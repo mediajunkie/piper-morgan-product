@@ -804,7 +804,9 @@ class ContextAssembler:
                     "turn_count": len(conv_ctx.turns),
                 }
             except Exception as e:
+                # #2151 FLOOR-ABSENT: an unread history is not "we haven't talked".
                 logger.warning("context_assembler_memory_history_error", error=str(e))
+                context["memory_source_failed"] = True
 
         # User history service (persistent memory)
         # Issue #1021: switched from ephemeral InMemoryUserHistoryRepository
@@ -828,7 +830,9 @@ class ContextAssembler:
                         "summary": summary,
                     }
             except Exception as e:
+                # #2151 FLOOR-ABSENT: a failed history read is not "no prior conversations".
                 logger.warning("context_assembler_memory_persistent_error", error=str(e))
+                context["memory_source_failed"] = True
 
         return context
 

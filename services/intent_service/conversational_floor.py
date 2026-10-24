@@ -233,6 +233,12 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         "calendar",
     ),
     SourceFailedDirective(
+        # #2151 FLOOR-ABSENT: the conversation-history read failed — there may be
+        # prior conversations. NEVER present this as a first conversation.
+        "memory_source_failed",
+        "past conversations",
+    ),
+    SourceFailedDirective(
         # #2151 (Arch 10-23): the trust-profile read failed — the stage is unknown,
         # not "new". NEVER present this as a fresh relationship.
         "trust_source_failed",

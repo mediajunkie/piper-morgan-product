@@ -39,12 +39,11 @@ from services.intent_service.conversational_floor import SOURCE_FAILED_FLAGS
 UNREGISTERED_KNOWN: Dict[str, str] = {
     "_gather_calendar_connection": "a failed connection lookup reads as not connected",
     "_gather_insight_pull_context": "the except branch writes the verified-empty insights dict",
-    "_gather_memory_context": "a failed history read leaves persistent_memory absent",
     "_gather_recent_activity_context": "GitHub and calendar legs registered 10-24; a failed Slack leg still reads as no activity (FLOOR-ABSENT)",
     "_gather_status_priority_context": "built from unregistered gathers (calendar, GitHub)",
     "_gather_temporal_context": "built from unregistered gathers (calendar, milestones, activity)",
 }
-UNREGISTERED_KNOWN_CEILING = 6
+UNREGISTERED_KNOWN_CEILING = 5
 
 _FLAGS = {entry.flag for entry in SOURCE_FAILED_FLAGS}
 

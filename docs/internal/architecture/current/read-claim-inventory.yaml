@@ -1109,6 +1109,20 @@ surfaces:
     failed leg raises _PartialSourceRead, so the cache stores nothing and the other legs
     still render.
 
+- id: floor:memory_source_failed
+  kind: floor
+  effect: READ
+  reads: this session's turns and persistent conversation history (UserHistoryService)
+  handler: services/intent_service/context_assembler.py:ContextAssembler._gather_memory_context
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: n/a}
+  texts:
+    failed: 'aggregate "... could not check: past conversations"'
+  verdict: green
+  notes: >-
+    Added 2026-10-24 (Lead, #2151 FLOOR-ABSENT). Either read failing arms the flag; the
+    gather is uncached (#973). Pins fail the read at the repository
+    (test_memory_floor_read_2151.py).
+
 - id: floor:projects_source_failed
   kind: floor
   effect: READ
@@ -1255,9 +1269,12 @@ surfaces:
   effect: READ
   reads: this session's turns and persistent conversation history (UserHistoryService)
   handler: services/intent_service/context_assembler.py:ContextAssembler._gather_memory_context
-  states: {verified: distinct, failed: conflated:not_performed, narrowed: distinct, not_performed: conflated:verified, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: conflated:verified, substituted: n/a}
   verdict: red
-  notes: 'FLOOR-ABSENT for the persistent-history read. unverified: served wording.'
+  notes: >-
+    FAILED is distinct since 2026-10-24 (see floor:memory_source_failed). Still red:
+    no prior conversations and no principal both leave persistent_memory absent.
+    unverified: served wording.
 
 - id: floor:assembler._gather_recent_activity_context
   kind: floor
