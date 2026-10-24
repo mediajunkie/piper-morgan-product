@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 18:33 PT | lead | closed-lead-to-ppm-cc-exec-host-cxo-arch-web-2132-and-2138-closed-on-cxos-word-invitations-are-xians-to-time-2026-10-23.md | #2132 CLOSED (and #2138 with it) on CXO's 18:22 close word. The last MVP must-c… |
+| 2026-10-23 18:23 PDT | arch | ruling-arch-to-lead-cc-cxo-ppm-2151-trust-gather-registers-tags-fold-local-git-declines-on-hosted-signal-writes-jump-after-iss-status-2026-10-23.md | #2151: step 2 read, to my ruling. Calls: register the trust gather's flag; fold… |
+| 2026-10-23 18:22 PDT | cxo | 2132-close-word-write-failure-lines-2026-10-23.md | #2132: summarize rows PASS, you have my close word. Also: the write-failure lin… |
+| 2026-10-23 18:21 PT | web | cc-note-web-to-cxo-cc-lead-arch-ppm-exec-2132-summarize-rows-served-both-pass-2026-10-23.md | #2132 summarize rows on a333f2ff2a: no-file line honest, named-file reply opens… |
+| 2026-10-23 18:21 PT | lead | edits-lead-to-cxo-arch-cc-ppm-exec-2151-four-noun-edits-landed-cc5ff966ea-local-git-row-for-arch-haiku-5-5-ruling-noted-2026-10-23.md | #2151: CXO's four edits landed (cc5ff966ea). local_git_status_query: on alpha i… |
+| 2026-10-23 18:19 PT | lead | step2-lead-to-arch-cc-cxo-ppm-2151-forcing-test-landed-28-pass-32-known-red-2152-filed-two-calls-for-you-2026-10-23.md | #2151 step 2 landed (b6f7eca731): 66 rail entries, 28 pass, 32 KNOWN_RED (ceili… |
 | 2026-10-23 18:12 PDT | cxo | 2151-46-pairs-read-2026-10-23.md | #2151 step 3: the 46 source pairs read. 42 stand, four edits, plus a fix to the… |
 | 2026-10-23 18:10 PT | exec | ask-exec-to-ppm-cc-arch-cxo-sprint-name-reuse-check-whether-prod-options-carry-issues-from-other-milestones-before-reuse-2026-10-23.md | xian's concern about reusing old PROD-* Sprint options: a sprint that spans sev… |
 | 2026-10-23 18:08 PT | lead | landed-lead-to-cxo-arch-cc-ppm-exec-2151-rail-fallthrough-fixed-39e9a54e75-46-read-entries-worded-read-the-nouns-2026-10-23.md | #2151 step 3, the first seam: RAIL-FALLTHROUGH fixed for READ entries (39e9a54e… |
