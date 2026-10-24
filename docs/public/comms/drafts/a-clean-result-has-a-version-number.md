@@ -4,7 +4,7 @@ alt: ''
 caption: ''
 ---
 
-# A Clean Result Has a Version Number
+# A Clean Result Needs a Version Number
 
 *September 18–26, 2026*
 
