@@ -1868,8 +1868,15 @@ async def get_calendar_status(request: Request):
             # is the host's, never this visitor's calendar. No user, nothing to read.
             return {"configured": False, "message": "Not connected"}
 
+        from services.infrastructure.keychain_service import SecretProvenance
+
         keychain = KeychainService()
-        refresh_token = keychain.get_api_key(f"google_calendar_{user_id}")
+        # #2151 (Arch 10-24 12:32): read with provenance; a store failure is a failed
+        # check, never "Not connected".
+        read = keychain.read_secret(f"google_calendar_{user_id}")
+        if read.provenance is SecretProvenance.STORE_FAILED:
+            return {"configured": False, "message": "Status check failed"}
+        refresh_token = read.value if read.is_present else None
 
         if refresh_token:
             return {

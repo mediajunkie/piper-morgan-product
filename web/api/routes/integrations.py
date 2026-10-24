@@ -360,9 +360,11 @@ async def check_integration_connection(
                 leg=result.get("leg"),
                 stale_reason=result.get("stale_oauth_reason"),
             )
-        elif result.get("error_type") == "check_failed":
+        elif result.get("error_type") in ("check_failed", "connection_failed"):
             # #2151 (route group 1): the check couldn't run. Nothing is recorded, so the
-            # card never turns "failed" over a connection nobody could check.
+            # card never turns "failed" over a connection nobody could check. Arch 10-24
+            # 12:32: ``connection_failed`` (every ``_test_*``'s ``except``) is the same
+            # thing: a timeout or DNS failure on our side, never the user's internet.
             return ConnectionTestResponse(
                 integration=integration_name,
                 success=False,
@@ -387,18 +389,15 @@ async def check_integration_connection(
             )
 
     except Exception as e:
+        # #2151 (Arch 10-24 12:32): a Test that raised is a check that couldn't run: no
+        # failed result is recorded, and no exception text reaches the page.
         latency_ms = (time.time() - start_time) * 1000
-        results.record_test_result(
-            principal, integration_name, ok=False, error=str(e), latency_ms=latency_ms
-        )
         logger.error(f"Integration test failed: {integration_name}", error=str(e))
         return ConnectionTestResponse(
             integration=integration_name,
             success=False,
-            message=f"Test failed: {str(e)}",
+            message=CHECK_FAILED_MESSAGE,
             latency_ms=round(latency_ms, 2),
-            error=str(e),
-            fix_suggestion="Check logs for details or contact support",
         )
 
 

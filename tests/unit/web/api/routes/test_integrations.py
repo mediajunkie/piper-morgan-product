@@ -270,8 +270,13 @@ class TestSingleIntegrationTest:
 
             response = await check_integration_connection("notion", current_user=mock_user)
 
+            # #2151 (Arch 10-24 12:32): a Test that raised is a check that couldn't run;
+            # CHECK_FAILED_MESSAGE, and no exception text on the page.
+            from web.api.routes.integrations import CHECK_FAILED_MESSAGE
+
             assert response.success is False
-            assert "Network error" in response.message or "Network error" in str(response.error)
+            assert response.message == CHECK_FAILED_MESSAGE
+            assert "Network error" not in response.message + str(response.error or "")
 
 
 class TestAllConnectionsEndpoint:

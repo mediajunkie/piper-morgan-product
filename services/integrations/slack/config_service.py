@@ -80,6 +80,21 @@ class SlackConfig:
         return True
 
 
+class SlackCredentialReadFailed(RuntimeError):
+    """#2151: the user's Slack token couldn't be read (the credential store failed to
+    answer). Never an empty token: an empty token reads as "not connected"."""
+
+
+def _user_secret(keychain: Any, provider: str, user_id: str) -> str:
+    """The user's own Slack secret, or "" when verified absent; RAISES on a store failure."""
+    from services.infrastructure.keychain_service import SecretProvenance
+
+    read = keychain.read_secret(provider, user_id)
+    if read.provenance is SecretProvenance.STORE_FAILED:
+        raise SlackCredentialReadFailed(f"{provider} credential store failed")
+    return (read.value or "") if read.is_present else ""
+
+
 class SlackConfigService:
     """
     Slack configuration service following ADR-010 patterns.
@@ -215,25 +230,44 @@ class SlackConfigService:
 
         # Issue #575/#576/#734: Check keychain for credentials with user-scoping
         keychain = KeychainService()
-        # User-scoped token (per ADR-058)
-        keychain_bot_token = keychain.get_api_key("slack_bot", username=user_id) or ""
+        # User-scoped token (per ADR-058). #2151 (Arch 10-24 12:32): read with provenance;
+        # get_api_key returned None for a store failure as well as for absence, so a
+        # failed read looked like "not connected". A store failure RAISES here.
+        keychain_bot_token = _user_secret(keychain, "slack_bot", user_id)
         # #1338: user token (xoxp-) for USER-only methods (search.messages), user-scoped
-        keychain_user_token = keychain.get_api_key("slack_user", username=user_id) or ""
+        keychain_user_token = _user_secret(keychain, "slack_user", user_id)
         # App credentials (shared, no user scoping)
         keychain_client_id = keychain.get_api_key("slack_client_id") or ""
         keychain_client_secret = keychain.get_api_key("slack_client_secret") or ""
 
         # 4-layer priority: env > user config > keychain > default
+        # #2151 (Arch 10-24 12:32): on a hosted deploy the env and PIPER.user.md layers
+        # are the HOST's, and they would override every user's own token; there only the
+        # user's own keychain token counts. A local install keeps all four layers.
+        from services.infrastructure.deployment import is_hosted_deployment
+
+        hosted = is_hosted_deployment()
         # bot_token is user-scoped
         bot_token = (
-            os.getenv("SLACK_BOT_TOKEN") or auth_config.get("bot_token") or keychain_bot_token or ""
+            keychain_bot_token
+            if hosted
+            else (
+                os.getenv("SLACK_BOT_TOKEN")
+                or auth_config.get("bot_token")
+                or keychain_bot_token
+                or ""
+            )
         )
         # user_token is user-scoped (same 4-layer priority as bot_token) — #1338
         user_token = (
-            os.getenv("SLACK_USER_TOKEN")
-            or auth_config.get("user_token")
-            or keychain_user_token
-            or ""
+            keychain_user_token
+            if hosted
+            else (
+                os.getenv("SLACK_USER_TOKEN")
+                or auth_config.get("user_token")
+                or keychain_user_token
+                or ""
+            )
         )
         # client_id/secret are app credentials (shared)
         client_id = (

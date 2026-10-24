@@ -28,16 +28,39 @@ def _request(cookie: str | None) -> Request:
 @pytest.mark.asyncio
 async def test_valid_token_selects_user_scoped_key():
     from services.auth.jwt_service import JWTService
-    from services.infrastructure.keychain_service import KeychainService
+    from services.infrastructure.keychain_service import (
+        KeychainService,
+        SecretProvenance,
+        SecretRead,
+    )
 
     validate = AsyncMock(return_value=SimpleNamespace(sub="user-abc"))
+    present = SecretRead(SecretProvenance.PRESENT, value="tok")
     with patch.object(JWTService, "validate_token", validate):
-        with patch.object(KeychainService, "get_api_key", return_value="tok") as get_key:
+        with patch.object(KeychainService, "read_secret", return_value=present) as read:
             result = await get_calendar_status(_request("auth_token=jwt123"))
 
     validate.assert_awaited_once_with("jwt123")
-    get_key.assert_called_once_with("google_calendar_user-abc")
+    read.assert_called_once_with("google_calendar_user-abc")
     assert result["configured"] is True
+
+
+@pytest.mark.asyncio
+async def test_a_store_that_failed_is_status_check_failed_not_not_connected():
+    """#2151 (Arch 10-24 12:32): get_api_key returned None for a store failure too."""
+    from services.auth.jwt_service import JWTService
+    from services.infrastructure.keychain_service import (
+        KeychainService,
+        SecretProvenance,
+        SecretRead,
+    )
+
+    validate = AsyncMock(return_value=SimpleNamespace(sub="user-abc"))
+    failed = SecretRead(SecretProvenance.STORE_FAILED, error="timeout")
+    with patch.object(JWTService, "validate_token", validate):
+        with patch.object(KeychainService, "read_secret", return_value=failed):
+            result = await get_calendar_status(_request("auth_token=jwt123"))
+    assert result == {"configured": False, "message": "Status check failed"}
 
 
 @pytest.mark.asyncio

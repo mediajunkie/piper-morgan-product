@@ -277,3 +277,46 @@ async def test_github_card_check_that_couldnt_run(how):
         out = await si.get_github_settings(current_user=_user())
     assert out["check_failed"] is True
     assert out["error"] == si.GITHUB_STATUS_CHECK_FAILED_LINE
+
+
+# ── Arch 10-24 12:32, gap 1: a Test that raises is a check that couldn't run ──
+
+
+@pytest.mark.asyncio
+async def test_a_connection_failed_test_records_nothing_and_says_couldnt_check():
+    store = MagicMock()
+    with (
+        patch.object(integ, "_get_test_result_store", return_value=store),
+        patch.object(
+            integ,
+            "_test_integration",
+            new=AsyncMock(
+                return_value={
+                    "success": False,
+                    "error": "fake: Cannot connect to host",
+                    "error_type": "connection_failed",
+                }
+            ),
+        ),
+    ):
+        resp = await integ.check_integration_connection("notion", current_user=MagicMock(sub="u1"))
+    assert resp.message == integ.CHECK_FAILED_MESSAGE
+    assert "internet" not in resp.message.lower()
+    store.record_test_result.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_a_test_that_raises_records_nothing_and_shows_no_exception_text():
+    store = MagicMock()
+    with (
+        patch.object(integ, "_get_test_result_store", return_value=store),
+        patch.object(
+            integ,
+            "_test_integration",
+            new=AsyncMock(side_effect=RuntimeError("fake secret-ish detail")),
+        ),
+    ):
+        resp = await integ.check_integration_connection("slack", current_user=MagicMock(sub="u1"))
+    assert resp.message == integ.CHECK_FAILED_MESSAGE
+    assert "fake secret-ish detail" not in (resp.message + str(resp.error or ""))
+    store.record_test_result.assert_not_called()

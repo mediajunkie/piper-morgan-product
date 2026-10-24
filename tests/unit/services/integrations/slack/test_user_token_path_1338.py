@@ -20,6 +20,22 @@ from services.integrations.slack.slack_integration_router import SlackIntegratio
 
 pytestmark = pytest.mark.asyncio
 
+
+def _mirror_read_secret(kc):
+    """#2151: SlackConfigService reads user tokens with provenance (read_secret);
+    mirror the mocked get_api_key: present when set, verified absent otherwise."""
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+    def _read(provider, username=None):
+        value = kc.get_api_key(provider, username)
+        if value:
+            return SecretRead(SecretProvenance.PRESENT, value=value)
+        return SecretRead(SecretProvenance.VERIFIED_ABSENT)
+
+    kc.read_secret = _read
+    return kc
+
+
 _USER = "owner-1"
 
 
@@ -41,6 +57,7 @@ async def test_config_loads_user_token_from_keychain_1338():
         "slack_bot": "xoxb-bot",
         "slack_user": "xoxp-user",
     }.get(provider, "")
+    _mirror_read_secret(keychain)
 
     with (
         patch.dict("os.environ", {}, clear=True),

@@ -16,6 +16,21 @@ import pytest
 pytestmark = pytest.mark.unit
 
 
+def _mirror_read_secret(kc):
+    """#2151: calendar status reads with provenance (read_secret); mirror the mocked
+    get_api_key (its return value, or its raise)."""
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+    def _read(name, username=None):
+        value = kc.get_api_key(name)
+        if value:
+            return SecretRead(SecretProvenance.PRESENT, value=value)
+        return SecretRead(SecretProvenance.VERIFIED_ABSENT)
+
+    kc.read_secret = _read
+    return kc
+
+
 class TestCalendarOAuthTrigger:
     """Tests for initiating Calendar OAuth from setup wizard"""
 
@@ -340,6 +355,7 @@ class TestCalendarSetupStatus:
         ):
             mock_keychain = MagicMock()
             mock_keychain.get_api_key.return_value = "stored_refresh_token"
+            _mirror_read_secret(mock_keychain)
             MockKeychain.return_value = mock_keychain
 
             response = await get_calendar_status(mock_request)
@@ -359,6 +375,7 @@ class TestCalendarSetupStatus:
         ):
             mock_keychain = MagicMock()
             mock_keychain.get_api_key.return_value = None
+            _mirror_read_secret(mock_keychain)
             MockKeychain.return_value = mock_keychain
 
             response = await get_calendar_status(mock_request)
@@ -378,6 +395,7 @@ class TestCalendarSetupStatus:
         ):
             mock_keychain = MagicMock()
             mock_keychain.get_api_key.side_effect = Exception("Keychain access denied")
+            _mirror_read_secret(mock_keychain)
             MockKeychain.return_value = mock_keychain
 
             response = await get_calendar_status(mock_request)
@@ -398,6 +416,7 @@ class TestCalendarSetupStatus:
         ):
             mock_keychain = MagicMock()
             mock_keychain.get_api_key.return_value = None
+            _mirror_read_secret(mock_keychain)
             MockKeychain.return_value = mock_keychain
 
             await get_calendar_status(mock_request)

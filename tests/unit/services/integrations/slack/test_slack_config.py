@@ -16,7 +16,23 @@ from services.integrations.slack.config_service import (
     SlackEnvironment,
 )
 
+
 # Test user ID for all tests
+def _mirror_read_secret(kc):
+    """#2151: SlackConfigService reads user tokens with provenance (read_secret);
+    mirror the mocked get_api_key: present when set, verified absent otherwise."""
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+    def _read(provider, username=None):
+        value = kc.get_api_key(provider, username)
+        if value:
+            return SecretRead(SecretProvenance.PRESENT, value=value)
+        return SecretRead(SecretProvenance.VERIFIED_ABSENT)
+
+    kc.read_secret = _read
+    return kc
+
+
 TEST_USER_ID = "test-user-123"
 
 
@@ -115,6 +131,7 @@ class TestSlackConfigService:
         # Mock keychain to return empty (Issue #576 added keychain support)
         mock_keychain = Mock()
         mock_keychain.get_api_key.return_value = None
+        _mirror_read_secret(mock_keychain)
 
         with (
             patch.dict(os.environ, {}, clear=True),
@@ -168,6 +185,7 @@ class TestSlackConfigService:
         # Mock keychain to return empty (Issue #576 added keychain support)
         mock_keychain = Mock()
         mock_keychain.get_api_key.return_value = None
+        _mirror_read_secret(mock_keychain)
 
         with (
             patch.dict(os.environ, {}, clear=True),

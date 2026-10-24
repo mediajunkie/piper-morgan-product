@@ -160,8 +160,10 @@ def test_github_recorded_check_for_b_is_none_after_a_github_test(accounts, store
     assert integrations._recorded_check_iso(accounts["b_id"], "github") is None
 
 
-def test_raw_exception_text_from_a_test_stays_with_its_account(accounts, store):
-    """The str(e) path records A's exception under A only."""
+def test_raw_exception_text_from_a_test_reaches_no_card(accounts, store):
+    """#2151 (Arch 10-24 12:32): a Test that raised is a check that couldn't run, so
+    nothing is recorded: A's exception text reaches neither A's card nor B's (it used to
+    be recorded under A only)."""
     with patch.object(
         integrations,
         "_test_integration",
@@ -169,10 +171,11 @@ def test_raw_exception_text_from_a_test_stays_with_its_account(accounts, store):
     ):
         r = accounts["a"].post("/api/v1/integrations/test/notion")
     assert r.status_code == 200 and r.json()["success"] is False
-    assert "a-private-workspace" in _card(accounts["a"], "notion")["status_message"]
-    b_card = _card(accounts["b"], "notion")
-    assert b_card["status_detail"] == UNCHECKED["status_detail"]
-    assert "a-private-workspace" not in str(b_card)
+    assert "a-private-workspace" not in r.text
+    for who in ("a", "b"):
+        card = _card(accounts[who], "notion")
+        assert "a-private-workspace" not in str(card)
+    assert _card(accounts["b"], "notion")["status_detail"] == UNCHECKED["status_detail"]
 
 
 def test_no_principal_records_nothing_and_reads_nothing():
