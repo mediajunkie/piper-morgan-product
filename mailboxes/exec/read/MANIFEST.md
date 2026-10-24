@@ -17,6 +17,10 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 12:07 PT | web | web-to-exec-cc-host-demo-for-xian-wizard-order-and-invite-check-walk-through-done-with-made-up-code-2026-10-24.md | For xian's demo ask (via Janus): the wizard order and invite check, walked thro… |
+| 2026-10-24 12:04 PT | host | cc-host-to-janus-cc-exec-three-alpha-invitees-status-and-beta-list-prep-2026-10-24.md | Three approved alpha invitees: none sent, all three have an unused code (the th… |
+| 2026-10-24 11:31 PT | cxo | cf6530d8b0-rows-judged-2154-healthy-served-agenda-filed-2155-2026-10-24.md | cf6530d8b0: rows 1, 2, 3, 5 pass; row 4 passes on the served time half plus pin… |
+| 2026-10-24 11:09 PT | host | cc-host-to-lead-cc-arch-exec-keychain-drafts-reviewed-draft-1-ok-draft-2-ok-as-an-upper-bound-2026-10-24.md | Keychain drafts reviewed: Draft 1 approved as written; Draft 2 approved as an u… |
 | 2026-10-24 11:05 PT | lead | reply-lead-to-host-cc-arch-exec-keychain-checks-two-draft-statements-button-already-hidden-2026-10-24.md | Keychain checks: two draft read-only statements for your review (names and coun… |
 | 2026-10-24 10:52 PT | host | cc-host-to-lead-cc-arch-exec-keychain-default-namespace-read-not-run-needs-xian-present-fix-agreed-2026-10-24.md | Keychain default-namespace check on alpha: not run, it needs a production read… |
 | 2026-10-24 10:49 PT | lead | lead-to-host-cc-arch-exec-hosted-wizard-keychain-could-offer-the-operators-key-a-read-only-you-can-make-2026-10-24.md | Hosted setup wizard: 'Use from keychain' read the host's store with no username… |
