@@ -163,3 +163,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v566 (12:26): #2148 decision card; #2146 steps card.
 - v567 (12:39): #2148 already built.
 - v568 (12:42): #2148 admitted, gate 5/2.
+- v579 (23:09): rebuilt for Saturday: stale cards removed; round 2 done; two one-line questions (gate password reuse, old plugin).

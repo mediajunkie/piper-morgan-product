@@ -31,75 +31,51 @@
  .jan dd{margin:.1rem 0 0}
 </style>
 <div class="wrap">
-<h1>Attention rollup — Friday 23 October</h1>
-<p class="meta">Exec · v568, rebuilt 12:42 PDT Fri 10-23 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<h1>Attention rollup — Saturday 24 October</h1>
+<p class="meta">Exec · v579, rebuilt 23:09 PDT Fri 10-23 for Saturday (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
+<div class="card hot"><b>MVP: every must-close item is closed. The invitations are yours to time.</b> Gate: 3 open, none must-close (#2018 and #1595 are known issues, #1386 is the gate&rsquo;s own test). HOST&rsquo;s send-morning checks are done: the privacy page and alpha are fine. Still open before a send: <b>your Terms text</b> (the Terms page shows nothing until you&rsquo;ve written it), Web&rsquo;s wizard and invite-code checks on send day, and the stored-key count (Lead&rsquo;s query, run with you present).</div>
 
-
-
-
-<div class="card hot"><b>Workstream reviews for the week that ended Thursday (Oct 16&ndash;22, Ship #066): all ten in. Synthesis ready for discussion.</b>
-<ul style="margin:.3rem 0 .2rem 1.2rem;padding:0">
-<li><b>Reviews: 10 of 10 filed</b> by 04:34 this morning: Lead, PA, PPM, Arch, CXO, Web, HOST, CIO, Comms, Docs. PA sent one correction: the database went down twice that week, not three times.</li>
-<li><b>The synthesis is ready for our discussion: <a href="https://claude.ai/artifact/QwwNgEVnZCD8TAEULTKiD2">Ship #066 week review</a></b>. It covers progress against last week&rsquo;s goal, what went wrong, each workstream, draft goals for next week, and five questions for you. The early draft is on hold, and the Ship will come from our discussion.</li>
-<li><b>Process fix (you approved it today):</b> my end-of-check-in script now prints the Ship cycle&rsquo;s state and next step from Friday to Wednesday. A commit gate will block a draft that comes before the synthesis (CIO reviews the gate first).</li>
-</ul></div>
-<div class="card hot"><b>The last MVP must-close is closed (#2132, 18:32 Fri). The invitations are yours to time.</b> <b>Gate: 3 open, none must-close</b> (#2018, #1595, #1386). Today closed #2085, #2096, #2142, #2148, #2146 and #2132 (with #2138). HOST&rsquo;s send-morning checks and PPM&rsquo;s recheck are ready when you pick a moment.
-<p style="margin:.4rem 0 .2rem"><b>For you, whenever (none of it is urgent):</b></p>
-<ol style="margin:.2rem 0 .2rem 1.2rem;padding:0">
-<li><b>Ship #066 draft:</b> your first look (the P.S. and trimming), then you hand it to Comms. It publishes Wed 10-28. <a href="https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/public/comms/drafts/weekly-ship-066-draft-2026-10-23.md">draft</a></li>
+<div class="card hot"><b>For you Saturday, in this order (none urgent):</b>
+<ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
+<li><b>Ship #066 draft:</b> your first look (the P.S. and trimming), then hand it to Comms. It publishes Wed 10-28. <a href="https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/public/comms/drafts/weekly-ship-066-draft-2026-10-23.md">draft</a></li>
+<li><b>Production plan review: all four reviewers and HOST are in.</b> I&rsquo;ll bring you the merged findings as one list to rule on: staging plus a restore drill (F8a, F1), the 1.0 definition (C3), the ESSENCE wording (C4), the sign-up model (C7), the Q share (C9), and the Readiness lane (C6, which the reviewers now agree on). Then I write the brief for the living map.</li>
 <li><b>Three Sprint options</b> to add in the web UI: <code>PROD-HONESTY - Failed Reads Say So</code>, <code>PROD-DATA - Data Boundaries, Privacy &amp; Terms</code>, <code>PROD-CONVO - Conversation Reliability</code>. PPM moves the issues afterwards.</li>
-<li><b>The skills review (#1715):</b> a 20-minute walk, Saturday when you&rsquo;re fresh.</li>
-<li><b>The Haiku 5.5 screen (about $4):</b> a separate cap now, or wait until Nov 1. My recommendation: wait. Don&rsquo;t change the model underneath the first partners.</li>
+<li><b>The skills review (#1715):</b> a 20-minute walk when you&rsquo;re fresh. Due by Tue 11-03.</li>
+<li><b>Two one-line questions:</b>
+<ul style="margin:.2rem 0 0 1.1rem;padding:0">
+<li>Was the June alpha gate password (user <code>piperalpha</code>, masked <code>ddb7…9184</code>), or its pattern, used anywhere else? If not, this closes. The gate is gone and the line is masked in the repo.</li>
+<li>Do you still use the old Piper plugin from June (<code>piper-morgan</code> 0.4.0) or the standalone <code>consult-piper</code> skill in your Claude account? If not, uninstall both (it also removes that dead password from its settings), and three old issues close (#1242, #1244, #1245).</li>
+</ul></li>
+<li><b>The Haiku 5.5 screen (about $4):</b> a separate cap now, or wait until Nov 1. My recommendation: wait.</li>
 </ol></div>
-<div class="card"><b>Anthropic spending limit: you raised it from $50 to $75 (08:11, in Lead&rsquo;s session). Recorded in decisions.log.</b> The test call went through at 08:14, and the Anthropic checks ran. Two of the #2132 changes pass. The third (#2133&rsquo;s decline) fails on Anthropic and is held. Lead asks Arch whether the two passing changes can land together after a full run. You&rsquo;ll review spend at the end of the next billing period. If Lead&rsquo;s test call is still refused, I&rsquo;ll tell you.</div>
 
-<div class="card"><b>Today&rsquo;s checkpoint: answered (08:33).</b> You ruled that #1386 passing after triage is close enough (B+ or A&minus; is acceptable for now), on the condition that #2132 closes before invitations go out. #2138 is folded into #2132, #2136 stays separate, and your #2096 read is done (count 1). All are recorded and relayed. Background, as it stood this morning: State at 06:4x (gate, main and alpha read just now, unchanged overnight). Your 10-18 rule: if MVP looks on track to close by 10-30 (or close enough), approve inviting people.
-<ul style="margin:.3rem 0 .2rem 1.2rem;padding:0">
-<li><b>Gate: 6 open, 3 must-close.</b> You admitted #2142 at 08:20, and it had already closed at 07:49 on a served check, so it counts as closed. #2085 (restart button): one built fix plus your second test. #2132 (wrong document): its fix is held after breaking six unrelated answers; Arch has ruled a route and Lead restarts it Friday morning. #2096: your read of <code>/api/v1/admin/feedback</code>. Closed Thursday on served checks: #2091, #2092, #2112, #2128, #1524.</li>
-<li><b>#1386, the gate&rsquo;s own test, Thursday evening&rsquo;s rerun: both bars now met, but only after triage.</b> Routing 90.2% with Lead&rsquo;s signed relabel (88.5% raw; bar 90%). Quality 92.7% with CXO&rsquo;s 18 waivers, now confirmed on full text (46.3% raw; bar 75%). Every failure is filed: #2132, #2140, #2142. <b>Your question today:</b> is &ldquo;met after triage&rdquo; close enough? The raw figures are what the product scored before anyone&rsquo;s judgment.</li>
-<li><b>Invitation: Anthropic only.</b> The OpenAI run now passes every hard condition but is 21 points behind on quality and showed an internal error string (#2139). Settled Thursday: Calendar is a plain connect step, the restart line has no fixed hour and uses the conditional &ldquo;send it again&rdquo;, the key line names the 5-day backups, and Terms is covered by Option 2.</li>
-<li><b>Still open for the invitation:</b> the count of stored keys with no encrypted value (a production read for HOST or you), HOST&rsquo;s send-morning checks, and your rewrite. If partners start before #2132 closes, CXO offers a known-issue line for it; that would mean accepting a known Class 3 in writing, which isn&rsquo;t a close.</li>
-</ul></div>
-
-
-
-<div class="card"><b>Restart button (#2085): passed today, 10:46.</b> You stopped the database, and the restarter brought it back on its own: &ldquo;restart accepted: HTTP 200&rdquo;, healthy 10 seconds later, about 2 minutes down in all. Closed at 10:50. <b>Gate now: 4 open, 1 must-close</b> (#2132 with #2138). #2096 closed.</div>
-<div class="card"><b>GitHub App (#2136): installed, with Workflows granted.</b> It covers piper-morgan-product, piper-morgan-mail, designinproduct and mediajunkie. <b>Still to add (one minute):</b> piper-morgan-website, piper-morgan-plugin and dispatch. Install page &rarr; Repository access &rarr; add them &rarr; Save.
-<p style="margin:.3rem 0 0"><b>A later decision, for a conversational walk: your own setup&rsquo;s exposure.</b> All 24 agent sessions on Amber run as your Mac user, so any of them can reach your admin SSH key and <code>gh</code> login through a shell. Scoping can&rsquo;t fix that. CIO and Pard propose replacing your admin key on Amber with a non-admin push credential for every agent, plus a separate Mac user that alone holds the App key. Not blocking today.</p></div>
-
+<div class="card"><b>GitHub App (#2136):</b> working. Last night&rsquo;s test push from the agents&rsquo; App was refused by the branch rule, as it should be. Your own pushes go through as admin. What&rsquo;s left is yours, when you&rsquo;re ready: taking your admin login and SSH key off Amber. Also still to add to the App (one minute): piper-morgan-website, piper-morgan-plugin and dispatch.</div>
 
 <h2>Next time you&rsquo;re here</h2>
-<div class="card"><b>Spec&rsquo;s seven recommendations (R1&ndash;R7): the one-page status is ready.</b> <a href="https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/audits/spec-recommendations-status-2026-10-23.md">Read it here</a> (two minutes). Most of the cheap steps are done. Five decisions are yours, and several steps were never started. We'll walk them one at a time, between other work. <b>First, after today&rsquo;s checkpoint:</b> should the old mailboxes and <code>data/postgres</code> come out of the public repo (R5 item 5)? My lean: yes, after the beta invites go out, with CIO costing it at the 11-05 mail review.</div>
+<div class="card"><b>Spec&rsquo;s seven recommendations (R1&ndash;R7):</b> <a href="https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/audits/spec-recommendations-status-2026-10-23.md">one-page status</a>. Five decisions are yours, walked one at a time. First: should the old mailboxes and <code>data/postgres</code> come out of the public repo? My lean: yes, after the invites go out.</div>
 <div class="card act"><ol style="margin:.2rem 0 .2rem 1.2rem;padding:0">
-<li><b>Today: the title for Sunday 10-25&rsquo;s post</b>, needed for Saturday&rsquo;s tease (in your <a href="https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86">planning doc</a>).</li>
-<li><b>Terms section for the invitation:</b> rewrite in your words, then your HALT pass: <a href="file:///Users/xian/Development/piper-morgan-worktrees/exec/docs/internal/design/terms-invitation-draft-for-xian-2026-10-19.md">terms-invitation-draft-for-xian-2026-10-19.md</a>. Or decide the invitation goes without a Terms page.</li>
-
+<li><b>The title for Sunday 10-25&rsquo;s post</b> (in your <a href="https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86">planning doc</a>).</li>
 <li><b>Comms: the slate</b> (keep 12 or merge to 8).</li>
+<li><b>Main-red / CI target:</b> still not ruled.</li>
 </ol></div>
 <h2>Whenever</h2>
-<p class="meta">Several of these are over a week old. After the R1&ndash;R7 walk, I&rsquo;ll walk this list with you the same way, one at a time.</p>
 <div class="card"><ol style="margin:.2rem 0 .2rem 1.2rem;padding:0">
-
-<li><b>Two database reads for the key paragraph</b> (HOST, low priority): count stored keys with no ciphertext, and whether Fly&rsquo;s Postgres backups keep deleted keys.</li>
 <li><b>Maybe later: <code>.flycast</code> &rarr; <code>.internal</code></b> in <code>DATABASE_URL</code>; wait for Lead&rsquo;s word.</li>
-<li><b>Two-week sprints</b> for the next milestone.</li>
 <li><b>Delete old revisions on 15 issues</b> (only you can): 297, 809, 1476, 1477, 1509, 1510, 1536&ndash;1540, 1718, 1830; comments on 377 and 646.</li>
 <li><b>&ldquo;Hide this chat&rdquo; control?</b> Lean: not before invites.</li>
 <li>Re-clone Kindbook; blog mining with Comms.</li>
-<li>Optional: search <code>Piper Morgan Alpha</code> in your GitHub security log (the &ldquo;authorized&rdquo; emails match your own reconnects); rename &ldquo;Web-key-for-testing&rdquo; in Console.</li>
+<li>Optional: search <code>Piper Morgan Alpha</code> in your GitHub security log; rename &ldquo;Web-key-for-testing&rdquo; in Console.</li>
 </ol></div>
 <h2>🚧 In motion, nothing for you</h2>
 <div class="card"><ul style="margin:.2rem 0 .2rem 1.2rem;padding:0">
-<li><b>#2132, the last must-close (the gate is 4 open, 1 must-close since #2096 closed):</b> one bad cell is left in Arch&rsquo;s table, comparing two documents. Each attempt to teach the router a new action has moved a neighbouring answer. The likely path, pending Arch: register compare so the old classifier handles it and the router never sees it (PPM says that meets the close scope). No call needed from you unless that fails.</li>
-<li>Ship #066: all ten reviews are in, and Comms reviewed my draft and I applied every fix (one false privacy line, from a review, removed). File: <code>docs/public/comms/drafts/weekly-ship-066-draft-2026-10-23.md</code>. Your first look comes after today&rsquo;s checkpoint, since the opening depends on it. It publishes Wed 10-28.</li>
-<li>Comms finished the Oct 9&ndash;22 mining pass. The results are in your <a href="https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86">Editorial Calendar Planning doc</a>: 9 insight candidates for the empty 10-31/11-01 weekend, and the narrative beat waits for the second restart test.</li>
-<li>The three held alpha invites: cleared by you Thursday, waiting on Comms&rsquo; packet and Web&rsquo;s code checks (HOST).</li>
-
+<li><b>#2151, the sweep for false &ldquo;none&rdquo; answers:</b> Lead&rsquo;s first fixes are on alpha. CXO passed all four normal-case questions. #2137 (&ldquo;Show my PRs&rdquo; on a token-connected account) passed and closed.</li>
+<li><b>Restarter (#2146):</b> passed its test Friday and brought the database back once with nobody touching it.</li>
+<li>Google&rsquo;s review of our Calendar access (#2087): submitted, waiting on Google.</li>
 <li>Mail v4 stays on three seats until the 11-05 review.</li>
 </ul></div>
 <h2>📊 Where things stand</h2>
-<div class="card">MVP gate: <b>6 open</b>, 3 must-close (#2132, #2085, #2096). #2142: admitted and closed today. Also open: #2018 and #1595 (known issues), #1386 (the gate&rsquo;s test). Main: 12 of 12 green. Alpha <code>ac3c7581ff</code> (Thu 19:19), healthy at 06:36 Fri.</div>
+<div class="card">MVP gate: <b>3 open, none must-close.</b> Closed Friday: #2085, #2096, #2142, #2148, #2146, #2132 (with #2138), #2137. Main: 12 of 12 green at 23:08. Alpha <code>5c654971e5</code>, healthy at 23:08 Fri.</div>
 <p class="meta">How I checked each version: <code>dev/active/exec-rollup-verification-history.md</code> (not needed to read this page).</p>
 
 </div>
