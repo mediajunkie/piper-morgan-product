@@ -368,7 +368,12 @@ class GoogleCalendarOAuthHandler:
 
         Returns:
             New CalendarTokens or None if refresh failed
+
+        #2151 (route group 1): on None, ``last_refresh_error`` says why: ``"revoked"``
+        when Google rejects the grant (``invalid_grant``), ``"unavailable"`` for anything
+        else (a 5xx, an unexpected status). A Test that couldn't run is not a revoked token.
         """
+        self.last_refresh_error: Optional[str] = None
         async with aiohttp.ClientSession() as session:
             async with session.post(
                 self.TOKEN_URL,
@@ -385,6 +390,11 @@ class GoogleCalendarOAuthHandler:
                         "calendar_token_refresh_failed",
                         status=response.status,
                         error=error_text,
+                    )
+                    self.last_refresh_error = (
+                        "revoked"
+                        if response.status in (400, 401) and "invalid_grant" in error_text
+                        else "unavailable"
                     )
                     return None
 

@@ -27,6 +27,16 @@ from web.api.routes.integrations import (
 )
 
 
+def _secret_read(value):
+    """#2151: the provenance read the calendar Test makes (``aread_secret``), mirroring a
+    mocked ``get_api_key`` value: present when set, verified absent when None."""
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+    if value:
+        return SecretRead(SecretProvenance.PRESENT, value=value)
+    return SecretRead(SecretProvenance.VERIFIED_ABSENT)
+
+
 class TestIntegrationHealthEndpoint:
     """Tests for GET /api/v1/integrations/health"""
 
@@ -463,6 +473,7 @@ class TestGitHubIntegration:
         """GitHub test should return not_configured when no token stored (Issue #562)"""
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = None
+        mock_keychain.aread_secret = AsyncMock(return_value=_secret_read(None))
 
         with patch(
             "services.infrastructure.keychain_service.KeychainService",
@@ -483,6 +494,7 @@ class TestSlackIntegration:
         """Slack test should succeed when stored OAuth token is valid (Issue #562)"""
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = "xoxb-test-token"
+        mock_keychain.aread_secret = AsyncMock(return_value=_secret_read("xoxb-test-token"))
 
         mock_response = AsyncMock()
         mock_response.json = AsyncMock(return_value={"ok": True})
@@ -514,6 +526,7 @@ class TestSlackIntegration:
         """Slack test should fail and include error when API returns ok=False (Issue #562)"""
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = "invalid_token"
+        mock_keychain.aread_secret = AsyncMock(return_value=_secret_read("invalid_token"))
 
         mock_response = AsyncMock()
         mock_response.json = AsyncMock(return_value={"ok": False, "error": "invalid_auth"})
@@ -547,6 +560,7 @@ class TestSlackIntegration:
         """Slack test should return not_configured when no token stored (Issue #562)"""
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = None
+        mock_keychain.aread_secret = AsyncMock(return_value=_secret_read(None))
 
         with patch(
             "services.infrastructure.keychain_service.KeychainService",
@@ -567,6 +581,7 @@ class TestCalendarIntegration:
         """Calendar test should succeed when OAuth token can be refreshed"""
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = "valid_refresh_token"
+        mock_keychain.aread_secret = AsyncMock(return_value=_secret_read("valid_refresh_token"))
 
         mock_handler = MagicMock()
         mock_handler.refresh_access_token = AsyncMock(
@@ -590,7 +605,7 @@ class TestCalendarIntegration:
             result = await _test_calendar()
 
             assert result["success"] is True
-            mock_keychain.get_api_key.assert_called_once_with("google_calendar")
+            mock_keychain.aread_secret.assert_awaited_once_with("google_calendar")
             mock_handler.refresh_access_token.assert_called_once_with("valid_refresh_token")
 
     @pytest.mark.asyncio
@@ -598,6 +613,7 @@ class TestCalendarIntegration:
         """Calendar test should fail when no refresh token in keychain"""
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = None
+        mock_keychain.aread_secret = AsyncMock(return_value=_secret_read(None))
 
         with patch(
             "services.infrastructure.keychain_service.KeychainService",
@@ -614,9 +630,11 @@ class TestCalendarIntegration:
         """Calendar test should fail when token refresh fails (Issue #539)"""
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = "expired_refresh_token"
+        mock_keychain.aread_secret = AsyncMock(return_value=_secret_read("expired_refresh_token"))
 
         mock_handler = MagicMock()
         mock_handler.refresh_access_token = AsyncMock(return_value=None)
+        mock_handler.last_refresh_error = "revoked"  # #2151: Google said invalid_grant
 
         with (
             patch(
@@ -633,6 +651,51 @@ class TestCalendarIntegration:
             assert result["success"] is False
             assert result["error_type"] == "token_invalid"
             assert "expired" in result["error"].lower() or "revoked" in result["error"].lower()
+
+    @pytest.mark.asyncio
+    async def test_calendar_google_unavailable_is_a_check_that_couldnt_run(self):
+        """#2151 (#2125 shape): a refresh Google didn't answer (5xx) is not a revoked token."""
+        from web.api.routes.integrations import CHECK_FAILED_MESSAGE
+
+        mock_keychain = MagicMock()
+        mock_keychain.aread_secret = AsyncMock(return_value=_secret_read("a_refresh_token"))
+        mock_handler = MagicMock()
+        mock_handler.refresh_access_token = AsyncMock(return_value=None)
+        mock_handler.last_refresh_error = "unavailable"
+        with (
+            patch(
+                "services.infrastructure.keychain_service.KeychainService",
+                return_value=mock_keychain,
+            ),
+            patch(
+                "services.integrations.calendar.oauth_handler.GoogleCalendarOAuthHandler",
+                return_value=mock_handler,
+            ),
+        ):
+            result = await _test_calendar()
+        assert result == {
+            "success": False,
+            "error": CHECK_FAILED_MESSAGE,
+            "error_type": "check_failed",
+        }
+
+    @pytest.mark.asyncio
+    async def test_calendar_a_store_that_failed_is_a_check_that_couldnt_run(self):
+        """#2151: the keychain store failing to answer is not "not connected"."""
+        from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+        from web.api.routes.integrations import CHECK_FAILED_MESSAGE
+
+        mock_keychain = MagicMock()
+        mock_keychain.aread_secret = AsyncMock(
+            return_value=SecretRead(SecretProvenance.STORE_FAILED, error="timeout")
+        )
+        with patch(
+            "services.infrastructure.keychain_service.KeychainService",
+            return_value=mock_keychain,
+        ):
+            result = await _test_calendar()
+        assert result["error_type"] == "check_failed"
+        assert result["error"] == CHECK_FAILED_MESSAGE
 
 
 class TestIntegrationRegistry:

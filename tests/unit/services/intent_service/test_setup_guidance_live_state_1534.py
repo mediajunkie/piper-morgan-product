@@ -62,6 +62,16 @@ _ENV_VARS = (
 )
 
 
+def _secret_read(value):
+    """#2151: the provenance read the calendar Test makes (``aread_secret``), mirroring a
+    mocked ``get_api_key`` value: present when set, verified absent when None."""
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+    if value:
+        return SecretRead(SecretProvenance.PRESENT, value=value)
+    return SecretRead(SecretProvenance.VERIFIED_ABSENT)
+
+
 @pytest_asyncio.fixture
 async def session():
     """Real in-memory DB with the real ConnectorBinding table (single-table
@@ -88,6 +98,7 @@ def _live_state_environment(monkeypatch, session):
 
     keychain = MagicMock()
     keychain.get_api_key.return_value = None
+    keychain.aread_secret = AsyncMock(return_value=_secret_read(None))
     # #2151: the status path awaits aget_api_key. A bare MagicMock raised TypeError
     # there, which the service used to swallow as "not configured"; a raising lookup
     # now reads "couldn't check", so the blank store must answer None for real.

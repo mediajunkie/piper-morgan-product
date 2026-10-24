@@ -474,6 +474,15 @@ async def check_system():
         )
 
 
+# #2151 route group 4 (Arch 10-24 09:09, the #2125 shape): Notion answered with a server
+# error, so the key was never checked. Never "Invalid API key". Wording pending CXO.
+NOTION_CHECK_FAILED_MESSAGE = (
+    "Couldn't check this key with Notion just now, so it wasn't saved. "
+    "Try again in a moment; if it keeps failing, tell us."
+)
+_NOTION_SERVER_ERROR_CODES = frozenset({"internal_server_error", "service_unavailable"})
+
+
 async def validate_notion_key_and_get_workspace(
     api_key: str,
 ) -> tuple[bool, Optional[str], Optional[str]]:
@@ -528,7 +537,14 @@ async def validate_notion_key_and_get_workspace(
         logger.warning("notion_key_invalid", error=str(e), error_code=error_code)
 
         # Map Notion API errors to user-friendly messages
-        if "unauthorized" in error_str or error_code == "unauthorized":
+        code_value = getattr(error_code, "value", error_code)
+        http_status = getattr(e, "status", None)
+        if code_value in _NOTION_SERVER_ERROR_CODES or (
+            isinstance(http_status, int) and http_status >= 500
+        ):
+            # #2151: a Notion 5xx is a check that couldn't run, not a rejected key.
+            error_msg = NOTION_CHECK_FAILED_MESSAGE
+        elif "unauthorized" in error_str or error_code == "unauthorized":
             error_msg = "Invalid API key. Check your key at notion.so/my-integrations"
         elif "forbidden" in error_str or error_code == "restricted_resource":
             error_msg = "Key lacks required permissions. Ensure integration has workspace access"

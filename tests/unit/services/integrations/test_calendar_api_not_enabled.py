@@ -7,12 +7,22 @@ the first read came back "Google refused the calendar read (error)", with no ser
 line to read.
 """
 
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
 from services.integrations.calendar.read_errors import classify_calendar_read_error
 from services.intent.intent_service import calendar_read_failed_line
+
+
+def _secret_read(value):
+    """#2151: the provenance read the calendar Test makes (``aread_secret``), mirroring a
+    mocked ``get_api_key`` value: present when set, verified absent when None."""
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+    if value:
+        return SecretRead(SecretProvenance.PRESENT, value=value)
+    return SecretRead(SecretProvenance.VERIFIED_ABSENT)
 
 
 class _HttpError(Exception):
@@ -63,6 +73,7 @@ async def _settings_test_with_read_error(read_error):
 
     keychain = MagicMock()
     keychain.get_api_key.return_value = "valid_refresh_token"
+    keychain.aread_secret = AsyncMock(return_value=_secret_read("valid_refresh_token"))
     handler = MagicMock()
     handler.refresh_access_token = AsyncMock(return_value=MagicMock(access_token="tok"))
     with (

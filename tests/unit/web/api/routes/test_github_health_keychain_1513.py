@@ -16,6 +16,16 @@ def _keychain_with(token):
     kc = MagicMock()
     kc.get_api_key.return_value = token
     kc.aget_api_key = AsyncMock(side_effect=kc.get_api_key)  # #2101: the coroutine path
+    # #2151 ISS-STATUS: config status reads with provenance (absent vs store failed).
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+    def _read(provider, username=None):
+        value = kc.get_api_key(provider, username)
+        if value:
+            return SecretRead(SecretProvenance.PRESENT, value=value)
+        return SecretRead(SecretProvenance.VERIFIED_ABSENT)
+
+    kc.aread_secret = AsyncMock(side_effect=_read)
     return kc
 
 
@@ -33,7 +43,7 @@ class TestGitHubConfigStatusReadsKeychain:
             status = await _get_integration_config_status("github", user_id="user-1")
         assert status == "configured"
         # and it asked for the USER-SCOPED key, the one the save route writes
-        kc_cls.return_value.get_api_key.assert_called_once_with("github_token", username="user-1")
+        kc_cls.return_value.aread_secret.assert_awaited_once_with("github_token", "user-1")
 
     @pytest.mark.asyncio
     async def test_no_env_no_keychain_is_not_configured(self, monkeypatch):

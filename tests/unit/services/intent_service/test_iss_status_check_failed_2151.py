@@ -47,8 +47,21 @@ class TestTheServiceSaysUnknown:
     @pytest.mark.parametrize("integration", ["github", "slack", "calendar"])
     async def test_a_raising_keychain_lookup_is_unknown(self, integration):
         with patch(
-            "services.infrastructure.keychain_service.KeychainService.aget_api_key",
+            "services.infrastructure.keychain_service.KeychainService.aread_secret",
             AsyncMock(side_effect=RuntimeError("keychain unavailable")),
+        ):
+            assert await iss.get_config_status(integration, user_id=_USER) == ("unknown", None)
+
+    @pytest.mark.parametrize("integration", ["github", "slack", "calendar"])
+    async def test_a_store_that_failed_to_answer_is_unknown(self, integration):
+        """The swallow under the swallow: get_api_key returns None when the store fails
+        (timeout, backend error), the same as "absent", so a failed lookup read as "Not
+        configured". read_secret's STORE_FAILED says which."""
+        from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+        with patch(
+            "services.infrastructure.keychain_service.KeychainService.aread_secret",
+            AsyncMock(return_value=SecretRead(SecretProvenance.STORE_FAILED, error="timeout")),
         ):
             assert await iss.get_config_status(integration, user_id=_USER) == ("unknown", None)
 
@@ -60,9 +73,11 @@ class TestTheServiceSaysUnknown:
             assert await iss.get_config_status("notion", user_id=_USER) == ("unknown", None)
 
     async def test_a_lookup_that_ran_and_found_nothing_is_still_not_configured(self):
+        from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
         with patch(
-            "services.infrastructure.keychain_service.KeychainService.aget_api_key",
-            AsyncMock(return_value=None),
+            "services.infrastructure.keychain_service.KeychainService.aread_secret",
+            AsyncMock(return_value=SecretRead(SecretProvenance.VERIFIED_ABSENT)),
         ):
             assert await iss.get_config_status("slack", user_id=_USER) == ("not_configured", None)
 

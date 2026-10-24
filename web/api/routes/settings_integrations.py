@@ -1753,12 +1753,20 @@ async def save_notion_key(
     """
     from services.database.session_factory import AsyncSessionFactory
     from services.security.user_api_key_service import UserAPIKeyService
-    from web.api.routes.setup import validate_notion_key_and_get_workspace
+    from web.api.routes.setup import (
+        NOTION_CHECK_FAILED_MESSAGE,
+        validate_notion_key_and_get_workspace,
+    )
 
     # Validate the key first
     is_valid, workspace_name, error_msg = await validate_notion_key_and_get_workspace(api_key)
 
     if not is_valid:
+        if error_msg == NOTION_CHECK_FAILED_MESSAGE:
+            # #2151: Notion didn't answer; the key wasn't refused, so not a 400.
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=error_msg
+            )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=error_msg or "Invalid Notion API key",

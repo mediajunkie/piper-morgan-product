@@ -128,6 +128,19 @@ async def github_oauth_bound(user_id: Optional[str]) -> bool:
     return (await github_oauth_binding_state(user_id)) == ConnectorStatusState.BOUND.value
 
 
+async def _keychain_has(provider: str, username: Optional[str] = None) -> bool:
+    """#2151 ISS-STATUS (route group 1): a keychain read that says WHY. ``get_api_key``
+    returns None for "absent" and for "the store failed" alike, so a failed lookup read as
+    "Not configured"; ``read_secret`` tells them apart, and a failed store RAISES here (the
+    caller marks the lookup failed)."""
+    from services.infrastructure.keychain_service import KeychainService, SecretProvenance
+
+    read = await KeychainService().aread_secret(provider, username)
+    if read.provenance is SecretProvenance.STORE_FAILED:
+        raise RuntimeError(read.error or f"{provider} credential store failed")
+    return read.is_present
+
+
 async def get_config_status(
     integration_id: str, user_id: Optional[str] = None
 ) -> Tuple[str, Optional[str]]:
@@ -174,10 +187,7 @@ async def get_config_status(
             # stored under user-scoped keychain key after a successful OAuth callback).
             if user_id:
                 try:
-                    from services.infrastructure.keychain_service import KeychainService
-
-                    keychain = KeychainService()
-                    if await keychain.aget_api_key("slack_bot", username=user_id):
+                    if await _keychain_has("slack_bot", username=user_id):
                         return "configured", "keychain"
                 except Exception as e:
                     lookup_failed = (
@@ -191,9 +201,7 @@ async def get_config_status(
             # (the process-env write was restart-volatile and removed in #1507).
             if user_id:
                 try:
-                    from services.infrastructure.keychain_service import KeychainService
-
-                    if await KeychainService().aget_api_key("github_token", username=user_id):
+                    if await _keychain_has("github_token", username=user_id):
                         return "configured", "keychain"
                 except Exception as e:
                     lookup_failed = (
@@ -204,11 +212,8 @@ async def get_config_status(
             # Calendar uses keychain token (Issue #529) or legacy MCP/credentials
             # Issue #839: Use user-scoped key when user_id available
             try:
-                from services.infrastructure.keychain_service import KeychainService
-
-                keychain = KeychainService()
                 key_name = f"google_calendar_{user_id}" if user_id else "google_calendar"
-                if await keychain.aget_api_key(key_name):
+                if await _keychain_has(key_name):
                     return "configured", "keychain"
             except Exception as e:
                 lookup_failed = True  # #2151 ISS-STATUS

@@ -360,6 +360,15 @@ async def check_integration_connection(
                 leg=result.get("leg"),
                 stale_reason=result.get("stale_oauth_reason"),
             )
+        elif result.get("error_type") == "check_failed":
+            # #2151 (route group 1): the check couldn't run. Nothing is recorded, so the
+            # card never turns "failed" over a connection nobody could check.
+            return ConnectionTestResponse(
+                integration=integration_name,
+                success=False,
+                message=CHECK_FAILED_MESSAGE,
+                latency_ms=round(latency_ms, 2),
+            )
         else:
             error_msg = result.get("error", result.get("error_type", "Unknown error"))
             results.record_test_result(
@@ -686,12 +695,19 @@ async def _test_notion(user_id: Optional[str] = None) -> Dict[str, Any]:
             ) as response:
                 if response.status == 200:
                     return {"success": True}
-                else:
+                if response.status in (401, 403):
                     return {
                         "success": False,
                         "error": "API key invalid or expired",
                         "error_type": "api_key_invalid",
                     }
+                # #2151 (#2125 shape): a 5xx or rate limit is a check that couldn't run,
+                # never an invalid key.
+                return {
+                    "success": False,
+                    "error": CHECK_FAILED_MESSAGE,
+                    "error_type": "check_failed",
+                }
 
     except Exception as e:
         return {"success": False, "error": str(e), "error_type": "connection_failed"}
@@ -815,13 +831,18 @@ async def _test_github(user_id: Optional[str] = None) -> Dict[str, Any]:
 async def _test_calendar(user_id: Optional[str] = None) -> Dict[str, Any]:
     """Test Google Calendar OAuth connection (Issue #539)"""
     try:
-        from services.infrastructure.keychain_service import KeychainService
+        from services.infrastructure.keychain_service import KeychainService, SecretProvenance
         from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
 
         keychain = KeychainService()
         # Issue #839: Use user-scoped key when user_id available
         key_name = f"google_calendar_{user_id}" if user_id else "google_calendar"
-        refresh_token = keychain.get_api_key(key_name)
+        # #2151 (route group 1): read with provenance; a store that failed to answer is a
+        # check that couldn't run, never "not connected".
+        read = await keychain.aread_secret(key_name)
+        if read.provenance is SecretProvenance.STORE_FAILED:
+            return {"success": False, "error": CHECK_FAILED_MESSAGE, "error_type": "check_failed"}
+        refresh_token = read.value if read.is_present else None
 
         if not refresh_token:
             return {
@@ -835,6 +856,14 @@ async def _test_calendar(user_id: Optional[str] = None) -> Dict[str, Any]:
         tokens = await handler.refresh_access_token(refresh_token)
 
         if not tokens:
+            if getattr(handler, "last_refresh_error", None) != "revoked":
+                # #2151 (#2125 shape): Google didn't answer (a 5xx, an unexpected status);
+                # the check couldn't run, so never "revoked".
+                return {
+                    "success": False,
+                    "error": CHECK_FAILED_MESSAGE,
+                    "error_type": "check_failed",
+                }
             return {
                 "success": False,
                 "error": "Token expired or revoked. Please reconnect.",

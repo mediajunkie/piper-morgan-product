@@ -33,6 +33,16 @@ GOOGLE_403 = (
 )
 
 
+def _secret_read(value):
+    """#2151: the provenance read the calendar Test makes (``aread_secret``), mirroring a
+    mocked ``get_api_key`` value: present when set, verified absent when None."""
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+    if value:
+        return SecretRead(SecretProvenance.PRESENT, value=value)
+    return SecretRead(SecretProvenance.VERIFIED_ABSENT)
+
+
 class TestClassifier:
     def test_the_alpha_403_is_insufficient_scope(self):
         assert classify_calendar_read_error(RuntimeError(GOOGLE_403)) == "insufficient_scope"
@@ -118,6 +128,7 @@ class TestSettingsTestReadsForReal:
 
         keychain = MagicMock()
         keychain.get_api_key.return_value = "refresh-token"
+        keychain.aread_secret = AsyncMock(return_value=_secret_read("refresh-token"))
         tokens = MagicMock(access_token="access-token")
         with (
             patch(
@@ -143,6 +154,7 @@ class TestSettingsTestReadsForReal:
 
         keychain = MagicMock()
         keychain.get_api_key.return_value = "refresh-token"
+        keychain.aread_secret = AsyncMock(return_value=_secret_read("refresh-token"))
         tokens = MagicMock(access_token="access-token")
         with (
             patch(

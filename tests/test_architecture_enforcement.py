@@ -8830,7 +8830,7 @@ class TestSyncCredentialCallsInAsyncRatchet:
         "web/api/routes/setup.py": 6,
         "services/security/user_api_key_service.py": 4,
         "services/integrations/slack/socket_mode_runner.py": 3,
-        "web/api/routes/integrations.py": 3,
+        "web/api/routes/integrations.py": 2,  # 2026-10-24: _test_calendar reads with provenance (#2151)
         "services/integrations/slack/oauth_handler.py": 2,
         "services/config/llm_config_service.py": 1,
         "services/integrations/notion/notion_integration_router.py": 1,

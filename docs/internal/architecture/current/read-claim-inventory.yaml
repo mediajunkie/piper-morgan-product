@@ -1650,25 +1650,32 @@ surfaces:
   effect: READ
   reads: the user's Notion key, validated with users.me()
   handler: web/api/routes/settings_integrations.py:get_notion_settings
-  states: {verified: distinct, failed: conflated:failed, narrowed: n/a, not_performed: n/a, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
   texts:
     failed: '"Invalid API key or insufficient permissions" for a non-auth APIResponseError'
-  verdict: red
+  verdict: green
   notes: >-
     validate_notion_key_and_get_workspace maps any APIResponseError that is not
     unauthorized, forbidden or rate-limited (a Notion 5xx) to "Invalid API key or
     insufficient permissions", a check that couldn't run reported as a rejected key (the
     #2125 shape). Network errors get their own message. An outer exception returns
     configured=false with the error text.
+    Fixed 2026-10-24 (Lead, route group 4): a Notion internal_server_error /
+    service_unavailable (or any 5xx) is NOTION_CHECK_FAILED_MESSAGE, never "Invalid API
+    key or insufficient permissions". Pins: test_card_check_failed_2151.py.
 
 - id: route:POST /api/v1/settings/integrations/notion/save
   kind: route
   effect: READ
   reads: validates the submitted Notion key before storing
   handler: web/api/routes/settings_integrations.py:save_notion_key
-  states: {verified: distinct, failed: conflated:failed, narrowed: n/a, not_performed: n/a, substituted: n/a}
-  verdict: red
-  notes: Same validator as GET /notion, so a Notion 5xx refuses the save as an invalid key.
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
+  verdict: green
+  notes: >-
+    Same validator as GET /notion, so a Notion 5xx refuses the save as an invalid key.
+    Fixed 2026-10-24 (Lead, route group 4): a Notion 5xx answers 503 with
+    NOTION_CHECK_FAILED_MESSAGE (a UserFacingHTTPException), never a 400 "invalid key".
+    Pin: test_card_check_failed_2151.py.
 
 - id: route:POST /api/v1/settings/integrations/notion/disconnect
   kind: route
@@ -1980,35 +1987,49 @@ surfaces:
   effect: READ
   reads: per-user integration config status (get_config_status) plus cached test results
   handler: web/api/routes/integrations.py:get_integrations_health
-  states: {verified: distinct, failed: conflated:verified, narrowed: n/a, not_performed: n/a, substituted: conflated:verified}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: conflated:verified}
   texts:
     verified: '"Not configured"'
     failed: CHECK_FAILED_MESSAGE (status "unknown") only when the whole check raises
-  verdict: red
+  verdict: green
   notes: >-
     ISS-STATUS: an inner credential-lookup failure returns "not_configured" and renders
     "Not configured"; env credentials count as the user's configuration.
+    Fixed 2026-10-24 (Lead, route group 1): config status reads the keychain with
+    provenance (_keychain_has over read_secret), so a store that failed to answer is
+    "unknown" (CHECK_FAILED_MESSAGE), never "Not configured"; get_api_key returned None
+    for both. Pins: test_iss_status_check_failed_2151.py. The env-credential note stands:
+    none of the env names is set on alpha (HOST 10-23 17:54).
 
 - id: route:POST /api/v1/integrations/test/{integration_name}
   kind: route
   effect: READ
   reads: an active probe of one integration with the user's credential
   handler: web/api/routes/integrations.py:check_integration_connection
-  states: {verified: distinct, failed: conflated:failed, narrowed: n/a, not_performed: distinct, substituted: conflated:verified}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: conflated:verified}
   texts:
     failed: '_test_calendar "Token expired or revoked. Please reconnect." for any non-200 refresh; _test_notion "API key invalid or expired" for any non-200'
-  verdict: red
+  verdict: green
   notes: >-
     _test_calendar trusts refresh_access_token's None (any non-200, including Google 5xx)
     as a revoked token, and _test_notion maps any non-200 to an invalid key: a check that
     couldn't run reported as a rejected credential (#2125 shape). The #2092 real-read
     probe is correct. _test_notion uses the "system" principal when there is no user.
+    Fixed 2026-10-24 (Lead, route group 1): _test_calendar reads with provenance and
+    reads refresh_access_token's last_refresh_error ("revoked" only on invalid_grant;
+    "unavailable" otherwise); _test_notion maps only 401/403 to an invalid key. A check
+    that couldn't run answers CHECK_FAILED_MESSAGE and records no failed result. Pins:
+    test_card_check_failed_2151.py, test_integrations.py. _test_notion still uses the
+    "system" principal when there is no user.
 
 - id: route:POST /api/v1/integrations/test-all
   kind: route
   effect: READ
   reads: the single-integration test for every integration
   handler: web/api/routes/integrations.py:check_all_connections
-  states: {verified: distinct, failed: conflated:failed, narrowed: n/a, not_performed: distinct, substituted: conflated:verified}
-  verdict: red
-  notes: Delegates to check_integration_connection and inherits its conflations.
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: conflated:verified}
+  verdict: green
+  notes: >-
+    Delegates to check_integration_connection and inherits its conflations.
+    Inherits check_integration_connection's fix (2026-10-24): a check that couldn't run
+    is CHECK_FAILED_MESSAGE, never a failed test.
