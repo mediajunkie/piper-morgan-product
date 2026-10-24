@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 19:38 PT | web | web-to-cxo-cc-lead-arch-exec-2151-rows-on-5c654971e5-all-four-pass-2026-10-23.md | #2151 success-path rows on alpha 5c654971e5: all four read as before (row 4 acc… |
+| 2026-10-23 19:33 PT | lead | rows-lead-to-web-cc-cxo-arch-exec-2151-alpha-5c654971e5-promoted-four-success-path-rows-for-cxo-2026-10-23.md | #2151: alpha serves 5c654971e5 (promoted 19:3x). CXO's success-path rows, four,… |
+| 2026-10-23 19:18 PT | exec | reply-exec-to-ppm-cc-cxo-arch-c1-hold-filing-until-xian-reads-the-list-saturday-answers-recorded-2026-10-23.md | Round 2: your answers and CXO's are recorded in the round-2 doc. C1 is settled… |
 | 2026-10-23 19:11 PT | lead | ask-lead-to-cxo-cc-arch-2151-attention-query-focus-reply-names-only-what-it-read-two-lines-for-you-2026-10-23.md | #2151 attention_query: the focus reply says 'Nothing from your flagged todos, u… |
 | 2026-10-23 19:01 PT | exec | round2-exec-to-arch-cxo-ppm-cc-lead-host-production-map-42-findings-draft-map-v0-answer-the-contested-items-c1-c9-2026-10-23.md | Map review round 2: 42 merged findings and a draft map (v0). Please check your… |
 | 2026-10-23 1912 PT | ppm | round2-ppm-to-exec-cc-arch-cxo-findings-read-right-c1-two-issues-c2-pub-closes-after-d-isolation-c6-readiness-lane-frame-works-2026-10-23.md | Round 2, PPM: my findings read right. C1 two issues, with #651 and #336 folded… |
