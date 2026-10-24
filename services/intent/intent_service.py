@@ -10850,6 +10850,7 @@ class IntentService:
             # 3. Calendar urgency (upcoming meetings in next 2 hours)
             # Issue #518 fix - Use CalendarIntegrationRouter (CORE-QUERY-1 pattern)
             upcoming_meetings = []
+            calendar_unchecked: Optional[str] = None  # #2151: "failed" | "not_connected"
             try:
                 from services.integrations.calendar.calendar_integration_router import (
                     CalendarIntegrationRouter,
@@ -10859,8 +10860,12 @@ class IntentService:
                 calendar_router = CalendarIntegrationRouter(user_id=user_id)
                 is_configured = await calendar_router.authenticate()
 
+                if not is_configured:
+                    calendar_unchecked = "not_connected"  # #2151: not checked, not empty
                 if is_configured:
                     events = await calendar_router.get_todays_events()
+                    if not events and getattr(calendar_router, "last_read_error", None):
+                        calendar_unchecked = "failed"  # #2151 CAL-SWALLOW (the #2092 signal)
                     two_hours_from_now = now + timedelta(hours=2)
 
                     for event in events:
@@ -10896,9 +10901,11 @@ class IntentService:
                                     )
             except Exception as calendar_error:
                 self.logger.warning(f"Calendar urgency check unavailable: {calendar_error}")
+                calendar_unchecked = "failed"
 
             # 4. Stale projects (no activity in 7+ days)
             stale_projects = []
+            stale_read_failed = False
             try:
                 async with AsyncSessionFactory.session_scope() as session:
                     from services.database.models import ProjectDB
@@ -10941,6 +10948,7 @@ class IntentService:
                         )
             except Exception as stale_error:
                 self.logger.warning(f"Failed to fetch stale projects: {stale_error}")
+                stale_read_failed = True
 
             # Format response — #1985 (b), CXO's ruling 2026-10-12: the todo
             # list LEADS the reply under a plain "Today:" opening (due today
@@ -10992,8 +11000,30 @@ class IntentService:
             elif not due_today_todos and not overdue_todos and not todo_reads_failed:
                 # #1069 source transparency keeps its place as the SECOND line:
                 # name what was checked, never assert a positive state.
+                # #2151 (CXO's partial form): name only the sources actually read.
+                checked = ["your flagged todos"]
+                if calendar_unchecked is None:
+                    checked.append("upcoming meetings")
+                if not stale_read_failed:
+                    checked.append("stale projects")
+                if len(checked) == 3:
+                    lines.append(
+                        "Nothing from your flagged todos, upcoming meetings or stale projects either."
+                    )
+                else:
+                    lines.append("Nothing from " + " or ".join(checked) + " either.")
+            # #2151: a source that couldn't be read is said, whatever else was found.
+            if calendar_unchecked == "failed":
                 lines.append(
-                    "Nothing from your flagged todos, upcoming meetings or stale projects either."
+                    "I couldn't check your calendar just now, so the list above doesn't "
+                    "include your meetings. Try again in a moment; if it keeps failing, tell us."
+                )
+            elif calendar_unchecked == "not_connected":
+                lines.append("Your calendar isn't connected, so meetings aren't included.")
+            if stale_read_failed:
+                lines.append(
+                    "I couldn't check your projects just now, so the list above doesn't "
+                    "include stale ones. Try again in a moment; if it keeps failing, tell us."
                 )
             message = "\n".join(lines)
             # #2076 (CXO, ADR-080 / #2033: code adds the fact, never the
