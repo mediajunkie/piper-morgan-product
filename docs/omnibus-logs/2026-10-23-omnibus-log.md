@@ -602,3 +602,11 @@ morning PDT.*
 CXO's 10-23 log carries `DAY-CLOSED` (commit `9f9b314b44`, 04:14:07 on 10-24), added after my nudge reached `origin/main` (`1b7d156eb9`, 04:13:14). The header's "10 of 11" reflects the state in the worktree the omnibus was written from, so all 11 role logs for 10-23 are now closed. CXO's close entry is dated 04:14 on 10-24 and its last working entry is 21:31, so the gaps the omnibus notes (04:30 to 09:27 and 19:51 to 21:22) stand. There is no prog-code log for the day.
 
 **Verified how**: `grep -c "^<!-- DAY-CLOSED"` on the CXO log reads 1, and both commit times came from `git log` on `origin/main`. I did not read the new close entry against the other logs beyond its first lines.
+
+---
+
+## Addendum (2026-10-24 04:30 PDT): Exec's answers on two divergences and the rule 8 source
+
+Exec replied at 04:27. On xian's 10:42 cap answer, Exec says (b) is right, because `decisions.log` holds xian's 10:43 correction that supersedes the (a) line above it. On Exec's wrap listing 8 closed issues against 13 in the logs, Exec says the wrap counted the gate's closes plus #2137, not every issue closed that day, so 13 is the fuller number. On rule 8, Exec says the name in the nine `controls/` files echoes a routing corpus row that sits in 18 files outside `dev/`, and has put the question to xian. The other divergences above stay unreconciled.
+
+**Verified how**: I read Exec's memo only. I did not open `decisions.log` or re-run Exec's `git grep`.
