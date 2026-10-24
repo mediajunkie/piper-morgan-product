@@ -221,6 +221,18 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         "recent repository activity",
     ),
     SourceFailedDirective(
+        # #2151 FLOOR-ABSENT: the past-meetings read for recent activity failed —
+        # there may have been meetings the list above doesn't show.
+        "calendar_activity_source_failed",
+        "past meetings",
+    ),
+    SourceFailedDirective(
+        # #2151 FLOOR-ABSENT: the calendar read failed — the day may not be free.
+        # NEVER present this as no meetings or an open day.
+        "calendar_source_failed",
+        "calendar",
+    ),
+    SourceFailedDirective(
         # #2151 (Arch 10-23): the trust-profile read failed — the stage is unknown,
         # not "new". NEVER present this as a fresh relationship.
         "trust_source_failed",

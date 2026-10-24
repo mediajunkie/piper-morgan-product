@@ -1010,12 +1010,17 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
         Returns:
             List[Dict[str, Any]]: List of processed calendar events
         """
+        # #2151 CAL-SWALLOW: every no-read return sets last_read_error, so a caller
+        # can tell "couldn't check" from "no events" (as get_recurring_events does).
+        self.last_read_error = None
         if self._circuit_open:
             logger.warning("Google Calendar circuit breaker is open")
+            self.last_read_error = "circuit_open"
             return []
 
         if not self._service:
             if not await self.authenticate():
+                self.last_read_error = self.last_read_error or "not_authenticated"
                 return []
 
         try:

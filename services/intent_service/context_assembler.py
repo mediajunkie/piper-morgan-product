@@ -239,6 +239,19 @@ def _github_read_not_performed(exc: BaseException) -> bool:
     ) or (exc.reason is None and exc.detail == "no_credential")
 
 
+class _CalendarReadFailed(Exception):
+    """#2151 FLOOR-ABSENT: a calendar read that did not happen (an error summary, an
+    events read never established, or the adapter's ``last_read_error``)."""
+
+
+def _calendar_feature_off(exc: BaseException) -> bool:
+    """The router has no calendar integration (the feature is off on this deployment):
+    not performed, so no "couldn't check" line."""
+    return isinstance(exc, RuntimeError) and str(exc).startswith(
+        "No calendar integration available"
+    )
+
+
 class _PartialSourceRead(Exception):
     """#2151 FLOOR-ABSENT: a multi-source compute where some sources failed. Carries
     the sources that were read (``result``, possibly None) and the registered flags of
@@ -1174,11 +1187,17 @@ class ContextAssembler:
         """
         if not user_id:
             return {}
-        return await self.cache.get_or_compute(
-            key=f"context:calendar:{user_id}",
-            ttl_seconds=_TTL_CALENDAR,
-            compute_fn=lambda: self._compute_calendar_context(user_id),
-        )
+        try:
+            return await self.cache.get_or_compute(
+                key=f"context:calendar:{user_id}",
+                ttl_seconds=_TTL_CALENDAR,
+                compute_fn=lambda: self._compute_calendar_context(user_id),
+            )
+        except Exception as e:
+            # #2151 FLOOR-ABSENT: a failed calendar read is not a free day.
+            # get_or_compute caches no failure (the exception propagates past it).
+            logger.warning("context_assembler_calendar_error", error=str(e))
+            return {"calendar_source_failed": True}
 
     async def _gather_calendar_connection(self, user_id: Optional[str]) -> Dict[str, Any]:
         """#2112: the calendar's connection state with CXO's sentence for it.
@@ -1253,23 +1272,33 @@ class ContextAssembler:
           }
         }
 
-        Fail-graceful: calendar unavailable (no OAuth, plugin disabled,
-        router raises) returns {} — no "calendar" key, no exception.
+        Not connected (``calendar_connected`` False) or no calendar integration
+        returns {} (not performed). #2151: a read that did not happen RAISES (the
+        gather arms ``calendar_source_failed``): the router raising, an error summary
+        (``success`` False), or a connected summary whose events read was never
+        established (#1425).
         """
-        try:
-            # Lazy-import to avoid startup cost and break potential import cycles
-            from services.integrations.calendar.calendar_integration_router import (
-                CalendarIntegrationRouter,
-            )
+        # Lazy-import to avoid startup cost and break potential import cycles
+        from services.integrations.calendar.calendar_integration_router import (
+            CalendarIntegrationRouter,
+        )
 
-            router = CalendarIntegrationRouter(user_id=user_id)
+        router = CalendarIntegrationRouter(user_id=user_id)
+        try:
             summary = await router.get_temporal_summary(user_id=user_id)
         except Exception as e:
-            logger.warning("context_assembler_calendar_error", error=str(e))
-            return {}
+            if _calendar_feature_off(e):
+                return {}
+            raise
 
         if not summary:
+            raise _CalendarReadFailed("empty temporal summary")
+        if summary.get("calendar_connected") is False:
             return {}
+        if not summary.get("success", False):
+            raise _CalendarReadFailed(summary.get("error_type") or "calendar read failed")
+        if not summary.get("events_read_established", False):
+            raise _CalendarReadFailed("events read not established")
 
         calendar: Dict[str, Any] = {}
 
@@ -2146,7 +2175,12 @@ class ContextAssembler:
                 logger.warning("context_assembler_github_activity_error", error=str(e))
                 github_items, _github_page_capped = [], False
                 failed_flags.append("github_activity_source_failed")
-        calendar_items = await self._fetch_calendar_activity_items(user_id)
+        try:
+            calendar_items = await self._fetch_calendar_activity_items(user_id)
+        except Exception as e:
+            logger.warning("context_assembler_calendar_activity_error", error=str(e))
+            calendar_items = []
+            failed_flags.append("calendar_activity_source_failed")
         slack_items = await self._fetch_slack_activity_items(user_id)
         slack_mention_items = await self._fetch_slack_mentions_items(user_id)
 
@@ -2265,65 +2299,71 @@ class ContextAssembler:
         _RECENT_ACTIVITY_WINDOW_DAYS using the existing
         CalendarIntegrationRouter.get_events_in_range method.
 
-        Per-source helper for `_compute_recent_activity`. Fail-graceful:
-        returns [] on any error (calendar API down → caller still gets
-        GitHub items). Filters out all-day events to keep "activity" focused
+        Per-source helper for `_compute_recent_activity`. #2151: RAISES on a
+        read that did not happen (the compute arms ``calendar_activity_source_failed``
+        and still renders the other sources); not connected or no calendar
+        integration returns [] (not performed). Filters out all-day events to keep "activity" focused
         on meetings (matches the pattern in `_handle_meeting_time_query`).
         Each item carries `source: 'calendar'`.
         """
+        from services.integrations.calendar.calendar_integration_router import (
+            CalendarIntegrationRouter,
+        )
+
+        calendar = CalendarIntegrationRouter(user_id=user_id)
+        now = datetime.now(timezone.utc)
+        cutoff = now - timedelta(days=_RECENT_ACTIVITY_WINDOW_DAYS)
+
         try:
-            from services.integrations.calendar.calendar_integration_router import (
-                CalendarIntegrationRouter,
-            )
-
-            calendar = CalendarIntegrationRouter(user_id=user_id)
-            now = datetime.now(timezone.utc)
-            cutoff = now - timedelta(days=_RECENT_ACTIVITY_WINDOW_DAYS)
-
             events = await calendar.get_events_in_range(cutoff, now)
-            if not events:
-                return []
-
-            # Filter to non-all-day events that are actually in the past
-            # (get_events_in_range may include future events that overlap
-            # with the start of the range).
-            def _parse_event_time(s):
-                if not s:
-                    return None
-                try:
-                    # #1573 sweep: ensure_utc guards an offset-less string
-                    # from a naive-vs-aware TypeError against now/cutoff.
-                    return ensure_utc(datetime.fromisoformat(str(s).replace("Z", "+00:00")))
-                except Exception:  # silent-ok: per-item parse, None-on-failure is the documented contract; per-row logging is noise
-                    return None
-
-            items = []
-            for event in events:
-                if event.get("is_all_day"):
-                    continue
-                start = _parse_event_time(event.get("start_time"))
-                if start is None or start > now or start < cutoff:
-                    continue
-                items.append(
-                    {
-                        "source": "calendar",
-                        "title": event.get("title") or event.get("summary") or "(untitled)",
-                        # Use start_time as updated_at for cross-source sort —
-                        # calendar events don't have an "updated" semantic
-                        # comparable to GitHub; the meeting's start is the
-                        # natural "when" for past-activity ordering.
-                        "updated_at": event.get("start_time"),
-                        "start_time": event.get("start_time"),
-                        "end_time": event.get("end_time"),
-                        "duration_minutes": event.get("duration_minutes"),
-                        "attendees": event.get("attendees", 0),
-                        "status": event.get("status"),
-                    }
-                )
-            return items
         except Exception as e:
-            logger.warning("context_assembler_calendar_activity_error", error=str(e))
+            if _calendar_feature_off(e):
+                return []
+            raise
+        if not events:
+            # #2151: [] is also every no-read return; the adapter's class says which.
+            read_error = calendar.last_read_error
+            if read_error and read_error != "not_authenticated":
+                raise _CalendarReadFailed(read_error)
             return []
+
+        # Filter to non-all-day events that are actually in the past
+        # (get_events_in_range may include future events that overlap
+        # with the start of the range).
+        def _parse_event_time(s):
+            if not s:
+                return None
+            try:
+                # #1573 sweep: ensure_utc guards an offset-less string
+                # from a naive-vs-aware TypeError against now/cutoff.
+                return ensure_utc(datetime.fromisoformat(str(s).replace("Z", "+00:00")))
+            except Exception:  # silent-ok: per-item parse, None-on-failure is the documented contract; per-row logging is noise
+                return None
+
+        items = []
+        for event in events:
+            if event.get("is_all_day"):
+                continue
+            start = _parse_event_time(event.get("start_time"))
+            if start is None or start > now or start < cutoff:
+                continue
+            items.append(
+                {
+                    "source": "calendar",
+                    "title": event.get("title") or event.get("summary") or "(untitled)",
+                    # Use start_time as updated_at for cross-source sort —
+                    # calendar events don't have an "updated" semantic
+                    # comparable to GitHub; the meeting's start is the
+                    # natural "when" for past-activity ordering.
+                    "updated_at": event.get("start_time"),
+                    "start_time": event.get("start_time"),
+                    "end_time": event.get("end_time"),
+                    "duration_minutes": event.get("duration_minutes"),
+                    "attendees": event.get("attendees", 0),
+                    "status": event.get("status"),
+                }
+            )
+        return items
 
     async def _fetch_slack_activity_items(self, user_id: str) -> List[Dict[str, Any]]:
         """Fetch the user's recent Slack DM activity (#1085 slice 2 — V1).

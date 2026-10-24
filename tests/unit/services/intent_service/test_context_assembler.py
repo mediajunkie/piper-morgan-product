@@ -164,6 +164,10 @@ class TestGatherCalendarContext:
     async def test_calendar_available_returns_mapped_fields(self):
         """When router returns a temporal summary, assembler maps to formatter schema."""
         summary = {
+            # #2151: the adapter's real success shape (TemporalSummaryResult.to_dict()).
+            "success": True,
+            "calendar_connected": True,
+            "events_read_established": True,
             "next_meeting": {"title": "CXO 1:1", "start": "2026-04-16T14:00:00"},
             "free_blocks": [
                 {"start": "2026-04-16T15:00:00", "duration_minutes": 90},
@@ -190,7 +194,7 @@ class TestGatherCalendarContext:
 
     @pytest.mark.asyncio
     async def test_calendar_unavailable_returns_empty(self):
-        """When router raises, assembler returns empty dict — no exception, no calendar key."""
+        """No calendar integration (the feature is off): not performed, so {} (#2151)."""
         mock_router = MagicMock()
         mock_router.get_temporal_summary = AsyncMock(
             side_effect=RuntimeError("No calendar integration available")
@@ -217,6 +221,10 @@ class TestGatherCalendarContext:
     async def test_calendar_partial_summary_handled(self):
         """If router returns summary without free_blocks, time_available_minutes absent."""
         summary = {
+            # #2151: the adapter's real success shape (TemporalSummaryResult.to_dict()).
+            "success": True,
+            "calendar_connected": True,
+            "events_read_established": True,
             "next_meeting": {"title": "Standup", "start": "2026-04-16T09:00:00"},
             "free_blocks": [],
             "time_available_minutes": None,
@@ -805,6 +813,10 @@ class TestContextAssemblerCaching:
         assembler = ContextAssembler(cache=cache)
 
         summary = {
+            # #2151: the adapter's real success shape (TemporalSummaryResult.to_dict()).
+            "success": True,
+            "calendar_connected": True,
+            "events_read_established": True,
             "next_meeting": {"title": "Standup", "start": "2026-05-12T10:00:00"},
             "free_blocks": [],
             "time_available_minutes": 0,
@@ -1485,6 +1497,8 @@ class TestGatherRecentActivityContext:
         """Mock CalendarIntegrationRouter returning events from get_events_in_range."""
         router = MagicMock()
         router.get_events_in_range = AsyncMock(return_value=events)
+        # #2151: the real router proxies the adapter's class for a failed read; None = read.
+        router.last_read_error = None
         return router
 
     @staticmethod
