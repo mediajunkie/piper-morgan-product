@@ -10,6 +10,7 @@
   - #1817 → PROD-INFRA (the nearest existing option to D);
   - #1632 and #1891 (V) → unset, because no V option exists.
 - **R is out of Production** (PPM's placement, 10-23): #371 and #1061 → Enterprise; #557 and #1209 → Dot Releases. On Arch's 17:57 points, #1219 followed #1209, and #482 came back into D: managed key custody depends on what #2062's Terms commit to. #1474, dead code, reads as Q, not V.
+- **Round 2, C5 and F29 (Arch, 21:33; CXO raised F34 and F35), applied 21:36:** #1487, #2103, and the timezone slice (#1828 parent, #1550, #1535, #1915) move E → H. H's acceptance for the timezone slice is "no false time statement". #2103's code fix has landed and it closes on Web's served toast row. #1550 needs a served check before anyone builds. #1011 moves E → V to be decided with the catalog seam (#2149, #1891, #2145). F28 (#1242, #1244, #1245 superseded) waits on PA's answer on live POC installs.
 - **Not yet on the board:** H, D and V have no Sprint options, so their issues read unset or under the nearest PROD-* bucket. Adding an option is a field-definition change, which is xian's to make in the web UI, never an API full replace. The map review (Exec, 17:54) decides whether the board should carry these sprint names at all.
 
 **The ask** (xian, 10-23 16:57, via Exec): "start looking at the issues in the Production milestone and organizing them into potential sprints. We know we will discover more along the way and we already have a proposed first sprint during the private beta that we use a gate for public beta but the rest is still wide open."
@@ -23,18 +24,18 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | # | Sprint (proposed) | Why this place in the order | Open |
 |---|---|---|---|
 | 1 | **PUB: Public Beta gate** (unchanged) | xian's ratified gate (ESSENCE v1.0, 08-30). It runs through the private beta. | 21 |
-| 2 | **H: Honesty sweep** (no false "none", "0", "not connected", "I can't see it") | xian approved the systematic sweep at 16:57: Arch scopes it, and Lead builds it after #2132. Design partners will hit these first, and each one is a Class 3 shape. Arch scoped it at 17:04 as **#2151** (placed Production by PPM), not #1423, because this week's served instances had no broad `except` for #1423's scanner to find. The list below is input to #2151's inventory, not a substitute for it. | 20 |
+| 2 | **H: Honesty sweep** (no false "none", "0", "not connected", "I can't see it") | xian approved the systematic sweep at 16:57: Arch scopes it, and Lead builds it after #2132. Design partners will hit these first, and each one is a Class 3 shape. Arch scoped it at 17:04 as **#2151** (placed Production by PPM), not #1423, because this week's served instances had no broad `except` for #1423's scanner to find. The list below is input to #2151's inventory, not a substitute for it. | 25 |
 | 3 | **D: Data boundaries and terms** (ownership, isolation, keys, Terms, legal) | xian, 10-16: the Terms and legal review come before any outside user beyond the design partners. The owner-id and isolation work is the same promise in code. | 22 |
 | 4 | **C: Connectors complete** (GitHub, Calendar, Notion on the #1232 contract, published OAuth apps) | v18.7(kk): the core connectors must finish to close Production. #2087 (Google verification) is submitted. | 24 |
-| 5 | **V: Conversation reliability** (multi-intent, armed offers, routing, catalog cost) | Correctness of the chat path beyond the honesty class. #2145 and #2149 (catalog cost and size) sit here. | 28 |
-| 6 | **E: Experience polish** (layout, toasts, timezone, dialog copy, nav) | CXO-led. These are visible and irritating, but not false. | 34 |
+| 5 | **V: Conversation reliability** (multi-intent, armed offers, routing, catalog cost) | Correctness of the chat path beyond the honesty class. #2145 and #2149 (catalog cost and size) sit here, with #1011 (slash-command precedence) decided alongside them. | 29 |
+| 6 | **E: Experience polish** (layout, dialog copy, nav) | CXO-led. These are visible and irritating, but not false. | 27 |
 | 7 | **T: Trust and learning** | #2135 (trust never progresses) makes the PDR-002 gradient inert today. The rest follows it. | 14 |
 | 8 | **Doc: Documents** | Follows #2132's family table. | 8 |
 | 9 | **Dist: Distribution** (marketplace, MCPB, plugin, onboarding skills) | Most of it waits on PUB's MCP path. | 11 |
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 40 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 222 open (refreshed 19:11 10-23 from the board; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 221 open (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -76,7 +77,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1706 | MCP-path increment 7: calendar tool exposure on the plugin surface (depends on #1441's connector port) | PUB |
 | #1707 | MCP-path increment 8: trust-gated proactivity — PLACEHOLDER, do not build until the plugin-surface trust-gr… | PUB |
 
-### H: Honesty sweep (20)
+### H: Honesty sweep (25)
 
 | # | Title | was |
 |---|---|---|
@@ -96,10 +97,15 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2107 | Chat says 'usually a brief outage — try again in a moment' when the cause is the Anthropic workspace usage … | — |
 | #2125 | Setup wizard reports the server's encryption misconfiguration as a key 'Validation error' (staging: 'master… | — |
 | #2134 | Semantic boundary detector: a failed check is cached as clear and recorded as a pass (48/63 turns off, unse… | — |
-| #2137 | Stale-PR and list-PR answers count zero PRs on the native-PAT fallback: the filter reads a pull_request key… | — |
 | #2147 | "show all events" answers with today's meeting time only and omits the week's other events, without saying … | — |
 | #2150 | Calendar: a later revoke of calendar access in the user's Google account leaves Settings saying connected u… | — |
 | #2151 | Sweep: every reply that reads user data says 'none / 0 / not connected / can't see it' only on a verified r… | — |
+| #1487 | renderInboundStatus lives inside a Jinja template — the branch deciding what users are told is unreachable … | — |
+| #2103 | Ten templates call an undefined global showToast() (121 call sites); toast.js exposes Toast.success/error, … | — |
+| #1828 | TZ-PROJECT: per-user timezone / time-handling fix — parent for #1493's 6 F-slice children | PROD-DESIGN |
+| #1550 | All-day calendar events render as 'at 12am' — technically the stored time, maladroit to humans | — |
+| #1535 | Reminder times display in UTC — per-user timezone rendering (1521 follow-on) | — |
+| #1915 | [TIMEZONE] 'set it back to pacific time' is refused — accept common zone names/abbreviations (Pacific, PT, … | — |
 
 ### D: Data boundaries and terms (22)
 
@@ -157,7 +163,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2106 | PAT-leg GitHub create fails with McpError unknown tool "issue_write", and the reply says it "may or may not… | — |
 | #2130 | Calendar asks: no weekday lookup; conflict check answers a multi-person question the user didn't ask | — |
 
-### V: Conversation reliability (28)
+### V: Conversation reliability (29)
 
 | # | Title | was |
 |---|---|---|
@@ -189,12 +195,12 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2133 | "Create issues from this meeting's action items" gets a single-subject prompt: #886's batch decline is stra… | — |
 | #2145 | Router and classifier calls send the full ~3.3k-token catalog uncached: enable Anthropic prompt caching on … | — |
 | #2149 | Router catalog size: single op or example additions move unrelated rows; decide a catalog shape before more… | — |
+| #1011 | ARCH-DESIGN: Slash-command dispatch precedence — post-MVP design decision needed | PROD-DESIGN |
 
-### E: Experience polish (34)
+### E: Experience polish (27)
 
 | # | Title | was |
 |---|---|---|
-| #1011 | ARCH-DESIGN: Slash-command dispatch precedence — post-MVP design decision needed | PROD-DESIGN |
 | #1043 | En-masse copy review pass for new M2e handlers + standup prompts | PROD-DESIGN |
 | #1090 | UI-1.0-PLAN: scope conversation history + settings UI surfaces for 1.0 launch | PROD-DESIGN |
 | #1183 | VOICE-LINT: attention/spatial references must stay present-tense + session-scoped (no implied cross-session… | PROD-DESIGN |
@@ -207,26 +213,20 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1347 | Conversation history viewer: full backward pagination + transcript-completeness failsafe (follow-on to #1235) | PROD-DESIGN |
 | #1350 | [BUG] settings_projects.html missing tokens.css / toast.js / nav include — 3 test failures (pre-existing, u… | PROD-DESIGN |
 | #1483 | TRUST-COPY follow-on: four latent 'cannot be undone' defaults remain in dialog.js — unreachable today, but … | — |
-| #1487 | renderInboundStatus lives inside a Jinja template — the branch deciding what users are told is unreachable … | — |
 | #1495 | localStorage chat fallback never persists assistant replies — the degraded-render surface that made #1489 p… | — |
 | #1515 | Conversation switching flash-rebuilds the entire screen — PM: 'a distracting, sloppy, unprofessional experi… | — |
 | #1516 | Conversation delete/archive have NO reachable UI — the affordances live in home.html's superseded sidebar, … | — |
 | #1519 | Insight Journal page ignores the design system — PM: 'designed randomly… breaks the nav. Really goofy looking' | — |
 | #1523 | SessionTimeout.logoutUrl points at nonexistent /logout UI route — works only via the login-bounce accident | — |
-| #1535 | Reminder times display in UTC — per-user timezone rendering (1521 follow-on) | — |
 | #1546 | Dialog copy voice pass: honest but awkward phrasing on delete/remove dialogs — PM: 'strangely written, soun… | — |
-| #1550 | All-day calendar events render as 'at 12am' — technically the stored time, maladroit to humans | — |
 | #1564 | iPad Safari layout float: large empty content block, composer detached mid-page, greeting scrolls under too… | — |
 | #1609 | No user-reachable surface exists for editing personal context (role/priorities) — the overlay is file-only … | — |
 | #1625 | Reminder surfacing is relentless — PM design ruling: pin due reminders to the top of Radar, mention in conv… | PROD-DESIGN |
-| #1828 | TZ-PROJECT: per-user timezone / time-handling fix — parent for #1493's 6 F-slice children | PROD-DESIGN |
 | #1907 | [RENDER] iPad (Safari) layout on alpha: portrait new-chat shows an empty full-height gray panel with the co… | PROD-DESIGN |
-| #1915 | [TIMEZONE] 'set it back to pacific time' is refused — accept common zone names/abbreviations (Pacific, PT, … | — |
 | #1945 | [UX] Project Config page lists the same repo under 'Linked Repositories' and 'Integrations'; no surface sho… | — |
 | #1946 | [RADAR] Radar did not refresh after a reminder was completed in chat — the cleared reminder stayed pinned a… | — |
 | #1957 | [WEB] Personality page: 'Reset to Defaults' reloads with a query string and leaves Warmth at its saved value | — |
 | #2099 | Invites page: minting a code does not refresh the list (revoke does) on alpha e801b1a309; xian's read after… | — |
-| #2103 | Ten templates call an undefined global showToast() (121 call sites); toast.js exposes Toast.success/error, … | — |
 | #2116 | [UX] "What makes you different?" asked a fifth time is answered with a question about motive, no answer (se… | — |
 
 ### T: Trust and learning (14)
