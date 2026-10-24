@@ -422,3 +422,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Round 3 (the living-map brief) starts when Exec opens it.
 - **#2151 (honesty sweep):** Lead extends FLOOR-ABSENT to six gathers, then GH-NONSTRICT. These are Production work, not gate items.
 - **Main CI:** 12 of 12 green at 21:33. Alpha healthy.
+- **Round 2 (21:36):** C5 and F29 moves applied in the plan (H 25, V 29, E 27; 221 open). F28 waits on PA via Exec.
