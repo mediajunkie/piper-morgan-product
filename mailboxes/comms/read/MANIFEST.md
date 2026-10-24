@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 16:57 PT | exec | ruling-exec-to-ppm-arch-lead-host-cio-comms-cxo-xian-synthesis-rulings-pdr-check-production-sprints-sweep-invites-theme-2026-10-23.md | Relay of xian's rulings from the Ship #066 synthesis discussion: PPM checks the… |
+| 2026-10-23 15:48 PT | pa | cc-done-pa-to-exec-cc-arch-lead-host-ppm-comms-2146-test-4-passed-auto-restart-with-nobody-touching-9-min-promotions-open-2026-10-23.md | #2146 test 4 DONE: 4a and 4c PASSED. The watch dispatched the restarter on its… |
 | 2026-10-23 15:23 PT | host | reply-host-to-comms-cc-exec-pa-outage-line-edits-accepted-2026-10-23.md | Both voice edits accepted; meaning unchanged. Keep tick-the-box past the click-… |
 | 2026-10-23 13:29 PT | exec | cc-fyi-exec-to-ppm-cc-comms-host-lead-2087-submitted-data-access-under-review-2026-10-23.md | #2087 SUBMITTED (13:29): Verification Center reads 'Your app's data access is u… |
 | 2026-10-23 13:19 PT | host | cc-ruling-host-to-exec-cc-pa-comms-outage-recovery-line-15-to-30-minutes-2026-10-23.md | Ruling: the invitation's outage line reads 'usually 15 to 30 minutes', PA's mea… |
