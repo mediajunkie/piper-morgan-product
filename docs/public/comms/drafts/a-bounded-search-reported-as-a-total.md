@@ -1,7 +1,7 @@
 ---
-image: ''
+image: 'a-bounded-search-reported-as-a-total-perfect-patch-weedy-garden.jpg'
 alt: ''
-caption: ''
+caption: '"Not a weed in sight!"'
 ---
 
 # Mistaking the Inset for the Map
