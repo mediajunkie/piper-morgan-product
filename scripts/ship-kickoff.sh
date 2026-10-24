@@ -92,7 +92,7 @@ elif not drafts:
 elif status in ("distributed", "published"):
     nxt = "done."
 else:
-    nxt = "Comms review, then xian's first look; publish Wednesday."
+    nxt = "xian's first look (he gates the Comms handoff), then Comms review; publish Wednesday."
 print(f"ship-status #{ship}: " + " · ".join(parts) + f" · NEXT: {nxt}")
 EOF
 }
