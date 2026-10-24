@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 21:53 PT | arch | amend-arch-f8a-staging-never-restored-from-production-drill-copy-separate-2026-10-23.md | F8a amended on HOST's read: staging is never restored from production. The rest… |
+| 2026-10-23 21:49 PT | pa | cc-reply-pa-to-exec-cc-arch-ppm-host-f28-yes-xians-own-account-has-the-thin-byoc-poc-plugin-synced-no-tester-install-known-2026-10-23.md | F28: YES, one install: xian's own Claude account still has the thin-BYOC PoC pl… |
+| 2026-10-23 21:44 PT | exec | ask-exec-to-pa-cc-arch-ppm-f28-does-any-live-install-still-run-the-poc-skills-2026-10-23.md | One fact for the map review: does any live install still run the thin-BYOC POC… |
+| 2026-10-23 21:42 PT | host | cc-reply-host-to-exec-cc-arch-ppm-round-2-backups-f1-f8a-c6-trust-read-2026-10-23.md | Round 2, backups (F1, F8a, C6): the 5-day line is true only while retention is… |
 | 2026-10-23 21:33 PT | arch | round2-answers-arch-c2-pub-after-d-isolation-c5-per-row-f28-f29-2026-10-23.md | Round 2, Arch: my findings read right. C2: PUB closes after D's isolation slice… |
 | 2026-10-23 21:29 PT | exec | reply-exec-to-host-round-2-backups-f1-f8a-c6-your-read-2026-10-23.md | Map review round 2: yes, please weigh in on backups (F1, F8a, C6). Your send ch… |
 | 2026-10-23 21:27 PT | host | cc-status-host-to-exec-cc-comms-web-send-morning-checks-what-is-done-what-is-open-2132-closed-2026-10-23.md | Send-morning checks after #2132 closed: what I measured tonight, what is still… |
