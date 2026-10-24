@@ -38,7 +38,6 @@ from services.intent_service.conversational_floor import SOURCE_FAILED_FLAGS
 # Each with why it is unregistered today (the inventory's floor rows).
 UNREGISTERED_KNOWN: Dict[str, str] = {
     "_gather_active_milestones_context": "a failed milestones read returns {} (FLOOR-ABSENT)",
-    "_gather_blocked_items_context": "a failed blocked-items read returns {} (FLOOR-ABSENT)",
     "_gather_calendar_connection": "a failed connection lookup reads as not connected",
     "_gather_calendar_context": "a failed calendar summary returns {} (FLOOR-ABSENT)",
     "_gather_insight_pull_context": "the except branch writes the verified-empty insights dict",
@@ -47,7 +46,7 @@ UNREGISTERED_KNOWN: Dict[str, str] = {
     "_gather_status_priority_context": "built from unregistered gathers (calendar, GitHub)",
     "_gather_temporal_context": "built from unregistered gathers (calendar, milestones, activity)",
 }
-UNREGISTERED_KNOWN_CEILING = 9
+UNREGISTERED_KNOWN_CEILING = 8
 
 _FLAGS = {entry.flag for entry in SOURCE_FAILED_FLAGS}
 

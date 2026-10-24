@@ -1017,7 +1017,8 @@ class TestGatherBlockedItemsContext:
         assert result["blocked_count"] == 19
 
     @pytest.mark.asyncio
-    async def test_github_api_failure_returns_empty_no_exception(self):
+    async def test_github_api_failure_arms_the_source_failed_flag(self):
+        # #2151 FLOOR-ABSENT: a failed read is not "nothing blocked" (was: returns {}).
         assembler = ContextAssembler()
         router = MagicMock()
         router.initialize = AsyncMock()
@@ -1027,7 +1028,7 @@ class TestGatherBlockedItemsContext:
             return_value=router,
         ):
             result = await assembler._gather_blocked_items_context(user_id="u1")
-        assert result == {}
+        assert result == {"blocked_items_source_failed": True}
 
     @pytest.mark.asyncio
     async def test_blocked_items_second_call_hits_cache(self):
@@ -1178,7 +1179,8 @@ class TestGatherActiveMilestonesContext:
         assert result["active_milestone_count"] == 8
 
     @pytest.mark.asyncio
-    async def test_github_api_failure_returns_empty_no_exception(self):
+    async def test_github_api_failure_arms_the_source_failed_flag(self):
+        # #2151 FLOOR-ABSENT: a failed read is not "nothing blocked" (was: returns {}).
         assembler = ContextAssembler()
         router = MagicMock()
         router.initialize = AsyncMock()
@@ -1365,7 +1367,8 @@ class TestGatherRecentActivityContext:
         assert result == {}
 
     @pytest.mark.asyncio
-    async def test_github_api_failure_returns_empty_no_exception(self):
+    async def test_github_api_failure_arms_the_source_failed_flag(self):
+        # #2151 FLOOR-ABSENT: a failed read is not "nothing blocked" (was: returns {}).
         assembler = ContextAssembler()
         router = MagicMock()
         router.initialize = AsyncMock()

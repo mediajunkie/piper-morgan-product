@@ -203,6 +203,12 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         "open issues",
     ),
     SourceFailedDirective(
+        # #2151 FLOOR-ABSENT: the blocked-items read failed — items may be blocked.
+        # NEVER present this as "nothing is blocked".
+        "blocked_items_source_failed",
+        "blocked items",
+    ),
+    SourceFailedDirective(
         # #2151 (Arch 10-23): the trust-profile read failed — the stage is unknown,
         # not "new". NEVER present this as a fresh relationship.
         "trust_source_failed",

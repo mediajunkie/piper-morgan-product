@@ -222,6 +222,16 @@ def _counts_by_source(items: List[Dict[str, Any]]) -> Dict[str, int]:
     return counts
 
 
+def _github_not_connected(exc: BaseException) -> bool:
+    """#2151 (Arch 10-23): a strict GitHub read that degraded CONNECT_REQUIRED was NOT
+    PERFORMED (the user never connected), not failed: the gather returns {} with no
+    source-failed flag, so the floor neither says "couldn't check" nor claims absence."""
+    from services.integrations.github.read_failed import GitHubReadFailed
+    from services.mcp.consumer.connector import DegradationReason
+
+    return isinstance(exc, GitHubReadFailed) and exc.reason is DegradationReason.CONNECT_REQUIRED
+
+
 class ContextAssembler:
     """Gathers structured context for the conversational floor."""
 
@@ -1722,7 +1732,15 @@ class ContextAssembler:
         """
         if not user_id:
             return {}
-        cached = await self._get_blocked_items_cached(user_id)
+        try:
+            cached = await self._get_blocked_items_cached(user_id)
+        except Exception as e:
+            if _github_not_connected(e):
+                return {}
+            # #2151 FLOOR-ABSENT: a failed read is not "nothing blocked". get_or_compute
+            # caches no failure (the exception propagates past it).
+            logger.warning("context_assembler_blocked_items_error", error=str(e))
+            return {"blocked_items_source_failed": True}
         return cached or {}
 
     async def _get_blocked_items_cached(
@@ -1748,48 +1766,46 @@ class ContextAssembler:
 
         Fetches up to 100 open issues from the default repo, filters those
         carrying `status: blocked`, sorts by `updated_at` desc, caps the
-        cached list at 10. Fail-graceful — returns None on any error or
-        empty result.
+        cached list at 10. Returns None on an empty result; RAISES on a failed
+        read (#2151: the gather arms ``blocked_items_source_failed``).
         """
-        try:
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
+        from services.integrations.github.github_integration_router import (
+            GitHubIntegrationRouter,
+        )
 
-            github = GitHubIntegrationRouter()
-            await github.initialize(user_id=user_id)
+        github = GitHubIntegrationRouter()
+        await github.initialize(user_id=user_id)
 
-            # Pull a generous slice so the post-filter still finds blocked
-            # items even when there are many non-blocked open issues.
-            all_open = await github.get_open_issues(limit=100)
-            if not all_open:
-                return None
-
-            blocked = [issue for issue in all_open if _BLOCKED_LABEL in (issue.get("labels") or [])]
-            if not blocked:
-                return None
-
-            blocked.sort(key=lambda i: i.get("updated_at") or "", reverse=True)
-
-            return {
-                "blocked_items": [
-                    {
-                        "number": i.get("number"),
-                        "title": i.get("title"),
-                        "labels": i.get("labels", []),
-                        "url": i.get("uri") or i.get("html_url"),
-                        "updated_at": i.get("updated_at"),
-                    }
-                    for i in blocked[:10]
-                ],
-                "blocked_count": len(blocked),
-                # #1778: blocked is filtered from ONE page — a full page means
-                # the count is a floor (unseen pages may hold more blocked items).
-                "blocked_count_capped": len(all_open) >= 100,
-            }
-        except Exception as e:
-            logger.warning("context_assembler_blocked_items_error", error=str(e))
+        # Pull a generous slice so the post-filter still finds blocked
+        # items even when there are many non-blocked open issues. #2151
+        # GH-NONSTRICT: strict, through the connector's one resolver, so a failed
+        # read raises instead of returning [].
+        all_open = await github.get_open_issues(limit=100, strict=True)
+        if not all_open:
             return None
+
+        blocked = [issue for issue in all_open if _BLOCKED_LABEL in (issue.get("labels") or [])]
+        if not blocked:
+            return None
+
+        blocked.sort(key=lambda i: i.get("updated_at") or "", reverse=True)
+
+        return {
+            "blocked_items": [
+                {
+                    "number": i.get("number"),
+                    "title": i.get("title"),
+                    "labels": i.get("labels", []),
+                    "url": i.get("uri") or i.get("html_url"),
+                    "updated_at": i.get("updated_at"),
+                }
+                for i in blocked[:10]
+            ],
+            "blocked_count": len(blocked),
+            # #1778: blocked is filtered from ONE page — a full page means
+            # the count is a floor (unseen pages may hold more blocked items).
+            "blocked_count_capped": len(all_open) >= 100,
+        }
 
     # ------------------------------------------------------------------
     # #1155: High-priority open issues gatherer
@@ -1813,12 +1829,7 @@ class ContextAssembler:
         try:
             cached = await self._get_high_priority_issues_cached(user_id)
         except Exception as e:
-            from services.integrations.github.read_failed import GitHubReadFailed
-            from services.mcp.consumer.connector import DegradationReason
-
-            if isinstance(e, GitHubReadFailed) and e.reason is DegradationReason.CONNECT_REQUIRED:
-                # #2151 (Arch 10-23): not connected is NOT PERFORMED, not failed — no
-                # "couldn't check" to someone who never connected, and no absence claim.
+            if _github_not_connected(e):
                 return {}
             # #2151 FLOOR-ABSENT: a failed issues read is not "no open issues". The
             # registered flag arms the floor's aggregate; get_or_compute caches no

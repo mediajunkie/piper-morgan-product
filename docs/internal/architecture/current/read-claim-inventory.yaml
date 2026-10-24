@@ -1028,6 +1028,21 @@ surfaces:
     the adapter (test_open_issues_strict_read_2151.py). Still red for SUBSTITUTED: ENV-REPO
     (the default repo can be the host's PIPER_DEFAULT_REPO, unset on alpha).
 
+- id: floor:blocked_items_source_failed
+  kind: floor
+  effect: READ
+  reads: open issues labeled status:blocked in the default repo (one 100-item page)
+  handler: services/intent_service/context_assembler.py:ContextAssembler._gather_blocked_items_context
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: conflated:verified}
+  texts:
+    failed: 'aggregate "... could not check: blocked items"'
+  verdict: red
+  notes: >-
+    Added 2026-10-24 (Lead, #2151 FLOOR-ABSENT, Arch's 10-23 21:28 shape): a strict read
+    through the connector's one resolver; the compute raises and the gather arms the
+    flag; CONNECT_REQUIRED returns {} (not performed). Pins fail the read at the adapter
+    (test_open_issues_strict_read_2151.py). Still red for SUBSTITUTED: ENV-REPO.
+
 - id: floor:projects_source_failed
   kind: floor
   effect: READ
@@ -1083,12 +1098,13 @@ surfaces:
   effect: READ
   reads: open issues labeled status:blocked in the default repo (one 100-item page)
   handler: services/intent_service/context_assembler.py:ContextAssembler._compute_blocked_items
-  states: {verified: conflated:not_performed, failed: conflated:not_performed, narrowed: distinct, not_performed: distinct, substituted: conflated:verified}
+  states: {verified: conflated:not_performed, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: conflated:verified}
   verdict: red
   notes: >-
-    FLOOR-ABSENT: get_open_issues is non-strict (GH-NONSTRICT); failure, unresolved repo
-    and no blocked items all return None, beside a "GitHub: connected" line. The capped
-    count is marked (narrowed distinct).
+    FAILED is distinct since 2026-10-24 (strict read; the compute raises; see
+    floor:blocked_items_source_failed). An unresolved repo, CONNECT_REQUIRED and no
+    blocked items still all give no blocked context. The capped count is marked
+    (narrowed distinct). ENV-REPO applies.
 
 - id: floor:assembler._gather_calendar_connection
   kind: floor

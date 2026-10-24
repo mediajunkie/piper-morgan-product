@@ -1,4 +1,4 @@
-"""#2151 GH-NONSTRICT (Arch 10-23 21:28): the open-issues gather's read is strict.
+"""#2151 GH-NONSTRICT (Arch 10-23 21:28): the open-issues and blocked-items gathers' read is strict.
 
 f57a31faf8 armed ``open_issues_source_failed`` at the gather, but the read under it
 (``get_open_issues`` non-strict → ``list_github_issues_direct``) caught every error
@@ -153,3 +153,54 @@ async def test_empty_with_a_repo_is_genuinely_none():
         resolve_repo=AsyncMock(return_value=MagicMock(full_name="o/r")),
     )
     assert out == {}
+
+
+# ── Blocked items: the same read, the same contract (10-24) ──
+
+
+async def _gather_blocked(router):
+    with patch(
+        "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+        return_value=router,
+    ):
+        return await ContextAssembler()._gather_blocked_items_context(UID)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "reason",
+    [DegradationReason.STALE_TOKEN, DegradationReason.UNREACHABLE, DegradationReason.MISCONFIGURED],
+)
+async def test_blocked_a_failed_read_arms_the_flag(reason):
+    router = _router(_degraded(reason))
+    out = await _gather_blocked(router)
+    assert out == {"blocked_items_source_failed": True}
+    assert router.mcp_adapter.list_github_issues_direct.await_count == 0
+
+
+@pytest.mark.asyncio
+async def test_blocked_a_read_that_raises_at_the_adapter_arms_the_flag():
+    router = _router(GitHubIssuesResult(issues=[]))
+    router.mcp_adapter.list_open_issues = AsyncMock(side_effect=TimeoutError("fake timeout"))
+    assert await _gather_blocked(router) == {"blocked_items_source_failed": True}
+
+
+@pytest.mark.asyncio
+async def test_blocked_not_connected_is_not_performed():
+    out = await _gather_blocked(_router(_degraded(DegradationReason.CONNECT_REQUIRED)))
+    assert out == {}
+
+
+@pytest.mark.asyncio
+async def test_blocked_items_read_through_the_connector():
+    item = {
+        "number": 9,
+        "title": "Fake blocked",
+        "state": "open",
+        "labels": [{"name": "status: blocked"}],
+        "html_url": "https://github.test/9",
+        "updated_at": "2026-10-24",
+    }
+    out = await _gather_blocked(_router(GitHubIssuesResult(issues=[item], total=1)))
+    assert out["blocked_count"] == 1
+    assert out["blocked_items"][0]["number"] == 9
