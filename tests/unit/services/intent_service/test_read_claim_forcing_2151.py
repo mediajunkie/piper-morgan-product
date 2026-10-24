@@ -665,12 +665,11 @@ KNOWN_RED: Dict[str, str] = {
     "search_documents": "NOTION-SEARCH",
     "analyze_document": "NOTION-SEARCH",
     # Google Calendar
-    "recurring_meetings": "CAL-SWALLOW",
     "attention_query": "CAL-SWALLOW",
     # Piper's own store
     "explain_suggestion": "SWALLOW-EMPTY",
 }
-KNOWN_RED_CEILING = 20
+KNOWN_RED_CEILING = 19
 
 
 # ─── Harness ────────────────────────────────────────────────────────────────

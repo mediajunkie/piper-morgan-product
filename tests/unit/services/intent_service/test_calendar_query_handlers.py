@@ -616,6 +616,8 @@ class TestRecurringMeetingsQueryResults:
             mock_router = MagicMock()
             mock_router.authenticate = AsyncMock(return_value=True)
             mock_router.get_recurring_events = AsyncMock(return_value=[])
+            # #2151: a verified empty read carries no read error (the #2092 signal).
+            mock_router.last_read_error = None
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_recurring_meetings_query(intent, "workflow-id")

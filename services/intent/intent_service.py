@@ -9894,6 +9894,20 @@ class IntentService:
             # Get recurring meetings via router (Issue #518 fix - CORE-QUERY-1 pattern)
             recurring_meetings = await calendar_router.get_recurring_events(days_ahead=30)
 
+            # #2151 CAL-SWALLOW: an empty list from a read that failed is not "none".
+            if not recurring_meetings and getattr(calendar_router, "last_read_error", None):
+                return IntentProcessingResult(
+                    success=False,
+                    message=calendar_read_failed_line(calendar_router.last_read_error),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                        "calendar_read_error": calendar_router.last_read_error,
+                    },
+                    workflow_id=workflow_id,
+                )
+
             if not recurring_meetings:
                 # #1096 (Pattern-073): the calendar API returned no events;
                 # we can only attest to "none found in the queried window".
