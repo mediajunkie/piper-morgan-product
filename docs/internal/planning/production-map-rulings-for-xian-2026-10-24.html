@@ -1,0 +1,96 @@
+<title>Production Plan Rulings</title>
+<style>
+ :root{--bg:#fafaf8;--card:#fff;--line:#e3e2de;--ink:#1b1b19;--mute:#6c6b66;--red:#b23c2b;--amber:#a8741f;--green:#2d7a3e;--blue:#2d5f8a;--chip:#efeeea;--track:#e8e7e3}
+ @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181b;--card:#1f2126;--line:#33363c;--ink:#e9e8e5;--mute:#9b9a94;--red:#e8705f;--amber:#dfa94b;--green:#5cbf72;--blue:#6aa3d8;--chip:#2a2c31;--track:#2e3137}}
+ :root[data-theme="dark"]{--bg:#17181b;--card:#1f2126;--line:#33363c;--ink:#e9e8e5;--mute:#9b9a94;--red:#e8705f;--amber:#dfa94b;--green:#5cbf72;--blue:#6aa3d8;--chip:#2a2c31;--track:#2e3137}
+ body{font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);margin:0;padding-block:2rem;padding-inline:1rem}
+ .wrap{max-width:900px;margin:0 auto}h1{font-size:1.5rem;margin:0 0 .2rem}
+ .meta{color:var(--mute);font-size:.85rem;margin:0 0 1.3rem}
+ h2{font-size:1.06rem;margin:1.8rem 0 .6rem;padding-bottom:.3rem;border-bottom:2px solid var(--line)}
+ .card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:7px;padding:.85rem 1rem;margin:.7rem 0}
+ .card.win{border-left-color:var(--green)}.card.act{border-left-color:var(--amber)}.card.hot{border-left-color:var(--red)}
+ p{margin:.45rem 0}code{font:.86em ui-monospace,Menlo,monospace;background:var(--chip);padding:.08em .32em;border-radius:3px}
+ table{border-collapse:collapse;width:100%;font-size:.87rem;margin:.5rem 0;font-variant-numeric:tabular-nums}
+ th,td{text-align:left;padding:.36rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+ th{color:var(--mute);font-weight:500;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--mute);font-size:.8rem}
+ /* dashboard */
+ .dash{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.7rem;margin:.6rem 0}
+ .tile{background:var(--card);border:1px solid var(--line);border-radius:7px;padding:.7rem .85rem}
+ .tile .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);margin-bottom:.15rem}
+ .tile .big{font-size:1.5rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.15}
+ .tile .sub{font-size:.78rem;color:var(--mute);margin-top:.1rem}
+ .bar{height:7px;border-radius:4px;background:var(--track);margin:.45rem 0 .1rem;overflow:hidden;display:flex}
+ .bar span{display:block;height:100%}
+ .g{background:var(--green)}.a{background:var(--amber)}.r{background:var(--red)}.b{background:var(--blue)}
+ .key{font-size:.72rem;color:var(--mute);margin-top:.25rem}
+ .key i{font-style:normal;display:inline-block;width:.55rem;height:.55rem;border-radius:2px;margin-right:.2rem;vertical-align:baseline}
+ pre{font:.8rem/1.45 ui-monospace,Menlo,monospace;background:var(--chip);border:1px solid var(--line);border-radius:5px;padding:.6rem .7rem;margin:.4rem 0;overflow-x:auto;white-space:pre}
+ .jan{font-size:.84rem}
+ .q{font-weight:600}.lean{color:var(--blue);font-weight:600}
+ ol.r>li{margin:.35rem 0}
+</style>
+<div class="wrap">
+<h1>Production plan: your rulings</h1>
+<p class="meta">Exec · Sat 10-24, 07:09 PDT. From the map review: Arch, CXO, PPM, Exec, with HOST on backups and PA on one fact. Full record: <code>docs/internal/planning/production-map-review-round2-2026-10-23.md</code> (42 findings).</p>
+
+<div class="card hot"><b>Bottom line.</b> The reviewers agree on almost everything. <b>Eight calls are yours.</b> Each one has my recommendation, so &ldquo;all as recommended&rdquo; is a valid answer. Once you&rsquo;ve answered, PPM files and moves the issues, and I write the brief for the living map. About 15 minutes.</div>
+
+<h2>The eight calls</h2>
+
+<div class="card act"><p class="q">1. One production instance, plus a separate staging instance.</p>
+<p>Alpha&rsquo;s Fly app is already production, and every audience has been served from it. Arch recommends keeping one production instance, with audiences as product gates, so there&rsquo;s no 1.0 instance and no migration. Add a staging instance for destructive tests and release rehearsals (Thursday&rsquo;s test stopped the database the partners&rsquo; data lives in). Staging holds made-up data only and is never copied from production. It has its own keys, can&rsquo;t email or message anyone, and shows a banner. Backup restore tests use a separate short-lived copy that is destroyed afterwards. Cost: one more small Fly app and database.</p>
+<p><span class="lean">Recommend: yes.</span></p></div>
+
+<div class="card act"><p class="q">2. What &ldquo;1.0&rdquo; means.</p>
+<p>(a) Every Production issue closes. About 50 of them aren&rsquo;t promises to users (test health, dead code, polish), so they would gate the 1.0 release. (b) Every 1.0 promise has a closed issue and main is green. The rest moves to Ongoing or to a health backlog that doesn&rsquo;t gate.</p>
+<p><span class="lean">Recommend: (b).</span> It makes the map able to show &ldquo;how close to 1.0&rdquo;. PPM counted the 50 by title only and would read them before moving any.</p></div>
+
+<div class="card act"><p class="q">3. Rewrite ESSENCE commitment 6 (&ldquo;not a destination app&rdquo;).</p>
+<p>Your August surface rulings and this week&rsquo;s PDR-005 and PDR-006 amendments make the web app a real surface. Sprint E (34 web issues) only makes sense if it is.</p>
+<p><span class="lean">Recommend: yes. Arch drafts the new wording, and you ratify it.</span></p></div>
+
+<div class="card act"><p class="q">4. Drafting a PRD or spec: 1.0 or after?</p>
+<p>ESSENCE commitment 2 includes Piper drafting PRDs and specs. Nothing in Production builds it. #2139 is the nearest.</p>
+<p><span class="lean">Recommend: after 1.0, noted in ESSENCE.</span> 1.0 stays smaller, and the drafting work rides on the document and GitHub capabilities once they&rsquo;re solid. If you see it as core to &ldquo;a PM&rsquo;s assistant&rdquo;, say 1.0, and PPM files it under Doc.</p></div>
+
+<div class="card act"><p class="q">5. PDR-001: the setup wizard as a recorded exception to &ldquo;recognition first&rdquo;.</p>
+<p>CXO&rsquo;s wording: &ldquo;recognition-first applies to the first conversation; the hosted setup wizard is a stepped, explicit-consent flow, and is the recorded exception.&rdquo;</p>
+<p><span class="lean">Recommend: adopt CXO&rsquo;s wording.</span> Whether Piper&rsquo;s first conversation actually recognizes the user today is unchecked. That&rsquo;s #1538&rsquo;s work.</p></div>
+
+<div class="card act"><p class="q">6. How public-beta users get in.</p>
+<p>Every account today starts from an invite code minted by hand. Public beta needs either open sign-up or a waitlist, plus per-account rate and abuse limits.</p>
+<p><span class="lean">Recommend: a waitlist first</span>, with you admitting people in batches and the abuse limits built before it opens. It keeps the rule that nothing needs a second person, and it lets you pace support. Open sign-up can come later.</p></div>
+
+<div class="card act"><p class="q">7. A Readiness lane, which gates public beta.</p>
+<p>A short list of things that must exist before strangers arrive, each one backing a promise in the Terms: the restore test, account deletion, data export, support intake and an outage notice. Other backstage work goes to Ongoing, with no gate. Exec owns the lane, and HOST&rsquo;s send-morning checks become its standing check. All reviewers agree.</p>
+<p><span class="lean">Recommend: yes.</span></p></div>
+
+<div class="card act"><p class="q">8. What &ldquo;main green&rdquo; means, and how much of each sprint goes to health work.</p>
+<p>Main&rsquo;s 12 check workflows are green today. The full test suite is not: #1452 shows hundreds of failures, and #1457 (ci.yml) has been red for 100+ runs. The honesty sprint&rsquo;s ratchets need a suite that runs green.</p>
+<p><span class="lean">Recommend: &ldquo;green&rdquo; means the 12 workflows now, and the full suite by the end of the honesty sprint. Health work takes about one issue in five of every sprint until then.</span> This is the old &ldquo;CI target&rdquo; question from your list.</p></div>
+
+<h2>Going ahead unless you object</h2>
+<div class="card"><ul style="margin:.2rem 0 .2rem 1.2rem;padding:0">
+<li><b>Order:</b> the sprints close honesty, then data separation, then public beta. Public beta can&rsquo;t open before each user&rsquo;s data is kept apart. The map shows this.</li>
+<li><b>New issues</b> (children of the Terms issue #2062, gating public beta):
+<ul style="margin:.1rem 0 0 1.1rem;padding:0">
+<li>database backups and a timed restore test, with the encryption key backed up separately from the database;</li>
+<li>account deletion with a real purge, which you can reach in the product, plus a deletion record that survives a restore;</li>
+<li>export of everything Piper holds for a user;</li>
+<li>support intake;</li>
+<li>an outage and data-loss notice.</li>
+</ul></li>
+<li><b>Also:</b> one ADR on GitHub identity; a rubric for the plugin surface (CXO); a user-facing &ldquo;what changed&rdquo; note (Comms).</li>
+<li><b>Moves already made in the plan:</b> the timezone fixes and two silent-failure web fixes join the honesty sprint, and #1011 joins the routing work. #366 (Slack memory) goes to Fast Follow.</li>
+<li><b>The promise in the Terms is tied to the setting:</b> anyone who changes backup retention (5 days today) changes the &ldquo;about five days&rdquo; promise in the same change.</li>
+</ul></div>
+
+<h2>Already on your list (no ruling here)</h2>
+<div class="card"><ul style="margin:.2rem 0 .2rem 1.2rem;padding:0">
+<li><b>Three Sprint options</b> to add in the GitHub web UI. The map is generated from them.</li>
+<li><b>Your old June Piper plugin:</b> if you don&rsquo;t use it, three old issues close (#1242, #1244, #1245).</li>
+</ul></div>
+
+<footer>Verified how: every item is taken from the round-2 record, which quotes each reviewer&rsquo;s memo. Issue states were checked 10-23 at 18:56 and updated with the evening&rsquo;s answers. Main CI read 12 of 12 green at 07:08 Sat. Recommendations are Exec&rsquo;s, except where a reviewer is named.</footer>
+</div>
