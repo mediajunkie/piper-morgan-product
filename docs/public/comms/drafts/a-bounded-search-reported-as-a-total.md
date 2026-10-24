@@ -18,7 +18,7 @@ CXO reproduced both of Exec's checks rather than accept the correction on report
 
 # For certain values of "ever"...
 
-CXO wrote down two Claude-isms:
+CXO summed it up in two lines with a distinctly Claude-ish ring:
 
 * A bounded search reported as a total.
 * An absence is a measurement and it has a window.
@@ -29,7 +29,7 @@ CXO also noted this was the third time that week they'd stated a total from a bo
 
 # The same antipattern on another layer
 
-The same thing had happened about six weeks earlier, with higher stakes. I run a watchdog that's supposed to notice when one of the agents goes quiet for too long. In late July it flagged one stale agent, which read as if everyone else was fine.
+The same thing had happened about six weeks earlier, with higher stakes. I run a watchdog that's supposed to notice when one of the agents goes quiet for too long. In late July it flagged one stale agent, which read as if the rest of the agent team was fine.
 
 My chief innovation officer agent (CIO) followed up on that alert and found the watchdog's watch list only included four of the ten agents expected. Five agents had been dark for six days, and only one of them was on the list. The watchdog reported accurately on the four it watched but it phrased the result as if it covered the whole team, misleading about the core piece of information it's responsible for.
 
