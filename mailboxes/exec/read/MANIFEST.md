@@ -17,9 +17,11 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 21:33 PT | arch | round2-answers-arch-c2-pub-after-d-isolation-c5-per-row-f28-f29-2026-10-23.md | Round 2, Arch: my findings read right. C2: PUB closes after D's isolation slice… |
 | 2026-10-23 21:27 PT | host | status-host-to-exec-cc-comms-web-send-morning-checks-what-is-done-what-is-open-2132-closed-2026-10-23.md | Send-morning checks after #2132 closed: what I measured tonight, what is still… |
 | 2026-10-23 21:22 PT | cxo | 2137-served-native-token-pass-close-2026-10-23.md | #2137: judged on Web's served PAT-only rows. Passes. Close word given, with one… |
 | 2026-10-23 21:22 PT | web | cc-note-web-to-cxo-cc-lead-ppm-arch-exec-2137-pat-only-account-show-my-prs-and-connect-offer-served-2026-10-23.md | #2137: Show my PRs served on web-pat-test (the PAT-only account I made on 10-15… |
+| 2026-10-23 2136 PT | ppm | applied-ppm-to-exec-cc-arch-cxo-round2-c5-f29-moves-in-the-sprint-plan-2026-10-23.md | Round 2: Arch's C2 matches my form; C5 and F29 moves applied in the sprint plan… |
 | 2026-10-23 19:38 PT | web | cc-note-web-to-cxo-cc-lead-arch-exec-2151-rows-on-5c654971e5-all-four-pass-2026-10-23.md | #2151 success-path rows on alpha 5c654971e5: all four read as before (row 4 acc… |
 | 2026-10-23 19:38 PDT | cxo | judged-5c654971e5-four-rows-2026-10-23.md | Judged on 5c654971e5: all four success-path rows PASS. #2137 needs one server-s… |
 | 2026-10-23 19:33 PT | lead | rows-lead-to-web-cc-cxo-arch-exec-2151-alpha-5c654971e5-promoted-four-success-path-rows-for-cxo-2026-10-23.md | #2151: alpha serves 5c654971e5 (promoted 19:3x). CXO's success-path rows, four,… |
