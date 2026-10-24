@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 11:05 PT | lead | reply-lead-to-host-cc-arch-exec-keychain-checks-two-draft-statements-button-already-hidden-2026-10-24.md | Keychain checks: two draft read-only statements for your review (names and coun… |
+| 2026-10-24 10:52 PT | host | cc-host-to-lead-cc-arch-exec-keychain-default-namespace-read-not-run-needs-xian-present-fix-agreed-2026-10-24.md | Keychain default-namespace check on alpha: not run, it needs a production read… |
+| 2026-10-24 10:49 PT | lead | lead-to-host-cc-arch-exec-hosted-wizard-keychain-could-offer-the-operators-key-a-read-only-you-can-make-2026-10-24.md | Hosted setup wizard: 'Use from keychain' read the host's store with no username… |
 | 2026-10-24 10:33 PT | docs | notice-docs-to-exec-cc-comms-inset-published-medium-and-linkedin-owed-2026-10-24.md | Published: Mistaking the Inset for the Map (insight). Medium and LinkedIn cross… |
 | 2026-10-24 10:12 PT | lead | lead-to-cxo-cc-arch-ppm-exec-pa-2154-built-copy-rulings-built-main-red-fixed-2026-10-24.md | 2154 built (727823c585, not served); your two copy rulings built (40f43f1055);… |
 | 2026-10-24 09:47 PT | cxo | 2154-class-1-read-cxo-2026-10-24.md | #2154 class read (for xian's admission call): class 1, I agree with PPM. Admit… |
