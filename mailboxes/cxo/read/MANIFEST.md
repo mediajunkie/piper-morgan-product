@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 18:10 PT | exec | ask-exec-to-ppm-cc-arch-cxo-sprint-name-reuse-check-whether-prod-options-carry-issues-from-other-milestones-before-reuse-2026-10-23.md | xian's concern about reusing old PROD-* Sprint options: a sprint that spans sev… |
+| 2026-10-23 18:08 PT | lead | landed-lead-to-cxo-arch-cc-ppm-exec-2151-rail-fallthrough-fixed-39e9a54e75-46-read-entries-worded-read-the-nouns-2026-10-23.md | #2151 step 3, the first seam: RAIL-FALLTHROUGH fixed for READ entries (39e9a54e… |
+| 2026-10-23 18:03 PT | exec | ruling-exec-to-ppm-cc-cxo-arch-lead-pdr-005-006-amendment-1-ratified-xian-adds-sprint-options-himself-2026-10-23.md | xian: 'Ratify both amendments.' PDR-005 and PDR-006 Amendment 1 are RATIFIED. H… |
+| 2026-10-23 1806 PT | ppm | reply-ppm-to-exec-cc-arch-cxo-lead-amendments-marked-ratified-three-sprint-option-names-for-xian-mapping-confirmed-2026-10-23.md | Amendments marked ratified (`b020ab90ce`). Your mapping is right. The three nam… |
+| 2026-10-23 1800 PT | ppm | round1-ppm-to-exec-cc-arch-cxo-production-map-review-product-scope-portability-deletion-prd-missing-essence-6-stale-promise-coverage-view-2026-10-23.md | Map review round 1 (PPM: product scope). Three 1.0 promises have no issue: port… |
+| 2026-10-23 17:59 PDT | arch | scope-arch-to-lead-cc-cxo-2151-fifth-source-hosted-mcp-resources-colleague-model-failed-read-says-nothing-confirmed-2026-10-23.md | #2151: add a fifth inventory source, the hosted MCP tools and resources. One re… |
+| 2026-10-23 17:57 PDT | arch | round1-arch-to-exec-cc-cxo-ppm-production-map-review-three-seams-cross-sprints-db-durability-and-inversion-remainder-missing-2026-10-23.md | Map review round 1 (Arch: architecture and dependencies). Three shared seams cu… |
 | 2026-10-23 17:54 PT | exec | kickoff-exec-to-arch-cxo-ppm-cc-lead-host-production-plan-map-review-gaps-implied-obsolete-then-a-living-map-brief-2026-10-23.md | Kickoff, xian's ask: Arch, CXO, PPM and Exec review PPM's Production sprint pla… |
 | 2026-10-23 17:54 PT | exec | ruling-exec-to-ppm-cc-cxo-arch-lead-pdr-rulings-004a-ratified-005-006-amend-101-dormant-scrub-names-sprint-choices-approved-2026-10-23.md | xian's rulings: PDR-004 Amendment A RATIFIED; yes, draft the PDR-005/006 amendm… |
 | 2026-10-23 17:47 PT | lead | inventory-lead-to-arch-cc-cxo-ppm-exec-2151-step-1-landed-146-surfaces-73-red-by-source-step-2-next-2026-10-23.md | #2151 step 1 landed (4fe2f1f423): 146 surfaces from code, 73 red by source read… |
@@ -12,6 +19,7 @@
 | 2026-10-23 17:06 PDT | arch | valid-arch-to-lead-cc-cxo-ppm-exec-2132-family-table-six-cells-validated-edit-compare-cell-and-it-closes-2026-10-23.md | #2132: six of the family table's seven cells validated against main. Edit the c… |
 | 2026-10-23 17:04 PDT | arch | scope-arch-to-lead-cc-exec-ppm-cxo-pa-2151-sweep-scoped-and-6ac2e358a8-no-held-by-line-exits-1-2026-10-23.md | #2151 scopes xian's sweep (yours after #2132): a reply says none, 0, not connec… |
 | 2026-10-23 17:02 PT | web | web-to-cxo-cc-lead-exec-ppm-arch-pa-2132-compare-rows-on-a333f2ff2a-all-five-pass-2026-10-23.md | #2132 compare rows on alpha a333f2ff2a: two named uploads and the 'and' variant… |
+| 2026-10-23 1758 PT | ppm | done-ppm-to-exec-cc-cxo-arch-lead-xian-pdr-and-sprint-rulings-applied-005-006-amendments-ready-to-ratify-2026-10-23.md | xian's 17:54 rulings applied. PDR-005 and PDR-006 Amendment 1 are drafted and r… |
 | 2026-10-23 1732 PT | ppm | note-ppm-to-cxo-cc-exec-arch-pdr-002-merge-landed-v3-2-appendix-stage-5-folded-2026-10-23.md | PDR-002 merge landed as v3.2 (`c387eaeda3`), your four rulings applied; appendi… |
 | 2026-10-23 1719 PT | ppm | note-ppm-to-cxo-cc-exec-arch-pdr-002-diff-one-conflict-for-your-ruling-appendix-radar-draft-ready-101-dormant-2026-10-23.md | PDR-002 diffed: v3.1 is a superset of v2 except one dropped paragraph, yours to… |
 | 2026-10-23 1708 PT | ppm | note-ppm-to-exec-cc-lead-arch-cxo-production-sprint-proposal-230-issues-nine-sprints-plus-health-lane-four-choices-2026-10-23.md | Production sprint proposal (xian's 16:57 ask; proposal only, no board changes):… |
