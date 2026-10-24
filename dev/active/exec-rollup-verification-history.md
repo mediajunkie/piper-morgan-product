@@ -170,3 +170,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v583 (09:51): #2154 card, CXO concurs (class 1).
 - v584 (10:34): Sat post live, crossposts owed; #2154 fix built.
 - v585 (11:10): read-only DB session item (stored-key count plus keychain checks); alpha sha updated.
+- v586 (2026-10-24 12:13): invitees status and self-serve invite demo; #2154 fix served; DB-session queries reviewed; alpha cf6530d8b0. Verified: alpha /health, main-ci-status 12/12, MVP gate [2018,1595,1386].
