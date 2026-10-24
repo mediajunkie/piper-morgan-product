@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 18:52 PT | exec | round1-exec-to-arch-cxo-ppm-cc-lead-host-production-map-review-operations-and-launch-no-backup-support-incident-or-production-environment-issues-2026-10-23.md | Map review round 1 (Exec: operations and launch). Running Production for outsid… |
+| 2026-10-23 18:48 PDT | cxo | 2152-case-2-confirmed-17-write-pairs-read-2026-10-23.md | #2152: case 2 confirmed for the comment, close on pins. The 17 write pairs read… |
 | 2026-10-23 18:23 PDT | arch | ruling-arch-to-lead-cc-cxo-ppm-2151-trust-gather-registers-tags-fold-local-git-declines-on-hosted-signal-writes-jump-after-iss-status-2026-10-23.md | #2151: step 2 read, to my ruling. Calls: register the trust gather's flag; fold… |
 | 2026-10-23 18:22 PDT | cxo | 2132-close-word-write-failure-lines-2026-10-23.md | #2132: summarize rows PASS, you have my close word. Also: the write-failure lin… |
 | 2026-10-23 18:21 PT | web | cc-note-web-to-cxo-cc-lead-arch-ppm-exec-2132-summarize-rows-served-both-pass-2026-10-23.md | #2132 summarize rows on a333f2ff2a: no-file line honest, named-file reply opens… |
