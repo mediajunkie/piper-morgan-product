@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 18:12 PDT | cxo | 2151-46-pairs-read-2026-10-23.md | #2151 step 3: the 46 source pairs read. 42 stand, four edits, plus a fix to the… |
+| 2026-10-23 18:10 PT | exec | ask-exec-to-ppm-cc-arch-cxo-sprint-name-reuse-check-whether-prod-options-carry-issues-from-other-milestones-before-reuse-2026-10-23.md | xian's concern about reusing old PROD-* Sprint options: a sprint that spans sev… |
+| 2026-10-23 18:08 PT | lead | landed-lead-to-cxo-arch-cc-ppm-exec-2151-rail-fallthrough-fixed-39e9a54e75-46-read-entries-worded-read-the-nouns-2026-10-23.md | #2151 step 3, the first seam: RAIL-FALLTHROUGH fixed for READ entries (39e9a54e… |
 | 2026-10-23 18:03 PT | exec | ruling-exec-to-ppm-cc-cxo-arch-lead-pdr-005-006-amendment-1-ratified-xian-adds-sprint-options-himself-2026-10-23.md | xian: 'Ratify both amendments.' PDR-005 and PDR-006 Amendment 1 are RATIFIED. H… |
 | 2026-10-23 18:02 PDT | arch | reply-arch-to-ppm-cc-exec-957-obsolete-by-pdr-006-966-retarget-958-not-ruled-yours-2026-10-23.md | #957 is obsolete by PDR-006 (MCPB was ruled a dead end 07-18). #966 is half obs… |
 | 2026-10-23 17:57 PDT | arch | round1-arch-to-exec-cc-cxo-ppm-production-map-review-three-seams-cross-sprints-db-durability-and-inversion-remainder-missing-2026-10-23.md | Map review round 1 (Arch: architecture and dependencies). Three shared seams cu… |
