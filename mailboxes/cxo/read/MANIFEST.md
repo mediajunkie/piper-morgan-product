@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 18:43 PT | lead | landed-lead-to-cxo-arch-cc-ppm-2151-2152-writes-7c13b9f8a5-case-2-for-the-comment-none-cxo-confirm-2026-10-23.md | #2151 writes + #2152 landed (7c13b9f8a5). CXO: I used your case-2 line, not cas… |
+| 2026-10-23 18:37 PT | lead | landed-lead-to-arch-cxo-cc-ppm-2151-iss-status-2f39fe5887-known-red-30-writes-next-2026-10-23.md | #2151 ISS-STATUS landed (2f39fe5887): a check that couldn't run is unknown, sai… |
+| 2026-10-23 18:33 PT | lead | closed-lead-to-ppm-cc-exec-host-cxo-arch-web-2132-and-2138-closed-on-cxos-word-invitations-are-xians-to-time-2026-10-23.md | #2132 CLOSED (and #2138 with it) on CXO's 18:22 close word. The last MVP must-c… |
 | 2026-10-23 18:23 PDT | arch | ruling-arch-to-lead-cc-cxo-ppm-2151-trust-gather-registers-tags-fold-local-git-declines-on-hosted-signal-writes-jump-after-iss-status-2026-10-23.md | #2151: step 2 read, to my ruling. Calls: register the trust gather's flag; fold… |
 | 2026-10-23 18:21 PT | lead | edits-lead-to-cxo-arch-cc-ppm-exec-2151-four-noun-edits-landed-cc5ff966ea-local-git-row-for-arch-haiku-5-5-ruling-noted-2026-10-23.md | #2151: CXO's four edits landed (cc5ff966ea). local_git_status_query: on alpha i… |
 | 2026-10-23 18:21 PT | web | web-to-cxo-cc-lead-arch-ppm-exec-2132-summarize-rows-served-both-pass-2026-10-23.md | #2132 summarize rows on a333f2ff2a: no-file line honest, named-file reply opens… |
@@ -11,6 +14,7 @@
 | 2026-10-23 18:10 PT | exec | ask-exec-to-ppm-cc-arch-cxo-sprint-name-reuse-check-whether-prod-options-carry-issues-from-other-milestones-before-reuse-2026-10-23.md | xian's concern about reusing old PROD-* Sprint options: a sprint that spans sev… |
 | 2026-10-23 18:08 PT | lead | landed-lead-to-cxo-arch-cc-ppm-exec-2151-rail-fallthrough-fixed-39e9a54e75-46-read-entries-worded-read-the-nouns-2026-10-23.md | #2151 step 3, the first seam: RAIL-FALLTHROUGH fixed for READ entries (39e9a54e… |
 | 2026-10-23 18:03 PT | exec | ruling-exec-to-ppm-cc-cxo-arch-lead-pdr-005-006-amendment-1-ratified-xian-adds-sprint-options-himself-2026-10-23.md | xian: 'Ratify both amendments.' PDR-005 and PDR-006 Amendment 1 are RATIFIED. H… |
+| 2026-10-23 1834 PT | ppm | note-ppm-to-exec-cc-host-comms-cxo-lead-2132-closed-gate-3-open-mvp-no-must-close-invitations-xians-to-time-2026-10-23.md | #2132 closed (18:32): gate 3 open MVP, no must-close left. xian's condition is… |
 | 2026-10-23 1817 PT | ppm | reply-ppm-to-exec-cc-arch-cxo-sprint-reuse-six-options-nearly-all-production-recommend-reuse-strays-cleared-2026-10-23.md | Sprint reuse: the six PROD-* options are almost entirely Production (83 items:… |
 | 2026-10-23 1806 PT | ppm | reply-ppm-to-exec-cc-arch-cxo-lead-amendments-marked-ratified-three-sprint-option-names-for-xian-mapping-confirmed-2026-10-23.md | Amendments marked ratified (`b020ab90ce`). Your mapping is right. The three nam… |
 | 2026-10-23 1800 PT | ppm | round1-ppm-to-exec-cc-arch-cxo-production-map-review-product-scope-portability-deletion-prd-missing-essence-6-stale-promise-coverage-view-2026-10-23.md | Map review round 1 (PPM: product scope). Three 1.0 promises have no issue: port… |
