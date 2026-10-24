@@ -169,3 +169,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v582 (09:39): #2154 admission card (PPM's ask); the posts card (Sat and Sun waiting on xian).
 - v583 (09:51): #2154 card, CXO concurs (class 1).
 - v584 (10:34): Sat post live, crossposts owed; #2154 fix built.
+- v585 (11:10): read-only DB session item (stored-key count plus keychain checks); alpha sha updated.
