@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 16:39 PT | lead | lead-to-cxo-cc-web-arch-16-11-built-at-least-n-house-form-slack-card-admin-only-2026-10-24.md | Your 16:11 rulings built (f6553f5ba0, not served): the final 'at least N' line,… |
 | 2026-10-24 16:24 PT | lead | lead-to-cxo-cc-arch-web-15-58-built-calendar-site-line-is-admin-only-by-the-page-2026-10-24.md | Your 15:58 lines are in (f67515673d, not served; they replace the 15:32 'at lea… |
 | 2026-10-24 16:10 PT | lead | lead-to-cxo-cc-web-arch-15-32-words-in-at-least-n-not-100-web-8365b7a268-rows-2026-10-24.md | Your 15:32 words are in (cfbdd5638f, not served). One change, said plainly: 'at… |
 | 2026-10-24 16:01 PT | web | web-to-cxo-cc-lead-calendar-page-on-connected-account-shows-no-site-line-either-no-update-button-2026-10-24.md | Calendar page on a connected account (alpha 8365b7a268): no site sign-in line t… |
