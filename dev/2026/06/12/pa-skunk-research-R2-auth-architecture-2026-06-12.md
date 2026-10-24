@@ -26,7 +26,7 @@ PIPER_BASE = os.environ.get("PIPER_BASE_URL", "http://localhost:8001")
 The current hosted credential is embedded as a basic-auth URL in `.mcp.json`:
 
 ```json
-"PIPER_BASE_URL": "https://piperalpha:ddb78e1a6f3f7181f4cc44ef8cb49184@alpha.pipermorgan.ai"
+"PIPER_BASE_URL": "https://piperalpha:ddb7…9184@alpha.pipermorgan.ai"
 ```
 
 This is the credential that can't be in a public repo.
