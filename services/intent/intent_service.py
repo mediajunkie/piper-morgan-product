@@ -18460,16 +18460,27 @@ Add any additional information here.
                     ),
                 )
 
-        dispatched = await dispatch_workflow(
-            workflow_type=intent.action,
-            session_id=session_id,
-            user_id=user_id,
-            context={
-                "intent": intent,
-                "workflow_id": workflow_id,
-                "intent_service": self,
-            },
-        )
+        try:
+            dispatched = await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id=session_id,
+                user_id=user_id,
+                context={
+                    "intent": intent,
+                    "workflow_id": workflow_id,
+                    "intent_service": self,
+                },
+                raise_errors=True,
+            )
+        except Exception:
+            # #2151 RAIL-FALLTHROUGH (Arch 10-23): a READ entry that raised is a
+            # failed read, said as one (CXO's template, one registry). It never
+            # falls through to the floor as if the read was not asked for.
+            # dispatch_workflow already logged the error with its traceback.
+            failed = self._rail_read_failed_result(intent, _rail_entry)
+            if failed is None:
+                return _RailOutcome(on_rail=True)  # WRITE / no user-data read: unchanged
+            return _RailOutcome(on_rail=True, result=failed)
         if dispatched is None:
             return _RailOutcome(on_rail=True)
 
@@ -18502,6 +18513,30 @@ Add any additional information here.
         dispatched.preferences = preferences
         # Issue #844: Apply soft invocation to all handler paths
         return _RailOutcome(on_rail=True, result=dispatched, apply_soft_offer=True)
+
+    @staticmethod
+    def _rail_read_failed_result(intent: Intent, entry: Any) -> Optional["IntentProcessingResult"]:
+        """#2151: the failed-read reply for a READ rail entry that raised, else None."""
+        from services.intent_service.rail_read_failure import rail_read_failed_message
+        from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
+        from services.shared_types import EffectClass
+
+        if getattr(entry, "effect", None) is not EffectClass.READ:
+            return None
+        # canonical = the first-registered key for this entry (aliases follow it)
+        canonical = next((k for k, e in WORKFLOW_REGISTRY.items() if e is entry), intent.action)
+        message = rail_read_failed_message(canonical)
+        if message is None:
+            return None
+        return IntentProcessingResult(
+            success=False,
+            message=message,
+            intent_data={
+                "category": intent.category.value if intent.category else "query",
+                "action": intent.action,
+                "context": {"read_failed": "rail_exception", "canonical_action": canonical},
+            },
+        )
 
     def _is_orchestratable_sibling(self, intent: Intent) -> bool:
         """#1763: can the orchestrator actually EXECUTE this sibling?

@@ -738,9 +738,14 @@ async def dispatch_workflow(
     user_id: Optional[str] = None,
     context: Optional[Dict[str, Any]] = None,
     resume: bool = False,
+    raise_errors: bool = False,
 ) -> Optional[Any]:
     """
     Dispatch a workflow by type.
+
+    ``raise_errors`` (#2151): the chat rail passes True so a handler exception
+    reaches it as a FAILED read instead of None ("not mine", which fell through
+    to the floor as if the read never ran). Other callers keep the None default.
 
     Args:
         workflow_type: The type of workflow to start (e.g., "meeting").
@@ -796,6 +801,8 @@ async def dispatch_workflow(
             error=str(e),
             exc_info=True,
         )
+        if raise_errors:
+            raise
         return None
 
 

@@ -21,6 +21,11 @@
 #                     falls through to category routing (QUERY -> _handle_generic_query
 #                     -> the floor). A handler with no try of its own therefore turns a
 #                     failed read into a floor answer that never saw the read.
+#                     FIXED 2026-10-23 for READ entries (Lead): the chat rail passes
+#                     raise_errors=True and renders CXO's couldn't-check template from
+#                     services/intent_service/rail_read_failure.py. WRITE/DESTRUCTIVE
+#                     entries and NO_USER_DATA_READ ones still fall through. Rows citing
+#                     RAIL-FALLTHROUGH stay red until re-verified by the step-2 forcing test.
 #   ISS-STATUS        IntegrationStatusService.get_status -> get_config_status: each
 #                     per-integration credential lookup is wrapped in `except Exception:
 #                     pass`, so a keychain/DB failure reads "not_configured"; the outer
