@@ -11041,23 +11041,26 @@ class IntentService:
                 else:
                     lines.append("Nothing from " + " or ".join(checked) + " either.")
             # #2151: a source that couldn't be read is said, whatever else was found.
+            # CXO 10-24 09:47 (Web read the DOM: the calendar line ran on after "Stale:"):
+            # each source sentence is its own paragraph, last, after a blank line.
+            source_lines: list[str] = []
             if calendar_unchecked == "failed":
-                lines.append(
+                source_lines.append(
                     "I couldn't check your calendar just now, so the list above doesn't "
                     "include your meetings. Try again in a moment; if it keeps failing, tell us."
                 )
             elif calendar_unchecked == "not_connected":
                 # CXO: the same not-connected wording as the calendar handlers.
-                lines.append(
+                source_lines.append(
                     "Google Calendar isn't connected yet, so meetings aren't included. "
                     'Ask me "how do I connect Google Calendar?" and I\'ll walk you through it.'
                 )
             if stale_read_failed:
-                lines.append(
+                source_lines.append(
                     "I couldn't check your projects just now, so the list above doesn't "
                     "include stale ones. Try again in a moment; if it keeps failing, tell us."
                 )
-            message = "\n".join(lines)
+            message = "\n\n".join(["\n".join(lines), *source_lines])
             # #2076 (CXO, ADR-080 / #2033: code adds the fact, never the
             # model): when GitHub needs reconnecting the reply OPENS by saying
             # so, then the reply above byte-for-byte. This path reads no GitHub

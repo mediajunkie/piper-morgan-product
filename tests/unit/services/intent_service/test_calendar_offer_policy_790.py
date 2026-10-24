@@ -143,11 +143,14 @@ class TestAcceptedState:
 class TestOfferTextContent:
     """Smoke checks on the user-visible copy (per PM Q1 disposition)."""
 
-    def test_offer_text_includes_settings_path(self):
-        assert "/settings/integrations/calendar" in OFFER_TEXT
+    def test_offer_text_names_the_settings_place(self):
+        # CXO 10-24 09:33: the house path, never the raw URL.
+        assert "Settings → Integrations → Google Calendar" in OFFER_TEXT
+        assert "/settings/" not in OFFER_TEXT
 
-    def test_guidance_text_includes_settings_path(self):
-        assert "/settings/integrations/calendar" in GUIDANCE_TEXT
+    def test_guidance_text_names_the_settings_place(self):
+        assert "Settings → Integrations → Google Calendar" in GUIDANCE_TEXT
+        assert "/settings/" not in GUIDANCE_TEXT
 
     def test_offer_text_does_not_claim_calendar_data(self):
         # Trust violation guard from #789 — must not imply we have data.
@@ -164,3 +167,45 @@ class TestDecisionImmutability:
         d = _decide(current_state=None)
         with pytest.raises(Exception):
             d.should_offer = False  # type: ignore[misc]
+
+
+class TestNoOfferOnTheTimeReply:
+    """CXO 10-24 09:33: a time question is not a calendar ask; #790's one-time offer is
+    never spent on it (Web saw it under "What time is it?" on 716cb6dc6c)."""
+
+    @pytest.mark.asyncio
+    async def test_what_time_is_it_with_no_calendar_makes_no_offer(self):
+        from unittest.mock import AsyncMock, MagicMock, patch
+
+        from services.domain.models import Intent
+        from services.intent_service.canonical_handlers import CanonicalHandlers
+        from services.shared_types import IntentCategory
+
+        handlers = CanonicalHandlers()
+        router = MagicMock()
+        router.get_temporal_summary = AsyncMock(
+            return_value={"success": True, "calendar_connected": False}
+        )
+        offer = AsyncMock(return_value=OFFER_TEXT)
+        intent = Intent(
+            original_message="What time is it?",
+            category=IntentCategory.TEMPORAL,
+            action="query_time",
+            confidence=0.9,
+        )
+        with (
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=router,
+            ),
+            patch(
+                "services.domain.user_preference_manager.UserPreferenceManager.get_reminder_timezone",
+                AsyncMock(return_value="America/Los_Angeles"),
+            ),
+            patch.object(CanonicalHandlers, "_apply_calendar_offer", new=offer),
+        ):
+            result = await handlers._handle_temporal_query(
+                intent, "session-1", user_id="00000000-0000-0000-0000-000000000790"
+            )
+        assert "I noticed your calendar" not in result["message"]
+        offer.assert_not_awaited()

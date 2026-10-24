@@ -47,3 +47,28 @@ async def test_a_failed_calendar_read_says_it_couldnt_check(intent_service):
         "I couldn't check your calendar just now, so the list above doesn't include your "
         "meetings. Try again in a moment; if it keeps failing, tell us."
     ) in result.message
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "calendar,sentence",
+    [
+        (
+            "not_connected",
+            "Google Calendar isn't connected yet, so meetings aren't included. "
+            'Ask me "how do I connect Google Calendar?" and I\'ll walk you through it.',
+        ),
+        (
+            "failed",
+            "I couldn't check your calendar just now, so the list above doesn't include your "
+            "meetings. Try again in a moment; if it keeps failing, tell us.",
+        ),
+    ],
+)
+async def test_the_source_sentence_is_its_own_last_paragraph(intent_service, calendar, sentence):
+    """CXO 10-24 09:47: Web read the DOM on 716cb6dc6c and the calendar sentence ran on
+    inside the last block's paragraph. It stands alone, last, after a blank line."""
+    result = await _Shape()._run(intent_service, [], [], calendar=calendar)
+    paragraphs = result.message.split("\n\n")
+    assert paragraphs[-1] == sentence
+    assert sentence not in paragraphs[0]

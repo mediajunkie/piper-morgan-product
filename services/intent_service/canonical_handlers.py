@@ -371,20 +371,11 @@ class CanonicalHandlers:
                     message += "\n\n⚠️ Note: Calendar data unavailable right now."
                 calendar_context["calendar_service"] = "unavailable"
                 calendar_context["error"] = temporal_summary.get("error")
-            # Issue #790: Trust-gated calendar setup offer (supersedes #789 silent default).
-            # Greeting context: not an explicit calendar query, so user_intent_mentions_calendar=False.
-            # Helper looks up offer state + trust stage and decides whether to surface a one-time
-            # offer or stay silent based on prior state.
+            # Issue #790's one-time setup offer is NOT made here (CXO 10-24 09:33): a time
+            # question is not a calendar ask, and the first showing is the one the user
+            # remembers. The agenda ask and the attention reply carry the connect line.
             elif not temporal_summary.get("calendar_connected", True):
-                logger.info(
-                    "Calendar not connected - applying trust-gated offer policy (Issue #790)"
-                )
                 calendar_context["calendar_connected"] = False
-                offer_text = await self._apply_calendar_offer(
-                    user_id=user_id, user_intent_mentions_calendar=False
-                )
-                if offer_text:
-                    message += "\n\n" + offer_text
             # Adjust calendar detail based on spatial pattern
             elif spatial_pattern == "EMBEDDED":
                 # EMBEDDED: Minimal - just current/next meeting

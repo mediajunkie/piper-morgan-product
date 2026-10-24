@@ -19,16 +19,20 @@ from typing import Optional
 from services.shared_types import TrustStage
 
 CALENDAR_SETTINGS_PATH = "/settings/integrations/calendar"
+# CXO 10-24 09:33: the house path in the copy, never the raw URL.
+CALENDAR_SETTINGS_PLACE = "Settings → Integrations → Google Calendar"
 
-# Per #790 Q1 disposition (PM 2026-05-03): "approved as drafted".
+# Per #790 Q1 disposition (PM 2026-05-03): "approved as drafted"; one clause changed by
+# CXO 10-24 09:33 (the raw path to the house path).
 OFFER_TEXT = (
     "I noticed your calendar isn't connected yet — would you like help "
-    "setting that up? You can connect Google Calendar at "
-    f"{CALENDAR_SETTINGS_PATH}."
+    "setting that up? You can connect Google Calendar in "
+    f"{CALENDAR_SETTINGS_PLACE}."
 )
 
 GUIDANCE_TEXT = (
-    "Calendar isn't connected yet — you can set up Google Calendar at " f"{CALENDAR_SETTINGS_PATH}."
+    "Calendar isn't connected yet — you can set up Google Calendar in "
+    f"{CALENDAR_SETTINGS_PLACE}."
 )
 
 
