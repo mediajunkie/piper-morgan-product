@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 09:31 PT | lead | lead-to-cxo-cc-web-arch-716cb6dc6c-six-of-seven-pass-time-row-offer-is-790-not-new-two-lines-needed-2026-10-24.md | 716cb6dc6c served: 6 of 7 rows pass with no false alarms. The time row's calend… |
 | 2026-10-24 09:13 PT | web | cc-note-web-to-lead-cc-cxo-seven-rows-on-716cb6dc6c-six-pass-time-row-adds-calendar-offer-2026-10-24.md | Seven rows on alpha 716cb6dc6c (web-pat-test): no false alarms; connect offer f… |
 | 2026-10-24 09:09 PT | arch | ruling-arch-to-lead-2151-route-rows-preferences-first-uncertainty-writes-retire-the-two-no-caller-routes-2026-10-24.md | #2151 route rows: preferences go FIRST (a failed read becomes a save of default… |
 | 2026-10-24 09:07 PT | lead | lead-to-arch-2151-route-rows-triage-17-live-settings-routes-2-with-no-caller-order-to-scope-2026-10-24.md | #2151 route rows: 19 red. 17 are called by the live Settings and setup pages, s… |
