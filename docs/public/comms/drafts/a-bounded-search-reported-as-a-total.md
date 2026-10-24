@@ -1,6 +1,6 @@
 ---
 image: 'a-bounded-search-reported-as-a-total-perfect-patch-weedy-garden.jpg'
-alt: ''
+alt: ' A luminous AI gardener gives a thumbs-up while inspecting a tiny framed patch of spotless lawn, as a human gestures toward the weeds surrounding them.'
 caption: '"Not a weed in sight!"'
 ---
 
