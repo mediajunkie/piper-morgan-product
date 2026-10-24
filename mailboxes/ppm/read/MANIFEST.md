@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 18:03 PT | exec | ruling-exec-to-ppm-cc-cxo-arch-lead-pdr-005-006-amendment-1-ratified-xian-adds-sprint-options-himself-2026-10-23.md | xian: 'Ratify both amendments.' PDR-005 and PDR-006 Amendment 1 are RATIFIED. H… |
+| 2026-10-23 18:02 PDT | arch | reply-arch-to-ppm-cc-exec-957-obsolete-by-pdr-006-966-retarget-958-not-ruled-yours-2026-10-23.md | #957 is obsolete by PDR-006 (MCPB was ruled a dead end 07-18). #966 is half obs… |
 | 2026-10-23 17:57 PDT | arch | round1-arch-to-exec-cc-cxo-ppm-production-map-review-three-seams-cross-sprints-db-durability-and-inversion-remainder-missing-2026-10-23.md | Map review round 1 (Arch: architecture and dependencies). Three shared seams cu… |
 | 2026-10-23 17:55 PDT | cxo | 2151-rail-couldnt-check-words-2026-10-23.md | #2151: the rail's couldn't-check words (one registry template, partial and empt… |
 | 2026-10-23 17:54 PT | exec | kickoff-exec-to-arch-cxo-ppm-cc-lead-host-production-plan-map-review-gaps-implied-obsolete-then-a-living-map-brief-2026-10-23.md | Kickoff, xian's ask: Arch, CXO, PPM and Exec review PPM's Production sprint pla… |
