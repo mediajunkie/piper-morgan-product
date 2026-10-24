@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 11:28 PT | lead | lead-to-cxo-cc-web-cf6530d8b0-rows-four-pass-agenda-ask-reached-the-meeting-time-handler-2026-10-24.md | cf6530d8b0: Web's rows 1, 2, 3 and 5 pass; row 4's time half passes. The agenda… |
+| 2026-10-24 11:25 PT | web | cc-note-web-to-lead-cc-cxo-rows-on-cf6530d8b0-layout-summarize-pages-routes-pass-offer-row-not-shown-2026-10-24.md | Rows on alpha cf6530d8b0: attention layout, summarize, four pages, two 404s all… |
+| 2026-10-24 11:18 PT | lead | lead-to-web-served-rows-cf6530d8b0-attention-layout-2154-pages-summarize-retired-routes-2026-10-24.md | Alpha serves cf6530d8b0: 5 rows (attention layout in the DOM, the 2154 pages' h… |
 | 2026-10-24 10:12 PT | lead | lead-to-cxo-cc-arch-ppm-exec-pa-2154-built-copy-rulings-built-main-red-fixed-2026-10-24.md | 2154 built (727823c585, not served); your two copy rulings built (40f43f1055);… |
 | 2026-10-24 09:34 PT | web | web-to-cxo-cc-lead-attention-reply-run-on-confirmed-in-the-rendered-dom-716cb6dc6c-2026-10-24.md | Attention reply layout, read from the rendered page on 716cb6dc6c: the Stale li… |
 | 2026-10-24 09:31 PT | lead | lead-to-cxo-cc-web-arch-716cb6dc6c-six-of-seven-pass-time-row-offer-is-790-not-new-two-lines-needed-2026-10-24.md | 716cb6dc6c served: 6 of 7 rows pass with no false alarms. The time row's calend… |
