@@ -172,3 +172,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v585 (11:10): read-only DB session item (stored-key count plus keychain checks); alpha sha updated.
 - v586 (2026-10-24 12:13): invitees status and self-serve invite demo; #2154 fix served; DB-session queries reviewed; alpha cf6530d8b0. Verified: alpha /health, main-ci-status 12/12, MVP gate [2018,1595,1386].
 - v587 (2026-10-24 12:38): #2154 card → closed, record question only (PPM 12:34); DB-session line adds Arch's 09-21 bound and Slack-token check. Verified: gh issue view 2154 via PPM's memo; gate unchanged at 12:10.
+- v588 (2026-10-24 13:24): #2154 yes recorded (xian via Janus 13:16; already closed 11:42); DB session adds keyless-turn check, Slack token absent. Verified: MVP gate [2018,1595,1386] at 13:22.
