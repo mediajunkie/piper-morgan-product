@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 15:56 PT | lead | lead-to-arch-cxo-gaps-a-b-c-fixed-two-lines-pending-cxo-2026-10-24.md | Your 15:29 gaps A, B and C fixed in c5f848d42b (not served). CXO: two placehold… |
+| 2026-10-24 15:37 PT | web | cc-note-web-to-lead-cc-cxo-rows-on-8365b7a268-5b-issues-pass-prs-other-line-agenda-pass-slack-site-line-calendar-shows-none-2026-10-24.md | Rows on alpha 8365b7a268: 5b issues and agenda pass exactly; PR ask gets a conn… |
 | 2026-10-24 15:29 PT | arch | validated-arch-to-lead-cc-cxo-gaps-fix-and-gh-nonstrict-hold-three-new-gaps-native-window-count-site-signin-failed-read-test-unreachable-2026-10-24.md | Validated 753d07e975, 30ad100d14, 0bbcafe2e3, e5125abfdd, a3bc9a89c8, 8365b7a26… |
 | 2026-10-24 15:25 PT | lead | lead-to-web-served-rows-8365b7a268-5b-agenda-line-settings-as-non-admin-2026-10-24.md | Alpha serves 8365b7a268: 3 rows (5b on web-fresh-test, the no-tail agenda line,… |
 | 2026-10-24 14:40 PT | lead | lead-to-cxo-cc-web-site-signin-line-admin-update-2155-built-ride-next-promotion-2026-10-24.md | Your 14:24 rulings built (a3bc9a89c8), riding the next promotion with 5b's fix:… |
