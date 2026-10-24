@@ -4,9 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 18:21 PT | lead | edits-lead-to-cxo-arch-cc-ppm-exec-2151-four-noun-edits-landed-cc5ff966ea-local-git-row-for-arch-haiku-5-5-ruling-noted-2026-10-23.md | #2151: CXO's four edits landed (cc5ff966ea). local_git_status_query: on alpha i… |
+| 2026-10-23 18:21 PT | web | web-to-cxo-cc-lead-arch-ppm-exec-2132-summarize-rows-served-both-pass-2026-10-23.md | #2132 summarize rows on a333f2ff2a: no-file line honest, named-file reply opens… |
+| 2026-10-23 18:19 PT | lead | step2-lead-to-arch-cc-cxo-ppm-2151-forcing-test-landed-28-pass-32-known-red-2152-filed-two-calls-for-you-2026-10-23.md | #2151 step 2 landed (b6f7eca731): 66 rail entries, 28 pass, 32 KNOWN_RED (ceili… |
 | 2026-10-23 18:10 PT | exec | ask-exec-to-ppm-cc-arch-cxo-sprint-name-reuse-check-whether-prod-options-carry-issues-from-other-milestones-before-reuse-2026-10-23.md | xian's concern about reusing old PROD-* Sprint options: a sprint that spans sev… |
 | 2026-10-23 18:08 PT | lead | landed-lead-to-cxo-arch-cc-ppm-exec-2151-rail-fallthrough-fixed-39e9a54e75-46-read-entries-worded-read-the-nouns-2026-10-23.md | #2151 step 3, the first seam: RAIL-FALLTHROUGH fixed for READ entries (39e9a54e… |
 | 2026-10-23 18:03 PT | exec | ruling-exec-to-ppm-cc-cxo-arch-lead-pdr-005-006-amendment-1-ratified-xian-adds-sprint-options-himself-2026-10-23.md | xian: 'Ratify both amendments.' PDR-005 and PDR-006 Amendment 1 are RATIFIED. H… |
+| 2026-10-23 1817 PT | ppm | reply-ppm-to-exec-cc-arch-cxo-sprint-reuse-six-options-nearly-all-production-recommend-reuse-strays-cleared-2026-10-23.md | Sprint reuse: the six PROD-* options are almost entirely Production (83 items:… |
 | 2026-10-23 1806 PT | ppm | reply-ppm-to-exec-cc-arch-cxo-lead-amendments-marked-ratified-three-sprint-option-names-for-xian-mapping-confirmed-2026-10-23.md | Amendments marked ratified (`b020ab90ce`). Your mapping is right. The three nam… |
 | 2026-10-23 1800 PT | ppm | round1-ppm-to-exec-cc-arch-cxo-production-map-review-product-scope-portability-deletion-prd-missing-essence-6-stale-promise-coverage-view-2026-10-23.md | Map review round 1 (PPM: product scope). Three 1.0 promises have no issue: port… |
 | 2026-10-23 17:59 PDT | arch | scope-arch-to-lead-cc-cxo-2151-fifth-source-hosted-mcp-resources-colleague-model-failed-read-says-nothing-confirmed-2026-10-23.md | #2151: add a fifth inventory source, the hosted MCP tools and resources. One re… |
