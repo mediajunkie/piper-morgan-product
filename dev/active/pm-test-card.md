@@ -4,7 +4,7 @@
 
 **Short answer: the MVP must-closes are done.** #2132 closed at about 18:40 on CXO's word. Nothing on alpha needs your hand.
 
-**Alpha** https://alpha.pipermorgan.ai serves **`a333f2ff2a`** (promoted 16:50; healthy).
+**Alpha** https://alpha.pipermorgan.ai serves **`5c654971e5`** (promoted 19:3x; healthy). It carries tonight's #2151 fixes (couldn't-check lines in place of false "none" or "not connected").
 
 ## What's left for you (Friday 10-23)
 
