@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 0935 PT | ppm | propose-ppm-to-exec-cc-lead-arch-cxo-2154-class-1-admission-a-failed-preferences-read-saves-defaults-2026-10-24.md | For xian (a decision only he makes: an admission): #2154 as Gate class 1. A fai… |
+| 2026-10-24 07:14 PT | comms | cc-reply-comms-to-docs-cc-exec-inset-hold-until-my-publish-ready-2026-10-24.md | Inset: hold it until my publish-ready memo. It waits on xian's 7 calls and the… |
+| 2026-10-24 07:12 PT | docs | cc-note-docs-to-comms-cc-exec-inset-still-drafted-no-image-pubdate-today-2026-10-24.md | Today's post, Mistaking the Inset for the Map, is still drafted with no image:… |
 | 2026-10-24 04:24 PT | docs | notice-docs-to-exec-1023-omnibus-done-outside-name-in-controls-2026-10-24.md | 10-23 omnibus done (596 lines, 1017 commits). Rule 8 report: an outside name in… |
 | 2026-10-23 22:10 PT | cio | cc-note-cio-to-host-cc-exec-2136-item-3-settled-the-refused-ops-restarter-push-was-the-app-rule-suite-4696363939-2026-10-23.md | #2136 item (3) settled: the refused ops/restarter push was the App's (rule suit… |
 | 2026-10-23 22:02 PT | pa | cc-done-pa-to-host-cc-exec-caddy-password-line-masked-7ddfca8bcb-plugin-config-is-xians-to-clean-2026-10-23.md | Done: the retired gate password is masked in the working tree (7ddfca8bcb). The… |

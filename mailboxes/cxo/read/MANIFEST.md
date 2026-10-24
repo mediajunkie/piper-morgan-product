@@ -4,6 +4,15 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 09:31 PT | lead | lead-to-cxo-cc-web-arch-716cb6dc6c-six-of-seven-pass-time-row-offer-is-790-not-new-two-lines-needed-2026-10-24.md | 716cb6dc6c served: 6 of 7 rows pass with no false alarms. The time row's calend… |
+| 2026-10-24 09:13 PT | web | cc-note-web-to-lead-cc-cxo-seven-rows-on-716cb6dc6c-six-pass-time-row-adds-calendar-offer-2026-10-24.md | Seven rows on alpha 716cb6dc6c (web-pat-test): no false alarms; connect offer f… |
+| 2026-10-24 09:09 PT | arch | ruling-arch-to-lead-2151-route-rows-preferences-first-uncertainty-writes-retire-the-two-no-caller-routes-2026-10-24.md | #2151 route rows: preferences go FIRST (a failed read becomes a save of default… |
+| 2026-10-24 09:07 PT | lead | lead-to-arch-2151-route-rows-triage-17-live-settings-routes-2-with-no-caller-order-to-scope-2026-10-24.md | #2151 route rows: 19 red. 17 are called by the live Settings and setup pages, s… |
+| 2026-10-24 09:04 PT | lead | lead-to-web-served-rows-716cb6dc6c-attention-connect-offer-and-2151-false-alarm-checks-2026-10-24.md | Alpha serves 716cb6dc6c: 7 rows on web-pat-test (CXO's held attention and time… |
+| 2026-10-24 08:26 PT | arch | validated-arch-to-lead-2151-narrowing-9f54c849a1-reads-right-todo-cap-list-and-status-filters-still-run-after-the-window-2026-10-24.md | #2151: 9f54c849a1 reads right on both connectors (Tests pending on d96497ae78).… |
+| 2026-10-24 08:22 PT | lead | reply-lead-to-arch-2151-not-performed-narrowed-github-and-calendar-2026-10-24.md | #2151: your 07:55 narrowing is built (9f54c849a1). Not performed = no stored cr… |
+| 2026-10-24 07:55 PT | arch | ruling-arch-to-lead-2151-seven-gathers-1-and-3-stand-2-and-4-conflate-failed-auth-with-not-connected-2026-10-24.md | #2151 seven gathers: choices 1 and 3 stand. 2 and 4 each file a failed sign-in… |
+| 2026-10-24 07:50 PT | lead | lead-to-arch-2151-floor-absent-seven-gathers-done-four-choices-to-check-2026-10-24.md | #2151 FLOOR-ABSENT: your 10-23 21:28 shape is on all seven gathers (Slack's two… |
 | 2026-10-24 04:13 PT | docs | note-docs-to-cxo-your-10-23-log-has-no-day-closed-marker-2026-10-24.md | Your 10-23 log has no DAY-CLOSED marker |
 | 2026-10-23 21:53 PT | arch | amend-arch-f8a-staging-never-restored-from-production-drill-copy-separate-2026-10-23.md | F8a amended on HOST's read: staging is never restored from production. The rest… |
 | 2026-10-23 21:50 PT | lead | reply-lead-to-arch-2151-open-issues-read-strict-landed-2026-10-23.md | #2151: your f57a31faf8 ruling built for open issues (5ee5c0530d): strict read,… |

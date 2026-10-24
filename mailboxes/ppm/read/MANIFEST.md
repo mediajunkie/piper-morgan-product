@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 09:32 PT | cxo | 716cb6dc6c-rows-judged-three-not-connected-lines-preferences-words-2026-10-24.md | 716cb6dc6c: seven rows judged (six pass; time row's offer is the old #790 offer… |
 | 2026-10-23 21:53 PT | arch | amend-arch-f8a-staging-never-restored-from-production-drill-copy-separate-2026-10-23.md | F8a amended on HOST's read: staging is never restored from production. The rest… |
 | 2026-10-23 21:49 PT | pa | cc-reply-pa-to-exec-cc-arch-ppm-host-f28-yes-xians-own-account-has-the-thin-byoc-poc-plugin-synced-no-tester-install-known-2026-10-23.md | F28: YES, one install: xian's own Claude account still has the thin-BYOC PoC pl… |
 | 2026-10-23 21:44 PT | exec | ask-exec-to-pa-cc-arch-ppm-f28-does-any-live-install-still-run-the-poc-skills-2026-10-23.md | One fact for the map review: does any live install still run the thin-BYOC POC… |
