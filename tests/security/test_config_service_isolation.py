@@ -12,6 +12,21 @@ from unittest.mock import Mock, patch
 import pytest
 
 
+def _mirror_read_secret(kc):
+    """#2151: SlackConfigService reads user tokens with provenance (read_secret); mirror
+    the mocked get_api_key: present when set, verified absent otherwise."""
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+    def _read(provider, username=None):
+        value = kc.get_api_key(provider, username)
+        if value:
+            return SecretRead(SecretProvenance.PRESENT, value=value)
+        return SecretRead(SecretProvenance.VERIFIED_ABSENT)
+
+    kc.read_secret = _read
+    return kc
+
+
 class TestSlackConfigServiceIsolation:
     """Verify Slack config service returns user-scoped credentials."""
 
@@ -63,6 +78,8 @@ class TestSlackConfigServiceIsolation:
                 return None
 
             mock_keychain.get_api_key.side_effect = get_api_key_side_effect
+
+            _mirror_read_secret(mock_keychain)
 
             config_service = SlackConfigService()
 
@@ -209,6 +226,8 @@ class TestCrossUserTokenIsolation:
 
             mock_keychain.get_api_key.side_effect = get_api_key_side_effect
 
+            _mirror_read_secret(mock_keychain)
+
             config_service = SlackConfigService()
 
             # User A queries - should NOT get User B's token
@@ -249,6 +268,8 @@ class TestCrossUserTokenIsolation:
 
             mock_keychain.get_api_key.side_effect = get_api_key_side_effect
 
+            _mirror_read_secret(mock_keychain)
+
             config_service = GitHubConfigService()
 
             # User A queries - should NOT get User B's token
@@ -271,6 +292,7 @@ class TestCrossUserTokenIsolation:
             mock_keychain = Mock()
             mock_keychain_class.return_value = mock_keychain
             mock_keychain.get_api_key.return_value = None
+            _mirror_read_secret(mock_keychain)
 
             token = GitHubConfigService().get_authentication_token(user_id="system")
             assert token == "system-floor-sentinel"

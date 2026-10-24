@@ -218,8 +218,13 @@ class TestIntegrationErrorHandling:
 
             response = await check_integration_connection("notion", current_user=_fake_claims())
 
+            # #2151 (Arch 10-24 12:32): a Test that raised is a check that couldn't run;
+            # CHECK_FAILED_MESSAGE, nothing recorded, no exception text on the page.
+            from web.api.routes.integrations import CHECK_FAILED_MESSAGE
+
             assert response.success is False
-            assert "Network timeout" in response.message or "Network timeout" in str(response.error)
+            assert response.message == CHECK_FAILED_MESSAGE
+            assert "Network timeout" not in response.message + str(response.error or "")
 
 
 class TestIntegrationRegistry:
