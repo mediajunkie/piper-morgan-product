@@ -154,3 +154,14 @@ async def test_other_dispatch_callers_still_get_none(monkeypatch):
     assert await dispatch_workflow("list_todos_query", session_id="s", user_id="u") is None
     with pytest.raises(RuntimeError):
         await dispatch_workflow("list_todos_query", session_id="s", user_id="u", raise_errors=True)
+
+
+@pytest.mark.asyncio
+async def test_a_failed_clear_todos_read_says_only_the_couldnt_check_sentence(service, monkeypatch):
+    """CXO 10-23 18:12: clear_todos' failed read must never imply anything was cleared or kept."""
+    outcome = await _rail_with_raising_handler(service, monkeypatch, "clear_todos")
+    assert outcome.result is not None
+    assert outcome.result.message == (
+        "I couldn't check your tasks and reminders just now, so I can't say which ones would be "
+        "cleared. Try again in a moment; if it keeps failing, tell us."
+    )
