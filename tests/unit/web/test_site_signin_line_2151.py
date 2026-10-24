@@ -72,3 +72,42 @@ def test_the_meeting_time_not_connected_line_has_no_analysis_tail():
         "Google Calendar isn't connected yet, so I can't see your meetings. \"\n"
         "                        'Ask me \"how do I connect Google Calendar?\" and I\\'ll walk you through it.'"
     ) in src
+
+
+@needs_node
+@pytest.mark.parametrize(
+    "page,line",
+    [
+        (
+            "settings_slack.html",
+            "Slack sign-in isn't set up for this site yet, so you can't connect Slack. Tell us and we'll fix it.",
+        ),
+        (
+            "settings_calendar.html",
+            "Google sign-in isn't set up for this site yet, so you can't connect Google Calendar. Tell us and we'll fix it.",
+        ),
+    ],
+)
+@pytest.mark.parametrize("is_admin", [True, False])
+def test_not_configured_is_a_site_line_for_non_admins_and_the_form_for_admins(page, line, is_admin):
+    """CXO 10-24 14:43: a non-admin gets the site line, no form, Connect disabled; an
+    admin keeps the form and today's line. Not servable on alpha (both apps configured)."""
+    body = (REPO / "templates" / page).read_text()
+    script = (
+        "const els = {};\n"
+        "const document = { getElementById(id) { if (!els[id]) els[id] = { id, className: '',"
+        " textContent: '', style: {}, disabled: false }; return els[id]; } };\n"
+        f"const window = {{ currentUser: {{ is_admin: {json.dumps(is_admin)} }} }};\n"
+        + _fn(body, "updateAppConfigUI")
+        + "\nupdateAppConfigUI(false);\n"
+        "process.stdout.write(JSON.stringify({ text: els['app-config-status-text'].textContent,"
+        " form: els['app-config-form'].style.display, connect: document.getElementById('connect-btn').disabled }));\n"
+    )
+    res = subprocess.run(["node", "-e", script], capture_output=True, text=True, timeout=30)
+    assert res.returncode == 0, res.stderr
+    out = json.loads(res.stdout)
+    if is_admin:
+        assert out["form"] == "block" and out["connect"] is False
+        assert out["text"].startswith("App credentials not configured")
+    else:
+        assert out == {"text": line, "form": "none", "connect": True}

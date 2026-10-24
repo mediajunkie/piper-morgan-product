@@ -1281,6 +1281,18 @@
             window.currentUser && window.currentUser.is_admin ? 'block' : 'none';
           // Enable OAuth card
           if (oauthCard) oauthCard.style.opacity = '1';
+        } else if (!(window.currentUser && window.currentUser.is_admin)) {
+          // CXO 10-24 14:43: a non-admin can't set the site's sign-in up; no form to be
+          // refused on, and Connect is disabled rather than left to fail.
+          statusEl.className = 'app-config-status not-configured';
+          statusIconEl.textContent = '❌';
+          statusTextEl.textContent =
+            "Slack sign-in isn't set up for this site yet, so you can't connect Slack. Tell us and we'll fix it.";
+          formEl.style.display = 'none';
+          configuredEl.style.display = 'none';
+          if (oauthCard) oauthCard.style.opacity = '0.5';
+          const connectBtn = document.getElementById('connect-btn');
+          if (connectBtn) connectBtn.disabled = true;
         } else {
           // Not configured - show red status and form
           statusEl.className = 'app-config-status not-configured';
