@@ -23,18 +23,18 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | # | Sprint (proposed) | Why this place in the order | Open |
 |---|---|---|---|
 | 1 | **PUB: Public Beta gate** (unchanged) | xian's ratified gate (ESSENCE v1.0, 08-30). It runs through the private beta. | 21 |
-| 2 | **H: Honesty sweep** (no false "none", "0", "not connected", "I can't see it") | xian approved the systematic sweep at 16:57: Arch scopes it, and Lead builds it after #2132. Design partners will hit these first, and each one is a Class 3 shape. Arch scoped it at 17:04 as **#2151** (placed Production by PPM), not #1423, because this week's served instances had no broad `except` for #1423's scanner to find. The list below is input to #2151's inventory, not a substitute for it. | 19 |
-| 3 | **D: Data boundaries and terms** (ownership, isolation, keys, Terms, legal) | xian, 10-16: the Terms and legal review come before any outside user beyond the design partners. The owner-id and isolation work is the same promise in code. | 21 |
-| 4 | **C: Connectors complete** (GitHub, Calendar, Notion on the #1232 contract, published OAuth apps) | v18.7(kk): the core connectors must finish to close Production. #2087 (Google verification) is submitted. | 25 |
-| 5 | **V: Conversation reliability** (multi-intent, armed offers, routing, catalog cost) | Correctness of the chat path beyond the honesty class. #2145 and #2149 (catalog cost and size) sit here. | 29 |
+| 2 | **H: Honesty sweep** (no false "none", "0", "not connected", "I can't see it") | xian approved the systematic sweep at 16:57: Arch scopes it, and Lead builds it after #2132. Design partners will hit these first, and each one is a Class 3 shape. Arch scoped it at 17:04 as **#2151** (placed Production by PPM), not #1423, because this week's served instances had no broad `except` for #1423's scanner to find. The list below is input to #2151's inventory, not a substitute for it. | 20 |
+| 3 | **D: Data boundaries and terms** (ownership, isolation, keys, Terms, legal) | xian, 10-16: the Terms and legal review come before any outside user beyond the design partners. The owner-id and isolation work is the same promise in code. | 22 |
+| 4 | **C: Connectors complete** (GitHub, Calendar, Notion on the #1232 contract, published OAuth apps) | v18.7(kk): the core connectors must finish to close Production. #2087 (Google verification) is submitted. | 24 |
+| 5 | **V: Conversation reliability** (multi-intent, armed offers, routing, catalog cost) | Correctness of the chat path beyond the honesty class. #2145 and #2149 (catalog cost and size) sit here. | 28 |
 | 6 | **E: Experience polish** (layout, toasts, timezone, dialog copy, nav) | CXO-led. These are visible and irritating, but not false. | 34 |
 | 7 | **T: Trust and learning** | #2135 (trust never progresses) makes the PDR-002 gradient inert today. The rest follows it. | 14 |
-| 8 | **Doc: Documents** | Follows #2132's family table. | 9 |
-| 9 | **Dist: Distribution** (marketplace, MCPB, plugin, onboarding skills) | Most of it waits on PUB's MCP path. | 14 |
-| — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 39 |
-| — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 5 |
+| 8 | **Doc: Documents** | Follows #2132's family table. | 8 |
+| 9 | **Dist: Distribution** (marketplace, MCPB, plugin, onboarding skills) | Most of it waits on PUB's MCP path. | 11 |
+| — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 40 |
+| — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 230.
+Total: 222 open (refreshed 19:11 10-23 from the board; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -45,9 +45,10 @@ Total: 230.
 
 Sizes are counts, not effort. Nothing here is estimated. We'll discover more along the way, as xian says, so this is a starting order, not a plan of record.
 
+
 ## Every open issue, by proposed sprint
 
-"was" is the board's current Sprint value ("—" for none).
+"was" is the board's Sprint value at the 19:11 refresh ("—" for none).
 
 ### PUB: Public Beta gate (21)
 
@@ -60,7 +61,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1538 | FTUX-ELICITATION: progressive elicitation — one thing at a time, reflect between steps, goal-driven not har… | PUB |
 | #1539 | FTUX-PURPOSE: 'what uncertainty is it reducing for me' — the only lens item with no twin, and the closest t… | PUB |
 | #1540 | FTUX-NAV: primary navigation hidden in the avatar/settings pill — findability, not taste (CXO re-ruling) | PUB |
-| #1551 | EPIC: Multi-tenancy — Production scope (split from #1419 per PM ruling 2026-08-09) | PUB |
+| #1551 | EPIC: Per-user isolation — Production scope (split from #1419 per PM ruling 2026-08-09) | PUB |
 | #1553 | Status-truth F6-F10: remaining surfaces after IntegrationStatusService landed (#1547 slice 2) | PUB |
 | #1591 | Standup two-modes: Production/PUB half — first-run interactive fallback + preference capture on #1510's dec… | PUB |
 | #1612 | Multi-LLM-provider support before public beta — OpenAI/Gemini genuinely reachable, not just code-complete | PUB |
@@ -75,7 +76,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1706 | MCP-path increment 7: calendar tool exposure on the plugin surface (depends on #1441's connector port) | PUB |
 | #1707 | MCP-path increment 8: trust-gated proactivity — PLACEHOLDER, do not build until the plugin-surface trust-gr… | PUB |
 
-### H: Honesty sweep (19)
+### H: Honesty sweep (20)
 
 | # | Title | was |
 |---|---|---|
@@ -98,18 +99,20 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2137 | Stale-PR and list-PR answers count zero PRs on the native-PAT fallback: the filter reads a pull_request key… | — |
 | #2147 | "show all events" answers with today's meeting time only and omits the week's other events, without saying … | — |
 | #2150 | Calendar: a later revoke of calendar access in the user's Google account leaves Settings saying connected u… | — |
+| #2151 | Sweep: every reply that reads user data says 'none / 0 / not connected / can't see it' only on a verified r… | — |
 
-### D: Data boundaries and terms (21)
+### D: Data boundaries and terms (22)
 
 | # | Title | was |
 |---|---|---|
+| #482 | SEC-KMS-INTEGRATION: Migrate from environment variable to AWS KMS | PROD-INFRA |
 | #1203 | KeyAuditService query/report surfaces unwired — deferred to M5 reconsideration with the hosted-credential w… | PROD-INFRA |
 | #1257 | [REFACTOR] P7 cutover: migrate user_id→owner_id reads + drop user_id (deferred from #1252) | PROD-INFRA |
 | #1345 | Route all LLM-billing paths through one fail-closed wrapper (m-36 structural end-state for #1343's ratchet … | PROD-INFRA |
 | #1499 | Route-surface audit (PM-directed, 8/7): 7 unmounted routers, 4 duplicate-purpose OAuth starts, UI calls to … | — |
 | #1531 | tests/security/test_cross_user_isolation.py has NO teardown — hardcoded fixture rows persist in shared dev … | — |
 | #1561 | ProjectQueryService by-id reads remain owner-unscoped + ProjectContext.resolve_project does global cross-te… | — |
-| #1817 | [TASK] Invalidation trigger: consent-from-key-presence stops being safe the moment a de-authorize surface e… | Beta Blockers |
+| #1817 | [TASK] Invalidation trigger: consent-from-key-presence stops being safe the moment a de-authorize surface e… | PROD-INFRA |
 | #1911 | MCP OAuth consent page: brand it, and show the user's name/email instead of a raw UUID | — |
 | #1918 | MCP: 'Connected apps' in Settings, so users can see and revoke ChatGPT/Claude access from Piper | — |
 | #2009 | owner_id is NULLABLE on 8 user-data tables that have no other owner column: count the NULLs, then NOT NULL | — |
@@ -125,11 +128,10 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2123 | Activity reads (status report, analyze commits) use the deployment's GitHub token instead of the account's … | — |
 | #2136 | Seat identity: GitHub App for agents so seats stop acting as the admin account (xian approved the route 10-… | — |
 
-### C: Connectors complete (25)
+### C: Connectors complete (24)
 
 | # | Title | was |
 |---|---|---|
-| #366 | SLACK-MEMORY: Persist spatial patterns over time | PROD-RECONNECT |
 | #1051 | POST-MVP: GitHub query state/prerelease filters (milestones state, releases prerelease) | PROD-RECONNECT |
 | #1323 | RECONNECT tech-debt: extract BindingBackedConnector mixin (dedupe connector-protocol logic across adapters) | PROD-RECONNECT |
 | #1325 | RECONNECT D3-ideal end-state: adopt GitHub-App installation-token auth for self-hosted github-mcp-server (w… | PROD-RECONNECT |
@@ -155,21 +157,20 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2106 | PAT-leg GitHub create fails with McpError unknown tool "issue_write", and the reply says it "may or may not… | — |
 | #2130 | Calendar asks: no weekday lookup; conflict check answers a multi-person question the user didn't ask | — |
 
-### V: Conversation reliability (29)
+### V: Conversation reliability (28)
 
 | # | Title | was |
 |---|---|---|
 | #1468 | Canonical judge calibration: STRICT bar has no ratified threshold, judge scores vary run-to-run (same respo… | — |
 | #1473 | Multi-intent turns of two QUERY-category halves fail both and return the generic fallback (orchestrator has… | — |
-| #1474 | CanonicalHandlers._get_dynamic_capabilities: zero production callers + carries the rail-description defect … | — |
 | #1555 | Surface-1 self-inconsistency: pre_classify vs _get_github_action diverge on milestone routing — one decisio… | — |
 | #1563 | Floor-prose offers dangle: 'Want me to pull up your reminders?' → 'yes' executes nothing (offer-binding cov… | — |
 | #1586 | Collapse the #902 in-handler close-confirm into the #1190 rail gate (redundant two-step UX on the rail path) | — |
 | #1619 | Registry: four mutations filed under the read-only QUERY category (create/close/reopen/comment issue) — saf… | — |
-| #1632 | Capability-legibility catalog should state outwardness per action ('visible to others') now that the axis e… | Beta Blockers |
+| #1632 | Capability-legibility catalog should state outwardness per action ('visible to others') now that the axis e… | — |
 | #1841 | [TESTS] pm039 live-LLM param 'show me all project plans' consistently classified manage_portfolio by gpt-4o… | — |
 | #1854 | [TESTS/LLM] Live canonical accuracy under bar — identity 92% (<95%), temporal + overall also red; newly VIS… | — |
-| #1891 | [DESIGN] The floor's capability_manifest_block (137 raw action names, every turn) is what 'what can you do?… | Beta Blockers |
+| #1891 | [DESIGN] The floor's capability_manifest_block (137 raw action names, every turn) is what 'what can you do?… | — |
 | #1931 | Completed todos can't be reopened from chat (reopen_todo exists, no chat route) | — |
 | #1932 | Chat cannot edit/rename/update a project (no update capability; floor is the honest answer until built) | — |
 | #1935 | Chat can't delete a project: wire delete through the #1190 destructive tier (follow-up to #1930 step 2) | — |
@@ -217,9 +218,9 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1550 | All-day calendar events render as 'at 12am' — technically the stored time, maladroit to humans | — |
 | #1564 | iPad Safari layout float: large empty content block, composer detached mid-page, greeting scrolls under too… | — |
 | #1609 | No user-reachable surface exists for editing personal context (role/priorities) — the overlay is file-only … | — |
-| #1625 | Reminder surfacing is relentless — PM design ruling: pin due reminders to the top of Radar, mention in conv… | Beta Blockers |
-| #1828 | TZ-PROJECT: per-user timezone / time-handling fix — parent for #1493's 6 F-slice children | Beta Blockers |
-| #1907 | [RENDER] iPad (Safari) layout on alpha: portrait new-chat shows an empty full-height gray panel with the co… | Beta Blockers |
+| #1625 | Reminder surfacing is relentless — PM design ruling: pin due reminders to the top of Radar, mention in conv… | PROD-DESIGN |
+| #1828 | TZ-PROJECT: per-user timezone / time-handling fix — parent for #1493's 6 F-slice children | PROD-DESIGN |
+| #1907 | [RENDER] iPad (Safari) layout on alpha: portrait new-chat shows an empty full-height gray panel with the co… | PROD-DESIGN |
 | #1915 | [TIMEZONE] 'set it back to pacific time' is refused — accept common zone names/abbreviations (Pacific, PT, … | — |
 | #1945 | [UX] Project Config page lists the same repo under 'Linked Repositories' and 'Integrations'; no surface sho… | — |
 | #1946 | [RADAR] Radar did not refresh after a reminder was completed in chat — the cleared reminder stayed pinned a… | — |
@@ -243,11 +244,11 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1217 | ETHICS-FLOOR-PERSONHOOD-ASSUMPTION: floor should not assume sapient/human personhood for role-named parties… | PROD-TRUST |
 | #1326 | M4: Introduce-person flow — People entity (Option A, user_confirmed provenance) | PROD-TRUST |
 | #1377 | Insight provenance: add is_seed/source field to InsightDB + surface it (full fix deferred from #1216) | PROD-TRUST |
-| #1735 | The personalization 'learning loop' is disconnected at every joint: auto-apply is a silent no-op, the learn… | Beta Blockers |
+| #1735 | The personalization 'learning loop' is disconnected at every joint: auto-apply is a silent no-op, the learn… | PROD-TRUST |
 | #2056 | Preference hook never fires on a cache hit or a context-free miss (reads user_id from an empty context); co… | — |
 | #2135 | Trust stage never progresses: no turn path records an interaction, so every account stays at Stage 1 and st… | — |
 
-### Doc: Documents (9)
+### Doc: Documents (8)
 
 | # | Title | was |
 |---|---|---|
@@ -258,21 +259,17 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1202 | FILES-FOLLOW-ON: G65 artifact persistence (export/share/versions) + tagging full release — split from #313 | PROD-DOCS |
 | #1246 | ARTIFACT-EXPORT-FORMATS: pdf/docx export + save-time format picker (#1184 follow-on) | PROD-DOCS |
 | #1270 | [D1] Refactor /documents · /files around the Document source-type object model (uploaded/generated/federated) | PROD-DOCS |
-| #2138 | Analyze an uploaded file: chat declines (and names Notion) one turn after it summarized the same file | — |
 | #2139 | "Create a doc from this conversation" and "Synthesize these sources" on an OpenAI-only account reply with t… | — |
 
-### Dist: Distribution (14)
+### Dist: Distribution (11)
 
 | # | Title | was |
 |---|---|---|
 | #830 | DIST-MCP-DOCS: Integration documentation for MCP clients | PROD-DIST |
 | #831 | DIST-MCP-REGISTRY: Publish to package registries | PROD-DIST |
 | #832 | DIST-MCP-TEST: Integration testing with MCP clients | PROD-DIST |
-| #865 | REFACTOR: Extract setup wizard into component-based steps | PROD-DIST |
-| #957 | DIST-MCPB-BUNDLE: MCPB packaging for Claude Desktop one-click install | PROD-DIST |
-| #958 | DIST-PROJECT-TEMPLATE: Claude Project template for Piper persona | PROD-DIST |
 | #959 | DIST-MCP-APPS: Artifact canvas via MCP Apps (in-chat UI) | PROD-DIST |
-| #966 | DIST-VISUAL-IDENTITY: Visual identity for MCPB + MCP Apps distribution | PROD-DIST |
+| #966 | DIST-VISUAL-IDENTITY: Visual identity for the plugin and MCP Apps surfaces (the MCPB half dropped, supersed… | PROD-DIST |
 | #1242 | MEET-PIPER-GITHUB — Add GitHub connector setup step to meet-piper onboarding | PROD-ONBOARD |
 | #1244 | CONSULT-ENRICH-FIX — Fix two enrichment layer bugs blocking consult-piper (Cowork/GitHub + Code/payload) | PROD-ONBOARD |
 | #1245 | PIPER-SKILL-MERGE — Collapse ask-piper + consult-piper into one smart piper skill | PROD-ONBOARD |
@@ -280,10 +277,11 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1300 | BYOC-CRED-DECOUPLE: decouple the plugin credential (Option A) — public-marketplace gate + BYO-key on-ramp | PROD-DIST |
 | #1340 | RECONNECT: fold Anthropic-key capture into /connect onboarding (deferred from #1185 Phase 3, ties #1300) | PROD-DIST |
 
-### Q: Health lane (39)
+### Q: Health lane (40)
 
 | # | Title | was |
 |---|---|---|
+| #865 | REFACTOR: Extract setup wizard into component-based steps | PROD-DIST |
 | #1001 | Owner-review: services/publishing/publisher.py retry/fallback (from #997 sweep) | PROD-TECHDEBT |
 | #1028 | PERPLEXITY broader sweep — 4 files still reference perplexity beyond the LLMProvider enum | PROD-TECHDEBT |
 | #1138 | Naming clarity: ActionDisposition.CANONICAL is misleading for floor-routed categories (STATUS/PRIORITY) | PROD-INFRA |
@@ -291,7 +289,6 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1151 | INTENT-EMPTY-ORIGINAL-MESSAGE: /intent response returns intent.original_message as empty string | PROD-INFRA |
 | #1167 | ORCHESTRATION-DOCKERFILE-BROKEN: COPYs untracked scripts/verify-python-version.sh → build fails | PROD-INFRA |
 | #1211 | Sweep: local-import-shadowing + broad-except = stealth-dead code (AST-level audit) | PROD-TECHDEBT |
-| #1219 | ActionClassifier false-negatives block 2 allow-listed reads from auto-exec (list_releases_query, shipped_th… | PROD-INFRA |
 | #1224 | Pre-existing test failures (3 clusters: standup conversation-state, perf-indexes, error-message integration… | PROD-TECHDEBT |
 | #1287 | Tech-debt: triage + remove unwired Multi-Agent Coordinator code (superseded #118 artifacts) | PROD-TECHDEBT |
 | #1321 | Sweep and resolve scattered implementation TODOs in services/ (M5) | PROD-TECHDEBT |
@@ -312,25 +309,15 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1452 | Full Test Suite backlog: 413 failed + 71 errors (suite's first real run in weeks) — burn-down + honest inte… | — |
 | #1457 | ci.yml red for 100+ runs: Windows-invalid filename 'dev/2025/11/10/3.' breaks clone — recurrence of #353's … | — |
 | #1469 | mypy gate filters out [name-defined] -- guaranteed-runtime-NameError class invisible to the ratchet (found … | — |
+| #1474 | CanonicalHandlers._get_dynamic_capabilities: zero production callers + carries the rail-description defect … | — |
 | #1479 | Flaky (order-dependent): test_github_query_handlers TestCommentIssueResults::test_formats_comment_confirmat… | — |
 | #1494 | ADR-059 blanket skip on test_portfolio_service.py also disables pins for the LIVE archive/restore extractio… | — |
 | #1506 | tests/domain/test_file_reference_detection.py classification tests fail keyless (ContainerNotInitializedErr… | — |
-| #1522 | False-trails audit (PM-directed): parallel systems inventory — 3 shipping-dark, 9 collision-armed, 5 dead-c… | Beta Blockers |
+| #1522 | False-trails audit (PM-directed): parallel systems inventory — 3 shipping-dark, 9 collision-armed, 5 dead-c… | PROD-TECHDEBT |
 | #1526 | StandupToChatBridge is dead code (zero prod callers) + deprecated _check_active_standup — delete-module-saf… | — |
 | #1528 | test_validate_openai_key_success hits the LIVE OpenAI API with the real keychain key — network-dependent te… | — |
 | #1549 | GET /api/v1/todos/shared-with-me is shadowed by /{todo_id} route order — matches as todo_id='shared-with-me' | — |
-| #1698 | SPATIAL-DISPOSAL: cold-island + census dead-families epic (PM-ruled 2026-08-15/16; Arch routing 2026-08-29) | Beta Blockers |
+| #1698 | SPATIAL-DISPOSAL: cold-island + census dead-families epic (PM-ruled 2026-08-15/16; Arch routing 2026-08-29) | PROD-TECHDEBT |
 | #2015 | update_todo_relationships passes edge_type as a str where KnowledgeGraphService.create_edge calls .value: e… | — |
 | #2058 | check_intent_bypasses.py reads an empty route body: find('@get') never matches '@router.get', so its intent… | — |
 | #2102 | aiohttp ClientSessions leak on the chat path: 40 "Unclosed client session" warnings in six minutes on alpha… | — |
-
-### R: Re-triage (5)
-
-| # | Title | was |
-|---|---|---|
-| #371 | INFRA-TIMESERIES: Implement Time-Series Database Infrastructure | PROD-INFRA |
-| #482 | SEC-KMS-INTEGRATION: Migrate from environment variable to AWS KMS | PROD-INFRA |
-| #557 | ARCH: WebSocket Infrastructure for Real-Time Communication | PROD-INFRA |
-| #1061 | INFRA-OAUTH-MULTI: Multi-OAuth installation infrastructure (broken out from #471; M2f or M5 — PM call) | PROD-INFRA |
-| #1209 | AutonomousExecutor fleshing-out: beyond read-only — mutating auto-execution + rollback UX (the wire's non-m… | PROD-INFRA |
-

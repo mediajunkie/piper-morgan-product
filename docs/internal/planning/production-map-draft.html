@@ -1,0 +1,321 @@
+<title>Production Plan Map</title>
+<style>
+:root{
+  --bg:#f7f6f3; --surface:#ffffff; --surface-2:#f0eee9; --text:#1d1d1b; --muted:#5f5d57; --line:#dcd9d2;
+  --red:#b42318; --red-bg:#fde8e6; --amber:#8a5a00; --amber-bg:#fdf1d8; --teal:#0f6b5c; --teal-bg:#dcf2ec;
+  --blue:#1f4e99; --blue-bg:#e3ebf8; --grey-bg:#ecebe7; --accent:#1f4e99;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#151515; --surface:#1e1e1d; --surface-2:#262624; --text:#ecebe7; --muted:#a8a59d; --line:#3a3936;
+    --red:#ff8a80; --red-bg:#3d1714; --amber:#f4c26b; --amber-bg:#3a2c10; --teal:#6fd3bf; --teal-bg:#123a33;
+    --blue:#9dbbf0; --blue-bg:#1b2a44; --grey-bg:#2a2a28; --accent:#9dbbf0;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#151515; --surface:#1e1e1d; --surface-2:#262624; --text:#ecebe7; --muted:#a8a59d; --line:#3a3936;
+  --red:#ff8a80; --red-bg:#3d1714; --amber:#f4c26b; --amber-bg:#3a2c10; --teal:#6fd3bf; --teal-bg:#123a33;
+  --blue:#9dbbf0; --blue-bg:#1b2a44; --grey-bg:#2a2a28; --accent:#9dbbf0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:15px/1.5 var(--sans);-webkit-text-size-adjust:100%}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:22px;margin:0 0 4px;letter-spacing:-.01em}
+h2{font-size:17px;margin:32px 0 8px;padding-top:12px;border-top:1px solid var(--line)}
+h3{font-size:14px;margin:18px 0 6px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+p{margin:6px 0 10px}
+.meta{color:var(--muted);font-size:13px;margin-bottom:14px}
+.bl{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:6px;padding:12px 14px}
+.bl p{margin:0}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{background:var(--surface-2);font-weight:600;font-size:12px;color:var(--muted);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.grid{min-width:680px}
+.grid td.row{font-weight:600;white-space:nowrap;width:150px}
+.grid td.row small{display:block;font-weight:400;color:var(--muted);font-size:11px;white-space:normal}
+.n{font:600 18px/1 var(--mono);display:inline-block;margin-right:6px}
+.n.dim{color:var(--muted);font-weight:400;font-size:13px}
+.note{color:var(--muted);font-size:12px;display:block;margin:2px 0 4px}
+.chip{display:inline-block;font:600 11px/1 var(--mono);padding:3px 5px;border-radius:4px;margin:2px 2px 0 0;white-space:nowrap}
+.k-gap{background:var(--red-bg);color:var(--red)}
+.k-move{background:var(--amber-bg);color:var(--amber)}
+.k-opp{background:var(--teal-bg);color:var(--teal)}
+.cell-red{background:var(--red-bg)}
+.cell-amber{background:var(--amber-bg)}
+.cell-ok{background:var(--blue-bg)}
+.cell-na{background:var(--grey-bg);color:var(--muted)}
+.qband td{background:var(--surface-2)}
+.out td{color:var(--muted);text-decoration:line-through}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin:8px 0}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.two{display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:860px){.two{grid-template-columns:1fr 1fr}}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+.box ul{margin:6px 0 0;padding-left:18px}
+.box li{margin:2px 0}
+pre.mermaid{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px;overflow-x:auto;font:12px/1.4 var(--mono);margin:0}
+code{font-family:var(--mono);font-size:12px}
+ul.deps{padding-left:18px;margin:6px 0}
+ul.deps li{margin:3px 0}
+.back{color:var(--red);font-weight:600}
+details{margin-top:8px}
+summary{cursor:pointer;font-weight:600;font-size:14px}
+.key{min-width:560px}
+.key td:first-child{font-family:var(--mono);font-weight:600;white-space:nowrap}
+footer{margin-top:36px;padding-top:12px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+footer ul{padding-left:18px;margin:6px 0}
+</style>
+
+<div class="wrap">
+<h1>Production Plan Map</h1>
+<div class="meta">v0 draft · baseline 2026-10-23 · Exec, merging round 1 from Arch, CXO, PPM and Exec · status: for the four reviewers, then for xian</div>
+
+<div class="bl"><p><strong>Bottom line.</strong> This map lays PPM's ratified Production plan (230 open issues in 9 sprints plus the Q health lane) over the three audience gates in <code>release-model.md</code>. It marks where each of <strong>42 merged round-1 findings</strong> lands: 11 missing, 13 implied, 5 obsolete, 9 misplaced and 4 opportunities. 14 of them were raised by two or more roles. The top three gaps:
+(1) <strong>The Terms (#2062) would promise mechanisms that no issue builds:</strong> backups and restore, deletion with a real purge, export, support and incident notice (F1, F2, F3, F6, F7, F14).
+(2) <strong>Public beta can't close in the drawn order:</strong> PUB's #1551 needs D's isolation rows, and H's "connected" truth needs C's single resolver (F13, F15).
+(3) <strong>Running Production for outside users has no home:</strong> a production environment distinct from alpha, self-serve sign-up and abuse limits, and incident notice (F7, F8, F9).</p></div>
+
+<h2>Main grid: sprints by audience gate</h2>
+<p>Each row is a sprint in the ratified order. A number is that sprint's open-issue count from the plan doc, placed in the column of the gate it formally blocks (<code>release-model.md</code> §2: only PUB gates public beta, and every other sprint gates 1.0). Chips are findings that land in that cell.</p>
+<div class="legend">
+  <span><span class="chip k-gap">F#</span> missing or implied (a gap)</span>
+  <span><span class="chip k-move">F#</span> obsolete or misplaced (a move)</span>
+  <span><span class="chip k-opp">F#</span> opportunity</span>
+  <span><span class="chip k-gap">← F#</span> backward edge (a later row blocks an earlier gate)</span>
+</div>
+<div class="scroll">
+<table class="grid">
+<thead><tr><th>Sprint</th><th>Private beta (now)</th><th>Public beta</th><th>1.0 / GA</th></tr></thead>
+<tbody>
+<tr><td class="row">1 · PUB<small>Public Beta gate</small></td>
+  <td><span class="note">In flight: runs through private beta</span></td>
+  <td class="cell-red"><span class="n">21</span><span class="note">gate subset (MCP path #1462 cluster)</span>
+    <span class="chip k-gap">F9</span><span class="chip k-gap">F10</span><span class="chip k-gap">F19</span><span class="chip k-gap">F20</span><span class="chip k-gap">F24</span><span class="chip k-gap">← F13</span><span class="chip k-gap">← F15</span><span class="chip k-move">F33</span><span class="chip k-move">F37 in</span><span class="chip k-opp">F40</span></td>
+  <td class="cell-na">—</td></tr>
+<tr><td class="row">2 · H<small>Honesty sweep (#2151)</small></td>
+  <td><span class="note">Next: Lead builds it after #2132</span></td>
+  <td class="cell-na">—</td>
+  <td class="cell-red"><span class="n">19</span><span class="chip k-gap">F15</span><span class="chip k-move">F34 in</span><span class="chip k-move">F35 in</span></td></tr>
+<tr><td class="row">3 · D<small>Data boundaries and terms</small></td>
+  <td class="cell-na">—</td>
+  <td class="cell-red"><span class="n dim">2 of 21</span><span class="note">#2062 Terms and #2063 legal review gate outside users</span>
+    <span class="chip k-gap">F1</span><span class="chip k-gap">F2</span><span class="chip k-gap">F6</span><span class="chip k-gap">F7</span><span class="chip k-gap">F14</span><span class="chip k-gap">F23</span><span class="chip k-move">F36 in</span><span class="chip k-opp">F39</span><span class="chip k-opp">F42</span></td>
+  <td class="cell-red"><span class="n">21</span><span class="note">+ #482 back from R, per plan header</span><span class="chip k-gap">F3</span><span class="chip k-gap">F21</span><span class="chip k-move">F31</span></td></tr>
+<tr><td class="row">4 · C<small>Connectors complete</small></td>
+  <td class="cell-na">—</td><td class="cell-na">—</td>
+  <td class="cell-red"><span class="n">25</span><span class="chip k-gap">F5</span><span class="chip k-gap">F16</span><span class="chip k-move">F27 out</span><span class="note">#1966 moves to H (F15)</span></td></tr>
+<tr><td class="row">5 · V<small>Conversation reliability</small></td>
+  <td class="cell-na">—</td><td class="cell-na">—</td>
+  <td class="cell-red"><span class="n">29</span><span class="chip k-gap">F4</span><span class="chip k-gap">F16</span><span class="chip k-move">F30 out</span></td></tr>
+<tr><td class="row">6 · E<small>Experience polish</small></td>
+  <td class="cell-na">—</td><td class="cell-na">—</td>
+  <td class="cell-amber"><span class="n">34</span><span class="chip k-gap">F22</span><span class="chip k-move">F29</span><span class="chip k-move">F34 out</span><span class="chip k-move">F35 out</span><span class="chip k-move">F36 out</span><span class="chip k-move">F37 out</span><span class="chip k-move">F38 out</span><span class="chip k-move">F19 out</span><span class="chip k-move">F32 in?</span></td></tr>
+<tr><td class="row">7 · T<small>Trust and learning</small></td>
+  <td class="cell-na">—</td><td class="cell-na">—</td>
+  <td class="cell-amber"><span class="n">14</span><span class="chip k-move">F21 out</span><span class="chip k-move">F38 out</span></td></tr>
+<tr><td class="row">8 · Doc<small>Documents</small></td>
+  <td class="cell-na">—</td><td class="cell-na">—</td>
+  <td class="cell-red"><span class="n">9</span><span class="chip k-gap">F11</span></td></tr>
+<tr><td class="row">9 · Dist<small>Distribution</small></td>
+  <td class="cell-na">—</td>
+  <td class="cell-red"><span class="chip k-gap">F12</span></td>
+  <td class="cell-amber"><span class="n">14</span><span class="note">2 rows have since left: #957 closed, #958 on Fast Follow</span><span class="chip k-move">F26</span><span class="chip k-move">F28</span><span class="chip k-move">F32 out</span></td></tr>
+<tr class="qband"><td class="row">Q · Health lane<small>standing share of every sprint</small></td>
+  <td class="cell-red"><span class="chip k-gap">F17</span><span class="note">first share: main green (#1452, #1457)</span></td>
+  <td>—</td>
+  <td class="cell-red"><span class="n">39</span><span class="chip k-gap">F18</span><span class="chip k-move">F30 in</span><span class="chip k-move">F38 in</span></td></tr>
+<tr><td class="row">No sprint<small>unhomed findings</small></td>
+  <td class="cell-na">—</td>
+  <td class="cell-red"><span class="chip k-gap">F8</span><span class="chip k-opp">F41</span></td>
+  <td class="cell-amber"><span class="chip k-move">F25</span><span class="note">ESSENCE text</span></td></tr>
+<tr class="out"><td class="row">R · Re-triage</td><td colspan="3">5 issues moved out on 10-23 (#371, #1061 to Enterprise; #557, #1209 to Dot Releases; #482 back to D)</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">"in" or "out" means the finding moves issues into or out of that row. F32 (#865) goes to E or Q, which isn't decided. Total from the plan: 21+19+21+25+29+34+14+9+14+39+5 = 230.</p>
+
+<h2>Dependencies (Arch)</h2>
+<div class="two">
+<div class="box">
+<strong>Must close before</strong>
+<ul class="deps">
+  <li><span class="back">Backward:</span> D isolation rows (#1561, #2009, #2013, #2014, #1257) → PUB's #1551 (F13)</li>
+  <li><span class="back">Backward:</span> one resolver per connector (#1966, in C) → H's six "connected" rows and PUB's #1553 (F15)</li>
+  <li>GitHub identity ADR → resolver, and D's #2123 and #2136 (F5)</li>
+  <li>Catalog shape #2149 (with #1891 and #2145) → C's #2130 and #1917; V's #1931, #1932 and #1935 (F16)</li>
+  <li>Green main (#1452, #1457) → H's ratchets (F17)</li>
+  <li>Terms mechanisms (F1, F2, F3, F6, F7) → #2062 → #2063 → outside users (F14)</li>
+  <li>Plugin surface rubric → PUB's #1701 to #1707 (F10)</li>
+  <li><span class="back">Empty node:</span> DB durability → D (F1); inversion remainder → V (F4)</li>
+</ul>
+</div>
+<pre class="mermaid">
+flowchart LR
+  subgraph G1[Private beta]
+    H[H honesty #2151]
+  end
+  subgraph G2[Public beta]
+    PUB[PUB gate]
+  end
+  subgraph G3[Outside users]
+    D[D data + terms]
+  end
+  subgraph G4[1.0]
+    C[C connectors] --> V[V reliability] --> E[E] --> T[T] --> Doc --> Dist
+  end
+  RES((seam: one resolver per connector)) --> H
+  RES --> PUB
+  GHID((seam: GitHub identity ADR)) --> RES
+  GHID --> D
+  CAT((seam: catalog shape #2149)) --> C
+  CAT --> V
+  CI((seam: green main)) --> H
+  DUR((missing: DB durability)) --> D
+  INV((missing: inversion remainder)) --> V
+  D -. backward edge: #1551 isolation .-> PUB
+</pre>
+</div>
+
+<h2>Side views</h2>
+
+<h3>Promise coverage (PPM)</h3>
+<div class="scroll">
+<table class="grid">
+<thead><tr><th>1.0 promise</th><th>PUB</th><th>H</th><th>D</th><th>C</th><th>V</th><th>E</th><th>T</th><th>Doc</th><th>Dist</th><th>Q</th><th>Gap</th></tr></thead>
+<tbody>
+<tr><td class="row">1 · Portability</td><td colspan="10" class="cell-red">no issue</td><td><span class="chip k-gap">F3</span></td></tr>
+<tr><td class="row">2a · GitHub issues</td><td class="cell-ok">●</td><td></td><td></td><td class="cell-ok">●</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td class="row">2b · PRD / spec</td><td colspan="10" class="cell-red">no issue (#2139 is nearest)</td><td><span class="chip k-gap">F11</span></td></tr>
+<tr><td class="row">3 · Standup, first contact</td><td class="cell-ok">●</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td class="row">4 · Honesty</td><td></td><td class="cell-ok">●</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td class="row">5 · One routing authority</td><td></td><td></td><td></td><td></td><td class="cell-ok">●</td><td></td><td></td><td></td><td></td><td></td><td><span class="chip k-gap">F4</span></td></tr>
+<tr><td class="row">6 · Surfaces (as amended)</td><td></td><td></td><td></td><td></td><td></td><td class="cell-ok">●</td><td></td><td></td><td class="cell-ok">●</td><td></td><td><span class="chip k-move">F25</span></td></tr>
+<tr><td class="row">7 · Colleague</td><td></td><td></td><td></td><td></td><td></td><td></td><td class="cell-amber">●</td><td></td><td></td><td></td><td><span class="note">#2135 dormant</span></td></tr>
+<tr><td class="row">Privacy/Terms: isolation</td><td></td><td></td><td class="cell-ok">●</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td class="row">Privacy/Terms: deletion</td><td colspan="10" class="cell-red">no Production issue (#651, #336 on Fast Follow)</td><td><span class="chip k-gap">F2</span></td></tr>
+<tr><td class="row">Privacy/Terms: durability</td><td colspan="10" class="cell-red">no issue (#338 on Fast Follow covers rollback only)</td><td><span class="chip k-gap">F1</span></td></tr>
+<tr><td class="row">No promise behind</td><td colspan="10" class="cell-amber">about 50: most of Q's 39 plus about 11 DIST and onboarding rows (PPM's count by title)</td><td><span class="chip k-gap">F18</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Journey stages (CXO)</h3>
+<div class="scroll">
+<table class="grid">
+<thead><tr><th>Moment</th><th>Sprints that serve it</th><th>Empty or thin cells, by surface</th></tr></thead>
+<tbody>
+<tr><td class="row">Arrive</td><td>PUB, Dist</td><td class="cell-red">MCP plugin: Dist waits on PUB</td></tr>
+<tr><td class="row">Set up</td><td>PUB (FTUX, key lines), C</td><td><span class="chip k-opp">F40</span> first-run slice</td></tr>
+<tr><td class="row">First useful answer</td><td>H, Doc</td><td class="cell-na">none named</td></tr>
+<tr><td class="row">Daily use</td><td>E, T, V</td><td class="cell-amber">Reminders and notifications: thin (#1625, #1946)</td></tr>
+<tr><td class="row">Something goes wrong</td><td>H</td><td class="cell-red">Plugin: only H's MCP row <span class="chip k-gap">F20</span> · Mail and support: the "tell us" loop <span class="chip k-gap">F6</span></td></tr>
+<tr><td class="row">Change or leave</td><td>D (Terms only)</td><td class="cell-red">Every surface: nothing <span class="chip k-gap">F2</span><span class="chip k-gap">F3</span><span class="chip k-opp">F39</span></td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">Surfaces in CXO's lens: web chat, Settings, Radar, reminders and notifications, MCP plugin, mail and support. Round 1 named only the empty or thin cells, so the rest are not shown as covered.</p>
+
+<h3>Ops readiness (Exec)</h3>
+<div class="scroll">
+<table class="grid">
+<thead><tr><th>Readiness item</th><th>Private beta (today)</th><th>Public beta</th><th>1.0 / GA</th></tr></thead>
+<tbody>
+<tr><td class="row">Backups and restore</td><td>Restart only (#2146, closed)</td><td class="cell-red">no issue <span class="chip k-gap">F1</span></td><td class="cell-red">no issue</td></tr>
+<tr><td class="row">Support path</td><td>In-app feedback (#2096, closed)</td><td class="cell-red">no issue <span class="chip k-gap">F6</span></td><td class="cell-red">no issue</td></tr>
+<tr><td class="row">Incident notice</td><td>Alert to xian (#2144)</td><td class="cell-red">no issue <span class="chip k-gap">F7</span></td><td class="cell-red">no status page</td></tr>
+<tr><td class="row">Production environment</td><td>Alpha</td><td class="cell-red">undecided <span class="chip k-gap">F8</span></td><td class="cell-red">undecided</td></tr>
+<tr><td class="row">Sign-up</td><td>Hand-minted invites (#1954, #2099)</td><td class="cell-red">no issue <span class="chip k-gap">F9</span></td><td class="cell-red">no issue</td></tr>
+<tr><td class="row">Abuse and rate limits</td><td class="cell-na">not assessed</td><td class="cell-red">no issue <span class="chip k-gap">F9</span></td><td class="cell-red">no issue</td></tr>
+<tr><td class="row">User release notes</td><td>Weekly Ship (development story only)</td><td class="cell-red">no issue <span class="chip k-gap">F12</span></td><td class="cell-red">no issue</td></tr>
+<tr><td class="row">Support window</td><td>xian alone (right for alpha)</td><td class="cell-red">no Terms line <span class="chip k-gap">F23</span></td><td class="cell-red">no Terms line</td></tr>
+<tr><td class="row">Launch checklist</td><td>HOST's send-morning checks</td><td class="cell-amber">promote <span class="chip k-opp">F41</span></td><td class="cell-amber">promote</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Since last version</h2>
+<div class="box">
+<p><strong>v0, the baseline (2026-10-23).</strong> There is no earlier version. The next version diffs against these figures: issues added, removed, moved or closed per sprint; findings opened or resolved; promises added or amended.</p>
+<ul>
+  <li><strong>Open issues by sprint (plan table):</strong> PUB 21 · H 19 · D 21 · C 25 · V 29 · E 34 · T 14 · Doc 9 · Dist 14 · Q 39 · R 5 (moved out) = 230.</li>
+  <li><strong>Board state at plan time:</strong> 116 with no Sprint value; 9 on the retired "Beta Blockers" value (re-labelled per the plan header); no Sprint option yet for H, D or V.</li>
+  <li><strong>Findings:</strong> 42 (11 missing · 13 implied · 5 obsolete · 9 misplaced · 4 opportunities); 14 agreed by 2+ roles.</li>
+  <li><strong>Drift already present at baseline (verified 18:56):</strong> #482 back in D; #1474 reads as Q but the table lists it under V; #957 closed; #958 on Fast Follow; #966 retitled and kept.</li>
+</ul>
+</div>
+
+<details>
+<summary>Findings key (42)</summary>
+<div class="scroll" style="margin-top:8px">
+<table class="key">
+<thead><tr><th>#</th><th>Kind</th><th>Finding</th><th>Lands</th></tr></thead>
+<tbody>
+<tr><td>F1</td><td>Missing</td><td>Production DB backups, retention, restore drill, HA decision</td><td>D</td></tr>
+<tr><td>F2</td><td>Missing</td><td>In-product account deletion with a real purge</td><td>D</td></tr>
+<tr><td>F3</td><td>Missing</td><td>Export everything Piper holds, in open formats</td><td>D</td></tr>
+<tr><td>F4</td><td>Missing</td><td>Inversion remainder (#1595 on MVP)</td><td>V</td></tr>
+<tr><td>F5</td><td>Missing</td><td>One GitHub identity model: ADR plus issue</td><td>seam</td></tr>
+<tr><td>F6</td><td>Missing</td><td>Support intake and the "tell us" loop</td><td>D</td></tr>
+<tr><td>F7</td><td>Missing</td><td>Incident notice to users</td><td>D / ops</td></tr>
+<tr><td>F8</td><td>Missing</td><td>Production environment distinct from alpha</td><td>none</td></tr>
+<tr><td>F9</td><td>Missing</td><td>Self-serve sign-up or waitlist; abuse and rate limits</td><td>PUB</td></tr>
+<tr><td>F10</td><td>Missing</td><td>Plugin surface rubric (CXO)</td><td>PUB</td></tr>
+<tr><td>F11</td><td>Missing</td><td>PRD/spec half of commitment 2 (ruling)</td><td>Doc</td></tr>
+<tr><td>F12</td><td>Implied</td><td>User-facing release notes</td><td>Dist</td></tr>
+<tr><td>F13</td><td>Implied</td><td>PUB closes after D's isolation rows</td><td>PUB / D</td></tr>
+<tr><td>F14</td><td>Implied</td><td>Terms mechanisms as children of #2062</td><td>D</td></tr>
+<tr><td>F15</td><td>Implied</td><td>One resolver per connector before H; #1966 to H</td><td>H</td></tr>
+<tr><td>F16</td><td>Implied</td><td>Catalog shape #2149 before C and V add ops</td><td>seam</td></tr>
+<tr><td>F17</td><td>Implied</td><td>Main green before H's ratchets</td><td>Q</td></tr>
+<tr><td>F18</td><td>Implied</td><td>1.0 definition: about 50 non-promise issues (ruling)</td><td>Q</td></tr>
+<tr><td>F19</td><td>Implied</td><td>#1186 self-help moves to PUB</td><td>PUB</td></tr>
+<tr><td>F20</td><td>Implied</td><td>Honesty shapes for plugin increments</td><td>PUB</td></tr>
+<tr><td>F21</td><td>Implied</td><td>#1609 and #955 move to D (data control)</td><td>D</td></tr>
+<tr><td>F22</td><td>Implied</td><td>Copy passes after #2151</td><td>E</td></tr>
+<tr><td>F23</td><td>Implied</td><td>Support window in the Terms</td><td>D</td></tr>
+<tr><td>F24</td><td>Implied</td><td>PDR-001 exception wording (ruling)</td><td>PUB</td></tr>
+<tr><td>F25</td><td>Obsolete</td><td>ESSENCE commitment 6 contradicts surface rulings</td><td>doc</td></tr>
+<tr><td>F26</td><td>Obsolete</td><td>#957, #958, #966: resolved by events</td><td>Dist</td></tr>
+<tr><td>F27</td><td>Obsolete</td><td>#366 to Fast Follow</td><td>C</td></tr>
+<tr><td>F28</td><td>Obsolete</td><td>#1242, #1244, #1245: read against PDR-006</td><td>Dist</td></tr>
+<tr><td>F29</td><td>Obsolete</td><td>#1011: check whether overtaken</td><td>E</td></tr>
+<tr><td>F30</td><td>Misplaced</td><td>#1474 V to Q</td><td>Q</td></tr>
+<tr><td>F31</td><td>Misplaced</td><td>R set out, #482 back in D: done</td><td>D</td></tr>
+<tr><td>F32</td><td>Misplaced</td><td>#865 Dist to E or Q</td><td>E / Q</td></tr>
+<tr><td>F33</td><td>Misplaced</td><td>#1551 retitle to per-user isolation</td><td>PUB</td></tr>
+<tr><td>F34</td><td>Misplaced</td><td>#2103, #1487 E to H</td><td>H</td></tr>
+<tr><td>F35</td><td>Misplaced</td><td>Timezone slice E to H</td><td>H</td></tr>
+<tr><td>F36</td><td>Misplaced</td><td>#1516 E to D</td><td>D</td></tr>
+<tr><td>F37</td><td>Misplaced</td><td>#1523 E to PUB</td><td>PUB</td></tr>
+<tr><td>F38</td><td>Misplaced</td><td>#1298, #1350, #1131, #1139 to Q</td><td>Q</td></tr>
+<tr><td>F39</td><td>Opportunity</td><td>One "leaving" slice in D</td><td>D</td></tr>
+<tr><td>F40</td><td>Opportunity</td><td>One first-run walkthrough</td><td>PUB</td></tr>
+<tr><td>F41</td><td>Opportunity</td><td>HOST checks become the launch checklist</td><td>ops</td></tr>
+<tr><td>F42</td><td>Opportunity</td><td>Feedback plus "couldn't check" lines feed triage</td><td>D</td></tr>
+</tbody>
+</table>
+</div>
+</details>
+
+<footer>
+<strong>Verified how</strong>
+<ul>
+  <li><strong>Sprint counts:</strong> read from the sprint table in <code>production-sprint-proposal-2026-10-23.md</code> (11 rows summing to 230), not from a live board query. The board's Sprint field was not read (it has no H, D or V option yet).</li>
+  <li><strong>Gate placement:</strong> follows <code>release-model.md</code> §2.</li>
+  <li><strong>Findings:</strong> merged from 4 round-1 memos (Arch, PPM, CXO, Exec), all read in full. Detail and proposed actions: <code>production-map-review-round2-2026-10-23.md</code>.</li>
+  <li><strong>Issue states:</strong> <code>gh issue view</code> (state and milestone) at 18:56 PT on 113 issue numbers, covering every number cited here. Coverage is 113 of the 230 open Production issues; the rest were not checked.</li>
+  <li><strong>Side views:</strong> each is drawn only from what its memo named.
+    <ul>
+      <li>Promise coverage: PPM's mapping. The "about 50" count is PPM's, by title, and unverified.</li>
+      <li>Journey: only the cells CXO named.</li>
+      <li>Ops readiness: Exec's keyword searches over open issues, not a full read.</li>
+    </ul></li>
+  <li><strong>Not rendered or tested:</strong> the mermaid block.</li>
+</ul>
+</footer>
+</div>
