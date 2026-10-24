@@ -45,6 +45,6 @@ It only costs a few words. It shouldn't be hard. Experience tells me I'll eventu
 
 ---
 
-*Next on Building Piper Morgan: "A Clean Result Needs a Version Number" — a published post called agents "people," a check for exactly that already existed, and the reason it missed says something about every "passed" stamp.*
+*Next on Building Piper Morgan: "A Clean Result Needs a Version Number" — a published post called agents "people," even though I had added a check for exactly that, and the reason it missed made me reflect on how you can tell when. clean bill of health has gone stale or expired.*
 
-*What "nothing found" in your own work is really "nothing found where I looked"?*
+*Have your run into this yourself, raeadinf "nothing found" in your own work when the real answer is"nothing found where I looked"?*
