@@ -9,7 +9,7 @@
   - #1735 → PROD-TRUST;
   - #1817 → PROD-INFRA (the nearest existing option to D);
   - #1632 and #1891 (V) → unset, because no V option exists.
-- **R is out of Production** (PPM's placement, 10-23): #371, #482 and #1061 → Enterprise; #557 and #1209 → Dot Releases.
+- **R is out of Production** (PPM's placement, 10-23): #371 and #1061 → Enterprise; #557 and #1209 → Dot Releases. On Arch's 17:57 points, #1219 followed #1209, and #482 came back into D: managed key custody depends on what #2062's Terms commit to. #1474, dead code, reads as Q, not V.
 - **Not yet on the board:** H, D and V have no Sprint options, so their issues read unset or under the nearest PROD-* bucket. Adding an option is a field-definition change, which is xian's to make in the web UI, never an API full replace. The map review (Exec, 17:54) decides whether the board should carry these sprint names at all.
 
 **The ask** (xian, 10-23 16:57, via Exec): "start looking at the issues in the Production milestone and organizing them into potential sprints. We know we will discover more along the way and we already have a proposed first sprint during the private beta that we use a gate for public beta but the rest is still wide open."
