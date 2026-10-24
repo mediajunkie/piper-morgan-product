@@ -4,54 +4,53 @@ alt: 'A child and a crew of robots checking each other''s work on a boat.'
 caption: ''
 ---
 
-<!-- Exec scaffold, 2026-10-23, from all 10 workstream reviews (Lead, PA, PPM, Arch, CXO, Web, HOST, CIO, Comms, Docs) plus PA's 04:29 correction. Brackets [xian: ...] mark lines only xian can write. Title options at the bottom. Remove this comment before publish. -->
+<!-- Exec draft v2, 2026-10-23, rebuilt after xian's discussion of the synthesis (ship-066-week-review.html, discussed 10-23 16:5x). Sources: 7 of 7 omnibus logs (10-16 to 10-22), 10 of 10 workstream reviews, decisions.log 10-23 16:57 and 17:54, the editorial calendar. Theme approved 16:57. Counts: gh-week-counts.py 2026-10-16..22 (98 opened, 79 closed), 26 successful fly-deploy.yml dispatches in the Pacific window, gate 31 closes and 32 admissions from PPM's ledger parse. Outages: 10-19 4h27m (Lead), 10-21 about 2h53m (HOST). Spend: Console screenshots read in Pard's session 10-23 17:47 PT (Console days are UTC), org total $21.63 for 10-16 to 10-22. Everything dated after Thursday 10-22 appears only in the opening's last paragraph and in Coming up. Comms' 04:42 review fixes are carried forward. Remove this comment before publish. -->
 
-# Weekly Ship #066: [title, see options at the bottom]
+# Weekly Ship #066: Tested on the Real Thing
 
 *October 16–22, 2026*
 
-The list of issues standing between us and the beta started the week at six and ended it at six. That number hides the week. Thirty-one issues closed on alpha and thirty-two new ones were admitted, and almost every one of them was a place where Piper told a user something that wasn't true: no meetings when there were meetings, zero work shipped when twenty items had closed, "add a key" to someone who had already added one.
+The list of issues standing between us and the beta started the week at six and ended it at six. That number hides the week. It peaked at thirteen on Monday, after my own run through the test card, and thirty-one issues closed on alpha while thirty-two were admitted. Almost every one was a place where Piper told a user something that wasn't true: no meetings when there were meetings, zero work shipped when twenty items had closed, "add a key" to someone who had already added one.
 
-[xian: the 10-23 checkpoint result, in a sentence or two. Are we on track for October 30, and did you accept the #1386 figures with the team's adjustments?]
+Last week Piper got better at telling you the state of things. This week we kept finding the places where it still didn't, and the reliable way to find them was to try the real thing on alpha. The team's own safeguards behaved the same way. Checks that looked right on paper failed the first time they met a real machine.
 
-Last week Piper got better at saying what's true about the state of things. This week we kept finding the places where it still wasn't, and the only reliable way to find them was to try the real thing on alpha.
+On Friday morning I judged the close-out figures close enough after the team's triage, on one condition: the document fix closes before any invitation goes out.
 
 # 🚀 Shipped this week
 
-## 🎯 What a user can do now that they couldn't a week ago
+## ⚙️ Engineering & architecture
 
-On alpha:
+- **The database went down twice.** On Monday it stopped for about four and a half hours. On Wednesday it ran out of memory and was down nearly three hours. Both times I brought it back by hand. It now has twice the memory, the health check reports the database's real state, and an alert reaches my inbox.
+- **A restarter, tested on a real outage.** The agents built one behind four safety checks and my approval, with a key that can touch one machine and nothing else. On Thursday I stopped the database on purpose to test it. All four checks passed. Then Fly refused the restart itself, because the key couldn't take the lock Fly's command-line tool asks for first. I restarted it by hand after about seven minutes. Arch ruled a route that skips the lock, and by Thursday evening it was built and waiting for my push.
+- **The stall, found by measuring.** Every model call used to hold up the whole server, stalling long sessions for minutes. The first two explanations were wrong. On Tuesday PA named the cause from a watchdog Lead built to catch it, and the fix moved those calls off the server's main loop.
+- **26 updates to alpha.** Since Wednesday the release step refuses unless alpha is healthy, nobody has chatted for half an hour, and the exact code passed its tests. On Thursday it correctly refused one of Lead's releases while the tests were still running.
+- **The close-out test.** PA's Thursday re-run of the 61-question test scored 88.5% on routing (the bar is 90%) and 46.3% on answer quality (the bar is 75%). Quality fell partly because the fixes made false answers true but terse, which the automated judge marks down. With routing relabels Lead signed and quality waivers CXO gave, row by row with reasons, the figures become 90.2% and 92.7%.
+- **Every agent acts on GitHub as me.** CIO found that every agent works through my admin account, so no rule or reviewer can tell an agent apart from me. On Thursday we created a GitHub App for the agents. The real fix comes when my own admin keys leave the shared machine.
+- **Red builds, again.** Lead's pushes turned our main branch red on most days, each time from tests outside the set Lead re-ran. Each was fixed the same day, and none reached alpha.
 
-- **Get invited and set up without help.** The setup wizard now opens on the invite code, checks it without using it up, and then asks for keys, account and projects. It no longer asks a hosted user to install Docker and Postgres. Before this week, every invited tester ended on "Setup Failed."
-- **Use Piper at length without it stalling.** Every chat reply used to hold up the whole server, so a long session brought minutes-long stalls. The closing test run answered 61 of 61 questions without one.
-- **Get true answers about their GitHub repo.** "What's the next milestone?" names it, where it used to say there weren't any. "What did we ship this week?" counts the 20 items that closed, where it used to say zero and call it a light week. A pull request is labeled as a pull request. A revoked connection says it needs reconnecting, with a one-step Reconnect. [xian: you checked the reconnect on your own account on 10-17, 4 of 4.]
-- **Ask about their calendar and get their real meetings.** "Do I have any meetings this week?" lists them. Asking about a named weekday gets a plain "I can't do that yet" instead of today's agenda passed off as Thursday's. A connected calendar is no longer called "not connected."
-- **Use Piper with only an OpenAI key.** That account used to be told to add a key on every turn. Now it gets answers. Its answers still scored 21.4 points below the same questions on Anthropic, so the beta invitation names Anthropic only for now.
-- **Rely on the privacy promises.** Asking us to delete your account now erases it, within the 14 days we promise. Logs no longer keep anything you typed. Uploaded files no longer fall back to being stored unencrypted. The privacy settings page now says what you can export and how to delete your account, instead of offering actions it didn't have.
-- **Smaller things:** a list of todos in one message creates each one, "change the title to X" retitles a draft, and a created issue is confirmed with its real number.
+## 🎯 Product & experience
 
-On [pipermorgan.ai](https://pipermorgan.ai/privacy), the privacy page now says plainly what is encrypted, that nothing is deleted automatically, that passwords are kept only as a one-way hash, and what connecting Google Calendar does. The site's pages also now carry their content and navigation in the HTML itself, so they read correctly before any script runs.
+What a user can do on alpha now that they couldn't a week ago:
 
-Not yet: asking Piper to analyze an uploaded document or a named Notion page still gets the wrong reply, and that fix is first in line next week. In-app feedback is waiting on me. The database can't yet restart itself (below).
+- **Get invited and set up without help.** The setup wizard opens on the invite code, checks it without using it up, then asks for keys, account and projects. Before this week, every invited sign-up ended on "Setup Failed."
+- **Use Piper at length.** The closing test run answered 61 of 61 questions with no stall.
+- **Get true answers about their GitHub repo.** "What's the next milestone?" names it. "What did we ship this week?" counts the 20 items that closed, not zero. A revoked connection says it needs reconnecting, with a one-step Reconnect, which I checked on my own account on Saturday.
+- **Ask about their calendar and get their real meetings.** "Do I have any meetings this week?" lists them. A named weekday gets a plain decline instead of today's agenda passed off as that day's. A connected calendar is no longer called "not connected."
+- **Use Piper with only an OpenAI key.** That account used to be told to add a key on every turn. Now it gets answers, though they trail Anthropic's, so the invitation names Anthropic only for now.
+- **Rely on the privacy promises.** Asking us to delete your account now erases it, within the 14 days we promise. Logs no longer keep anything you typed. Uploaded files no longer fall back to being stored unencrypted.
+- **Smaller things:** a list of todos in one message creates each one, "change the title to X" retitles a draft, a created issue is confirmed with its real number, and an expired sign-in brings up a sign-in box.
 
-## ⚙️ Below the line: engineering & architecture
+On [pipermorgan.ai](https://pipermorgan.ai/privacy), the privacy page now says plainly what is encrypted, that nothing is deleted automatically, that there's no way yet to delete a conversation inside Piper, and what connecting Google Calendar does.
 
-- **The database went down twice.** On Monday, alpha's database stopped for about four and a half hours. On Wednesday it ran out of memory and was down nearly three hours. Both times I restarted it by hand. It now has twice the memory, the health check reports the database's real state, and an alert reaches my inbox.
-- **A restart button, tested on a real outage.** The agents built a restarter that runs only from a protected branch, behind four safety checks and my approval, with a key that can touch one machine and nothing else. On Thursday I stopped the database on purpose to test it. All four checks passed. Then Fly refused the restart itself, because the key couldn't take the lock that Fly's command-line tool asks for first. I restarted it by hand after about seven minutes. Arch ruled a route that skips the lock, and it's built and waiting for my push.
-- **26 updates to alpha.** Each needed my word or the standing grant. Since Wednesday the release step refuses unless alpha is healthy, nobody has chatted for half an hour, and the exact code passed its tests. On Thursday it correctly refused one of Lead's releases while the tests were still running.
-- **The gate's own test.** PA's re-run of the 61-question close-out test scored 88.5% on routing (the bar is 90%) and 46.3% on answer quality (the bar is 75%). With routing relabels Lead signed and answer-quality waivers CXO gave, row by row with reasons, those become 90.2% and 92.7%. The team showed the raw figures first, and whether the adjusted ones count was my call. [xian: what you decided.]
-- **Every agent acts on GitHub as me.** CIO found that every agent works through my admin account, so no rule or reviewer can actually tell an agent apart from me. We've created a GitHub App for the agents. The real fix comes when my own admin keys leave the shared machine.
-- **Red builds, again.** Lead's pushes turned the main branch red on most days, each time from tests outside the set Lead re-ran. Each was fixed the same day.
+Not yet: asking Piper to analyze an uploaded document or a named Notion page still gets the wrong reply. In-app feedback was waiting on me at week's end.
 
 ## 🔬 Methodology & process innovation
 
-- **Run the safeguard on what it guards.** Five times in two days, a safeguard judged by reading it turned out wrong once someone checked it against the real thing. The database's own restart setting can't fire for this kind of failure. One check parsed output it had guessed at. A key's limits had never been tested. Arch made it a rule: a check that reads a tool's output is tested on that tool's real output.
+- **Run the safeguard on what it guards.** Five times in two days, a safeguard judged by reading it turned out wrong once someone ran it. Arch made it a rule: a check that reads a tool's output is tested on that tool's real output.
 - **Served, not unit-tested.** CXO closed nothing on a unit test alone. Four fixes that passed their tests were still wrong on alpha, and each was caught by an agent asking the real question and quoting the real reply.
-- **Fact-check ledgers before the rewrite.** Comms now writes a ledger of every checkable claim before I rewrite a draft. This week the ledgers caught four errors in Comms's own drafts. A forensic check also corrected "The Phantom Feature" before it published: it had said summarization never worked, but it worked in July 2025.
+- **Fact-check ledgers before the rewrite.** Comms now writes a ledger of every checkable claim before I rewrite a draft, and the ledgers caught four errors in Comms's own drafts of upcoming posts. A forensic check also corrected "The Phantom Feature" before it published: summarization had worked in July 2025.
 
-[xian: a sentence of your own, if you have one.]
-
-## 🌍 Published this week
+## 🌍 External relations & community
 
 - Oct 17: "[Convergent Claims Aren't Independent Evidence](https://pipermorgan.ai/blog/convergent-claims-arent-independent-evidence)" — insight
 - Oct 18: "[Measure the Start, Not the End](https://pipermorgan.ai/blog/measure-the-start-not-the-end)" — insight
@@ -67,30 +66,41 @@ Not yet: asking Piper to analyze an uploaded document or a named Notion page sti
 
 - **Issues closed:** 79
 - **Issues filed:** 98
-- **Open issues on the beta gate:** 6 → 6 (31 closed, 32 admitted)
+- **Open issues on the beta gate:** 6 → 6 (peak 13 on Monday, 31 closed, 32 admitted)
 - **Updates to alpha:** 26
-- **Max 20x plan weekly usage:** [xian]
-- **API spend:** [xian]
+- **Database outages:** 2, about 7 hours 20 minutes down in all
+- **Model spend:** ~$22 for the week
+
+<!-- USAGE: Max 20x plan weekly usage not yet available (Pard reads it, or xian). Add a bullet if wanted, or leave it out. -->
+
+On Tuesday I dropped the limit of two alpha updates a day in favor of readiness checks, and handed the design-partner window to Exec, PPM and CXO, since partners are spread across time zones. By Wednesday those conditions were checks the release step runs. PPM kept the gate ledger all week and named its own drift, no roadmap work.
 
 # 🎯 Coming up next week
 
-[xian: depends on the checkpoint. The draft line, if we're on track:] Close the last items on the gate: test the restart button again, fix document analysis, and read the in-app feedback myself. Then send the first design-partner invitations.
+The goals I ratified on Friday, with what has happened since Thursday:
+
+- **Close the last must-close items.** The restarter passed its second test on Friday morning, through the route that skips the lock, and later brought the database back with nobody touching it. A Calendar connect without the calendar box ticked no longer reports success, and Google's review of our Calendar access is submitted. That leaves the document fix, for analyzing and comparing documents.
+- **Send the first design-partner invitations once the document fix closes,** at a time I'll pick.
+- **Sweep for false "none" answers.** Arch has scoped a sweep for every place a failed read can come out as "none," "0," "not connected" or "I can't see it." Lead takes it on after the document fix.
+- **The agents' GitHub App:** its key and install were done Friday morning, and by Friday evening the agents were switching over to it. A test push to the branch that runs the database restarter was refused, as it should be.
+- **Map what's next.** PPM checked the product decision records and proposed the Production milestone as an ordered series of sprints. Arch, CXO, PPM and Exec review it as a map next.
+- **Keep October 30 as the MVP target.**
 
 # 🚧 Blockers & asks
 
-Mostly me: pushing the restarter fix and sitting with the second test, moving the GitHub App's key, and rewriting the invitation's terms in my own words.
+Mostly me: the invitation's terms in my own words, and choosing the moment to send.
 
 # 🔎 This week's learning pattern
 
 ## A safeguard you've only read is a guess
 
-**Discovery**: A safety check reviewed on paper tells you what its author expected. Running it against the real thing tells you what it does, and the two kept disagreeing.
+**Discovery**: A check reviewed on paper tells you what its author expected. Running it against the real thing tells you what it does, and this week the two kept disagreeing.
 
-**Example from this week**: Fly's restart setting was on and looked like the fix for a dead database, until a read of the source showed it can't fire when only the database stops. The restarter's checks were approved on paper and then failed on the live machine's real output. The final test passed every check and then found a lock the checks had never tried to take.
+**Example from this week**: Fly's restart setting looked like the fix for a dead database, until a read of the source showed it can't fire when only the database stops. One of the restarter's approved checks would have refused every run, had PA not tried it on the live machine's real output. Thursday's test then passed every check and found a lock the checks had never tried to take.
 
 **Why it matters**: It's the same lesson as Piper's this week. Piper's fixes for false answers passed their tests and still said false things on alpha until an agent asked the real question. The team's safeguards passed review and still failed until someone ran them.
 
-**Application beyond this week**: Before trusting a check, run it once on the real input it will see, on purpose, while someone is watching.
+**Application beyond this week**: Before trusting a check, run it once on the real input it will see, on purpose, while someone is watching. When the same false answer keeps turning up in new places, sweep for the shape instead of fixing one at a time.
 
 **Related patterns**: Last week's "A rule nobody checks is just a wish," and "Convergent Claims Aren't Independent Evidence."
 
@@ -99,20 +109,10 @@ xian + Piper Morgan Development Team
 
 This is Weekly Ship #066. Previous: [#065 "The Truth About State"](https://pipermorgan.ai/shipping-news/weekly-ship-065-the-truth-about-state/).
 
-*P.S. [xian: optional.]*
+*P.S. My anecdotal sense of some of our revised review and planning processes these past four to six weeks, on top of some of the focused planning we did around what is in the MVP and how to avoid creeping scope creep, is that it has worked to keep us focused on our true goals and honest about the work really needed to get there, and the results are real clarity, visible progress, sensible adjustment where needed, and much less anxiety for me, more calm, and moments of sheer joy.*
 
 *P.P.S. Full session logs and technical details available in the [GitHub repository](https://github.com/mediajunkie/piper-morgan-product) and [documentation site](https://pmorgan.tech). Yes, you can copy it. That just makes our protocol stronger.*
 
 ---
 
 **Week of October 16–22, 2026 | Phase: MVP closure toward invitation-only private beta**
-
-<!--
-Title options (Exec's lean first):
-1. "Tested on the Real Thing"
-2. "Six to Six"
-3. "Served, Not Assumed"
-
-Sources (each line above traces to these): workstream-066-{lead,pa,ppm,arch,cxo,web,host,cio,comms,docs}-2026-10-23.md in mailboxes/exec/inbox, PA's correction (twice, not three times). Counts: gh-week-counts.py 2026-10-16..22 (opened 98, closed 79); fly-deploy.yml workflow_dispatch successes in the Pacific window = 26 (matches Lead); gate 31 closes / 32 admissions from PPM's ledger parse. Outage durations: Lead (4h27m, ~2h50m) vs HOST (~2h53m) for 10-21; prose says "nearly three hours".
-Comms review 04:42 applied: privacy line rewritten (#2065 closed on copy, no hide/delete control), m-49 count is five, "honest" stems removed, people-words fixed, curly apostrophe in caption.
--->

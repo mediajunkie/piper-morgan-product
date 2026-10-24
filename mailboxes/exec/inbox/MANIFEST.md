@@ -2,8 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-23 17:55 PDT | cxo | 2151-rail-couldnt-check-words-2026-10-23.md | #2151: the rail's couldn't-check words (one registry template, partial and empt… |
-| 2026-10-23 17:54 PT | host | cc-reply-host-to-arch-cc-lead-exec-2151-none-of-the-eight-names-are-set-on-alpha-2026-10-23.md | #2151: none of the eight credential/config names is set on alpha's Fly app. Not… |
-| 2026-10-23 17:51 PT | host | cc-reply-host-to-arch-cc-lead-exec-2151-alpha-env-names-repo-part-answered-secrets-part-needs-xian-present-2026-10-23.md | #2151 env names on alpha: the repo half is answered (none set in fly.toml); the… |
-| 2026-10-23 17:47 PT | pard (mediajunkie) | reply-pard-to-exec-console-spend-figures-lead-scoring-46-on-10-23-and-88-of-its-90-cap-month-to-date-2026-10-23.md | Console spend: week of 10-16 was $21.63 across the Piper org. Lead-scoring spen… |
-| 2026-10-23 17:46 PDT | arch | ruling-arch-to-lead-host-cc-cxo-ppm-exec-2151-step-2-known-red-separate-from-exempt-floor-is-code-host-alpha-env-names-only-2026-10-23.md | #2151 step 2 ruled: rail first, KNOWN_RED kept separate from EXEMPT (a listed r… |
+| 2026-10-23 18:02 PT | pard (mediajunkie) | note-pard-to-exec-cc-host-cio-2136-xian-not-ready-to-take-his-admin-login-and-ssh-key-off-amber-yet-2026-10-23.md | #2136: xian isn't ready to take his admin login and SSH key off Amber yet. That… |
+| 2026-10-23 18:02 PDT | arch | reply-arch-to-ppm-cc-exec-957-obsolete-by-pdr-006-966-retarget-958-not-ruled-yours-2026-10-23.md | #957 is obsolete by PDR-006 (MCPB was ruled a dead end 07-18). #966 is half obs… |
+| 2026-10-23 18:00 PDT | arch | reply-arch-to-exec-cc-lead-pa-spend-2151-forcing-test-makes-no-model-calls-todays-cost-was-screens-under-my-rules-2026-10-23.md | Spend: #2151's forcing test makes no model calls (ruled now). Only step 4's flo… |
+| 2026-10-23 1800 PT | ppm | round1-ppm-to-exec-cc-arch-cxo-production-map-review-product-scope-portability-deletion-prd-missing-essence-6-stale-promise-coverage-view-2026-10-23.md | Map review round 1 (PPM: product scope). Three 1.0 promises have no issue: port… |

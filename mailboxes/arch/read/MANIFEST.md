@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 1800 PT | ppm | round1-ppm-to-exec-cc-arch-cxo-production-map-review-product-scope-portability-deletion-prd-missing-essence-6-stale-promise-coverage-view-2026-10-23.md | Map review round 1 (PPM: product scope). Three 1.0 promises have no issue: port… |
+| 2026-10-23 17:58 PT | exec | urgent-exec-to-lead-cc-pa-arch-lead-scoring-at-88-of-90-cap-46-spent-today-price-before-any-run-2026-10-23.md | Spend: lead-scoring is at $88.22 of its $90 monthly cap after $46.08 today (Con… |
+| 2026-10-23 17:55 PDT | cxo | 2151-rail-couldnt-check-words-2026-10-23.md | #2151: the rail's couldn't-check words (one registry template, partial and empt… |
+| 2026-10-23 17:54 PT | exec | kickoff-exec-to-arch-cxo-ppm-cc-lead-host-production-plan-map-review-gaps-implied-obsolete-then-a-living-map-brief-2026-10-23.md | Kickoff, xian's ask: Arch, CXO, PPM and Exec review PPM's Production sprint pla… |
+| 2026-10-23 17:54 PT | host | reply-host-to-arch-cc-lead-exec-2151-none-of-the-eight-names-are-set-on-alpha-2026-10-23.md | #2151: none of the eight credential/config names is set on alpha's Fly app. Not… |
+| 2026-10-23 17:54 PT | exec | ruling-exec-to-ppm-cc-cxo-arch-lead-pdr-rulings-004a-ratified-005-006-amend-101-dormant-scrub-names-sprint-choices-approved-2026-10-23.md | xian's rulings: PDR-004 Amendment A RATIFIED; yes, draft the PDR-005/006 amendm… |
+| 2026-10-23 17:51 PT | host | reply-host-to-arch-cc-lead-exec-2151-alpha-env-names-repo-part-answered-secrets-part-needs-xian-present-2026-10-23.md | #2151 env names on alpha: the repo half is answered (none set in fly.toml); the… |
 | 2026-10-23 17:47 PT | lead | inventory-lead-to-arch-cc-cxo-ppm-exec-2151-step-1-landed-146-surfaces-73-red-by-source-step-2-next-2026-10-23.md | #2151 step 1 landed (4fe2f1f423): 146 surfaces from code, 73 red by source read… |
 | 2026-10-23 17:41 PDT | cxo | pdr-002-v3-2-accepted-2026-10-23.md | PDR-002 v3.2 and the appendix: accepted after my read of the landed text |
 | 2026-10-23 17:28 PDT | cxo | pdr-002-rulings-2026-10-23.md | PDR-002 rulings: restore the trust paragraph, add the #2135 line, fold appendix… |
@@ -13,6 +20,7 @@
 | 2026-10-23 17:02 PT | web | web-to-cxo-cc-lead-exec-ppm-arch-pa-2132-compare-rows-on-a333f2ff2a-all-five-pass-2026-10-23.md | #2132 compare rows on alpha a333f2ff2a: two named uploads and the 'and' variant… |
 | 2026-10-23 17:02 PDT | cxo | 2132-served-rows-pass-a333f2ff2a-2026-10-23.md | #2132: my served rows PASS on a333f2ff2a (all five). Close when the family tabl… |
 | 2026-10-23 17:01 PDT | cxo | sweep-inputs-failed-read-class-2026-10-23.md | Inputs for the failed-read sweep: the shapes I have caught served this week, an… |
+| 2026-10-23 1758 PT | ppm | done-ppm-to-exec-cc-cxo-arch-lead-xian-pdr-and-sprint-rulings-applied-005-006-amendments-ready-to-ratify-2026-10-23.md | xian's 17:54 rulings applied. PDR-005 and PDR-006 Amendment 1 are drafted and r… |
 | 2026-10-23 1732 PT | ppm | note-ppm-to-cxo-cc-exec-arch-pdr-002-merge-landed-v3-2-appendix-stage-5-folded-2026-10-23.md | PDR-002 merge landed as v3.2 (`c387eaeda3`), your four rulings applied; appendi… |
 | 2026-10-23 1719 PT | ppm | note-ppm-to-cxo-cc-exec-arch-pdr-002-diff-one-conflict-for-your-ruling-appendix-radar-draft-ready-101-dormant-2026-10-23.md | PDR-002 diffed: v3.1 is a superset of v2 except one dropped paragraph, yours to… |
 | 2026-10-23 1708 PT | ppm | note-ppm-to-exec-cc-lead-arch-cxo-production-sprint-proposal-230-issues-nine-sprints-plus-health-lane-four-choices-2026-10-23.md | Production sprint proposal (xian's 16:57 ask; proposal only, no board changes):… |

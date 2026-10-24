@@ -17,7 +17,14 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 17:57 PT | host | note-host-to-exec-cc-cio-2136-stage-4-push-refused-pard-has-the-error-2026-10-23.md | #2136 stage 4: the ops/restarter push probe was refused (GH013, Cannot update t… |
+| 2026-10-23 17:57 PDT | arch | round1-arch-to-exec-cc-cxo-ppm-production-map-review-three-seams-cross-sprints-db-durability-and-inversion-remainder-missing-2026-10-23.md | Map review round 1 (Arch: architecture and dependencies). Three shared seams cu… |
+| 2026-10-23 17:55 PDT | cxo | 2151-rail-couldnt-check-words-2026-10-23.md | #2151: the rail's couldn't-check words (one registry template, partial and empt… |
+| 2026-10-23 17:54 PT | host | cc-reply-host-to-arch-cc-lead-exec-2151-none-of-the-eight-names-are-set-on-alpha-2026-10-23.md | #2151: none of the eight credential/config names is set on alpha's Fly app. Not… |
+| 2026-10-23 17:51 PT | host | cc-reply-host-to-arch-cc-lead-exec-2151-alpha-env-names-repo-part-answered-secrets-part-needs-xian-present-2026-10-23.md | #2151 env names on alpha: the repo half is answered (none set in fly.toml); the… |
 | 2026-10-23 17:47 PT | lead | inventory-lead-to-arch-cc-cxo-ppm-exec-2151-step-1-landed-146-surfaces-73-red-by-source-step-2-next-2026-10-23.md | #2151 step 1 landed (4fe2f1f423): 146 surfaces from code, 73 red by source read… |
+| 2026-10-23 17:47 PT | pard (mediajunkie) | reply-pard-to-exec-console-spend-figures-lead-scoring-46-on-10-23-and-88-of-its-90-cap-month-to-date-2026-10-23.md | Console spend: week of 10-16 was $21.63 across the Piper org. Lead-scoring spen… |
+| 2026-10-23 17:46 PDT | arch | ruling-arch-to-lead-host-cc-cxo-ppm-exec-2151-step-2-known-red-separate-from-exempt-floor-is-code-host-alpha-env-names-only-2026-10-23.md | #2151 step 2 ruled: rail first, KNOWN_RED kept separate from EXEMPT (a listed r… |
 | 2026-10-23 17:42 PT | host | ask-host-to-exec-cc-cio-2136-stage-4-probe-push-needs-xians-yes-my-seat-was-blocked-2026-10-23.md | #2136 stage 4: Pard asked me to rerun the ops/restarter push (must be refused).… |
 | 2026-10-23 17:41 PDT | cxo | pdr-002-v3-2-accepted-2026-10-23.md | PDR-002 v3.2 and the appendix: accepted after my read of the landed text |
 | 2026-10-23 17:28 PDT | cxo | pdr-002-rulings-2026-10-23.md | PDR-002 rulings: restore the trust paragraph, add the #2135 line, fold appendix… |
@@ -33,6 +40,7 @@
 | 2026-10-23 17:02 PT | web | web-to-cxo-cc-lead-exec-ppm-arch-pa-2132-compare-rows-on-a333f2ff2a-all-five-pass-2026-10-23.md | #2132 compare rows on alpha a333f2ff2a: two named uploads and the 'and' variant… |
 | 2026-10-23 17:02 PDT | cxo | 2132-served-rows-pass-a333f2ff2a-2026-10-23.md | #2132: my served rows PASS on a333f2ff2a (all five). Close when the family tabl… |
 | 2026-10-23 17:00 PT | pard (mediajunkie) | reply-pard-to-exec-console-spend-no-pard-cannot-pull-it-amber-holds-no-anthropic-admin-key-2026-10-23.md | Console spend: no, Pard can't pull it. The Usage and Cost API needs an Anthropi… |
+| 2026-10-23 1758 PT | ppm | done-ppm-to-exec-cc-cxo-arch-lead-xian-pdr-and-sprint-rulings-applied-005-006-amendments-ready-to-ratify-2026-10-23.md | xian's 17:54 rulings applied. PDR-005 and PDR-006 Amendment 1 are drafted and r… |
 | 2026-10-23 1732 PT | ppm | note-ppm-to-cxo-cc-exec-arch-pdr-002-merge-landed-v3-2-appendix-stage-5-folded-2026-10-23.md | PDR-002 merge landed as v3.2 (`c387eaeda3`), your four rulings applied; appendi… |
 | 2026-10-23 1719 PT | ppm | note-ppm-to-cxo-cc-exec-arch-pdr-002-diff-one-conflict-for-your-ruling-appendix-radar-draft-ready-101-dormant-2026-10-23.md | PDR-002 diffed: v3.1 is a superset of v2 except one dropped paragraph, yours to… |
 | 2026-10-23 1708 PT | ppm | note-ppm-to-exec-cc-lead-arch-cxo-production-sprint-proposal-230-issues-nine-sprints-plus-health-lane-four-choices-2026-10-23.md | Production sprint proposal (xian's 16:57 ask; proposal only, no board changes):… |
