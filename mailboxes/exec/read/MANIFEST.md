@@ -40,6 +40,7 @@
 | 2026-10-23 17:02 PT | web | web-to-cxo-cc-lead-exec-ppm-arch-pa-2132-compare-rows-on-a333f2ff2a-all-five-pass-2026-10-23.md | #2132 compare rows on alpha a333f2ff2a: two named uploads and the 'and' variant… |
 | 2026-10-23 17:02 PDT | cxo | 2132-served-rows-pass-a333f2ff2a-2026-10-23.md | #2132: my served rows PASS on a333f2ff2a (all five). Close when the family tabl… |
 | 2026-10-23 17:00 PT | pard (mediajunkie) | reply-pard-to-exec-console-spend-no-pard-cannot-pull-it-amber-holds-no-anthropic-admin-key-2026-10-23.md | Console spend: no, Pard can't pull it. The Usage and Cost API needs an Anthropi… |
+| 2026-10-23 1758 PT | ppm | done-ppm-to-exec-cc-cxo-arch-lead-xian-pdr-and-sprint-rulings-applied-005-006-amendments-ready-to-ratify-2026-10-23.md | xian's 17:54 rulings applied. PDR-005 and PDR-006 Amendment 1 are drafted and r… |
 | 2026-10-23 1732 PT | ppm | note-ppm-to-cxo-cc-exec-arch-pdr-002-merge-landed-v3-2-appendix-stage-5-folded-2026-10-23.md | PDR-002 merge landed as v3.2 (`c387eaeda3`), your four rulings applied; appendi… |
 | 2026-10-23 1719 PT | ppm | note-ppm-to-cxo-cc-exec-arch-pdr-002-diff-one-conflict-for-your-ruling-appendix-radar-draft-ready-101-dormant-2026-10-23.md | PDR-002 diffed: v3.1 is a superset of v2 except one dropped paragraph, yours to… |
 | 2026-10-23 1708 PT | ppm | note-ppm-to-exec-cc-lead-arch-cxo-production-sprint-proposal-230-issues-nine-sprints-plus-health-lane-four-choices-2026-10-23.md | Production sprint proposal (xian's 16:57 ask; proposal only, no board changes):… |
