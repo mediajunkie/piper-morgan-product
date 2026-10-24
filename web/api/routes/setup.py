@@ -28,9 +28,9 @@ from services.auth.session_cookies import set_session_cookies
 from services.config.llm_config_service import KEY_CHECK_UNAVAILABLE_MESSAGE, KeyCheckUnavailable
 from services.database.models import User
 from services.database.session_factory import AsyncSessionFactory
+from services.infrastructure.deployment import is_hosted_deployment
 from services.security.field_encryption import KeyStoreConfigError
 from services.security.user_api_key_service import UserAPIKeyService
-from services.infrastructure.deployment import is_hosted_deployment
 
 router = APIRouter(prefix="/api/v1/setup", tags=["setup"])
 logger = structlog.get_logger(__name__)

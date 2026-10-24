@@ -9570,16 +9570,17 @@ class IntentService:
         self.logger.info("Processing local-git status query")
         from services.infrastructure.deployment import is_hosted_deployment
         from services.integrations.local_git import LocalGitInspector
+        from services.integrations.local_git.inspector import LocalGitStatus
 
         # #2151 (CXO + Arch 10-23): on a hosted server this read would be the SERVER's
         # working tree presented as the user's (a substituted read), so it declines by
         # the deployment signal, never by probing for a tree. A local install whose
         # read fails gets the same plain decline, not the raw error string.
         hosted = is_hosted_deployment()
-        status = None if hosted else LocalGitInspector().get_status()
+        status = LocalGitStatus(error="hosted") if hosted else LocalGitInspector().get_status()
 
         if hosted or status.error:
-            if status is not None:
+            if not hosted:
                 self.logger.info("local_git_status_unreadable", error=status.error)
             return IntentProcessingResult(
                 success=True,
@@ -9589,7 +9590,7 @@ class IntentService:
                     "action": "local_git_status_query",
                     "context": {
                         "declined": "hosted" if hosted else "unreadable",
-                        **({"error": status.error} if status is not None else {}),
+                        **({} if hosted else {"error": status.error}),
                     },
                 },
                 workflow_id=workflow_id,
