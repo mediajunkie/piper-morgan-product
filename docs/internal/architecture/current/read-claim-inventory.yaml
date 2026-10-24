@@ -34,7 +34,9 @@
 #                     CREDENTIALS / MCP_ENABLED) count as THIS user's connection (via=env).
 #   ENV-REPO          repo_resolver.resolve_repo path 3: PIPER_DEFAULT_REPO (a host-wide
 #                     env var) resolves when the user has no default; replies built on it
-#                     do not name the repo. Whether the alpha host sets it: unverified.
+#                     do not name the repo. Not set on alpha (HOST 10-23 17:54: none of
+#                     the eight env names is set; Fly secrets read with xian present), so
+#                     on alpha this is test/dev only until a host sets it.
 #   GH-NONSTRICT      GitHubIntegrationRouter.get_open_issues / get_recent_issues and
 #                     GitHubMCPSpatialAdapter.list_github_issues_direct (non-strict) return
 #                     [] on any error and on an unresolved repo.
