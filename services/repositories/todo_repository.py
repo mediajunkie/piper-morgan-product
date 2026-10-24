@@ -4,7 +4,7 @@ Following established repository patterns with AsyncSessionFactory
 """
 
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 from uuid import UUID
 
 import structlog
@@ -73,10 +73,11 @@ class TodoRepository(BaseRepository):
     async def get_todos_by_owner(
         self,
         owner_id: str,
-        status: Optional[TodoStatus] = None,
+        status: Optional[Union[TodoStatus, str]] = None,
         priority: Optional[TodoPriority] = None,
         context: Optional[str] = None,
         project_id: Optional[str] = None,
+        list_id: Optional[str] = None,
         completed: Optional[bool] = None,
         limit: int = 100,
     ) -> List[domain.Todo]:
@@ -93,6 +94,7 @@ class TodoRepository(BaseRepository):
             priority=priority,
             context=context,
             project_id=project_id,
+            list_id=list_id,
             completed=completed,
             limit=limit,
         )
@@ -101,10 +103,11 @@ class TodoRepository(BaseRepository):
     async def get_todos_by_owner_with_total(
         self,
         owner_id: str,
-        status: Optional[TodoStatus] = None,
+        status: Optional[Union[TodoStatus, str]] = None,
         priority: Optional[TodoPriority] = None,
         context: Optional[str] = None,
         project_id: Optional[str] = None,
+        list_id: Optional[str] = None,
         completed: Optional[bool] = None,
         limit: int = 100,
     ) -> Tuple[List[domain.Todo], int]:
@@ -132,7 +135,10 @@ class TodoRepository(BaseRepository):
         # were latent because the only status-passing caller (the agenda
         # aggregation path) was unreachable until #1460 revived its gate.
         if status:
-            query = query.where(TodoDB.status == status.value)
+            # #2151 TODO-CAP: a plain string status (the service's argument) binds as is.
+            query = query.where(
+                TodoDB.status == (status.value if isinstance(status, TodoStatus) else status)
+            )
         if priority:
             query = query.where(TodoDB.priority == priority.value)
         if context:
@@ -144,6 +150,10 @@ class TodoRepository(BaseRepository):
         # many completed todos a short active list and no cap to say so).
         if completed is not None:
             query = query.where(TodoDB.completed == completed)
+        # #2151 TODO-CAP (Arch 10-24 08:26): the list filter too, so the window and the
+        # total are both over the rows asked for.
+        if list_id:
+            query = query.where(TodoDB.list_id == list_id)
 
         query = query.order_by(
             TodoDB.priority.desc(), TodoDB.due_date.asc().nulls_last(), TodoDB.created_at.desc()
@@ -165,7 +175,10 @@ class TodoRepository(BaseRepository):
         # DataError "expected str, got TodoStatus"; same class as #1460's fix
         # in get_todos_by_owner above).
         if status:
-            query = query.where(TodoDB.status == status.value)
+            # #2151 TODO-CAP: a plain string status (the service's argument) binds as is.
+            query = query.where(
+                TodoDB.status == (status.value if isinstance(status, TodoStatus) else status)
+            )
 
         query = query.order_by(TodoDB.priority.desc(), TodoDB.due_date.asc().nulls_last())
 

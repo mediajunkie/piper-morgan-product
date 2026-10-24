@@ -192,8 +192,8 @@ class TodoManagementService:
         """List todos for a user.
 
         #2151 TODO-CAP: returns a ``TodoPage`` (a list) whose ``capped`` says more
-        rows matched the SQL filters (owner, completion) than the ``TODO_LIST_CAP``
-        window held. A reply over a capped list says so.
+        rows matched (owner, list, status, completion; all filtered in SQL) than the
+        ``TODO_LIST_CAP`` window held. A reply over a capped list says so.
 
         Args:
             user_id: Owner ID to filter by
@@ -216,26 +216,16 @@ class TodoManagementService:
 
             # #2151 TODO-CAP: completion filtered in SQL, so the window holds the
             # rows asked for.
+            # #2151 TODO-CAP (Arch 10-24 08:26): every filter in SQL, so the window and
+            # the total are both over the rows asked for.
             todos, total = await todo_repo.get_todos_by_owner_with_total(
                 user_id,
+                status=status,
+                list_id=list_id,
                 completed=None if include_completed else False,
                 limit=TODO_LIST_CAP,
             )
-            capped = total > len(todos)
-
-            # Filter by list if specified
-            if list_id:
-                todos = [t for t in todos if t.list_id == list_id]
-
-            # Filter by status if specified
-            if status:
-                todos = [t for t in todos if t.status == status]
-
-            # Filter completed if requested
-            if not include_completed:
-                todos = [t for t in todos if not t.completed]
-
-            return TodoPage(todos, capped=capped)
+            return TodoPage(todos, capped=total > len(todos))
 
     async def get_todo(self, todo_id: UUID, user_id: UUID) -> Optional[Todo]:
         """Get a specific todo by ID.

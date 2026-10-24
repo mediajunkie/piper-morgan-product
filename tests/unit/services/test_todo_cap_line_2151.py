@@ -124,3 +124,37 @@ async def test_a_capped_list_says_so_in_cxos_words():
 async def test_an_uncapped_list_has_no_cap_line():
     assert await _list_reply(TodoPage([_todo(1)], capped=False)) == "FAKE LIST"
     assert await _list_reply([_todo(1)]) == "FAKE LIST"
+
+
+# ── Arch 10-24 08:26: the list and status filters run in SQL too ──
+
+
+@pytest.mark.asyncio
+async def test_list_and_status_filters_are_in_sql_before_the_limit():
+    session = _CapturingSession()
+    await TodoRepository(session).get_todos_by_owner_with_total(
+        "owner-1", status="pending", list_id="list-x", completed=False, limit=TODO_LIST_CAP
+    )
+    where, sql = _where(session.statements[0])
+    assert "list_id" in where and "'list-x'" in where
+    assert "status" in where and "'pending'" in where
+    assert "LIMIT 100" in sql
+
+
+@pytest.mark.asyncio
+async def test_a_list_past_the_first_hundred_comes_back_whole_and_uncapped():
+    """120 active rows, 10 on list X ranked after the first 100: the SQL filter returns
+    all 10, the total is 10, and nothing is capped (the post-filter returned the matches
+    among the first 100 and said capped)."""
+    list_x = [_todo(i) for i in range(10)]
+    repo_read = AsyncMock(return_value=(list_x, 10))
+    out = await _list(repo_read, list_id="list-x")
+    assert len(out) == 10 and out.capped is False
+    assert repo_read.await_args.kwargs["list_id"] == "list-x"
+
+
+@pytest.mark.asyncio
+async def test_the_status_filter_is_passed_down():
+    repo_read = AsyncMock(return_value=([], 0))
+    await _list(repo_read, status="blocked")
+    assert repo_read.await_args.kwargs["status"] == "blocked"
