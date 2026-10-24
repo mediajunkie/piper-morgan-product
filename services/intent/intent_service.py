@@ -9554,6 +9554,29 @@ class IntentService:
                 error_type="list_branches_error",
             )
 
+    @staticmethod
+    def _activity_read_failed_result(
+        activity: Any, intent: Intent, source_noun: str, unknown_clause: str
+    ) -> Optional["IntentProcessingResult"]:
+        """#2151: ``get_recent_activity`` marks a read that didn't happen with
+        ``read_failed`` (no credential, no response, an exception); before this the
+        handlers computed it as zero activity ("No commits found …"). CXO's template."""
+        if not isinstance(activity, dict) or not activity.get("read_failed"):
+            return None
+        from services.intent_service.rail_read_failure import RAIL_READ_FAILED_TEMPLATE
+
+        return IntentProcessingResult(
+            success=False,
+            message=RAIL_READ_FAILED_TEMPLATE.format(
+                source_noun=source_noun, unknown_clause=unknown_clause
+            ),
+            intent_data={
+                "category": intent.category.value if intent.category else "analysis",
+                "action": intent.action,
+                "context": {"read_failed": activity.get("read_failed")},
+            },
+        )
+
     async def _handle_local_git_status_query(
         self, intent: Intent, workflow_id: str
     ) -> IntentProcessingResult:
@@ -13105,6 +13128,12 @@ class IntentService:
             activity = await github_service._github_agent.get_recent_activity(
                 days=days, repository=repository, user_id=_principal_from_intent(intent)
             )
+            # #2151 ACTIVITY-READ-FAILED: a read that didn't happen is never zero activity.
+            _failed = self._activity_read_failed_result(
+                activity, intent, f"your GitHub commits in {repository}", "what changed in the code"
+            )
+            if _failed is not None:
+                return _failed
 
             # Extract commits from activity
             commits = activity.get("commits", [])
@@ -13416,6 +13445,15 @@ class IntentService:
             activity = await github_service._github_agent.get_recent_activity(
                 days=days, repository=repository, user_id=_principal_from_intent(intent)
             )
+            # #2151 ACTIVITY-READ-FAILED: a read that didn't happen is never zero activity.
+            _failed = self._activity_read_failed_result(
+                activity,
+                intent,
+                f"your GitHub activity in {repository}",
+                "what your repository metrics are",
+            )
+            if _failed is not None:
+                return _failed
 
             # Route to appropriate analysis helper
             if data_type == "repository_metrics":

@@ -658,9 +658,6 @@ KNOWN_RED: Dict[str, str] = {
     "list_prs": "GH-NONSTRICT",
     "stale_prs": "GH-NONSTRICT",
     "learn_pattern": "GH-NONSTRICT",
-    "analyze_commits": "ACTIVITY-READ-FAILED",
-    "analyze_data": "ACTIVITY-READ-FAILED",
-    "generate_content": "ACTIVITY-READ-FAILED",
     "set_default_repo": "SWALLOW-EMPTY",
     "show_standup": "SWALLOW-EMPTY",
     # Notion
@@ -673,7 +670,7 @@ KNOWN_RED: Dict[str, str] = {
     # Piper's own store
     "explain_suggestion": "SWALLOW-EMPTY",
 }
-KNOWN_RED_CEILING = 23
+KNOWN_RED_CEILING = 20
 
 
 # ─── Harness ────────────────────────────────────────────────────────────────
