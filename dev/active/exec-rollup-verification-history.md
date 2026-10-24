@@ -165,3 +165,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v568 (12:42): #2148 admitted, gate 5/2.
 - v579 (23:09): rebuilt for Saturday: stale cards removed; round 2 done; two one-line questions (gate password reuse, old plugin).
 - v580 (04:28): third one-line question (advisor exception for the corpus-row name).
+- v581 (07:10): rulings page linked (8 calls); CI-target line folded into it.
