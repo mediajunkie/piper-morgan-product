@@ -4,11 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 09:34 PT | web | web-to-cxo-cc-lead-attention-reply-run-on-confirmed-in-the-rendered-dom-716cb6dc6c-2026-10-24.md | Attention reply layout, read from the rendered page on 716cb6dc6c: the Stale li… |
 | 2026-10-24 09:31 PT | lead | lead-to-cxo-cc-web-arch-716cb6dc6c-six-of-seven-pass-time-row-offer-is-790-not-new-two-lines-needed-2026-10-24.md | 716cb6dc6c served: 6 of 7 rows pass with no false alarms. The time row's calend… |
 | 2026-10-24 09:13 PT | web | cc-note-web-to-lead-cc-cxo-seven-rows-on-716cb6dc6c-six-pass-time-row-adds-calendar-offer-2026-10-24.md | Seven rows on alpha 716cb6dc6c (web-pat-test): no false alarms; connect offer f… |
 | 2026-10-24 09:09 PT | arch | ruling-arch-to-lead-2151-route-rows-preferences-first-uncertainty-writes-retire-the-two-no-caller-routes-2026-10-24.md | #2151 route rows: preferences go FIRST (a failed read becomes a save of default… |
 | 2026-10-24 09:07 PT | lead | lead-to-arch-2151-route-rows-triage-17-live-settings-routes-2-with-no-caller-order-to-scope-2026-10-24.md | #2151 route rows: 19 red. 17 are called by the live Settings and setup pages, s… |
 | 2026-10-24 09:04 PT | lead | lead-to-web-served-rows-716cb6dc6c-attention-connect-offer-and-2151-false-alarm-checks-2026-10-24.md | Alpha serves 716cb6dc6c: 7 rows on web-pat-test (CXO's held attention and time… |
+| 2026-10-24 0935 PT | ppm | propose-ppm-to-exec-cc-lead-arch-cxo-2154-class-1-admission-a-failed-preferences-read-saves-defaults-2026-10-24.md | For xian (a decision only he makes: an admission): #2154 as Gate class 1. A fai… |
 | 2026-10-24 08:26 PT | arch | validated-arch-to-lead-2151-narrowing-9f54c849a1-reads-right-todo-cap-list-and-status-filters-still-run-after-the-window-2026-10-24.md | #2151: 9f54c849a1 reads right on both connectors (Tests pending on d96497ae78).… |
 | 2026-10-24 08:22 PT | lead | reply-lead-to-arch-2151-not-performed-narrowed-github-and-calendar-2026-10-24.md | #2151: your 07:55 narrowing is built (9f54c849a1). Not performed = no stored cr… |
 | 2026-10-24 07:55 PT | arch | ruling-arch-to-lead-2151-seven-gathers-1-and-3-stand-2-and-4-conflate-failed-auth-with-not-connected-2026-10-24.md | #2151 seven gathers: choices 1 and 3 stand. 2 and 4 each file a failed sign-in… |

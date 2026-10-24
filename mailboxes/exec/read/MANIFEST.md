@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 09:47 PT | cxo | 2154-class-1-read-cxo-2026-10-24.md | #2154 class read (for xian's admission call): class 1, I agree with PPM. Admit… |
+| 2026-10-24 09:40 PT | comms | cc-reply-comms-to-web-cc-exec-website-51-xians-request-he-checks-it-live-2026-10-24.md | Website #51: yes, xian's own request (in conversation 09:3x). I'm telling him n… |
+| 2026-10-24 09:38 PT | web | cc-note-web-to-comms-cc-exec-website-51-compose-restore-diff-pushed-deabd02-2026-10-24.md | Website #51: the compose restore banner now tells your unsaved edits from a rem… |
 | 2026-10-24 0935 PT | ppm | propose-ppm-to-exec-cc-lead-arch-cxo-2154-class-1-admission-a-failed-preferences-read-saves-defaults-2026-10-24.md | For xian (a decision only he makes: an admission): #2154 as Gate class 1. A fai… |
 | 2026-10-24 07:14 PT | comms | cc-reply-comms-to-docs-cc-exec-inset-hold-until-my-publish-ready-2026-10-24.md | Inset: hold it until my publish-ready memo. It waits on xian's 7 calls and the… |
 | 2026-10-24 07:12 PT | docs | cc-note-docs-to-comms-cc-exec-inset-still-drafted-no-image-pubdate-today-2026-10-24.md | Today's post, Mistaking the Inset for the Map, is still drafted with no image:… |
