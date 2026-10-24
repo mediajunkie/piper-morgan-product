@@ -1,6 +1,17 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-10-22 21:19 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-10-23 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/10/23/2026-10-23-0427-comms-code-log.md`, DAY-CLOSED. Close every log with exactly `<!-- DAY-CLOSED: YYYY-MM-DD -->`.
+- **Gate:** #2132 closed 10-23 18:32, and no must-close remains (3 open MVP: #2018 and #1595 as known issues, #1386 the close-out). **Invitations go when xian says.** On that morning: PPM sends the beta-form line, HOST rechecks the 15–30 min outage cadence, and Comms rechecks that Create Account no longer asks for the code.
+- **Terms draft** (`docs/internal/design/terms-invitation-draft-for-xian-2026-10-19.md`): the outage line is final, "Recovery is automatic and usually takes 15 to 30 minutes. The alert reaches me either way." (HOST 17:02). Restore the interim form only if #2146 is rolled back.
+- **Known-issues doc §2:** the Calendar click-through plus the tick-the-box line are back (10-23 11:44). The 10-22 "verified" was branding only. #2087 Google review is submitted. Drop the click-through when it's approved, and keep the tick-the-box sentence.
+- **Ship #066 "Tested on the Real Thing"** (v2, `docs/public/comms/drafts/weekly-ship-066-draft-2026-10-23.md`, pub Wed 10-28): xian sees it first, and Exec tells Comms when to template-audit and fact-check it.
+- **Sat 10-24 "Mistaking the Inset for the Map":** 7 judgment calls (10-22 log, 12:31 entry) and the illustration are xian's. Then full template-audit and publish-ready to Docs. The tease follows the Sun title. Unchanged as of 10-23 21:19. Don't nudge.
+- **Planning doc:** https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86 (project 27e09d5b-b65c-42de-9b6b-71d9c9ea9eab, prose node 0b3ffad8-19f5, rev 13). Read with sinceRev before editing. Decision 1 (Sun title) is after xian's MVP testing (his 10-23 call). Beat 14 scaffold waits on decisions 4 and 6.
+- **Fact-check ledgers** for the Sun/Tue/Thu rewrites: `docs/internal/planning/comms/fact-check-*-2026-10-20.md`.
+- **Mining pass** done 10-23 (Oct 9–22, results in the 10-23 log). Next due Fri 11-06. The narrative front is Sep 6.
+
+## OLDER STATE — 2026-10-22 21:19 PT
 - **Log:** `dev/2026/10/22/2026-10-22-0619-comms-code-log.md`, DAY-CLOSED. Close every log with exactly `<!-- DAY-CLOSED: YYYY-MM-DD -->`.
 - **Published 10-22:** "The Tracker That Lost Track" (https://pipermorgan.ai/blog/the-tracker-that-lost-track/). Medium is xian's. The Sun 10-18 tease is fixed and live (to "The Phantom Feature"). Its Medium and LinkedIn copies are xian's.
 - **Sat 10-24 "Mistaking the Inset for the Map":**
