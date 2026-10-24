@@ -112,7 +112,7 @@ surfaces:
   verdict: green
   notes: >-
     The default zone is named when it is used. Shallow below the handler:
-    user_timezone_name and the calendar router were not traced.
+    user_timezone_name and the calendar router were not traced. STEP 2 (forcing test, 2026-10-23): a failed calendar read returned success=True with events_read_established=False and the reply said "(No meetings - great day for deep work!)" (CAL-SWALLOW). FIXED 2ea350c054: it says it couldn't check.
 
 - id: get_capabilities
   kind: rail
@@ -238,11 +238,11 @@ surfaces:
   effect: READ
   reads: provenance of a prior suggestion (the assembler's last provenance map)
   handler: services/intent_service/canonical_handlers.py:CanonicalHandlers._handle_provenance_query
-  states: {verified: distinct, failed: n/a, narrowed: n/a, not_performed: distinct, substituted: n/a}
-  verdict: green
+  states: {verified: distinct, failed: conflated:verified, narrowed: n/a, not_performed: distinct, substituted: n/a}
+  verdict: red
   notes: >-
     Shallow: the handler was not read line by line. It reads in-process provenance, not a
-    remote or DB source, so a failed read has no remote leg.
+    remote or DB source, so a failed read has no remote leg. STEP 2 (forcing test, 2026-10-23): the DB fallback (get_most_recent_turn_provenance) failure is swallowed into "I don't have a clear record" (SWALLOW-EMPTY).
 
 - id: get_contextual_guidance
   kind: rail
@@ -288,71 +288,76 @@ surfaces:
   effect: WRITE
   reads: the user's project by name (resolve target)
   handler: services/intent_service/canonical_handlers.py:CanonicalHandlers._handle_archive_project
-  states: {verified: distinct, failed: conflated:not_performed, narrowed: n/a, not_performed: distinct, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: n/a}
   verdict: green
   notes: >-
     Resolves the target with an owner-scoped DB lookup; not-found names the project. A
     raise falls through (RAIL-FALLTHROUGH) and nothing is claimed archived. Shallow: the
-    message sites were scanned, not every branch.
+    message sites were scanned, not every branch. FIXED 7c13b9f8a5: a raised write no longer falls through to the floor; it says it can't confirm and where to look (RAIL_WRITE_SOURCES).
 
 - id: restore_project
   kind: rail
   effect: WRITE
   reads: the user's archived project by name (resolve target)
   handler: services/intent_service/canonical_handlers.py:CanonicalHandlers._handle_restore_project
-  states: {verified: distinct, failed: conflated:not_performed, narrowed: n/a, not_performed: distinct, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: n/a}
   verdict: green
-  notes: Same shape as archive_project. Shallow.
+  notes: >-
+    Same shape as archive_project. Shallow. FIXED 7c13b9f8a5: a raised write no longer falls through to the floor; it says it can't confirm and where to look (RAIL_WRITE_SOURCES).
 
 - id: add_project
   kind: rail
   effect: WRITE
   reads: the user's projects (duplicate check) and an optional named repo
   handler: services/intent_service/canonical_handlers.py:CanonicalHandlers._handle_add_project
-  states: {verified: distinct, failed: conflated:not_performed, narrowed: n/a, not_performed: distinct, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: n/a}
   verdict: green
-  notes: Write path; no absence claim found on a failed read. Shallow.
+  notes: >-
+    Write path; no absence claim found on a failed read. Shallow. FIXED 7c13b9f8a5: a raised write no longer falls through to the floor; it says it can't confirm and where to look (RAIL_WRITE_SOURCES).
 
 - id: link_repo
   kind: rail
   effect: WRITE
   reads: the user's project by name and the repository record
   handler: services/intent_service/canonical_handlers.py:CanonicalHandlers._handle_link_repo
-  states: {verified: distinct, failed: conflated:not_performed, narrowed: n/a, not_performed: distinct, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: n/a}
   verdict: green
-  notes: Write path; target resolution is an owner-scoped DB read. Shallow.
+  notes: >-
+    Write path; target resolution is an owner-scoped DB read. Shallow. FIXED 7c13b9f8a5: a raised write no longer falls through to the floor; it says it can't confirm and where to look (RAIL_WRITE_SOURCES).
 
 - id: unlink_repo
   kind: rail
   effect: DESTRUCTIVE
   reads: the project's linked repositories (resolve target)
   handler: services/intent_service/canonical_handlers.py:CanonicalHandlers._handle_unlink_repo
-  states: {verified: distinct, failed: conflated:not_performed, narrowed: n/a, not_performed: distinct, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: n/a}
   verdict: green
-  notes: Confirms first; owner-scoped DB read. Shallow.
+  notes: >-
+    Confirms first; owner-scoped DB read. Shallow. FIXED 7c13b9f8a5: a raised write no longer falls through to the floor; it says it can't confirm and where to look (RAIL_WRITE_SOURCES).
 
 - id: close_issue
   kind: rail
   effect: DESTRUCTIVE
   reads: open issues of the default repo (fuzzy title match) when no number is given
   handler: services/intent/intent_service.py:IntentService._handle_close_issue_query
-  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: conflated:verified}
+  states: {verified: distinct, failed: conflated:verified, narrowed: n/a, not_performed: distinct, substituted: conflated:verified}
   texts:
     failed: 'no match or failed search -> "I can close a particular issue if you give me its number, like "close #123". ..."'
-  verdict: green
+  verdict: red
   notes: >-
     _fuzzy_find_issues returns [] on error (GH-NONSTRICT), but the no-match reply makes no
     absence claim; it asks for a number. ENV-REPO can pick the repo, and the reply names
-    the matched issue for confirmation before any close, so no data claim rests on it.
+    the matched issue for confirmation before any close, so no data claim rests on it. STEP 2 (forcing test, 2026-10-23): a failed fuzzy search is swallowed as "no match" and the reply asks for a number without saying the search could not run (GH-NONSTRICT).
 
 - id: reopen_issue
   kind: rail
   effect: DESTRUCTIVE
   reads: closed issues of the default repo (fuzzy match) when no number is given
   handler: services/intent/intent_service.py:IntentService._handle_reopen_issue_query
-  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: conflated:verified}
-  verdict: green
-  notes: Same shape as close_issue (no absence claim on a failed search). Shallow.
+  states: {verified: distinct, failed: conflated:verified, narrowed: n/a, not_performed: distinct, substituted: conflated:verified}
+  verdict: red
+  notes: >-
+    Same shape as close_issue (no absence claim on a failed search). Shallow. STEP 2 (forcing test, 2026-10-23): same as close_issue (GH-NONSTRICT).
 
 - id: comment_issue
   kind: rail
@@ -361,7 +366,8 @@ surfaces:
   handler: services/intent/intent_service.py:IntentService._handle_comment_issue_query
   states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: n/a}
   verdict: green
-  notes: The "couldn't find" texts are about parsing the request, not the user's data. Shallow.
+  notes: >-
+    The "couldn't find" texts are about parsing the request, not the user's data. Shallow. STEP 2 (forcing test, 2026-10-23): the native POST's None was reported as "Successfully added comment" (#2152). FIXED 7c13b9f8a5 (CXO's outcome-unknown line).
 
 - id: update_issue
   kind: rail
@@ -463,11 +469,11 @@ surfaces:
   effect: WRITE
   reads: the user's registered repos and connector repo search for a bare name
   handler: services/intent/intent_service.py:IntentService._handle_set_default_repo
-  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: n/a}
-  verdict: green
+  states: {verified: distinct, failed: conflated:verified, narrowed: n/a, not_performed: distinct, substituted: n/a}
+  verdict: red
   notes: >-
     _resolve_bare_repo_name swallows lookup failures to None, and the caller asks for the
-    owner/name form; it never says the repo doesn't exist.
+    owner/name form; it never says the repo doesn't exist. STEP 2 (forcing test, 2026-10-23): after the registry and connector lookups fail, the reply is the "doesn't look like owner/name" nudge (SWALLOW-EMPTY).
 
 - id: get_default_repo
   kind: rail
@@ -752,11 +758,12 @@ surfaces:
   effect: READ
   reads: the SERVER process's working tree (LocalGitInspector)
   handler: services/intent/intent_service.py:IntentService._handle_local_git_status_query
-  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: conflated:verified}
+  states: {verified: distinct, failed: n/a, narrowed: n/a, not_performed: n/a, substituted: n/a}
   texts:
     verified: "You're on **`{branch}`**, tracking `{upstream}` ..."
     failed: "I couldn't read the local git state: {error}. This query inspects the server's working directory ..."
-  verdict: red
+  verdict: exempt
+  reason: declines in CXO's words on a hosted server (deployment signal) and when the local read fails; reads none of the user's data (8fee74485d / 83ec7edff9)
   notes: >-
     The success reply presents the server checkout's branch and dirty state as the user's
     ("You're on main"). Only the error branch says it is the server's working directory.
