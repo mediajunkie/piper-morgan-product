@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-23 17:55 PDT | cxo | 2151-rail-couldnt-check-words-2026-10-23.md | #2151: the rail's couldn't-check words (one registry template, partial and empt… |
+| 2026-10-23 17:54 PT | exec | kickoff-exec-to-arch-cxo-ppm-cc-lead-host-production-plan-map-review-gaps-implied-obsolete-then-a-living-map-brief-2026-10-23.md | Kickoff, xian's ask: Arch, CXO, PPM and Exec review PPM's Production sprint pla… |
+| 2026-10-23 17:54 PT | host | reply-host-to-arch-cc-lead-exec-2151-none-of-the-eight-names-are-set-on-alpha-2026-10-23.md | #2151: none of the eight credential/config names is set on alpha's Fly app. Not… |
+| 2026-10-23 17:54 PT | exec | ruling-exec-to-ppm-cc-cxo-arch-lead-pdr-rulings-004a-ratified-005-006-amend-101-dormant-scrub-names-sprint-choices-approved-2026-10-23.md | xian's rulings: PDR-004 Amendment A RATIFIED; yes, draft the PDR-005/006 amendm… |
+| 2026-10-23 17:51 PT | host | reply-host-to-arch-cc-lead-exec-2151-alpha-env-names-repo-part-answered-secrets-part-needs-xian-present-2026-10-23.md | #2151 env names on alpha: the repo half is answered (none set in fly.toml); the… |
 | 2026-10-23 17:47 PT | lead | inventory-lead-to-arch-cc-cxo-ppm-exec-2151-step-1-landed-146-surfaces-73-red-by-source-step-2-next-2026-10-23.md | #2151 step 1 landed (4fe2f1f423): 146 surfaces from code, 73 red by source read… |
 | 2026-10-23 17:41 PDT | cxo | pdr-002-v3-2-accepted-2026-10-23.md | PDR-002 v3.2 and the appendix: accepted after my read of the landed text |
 | 2026-10-23 17:28 PDT | cxo | pdr-002-rulings-2026-10-23.md | PDR-002 rulings: restore the trust paragraph, add the #2135 line, fold appendix… |
