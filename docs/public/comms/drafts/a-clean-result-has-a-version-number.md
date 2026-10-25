@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'a-clean-result-has-a-version-number-old-and-new-height-checks.jpg'
+alt: ' An AI ride attendant waves a passenger through using an old, shorter measuring stick, while the passenger points to the taller height requirement mounted beside them.'
 caption: ''
 ---
 
