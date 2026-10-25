@@ -113,6 +113,9 @@
 /* Utility links: inline, separator-joined, small + muted. Token note: the v2 spec calls for .62rem;
    the type scale's smallest is --font-size-xs (.75rem), used here for F3 token-cleanliness (flag at
    UAT if the exact .62 weight is required → add a smaller type token). */
+/* #2156: Send feedback sits on its own line above the utility links, in the secondary colour. */
+.nav-rail-feedback-link { display: block; margin-bottom: var(--space-xs); font-size: var(--font-size-sm); color: var(--color-nav-text-secondary); text-decoration: none; }
+.nav-rail-feedback-link:hover, .nav-rail-feedback-link.active { color: var(--color-nav-text); text-decoration: underline; }
 .nav-rail-utility { margin-bottom: var(--space-sm); font-size: var(--font-size-xs); line-height: 1.6; }
 .nav-rail-utility-link { color: var(--color-nav-divider); text-decoration: none; }
 .nav-rail-utility-link:hover { color: var(--color-nav-text-secondary); }

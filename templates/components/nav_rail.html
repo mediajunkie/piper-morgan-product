@@ -35,13 +35,16 @@
        UTILITIES at the mock's .tag visual weight, NOT primary nav (the body's conversation list is
        primary). Replaces the v1 "everything crammed in the footer" clutter PM flagged. -->
   <div class="nav-rail-footer">
+    <!-- #2156 (CXO 10-24): Send feedback on its own line, in the secondary colour, so it doesn't
+         read as a fifth section link in the divider colour. -->
+    <a href="/feedback" class="nav-rail-feedback-link" id="nav-feedback" data-nav-path="/feedback">Send feedback</a>
+
     <!-- Utility links: separator-joined inline, .62rem, muted. "Check in" is Stage 3+ (link-level gate). -->
     <nav class="nav-rail-utility" id="nav-menu" aria-label="Sections">
       <a href="/standup" class="nav-rail-utility-link nav-item-trust-gated" data-min-trust-stage="3" id="nav-standup" data-nav-path="/standup">Check in</a>
       <a href="/insights" class="nav-rail-utility-link" id="nav-insights" data-nav-path="/insights">Insights</a>
       <a href="/learning" class="nav-rail-utility-link" id="nav-learning" data-nav-path="/learning">Learning</a>
       <a href="/settings" class="nav-rail-utility-link" id="nav-settings" data-nav-path="/settings">Settings</a>
-      <a href="/feedback" class="nav-rail-utility-link" id="nav-feedback" data-nav-path="/feedback">Send feedback</a>
     </nav>
 
     <!-- User-avatar menu (bottom-most; dropdown opens upward). "Your work" = the user's own-content
