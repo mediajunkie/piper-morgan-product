@@ -38,17 +38,17 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 |---|---|---|---|
 | 1 | **PUB: Public Beta gate** (unchanged) | xian's ratified gate (ESSENCE v1.0, 08-30). It runs through the private beta. | 24 |
 | 2 | **H: Honesty sweep** (no false "none", "0", "not connected", "I can't see it") | xian approved the systematic sweep at 16:57: Arch scopes it, and Lead builds it after #2132. Design partners will hit these first, and each one is a Class 3 shape. Arch scoped it at 17:04 as **#2151** (placed Production by PPM), not #1423, because this week's served instances had no broad `except` for #1423's scanner to find. The list below is input to #2151's inventory, not a substitute for it. | 26 |
-| 3 | **D: Data boundaries and terms** (ownership, isolation, keys, Terms, legal) | xian, 10-16: the Terms and legal review come before any outside user beyond the design partners. The owner-id and isolation work is the same promise in code. | 30 |
+| 3 | **D: Data boundaries and terms** (ownership, isolation, keys, Terms, legal) | xian, 10-16: the Terms and legal review come before any outside user beyond the design partners. The owner-id and isolation work is the same promise in code. | 31 |
 | 4 | **C: Connectors complete** (GitHub, Calendar, Notion on the #1232 contract, published OAuth apps) | v18.7(kk): the core connectors must finish to close Production. #2087 (Google verification) is submitted. | 24 |
-| 5 | **V: Conversation reliability** (multi-intent, armed offers, routing, catalog cost) | Correctness of the chat path beyond the honesty class. #2145 and #2149 (catalog cost and size) sit here, with #1011 (slash-command precedence) decided alongside them. | 30 |
-| 6 | **E: Experience polish** (layout, dialog copy, nav) | CXO-led. These are visible and irritating, but not false. | 29 |
+| 5 | **V: Conversation reliability** (multi-intent, armed offers, routing, catalog cost) | Correctness of the chat path beyond the honesty class. #2145 and #2149 (catalog cost and size) sit here, with #1011 (slash-command precedence) decided alongside them. | 31 |
+| 6 | **E: Experience polish** (layout, dialog copy, nav) | CXO-led. These are visible and irritating, but not false. | 28 |
 | 7 | **T: Trust and learning** | #2135 (trust never progresses) makes the PDR-002 gradient inert today. The rest follows it. | 14 |
 | 8 | **Doc: Documents** | Follows #2132's family table. | 8 |
 | 9 | **Dist: Distribution** (marketplace, MCPB, plugin, onboarding skills) | Most of it waits on PUB's MCP path. | 5 |
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 16 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 206 open (#2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 207 open (#2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -124,7 +124,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1915 | [TIMEZONE] 'set it back to pacific time' is refused — accept common zone names/abbreviations (Pacific, PT, … | — |
 | #2167 | UX (class 3): the API key Remove dialog says "we destroy our copy immediately"; backups keep it up to about five days (10-24; proposed for MVP) | — |
 
-### D: Data boundaries and terms (30)
+### D: Data boundaries and terms (31)
 
 | # | Title | was |
 |---|---|---|
@@ -158,6 +158,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2160 | Support intake and the 'tell us' loop: one queue, a named owner, a response window the Terms can state (10-24) | — |
 | #2161 | Incident notice to users: an in-app banner during an outage, an after-note, and prepared words for data l… (10-24) | — |
 | #2162 | Staging instance for destructive tests and promotion rehearsal: synthetic data only, never restored from … (10-24) | — |
+| #2166 | Todo/list/project Share: the UI sends user_to_share_with but the API requires user_id (422); with user_id the API answers 500 (10-24; E → D 10-24, hidden on alpha meanwhile) | — |
 
 ### C: Connectors complete (24)
 
@@ -188,7 +189,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2130 | Calendar asks: no weekday lookup; conflict check answers a multi-person question the user didn't ask | — |
 | #2163 | GitHub identity: one app/token model and whose token serves a read (ADR plus carrying it into the six iss… (10-24) | — |
 
-### V: Conversation reliability (30)
+### V: Conversation reliability (31)
 
 | # | Title | was |
 |---|---|---|
@@ -222,8 +223,9 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2149 | Router catalog size: single op or example additions move unrelated rows; decide a catalog shape before more… | — |
 | #1011 | ARCH-DESIGN: Slash-command dispatch precedence — post-MVP design decision needed | PROD-DESIGN |
 | #2155 | UX: "What's on my agenda?" with no calendar answers about meeting-time analysis (placed 10-24) | — |
+| #2169 | Chat delete: a list-item remove ask gets a confirmation for a different object (the prior turn's to-do) (10-24; class pending Lead's pin) | — |
 
-### E: Experience polish (29)
+### E: Experience polish (28)
 
 | # | Title | was |
 |---|---|---|
@@ -255,7 +257,6 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2099 | Invites page: minting a code does not refresh the list (revoke does) on alpha e801b1a309; xian's read after… | — |
 | #2116 | [UX] "What makes you different?" asked a fifth time is answered with a question about motive, no answer (se… | — |
 | #2156 | UX: Send feedback is a quiet footer link, and absent from the setup wizard and error pages (10-24) | — |
-| #2166 | Todo/list/project Share: the UI sends user_to_share_with but the API requires user_id (422); with user_id the API answers 500 (10-24) | — |
 
 ### T: Trust and learning (14)
 
