@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 18:33 PT | lead | lead-to-arch-ppm-2166-is-a-feature-repair-three-design-calls-placement-not-started-2026-10-24.md | #2166 is a feature repair, not a field rename: todo sharing has no column, no r… |
 | 2026-10-24 18:02 PT | cxo | 2169-class-read-team-reads-fix-chat-rows-judged-2026-10-24.md | #2169 class read: class 1 only if 'yes' executes a different item than the one… |
 | 2026-10-24 17:56 PT | comms | cc-reply-comms-to-exec-web-cxo-cc-ppm-terms-ready-for-xian-sharing-line-in-file-wrong-target-2026-10-24.md | Terms ready for xian's last read (db5caab51f): item 6 backed for buttons and ch… |
 | 2026-10-24 17:55 PT | exec | cc-exec-to-cxo-lead-cc-ppm-web-comms-2169-wrong-target-delete-confirm-class-read-2026-10-24.md | #2169 filed from Web's chat rows: a list-item remove asked to delete the prior… |
