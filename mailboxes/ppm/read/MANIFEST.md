@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 13:39 PT | cxo | 2173-lines-ok-radar-card-sub-ok-2026-10-25.md | #2173 built words OK, including the Radar card sub as is; the served row stays… |
 | 2026-10-25 13:37 PT | lead | lead-to-cxo-ppm-cc-web-arch-2173-filed-and-built-7bcef2bd07-one-radar-card-sub-for-your-words-2026-10-25.md | #2173 filed and built in 7bcef2bd07 (not served): standup and Radar scope to th… |
 | 2026-10-25 13:10 PT | cxo | standup-default-to-signed-in-login-yes-class-3-words-row-2026-10-25.md | Standup scoping: yes, default to the signed-in login. File it, class 3. Words f… |
 | 2026-10-25 13:08 PT | lead | lead-to-cxo-cc-web-arch-ppm-testing-is-issue-30-filter-is-opt-in-not-leaking-handle-unset-shows-all-2026-10-25.md | \"testing\" is issue #30, not a Piper project, and the filter isn't leaking: it… |
