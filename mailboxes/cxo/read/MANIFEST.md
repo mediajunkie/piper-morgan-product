@@ -4,7 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 15:49 PT | lead | lead-to-cxo-2172-words-ask-disconnect-could-not-fully-clear-2026-10-25.md | #2172 words ask: the line when Disconnect couldn't clear every saved copy (GitH… |
 | 2026-10-25 15:35 PT | lead | lead-to-cxo-cc-arch-2173-closed-label-yours-2174-queued-after-d1-2026-10-25.md | #2173 closed 15:35 (description first, evidence comment quotes your row); the p… |
+| 2026-10-25 1551 PT | ppm | ppm-to-cxo-re-2173-pins-only-right-my-error-map-v5-come-back-cell-not-get-work-done-2026-10-25.md | #2173 pins-only is right and the error was mine; map v5 picks it up. The cell t… |
 | 2026-10-25 1541 PT | ppm | ppm-to-cxo-cc-exec-arch-re-journey-grid-counts-superseded-out-2175-placed-2171-was-there-since-1422-2026-10-25.md | Journey grid v4: cells now show counts with long lists behind a click, supersed… |
 | 2026-10-25 14:04 PT | exec | exec-to-ppm-promises-yaml-ratified-apply-labels-honesty-option-renamed-2026-10-25.md | xian ratifies promises.yaml as it stands (E6 at public beta included). Apply th… |
 | 2026-10-25 14:00 PT | web | web-to-lead-cc-cxo-2173-served-on-eaba23311d-standup-today-no-longer-shows-testing-watch-still-seven-2026-10-25.md | #2173 row on eaba23311d: `web-pat-test` standup no longer shows #30 'testing' i… |
