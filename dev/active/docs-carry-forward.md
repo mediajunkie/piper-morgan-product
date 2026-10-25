@@ -7,7 +7,7 @@
 - Clean Result DISTRIBUTED 10-25 (URLs from xian, liPubDate my assumption). Nothing owed from xian.
 - **Mon 10-26 04:12 START**: owe the 10-25 omnibus (Sonnet-subagent brief, 11 role rows, fetch again before nudging, name scan incl. controls/), nudges, CI check. Weekly audit Mon 10-26 (issue opens about 09:20).
 - **Tue 10-27**: PUBLISH "The Caveat That Kept Disappearing" (building, Medium only). Comms memo in inbox (draft 7948b209c2), pre-flight and dry-run done 10-25: `--draft .../the-caveat-that-kept-disappearing.md --image .../the-caveat-that-kept-disappearing-the-photographer-s-incomplete-group-photo.jpg --slug the-caveat-that-kept-disappearing --category building --work-date 2026-09-01`. Re-sync and recheck draft commit first, then archive, row `published`, crosspost reminder to Exec (cc Comms).
-- Open with Exec/xian: rule 8 outside name in nine 10-23 controls files plus eight older files (routing corpus row in 18 files outside dev/). HOST 10-20 log outside first name (reported).
+- Rule 8: xian ruled 10-25 14:09 the corpus-row person is a client, Lead swapped it (566ab3db1c, 0 of 18 outside dev/ per Lead). Open: dev/ logs and history (xian), company name (Exec asked xian). HOST 10-20 log outside first name (reported).
 - Held: #1909 fixtures box (Lead after 10-30), glossary re-verify about 11-30, CIO concept-link inventory by 11-01.
 
 ## OWED (PM's hand)
