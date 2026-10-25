@@ -358,7 +358,7 @@ def main():
 
     # journey grid
     w(
-        "<h2>Journey grid</h2><p>Moment list: CXO draft, unratified. Surface columns (Arch, 10-24): web "
+        "<h2>Journey grid</h2><p>Moment list: ratified by CXO 2026-10-24. Surface columns (Arch, 10-24): web "
         "(Piper's own web app), mcp (the hosted MCP endpoint, including the Claude plugin, which delivers it), "
         "chat (Slack and similar platforms, not in 1.0, so grey, never red). Labels: surface:web, surface:mcp, "
         "surface:chat. Without a surface label an issue sits under &quot;unassigned surface&quot;.</p>"
@@ -419,7 +419,7 @@ def main():
         "Edge rule (Arch, 2026-10-24): an edge means \"must close before\", nothing weaker; whoever adds one "
         "says why in a comment on the blocked issue; a backward edge is drawn red, never hidden; Arch reviews "
         "the edges each Friday. Close states: <code>close:served</code> (a quoted served row on the close) or "
-        "<code>close:pins-only</code> (failure branches pinned, not servable); unlabelled closes show grey.</p>"
+        "<code>close:pins-only</code> (any acceptance branch accepted on tests only, even if the healthy path was served; a closer who is unsure uses this, never close:served); unlabelled closes show grey (CXO rule, 2026-10-24).</p>"
     )
 
     css = (
