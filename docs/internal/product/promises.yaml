@@ -11,7 +11,7 @@
 #   A promise made in the invitation is gated private-beta, because the partners already hold it.
 # Fields: id, wording, source, gate, note (optional).
 
-essence:   # docs/internal/architecture/ESSENCE.md v1.x, "Seven commitments"
+essence:   # docs/internal/architecture/ESSENCE.md v1.1 (ratified 2026-10-25), "Seven commitments"
   - id: E1-portable-context
     wording: "It accumulates its owner's context, and the owner can walk away with it."
     source: ESSENCE commitment 1
@@ -21,7 +21,7 @@ essence:   # docs/internal/architecture/ESSENCE.md v1.x, "Seven commitments"
     wording: "It works on the judgment artifacts its owner is accountable for."
     source: ESSENCE commitment 2
     gate: 1.0
-    note: "GitHub issues first. The PRD/spec half comes after 1.0 (ruling 4); ESSENCE v1.1 (Arch's draft, awaiting xian) says so."
+    note: "GitHub issues first. The PRD/spec half comes after 1.0 (ruling 4); ESSENCE v1.1 (ratified 10-25) says so."
   - id: E3-daily-ritual
     wording: "It shows up once a day, answers whenever asked — and earns the relationship in the first exchange."
     source: ESSENCE commitment 3
@@ -38,10 +38,10 @@ essence:   # docs/internal/architecture/ESSENCE.md v1.x, "Seven commitments"
     gate: 1.0
     note: "The inversion's remainder (#1595 at MVP close, F4)."
   - id: E6-surfaces
-    wording: "PENDING ESSENCE v1.1: commitment 6 is being rewritten (ruling 3). Quote the ratified text here when xian ratifies it."
-    source: ESSENCE commitment 6 (v1.1 draft, Arch, 2026-10-24)
-    gate: 1.0
-    note: "PDR-005 and PDR-006 Amendment 1: web and the hosted MCP/plugin are complementary surfaces."
+    wording: "It meets its user on whichever surface they're working in, as one Piper."
+    source: ESSENCE commitment 6 (v1.1, ratified by xian 2026-10-25 12:40)
+    gate: public-beta
+    note: "Gate changed from 1.0 (v0) to public-beta, for xian's read: v1.1 says 'The MCP and plugin surface ships during the beta, and its completion gates public beta.' The web app is the beta surface. Chat platforms are out of 1.0 ('when they return'), so the map's chat column is grey. PDR-005 and PDR-006 Amendment 1."
   - id: E7-colleague
     wording: "It works WITH its owner, like a colleague — not just FOR them, like an appliance."
     source: ESSENCE commitment 7
