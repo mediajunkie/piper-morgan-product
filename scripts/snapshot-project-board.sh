@@ -1,6 +1,9 @@
 #!/bin/bash
 # Snapshots the "Building Piper Morgan" GitHub Projects v2 board (issue#, state, milestone,
-# Sprint field value, title) to a git-committed TSV file.
+# Sprint field value, title, labels, blocked_by) to a git-committed TSV file.
+# labels: comma-joined, sorted (carries promise:<id>, journey:<moment>, seam:<name> for the
+# living map, round 3). blocked_by: comma-joined issue numbers from GitHub's native
+# issue-dependency relation (an edge means "must close before"; Arch, 10-24). Dates are Pacific.
 #
 # Why this exists: the Sprint field is a Projects v2 custom field with no history/audit trail
 # of its own (confirmed empirically 2026-07-05 -- no REST timeline event, no Enterprise audit
@@ -17,13 +20,13 @@
 set -euo pipefail
 
 PROJECT_ID="PVT_kwHOADE-8s4A-JwA"
-DATE=$(date +%Y-%m-%d)
+DATE=$(TZ=America/Los_Angeles date +%Y-%m-%d)
 OUTDIR="dev/snapshots"
 OUTFILE="$OUTDIR/project-board-${DATE}.tsv"
 
 mkdir -p "$OUTDIR"
 
-echo "issue	state	milestone	sprint	title" > "$OUTFILE"
+echo "issue	state	milestone	sprint	title	labels	blocked_by" > "$OUTFILE"
 
 CURSOR=""
 while : ; do
@@ -36,7 +39,7 @@ while : ; do
             pageInfo { hasNextPage endCursor }
             nodes {
               content {
-                ... on Issue { number state title milestone { title } }
+                ... on Issue { number state title milestone { title } labels(first: 30) { nodes { name } } blockedBy(first: 30) { nodes { number } } }
               }
               fieldValueByName(name: "Sprint") {
                 ... on ProjectV2ItemFieldSingleSelectValue { name }
@@ -55,7 +58,7 @@ while : ; do
             pageInfo { hasNextPage endCursor }
             nodes {
               content {
-                ... on Issue { number state title milestone { title } }
+                ... on Issue { number state title milestone { title } labels(first: 30) { nodes { name } } blockedBy(first: 30) { nodes { number } } }
               }
               fieldValueByName(name: "Sprint") {
                 ... on ProjectV2ItemFieldSingleSelectValue { name }
@@ -80,7 +83,9 @@ for it in items:
     milestone = (c.get('milestone') or {}).get('title', '')
     title = c.get('title', '').replace('\t', ' ')
     sprint = (it.get('fieldValueByName') or {}).get('name', '')
-    print(f'{num}\t{state}\t{milestone}\t{sprint}\t{title}')
+    labels = ','.join(sorted(n['name'] for n in (c.get('labels') or {}).get('nodes', [])))
+    blocked_by = ','.join(str(n['number']) for n in sorted((c.get('blockedBy') or {}).get('nodes', []), key=lambda n: n['number']))
+    print(f'{num}\t{state}\t{milestone}\t{sprint}\t{title}\t{labels}\t{blocked_by}')
 " >> "$OUTFILE"
 
   HASNEXT=$(echo "$RESP" | python3 -c "import json,sys; print(json.load(sys.stdin)['data']['node']['items']['pageInfo']['hasNextPage'])")

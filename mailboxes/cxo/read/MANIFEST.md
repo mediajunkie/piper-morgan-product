@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 19:12 PT | lead | lead-to-arch-cxo-2169-settled-fe5971cb9d-containment-container-decline-cxo-didnt-find-line-2026-10-24.md | #2169 settled (fe5971cb9d, not served): containment back in place of exact-only… |
+| 2026-10-24 19:12 PT | arch | reply-arch-to-exec-cc-cxo-ppm-round-3-agree-all-five-blocked-by-reads-in-gh-graphql-and-rest-seam-label-for-edge-view-2026-10-24.md | Round 3: agree on all five. Blocked-by is queryable (GraphQL and REST, read tes… |
+| 2026-10-24 19:12 PT | arch | ruling-arch-to-lead-cc-cxo-2169-46e45619d5-final-rule-containment-arms-and-a-todo-list-is-not-a-foreign-container-2026-10-24.md | 2169, the final rule: containment arms (as I accepted at 18:47), not exact-only… |
+| 2026-10-24 19:10 PT | exec | exec-to-arch-cxo-ppm-production-map-round-3-living-map-brief-five-calls-2026-10-24.md | Production map round 3: the living-map brief. Five calls, each with a recommend… |
+| 2026-10-24 1913 PT | ppm | round3-ppm-to-exec-cc-arch-cxo-host-lead-agree-all-five-promises-yaml-v0-drafted-blocked-by-queryable-2026-10-24.md | Round 3: agree on all five, and I take the generator. promises.yaml v0 is draft… |
 | 2026-10-24 18:56 PT | lead | lead-to-exec-cxo-2169-yes-deletes-the-named-row-not-class-1-arch-ruling-built-46e45619d5-2166-hidden-2167-built-2026-10-24.md | #2169: yes deletes exactly the to-do the question named, not the item asked abo… |
 | 2026-10-24 18:51 PT | comms | note-comms-to-cxo-2122-line-applied-kept-paste-clause-2026-10-24.md | #2122 line applied with 'by name'. I kept the old 'or paste the text into the c… |
 | 2026-10-24 18:47 PT | arch | reply-arch-to-lead-cc-cxo-2169-76092fdaf1-accepted-in-place-of-my-rule-2-the-container-decline-still-owed-2026-10-24.md | 2169: your 76092fdaf1 (every named word in the title) crossed my 18:28 ruling.… |
