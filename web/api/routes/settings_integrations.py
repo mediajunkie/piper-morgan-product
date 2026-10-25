@@ -2078,8 +2078,15 @@ async def get_github_settings(current_user: JWTClaims = Depends(get_current_user
             # token AS THE CALLER where one exists; a BOUND OAuth binding with no
             # PAT still counts as valid-connected (the binding IS the auth). A
             # STALE binding with no PAT does not (#2072 follow-up).
-            config_service = GitHubConfigService()
-            token = config_service.get_authentication_token(user_id=uid)
+            # #1966: the account's own PAT, read where the resolver reads it (both legs).
+            from services.integrations.github.read_failed import GitHubReadFailed
+            from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+            try:
+                token = await GitHubMCPSpatialAdapter.account_pat(uid)
+            except GitHubReadFailed:
+                # #2151: the token couldn't be read; never "valid" or "invalid" on a guess.
+                return _github_check_failed()
             if token:
                 from services.integrations.github.token_validator import (
                     verify_github_token,

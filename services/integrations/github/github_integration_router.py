@@ -182,7 +182,14 @@ class GitHubIntegrationRouter:
             # Configure MCP adapter with GitHub token (async operation)
             if self.mcp_adapter:
                 try:
-                    token = await self.config_service.aget_authentication_token(user_id or "system")
+                    # #1966: a user's native token is their own PAT, read where the resolver
+                    # reads it (both legs); "system" only for a principal-less caller.
+                    if user_id and user_id != "system":
+                        from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+                        token = await GitHubMCPSpatialAdapter.account_pat(user_id)
+                    else:
+                        token = await self.config_service.aget_authentication_token("system")
                 except (ValueError, Exception) as e:
                     logger.warning(f"GitHub token lookup failed: {e}")
                     token = None

@@ -10,6 +10,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
 # #1192 slice (c): these endpoints used to validate via router.test_connection(),
 # which is an unimplemented migration orphan (always AttributeError → 500). They
@@ -67,14 +68,20 @@ class TestGetGitHubSettings:
                 "services.integrations.github.config_service.GitHubConfigService",
                 return_value=mock_config_service,
             ),
+            patch.object(
+                GitHubMCPSpatialAdapter,
+                "account_pat",
+                new=AsyncMock(
+                    return_value=mock_config_service.get_authentication_token.return_value
+                ),
+            ) as account_pat,
         ):
             result = await get_github_settings(current_user=_claims())
 
         assert result["configured"] is True
         assert result["valid"] is True
-        # And critically: the caller's id was consulted, never "system".
-        called_with = mock_config_service.get_authentication_token.call_args
-        assert called_with.kwargs.get("user_id") != "system"
+        # And critically: the caller's own PAT was read (#1966), never "system".
+        account_pat.assert_awaited_once_with(_claims().sub)
 
     @pytest.mark.asyncio
     async def test_returns_not_configured_when_no_token(self):
@@ -88,6 +95,13 @@ class TestGetGitHubSettings:
                 "services.integrations.github.config_service.GitHubConfigService",
                 return_value=mock_config_service,
             ),
+            patch.object(
+                GitHubMCPSpatialAdapter,
+                "account_pat",
+                new=AsyncMock(
+                    return_value=mock_config_service.get_authentication_token.return_value
+                ),
+            ) as account_pat,
         ):
             result = await get_github_settings(current_user=_claims())
 
@@ -107,6 +121,13 @@ class TestGetGitHubSettings:
                 "services.integrations.github.config_service.GitHubConfigService",
                 return_value=mock_config_service,
             ),
+            patch.object(
+                GitHubMCPSpatialAdapter,
+                "account_pat",
+                new=AsyncMock(
+                    return_value=mock_config_service.get_authentication_token.return_value
+                ),
+            ) as account_pat,
             patch(
                 _VALIDATOR,
                 new=AsyncMock(
@@ -133,6 +154,13 @@ class TestGetGitHubSettings:
                 "services.integrations.github.config_service.GitHubConfigService",
                 return_value=mock_config_service,
             ),
+            patch.object(
+                GitHubMCPSpatialAdapter,
+                "account_pat",
+                new=AsyncMock(
+                    return_value=mock_config_service.get_authentication_token.return_value
+                ),
+            ) as account_pat,
             patch(
                 _VALIDATOR,
                 new=AsyncMock(

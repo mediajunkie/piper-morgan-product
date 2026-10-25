@@ -8825,7 +8825,7 @@ class TestSyncCredentialCallsInAsyncRatchet:
     MIN_FILES_IN_SCOPE = 400  # vacuity: 527 measured 2026-10-20
 
     CEILINGS = {
-        "web/api/routes/settings_integrations.py": 8,  # 2026-10-25: _list_repos_native_pat reads read_user_token, its env fallback gone (ADR-081 D1); 2026-10-24: the calendar card reads via _test_calendar; get_all_oauth_status retired (#2151); 2026-10-20: the calendars list read moved to aget_api_key (#2105)
+        "web/api/routes/settings_integrations.py": 7,  # 2026-10-25: the GitHub card reads account_pat (#1966); _list_repos_native_pat reads read_user_token, its env fallback gone (ADR-081 D1); 2026-10-24: the calendar card reads via _test_calendar; get_all_oauth_status retired (#2151); 2026-10-20: the calendars list read moved to aget_api_key (#2105)
         "services/connectors/disconnect.py": 6,
         "web/api/routes/setup.py": 6,
         "services/security/user_api_key_service.py": 4,

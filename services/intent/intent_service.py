@@ -15455,9 +15455,18 @@ Add any additional information here.
                     "repository, or name the repo in your request"
                 )
 
-        # Resolve the token (keychain-first for a connected user; #1192 Blocker 1 —
-        # a connected PAT wins over a stale global env token).
-        token = await GitHubConfigService().aget_authentication_token(user_id or "system")
+        # Resolve the credential as the account (#1966): the resolver's Authorization, the
+        # OAuth grant or the account's own PAT, the same one every connector read uses. A
+        # failed or absent credential raises, and the caller degrades honestly. "system"
+        # only for a principal-less caller (ADR-081 D2: None on a hosted deploy).
+        token: Optional[str]
+        if user_id and user_id != "system":
+            from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+            headers = await GitHubMCPSpatialAdapter()._grant_headers_or_raise(user_id)
+            token = headers["Authorization"].split(" ", 1)[1]
+        else:
+            token = await GitHubConfigService().aget_authentication_token("system")
         if not token:
             raise ValueError("GitHub is not configured")
 
