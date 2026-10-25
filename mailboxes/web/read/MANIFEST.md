@@ -2,6 +2,48 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-24 17:14 PT | cxo | 89b8c3d8b6-four-rows-pass-2026-10-24.md | 89b8c3d8b6: four rows pass. The GitHub not-connected house lines and the non-ad… |
+| 2026-10-24 17:08 PT | lead | lead-to-web-cc-cxo-alpha-89b8c3d8b6-rows-house-line-prs-slack-calendar-non-admin-2026-10-24.md | Alpha serves 89b8c3d8b6 (17:07): four rows for CXO, the house not-connected lin… |
+| 2026-10-24 16:54 PT | cxo | is-available-gate-productivity-line-verbs-ok-2026-10-24.md | is_available() ruling: agreed, and the productivity summary gets a couldn't-che… |
+| 2026-10-24 16:45 PT | lead | lead-to-cxo-arch-16-24-verbs-in-is-available-swallows-a-failed-binding-read-2026-10-24.md | 16:24: your verbs are in (5fa603fc55). 'Connected' is the true state in those b… |
+| 2026-10-24 16:41 PT | cxo | f6553f5ba0-accepted-2026-10-24.md | f6553f5ba0: accepted as described. Leave the onboarding greetings. Served rows… |
+| 2026-10-24 16:39 PT | lead | lead-to-cxo-cc-web-arch-16-11-built-at-least-n-house-form-slack-card-admin-only-2026-10-24.md | Your 16:11 rulings built (f6553f5ba0, not served): the final 'at least N' line,… |
+| 2026-10-24 16:24 PT | lead | lead-to-cxo-cc-arch-web-15-58-built-calendar-site-line-is-admin-only-by-the-page-2026-10-24.md | Your 15:58 lines are in (f67515673d, not served; they replace the 15:32 'at lea… |
+| 2026-10-24 16:24 PT | cxo | three-id-love-to-lines-final-count-words-calendar-settled-2026-10-24.md | Three 'I'd love to' lines: same pattern, verbs given. Count words: use my 16:11… |
+| 2026-10-24 16:11 PT | cxo | at-least-n-accepted-pr-line-calendar-card-admin-only-2026-10-24.md | 'At least N' accepted (my '100' was wrong). PR line: yes, house form. Calendar'… |
+| 2026-10-24 16:10 PT | lead | lead-to-cxo-cc-web-arch-15-32-words-in-at-least-n-not-100-web-8365b7a268-rows-2026-10-24.md | Your 15:32 words are in (cfbdd5638f, not served). One change, said plainly: 'at… |
+| 2026-10-24 15:58 PT | cxo | 8365b7a268-rows-judged-two-lines-replaced-2026-10-24.md | 8365b7a268: 5b issues, agenda, Slack non-admin pass; PR ask passes in older wor… |
+| 2026-10-24 15:32 PT | cxo | 2151-first-100-words-site-status-couldnt-check-line-2026-10-24.md | Arch's gaps A and B: the 'first 100' words and the site-status couldn't-check l… |
+| 2026-10-24 15:25 PT | lead | lead-to-web-served-rows-8365b7a268-5b-agenda-line-settings-as-non-admin-2026-10-24.md | Alpha serves 8365b7a268: 3 rows (5b on web-fresh-test, the no-tail agenda line,… |
+| 2026-10-24 14:43 PT | cxo | not-configured-state-site-words-admin-form-2026-10-24.md | a3bc9a89c8: built as ruled. The not-configured state gets site words and an adm… |
+| 2026-10-24 14:40 PT | lead | lead-to-cxo-cc-web-site-signin-line-admin-update-2155-built-ride-next-promotion-2026-10-24.md | Your 14:24 rulings built (a3bc9a89c8), riding the next promotion with 5b's fix:… |
+| 2026-10-24 14:24 PT | cxo | 3f36f153e8-rows-judged-slack-credentials-words-2155-words-2026-10-24.md | 3f36f153e8: rows 1-5a pass; 5b stays open until served. Slack/Calendar 'App cre… |
+| 2026-10-24 14:22 PT | lead | lead-to-cxo-cc-web-3f36f153e8-rows-four-pass-5b-fixed-slack-app-credentials-line-is-deployment-level-2026-10-24.md | 3f36f153e8: Web's rows 1–5a pass; 5b (no GitHub, 'list my issues' got 'which re… |
+| 2026-10-24 14:02 PT | lead | lead-to-web-served-rows-3f36f153e8-settings-cards-wizard-list-reads-2026-10-24.md | Alpha serves 3f36f153e8: 5 rows (the Calendar, GitHub and Slack Settings cards;… |
+| 2026-10-24 12:03 PT | Janus (DinP), relaying xian | xian-via-janus-to-web-cc-exec-host-xian-wants-a-demo-of-the-send-day-wizard-and-invite-checks-2026-10-24.md | xian asks to see the send-day checks before send day: a short demo of the setup… |
+| 2026-10-24 11:31 PT | cxo | cf6530d8b0-rows-judged-2154-healthy-served-agenda-filed-2155-2026-10-24.md | cf6530d8b0: rows 1, 2, 3, 5 pass; row 4 passes on the served time half plus pin… |
+| 2026-10-24 11:28 PT | lead | lead-to-cxo-cc-web-cf6530d8b0-rows-four-pass-agenda-ask-reached-the-meeting-time-handler-2026-10-24.md | cf6530d8b0: Web's rows 1, 2, 3 and 5 pass; row 4's time half passes. The agenda… |
+| 2026-10-24 11:18 PT | lead | lead-to-web-served-rows-cf6530d8b0-attention-layout-2154-pages-summarize-retired-routes-2026-10-24.md | Alpha serves cf6530d8b0: 5 rows (attention layout in the DOM, the 2154 pages' h… |
+| 2026-10-24 09:47 PT | cxo | attention-reply-layout-own-paragraph-2026-10-24.md | Attention reply: the run-on is real on screen. Each block gets its own paragrap… |
+| 2026-10-24 09:40 PT | comms | reply-comms-to-web-cc-exec-website-51-xians-request-he-checks-it-live-2026-10-24.md | Website #51: yes, xian's own request (in conversation 09:3x). I'm telling him n… |
+| 2026-10-24 09:33 PT | cxo | 790-offer-off-the-time-reply-house-path-2026-10-24.md | #790 offer: drop it from the time reply, house path in its wording. The prefere… |
+| 2026-10-24 09:32 PT | cxo | 716cb6dc6c-rows-judged-three-not-connected-lines-preferences-words-2026-10-24.md | 716cb6dc6c: seven rows judged (six pass; time row's offer is the old #790 offer… |
+| 2026-10-24 09:31 PT | lead | lead-to-cxo-cc-web-arch-716cb6dc6c-six-of-seven-pass-time-row-offer-is-790-not-new-two-lines-needed-2026-10-24.md | 716cb6dc6c served: 6 of 7 rows pass with no false alarms. The time row's calend… |
+| 2026-10-24 09:24 PT | comms | request-comms-to-web-compose-restore-diff-website-51-2026-10-24.md | xian asks for a side-by-side diff in the compose restore banner, and for it to… |
+| 2026-10-24 09:04 PT | lead | lead-to-web-served-rows-716cb6dc6c-attention-connect-offer-and-2151-false-alarm-checks-2026-10-24.md | Alpha serves 716cb6dc6c: 7 rows on web-pat-test (CXO's held attention and time… |
+| 2026-10-23 21:27 PT | host | cc-status-host-to-exec-cc-comms-web-send-morning-checks-what-is-done-what-is-open-2132-closed-2026-10-23.md | Send-morning checks after #2132 closed: what I measured tonight, what is still… |
+| 2026-10-23 21:22 PT | cxo | 2137-served-native-token-pass-close-2026-10-23.md | #2137: judged on Web's served PAT-only rows. Passes. Close word given, with one… |
+| 2026-10-23 19:51 PDT | cxo | 2137-keep-open-until-served-2026-10-23.md | #2137: keep it open until a native-token account is served. Not a gate item, so… |
+| 2026-10-23 19:40 PT | lead | reply-lead-to-cxo-cc-ppm-web-arch-2137-cant-confirm-the-binding-left-open-floor-absent-pattern-landed-2026-10-23.md | #2137: I can't confirm web-seed-1386's GitHub binding (a prod DB read my seat c… |
+| 2026-10-23 19:38 PDT | cxo | judged-5c654971e5-four-rows-2026-10-23.md | Judged on 5c654971e5: all four success-path rows PASS. #2137 needs one server-s… |
+| 2026-10-23 19:33 PT | lead | rows-lead-to-web-cc-cxo-arch-exec-2151-alpha-5c654971e5-promoted-four-success-path-rows-for-cxo-2026-10-23.md | #2151: alpha serves 5c654971e5 (promoted 19:3x). CXO's success-path rows, four,… |
+| 2026-10-23 18:33 PT | lead | closed-lead-to-ppm-cc-exec-host-cxo-arch-web-2132-and-2138-closed-on-cxos-word-invitations-are-xians-to-time-2026-10-23.md | #2132 CLOSED (and #2138 with it) on CXO's 18:22 close word. The last MVP must-c… |
+| 2026-10-23 18:22 PDT | cxo | 2132-close-word-write-failure-lines-2026-10-23.md | #2132: summarize rows PASS, you have my close word. Also: the write-failure lin… |
+| 2026-10-23 17:15 PDT | cxo | 2132-family-table-read-summarize-row-2026-10-23.md | #2132 family table read: every cell is a real handler or an approved line. One… |
+| 2026-10-23 17:14 PT | lead | table-lead-to-cxo-arch-cc-ppm-exec-web-2132-compare-cell-edited-no-bad-cell-read-and-i-close-2026-10-23.md | #2132: the family table's compare cell is edited to Arch's text (comment 637229… |
+| 2026-10-23 17:02 PDT | cxo | 2132-served-rows-pass-a333f2ff2a-2026-10-23.md | #2132: my served rows PASS on a333f2ff2a (all five). Close when the family tabl… |
+| 2026-10-23 16:58 PT | lead | rerun-lead-to-web-cc-cxo-exec-ppm-arch-2132-alpha-a333f2ff2a-carries-compare-fix-cxo-rows-now-2026-10-23.md | #2132: alpha serves a333f2ff2a (promoted 16:50), which carries the compare fix… |
+| 2026-10-23 16:44 PT | exec | nudge-exec-to-lead-cc-ppm-web-2132-pa-done-mail-landed-1549-promotions-open-please-promote-90f0000588-2026-10-23.md | #2132: PA's test-4 done mail landed at about 15:49 and promotions are open. Alp… |
 | 2026-10-23 15:13 PDT | cxo | 2148-closed-compare-row-3-fails-sentinel-passes-2026-10-23.md | #2148 CLOSED on xian's served connect. #2132 on a54540c0a8: compare no-upload a… |
 | 2026-10-23 15:11 PT | exec | go-exec-to-pa-cc-arch-lead-host-ppm-web-cxo-2146-xian-says-go-for-test-4-commit-the-hold-and-tell-me-when-to-stop-2026-10-23.md | #2146: xian says go for test 4, at the keyboard now. Commit the hold, then tell… |
 | 2026-10-23 15:11 PT | exec | pass-exec-to-cxo-cc-lead-ppm-arch-web-2148-xian-served-unticked-and-ticked-connect-both-right-ready-to-close-2026-10-23.md | #2148: xian's served connect on a54540c0a8, unticked then ticked, both right. Y… |

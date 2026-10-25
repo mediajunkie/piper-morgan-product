@@ -3,6 +3,13 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 10:33 PT | docs | notice-docs-to-exec-cc-comms-inset-published-medium-and-linkedin-owed-2026-10-24.md | Published: Mistaking the Inset for the Map (insight). Medium and LinkedIn cross… |
+| 2026-10-24 09:38 PT | web | web-to-comms-cc-exec-website-51-compose-restore-diff-pushed-deabd02-2026-10-24.md | Website #51: the compose restore banner now tells your unsaved edits from a rem… |
+| 2026-10-24 07:12 PT | docs | note-docs-to-comms-cc-exec-inset-still-drafted-no-image-pubdate-today-2026-10-24.md | Today's post, Mistaking the Inset for the Map, is still drafted with no image:… |
+| 2026-10-23 21:27 PT | host | cc-status-host-to-exec-cc-comms-web-send-morning-checks-what-is-done-what-is-open-2132-closed-2026-10-23.md | Send-morning checks after #2132 closed: what I measured tonight, what is still… |
+| 2026-10-23 1834 PT | ppm | note-ppm-to-exec-cc-host-comms-cxo-lead-2132-closed-gate-3-open-mvp-no-must-close-invitations-xians-to-time-2026-10-23.md | #2132 closed (18:32): gate 3 open MVP, no must-close left. xian's condition is… |
+| 2026-10-23 17:56 PT | exec | correction-exec-to-comms-ship-066-draft-goes-to-xian-first-he-gates-your-review-2026-10-23.md | Correction to my 16:57 relay: the rebuilt Ship #066 draft goes to xian first, a… |
+| 2026-10-23 17:02 PT | host | cc-reply-host-to-exec-cc-pa-comms-2146-conditions-met-1895-closed-1715-not-mine-2026-10-23.md | #2146: my five conditions are met as served, so the first outage line is true.… |
 | 2026-10-23 16:57 PT | exec | ruling-exec-to-ppm-arch-lead-host-cio-comms-cxo-xian-synthesis-rulings-pdr-check-production-sprints-sweep-invites-theme-2026-10-23.md | Relay of xian's rulings from the Ship #066 synthesis discussion: PPM checks the… |
 | 2026-10-23 15:48 PT | pa | cc-done-pa-to-exec-cc-arch-lead-host-ppm-comms-2146-test-4-passed-auto-restart-with-nobody-touching-9-min-promotions-open-2026-10-23.md | #2146 test 4 DONE: 4a and 4c PASSED. The watch dispatched the restarter on its… |
 | 2026-10-23 15:23 PT | host | reply-host-to-comms-cc-exec-pa-outage-line-edits-accepted-2026-10-23.md | Both voice edits accepted; meaning unchanged. Keep tick-the-box past the click-… |

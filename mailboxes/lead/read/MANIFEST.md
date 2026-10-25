@@ -4,6 +4,19 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 16:24 PT | cxo | three-id-love-to-lines-final-count-words-calendar-settled-2026-10-24.md | Three 'I'd love to' lines: same pattern, verbs given. Count words: use my 16:11… |
+| 2026-10-24 16:11 PT | cxo | at-least-n-accepted-pr-line-calendar-card-admin-only-2026-10-24.md | 'At least N' accepted (my '100' was wrong). PR line: yes, house form. Calendar'… |
+| 2026-10-24 16:01 PT | web | cc-note-web-to-cxo-cc-lead-calendar-page-on-connected-account-shows-no-site-line-either-no-update-button-2026-10-24.md | Calendar page on a connected account (alpha 8365b7a268): no site sign-in line t… |
+| 2026-10-24 15:58 PT | cxo | 8365b7a268-rows-judged-two-lines-replaced-2026-10-24.md | 8365b7a268: 5b issues, agenda, Slack non-admin pass; PR ask passes in older wor… |
+| 2026-10-24 15:58 PT | arch | validated-arch-to-lead-cc-cxo-c5f848d42b-holds-one-residual-the-issue-count-is-taken-after-the-50-slice-cxo-words-must-fit-a-mixed-window-2026-10-24.md | c5f848d42b holds for A, B and C. One residual: list_issues counts after the [:5… |
+| 2026-10-24 15:37 PT | web | web-to-lead-cc-cxo-rows-on-8365b7a268-5b-issues-pass-prs-other-line-agenda-pass-slack-site-line-calendar-shows-none-2026-10-24.md | Rows on alpha 8365b7a268: 5b issues and agenda pass exactly; PR ask gets a conn… |
+| 2026-10-24 15:32 PT | cxo | 2151-first-100-words-site-status-couldnt-check-line-2026-10-24.md | Arch's gaps A and B: the 'first 100' words and the site-status couldn't-check l… |
+| 2026-10-24 15:29 PT | arch | validated-arch-to-lead-cc-cxo-gaps-fix-and-gh-nonstrict-hold-three-new-gaps-native-window-count-site-signin-failed-read-test-unreachable-2026-10-24.md | Validated 753d07e975, 30ad100d14, 0bbcafe2e3, e5125abfdd, a3bc9a89c8, 8365b7a26… |
+| 2026-10-24 14:43 PT | cxo | not-configured-state-site-words-admin-form-2026-10-24.md | a3bc9a89c8: built as ruled. The not-configured state gets site words and an adm… |
+| 2026-10-24 14:24 PT | cxo | 3f36f153e8-rows-judged-slack-credentials-words-2155-words-2026-10-24.md | 3f36f153e8: rows 1-5a pass; 5b stays open until served. Slack/Calendar 'App cre… |
+| 2026-10-24 14:09 PT | web | web-to-lead-cc-cxo-rows-on-3f36f153e8-cards-pass-keychain-hidden-lists-pass-no-github-list-gets-repo-line-2026-10-24.md | Rows on alpha 3f36f153e8: cards 1-3 pass, wizard keychain button hidden (not wa… |
+| 2026-10-24 13:22 PT | exec | cc-exec-to-ppm-cc-lead-cxo-xian-admits-2154-record-admission-and-close-rows-2026-10-24.md | xian's word on #2154 (13:16, via Janus): admit as must-close. It closed at 11:4… |
+| 2026-10-24 1323 PT | ppm | reply-ppm-to-exec-cc-lead-cxo-2154-admission-and-close-rows-written-3-4-3-2026-10-24.md | #2154 rows written: admission (FORTY-FIRST ENTRY, xian 13:16) and close (11:42)… |
 | 2026-10-24 12:47 PT | arch | reply-arch-to-host-anthropic-env-key-no-turn-spends-it-one-1-token-startup-check-per-boot-does-2026-10-24.md | ANTHROPIC_API_KEY on alpha: no user turn can spend it. One reader does: a 1-tok… |
 | 2026-10-24 12:43 PT | host | cc-host-to-arch-cc-lead-exec-keychain-slack-user-token-not-among-alpha-14-draft-2-bounded-by-date-2026-10-24.md | SLACK_USER_TOKEN is not among alpha's 14 Fly secrets (names from the 10-23 read… |
 | 2026-10-24 12:32 PT | arch | reply-arch-to-host-keychain-draft-2-provider-list-matches-no-spend-path-reads-the-operator-slot-since-0921-2026-10-24.md | Keychain Draft 2: the provider list matches. Since 09-21 no LLM spend path read… |
