@@ -48,7 +48,7 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 16 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 211 open (#2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 210 open (#1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -163,7 +163,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2162 | Staging instance for destructive tests and promotion rehearsal: synthetic data only, never restored from … (10-24) | — |
 | #2166 | Todo/list/project Share: the UI sends user_to_share_with but the API requires user_id (422); with user_id the API answers 500 (10-24; E → D 10-24, hidden on alpha meanwhile) | — |
 
-### C: Connectors complete (24)
+### C: Connectors complete (23)
 
 | # | Title | was |
 |---|---|---|
@@ -183,7 +183,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1514 | Published OAuth apps for ALL FOUR core connectors (Calendar, Slack, GitHub, Notion) — kill bring-your-own-c… | — |
 | #1916 | Calendar Connect: tell testers up front when the Google OAuth audience excludes them, and record started-ne… | — |
 | #1917 | GitHub: 'PRs needing review' has no operation — list_prs is author-scoped, stale_prs is age-based (CXO ruli… | — |
-| #1966 | GitHub has two credential resolvers (OAuth grant vs per-user PAT) that disagree; converge on one resolver i… | — |
+| #1966 | GitHub has two credential resolvers (OAuth grant vs per-user PAT) that disagree; converge on one resolver i… (closed 10-25 10:37 on Web's rows; the resolver seam's issue) | — |
 | #1983 | Settings → GitHub: recommend fine-grained read-only PATs (not classic repo-scope) in the token hint | — |
 | #2036 | GitHub Test says 'needs re-authorizing' after a deliberate Disconnect when a personal token serves | — |
 | #2053 | Stale grant with a PAT serving: the Integrations card has no Reconnect button, and pressing Test prints the… | — |
