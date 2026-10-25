@@ -8,17 +8,23 @@ caption: ''
 
 *September 1–3, 2026*
 
-When Piper answers you inside Claude or ChatGPT, Piper doesn't write the final sentence you read. Piper hands over the data, and the host model turns it into prose. That handoff is where we'd already caught one failure a few days earlier: a read that failed outright came back to the user, in fluent prose, as "your todo list is currently empty." Marking the failure as a structured field fixed that one. The open question was quieter and harder. What about a caveat on a partial answer, like "here are your open issues, but not all of them"? Does that survive the rewrite?
+One of the things Piper can do now, still in alpha, is run *inside your preferred chat client,* at least if that client is Claude or ChatGPT. When Piper responds via connector or plugin in this context, Piper doesn't write the final sentence you read. That is left to your existing chat partner. Piper hands over the data, and the host model turns it into prose. 
 
-My experience-design agent (CXO) had a theory about how to make it survive. The first week of September tested that theory to destruction, then tested the replacement, and then did something I don't see often enough from anyone. CXO stopped.
+A few days earlier, toward the end of August, I had already caught one failure in this implementation: A failed attempt by to read the todo list Piper is holding for you was reported by Claude as "your todo list is currently empty." 
 
-# A theory that lost in both models
+The basic fix for that was (apparently) to mark the failure as a structured field. This does not address more nuanced cases, such a partial answer like "here are your open issues, but not all of them"? Will that nuance get lost in the rewrite?
 
-The morning started with me sorting out why the OpenAI side of the experiment had no credit. I'd been topping up a different organization than the one the key actually lived in. Once that was fixed, my assistant (Piper Alpha) ran the full set of trials against both Claude and GPT-4o, thirty in all, including a check designed specifically to test CXO's theory.
+My experience-design agent (CXO) had a theory about how to make it survive. This first week of September we tested that theory to destruction, then tested the replacement, and then did CXO suggested we stop.
 
-The theory was that the caveat got dropped because it was descriptive. Make it an explicit instruction, a field that says in effect "this answer may not be claimed as complete," and the host model would honor it. It didn't, in either model. The partial-coverage caveat vanished with or without the instruction.
+# A theory that lost against Claude and ChatGPT
 
-CXO took the loss and restructured the whole scoring rubric around a better question. Is the caveat about something that's in the reply, or about something that's missing from it? Caveats about delivered content held up when they were structured. Caveats about missing content disappeared, because the reply already looked like a finished answer. Piper Alpha checked that reading against their own transcripts instead of just agreeing, and put it more sharply: the reply "reads complete on its own." Content that's present crowds out content that's absent.
+The first morning started with me sorting out why the OpenAI side of the experiment had no credit. D'oh! I'd been topping up a different organization than the one the key actually lived in. Once that was fixed, my assistant (Piper Alpha) ran the full set of trials against both Claude and GPT-4o, thirty in all, including a check designed specifically to test CXO's theory.
+
+The theory was that the caveat got dropped because it was descriptive. Make it an explicit instruction, a field that says in effect "do not claim this answer is complete," and the host model would have to honor it. Nope, It didn't, in either model. The partial-coverage caveat vanished with or without the instruction.
+
+So then CXO tried restructuring the whole scoring rubric around a better question. "Is the caveat about something that's *in* the reply, or about something that's *missing from* it? Caveats about delivered content held up when they were structured. Caveats about missing content disappeared, because the reply already looked like a finished answer. Piper Alpha checked that reading against their own transcripts and noted the reply "reads complete on its own." 
+
+Content that's present crowds out content that's absent.
 
 My chief architect agent (Arch) updated our rule for how connectors should report gaps the same afternoon, and labeled it plainly as a theory waiting on a decisive test.
 
@@ -48,6 +54,6 @@ The underlying theory never got fully settled, and that turned out not to matter
 
 ---
 
-*Next on Building Piper Morgan: "Where the Citation Came From" — a wrong citation spreads through the team for two days, and the agent who finally traces it back finds the trail ends at their own memo.*
+*Next on Building Piper Morgan: "Citation via Hearsay" — a wrong citation spreads through the team for two days, and the agent who finally traces it back finds the trail ends at their own memo.*
 
 *When was the last time you stopped an experiment because you'd learned what you needed, rather than because it finally told you what you wanted?*
