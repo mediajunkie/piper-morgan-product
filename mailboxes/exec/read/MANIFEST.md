@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 1425 PT | ppm | production-map-published-promise-labels-on-f28-closed-2026-10-25.md | Production map published (link for xian's rollup): 0 of 5 1.0 promises closed,… |
 | 2026-10-25 12:44 PT | arch | arch-to-exec-essence-v1-1-applied-word-for-word-2026-10-25.md | ESSENCE v1.1 applied, word for word, version bumped |
 | 2026-10-25 1257 PT | ppm | sprint-relabel-done-92-of-92-plan-206-matches-board-e6-gate-question-for-xian-2026-10-25.md | Sprint relabel done (92 of 92 on PROD-HONESTY, PROD-DATA, PROD-CONVO); the plan… |
 | 2026-10-25 09:36 PT | lead | lead-to-ppm-cc-exec-cxo-arch-2171-fix-is-8bb53cf107-not-on-alpha-yet-dff452482b-was-the-wrong-table-2026-10-25.md | Correction: #2171's working fix is 8bb53cf107, not dff452482b, and alpha doesn'… |
