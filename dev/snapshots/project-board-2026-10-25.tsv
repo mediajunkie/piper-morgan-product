@@ -1061,10 +1061,10 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1234	CLOSED	MVP	D1 - Beta design quality	Reference resolver: 2 pre-existing test failures (context-window limiting + definite-reference accuracy)		
 1235	CLOSED	MVP	RECONNECT - Connector Refactor	Conversation /turns display endpoint returns OLDEST 50 turns (no offset/pagination) for long conversations		
 1241	CLOSED	MVP	Beta Blockers - Hard Gates Only	ARCH-AUDIT: content not anchored to user auth — extent + remediation (multi-tenancy completeness)	beta:multi-tenancy,bug	
-1242	OPEN	Production	PROD-ONBOARD - Meet-Piper Skill-Layer Onboarding	MEET-PIPER-GITHUB — Add GitHub connector setup step to meet-piper onboarding	component: integration,enhancement,journey:connect-a-source,promise:E2-judgment-artifacts,surface:mcp	
+1242	CLOSED	Production	PROD-ONBOARD - Meet-Piper Skill-Layer Onboarding	MEET-PIPER-GITHUB — Add GitHub connector setup step to meet-piper onboarding	component: integration,enhancement,journey:connect-a-source,surface:mcp	
 1243	CLOSED	MVP	FLYWHEEL - Process improvement	Briefing staleness sweep — #972 check-staleness lint flags 16/19 briefings		
-1244	OPEN	Production	PROD-ONBOARD - Meet-Piper Skill-Layer Onboarding	CONSULT-ENRICH-FIX — Fix two enrichment layer bugs blocking consult-piper (Cowork/GitHub + Code/payload)	bug,component: ai,component: integration,journey:something-goes-wrong,promise:E4-never-lies,surface:mcp	
-1245	OPEN	Production	PROD-ONBOARD - Meet-Piper Skill-Layer Onboarding	PIPER-SKILL-MERGE — Collapse ask-piper + consult-piper into one smart piper skill	component: ai,component: workflow,enhancement,journey:get-work-done,surface:mcp	
+1244	CLOSED	Production	PROD-ONBOARD - Meet-Piper Skill-Layer Onboarding	CONSULT-ENRICH-FIX — Fix two enrichment layer bugs blocking consult-piper (Cowork/GitHub + Code/payload)	bug,component: ai,component: integration,journey:something-goes-wrong,surface:mcp	
+1245	CLOSED	Production	PROD-ONBOARD - Meet-Piper Skill-Layer Onboarding	PIPER-SKILL-MERGE — Collapse ask-piper + consult-piper into one smart piper skill	component: ai,component: workflow,enhancement,journey:get-work-done,surface:mcp	
 1246	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	ARTIFACT-EXPORT-FORMATS: pdf/docx export + save-time format picker (#1184 follow-on)	enhancement,journey:manage-my-data,surface:web	
 1248	CLOSED	MVP	FLYWHEEL - Process improvement	Frontend jest harness: 6 failing form-validation tests + not wired into CI	bug	
 1251	CLOSED	MVP	D1 - Beta design quality	/insights page UI polish: no global nav, design-system drift, 'Correct' wording	enhancement	

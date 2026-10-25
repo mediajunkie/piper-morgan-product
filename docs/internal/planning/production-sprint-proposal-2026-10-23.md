@@ -21,7 +21,7 @@
     - 3 closed as superseded by PDR-006: #830, #831, #832.
     - #1282 stays, narrowed to listing the hosted plugin.
     - 18 stay: 14 for main green (#1224, #1349, #1357, #1367, #1371, #1372, #1385, #1437, #1439, #1451, #1452, #1479, #1506, #1528), plus #1494 and #1549 (possible honesty shapes, unruled), #966 (plugin identity) and #1282.
-    - #1242, #1244 and #1245 wait on F28.
+    - #1242, #1244 and #1245 wait on F28. **Settled 10-25 14:09:** xian has no need for the skunkworks PoC plugin; all three closed not planned, and #1242's GitHub-connect intent is an acceptance line on #1462.
   - **Readiness lane** (ruling 7, Exec owns it): HOST's send-morning checks are its standing check. Its Terms-backed items are #2062's children and gate public beta: #2157 backups and the restore drill, #2158 deletion (#651 and #336 are its children), #2159 export, #2160 support intake, #2161 incident notice. #2162 (staging, ruling 1) sits in the lane without gating. All six are listed under D.
   - **Filed with them:** #2163 (GitHub identity ADR, C, a seam ahead of H, C and D); #2164 (waitlist) and #2165 (abuse limits) in PUB (ruling 6: waitlist first, after the inner-circle invitations). #2156 (Send feedback findability, CXO) is in E.
   - **Rulings 3 to 5** (ESSENCE 6 rewrite, PRD/spec after 1.0, PDR-001 wording) are Arch's and CXO's to record. F28 waits on xian.
@@ -49,7 +49,7 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 16 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 207 open (#2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 204 open (#1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -297,14 +297,14 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1270 | [D1] Refactor /documents · /files around the Document source-type object model (uploaded/generated/federated) | PROD-DOCS |
 | #2139 | "Create a doc from this conversation" and "Synthesize these sources" on an OpenAI-only account reply with t… | — |
 
-### Dist: Distribution (5)
+### Dist: Distribution (2)
 
 | # | Title | was |
 |---|---|---|
 | #966 | DIST-VISUAL-IDENTITY: Visual identity for the plugin and MCP Apps surfaces (the MCPB half dropped, supersed… | PROD-DIST |
-| #1242 | MEET-PIPER-GITHUB — Add GitHub connector setup step to meet-piper onboarding | PROD-ONBOARD |
-| #1244 | CONSULT-ENRICH-FIX — Fix two enrichment layer bugs blocking consult-piper (Cowork/GitHub + Code/payload) | PROD-ONBOARD |
-| #1245 | PIPER-SKILL-MERGE — Collapse ask-piper + consult-piper into one smart piper skill | PROD-ONBOARD |
+| #1242 | MEET-PIPER-GITHUB — Add GitHub connector setup step to meet-piper onboarding (closed, superseded 10-25) | PROD-ONBOARD |
+| #1244 | CONSULT-ENRICH-FIX — Fix two enrichment layer bugs blocking consult-piper (Cowork/GitHub + Code/payload) (closed, superseded 10-25) | PROD-ONBOARD |
+| #1245 | PIPER-SKILL-MERGE — Collapse ask-piper + consult-piper into one smart piper skill (closed, superseded 10-25) | PROD-ONBOARD |
 | #1282 | BYOC-DIST — Plugin packaging and marketplace distribution | PROD-DIST |
 
 ### Q: Health lane (16)
