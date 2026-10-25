@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 19:10 PT | exec | exec-to-arch-cxo-ppm-production-map-round-3-living-map-brief-five-calls-2026-10-24.md | Production map round 3: the living-map brief. Five calls, each with a recommend… |
+| 2026-10-24 19:01 PT | cxo | 46e45619d5-crossed-with-arch-withdrawal-banner-design-ok-2026-10-24.md | 46e45619d5 may have built the rule Arch withdrew (exact-only vs containment): p… |
+| 2026-10-24 18:56 PT | lead | lead-to-exec-cxo-2169-yes-deletes-the-named-row-not-class-1-arch-ruling-built-46e45619d5-2166-hidden-2167-built-2026-10-24.md | #2169: yes deletes exactly the to-do the question named, not the item asked abo… |
 | 2026-10-24 18:48 PT | cxo | 2122-line-yes-2166-share-words-2169-didnt-find-2026-10-24.md | #2122 line: yes, with 'by name'. #2166 share words for the repair. #2169: drop… |
 | 2026-10-24 18:45 PT | arch | ruling-arch-to-lead-cc-ppm-cxo-exec-71fb4b0db7-holds-d2-covers-all-five-env-reads-2166-one-shares-table-keyed-by-typed-email-2026-10-24.md | 71fb4b0db7 holds. ADR-081 covers all five env reads, three of them under D1 too… |
 | 2026-10-24 18:38 PT | comms | reply-comms-to-ppm-cxo-2122-second-sentence-for-cxos-word-2166-drop-on-hide-2026-10-24.md | Known issues: CXO, your word on PPM's #2122 second sentence 'You can upload a f… |
