@@ -9,6 +9,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
 # #1192 slice (c): these endpoints used to validate via router.test_connection(),
 # which is an unimplemented migration orphan (always AttributeError → 500). They
 # now validate via verify_github_token (GET /user). The OLD tests mocked
@@ -383,6 +385,10 @@ class TestGitHubConfigServiceKeychainFallback:
 
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = "ghp_keychain_token"
+        # #2151: a real user's token is read with provenance (read_secret).
+        mock_keychain.read_secret.return_value = SecretRead(
+            SecretProvenance.PRESENT, value="ghp_keychain_token"
+        )
 
         with (
             patch.dict("os.environ", {"GITHUB_TOKEN": "ghp_env_token"}, clear=True),
@@ -397,7 +403,7 @@ class TestGitHubConfigServiceKeychainFallback:
 
             # The connected user's token wins; the stale env token is shadowed.
             assert token == "ghp_keychain_token"
-            mock_keychain.get_api_key.assert_called_once_with(
+            mock_keychain.read_secret.assert_called_once_with(
                 "github_token", username="test-user-123"
             )
 
@@ -429,6 +435,10 @@ class TestGitHubConfigServiceKeychainFallback:
 
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = "ghp_keychain_token"
+        # #2151: a real user's token is read with provenance (read_secret).
+        mock_keychain.read_secret.return_value = SecretRead(
+            SecretProvenance.PRESENT, value="ghp_keychain_token"
+        )
 
         with (
             patch.dict("os.environ", {}, clear=True),
@@ -444,7 +454,7 @@ class TestGitHubConfigServiceKeychainFallback:
 
             assert token == "ghp_keychain_token"
             # Issue #734: Now passes user_id to keychain
-            mock_keychain.get_api_key.assert_called_once_with(
+            mock_keychain.read_secret.assert_called_once_with(
                 "github_token", username="test-user-123"
             )
 
@@ -454,6 +464,7 @@ class TestGitHubConfigServiceKeychainFallback:
 
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = None
+        mock_keychain.read_secret.return_value = SecretRead(SecretProvenance.VERIFIED_ABSENT)
 
         with (
             patch.dict("os.environ", {}, clear=True),

@@ -8,6 +8,7 @@ Issue #228 CORE-USERS-API Phase 1C
 """
 
 import logging
+import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 from uuid import UUID
@@ -51,6 +52,13 @@ GITHUB_LEGACY_CONTEXT_FALLBACK = False
 def secret_context(provider: str) -> str:
     """The HKDF context a provider's secret is encrypted under (#1982)."""
     return GITHUB_SECRET_CONTEXT if provider in GITHUB_PROVIDERS else USER_SECRET_CONTEXT
+
+
+class UserKeyReadFailed(Exception):
+    """#2151 (Arch 10-24 16:49): an active key row exists but its secret couldn't be read.
+
+    A row that exists is not absence: ``retrieve_user_key_strict`` raises this where
+    ``retrieve_user_key`` answers None."""
 
 
 class UserAPIKeyService:
@@ -382,6 +390,42 @@ class UserAPIKeyService:
             return self._encryptor.decrypt(token, USER_SECRET_CONTEXT)
         except DecryptionError:
             return None
+
+    async def retrieve_user_key_strict(
+        self, session: AsyncSession, user_id: str, provider: str
+    ) -> Optional[str]:
+        """``retrieve_user_key`` that tells absence from failure (#2151, Arch 10-24 16:49).
+
+        None only when no active row exists. An active row whose secret can't be read
+        (the decrypt fails and the keychain has nothing, or the keychain store fails)
+        raises ``UserKeyReadFailed``. A database error propagates. ``retrieve_user_key``
+        keeps its None-on-failure contract for callers that only try a key."""
+        try:
+            row_user = uuid.UUID(str(user_id))
+        except ValueError:
+            return None  # the column is a UUID: no row can exist for this principal
+        result = await session.execute(
+            select(UserAPIKey).where(
+                and_(
+                    UserAPIKey.user_id == row_user,
+                    UserAPIKey.provider == provider,
+                    UserAPIKey.is_active == True,
+                )
+            )
+        )
+        user_key = result.scalar_one_or_none()
+        if not user_key:
+            return None
+        if user_key.encrypted_secret and self._encryptor:
+            secret = self._decrypt_secret(user_key.encrypted_secret, provider)
+            if secret is not None:
+                return secret
+        read = await self._keychain.aread_secret(provider, username=user_id)
+        if read.is_present and read.value:
+            return read.value
+        raise UserKeyReadFailed(
+            f"an active {provider} key row could not be read ({read.provenance.value})"
+        )
 
     async def retrieve_user_key(
         self, session: AsyncSession, user_id: str, provider: str

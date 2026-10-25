@@ -10,6 +10,7 @@ import contextlib
 import html
 import json
 import logging
+import uuid
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
@@ -61,6 +62,11 @@ _RESOLVE_TOOL = "resolve_resource"
 # The Settings route that starts the GitHub OAuth connect flow (#1317 inc.2 slice E) —
 # surfaced as the connect action_hint on a CONNECT_REQUIRED honest-degrade.
 _CONNECT_URL = "/api/v1/settings/integrations/github/connect"
+# #2151 (Arch 10-24 16:49): the resolver's degrade when a stored-token read failed. A store
+# that didn't answer is a failed read, never "not connected".
+CREDENTIAL_STORE_FAILED_MESSAGE = (
+    "I couldn't read your GitHub connection just now. Try again in a moment."
+)
 
 # The github-mcp-server tool + canonical query for the user's open issues (#1322 cutover).
 # search_issues is user-wide (assignee:@me, across repos) → no repo resolution, sidestepping
@@ -1430,34 +1436,52 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         (provider ``github``, context ``user_api_keys.secret.github``), read BEFORE the
         keychain path. Settings writes both; this is the one a scoped process (the MCP
         app) can read, because the hosted keychain table encrypts under a per-user
-        context no fixed subkey list can name. Any failure is ``None`` (next source)."""
+        context no fixed subkey list can name.
+
+        #2151 (Arch 10-24 16:49): None only when no active row exists. A failed read (the
+        database, or an active row whose secret can't be read) raises
+        ``GitHubReadFailed(detail="store_failed")``; it never reads as absence."""
         uid = str(user_id or "").strip()
         if not uid or uid == "system":
             return None
         try:
+            uuid.UUID(uid)
+        except ValueError:
+            return None  # the column is a UUID: no row can exist for this principal
+        try:
             from services.security.user_api_key_service import UserAPIKeyService
 
             async with AsyncSessionFactory.session_scope() as session:
-                return await UserAPIKeyService().retrieve_user_key(session, uid, _GITHUB) or None
-        except Exception:
+                return (
+                    await UserAPIKeyService().retrieve_user_key_strict(session, uid, _GITHUB)
+                    or None
+                )
+        except Exception as e:
             logger.warning("GitHub PAT at-rest lookup failed", exc_info=True)
-            return None
+            raise GitHubReadFailed(
+                "the stored GitHub token couldn't be read", None, detail="store_failed"
+            ) from e
 
     @staticmethod
     def _user_pat(user_id) -> Optional[str]:
         """The user's OWN personal access token, or None. Never the env/system
         token for a real user: ``GitHubConfigService`` returns the env token only
-        for the literal "system" principal (#1461), which this refuses outright."""
+        for the literal "system" principal (#1461), which this refuses outright.
+
+        #2151 (Arch 10-24 16:49): read with provenance; a keychain that failed to answer
+        raises ``GitHubReadFailed(detail="store_failed")``."""
         uid = str(user_id or "").strip()
         if not uid or uid == "system":
             return None
         try:
             from services.integrations.github.config_service import GitHubConfigService
 
-            return GitHubConfigService().get_authentication_token(uid) or None
-        except Exception:
+            return GitHubConfigService().read_user_token(uid) or None
+        except Exception as e:
             logger.warning("GitHub PAT lookup failed", exc_info=True)
-            return None
+            raise GitHubReadFailed(
+                "the stored GitHub token couldn't be read", None, detail="store_failed"
+            ) from e
 
     async def resolve_credential(self, user_id):
         """#1965 (b) — THE GitHub credential resolver (Arch's ruling, PA's order):
@@ -1489,9 +1513,19 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         if binding is not None:
             stale = _NONBOUND_REASON.get(binding.status, DegradationReason.CONNECT_REQUIRED)
         # #2101: the PAT read is a store connect on the hosted path; off the loop.
-        pat = await self._user_pat_at_rest(user_id) or await asyncio.to_thread(
-            self._user_pat, user_id
-        )
+        # #2151 (Arch 10-24 16:49): a leg that failed is not absence. Either leg's token
+        # still serves; with none, a failed leg degrades UNREACHABLE, never CONNECT_REQUIRED.
+        store_failed = False
+        pat = None
+        try:
+            pat = await self._user_pat_at_rest(user_id)
+        except GitHubReadFailed:
+            store_failed = True
+        if not pat:
+            try:
+                pat = await asyncio.to_thread(self._user_pat, user_id)
+            except GitHubReadFailed:
+                store_failed = True
         if pat:
             return GitHubCredential(
                 owner_id=getattr(binding, "owner_id", user_id),
@@ -1500,9 +1534,14 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 leg="pat",
                 stale_oauth_reason=stale,
             )
-        if binding is None:
-            return await self.degrade(DegradationReason.CONNECT_REQUIRED)
-        return await self.degrade(stale or DegradationReason.CONNECT_REQUIRED)
+        if stale is not None and stale is not DegradationReason.CONNECT_REQUIRED:
+            return await self.degrade(stale)
+        if store_failed:
+            return DegradationResponse(
+                reason=DegradationReason.UNREACHABLE,
+                user_message=CREDENTIAL_STORE_FAILED_MESSAGE,
+            )
+        return await self.degrade(DegradationReason.CONNECT_REQUIRED)
 
     @staticmethod
     def _coerce_user_uuid(user_id):

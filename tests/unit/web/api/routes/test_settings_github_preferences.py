@@ -15,6 +15,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+from services.infrastructure.keychain_service import SecretProvenance, SecretRead
 from web.api.routes.settings_integrations import (
     GitHubPreferencesRequest,
     get_github_preferences,
@@ -35,6 +36,8 @@ class TestGetGitHubRepositories:
         """
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = None
+        # #2151: the PAT leg reads with provenance; nothing stored is VERIFIED_ABSENT.
+        mock_keychain.read_secret.return_value = SecretRead(SecretProvenance.VERIFIED_ABSENT)
 
         mock_user = MagicMock()
         mock_user.sub = "test-user-123"
@@ -76,6 +79,9 @@ class TestGetGitHubRepositories:
         """Should return list of repositories when connected"""
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = "ghp_test_token"
+        mock_keychain.read_secret.return_value = SecretRead(
+            SecretProvenance.PRESENT, value="ghp_test_token"
+        )
 
         mock_user = MagicMock()
         mock_user.sub = "test-user-123"
@@ -147,6 +153,9 @@ class TestGetGitHubRepositories:
         """Should return error when GitHub API returns error"""
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = "ghp_test_token"
+        mock_keychain.read_secret.return_value = SecretRead(
+            SecretProvenance.PRESENT, value="ghp_test_token"
+        )
 
         mock_user = MagicMock()
         mock_user.sub = "test-user-123"

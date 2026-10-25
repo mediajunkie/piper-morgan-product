@@ -814,16 +814,16 @@ surfaces:
   effect: READ
   reads: the user's todo completion stats (7 days) and the default repo's closed issues
   handler: services/intent/intent_service.py:IntentService._handle_productivity_query
-  states: {verified: distinct, failed: conflated:verified, narrowed: distinct, not_performed: distinct, substituted: conflated:verified}
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: conflated:verified}
   texts:
-    failed: '"- I couldn''t read this account''s GitHub connection, so nothing is counted here." (GitHubReadFailed only)'
+    failed: '"- I couldn''t read this account''s GitHub connection, so nothing is counted here." (the closed-issues read); "I couldn''t check GitHub just now, so this summary doesn''t include it. Try again in a moment; if it keeps failing, tell us." (the is_available check, or any other GitHub-block error; CXO 10-24 16:54)'
     verified: "No completed items this week. Consider setting some achievable goals!"
   verdict: red
   notes: >-
-    GitHubReadFailed is disclosed (#2128), but any other exception in the GitHub block is
-    logged and drops the section entirely, and the assessment line then counts tasks only
-    ("No completed items this week") with nothing said about GitHub. ENV-REPO can supply
-    the repo.
+    GitHubReadFailed is disclosed (#2128). Since 10-24 (#2151, Arch 16:49) a failed
+    is_available check or any other GitHub-block exception gets CXO's couldn't-check line
+    after the summary instead of a silent drop; not connected gets no line. Still red:
+    ENV-REPO can supply the repo (substituted).
 
 - id: session_activity_query
   kind: rail

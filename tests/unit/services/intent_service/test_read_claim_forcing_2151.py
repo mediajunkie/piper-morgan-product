@@ -362,16 +362,26 @@ def _pre_gh_connector(_hits: _Hits) -> List[Any]:
 
 
 def _pre_gh_native(_hits: _Hits) -> List[Any]:
-    """No connector binding (CONNECT_REQUIRED): the native-PAT REST fallback is taken."""
+    """No connector binding (CONNECT_REQUIRED): the native-PAT REST fallback is taken.
+
+    Since #2151 (Arch 10-24 16:49) ``is_available()`` derives from ``resolve_credential``,
+    so for a principal a CONNECT_REQUIRED resolver closes the gate before the native leg.
+    The leg is still reached through the legacy gate (no principal, ``is_configured``), so
+    the gate is held open here to keep measuring the leg's failure line."""
+    from services.integrations.github.github_integration_router import GitHubIntegrationRouter
     from services.mcp.consumer.connector import DegradationReason
     from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
     async def _no_binding(self, *_a, **_k):
         return await self.degrade(DegradationReason.CONNECT_REQUIRED)
 
+    async def _gate_open(self, *_a, **_k):
+        return True
+
     return [
         *_pre_gh_common(),
         patch.object(GitHubMCPSpatialAdapter, "resolve_credential", _no_binding),
+        patch.object(GitHubIntegrationRouter, "is_available", _gate_open),
     ]
 
 

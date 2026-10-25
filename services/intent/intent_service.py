@@ -500,6 +500,12 @@ GENERATE_CONTENT_WHAT_I_CAN_DRAFT = (
 # Piper sources it read and the window it read, and says GitHub was not read.
 # Each read is fail-closed: the empty line only when all three read ok and all
 # three are empty; a failed read is named, never reported as "nothing new".
+# #2151 (CXO 10-24 16:54): the productivity summary when the GitHub check itself failed. It
+# follows the summary in its own paragraph; a not-connected account gets no line.
+PRODUCTIVITY_GITHUB_CHECK_FAILED = (
+    "I couldn't check GitHub just now, so this summary doesn't include it. "
+    "Try again in a moment; if it keeps failing, tell us."
+)
 CHANGES_SOURCES = ("tasks", "projects", "activity log")
 CHANGES_NOTHING_NEW = (
     "I don't see anything new in your Piper tasks, projects or activity log {window}. "
@@ -6693,7 +6699,15 @@ class IntentService:
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
-            if not await github_router.is_available():
+            from services.integrations.github.read_failed import GitHubReadFailed
+
+            try:
+                _github_available = await github_router.is_available()
+            except GitHubReadFailed as _gate_failed:
+                return self._github_gate_failed(
+                    _gate_failed, "shipped_this_week", "show you what shipped"
+                )
+            if not _github_available:
                 return IntentProcessingResult(
                     success=True,
                     message=(
@@ -6875,7 +6889,15 @@ class IntentService:
 
                 github_router = GitHubIntegrationRouter()
                 await github_router.initialize(user_id=_user_id)
-                if not await github_router.is_available():
+                from services.integrations.github.read_failed import GitHubReadFailed
+
+                try:
+                    _github_available = await github_router.is_available()
+                except GitHubReadFailed as _gate_failed:
+                    return self._github_gate_failed(
+                        _gate_failed, "stale_prs", "list your stale PRs"
+                    )
+                if not _github_available:
                     return IntentProcessingResult(
                         success=True,
                         message=(
@@ -7092,7 +7114,15 @@ class IntentService:
 
                 github_router = GitHubIntegrationRouter()
                 await github_router.initialize(user_id=_user_id)
-                if not await github_router.is_available():
+                from services.integrations.github.read_failed import GitHubReadFailed
+
+                try:
+                    _github_available = await github_router.is_available()
+                except GitHubReadFailed as _gate_failed:
+                    return self._github_gate_failed(
+                        _gate_failed, "review_issue", "show you that issue's details"
+                    )
+                if not _github_available:
                     return IntentProcessingResult(
                         success=True,
                         message=(
@@ -7372,7 +7402,13 @@ class IntentService:
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
-            if not await github_router.is_available():
+            from services.integrations.github.read_failed import GitHubReadFailed
+
+            try:
+                _github_available = await github_router.is_available()
+            except GitHubReadFailed as _gate_failed:
+                return self._github_gate_failed(_gate_failed, "close_issue", "close that issue")
+            if not _github_available:
                 return IntentProcessingResult(
                     success=True,
                     message=(
@@ -7716,7 +7752,13 @@ class IntentService:
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
-            if not await github_router.is_available():
+            from services.integrations.github.read_failed import GitHubReadFailed
+
+            try:
+                _github_available = await github_router.is_available()
+            except GitHubReadFailed as _gate_failed:
+                return self._github_gate_failed(_gate_failed, "reopen_issue", "reopen that issue")
+            if not _github_available:
                 return IntentProcessingResult(
                     success=True,
                     message=(
@@ -8051,7 +8093,15 @@ class IntentService:
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
-            if not await github_router.is_available():
+            from services.integrations.github.read_failed import GitHubReadFailed
+
+            try:
+                _github_available = await github_router.is_available()
+            except GitHubReadFailed as _gate_failed:
+                return self._github_gate_failed(
+                    _gate_failed, "comment_issue", "comment on that issue"
+                )
+            if not _github_available:
                 return IntentProcessingResult(
                     success=True,
                     message=(
@@ -9003,7 +9053,15 @@ class IntentService:
 
                 github_router = GitHubIntegrationRouter()
                 await github_router.initialize(user_id=_user_id)
-                if not await github_router.is_available():
+                from services.integrations.github.read_failed import GitHubReadFailed
+
+                try:
+                    _github_available = await github_router.is_available()
+                except GitHubReadFailed as _gate_failed:
+                    return self._github_gate_failed(
+                        _gate_failed, "list_prs", "list your pull requests"
+                    )
+                if not _github_available:
                     return IntentProcessingResult(
                         success=True,
                         message=(
@@ -9106,6 +9164,35 @@ class IntentService:
                 error=str(e),
                 error_type="list_prs_error",
             )
+
+    def _github_gate_failed(self, rf, action: str, verb: str) -> "IntentProcessingResult":
+        """#2151 (Arch 10-24 16:49): ``is_available()`` raised, so the credential check
+        itself failed (a stale or misconfigured connection, or a store that didn't
+        answer). Said as that, never as "GitHub isn't connected"."""
+        from services.mcp.consumer.connector import DegradationReason
+
+        if rf.reason is DegradationReason.STALE_TOKEN:
+            message = (
+                "Your GitHub connection needs re-authorizing. Reconnect it in Settings → "
+                f"Integrations, and I can {verb}."
+            )
+        else:
+            message = (
+                f"I couldn't check your GitHub connection just now, so I can't {verb} yet. "
+                "Try again in a moment."
+            )
+        self.logger.warning(
+            "github_gate_failed", action=action, reason=rf.reason_code, detail=rf.detail
+        )
+        return IntentProcessingResult(
+            success=False,
+            message=message,
+            intent_data={
+                "category": "query",
+                "action": action,
+                "context": {"read_failed": rf.reason_code, "detail": rf.detail},
+            },
+        )
 
     def _github_list_read_failed(self, rf, action: str, noun: str) -> "IntentProcessingResult":
         """#1524: a GitHub list read that did not happen, said as that, never as "none".
@@ -10317,7 +10404,21 @@ class IntentService:
                 _user_id = _principal_from_intent(intent)
                 await github_router.initialize(user_id=_user_id)
 
-                if await github_router.is_available():
+                from services.integrations.github.read_failed import GitHubReadFailed
+
+                try:
+                    _github_available = await github_router.is_available()
+                except GitHubReadFailed as _gate_failed:
+                    # #2151 (Arch 10-24 16:49, CXO 16:54): a failed check gets CXO's
+                    # couldn't-check line after the summary; not connected gets none.
+                    self.logger.warning(
+                        "productivity_github_gate_failed",
+                        reason=_gate_failed.reason_code,
+                        detail=_gate_failed.detail,
+                    )
+                    github_stats = {"check_failed": True, "issues_closed": None, "items": []}
+                    _github_available = False
+                if _github_available:
                     # Get closed issues from past 7 days
                     from services.integrations.github.read_failed import GitHubReadFailed
 
@@ -10358,7 +10459,8 @@ class IntentService:
 
             except Exception as gh_error:
                 self.logger.warning(f"GitHub productivity metrics unavailable: {gh_error}")
-                # Continue without GitHub stats
+                # CXO 10-24 16:54: a summary that silently leaves GitHub out looks complete.
+                github_stats = {"check_failed": True, "issues_closed": None, "items": []}
 
             # Format productivity summary
             lines = ["**Productivity Summary (Past 7 Days)**\n"]
@@ -10378,7 +10480,7 @@ class IntentService:
                 lines.append(
                     "- I couldn't read this account's GitHub connection, so nothing is counted here."
                 )
-            elif github_stats:
+            elif github_stats and not github_stats.get("check_failed"):
                 lines.append("\n**GitHub:**")
                 lines.append(f"- Issues/PRs Closed: {github_stats['issues_closed']}")
 
@@ -10405,6 +10507,9 @@ class IntentService:
                 lines.append(
                     f"Highly productive week with {total_completed} item{'s' if total_completed != 1 else ''} completed. Excellent work!"
                 )
+
+            if github_stats and github_stats.get("check_failed"):
+                lines.append(f"\n{PRODUCTIVITY_GITHUB_CHECK_FAILED}")
 
             message = "\n".join(lines)
 
@@ -12232,7 +12337,13 @@ class IntentService:
         _user_id = user_id or _principal_from_intent(intent)
         await github_router.initialize(user_id=_user_id)
 
-        if not await github_router.is_available():
+        from services.integrations.github.read_failed import GitHubReadFailed
+
+        try:
+            _github_available = await github_router.is_available()
+        except GitHubReadFailed as _gate_failed:
+            return self._github_gate_failed(_gate_failed, "create_issue", "create that issue")
+        if not _github_available:
             return IntentProcessingResult(
                 success=True,
                 message=(
@@ -12959,7 +13070,13 @@ class IntentService:
         _user_id = user_id or _principal_from_intent(intent)
         await github_router.initialize(user_id=_user_id)
 
-        if not await github_router.is_available():
+        from services.integrations.github.read_failed import GitHubReadFailed
+
+        try:
+            _github_available = await github_router.is_available()
+        except GitHubReadFailed as _gate_failed:
+            return self._github_gate_failed(_gate_failed, "update_issue", "update that issue")
+        if not _github_available:
             return IntentProcessingResult(
                 success=True,
                 message=(
