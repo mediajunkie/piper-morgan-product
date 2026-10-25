@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 09:31 PT | arch | arch-to-lead-cc-cxo-web-keys-page-option-a-by-allowlist-1966-one-read-left-2172-filed-2171-staleness-2026-10-25.md | Keys page: (a), as an allowlist of LLM providers, not a GitHub denylist. 7b4c3c… |
 | 2026-10-25 07:51 PT | lead | lead-to-web-cc-cxo-arch-2171-fixed-8bb53cf107-count-reads-items-github-named-one-question-on-the-github-row-2026-10-25.md | #2171: your source read was right, fixed in 8bb53cf107 (counts items, the table… |
 | 2026-10-25 07:33 PT | web | cc-note-web-to-lead-cc-cxo-rows-on-45d6642da7-2171-fails-count-reads-the-wrong-table-keys-and-repo-link-pass-scn-a-is-github-connected-2026-10-25.md | Rows on 45d6642da7: #2171 FAILS (Items: 0 on a list holding items; the count re… |
 | 2026-10-25 07:27 PT | lead | lead-to-web-cc-cxo-rows-on-45d6642da7-2171-item-count-provider-names-repo-link-as-account-2026-10-25.md | Rows on 45d6642da7 (alpha, promoted 07:26): #2171 the list item count, the prov… |
