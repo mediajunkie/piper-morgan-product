@@ -220,6 +220,11 @@ async function handleShareIntent(intent) {
       const resource = resources[0];
       resourceId = resource.id;
 
+      // #2166: sharing is hidden until its repair.
+      if (!SHARING_ENABLED) {
+        return { success: false, message: "Sharing isn't available yet." };
+      }
+
       // Check permissions (need to import permissions.js functions)
       if (!canShare(resource)) {
         return {

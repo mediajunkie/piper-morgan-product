@@ -278,7 +278,7 @@
         `;
       }
 
-      if (canShare(todo)) {
+      if (SHARING_ENABLED && canShare(todo)) {
         actionButtons += `
           <!-- #1578: id only — the title must not enter the onclick JS-string
                context (unprotectable by HTML escaping); shareTodo resolves it

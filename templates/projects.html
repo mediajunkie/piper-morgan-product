@@ -128,7 +128,7 @@
         `;
       }
 
-      if (canShare(project)) {
+      if (SHARING_ENABLED && canShare(project)) {
         actionButtons += `
           <button class="share-btn" onclick="shareProject('${project.id}', '${project.name}')">
             Share

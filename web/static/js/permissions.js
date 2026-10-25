@@ -32,6 +32,11 @@ function canDelete(resource) {
   return share && share.role === 'ADMIN';
 }
 
+// #2166 (PPM 10-24 18:36): sharing is hidden on alpha until its repair (Production D):
+// todo sharing has no column, no route lists shares, and an email resolves to nothing.
+// The Share buttons and the chat share intent check this first.
+const SHARING_ENABLED = false;
+
 // Check if current user can share a resource
 function canShare(resource) {
   if (!window.currentUser) return false;

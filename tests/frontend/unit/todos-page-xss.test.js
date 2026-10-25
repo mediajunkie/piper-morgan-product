@@ -33,13 +33,22 @@ const ESCAPE_JS = fs.readFileSync(
 // single-quoted JS strings — all three contexts the page interpolates into.
 const HOSTILE = '<img src=x onerror="window.__pwned = true">\'";--</script>';
 
-function loadTodosPage() {
+function loadTodosPage({ sharing = false } = {}) {
   const html = fs.readFileSync(TEMPLATE, 'utf8');
   const inline = [...html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)]
     .map((m) => m[1])
     .join('\n');
   expect(inline).toContain('function renderTodos');
-  const permissions = fs.readFileSync(PERMISSIONS, 'utf8');
+  // #2166: Share is hidden on alpha (SHARING_ENABLED = false). The XSS pins on the share
+  // path load the page with it on, so the protection stays measured for its return.
+  let permissions = fs.readFileSync(PERMISSIONS, 'utf8');
+  expect(permissions).toContain('const SHARING_ENABLED = false;');
+  if (sharing) {
+    permissions = permissions.replace(
+      'const SHARING_ENABLED = false;',
+      'const SHARING_ENABLED = true;'
+    );
+  }
   const wrapped = `
     ${ESCAPE_JS}
     ${permissions}
@@ -156,7 +165,15 @@ describe('todos.html render path — stored XSS (#1578)', () => {
     ).toBe(hostileStage);
   });
 
+  test('#2166: no Share button renders while sharing is hidden', () => {
+    page.renderTodos([
+      { id: 't4', text: 'mine', owner_id: 'u1', status: 'pending' },
+    ]);
+    expect(container().querySelector('.share-btn')).toBeNull();
+  });
+
   test('Share button onclick carries only the id — never the title (JS-string context is unprotectable by HTML escaping)', () => {
+    page = loadTodosPage({ sharing: true });
     page.renderTodos([
       { id: 't4', text: HOSTILE, owner_id: 'u1', status: 'pending' },
     ]);

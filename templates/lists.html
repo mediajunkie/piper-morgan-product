@@ -293,7 +293,7 @@
           `;
         }
 
-        if (canShare(list)) {
+        if (SHARING_ENABLED && canShare(list)) {
           actionButtons += `
             <button class="share-btn" onclick="shareList('${list.id}', '${list.name}')">
               Share
