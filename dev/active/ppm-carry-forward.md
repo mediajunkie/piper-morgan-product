@@ -440,3 +440,9 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Friday 10-30:** first since-last diff against `dev/snapshots/project-board-2026-10-24.tsv`; take a fresh snapshot first.
 - **Watch:** #2171 (H, Lists "Items: 0"), Lead's provider display-name nit on #2167's dialog (not a gate), #2166's D repair (Arch's shares table).
 - Main CI 12 of 12 green at 21:33; alpha healthy on `228f3cec14`.
+
+## 2026-10-25 15:33 WORK (interim)
+- Waiting on Exec: the backward edge #1706 (PUB) → #1441 (C), and #2018 (MVP) blocked by #2172. Both are Sprint or admission calls; I wrote no row.
+- Waiting on others: Arch's word on whether #1706's edge is truly "must close before"; Web's consent-page run on #2175; CXO's Friday spot-check (no green cell yet).
+- Map: v4 at https://claude.ai/artifact/63oejcubP3zEj617nFAN68. The snapshot now carries `state_reason`. The Friday 10-30 since-last diff is due.
+- Placed today with the Sprint field blank (PM-gated): #2174 (C) and #2175 (PUB).
