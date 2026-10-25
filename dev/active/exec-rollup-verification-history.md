@@ -188,3 +188,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v603 11:08 Sun 10-25: #2171 working fix 8bb53cf107 on alpha 73e050aae5 (merge-base ancestor), awaiting CXO served row; status 11:08. Verified: /health, git merge-base, main-ci-status 12/12, MVP [2018,1595,1386].
 - v604 12:10 Sun 10-25: xian (in session) did Ship #066 first look Friday, final edit after Tuesday post ready; crossposts sent to Docs. Rollup corrected (had said untouched).
 - v605 12:41 Sun 10-25: xian approved ESSENCE v1.1, added 3 Sprint options (read back, 60), Terms commas applied; items removed from his list; promises.yaml remains. Verified: gh project field-list, decisions.log 12:40.
+- v606 13:00 Sun 10-25: ESSENCE applied (Arch 12:44); PPM relabel 92/92, plan 206 = board; E6 gate question (public beta vs 1.0) added under promises.yaml.
