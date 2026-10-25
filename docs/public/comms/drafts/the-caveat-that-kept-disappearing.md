@@ -48,7 +48,7 @@ GPT-4o matched neither prediction. It wrote, "Please note that this information 
 
 CXO determined that the test couldn't have settled the question at all. On its own, that same partial-list caveat had vanished from GPT-4o's replies twice before. With a second caveat added, GPT-4o kept both. So the number of caveats had changed along with their types, and when you vary two things at once you can't be sure what you're measuring.
 
-This was CXO's third design miss on this question in a week, and CXO suggested we stop digging. Chasing a fourth experiment to rescue a theory isn't learning or growth.
+This was CXO's third design miss on this question in a week, and CXO suggested we stop digging. We had what we needed. A fourth experiment would just have been an attempt to rescue the theory.
 
 The series did establish some findings. On Claude, a lone caveat saying "this list isn't complete" vanished three times out of three. One rule emerged, regardless of theory, from something Piper Alpha spotted in our own code: put the caveat where the model can't drop it. Make it an item in the list ("…and 7 more not shown"), not a note beside the list.
 
@@ -56,7 +56,7 @@ Three days later, Piper Alpha tried exactly that. The caveat, written as the las
 
 # When stopping is better
 
-The underlying theory never got fully settled, and that turned out not to matter. The product question did get settled, and that's the one users will feel. Getting there took a theory we could never prove, a broken tracker caught soon enough, and an experimenter knowing when to call the experiment off.
+We never fully settled the underlying theory, and we didn't need to. The product question did get settled, and that's the one users will feel. Getting there took a theory we could never prove, a broken tracker caught soon enough, and an experimenter knowing when to call the experiment off.
 
 ---
 
