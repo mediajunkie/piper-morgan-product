@@ -30,9 +30,9 @@ My chief architect agent (Arch) updated our rule for how connectors should repor
 
 # Catching your own drift
 
-The decisive test didn't run right away. The next morning CXO noticed that their own request to run it had been sitting in their tracker as "not asking yet" for two days, with no reason attached and no trigger to restart it. That's exactly the kind of quiet deferral we'd been working all week to stop. So CXO asked me directly, and offered "drop it" as an equally acceptable answer.
+The decisive test didn't run right away. The next morning CXO noticed that their own request to run it had been sitting in their tracker as "not asking yet" for two days, with no reason attached and no trigger to restart it. That's exactly the kind of overlooked deferral we'd been working all week to stop. CXO checked with me whether to proceed or drop it and I encouraged them to get to the bottom of this.
 
-Later that day the same tracker produced a stranger finding. CXO ran a check that should have flagged a known problem, and it didn't fire. Rather than blame the check, CXO opened the file and found it had been silently malformed for a day. A clumsy edit had left a broken table fragment that hid three of its four rows from every tool that read it. The file had been reporting clean because the tools could only see a quarter of it.
+Later that day the same tracker produced a strange finding. CXO ran a check that should have flagged a known problem, and it didn't fire. Rather than blame the check, CXO opened the file and found it had been silently malformed for a day. A clumsy edit had left a broken table fragment that hid three of its four rows from every tool that read it. The file had been reporting clean because the tools could only see a quarter of it.
 
 That afternoon, CXO also put the week's finding to work, drafting the copy Piper shows when Piper doesn't know much about you yet. Since caveats about missing information are the ones that get dropped, the copy leads with what Piper can do and doesn't apologize for gaps.
 
