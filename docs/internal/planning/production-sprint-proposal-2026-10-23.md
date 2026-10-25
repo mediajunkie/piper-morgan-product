@@ -36,19 +36,19 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 
 | # | Sprint (proposed) | Why this place in the order | Open |
 |---|---|---|---|
-| 1 | **PUB: Public Beta gate** (unchanged) | xian's ratified gate (ESSENCE v1.0, 08-30). It runs through the private beta. | 23 |
-| 2 | **H: Honesty sweep** (no false "none", "0", "not connected", "I can't see it") | xian approved the systematic sweep at 16:57: Arch scopes it, and Lead builds it after #2132. Design partners will hit these first, and each one is a Class 3 shape. Arch scoped it at 17:04 as **#2151** (placed Production by PPM), not #1423, because this week's served instances had no broad `except` for #1423's scanner to find. The list below is input to #2151's inventory, not a substitute for it. | 25 |
+| 1 | **PUB: Public Beta gate** (unchanged) | xian's ratified gate (ESSENCE v1.0, 08-30). It runs through the private beta. | 24 |
+| 2 | **H: Honesty sweep** (no false "none", "0", "not connected", "I can't see it") | xian approved the systematic sweep at 16:57: Arch scopes it, and Lead builds it after #2132. Design partners will hit these first, and each one is a Class 3 shape. Arch scoped it at 17:04 as **#2151** (placed Production by PPM), not #1423, because this week's served instances had no broad `except` for #1423's scanner to find. The list below is input to #2151's inventory, not a substitute for it. | 26 |
 | 3 | **D: Data boundaries and terms** (ownership, isolation, keys, Terms, legal) | xian, 10-16: the Terms and legal review come before any outside user beyond the design partners. The owner-id and isolation work is the same promise in code. | 30 |
-| 4 | **C: Connectors complete** (GitHub, Calendar, Notion on the #1232 contract, published OAuth apps) | v18.7(kk): the core connectors must finish to close Production. #2087 (Google verification) is submitted. | 25 |
+| 4 | **C: Connectors complete** (GitHub, Calendar, Notion on the #1232 contract, published OAuth apps) | v18.7(kk): the core connectors must finish to close Production. #2087 (Google verification) is submitted. | 24 |
 | 5 | **V: Conversation reliability** (multi-intent, armed offers, routing, catalog cost) | Correctness of the chat path beyond the honesty class. #2145 and #2149 (catalog cost and size) sit here, with #1011 (slash-command precedence) decided alongside them. | 30 |
-| 6 | **E: Experience polish** (layout, dialog copy, nav) | CXO-led. These are visible and irritating, but not false. | 28 |
+| 6 | **E: Experience polish** (layout, dialog copy, nav) | CXO-led. These are visible and irritating, but not false. | 29 |
 | 7 | **T: Trust and learning** | #2135 (trust never progresses) makes the PDR-002 gradient inert today. The rest follows it. | 14 |
 | 8 | **Doc: Documents** | Follows #2132's family table. | 8 |
 | 9 | **Dist: Distribution** (marketplace, MCPB, plugin, onboarding skills) | Most of it waits on PUB's MCP path. | 5 |
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 16 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 204 open (#2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 206 open (#2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -64,7 +64,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 
 "was" is the board's Sprint value at the 19:11 refresh ("—" for none).
 
-### PUB: Public Beta gate (23)
+### PUB: Public Beta gate (24)
 
 | # | Title | was |
 |---|---|---|
@@ -91,8 +91,9 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1707 | MCP-path increment 8: trust-gated proactivity — PLACEHOLDER, do not build until the plugin-surface trust-gr… | PUB |
 | #2164 | Waitlist sign-up with batch admission (after the inner-circle invitations) (10-24) | — |
 | #2165 | Per-account rate and abuse limits, with a user-facing line when a limit is hit (10-24) | — |
+| #2168 | Plugin surface rubric: ratify CXO's v0.1 and run it per increment as the precondition for #1701-#1707 (10-24) | PUB |
 
-### H: Honesty sweep (25)
+### H: Honesty sweep (26)
 
 | # | Title | was |
 |---|---|---|
@@ -121,6 +122,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1550 | All-day calendar events render as 'at 12am' — technically the stored time, maladroit to humans | — |
 | #1535 | Reminder times display in UTC — per-user timezone rendering (1521 follow-on) | — |
 | #1915 | [TIMEZONE] 'set it back to pacific time' is refused — accept common zone names/abbreviations (Pacific, PT, … | — |
+| #2167 | UX (class 3): the API key Remove dialog says "we destroy our copy immediately"; backups keep it up to about five days (10-24; proposed for MVP) | — |
 
 ### D: Data boundaries and terms (30)
 
@@ -157,13 +159,12 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2161 | Incident notice to users: an in-app banner during an outage, an after-note, and prepared words for data l… (10-24) | — |
 | #2162 | Staging instance for destructive tests and promotion rehearsal: synthetic data only, never restored from … (10-24) | — |
 
-### C: Connectors complete (25)
+### C: Connectors complete (24)
 
 | # | Title | was |
 |---|---|---|
 | #1051 | POST-MVP: GitHub query state/prerelease filters (milestones state, releases prerelease) | PROD-RECONNECT |
 | #1323 | RECONNECT tech-debt: extract BindingBackedConnector mixin (dedupe connector-protocol logic across adapters) | PROD-RECONNECT |
-| #1325 | RECONNECT D3-ideal end-state: adopt GitHub-App installation-token auth for self-hosted github-mcp-server (w… | PROD-RECONNECT |
 | #1327 | RECONNECT: GitHub target resolution — hierarchy (explicit→infer→ask→default) + default-repo mechanism | PROD-RECONNECT |
 | #1336 | [placeholder] Expand/refactor canonical-query regression for connector states + trust properties | PROD-RECONNECT |
 | #1352 | RECONNECT-WS4 follow-up: migrate calendar to the shared degrade(reason) contract + apply to other connector… | PROD-RECONNECT |
@@ -222,7 +223,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1011 | ARCH-DESIGN: Slash-command dispatch precedence — post-MVP design decision needed | PROD-DESIGN |
 | #2155 | UX: "What's on my agenda?" with no calendar answers about meeting-time analysis (placed 10-24) | — |
 
-### E: Experience polish (28)
+### E: Experience polish (29)
 
 | # | Title | was |
 |---|---|---|
@@ -254,6 +255,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2099 | Invites page: minting a code does not refresh the list (revoke does) on alpha e801b1a309; xian's read after… | — |
 | #2116 | [UX] "What makes you different?" asked a fifth time is answered with a question about motive, no answer (se… | — |
 | #2156 | UX: Send feedback is a quiet footer link, and absent from the setup wizard and error pages (10-24) | — |
+| #2166 | Todo/list/project Share: the UI sends user_to_share_with but the API requires user_id (422); with user_id the API answers 500 (10-24) | — |
 
 ### T: Trust and learning (14)
 

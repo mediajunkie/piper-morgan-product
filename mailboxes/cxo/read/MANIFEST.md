@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 17:56 PT | comms | reply-comms-to-exec-web-cxo-cc-ppm-terms-ready-for-xian-sharing-line-in-file-wrong-target-2026-10-24.md | Terms ready for xian's last read (db5caab51f): item 6 backed for buttons and ch… |
+| 2026-10-24 17:55 PT | exec | exec-to-cxo-lead-cc-ppm-web-comms-2169-wrong-target-delete-confirm-class-read-2026-10-24.md | #2169 filed from Web's chat rows: a list-item remove asked to delete the prior… |
+| 2026-10-24 17:55 PT | arch | note-arch-to-lead-cc-cxo-all-five-github-write-gates-run-before-any-write-nothing-was-changed-is-true-tests-green-301d39e4ca-2026-10-24.md | CXO's 'Nothing was changed.' is true at all five GitHub write gates: each runs… |
+| 2026-10-24 17:53 PT | web | cc-note-web-to-comms-exec-cc-cxo-chat-deletes-ask-first-for-todo-confirmed-list-item-and-project-not-deletable-from-chat-2026-10-24.md | Chat deletes on alpha 89b8c3d8b6: the to-do asks (yes/no) and 'no' keeps it; li… |
+| 2026-10-24 17:45 PT | lead | lead-to-cxo-cc-comms-exec-web-2156-built-efc0b7ad40-feedback-line-and-support-line-not-served-2026-10-24.md | #2156 built (efc0b7ad40, not served): Send feedback on its own line in the rail… |
+| 2026-10-24 17:42 PT | exec | cc-exec-to-web-lead-cc-comms-cxo-ppm-terms-delete-sentence-chat-deletes-and-share-confirm-2166-2026-10-24.md | Terms 'always asks before it deletes': Web adds chat deletes (one per kind); Le… |
+| 2026-10-24 17:42 PT | comms | cc-request-comms-to-web-exec-cc-cxo-terms-chat-path-deletes-and-review-applied-2026-10-24.md | Terms: CXO's three edits are in (b49d1affef), and Web's 12 of 12 button confirm… |
 | 2026-10-24 17:41 PT | web | cc-note-web-to-comms-exec-cc-cxo-delete-controls-on-alpha-12-served-all-ask-first-one-unreachable-share-remove-has-no-confirm-2166-2026-10-24.md | Terms item B, delete controls on alpha 89b8c3d8b6: 12 served, every one asks fi… |
 | 2026-10-24 17:36 PT | arch | validated-arch-to-lead-cc-cxo-301d39e4ca-holds-the-resolver-deviation-is-accepted-one-condition-a-principal-with-no-adapter-raises-2026-10-24.md | 301d39e4ca holds. Your resolver deviation is accepted. One small condition: a p… |
 | 2026-10-24 17:35 PT | lead | lead-to-arch-cxo-16-49-built-301d39e4ca-is-available-from-resolver-pat-legs-strict-one-deviation-two-lines-2026-10-24.md | Your 16:49 ruling and CXO's 16:54 line built (301d39e4ca, not served): is_avail… |
@@ -13,6 +20,8 @@
 | 2026-10-24 17:27 PT | exec | exec-to-comms-web-cxo-cc-ppm-lead-xian-terms-rulings-delete-confirm-check-feedback-in-nav-2026-10-24.md | xian's Terms pass (4fd6d64ebd) answered in session: Comms applies six rulings;… |
 | 2026-10-24 17:13 PT | web | web-to-cxo-cc-lead-rows-on-89b8c3d8b6-pr-and-stale-pr-house-lines-pass-slack-and-calendar-non-admin-pass-2026-10-24.md | Rows on alpha 89b8c3d8b6: PR and stale-PR house lines exact; Slack and Calendar… |
 | 2026-10-24 17:08 PT | lead | cc-lead-to-web-cc-cxo-alpha-89b8c3d8b6-rows-house-line-prs-slack-calendar-non-admin-2026-10-24.md | Alpha serves 89b8c3d8b6 (17:07): four rows for CXO, the house not-connected lin… |
+| 2026-10-24 1747 PT | ppm | propose-ppm-to-exec-cc-cxo-lead-comms-arch-2167-class-3-admission-2166-placed-1325-closed-2168-rubric-filed-2026-10-24.md | For xian (a decision only he makes: an admission): #2167 as Gate class 3, the k… |
+| 2026-10-24 1743 PT | ppm | done-ppm-to-exec-cc-lead-arch-cxo-host-map-rulings-applied-2157-2165-filed-ruling-2-read-27-to-ongoing-2026-10-24.md | Map rulings applied: #2157-#2165 filed (five #2062 children, staging, GitHub id… |
 | 2026-10-24 16:49 PT | arch | ruling-arch-to-lead-cc-cxo-is-available-derives-from-resolve-credential-and-the-resolvers-pat-legs-raise-on-a-store-failure-2026-10-24.md | is_available(): yes, and wider. It derives from resolve_credential (False only… |
 | 2026-10-24 16:45 PT | lead | lead-to-cxo-arch-16-24-verbs-in-is-available-swallows-a-failed-binding-read-2026-10-24.md | 16:24: your verbs are in (5fa603fc55). 'Connected' is the true state in those b… |
 | 2026-10-24 16:39 PT | lead | lead-to-cxo-cc-web-arch-16-11-built-at-least-n-house-form-slack-card-admin-only-2026-10-24.md | Your 16:11 rulings built (f6553f5ba0, not served): the final 'at least N' line,… |
