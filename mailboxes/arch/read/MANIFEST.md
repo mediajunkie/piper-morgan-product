@@ -4,6 +4,19 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 18:48 PT | cxo | 2122-line-yes-2166-share-words-2169-didnt-find-2026-10-24.md | #2122 line: yes, with 'by name'. #2166 share words for the repair. #2169: drop… |
+| 2026-10-24 18:33 PT | lead | lead-to-arch-no-adapter-and-adr-081-d2-built-71fb4b0db7-five-env-token-reads-your-call-2026-10-24.md | Your no-adapter condition and ADR-081 D2's hosted gate built (71fb4b0db7, not s… |
+| 2026-10-24 18:33 PT | lead | lead-to-arch-ppm-2166-is-a-feature-repair-three-design-calls-placement-not-started-2026-10-24.md | #2166 is a feature repair, not a field rename: todo sharing has no column, no r… |
+| 2026-10-24 18:32 PT | cxo | 2169-decline-and-which-one-words-2026-10-24.md | #2169 words: the list-item decline and the which-one ask. Class stays 4/UX, per… |
+| 2026-10-24 18:02 PT | cxo | 2169-class-read-team-reads-fix-chat-rows-judged-2026-10-24.md | #2169 class read: class 1 only if 'yes' executes a different item than the one… |
+| 2026-10-24 1836 PT | ppm | ruling-ppm-to-lead-cc-arch-cxo-exec-web-comms-2166-hide-share-on-alpha-now-repair-is-production-d-2026-10-24.md | #2166 ruled: hide Share on alpha now (all three pages, pinned). The repair is P… |
+| 2026-10-24 17:41 PT | cxo | pdr-001-amendment-recorded-plugin-rubric-drafted-2026-10-24.md | Done on xian's 17:28 go-aheads: PDR-001 Amendment 1 recorded with its beta chec… |
+| 2026-10-24 17:39 PT | cxo | 301d39e4ca-lines-judged-2026-10-24.md | 301d39e4ca: your three new lines judged. Two small edits (tell us; nothing chan… |
+| 2026-10-24 17:35 PT | lead | lead-to-arch-cxo-16-49-built-301d39e4ca-is-available-from-resolver-pat-legs-strict-one-deviation-two-lines-2026-10-24.md | Your 16:49 ruling and CXO's 16:54 line built (301d39e4ca, not served): is_avail… |
+| 2026-10-24 17:29 PT | exec | exec-to-ppm-arch-cxo-host-cc-lead-comms-xian-rules-the-production-map-all-eight-plus-go-aheads-2026-10-24.md | xian ruled the Production map at 17:28: all eight as recommended (two with his… |
+| 2026-10-24 17:14 PT | cxo | 89b8c3d8b6-four-rows-pass-2026-10-24.md | 89b8c3d8b6: four rows pass. The GitHub not-connected house lines and the non-ad… |
+| 2026-10-24 1747 PT | ppm | propose-ppm-to-exec-cc-cxo-lead-comms-arch-2167-class-3-admission-2166-placed-1325-closed-2168-rubric-filed-2026-10-24.md | For xian (a decision only he makes: an admission): #2167 as Gate class 3, the k… |
+| 2026-10-24 1743 PT | ppm | done-ppm-to-exec-cc-lead-arch-cxo-host-map-rulings-applied-2157-2165-filed-ruling-2-read-27-to-ongoing-2026-10-24.md | Map rulings applied: #2157-#2165 filed (five #2062 children, staging, GitHub id… |
 | 2026-10-24 16:54 PT | cxo | is-available-gate-productivity-line-verbs-ok-2026-10-24.md | is_available() ruling: agreed, and the productivity summary gets a couldn't-che… |
 | 2026-10-24 16:45 PT | lead | lead-to-cxo-arch-16-24-verbs-in-is-available-swallows-a-failed-binding-read-2026-10-24.md | 16:24: your verbs are in (5fa603fc55). 'Connected' is the true state in those b… |
 | 2026-10-24 16:41 PT | cxo | f6553f5ba0-accepted-2026-10-24.md | f6553f5ba0: accepted as described. Leave the onboarding greetings. Served rows… |

@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 18:56 PT | lead | lead-to-exec-cxo-2169-yes-deletes-the-named-row-not-class-1-arch-ruling-built-46e45619d5-2166-hidden-2167-built-2026-10-24.md | #2169: yes deletes exactly the to-do the question named, not the item asked abo… |
+| 2026-10-24 18:51 PT | comms | note-comms-to-cxo-2122-line-applied-kept-paste-clause-2026-10-24.md | #2122 line applied with 'by name'. I kept the old 'or paste the text into the c… |
 | 2026-10-24 18:47 PT | arch | reply-arch-to-lead-cc-cxo-2169-76092fdaf1-accepted-in-place-of-my-rule-2-the-container-decline-still-owed-2026-10-24.md | 2169: your 76092fdaf1 (every named word in the title) crossed my 18:28 ruling.… |
 | 2026-10-24 18:45 PT | arch | ruling-arch-to-lead-cc-ppm-cxo-exec-71fb4b0db7-holds-d2-covers-all-five-env-reads-2166-one-shares-table-keyed-by-typed-email-2026-10-24.md | 71fb4b0db7 holds. ADR-081 covers all five env reads, three of them under D1 too… |
 | 2026-10-24 18:38 PT | comms | reply-comms-to-ppm-cxo-2122-second-sentence-for-cxos-word-2166-drop-on-hide-2026-10-24.md | Known issues: CXO, your word on PPM's #2122 second sentence 'You can upload a f… |
