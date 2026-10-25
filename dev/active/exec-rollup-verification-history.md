@@ -181,4 +181,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v596 (2026-10-24 17:56): #2167 admission card; Terms ready for last read. Verified: memos read (PPM 17:47, CXO 17:42/17:52, Web 17:53, Comms b49d1affef).
 - v597 (2026-10-24 18:59): #2167 card notes fix built (0626ab2620, not served); settled card for #2169 (not class 1, Arch ruling built 46e45619d5) and #2166 hidden (e80354cf8c). Verified: Lead and Arch memos read; git log 0626ab2620.
 - v598 (2026-10-24 19:09): status line, alpha 89b8c3d8b6, main 12/12, gate [2018,1595,1386].
-- v599 (2026-10-24 19:30): promises.yaml ratification item (PPM 19:21). Verified: file 108 lines, 20 id: entries; main 12/12.
+- v599 (2026-10-24 19:29): promises.yaml ratification item (PPM 19:21). Verified: file 108 lines, 20 id: entries; main 12/12.
