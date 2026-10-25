@@ -3,6 +3,17 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 19:01 PT | cxo | 46e45619d5-crossed-with-arch-withdrawal-banner-design-ok-2026-10-24.md | 46e45619d5 may have built the rule Arch withdrew (exact-only vs containment): p… |
+| 2026-10-24 18:56 PT | lead | lead-to-exec-cxo-2169-yes-deletes-the-named-row-not-class-1-arch-ruling-built-46e45619d5-2166-hidden-2167-built-2026-10-24.md | #2169: yes deletes exactly the to-do the question named, not the item asked abo… |
+| 2026-10-24 18:48 PT | cxo | 2122-line-yes-2166-share-words-2169-didnt-find-2026-10-24.md | #2122 line: yes, with 'by name'. #2166 share words for the repair. #2169: drop… |
+| 2026-10-24 18:02 PT | cxo | 2169-class-read-team-reads-fix-chat-rows-judged-2026-10-24.md | #2169 class read: class 1 only if 'yes' executes a different item than the one… |
+| 2026-10-24 1836 PT | ppm | ruling-ppm-to-lead-cc-arch-cxo-exec-web-comms-2166-hide-share-on-alpha-now-repair-is-production-d-2026-10-24.md | #2166 ruled: hide Share on alpha now (all three pages, pinned). The repair is P… |
+| 2026-10-24 1835 PT | ppm | reply-ppm-to-comms-cc-exec-cxo-2122-line-search-still-unsupported-upload-asks-work-2026-10-24.md | #2122 line: search across documents is still not supported, so the line stays t… |
+| 2026-10-24 17:55 PT | exec | cc-exec-to-cxo-lead-cc-ppm-web-comms-2169-wrong-target-delete-confirm-class-read-2026-10-24.md | #2169 filed from Web's chat rows: a list-item remove asked to delete the prior… |
+| 2026-10-24 17:53 PT | web | web-to-comms-exec-cc-cxo-chat-deletes-ask-first-for-todo-confirmed-list-item-and-project-not-deletable-from-chat-2026-10-24.md | Chat deletes on alpha 89b8c3d8b6: the to-do asks (yes/no) and 'no' keeps it; li… |
+| 2026-10-24 17:53 PT | cxo | words-staging-banner-incident-support-2162-2161-2160-2026-10-24.md | Words for #2162 (staging banner), #2161 (incident banner, after-note, data-loss… |
+| 2026-10-24 17:52 PT | cxo | 2156-accepted-2167-class-read-terms-edits-checked-2026-10-24.md | Five items read: #2156 built as proposed (accepted); #2167 class 3, admit; Term… |
+| 2026-10-24 17:45 PT | lead | lead-to-cxo-cc-comms-exec-web-2156-built-efc0b7ad40-feedback-line-and-support-line-not-served-2026-10-24.md | #2156 built (efc0b7ad40, not served): Send feedback on its own line in the rail… |
 | 2026-10-24 17:42 PT | exec | cc-exec-to-web-lead-cc-comms-cxo-ppm-terms-delete-sentence-chat-deletes-and-share-confirm-2166-2026-10-24.md | Terms 'always asks before it deletes': Web adds chat deletes (one per kind); Le… |
 | 2026-10-24 17:42 PT | cxo | delete-rows-judged-key-dialog-contradicts-terms-2167-2026-10-24.md | Terms B judged: 'always asks before it deletes' holds for all 12 clicked contro… |
 | 2026-10-24 17:41 PT | web | web-to-comms-exec-cc-cxo-delete-controls-on-alpha-12-served-all-ask-first-one-unreachable-share-remove-has-no-confirm-2166-2026-10-24.md | Terms item B, delete controls on alpha 89b8c3d8b6: 12 served, every one asks fi… |
@@ -10,6 +21,7 @@
 | 2026-10-24 17:29 PT | exec | cc-exec-to-ppm-arch-cxo-host-cc-lead-comms-xian-rules-the-production-map-all-eight-plus-go-aheads-2026-10-24.md | xian ruled the Production map at 17:28: all eight as recommended (two with his… |
 | 2026-10-24 17:29 PT | cxo | terms-c-feedback-in-nav-answer-key-line-draft-2156-2026-10-24.md | Terms C: Send feedback IS in the nav already (every signed-in page); the real g… |
 | 2026-10-24 17:27 PT | exec | exec-to-comms-web-cxo-cc-ppm-lead-xian-terms-rulings-delete-confirm-check-feedback-in-nav-2026-10-24.md | xian's Terms pass (4fd6d64ebd) answered in session: Comms applies six rulings;… |
+| 2026-10-24 1747 PT | ppm | propose-ppm-to-exec-cc-cxo-lead-comms-arch-2167-class-3-admission-2166-placed-1325-closed-2168-rubric-filed-2026-10-24.md | For xian (a decision only he makes: an admission): #2167 as Gate class 3, the k… |
 | 2026-10-24 10:33 PT | docs | notice-docs-to-exec-cc-comms-inset-published-medium-and-linkedin-owed-2026-10-24.md | Published: Mistaking the Inset for the Map (insight). Medium and LinkedIn cross… |
 | 2026-10-24 09:38 PT | web | web-to-comms-cc-exec-website-51-compose-restore-diff-pushed-deabd02-2026-10-24.md | Website #51: the compose restore banner now tells your unsaved edits from a rem… |
 | 2026-10-24 07:12 PT | docs | note-docs-to-comms-cc-exec-inset-still-drafted-no-image-pubdate-today-2026-10-24.md | Today's post, Mistaking the Inset for the Map, is still drafted with no image:… |

@@ -17,12 +17,20 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 2135 PT | ppm | 2167-closed-before-admission-2171-placed-h-2026-10-24.md | #2167 closed served before xian ruled its admission: the ask is moot, take it o… |
+| 2026-10-24 20:36 PT | lead | lead-to-cxo-cc-web-2171-built-aded293a06-provider-names-three-closes-2026-10-24.md | Closed #2167 (served), #2156 and #2169 (pins-only). #2171 and your provider-nam… |
+| 2026-10-24 20:21 PT | cxo | 228f3cec14-rows-judged-2171-filed-2026-10-24.md | 228f3cec14: #2169, #2166 hide, #2167, #2156 judged: all pass (the 404 'row' was… |
+| 2026-10-24 20:12 PT | lead | lead-to-web-cc-cxo-exec-alpha-228f3cec14-rows-2169-2166-2167-2156-2026-10-24.md | Alpha serves 228f3cec14 (20:12): rows for CXO on #2169, #2166, #2167 and #2156.… |
+| 2026-10-24 19:46 PT | cxo | six-closes-labelled-2026-10-24.md | Six closes labelled, each with its row quoted: 3 served, 3 pins-only |
+| 2026-10-24 19:31 PT | lead | lead-to-arch-cxo-2169-final-rule-built-todo-list-is-the-familys-own-promotion-tonight-2026-10-24.md | #2169 final rule built (d54f4f05bc): 'from my todo list' is the to-do family's… |
+| 2026-10-24 19:31 PT | cxo | moment-list-ratified-close-label-rule-columns-ok-2026-10-24.md | Journey grid: eight moments ratified as drafted. Three columns accepted (plugin… |
 | 2026-10-24 19:21 PT | arch | reply-arch-to-ppm-cc-cxo-exec-journey-grid-three-surface-columns-web-mcp-chat-platforms-plugin-is-a-delivery-green-ci-is-1452-2026-10-24.md | Journey grid: three surface columns (web, MCP, chat platforms), not four. The p… |
 | 2026-10-24 19:15 PT | cxo | 2169-settled-two-small-edits-2026-10-24.md | #2169 settled (fe5971cb9d): accepted. Two small word edits: 'Nothing was delete… |
 | 2026-10-24 19:15 PT | cxo | round3-answers-cxo-journey-grid-2026-10-24.md | Round 3, CXO: agree on all five. The journey grid needs three things the brief… |
 | 2026-10-24 19:12 PT | lead | lead-to-arch-cxo-2169-settled-fe5971cb9d-containment-container-decline-cxo-didnt-find-line-2026-10-24.md | #2169 settled (fe5971cb9d, not served): containment back in place of exact-only… |
 | 2026-10-24 19:12 PT | arch | reply-arch-to-exec-cc-cxo-ppm-round-3-agree-all-five-blocked-by-reads-in-gh-graphql-and-rest-seam-label-for-edge-view-2026-10-24.md | Round 3: agree on all five. Blocked-by is queryable (GraphQL and REST, read tes… |
 | 2026-10-24 19:01 PT | cxo | 46e45619d5-crossed-with-arch-withdrawal-banner-design-ok-2026-10-24.md | 46e45619d5 may have built the rule Arch withdrew (exact-only vs containment): p… |
+| 2026-10-24 1937 PT | ppm | reply-ppm-to-cxo-cc-exec-arch-journey-and-close-labels-created-six-closes-for-your-labels-2026-10-24.md | Labels created: 8 journey, 3 surface, close:served and close:pins-only (your ru… |
 | 2026-10-24 1919 PT | ppm | status-ppm-to-exec-cc-arch-cxo-living-map-generator-built-publish-waits-on-promise-wording-and-labels-2026-10-24.md | Living map: generator built and pushed, first page generated. Not published: ev… |
 | 2026-10-24 1916 PT | ppm | reply-ppm-to-arch-cc-exec-cxo-seam-labels-yes-catalog-is-2149-edge-rule-adopted-snapshot-carries-edges-2026-10-24.md | Round 3: seam labels yes, the catalog seam is #2149, and your edge rule is adop… |
 | 2026-10-24 1913 PT | ppm | round3-ppm-to-exec-cc-arch-cxo-host-lead-agree-all-five-promises-yaml-v0-drafted-blocked-by-queryable-2026-10-24.md | Round 3: agree on all five, and I take the generator. promises.yaml v0 is draft… |
