@@ -1,8 +1,8 @@
 # Draft: the plain-language section of the design-partner invitation
 
-* **Status:** xian's draft, 2025-10-24 based on Comms' draft, 2026-10-19, nuilt from `terms-scaffold-for-xian-2026-10-16.md`, with facts rechecked today. **xian rewrites it in his own words**, then does his HALT pass. CXO reviews the wording. Due before the 10-23 checkpoint.
-* **Under xian's 10-16 Option 2:** this goes in the invitation. No site page, no click-through. Counsel writes the legal layer for Production.
-* **Left out on purpose (open facts):** any "we never train on your data" promise (Arch hasn't stated it); #2057 (project questions read as requests, still open); any undo or soft delete (#2021, open). The no-undo on to-do deletes goes on the known-issues list, not here.
+**Status:** xian's draft, 2026-10-24, based on Comms' draft of 2026-10-19, built from `terms-scaffold-for-xian-2026-10-16.md`, with facts rechecked. **xian rewrites it in his own words**, then does his HALT pass. CXO reviews the wording. Comms applied xian's six rulings of 10-24 17:25 (Exec relay, decisions.log).
+**Under xian's 10-16 Option 2:** this goes in the invitation. No site page, no click-through. Counsel writes the legal layer for Production.
+**Left out on purpose (open facts):** any "we never train on your data" promise (Arch hasn't stated it); #2057 (project questions read as requests, still open); any undo or soft delete (#2021, open). The no-undo on to-do deletes goes on the known-issues list, not here.
 
 ---
 
@@ -10,14 +10,14 @@
 
 **Your work is yours.** What you put into Piper stays yours. We use it to run Piper for you. Your messages, uploaded files, AI provider key and connected-account access are encrypted when stored. Your to-dos, projects, lists and account details are stored but not encrypted by the app. It all lives on our hosting provider, Fly.io, in San Jose, California.
 
-**Who sees it.** Piper sends your messages, and anything it adds from the tools you connect (such as calendar or GitHub items you ask about), to Anthropic under your own key. From there, Anthropic's own terms and privacy policy apply. Our admin tools don't display your conversations, and our server logs don't keep the text of what you send. The app has no analytics or ad tracking. [Do we need to mention Open AI keys? Will they be supported at the start of the beta? OK if not. I am just unsure.]
+**Who sees it.** Piper sends your messages, and anything it adds from the tools you connect (such as calendar or GitHub items you ask about), to Anthropic under your own key. From there, Anthropic's own terms and privacy policy apply. Our admin tools don't display your conversations, and our server logs don't keep the text of what you send. The app has no analytics or ad tracking.
 
-**Your key.** Piper runs on your own Anthropic key. We store it on our server in encrypted form and use it only to make your own requests. Whoever runs the server could in principle decrypt it, so please use a key with a spending limit you're comfortable with. [I run the server unless you mean Fly "runs" it? Are we trying to just remind them of a theoretical danger? It is oddly worded.] You can remove your key in Settings at any time, and that deletes it from our live database. Our encrypted backups can keep it for up to about five days. To cut off access completely, also revoke the key in Anthropic's console, so it stops working for Piper too.
+**Your key.** Piper runs on your own Anthropic key. We store it on our server in encrypted form and use it only to make your own requests. We hold the key that unlocks it, so in principle we could read it. [PROPOSED, CXO to review: We don't look at it, and our admin tools don't show it.] Please use a key with a spending limit you're comfortable with. You can remove your key in Settings at any time, and that deletes it from our live database. Our encrypted backups can keep it for up to about five days. To cut off access completely, also revoke the key in Anthropic's console, so it stops working for Piper too.
 
 
 **When Piper acts for you.** Piper checks with you before making most changes. If you tell it directly to do something, such as "Create a GitHub issue," Piper will do it right away, treating a plain instruction as the go. Piper always asks before it deletes something of yours. There's no undo yet, so take that question seriously!
 
-**When something breaks.** We expect you'll hit rough edges. We'll include a short list of the most egregious known issues with this invitation. When you find something new, use Send feedback in Piper, or email alpha@pipermorgan.ai. Either way the message will be read by the team, including by me (xian) the human who owns this particular loop. [Does Send feedback exist yet? Should we explain how to do that?[
+**When something breaks.** We expect you'll hit rough edges. We'll include a short list of the most egregious known issues with this invitation. When you find something new, use Send feedback at the bottom of Piper's left-hand menu, or email support@pipermorgan.ai. Either way the message will be read by the team, including by me (xian) the human who owns this particular loop.
 
 **Brief restarts.** Piper may restart briefly when we update it, usually at a quiet moment. You'll stay signed in, and your conversation will still be there. If a message gets no reply around the time of a restart, just send it again.
 
@@ -31,7 +31,7 @@
 - *Beta form:* Expect errors, and go carefully. Using your real work is OK.
 - *Alpha form:* Piper isn't reliable yet. Please use test data, not your real work.
 
-Before Production, we'll add [the list xian chooses from: deleting a conversation for good, deleting your account in the app, exporting conversations and to-dos, undo]. Today, the sections above describe what's true.
+Before Production, we'll add deleting a conversation for good, deleting your account in the app, exporting your conversations and to-dos, and undo. Today, the sections above describe what's true.
 
 **Who it's for.** Piper Morgan is an assistant who gets it for product managers and for people making products who need the support of a product manager and don't have a human one at hand.
 
@@ -59,3 +59,12 @@ Before Production, we'll add [the list xian chooses from: deleting a conversatio
 **Outage line (added 10-23 15:20, HOST ruled 13:19, edits accepted 15:23, first form true 15:48):** HOST's wording on PA's measurement (watch runs every 9 to 24 minutes, 12 runs over about 2.5 hours of one afternoon). Comms made two voice edits: the semicolon is now two sentences, and "reaches xian" is "reaches me", to match the draft's voice ("including me"). Keep "usually": a second fault within 24 hours stops and alerts instead of restarting. Never use test 3's two minutes, because a person dispatched that run. The interim line holds until #2146 is live, and xian names how fast. **Comms and HOST, send morning:** recheck the 15 to 30 minutes against the live watch cadence. If Arch and Lead change the cadence, the number changes with it. **10-23 15:48 (PA):** #2146 test 4 passed, so HOST's condition is met (pushed, reviewer removed, test 4 passed). The watch dispatched the restarter itself, and the database was healthy 9 min 15 s after the hold came off, about 4.5 min of that waiting for the schedule. The first form is now true. HOST still makes the send-morning pick. Keep "usually", because `stop24` refuses a second automatic restart within 24 hours. **17:02 (HOST):** HOST re-checked all five conditions directly and ruled "Comms: use that form", so the interim form (xian restarts it) is cut. Bring it back only if #2146 is rolled back. The stop24 refusal itself hasn't been served (Arch).
 
 **Voice checks run on this draft:** no semicolons; no "honest", "quietly", "load-bearing" or "cohort"; no "never" promises except "can't be taken back" (a code fact).
+
+**xian's rulings of 10-24 17:25 (Exec relay; Comms applied 17:29):**
+1. Who sees it: the OpenAI bracket is cut. The invitation names Anthropic only at beta start.
+2. Your key: xian's sentence is in. The reassurance line is a proposal for CXO's review. "Our admin tools don't show it" is checked in code: `web/api/routes/admin.py` and `admin_invites.py` have no route that returns a key, and admin.py reports only whether the key service works (#2125, L192, L231). Layer: code read, 2 admin route files of 2. Not checked: the served admin pages. "We don't look at it" states intent, as xian asked, and promises nothing more.
+3. When something breaks: support@ replaces alpha@ (xian, both places). Send feedback is in the left-hand menu's footer links (`templates/components/nav_rail.html:44`, #2096, 6bbe89f930). The rail is included by `layouts/app_shell.html`, which 30 of the app's page templates use (all but login, setup, reset_password and the error pages). "Only on Home, Todos and Projects" came from the three pages Web tested on 10-23, not from where it lives. Layer: templates, not the served page. Web or CXO confirm on alpha.
+4. Before Production: all four listed.
+5. Status lines: year, "built", the 10-23 due line, back to bold-label style.
+6. "Piper always asks before it deletes" stays, pending Web's per-button check (B). If any control deletes without asking, Comms tells Exec before touching the sentence.
+
