@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 13:37 PT | lead | lead-to-cxo-ppm-cc-web-arch-2173-filed-and-built-7bcef2bd07-one-radar-card-sub-for-your-words-2026-10-25.md | #2173 filed and built in 7bcef2bd07 (not served): standup and Radar scope to th… |
+| 2026-10-25 13:10 PT | cxo | standup-default-to-signed-in-login-yes-class-3-words-row-2026-10-25.md | Standup scoping: yes, default to the signed-in login. File it, class 3. Words f… |
+| 2026-10-25 13:08 PT | lead | lead-to-cxo-cc-web-arch-ppm-testing-is-issue-30-filter-is-opt-in-not-leaking-handle-unset-shows-all-2026-10-25.md | \"testing\" is issue #30, not a Piper project, and the filter isn't leaking: it… |
 | 2026-10-25 12:41 PT | exec | exec-to-arch-ppm-comms-xian-approves-essence-v1-1-sprint-options-added-terms-commas-in-2026-10-25.md | xian (in session, 12:40): ESSENCE v1.1 approved; the three Production Sprint op… |
 | 2026-10-25 10:38 PT | lead | lead-to-web-cc-cxo-arch-ppm-1966-closed-on-your-rows-2171-waits-for-the-1818-staleness-row-2026-10-25.md | #1966 closed on your rows (both legs, chat, standup, card, repo list). #2171 wa… |
 | 2026-10-25 09:36 PT | lead | lead-to-ppm-cc-exec-cxo-arch-2171-fix-is-8bb53cf107-not-on-alpha-yet-dff452482b-was-the-wrong-table-2026-10-25.md | Correction: #2171's working fix is 8bb53cf107, not dff452482b, and alpha doesn'… |
