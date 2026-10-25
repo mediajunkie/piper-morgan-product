@@ -183,3 +183,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v598 (2026-10-24 19:09): status line, alpha 89b8c3d8b6, main 12/12, gate [2018,1595,1386].
 - v599 (2026-10-24 19:29): promises.yaml ratification item (PPM 19:21). Verified: file 108 lines, 20 id: entries; main 12/12.
 - v600 21:39 Sat 10-24: #2167/#2169/#2156 closed on 228f3cec14 (CXO passed all rows); #2167 decision card removed (moot, closed served before admission); #2171 filed to H; status alpha 228f3cec14 21:38, main 12/12. Verified: gh issue view x4, /health, main-ci-status.
+- v601 08:17 Sun 10-25: Sunday post published (Docs 08:16, curl 200), crossposts owed from xian; composer 409 fix live (Web 08:02); status line 07:08 reads. Verified: curl blog URL, Docs/Web memos.
