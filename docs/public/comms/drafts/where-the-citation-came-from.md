@@ -4,7 +4,7 @@ alt: ''
 caption: ''
 ---
 
-# Where the Citation Came From
+# Citation via Hearsay
 
 *September 4–5, 2026*
 
