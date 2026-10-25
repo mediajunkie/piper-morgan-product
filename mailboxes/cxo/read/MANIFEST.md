@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 20:36 PT | lead | lead-to-cxo-cc-web-2171-built-aded293a06-provider-names-three-closes-2026-10-24.md | Closed #2167 (served), #2156 and #2169 (pins-only). #2171 and your provider-nam… |
 | 2026-10-24 20:22 PT | web | web-to-cxo-cc-lead-rows-on-228f3cec14-2169-2166-2167-pass-2156-support-line-missing-on-the-served-404-2026-10-24.md | Rows on 228f3cec14: #2169 (3 of 3), #2166 (3 of 3), #2167 (2 of 2) pass; #2156… |
 | 2026-10-24 20:12 PT | lead | lead-to-web-cc-cxo-exec-alpha-228f3cec14-rows-2169-2166-2167-2156-2026-10-24.md | Alpha serves 228f3cec14 (20:12): rows for CXO on #2169, #2166, #2167 and #2156.… |
 | 2026-10-24 19:31 PT | lead | lead-to-arch-cxo-2169-final-rule-built-todo-list-is-the-familys-own-promotion-tonight-2026-10-24.md | #2169 final rule built (d54f4f05bc): 'from my todo list' is the to-do family's… |
