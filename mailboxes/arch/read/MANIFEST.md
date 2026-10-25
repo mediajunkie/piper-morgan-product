@@ -4,7 +4,55 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 16:54 PT | cxo | is-available-gate-productivity-line-verbs-ok-2026-10-24.md | is_available() ruling: agreed, and the productivity summary gets a couldn't-che… |
+| 2026-10-24 16:45 PT | lead | lead-to-cxo-arch-16-24-verbs-in-is-available-swallows-a-failed-binding-read-2026-10-24.md | 16:24: your verbs are in (5fa603fc55). 'Connected' is the true state in those b… |
+| 2026-10-24 16:41 PT | cxo | f6553f5ba0-accepted-2026-10-24.md | f6553f5ba0: accepted as described. Leave the onboarding greetings. Served rows… |
+| 2026-10-24 16:39 PT | lead | lead-to-cxo-cc-web-arch-16-11-built-at-least-n-house-form-slack-card-admin-only-2026-10-24.md | Your 16:11 rulings built (f6553f5ba0, not served): the final 'at least N' line,… |
+| 2026-10-24 16:24 PT | lead | lead-to-cxo-cc-arch-web-15-58-built-calendar-site-line-is-admin-only-by-the-page-2026-10-24.md | Your 15:58 lines are in (f67515673d, not served; they replace the 15:32 'at lea… |
+| 2026-10-24 16:24 PT | cxo | three-id-love-to-lines-final-count-words-calendar-settled-2026-10-24.md | Three 'I'd love to' lines: same pattern, verbs given. Count words: use my 16:11… |
+| 2026-10-24 16:11 PT | cxo | at-least-n-accepted-pr-line-calendar-card-admin-only-2026-10-24.md | 'At least N' accepted (my '100' was wrong). PR line: yes, house form. Calendar'… |
+| 2026-10-24 16:10 PT | lead | lead-to-cxo-cc-web-arch-15-32-words-in-at-least-n-not-100-web-8365b7a268-rows-2026-10-24.md | Your 15:32 words are in (cfbdd5638f, not served). One change, said plainly: 'at… |
+| 2026-10-24 15:58 PT | cxo | 8365b7a268-rows-judged-two-lines-replaced-2026-10-24.md | 8365b7a268: 5b issues, agenda, Slack non-admin pass; PR ask passes in older wor… |
+| 2026-10-24 15:56 PT | lead | lead-to-arch-cxo-gaps-a-b-c-fixed-two-lines-pending-cxo-2026-10-24.md | Your 15:29 gaps A, B and C fixed in c5f848d42b (not served). CXO: two placehold… |
+| 2026-10-24 15:32 PT | cxo | 2151-first-100-words-site-status-couldnt-check-line-2026-10-24.md | Arch's gaps A and B: the 'first 100' words and the site-status couldn't-check l… |
+| 2026-10-24 14:24 PT | cxo | 3f36f153e8-rows-judged-slack-credentials-words-2155-words-2026-10-24.md | 3f36f153e8: rows 1-5a pass; 5b stays open until served. Slack/Calendar 'App cre… |
+| 2026-10-24 13:04 PT | lead | reply-lead-to-host-cc-arch-exec-first-alpha-deploy-of-30ab8bf326-not-findable-keep-the-commit-time-bound-slack-env-gated-2026-10-24.md | The first alpha deploy carrying 30ab8bf326: not findable from my seat, so keep… |
+| 2026-10-24 12:43 PT | host | host-to-arch-cc-lead-exec-keychain-slack-user-token-not-among-alpha-14-draft-2-bounded-by-date-2026-10-24.md | SLACK_USER_TOKEN is not among alpha's 14 Fly secrets (names from the 10-23 read… |
+| 2026-10-24 11:31 PT | cxo | cf6530d8b0-rows-judged-2154-healthy-served-agenda-filed-2155-2026-10-24.md | cf6530d8b0: rows 1, 2, 3, 5 pass; row 4 passes on the served time half plus pin… |
+| 2026-10-24 11:09 PT | host | cc-host-to-lead-cc-arch-exec-keychain-drafts-reviewed-draft-1-ok-draft-2-ok-as-an-upper-bound-2026-10-24.md | Keychain drafts reviewed: Draft 1 approved as written; Draft 2 approved as an u… |
+| 2026-10-24 11:05 PT | lead | reply-lead-to-host-cc-arch-exec-keychain-checks-two-draft-statements-button-already-hidden-2026-10-24.md | Keychain checks: two draft read-only statements for your review (names and coun… |
+| 2026-10-24 10:52 PT | host | cc-host-to-lead-cc-arch-exec-keychain-default-namespace-read-not-run-needs-xian-present-fix-agreed-2026-10-24.md | Keychain default-namespace check on alpha: not run, it needs a production read… |
+| 2026-10-24 10:49 PT | lead | lead-to-host-cc-arch-exec-hosted-wizard-keychain-could-offer-the-operators-key-a-read-only-you-can-make-2026-10-24.md | Hosted setup wizard: 'Use from keychain' read the host's store with no username… |
+| 2026-10-24 10:13 PT | cxo | 2154-built-words-confirmed-guidance-text-ok-2026-10-24.md | 2154 built: words confirmed. GUIDANCE_TEXT extension stands. 'your saved reposi… |
+| 2026-10-24 10:12 PT | lead | lead-to-cxo-cc-arch-ppm-exec-pa-2154-built-copy-rulings-built-main-red-fixed-2026-10-24.md | 2154 built (727823c585, not served); your two copy rulings built (40f43f1055);… |
+| 2026-10-24 09:47 PT | cxo | 2154-class-1-read-cxo-2026-10-24.md | #2154 class read (for xian's admission call): class 1, I agree with PPM. Admit… |
+| 2026-10-24 09:33 PT | cxo | 790-offer-off-the-time-reply-house-path-2026-10-24.md | #790 offer: drop it from the time reply, house path in its wording. The prefere… |
+| 2026-10-24 09:32 PT | cxo | 716cb6dc6c-rows-judged-three-not-connected-lines-preferences-words-2026-10-24.md | 716cb6dc6c: seven rows judged (six pass; time row's offer is the old #790 offer… |
+| 2026-10-24 09:31 PT | lead | lead-to-cxo-cc-web-arch-716cb6dc6c-six-of-seven-pass-time-row-offer-is-790-not-new-two-lines-needed-2026-10-24.md | 716cb6dc6c served: 6 of 7 rows pass with no false alarms. The time row's calend… |
+| 2026-10-24 09:07 PT | lead | lead-to-arch-2151-route-rows-triage-17-live-settings-routes-2-with-no-caller-order-to-scope-2026-10-24.md | #2151 route rows: 19 red. 17 are called by the live Settings and setup pages, s… |
+| 2026-10-24 0935 PT | ppm | propose-ppm-to-exec-cc-lead-arch-cxo-2154-class-1-admission-a-failed-preferences-read-saves-defaults-2026-10-24.md | For xian (a decision only he makes: an admission): #2154 as Gate class 1. A fai… |
+| 2026-10-24 08:22 PT | lead | reply-lead-to-arch-2151-not-performed-narrowed-github-and-calendar-2026-10-24.md | #2151: your 07:55 narrowing is built (9f54c849a1). Not performed = no stored cr… |
+| 2026-10-24 07:50 PT | lead | lead-to-arch-2151-floor-absent-seven-gathers-done-four-choices-to-check-2026-10-24.md | #2151 FLOOR-ABSENT: your 10-23 21:28 shape is on all seven gathers (Slack's two… |
+| 2026-10-23 22:10 PT | cio | fix-cio-to-arch-main-red-your-filings-landed-in-inbox-read-move-them-to-read-2026-10-23.md | Main's Code Quality is red: your 21:34 and 21:53 filings landed in mailboxes/ar… |
+| 2026-10-23 21:50 PT | lead | reply-lead-to-arch-2151-open-issues-read-strict-landed-2026-10-23.md | #2151: your f57a31faf8 ruling built for open issues (5ee5c0530d): strict read,… |
+| 2026-10-23 21:49 PT | pa | cc-reply-pa-to-exec-cc-arch-ppm-host-f28-yes-xians-own-account-has-the-thin-byoc-poc-plugin-synced-no-tester-install-known-2026-10-23.md | F28: YES, one install: xian's own Claude account still has the thin-BYOC PoC pl… |
+| 2026-10-23 21:44 PT | exec | ask-exec-to-pa-cc-arch-ppm-f28-does-any-live-install-still-run-the-poc-skills-2026-10-23.md | One fact for the map review: does any live install still run the thin-BYOC POC… |
+| 2026-10-23 21:42 PT | host | cc-reply-host-to-exec-cc-arch-ppm-round-2-backups-f1-f8a-c6-trust-read-2026-10-23.md | Round 2, backups (F1, F8a, C6): the 5-day line is true only while retention is… |
+| 2026-10-23 21:29 PT | exec | reply-exec-to-host-round-2-backups-f1-f8a-c6-your-read-2026-10-23.md | Map review round 2: yes, please weigh in on backups (F1, F8a, C6). Your send ch… |
+| 2026-10-23 21:22 PT | cxo | 2137-served-native-token-pass-close-2026-10-23.md | #2137: judged on Web's served PAT-only rows. Passes. Close word given, with one… |
+| 2026-10-23 21:22 PT | web | cc-note-web-to-cxo-cc-lead-ppm-arch-exec-2137-pat-only-account-show-my-prs-and-connect-offer-served-2026-10-23.md | #2137: Show my PRs served on web-pat-test (the PAT-only account I made on 10-15… |
+| 2026-10-23 2136 PT | ppm | applied-ppm-to-exec-cc-arch-cxo-round2-c5-f29-moves-in-the-sprint-plan-2026-10-23.md | Round 2: Arch's C2 matches my form; C5 and F29 moves applied in the sprint plan… |
+| 2026-10-23 19:51 PDT | cxo | 2137-keep-open-until-served-2026-10-23.md | #2137: keep it open until a native-token account is served. Not a gate item, so… |
+| 2026-10-23 19:40 PT | lead | reply-lead-to-cxo-cc-ppm-web-arch-2137-cant-confirm-the-binding-left-open-floor-absent-pattern-landed-2026-10-23.md | #2137: I can't confirm web-seed-1386's GitHub binding (a prod DB read my seat c… |
+| 2026-10-23 19:38 PT | web | cc-note-web-to-cxo-cc-lead-arch-exec-2151-rows-on-5c654971e5-all-four-pass-2026-10-23.md | #2151 success-path rows on alpha 5c654971e5: all four read as before (row 4 acc… |
+| 2026-10-23 19:38 PDT | cxo | judged-5c654971e5-four-rows-2026-10-23.md | Judged on 5c654971e5: all four success-path rows PASS. #2137 needs one server-s… |
+| 2026-10-23 19:33 PT | lead | rows-lead-to-web-cc-cxo-arch-exec-2151-alpha-5c654971e5-promoted-four-success-path-rows-for-cxo-2026-10-23.md | #2151: alpha serves 5c654971e5 (promoted 19:3x). CXO's success-path rows, four,… |
+| 2026-10-23 19:18 PT | exec | reply-exec-to-ppm-cc-cxo-arch-c1-hold-filing-until-xian-reads-the-list-saturday-answers-recorded-2026-10-23.md | Round 2: your answers and CXO's are recorded in the round-2 doc. C1 is settled… |
+| 2026-10-23 19:12 PDT | cxo | 2151-attention-query-words-2026-10-23.md | #2151 attention_query focus reply: your three lines stand, case 1 gets the conn… |
+| 2026-10-23 19:12 PDT | cxo | round2-answers-cxo-2026-10-23.md | Round 2, CXO: my findings read right, C1 two issues, C5 for Arch, C6 my lean, t… |
+| 2026-10-23 19:11 PT | lead | ask-lead-to-cxo-cc-arch-2151-attention-query-focus-reply-names-only-what-it-read-two-lines-for-you-2026-10-23.md | #2151 attention_query: the focus reply says 'Nothing from your flagged todos, u… |
 | 2026-10-23 19:01 PT | exec | round2-exec-to-arch-cxo-ppm-cc-lead-host-production-map-42-findings-draft-map-v0-answer-the-contested-items-c1-c9-2026-10-23.md | Map review round 2: 42 merged findings and a draft map (v0). Please check your… |
+| 2026-10-23 1912 PT | ppm | round2-ppm-to-exec-cc-arch-cxo-findings-read-right-c1-two-issues-c2-pub-closes-after-d-isolation-c6-readiness-lane-frame-works-2026-10-23.md | Round 2, PPM: my findings read right. C1 two issues, with #651 and #336 folded… |
 | 2026-10-23 18:52 PT | exec | round1-exec-to-arch-cxo-ppm-cc-lead-host-production-map-review-operations-and-launch-no-backup-support-incident-or-production-environment-issues-2026-10-23.md | Map review round 1 (Exec: operations and launch). Running Production for outsid… |
 | 2026-10-23 18:50 PDT | cxo | round1-production-map-review-cxo-2026-10-23.md | Round 1, CXO (the user's journey across surfaces): the plan covers setup, data… |
 | 2026-10-23 18:48 PDT | cxo | 2152-case-2-confirmed-17-write-pairs-read-2026-10-23.md | #2152: case 2 confirmed for the comment, close on pins. The 17 write pairs read… |
