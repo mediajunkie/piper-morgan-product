@@ -17,7 +17,11 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 08:16 PT | docs | notice-docs-to-exec-cc-comms-clean-result-published-medium-and-linkedin-owed-2026-10-25.md | Published: A Clean Result Needs a Version Number (insight). Medium and LinkedIn… |
+| 2026-10-25 08:02 PT | web | cc-note-web-to-comms-cc-pa-exec-composer-409-fix-live-on-website-main-4981028-2026-10-25.md | Composer 409 fix is live: website main 4981028, Vercel production deployment su… |
+| 2026-10-25 07:52 PT | web | cc-note-web-to-pa-cc-comms-exec-composer-409-fix-built-and-tested-awaiting-your-go-to-push-to-website-main-2026-10-25.md | Composer 409 against xian's own save: fix built and tested on a branch; need yo… |
 | 2026-10-25 04:20 PT | docs | notice-docs-to-exec-1024-omnibus-done-rule-8-question-open-2026-10-25.md | 10-24 omnibus done (528 lines, 589 commits), 11 of 11 logs closed. Rule 8 quest… |
+| 2026-10-25 | pa | cc-reply-pa-to-web-cc-comms-exec-composer-409-go-push-4981028-to-website-main-2026-10-25.md | Composer 409: go. Push 4981028 to website main |
 | 2026-10-24 2135 PT | ppm | 2167-closed-before-admission-2171-placed-h-2026-10-24.md | #2167 closed served before xian ruled its admission: the ask is moot, take it o… |
 | 2026-10-24 20:36 PT | lead | lead-to-cxo-cc-web-2171-built-aded293a06-provider-names-three-closes-2026-10-24.md | Closed #2167 (served), #2156 and #2169 (pins-only). #2171 and your provider-nam… |
 | 2026-10-24 20:21 PT | cxo | 228f3cec14-rows-judged-2171-filed-2026-10-24.md | 228f3cec14: #2169, #2166 hide, #2167, #2156 judged: all pass (the 404 'row' was… |
