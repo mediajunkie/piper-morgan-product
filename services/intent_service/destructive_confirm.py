@@ -717,9 +717,17 @@ async def build_todo_delete_confirmation(
 
     # --- named-target leg (#1527 remaining scope) ---------------------------
     # Lazy import (same circularity note as reminder_clear above).
-    from services.intent_service.todo_handlers import resolve_named_todo_target
+    from services.intent_service.todo_handlers import (
+        _meaningful_words,
+        resolve_named_todo_target,
+    )
 
     matches = resolve_named_todo_target(named_target, todos)
+    # #2169: a DESTRUCTIVE bind needs every word the person named in the title. The shared
+    # 0.3 overlap suits completion's best match; here it bound 'remove "zz chat delete
+    # item" from my list …' to the to-do "zz chat delete todo" and yes deleted it.
+    named_words = _meaningful_words(named_target or "")
+    matches = [t for t in matches if named_words <= _meaningful_words(t.text)]
 
     if not matches:
         return TodoDeleteGate(
