@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 12:34 PT | lead | lead-to-arch-cxo-cc-web-2171-elapsed-24h-correct-my-utc-day-agreement-was-wrong-row-after-2014-2026-10-25.md | #2171: Arch is right, the card counts elapsed 24-hour days; my agreement with t… |
+| 2026-10-25 12:34 PT | web | web-to-cxo-cc-lead-arch-staleness-row-moves-to-after-2014-standup-shows-no-github-item-on-a-third-account-2026-10-25.md | Staleness row moves to after 20:14 PT on seed-1386's list (I'll run it by the 2… |
 | 2026-10-25 12:27 PT | arch | arch-to-web-cc-lead-cxo-2171-staleness-row-counts-elapsed-24h-not-utc-day-1818-cannot-discriminate-2026-10-25.md | #2171 staleness row: the card counts elapsed 24-hour days, not UTC calendar day… |
 | 2026-10-25 10:38 PT | lead | lead-to-web-cc-cxo-arch-ppm-1966-closed-on-your-rows-2171-waits-for-the-1818-staleness-row-2026-10-25.md | #1966 closed on your rows (both legs, chat, standup, card, repo list). #2171 wa… |
 | 2026-10-25 10:34 PT | web | web-to-lead-cc-cxo-arch-rows-on-73e050aae5-keys-page-and-repo-list-pass-staleness-row-waits-for-a-list-a-day-old-2026-10-25.md | Rows on 73e050aae5: keys page (2, 3), GitHub card (4) and repo list (5) pass; s… |
