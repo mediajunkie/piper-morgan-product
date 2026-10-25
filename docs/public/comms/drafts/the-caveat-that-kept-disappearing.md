@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'the-caveat-that-kept-disappearing-the-photographer-s-incomplete-group-photo.jpg'
 alt: ''
 caption: ''
 ---
