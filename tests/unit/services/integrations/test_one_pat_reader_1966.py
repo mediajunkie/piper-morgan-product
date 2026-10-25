@@ -99,6 +99,27 @@ def test_only_the_adapter_reads_the_pat_legs():
     assert not offenders, "PAT legs read outside account_pat (#1966): " + "; ".join(offenders)
 
 
+def test_the_keychain_leg_is_read_only_in_user_pat():
+    """Arch 10-25: read_user_token (the keychain leg alone) is referenced only by
+    _user_pat; _list_repos_native_pat read it directly and missed a PAT saved at rest."""
+    offenders = []
+    for base in ("services", "web"):
+        for path in (ROOT / base).rglob("*.py"):
+            rel = path.relative_to(ROOT).as_posix()
+            if rel == "services/integrations/github/config_service.py":
+                continue
+            tree = ast.parse(path.read_text())
+            for fn in ast.walk(tree):
+                if not isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    continue
+                if rel == "services/mcp/consumer/github_adapter.py" and fn.name == "_user_pat":
+                    continue
+                for n in ast.walk(fn):
+                    if isinstance(n, ast.Attribute) and n.attr == "read_user_token":
+                        offenders.append(f"{rel}:{n.lineno}")
+    assert not offenders, "keychain-only PAT read (#1966): " + "; ".join(sorted(set(offenders)))
+
+
 def test_no_user_scoped_token_read_outside_the_config_service():
     """get_authentication_token / aget_authentication_token take only the literal "system"
     outside the config service; a user's token comes from account_pat."""
@@ -150,3 +171,69 @@ class TestSettingsCardReadsTheAccountPat:
         out, verify = await self._card(AsyncMock(side_effect=_failed))
         verify.assert_not_awaited()
         assert out == _github_check_failed()
+
+
+class _Resp:
+    status = 200
+
+    async def json(self):
+        return [{"id": 1, "name": "r", "full_name": "me/r"}]
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, *a):
+        return False
+
+
+class _Session:
+    def __init__(self):
+        self.headers = None
+
+    def get(self, url, headers=None, params=None):
+        self.headers = headers
+        return _Resp()
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, *a):
+        return False
+
+
+@pytest.mark.asyncio
+class TestRepoListReadsTheAccountPat:
+    """Arch 10-25: the PAT-only repo list read the keychain alone, so a PAT saved only at
+    rest got 401 "GitHub not connected" while the resolver said connected."""
+
+    async def _list(self, pat):
+        from web.api.routes import settings_integrations as si
+
+        session = _Session()
+        with (
+            patch.object(_A, "account_pat", pat),
+            patch("aiohttp.ClientSession", return_value=session),
+        ):
+            return await si._list_repos_native_pat(_USER), session
+
+    async def test_a_pat_saved_only_at_rest_lists_repos(self):
+        pat = AsyncMock(return_value="fake-token-row")
+        repos, session = await self._list(pat)
+        pat.assert_awaited_once_with(_USER)
+        assert session.headers["Authorization"] == "Bearer fake-token-row"
+        assert repos[0]["full_name"] == "me/r"
+
+    async def test_no_pat_is_not_connected(self):
+        from fastapi import HTTPException
+
+        with pytest.raises(HTTPException) as exc:
+            await self._list(AsyncMock(return_value=None))
+        assert exc.value.status_code == 401
+
+    async def test_a_failed_read_is_couldnt_read_not_not_connected(self):
+        from web.api.routes.settings_integrations import GITHUB_TOKEN_READ_FAILED_MESSAGE
+
+        with pytest.raises(Exception) as exc:
+            await self._list(AsyncMock(side_effect=_failed))
+        assert exc.value.status_code == 503
+        assert exc.value.detail == GITHUB_TOKEN_READ_FAILED_MESSAGE

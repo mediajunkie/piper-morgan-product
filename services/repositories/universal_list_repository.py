@@ -122,8 +122,13 @@ class UniversalListRepository(BaseRepository):
         return [db_list.to_domain() for db_list in db_lists]
 
     async def get_max_item_added_at(self, list_id: str):
-        """Return the most-recent `ListItem.added_at` for items in the list,
-        or `None` if the list has no items.
+        """Return when the newest item in the list was added, or `None` if the list has no
+        items.
+
+        #2171 sibling (Arch 10-25): it reads ``ItemDB.created_at`` by ``list_id``, the rows
+        the add-item route writes and the items panel reads, like ``count_items``. It used
+        to read ``max(ListItemDB.added_at)``, a table the page never writes, so a 40-day-old
+        list with an item added today still read "stale, 40 days".
 
         Used by the staleness signal (#714) to compute the effective
         last-touched timestamp of a list. Cheap single-row aggregate query
@@ -133,7 +138,7 @@ class UniversalListRepository(BaseRepository):
         avoid the per-list query.
         """
         result = await self.session.execute(
-            select(func.max(ListItemDB.added_at)).where(ListItemDB.list_id == list_id)
+            select(func.max(ItemDB.created_at)).where(ItemDB.list_id == list_id)
         )
         return result.scalar_one_or_none()
 

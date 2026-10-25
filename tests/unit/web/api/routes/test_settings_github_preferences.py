@@ -16,6 +16,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+from services.mcp.consumer.connector import DegradationReason
 from web.api.routes.settings_integrations import (
     GitHubPreferencesRequest,
     get_github_preferences,
@@ -123,14 +124,22 @@ class TestGetGitHubRepositories:
                 return_value=mock_keychain,
             ),
             patch("aiohttp.ClientSession", return_value=mock_session),
-            # #1965 (b): the connector's ONE resolver now serves a PAT user on their own
-            # token (PAT leg). To keep pinning the route's transitional native-PAT
-            # fallback branch (reached only when the resolver reports CONNECT_REQUIRED),
-            # the resolver's PAT lookup is stubbed empty here. #1966 converges the route
-            # onto the resolver and retires this branch.
+            # The route's transitional native-PAT fallback runs only when the connector
+            # reports CONNECT_REQUIRED, so that is stubbed here. Since #1966 (Arch 10-25)
+            # the fallback reads the account's PAT through account_pat, both legs.
             patch(
-                "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter._user_pat",
-                return_value=None,
+                "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter"
+                ".search_user_repositories",
+                new=AsyncMock(
+                    return_value=MagicMock(
+                        repositories=None,
+                        degradation=MagicMock(reason=DegradationReason.CONNECT_REQUIRED),
+                    )
+                ),
+            ),
+            patch(
+                "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.account_pat",
+                new=AsyncMock(return_value="ghp_test_token"),
             ),
             patch(
                 "web.api.routes.settings_integrations._load_github_prefs_db",

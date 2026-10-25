@@ -1,6 +1,8 @@
 """CXO's #2167 nit, served on 45d6642da7 (Web 10-25): the keys page names each provider
 (table row, Remove dialog, status line) instead of showing its id. Web found the GitHub
-row still lower-case ("github"); it is the account's GitHub token at rest, listed here."""
+row still lower-case ("github"). Since Arch's 10-25 allowlist ruling the routes no longer
+list it at all (tests/unit/web/api/routes/test_keys_routes_llm_allowlist.py), so the map
+names only the LLM providers."""
 
 from pathlib import Path
 
@@ -14,7 +16,7 @@ def test_every_listed_provider_has_a_display_name():
         ("anthropic", "Anthropic"),
         ("openai", "OpenAI"),
         ("gemini", "Google Gemini"),
-        ("github", "GitHub"),
     ]:
         assert f'{provider}: "{name}"' in line
     assert "PROVIDER_NAMES[k.provider] || k.provider" in src
+    assert "github" not in line

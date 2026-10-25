@@ -17,10 +17,28 @@ from pydantic import BaseModel, Field
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.database.session_factory import AsyncSessionFactory
+from services.llm.config import LLMProvider
 from services.security.user_api_key_service import UserAPIKeyService
 
 router = APIRouter(prefix="/api/v1/keys", tags=["api-keys"])
 logger = structlog.get_logger(__name__)
+
+# Arch 2026-10-25 (#1966 follow-up): these routes serve only the LLM providers, as an
+# allowlist. user_api_keys also holds connector credentials (the GitHub PAT at rest,
+# `{connector}_mcp_oauth` grants); those are managed only through their connector's
+# Connect/Disconnect, which clear every copy. A new connector must not appear here.
+LLM_KEY_PROVIDERS = frozenset(p.value for p in LLMProvider)
+
+# CXO 2026-10-25.
+NOT_AN_LLM_PROVIDER = (
+    "This page is for AI provider keys only. Connected services like GitHub, "
+    "Google Calendar and Notion are managed in Settings \u2192 Integrations."
+)
+
+
+def _require_llm_provider(provider: str) -> None:
+    if provider not in LLM_KEY_PROVIDERS:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=NOT_AN_LLM_PROVIDER)
 
 
 def build_audit_context(request: Request) -> Dict[str, Any]:
@@ -47,7 +65,7 @@ def build_audit_context(request: Request) -> Dict[str, Any]:
 class StoreKeyRequest(BaseModel):
     """Request model for storing API key"""
 
-    provider: str = Field(..., description="Service provider (openai, anthropic, github, etc)")
+    provider: str = Field(..., description="LLM provider (anthropic, openai, gemini)")
     api_key: str = Field(..., description="API key to store")
     validate: bool = Field(True, description="Whether to validate key before storing")
 
@@ -151,6 +169,7 @@ async def store_api_key(
 
     Issue #249: Added audit logging
     """
+    _require_llm_provider(request.provider)
     try:
         # Build audit context from request (Issue #249)
         audit_context = build_audit_context(req)
@@ -233,7 +252,7 @@ async def list_api_keys(
                 active_only=active_only,
             )
 
-            return [KeyMetadata(**key) for key in keys]
+            return [KeyMetadata(**key) for key in keys if key.get("provider") in LLM_KEY_PROVIDERS]
 
     except Exception as e:
         logger.error("Failed to list API keys", error=str(e), user_id=current_user.user_id)
@@ -268,6 +287,7 @@ async def delete_api_key(
 
     Issue #249: Added audit logging
     """
+    _require_llm_provider(provider)
     try:
         # Build audit context from request (Issue #249)
         audit_context = build_audit_context(request)
@@ -326,6 +346,7 @@ async def validate_api_key(
     Raises:
         HTTPException: If key not found or validation fails
     """
+    _require_llm_provider(provider)
     try:
         async with AsyncSessionFactory.session_scope() as session:
             is_valid = await service.validate_user_key(
@@ -385,6 +406,7 @@ async def rotate_api_key(
 
     Issue #249: Added audit logging
     """
+    _require_llm_provider(provider)
     try:
         # Build audit context from request (Issue #249)
         audit_context = build_audit_context(req)

@@ -92,3 +92,38 @@ def test_the_add_route_and_the_items_read_use_the_counted_table():
     src = (ROOT / "web/api/routes/lists.py").read_text()
     assert "ItemDB.from_domain(item)" in src
     assert "select(ItemDB).where(ItemDB.list_id == list_id)" in src
+
+
+@pytest.mark.asyncio
+async def test_an_item_added_today_makes_an_old_list_read_updated_today():
+    """Arch's sibling, CXO's close condition: the staleness hint read ``list_items`` too, so a
+    40-day-old list with an item added today read "stale, 40 days". Real rows in ``items``,
+    through the route's own staleness computation."""
+    from datetime import datetime, timedelta, timezone
+
+    from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+
+    from services.database.models import ItemDB
+    from services.lists.staleness import compute_staleness
+    from services.repositories.universal_list_repository import UniversalListRepository
+
+    now = datetime.now(timezone.utc)
+    engine = create_async_engine("sqlite+aiosqlite:///:memory:")
+    async with engine.begin() as conn:
+        await conn.run_sync(lambda c: ItemDB.__table__.create(c, checkfirst=True))
+    Session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    async with Session() as session:
+        session.add(ItemDB(text="zz added today", position=0, list_id="L1", item_type="item"))
+        await session.commit()
+        repo = UniversalListRepository(session)
+
+        newest = await repo.get_max_item_added_at("L1")
+        assert newest is not None
+        signal = compute_staleness(
+            list_updated_at=now - timedelta(days=40), item_added_at_values=[newest]
+        )
+        assert signal.is_stale is False
+        assert signal.last_updated_human == "today"
+
+        assert await repo.get_max_item_added_at("L-empty") is None
+    await engine.dispose()

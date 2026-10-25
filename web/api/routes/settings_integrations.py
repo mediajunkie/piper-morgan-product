@@ -2356,22 +2356,21 @@ async def _list_repos_native_pat(user_sub: str) -> list:
     """Transitional native-PAT repo list (the #1042 fallback when not OAuth-connected).
 
     Returns raw GitHub-API repo dicts (``id/name/full_name/description`` among the fields). Raises
-    HTTP 401 when no PAT is configured (keychain user-scoped key #849, then env fallback), and HTTP
+    HTTP 401 when the account has no PAT (``account_pat``, both legs, #1966), and HTTP
     502 when the GitHub API call fails — the same surfaces the handler used pre-cutover. Retired by
     ADR-070 D6 once the OAuth connector is the sole path."""
     import aiohttp
 
-    from services.integrations.github.config_service import (
-        GitHubConfigService,
-        GitHubTokenStoreFailed,
-    )
+    from services.integrations.github.read_failed import GitHubReadFailed
+    from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
     # ADR-081 D1 (Arch 10-24): a user's repo list reads only that user's own token, never the
-    # deployment's env token (local installs too, per #1461). Read with provenance: a store
-    # that didn't answer is a failed read, not "not connected".
+    # deployment's env token (local installs too, per #1461). #1966 (Arch 10-25): read where
+    # the resolver reads it, both legs, so a PAT saved only at rest lists repos. A leg that
+    # failed with no token is a failed read, not "not connected".
     try:
-        token = await asyncio.to_thread(GitHubConfigService().read_user_token, user_sub)
-    except GitHubTokenStoreFailed:
+        token = await GitHubMCPSpatialAdapter.account_pat(user_sub)
+    except GitHubReadFailed:
         raise UserFacingHTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=GITHUB_TOKEN_READ_FAILED_MESSAGE,
