@@ -15,6 +15,12 @@
   - **1.0 = every 1.0 promise has a closed issue and main is green** (ruling 2). xian is "the final arbiter of whether a given bug blocks production launch". Non-promise rows move to Ongoing after a body read (in progress; see the PPM log).
   - **Main green** = the 12 workflows now, and the full suite by the end of H. **Q's share is about 1 in 5 issues per sprint** until then (ruling 8). Q stays a standing share, sized at that ratio when each sprint is built.
   - **Order:** H → D's isolation slice → PUB (go-ahead).
+  - **Ruling 2 applied 17:42:** 48 Q and Dist rows read in full (a Sonnet subagent, with PPM checking the low-confidence ones).
+    - 27 moved to Ongoing with their Sprint cleared. 6 of them are close candidates for their owners: #1356, #1365, #1469, #2058, #2102, #1300.
+    - 3 closed as superseded by PDR-006: #830, #831, #832.
+    - #1282 stays, narrowed to listing the hosted plugin.
+    - 18 stay: 14 for main green (#1224, #1349, #1357, #1367, #1371, #1372, #1385, #1437, #1439, #1451, #1452, #1479, #1506, #1528), plus #1494 and #1549 (possible honesty shapes, unruled), #966 (plugin identity) and #1282.
+    - #1242, #1244 and #1245 wait on F28.
   - **Readiness lane** (ruling 7, Exec owns it): HOST's send-morning checks are its standing check. Its Terms-backed items are #2062's children and gate public beta: #2157 backups and the restore drill, #2158 deletion (#651 and #336 are its children), #2159 export, #2160 support intake, #2161 incident notice. #2162 (staging, ruling 1) sits in the lane without gating. All six are listed under D.
   - **Filed with them:** #2163 (GitHub identity ADR, C, a seam ahead of H, C and D); #2164 (waitlist) and #2165 (abuse limits) in PUB (ruling 6: waitlist first, after the inner-circle invitations). #2156 (Send feedback findability, CXO) is in E.
   - **Rulings 3 to 5** (ESSENCE 6 rewrite, PRD/spec after 1.0, PDR-001 wording) are Arch's and CXO's to record. F28 waits on xian.
@@ -38,11 +44,11 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | 6 | **E: Experience polish** (layout, dialog copy, nav) | CXO-led. These are visible and irritating, but not false. | 28 |
 | 7 | **T: Trust and learning** | #2135 (trust never progresses) makes the PDR-002 gradient inert today. The rest follows it. | 14 |
 | 8 | **Doc: Documents** | Follows #2132's family table. | 8 |
-| 9 | **Dist: Distribution** (marketplace, MCPB, plugin, onboarding skills) | Most of it waits on PUB's MCP path. | 11 |
-| — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 40 |
+| 9 | **Dist: Distribution** (marketplace, MCPB, plugin, onboarding skills) | Most of it waits on PUB's MCP path. | 5 |
+| — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 16 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 234 open (#2155 added to V 10-24; 12 filed or moved in on xian's map rulings 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 204 open (#2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -281,63 +287,33 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1270 | [D1] Refactor /documents · /files around the Document source-type object model (uploaded/generated/federated) | PROD-DOCS |
 | #2139 | "Create a doc from this conversation" and "Synthesize these sources" on an OpenAI-only account reply with t… | — |
 
-### Dist: Distribution (11)
+### Dist: Distribution (5)
 
 | # | Title | was |
 |---|---|---|
-| #830 | DIST-MCP-DOCS: Integration documentation for MCP clients | PROD-DIST |
-| #831 | DIST-MCP-REGISTRY: Publish to package registries | PROD-DIST |
-| #832 | DIST-MCP-TEST: Integration testing with MCP clients | PROD-DIST |
-| #959 | DIST-MCP-APPS: Artifact canvas via MCP Apps (in-chat UI) | PROD-DIST |
 | #966 | DIST-VISUAL-IDENTITY: Visual identity for the plugin and MCP Apps surfaces (the MCPB half dropped, supersed… | PROD-DIST |
 | #1242 | MEET-PIPER-GITHUB — Add GitHub connector setup step to meet-piper onboarding | PROD-ONBOARD |
 | #1244 | CONSULT-ENRICH-FIX — Fix two enrichment layer bugs blocking consult-piper (Cowork/GitHub + Code/payload) | PROD-ONBOARD |
 | #1245 | PIPER-SKILL-MERGE — Collapse ask-piper + consult-piper into one smart piper skill | PROD-ONBOARD |
 | #1282 | BYOC-DIST — Plugin packaging and marketplace distribution | PROD-DIST |
-| #1300 | BYOC-CRED-DECOUPLE: decouple the plugin credential (Option A) — public-marketplace gate + BYO-key on-ramp | PROD-DIST |
-| #1340 | RECONNECT: fold Anthropic-key capture into /connect onboarding (deferred from #1185 Phase 3, ties #1300) | PROD-DIST |
 
-### Q: Health lane (40)
+### Q: Health lane (16)
 
 | # | Title | was |
 |---|---|---|
-| #865 | REFACTOR: Extract setup wizard into component-based steps | PROD-DIST |
-| #1001 | Owner-review: services/publishing/publisher.py retry/fallback (from #997 sweep) | PROD-TECHDEBT |
-| #1028 | PERPLEXITY broader sweep — 4 files still reference perplexity beyond the LLMProvider enum | PROD-TECHDEBT |
-| #1138 | Naming clarity: ActionDisposition.CANONICAL is misleading for floor-routed categories (STATUS/PRIORITY) | PROD-INFRA |
-| #1144 | TEST-DISCIPLINE-REFACTOR: use real SurfaceableInsight + ExtractedLearning fixtures, not MagicMock defaults … | PROD-TECHDEBT |
-| #1151 | INTENT-EMPTY-ORIGINAL-MESSAGE: /intent response returns intent.original_message as empty string | PROD-INFRA |
-| #1167 | ORCHESTRATION-DOCKERFILE-BROKEN: COPYs untracked scripts/verify-python-version.sh → build fails | PROD-INFRA |
-| #1211 | Sweep: local-import-shadowing + broad-except = stealth-dead code (AST-level audit) | PROD-TECHDEBT |
 | #1224 | Pre-existing test failures (3 clusters: standup conversation-state, perf-indexes, error-message integration… | PROD-TECHDEBT |
-| #1287 | Tech-debt: triage + remove unwired Multi-Agent Coordinator code (superseded #118 artifacts) | PROD-TECHDEBT |
-| #1321 | Sweep and resolve scattered implementation TODOs in services/ (M5) | PROD-TECHDEBT |
 | #1349 | [BUG] test_github_place_has_name asserts repo name in Place.name but Place.name is just 'GitHub' (pre-exist… | PROD-TECHDEBT |
-| #1356 | tests/archive/ is collected by pytest despite its name (1+ import errors); run_pm012_github_tests.py refere… | PROD-TECHDEBT |
 | #1357 | test_github_api_connection.py's live 401s appear only in large combined test runs — likely GitHub rate-limi… | PROD-TECHDEBT |
-| #1365 | ci.yml's 'Configuration Validation Test' step is stale — ConfigValidator is a stub that always returns ok | PROD-TECHDEBT |
 | #1367 | test_execution_intent_no_placeholder fails: mocks .classify but code calls .classify_multiple | PROD-TECHDEBT |
-| #1369 | Dead code cleanup: async-prompt-queue system (coordination/manifest.json, methodology/coordination/*, workt… | PROD-TECHDEBT |
 | #1371 | Test-collection fragility: ModuleNotFoundError for real packages (services.configuration/services.cache) wh… | PROD-TECHDEBT |
 | #1372 | tests/intent/contracts/: 42 pre-existing failures, ContainerNotInitializedError (ServiceContainer test frag… | PROD-TECHDEBT |
 | #1385 | tests/security cross-file fixture contamination: full-suite runs leak 1111/2222 fixture rows, making isolat… | PROD-TECHDEBT |
-| #1436 | mypy CI gate (per-code ratchet) + Tier-1 signature-drift fix pack — 1,060 errors enumerated, ~30 verified d… | — |
 | #1437 | Stale integration test: test_get_default_project_query pins a 422 the pipeline no longer returns (pre-exist… | — |
 | #1439 | Pre-existing: two llm_config_service tests read the machine's REAL keychain (fail on any host with a stored… | — |
-| #1449 | Real performance + coverage gates for the live system (replace deleted fossil CI jobs) | — |
 | #1451 | settings/projects template test fails: test_template_includes_navigation (pre-existing) | — |
 | #1452 | Full Test Suite backlog: 413 failed + 71 errors (suite's first real run in weeks) — burn-down + honest inte… | — |
-| #1457 | ci.yml red for 100+ runs: Windows-invalid filename 'dev/2025/11/10/3.' breaks clone — recurrence of #353's … | — |
-| #1469 | mypy gate filters out [name-defined] -- guaranteed-runtime-NameError class invisible to the ratchet (found … | — |
-| #1474 | CanonicalHandlers._get_dynamic_capabilities: zero production callers + carries the rail-description defect … | — |
 | #1479 | Flaky (order-dependent): test_github_query_handlers TestCommentIssueResults::test_formats_comment_confirmat… | — |
 | #1494 | ADR-059 blanket skip on test_portfolio_service.py also disables pins for the LIVE archive/restore extractio… | — |
 | #1506 | tests/domain/test_file_reference_detection.py classification tests fail keyless (ContainerNotInitializedErr… | — |
-| #1522 | False-trails audit (PM-directed): parallel systems inventory — 3 shipping-dark, 9 collision-armed, 5 dead-c… | PROD-TECHDEBT |
-| #1526 | StandupToChatBridge is dead code (zero prod callers) + deprecated _check_active_standup — delete-module-saf… | — |
 | #1528 | test_validate_openai_key_success hits the LIVE OpenAI API with the real keychain key — network-dependent te… | — |
 | #1549 | GET /api/v1/todos/shared-with-me is shadowed by /{todo_id} route order — matches as todo_id='shared-with-me' | — |
-| #1698 | SPATIAL-DISPOSAL: cold-island + census dead-families epic (PM-ruled 2026-08-15/16; Arch routing 2026-08-29) | PROD-TECHDEBT |
-| #2015 | update_todo_relationships passes edge_type as a str where KnowledgeGraphService.create_edge calls .value: e… | — |
-| #2058 | check_intent_bypasses.py reads an empty route body: find('@get') never matches '@router.get', so its intent… | — |
-| #2102 | aiohttp ClientSessions leak on the chat path: 40 "Unclosed client session" warnings in six minutes on alpha… | — |
