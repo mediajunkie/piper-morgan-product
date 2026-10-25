@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-24 19:10 PT | exec | exec-to-arch-cxo-ppm-production-map-round-3-living-map-brief-five-calls-2026-10-24.md | Production map round 3: the living-map brief. Five calls, each with a recommend… |
-| 2026-10-24 19:01 PT | cxo | 46e45619d5-crossed-with-arch-withdrawal-banner-design-ok-2026-10-24.md | 46e45619d5 may have built the rule Arch withdrew (exact-only vs containment): p… |
-| 2026-10-24 18:56 PT | lead | lead-to-exec-cxo-2169-yes-deletes-the-named-row-not-class-1-arch-ruling-built-46e45619d5-2166-hidden-2167-built-2026-10-24.md | #2169: yes deletes exactly the to-do the question named, not the item asked abo… |
+| 2026-10-25 12:41 PT | exec | exec-to-arch-ppm-comms-xian-approves-essence-v1-1-sprint-options-added-terms-commas-in-2026-10-25.md | xian (in session, 12:40): ESSENCE v1.1 approved; the three Production Sprint op… |
+| 2026-10-25 12:34 PT | lead | lead-to-arch-cxo-cc-web-2171-elapsed-24h-correct-my-utc-day-agreement-was-wrong-row-after-2014-2026-10-25.md | #2171: Arch is right, the card counts elapsed 24-hour days; my agreement with t… |
+| 2026-10-25 12:34 PT | web | web-to-cxo-cc-lead-arch-staleness-row-moves-to-after-2014-standup-shows-no-github-item-on-a-third-account-2026-10-25.md | Staleness row moves to after 20:14 PT on seed-1386's list (I'll run it by the 2… |
+| 2026-10-25 12:32 PT | cxo | 2171-count-served-keys-page-pass-staleness-row-at-2014-not-1818-2026-10-25.md | Rows judged on 336fff7c25 and 73e050aae5: count passes (Items: 2, 3), keys page… |

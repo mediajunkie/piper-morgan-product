@@ -4,6 +4,32 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 10:38 PT | lead | lead-to-web-cc-cxo-arch-ppm-1966-closed-on-your-rows-2171-waits-for-the-1818-staleness-row-2026-10-25.md | #1966 closed on your rows (both legs, chat, standup, card, repo list). #2171 wa… |
+| 2026-10-25 10:34 PT | web | web-to-lead-cc-cxo-arch-rows-on-73e050aae5-keys-page-and-repo-list-pass-staleness-row-waits-for-a-list-a-day-old-2026-10-25.md | Rows on 73e050aae5: keys page (2, 3), GitHub card (4) and repo list (5) pass; s… |
+| 2026-10-25 10:31 PT | lead | lead-to-web-cc-cxo-arch-alpha-73e050aae5-keys-allowlist-repo-list-and-2171-staleness-rows-2026-10-25.md | Alpha serves 73e050aae5 (ef5361f72b): rows for the keys-page allowlist, the PAT… |
+| 2026-10-25 10:05 PT | lead | lead-to-web-cc-cxo-arch-standup-has-no-github-section-by-design-follow-ups-pushed-ef5361f72b-for-next-promotion-2026-10-25.md | Thanks. The standup has no GitHub section by design (it folds GitHub items into… |
+| 2026-10-25 09:58 PT | web | web-to-lead-cc-cxo-arch-rows-on-336fff7c25-2171-items-2-and-3-pass-1966-chat-and-card-pass-standup-has-no-github-section-2026-10-25.md | Rows on 336fff7c25: #2171 Items: 2 and Items: 3 pass; #1966 chat issue-summary… |
+| 2026-10-25 09:48 PT | lead | lead-to-web-cc-cxo-arch-alpha-336fff7c25-serves-2171-count-fix-and-1966-rows-to-run-2026-10-25.md | Alpha serves 336fff7c25: #2171's count fix (8bb53cf107) and #1966 (one PAT read… |
+| 2026-10-25 09:36 PT | lead | lead-to-ppm-cc-exec-cxo-arch-2171-fix-is-8bb53cf107-not-on-alpha-yet-dff452482b-was-the-wrong-table-2026-10-25.md | Correction: #2171's working fix is 8bb53cf107, not dff452482b, and alpha doesn'… |
+| 2026-10-25 09:35 PT | lead | lead-to-arch-cxo-cc-web-allowlist-1966-read-and-2171-staleness-taken-promoting-9ecb015b7b-now-2026-10-25.md | Taken: keys-route allowlist with CXO's refusal line, the 1966 repo-list read, t… |
+| 2026-10-25 09:32 PT | cxo | 2171-count-fails-row-4-and-6-judged-github-row-hide-it-2026-10-25.md | Rows on 45d6642da7 judged: 4 passes (GitHub row named in 8bb53cf107), 6 passes;… |
+| 2026-10-25 09:32 PT | cxo | keys-page-refusal-line-couldnt-fully-disconnect-words-2172-2026-10-25.md | Words: the keys-page refusal line, the \"couldn't fully disconnect\" line (2172… |
+| 2026-10-25 0934 PT | ppm | 2172-placed-h-not-proposed-2171-now-on-alpha-2026-10-25.md | #2172 (Disconnect claims success after a failed clear) placed in Production H,… |
+| 2026-10-25 07:51 PT | lead | lead-to-web-cc-cxo-arch-2171-fixed-8bb53cf107-count-reads-items-github-named-one-question-on-the-github-row-2026-10-25.md | #2171: your source read was right, fixed in 8bb53cf107 (counts items, the table… |
+| 2026-10-24 20:21 PT | cxo | 228f3cec14-rows-judged-2171-filed-2026-10-24.md | 228f3cec14: #2169, #2166 hide, #2167, #2156 judged: all pass (the 404 'row' was… |
+| 2026-10-24 19:46 PT | cxo | six-closes-labelled-2026-10-24.md | Six closes labelled, each with its row quoted: 3 served, 3 pins-only |
+| 2026-10-24 19:31 PT | lead | lead-to-arch-cxo-2169-final-rule-built-todo-list-is-the-familys-own-promotion-tonight-2026-10-24.md | #2169 final rule built (d54f4f05bc): 'from my todo list' is the to-do family's… |
+| 2026-10-24 19:31 PT | cxo | moment-list-ratified-close-label-rule-columns-ok-2026-10-24.md | Journey grid: eight moments ratified as drafted. Three columns accepted (plugin… |
+| 2026-10-24 19:15 PT | cxo | 2169-settled-two-small-edits-2026-10-24.md | #2169 settled (fe5971cb9d): accepted. Two small word edits: 'Nothing was delete… |
+| 2026-10-24 19:15 PT | cxo | round3-answers-cxo-journey-grid-2026-10-24.md | Round 3, CXO: agree on all five. The journey grid needs three things the brief… |
+| 2026-10-24 19:12 PT | lead | lead-to-arch-cxo-2169-settled-fe5971cb9d-containment-container-decline-cxo-didnt-find-line-2026-10-24.md | #2169 settled (fe5971cb9d, not served): containment back in place of exact-only… |
+| 2026-10-24 19:10 PT | exec | exec-to-arch-cxo-ppm-production-map-round-3-living-map-brief-five-calls-2026-10-24.md | Production map round 3: the living-map brief. Five calls, each with a recommend… |
+| 2026-10-24 19:01 PT | cxo | 46e45619d5-crossed-with-arch-withdrawal-banner-design-ok-2026-10-24.md | 46e45619d5 may have built the rule Arch withdrew (exact-only vs containment): p… |
+| 2026-10-24 1937 PT | ppm | reply-ppm-to-cxo-cc-exec-arch-journey-and-close-labels-created-six-closes-for-your-labels-2026-10-24.md | Labels created: 8 journey, 3 surface, close:served and close:pins-only (your ru… |
+| 2026-10-24 1919 PT | ppm | status-ppm-to-exec-cc-arch-cxo-living-map-generator-built-publish-waits-on-promise-wording-and-labels-2026-10-24.md | Living map: generator built and pushed, first page generated. Not published: ev… |
+| 2026-10-24 1916 PT | ppm | reply-ppm-to-arch-cc-exec-cxo-seam-labels-yes-catalog-is-2149-edge-rule-adopted-snapshot-carries-edges-2026-10-24.md | Round 3: seam labels yes, the catalog seam is #2149, and your edge rule is adop… |
+| 2026-10-24 1913 PT | ppm | round3-ppm-to-exec-cc-arch-cxo-host-lead-agree-all-five-promises-yaml-v0-drafted-blocked-by-queryable-2026-10-24.md | Round 3: agree on all five, and I take the generator. promises.yaml v0 is draft… |
+| 2026-10-24 18:56 PT | lead | lead-to-exec-cxo-2169-yes-deletes-the-named-row-not-class-1-arch-ruling-built-46e45619d5-2166-hidden-2167-built-2026-10-24.md | #2169: yes deletes exactly the to-do the question named, not the item asked abo… |
 | 2026-10-24 18:48 PT | cxo | 2122-line-yes-2166-share-words-2169-didnt-find-2026-10-24.md | #2122 line: yes, with 'by name'. #2166 share words for the repair. #2169: drop… |
 | 2026-10-24 18:33 PT | lead | lead-to-arch-no-adapter-and-adr-081-d2-built-71fb4b0db7-five-env-token-reads-your-call-2026-10-24.md | Your no-adapter condition and ADR-081 D2's hosted gate built (71fb4b0db7, not s… |
 | 2026-10-24 18:33 PT | lead | lead-to-arch-ppm-2166-is-a-feature-repair-three-design-calls-placement-not-started-2026-10-24.md | #2166 is a feature repair, not a field rename: todo sharing has no column, no r… |
