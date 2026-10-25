@@ -134,6 +134,17 @@
 }
 
 /* Error help section */
+/* #2156: the support line on the pages with no app shell. */
+.error-support {
+  margin: var(--space-lg) 0 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.error-support a {
+  color: var(--color-primary);
+}
+
 .error-help {
   background: var(--color-neutral-off-white);
   border-left: var(--border-width-thick) solid var(--color-primary);
@@ -305,6 +316,10 @@
   }
 
   .error-help li {
+    color: #bdc3c7; /* token-lint-allow: intentional dark-mode-specific contrast (#1172) */
+  }
+
+  .error-support {
     color: #bdc3c7; /* token-lint-allow: intentional dark-mode-specific contrast (#1172) */
   }
 

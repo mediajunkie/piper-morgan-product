@@ -142,6 +142,11 @@
     text-decoration: underline;
 }
 
+/* #2156: the support line on the pages with no app shell. */
+.auth-footer .auth-support {
+    margin-top: var(--space-sm);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .auth-container {

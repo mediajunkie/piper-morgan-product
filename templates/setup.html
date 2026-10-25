@@ -830,6 +830,12 @@
 
       <!-- Error display -->
       <div id="error-message" class="error-message" style="display: none"></div>
+
+      <!-- #2156 (CXO 10-24): the wizard has no shell, so no feedback link. The line stays
+           visible on every step, the intro included. -->
+      <div class="auth-footer">
+        <p class="auth-support">Stuck? Email <a href="mailto:support@pipermorgan.ai">support@pipermorgan.ai</a>.</p>
+      </div>
     </div>
 
     <script src="/static/js/toast.js?v={{ asset_v }}"></script>
