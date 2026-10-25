@@ -1,7 +1,7 @@
 ---
 image: 'a-clean-result-has-a-version-number-old-and-new-height-checks.jpg'
 alt: ''
-caption: '"Sorry, last time we checked you weren''t tall enough!"'
+caption: ''
 ---
 
 # A Clean Result Needs a Version Number
