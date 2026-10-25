@@ -334,7 +334,9 @@
               </div>
             </div>
             ${list.description ? `<p>${list.description}</p>` : ''}
-            <small>Items: <span id="item-count-${list.id}">${list.item_count || 0}</span></small>
+            ${typeof list.item_count === 'number'
+              ? `<small>Items: <span id="item-count-${list.id}">${list.item_count}</span></small>`
+              : ''}
             ${stalenessHint}
 
             <!-- Inline items panel (hidden by default) -->
@@ -677,8 +679,12 @@
         const data = await response.json();
         renderItems(listId, data.items || []);
 
-        // Update item count
-        document.getElementById(`item-count-${listId}`).textContent = data.count || 0;
+        // Update item count (#2171: from this successful read, never a fallback zero;
+        // the card may carry no count span when the list read couldn't count).
+        const countEl = document.getElementById(`item-count-${listId}`);
+        if (countEl) {
+          countEl.textContent = typeof data.count === 'number' ? data.count : (data.items || []).length;
+        }
       } catch (error) {
         console.error('Error loading items:', error);
         itemsList.innerHTML = '<li class="items-empty">Failed to load items</li>';

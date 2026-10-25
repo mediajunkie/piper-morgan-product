@@ -137,6 +137,14 @@ class UniversalListRepository(BaseRepository):
         )
         return result.scalar_one_or_none()
 
+    async def count_items(self, list_id: str) -> int:
+        """The number of items in the list, read now (#2171). The cached ``ListDB.item_count``
+        is not kept current on every item write, so a page must not show it as a fact."""
+        result = await self.session.execute(
+            select(func.count(ListItemDB.id)).where(ListItemDB.list_id == list_id)
+        )
+        return int(result.scalar() or 0)
+
     async def get_default_list(self, owner_id: str, item_type: str) -> Optional[domain.List]:
         """Get user's default list for a specific item type"""
         result = await self.session.execute(

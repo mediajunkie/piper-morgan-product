@@ -245,6 +245,13 @@ async def list_lists(
                 list_updated_at=list_item.updated_at,
                 item_added_at_values=item_ts_values,
             )
+            # #2171: the real count, read now. A count that couldn't be read is None, and
+            # the card then shows no count, never a false zero.
+            try:
+                item_count: Optional[int] = await list_repo.count_items(list_item.id)
+            except Exception as e:
+                logger.warning("list_item_count_failed", list_id=list_item.id, error=str(e))
+                item_count = None
             list_payloads.append(
                 {
                     "id": list_item.id,
@@ -258,6 +265,7 @@ async def list_lists(
                         list_item.updated_at.isoformat() if list_item.updated_at else None
                     ),
                     "staleness": staleness.to_dict(),
+                    "item_count": item_count,
                 }
             )
 
