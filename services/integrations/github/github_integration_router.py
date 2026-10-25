@@ -292,31 +292,39 @@ class GitHubIntegrationRouter:
         return await self.spatial_github.get_issue(repo_name, issue_number)
 
     async def is_available(self) -> bool:
-        """#1220/#1382: is GitHub usable for THIS user — via the per-user OAuth
-        binding (the tester path on hosted, status BOUND) OR the legacy PAT
-        config (local dev / pre-OAuth users).
+        """Is GitHub usable for THIS user. #2151 (Arch 10-24 16:49): derived from the
+        connector's one resolver, ``resolve_credential``, so the gate and the reads never
+        disagree about an account (the PAT in ``user_api_keys`` included).
 
-        The chat handlers' capability gates previously used the PAT-only
-        ``config_service.is_configured``, which made connected-via-OAuth users
-        read as "not connected" and degrade before any connector call could
-        run — found live during the v0.8.10.1 first-real-write attempt
-        (2026-07-09). This check is the single gate the chat surfaces use.
+        A ``GitHubCredential`` → True. CONNECT_REQUIRED → False, the only False. Any
+        other degrade (STALE_TOKEN, UNREACHABLE, MISCONFIGURED) or a failed read →
+        raises ``GitHubReadFailed`` with the reason: a failed check is not "not
+        connected". With no user or no MCP adapter, the legacy config check decides.
         """
-        if self._user_id:
-            try:
-                from services.connectors.binding_repository import (
-                    ConnectorBindingRepository,
-                )
-                from services.database.session_factory import AsyncSessionFactory
-                from services.mcp.consumer.connector import ConnectorStatusState
+        if not self._user_id or self.mcp_adapter is None:
+            return self.config_service.is_configured(self._user_id or "system")
+        from services.mcp.consumer.connector import DegradationReason, DegradationResponse
 
-                async with AsyncSessionFactory.session_scope() as session:
-                    binding = await ConnectorBindingRepository(session).get(self._user_id, "github")
-                if binding is not None and binding.status == ConnectorStatusState.BOUND.value:
-                    return True
-            except Exception as e:  # binding check is additive — legacy still decides
-                logger.debug(f"is_available binding check failed: {e}")
-        return self.config_service.is_configured(self._user_id or "system")
+        try:
+            credential = await self.mcp_adapter.resolve_credential(self._user_id)
+        except GitHubReadFailed:
+            raise
+        except Exception as e:
+            logger.warning(f"is_available credential read failed: {e}")
+            raise GitHubReadFailed(
+                "the GitHub credential read failed",
+                DegradationReason.UNREACHABLE,
+                detail="store_failed",
+            ) from e
+        if isinstance(credential, DegradationResponse):
+            if credential.reason is DegradationReason.CONNECT_REQUIRED:
+                return False
+            raise GitHubReadFailed(
+                "the account's GitHub credential failed",
+                credential.reason,
+                detail=credential.reason.value,
+            )
+        return True
 
     async def _try_connector_write(self, method_name: str, **kwargs):
         """#1220: attempt a write over the per-user OAuth grant.
@@ -667,9 +675,10 @@ class GitHubIntegrationRouter:
         if self._user_id and self.mcp_adapter is not None:
             try:
                 await self.mcp_adapter._grant_headers_or_raise(self._user_id)
-            except GitHubReadFailed as not_connected:
-                if not_connected.detail == "no_credential":
-                    return not_connected
+            except GitHubReadFailed as credential_failed:
+                # Not connected, or a credential that failed (Arch 10-24 16:49): either
+                # comes before "which repository?".
+                return credential_failed
         return repo_unresolved()
 
     async def get_open_items_strict(

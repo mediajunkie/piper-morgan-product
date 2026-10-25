@@ -123,7 +123,9 @@ class TestUpdateIssueGate:
 
 
 class TestRouterIsAvailable:
-    """The gate itself: OAuth binding (BOUND) OR legacy PAT — either suffices."""
+    """The gate itself: OAuth binding (BOUND) OR the user's own PAT, either suffices.
+    #2151 (Arch 10-24 16:49): derived from ``resolve_credential``, so the PAT legs are
+    the resolver's (``user_api_keys`` first, then the keychain), not ``is_configured``."""
 
     def _router(self, user_id="694d8f4e-0000-0000-0000-000000000042"):
         from services.integrations.github.github_integration_router import (
@@ -132,42 +134,74 @@ class TestRouterIsAvailable:
 
         r = GitHubIntegrationRouter()
         r._user_id = user_id
+        assert r.mcp_adapter is not None
         return r
+
+    def _legs(self, r, at_rest=None, keychain=None):
+        return (
+            patch.object(
+                type(r.mcp_adapter), "_user_pat_at_rest", new=AsyncMock(return_value=at_rest)
+            ),
+            patch.object(type(r.mcp_adapter), "_user_pat", return_value=keychain),
+        )
 
     @pytest.mark.asyncio
     async def test_bound_binding_without_pat_is_available(self):
         r = self._router()
-        binding = type("B", (), {"status": "bound"})()
+        binding = type(
+            "B", (), {"status": "bound", "owner_id": r._user_id, "mcp_server_ref": "github"}
+        )()
+        a, k = self._legs(r)
         with (
             patch(
                 "services.connectors.binding_repository.ConnectorBindingRepository.get",
                 new=AsyncMock(return_value=binding),
             ),
-            patch.object(r.config_service, "is_configured", return_value=False),
+            a,
+            k,
         ):
             assert await r.is_available() is True
 
     @pytest.mark.asyncio
     async def test_no_binding_no_pat_unavailable(self):
         r = self._router()
+        a, k = self._legs(r)
         with (
             patch(
                 "services.connectors.binding_repository.ConnectorBindingRepository.get",
                 new=AsyncMock(return_value=None),
             ),
-            patch.object(r.config_service, "is_configured", return_value=False),
+            a,
+            k,
         ):
             assert await r.is_available() is False
 
     @pytest.mark.asyncio
     async def test_pat_only_still_available(self):
         r = self._router()
+        a, k = self._legs(r, keychain="fake-token-keychain")
         with (
             patch(
                 "services.connectors.binding_repository.ConnectorBindingRepository.get",
                 new=AsyncMock(return_value=None),
             ),
-            patch.object(r.config_service, "is_configured", return_value=True),
+            a,
+            k,
+        ):
+            assert await r.is_available() is True
+
+    @pytest.mark.asyncio
+    async def test_the_user_api_keys_pat_counts(self):
+        """Arch 16:49: the gate used to miss the at-rest row the reads serve from."""
+        r = self._router()
+        a, k = self._legs(r, at_rest="fake-token-at-rest")
+        with (
+            patch(
+                "services.connectors.binding_repository.ConnectorBindingRepository.get",
+                new=AsyncMock(return_value=None),
+            ),
+            a,
+            k,
         ):
             assert await r.is_available() is True
 

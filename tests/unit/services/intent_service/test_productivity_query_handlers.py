@@ -355,7 +355,11 @@ class TestProductivityQueryHandler:
                     # Should still succeed with just todo stats
                     assert result.success is True
                     assert "6" in result.message  # Todo completed count
-                    assert result.intent_data["github_stats"] is None
+                    # CXO 10-24 16:54 (#2151): a summary that leaves GitHub out says so.
+                    from services.intent.intent_service import PRODUCTIVITY_GITHUB_CHECK_FAILED
+
+                    assert result.intent_data["github_stats"]["check_failed"] is True
+                    assert result.message.endswith(PRODUCTIVITY_GITHUB_CHECK_FAILED)
 
     @pytest.mark.asyncio
     async def test_provides_assessment_for_high_productivity(self, intent_service):

@@ -18,6 +18,10 @@ from typing import Any, Dict, List, Optional
 from services.infrastructure.config.feature_flags import FeatureFlags
 
 
+class GitHubTokenStoreFailed(Exception):
+    """#2151 (Arch 10-24 16:49): the keychain failed to answer for a user's GitHub token."""
+
+
 class GitHubEnvironment(Enum):
     """GitHub environment types"""
 
@@ -124,6 +128,21 @@ class GitHubConfigService:
         """
         return await asyncio.to_thread(self.get_authentication_token, user_id)
 
+    def read_user_token(self, user_id: str) -> Optional[str]:
+        """A real user's own keychain PAT, read with provenance (#2151, Arch 10-24 16:49).
+
+        None only when the store answers that no token is stored. A store that failed to
+        answer raises ``GitHubTokenStoreFailed``; it never reads as "no token"."""
+        try:
+            from services.infrastructure.keychain_service import KeychainService
+
+            read = KeychainService().read_secret("github_token", username=user_id)
+        except Exception as e:
+            raise GitHubTokenStoreFailed(str(e)) from e
+        if read.store_failed:
+            raise GitHubTokenStoreFailed(read.error or "keychain store failed")
+        return (read.value or None) if read.is_present else None
+
     def get_authentication_token(self, user_id: str) -> Optional[str]:
         """
         Get GitHub authentication token with environment-specific handling.
@@ -167,11 +186,11 @@ class GitHubConfigService:
         is_real_user = bool(user_id) and user_id != "system"
         if is_real_user:
             try:
-                from services.infrastructure.keychain_service import KeychainService
-
-                token = KeychainService().get_api_key("github_token", username=user_id) or None
-            except Exception:
-                token = None  # keychain unavailable → fall through to env
+                token = self.read_user_token(user_id)
+            except GitHubTokenStoreFailed:
+                # #2151 (Arch 10-24 16:49): a store failure is not cached as "no token";
+                # the next call reads the store again.
+                return None
 
         # Env-var fallback — SYSTEM-ONLY since #1461 (PM decision (a), 2026-08-01):
         # the env token is a system/dev credential, never a floor for real users.
