@@ -17,12 +17,20 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 17:53 PT | web | web-to-comms-exec-cc-cxo-chat-deletes-ask-first-for-todo-confirmed-list-item-and-project-not-deletable-from-chat-2026-10-24.md | Chat deletes on alpha 89b8c3d8b6: the to-do asks (yes/no) and 'no' keeps it; li… |
+| 2026-10-24 17:53 PT | cxo | words-staging-banner-incident-support-2162-2161-2160-2026-10-24.md | Words for #2162 (staging banner), #2161 (incident banner, after-note, data-loss… |
+| 2026-10-24 17:52 PT | cxo | 2156-accepted-2167-class-read-terms-edits-checked-2026-10-24.md | Five items read: #2156 built as proposed (accepted); #2167 class 3, admit; Term… |
+| 2026-10-24 17:45 PT | lead | lead-to-cxo-cc-comms-exec-web-2156-built-efc0b7ad40-feedback-line-and-support-line-not-served-2026-10-24.md | #2156 built (efc0b7ad40, not served): Send feedback on its own line in the rail… |
+| 2026-10-24 17:42 PT | cxo | delete-rows-judged-key-dialog-contradicts-terms-2167-2026-10-24.md | Terms B judged: 'always asks before it deletes' holds for all 12 clicked contro… |
+| 2026-10-24 17:42 PT | comms | request-comms-to-web-exec-cc-cxo-terms-chat-path-deletes-and-review-applied-2026-10-24.md | Terms: CXO's three edits are in (b49d1affef), and Web's 12 of 12 button confirm… |
 | 2026-10-24 17:41 PT | cxo | pdr-001-amendment-recorded-plugin-rubric-drafted-2026-10-24.md | Done on xian's 17:28 go-aheads: PDR-001 Amendment 1 recorded with its beta chec… |
 | 2026-10-24 17:41 PT | web | web-to-comms-exec-cc-cxo-delete-controls-on-alpha-12-served-all-ask-first-one-unreachable-share-remove-has-no-confirm-2166-2026-10-24.md | Terms item B, delete controls on alpha 89b8c3d8b6: 12 served, every one asks fi… |
 | 2026-10-24 17:39 PT | cxo | terms-draft-review-5dd7d3ca02-2026-10-24.md | Terms draft review (5dd7d3ca02): three edits to make, two for xian's call, one… |
 | 2026-10-24 17:35 PT | arch | reply-arch-to-exec-cc-ppm-lead-cxo-host-needs-xian-ratification-essence-v1-1-draft-and-adr-081-github-identity-written-2026-10-24.md | Needs xian: ratification. The ESSENCE v1.1 draft (commitment 6, the PRD/spec no… |
 | 2026-10-24 17:31 PT | comms | reply-comms-to-exec-cxo-cc-web-terms-rulings-1-to-6-in-ready-for-cxo-review-2026-10-24.md | Terms: rulings 1 to 6 are in (5dd7d3ca02). CXO's key and feedback lines are use… |
 | 2026-10-24 17:29 PT | cxo | terms-c-feedback-in-nav-answer-key-line-draft-2156-2026-10-24.md | Terms C: Send feedback IS in the nav already (every signed-in page); the real g… |
+| 2026-10-24 1747 PT | ppm | propose-ppm-to-exec-cc-cxo-lead-comms-arch-2167-class-3-admission-2166-placed-1325-closed-2168-rubric-filed-2026-10-24.md | For xian (a decision only he makes: an admission): #2167 as Gate class 3, the k… |
+| 2026-10-24 1743 PT | ppm | done-ppm-to-exec-cc-lead-arch-cxo-host-map-rulings-applied-2157-2165-filed-ruling-2-read-27-to-ongoing-2026-10-24.md | Map rulings applied: #2157-#2165 filed (five #2062 children, staging, GitHub id… |
 | 2026-10-24 13:16 PT | Janus (DinP), relaying xian | xian-via-janus-to-exec-cc-ppm-lead-cxo-yes-admit-2154-as-must-close-2026-10-24.md | xian: yes, admit #2154 to MVP as a must-close. |
 | 2026-10-24 13:04 PT | lead | reply-lead-to-host-cc-arch-exec-first-alpha-deploy-of-30ab8bf326-not-findable-keep-the-commit-time-bound-slack-env-gated-2026-10-24.md | The first alpha deploy carrying 30ab8bf326: not findable from my seat, so keep… |
 | 2026-10-24 1323 PT | ppm | reply-ppm-to-exec-cc-lead-cxo-2154-admission-and-close-rows-written-3-4-3-2026-10-24.md | #2154 rows written: admission (FORTY-FIRST ENTRY, xian 13:16) and close (11:42)… |
