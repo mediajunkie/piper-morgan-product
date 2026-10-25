@@ -2,12 +2,12 @@
 type: methodology
 title: "\"Clear\" Is Not a Measurement — An Instrument Must Assert What It Looked At"
 valid_from: "2026-07-27"
-last_updated: "2026-10-24"
+last_updated: "2026-10-25"
 ---
 
 # "Clear" Is Not a Measurement — An Instrument Must Assert What It Looked At
 
-**Status**: Emerging → strong. **Eleven instances in 96 hours across four roles and two projects, plus three later (12 on 10-16, 13 and 14 on 10-23)** *(count unaffected by the 2026-07-31 boundary ruling — see the three-routes section below, including a correction to how that ruling was first written here)*, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** — as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.
+**Status**: Emerging → strong. **Eleven instances in 96 hours across four roles and two projects, plus four later (12 on 10-16, 13 and 14 on 10-23, 15 on 10-24 from a third project, Klatch)** *(count unaffected by the 2026-07-31 boundary ruling — see the three-routes section below, including a correction to how that ruling was first written here)*, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** — as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.
 **Filed**: 2026-07-27 by CIO
 **Origin**: **Arch's bequest.** Its migration handoff (`dev/2026/07/25/handoff-arch-amber-2026-07-25.md`, §4.1) named the "blind-sweep class" from six instances and flagged writing it up as *"the highest-value un-started piece of Architect methodology work I'm leaving."* Written up here at the altitude the evidence now supports, with three more roles' independent corroboration: HOST's Criteria G, Janus's (Design in Product) show-your-work principle, and CIO's own instruments failing the same way twice.
 **Related**: methodology-43 (Name the Layer — the agent-side twin; boundary below), methodology-36 (mechanisms over vigilance), methodology-42 (reflexive verification)
@@ -107,6 +107,10 @@ That second one is the strongest evidence in this document. **The class recurs i
 13. **An open issue suppressed the next cycle, and the run said success.** Three cycle generators (agent-360, skill-candidates-review, role-health) open no new issue while the last one is open. That's a deliberate rule: "an open issue IS the reminder". It's correct as long as someone is working the open issue. September's skill-candidates issue (#1715) sat untouched from 09-06, so the 10-06 run returned `success`, opened nothing, and logged "already exists: #1715" where nobody reads. October's review never existed, and the only symptom was an absence. Exec found it by asking xian's question ("are the audits current?") against the issue list, not by reading any run. **Cure (7c87c1ceec):** on a cycle day, a suppressed run comments on the issue that suppressed it, which is where its owner looks. This is the "silent vs merely quiet" corollary with a twist: the silence was designed, but its *reason* was written only to the run log.
 14. **A feed that records successes can't attest a refusal.** For #2136's stage 4, the question was whether the push that `ops/restarter`'s ruleset refused came from the App and not from xian's admin login. The repo activity feed, which settled stage 1, has nothing to say. It records ref updates, and a refused push updates nothing, so "refused", "never sent" and "sent by someone else" all read the same: no row. The ruleset's own evaluation log (`rulesets/rule-suites`) records every evaluation, with actor and result: suite 4696363939, `piper-morgan-agents[bot]`, `fail`. **Rule:** for a negative test, read the instrument that records refusals, and ask "what would this print if the push never happened?" before reading its silence.
 
+### Instance 15, 2026-10-24: a self-test that couldn't tell a guard from its backstop *(Klatch; recorded by CIO from the 10-25 cross-pollination brief)*
+
+15. **A self-test keyed on "did it throw" passed with the guard deleted.** Klatch's round 450 (commit `ed4a31c4`) graded `verdict.mjs`'s self-test by cripple: four one-guard deletions of the real source, each run in a scratch tree at the library's own depth. Three of four still returned `selfTest() === true`. A round-trip check at the end of `renderRowSet` caught the same bad shapes with a different message, so the behaviour was guarded twice and the diagnosis once, and a test that asks only whether something threw reads the same with the inner guard or without it. **Cure (same commit):** each bad-input case asserts the reason (the error message), not the throw; all four cripples now fail as they should, with a clean control. The same commit records a second instance of the instance-12 shape: a source scan keyed on an adjacent-token pattern couldn't reach a call made through a ternary, and it failed by returning a *smaller number*, 4 of 6. This is the entry's third project, found and cured independently.
+
 ## Why "be more careful" fails here
 
 The proxy is always cheaper than the claim (m-43), and **the silent path is always the shorter code path.** `exit 0` is fewer characters than a diagnostic. A bare `git log` is shorter than one naming its ref. `2>/dev/null` is the reflex for suppressing noise. Every one of these is what you write when you are moving fast *and being reasonable*.
@@ -116,11 +120,12 @@ The proxy is always cheaper than the claim (m-43), and **the silent path is alwa
 > **A check must be able to positively assert what it looked at — ref, path, scope, and how much it saw — not merely emit clear/alert.**
 > *(Janus's formulation, adopted verbatim. A check that cannot show its work is indistinguishable from one that never ran.)*
 
-Four operational corollaries, each earned by a specific instance above:
+Five operational corollaries, each earned by a specific instance above:
 
 - **Fail loudly, never quietly.** An instrument that cannot find its input must say so and exit non-zero. "Measured nothing" must never render as "nothing wrong." *(the exit-0 case)*
 - **Name the scope in the output.** Emit the ref, the path, the row count, the tip commit. Cheap, and it converts *"clear"* into *"clear, having examined X"* — a claim that can be checked. *(instance 7)* **Count the scope before the filter, not after:** a count of what the parser accepted is a numerator. Count what was there with a looser match, and print the difference. *(instance 12)*
 - **A state needs a lifecycle, not just a definition.** Any suppression, exemption, or park must carry a **falsifiable clearing condition** — an observable event that ends it — not a situation description. A situation rots silently; a condition can be checked. *(instance 9)*
+- **A check of a layered defence must say which layer answered.** Key the reason (the message, the code), not the presence of a failure, and validate the check by deleting the guard it covers: if it still passes, it was measuring the backstop. *(instance 15)*
 - **Distinguish silent from merely quiet.** A rate-limited or thresholded mechanism legitimately produces no output while working. Ask which one you have *before* reading silence as health.
 
 ## The counter-intuitive part
@@ -133,7 +138,7 @@ So the practice this entry protects is **not** "make fewer measurement errors." 
 
 ## How to apply
 
-- Before trusting any check, ask: **"what would this print if it ran against nothing?"** If the answer matches its healthy output, it is not yet an instrument.
+- Before trusting any check, ask: **"what would this print if it ran against nothing?"** If the answer matches its healthy output, it is not yet an instrument Ask the same with the guard it covers deleted (a cripple run).
 - When adopting a *cure* for this class, **run it and look at the output.** Two of the nine instances are cures that silently didn't work.
 - Treat a **diagnosis** as carrying the same evidentiary burden as the mechanism it explains (HOST). Plausible, widely believed and canonically documented is still untested.
 - When you find one, **mail the correction rather than quietly editing.** Instance 9's fix reached its canonical surface in fifteen minutes because it was routed; a silent amendment leaves every downstream copy wrong.

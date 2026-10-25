@@ -51,8 +51,8 @@ log, never here. Bump `last_updated` to the newest line's date, or CI fails. Ski
   (#2021 lifts), #2023 corpus rows first. Pacing: normal from 10-16 (run-hot ended 10-15 22:00).
 - **PM's open asks** *(Exec, 2026-10-09 06:4x PDT)*: on Exec's attention rollup at
   `claude.ai/artifact/719UZ4h1NELjEwWZbDCceT` (its own header line carries the current version; do not pin one here, it was v90 at 04:2x and v95 by 06:4x). Do not copy the list here: it goes stale within hours.
-- **Usage** *(CIO, 2026-10-24 10:09 PDT, last row of `dev/heartbeats/usage-per-account.tsv`, read 09:23)*: the pipermorgan.ai
-  weekly meter is at **11%**; the next reset is **10-29 21:59 PDT** (10-30 04:59Z). The stop line is **95%**
+- **Usage** *(CIO, 2026-10-25 10:07 PDT, last row of `dev/heartbeats/usage-per-account.tsv`, read 09:23)*: the pipermorgan.ai
+  weekly meter is at **17%**; the next reset is **10-29 21:59 PDT** (10-30 04:59Z). The stop line is **95%**
   of the weekly meter (PM-approved 10-06). Normal pacing.
 - **Mail** *(CIO, 2026-10-22)*: v3 (`scripts/mail-send.sh`) for everyone. **Mail v4 pilot** (exec, cio and lead)
   runs through `scripts/mail4.py` in the private `piper-morgan-mail` repo; reviewed 10-22 (delivery 23 of 23 on time; it continues for the three seats, not widened before the 11-05 review; the first inbox read of the day now runs the canary); see
