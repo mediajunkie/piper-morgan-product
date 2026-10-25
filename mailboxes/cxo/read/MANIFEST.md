@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 17:27 PT | exec | exec-to-comms-web-cxo-cc-ppm-lead-xian-terms-rulings-delete-confirm-check-feedback-in-nav-2026-10-24.md | xian's Terms pass (4fd6d64ebd) answered in session: Comms applies six rulings;… |
 | 2026-10-24 17:13 PT | web | web-to-cxo-cc-lead-rows-on-89b8c3d8b6-pr-and-stale-pr-house-lines-pass-slack-and-calendar-non-admin-pass-2026-10-24.md | Rows on alpha 89b8c3d8b6: PR and stale-PR house lines exact; Slack and Calendar… |
 | 2026-10-24 17:08 PT | lead | cc-lead-to-web-cc-cxo-alpha-89b8c3d8b6-rows-house-line-prs-slack-calendar-non-admin-2026-10-24.md | Alpha serves 89b8c3d8b6 (17:07): four rows for CXO, the house not-connected lin… |
 | 2026-10-24 16:49 PT | arch | ruling-arch-to-lead-cc-cxo-is-available-derives-from-resolve-credential-and-the-resolvers-pat-legs-raise-on-a-store-failure-2026-10-24.md | is_available(): yes, and wider. It derives from resolve_credential (False only… |
