@@ -32,19 +32,21 @@ My chief architect agent (Arch) updated our rule for how connectors should repor
 
 The decisive test didn't run right away. The next morning CXO noticed that their own request to run it had been sitting in their tracker as "not asking yet" for two days, with no reason attached and no trigger to restart it. That's exactly the kind of overlooked deferral we'd been working all week to stop. CXO checked with me whether to proceed or drop it and I encouraged them to get to the bottom of this.
 
-Later that day the same tracker produced a strange finding. CXO ran a check that should have flagged a known problem, and it didn't fire. Rather than blame the check, CXO opened the file and found it had been silently malformed for a day. A clumsy edit had left a broken table fragment that hid three of its four rows from every tool that read it. The file had been reporting clean because the tools could only see a quarter of it.
+Later that day the same tracker produced a strange finding. CXO ran a check that should have flagged a known problem, but it didn't fire. CXO opened the file and found it had been silently malformed for a day. A clumsy edit had left a broken table fragment that hid three of its four rows from every tool that read it. The file had been reporting clean because the tools could only see a quarter of it. (Sad trombone.)
 
-That afternoon, CXO also put the week's finding to work, drafting the copy Piper shows when Piper doesn't know much about you yet. Since caveats about missing information are the ones that get dropped, the copy leads with what Piper can do and doesn't apologize for gaps.
+That afternoon, CXO also put the week's finding to work, drafting the copy Piper shows when Piper doesn't know much about you yet. Since we learned that caveats about missing information get dropped, the copy leads with what Piper can do but doesn't apologize for gaps.
 
 # The killer test
 
-On the third morning I told Arch, more or less, "let's do the killer test (authorized!)." Piper Alpha had results by seven. Each model got a reply carrying two caveats, one of each kind, to see which survived. CXO had registered what each possible result would look like before any data came in.
+On the third morning I told Arch, more or less, "let's do the killer test (authorized!)." [Comms, we need to define what we meant by "killer" here.] Piper Alpha had results by seven. Each model got a reply carrying two caveats, one of each kind, to see which survived. CXO had registered what each possible result would look like before any data came in.
 
-Claude matched the predicted pattern exactly. GPT-4o matched neither prediction. Both of its caveats survived together, a third outcome neither prediction had allowed for.
+Claude matched the predicted pattern exactly. GPT-4o matched neither prediction. Both of its caveats survived together, a third outcome neither prediction had allowed for. [Comms: This is hard to understand. Let's quote the actual replies if they were stored or somewhow make it clear what it means for both caveats to survive together and why it is bad.]
 
-CXO's read of that result: the test couldn't have settled the question at all. To compare two kinds of caveat, it had to add a second caveat, which meant the number of caveats changed along with the kind. Two things varied at once. It was CXO's third design miss on this question in a week, and CXO said so, recommended stopping the series, and made clear that stopping wasn't discouragement. Chasing a fourth experiment to rescue a theory isn't the same as learning something.
+CXO's determined that the test couldn't have settled the question at all. To compare two kinds of caveat, it had to add a second caveat, which meant the number of caveats changed along with the types. When you vary two things at once you can't be sure what you are measuring. 
 
-What the series did establish was enough to build on. On Claude, a lone caveat saying "this list isn't complete" vanished three times out of three. And one rule held regardless of which theory was right: put the caveat where the model can't drop it. Make it an item in the list ("…and four more not shown"), not a note beside the list.
+This was CXO's third design miss on this question in a week, and CXO suggested we stop digging. Chasing a fourth experiment to rescue a theory isn't learning or growth.
+
+The series did establish enough to build on. On Claude, a lone caveat saying "this list isn't complete" vanished three times out of three. And one rule held regardless of which theory was right: put the caveat where the model can't drop it. Make it an item in the list ("…and four more not shown"), not a note beside the list.
 
 Three days later, Piper Alpha tried exactly that. The caveat, written as the last item of the list, came through in both Claude and GPT-4o on the first try, the first clean pass across both models in seven rounds. It's one trial per model, and the team wrote it down that way.
 
