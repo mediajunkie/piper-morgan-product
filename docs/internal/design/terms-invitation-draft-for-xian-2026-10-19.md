@@ -76,3 +76,5 @@ Before Production, we'll add deleting a conversation for good, deleting your acc
 - For xian, his own words: a comma in "me (xian), the human who owns…". Is trash on the roadmap or a hope ("we'd like to add")? #2021 is open. Also a comma after "yourself".
 
 - CXO 17:42 judged item 6: keep the sentence, with "something", not "anything". The API-key Remove dialog ("we destroy our copy immediately") contradicts this draft's five-day backups line. The dialog is the false one, so #2167 (Lead) changes it, and this paragraph stays as written.
+- **Item 6, chat path (Web 17:53, alpha 89b8c3d8b6):** nothing was deleted without asking. A to-do asks "(yes/no)", and "no" keeps it. Project delete is declined with an archive offer. List-item delete isn't recognised from chat. So the sentence holds for buttons (12 of 12 reachable) and chat (3 of 3 kinds tried). One side finding, not for the sentence: a list-item ask got a confirmation naming a different object (the previous to-do). Web is filing it. **The draft is ready for xian's last read (17:55).**
+

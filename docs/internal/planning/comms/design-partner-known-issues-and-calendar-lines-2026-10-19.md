@@ -17,12 +17,17 @@
 > - **No undo for deleted to-dos.** Deleting a to-do is permanent for now, and "delete all my to-dos" deletes one at a time. *(#2019, #2021)*
 > - **A broken GitHub connection can look fine.** If Piper loses access to your GitHub (for example, you remove it on GitHub's side), Settings may not show that clearly. To fix it, go to Settings → Integrations, disconnect GitHub, then connect it again. *(#2018)*
 > - **Searching your documents from chat doesn't work yet.** Paste the text into the chat and ask about that. *(#2122)*
+> - **Sharing doesn't work yet.** Sharing a to-do, list or project with another person shows an error if you try. *(#2166)*
 
   *#2018 line, CXO 15:32:* when CXO judges the served recovery read, it changes to "Settings → Integrations → GitHub will say it needs reconnecting. Press Reconnect." If #2018 closes, PPM strikes the line.
 
 **Contingent fifth line (#2101, chat stall), CXO 16:20:** goes in only if xian rules the stall isn't fixed before partners. CXO's wording: "Piper may stop responding for a few minutes. Reload the page and try again." It's a fact only if the stall recovers by itself, which both observed stalls did. If that's in doubt on send morning, write "usually": "Piper may stop responding for a few minutes. Reloading the page and trying again usually works." *(#2101)*
 
 *#2122 line:* CXO's wording, 18:07 10-20. #2122 isn't Class 1–4 (Web's served turn showed no false result). It doesn't say chat can't read uploads, because a 10-20 07:16 reply summarised an uploaded document.
+
+*#2166 line (added 17:55 10-24):* PPM's proposed sentence (17:47), CXO approved (17:52), split by Comms into a bold lead plus one sentence with no semicolon, to match the list. Share is broken end to end (the UI sends the wrong field: 422, then 500). It isn't a gate item, because the dialog shows an error and never claims a share happened. PPM strikes it when #2166 closes.
+
+*#2122 line, recheck at send:* #2122 closed 10-21 with the reply made truthful ("I can't search your documents from chat yet"). #2132 (analyze and compare documents) closed 10-23 18:32. On send morning, PPM confirms which document asks still fail in chat, so this line doesn't understate what now works.
 
 The issue numbers are for PPM's strike-at-send. Drop them from the copy partners see.
 
