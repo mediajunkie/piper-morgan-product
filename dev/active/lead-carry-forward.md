@@ -1,5 +1,15 @@
 # Lead carry-forward — Fable 5.1 seat; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY CLOSED 2026-10-24 21:4x PT — alpha 228f3cec14 (promoted 20:12); main 12/12 green; inbox empty
+**10-25 START order:**
+1. Rotate cron e0bdd924 (expires about 10-26).
+2. Mail, then CI (`scripts/main-ci-status.sh`).
+3. ADR-081 env reads from local `wip/lead-adr081-env-reads`: update the pins in `test_iss_status_check_failed_2151.py` (expects "unknown" on a failed lookup) and `test_setup_guidance_live_state_1534.py:169`. Then D1: `validate_github_repo`'s five callers pass the account's resolved credential, and `validated=False` means "not checked". Then the full suite plus the backlog gate, then push.
+4. Next promotion (readiness checklist, 07:00–21:00 PT) carrying #2171 (a real list item count) and the provider names on the keys page. Then send Web their rows: a list with one item shows "Items: 1", and a failed count shows no number; the keys page shows Anthropic, OpenAI and Google Gemini.
+5. #2102: read the second clean alpha log window after that promotion.
+- **Closed 10-24:** #2058, #1365, #1356, #1469, #2167, #2156, #2169.
+- **Open by design:** #2166 waits for the Production D repair (resource_shares table plus owner-only shares route; the design is on the issue). #2161 has the banner design. #1300 needs a PM ruling. HOST's keychain read waits for xian.
+
 ## STATE @ 2026-10-23 08:00 PT — alpha dc45f98938 (promoted 07:10); main 3d7e850fc8+ green; #2142 CLOSED; ANTHROPIC CAP (keychain workspace, until 11-01) is on xian's rollup
 - **Served on dc45f98938 (Web 07:15):** 2132 file rows PASS; 2139 PASS (close left to CXO); 2142 PASS (closed). 2132 rows 3–4 ("Analyze this document" → repo metrics) FAIL: the legacy LLM classifier's prompt example (prompts.py L251, per PA) after the router's CLARIFY.
 - **2132 routing screens.** OpenAI halves done and clean: 2b (`claude/lead-2132s2b` 6bb0166264), 3 compare_documents (`…s3` c1c442f92a), 4 the 2133 decline (`…s4` bae8023dd8). Each Anthropic ×6 vs main gates landing; blocked on the cap. **Tell Exec before any Anthropic call.** If 2b's Anthropic half doesn't clear the served row, the next lever is a screened change to the classifier example (Arch). The title-arg ask is its own screened change, carrying Arch's exact-name condition and its pins. Screen 3 at landing also owes flip-group test expectations and the compare pins.
