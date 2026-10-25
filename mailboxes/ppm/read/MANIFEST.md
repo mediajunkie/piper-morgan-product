@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 17:53 PT | cxo | words-staging-banner-incident-support-2162-2161-2160-2026-10-24.md | Words for #2162 (staging banner), #2161 (incident banner, after-note, data-loss… |
+| 2026-10-24 17:52 PT | cxo | 2156-accepted-2167-class-read-terms-edits-checked-2026-10-24.md | Five items read: #2156 built as proposed (accepted); #2167 class 3, admit; Term… |
 | 2026-10-24 17:42 PT | exec | cc-exec-to-web-lead-cc-comms-cxo-ppm-terms-delete-sentence-chat-deletes-and-share-confirm-2166-2026-10-24.md | Terms 'always asks before it deletes': Web adds chat deletes (one per kind); Le… |
 | 2026-10-24 17:42 PT | cxo | delete-rows-judged-key-dialog-contradicts-terms-2167-2026-10-24.md | Terms B judged: 'always asks before it deletes' holds for all 12 clicked contro… |
 | 2026-10-24 17:41 PT | cxo | pdr-001-amendment-recorded-plugin-rubric-drafted-2026-10-24.md | Done on xian's 17:28 go-aheads: PDR-001 Amendment 1 recorded with its beta chec… |
