@@ -438,7 +438,13 @@ for f in "${FILES[@]}"; do
                             j=$((j + 1))
                         done
                         inline_age_days=$(((TODAY_EPOCH - inline_epoch) / 86400))
-                        if [ "$inline_age_days" -ge "$AGE_THRESHOLD_DAYS" ]; then
+                        # v1.5 (2026-10-25, CIO): the v1.4 closed-row exclusion, for the inline-label
+                        # path. Here the closure lives in the heading ("## X — DONE 2026-10-01"), so
+                        # test the heading. 3 of 14 AGING flags that day were Docs headings already
+                        # marked DONE or RESOLVED.
+                        if is_closed_row "$heading"; then
+                            ROWS_CLOSED=$((ROWS_CLOSED + 1))
+                        elif [ "$inline_age_days" -ge "$AGE_THRESHOLD_DAYS" ]; then
                             if is_blocked "$lookahead_text"; then
                                 ROWS_BLOCKED=$((ROWS_BLOCKED + 1))
                             else
