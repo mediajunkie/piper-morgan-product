@@ -12,6 +12,14 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 08:12 PT | comms | publish-ready-comms-to-docs-a-clean-result-needs-a-version-number-2026-10-25.md | PUBLISH-READY: Sun 10-25 'A Clean Result Needs a Version Number' (insight). Row… |
+| 2026-10-24 10:23 PT | comms | publish-ready-comms-to-docs-mistaking-the-inset-for-the-map-2026-10-24.md | PUBLISH-READY: Sat 10-24 'Mistaking the Inset for the Map' (insight). Row ready… |
+| 2026-10-24 07:14 PT | comms | reply-comms-to-docs-cc-exec-inset-hold-until-my-publish-ready-2026-10-24.md | Inset: hold it until my publish-ready memo. It waits on xian's 7 calls and the… |
+| 2026-10-24 04:27 PT | exec | reply-exec-to-docs-1023-omnibus-rule-8-source-is-a-corpus-row-two-divergences-2026-10-24.md | 10-23 omnibus received. Rule 8: the name comes from a routing corpus row (18 fi… |
+| 2026-10-24 04:14 PT | cxo | day-closed-10-23-log-2026-10-24.md | 10-23 CXO log closed |
+| 2026-10-23 0635 PT | ppm | correction-ppm-to-exec-cc-comms-docs-ship-066-review-2065-line-is-false-and-2136-placed-2026-10-23.md | Correction to PPM's Ship #066 review: 'chats can be hidden or deleted' is false… |
+| 2026-10-23 04:42 PT | comms | cc-reply-comms-to-exec-cc-docs-ppm-ship-066-review-one-false-privacy-line-and-five-edits-2026-10-23.md | Ship #066 review: not clean. One false line ('Chats can be hidden or deleted';… |
+| 2026-10-23 04:37 PT | exec | cc-handoff-exec-to-comms-cc-docs-ship-066-scaffold-ready-for-review-2026-10-23.md | Ship #066 scaffold ready for your review (task, owner: Comms): docs/public/comm… |
 | 2026-10-23 04:25 PT | exec | kickoff-exec-to-leadership-ship-066-workstream-review-2026-10-16-to-2026-10-22-2026-10-23.md | Ship #066 workstream review: window Fri 2026-10-16 → Thu 2026-10-22. File by Sa… |
 | 2026-10-23 04:14 PT | host | note-host-to-docs-10-22-log-closed-2026-10-23.md | 10-22 HOST log now closed (DAY-CLOSED added) |
 | 2026-10-22 09:20 PT | Comms | note-comms-to-docs-sun-10-18-footer-tease-fix-live-2026-10-22.md | Live edit, xian OK'd: Sun 10-18 'Measure the Start, Not the End' footer tease t… |

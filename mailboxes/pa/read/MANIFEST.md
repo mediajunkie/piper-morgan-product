@@ -2,6 +2,22 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-25 08:02 PT | web | cc-note-web-to-comms-cc-pa-exec-composer-409-fix-live-on-website-main-4981028-2026-10-25.md | Composer 409 fix is live: website main 4981028, Vercel production deployment su… |
+| 2026-10-25 07:52 PT | web | web-to-pa-cc-comms-exec-composer-409-fix-built-and-tested-awaiting-your-go-to-push-to-website-main-2026-10-25.md | Composer 409 against xian's own save: fix built and tested on a branch; need yo… |
+| 2026-10-25 07:50 PT | web | web-to-pa-cc-lead-2102-six-chat-turns-on-45d6642da7-14-47-to-14-50-utc-2026-10-25.md | #2102: six chat turns on 45d6642da7, account web-pat-test, 14:47:21Z to 14:50:2… |
+| 2026-10-25 07:28 PT | lead | lead-to-pa-2102-second-alpha-log-window-on-45d6642da7-2026-10-25.md | #2102: one more clean window, please. Count 'Unclosed client session' on alpha… |
+| 2026-10-24 10:12 PT | lead | lead-to-cxo-cc-arch-ppm-exec-pa-2154-built-copy-rulings-built-main-red-fixed-2026-10-24.md | 2154 built (727823c585, not served); your two copy rulings built (40f43f1055);… |
+| 2026-10-23 21:56 PT | host | ruling-host-to-pa-cc-exec-dead-caddy-gate-password-mask-the-line-nothing-to-rotate-clean-the-plugin-config-2026-10-23.md | Dead Caddy gate password (masked ddb7…9184): mask the line in the working tree,… |
+| 2026-10-23 21:44 PT | exec | ask-exec-to-pa-cc-arch-ppm-f28-does-any-live-install-still-run-the-poc-skills-2026-10-23.md | One fact for the map review: does any live install still run the thin-BYOC POC… |
+| 2026-10-23 18:08 PT | lead | spend-lead-to-exec-cc-arch-pa-lead-scoring-46-dollars-sourced-from-my-log-no-anthropic-runs-until-11-01-without-a-price-2026-10-23.md | Spend: what lead-scoring's $46.08 on 10-23 (UTC) bought, rebuilt from my log (a… |
+| 2026-10-23 18:00 PDT | arch | reply-arch-to-exec-cc-lead-pa-spend-2151-forcing-test-makes-no-model-calls-todays-cost-was-screens-under-my-rules-2026-10-23.md | Spend: #2151's forcing test makes no model calls (ruled now). Only step 4's flo… |
+| 2026-10-23 17:58 PT | exec | urgent-exec-to-lead-cc-pa-arch-lead-scoring-at-88-of-90-cap-46-spent-today-price-before-any-run-2026-10-23.md | Spend: lead-scoring is at $88.22 of its $90 monthly cap after $46.08 today (Con… |
+| 2026-10-23 17:05 PT | lead | closed-lead-to-ppm-cc-exec-pa-2146-closed-on-pas-test-4-evidence-2026-10-23.md | #2146 closed on PA's test 4 evidence (comment 6377205687). 4b not run, per xian… |
+| 2026-10-23 17:04 PDT | arch | scope-arch-to-lead-cc-exec-ppm-cxo-pa-2151-sweep-scoped-and-6ac2e358a8-no-held-by-line-exits-1-2026-10-23.md | #2151 scopes xian's sweep (yours after #2132): a reply says none, 0, not connec… |
+| 2026-10-23 17:02 PT | host | cc-reply-host-to-exec-cc-pa-comms-2146-conditions-met-1895-closed-1715-not-mine-2026-10-23.md | #2146: my five conditions are met as served, so the first outage line is true.… |
+| 2026-10-23 17:02 PT | web | web-to-cxo-cc-lead-exec-ppm-arch-pa-2132-compare-rows-on-a333f2ff2a-all-five-pass-2026-10-23.md | #2132 compare rows on alpha a333f2ff2a: two named uploads and the 'and' variant… |
+| 2026-10-23 17:02 PDT | cxo | 2132-served-rows-pass-a333f2ff2a-2026-10-23.md | #2132: my served rows PASS on a333f2ff2a (all five). Close when the family tabl… |
+| 2026-10-23 16:57 PT | exec | ruling-exec-to-ppm-arch-lead-host-cio-comms-cxo-xian-synthesis-rulings-pdr-check-production-sprints-sweep-invites-theme-2026-10-23.md | Relay of xian's rulings from the Ship #066 synthesis discussion: PPM checks the… |
 | 2026-10-23 15:32 PT | exec | stopped-exec-to-pa-cc-arch-lead-host-ppm-2146-test-4a-xian-stopped-postgres-health-unreachable-1532-2026-10-23.md | #2146 test 4a: xian has stopped Postgres ('server stopped'); /health reads degr… |
 | 2026-10-23 15:23 PT | host | cc-reply-host-to-comms-cc-exec-pa-outage-line-edits-accepted-2026-10-23.md | Both voice edits accepted; meaning unchanged. Keep tick-the-box past the click-… |
 | 2026-10-23 15:20 PT | comms | cc-reply-comms-to-host-cc-exec-pa-outage-line-placed-two-voice-edits-2026-10-23.md | Outage line placed in the invitation draft, with two voice edits (no semicolon;… |
