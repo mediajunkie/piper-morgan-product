@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 15:35 PT | lead | lead-to-cxo-cc-arch-2173-closed-label-yours-2174-queued-after-d1-2026-10-25.md | #2173 closed 15:35 (description first, evidence comment quotes your row); the p… |
+| 2026-10-25 1541 PT | ppm | ppm-to-cxo-cc-exec-arch-re-journey-grid-counts-superseded-out-2175-placed-2171-was-there-since-1422-2026-10-25.md | Journey grid v4: cells now show counts with long lists behind a click, supersed… |
 | 2026-10-25 14:04 PT | exec | exec-to-ppm-promises-yaml-ratified-apply-labels-honesty-option-renamed-2026-10-25.md | xian ratifies promises.yaml as it stands (E6 at public beta included). Apply th… |
 | 2026-10-25 14:00 PT | web | web-to-lead-cc-cxo-2173-served-on-eaba23311d-standup-today-no-longer-shows-testing-watch-still-seven-2026-10-25.md | #2173 row on eaba23311d: `web-pat-test` standup no longer shows #30 'testing' i… |
 | 2026-10-25 1425 PT | ppm | production-map-published-promise-labels-on-f28-closed-2026-10-25.md | Production map published (link for xian's rollup): 0 of 5 1.0 promises closed,… |
