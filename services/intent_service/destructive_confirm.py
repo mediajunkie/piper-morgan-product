@@ -478,6 +478,12 @@ _FOREIGN_CONTAINER_WORDS = {
 _CONTAINER_PREPOSITIONS = frozenset({"from", "in", "on", "off", "out"})
 _CONTAINER_LOOKAHEAD = 4
 
+# CXO 10-24: the named-leg miss. No quote of the stripped message (it isn't their words).
+NAMED_DELETE_NOT_FOUND = (
+    "I couldn't find a to-do that matches that. Ask me to show your to-dos and I'll number "
+    'them, then say "delete todo N".'
+)
+
 # CXO 10-24 18:32: each names where the thing can be done today.
 FOREIGN_CONTAINER_DECLINE = {
     "list": (
@@ -795,32 +801,18 @@ async def build_todo_delete_confirmation(
     )
 
     matches = resolve_named_todo_target(named_target, todos)
-    # #2169 (Arch 10-24 18:28): only a UNIQUE EXACT match arms the one-word yes/no. A
-    # fuzzy candidate, even a single one, is the code's guess, and a bare yes must never
-    # confirm a guess on a delete with no undo: it gets the which-one ask by number.
+    # #2169 (Arch 10-24 18:53, accepting 76092fdaf1 in place of his exact-only rule): a
+    # DESTRUCTIVE bind needs every word the person named in the title. The shared 0.3
+    # overlap suits completion's best match (reversible); here it bound a list-item ask to
+    # a different to-do. Several containing matches still get the which-one ask.
     named_words = _meaningful_words(named_target or "")
-    exact = [t for t in matches if _meaningful_words(t.text) == named_words]
+    matches = [t for t in matches if named_words <= _meaningful_words(t.text)]
 
     if not matches:
-        return TodoDeleteGate(
-            clarification=(
-                f'I couldn\'t find a todo or reminder matching "{named_target}". '
-                "Say 'show my todos' to see the list — nothing has been deleted."
-            )
-        )
+        # CXO 10-24: never quote the stripped message back as their words.
+        return TodoDeleteGate(clarification=NAMED_DELETE_NOT_FOUND)
 
-    if len(matches) == 1 and len(exact) != 1:
-        position = next(i + 1 for i, t in enumerate(todos) if t.id == matches[0].id)
-        return TodoDeleteGate(
-            # CXO 10-24 18:32: a bare yes can't answer it.
-            clarification=(
-                f"I'm not sure which to-do you mean. The closest is number {position}: "
-                f'"{matches[0].text}". If that\'s the one, say "delete todo {position}" and '
-                "I'll ask you to confirm. If not, tell me more of its title."
-            )
-        )
-
-    if len(matches) > 1 or len(exact) != 1:
+    if len(matches) > 1:
         position_by_id = {t.id: i + 1 for i, t in enumerate(todos)}
         candidates = ", ".join(f'{position_by_id[t.id]}. "{t.text}"' for t in matches)
         return TodoDeleteGate(

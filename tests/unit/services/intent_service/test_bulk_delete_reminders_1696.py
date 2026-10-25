@@ -409,13 +409,11 @@ class TestBoundariesUnregressed:
     async def test_named_target_still_arms_the_title_bound_confirm(
         self, live_service, monkeypatch, todo_boundary
     ):
-        """The #1527 named-target leg still resolves 'delete my vendor reminder' by name.
-        #2169 (Arch 10-24 18:28): "vendor" against "Call the vendor" is a fuzzy match, so
-        it asks by number instead of arming the one-word confirm."""
+        """The #1527 named-target leg is untouched: 'delete my vendor
+        reminder' resolves by name and arms the #1666 title-bound confirm."""
         sid = "e2e-1696-named"
         phrase = "delete my vendor reminder"
         _stub_classification(monkeypatch, live_service, phrase, "delete_todo")
         result = await live_service.process_intent(message=phrase, session_id=sid, user_id=_USER)
-        assert result.message.startswith("I'm not sure which to-do you mean. The closest is ")
-        assert '"Call the vendor"' in result.message and "(yes/no)" not in result.message
+        assert result.message == 'Delete the reminder "Call the vendor"? (yes/no)'
         assert todo_boundary["deleted"] == []
