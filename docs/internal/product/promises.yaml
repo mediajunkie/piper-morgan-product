@@ -1,7 +1,7 @@
 # Piper Morgan: the promise register (map round 3, call 1)
 #
-# Status: DRAFT v0, PPM, 2026-10-24. NOT RATIFIED. xian ratifies the wording.
-#   Until then no issue is labelled `promise:<id>`, and the map's promise view reads this file as a draft.
+# Status: RATIFIED by xian, 2026-10-25 14:04 PT (in session with Exec; decisions.log 14:04), as the file stood on main,
+#   E6 at public-beta included. Drafted by PPM 2026-10-24. Wording changes need xian's word again.
 # Owner: PPM (Exec's round-3 brief, call 5). One entry per promise. Wording is quoted from the source,
 #   never paraphrased into a stronger claim.
 # Measure (xian's ruling 2, 2026-10-24 17:28): 1.0 = every promise gated `1.0` has a closed issue,
