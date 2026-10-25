@@ -3,6 +3,7 @@
 **Status: ORDER RATIFIED** (xian, 2026-10-23 17:54, via Exec: "I approve all 4 questions for me"; decisions.log). No dates; PPM proposes none.
 - **Order:** PUB, then H, D, C, then V, E, T, Doc, Dist.
 - **Q** is a standing share of every sprint. Its size is open until the CI ruling.
+- **H, D and V carry their own Sprint options (10-25):** xian added `PROD-HONESTY - Failed reads say so`, `PROD-DATA - Data Boundaries, Privacy & Terms` and `PROD-CONVO - Conversation Reliability` at 12:40 (60 options). PPM set every H, D and V row per item, closed rows included: H 29, D 31, V 32, 92 of 92 read back. This moved #1828 and #1011 off PROD-DESIGN, and D's five PROD-INFRA rows (#482, #1203, #1257, #1345, #1817) to PROD-DATA. The other sprints keep today's options.
 - **The 9 "Beta Blockers - Hard Gates Only" issues are re-labelled** per item (`assign-sprint-safely`; the Sprint option list is unchanged at 57):
   - #1522 and #1698 → PROD-TECHDEBT;
   - #1625, #1828 and #1907 → PROD-DESIGN;
@@ -48,7 +49,7 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 16 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 210 open (#1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 206 open, matching the board's open Production count in the 10-25 snapshot (#2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -93,7 +94,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2165 | Per-account rate and abuse limits, with a user-facing line when a limit is hit (10-24) | — |
 | #2168 | Plugin surface rubric: ratify CXO's v0.1 and run it per increment as the precondition for #1701-#1707 (10-24) | PUB |
 
-### H: Honesty sweep (28)
+### H: Honesty sweep (27)
 
 | # | Title | was |
 |---|---|---|
@@ -125,9 +126,9 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2167 | UX (class 3): the API key Remove dialog says "we destroy our copy immediately"; backups keep it up to about five days (10-24; closed 10-24 20:24, `close:served`, never admitted to MVP) | — |
 | #2171 | UX (class 3): Lists page card shows "Items: 0" for a list that holds items (10-24, CXO from Web's catch) | — |
 | #2172 | GitHub Disconnect reports success when a credential copy failed to clear (each clear's failure is swallowed) (10-25, Arch) | — |
-| #2045 | Integrations card after a successful Test keeps 'Not checked yet. Press Test.' and '0 of 4 healthy' until… (added 10-24: missing from the plan, found by the map generator) | — |
+| #2045 | Integrations card after a successful Test keeps 'Not checked yet. Press Test.' and '0 of 4 healthy' until… (added 10-24: missing from the plan, found by the map generator; closed 10-25) | — |
 
-### D: Data boundaries and terms (31)
+### D: Data boundaries and terms (30)
 
 | # | Title | was |
 |---|---|---|
@@ -151,7 +152,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2063 | Legal review of Terms before any outside user beyond the design partners (xian 10-16: 'a good cutoff') | — |
 | #2086 | Admin grant on Fly was never applied: migration a1599 keys on username 'dinp', which does not exist in the … | — |
 | #2109 | Inversion and preclaim shadows spend the requesting user's own LLM key (the task inherits the request's key… | — |
-| #2123 | Activity reads (status report, analyze commits) use the deployment's GitHub token instead of the account's … | — |
+| #2123 | Activity reads (status report, analyze commits) use the deployment's GitHub token instead of the account's … (closed) | — |
 | #2136 | Seat identity: GitHub App for agents so seats stop acting as the admin account (xian approved the route 10-… | — |
 | #2157 | Production DB: scheduled backups and retention, one timed restore drill on a short-lived copy (five proof… (10-24) | — |
 | #2158 | Account deletion in product with a real purge, and a deletion record kept outside the snapshot (re-applie… (10-24) | — |
@@ -192,7 +193,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2130 | Calendar asks: no weekday lookup; conflict check answers a multi-person question the user didn't ask | — |
 | #2163 | GitHub identity: one app/token model and whose token serves a read (ADR plus carrying it into the six iss… (10-24) | — |
 
-### V: Conversation reliability (32)
+### V: Conversation reliability (31)
 
 | # | Title | was |
 |---|---|---|
@@ -226,10 +227,10 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2149 | Router catalog size: single op or example additions move unrelated rows; decide a catalog shape before more… | — |
 | #1011 | ARCH-DESIGN: Slash-command dispatch precedence — post-MVP design decision needed | PROD-DESIGN |
 | #2155 | UX: "What's on my agenda?" with no calendar answers about meeting-time analysis (placed 10-24) | — |
-| #2169 | Chat delete: a list-item remove ask gets a confirmation for a different object (the prior turn's to-do) (10-24; class pending Lead's pin) | — |
+| #2169 | Chat delete: a list-item remove ask gets a confirmation for a different object (the prior turn's to-do) (10-24; closed, `close:pins-only` per CXO, not Class 1) | — |
 | #2170 | Chat: remove an item from a list (a list-item rail), with exact-match arming and an id-bound confirm (added 10-24: missing from the plan, found by the map generator) | — |
 
-### E: Experience polish (28)
+### E: Experience polish (27)
 
 | # | Title | was |
 |---|---|---|
@@ -260,7 +261,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1957 | [WEB] Personality page: 'Reset to Defaults' reloads with a query string and leaves Warmth at its saved value | — |
 | #2099 | Invites page: minting a code does not refresh the list (revoke does) on alpha e801b1a309; xian's read after… | — |
 | #2116 | [UX] "What makes you different?" asked a fifth time is answered with a question about motive, no answer (se… | — |
-| #2156 | UX: Send feedback is a quiet footer link, and absent from the setup wizard and error pages (10-24) | — |
+| #2156 | UX: Send feedback is a quiet footer link, and absent from the setup wizard and error pages (10-24) (closed 10-24, `close:pins-only`) | — |
 
 ### T: Trust and learning (15)
 
