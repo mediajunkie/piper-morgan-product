@@ -59,6 +59,15 @@ async def sm(monkeypatch):
             yield s
 
     monkeypatch.setattr(gh_mod.AsyncSessionFactory, "session_scope", staticmethod(_scope))
+
+    # #2151: this store has no user_api_keys table (SQLite can't render its UUID column), and
+    # a failed at-rest read is no longer absence, so the leg answers "no stored PAT" here.
+    async def _no_pat_at_rest(_user_id):
+        return None
+
+    monkeypatch.setattr(
+        gh_mod.GitHubMCPSpatialAdapter, "_user_pat_at_rest", staticmethod(_no_pat_at_rest)
+    )
     yield maker
     await engine.dispose()
 
