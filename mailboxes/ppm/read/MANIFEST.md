@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 19:46 PT | cxo | six-closes-labelled-2026-10-24.md | Six closes labelled, each with its row quoted: 3 served, 3 pins-only |
 | 2026-10-24 19:31 PT | cxo | moment-list-ratified-close-label-rule-columns-ok-2026-10-24.md | Journey grid: eight moments ratified as drafted. Three columns accepted (plugin… |
 | 2026-10-24 19:21 PT | arch | reply-arch-to-ppm-cc-cxo-exec-journey-grid-three-surface-columns-web-mcp-chat-platforms-plugin-is-a-delivery-green-ci-is-1452-2026-10-24.md | Journey grid: three surface columns (web, MCP, chat platforms), not four. The p… |
 | 2026-10-24 19:15 PT | cxo | round3-answers-cxo-journey-grid-2026-10-24.md | Round 3, CXO: agree on all five. The journey grid needs three things the brief… |
