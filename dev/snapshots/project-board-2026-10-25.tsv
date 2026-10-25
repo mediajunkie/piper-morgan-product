@@ -13,7 +13,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 371	OPEN	Enterprise		INFRA-TIMESERIES: Implement Time-Series Database Infrastructure		
 355	CLOSED	MVP	M3 - Artifact Persistence	DOCS-STOPGAP: Basic Artifact Persistence	component: ui,enhancement,priority: medium	
 366	OPEN	Fast Follow		SLACK-MEMORY: Persist spatial patterns over time		
-313	CLOSED	MVP	M3 - Artifact Persistence	CONV-UX-DOCS: File Browser & Document Management UI		
+313	CLOSED	MVP	M3 - Artifact Persistence	CONV-UX-DOCS: File Browser & Document Management UI	promise:T7-leaving	
 118	CLOSED	MVP	M3 - Artifact Persistence	INFR-AGENT: Multi-Agent Coordinator Operational Deployment	architecture,enhancement	
 719	CLOSED	MVP	M0 - Conversational Glue	INFRA: RouterInitializer.ROUTERS list is dead code - maintenance trap		
 762	CLOSED	MVP	M0 - Conversational Glue	EPIC: GLUE - Conversational Glue Implementation	PDR-002,epic,glue	
@@ -106,7 +106,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 568	OPEN	Fast Follow		MUX-CORE-PORTFOLIO-ACROSS: Cross-channel portfolio sharing	enhancement	
 790	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MVP: Trust-gated calendar integration behavior	MVP,enhancement	
 760	OPEN	Fast Follow		TECH-DEBT: Add slack_workspaces table for proper team_id → user_id mapping		
-558	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	MUX-STANDUP-CONVERSE: LLM-based preference extraction	enhancement	
+558	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	MUX-STANDUP-CONVERSE: LLM-based preference extraction	enhancement,journey:come-back	
 474	CLOSED	MVP	I1 - MUX Interaction	MUX-TECH-LISTS: Enable full list management (add/edit/delete items)	enhancement	
 436	CLOSED	MVP	I1 - MUX Interaction	MUX-TECH-PHASE4-COMPOSTING: Implement Composting to Learning Pipeline	UX,architecture,epic	
 477	CLOSED	MVP	V2 - MUX Integration Mapping	MUX-VISION-LISTS: Refine todo list UX and paradigm	enhancement	
@@ -259,7 +259,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 305	CLOSED	MVP	M1 - MVP Foundation	CORE-CONFIG-PIPER: PIPER.md Lightweight Configuration System		
 307	CLOSED	MVP	M1 - MVP Foundation	CONV-UX-NAV: Global Navigation & Wayfinding		
 171	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Add clear links to ADRs and Patterns in docs/README		
-302	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	CONV-MCP-DOCS: Unified Document Processing via Skills		
+302	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	CONV-MCP-DOCS: Unified Document Processing via Skills	journey:get-work-done	
 303	CLOSED	MVP	M3 - Artifact Persistence	CONV-MCP-STANDUP: Standup Workflow Skill		
 304	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONV-INFR-NOTN: Activate Existing Notion Integration		
 309	OPEN	Fast Follow	M2 - Conscious Floor + Action Handlers	CONV-MCP-PROTO: DocumentAnalysisSkill Prototype		
@@ -287,7 +287,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 333	CLOSED	MVP	S1 (Security and Critical Fixes)	data: Implement soft delete strategy across domain models		
 334	CLOSED	Ongoing	FLYWHEEL - Process improvement	infra: Create database migration rollback testing strategy		
 335	OPEN	Fast Follow		# STYLE-PK-PREFIXED: Adopt Prefixed Primary Key Naming Convention	component: database,documentation,enhancement	
-336	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	 DATA-SOFT-DELETE: Implement Soft Delete Strategy Across Domain Models	component: database,data-safety	
+336	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	 DATA-SOFT-DELETE: Implement Soft Delete Strategy Across Domain Models	component: database,data-safety,journey:manage-my-data	
 337	OPEN	Fast Follow		STYLE-TABLE-SINGULAR: Adopt Singular Table Naming Convention	component: database,documentation,enhancement	
 338	OPEN	Fast Follow		INFRA-MIGRATION-ROLLBACK - Comprehensive Database Migration Rollback Testing	component: database,infrastructure,testing	
 339	CLOSED	Ongoing	FLYWHEEL - Process improvement	style: Adopt prefixed primary key naming convention		
@@ -498,7 +498,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 648	CLOSED	MVP	I1 - MUX Interaction	TRUST-LEVELS-2: Integration (Intent Pipeline & ProactivityGate)	UX,architecture	
 649	CLOSED	MVP	I1 - MUX Interaction	TRUST-LEVELS-3: Discussability (TrustExplainer & Intent Handlers)	UX,architecture	
 650	OPEN	Fast Follow		FUTURE-CONSCIOUSNESS: Settings Reset confirmation pattern	future-requirement	
-651	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	FUTURE-CONSCIOUSNESS: Account Deletion confirmation pattern	future-requirement	
+651	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	FUTURE-CONSCIOUSNESS: Account Deletion confirmation pattern	future-requirement,journey:manage-my-data,promise:R2-delete-account,surface:web	
 652	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: Settings disconnect confirmations	component: ui,priority: medium	
 653	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: Learning dashboard clear data confirmation	component: ui,priority: medium	
 654	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: Button labels standardization (Delete → Remove)	component: ui,priority: low	
@@ -555,8 +555,8 @@ issue	state	milestone	sprint	title	labels	blocked_by
 708	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-LIFECYCLE-UI-TODOS: Wire lifecycle indicators into Todos view	component: ui,enhancement	
 709	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-LIFECYCLE-UI-PROJECTS: Wire lifecycle indicators into Projects view	component: ui,enhancement	
 710	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-WORKITEMS-VIEW: Create Work Items View with Lifecycle	enhancement	
-712	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	MUX-DOCUMENT-VIEWER: Create Document Viewer with Lifecycle	enhancement	
-713	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	MUX-DOCUMENTS-LIFECYCLE-UI: Wire Lifecycle to Documents View	enhancement	
+712	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	MUX-DOCUMENT-VIEWER: Create Document Viewer with Lifecycle	enhancement,journey:get-work-done,surface:web	
+713	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	MUX-DOCUMENTS-LIFECYCLE-UI: Wire Lifecycle to Documents View	enhancement,journey:get-work-done,surface:web	
 714	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MUX-LISTS-LIFECYCLE-UI: Wire Lifecycle/Staleness to Lists View	enhancement	
 715	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MUX-HOME-CONVERSATIONS-LIFECYCLE: Wire Lifecycle to Home/Conversations	enhancement	
 716	OPEN	Fast Follow	M3 - Artifact Persistence	MUX-FEATURES-VIEW: Create Features View with Lifecycle	enhancement	
@@ -782,9 +782,9 @@ issue	state	milestone	sprint	title	labels	blocked_by
 948	CLOSED	MVP	M5 - Distribution + Polish	Server leaves orphaned processes after stop	bug	
 949	CLOSED	MVP	M5 - Distribution + Polish	DEV: Server restart reliability — stale .pyc, orphaned processes, startup timing	bug	
 951	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONTEXT-ASSEMBLER-EXPAND: Context assembly for all floor-routed categories	enhancement	
-954	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	TRUST-LITE: Trust graduation via context (lightweight implementation)	enhancement	
-955	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	PREF-INFER: User-correctable preferences (Claude memory model)	enhancement	
-956	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	LEARNING-SURFACE: Trust-graduated learning surfacing	enhancement	
+954	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	TRUST-LITE: Trust graduation via context (lightweight implementation)	enhancement,journey:come-back	
+955	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	PREF-INFER: User-correctable preferences (Claude memory model)	enhancement,journey:manage-my-data	
+956	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	LEARNING-SURFACE: Trust-graduated learning surfacing	enhancement,journey:come-back	
 957	CLOSED	Production	PROD-DIST - MCP Marketplace Distribution	DIST-MCPB-BUNDLE: MCPB packaging for Claude Desktop one-click install	desktop,distribution,enhancement,packaging	
 958	OPEN	Fast Follow		DIST-PROJECT-TEMPLATE: Claude Project template for Piper persona	distribution,enhancement	
 959	OPEN	Ongoing		DIST-MCP-APPS: Artifact canvas via MCP Apps (in-chat UI)	desktop,distribution,enhancement	
@@ -794,7 +794,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 963	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Pattern-045: canonical handler dead code + dead tests after floor migration	bug	
 964	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	FLOOR-ETHICS-VERIFY: Verify floor pipeline ethics matches pre-ADR-060 coverage	enhancement	
 965	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Temporal canonical handlers produce template responses, fail Colleague Test (Pattern-045)	bug	
-966	OPEN	Production	PROD-DIST - MCP Marketplace Distribution	DIST-VISUAL-IDENTITY: Visual identity for the plugin and MCP Apps surfaces (the MCPB half dropped, superseded by PDR-006)	desktop,distribution,enhancement,packaging	
+966	OPEN	Production	PROD-DIST - MCP Marketplace Distribution	DIST-VISUAL-IDENTITY: Visual identity for the plugin and MCP Apps surfaces (the MCPB half dropped, superseded by PDR-006)	desktop,distribution,enhancement,journey:set-up,packaging,surface:mcp	
 967	CLOSED	MVP	FLYWHEEL - Process improvement	TRACKING: Backlog Deep Review — Surviving Edges	documentation	
 968	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Reconcile canonical query test v3 routing reference with actual M1 routing	type: research	
 969	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Two GitHub adapter errors surfaced by M1 canonical retest (Q41, Q60)	bug	
@@ -847,7 +847,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1040	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	INTENT-COVERAGE-B: Pre-classifier + handlers for GitHub labels + branches	enhancement	
 1041	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	M2-WIRE-TRIAGE: WIRE-* issues #690-695 superseded-by-floor-migration triage	enhancement	
 1042	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	PRE-1039: Remove hardcoded 'piper-morgan-product' repo default in GitHub adapter + handlers	M2e,component: integration,enhancement	
-1043	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	En-masse copy review pass for new M2e handlers + standup prompts	component: ui,enhancement	
+1043	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	En-masse copy review pass for new M2e handlers + standup prompts	component: ui,enhancement,journey:get-work-done,surface:web	
 1044	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	FOLLOWUP: Local-git 'what branch are we on?' query handler	M2e,component: integration,enhancement	
 1045	OPEN	Fast Follow		POST-MVP: Project Detail Activity tab — design + content	component: ui,enhancement	
 1046	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	BUG: tests/intent_service/test_action_mapper.py::test_mapping_count drift (expects 26, gets 31)	bug	
@@ -875,7 +875,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1048	CLOSED	MVP	D1 - Beta design quality	MUX-INSIGHT-STAGE-VISUAL: Decide stage-specific visual treatment for Insight Journal	UX,question	
 1049	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-05-04	documentation,fly-audit,maintenance,weekly-audit	
 1050	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	STANDUP-ACTIVE-REPOS: full active-repos resolution for morning standup (per-project + per-user)	component: ui,enhancement	
-1051	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	POST-MVP: GitHub query state/prerelease filters (milestones state, releases prerelease)	enhancement	
+1051	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	POST-MVP: GitHub query state/prerelease filters (milestones state, releases prerelease)	enhancement,journey:get-work-done,surface:mcp,surface:web	
 1052	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	PRE-900: Persist StandupConversation to PostgreSQL (currently in-memory module-level singleton)	component: database,enhancement	
 1053	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Migrate downstream standup tests to async fixtures (Fake-based)		
 1054	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Test regression: tests/features/test_morning_standup.py::test_generate_standup_for_user (pre-existing on main)		
@@ -992,25 +992,25 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1240	CLOSED	MVP	D1 - Beta design quality	RADAR-PEOPLE-SOURCE — PeopleEntitySource (People as a live Radar entity type)	enhancement	
 1237	CLOSED	MVP	D1 - Beta design quality	RADAR-ENTITY-SOURCES — all four Layer-2 EntitySources for beta (no partial ship)	enhancement,epic	
 1238	CLOSED	MVP	D1 - Beta design quality	RADAR-DOC-SOURCE — DocumentEntitySource (Document as a live Radar entity type)	enhancement	
-1090	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	UI-1.0-PLAN: scope conversation history + settings UI surfaces for 1.0 launch	enhancement,epic	
+1090	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	UI-1.0-PLAN: scope conversation history + settings UI surfaces for 1.0 launch	enhancement,epic,journey:manage-my-data,surface:web	
 1164	OPEN	Dot Releases (Post-MVP)		HISTORY-PRIVACY-TOGGLE-STUB: slide-out 'Start private session' toggle is UI-only (no backend)	bug,component: ui,priority: low	
 1170	CLOSED	MVP	D1 - Beta design quality	DESIGN-FLOOR-F1: Dialog/Modal component (retire native browser confirm)	UX,component: ui,enhancement	
 1171	CLOSED	MVP	D1 - Beta design quality	DESIGN-FLOOR-F2: consistent page-shell + nav-chrome (retire styled-unlike-the-site)	UX,component: ui,enhancement	
 1172	CLOSED	MVP	D1 - Beta design quality	DESIGN-FLOOR-F3: token-discipline + CI lint gate (retire hardcoded-value drift)	UX,component: ui,enhancement	
 1173	CLOSED	MVP	D1 - Beta design quality	DESIGN-FLOOR-C1: chat-page paradigm conformance (default-on-login surface)	UX,component: ui,enhancement	
-1174	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	BEING-GOOD-PROACTIVE-PRESENCE: discovery thread — proactive relevance / notifications (when + how Piper nudges)	UX,enhancement,innovation	
+1174	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	BEING-GOOD-PROACTIVE-PRESENCE: discovery thread — proactive relevance / notifications (when + how Piper nudges)	UX,enhancement,innovation,journey:come-back	
 1175	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	SOURCE-TYPE-SLOT-LOCATION: revisit intent.context vs intent.slots for source_type (post slot-filling unification)	priority: low	
 1176	CLOSED	MVP	Beta Blockers - Hard Gates Only	HOSTED-DEPLOY-PORTABILITY: hardcoded-local assumptions break a non-localhost deploy (main.py bind + alembic.ini)	beta:deploy-portability	
 1177	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-06-08	documentation,fly-audit,maintenance,weekly-audit	
 1178	CLOSED	Ongoing	Q - Recurring Audits	ROLE-HEALTH-CHECK: 2026-06-08	process,role-health-check,sapient-trust	
 1179	OPEN	Fast Follow		LEARNING-CONSOLIDATION-EXPIRY: dedup + expire composted learnings (post-MVP, deferred from #976)		
 1180	CLOSED	MVP	FLYWHEEL - Process improvement	TEST-INFRA: make ConversationDB SQLite-testable (Postgres-only DDL blocks in-memory repo tests)		
-1183	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	VOICE-LINT: attention/spatial references must stay present-tense + session-scoped (no implied cross-session memory)		
+1183	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	VOICE-LINT: attention/spatial references must stay present-tense + session-scoped (no implied cross-session memory)	journey:get-work-done,surface:web	
 1182	CLOSED	Ongoing	Q - Recurring Audits	DOCS-LINKROT: 206 broken internal .md links across docs/ (models/models/ doubled-dir is ~72)	documentation	
 1181	OPEN	Fast Follow		BEING-GOOD-INVITED-WATCH: 'let me know if X' standing-watch — first proactive-presence slice (thin vertical, pluggable channel)		
 1184	CLOSED	MVP	D1 - Beta design quality	ARTIFACT-RENAME-FORMAT: rename saved artifacts + choose save/export format (#355 follow-on)		
 1185	CLOSED	MVP	RECONNECT - Connector Refactor	BYO-KEY-MULTI-TENANT: wire LLM path to per-user keys (hosted beta — PM-decided 6/9)		
-1186	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	PIPER-SELF-KNOWLEDGE: support info + help-doc pointers + RAG over own docs (so Piper can answer 'how do you work?')		
+1186	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	PIPER-SELF-KNOWLEDGE: support info + help-doc pointers + RAG over own docs (so Piper can answer 'how do you work?')	journey:get-work-done,surface:web	
 1187	CLOSED	MVP	M3 - Artifact Persistence	SUMMARIZE-FETCH-AUGMENTATION: fetch source content for floor-rendered summaries (follow-on from #1158)	architecture	
 1188	CLOSED	MVP	M3 - Artifact Persistence	test_summarize_empty_content fails on main — humanizer drops 'too short' phrase the test asserts	bug	
 1189	CLOSED	MVP	M3 - Artifact Persistence	Repoint stale test_github_query_handlers routing tests onto the action-dispatch rail (#1124 test-debt)	architecture	
@@ -1025,7 +1025,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1199	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS1: Unify the two default-repo/preference stores (github_preferences.json vs in-memory UserPreferenceManager) — child of #1192		
 1200	CLOSED	MVP	M3 - Artifact Persistence	Q25 'What's the next milestone?' — the standing canonical failure: investigate routing vs stale expectation (known-failures-are-tasks)		
 1201	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS6: Slack inbound setup has no product path — Socket Mode/app-token step is invisible, manual, dev-mediated (connect-UX gap, child of the #1192 family)		
-1202	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	FILES-FOLLOW-ON: G65 artifact persistence (export/share/versions) + tagging full release — split from #313		
+1202	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	FILES-FOLLOW-ON: G65 artifact persistence (export/share/versions) + tagging full release — split from #313	journey:manage-my-data,surface:web	
 1203	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	KeyAuditService query/report surfaces unwired — deferred to M5 reconsideration with the hosted-credential work (PM 2026-06-12)		
 1204	CLOSED	MVP	FLYWHEEL - Process improvement	Error-suite test debt: uncollectable test_error_contracts.py + dead user-guide link assertion	testing	
 1205	CLOSED	Ongoing	Q - Recurring Audits	DOCS-TEMPLATE-CURRENCY: methodology/template drift flagged by #1058 hygiene pass	documentation	
@@ -1041,7 +1041,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1215	CLOSED	MVP	M3 - Artifact Persistence	Calendar 'Connect' returns 503 — Google OAuth not configured (credentials.json + GOOGLE_CLIENT_ID/SECRET missing)	bug	
 1216	CLOSED	MVP	Beta Blockers - Hard Gates Only	'What have you learned about my workstyle' claims a seed-vs-real distinction the system cannot make	beta:correctness-bugs,bug	
 1224	OPEN	Production	PROD-TECHDEBT - General Cleanup	Pre-existing test failures (3 clusters: standup conversation-state, perf-indexes, error-message integration) — found during #1180/#1204	technical-debt,testing	
-1217	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	ETHICS-FLOOR-PERSONHOOD-ASSUMPTION: floor should not assume sapient/human personhood for role-named parties without explicit signal	bug	
+1217	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	ETHICS-FLOOR-PERSONHOOD-ASSUMPTION: floor should not assume sapient/human personhood for role-named parties without explicit signal	bug,journey:get-work-done	
 1218	CLOSED	MVP	D1 - Beta design quality	INTENT-ROUTING-ISSUENUMBER-TRIGGER: #NNN patterns in context messages trigger close_issue_query at 1.0 confidence	bug	
 1219	OPEN	Dot Releases (Post-MVP)		ActionClassifier false-negatives block 2 allow-listed reads from auto-exec (list_releases_query, shipped_this_week)	priority: low	
 1220	CLOSED	MVP	Beta Blockers - Hard Gates Only	RECONNECT-WS8: Move integration connection/auth layer to MCP (BETA→RELEASE; data-ops already on MCP-consumer adapters)	architecture,beta:connector-cutover,enhancement,mcp	
@@ -1061,11 +1061,11 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1234	CLOSED	MVP	D1 - Beta design quality	Reference resolver: 2 pre-existing test failures (context-window limiting + definite-reference accuracy)		
 1235	CLOSED	MVP	RECONNECT - Connector Refactor	Conversation /turns display endpoint returns OLDEST 50 turns (no offset/pagination) for long conversations		
 1241	CLOSED	MVP	Beta Blockers - Hard Gates Only	ARCH-AUDIT: content not anchored to user auth — extent + remediation (multi-tenancy completeness)	beta:multi-tenancy,bug	
-1242	OPEN	Production	PROD-ONBOARD - Meet-Piper Skill-Layer Onboarding	MEET-PIPER-GITHUB — Add GitHub connector setup step to meet-piper onboarding	component: integration,enhancement	
+1242	OPEN	Production	PROD-ONBOARD - Meet-Piper Skill-Layer Onboarding	MEET-PIPER-GITHUB — Add GitHub connector setup step to meet-piper onboarding	component: integration,enhancement,journey:connect-a-source,promise:E2-judgment-artifacts,surface:mcp	
 1243	CLOSED	MVP	FLYWHEEL - Process improvement	Briefing staleness sweep — #972 check-staleness lint flags 16/19 briefings		
-1244	OPEN	Production	PROD-ONBOARD - Meet-Piper Skill-Layer Onboarding	CONSULT-ENRICH-FIX — Fix two enrichment layer bugs blocking consult-piper (Cowork/GitHub + Code/payload)	bug,component: ai,component: integration	
-1245	OPEN	Production	PROD-ONBOARD - Meet-Piper Skill-Layer Onboarding	PIPER-SKILL-MERGE — Collapse ask-piper + consult-piper into one smart piper skill	component: ai,component: workflow,enhancement	
-1246	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	ARTIFACT-EXPORT-FORMATS: pdf/docx export + save-time format picker (#1184 follow-on)	enhancement	
+1244	OPEN	Production	PROD-ONBOARD - Meet-Piper Skill-Layer Onboarding	CONSULT-ENRICH-FIX — Fix two enrichment layer bugs blocking consult-piper (Cowork/GitHub + Code/payload)	bug,component: ai,component: integration,journey:something-goes-wrong,promise:E4-never-lies,surface:mcp	
+1245	OPEN	Production	PROD-ONBOARD - Meet-Piper Skill-Layer Onboarding	PIPER-SKILL-MERGE — Collapse ask-piper + consult-piper into one smart piper skill	component: ai,component: workflow,enhancement,journey:get-work-done,surface:mcp	
+1246	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	ARTIFACT-EXPORT-FORMATS: pdf/docx export + save-time format picker (#1184 follow-on)	enhancement,journey:manage-my-data,surface:web	
 1248	CLOSED	MVP	FLYWHEEL - Process improvement	Frontend jest harness: 6 failing form-validation tests + not wired into CI	bug	
 1251	CLOSED	MVP	D1 - Beta design quality	/insights page UI polish: no global nav, design-system drift, 'Correct' wording	enhancement	
 1252	CLOSED	MVP	D1 - Beta design quality	[REFACTOR] User-auth anchoring consolidation (ADR-071 D2–D6)		
@@ -1086,13 +1086,13 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1267	CLOSED	MVP	FLYWHEEL - Process improvement	[BUG] Projects 500 — project_integrations / project_repository_links have no alembic create-migration		
 1268	CLOSED	MVP	D1 - Beta design quality	[D1] Global nav coverage: /lists (and others) not reachable from nav		
 1269	CLOSED	MVP	D1 - Beta design quality	[DESIGN] Re-conceive morning standup as a skill built from connected context (today: one-shot fallback output)		
-1270	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	[D1] Refactor /documents · /files around the Document source-type object model (uploaded/generated/federated)		
+1270	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	[D1] Refactor /documents · /files around the Document source-type object model (uploaded/generated/federated)	journey:manage-my-data,surface:web	
 1271	CLOSED	MVP	D1 - Beta design quality	[F3] Extract nav inline <style> → lint-covered nav.css (+ resolve the 10 one-offs)		
 1272	CLOSED	Ongoing	FLYWHEEL - Process improvement	MEM-EVAL corpus analysis — classify context surfaces (load-bearing / dead-weight / gap) for progressive-loading + trust findings	enhancement	
 1273	CLOSED	MVP	RECONNECT - Connector Refactor	create_all-era tables lack create_table migrations (intents/stakeholders/tasks/workflows) — same class as #1267		
 1274	CLOSED	MVP	FLYWHEEL - Process improvement	Implement MEM-EVAL progressive-loading recommendations (propose-and-diff) — trim MEMORY.md + demand-load PROJECT/ROSTER + role-condition pins	enhancement	
 1247	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-06-15	documentation,fly-audit,maintenance,weekly-audit	
-1249	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	Design-floor primitive: inline-editable text (D2, sibling to Dialog #1170)		
+1249	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	Design-floor primitive: inline-editable text (D2, sibling to Dialog #1170)	journey:get-work-done,surface:web	
 1250	CLOSED	MVP	M5 - Distribution + Polish	Learning toggle 500s — hardcoded TEST_USER_ID violates users FK (ADR-071 instance)	bug	
 1280	CLOSED	MVP	D1 - Beta design quality	[D1] Implement the CXO Radar mockup's visual design — sleek left nav + 3-column polished layout	enhancement	
 1278	CLOSED	MVP	Beta Blockers - Hard Gates Only	Host piper-morgan server on Fly.io for beta launch	beta:deploy-portability,enhancement	
@@ -1101,15 +1101,15 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1277	CLOSED	Ongoing	FLYWHEEL - Process improvement	Canonical ops recipes: ephemeral-worktree server launch, integrations connect-flow, GH Actions debug	documentation	
 1279	CLOSED	MVP	Beta Blockers - Hard Gates Only	GitHubIntegrationRouter has no close() → per-request aiohttp session leak (places.py + radar WorkItem source)	beta:correctness-bugs	
 1281	OPEN	Dot Releases (Post-MVP)		People entity source (PeopleEntitySource) — post-beta		
-1282	OPEN	Production	PROD-DIST - MCP Marketplace Distribution	BYOC-DIST — Plugin packaging and marketplace distribution	enhancement	
+1282	OPEN	Production	PROD-DIST - MCP Marketplace Distribution	BYOC-DIST — Plugin packaging and marketplace distribution	enhancement,journey:set-up,promise:E6-surfaces,surface:mcp	
 1283	CLOSED	MVP	Beta Blockers - Hard Gates Only	[AUDIT] Action↔handler routing integrity — classifier-emitted actions vs registered handlers (#1269 class)	beta:routing-integrity	
-1284	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[DESIGN] 'Your stuff' nav group — nomenclature (CXO + Comms) + maybe a parent hub route		
+1284	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[DESIGN] 'Your stuff' nav group — nomenclature (CXO + Comms) + maybe a parent hub route	journey:get-work-done,surface:web	
 1289	CLOSED	Production	RECONNECT - Connector Refactor	Retire the hollow MorningStandupWorkflow (#1269 P6 — the fabricating /generate path)		
 1285	CLOSED	MVP	Beta Blockers - Hard Gates Only	BUG: naive/aware datetime subtraction in conversation_manager.transition_state (standup COMPLETE path)	beta:correctness-bugs	
 1286	CLOSED	Production	RECONNECT - Connector Refactor	[D2] Design-system foundation: grid + baseline typographic rhythm + padding/margin/tiling (mobile-first, progressive-rendering)		
 1287	OPEN	Ongoing		Tech-debt: triage + remove unwired Multi-Agent Coordinator code (superseded #118 artifacts)	enhancement	
-1288	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[DESIGN] Standup content curation + home morning-card (#1269 follow-on, post-beta)		
-1290	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[D2][DESIGN] Nav menu structure — work/learning/insights/settings top-level + a Settings submenu? (PM question for CXO)		
+1288	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[DESIGN] Standup content curation + home morning-card (#1269 follow-on, post-beta)	journey:come-back,promise:E3-daily-ritual,surface:web	
+1290	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[D2][DESIGN] Nav menu structure — work/learning/insights/settings top-level + a Settings submenu? (PM question for CXO)	journey:get-work-done,surface:web	
 1291	CLOSED	MVP	PROD-INFRA - Infra & Security Hardening	[REFACTOR] ADR-071 D4 — deeper user_id→owner_id read-threading (deferred from #1252)		
 1292	CLOSED	MVP	FLYWHEEL - Process improvement	Reconcile mailbox discipline doc Rule 3 with #1259 push-to-ref; retire obsolete incoming/ + DELIVERY-LOG.md		
 1293	CLOSED	MVP	RECONNECT - Connector Refactor	Floor quality: 'How do I get help?' (Identity) deflects instead of answering — canonical Q4 marginal (6/9)		
@@ -1145,8 +1145,8 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1325	CLOSED	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT D3-ideal end-state: adopt GitHub-App installation-token auth for self-hosted github-mcp-server (when supported)	enhancement,mcp	
 1321	OPEN	Ongoing		Sweep and resolve scattered implementation TODOs in services/ (M5)	technical-debt	
 1324	CLOSED	MVP	Beta Blockers - Hard Gates Only	audit: hardcoded config values that should be env vars or configurable	beta:routing-integrity,bug	
-1327	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT: GitHub target resolution — hierarchy (explicit→infer→ask→default) + default-repo mechanism		
-1326	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	M4: Introduce-person flow — People entity (Option A, user_confirmed provenance)	enhancement	
+1327	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT: GitHub target resolution — hierarchy (explicit→infer→ask→default) + default-repo mechanism	journey:get-work-done,surface:mcp,surface:web	
+1326	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	M4: Introduce-person flow — People entity (Option A, user_confirmed provenance)	enhancement,journey:get-work-done	
 1328	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-06-29	documentation,fly-audit,maintenance,weekly-audit	
 1329	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT: integration health + settings banners not OAuth-connector-aware (show stale 401/unknown)		
 1330	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT: /github/disconnect clears native PAT but not the OAuth binding		
@@ -1186,18 +1186,18 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1374	CLOSED	Ongoing	FLYWHEEL - Process improvement	mail-send.sh residue reconcile fails when caller passes both sides of a staged rename	bug	
 1375	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-07-07	documentation,fly-audit,maintenance,weekly-audit	
 1376	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	Follow-up to #1279: ~23 more fresh-GitHubIntegrationRouter sites (intent_service, context_assembler, canonical_handlers) never close their aiohttp session	technical-debt	
-1377	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	Insight provenance: add is_seed/source field to InsightDB + surface it (full fix deferred from #1216)	enhancement	
-1378	OPEN	Production	PUB - Public Beta	Auth security polish (from #441 Phase 4): CSRF [PUBLIC-BETA GATE per PM 7/7] + lockout, timeout warnings, UX niceties	enhancement	
+1377	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	Insight provenance: add is_seed/source field to InsightDB + surface it (full fix deferred from #1216)	enhancement,journey:get-work-done	
+1378	OPEN	Production	PUB - Public Beta	Auth security polish (from #441 Phase 4): CSRF [PUBLIC-BETA GATE per PM 7/7] + lockout, timeout warnings, UX niceties	enhancement,journey:come-back,surface:web	
 1343	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY] Anonymous /api/v1/intent requests could silently bill the server's own Anthropic key — FIXED, deployed as v0.8.9.1, live-verified		
 1344	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY] Alpha registration is currently fully open (Caddy gate removal reversed a 2026-06-25 PM decision to keep it as the invite mechanism) — needs PM decision, not a unilateral fix		
 1345	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Route all LLM-billing paths through one fail-closed wrapper (m-36 structural end-state for #1343's ratchet lint)		
 1346	CLOSED	MVP	Beta Blockers - Hard Gates Only	tests/load/test_cache_effectiveness.py imports a missing helper module (setup_real_system.py) — the only real collection error; pytest.ini's import-mode was already correct		
-1347	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	Conversation history viewer: full backward pagination + transcript-completeness failsafe (follow-on to #1235)	component: api,component: ui,enhancement,priority: low	
+1347	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	Conversation history viewer: full backward pagination + transcript-completeness failsafe (follow-on to #1235)	component: api,component: ui,enhancement,journey:come-back,priority: low,surface:web	
 1348	CLOSED	MVP	Beta Blockers - Hard Gates Only	[BUG] create_user 500s with a confusing error when email is omitted (CreateUserRequest.email is Optional but User.email is NOT NULL)	beta:auth-lifecycle,bug,component: api,priority: low	
 1349	OPEN	Production	PROD-TECHDEBT - General Cleanup	[BUG] test_github_place_has_name asserts repo name in Place.name but Place.name is just 'GitHub' (pre-existing, unrelated to #1344)	bug,component: knowledge,priority: low	
 1350	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[BUG] settings_projects.html missing tokens.css / toast.js / nav include — 3 test failures (pre-existing, unrelated to #1344)	bug,component: ui,priority: low	
 1351	CLOSED	Production	PUB - Public Beta	[SECURITY] MCPB's connect() credential is theater (Caddy removal broke it) + shared session_id needs a full cross-request-bleed audit	bug,component: api,priority: high	
-1352	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT-WS4 follow-up: migrate calendar to the shared degrade(reason) contract + apply to other connectors + general enforcement test	component: integration,priority: medium	
+1352	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT-WS4 follow-up: migrate calendar to the shared degrade(reason) contract + apply to other connectors + general enforcement test	component: integration,journey:something-goes-wrong,priority: medium,surface:mcp,surface:web	
 1380	CLOSED	MVP	Beta Blockers - Hard Gates Only	Settings has no LLM key management — /api/v1/keys backend is UI-orphaned	priority: high	
 1381	CLOSED	MVP	Beta Blockers - Hard Gates Only	Server UTC leaks into chat as the user's local time	bug	
 1382	CLOSED	MVP	Beta Blockers - Hard Gates Only	Keychain-backed credential layer is inoperative on hosted Linux — blocks wizard key save + all OAuth token storage	bug,priority: critical	
@@ -1229,7 +1229,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1424	CLOSED	MVP	Beta Blockers - Hard Gates Only	EPIC: Finish-the-Unfinished sprint — census, guards, HIGH fixes, driver-green acceptance	epic	
 1425	CLOSED	MVP	Beta Blockers - Hard Gates Only	Affirmative-false-claims family: 5 status/agenda handlers assert 'nothing found' when the data source FAILED (F2, census 2026-07-16)		
 1426	CLOSED	MVP	Beta Blockers - Hard Gates Only	Decline-copy freshness: Piper falsely denies shipped capabilities (file upload, reminders) + misdirecting generic decline (F5/F6, census 2026-07-16)		
-1427	OPEN	Production	PROD-HONESTY - Failed reads say so	/api/v1/todos REST surface is mocked end-to-end: fabricated responses, nothing persists, hardcoded default-user (F7, census 2026-07-16)		
+1427	OPEN	Production	PROD-HONESTY - Failed Reads Say So	/api/v1/todos REST surface is mocked end-to-end: fabricated responses, nothing persists, hardcoded default-user (F7, census 2026-07-16)	journey:get-work-done	
 1428	CLOSED	MVP	Beta Blockers - Hard Gates Only	'What can you do?' systematically understates capabilities (rail-descriptions-only) and leaks internal markers (F8, census 2026-07-16)		
 1429	CLOSED	MVP	Beta Blockers - Hard Gates Only	Slack /standup command renders empty Yesterday/Today always — data sources return [] (F18, census 2026-07-16)		
 1430	CLOSED	MVP	Beta Blockers - Hard Gates Only	Learning dashboard acts on phantom user 'current_user' — never the logged-in user (F19, census 2026-07-16)		
@@ -1253,9 +1253,9 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1437	OPEN	Production		Stale integration test: test_get_default_project_query pins a 422 the pipeline no longer returns (pre-existing)		
 1438	CLOSED	MVP	Beta Blockers - Hard Gates Only	Pre-existing: test_pattern_similarity_detection fails (pattern IDs both None) — learning-cycle store not creating patterns		
 1439	OPEN	Production		Pre-existing: two llm_config_service tests read the machine's REAL keychain (fail on any host with a stored consent list)		
-1440	OPEN	Production		EPIC: RECONNECT R2 — Production connector gate: GitHub · Google Calendar · Notion complete on the #1232 contract (Slack moved to Fast Follow)	epic	
-1441	OPEN	Production		RECONNECT R2: Google Calendar — full port to the #1232 Connector contract		
-1442	OPEN	Production		RECONNECT R2: Notion — full port to the #1232 Connector contract		
+1440	OPEN	Production		EPIC: RECONNECT R2 — Production connector gate: GitHub · Google Calendar · Notion complete on the #1232 contract (Slack moved to Fast Follow)	epic,journey:connect-a-source,surface:mcp,surface:web	
+1441	OPEN	Production		RECONNECT R2: Google Calendar — full port to the #1232 Connector contract	journey:connect-a-source,surface:mcp,surface:web	
+1442	OPEN	Production		RECONNECT R2: Notion — full port to the #1232 Connector contract	journey:connect-a-source,promise:T1-your-work-is-yours,surface:mcp,surface:web	
 1407	OPEN	Fast Follow		Day-part greeting sweep: remaining surfaces still compute from server clock (#1405 follow-up)	bug	
 1408	CLOSED	MVP	Beta Blockers - Hard Gates Only	Droplet/Fly deploys re-download the full dependency set (~45min) — add pip BuildKit cache mount	bug	
 1409	CLOSED	MVP	Beta Blockers - Hard Gates Only	Deploys pull ~4-5GB of nvidia CUDA wheels for torch on CPU-only hosts — pin CPU-only torch	enhancement	
@@ -1271,7 +1271,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1449	OPEN	Ongoing		Real performance + coverage gates for the live system (replace deleted fossil CI jobs)	technical-debt	
 1450	CLOSED	MVP	Beta Blockers - Hard Gates Only	download_file serves ciphertext when at-rest encryption is on — FileResponse bypasses the #1306 decrypt seam	bug	
 1451	OPEN	Production		settings/projects template test fails: test_template_includes_navigation (pre-existing)	bug	
-1452	OPEN	Production		Full Test Suite backlog: 413 failed + 71 errors (suite's first real run in weeks) — burn-down + honest interim gate	technical-debt	
+1452	OPEN	Production		Full Test Suite backlog: 413 failed + 71 errors (suite's first real run in weeks) — burn-down + honest interim gate	seam:green-ci,technical-debt	
 1453	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-07-20	documentation,fly-audit,maintenance,weekly-audit	
 1454	CLOSED	MVP	Beta Blockers - Hard Gates Only	mail-send/merge interaction resurrects triaged memos in inboxes (3 cleanup rounds in 2 days)	technical-debt	
 1455	CLOSED	Ongoing	Q - Recurring Audits	docs(arch): adr-index.md missing 9 ADRs (065, 066, 069, 074-079)	documentation	
@@ -1289,7 +1289,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1491	CLOSED	MVP	Beta Blockers - Hard Gates Only	Due-reminder fetch crashes: 'can't compare offset-naive and offset-aware datetimes' (todo_handlers, live on v30) — saved reminders may NEVER surface	bug	
 1492	CLOSED	MVP	Beta Blockers - Hard Gates Only	Project-name extraction brittle on archive/restore phrasings: trailing punctuation, quotes, and 'called X' all fail; only bare 'Archive my project Test' works	bug	
 1488	CLOSED	MVP	Beta Blockers - Hard Gates Only	Todo-creation misroutes to the GitHub rail on PM's beta account — reproduced twice (8/2, 8/7 on v30), unreproducible synthetically (20/20 clean); account-context differential; blocks #1394 verification	bug	
-1462	OPEN	Production	PUB - Public Beta	EPIC: Hosted MCP endpoint + plugin distribution (PDR-006 implementation)		
+1462	OPEN	Production	PUB - Public Beta	EPIC: Hosted MCP endpoint + plugin distribution (PDR-006 implementation)	journey:set-up,promise:E6-surfaces,surface:mcp	
 1463	CLOSED	Production	PUB - Public Beta	[GATE] Verification rubric branch for MCP-tool-output surface (honesty-under-recomposition untested) — PDR-006 pre-user gate		
 1467	CLOSED	MVP	Beta Blockers - Hard Gates Only	Q22 'What patterns do you see?' (Predictive) routing oscillates floor↔canonical across runs with no intervening routing change — classifier non-determinism finding (no-regression rule filing)	bug	
 1468	OPEN	Production	PROD-CONVO - Conversation Reliability	Canonical judge calibration: STRICT bar has no ratified threshold, judge scores vary run-to-run (same response class C=1 vs C=0), and the STRICT gap concentrates in a uniform Tone T=2 — the 'generic, not colleague' signal (Jake-FTUX adjacent)	technical-debt	
@@ -1297,7 +1297,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1470	CLOSED	MVP	Beta Blockers - Hard Gates Only	Restore-by-name chat path can never find an archived project — find_by_name hard-filters is_archived == False		
 1471	CLOSED	MVP	Beta Blockers - Hard Gates Only	Pre-classifier precedence: 'connect my calendar' collides with the temporal calendar pattern → (temporal, get_current_time) instead of the integration-connect lane	bug	
 1472	CLOSED	MVP	Beta Blockers - Hard Gates Only	Raw TodoStatus/TodoPriority enum comparisons against String columns silently break todo filters (latent class exposed by #1460)		
-1473	OPEN	Production	PROD-CONVO - Conversation Reliability	Multi-intent turns of two QUERY-category halves fail both and return the generic fallback (orchestrator has no QUERY handler) — #1460's AC exemplar affected		
+1473	OPEN	Production	PROD-CONVO - Conversation Reliability	Multi-intent turns of two QUERY-category halves fail both and return the generic fallback (orchestrator has no QUERY handler) — #1460's AC exemplar affected	journey:get-work-done,surface:mcp,surface:web	
 1474	OPEN	Ongoing		CanonicalHandlers._get_dynamic_capabilities: zero production callers + carries the rail-description defect #1428 just fixed — fix-or-delete candidate	technical-debt	
 1475	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-08-03	documentation,fly-audit,maintenance,weekly-audit	
 1476	CLOSED	MVP	Beta Blockers - Hard Gates Only	FTUX-TRUST: 'blocked' status card has no findable referent — tester searched, failed, and read it as breakage		
@@ -1307,13 +1307,13 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1480	CLOSED	MVP	Beta Blockers - Hard Gates Only	Slack link deep-link params don't survive an unauthenticated visit — login redirects to '/' unconditionally (post-#1466 UX follow-up)	enhancement	
 1481	OPEN	Fast Follow		Socket-mode DM/mention path binds EVERY Slack sender to the connector owner's principal — #1466 mapping should resolve per-sender identity there too	bug	
 1482	CLOSED	MVP	Beta Blockers - Hard Gates Only	TRUST-COPY: five live surfaces claim 'cannot be undone' for SOFT deletes — and the one genuinely permanent operation claims nothing		
-1483	OPEN	Production		TRUST-COPY follow-on: four latent 'cannot be undone' defaults remain in dialog.js — unreachable today, but a default is a claim waiting to render		
+1483	OPEN	Production		TRUST-COPY follow-on: four latent 'cannot be undone' defaults remain in dialog.js — unreachable today, but a default is a claim waiting to render	journey:manage-my-data,surface:web	
 1485	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY] Any authenticated user can write the GLOBAL slack_app_token — a per-user settings route performs an unscoped, app-wide credential write		
 1486	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Monthly Housekeeping - 2026-08	documentation,fly-audit,maintenance,monthly-audit	
-1487	OPEN	Production	PROD-HONESTY - Failed reads say so	renderInboundStatus lives inside a Jinja template — the branch deciding what users are told is unreachable by the JS test harness (why 1484's catch-all defect shipped silently)	technical-debt	
+1487	OPEN	Production	PROD-HONESTY - Failed Reads Say So	renderInboundStatus lives inside a Jinja template — the branch deciding what users are told is unreachable by the JS test harness (why 1484's catch-all defect shipped silently)	technical-debt	
 1493	CLOSED	MVP	Beta Blockers - Hard Gates Only	Naive-local datetime class in todo layer: repository writes/cutoffs and temporal_utils reminder parsing use datetime.now() (local, naive) against timestamptz	bug	
 1494	OPEN	Production		ADR-059 blanket skip on test_portfolio_service.py also disables pins for the LIVE archive/restore extraction path	bug	
-1495	OPEN	Production		localStorage chat fallback never persists assistant replies — the degraded-render surface that made #1489 present as user-bubbles-only	bug	
+1495	OPEN	Production		localStorage chat fallback never persists assistant replies — the degraded-render surface that made #1489 present as user-bubbles-only	bug,journey:come-back,promise:E4-never-lies,surface:web	
 1459	CLOSED	Production		Intent.original_message dual-surface storage: 39 read sites / 3 idioms / 2 setter surfaces — #1332's class never closed, needs single access authority + ratchet	bug,technical-debt	
 1496	CLOSED	MVP	Beta Blockers - Hard Gates Only	Slash commands have no live transport — /link (#1466) and /standup unreachable in production	bug	
 1504	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY] Auth-exempt /api/v1/setup/* writes GLOBAL credentials (anthropic/openai LLM keys, slack client creds) with no setup-complete lockout	bug	
@@ -1332,7 +1332,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1542	CLOSED	MVP	Beta Blockers - Hard Gates Only	Reminder duration-words gap: 'in two hours' (word-form) silently defaults to tomorrow-9am — the 1490 never-default invariant covers clock times but not spelled durations; task-after-duration ordering also fails		
 1545	CLOSED	MVP	Beta Blockers - Hard Gates Only	One malformed insights row 500s the ENTIRE Insight Journal ('Failed to load insights') — list endpoints must skip+log bad rows, not die		
 1547	CLOSED	MVP		Status-truth class fix: ALL FOUR plugins hardcode is_configured()=False (since #784) — build the canonical IntegrationStatusService and migrate 10 lying/blind surfaces		
-1553	OPEN	Production	PUB - Public Beta	Status-truth F6-F10: remaining surfaces after IntegrationStatusService landed (#1547 slice 2)		
+1553	OPEN	Production	PUB - Public Beta	Status-truth F6-F10: remaining surfaces after IntegrationStatusService landed (#1547 slice 2)	journey:something-goes-wrong,promise:E4-never-lies,surface:chat,surface:web	
 1510	CLOSED	MVP	Beta Blockers - Hard Gates Only	FTUX-TRUST: compose vs. execute — collaborate-first default (PM spec 08-07); diagnose the layer before building		
 1548	CLOSED	MVP	Beta Blockers - Hard Gates Only	PUT /api/v1/todos/{id} 500s against the REAL repository — route calls update_todo(todo_obj) but the signature is (todo_id, updates, owner_id); mocked tests imagined the interface		
 1512	CLOSED	MVP	Beta Blockers - Hard Gates Only	Todos UI cannot set priority (field absent) while the standup's Today bucket selects on high-priority — the UI can't produce what the standup reads	bug	
@@ -1358,24 +1358,24 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1522	OPEN	Ongoing		False-trails audit (PM-directed): parallel systems inventory — 3 shipping-dark, 9 collision-armed, 5 dead-code-with-passing-tests families, cauterization order + regrowth ratchet		
 1505	CLOSED	MVP	Beta Blockers - Hard Gates Only	Pre-classifier multi-intent path drops integration-connect asks paired with a greeting ('hi piper, connect my github' resolves to greeting only)	bug	
 1536	CLOSED	MVP	Beta Blockers - Hard Gates Only	FTUX-COLDSTART: show the user their own work in the first exchange — the differentiator existed and was never encountered		
-1537	OPEN	Production	PUB - Public Beta	FTUX-COMPOSER: chat input doesn't grow — you cannot read your own message before sending, and it gates the elicitation work		
-1538	OPEN	Production	PUB - Public Beta	FTUX-ELICITATION: progressive elicitation — one thing at a time, reflect between steps, goal-driven not harness-driven		
-1539	OPEN	Production	PUB - Public Beta	FTUX-PURPOSE: 'what uncertainty is it reducing for me' — the only lens item with no twin, and the closest to Jake's headline verdict		
-1540	OPEN	Production	PUB - Public Beta	FTUX-NAV: primary navigation hidden in the avatar/settings pill — findability, not taste (CXO re-ruling)		
+1537	OPEN	Production	PUB - Public Beta	FTUX-COMPOSER: chat input doesn't grow — you cannot read your own message before sending, and it gates the elicitation work	journey:first-conversation,surface:web	
+1538	OPEN	Production	PUB - Public Beta	FTUX-ELICITATION: progressive elicitation — one thing at a time, reflect between steps, goal-driven not harness-driven	journey:first-conversation,promise:E3-daily-ritual,surface:web	
+1539	OPEN	Production	PUB - Public Beta	FTUX-PURPOSE: 'what uncertainty is it reducing for me' — the only lens item with no twin, and the closest to Jake's headline verdict	journey:first-conversation,surface:web	
+1540	OPEN	Production	PUB - Public Beta	FTUX-NAV: primary navigation hidden in the avatar/settings pill — findability, not taste (CXO re-ruling)	journey:first-conversation,surface:web	
 1569	CLOSED	MVP	Beta Blockers - Hard Gates Only	PRODUCT QUESTION (PPM/CXO): reminders ARE todos in the data model — they surface in the /todos list. Keep the unified model, or present them as distinct?		
 1511	CLOSED	MVP	Beta Blockers - Hard Gates Only	Two standups wear one name: web /standup runs an interview whose answers never feed the summary Slack /standup generates — semantic divergence per surface	bug	
 1497	OPEN	Fast Follow		Slack settings page is three generations of config stacked with no stated order — PM: 'a dog's breakfast, needs reorg, refactor'	bug	
 1498	CLOSED	Production		Live 'Good afternoon' greeting banner renders above historical conversation views — 8:33 AM turns under a 2:30 PM header	bug	
-1499	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Route-surface audit (PM-directed, 8/7): 7 unmounted routers, 4 duplicate-purpose OAuth starts, UI calls to nonexistent routes, stale exception list	bug	
+1499	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Route-surface audit (PM-directed, 8/7): 7 unmounted routers, 4 duplicate-purpose OAuth starts, UI calls to nonexistent routes, stale exception list	bug,surface:web	
 1506	OPEN	Production		tests/domain/test_file_reference_detection.py classification tests fail keyless (ContainerNotInitializedError) — need the llm marker or a container stub	bug	
 1528	OPEN	Production		test_validate_openai_key_success hits the LIVE OpenAI API with the real keychain key — network-dependent test flakes on timeouts (and burns quota)		
 1531	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	tests/security/test_cross_user_isolation.py has NO teardown — hardcoded fixture rows persist in shared dev DB, second runs collide (killed-sweep amplifier)		
-1546	OPEN	Production		Dialog copy voice pass: honest but awkward phrasing on delete/remove dialogs — PM: 'strangely written, sounds like ESL'		
-1555	OPEN	Production	PROD-CONVO - Conversation Reliability	Surface-1 self-inconsistency: pre_classify vs _get_github_action diverge on milestone routing — one decision, two implementations		
+1546	OPEN	Production		Dialog copy voice pass: honest but awkward phrasing on delete/remove dialogs — PM: 'strangely written, sounds like ESL'	journey:manage-my-data,surface:web	
+1555	OPEN	Production	PROD-CONVO - Conversation Reliability	Surface-1 self-inconsistency: pre_classify vs _get_github_action diverge on milestone routing — one decision, two implementations	journey:get-work-done,surface:mcp,surface:web	
 1556	CLOSED	Production		Naive-datetime class outside the #1493 audit scope: universal_list_repository (6 writes), file_repository (1 write + 3 cutoffs), todo_knowledge_service (2 sites)		
 1561	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	ProjectQueryService by-id reads remain owner-unscoped + ProjectContext.resolve_project does global cross-tenant reads (dead code) — #1501 siblings		
-1563	OPEN	Production	PROD-CONVO - Conversation Reliability	Floor-prose offers dangle: 'Want me to pull up your reminders?' → 'yes' executes nothing (offer-binding covers registered offers only)		
-1564	OPEN	Production		iPad Safari layout float: large empty content block, composer detached mid-page, greeting scrolls under toolbar		
+1563	OPEN	Production	PROD-CONVO - Conversation Reliability	Floor-prose offers dangle: 'Want me to pull up your reminders?' → 'yes' executes nothing (offer-binding covers registered offers only)	journey:get-work-done,surface:mcp,surface:web	
+1564	OPEN	Production		iPad Safari layout float: large empty content block, composer detached mid-page, greeting scrolls under toolbar	journey:get-work-done,surface:web	
 1565	CLOSED	Production		what-day answer appends calendar event as location: 'You're currently in: Sandra and Brian'		
 1574	CLOSED	Production		UserPreferenceManager is in-memory only — ALL user preferences silently reset every process restart; tz preference is a facade (audit F6)		
 1575	CLOSED	Production		Calendar adapter contains TWO different 'today' computations that disagree (audit F3)		
@@ -1386,33 +1386,33 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1583	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-08-10	documentation,fly-audit,maintenance,weekly-audit	
 1584	CLOSED	Ongoing	Q - Recurring Audits	docs: ~240 broken internal links across docs/ (5 systemic clusters + individual cases), plus 2 methodology cross-ref drifts	documentation,maintenance	
 1585	CLOSED	Ongoing	Q - Recurring Audits	docs: 11 stale current-state docs (up to 11mo old) + 6 duplicate-file clusters needing reconciliation	documentation,maintenance	
-1586	OPEN	Production	PROD-CONVO - Conversation Reliability	Collapse the #902 in-handler close-confirm into the #1190 rail gate (redundant two-step UX on the rail path)		
+1586	OPEN	Production	PROD-CONVO - Conversation Reliability	Collapse the #902 in-handler close-confirm into the #1190 rail gate (redundant two-step UX on the rail path)	journey:get-work-done,surface:mcp,surface:web	
 1587	CLOSED	Production		WorkItemProvider conflates read-failure with emptiness ([] both ways) and assignee-filters new bindings to empty (from #1536 build)		
 1588	CLOSED	Production		Audit context-over-param principal overrides in conversation_handler.py (one fixed in #1536; siblings suspected)		
 1500	OPEN	Fast Follow		Slack DMs with file attachments (and edits) are silently ignored — tester sends a screenshot, gets no reply, reads it as flakiness	enhancement	
 1502	CLOSED	Production		request.state.is_admin is read in files.py/ui.py but never assigned — admin bypasses permanently False (dead concept)	bug	
 1503	OPEN	Fast Follow		No API path to clear or rotate slack_app_token (overwrite-only)	enhancement	
-1509	OPEN	Production		TRUST-CONSENT: consent gate + capability legibility — one feature (Jake alpha FTUX; PPM's hold-a-release item)		
-1514	OPEN	Production		Published OAuth apps for ALL FOUR core connectors (Calendar, Slack, GitHub, Notion) — kill bring-your-own-client setup	enhancement	
-1515	OPEN	Production		Conversation switching flash-rebuilds the entire screen — PM: 'a distracting, sloppy, unprofessional experience'	bug	
-1516	OPEN	Production		Conversation delete/archive have NO reachable UI — the affordances live in home.html's superseded sidebar, while the nav rail everyone sees (#1280) renders bare titles	bug	
-1519	OPEN	Production		Insight Journal page ignores the design system — PM: 'designed randomly… breaks the nav. Really goofy looking'		
-1523	OPEN	Production		SessionTimeout.logoutUrl points at nonexistent /logout UI route — works only via the login-bounce accident		
+1509	OPEN	Production		TRUST-CONSENT: consent gate + capability legibility — one feature (Jake alpha FTUX; PPM's hold-a-release item)	journey:get-work-done,promise:T4-asks-before-acting,surface:mcp,surface:web	
+1514	OPEN	Production		Published OAuth apps for ALL FOUR core connectors (Calendar, Slack, GitHub, Notion) — kill bring-your-own-client setup	enhancement,journey:connect-a-source,surface:web	
+1515	OPEN	Production		Conversation switching flash-rebuilds the entire screen — PM: 'a distracting, sloppy, unprofessional experience'	bug,journey:get-work-done,surface:web	
+1516	OPEN	Production		Conversation delete/archive have NO reachable UI — the affordances live in home.html's superseded sidebar, while the nav rail everyone sees (#1280) renders bare titles	bug,journey:manage-my-data,surface:web	
+1519	OPEN	Production		Insight Journal page ignores the design system — PM: 'designed randomly… breaks the nav. Really goofy looking'	journey:get-work-done,surface:web	
+1523	OPEN	Production		SessionTimeout.logoutUrl points at nonexistent /logout UI route — works only via the login-bounce accident	journey:come-back,surface:web	
 1524	CLOSED	MVP		GitHub query cohort (PRs/milestones/releases/labels/branches) returns success=True on failure — and existing tests ASSERT the lie		
-1525	OPEN	Production	PROD-HONESTY - Failed reads say so	Todo handlers' string-return contract cannot carry failure — call sites wrap ALL returns in success=True (residue after 1423 narrowing)		
+1525	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Todo handlers' string-return contract cannot carry failure — call sites wrap ALL returns in success=True (residue after 1423 narrowing)	journey:get-work-done,promise:E4-never-lies,surface:web	
 1526	OPEN	Ongoing		StandupToChatBridge is dead code (zero prod callers) + deprecated _check_active_standup — delete-module-safely candidates worth ~3 ratchet points		
 1533	CLOSED	Production		Principal-dropping audit (PM-directed): report + guard implementation + 33 test-blind suites need authenticated variants		
-1535	OPEN	Production	PROD-HONESTY - Failed reads say so	Reminder times display in UTC — per-user timezone rendering (1521 follow-on)		
-1549	OPEN	Production		GET /api/v1/todos/shared-with-me is shadowed by /{todo_id} route order — matches as todo_id='shared-with-me'		
-1550	OPEN	Production	PROD-HONESTY - Failed reads say so	All-day calendar events render as 'at 12am' — technically the stored time, maladroit to humans		
-1551	OPEN	Production	PUB - Public Beta	EPIC: Per-user isolation — Production scope (split from #1419 per PM ruling 2026-08-09)		
-1552	OPEN	Production	PROD-HONESTY - Failed reads say so	Insight repo: three sibling one-bad-row kill-all reads (get_for_object / get_unsurfaced / get_for_context)		
-1554	OPEN	Production	PROD-HONESTY - Failed reads say so	Created issues use raw command text as description (f-string fallback ships the user's sentence as the body)		
+1535	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Reminder times display in UTC — per-user timezone rendering (1521 follow-on)	journey:get-work-done,surface:web	
+1549	OPEN	Production		GET /api/v1/todos/shared-with-me is shadowed by /{todo_id} route order — matches as todo_id='shared-with-me'	journey:get-work-done,surface:web	
+1550	OPEN	Production	PROD-HONESTY - Failed Reads Say So	All-day calendar events render as 'at 12am' — technically the stored time, maladroit to humans	journey:come-back,surface:web	
+1551	OPEN	Production	PUB - Public Beta	EPIC: Per-user isolation — Production scope (split from #1419 per PM ruling 2026-08-09)	promise:T1-your-work-is-yours	
+1552	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Insight repo: three sibling one-bad-row kill-all reads (get_for_object / get_unsurfaced / get_for_context)	journey:get-work-done,promise:E4-never-lies,surface:web	
+1554	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Created issues use raw command text as description (f-string fallback ships the user's sentence as the body)	journey:get-work-done,surface:web	
 1589	CLOSED	MVP	Beta Blockers - Hard Gates Only	Greeting claims 'a clear day ahead' against a calendar with four events, and renders a UTC instant as a local clock face ('focus time between 2:09 am and 6:00 pm')		
 1590	CLOSED	MVP	Beta Blockers - Hard Gates Only	#1536 first-contact demo did NOT appear for a GitHub-connected account — which gate fired? (leading hypothesis: no default repo → silent no-demo)		
-1591	OPEN	Production	PUB - Public Beta	Standup two-modes: Production/PUB half — first-run interactive fallback + preference capture on #1510's declaration surface (split from #1511)		
+1591	OPEN	Production	PUB - Public Beta	Standup two-modes: Production/PUB half — first-run interactive fallback + preference capture on #1510's declaration surface (split from #1511)	journey:come-back,surface:web	
 1594	CLOSED	Ongoing	Q - Recurring Audits	Post-reboot: dev Docker data services (postgres/redis/chromadb) do not restart, and nothing alerts on it		
-1595	OPEN	MVP	Beta Blockers - Hard Gates Only	EPIC: Understanding-Layer Inversion — one constrained LLM routing call does the understanding (Arch-RATIFIED 08-09, all 4 decisions + 2 amendments)		
+1595	OPEN	MVP	Beta Blockers - Hard Gates Only	EPIC: Understanding-Layer Inversion — one constrained LLM routing call does the understanding (Arch-RATIFIED 08-09, all 4 decisions + 2 amendments)	journey:get-work-done,promise:E5-one-authority,surface:mcp,surface:web	
 1600	CLOSED	MVP	Beta Blockers - Hard Gates Only	🔴 CI RED ON MAIN 2 DAYS: silent-death + todo-marker ratchets over ceiling (gating smoke subset) and the mypy gate 17 errors over — untracked		
 1596	CLOSED	MVP	Beta Blockers - Hard Gates Only	Floor amnesia after a guided-flow escape — the escape works, the floor that catches it has no context		
 1597	CLOSED	MVP	Beta Blockers - Hard Gates Only	Live-verification backlog: four shipped fixes whose own stated live check has never been run		
@@ -1425,20 +1425,20 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1606	CLOSED	MVP	Beta Blockers - Hard Gates Only	CORPUS: two-part message 'please clear the reminders except X — also, can you set my default repo conversationally?' dropped request 1 AND misparsed request 2 (a question) as a malformed set-command		
 1607	CLOSED	Production		UI: switching back to a chat briefly flashes the PREVIOUS chat's user messages before the new chat renders		
 1608	OPEN	Ongoing	FLYWHEEL - Process improvement	CI liveness detector: flag workflows with zero recent successes — the 'red nobody sees' half of the #1600 postmortem (3 instances, one 2.5 months old)		
-1609	OPEN	Production		No user-reachable surface exists for editing personal context (role/priorities) — the overlay is file-only (PIPER.user.md), unreachable from the hosted beta		
+1609	OPEN	Production		No user-reachable surface exists for editing personal context (role/priorities) — the overlay is file-only (PIPER.user.md), unreachable from the hosted beta	journey:set-up,surface:web	
 1610	CLOSED	MVP	Beta Blockers - Hard Gates Only	ALPHA_AGREEMENT_v2.md ships with a literal [contact email] placeholder — open since Oct 2025	bug	
 1614	CLOSED	MVP	Beta Blockers - Hard Gates Only	Error toasts show canned copy instead of the server's actual explanation — app-level handler rewrites {detail} as {message}, every fetch consumer reads detail		
 1615	CLOSED	MVP	Beta Blockers - Hard Gates Only	First-contact demo + greeting polish: demo bullets render inline as one run-on line; greeting cites already-elapsed focus time in present tense		
 1616	CLOSED	Ongoing	FLYWHEEL - Process improvement	Windows users cannot clone the repo: cohort memo filenames exceed Windows path limits (found by the retired CI workflow's clone check — it was red for a real reason)		
-1612	OPEN	Production	PUB - Public Beta	Multi-LLM-provider support before public beta — OpenAI/Gemini genuinely reachable, not just code-complete		
+1612	OPEN	Production	PUB - Public Beta	Multi-LLM-provider support before public beta — OpenAI/Gemini genuinely reachable, not just code-complete	journey:set-up,surface:web	
 1617	CLOSED	MVP	Beta Blockers - Hard Gates Only	Standup interview's completion tail keeps claiming turns — swallowed two real commands after 'Anything else?' (PM live, v52)		
 1619	OPEN	Production	PROD-CONVO - Conversation Reliability	Registry: four mutations filed under the read-only QUERY category (create/close/reopen/comment issue) — safe today (verified), misfires on every future category-based expectation		
 1620	CLOSED	Ongoing	FLYWHEEL - Process improvement	Shadow-score runs must record their resolved provider/model path — run 1 vs 1b same-model is inferred, not proven (openai 429 credit_balance_exhausted fell back to haiku)		
 1621	CLOSED	Ongoing	FLYWHEEL - Process improvement	Live-verification fixture: programmatic login + real-turn driver against a local server — would discharge the #1597 backlog class		
 1622	CLOSED	MVP	Beta Blockers - Hard Gates Only	Standup watch list renders a garbage item: '"{"' hasn't moved in 380 days — malformed title surfaced verbatim to PM		
 1623	CLOSED	MVP	Beta Blockers - Hard Gates Only	Mid-gathering interview answers STOLEN by other surfaces — twice in one interview (files-family denial ate a plan answer; temporal canned response ate a blocker answer)		
-1624	OPEN	Production	PUB - Public Beta	Chat document-summarize: finish #1187's deferred branch — the capability PM remembers has not worked in chat since 2025-08-22 (Arch's loss audit 2026-10-19; forensics 2026-08-15 corrected); the deferral was closed with no successor		
-1625	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	Reminder surfacing is relentless — PM design ruling: pin due reminders to the top of Radar, mention in conversation ONCE, not every reply		
+1624	OPEN	Production	PUB - Public Beta	Chat document-summarize: finish #1187's deferred branch — the capability PM remembers has not worked in chat since 2025-08-22 (Arch's loss audit 2026-10-19; forensics 2026-08-15 corrected); the deferral was closed with no successor	journey:get-work-done,surface:web	
+1625	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	Reminder surfacing is relentless — PM design ruling: pin due reminders to the top of Radar, mention in conversation ONCE, not every reply	journey:get-work-done,surface:web	
 1626	CLOSED	MVP	Beta Blockers - Hard Gates Only	Reminder-clearing bug: single reminder deletion clears all reminders		
 1592	CLOSED	Production		Calendar adapters constructed without user scope log ERROR 'Google client secrets file not found: credentials.json' on Fly (file absent in container)		
 1593	CLOSED	Ongoing	Q - Recurring Audits	CI: link-checker.yml detects broken links correctly but never fails the workflow	documentation	
@@ -1451,7 +1451,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1629	OPEN	Ongoing	FLYWHEEL - Process improvement	session_activity.owner_id model/DB drift (varchar vs declared UUID) silently aborted the whole e2e cleanup cascade — 38 test users leaked in dev DB		
 1630	CLOSED	MVP	Beta Blockers - Hard Gates Only	Unarmed draft opening is still stealable: 'help me write a ticket' with no subject arms no offer, so the answer to 'What's it about?' routes through the greedy chain		
 1631	CLOSED	MVP	Beta Blockers - Hard Gates Only	Greedy accept/decline rows can claim long free-text replies to ANY armed offer — 'yes,'/'please' prefixes and unanchored decline phrases match into prose		
-1632	OPEN	Production	PROD-CONVO - Conversation Reliability	Capability-legibility catalog should state outwardness per action ('visible to others') now that the axis exists		
+1632	OPEN	Production	PROD-CONVO - Conversation Reliability	Capability-legibility catalog should state outwardness per action ('visible to others') now that the axis exists	journey:get-work-done,surface:mcp,surface:web	
 1633	CLOSED	MVP	Beta Blockers - Hard Gates Only	issue_intelligence.py appears to be unwired 75%-complete code — no instantiation outside its module		
 1634	OPEN	Enterprise		User-facing data-retention settings (Enterprise) — PM ratified no-default-limit + roadmap this for later		
 1635	CLOSED	MVP	Beta Blockers - Hard Gates Only	Ambient presence — the real watching capability (placeholder false door SHIPPED 2026-08-28, v64)		
@@ -1466,7 +1466,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1650	CLOSED	MVP	Beta Blockers - Hard Gates Only	Yes/no confirms accept mid-length prose: 'please note that I'll need to figure out later…' (~95 chars, one line) accepted a delete confirm — under #1631's 160 floor		
 1651	CLOSED	MVP	Beta Blockers - Hard Gates Only	Standup can't consume its own offer referent: offered 'mark that overdue todo done?', accepted verbatim, then 'couldn't find a todo matching overdue'		
 1688	CLOSED	Production	PUB - Public Beta	FTUX empty-state interview: cold users on Web + MCP meet a plain greeting instead of the value-delivering first question		
-1658	OPEN	Production	PUB - Public Beta	PROTOTYPE PARITY: chat-side file upload (UI element + drag-drop), file→project connection, and contextual layers existed in the original prototype and are absent today — PM's parity callout		
+1658	OPEN	Production	PUB - Public Beta	PROTOTYPE PARITY: chat-side file upload (UI element + drag-drop), file→project connection, and contextual layers existed in the original prototype and are absent today — PM's parity callout	journey:get-work-done,surface:web	
 1661	CLOSED	Production	PUB - Public Beta	Temporal file references ('summarize the file', '...I uploaded last month') cap at a 7-day window — aged documents get the honest-empty reply while the Files page lists them	bug	
 1662	CLOSED	Production		Upload writability probe (#1656) printed nothing on the v60 prod boot — wiring discrepancy between web/startup.py phases and the actual boot sequence		
 1647	CLOSED	Production		pre-commit-broad-staging-warn.sh blocks unconditionally instead of warning, per its own header comments		
@@ -1509,13 +1509,13 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1664	CLOSED	MVP	Beta Blockers - Hard Gates Only	SessionSnapshot renders '(yes/no confirm)' on the which-repo question — repo clarification rides CONFIRM_PENDING_ACTION_WORKFLOW so is_confirm is true for a non-yes/no ask		
 1665	CLOSED	MVP	Beta Blockers - Hard Gates Only	Arm sites do not store their rendered ask — live SessionSnapshot carries question=None for most kinds, weaker than the Phase 2.1 gated condition		
 1666	CLOSED	MVP	Beta Blockers - Hard Gates Only	delete_todo has no WorkflowEntry — falls through the #1124 consent-gate rail entirely, executes immediately with no confirm		
-1701	OPEN	Production	PUB - Public Beta	MCP-path increment 2: create a GitHub issue from natural language (host LLM drafts, tool files)		
-1702	OPEN	Production	PUB - Public Beta	MCP-path increment 3: todos and reminders (first Piper-native persistence)		
-1703	OPEN	Production	PUB - Public Beta	MCP-path increment 4: morning standup (north star; honesty-under-recomposition probe must run inside this increment)		
-1704	OPEN	Production	PUB - Public Beta	MCP-path increment 5: document knowledge base (upload → chunk → embed → cited answers)		
-1705	OPEN	Production	PUB - Public Beta	MCP-path increment 6: "same Piper" cross-session memory (preferences/working-mode, resource not tool)		
-1706	OPEN	Production	PUB - Public Beta	MCP-path increment 7: calendar tool exposure on the plugin surface (depends on #1441's connector port)		
-1707	OPEN	Production	PUB - Public Beta	MCP-path increment 8: trust-gated proactivity — PLACEHOLDER, do not build until the plugin-surface trust-gradient question is decided		
+1701	OPEN	Production	PUB - Public Beta	MCP-path increment 2: create a GitHub issue from natural language (host LLM drafts, tool files)	journey:get-work-done,promise:E6-surfaces,surface:mcp	
+1702	OPEN	Production	PUB - Public Beta	MCP-path increment 3: todos and reminders (first Piper-native persistence)	journey:get-work-done,promise:E6-surfaces,surface:mcp	
+1703	OPEN	Production	PUB - Public Beta	MCP-path increment 4: morning standup (north star; honesty-under-recomposition probe must run inside this increment)	journey:come-back,promise:E6-surfaces,surface:mcp	
+1704	OPEN	Production	PUB - Public Beta	MCP-path increment 5: document knowledge base (upload → chunk → embed → cited answers)	journey:get-work-done,promise:E6-surfaces,surface:mcp	
+1705	OPEN	Production	PUB - Public Beta	MCP-path increment 6: "same Piper" cross-session memory (preferences/working-mode, resource not tool)	journey:come-back,promise:E6-surfaces,surface:mcp	
+1706	OPEN	Production	PUB - Public Beta	MCP-path increment 7: calendar tool exposure on the plugin surface (depends on #1441's connector port)	journey:connect-a-source,promise:E6-surfaces,surface:mcp	
+1707	OPEN	Production	PUB - Public Beta	MCP-path increment 8: trust-gated proactivity — PLACEHOLDER, do not build until the plugin-surface trust-gradient question is decided	journey:get-work-done,surface:mcp	
 1717	CLOSED	MVP	Beta Blockers - Hard Gates Only	The #1425 honest-degrade directives compose additively — five sites now, no aggregation, and a multi-failure turn may enumerate every broken subsystem		
 1718	CLOSED	MVP	Beta Blockers - Hard Gates Only	BYOC key validation discards the failure reason — 'invalid' shown for auth errors AND quota/billing errors alike	bug	
 1719	OPEN	Ongoing	FLYWHEEL - Process improvement	Structural: file-moved-but-cross-refs-not-updated recurs 3+ times, needs a systemic fix not repeated manual sweeps		
@@ -1554,7 +1554,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1732	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY] The chat reply render path has NO sanitizer — marked.parse(message) → innerHTML with user text already interpolated unescaped (todo_handlers:288) — the 1578/1581 family's missing member		
 1733	CLOSED	MVP	Beta Blockers - Hard Gates Only	Stale, unauthenticated duplicate of the personality-preferences page is publicly reachable (hardcodes user_id=default)		
 1734	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY] Personality API looks user-scoped but PUT-rewrites the GLOBAL config/PIPER.user.md — any authed user's save clobbers the whole instance's overlay (hosted-beta hazard)		
-1735	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	The personalization 'learning loop' is disconnected at every joint: auto-apply is a silent no-op, the learned store is in-memory and unread, and the read store has no learning writer		
+1735	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	The personalization 'learning loop' is disconnected at every joint: auto-apply is a silent no-op, the learned store is in-memory and unread, and the read store has no learning writer	journey:come-back,promise:E1-portable-context,promise:E4-never-lies,surface:mcp,surface:web	
 1736	CLOSED	MVP	Beta Blockers - Hard Gates Only	Chat read-back of an issue reports 'Description: No description' while the issue HAS a body — fabricated absence pointed at our own artifact (PM live 2026-09-09, v70)		
 1737	CLOSED	MVP	Beta Blockers - Hard Gates Only	Web chat composer: input should grow to a few rows then scroll, instead of ticker-taping off the right edge (PM live 2026-09-09)		
 1738	CLOSED	MVP	Beta Blockers - Hard Gates Only	Piper reads its OWN truncated render as its data source: list cut to 5 with '...and 1 more', then 'I don't have that detail — the list I got back only showed five names' (PM live 2026-09-09, v70)		
@@ -1647,7 +1647,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1825	CLOSED	Ongoing	FLYWHEEL - Process improvement	mail-send.sh: stranded-sibling guard false-positives on MANIFEST.md (an index, not a movable memo)	UX	
 1829	CLOSED	MVP	Beta Blockers - Hard Gates Only	[ARCH] Provider-agnosticism is load-bearing for BYOC but enforced only by a comment — and resolve_model's totality is silent fallback, not exhaustiveness	architecture	
 1827	CLOSED	Ongoing	FLYWHEEL - Process improvement	mail-send.sh recipient check warns on correctly-delivered mail (case-insensitive guard vs case-sensitive compare, macOS-only)		
-1828	OPEN	Production	PROD-HONESTY - Failed reads say so	TZ-PROJECT: per-user timezone / time-handling fix — parent for #1493's 6 F-slice children	documentation	
+1828	OPEN	Production	PROD-HONESTY - Failed Reads Say So	TZ-PROJECT: per-user timezone / time-handling fix — parent for #1493's 6 F-slice children	documentation,journey:get-work-done,surface:web	
 1830	CLOSED	Ongoing	Q - Recurring Audits	docs/operations/alpha-onboarding/email-template.md is stale — describes local install, not the hosted-alpha flow actually in use since 2026-07-12	sapient-trust	
 1831	CLOSED	MVP	Beta Blockers - Hard Gates Only	[TESTS] tests/intent cohort (26 tests, 8 files) reaches live LLM legs unmarked — local-red/CI-green since #1809; #1821's class, next cohort	testing	
 1826	CLOSED	Ongoing	Q - Recurring Audits	DOCS-YAML-FRONTMATTER: extend #972's pilot pattern to ADRs, patterns, methodology (161 files)	documentation	
@@ -1693,7 +1693,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1885	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY] Three LIVE unused invite tokens were in full form in tracked session logs + an omnibus log (public repo) — found by the new #1845 gate; scrubbed on main, burn on prod needs PM's hand; Google key in a 2025-10 server log needs rotation check	bug	
 1883	CLOSED	MVP	Beta Blockers - Hard Gates Only	docs: 8 living docs still describe the standup consciousness family + StandupToChatBridge + format_files_conscious, deleted as dead in #1775 (2026-09-24)	documentation	
 1880	CLOSED	MVP	Beta Blockers - Hard Gates Only	[RENDER] Post-1762 residue: calendar free_blocks[:3] under a header stating len(free_blocks); the clarification-turn family renders matches[:5] under 'Found N matching' on a turn whose whole purpose is choosing; four latent [:N] slices that must convert in the same change that lifts their gather cap		
-1891	OPEN	Production	PROD-CONVO - Conversation Reliability	[DESIGN] The floor's capability_manifest_block (137 raw action names, every turn) is what 'what can you do?' actually paraphrases from — it carries no outwardness, and CHAT_POINTERS has no row for any OUTWARD action; the #1632 marker can't reach PM's reply until one of those changes		
+1891	OPEN	Production	PROD-CONVO - Conversation Reliability	[DESIGN] The floor's capability_manifest_block (137 raw action names, every turn) is what 'what can you do?' actually paraphrases from — it carries no outwardness, and CHAT_POINTERS has no row for any OUTWARD action; the #1632 marker can't reach PM's reply until one of those changes	journey:first-conversation,surface:mcp,surface:web	
 1890	CLOSED	Ongoing	Beta Blockers - Hard Gates Only	[WEB] templates/components/greeting_context.html has zero include sites — orphaned partial (found by the #1582 census)		
 1889	CLOSED	MVP	Beta Blockers - Hard Gates Only	[HONESTY] degraded_sources (#1587) reaches StandupSummary.to_prose and the Radar JSON, but not the standup's Slack/Markdown/text formatters, the /today route, or the Radar UI's empty-state card — those surfaces can still render a failed source as all-clear	UX	
 1894	CLOSED	MVP	Beta Blockers - Hard Gates Only	Link-checker ratchet tripped on main: 92 broken vs ceiling 90 (first red 2026-09-25 07:03 PT)	bug	
@@ -1722,7 +1722,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1901	CLOSED	MVP	Beta Blockers - Hard Gates Only	[RENDER] #1855 unarmed-offer rewriter mangles a compound question: 'Want me to try again, or is there a specific area…?' → 'If you'd like me to try again, or is there a specific area…, just tell me directly.'	bug	
 1903	CLOSED	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-09-28	documentation,fly-audit,maintenance,weekly-audit	
 1904	OPEN	Ongoing		docs: 3 procedural docs 300+ days stale, describe old issues as 'Production Ready' -- TESTING.md, database-production-setup.md, api-key-management.md	documentation	
-1907	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[RENDER] iPad (Safari) layout on alpha: portrait new-chat shows an empty full-height gray panel with the composer pushed off-screen; Send button clipped at the bottom in both orientations; Radar cards print raw ISO timestamps; timezone hint has a dangling 'set my timezone to ""'	bug	
+1907	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[RENDER] iPad (Safari) layout on alpha: portrait new-chat shows an empty full-height gray panel with the composer pushed off-screen; Send button clipped at the bottom in both orientations; Radar cards print raw ISO timestamps; timezone hint has a dangling 'set my timezone to ""'	bug,journey:get-work-done,surface:web	
 1908	OPEN	Ongoing		Building-narrative sequence number as a separate field from pubDate (PM idea, not urgent)	documentation	
 1909	OPEN	Ongoing		Quarterly Maintenance Sweep - Q4 2026	documentation,maintenance	
 1898	CLOSED	MVP	Beta Blockers - Hard Gates Only	_handle_set_default_repo reads only intent.context["original_message"] — drops the repo under the Inversion flip (#1595/#1606)		
@@ -1730,11 +1730,11 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1905	CLOSED	Ongoing	Q - Recurring Audits	Blog Eras: 2 posts published 09-26/27 with empty cluster — publish-post.js --cluster silently defaults to ''	bug	
 1906	CLOSED	MVP	Beta Blockers - Hard Gates Only	[ACCEPTANCE] 'Clear the overdue reminder' → 'which one?' clarify is UNARMED — the user's pick ('Clear the first one.') re-enters classification with no carrier; on alpha it fell to the floor, which improvised an unarmed 'just confirm' ask, and 'Yes' had nothing to execute (PM test card, 2026-09-30 21:34)	bug	
 1910	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SPEND] Keyless 'what time is it?' has no zero-LLM path once TEMPORAL_PATTERNS is deleted (reaches the classifier → #1812 refusal), and the #1818 spend-free gate cannot see it (fails at container resolution before the chokepoint)	bug	
-1915	OPEN	Production	PROD-HONESTY - Failed reads say so	[TIMEZONE] 'set it back to pacific time' is refused — accept common zone names/abbreviations (Pacific, PT, PST/PDT, Eastern, UTC…) as aliases for IANA zones (PM test card Test 4)	enhancement	
+1915	OPEN	Production	PROD-HONESTY - Failed Reads Say So	[TIMEZONE] 'set it back to pacific time' is refused — accept common zone names/abbreviations (Pacific, PT, PST/PDT, Eastern, UTC…) as aliases for IANA zones (PM test card Test 4)	enhancement,journey:get-work-done,surface:web	
 1913	CLOSED	MVP		[CHAT] A conversation started while keyless disappears from the sidebar after the user adds a valid API key (PM test card Test 7, alpha v156)	bug	
-1911	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	MCP OAuth consent page: brand it, and show the user's name/email instead of a raw UUID	UX	
-1916	OPEN	Production		Calendar Connect: tell testers up front when the Google OAuth audience excludes them, and record started-never-returned attempts	enhancement	
-1917	OPEN	Production		GitHub: 'PRs needing review' has no operation — list_prs is author-scoped, stale_prs is age-based (CXO ruling, Phase 3 corpus row)	enhancement	
+1911	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	MCP OAuth consent page: brand it, and show the user's name/email instead of a raw UUID	UX,journey:set-up,surface:mcp	
+1916	OPEN	Production		Calendar Connect: tell testers up front when the Google OAuth audience excludes them, and record started-never-returned attempts	enhancement,journey:connect-a-source,surface:web	
+1917	OPEN	Production		GitHub: 'PRs needing review' has no operation — list_prs is author-scoped, stale_prs is age-based (CXO ruling, Phase 3 corpus row)	enhancement,journey:get-work-done,surface:mcp,surface:web	
 1919	CLOSED	Ongoing		Corpus: execute B3's ratified HISTORICAL/ABSORBED markers (21 files + 2 indexes) — absorb-and-mark completion	methodology	
 1920	CLOSED	MVP		Armed-carrier off-intent release: GitHub WRITE commands no longer release after the GITHUB_QUERY_PATTERNS deletion (#1899 write half was surface-1-only) — Arch's shape: cross-family write release + explicit exit	bug	
 1921	OPEN	Ongoing		inversion_corpus_phase0.yaml is not valid YAML (unescaped inner quotes); project's regex loader masks it		
@@ -1745,42 +1745,42 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1928	CLOSED	MVP		check_fullsuite_backlog.py truncates parametrize ids at the first space (gate under-counts new failures)	bug	
 1929	CLOSED	MVP		spend-free canonical ratchet (1818): 7 SPENDS params fail in CI only, root cause unconfirmed (backlogged as triage)	bug	
 1930	CLOSED	MVP		Portfolio 'delete my project' asks to confirm, but nothing executes the delete (75% pattern)	bug	
-1931	OPEN	Production	PROD-CONVO - Conversation Reliability	Completed todos can't be reopened from chat (reopen_todo exists, no chat route)	enhancement	
+1931	OPEN	Production	PROD-CONVO - Conversation Reliability	Completed todos can't be reopened from chat (reopen_todo exists, no chat route)	enhancement,journey:get-work-done,surface:mcp,surface:web	
 1927	OPEN	Ongoing		usage-read.sh returns SHAPE-CHANGED (TypeError) on 16 of 44 overnight readings (00:23 and 03:23 slots), 6 of 134 otherwise		
-1932	OPEN	Production	PROD-CONVO - Conversation Reliability	Chat cannot edit/rename/update a project (no update capability; floor is the honest answer until built)	enhancement	
+1932	OPEN	Production	PROD-CONVO - Conversation Reliability	Chat cannot edit/rename/update a project (no update capability; floor is the honest answer until built)	enhancement,journey:get-work-done,surface:mcp,surface:web	
 1933	CLOSED	MVP		Deletion gate: the mis-serve credit assumes the fallback can't be worse, but it can be a WRITE mis-route (PORTFOLIO edit-project → update_document_query 10/10)	bug	
 1934	CLOSED	Ongoing		Commit-message bearer guard misses -am, --message, -F, git -C/-c, and its block reason never reaches the committer	sapient-trust	
-1935	OPEN	Production	PROD-CONVO - Conversation Reliability	Chat can't delete a project: wire delete through the #1190 destructive tier (follow-up to #1930 step 2)	enhancement	
+1935	OPEN	Production	PROD-CONVO - Conversation Reliability	Chat can't delete a project: wire delete through the #1190 destructive tier (follow-up to #1930 step 2)	enhancement,journey:get-work-done,surface:mcp,surface:web	
 1936	CLOSED	Ongoing		requirements.lock is uninstallable (ResolutionImpossible) and ~5 months stale; nothing uses it, but its name promises reproducibility	bug	
 1937	CLOSED	Ongoing		FLY-AUDIT: Monthly Housekeeping - 2026-10	documentation,fly-audit,maintenance,monthly-audit	
 1938	CLOSED	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-10-05	documentation,fly-audit,maintenance,weekly-audit	
 1940	OPEN	Ongoing		Rule: who assigns gate issues vs build work; role lives in an Owner: body line, Assignee stays the PM login		
 1941	CLOSED	Production		[HONESTY] close of a nonexistent issue hedged again on alpha v169 — read-back 404 arrives as a wrapped McpError, not content text (1858, third shape)		
 1944	CLOSED	Production		[GITHUB] 'my default repo should be test-piper-morgan' should resolve a bare name against the user's registered repos		
-1945	OPEN	Production		[UX] Project Config page lists the same repo under 'Linked Repositories' and 'Integrations'; no surface shows the default repo or a default project		
-1946	OPEN	Production		[RADAR] Radar did not refresh after a reminder was completed in chat — the cleared reminder stayed pinned at the top until reload		
+1945	OPEN	Production		[UX] Project Config page lists the same repo under 'Linked Repositories' and 'Integrations'; no surface shows the default repo or a default project	journey:connect-a-source,surface:web	
+1946	OPEN	Production		[RADAR] Radar did not refresh after a reminder was completed in chat — the cleared reminder stayed pinned at the top until reload	journey:get-work-done,surface:web	
 1948	CLOSED	Production		app_shell applies no body font-family, so pages fall back to the browser serif default (journal, connected apps)	UX	
 1947	CLOSED	Ongoing		[CI] Architecture Enforcement (the 1436 mypy signature-drift ratchet) has been red for 41 consecutive runs since 2026-10-01 20:02Z — nobody's 'CI green' check names this workflow		
 1950	CLOSED	Production		--font-family-mono token is referenced but never defined (inline code and kbd render sans)	UX	
 1942	CLOSED	MVP		[ROUTING] Router-served Intent carried no context['original_message'] — 'get issue 101' answered 'I couldn't find an issue number' on alpha v169 (1858-style dual-field gap, fixed at the source)		
-1943	OPEN	Production	PROD-CONVO - Conversation Reliability	[ARCH] Todo/reminder target + clear-verb interpretation should consume the router's extracted args, not regex binders — PM's 2026-10-05 live round (C: 'first three'; the clear-default answer with the list)		
+1943	OPEN	Production	PROD-CONVO - Conversation Reliability	[ARCH] Todo/reminder target + clear-verb interpretation should consume the router's extracted args, not regex binders — PM's 2026-10-05 live round (C: 'first three'; the clear-default answer with the list)	journey:get-work-done,promise:E5-one-authority,surface:mcp,surface:web	
 1951	CLOSED	MVP		[CORPUS] 12 Phase-0/Phase-3 row expectations predate the 10-05 catalog growth (link_repo, unlink_repo, read_canonical, calendar ops): the first full-corpus run since (10-06) shows 9 asserted regressions + 1 deleted-list ledger regression, all attributed to stale expectations by ×6 controls — re-judge needed before the report can be wired into the gate		
 1949	OPEN	Production	PROD-CONVO - Conversation Reliability	[ROUTING] 'show me all project plans' classifies as PORTFOLIO/manage_portfolio, not a document search (live llm-marked contract test, 2026-10-05)		
 1953	OPEN	Ongoing		[CI] Decide whether CI runs tests/intent/ -m "not llm" (split from the contract-test issue)		
 1954	OPEN	Ongoing		[OPS] Mint two replacement beta invites and re-record the roster (residue of the invite-token exposure issue)		
-1955	OPEN	Production	PROD-CONVO - Conversation Reliability	Ask-and-wait dead end: "which reminder would you like to close?" leaves the next reply with nothing to land on		
+1955	OPEN	Production	PROD-CONVO - Conversation Reliability	Ask-and-wait dead end: "which reminder would you like to close?" leaves the next reply with nothing to land on	journey:get-work-done,surface:mcp,surface:web	
 1956	CLOSED	Ongoing		Scheduled E2E & AAXT Tests failed 2026-10-07 07:20Z: CI Anthropic key 'credit balance too low' (billing, not code)		
-1957	OPEN	Production		[WEB] Personality page: 'Reset to Defaults' reloads with a query string and leaves Warmth at its saved value		
-1962	OPEN	Production	PROD-CONVO - Conversation Reliability	Subject-less advice asks ("what's your advice here"): 'you might have sent that before it was ready' blames the user; unrelated overdue-reminder nudge appended	UX	
-1963	OPEN	Production	PROD-HONESTY - Failed reads say so	[HONESTY] Populated Radar with a failed source shows no disclosure (partial render reads as complete) — follow-up to #1889	UX	
+1957	OPEN	Production		[WEB] Personality page: 'Reset to Defaults' reloads with a query string and leaves Warmth at its saved value	journey:set-up,surface:web	
+1962	OPEN	Production	PROD-CONVO - Conversation Reliability	Subject-less advice asks ("what's your advice here"): 'you might have sent that before it was ready' blames the user; unrelated overdue-reminder nudge appended	UX,journey:get-work-done,surface:mcp,surface:web	
+1963	OPEN	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] Populated Radar with a failed source shows no disclosure (partial render reads as complete) — follow-up to #1889	UX,journey:something-goes-wrong,promise:E4-never-lies,surface:web	
 1964	CLOSED	Production		[HONESTY] /generate standup formatters: raw user id in the heading, 'Saved 0m' footer, 'Blockers' (not Watch), and 'No blockers ✅' under a partial read	UX	
 1965	CLOSED	MVP		[HONESTY] Radar/standup GitHub work items: a failed or unauthenticated read comes back as 'verified empty', so #1587/#1889's disclosure never fires; on alpha an OAuth-connected account shows no work items and no failure		
-1966	CLOSED	Production		GitHub has two credential resolvers (OAuth grant vs per-user PAT) that disagree; converge on one resolver in the adapter		
+1966	CLOSED	Production		GitHub has two credential resolvers (OAuth grant vs per-user PAT) that disagree; converge on one resolver in the adapter	journey:get-work-done,promise:E4-never-lies,seam:resolver,surface:mcp,surface:web	
 1958	CLOSED	Production		Reminder confirmation says 'scheduled for next Friday' when the user wrote 'on Friday' (label hardcodes 'next')	UX	
 1959	CLOSED	Production		[UX] close/reopen asks 'Close issue #N? (yes/no)' before checking the issue exists — the confirm comes first, the 'no such issue' after	enhancement	
 1960	CLOSED	Production		[COPY] consent check says set-default-repo 'writes outside our conversation (to your connected tools)' — it writes Piper's own preference store	enhancement	
-1961	OPEN	Production	PROD-HONESTY - Failed reads say so	[HONESTY] 'show my todos' reply renders an OPEN overdue todo with strikethrough (~~revise the pr~~) — LLM-composed markup implies done	bug	
-1970	OPEN	Production	PROD-CONVO - Conversation Reliability	Consent framing (imperative vs ambiguous) moves to the router as a structured arg; _EXECUTE_RE becomes a ratcheted fallback (ADR-080 D1/D6)	enhancement	
+1961	OPEN	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] 'show my todos' reply renders an OPEN overdue todo with strikethrough (~~revise the pr~~) — LLM-composed markup implies done	bug,journey:get-work-done,promise:E4-never-lies,surface:web	
+1970	OPEN	Production	PROD-CONVO - Conversation Reliability	Consent framing (imperative vs ambiguous) moves to the router as a structured arg; _EXECUTE_RE becomes a ratcheted fallback (ADR-080 D1/D6)	enhancement,promise:E5-one-authority	
 1971	CLOSED	Production		inversion-phase3-deletion-gate: a corpus row's MATCH verdict can't see a DIFFERENT pre-classifier list intercepting the phrase first	bug	
 1973	CLOSED	Production		Phase 3 gate credits sub-threshold MATCH/REVIEW rows the live consult won't dispatch; 9 rows of past deletions (TEMPORAL 7, ANALYSIS 2) already stand down on alpha		
 1975	CLOSED	Production		[CHAT] Deleting an UPCOMING reminder: confirm names it, then 'yes' answers "couldn't find it in your due reminders" — confirm and executor search different sets		
@@ -1790,8 +1790,8 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1979	CLOSED	Production		Two-topic "summarize my current work and …" gets an upload-a-document prompt (summarize_document rail runs on a conversation-sourced turn)	UX	
 1981	OPEN	Fast Follow		MCP/plugin: first-time user setup path from a directory listing (later, per PM)		
 1982	CLOSED	Production		MCP server can't read GitHub issues: GITHUB_MCP_SERVER_URL unset and ENCRYPTION_MASTER_KEY absent on piper-morgan-mcp		
-1983	OPEN	Production		Settings → GitHub: recommend fine-grained read-only PATs (not classic repo-scope) in the token hint		
-1984	OPEN	Production	PROD-CONVO - Conversation Reliability	[KNOWN MISS] Cold two-topic 'summarize my current work and I need the archived list too': router reads 'my work' as session activity (ledgered 2026-10-12; served reply honest; description/rail levers measured NO-GO)	UX	
+1983	OPEN	Production		Settings → GitHub: recommend fine-grained read-only PATs (not classic repo-scope) in the token hint	journey:connect-a-source,surface:web	
+1984	OPEN	Production	PROD-CONVO - Conversation Reliability	[KNOWN MISS] Cold two-topic 'summarize my current work and I need the archived list too': router reads 'my work' as session activity (ledgered 2026-10-12; served reply honest; description/rail levers measured NO-GO)	UX,journey:get-work-done,surface:mcp,surface:web	
 1985	CLOSED	Production		[HONESTY] attention_query answers 'nothing urgent' while the account has overdue and due-today todos — the handler scopes TodoDB by session_id, not the user (the #1395 principal-confusion class, two queries left)		
 1986	CLOSED	Production		[UX] 'thank you!' as a cold first turn serves a todo briefing, not a short warm acknowledgement — CONVERSATION/thanks and farewell fall to the floor; only greeting has the pure-pleasantry canned path (#1974's bar)		
 1987	CLOSED	Production		[ROUTING] 'delete that reminder' right after 'Reminder saved: …' in the same session asks 'Which todo should I remove? Try: delete todo [number]' and deletes nothing — the just-created reminder is not resolved as the referent		
@@ -1804,7 +1804,7 @@ issue	state	milestone	sprint	title	labels	blocked_by
 1994	CLOSED	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-10-12	documentation,fly-audit,maintenance,weekly-audit	
 1998	CLOSED	Production		[HONESTY] Compound 'thanks, and what's on my list today?' says the todo list is clear and calls days-overdue items 'due today'	UX	
 1999	CLOSED	Production		'show today's tasks': '(0 days overdue)' label and the day count moves between turns (4 -> 5 days in minutes)	UX	
-1995	OPEN	Production	PROD-HONESTY - Failed reads say so	[HONESTY] GitHub token missing a permission reads as an empty result (e.g. no Pull requests: Read -> 'my pull requests' empty, not 'I can't see them')	UX	
+1995	OPEN	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] GitHub token missing a permission reads as an empty result (e.g. no Pull requests: Read -> 'my pull requests' empty, not 'I can't see them')	UX,journey:something-goes-wrong,promise:E4-never-lies,surface:mcp,surface:web	
 2000	CLOSED	Production		TEST: unarmed-ask census (#1766) misses asks whose '?' is mid-line ('Which todo should I remove? Try: …')	architecture	
 2001	CLOSED	Production		[UX] 'Today:' list says '(1 days overdue)' — singular is 'day'	UX	
 2002	CLOSED	Production		[UX] numbered delete ask: closing sentence renders inside the last list item	UX	
@@ -1814,8 +1814,8 @@ issue	state	milestone	sprint	title	labels	blocked_by
 2007	CLOSED	Production		Fresh standup ask orphans a SUSPENDED standup: the in-progress branch never sees SUSPENDED (include_suspended defaults False)		
 2008	CLOSED	Production		[UX] standup invents a reason for an empty day: "looks like you were in planning mode"	UX	
 2009	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	owner_id is NULLABLE on 8 user-data tables that have no other owner column: count the NULLs, then NOT NULL		
-2010	OPEN	Production	PROD-HONESTY - Failed reads say so	[HONESTY] list_projects renderer offers things nothing is armed to do (empty state and closing question)	UX	
-2011	OPEN	Production	PROD-HONESTY - Failed reads say so	Unarmed-ask census (#1766) scans 2 packages; 67 holder sites elsewhere in services/ escape it (34 in consciousness, which renders day-one replies)		
+2010	OPEN	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] list_projects renderer offers things nothing is armed to do (empty state and closing question)	UX,journey:first-conversation,promise:E4-never-lies,surface:web	
+2011	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Unarmed-ask census (#1766) scans 2 packages; 67 holder sites elsewhere in services/ escape it (34 in consciousness, which renders day-one replies)		
 2013	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	knowledge_nodes/knowledge_edges owner_id: the KG write routes store rows the owner-filtered reads can never return to their creator; thread owner_id from current_user.sub, then NOT NULL		
 2014	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	items: a base item row with no list has no owner path (list_id nullable, no FK); add CHECK (item_type <> 'item' OR list_id IS NOT NULL) + the FK, count first; scope ItemService's by-id reads		
 2012	CLOSED	MVP		[HONESTY] Integration Health 'Test' reports GitHub 'connection successful' on a revoked OAuth grant: _test_github returns success when a binding row exists, with no GitHub call		
@@ -1823,51 +1823,51 @@ issue	state	milestone	sprint	title	labels	blocked_by
 2016	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	10 DB-bound unit tests insert rows with random owner ids and fail on an empty migrated database (users FK): they pass only where a users row already exists		
 2019	CLOSED	Production		Cap bulk todo deletes at one item in the delete handler until soft delete exists (xian's 10-14 ruling, PPM's interim B)		
 2017	CLOSED	MVP		Integrations page: GitHub card's Disconnect button does nothing when clicked (no confirm dialog, no request)		
-2018	OPEN	MVP	Beta Blockers - Hard Gates Only	Settings → Integrations: a GitHub user with a dead connection can't recover from the UI (tracking: false 'connected', dead Disconnect, no reconnect path, unreachable GitHub settings page)		
+2018	OPEN	MVP	Beta Blockers - Hard Gates Only	Settings → Integrations: a GitHub user with a dead connection can't recover from the UI (tracking: false 'connected', dead Disconnect, no reconnect path, unreachable GitHub settings page)	journey:something-goes-wrong,promise:E4-never-lies,surface:web	
 2020	CLOSED	Production		Standup interview decline says a quick report 'stays exactly as it is' when none exists	UX	
-2021	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Soft delete with an undo window for todos, then bulk delete may return (xian's 10-14 ruling, PPM's option C; lifts #2019)		
-2022	OPEN	Production	PROD-HONESTY - Failed reads say so	MCP github-issues payload doesn't say what it searched (assignee:@me across all repos), so Claude attributes the total to one repo		
-2023	OPEN	Production	PROD-CONVO - Conversation Reliability	Standup interview swallows the user's own requests as answers (a question or 'do a standup' lands in the draft)	UX	
-2024	OPEN	Production	PROD-CONVO - Conversation Reliability	Contextual offers (#852 offer_hint) arm only on a single yes/no question: drop directive arms, single-offer copy, census hardening	architecture	
-2025	OPEN	Production	PROD-CONVO - Conversation Reliability	Delete gate reads 'delete todo 1 and 2' as todo 1 only; the second item is silently dropped	bug	
+2021	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Soft delete with an undo window for todos, then bulk delete may return (xian's 10-14 ruling, PPM's option C; lifts #2019)	journey:get-work-done,surface:mcp,surface:web	
+2022	OPEN	Production	PROD-HONESTY - Failed Reads Say So	MCP github-issues payload doesn't say what it searched (assignee:@me across all repos), so Claude attributes the total to one repo	journey:get-work-done,promise:E4-never-lies,surface:mcp	
+2023	OPEN	Production	PROD-CONVO - Conversation Reliability	Standup interview swallows the user's own requests as answers (a question or 'do a standup' lands in the draft)	UX,journey:get-work-done,surface:mcp,surface:web	
+2024	OPEN	Production	PROD-CONVO - Conversation Reliability	Contextual offers (#852 offer_hint) arm only on a single yes/no question: drop directive arms, single-offer copy, census hardening	architecture,journey:get-work-done,surface:mcp,surface:web	
+2025	OPEN	Production	PROD-CONVO - Conversation Reliability	Delete gate reads 'delete todo 1 and 2' as todo 1 only; the second item is silently dropped	bug,journey:get-work-done,surface:mcp,surface:web	
 2026	CLOSED	Production		Off-topic and off-intent exits at the standup invitation still say 'I've paused it' after the unstarted standup now closes	bug	
 2027	CLOSED	Production		Standup interview suggestions ('nothing', 'skip') are never rendered as chips on the web chat	bug	
 2028	CLOSED	Production		Standup interview suggestions ("nothing", "skip") are emitted at 7 sites but never rendered: render chips or delete them		
 2029	CLOSED	Production		GitHub settings page says Connected and hides 'Connect with GitHub' for a revoked grant (oauth-status reads the binding, never GitHub)		
-2030	OPEN	Production	PROD-CONVO - Conversation Reliability	Multi-intent path renders canonical builders' questions unarmed: IntentOrchestrator._execute_single keeps only the message	bug	
+2030	OPEN	Production	PROD-CONVO - Conversation Reliability	Multi-intent path renders canonical builders' questions unarmed: IntentOrchestrator._execute_single keeps only the message	bug,journey:get-work-done,surface:mcp,surface:web	
 2031	CLOSED	Production		Integrations card shows 'Not configured' for a STALE GitHub binding (after 2029), and says 'MCP connector' when bound		
 2032	CLOSED	Production		Bare 'cancel' with no standup active replies 'standup cancelled' (claims a state that does not exist)	UX	
 2033	CLOSED	Production		Bare 'cancel' or 'skip the standup' with no standup running says 'standup cancelled' / 'standup skipped'	bug	
 2035	CLOSED	Production		'yes' to 'Would you like to add one?' (no projects) meets a second confirmation for a nameless add	UX	
 2034	CLOSED	Production		A 'yes' to Piper's own add-project offer gets a second consent check ('asking me to add project')	bug	
 2039	CLOSED	Production		Settings → GitHub can't be found by a likely URL: /settings/github is a raw 404, and the Settings index has no GitHub entry		
-2036	OPEN	Production		GitHub Test says 'needs re-authorizing' after a deliberate Disconnect when a personal token serves		
+2036	OPEN	Production		GitHub Test says 'needs re-authorizing' after a deliberate Disconnect when a personal token serves	journey:connect-a-source,promise:E4-never-lies,surface:web	
 2037	CLOSED	Production		Integrations Test toast and card ignore the leg-naming reply (#2012 line never reaches the user)	UX	
 2038	CLOSED	Production		Integrations page Test toast shows a generic 'Test Passed' instead of the API's leg-naming message (#2012)	bug	
-2041	OPEN	Production	PROD-CONVO - Conversation Reliability	Multi-intent path drops write offers: IntentOrchestrator._execute_single does not carry write_offer	bug	
+2041	OPEN	Production	PROD-CONVO - Conversation Reliability	Multi-intent path drops write offers: IntentOrchestrator._execute_single does not carry write_offer	bug,journey:get-work-done,surface:mcp,surface:web	
 2040	CLOSED	MVP		'You don't have any open issues' hides its scope; 'show me the rest' with nothing held gets an invented list	UX	
-2042	OPEN	Production	PROD-HONESTY - Failed reads say so	Floor LLM narrates actions or data that code never produced (class tracking; #2033, #2040)		
-2043	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	OAuth redirect defaults: GitHub handler and calendar wizard fall back to localhost, not PIPER_BASE_URL (#1324 class); calendar wizard default is off the /api/v1/setup prefix		
+2042	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Floor LLM narrates actions or data that code never produced (class tracking; #2033, #2040)	journey:get-work-done,promise:E4-never-lies,surface:web	
+2043	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	OAuth redirect defaults: GitHub handler and calendar wizard fall back to localhost, not PIPER_BASE_URL (#1324 class); calendar wizard default is off the /api/v1/setup prefix	journey:connect-a-source,surface:web	
 2044	CLOSED	Production		Integrations card reads 'Google Calendar — Status: unknown' right after a successful connect; CXO: 'Connected' + 'Not checked yet. Press Test.'	UX	
 2048	CLOSED	MVP		'list my projects' on a no-projects account gets the floor's 'I don't have your projects list in front of me' (regression from 6f2916d10f)	UX	
 2049	CLOSED	Production		Integrations card keeps 'Not checked yet' and '0 of 4' after a successful Test; last-checked shows a raw UTC timestamp	UX	
 2050	CLOSED	Production		'delete the first two reminders' with no list on screen says 'There's no number 1'; confirms call one object 'todo' and 'reminder'	UX	
 2047	CLOSED	Production		'list my projects' (the card's S3 phrase) classifies manage_portfolio 3 of 3 on an empty-projects account; the floor then narrates 'I don't have your projects list in front of me'	bug	
-2045	CLOSED	Production	PROD-HONESTY - Failed reads say so	Integrations card after a successful Test keeps 'Not checked yet. Press Test.' and '0 of 4 healthy' until reload; the reloaded line is a raw ISO UTC stamp	UX	
+2045	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Integrations card after a successful Test keeps 'Not checked yet. Press Test.' and '0 of 4 healthy' until reload; the reloaded line is a raw ISO UTC stamp	UX,journey:connect-a-source,promise:E4-never-lies,surface:web	
 2046	CLOSED	Production		Ordinal todo deletes need a list shown first ('There's no number 1' with 2 reminders), and the two delete confirms differ ('Delete todo:' vs 'Delete the reminder')	UX	
 2051	CLOSED	Production		'what issues are assigned to me?' offers to look instead of answering (unarmed offer, 'let me pull that up' with nothing pulled)	UX	
 2052	CLOSED	Production		Repeat 'show my open issues' in the same chat kept the old count (9) after five issues were unassigned; a new chat was right (floor composing from history, #2042 class)	bug	
-2053	OPEN	Production		Stale grant with a PAT serving: the Integrations card has no Reconnect button, and pressing Test prints the 'needs re-authorizing' line twice	UX	
+2053	OPEN	Production		Stale grant with a PAT serving: the Integrations card has no Reconnect button, and pressing Test prints the 'needs re-authorizing' line twice	UX,journey:connect-a-source,surface:web	
 2054	CLOSED	MVP		Intent cache shares one mutable context dict across every hit, so per-turn state and the principal leak between turns and users	architecture,bug	
 2055	CLOSED	Production		ADR-075 OQ-3 first-response notice shows under data answers; CXO/Arch: show it only on the next greeting or help reply, never under a list or result	UX	
-2057	OPEN	Production	PROD-CONVO - Conversation Reliability	Surface 1 claims 'how do I archive my project Foo?' as PORTFOLIO/manage_portfolio, and the legacy branch archives it		
+2057	OPEN	Production	PROD-CONVO - Conversation Reliability	Surface 1 claims 'how do I archive my project Foo?' as PORTFOLIO/manage_portfolio, and the legacy branch archives it	journey:get-work-done,promise:T4-asks-before-acting,surface:mcp,surface:web	
 2056	OPEN	Production		Preference hook never fires on a cache hit or a context-free miss (reads user_id from an empty context); context_assembler's own cache unchecked for the #2054 sharing pattern	bug	
 2058	CLOSED	Ongoing		check_intent_bypasses.py reads an empty route body: find('@get') never matches '@router.get', so its intent check can't pass		
-2059	CLOSED	MVP		Privacy copy says logs keep at most a fingerprint, but 9 classifier/standup sites log a 50-char message prefix (one at WARNING)		
-2060	CLOSED	MVP		In-app Chroma PersistentClient is built without anonymized_telemetry=False, so Chroma's default posthog telemetry can run from the app process ('no analytics' claim on /privacy)	bug	
-2062	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Terms of Service published before Production, every commitment mapped to a mechanism (xian's Option 2, 10-16)		
-2063	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Legal review of Terms before any outside user beyond the design partners (xian 10-16: 'a good cutoff')		
-2061	CLOSED	MVP		Uploaded-file writes fall back to plaintext in production when ENCRYPTION_MASTER_KEY is unset (the encrypted columns refuse; #1387 asymmetry)	architecture	
+2059	CLOSED	MVP		Privacy copy says logs keep at most a fingerprint, but 9 classifier/standup sites log a 50-char message prefix (one at WARNING)	promise:T2-who-sees-it	
+2060	CLOSED	MVP		In-app Chroma PersistentClient is built without anonymized_telemetry=False, so Chroma's default posthog telemetry can run from the app process ('no analytics' claim on /privacy)	bug,promise:T2-who-sees-it	
+2062	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Terms of Service published before Production, every commitment mapped to a mechanism (xian's Option 2, 10-16)	journey:invited,surface:web	
+2063	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Legal review of Terms before any outside user beyond the design partners (xian 10-16: 'a good cutoff')	journey:invited	
+2061	CLOSED	MVP		Uploaded-file writes fall back to plaintext in production when ENCRYPTION_MASTER_KEY is unset (the encrypted columns refuse; #1387 asymmetry)	architecture,promise:T1-your-work-is-yours	
 2064	CLOSED	MVP		The live /privacy promise ('we'll delete your account and everything in it within 14 days') has no erasure path: a naive user delete fails on 13 FKs and orphans 13 tables	architecture	
 2065	CLOSED	MVP		UX: no way to hide or delete a chat; Settings 'Export/delete data' promises actions the page does not offer	UX	
 2066	CLOSED	Production		Integrations card: the OAuth-leg GitHub card carries no last_check, so #2045's 'Healthy. Checked just now.' / 'Last checked at …' line never shows for an OAuth-connected account	UX	
@@ -1878,62 +1878,62 @@ issue	state	milestone	sprint	title	labels	blocked_by
 2071	CLOSED	MVP		Integrations Test result is host-global: one account's Test sets the status, error text and check time every other account sees, on the card and in chat		
 2072	CLOSED	MVP		[HONESTY] A STALE GitHub binding reads as 'not configured' to the radar and standup gate, so a revoked grant is silently skipped instead of disclosed (regression of #1965's served pass since #2029 marks the binding STALE)	bug	
 2073	CLOSED	Production		build_inversion_corpus_phase0.py has drifted behind hand edits to inversion_corpus_phase0.yaml (regenerating reverts a ruled row)	technical-debt	
-2074	OPEN	Production	PROD-HONESTY - Failed reads say so	Revoked Calendar/Slack tokens still read 'connected' on the four #2072 surfaces: extend needs-reconnecting to each integration's own auth-rejection state		
+2074	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Revoked Calendar/Slack tokens still read 'connected' on the four #2072 surfaces: extend needs-reconnecting to each integration's own auth-rejection state	journey:something-goes-wrong,promise:E4-never-lies,surface:web	
 2076	CLOSED	Production		Plain focus and standup replies don't say GitHub can't be read when the grant is revoked (failed source shown as empty)	UX	
 2075	CLOSED	Production		Integrations headline says All Systems Healthy for an OAuth-bound integration that has never been tested	UX	
 2077	CLOSED	MVP		Settings → GitHub token field may be filled with the saved Piper password (Chrome ignores autocomplete=off on password inputs)		
 2078	CLOSED	MVP		Setup wizard ends in 'Setup Failed' for every invited tester on alpha: /setup/complete is gated by require_setup_incomplete, so the account is created but keys are not stored and the button sticks on 'Creating…'	bug	
 2080	CLOSED	MVP		Empty-projects offer chain: after 'What would you like to call it?' the name reply falls to the floor, which improvises a consent question; 'Yes' then creates nothing and says so (xian, alpha 118241587e)	bug	
 2079	CLOSED	Production		Standup reply opens 'Good morning!' at any hour (hardcoded), seen at 4:29 PM on alpha while the page header says Good afternoon	bug	
-2081	CLOSED	Production		Admin Invites page: mint, list (masked), and revoke alpha invite codes from the signed-in admin account instead of fly ssh console		
+2081	CLOSED	Production		Admin Invites page: mint, list (masked), and revoke alpha invite codes from the signed-in admin account instead of fly ssh console	promise:T8-invite-code	
 2082	CLOSED	Production		A declarative add with no name ('I'd like to start a new project') asks consent for 'add project' before any name exists; CXO rules name first, then the one confirm		
 2083	CLOSED	Production		/health reports 'healthy' while the production database is unreachable (alpha login 500, release_command cannot connect) — add a DB ping to the health verdict		
-2087	OPEN	Production		Google OAuth consent screen is Internal user type: only Workspace accounts on PM's domain can connect Google Calendar; design partners will be refused. Decide External + publishing status + verification before 10-30		
+2087	OPEN	Production		Google OAuth consent screen is Internal user type: only Workspace accounts on PM's domain can connect Google Calendar; design partners will be refused. Decide External + publishing status + verification before 10-30	journey:connect-a-source,surface:web	
 2086	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Admin grant on Fly was never applied: migration a1599 keys on username 'dinp', which does not exist in the production users table; make the grant durable for the account xian named (mvp-tester)		
-2085	CLOSED	MVP		Production Postgres died inside a started machine (~05:25 PT 2026-10-19) and nothing restarted or alerted it for 4+ hours — restart policy and an alert on the pg check		
+2085	CLOSED	MVP		Production Postgres died inside a started machine (~05:25 PT 2026-10-19) and nothing restarted or alerted it for 4+ hours — restart policy and an alert on the pg check	promise:T6-restarts-and-outages	
 2088	CLOSED	Production		Setup wizard asks for the invite code at step 3 of 5 (after System Requirements and Connect Your AI); xian: the invite requirement belongs at the start; interim: invitations must say the code is asked at step 3	UX	
 2089	CLOSED	MVP	Beta Blockers - Hard Gates Only	Hosted setup wizard still shows the local System Requirements check (Docker, Postgres, Redis, Temporal) and the Temporal line always fails on alpha; skip or replace the step when running hosted	UX	
 2090	CLOSED	Production		MCP: backfill GitHub-context rows for PATs saved before the dual write (runbook 2b, after 1982)		
 2091	CLOSED	MVP	Beta Blockers - Hard Gates Only	Calendar in chat ignores a weekday target: "what's my agenda Thursday?" and "how about on Thursday?" answer "You have no meetings scheduled for today."	bug	
 2092	CLOSED	MVP	Beta Blockers - Hard Gates Only	Chat reads no events from a Google Calendar that Settings → Test reports healthy: "Do I have any meetings this week?" → "I didn't find any events in the calendar for the next 7 days" (to confirm: wrong calendar or credential, or an empty week)	bug	
-2093	OPEN	Production	PROD-HONESTY - Failed reads say so	"Is my calendar connected?" answers with the integrations setup boilerplate: lists all four as Connected, then "Popular integrations to connect" naming the same four, then setup guidance	UX	
+2093	OPEN	Production	PROD-HONESTY - Failed Reads Say So	"Is my calendar connected?" answers with the integrations setup boilerplate: lists all four as Connected, then "Popular integrations to connect" naming the same four, then setup guidance	UX,journey:connect-a-source,promise:E4-never-lies,surface:web	
 2094	CLOSED	MVP		"Add three todos for the launch: draft brief, book venue, send invites" is refused ("I didn't catch what you'd like me to add"); a list of todos in one message should create each	bug	
 2095	CLOSED	MVP		"What have I created this session?" says nothing was created right after a todo was added in that session: the session_activity ledger records issues and docs only, not todos	bug	
-2096	CLOSED	MVP	Beta Blockers - Hard Gates Only	No way to send feedback from inside the app: card A6 (P5 'find your way') found Todos and Projects in seconds and no feedback path at all	UX	
+2096	CLOSED	MVP	Beta Blockers - Hard Gates Only	No way to send feedback from inside the app: card A6 (P5 'find your way') found Todos and Projects in seconds and no feedback path at all	UX,promise:T5-feedback-is-read	
 2097	CLOSED	MVP		[HONESTY] create-issue write lands but the reply says it couldn't verify; the retry creates a duplicate (served e801b1a309, #1386 scenario B)		
 2098	CLOSED	MVP		Pending issue draft: "change the title to X" is appended to the body, title unchanged (served e801b1a309, #1386 scenario B turn 3)		
-2099	OPEN	Production		Invites page: minting a code does not refresh the list (revoke does) on alpha e801b1a309; xian's read after the 350c8c4dc9 fix	UX	
+2099	OPEN	Production		Invites page: minting a code does not refresh the list (revoke does) on alpha e801b1a309; xian's read after the 350c8c4dc9 fix	UX,journey:invited,surface:web	
 2100	CLOSED	MVP	Beta Blockers - Hard Gates Only	Capability reply says connecting Notion 'would solve' summarizing Notion docs; chat has no Notion reader	UX	
 2101	CLOSED	MVP		Alpha app stalls for minutes within minutes of one scripted chat session starting (14:53 and 15:20 on 2026-10-19); cause unread		
 2102	CLOSED	Ongoing		aiohttp ClientSessions leak on the chat path: 40 "Unclosed client session" warnings in six minutes on alpha (PA's 2026-10-19 log read)		
-2103	OPEN	Production	PROD-HONESTY - Failed reads say so	Ten templates call an undefined global showToast() (121 call sites); toast.js exposes Toast.success/error, so their toasts throw		
+2103	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Ten templates call an undefined global showToast() (121 call sites); toast.js exposes Toast.success/error, so their toasts throw	journey:connect-a-source,surface:web	
 2105	CLOSED	MVP		[UX] Calendar settings 'Refresh List' on an unconnected calendar shows the signed-out modal while the session is valid (served ef907b2cd7)		
-2106	OPEN	Production		PAT-leg GitHub create fails with McpError unknown tool "issue_write", and the reply says it "may or may not have" landed		
+2106	OPEN	Production		PAT-leg GitHub create fails with McpError unknown tool "issue_write", and the reply says it "may or may not have" landed	journey:something-goes-wrong,promise:E2-judgment-artifacts,promise:E4-never-lies,surface:mcp,surface:web	
 2108	CLOSED	Production		Command palette 'Start private session' does nothing: PrivacyMode component is never loaded		
-2109	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Inversion and preclaim shadows spend the requesting user's own LLM key (the task inherits the request's key contextvar)	architecture	
+2109	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Inversion and preclaim shadows spend the requesting user's own LLM key (the task inherits the request's key contextvar)	architecture,journey:get-work-done,promise:T3-your-key,surface:mcp,surface:web	
 2111	CLOSED	Production		[HONESTY] A GitHub 404 on an issue read says "GitHub's MCP server is unreachable right now"		
 2112	CLOSED	MVP	Beta Blockers - Hard Gates Only	Calendar asks ("Check my calendar for conflicts", "Find time for a 1:1") are answered with today's date and time		
 2113	CLOSED	Production		"Update issue #123" is routed to the Notion document-update path ("Notion isn't configured yet")		
-2110	CLOSED	Production		[UX] Colon-and-quotes create ('Create a GitHub issue: "<title>" in <repo>') asks "What should the issue be about?" though a title was given (served 54a5ba990f)	UX	
-2116	OPEN	Production		[UX] "What makes you different?" asked a fifth time is answered with a question about motive, no answer (served 54a5ba990f, canonical Q5)	UX	
+2110	CLOSED	Production		[UX] Colon-and-quotes create ('Create a GitHub issue: "<title>" in <repo>') asks "What should the issue be about?" though a title was given (served 54a5ba990f)	UX,promise:E2-judgment-artifacts	
+2116	OPEN	Production		[UX] "What makes you different?" asked a fifth time is answered with a question about motive, no answer (served 54a5ba990f, canonical Q5)	UX,journey:get-work-done,surface:web	
 2117	CLOSED	MVP		[UX] Wizard key check says "Valid (claude-3.5 access confirmed)"; the model is a constant, nothing was checked (served 54a5ba990f)	UX	
 2119	CLOSED	Production		"Generate a status report" answers with a commit-count line ("commit_analysis report … 0 commits")		
 2120	CLOSED	Production		"Close completed issues" says it found no matching issues and asks for a number, without looking for completed ones		
 2121	CLOSED	Production		ANALYSIS reads (generate_report, analyze_commits, recent activity) use the native-PAT REST path and cannot read for an OAuth-only account		
 2122	CLOSED	Production		Document search on an Anthropic-only account: embeddings need an OpenAI key; what the partner sees is unverified		
-2123	CLOSED	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Activity reads (status report, analyze commits) use the deployment's GitHub token instead of the account's grant when an env token is set		
-2125	OPEN	Production	PROD-HONESTY - Failed reads say so	Setup wizard reports the server's encryption misconfiguration as a key 'Validation error' (staging: 'master_key must be 32 bytes (AES-256); got 48 bytes')		
+2123	CLOSED	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Activity reads (status report, analyze commits) use the deployment's GitHub token instead of the account's grant when an env token is set	journey:get-work-done,surface:mcp,surface:web	
+2125	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Setup wizard reports the server's encryption misconfiguration as a key 'Validation error' (staging: 'master_key must be 32 bytes (AES-256); got 48 bytes')	journey:set-up,promise:E4-never-lies,surface:web	
 2127	CLOSED	Production		OpenAI-only account: multi-intent classification is sent to provider 'anthropic' and the turn returns the missing-key refusal		
 2128	CLOSED	MVP		GitHub 'this week' reads miss closed work: 'What's my productivity this week?' says 'Issues/PRs Closed: 0' and 'What did we ship this week?' finds none, while the same repo shows 19 closed		
 2129	CLOSED	Production		Singular/plural slips in chat replies: "1 meetings", "1 items", "1 active projects"	UX	
-2130	OPEN	Production		Calendar asks: no weekday lookup; conflict check answers a multi-person question the user didn't ask	UX	
+2130	OPEN	Production		Calendar asks: no weekday lookup; conflict check answers a multi-person question the user didn't ask	UX,journey:get-work-done,surface:mcp,surface:web	
 2131	CLOSED	Production		LLM calls made for a user without user_id resolve the server's provider and consent list (8 sites; the class behind #2127)	architecture	
 2132	CLOSED	MVP		Document asks with no document in the chat are answered with repository metrics ("Analyze this document", "Compare these two documents")	close:pins-only	
-2133	OPEN	Production	PROD-CONVO - Conversation Reliability	"Create issues from this meeting's action items" gets a single-subject prompt: #886's batch decline is stranded by the create_ticket alias		
-2134	OPEN	Production	PROD-HONESTY - Failed reads say so	Semantic boundary detector: a failed check is cached as clear and recorded as a pass (48/63 turns off, unseen, on PA's OpenAI run)	architecture	
-2135	OPEN	Production		Trust stage never progresses: no turn path records an interaction, so every account stays at Stage 1 and stage-gated features are unreachable		
+2133	OPEN	Production	PROD-CONVO - Conversation Reliability	"Create issues from this meeting's action items" gets a single-subject prompt: #886's batch decline is stranded by the create_ticket alias	journey:get-work-done,surface:mcp,surface:web	
+2134	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Semantic boundary detector: a failed check is cached as clear and recorded as a pass (48/63 turns off, unseen, on PA's OpenAI run)	architecture	
+2135	OPEN	Production		Trust stage never progresses: no turn path records an interaction, so every account stays at Stage 1 and stage-gated features are unreachable	journey:come-back,surface:web	
 2137	CLOSED	Production		Stale-PR and list-PR answers count zero PRs on the native-PAT fallback: the filter reads a pull_request key neither open-issue path provides	close:served	
-2139	OPEN	Production		"Create a doc from this conversation" and "Synthesize these sources" on an OpenAI-only account reply with the internal string "Content type is required for content generation."		
+2139	OPEN	Production		"Create a doc from this conversation" and "Synthesize these sources" on an OpenAI-only account reply with the internal string "Content type is required for content generation."	journey:something-goes-wrong,surface:web	
 2140	CLOSED	Production		"What changed since yesterday?" says 'No activity detected' without saying it checked only Piper's own records, not the repo (1386 Q29)		
 2142	CLOSED	MVP		"Tell me more about the GitHub integration" attributes the user's calendar events to their repo and lists capabilities from model recall	UX	
 2143	CLOSED	Production		"What changed in the past hour?" reads an empty window: the parser returns 0 days, so since_time is now and nothing can be found		
@@ -1941,31 +1941,32 @@ issue	state	milestone	sprint	title	labels	blocked_by
 2144	OPEN	Ongoing		Alpha health watch: failing		
 2145	OPEN	Production	PROD-CONVO - Conversation Reliability	Router and classifier calls send the full ~3.3k-token catalog uncached: enable Anthropic prompt caching on the static prefix		
 2146	CLOSED	Production		Alpha Postgres recovery waits on two human presses (dispatch and alpha-db approval): auto-dispatch from the health watch and drop the required reviewer	close:served	
-2147	OPEN	Production	PROD-HONESTY - Failed reads say so	"show all events" answers with today's meeting time only and omits the week's other events, without saying it covered today		
+2147	OPEN	Production	PROD-HONESTY - Failed Reads Say So	"show all events" answers with today's meeting time only and omits the week's other events, without saying it covered today	journey:get-work-done,promise:E4-never-lies,surface:web	
 2148	CLOSED	MVP		Calendar connect says 'Calendar Connected' even when the user left Google's calendar box unticked		
-2149	OPEN	Production	PROD-CONVO - Conversation Reliability	Router catalog size: single op or example additions move unrelated rows; decide a catalog shape before more ops are added		
-2150	OPEN	Production	PROD-HONESTY - Failed reads say so	Calendar: a later revoke of calendar access in the user's Google account leaves Settings saying connected until Test runs		
-1918	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	MCP: 'Connected apps' in Settings, so users can see and revoke ChatGPT/Claude access from Piper		
-2107	OPEN	Production	PROD-HONESTY - Failed reads say so	Chat says 'usually a brief outage — try again in a moment' when the cause is the Anthropic workspace usage limit (locked until a dated reset); the 400's text names the case		
+2149	OPEN	Production	PROD-CONVO - Conversation Reliability	Router catalog size: single op or example additions move unrelated rows; decide a catalog shape before more ops are added	promise:E5-one-authority,seam:catalog	
+2150	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Calendar: a later revoke of calendar access in the user's Google account leaves Settings saying connected until Test runs	journey:something-goes-wrong,promise:E4-never-lies,surface:web	
+1918	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	MCP: 'Connected apps' in Settings, so users can see and revoke ChatGPT/Claude access from Piper	journey:manage-my-data,surface:mcp,surface:web	
+2107	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Chat says 'usually a brief outage — try again in a moment' when the cause is the Anthropic workspace usage limit (locked until a dated reset); the 400's text names the case	journey:something-goes-wrong,promise:E4-never-lies,surface:web	
 2138	CLOSED	Production		Analyze an uploaded file: chat declines (and names Notion) one turn after it summarized the same file	UX,close:served	
-2151	OPEN	Production	PROD-HONESTY - Failed reads say so	Sweep: every reply that reads user data says 'none / 0 / not connected / can't see it' only on a verified read (failed, narrowed and not-performed reads say so)		
+2151	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Sweep: every reply that reads user data says 'none / 0 / not connected / can't see it' only on a verified read (failed, narrowed and not-performed reads say so)	journey:something-goes-wrong,promise:E4-never-lies,surface:web	
 2152	CLOSED	Production		comment_issue says 'Successfully added comment' when the native-path POST failed (a write claiming success)	bug,close:pins-only	
 2154	CLOSED	MVP		Settings preferences: a failed preferences read shows defaults, and Save writes them over the user's stored values (Slack, GitHub, Calendar, Notion; calendars list; Notion databases)	close:pins-only	
-2155	OPEN	Production	PROD-CONVO - Conversation Reliability	UX: "What's on my agenda?" with no calendar answers about meeting-time analysis	UX	
-2157	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Production DB: scheduled backups and retention, one timed restore drill on a short-lived copy (five proofs), master-key custody, and a recorded HA decision		
-2158	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Account deletion in product with a real purge, and a deletion record kept outside the snapshot (re-applied after any restore)		
-2159	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Export everything Piper holds for a user, in open formats (read against the owner-id inventory)		
-2160	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Support intake and the 'tell us' loop: one queue, a named owner, a response window the Terms can state		
-2161	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Incident notice to users: an in-app banner during an outage, an after-note, and prepared words for data loss		
+2155	OPEN	Production	PROD-CONVO - Conversation Reliability	UX: "What's on my agenda?" with no calendar answers about meeting-time analysis	UX,journey:get-work-done,surface:mcp,surface:web	
+2157	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Production DB: scheduled backups and retention, one timed restore drill on a short-lived copy (five proofs), master-key custody, and a recorded HA decision	journey:something-goes-wrong,promise:R1-backups-and-restore,seam:db-durability	
+2158	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Account deletion in product with a real purge, and a deletion record kept outside the snapshot (re-applied after any restore)	journey:manage-my-data,promise:R2-delete-account,surface:web	
+2159	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Export everything Piper holds for a user, in open formats (read against the owner-id inventory)	journey:manage-my-data,promise:E1-portable-context,promise:R3-export-everything,surface:web	
+2160	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Support intake and the 'tell us' loop: one queue, a named owner, a response window the Terms can state	journey:something-goes-wrong,promise:R4-support-loop,promise:T5-feedback-is-read,surface:web	
+2161	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Incident notice to users: an in-app banner during an outage, an after-note, and prepared words for data loss	journey:something-goes-wrong,promise:R5-incident-notice,surface:web	
 2162	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Staging instance for destructive tests and promotion rehearsal: synthetic data only, never restored from production, its own keys, a banner		
-2163	OPEN	Production		GitHub identity: one app/token model and whose token serves a read (ADR plus carrying it into the six issues)		
-2164	OPEN	Production		Waitlist sign-up with batch admission (after the inner-circle invitations)		
-2165	OPEN	Production		Per-account rate and abuse limits, with a user-facing line when a limit is hit		
-2156	CLOSED	Production		UX: Send feedback is a quiet footer link, and absent from the setup wizard and error pages	UX,close:pins-only	
-2166	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Todo/list/project Share: the UI sends user_to_share_with but the API requires user_id (422); with user_id the API answers 500	bug	
-2167	CLOSED	Production	PROD-HONESTY - Failed reads say so	UX (class 3): the API key Remove dialog says "we destroy our copy immediately"; backups keep it up to about five days	UX,close:served	
-2168	OPEN	Production	PUB - Public Beta	Plugin surface rubric: ratify CXO's v0.1 and run it per increment as the precondition for #1701-#1707		
-2169	CLOSED	Production	PROD-CONVO - Conversation Reliability	Chat delete: a list-item remove ask gets a confirmation for a different object (the prior turn's to-do)	close:pins-only	
-2170	OPEN	Production	PROD-CONVO - Conversation Reliability	Chat: remove an item from a list (a list-item rail), with exact-match arming and an id-bound confirm		
-2171	OPEN	Production	PROD-HONESTY - Failed reads say so	UX (class 3): Lists page card shows "Items: 0" for a list that holds items	UX	
-2172	OPEN	Production	PROD-HONESTY - Failed reads say so	GitHub Disconnect reports success when a credential copy failed to clear (each clear's failure is swallowed)	architecture	
+2163	OPEN	Production		GitHub identity: one app/token model and whose token serves a read (ADR plus carrying it into the six issues)	journey:connect-a-source,seam:github-identity,surface:mcp,surface:web	
+2164	OPEN	Production		Waitlist sign-up with batch admission (after the inner-circle invitations)	journey:invited,surface:web	
+2165	OPEN	Production		Per-account rate and abuse limits, with a user-facing line when a limit is hit	journey:something-goes-wrong,surface:web	
+2156	CLOSED	Production		UX: Send feedback is a quiet footer link, and absent from the setup wizard and error pages	UX,close:pins-only,journey:something-goes-wrong,promise:T5-feedback-is-read,surface:web	
+2166	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Todo/list/project Share: the UI sends user_to_share_with but the API requires user_id (422); with user_id the API answers 500	bug,journey:get-work-done,surface:web	
+2167	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	UX (class 3): the API key Remove dialog says "we destroy our copy immediately"; backups keep it up to about five days	UX,close:served,journey:manage-my-data,promise:E4-never-lies,promise:T3-your-key,surface:web	
+2168	OPEN	Production	PUB - Public Beta	Plugin surface rubric: ratify CXO's v0.1 and run it per increment as the precondition for #1701-#1707	promise:E6-surfaces,surface:mcp	
+2169	CLOSED	Production	PROD-CONVO - Conversation Reliability	Chat delete: a list-item remove ask gets a confirmation for a different object (the prior turn's to-do)	close:pins-only,journey:get-work-done,promise:T4-asks-before-acting,surface:web	
+2170	OPEN	Production	PROD-CONVO - Conversation Reliability	Chat: remove an item from a list (a list-item rail), with exact-match arming and an id-bound confirm	journey:get-work-done,surface:mcp,surface:web	
+2171	OPEN	Production	PROD-HONESTY - Failed Reads Say So	UX (class 3): Lists page card shows "Items: 0" for a list that holds items	UX,journey:get-work-done,promise:E4-never-lies,surface:web	
+2172	OPEN	Production	PROD-HONESTY - Failed Reads Say So	GitHub Disconnect reports success when a credential copy failed to clear (each clear's failure is swallowed)	architecture,journey:connect-a-source,promise:E4-never-lies,surface:web	
+2173	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Standup and Radar show every open GitHub issue as the person's own work when no GitHub username is saved; default to the signed-in login	architecture,journey:come-back,promise:E4-never-lies,surface:web	

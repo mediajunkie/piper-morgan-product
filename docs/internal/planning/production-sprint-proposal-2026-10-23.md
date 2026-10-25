@@ -3,7 +3,7 @@
 **Status: ORDER RATIFIED** (xian, 2026-10-23 17:54, via Exec: "I approve all 4 questions for me"; decisions.log). No dates; PPM proposes none.
 - **Order:** PUB, then H, D, C, then V, E, T, Doc, Dist.
 - **Q** is a standing share of every sprint. Its size is open until the CI ruling.
-- **H, D and V carry their own Sprint options (10-25):** xian added `PROD-HONESTY - Failed reads say so`, `PROD-DATA - Data Boundaries, Privacy & Terms` and `PROD-CONVO - Conversation Reliability` at 12:40 (60 options). PPM set every H, D and V row per item, closed rows included: H 29, D 31, V 32, 92 of 92 read back. This moved #1828 and #1011 off PROD-DESIGN, and D's five PROD-INFRA rows (#482, #1203, #1257, #1345, #1817) to PROD-DATA. The other sprints keep today's options.
+- **H, D and V carry their own Sprint options (10-25):** xian added `PROD-HONESTY - Failed Reads Say So` (xian renamed it to title case at 14:04, same option id), `PROD-DATA - Data Boundaries, Privacy & Terms` and `PROD-CONVO - Conversation Reliability` at 12:40 (60 options). PPM set every H, D and V row per item, closed rows included: H 29, D 31, V 32, 92 of 92 read back. This moved #1828 and #1011 off PROD-DESIGN, and D's five PROD-INFRA rows (#482, #1203, #1257, #1345, #1817) to PROD-DATA. The other sprints keep today's options.
 - **The 9 "Beta Blockers - Hard Gates Only" issues are re-labelled** per item (`assign-sprint-safely`; the Sprint option list is unchanged at 57):
   - #1522 and #1698 → PROD-TECHDEBT;
   - #1625, #1828 and #1907 → PROD-DESIGN;

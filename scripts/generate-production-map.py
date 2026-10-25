@@ -302,8 +302,8 @@ def main():
 
     # promise view
     w(
-        "<h2>Promise view</h2><p>Labels (<code>promise:&lt;id&gt;</code>) are not applied yet, so nearly every promise is red. "
-        "That is correct today.</p>"
+        "<h2>Promise view</h2><p>An issue backs a promise when its <code>promise:&lt;id&gt;</code> label is on it. "
+        "Red: an open issue still backs it. Amber: all closed, at least one not shown served. Green: all closed and served.</p>"
     )
     w(
         '<div class="scroll"><table><tr><th>Promise</th><th>Wording</th><th>Gate</th><th>Issues</th></tr>'
@@ -422,21 +422,41 @@ def main():
         "<code>close:pins-only</code> (any acceptance branch accepted on tests only, even if the healthy path was served; a closer who is unsure uses this, never close:served); unlabelled closes show grey (CXO rule, 2026-10-24).</p>"
     )
 
-    css = (
-        "body{font:15px/1.45 system-ui,sans-serif;margin:0 auto;max-width:1000px;padding:0 16px 40px;background:#fff;color:#1a1a1a}"
-        "a{color:#0a58ca}table{border-collapse:collapse;width:100%;margin:8px 0}th,td{border:1px solid #bbb;padding:4px 6px;text-align:left;vertical-align:top}"
-        ".scroll{overflow-x:auto}.big{font-size:1.4em;font-weight:700}.head{padding:8px 0}"
-        ".red,tr.red td{background:#fbd5d5;color:#5a0000}.red a{color:#7a0000}tr.green td{background:#d4edda;color:#0b3d17}tr.grey td{background:#e4e4e4}tr.amber td,.am{background:#ffe9a8;color:#4a3800}.gn{background:#d4edda;color:#0b3d17}.gy{background:#e4e4e4;color:#333}.chip{margin-right:6px;white-space:nowrap}"
-        ".done a{text-decoration:line-through;color:#777}.amber{background:#fff0c2;color:#4a3800;padding:6px}.iss{line-height:1.8}.iss span{margin-right:6px;white-space:nowrap}"
-        "@media(prefers-color-scheme:dark){body{background:#16181c;color:#e6e6e6}a{color:#7db3ff}th,td{border-color:#444}"
-        ".red,tr.red td{background:#5a1c1c;color:#ffd6d6}.red a{color:#ffb0b0}tr.green td{background:#1d4a2a;color:#d6f5de}tr.grey td,.gy{background:#333;color:#ddd}tr.amber td,.am{background:#5a4a10;color:#ffeab0}.gn{background:#1d4a2a;color:#d6f5de}"
-        ".done a{color:#888}.amber{background:#4a3d12;color:#ffeab0}}"
+    # Colour tokens: light on :root, dark under the OS preference unless the viewer chose light,
+    # and again under an explicit dark choice (the artifact viewer sets data-theme).
+    light = (
+        "--bg:#fbfbfa;--fg:#1c1d1f;--muted:#5f6368;--link:#0b57c2;--rule:#c9cbcf;"
+        "--red-bg:#f9d7d5;--red-fg:#5c0b07;--amb-bg:#fbe7ad;--amb-fg:#4a3800;"
+        "--grn-bg:#d5ecda;--grn-fg:#0b3d17;--gry-bg:#e6e6e3;--gry-fg:#34363a"
     )
+    dark = (
+        "--bg:#16181b;--fg:#e7e7e5;--muted:#a3a6ab;--link:#8bb8ff;--rule:#45484d;"
+        "--red-bg:#5a1d1a;--red-fg:#ffd9d6;--amb-bg:#55450f;--amb-fg:#ffeab0;"
+        "--grn-bg:#1d4a2a;--grn-fg:#d6f5de;--gry-bg:#33353a;--gry-fg:#dcdcdc;color-scheme:dark"
+    )
+    css = (
+        f":root{{{light}}}"
+        f"@media (prefers-color-scheme:dark){{:root:not([data-theme=light]){{{dark}}}}}"
+        f":root[data-theme=dark]{{{dark}}}"
+        "body{font:15px/1.45 system-ui,sans-serif;background:var(--bg);color:var(--fg)}"
+        ".wrap{margin:0 auto;max-width:1000px;padding-inline:16px;padding-block:8px 40px}"
+        "h1,h2{text-wrap:balance}a{color:var(--link)}"
+        "table{border-collapse:collapse;width:100%;margin:8px 0;font:inherit}"
+        "th,td{border:1px solid var(--rule);padding:4px 6px;text-align:left;vertical-align:top}"
+        ".scroll{overflow-x:auto}.big{font-size:1.4em;font-weight:700}.head{padding:8px 0}"
+        ".red,tr.red td{background:var(--red-bg);color:var(--red-fg)}.red a{color:var(--red-fg)}"
+        "tr.green td,.gn{background:var(--grn-bg);color:var(--grn-fg)}"
+        "tr.grey td,.gy{background:var(--gry-bg);color:var(--gry-fg)}"
+        "tr.amber td,.am{background:var(--amb-bg);color:var(--amb-fg)}"
+        ".amber{background:var(--amb-bg);color:var(--amb-fg);padding:6px}"
+        ".chip{margin-right:6px;white-space:nowrap}.done a{text-decoration:line-through;color:var(--muted)}"
+        ".iss{line-height:1.8}.iss span{margin-right:6px;white-space:nowrap}"
+    )
+    # A page fragment: the artifact host wraps it in its own document skeleton.
     doc = (
-        '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
-        f"<title>Production map {esc(date)}</title><style>{css}</style></head><body>\n"
+        f'<title>Production Map</title><style>{css}</style>\n<div class="wrap">\n'
         + "\n".join(P)
-        + "\n</body></html>\n"
+        + "\n</div>\n"
     )
     os.makedirs(os.path.dirname(out), exist_ok=True)
     open(out, "w", encoding="utf-8").write(doc)
