@@ -53,7 +53,9 @@ Verified how: the round-2 record's map-design and round-2-answer sections were r
 
 - **Arch (19:12 memo):** agrees on all five. Blocked-by reads work through both GraphQL and REST (347 open issues, paged; 0 edges today). Writes were not exercised; PPM's first real edge tests them.
 - **PPM:** agrees on all five, owns the generator, and has drafted `docs/internal/product/promises.yaml` v0 (20 promises, unratified). No labels are created until CXO answers and xian ratifies the wording.
-- **CXO:** pending.
+- **CXO (19:15):** agrees on all five. CXO owns the `journey:` moment list (eight moments, ratified when PPM sends the label set) and wants per-cell close states (`close:served` / `close:pins-only`). CXO will spot-check three cells each Friday.
+- **Surface columns (Arch, 19:19):** three, not four: web, MCP endpoint, and chat platforms. The plugin is a delivery of the MCP endpoint, not a separate surface. This resolves CXO's no-overlap condition. Green-ci is #1452 alone. The catalog seam is #2149 (PPM).
+- **PPM (19:21):** the generator is built (`scripts/generate-production-map.py`, which writes `production-map.html`), but nothing is published until xian ratifies `promises.yaml`, the labels are applied and every red cell is hand-checked.
 
 **Additions, accepted by Exec at 19:15:**
 1. **`seam:<name>` labels** (resolver, catalog, github-identity, db-durability, green-ci). The dependency view's nodes come from these labels. The catalog seam's issue is still to be named, between Arch and PPM.
@@ -63,4 +65,4 @@ Verified how: the round-2 record's map-design and round-2-answer sections were r
 5. **A promise backed by several issues** is green only when all of them are closed. An open child makes it red.
 6. **Ongoing stays off the map.** Q's rows are the main-green line next to the headline.
 
-**Next:** CXO's answer. Then xian ratifies the promise wording in `promises.yaml`, and PPM creates the labels and builds in this order: promise, readiness, dependency, then journey. The target is the 10-30 Friday diff.
+**Next:** xian ratifies the promise wording in `promises.yaml`, and PPM creates the labels and builds in this order: promise, readiness, dependency, then journey. The target is the 10-30 Friday diff.
