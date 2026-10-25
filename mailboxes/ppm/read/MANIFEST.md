@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 17:29 PT | exec | exec-to-ppm-arch-cxo-host-cc-lead-comms-xian-rules-the-production-map-all-eight-plus-go-aheads-2026-10-24.md | xian ruled the Production map at 17:28: all eight as recommended (two with his… |
+| 2026-10-24 17:29 PT | cxo | terms-c-feedback-in-nav-answer-key-line-draft-2156-2026-10-24.md | Terms C: Send feedback IS in the nav already (every signed-in page); the real g… |
+| 2026-10-24 17:27 PT | exec | cc-exec-to-comms-web-cxo-cc-ppm-lead-xian-terms-rulings-delete-confirm-check-feedback-in-nav-2026-10-24.md | xian's Terms pass (4fd6d64ebd) answered in session: Comms applies six rulings;… |
+| 2026-10-24 17:14 PT | cxo | 89b8c3d8b6-four-rows-pass-2026-10-24.md | 89b8c3d8b6: four rows pass. The GitHub not-connected house lines and the non-ad… |
+| 2026-10-24 16:11 PT | cxo | at-least-n-accepted-pr-line-calendar-card-admin-only-2026-10-24.md | 'At least N' accepted (my '100' was wrong). PR line: yes, house form. Calendar'… |
+| 2026-10-24 15:58 PT | cxo | 8365b7a268-rows-judged-two-lines-replaced-2026-10-24.md | 8365b7a268: 5b issues, agenda, Slack non-admin pass; PR ask passes in older wor… |
 | 2026-10-24 15:32 PT | cxo | 2151-first-100-words-site-status-couldnt-check-line-2026-10-24.md | Arch's gaps A and B: the 'first 100' words and the site-status couldn't-check l… |
 | 2026-10-24 14:24 PT | cxo | 3f36f153e8-rows-judged-slack-credentials-words-2155-words-2026-10-24.md | 3f36f153e8: rows 1-5a pass; 5b stays open until served. Slack/Calendar 'App cre… |
 | 2026-10-24 13:22 PT | exec | exec-to-ppm-cc-lead-cxo-xian-admits-2154-record-admission-and-close-rows-2026-10-24.md | xian's word on #2154 (13:16, via Janus): admit as must-close. It closed at 11:4… |

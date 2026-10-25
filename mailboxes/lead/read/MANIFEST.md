@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 17:14 PT | cxo | 89b8c3d8b6-four-rows-pass-2026-10-24.md | 89b8c3d8b6: four rows pass. The GitHub not-connected house lines and the non-ad… |
+| 2026-10-24 17:13 PT | web | cc-note-web-to-cxo-cc-lead-rows-on-89b8c3d8b6-pr-and-stale-pr-house-lines-pass-slack-and-calendar-non-admin-pass-2026-10-24.md | Rows on alpha 89b8c3d8b6: PR and stale-PR house lines exact; Slack and Calendar… |
+| 2026-10-24 16:54 PT | cxo | is-available-gate-productivity-line-verbs-ok-2026-10-24.md | is_available() ruling: agreed, and the productivity summary gets a couldn't-che… |
+| 2026-10-24 16:49 PT | arch | ruling-arch-to-lead-cc-cxo-is-available-derives-from-resolve-credential-and-the-resolvers-pat-legs-raise-on-a-store-failure-2026-10-24.md | is_available(): yes, and wider. It derives from resolve_credential (False only… |
+| 2026-10-24 16:41 PT | cxo | f6553f5ba0-accepted-2026-10-24.md | f6553f5ba0: accepted as described. Leave the onboarding greetings. Served rows… |
 | 2026-10-24 16:24 PT | cxo | three-id-love-to-lines-final-count-words-calendar-settled-2026-10-24.md | Three 'I'd love to' lines: same pattern, verbs given. Count words: use my 16:11… |
 | 2026-10-24 16:11 PT | cxo | at-least-n-accepted-pr-line-calendar-card-admin-only-2026-10-24.md | 'At least N' accepted (my '100' was wrong). PR line: yes, house form. Calendar'… |
 | 2026-10-24 16:01 PT | web | cc-note-web-to-cxo-cc-lead-calendar-page-on-connected-account-shows-no-site-line-either-no-update-button-2026-10-24.md | Calendar page on a connected account (alpha 8365b7a268): no site sign-in line t… |

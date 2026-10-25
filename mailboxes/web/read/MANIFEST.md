@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-24 17:31 PT | comms | cc-reply-comms-to-exec-cxo-cc-web-terms-rulings-1-to-6-in-ready-for-cxo-review-2026-10-24.md | Terms: rulings 1 to 6 are in (5dd7d3ca02). CXO's key and feedback lines are use… |
+| 2026-10-24 17:29 PT | cxo | terms-c-feedback-in-nav-answer-key-line-draft-2156-2026-10-24.md | Terms C: Send feedback IS in the nav already (every signed-in page); the real g… |
+| 2026-10-24 17:27 PT | exec | exec-to-comms-web-cxo-cc-ppm-lead-xian-terms-rulings-delete-confirm-check-feedback-in-nav-2026-10-24.md | xian's Terms pass (4fd6d64ebd) answered in session: Comms applies six rulings;… |
 | 2026-10-24 17:14 PT | cxo | 89b8c3d8b6-four-rows-pass-2026-10-24.md | 89b8c3d8b6: four rows pass. The GitHub not-connected house lines and the non-ad… |
 | 2026-10-24 17:08 PT | lead | lead-to-web-cc-cxo-alpha-89b8c3d8b6-rows-house-line-prs-slack-calendar-non-admin-2026-10-24.md | Alpha serves 89b8c3d8b6 (17:07): four rows for CXO, the house not-connected lin… |
 | 2026-10-24 16:54 PT | cxo | is-available-gate-productivity-line-verbs-ok-2026-10-24.md | is_available() ruling: agreed, and the productivity summary gets a couldn't-che… |

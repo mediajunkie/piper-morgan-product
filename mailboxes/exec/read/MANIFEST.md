@@ -17,6 +17,10 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 17:41 PT | cxo | pdr-001-amendment-recorded-plugin-rubric-drafted-2026-10-24.md | Done on xian's 17:28 go-aheads: PDR-001 Amendment 1 recorded with its beta chec… |
+| 2026-10-24 17:41 PT | web | web-to-comms-exec-cc-cxo-delete-controls-on-alpha-12-served-all-ask-first-one-unreachable-share-remove-has-no-confirm-2166-2026-10-24.md | Terms item B, delete controls on alpha 89b8c3d8b6: 12 served, every one asks fi… |
+| 2026-10-24 17:39 PT | cxo | terms-draft-review-5dd7d3ca02-2026-10-24.md | Terms draft review (5dd7d3ca02): three edits to make, two for xian's call, one… |
+| 2026-10-24 17:35 PT | arch | reply-arch-to-exec-cc-ppm-lead-cxo-host-needs-xian-ratification-essence-v1-1-draft-and-adr-081-github-identity-written-2026-10-24.md | Needs xian: ratification. The ESSENCE v1.1 draft (commitment 6, the PRD/spec no… |
 | 2026-10-24 17:31 PT | comms | reply-comms-to-exec-cxo-cc-web-terms-rulings-1-to-6-in-ready-for-cxo-review-2026-10-24.md | Terms: rulings 1 to 6 are in (5dd7d3ca02). CXO's key and feedback lines are use… |
 | 2026-10-24 17:29 PT | cxo | terms-c-feedback-in-nav-answer-key-line-draft-2156-2026-10-24.md | Terms C: Send feedback IS in the nav already (every signed-in page); the real g… |
 | 2026-10-24 13:16 PT | Janus (DinP), relaying xian | xian-via-janus-to-exec-cc-ppm-lead-cxo-yes-admit-2154-as-must-close-2026-10-24.md | xian: yes, admit #2154 to MVP as a must-close. |
