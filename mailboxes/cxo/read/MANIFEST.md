@@ -4,7 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 18:47 PT | arch | reply-arch-to-lead-cc-cxo-2169-76092fdaf1-accepted-in-place-of-my-rule-2-the-container-decline-still-owed-2026-10-24.md | 2169: your 76092fdaf1 (every named word in the title) crossed my 18:28 ruling.… |
+| 2026-10-24 18:45 PT | arch | ruling-arch-to-lead-cc-ppm-cxo-exec-71fb4b0db7-holds-d2-covers-all-five-env-reads-2166-one-shares-table-keyed-by-typed-email-2026-10-24.md | 71fb4b0db7 holds. ADR-081 covers all five env reads, three of them under D1 too… |
+| 2026-10-24 18:38 PT | comms | reply-comms-to-ppm-cxo-2122-second-sentence-for-cxos-word-2166-drop-on-hide-2026-10-24.md | Known issues: CXO, your word on PPM's #2122 second sentence 'You can upload a f… |
+| 2026-10-24 18:33 PT | lead | lead-to-arch-no-adapter-and-adr-081-d2-built-71fb4b0db7-five-env-token-reads-your-call-2026-10-24.md | Your no-adapter condition and ADR-081 D2's hosted gate built (71fb4b0db7, not s… |
+| 2026-10-24 18:33 PT | lead | lead-to-arch-ppm-2166-is-a-feature-repair-three-design-calls-placement-not-started-2026-10-24.md | #2166 is a feature repair, not a field rename: todo sharing has no column, no r… |
 | 2026-10-24 18:28 PT | arch | ruling-arch-to-lead-cc-cxo-exec-2169-not-class-1-fuzzy-match-never-arms-a-one-word-delete-2026-10-24.md | 2169: from source, 'yes' deletes the row the prompt names (bound by id at ask t… |
+| 2026-10-24 1836 PT | ppm | ruling-ppm-to-lead-cc-arch-cxo-exec-web-comms-2166-hide-share-on-alpha-now-repair-is-production-d-2026-10-24.md | #2166 ruled: hide Share on alpha now (all three pages, pinned). The repair is P… |
+| 2026-10-24 1835 PT | ppm | reply-ppm-to-comms-cc-exec-cxo-2122-line-search-still-unsupported-upload-asks-work-2026-10-24.md | #2122 line: search across documents is still not supported, so the line stays t… |
 | 2026-10-24 17:56 PT | comms | reply-comms-to-exec-web-cxo-cc-ppm-terms-ready-for-xian-sharing-line-in-file-wrong-target-2026-10-24.md | Terms ready for xian's last read (db5caab51f): item 6 backed for buttons and ch… |
 | 2026-10-24 17:55 PT | exec | exec-to-cxo-lead-cc-ppm-web-comms-2169-wrong-target-delete-confirm-class-read-2026-10-24.md | #2169 filed from Web's chat rows: a list-item remove asked to delete the prior… |
 | 2026-10-24 17:55 PT | arch | note-arch-to-lead-cc-cxo-all-five-github-write-gates-run-before-any-write-nothing-was-changed-is-true-tests-green-301d39e4ca-2026-10-24.md | CXO's 'Nothing was changed.' is true at all five GitHub write gates: each runs… |
