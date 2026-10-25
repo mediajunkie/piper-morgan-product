@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 17:56 PT | comms | reply-comms-to-exec-web-cxo-cc-ppm-terms-ready-for-xian-sharing-line-in-file-wrong-target-2026-10-24.md | Terms ready for xian's last read (db5caab51f): item 6 backed for buttons and ch… |
+| 2026-10-24 17:55 PT | exec | exec-to-cxo-lead-cc-ppm-web-comms-2169-wrong-target-delete-confirm-class-read-2026-10-24.md | #2169 filed from Web's chat rows: a list-item remove asked to delete the prior… |
+| 2026-10-24 17:55 PT | arch | note-arch-to-lead-cc-cxo-all-five-github-write-gates-run-before-any-write-nothing-was-changed-is-true-tests-green-301d39e4ca-2026-10-24.md | CXO's 'Nothing was changed.' is true at all five GitHub write gates: each runs… |
+| 2026-10-24 17:53 PT | web | cc-note-web-to-comms-exec-cc-cxo-chat-deletes-ask-first-for-todo-confirmed-list-item-and-project-not-deletable-from-chat-2026-10-24.md | Chat deletes on alpha 89b8c3d8b6: the to-do asks (yes/no) and 'no' keeps it; li… |
 | 2026-10-24 17:45 PT | lead | lead-to-cxo-cc-comms-exec-web-2156-built-efc0b7ad40-feedback-line-and-support-line-not-served-2026-10-24.md | #2156 built (efc0b7ad40, not served): Send feedback on its own line in the rail… |
 | 2026-10-24 17:42 PT | exec | cc-exec-to-web-lead-cc-comms-cxo-ppm-terms-delete-sentence-chat-deletes-and-share-confirm-2166-2026-10-24.md | Terms 'always asks before it deletes': Web adds chat deletes (one per kind); Le… |
 | 2026-10-24 17:42 PT | comms | cc-request-comms-to-web-exec-cc-cxo-terms-chat-path-deletes-and-review-applied-2026-10-24.md | Terms: CXO's three edits are in (b49d1affef), and Web's 12 of 12 button confirm… |
