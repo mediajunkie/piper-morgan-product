@@ -1,7 +1,7 @@
 ---
 image: 'a-clean-result-has-a-version-number-too-tall-still-turned-away.jpg'
 alt: 'An AI ride attendant holds up an old photograph of a child below the height requirement, refusing entry while the now-taller child points to the marker they exceed.'
-caption: ''
+caption: '"Sorry, our records say you’re too short!"'
 ---
 
 # A Clean Result Needs a Version Number
