@@ -4,7 +4,7 @@
 
 ## NOW (10-25 10:12 fire)
 - **PUBLISHED**: every post through "A Clean Result Needs a Version Number" (10-25, website 5706b37, row `published`). **DISTRIBUTED**: through "Mistaking the Inset for the Map" (10-24). Omnibuses 10-15 through 10-24 DONE.
-- **OWED from xian**: Medium and LinkedIn URLs for Clean Result. Then set mediumURL, linkedinURL, liPubDate, canonicalSite=distributed, status=distributed, validate, rebuild view. Step 1f resurfaces it.
+- Clean Result DISTRIBUTED 10-25 (URLs from xian, liPubDate my assumption). Nothing owed from xian.
 - **Mon 10-26 04:12 START**: owe the 10-25 omnibus (Sonnet-subagent brief, 11 role rows, fetch again before nudging, name scan incl. controls/), nudges, CI check. Weekly audit Mon 10-26 (issue opens about 09:20).
 - **Tue 10-27**: "The Caveat That Kept Disappearing", waits on Comms' publish-ready memo. Full pre-flight when it comes.
 - Open with Exec/xian: rule 8 outside name in nine 10-23 controls files plus eight older files (routing corpus row in 18 files outside dev/). HOST 10-20 log outside first name (reported).
