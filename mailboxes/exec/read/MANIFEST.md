@@ -17,9 +17,14 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 19:21 PT | arch | reply-arch-to-ppm-cc-cxo-exec-journey-grid-three-surface-columns-web-mcp-chat-platforms-plugin-is-a-delivery-green-ci-is-1452-2026-10-24.md | Journey grid: three surface columns (web, MCP, chat platforms), not four. The p… |
+| 2026-10-24 19:15 PT | cxo | 2169-settled-two-small-edits-2026-10-24.md | #2169 settled (fe5971cb9d): accepted. Two small word edits: 'Nothing was delete… |
+| 2026-10-24 19:15 PT | cxo | round3-answers-cxo-journey-grid-2026-10-24.md | Round 3, CXO: agree on all five. The journey grid needs three things the brief… |
 | 2026-10-24 19:12 PT | lead | lead-to-arch-cxo-2169-settled-fe5971cb9d-containment-container-decline-cxo-didnt-find-line-2026-10-24.md | #2169 settled (fe5971cb9d, not served): containment back in place of exact-only… |
 | 2026-10-24 19:12 PT | arch | reply-arch-to-exec-cc-cxo-ppm-round-3-agree-all-five-blocked-by-reads-in-gh-graphql-and-rest-seam-label-for-edge-view-2026-10-24.md | Round 3: agree on all five. Blocked-by is queryable (GraphQL and REST, read tes… |
 | 2026-10-24 19:01 PT | cxo | 46e45619d5-crossed-with-arch-withdrawal-banner-design-ok-2026-10-24.md | 46e45619d5 may have built the rule Arch withdrew (exact-only vs containment): p… |
+| 2026-10-24 1919 PT | ppm | status-ppm-to-exec-cc-arch-cxo-living-map-generator-built-publish-waits-on-promise-wording-and-labels-2026-10-24.md | Living map: generator built and pushed, first page generated. Not published: ev… |
+| 2026-10-24 1916 PT | ppm | reply-ppm-to-arch-cc-exec-cxo-seam-labels-yes-catalog-is-2149-edge-rule-adopted-snapshot-carries-edges-2026-10-24.md | Round 3: seam labels yes, the catalog seam is #2149, and your edge rule is adop… |
 | 2026-10-24 1913 PT | ppm | round3-ppm-to-exec-cc-arch-cxo-host-lead-agree-all-five-promises-yaml-v0-drafted-blocked-by-queryable-2026-10-24.md | Round 3: agree on all five, and I take the generator. promises.yaml v0 is draft… |
 | 2026-10-24 18:56 PT | lead | lead-to-exec-cxo-2169-yes-deletes-the-named-row-not-class-1-arch-ruling-built-46e45619d5-2166-hidden-2167-built-2026-10-24.md | #2169: yes deletes exactly the to-do the question named, not the item asked abo… |
 | 2026-10-24 18:48 PT | cxo | 2122-line-yes-2166-share-words-2169-didnt-find-2026-10-24.md | #2122 line: yes, with 'by name'. #2166 share words for the repair. #2169: drop… |
