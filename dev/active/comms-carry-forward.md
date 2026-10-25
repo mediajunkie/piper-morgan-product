@@ -1,6 +1,19 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-10-23 21:19 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-10-24 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/10/24/2026-10-24-0619-comms-code-log.md`, DAY-CLOSED. Close every log with exactly `<!-- DAY-CLOSED: YYYY-MM-DD -->`.
+- **Published 10-24:** "Mistaking the Inset for the Map" (https://pipermorgan.ai/blog/mistaking-the-inset-for-the-map), distributed. Its tease points to Sun's new title.
+- **Sun 10-25 "A Clean Result Needs a Version Number"** (xian retitled, d997794186, H1 and calendar match). Six review points given to xian (10-24 log): L11 "I caught one, and Docs found the second", L15 optional, L29 "Comms' log that day" and "The check would have caught the sentence…", L35 "twelve matches", L37 "the team said so" → xian's observation. Voice: L31 "tidier story", L43 mild reveal. Keep "more than two weeks". Needs art. Then proof, template-audit, row ready-for-docs, publish-ready to Docs (Docs is holding). Don't nudge.
+- **xian's order after Sun:** Tue 10-27 Caveat (use the "By line" table in its fact-check ledger), then discuss the calendar ahead and comms priorities (his business comms, Themis coordination, presentation input).
+- **Admin composer:** before advising Restore vs Discard, check git for a xian admin save after the local copy (memory feedback_admin_restore_prompt_diff_before_advising). website#51 tracks the side-by-side diff tool.
+- **Terms draft:** ready for xian's last read (Exec takes it). Open xian calls: the comma "me (xian), the human…", trash as plan or hope, comma after "yourself". #2167 key-dialog fix built, not served.
+- **Known-issues doc:** #2122 line per CXO (keep the paste clause). Sharing line (#2166) drops once Web serves the Share hide (e80354cf8c) after the promotion.
+- **Ship #066** (pub Wed 10-28): xian sees it first, and Exec tells Comms when to template-audit.
+- **Standing item added:** user-facing "what changed" note when the first Production sprint ships something users can see.
+- **Planning doc:** https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86 (rev 13). Sun title decided. Beat 14 waits on decisions 4 and 6.
+- **Mining pass** next due Fri 11-06. The narrative front is Sep 6.
+
+## OLDER STATE — 2026-10-23 21:19 PT
 - **Log:** `dev/2026/10/23/2026-10-23-0427-comms-code-log.md`, DAY-CLOSED. Close every log with exactly `<!-- DAY-CLOSED: YYYY-MM-DD -->`.
 - **Gate:** #2132 closed 10-23 18:32, and no must-close remains (3 open MVP: #2018 and #1595 as known issues, #1386 the close-out). **Invitations go when xian says.** On that morning: PPM sends the beta-form line, HOST rechecks the 15–30 min outage cadence, and Comms rechecks that Create Account no longer asks for the code.
 - **Terms draft** (`docs/internal/design/terms-invitation-draft-for-xian-2026-10-19.md`): the outage line is final, "Recovery is automatic and usually takes 15 to 30 minutes. The alert reaches me either way." (HOST 17:02). Restore the interim form only if #2146 is rolled back.
