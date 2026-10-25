@@ -428,3 +428,15 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Its text quotes retention as a number tied to F1, following HOST's rule: whoever changes retention changes the promise in the same change.
   - C6: Exec, HOST and Arch are on the Readiness lane (only Terms-backed items gate); CXO leans Ongoing.
   - F28: xian's word on his own PoC install, via Exec.
+
+## 2026-10-24 21:33 STOP: day-close (carry into 10-25, Sunday)
+
+- **Gate: 3 open MVP** (#2018, #1595, #1386). **Must-close: none.** #2167 closed served before admission, so there's no ledger row. #2154's admission and close rows are written.
+- **Waits on xian (via Exec):**
+  - ratify `docs/internal/product/promises.yaml` (20 promises; E6 waits on ESSENCE v1.1). Then create the `promise:` and `seam:` labels and apply promise, seam, journey and surface labels by reading each body. Hand-check every red cell, then publish `production-map.html` as one artifact link;
+  - the 3 Sprint options (PROD-HONESTY, PROD-DATA, PROD-CONVO). Then relabel H, D and V per item from a fresh snapshot;
+  - F28 (#1242, #1244, #1245): his PoC install;
+  - the invitation morning: recheck no Class 1 or 2 open, send Comms the beta-form line, recheck checklist rows and the #2122 line (search unsupported; upload works). Comms can drop the sharing line (CXO 20:21: Share hidden, pass).
+- **Friday 10-30:** first since-last diff against `dev/snapshots/project-board-2026-10-24.tsv`; take a fresh snapshot first.
+- **Watch:** #2171 (H, Lists "Items: 0"), Lead's provider display-name nit on #2167's dialog (not a gate), #2166's D repair (Arch's shares table).
+- Main CI 12 of 12 green at 21:33; alpha healthy on `228f3cec14`.

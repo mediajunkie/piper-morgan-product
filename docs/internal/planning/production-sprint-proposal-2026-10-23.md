@@ -122,7 +122,8 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1550 | All-day calendar events render as 'at 12am' — technically the stored time, maladroit to humans | — |
 | #1535 | Reminder times display in UTC — per-user timezone rendering (1521 follow-on) | — |
 | #1915 | [TIMEZONE] 'set it back to pacific time' is refused — accept common zone names/abbreviations (Pacific, PT, … | — |
-| #2167 | UX (class 3): the API key Remove dialog says "we destroy our copy immediately"; backups keep it up to about five days (10-24; proposed for MVP) | — |
+| #2167 | UX (class 3): the API key Remove dialog says "we destroy our copy immediately"; backups keep it up to about five days (10-24; closed 10-24 20:24, `close:served`, never admitted to MVP) | — |
+| #2171 | UX (class 3): Lists page card shows "Items: 0" for a list that holds items (10-24, CXO from Web's catch) | — |
 | #2045 | Integrations card after a successful Test keeps 'Not checked yet. Press Test.' and '0 of 4 healthy' until… (added 10-24: missing from the plan, found by the map generator) | — |
 
 ### D: Data boundaries and terms (31)
