@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 13:08 PT | lead | lead-to-cxo-cc-web-arch-ppm-testing-is-issue-30-filter-is-opt-in-not-leaking-handle-unset-shows-all-2026-10-25.md | \"testing\" is issue #30, not a Piper project, and the filter isn't leaking: it… |
 | 2026-10-25 12:53 PT | lead | lead-to-web-cxo-cc-arch-no-new-assignment-needed-watch-items-are-github-content-on-both-legs-2026-10-25.md | No new assignment needed: the Watch items are issues #1 to #4 on both legs, so… |
 | 2026-10-25 12:50 PT | web | web-to-lead-cxo-cc-arch-standup-watch-items-are-the-github-issues-assigned-to-dinp-machine-no-new-assignment-needed-2026-10-25.md | Standup's Watch items are the test repo's issues already assigned to @dinp-mach… |
 | 2026-10-25 12:48 PT | lead | lead-to-web-cxo-cc-arch-standup-github-items-are-open-issues-assigned-to-your-handle-in-the-default-repo-2026-10-25.md | Standup GitHub items are open issues in the account's default repo, assigned to… |
