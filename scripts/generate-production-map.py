@@ -340,21 +340,36 @@ def main():
     for s in sorted(set(SEAMS) | {l[5:] for l in by_label if l.startswith("seam:")}):
         iss = sorted(by_label.get("seam:" + s, []))
         if iss:
-            w(f'<tr><td>{esc(s)}</td><td>{" ".join(a(n, cur) for n in iss)}</td></tr>')
+            cells = " ".join(
+                f'<span class="{"" if is_open(n) else "done"}">{a(n, cur)}</span>' for n in iss
+            )
+            w(f"<tr><td>{esc(s)}</td><td>{cells}</td></tr>")
         else:
             w(f'<tr class="red"><td>{esc(s)}</td><td>empty seam</td></tr>')
     w("</table>")
-    edges = sorted((n, b) for n in rc for b in cur[n]["edges"] if b in rc)
+    edges = sorted((n, b) for n in cur for b in cur[n]["edges"] if n in rc or b in rc)
+
+    def end(n):
+        if n in rc:
+            return f'<span class="{"" if is_open(n) else "done"}">{a(n, cur)}</span> ({esc(rc[n])})'
+        ms = cur[n]["milestone"] if n in cur else "not in snapshot"
+        return f"{a(n, cur) if n in cur else '#%d' % n} ({esc(ms or 'no milestone')})"
+
     if edges:
-        w("<p>Edges among Production issues (blocked &rarr; blocker):</p><ul>")
+        w(
+            "<p>Recorded blocked-by edges touching Production (blocked &rarr; blocker, row or milestone in brackets). "
+            "Red: backward (the blocker sits in a later row).</p><ul>"
+        )
         for n, b in edges:
-            bk = order.get(rc[b], 0) > order.get(rc[n], 0)
+            bk = n in rc and b in rc and order.get(rc[b], 0) > order.get(rc[n], 0)
             w(
-                f'<li class="{"red" if bk else ""}">{a(n, cur)} &rarr; {a(b, cur)}{" (backward)" if bk else ""}</li>'
+                f'<li class="{"red" if bk else ""}">{end(n)} &rarr; {end(b)}{" (backward)" if bk else ""}</li>'
             )
         w("</ul>")
     else:
-        w("<p>No blocked-by edges among Production issues yet.</p>")
+        w(
+            "<p>No blocked-by edges recorded on GitHub yet (none recorded is not the same as none existing).</p>"
+        )
 
     # journey grid
     w(
