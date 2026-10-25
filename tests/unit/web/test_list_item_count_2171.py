@@ -55,3 +55,40 @@ def test_the_card_shows_a_count_only_when_a_number_arrived():
     assert "list.item_count || 0" not in src
     assert "typeof list.item_count === 'number'" in src
     assert "data.count || 0" not in src
+
+
+aiosqlite = pytest.importorskip("aiosqlite")
+
+
+@pytest.mark.asyncio
+async def test_the_count_reads_the_table_the_page_writes_and_reads():
+    """Web on alpha 45d6642da7: a list holding two items read "Items: 0", because the count
+    read ``list_items`` while the add-item route writes ``items``. Real rows this time, in
+    the table the route writes, and the same predicate the items panel reads with."""
+    from sqlalchemy import func, select
+    from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+
+    from services.database.models import ItemDB
+    from services.repositories.universal_list_repository import UniversalListRepository
+
+    engine = create_async_engine("sqlite+aiosqlite:///:memory:")
+    async with engine.begin() as conn:
+        await conn.run_sync(lambda c: ItemDB.__table__.create(c, checkfirst=True))
+    Session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    async with Session() as session:
+        for i, text in enumerate(["zz item a", "zz item b"]):
+            session.add(ItemDB(text=text, position=i, list_id="L1", item_type="item"))
+        session.add(ItemDB(text="other list", position=0, list_id="L2", item_type="item"))
+        await session.commit()
+
+        panel = await session.execute(select(func.count(ItemDB.id)).where(ItemDB.list_id == "L1"))
+        assert await UniversalListRepository(session).count_items("L1") == panel.scalar() == 2
+        assert await UniversalListRepository(session).count_items("L-empty") == 0
+    await engine.dispose()
+
+
+def test_the_add_route_and_the_items_read_use_the_counted_table():
+    """If the page's write or read moves to another table, the count must move with it."""
+    src = (ROOT / "web/api/routes/lists.py").read_text()
+    assert "ItemDB.from_domain(item)" in src
+    assert "select(ItemDB).where(ItemDB.list_id == list_id)" in src
