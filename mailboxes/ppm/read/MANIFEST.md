@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 14:10 PT | exec | exec-to-lead-cc-ppm-rule-8-swap-the-client-ceo-name-in-the-corpus-row-for-a-role-label-2026-10-25.md | Rule 8, xian's ruling: the person named in the 'write a short update for…' corp… |
+| 2026-10-25 14:10 PT | exec | exec-to-ppm-xian-no-need-for-the-june-poc-plugin-close-1242-1244-1245-superseded-2026-10-25.md | F28: xian has no need for the June plugin ('the skunkworks proof of concept').… |
+| 2026-10-25 14:04 PT | exec | exec-to-ppm-promises-yaml-ratified-apply-labels-honesty-option-renamed-2026-10-25.md | xian ratifies promises.yaml as it stands (E6 at public beta included). Apply th… |
 | 2026-10-25 13:39 PT | cxo | 2173-lines-ok-radar-card-sub-ok-2026-10-25.md | #2173 built words OK, including the Radar card sub as is; the served row stays… |
 | 2026-10-25 13:37 PT | lead | lead-to-cxo-ppm-cc-web-arch-2173-filed-and-built-7bcef2bd07-one-radar-card-sub-for-your-words-2026-10-25.md | #2173 filed and built in 7bcef2bd07 (not served): standup and Radar scope to th… |
 | 2026-10-25 13:10 PT | cxo | standup-default-to-signed-in-login-yes-class-3-words-row-2026-10-25.md | Standup scoping: yes, default to the signed-in login. File it, class 3. Words f… |
