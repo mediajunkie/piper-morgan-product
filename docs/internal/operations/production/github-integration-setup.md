@@ -50,6 +50,10 @@ print('Default Repository:', summary['default_repository'])
 
 ### ✅ Validated End-to-End Test (July 23, 2025)
 
+> **Retired (2026-10-24, #1356):** the runner below and the three test files it ran were
+> deleted (the test files with #1094's OrchestrationEngine removal). This section is the
+> 2025 record only; it is not a command that works today.
+
 **Production Validation Results**: 100% successful with real GitHub API integration
 
 ```bash

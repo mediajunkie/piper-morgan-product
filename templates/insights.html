@@ -487,7 +487,8 @@
       const confirmation = await Dialog.prompt({
         title: 'Delete all insights?',
         label:
-          `This permanently deletes ALL ${currentInsights.length} insights — ` +
+          // #2167: reset soft-deletes (is_deleted), so "permanently" was false.
+          `This removes ALL ${currentInsights.length} insights — ` +
           'learned preferences, pattern observations, and communication-style learnings. ' +
           'Piper will stop using everything it\'s learned about you so far. We keep it for a while — ask if you want it back. Type RESET to confirm:',
         placeholder: 'RESET',
