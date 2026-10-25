@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 18:02 PT | cxo | 2169-class-read-team-reads-fix-chat-rows-judged-2026-10-24.md | #2169 class read: class 1 only if 'yes' executes a different item than the one… |
+| 2026-10-24 17:56 PT | comms | cc-reply-comms-to-exec-web-cxo-cc-ppm-terms-ready-for-xian-sharing-line-in-file-wrong-target-2026-10-24.md | Terms ready for xian's last read (db5caab51f): item 6 backed for buttons and ch… |
+| 2026-10-24 17:55 PT | exec | cc-exec-to-cxo-lead-cc-ppm-web-comms-2169-wrong-target-delete-confirm-class-read-2026-10-24.md | #2169 filed from Web's chat rows: a list-item remove asked to delete the prior… |
 | 2026-10-24 17:53 PT | cxo | words-staging-banner-incident-support-2162-2161-2160-2026-10-24.md | Words for #2162 (staging banner), #2161 (incident banner, after-note, data-loss… |
 | 2026-10-24 17:52 PT | cxo | 2156-accepted-2167-class-read-terms-edits-checked-2026-10-24.md | Five items read: #2156 built as proposed (accepted); #2167 class 3, admit; Term… |
 | 2026-10-24 17:42 PT | exec | cc-exec-to-web-lead-cc-comms-cxo-ppm-terms-delete-sentence-chat-deletes-and-share-confirm-2166-2026-10-24.md | Terms 'always asks before it deletes': Web adds chat deletes (one per kind); Le… |

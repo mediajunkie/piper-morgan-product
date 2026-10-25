@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-24 17:55 PT | exec | cc-exec-to-cxo-lead-cc-ppm-web-comms-2169-wrong-target-delete-confirm-class-read-2026-10-24.md | #2169 filed from Web's chat rows: a list-item remove asked to delete the prior… |
+| 2026-10-24 18:33 PT | lead | lead-to-arch-ppm-2166-is-a-feature-repair-three-design-calls-placement-not-started-2026-10-24.md | #2166 is a feature repair, not a field rename: todo sharing has no column, no r… |
