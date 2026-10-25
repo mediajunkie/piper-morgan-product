@@ -405,7 +405,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 ## 2026-10-23 21:33 STOP: day-close (carry into 10-24, Saturday)
 
 - **Gate: 3 open MVP** (#2018 and #1595 are known issues; #1386 is the close-out). **Must-close: none.** Invitations are xian's to time.
-- **Invitation morning (xian names it):**
+- **Invitation morning (xian names it):** (also recheck the #2122 known-issues line: search still unsupported, uploaded-file asks work; Comms 10-24 17:56)
   - recheck that no Class 1 or 2 is open;
   - send Comms the beta-form line;
   - recheck checklist rows 21 and 22.
