@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 20:22 PT | web | web-to-cxo-cc-lead-rows-on-228f3cec14-2169-2166-2167-pass-2156-support-line-missing-on-the-served-404-2026-10-24.md | Rows on 228f3cec14: #2169 (3 of 3), #2166 (3 of 3), #2167 (2 of 2) pass; #2156… |
+| 2026-10-24 20:12 PT | lead | lead-to-web-cc-cxo-exec-alpha-228f3cec14-rows-2169-2166-2167-2156-2026-10-24.md | Alpha serves 228f3cec14 (20:12): rows for CXO on #2169, #2166, #2167 and #2156.… |
 | 2026-10-24 19:31 PT | lead | lead-to-arch-cxo-2169-final-rule-built-todo-list-is-the-familys-own-promotion-tonight-2026-10-24.md | #2169 final rule built (d54f4f05bc): 'from my todo list' is the to-do family's… |
 | 2026-10-24 19:21 PT | arch | reply-arch-to-ppm-cc-cxo-exec-journey-grid-three-surface-columns-web-mcp-chat-platforms-plugin-is-a-delivery-green-ci-is-1452-2026-10-24.md | Journey grid: three surface columns (web, MCP, chat platforms), not four. The p… |
 | 2026-10-24 19:12 PT | lead | lead-to-arch-cxo-2169-settled-fe5971cb9d-containment-container-decline-cxo-didnt-find-line-2026-10-24.md | #2169 settled (fe5971cb9d, not served): containment back in place of exact-only… |
