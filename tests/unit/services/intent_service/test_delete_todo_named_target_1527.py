@@ -478,6 +478,35 @@ class TestDestructiveNamedBind:
         assert gate.offer is None
         assert gate.clarification in FOREIGN_CONTAINER_DECLINE.values()
 
+    @pytest.mark.parametrize(
+        "message",
+        (
+            "delete buy milk from my todo list",
+            "remove buy milk from my to-do list",
+            "delete buy milk from my to do list",
+            "delete the buy milk reminder from my reminders list",
+        ),
+    )
+    async def test_the_to_do_familys_own_list_is_not_a_foreign_container(self, message):
+        """Arch's final rule: "my todo list" is the to-do family's own list, so the ask
+        resolves through the to-do family (here it binds the to-do)."""
+        handlers = _BuilderHandlers(todos=[_todo("buy milk")])
+        gate = await build_todo_delete_confirmation(_delete_intent(message), handlers, _USER)
+        assert gate.offer is not None
+        assert gate.offer.question.endswith('"buy milk"? (yes/no)')
+
+    async def test_an_unquoted_project_word_in_a_title_is_a_known_decline(self):
+        """Arch accepted the cost: an unquoted 'from the project folder' title declines
+        (nothing armed); quoting the title resolves it (the next pin)."""
+        from services.intent_service.destructive_confirm import FOREIGN_CONTAINER_DECLINE
+
+        handlers = _BuilderHandlers(todos=[_todo("move files from the project folder")])
+        gate = await build_todo_delete_confirmation(
+            _delete_intent("delete move files from the project folder"), handlers, _USER
+        )
+        assert gate.offer is None
+        assert gate.clarification == FOREIGN_CONTAINER_DECLINE["project"]
+
     async def test_a_container_word_inside_a_quoted_title_is_the_title(self):
         title = "move files from the project folder"
         handlers = _BuilderHandlers(todos=[_todo(title)])

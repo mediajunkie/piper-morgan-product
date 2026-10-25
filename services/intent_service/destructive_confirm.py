@@ -480,15 +480,16 @@ _CONTAINER_LOOKAHEAD = 4
 
 # CXO 10-24: the named-leg miss. No quote of the stripped message (it isn't their words).
 NAMED_DELETE_NOT_FOUND = (
-    "I couldn't find a to-do that matches that. Ask me to show your to-dos and I'll number "
-    'them, then say "delete todo N".'
+    "I couldn't find a to-do that matches that. Nothing was deleted. Ask me to show your "
+    'to-dos and I\'ll number them, then say "delete todo N".'
 )
 
-# CXO 10-24 18:32: each names where the thing can be done today.
+# CXO 10-24 (18:32, then the to-do tail): each names where the thing can be done today; the list
+# line adds the to-do reading (a bare "my list" may mean the to-do list).
 FOREIGN_CONTAINER_DECLINE = {
     "list": (
         "I can't remove items from a list from chat yet. Open the list on your Lists page "
-        "and use Remove next to it."
+        'and use Remove next to it. If you meant a to-do, say "delete todo N".'
     ),
     "project": (
         "I can't remove things inside a project from chat yet. Open the project on your "
@@ -504,10 +505,41 @@ def _names_a_foreign_container(message: str) -> Optional[str]:
     words = _unquoted_words(message or "")
     for i, word in enumerate(words):
         if word in _CONTAINER_PREPOSITIONS:
-            for following in words[i + 1 : i + 1 + _CONTAINER_LOOKAHEAD]:
-                if following in _FOREIGN_CONTAINER_WORDS:
-                    return _FOREIGN_CONTAINER_WORDS[following]
+            for j in range(i + 1, min(i + 1 + _CONTAINER_LOOKAHEAD, len(words))):
+                kind = _FOREIGN_CONTAINER_WORDS.get(words[j])
+                if kind is None:
+                    continue
+                if kind == "list" and _is_todo_family_list(words, j):
+                    return None  # "my todo list" is the to-do family's own list
+                return kind
     return None
+
+
+# Arch 10-24 (the final #2169 rule): a list qualified by the to-do family's own nouns is that family's own
+# list ("from my todo list", "my to-do list", "my reminders list"), never a foreign one.
+_TODO_FAMILY_NOUNS = frozenset({"todo", "todos", "task", "tasks", "reminder", "reminders"})
+
+
+def _without_own_list_phrase(message: str) -> str:
+    """``message`` minus a "from my todo list"-style phrase (the preposition through
+    "list"), so the to-do family's own list is never part of the named target. Plain
+    word scanning (the #1943 binder ratchet); the rest keeps its words in order."""
+    words = "".join(ch if ch.isalnum() else " " for ch in (message or "")).split()
+    lowered = [w.lower() for w in words]
+    for i, word in enumerate(lowered):
+        if word not in _CONTAINER_PREPOSITIONS:
+            continue
+        for j in range(i + 1, min(i + 1 + _CONTAINER_LOOKAHEAD, len(lowered))):
+            if lowered[j] in ("list", "lists") and _is_todo_family_list(lowered, j):
+                return " ".join(words[:i] + words[j + 1 :])
+    return message
+
+
+def _is_todo_family_list(words: list, list_at: int) -> bool:
+    before = words[max(0, list_at - 2) : list_at]
+    if before and before[-1] in _TODO_FAMILY_NOUNS:
+        return True
+    return before[-2:] == ["to", "do"]
 
 
 _QUOTE_OPEN_CLOSE = {'"': '"', "\u201c": "\u201d", "'": "'", "\u2018": "\u2019"}
@@ -710,7 +742,7 @@ async def build_todo_delete_confirmation(
     named_target = None
     referent = None
     if todo_number is None:
-        named_target = _named_delete_target(message)
+        named_target = _named_delete_target(_without_own_list_phrase(message))
         if named_target and _is_positional_only(named_target):
             # #1943: "first two" / "last" / "1-3" point at positions, they
             # name nothing — never fuzzy-bind them (see _POSITIONAL_WORDS).
