@@ -497,3 +497,47 @@ async def test_not_connected_gets_no_line(intent_service):
     result = await _productivity(intent_service, {"return_value": False})
     assert PRODUCTIVITY_GITHUB_CHECK_FAILED not in result.message
     assert "GitHub" not in result.message
+
+
+# ── forcing test: every write gate runs before its write (CXO 17:39, Arch 17:55) ────
+
+WRITE_GATE_HANDLERS = {
+    "_handle_close_issue_query",
+    "_handle_reopen_issue_query",
+    "_handle_comment_issue_query",
+    "_handle_create_issue",
+    "_handle_update_issue",
+}
+_WRITE_WORDS = ("create", "update", "close", "reopen", "comment", "write", "delete")
+
+
+def test_no_github_write_precedes_the_gate():
+    """ "Nothing was changed." on a failed gate is true only while the gate comes first:
+    in each write handler, the only call before ``is_available()`` is ``initialize()``,
+    and no write-shaped call on any object comes before it either."""
+    src = (REPO_ROOT / "services/intent/intent_service.py").read_text()
+    seen = set()
+    for fn in ast.walk(ast.parse(src)):
+        if not isinstance(fn, (ast.AsyncFunctionDef, ast.FunctionDef)):
+            continue
+        if fn.name not in WRITE_GATE_HANDLERS:
+            continue
+        seen.add(fn.name)
+        calls = [
+            c for c in ast.walk(fn) if isinstance(c, ast.Call) and isinstance(c.func, ast.Attribute)
+        ]
+        gate = min(c.lineno for c in calls if c.func.attr == "is_available")
+        early = [
+            (c.lineno, c.func.attr)
+            for c in calls
+            if c.lineno < gate
+            and (
+                (
+                    getattr(c.func.value, "id", None) == "github_router"
+                    and c.func.attr != "initialize"
+                )
+                or any(w in c.func.attr.lower() for w in _WRITE_WORDS)
+            )
+        ]
+        assert not early, f"{fn.name}: calls before the is_available gate: {early}"
+    assert seen == WRITE_GATE_HANDLERS
