@@ -35,7 +35,10 @@ MOMENTS = [
     ("come-back", "come back"),
 ]
 SEAMS = ["resolver", "catalog", "github-identity", "db-durability", "green-ci"]
-SURFACES = ["web", "chat", "plugin", "MCP"]
+# Arch, 2026-10-24 19:21: a column is a surface where a different thing serves the step.
+# The plugin is a delivery of the MCP endpoint, not a column. chat is out of 1.0 scope (grey).
+SURFACES = ["web", "mcp", "chat"]
+OUT_OF_SCOPE_SURFACES = {"chat"}
 FALLBACK = {
     "PROD-RECONNECT": "C",
     "PROD-DESIGN": "E",
@@ -355,8 +358,10 @@ def main():
 
     # journey grid
     w(
-        "<h2>Journey grid</h2><p>Moment list: CXO draft, unratified. Surface columns pending Arch's definition "
-        "(CXO: no overlapping columns). Without a surface label an issue sits under &quot;unassigned surface&quot;.</p>"
+        "<h2>Journey grid</h2><p>Moment list: CXO draft, unratified. Surface columns (Arch, 10-24): web "
+        "(Piper's own web app), mcp (the hosted MCP endpoint, including the Claude plugin, which delivers it), "
+        "chat (Slack and similar platforms, not in 1.0, so grey, never red). Labels: surface:web, surface:mcp, "
+        "surface:chat. Without a surface label an issue sits under &quot;unassigned surface&quot;.</p>"
     )
     w(
         '<div class="scroll"><table><tr><th>Moment</th>'
@@ -369,7 +374,14 @@ def main():
         iss = sorted(by_label.get("journey:" + slug, []))
         if not iss:
             w(
-                f'<tr class="red"><td>{esc(name)}</td><td colspan="{len(SURFACES) + 1}">no issue</td></tr>'
+                f"<tr><td>{esc(name)}</td>"
+                + "".join(
+                    '<td class="gy">not in 1.0</td>'
+                    if s in OUT_OF_SCOPE_SURFACES
+                    else '<td class="red">no issue</td>'
+                    for s in SURFACES
+                )
+                + '<td class="red">no issue</td></tr>'
             )
             continue
         cols = {s: [] for s in SURFACES + ["u"]}
@@ -383,7 +395,16 @@ def main():
                 cols[s].append(issue_chip(n, cur))
         w(
             f"<tr><td>{esc(name)}</td>"
-            + "".join(f"<td>{' '.join(cols[s])}</td>" for s in SURFACES + ["u"])
+            + "".join(
+                f'<td class="gy">{" ".join(cols[s]) or "not in 1.0"}</td>'
+                if s in OUT_OF_SCOPE_SURFACES
+                else (
+                    f"<td>{' '.join(cols[s])}</td>"
+                    if cols[s] or s == "u"
+                    else '<td class="red">no issue</td>'
+                )
+                for s in SURFACES + ["u"]
+            )
             + "</tr>"
         )
     w("</table></div>")
