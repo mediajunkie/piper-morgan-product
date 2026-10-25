@@ -1,0 +1,108 @@
+# Piper Morgan: the promise register (map round 3, call 1)
+#
+# Status: DRAFT v0, PPM, 2026-10-24. NOT RATIFIED. xian ratifies the wording.
+#   Until then no issue is labelled `promise:<id>`, and the map's promise view reads this file as a draft.
+# Owner: PPM (Exec's round-3 brief, call 5). One entry per promise. Wording is quoted from the source,
+#   never paraphrased into a stronger claim.
+# Measure (xian's ruling 2, 2026-10-24 17:28): 1.0 = every promise gated `1.0` has a closed issue,
+#   and main is green. Which issues back a promise is read from the `promise:<id>` labels on the
+#   issues, never from this file, so the file holds no issue lists.
+# Gates: private-beta (the design-partner invitation), public-beta, 1.0.
+#   A promise made in the invitation is gated private-beta, because the partners already hold it.
+# Fields: id, wording, source, gate, note (optional).
+
+essence:   # docs/internal/architecture/ESSENCE.md v1.x, "Seven commitments"
+  - id: E1-portable-context
+    wording: "It accumulates its owner's context, and the owner can walk away with it."
+    source: ESSENCE commitment 1
+    gate: 1.0
+    note: "Portability is architectural: exportable by construction, in open formats (#2159)."
+  - id: E2-judgment-artifacts
+    wording: "It works on the judgment artifacts its owner is accountable for."
+    source: ESSENCE commitment 2
+    gate: 1.0
+    note: "GitHub issues first. The PRD/spec half comes after 1.0 (ruling 4); ESSENCE v1.1 (Arch's draft, awaiting xian) says so."
+  - id: E3-daily-ritual
+    wording: "It shows up once a day, answers whenever asked — and earns the relationship in the first exchange."
+    source: ESSENCE commitment 3
+    gate: 1.0
+    note: "The first-exchange half carries PDR-001 Amendment 1's beta check (#1538; beta-formalities checklist)."
+  - id: E4-never-lies
+    wording: "It never lies, and it degrades honestly."
+    source: ESSENCE commitment 4
+    gate: private-beta
+    note: "Gate classes 1 and 3. The honesty sweep (#2151, sprint H) is its main body."
+  - id: E5-one-authority
+    wording: "It understands requests through one derived, constrained authority."
+    source: ESSENCE commitment 5
+    gate: 1.0
+    note: "The inversion's remainder (#1595 at MVP close, F4)."
+  - id: E6-surfaces
+    wording: "PENDING ESSENCE v1.1: commitment 6 is being rewritten (ruling 3). Quote the ratified text here when xian ratifies it."
+    source: ESSENCE commitment 6 (v1.1 draft, Arch, 2026-10-24)
+    gate: 1.0
+    note: "PDR-005 and PDR-006 Amendment 1: web and the hosted MCP/plugin are complementary surfaces."
+  - id: E7-colleague
+    wording: "It works WITH its owner, like a colleague — not just FOR them, like an appliance."
+    source: ESSENCE commitment 7
+    gate: 1.0
+    note: "Gates how things are built (Colleague Test). It licenses no build, so expect few or no labelled issues. The view shows it as gate-by-test, not red."
+
+terms:   # docs/internal/design/terms-invitation-draft-for-xian-2026-10-19.md (xian's last read pending)
+  - id: T1-your-work-is-yours
+    wording: "Your work is yours. ... encrypted when stored."
+    source: invitation, "Your work is yours."
+    gate: private-beta
+  - id: T2-who-sees-it
+    wording: "Piper sends your messages ... to Anthropic under your own key."
+    source: invitation, "Who sees it."
+    gate: private-beta
+  - id: T3-your-key
+    wording: "We store it on our server in encrypted form and use it only to make your own requests."
+    source: invitation, "Your key."
+    gate: private-beta
+    note: "The backups window ('up to about five days') is #2157's retention number. Whoever changes one changes the other (HOST, 10-23). The operator-key check (HOST, xian present) is unrun."
+  - id: T4-asks-before-acting
+    wording: "Piper checks with you before making most changes. ... Piper always asks before it deletes something of yours."
+    source: invitation, "When Piper acts for you." (item 6, backed by Web's 12 buttons plus chat rows, 10-24)
+    gate: private-beta
+  - id: T5-feedback-is-read
+    wording: "When you find something new, send feedback ... read by the team."
+    source: invitation, "When something breaks."
+    gate: private-beta
+    note: "The response window waits on Exec naming the owner (#2160)."
+  - id: T6-restarts-and-outages
+    wording: "Piper may restart briefly when we update it ... If the database stops. Recovery is automatic and usually takes 15 to 30 minutes."
+    source: invitation, "Brief restarts." and "If the database stops."
+    gate: private-beta
+  - id: T7-leaving
+    wording: "You can download your uploaded files, and what Piper has learned about how you work. Exporting your conversations and to-dos is the goal, and isn't built yet."
+    source: invitation, "Leaving."
+    gate: private-beta
+    note: "Today's wording promises only what exists. The goal half (#2158, #2159) is public-beta under the Readiness lane."
+  - id: T8-invite-code
+    wording: "Your code works once, for one account."
+    source: invitation, "Your invite code."
+    gate: private-beta
+
+readiness:   # Terms-backed mechanisms that gate public beta (ruling 7; #2062's children)
+  - id: R1-backups-and-restore
+    wording: "Backups with a stated retention, and a restore that has been tested."
+    source: "#2062 map; F1; #2157"
+    gate: public-beta
+  - id: R2-delete-account
+    wording: "A user can delete their account in product, with a real purge."
+    source: "#2062 map; F2; xian 10-13 ('a trash with a real purge'); #2158"
+    gate: public-beta
+  - id: R3-export-everything
+    wording: "A user can export everything Piper holds for them, in open formats."
+    source: "#2062 map; F3 (E1); #2159"
+    gate: public-beta
+  - id: R4-support-loop
+    wording: "A named owner reads feedback, and the user hears back within a stated window."
+    source: "#2062 map; F6; #2160"
+    gate: public-beta
+  - id: R5-incident-notice
+    wording: "Users are told during an outage, and afterwards, including when data was lost."
+    source: "#2062 map; F7; #2161"
+    gate: public-beta
