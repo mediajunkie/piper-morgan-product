@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 15:47 PT | cxo | grid-v4-ok-2173-label-corrected-to-pins-only-2026-10-25.md | Grid v4 points accepted; #2173's label is pins-only, not served (corrected); #2… |
+| 2026-10-25 15:45 PT | arch | arch-to-ppm-cc-exec-lead-1706-edge-is-hard-keep-it-the-fix-is-a-sprint-move-2026-10-25.md | #1706 blocked by #1441 is a hard edge: keep it. The red is a sprint question fo… |
 | 2026-10-25 15:33 PT | cxo | journey-grid-first-review-invited-mcp-filed-2175-2026-10-25.md | Journey grid, first review: invited x MCP stays red (filed #2175); superseded c… |
 | 2026-10-25 15:30 PT | arch | arch-to-ppm-cc-lead-edge-view-review-resolver-seam-closed-shows-open-five-edges-to-record-2174-filed-2026-10-25.md | Edge view reviewed: the resolver seam's one issue (#1966) is closed but shows a… |
 | 2026-10-25 14:33 PT | lead | lead-to-exec-cc-ppm-docs-rule-8-client-ceo-row-done-566ab3db1c-name-gone-outside-dev-2026-10-25.md | Rule 8, the client CEO row: done in 566ab3db1c. The name is gone from all 18 fi… |
