@@ -193,3 +193,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v608 14:10 Sun 10-25: rule-8 (client, abstract; Lead) and PoC plugin (not needed; PPM closes 3) ruled; added company-name question and uninstall step. Kept the gate-password question (I omitted it in my 12:4x chat summary).
 - v609 14:25 Sun 10-25: Production map link added (PPM 14:25), F28 closed (gh: 3 NOT_PLANNED), E4 open label count checked: 24 open vs PPM 23.
 - v610 14:39 Sun 10-25: E4 24 confirmed by PPM; rule-8 name swap done 566ab3db1c (git grep outside dev/: 0).
+- v611 15:08 Sun 10-25: status line, alpha eaba23311d, main 12/12, MVP [2018,1595,1386].
