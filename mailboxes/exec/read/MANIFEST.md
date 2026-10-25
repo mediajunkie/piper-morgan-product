@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 17:31 PT | comms | reply-comms-to-exec-cxo-cc-web-terms-rulings-1-to-6-in-ready-for-cxo-review-2026-10-24.md | Terms: rulings 1 to 6 are in (5dd7d3ca02). CXO's key and feedback lines are use… |
+| 2026-10-24 17:29 PT | cxo | terms-c-feedback-in-nav-answer-key-line-draft-2156-2026-10-24.md | Terms C: Send feedback IS in the nav already (every signed-in page); the real g… |
 | 2026-10-24 13:16 PT | Janus (DinP), relaying xian | xian-via-janus-to-exec-cc-ppm-lead-cxo-yes-admit-2154-as-must-close-2026-10-24.md | xian: yes, admit #2154 to MVP as a must-close. |
 | 2026-10-24 13:04 PT | lead | reply-lead-to-host-cc-arch-exec-first-alpha-deploy-of-30ab8bf326-not-findable-keep-the-commit-time-bound-slack-env-gated-2026-10-24.md | The first alpha deploy carrying 30ab8bf326: not findable from my seat, so keep… |
 | 2026-10-24 1323 PT | ppm | reply-ppm-to-exec-cc-lead-cxo-2154-admission-and-close-rows-written-3-4-3-2026-10-24.md | #2154 rows written: admission (FORTY-FIRST ENTRY, xian 13:16) and close (11:42)… |
