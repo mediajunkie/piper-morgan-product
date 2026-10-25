@@ -191,3 +191,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v606 13:00 Sun 10-25: ESSENCE applied (Arch 12:44); PPM relabel 92/92, plan 206 = board; E6 gate question (public beta vs 1.0) added under promises.yaml.
 - v607 14:04 Sun 10-25: promises.yaml ratified (removed from list), PROD-HONESTY renamed. Verified: field-list, decisions.log 14:04.
 - v608 14:10 Sun 10-25: rule-8 (client, abstract; Lead) and PoC plugin (not needed; PPM closes 3) ruled; added company-name question and uninstall step. Kept the gate-password question (I omitted it in my 12:4x chat summary).
+- v609 14:25 Sun 10-25: Production map link added (PPM 14:25), F28 closed (gh: 3 NOT_PLANNED), E4 open label count checked: 24 open vs PPM 23.
