@@ -321,7 +321,8 @@ class TestConfirmBuilder:
         )
         assert gate.clarification is not None
         assert gate.offer is None and not gate.passthrough
-        assert "couldn't find a todo or reminder" in gate.clarification
+        # #2169 (CXO 10-24): the miss no longer quotes the stripped message back.
+        assert "couldn't find a to-do that matches that" in gate.clarification
         assert "project" not in gate.clarification.lower()
 
     async def test_out_of_range_passes_through(self):
