@@ -195,3 +195,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v610 14:39 Sun 10-25: E4 24 confirmed by PPM; rule-8 name swap done 566ab3db1c (git grep outside dev/: 0).
 - v611 15:08 Sun 10-25: status line, alpha eaba23311d, main 12/12, MVP [2018,1595,1386].
 - v612 15:20 Sun 10-25: Search Console card added (Web 15:19, Comms 15:19).
+- v613 15:41 Sun 10-25: two sequencing calls card (#2172/#2018 MVP edge; #1706 backward edge), #2175 noted; sitemap update (posts built, noindex question). Verified: gh issue view 1706/1441/2018/2172/2175; memos.
