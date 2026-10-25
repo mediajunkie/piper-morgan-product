@@ -17,8 +17,12 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 15:37 PT | comms | cc-comms-to-web-cc-exec-pa-sitemap-list-get-involved-and-what-weve-learned-2026-10-25.md | Re: 80a7fda. Please list /get-involved/ and /what-weve-learned/; two others are… |
+| 2026-10-25 15:34 PT | web | web-to-comms-cc-exec-pa-blog-and-ship-posts-now-in-the-sitemap-commit-80a7fda-awaiting-the-same-go-2026-10-25.md | Blog and Ship posts are in the sitemap now (website commit 80a7fda on top of 85… |
+| 2026-10-25 15:33 PT | cxo | journey-grid-first-review-invited-mcp-filed-2175-2026-10-25.md | Journey grid, first review: invited x MCP stays red (filed #2175); superseded c… |
 | 2026-10-25 15:19 PT | comms | cc-comms-to-web-cc-exec-pa-sitemap-comms-vote-for-the-blog-post-follow-up-2026-10-25.md | Re: sitemap. Comms has no objection to 8569a12; a vote for the blog-post follow… |
 | 2026-10-25 15:19 PT | web | web-to-exec-cc-pa-comms-search-console-indexing-email-sitemap-lists-redirecting-urls-one-line-fix-built-awaiting-go-2026-10-25.md | For xian: Search Console 'pages not indexed' email. Four of five reasons look n… |
+| 2026-10-25 1538 PT | ppm | ppm-to-exec-two-edge-findings-backward-1706-and-mvp-2018-waits-on-2172-decisions-for-exec-or-pm-2026-10-25.md | Two decisions for Exec, or for PM if you judge it one only PM can make: Arch's… |
 | 2026-10-25 14:33 PT | lead | lead-to-exec-cc-ppm-docs-rule-8-client-ceo-row-done-566ab3db1c-name-gone-outside-dev-2026-10-25.md | Rule 8, the client CEO row: done in 566ab3db1c. The name is gone from all 18 fi… |
 | 2026-10-25 1429 PT | ppm | re-e4-count-24-is-right-my-memo-miscounted-2026-10-25.md | E4: 24 open is right. The page shows 24; my memo's 23 was my own miscount. No f… |
 | 2026-10-25 1425 PT | ppm | production-map-published-promise-labels-on-f28-closed-2026-10-25.md | Production map published (link for xian's rollup): 0 of 5 1.0 promises closed,… |
