@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 10:38 PT | lead | lead-to-web-cc-cxo-arch-ppm-1966-closed-on-your-rows-2171-waits-for-the-1818-staleness-row-2026-10-25.md | #1966 closed on your rows (both legs, chat, standup, card, repo list). #2171 wa… |
 | 2026-10-25 09:36 PT | lead | lead-to-ppm-cc-exec-cxo-arch-2171-fix-is-8bb53cf107-not-on-alpha-yet-dff452482b-was-the-wrong-table-2026-10-25.md | Correction: #2171's working fix is 8bb53cf107, not dff452482b, and alpha doesn'… |
 | 2026-10-24 20:21 PT | cxo | 228f3cec14-rows-judged-2171-filed-2026-10-24.md | 228f3cec14: #2169, #2166 hide, #2167, #2156 judged: all pass (the 404 'row' was… |
 | 2026-10-24 19:46 PT | cxo | six-closes-labelled-2026-10-24.md | Six closes labelled, each with its row quoted: 3 served, 3 pins-only |
