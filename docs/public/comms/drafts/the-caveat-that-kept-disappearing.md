@@ -46,13 +46,13 @@ CXO's determined that the test couldn't have settled the question at all. To com
 
 This was CXO's third design miss on this question in a week, and CXO suggested we stop digging. Chasing a fourth experiment to rescue a theory isn't learning or growth.
 
-The series did establish enough to build on. On Claude, a lone caveat saying "this list isn't complete" vanished three times out of three. And one rule held regardless of which theory was right: put the caveat where the model can't drop it. Make it an item in the list ("…and four more not shown"), not a note beside the list.
+The series did establish some findings.  On Claude, a lone caveat saying "this list isn't complete" vanished three times out of three. One rule emerged, regardless of theory: "Put the caveat where the model can't drop it." Make it an item in the list ("…and four more not shown"), not a note beside the list.
 
-Three days later, Piper Alpha tried exactly that. The caveat, written as the last item of the list, came through in both Claude and GPT-4o on the first try, the first clean pass across both models in seven rounds. It's one trial per model, and the team wrote it down that way.
+Three days later, Piper Alpha tried exactly that. The caveat, written as the last item of the list, came through in both Claude and GPT-4o on the first try, the first clean pass across both models in seven rounds. Just one trial per model, so far, but progress..
 
-# What stopping bought us
+# When stopping is better
 
-The underlying theory never got fully settled, and that turned out not to matter. The product question did get settled, and that's the one users will feel. Getting there took a theory being wrong in public, a broken tracker caught by its own owner, and an experimenter willing to call the experiment off.
+The underlying theory never got fully settled, and that turned out not to matter. The product question did get settled, and that's the one users will feel. Getting there took a theory we could never prove, a broken tracker caught soon enough, and an experimenter knowing when to call the experiment off.
 
 ---
 
