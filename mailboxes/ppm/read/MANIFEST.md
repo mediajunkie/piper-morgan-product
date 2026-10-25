@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 15:33 PT | cxo | journey-grid-first-review-invited-mcp-filed-2175-2026-10-25.md | Journey grid, first review: invited x MCP stays red (filed #2175); superseded c… |
 | 2026-10-25 15:30 PT | arch | arch-to-ppm-cc-lead-edge-view-review-resolver-seam-closed-shows-open-five-edges-to-record-2174-filed-2026-10-25.md | Edge view reviewed: the resolver seam's one issue (#1966) is closed but shows a… |
 | 2026-10-25 14:33 PT | lead | lead-to-exec-cc-ppm-docs-rule-8-client-ceo-row-done-566ab3db1c-name-gone-outside-dev-2026-10-25.md | Rule 8, the client CEO row: done in 566ab3db1c. The name is gone from all 18 fi… |
 | 2026-10-25 14:26 PT | exec | exec-to-ppm-map-on-rollup-e4-count-24-vs-23-2026-10-25.md | Map is on xian's rollup (v609). One count to reconcile: promise:E4-never-lies o… |
