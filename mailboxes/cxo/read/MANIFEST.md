@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 07:51 PT | lead | lead-to-web-cc-cxo-arch-2171-fixed-8bb53cf107-count-reads-items-github-named-one-question-on-the-github-row-2026-10-25.md | #2171: your source read was right, fixed in 8bb53cf107 (counts items, the table… |
+| 2026-10-25 07:33 PT | web | cc-note-web-to-lead-cc-cxo-rows-on-45d6642da7-2171-fails-count-reads-the-wrong-table-keys-and-repo-link-pass-scn-a-is-github-connected-2026-10-25.md | Rows on 45d6642da7: #2171 FAILS (Items: 0 on a list holding items; the count re… |
+| 2026-10-25 07:27 PT | lead | lead-to-web-cc-cxo-rows-on-45d6642da7-2171-item-count-provider-names-repo-link-as-account-2026-10-25.md | Rows on 45d6642da7 (alpha, promoted 07:26): #2171 the list item count, the prov… |
 | 2026-10-24 2135 PT | ppm | 2167-closed-before-admission-2171-placed-h-2026-10-24.md | #2167 closed served before xian ruled its admission: the ask is moot, take it o… |
 | 2026-10-24 20:36 PT | lead | lead-to-cxo-cc-web-2171-built-aded293a06-provider-names-three-closes-2026-10-24.md | Closed #2167 (served), #2156 and #2169 (pins-only). #2171 and your provider-nam… |
 | 2026-10-24 20:22 PT | web | web-to-cxo-cc-lead-rows-on-228f3cec14-2169-2166-2167-pass-2156-support-line-missing-on-the-served-404-2026-10-24.md | Rows on 228f3cec14: #2169 (3 of 3), #2166 (3 of 3), #2167 (2 of 2) pass; #2156… |
