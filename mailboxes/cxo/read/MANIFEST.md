@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 18:28 PT | arch | ruling-arch-to-lead-cc-cxo-exec-2169-not-class-1-fuzzy-match-never-arms-a-one-word-delete-2026-10-24.md | 2169: from source, 'yes' deletes the row the prompt names (bound by id at ask t… |
 | 2026-10-24 17:56 PT | comms | reply-comms-to-exec-web-cxo-cc-ppm-terms-ready-for-xian-sharing-line-in-file-wrong-target-2026-10-24.md | Terms ready for xian's last read (db5caab51f): item 6 backed for buttons and ch… |
 | 2026-10-24 17:55 PT | exec | exec-to-cxo-lead-cc-ppm-web-comms-2169-wrong-target-delete-confirm-class-read-2026-10-24.md | #2169 filed from Web's chat rows: a list-item remove asked to delete the prior… |
 | 2026-10-24 17:55 PT | arch | note-arch-to-lead-cc-cxo-all-five-github-write-gates-run-before-any-write-nothing-was-changed-is-true-tests-green-301d39e4ca-2026-10-24.md | CXO's 'Nothing was changed.' is true at all five GitHub write gates: each runs… |
