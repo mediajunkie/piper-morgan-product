@@ -226,6 +226,16 @@ keeps first claim on ambiguous shapes; singular unnamed 'delete my reminder'
 keeps the which-todo ask; the #1527 named-target and #1666 numbered legs
 unchanged. Regression: `test_bulk_delete_reminders_1696.py` + the updated
 bulk pin in `test_reminder_delete_misroute_1527.py`.
+**#2169 strict destructive bind (2026-10-24)**: the #1527 named-target leg of
+`build_todo_delete_confirmation` arms only when EVERY meaningful word the person named is
+in the todo's title (`_meaningful_words(named) <= _meaningful_words(title)`); a partial
+overlap (the shared 0.3 threshold, still completion's best-match policy) answers the
+honest didn't-find line, nothing armed. Web's alpha row: `remove "zz chat delete item"
+from my list "zz chat delete list"` (no list-item rail exists) kept "zz chat from list zz
+chat list", matched the to-do "zz chat delete todo" on "zz chat", and yes deleted it (the
+id is bound at ask time). Regression: `TestDestructiveBindNeedsEveryNamedWord` in
+`test_delete_todo_named_target_1527.py`; #1595's multi-intent fixture rows now carry each
+segment's full named words.
 **Issue 2019 one-item delete cap (2026-10-15, interim until soft delete, issue
 2021)**: xian's 10-14 ruling — no irreversible bulk delete — supersedes every
 MULTI-item delete arm described in this section. The cap lives in the delete

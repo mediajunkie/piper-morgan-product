@@ -167,6 +167,15 @@ class GitHubConfigService:
         if not user_id:
             raise ValueError("user_id is required")
 
+        # ADR-081 D2: a hosted deploy has no GitHub identity of its own. The env token names
+        # and the "system" keychain row are honored only on a local install, where the
+        # operator is the user. Checked at call time and never cached.
+        if user_id == "system":
+            from services.infrastructure.deployment import is_hosted_deployment
+
+            if is_hosted_deployment():
+                return None
+
         # Check user-specific cache first
         if user_id not in self._user_config_cache:
             self._user_config_cache[user_id] = {}

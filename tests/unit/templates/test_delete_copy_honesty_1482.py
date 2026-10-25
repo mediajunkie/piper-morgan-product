@@ -40,9 +40,20 @@ def test_soft_deletes_carry_the_honest_keeper_line():
 @pytest.mark.smoke
 def test_hard_delete_key_copy_is_honest_and_does_not_overclaim():
     src = open("templates/settings_llm_keys.html").read()
-    assert "really is gone" in src, "the one TRUE permanence claim went missing"
-    assert "destroy our copy" in src
+    # #2167 (CXO 10-24): the live row goes at once, but backups keep it ~five days, so
+    # "really is gone, we destroy our copy immediately" overclaimed.
+    assert "destroy our copy" not in src and "really is gone" not in src
+    assert "This removes it from our live database right away." in src
+    assert "Our encrypted backups can keep it for up to about five days." in src
     # The overclaim that must never ship: Piper cannot revoke at the provider
     # (delete_user_key = keychain + DB only; verified 2026-08-04).
     assert "revoke it at the provider" not in src
     assert "until you revoke it there" in src, "the residual-validity fact went missing"
+
+
+@pytest.mark.smoke
+def test_insight_reset_does_not_claim_permanence():
+    """#2167: reset-all soft-deletes (``soft_delete_all``), so "permanently" was false."""
+    src = open("templates/insights.html").read()
+    assert "permanently deletes" not in src
+    assert "This removes ALL ${currentInsights.length} insights" in src

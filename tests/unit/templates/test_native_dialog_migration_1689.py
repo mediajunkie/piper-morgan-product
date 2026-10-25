@@ -80,8 +80,8 @@ def test_settings_llm_keys_delete_uses_dialog_confirm(llm_keys):
 def test_settings_llm_keys_delete_copy_preserved(llm_keys):
     # #1482 honesty set rides along unchanged (its own pins live in
     # test_delete_copy_honesty_1482.py; this is the migration-local guard).
-    assert "really is gone" in llm_keys
-    assert "destroy our copy" in llm_keys
+    # #2167 (CXO 10-24) replaced the overclaim; the copy pins live in the 1482 file.
+    assert "This removes it from our live database right away." in llm_keys
     assert "until you revoke it there" in llm_keys
 
 

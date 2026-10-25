@@ -248,8 +248,11 @@ def _rail_registered():
 def todo_boundary(monkeypatch):
     """The owner-scoped todo list, deterministic; delete EXPLOSIVE unless a
     test arms it. Two of the rows are named for what the SEGMENTS of the split
-    turns resolve to, which is how a per-sibling confirm can name a real item:
-    "are we behind upstream at all and" → "upstream check" (fuzzy match,
+    turns resolve to, which is how a per-sibling confirm can name a real item.
+    #2169 (10-24): a destructive bind now needs every named word in the title, so the
+    rows carry each segment's full named words (the partial-overlap binds below were
+    the shape #2169 showed deletes the wrong item). History:
+    "are we behind upstream at all and" → "are we behind upstream" (fuzzy match,
     0.33 score — #1595 Phase 3 fourteenth deletion, 2026-10-03: was "what
     branch are we on and" against LOCAL_GIT_STATUS_PATTERNS' own
     `\\bwhat branch are we on\\b` literal, now its surviving `\\bbehind
@@ -263,7 +266,11 @@ def todo_boundary(monkeypatch):
     from services.todo.todo_management_service import TodoManagementService
 
     state = {
-        "todos": [_todo("upstream check"), _todo("discussed yesterday"), _todo("hydrate")],
+        "todos": [
+            _todo("are we behind upstream"),
+            _todo("what we discussed yesterday was helpful"),
+            _todo("hydrate"),
+        ],
         "deleted": [],
         "allow_delete": False,
     }
@@ -605,7 +612,7 @@ class TestTwoReadSiblings:
         assert result.intent_data.get("multi_intent_inversion") is True
         assert result.success is True
         # Both halves are in ONE reply.
-        assert "upstream check" in result.message  # the todo list half
+        assert "are we behind upstream" in result.message  # the todo list half
         assert result.message.count("\n") or len(result.message) > 40
 
     async def test_every_decision_line_names_the_sibling(
@@ -652,9 +659,14 @@ class TestReadPlusDestructive:
         )
         assert todo_boundary["deleted"] == []
         assert result.intent_data.get("destructive_confirmation_pending") is True
-        assert 'Delete the reminder "discussed yesterday"? (yes/no)' in result.message
+        assert (
+            'Delete the reminder "what we discussed yesterday was helpful"? (yes/no)'
+            in result.message
+        )
         # The read half is still in the reply, and it LEADS.
-        assert result.message.index("upstream check") < result.message.index("Delete the reminder")
+        assert result.message.index("are we behind upstream") < result.message.index(
+            "Delete the reminder"
+        )
         assert "haven't touched" not in result.message  # nothing was deferred
 
     async def test_read_runs_first_even_when_the_write_is_first_in_the_message(
@@ -683,7 +695,7 @@ class TestReadPlusDestructive:
         )
         assert dispatched == ["list_todos_query", "delete_todo"]
         assert todo_boundary["deleted"] == []
-        assert 'Delete the reminder "upstream check"? (yes/no)' in result.message
+        assert 'Delete the reminder "are we behind upstream"? (yes/no)' in result.message
         assert "haven't touched" not in result.message
 
     async def test_the_confirmed_yes_deletes_exactly_the_named_row(
@@ -717,7 +729,7 @@ class TestPauseStopsTheTurn:
         "I haven't touched "
         '"what we discussed yesterday was helpful" yet; ask me again after this.\n'
         "\n"
-        'Delete the reminder "upstream check"? (yes/no)'
+        'Delete the reminder "are we behind upstream"? (yes/no)'
     )
 
     async def _run(self, monkeypatch, sid):
@@ -753,14 +765,14 @@ class TestPauseStopsTheTurn:
         assert pending is not None
         bound = pending["pending_action"]["intent"]
         bound_context = bound["context"] if isinstance(bound, dict) else bound.context
-        assert bound_context["delete_todo_resolved"]["text"] == "upstream check"
+        assert bound_context["delete_todo_resolved"]["text"] == "are we behind upstream"
         # And the yes deletes exactly one row — the one the user was shown.
         todo_boundary["allow_delete"] = True
         yes = await service.process_intent(
             message="yes", session_id=_sid("two-del-store"), user_id=_USER
         )
         assert len(todo_boundary["deleted"]) == 1
-        assert "upstream check" in yes.message
+        assert "are we behind upstream" in yes.message
         assert "discussed yesterday" not in yes.message
 
 
@@ -1469,12 +1481,12 @@ class TestReadSiblingWriteOfferIsCarried:
 
         assert result.intent_data.get("multi_intent_inversion") is True
         assert "haven't touched" not in result.message  # nothing deferred
-        assert "upstream check" in result.message  # the todos ran
+        assert "are we behind upstream" in result.message  # the todos ran
         assert "don't have any active projects yet." in result.message
         # ONE question, asked once, as the LAST paragraph.
         assert result.message.count(OFFER_QUESTION) == 1
         assert result.message.split("\n\n")[-1] == OFFER_QUESTION
-        assert result.message.index("upstream check") < result.message.index(OFFER_QUESTION)
+        assert result.message.index("are we behind upstream") < result.message.index(OFFER_QUESTION)
         # Armed after the loop: the #846 store holds the #2035 record.
         pending = service.workflow_offer_service.peek_pending_offer(sid, user_id=_USER)
         assert pending is not None
@@ -1494,7 +1506,7 @@ class TestReadSiblingWriteOfferIsCarried:
             [
                 _plan_op("list_projects", "list my projects"),
                 _plan_op("delete_todo", "delete hydrate reminder"),
-                _plan_op("delete_todo", "delete upstream check todo"),
+                _plan_op("delete_todo", "delete are we behind upstream todo"),
             ],
         )
         service = _service(monkeypatch)
@@ -1510,7 +1522,7 @@ class TestReadSiblingWriteOfferIsCarried:
         assert "don't have any active projects yet." in result.message
         # The deferred line names the sibling after the pause, and leads.
         assert result.message.startswith("I haven't touched")
-        assert "delete upstream check todo" in result.message
+        assert "delete are we behind upstream todo" in result.message
         # The pause is what is armed.
         pending = service.workflow_offer_service.peek_pending_offer(sid, user_id=_USER)
         assert pending is not None
@@ -1549,7 +1561,7 @@ class TestReadSiblingWriteOfferIsCarried:
         sid = _sid("offer-drift")
         result = await service.process_intent(message=OFFER_MESSAGE, session_id=sid, user_id=_USER)
 
-        assert "upstream check" in result.message  # the todos still ran
+        assert "are we behind upstream" in result.message  # the todos still ran
         assert "haven't touched" not in result.message
         assert "Shall I start a project?" not in result.message
         pending = service.workflow_offer_service.peek_pending_offer(sid, user_id=_USER)
