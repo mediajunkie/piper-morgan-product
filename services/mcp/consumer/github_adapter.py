@@ -1514,6 +1514,24 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             )
         return None
 
+    async def account_login(self, user_id) -> str:
+        """#2173 (CXO 10-25): the account's signed-in GitHub login, read with its own
+        credential (either leg, through ``_grant_headers_or_raise``) from ``GET /user``.
+        It scopes "assigned to me" when no username is saved. Raises ``GitHubReadFailed``
+        (``detail="login_unresolved"``) when the login can't be read: the caller must not
+        fall back to showing every issue as the person's own."""
+        from services.integrations.github.token_validator import verify_github_token
+
+        headers = await self._grant_headers_or_raise(user_id)
+        token = headers["Authorization"].split(" ", 1)[1]
+        result = await verify_github_token(token)
+        login = result.get("username") if result.get("authenticated") else None
+        if not login:
+            raise GitHubReadFailed(
+                "the signed-in GitHub login couldn't be read", None, detail="login_unresolved"
+            )
+        return str(login)
+
     async def resolve_credential(self, user_id):
         """#1965 (b) — THE GitHub credential resolver (Arch's ruling, PA's order):
 

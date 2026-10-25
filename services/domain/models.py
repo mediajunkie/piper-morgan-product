@@ -2135,13 +2135,28 @@ def degraded_disclosure(
 
 _CONNECT_REASONS = {"connect_required", "not_configured"}
 
+# #2173 (CXO 10-25): the work-item read couldn't tell which issues are the person's.
+_ASSIGNEE_UNRESOLVED = "assignee_unresolved"
+GITHUB_ASSIGNEE_UNRESOLVED_LINE = (
+    "I couldn't tell which GitHub issues are assigned to you, so this summary doesn't "
+    "include GitHub. Try again in a moment; if it keeps failing, tell us."
+)
+
 
 def _group_details(details: list[dict]) -> dict:
-    groups: dict = {"unreachable": [], "connect": [], "stale": [], "misconfigured": []}
+    groups: dict = {
+        "unreachable": [],
+        "unscoped": [],
+        "connect": [],
+        "stale": [],
+        "misconfigured": [],
+    }
     for d in details:
         reason = d.get("reason")
         name = d.get("connector") or d.get("label")
-        if reason in _CONNECT_REASONS and d.get("connector"):
+        if reason == _ASSIGNEE_UNRESOLVED:
+            groups["unscoped"].append(name)
+        elif reason in _CONNECT_REASONS and d.get("connector"):
             groups["connect"].append(name)
         elif reason == "stale_token" and d.get("connector"):
             groups["stale"].append(name)
@@ -2156,6 +2171,8 @@ def _clauses(groups: dict) -> list[str]:
     out: list[str] = []
     if groups["unreachable"]:
         out.append(f"I couldn't reach {oxford_join(groups['unreachable'])} just now")
+    if groups["unscoped"]:
+        out.append("I couldn't tell which GitHub issues are assigned to you")
     if groups["connect"]:
         verb = "aren't" if len(groups["connect"]) > 1 else "isn't"
         out.append(f"{oxford_join(groups['connect'])} {verb} connected yet")
@@ -2187,6 +2204,8 @@ def _action_sentences(groups: dict, *, empty: bool) -> list[str]:
 
 def _reason_sentence(details: list[dict], *, empty: bool) -> str:
     groups = _group_details(details)
+    if groups["unscoped"] and not any(v for k, v in groups.items() if k != "unscoped"):
+        return GITHUB_ASSIGNEE_UNRESOLVED_LINE
     clauses = _clauses(groups)
     head = ", and ".join(clauses)
     head = head[0].upper() + head[1:] if head else head

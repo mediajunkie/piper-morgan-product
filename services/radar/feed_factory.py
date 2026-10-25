@@ -61,12 +61,22 @@ class ConversationHistoryProvider:
 
 def filter_issues_by_assignee(issues: list, handle: Optional[str]) -> list:
     """#6: keep only issues assigned to ``handle`` (case-insensitive) — "what's on MY
-    plate". No handle → all issues (opt-in; absent config preserves show-all)."""
+    plate". No handle → all issues. Since #2173 the standup/Radar read always passes a
+    handle (the saved username, else the signed-in login); only the unscoped first-contact
+    read (``include_unassigned``) reaches the no-handle branch."""
     items = list(issues or [])
     if not handle:
         return items
     h = handle.lower()
     return [i for i in items if h in [str(a).lower() for a in (i.get("assignees") or [])]]
+
+
+class WorkItemScopeReason(Enum):
+    """#2173: a SOURCE_FAILED reason local to the work-item read (not a connector
+    DegradationReason): the account's own issues couldn't be told apart, because no
+    username is saved and the signed-in login couldn't be read."""
+
+    ASSIGNEE_UNRESOLVED = "assignee_unresolved"
 
 
 class WorkItemReadKind(str, Enum):
@@ -157,8 +167,26 @@ class WorkItemProvider:
                 # a transport error) raises into the except below and is recorded
                 # as SOURCE_FAILED, instead of the lenient path's silent [].
                 issues = await router.get_open_issues(
-                    limit=100 if handle else WORKITEM_FETCH, strict=True
+                    limit=100 if (handle or not include_unassigned) else WORKITEM_FETCH,
+                    strict=True,
                 )
+                if not handle and not include_unassigned:
+                    # #2173 (CXO 10-25): with no saved username, "assigned to me" means the
+                    # signed-in login. If that can't be read, the read fails; it never
+                    # falls back to every open issue presented as the person's own. A
+                    # credential failure keeps its own reason (reconnect, unreachable).
+                    from services.integrations.github.read_failed import GitHubReadFailed
+                    from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+                    try:
+                        handle = await GitHubMCPSpatialAdapter().account_login(user_id)
+                    except Exception as e:
+                        logger.warning("radar_workitem_login_unresolved", error=str(e))
+                        reason = e.reason if isinstance(e, GitHubReadFailed) else None
+                        return WorkItemOutcome(
+                            kind=WorkItemReadKind.SOURCE_FAILED,
+                            reason=reason or WorkItemScopeReason.ASSIGNEE_UNRESOLVED,
+                        )
                 filtered = (
                     list(issues or [])
                     if include_unassigned

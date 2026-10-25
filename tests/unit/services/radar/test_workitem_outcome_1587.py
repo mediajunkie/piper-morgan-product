@@ -59,7 +59,7 @@ async def test_configured_but_no_issues_is_verified_empty():
     with (
         patch(f"{SVC}.is_configured", new=AsyncMock(return_value=True)),
         patch(ROUTER, return_value=router),
-        patch(HANDLE_READER, new=AsyncMock(return_value=None)),
+        patch(HANDLE_READER, new=AsyncMock(return_value="me")),
     ):
         outcome = await WorkItemProvider().gather_for_user("u1")
     assert outcome.kind == WorkItemReadKind.VERIFIED_EMPTY
@@ -69,11 +69,12 @@ async def test_configured_but_no_issues_is_verified_empty():
 
 @pytest.mark.asyncio
 async def test_configured_with_issues_is_items():
-    router = _mock_router(issues=[_issue(1), _issue(2)])
+    # #2173: the standup read is always scoped (saved username, else the signed-in login).
+    router = _mock_router(issues=[_issue(1, ["me"]), _issue(2, ["me"])])
     with (
         patch(f"{SVC}.is_configured", new=AsyncMock(return_value=True)),
         patch(ROUTER, return_value=router),
-        patch(HANDLE_READER, new=AsyncMock(return_value=None)),
+        patch(HANDLE_READER, new=AsyncMock(return_value="me")),
     ):
         outcome = await WorkItemProvider().gather_for_user("u1")
     assert outcome.kind == WorkItemReadKind.ITEMS
@@ -158,11 +159,11 @@ async def test_list_for_user_still_flattens_failed_to_empty_list():
 
 @pytest.mark.asyncio
 async def test_list_for_user_still_returns_items():
-    router = _mock_router(issues=[_issue(1)])
+    router = _mock_router(issues=[_issue(1, ["me"])])
     with (
         patch(f"{SVC}.is_configured", new=AsyncMock(return_value=True)),
         patch(ROUTER, return_value=router),
-        patch(HANDLE_READER, new=AsyncMock(return_value=None)),
+        patch(HANDLE_READER, new=AsyncMock(return_value="me")),
     ):
         result = await WorkItemProvider().list_for_user("u1")
-    assert result == [_issue(1)]
+    assert result == [_issue(1, ["me"])]
