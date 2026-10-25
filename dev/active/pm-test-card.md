@@ -1,12 +1,12 @@
 # PM test card
 
-**Owner**: Lead · **v113**, 20:15 10-24 · Mirror: https://claude.ai/artifact/ALxfaRpLn5wjBVUPjzLvbi (this file wins between republishes) · older versions: `git log -p` of this file, and the history at the bottom.
+**Owner**: Lead · **v114**, 07:30 10-25 · Mirror: https://claude.ai/artifact/ALxfaRpLn5wjBVUPjzLvbi (this file wins between republishes) · older versions: `git log -p` of this file, and the history at the bottom.
 
-**Short answer: still nothing on alpha needs your hand.** Alpha got its sixth Saturday update at about 20:12.
+**Short answer: still nothing on alpha needs your hand.** Alpha got a Sunday-morning update at about 07:26: the Lists page shows each list's real item count, the AI keys page names the provider (Anthropic, OpenAI, Google Gemini), and a repo you link is checked with your own GitHub connection, never the server's.
 
-**Alpha** https://alpha.pipermorgan.ai serves **`228f3cec14`** (promoted about 20:12 10-24; healthy).
+**Alpha** https://alpha.pipermorgan.ai serves **`45d6642da7`** (promoted about 07:26 10-25; healthy). Web has the rows for it.
 
-## What's left for you (Saturday 10-24)
+## What's left for you (Sunday 10-25)
 
 1. **A short read with HOST, when you're at your desk:** whether alpha's credential store holds an operator-level AI key with no username. The setup wizard could have offered it to visitors; that's fixed and on alpha since about 14:00. The read tells us whether anyone ever got it. HOST has two reviewed read-only queries (names and counts only). Exec puts it on your list.
 2. **The invitations and the Haiku 5.5 money question:** unchanged.
