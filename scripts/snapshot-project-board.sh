@@ -26,7 +26,7 @@ OUTFILE="$OUTDIR/project-board-${DATE}.tsv"
 
 mkdir -p "$OUTDIR"
 
-echo "issue	state	milestone	sprint	title	labels	blocked_by" > "$OUTFILE"
+echo "issue	state	milestone	sprint	title	labels	blocked_by	state_reason" > "$OUTFILE"
 
 CURSOR=""
 while : ; do
@@ -39,7 +39,7 @@ while : ; do
             pageInfo { hasNextPage endCursor }
             nodes {
               content {
-                ... on Issue { number state title milestone { title } labels(first: 30) { nodes { name } } blockedBy(first: 30) { nodes { number } } }
+                ... on Issue { number state stateReason title milestone { title } labels(first: 30) { nodes { name } } blockedBy(first: 30) { nodes { number } } }
               }
               fieldValueByName(name: "Sprint") {
                 ... on ProjectV2ItemFieldSingleSelectValue { name }
@@ -58,7 +58,7 @@ while : ; do
             pageInfo { hasNextPage endCursor }
             nodes {
               content {
-                ... on Issue { number state title milestone { title } labels(first: 30) { nodes { name } } blockedBy(first: 30) { nodes { number } } }
+                ... on Issue { number state stateReason title milestone { title } labels(first: 30) { nodes { name } } blockedBy(first: 30) { nodes { number } } }
               }
               fieldValueByName(name: "Sprint") {
                 ... on ProjectV2ItemFieldSingleSelectValue { name }
@@ -85,7 +85,8 @@ for it in items:
     sprint = (it.get('fieldValueByName') or {}).get('name', '')
     labels = ','.join(sorted(n['name'] for n in (c.get('labels') or {}).get('nodes', [])))
     blocked_by = ','.join(str(n['number']) for n in sorted((c.get('blockedBy') or {}).get('nodes', []), key=lambda n: n['number']))
-    print(f'{num}\t{state}\t{milestone}\t{sprint}\t{title}\t{labels}\t{blocked_by}')
+    state_reason = c.get('stateReason') or ''
+    print(f'{num}\t{state}\t{milestone}\t{sprint}\t{title}\t{labels}\t{blocked_by}\t{state_reason}')
 " >> "$OUTFILE"
 
   HASNEXT=$(echo "$RESP" | python3 -c "import json,sys; print(json.load(sys.stdin)['data']['node']['items']['pageInfo']['hasNextPage'])")

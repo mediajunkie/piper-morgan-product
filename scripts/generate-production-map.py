@@ -29,7 +29,7 @@ MOMENTS = [
     ("set-up", "set up"),
     ("first-conversation", "first conversation"),
     ("connect-a-source", "connect a source"),
-    ("get-work-done", "ask and get work done"),
+    ("get-work-done", "get work done"),
     ("something-goes-wrong", "something goes wrong"),
     ("manage-my-data", "manage my data"),
     ("come-back", "come back"),
@@ -138,6 +138,34 @@ def esc(s):
     return html.escape(str(s))
 
 
+def superseded(n, snap):
+    """Closed as not planned or duplicate: dropped work, never evidence for a cell or a promise."""
+    r = snap.get(n) or {}
+    return r.get("state") == "CLOSED" and (r.get("state_reason") or "") in (
+        "NOT_PLANNED",
+        "DUPLICATE",
+    )
+
+
+def cell_counts(iss, snap):
+    o = sum(1 for n in iss if snap[n]["state"] != "CLOSED")
+    sv = sum(1 for n in iss if snap[n]["state"] == "CLOSED" and "close:served" in snap[n]["labels"])
+    po = sum(
+        1 for n in iss if snap[n]["state"] == "CLOSED" and "close:pins-only" in snap[n]["labels"]
+    )
+    un = len(iss) - o - sv - po
+    return f'<div class="cnt">{o} open &middot; {sv} served &middot; {po} pins only &middot; {un} unlabelled</div>'
+
+
+def cell(iss, snap):
+    chips = " ".join(issue_chip(n, snap) for n in iss)
+    if len(iss) <= 8:
+        return cell_counts(iss, snap) + chips
+    return (
+        cell_counts(iss, snap) + f"<details><summary>{len(iss)} issues</summary>{chips}</details>"
+    )
+
+
 def pick_snapshots(args):
     snaps = sorted(glob.glob(os.path.join(ROOT, "dev/snapshots/project-board-*.tsv")))
     cur = args.snapshot or (snaps[-1] if snaps else None)
@@ -233,7 +261,7 @@ def main():
             by_label.setdefault(l, []).append(n)
     pstat = []
     for grp, p in promises:
-        iss = sorted(by_label.get("promise:" + p["id"], []))
+        iss = sorted(n for n in by_label.get("promise:" + p["id"], []) if not superseded(n, cur))
         gbt = "gate-by-test" in (p.get("note") or "") or p["id"].startswith("E7")
         if not iss:
             cls = "grey" if gbt else "red"
@@ -384,9 +412,11 @@ def main():
         + "<th>unassigned surface</th></tr>"
     )
     known = {m for m, _ in MOMENTS}
+    dropped = set()
     extra = sorted({l[8:] for l in by_label if l.startswith("journey:")} - known)
     for slug, name in MOMENTS + [(e, e) for e in extra]:
-        iss = sorted(by_label.get("journey:" + slug, []))
+        iss = sorted(n for n in by_label.get("journey:" + slug, []) if not superseded(n, cur))
+        dropped.update(n for n in by_label.get("journey:" + slug, []) if superseded(n, cur))
         if not iss:
             w(
                 f"<tr><td>{esc(name)}</td>"
@@ -407,14 +437,14 @@ def main():
                 if "surface:" + s.lower() in {x.lower() for x in cur[n]["labels"]}
             ]
             for s in hit or ["u"]:
-                cols[s].append(issue_chip(n, cur))
+                cols[s].append(n)
         w(
             f"<tr><td>{esc(name)}</td>"
             + "".join(
-                f'<td class="gy">{" ".join(cols[s]) or "not in 1.0"}</td>'
+                f'<td class="gy">{cell(cols[s], cur) if cols[s] else "not in 1.0"}</td>'
                 if s in OUT_OF_SCOPE_SURFACES
                 else (
-                    f"<td>{' '.join(cols[s])}</td>"
+                    f"<td>{cell(cols[s], cur) if cols[s] else ''}</td>"
                     if cols[s] or s == "u"
                     else '<td class="red">no issue</td>'
                 )
@@ -423,6 +453,13 @@ def main():
             + "</tr>"
         )
     w("</table></div>")
+    w(
+        "<p>Each cell counts its issues: open, closed served, closed pins only, closed unlabelled. "
+        "Cells with more than 8 issues keep the list behind a click. "
+        "Superseded closes (not planned or duplicate) are left out of every cell and promise: "
+        + (" ".join(a(n, cur) for n in sorted(dropped)) or "none")
+        + ".</p>"
+    )
 
     cmd = "python3 scripts/generate-production-map.py" + (
         f" --snapshot {os.path.relpath(cpath, ROOT)}" if args.snapshot else ""
@@ -464,7 +501,7 @@ def main():
         "tr.grey td,.gy{background:var(--gry-bg);color:var(--gry-fg)}"
         "tr.amber td,.am{background:var(--amb-bg);color:var(--amb-fg)}"
         ".amber{background:var(--amb-bg);color:var(--amb-fg);padding:6px}"
-        ".chip{margin-right:6px;white-space:nowrap}.done a{text-decoration:line-through;color:var(--muted)}"
+        ".cnt{font-size:12px;color:var(--muted);margin-bottom:2px}summary{cursor:pointer}.chip{margin-right:6px;white-space:nowrap}.done a{text-decoration:line-through;color:var(--muted)}"
         ".iss{line-height:1.8}.iss span{margin-right:6px;white-space:nowrap}"
     )
     # A page fragment: the artifact host wraps it in its own document skeleton.
