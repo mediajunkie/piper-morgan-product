@@ -211,9 +211,8 @@ async def get_config_status(
                 try:
                     from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
-                    if await GitHubMCPSpatialAdapter._user_pat_at_rest(user_id):
-                        return "configured", "user_secret_store"
-                    if await asyncio.to_thread(GitHubMCPSpatialAdapter._user_pat, user_id):
+                    # #1966: the one PAT read, both legs in the resolver's order.
+                    if await GitHubMCPSpatialAdapter.account_pat(user_id):
                         return "configured", "keychain"
                 except Exception as e:
                     lookup_failed = (

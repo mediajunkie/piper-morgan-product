@@ -331,12 +331,18 @@ def _pre_repo() -> List[Any]:
 
 def _pre_gh_common() -> List[Any]:
     from services.integrations.github.config_service import GitHubConfigService
+    from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
     async def _token(self, *_a, **_k):
         return "fake-token-forced-2151"
 
+    async def _account_pat(*_a, **_k):
+        return "fake-token-forced-2151"
+
     return [
         patch.object(GitHubConfigService, "aget_authentication_token", _token),
+        # #1966: a user's native REST token is their own PAT, read through account_pat.
+        patch.object(GitHubMCPSpatialAdapter, "account_pat", staticmethod(_account_pat)),
         patch.object(
             GitHubConfigService, "get_authentication_token", lambda s, *a, **k: "fake-token-2151"
         ),

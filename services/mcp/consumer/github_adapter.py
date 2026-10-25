@@ -1483,6 +1483,37 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 "the stored GitHub token couldn't be read", None, detail="store_failed"
             ) from e
 
+    @staticmethod
+    async def account_pat(user_id) -> Optional[str]:
+        """#1966 / ADR-081 D1: THE read of an account's own GitHub PAT, both legs in the
+        resolver's order: the encrypted-at-rest row first, then the user-scoped keychain.
+        Every caller that needs the account's raw token (the REST paths, Settings' validity
+        check, repo validation, the status line) reads it here, so no surface can find a
+        token the resolver doesn't, or miss one it finds.
+
+        Either leg's token serves. None only when both legs ran and found nothing. With no
+        token and a leg that failed, raises ``GitHubReadFailed(detail="store_failed")``:
+        a failed read is never absence (#2151)."""
+        store_failed = False
+        pat = None
+        try:
+            pat = await GitHubMCPSpatialAdapter._user_pat_at_rest(user_id)
+        except GitHubReadFailed:
+            store_failed = True
+        if not pat:
+            # #2101: the keychain read is a store connect on the hosted path; off the loop.
+            try:
+                pat = await asyncio.to_thread(GitHubMCPSpatialAdapter._user_pat, user_id)
+            except GitHubReadFailed:
+                store_failed = True
+        if pat:
+            return pat
+        if store_failed:
+            raise GitHubReadFailed(
+                "the stored GitHub token couldn't be read", None, detail="store_failed"
+            )
+        return None
+
     async def resolve_credential(self, user_id):
         """#1965 (b) — THE GitHub credential resolver (Arch's ruling, PA's order):
 
@@ -1512,20 +1543,14 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         stale = None
         if binding is not None:
             stale = _NONBOUND_REASON.get(binding.status, DegradationReason.CONNECT_REQUIRED)
-        # #2101: the PAT read is a store connect on the hosted path; off the loop.
         # #2151 (Arch 10-24 16:49): a leg that failed is not absence. Either leg's token
         # still serves; with none, a failed leg degrades UNREACHABLE, never CONNECT_REQUIRED.
         store_failed = False
         pat = None
         try:
-            pat = await self._user_pat_at_rest(user_id)
+            pat = await self.account_pat(user_id)
         except GitHubReadFailed:
             store_failed = True
-        if not pat:
-            try:
-                pat = await asyncio.to_thread(self._user_pat, user_id)
-            except GitHubReadFailed:
-                store_failed = True
         if pat:
             return GitHubCredential(
                 owner_id=getattr(binding, "owner_id", user_id),

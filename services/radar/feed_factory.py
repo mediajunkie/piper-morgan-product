@@ -219,7 +219,9 @@ class PlaceProvider:
             except Exception as e:
                 logger.warning("radar_place_trust_lookup_failed", error=str(e))
 
-            # GitHub source — only if the user has a configured token (keychain-first #1192).
+            # GitHub source — only if the user's GitHub is configured, by the same status
+            # service the work-item source gates on (#1966: binding-first, then the
+            # account's own PAT on both legs; never a keychain-only probe).
             # Candidate tracked separately so the finally below closes it even
             # when it doesn't graduate to a source (#1279).
             github_router = None
@@ -231,7 +233,11 @@ class PlaceProvider:
 
                 gh_candidate = GitHubIntegrationRouter()
                 await gh_candidate.initialize(user_id=user_id)
-                if gh_candidate.config_service.is_configured(user_id):
+                from services.integrations.integration_status_service import (
+                    IntegrationStatusService,
+                )
+
+                if await IntegrationStatusService().is_configured(user_id, "github"):
                     github_router = gh_candidate
             except Exception as e:
                 logger.warning("radar_place_github_init_failed", error=str(e))

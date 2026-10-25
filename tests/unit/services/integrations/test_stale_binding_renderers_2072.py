@@ -67,10 +67,11 @@ def _claims(sub: str = "11111111-2222-3333-4444-555555555555"):
     return c
 
 
-def _no_pat_config_service():
-    svc = MagicMock()
-    svc.get_authentication_token.return_value = None
-    return svc
+def _no_account_pat():
+    """#1966: the card reads the account's own PAT through account_pat; none here."""
+    from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+    return patch.object(GitHubMCPSpatialAdapter, "account_pat", AsyncMock(return_value=None))
 
 
 async def _status_priority_context(assembler: ContextAssembler) -> dict:
@@ -103,7 +104,7 @@ class TestStaleBindingNeverRendersConnected:
     @pytest.mark.asyncio
     async def test_settings_github_status_is_not_valid(self, state):
         b, c = _binding(state)
-        with b, c, patch(CONFIG_SVC, return_value=_no_pat_config_service()):
+        with b, c, _no_account_pat():
             result = await get_github_settings(current_user=_claims())
         assert result["configured"] is True
         assert result["valid"] is False
@@ -165,7 +166,7 @@ class TestBoundBindingStillRendersConnected:
     @pytest.mark.asyncio
     async def test_settings_github_status_is_valid(self):
         b, c = _binding("bound")
-        with b, c, patch(CONFIG_SVC, return_value=_no_pat_config_service()):
+        with b, c, _no_account_pat():
             result = await get_github_settings(current_user=_claims())
         assert (result["configured"], result["valid"], result["error"]) == (True, True, None)
 

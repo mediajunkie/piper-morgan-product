@@ -329,3 +329,40 @@ class TestGap1IssueNumberExtraction1187:
         with _patched() as fetch_mock:
             assert await intent_service._fetch_summary_source_content(intent) is None
         fetch_mock.assert_not_awaited()
+
+
+class TestIssueFetchReadsAsTheAccount1966:
+    """#1966: a user's issue fetch reads with the resolver's Authorization (the OAuth grant
+    or the account's own PAT), so an OAuth-only account reads it too; before, only a
+    keychain PAT served and an OAuth-only account was told GitHub "is not configured"."""
+
+    @pytest.mark.asyncio
+    async def test_an_oauth_only_account_fetches_with_its_grant(self, intent_service):
+        from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+        headers = AsyncMock(return_value={"Authorization": "Bearer fake-token-grant"})
+        with (
+            _patched(token=None) as fetch_mock,
+            patch.object(GitHubMCPSpatialAdapter, "_grant_headers_or_raise", headers),
+        ):
+            await intent_service._fetch_issue_content(
+                {"original_message": "summarize github issue #1124", "user_id": "u-oauth"}
+            )
+        headers.assert_awaited_once_with("u-oauth")
+        assert fetch_mock.await_args.args[3] == "fake-token-grant"
+
+    @pytest.mark.asyncio
+    async def test_a_failed_credential_raises_never_reads_as_system(self, intent_service):
+        from services.integrations.github.read_failed import GitHubReadFailed
+        from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+        failed = AsyncMock(side_effect=GitHubReadFailed("no credential", None, detail="x"))
+        with (
+            _patched(token="fake-token-system") as fetch_mock,
+            patch.object(GitHubMCPSpatialAdapter, "_grant_headers_or_raise", failed),
+        ):
+            with pytest.raises(GitHubReadFailed):
+                await intent_service._fetch_issue_content(
+                    {"original_message": "summarize github issue #1124", "user_id": "u-1"}
+                )
+        fetch_mock.assert_not_awaited()

@@ -124,7 +124,8 @@ class TestGitHubBindingFirst:
 
     @pytest.mark.asyncio
     async def test_the_user_api_keys_pat_is_configured(self, service, monkeypatch):
-        """ADR-081 D1: the at-rest row the reads serve from counts (it didn't before)."""
+        """ADR-081 D1: the at-rest row the reads serve from counts (it didn't before). #1966:
+        both PAT legs read through ``account_pat`` and report the personal-token label."""
         _clear_integration_env(monkeypatch)
         with (
             patch.object(iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)),
@@ -134,7 +135,7 @@ class TestGitHubBindingFirst:
         ):
             status = await service.get_status("u1", "github")
         assert status["configured"] is True
-        assert status["via"] == "user_secret_store"
+        assert status["via"] == "keychain"
 
     @pytest.mark.asyncio
     async def test_the_env_token_never_configures_an_account(self, service, monkeypatch):

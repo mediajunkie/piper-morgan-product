@@ -5,7 +5,6 @@ Issue #867: Optionally validate repos exist and pull metadata when linking.
 Soft validation: if token unavailable or API fails, warn but don't block.
 """
 
-import asyncio
 from dataclasses import dataclass
 from typing import Optional
 
@@ -152,8 +151,7 @@ async def validate_github_repo(
 
 
 async def _account_github_token(user_id: Optional[str]) -> Optional[str]:
-    """The account's own GitHub PAT, read through the connector resolver's PAT legs
-    (the at-rest row first, then the keychain), or None. A failed read is None too:
+    """The account's own GitHub PAT (``GitHubMCPSpatialAdapter.account_pat``), or None. A failed read is None too:
     the caller's validation then reads "not checked". An OAuth-only account has no token
     in hand here, so its repo is likewise not checked."""
     if not user_id:
@@ -161,10 +159,7 @@ async def _account_github_token(user_id: Optional[str]) -> Optional[str]:
     try:
         from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
-        token = await GitHubMCPSpatialAdapter._user_pat_at_rest(user_id)
-        if not token:
-            token = await asyncio.to_thread(GitHubMCPSpatialAdapter._user_pat, user_id)
-        return token or None
+        return await GitHubMCPSpatialAdapter.account_pat(user_id)
     except Exception:
         logger.warning("github_repo_validation_token_unreadable", exc_info=True)
         return None
