@@ -1,28 +1,29 @@
 # Draft: the plain-language section of the design-partner invitation
 
-**Status:** Comms' draft, 2026-10-19, on xian's go (Exec's 14:30 relay, item 5). Built from `terms-scaffold-for-xian-2026-10-16.md`, with facts rechecked today. **xian rewrites it in his own words**, then does his HALT pass. CXO reviews the wording. Due before the 10-23 checkpoint.
-**Under xian's 10-16 Option 2:** this goes in the invitation. No site page, no click-through. Counsel writes the legal layer for Production.
-**Left out on purpose (open facts):** any "we never train on your data" promise (Arch hasn't stated it); #2057 (project questions read as requests, still open); any undo or soft delete (#2021, open). The no-undo on to-do deletes goes on the known-issues list, not here.
+* **Status:** xian's draft, 2025-10-24 based on Comms' draft, 2026-10-19, nuilt from `terms-scaffold-for-xian-2026-10-16.md`, with facts rechecked today. **xian rewrites it in his own words**, then does his HALT pass. CXO reviews the wording. Due before the 10-23 checkpoint.
+* **Under xian's 10-16 Option 2:** this goes in the invitation. No site page, no click-through. Counsel writes the legal layer for Production.
+* **Left out on purpose (open facts):** any "we never train on your data" promise (Arch hasn't stated it); #2057 (project questions read as requests, still open); any undo or soft delete (#2021, open). The no-undo on to-do deletes goes on the known-issues list, not here.
 
 ---
 
-## What you're agreeing to, in plain words
+## What you're agreeing to, in plain language
 
 **Your work is yours.** What you put into Piper stays yours. We use it to run Piper for you. Your messages, uploaded files, AI provider key and connected-account access are encrypted when stored. Your to-dos, projects, lists and account details are stored but not encrypted by the app. It all lives on our hosting provider, Fly.io, in San Jose, California.
 
-**Who sees it.** Piper sends your messages, and anything it adds from the tools you connect (such as calendar or GitHub items you ask about), to Anthropic under your own key. From there, Anthropic's own terms and privacy policy apply. Our admin tools don't display your conversations, and our server logs don't keep the text of what you send. The app has no analytics or ad tracking.
+**Who sees it.** Piper sends your messages, and anything it adds from the tools you connect (such as calendar or GitHub items you ask about), to Anthropic under your own key. From there, Anthropic's own terms and privacy policy apply. Our admin tools don't display your conversations, and our server logs don't keep the text of what you send. The app has no analytics or ad tracking. [Do we need to mention Open AI keys? Will they be supported at the start of the beta? OK if not. I am just unsure.]
 
-**Your key.** Piper runs on your own Anthropic key. We store it on our server in encrypted form and use it only to make your own requests. Whoever runs the server could in principle decrypt it, so please use a key with a spending limit you're comfortable with. You can remove your key in Settings at any time, and that deletes it from our live database. Our encrypted backups can keep it for up to about five days. To cut off access completely, also revoke the key in Anthropic's console, so it stops working for Piper too.
+**Your key.** Piper runs on your own Anthropic key. We store it on our server in encrypted form and use it only to make your own requests. Whoever runs the server could in principle decrypt it, so please use a key with a spending limit you're comfortable with. [I run the server unless you mean Fly "runs" it? Are we trying to just remind them of a theoretical danger? It is oddly worded.] You can remove your key in Settings at any time, and that deletes it from our live database. Our encrypted backups can keep it for up to about five days. To cut off access completely, also revoke the key in Anthropic's console, so it stops working for Piper too.
 
-**When Piper acts for you.** Piper checks with you before most changes. If you tell it plainly to do something, such as "Create a GitHub issue: …" on its own, it does it right away, so treat a plain instruction as the go. It asks before it deletes something of yours. There's no undo yet, so take that question seriously.
 
-**When something breaks.** You'll hit rough edges. We'll send you a short list of known issues with this invitation. When you find something new, use Send feedback in Piper, or email alpha@pipermorgan.ai. The team reads both, including me.
+**When Piper acts for you.** Piper checks with you before making most changes. If you tell it directly to do something, such as "Create a GitHub issue," Piper will do it right away, treating a plain instruction as the go. Piper always asks before it deletes something of yours. There's no undo yet, so take that question seriously!
 
-**Brief restarts.** Piper may restart briefly when we update it, usually at a quiet moment. You'll stay signed in, and your conversation will still be there. If a message gets no reply around then, send it again.
+**When something breaks.** We expect you'll hit rough edges. We'll include a short list of the most egregious known issues with this invitation. When you find something new, use Send feedback in Piper, or email alpha@pipermorgan.ai. Either way the message will be read by the team, including by me (xian) the human who owns this particular loop. [Does Send feedback exist yet? Should we explain how to do that?[
+
+**Brief restarts.** Piper may restart briefly when we update it, usually at a quiet moment. You'll stay signed in, and your conversation will still be there. If a message gets no reply around the time of a restart, just send it again.
 
 **If the database stops.** Recovery is automatic and usually takes 15 to 30 minutes. The alert reaches me either way.
 
-**Leaving.** You can download your uploaded files, and what Piper has learned about how you work. Exporting your conversations and to-dos is the goal, and isn't built yet. There's no delete-account button yet either. Email support@pipermorgan.ai and we'll delete your account and everything in it within 14 days. Deleting a single conversation inside Piper isn't possible yet. A trash you can empty for good is the goal.
+**Leaving.** You can download your uploaded files, and what Piper has learned about how you work. Exporting your conversations and to-dos is the goal, and isn't built yet. There's no delete-account button yet either. If you'd like to delete your account, just email support@pipermorgan.ai and we'll delete your account and everything in it within 14 days. Deleting a single conversation inside Piper isn't possible yet. The roadmap includes the ability to put things in trash and to empty it for good yourself so we hope to get there before too long.
 
 **Your invite code.** Your code works once, for one account. Please don't share it. If it leaks before you use it, tell us and we'll cancel it. Once used, it can't be taken back, because the account exists. We won't publish who our testers are, and we won't quote you without asking first.
 
@@ -32,7 +33,7 @@
 
 Before Production, we'll add [the list xian chooses from: deleting a conversation for good, deleting your account in the app, exporting conversations and to-dos, undo]. Today, the sections above describe what's true.
 
-**Who it's for.** [xian, one sentence a stranger understands.]
+**Who it's for.** Piper Morgan is an assistant who gets it for product managers and for people making products who need the support of a product manager and don't have a human one at hand.
 
 ---
 
