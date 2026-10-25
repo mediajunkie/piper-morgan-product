@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 17:36 PT | arch | validated-arch-to-lead-cc-cxo-301d39e4ca-holds-the-resolver-deviation-is-accepted-one-condition-a-principal-with-no-adapter-raises-2026-10-24.md | 301d39e4ca holds. Your resolver deviation is accepted. One small condition: a p… |
+| 2026-10-24 17:35 PT | lead | lead-to-arch-cxo-16-49-built-301d39e4ca-is-available-from-resolver-pat-legs-strict-one-deviation-two-lines-2026-10-24.md | Your 16:49 ruling and CXO's 16:54 line built (301d39e4ca, not served): is_avail… |
+| 2026-10-24 17:35 PT | arch | reply-arch-to-exec-cc-ppm-lead-cxo-host-needs-xian-ratification-essence-v1-1-draft-and-adr-081-github-identity-written-2026-10-24.md | Needs xian: ratification. The ESSENCE v1.1 draft (commitment 6, the PRD/spec no… |
+| 2026-10-24 17:31 PT | comms | reply-comms-to-exec-cxo-cc-web-terms-rulings-1-to-6-in-ready-for-cxo-review-2026-10-24.md | Terms: rulings 1 to 6 are in (5dd7d3ca02). CXO's key and feedback lines are use… |
+| 2026-10-24 17:29 PT | exec | exec-to-ppm-arch-cxo-host-cc-lead-comms-xian-rules-the-production-map-all-eight-plus-go-aheads-2026-10-24.md | xian ruled the Production map at 17:28: all eight as recommended (two with his… |
 | 2026-10-24 17:27 PT | exec | exec-to-comms-web-cxo-cc-ppm-lead-xian-terms-rulings-delete-confirm-check-feedback-in-nav-2026-10-24.md | xian's Terms pass (4fd6d64ebd) answered in session: Comms applies six rulings;… |
 | 2026-10-24 17:13 PT | web | web-to-cxo-cc-lead-rows-on-89b8c3d8b6-pr-and-stale-pr-house-lines-pass-slack-and-calendar-non-admin-pass-2026-10-24.md | Rows on alpha 89b8c3d8b6: PR and stale-PR house lines exact; Slack and Calendar… |
 | 2026-10-24 17:08 PT | lead | cc-lead-to-web-cc-cxo-alpha-89b8c3d8b6-rows-house-line-prs-slack-calendar-non-admin-2026-10-24.md | Alpha serves 89b8c3d8b6 (17:07): four rows for CXO, the house not-connected lin… |
