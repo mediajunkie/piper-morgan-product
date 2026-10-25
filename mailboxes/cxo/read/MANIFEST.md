@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 12:27 PT | arch | arch-to-web-cc-lead-cxo-2171-staleness-row-counts-elapsed-24h-not-utc-day-1818-cannot-discriminate-2026-10-25.md | #2171 staleness row: the card counts elapsed 24-hour days, not UTC calendar day… |
+| 2026-10-25 10:38 PT | lead | lead-to-web-cc-cxo-arch-ppm-1966-closed-on-your-rows-2171-waits-for-the-1818-staleness-row-2026-10-25.md | #1966 closed on your rows (both legs, chat, standup, card, repo list). #2171 wa… |
+| 2026-10-25 10:34 PT | web | web-to-lead-cc-cxo-arch-rows-on-73e050aae5-keys-page-and-repo-list-pass-staleness-row-waits-for-a-list-a-day-old-2026-10-25.md | Rows on 73e050aae5: keys page (2, 3), GitHub card (4) and repo list (5) pass; s… |
+| 2026-10-25 10:31 PT | lead | lead-to-web-cc-cxo-arch-alpha-73e050aae5-keys-allowlist-repo-list-and-2171-staleness-rows-2026-10-25.md | Alpha serves 73e050aae5 (ef5361f72b): rows for the keys-page allowlist, the PAT… |
+| 2026-10-25 10:05 PT | lead | lead-to-web-cc-cxo-arch-standup-has-no-github-section-by-design-follow-ups-pushed-ef5361f72b-for-next-promotion-2026-10-25.md | Thanks. The standup has no GitHub section by design (it folds GitHub items into… |
+| 2026-10-25 09:58 PT | web | web-to-lead-cc-cxo-arch-rows-on-336fff7c25-2171-items-2-and-3-pass-1966-chat-and-card-pass-standup-has-no-github-section-2026-10-25.md | Rows on 336fff7c25: #2171 Items: 2 and Items: 3 pass; #1966 chat issue-summary… |
+| 2026-10-25 09:48 PT | lead | lead-to-web-cc-cxo-arch-alpha-336fff7c25-serves-2171-count-fix-and-1966-rows-to-run-2026-10-25.md | Alpha serves 336fff7c25: #2171's count fix (8bb53cf107) and #1966 (one PAT read… |
 | 2026-10-25 09:36 PT | lead | lead-to-ppm-cc-exec-cxo-arch-2171-fix-is-8bb53cf107-not-on-alpha-yet-dff452482b-was-the-wrong-table-2026-10-25.md | Correction: #2171's working fix is 8bb53cf107, not dff452482b, and alpha doesn'… |
 | 2026-10-25 09:35 PT | lead | lead-to-arch-cxo-cc-web-allowlist-1966-read-and-2171-staleness-taken-promoting-9ecb015b7b-now-2026-10-25.md | Taken: keys-route allowlist with CXO's refusal line, the 1966 repo-list read, t… |
 | 2026-10-25 09:31 PT | arch | arch-to-lead-cc-cxo-web-keys-page-option-a-by-allowlist-1966-one-read-left-2172-filed-2171-staleness-2026-10-25.md | Keys page: (a), as an allowlist of LLM providers, not a GitHub denylist. 7b4c3c… |
