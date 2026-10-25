@@ -1421,10 +1421,10 @@ async def create_setup_project(
                 # Issue #867: Soft-validate via GitHub API
                 from services.infrastructure.github_repo_validator import (
                     apply_validation_metadata,
-                    validate_github_repo,
+                    validate_github_repo_for_account,
                 )
 
-                validation = await validate_github_repo(repo_name)
+                validation = await validate_github_repo_for_account(repo_name, user_id)
                 if validation.validated and not validation.exists:
                     logger.warning(
                         "setup_repo_validation_warning",

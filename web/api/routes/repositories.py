@@ -17,7 +17,7 @@ from services.database.models import RepositoryDB
 from services.domain import models as domain
 from services.infrastructure.github_repo_validator import (
     apply_validation_metadata,
-    validate_github_repo,
+    validate_github_repo_for_account,
 )
 from web.api.dependencies import get_project_repository, get_repository_repository
 
@@ -86,7 +86,7 @@ async def create_repository(
     # Issue #867: Soft-validate via GitHub API (GitHub provider only)
     validation_warning = None
     if req.provider == "github":
-        validation = await validate_github_repo(full_name)
+        validation = await validate_github_repo_for_account(full_name, current_user.sub)
         if validation.validated and not validation.exists:
             validation_warning = validation.error
             logger.warning(

@@ -5,7 +5,7 @@ Issue #867: Optionally validate repos exist and pull metadata when linking.
 Soft validation: if token unavailable or API fails, warn but don't block.
 """
 
-import os
+import asyncio
 from dataclasses import dataclass
 from typing import Optional
 
@@ -38,8 +38,13 @@ class RepoValidationResult:
 
 
 def get_github_token() -> Optional[str]:
-    """Resolve GitHub token from environment."""
-    return os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    """The deployment's GitHub token, LOCAL INSTALLS ONLY (ADR-081 D2): None on a hosted
+    deploy. An alias of ``GitHubConfigService().get_authentication_token("system")``, the
+    one local-only reader of the env token names. A caller acting for an account should
+    use ``validate_github_repo_for_account`` (ADR-081 D1)."""
+    from services.integrations.github.config_service import GitHubConfigService
+
+    return GitHubConfigService().get_authentication_token("system")
 
 
 async def validate_github_repo(
@@ -50,13 +55,16 @@ async def validate_github_repo(
 
     Args:
         full_name: Repository in "owner/repo" format.
-        token: GitHub token. If None, attempts to resolve from environment.
-               If still None, returns unvalidated result (soft skip).
+        token: the requesting account's own GitHub token. None returns the
+               unvalidated result, which means "not checked", never "doesn't exist".
+               ADR-081 D1 (Arch 10-24 18:45): never the deployment's env token, which
+               can see repos the account can't. A caller acting for an account uses
+               ``validate_github_repo_for_account``.
 
     Returns:
         RepoValidationResult with validation status and optional metadata.
     """
-    resolved_token = token or get_github_token()
+    resolved_token = token
 
     if not resolved_token:
         logger.info("github_repo_validation_skipped", full_name=full_name, reason="no_token")
@@ -141,6 +149,34 @@ async def validate_github_repo(
         return RepoValidationResult(
             validated=False, exists=False, accessible=False, error=f"Unexpected error: {e}"
         )
+
+
+async def _account_github_token(user_id: Optional[str]) -> Optional[str]:
+    """The account's own GitHub PAT, read through the connector resolver's PAT legs
+    (the at-rest row first, then the keychain), or None. A failed read is None too:
+    the caller's validation then reads "not checked". An OAuth-only account has no token
+    in hand here, so its repo is likewise not checked."""
+    if not user_id:
+        return None
+    try:
+        from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+        token = await GitHubMCPSpatialAdapter._user_pat_at_rest(user_id)
+        if not token:
+            token = await asyncio.to_thread(GitHubMCPSpatialAdapter._user_pat, user_id)
+        return token or None
+    except Exception:
+        logger.warning("github_repo_validation_token_unreadable", exc_info=True)
+        return None
+
+
+async def validate_github_repo_for_account(
+    full_name: str, user_id: Optional[str]
+) -> RepoValidationResult:
+    """ADR-081 D1: validate ``full_name`` as the requesting account, with its own
+    credential. No credential (or one that couldn't be read) returns ``validated=False``,
+    "not checked"."""
+    return await validate_github_repo(full_name, token=await _account_github_token(user_id))
 
 
 def apply_validation_metadata(repo, result: RepoValidationResult):

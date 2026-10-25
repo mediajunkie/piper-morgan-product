@@ -27,6 +27,7 @@ from services.integrations.integration_status_service import (
     KNOWN_INTEGRATIONS,
     IntegrationStatusService,
 )
+from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter as _Adapter
 
 
 def _clear_integration_env(monkeypatch):
@@ -108,28 +109,48 @@ class TestGitHubBindingFirst:
 
     @pytest.mark.asyncio
     async def test_keychain_pat_is_configured_via_keychain(self, service, monkeypatch):
-        """#1513 hoisted: user-scoped keychain PAT, no env, no binding."""
+        """#1513 hoisted: user-scoped keychain PAT, no env, no binding. ADR-081 D1: read
+        through the connector resolver's own PAT legs (at-rest row first, then keychain)."""
         _clear_integration_env(monkeypatch)
         with (
             patch.object(iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)),
-            patch(
-                "services.infrastructure.keychain_service.KeychainService",
-                return_value=_keychain_with("ghp_stored"),
-            ) as kc_cls,
+            patch.object(_Adapter, "_user_pat_at_rest", new=AsyncMock(return_value=None)),
+            patch.object(_Adapter, "_user_pat", return_value="fake-token-stored") as leg,
         ):
             status = await service.get_status("u1", "github")
         assert status["configured"] is True
         assert status["via"] == "keychain"
-        kc_cls.return_value.aread_secret.assert_awaited_once_with("github_token", "u1")
+        leg.assert_called_once_with("u1")
 
     @pytest.mark.asyncio
-    async def test_env_token_is_configured_via_env(self, service, monkeypatch):
+    async def test_the_user_api_keys_pat_is_configured(self, service, monkeypatch):
+        """ADR-081 D1: the at-rest row the reads serve from counts (it didn't before)."""
         _clear_integration_env(monkeypatch)
-        monkeypatch.setenv("GITHUB_TOKEN", "ghp_env")
-        with patch.object(iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)):
+        with (
+            patch.object(iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)),
+            patch.object(
+                _Adapter, "_user_pat_at_rest", new=AsyncMock(return_value="fake-token-row")
+            ),
+        ):
             status = await service.get_status("u1", "github")
         assert status["configured"] is True
-        assert status["via"] == "env"
+        assert status["via"] == "user_secret_store"
+
+    @pytest.mark.asyncio
+    async def test_the_env_token_never_configures_an_account(self, service, monkeypatch):
+        """ADR-081 D1 / B4 (Arch 10-24): GITHUB_TOKEN in the env is the deployment's, never a
+        status claim for an account."""
+        _clear_integration_env(monkeypatch)
+        monkeypatch.setenv("GITHUB_TOKEN", "fake-token-env")
+        with (
+            patch.object(iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)),
+            patch.object(iss_mod, "github_oauth_binding_state", new=AsyncMock(return_value=None)),
+            patch.object(_Adapter, "_user_pat_at_rest", new=AsyncMock(return_value=None)),
+            patch.object(_Adapter, "_user_pat", return_value=None),
+        ):
+            status = await service.get_status("u1", "github")
+        assert status["configured"] is False
+        assert status["via"] is None
 
     @pytest.mark.asyncio
     async def test_nothing_anywhere_is_not_configured(self, service, monkeypatch):
@@ -140,10 +161,8 @@ class TestGitHubBindingFirst:
             # real read raises, which now (correctly) reads "couldn't check". No
             # binding is what this case means.
             patch.object(iss_mod, "github_oauth_binding_state", new=AsyncMock(return_value=None)),
-            patch(
-                "services.infrastructure.keychain_service.KeychainService",
-                return_value=_keychain_with(None),
-            ),
+            patch.object(_Adapter, "_user_pat_at_rest", new=AsyncMock(return_value=None)),
+            patch.object(_Adapter, "_user_pat", return_value=None),
         ):
             status = await service.get_status("u1", "github")
         assert status == {
@@ -228,6 +247,9 @@ class TestHealthComposition:
     @pytest.mark.asyncio
     async def test_is_configured_convenience(self, service, monkeypatch):
         _clear_integration_env(monkeypatch)
-        monkeypatch.setenv("GITHUB_TOKEN", "ghp_env")
-        with patch.object(iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)):
+        with (
+            patch.object(iss_mod, "github_oauth_bound", new=AsyncMock(return_value=False)),
+            patch.object(_Adapter, "_user_pat_at_rest", new=AsyncMock(return_value=None)),
+            patch.object(_Adapter, "_user_pat", return_value="fake-token-stored"),
+        ):
             assert await service.is_configured("u1", "github") is True

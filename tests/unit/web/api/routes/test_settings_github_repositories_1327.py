@@ -15,6 +15,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+from services.infrastructure.keychain_service import SecretProvenance, SecretRead
 from services.mcp.consumer.connector import DegradationReason, DegradationResponse
 from services.mcp.consumer.github_adapter import GitHubReposResult
 from web.api.routes.settings_integrations import (
@@ -159,6 +160,9 @@ class TestRepositoriesConnectRequiredFallsBackToPat:
 
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = "ghp_test_token"
+        mock_keychain.read_secret.return_value = SecretRead(
+            SecretProvenance.PRESENT, value="ghp_test_token"
+        )
 
         mock_github_response = [
             {
@@ -206,6 +210,8 @@ class TestRepositoriesConnectRequiredFallsBackToPat:
 
         mock_keychain = MagicMock()
         mock_keychain.get_api_key.return_value = None
+        # #2151 / ADR-081: the user token is read with provenance.
+        mock_keychain.read_secret.return_value = SecretRead(SecretProvenance.VERIFIED_ABSENT)
 
         with (
             patch(_ADAPTER, cls),
@@ -227,6 +233,51 @@ class TestRepositoriesConnectRequiredFallsBackToPat:
                     os.environ["GITHUB_TOKEN"] = old_github
                 if old_gh:
                     os.environ["GH_TOKEN"] = old_gh
+
+
+class TestNativePatIsTheUsersOwnAdr081:
+    """ADR-081 D1 (Arch 10-24): the native-PAT repo list reads only the user's own token
+    with provenance, never the deployment's env token, and a store failure is a failed
+    read (503 with the vetted line), never "not connected"."""
+
+    def _user(self):
+        u = MagicMock()
+        u.sub = "u-adr081"
+        return u
+
+    @pytest.mark.asyncio
+    async def test_the_env_token_never_lists_a_users_repos(self, monkeypatch):
+        from fastapi import HTTPException
+
+        monkeypatch.setenv("GITHUB_TOKEN", "fake-token-env")
+        cls, _ = _adapter_returning(_degrade(DegradationReason.CONNECT_REQUIRED))
+        kc = MagicMock()
+        kc.read_secret.return_value = SecretRead(SecretProvenance.VERIFIED_ABSENT)
+        with (
+            patch(_ADAPTER, cls),
+            patch("services.infrastructure.keychain_service.KeychainService", return_value=kc),
+        ):
+            with pytest.raises(HTTPException) as exc_info:
+                await get_github_repositories(current_user=self._user())
+        assert exc_info.value.status_code == 401
+
+    @pytest.mark.asyncio
+    async def test_a_store_failure_is_a_503_not_not_connected(self):
+        from fastapi import HTTPException
+
+        from web.api.routes.settings_integrations import GITHUB_TOKEN_READ_FAILED_MESSAGE
+
+        cls, _ = _adapter_returning(_degrade(DegradationReason.CONNECT_REQUIRED))
+        kc = MagicMock()
+        kc.read_secret.return_value = SecretRead(SecretProvenance.STORE_FAILED, error="timeout")
+        with (
+            patch(_ADAPTER, cls),
+            patch("services.infrastructure.keychain_service.KeychainService", return_value=kc),
+        ):
+            with pytest.raises(HTTPException) as exc_info:
+                await get_github_repositories(current_user=self._user())
+        assert exc_info.value.status_code == 503
+        assert exc_info.value.detail == GITHUB_TOKEN_READ_FAILED_MESSAGE
 
 
 class TestPreferencesAreOAuthAgnostic:

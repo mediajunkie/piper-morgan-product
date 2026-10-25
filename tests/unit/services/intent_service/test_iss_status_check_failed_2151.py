@@ -46,9 +46,17 @@ def _no_env_credentials(monkeypatch):
 class TestTheServiceSaysUnknown:
     @pytest.mark.parametrize("integration", ["github", "slack", "calendar"])
     async def test_a_raising_keychain_lookup_is_unknown(self, integration):
-        with patch(
-            "services.infrastructure.keychain_service.KeychainService.aread_secret",
-            AsyncMock(side_effect=RuntimeError("keychain unavailable")),
+        # ADR-081 D1: GitHub's status reads the resolver's PAT legs, whose keychain leg is
+        # the sync read_secret; the store fails on both reads.
+        with (
+            patch(
+                "services.infrastructure.keychain_service.KeychainService.aread_secret",
+                AsyncMock(side_effect=RuntimeError("keychain unavailable")),
+            ),
+            patch(
+                "services.infrastructure.keychain_service.KeychainService.read_secret",
+                side_effect=RuntimeError("keychain unavailable"),
+            ),
         ):
             assert await iss.get_config_status(integration, user_id=_USER) == ("unknown", None)
 
@@ -59,9 +67,16 @@ class TestTheServiceSaysUnknown:
         configured". read_secret's STORE_FAILED says which."""
         from services.infrastructure.keychain_service import SecretProvenance, SecretRead
 
-        with patch(
-            "services.infrastructure.keychain_service.KeychainService.aread_secret",
-            AsyncMock(return_value=SecretRead(SecretProvenance.STORE_FAILED, error="timeout")),
+        failed = SecretRead(SecretProvenance.STORE_FAILED, error="timeout")
+        with (
+            patch(
+                "services.infrastructure.keychain_service.KeychainService.aread_secret",
+                AsyncMock(return_value=failed),
+            ),
+            patch(
+                "services.infrastructure.keychain_service.KeychainService.read_secret",
+                return_value=failed,
+            ),
         ):
             assert await iss.get_config_status(integration, user_id=_USER) == ("unknown", None)
 

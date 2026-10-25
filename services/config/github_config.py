@@ -63,18 +63,21 @@ class GitHubConfiguration:
             return tuple(self.default_repository.split("/", 1))
         return self.owner, self.default_repository
 
-    def validate_environment(self) -> bool:
-        """Validate GitHub environment configuration
+    def validate_environment(self) -> Optional[bool]:
+        """Validate GitHub environment configuration (a local install's deployment token).
+
+        ADR-081 D2: a hosted deploy has no GitHub identity of its own, so there is nothing
+        to validate there: None ("not applicable"), never False-means-broken.
 
         Returns:
-            True if environment is properly configured
+            True / False for a local install; None on a hosted deploy.
         """
-        # Check for GitHub token
-        token = os.getenv("GITHUB_TOKEN") or os.getenv("GH_TOKEN")
-        if not token:
-            return False
+        from services.infrastructure.deployment import is_hosted_deployment
+        from services.integrations.github.config_service import GitHubConfigService
 
-        return True
+        if is_hosted_deployment():
+            return None
+        return bool(GitHubConfigService().get_authentication_token("system"))
 
     @classmethod
     def create_default(cls) -> "GitHubConfiguration":

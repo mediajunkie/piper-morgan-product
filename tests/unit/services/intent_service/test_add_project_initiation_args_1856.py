@@ -245,7 +245,7 @@ class _Recorder:
             self.linked.append(kwargs)
             return MagicMock()
 
-        async def _validate(_repo_name):
+        async def _validate(_repo_name, _user_id=None):
             v = MagicMock()
             v.validated = False
             v.exists = None
@@ -260,7 +260,7 @@ class _Recorder:
             patch.object(RepositoryRepository, "get_project_links", _get_project_links),
             patch.object(RepositoryRepository, "link_to_project", _link_to_project),
             patch(
-                "services.infrastructure.github_repo_validator.validate_github_repo",
+                "services.infrastructure.github_repo_validator.validate_github_repo_for_account",
                 _validate,
             ),
         ]

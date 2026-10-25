@@ -72,9 +72,21 @@ class ConfigValidator:
         """
         Validate GitHub service configuration.
 
-        Required: GITHUB_TOKEN
+        Required: GITHUB_TOKEN (a local install's deployment token)
         """
-        token = os.getenv("GITHUB_TOKEN")
+        from services.infrastructure.deployment import is_hosted_deployment
+        from services.integrations.github.config_service import GitHubConfigService
+
+        if is_hosted_deployment():
+            # ADR-081 D2: GitHub connects per account on a hosted deploy; nothing to report
+            # missing here.
+            return ValidationResult(
+                service="github",
+                status=ServiceStatus.OPTIONAL,
+                message="GitHub connects per account on this deployment",
+                config_checked=[],
+            )
+        token = GitHubConfigService().get_authentication_token("system")
 
         if not token:
             return ValidationResult(

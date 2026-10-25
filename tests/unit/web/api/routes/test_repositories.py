@@ -82,7 +82,7 @@ class TestCreateRepository:
         client = _make_app(repo_repo_mock=repo_repo)
 
         with patch(
-            "web.api.routes.repositories.validate_github_repo",
+            "web.api.routes.repositories.validate_github_repo_for_account",
             new_callable=AsyncMock,
             return_value=RepoValidationResult(validated=False, exists=False, accessible=False),
         ):
@@ -148,7 +148,7 @@ class TestCreateRepository:
         client = _make_app(repo_repo_mock=repo_repo)
 
         with patch(
-            "web.api.routes.repositories.validate_github_repo",
+            "web.api.routes.repositories.validate_github_repo_for_account",
             new_callable=AsyncMock,
             return_value=RepoValidationResult(
                 validated=True,
@@ -185,7 +185,7 @@ class TestCreateRepository:
         client = _make_app(repo_repo_mock=repo_repo)
 
         with patch(
-            "web.api.routes.repositories.validate_github_repo",
+            "web.api.routes.repositories.validate_github_repo_for_account",
             new_callable=AsyncMock,
             return_value=RepoValidationResult(
                 validated=True,
@@ -219,7 +219,7 @@ class TestCreateRepository:
         client = _make_app(repo_repo_mock=repo_repo)
 
         with patch(
-            "web.api.routes.repositories.validate_github_repo",
+            "web.api.routes.repositories.validate_github_repo_for_account",
             new_callable=AsyncMock,
             return_value=RepoValidationResult(validated=False, exists=False, accessible=False),
         ):

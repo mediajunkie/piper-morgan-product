@@ -103,6 +103,8 @@ def _live_state_environment(monkeypatch, session):
     # there, which the service used to swallow as "not configured"; a raising lookup
     # now reads "couldn't check", so the blank store must answer None for real.
     keychain.aget_api_key = AsyncMock(return_value=None)
+    # ADR-081 D1: GitHub's status reads the resolver's PAT legs (the sync keychain read).
+    keychain.read_secret = MagicMock(return_value=_secret_read(None))
 
     return (
         patch.object(AsyncSessionFactory, "session_scope", new=lambda: _yield_session(session)),
@@ -117,6 +119,11 @@ def _live_state_environment(monkeypatch, session):
         ),
         patch(
             "services.security.user_api_key_service.UserAPIKeyService.retrieve_user_key",
+            new=AsyncMock(return_value=None),
+        ),
+        # ADR-081 D1: the resolver's at-rest leg reads strictly (no row -> None).
+        patch(
+            "services.security.user_api_key_service.UserAPIKeyService.retrieve_user_key_strict",
             new=AsyncMock(return_value=None),
         ),
     )
@@ -137,8 +144,8 @@ class TestGuidanceReadsRealBindingState:
         )
         await session.commit()
 
-        p1, p2, p3, p4 = _live_state_environment(monkeypatch, session)
-        with p1, p2, p3, p4:
+        p1, p2, p3, p4, p5 = _live_state_environment(monkeypatch, session)
+        with p1, p2, p3, p4, p5:
             result = await CanonicalHandlers()._format_integration_setup_guidance(user_id=_USER)
 
         message = result["message"]
@@ -158,8 +165,8 @@ class TestGuidanceReadsRealBindingState:
     async def test_no_binding_reports_honestly_not_connected(self, session, monkeypatch):
         """AC2: with no binding and no credentials, GitHub is honestly Not
         connected — a real negative measurement, not the failure disclaimer."""
-        p1, p2, p3, p4 = _live_state_environment(monkeypatch, session)
-        with p1, p2, p3, p4:
+        p1, p2, p3, p4, p5 = _live_state_environment(monkeypatch, session)
+        with p1, p2, p3, p4, p5:
             result = await CanonicalHandlers()._format_integration_setup_guidance(user_id=_USER)
 
         message = result["message"]
@@ -176,8 +183,8 @@ class TestGuidanceReadsRealBindingState:
         await ConnectorBindingRepository(session).upsert(_USER, "github", status="bound")
         await session.commit()
 
-        p1, p2, p3, p4 = _live_state_environment(monkeypatch, session)
-        with p1, p2, p3, p4:
+        p1, p2, p3, p4, p5 = _live_state_environment(monkeypatch, session)
+        with p1, p2, p3, p4, p5:
             result = await CanonicalHandlers()._format_integration_setup_guidance(user_id=_USER)
 
         assert "demo" not in result["message"].lower()

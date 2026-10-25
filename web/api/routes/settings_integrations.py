@@ -9,6 +9,7 @@ Issue #529: ALPHA-SETUP-CALENDAR (Settings integration)
 Issue #570: Slack Channel Selection Settings
 """
 
+import asyncio
 import json
 import os
 from typing import List, Optional
@@ -297,6 +298,13 @@ CALENDAR_STATUS_CHECK_FAILED_LINE = (
 # #2151 (route group 1): the GitHub card when its check couldn't run. Wording pending CXO.
 GITHUB_STATUS_CHECK_FAILED_LINE = (
     "Couldn't check your GitHub connection just now. Reload to try again."
+)
+
+# ADR-081 D1: the repo list when the user's stored token couldn't be read (a failed read,
+# never "not connected"). Words pending CXO; same shape as the card line above.
+GITHUB_TOKEN_READ_FAILED_MESSAGE = (
+    "I couldn't read your GitHub connection just now, so I can't list your repositories. "
+    "Reload to try again."
 )
 
 
@@ -2346,12 +2354,21 @@ async def _list_repos_native_pat(user_sub: str) -> list:
     ADR-070 D6 once the OAuth connector is the sole path."""
     import aiohttp
 
-    from services.infrastructure.keychain_service import KeychainService
+    from services.integrations.github.config_service import (
+        GitHubConfigService,
+        GitHubTokenStoreFailed,
+    )
 
-    keychain = KeychainService()
-    token = keychain.get_api_key("github_token", username=user_sub)  # #849 user-scoped
-    if not token:
-        token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    # ADR-081 D1 (Arch 10-24): a user's repo list reads only that user's own token, never the
+    # deployment's env token (local installs too, per #1461). Read with provenance: a store
+    # that didn't answer is a failed read, not "not connected".
+    try:
+        token = await asyncio.to_thread(GitHubConfigService().read_user_token, user_sub)
+    except GitHubTokenStoreFailed:
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=GITHUB_TOKEN_READ_FAILED_MESSAGE,
+        )
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

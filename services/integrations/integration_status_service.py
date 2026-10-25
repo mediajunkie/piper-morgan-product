@@ -31,6 +31,7 @@ Demo is STRUCTURALLY excluded: ``KNOWN_INTEGRATIONS`` is the user-facing set,
 and asking for anything else raises — no downstream filtering required.
 """
 
+import asyncio
 import os
 from typing import Any, Dict, Optional, Tuple
 
@@ -195,13 +196,24 @@ async def get_config_status(
                     )
                     logger.warning(f"{integration_id} credential lookup failed", error=str(e))
         elif integration_id == "github":
-            if os.environ.get("GITHUB_TOKEN") or os.environ.get("GITHUB_ACCESS_TOKEN"):
-                return "configured", "env"
-            # #1513: PAT saves store the token user-scoped in the keychain ONLY
-            # (the process-env write was restart-volatile and removed in #1507).
+            # ADR-081 D1 / Amendment B4 (Arch 10-24): a user's GitHub status derives from the
+            # connector resolver's own PAT legs (the binding is read first, in get_status), never
+            # from the deployment's env. The env counts only for a principal-less local call.
+            if not user_id:
+                from services.integrations.github.config_service import GitHubConfigService
+
+                # The one local-only helper (ADR-081 D2): None on a hosted deploy.
+                if await asyncio.to_thread(
+                    GitHubConfigService().get_authentication_token, "system"
+                ):
+                    return "configured", "env"
             if user_id:
                 try:
-                    if await _keychain_has("github_token", username=user_id):
+                    from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+                    if await GitHubMCPSpatialAdapter._user_pat_at_rest(user_id):
+                        return "configured", "user_secret_store"
+                    if await asyncio.to_thread(GitHubMCPSpatialAdapter._user_pat, user_id):
                         return "configured", "keychain"
                 except Exception as e:
                     lookup_failed = (

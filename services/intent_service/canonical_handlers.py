@@ -5775,10 +5775,10 @@ What would you like to set up first?"""
             if not repo:
                 from services.infrastructure.github_repo_validator import (
                     apply_validation_metadata,
-                    validate_github_repo,
+                    validate_github_repo_for_account,
                 )
 
-                validation = await validate_github_repo(repo_name)
+                validation = await validate_github_repo_for_account(repo_name, user_id)
                 if validation.validated and not validation.exists:
                     note = (
                         " (Note: I could not verify this repo on GitHub — "
@@ -6328,10 +6328,10 @@ What would you like to set up first?"""
                 # Issue #867: Soft-validate via GitHub API
                 from services.infrastructure.github_repo_validator import (
                     apply_validation_metadata,
-                    validate_github_repo,
+                    validate_github_repo_for_account,
                 )
 
-                validation = await validate_github_repo(repo_name)
+                validation = await validate_github_repo_for_account(repo_name, user_id)
                 if validation.validated and not validation.exists:
                     validation_note = (
                         " (Note: I couldn't verify this repo on GitHub"
