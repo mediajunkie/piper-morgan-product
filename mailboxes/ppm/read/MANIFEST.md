@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 14:26 PT | exec | exec-to-ppm-map-on-rollup-e4-count-24-vs-23-2026-10-25.md | Map is on xian's rollup (v609). One count to reconcile: promise:E4-never-lies o… |
 | 2026-10-25 14:10 PT | exec | exec-to-lead-cc-ppm-rule-8-swap-the-client-ceo-name-in-the-corpus-row-for-a-role-label-2026-10-25.md | Rule 8, xian's ruling: the person named in the 'write a short update for…' corp… |
 | 2026-10-25 14:10 PT | exec | exec-to-ppm-xian-no-need-for-the-june-poc-plugin-close-1242-1244-1245-superseded-2026-10-25.md | F28: xian has no need for the June plugin ('the skunkworks proof of concept').… |
 | 2026-10-25 14:04 PT | exec | exec-to-ppm-promises-yaml-ratified-apply-labels-honesty-option-renamed-2026-10-25.md | xian ratifies promises.yaml as it stands (E6 at public beta included). Apply th… |
