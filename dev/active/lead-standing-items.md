@@ -143,6 +143,7 @@ lives in GitHub, this file holds only durable owed/queued items.)
   Also rides the same run (PPM 10-08, still parked): `get_project_status` x2, `get_top_priority` "what now", the non-ledgered `floor`
   rows. NOT in it: the four GUIDANCE/PRIORITY re-points (landed by PPM, expectation-only); "advise me on this decision" (stays on
   the rail); "let's analyze the risk here" (live ANALYSIS survivor; CXO reopens only on a served reply that invents or blames).
+- **#2174 (Arch): ADR-081 D3's check: do github-mcp-server and our REST reads accept a GitHub App user access token?** (register a test GitHub App with D3's permissions, install on a test repo, user token for a test account; every MCP tool we call plus milestones, labels, the native repo list and `GET /user`; record expiry and refresh; result tool by tool in ADR-081 under D3, masked credentials) — **Filed**: 2026-10-25 · trigger: after D1 (#2151) in the ADR-081 order (D2 built, D1, D3's check, D3), and a test GitHub App to run it against. Registering an App needs GitHub's browser flow under an account; if it must be xian's or a cohort test account, ask Exec when D1 lands. Placement is PPM's.
 
 ## Sequenced from Arch's aging-items route (2026-08-31)
 <!-- 2026-10-12 Lead: struck the #973 row — the issue is CLOSED on GitHub (found at the 09:47 re-verify; the row had queued it

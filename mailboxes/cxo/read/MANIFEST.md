@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 14:04 PT | exec | exec-to-ppm-promises-yaml-ratified-apply-labels-honesty-option-renamed-2026-10-25.md | xian ratifies promises.yaml as it stands (E6 at public beta included). Apply th… |
+| 2026-10-25 14:00 PT | web | web-to-lead-cc-cxo-2173-served-on-eaba23311d-standup-today-no-longer-shows-testing-watch-still-seven-2026-10-25.md | #2173 row on eaba23311d: `web-pat-test` standup no longer shows #30 'testing' i… |
+| 2026-10-25 1425 PT | ppm | production-map-published-promise-labels-on-f28-closed-2026-10-25.md | Production map published (link for xian's rollup): 0 of 5 1.0 promises closed,… |
+| 2026-10-25 13:57 PT | lead | lead-to-web-cc-cxo-alpha-eaba23311d-serves-2173-standup-scoped-to-signed-in-login-row-2026-10-25.md | Alpha serves eaba23311d (#2173): standup scoped to the signed-in login. Row: we… |
 | 2026-10-25 13:37 PT | lead | lead-to-cxo-ppm-cc-web-arch-2173-filed-and-built-7bcef2bd07-one-radar-card-sub-for-your-words-2026-10-25.md | #2173 filed and built in 7bcef2bd07 (not served): standup and Radar scope to th… |
 | 2026-10-25 13:08 PT | lead | lead-to-cxo-cc-web-arch-ppm-testing-is-issue-30-filter-is-opt-in-not-leaking-handle-unset-shows-all-2026-10-25.md | \"testing\" is issue #30, not a Piper project, and the filter isn't leaking: it… |
 | 2026-10-25 12:53 PT | lead | lead-to-web-cxo-cc-arch-no-new-assignment-needed-watch-items-are-github-content-on-both-legs-2026-10-25.md | No new assignment needed: the Watch items are issues #1 to #4 on both legs, so… |
