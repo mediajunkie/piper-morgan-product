@@ -141,14 +141,37 @@ class TestGetCalendarSettings:
         kc.aread_secret.assert_awaited_once_with("google_calendar_user_abc")
 
 
+def _async_keychain(get_value=None):
+    """KeychainService double for the async disconnect path (#2172): deletes succeed and
+    the provenance read-back answers VERIFIED_ABSENT unless a test says otherwise."""
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+    kc = MagicMock()
+    kc.adelete_api_key = AsyncMock(return_value=True)
+    kc.aget_api_key = AsyncMock(return_value=get_value)
+    kc.aread_secret = AsyncMock(return_value=SecretRead(SecretProvenance.VERIFIED_ABSENT))
+    return kc
+
+
+def _github_credential_gone():
+    """The GitHub read-back (#2172) finds no credential: CONNECT_REQUIRED, no leg."""
+    from types import SimpleNamespace
+
+    from services.mcp.consumer.connector import DegradationReason
+
+    return patch(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.resolve_credential",
+        AsyncMock(return_value=SimpleNamespace(reason=DegradationReason.CONNECT_REQUIRED)),
+    )
+
+
 class TestDisconnectCalendar:
     """Tests for POST /api/v1/settings/integrations/calendar/disconnect"""
 
     @pytest.mark.asyncio
     async def test_disconnects_and_returns_success(self):
         """Should remove token from keychain and return success"""
-        mock_keychain = MagicMock()
-        mock_keychain.delete_api_key.return_value = True
+        mock_keychain = _async_keychain()
 
         with patch(
             "services.infrastructure.keychain_service.KeychainService",
@@ -157,15 +180,17 @@ class TestDisconnectCalendar:
             result = await disconnect_calendar(current_user=_mock_current_user("test_user"))
 
             assert result["success"] is True
-            assert result["message"] == "Calendar disconnected"
+            assert result["message"] == "Google Calendar disconnected"  # #2172: CXO display name
             # Issue #839: Should use user-scoped key
-            mock_keychain.delete_api_key.assert_called_once_with("google_calendar_test_user")
+            mock_keychain.adelete_api_key.assert_awaited_once_with(
+                "google_calendar_test_user", None
+            )
 
     @pytest.mark.asyncio
     async def test_succeeds_even_when_no_token_exists(self):
         """Should still succeed even if no token exists to clear"""
-        mock_keychain = MagicMock()
-        mock_keychain.delete_api_key.side_effect = Exception("Key not found")
+        mock_keychain = _async_keychain()
+        mock_keychain.adelete_api_key.side_effect = Exception("Key not found")
 
         with patch(
             "services.infrastructure.keychain_service.KeychainService",
@@ -174,7 +199,7 @@ class TestDisconnectCalendar:
             result = await disconnect_calendar(current_user=_mock_current_user())
 
             assert result["success"] is True
-            assert result["message"] == "Calendar disconnected"
+            assert result["message"] == "Google Calendar disconnected"  # #2172: CXO display name
 
 
 class TestIntegrationRegistryCalendarUrl:

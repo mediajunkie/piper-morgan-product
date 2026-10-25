@@ -1022,7 +1022,7 @@
           const data = await response.json();
 
           if (data.success) {
-            Toast.show('success', 'Disconnected', 'Slack disconnected');
+            Toast.show('success', 'Disconnected', data.message || 'Slack disconnected');  // #2172: carries the revoke line
             loadSlackStatus();  // Refresh status
           } else {
             throw new Error(data.message || 'Failed to disconnect');

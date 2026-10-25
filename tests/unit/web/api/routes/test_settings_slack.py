@@ -20,6 +20,30 @@ from web.api.routes.settings_integrations import (
 )
 
 
+def _async_keychain(get_value=None):
+    """KeychainService double for the async disconnect path (#2172): deletes succeed and
+    the provenance read-back answers VERIFIED_ABSENT unless a test says otherwise."""
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+    kc = MagicMock()
+    kc.adelete_api_key = AsyncMock(return_value=True)
+    kc.aget_api_key = AsyncMock(return_value=get_value)
+    kc.aread_secret = AsyncMock(return_value=SecretRead(SecretProvenance.VERIFIED_ABSENT))
+    return kc
+
+
+def _github_credential_gone():
+    """The GitHub read-back (#2172) finds no credential: CONNECT_REQUIRED, no leg."""
+    from types import SimpleNamespace
+
+    from services.mcp.consumer.connector import DegradationReason
+
+    return patch(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.resolve_credential",
+        AsyncMock(return_value=SimpleNamespace(reason=DegradationReason.CONNECT_REQUIRED)),
+    )
+
+
 class TestGetSlackSettings:
     """Tests for GET /api/v1/settings/integrations/slack.
 
@@ -236,7 +260,8 @@ class TestDisconnectSlack:
             result = await disconnect_slack(current_user=mock_user)
 
             assert result["success"] is True
-            assert result["message"] == "Slack disconnected"
+            # #2172: Piper holds no copy, so success, with CXO's line that it stays valid at Slack
+            assert result["message"].startswith("Slack disconnected. Piper no longer holds")
 
     @pytest.mark.asyncio
     async def test_handles_missing_token_gracefully(self):
@@ -268,7 +293,7 @@ class TestDisconnectSlack:
         the shadowed one leaked the keychain creds)."""
         import os
 
-        mock_keychain = MagicMock()
+        mock_keychain = _async_keychain()
         mock_oauth_handler = MagicMock()
         mock_oauth_handler.revoke_workspace_access = AsyncMock(return_value=True)
         mock_user = MagicMock()
@@ -294,8 +319,8 @@ class TestDisconnectSlack:
 
         assert result["success"] is True
         # user-scoped keychain creds removed (#849) — the behavior the dead dup lacked
-        mock_keychain.delete_api_key.assert_any_call("slack_bot", username="user-789")
-        mock_keychain.delete_api_key.assert_any_call("slack_user", username="user-789")
+        mock_keychain.adelete_api_key.assert_any_await("slack_bot", "user-789")
+        mock_keychain.adelete_api_key.assert_any_await("slack_user", "user-789")
         # Slack-side revoke — the behavior the prior live route lacked
         # 2026-07-06 (#542): takes user_id now, not the workspace_id env var
         mock_oauth_handler.revoke_workspace_access.assert_called_once_with("user-789")

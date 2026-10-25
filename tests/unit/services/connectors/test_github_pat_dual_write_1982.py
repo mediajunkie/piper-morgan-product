@@ -96,9 +96,17 @@ async def test_disconnect_github_removes_all_three_copies():
     ``user_api_keys`` row. Disconnect must remove all three. The key service is REAL
     here (only the keychain, the session and the audit logger are doubles), so the
     second keychain delete and the row delete are the service's own behaviour."""
+    from types import SimpleNamespace
+
     from services.connectors.disconnect import disconnect_connector
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+    from services.mcp.consumer.connector import DegradationReason
 
     keychain = MagicMock()
+    # the helper's own copy goes through the async surface (#2172); the real key
+    # service's copy (provider "github") still uses the sync delete_api_key
+    keychain.adelete_api_key = AsyncMock(return_value=True)
+    keychain.aread_secret = AsyncMock(return_value=SecretRead(SecretProvenance.VERIFIED_ABSENT))
     binding_repo = MagicMock()
     binding_repo.set_status = AsyncMock()
     grant_store = MagicMock()
@@ -131,11 +139,17 @@ async def test_disconnect_github_removes_all_three_copies():
             return_value=grant_store,
         ),
         patch("services.security.user_api_key_service.audit_logger") as audit,
+        patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.resolve_credential",
+            AsyncMock(return_value=SimpleNamespace(reason=DegradationReason.CONNECT_REQUIRED)),
+        ),
     ):
         audit.log_api_key_event = AsyncMock()
-        await disconnect_connector(_U, "github")
+        outcome = await disconnect_connector(_U, "github")
+    assert outcome.cleared, outcome.remaining
     # 1. the route's keychain copy
-    keychain.delete_api_key.assert_any_call("github_token", username=_U)
+    keychain.adelete_api_key.assert_any_await("github_token", _U)
+    keychain.adelete_api_key.assert_any_await("github", _U)  # helper's read-back of copy 2
     # 2. the key service's own keychain copy (provider "github", user-scoped)
     keychain.delete_api_key.assert_any_call("github", username=_U)
     # 3. the at-rest row

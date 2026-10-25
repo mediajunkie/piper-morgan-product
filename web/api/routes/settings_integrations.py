@@ -308,6 +308,43 @@ GITHUB_TOKEN_READ_FAILED_MESSAGE = (
 )
 
 
+# #2172 (Arch 10-25, ADR-080): Disconnect says "disconnected" only when every saved copy
+# is verifiably gone. Otherwise this line, through the page's error toast. Words: CXO
+# 10-25 16:00 ("may", twice: a failed read-back doesn't show the copy is there).
+DISCONNECT_INCOMPLETE_LINE = (
+    "I couldn't fully disconnect {service}: a saved copy of your access may still be "
+    "stored, so Piper may still be able to use it. Try Disconnect again; if it keeps "
+    "failing, tell us."
+)
+# Piper's copies are gone but the provider-side revoke failed (Slack, Google): added to
+# the success message, never the failure toast. Words: CXO 10-25 16:00.
+DISCONNECT_REVOKE_FAILED_LINE = (
+    "Piper no longer holds your access. I couldn't revoke it at {service}, so it stays "
+    "valid there until you remove Piper in {service}'s settings."
+)
+
+
+def _disconnected_message(service: str, result) -> str:
+    """The success message (#2172): "{service} disconnected", plus CXO's revoke line
+    when the provider-side revoke failed."""
+    message = f"{service} disconnected"
+    if result.provider_revoke_failed:
+        message += ". " + DISCONNECT_REVOKE_FAILED_LINE.format(service=service)
+    return message
+
+
+def _disconnect_incomplete(service: str):
+    """The route's answer when ``DisconnectResult.cleared`` is False (#2172): a 503 whose
+    ``detail`` the page shows, never ``success: true``."""
+    from fastapi.responses import JSONResponse
+
+    line = DISCONNECT_INCOMPLETE_LINE.format(service=service)
+    return JSONResponse(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        content={"success": False, "detail": line, "message": line},
+    )
+
+
 def _github_check_failed() -> dict:
     return {
         "configured": None,
@@ -584,12 +621,14 @@ async def disconnect_slack(current_user: JWTClaims = Depends(get_current_user)):
     try:
         from services.connectors.disconnect import disconnect_connector
 
-        await disconnect_connector(current_user.sub, "slack")
+        result = await disconnect_connector(current_user.sub, "slack")
+        if not result.cleared:
+            return _disconnect_incomplete("Slack")
         logger.info("slack_disconnected")
 
         return {
             "success": True,
-            "message": "Slack disconnected",
+            "message": _disconnected_message("Slack", result),
         }
 
     except Exception as e:
@@ -1538,12 +1577,14 @@ async def disconnect_calendar(
     try:
         from services.connectors.disconnect import disconnect_connector
 
-        await disconnect_connector(current_user.sub, "calendar")
+        result = await disconnect_connector(current_user.sub, "calendar")
+        if not result.cleared:
+            return _disconnect_incomplete("Google Calendar")
         logger.info("calendar_disconnected", user_id=current_user.sub)
 
         return {
             "success": True,
-            "message": "Calendar disconnected",
+            "message": _disconnected_message("Google Calendar", result),
         }
 
     except Exception as e:
@@ -1855,7 +1896,9 @@ async def disconnect_notion(current_user: JWTClaims = Depends(get_current_user))
     try:
         from services.connectors.disconnect import disconnect_connector
 
-        await disconnect_connector(current_user.sub, "notion")
+        result = await disconnect_connector(current_user.sub, "notion")
+        if not result.cleared:
+            return _disconnect_incomplete("Notion")
         logger.info("notion_disconnected")
 
         return {
@@ -2248,7 +2291,9 @@ async def disconnect_github(current_user: JWTClaims = Depends(get_current_user))
     from services.connectors.disconnect import disconnect_connector
 
     try:
-        await disconnect_connector(current_user.sub, "github")
+        result = await disconnect_connector(current_user.sub, "github")
+        if not result.cleared:
+            return _disconnect_incomplete("GitHub")
         logger.info("github_disconnected")
 
         return {

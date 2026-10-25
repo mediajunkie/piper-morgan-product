@@ -16,6 +16,78 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 
+def _async_keychain(get_value=None):
+    """KeychainService double for the async disconnect path (#2172): deletes succeed and
+    the provenance read-back answers VERIFIED_ABSENT unless a test says otherwise."""
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+    kc = MagicMock()
+    kc.adelete_api_key = AsyncMock(return_value=True)
+    kc.aget_api_key = AsyncMock(return_value=get_value)
+    kc.aread_secret = AsyncMock(return_value=SecretRead(SecretProvenance.VERIFIED_ABSENT))
+    return kc
+
+
+def _github_stores_ok():
+    """Binding/grant/at-rest stores clear cleanly (no DB in a unit test)."""
+    from contextlib import ExitStack
+
+    scope = MagicMock()
+    scope.__aenter__ = AsyncMock(return_value=AsyncMock())
+    scope.__aexit__ = AsyncMock(return_value=False)
+    factory = MagicMock()
+    factory.session_scope.return_value = scope
+    repo = MagicMock()
+    repo.set_status = AsyncMock()
+    grant = MagicMock()
+    grant.delete = AsyncMock(return_value=True)
+    stack = ExitStack()
+    stack.enter_context(patch("services.database.session_factory.AsyncSessionFactory", factory))
+    stack.enter_context(
+        patch(
+            "services.connectors.binding_repository.ConnectorBindingRepository", return_value=repo
+        )
+    )
+    stack.enter_context(
+        patch("services.mcp.consumer.connector_grant_store.ConnectorGrantStore", return_value=grant)
+    )
+    stack.enter_context(
+        patch("services.connectors.github_pat_store.delete_user_pat_at_rest", AsyncMock())
+    )
+    return stack
+
+
+def _github_credential_gone():
+    """The GitHub read-back (#2172) finds no credential: CONNECT_REQUIRED, no leg."""
+    from types import SimpleNamespace
+
+    from services.mcp.consumer.connector import DegradationReason
+
+    return patch(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.resolve_credential",
+        AsyncMock(return_value=SimpleNamespace(reason=DegradationReason.CONNECT_REQUIRED)),
+    )
+
+
+def _notion_store_ok():
+    """The #358 user-key store clears cleanly (no DB in a unit test)."""
+    scope = MagicMock()
+    scope.__aenter__ = AsyncMock(return_value=AsyncMock())
+    scope.__aexit__ = AsyncMock(return_value=False)
+    factory = MagicMock()
+    factory.session_scope_fresh.return_value = scope
+    svc = MagicMock()
+    svc.delete_user_key = AsyncMock(return_value=True)
+    from contextlib import ExitStack
+
+    stack = ExitStack()
+    stack.enter_context(patch("services.database.session_factory.AsyncSessionFactory", factory))
+    stack.enter_context(
+        patch("services.security.user_api_key_service.UserAPIKeyService", return_value=svc)
+    )
+    return stack
+
+
 class TestGitHubTokenLifecycle849:
     """Issue #849 Category B: GitHub token store/retrieve/delete must be user-scoped."""
 
@@ -110,13 +182,15 @@ class TestGitHubTokenLifecycle849:
         """disconnect_github route handler must pass username=current_user.sub."""
         from web.api.routes.settings_integrations import disconnect_github
 
-        mock_keychain = MagicMock()
+        mock_keychain = _async_keychain()
         mock_config = MagicMock()
         mock_config.clear_cache = MagicMock()
         mock_user = MagicMock()
         mock_user.sub = "user-123"
 
         with (
+            _github_credential_gone(),
+            _github_stores_ok(),
             patch.dict("os.environ", {"GITHUB_TOKEN": "ghp_test"}, clear=True),
             patch(
                 "services.infrastructure.keychain_service.KeychainService",
@@ -127,10 +201,9 @@ class TestGitHubTokenLifecycle849:
                 return_value=mock_config,
             ),
         ):
-            await disconnect_github(current_user=mock_user)
-            mock_keychain.delete_api_key.assert_called_once_with(
-                "github_token", username="user-123"
-            )
+            result = await disconnect_github(current_user=mock_user)
+            assert result["success"] is True
+            mock_keychain.adelete_api_key.assert_any_await("github_token", "user-123")
 
 
 class TestSlackOAuthStoreConsistency849:
@@ -320,8 +393,9 @@ class TestDisconnectKeyCorrectness849:
         source = inspect.getsource(disconnect)
 
         # Verify user-scoped key deletion (code may be split across lines by black)
-        assert '"slack_bot", username=user_id' in source
-        assert '"slack_user", username=user_id' in source
+        assert 'for provider in ("slack_bot", "slack_user")' in source
+        assert "_keychain_copy_gone(keychain, provider, user_id)" in source
+        assert "adelete_api_key(provider, username)" in source
         assert 'delete_api_key("slack_bot_token")' not in source
 
     @pytest.mark.asyncio
@@ -329,14 +403,17 @@ class TestDisconnectKeyCorrectness849:
         """Notion disconnect must use notion with username=current_user.sub."""
         from web.api.routes.settings_integrations import disconnect_notion
 
-        mock_keychain = MagicMock()
+        mock_keychain = _async_keychain()
         mock_user = MagicMock()
         mock_user.sub = "user-notion-1"
 
-        with patch(
-            "services.infrastructure.keychain_service.KeychainService",
-            return_value=mock_keychain,
+        with (
+            patch(
+                "services.infrastructure.keychain_service.KeychainService",
+                return_value=mock_keychain,
+            ),
+            _notion_store_ok(),
         ):
             result = await disconnect_notion(current_user=mock_user)
             assert result["success"] is True
-            mock_keychain.delete_api_key.assert_called_once_with("notion", username="user-notion-1")
+            mock_keychain.adelete_api_key.assert_awaited_once_with("notion", "user-notion-1")

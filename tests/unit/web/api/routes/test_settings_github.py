@@ -269,14 +269,66 @@ class TestSaveGitHubToken:
             assert _os.environ.get("GITHUB_TOKEN") != "ghp_valid_token"
 
 
+def _async_keychain(get_value=None):
+    """KeychainService double for the async disconnect path (#2172): deletes succeed and
+    the provenance read-back answers VERIFIED_ABSENT unless a test says otherwise."""
+    from services.infrastructure.keychain_service import SecretProvenance, SecretRead
+
+    kc = MagicMock()
+    kc.adelete_api_key = AsyncMock(return_value=True)
+    kc.aget_api_key = AsyncMock(return_value=get_value)
+    kc.aread_secret = AsyncMock(return_value=SecretRead(SecretProvenance.VERIFIED_ABSENT))
+    return kc
+
+
+def _github_stores_ok():
+    """Binding/grant/at-rest stores clear cleanly (no DB in a unit test)."""
+    from contextlib import ExitStack
+
+    scope = MagicMock()
+    scope.__aenter__ = AsyncMock(return_value=AsyncMock())
+    scope.__aexit__ = AsyncMock(return_value=False)
+    factory = MagicMock()
+    factory.session_scope.return_value = scope
+    repo = MagicMock()
+    repo.set_status = AsyncMock()
+    grant = MagicMock()
+    grant.delete = AsyncMock(return_value=True)
+    stack = ExitStack()
+    stack.enter_context(patch("services.database.session_factory.AsyncSessionFactory", factory))
+    stack.enter_context(
+        patch(
+            "services.connectors.binding_repository.ConnectorBindingRepository", return_value=repo
+        )
+    )
+    stack.enter_context(
+        patch("services.mcp.consumer.connector_grant_store.ConnectorGrantStore", return_value=grant)
+    )
+    stack.enter_context(
+        patch("services.connectors.github_pat_store.delete_user_pat_at_rest", AsyncMock())
+    )
+    return stack
+
+
+def _github_credential_gone():
+    """The GitHub read-back (#2172) finds no credential: CONNECT_REQUIRED, no leg."""
+    from types import SimpleNamespace
+
+    from services.mcp.consumer.connector import DegradationReason
+
+    return patch(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.resolve_credential",
+        AsyncMock(return_value=SimpleNamespace(reason=DegradationReason.CONNECT_REQUIRED)),
+    )
+
+
 class TestDisconnectGitHub:
     """Tests for POST /api/v1/settings/integrations/github/disconnect"""
 
     @pytest.mark.asyncio
     async def test_disconnects_and_returns_success(self):
         """Should remove token from keychain and return success"""
-        mock_keychain = MagicMock()
-        mock_keychain.delete_api_key.return_value = None
+        mock_keychain = _async_keychain()
 
         mock_config_service = MagicMock()
         mock_config_service.clear_cache = MagicMock()
@@ -285,6 +337,8 @@ class TestDisconnectGitHub:
         mock_user.sub = "test-user-123"
 
         with (
+            _github_credential_gone(),
+            _github_stores_ok(),
             patch.dict("os.environ", {"GITHUB_TOKEN": "ghp_test"}, clear=True),
             patch(
                 "services.infrastructure.keychain_service.KeychainService",
@@ -300,15 +354,13 @@ class TestDisconnectGitHub:
             assert result["success"] is True
             assert result["message"] == "GitHub disconnected"
             # Issue #849: Verify user-scoped key deletion
-            mock_keychain.delete_api_key.assert_called_once_with(
-                "github_token", username="test-user-123"
-            )
+            mock_keychain.adelete_api_key.assert_any_await("github_token", "test-user-123")
 
     @pytest.mark.asyncio
     async def test_handles_missing_token_gracefully(self):
         """Should succeed even if no token exists to delete"""
-        mock_keychain = MagicMock()
-        mock_keychain.delete_api_key.side_effect = KeyError("github_token")
+        mock_keychain = _async_keychain()
+        mock_keychain.adelete_api_key.side_effect = KeyError("github_token")
 
         mock_config_service = MagicMock()
         mock_config_service.clear_cache = MagicMock()
@@ -317,6 +369,8 @@ class TestDisconnectGitHub:
         mock_user.sub = "test-user-123"
 
         with (
+            _github_credential_gone(),
+            _github_stores_ok(),
             patch.dict("os.environ", {}, clear=True),
             patch(
                 "services.infrastructure.keychain_service.KeychainService",
@@ -338,7 +392,7 @@ class TestDisconnectGitHub:
         """#1330: disconnect must also UNBIND the OAuth connector + revoke the #358 grant —
         else the badge/health still read 'Connected via OAuth' and chat reads keep working
         through the connector after Disconnect (it only cleared the native PAT before)."""
-        mock_keychain = MagicMock()
+        mock_keychain = _async_keychain()
         mock_config_service = MagicMock()
         mock_config_service.clear_cache = MagicMock()
 
@@ -359,6 +413,7 @@ class TestDisconnectGitHub:
         mock_grant_store.delete = AsyncMock(return_value=True)
 
         with (
+            _github_credential_gone(),
             patch.dict("os.environ", {"GITHUB_TOKEN": "ghp_test"}, clear=True),
             patch(
                 "services.infrastructure.keychain_service.KeychainService",
@@ -369,6 +424,7 @@ class TestDisconnectGitHub:
                 return_value=mock_config_service,
             ),
             patch("services.database.session_factory.AsyncSessionFactory", mock_factory),
+            patch("services.connectors.github_pat_store.delete_user_pat_at_rest", AsyncMock()),
             patch(
                 "services.connectors.binding_repository.ConnectorBindingRepository",
                 return_value=mock_binding_repo,

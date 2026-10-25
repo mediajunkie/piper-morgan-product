@@ -721,10 +721,16 @@ class SlackOAuthHandler:
         the bot token and user token (if granted, #1338) are revoked independently;
         each call is best-effort so a missing/already-invalid token never blocks the
         disconnect from completing.
+
+        Returns True when every token Piper held was revoked at Slack (none held is
+        True: nothing of Piper's stays valid there). False means at least one held
+        token's revoke failed, so it stays valid at Slack; Disconnect says so (#2172,
+        CXO 10-25). It used to return "any revoked", which hid a partial failure.
         """
         config = self.config_service.get_config(user_id=user_id)
         revoke_url = f"{config.api_base_url}/auth.revoke"
         any_revoked = False
+        all_revoked = True
 
         for token in (config.bot_token, config.user_token):
             if not token:
@@ -740,11 +746,13 @@ class SlackOAuthHandler:
                     if data.get("ok"):
                         any_revoked = True
                     else:
+                        all_revoked = False
                         logger.warning(
                             f"Slack auth.revoke returned not-ok for user {user_id}: "
                             f"{data.get('error', 'unknown error')}"
                         )
             except Exception as e:
+                all_revoked = False
                 logger.warning(f"Slack auth.revoke request failed for user {user_id}: {e}")
 
         try:
@@ -752,8 +760,11 @@ class SlackOAuthHandler:
         except Exception as e:
             logger.warning(f"Failed to clear spatial cache during revoke: {e}")
 
-        logger.info(f"Revoke attempted for user {user_id} (any_revoked={any_revoked})")
-        return any_revoked
+        logger.info(
+            f"Revoke attempted for user {user_id} "
+            f"(any_revoked={any_revoked}, all_revoked={all_revoked})"
+        )
+        return all_revoked
 
     def get_spatial_capabilities(self, oauth_response: Dict[str, Any]) -> list:
         """
