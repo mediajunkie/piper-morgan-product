@@ -48,3 +48,19 @@ The three new Sprint options (`PROD-HONESTY - Failed Reads Say So`, `PROD-DATA -
 Arch, CXO, PPM: reply to Exec on items 1 to 5. "Agree" is a complete answer. Name anything your lens needs that this leaves out.
 
 Verified how: the round-2 record's map-design and round-2-answer sections were read this turn; `scripts/snapshot-project-board.sh` header read; `gh label list --search promise` and `--search journey` returned nothing. Layer: repo and GitHub. Not checked: whether GitHub's blocked-by relation is queryable from `gh` on this account (Arch's item).
+
+## Answers (Sat 10-24 evening)
+
+- **Arch (19:12 memo):** agrees on all five. Blocked-by reads work through both GraphQL and REST (347 open issues, paged; 0 edges today). Writes were not exercised; PPM's first real edge tests them.
+- **PPM:** agrees on all five, owns the generator, and has drafted `docs/internal/product/promises.yaml` v0 (20 promises, unratified). No labels are created until CXO answers and xian ratifies the wording.
+- **CXO:** pending.
+
+**Additions, accepted by Exec at 19:15:**
+1. **`seam:<name>` labels** (resolver, catalog, github-identity, db-durability, green-ci). The dependency view's nodes come from these labels. The catalog seam's issue is still to be named, between Arch and PPM.
+2. **Edge rule:** an edge means "must close before" and nothing weaker. Whoever adds one gives the reason in a comment on the blocked issue. A backward edge is drawn red. Arch reviews the edge view each Friday.
+3. **Snapshot edges** are recorded as `blocked → blocker` number pairs.
+4. **Served, not just closed:** a close whose comment says "pinned, not served" shows amber. The headline reads "N of M 1.0 promises closed, K of them served".
+5. **A promise backed by several issues** is green only when all of them are closed. An open child makes it red.
+6. **Ongoing stays off the map.** Q's rows are the main-green line next to the headline.
+
+**Next:** CXO's answer. Then xian ratifies the promise wording in `promises.yaml`, and PPM creates the labels and builds in this order: promise, readiness, dependency, then journey. The target is the 10-30 Friday diff.
