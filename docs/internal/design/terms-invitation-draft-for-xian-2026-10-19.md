@@ -17,13 +17,13 @@
 
 **When Piper acts for you.** Piper checks with you before making most changes. If you tell it directly to do something, such as "Create a GitHub issue," Piper will do it right away, treating a plain instruction as the go. Piper always asks before it deletes something of yours. There's no undo yet, so take that question seriously!
 
-**When something breaks.** We expect you'll hit rough edges. We'll include a short list of the most egregious known issues with this invitation. When you find something new, send feedback from the left-hand menu once you're in the app, or email support@pipermorgan.ai. Either way the message will be read by the team, including by me (xian) the human who owns this particular loop.
+**When something breaks.** We expect you'll hit rough edges. We'll include a short list of the most egregious known issues with this invitation. When you find something new, send feedback from the left-hand menu once you're in the app, or email support@pipermorgan.ai. Either way the message will be read by the team, including by me (xian), the human who owns this particular loop.
 
 **Brief restarts.** Piper may restart briefly when we update it, usually at a quiet moment. You'll stay signed in, and your conversation will still be there. If a message gets no reply around the time of a restart, just send it again.
 
 **If the database stops.** Recovery is automatic and usually takes 15 to 30 minutes. The alert reaches me either way.
 
-**Leaving.** You can download your uploaded files, and what Piper has learned about how you work. Exporting your conversations and to-dos is the goal, and isn't built yet. There's no delete-account button yet either. If you'd like to delete your account, just email support@pipermorgan.ai and we'll delete your account and everything in it within 14 days. Deleting a single conversation inside Piper isn't possible yet. The roadmap includes the ability to put things in trash and to empty it for good yourself so we hope to get there before too long.
+**Leaving.** You can download your uploaded files, and what Piper has learned about how you work. Exporting your conversations and to-dos is the goal, and isn't built yet. There's no delete-account button yet either. If you'd like to delete your account, just email support@pipermorgan.ai and we'll delete your account and everything in it within 14 days. Deleting a single conversation inside Piper isn't possible yet. The roadmap includes the ability to put things in trash and to empty it for good yourself, so we hope to get there before too long.
 
 **Your invite code.** Your code works once, for one account. Please don't share it. If it leaks before you use it, tell us and we'll cancel it. Once used, it can't be taken back, because the account exists. We won't publish who our testers are, and we won't quote you without asking first.
 
@@ -74,6 +74,7 @@ Before Production, we'll add deleting a conversation for good, deleting your acc
 - Fact row "When something breaks" brought up to date.
 - Item 6: Web clicked 12 served delete or disconnect controls on alpha 89b8c3d8b6. Every one asks first, and Cancel leaves the item. Of about 19 delete-type controls in the templates, 7 were not reachable. Their source has confirms, except share Remove (`removeShare`), which deletes a share with no confirm. Share is broken today (#2166), so no share can exist yet. The chat path ("delete that to-do") is not yet checked on the same standard (CXO asked). The sentence stays until that comes back.
 - For xian, his own words: a comma in "me (xian), the human who owns…". Is trash on the roadmap or a hope ("we'd like to add")? #2021 is open. Also a comma after "yourself".
+  - **xian, 10-25 12:40:** both commas added (Exec applied). Trash: keep "The roadmap includes…" as the plan and "we hope to get there before too long" as the timing (#2021 is open in Production). No calls left for xian on the copy.
 
 - CXO 17:42 judged item 6: keep the sentence, with "something", not "anything". The API-key Remove dialog ("we destroy our copy immediately") contradicts this draft's five-day backups line. The dialog is the false one, so #2167 (Lead) changes it, and this paragraph stays as written.
 - **Item 6, chat path (Web 17:53, alpha 89b8c3d8b6):** nothing was deleted without asking. A to-do asks "(yes/no)", and "no" keeps it. Project delete is declined with an archive offer. List-item delete isn't recognised from chat. So the sentence holds for buttons (12 of 12 reachable) and chat (3 of 3 kinds tried). One side finding, not for the sentence: a list-item ask got a confirmation naming a different object (the previous to-do). Web is filing it. **The draft is ready for xian's last read (17:55).**
