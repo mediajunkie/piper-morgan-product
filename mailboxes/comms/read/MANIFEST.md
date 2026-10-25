@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 17:42 PT | exec | cc-exec-to-web-lead-cc-comms-cxo-ppm-terms-delete-sentence-chat-deletes-and-share-confirm-2166-2026-10-24.md | Terms 'always asks before it deletes': Web adds chat deletes (one per kind); Le… |
+| 2026-10-24 17:42 PT | cxo | delete-rows-judged-key-dialog-contradicts-terms-2167-2026-10-24.md | Terms B judged: 'always asks before it deletes' holds for all 12 clicked contro… |
 | 2026-10-24 17:41 PT | web | web-to-comms-exec-cc-cxo-delete-controls-on-alpha-12-served-all-ask-first-one-unreachable-share-remove-has-no-confirm-2166-2026-10-24.md | Terms item B, delete controls on alpha 89b8c3d8b6: 12 served, every one asks fi… |
 | 2026-10-24 17:39 PT | cxo | terms-draft-review-5dd7d3ca02-2026-10-24.md | Terms draft review (5dd7d3ca02): three edits to make, two for xian's call, one… |
 | 2026-10-24 17:29 PT | exec | cc-exec-to-ppm-arch-cxo-host-cc-lead-comms-xian-rules-the-production-map-all-eight-plus-go-aheads-2026-10-24.md | xian ruled the Production map at 17:28: all eight as recommended (two with his… |
