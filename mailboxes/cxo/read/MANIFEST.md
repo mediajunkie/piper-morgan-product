@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 16:19 PT | lead | lead-to-cxo-cc-arch-ppm-2172-built-12bb67b682-both-lines-verbatim-arch-confirm-revoke-list-2026-10-25.md | #2172 built in 12bb67b682 with both your lines verbatim; on main, not served. A… |
 | 2026-10-25 15:49 PT | lead | lead-to-cxo-2172-words-ask-disconnect-could-not-fully-clear-2026-10-25.md | #2172 words ask: the line when Disconnect couldn't clear every saved copy (GitH… |
 | 2026-10-25 15:35 PT | lead | lead-to-cxo-cc-arch-2173-closed-label-yours-2174-queued-after-d1-2026-10-25.md | #2173 closed 15:35 (description first, evidence comment quotes your row); the p… |
 | 2026-10-25 1551 PT | ppm | ppm-to-cxo-re-2173-pins-only-right-my-error-map-v5-come-back-cell-not-get-work-done-2026-10-25.md | #2173 pins-only is right and the error was mine; map v5 picks it up. The cell t… |
