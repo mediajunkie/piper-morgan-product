@@ -2,11 +2,13 @@
 
 **Updated**: 2026-10-17 (04:12 fire, see NOW below; older DONE lines below are history). DONE 10-12: 10-10 + 10-11 omnibuses, Weekly Audit #1994 closed, BRIEFING-CURRENT-STATE refreshed, How to Report edit pushed (xian approved), Ship #064 row set by Comms and view rebuilt. Known fault: bare `gh` hung on Amber after the 10-10 reboot (Pard); prefix `GODEBUG=netdns=go` until Pard confirms the fix. History in session logs (`dev/2026/10/{04..12}/*docs-code-log.md`), not here.
 
-## NOW (10-24 22:12 STOP)
-- **PUBLISHED and DISTRIBUTED**: every post through The Tracker That Lost Track (10-22), and **Mistaking the Inset for the Map (10-24, website 6def8e8, Medium and LinkedIn URLs from xian, row `distributed`, liPubDate 10-24 is my assumption)**. Omnibuses 10-15 through 10-23 DONE (10-23: 596 lines, 1017 commits, CXO addendum and Exec-answers addendum).
-- **Sun 10-25 04:12 START**: owe the 10-24 omnibus (Sonnet-subagent brief, 11 role rows, fetch again before nudging, name scan to cover controls/) plus nudges. "A Clean Result Needs a Version Number" (`drafted`, insight, pubDate 10-25) is HELD until Comms' publish-ready memo (needs xian's rewrite, title pick, art). Do not publish without it. Full pre-flight when it comes.
-- Open with Exec/xian: rule 8 outside name in nine 10-23 controls files plus eight older files, source is a routing corpus row in 18 files outside dev/ (Exec put it to xian, Lead swaps the row if he is not covered). HOST 10-20 log outside first name (reported earlier).
-- Held: #1909 fixtures box (Lead after 10-30), glossary re-verify about 11-30, CIO concept-link inventory by 11-01. Next weekly audit Mon 10-26 (issue opens about 09:20).
+## NOW (10-25 10:12 fire)
+- **PUBLISHED**: every post through "A Clean Result Needs a Version Number" (10-25, website 5706b37, row `published`). **DISTRIBUTED**: through "Mistaking the Inset for the Map" (10-24). Omnibuses 10-15 through 10-24 DONE.
+- **OWED from xian**: Medium and LinkedIn URLs for Clean Result. Then set mediumURL, linkedinURL, liPubDate, canonicalSite=distributed, status=distributed, validate, rebuild view. Step 1f resurfaces it.
+- **Mon 10-26 04:12 START**: owe the 10-25 omnibus (Sonnet-subagent brief, 11 role rows, fetch again before nudging, name scan incl. controls/), nudges, CI check. Weekly audit Mon 10-26 (issue opens about 09:20).
+- **Tue 10-27**: "The Caveat That Kept Disappearing", waits on Comms' publish-ready memo. Full pre-flight when it comes.
+- Open with Exec/xian: rule 8 outside name in nine 10-23 controls files plus eight older files (routing corpus row in 18 files outside dev/). HOST 10-20 log outside first name (reported).
+- Held: #1909 fixtures box (Lead after 10-30), glossary re-verify about 11-30, CIO concept-link inventory by 11-01.
 
 ## OWED (PM's hand)
 - Nothing for "It Doesn't Count if You Skip It": FULLY DISTRIBUTED 10-11 (LinkedIn + Medium URLs from PM, row `distributed`, `canonicalSite` `distributed`).
