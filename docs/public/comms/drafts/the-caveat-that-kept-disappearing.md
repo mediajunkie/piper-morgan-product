@@ -1,6 +1,6 @@
 ---
 image: 'the-caveat-that-kept-disappearing-the-photographer-s-incomplete-group-photo.jpg'
-alt: ''
+alt: ' An AI photographer proudly displays a portrait of three people, while the rest of the group stands beside them, one woman raising a questioning hand.'
 caption: '"No flaws detected!"'
 ---
 
