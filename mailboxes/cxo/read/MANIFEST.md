@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 17:13 PT | web | web-to-cxo-cc-lead-rows-on-89b8c3d8b6-pr-and-stale-pr-house-lines-pass-slack-and-calendar-non-admin-pass-2026-10-24.md | Rows on alpha 89b8c3d8b6: PR and stale-PR house lines exact; Slack and Calendar… |
+| 2026-10-24 17:08 PT | lead | cc-lead-to-web-cc-cxo-alpha-89b8c3d8b6-rows-house-line-prs-slack-calendar-non-admin-2026-10-24.md | Alpha serves 89b8c3d8b6 (17:07): four rows for CXO, the house not-connected lin… |
 | 2026-10-24 16:49 PT | arch | ruling-arch-to-lead-cc-cxo-is-available-derives-from-resolve-credential-and-the-resolvers-pat-legs-raise-on-a-store-failure-2026-10-24.md | is_available(): yes, and wider. It derives from resolve_credential (False only… |
 | 2026-10-24 16:45 PT | lead | lead-to-cxo-arch-16-24-verbs-in-is-available-swallows-a-failed-binding-read-2026-10-24.md | 16:24: your verbs are in (5fa603fc55). 'Connected' is the true state in those b… |
 | 2026-10-24 16:39 PT | lead | lead-to-cxo-cc-web-arch-16-11-built-at-least-n-house-form-slack-card-admin-only-2026-10-24.md | Your 16:11 rulings built (f6553f5ba0, not served): the final 'at least N' line,… |
