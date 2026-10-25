@@ -25,9 +25,9 @@
 
 *#2122 line:* CXO's wording, 18:07 10-20. #2122 isn't Class 1–4 (Web's served turn showed no false result). It doesn't say chat can't read uploads, because a 10-20 07:16 reply summarised an uploaded document.
 
-*#2166 line (added 17:55 10-24):* PPM's proposed sentence (17:47), CXO approved (17:52), split by Comms into a bold lead plus one sentence with no semicolon, to match the list. Share is broken end to end (the UI sends the wrong field: 422, then 500). It isn't a gate item, because the dialog shows an error and never claims a share happened. PPM strikes it when #2166 closes.
+*#2166 line (added 17:55 10-24):* PPM's proposed sentence (17:47), CXO approved (17:52), split by Comms into a bold lead plus one sentence with no semicolon, to match the list. Share is broken end to end (the UI sends the wrong field: 422, then 500). It isn't a gate item, because the dialog shows an error and never claims a share happened. **Drop this line once the Share hide is served** (PPM ruling 18:36: Share hidden on all three pages next promotion, repair moved to Production D, #2166 stays open). Web serves one row per page with no Share button, and then Comms removes the line. Until then it stays.
 
-*#2122 line, recheck at send:* #2122 closed 10-21 with the reply made truthful ("I can't search your documents from chat yet"). #2132 (analyze and compare documents) closed 10-23 18:32. On send morning, PPM confirms which document asks still fail in chat, so this line doesn't understate what now works.
+*#2122 line, recheck at send:* #2122 closed 10-21 with the reply made truthful ("I can't search your documents from chat yet"). #2132 (analyze and compare documents) closed 10-23 18:32. On send morning, PPM confirms which document asks still fail in chat, so this line doesn't understate what now works. **PPM 18:35:** search is still unsupported (served), and asks about an uploaded file now work (analyze, analyze a named file, questions about a file: served). Proposed second sentence, waiting on CXO's word: "You can upload a file and ask Piper about it." Leave out "summarize" until it has a served row. PPM rechecks both halves on send morning.
 
 The issue numbers are for PPM's strike-at-send. Drop them from the copy partners see.
 
