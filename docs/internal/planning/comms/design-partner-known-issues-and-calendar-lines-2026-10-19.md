@@ -17,7 +17,6 @@
 > - **No undo for deleted to-dos.** Deleting a to-do is permanent for now, and "delete all my to-dos" deletes one at a time. *(#2019, #2021)*
 > - **A broken GitHub connection can look fine.** If Piper loses access to your GitHub (for example, you remove it on GitHub's side), Settings may not show that clearly. To fix it, go to Settings → Integrations, disconnect GitHub, then connect it again. *(#2018)*
 > - **Searching your documents from chat doesn't work yet.** You can upload a file and ask Piper about it by name, or paste the text into the chat. *(#2122)*
-> - **Sharing doesn't work yet.** Sharing a to-do, list or project with another person shows an error if you try. *(#2166)*
 
   *#2018 line, CXO 15:32:* when CXO judges the served recovery read, it changes to "Settings → Integrations → GitHub will say it needs reconnecting. Press Reconnect." If #2018 closes, PPM strikes the line.
 
@@ -25,7 +24,7 @@
 
 *#2122 line:* CXO's wording, 18:07 10-20. #2122 isn't Class 1–4 (Web's served turn showed no false result). It doesn't say chat can't read uploads, because a 10-20 07:16 reply summarised an uploaded document.
 
-*#2166 line (added 17:55 10-24):* PPM's proposed sentence (17:47), CXO approved (17:52), split by Comms into a bold lead plus one sentence with no semicolon, to match the list. Share is broken end to end (the UI sends the wrong field: 422, then 500). It isn't a gate item, because the dialog shows an error and never claims a share happened. **Drop this line once the Share hide is served** (PPM ruling 18:36: Share hidden on all three pages next promotion, repair moved to Production D, #2166 stays open). Web serves one row per page with no Share button, and then Comms removes the line. Until then it stays.
+*#2166 line (added 17:55 10-24):* PPM's proposed sentence (17:47), CXO approved (17:52), split by Comms into a bold lead plus one sentence with no semicolon, to match the list. Share is broken end to end (the UI sends the wrong field: 422, then 500). It isn't a gate item, because the dialog shows an error and never claims a share happened. **Drop this line once the Share hide is served** (PPM ruling 18:36: Share hidden on all three pages next promotion, repair moved to Production D, #2166 stays open). Web serves one row per page with no Share button, and then Comms removes the line. Until then it stays. **Dropped 10-24 21:41:** Share is hidden on alpha 228f3cec14, CXO passed 3 of 3 pages (CXO 20:21, relayed by Exec 21:40). #2166 stays open for Production D.
 
 *#2122 line, recheck at send:* #2122 closed 10-21 with the reply made truthful ("I can't search your documents from chat yet"). #2132 (analyze and compare documents) closed 10-23 18:32. On send morning, PPM confirms which document asks still fail in chat, so this line doesn't understate what now works. **PPM 18:35:** search is still unsupported (served), and asks about an uploaded file now work (analyze, analyze a named file, questions about a file: served). **CXO 18:48: yes, with "by name"** (every served row named the file, and the unnamed ask is the case that still fails). Applied 18:51. Comms kept "or paste the text into the chat" from the old line, since pasting still works and helps with search. Leave out "summarize" until it has a served row. PPM rechecks both halves on send morning.
 

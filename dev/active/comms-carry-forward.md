@@ -7,7 +7,7 @@
 - **xian's order after Sun:** Tue 10-27 Caveat (use the "By line" table in its fact-check ledger), then discuss the calendar ahead and comms priorities (his business comms, Themis coordination, presentation input).
 - **Admin composer:** before advising Restore vs Discard, check git for a xian admin save after the local copy (memory feedback_admin_restore_prompt_diff_before_advising). website#51 tracks the side-by-side diff tool.
 - **Terms draft:** ready for xian's last read (Exec takes it). Open xian calls: the comma "me (xian), the human…", trash as plan or hope, comma after "yourself". #2167 key-dialog fix built, not served.
-- **Known-issues doc:** #2122 line per CXO (keep the paste clause). Sharing line (#2166) drops once Web serves the Share hide (e80354cf8c) after the promotion.
+- **Known-issues doc:** #2122 line per CXO (keep the paste clause). Sharing line dropped 10-24 (Share hidden on alpha 228f3cec14).
 - **Ship #066** (pub Wed 10-28): xian sees it first, and Exec tells Comms when to template-audit.
 - **Standing item added:** user-facing "what changed" note when the first Production sprint ships something users can see.
 - **Planning doc:** https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86 (rev 13). Sun title decided. Beat 14 waits on decisions 4 and 6.
