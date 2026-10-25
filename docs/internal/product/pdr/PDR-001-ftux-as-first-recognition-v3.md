@@ -1,6 +1,6 @@
 # PDR-001: First Contact is First Recognition
 
-**Status**: Draft v3
+**Status**: Draft v3; **Amendment 1 ratified 2026-10-24 (xian)**
 **Date**: January 4, 2026 (v3, v2); December 2, 2025 (v1)
 **Author**: Principal Product Manager
 **Stakeholders**: PM (xian), CXO, Chief Architect, Ted Nadeau (Advisor)
@@ -322,7 +322,29 @@ Requires:
 
 ---
 
+## Amendment 1: recognition-first applies to the first conversation; the hosted setup wizard is the recorded exception (RATIFIED 2026-10-24 17:28 PT, xian, with Exec: "Adopt CXO's PDR-001 wording. In beta see that we live up to it.")
+
+**The wording, as ratified:** recognition-first applies to the first conversation. The hosted setup wizard is a stepped, explicit-consent flow, and is the recorded exception.
+
+**Why an exception is recorded, not denied.** The decision above says first contact is not "a separate onboarding wizard that precedes the real experience", and "Traditional wizard → main app handoff" is in Alternatives Rejected. The hosted app has a wizard anyway (invite, API keys, account, projects, complete), because it must collect an invite code, a provider key and consent before any conversation can run, and none of that can be inferred. Leaving the PDR silent made it read as if the wizard were a drift from the decision. It is a bounded exception with a boundary.
+
+**The boundary.**
+- The wizard asks only for what a conversation cannot start without: the invite code, the account, the provider key, and any consent the person must give. Nothing in it is a product tour.
+- Everything else in the original decision still holds for the first conversation: Piper opens oriented, offers options rather than "What can I help you with?", and does not ask the user to articulate what they do not yet know.
+- Integrations and preferences stay in the conversation and in Settings, not in more wizard steps.
+
+**The beta check ("see that we live up to it").** Whether the first conversation after the wizard recognizes the user today is not verified; #1538 is the work. During beta, the check is a served row, not a description:
+1. Web takes a fresh account through the wizard on alpha and quotes the first Piper reply in chat, with the account's connected state stated beforehand.
+2. CXO judges the quote on three tests: it orients (says what Piper can see on this account, truthfully); it offers options instead of a blank prompt; and it states nothing false about what is connected.
+3. Run once per beta wave on a fresh account, and again whenever the wizard's steps or the first reply's handler change. A failure is class 3 (honesty) if the reply claims something untrue, and otherwise a UX issue.
+
+**What this amendment does not change:** the rest of the decision, the FTUX success criteria, and the trust-gradient initialization, which stays dormant through beta (#2135).
+
+---
+
 ## Changelog
+
+**Amendment 1 (October 24, 2026)**: recorded the setup wizard as the exception to recognition-first, with its boundary and the beta check. Ratified by xian 17:28 PT (production-map ruling 5). Drafted by CXO.
 
 **v3 (January 4, 2026)**:
 - Added emotional context awareness to cross-session greeting (CXO feedback)
