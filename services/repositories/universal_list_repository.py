@@ -139,9 +139,14 @@ class UniversalListRepository(BaseRepository):
 
     async def count_items(self, list_id: str) -> int:
         """The number of items in the list, read now (#2171). The cached ``ListDB.item_count``
-        is not kept current on every item write, so a page must not show it as a fact."""
+        is not kept current on every item write, so a page must not show it as a fact.
+
+        It counts exactly what the list's items panel shows: ``ItemDB`` rows by ``list_id``,
+        the table the add-item route writes and ``GET /lists/{id}/items`` reads. (The first
+        build counted ``ListItemDB`` membership rows, which the page never writes, so a list
+        holding items read 0; Web on alpha 45d6642da7.)"""
         result = await self.session.execute(
-            select(func.count(ListItemDB.id)).where(ListItemDB.list_id == list_id)
+            select(func.count(ItemDB.id)).where(ItemDB.list_id == list_id)
         )
         return int(result.scalar() or 0)
 
