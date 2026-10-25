@@ -1,9 +1,9 @@
 # The Essence of Piper Morgan
 
-**Version**: **v1.0 — RATIFIED by PM 2026-08-30** (in-conversation, after the full trifecta pass:
+**Version**: **v1.1 — RATIFIED by xian 2026-10-25** (v1.0 RATIFIED by PM 2026-08-30, in-conversation, after the full trifecta pass:
 CXO concur + one challenge + two amendments · PPM concur + one amendment · HOST trust lens. The
 synthesis and its addendum: `reviews/2026-08-architectural-review/trifecta-synthesis.md`.)
-**Date**: 2026-08-29 (v0.1) · 2026-08-30 (v1.0) · 2026-10-14 (v1.0.3, amendment log at the end)
+**Date**: 2026-08-29 (v0.1) · 2026-08-30 (v1.0) · 2026-10-14 (v1.0.3) · 2026-10-25 (v1.1, ratified by xian 10-25 12:40; amendment log at the end)
 **Authors**: Chief Architect, from the Architectural Review 2026 (PM+Arch co-led); every claim
 traces to the review's evidence (`docs/internal/architecture/reviews/2026-08-architectural-review/`)
 or a PM ratification recorded in `decisions.log` on 2026-08-29.
@@ -43,6 +43,7 @@ else.
    real, filed, in the owner's repos — then the PRD/spec/document family. The field's verdict:
    own the artifact or own the record system; everything between is acquisition inventory. Piper
    owns the artifact side.
+   *(Scope, xian 2026-10-24: GitHub issues are the 1.0 artifact. Drafting PRDs and specs comes after 1.0, built on the document and GitHub capabilities once they're solid; #2139 is the nearest existing work. The commitment is unchanged; only its sequencing is recorded.)*
 3. **It shows up once a day, answers whenever asked — and earns the relationship in the first
    exchange.** The morning standup is the proactive ritual — the one feature where the original
    vision survived, and the specific behavior that converts "a chatbot I visit" into "an assistant
@@ -62,11 +63,9 @@ else.
    routing rail — not N surface-local opinions. The incident record's largest cluster came from
    violating this; the Inversion (chat path) and the MCP tool catalog (BYOC path) are the same
    derived artifact wearing two interfaces, and both converge here.
-6. **It reaches its user through the chat surfaces the user already lives in.** One backend-owned
-   MCP server (PDR-006), plugged into Claude/ChatGPT/whatever-comes-next — not a destination app.
-   Connector rule, ratified: Piper's backend holds a grant only where it must act without the user
-   present (standup generation, background reflection, document mirroring); in-conversation reads
-   of third-party services belong to the host's own connectors.
+6. **It meets its user on whichever surface they're working in, as one Piper.** The hosted web app, the MCP endpoint and plugin inside the user's own chat, and chat platforms when they return are complementary surfaces over one backend. The user chooses where to meet Piper, and we don't decide that for them. The web app is a real surface, the beta surface, where conversations, the radar and settings live. The MCP and plugin surface ships during the beta, and its completion gates public beta. Each surface expresses the same Piper as that surface allows (initiation where the host affords it, per commitment 3). Connector rule, ratified: Piper's backend holds a grant only where it must act without the user present (standup generation, background reflection, document mirroring), or where Piper is itself the host (the web app reads with the user's own grant). Inside another host's chat, in-conversation reads of third-party services belong to that host's connectors.
+
+   *(v1.1, xian 2026-10-24: "not a destination app" retired as an overreading; sources: xian 08-08 and 08-10, gate R7, PDR-005 and PDR-006 Amendment 1.)*
 7. **It works WITH its owner, like a colleague — not just FOR them, like an appliance.**
    Offer-first collaboration (propose, draft, ask — never hijack the session), judgment framed as
    a peer's ("here's my read; you decide"), the working stance of an apprentice becoming a peer.
@@ -90,7 +89,7 @@ else.
 ## What it does today, on which surface (dated snapshot — 2026-08-29, "not yet" line 2026-08-30)
 
 - **Live surface**: the web-chat app (alpha, ~11 testers + PM), in **explicit maintenance mode**
-  as of 2026-08-29 — bugs fixed, nothing new built. It classifies intents (legacy chain carries
+  as of 2026-08-29 — bugs fixed, nothing new built *(superseded 10-23: the hosted web UI is the beta surface (PDR-005 Amendment 1); Sprint E builds on it.)*. It classifies intents (legacy chain carries
   observed traffic; flip-1 live for `read_status` since 08-21 via deployment secrets, unexercised
   to date; full staged flip ratified and sequenced by Lead into PM's next watched round — *superseded
   10-14: the live router now runs first on unarmed turns for the flipped read waves and ten
@@ -134,8 +133,7 @@ Every module, doc, and capability in the repo is exactly one of these, with the 
 
 Not an **agent harness** (that's a commodity knife-fight against the platform vendors' own
 products — both the field's evidence and the lived experience of solo builders currently in
-exactly that fight say so). Not a **destination
-UI** (the structurally doomed shape in the copilot category). Not a **platform or marketplace**
+exactly that fight say so). Not a **walled garden**: no surface is required, and none is the only way in. The web app is a surface the user can choose, never one they're made to come to. Not a **platform or marketplace**
 (Era 2 bought that vision on unverified claims; July deleted its remains). Not **enterprise
 multi-tenant SaaS** — unless and until a Bet Memo with a named buyer says otherwise. The
 scope-bet gate governs all *becoming*; this document governs all *being*.
@@ -194,3 +192,4 @@ scope-bet gate governs all *becoming*; this document governs all *being*.
   PENDING to landed-for-one-write with its denominator (1 of 10 allowlisted writes served; the rest
   static); the 08-29 snapshot's flip-1 clause marked superseded. Overdue against this doc's own
   rule (same-day on a ratification touching the boundary): ADR-080 was confirmed 10-06.*
+- *v1.1, 2026-10-24 (xian's Production-map rulings 3 and 4; drafted by Arch; ratified by xian 2026-10-25 12:40, relayed by Exec): commitment 6 rewritten (surfaces complementary, web is the beta surface, the connector rule gains the Piper-as-host clause); the "destination UI" boundary line replaced by "walled garden"; commitment 2 records PRD/spec drafting as post-1.0; the 08-29 maintenance-mode clause marked superseded.*

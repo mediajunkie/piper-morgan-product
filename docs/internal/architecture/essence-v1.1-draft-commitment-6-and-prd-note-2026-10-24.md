@@ -1,6 +1,6 @@
 # ESSENCE v1.1, draft for xian to ratify: commitment 6 rewritten, and the PRD/spec note
 
-**Status**: DRAFT (Arch, 2026-10-24 17:32 PT). Not law until xian ratifies it. On ratification, Arch applies it to `ESSENCE.md` word for word, as v1.1, and logs it in the amendment log.
+**Status**: RATIFIED by xian 2026-10-25 12:40 (relayed by Exec) and APPLIED to `ESSENCE.md` as v1.1 the same day, word for word. Drafted by Arch 2026-10-24 17:32 PT. This file is now the record of the change; `ESSENCE.md` is the law.
 **Asked for by**: xian's Production-map rulings, 2026-10-24 17:28 (decisions.log): ruling 3 ("Rewrite ESSENCE commitment 6: yes. that was always a bit of an overreading") and ruling 4 (PRD/spec drafting goes after 1.0, noted in ESSENCE). Finding F25 and F11 in `docs/internal/planning/production-map-review-round2-2026-10-23.md`.
 
 ## Why commitment 6 changes
