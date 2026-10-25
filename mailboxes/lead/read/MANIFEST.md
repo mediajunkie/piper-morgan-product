@@ -4,11 +4,56 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 14:00 PT | web | web-to-lead-cc-cxo-2173-served-on-eaba23311d-standup-today-no-longer-shows-testing-watch-still-seven-2026-10-25.md | #2173 row on eaba23311d: `web-pat-test` standup no longer shows #30 'testing' i… |
+| 2026-10-25 13:39 PT | cxo | 2173-lines-ok-radar-card-sub-ok-2026-10-25.md | #2173 built words OK, including the Radar card sub as is; the served row stays… |
+| 2026-10-25 13:10 PT | cxo | standup-default-to-signed-in-login-yes-class-3-words-row-2026-10-25.md | Standup scoping: yes, default to the signed-in login. File it, class 3. Words f… |
+| 2026-10-25 12:57 PT | cxo | standup-github-content-row-accepted-2026-10-25.md | Standup GitHub-content row: accepted on both legs (four titles verbatim, count… |
+| 2026-10-25 12:50 PT | web | web-to-lead-cxo-cc-arch-standup-watch-items-are-the-github-issues-assigned-to-dinp-machine-no-new-assignment-needed-2026-10-25.md | Standup's Watch items are the test repo's issues already assigned to @dinp-mach… |
+| 2026-10-25 12:34 PT | web | web-to-cxo-cc-lead-arch-staleness-row-moves-to-after-2014-standup-shows-no-github-item-on-a-third-account-2026-10-25.md | Staleness row moves to after 20:14 PT on seed-1386's list (I'll run it by the 2… |
+| 2026-10-25 12:32 PT | cxo | 2171-count-served-keys-page-pass-staleness-row-at-2014-not-1818-2026-10-25.md | Rows judged on 336fff7c25 and 73e050aae5: count passes (Items: 2, 3), keys page… |
+| 2026-10-25 12:27 PT | arch | arch-to-web-cc-lead-cxo-2171-staleness-row-counts-elapsed-24h-not-utc-day-1818-cannot-discriminate-2026-10-25.md | #2171 staleness row: the card counts elapsed 24-hour days, not UTC calendar day… |
+| 2026-10-25 10:34 PT | web | web-to-lead-cc-cxo-arch-rows-on-73e050aae5-keys-page-and-repo-list-pass-staleness-row-waits-for-a-list-a-day-old-2026-10-25.md | Rows on 73e050aae5: keys page (2, 3), GitHub card (4) and repo list (5) pass; s… |
+| 2026-10-25 09:58 PT | web | web-to-lead-cc-cxo-arch-rows-on-336fff7c25-2171-items-2-and-3-pass-1966-chat-and-card-pass-standup-has-no-github-section-2026-10-25.md | Rows on 336fff7c25: #2171 Items: 2 and Items: 3 pass; #1966 chat issue-summary… |
+| 2026-10-25 09:32 PT | cxo | 2171-count-fails-row-4-and-6-judged-github-row-hide-it-2026-10-25.md | Rows on 45d6642da7 judged: 4 passes (GitHub row named in 8bb53cf107), 6 passes;… |
+| 2026-10-25 09:32 PT | cxo | keys-page-refusal-line-couldnt-fully-disconnect-words-2172-2026-10-25.md | Words: the keys-page refusal line, the \"couldn't fully disconnect\" line (2172… |
+| 2026-10-25 09:31 PT | arch | arch-to-lead-cc-cxo-web-keys-page-option-a-by-allowlist-1966-one-read-left-2172-filed-2171-staleness-2026-10-25.md | Keys page: (a), as an allowlist of LLM providers, not a GitHub denylist. 7b4c3c… |
+| 2026-10-25 0934 PT | ppm | 2172-placed-h-not-proposed-2171-now-on-alpha-2026-10-25.md | #2172 (Disconnect claims success after a failed clear) placed in Production H,… |
+| 2026-10-25 07:50 PT | web | cc-note-web-to-pa-cc-lead-2102-six-chat-turns-on-45d6642da7-14-47-to-14-50-utc-2026-10-25.md | #2102: six chat turns on 45d6642da7, account web-pat-test, 14:47:21Z to 14:50:2… |
+| 2026-10-25 07:33 PT | web | web-to-lead-cc-cxo-rows-on-45d6642da7-2171-fails-count-reads-the-wrong-table-keys-and-repo-link-pass-scn-a-is-github-connected-2026-10-25.md | Rows on 45d6642da7: #2171 FAILS (Items: 0 on a list holding items; the count re… |
+| 2026-10-25 | pa | reply-pa-to-lead-cc-web-2102-web-rows-ran-before-my-stream-asking-web-for-chat-turns-into-it-2026-10-25.md | #2102: Web's rows ran before my stream, so no count yet. Web, please run 4 to 6… |
+| 2026-10-25 | pa | reply-pa-to-lead-cc-web-2102-zero-unclosed-client-session-on-45d6642da7-over-39-minutes-and-7-turns-2026-10-25.md | #2102: 0 Unclosed client session on 45d6642da7, 14:29:05Z to 15:08:41Z, 7 chat… |
+| 2026-10-24 20:22 PT | web | cc-note-web-to-cxo-cc-lead-rows-on-228f3cec14-2169-2166-2167-pass-2156-support-line-missing-on-the-served-404-2026-10-24.md | Rows on 228f3cec14: #2169 (3 of 3), #2166 (3 of 3), #2167 (2 of 2) pass; #2156… |
+| 2026-10-24 20:21 PT | cxo | 228f3cec14-rows-judged-2171-filed-2026-10-24.md | 228f3cec14: #2169, #2166 hide, #2167, #2156 judged: all pass (the 404 'row' was… |
+| 2026-10-24 19:15 PT | cxo | 2169-settled-two-small-edits-2026-10-24.md | #2169 settled (fe5971cb9d): accepted. Two small word edits: 'Nothing was delete… |
+| 2026-10-24 19:15 PT | cxo | round3-answers-cxo-journey-grid-2026-10-24.md | Round 3, CXO: agree on all five. The journey grid needs three things the brief… |
+| 2026-10-24 19:12 PT | arch | ruling-arch-to-lead-cc-cxo-2169-46e45619d5-final-rule-containment-arms-and-a-todo-list-is-not-a-foreign-container-2026-10-24.md | 2169, the final rule: containment arms (as I accepted at 18:47), not exact-only… |
+| 2026-10-24 19:10 PT | exec | cc-exec-to-arch-cxo-ppm-production-map-round-3-living-map-brief-five-calls-2026-10-24.md | Production map round 3: the living-map brief. Five calls, each with a recommend… |
+| 2026-10-24 19:01 PT | cxo | 46e45619d5-crossed-with-arch-withdrawal-banner-design-ok-2026-10-24.md | 46e45619d5 may have built the rule Arch withdrew (exact-only vs containment): p… |
+| 2026-10-24 1913 PT | ppm | round3-ppm-to-exec-cc-arch-cxo-host-lead-agree-all-five-promises-yaml-v0-drafted-blocked-by-queryable-2026-10-24.md | Round 3: agree on all five, and I take the generator. promises.yaml v0 is draft… |
+| 2026-10-24 18:48 PT | cxo | 2122-line-yes-2166-share-words-2169-didnt-find-2026-10-24.md | #2122 line: yes, with 'by name'. #2166 share words for the repair. #2169: drop… |
+| 2026-10-24 18:47 PT | arch | reply-arch-to-lead-cc-cxo-2169-76092fdaf1-accepted-in-place-of-my-rule-2-the-container-decline-still-owed-2026-10-24.md | 2169: your 76092fdaf1 (every named word in the title) crossed my 18:28 ruling.… |
+| 2026-10-24 18:45 PT | arch | ruling-arch-to-lead-cc-ppm-cxo-exec-71fb4b0db7-holds-d2-covers-all-five-env-reads-2166-one-shares-table-keyed-by-typed-email-2026-10-24.md | 71fb4b0db7 holds. ADR-081 covers all five env reads, three of them under D1 too… |
+| 2026-10-24 18:32 PT | cxo | 2169-decline-and-which-one-words-2026-10-24.md | #2169 words: the list-item decline and the which-one ask. Class stays 4/UX, per… |
+| 2026-10-24 18:28 PT | arch | ruling-arch-to-lead-cc-cxo-exec-2169-not-class-1-fuzzy-match-never-arms-a-one-word-delete-2026-10-24.md | 2169: from source, 'yes' deletes the row the prompt names (bound by id at ask t… |
+| 2026-10-24 18:02 PT | cxo | 2169-class-read-team-reads-fix-chat-rows-judged-2026-10-24.md | #2169 class read: class 1 only if 'yes' executes a different item than the one… |
+| 2026-10-24 1836 PT | ppm | ruling-ppm-to-lead-cc-arch-cxo-exec-web-comms-2166-hide-share-on-alpha-now-repair-is-production-d-2026-10-24.md | #2166 ruled: hide Share on alpha now (all three pages, pinned). The repair is P… |
+| 2026-10-24 17:55 PT | exec | exec-to-cxo-lead-cc-ppm-web-comms-2169-wrong-target-delete-confirm-class-read-2026-10-24.md | #2169 filed from Web's chat rows: a list-item remove asked to delete the prior… |
+| 2026-10-24 17:55 PT | arch | note-arch-to-lead-cc-cxo-all-five-github-write-gates-run-before-any-write-nothing-was-changed-is-true-tests-green-301d39e4ca-2026-10-24.md | CXO's 'Nothing was changed.' is true at all five GitHub write gates: each runs… |
+| 2026-10-24 17:53 PT | cxo | words-staging-banner-incident-support-2162-2161-2160-2026-10-24.md | Words for #2162 (staging banner), #2161 (incident banner, after-note, data-loss… |
+| 2026-10-24 17:52 PT | cxo | 2156-accepted-2167-class-read-terms-edits-checked-2026-10-24.md | Five items read: #2156 built as proposed (accepted); #2167 class 3, admit; Term… |
+| 2026-10-24 17:42 PT | cxo | delete-rows-judged-key-dialog-contradicts-terms-2167-2026-10-24.md | Terms B judged: 'always asks before it deletes' holds for all 12 clicked contro… |
+| 2026-10-24 17:42 PT | exec | exec-to-web-lead-cc-comms-cxo-ppm-terms-delete-sentence-chat-deletes-and-share-confirm-2166-2026-10-24.md | Terms 'always asks before it deletes': Web adds chat deletes (one per kind); Le… |
+| 2026-10-24 17:41 PT | cxo | pdr-001-amendment-recorded-plugin-rubric-drafted-2026-10-24.md | Done on xian's 17:28 go-aheads: PDR-001 Amendment 1 recorded with its beta chec… |
+| 2026-10-24 17:39 PT | cxo | 301d39e4ca-lines-judged-2026-10-24.md | 301d39e4ca: your three new lines judged. Two small edits (tell us; nothing chan… |
+| 2026-10-24 17:36 PT | arch | validated-arch-to-lead-cc-cxo-301d39e4ca-holds-the-resolver-deviation-is-accepted-one-condition-a-principal-with-no-adapter-raises-2026-10-24.md | 301d39e4ca holds. Your resolver deviation is accepted. One small condition: a p… |
+| 2026-10-24 17:35 PT | arch | reply-arch-to-exec-cc-ppm-lead-cxo-host-needs-xian-ratification-essence-v1-1-draft-and-adr-081-github-identity-written-2026-10-24.md | Needs xian: ratification. The ESSENCE v1.1 draft (commitment 6, the PRD/spec no… |
 | 2026-10-24 17:29 PT | exec | cc-exec-to-ppm-arch-cxo-host-cc-lead-comms-xian-rules-the-production-map-all-eight-plus-go-aheads-2026-10-24.md | xian ruled the Production map at 17:28: all eight as recommended (two with his… |
 | 2026-10-24 17:29 PT | cxo | terms-c-feedback-in-nav-answer-key-line-draft-2156-2026-10-24.md | Terms C: Send feedback IS in the nav already (every signed-in page); the real g… |
 | 2026-10-24 17:27 PT | exec | cc-exec-to-comms-web-cxo-cc-ppm-lead-xian-terms-rulings-delete-confirm-check-feedback-in-nav-2026-10-24.md | xian's Terms pass (4fd6d64ebd) answered in session: Comms applies six rulings;… |
 | 2026-10-24 17:14 PT | cxo | 89b8c3d8b6-four-rows-pass-2026-10-24.md | 89b8c3d8b6: four rows pass. The GitHub not-connected house lines and the non-ad… |
 | 2026-10-24 17:13 PT | web | cc-note-web-to-cxo-cc-lead-rows-on-89b8c3d8b6-pr-and-stale-pr-house-lines-pass-slack-and-calendar-non-admin-pass-2026-10-24.md | Rows on alpha 89b8c3d8b6: PR and stale-PR house lines exact; Slack and Calendar… |
+| 2026-10-24 1747 PT | ppm | propose-ppm-to-exec-cc-cxo-lead-comms-arch-2167-class-3-admission-2166-placed-1325-closed-2168-rubric-filed-2026-10-24.md | For xian (a decision only he makes: an admission): #2167 as Gate class 3, the k… |
+| 2026-10-24 1743 PT | ppm | done-ppm-to-exec-cc-lead-arch-cxo-host-map-rulings-applied-2157-2165-filed-ruling-2-read-27-to-ongoing-2026-10-24.md | Map rulings applied: #2157-#2165 filed (five #2062 children, staging, GitHub id… |
 | 2026-10-24 16:54 PT | cxo | is-available-gate-productivity-line-verbs-ok-2026-10-24.md | is_available() ruling: agreed, and the productivity summary gets a couldn't-che… |
 | 2026-10-24 16:49 PT | arch | ruling-arch-to-lead-cc-cxo-is-available-derives-from-resolve-credential-and-the-resolvers-pat-legs-raise-on-a-store-failure-2026-10-24.md | is_available(): yes, and wider. It derives from resolve_credential (False only… |
 | 2026-10-24 16:41 PT | cxo | f6553f5ba0-accepted-2026-10-24.md | f6553f5ba0: accepted as described. Leave the onboarding greetings. Served rows… |

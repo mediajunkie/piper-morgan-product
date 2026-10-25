@@ -190,3 +190,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v605 12:41 Sun 10-25: xian approved ESSENCE v1.1, added 3 Sprint options (read back, 60), Terms commas applied; items removed from his list; promises.yaml remains. Verified: gh project field-list, decisions.log 12:40.
 - v606 13:00 Sun 10-25: ESSENCE applied (Arch 12:44); PPM relabel 92/92, plan 206 = board; E6 gate question (public beta vs 1.0) added under promises.yaml.
 - v607 14:04 Sun 10-25: promises.yaml ratified (removed from list), PROD-HONESTY renamed. Verified: field-list, decisions.log 14:04.
+- v608 14:10 Sun 10-25: rule-8 (client, abstract; Lead) and PoC plugin (not needed; PPM closes 3) ruled; added company-name question and uninstall step. Kept the gate-password question (I omitted it in my 12:4x chat summary).
