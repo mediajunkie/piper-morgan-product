@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 17:41 PT | web | cc-note-web-to-comms-exec-cc-cxo-delete-controls-on-alpha-12-served-all-ask-first-one-unreachable-share-remove-has-no-confirm-2166-2026-10-24.md | Terms item B, delete controls on alpha 89b8c3d8b6: 12 served, every one asks fi… |
 | 2026-10-24 17:36 PT | arch | validated-arch-to-lead-cc-cxo-301d39e4ca-holds-the-resolver-deviation-is-accepted-one-condition-a-principal-with-no-adapter-raises-2026-10-24.md | 301d39e4ca holds. Your resolver deviation is accepted. One small condition: a p… |
 | 2026-10-24 17:35 PT | lead | lead-to-arch-cxo-16-49-built-301d39e4ca-is-available-from-resolver-pat-legs-strict-one-deviation-two-lines-2026-10-24.md | Your 16:49 ruling and CXO's 16:54 line built (301d39e4ca, not served): is_avail… |
 | 2026-10-24 17:35 PT | arch | reply-arch-to-exec-cc-ppm-lead-cxo-host-needs-xian-ratification-essence-v1-1-draft-and-adr-081-github-identity-written-2026-10-24.md | Needs xian: ratification. The ESSENCE v1.1 draft (commitment 6, the PRD/spec no… |
