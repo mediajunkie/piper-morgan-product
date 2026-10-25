@@ -138,11 +138,13 @@ class TestGatePassesPositionsThrough:
         assert gate.offer is None
 
     async def test_named_leg_still_binds_a_real_name(self):
+        # #2169 (Arch 10-24 18:28): a fuzzy name finds the row but asks by number, never
+        # the one-word confirm.
         gate = await build_todo_delete_confirmation(
             _intent("delete my budget review reminder"), _Handlers(_webs_list()), _USER
         )
-        assert gate.offer is not None and not gate.passthrough
-        assert "send the budget review to finance" in (gate.offer.question or "")
+        assert gate.offer is None and not gate.passthrough
+        assert "send the budget review to finance" in (gate.clarification or "")
 
     async def test_numbered_delete_still_uses_the_number_leg(self):
         gate = await build_todo_delete_confirmation(

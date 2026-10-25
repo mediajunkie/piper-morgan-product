@@ -438,45 +438,93 @@ class TestEndToEndNamedDelete:
         assert todo_boundary["deleted"] == []
 
 
-# --- #2169: a destructive named bind needs every named word in the title ----------------
+# --- #2169 (Arch 10-24 18:28): a named container declines; only a unique exact match arms
 
 _LIST_ITEM_ASK = 'remove "zz chat delete item" from my list "zz chat delete list"'
 
 
-class TestDestructiveBindNeedsEveryNamedWord:
+class TestDestructiveBindIsExactOnly:
     """#2169 (Web's chat rows on alpha 89b8c3d8b6, 10-24 17:53): a list-item remove armed
-    'Delete the reminder "zz chat delete todo"? (yes/no)', the prior turn's to-do. The
-    named leg kept "zz chat from list zz chat list" and the shared 0.3 overlap matched the
-    to-do on "zz chat". Completion keeps best-match fuzzy; the DESTRUCTIVE gate binds only
-    when every word the person named is in the title, else it says it found nothing."""
+    'Delete the reminder "zz chat delete todo"? (yes/no)', the prior turn's to-do, through
+    the named leg's fuzzy overlap; yes deleted that to-do (the row the prompt named).
+    Arch's ruling: a named list or project declines with nothing armed, and only a unique
+    exact match arms the one-word confirm. A fuzzy candidate gets the ask by number."""
 
     pytestmark = pytest.mark.asyncio
 
-    async def test_the_list_item_ask_arms_nothing(self):
+    async def test_a_the_list_item_ask_declines_and_arms_nothing(self):
+        from services.intent_service.destructive_confirm import FOREIGN_CONTAINER_DECLINE
+
         handlers = _BuilderHandlers(todos=[_todo("zz chat delete todo")])
         intent = _delete_intent(_LIST_ITEM_ASK, action="remove_todo")
         gate = await build_todo_delete_confirmation(intent, handlers, _USER)
         assert gate.offer is None
-        assert gate.clarification is not None
-        assert "nothing has been deleted" in gate.clarification
+        assert gate.clarification == FOREIGN_CONTAINER_DECLINE["list"]
         assert RESOLVED_TODO_CONTEXT_KEY not in (intent.context or {})
 
-    async def test_a_partial_overlap_never_binds(self):
-        handlers = _BuilderHandlers(todos=[_todo("call the dentist about Friday")])
-        gate = await build_todo_delete_confirmation(
-            _delete_intent("delete my call mom reminder"), handlers, _USER
-        )
-        assert gate.offer is None
+    @pytest.mark.parametrize(
+        "message",
+        (
+            "delete the design task in my project Apollo",
+            "remove milk from the grocery list",
+            "delete item 2 from my list",
+        ),
+    )
+    async def test_a_any_named_container_declines(self, message):
+        from services.intent_service.destructive_confirm import FOREIGN_CONTAINER_DECLINE
 
-    async def test_every_named_word_in_the_title_still_binds(self):
-        handlers = _BuilderHandlers(todos=[_todo("hydrate twice a day")])
+        handlers = _BuilderHandlers(todos=[_todo("design task"), _todo("milk")])
+        gate = await build_todo_delete_confirmation(_delete_intent(message), handlers, _USER)
+        assert gate.offer is None
+        assert gate.clarification in FOREIGN_CONTAINER_DECLINE.values()
+
+    async def test_a_a_container_word_inside_a_quoted_title_is_the_title(self):
+        title = "move files from the project folder"
+        handlers = _BuilderHandlers(todos=[_todo(title)])
         gate = await build_todo_delete_confirmation(
-            _delete_intent("delete my hydrate reminder"), handlers, _USER
+            _delete_intent(f'delete my "{title}" reminder'), handlers, _USER
         )
         assert gate.offer is not None
-        assert gate.offer.question == 'Delete the reminder "hydrate twice a day"? (yes/no)'
+        assert gate.offer.question == f'Delete the reminder "{title}"? (yes/no)'
 
-    async def test_end_to_end_yes_deletes_nothing(self, live_service, monkeypatch, todo_boundary):
+    @pytest.mark.parametrize(
+        "title,message",
+        (
+            ("hydrate twice a day", "delete my hydrate reminder"),
+            ("call the dentist about Friday", "delete my call mom reminder"),
+        ),
+    )
+    async def test_b_a_single_fuzzy_match_asks_by_number_and_arms_nothing(self, title, message):
+        handlers = _BuilderHandlers(todos=[_todo("Review the PR"), _todo(title)])
+        intent = _delete_intent(message)
+        gate = await build_todo_delete_confirmation(intent, handlers, _USER)
+        assert gate.offer is None
+        # CXO 10-24 18:32, verbatim.
+        assert gate.clarification == (
+            f'I\'m not sure which to-do you mean. The closest is number 2: "{title}". '
+            "If that's the one, say \"delete todo 2\" and I'll ask you to confirm. "
+            "If not, tell me more of its title."
+        )
+        assert RESOLVED_TODO_CONTEXT_KEY not in (intent.context or {})
+
+    async def test_c_end_to_end_exact_arms_and_yes_deletes_the_prompts_row(
+        self, live_service, monkeypatch, todo_boundary
+    ):
+        """CXO 18:02: the deleted id equals the id the prompt named."""
+        sid = "e2e-2169-exact"
+        named = todo_boundary["todos"][0]
+        _stub_classification(monkeypatch, live_service, "delete my hydrate reminder", "delete_todo")
+        ask = await live_service.process_intent(
+            message="delete my hydrate reminder", session_id=sid, user_id=_USER
+        )
+        assert ask.message == f'Delete the reminder "{named.text}"? (yes/no)'
+        todo_boundary["allow_delete"] = True
+        await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
+        assert todo_boundary["deleted"] == [named.id]
+
+    async def test_a_end_to_end_the_list_item_ask_and_yes_delete_nothing(
+        self, live_service, monkeypatch, todo_boundary
+    ):
         sid = "e2e-2169"
         todo_boundary["todos"] = [_todo("zz chat delete todo")]
         _stub_classification(monkeypatch, live_service, _LIST_ITEM_ASK, "remove_todo")

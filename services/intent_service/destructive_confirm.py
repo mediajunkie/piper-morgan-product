@@ -466,6 +466,72 @@ def _is_positional_only(named_target: str) -> bool:
     return bool(words) and all(w.lower() in _POSITIONAL_WORDS or _is_positional(w) for w in words)
 
 
+# #2169 (Arch 10-24 18:28): containers the to-do delete family doesn't own, named after a
+# preposition outside any quoted title ("remove "x" from my list "y"", "delete the task
+# in my project"). A word-SET scan in the _named_delete_target idiom, no extraction regex.
+_FOREIGN_CONTAINER_WORDS = {
+    "list": "list",
+    "lists": "list",
+    "project": "project",
+    "projects": "project",
+}
+_CONTAINER_PREPOSITIONS = frozenset({"from", "in", "on", "off", "out"})
+_CONTAINER_LOOKAHEAD = 4
+
+# CXO 10-24 18:32: each names where the thing can be done today.
+FOREIGN_CONTAINER_DECLINE = {
+    "list": (
+        "I can't remove items from a list from chat yet. Open the list on your Lists page "
+        "and use Remove next to it."
+    ),
+    "project": (
+        "I can't remove things inside a project from chat yet. Open the project on your "
+        "Projects page."
+    ),
+}
+
+
+def _names_a_foreign_container(message: str) -> Optional[str]:
+    """ "list" or "project" when the ask points into one, else None. Quoted spans are a
+    title, never the container, so they are blanked first. Plain string scanning, no
+    regex: the #1943 binder ratchet counts every regex that reads the message."""
+    words = _unquoted_words(message or "")
+    for i, word in enumerate(words):
+        if word in _CONTAINER_PREPOSITIONS:
+            for following in words[i + 1 : i + 1 + _CONTAINER_LOOKAHEAD]:
+                if following in _FOREIGN_CONTAINER_WORDS:
+                    return _FOREIGN_CONTAINER_WORDS[following]
+    return None
+
+
+_QUOTE_OPEN_CLOSE = {'"': '"', "\u201c": "\u201d", "'": "'", "\u2018": "\u2019"}
+
+
+def _unquoted_words(message: str) -> list:
+    """The lowercase words of ``message`` outside quoted spans. An apostrophe inside a
+    word ("don't") is not a quote."""
+    out = []
+    closer = None
+    for i, ch in enumerate(message):
+        if closer is not None:
+            if ch == closer:
+                closer = None
+            out.append(" ")
+            continue
+        is_apostrophe = (
+            ch in "'\u2019"
+            and 0 < i < len(message) - 1
+            and message[i - 1].isalnum()
+            and message[i + 1].isalnum()
+        )
+        if ch in _QUOTE_OPEN_CLOSE and not is_apostrophe:
+            closer = _QUOTE_OPEN_CLOSE[ch]
+            out.append(" ")
+            continue
+        out.append(ch.lower() if ch.isalnum() else " ")
+    return "".join(out).split()
+
+
 def _named_delete_target(message: str) -> str:
     """The message minus delete-command vocabulary and stopwords, in order.
 
@@ -628,6 +694,12 @@ async def build_todo_delete_confirmation(
     if todo_user_id is None:
         return TodoDeleteGate(passthrough=True)
 
+    container = _names_a_foreign_container(message)
+    if container is not None:
+        # #2169 (Arch 10-24 18:28): an ask that names a list or project the to-do family
+        # doesn't own never resolves into it; it declines with nothing armed.
+        return TodoDeleteGate(clarification=FOREIGN_CONTAINER_DECLINE[container])
+
     todo_number = todo_handlers._extract_todo_id(message)
     named_target = None
     referent = None
@@ -723,11 +795,11 @@ async def build_todo_delete_confirmation(
     )
 
     matches = resolve_named_todo_target(named_target, todos)
-    # #2169: a DESTRUCTIVE bind needs every word the person named in the title. The shared
-    # 0.3 overlap suits completion's best match; here it bound 'remove "zz chat delete
-    # item" from my list …' to the to-do "zz chat delete todo" and yes deleted it.
+    # #2169 (Arch 10-24 18:28): only a UNIQUE EXACT match arms the one-word yes/no. A
+    # fuzzy candidate, even a single one, is the code's guess, and a bare yes must never
+    # confirm a guess on a delete with no undo: it gets the which-one ask by number.
     named_words = _meaningful_words(named_target or "")
-    matches = [t for t in matches if named_words <= _meaningful_words(t.text)]
+    exact = [t for t in matches if _meaningful_words(t.text) == named_words]
 
     if not matches:
         return TodoDeleteGate(
@@ -737,7 +809,18 @@ async def build_todo_delete_confirmation(
             )
         )
 
-    if len(matches) > 1:
+    if len(matches) == 1 and len(exact) != 1:
+        position = next(i + 1 for i, t in enumerate(todos) if t.id == matches[0].id)
+        return TodoDeleteGate(
+            # CXO 10-24 18:32: a bare yes can't answer it.
+            clarification=(
+                f"I'm not sure which to-do you mean. The closest is number {position}: "
+                f'"{matches[0].text}". If that\'s the one, say "delete todo {position}" and '
+                "I'll ask you to confirm. If not, tell me more of its title."
+            )
+        )
+
+    if len(matches) > 1 or len(exact) != 1:
         position_by_id = {t.id: i + 1 for i, t in enumerate(todos)}
         candidates = ", ".join(f'{position_by_id[t.id]}. "{t.text}"' for t in matches)
         return TodoDeleteGate(
