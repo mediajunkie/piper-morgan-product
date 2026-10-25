@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-24 19:15 PT | cxo | round3-answers-cxo-journey-grid-2026-10-24.md | Round 3, CXO: agree on all five. The journey grid needs three things the brief… |
 | 2026-10-24 19:12 PT | arch | reply-arch-to-exec-cc-cxo-ppm-round-3-agree-all-five-blocked-by-reads-in-gh-graphql-and-rest-seam-label-for-edge-view-2026-10-24.md | Round 3: agree on all five. Blocked-by is queryable (GraphQL and REST, read tes… |
 | 2026-10-24 19:10 PT | exec | exec-to-arch-cxo-ppm-production-map-round-3-living-map-brief-five-calls-2026-10-24.md | Production map round 3: the living-map brief. Five calls, each with a recommend… |
 | 2026-10-24 19:01 PT | cxo | 46e45619d5-crossed-with-arch-withdrawal-banner-design-ok-2026-10-24.md | 46e45619d5 may have built the rule Arch withdrew (exact-only vs containment): p… |
