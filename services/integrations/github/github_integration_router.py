@@ -299,10 +299,15 @@ class GitHubIntegrationRouter:
         A ``GitHubCredential`` → True. CONNECT_REQUIRED → False, the only False. Any
         other degrade (STALE_TOKEN, UNREACHABLE, MISCONFIGURED) or a failed read →
         raises ``GitHubReadFailed`` with the reason: a failed check is not "not
-        connected". With no user or no MCP adapter, the legacy config check decides.
+        connected". With no principal, the legacy config check decides; a principal with
+        no MCP adapter raises ``detail="no_adapter"`` (Arch 10-24 17:36).
         """
-        if not self._user_id or self.mcp_adapter is None:
-            return self.config_service.is_configured(self._user_id or "system")
+        if not self._user_id:
+            return self.config_service.is_configured("system")
+        if self.mcp_adapter is None:
+            # Arch 10-24 17:36: a principal with no adapter never falls back to the PAT-only
+            # legacy check, which can't see user_api_keys and reads a store failure as None.
+            raise GitHubReadFailed("no GitHub adapter for this read", None, detail="no_adapter")
         from services.mcp.consumer.connector import DegradationReason, DegradationResponse
 
         try:

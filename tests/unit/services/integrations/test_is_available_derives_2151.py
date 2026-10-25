@@ -10,6 +10,7 @@ resolver's PAT legs tell absence from failure.
 """
 
 import ast
+import re
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
@@ -283,6 +284,25 @@ class TestIsAvailable:
         assert caught.value.detail == "store_failed"
 
     @pytest.mark.asyncio
+    async def test_a_principal_with_no_adapter_raises_never_false(self):
+        """Arch 10-24 17:36: never the PAT-only legacy check for a principal."""
+        r = _router()
+        r.mcp_adapter = None
+        with patch.object(r.config_service, "is_configured", return_value=False) as legacy:
+            with pytest.raises(GitHubReadFailed) as caught:
+                await r.is_available()
+        assert caught.value.detail == "no_adapter"
+        legacy.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_no_principal_keeps_the_legacy_check(self):
+        r = _router()
+        r._user_id = None
+        with patch.object(r.config_service, "is_configured", return_value=True) as legacy:
+            assert await r.is_available() is True
+        legacy.assert_called_once_with("system")
+
+    @pytest.mark.asyncio
     async def test_a_credential_is_true(self):
         from services.mcp.consumer.github_adapter import GitHubCredential
 
@@ -319,11 +339,48 @@ class TestGateLine:
         assert "close that issue" in out.message
         assert out.intent_data["context"]["read_failed"] == rf.reason_code
 
-    def test_stale_says_reauthorize(self):
+    def test_stale_says_it_isnt_working_anymore(self):
+        """CXO 10-24 17:39: "isn't working anymore", never a guessed cause."""
         svc = self._svc()
         svc.logger = MagicMock()
         rf = GitHubReadFailed("x", DegradationReason.STALE_TOKEN, detail="stale_token")
-        assert "re-authorizing" in svc._github_gate_failed(rf, "a", "do it").message
+        assert svc._github_gate_failed(rf, "close_issue", "close that issue").message == (
+            "Your GitHub connection isn't working anymore. Reconnect it in Settings → "
+            "Integrations, and I can close that issue."
+        )
+
+    @pytest.mark.parametrize(
+        "action", ["close_issue", "reopen_issue", "comment_issue", "create_issue", "update_issue"]
+    )
+    def test_a_write_gate_says_nothing_was_changed(self, action):
+        svc = self._svc()
+        svc.logger = MagicMock()
+        rf = GitHubReadFailed("x", DegradationReason.UNREACHABLE, detail="store_failed")
+        assert svc._github_gate_failed(rf, action, "close that issue").message == (
+            "I couldn't check your GitHub connection just now, so I can't close that issue "
+            "yet. Nothing was changed. Try again in a moment; if it keeps failing, tell us."
+        )
+
+    @pytest.mark.parametrize(
+        "action", ["shipped_this_week", "stale_prs", "review_issue", "list_prs"]
+    )
+    def test_a_read_gate_has_the_house_tail_only(self, action):
+        svc = self._svc()
+        svc.logger = MagicMock()
+        rf = GitHubReadFailed("x", DegradationReason.UNREACHABLE, detail="store_failed")
+        assert svc._github_gate_failed(rf, action, "list your stale PRs").message == (
+            "I couldn't check your GitHub connection just now, so I can't list your stale "
+            "PRs yet. Try again in a moment; if it keeps failing, tell us."
+        )
+
+    def test_every_gate_action_is_known(self):
+        """The nine gate actions in intent_service are the five writes plus four reads."""
+        from services.intent.intent_service import _GITHUB_WRITE_GATE_ACTIONS
+
+        src = (REPO_ROOT / "services/intent/intent_service.py").read_text()
+        actions = set(re.findall(r'self\._github_gate_failed\(\s*_gate_failed,\s*"(\w+)"', src))
+        reads = {"shipped_this_week", "stale_prs", "review_issue", "list_prs"}
+        assert actions == set(_GITHUB_WRITE_GATE_ACTIONS) | reads
 
 
 # ── forcing test: every gate catches the raise ─────────────────────────────────

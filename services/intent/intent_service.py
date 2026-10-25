@@ -500,6 +500,11 @@ GENERATE_CONTENT_WHAT_I_CAN_DRAFT = (
 # Piper sources it read and the window it read, and says GitHub was not read.
 # Each read is fail-closed: the empty line only when all three read ok and all
 # three are empty; a failed read is named, never reported as "nothing new".
+# #2151 (CXO 10-24 17:39): the gate actions that write; their failed-check line adds
+# "Nothing was changed." (each gate runs before its write starts).
+_GITHUB_WRITE_GATE_ACTIONS = frozenset(
+    {"close_issue", "reopen_issue", "comment_issue", "create_issue", "update_issue"}
+)
 # #2151 (CXO 10-24 16:54): the productivity summary when the GitHub check itself failed. It
 # follows the summary in its own paragraph; a not-connected account gets no line.
 PRODUCTIVITY_GITHUB_CHECK_FAILED = (
@@ -9172,14 +9177,18 @@ class IntentService:
         from services.mcp.consumer.connector import DegradationReason
 
         if rf.reason is DegradationReason.STALE_TOKEN:
+            # CXO 10-24 17:39: "isn't working anymore" is true for expired, revoked and stale.
             message = (
-                "Your GitHub connection needs re-authorizing. Reconnect it in Settings → "
+                "Your GitHub connection isn't working anymore. Reconnect it in Settings → "
                 f"Integrations, and I can {verb}."
             )
         else:
+            # CXO 10-24 17:39: the house tail; a write gate also says nothing was changed,
+            # which holds because every gate runs before any write starts.
+            changed = " Nothing was changed." if action in _GITHUB_WRITE_GATE_ACTIONS else ""
             message = (
-                f"I couldn't check your GitHub connection just now, so I can't {verb} yet. "
-                "Try again in a moment."
+                f"I couldn't check your GitHub connection just now, so I can't {verb} yet."
+                f"{changed} Try again in a moment; if it keeps failing, tell us."
             )
         self.logger.warning(
             "github_gate_failed", action=action, reason=rf.reason_code, detail=rf.detail
