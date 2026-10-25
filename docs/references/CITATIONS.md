@@ -427,7 +427,7 @@ pass, not a mechanical check, flagged rather than guessed at. Prior: March 3, 20
 - **Serena MCP Server** (oraios/serena) - Symbolic code analysis via MCP
   - Language Server Protocol (LSP) integration for semantic code understanding
   - Supports: find_symbol, search_for_pattern, get_symbols_overview operations
-  - *Recommended by: John Phamvan (Kind Systems CEO)*
+  - *Recommended by: a client's CEO*
   - *Integrated: October 2025*
   - *Used in: Token-efficient project briefings (79% reduction), symbolic code navigation*
   - *Enables: Live codebase queries replacing static documentation*
@@ -471,7 +471,7 @@ pass, not a mechanical check, flagged rather than guessed at. Prior: March 3, 20
 ### Direct Collaborators
 - Chief Architect sessions providing strategic guidance
 - Lead Developer implementing core features
-- **John Phamvan** (Kind Systems CEO) - Tool recommendations and technical guidance
+- **A client's CEO** - Tool recommendations and technical guidance
 - Community feedback shaping requirements
 
 ### Advisors

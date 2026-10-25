@@ -4194,7 +4194,7 @@ three non-judge-experiment tests).
 **The dispatch's own procedure caught the gap**: `STAKEHOLDER_UPDATE_PATTERNS` emptied to `[]`
 (FULL tombstone), the 3 directly-corpus-backed tests converted to decline+inversion-routes — but
 `test_judge_experiment_query_routes_to_stakeholder_update` (the file's own namesake #1256
-regression pin) FAILED: "Write a short update for the OpenLaws CEO John Phamvan on where we are
+regression pin) FAILED: "Write a short update for the client CEO on where we are
 with the Piper Morgan alpha testing." mis-routed to `update_document_query` —
 `DOCUMENT_QUERY_PATTERNS`' loose "update ... with" regex re-claimed it, reopening the EXACT
 production bug #1256 fixed. This phrase is NOT one of the 5 corpus rows (none of them contains the

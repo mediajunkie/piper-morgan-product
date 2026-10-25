@@ -3951,7 +3951,7 @@ HAND_ROWS = [
     # the rule-10 batch. Deleting STAKEHOLDER_UPDATE's "write … update for" literal let DOCUMENT_QUERY's loose
     # "update … with" reclaim this phrase (reopening #1256), so the literal survives and the phrasing joins the corpus.
     {
-        "phrase": "Write a short update for the OpenLaws CEO John Phamvan on where we are with the Piper Morgan alpha testing.",
+        "phrase": "Write a short update for the client CEO on where we are with the Piper Morgan alpha testing.",
         "category": "SYNTHESIS",
         "expected": "action:write_stakeholder_update",
         "source": "phase3-rule10-b/STAKEHOLDER_UPDATE_PATTERNS tests/unit/services/intent_service/test_pre_classifier_stakeholder_update_1256.py::TestStakeholderUpdateRouting::test_judge_experiment_query_routes_to_stakeholder_update",

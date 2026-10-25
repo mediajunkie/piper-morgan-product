@@ -482,7 +482,7 @@ Added (current-asserted, not in the 08-12 baseline):
 - [STATUS] How long ago did I finish the redesign?
 - [STATUS] When was the auth refactor shipped?
 - [STATUS] summarize my current work and I need the archived list too
-- [SYNTHESIS] Write a short update for the OpenLaws CEO John Phamvan on where we are with the Piper Morgan alpha testing.
+- [SYNTHESIS] Write a short update for the client CEO on where we are with the Piper Morgan alpha testing.
 - [SYNTHESIS] Draft a status update for the board
 - [SYNTHESIS] Write something to send to Jake about the beta timeline
 - [SYNTHESIS] I need a stakeholder update on the alpha program
@@ -1120,7 +1120,7 @@ These 54 rows are the Inversion's question book (36 probe-DISAGREEs by construct
 | what did i create this session | QUERY | action:session_activity_query | `session_activity_query` @0.95 | MATCH |  | - |
 | what did we do this session | QUERY | action:session_activity_query | `session_activity_query` @0.95 | MATCH |  | - |
 | what issues did we open during the call | QUERY | action:session_activity_query | `session_activity_query` @0.85 | MATCH |  | - |
-| Write a short update for the OpenLaws CEO John Phamvan  | SYNTHESIS | action:write_stakeholder_update | `write_stakeholder_update` @0.95 | MATCH |  | - |
+| Write a short update for the client CEO  | SYNTHESIS | action:write_stakeholder_update | `write_stakeholder_update` @0.95 | MATCH |  | - |
 | help me setup my projects | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.95 | MATCH |  | - |
 | help me setup projects | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.95 | MATCH |  | - |
 | How do I setup my projects? | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.95 | MATCH |  | - |

@@ -68,7 +68,7 @@ Dropped (baseline-asserted, not in current corpus):
 - [TEMPORAL] remind me at 9:41 today to check in with the lead developer
 
 Added (current-asserted, not in the 08-12 baseline):
-- [SYNTHESIS] Write a short update for the OpenLaws CEO John Phamvan on where we are with the Piper Morgan alpha testing.
+- [SYNTHESIS] Write a short update for the client CEO on where we are with the Piper Morgan alpha testing.
 
 ## Exhibit A (PM 2026-08-08 live transcript) + Arch's demanded row
 
@@ -88,4 +88,4 @@ These 54 rows are the Inversion's question book (36 probe-DISAGREEs by construct
 
 | phrase | category | expected | router route @conf | verdict | note |
 |---|---|---|---|---|---|
-| Write a short update for the OpenLaws CEO John Phamvan  | SYNTHESIS | action:write_stakeholder_update | `write_stakeholder_update` @0.95 | MATCH |  |
+| Write a short update for the client CEO  | SYNTHESIS | action:write_stakeholder_update | `write_stakeholder_update` @0.95 | MATCH |  |

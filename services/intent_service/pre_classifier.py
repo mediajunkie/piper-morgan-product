@@ -893,7 +893,7 @@ class PreClassifier:
     # test_judge_experiment_query_routes_to_stakeholder_update` (a
     # non-corpus, end-to-end regression pin for the ORIGINAL #1256 bug)
     # FAILED when this list's "write ... update for" literal was emptied:
-    # "Write a short update for the OpenLaws CEO John Phamvan on where we
+    # "Write a short update for the client CEO on where we
     # are with the Piper Morgan alpha testing." mis-routes to
     # `update_document_query` (DOCUMENT_QUERY_PATTERNS' loose "update ...
     # with" regex re-claims it) -- a real production regression, not a
@@ -914,8 +914,8 @@ class PreClassifier:
     # phrase itself deposited as its own corpus row, inversion-phase3-
     # rule10b-1256-row-score-2026-10-09-anthropic.md, 1/1 MATCH@0.95) reads
     # GO (deletable, full) -- but a direct empirical re-check of the exact
-    # #1256 phrase ("Write a short update for the OpenLaws CEO John
-    # Phamvan on where we are with the Piper Morgan alpha testing.")
+    # #1256 phrase ("Write a short update for the client CEO
+    # on where we are with the Piper Morgan alpha testing.")
     # STILL reopens the collision: `PreClassifier.pre_classify(msg)`
     # returns `update_document_query`, not None. The gate's MATCH@0.95
     # verdict describes what the LIVE INVERSION ROUTER would say IF this

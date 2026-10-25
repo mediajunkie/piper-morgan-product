@@ -1981,7 +1981,7 @@ def test_rule10_report_names_the_ci_tier_requirement_when_holding():
 # row with the licensed literals removed. A different action reclaiming it is NO-GO.
 
 _1256 = (
-    "Write a short update for the OpenLaws CEO John Phamvan on where we are with "
+    "Write a short update for the client CEO on where we are with "
     "the Piper Morgan alpha testing."
 )
 

@@ -1,7 +1,7 @@
 """#1256 — "write a stakeholder update" must not misroute to update_document_query.
 
-The bug (LLM-as-judge, 2026-06-16): "Write a short update for the OpenLaws CEO
-John Phamvan on where we are with the Piper Morgan alpha testing" hit
+The bug (LLM-as-judge, 2026-06-16): "Write a short update for the client CEO
+on where we are with the Piper Morgan alpha testing" hit
 DOCUMENT_QUERY_PATTERNS' loose `update ... with` regex (greedily bridging
 "update for the CEO ... where we are WITH") → update_document_query at
 confidence 1.0 → "which document do you want to update?" instead of a memo.
@@ -52,7 +52,7 @@ class TestStakeholderUpdateRouting:
         deletion work -- surface 1 still claims it directly, zero LLM
         call, same as always."""
         intent = _classify(
-            "Write a short update for the OpenLaws CEO John Phamvan on where "
+            "Write a short update for the client CEO on where "
             "we are with the Piper Morgan alpha testing."
         )
         assert intent is not None
