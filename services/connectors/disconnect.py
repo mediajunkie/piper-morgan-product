@@ -147,6 +147,10 @@ async def _disconnect_github(user_id: str) -> list[str]:
     except Exception as e:
         logger.warning("github_oauth_binding_clear_failed", error=str(e))
         remaining.append("oauth_binding_and_grant")
+    # The grant's keychain copy (#2172, Arch): ConnectorGrantStore.delete removes the
+    # row, then this copy best-effort, so read it back here.
+    if not await _keychain_copy_gone(keychain, "github_mcp_oauth", user_id):
+        remaining.append("oauth_grant_keychain")
     # #1982: the at-rest PAT row (the dual write's second copy) goes too, so a
     # revoke leaves no row the MCP app's GitHub subkey could still read.
     try:

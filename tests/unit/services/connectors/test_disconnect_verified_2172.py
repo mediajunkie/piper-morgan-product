@@ -116,6 +116,17 @@ class TestGitHub:
         result, _ = await _github(_keychain({"github": _FAILED}), resolved=_GONE)
         assert result.remaining == ("keychain_pat_key_service",)
 
+    async def test_the_grants_keychain_copy_is_read_back(self):
+        kc = _keychain({"github_mcp_oauth": _PRESENT})
+        result, _ = await _github(kc, resolved=_GONE)
+        assert result.remaining == ("oauth_grant_keychain",)
+        kc.adelete_api_key.assert_any_await("github_mcp_oauth", _U)
+        kc.aread_secret.assert_any_await("github_mcp_oauth", _U)
+
+    async def test_the_grants_keychain_read_back_that_failed_is_not_gone(self):
+        result, _ = await _github(_keychain({"github_mcp_oauth": _FAILED}), resolved=_GONE)
+        assert result.remaining == ("oauth_grant_keychain",)
+
     async def test_resolver_still_serving_a_leg_is_remaining(self):
         still = SimpleNamespace(leg="pat", token="fake-token-2172")
         result, _ = await _github(_keychain(), resolved=still)
