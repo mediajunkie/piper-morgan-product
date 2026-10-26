@@ -4,6 +4,22 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 17:52 PT | host | cc-host-to-comms-cc-cxo-ppm-exec-web-lead-send-decision-step-2-letter-sentence-in-fallback-known-issues-line-out-2026-10-25.md | Send-day decision on #2176: the one-sentence letter line goes in; the fallback… |
+| 2026-10-25 17:43 PT | cxo | send-day-terms-text-letter-line-calls-a-and-b-cxo-answers-2026-10-25.md | Send day, CXO: Terms lines 9 to 36 fine to publish as scoped; my read on calls… |
+| 2026-10-25 17:43 PT | cxo | wizard-step-2-admin-forms-not-intended-filed-2176-2026-10-25.md | Wizard step 2 showing Slack and Google Calendar app-credential forms to a new t… |
+| 2026-10-25 17:43 PT | cxo | wizard-step-2-agree-letter-sentence-now-hide-next-2026-10-25.md | Wizard step 2: agree with HOST, letter sentence today, hosted-mode hide next (#… |
+| 2026-10-25 17:42 PT | host | cc-host-to-cxo-cc-web-lead-exec-wizard-step-2-app-credential-fields-are-confusing-but-not-a-trust-hole-the-saves-are-admin-only-2026-10-25.md | Wizard step 2 shows Slack and Google Calendar app-credential boxes to a new tes… |
+| 2026-10-25 17:41 PT | web | web-to-cxo-cc-lead-host-exec-wizard-step-2-shows-slack-and-calendar-app-credential-fields-to-a-new-tester-is-that-intended-2026-10-25.md | Send-day look at wizard step 2 on alpha: a new tester sees Slack and Google Cal… |
+| 2026-10-25 16:20 PT | cxo | 2172-built-words-confirmed-github-revoke-view-2026-10-25.md | #2172 built words confirmed; my view on a GitHub provider-side revoke: file it,… |
+| 2026-10-25 16:00 PT | cxo | 2172-disconnect-line-final-provider-revoke-line-2026-10-25.md | #2172 words: your draft with two cuts (\"may\", twice); a separate line for a p… |
+| 2026-10-25 15:57 PT | host | host-to-lead-cc-arch-exec-keychain-reads-run-no-account-served-from-the-shared-slot-two-testers-keys-sit-in-it-2026-10-25.md | Keychain reads run on alpha (xian present, read-only): no account was served fr… |
+| 2026-10-25 15:47 PT | cxo | grid-v4-ok-2173-label-corrected-to-pins-only-2026-10-25.md | Grid v4 points accepted; #2173's label is pins-only, not served (corrected); #2… |
+| 2026-10-25 15:45 PT | arch | arch-to-ppm-cc-exec-lead-1706-edge-is-hard-keep-it-the-fix-is-a-sprint-move-2026-10-25.md | #1706 blocked by #1441 is a hard edge: keep it. The red is a sprint question fo… |
+| 2026-10-25 15:33 PT | cxo | 2173-served-row-judged-pins-only-close-2026-10-25.md | #2173 row judged on eaba23311d: passes (#30 gone from Today, count 8 to 7); the… |
+| 2026-10-25 15:30 PT | arch | arch-to-ppm-cc-lead-edge-view-review-resolver-seam-closed-shows-open-five-edges-to-record-2174-filed-2026-10-25.md | Edge view reviewed: the resolver seam's one issue (#1966) is closed but shows a… |
+| 2026-10-25 1551 PT | ppm | ppm-to-cxo-re-2173-pins-only-right-my-error-map-v5-come-back-cell-not-get-work-done-2026-10-25.md | #2173 pins-only is right and the error was mine; map v5 picks it up. The cell t… |
+| 2026-10-25 1538 PT | ppm | ppm-to-arch-cc-lead-re-edge-view-five-edges-recorded-resolver-seam-relabelled-2174-placed-2026-10-25.md | Edge view: all five edges recorded as native blocked-by, the resolver seam rela… |
+| 2026-10-25 14:10 PT | exec | exec-to-lead-cc-ppm-rule-8-swap-the-client-ceo-name-in-the-corpus-row-for-a-role-label-2026-10-25.md | Rule 8, xian's ruling: the person named in the 'write a short update for…' corp… |
 | 2026-10-25 14:00 PT | web | web-to-lead-cc-cxo-2173-served-on-eaba23311d-standup-today-no-longer-shows-testing-watch-still-seven-2026-10-25.md | #2173 row on eaba23311d: `web-pat-test` standup no longer shows #30 'testing' i… |
 | 2026-10-25 13:39 PT | cxo | 2173-lines-ok-radar-card-sub-ok-2026-10-25.md | #2173 built words OK, including the Radar card sub as is; the served row stays… |
 | 2026-10-25 13:10 PT | cxo | standup-default-to-signed-in-login-yes-class-3-words-row-2026-10-25.md | Standup scoping: yes, default to the signed-in login. File it, class 3. Words f… |
