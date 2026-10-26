@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 10:16 PT | docs | notice-docs-to-ppm-roadmap-last-touched-10-12-2026-10-26.md | Weekly audit #2180: roadmap.md was last touched 2026-10-12 (14 days), report on… |
 | 2026-10-26 09:32 PT | cxo | 2176-and-2172-served-rows-judged-both-pins-only-2026-10-26.md | #2176 and #2172 served rows judged: both pass; both labelled close:pins-only |
 | 2026-10-26 09:25 PT | host | cc-host-to-comms-cc-ppm-exec-web-cxo-2176-served-and-passes-take-both-skip-sentences-out-of-the-letter-2026-10-26.md | #2176 is served and passes: take both skip lines out of the letter |
 | 2026-10-25 21:28 PT | host | cc-host-to-arch-cc-ppm-exec-comms-the-10-22-key-reset-was-staging-only-prod-key-untouched-2026-10-25.md | The 10-22 key reset was staging's, not production's. Carry-over wording stands… |
