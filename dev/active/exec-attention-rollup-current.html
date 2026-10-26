@@ -32,13 +32,13 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Saturday 24 October</h1>
-<p class="meta">Exec · v619, rebuilt 04:37 PDT Mon 10-26 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v620, rebuilt 07:12 PDT Mon 10-26 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <div class="card hot"><b>MVP: every must-close item is closed. The invitations are yours to time.</b> Gate: 3 open, none must-close (#2018 and #1595 are known issues, #1386 is the gate&rsquo;s own test). Before a send:
 <ul style="margin:.3rem 0 .2rem 1.2rem;padding:0">
 <li><b>Terms page live:</b> <a href="https://pipermorgan.ai/terms/">pipermorgan.ai/terms/</a> (17:19, your A1 and B calls; Web read both lines back from the served page). Google approved Calendar read access (15:50), and you found the consent screen clean.</li>
 <li><b>Send-day checks passed (16:14):</b> the wizard opens on Invite; all three codes read valid and unused.</li>
-<li><b>Tonight&rsquo;s promotion failed twice</b> (#2177: staging&rsquo;s image tag &ldquo;manifest unknown&rdquo;). Alpha is unchanged and healthy on <code>eaba23311d</code>. So #2176&rsquo;s hide of the Slack and Calendar admin boxes is built but not served, and the letter keeps HOST&rsquo;s one sentence (&ldquo;skip the optional Slack and Google Calendar boxes&rdquo;). Lead won&rsquo;t retry without a reason to expect a different result; HOST may ask for one more try at 07:00, before you send.</li>
+<li><b>Alpha updated this morning (07:06) to <code>69d859ca5f</code></b>, on a fresh staging build, after last night&rsquo;s two failures. It now carries #2176 (the setup wizard no longer shows new testers the Slack and Calendar admin boxes) and #2172 (Disconnect only says it worked when it did). Web is checking both on alpha now. If #2176 passes before you send, the letter&rsquo;s &ldquo;skip the optional Slack and Google Calendar boxes&rdquo; sentence comes out. Otherwise it stays in. Known issues rechecked at 06:35 (PPM): unchanged, none struck.</li>
 </ul>
 HOST&rsquo;s draft beta shortlist is ready to walk with you (in the private roster): 5 people who already have a code or account, and 8 earlier invitees who never made an account.</div>
 
@@ -51,7 +51,7 @@ HOST&rsquo;s draft beta shortlist is ready to walk with you (in the private rost
 <div class="card hot"><b>Two new calls, from tonight&rsquo;s send prep</b>
 <ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
 <li><b>&ldquo;Your account carries over to the beta&rdquo;: make that promise in the letter?</b> It&rsquo;s true of the plan: the beta is alpha&rsquo;s own app, no migration deletes user data, and promotions don&rsquo;t touch the database (Arch, from source). But it&rsquo;s a new promise, so it&rsquo;s yours (PPM). It rests on #2157, which isn&rsquo;t done: there are no scheduled backups yet, and if the encryption key is ever lost, saved keys and connections stop working even though the account survives. <span style="color:var(--blue);font-weight:600">My recommendation:</span> promise the part the code guarantees, &ldquo;your account and your work carry over&rdquo;, leave saved keys and connections out, and have #2157 carry the promise.</li>
-<li><b>Fix tonight&rsquo;s failed promotions (#2177) by pulling staging&rsquo;s image by digest, not by tag?</b> A tag only names an image; a digest identifies it, so the workflow&rsquo;s own &ldquo;promote staging&rsquo;s exact image&rdquo; becomes true by construction. Arch prefers it, HOST supports it, and Lead has it built with Arch&rsquo;s three safeguards and 13 tests, on a side branch (not on main). Arch read the branch at 19:06: all three safeguards are met. It&rsquo;s a deploy-workflow change, so it needs your yes. If Fly&rsquo;s data turns out to lack the digest, the first run refuses before alpha changes. <span style="color:var(--blue);font-weight:600">My recommendation: yes.</span> It doesn&rsquo;t block the send: HOST wants no retry, and the letter&rsquo;s skip sentence covers it.</li>
+<li><b>Fix tonight&rsquo;s failed promotions (#2177) by pulling staging&rsquo;s image by digest, not by tag?</b> A tag only names an image; a digest identifies it, so the workflow&rsquo;s own &ldquo;promote staging&rsquo;s exact image&rdquo; becomes true by construction. Arch prefers it, HOST supports it, and Lead has it built with Arch&rsquo;s three safeguards and 13 tests, on a side branch (not on main). Arch read the branch at 19:06: all three safeguards are met. It&rsquo;s a deploy-workflow change, so it needs your yes. If Fly&rsquo;s data turns out to lack the digest, the first run refuses before alpha changes. <span style="color:var(--blue);font-weight:600">My recommendation: yes.</span> It doesn&rsquo;t block the send. This morning&rsquo;s update worked on a fresh build, but the failure can come back on any update until this lands.</li>
 </ol></div>
 
 <div class="card hot"><b>Two sequencing calls from the map&rsquo;s first dependency edges</b> (PPM recorded Arch&rsquo;s five; these two aren&rsquo;t ours to settle).
@@ -104,7 +104,7 @@ Also from the map&rsquo;s first review: CXO filed #2175 (no path to an invite fo
 <li>Mail v4 stays on three seats until the 11-05 review.</li>
 </ul></div>
 <h2>📊 Where things stand</h2>
-<div class="card">MVP gate: <b>3 open, none must-close.</b> Saturday: #2154 admitted on your word and already closed (11:42). Alpha <code>eaba23311d</code>, healthy at 19:08 Sun. Main 12 of 12 green at 19:08 Sun.</div>
+<div class="card">MVP gate: <b>3 open, none must-close.</b> Saturday: #2154 admitted on your word and already closed (11:42). Alpha <code>69d859ca5f</code>, healthy at 07:08 Mon. Main 12 of 12 green at 07:08 Mon.</div>
 <p class="meta">How I checked each version: <code>dev/active/exec-rollup-verification-history.md</code> (not needed to read this page).</p>
 
 </div>
