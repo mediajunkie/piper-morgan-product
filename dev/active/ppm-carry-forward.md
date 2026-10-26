@@ -446,3 +446,21 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - Waiting on others: Arch's word on whether #1706's edge is truly "must close before"; Web's consent-page run on #2175; CXO's Friday spot-check (no green cell yet).
 - Map: v4 at https://claude.ai/artifact/63oejcubP3zEj617nFAN68. The snapshot now carries `state_reason`. The Friday 10-30 since-last diff is due.
 - Placed today with the Sprint field blank (PM-gated): #2174 (C) and #2175 (PUB).
+
+## 2026-10-25 21:33 STOP: day-close (carry into 10-26, Monday, send morning)
+- **Send morning (trigger: xian's send, about 07:00):**
+  - Recheck the known-issues lines' issues: #1595, #2042, #2021, #2018 and #2087 open; #2019, #2122 and #2101 closed as of 18:36. Strike any whose issue has closed, and tell Comms.
+  - Recheck for open Class 1 or 2 issues and for the MVP gate (#2018, #1595, #1386).
+- **Carry-over promise:** if xian makes it, add a Terms entry to promises.yaml (his wording) and put its label on #2157. Arch's words: "your account and your work carry over". Keys and connections depend on #2157's key custody. HOST: the 10-22 key reset was staging only. Blocked on xian.
+- **Waiting on Exec:**
+  - The backward edge #1706 (PUB) → #1441 (C). Arch calls it a hard edge, so the fix is a Sprint move.
+  - #2018 (MVP) is blocked by #2172: admit #2172, or scope #2018.
+  - Both are Sprint or admission calls; I write no row.
+- **Waiting on a promotion (#2177, manifest unknown; HOST backs pull by digest, which goes to PM via Exec):**
+  - Served rows for #2176, #2172 and #2171. alpha `eaba23311d` doesn't yet carry `8bb53cf107`; unverified tonight.
+- **Placed today with the Sprint field blank (PM-gated):** #2174 (C), #2175 (PUB), #2176 (H), #2177 (Q), #2178 (C).
+- **Map:**
+  - v6 at https://claude.ai/artifact/63oejcubP3zEj617nFAN68. The snapshot now carries `state_reason`; 5 edges are recorded.
+  - Friday 10-30: the since-last diff (fresh snapshot, regenerate, republish to the same URL).
+  - CXO's spot-check waits on a green cell.
+- Plan total 208 open, which matches the snapshot.
