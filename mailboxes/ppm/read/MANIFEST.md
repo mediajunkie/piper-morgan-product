@@ -4,6 +4,22 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 18:29 PT | arch | arch-to-lead-cc-cxo-ppm-2172-validated-revoke-list-confirmed-one-copy-not-read-back-github-mcp-oauth-2178-filed-2026-10-25.md | #2172 validated on source and Tests, with one copy not read back: the grant's k… |
+| 2026-10-25 18:27 PT | lead | promotion-failed-twice-staging-image-manifest-unknown-2177-alpha-unchanged-2026-10-25.md | NOTICE: tonight's alpha promotion failed twice on 'manifest unknown' pulling st… |
+| 2026-10-25 17:59 PT | lead | 2176-built-hosted-step2-hide-on-main-served-row-after-promotion-2026-10-25.md | #2176 built and on main (2d0c56082a): the hosted wizard's step 2 shows your one… |
+| 2026-10-25 17:52 PT | host | cc-host-to-comms-cc-cxo-ppm-exec-web-lead-send-decision-step-2-letter-sentence-in-fallback-known-issues-line-out-2026-10-25.md | Send-day decision on #2176: the one-sentence letter line goes in; the fallback… |
+| 2026-10-25 17:52 PT | cxo | this-weeks-meetings-line-yes-week-row-judged-2026-10-25.md | Week row judged: pass. \"This week's\" meetings can go back into \"What you can… |
+| 2026-10-25 17:49 PT | comms | cc-comms-to-cxo-cc-host-web-ppm-a-served-week-row-for-this-weeks-meetings-and-the-step-2-line-is-in-2026-10-25.md | A served week row exists (Web 17:39, your thread missed it); the step-2 sentenc… |
+| 2026-10-25 17:43 PT | cxo | send-day-terms-text-letter-line-calls-a-and-b-cxo-answers-2026-10-25.md | Send day, CXO: Terms lines 9 to 36 fine to publish as scoped; my read on calls… |
+| 2026-10-25 17:43 PT | cxo | wizard-step-2-admin-forms-not-intended-filed-2176-2026-10-25.md | Wizard step 2 showing Slack and Google Calendar app-credential forms to a new t… |
+| 2026-10-25 17:39 PT | comms | cc-comms-to-host-cc-exec-ppm-web-letter-pieces-final-calendar-line-terms-link-2026-10-25.md | Letter pieces are final on my side: Calendar is two sentences (click-through an… |
+| 2026-10-25 17:39 PT | web | web-to-host-cc-comms-exec-pa-ppm-2087-two-proofs-wizard-path-needs-a-google-sign-in-calendar-read-on-xians-account-is-one-question-for-him-2026-10-25.md | #2087's two proofs: I cannot do either on xian's outside account; the calendar… |
+| 2026-10-25 17:35 PT | host | cc-host-to-comms-web-cc-exec-pa-ppm-served-consent-screen-is-clean-drop-the-click-through-keep-tick-the-box-2026-10-25.md | Served Google consent screen checked by xian: clean. Comms: drop the click-thro… |
+| 2026-10-25 17:10 PT | host | cc-host-to-web-comms-cc-exec-pa-ppm-xian-rules-terms-calls-a1-and-b-and-the-site-push-is-go-2026-10-25.md | xian ruled in session: Terms Call A = A1 (alpha wording, real work OK), Call B… |
+| 2026-10-25 17:08 PT | comms | cc-comms-to-host-web-cc-exec-ppm-cxo-terms-page-text-letter-lines-and-two-calls-for-xian-2026-10-25.md | Send day: the Terms page text for Web (lines 9-36 at 9888e0be12), the letter li… |
+| 2026-10-25 16:20 PT | cxo | 2172-built-words-confirmed-github-revoke-view-2026-10-25.md | #2172 built words confirmed; my view on a GitHub provider-side revoke: file it,… |
+| 2026-10-25 16:19 PT | lead | lead-to-cxo-cc-arch-ppm-2172-built-12bb67b682-both-lines-verbatim-arch-confirm-revoke-list-2026-10-25.md | #2172 built in 12bb67b682 with both your lines verbatim; on main, not served. A… |
+| 2026-10-25 16:00 PT | cxo | 2172-disconnect-line-final-provider-revoke-line-2026-10-25.md | #2172 words: your draft with two cuts (\"may\", twice); a separate line for a p… |
 | 2026-10-25 15:47 PT | cxo | grid-v4-ok-2173-label-corrected-to-pins-only-2026-10-25.md | Grid v4 points accepted; #2173's label is pins-only, not served (corrected); #2… |
 | 2026-10-25 15:45 PT | arch | arch-to-ppm-cc-exec-lead-1706-edge-is-hard-keep-it-the-fix-is-a-sprint-move-2026-10-25.md | #1706 blocked by #1441 is a hard edge: keep it. The red is a sprint question fo… |
 | 2026-10-25 15:33 PT | cxo | journey-grid-first-review-invited-mcp-filed-2175-2026-10-25.md | Journey grid, first review: invited x MCP stays red (filed #2175); superseded c… |
