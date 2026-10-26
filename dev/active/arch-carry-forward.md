@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-24 21:28 PDT
+last_updated: 2026-10-25 21:28 PDT
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -26,29 +26,32 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
-Older day blocks (10-04 to 10-23) were cut at the 10-24 STOP rewrite; their threads are resolved, or carried below, or recorded in their own day's log and decisions.log. The full prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
+Day blocks before 10-25 were cut at the 10-25 STOP rewrite. Their threads are resolved, or carried below, or recorded in their own day's log and in decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
-- **10-24, closed at 21:3x.** Alpha serves `228f3cec14` (/health 21:28), and Tests passed on `aded293a06`. Detail is in the 10-24 log and decisions.log (15:29 to 19:21).
-  - **Law written today:**
-    - **ADR-081** (GitHub identity): ACCEPTED, with D3 conditional on the github-mcp-server compatibility check (Lead runs it before any build; the fallback is a published OAuth App with the narrowest scope).
-      - Lead's build order: D2's gate (`71fb4b0db7` done: "system" token is None on a hosted deploy), then D1's gate convergence (#1966/#2151), then D3's check, then D3.
-      - **Lead's five env-token reads plus their forcing test** were parked for 10-25 START in a fresh session (Lead's named trigger: the ISS pins need their own tested unit). **Validate that landing from source plus Tests.**
-    - **ESSENCE v1.1 draft** (`docs/internal/architecture/essence-v1.1-draft-commitment-6-and-prd-note-2026-10-24.md`): waits on xian's ratification through Exec, together with the `promises.yaml` wording. On ratification, apply it word for word and log it.
-  - **#2151's five states:** verified; failed ("couldn't check"); narrowed; not performed (no stored credential *only*, per the 07:55 narrowing); substituted. A store error is a failed read. Everything validated today is in the log. My own miss: the 07:55 validation didn't catch the swallowed store failure in `is_available` and the PAT legs; fixed after 16:49.
-  - **#2169 CLOSED** (served 3 of 3, CXO 20:21; `close:pins-only` for the project variant). The containment rule with the to-do-family own-list carve-out is law.
-  - **#2166:** Share is hidden (served pass). The repair is Production D, on my design (decisions.log 18:45): a grant to the typed email, resolved recipient-side against `users.is_verified`; one `resource_shares` table; an owner-only `GET /{type}/{id}/shares`; a lowercase role enum. Validate when Lead builds it.
-  - **#2171** (Lists "Items: 0"): fix `dff452482b` validated (21:3x comment). Served rows are owed after the next promotion (Lead/Web/CXO).
-  - **#2167 and #2156 CLOSED** (CXO). CXO's nit to Lead: map provider ids to display names. It is not a gate and not mine.
-  - **Living map:** the journey grid has three columns (web, mcp, chat platforms in grey); the moment list is ratified; seam labels exist; the edge rule is adopted; PPM's generator is built but **not published**. `close:` labels exist (served / pins-only). Watch the publish.
+- **10-25, closed at 21:28.** Alpha still serves `eaba23311d` (Web's /health read, 21:18): the promotion failed twice on "manifest unknown" (#2177). Code Quality on main: success (04:20Z). Detail is in the 10-25 log.
+  - **Law applied today:** ESSENCE v1.1, applied word for word (xian ratified it at 12:40, via Exec), including the connector rule's Piper-as-host clause. `promises.yaml` was ratified by xian at 14:04. The #1462 "connect GitHub at first use" mechanism is in decisions.log (15:30).
+  - **Closed:** #1966 and #2173. #2173 was validated on `7bcef2bd07` (assignee login read via `/user`; failure-shaped `assignee_unresolved`). Edge: a 401 on `/user` reads as assignee_unresolved.
+  - **#2172 (Disconnect honesty): built and validated.** `12bb67b682` plus `76b39a3133` (the `github_mcp_oauth` keychain read-back). Tests passed on `75ab9d6f30`. The served row waits on a working promotion (CXO: `close:pins-only`).
+  - **#2178 (revoke the GitHub OAuth grant at GitHub on Disconnect; never revoke a PAT):** filed by Arch, placed in C by PPM. Validate when Lead builds it.
+  - **#2174 (ADR-081 D3 compatibility check):** Lead runs it after D1 (#2151). Blocks #2163 and #1514.
+  - **#2177 (pull by digest):** branch `lead/2177-pull-by-digest` `a56a77a9ff` meets Arch's three conditions (machines agree on a digest or the run refuses; pulled RepoDigests equal the digest read; served-sha attestation kept). Optional tightening: deploy by the pushed digest, not the `promote-<sha12>` tag. Landing waits for xian's yes, via Exec. The first run shows whether Fly's machine JSON carries the digest; if it doesn't, the run refuses before alpha changes. **Validate the landed commit against the branch.**
+  - **#2176 (wizard key step):** UI only; the server side is gated (`require_setup_incomplete`, `require_admin`). The served row waits on a promotion.
+  - **#2171:** both rows served (Web 21:18, CXO `close:served` 21:20). Lead closes it. Nothing for Arch.
+  - **Edges (PPM, native blocked-by):** #2163 ← #2174 and #2151; #1514 ← #2174; #1706 ← #1441 (a hard edge, per Arch); #2018 ← #2172. `seam:resolver` is on #2151, #2172 and #2173. The #1706/#1441 sprint order is Exec's call.
+  - **Carry-over ruling** (memo to PPM, cc Comms, Exec and HOST): no migration deletes user data. The promise rests on #2157 (backups) and on master-key custody. The 10-22 key reset HOST recalled is unverified (not in decisions.log). Comms narrowed the clause to match. The promise itself is xian's, via Exec.
+  - **Keys:** setup writes are per-user (`store_user_key`). The only unscoped LLM-key write is `migrate_key_to_keychain`, reached only by `scripts/migrate_keys_to_keychain.py`. The two shared-slot keychain rows: delete them and tell the testers, on xian's rollup (Exec 18:30). Not Arch's.
+  - **Practice:** take every memo/comment timestamp from `date` in the same command that writes it (four corrections today).
 - **Still open from earlier days (each with its owner):**
-  - **The Haiku 5.5 router/classifier screen:** about $4, rule-7 batch. Waits for 11-01, or for a cap from xian via Exec. Screen it before #2149.
+  - **Lead's five env-token reads plus their forcing test (ADR-081 D2 follow-on):** validate from source plus Tests when they land.
+  - **#2166 Share repair (Production D, Arch's design, decisions.log 10-24 18:45):** validate when Lead builds it.
+  - **Haiku 5.5 router/classifier screen:** about $4, rule-7 batch. Waits for 11-01, or for a cap from xian via Exec. Screen it before #2149.
   - **HOST, with xian present:** the served refusal check (a chat turn from an account with no key of its own) and HOST's Drafts 1 and 2 (DB reads).
   - **#2139** (doc from the conversation) and **#2135** (trust stage, dormant, tripwire landed).
   - **#2112:** only the connected-account row is open (xian's calendar account via Exec).
-  - **#2123:** CXO's served cross-account row (needs a second GitHub account with a private repo). ADR-081 D2 removes the last leg; it closes when the D2 gate plus its pin are live.
-  - **#1897 (unit 4b, router `plan` outcome):** not urgent; measure single-op accuracy before shipping.
-  - **Q5 denominator:** still open; my recommendation is the flat test. **Bets 001–003:** PM TO FILL, tracking only.
-  - **GitHub criteria line:** 9 open with `label:architecture` (21:28). Open each issue at START, rather than writing a row from the list.
+  - **#2123:** CXO's served cross-account row. It closes when the ADR-081 D2 gate plus its pin are live.
+  - **#1897 (unit 4b):** measure single-op accuracy before shipping.
+  - **Q5 denominator:** open; Arch recommends the flat test. **Bets 001–003:** PM TO FILL.
+  - **GitHub criteria line:** 12 open with `label:architecture` (21:28, 10-25); #2172, #2174 and #2178 are new since 10-24. Open each issue at START, rather than writing a row from the list.
 
 ## Standing hard rules (load-bearing; full incident detail in decisions.log if ever needed)
 
