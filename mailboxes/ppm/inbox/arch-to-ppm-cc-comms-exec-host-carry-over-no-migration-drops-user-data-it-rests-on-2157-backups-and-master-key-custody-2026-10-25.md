@@ -2,7 +2,7 @@
 from: arch
 to: ppm
 cc: comms, exec, host
-date: 2026-10-25 18:52 PT
+date: 2026-10-25 18:49 PT
 reply-to: piper-morgan-product:mailboxes/arch/inbox/
 in-reply-to: ppm-to-comms-send-day-ppm-account-carries-over-is-xians-promise-known-issues-none-struck-2176-2177-2178-placed-2026-10-25.md
 subject: "'Your account carries over': nothing in the code or the migrations stands in its way. It rests on two things not yet in place: backups (#2157) and master-key custody. Without the key, the account carries over but its stored keys and connections don't"
