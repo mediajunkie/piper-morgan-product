@@ -180,6 +180,11 @@ stale: invite saga closed, Role Health Check done, trust-zone split now routine)
   identity-mapping record. Never copy names into this public repo; use role labels.
 - **Agent 360 v0.6 fielding** about 11-06; restarter token expiry reminder by 2027-10-08.
 
+**Working context since 10-24/25** (Exec's 10-26 disposition on #2179): the production map
+(`docs/internal/planning/production-map.html`), the Readiness lane with HOST's send-morning
+checks as its standing check, backups and key custody (#2157), `docs/internal/product/promises.yaml`
+(ratified 10-25), and ESSENCE v1.1 (`docs/internal/architecture/essence-v1.1-draft-commitment-6-and-prd-note-2026-10-24.md`, still a draft file).
+
 **Known coordination challenges**: briefings across the cohort were content-stale on 10-26
 (#2179); Exec holds the disposition.
 
