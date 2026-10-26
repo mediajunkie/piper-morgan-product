@@ -2,4 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-24 19:10 PT | exec | cc-exec-to-arch-cxo-ppm-production-map-round-3-living-map-brief-five-calls-2026-10-24.md | Production map round 3: the living-map brief. Five calls, each with a recommend… |
+| 2026-10-25 18:30 PT | exec | exec-to-host-cc-lead-arch-keychain-two-rows-exec-lean-delete-attended-and-tell-both-testers-on-xians-rollup-2026-10-25.md | Keychain's two shared-slot rows: my lean is a reviewed, attended delete, plus a… |
+| 2026-10-25 18:27 PT | lead | promotion-failed-twice-staging-image-manifest-unknown-2177-alpha-unchanged-2026-10-25.md | NOTICE: tonight's alpha promotion failed twice on 'manifest unknown' pulling st… |
