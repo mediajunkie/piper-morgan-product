@@ -29,7 +29,7 @@ Disconnect in Piper doesn't revoke at GitHub (#2178, Production), so this step s
 - Then ask in chat: **"show my open pull requests"**. Expect a plain "needs re-authorizing" reply, not a list and not an empty "no PRs".
 
 **3. Disconnect.** Settings → GitHub (`/settings/integrations/github`, or the card's link) → **Disconnect**.
-- Expect a confirm dialog first. Note its words.
+- Expect a confirm dialog first: **"Disconnect GitHub?"** / "I'll disconnect your GitHub account. You can set it up again anytime." with a **Disconnect** button. On success, a toast reads "Disconnected" / "GitHub disconnected" and the status reloads. (From the Integrations page instead, the same dialog reads "Disconnect Github?", with a lower-case h.) *Source: Lead, 10-26 15:48, from both templates at `69d859ca5f`; not yet seen served, so note what you actually see.*
 - Then expect one of two outcomes. Either "disconnected" with the page offering **Connect with GitHub**, or CXO's "incomplete" line naming what's left (a 503 from #2172's fix).
 - **Either outcome is honest. Tell me which one you get, word for word.** A claimed success with a connection still shown would be the #2172 failure.
 
