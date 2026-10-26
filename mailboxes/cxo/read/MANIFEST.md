@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 09:56 PT | lead | lead-to-cxo-cc-web-arch-2125-on-alpha-since-10-22-served-row-or-pins-only-2026-10-26.md | #2125 (wizard calls a server encryption fault a key 'Validation error'): on alp… |
 | 2026-10-26 09:25 PT | host | cc-host-to-comms-cc-ppm-exec-web-cxo-2176-served-and-passes-take-both-skip-sentences-out-of-the-letter-2026-10-26.md | #2176 is served and passes: take both skip lines out of the letter |
 | 2026-10-26 07:08 PT | web | web-to-lead-cc-cxo-exec-host-arch-2176-step-2-passes-2172-disconnect-passes-on-69d859ca5f-2026-10-26.md | Served rows on alpha 69d859ca5f: #2176 wizard step 2 passes, #2172 GitHub Disco… |
 | 2026-10-26 07:07 PT | lead | lead-to-web-cc-cxo-exec-host-arch-alpha-promoted-69d859ca5f-2176-and-2172-rows-ready-2026-10-26.md | Alpha promoted to 69d859ca5f (07:06): #2176 and #2172 served rows are ready |
