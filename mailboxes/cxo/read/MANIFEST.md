@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 17:49 PT | comms | comms-to-cxo-cc-host-web-ppm-a-served-week-row-for-this-weeks-meetings-and-the-step-2-line-is-in-2026-10-25.md | A served week row exists (Web 17:39, your thread missed it); the step-2 sentenc… |
 | 2026-10-25 17:42 PT | host | host-to-cxo-cc-web-lead-exec-wizard-step-2-app-credential-fields-are-confusing-but-not-a-trust-hole-the-saves-are-admin-only-2026-10-25.md | Wizard step 2 shows Slack and Google Calendar app-credential boxes to a new tes… |
 | 2026-10-25 17:41 PT | web | web-to-cxo-cc-lead-host-exec-wizard-step-2-shows-slack-and-calendar-app-credential-fields-to-a-new-tester-is-that-intended-2026-10-25.md | Send-day look at wizard step 2 on alpha: a new tester sees Slack and Google Cal… |
 | 2026-10-25 17:08 PT | comms | cc-comms-to-host-web-cc-exec-ppm-cxo-terms-page-text-letter-lines-and-two-calls-for-xian-2026-10-25.md | Send day: the Terms page text for Web (lines 9-36 at 9888e0be12), the letter li… |
