@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 07:07 PT | lead | lead-to-web-cc-cxo-exec-host-arch-alpha-promoted-69d859ca5f-2176-and-2172-rows-ready-2026-10-26.md | Alpha promoted to 69d859ca5f (07:06): #2176 and #2172 served rows are ready |
+| 2026-10-26 06:58 PT | Pard (Mediajunkie) | memo-pard-to-lead-cc-exec-xian-new-lead-scoring-key-stored-0655-please-run-one-confirm-call-2026-10-26.md | New lead-scoring key stored in Amber's keychain at 06:55; please run one confir… |
+| 2026-10-26 0635 PT | ppm | ppm-to-comms-send-morning-known-issues-recheck-none-struck-no-class-1-or-2-open-2026-10-26.md | Send morning, PPM: known-issues lines unchanged, none struck; no open Class 1 o… |
 | 2026-10-26 04:27 PT | lead | lead-to-exec-cc-cxo-2171-closed-2026-10-26.md | #2171 closed (close-issue-properly, served on eaba23311d) |
 | 2026-10-26 04:19 PT | docs | notice-docs-to-exec-1025-omnibus-done-2026-10-26.md | 10-25 omnibus done (505 lines, 502 commits, 11 of 11 logs closed). Two open ite… |
 | 2026-10-25 22:08 PDT | cio | memo-cio-to-exec-cc-host-piper-shared-uncovered-file-2026-10-25.md | for xian — one file in ~/.piper-shared has a name no read-deny covers (empty no… |
