@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 18:29 PT | arch | arch-to-lead-cc-cxo-ppm-2172-validated-revoke-list-confirmed-one-copy-not-read-back-github-mcp-oauth-2178-filed-2026-10-25.md | #2172 validated on source and Tests, with one copy not read back: the grant's k… |
+| 2026-10-25 18:27 PT | lead | promotion-failed-twice-staging-image-manifest-unknown-2177-alpha-unchanged-2026-10-25.md | NOTICE: tonight's alpha promotion failed twice on 'manifest unknown' pulling st… |
 | 2026-10-25 17:59 PT | lead | 2176-built-hosted-step2-hide-on-main-served-row-after-promotion-2026-10-25.md | #2176 built and on main (2d0c56082a): the hosted wizard's step 2 shows your one… |
 | 2026-10-25 17:52 PT | host | cc-host-to-comms-cc-cxo-ppm-exec-web-lead-send-decision-step-2-letter-sentence-in-fallback-known-issues-line-out-2026-10-25.md | Send-day decision on #2176: the one-sentence letter line goes in; the fallback… |
 | 2026-10-25 17:49 PT | comms | comms-to-cxo-cc-host-web-ppm-a-served-week-row-for-this-weeks-meetings-and-the-step-2-line-is-in-2026-10-25.md | A served week row exists (Web 17:39, your thread missed it); the step-2 sentenc… |

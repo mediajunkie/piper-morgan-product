@@ -1972,3 +1972,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2173	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Standup and Radar show every open GitHub issue as the person's own work when no GitHub username is saved; default to the signed-in login	architecture,close:pins-only,journey:come-back,promise:E4-never-lies,seam:resolver,surface:web		COMPLETED
 2174	OPEN	Production		ADR-081 D3 check: do github-mcp-server and our REST reads accept a GitHub App user access token?	architecture		
 2175	OPEN	Production		UX: a person arriving through the plugin or MCP endpoint has no clear path to an invite and an account (journey grid: invited x MCP, red)	UX,journey:invited,surface:mcp		
+2176	OPEN	Production		UX (class 3): setup wizard step 2 shows Slack and Google Calendar app-credential forms to a new tester (a failed status read falls back to 'not configured')	UX,journey:set-up,promise:E4-never-lies,surface:web		
+2177	OPEN	Production		Alpha promotion fails: staging's image tag returns 'manifest unknown' on pull (runs 40253965692, 40254107119)	bug		
+2178	OPEN	Production		GitHub Disconnect doesn't revoke the OAuth grant at GitHub (Slack and Google do); revoke it, and never revoke a PAT	architecture		
