@@ -66,6 +66,11 @@ Slack and Notion stay unnamed (xian 15:0x). Notion has no chat reader (Lead 15:0
 - **The invite code's step:** asked first. CXO closed #2088 and #2089 at 15:32 on 10-21 on Web's served rows (76789a8988: strip "1. Invite", "2. API Keys", "3. Account", "4. Projects", "5. Complete", no System step or Temporal line). The step-3 interim line is out. The invitation calls the first step "Invite". Still on Lead's pins: Create Account no longer asking for the code. Recheck what alpha serves on send morning.
 - **#2089's system-check known-issue line:** not needed. #2089 closed 10-21 15:32 (CXO).
 - **Beta or alpha form:** PPM's one line on the morning.
+- **Wizard step 2, Slack and Calendar credential boxes (#2176, added 10-25 17:49):** CXO's sentence (17:43), for the setup instructions:
+  > On the setup page, skip the optional Slack and Google Calendar boxes. You connect them after you're in, under Settings → Integrations.
+
+  Use it, or CXO's fallback known-issues line sent to Lead, but not both. Drop it once Lead's hosted-mode hide is served. "Skip" is deliberate (Save gets a refusal), so don't soften it to "you can ignore".
+- **Create Account doesn't re-ask the code:** source only (CXO 17:43). Don't state it in the letter as a checked fact. The letter says only that the wizard asks for the code first, which is served.
 
 ## 4. HOST's send checks (15:23), all read on send morning
 
