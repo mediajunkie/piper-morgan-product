@@ -2,7 +2,7 @@
 
 ## DAY CLOSED 2026-10-25 21:5x PT — alpha eaba23311d (unchanged; tonight's promotion failed "manifest unknown" twice); inbox empty
 **10-26 START order:**
-1. Cron b9a8316a: rotate by 10-31. Mail, then CI (`scripts/main-ci-status.sh`). At 21:47 the Documentation Link Checker was red on b27dd72d10, a commit that touched only a carry-forward and mail: 96 against a ceiling of 63, most likely external links timing out. I reran it (run 40269795078); read the result.
+1. Cron b9a8316a: rotate by 10-31. Mail, then CI (`scripts/main-ci-status.sh`). At 21:47 the Documentation Link Checker was red on b27dd72d10, a commit that touched only a carry-forward and mail: 96 against a ceiling of 63, most likely external links timing out. The rerun (run 40269795078) passed at 21:5x, so it was flakiness and main is 12/12.
 2. **#2177 (promotion pull-by-digest):** branch `lead/2177-pull-by-digest` a56a77a9ff, pushed but NOT on main. Arch validated all three conditions (19:06). PM DECISION with Exec. On xian's yes: merge, then one promotion inside 07:00–21:00 with readiness held. HOST: no retry at 07:00 without that yes; if a new staging deploy lands, one try is my call. A refusal on a missing digest goes on #2177 with the JSON fields. Arch's optional tightening (deploy the pushed digest) comes only after a digest run passes.
 3. After a promotion: Web's #2176 served row (fresh browser, hosted step 2 with no Client ID or Secret boxes, the connect-later line, the Notion box kept), and #2172's normal-Disconnect row (CXO closes pins-only). Both are on main (2d0c56082a, 76b39a3133), not served.
 4. #2178 (GitHub OAuth revoke): PPM places it (Production). The revoke list stays Slack and Calendar; never revoke a PAT.
