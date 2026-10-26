@@ -1,6 +1,23 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-10-24 21:19 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-10-25 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/10/25/2026-10-25-0619-comms-code-log.md`, DAY-CLOSED. Close every log with exactly `<!-- DAY-CLOSED: YYYY-MM-DD -->`.
+- **Published 10-25:** "A Clean Result Needs a Version Number" (https://pipermorgan.ai/blog/a-clean-result-needs-a-version-number). Crossposted, and xian sent Docs the links.
+- **Tue 10-27 "The Caveat That Kept Disappearing":** publish-ready with Docs, row ready-for-docs. Medium is xian's after it publishes (building). If xian saves again in the composer, diff before Docs publishes.
+- **Thu 10-29 "Citation via Hearsay"** (`where-the-citation-came-from.md`): xian's rewrite hasn't started (last save 08:17, the retitle). Then check it against its ledger (`fact-check-where-the-citation-came-from-2026-10-20.md`), ask whether he started the 09-03 retro, then art, template-audit, row, and publish-ready. Its tease targets Tue 11-03 "The Unguarded Entrance". Don't nudge.
+- **Ship #066** (pub Wed 10-28): wait for xian's go via Exec, then template-audit and fact-check (Comms lanes).
+- **Invitations (xian wanted them out 10-25):** all letter pieces are final in `docs/internal/planning/comms/design-partner-known-issues-and-calendar-lines-2026-10-19.md` (§1 known issues, §2 calendar, §3 lines). xian writes the letter and sends it himself. HOST marks the roster.
+  - /terms/ is live (website 2353519), showing the A1 "What this alpha is" line and "with your invitation". Source: `docs/internal/design/terms-invitation-draft-for-xian-2026-10-19.md` L9-36. Any edit there now also needs a website update.
+  - Calendar: the click-through is dropped (Google approved, xian's clean screen 17:30). The tick-the-box sentence stays because the box starts unticked. "today's meetings or this week's" (CXO passed it). Don't edit the consent screen or its Terms field (it could re-trigger verification).
+  - Step-2 "skip the optional Slack and Google Calendar boxes" sentence goes in the setup line (HOST). Both come out once #2176's hide is served.
+  - The "account carries over" clause is xian's promise to make. If he adds it, use "Your account and your work carry over to the beta." (Arch: saved keys and connections depend on #2157). Not in the letter otherwise.
+  - The letter must not claim Create Account skips the code (source only).
+- **Sitemap:** live, 433 URLs plus /terms/. Resubmitting in Search Console and the report's URL lists are xian's.
+- **Still to discuss with xian:** the calendar ahead and comms priorities (business comms, Themis coordination, presentation input).
+- **Standing:** a user-facing "what changed" note when the first Production sprint ships something users can see. Mining pass next due Fri 11-06. The narrative front is Sep 6.
+- **Planning doc:** https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86 (rev 13).
+
+## OLDER STATE — 2026-10-24 21:19 PT
 - **Log:** `dev/2026/10/24/2026-10-24-0619-comms-code-log.md`, DAY-CLOSED. Close every log with exactly `<!-- DAY-CLOSED: YYYY-MM-DD -->`.
 - **Published 10-24:** "Mistaking the Inset for the Map" (https://pipermorgan.ai/blog/mistaking-the-inset-for-the-map), distributed. Its tease points to Sun's new title.
 - **Sun 10-25 "A Clean Result Needs a Version Number"** (xian retitled, d997794186, H1 and calendar match). Six review points given to xian (10-24 log): L11 "I caught one, and Docs found the second", L15 optional, L29 "Comms' log that day" and "The check would have caught the sentence…", L35 "twelve matches", L37 "the team said so" → xian's observation. Voice: L31 "tidier story", L43 mild reveal. Keep "more than two weeks". Needs art. Then proof, template-audit, row ready-for-docs, publish-ready to Docs (Docs is holding). Don't nudge.
