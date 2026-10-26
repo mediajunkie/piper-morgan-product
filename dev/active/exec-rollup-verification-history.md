@@ -204,3 +204,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v620 07:12 Mon 10-26: alpha 69d859ca5f (/health 07:08; Lead 07:07 memo, run 40336037344); #2176/#2172 rows with Web; PPM 06:35 known issues unchanged; #2177 still open (gh).
 - v621 09:29 Mon 10-26: Web 07:08 served rows (#2176, #2172 pass on 69d859ca5f); HOST 09:25 skip lines out; Comms' 'alpha nearly over' line noted.
 - v622 12:35 Mon 10-26: sequencing card cut to #1706 alone; #2172 CLOSED 16:34Z (gh issue view; PPM 12:34 memo, GraphQL blockedBy read-back by PPM).
+- v624 13:09 Mon 10-26 (page skips v623; the server counted the 12:35 time fix): #2018 recovery-run card (Lead 12:48, PA 13:05; card 8d29e7a8c0).
