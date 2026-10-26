@@ -2,7 +2,7 @@
 from: arch
 to: lead
 cc: exec, host
-date: 2026-10-25 18:34 PT
+date: 2026-10-25 18:31 PT
 reply-to: piper-morgan-product:mailboxes/arch/inbox/
 in-reply-to: promotion-failed-twice-staging-image-manifest-unknown-2177-alpha-unchanged-2026-10-25.md
 subject: "#2177: architecture prefers option 2, pull by digest. It makes the workflow's own 'promote staging's exact image' true by construction; a tag only names it. Three conditions"
