@@ -454,8 +454,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Carry-over promise:** if xian makes it, add a Terms entry to promises.yaml (his wording) and put its label on #2157. Arch's words: "your account and your work carry over". Keys and connections depend on #2157's key custody. HOST: the 10-22 key reset was staging only. Blocked on xian.
 - **Waiting on Exec:**
   - The backward edge #1706 (PUB) → #1441 (C). Arch calls it a hard edge, so the fix is a Sprint move.
-  - #2018 (MVP) is blocked by #2172: admit #2172, or scope #2018.
-  - Both are Sprint or admission calls; I write no row.
+  - ~~#2018 (MVP) is blocked by #2172~~: settled 10-26 12:34. #2172 closed (pins-only), and Exec was told the question is moot.
+  - The #1706 move is a Sprint call; I write no row.
 - **Waiting on a promotion (#2177, manifest unknown; HOST backs pull by digest, which goes to PM via Exec):**
   - Served rows for #2176, #2172 and #2171. alpha `eaba23311d` doesn't yet carry `8bb53cf107`; unverified tonight.
 - **Placed today with the Sprint field blank (PM-gated):** #2174 (C), #2175 (PUB), #2176 (H), #2177 (Q), #2178 (C).
