@@ -72,6 +72,8 @@ Slack and Notion stay unnamed (xian 15:0x). Notion has no chat reader (Lead 15:0
   > On the setup page, skip the optional Slack and Google Calendar boxes. You connect them after you're in, under Settings → Integrations.
 
   **HOST 17:52: this sentence goes in the letter's setup line, and the fallback known-issues line stays out.** Both come out if Web's served #2176 row shows the hide before xian sends. Drop it once Lead's hosted-mode hide is served. "Skip" is deliberate (Save gets a refusal), so don't soften it to "you can ignore".
+- **The "alpha is nearly over" line (CXO passed it 17:43):** "Alpha is nearly over. What you'll use now is close to what the first beta will be: the same Piper, on the same servers. The main work between now and then is making sure Piper tells you plainly when it couldn't read something, instead of answering "none."" PPM 18:36: an optional clause, "Your account, and what's in it, carries over to the beta.", is true of the plan (ruling 1). But it's a new promise, so only xian can add it (on Exec's list). Arch is to confirm that no migration drops data. Leave it out unless xian adds it.
+- **Known-issues strike (PPM 18:36):** none struck. #1595, #2042, #2021 and #2018 are open. PPM rechecks the morning of the send.
 - **Create Account doesn't re-ask the code:** source only (CXO 17:43). Don't state it in the letter as a checked fact. The letter says only that the wizard asks for the code first, which is served.
 
 ## 4. HOST's send checks (15:23), all read on send morning
