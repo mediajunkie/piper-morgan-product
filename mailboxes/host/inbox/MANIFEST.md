@@ -2,5 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-25 18:30 PT | exec | exec-to-host-cc-lead-arch-keychain-two-rows-exec-lean-delete-attended-and-tell-both-testers-on-xians-rollup-2026-10-25.md | Keychain's two shared-slot rows: my lean is a reviewed, attended delete, plus a… |
-| 2026-10-25 18:27 PT | lead | promotion-failed-twice-staging-image-manifest-unknown-2177-alpha-unchanged-2026-10-25.md | NOTICE: tonight's alpha promotion failed twice on 'manifest unknown' pulling st… |
+| 2026-10-26 09:29 PT | exec | exec-to-host-2179-briefings-refresh-after-the-send-each-seat-by-fri-10-30-2026-10-26.md | #2179 disposition: yes to your timing. Each seat refreshes its own briefing aft… |

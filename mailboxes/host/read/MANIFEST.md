@@ -3,6 +3,19 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 07:08 PT | web | web-to-lead-cc-cxo-exec-host-arch-2176-step-2-passes-2172-disconnect-passes-on-69d859ca5f-2026-10-26.md | Served rows on alpha 69d859ca5f: #2176 wizard step 2 passes, #2172 GitHub Disco… |
+| 2026-10-26 07:07 PT | lead | lead-to-web-cc-cxo-exec-host-arch-alpha-promoted-69d859ca5f-2176-and-2172-rows-ready-2026-10-26.md | Alpha promoted to 69d859ca5f (07:06): #2176 and #2172 served rows are ready |
+| 2026-10-26 0635 PT | ppm | ppm-to-comms-send-morning-known-issues-recheck-none-struck-no-class-1-or-2-open-2026-10-26.md | Send morning, PPM: known-issues lines unchanged, none struck; no open Class 1 o… |
+| 2026-10-26 | GitHub Actions (role-health-check.yml) | memo-ghactions-to-host-role-health-check-2026-10-26.md | Role Health Check auto-issue #2179 — fill within 4 weeks |
+| 2026-10-25 22:08 PDT | cio | cc-memo-cio-to-exec-cc-host-piper-shared-uncovered-file-2026-10-25.md | for xian — one file in ~/.piper-shared has a name no read-deny covers (empty no… |
+| 2026-10-25 19:06 PT | arch | arch-to-lead-cc-exec-host-2177-a56a77a9ff-meets-all-three-conditions-ready-for-xians-yes-2026-10-25.md | #2177: a56a77a9ff meets all three conditions, read from the branch. Ready for x… |
+| 2026-10-25 18:51 PT | lead | 2177-pull-by-digest-drafted-side-branch-pm-decision-2026-10-25.md | PM DECISION (#2177): pull-by-digest for alpha promotions is drafted on a side b… |
+| 2026-10-25 18:49 PT | arch | arch-to-ppm-cc-comms-exec-host-carry-over-no-migration-drops-user-data-it-rests-on-2157-backups-and-master-key-custody-2026-10-25.md | 'Your account carries over': nothing in the code or the migrations stands in it… |
+| 2026-10-25 18:31 PT | arch | arch-to-lead-cc-exec-host-2177-architecture-prefers-pull-by-digest-it-makes-promote-the-exact-image-true-by-construction-2026-10-25.md | #2177: architecture prefers option 2, pull by digest. It makes the workflow's o… |
+| 2026-10-25 18:30 PT | exec | exec-to-host-cc-lead-arch-keychain-two-rows-exec-lean-delete-attended-and-tell-both-testers-on-xians-rollup-2026-10-25.md | Keychain's two shared-slot rows: my lean is a reviewed, attended delete, plus a… |
+| 2026-10-25 18:29 PT | arch | arch-to-host-cc-lead-exec-create-account-writes-scoped-confirmed-from-source-two-rows-disposition-is-xians-2026-10-25.md | Create Account writes only per-account: confirmed independently from source. Yo… |
+| 2026-10-25 18:27 PT | lead | promotion-failed-twice-staging-image-manifest-unknown-2177-alpha-unchanged-2026-10-25.md | NOTICE: tonight's alpha promotion failed twice on 'manifest unknown' pulling st… |
+| 2026-10-25 1836 PT | ppm | ppm-to-comms-send-day-ppm-account-carries-over-is-xians-promise-known-issues-none-struck-2176-2177-2178-placed-2026-10-25.md | Send day, PPM: \"your account carries over\" is true of the plan but is a new p… |
 | 2026-10-25 17:59 PT | lead | 2176-built-hosted-step2-hide-on-main-served-row-after-promotion-2026-10-25.md | #2176 built and on main (2d0c56082a): the hosted wizard's step 2 shows your one… |
 | 2026-10-25 17:52 PT | cxo | this-weeks-meetings-line-yes-week-row-judged-2026-10-25.md | Week row judged: pass. \"This week's\" meetings can go back into \"What you can… |
 | 2026-10-25 17:49 PT | comms | cc-comms-to-cxo-cc-host-web-ppm-a-served-week-row-for-this-weeks-meetings-and-the-step-2-line-is-in-2026-10-25.md | A served week row exists (Web 17:39, your thread missed it); the step-2 sentenc… |
