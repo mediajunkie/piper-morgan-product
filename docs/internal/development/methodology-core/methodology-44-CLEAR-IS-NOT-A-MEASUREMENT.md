@@ -2,12 +2,12 @@
 type: methodology
 title: "\"Clear\" Is Not a Measurement — An Instrument Must Assert What It Looked At"
 valid_from: "2026-07-27"
-last_updated: "2026-10-25"
+last_updated: "2026-10-26"
 ---
 
 # "Clear" Is Not a Measurement — An Instrument Must Assert What It Looked At
 
-**Status**: Emerging → strong. **Eleven instances in 96 hours across four roles and two projects, plus four later (12 on 10-16, 13 and 14 on 10-23, 15 on 10-24 from a third project, Klatch)** *(count unaffected by the 2026-07-31 boundary ruling — see the three-routes section below, including a correction to how that ruling was first written here)*, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** — as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.
+**Status**: Emerging → strong. **Eleven instances in 96 hours across four roles and two projects, plus five later (12 on 10-16, 13 and 14 on 10-23, 15 on 10-24 from a third project, Klatch, 16 on 10-26)** *(count unaffected by the 2026-07-31 boundary ruling — see the three-routes section below, including a correction to how that ruling was first written here)*, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** — as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.
 **Filed**: 2026-07-27 by CIO
 **Origin**: **Arch's bequest.** Its migration handoff (`dev/2026/07/25/handoff-arch-amber-2026-07-25.md`, §4.1) named the "blind-sweep class" from six instances and flagged writing it up as *"the highest-value un-started piece of Architect methodology work I'm leaving."* Written up here at the altitude the evidence now supports, with three more roles' independent corroboration: HOST's Criteria G, Janus's (Design in Product) show-your-work principle, and CIO's own instruments failing the same way twice.
 **Related**: methodology-43 (Name the Layer — the agent-side twin; boundary below), methodology-36 (mechanisms over vigilance), methodology-42 (reflexive verification)
@@ -110,6 +110,10 @@ That second one is the strongest evidence in this document. **The class recurs i
 ### Instance 15, 2026-10-24: a self-test that couldn't tell a guard from its backstop *(Klatch; recorded by CIO from the 10-25 cross-pollination brief)*
 
 15. **A self-test keyed on "did it throw" passed with the guard deleted.** Klatch's round 450 (commit `ed4a31c4`) graded `verdict.mjs`'s self-test by cripple: four one-guard deletions of the real source, each run in a scratch tree at the library's own depth. Three of four still returned `selfTest() === true`. A round-trip check at the end of `renderRowSet` caught the same bad shapes with a different message, so the behaviour was guarded twice and the diagnosis once, and a test that asks only whether something threw reads the same with the inner guard or without it. **Cure (same commit):** each bad-input case asserts the reason (the error message), not the throw; all four cripples now fail as they should, with a clean control. The same commit records a second instance of the instance-12 shape: a source scan keyed on an adjacent-token pattern couldn't reach a call made through a ternary, and it failed by returning a *smaller number*, 4 of 6. This is the entry's third project, found and cured independently.
+
+### Instance 16, 2026-10-26: commit-fresh, content-stale *(HOST found it; recorded by CIO)*
+
+16. **A briefing's commit date said current; its content didn't.** HOST's role-health audit (#2179, finding 2) found every role briefing last committed 10-13 or 10-14, recent by date, while none but two named the Readiness lane, and none named the production map, the restore-drill proofs or promises.yaml, all added since. The disposition's own follow-up was a `git log -1` per briefing, which would have passed any briefing touched by a one-line edit. **Cure:** `scripts/briefing-pointer-check.sh` reads each briefing for the named pointers and prints the commit date beside them, so the two readings sit side by side. On first run it measured 1 of 13 complete (HOST's, refreshed that morning) and 58 gaps. Its own first run also repeated the entry's shape: a grep pattern error printed `-`, the same as "missing", until the error got its own exit code.
 
 ## Why "be more careful" fails here
 
