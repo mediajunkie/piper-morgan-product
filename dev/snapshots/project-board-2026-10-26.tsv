@@ -1910,7 +1910,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2105	CLOSED	MVP		[UX] Calendar settings 'Refresh List' on an unconnected calendar shows the signed-out modal while the session is valid (served ef907b2cd7)			COMPLETED
 2106	OPEN	Production		PAT-leg GitHub create fails with McpError unknown tool "issue_write", and the reply says it "may or may not have" landed	journey:something-goes-wrong,promise:E2-judgment-artifacts,promise:E4-never-lies,surface:mcp,surface:web		
 2108	CLOSED	Production		Command palette 'Start private session' does nothing: PrivacyMode component is never loaded			COMPLETED
-2109	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Inversion and preclaim shadows spend the requesting user's own LLM key (the task inherits the request's key contextvar)	architecture,journey:get-work-done,promise:T3-your-key,surface:mcp,surface:web		
+2109	CLOSED	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Inversion and preclaim shadows spend the requesting user's own LLM key (the task inherits the request's key contextvar)	architecture,journey:get-work-done,promise:T3-your-key,surface:mcp,surface:web		COMPLETED
 2111	CLOSED	Production		[HONESTY] A GitHub 404 on an issue read says "GitHub's MCP server is unreachable right now"			COMPLETED
 2112	CLOSED	MVP	Beta Blockers - Hard Gates Only	Calendar asks ("Check my calendar for conflicts", "Find time for a 1:1") are answered with today's date and time			COMPLETED
 2113	CLOSED	Production		"Update issue #123" is routed to the Notion document-update path ("Notion isn't configured yet")			COMPLETED
@@ -1922,7 +1922,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2121	CLOSED	Production		ANALYSIS reads (generate_report, analyze_commits, recent activity) use the native-PAT REST path and cannot read for an OAuth-only account			COMPLETED
 2122	CLOSED	Production		Document search on an Anthropic-only account: embeddings need an OpenAI key; what the partner sees is unverified			COMPLETED
 2123	CLOSED	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Activity reads (status report, analyze commits) use the deployment's GitHub token instead of the account's grant when an env token is set	close:pins-only,journey:get-work-done,surface:mcp,surface:web		COMPLETED
-2125	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Setup wizard reports the server's encryption misconfiguration as a key 'Validation error' (staging: 'master_key must be 32 bytes (AES-256); got 48 bytes')	journey:set-up,promise:E4-never-lies,surface:web		
+2125	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Setup wizard reports the server's encryption misconfiguration as a key 'Validation error' (staging: 'master_key must be 32 bytes (AES-256); got 48 bytes')	close:pins-only,journey:set-up,promise:E4-never-lies,surface:web		COMPLETED
 2127	CLOSED	Production		OpenAI-only account: multi-intent classification is sent to provider 'anthropic' and the turn returns the missing-key refusal			COMPLETED
 2128	CLOSED	MVP		GitHub 'this week' reads miss closed work: 'What's my productivity this week?' says 'Issues/PRs Closed: 0' and 'What did we ship this week?' finds none, while the same repo shows 19 closed			COMPLETED
 2129	CLOSED	Production		Singular/plural slips in chat replies: "1 meetings", "1 items", "1 active projects"	UX		COMPLETED
@@ -1968,10 +1968,10 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2169	CLOSED	Production	PROD-CONVO - Conversation Reliability	Chat delete: a list-item remove ask gets a confirmation for a different object (the prior turn's to-do)	close:pins-only,journey:get-work-done,promise:T4-asks-before-acting,surface:web		COMPLETED
 2170	OPEN	Production	PROD-CONVO - Conversation Reliability	Chat: remove an item from a list (a list-item rail), with exact-match arming and an id-bound confirm	journey:get-work-done,surface:mcp,surface:web		
 2171	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	UX (class 3): Lists page card shows "Items: 0" for a list that holds items	UX,close:served,journey:get-work-done,promise:E4-never-lies,surface:web		COMPLETED
-2172	OPEN	Production	PROD-HONESTY - Failed Reads Say So	GitHub Disconnect reports success when a credential copy failed to clear (each clear's failure is swallowed)	architecture,journey:connect-a-source,promise:E4-never-lies,seam:resolver,surface:web		
+2172	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	GitHub Disconnect reports success when a credential copy failed to clear (each clear's failure is swallowed)	architecture,close:pins-only,journey:connect-a-source,promise:E4-never-lies,seam:resolver,surface:web		COMPLETED
 2173	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Standup and Radar show every open GitHub issue as the person's own work when no GitHub username is saved; default to the signed-in login	architecture,close:pins-only,journey:come-back,promise:E4-never-lies,seam:resolver,surface:web		COMPLETED
 2174	OPEN	Production		ADR-081 D3 check: do github-mcp-server and our REST reads accept a GitHub App user access token?	architecture		
 2175	OPEN	Production		UX: a person arriving through the plugin or MCP endpoint has no clear path to an invite and an account (journey grid: invited x MCP, red)	UX,journey:invited,surface:mcp		
-2176	OPEN	Production		UX (class 3): setup wizard step 2 shows Slack and Google Calendar app-credential forms to a new tester (a failed status read falls back to 'not configured')	UX,journey:set-up,promise:E4-never-lies,surface:web		
+2176	CLOSED	Production		UX (class 3): setup wizard step 2 shows Slack and Google Calendar app-credential forms to a new tester (a failed status read falls back to 'not configured')	UX,close:pins-only,journey:set-up,promise:E4-never-lies,surface:web		COMPLETED
 2177	OPEN	Production		Alpha promotion fails: staging's image tag returns 'manifest unknown' on pull (runs 40253965692, 40254107119)	bug		
 2178	OPEN	Production		GitHub Disconnect doesn't revoke the OAuth grant at GitHub (Slack and Google do); revoke it, and never revoke a PAT	architecture		

@@ -1,11 +1,28 @@
-# Piper Morgan Roadmap v19.0
+# Piper Morgan Roadmap v19.1
 
-**Date**: October 10, 2026 (v19.0 fold — the first full fold since v18.7 of July 16; supersedes the v18.8 / v18.9 / v18.10 pointer-only entries)
+**Date**: October 26, 2026 (v19.1: the Current Position re-fold after the Production map rulings, ESSENCE v1.1 and the ratified promise register; v19.0 of October 10 is archived whole at `../historical/roadmap-v19.0-2026-10-26.md`)
 **Author**: PPM. Section owners as in v18: PA (BYOC / skunkworks), CIO (Methodology), CXO (Differentiator stack), Architect (architectural commitments), Lead Dev (build), Comms (external language).
 **Status**: Active. Canonical `roadmap.md`. **The v18.10 document is archived whole** at `../historical/roadmap-v18.10-2026-10-10.md` (v18.1 through v18.10 changelogs, the Beta Blockers / 22-issue narrative, the 07-16 Current Position). Nothing was deleted; sections below that predate this fold are kept in place under an explicit "historical" banner so a reader cannot mistake May or July state for current state.
-**Supersedes**: v18.10 (October 5, 2026, pointer correction) and the v18 line (v18.0 through v18.10); v17.0 (May 30, 2026); v16.0 (May 10, 2026).
+**Supersedes**: v19.0 (October 10, 2026); the v18 line (v18.0 through v18.10); v17.0 (May 30, 2026); v16.0 (May 10, 2026).
 
-**How to read this document.** The **gate, the dates and the audience model** are current as of 2026-10-10 and live in *Current Position*, *Sprint Summary* and *Timeline* below. They are **pointers to canonical sources**, not copies: the gate rules are `../beta-gate-standard.md`, the audience model is `../release-model.md`, live counts are `scripts/sprint-truth.py`, orientation is `docs/briefing/BRIEFING-CURRENT-STATE.md`. Where this document and one of those disagree, **that source wins**. Sections marked `[HISTORICAL]` are frozen at the date in their banner (May 30 or July 16) and are retained for provenance only.
+**How to read this document.** The **gate, the dates and the audience model** are current as of 2026-10-26 and live in *Current Position*, *Sprint Summary* and *Timeline* below. They are **pointers to canonical sources**, not copies: the gate rules are `../beta-gate-standard.md`, the audience model is `../release-model.md`, live counts are `scripts/sprint-truth.py`, orientation is `docs/briefing/BRIEFING-CURRENT-STATE.md`. Where this document and one of those disagree, **that source wins**. Sections marked `[HISTORICAL]` are frozen at the date in their banner (May 30 or July 16) and are retained for provenance only.
+
+**v19.1 changelog** (October 26, 2026, PPM; Docs' weekly audit #2180 found this file 14 days untouched). Only *Current Position* is rewritten; every other section is carried. Each line cites its source, and none was re-litigated here:
+- (a) **xian's Production map rulings** (decisions.log 2026-10-24 17:28): one production instance, alpha's own Fly app, plus a synthetic-data staging never restored from production; **1.0 = every promise gated 1.0 has a closed issue, and main is green**; public beta opens by waitlist with batch admission; a Readiness lane (#2157 to #2161, Terms-backed) gates public beta.
+- (b) **ESSENCE v1.1 ratified** (xian, 2026-10-25 12:40). Commitment 6 becomes complementary surfaces: the web app is the beta surface, and the MCP and plugin surface ships during the beta, its completion gating public beta. This replaces v19.0's "MCP/plugin is not a gate surface". PRD/spec drafting is recorded as after 1.0.
+- (c) **The promise register** `docs/internal/product/promises.yaml` was ratified by xian on 2026-10-25 at 14:04. It holds 20 promises (E1-E7, T1-T8, R1-R5), each gated private-beta, public-beta or 1.0. Which issues back a promise is read from `promise:<id>` labels.
+- (d) **Production is organized into sprints in closing order:** H (honesty) → D (data boundaries and terms) → PUB → C (connectors) → V (conversation reliability) → E (experience), with T, Doc, Dist, Readiness and Q (health) alongside. The plan is `../production-sprint-proposal-2026-10-23.md`. xian added the three new Sprint options on 10-25.
+- (e) **A generated Production map** (`../production-map.html`, from `scripts/generate-production-map.py` over the board snapshot) replaces hand-kept sprint narrative. Every Friday, Exec's synthesis carries its since-last diff.
+- (f) **The invitation:** xian ruled on 2026-10-23 at 16:57 that invitations may go once #2132 closes, and that he picks the exact time. #2132 closed served the same evening. The Terms page wording was ruled on 10-25 (Call A1: "What this alpha is").
+
+**Verified how (v19.1).** Method:
+- read decisions.log entries 10-23 16:57, 10-24 17:28 and 10-25 14:04 in full;
+- read `promises.yaml` in full;
+- ran `gh api .../milestones`, `gh issue list --milestone MVP` and `gh issue list --milestone Production` at 2026-10-26 10:3x PDT;
+- reconciled the plan doc's Production rows to a fresh board snapshot (203 = 203);
+- read alpha `/health` (`69d859ca5f`) as quoted in the briefing at 09:27 and by me at 09:33.
+
+Layer: the decision record, the tracker and served health. Not re-audited: any section other than *Current Position*. Not checked: whether a beta hostname fronts alpha's app.
 
 **v19.0 changelog** (October 10, 2026, PPM). The full fold of #1644's open half. Since v18.7 (July 16) the following changed the shape of this roadmap; each line cites its source and none was re-litigated here:
 - (a) **The gate is the open MVP milestone, closed by a frozen-list rule.** Four admission classes tagged at filing (data loss, security, honesty, golden-path), Epic 0 clause, per-surface table, slip rule; PM ratified 2026-10-05 (`../beta-gate-standard.md`). The "Beta Blockers sprint of 22 issues / 7 epics" model (v18.5) and `beta-blockers.md` as the gate are superseded; `beta-blockers.md` keeps its Epics A-G history under a banner. Measured pass 2026-10-05 of 31 open MVP issues (31 of 31 read in full) and PM's rulings 10-06 brought the gate to 14.
@@ -45,21 +62,50 @@
 - **Per-surface sufficient-signals as coordination primitive** — Phase 2.2 unblocked via two separate "Surface 2 unblocked" + "Surface 4 unblocked" PPM-to-Lead-Dev memos (May 18); composite signal declined; per-surface signals match Lead Dev's sub-phase model
 
 ---
-## Current Position (October 10, 2026)
+## Current Position (October 26, 2026)
 
-**The gate.** Beta ships when the **MVP milestone closes**; the milestone is the gate list and nothing else is (`../beta-gate-standard.md`, PM-ratified 2026-10-05). `scripts/sprint-truth.py` on 2026-10-10: **MVP 14 not done (2 Sprint Backlog, 2 In Progress, 1 In Review, 9 Product Backlog); 1,236 done; 0 unmilestoned** of 305 open issues. (The GitHub milestone endpoint reads 1,237 closed in the same minute; the two instruments differ by one item and the difference was not chased.) The gate was 28 on 10-02 and 14 on 10-06; most of that fall was PM's triage rulings moving issues to Production, not burn-down.
+**The gate.** Beta ships when the **MVP milestone closes**. The milestone is the gate list and nothing else is (`../beta-gate-standard.md`, PM-ratified 2026-10-05).
+- The milestone endpoint read **3 open** (#2018, #1595, #1386) and 1,284 closed at 2026-10-26 10:3x PDT. `gh issue list --milestone MVP` agrees.
+- No must-close has remained since #2132 closed served on 10-23 at 18:32.
+- #2018 and #1595 are named in the invitation's known issues. #1386 is the close-out.
+- A closure means a served answer someone can quote, not green tests.
 
-**The dates.** PM held both on 2026-10-09 09:46: **design partners Fri 10-23, hard stop Fri 10-30** (the MVP milestone's `due_on` is also 10-30). Both are conditional on named unknowns, stated in `../beta-gate-pass-2026-10-05.md`. The slip ledger in `../beta-gate-standard.md` shows **4 slips and 0 days moved**; PPM proposes no date, PM alone moves them. Two checks are scheduled and one is a standing tripwire: Mon 10-12 Lead's Epic 0 Phase 3 re-measure (resolution row in the ledger); Wed 10-14 the tripwire (Epic 0 evidence tranche not done, or the gate list growing again, brings the choice back to PM the same day via Exec). The weekday on the tripwire is PPM's inference; PM named no day.
+**The invitation and the dates.**
+- Invitations go at a time xian picks, any time after #2132 closed (decisions.log 10-23 16:57). xian calls them alpha invitations.
+- The Terms page wording was ruled on 10-25 (Call A1), and the letter pieces were readied by Comms and HOST.
+- The baseline dates are unchanged in the ledger: **design partners Fri 10-23, hard stop Fri 10-30**. The MVP milestone's `due_on` is also 10-30.
+- Slips live in `../beta-gate-standard.md`. Only PM moves a date; PPM proposes none.
 
-**What is left in the gate, by kind** (titles and rulings are in the ledger and `../beta-gate-pass-2026-10-05.md`, not repeated here): the Epic 0 completion tail (Phase 3 router-args and the deletions; Lead reports a ratchet ceiling of 121 across 36 lists and a routing tail of 91, quoted and not re-measured by PPM); the connector credential and invitation closures (#1889, #1963, #1965, waiting on alpha promote and PM-provisioned OAuth-only and PAT-only accounts); and golden-path closures that need a served reply someone can quote. "Tests green" is not a closure: the closing standard is the served answer on the test account.
+**What each gate promises** (`docs/internal/product/promises.yaml`, ratified 10-25):
 
-**Surfaces (PM R7, 2026-10-05).** No surface *is* the MVP; the MVP is a core capability set with varying instantiation. The **hosted web UI at beta.pipermorgan.ai is required**. The MCP/plugin surface is a PA-run demand probe, released and tested *during* beta, listed nowhere until PM has tested it extensively; BYOC/local is not ruled. Bring-your-own-key is ratified (the keyless first chat exists only to start a person, and only if it costs Piper nothing).
+| Gate | Promises |
+|---|---|
+| Private beta | E4 ("It never lies, and it degrades honestly") and the eight Terms paragraphs, T1 to T8 |
+| Public beta | E6 (surfaces, per ESSENCE v1.1) and the five Readiness items, R1 to R5 (backups and restore, in-product delete, export, support loop, incident notice) |
+| 1.0 | E1, E2, E3, E5 and E7 (E7 is gated by the Colleague Test, not by issues) |
 
-**Where it runs.** Alpha: Fly app `piper-morgan`, v0.8.14.0 (briefing, 10-09). Staging: `piper-morgan-staging`. The DigitalOcean droplet and the `origin/production` branch no longer exist; **do not cite `origin/production` as "what's live"**. Private beta is `v0.9.0`, reserved for it.
+- **1.0 is measured by the map's headline:** "N of 5 1.0 promises have a closed issue", with main's CI state. It reads **0 of 5** on 10-26.
 
-**Beyond the gate.** After MVP closes, **Production** begins (185 open, 41 closed on 10-10 by the milestone endpoint). Public beta waits on the front-loaded MCP-path cluster (#1462, #1458, #1509, #1688; sprint `PUB - Public Beta`); #1458 (cross-caller isolation) gates the first MCP directory submission. 1.0/GA needs the Production milestone closed in full, including the four-connector gate (GitHub, Google Calendar, Slack, Notion; PM 07-16). Slack moved to Fast Follow on 08-27/28; calendar returns as a central capability (08-30 ruling). Order is strictly MVP → Production → Fast Follow (`../release-model.md`).
+**Production** (xian's rulings 10-24 17:28):
+- **Sprints in closing order:** H → D → PUB → C → V → E, then T, Doc, Dist, Readiness and Q.
+- **Size:** 203 issues open, on both `gh` and the 10-26 board snapshot. The 1.0 cut is the promise register, not the milestone. Non-promise work goes to Ongoing or the non-gating Q lane.
+- **Dependencies:** recorded as GitHub's native blocked-by relationship, since 10-25. A backward edge (#1706 in PUB, blocked by #1441 in C) is with Exec as a Sprint question.
+- **Public beta** opens by waitlist after the inner circle, and needs the Readiness lane closed and the MCP surface complete (ESSENCE v1.1).
+- **The map** is `../production-map.html`, also published as a private artifact Exec carries on xian's rollup.
 
-**What this document no longer claims.** It no longer says "no fixed beta date," "22 issues across 7 epics," "Beta Blockers sprint is the gate," "Production 1.0 is October 30, 2026," or that #1216 is an untriaged gap (per the v18.6 changelog it shipped a beta-safe interim fix and closed Jul 7; July's flag is retired). Those were true on the dates in the v18 archive.
+**Where it runs.**
+- Alpha is the Fly app `piper-morgan` and is also the production instance (ruling 1). It served `69d859ca5f` on 10-26, promoted at 07:06 under the standing promotion grant (`docs/internal/operations/alpha-promotion-standing-grant.md`).
+- Staging (`piper-morgan-staging`) holds synthetic data only.
+- The latest tag is v0.8.14.0, and 0.9.0 is reserved for the beta.
+- **Do not cite `origin/production`**: it no longer exists.
+
+**What this section no longer claims** (all true on 10-10, superseded since):
+- "14 open in the gate" (now 3).
+- The Wed 10-14 tripwire. PM ruled Option 1 plus Option 3 on 10-14; see the ledger.
+- "MCP/plugin is not a gate surface": its completion now gates public beta.
+- "1.0 needs the Production milestone closed in full": 1.0 is now the promise register.
+- "185 open in Production."
+
 
 Differentiator stack: pillars 1-2 (Context Methodology, Conscious Floor) operate at the floor, pillar 3 (Artifact Persistence) shipped in M3; pillar 4 (Trust-Graduated Experience) is not built and has an open product question (see the stack section). The first-contact criterion (ratified 2026-08-15), the surfaces taxonomy v1.0 (08-21) and the FTUX experience model (08-21) are the design-side anchors for what a tester sees first.
 

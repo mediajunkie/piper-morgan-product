@@ -49,7 +49,7 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 16 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 207 open (#2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 203 open (#2109 closed in D and #2125, #2172, #2176 in H, 10-26 morning; #2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -95,7 +95,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2168 | Plugin surface rubric: ratify CXO's v0.1 and run it per increment as the precondition for #1701-#1707 (10-24) | PUB |
 | #2175 | UX: a person arriving through the plugin or MCP endpoint has no clear path to an invite and an account (10-25, CXO; journey grid invited x MCP) | — |
 
-### H: Honesty sweep (27)
+### H: Honesty sweep (24)
 
 | # | Title | was |
 |---|---|---|
@@ -113,7 +113,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2074 | Revoked Calendar/Slack tokens still read 'connected' on the four #2072 surfaces: extend needs-reconnecting … | — |
 | #2093 | "Is my calendar connected?" answers with the integrations setup boilerplate: lists all four as Connected, t… | — |
 | #2107 | Chat says 'usually a brief outage — try again in a moment' when the cause is the Anthropic workspace usage … | — |
-| #2125 | Setup wizard reports the server's encryption misconfiguration as a key 'Validation error' (staging: 'master… | — |
+| #2125 | Setup wizard reports the server's encryption misconfiguration as a key 'Validation error' (staging: 'master… (closed 10-26, pins only) | — |
 | #2134 | Semantic boundary detector: a failed check is cached as clear and recorded as a pass (48/63 turns off, unse… | — |
 | #2147 | "show all events" answers with today's meeting time only and omits the week's other events, without saying … | — |
 | #2150 | Calendar: a later revoke of calendar access in the user's Google account leaves Settings saying connected u… | — |
@@ -126,12 +126,12 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1915 | [TIMEZONE] 'set it back to pacific time' is refused — accept common zone names/abbreviations (Pacific, PT, … | — |
 | #2167 | UX (class 3): the API key Remove dialog says "we destroy our copy immediately"; backups keep it up to about five days (10-24; closed 10-24 20:24, `close:served`, never admitted to MVP) | — |
 | #2171 | UX (class 3): Lists page card shows "Items: 0" for a list that holds items (10-24, CXO from Web's catch; closed 10-26 04:26, served) | — |
-| #2172 | GitHub Disconnect reports success when a credential copy failed to clear (each clear's failure is swallowed) (10-25, Arch) | — |
+| #2172 | GitHub Disconnect reports success when a credential copy failed to clear (each clear's failure is swallowed) (10-25, Arch) (closed 10-26, pins only) | — |
 | #2173 | Standup and Radar show every open GitHub issue as the person's own work when no GitHub username is saved; default to the signed-in login (10-25, Lead; built 7bcef2bd07; closed 10-25 15:35, served row 1 of 2) | — |
-| #2176 | Setup wizard step 2 shows Slack and Google Calendar app-credential forms to a new tester (10-25, CXO; class 3; built 2d0c56082a, not served) | — |
+| #2176 | Setup wizard step 2 shows Slack and Google Calendar app-credential forms to a new tester (10-25, CXO; class 3; built 2d0c56082a, not served) (closed 10-26, pins only) | — |
 | #2045 | Integrations card after a successful Test keeps 'Not checked yet. Press Test.' and '0 of 4 healthy' until… (added 10-24: missing from the plan, found by the map generator; closed 10-25) | — |
 
-### D: Data boundaries and terms (30)
+### D: Data boundaries and terms (29)
 
 | # | Title | was |
 |---|---|---|
@@ -154,7 +154,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2062 | Terms of Service published before Production, every commitment mapped to a mechanism (xian's Option 2, 10-16) | — |
 | #2063 | Legal review of Terms before any outside user beyond the design partners (xian 10-16: 'a good cutoff') | — |
 | #2086 | Admin grant on Fly was never applied: migration a1599 keys on username 'dinp', which does not exist in the … | — |
-| #2109 | Inversion and preclaim shadows spend the requesting user's own LLM key (the task inherits the request's key… | — |
+| #2109 | Inversion and preclaim shadows spend the requesting user's own LLM key (the task inherits the request's key… (closed 10-26) | — |
 | #2123 | Activity reads (status report, analyze commits) use the deployment's GitHub token instead of the account's … (closed) | — |
 | #2136 | Seat identity: GitHub App for agents so seats stop acting as the admin account (xian approved the route 10-… | — |
 | #2157 | Production DB: scheduled backups and retention, one timed restore drill on a short-lived copy (five proof… (10-24) | — |
