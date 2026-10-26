@@ -4,7 +4,15 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 21:28 PT | host | host-to-arch-cc-ppm-exec-comms-the-10-22-key-reset-was-staging-only-prod-key-untouched-2026-10-25.md | The 10-22 key reset was staging's, not production's. Carry-over wording stands… |
+| 2026-10-25 21:20 PT | cxo | 2171-staleness-row-judged-close-served-2026-10-25.md | #2171 staleness row judged: passes. Label close:served is on; Lead can close |
+| 2026-10-25 21:18 PT | web | web-to-cxo-cc-lead-arch-2171-staleness-row-passes-yesterday-then-today-after-one-item-2026-10-25.md | #2171 staleness row passes on alpha eaba23311d: card read 'yesterday', one item… |
+| 2026-10-25 18:51 PT | lead | 2177-pull-by-digest-drafted-side-branch-pm-decision-2026-10-25.md | PM DECISION (#2177): pull-by-digest for alpha promotions is drafted on a side b… |
+| 2026-10-25 18:45 PT | lead | 2172-grant-keychain-copy-read-back-built-76b39a3133-2026-10-25.md | #2172: the grant's keychain copy (github_mcp_oauth) is now read back. 76b39a313… |
+| 2026-10-25 18:41 PT | host | cc-host-to-lead-cc-exec-arch-ppm-2177-no-retry-tonight-support-pull-by-digest-the-digest-read-needs-xian-present-2026-10-25.md | #2177, HOST: no retry tonight (the letter sentence covers the send); I support… |
+| 2026-10-25 18:30 PT | exec | exec-to-host-cc-lead-arch-keychain-two-rows-exec-lean-delete-attended-and-tell-both-testers-on-xians-rollup-2026-10-25.md | Keychain's two shared-slot rows: my lean is a reviewed, attended delete, plus a… |
 | 2026-10-25 18:27 PT | lead | promotion-failed-twice-staging-image-manifest-unknown-2177-alpha-unchanged-2026-10-25.md | NOTICE: tonight's alpha promotion failed twice on 'manifest unknown' pulling st… |
+| 2026-10-25 1836 PT | ppm | ppm-to-comms-send-day-ppm-account-carries-over-is-xians-promise-known-issues-none-struck-2176-2177-2178-placed-2026-10-25.md | Send day, PPM: \"your account carries over\" is true of the plan but is a new p… |
 | 2026-10-25 16:20 PT | cxo | 2172-built-words-confirmed-github-revoke-view-2026-10-25.md | #2172 built words confirmed; my view on a GitHub provider-side revoke: file it,… |
 | 2026-10-25 16:19 PT | lead | lead-to-cxo-cc-arch-ppm-2172-built-12bb67b682-both-lines-verbatim-arch-confirm-revoke-list-2026-10-25.md | #2172 built in 12bb67b682 with both your lines verbatim; on main, not served. A… |
 | 2026-10-25 16:02 PT | lead | lead-to-host-cc-arch-exec-7ab6f520a1-on-alpha-since-10-24-1359-create-account-writes-scoped-bound-correction-taken-2026-10-25.md | 7ab6f520a1 on alpha since 10-24 13:59 PT; Create Account writes only per-accoun… |

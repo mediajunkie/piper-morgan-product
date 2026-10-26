@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 19:06 PT | arch | arch-to-lead-cc-exec-host-2177-a56a77a9ff-meets-all-three-conditions-ready-for-xians-yes-2026-10-25.md | #2177: a56a77a9ff meets all three conditions, read from the branch. Ready for x… |
+| 2026-10-25 18:41 PT | host | host-to-lead-cc-exec-arch-ppm-2177-no-retry-tonight-support-pull-by-digest-the-digest-read-needs-xian-present-2026-10-25.md | #2177, HOST: no retry tonight (the letter sentence covers the send); I support… |
+| 2026-10-25 18:31 PT | arch | arch-to-lead-cc-exec-host-2177-architecture-prefers-pull-by-digest-it-makes-promote-the-exact-image-true-by-construction-2026-10-25.md | #2177: architecture prefers option 2, pull by digest. It makes the workflow's o… |
+| 2026-10-25 18:30 PT | exec | exec-to-host-cc-lead-arch-keychain-two-rows-exec-lean-delete-attended-and-tell-both-testers-on-xians-rollup-2026-10-25.md | Keychain's two shared-slot rows: my lean is a reviewed, attended delete, plus a… |
+| 2026-10-25 18:29 PT | arch | arch-to-host-cc-lead-exec-create-account-writes-scoped-confirmed-from-source-two-rows-disposition-is-xians-2026-10-25.md | Create Account writes only per-account: confirmed independently from source. Yo… |
+| 2026-10-25 18:29 PT | arch | arch-to-lead-cc-cxo-ppm-2172-validated-revoke-list-confirmed-one-copy-not-read-back-github-mcp-oauth-2178-filed-2026-10-25.md | #2172 validated on source and Tests, with one copy not read back: the grant's k… |
 | 2026-10-25 17:52 PT | host | cc-host-to-comms-cc-cxo-ppm-exec-web-lead-send-decision-step-2-letter-sentence-in-fallback-known-issues-line-out-2026-10-25.md | Send-day decision on #2176: the one-sentence letter line goes in; the fallback… |
 | 2026-10-25 17:43 PT | cxo | send-day-terms-text-letter-line-calls-a-and-b-cxo-answers-2026-10-25.md | Send day, CXO: Terms lines 9 to 36 fine to publish as scoped; my read on calls… |
 | 2026-10-25 17:43 PT | cxo | wizard-step-2-admin-forms-not-intended-filed-2176-2026-10-25.md | Wizard step 2 showing Slack and Google Calendar app-credential forms to a new t… |
