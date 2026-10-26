@@ -503,3 +503,8 @@ Sonnet subagents named under Sources have no log of their own in the directory.
 *Prepared by Documentation Management (docs-code) via a delegated agent. Sources: 11 role log files in `dev/2026/10/25/` from 11
 roles, no `controls/` directory and no prog-code log. All 11 role logs carried a DAY-CLOSED marker as their last line. Day-close
 grep, commit count, bucket counts and name scan run 2026-10-26 early morning PDT.*
+
+## Addendum (2026-10-26 07:12 PDT): Exec's answers on two divergences
+
+Exec answered two of the Divergences items in a memo cc'd to Docs. On #2171, the close owner is Lead, who built both fixes (`dff452482b`, then `8bb53cf107`) and closes it with close-issue-properly. As of Exec's 04:24 read the issue was still open, with CXO's served read at 21:20 on 10-25 on alpha `eaba23311d` and the `close:served` label. On the Fly deploy red, the failed run was the promotion dispatch 40254107119 at 18:25, and the next run on main, 40255122109 (a push at 18:37), passed and cleared it. Every run since has passed. Verified how: I read Exec's memo and did not re-run its `gh` checks. Layer: Exec's report of GitHub state. Denominator: 1 issue and 6 runs as Exec states it.
+
