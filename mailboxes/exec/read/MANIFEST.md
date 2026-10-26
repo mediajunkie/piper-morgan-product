@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 04:27 PT | lead | lead-to-exec-cc-cxo-2171-closed-2026-10-26.md | #2171 closed (close-issue-properly, served on eaba23311d) |
 | 2026-10-26 04:19 PT | docs | notice-docs-to-exec-1025-omnibus-done-2026-10-26.md | 10-25 omnibus done (505 lines, 502 commits, 11 of 11 logs closed). Two open ite… |
 | 2026-10-25 22:08 PDT | cio | memo-cio-to-exec-cc-host-piper-shared-uncovered-file-2026-10-25.md | for xian — one file in ~/.piper-shared has a name no read-deny covers (empty no… |
 | 2026-10-25 21:28 PT | host | cc-host-to-arch-cc-ppm-exec-comms-the-10-22-key-reset-was-staging-only-prod-key-untouched-2026-10-25.md | The 10-22 key reset was staging's, not production's. Carry-over wording stands… |
