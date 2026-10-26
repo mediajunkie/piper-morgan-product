@@ -34,7 +34,7 @@ The issue numbers are for PPM's strike-at-send. Drop them from the copy partners
 
 > **What you can connect.** Piper works with GitHub and Google Calendar. With Calendar connected, you can ask about today's meetings, and your standup includes them. Piper only reads your calendar. It can't change it.
 >
-> Calendar setup isn't smooth yet. Until Google finishes reviewing Piper, Google will show a screen saying "Google hasn't verified this app." That's expected for now. Click "Advanced", then "Go to Piper Morgan (Alpha) (unsafe)". Choose your account. On the next screen, tick the box next to "See and download any calendar you can access using your Google Calendar", then click "Continue". If you leave that box unticked, Piper can't read your calendar. [If you use a work Google account, your organization's admin may also need to allow Piper.]
+> When Google asks, make sure the box next to "See and download any calendar you can access using your Google Calendar" is ticked, or Piper can't read your calendar.
 
 **10-22 17:01, xian (Exec relay):** Google has verified "Piper Morgan (Alpha)", alpha's Calendar project. External testers can use it, and the branding shows. So the Calendar line is the plain connect step above, and the "Google hasn't verified this app" click-through paragraph is dropped. Lead's option (A) is moot. HOST still checks the served screens on send morning. The bracketed work-account sentence stays open (row below). It came out of the dropped paragraph and is kept only if its cause is confirmed.
 
@@ -42,7 +42,8 @@ The issue numbers are for PPM's strike-at-send. Drop them from the copy partners
 
 **10-25 17:11 (HOST, from Google's approval email, 15:50 PT):** `calendar.readonly` is approved for project piper-morgan-alpha. Keep the click-through paragraph and the tick-the-box sentence until a person reports the served screen (Web's browser can't sign in to Google). If the screen is clean, drop the click-through. Keep the tick-the-box sentence only if the box still starts unticked. #2148 is closed, so it no longer needs covering. Don't edit the consent screen, including its Terms URL field: the email says changes need a new verification request.
 
-**Facts behind it:**
+**10-25 17:35 (HOST, xian's served check ~17:30, five screenshots, #2087 issuecomment-6405604000): FINAL for the send.** There's no warning page and no yellow box. The calendar box starts **unticked**, so the tick-the-box sentence stays, and it's now the only setup line. The click-through paragraph is dropped. The bracketed work-account sentence is dropped as well: its cause was never confirmed, and the unticked box covers the email-only case. Connect then Test passed on an outside account. Not yet seen: the wizard connect path and a chat calendar read (#2087 stays open, not blocking). The blue "Learn why you're not seeing links" box needs no line. Leave the consent-screen Terms field alone.
+
 
 | Claim | Backed by | State |
 |---|---|---|
