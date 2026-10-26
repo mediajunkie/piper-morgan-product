@@ -31,5 +31,6 @@ v618, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 ## Mine
 - Relay xian's rulings on the items above to their owners the moment he gives them. Use decisions.log for PM rulings.
 - First Friday map diff: 10-30, in the weekly synthesis.
+- 10-30, in the same Friday pass: `git log -1` on each seat's briefing (#2179 disposition). Nudge any seat still on 10-13 or 10-14.
 - Re-arm the cron by 10-27.
 - Rule 8: outside names stay out of everything I write here. The client is "the client CEO".

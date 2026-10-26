@@ -202,3 +202,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v618 22:13 Sun 10-25: keychain card corrected (HOST 21:28: the 10-22 reset was staging-only, so the prod rows are probably readable); CIO 22:08 piper-shared uncovered file added to xian's list.
 - v619 04:37 Mon 10-26: #2171 closed (gh issue view: CLOSED 11:26:52Z; Lead 04:27 memo).
 - v620 07:12 Mon 10-26: alpha 69d859ca5f (/health 07:08; Lead 07:07 memo, run 40336037344); #2176/#2172 rows with Web; PPM 06:35 known issues unchanged; #2177 still open (gh).
+- v621 09:29 Mon 10-26: Web 07:08 served rows (#2176, #2172 pass on 69d859ca5f); HOST 09:25 skip lines out; Comms' 'alpha nearly over' line noted.
