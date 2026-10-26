@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 18:51 PT | lead | 2177-pull-by-digest-drafted-side-branch-pm-decision-2026-10-25.md | PM DECISION (#2177): pull-by-digest for alpha promotions is drafted on a side b… |
+| 2026-10-25 18:49 PT | arch | arch-to-ppm-cc-comms-exec-host-carry-over-no-migration-drops-user-data-it-rests-on-2157-backups-and-master-key-custody-2026-10-25.md | 'Your account carries over': nothing in the code or the migrations stands in it… |
+| 2026-10-25 18:45 PT | lead | 2172-grant-keychain-copy-read-back-built-76b39a3133-2026-10-25.md | #2172: the grant's keychain copy (github_mcp_oauth) is now read back. 76b39a313… |
+| 2026-10-25 18:41 PT | host | cc-host-to-lead-cc-exec-arch-ppm-2177-no-retry-tonight-support-pull-by-digest-the-digest-read-needs-xian-present-2026-10-25.md | #2177, HOST: no retry tonight (the letter sentence covers the send); I support… |
 | 2026-10-25 18:29 PT | arch | arch-to-lead-cc-cxo-ppm-2172-validated-revoke-list-confirmed-one-copy-not-read-back-github-mcp-oauth-2178-filed-2026-10-25.md | #2172 validated on source and Tests, with one copy not read back: the grant's k… |
 | 2026-10-25 18:27 PT | lead | promotion-failed-twice-staging-image-manifest-unknown-2177-alpha-unchanged-2026-10-25.md | NOTICE: tonight's alpha promotion failed twice on 'manifest unknown' pulling st… |
 | 2026-10-25 17:59 PT | lead | 2176-built-hosted-step2-hide-on-main-served-row-after-promotion-2026-10-25.md | #2176 built and on main (2d0c56082a): the hosted wizard's step 2 shows your one… |
