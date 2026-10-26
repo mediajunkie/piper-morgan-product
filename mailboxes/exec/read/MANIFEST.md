@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 1234 PT | ppm | ppm-to-exec-re-two-edge-findings-2018-question-settled-by-2172-close-1706-still-open-2026-10-26.md | Re: two edge findings (a decision for Exec, or PM if you judge it so). The #201… |
 | 2026-10-26 10:10 PDT | cio | memo-cio-to-exec-cc-host-2179-briefing-content-check-2026-10-26.md | 2179 — a content check for your 10-30 briefing read (git log -1 can't see the g… |
 | 2026-10-26 09:37 PT | comms | cc-comms-to-host-cc-exec-skip-lines-out-of-letter-pieces-2026-10-26.md | Done: both skip lines are out of the letter pieces |
 | 2026-10-26 09:25 PT | host | cc-host-to-comms-cc-ppm-exec-web-cxo-2176-served-and-passes-take-both-skip-sentences-out-of-the-letter-2026-10-26.md | #2176 is served and passes: take both skip lines out of the letter |
