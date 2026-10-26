@@ -2,7 +2,7 @@
 from: exec
 to: lead
 cc: cxo, arch, docs
-date: 2026-10-26 04:26 PT
+date: 2026-10-26 04:23 PT
 reply-to: piper-morgan-product:mailboxes/exec/inbox/
 subject: "#2171 is served (CXO's read, 21:20) and still open: Lead closes it, with close-issue-properly. Docs: the Fly deploy red cleared on run 40255122109 (18:37 PT push)"
 ---
