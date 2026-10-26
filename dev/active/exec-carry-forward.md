@@ -1,24 +1,35 @@
 # Exec carry-forward
 
-**Rewritten fresh 2026-10-13 11:57 PDT** (Opus 5.5 from 10-13 ~11:1x; was Sonnet 5.5). Earlier entries (10-01 to 10-10): `git log -p -- dev/active/exec-carry-forward.md`. Session log: `dev/2026/10/13/2026-10-13-0422-exec-code-log.md` (10-12 log closed).
+**Rewritten fresh 2026-10-25 23:10 PDT** (Opus 5.5). The previous version (10-13) was stale; history is in `git log -p -- dev/active/exec-carry-forward.md`. Session log: `dev/2026/10/25/2026-10-25-0421-exec-code-log.md` (closed).
 
-**STATE: LIVE.** Cron **`af17a3e8`** (`38 6,10,14,18,22 * * *`), armed 10-22 06:54, expires ~10-29, re-arm by ~10-27. xian works mainly through Janus today; he said usage is on track with room to spare, so run hotter (review work first, per my role card).
+**STATE: LIVE.** Cron **`af17a3e8`** (`38 6,10,14,18,22 * * *`), armed 10-22 06:54, expires about 10-29. **Re-arm by 10-27.**
 
 ## Rollup
-v230, Artifact `719UZ4h1NELjEwWZbDCceT` version 232. Source `dev/active/exec-attention-rollup-current.html`. Short, bottom line first, resolved items removed (xian's ruling).
+v618, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
-## Waiting on xian
-- Alpha promotion: "yes as proposed" / "yes, without the extra check" / "auto-promote instead" (CIO+Lead memo 10:45). One dispatch also promotes logs-fingerprint, #1987 half 2, #2001.
-- History rewrite (depth A): kit ready (Themis, designinproduct private); his go in the session that pushes, plus a quiet moment I pick. Before push: back up every ref to a private repo, run `tests/unit/scripts/test_prod_user_lookup.py` on the rewritten head.
-- Delete old revisions on 15 edited issues (web only).
-- Wednesday 10-14 tripwire pick (A/B/C; lean C).
-- Optional: review the 11 role cards' priority order (~10 min).
-- Ship #064: he edits today. Invites on hold until he tests. Calendar secrets (card row E), OpenAI top-up, cloud routine delete, Spec R1-R7 walk-through (with me), blog mining with Comms, GitHub test account, Weekly Ship site readership unmeasured.
+## Waiting on xian (all on v618)
+- **Send day (Mon):** the letter keeps HOST's skip sentence. Two new calls:
+  - carry-over promise (lean: "your account and your work carry over"; #2157 carries the promise);
+  - #2177 pull by digest (lean: yes). Branch `lead/2177-pull-by-digest` a56a77a9ff; Arch says all three conditions are met.
+- **Two shared-slot tester keys:** lean is a reviewed, attended delete plus a short note to each tester. The 10-22 reset was staging-only, so the keys are probably readable.
+- **Sequencing:**
+  - #2172 into MVP (lean yes);
+  - #1706 moved later (lean yes; Arch says the edge is hard). This is a Sprint move.
+- **Others:**
+  - the uncovered ~/.piper-shared file (CIO has the name);
+  - the gate password reuse question;
+  - the client company name question;
+  - uninstall the skunkworks PoC plugin and `consult-piper`;
+  - Search Console URL lists (optional);
+  - #2136 remainders;
+  - #1715 by 11-03;
+  - Haiku 5.5: wait until 11-01;
+  - HOST's beta shortlist;
+  - Ship #066 final edit after Tuesday's post (publishes Wed 10-28).
+- **Janus #2154 confirmation:** still unsent; it needs xian's push approval.
 
 ## Mine
-- Forensic sub-agent on where the five goals are written (brief `dev/active/exec-goals-forensic-brief-2026-10-13.md`, report `...-report-...`); commit the report and bring xian the answer, then discuss where they live.
-- Row 111 seat-push watch; #1967 pilot report to CIO by 10-16; mail v4 audit by 10-22; Wednesday tripwire check 10-14.
-- Rule 8: outside names stay out of everything I write here.
-
-## Dates held
-Design partners Fri 10-23; hard stop Fri 10-30.
+- Relay xian's rulings on the items above to their owners the moment he gives them. Use decisions.log for PM rulings.
+- First Friday map diff: 10-30, in the weekly synthesis.
+- Re-arm the cron by 10-27.
+- Rule 8: outside names stay out of everything I write here. The client is "the client CEO".
