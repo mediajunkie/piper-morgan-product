@@ -936,13 +936,17 @@
 
     // Initialize Slack OAuth on page load
     // Issue #576: Check credentials first, then OAuth status
-    checkSlackCallbackParams();
-    checkSlackCredentialsStatus().then(credentialsConfigured => {
-        if (credentialsConfigured) {
-            // Only check OAuth status if credentials are configured
-            checkSlackStatus();
-        }
-    });
+    // #2176: a hosted wizard renders no Slack or Calendar blocks (they connect in
+    // Settings after sign-in), so it makes neither status call.
+    if (!hosted) {
+        checkSlackCallbackParams();
+        checkSlackCredentialsStatus().then(credentialsConfigured => {
+            if (credentialsConfigured) {
+                // Only check OAuth status if credentials are configured
+                checkSlackStatus();
+            }
+        });
+    }
 
     // =========================================================================
     // Google Calendar App Credential Functions (Issue #577)
@@ -1161,13 +1165,15 @@
 
     // Initialize Calendar OAuth on page load
     // Issue #577: Check credentials first, then OAuth status
-    checkCalendarCallbackParams();
-    checkCalendarCredentialsStatus().then(credentialsConfigured => {
-        if (credentialsConfigured) {
-            // Only check OAuth status if credentials are configured
-            checkCalendarStatus();
-        }
-    });
+    if (!hosted) {
+        checkCalendarCallbackParams();
+        checkCalendarCredentialsStatus().then(credentialsConfigured => {
+            if (credentialsConfigured) {
+                // Only check OAuth status if credentials are configured
+                checkCalendarStatus();
+            }
+        });
+    }
 
     checkSetupStatus();
 })();

@@ -485,6 +485,13 @@
           >
         </div>
 
+        {% if hosted %}
+        <!-- #2176 (CXO 2026-10-25): on a hosted instance the person in the wizard is
+             never the site's admin, so the Slack and Google Calendar app-credential
+             forms are not theirs to fill (PM 2026-10-01: a non-admin never sees the
+             app-credential card). They connect both in Settings after sign-in. -->
+        <p id="connect-later-line" style="font-size: 0.9rem; color: #666;">You can connect Slack and Google Calendar later, in Settings → Integrations.</p>
+        {% else %}
         <!-- Slack OAuth Integration (Issue #528: ALPHA-SETUP-SLACK) -->
         <!-- Issue #576: Added credential configuration before OAuth -->
         <div class="form-group">
@@ -657,6 +664,8 @@
             ></div>
           </div>
         </div>
+
+        {% endif %}
 
         <div
           class="button-group"
