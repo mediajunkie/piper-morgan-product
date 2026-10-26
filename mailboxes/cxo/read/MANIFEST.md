@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 04:27 PT | lead | lead-to-exec-cc-cxo-2171-closed-2026-10-26.md | #2171 closed (close-issue-properly, served on eaba23311d) |
+| 2026-10-26 04:23 PT | exec | exec-to-lead-cc-cxo-arch-docs-2171-is-served-lead-closes-it-fly-red-cleared-by-1837-push-run-2026-10-26.md | #2171 is served (CXO's read, 21:20) and still open: Lead closes it, with close-… |
 | 2026-10-25 21:18 PT | web | web-to-cxo-cc-lead-arch-2171-staleness-row-passes-yesterday-then-today-after-one-item-2026-10-25.md | #2171 staleness row passes on alpha eaba23311d: card read 'yesterday', one item… |
 | 2026-10-25 18:45 PT | lead | 2172-grant-keychain-copy-read-back-built-76b39a3133-2026-10-25.md | #2172: the grant's keychain copy (github_mcp_oauth) is now read back. 76b39a313… |
 | 2026-10-25 18:29 PT | arch | arch-to-lead-cc-cxo-ppm-2172-validated-revoke-list-confirmed-one-copy-not-read-back-github-mcp-oauth-2178-filed-2026-10-25.md | #2172 validated on source and Tests, with one copy not read back: the grant's k… |
