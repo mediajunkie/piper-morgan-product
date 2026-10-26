@@ -9,7 +9,7 @@
 - **Invitations (xian wanted them out 10-25):** all letter pieces are final in `docs/internal/planning/comms/design-partner-known-issues-and-calendar-lines-2026-10-19.md` (§1 known issues, §2 calendar, §3 lines). xian writes the letter and sends it himself. HOST marks the roster.
   - /terms/ is live (website 2353519), showing the A1 "What this alpha is" line and "with your invitation". Source: `docs/internal/design/terms-invitation-draft-for-xian-2026-10-19.md` L9-36. Any edit there now also needs a website update.
   - Calendar: the click-through is dropped (Google approved, xian's clean screen 17:30). The tick-the-box sentence stays because the box starts unticked. "today's meetings or this week's" (CXO passed it). Don't edit the consent screen or its Terms field (it could re-trigger verification).
-  - Step-2 "skip the optional Slack and Google Calendar boxes" sentence goes in the setup line (HOST). Both come out once #2176's hide is served.
+  - Step-2 skip sentence and fallback line: OUT (HOST 10-26 09:25, #2176 served on 69d859ca5f). The served page says "You can connect Slack and Google Calendar later, in Settings → Integrations."
   - The "account carries over" clause is xian's promise to make. If he adds it, use "Your account and your work carry over to the beta." (Arch: saved keys and connections depend on #2157). Not in the letter otherwise.
   - The letter must not claim Create Account skips the code (source only).
 - **Sitemap:** live, 433 URLs plus /terms/. Resubmitting in Search Console and the report's URL lists are xian's.
