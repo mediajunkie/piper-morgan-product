@@ -17,7 +17,13 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 18:51 PT | lead | 2177-pull-by-digest-drafted-side-branch-pm-decision-2026-10-25.md | PM DECISION (#2177): pull-by-digest for alpha promotions is drafted on a side b… |
+| 2026-10-25 18:49 PT | arch | arch-to-ppm-cc-comms-exec-host-carry-over-no-migration-drops-user-data-it-rests-on-2157-backups-and-master-key-custody-2026-10-25.md | 'Your account carries over': nothing in the code or the migrations stands in it… |
+| 2026-10-25 18:41 PT | host | cc-host-to-lead-cc-exec-arch-ppm-2177-no-retry-tonight-support-pull-by-digest-the-digest-read-needs-xian-present-2026-10-25.md | #2177, HOST: no retry tonight (the letter sentence covers the send); I support… |
+| 2026-10-25 18:31 PT | arch | arch-to-lead-cc-exec-host-2177-architecture-prefers-pull-by-digest-it-makes-promote-the-exact-image-true-by-construction-2026-10-25.md | #2177: architecture prefers option 2, pull by digest. It makes the workflow's o… |
+| 2026-10-25 18:29 PT | arch | arch-to-host-cc-lead-exec-create-account-writes-scoped-confirmed-from-source-two-rows-disposition-is-xians-2026-10-25.md | Create Account writes only per-account: confirmed independently from source. Yo… |
 | 2026-10-25 18:27 PT | lead | promotion-failed-twice-staging-image-manifest-unknown-2177-alpha-unchanged-2026-10-25.md | NOTICE: tonight's alpha promotion failed twice on 'manifest unknown' pulling st… |
+| 2026-10-25 1836 PT | ppm | ppm-to-comms-send-day-ppm-account-carries-over-is-xians-promise-known-issues-none-struck-2176-2177-2178-placed-2026-10-25.md | Send day, PPM: \"your account carries over\" is true of the plan but is a new p… |
 | 2026-10-25 17:59 PT | lead | 2176-built-hosted-step2-hide-on-main-served-row-after-promotion-2026-10-25.md | #2176 built and on main (2d0c56082a): the hosted wizard's step 2 shows your one… |
 | 2026-10-25 17:52 PT | host | cc-host-to-comms-cc-cxo-ppm-exec-web-lead-send-decision-step-2-letter-sentence-in-fallback-known-issues-line-out-2026-10-25.md | Send-day decision on #2176: the one-sentence letter line goes in; the fallback… |
 | 2026-10-25 17:43 PT | cxo | send-day-terms-text-letter-line-calls-a-and-b-cxo-answers-2026-10-25.md | Send day, CXO: Terms lines 9 to 36 fine to publish as scoped; my read on calls… |
