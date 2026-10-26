@@ -13,7 +13,6 @@ v618, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
   - #2177 pull by digest (lean: yes). Branch `lead/2177-pull-by-digest` a56a77a9ff; Arch says all three conditions are met.
 - **Two shared-slot tester keys:** lean is a reviewed, attended delete plus a short note to each tester. The 10-22 reset was staging-only, so the keys are probably readable.
 - **Sequencing:**
-  - #2172 into MVP (lean yes);
   - #1706 moved later (lean yes; Arch says the edge is hard). This is a Sprint move.
 - **Others:**
   - the uncovered ~/.piper-shared file (CIO has the name);
