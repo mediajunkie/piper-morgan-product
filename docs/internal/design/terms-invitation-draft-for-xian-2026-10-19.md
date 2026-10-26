@@ -17,7 +17,7 @@
 
 **When Piper acts for you.** Piper checks with you before making most changes. If you tell it directly to do something, such as "Create a GitHub issue," Piper will do it right away, treating a plain instruction as the go. Piper always asks before it deletes something of yours. There's no undo yet, so take that question seriously!
 
-**When something breaks.** We expect you'll hit rough edges. We'll include a short list of the most egregious known issues with this invitation. When you find something new, send feedback from the left-hand menu once you're in the app, or email support@pipermorgan.ai. Either way the message will be read by the team, including by me (xian), the human who owns this particular loop.
+**When something breaks.** We expect you'll hit rough edges. We'll include a short list of the most egregious known issues with your invitation. When you find something new, send feedback from the left-hand menu once you're in the app, or email support@pipermorgan.ai. Either way the message will be read by the team, including by me (xian), the human who owns this particular loop.
 
 **Brief restarts.** Piper may restart briefly when we update it, usually at a quiet moment. You'll stay signed in, and your conversation will still be there. If a message gets no reply around the time of a restart, just send it again.
 
@@ -27,9 +27,7 @@
 
 **Your invite code.** Your code works once, for one account. Please don't share it. If it leaks before you use it, tell us and we'll cancel it. Once used, it can't be taken back, because the account exists. We won't publish who our testers are, and we won't quote you without asking first.
 
-**What this beta is.** *(xian picks ONE form on the morning the invitation goes, from PPM's one line. Never both.)*
-- *Beta form:* Expect errors, and go carefully. Using your real work is OK.
-- *Alpha form:* Piper isn't reliable yet. Please use test data, not your real work.
+**What this alpha is.** Expect errors, and go carefully. Using your real work is OK.
 
 Before Production, we'll add deleting a conversation for good, deleting your account in the app, exporting your conversations and to-dos, and undo. Today, the sections above describe what's true.
 
@@ -80,3 +78,5 @@ Before Production, we'll add deleting a conversation for good, deleting your acc
 - **Item 6, chat path (Web 17:53, alpha 89b8c3d8b6):** nothing was deleted without asking. A to-do asks "(yes/no)", and "no" keeps it. Project delete is declined with an archive offer. List-item delete isn't recognised from chat. So the sentence holds for buttons (12 of 12 reachable) and chat (3 of 3 kinds tried). One side finding, not for the sentence: a list-item ask got a confirmation naming a different object (the previous to-do). Web is filing it. **The draft is ready for xian's last read (17:55).**
 
 *10-24 21:41, Exec 21:40:* #2167 closed served (the key dialog now matches the five-day backups line), so the "Your key" paragraph stands with no conflict. #2156 closed pins-only (feedback link on its own line, a support line on the setup page). It doesn't add the menu to the wizard or error pages, so "once you're in the app" stays. #2169 closed pins-only. No Terms wording changes.
+
+*10-25 17:10, xian (in session with HOST, relayed 17:10):* Call A = A1, so the section reads "**What this alpha is.** Expect errors, and go carefully. Using your real work is OK." Call B = yes, so L20 now says "with your invitation". The copy section is now also the /terms/ page (website, Web pushes on xian's go). Comms applied both. Google's consent-screen Terms URL field stays empty: HOST 17:11 says any consent-screen change may need a new verification request, and that call is xian's with Exec.
