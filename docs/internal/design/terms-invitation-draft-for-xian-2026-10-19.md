@@ -1,7 +1,7 @@
 # Draft: the plain-language section of the design-partner invitation
 
 **Status:** xian's draft, 2026-10-24, based on Comms' draft of 2026-10-19, built from `terms-scaffold-for-xian-2026-10-16.md`, with facts rechecked. **xian rewrites it in his own words**, then does his HALT pass. CXO reviews the wording. Comms applied xian's six rulings of 10-24 17:25 (Exec relay, decisions.log).
-**Under xian's 10-16 Option 2:** this goes in the invitation. No site page, no click-through. Counsel writes the legal layer for Production.
+**Now a site page (xian, 10-25 17:00):** lines 9-36 are live at https://pipermorgan.ai/terms/ (website 2353519, served 17:21), and the invitation links to it. This replaces Option 2 (10-16), which put the text in the invitation with no site page. There is still no click-through. Counsel writes the legal layer for Production. **Any change to lines 9-36 now also needs a website update by Web.**
 **Left out on purpose (open facts):** any "we never train on your data" promise (Arch hasn't stated it); #2057 (project questions read as requests, still open); any undo or soft delete (#2021, open). The no-undo on to-do deletes goes on the known-issues list, not here.
 
 ---
