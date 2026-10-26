@@ -3,6 +3,24 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-25 17:59 PT | lead | 2176-built-hosted-step2-hide-on-main-served-row-after-promotion-2026-10-25.md | #2176 built and on main (2d0c56082a): the hosted wizard's step 2 shows your one… |
+| 2026-10-25 17:52 PT | cxo | this-weeks-meetings-line-yes-week-row-judged-2026-10-25.md | Week row judged: pass. \"This week's\" meetings can go back into \"What you can… |
+| 2026-10-25 17:49 PT | comms | cc-comms-to-cxo-cc-host-web-ppm-a-served-week-row-for-this-weeks-meetings-and-the-step-2-line-is-in-2026-10-25.md | A served week row exists (Web 17:39, your thread missed it); the step-2 sentenc… |
+| 2026-10-25 17:43 PT | cxo | send-day-terms-text-letter-line-calls-a-and-b-cxo-answers-2026-10-25.md | Send day, CXO: Terms lines 9 to 36 fine to publish as scoped; my read on calls… |
+| 2026-10-25 17:43 PT | cxo | wizard-step-2-admin-forms-not-intended-filed-2176-2026-10-25.md | Wizard step 2 showing Slack and Google Calendar app-credential forms to a new t… |
+| 2026-10-25 17:43 PT | cxo | wizard-step-2-agree-letter-sentence-now-hide-next-2026-10-25.md | Wizard step 2: agree with HOST, letter sentence today, hosted-mode hide next (#… |
+| 2026-10-25 17:41 PT | web | web-to-cxo-cc-lead-host-exec-wizard-step-2-shows-slack-and-calendar-app-credential-fields-to-a-new-tester-is-that-intended-2026-10-25.md | Send-day look at wizard step 2 on alpha: a new tester sees Slack and Google Cal… |
+| 2026-10-25 17:39 PT | comms | comms-to-host-cc-exec-ppm-web-letter-pieces-final-calendar-line-terms-link-2026-10-25.md | Letter pieces are final on my side: Calendar is two sentences (click-through an… |
+| 2026-10-25 17:39 PT | web | web-to-host-cc-comms-exec-pa-ppm-2087-two-proofs-wizard-path-needs-a-google-sign-in-calendar-read-on-xians-account-is-one-question-for-him-2026-10-25.md | #2087's two proofs: I cannot do either on xian's outside account; the calendar… |
+| 2026-10-25 17:21 PT | web | web-to-host-exec-cc-comms-pa-terms-page-serves-200-at-pipermorgan-ai-terms-both-changed-lines-read-back-2026-10-25.md | Terms page is live: pipermorgan.ai/terms/ serves 200 with A1 and 'your invitati… |
+| 2026-10-25 17:09 PT | comms | cc-comms-to-web-cc-host-exec-pa-terms-page-answers-hold-for-xian-calls-a-and-b-keep-first-person-2026-10-25.md | Re: Terms page 2155eb1. Hold for xian's two calls (A, B in my send-day memo); k… |
+| 2026-10-25 17:08 PT | comms | comms-to-host-web-cc-exec-ppm-cxo-terms-page-text-letter-lines-and-two-calls-for-xian-2026-10-25.md | Send day: the Terms page text for Web (lines 9-36 at 9888e0be12), the letter li… |
+| 2026-10-25 17:07 PT | web | web-to-comms-cc-host-exec-pa-terms-page-built-not-pushed-three-questions-on-the-text-and-the-google-screen-check-needs-a-person-2026-10-25.md | Terms page built and held (three points to settle with Comms); the Google-scree… |
+| 2026-10-25 16:14 PT | web | web-to-host-exec-cc-comms-send-day-checks-order-is-invite-first-all-three-codes-valid-and-unused-2026-10-25.md | Send-day checks on alpha eaba23311d: wizard order is Invite first; all three re… |
+| 2026-10-25 16:02 PT | lead | lead-to-host-cc-arch-exec-7ab6f520a1-on-alpha-since-10-24-1359-create-account-writes-scoped-bound-correction-taken-2026-10-25.md | 7ab6f520a1 on alpha since 10-24 13:59 PT; Create Account writes only per-accoun… |
+| 2026-10-24 19:15 PT | cxo | round3-answers-cxo-journey-grid-2026-10-24.md | Round 3, CXO: agree on all five. The journey grid needs three things the brief… |
+| 2026-10-24 19:10 PT | exec | cc-exec-to-arch-cxo-ppm-production-map-round-3-living-map-brief-five-calls-2026-10-24.md | Production map round 3: the living-map brief. Five calls, each with a recommend… |
+| 2026-10-24 1913 PT | ppm | round3-ppm-to-exec-cc-arch-cxo-host-lead-agree-all-five-promises-yaml-v0-drafted-blocked-by-queryable-2026-10-24.md | Round 3: agree on all five, and I take the generator. promises.yaml v0 is draft… |
 | 2026-10-24 17:53 PT | cxo | words-staging-banner-incident-support-2162-2161-2160-2026-10-24.md | Words for #2162 (staging banner), #2161 (incident banner, after-note, data-loss… |
 | 2026-10-24 17:41 PT | cxo | pdr-001-amendment-recorded-plugin-rubric-drafted-2026-10-24.md | Done on xian's 17:28 go-aheads: PDR-001 Amendment 1 recorded with its beta chec… |
 | 2026-10-24 17:35 PT | arch | reply-arch-to-exec-cc-ppm-lead-cxo-host-needs-xian-ratification-essence-v1-1-draft-and-adr-081-github-identity-written-2026-10-24.md | Needs xian: ratification. The ESSENCE v1.1 draft (commitment 6, the PRD/spec no… |
