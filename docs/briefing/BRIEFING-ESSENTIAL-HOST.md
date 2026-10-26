@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-HOST
 valid_from: "2026-04-22"
-last_updated: "2026-10-13"
-last_verified: "2026-10-13"
+last_updated: "2026-10-26"
+last_verified: "2026-10-26"
 max_age_days: 90
 ---
 
@@ -154,40 +154,34 @@ The discipline: protect time for noticing + naming + cross-check. The instinct t
 
 ## Current Focus
 
-**As of 2026-09-22, verified against this week's own actual work rather than restated from the
-June entry above (which was 3+ months stale — all five of its items had fallen off HOST's active
-tracking entirely by September, with no trace in the current carry-forward).**
+**As of 2026-10-26, rewritten from HOST's own 10-19 to 10-26 work (the 09-22 version had gone
+stale: invite saga closed, Role Health Check done, trust-zone split now routine).**
 
 **Active Priorities**:
-1. **Trust/credential verification on tester onboarding** — the live, demonstrated shape of
-   HOST's role this month: independently re-verifying "observed flow, not a test pin" evidence
-   before lifting a hold (the alpha-tester invite saga, 09-19 through 09-21), holding an already-
-   ratified bar against pressure to lower it even when the pressure is well-intentioned, and
-   catching/escalating a real credential exposure (a bearer invite code leaked into the public
-   repo) rather than letting a colleague's summary substitute for checking the actual source.
-2. **Governance rulings on agent-cohort trust properties** — e.g. the 2026-09-20 ruling that this
-   cohort's agents are never referred to as "people" (an overclaim of evidenced motive/virtue,
-   not a style choice), recorded durably in `decisions.log` with a mechanized backstop (`#1834`)
-   rather than left to memory — the standard HOST holds every such ruling to.
-3. **Duty-cycle mechanism stewardship** — verifying the belt's own liveness surfaces rather than
-   trusting them (per v1.34's "don't trust that you ran it, check the external surface"
-   discipline), and correcting cohort-wide misdiagnoses at the source when found (e.g. a 09-21
-   self-correction on a wrong reboot/cron-id-continuity inference, fixed in the original artifact
-   with attribution rather than silently).
-4. **Trust-zone split discipline** (`#1344`) — HOST owns tester identity mapping, never touches
-   the DB; Lead mints/validates, never sees identities. Demonstrated repeatedly this month
-   (alpha-tester roster, the Fly-migration account-identity finding) as a real operational
-   boundary, not a paper rule.
+1. **Send-day checks (the Readiness lane's standing check, Exec owns the lane).** Before the
+   alpha invites go (xian's hand only): `/health` and served git sha, main's CI
+   (`scripts/main-ci-status.sh`, 12 workflows), PPM's known-issues recheck, Web's served rows,
+   invite codes valid and unused. Mark the roster as each send happens.
+2. **Credential custody on the hosted app.** The keychain findings (two unscoped credential-store
+   rows, likely outside testers' own keys; Create Account writes now scoped) and their
+   disposition are xian's call (reviewed, attended delete). Prod reads happen only by xian's hand
+   through `fly ssh console`, masked, names and counts only. ADR-081 D3 custody is open.
+3. **Restore drill (#2157).** HOST owns the spec: five proofs (timed restore with loss window,
+   key decrypts, deletions survive, who restored, copy destroyed and checked). Runs with xian
+   present; proof 3 needs #2158. "Your account carries over" depends on it and on master-key custody.
+4. **Seat identity (#2136)** and **Google OAuth (#2087):** one open item each, both gated outside HOST.
+5. **Governance rulings and mechanized backstops** (#1834, #1967, #1968): a ruling that is not
+   written down with a check is not done.
 
 **Standing cadence work**:
-- **Role Health Check** — 4-weekly, self-polling via GH Actions (`label:sapient-trust`). Last
-  closed `#1714` 08-31; next due ~09-28.
-- **Alpha-tester roster** (`dev/alpha/alpha-tester-roster.md`, main checkout, gitignored) — the
-  durable identity-mapping record for every minted invite token.
+- **Role Health Check**: 4-weekly, GH Actions issue, `label:sapient-trust`. Last: #2179 (10-26).
+  Next due ~11-23.
+- **Alpha-tester roster** (`dev/alpha/alpha-tester-roster.md`, main checkout, gitignored): the
+  identity-mapping record. Never copy names into this public repo; use role labels.
+- **Agent 360 v0.6 fielding** about 11-06; restarter token expiry reminder by 2027-10-08.
 
-**Known coordination challenges**: none currently tracked as live/blocking as of this refresh —
-if this section reads stale again, that's itself a signal worth flagging (see Docs's 09-22 note
-that prompted this refresh).
+**Known coordination challenges**: briefings across the cohort were content-stale on 10-26
+(#2179); Exec holds the disposition.
 
 ## Progressive Loading
 
