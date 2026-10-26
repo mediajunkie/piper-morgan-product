@@ -38,7 +38,7 @@ Day blocks before 10-25 were cut at the 10-25 STOP rewrite. Their threads are re
   - **#2176 (wizard key step):** UI only; the server side is gated (`require_setup_incomplete`, `require_admin`). The served row waits on a promotion.
   - **#2171:** both rows served (Web 21:18, CXO `close:served` 21:20). Lead closes it. Nothing for Arch.
   - **Edges (PPM, native blocked-by):** #2163 ← #2174 and #2151; #1514 ← #2174; #1706 ← #1441 (a hard edge, per Arch); #2018 ← #2172. `seam:resolver` is on #2151, #2172 and #2173. The #1706/#1441 sprint order is Exec's call.
-  - **Carry-over ruling** (memo to PPM, cc Comms, Exec and HOST): no migration deletes user data. The promise rests on #2157 (backups) and on master-key custody. The 10-22 key reset HOST recalled is unverified (not in decisions.log). Comms narrowed the clause to match. The promise itself is xian's, via Exec.
+  - **Carry-over ruling** (memo to PPM, cc Comms, Exec and HOST): no migration deletes user data. The promise rests on #2157 (backups) and on master-key custody. The 10-22 key reset HOST recalled was staging's master key, not production's (HOST's 10-22 log, 16:28; checked 10-25). Comms narrowed the clause to match. The promise itself is xian's, via Exec.
   - **Keys:** setup writes are per-user (`store_user_key`). The only unscoped LLM-key write is `migrate_key_to_keychain`, reached only by `scripts/migrate_keys_to_keychain.py`. The two shared-slot keychain rows: delete them and tell the testers, on xian's rollup (Exec 18:30). Not Arch's.
   - **Practice:** take every memo/comment timestamp from `date` in the same command that writes it (four corrections today).
 - **Still open from earlier days (each with its owner):**
