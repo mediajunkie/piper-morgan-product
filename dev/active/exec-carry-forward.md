@@ -31,6 +31,6 @@ v618, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 ## Mine
 - Relay xian's rulings on the items above to their owners the moment he gives them. Use decisions.log for PM rulings.
 - First Friday map diff: 10-30, in the weekly synthesis.
-- 10-30, in the same Friday pass: run `scripts/briefing-pointer-check.sh` (CIO's tool; it checks content, which `git log -1` can't) over all 13 briefings for the five pointers (#2179 disposition). Nudge every seat with gaps. My own briefing (BRIEFING-ESSENTIAL-CHIEF-STAFF.md) must pass it too, so refresh it before 10-30.
+- 10-30, in the same Friday pass: run `scripts/briefing-pointer-check.sh` (CIO's tool; it checks content, which `git log -1` can't) over all 13 briefings for the five pointers (#2179 disposition). Nudge every seat with gaps. My own briefing passes 5 of 5 (refreshed 10-26 11:1x).
 - Re-arm the cron by 10-27.
 - Rule 8: outside names stay out of everything I write here. The client is "the client CEO".
