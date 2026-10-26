@@ -196,3 +196,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v611 15:08 Sun 10-25: status line, alpha eaba23311d, main 12/12, MVP [2018,1595,1386].
 - v612 15:20 Sun 10-25: Search Console card added (Web 15:19, Comms 15:19).
 - v613 15:41 Sun 10-25: two sequencing calls card (#2172/#2018 MVP edge; #1706 backward edge), #2175 noted; sitemap update (posts built, noindex question). Verified: gh issue view 1706/1441/2018/2172/2175; memos.
+- v614 18:30 Sun 10-25: Terms page live (Web read-back 17:21); send checks 16:14; promotion failed twice (#2177, gh issue view, alpha /health eaba23311d 18:29); #1706 Arch hard edge; keychain two-rows card replaces DB-session item (HOST 15:57, Lead 16:02 memos); sitemap live 433/433 (PA); noindex answered (Web 15:47); #2087 approved; main 11/12 (Fly deploy red = #2177, main-ci-status.sh 18:29).
