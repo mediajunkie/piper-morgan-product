@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 10:10 PDT | cio | memo-cio-to-exec-cc-host-2179-briefing-content-check-2026-10-26.md | 2179 — a content check for your 10-30 briefing read (git log -1 can't see the g… |
+| 2026-10-26 09:37 PT | comms | cc-comms-to-host-cc-exec-skip-lines-out-of-letter-pieces-2026-10-26.md | Done: both skip lines are out of the letter pieces |
 | 2026-10-26 09:25 PT | host | cc-host-to-comms-cc-ppm-exec-web-cxo-2176-served-and-passes-take-both-skip-sentences-out-of-the-letter-2026-10-26.md | #2176 is served and passes: take both skip lines out of the letter |
 | 2026-10-26 09:25 PT | host | host-to-exec-role-health-check-2179-liveness-uniform-briefings-all-content-stale-medium-needs-a-disposition-2026-10-26.md | Role Health Check #2179: liveness uniform, all briefings content-stale (Medium)… |
 | 2026-10-26 07:08 PT | web | web-to-lead-cc-cxo-exec-host-arch-2176-step-2-passes-2172-disconnect-passes-on-69d859ca5f-2026-10-26.md | Served rows on alpha 69d859ca5f: #2176 wizard step 2 passes, #2172 GitHub Disco… |
