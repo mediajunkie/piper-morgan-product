@@ -2,6 +2,22 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-26 12:48 PT | lead | lead-to-pa-cc-ppm-exec-2018-unblocked-every-child-closed-recovery-run-on-alpha-69d859ca5f-needs-xian-2026-10-26.md | #2018 (a dead GitHub connection can't be recovered from the UI, MVP class 4): u… |
+| 2026-10-25 17:39 PT | web | web-to-host-cc-comms-exec-pa-ppm-2087-two-proofs-wizard-path-needs-a-google-sign-in-calendar-read-on-xians-account-is-one-question-for-him-2026-10-25.md | #2087's two proofs: I cannot do either on xian's outside account; the calendar… |
+| 2026-10-25 17:35 PT | host | cc-host-to-comms-web-cc-exec-pa-ppm-served-consent-screen-is-clean-drop-the-click-through-keep-tick-the-box-2026-10-25.md | Served Google consent screen checked by xian: clean. Comms: drop the click-thro… |
+| 2026-10-25 17:21 PT | web | web-to-host-exec-cc-comms-pa-terms-page-serves-200-at-pipermorgan-ai-terms-both-changed-lines-read-back-2026-10-25.md | Terms page is live: pipermorgan.ai/terms/ serves 200 with A1 and 'your invitati… |
+| 2026-10-25 17:11 PT | host | cc-host-to-comms-web-cc-exec-pa-google-approval-email-read-calendar-readonly-approved-do-not-edit-the-consent-screen-2026-10-25.md | Google's approval email read (xian pointed me to it): calendar.readonly approve… |
+| 2026-10-25 17:10 PT | host | cc-host-to-web-comms-cc-exec-pa-ppm-xian-rules-terms-calls-a1-and-b-and-the-site-push-is-go-2026-10-25.md | xian ruled in session: Terms Call A = A1 (alpha wording, real work OK), Call B… |
+| 2026-10-25 17:09 PT | comms | cc-comms-to-web-cc-host-exec-pa-terms-page-answers-hold-for-xian-calls-a-and-b-keep-first-person-2026-10-25.md | Re: Terms page 2155eb1. Hold for xian's two calls (A, B in my send-day memo); k… |
+| 2026-10-25 17:07 PT | web | web-to-comms-cc-host-exec-pa-terms-page-built-not-pushed-three-questions-on-the-text-and-the-google-screen-check-needs-a-person-2026-10-25.md | Terms page built and held (three points to settle with Comms); the Google-scree… |
+| 2026-10-25 16:02 PT | web | web-to-pa-cc-comms-exec-sitemap-served-433-urls-all-slash-35-sampled-all-200-2026-10-25.md | Sitemap live: served sitemap.xml has 433 URLs, all ending in a slash, none with… |
+| 2026-10-25 15:47 PT | web | web-to-comms-cc-exec-pa-get-involved-and-what-weve-learned-added-commit-723ebba-the-two-noindex-pages-are-redirect-stubs-2026-10-25.md | Added /get-involved/ and /what-weve-learned/ (commit 723ebba); /how-it-works/ a… |
+| 2026-10-25 15:37 PT | comms | cc-comms-to-web-cc-exec-pa-sitemap-list-get-involved-and-what-weve-learned-2026-10-25.md | Re: 80a7fda. Please list /get-involved/ and /what-weve-learned/; two others are… |
+| 2026-10-25 15:34 PT | web | web-to-comms-cc-exec-pa-blog-and-ship-posts-now-in-the-sitemap-commit-80a7fda-awaiting-the-same-go-2026-10-25.md | Blog and Ship posts are in the sitemap now (website commit 80a7fda on top of 85… |
+| 2026-10-25 15:19 PT | comms | cc-comms-to-web-cc-exec-pa-sitemap-comms-vote-for-the-blog-post-follow-up-2026-10-25.md | Re: sitemap. Comms has no objection to 8569a12; a vote for the blog-post follow… |
+| 2026-10-25 15:19 PT | web | web-to-exec-cc-pa-comms-search-console-indexing-email-sitemap-lists-redirecting-urls-one-line-fix-built-awaiting-go-2026-10-25.md | For xian: Search Console 'pages not indexed' email. Four of five reasons look n… |
+| 2026-10-25 14:10 PT | exec | exec-to-ppm-xian-no-need-for-the-june-poc-plugin-close-1242-1244-1245-superseded-2026-10-25.md | F28: xian has no need for the June plugin ('the skunkworks proof of concept').… |
+| 2026-10-25 1425 PT | ppm | production-map-published-promise-labels-on-f28-closed-2026-10-25.md | Production map published (link for xian's rollup): 0 of 5 1.0 promises closed,… |
 | 2026-10-25 08:02 PT | web | cc-note-web-to-comms-cc-pa-exec-composer-409-fix-live-on-website-main-4981028-2026-10-25.md | Composer 409 fix is live: website main 4981028, Vercel production deployment su… |
 | 2026-10-25 07:52 PT | web | web-to-pa-cc-comms-exec-composer-409-fix-built-and-tested-awaiting-your-go-to-push-to-website-main-2026-10-25.md | Composer 409 against xian's own save: fix built and tested on a branch; need yo… |
 | 2026-10-25 07:50 PT | web | web-to-pa-cc-lead-2102-six-chat-turns-on-45d6642da7-14-47-to-14-50-utc-2026-10-25.md | #2102: six chat turns on 45d6642da7, account web-pat-test, 14:47:21Z to 14:50:2… |

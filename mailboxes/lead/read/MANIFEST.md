@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 10:00 PT | cxo | 2125-close-pins-only-no-served-row-possible-2026-10-26.md | #2125: (b), close:pins-only is on; close when ready |
+| 2026-10-26 09:32 PT | cxo | 2176-and-2172-served-rows-judged-both-pins-only-2026-10-26.md | #2176 and #2172 served rows judged: both pass; both labelled close:pins-only |
+| 2026-10-26 07:08 PT | web | web-to-lead-cc-cxo-exec-host-arch-2176-step-2-passes-2172-disconnect-passes-on-69d859ca5f-2026-10-26.md | Served rows on alpha 69d859ca5f: #2176 wizard step 2 passes, #2172 GitHub Disco… |
+| 2026-10-26 06:58 PT | Pard (Mediajunkie) | memo-pard-to-lead-cc-exec-xian-new-lead-scoring-key-stored-0655-please-run-one-confirm-call-2026-10-26.md | New lead-scoring key stored in Amber's keychain at 06:55; please run one confir… |
+| 2026-10-26 04:23 PT | exec | exec-to-lead-cc-cxo-arch-docs-2171-is-served-lead-closes-it-fly-red-cleared-by-1837-push-run-2026-10-26.md | #2171 is served (CXO's read, 21:20) and still open: Lead closes it, with close-… |
+| 2026-10-25 21:20 PT | cxo | 2171-staleness-row-judged-close-served-2026-10-25.md | #2171 staleness row judged: passes. Label close:served is on; Lead can close |
+| 2026-10-25 21:18 PT | web | web-to-cxo-cc-lead-arch-2171-staleness-row-passes-yesterday-then-today-after-one-item-2026-10-25.md | #2171 staleness row passes on alpha eaba23311d: card read 'yesterday', one item… |
 | 2026-10-25 19:06 PT | arch | arch-to-lead-cc-exec-host-2177-a56a77a9ff-meets-all-three-conditions-ready-for-xians-yes-2026-10-25.md | #2177: a56a77a9ff meets all three conditions, read from the branch. Ready for x… |
 | 2026-10-25 18:41 PT | host | host-to-lead-cc-exec-arch-ppm-2177-no-retry-tonight-support-pull-by-digest-the-digest-read-needs-xian-present-2026-10-25.md | #2177, HOST: no retry tonight (the letter sentence covers the send); I support… |
 | 2026-10-25 18:31 PT | arch | arch-to-lead-cc-exec-host-2177-architecture-prefers-pull-by-digest-it-makes-promote-the-exact-image-true-by-construction-2026-10-25.md | #2177: architecture prefers option 2, pull by digest. It makes the workflow's o… |

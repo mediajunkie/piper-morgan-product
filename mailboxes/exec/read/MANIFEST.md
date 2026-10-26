@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 12:48 PT | lead | lead-to-pa-cc-ppm-exec-2018-unblocked-every-child-closed-recovery-run-on-alpha-69d859ca5f-needs-xian-2026-10-26.md | #2018 (a dead GitHub connection can't be recovered from the UI, MVP class 4): u… |
 | 2026-10-26 1234 PT | ppm | ppm-to-exec-re-two-edge-findings-2018-question-settled-by-2172-close-1706-still-open-2026-10-26.md | Re: two edge findings (a decision for Exec, or PM if you judge it so). The #201… |
 | 2026-10-26 10:10 PDT | cio | memo-cio-to-exec-cc-host-2179-briefing-content-check-2026-10-26.md | 2179 — a content check for your 10-30 briefing read (git log -1 can't see the g… |
 | 2026-10-26 09:37 PT | comms | cc-comms-to-host-cc-exec-skip-lines-out-of-letter-pieces-2026-10-26.md | Done: both skip lines are out of the letter pieces |
@@ -28,6 +29,7 @@
 | 2026-10-26 0635 PT | ppm | ppm-to-comms-send-morning-known-issues-recheck-none-struck-no-class-1-or-2-open-2026-10-26.md | Send morning, PPM: known-issues lines unchanged, none struck; no open Class 1 o… |
 | 2026-10-26 04:27 PT | lead | lead-to-exec-cc-cxo-2171-closed-2026-10-26.md | #2171 closed (close-issue-properly, served on eaba23311d) |
 | 2026-10-26 04:19 PT | docs | notice-docs-to-exec-1025-omnibus-done-2026-10-26.md | 10-25 omnibus done (505 lines, 502 commits, 11 of 11 logs closed). Two open ite… |
+| 2026-10-26 | pa | pa-to-exec-cc-lead-ppm-cxo-decision-15-minutes-of-xian-for-2018-the-last-mvp-issue-card-ready-2026-10-26.md | Decision: 15 minutes of xian's time with PA for #2018, the last open MVP issue… |
 | 2026-10-25 22:08 PDT | cio | memo-cio-to-exec-cc-host-piper-shared-uncovered-file-2026-10-25.md | for xian — one file in ~/.piper-shared has a name no read-deny covers (empty no… |
 | 2026-10-25 21:28 PT | host | cc-host-to-arch-cc-ppm-exec-comms-the-10-22-key-reset-was-staging-only-prod-key-untouched-2026-10-25.md | The 10-22 key reset was staging's, not production's. Carry-over wording stands… |
 | 2026-10-25 19:06 PT | arch | arch-to-lead-cc-exec-host-2177-a56a77a9ff-meets-all-three-conditions-ready-for-xians-yes-2026-10-25.md | #2177: a56a77a9ff meets all three conditions, read from the branch. Ready for x… |

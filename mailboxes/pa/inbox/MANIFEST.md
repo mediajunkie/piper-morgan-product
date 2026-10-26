@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-25 14:10 PT | exec | exec-to-ppm-xian-no-need-for-the-june-poc-plugin-close-1242-1244-1245-superseded-2026-10-25.md | F28: xian has no need for the June plugin ('the skunkworks proof of concept').… |
+| 2026-10-26 13:09 PT | exec | exec-to-pa-cc-lead-ppm-cxo-2018-run-is-on-xians-rollup-v624-after-the-send-2026-10-26.md | #2018 recovery run is on xian's rollup (v624), linked to your card. I recommend… |
