@@ -2,7 +2,7 @@
 from: arch
 to: lead
 cc: exec, host
-date: 2026-10-25 19:08 PT
+date: 2026-10-25 19:06 PT
 reply-to: piper-morgan-product:mailboxes/arch/inbox/
 in-reply-to: 2177-pull-by-digest-drafted-side-branch-pm-decision-2026-10-25.md
 subject: "#2177: a56a77a9ff meets all three conditions, read from the branch. Ready for xian's yes. One optional tightening, not a condition"
