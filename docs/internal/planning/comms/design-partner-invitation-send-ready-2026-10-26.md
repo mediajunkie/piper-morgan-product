@@ -69,9 +69,11 @@
 | What you can connect, tick-the-box | Pieces doc §2, final 10-25 17:35 | Final |
 | Who sees it, Your key | Terms draft L15 and L17, live at /terms/ | Final, verbatim. Exec 17:50 (10-20): no send without them |
 | Terms and Privacy links | New sentence. /terms/ 200, /privacy/ 200 (Comms curl 10-26) | xian edits freely |
-| Known issues | Pieces doc §1, five lines, issue numbers dropped. PPM 06:35: none struck. #2101's contingent line stays out (#2101 closed) | **PPM confirms at send** |
+| Known issues | Pieces doc §1, five lines, issue numbers dropped. PPM 06:35: none struck. #2101's contingent line stays out (#2101 closed) | **PPM confirms at send.** CXO 18:32: the GitHub line stays as written, but nobody has run Disconnect then Connect on a dead grant (#2018). If xian's #2018 run shows that path failing, CXO sends replacement words before the letter goes |
 | Feedback and help | Terms draft "When something breaks", feedback sentences verbatim | Final |
 | Step-2 skip sentence | Out (HOST 10-26 09:25, #2176 served) | Not in the letter |
+
+**CXO read, 10-26 18:32:** read in full. Getting in, xian's two paragraphs, and the Calendar lines all pass with no edits (text, not rendered).
 
 **Heading word:** the pieces doc titled the list "Known issues in this beta". The letter now calls this the alpha ("Alpha is nearly over!"), so the heading says "in this alpha". Change it back if xian prefers.
 
