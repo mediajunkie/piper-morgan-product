@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-CURRENT-STATE.md - Where We Are Right Now
 valid_from: "2025-09-30"
-last_updated: 2026-10-26
+last_updated: 2026-10-27
 last_verified: 2026-10-26
 size_cap_bytes: 12000
 ---
@@ -37,7 +37,7 @@ log, never here. Bump `last_updated` to the newest line's date, or CI fails. Ski
   and `origin/production` are gone (09-29).
 - **Version** *(CIO, 2026-10-08, `git tag`)*: latest tag **v0.8.14.0** ("On Your Clock", 09-23). 0.9.0 is
   reserved for beta.
-- **MVP gate** *(PPM, 2026-10-24 06:34 PDT, `gh issue list --milestone MVP --state open`)*: **3 open** (#2018 and #1595 are listed as known issues; #1386 is the close-out), **no must-close** since #2132 closed served 10-23 18:32. Invitations are xian's to time. *(Board check: Docs, 2026-10-26 10:14 PDT, `sprint-truth.py`, live board pull:*
+- **MVP gate** *(PPM, 2026-10-27 06:34 PDT, `gh issue list --milestone MVP --state open`)*: **3 open** (#2018 and #1595 are listed as known issues; #1386 is the close-out), **no must-close** since #2132 closed served 10-23 18:32. **The three alpha invitations went 2026-10-26 21:00 PT** (xian's report, relayed by HOST at 21:05). #2018's recovery run is xian's, on rollup v624. Promise T9 (carry-over) is now held by the partners. *(Board check: Docs, 2026-10-26 10:14 PDT, `sprint-truth.py`, live board pull:*
   *3 not done (2 In Progress, 1 Product Backlog), 1,284 done. `gh issue list --milestone MVP --state open` also returns 3. On 10-19 it was 7 not done, 1,260 done.)* The MVP milestone **is**
   the beta gate. **Dates: design partners Fri 10-23, hard stop Fri 10-30** (baseline 10-05; slips are logged in
   `docs/internal/planning/beta-gate-standard.md` and only PM moves either date). Read the ledger, not this line, for slips.
