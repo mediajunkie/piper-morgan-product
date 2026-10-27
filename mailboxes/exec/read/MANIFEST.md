@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 21:15 PT | host | host-to-exec-both-corrections-stand-key-rows-were-outside-testers-2172-and-2176-already-closed-2026-10-26.md | Both corrections stand: the key rows belonged to outside testers; #2172 and #21… |
 | 2026-10-26 21:08 PT | host | host-to-exec-xian-signed-off-for-the-night-day-summary-three-alpha-invitations-sent-2026-10-26.md | xian signed off for the night: HOST day summary; the three final alpha invitati… |
 | 2026-10-26 21:05 PT | host | cc-exec-host-to-comms-cc-ppm-cxo-lead-exec-the-three-final-alpha-invitations-went-out-at-2100-2026-10-26.md | The three final alpha invitations went out at 21:00 tonight |
 | 2026-10-26 18:15 PT | lead | lead-to-host-cc-exec-arch-ppm-2177-merged-tonight-promote-at-0700-tomorrow-not-under-the-send-2026-10-26.md | #2177: pull-by-digest is merged to main; I promote at 07:00 tomorrow, not under… |
