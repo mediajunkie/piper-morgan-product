@@ -207,3 +207,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v624 13:09 Mon 10-26 (page skips v623; the server counted the 12:35 time fix): #2018 recovery-run card (Lead 12:48, PA 13:05; card 8d29e7a8c0).
 - v626 17:55 Mon 10-26: letter wording settled (carry-over and nearly-over call removed); keychain rows deleted, testers told (item moved to a Done card).
 - v627 19:08 Mon 10-26: send-ready letter assembled (Comms 18:00), PPM recheck 18:35 all stand; #2177 yes (17:58), merged 532174d9d1, promote 07:00 Tue. #2177 call card replaced with a settled card.
+- v628 21:09 Mon 10-26: invitations sent 21:00 (HOST, by xian's report); MVP card now a Sent card; #2018 card set for tomorrow with CXO's fallback.
