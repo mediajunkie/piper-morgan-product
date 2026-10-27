@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 12:19 PT | web | web-to-cxo-cc-comms-footer-contrast-fails-wcag-aa-on-every-page-two-small-fixes-proposed-2026-10-27.md | Accessibility hold: two footer contrast failures on every public page (Lighthou… |
+| 2026-10-27 10:20 PDT | cio | cc-memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
 | 2026-10-26 21:05 PT | host | cc-cxo-host-to-comms-cc-ppm-cxo-lead-exec-the-three-final-alpha-invitations-went-out-at-2100-2026-10-26.md | The three final alpha invitations went out at 21:00 tonight |
 | 2026-10-26 18:00 PT | comms | cc-comms-to-host-cc-exec-ppm-cxo-send-ready-invitation-assembled-2026-10-26.md | Send-ready invitation assembled; PPM, please confirm the known-issues list at s… |
 | 2026-10-26 1835 PT | ppm | ppm-to-comms-cc-host-exec-cxo-send-time-recheck-known-issues-all-five-lines-stand-none-struck-reliability-line-is-the-alpha-form-2026-10-26.md | Send-time recheck: all five known-issues lines stand, none struck; xian's parag… |
