@@ -211,3 +211,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v629 04:19 Tue 10-27: Caveat post live, Medium crosspost owed; Ship #066 final edit now due.
 - v630 06:25 Tue 10-27: Ship #066 Comms pre-check clean; Coming-up send line updated.
 - v631 07:14 Tue 10-27: #2177 closed, alpha 36bdcf09bb (same app code); status line refreshed; #2018 card says Today.
+- v632 15:35 Tue 10-27: #1706 call put on hold pending Arch on #1703 (PPM 15:34).
