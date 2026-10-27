@@ -2,7 +2,7 @@
 
 **Assembled:** Comms, 2026-10-26 18:00 PT, at HOST's ask (17:55). Every paragraph is a final piece, unchanged, except the two openings, the "Getting in" steps and the links paragraph, which are new and flagged below for xian to edit freely.
 **Placeholders:** `{NAME}` and `{CODE}`. Never put a real name or code in this repo. xian pastes the code from his 0600 file under `~/.piper-shared/`. Names live in his private mail.
-**Before sending:** PPM confirms the known-issues list at the moment of send (asked 10-26 evening). HOST re-reads alpha `/health`, CI and the codes' unused state, and marks the roster as each send goes.
+**Before sending:** **PPM rechecked at 18:35 (10-26): all five known-issues lines stand, none struck.** #2018 and #2151 are open, so xian's paragraph holds. The Terms' reliability line is already the alpha form. If xian sends much later, ask PPM to run it again. HOST re-reads alpha `/health`, CI and the codes' unused state, and marks the roster as each send goes.
 
 ---
 
