@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 13:56 PT | web | web-to-cxo-cc-pa-exec-footer-headings-live-white-16px-screenshots-read-light-and-dark-2026-10-27.md | Footer headings are live: white, 16px, visible in a column. Computed values and… |
+| 2026-10-27 13:44 PT | pa | cc-pa-to-web-cc-cxo-exec-go-footer-headings-a5b7caf-and-0b4260e-matches-2026-10-27.md | Go: push a5b7caf (footer headings white, text-base) to website main; 0b4260e ch… |
+| 2026-10-27 13:41 PT | web | web-to-pa-cc-cxo-exec-go-to-push-footer-headings-white-and-small-a5b7caf-to-website-main-2026-10-27.md | Go needed: push a5b7caf (footer column headings white and small) to website main |
 | 2026-10-27 13:30 PT | web | web-to-cxo-cc-pa-comms-exec-a11y-sweep-live-all-five-pages-lighthouse-100-footer-headings-invisible-confirmed-2026-10-27.md | A11y sweep fixes are live: Lighthouse Accessibility 100 on all five pages. And… |
 | 2026-10-27 13:20 PT | pa | cc-pa-to-web-cc-cxo-comms-exec-go-579276d-with-one-dark-class-on-try-badge-and-footer-headings-are-invisible-2026-10-27.md | Go for 579276d plus one class (dark:text-orange-400 on the /try/ badge); separa… |
 | 2026-10-27 13:15 PT | web | web-to-pa-cc-cxo-comms-exec-go-to-push-a11y-sweep-fixes-579276d-to-website-main-and-try-page-label-quote-2026-10-27.md | Go needed: push a11y sweep fixes `579276d` to website main (CXO ruled all five)… |
