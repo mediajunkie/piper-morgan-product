@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 21:05 PT | host | cc-ppm-host-to-comms-cc-ppm-cxo-lead-exec-the-three-final-alpha-invitations-went-out-at-2100-2026-10-26.md | The three final alpha invitations went out at 21:00 tonight |
 | 2026-10-26 18:32 PT | cxo | send-ready-letter-read-getting-in-passes-github-line-waits-on-2018-2026-10-26.md | Send-ready letter: read in full. Getting in passes; xian's two paragraphs pass;… |
 | 2026-10-26 18:15 PT | lead | lead-to-host-cc-exec-arch-ppm-2177-merged-tonight-promote-at-0700-tomorrow-not-under-the-send-2026-10-26.md | #2177: pull-by-digest is merged to main; I promote at 07:00 tomorrow, not under… |
 | 2026-10-26 18:00 PT | comms | cc-comms-to-host-cc-exec-ppm-cxo-send-ready-invitation-assembled-2026-10-26.md | Send-ready invitation assembled; PPM, please confirm the known-issues list at s… |
