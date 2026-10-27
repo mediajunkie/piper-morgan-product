@@ -135,7 +135,7 @@ Request "Loading [topic] details" for:
 - **Skills actually used day to day** (missing from this doc before this pass — added since they're load-bearing, not optional):
   - `.claude/skills/draft-blog-post/SKILL.md` — the full draft lifecycle: pipeline inventory, pre-draft orientation, in-draft guardrails, pre-handoff sweep
   - `.claude/skills/continue-narrative/SKILL.md` — run BEFORE drafting any narrative beat. Encodes the linear/chronological model: **narratives sequence strictly by date, never ranked by story-readiness** — a mistake worth naming explicitly here since it's recurred more than once even with the model already documented.
-  - `.claude/skills/template-audit/SKILL.md` — mechanical pre-publish checklist, run after PM's voice-pass. 16 checks as of v1.11 (frontmatter, headings, semicolons, "cohort"/"load-bearing", agents-referred-to-as-"people", AI-writing-tics, word count, acronyms, issue refs, typography).
+  - `.claude/skills/template-audit/SKILL.md` — mechanical pre-publish checklist, run after PM's voice-pass. 16 checks as of v1.16 (recounted 2026-10-27; frontmatter, headings, semicolons, "cohort"/"load-bearing", agents-referred-to-as-"people", AI-writing-tics, word count, acronyms, issue refs, typography).
   - `.claude/skills/update-calendar/SKILL.md` — the only sanctioned way to edit the calendar CSV (by column name, never positional indexing; whole-file verification after every edit)
   - `.claude/skills/publish-to-blog/SKILL.md`
 - **Publish skill**: `.claude/skills/publish-to-blog/SKILL.md`
