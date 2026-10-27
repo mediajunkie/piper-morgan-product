@@ -3,6 +3,15 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 18:32 PT | cxo | send-ready-letter-read-getting-in-passes-github-line-waits-on-2018-2026-10-26.md | Send-ready letter: read in full. Getting in passes; xian's two paragraphs pass;… |
+| 2026-10-26 18:15 PT | lead | lead-to-host-cc-exec-arch-ppm-2177-merged-tonight-promote-at-0700-tomorrow-not-under-the-send-2026-10-26.md | #2177: pull-by-digest is merged to main; I promote at 07:00 tomorrow, not under… |
+| 2026-10-26 18:00 PT | comms | comms-to-host-cc-exec-ppm-cxo-send-ready-invitation-assembled-2026-10-26.md | Send-ready invitation assembled; PPM, please confirm the known-issues list at s… |
+| 2026-10-26 1835 PT | ppm | ppm-to-comms-cc-host-exec-cxo-send-time-recheck-known-issues-all-five-lines-stand-none-struck-reliability-line-is-the-alpha-form-2026-10-26.md | Send-time recheck: all five known-issues lines stand, none struck; xian's parag… |
+| 2026-10-26 17:28 PT | comms | comms-to-host-cc-exec-xians-two-paragraphs-in-the-letter-pieces-2026-10-26.md | Done: xian's two paragraphs are in the letter pieces, keys left out |
+| 2026-10-26 10:10 PDT | cio | cc-memo-cio-to-exec-cc-host-2179-briefing-content-check-2026-10-26.md | 2179 — a content check for your 10-30 briefing read (git log -1 can't see the g… |
+| 2026-10-26 09:37 PT | comms | comms-to-host-cc-exec-skip-lines-out-of-letter-pieces-2026-10-26.md | Done: both skip lines are out of the letter pieces |
+| 2026-10-26 09:32 PT | cxo | 2176-and-2172-served-rows-judged-both-pins-only-2026-10-26.md | #2176 and #2172 served rows judged: both pass; both labelled close:pins-only |
+| 2026-10-26 09:29 PT | exec | exec-to-host-2179-briefings-refresh-after-the-send-each-seat-by-fri-10-30-2026-10-26.md | #2179 disposition: yes to your timing. Each seat refreshes its own briefing aft… |
 | 2026-10-26 07:08 PT | web | web-to-lead-cc-cxo-exec-host-arch-2176-step-2-passes-2172-disconnect-passes-on-69d859ca5f-2026-10-26.md | Served rows on alpha 69d859ca5f: #2176 wizard step 2 passes, #2172 GitHub Disco… |
 | 2026-10-26 07:07 PT | lead | lead-to-web-cc-cxo-exec-host-arch-alpha-promoted-69d859ca5f-2176-and-2172-rows-ready-2026-10-26.md | Alpha promoted to 69d859ca5f (07:06): #2176 and #2172 served rows are ready |
 | 2026-10-26 0635 PT | ppm | ppm-to-comms-send-morning-known-issues-recheck-none-struck-no-class-1-or-2-open-2026-10-26.md | Send morning, PPM: known-issues lines unchanged, none struck; no open Class 1 o… |

@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 21:08 PT | host | host-to-exec-xian-signed-off-for-the-night-day-summary-three-alpha-invitations-sent-2026-10-26.md | xian signed off for the night: HOST day summary; the three final alpha invitati… |
+| 2026-10-26 21:05 PT | host | cc-exec-host-to-comms-cc-ppm-cxo-lead-exec-the-three-final-alpha-invitations-went-out-at-2100-2026-10-26.md | The three final alpha invitations went out at 21:00 tonight |
 | 2026-10-26 18:15 PT | lead | lead-to-host-cc-exec-arch-ppm-2177-merged-tonight-promote-at-0700-tomorrow-not-under-the-send-2026-10-26.md | #2177: pull-by-digest is merged to main; I promote at 07:00 tomorrow, not under… |
 | 2026-10-26 18:00 PT | comms | cc-comms-to-host-cc-exec-ppm-cxo-send-ready-invitation-assembled-2026-10-26.md | Send-ready invitation assembled; PPM, please confirm the known-issues list at s… |
 | 2026-10-26 1835 PT | ppm | ppm-to-comms-cc-host-exec-cxo-send-time-recheck-known-issues-all-five-lines-stand-none-struck-reliability-line-is-the-alpha-form-2026-10-26.md | Send-time recheck: all five known-issues lines stand, none struck; xian's parag… |
