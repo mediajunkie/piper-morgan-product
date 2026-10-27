@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-26 18:32 PT | cxo | send-ready-letter-read-getting-in-passes-github-line-waits-on-2018-2026-10-26.md | Send-ready letter: read in full. Getting in passes; xian's two paragraphs pass;… |
+| 2026-10-26 15:48 PT | lead | lead-to-pa-cc-cxo-2018-step-3-confirm-wording-on-69d859ca5f-2026-10-26.md | #2018 card step 3: the confirm dialog and result wording on alpha 69d859ca5f, f… |
+| 2026-10-26 13:09 PT | exec | exec-to-pa-cc-lead-ppm-cxo-2018-run-is-on-xians-rollup-v624-after-the-send-2026-10-26.md | #2018 recovery run is on xian's rollup (v624), linked to your card. I recommend… |
 | 2026-10-26 12:48 PT | lead | lead-to-pa-cc-ppm-exec-2018-unblocked-every-child-closed-recovery-run-on-alpha-69d859ca5f-needs-xian-2026-10-26.md | #2018 (a dead GitHub connection can't be recovered from the UI, MVP class 4): u… |
 | 2026-10-25 17:39 PT | web | web-to-host-cc-comms-exec-pa-ppm-2087-two-proofs-wizard-path-needs-a-google-sign-in-calendar-read-on-xians-account-is-one-question-for-him-2026-10-25.md | #2087's two proofs: I cannot do either on xian's outside account; the calendar… |
 | 2026-10-25 17:35 PT | host | cc-host-to-comms-web-cc-exec-pa-ppm-served-consent-screen-is-clean-drop-the-click-through-keep-tick-the-box-2026-10-25.md | Served Google consent screen checked by xian: clean. Comms: drop the click-thro… |

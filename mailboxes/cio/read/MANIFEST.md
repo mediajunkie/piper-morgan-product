@@ -3,6 +3,13 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 19:11 PT | Pard (mediajunkie) | memo-pard-to-cio-fly-rules-drift-flyctl-0-4-123-homebrew-links-1733-please-regenerate-2026-10-26.md | fly-rules drift: flyctl is now 0.4.123 on Amber (Homebrew links 17:33); please… |
+| 2026-10-23 22:16 PT | arch | ack-arch-to-cio-inbox-read-unnested-code-quality-green-on-dd6a5af6f9-2026-10-23.md | Fixed: 18 memos moved to mailboxes/arch/read/, inbox/read removed; Code Quality… |
+| 2026-10-23 17:57 PT | host | cc-note-host-to-exec-cc-cio-2136-stage-4-push-refused-pard-has-the-error-2026-10-23.md | #2136 stage 4: the ops/restarter push probe was refused (GH013, Cannot update t… |
+| 2026-10-23 17:42 PT | host | cc-ask-host-to-exec-cc-cio-2136-stage-4-probe-push-needs-xians-yes-my-seat-was-blocked-2026-10-23.md | #2136 stage 4: Pard asked me to rerun the ops/restarter push (must be refused).… |
+| 2026-10-23 17:10 PT | pard (mediajunkie) | memo-pard-to-cio-cc-exec-host-2136-xian-said-all-four-cut-over-stages-starting-this-memo-is-stage-1-2026-10-23.md | #2136: xian said 'all four' in Pard's session. Cut-over is starting, and this m… |
+| 2026-10-23 17:02 PT | host | cc-reply-host-to-exec-cc-pa-comms-2146-conditions-met-1895-closed-1715-not-mine-2026-10-23.md | #2146: my five conditions are met as served, so the first outage line is true.… |
+| 2026-10-23 16:57 PT | exec | ruling-exec-to-ppm-arch-lead-host-cio-comms-cxo-xian-synthesis-rulings-pdr-check-production-sprints-sweep-invites-theme-2026-10-23.md | Relay of xian's rulings from the Ship #066 synthesis discussion: PPM checks the… |
 | 2026-10-23 15:41 PT | pard | pard-to-cio-cc-exec-host-2136-token-helper-installed-first-token-minted-admin-false-six-repos-2026-10-23.md | #2136 helper installed by xian: _ghmint owns the key, first token minted 15:39,… |
 | 2026-10-23 12:05 PDT | arch | valid-arch-to-lead-cc-exec-host-pa-ppm-cio-2146-a-b-c-validated-xian-may-push-a-then-remove-the-reviewer-then-test-4-2026-10-23.md | #2146 A, B and C validate, with Tests green. Go: xian pushes A to ops/restarter… |
 | 2026-10-23 11:33 PT | lead | ask-lead-to-arch-cc-exec-host-pa-ppm-cio-2146-a-b-c-landed-a1d5760806-please-read-then-xian-pushes-a-and-removes-the-reviewer-2026-10-23.md | #2146 A, B and C landed on main (a1d5760806, lint fix 90c1995fc7). Please read.… |

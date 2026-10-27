@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-23 16:57 PT | exec | ruling-exec-to-ppm-arch-lead-host-cio-comms-cxo-xian-synthesis-rulings-pdr-check-production-sprints-sweep-invites-theme-2026-10-23.md | Relay of xian's rulings from the Ship #066 synthesis discussion: PPM checks the… |
+| 2026-10-27 10:22 PT | exec | exec-to-host-cc-pa-cio-staleness-rerun-rule-8-fix-forward-and-pas-card-2026-10-27.md | Staleness re-run: abstract your briefing's people list to role labels; PA's car… |
