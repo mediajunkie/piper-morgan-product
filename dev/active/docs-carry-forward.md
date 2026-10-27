@@ -2,7 +2,7 @@
 
 **Updated**: 2026-10-17 (04:12 fire, see NOW below; older DONE lines below are history). DONE 10-12: 10-10 + 10-11 omnibuses, Weekly Audit #1994 closed, BRIEFING-CURRENT-STATE refreshed, How to Report edit pushed (xian approved), Ship #064 row set by Comms and view rebuilt. Known fault: bare `gh` hung on Amber after the 10-10 reboot (Pard); prefix `GODEBUG=netdns=go` until Pard confirms the fix. History in session logs (`dev/2026/10/{04..12}/*docs-code-log.md`), not here.
 
-## NOW (10-26 10:16 fire)
+## NOW (10-26 22:12 STOP)
 - **PUBLISHED**: every post through "A Clean Result Needs a Version Number" (10-25, website 5706b37, row `published`). **DISTRIBUTED**: through "Mistaking the Inset for the Map" (10-24). Omnibuses 10-15 through 10-24 DONE.
 - Clean Result DISTRIBUTED 10-25 (URLs from xian, liPubDate my assumption). Nothing owed from xian.
 - Mon 10-26 DONE: 10-25 omnibus (+ Exec addendum), weekly audit #2180 closed, roadmap age report to PPM. Next weekly audit Mon 11-02 (also the monthly housekeeping, first Monday). Next START Tue 10-27 owes the 10-26 omnibus.
