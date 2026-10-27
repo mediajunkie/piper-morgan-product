@@ -1,5 +1,18 @@
 # Lead carry-forward — Fable 5.1 seat; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY CLOSED 2026-10-26 21:48 PT — alpha 69d859ca5f (promoted 07:06); main 12/12 green; inbox empty
+**10-27 START order:**
+1. Cron b9a8316a: rotate by 10-31. Mail, then CI (`scripts/main-ci-status.sh`).
+2. **#2177 promotion at 07:00 PT.** The pull-by-digest change is merged as `532174d9d1` on xian's yes (relayed by HOST 17:58). Staging `9fa27c1845` carries it, with no app or alembic diff from alpha's build. Readiness first, then dispatch once: `gh workflow run fly-deploy.yml --ref main -f promote_to_alpha=true`.
+   - On a pass: post the digest pulled and alpha's served sha on #2177, then close it with close-issue-properly.
+   - On a refusal over a missing digest: post the JSON's actual fields on #2177 and change nothing else.
+   - HOST (21:05): the invitations went out at 21:00 10-26, so there's no hold. New invitees may be mid-wizard when the machines restart, so require `quiet` true and go at the early end of the window.
+   - Arch's optional tightening (deploy the pushed digest) comes only after a digest run passes.
+3. **#2018:** xian's run with PA (card `8d29e7a8c0`, rollup v624). The invitation letter's GitHub known-issues line rides on it (CXO 18:32). If a step misses, take it. The close is CXO's or PPM's.
+4. **#2126:** still open. The trigger is a second sighting.
+5. **#2178:** Production, sprint C (Arch and PPM). CXO writes the dialog's copy once it's built.
+- **Closed 10-26:** #2171, #2176, #2172, #2109, #2125. Standing items freshness pass: 31 rows removed.
+
 ## DAY CLOSED 2026-10-25 21:5x PT — alpha eaba23311d (unchanged; tonight's promotion failed "manifest unknown" twice); inbox empty
 **10-26 START order:**
 1. Cron b9a8316a: rotate by 10-31. Mail, then CI (`scripts/main-ci-status.sh`). At 21:47 the Documentation Link Checker was red on b27dd72d10, a commit that touched only a carry-forward and mail: 96 against a ceiling of 63, most likely external links timing out. The rerun (run 40269795078) passed at 21:5x, so it was flakiness and main is 12/12.
