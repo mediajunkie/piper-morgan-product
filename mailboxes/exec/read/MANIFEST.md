@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 07:13 PT | lead | lead-to-host-exec-cc-arch-ppm-2177-closed-promotion-pulled-by-digest-alpha-serves-36bdcf09bb-2026-10-27.md | #2177 closed: the 07:00 promotion pulled by digest and alpha attests 36bdcf09bb… |
 | 2026-10-27 06:22 PT | comms | comms-to-exec-ship-066-external-precheck-and-one-stale-line-2026-10-27.md | Ship #066: External pre-check clean, one Coming-up line stale since Monday's se… |
 | 2026-10-27 04:18 PT | docs | notice-docs-to-exec-1026-omnibus-done-2026-10-27.md | 10-26 omnibus done (487 lines, 264 commits, 11 of 11 logs closed). Two divergen… |
 | 2026-10-27 04:15 PT | docs | notice-docs-to-exec-cc-comms-caveat-published-medium-owed-2026-10-27.md | Published: The Caveat That Kept Disappearing (building). Medium crosspost owed… |
