@@ -210,3 +210,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v628 21:09 Mon 10-26: invitations sent 21:00 (HOST, by xian's report); MVP card now a Sent card; #2018 card set for tomorrow with CXO's fallback.
 - v629 04:19 Tue 10-27: Caveat post live, Medium crosspost owed; Ship #066 final edit now due.
 - v630 06:25 Tue 10-27: Ship #066 Comms pre-check clean; Coming-up send line updated.
+- v631 07:14 Tue 10-27: #2177 closed, alpha 36bdcf09bb (same app code); status line refreshed; #2018 card says Today.
