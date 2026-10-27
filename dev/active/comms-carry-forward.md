@@ -1,6 +1,17 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-10-25 21:19 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-10-26 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/10/26/2026-10-26-0619-comms-code-log.md`, DAY-CLOSED. Close every log with exactly `<!-- DAY-CLOSED: YYYY-MM-DD -->`.
+- **Invitations SENT:** xian sent all three (A, B, C) at 21:00 PT 10-26 from his xian@ address (HOST 21:05, from xian's report). The record of what partners were told is `docs/internal/planning/comms/design-partner-invitation-send-ready-2026-10-26.md`. The carry-over paragraph is now a partner promise (PPM's register). If a known-issues line goes stale later, that's a follow-up note to partners, xian's call.
+- **Tue 10-27 "The Caveat That Kept Disappearing":** row ready-for-docs, Docs publishes. Medium crosspost is xian's after it goes live (building). If xian saves again in the composer, diff before Docs publishes.
+- **Thu 10-29 "Citation via Hearsay"** (`where-the-citation-came-from.md`): xian's rewrite not started (last save bbed820f88, 10-25 08:17). Then check it against `fact-check-where-the-citation-came-from-2026-10-20.md`, ask about the 09-03 retro, then art, template-audit, row, publish-ready. Tease targets Tue 11-03 "The Unguarded Entrance". Don't nudge.
+- **Ship #066** (pub Wed 10-28): wait for xian's go via Exec, then template-audit and fact-check (Comms lanes).
+- **Rosenverse (Themis, for xian's talk):** two memos delivered to designinproduct `docs/mail/` (first reply 17:27, addendum 17:45: CIO 08-07 refuting the approved freeze design is the new top slide-1 pick, chaining into the 08-09 false alarm). xian and Themis choose. Themis wanted it Wednesday. Lesson from xian: for example-hunting, run a ledgered month-by-month sweep, not keyword finds that skew recent.
+- **Calendar gaps:** no posts on 10-31, 11-01, 11-05. Raise in the calendar talk with xian, along with comms priorities (business comms, Themis coordination, presentation input).
+- **Standing:** a user-facing "what changed" note when the first Production sprint ships something users can see. Mining pass next due Fri 11-06. The narrative front is Sep 6.
+- **Planning doc:** https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86 (rev 13).
+
+## OLDER STATE — 2026-10-25 21:19 PT
 - **Log:** `dev/2026/10/25/2026-10-25-0619-comms-code-log.md`, DAY-CLOSED. Close every log with exactly `<!-- DAY-CLOSED: YYYY-MM-DD -->`.
 - **Published 10-25:** "A Clean Result Needs a Version Number" (https://pipermorgan.ai/blog/a-clean-result-needs-a-version-number). Crossposted, and xian sent Docs the links.
 - **Tue 10-27 "The Caveat That Kept Disappearing":** publish-ready with Docs, row ready-for-docs. Medium is xian's after it publishes (building). If xian saves again in the composer, diff before Docs publishes.
