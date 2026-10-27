@@ -25,7 +25,7 @@ max_age_days: 90
 Each line states the concept and names what carries it (xian, 10-13: a concept must be written down, not live only in its implementation).
 
 - **xian's attention**: one short rollup, bottom line first, resolved items removed; any report, synthesis or decision request reaching Exec goes on it the same day. Carried by `dev/active/exec-attention-rollup-current.html`, published as one Artifact page, and skill `cohort-attention-rollup`. Conversation with xian runs through that page, Janus and his own messages, not memos.
-- **Open items and disposition** (do / defer / drop after 14 days): carried by `dev/active/exec-standing-items.md`, `scripts/aging-standing-items.sh` and `scripts/owed-scan.py`. The older `exec-open-items-tracker.md` is superseded (last touched 2026-07-23); ignore its "every session" lines below.
+- **Open items and disposition** (do / defer / drop after 14 days): carried by `dev/active/exec-standing-items.md`, `scripts/aging-standing-items.sh` and `scripts/owed-scan.py`. The older `exec-open-items-tracker.md` is superseded (last touched 2026-07-23).
 - **Sprint and gate progress**: PPM owns the gate; Exec reads it from `scripts/ppm-criteria-line.sh` and `scripts/sprint-truth.py` and from PPM's weekly line.
 - **Mail and per-memo push**: `scripts/mail-send.sh` (v3) and `scripts/mail4.py` (v4); a wake drains both plus the awaiting-decision label (skill `duty-cycle-tick`).
 - **Startup context**: the SessionStart hook prints this card and status; omnibus logs are read when drafting or reviewing the Weekly Ship (their trigger), not at every start; the cross-pollination brief is read at session start per CLAUDE.md.
@@ -61,7 +61,7 @@ Each line states the concept and names what carries it (xian, 10-13: a concept m
 - Sprint coordination and progress synthesis
 - Quality gate enforcement across teams
 - Strategic decision support for PM
-- Open items tracking and handoff management (`exec-open-items-tracker.md`)
+- Open items tracking and handoff management (`dev/active/exec-standing-items.md`, `dev/active/exec-carry-forward.md`)
 - Weekly Ship drafting and review
 - Migration handoff review (Chat→Code transitions; pattern stabilized across seven migrations Apr 22–26)
 - Agent coordination status monitoring
@@ -160,7 +160,7 @@ Tracker items with no progress >14 days force a do/defer/drop decision. Apply at
 
 **The policy fails when not applied**, per predecessor §6 acknowledgment of complicity in 14+ day stale items. Operational discipline:
 
-1. **At session start**: scan `dev/active/exec-open-items-tracker.md` for any item with `last-progress` >14 days
+1. **At session start**: run `scripts/aging-standing-items.sh` over `dev/active/exec-standing-items.md` for any item with no progress in >14 days
 2. **For each stale item**: pick one of:
    - **Do**: take a small action this session to advance (drop the staleness clock)
    - **Defer**: explicitly mark deferred-until-{condition} with the unblock specified
@@ -193,8 +193,8 @@ Before producing anything, work this checklist:
 
 1. **SessionStart hook output** — unread mailbox counts, today's session logs, xpoll brief location
 2. **Check `mailboxes/exec/inbox/`** — process any pending memos; move to `read/` after processing
-3. **Read most recent omnibus log(s)** in `docs/omnibus-logs/` for cross-role context
-4. **Check `dev/active/exec-open-items-tracker.md`** — apply disposition policy to anything >14 days
+3. **Read the "Now" section of `docs/briefing/BRIEFING-CURRENT-STATE.md`** and `docs/briefs/cross-pollination/current.md` (CLAUDE.md's session start); the latest omnibus log in `docs/omnibus-logs/` when Docs' notice names a divergence for you
+4. **Read `dev/active/exec-carry-forward.md`** (state, cron id, what waits on xian) and apply the disposition policy to `dev/active/exec-standing-items.md`
 5. **Check session log carry-forward** items from prior session
 6. **`git log --oneline -20`** for recent commits worth knowing about
 7. **Review any in-flight Ship draft state** in `docs/public/comms/drafts/`
@@ -209,14 +209,14 @@ Before producing anything, work this checklist:
 | Read workstream memos | Direct `Read` on `mailboxes/exec/inbox/workstream-{ship#}-{role}-{date}.md` |
 | Read GitHub issue body | `gh issue view {number}` |
 | Read Ship drafts at draft stage | Direct `Read` on `docs/public/comms/drafts/` — review can happen pre-publication |
-| Read tracker reconciliation history | `git log dev/active/exec-open-items-tracker.md` |
+| Read carry-forward history | `git log -p -- dev/active/exec-carry-forward.md` |
 | Verify a comparative claim before lifting | Open the canonical source (omnibus log, retest output, issue tracker) — never paraphrase from memory |
 
 ## Current Focus
 > **🎯 For current sprint objectives and active issues, see `docs/briefing/BRIEFING-CURRENT-STATE.md`**
 
 **Standing Responsibilities**:
-- Review and update `dev/active/exec-open-items-tracker.md` at session start and session end (apply disposition policy)
+- Review `dev/active/exec-standing-items.md` and rewrite `dev/active/exec-carry-forward.md` at session start and STOP (apply disposition policy)
 - Track open items across agent sessions (carry forward, force-decide, or close)
 - Monitor sprint phase transitions
 - Coordinate design guidance requests between roles (e.g., UX memos to CXO/PPM)
@@ -229,7 +229,7 @@ Request additional detail for:
 - **Sprint position**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
 - **Team methodology**: `docs/internal/development/methodology-core/` (esp. `methodology-00-EXCELLENCE-FLYWHEEL.md` v2.0)
 - **Active issues**: GitHub issues (use `gh issue list`)
-- **Roadmap (v15.0)**: `docs/internal/planning/roadmap/roadmap.md`
+- **Roadmap (v19.1)**: `docs/internal/planning/roadmap/roadmap.md`
 - **Vision (V2.3)**: `docs/internal/planning/current/vision.md`
 - **Strategic context**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
 - **Weekly Ship guide**: `docs/internal/development/weekly-ship-process-guide.md`
@@ -267,8 +267,8 @@ Request additional detail for:
 **Weekly Ship**: You own the synthesis process. See `docs/internal/development/weekly-ship-process-guide.md` for the full guide.
 
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
-- **Open items tracker**: `dev/active/exec-open-items-tracker.md` (living document, updated every exec session)
-- **Roadmap**: `docs/internal/planning/roadmap/roadmap.md` (v15.0)
+- **Open items**: `dev/active/exec-standing-items.md`; session state in `dev/active/exec-carry-forward.md` (the older `exec-open-items-tracker.md` is superseded)
+- **Roadmap**: `docs/internal/planning/roadmap/roadmap.md` (v19.1)
 - **Pattern catalog**: `docs/internal/architecture/patterns/`
 - **Omnibus logs**: `docs/omnibus-logs/` (daily synthesis)
 - **Session logs**: `dev/YYYY/MM/DD/` (raw execution evidence)

@@ -27,6 +27,7 @@ v628, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
   - Haiku 5.5: wait until 11-01;
   - HOST's beta shortlist;
   - Ship #066 final edit after Tuesday's post (publishes Wed 10-28).
+- **History rewrite (whenever xian takes up rule-8 history):** add HOST's briefing people list (fixed forward 10-27 on CIO's re-run) to the set. Not on the rollup on its own.
 - **Janus #2154 confirmation:** still unsent; needs xian's push approval.
 - **Old lead-scoring key:** revoke it once Lead confirms the new one (Pard memo). Not yet on the rollup.
 
