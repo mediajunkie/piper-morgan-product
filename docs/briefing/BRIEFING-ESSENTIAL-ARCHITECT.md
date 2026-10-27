@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-ARCHITECT
 valid_from: "2025-10-19"
-last_updated: "2026-09-23"
-last_verified: "2026-09-23"
+last_updated: "2026-10-27"
+last_verified: "2026-10-27"
 ---
 
 # BRIEFING-ESSENTIAL-ARCHITECT
@@ -63,9 +63,11 @@ Read these FIRST; the sections below are historical context:
 - **`docs/internal/architecture/SYSTEM.md`** — what's actually running (census-derived).
 - **`docs/internal/architecture/CONNECTORS.md`** — per-connector transport/grant truth + the
   C4 grant rule + class-aware payload-honesty rules.
-- **`reviews/2026-08-architectural-review/reorientation-plan.md`** — the four workstreams, owners,
-  dates. **Ratified sequencing: web-chat = MAINTENANCE MODE; all new build → the MCP/BYOC path;
-  MCP-path completion = PUBLIC-BETA GATE (milestone #9).** The legacy-classifier retirement
+- **`docs/internal/architecture/reviews/2026-08-architectural-review/reorientation-plan.md`** — the
+  four workstreams, owners, dates. Its 08-29 sequencing ("web-chat = maintenance mode; all new
+  build → the MCP/BYOC path") is **superseded**: the hosted web UI is the beta surface (PDR-005
+  Amendment 1, 10-23; ESSENCE v1.1 commitment 6, ratified 10-25). MCP-path completion still gates
+  public beta. The legacy-classifier retirement
   criterion (plan C2) was due a check 2026-09-30 that did not happen; stated 10-13: not met (the
   LLM classifier still serves four call sites). Its re-check trigger is the #1595 Phase 3 tail
   reaching the ruled floor (decisions.log 10-13).
@@ -152,7 +154,7 @@ fly secrets; the staged full flip is sequenced into PM's next watched round.
 
 **Technical Debt** *(2026-09-01: this list is HISTORICAL — the Leg-B census + Lead's disposal
 pipeline (epic #1698) now govern dead/75% code, and the resolved strikethroughs below are kept as
-record only. One line-item correction: `intent_service.py` is now ~14.4K lines, not ~10.4K.)*:
+record only. Its size is in the line item below, measured 10-27.)*:
 - ~~ADR-051 RequestContext migration Phase 2/3 partial adoption (#1015) — intent path adopted RequestContext; all other route/service surfaces still use `current_user.sub` / `user_id: str`; Apr 27 audit recommended completing the migration~~ — ✅ resolved 2026-05-16 as **#1015 Phase 2 Option C** (ratify-with-scope-clarification, Architect-ratified): ADR-051 AMENDED with intent-path-specific scope; RequestContext docstring updated to name the scope + Pattern-072 connection; `require_request_context` orphan dependency in `auth_middleware.py` deleted (Architect's Option 1; was 3rd 12w/Pattern-073 instance); 2 orphan tests in `tests/security/test_request_context_enforcement.py` deleted. RequestContext is now the canonical identity-and-context object for the intent path specifically; other surfaces use FastAPI dependency injection (`current_user: JWTClaims`). Adopting RequestContext beyond intent path is a Pattern-072 recognition-trigger decision (criterion: ≥3 service boundaries with state depending on identity-and-context, not just identity). Net ~+50 lines in docs, ~-80 lines in code/tests.
 - ~~OrchestrationEngine + WorkflowFactory partially abandoned post-#883 lazy-workflow; engine.create_workflow_from_intent had zero active callers but the engine reference was held in 5 places (intent_service, container init, webhook_router, 2 slack handlers); WorkflowFactory + dispatcher had 8/14 WorkflowType coverage gap silently failing~~ — ✅ resolved 2026-05-15 PM as **#1094 ENGINE-DELETION** (γ-preserve ratified by Architect): deleted `services/orchestration/engine.py` + `services/orchestration/workflow_factory.py` + `services/integrations/slack/slack_workflow_factory.py` + ~12 engine-direct tests; refactored 5 live-code consumers + ~20 test files to drop the engine kwarg; Slack handlers + intent_service now dispatch EXECUTION intents via task_type registry (Pattern-072 third-consumer trigger fires here — promotion to Proven). Workflow domain model + WorkflowRepository preserved (γ-preserve). Branch `claude/1094-engine-deletion`.
 - ~~`services/ethics/boundary_enforcer.py` — held alive by KG service; tracked as #1010~~ — ✅ resolved 2026-05-14 (KG migrated to its own KGBoundaryEnforcer; placeholder methods removed; #1089 KG-PRIVACY-FILTER filed as designed-feature replacement)
@@ -161,12 +163,10 @@ record only. One line-item correction: `intent_service.py` is now ~14.4K lines, 
 - 🚧 **LLM outputs reach users unfiltered (#1017)** — Phase 2 implementation **merged to main 2026-05-15** (`ba00185a`, branch `claude/1017-output-content-filter`): OutputFilter at decorator chokepoint on `LLMClient.complete()`; profile dispatch via `task_type` registry (10 user_visible / 1 internal / 1 mixed); Tier 1 PII regex (reused SecurityRedactor + added secret-format patterns) + Tier 2 BoundaryEnforcer-on-outputs; CXO-ratified canned phrasing on category violations with regenerate-trigger coupling; hash-only audit envelope (Pattern-064-adjacent invariant) via `log_output_filter_decision()` writing to `ethics_audit_log`; 55 new tests, 0 regressions. **Phase 3 probe set + CI verification gate + ADR-061 amendment** remain (gated on Architect + CXO co-design per CXO Q7 ratification)
 - Slash-command dispatch precedence (the hardcoded `/standup` short-circuit at intent_service.py:617) — tracked as **#1011** (post-MVP design decision)
 - CLI bypasses intent layer (future work)
-- `services/intent/intent_service.py` at **15,607 lines** as of 2026-09-23 (`wc -l`, re-verified
-  this fire — the ~10,400 then ~14.4K figures both here previously were stale; grown ~1,200 lines
-  since the last owner-attested check on 09-01. The "thin orchestrator" framing needs re-examination
-  if this trend continues; not re-derived this fire, flagged for the next full pass) — package
-  `services/intent_service/` carries the logic at ~16K LOC across 32 files (not re-verified this
-  fire, carried from the 09-01 figure)
+- `services/intent/intent_service.py` at **19,468 lines** as of 2026-10-27 (`wc -l`; it was 15,607
+  on 09-23). The package `services/intent_service/` is 49,703 lines over 59 files (`find … | wc -l`,
+  10-27). The "thin orchestrator" framing doesn't hold at this size; that's a design question for a
+  full pass, not settled here
 
 ## Catalog Citation Framework
 
