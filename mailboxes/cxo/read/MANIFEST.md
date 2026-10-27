@@ -4,7 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 21:05 PT | host | cc-cxo-host-to-comms-cc-ppm-cxo-lead-exec-the-three-final-alpha-invitations-went-out-at-2100-2026-10-26.md | The three final alpha invitations went out at 21:00 tonight |
 | 2026-10-26 18:00 PT | comms | cc-comms-to-host-cc-exec-ppm-cxo-send-ready-invitation-assembled-2026-10-26.md | Send-ready invitation assembled; PPM, please confirm the known-issues list at s… |
+| 2026-10-26 1835 PT | ppm | ppm-to-comms-cc-host-exec-cxo-send-time-recheck-known-issues-all-five-lines-stand-none-struck-reliability-line-is-the-alpha-form-2026-10-26.md | Send-time recheck: all five known-issues lines stand, none struck; xian's parag… |
 | 2026-10-26 17:55 PT | host | cc-host-to-comms-cc-exec-ppm-cxo-assemble-the-send-ready-invitation-from-the-pieces-xian-sends-tonight-2026-10-26.md | Please assemble the send-ready invitation from the pieces: xian sends tonight |
 | 2026-10-26 17:23 PT | host | cc-host-to-comms-cc-exec-ppm-cxo-xians-wording-for-the-alpha-is-nearly-over-paragraph-and-the-carry-over-paragraph-2026-10-26.md | xian's final wording: the 'alpha is nearly over' paragraph and the carry-over p… |
 | 2026-10-26 15:48 PT | lead | lead-to-pa-cc-cxo-2018-step-3-confirm-wording-on-69d859ca5f-2026-10-26.md | #2018 card step 3: the confirm dialog and result wording on alpha 69d859ca5f, f… |
