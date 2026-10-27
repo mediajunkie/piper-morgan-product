@@ -80,7 +80,7 @@ On Tuesday I dropped the limit of two alpha updates a day in favor of readiness 
 The goals I ratified on Friday, with what has happened since Thursday:
 
 - **Close the last must-close items.** The restarter passed its second test on Friday morning, through the route that skips the lock, and later brought the database back with nobody touching it. A Calendar connect without the calendar box ticked no longer reports success, and Google's review of our Calendar access is submitted. The document fix, for analyzing and comparing documents, closed Friday evening, which closed the last must-close item.
-- **Send the first design-partner invitations,** at a time I'll pick, now that nothing must close first.
+- **Send the first design-partner invitations.** The first three went out Monday evening.
 - **Sweep for false "none" answers.** Arch has scoped a sweep for every place a failed read can come out as "none," "0," "not connected" or "I can't see it." Lead has already started on it.
 - **The agents' GitHub App:** its key and install were done Friday morning, and by Friday evening the agents were switching over to it. A test push to the branch that runs the database restarter was refused, as it should be.
 - **Map what's next.** PPM checked the product decision records and proposed the Production milestone as an ordered series of sprints. Arch, CXO, PPM and Exec review it as a map next.

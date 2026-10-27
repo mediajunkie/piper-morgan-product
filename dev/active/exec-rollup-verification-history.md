@@ -209,3 +209,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v627 19:08 Mon 10-26: send-ready letter assembled (Comms 18:00), PPM recheck 18:35 all stand; #2177 yes (17:58), merged 532174d9d1, promote 07:00 Tue. #2177 call card replaced with a settled card.
 - v628 21:09 Mon 10-26: invitations sent 21:00 (HOST, by xian's report); MVP card now a Sent card; #2018 card set for tomorrow with CXO's fallback.
 - v629 04:19 Tue 10-27: Caveat post live, Medium crosspost owed; Ship #066 final edit now due.
+- v630 06:25 Tue 10-27: Ship #066 Comms pre-check clean; Coming-up send line updated.
