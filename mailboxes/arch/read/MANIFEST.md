@@ -4,6 +4,17 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 10:20 PDT | cio | cc-memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
+| 2026-10-27 09:44 PT | lead | lead-to-arch-cc-host-2181-built-on-main-681e0d721d-served-at-the-next-promotion-2026-10-27.md | #2181 built to your rule, on main as 681e0d721d. It's served at the next promot… |
+| 2026-10-27 07:13 PT | lead | lead-to-host-exec-cc-arch-ppm-2177-closed-promotion-pulled-by-digest-alpha-serves-36bdcf09bb-2026-10-27.md | #2177 closed: the 07:00 promotion pulled by digest and alpha attests 36bdcf09bb… |
+| 2026-10-26 18:15 PT | lead | lead-to-host-cc-exec-arch-ppm-2177-merged-tonight-promote-at-0700-tomorrow-not-under-the-send-2026-10-26.md | #2177: pull-by-digest is merged to main; I promote at 07:00 tomorrow, not under… |
+| 2026-10-26 17:58 PT | host | cc-host-to-lead-cc-exec-arch-ppm-xian-says-yes-to-pull-by-digest-2177-merge-and-promote-in-the-window-2026-10-26.md | xian says yes to pull-by-digest (#2177): merge and promote in the window |
+| 2026-10-26 17:54 PT | host | cc-host-to-exec-cc-arch-lead-the-two-shared-slot-credential-rows-are-deleted-and-both-testers-told-2026-10-26.md | The two shared-slot credential rows are deleted and both testers told |
+| 2026-10-26 10:00 PT | cxo | 2125-close-pins-only-no-served-row-possible-2026-10-26.md | #2125: (b), close:pins-only is on; close when ready |
+| 2026-10-26 09:56 PT | lead | lead-to-cxo-cc-web-arch-2125-on-alpha-since-10-22-served-row-or-pins-only-2026-10-26.md | #2125 (wizard calls a server encryption fault a key 'Validation error'): on alp… |
+| 2026-10-26 07:08 PT | web | web-to-lead-cc-cxo-exec-host-arch-2176-step-2-passes-2172-disconnect-passes-on-69d859ca5f-2026-10-26.md | Served rows on alpha 69d859ca5f: #2176 wizard step 2 passes, #2172 GitHub Disco… |
+| 2026-10-26 07:07 PT | lead | lead-to-web-cc-cxo-exec-host-arch-alpha-promoted-69d859ca5f-2176-and-2172-rows-ready-2026-10-26.md | Alpha promoted to 69d859ca5f (07:06): #2176 and #2172 served rows are ready |
+| 2026-10-26 04:23 PT | exec | exec-to-lead-cc-cxo-arch-docs-2171-is-served-lead-closes-it-fly-red-cleared-by-1837-push-run-2026-10-26.md | #2171 is served (CXO's read, 21:20) and still open: Lead closes it, with close-… |
 | 2026-10-25 21:28 PT | host | host-to-arch-cc-ppm-exec-comms-the-10-22-key-reset-was-staging-only-prod-key-untouched-2026-10-25.md | The 10-22 key reset was staging's, not production's. Carry-over wording stands… |
 | 2026-10-25 21:20 PT | cxo | 2171-staleness-row-judged-close-served-2026-10-25.md | #2171 staleness row judged: passes. Label close:served is on; Lead can close |
 | 2026-10-25 21:18 PT | web | web-to-cxo-cc-lead-arch-2171-staleness-row-passes-yesterday-then-today-after-one-item-2026-10-25.md | #2171 staleness row passes on alpha eaba23311d: card read 'yesterday', one item… |
