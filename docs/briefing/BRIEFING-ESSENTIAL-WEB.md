@@ -5,8 +5,8 @@ role: Web (Unicorn Web Designer)
 role-slug: web
 session-log-slug: web-code
 valid_from: "2026-08-03"
-last_updated: "2026-08-03"
-last_verified: "2026-08-03"
+last_updated: "2026-10-27"
+last_verified: "2026-10-27"
 self-authored-by: Web (Amber/pipermorgan.ai, Opus 5)
 sibling: docs/briefing/ROLE-PORTFOLIO-WEB.md (medium-pace priorities; this doc is the slow-pace identity/how-to-operate layer Rule 5 splits it from)
 ---
@@ -53,7 +53,7 @@ Run `basename "$(pwd)"` + `git branch --show-current` before any commit — the 
 
 **The publishing pipeline** (Web owns the scripts; Docs owns the skill spec that calls them): `publish-post.js`, the CLI (`scripts/publish-cli.js`), the Medium RSS fetch (`scripts/fetch-blog-posts.js`), the editorial-calendar CSV (`src/lib/editorial-calendar.ts` for build-time reads used by compose API routes, `loadCalendarLive()` for request-time reads used by `/admin/calendar`). Know which one a bug lives in before touching either — they read the same source data on different schedules and a fix to one is not a fix to the other (the admin-calendar staleness bug, 2026-07-29, was exactly this: the CSV was fresh, the build-time read wasn't).
 
-**Compose UI state**: React state + a `fieldsRef` kept live every render (not closed over at timer-arm time) is the fix shape for any autosave/timer bug here — the 2026-07-30 data-loss incident was a closure capturing stale state at arm-time, compounded by a manual-save path that didn't cancel the pending timer. If you touch the autosave path again, reproduce the exact timing in a standalone Node script before trusting a fix; there's no test runner or browser here to verify against.
+**Compose UI state**: React state + a `fieldsRef` kept live every render (not closed over at timer-arm time) is the fix shape for any autosave/timer bug here — the 2026-07-30 data-loss incident was a closure capturing stale state at arm-time, compounded by a manual-save path that didn't cancel the pending timer. If you touch the autosave path again, reproduce the exact timing in a standalone Node script before trusting a fix; jest and a Chrome browser (chrome-devtools) both run on this host, so reproduce in a standalone Node script first, then check the fix in a browser.
 
 **GitHub Contents API for draft storage** (`src/lib/github-drafts.ts`): optimistic concurrency via file SHA. A save that doesn't check the SHA first is a silent-overwrite bug waiting to happen.
 
