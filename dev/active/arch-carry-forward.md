@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-25 21:28 PDT
+last_updated: 2026-10-26 21:27 PDT
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -26,32 +26,25 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
-Day blocks before 10-25 were cut at the 10-25 STOP rewrite. Their threads are resolved, or carried below, or recorded in their own day's log and in decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
+Day blocks before 10-26 were cut at the 10-26 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
-- **10-25, closed at 21:28.** Alpha still serves `eaba23311d` (Web's /health read, 21:18): the promotion failed twice on "manifest unknown" (#2177). Code Quality on main: success (04:20Z). Detail is in the 10-25 log.
-  - **Law applied today:** ESSENCE v1.1, applied word for word (xian ratified it at 12:40, via Exec), including the connector rule's Piper-as-host clause. `promises.yaml` was ratified by xian at 14:04. The #1462 "connect GitHub at first use" mechanism is in decisions.log (15:30).
-  - **Closed:** #1966 and #2173. #2173 was validated on `7bcef2bd07` (assignee login read via `/user`; failure-shaped `assignee_unresolved`). Edge: a 401 on `/user` reads as assignee_unresolved.
-  - **#2172 (Disconnect honesty): built and validated.** `12bb67b682` plus `76b39a3133` (the `github_mcp_oauth` keychain read-back). Tests passed on `75ab9d6f30`. The served row waits on a working promotion (CXO: `close:pins-only`).
-  - **#2178 (revoke the GitHub OAuth grant at GitHub on Disconnect; never revoke a PAT):** filed by Arch, placed in C by PPM. Validate when Lead builds it.
-  - **#2174 (ADR-081 D3 compatibility check):** Lead runs it after D1 (#2151). Blocks #2163 and #1514.
-  - **#2177 (pull by digest):** branch `lead/2177-pull-by-digest` `a56a77a9ff` meets Arch's three conditions (machines agree on a digest or the run refuses; pulled RepoDigests equal the digest read; served-sha attestation kept). Optional tightening: deploy by the pushed digest, not the `promote-<sha12>` tag. Landing waits for xian's yes, via Exec. The first run shows whether Fly's machine JSON carries the digest; if it doesn't, the run refuses before alpha changes. **Validate the landed commit against the branch.**
-  - **#2176 (wizard key step):** UI only; the server side is gated (`require_setup_incomplete`, `require_admin`). The served row waits on a promotion.
-  - **#2171:** both rows served (Web 21:18, CXO `close:served` 21:20). Lead closes it. Nothing for Arch.
-  - **Edges (PPM, native blocked-by):** #2163 ← #2174 and #2151; #1514 ← #2174; #1706 ← #1441 (a hard edge, per Arch); #2018 ← #2172. `seam:resolver` is on #2151, #2172 and #2173. The #1706/#1441 sprint order is Exec's call.
-  - **Carry-over ruling** (memo to PPM, cc Comms, Exec and HOST): no migration deletes user data. The promise rests on #2157 (backups) and on master-key custody. The 10-22 key reset HOST recalled was staging's master key, not production's (HOST's 10-22 log, 16:28; checked 10-25). Comms narrowed the clause to match. The promise itself is xian's, via Exec.
-  - **Keys:** setup writes are per-user (`store_user_key`). The only unscoped LLM-key write is `migrate_key_to_keychain`, reached only by `scripts/migrate_keys_to_keychain.py`. The two shared-slot keychain rows: delete them and tell the testers, on xian's rollup (Exec 18:30). Not Arch's.
-  - **Practice:** take every memo/comment timestamp from `date` in the same command that writes it (four corrections today).
+- **10-26, closed at 21:27.** Alpha serves `69d859ca5f` (healthy, /health 21:27), promoted 07:06 by Lead. It carries only Arch-validated code (#2172's `12bb67b682` and `76b39a3133`, #2176's `2d0c56082a`). Code Quality on main: success. Tonight's invitation send was planned on this build (HOST 17:58); Arch has not seen confirmation that it went.
+  - **#2177 (pull by digest):** xian said yes (HOST 17:58). Merged as `532174d9d1`; its 3 files equal `a56a77a9ff`; Tests passed on `323712e284`. **Owed at 07:00 10-27:** Lead's promotion. Read its log: the pulled `RepoDigests` equal the digest read, and the attestation passes. A refusal on a missing `image_ref.digest` leaves alpha unchanged. The optional digest-deploy tightening is Lead's follow-up after a passing digest run.
+  - **Closed today:** #2171 (served), #2172 (pins-only; served on a PAT account only), #2176 (served), #2109 (pins-only), #2125 (pins-only). `label:architecture` open: 10.
+  - **#2018 (dead GitHub connection, recovery from the UI):** PA's card waits on xian's 15 minutes, via Exec. Arch checked step 3 on source (#2018 comment 6428824719): GitHub Disconnect never calls GitHub, so a grant revoked there can't change its answer.
+  - **#2178** (GitHub-side revoke on Disconnect; never a PAT): placed in C. Validate when Lead builds it.
+  - **#2174** (ADR-081 D3 check): Lead, after D1 (#2151). Blocks #2163 and #1514.
+  - **Shared-slot keychain rows:** deleted by xian (52→50) and both testers told (HOST 17:54). Thread closed.
+  - **Carry-over:** the 10-22 key reset was staging's (HOST's 10-22 log, 16:28). The promise rests on #2157 (backups) and master-key custody; the decision is xian's, via Exec.
+  - **Practice:** take every memo/comment timestamp from `date` in the same command that writes it.
 - **Still open from earlier days (each with its owner):**
-  - **Lead's five env-token reads plus their forcing test (ADR-081 D2 follow-on):** validate from source plus Tests when they land.
+  - **Lead's ADR-081 D2 env-token reads plus their forcing test:** validate from source plus Tests when they land.
   - **#2166 Share repair (Production D, Arch's design, decisions.log 10-24 18:45):** validate when Lead builds it.
   - **Haiku 5.5 router/classifier screen:** about $4, rule-7 batch. Waits for 11-01, or for a cap from xian via Exec. Screen it before #2149.
-  - **HOST, with xian present:** the served refusal check (a chat turn from an account with no key of its own) and HOST's Drafts 1 and 2 (DB reads).
-  - **#2139** (doc from the conversation) and **#2135** (trust stage, dormant, tripwire landed).
-  - **#2112:** only the connected-account row is open (xian's calendar account via Exec).
-  - **#2123:** CXO's served cross-account row. It closes when the ADR-081 D2 gate plus its pin are live.
-  - **#1897 (unit 4b):** measure single-op accuracy before shipping.
-  - **Q5 denominator:** open; Arch recommends the flat test. **Bets 001–003:** PM TO FILL.
-  - **GitHub criteria line:** 12 open with `label:architecture` (21:28, 10-25); #2172, #2174 and #2178 are new since 10-24. Open each issue at START, rather than writing a row from the list.
+  - **HOST, with xian present:** the served refusal check (a chat turn from an account with no key of its own) and HOST's Drafts 1 and 2.
+  - **#2139** and **#2135** (dormant, tripwire landed). **#2112:** the connected-account row (xian). **#2123:** closes when the ADR-081 D2 gate plus its pin are live.
+  - **#1897 (unit 4b):** measure single-op accuracy before shipping. **Q5 denominator:** open (flat test recommended). **Bets 001–003:** PM TO FILL.
+  - **GitHub criteria line:** open each `label:architecture` issue at START rather than writing a row from the list.
 
 ## Standing hard rules (load-bearing; full incident detail in decisions.log if ever needed)
 
