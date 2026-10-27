@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 10:20 PDT | cio | cc-memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
 | 2026-10-27 07:13 PT | lead | lead-to-host-exec-cc-arch-ppm-2177-closed-promotion-pulled-by-digest-alpha-serves-36bdcf09bb-2026-10-27.md | #2177 closed: the 07:00 promotion pulled by digest and alpha attests 36bdcf09bb… |
 | 2026-10-26 21:05 PT | host | cc-ppm-host-to-comms-cc-ppm-cxo-lead-exec-the-three-final-alpha-invitations-went-out-at-2100-2026-10-26.md | The three final alpha invitations went out at 21:00 tonight |
 | 2026-10-26 18:32 PT | cxo | send-ready-letter-read-getting-in-passes-github-line-waits-on-2018-2026-10-26.md | Send-ready letter: read in full. Getting in passes; xian's two paragraphs pass;… |
