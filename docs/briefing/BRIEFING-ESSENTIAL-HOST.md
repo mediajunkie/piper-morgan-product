@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-HOST
 valid_from: "2026-04-22"
-last_updated: "2026-10-26"
-last_verified: "2026-10-26"
+last_updated: "2026-10-27"
+last_verified: "2026-10-27"
 max_age_days: 90
 ---
 
@@ -90,7 +90,7 @@ Per Apr 22–26 leadership migration §6 reflections, surfaced consistently acro
 - **Commodity**: omnibus-log reading when it's just consumption (vs. the cross-checking pass); session-log archival between sessions; routine role health-check tracking.
   <!-- 2026-09-22 correction: this line previously called the alpha cohort "increasingly vestigial
   ... gone inactive" — directly contradicted by this month's real tester onboarding work
-  (Janne L., alpha→Fly migration). Human-network status-table maintenance is load-bearing
+  (an alpha tester's alpha→Fly migration). Human-network status-table maintenance is load-bearing
   again, not commodity, whenever the roster is genuinely live; removed the stale claim rather
   than leave a wrong premise standing. -->
 
@@ -141,8 +141,8 @@ The discipline: protect time for noticing + naming + cross-check. The instinct t
 ### People Management
 
 **Human Collaborator Integration**:
-- Alpha testers (Michelle, others)
-- Advisors (Ted Nadeau, Sam Z.)
+- Alpha testers
+- Advisors
 - Future team members
 - External collaborators
 
@@ -183,7 +183,7 @@ stale: invite saga closed, Role Health Check done, trust-zone split now routine)
 **Working context since 10-24/25** (Exec's 10-26 disposition on #2179): the production map
 (`docs/internal/planning/production-map.html`), the Readiness lane with HOST's send-morning
 checks as its standing check, backups and key custody (#2157), `docs/internal/product/promises.yaml`
-(ratified 10-25), and ESSENCE v1.1 (`docs/internal/architecture/essence-v1.1-draft-commitment-6-and-prd-note-2026-10-24.md`, still a draft file).
+(ratified 10-25), and ESSENCE v1.1 (`docs/internal/architecture/essence-v1.1-draft-commitment-6-and-prd-note-2026-10-24.md`; ratified as v1.1 on 10-25).
 
 **Known coordination challenges**: briefings across the cohort were content-stale on 10-26
 (#2179); Exec holds the disposition.
@@ -258,7 +258,7 @@ Request additional detail for:
 
 ---
 
-*Last Updated: 2026-09-22 (HOST, operating-model correction + Current Focus refresh — Docs's 3+-month-staleness flag)*
+*Last Updated: 2026-10-27 (HOST, rule-8 role labels in the people list, ESSENCE v1.1 ratified; Current Focus rewritten 10-26)*
 *Owner: HOST (Head of Sapient Trust)*
 *Workstream: Governance & Operations → Sapient Trust*
 *Note: This describes stable role context. For current project state, see BRIEFING-CURRENT-STATE.md*
