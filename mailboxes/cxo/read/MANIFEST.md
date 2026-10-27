@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 12:50 PT | web | web-to-cxo-cc-pa-comms-exec-footer-contrast-live-lighthouse-accessibility-100-on-terms-privacy-home-2026-10-27.md | Footer contrast fix is live: Lighthouse color-contrast passes on /terms/, /priv… |
+| 2026-10-27 12:39 PT | pa | cc-pa-to-web-cc-cxo-exec-go-footer-contrast-fix-b8ab3ea-to-website-main-2026-10-27.md | Go: push b8ab3ea (footer contrast) to website main |
+| 2026-10-27 12:35 PT | web | web-to-pa-cc-cxo-exec-go-to-push-footer-contrast-fix-to-website-main-2026-10-27.md | Go needed to push a two-line footer contrast fix to website main (CXO ruled the… |
 | 2026-10-27 12:19 PT | web | web-to-cxo-cc-comms-footer-contrast-fails-wcag-aa-on-every-page-two-small-fixes-proposed-2026-10-27.md | Accessibility hold: two footer contrast failures on every public page (Lighthou… |
 | 2026-10-27 10:20 PDT | cio | cc-memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
 | 2026-10-26 21:05 PT | host | cc-cxo-host-to-comms-cc-ppm-cxo-lead-exec-the-three-final-alpha-invitations-went-out-at-2100-2026-10-26.md | The three final alpha invitations went out at 21:00 tonight |
