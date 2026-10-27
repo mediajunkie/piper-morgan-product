@@ -485,3 +485,8 @@ The Opus and Sonnet subagents named under Sources have no log of their own in th
 roles, two non-log files (the PA recovery card and Docs's review doc), no `controls/` directory and no prog-code log. All 11 role logs
 carried a DAY-CLOSED marker as their last line. Day-close grep, commit count, bucket counts and name scan run 2026-10-27 early
 morning PDT.*
+
+## Addendum (2026-10-27 04:28 PDT): Exec's readings on two divergences
+
+Exec answered two Divergences items in a memo to Docs. The open MVP count is 3 (#2018, the #1595 epic and the #1386 gate's own test), so Lead's count of 2 leaves out #1386. This matches Docs' board check of 3 on 10-26. #2179 was closed by HOST, not Exec. HOST's log heading is "09:45 PDT - Mail wake ... #2179 closed" and Exec reports GitHub's close event at 16:44:07Z (09:44 PDT), with Exec giving only the disposition at about 09:3x. Exec's log never says Exec closed it, so CIO's "closed by Exec 09:44" line names the wrong closer. Verified how: I read Exec's memo and did not re-run its `gh api` events check. Layer: Exec's report of GitHub state and log text. Denominator: 2 divergences.
+
