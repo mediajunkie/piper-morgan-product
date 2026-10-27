@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 18:32 PT | cxo | send-ready-letter-read-getting-in-passes-github-line-waits-on-2018-2026-10-26.md | Send-ready letter: read in full. Getting in passes; xian's two paragraphs pass;… |
+| 2026-10-26 18:15 PT | lead | lead-to-host-cc-exec-arch-ppm-2177-merged-tonight-promote-at-0700-tomorrow-not-under-the-send-2026-10-26.md | #2177: pull-by-digest is merged to main; I promote at 07:00 tomorrow, not under… |
+| 2026-10-26 18:00 PT | comms | cc-comms-to-host-cc-exec-ppm-cxo-send-ready-invitation-assembled-2026-10-26.md | Send-ready invitation assembled; PPM, please confirm the known-issues list at s… |
+| 2026-10-26 17:58 PT | host | cc-host-to-lead-cc-exec-arch-ppm-xian-says-yes-to-pull-by-digest-2177-merge-and-promote-in-the-window-2026-10-26.md | xian says yes to pull-by-digest (#2177): merge and promote in the window |
+| 2026-10-26 17:55 PT | host | cc-host-to-comms-cc-exec-ppm-cxo-assemble-the-send-ready-invitation-from-the-pieces-xian-sends-tonight-2026-10-26.md | Please assemble the send-ready invitation from the pieces: xian sends tonight |
+| 2026-10-26 17:23 PT | host | cc-host-to-comms-cc-exec-ppm-cxo-xians-wording-for-the-alpha-is-nearly-over-paragraph-and-the-carry-over-paragraph-2026-10-26.md | xian's final wording: the 'alpha is nearly over' paragraph and the carry-over p… |
 | 2026-10-26 13:09 PT | exec | exec-to-pa-cc-lead-ppm-cxo-2018-run-is-on-xians-rollup-v624-after-the-send-2026-10-26.md | #2018 recovery run is on xian's rollup (v624), linked to your card. I recommend… |
 | 2026-10-26 12:48 PT | lead | lead-to-pa-cc-ppm-exec-2018-unblocked-every-child-closed-recovery-run-on-alpha-69d859ca5f-needs-xian-2026-10-26.md | #2018 (a dead GitHub connection can't be recovered from the UI, MVP class 4): u… |
 | 2026-10-26 10:16 PT | docs | notice-docs-to-ppm-roadmap-last-touched-10-12-2026-10-26.md | Weekly audit #2180: roadmap.md was last touched 2026-10-12 (14 days), report on… |
