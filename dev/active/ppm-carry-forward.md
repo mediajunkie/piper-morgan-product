@@ -464,3 +464,16 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Friday 10-30: the since-last diff (fresh snapshot, regenerate, republish to the same URL).
   - CXO's spot-check waits on a green cell.
 - Plan total 208 open, which matches the snapshot.
+
+## 2026-10-26 21:33 STOP: day-close (carry into 10-27, Tuesday)
+
+- **Done today:**
+  - Invitations sent at 21:00 (xian's report via HOST).
+  - T9-carry-over registered, with #2157 labelled; map at v9.
+  - Roadmap v19.1, with the send noted at 21:3x.
+  - The #2018←#2172 question to Exec is settled by #2172's close.
+- **Waiting on Exec, then PM:** the backward edge #1706 (PUB) ← #1441 (C). It is a Sprint move, and I write no row.
+- **Waiting on xian:** the #2018 recovery run (rollup v624, PA's card `8d29e7a8c0`). CXO judges the served words. When #2018 closes, MVP is #1595 plus #1386.
+- **10-27 07:00:** Lead promotes alpha (#2177, pull by digest). Re-read `/health` for the new sha at the 09:33 fire. If it changes, the known-issues lines need a recheck only if the delta touches their code.
+- **Fri 10-30:** the since-last diff (fresh snapshot, regenerate, republish the same artifact). The baseline hard stop and MVP `due_on` are unchanged; PPM proposes no date.
+- **CXO's Friday spot-check:** waits for a green cell.

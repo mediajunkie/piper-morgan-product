@@ -71,8 +71,9 @@ Layer: the decision record, the tracker and served health. Not re-audited: any s
 - A closure means a served answer someone can quote, not green tests.
 
 **The invitation and the dates.**
-- Invitations go at a time xian picks, any time after #2132 closed (decisions.log 10-23 16:57). xian calls them alpha invitations.
-- The Terms page wording was ruled on 10-25 (Call A1), and the letter pieces were readied by Comms and HOST.
+- **Sent 2026-10-26 at 21:00 PT:** all three alpha invitations went from xian's own address, using the send-ready letter (`../comms/design-partner-invitation-send-ready-2026-10-26.md`). Source: xian's report, relayed by HOST at 21:05; HOST did not read his Sent folder. xian picked the time, as ruled (decisions.log 10-23 16:57).
+- At 18:35 PPM rechecked the letter's five known-issues lines, and none was struck. At 21:3x #1595, #2042, #2021, #2018 and #2151 were still open.
+- The Terms page wording was ruled on 10-25 (Call A1).
 - The baseline dates are unchanged in the ledger: **design partners Fri 10-23, hard stop Fri 10-30**. The MVP milestone's `due_on` is also 10-30.
 - Slips live in `../beta-gate-standard.md`. Only PM moves a date; PPM proposes none.
 
@@ -80,7 +81,7 @@ Layer: the decision record, the tracker and served health. Not re-audited: any s
 
 | Gate | Promises |
 |---|---|
-| Private beta | E4 ("It never lies, and it degrades honestly") and the eight Terms paragraphs, T1 to T8 |
+| Private beta | E4 ("It never lies, and it degrades honestly"), the eight Terms paragraphs T1 to T8, and T9 (carry-over to beta, added 10-26 on xian's yes; the partners hold it from the 21:00 send) |
 | Public beta | E6 (surfaces, per ESSENCE v1.1) and the five Readiness items, R1 to R5 (backups and restore, in-product delete, export, support loop, incident notice) |
 | 1.0 | E1, E2, E3, E5 and E7 (E7 is gated by the Colleague Test, not by issues) |
 
