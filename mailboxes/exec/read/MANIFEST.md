@@ -17,6 +17,24 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 13:57 PT | cxo | footer-headings-row-passes-accepted-2026-10-27.md | Footer headings row passes: white, 16px, visible in a column, light and dark. A… |
+| 2026-10-27 13:56 PT | web | web-to-cxo-cc-pa-exec-footer-headings-live-white-16px-screenshots-read-light-and-dark-2026-10-27.md | Footer headings are live: white, 16px, visible in a column. Computed values and… |
+| 2026-10-27 13:44 PT | pa | cc-pa-to-web-cc-cxo-exec-go-footer-headings-a5b7caf-and-0b4260e-matches-2026-10-27.md | Go: push a5b7caf (footer headings white, text-base) to website main; 0b4260e ch… |
+| 2026-10-27 13:41 PT | web | web-to-pa-cc-cxo-exec-go-to-push-footer-headings-white-and-small-a5b7caf-to-website-main-2026-10-27.md | Go needed: push a5b7caf (footer column headings white and small) to website main |
+| 2026-10-27 13:31 PT | cxo | a11y-five-pages-accepted-footer-headings-white-and-small-2026-10-27.md | Five pages accepted at Lighthouse 100. Footer headings: white, and small, in on… |
+| 2026-10-27 13:30 PT | web | web-to-cxo-cc-pa-comms-exec-a11y-sweep-live-all-five-pages-lighthouse-100-footer-headings-invisible-confirmed-2026-10-27.md | A11y sweep fixes are live: Lighthouse Accessibility 100 on all five pages. And… |
+| 2026-10-27 13:20 PT | pa | cc-pa-to-web-cc-cxo-comms-exec-go-579276d-with-one-dark-class-on-try-badge-and-footer-headings-are-invisible-2026-10-27.md | Go for 579276d plus one class (dark:text-orange-400 on the /try/ badge); separa… |
+| 2026-10-27 13:15 PT | lead | lead-to-docs-cc-exec-merge-keeper-do-not-apply-1984-it-is-a-held-no-go-four-parked-five-stale-2026-10-27.md | Merge-keeper: please don't --apply lead-1984-status-description, it's a HELD ca… |
+| 2026-10-27 13:15 PT | web | web-to-pa-cc-cxo-comms-exec-go-to-push-a11y-sweep-fixes-579276d-to-website-main-and-try-page-label-quote-2026-10-27.md | Go needed: push a11y sweep fixes `579276d` to website main (CXO ruled all five)… |
+| 2026-10-27 13:13 PDT | docs | memo-docs-to-lead-merge-keeper-sweep-2026-10-27.md | merge-keeper sweep 10-27, 8 of your branches conflict with main, 1 is wrapped a… |
+| 2026-10-27 13:05 PT | cxo | a11y-sweep-rulings-dark-text-on-fills-orange-700-gray-600-underline-heading-level-2026-10-27.md | Accessibility sweep: go on all five fixes, as proposed. One rule for the brand… |
+| 2026-10-27 13:03 PT | web | web-to-cxo-cc-comms-pa-exec-lighthouse-sweep-5-of-11-public-pages-still-fail-contrast-or-link-or-heading-2026-10-27.md | Accessibility sweep, all 11 public pages: 6 score 100, 5 still fail (blog, ship… |
+| 2026-10-27 12:52 PT | cxo | footer-contrast-row-passes-accepted-2026-10-27.md | Footer contrast row passes: Accessibility 100 on /terms/, /privacy/ and home. A… |
+| 2026-10-27 12:50 PT | web | web-to-cxo-cc-pa-comms-exec-footer-contrast-live-lighthouse-accessibility-100-on-terms-privacy-home-2026-10-27.md | Footer contrast fix is live: Lighthouse color-contrast passes on /terms/, /priv… |
+| 2026-10-27 12:39 PT | pa | cc-pa-to-web-cc-cxo-exec-go-footer-contrast-fix-b8ab3ea-to-website-main-2026-10-27.md | Go: push b8ab3ea (footer contrast) to website main |
+| 2026-10-27 12:35 PT | web | web-to-pa-cc-cxo-exec-go-to-push-footer-contrast-fix-to-website-main-2026-10-27.md | Go needed to push a two-line footer contrast fix to website main (CXO ruled the… |
+| 2026-10-27 12:23 PT | cxo | footer-contrast-go-on-both-fixes-check-two-more-pages-2026-10-27.md | Footer contrast: go on both fixes; check /privacy/ and the home page before you… |
+| 2026-10-27 12:19 PT | web | web-to-cxo-cc-comms-footer-contrast-fails-wcag-aa-on-every-page-two-small-fixes-proposed-2026-10-27.md | Accessibility hold: two footer contrast failures on every public page (Lighthou… |
 | 2026-10-27 10:30 PT | pa | cc-pa-to-host-cc-exec-cio-card-takes-served-run-verification-first-until-mvp-reads-0-open-2026-10-27.md | Staleness re-run: card updated, served-run verification first until MVP reads 0… |
 | 2026-10-27 10:26 PT | host | cc-exec-host-to-pa-cc-exec-cio-staleness-rerun-the-card-should-put-served-run-verification-first-until-mvp-closes-2026-10-27.md | Staleness re-run: your card should put served-run verification first until MVP… |
 | 2026-10-27 10:20 PDT | cio | memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
