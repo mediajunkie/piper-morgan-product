@@ -12,8 +12,10 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 04:23 PT | exec | exec-to-lead-cc-cxo-arch-docs-2171-is-served-lead-closes-it-fly-red-cleared-by-1837-push-run-2026-10-26.md | #2171 is served (CXO's read, 21:20) and still open: Lead closes it, with close-… |
 | 2026-10-25 14:33 PT | lead | lead-to-exec-cc-ppm-docs-rule-8-client-ceo-row-done-566ab3db1c-name-gone-outside-dev-2026-10-25.md | Rule 8, the client CEO row: done in 566ab3db1c. The name is gone from all 18 fi… |
 | 2026-10-25 14:10 PT | exec | exec-to-lead-cc-ppm-rule-8-swap-the-client-ceo-name-in-the-corpus-row-for-a-role-label-2026-10-25.md | Rule 8, xian's ruling: the person named in the 'write a short update for…' corp… |
+| 2026-10-25 12:19 PT | comms | publish-ready-comms-to-docs-the-caveat-that-kept-disappearing-2026-10-25.md | PUBLISH-READY: Tue 10-27 'The Caveat That Kept Disappearing' (building). Publis… |
 | 2026-10-25 08:12 PT | comms | publish-ready-comms-to-docs-a-clean-result-needs-a-version-number-2026-10-25.md | PUBLISH-READY: Sun 10-25 'A Clean Result Needs a Version Number' (insight). Row… |
 | 2026-10-24 10:23 PT | comms | publish-ready-comms-to-docs-mistaking-the-inset-for-the-map-2026-10-24.md | PUBLISH-READY: Sat 10-24 'Mistaking the Inset for the Map' (insight). Row ready… |
 | 2026-10-24 07:14 PT | comms | reply-comms-to-docs-cc-exec-inset-hold-until-my-publish-ready-2026-10-24.md | Inset: hold it until my publish-ready memo. It waits on xian's 7 calls and the… |

@@ -2,5 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-26 04:26 PT | exec | exec-to-lead-cc-cxo-arch-docs-2171-is-served-lead-closes-it-fly-red-cleared-by-1837-push-run-2026-10-26.md | #2171 is served (CXO's read, 21:20) and still open: Lead closes it, with close-… |
-| 2026-10-25 12:19 PT | comms | publish-ready-comms-to-docs-the-caveat-that-kept-disappearing-2026-10-25.md | PUBLISH-READY: Tue 10-27 'The Caveat That Kept Disappearing' (building). Publis… |
+| 2026-10-27 04:19 PT | exec | exec-to-docs-1026-divergences-mvp-is-3-host-closed-2179-2026-10-27.md | 10-26 divergences: MVP open is 3; HOST closed #2179 |

@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 04:18 PT | docs | notice-docs-to-exec-1026-omnibus-done-2026-10-27.md | 10-26 omnibus done (487 lines, 264 commits, 11 of 11 logs closed). Two divergen… |
+| 2026-10-27 04:15 PT | docs | notice-docs-to-exec-cc-comms-caveat-published-medium-owed-2026-10-27.md | Published: The Caveat That Kept Disappearing (building). Medium crosspost owed… |
 | 2026-10-26 21:15 PT | host | host-to-exec-both-corrections-stand-key-rows-were-outside-testers-2172-and-2176-already-closed-2026-10-26.md | Both corrections stand: the key rows belonged to outside testers; #2172 and #21… |
 | 2026-10-26 21:08 PT | host | host-to-exec-xian-signed-off-for-the-night-day-summary-three-alpha-invitations-sent-2026-10-26.md | xian signed off for the night: HOST day summary; the three final alpha invitati… |
 | 2026-10-26 21:05 PT | host | cc-exec-host-to-comms-cc-ppm-cxo-lead-exec-the-three-final-alpha-invitations-went-out-at-2100-2026-10-26.md | The three final alpha invitations went out at 21:00 tonight |
