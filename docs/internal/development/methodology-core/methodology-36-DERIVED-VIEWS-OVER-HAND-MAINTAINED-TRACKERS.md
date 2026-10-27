@@ -2,7 +2,7 @@
 type: methodology
 title: Mechanism Beats Vigilance — Promote Recurring Vigilance-Disciplines to Mechanisms
 valid_from: "2026-05-24"
-last_updated: "2026-10-23"
+last_updated: "2026-10-27"
 ---
 
 # Mechanism Beats Vigilance — Promote Recurring Vigilance-Disciplines to Mechanisms
@@ -116,6 +116,8 @@ Promotion has a side effect the diagnostic doesn't cover. Step 3 assumes the lap
 **Evidence (CIO, 2026-10-13, `docs/internal/research/role-duties-operational-vs-official-2026-10-13.md`):** across 11 roles, 13 of 164 written duties had moved into a script, skill step or hook, and **none of those 13 had lapsed**. Of the 37 not seen in 30 days of logs, nearly all were specialist judgement duties: CXO's scoring and voice work, PA's product-shadow moments, CIO's methodology audit (179 days against an 8-week maximum), Arch's ADR audits, PPM's PDR work. Where it was measurable, roles spent 20 to 35% of their entries on their own priorities. CIO spent 0%.
 
 **What to do:** give unmechanizable work a *trigger* with a visible miss, not a mechanism. The role card plus the daily `Drift:` line (duty-cycle-tick v1.51) is the first such trigger. It names priority 1 at every start and asks once a day whether yesterday served it. The check is whether the specialist share moves on a re-run (about 10-27). If it doesn't, the trigger is being written, not acted on, and it needs a cost when missed, such as a dated standing-items row per role. The role-level shape is catalogued as Pattern-075 (Load-Bearing Work Crowded Out by Commodity Work, Emerging, elevated from PP-002 the same day).
+
+**The re-run, 2026-10-27 (`docs/internal/research/role-duties-rerun-2026-10-27.md`):** the trigger moved the share for some roles, not the cohort. Of 9 roles measurable both times, 4 rose (CXO 20% to 49%, Comms, Docs, and CIO from 0% to 10% by content), 2 held (Arch, HOST) and 3 fell (Exec, Web, PA, in the invitation-send week). Duties not seen fell from 37 of 164 to 14 of 166, and the 13 moved duties still all run. **New in this run:** two triggers added on 10-13 as *log habits*, Web's accessibility line per push and Docs's merge-keeper sweep, lapsed within days. **So a judgement trigger kept by habit decays nearly as fast as no trigger.** Give it a printed line where the agent already looks (the corollary below), or the dated standing-items row named above, within the week it's adopted.
 
 ## Corollary — a skipped step gets a status line and a gate, not stronger prose (2026-10-23)
 

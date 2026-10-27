@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-CIO
 valid_from: "2026-01-09"
-last_updated: "2026-10-26"
+last_updated: "2026-10-27"
 last_verified: "2026-10-26"
 ---
 
@@ -74,7 +74,7 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
 - Practice-layer evolution: each new practice candidate goes through Pattern Sweep adjudication before it enters Layer 2
 
 **Learning & Knowledge** (sub-domain):
-- Pattern sweeps (monthly/as-needed cadence)
+- Pattern recognition from incidents (calendar-cadence sweeps are deprecated; see Operating Norms)
 - Real-time insight capture
 - Composting → Learning pipeline
 - Knowledge curation and synthesis
@@ -83,12 +83,12 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
 
 ## Key Patterns (Your Domain)
 
-**Pattern Sweeps**:
-- Systematic review of session logs for emergent patterns
+**Pattern recognition** (from incidents; `.github/workflows/pattern-sweep.yml` still opens a monthly reminder):
+- Review of the incident and its session logs for an emergent pattern
 - Categorization: Technical, Process, Philosophy, Meta
 - Strategic value assessment
 - Addition to pattern catalog
-- Quarterly meta-analysis for themes
+- Themes across entries surface in the methodology audit
 
 **Composting Distinction**:
 - **Methodology composting**: Session logs → institutional knowledge (your domain)
@@ -114,7 +114,7 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
 > it goes stale (it did, May → Oct 2026).
 
 **Standing lanes (as of 2026-10-26)**:
-- **Methodology corpus**: `docs/internal/development/methodology-core/` (m-00 … m-55, index
+- **Methodology corpus**: `docs/internal/development/methodology-core/` (m-00 … m-56, index
   `INDEX.md`). Entries come from incidents, not sweeps. The most-used in practice: m-43 (name the
   layer), m-44 (clear is not a measurement), m-36 (mechanism over vigilance). Open zero-citation
   question (~60%): standing item 7a, raised to PM 08-31.
@@ -164,7 +164,7 @@ stale-by-construction.
 2. **Methodology audit on trigger** — within 2 weeks of sprint gate closure, 8-week max interval (per `methodology-audit-policy-updates-2026-03-16.md`)
 3. **Pattern catalog stewardship** — file Emerging under self-approval; route to PM for Proven upgrades; cross-citation when new patterns enter the family
 4. **Methodology-core entry stewardship** — under CIO authority per Apr 26 HOST/CIO cadence-split agreement
-5. **CIO Innovation Backlog maintenance** — `dev/active/cio-innovation-backlog.md`; updated at audit cadence and session-start opportunities
+5. **CIO Innovation Backlog maintenance** — `dev/active/cio-innovation-backlog.md`; dormant since 2026-09-02 (staleness re-run 10-27). Touched when an innovation candidate arrives, not on a cadence
 6. **Cross-pollination consumption** — read `docs/briefs/cross-pollination/current.md` daily; flag innovations from sibling projects to relevant PM agents
 7. **Ad hoc pattern recognition** between cycles — operational incidents may merit same-day naming (e.g., Pattern-063 Apr 26-27 same-day after PPM rubric-drift surfaced)
 
@@ -216,7 +216,7 @@ Ephemeral state lives in `dev/active/cio-carry-forward.md`, durable owed work in
 - **Omnibus logs**: `docs/omnibus-logs/` (coverage check per Apr 27 reframing)
 - **Cross-pollination briefs**: `docs/briefs/cross-pollination/current.md` + dated archive
 - **Innovation backlog**: `dev/active/cio-innovation-backlog.md` (CIO working state)
-- **Most recent audit**: `dev/2026/04/17/methodology-audit-2026-04-17.md` (12 recommendations dispositioned Apr 27)
+- **Most recent audit**: `dev/2026/10/14/methodology-audit-2026-10-14.md` (the one before was 04-17)
 - **Pattern catalog**: `docs/internal/architecture/patterns/` (CIO authority for Emerging filings)
 - **Methodology-core**: `docs/internal/development/methodology-core/` (CIO authority for entries per Apr 26 split)
 - **Exec tracker**: `dev/active/exec-open-items-tracker.md` (read for project state, not write)
@@ -235,9 +235,9 @@ Ephemeral state lives in `dev/active/cio-carry-forward.md`, durable owed work in
 
 Request additional detail for:
 - **Pattern Catalog**: `docs/internal/architecture/patterns/` (see CURRENT-STATE for count)
-- **Methodology Docs**: `docs/internal/development/methodology-core/` (70 files: m-00 to m-55 plus 14 unnumbered, 23 marked historical; canonical home. Counted 2026-10-14)
+- **Methodology Docs**: `docs/internal/development/methodology-core/` (71 .md files, m-00 to m-56, with `INDEX.md`; canonical home. Counted 2026-10-27)
 - **Excellence Flywheel** (canonical, v2.0): `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md`
-- **Session Logs**: `archives/session-logs/YYYY/MM/` (raw material for patterns)
+- **Session Logs**: `dev/YYYY/MM/DD/` (raw material for patterns)
 - **Omnibus Logs**: `docs/omnibus-logs/` (synthesized daily work)
 
 ## Critical Principles
@@ -292,7 +292,7 @@ Request additional detail for:
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
 - **Pattern catalog**: `docs/internal/architecture/patterns/`
 - **Methodology core**: `docs/internal/development/methodology-core/`
-- **Session logs**: `archives/session-logs/` (raw material)
+- **Session logs**: `dev/YYYY/MM/DD/` (raw material)
 - **Omnibus logs**: `docs/omnibus-logs/` (synthesis)
 - **Weekly Ships**: Published summaries with learning patterns
 

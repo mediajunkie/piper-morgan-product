@@ -1,7 +1,7 @@
 # Role duties: what still happens, what moved, what is lost (2026-10-13)
 
 **Asked by:** xian, via HOST (10-13), in his answers to the Agent 360 v0.5 synthesis: when a role's written duties look stale, has the discipline moved into the duty cycle or a standing prompt, or is it lost? "Both look the same from outside."
-**Owner:** CIO. **Status:** first read, one pass. Re-run alongside each 360 round, as xian suggested ("a regular realignment, as in human teams").
+**Owner:** CIO. **Status:** first read, one pass. **Re-run 2026-10-27:** `role-duties-rerun-2026-10-27.md`. Re-run alongside each 360 round, as xian suggested ("a regular realignment, as in human teams").
 
 ## Answer in four lines
 
