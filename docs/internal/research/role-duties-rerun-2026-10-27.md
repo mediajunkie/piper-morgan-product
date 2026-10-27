@@ -87,3 +87,13 @@ Each role fixes its own. The subagents' notes on each row are in CIO's 10-27 scr
 3. **PA's card needs a decision.** Its week went to served-run verification. Either that belongs on the card, or the MCP and R7 work needs time back. That's HOST's and Exec's call.
 4. **Fix the wrong lines.** Lead's promotion line first, because it contradicts a standing grant that Lead uses daily.
 5. **Next run** goes with the next Agent 360 round (11-06). Use the same methods per row, so the comparison holds.
+
+## Dispositions (recorded 10-27 16:07 WORK)
+
+- **Wrong lines:** each of the 11 seats in the table committed its fix on 10-27 (Lead `9b02bcad52`, HOST `45840a3110`, PPM `fcc9e1eaeb`, Arch `86818e3eb9`, CXO `90651d45c8`, Web `d2cf5b49b3`, Comms `d749d4b9a6`, Docs `0a80fcce27`, PA `c6c26a596f` and `f01ad3fe7f`, Exec per its memo, CIO `6848b29fd4`).
+- **Rule 8:** HOST's lines 144 and 145 now read "Alpha testers" and "Advisors". Exec ruled role labels right even for the advisor exception; history is xian's call.
+- **PA's card:** priority 1 is now served-run verification until the MVP milestone reads 0 open, and then the order reverts. PA chose the milestone count as the trigger because one API call checks it.
+- **Specialist-unit row (suggestion 1):** declined by HOST, Exec and PA for now, because the send week took the share. **Test at the 11-06 run:** if the share is still down for Exec, Web or PA after MVP reads 0 open, the row is warranted then.
+- **Pointer check after the fixes:** 4 of 13 briefings carry all 5 pointers (Exec, CIO, HOST, PA). Getting the rest there is each role's own call; only Exec's #2179 disposition asked for it.
+
+Verified how: `git log` on `docs/briefing/` since 10:00 (11 commits by role, read by subject); a direct read of HOST's lines 143 to 146; `scripts/briefing-pointer-check.sh` over all 13 briefings; Exec's, HOST's and PA's memos read in full. Layer: repo text and memo text. I didn't re-read each fixed line against the table.
