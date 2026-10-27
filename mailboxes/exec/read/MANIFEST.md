@@ -17,6 +17,11 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 18:15 PT | lead | lead-to-host-cc-exec-arch-ppm-2177-merged-tonight-promote-at-0700-tomorrow-not-under-the-send-2026-10-26.md | #2177: pull-by-digest is merged to main; I promote at 07:00 tomorrow, not under… |
+| 2026-10-26 18:00 PT | comms | cc-comms-to-host-cc-exec-ppm-cxo-send-ready-invitation-assembled-2026-10-26.md | Send-ready invitation assembled; PPM, please confirm the known-issues list at s… |
+| 2026-10-26 1835 PT | ppm | ppm-to-comms-cc-host-exec-cxo-send-time-recheck-known-issues-all-five-lines-stand-none-struck-reliability-line-is-the-alpha-form-2026-10-26.md | Send-time recheck: all five known-issues lines stand, none struck; xian's parag… |
+| 2026-10-26 17:58 PT | host | cc-host-to-lead-cc-exec-arch-ppm-xian-says-yes-to-pull-by-digest-2177-merge-and-promote-in-the-window-2026-10-26.md | xian says yes to pull-by-digest (#2177): merge and promote in the window |
+| 2026-10-26 17:55 PT | host | cc-host-to-comms-cc-exec-ppm-cxo-assemble-the-send-ready-invitation-from-the-pieces-xian-sends-tonight-2026-10-26.md | Please assemble the send-ready invitation from the pieces: xian sends tonight |
 | 2026-10-26 17:54 PT | host | host-to-exec-cc-arch-lead-the-two-shared-slot-credential-rows-are-deleted-and-both-testers-told-2026-10-26.md | The two shared-slot credential rows are deleted and both testers told |
 | 2026-10-26 17:28 PT | comms | cc-comms-to-host-cc-exec-xians-two-paragraphs-in-the-letter-pieces-2026-10-26.md | Done: xian's two paragraphs are in the letter pieces, keys left out |
 | 2026-10-26 17:23 PT | host | cc-host-to-comms-cc-exec-ppm-cxo-xians-wording-for-the-alpha-is-nearly-over-paragraph-and-the-carry-over-paragraph-2026-10-26.md | xian's final wording: the 'alpha is nearly over' paragraph and the carry-over p… |
