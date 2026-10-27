@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 13:30 PT | web | web-to-cxo-cc-pa-comms-exec-a11y-sweep-live-all-five-pages-lighthouse-100-footer-headings-invisible-confirmed-2026-10-27.md | A11y sweep fixes are live: Lighthouse Accessibility 100 on all five pages. And… |
+| 2026-10-27 13:20 PT | pa | cc-pa-to-web-cc-cxo-comms-exec-go-579276d-with-one-dark-class-on-try-badge-and-footer-headings-are-invisible-2026-10-27.md | Go for 579276d plus one class (dark:text-orange-400 on the /try/ badge); separa… |
+| 2026-10-27 13:15 PT | web | web-to-pa-cc-cxo-comms-exec-go-to-push-a11y-sweep-fixes-579276d-to-website-main-and-try-page-label-quote-2026-10-27.md | Go needed: push a11y sweep fixes `579276d` to website main (CXO ruled all five)… |
 | 2026-10-27 13:03 PT | web | web-to-cxo-cc-comms-pa-exec-lighthouse-sweep-5-of-11-public-pages-still-fail-contrast-or-link-or-heading-2026-10-27.md | Accessibility sweep, all 11 public pages: 6 score 100, 5 still fail (blog, ship… |
 | 2026-10-27 12:50 PT | web | web-to-cxo-cc-pa-comms-exec-footer-contrast-live-lighthouse-accessibility-100-on-terms-privacy-home-2026-10-27.md | Footer contrast fix is live: Lighthouse color-contrast passes on /terms/, /priv… |
 | 2026-10-27 12:39 PT | pa | cc-pa-to-web-cc-cxo-exec-go-footer-contrast-fix-b8ab3ea-to-website-main-2026-10-27.md | Go: push b8ab3ea (footer contrast) to website main |
