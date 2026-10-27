@@ -451,7 +451,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Send morning (trigger: xian's send, about 07:00):**
   - Recheck the known-issues lines' issues: #1595, #2042, #2021, #2018 and #2087 open; #2019, #2122 and #2101 closed as of 18:36. Strike any whose issue has closed, and tell Comms.
   - Recheck for open Class 1 or 2 issues and for the MVP gate (#2018, #1595, #1386).
-- **Carry-over promise:** if xian makes it, add a Terms entry to promises.yaml (his wording) and put its label on #2157. Arch's words: "your account and your work carry over". Keys and connections depend on #2157's key custody. HOST: the 10-22 key reset was staging only. Blocked on xian.
+- **Carry-over promise: DONE 10-26 18:4x.** T9-carry-over is in promises.yaml (private-beta), with #2157 labelled and the map at v9.
 - **Waiting on Exec:**
   - The backward edge #1706 (PUB) → #1441 (C). Arch calls it a hard edge, so the fix is a Sprint move.
   - ~~#2018 (MVP) is blocked by #2172~~: settled 10-26 12:34. #2172 closed (pins-only), and Exec was told the question is moot.

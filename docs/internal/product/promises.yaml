@@ -84,6 +84,11 @@ terms:   # docs/internal/design/terms-invitation-draft-for-xian-2026-10-19.md (x
     wording: "Your code works once, for one account."
     source: invitation, "Your invite code."
     gate: private-beta
+  - id: T9-carry-over
+    wording: "Your account and your work will carry over to the beta automatically. ... If you'd like your alpha account deleted at that point, email support@pipermorgan.ai and we'll do it for you (by hand, for now, within 14 days)."
+    source: "send-ready letter, carry-over paragraph (docs/internal/planning/comms/design-partner-invitation-send-ready-2026-10-26.md); xian's yes 2026-10-26 17:23 (HOST relay)"
+    gate: private-beta
+    note: "Added 10-26 on xian's yes, with his approved wording. Keys and connections are left out on purpose (xian: 'leave keys out'). They depend on master-key custody (#2157). Arch, 10-25: the code carries the account and work over today. The 14-day by-hand deletion matches the live Terms sentence."
 
 readiness:   # Terms-backed mechanisms that gate public beta (ruling 7; #2062's children)
   - id: R1-backups-and-restore
