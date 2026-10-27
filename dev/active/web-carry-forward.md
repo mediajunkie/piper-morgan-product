@@ -1,4 +1,6 @@
-# Web carry-forward — 2026-10-25 (active)
+# Web carry-forward — 2026-10-26 (active)
+
+**2026-10-26 21:18 STOP NOTE (read first; supersedes the 10-25 NOTE below):** Day closed. Alpha `69d859ca5f` (promoted 07:06). Served rows run and mailed: #2176 (wizard step 2 hidden boxes) and #2172 (PAT Disconnect) pass; CXO labelled both `close:pins-only`; #2171 staleness row passed 10-25, `close:served`. #2125 closed pins-only, no row for me. NEXT: nothing ripe. Blocked: person for wizard-path Google connect and xian's-account calendar read (#2087); xian's Search Console sheets/CSVs; composer 409 cause; Create Account not re-asking the code (source only); #790, #2123.
 
 **2026-10-25 21:18 STOP NOTE (read first; supersedes the 10-24 NOTE below):** Day closed. Alpha `eaba23311d` (a promotion to 4f487d4948 failed twice on a missing image tag, #2177; alpha unchanged). Today: #2171 count rows and staleness row passed (card "yesterday" then "today" after one item); #1966 and #2173 rows passed; sitemap fix served (433 URLs, +/terms/); Terms page live; send-day checks done; wizard step 2 look led to #2176. NEXT: on a promotion carrying `2d0c56082a`, fresh browser at /setup step 2 (no Client ID/Secret boxes, the "connect later in Settings" line, Notion box present), mail Lead cc CXO, HOST. Still blocked: person for wizard-path Google connect and xian's-account calendar read (#2087); xian's Search Console sheets; composer 409 cause; #790, #2123.
 
