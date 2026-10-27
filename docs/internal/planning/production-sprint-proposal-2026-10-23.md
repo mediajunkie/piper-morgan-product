@@ -49,7 +49,7 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 16 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 203 open (#2109 closed in D and #2125, #2172, #2176 in H, 10-26 morning; #2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 202 open (#2177 closed in Q 10-27 07:12; its follow-up #2181 placed Ongoing; #2109 closed in D and #2125, #2172, #2176 in H, 10-26 morning; #2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -311,7 +311,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1245 | PIPER-SKILL-MERGE — Collapse ask-piper + consult-piper into one smart piper skill (closed, superseded 10-25) | PROD-ONBOARD |
 | #1282 | BYOC-DIST — Plugin packaging and marketplace distribution | PROD-DIST |
 
-### Q: Health lane (17)
+### Q: Health lane (16)
 
 | # | Title | was |
 |---|---|---|
@@ -331,4 +331,4 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1506 | tests/domain/test_file_reference_detection.py classification tests fail keyless (ContainerNotInitializedErr… | — |
 | #1528 | test_validate_openai_key_success hits the LIVE OpenAI API with the real keychain key — network-dependent te… | — |
 | #1549 | GET /api/v1/todos/shared-with-me is shadowed by /{todo_id} route order — matches as todo_id='shared-with-me' | — |
-| #2177 | Alpha promotion fails: staging's image tag returns 'manifest unknown' on pull (10-25, Lead) | — |
+| #2177 | Alpha promotion fails: staging's image tag returns 'manifest unknown' on pull (10-25, Lead; closed 10-27 07:12, served: run 40517175846 pulled by digest, alpha attests 36bdcf09bb) | — |
