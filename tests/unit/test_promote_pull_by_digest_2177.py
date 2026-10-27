@@ -90,8 +90,12 @@ class TestWorkflow:
         assert "EXPECTED: ${{ steps.img.outputs.sha }}" in text
 
 
+PUSHED = "sha256:" + "c" * 64
+
+
 def _copy_run(tmp_path, src, repo_digests):
-    """Run the copy step's bash with a stub docker that records calls."""
+    """Run the copy step's bash with a stub docker that records calls (its push prints a
+    digest line, as `docker push` does; #2181 deploys by it)."""
     bindir = tmp_path / "bin"
     bindir.mkdir()
     log = tmp_path / "docker.log"
@@ -101,6 +105,9 @@ def _copy_run(tmp_path, src, repo_digests):
         f'echo "$@" >> "{log}"\n'
         'if [ "$1" = "image" ] && [ "$2" = "inspect" ]; then\n'
         f"  printf '%s\\n' {' '.join(repr(d) for d in repo_digests)}\n"
+        "fi\n"
+        'if [ "$1" = "push" ]; then\n'
+        f'  echo "promote-4f487d494835: digest: {PUSHED} size: 3461"\n'
         "fi\n"
         "exit 0\n"
     )
@@ -132,7 +139,7 @@ class TestCopyStep:
         assert r.returncode == 0, r.stdout + r.stderr
         assert f"pull {self.SRC}" in log
         assert "push registry.fly.io/piper-morgan:promote-4f487d494835" in log
-        assert "ref=registry.fly.io/piper-morgan:promote-4f487d494835" in out
+        assert f"ref=registry.fly.io/piper-morgan@{PUSHED}" in out  # #2181: the pushed digest
 
     def test_a_pulled_image_with_another_digest_refuses_before_push(self, tmp_path):
         other = f"registry.fly.io/piper-morgan-staging@{D2}"

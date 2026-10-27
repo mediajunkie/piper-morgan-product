@@ -573,10 +573,26 @@ jobs:
           docker tag "$SRC" "$DST"
           docker logout registry.fly.io
           echo "$ALPHA_TOKEN" | docker login registry.fly.io -u x --password-stdin
-          docker push "$DST"
+          push_out="$(docker push "$DST")"
+          echo "$push_out"
+          # #2181 (Arch, 10-27): deploy alpha by the digest this push produced, never by the
+          # promote-<sha12> tag (a tag is the class of name that failed in #2177). Read it from the
+          # push's own `digest: sha256:… size: N` line, else from the pushed ref's RepoDigests. It
+          # need not equal staging's digest (a re-push can change the manifest digest); condition 2
+          # above plus the served-sha attestation carry identity. No digest: refuse, no tag fallback.
+          pushed_digest="$(printf '%s\n' "$push_out" | grep -oE 'digest: sha256:[0-9a-f]{64}' | head -n1 | cut -d' ' -f2 || true)"
+          if [ -z "$pushed_digest" ]; then
+            pushed_digest="$(docker image inspect --format '{{range .RepoDigests}}{{println .}}{{end}}' "$DST" \
+              | grep -oE '^registry\.fly\.io/piper-morgan@sha256:[0-9a-f]{64}$' | head -n1 | cut -d@ -f2 || true)"
+          fi
           docker logout registry.fly.io
-          echo "copied $SRC ($src_digest) -> $DST"
-          echo "ref=$DST" >> "$GITHUB_OUTPUT"
+          if [ -z "$pushed_digest" ]; then
+            echo "::error title=No pushed digest::could not read the digest the push to $DST produced. Refusing; alpha is unchanged."
+            exit 1
+          fi
+          ref="registry.fly.io/piper-morgan@$pushed_digest"
+          echo "copied $SRC ($src_digest) -> $DST ($ref)"
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
 
       - name: Promote that exact image to alpha
         env:
@@ -584,7 +600,8 @@ jobs:
         run: |
           # --image, never a rebuild. Rebuilding from a tag would produce a DIFFERENT artifact from
           # the one that was smoke-driven, which is the exact gap this step exists to close. The
-          # image is the copy in alpha's OWN repository (step above) — same bytes as staging's.
+          # image is the copy in alpha's OWN repository (step above) — same bytes as staging's —
+          # named by the digest its push produced (#2181), never by a tag.
           flyctl deploy \
             --app piper-morgan \
             --image "${{ steps.copy.outputs.ref }}" \
