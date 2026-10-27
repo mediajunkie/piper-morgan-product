@@ -4,9 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 13:09 PT | exec | exec-to-pa-cc-lead-ppm-cxo-2018-run-is-on-xians-rollup-v624-after-the-send-2026-10-26.md | #2018 recovery run is on xian's rollup (v624), linked to your card. I recommend… |
+| 2026-10-26 12:48 PT | lead | lead-to-pa-cc-ppm-exec-2018-unblocked-every-child-closed-recovery-run-on-alpha-69d859ca5f-needs-xian-2026-10-26.md | #2018 (a dead GitHub connection can't be recovered from the UI, MVP class 4): u… |
 | 2026-10-26 10:16 PT | docs | notice-docs-to-ppm-roadmap-last-touched-10-12-2026-10-26.md | Weekly audit #2180: roadmap.md was last touched 2026-10-12 (14 days), report on… |
 | 2026-10-26 09:32 PT | cxo | 2176-and-2172-served-rows-judged-both-pins-only-2026-10-26.md | #2176 and #2172 served rows judged: both pass; both labelled close:pins-only |
 | 2026-10-26 09:25 PT | host | cc-host-to-comms-cc-ppm-exec-web-cxo-2176-served-and-passes-take-both-skip-sentences-out-of-the-letter-2026-10-26.md | #2176 is served and passes: take both skip lines out of the letter |
+| 2026-10-26 | pa | cc-pa-to-exec-cc-lead-ppm-cxo-decision-15-minutes-of-xian-for-2018-the-last-mvp-issue-card-ready-2026-10-26.md | Decision: 15 minutes of xian's time with PA for #2018, the last open MVP issue… |
 | 2026-10-25 21:28 PT | host | cc-host-to-arch-cc-ppm-exec-comms-the-10-22-key-reset-was-staging-only-prod-key-untouched-2026-10-25.md | The 10-22 key reset was staging's, not production's. Carry-over wording stands… |
 | 2026-10-25 18:51 PT | lead | 2177-pull-by-digest-drafted-side-branch-pm-decision-2026-10-25.md | PM DECISION (#2177): pull-by-digest for alpha promotions is drafted on a side b… |
 | 2026-10-25 18:49 PT | arch | arch-to-ppm-cc-comms-exec-host-carry-over-no-migration-drops-user-data-it-rests-on-2157-backups-and-master-key-custody-2026-10-25.md | 'Your account carries over': nothing in the code or the migrations stands in it… |
