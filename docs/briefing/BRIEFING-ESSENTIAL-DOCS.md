@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-DOCS
 valid_from: "2026-03-19"
-last_updated: "2026-10-13"
+last_updated: "2026-10-27"
 last_verified: "2026-09-01"
 verified_scope: "2026-09-01 (Docs): spot-verified blog-metadata pipeline claims against a live publish, merge-keeper section, PreCompact-hook note, cross-repo worktree warning, and Amber image-toolchain note against actual practice. Content confirmed current, no drift found. Verification history: docs/internal/architecture/decisions/claude-md-history.log."
 ---
@@ -88,7 +88,7 @@ before your first publish. Publishing from the shared website checkout was retir
 
 **The procedure lives in the skills, not here** — `publish-to-blog` (Step 0 is *check the calendar
 first*, and inverting that order is itself the bug; `--work-date` is mandatory; dry-run before every
-publish) and `update-calendar` v1.4 (column ownership, the validator, and update `draftPath` in the same
+publish) and `update-calendar` (v1.6 as of 10-27: column ownership, the validator, and update `draftPath` in the same
 pass when you move a draft). **Read them at publish time rather than trusting a summary here** — a
 summary in a briefing is exactly the surface that goes stale without anyone noticing.
 
@@ -210,4 +210,4 @@ Overlap zone: blog post count updates, editorial calendar data. PM sequences the
 
 ---
 
-*Last Updated: March 19, 2026*
+*Last Updated: October 27, 2026 (v1.6 reference and footer fixed per CIO's staleness re-run)*
