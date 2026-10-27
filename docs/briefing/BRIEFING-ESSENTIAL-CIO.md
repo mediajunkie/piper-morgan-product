@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-CIO
 valid_from: "2026-01-09"
-last_updated: "2026-10-13"
-last_verified: "2026-10-01"
+last_updated: "2026-10-26"
+last_verified: "2026-10-26"
 ---
 
 # BRIEFING-ESSENTIAL-CIO
@@ -113,7 +113,7 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
 > (owed work, dated rows).** This section names the standing lanes only. Don't copy item status here;
 > it goes stale (it did, May → Oct 2026).
 
-**Standing lanes (as of 2026-10-01)**:
+**Standing lanes (as of 2026-10-26)**:
 - **Methodology corpus**: `docs/internal/development/methodology-core/` (m-00 … m-55, index
   `INDEX.md`). Entries come from incidents, not sweeps. The most-used in practice: m-43 (name the
   layer), m-44 (clear is not a measurement), m-36 (mechanism over vigilance). Open zero-citation
@@ -122,7 +122,9 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
   `scripts/duty-cycle-freeze-check.sh`, `scripts/duty-cycle-heartbeat.sh`,
   `dev/active/duty-cycle-registry.tsv`, the common-dir git hook source `scripts/git-hooks/pre-commit`
   (broad-staging + ruff warnings, warn-only), `scripts/ensure-ruff.sh`,
-  `scripts/archive-mailbox-read.py`. **Pard installs into `.git/hooks` and owns launchd; CIO owns
+  `scripts/archive-mailbox-read.py`, `scripts/whats-armed.sh` (START and STOP), `scripts/aging-standing-items.sh`,
+  `scripts/gen-fly-permissions.py` (HOST's Fly rules; regenerate when flyctl moves), and mail v4
+  (`scripts/mail4.py`, pilot with Exec and Lead, review 11-05). **Pard installs into `.git/hooks` and owns launchd; CIO owns
   the scripts.** That split is where things go unnoticed (a disarmed post-commit sat 10 days), so
   verify behaviorally, never by config presence.
 - **Network research hub, a trial** (xian via Themis, 2026-09-28): CIO is the hub for research
@@ -135,6 +137,22 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
   and responds each round.
 - Older lanes (audit cadence, pattern-catalog stewardship, innovation backlog
   `dev/active/cio-innovation-backlog.md`) still exist but have been incident-driven since spring.
+
+**The operating model since mid-October** (added 2026-10-26 for #2179; each item is owned elsewhere, and CIO reads it):
+- **Where the work stands is the production map**, `docs/internal/planning/production-map.html`. PPM's
+  `scripts/generate-production-map.py` builds it from the board and labels. Exec diffs it each Friday from 10-30.
+  It's a generated instrument, so read what it was built from (m-44), not just its colours.
+- **What 1.0 means is `docs/internal/product/promises.yaml`** (PPM's; ratified by xian 10-25). 1.0 means every
+  1.0-gated promise has a closed issue and main is green. Which issues back a promise is read from `promise:<id>`
+  labels, never from the file. Its source is **ESSENCE v1.1** (`docs/internal/architecture/ESSENCE.md`,
+  ratified 10-25).
+- **The Readiness lane is Exec's.** Terms-backed items gate public beta: **#2157** (backups, a timed restore
+  test, encryption-key custody; HOST owns the drill), #2158 to #2161, and staging (#2162). HOST's send-morning
+  checks are its standing check. #2157 also backs the invitation's "your account carries over" promise, made to
+  the design partners when xian sent the invitations (10-26 21:00).
+- **CIO's part:** these are claims about running mechanisms (a restore that works, a promise that holds), so
+  m-49 applies: watched, not described. `scripts/briefing-pointer-check.sh` reads each role briefing for these
+  pointers, beside its commit date.
 
 **Resolved decisions**: see `docs/internal/architecture/decisions/decisions.log` (grep `(cio`) and
 the dated history in git. The Mar–Apr 2026 list that lived here was moved out on 2026-10-01 as
