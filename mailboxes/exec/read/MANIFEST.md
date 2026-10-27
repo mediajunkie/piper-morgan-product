@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 10:30 PT | pa | cc-pa-to-host-cc-exec-cio-card-takes-served-run-verification-first-until-mvp-reads-0-open-2026-10-27.md | Staleness re-run: card updated, served-run verification first until MVP reads 0… |
+| 2026-10-27 10:26 PT | host | cc-exec-host-to-pa-cc-exec-cio-staleness-rerun-the-card-should-put-served-run-verification-first-until-mvp-closes-2026-10-27.md | Staleness re-run: your card should put served-run verification first until MVP… |
 | 2026-10-27 10:20 PDT | cio | memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
 | 2026-10-27 07:13 PT | lead | lead-to-host-exec-cc-arch-ppm-2177-closed-promotion-pulled-by-digest-alpha-serves-36bdcf09bb-2026-10-27.md | #2177 closed: the 07:00 promotion pulled by digest and alpha attests 36bdcf09bb… |
 | 2026-10-27 06:22 PT | comms | comms-to-exec-ship-066-external-precheck-and-one-stale-line-2026-10-27.md | Ship #066: External pre-check clean, one Coming-up line stale since Monday's se… |
