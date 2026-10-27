@@ -451,7 +451,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Send morning (trigger: xian's send, about 07:00):**
   - Recheck the known-issues lines' issues: #1595, #2042, #2021, #2018 and #2087 open; #2019, #2122 and #2101 closed as of 18:36. Strike any whose issue has closed, and tell Comms.
   - Recheck for open Class 1 or 2 issues and for the MVP gate (#2018, #1595, #1386).
-- **Carry-over promise: DONE 10-26 18:4x.** T9-carry-over is in promises.yaml (private-beta), with #2157 labelled and the map at v9.
+- **Carry-over promise: DONE 10-26 18:36 (commit time).** T9-carry-over is in promises.yaml (private-beta), with #2157 labelled and the map at v9.
 - **Waiting on Exec:**
   - The backward edge #1706 (PUB) → #1441 (C). Arch calls it a hard edge, so the fix is a Sprint move.
   - ~~#2018 (MVP) is blocked by #2172~~: settled 10-26 12:34. #2172 closed (pins-only), and Exec was told the question is moot.
@@ -470,7 +470,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Done today:**
   - Invitations sent at 21:00 (xian's report via HOST).
   - T9-carry-over registered, with #2157 labelled; map at v9.
-  - Roadmap v19.1, with the send noted at 21:3x.
+  - Roadmap v19.1, with the send noted by 21:35.
   - The #2018←#2172 question to Exec is settled by #2172's close.
 - **Waiting on Exec, then PM:** the backward edge #1706 (PUB) ← #1441 (C). It is a Sprint move, and I write no row.
 - **Waiting on xian:** the #2018 recovery run (rollup v624, PA's card `8d29e7a8c0`). CXO judges the served words. When #2018 closes, MVP is #1595 plus #1386.

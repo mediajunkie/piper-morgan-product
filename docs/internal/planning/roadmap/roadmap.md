@@ -72,7 +72,7 @@ Layer: the decision record, the tracker and served health. Not re-audited: any s
 
 **The invitation and the dates.**
 - **Sent 2026-10-26 at 21:00 PT:** all three alpha invitations went from xian's own address, using the send-ready letter (`../comms/design-partner-invitation-send-ready-2026-10-26.md`). Source: xian's report, relayed by HOST at 21:05; HOST did not read his Sent folder. xian picked the time, as ruled (decisions.log 10-23 16:57).
-- At 18:35 PPM rechecked the letter's five known-issues lines, and none was struck. At 21:3x #1595, #2042, #2021, #2018 and #2151 were still open.
+- At 18:35 PPM rechecked the letter's five known-issues lines, and none was struck. By 21:35 #1595, #2042, #2021, #2018 and #2151 were still open.
 - The Terms page wording was ruled on 10-25 (Call A1).
 - The baseline dates are unchanged in the ledger: **design partners Fri 10-23, hard stop Fri 10-30**. The MVP milestone's `due_on` is also 10-30.
 - Slips live in `../beta-gate-standard.md`. Only PM moves a date; PPM proposes none.
