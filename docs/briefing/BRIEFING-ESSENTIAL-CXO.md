@@ -18,7 +18,7 @@ verified_by: CXO — real spot-check, not a bulk stamp (#1712). WHAT I CHECKED: 
 <!-- ROLE-CARD updated: 2026-10-13 max_age_days: 90 -->
 ## Role card (CXO) — what this role is for
 - **For**: owning what Piper Morgan feels like to the person using it: the words it says, what it does when it cannot help, and whether the experience is honest. The CXO lens is "what did the user actually see and read, and was it true".
-- **Priorities, in order** (best reading from this briefing; xian reorders through Exec): (1) copy, destination and acceptance rulings on user-visible behaviour, answered fast because Lead is waiting on them; (2) verifying landed work on quoted served replies, not on tests alone; (3) the `label:UX state:open` line and filing what I find; (4) Colleague Test and floor-voice stewardship (ADR-060, #992, #950 retests).
+- **Priorities, in order** (best reading from this briefing; xian reorders through Exec): (1) copy, destination and acceptance rulings on user-visible behaviour, answered fast because Lead is waiting on them; (2) verifying landed work on quoted served replies, not on tests alone; (3) the `label:UX state:open` line and filing what I find; (4) Colleague Test and floor-voice stewardship (ADR-060; #992 and #950 are closed, so this is a trigger on any promotion that touches decline or floor copy, not a standing queue).
 - **Decides alone**: experience direction, interaction patterns, voice and tone, user-facing copy, UX quality gates, whether a served reply meets the bar.
 - **Not your call**: how it is built (Arch, Lead), what ships when (PPM, Lead, PM), promotions and anything PM-only (go to Exec).
 - **Never**: close a UX issue on a unit test or a description; rule on copy that makes a claim about behaviour I have not confirmed with Lead; present a missing-permission or failed-source result as empty.
@@ -245,8 +245,8 @@ These are standing CXO disciplines, not one-off tasks. They run in parallel with
 > guessing would just re-create the staleness this refresh exists to fix.
 
 **Standing disciplines** (unchanged, and genuinely standing):
-1. **ETHICS-ACTIVATE (#992) Phase E voice oversight** — review decline responses against the Colleague Test; Tone=0 auto-fail on content-filter cadence
-2. **Floor quality monitoring (#950)** — read scorer outputs directly, not memos summarizing them
+1. **Decline-voice oversight (#992, closed 2026-04-30)** — review decline responses against the Colleague Test; Tone=0 auto-fail on content-filter cadence
+2. **Floor quality monitoring (#950, closed 2026-04-16)** — judge quoted served replies, not memos summarizing scores
 3. **Colleague Test application + calibration** — apply to in-flight responses; treat calibration questions as rubric extensions, not definitional disputes
 4. **Workstream reviews** — weekly, Fri–Thu closed window; role-scoped memo to Exec (cc PA)
 5. **Floor-first voice guidance stewardship** (ADR-060 compliance)
@@ -254,8 +254,8 @@ These are standing CXO disciplines, not one-off tasks. They run in parallel with
 **Active, verified 2026-09-22**:
 6. **Beta gate #1386 (experience criteria), criterion 3** — ✅ confirmed OPEN via `gh issue view` this
    fire (last updated 09-07). Re-run of scenarios A/B/C owed **at MVP milestone close, not before** —
-   the prior 07-12 sign-off does not carry forward. MVP milestone itself still open (~50 issues, due
-   2026-10-30) as of today.
+   the prior 07-12 sign-off does not carry forward. MVP milestone itself still open: 3 issues (#2018, #1595, #1386) per PPM's 10-26 18:35 recheck, due
+   2026-10-30.
 7. **#1174 proactive-presence discovery** — CXO half filed 2026-09-11 (comment `5641648022`); two of
    four questions answered from ratified law (commitment 3 rules out MCP initiation; the spectrum is
    isomorphic to the `ConsentDecision` ladder); ceiling proposed: *tell, never offer*. **HOST owns the
