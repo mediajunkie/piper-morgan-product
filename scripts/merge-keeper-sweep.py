@@ -13,6 +13,7 @@ files appear in its diff against main, AND a no-conflict merge is possible.
 Always escalates (never auto-merges):
   - Branches younger than the age threshold (likely active)
   - Branches with merge conflicts against main
+  - Branches whose head commit subject starts with HELD or WIP
   - Branches whose diff contains files larger than --max-blob-size (default 1MB)
   - Branches whose diff contains .env, .DS_Store, or other ignore-pattern files
 
@@ -114,6 +115,12 @@ def list_claude_branches() -> List[str]:
             except ValueError:
                 continue
     return ahead
+
+
+def branch_is_held(branch: str) -> bool:
+    """True when the head commit subject starts with HELD or WIP (Lead, 2026-10-27)."""
+    rc, out, _ = run_git("log", "-1", "--format=%s", f"origin/{branch}")
+    return rc == 0 and out.strip().upper().startswith(("HELD", "WIP"))
 
 
 def branch_last_commit_age(branch: str) -> Optional[float]:
@@ -239,6 +246,17 @@ def evaluate_branch(
                 f"last commit {age:.1f}h ago (< {age_hours_threshold}h "
                 f"threshold) — likely active session"
             ),
+        )
+
+    if branch_is_held(branch):
+        return BranchAction(
+            branch=branch,
+            last_commit_age_hours=age,
+            files_changed=0,
+            insertions=0,
+            deletions=0,
+            action="escalate",
+            reason="head commit subject starts with HELD or WIP, never auto-merged",
         )
 
     files_changed, insertions, deletions, warnings = branch_diff_summary(
