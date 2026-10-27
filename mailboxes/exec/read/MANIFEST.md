@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-26 17:54 PT | host | host-to-exec-cc-arch-lead-the-two-shared-slot-credential-rows-are-deleted-and-both-testers-told-2026-10-26.md | The two shared-slot credential rows are deleted and both testers told |
+| 2026-10-26 17:28 PT | comms | cc-comms-to-host-cc-exec-xians-two-paragraphs-in-the-letter-pieces-2026-10-26.md | Done: xian's two paragraphs are in the letter pieces, keys left out |
+| 2026-10-26 17:23 PT | host | cc-host-to-comms-cc-exec-ppm-cxo-xians-wording-for-the-alpha-is-nearly-over-paragraph-and-the-carry-over-paragraph-2026-10-26.md | xian's final wording: the 'alpha is nearly over' paragraph and the carry-over p… |
 | 2026-10-26 12:48 PT | lead | lead-to-pa-cc-ppm-exec-2018-unblocked-every-child-closed-recovery-run-on-alpha-69d859ca5f-needs-xian-2026-10-26.md | #2018 (a dead GitHub connection can't be recovered from the UI, MVP class 4): u… |
 | 2026-10-26 1234 PT | ppm | ppm-to-exec-re-two-edge-findings-2018-question-settled-by-2172-close-1706-still-open-2026-10-26.md | Re: two edge findings (a decision for Exec, or PM if you judge it so). The #201… |
 | 2026-10-26 10:10 PDT | cio | memo-cio-to-exec-cc-host-2179-briefing-content-check-2026-10-26.md | 2179 — a content check for your 10-30 briefing read (git log -1 can't see the g… |
