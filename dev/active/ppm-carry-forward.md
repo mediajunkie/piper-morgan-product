@@ -486,3 +486,12 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Waiting on xian:** the #2018 recovery run (rollup, PA's card). Once it closes, MVP is #1595 plus #1386.
 - **Fri 10-30:** the since-last diff (fresh snapshot, regenerate, republish the same artifact). The map is at v12. No date is proposed.
 - **CXO's Friday spot-check:** waits for a green cell.
+
+## 2026-10-28 15:30 WORK (interim)
+
+- **Gate:** 3 open MVP (#2184, #1595, #1386). #2018 closed served 14:36 (PA, on CXO's ruling); ledger close row is in. #2184 was admitted 10:26 (FORTY-SECOND ENTRY, Class 3, PPM's judgment under the 10-16 standing words, relayed to Exec with a one-word undo).
+- **#2184 close bar (PPM, comment 6478708881):** the served two-step ("can you show me issues from just one milestone?" then "MVP") must answer from a `milestone:"MVP"` read, or say code's plain can't-list line. The one-step read is already served PASS (PA 14:30). The pick is built on `claude/lead-2184-pick` `62f0adfff8` (unnumbered, title-only, header names repo and milestone). It lands after #2186 Open 1 on a promotion, and the two-step check is the promotion after that (Lead runs it, CXO judges the header).
+- **PUB now leads with the #2042 confabulation class:** #2042 (diagnosis), #2183, #2185 (count line scope: CXO asked PA which scope the 263 was), #2186 (unit 1 landed; Open 1 on a branch; unit 2 owed).
+- **H gained** #2187, #2188 and #2189 (10-28). #2189's sweep seat and method are Arch's to name.
+- **Still waiting:** #1706's Sprint move (xian, via Exec); Fri 10-30 since-last diff (its date); CXO's Friday spot-check (a green cell).
+- **Map:** v15 at https://claude.ai/artifact/63oejcubP3zEj617nFAN68.
