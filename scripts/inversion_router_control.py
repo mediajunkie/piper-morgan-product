@@ -48,6 +48,10 @@ async def _control(phrases: list[str], samples: int, provider: Optional[str]) ->
                 d = await route(phrase, None, llm_service=llm, grammar=grammar, user_id=None)
                 label = d.route_label
                 conf = d.confidence
+                # #2186 (2026-10-28): the args the router emitted, so a screen
+                # sees whether a qualifier (milestone, label, count, repo) is
+                # already extracted under the wording being measured.
+                args_ = dict(d.args or {})
                 served = (
                     f"{d.served_provider}:{d.served_model}"
                     if d.served_provider and d.served_model
@@ -55,13 +59,14 @@ async def _control(phrases: list[str], samples: int, provider: Optional[str]) ->
                 )
                 err = d.error
             except Exception as e:  # probe discipline: recorded, never aborts
-                label, conf, served, err = "ERROR", None, "unresolved", f"{type(e).__name__}: {e}"
+                label, conf, args_, served, err = "ERROR", None, {}, "unresolved", f"{type(e).__name__}: {e}"
             rows.append(
                 {
                     "phrase": phrase,
                     "sample": n,
                     "route": label,
                     "confidence": conf,
+                    "args": args_,
                     "served": served,
                     "error": err,
                 }
@@ -71,6 +76,13 @@ async def _control(phrases: list[str], samples: int, provider: Optional[str]) ->
                 + (f" ERR {err}" if err else "")
             )
     return rows
+
+
+def _fmt_args(args: Optional[dict]) -> str:
+    """``key=value`` pairs, sorted, or ``-`` — one cell per sample (#2186)."""
+    if not args:
+        return "-"
+    return "; ".join(f"{k}={v}" for k, v in sorted(args.items()))
 
 
 def write_report(rows: list[dict], out: Path, samples: int, label: str) -> None:
@@ -99,12 +111,12 @@ def write_report(rows: list[dict], out: Path, samples: int, label: str) -> None:
         "",
         "## Samples",
         "",
-        "| phrase | # | route | conf | served | error |",
-        "|---|---|---|---|---|---|",
+        "| phrase | # | route | conf | args | served | error |",
+        "|---|---|---|---|---|---|---|",
     ]
     for r in rows:
         lines.append(
-            f"| {r['phrase']} | {r['sample']} | `{r['route']}` | {r['confidence']} | {r['served']} | {r['error'] or ''} |"
+            f"| {r['phrase']} | {r['sample']} | `{r['route']}` | {r['confidence']} | {_fmt_args(r.get('args'))} | {r['served']} | {r['error'] or ''} |"
         )
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text("\n".join(lines) + "\n")

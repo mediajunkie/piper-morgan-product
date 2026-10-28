@@ -26,6 +26,7 @@ from typing import Any, Callable, Dict, List, NamedTuple, Optional, Tuple
 
 import structlog
 
+from services.intent_service.floor_listed_records import listed_records_event
 from services.intent_service.scope_guard import apply_scope_guard
 from services.intent_service.unarmed_offer import detect_offer_questions, enforce_armed_offers
 from services.llm.clients import AllProvidersFailed
@@ -2033,6 +2034,35 @@ class ConversationalFloor:
                     intent_category=ctx.intent_category,
                 )
 
+            # #2042 rung 2 (Arch's diagnosis 2026-10-28), LOG-ONLY: record what
+            # the finished reply enumerates against what the prompt carried and
+            # which record reads the assembler ran, so the class ("record claims
+            # from context slices with no read of the asked scope") is measured
+            # over served turns before anyone decides to redact. Runs LAST so it
+            # sees the reply the user sees. Never changes the message; never
+            # breaks the turn (#1423 discipline).
+            try:
+                _listed = listed_records_event(
+                    message,
+                    prompt,
+                    ctx.domain_context_provenance,
+                    ctx.domain_context,
+                )
+                if _listed:
+                    logger.info(
+                        "floor_listed_records",
+                        session_id=ctx.session_id,
+                        user_id=ctx.user_id,
+                        intent_category=ctx.intent_category,
+                        intent_action=ctx.intent_action,
+                        **_listed,
+                    )
+            except Exception as e:  # silent-ok: LOGGED; a measurement must never break the turn
+                logger.warning(
+                    "floor_listed_records_error",
+                    error=str(e),
+                    session_id=ctx.session_id,
+                )
             return FloorResponse(
                 message=message,
                 floor_hit=True,
