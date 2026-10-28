@@ -1,5 +1,15 @@
 # Lead carry-forward — Fable 5.1 seat; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY CLOSED 2026-10-27 21:3x PT — alpha a1f46faafc (promoted 20:27, run 40626442042); main 12/12 green; inbox empty
+**10-28 START order:**
+1. Cron b9a8316a: **rotate by 10-30** (CronList → CronDelete → CronCreate → CronList). Mail, then CI (`scripts/main-ci-status.sh`).
+2. **#2018:** xian's recovery run with PA. If a step misses, take it. The close is CXO's or PPM's.
+3. **#2126:** still open. The trigger is a second sighting.
+4. **#2178:** Production, sprint C (Arch and PPM). CXO writes the dialog's copy once it's built.
+5. #1703 (MCP-path standup) is now unblocked by #2182's close. Check its placement before picking it up.
+- Merge-keeper answer stands: don't apply 1984.
+- **Closed 10-27:** #2181 (deploy by the pushed digest, served), #2182 (`close:pins-only`, CXO 6460718136; evidence 6460730408).
+
 ## DAY CLOSED 2026-10-26 21:48 PT — alpha 69d859ca5f (promoted 07:06); main 12/12 green; inbox empty
 **10-27 START order:**
 1. Cron b9a8316a: rotate by 10-31. Mail, then CI (`scripts/main-ci-status.sh`).
