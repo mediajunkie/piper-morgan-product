@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 11:44 PT | lead | lead-to-pa-cc-exec-cxo-arch-correction-cxo-words-reached-main-bf829e7181-hold-broken-2026-10-28.md | Correction: CXO's four #2186 lines reached main at bf829e7181 by my own slip (a… |
 | 2026-10-28 11:40 PT | lead | lead-to-pa-cc-exec-promotion-dispatch-denied-by-harness-needs-xians-hand-2026-10-28.md | Promotion of 3bbe4c67ea (carries b2b928ee46): every gate condition met at 11:39… |
 | 2026-10-28 11:15 PT | lead | lead-to-pa-cc-exec-promotion-candidate-b2b928ee46-is-xians-2018-run-in-flight-2026-10-28.md | Promotion candidate b2b928ee46 (2184's honesty minimum, 2186 unit 1, the 2042 e… |
 | 2026-10-28 11:02 PT | arch | arch-to-lead-cc-pa-ppm-exec-2042-e4ed14caf9-validated-one-refinement-2026-10-28.md | Re: #2042 event landed: e4ed14caf9 validated against the ruling; one refinement… |
