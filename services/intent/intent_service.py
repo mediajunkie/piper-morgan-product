@@ -8732,20 +8732,19 @@ class IntentService:
 
     async def _resolve_router_bare_repo(self, user_id: Optional[str], name: str) -> Optional[str]:
         """#2186: the router named a repo without its owner (``piper-morgan-product``).
-        Search needs ``owner/name``; the one owner we can state honestly is the
-        user's default repo's, when its name matches. Otherwise None, and the
-        handler names the repo as a qualifier it could not apply."""
+        Search needs ``owner/name``. Resolve through the same lookup #1944 uses
+        (``_bare_repo_hits``: registry, default repo, connected account); exactly one
+        hit applies, anything else is None and the handler names the repo as a
+        qualifier it could not apply (several hits would need the user's word)."""
         if not user_id or not name:
             return None
         try:
-            from services.integrations.github.repo_resolver import get_user_default_repo
-
-            repo = await get_user_default_repo(UUID(str(user_id)))
+            hits = await self._bare_repo_hits(user_id, name)
         except Exception as e:  # silent-ok: logged; the handler names the unapplied repo
             self.logger.warning("bare_repo_resolve_failed", error=str(e))
             return None
-        if isinstance(repo, str) and repo.split("/")[-1].lower() == name.lower():
-            return repo
+        if hits and len(hits) == 1:
+            return hits[0]
         return None
 
     async def _default_repo_open_issue_count(
@@ -8895,25 +8894,18 @@ class IntentService:
                 error_type="set_default_repo_error",
             )
 
-    async def _resolve_bare_repo_name(self, original_message: str, user_id: Optional[str]):
-        """1944: a default-repo ask that names a repo WITHOUT its owner
-        ("...should be test-piper-morgan"). Resolve it against the user's
-        own registered repositories: exactly one whose name (or full name)
-        matches → that ``owner/name``; several → a result naming them;
-        none, or no registry → None (the caller keeps its owner/name nudge).
-        A registry failure is None too — never a crash on a preference ask."""
-        import re
-
-        m = re.search(
-            r"(?:\bto|\bbe|\bis|\buse|=)\s+[\"'`]?([A-Za-z0-9][\w.\-]*)[\"'`]?\s*[.!]?\s*$",
-            original_message,
-            re.IGNORECASE,
-        )
-        if not m or not user_id:
-            return None
-        token = m.group(1).lower()
-        if token in {"default", "repo", "repository", "it", "that", "this"}:
-            return None
+    async def _bare_repo_hits(self, user_id: Optional[str], token: str) -> Optional[List[str]]:
+        """The ONE lookup behind every bare-repo-name resolution (#1944 set-default-repo,
+        #2186 the router's bare ``repo`` arg): ``owner/name`` candidates whose name or
+        full name equals ``token`` (case-insensitive), from (1) the user's repo registry,
+        then (2) the current default repo, then (3) the connected account's repos — the
+        same three sources, same order, #1944 has used since its 2026-10-07 reopen.
+        Returns None when the registry read itself fails (#1944's contract: the caller
+        keeps its nudge), else the sorted hit list (possibly empty). Extracted 2026-10-28
+        so the router path and #1944 cannot diverge (the #1555 class)."""
+        token = (token or "").lower()
+        if not token or not user_id:
+            return []
         try:
             from services.database.repositories import RepositoryRepository
 
@@ -8957,6 +8949,30 @@ class IntentService:
                 hits = _match((r or {}).get("full_name") for r in (found.repositories or []))
             except Exception as e:  # silent-ok: best-effort, the caller's nudge still answers
                 self.logger.warning(f"1944 connected-account repo lookup failed: {e}")
+        return hits
+
+    async def _resolve_bare_repo_name(self, original_message: str, user_id: Optional[str]):
+        """1944: a default-repo ask that names a repo WITHOUT its owner
+        ("...should be test-piper-morgan"). Resolve it against the user's
+        own registered repositories: exactly one whose name (or full name)
+        matches → that ``owner/name``; several → a result naming them;
+        none, or no registry → None (the caller keeps its owner/name nudge).
+        A registry failure is None too — never a crash on a preference ask."""
+        import re
+
+        m = re.search(
+            r"(?:\bto|\bbe|\bis|\buse|=)\s+[\"'`]?([A-Za-z0-9][\w.\-]*)[\"'`]?\s*[.!]?\s*$",
+            original_message,
+            re.IGNORECASE,
+        )
+        if not m or not user_id:
+            return None
+        token = m.group(1).lower()
+        if token in {"default", "repo", "repository", "it", "that", "this"}:
+            return None
+        hits = await self._bare_repo_hits(user_id, token)
+        if hits is None:
+            return None
         if len(hits) == 1:
             return hits[0]
         if len(hits) > 1:

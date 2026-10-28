@@ -24,7 +24,7 @@ from services.shared_types import IntentCategory
 
 _CONN = "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_open_issues"
 _NATIVE = "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
-_DEFAULT_REPO = "services.integrations.github.repo_resolver.get_user_default_repo"
+_HITS = "services.intent.intent_service.IntentService._bare_repo_hits"
 
 
 @pytest.fixture
@@ -244,7 +244,7 @@ async def test_router_repo_beats_the_regex(intent_service):
 
 @pytest.mark.asyncio
 async def test_bare_router_repo_without_a_user_is_named_not_dropped(intent_service):
-    with patch(_DEFAULT_REPO, new=AsyncMock(return_value="mediajunkie/piper-morgan-product")):
+    with patch(_HITS, new=AsyncMock(return_value=["mediajunkie/piper-morgan-product"])):
         stub, res = await _run(
             intent_service,
             _intent(
@@ -263,7 +263,7 @@ async def test_bare_router_repo_without_a_user_is_named_not_dropped(intent_servi
 async def test_bare_router_repo_with_a_user_resolves(intent_service):
     uid = "11111111-1111-1111-1111-111111111111"
     with patch("services.intent.intent_service._principal_from_intent", return_value=uid):
-        with patch(_DEFAULT_REPO, new=AsyncMock(return_value="mediajunkie/piper-morgan-product")):
+        with patch(_HITS, new=AsyncMock(return_value=["mediajunkie/piper-morgan-product"])):
             stub, res = await _run(
                 intent_service,
                 _intent(
@@ -273,6 +273,31 @@ async def test_bare_router_repo_with_a_user_resolves(intent_service):
             )
     assert stub.await_args == call(uid, limit=50, repository="mediajunkie/piper-morgan-product")
     assert "can't filter" not in res.message
+
+
+@pytest.mark.asyncio
+async def test_bare_router_repo_with_several_hits_is_named_not_guessed(intent_service):
+    # The same lookup as #1944 (_bare_repo_hits). Two registered repos share the
+    # bare name: the read must not pick one; the qualifier is named as unapplied.
+    uid = "11111111-1111-1111-1111-111111111111"
+    with patch("services.intent.intent_service._principal_from_intent", return_value=uid):
+        with patch(
+            _HITS,
+            new=AsyncMock(
+                return_value=["acme/piper-morgan-product", "mediajunkie/piper-morgan-product"]
+            ),
+        ):
+            stub, res = await _run(
+                intent_service,
+                _intent(
+                    "show open issues in piper-morgan-product",
+                    {"repo": "piper-morgan-product"},
+                ),
+            )
+    assert stub.await_args == call(uid, limit=50, repository=None)
+    assert res.message.endswith(
+        LIST_CANT_FILTER_LINE.format(qualifier='repository "piper-morgan-product"')
+    )
 
 
 # ── corpus rows and the scorer (#2186 step 6) ──

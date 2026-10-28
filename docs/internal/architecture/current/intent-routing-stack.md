@@ -451,7 +451,7 @@ description: testing the description}` (census 597). Regression: `test_add_proje
 `_router_list_issue_args` (the #1976 honesty guard, `user_said_every_word`, on every string value; a
 value that fails is ignored; `count` or `limit` honoured as a positive int up to 50). A router
 `owner/repo` beats `_slotfill_issue_request`, which stays the fallback (#1388); a bare repo name
-resolves only against the user's default repo. `GitHubMCPSpatialAdapter.list_open_issues` builds
+resolves through the #1944 lookup, extracted as `_bare_repo_hits` (the user's registry, then the default repo, then the connected account's repos; one shared helper so the two paths cannot diverge); exactly one hit applies, else the name is reported as unapplied. `GitHubMCPSpatialAdapter.list_open_issues` builds
 `is:closed` / `milestone:"X"` / `label:"Y"` in code, and `_search_via_connector` now sends `sort:
 created, order: desc` (so `list_open_prs` sorts too). The count slices the sorted page for display;
 `total_count` stays the true total. The count line names an applied milestone/label (and says
