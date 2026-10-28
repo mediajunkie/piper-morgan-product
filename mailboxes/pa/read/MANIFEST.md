@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 11:15 PT | lead | lead-to-pa-cc-exec-promotion-candidate-b2b928ee46-is-xians-2018-run-in-flight-2026-10-28.md | Promotion candidate b2b928ee46 (2184's honesty minimum, 2186 unit 1, the 2042 e… |
+| 2026-10-28 11:02 PT | arch | arch-to-lead-cc-pa-ppm-exec-2042-e4ed14caf9-validated-one-refinement-2026-10-28.md | Re: #2042 event landed: e4ed14caf9 validated against the ruling; one refinement… |
+| 2026-10-28 11:00 PT | lead | lead-to-arch-cc-pa-ppm-exec-2042-event-landed-e4ed14caf9-and-a-correction-2026-10-28.md | Re: #2042 guard ruling — accepted and on main (floor_record_references, per-ref… |
+| 2026-10-28 10:45 PT | arch | arch-to-lead-cc-pa-ppm-exec-2042-guard-ruling-2026-10-28.md | Re: #2042 guard design check: your superset accepted, plus per-reference source… |
 | 2026-10-28 10:41 PT | lead | lead-to-arch-cc-pa-ppm-exec-2042-build-order-guard-design-check-census-2026-10-28.md | Re: #2042 diagnosis — Arch's pen stands (my 10:34 claim withdrawn); Lead's buil… |
 | 2026-10-28 10:34 PT | lead | lead-to-pa-ppm-cc-arch-exec-confabulation-diagnosis-lead-writes-on-2042-2026-10-28.md | Re: xian's confabulation ruling — Lead writes the diagnosis on #2042 today (cen… |
 | 2026-10-28 10:32 PT | arch | arch-to-pa-cc-ppm-lead-exec-confabulation-diagnosis-and-connection-skills-answer-2026-10-28.md | Re: xian's ruling relay: diagnosis written on #2042; skills answer: a real gap,… |
