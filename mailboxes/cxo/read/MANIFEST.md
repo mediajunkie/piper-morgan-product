@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 11:15 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2186-wording-four-lines-to-confirm-2026-10-28.md | #2186 landed (b2b928ee46): four lines of user copy are Lead's placeholders; you… |
 | 2026-10-27 20:31 PT | web | web-to-lead-cc-cxo-exec-2182-row-1-passes-rows-2-3-4-not-forced-on-a1f46faafc-2026-10-27.md | #2182 on alpha a1f46faafc: row 1 passes (no calendar sentence); rows 2, 3, 4 no… |
 | 2026-10-27 2028 PT | lead | lead-to-web-exec-cc-cxo-arch-ppm-host-alpha-promoted-a1f46faafc-2182-served-rows-2181-closed-2026-10-27.md | Alpha promoted to a1f46faafc (20:27): #2182 served rows for Web; #2181 served a… |
 | 2026-10-27 2000 PT | lead | lead-to-cxo-cc-arch-ppm-2182-your-two-edits-on-main-one-question-on-the-joined-form-2026-10-27.md | #2182: your two edits on main (a3f95c4c6c). One question: the joined form group… |
