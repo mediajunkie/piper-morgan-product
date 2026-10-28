@@ -35,23 +35,23 @@ from services.radar.models import EntityType, Provenance, RadarEntity
 from services.radar.sources import EntitySourceReadFailed
 from web.api.routes.standup import format_standup, get_today_standup
 
-GH = "your GitHub work items"
+GH = "your GitHub"
 CAL = "your calendar"
 
 EMPTY_TAIL = "I can't put together a standup right now — try again in a bit."
 
 # The ruled strings, verbatim (CXO 2026-10-08).
 PARTIAL = {
-    "chat": "I couldn't reach your GitHub work items just now, so what's below is incomplete.",
-    "slack": "_Couldn't reach your GitHub work items just now, so what's below is incomplete._",
-    "markdown": "Note: couldn't reach your GitHub work items just now, so what's below is incomplete.",
-    "text": "Note: couldn't reach your GitHub work items just now, so what's below is incomplete.",
+    "chat": "I couldn't reach your GitHub just now, so what's below is incomplete.",
+    "slack": "_Couldn't reach your GitHub just now, so what's below is incomplete._",
+    "markdown": "Note: couldn't reach your GitHub just now, so what's below is incomplete.",
+    "text": "Note: couldn't reach your GitHub just now, so what's below is incomplete.",
 }
 EMPTY = {
-    "chat": f"I couldn't reach your GitHub work items just now. {EMPTY_TAIL}",
-    "slack": f"_Couldn't reach your GitHub work items just now. {EMPTY_TAIL}_",
-    "markdown": f"Note: couldn't reach your GitHub work items just now. {EMPTY_TAIL}",
-    "text": f"Note: couldn't reach your GitHub work items just now. {EMPTY_TAIL}",
+    "chat": f"I couldn't reach your GitHub just now. {EMPTY_TAIL}",
+    "slack": f"_Couldn't reach your GitHub just now. {EMPTY_TAIL}_",
+    "markdown": f"Note: couldn't reach your GitHub just now. {EMPTY_TAIL}",
+    "text": f"Note: couldn't reach your GitHub just now. {EMPTY_TAIL}",
 }
 
 # Words that would render an all-clear / empty section list under a failed read.
@@ -81,8 +81,7 @@ def test_helper_partial_and_empty_wording(fmt):
 def test_helper_is_plural_safe_one_sentence():
     line = degraded_disclosure([GH, CAL], "chat")
     assert line == (
-        "I couldn't reach your GitHub work items and your calendar just now, "
-        "so what's below is incomplete."
+        "I couldn't reach your GitHub and your calendar just now, " "so what's below is incomplete."
     )
     assert " it " not in line  # no pronoun to disagree with a plural
 
@@ -251,7 +250,7 @@ async def _radar_response(sources):
 
 async def test_radar_route_renders_the_card_title_and_populated_note():
     empty = await _radar_response([_Failing()])
-    assert empty.degraded_title == "I couldn't reach your GitHub work items just now."
+    assert empty.degraded_title == "I couldn't reach your GitHub just now."
     assert empty.degraded_note == ""  # each string only in its own state
     populated = await _radar_response([_Failing(), _One()])
     assert populated.degraded_note == PARTIAL["chat"]  # #1963: same line as the standup
@@ -383,7 +382,7 @@ def test_format_stems_per_reason():
 
 def test_mixed_reasons_one_sentence_unreachable_first():
     details = [
-        {"label": "your GitHub work items", "reason": "connect_required", "connector": "GitHub"},
+        {"label": "your GitHub", "reason": "connect_required", "connector": "GitHub"},
         {"label": "your calendar", "reason": "unreachable", "connector": "Calendar"},
     ]
     assert degraded_disclosure([], "chat", details=details) == (
@@ -408,7 +407,7 @@ def test_mixed_reasons_one_sentence_unreachable_first():
         ),
         (
             "unreachable",
-            "I couldn't reach your GitHub work items just now.",
+            "I couldn't reach your GitHub just now.",
             "Your Radar may be missing what you're working on there. "
             "An empty Radar doesn't mean all clear. Check back in a bit.",
         ),

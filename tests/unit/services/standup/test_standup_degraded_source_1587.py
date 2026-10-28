@@ -20,7 +20,7 @@ NOW = 1_000_000_000.0
 
 
 class _FailingSource:
-    def __init__(self, label="your GitHub work items"):
+    def __init__(self, label="your GitHub"):
         self._label = label
 
     async def fetch(self, user_id):
@@ -56,7 +56,7 @@ async def test_failed_source_recorded_in_degraded_sources():
     summary = await StandupAssembler(
         [_FailingSource(), _OkSource([_doc("a doc")])], now_epoch=NOW
     ).assemble("u1")
-    assert summary.degraded_sources == ["your GitHub work items"]
+    assert summary.degraded_sources == ["your GitHub"]
     assert [it.display for it in summary.yesterday] == ["a doc"]
 
 
@@ -74,7 +74,7 @@ async def test_to_prose_discloses_failure_alongside_real_content():
     prose = summary.to_prose()
     assert "a doc" in prose  # real content still renders
     assert "couldn't reach" in prose.lower()
-    assert "your GitHub work items" in prose
+    assert "your GitHub" in prose
 
 
 async def test_to_prose_never_says_nothing_to_show_when_everything_failed():
@@ -104,5 +104,5 @@ def test_standup_summary_degraded_sources_defaults_empty():
 
 
 def test_standup_summary_to_dict_carries_degraded_sources():
-    summary = StandupSummary(degraded_sources=["your GitHub work items"])
-    assert summary.to_dict()["degraded_sources"] == ["your GitHub work items"]
+    summary = StandupSummary(degraded_sources=["your GitHub"])
+    assert summary.to_dict()["degraded_sources"] == ["your GitHub"]

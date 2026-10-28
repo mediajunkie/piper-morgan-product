@@ -297,7 +297,7 @@ _DEGRADED_EMPTY_OFFER = (
 )
 _DEGRADED_EMPTY_STANDALONE_TAIL = (
     "I can't pull a standup together right now. You can ask again in a bit, or say "
-    "'my standup interview' any time to capture one interactively."
+    "'my standup interview' and we'll do one together."
 )
 
 

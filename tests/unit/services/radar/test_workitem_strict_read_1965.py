@@ -3,7 +3,7 @@
 Before: ``GitHubMCPSpatialAdapter._call_github_api`` returned ``None`` on no
 session / 401 / 403 / any non-200 / any exception, ``list_github_issues_direct``
 turned that into ``[]``, and ``WorkItemProvider.gather_for_user`` recorded
-VERIFIED_EMPTY — so #1587/#1889's "I couldn't reach your GitHub work items"
+VERIFIED_EMPTY — so #1587/#1889's "I couldn't reach your GitHub"
 disclosure could never fire for a real GitHub failure (including an
 OAuth-connected user whose adapter has no token at all).
 

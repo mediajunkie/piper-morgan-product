@@ -43,7 +43,7 @@ class RadarViewResponse(BaseModel):
     state: str  # "populated" | "empty"
     entities: List[RadarEntityResponse]
     # #1587: user-facing labels of any source that genuinely FAILED this read
-    # (e.g. ["your GitHub work items"]) — empty means no source failed, not
+    # (e.g. ["your GitHub"]) — empty means no source failed, not
     # that every source was attempted.
     degraded_sources: List[str] = []
     # #1889 / #1963: server-rendered copy for a failed source (CXO 2026-10-08),

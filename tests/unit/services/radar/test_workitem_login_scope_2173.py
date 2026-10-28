@@ -93,9 +93,7 @@ async def test_the_unscoped_first_contact_read_needs_no_login():
 
 
 def test_the_failed_source_line_is_cxos_words():
-    details = [
-        {"label": "your GitHub work items", "reason": "assignee_unresolved", "connector": "GitHub"}
-    ]
+    details = [{"label": "your GitHub", "reason": "assignee_unresolved", "connector": "GitHub"}]
     for empty in (False, True):
         assert degraded_disclosure([], "chat", empty=empty, details=details) == (
             GITHUB_ASSIGNEE_UNRESOLVED_LINE
@@ -108,7 +106,7 @@ def test_the_failed_source_line_is_cxos_words():
 
 def test_with_another_failure_it_joins_the_one_sentence():
     details = [
-        {"label": "your GitHub work items", "reason": "assignee_unresolved", "connector": "GitHub"},
+        {"label": "your GitHub", "reason": "assignee_unresolved", "connector": "GitHub"},
         {"label": "your calendar", "reason": None, "connector": None},
     ]
     line = degraded_disclosure([], "chat", empty=False, details=details)

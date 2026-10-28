@@ -126,7 +126,7 @@ async def test_radar_route_surfaces_degraded_source_on_github_failure_1587(monke
     ):
         view = await get_radar(current_user=_USER, service=_FakeHistoryService([]))
 
-    assert view.degraded_sources == ["your GitHub work items"]
+    assert view.degraded_sources == ["your GitHub"]
 
 
 # --- #6: scope work items to "assigned to me" via the configured GitHub handle ---

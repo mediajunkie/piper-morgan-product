@@ -92,7 +92,7 @@ REENTRY_BOUND = (
 )
 
 _STALE_GITHUB_DETAIL = {
-    "label": "your GitHub work items",
+    "label": "your GitHub",
     "reason": "stale_token",
     "connector": "GitHub",
 }
@@ -208,7 +208,7 @@ class TestStandupEmptyStateDisclosesStaleGitHub2076:
         """The served shape: the GitHub read failed STALE_TOKEN (b1fbfa3da1), recorded on
         the summary. That record answers; the status service is not asked."""
         summary = StandupSummary(
-            degraded_sources=["your GitHub work items"], degraded_details=[_STALE_GITHUB_DETAIL]
+            degraded_sources=["your GitHub"], degraded_details=[_STALE_GITHUB_DETAIL]
         )
         result, bstate = await _standup_turn(service, "s-2076-a", summary, None)
         assert result.message == STANDUP_STALE
@@ -237,11 +237,11 @@ class TestStandupEmptyStateDisclosesStaleGitHub2076:
         """An unreachable read with a healthy binding is not "needs reconnecting".
         #2182: nor is it "no observed activity"; the #1889 line says the read failed."""
         summary = StandupSummary(
-            degraded_sources=["your GitHub work items"],
+            degraded_sources=["your GitHub"],
             degraded_details=[{**_STALE_GITHUB_DETAIL, "reason": "unreachable"}],
         )
         result, _ = await _standup_turn(service, "s-2076-d", summary, "bound")
-        assert result.message.startswith("I couldn't reach your GitHub work items just now.")
+        assert result.message.startswith("I couldn't reach your GitHub just now.")
         assert "reconnecting" not in result.message
         assert "no observed activity" not in result.message
 

@@ -2308,7 +2308,7 @@ class StandupSummary:
     # confidence. Within the slot: confirmed-blocked first, then stale ("hasn't moved…").
     watch: list["StandupItem"] = field(default_factory=list)
     # #1587: user-facing labels of any Radar EntitySource that genuinely FAILED
-    # this assemble (e.g. ["your GitHub work items"]) — distinct from a slot
+    # this assemble (e.g. ["your GitHub"]) — distinct from a slot
     # simply having nothing to show. Empty does not mean every source was
     # attempted, only that none of the attempted ones failed.
     degraded_sources: list[str] = field(default_factory=list)

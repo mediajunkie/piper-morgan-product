@@ -152,7 +152,13 @@ class TestEmptyCopy:
     def test_a_failure_takes_cxos_tail_not_no_observed_activity(self):
         lead, standalone = sp.empty_standup_copy(False, self.LINE)
         assert lead == f"{self.LINE} {self.TAIL}"  # CXO 10-27 19:16
-        assert standalone.startswith(f"{self.LINE} I can't pull a standup together")
+        assert (
+            standalone
+            == (  # CXO 10-27 19:39
+                f"{self.LINE} I can't pull a standup together right now. You can ask again in a "
+                "bit, or say 'my standup interview' and we'll do one together."
+            )
+        )
         for text in (lead, standalone):
             assert "no observed activity" not in text and "—" not in text
 
@@ -200,11 +206,11 @@ class TestGitHubStatusCheckFailed:
             s = await _assemble(
                 None, [WorkItemEntitySource(WorkItemProvider()), DocumentEntitySource(_Docs())]
             )
-        assert s.degraded_sources == ["your GitHub work items"]
+        assert s.degraded_sources == ["your GitHub"]
         lead, _ = sp.empty_standup_copy(
             False, degraded_head(s.degraded_sources, s.degraded_details)
         )
-        assert lead.startswith("I couldn't reach your GitHub work items just now.")
+        assert lead.startswith("I couldn't reach your GitHub just now.")
         assert "no observed activity" not in lead
 
     async def test_github_not_connected_stays_verified_empty(self):

@@ -32,8 +32,8 @@ class EntitySourceReadFailed(Exception):
     blanks the whole surface) distinguish an HONEST failure from a genuine empty,
     and record it for the consumer to disclose rather than just log-and-drop.
 
-    ``label`` is the user-facing name of what couldn't be read (e.g. "your GitHub
-    work items") — consumers surface it verbatim in ``degraded_sources``.
+    ``label`` is the user-facing name of what couldn't be read (e.g. "your GitHub",
+    CXO 10-27) — consumers surface it verbatim in ``degraded_sources``.
     """
 
     def __init__(self, label: str, reason: Any = None, connector: Optional[str] = None):
@@ -240,7 +240,7 @@ class WorkItemEntitySource:
                 # caller's per-source isolation (RadarFeed/StandupAssembler) can
                 # record and disclose it rather than silently dropping it.
                 raise EntitySourceReadFailed(
-                    "your GitHub work items",
+                    "your GitHub",
                     reason=getattr(outcome, "reason", None),
                     connector="GitHub",
                 )

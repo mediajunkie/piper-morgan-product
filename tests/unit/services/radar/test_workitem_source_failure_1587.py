@@ -103,7 +103,7 @@ async def test_radar_feed_records_degraded_source_and_still_shows_others():
     feed = RadarFeed([_OkSource(), failing])
     view = await feed.assemble("u1")
 
-    assert view.degraded_sources == ["your GitHub work items"]
+    assert view.degraded_sources == ["your GitHub"]
     assert view.state == "populated"
     assert any(e.title == "a doc" for e in view.entities)
 
@@ -121,7 +121,7 @@ async def test_radar_feed_empty_view_still_discloses_degraded_source():
     view = await feed.assemble("u1")
 
     assert view.state == "empty"
-    assert view.degraded_sources == ["your GitHub work items"]
+    assert view.degraded_sources == ["your GitHub"]
 
 
 @pytest.mark.asyncio
