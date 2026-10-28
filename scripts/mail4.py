@@ -176,6 +176,17 @@ def acks(tip, role):
     return d
 
 
+def last_ack(tip, role):
+    # A seat can read and ack per message (`read ID`, `ack ID`) without ever running `inbox`, so a
+    # missing canary alone doesn't mean unread mail (Exec, 10-28). Report the last non-canary ack too.
+    days = []
+    for line in (show(tip, f"acks/{role}.log") or "").splitlines():
+        parts = line.split(" ", 3)
+        if len(parts) >= 3 and not (len(parts) == 4 and parts[3].startswith("canary")):
+            days.append(parts[1][:10])
+    return max(days, default=None)
+
+
 def recipients(m):
     return list(m.get("to") or []) + list(m.get("cc") or [])
 
@@ -410,7 +421,9 @@ def cmd_check(a):
     msgs = [m for m in every if m.get("type") != "canary"]
     today = now_pt().strftime("%Y-%m-%d")
     stale = [
-        f"{r} {last_canary(every, r) or 'never'}" for r in pilot if last_canary(every, r) != today
+        f"{r} {last_canary(every, r) or 'never'} (last ack {last_ack(tip, r) or 'never'})"
+        for r in pilot
+        if last_canary(every, r) != today
     ]
     late = []
     for r in pilot:
@@ -423,7 +436,8 @@ def cmd_check(a):
     )
     if stale:
         print(
-            f"  no canary today from: {', '.join(stale)} (last run); a seat's first inbox read of the day runs it"
+            f"  no canary today from: {', '.join(stale)}; a seat's first inbox read of the day runs it, "
+            "so a recent ack with no canary means per-message reads, not unread mail"
         )
     for r, m in late:
         print(f"  OVERDUE {r}: {m['id']} from {m['from']} ({age_days(m):.1f}d) {m['subject']}")

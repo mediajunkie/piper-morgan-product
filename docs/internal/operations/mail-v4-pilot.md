@@ -53,7 +53,7 @@ Your role comes from your branch (`claude/<role>-cycle`); `--as ROLE` overrides.
 ## Known limits (pilot)
 
 - ~~No mail wake yet.~~ Closed: Pard's `mail-wake.py` reads `mail4.py inbox --ids`, so a v4 message wakes its recipient (seen 10-16).
-- The daily canary runs on the seat's first `inbox` read of the day (since 10-22; it had run on 15 of 41 seat-days as a START step). `check` names seats without one today.
+- The daily canary runs on the seat's first `inbox` read of the day (since 10-22; it had run on 15 of 41 seat-days as a START step). `check` names seats without one today, with each seat's last non-canary ack. A seat that reads and acks per message (`read ID`, `ack ID`) never runs `inbox`, so no canary there plus a recent ack means it is reading, not that mail is unread (Exec and Lead, 10-28).
 - No per-message search beyond `inbox` and `read`. `check` scans every message; fine at pilot volume.
 
 ## Success and stop criteria (from the proposal)
