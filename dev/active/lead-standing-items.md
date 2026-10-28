@@ -5,6 +5,7 @@ freshness pass at START/STOP alongside the carry-forward, and cites NO issue sta
 lives in GitHub, this file holds only durable owed/queued items.)
 
 ## Durable owed
+- **v4 mail at every START** (CIO 10:08 10-28: no lead canary since 10-22; the canary fires on the first `scripts/mail4.py inbox` of the day, and my fires read only `mailboxes/`) — **Filed**: 2026-10-28 · rule: run `venv/bin/python scripts/mail4.py inbox` alongside check-mailbox at START and on every MAIL WAKE; ack with `mail4.py ack ID done --note`. Trigger to strike: the 11-05 pilot review folds it into the duty-cycle-tick skill.
 **Freshness pass 2026-10-26 09:58 PT:** removed 31 rows whose issues are all CLOSED on GitHub, or whose dated trigger has passed (the 10-22 hold, the done /health quiet count, the 2085 restarter rows). `git log -p` keeps them.
 
 - **Staging deploy-mid-chat row (Web)** — **Filed**: 2026-10-20 · trigger: the staging invite (one attended mint on `piper-morgan-staging`, xian or HOST with him) and Web's "go" mail; I fire a docs push and report the deploy step's times.
