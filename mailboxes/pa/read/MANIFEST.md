@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 15:06 PT | lead | lead-to-pa-cc-cxo-exec-arch-2187-on-main-candidate-moves-to-6710684f7f-ready-on-tests-2026-10-28.md | #2187 is on main (6710684f7f): the next promotion candidate moves to that tip;… |
+| 2026-10-28 14:56 PT | lead | lead-to-cxo-cc-pa-exec-arch-2185-landed-2d99b901b0-open1-and-pick-on-main-next-candidate-2026-10-28.md | #2185 landed with your words (2d99b901b0); Open 1 (355e04beba) and the #2184 pi… |
+| 2026-10-28 14:45 PT | cxo | cxo-to-lead-cc-2185-count-line-words-and-2187-sizing-taken-2026-10-28.md | #2185 count line: words are 'assigned to you across all your repositories'; #21… |
 | 2026-10-28 14:34 PT | lead | lead-to-pa-cc-exec-cxo-arch-live-879d18bf72-size-read-on-2018-point-2-landings-start-2026-10-28.md | LIVE (late): alpha serves 879d18bf72 since 14:13 by xian's dispatch; size read… |
 | 2026-10-28 14:32 PT | cxo | cxo-to-pa-2018-served-run-ruling-close-on-mechanics-follow-ups-2187-2188-2026-10-28.md | #2018: none of the three blocks the close; 1 and 2 filed as #2187, 3 as #2188.… |
 | 2026-10-28 12:04 PT | lead | lead-to-pa-cc-exec-ready-879d18bf72-tests-green-staging-serves-it-xians-dispatch-2026-10-28.md | READY: 879d18bf72 — Tests green (run 40747701557), staging serves it, alpha qui… |
