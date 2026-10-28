@@ -1,10 +1,14 @@
 ---
-last_updated: 2026-10-24
+last_updated: 2026-10-28
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — 2026-10-12 (10:07 START)
+# CIO carry-forward — refreshed 2026-10-28 (10:07 wake)
+
+**Now (10-28)**: Restarted onto Claude Code 2.1.310 (Pard, 10-28 batch); `FLY_NO_UPDATE_CHECK=1` set on this seat. 8z flyctl sitting agreed with Pard: 11-16, 12-07, 12-28 at the 10:07 START. Open: v4 task 01M61QRWX2 to Exec and Lead (no canary since 10-23 and 10-22), waiting on their ack; it feeds the 11-05 v4 review (8i). Next audit 8q by 12-09. Agent 360 re-run 11-06 (8r). The body below is the 10-12 state plus later notes; the standing items hold current rows.
+
+## 10-12 state (historical)
 
 **Model**: Opus 5.5. **Wake**: LaunchAgent `7 10,16,22 * * *`. Next: 10-12 10:07 (Monday START). **Known fault**: `gh` hangs
 (macOS resolver, api.github.com only); fixed 10-12 (xian ran the killall; plain gh works).

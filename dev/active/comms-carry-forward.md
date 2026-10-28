@@ -1,15 +1,8 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-10-27 21:19 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/10/27/2026-10-27-0619-comms-code-log.md`, DAY-CLOSED. Close every log with exactly `<!-- DAY-CLOSED: YYYY-MM-DD -->`.
-- **Ship #066 (pub Wed 10-28), `weekly-ship-066-draft-2026-10-23.md`, last change 37825d2d19 (Comms, 19:28):**
-  - My full review is applied: Exec took 6 edits (2d55ae1645). xian's cuts are in: "Red builds", "Why it matters", the USAGE comment. L13 is back to "Almost every one" (xian). Now 1,814 words.
-  - **Waiting on xian:**
-    - (a) A replacement for "honest" in the P.S. Offered: clear-eyed (my pick), realistic, candid, straight with ourselves, truthful.
-    - (b) Whether to make the duplication cuts (about 1,450–1,500 words), or send them to Exec as proposals. The list: restarter told 3×, gate count 2×, the 61-question test 2× with the dense close-out figures, GitHub App 2×, privacy 2×, theme 4×, the Governance paragraph's internal jargon, "26 updates" as a second safeguard story, the fact-check ledger process. Plus Blockers & asks is stale ("choosing the moment to send").
-    - (c) The format idea: Coming up forward-only, post-window events in one opening line.
-  - I asked Exec to hold edits to the file until xian answers.
-  - After xian's edit: full template-audit, then publish-ready. The L7 source comment comes out at publish. Exec asks at the 06:38 Wed fire if nothing has landed.
+## ⭐ CURRENT STATE — 2026-10-28 09:20 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/10/28/2026-10-28-0619-comms-code-log.md`, open. Close every log with exactly `<!-- DAY-CLOSED: YYYY-MM-DD -->`.
+- **Ship #066:** published and distributed 10-28 (333f8c7b7a, LinkedIn done). Nothing owed.
 - **Thu 10-29 "Citation via Hearsay"** (`where-the-citation-came-from.md`): xian's rewrite not started (bbed820f88, 10-25 08:17). Then the ledger check (`fact-check-where-the-citation-came-from-2026-10-20.md`), ask about the 09-03 retro, art, template-audit, row, publish-ready. Tease targets Tue 11-03 "The Unguarded Entrance". Don't nudge. A day-before rewrite is normal.
 - **Published 10-27:** "The Caveat That Kept Disappearing", distributed (Medium done).
 - **/try/ wording:** "beta" stays (Comms ruling 10-27, to Web). Standing row has two triggers: a beta date announced, the beta opening.
