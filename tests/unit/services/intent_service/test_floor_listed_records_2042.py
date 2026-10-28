@@ -100,9 +100,9 @@ class TestShapes:
         ev = listed_records_event(reply, prompt, {}, {}, history, "show me the rest")
         assert ev is not None
         assert ev["unsourced_references"] == ["#2", "#1"]
-        assert ev["reference_sources"] == {"#2": "absent", "#1": "absent"}
+        assert ev["reference_sources"] == {"#2": ["absent"], "#1": ["absent"]}
 
-    def test_sources_prefer_context_then_history_then_user(self):
+    def test_sources_name_every_holder_context_then_history_then_user(self):
         from services.intent_service.floor_listed_records import reference_sources
 
         ctx = {
@@ -112,12 +112,26 @@ class TestShapes:
         hist = [{"role": "assistant", "content": "earlier: #13"}]
         got = reference_sources(["#11", "#12", "#13", "#14", "#15"], ctx, hist, "what about #14?")
         assert got == {
-            "#11": "blocked_items",
-            "#12": "pending_todos",
-            "#13": "history",
-            "#14": "user",
-            "#15": "absent",
+            "#11": ["blocked_items"],
+            "#12": ["pending_todos"],
+            "#13": ["history"],
+            "#14": ["user"],
+            "#15": ["absent"],
         }
+
+    def test_a_number_in_two_slices_names_both(self):
+        # Arch's 11:02 refinement: the offline criterion asks whether ANY source
+        # matches the asked scope, so a first-match (alphabetical) would mis-flag
+        # a legitimate list. Every holder is recorded, history and user too.
+        from services.intent_service.floor_listed_records import reference_sources
+
+        ctx = {
+            "high_priority_issues": [{"number": 2018, "title": "Settings"}],
+            "blocked_items": [{"number": 2018, "title": "Settings"}],
+        }
+        hist = [{"role": "assistant", "content": "You asked about #2018 earlier."}]
+        got = reference_sources(["#2018"], ctx, hist, "and #2018?")
+        assert got == {"#2018": ["blocked_items", "high_priority_issues", "history", "user"]}
 
     def test_one_sourced_reference_and_no_list_is_not_an_enumeration(self):
         assert (
@@ -191,9 +205,9 @@ class TestSeam:
         assert "high_priority_issues[priority:high]" in ev["context_reads"]
         # Arch's mis-attribution datum: each number names the slice it came from.
         assert ev["reference_sources"] == {
-            "#2183": "high_priority_issues",
-            "#2151": "high_priority_issues",
-            "#2018": "high_priority_issues",
+            "#2183": ["high_priority_issues"],
+            "#2151": ["high_priority_issues"],
+            "#2018": ["high_priority_issues"],
         }
         # Log-only: the user sees exactly what the model composed.
         assert resp.message == REPLY_2184
