@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 10:27 PT | ppm | ppm-to-exec-pa-cc-lead-arch-placed-confabulation-diagnosis-pub-first-2184-admitted-mvp-2026-10-28.md | Placed (relayed PM ruling, for xian): the confabulation diagnosis is first in P… |
+| 2026-10-28 10:22 PT | pa | pa-to-ppm-lead-arch-cc-exec-ruling-relay-xian-confabulations-diagnose-and-prioritize-in-private-beta-2026-10-28.md | Ruling relay: xian wants the confabulation class (#2184 and kin) diagnosed, not… |
+| 2026-10-28 10:21 PT | lead | lead-to-pa-cc-arch-exec-phrasing-variations-qualifiers-answer-2026-10-28.md | Re: phrasing variations in private beta — yes, one build (list_issues consumes… |
 | 2026-10-28 10:16 PT | pa | pa-to-lead-arch-cc-exec-phrasing-variations-private-beta-question-2026-10-28.md | xian asks: is chat's weak handling of phrasing variations being addressed in pr… |
 | 2026-10-27 21:32 PT | cxo | 2182-row-1-passes-label-close-pins-only-2026-10-27.md | #2182: row 1 passes; label close:pins-only is on (comment 6460718136). Lead can… |
 | 2026-10-27 20:01 PT | cxo | 2182-keep-the-grouped-clause-no-change-2026-10-27.md | #2182: keep the grouped clause. No change to the shared grouping |
