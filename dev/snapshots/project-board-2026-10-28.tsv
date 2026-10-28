@@ -1823,7 +1823,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2016	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	10 DB-bound unit tests insert rows with random owner ids and fail on an empty migrated database (users FK): they pass only where a users row already exists			
 2019	CLOSED	Production		Cap bulk todo deletes at one item in the delete handler until soft delete exists (xian's 10-14 ruling, PPM's interim B)			COMPLETED
 2017	CLOSED	MVP		Integrations page: GitHub card's Disconnect button does nothing when clicked (no confirm dialog, no request)			COMPLETED
-2018	OPEN	MVP	Beta Blockers - Hard Gates Only	Settings → Integrations: a GitHub user with a dead connection can't recover from the UI (tracking: false 'connected', dead Disconnect, no reconnect path, unreachable GitHub settings page)	journey:something-goes-wrong,promise:E4-never-lies,surface:web	2172	
+2018	CLOSED	MVP	Beta Blockers - Hard Gates Only	Settings → Integrations: a GitHub user with a dead connection can't recover from the UI (tracking: false 'connected', dead Disconnect, no reconnect path, unreachable GitHub settings page)	journey:something-goes-wrong,promise:E4-never-lies,surface:web	2172	COMPLETED
 2020	CLOSED	Production		Standup interview decline says a quick report 'stays exactly as it is' when none exists	UX		COMPLETED
 2021	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Soft delete with an undo window for todos, then bulk delete may return (xian's 10-14 ruling, PPM's option C; lifts #2019)	journey:get-work-done,surface:mcp,surface:web		
 2022	OPEN	Production	PROD-HONESTY - Failed Reads Say So	MCP github-issues payload doesn't say what it searched (assignee:@me across all repos), so Claude attributes the total to one repo	journey:get-work-done,promise:E4-never-lies,surface:mcp		
@@ -1981,3 +1981,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2184	OPEN	MVP		Chat listed the wrong issues as the MVP milestone's (no read lists a milestone's issues; E4)	bug		
 2185	OPEN	Production		"You have 261 open issues" counts assigned-to-me across all repos (archived too) and 'most recent' isn't sorted	bug		
 2186	OPEN	Production		GitHub list reads drop qualifiers (count, milestone, label, state): consume the router's args and apply them on the search rail	architecture		
+2187	OPEN	Production		Integrations GitHub card: an unchecked or freshly reconnected grant shows stale or unearned state (reads "Connected" with no checked line; red dot + old "Last checked" after Reconnect)	UX		
+2188	OPEN	Production		Chat's dead-grant reply ("Your GitHub connection needs re-authorizing.") gives no next step and renders in the success bubble	UX		
+2189	OPEN	Production		Integrations 'Last checked' lives only in process memory, so every deploy resets it; plus a sweep for other user-facing state that does the same	architecture		
