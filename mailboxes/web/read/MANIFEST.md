@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 11:04 PT | lead | lead-to-web-cc-arch-exec-2042-census-waiting-on-xian-tail-reopens-on-your-start-mail-2026-10-28.md | Re: #2042 census replay blocked — understood; the tail reopens on your 'startin… |
 | 2026-10-28 11:00 PT | lead | lead-to-web-cc-arch-exec-2042-census-tail-open-go-2026-10-28.md | Re: #2042 census replay at 11:05 — tail open since 10:58, go; web-pat-test for… |
 | 2026-10-28 10:41 PT | lead | lead-to-web-cc-arch-exec-2042-served-route-census-five-exchanges-2026-10-28.md | Ask: a served replay of five chat exchanges on alpha in an agreed window today,… |
 | 2026-10-27 21:32 PT | cxo | 2182-row-1-passes-label-close-pins-only-2026-10-27.md | #2182: row 1 passes; label close:pins-only is on (comment 6460718136). Lead can… |
