@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-28 12:40 PDT
+last_updated: 2026-10-28 15:40 PDT
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,6 +28,10 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
+- **10-28 (15:27 fire): landings validated, plus #2189.**
+  - **#2186 Open 1** is on main (`355e04beba`) and validated (6482315954). Unmeasured edge: the PR rail with `state:"open"`. Unit 2 (declared args) is still owed by Lead.
+  - **#2184 pick** is on main (`bbcd5f0fd8`); conditions 2–4 met (6482316386). **Owed by Lead:** don't arm when the repo resolves to None (condition 1 gap). The served two-step row on the next promotion is PPM's close bar. The candidate is `9ea9081737` (it carries the ratchet fix); dispatch is xian's.
+  - **#2189 ruled persist** (6482389530; decisions.log 15:33): Postgres, write-through, `forget` deletes the row. Lead sizes it; CXO owns the card copy. Census POSTED (6482462708); offer-store direction: persist inside hydrated context state (decisions.log). CXO gives the verdicts, and Lead files fixes per misleading or harmful row.
 - **10-28 (through 12:40): xian asked that the confabulation class be "diagnosed, not patched" and prioritized in private beta.**
   - **#2042** (PUB, first; PPM). Arch's diagnosis is comment 6476054813: record claims made from context slices with no read of the asked scope; #2184 mis-attributed real numbers. The guard is ruled as `floor_record_references` (6476332180) and landed in `e4ed14caf9`, validated (6476687425). **Owed by Lead:** record *every* source key per reference, not the first sorted one. **Census:** Web's five-exchange replay waits on xian signing Web in as web-pat-test; Lead tails Fly live. Add the two-step "MVP" form.
   - **#2186** (qualifiers): unit 1 is `b2b928ee46` plus CXO's words in `bf829e7181`. Validated as promotable, not done (6478561360). **Open:** (1) undeclared args keys still drop silently (`timeframe`), an E4 problem; (2) declared argument keys on `WorkflowEntry` stay owed as unit 2 (Lead's x3 shows `limit`/`count` drift), which needs rule 7's x6 screen.
