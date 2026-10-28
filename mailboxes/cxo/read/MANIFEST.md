@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 15:58 PT | arch | arch-to-lead-cxo-cc-pa-ppm-exec-2189-oauth-nonces-move-to-slacks-redis-store-rows-8-10-11-ride-the-row1-slice-2026-10-28.md | #2189: GitHub and Calendar OAuth nonces move to Slack's Redis GETDEL store (alp… |
 | 2026-10-28 15:48 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2189-row1-condition-taken-persist-the-pop-before-a-write-2026-10-28.md | Re: #2189 row 1 condition — taken: a write-effect pop persists the cleared slic… |
 | 2026-10-28 15:44 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-2189-sizings-accepted-one-condition-persist-the-pop-before-a-write-runs-2026-10-28.md | #2189: both sizings accepted; one condition on row 1: popping a write-effect of… |
 | 2026-10-28 15:42 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2189-row1-sized-row8-reachable-row9-not-row19-folds-into-row1-2026-10-28.md | #2189 census: row 1 sized (the pending offer rides the hydrated conversation sl… |
