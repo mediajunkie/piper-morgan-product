@@ -279,3 +279,26 @@ async def test_milestones_handler_does_not_arm_on_an_empty_read(intent_service):
     ):
         res = await intent_service._handle_list_milestones_query(intent, "wf", session_id=_SESSION)
     assert store.slot is None and mp.PICK_PENDING_FLAG not in res.intent_data
+
+
+@pytest.mark.asyncio
+async def test_milestones_handler_does_not_arm_when_the_repo_cannot_be_resolved(intent_service):
+    # Arch's condition 1 (15:29 10-28): no repo, no arm — a repo-less bound read would be
+    # assignee:@me across all repos and disagree with the counts just listed.
+    store = _Store()
+    intent_service.workflow_offer_service = store
+    router = MagicMock()
+    router.initialize = AsyncMock()
+    router.list_milestones_via_mcp = AsyncMock(return_value=_milestones(3))
+    router._resolve_default_repo = AsyncMock(return_value=None)
+    intent = Intent(
+        category=IntentCategory.QUERY,
+        action="list_milestones_query",
+        context={"original_message": "show milestones"},
+    )
+    with patch(
+        "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+        return_value=router,
+    ):
+        res = await intent_service._handle_list_milestones_query(intent, "wf", session_id=_SESSION)
+    assert res.success and store.slot is None and mp.PICK_PENDING_FLAG not in res.intent_data

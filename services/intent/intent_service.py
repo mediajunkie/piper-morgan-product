@@ -551,6 +551,10 @@ def _router_unapplied_keys(intent, applied: "frozenset[str]") -> List[str]:
         if not isinstance(key, str) or key in applied or key in _LIST_RAIL_SATISFIED_KEYS:
             continue
         raw = args.get(key)
+        if key == "state" and isinstance(raw, str) and raw.strip().lower() == "open":
+            # Arch 15:29 10-28: both rails read open items; "open" is satisfied,
+            # not unapplied (else the PR rail would say it couldn't apply "open").
+            continue
         shown = None
         if isinstance(raw, str) and raw and len(raw) <= _MAX_LIST_QUALIFIER_CHARS:
             # CXO 12:34: the user's phrase, quoted; the router's field name is
@@ -9663,18 +9667,24 @@ class IntentService:
                         if isinstance(_resolved, tuple) and len(_resolved) == 2 and all(_resolved)
                         else None
                     )
-                    _pick_armed = arm_milestone_pick(
-                        session_id=session_id,
-                        principal=_principal_from_intent(intent),
-                        offer_service=self.workflow_offer_service,
-                        titles=[
-                            display_title(m.get("title"), "(untitled milestone)")
-                            for m in milestones
-                            if isinstance(m, dict)
-                        ],
-                        repository=_repo_full,
-                        original_message=intent.original_message or "",
-                    )
+                    # Arch 15:29 10-28 (condition 1): no repo, no arm — a bound read
+                    # without the listed repo would be assignee:@me across all repos
+                    # and its count would disagree with the list just shown.
+                    if _repo_full:
+                        _pick_armed = arm_milestone_pick(
+                            session_id=session_id,
+                            principal=_principal_from_intent(intent),
+                            offer_service=self.workflow_offer_service,
+                            titles=[
+                                display_title(m.get("title"), "(untitled milestone)")
+                                for m in milestones
+                                if isinstance(m, dict)
+                            ],
+                            repository=_repo_full,
+                            original_message=intent.original_message or "",
+                        )
+                    else:
+                        self.logger.info("milestone_pick_not_armed_no_repo", session_id=session_id)
                 except (
                     Exception
                 ) as e:  # silent-ok: logged; an un-armed pick leaves today's behaviour

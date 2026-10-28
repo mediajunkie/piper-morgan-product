@@ -463,7 +463,7 @@ async def test_pr_list_names_every_router_key_it_was_given(intent_service):
             "inversion_args": {"timeframe": "this week"},
         },
     )
-    intent.original_message = "list my pull requests from this week"
+    intent.bind_original_message("list my pull requests from this week")
     with patch(
         "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_open_prs",
         new=AsyncMock(return_value=GitHubIssuesResult(issues=page, total=2)),
@@ -473,3 +473,27 @@ async def test_pr_list_names_every_router_key_it_was_given(intent_service):
     assert line in res.message
     assert "timeframe" not in res.message
     assert res.message.index(line) < res.message.index("Here are the most recent:")
+
+
+@pytest.mark.asyncio
+async def test_pr_list_treats_state_open_as_rail_satisfied(intent_service):
+    # Arch 15:29 10-28: the PR rail reads open items; a router state "open" is satisfied, not unapplied.
+    page = [
+        {"number": 7, "title": "Seven", "html_url": "https://github.com/o/r/pull/7", "labels": []}
+    ]
+    intent = Intent(
+        category=IntentCategory.QUERY,
+        action="list_prs_query",
+        context={
+            "original_message": "list my open pull requests from this week",
+            "inversion_args": {"state": "open", "timeframe": "this week"},
+        },
+    )
+    intent.bind_original_message("list my open pull requests from this week")
+    with patch(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_open_prs",
+        new=AsyncMock(return_value=GitHubIssuesResult(issues=page, total=1)),
+    ):
+        res = await intent_service._handle_list_prs_query(intent, "wf")
+    assert LIST_UNAPPLIED_LINE.format(qualifiers='"this week"', pronoun="it") in res.message
+    assert '"open"' not in res.message
