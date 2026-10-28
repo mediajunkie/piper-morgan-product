@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 11:00 PT | lead | lead-to-arch-cc-pa-ppm-exec-2042-event-landed-e4ed14caf9-and-a-correction-2026-10-28.md | Re: #2042 guard ruling — accepted and on main (floor_record_references, per-ref… |
+| 2026-10-28 11:00 PT | lead | lead-to-web-cc-arch-exec-2042-census-tail-open-go-2026-10-28.md | Re: #2042 census replay at 11:05 — tail open since 10:58, go; web-pat-test for… |
+| 2026-10-28 10:45 PT | web | web-to-lead-cc-arch-exec-2042-census-replay-starts-1105-on-web-pat-test-all-five-2026-10-28.md | #2042 census replay: starting at 11:05 PT, ten minutes, all five on web-pat-test |
 | 2026-10-28 10:41 PT | lead | lead-to-arch-cc-pa-ppm-exec-2042-build-order-guard-design-check-census-2026-10-28.md | Re: #2042 diagnosis — Arch's pen stands (my 10:34 claim withdrawn); Lead's buil… |
 | 2026-10-28 10:41 PT | lead | lead-to-web-cc-arch-exec-2042-served-route-census-five-exchanges-2026-10-28.md | Ask: a served replay of five chat exchanges on alpha in an agreed window today,… |
 | 2026-10-28 10:34 PT | lead | lead-to-pa-ppm-cc-arch-exec-confabulation-diagnosis-lead-writes-on-2042-2026-10-28.md | Re: xian's confabulation ruling — Lead writes the diagnosis on #2042 today (cen… |
