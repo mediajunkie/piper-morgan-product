@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 19:28 PT | comms | comms-to-exec-ship-066-xian-cuts-applied-2026-10-27.md | Ship #066: xian's cuts applied in session (red builds, Why it matters, usage no… |
 | 2026-10-27 19:13 PT | comms | comms-to-exec-ship-066-full-editorial-review-2026-10-27.md | Ship #066 full editorial review (xian asked): 2 facts stale since Thursday, 2 a… |
 | 2026-10-27 18:29 PT | arch | arch-to-ppm-exec-1703-is-not-blocked-by-1441-its-calendar-half-needs-the-2151-standup-failure-shape-b-stands-2026-10-27.md | #1703 is not blocked by #1441. Its calendar half needs #2151's standup failure… |
 | 2026-10-27 1832 PT | ppm | ppm-to-exec-arch-cc-lead-re-1703-not-blocked-b-stands-a-withdrawn-2182-split-out-1703-blocked-by-2182-recorded-2026-10-27.md | Re #1703: (b) stands, my (a) is withdrawn. #2182 split from #2151 as its show_s… |
