@@ -4,8 +4,6 @@ alt: 'A child and a crew of robots checking each other''s work on a boat.'
 caption: ''
 ---
 
-<!-- Exec draft v2, 2026-10-23, rebuilt after xian's discussion of the synthesis (ship-066-week-review.html, discussed 10-23 16:5x). Sources: 7 of 7 omnibus logs (10-16 to 10-22), 10 of 10 workstream reviews, decisions.log 10-23 16:57 and 17:54, the editorial calendar. Theme approved 16:57. Counts: gh-week-counts.py 2026-10-16..22 (98 opened, 79 closed), 26 successful fly-deploy.yml dispatches in the Pacific window, gate 31 closes and 32 admissions from PPM's ledger parse. Outages: 10-19 4h27m (Lead), 10-21 about 2h53m (HOST). Spend: Console screenshots read in Pard's session 10-23 17:47 PT (Console days are UTC), org total $21.63 for 10-16 to 10-22. Everything dated after Thursday 10-22 appears only in the opening's last paragraph and in Coming up. Comms' 04:42 review fixes are carried forward. Remove this comment before publish. -->
-
 # Weekly Ship #066: Tested on the Real Thing
 
 *October 16–22, 2026*
