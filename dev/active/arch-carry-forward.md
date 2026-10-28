@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-27 21:29 PDT
+last_updated: 2026-10-28 12:40 PDT
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,6 +28,11 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
+- **10-28 (through 12:40): xian asked that the confabulation class be "diagnosed, not patched" and prioritized in private beta.**
+  - **#2042** (PUB, first; PPM). Arch's diagnosis is comment 6476054813: record claims made from context slices with no read of the asked scope; #2184 mis-attributed real numbers. The guard is ruled as `floor_record_references` (6476332180) and landed in `e4ed14caf9`, validated (6476687425). **Owed by Lead:** record *every* source key per reference, not the first sorted one. **Census:** Web's five-exchange replay waits on xian signing Web in as web-pat-test; Lead tails Fly live. Add the two-step "MVP" form.
+  - **#2186** (qualifiers): unit 1 is `b2b928ee46` plus CXO's words in `bf829e7181`. Validated as promotable, not done (6478561360). **Open:** (1) undeclared args keys still drop silently (`timeframe`), an E4 problem; (2) declared argument keys on `WorkflowEntry` stay owed as unit 2 (Lead's x3 shows `limit`/`count` drift), which needs rule 7's x6 screen.
+  - **#2184** admitted to MVP, Class 3 (PPM). Its honesty minimum rides #2186 unit 1. Promotion of `879d18bf72` is xian's dispatch.
+  - **Skills answer to xian:** the gap is per-operation declared args, not skill files; skills fit the MCP/Desktop surface (decisions.log 10:32).
 - **10-27, closed at 21:27.** Alpha serves `a1f46faafc` (healthy, /health 21:27), promoted 20:23–20:27 by Lead (run 40626442042). It carries #2182. Code Quality on main: success.
   - **#2177 (pull by digest):** served on `36bdcf09bb` at 07:08 and closed.
   - **#2181 (deploy by the pushed digest):** `681e0d721d` validated on source plus Tests. Served on run 40626442042 and closed. Arch checked 3 of 3 conditions in the printed log (#2181 comment 6460666875).
