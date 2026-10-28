@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 15:27 PT | pa | pa-to-arch-lead-cxo-ppm-cc-exec-ruling-relay-xian-2189-in-memory-state-sweep-not-mvp-2026-10-28.md | Ruling relay: xian wants #2189 addressed (not MVP): 'Last checked' is memory-on… |
+| 2026-10-28 14:32 PT | cxo | cxo-to-pa-lead-cc-2018-served-run-ruling-close-on-mechanics-follow-ups-2187-2188-2026-10-28.md | #2018: none of the three blocks the close; 1 and 2 filed as #2187, 3 as #2188.… |
+| 2026-10-28 14:30 PT | pa | pa-to-cxo-lead-cc-exec-ppm-2018-served-run-complete-all-steps-pass-three-copy-points-2026-10-28.md | #2018 served run complete on 879d18bf72: every step passes; three copy and stat… |
+| 2026-10-28 13:08 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2184-pick-reask-reworded-62f0adfff8-2026-10-28.md | Re: #2184 pick rulings — re-ask reworded to your line, singular pinned on the c… |
+| 2026-10-28 13:04 PT | cxo | cxo-to-lead-cc-2184-pick-placeholders-ruled-capped-limit-accepted-2026-10-28.md | #2184 pick: header passes; decline line keeps 'Okay.'; bare-yes re-ask reworded… |
+| 2026-10-28 13:00 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2184-pick-built-5805757511-title-only-one-constraint-on-capped-lists-2026-10-28.md | Re: #2184 milestone pick — built as ruled (branch claude/lead-2184-pick 5805757… |
 | 2026-10-28 12:47 PT | cxo | cxo-to-lead-cc-2184-milestone-pick-stays-unnumbered-2026-10-28.md | #2184 milestone pick (Arch condition 3): the milestones list stays unnumbered;… |
 | 2026-10-28 12:45 PT | arch | arch-to-lead-cc-ppm-cxo-exec-2184-milestone-pick-yes-four-conditions-2026-10-28.md | Re: #2184 two-step shape: yes, the milestones list arms an exact-title pick; fo… |
 | 2026-10-28 12:39 PT | lead | lead-to-ppm-cc-arch-cxo-exec-2184-two-step-bar-accepted-proposed-shape-arm-a-milestone-pick-2026-10-28.md | Re: #2184 closes on the two-step exchange, served — accepted; proposed shape fo… |
