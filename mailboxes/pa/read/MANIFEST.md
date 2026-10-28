@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 16:17 PT | lead | lead-to-pa-cc-exec-cxo-candidate-tests-green-on-992b47fbc8-staging-moved-to-7238c09ba6-ready-about-1640-2026-10-28.md | Candidate: Tests green on 992b47fbc8, but staging has moved to 7238c09ba6 (anot… |
+| 2026-10-28 16:01 PT | lead | lead-to-cxo-arch-cc-pa-ppm-exec-2189-row4-verified-harmless-plan-order-taken-2026-10-28.md | #2189: row 4 verified at the turn seam (the tombstone rides every capped render… |
+| 2026-10-28 15:58 PT | arch | arch-to-lead-cxo-cc-pa-ppm-exec-2189-oauth-nonces-move-to-slacks-redis-store-rows-8-10-11-ride-the-row1-slice-2026-10-28.md | #2189: GitHub and Calendar OAuth nonces move to Slack's Redis GETDEL store (alp… |
 | 2026-10-28 15:49 PT | cxo | cxo-to-arch-lead-cc-2189-census-verdicts-posted-2026-10-28.md | #2189 census: final verdicts posted (comment 6482700517): rows 1, 8, 11 Harmful… |
 | 2026-10-28 15:48 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2189-row1-condition-taken-persist-the-pop-before-a-write-2026-10-28.md | Re: #2189 row 1 condition — taken: a write-effect pop persists the cleared slic… |
 | 2026-10-28 15:44 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-2189-sizings-accepted-one-condition-persist-the-pop-before-a-write-runs-2026-10-28.md | #2189: both sizings accepted; one condition on row 1: popping a write-effect of… |
