@@ -37,11 +37,11 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 
 | # | Sprint (proposed) | Why this place in the order | Open |
 |---|---|---|---|
-| 1 | **PUB: Public Beta gate** (unchanged) | xian's ratified gate (ESSENCE v1.0, 08-30). It runs through the private beta. | 24 |
-| 2 | **H: Honesty sweep** (no false "none", "0", "not connected", "I can't see it") | xian approved the systematic sweep at 16:57: Arch scopes it, and Lead builds it after #2132. Design partners will hit these first, and each one is a Class 3 shape. Arch scoped it at 17:04 as **#2151** (placed Production by PPM), not #1423, because this week's served instances had no broad `except` for #1423's scanner to find. The list below is input to #2151's inventory, not a substitute for it. | 27 |
+| 1 | **PUB: Public Beta gate** (unchanged) | xian's ratified gate (ESSENCE v1.0, 08-30). It runs through the private beta. 10-28: the confabulation diagnosis (#2042) and its kin (#2183, #2185, #2186) moved in on xian's word. | 28 |
+| 2 | **H: Honesty sweep** (no false "none", "0", "not connected", "I can't see it") | xian approved the systematic sweep at 16:57: Arch scopes it, and Lead builds it after #2132. Design partners will hit these first, and each one is a Class 3 shape. Arch scoped it at 17:04 as **#2151** (placed Production by PPM), not #1423, because this week's served instances had no broad `except` for #1423's scanner to find. The list below is input to #2151's inventory, not a substitute for it. | 26 |
 | 3 | **D: Data boundaries and terms** (ownership, isolation, keys, Terms, legal) | xian, 10-16: the Terms and legal review come before any outside user beyond the design partners. The owner-id and isolation work is the same promise in code. | 31 |
 | 4 | **C: Connectors complete** (GitHub, Calendar, Notion on the #1232 contract, published OAuth apps) | v18.7(kk): the core connectors must finish to close Production. #2087 (Google verification) is submitted. | 24 |
-| 5 | **V: Conversation reliability** (multi-intent, armed offers, routing, catalog cost) | Correctness of the chat path beyond the honesty class. #2145 and #2149 (catalog cost and size) sit here, with #1011 (slash-command precedence) decided alongside them. | 32 |
+| 5 | **V: Conversation reliability** (multi-intent, armed offers, routing, catalog cost) | Correctness of the chat path beyond the honesty class. #2145 and #2149 (catalog cost and size) sit here, with #1011 (slash-command precedence) decided alongside them. | 31 |
 | 6 | **E: Experience polish** (layout, dialog copy, nav) | CXO-led. These are visible and irritating, but not false. | 28 |
 | 7 | **T: Trust and learning** | #2135 (trust never progresses) makes the PDR-002 gradient inert today. The rest follows it. | 15 |
 | 8 | **Doc: Documents** | Follows #2132's family table. | 8 |
@@ -49,7 +49,7 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 16 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 203 open (#2183 added to V 10-28; #2182 closed in H 10-27 21:33, pins only; #2182 added to H 10-27, #2151's show_standup row; #2177 closed in Q 10-27 07:12; its follow-up #2181 placed Ongoing; #2109 closed in D and #2125, #2172, #2176 in H, 10-26 morning; #2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 205 open (#2042 moved H to PUB, #2183 moved V to PUB, #2185 and #2186 added to PUB, 10-28 on xian's word, PA relay 10:22; #2184 admitted MVP, not counted here; #2183 added to V 10-28; #2182 closed in H 10-27 21:33, pins only; #2182 added to H 10-27, #2151's show_standup row; #2177 closed in Q 10-27 07:12; its follow-up #2181 placed Ongoing; #2109 closed in D and #2125, #2172, #2176 in H, 10-26 morning; #2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -65,7 +65,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 
 "was" is the board's Sprint value at the 19:11 refresh ("—" for none).
 
-### PUB: Public Beta gate (25)
+### PUB: Public Beta gate (29)
 
 | # | Title | was |
 |---|---|---|
@@ -90,12 +90,16 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1705 | MCP-path increment 6: "same Piper" cross-session memory (preferences/working-mode, resource not tool) | PUB |
 | #1706 | MCP-path increment 7: calendar tool exposure on the plugin surface (depends on #1441's connector port) | PUB |
 | #1707 | MCP-path increment 8: trust-gated proactivity — PLACEHOLDER, do not build until the plugin-surface trust-gr… | PUB |
+| #2042 | Floor LLM narrates actions or data that code never produced (class tracking; #2033, #2040). **The class diagnosis, moved from H 10-28 on xian's word** ("diagnosed and prioritized in the private beta sprint"); first in PUB | H |
 | #2164 | Waitlist sign-up with batch admission (after the inner-circle invitations) (10-24) | — |
 | #2165 | Per-account rate and abuse limits, with a user-facing line when a limit is hit (10-24) | — |
 | #2168 | Plugin surface rubric: ratify CXO's v0.1 and run it per increment as the precondition for #1701-#1707 (10-24) | PUB |
 | #2175 | UX: a person arriving through the plugin or MCP endpoint has no clear path to an invite and an account (10-25, CXO; journey grid invited x MCP) | — |
+| #2183 | Chat ignores a count in "show my last two new issues" and lists every open issue (10-28; moved from V 10-28 with its kin on xian's word) | V |
+| #2185 | "You have 261 open issues" counts assigned-to-me across all repos and "most recent" isn't sorted (10-28, split from #2183) | — |
+| #2186 | GitHub list reads drop qualifiers (count, milestone, label, state): consume the router's args on the search rail (10-28, Arch; the class fix for #2183/#2184) | — |
 
-### H: Honesty sweep (24)
+### H: Honesty sweep (23)
 
 | # | Title | was |
 |---|---|---|
@@ -109,7 +113,6 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2010 | [HONESTY] list_projects renderer offers things nothing is armed to do (empty state and closing question) | — |
 | #2011 | Unarmed-ask census (#1766) scans 2 packages; 67 holder sites elsewhere in services/ escape it (34 in consci… | — |
 | #2022 | MCP github-issues payload doesn't say what it searched (assignee:@me across all repos), so Claude attribute… | — |
-| #2042 | Floor LLM narrates actions or data that code never produced (class tracking; #2033, #2040) | — |
 | #2074 | Revoked Calendar/Slack tokens still read 'connected' on the four #2072 surfaces: extend needs-reconnecting … | — |
 | #2093 | "Is my calendar connected?" answers with the integrations setup boilerplate: lists all four as Connected, t… | — |
 | #2107 | Chat says 'usually a brief outage — try again in a moment' when the cause is the Anthropic workspace usage … | — |
@@ -199,7 +202,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2174 | ADR-081 D3 check: do github-mcp-server and our REST reads accept a GitHub App user access token? (10-25, Arch; blocks #2163 and #1514's GitHub part) | — |
 | #2178 | GitHub Disconnect doesn't revoke the OAuth grant at GitHub; revoke it, never a PAT (10-25, Arch) | — |
 
-### V: Conversation reliability (32)
+### V: Conversation reliability (31)
 
 | # | Title | was |
 |---|---|---|
@@ -235,7 +238,6 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2155 | UX: "What's on my agenda?" with no calendar answers about meeting-time analysis (placed 10-24) | — |
 | #2169 | Chat delete: a list-item remove ask gets a confirmation for a different object (the prior turn's to-do) (10-24; closed, `close:pins-only` per CXO, not Class 1) | — |
 | #2170 | Chat: remove an item from a list (a list-item rail), with exact-match arming and an id-bound confirm (added 10-24: missing from the plan, found by the map generator) | — |
-| #2183 | Chat ignores a count in "show my last two new issues" and lists every open issue (10-28, xian on alpha via PA; scope of the "261" unchecked) | — |
 
 ### E: Experience polish (27)
 
