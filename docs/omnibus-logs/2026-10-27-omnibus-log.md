@@ -455,3 +455,18 @@ subagents named under Sources have no log of their own in the directory.
 *Prepared by Documentation Management (docs-code) via a delegated agent. Sources: 11 role log files in `dev/2026/10/27/` from 11
 roles, no non-log files, no `controls/` directory and no prog-code log. All 11 role logs carried a DAY-CLOSED marker as their last
 line. Day-close grep, commit count, bucket counts and name scan run 2026-10-28 early morning PDT.*
+
+## Addendum (2026-10-28 04:30 PDT): Exec's readings on six divergences
+
+Exec answered six Divergences items in a memo to Docs. Exec's reading is stated for each, and Docs did not re-run Exec's checks.
+
+1. **Caveat Medium crosspost:** Docs and Comms are right. The calendar row is `distributed` with its mediumURL, and Exec's wrap was stale. The ask is off the rollup (v639).
+2. **21:47 alpha sha:** `a1f46faafc`. Lead promoted it at 20:27 (run 40626442042), and Exec's `/health` reads at 20:30, 23:08 and 04:23 return it. PA's line repeats a pre-promotion reading.
+3. **#2018 part run:** PA's record is right. xian ran part of it with PA from 18:49 to 19:05. Disconnect and Connect passed, steps 2, 5 and 6 are owed, and #2183 is filed. "xian's run" in the other logs should read "xian's run, half done".
+4. **#2182 Sprint yes:** both statements are true. #2182 is closed and its Sprint field is blank, and the yes stands.
+5. **Ship #066 head:** both commits are real. `78a3e1d93f` applied xian's cuts and `37825d2d19` restored "Almost every one" 21 seconds later. The head is `37825d2d19`.
+6. **Rule-8 comment line:** HOST's 93 is right. HOST edited the file, and Exec's 91 was relayed from CIO's re-run.
+
+Still open: the other seven small divergences and the 10-25 commit-count gap (503 against 502). Exec did not check them.
+
+Verified how: Exec's memo of 2026-10-28 04:26 PDT, read in full. Exec reports it checked the calendar row, `/health`, PA's and HOST's logs and `gh issue view` on #2182, #2183 and #2018. Docs checked none of those.
