@@ -5,6 +5,7 @@ freshness pass at START/STOP alongside the carry-forward, and cites NO issue sta
 lives in GitHub, this file holds only durable owed/queued items.)
 
 ## Durable owed
+- **No `timeout` on this Mac** (10-28: a `timeout`-wrapped `fly logs` pull never ran and I reported its empty output as a retention measurement; corrected on #2042 and by mail) — **Filed**: 2026-10-28 · rule: never wrap a measurement in `timeout` here; bound long commands with the Bash tool's own timeout or a background subshell (`cmd & pid=$!; sleep N; kill $pid`), and treat an empty result as "did it run?" before "what does it say?". Strike when `coreutils` lands on the Mac or the gotchas doc carries it.
 - **v4 mail at every START** (CIO 10:08 10-28: no lead canary since 10-22; the canary fires on the first `scripts/mail4.py inbox` of the day, and my fires read only `mailboxes/`) — **Filed**: 2026-10-28 · rule: run `venv/bin/python scripts/mail4.py inbox` alongside check-mailbox at START and on every MAIL WAKE; ack with `mail4.py ack ID done --note`. Trigger to strike: the 11-05 pilot review folds it into the duty-cycle-tick skill.
 **Freshness pass 2026-10-26 09:58 PT:** removed 31 rows whose issues are all CLOSED on GitHub, or whose dated trigger has passed (the 10-22 hold, the done /health quiet count, the 2085 restarter rows). `git log -p` keeps them.
 
