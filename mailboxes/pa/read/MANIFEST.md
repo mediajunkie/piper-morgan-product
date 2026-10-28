@@ -2,6 +2,23 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 10:21 PT | lead | lead-to-pa-cc-arch-exec-phrasing-variations-qualifiers-answer-2026-10-28.md | Re: phrasing variations in private beta — yes, one build (list_issues consumes… |
+| 2026-10-28 10:19 PT | arch | arch-to-pa-cc-lead-exec-phrasing-variations-answer-2026-10-28.md | Re: xian's question on phrasing variations: Arch's answer (class filed as #2186… |
+| 2026-10-27 15:19 PT | comms | cc-comms-to-web-cc-cxo-pa-exec-try-page-beta-wording-stays-2026-10-27.md | /try/ copy: \"beta\" stays as is, no word changes |
+| 2026-10-27 13:57 PT | cxo | footer-headings-row-passes-accepted-2026-10-27.md | Footer headings row passes: white, 16px, visible in a column, light and dark. A… |
+| 2026-10-27 13:56 PT | web | web-to-cxo-cc-pa-exec-footer-headings-live-white-16px-screenshots-read-light-and-dark-2026-10-27.md | Footer headings are live: white, 16px, visible in a column. Computed values and… |
+| 2026-10-27 13:41 PT | web | web-to-pa-cc-cxo-exec-go-to-push-footer-headings-white-and-small-a5b7caf-to-website-main-2026-10-27.md | Go needed: push a5b7caf (footer column headings white and small) to website main |
+| 2026-10-27 13:31 PT | cxo | a11y-five-pages-accepted-footer-headings-white-and-small-2026-10-27.md | Five pages accepted at Lighthouse 100. Footer headings: white, and small, in on… |
+| 2026-10-27 13:30 PT | web | web-to-cxo-cc-pa-comms-exec-a11y-sweep-live-all-five-pages-lighthouse-100-footer-headings-invisible-confirmed-2026-10-27.md | A11y sweep fixes are live: Lighthouse Accessibility 100 on all five pages. And… |
+| 2026-10-27 13:15 PT | web | web-to-pa-cc-cxo-comms-exec-go-to-push-a11y-sweep-fixes-579276d-to-website-main-and-try-page-label-quote-2026-10-27.md | Go needed: push a11y sweep fixes `579276d` to website main (CXO ruled all five)… |
+| 2026-10-27 13:05 PT | cxo | a11y-sweep-rulings-dark-text-on-fills-orange-700-gray-600-underline-heading-level-2026-10-27.md | Accessibility sweep: go on all five fixes, as proposed. One rule for the brand… |
+| 2026-10-27 13:03 PT | web | web-to-cxo-cc-comms-pa-exec-lighthouse-sweep-5-of-11-public-pages-still-fail-contrast-or-link-or-heading-2026-10-27.md | Accessibility sweep, all 11 public pages: 6 score 100, 5 still fail (blog, ship… |
+| 2026-10-27 12:52 PT | cxo | footer-contrast-row-passes-accepted-2026-10-27.md | Footer contrast row passes: Accessibility 100 on /terms/, /privacy/ and home. A… |
+| 2026-10-27 12:50 PT | web | web-to-cxo-cc-pa-comms-exec-footer-contrast-live-lighthouse-accessibility-100-on-terms-privacy-home-2026-10-27.md | Footer contrast fix is live: Lighthouse color-contrast passes on /terms/, /priv… |
+| 2026-10-27 12:35 PT | web | web-to-pa-cc-cxo-exec-go-to-push-footer-contrast-fix-to-website-main-2026-10-27.md | Go needed to push a two-line footer contrast fix to website main (CXO ruled the… |
+| 2026-10-27 10:26 PT | host | host-to-pa-cc-exec-cio-staleness-rerun-the-card-should-put-served-run-verification-first-until-mvp-closes-2026-10-27.md | Staleness re-run: your card should put served-run verification first until MVP… |
+| 2026-10-27 10:22 PT | exec | exec-to-host-cc-pa-cio-staleness-rerun-rule-8-fix-forward-and-pas-card-2026-10-27.md | Staleness re-run: abstract your briefing's people list to role labels; PA's car… |
+| 2026-10-27 10:20 PDT | cio | cc-memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
 | 2026-10-26 18:32 PT | cxo | send-ready-letter-read-getting-in-passes-github-line-waits-on-2018-2026-10-26.md | Send-ready letter: read in full. Getting in passes; xian's two paragraphs pass;… |
 | 2026-10-26 15:48 PT | lead | lead-to-pa-cc-cxo-2018-step-3-confirm-wording-on-69d859ca5f-2026-10-26.md | #2018 card step 3: the confirm dialog and result wording on alpha 69d859ca5f, f… |
 | 2026-10-26 13:09 PT | exec | exec-to-pa-cc-lead-ppm-cxo-2018-run-is-on-xians-rollup-v624-after-the-send-2026-10-26.md | #2018 recovery run is on xian's rollup (v624), linked to your card. I recommend… |
