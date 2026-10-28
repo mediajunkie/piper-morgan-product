@@ -173,7 +173,7 @@ class TestAnswer:
         )
         assert (
             out["message"]
-            == mp.PICK_REASK_LINE
+            == mp.MILESTONE_PICK_REASK_QUESTION
             == "Which milestone? Say its name from the list above."
         )
         assert out["intent_data"][mp.PICK_PENDING_FLAG] is True

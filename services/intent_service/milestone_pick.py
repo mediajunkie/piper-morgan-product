@@ -48,8 +48,10 @@ MAX_TITLES = 50
 
 # CXO ruled 13:04 10-28: a silent arm's decline has nothing to refuse; the shortest acknowledgement.
 PICK_DECLINE_LINE = "Okay."
-# CXO 13:04 10-28: no titles and no ellipsis; the list is on screen.
-PICK_REASK_LINE = "Which milestone? Say its name from the list above."
+# CXO 13:04 10-28: no titles and no ellipsis; the list is on screen. Named *_QUESTION:
+# it is rendered only by run_clarify_milestone_pick_workflow, which stores it on the
+# #846 record and arms it (the #1766 census's named-question-holder rule).
+MILESTONE_PICK_REASK_QUESTION = "Which milestone? Say its name from the list above."
 
 
 def normalize_title(text: Optional[str]) -> str:
@@ -210,7 +212,7 @@ async def run_clarify_milestone_pick_workflow(
         )
         return None
     titles = [t for t in (payload.get("pick_titles") or []) if isinstance(t, str)]
-    question = PICK_REASK_LINE
+    question = MILESTONE_PICK_REASK_QUESTION
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         _record(
