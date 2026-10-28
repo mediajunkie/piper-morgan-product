@@ -8726,7 +8726,16 @@ class IntentService:
             if issues:
                 # total_count is the TRUE match count (search_issues total_count); `issues` is
                 # only a page (e.g. 30 of 179) — count by total_count, show a few recent (#1322).
-                _scope = f" in {_named_repo}" if _named_repo else ""
+                # #2185 (CXO 14:45 10-28): the count names its scope, and only what
+                # the query did. The connector's default read is assignee:@me across
+                # every repo; a named/bound repo read is repo-wide with no assignee
+                # term, so it names the repo and nothing more.
+                if _named_repo:
+                    _scope = f" in {_named_repo}"
+                elif _assignee_scoped:
+                    _scope = " assigned to you across all your repositories"
+                else:
+                    _scope = ""
                 _scope += _filter_scope
                 if _issues_window_full:
                     # CXO 10-24 16:11 (final): a full window is a floor, never a bare total.

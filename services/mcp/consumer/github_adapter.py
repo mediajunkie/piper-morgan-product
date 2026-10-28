@@ -72,7 +72,9 @@ CREDENTIAL_STORE_FAILED_MESSAGE = (
 # search_issues is user-wide (assignee:@me, across repos) → no repo resolution, sidestepping
 # the vestigial resolve_repo / #1230. De-risked live (179 issues). Isolated for testability.
 _ISSUES_TOOL = "search_issues"
-_MY_OPEN_ISSUES_QUERY = "assignee:@me is:open is:issue"
+# #2185: archived repos are not what a person means by "my open issues" (CXO 14:45
+# 10-28: no words needed for excluding them).
+_MY_OPEN_ISSUES_QUERY = "assignee:@me is:open is:issue archived:false"
 # PRs (#1322 P3): search_pull_requests, same payload shape, user-wide "PRs I opened".
 _PRS_TOOL = "search_pull_requests"
 _MY_OPEN_PRS_QUERY = "author:@me is:open is:pr"

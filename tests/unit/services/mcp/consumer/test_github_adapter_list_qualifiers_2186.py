@@ -51,18 +51,24 @@ def _adapter(seen):
 @pytest.mark.parametrize(
     "kwargs, expected",
     [
-        ({}, "assignee:@me is:open is:issue"),
-        ({"milestone": "MVP"}, 'assignee:@me is:open is:issue milestone:"MVP"'),
-        ({"label": "needs-triage"}, 'assignee:@me is:open is:issue label:"needs-triage"'),
-        ({"state": "closed"}, "assignee:@me is:closed is:issue"),
-        ({"state": "open"}, "assignee:@me is:open is:issue"),
-        ({"state": "all"}, "assignee:@me is:open is:issue"),  # anything else reads open
+        ({}, "assignee:@me is:open is:issue archived:false"),
+        ({"milestone": "MVP"}, 'assignee:@me is:open is:issue archived:false milestone:"MVP"'),
+        (
+            {"label": "needs-triage"},
+            'assignee:@me is:open is:issue archived:false label:"needs-triage"',
+        ),
+        ({"state": "closed"}, "assignee:@me is:closed is:issue archived:false"),
+        ({"state": "open"}, "assignee:@me is:open is:issue archived:false"),
+        (
+            {"state": "all"},
+            "assignee:@me is:open is:issue archived:false",
+        ),  # anything else reads open
         (
             {"repository": "o/r", "milestone": "Sprint 4", "label": "bug", "state": "closed"},
             'repo:o/r is:issue is:closed milestone:"Sprint 4" label:"bug"',
         ),
-        ({"milestone": 'M"V"P'}, 'assignee:@me is:open is:issue milestone:"MVP"'),
-        ({"milestone": '""', "label": "  "}, "assignee:@me is:open is:issue"),
+        ({"milestone": 'M"V"P'}, 'assignee:@me is:open is:issue archived:false milestone:"MVP"'),
+        ({"milestone": '""', "label": "  "}, "assignee:@me is:open is:issue archived:false"),
     ],
 )
 async def test_query_built_in_code(kwargs, expected):

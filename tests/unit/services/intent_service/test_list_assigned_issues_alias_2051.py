@@ -126,7 +126,9 @@ class TestTheReadRuns:
     async def test_nine_assigned_is_the_capped_list(self):
         result = await _dispatch(assigned=[_issue(n) for n in range(9, 0, -1)], repo_total=0)
         assert result is not None and result.success
-        assert result.message.startswith("You have **9 open issues**.")
+        assert result.message.startswith(
+            "You have **9 open issues** assigned to you across all your repositories."
+        )
         assert result.message.count("\n- **#") == 5
         assert "That's 5 of 9 — say the word and I'll pull the rest." in result.message
         assert result.intent_data["list_remainder_offer_pending"] is True

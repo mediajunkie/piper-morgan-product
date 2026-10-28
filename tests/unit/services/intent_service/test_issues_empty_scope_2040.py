@@ -184,7 +184,9 @@ class TestEmptyLineNamesItsScope:
         adapter = _Adapter(assigned=[_issue(3), _issue(2)], repo_total=7)
         result = await _run(svc, adapter)
         assert adapter.calls == [(None, 50)]
-        assert result.message.startswith("You have **2 open issues**.")
+        assert result.message.startswith(
+            "You have **2 open issues** assigned to you across all your repositories."
+        )
 
     async def test_the_native_pat_fallback_line_is_unchanged(self, svc):
         """Not connected via OAuth: the native router lists the resolved

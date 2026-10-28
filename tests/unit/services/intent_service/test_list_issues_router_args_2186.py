@@ -72,7 +72,7 @@ async def _run(svc, intent, issues=None, total=12):
 # before #2186, byte for byte (captured from origin/main c26d199a5a's handler
 # with this exact stub).
 _TODAY_REPLY = (
-    "You have **12 open issues**.\n\nHere are the most recent:\n"
+    "You have **12 open issues** assigned to you across all your repositories.\n\nHere are the most recent:\n"
     "- **#100**: Issue 0 (bug)\n- **#101**: Issue 1\n- **#102**: Issue 2\n"
     "- **#103**: Issue 3\n- **#104**: Issue 4\n\n"
     "That's all 5 I have in front of me, out of 12."
@@ -112,7 +112,9 @@ async def test_milestone_reaches_the_rail_and_names_its_scope(intent_service):
         total=3,
     )
     assert stub.await_args == call(None, limit=50, repository=None, milestone="MVP")
-    assert res.message.startswith('You have **3 open issues** in milestone "MVP".')
+    assert res.message.startswith(
+        'You have **3 open issues** assigned to you across all your repositories in milestone "MVP".'
+    )
     assert res.intent_data["context"]["filters"] == {"milestone": "MVP"}
 
 
@@ -125,7 +127,9 @@ async def test_label_reaches_the_rail_and_names_its_scope(intent_service):
         total=4,
     )
     assert stub.await_args == call(None, limit=50, repository=None, label="needs-triage")
-    assert res.message.startswith('You have **4 open issues** labeled "needs-triage".')
+    assert res.message.startswith(
+        'You have **4 open issues** assigned to you across all your repositories labeled "needs-triage".'
+    )
     assert "couldn't" not in res.message
 
 
@@ -136,7 +140,9 @@ async def test_closed_state_reads_closed_and_says_closed(intent_service):
         intent_service, _intent("what closed issues do I have", {"state": "closed"}), total=9
     )
     assert stub.await_args == call(None, limit=50, repository=None, state="closed")
-    assert res.message.startswith("You have **9 closed issues**.")
+    assert res.message.startswith(
+        "You have **9 closed issues** assigned to you across all your repositories."
+    )
 
 
 @pytest.mark.asyncio
@@ -164,7 +170,9 @@ async def test_count_shows_the_newest_n_and_keeps_the_true_total(intent_service,
         intent_service, _intent("show my last two new issues", {key: "2"}), total=12
     )
     assert stub.await_args == call(None, limit=50, repository=None)
-    assert res.message.startswith("You have **12 open issues**.")  # total unchanged
+    assert res.message.startswith(
+        "You have **12 open issues** assigned to you across all your repositories."
+    )  # total unchanged
     assert "#100" in res.message and "#101" in res.message
     assert "#102" not in res.message
     assert "That's the 2 you asked for, out of 12." in res.message
@@ -238,7 +246,9 @@ async def test_native_fallback_names_every_qualifier_it_cannot_apply(intent_serv
     with patch(_CONN, new=AsyncMock(return_value=degrade)):
         with patch(_NATIVE, return_value=native_router):
             res = await intent_service._handle_list_issues_query(intent, "wf")
-    assert res.message.startswith("You have **1 open issue**.")  # no false filter claim
+    assert res.message.startswith(
+        "You have **1 open issue**."
+    )  # native read: no assignee term, so no scope phrase  # no false filter claim
     # One sentence for every unapplied qualifier, joined with "and" (CXO).
     assert (
         LIST_UNAPPLIED_LINE.format(qualifiers='milestone "MVP" and state "closed"', pronoun="them")
@@ -365,7 +375,10 @@ async def test_singular_count_line_open_and_closed(intent_service):
         issues=_page(1),
         total=1,
     )
-    assert '**1 open issue** in milestone "MVP".' in res.message
+    assert (
+        '**1 open issue** assigned to you across all your repositories in milestone "MVP".'
+        in res.message
+    )
     _, res = await _run(
         intent_service,
         _intent("what closed issues do I have", {"state": "closed"}),
