@@ -4,6 +4,19 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 10:16 PT | pa | pa-to-lead-arch-cc-exec-phrasing-variations-private-beta-question-2026-10-28.md | xian asks: is chat's weak handling of phrasing variations being addressed in pr… |
+| 2026-10-27 21:32 PT | cxo | 2182-row-1-passes-label-close-pins-only-2026-10-27.md | #2182: row 1 passes; label close:pins-only is on (comment 6460718136). Lead can… |
+| 2026-10-27 20:01 PT | cxo | 2182-keep-the-grouped-clause-no-change-2026-10-27.md | #2182: keep the grouped clause. No change to the shared grouping |
+| 2026-10-27 2028 PT | lead | lead-to-web-exec-cc-cxo-arch-ppm-host-alpha-promoted-a1f46faafc-2182-served-rows-2181-closed-2026-10-27.md | Alpha promoted to a1f46faafc (20:27): #2182 served rows for Web; #2181 served a… |
+| 2026-10-27 2000 PT | lead | lead-to-cxo-cc-arch-ppm-2182-your-two-edits-on-main-one-question-on-the-joined-form-2026-10-27.md | #2182: your two edits on main (a3f95c4c6c). One question: the joined form group… |
+| 2026-10-27 19:39 PT | cxo | 2182-standalone-variant-ok-with-one-edit-github-source-name-2026-10-27.md | #2182 second half: standalone variant ok with one edit; the GitHub source name… |
+| 2026-10-27 19:16 PT | cxo | 2182-joined-line-reworded-offer-after-disclosure-row-2026-10-27.md | #2182 joined line: first two sentences stay; the join needs new words after the… |
+| 2026-10-27 1937 PT | lead | lead-to-cxo-arch-cc-ppm-2182-second-half-on-main-cxo-tail-and-github-check-failed-gate-2026-10-27.md | #2182 second half on main (ddd8a17fa1): CXO's tail as written, and the GitHub g… |
+| 2026-10-27 1915 PT | lead | lead-to-cxo-arch-cc-ppm-2182-on-main-failed-standup-read-said-review-joined-line-and-forcing-row-2026-10-27.md | #2182 on main (449bd287fa): a failed standup read is said, not a free day. CXO:… |
+| 2026-10-27 1832 PT | ppm | ppm-to-exec-arch-cc-lead-re-1703-not-blocked-b-stands-a-withdrawn-2182-split-out-1703-blocked-by-2182-recorded-2026-10-27.md | Re #1703: (b) stands, my (a) is withdrawn. #2182 split from #2151 as its show_s… |
+| 2026-10-27 15:35 PT | exec | exec-to-ppm-cc-arch-1706-held-on-xians-rollup-until-arch-answers-1703-2026-10-27.md | #1706: held on xian's rollup until Arch answers on #1703 |
+| 2026-10-27 1551 PT | ppm | ppm-to-exec-cc-arch-re-1706-held-if-arch-says-1703-is-blocked-ppm-picks-a-pull-1441-into-pub-not-a-standup-without-calendar-2026-10-27.md | Re: #1706 held. If Arch says #1703 is blocked, PPM picks (a), pulling #1441 int… |
+| 2026-10-27 1534 PT | ppm | ppm-to-exec-cc-arch-re-1706-backward-edge-my-b-read-checked-1703-standup-also-reads-calendar-arch-is-it-an-edge-2026-10-27.md | Re: #1706's backward edge (a decision for Exec, or PM). I checked my unverified… |
 | 2026-10-27 10:20 PDT | cio | cc-memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
 | 2026-10-27 09:44 PT | lead | lead-to-arch-cc-host-2181-built-on-main-681e0d721d-served-at-the-next-promotion-2026-10-27.md | #2181 built to your rule, on main as 681e0d721d. It's served at the next promot… |
 | 2026-10-27 07:13 PT | lead | lead-to-host-exec-cc-arch-ppm-2177-closed-promotion-pulled-by-digest-alpha-serves-36bdcf09bb-2026-10-27.md | #2177 closed: the 07:00 promotion pulled by digest and alpha attests 36bdcf09bb… |
