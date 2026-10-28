@@ -49,7 +49,7 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 16 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 203 open (#2182 added to H 10-27, #2151's show_standup row; #2177 closed in Q 10-27 07:12; its follow-up #2181 placed Ongoing; #2109 closed in D and #2125, #2172, #2176 in H, 10-26 morning; #2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 202 open (#2182 closed in H 10-27 21:33, pins only; #2182 added to H 10-27, #2151's show_standup row; #2177 closed in Q 10-27 07:12; its follow-up #2181 placed Ongoing; #2109 closed in D and #2125, #2172, #2176 in H, 10-26 morning; #2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -95,7 +95,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2168 | Plugin surface rubric: ratify CXO's v0.1 and run it per increment as the precondition for #1701-#1707 (10-24) | PUB |
 | #2175 | UX: a person arriving through the plugin or MCP endpoint has no clear path to an invite and an account (10-25, CXO; journey grid invited x MCP) | — |
 
-### H: Honesty sweep (25)
+### H: Honesty sweep (24)
 
 | # | Title | was |
 |---|---|---|
@@ -129,7 +129,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2172 | GitHub Disconnect reports success when a credential copy failed to clear (each clear's failure is swallowed) (10-25, Arch) (closed 10-26, pins only) | — |
 | #2173 | Standup and Radar show every open GitHub issue as the person's own work when no GitHub username is saved; default to the signed-in login (10-25, Lead; built 7bcef2bd07; closed 10-25 15:35, served row 1 of 2) | — |
 | #2176 | Setup wizard step 2 shows Slack and Google Calendar app-credential forms to a new tester (10-25, CXO; class 3; built 2d0c56082a, not served) (closed 10-26, pins only) | — |
-| #2182 | Standup shows a failed calendar or source read as a free day or 'no activity' (10-27, #2151's `show_standup` row split out on Arch's advice; #1703 is blocked by it) | — |
+| #2182 | Standup shows a failed calendar or source read as a free day or 'no activity' (10-27, #2151's `show_standup` row split out on Arch's advice; #1703 is blocked by it; closed 10-27 21:33, pins only, 1 of 4 rows served on alpha a1f46faafc) | — |
 | #2045 | Integrations card after a successful Test keeps 'Not checked yet. Press Test.' and '0 of 4 healthy' until… (added 10-24: missing from the plan, found by the map generator; closed 10-25) | — |
 
 ### D: Data boundaries and terms (29)

@@ -1975,5 +1975,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2176	CLOSED	Production		UX (class 3): setup wizard step 2 shows Slack and Google Calendar app-credential forms to a new tester (a failed status read falls back to 'not configured')	UX,close:pins-only,journey:set-up,promise:E4-never-lies,surface:web		COMPLETED
 2177	CLOSED	Production		Alpha promotion fails: staging's image tag returns 'manifest unknown' on pull (runs 40253965692, 40254107119)	bug		COMPLETED
 2178	OPEN	Production		GitHub Disconnect doesn't revoke the OAuth grant at GitHub (Slack and Google do); revoke it, and never revoke a PAT	architecture		
-2181	OPEN	Ongoing		Promote deploys alpha by the pushed digest, not the promote-<sha12> tag (2177 follow-up)	architecture		
-2182	OPEN	Production		Standup shows a failed calendar or source read as a free day or 'no activity' (#2151's show_standup row, split out for #1703)	journey:something-goes-wrong,promise:E4-never-lies,seam:resolver,surface:mcp,surface:web		
+2181	CLOSED	Ongoing		Promote deploys alpha by the pushed digest, not the promote-<sha12> tag (2177 follow-up)	architecture		COMPLETED
+2182	CLOSED	Production		Standup shows a failed calendar or source read as a free day or 'no activity' (#2151's show_standup row, split out for #1703)	close:pins-only,journey:something-goes-wrong,promise:E4-never-lies,seam:resolver,surface:mcp,surface:web		COMPLETED

@@ -477,3 +477,12 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **10-27 07:00:** Lead promotes alpha (#2177, pull by digest). Re-read `/health` for the new sha at the 09:33 fire. If it changes, the known-issues lines need a recheck only if the delta touches their code.
 - **Fri 10-30:** the since-last diff (fresh snapshot, regenerate, republish the same artifact). The baseline hard stop and MVP `due_on` are unchanged; PPM proposes no date.
 - **CXO's Friday spot-check:** waits for a green cell.
+
+## 2026-10-27 21:33 STOP: day-close (carry into 10-28, Wednesday)
+
+- **Alpha:** `a1f46faafc` (promoted 20:27, by digest). #2177 and #2181 are both closed.
+- **#1706:** Arch ruled 10-27 18:29 that #1703 is not blocked by #1441, so (b) stands and my (a) is withdrawn. The Sprint move (#1706 out of PUB) waits on xian via Exec. I write no row.
+- **#2182:** split from #2151 and closed the same evening, pins-only (1 of 4 rows served). The #1703 ← #2182 edge is met.
+- **Waiting on xian:** the #2018 recovery run (rollup, PA's card). Once it closes, MVP is #1595 plus #1386.
+- **Fri 10-30:** the since-last diff (fresh snapshot, regenerate, republish the same artifact). The map is at v12. No date is proposed.
+- **CXO's Friday spot-check:** waits for a green cell.

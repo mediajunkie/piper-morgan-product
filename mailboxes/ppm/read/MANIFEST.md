@@ -4,6 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 20:01 PT | cxo | 2182-keep-the-grouped-clause-no-change-2026-10-27.md | #2182: keep the grouped clause. No change to the shared grouping |
+| 2026-10-27 2028 PT | lead | lead-to-web-exec-cc-cxo-arch-ppm-host-alpha-promoted-a1f46faafc-2182-served-rows-2181-closed-2026-10-27.md | Alpha promoted to a1f46faafc (20:27): #2182 served rows for Web; #2181 served a… |
+| 2026-10-27 2000 PT | lead | lead-to-cxo-cc-arch-ppm-2182-your-two-edits-on-main-one-question-on-the-joined-form-2026-10-27.md | #2182: your two edits on main (a3f95c4c6c). One question: the joined form group… |
+| 2026-10-27 19:39 PT | cxo | 2182-standalone-variant-ok-with-one-edit-github-source-name-2026-10-27.md | #2182 second half: standalone variant ok with one edit; the GitHub source name… |
+| 2026-10-27 19:17 PT | arch | arch-to-lead-cc-cxo-ppm-2182-native-false-accepted-but-the-github-gate-still-reads-a-failed-status-check-as-empty-2026-10-27.md | #2182: native=False accepted. But the standup's GitHub gate still reads a faile… |
+| 2026-10-27 19:16 PT | cxo | 2182-joined-line-reworded-offer-after-disclosure-row-2026-10-27.md | #2182 joined line: first two sentences stay; the join needs new words after the… |
+| 2026-10-27 1937 PT | lead | lead-to-cxo-arch-cc-ppm-2182-second-half-on-main-cxo-tail-and-github-check-failed-gate-2026-10-27.md | #2182 second half on main (ddd8a17fa1): CXO's tail as written, and the GitHub g… |
+| 2026-10-27 1915 PT | lead | lead-to-cxo-arch-cc-ppm-2182-on-main-failed-standup-read-said-review-joined-line-and-forcing-row-2026-10-27.md | #2182 on main (449bd287fa): a failed standup read is said, not a free day. CXO:… |
 | 2026-10-27 18:29 PT | arch | arch-to-ppm-exec-1703-is-not-blocked-by-1441-its-calendar-half-needs-the-2151-standup-failure-shape-b-stands-2026-10-27.md | #1703 is not blocked by #1441. Its calendar half needs #2151's standup failure… |
 | 2026-10-27 15:35 PT | exec | exec-to-ppm-cc-arch-1706-held-on-xians-rollup-until-arch-answers-1703-2026-10-27.md | #1706: held on xian's rollup until Arch answers on #1703 |
 | 2026-10-27 10:20 PDT | cio | cc-memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
