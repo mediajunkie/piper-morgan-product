@@ -511,6 +511,44 @@ def _unapplied_sentences(unhonoured: List[str], repo_unresolved: Optional[str]) 
     return " ".join(parts)
 
 
+# #2186 Open 1 (Arch 12:29 10-28, E4): keys the search rail already satisfies on
+# every read, so naming them would be noise, not honesty.
+_LIST_RAIL_SATISFIED_KEYS = frozenset({"sort", "order"})
+
+
+def _router_unapplied_keys(intent, applied: "frozenset[str]") -> List[str]:
+    """#2186 Open 1: every ``inversion_args`` key a list read did NOT apply, named.
+
+    ``applied`` is the set of keys the handler consumes (the issues read:
+    milestone, label, state, repo, count, limit; the PR read today: none).
+    Rail-satisfied keys (sort, order) are skipped. A value is echoed only when
+    every word of it occurs in the user's message (the #1976 guard); otherwise
+    the key alone is named, so an LLM-written value never reaches the user.
+    Nothing an undeclared key asked for is dropped without a word.
+    """
+    args = (intent.context or {}).get("inversion_args")
+    if not isinstance(args, dict):
+        return []
+    from services.onboarding.portfolio_service import user_said_every_word
+
+    message = getattr(intent, "original_message", None) or (intent.context or {}).get(
+        "original_message"
+    )
+    named: List[str] = []
+    for key in args:
+        if not isinstance(key, str) or key in applied or key in _LIST_RAIL_SATISFIED_KEYS:
+            continue
+        raw = args.get(key)
+        shown = None
+        if isinstance(raw, str) and raw and len(raw) <= _MAX_LIST_QUALIFIER_CHARS:
+            shown = user_said_every_word(raw, message)
+        named.append(f'{key} "{shown}"' if shown else key)
+    return named
+
+
+_LIST_ISSUES_APPLIED_KEYS = frozenset({"milestone", "label", "state", "repo", "count", "limit"})
+
+
 # #2186: the largest count the list read can honour (the handler reads one 50-item page).
 _MAX_LIST_COUNT = 50
 _MAX_LIST_QUALIFIER_CHARS = 100
@@ -589,6 +627,8 @@ def _router_list_issue_args(intent) -> Dict[str, Any]:
             out["count"] = count
         else:
             out["unhonoured"].append(f"count {count}")
+    # #2186 Open 1: a key this read never consumes is named, never dropped.
+    out["unhonoured"].extend(_router_unapplied_keys(intent, _LIST_ISSUES_APPLIED_KEYS))
     return out
 
 
@@ -9337,6 +9377,13 @@ class IntentService:
                     )
                 else:
                     message = f"You have **{pr_count} open PR{'s' if pr_count != 1 else ''}**."
+                # #2186 Open 1 (E4): the PR read applies no router key yet; name
+                # every one it was given, under the header, above the list.
+                _pr_unapplied = _unapplied_sentences(
+                    _router_unapplied_keys(intent, frozenset()), None
+                )
+                if _pr_unapplied:
+                    message += " " + _pr_unapplied
                 message += "\n\nHere are the most recent:"
                 # #1762 epic 6 — render the whole held set, cap at the shared
                 # renderer, store what the cap hid (GatherOutcome §5b).
@@ -9358,6 +9405,11 @@ class IntentService:
                 _complete = _capped.complete
             else:
                 message = "You don't have any open pull requests right now."
+                _pr_unapplied = _unapplied_sentences(
+                    _router_unapplied_keys(intent, frozenset()), None
+                )
+                if _pr_unapplied:
+                    message += " " + _pr_unapplied
 
             return IntentProcessingResult(
                 success=True,
