@@ -101,9 +101,8 @@ async def test_workitem_provider_returns_empty_when_github_unavailable(monkeypat
 
     monkeypatch.setattr(ghmod, "GitHubIntegrationRouter", _BoomRouter)
     with patch(
-        "services.integrations.integration_status_service."
-        "IntegrationStatusService.is_configured",
-        new=AsyncMock(return_value=True),
+        "services.integrations.integration_status_service." "IntegrationStatusService.get_status",
+        new=AsyncMock(return_value={"configured": True, "check_failed": False}),
     ):
         assert await WorkItemProvider().list_for_user("user-1") == []
 
@@ -122,9 +121,8 @@ async def test_radar_route_surfaces_degraded_source_on_github_failure_1587(monke
 
     monkeypatch.setattr(ghmod, "GitHubIntegrationRouter", _BoomRouter)
     with patch(
-        "services.integrations.integration_status_service."
-        "IntegrationStatusService.is_configured",
-        new=AsyncMock(return_value=True),
+        "services.integrations.integration_status_service." "IntegrationStatusService.get_status",
+        new=AsyncMock(return_value={"configured": True, "check_failed": False}),
     ):
         view = await get_radar(current_user=_USER, service=_FakeHistoryService([]))
 

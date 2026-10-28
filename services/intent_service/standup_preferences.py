@@ -287,15 +287,17 @@ EMPTY_STANDALONE_GITHUB_STALE = (
 
 
 # #2182 (E4, #2151's show_standup row): when a source's read FAILED (the calendar, the
-# documents, GitHub unreachable), the empty standup is not "no observed activity". The
-# lead opens with the #1889 disclosure line (CXO's words, 2026-10-08) and keeps the offer
-# last, the #2076 shape. CXO reviews the joined copy.
+# documents, GitHub unreachable), the empty standup is not "no observed activity". It
+# opens with the disclosure's first sentence (``degraded_head``) and then CXO's tail
+# (10-27 19:16): one yes/no, last.
 _DEGRADED_EMPTY_OFFER = (
-    f"{_EMPTY_OFFER_ASK} You tell me what happened and what's ahead, and I'll put it "
-    "together. (yes/no)"
+    "I can't pull a standup together right now. You can ask again in a bit, or we can do "
+    "a quick guided one: you tell me what happened and what's ahead, and I'll write it "
+    "up. Want to do that? (yes/no)"
 )
 _DEGRADED_EMPTY_STANDALONE_TAIL = (
-    "Say 'my standup interview' any time to capture one interactively."
+    "I can't pull a standup together right now. You can ask again in a bit, or say "
+    "'my standup interview' any time to capture one interactively."
 )
 
 

@@ -41,7 +41,10 @@ ISSUES = [_issue(1, ["dinp-machine"]), _issue(7, ["dinp-machine"]), _issue(30, [
 
 async def _gather(saved, login, **kw):
     with (
-        patch(f"{SVC}.is_configured", new=AsyncMock(return_value=True)),
+        patch(
+            f"{SVC}.get_status",
+            new=AsyncMock(return_value={"configured": True, "check_failed": False}),
+        ),
         patch(ROUTER, return_value=_router(ISSUES)),
         patch(HANDLE_READER, new=AsyncMock(return_value=saved)),
         patch.object(_A, "account_login", login),

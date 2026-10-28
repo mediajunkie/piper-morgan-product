@@ -5516,13 +5516,10 @@ class IntentService:
                 degraded_line = ""
                 failed_sources = list(summary.degraded_sources or [])
                 if not github_stale and failed_sources:
-                    from services.domain.models import degraded_disclosure
+                    from services.domain.models import degraded_head
 
-                    degraded_line = degraded_disclosure(
-                        failed_sources,
-                        "chat",
-                        empty=True,
-                        details=list(summary.degraded_details or []),
+                    degraded_line = degraded_head(
+                        failed_sources, list(summary.degraded_details or [])
                     )
                 empty_lead, empty_standalone = sp.empty_standup_copy(github_stale, degraded_line)
                 invite = (

@@ -30,7 +30,10 @@ async def test_oauth_bound_no_pat_user_gets_work_items_fetched():
     PAT-only config service says False → the provider must STILL fetch."""
     router = _mock_router(pat_configured=False)
     with (
-        patch(f"{SVC}.is_configured", new=AsyncMock(return_value=True)),
+        patch(
+            f"{SVC}.get_status",
+            new=AsyncMock(return_value={"configured": True, "check_failed": False}),
+        ),
         patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
             return_value=router,
@@ -51,7 +54,10 @@ async def test_unconfigured_user_short_circuits_before_any_session():
     """The pre-existing no-session fast path stays: not configured → [] with no
     router constructed at all."""
     with (
-        patch(f"{SVC}.is_configured", new=AsyncMock(return_value=False)),
+        patch(
+            f"{SVC}.get_status",
+            new=AsyncMock(return_value={"configured": False, "check_failed": False}),
+        ),
         patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
         ) as router_cls,

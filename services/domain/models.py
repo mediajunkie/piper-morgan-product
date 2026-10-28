@@ -2221,6 +2221,21 @@ def _reason_sentence(details: list[dict], *, empty: bool) -> str:
     return " ".join([body] + _action_sentences(groups, empty=empty))
 
 
+def degraded_head(sources: list[str], details: Optional[list[dict]] = None) -> str:
+    """#2182 (CXO 10-27): the disclosure's first sentence alone, every failed source's
+    clause joined ("I couldn't reach your calendar just now, and I couldn't tell which
+    GitHub issues are assigned to you."), plus the actionable reasons' own next steps.
+    The empty standup follows it with its own tail. "" when nothing failed."""
+    if not details:
+        details = [{"label": lb, "reason": None, "connector": None} for lb in sources or []]
+    groups = _group_details(details)
+    head = ", and ".join(_clauses(groups))
+    if not head:
+        return ""
+    head = head[0].upper() + head[1:]
+    return " ".join([f"{head}."] + _action_sentences(groups, empty=True))
+
+
 def _format_line(sentence: str, fmt: str) -> str:
     """Per-format stems, as ruled for #1889: chat as-is; Slack italic and without the
     leading "I "; Markdown/text "Note: " with the first word lower-cased ("couldn't",

@@ -153,7 +153,18 @@ class WorkItemProvider:
                 IntegrationStatusService,
             )
 
-            if not await IntegrationStatusService().is_configured(user_id, "github"):
+            status = await IntegrationStatusService().get_status(user_id, "github")
+            if not status.get("configured"):
+                if status.get("check_failed"):
+                    # #2182 (Arch 10-27): the status check itself failed (#2151
+                    # ISS-STATUS), so whether GitHub is connected is unknown: a failed
+                    # read, never "no work items".
+                    from services.mcp.consumer.connector import DegradationReason
+
+                    return WorkItemOutcome(
+                        kind=WorkItemReadKind.SOURCE_FAILED,
+                        reason=DegradationReason.UNREACHABLE,
+                    )
                 # No configured GitHub connector -> genuinely nothing to read,
                 # not a failed attempt.
                 return WorkItemOutcome(kind=WorkItemReadKind.VERIFIED_EMPTY)

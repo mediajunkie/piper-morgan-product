@@ -89,7 +89,10 @@ class TestWorkItemProviderClosesRouter:
 
         router = self._mock_router()
         with (
-            patch(f"{self._SVC}.is_configured", new=AsyncMock(return_value=True)),
+            patch(
+                f"{self._SVC}.get_status",
+                new=AsyncMock(return_value={"configured": True, "check_failed": False}),
+            ),
             patch(
                 "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
                 return_value=router,
@@ -108,7 +111,10 @@ class TestWorkItemProviderClosesRouter:
         router = self._mock_router()
         router.get_open_issues = AsyncMock(side_effect=RuntimeError("github down"))
         with (
-            patch(f"{self._SVC}.is_configured", new=AsyncMock(return_value=True)),
+            patch(
+                f"{self._SVC}.get_status",
+                new=AsyncMock(return_value={"configured": True, "check_failed": False}),
+            ),
             patch(
                 "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
                 return_value=router,
@@ -129,7 +135,10 @@ class TestWorkItemProviderClosesRouter:
 
         router = self._mock_router()
         with (
-            patch(f"{self._SVC}.is_configured", new=AsyncMock(return_value=False)),
+            patch(
+                f"{self._SVC}.get_status",
+                new=AsyncMock(return_value={"configured": False, "check_failed": False}),
+            ),
             patch(
                 "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
                 return_value=router,

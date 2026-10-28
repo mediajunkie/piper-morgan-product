@@ -47,7 +47,10 @@ def _issue(num, assignees=None):
 async def test_unconfigured_connector_is_verified_empty_not_failed():
     """No GitHub connector configured -> genuinely nothing to read, honestly
     VERIFIED_EMPTY, not SOURCE_FAILED (we never attempted a read that failed)."""
-    with patch(f"{SVC}.is_configured", new=AsyncMock(return_value=False)):
+    with patch(
+        f"{SVC}.get_status",
+        new=AsyncMock(return_value={"configured": False, "check_failed": False}),
+    ):
         outcome = await WorkItemProvider().gather_for_user("u1")
     assert outcome == WorkItemOutcome(kind=WorkItemReadKind.VERIFIED_EMPTY)
     assert not outcome.failed
@@ -57,7 +60,10 @@ async def test_unconfigured_connector_is_verified_empty_not_failed():
 async def test_configured_but_no_issues_is_verified_empty():
     router = _mock_router(issues=[])
     with (
-        patch(f"{SVC}.is_configured", new=AsyncMock(return_value=True)),
+        patch(
+            f"{SVC}.get_status",
+            new=AsyncMock(return_value={"configured": True, "check_failed": False}),
+        ),
         patch(ROUTER, return_value=router),
         patch(HANDLE_READER, new=AsyncMock(return_value="me")),
     ):
@@ -72,7 +78,10 @@ async def test_configured_with_issues_is_items():
     # #2173: the standup read is always scoped (saved username, else the signed-in login).
     router = _mock_router(issues=[_issue(1, ["me"]), _issue(2, ["me"])])
     with (
-        patch(f"{SVC}.is_configured", new=AsyncMock(return_value=True)),
+        patch(
+            f"{SVC}.get_status",
+            new=AsyncMock(return_value={"configured": True, "check_failed": False}),
+        ),
         patch(ROUTER, return_value=router),
         patch(HANDLE_READER, new=AsyncMock(return_value="me")),
     ):
@@ -88,7 +97,10 @@ async def test_read_failure_is_source_failed_not_empty():
     as SOURCE_FAILED, never collapse to an empty-looking result."""
     router = _mock_router(boom=True)
     with (
-        patch(f"{SVC}.is_configured", new=AsyncMock(return_value=True)),
+        patch(
+            f"{SVC}.get_status",
+            new=AsyncMock(return_value={"configured": True, "check_failed": False}),
+        ),
         patch(ROUTER, return_value=router),
         patch(HANDLE_READER, new=AsyncMock(return_value=None)),
     ):
@@ -102,7 +114,7 @@ async def test_read_failure_is_source_failed_not_empty():
 async def test_configured_status_check_itself_failing_is_source_failed():
     """The status-service probe raising (not just returning False) must also
     read as a failed attempt, not a verified emptiness."""
-    with patch(f"{SVC}.is_configured", new=AsyncMock(side_effect=RuntimeError("db down"))):
+    with patch(f"{SVC}.get_status", new=AsyncMock(side_effect=RuntimeError("db down"))):
         outcome = await WorkItemProvider().gather_for_user("u1")
     assert outcome.kind == WorkItemReadKind.SOURCE_FAILED
 
@@ -116,7 +128,10 @@ async def test_default_filters_to_assignee_handle():
     "assigned to me" scoping (#6) — a handle with nothing assigned reads empty."""
     router = _mock_router(issues=[_issue(1, ["someone-else"])])
     with (
-        patch(f"{SVC}.is_configured", new=AsyncMock(return_value=True)),
+        patch(
+            f"{SVC}.get_status",
+            new=AsyncMock(return_value={"configured": True, "check_failed": False}),
+        ),
         patch(ROUTER, return_value=router),
         patch(HANDLE_READER, new=AsyncMock(return_value="me")),
     ):
@@ -131,7 +146,10 @@ async def test_include_unassigned_bypasses_the_filter():
     repo's open issues rather than read as "you have no work items"."""
     router = _mock_router(issues=[_issue(1, ["someone-else"]), _issue(2, [])])
     with (
-        patch(f"{SVC}.is_configured", new=AsyncMock(return_value=True)),
+        patch(
+            f"{SVC}.get_status",
+            new=AsyncMock(return_value={"configured": True, "check_failed": False}),
+        ),
         patch(ROUTER, return_value=router),
         patch(HANDLE_READER, new=AsyncMock(return_value="me")),
     ):
@@ -149,7 +167,10 @@ async def test_list_for_user_still_flattens_failed_to_empty_list():
     for their purposes, but previously-tested) FAILED==EMPTY conflation."""
     router = _mock_router(boom=True)
     with (
-        patch(f"{SVC}.is_configured", new=AsyncMock(return_value=True)),
+        patch(
+            f"{SVC}.get_status",
+            new=AsyncMock(return_value={"configured": True, "check_failed": False}),
+        ),
         patch(ROUTER, return_value=router),
         patch(HANDLE_READER, new=AsyncMock(return_value=None)),
     ):
@@ -161,7 +182,10 @@ async def test_list_for_user_still_flattens_failed_to_empty_list():
 async def test_list_for_user_still_returns_items():
     router = _mock_router(issues=[_issue(1, ["me"])])
     with (
-        patch(f"{SVC}.is_configured", new=AsyncMock(return_value=True)),
+        patch(
+            f"{SVC}.get_status",
+            new=AsyncMock(return_value={"configured": True, "check_failed": False}),
+        ),
         patch(ROUTER, return_value=router),
         patch(HANDLE_READER, new=AsyncMock(return_value="me")),
     ):

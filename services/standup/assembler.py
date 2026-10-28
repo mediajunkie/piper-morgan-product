@@ -292,6 +292,10 @@ class StandupCalendarProvider:
             ):
                 return [], CALENDAR_NOT_CONNECTED  # no calendar integration on this deploy
             else:
+                # Not a hosted path: CalendarIntegrationRouter always has
+                # ``spatial_calendar`` (an adapter, or None above). Only a router double
+                # without one lands here; an empty list is then a free day unless it
+                # set ``last_read_error`` (Arch 10-27 asked for this note).
                 raw = await router.get_todays_events(user_id=user_id)
                 if not raw and getattr(router, "last_read_error", None):
                     return [], CALENDAR_READ_FAILED

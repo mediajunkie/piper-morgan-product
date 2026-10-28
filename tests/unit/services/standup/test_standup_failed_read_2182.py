@@ -13,7 +13,7 @@ from unittest.mock import patch
 
 import pytest
 
-from services.domain.models import StandupSummary
+from services.domain.models import StandupSummary, degraded_head
 from services.intent_service import standup_preferences as sp
 from services.radar.sources import DocumentEntitySource, EntitySourceReadFailed
 from services.standup.assembler import (
@@ -124,17 +124,37 @@ class TestAssemblerRecordsTheFailure:
 
 
 class TestEmptyCopy:
-    LINE = "I couldn't reach your calendar just now. I can't put together a standup right now — try again in a bit."
+    LINE = "I couldn't reach your calendar just now."
+    TAIL = (
+        "I can't pull a standup together right now. You can ask again in a bit, or we can "
+        "do a quick guided one: you tell me what happened and what's ahead, and I'll write "
+        "it up. Want to do that? (yes/no)"
+    )
+
+    def test_the_head_is_the_disclosure_sentence_alone(self):
+        assert degraded_head(["your calendar"]) == self.LINE
+        joined = degraded_head(
+            [],
+            [
+                {"label": "your calendar", "reason": None, "connector": None},
+                {"label": "x", "reason": "assignee_unresolved", "connector": "GitHub"},
+            ],
+        )
+        assert joined == (
+            "I couldn't reach your calendar just now, and I couldn't tell which GitHub "
+            "issues are assigned to you."
+        )
+        assert degraded_head([]) == ""
 
     def test_no_failure_keeps_the_no_activity_copy(self):
         assert sp.empty_standup_copy(False) == (sp.INVITE_EMPTY_LEAD, sp.EMPTY_STANDALONE)
 
-    def test_a_failure_replaces_no_observed_activity(self):
+    def test_a_failure_takes_cxos_tail_not_no_observed_activity(self):
         lead, standalone = sp.empty_standup_copy(False, self.LINE)
+        assert lead == f"{self.LINE} {self.TAIL}"  # CXO 10-27 19:16
+        assert standalone.startswith(f"{self.LINE} I can't pull a standup together")
         for text in (lead, standalone):
-            assert text.startswith(self.LINE)
-            assert "no observed activity" not in text
-        assert lead.endswith("(yes/no)")
+            assert "no observed activity" not in text and "—" not in text
 
     def test_github_reconnecting_keeps_its_own_copy(self):
         assert sp.empty_standup_copy(True, self.LINE)[0] == sp.INVITE_EMPTY_LEAD_GITHUB_STALE
@@ -144,6 +164,56 @@ class TestEmptyCopy:
         with patch.object(sp.vi, "was_declined", lambda *_a, **_k: False):
             rec = sp.build_interview_invitation(USER_A, "s-2182", question=lead)
         assert rec["decline_message"] == sp.INVITE_DECLINE_MESSAGE_NO_REPORT
+
+
+class TestGitHubStatusCheckFailed:
+    """Arch 10-27: a GitHub status check that couldn't run is a failed read, not "no work
+    items". Only the binding read fails (no PAT); the documents read is healthy."""
+
+    ISS = "services.integrations.integration_status_service"
+
+    def _status(self, binding_state, config_status):
+        async def _binding(_uid):
+            return binding_state
+
+        async def _config(_iid, user_id=None):
+            return config_status, None
+
+        return (
+            patch(f"{self.ISS}.github_oauth_binding_state", _binding),
+            patch(f"{self.ISS}.get_config_status", _config),
+        )
+
+    async def test_a_failed_binding_check_is_disclosed_as_github(self):
+        from services.integrations.integration_status_service import BINDING_CHECK_FAILED
+        from services.radar.feed_factory import WorkItemProvider, WorkItemReadKind
+        from services.radar.sources import WorkItemEntitySource
+
+        class _Docs:
+            async def list_for_user(self, _uid):
+                return []
+
+        a, b = self._status(BINDING_CHECK_FAILED, "not_configured")
+        with a, b:
+            outcome = await WorkItemProvider().gather_for_user(USER_A)
+            assert outcome.kind == WorkItemReadKind.SOURCE_FAILED
+            s = await _assemble(
+                None, [WorkItemEntitySource(WorkItemProvider()), DocumentEntitySource(_Docs())]
+            )
+        assert s.degraded_sources == ["your GitHub work items"]
+        lead, _ = sp.empty_standup_copy(
+            False, degraded_head(s.degraded_sources, s.degraded_details)
+        )
+        assert lead.startswith("I couldn't reach your GitHub work items just now.")
+        assert "no observed activity" not in lead
+
+    async def test_github_not_connected_stays_verified_empty(self):
+        from services.radar.feed_factory import WorkItemProvider, WorkItemReadKind
+
+        a, b = self._status(None, "not_configured")
+        with a, b:
+            outcome = await WorkItemProvider().gather_for_user(USER_A)
+        assert outcome.kind == WorkItemReadKind.VERIFIED_EMPTY
 
 
 class TestTwoAccountPin:

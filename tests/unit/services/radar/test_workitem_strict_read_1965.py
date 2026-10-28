@@ -164,7 +164,9 @@ async def test_provider_asks_for_the_strict_read():
     router.get_open_issues = AsyncMock(return_value=[])
     router.close = AsyncMock()
     with (
-        patch(f"{SVC}.is_configured", AsyncMock(return_value=True)),
+        patch(
+            f"{SVC}.get_status", AsyncMock(return_value={"configured": True, "check_failed": False})
+        ),
         patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
             return_value=router,
@@ -191,7 +193,9 @@ async def test_provider_end_to_end_no_token_is_source_failed_not_empty():
     router.initialize = AsyncMock()
     router.close = AsyncMock()
     with (
-        patch(f"{SVC}.is_configured", AsyncMock(return_value=True)),
+        patch(
+            f"{SVC}.get_status", AsyncMock(return_value={"configured": True, "check_failed": False})
+        ),
         patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
             return_value=router,
@@ -237,7 +241,9 @@ async def test_reason_reaches_the_outcome_and_the_source_error():
     router.initialize = AsyncMock()
     router.close = AsyncMock()
     with (
-        patch(f"{SVC}.is_configured", AsyncMock(return_value=True)),
+        patch(
+            f"{SVC}.get_status", AsyncMock(return_value={"configured": True, "check_failed": False})
+        ),
         patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
             return_value=router,
