@@ -49,7 +49,7 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 16 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 202 open (#2182 closed in H 10-27 21:33, pins only; #2182 added to H 10-27, #2151's show_standup row; #2177 closed in Q 10-27 07:12; its follow-up #2181 placed Ongoing; #2109 closed in D and #2125, #2172, #2176 in H, 10-26 morning; #2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 203 open (#2183 added to V 10-28; #2182 closed in H 10-27 21:33, pins only; #2182 added to H 10-27, #2151's show_standup row; #2177 closed in Q 10-27 07:12; its follow-up #2181 placed Ongoing; #2109 closed in D and #2125, #2172, #2176 in H, 10-26 morning; #2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -199,7 +199,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2174 | ADR-081 D3 check: do github-mcp-server and our REST reads accept a GitHub App user access token? (10-25, Arch; blocks #2163 and #1514's GitHub part) | — |
 | #2178 | GitHub Disconnect doesn't revoke the OAuth grant at GitHub; revoke it, never a PAT (10-25, Arch) | — |
 
-### V: Conversation reliability (31)
+### V: Conversation reliability (32)
 
 | # | Title | was |
 |---|---|---|
@@ -235,6 +235,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2155 | UX: "What's on my agenda?" with no calendar answers about meeting-time analysis (placed 10-24) | — |
 | #2169 | Chat delete: a list-item remove ask gets a confirmation for a different object (the prior turn's to-do) (10-24; closed, `close:pins-only` per CXO, not Class 1) | — |
 | #2170 | Chat: remove an item from a list (a list-item rail), with exact-match arming and an id-bound confirm (added 10-24: missing from the plan, found by the map generator) | — |
+| #2183 | Chat ignores a count in "show my last two new issues" and lists every open issue (10-28, xian on alpha via PA; scope of the "261" unchecked) | — |
 
 ### E: Experience polish (27)
 
