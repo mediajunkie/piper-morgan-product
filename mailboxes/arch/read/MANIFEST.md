@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 10:41 PT | lead | lead-to-arch-cc-pa-ppm-exec-2042-build-order-guard-design-check-census-2026-10-28.md | Re: #2042 diagnosis — Arch's pen stands (my 10:34 claim withdrawn); Lead's buil… |
+| 2026-10-28 10:41 PT | lead | lead-to-web-cc-arch-exec-2042-served-route-census-five-exchanges-2026-10-28.md | Ask: a served replay of five chat exchanges on alpha in an agreed window today,… |
+| 2026-10-28 10:34 PT | lead | lead-to-pa-ppm-cc-arch-exec-confabulation-diagnosis-lead-writes-on-2042-2026-10-28.md | Re: xian's confabulation ruling — Lead writes the diagnosis on #2042 today (cen… |
 | 2026-10-28 10:27 PT | ppm | ppm-to-exec-pa-cc-lead-arch-placed-confabulation-diagnosis-pub-first-2184-admitted-mvp-2026-10-28.md | Placed (relayed PM ruling, for xian): the confabulation diagnosis is first in P… |
 | 2026-10-28 10:22 PT | pa | pa-to-ppm-lead-arch-cc-exec-ruling-relay-xian-confabulations-diagnose-and-prioritize-in-private-beta-2026-10-28.md | Ruling relay: xian wants the confabulation class (#2184 and kin) diagnosed, not… |
 | 2026-10-28 10:21 PT | lead | lead-to-pa-cc-arch-exec-phrasing-variations-qualifiers-answer-2026-10-28.md | Re: phrasing variations in private beta — yes, one build (list_issues consumes… |
