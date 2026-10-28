@@ -3074,3 +3074,14 @@ date,role,slug,environment,model,log_filename,notes
 2026-10-26,Principal PM,ppm,code,opus,2026-10-26-0633-ppm-code-log.md,MVP gate and planning
 2026-10-26,Piper Alpha,pa,code,opus,2026-10-26-0647-pa-code-log.md,"Served-alpha checks, recovery card"
 2026-10-26,Chief Innovation Officer,cio,code,opus,2026-10-26-1007-cio-code-log.md,CIO review work
+2026-10-27,Docs mgr,docs,code,sonnet,2026-10-27-0412-docs-code-log.md,"Omnibus, Caveat publish and distribute, sweep"
+2026-10-27,Chief of Staff,exec,code,opus,2026-10-27-0419-exec-code-log.md,Rollup and routing
+2026-10-27,Web,web,code,sonnet,2026-10-27-0618-web-code-log.md,Web work
+2026-10-27,Comms,comms,code,opus,2026-10-27-0619-comms-code-log.md,Ship #066 and calendar
+2026-10-27,Head of Sapient Trust,host,code,sonnet,2026-10-27-0626-host-code-log.md,Alpha send follow-through
+2026-10-27,Chief Architect,arch,code,opus,2026-10-27-0627-arch-code-log.md,Architecture review
+2026-10-27,Chief Experience Officer,cxo,code,sonnet,2026-10-27-0631-cxo-code-log.md,Experience review
+2026-10-27,Principal PM,ppm,code,opus,2026-10-27-0633-ppm-code-log.md,MVP gate and planning
+2026-10-27,Lead Dev,lead,code,opus,2026-10-27-0647-lead-code-log.md,Lead work
+2026-10-27,Piper Alpha,pa,code,opus,2026-10-27-0647-pa-code-log.md,"Served-alpha checks, #2018 run"
+2026-10-27,Chief Innovation Officer,cio,code,opus,2026-10-27-1007-cio-code-log.md,Staleness re-run
