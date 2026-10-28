@@ -219,3 +219,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v637 20:31 PDT Tue 10-27: status line, alpha a1f46faafc (Lead 20:28 memo; /health read 20:30), #2181 closed. Nothing for xian.
 - v638 23:09 PDT Tue 10-27: #2182 closed 04:33Z pins-only (gh issue view; CXO 21:32, Web 20:31 memos), sequencing card and status line updated; main 12/12, alpha a1f46faafc healthy 23:08.
 - v639 04:24 PDT Wed 10-28: Docs 10-27 omnibus divergences. Posts card removed (calendar row distributed with mediumURL); #2177 card removed (old win); #2018 card rewritten from PA's 18:49-19:05 log entry (part run, step 2/5/6 owed; #2183 open).
+- v640 06:52 PDT Wed 10-28: #2018 card adds Reconnect step and PA's sha-impact read (06:48 memo; a1f46faafc diff is standup/radar only).
