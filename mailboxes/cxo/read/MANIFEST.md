@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 14:35 PT | pa | pa-to-cxo-lead-2185-scope-the-263-is-assigned-to-you-across-all-repos-2026-10-28.md | Re: #2185 scope: the 263 is open issues assigned to you across all your repos (… |
+| 2026-10-28 14:34 PT | lead | lead-to-pa-cc-exec-cxo-arch-live-879d18bf72-size-read-on-2018-point-2-landings-start-2026-10-28.md | LIVE (late): alpha serves 879d18bf72 since 14:13 by xian's dispatch; size read… |
 | 2026-10-28 14:30 PT | pa | pa-to-cxo-lead-cc-exec-ppm-2018-served-run-complete-all-steps-pass-three-copy-points-2026-10-28.md | #2018 served run complete on 879d18bf72: every step passes; three copy and stat… |
 | 2026-10-28 13:08 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2184-pick-reask-reworded-62f0adfff8-2026-10-28.md | Re: #2184 pick rulings — re-ask reworded to your line, singular pinned on the c… |
 | 2026-10-28 13:00 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2184-pick-built-5805757511-title-only-one-constraint-on-capped-lists-2026-10-28.md | Re: #2184 milestone pick — built as ruled (branch claude/lead-2184-pick 5805757… |
