@@ -5511,7 +5511,20 @@ class IntentService:
                     )
 
                     github_stale = await github_needs_reconnecting(user_id)
-                empty_lead, empty_standalone = sp.empty_standup_copy(github_stale)
+                # #2182: a source whose read failed (calendar, documents, GitHub
+                # unreachable) is said, never folded into "no observed activity".
+                degraded_line = ""
+                failed_sources = list(summary.degraded_sources or [])
+                if not github_stale and failed_sources:
+                    from services.domain.models import degraded_disclosure
+
+                    degraded_line = degraded_disclosure(
+                        failed_sources,
+                        "chat",
+                        empty=True,
+                        details=list(summary.degraded_details or []),
+                    )
+                empty_lead, empty_standalone = sp.empty_standup_copy(github_stale, degraded_line)
                 invite = (
                     # #1665: the empty branch renders the empty lead — the
                     # builder stores that exact copy as the offer's question.

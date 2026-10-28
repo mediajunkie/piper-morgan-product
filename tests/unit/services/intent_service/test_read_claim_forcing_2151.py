@@ -607,8 +607,13 @@ FORCE: Dict[str, Force] = {
         context={"pattern_type": "issue_similarity", "source": "github_issues"},
     ),
     "productivity": Force(one("db") + gh(native=False), "how productive was I this week?"),
+    # #2182: the work-items read goes through the one resolver for the signed-in user, so
+    # the native-leg run (resolver CONNECT_REQUIRED) is the not-connected state here, as
+    # for list_issues; its honest reply is the not-connected line.
     "show_standup": Force(
-        gh() + one("calendar") + one("db"), "show my standup", absence=("no observed activity",)
+        gh(native=False) + one("calendar") + one("db"),
+        "show my standup",
+        absence=("no observed activity",),
     ),
     # ── the server's working tree ──
 }
@@ -673,7 +678,6 @@ KNOWN_RED: Dict[str, str] = {
     "reopen_issue": "GH-NONSTRICT",
     "learn_pattern": "GH-NONSTRICT",
     "set_default_repo": "SWALLOW-EMPTY",
-    "show_standup": "SWALLOW-EMPTY",
     # Notion
     "update_document": "NOTION-SEARCH",
     "search_documents": "NOTION-SEARCH",
@@ -683,7 +687,7 @@ KNOWN_RED: Dict[str, str] = {
     # Piper's own store
     "explain_suggestion": "SWALLOW-EMPTY",
 }
-KNOWN_RED_CEILING = 15
+KNOWN_RED_CEILING = 14
 
 
 # ─── Harness ────────────────────────────────────────────────────────────────

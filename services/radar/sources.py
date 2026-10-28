@@ -141,7 +141,11 @@ class DocumentEntitySource:
         self._docs = document_service
 
     async def fetch(self, user_id: str) -> list[RadarEntity]:
-        rows = await self._docs.list_for_user(user_id)
+        try:
+            rows = await self._docs.list_for_user(user_id)
+        except Exception as err:
+            # #2182 (#1587's contract): a failed read is disclosed, never an empty list.
+            raise EntitySourceReadFailed("your documents") from err
         entities: list[RadarEntity] = []
         for r in rows or []:
             last_touch = _get(r, "updated_at") or _get(r, "created_at")

@@ -405,7 +405,8 @@ class TestCalendarAdapterAndAssemblerFaces:
         downstream, so it carries its zone."""
         from services.standup.assembler import StandupCalendarProvider
 
-        router = MagicMock()
+        # #2182: spec'd, so the provider's adapter probe sees a router with no adapter.
+        router = MagicMock(spec=["get_todays_events"])
         router.get_todays_events = AsyncMock(return_value=[dict(PROCESSED_MEETING)])
         provider = StandupCalendarProvider(router_factory=lambda user_id: router)
 

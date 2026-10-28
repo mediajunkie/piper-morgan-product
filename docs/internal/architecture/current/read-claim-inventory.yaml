@@ -845,17 +845,18 @@ surfaces:
   effect: READ
   reads: Radar entity sources (GitHub work items, documents) plus today's calendar
   handler: services/intent/intent_service.py:IntentService._handle_standup_query
-  states: {verified: distinct, failed: conflated:verified, narrowed: distinct, not_performed: distinct, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: n/a}
   texts:
     verified: INVITE_EMPTY_LEAD / EMPTY_STANDALONE "I don't have anything to build your standup from yet — no observed activity in your connected tools. ..."
-    failed: same line unless GitHub needs reconnecting (INVITE_EMPTY_LEAD_GITHUB_STALE)
-  verdict: red
+    failed: the #1889 disclosure ("I couldn't reach your calendar just now. ...") then the interview offer (#2182); GitHub needing reconnecting keeps INVITE_EMPTY_LEAD_GITHUB_STALE
+  verdict: green
   notes: >-
-    StandupAssembler.assemble records EntitySourceReadFailed in degraded_sources, but the
-    empty branch only consults github_needs_reconnecting: an UNREACHABLE or other degraded
-    source, any generic exception (swallowed without a record), or a calendar failure
-    (_append_calendar_events returns silently) all yield "no observed activity in your
-    connected tools". Non-empty reports disclose via to_prose (not traced line by line).
+    #2182 (10-27): the empty branch leads with degraded_disclosure over degraded_sources.
+    The calendar provider's read_today reads _fetch_todays_events' established flag
+    (no_credential = not connected, silent; any other failure is recorded as "your
+    calendar"), and DocumentEntitySource raises EntitySourceReadFailed("your documents").
+    Before: an UNREACHABLE source, a generic exception, or a calendar failure all yielded
+    "no observed activity in your connected tools". Non-empty reports disclose via to_prose.
 
 - id: list_projects
   kind: rail

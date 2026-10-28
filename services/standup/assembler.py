@@ -57,6 +57,13 @@ _TODAY_ICON = "🎯"
 _WATCH_ICON = "⚠️"
 _CALENDAR_ICON = "📅"
 
+# #2182: what ``StandupCalendarProvider.read_today`` says about a read that didn't give
+# today's events. NOT_CONNECTED: there is no calendar to read (the standup stays silent
+# about it). FAILED: a connected calendar's read failed (the standup must say so).
+CALENDAR_NOT_CONNECTED = "not_connected"
+CALENDAR_READ_FAILED = "failed"
+_CALENDAR_LABEL = "your calendar"
+
 
 class StandupAssembler:
     """Derives a ``StandupSummary`` from a list of EntitySources (the SAME wiring Radar
@@ -198,13 +205,27 @@ class StandupAssembler:
 
     async def _append_calendar_events(self, summary: StandupSummary, user_id: str) -> None:
         """Append today's calendar events to the Today slot (CXO: calendar is what makes
-        "today" feel real). Per-source isolation: a calendar hiccup never blanks Today."""
+        "today" feel real). Per-source isolation: a calendar hiccup never blanks Today.
+
+        #2182: a failed read is recorded as a degraded source ("your calendar"), so the
+        standup says it couldn't check, never shows a free day. A calendar that isn't
+        connected says nothing, as before."""
         if self._calendar is None:
             return
+        read_today = getattr(self._calendar, "read_today", None)
         try:
-            events = await self._calendar.events_today(user_id)
+            if read_today is not None:
+                events, unread = await read_today(user_id)
+            else:
+                events, unread = await self._calendar.events_today(user_id), None
         except Exception:
             logger.warning("standup_calendar_failed", exc_info=True)
+            events, unread = [], CALENDAR_READ_FAILED
+        if unread == CALENDAR_READ_FAILED:
+            summary.degraded_sources.append(_CALENDAR_LABEL)
+            summary.degraded_details.append(
+                {"label": _CALENDAR_LABEL, "reason": None, "connector": None}
+            )
             return
         for ev in events or []:
             title = (ev.get("title") or "").strip()
@@ -222,8 +243,8 @@ class StandupAssembler:
 
 class StandupCalendarProvider:
     """Adapts ``CalendarIntegrationRouter.get_todays_events`` → the assembler's
-    ``events_today(user_id) -> [{title, time}]`` contract. Graceful-empty (returns ``[]``)
-    when the calendar isn't configured / reachable — never raises into the standup. Time is
+    ``events_today(user_id) -> [{title, time}]`` contract, plus ``read_today`` (#2182), which
+    also says whether the read happened. Never raises into the standup. Time is
     formatted from the event's ``start_time`` as-given (the calendar integration owns
     timezone-correctness, #586). DI ``router_factory`` keeps it unit-testable."""
 
@@ -239,17 +260,47 @@ class StandupCalendarProvider:
         return CalendarIntegrationRouter(user_id=user_id)
 
     async def events_today(self, user_id: str) -> list[dict]:
+        events, _unread = await self.read_today(user_id)
+        return events
+
+    async def read_today(self, user_id: str) -> tuple[list[dict], Optional[str]]:
+        """#2182: ``(events, unread)``. ``unread`` is None when the read happened (an
+        empty list is then a real free day), ``CALENDAR_NOT_CONNECTED`` when there is no
+        calendar to read (no stored credential, or no calendar integration on this
+        deploy), and ``CALENDAR_READ_FAILED`` when a connected calendar's read failed.
+
+        ``get_todays_events`` answers ``[]`` both to an empty day and to a failed read, so
+        the adapter's ``_fetch_todays_events`` (#1425: it returns ``established``) is read
+        when present, with ``last_read_error`` telling not-connected from failed
+        (#2151: ``"no_credential"`` is the only not-connected class). Never raises."""
         try:
             from services.utils import datetime_utils
 
             router = self._router_factory(user_id)
-            raw = await router.get_todays_events(user_id=user_id)
+            adapter = getattr(router, "spatial_calendar", None)
+            fetch = getattr(adapter, "_fetch_todays_events", None)
+            if fetch is not None:
+                raw, established = await fetch(user_id)
+                if not established:
+                    err = getattr(adapter, "last_read_error", None)
+                    unread = (
+                        CALENDAR_NOT_CONNECTED if err == "no_credential" else CALENDAR_READ_FAILED
+                    )
+                    return [], unread
+            elif hasattr(router, "spatial_calendar") and not getattr(
+                router, "legacy_calendar", None
+            ):
+                return [], CALENDAR_NOT_CONNECTED  # no calendar integration on this deploy
+            else:
+                raw = await router.get_todays_events(user_id=user_id)
+                if not raw and getattr(router, "last_read_error", None):
+                    return [], CALENDAR_READ_FAILED
             # #1576: resolve the user's zone ONCE per read, not per event.
             tz_name = await datetime_utils.user_timezone_name(user_id)
-            return [self._normalize(ev, tz_name) for ev in (raw or [])]
+            return [self._normalize(ev, tz_name) for ev in (raw or [])], None
         except Exception:
             logger.warning("standup_calendar_provider_failed", exc_info=True)
-            return []
+            return [], CALENDAR_READ_FAILED
 
     @staticmethod
     def _normalize(ev: dict, tz_name: Optional[str] = None) -> dict:

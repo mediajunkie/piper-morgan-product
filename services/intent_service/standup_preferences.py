@@ -286,11 +286,37 @@ EMPTY_STANDALONE_GITHUB_STALE = (
 )
 
 
-def empty_standup_copy(github_stale: bool) -> Tuple[str, str]:
-    """(invitation lead, standalone statement) for the empty standup (#2076)."""
+# #2182 (E4, #2151's show_standup row): when a source's read FAILED (the calendar, the
+# documents, GitHub unreachable), the empty standup is not "no observed activity". The
+# lead opens with the #1889 disclosure line (CXO's words, 2026-10-08) and keeps the offer
+# last, the #2076 shape. CXO reviews the joined copy.
+_DEGRADED_EMPTY_OFFER = (
+    f"{_EMPTY_OFFER_ASK} You tell me what happened and what's ahead, and I'll put it "
+    "together. (yes/no)"
+)
+_DEGRADED_EMPTY_STANDALONE_TAIL = (
+    "Say 'my standup interview' any time to capture one interactively."
+)
+
+
+def empty_standup_copy(github_stale: bool, degraded_line: str = "") -> Tuple[str, str]:
+    """(invitation lead, standalone statement) for the empty standup (#2076).
+
+    ``degraded_line`` (#2182): the summary's disclosure for any source whose read failed;
+    when set, it replaces "no observed activity in your connected tools"."""
     if github_stale:
         return INVITE_EMPTY_LEAD_GITHUB_STALE, EMPTY_STANDALONE_GITHUB_STALE
+    if degraded_line:
+        return (
+            f"{degraded_line} {_DEGRADED_EMPTY_OFFER}",
+            f"{degraded_line} {_DEGRADED_EMPTY_STANDALONE_TAIL}",
+        )
     return INVITE_EMPTY_LEAD, EMPTY_STANDALONE
+
+
+def _is_empty_lead(question: Optional[str]) -> bool:
+    """True for every lead rendered with no report (#2020), the #2182 degraded ones too."""
+    return question in _EMPTY_LEADS or bool(question and question.endswith(_DEGRADED_EMPTY_OFFER))
 
 
 # Property 3 made explicit at decline time: nothing changed, nothing stored,
@@ -351,6 +377,6 @@ def build_interview_invitation(
         # #2020: the decline copy follows the lead the caller rendered — the
         # empty lead has no report to leave "exactly as it is".
         "decline_message": (
-            INVITE_DECLINE_MESSAGE_NO_REPORT if question in _EMPTY_LEADS else INVITE_DECLINE_MESSAGE
+            INVITE_DECLINE_MESSAGE_NO_REPORT if _is_empty_lead(question) else INVITE_DECLINE_MESSAGE
         ),
     }

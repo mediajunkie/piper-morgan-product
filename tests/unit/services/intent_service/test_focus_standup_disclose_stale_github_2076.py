@@ -234,13 +234,16 @@ class TestStandupEmptyStateDisclosesStaleGitHub2076:
 
     @pytest.mark.asyncio
     async def test_github_failed_another_way_is_not_called_reconnecting(self, service):
-        """An unreachable read with a healthy binding is not "needs reconnecting"."""
+        """An unreachable read with a healthy binding is not "needs reconnecting".
+        #2182: nor is it "no observed activity"; the #1889 line says the read failed."""
         summary = StandupSummary(
             degraded_sources=["your GitHub work items"],
             degraded_details=[{**_STALE_GITHUB_DETAIL, "reason": "unreachable"}],
         )
         result, _ = await _standup_turn(service, "s-2076-d", summary, "bound")
-        assert result.message == STANDUP_BOUND_INVITE
+        assert result.message.startswith("I couldn't reach your GitHub work items just now.")
+        assert "reconnecting" not in result.message
+        assert "no observed activity" not in result.message
 
     @pytest.mark.asyncio
     async def test_sessionless_stale_keeps_the_standalone_shape_with_the_sentence(self, service):
