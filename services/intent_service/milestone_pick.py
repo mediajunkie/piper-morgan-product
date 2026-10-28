@@ -173,10 +173,8 @@ async def handle_milestone_pick_turn(
             "milestone_pick_bound": True,
         },
     )
-    try:
-        intent.original_message = message
-    except Exception:  # silent-ok: the context copy carries it either way
-        pass
+    # #1459: the ONE writer for the user's message (both surfaces together).
+    intent.bind_original_message(message)
     logger.info(
         "milestone_pick_bound",
         session_id=session_id,
