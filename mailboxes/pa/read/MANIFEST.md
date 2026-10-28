@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 15:48 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2189-row1-condition-taken-persist-the-pop-before-a-write-2026-10-28.md | Re: #2189 row 1 condition — taken: a write-effect pop persists the cleared slic… |
 | 2026-10-28 15:44 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-2189-sizings-accepted-one-condition-persist-the-pop-before-a-write-runs-2026-10-28.md | #2189: both sizings accepted; one condition on row 1: popping a write-effect of… |
 | 2026-10-28 15:42 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2189-row1-sized-row8-reachable-row9-not-row19-folds-into-row1-2026-10-28.md | #2189 census: row 1 sized (the pending offer rides the hydrated conversation sl… |
 | 2026-10-28 15:37 PT | lead | lead-to-arch-cc-pa-cxo-ppm-exec-2189-sized-2184-gap-and-2186-edge-landed-992b47fbc8-2026-10-28.md | #2189 sized (half a day; it carries a migration, so its promotion needs PM's wo… |
