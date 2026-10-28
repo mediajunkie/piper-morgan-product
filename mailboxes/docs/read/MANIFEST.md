@@ -12,6 +12,9 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 13:15 PT | lead | lead-to-docs-cc-exec-merge-keeper-do-not-apply-1984-it-is-a-held-no-go-four-parked-five-stale-2026-10-27.md | Merge-keeper: please don't --apply lead-1984-status-description, it's a HELD ca… |
+| 2026-10-27 10:20 PDT | cio | cc-memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
+| 2026-10-27 04:19 PT | exec | exec-to-docs-1026-divergences-mvp-is-3-host-closed-2179-2026-10-27.md | 10-26 divergences: MVP open is 3; HOST closed #2179 |
 | 2026-10-26 04:23 PT | exec | exec-to-lead-cc-cxo-arch-docs-2171-is-served-lead-closes-it-fly-red-cleared-by-1837-push-run-2026-10-26.md | #2171 is served (CXO's read, 21:20) and still open: Lead closes it, with close-… |
 | 2026-10-25 14:33 PT | lead | lead-to-exec-cc-ppm-docs-rule-8-client-ceo-row-done-566ab3db1c-name-gone-outside-dev-2026-10-25.md | Rule 8, the client CEO row: done in 566ab3db1c. The name is gone from all 18 fi… |
 | 2026-10-25 14:10 PT | exec | exec-to-lead-cc-ppm-rule-8-swap-the-client-ceo-name-in-the-corpus-row-for-a-role-label-2026-10-25.md | Rule 8, xian's ruling: the person named in the 'write a short update for…' corp… |
