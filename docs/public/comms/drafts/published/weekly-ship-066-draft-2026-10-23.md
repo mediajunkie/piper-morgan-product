@@ -8,7 +8,7 @@ caption: ''
 
 *October 16–22, 2026*
 
-The list of issues standing between us and the beta started the week at six and ended it at six. That number hides the week. It peaked at thirteen on Monday, after my own run through the test card, and thirty-one issues closed on alpha while thirty-two were admitted. Almost every one was a place where Piper told a user something that wasn't true: no meetings when there were meetings, zero work shipped when twenty items had closed, "add a key" to someone who had already added one.
+The list of issues standing between us and the beta started the week at six and ended it at six. That number hides the details of the week. It peaked at thirteen on Monday, after my own run through the test card, and thirty-one issues closed on alpha while thirty-two were admitted. Almost every one was a place where Piper told a user something that wasn't true: no meetings when there were meetings, zero work shipped when twenty items had closed, "add a key" to someone who had already added one.
 
 Last week Piper got better at telling you the state of things. This week we kept finding the places where it still didn't, and the reliable way to find them was to try the real thing on alpha. The team's own safeguards behaved the same way. Checks that looked right on paper failed the first time they met a real machine.
 
