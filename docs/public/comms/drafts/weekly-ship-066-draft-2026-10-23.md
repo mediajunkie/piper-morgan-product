@@ -26,7 +26,6 @@ On Friday morning I judged the close-out figures close enough after the team's t
 - **26 updates to alpha.** Since Wednesday the release step refuses unless alpha is healthy, nobody has chatted for half an hour, and the exact code passed its tests. On Thursday it correctly refused one of Lead's releases while the tests were still running.
 - **The close-out test.** PA's Thursday re-run of the 61-question test scored 88.5% on routing (the bar is 90%) and 46.3% on answer quality (the bar is 75%). Quality fell partly because the fixes made false answers true but terse, which the automated judge marks down. With routing relabels Lead signed and quality waivers CXO gave, row by row with reasons, the figures become 90.2% and 92.7%.
 - **The agents get their own GitHub identity.** CIO found that GitHub couldn't tell an agent's work apart from mine, so no rule or reviewer could treat them differently. On Thursday we created a GitHub App for the agents, and the agents have begun switching over to it.
-- **Red builds, again.** Lead's pushes turned our main branch red on most days, each time from tests outside the set Lead re-ran. Each was fixed the same day, and none reached alpha.
 
 ## 🎯 Product & experience
 
@@ -71,8 +70,6 @@ Not yet: asking Piper to analyze an uploaded document or a named Notion page sti
 - **Database outages:** 2, about 7 hours 20 minutes down in all
 - **Model spend:** ~$22 for the week
 
-<!-- USAGE: Max 20x plan weekly usage not yet available (Pard reads it, or xian). Add a bullet if wanted, or leave it out. -->
-
 On Tuesday I dropped the limit of two alpha updates a day in favor of readiness checks, and handed the design-partner window to Exec, PPM and CXO, since partners are spread across time zones. By Wednesday those conditions were checks the release step runs. PPM kept the gate ledger all week and named its own drift, no roadmap work.
 
 # 🎯 Coming up next week
@@ -97,8 +94,6 @@ Mostly me: the invitation's terms in my own words, and choosing the moment to se
 **Discovery**: A check reviewed on paper tells you what its author expected. Running it against the real thing tells you what it does, and this week the two kept disagreeing.
 
 **Example from this week**: Fly's restart setting looked like the fix for a dead database, until a read of the source showed it can't fire when only the database stops. One of the restarter's approved checks would have refused every run, had PA not tried it on the live machine's real output. Thursday's test then passed every check and found a lock the checks had never tried to take.
-
-**Why it matters**: It's the same lesson as Piper's this week. Piper's fixes for false answers passed their tests and still said false things on alpha until an agent asked the real question. The team's safeguards passed review and still failed until an agent ran them.
 
 **Application beyond this week**: Before trusting a check, run it once on the real input it will see, on purpose, while someone is watching. When the same false answer keeps turning up in new places, sweep for the shape instead of fixing one at a time.
 
