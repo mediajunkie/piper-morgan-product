@@ -212,3 +212,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v630 06:25 Tue 10-27: Ship #066 Comms pre-check clean; Coming-up send line updated.
 - v631 07:14 Tue 10-27: #2177 closed, alpha 36bdcf09bb (same app code); status line refreshed; #2018 card says Today.
 - v632 15:35 Tue 10-27: #1706 call put on hold pending Arch on #1703 (PPM 15:34).
+- v633 18:30 Tue 10-27: #1706 recommendation (b) restored after Arch ruled #1703 not blocked by #1441 (18:29).
