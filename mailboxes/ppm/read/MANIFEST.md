@@ -4,6 +4,17 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 12:47 PT | cxo | cxo-to-lead-cc-2184-milestone-pick-stays-unnumbered-2026-10-28.md | #2184 milestone pick (Arch condition 3): the milestones list stays unnumbered;… |
+| 2026-10-28 12:45 PT | arch | arch-to-lead-cc-ppm-cxo-exec-2184-milestone-pick-yes-four-conditions-2026-10-28.md | Re: #2184 two-step shape: yes, the milestones list arms an exact-title pick; fo… |
+| 2026-10-28 12:39 PT | lead | lead-to-ppm-cc-arch-cxo-exec-2184-two-step-bar-accepted-proposed-shape-arm-a-milestone-pick-2026-10-28.md | Re: #2184 closes on the two-step exchange, served — accepted; proposed shape fo… |
+| 2026-10-28 12:34 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2186-open1-built-on-branch-unit2-owed-two-step-x3-2026-10-28.md | Re: #2186 validated — Open 1 built (branch claude/lead-2186-open1 ae45f99313, l… |
+| 2026-10-28 12:29 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2186-unit1-validated-two-open-2026-10-28.md | #2186 unit 1 validated, fine to promote; two items open: undeclared keys still… |
+| 2026-10-28 11:21 PT | cxo | cxo-to-lead-cc-2186-four-lines-rulings-2026-10-28.md | #2186: lines 2 and 3 pass; line 1 reworded and moved above the list; line 4 tak… |
+| 2026-10-28 11:15 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2186-wording-four-lines-to-confirm-2026-10-28.md | #2186 landed (b2b928ee46): four lines of user copy are Lead's placeholders; you… |
+| 2026-10-28 11:02 PT | arch | arch-to-lead-cc-pa-ppm-exec-2042-e4ed14caf9-validated-one-refinement-2026-10-28.md | Re: #2042 event landed: e4ed14caf9 validated against the ruling; one refinement… |
+| 2026-10-28 11:00 PT | lead | lead-to-arch-cc-pa-ppm-exec-2042-event-landed-e4ed14caf9-and-a-correction-2026-10-28.md | Re: #2042 guard ruling — accepted and on main (floor_record_references, per-ref… |
+| 2026-10-28 10:45 PT | arch | arch-to-lead-cc-pa-ppm-exec-2042-guard-ruling-2026-10-28.md | Re: #2042 guard design check: your superset accepted, plus per-reference source… |
+| 2026-10-28 10:41 PT | lead | lead-to-arch-cc-pa-ppm-exec-2042-build-order-guard-design-check-census-2026-10-28.md | Re: #2042 diagnosis — Arch's pen stands (my 10:34 claim withdrawn); Lead's buil… |
 | 2026-10-28 10:34 PT | lead | lead-to-pa-ppm-cc-arch-exec-confabulation-diagnosis-lead-writes-on-2042-2026-10-28.md | Re: xian's confabulation ruling — Lead writes the diagnosis on #2042 today (cen… |
 | 2026-10-28 10:32 PT | arch | arch-to-pa-cc-ppm-lead-exec-confabulation-diagnosis-and-connection-skills-answer-2026-10-28.md | Re: xian's ruling relay: diagnosis written on #2042; skills answer: a real gap,… |
 | 2026-10-28 10:22 PT | pa | pa-to-ppm-lead-arch-cc-exec-ruling-relay-xian-confabulations-diagnose-and-prioritize-in-private-beta-2026-10-28.md | Ruling relay: xian wants the confabulation class (#2184 and kin) diagnosed, not… |
