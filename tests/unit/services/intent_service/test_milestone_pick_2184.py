@@ -171,7 +171,11 @@ class TestAnswer:
         out = await mp.run_clarify_milestone_pick_workflow(
             _SESSION, _USER, {"pending_action": rec["pending_action"], "intent_service": svc}
         )
-        assert out["message"] == mp.PICK_REASK_LINE.format(titles=", ".join(TITLES))
+        assert (
+            out["message"]
+            == mp.PICK_REASK_LINE
+            == "Which milestone? Say its name from the list above."
+        )
         assert out["intent_data"][mp.PICK_PENDING_FLAG] is True
         assert (
             store.slot["pending_action"]["pick_titles"] == TITLES
@@ -216,6 +220,10 @@ async def test_issues_handler_honours_code_bound_scope_over_the_guard(intent_ser
     with patch(_CONN, new=AsyncMock(return_value=GitHubIssuesResult(issues=page, total=3))) as stub:
         res = await intent_service._handle_list_issues_query(intent, "wf")
     assert stub.await_args == call(None, limit=50, repository=REPO, milestone="MVP")
+    # CXO 13:04: singular confirmed on the code-bound path too.
+    with patch(_CONN, new=AsyncMock(return_value=GitHubIssuesResult(issues=page, total=1))):
+        one = await intent_service._handle_list_issues_query(intent, "wf")
+    assert f'You have **1 open issue** in {REPO} in milestone "MVP".' in one.message
     # CXO 12:47: the header names the milestone AND the repo it was read in (Arch's condition 1).
     assert f'in {REPO} in milestone "MVP"' in res.message and "couldn't" not in res.message
 

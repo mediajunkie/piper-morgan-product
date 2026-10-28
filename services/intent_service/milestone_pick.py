@@ -46,9 +46,10 @@ MILESTONE_PICK_WORKFLOW = "clarify_milestone_pick"
 PICK_PENDING_FLAG = "milestone_pick_pending"
 MAX_TITLES = 50
 
-# CXO owns the words (#2184); Lead's placeholders.
+# CXO ruled 13:04 10-28: a silent arm's decline has nothing to refuse; the shortest acknowledgement.
 PICK_DECLINE_LINE = "Okay."
-PICK_REASK_LINE = "Which milestone? {titles}"
+# CXO 13:04 10-28: no titles and no ellipsis; the list is on screen.
+PICK_REASK_LINE = "Which milestone? Say its name from the list above."
 
 
 def normalize_title(text: Optional[str]) -> str:
@@ -209,7 +210,7 @@ async def run_clarify_milestone_pick_workflow(
         )
         return None
     titles = [t for t in (payload.get("pick_titles") or []) if isinstance(t, str)]
-    question = PICK_REASK_LINE.format(titles=", ".join(titles) or "(none listed)")
+    question = PICK_REASK_LINE
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         _record(
