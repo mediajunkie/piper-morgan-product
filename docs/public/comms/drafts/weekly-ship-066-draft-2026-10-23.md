@@ -10,7 +10,7 @@ caption: ''
 
 *October 16–22, 2026*
 
-The list of issues standing between us and the beta started the week at six and ended it at six. That number hides the week. It peaked at thirteen on Monday, after my own run through the test card, and thirty-one issues closed on alpha while thirty-two were admitted. Almost every one was a place where Piper told a user something that wasn't true: no meetings when there were meetings, zero work shipped when twenty items had closed, "add a key" to someone who had already added one.
+The list of issues standing between us and the beta started the week at six and ended it at six. That number hides the week. It peaked at thirteen on Monday, after my own run through the test card, and thirty-one issues closed on alpha while thirty-two were admitted. Almost every one of them was a place where Piper told a user something that wasn't true: no meetings when there were meetings, zero work shipped when twenty items had closed, "add a key" to someone who had already added one.
 
 Last week Piper got better at telling you the state of things. This week we kept finding the places where it still didn't, and the reliable way to find them was to try the real thing on alpha. The team's own safeguards behaved the same way. Checks that looked right on paper failed the first time they met a real machine.
 
@@ -34,7 +34,7 @@ What a user can do on alpha now that they couldn't a week ago:
 
 - **Get invited and set up without help.** The setup wizard opens on the invite code, checks it without using it up, then asks for keys, account and projects. Before this week, every invited sign-up ended on "Setup Failed."
 - **Use Piper at length.** The closing test run answered 61 of 61 questions with no stall.
-- **Get true answers about their GitHub repo.** "What's the next milestone?" names it. "What did we ship this week?" counts the 20 items that closed, not zero. A revoked connection says it needs reconnecting, with a one-step Reconnect, which I checked on my own account on Saturday.
+- **Get true answers about their GitHub repo.** "What's the next milestone?" names it. "What did we ship this week?" counts the 20 items that closed, not zero. In chat, a revoked connection says it needs reconnecting, with a one-step Reconnect, which I checked on my own account on Saturday.
 - **Ask about their calendar and get their real meetings.** "Do I have any meetings this week?" lists them. A named weekday gets a plain decline instead of today's agenda passed off as that day's. A connected calendar is no longer called "not connected."
 - **Use Piper with only an OpenAI key.** That account used to be told to add a key on every turn. Now it gets answers, though they trail Anthropic's, so the invitation names Anthropic only for now.
 - **Rely on the privacy promises.** Asking us to delete your account now erases it, within the 14 days we promise. Logs no longer keep anything you typed. Uploaded files no longer fall back to being stored unencrypted.
@@ -42,11 +42,11 @@ What a user can do on alpha now that they couldn't a week ago:
 
 On [pipermorgan.ai](https://pipermorgan.ai/privacy), the privacy page now says plainly what is encrypted, that nothing is deleted automatically, that there's no way yet to delete a conversation inside Piper, and what connecting Google Calendar does.
 
-Not yet: asking Piper to analyze an uploaded document or a named Notion page still gets the wrong reply. In-app feedback was waiting on me at week's end.
+Not yet: asking Piper to analyze an uploaded document or a named Notion page still gets the wrong reply. In-app feedback was waiting on me at week's end, and it shipped Friday.
 
 ## 🔬 Methodology & process innovation
 
-- **Run the safeguard on what it guards.** Five times in two days, a safeguard judged by reading it turned out wrong once someone ran it. Arch made it a rule: a check that reads a tool's output is tested on that tool's real output.
+- **Run the safeguard on what it guards.** Five times in two days, a safeguard judged by reading it turned out wrong once an agent ran it. Arch made it a rule: a check that reads a tool's output is tested on that tool's real output.
 - **Served, not unit-tested.** CXO closed nothing on a unit test alone. Four fixes that passed their tests were still wrong on alpha, and each was caught by an agent asking the real question and quoting the real reply.
 - **Fact-check ledgers before the rewrite.** Comms now writes a ledger of every checkable claim before I rewrite a draft, and the ledgers caught four errors in Comms's own drafts of upcoming posts. A forensic check also corrected "The Phantom Feature" before it published: summarization had worked in July 2025.
 
@@ -79,7 +79,7 @@ On Tuesday I dropped the limit of two alpha updates a day in favor of readiness 
 
 The goals I ratified on Friday, with what has happened since Thursday:
 
-- **Close the last must-close items.** The restarter passed its second test on Friday morning, through the route that skips the lock, and later brought the database back with nobody touching it. A Calendar connect without the calendar box ticked no longer reports success, and Google's review of our Calendar access is submitted. The document fix, for analyzing and comparing documents, closed Friday evening, which closed the last must-close item.
+- **Close the last must-close items.** The restarter passed its second test on Friday morning, through the route that skips the lock, and later brought the database back with nobody touching it. A Calendar connect without the calendar box ticked no longer reports success, and Google approved our Calendar access on Sunday. The document fix, for analyzing and comparing documents, closed Friday evening, which closed the last must-close item.
 - **Send the first design-partner invitations.** The first three went out Monday evening.
 - **Sweep for false "none" answers.** Arch has scoped a sweep for every place a failed read can come out as "none," "0," "not connected" or "I can't see it." Lead has already started on it.
 - **The agents' GitHub App:** its key and install were done Friday morning, and by Friday evening the agents were switching over to it. A test push to the branch that runs the database restarter was refused, as it should be.
@@ -98,7 +98,7 @@ Mostly me: the invitation's terms in my own words, and choosing the moment to se
 
 **Example from this week**: Fly's restart setting looked like the fix for a dead database, until a read of the source showed it can't fire when only the database stops. One of the restarter's approved checks would have refused every run, had PA not tried it on the live machine's real output. Thursday's test then passed every check and found a lock the checks had never tried to take.
 
-**Why it matters**: It's the same lesson as Piper's this week. Piper's fixes for false answers passed their tests and still said false things on alpha until an agent asked the real question. The team's safeguards passed review and still failed until someone ran them.
+**Why it matters**: It's the same lesson as Piper's this week. Piper's fixes for false answers passed their tests and still said false things on alpha until an agent asked the real question. The team's safeguards passed review and still failed until an agent ran them.
 
 **Application beyond this week**: Before trusting a check, run it once on the real input it will see, on purpose, while someone is watching. When the same false answer keeps turning up in new places, sweep for the shape instead of fixing one at a time.
 

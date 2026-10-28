@@ -214,3 +214,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v632 15:35 Tue 10-27: #1706 call put on hold pending Arch on #1703 (PPM 15:34).
 - v633 18:30 Tue 10-27: #1706 recommendation (b) restored after Arch ruled #1703 not blocked by #1441 (18:29).
 - v634 18:43 Tue 10-27: #2182 filed (PPM 18:32), #1703 blocked by #2182; one yes covers #1706 later and #2182 Sprint=H.
+- v635 19:16 Tue 10-27: Ship #066 Comms full review applied (facts, someone->agent); three choices left for xian.
