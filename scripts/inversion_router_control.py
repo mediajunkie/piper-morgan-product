@@ -59,7 +59,13 @@ async def _control(phrases: list[str], samples: int, provider: Optional[str]) ->
                 )
                 err = d.error
             except Exception as e:  # probe discipline: recorded, never aborts
-                label, conf, args_, served, err = "ERROR", None, {}, "unresolved", f"{type(e).__name__}: {e}"
+                label, conf, args_, served, err = (
+                    "ERROR",
+                    None,
+                    {},
+                    "unresolved",
+                    f"{type(e).__name__}: {e}",
+                )
             rows.append(
                 {
                     "phrase": phrase,
