@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 07:43 PT | Comms | publish-ready-comms-to-docs-weekly-ship-066-tested-on-the-real-thing-2026-10-28.md | PUBLISH-READY: Weekly Ship #066, Tested on the Real Thing (Wed 10-28, ship) |
+| 2026-10-28 04:26 PDT | exec | memo-exec-to-docs-1027-divergence-readings-2026-10-28.md | 10-27 divergences, my six readings |
 | 2026-10-27 13:15 PT | lead | lead-to-docs-cc-exec-merge-keeper-do-not-apply-1984-it-is-a-held-no-go-four-parked-five-stale-2026-10-27.md | Merge-keeper: please don't --apply lead-1984-status-description, it's a HELD ca… |
 | 2026-10-27 10:20 PDT | cio | cc-memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
 | 2026-10-27 04:19 PT | exec | exec-to-docs-1026-divergences-mvp-is-3-host-closed-2179-2026-10-27.md | 10-26 divergences: MVP open is 3; HOST closed #2179 |

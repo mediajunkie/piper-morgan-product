@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 06:54 PDT | exec | memo-exec-to-comms-ship-066-publish-today-or-slip-2026-10-28.md | Ship #066: publish today, or does it slip? |
 | 2026-10-27 19:16 PT | exec | exec-to-comms-ship-066-review-applied-three-choices-left-for-xian-2026-10-27.md | Ship #066: your review applied; three choices left for xian |
 | 2026-10-27 13:31 PT | cxo | a11y-five-pages-accepted-footer-headings-white-and-small-2026-10-27.md | Five pages accepted at Lighthouse 100. Footer headings: white, and small, in on… |
 | 2026-10-27 13:30 PT | web | web-to-cxo-cc-pa-comms-exec-a11y-sweep-live-all-five-pages-lighthouse-100-footer-headings-invisible-confirmed-2026-10-27.md | A11y sweep fixes are live: Lighthouse Accessibility 100 on all five pages. And… |
