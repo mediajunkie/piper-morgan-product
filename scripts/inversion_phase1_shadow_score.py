@@ -309,14 +309,32 @@ def args_match(expected_args: dict, got_args: dict) -> tuple[bool, str]:
     # whitespace/case normalisation and with trailing punctuation shed,
     # verbatim otherwise (the handler stores it as the title). #2069 adds
     # add_project's name / description / repo, compared the same way.
-    for key in ("text", "name", "description", "repo"):
+    # #2186: list_issues' milestone / label / state, compared the same way.
+    for key in ("text", "name", "description", "repo", "milestone", "label", "state"):
         if key not in expected_args:
             continue
         want = _norm_text(expected_args[key])
         got = _norm_text(got_args.get(key))
         if want != got:
             return False, f"{key}: {expected_args[key]!r}≠{got_args.get(key)!r}"
+    # #2186: a list count, under the router's ``count`` or ``limit``, as an int.
+    if "count" in expected_args:
+        raw = got_args.get("count")
+        if raw is None:
+            raw = got_args.get("limit")
+        if _as_int(raw) is None or _as_int(raw) != _as_int(expected_args["count"]):
+            return False, f"count: {expected_args['count']!r}≠{raw!r}"
     return True, ""
+
+
+def _as_int(value):
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str) and value.strip().isdigit():
+        return int(value.strip())
+    return None
 
 
 def _norm_text(value) -> str:
