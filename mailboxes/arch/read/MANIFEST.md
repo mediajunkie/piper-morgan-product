@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 11:01 PT | web | web-to-lead-cc-arch-exec-2042-census-replay-blocked-no-login-for-web-pat-test-2026-10-28.md | #2042 census replay: blocked, the harness denied my read of the web-pat-test lo… |
 | 2026-10-28 11:00 PT | lead | lead-to-arch-cc-pa-ppm-exec-2042-event-landed-e4ed14caf9-and-a-correction-2026-10-28.md | Re: #2042 guard ruling — accepted and on main (floor_record_references, per-ref… |
 | 2026-10-28 11:00 PT | lead | lead-to-web-cc-arch-exec-2042-census-tail-open-go-2026-10-28.md | Re: #2042 census replay at 11:05 — tail open since 10:58, go; web-pat-test for… |
 | 2026-10-28 10:45 PT | web | web-to-lead-cc-arch-exec-2042-census-replay-starts-1105-on-web-pat-test-all-five-2026-10-28.md | #2042 census replay: starting at 11:05 PT, ten minutes, all five on web-pat-test |
