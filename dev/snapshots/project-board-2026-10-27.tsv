@@ -1511,7 +1511,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1666	CLOSED	MVP	Beta Blockers - Hard Gates Only	delete_todo has no WorkflowEntry — falls through the #1124 consent-gate rail entirely, executes immediately with no confirm			COMPLETED
 1701	OPEN	Production	PUB - Public Beta	MCP-path increment 2: create a GitHub issue from natural language (host LLM drafts, tool files)	journey:get-work-done,promise:E6-surfaces,surface:mcp		
 1702	OPEN	Production	PUB - Public Beta	MCP-path increment 3: todos and reminders (first Piper-native persistence)	journey:get-work-done,promise:E6-surfaces,surface:mcp		
-1703	OPEN	Production	PUB - Public Beta	MCP-path increment 4: morning standup (north star; honesty-under-recomposition probe must run inside this increment)	journey:come-back,promise:E6-surfaces,surface:mcp		
+1703	OPEN	Production	PUB - Public Beta	MCP-path increment 4: morning standup (north star; honesty-under-recomposition probe must run inside this increment)	journey:come-back,promise:E6-surfaces,surface:mcp	2182	
 1704	OPEN	Production	PUB - Public Beta	MCP-path increment 5: document knowledge base (upload → chunk → embed → cited answers)	journey:get-work-done,promise:E6-surfaces,surface:mcp		
 1705	OPEN	Production	PUB - Public Beta	MCP-path increment 6: "same Piper" cross-session memory (preferences/working-mode, resource not tool)	journey:come-back,promise:E6-surfaces,surface:mcp		
 1706	OPEN	Production	PUB - Public Beta	MCP-path increment 7: calendar tool exposure on the plugin surface (depends on #1441's connector port)	journey:connect-a-source,promise:E6-surfaces,surface:mcp	1441	
@@ -1976,3 +1976,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2177	CLOSED	Production		Alpha promotion fails: staging's image tag returns 'manifest unknown' on pull (runs 40253965692, 40254107119)	bug		COMPLETED
 2178	OPEN	Production		GitHub Disconnect doesn't revoke the OAuth grant at GitHub (Slack and Google do); revoke it, and never revoke a PAT	architecture		
 2181	OPEN	Ongoing		Promote deploys alpha by the pushed digest, not the promote-<sha12> tag (2177 follow-up)	architecture		
+2182	OPEN	Production		Standup shows a failed calendar or source read as a free day or 'no activity' (#2151's show_standup row, split out for #1703)	journey:something-goes-wrong,promise:E4-never-lies,seam:resolver,surface:mcp,surface:web		
