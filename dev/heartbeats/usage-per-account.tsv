@@ -608,3 +608,5 @@ ts_local	account	config_dir	five_hour_pct	five_hour_reset	seven_day_pct	seven_da
 2026-10-27 15:23 PDT	designinproduct.com	~/.claude	4.0	2026-10-28T01:30	31.0	2026-10-29T04:00	usage-read.sh		Fable	5	no
 2026-10-27 18:23 PDT	pipermorgan.ai	~/.claude-pm	2.0	2026-10-28T02:10	25.0	2026-10-30T05:00	usage-read.sh		Fable	0	no
 2026-10-27 18:23 PDT	designinproduct.com	~/.claude	EXPIRED-TOKEN				usage-read.sh	the stored credential expired at 2026-10-27 18:17:49; a live session refreshes it, a scheduled read cannot			
+2026-10-27 21:23 PDT	pipermorgan.ai	~/.claude-pm	2.0	2026-10-28T07:09	26.0	2026-10-30T04:59	usage-read.sh		Fable	0	no
+2026-10-27 21:23 PDT	designinproduct.com	~/.claude	3.0	2026-10-28T06:40	33.0	2026-10-29T04:00	usage-read.sh		Fable	5	no
