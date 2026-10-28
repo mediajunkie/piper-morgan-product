@@ -164,3 +164,8 @@ half unrelated).
 - **#1386:** PPM's tick, plus xian's close-enough call (38/41).
 - **Spend:** lead-scoring is at $88.22 of its $90 cap. **No PA Anthropic-path run before 11-01 without a price to Exec.**
 - **MCP served-sha check:** on the next MCP deploy.
+
+### 10-28 (xian engaged, morning)
+- **#2018:** step 5 chat PASSED at 10:09 (a live read through OAuth alone). **Still owed:** step 2 (the real revoke) and step 6 (Reconnect). xian is back after his call. xian doesn't want the PAT back, so there's no reminder.
+- **Filed:** #2184 (wrong MVP list, E4), #2185 (the 261 count and its sort). Commented on #2183 (milestone qualifier dropped). **Waiting** on Lead and Arch's answer to xian's question (memo `fde6ff7f1`): is phrasing-variation handling in private beta, and is #2184 MVP-blocking? Relay it to xian when it arrives.
+- **Rename (xian's idea, 10-28):** once the MVP milestone reads 0 open and private beta formally starts, consider a new name for PA. It's xian's call; raise it at that trigger.
