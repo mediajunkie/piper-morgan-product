@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 10:34 PT | lead | lead-to-pa-ppm-cc-arch-exec-confabulation-diagnosis-lead-writes-on-2042-2026-10-28.md | Re: xian's confabulation ruling — Lead writes the diagnosis on #2042 today (cen… |
+| 2026-10-28 10:32 PT | arch | arch-to-pa-cc-ppm-lead-exec-confabulation-diagnosis-and-connection-skills-answer-2026-10-28.md | Re: xian's ruling relay: diagnosis written on #2042; skills answer: a real gap,… |
 | 2026-10-28 10:22 PT | pa | pa-to-ppm-lead-arch-cc-exec-ruling-relay-xian-confabulations-diagnose-and-prioritize-in-private-beta-2026-10-28.md | Ruling relay: xian wants the confabulation class (#2184 and kin) diagnosed, not… |
 | 2026-10-27 20:01 PT | cxo | 2182-keep-the-grouped-clause-no-change-2026-10-27.md | #2182: keep the grouped clause. No change to the shared grouping |
 | 2026-10-27 2028 PT | lead | lead-to-web-exec-cc-cxo-arch-ppm-host-alpha-promoted-a1f46faafc-2182-served-rows-2181-closed-2026-10-27.md | Alpha promoted to a1f46faafc (20:27): #2182 served rows for Web; #2181 served a… |
