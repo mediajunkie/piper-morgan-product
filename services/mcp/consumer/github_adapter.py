@@ -76,6 +76,36 @@ _MY_OPEN_ISSUES_QUERY = "assignee:@me is:open is:issue"
 # PRs (#1322 P3): search_pull_requests, same payload shape, user-wide "PRs I opened".
 _PRS_TOOL = "search_pull_requests"
 _MY_OPEN_PRS_QUERY = "author:@me is:open is:pr"
+
+
+def _search_quote(value: str) -> str:
+    """#2186: a qualifier value as a double-quoted search term, any embedded
+    double quote dropped so the value can't close the term early."""
+    return '"' + value.replace('"', "") + '"'
+
+
+def _qualified_search_query(
+    base: str,
+    *,
+    milestone: Optional[str] = None,
+    label: Optional[str] = None,
+    state: Optional[str] = None,
+) -> str:
+    """#2186: append the router's qualifiers to a search ``base`` in code.
+
+    ``is:open`` becomes ``is:closed`` only when ``state`` is exactly ``closed``;
+    any other state reads open. ``milestone:"X"`` and ``label:"Y"`` are appended
+    quoted. A blank value (or one that is only quotes) adds nothing.
+    """
+    query = base
+    if state == "closed":
+        query = query.replace("is:open", "is:closed")
+    for key, value in (("milestone", milestone), ("label", label)):
+        if isinstance(value, str) and value.replace('"', "").strip():
+            query += f" {key}:{_search_quote(value.strip())}"
+    return query
+
+
 # Repos (#1327 gap 3): the Settings repo-config dropdown — the user's OWN repos. search_repositories
 # is user-wide (user:@me, across the user's repos) → no repo resolution, mirroring the search_issues
 # rail. De-risked live (18 repos via user:@me; payload {total_count, incomplete_results, items[]} —
@@ -463,7 +493,14 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
 
     # ── #1322 cutover: the user's open issues / PRs over the OAuth connector ──
     async def list_open_issues(
-        self, user_id: str, *, limit: int = 50, repository: Optional[str] = None
+        self,
+        user_id: str,
+        *,
+        limit: int = 50,
+        repository: Optional[str] = None,
+        milestone: Optional[str] = None,
+        label: Optional[str] = None,
+        state: Optional[str] = None,
     ) -> GitHubIssuesResult:
         """List open GitHub issues over the per-user OAuth connector (#1322).
 
@@ -473,8 +510,15 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         ``resolve_repo`` / #1230). #1388: an explicitly-named ``repository``
         ("owner/name") scopes the search to THAT repo's open issues instead —
         a named repo must always beat the default scope.
+
+        #2186: ``milestone`` / ``label`` / ``state`` are the router's qualifiers,
+        already checked by the handler. The search terms are built HERE, in code
+        (ADR-080: the model never writes the query): ``state`` is honoured only as
+        exactly ``closed`` (anything else reads open), and each value is
+        double-quoted with any embedded double quote dropped.
         """
         query = f"repo:{repository} is:issue is:open" if repository else _MY_OPEN_ISSUES_QUERY
+        query = _qualified_search_query(query, milestone=milestone, label=label, state=state)
         return await self._search_via_connector(
             user_id, tool=_ISSUES_TOOL, query=query, limit=limit
         )
@@ -1142,8 +1186,16 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 # #2005: github-mcp-server's search tools page at 30 by default; ask for the
                 # page we will show (perPage, its pagination arg, max 100) so a 50-cap read
                 # returns 50, not 30. total_count stays the authoritative count either way.
+                # #2186: newest first, the form the module's two other search calls
+                # use, so a page (and a count slice of it) is the most recent items.
                 result = await client.call_tool(
-                    tool, {"query": query, "perPage": max(1, min(limit, 100))}
+                    tool,
+                    {
+                        "query": query,
+                        "perPage": max(1, min(limit, 100)),
+                        "sort": "created",
+                        "order": "desc",
+                    },
                 )
                 items, total = self._parse_issue_search(self._tool_text(result), limit=limit)
         except Exception as exc:

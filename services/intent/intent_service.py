@@ -488,6 +488,90 @@ def _router_document_title(intent) -> Optional[str]:
     return title
 
 
+# #2186: a list read names a qualifier it could not apply; never drops one silently.
+# CXO owns the wording (#2186); Lead's placeholder
+LIST_CANT_FILTER_LINE = "I can't filter by {qualifier} yet, so this is the full list."
+# #2186: the largest count the list read can honour (the handler reads one 50-item page).
+_MAX_LIST_COUNT = 50
+_MAX_LIST_QUALIFIER_CHARS = 100
+
+
+def _router_list_issue_args(intent) -> Dict[str, Any]:
+    """#2186: the live router's list qualifiers for a GitHub issue list read.
+
+    Read from ``context["inversion_args"]`` (the #1943/#1976/#2069 family: the
+    router decides meaning, the handler checks permission and does the read).
+    Absent on the legacy-classifier path, where every field stays None and the
+    read is byte-identical to before.
+
+    Guards: ``milestone`` / ``label`` / ``state`` / ``repo`` must pass the #1976
+    honesty guard (``user_said_every_word``: every word of the value occurs in
+    the user's message); a value that fails is ignored as if absent. ``state``
+    is honoured only as ``open`` or ``closed``. The count arrives as ``count``
+    or ``limit`` and is honoured as a positive int up to ``_MAX_LIST_COUNT``.
+    A declared qualifier the read can't honour (a state that is neither, a
+    count over the cap) lands in ``unhonoured`` so the reply can name it.
+    ``repo`` is an ``owner/name`` pair, or ``repo_bare`` when the router gave
+    a bare name (the handler resolves that against the user's default repo).
+    """
+    out: Dict[str, Any] = {
+        "repo": None,
+        "repo_bare": None,
+        "milestone": None,
+        "label": None,
+        "state": None,
+        "count": None,
+        "unhonoured": [],
+    }
+    args = (intent.context or {}).get("inversion_args")
+    if not isinstance(args, dict):
+        return out
+    from services.onboarding.portfolio_service import user_said_every_word
+
+    message = getattr(intent, "original_message", None) or (intent.context or {}).get(
+        "original_message"
+    )
+
+    def _said(key: str) -> Optional[str]:
+        raw = args.get(key)
+        if not isinstance(raw, str) or len(raw) > _MAX_LIST_QUALIFIER_CHARS:
+            return None
+        return user_said_every_word(raw, message)
+
+    out["milestone"] = _said("milestone")
+    out["label"] = _said("label")
+
+    state = _said("state")
+    if state is not None:
+        if state.lower() in ("open", "closed"):
+            out["state"] = state.lower()
+        else:
+            out["unhonoured"].append(f'state "{state}"')
+
+    repo = _said("repo")
+    if repo is not None and " " not in repo:
+        parts = repo.split("/")
+        if len(parts) == 2 and all(parts):
+            out["repo"] = repo
+        elif len(parts) == 1:
+            out["repo_bare"] = repo
+
+    raw_count = args.get("count")
+    if raw_count is None:
+        raw_count = args.get("limit")
+    count: Optional[int] = None
+    if isinstance(raw_count, int) and not isinstance(raw_count, bool):
+        count = raw_count
+    elif isinstance(raw_count, str) and raw_count.strip().isdigit():
+        count = int(raw_count.strip())
+    if count is not None and count > 0:
+        if count <= _MAX_LIST_COUNT:
+            out["count"] = count
+        else:
+            out["unhonoured"].append(f"count {count}")
+    return out
+
+
 # #2139 (CXO 2026-10-22 19:2x): generate_content with no content type makes
 # nothing and says what it can make.
 GENERATE_CONTENT_WHAT_I_CAN_DRAFT = (
@@ -8422,12 +8506,32 @@ class IntentService:
             # #1388: an explicitly-named repo in the request must beat the
             # user-wide default scope (the read-path sibling of #1220's
             # slotfilled-repo-beats-default rule for writes).
-            _named_repo = self._slotfill_issue_request(
+            # #2186: the router's qualifiers (milestone/label/state/repo/count),
+            # honesty-guarded; all None on the legacy path. A router-named
+            # owner/repo beats the regex, which stays the fallback (#1388).
+            _rargs = _router_list_issue_args(intent)
+            _unhonoured: List[str] = list(_rargs["unhonoured"])
+            _named_repo = _rargs["repo"] or self._slotfill_issue_request(
                 intent.original_message or intent.context.get("original_message") or ""
             ).get("repository")
+            if not _named_repo and _rargs["repo_bare"]:
+                _named_repo = await self._resolve_router_bare_repo(_user_id, _rargs["repo_bare"])
+                if not _named_repo:
+                    _unhonoured.append(f'repository "{_rargs["repo_bare"]}"')
+            _qualifiers = {
+                k: v
+                for k, v in (
+                    ("milestone", _rargs["milestone"]),
+                    ("label", _rargs["label"]),
+                    ("state", "closed" if _rargs["state"] == "closed" else None),
+                )
+                if v is not None
+            }
+            _count = _rargs["count"]
             connector_result = await GitHubMCPSpatialAdapter().list_open_issues(
-                _user_id, limit=50, repository=_named_repo
+                _user_id, limit=50, repository=_named_repo, **_qualifiers
             )
+            _filters_applied = False
             # #2040: which scope did the read take? The connector's default
             # query is ``assignee:@me`` (user-wide); a named repo is repo-wide;
             # the native-PAT fallback lists the resolved default repo. Only the
@@ -8436,6 +8540,7 @@ class IntentService:
             _issues_window_full = False  # Arch 15:29 gap A: set by the native read only
             if connector_result.issues is not None:
                 _assignee_scoped = not _named_repo
+                _filters_applied = bool(_qualifiers)
                 issues = connector_result.issues
                 total_count = (
                     connector_result.total if connector_result.total is not None else len(issues)
@@ -8469,6 +8574,13 @@ class IntentService:
                     getattr(github_router, "last_open_window_full", None) is True
                     or len(open_items) >= 100
                 )
+                # #2186: the native read takes no qualifiers; name each one.
+                if "milestone" in _qualifiers:
+                    _unhonoured.append(f'milestone "{_qualifiers["milestone"]}"')
+                if "label" in _qualifiers:
+                    _unhonoured.append(f'label "{_qualifiers["label"]}"')
+                if "state" in _qualifiers:
+                    _unhonoured.append('state "closed"')
             else:
                 # Connected but degraded → honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
@@ -8481,11 +8593,27 @@ class IntentService:
                     },
                 )
 
+            # #2186: name an applied milestone/label in the count line, the
+            # way _scope names a repo; a closed read says "closed".
+            _filter_scope = ""
+            _state_word = "open"
+            if _filters_applied:
+                if "milestone" in _qualifiers:
+                    _filter_scope += f' in milestone "{_qualifiers["milestone"]}"'
+                if "label" in _qualifiers:
+                    _filter_scope += f' labeled "{_qualifiers["label"]}"'
+                if "state" in _qualifiers:
+                    _state_word = "closed"
+            if _count is not None:
+                # The newest N of the sorted page; total_count stays the true total.
+                issues = issues[:_count]
+
             _repo_open: Optional[Tuple[str, int]] = None
             if issues:
                 # total_count is the TRUE match count (search_issues total_count); `issues` is
                 # only a page (e.g. 30 of 179) — count by total_count, show a few recent (#1322).
                 _scope = f" in {_named_repo}" if _named_repo else ""
+                _scope += _filter_scope
                 if _issues_window_full:
                     # CXO 10-24 16:11 (final): a full window is a floor, never a bare total.
                     # The 100 are open items (issues and PRs), so N can be under 100.
@@ -8496,7 +8624,8 @@ class IntentService:
                     )
                 else:
                     message = (
-                        f"You have **{total_count} open issue{'s' if total_count != 1 else ''}**"
+                        f"You have **{total_count} {_state_word} "
+                        f"issue{'s' if total_count != 1 else ''}**"
                         f"{_scope}."
                     )
                 message += "\n\nHere are the most recent:"
@@ -8514,8 +8643,9 @@ class IntentService:
                     _lines.append(f"\n- **#{number}**: {title}{label_str}")
                 _capped = compose_capped_list(
                     lines=_lines,
-                    cap=5,
-                    kind="open issues",
+                    # #2186: an asked-for count over 5 shows that many.
+                    cap=max(5, _count or 0),
+                    kind=f"{_state_word} issues",
                     # total_count is the TRUE match count; `issues` is only a
                     # page, so the held set can be strictly smaller — the one
                     # site in the six where the offer must say what it can
@@ -8525,6 +8655,13 @@ class IntentService:
                 message += _capped.body
                 _remainder = _capped.remainder
                 _complete = _capped.complete
+            elif _filters_applied:
+                # #2186: a filtered read that found nothing names its whole
+                # scope; the #2040 default-repo count would not share the filter.
+                if _named_repo:
+                    message = f"No {_state_word} issues in {_named_repo}{_filter_scope} right now."
+                else:
+                    message = f"You have no {_state_word} issues assigned to you{_filter_scope}."
             else:
                 if _named_repo:
                     # A named repo is read repo-wide, so this line already
@@ -8547,9 +8684,20 @@ class IntentService:
                 else:
                     message = "You don't have any open issues right now."
 
+            if _unhonoured:
+                # #2186 (E4): a qualifier the read could not apply is named,
+                # never dropped silently.
+                message += "\n\n" + " ".join(
+                    LIST_CANT_FILTER_LINE.format(qualifier=q) for q in _unhonoured
+                )
+
             _ctx: Dict[str, Any] = {"issue_count": total_count if issues else 0}
             if _assignee_scoped:
                 _ctx["scope"] = "assigned_to_you"
+            if _filters_applied:
+                _ctx["filters"] = dict(_qualifiers)
+            if _unhonoured:
+                _ctx["unhonoured_qualifiers"] = list(_unhonoured)
             if _repo_open is not None:
                 # The OUTCOME for next-turn context (#1738), not just the string.
                 _ctx["default_repo"] = _repo_open[0]
@@ -8581,6 +8729,24 @@ class IntentService:
                 error=str(e),
                 error_type="list_issues_error",
             )
+
+    async def _resolve_router_bare_repo(self, user_id: Optional[str], name: str) -> Optional[str]:
+        """#2186: the router named a repo without its owner (``piper-morgan-product``).
+        Search needs ``owner/name``; the one owner we can state honestly is the
+        user's default repo's, when its name matches. Otherwise None, and the
+        handler names the repo as a qualifier it could not apply."""
+        if not user_id or not name:
+            return None
+        try:
+            from services.integrations.github.repo_resolver import get_user_default_repo
+
+            repo = await get_user_default_repo(UUID(str(user_id)))
+        except Exception as e:  # silent-ok: logged; the handler names the unapplied repo
+            self.logger.warning("bare_repo_resolve_failed", error=str(e))
+            return None
+        if isinstance(repo, str) and repo.split("/")[-1].lower() == name.lower():
+            return repo
+        return None
 
     async def _default_repo_open_issue_count(
         self, user_id: Optional[str]

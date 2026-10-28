@@ -446,6 +446,21 @@ description yet." The scorer's `args_match` gains `name` / `description` / `repo
 project called Baz with description testing the description' carries `expected_args: {name: Baz,
 description: testing the description}` (census 597). Regression: `test_add_project_router_args_2069.py`
 (pins the description UNCHANGED from main's text), `test_add_project_consent_name_2069.py`.
+**#2186 list_issues consumes the router's `milestone` / `label` / `state` / `repo` / `count` args
+(2026-10-28)**: `_handle_list_issues_query` reads `context["inversion_args"]` through
+`_router_list_issue_args` (the #1976 honesty guard, `user_said_every_word`, on every string value; a
+value that fails is ignored; `count` or `limit` honoured as a positive int up to 50). A router
+`owner/repo` beats `_slotfill_issue_request`, which stays the fallback (#1388); a bare repo name
+resolves only against the user's default repo. `GitHubMCPSpatialAdapter.list_open_issues` builds
+`is:closed` / `milestone:"X"` / `label:"Y"` in code, and `_search_via_connector` now sends `sort:
+created, order: desc` (so `list_open_prs` sorts too). The count slices the sorted page for display;
+`total_count` stays the true total. The count line names an applied milestone/label (and says
+"closed"); a qualifier the read can't apply (an other state, a count over 50, any qualifier on the
+native-PAT fallback, an unresolved bare repo) appends `LIST_CANT_FILTER_LINE`, never a silent drop.
+**The rail description is unchanged**: Lead's ×3 against alpha's router showed the args already
+arrive under main's wording (`dev/2026/10/28/controls/2186-args-baseline-x3-main-args-2026-10-28.txt`,
+Lead's worktree). `args_match` gains `milestone` / `label` / `state` / `count`; four corpus args rows.
+Regression: `test_list_issues_router_args_2186.py`, `test_github_adapter_list_qualifiers_2186.py`.
 **#2051 `list_assigned_issues` alias (2026-10-17, same batch)**: the classifier's own action name for
 "what issues are assigned to me?" had no rail key and fell to the floor ("Let me pull that up…"); it is
 now an alias on the `list_issues` entry, so the read runs and answers 0-assigned with the #2040 scope
