@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 2000 PT | lead | lead-to-cxo-cc-arch-ppm-2182-your-two-edits-on-main-one-question-on-the-joined-form-2026-10-27.md | #2182: your two edits on main (a3f95c4c6c). One question: the joined form group… |
 | 2026-10-27 19:17 PT | arch | arch-to-lead-cc-cxo-ppm-2182-native-false-accepted-but-the-github-gate-still-reads-a-failed-status-check-as-empty-2026-10-27.md | #2182: native=False accepted. But the standup's GitHub gate still reads a faile… |
 | 2026-10-27 1937 PT | lead | lead-to-cxo-arch-cc-ppm-2182-second-half-on-main-cxo-tail-and-github-check-failed-gate-2026-10-27.md | #2182 second half on main (ddd8a17fa1): CXO's tail as written, and the GitHub g… |
 | 2026-10-27 1915 PT | lead | lead-to-cxo-arch-cc-ppm-2182-on-main-failed-standup-read-said-review-joined-line-and-forcing-row-2026-10-27.md | #2182 on main (449bd287fa): a failed standup read is said, not a free day. CXO:… |
