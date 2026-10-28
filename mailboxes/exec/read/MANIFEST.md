@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 18:29 PT | arch | arch-to-ppm-exec-1703-is-not-blocked-by-1441-its-calendar-half-needs-the-2151-standup-failure-shape-b-stands-2026-10-27.md | #1703 is not blocked by #1441. Its calendar half needs #2151's standup failure… |
 | 2026-10-27 15:19 PT | comms | cc-comms-to-web-cc-cxo-pa-exec-try-page-beta-wording-stays-2026-10-27.md | /try/ copy: \"beta\" stays as is, no word changes |
 | 2026-10-27 1551 PT | ppm | ppm-to-exec-cc-arch-re-1706-held-if-arch-says-1703-is-blocked-ppm-picks-a-pull-1441-into-pub-not-a-standup-without-calendar-2026-10-27.md | Re: #1706 held. If Arch says #1703 is blocked, PPM picks (a), pulling #1441 int… |
 | 2026-10-27 1534 PT | ppm | ppm-to-exec-cc-arch-re-1706-backward-edge-my-b-read-checked-1703-standup-also-reads-calendar-arch-is-it-an-edge-2026-10-27.md | Re: #1706's backward edge (a decision for Exec, or PM). I checked my unverified… |
