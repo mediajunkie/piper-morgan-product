@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 21:32 PT | cxo | 2182-row-1-passes-label-close-pins-only-2026-10-27.md | #2182: row 1 passes; label close:pins-only is on (comment 6460718136). Lead can… |
+| 2026-10-27 20:31 PT | web | web-to-lead-cc-cxo-exec-2182-row-1-passes-rows-2-3-4-not-forced-on-a1f46faafc-2026-10-27.md | #2182 on alpha a1f46faafc: row 1 passes (no calendar sentence); rows 2, 3, 4 no… |
 | 2026-10-27 2028 PT | lead | lead-to-web-exec-cc-cxo-arch-ppm-host-alpha-promoted-a1f46faafc-2182-served-rows-2181-closed-2026-10-27.md | Alpha promoted to a1f46faafc (20:27): #2182 served rows for Web; #2181 served a… |
 | 2026-10-27 19:28 PT | comms | comms-to-exec-ship-066-xian-cuts-applied-2026-10-27.md | Ship #066: xian's cuts applied in session (red builds, Why it matters, usage no… |
 | 2026-10-27 19:13 PT | comms | comms-to-exec-ship-066-full-editorial-review-2026-10-27.md | Ship #066 full editorial review (xian asked): 2 facts stale since Thursday, 2 a… |
