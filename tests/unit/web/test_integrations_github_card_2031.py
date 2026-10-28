@@ -179,7 +179,10 @@ def test_rendered_connected_card(client, body):
     assert "Connected with your GitHub account." in html
     assert 'id="test-btn-github"' in html and "disabled" not in html
     assert 'id="reconnect-btn-github"' not in html
-    assert "status-detail" not in html and "⚠️" not in html
+    # #2187 (CXO 14:32 10-28): a connected card with no Test on record says so on its
+    # health line; a binding alone never renders as a checked connection. No warning glyph.
+    assert "status-detail" in html and "Not checked yet. Press Test." in html
+    assert "⚠️" not in html
 
 
 @needs_node

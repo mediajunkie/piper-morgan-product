@@ -71,7 +71,9 @@ async def test_oauth_serving_is_connected():
         status.status == "connected"
     )  # #2075: a bound grant with no recorded check claims no health
     assert status.status_message == "Connected with your GitHub account."
-    assert status.status_icon is None and status.status_detail is None
+    assert (
+        status.status_icon is None and status.status_detail == "Not checked yet. Press Test."
+    )  # #2187: no record -> unchecked line
     assert status.can_test is True and status.show_test is True
     assert status.action is None
     probe.assert_not_awaited()  # a healthy page load makes no GitHub call

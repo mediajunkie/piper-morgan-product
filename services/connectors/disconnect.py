@@ -90,6 +90,15 @@ async def disconnect_connector(user_id: str, connector: str) -> DisconnectResult
             f"(supported: {', '.join(SUPPORTED_CONNECTORS)})"
         )
     result = DisconnectResult(connector, tuple(remaining), revoke_failed)
+    if result.cleared:
+        # #2187: a cleared connection has no check to show; the next grant starts
+        # from "Not checked yet" instead of inheriting this one's last Test.
+        try:
+            from services.integrations.principal_test_results import get_test_result_store
+
+            get_test_result_store().forget(user_id, connector)
+        except Exception as e:  # silent-ok: logged; the clear itself succeeded
+            logger.warning("connector_test_record_forget_failed", connector=connector, error=str(e))
     if not result.cleared:
         logger.warning(
             "connector_disconnect_incomplete", connector=connector, remaining=result.remaining

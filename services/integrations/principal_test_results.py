@@ -97,6 +97,16 @@ class PrincipalTestResultStore:
         with self._lock:
             self._results.clear()
 
+    def forget(self, principal: Optional[str], integration: str) -> bool:
+        """#2187: drop THIS principal's record for ONE integration, so a new grant or a
+        disconnect never inherits the previous grant's check (the card then reads
+        "Not checked yet. Press Test." until Test runs). Returns True if a record
+        existed. No principal, nothing to forget."""
+        if not principal:
+            return False
+        with self._lock:
+            return self._results.pop((str(principal), integration), None) is not None
+
 
 _store: Optional[PrincipalTestResultStore] = None
 

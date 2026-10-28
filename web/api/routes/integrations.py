@@ -524,6 +524,11 @@ async def _github_card(
         return card(
             status=oauth_status,
             status_message=_GITHUB_CARD_CONNECTED,
+            # #2187 (CXO 14:32 10-28): with no Test on record the card says what it
+            # knows, Slack's form: "Connected with your GitHub account." plus the
+            # health line "Not checked yet. Press Test." A binding alone never
+            # reads as a checked connection (the #2044 unchecked state, applied here).
+            status_detail=UNCHECKED_DETAIL if oauth_result is None else None,
             can_test=True,
             last_check=oauth_result.checked_at_iso if oauth_result is not None else None,
             error=oauth_error,

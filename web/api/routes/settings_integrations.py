@@ -1476,6 +1476,15 @@ async def handle_github_callback(
             await persist_github_connection(session, user_id, access_token)
             await session.commit()
 
+        # #2187: a NEW grant must not inherit the previous grant's Test result (the
+        # card showed the old red check after Reconnect until Test was pressed).
+        try:
+            from services.integrations.principal_test_results import get_test_result_store
+
+            get_test_result_store().forget(str(user_id) if user_id else None, "github")
+        except Exception:  # silent-ok: logged; the grant itself is stored
+            logger.warning("github_test_record_forget_failed", user_id=user_id, exc_info=True)
+
         # #1314 "default default": auto-set a first-run user's default_repo so they
         # aren't stuck at zero. Best-effort — a failure here must never break the
         # OAuth connection itself, which already succeeded above.
