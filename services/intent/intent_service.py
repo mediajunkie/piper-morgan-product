@@ -1035,6 +1035,8 @@ class IntentService:
             "reminder_task_question_pending",
             # #1987 half 2: the armed which-todo pick (numbered candidates).
             "delete_todo_pick_pending",
+            # #2184: the armed milestone pick (the milestones list's own titles).
+            "milestone_pick_pending",
             # #1651: the standup's bound overdue-todo offer must survive
             # this turn (armed on the rail-dispatched get_standup path).
             "standup_todo_offer_pending",
@@ -1975,6 +1977,28 @@ class IntentService:
                             intent_data=_dtp_turn["intent_data"],
                             requires_clarification=_dtp_turn.get("requires_clarification", False),
                         )
+                # #2184 (Arch 12:45 10-28): a pending MILESTONE PICK (armed by
+                # _handle_list_milestones_query's own read) binds a message that
+                # IS one listed title and runs the issues read with that
+                # milestone and the listed repo (code-bound). Returning None
+                # falls through exactly as the delete pick does.
+                elif _vi_payload.get("kind") == "milestone_pick_question":
+                    from services.intent_service import milestone_pick as _mp
+
+                    _mp_turn = await _mp.handle_milestone_pick_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _mp_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_mp_turn["message"],
+                            intent_data=_mp_turn["intent_data"],
+                            requires_clarification=False,
+                        )
                 elif _vi_payload.get("kind") == "reminder_time_question":
                     from services.intent_service import todo_handlers as _th
 
@@ -2607,6 +2631,9 @@ class IntentService:
                         # command, decline, bare exit) drops via the pop;
                         # nothing bound, nothing deleted.
                         "delete_todo_pick_question": "delete_todo_pick_question_released",
+                        # #2184: a released milestone pick (any non-title turn)
+                        # drops via the pop; nothing was read.
+                        "milestone_pick_question": "milestone_pick_question_released",
                         # #2035: an ignored yes/no add-project offer is
                         # dropped by the pop; nothing was created.
                         "add_project_offer_question": "add_project_offer_abandoned",
@@ -8530,6 +8557,19 @@ class IntentService:
             # honesty-guarded; all None on the legacy path. A router-named
             # owner/repo beats the regex, which stays the fallback (#1388).
             _rargs = _router_list_issue_args(intent)
+            # #2184: scope bound by CODE at the milestone-pick seam (never
+            # LLM-written), so the #1976 word-set guard above does not apply.
+            _ctx_in = intent.context or {}
+            if (
+                isinstance(_ctx_in.get("list_scope_milestone"), str)
+                and _ctx_in["list_scope_milestone"]
+            ):
+                _rargs["milestone"] = _ctx_in["list_scope_milestone"]
+            if (
+                isinstance(_ctx_in.get("list_scope_repository"), str)
+                and "/" in _ctx_in["list_scope_repository"]
+            ):
+                _rargs["repo"] = _ctx_in["list_scope_repository"]
             _unhonoured: List[str] = list(_rargs["unhonoured"])
             _named_repo = _rargs["repo"] or self._slotfill_issue_request(
                 intent.original_message or intent.context.get("original_message") or ""
@@ -9527,12 +9567,45 @@ class IntentService:
             else:
                 message = "You don't have any open milestones right now."
 
+            # #2184 (Arch 12:45 10-28, rung 1): the list THIS handler just read
+            # arms an exact-title pick carrying the repo it was read from; the
+            # next turn's bare title runs the milestone issues read in code.
+            # Only from this read (D2), never when the list armed a remainder
+            # offer (same one-slot store; the printed promise wins).
+            _pick_armed = False
+            if milestones and _remainder is None and session_id:
+                try:
+                    from services.intent_service.milestone_pick import arm_milestone_pick
+
+                    _resolved = await github_router._resolve_default_repo()
+                    _repo_full = (
+                        f"{_resolved[0]}/{_resolved[1]}"
+                        if isinstance(_resolved, tuple) and len(_resolved) == 2 and all(_resolved)
+                        else None
+                    )
+                    _pick_armed = arm_milestone_pick(
+                        session_id=session_id,
+                        principal=_principal_from_intent(intent),
+                        offer_service=self.workflow_offer_service,
+                        titles=[
+                            display_title(m.get("title"), "(untitled milestone)")
+                            for m in milestones
+                            if isinstance(m, dict)
+                        ],
+                        repository=_repo_full,
+                        original_message=intent.original_message or "",
+                    )
+                except (
+                    Exception
+                ) as e:  # silent-ok: logged; an un-armed pick leaves today's behaviour
+                    self.logger.warning("milestone_pick_arm_failed", error=str(e))
             return IntentProcessingResult(
                 success=True,
                 message=message,
                 intent_data={
                     "category": "query",
                     "action": "list_milestones_query",
+                    **({"milestone_pick_pending": True} if _pick_armed else {}),
                     "context": {
                         "milestone_count": len(milestones) if milestones else 0,
                     },

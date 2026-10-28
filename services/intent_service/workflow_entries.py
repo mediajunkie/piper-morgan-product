@@ -24,6 +24,9 @@ from services.intent_service.delete_todo_pick import (
     PICK_PENDING_FLAG,
     run_clarify_delete_todo_pick_workflow,
 )
+from services.intent_service.milestone_pick import (
+    run_clarify_milestone_pick_workflow,
+)
 from services.intent_service.reminder_clear import (
     run_clarify_reminder_clear_verb_workflow,
     run_clear_reminders_delete_workflow,
@@ -3831,6 +3834,17 @@ def register_default_workflows() -> None:
             entry_point=run_clarify_delete_todo_pick_workflow,
             effect=EffectClass.READ,
             description="Re-ask the #1987 which-todo pick on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #2184: generic-accept landing for the milestone pick (the carrier
+        # armed by _handle_list_milestones_query's own read). effect: READ — a
+        # bare "yes" re-asks which milestone and re-arms; the bound title runs
+        # the issues read at the pop seam (milestone_pick.handle_milestone_pick_turn).
+        # action_triggered=False (the #1987 precedent).
+        "clarify_milestone_pick": WorkflowEntry(
+            entry_point=run_clarify_milestone_pick_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #2184 which-milestone pick on a bare affirmative",
             requires_context=["pending_action", "intent_service"],
         ),
         "reminder_clear_pick_target": WorkflowEntry(

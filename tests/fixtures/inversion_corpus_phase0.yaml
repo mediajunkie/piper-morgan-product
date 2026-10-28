@@ -444,6 +444,16 @@ corpus:
     source: "probe-row-52"
     surface1_claim: "priority/get_top_priority"
     probe_verdict: "DISAGREE"
+  - phrase: "can you show me issues from just one milestone?"
+    category: QUERY
+    expected: REVIEW
+    source: "#2184 alpha a1f46faafc 2026-10-28 10:12 (xian's served two-step exchange, turn 1)"
+    notes: "Router ×3 on main 10-28: CLARIFY @0.40 (sub-threshold); surface 1 then claims list_milestones_query (\\bshow.*milestones?) and the milestones handler lists them. Since #2184 that handler ARMS an exact-title pick on the titles it rendered (milestone_pick.py). Context-dependent (Phase-0 convention: informational). REVIEW, not asserted."
+  - phrase: "MVP"
+    category: QUERY
+    expected: REVIEW
+    source: "#2184 alpha a1f46faafc 2026-10-28 10:12 (xian's served two-step exchange, turn 2)"
+    notes: "Router ×3 on main 10-28: CLARIFY @0.30 (sub-threshold); nothing claims it; the floor composed three priority-slice issue numbers as the milestone's (#2042's class). Since #2184 the armed pick binds this exact title at the pop seam and runs the issues read with milestone='MVP' and the listed repo. Two-turn shape, context-dependent (informational). REVIEW."
   - phrase: "Mark the first three complete and leave the fourth one pending."
     category: EXECUTION
     expected: action:complete_todo
