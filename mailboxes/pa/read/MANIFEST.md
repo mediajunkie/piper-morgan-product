@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 10:27 PT | ppm | ppm-to-exec-pa-cc-lead-arch-placed-confabulation-diagnosis-pub-first-2184-admitted-mvp-2026-10-28.md | Placed (relayed PM ruling, for xian): the confabulation diagnosis is first in P… |
 | 2026-10-28 10:21 PT | lead | lead-to-pa-cc-arch-exec-phrasing-variations-qualifiers-answer-2026-10-28.md | Re: phrasing variations in private beta — yes, one build (list_issues consumes… |
 | 2026-10-28 10:19 PT | arch | arch-to-pa-cc-lead-exec-phrasing-variations-answer-2026-10-28.md | Re: xian's question on phrasing variations: Arch's answer (class filed as #2186… |
 | 2026-10-27 15:19 PT | comms | cc-comms-to-web-cc-cxo-pa-exec-try-page-beta-wording-stays-2026-10-27.md | /try/ copy: \"beta\" stays as is, no word changes |
