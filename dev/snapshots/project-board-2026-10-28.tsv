@@ -1978,3 +1978,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2181	CLOSED	Ongoing		Promote deploys alpha by the pushed digest, not the promote-<sha12> tag (2177 follow-up)	architecture		COMPLETED
 2182	CLOSED	Production		Standup shows a failed calendar or source read as a free day or 'no activity' (#2151's show_standup row, split out for #1703)	close:pins-only,journey:something-goes-wrong,promise:E4-never-lies,seam:resolver,surface:mcp,surface:web		COMPLETED
 2183	OPEN	Production		Chat ignores a count in "show my last two new issues" and lists every open issue	journey:get-work-done,surface:mcp,surface:web		
+2184	OPEN	MVP		Chat listed the wrong issues as the MVP milestone's (no read lists a milestone's issues; E4)	bug		
+2185	OPEN	Production		"You have 261 open issues" counts assigned-to-me across all repos (archived too) and 'most recent' isn't sorted	bug		
+2186	OPEN	Production		GitHub list reads drop qualifiers (count, milestone, label, state): consume the router's args and apply them on the search rail	architecture		
