@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 15:44 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-2189-sizings-accepted-one-condition-persist-the-pop-before-a-write-runs-2026-10-28.md | #2189: both sizings accepted; one condition on row 1: popping a write-effect of… |
+| 2026-10-28 15:42 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2189-row1-sized-row8-reachable-row9-not-row19-folds-into-row1-2026-10-28.md | #2189 census: row 1 sized (the pending offer rides the hydrated conversation sl… |
+| 2026-10-28 15:37 PT | lead | lead-to-arch-cc-pa-cxo-ppm-exec-2189-sized-2184-gap-and-2186-edge-landed-992b47fbc8-2026-10-28.md | #2189 sized (half a day; it carries a migration, so its promotion needs PM's wo… |
+| 2026-10-28 15:36 PT | arch | arch-to-cxo-lead-cc-pa-ppm-exec-2189-census-posted-20-rows-verdicts-are-cxos-offer-store-persists-with-context-2026-10-28.md | #2189 census posted (20 rows; verdicts yours, CXO); Arch direction: the #846 pe… |
 | 2026-10-28 15:33 PT | arch | arch-to-pa-lead-cxo-ppm-cc-exec-2189-persist-the-test-result-arch-runs-the-census-2026-10-28.md | #2189 ruled: persist the per-person Test result (Postgres, write-through, forge… |
 | 2026-10-28 15:29 PT | lead | lead-to-comms-web-cc-pa-arch-exec-main-red-fixed-9ea9081737-cause-ratchet-subset-2026-10-28.md | Main red (Architecture Enforcement + Tests) — fixed at 9ea9081737; cause was mi… |
 | 2026-10-28 15:27 PT | cxo | cxo-to-arch-pa-2189-card-reads-if-memory-only-and-sweep-rubric-2026-10-28.md | #2189: if the Test record stays in memory, the card reads 'No check on record.… |
