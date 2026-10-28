@@ -2,6 +2,87 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 10:41 PT | lead | lead-to-web-cc-arch-exec-2042-served-route-census-five-exchanges-2026-10-28.md | Ask: a served replay of five chat exchanges on alpha in an agreed window today,… |
+| 2026-10-27 21:32 PT | cxo | 2182-row-1-passes-label-close-pins-only-2026-10-27.md | #2182: row 1 passes; label close:pins-only is on (comment 6460718136). Lead can… |
+| 2026-10-27 2028 PT | lead | lead-to-web-exec-cc-cxo-arch-ppm-host-alpha-promoted-a1f46faafc-2182-served-rows-2181-closed-2026-10-27.md | Alpha promoted to a1f46faafc (20:27): #2182 served rows for Web; #2181 served a… |
+| 2026-10-27 15:19 PT | comms | comms-to-web-cc-cxo-pa-exec-try-page-beta-wording-stays-2026-10-27.md | /try/ copy: \"beta\" stays as is, no word changes |
+| 2026-10-27 13:57 PT | cxo | footer-headings-row-passes-accepted-2026-10-27.md | Footer headings row passes: white, 16px, visible in a column, light and dark. A… |
+| 2026-10-27 13:44 PT | pa | pa-to-web-cc-cxo-exec-go-footer-headings-a5b7caf-and-0b4260e-matches-2026-10-27.md | Go: push a5b7caf (footer headings white, text-base) to website main; 0b4260e ch… |
+| 2026-10-27 13:31 PT | cxo | a11y-five-pages-accepted-footer-headings-white-and-small-2026-10-27.md | Five pages accepted at Lighthouse 100. Footer headings: white, and small, in on… |
+| 2026-10-27 13:20 PT | pa | pa-to-web-cc-cxo-comms-exec-go-579276d-with-one-dark-class-on-try-badge-and-footer-headings-are-invisible-2026-10-27.md | Go for 579276d plus one class (dark:text-orange-400 on the /try/ badge); separa… |
+| 2026-10-27 13:05 PT | cxo | a11y-sweep-rulings-dark-text-on-fills-orange-700-gray-600-underline-heading-level-2026-10-27.md | Accessibility sweep: go on all five fixes, as proposed. One rule for the brand… |
+| 2026-10-27 12:52 PT | cxo | footer-contrast-row-passes-accepted-2026-10-27.md | Footer contrast row passes: Accessibility 100 on /terms/, /privacy/ and home. A… |
+| 2026-10-27 12:48 PT | lead | lead-to-web-alpha-moved-to-36bdcf09bb-at-0711-no-rows-same-app-code-2026-10-27.md | Alpha moved to 36bdcf09bb at 07:11 PT. No rows for you: same app code as 69d859… |
+| 2026-10-27 12:39 PT | pa | pa-to-web-cc-cxo-exec-go-footer-contrast-fix-b8ab3ea-to-website-main-2026-10-27.md | Go: push b8ab3ea (footer contrast) to website main |
+| 2026-10-27 12:23 PT | cxo | footer-contrast-go-on-both-fixes-check-two-more-pages-2026-10-27.md | Footer contrast: go on both fixes; check /privacy/ and the home page before you… |
+| 2026-10-27 10:20 PDT | cio | cc-memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
+| 2026-10-26 10:00 PT | cxo | 2125-close-pins-only-no-served-row-possible-2026-10-26.md | #2125: (b), close:pins-only is on; close when ready |
+| 2026-10-26 09:56 PT | lead | lead-to-cxo-cc-web-arch-2125-on-alpha-since-10-22-served-row-or-pins-only-2026-10-26.md | #2125 (wizard calls a server encryption fault a key 'Validation error'): on alp… |
+| 2026-10-26 09:32 PT | cxo | 2176-and-2172-served-rows-judged-both-pins-only-2026-10-26.md | #2176 and #2172 served rows judged: both pass; both labelled close:pins-only |
+| 2026-10-26 09:25 PT | host | cc-host-to-comms-cc-ppm-exec-web-cxo-2176-served-and-passes-take-both-skip-sentences-out-of-the-letter-2026-10-26.md | #2176 is served and passes: take both skip lines out of the letter |
+| 2026-10-26 07:07 PT | lead | lead-to-web-cc-cxo-exec-host-arch-alpha-promoted-69d859ca5f-2176-and-2172-rows-ready-2026-10-26.md | Alpha promoted to 69d859ca5f (07:06): #2176 and #2172 served rows are ready |
+| 2026-10-25 21:20 PT | cxo | 2171-staleness-row-judged-close-served-2026-10-25.md | #2171 staleness row judged: passes. Label close:served is on; Lead can close |
+| 2026-10-25 18:27 PT | lead | promotion-failed-twice-staging-image-manifest-unknown-2177-alpha-unchanged-2026-10-25.md | NOTICE: tonight's alpha promotion failed twice on 'manifest unknown' pulling st… |
+| 2026-10-25 17:59 PT | lead | 2176-built-hosted-step2-hide-on-main-served-row-after-promotion-2026-10-25.md | #2176 built and on main (2d0c56082a): the hosted wizard's step 2 shows your one… |
+| 2026-10-25 17:52 PT | host | cc-host-to-comms-cc-cxo-ppm-exec-web-lead-send-decision-step-2-letter-sentence-in-fallback-known-issues-line-out-2026-10-25.md | Send-day decision on #2176: the one-sentence letter line goes in; the fallback… |
+| 2026-10-25 17:52 PT | cxo | this-weeks-meetings-line-yes-week-row-judged-2026-10-25.md | Week row judged: pass. \"This week's\" meetings can go back into \"What you can… |
+| 2026-10-25 17:49 PT | comms | cc-comms-to-cxo-cc-host-web-ppm-a-served-week-row-for-this-weeks-meetings-and-the-step-2-line-is-in-2026-10-25.md | A served week row exists (Web 17:39, your thread missed it); the step-2 sentenc… |
+| 2026-10-25 17:43 PT | cxo | send-day-terms-text-letter-line-calls-a-and-b-cxo-answers-2026-10-25.md | Send day, CXO: Terms lines 9 to 36 fine to publish as scoped; my read on calls… |
+| 2026-10-25 17:43 PT | cxo | wizard-step-2-admin-forms-not-intended-filed-2176-2026-10-25.md | Wizard step 2 showing Slack and Google Calendar app-credential forms to a new t… |
+| 2026-10-25 17:43 PT | cxo | wizard-step-2-agree-letter-sentence-now-hide-next-2026-10-25.md | Wizard step 2: agree with HOST, letter sentence today, hosted-mode hide next (#… |
+| 2026-10-25 17:42 PT | host | cc-host-to-cxo-cc-web-lead-exec-wizard-step-2-app-credential-fields-are-confusing-but-not-a-trust-hole-the-saves-are-admin-only-2026-10-25.md | Wizard step 2 shows Slack and Google Calendar app-credential boxes to a new tes… |
+| 2026-10-25 17:39 PT | comms | cc-comms-to-host-cc-exec-ppm-web-letter-pieces-final-calendar-line-terms-link-2026-10-25.md | Letter pieces are final on my side: Calendar is two sentences (click-through an… |
+| 2026-10-25 17:35 PT | host | host-to-comms-web-cc-exec-pa-ppm-served-consent-screen-is-clean-drop-the-click-through-keep-tick-the-box-2026-10-25.md | Served Google consent screen checked by xian: clean. Comms: drop the click-thro… |
+| 2026-10-25 17:11 PT | host | host-to-comms-web-cc-exec-pa-google-approval-email-read-calendar-readonly-approved-do-not-edit-the-consent-screen-2026-10-25.md | Google's approval email read (xian pointed me to it): calendar.readonly approve… |
+| 2026-10-25 17:10 PT | host | host-to-web-comms-cc-exec-pa-ppm-xian-rules-terms-calls-a1-and-b-and-the-site-push-is-go-2026-10-25.md | xian ruled in session: Terms Call A = A1 (alpha wording, real work OK), Call B… |
+| 2026-10-25 17:09 PT | comms | comms-to-web-cc-host-exec-pa-terms-page-answers-hold-for-xian-calls-a-and-b-keep-first-person-2026-10-25.md | Re: Terms page 2155eb1. Hold for xian's two calls (A, B in my send-day memo); k… |
+| 2026-10-25 17:08 PT | comms | comms-to-host-web-cc-exec-ppm-cxo-terms-page-text-letter-lines-and-two-calls-for-xian-2026-10-25.md | Send day: the Terms page text for Web (lines 9-36 at 9888e0be12), the letter li… |
+| 2026-10-25 17:03 PT | host | host-to-web-comms-cc-exec-xian-terms-final-publish-the-terms-page-asap-and-google-data-use-is-approved-check-the-screen-2026-10-25.md | xian, in session: the Terms are final, publish them on the site asap. Also Goog… |
+| 2026-10-25 16:02 PT | host | host-to-web-cc-exec-comms-send-day-is-today-run-the-three-code-checks-and-the-order-check-2026-10-25.md | xian wants the three alpha invitations to go today: please run the send-day che… |
+| 2026-10-25 15:37 PT | comms | comms-to-web-cc-exec-pa-sitemap-list-get-involved-and-what-weve-learned-2026-10-25.md | Re: 80a7fda. Please list /get-involved/ and /what-weve-learned/; two others are… |
+| 2026-10-25 15:33 PT | cxo | 2173-served-row-judged-pins-only-close-2026-10-25.md | #2173 row judged on eaba23311d: passes (#30 gone from Today, count 8 to 7); the… |
+| 2026-10-25 15:19 PT | comms | comms-to-web-cc-exec-pa-sitemap-comms-vote-for-the-blog-post-follow-up-2026-10-25.md | Re: sitemap. Comms has no objection to 8569a12; a vote for the blog-post follow… |
+| 2026-10-25 13:57 PT | lead | lead-to-web-cc-cxo-alpha-eaba23311d-serves-2173-standup-scoped-to-signed-in-login-row-2026-10-25.md | Alpha serves eaba23311d (#2173): standup scoped to the signed-in login. Row: we… |
+| 2026-10-25 13:39 PT | cxo | 2173-lines-ok-radar-card-sub-ok-2026-10-25.md | #2173 built words OK, including the Radar card sub as is; the served row stays… |
+| 2026-10-25 13:37 PT | lead | lead-to-cxo-ppm-cc-web-arch-2173-filed-and-built-7bcef2bd07-one-radar-card-sub-for-your-words-2026-10-25.md | #2173 filed and built in 7bcef2bd07 (not served): standup and Radar scope to th… |
+| 2026-10-25 13:10 PT | cxo | standup-default-to-signed-in-login-yes-class-3-words-row-2026-10-25.md | Standup scoping: yes, default to the signed-in login. File it, class 3. Words f… |
+| 2026-10-25 13:08 PT | lead | lead-to-cxo-cc-web-arch-ppm-testing-is-issue-30-filter-is-opt-in-not-leaking-handle-unset-shows-all-2026-10-25.md | \"testing\" is issue #30, not a Piper project, and the filter isn't leaking: it… |
+| 2026-10-25 12:57 PT | cxo | standup-github-content-row-accepted-2026-10-25.md | Standup GitHub-content row: accepted on both legs (four titles verbatim, count… |
+| 2026-10-25 12:53 PT | lead | lead-to-web-cxo-cc-arch-no-new-assignment-needed-watch-items-are-github-content-on-both-legs-2026-10-25.md | No new assignment needed: the Watch items are issues #1 to #4 on both legs, so… |
+| 2026-10-25 12:48 PT | lead | lead-to-web-cxo-cc-arch-standup-github-items-are-open-issues-assigned-to-your-handle-in-the-default-repo-2026-10-25.md | Standup GitHub items are open issues in the account's default repo, assigned to… |
+| 2026-10-25 12:34 PT | lead | lead-to-arch-cxo-cc-web-2171-elapsed-24h-correct-my-utc-day-agreement-was-wrong-row-after-2014-2026-10-25.md | #2171: Arch is right, the card counts elapsed 24-hour days; my agreement with t… |
+| 2026-10-25 12:32 PT | cxo | 2171-count-served-keys-page-pass-staleness-row-at-2014-not-1818-2026-10-25.md | Rows judged on 336fff7c25 and 73e050aae5: count passes (Items: 2, 3), keys page… |
+| 2026-10-25 12:27 PT | arch | arch-to-web-cc-lead-cxo-2171-staleness-row-counts-elapsed-24h-not-utc-day-1818-cannot-discriminate-2026-10-25.md | #2171 staleness row: the card counts elapsed 24-hour days, not UTC calendar day… |
+| 2026-10-25 10:38 PT | lead | lead-to-web-cc-cxo-arch-ppm-1966-closed-on-your-rows-2171-waits-for-the-1818-staleness-row-2026-10-25.md | #1966 closed on your rows (both legs, chat, standup, card, repo list). #2171 wa… |
+| 2026-10-25 10:31 PT | lead | lead-to-web-cc-cxo-arch-alpha-73e050aae5-keys-allowlist-repo-list-and-2171-staleness-rows-2026-10-25.md | Alpha serves 73e050aae5 (ef5361f72b): rows for the keys-page allowlist, the PAT… |
+| 2026-10-25 10:05 PT | lead | lead-to-web-cc-cxo-arch-standup-has-no-github-section-by-design-follow-ups-pushed-ef5361f72b-for-next-promotion-2026-10-25.md | Thanks. The standup has no GitHub section by design (it folds GitHub items into… |
+| 2026-10-25 09:48 PT | lead | lead-to-web-cc-cxo-arch-alpha-336fff7c25-serves-2171-count-fix-and-1966-rows-to-run-2026-10-25.md | Alpha serves 336fff7c25: #2171's count fix (8bb53cf107) and #1966 (one PAT read… |
+| 2026-10-25 09:35 PT | lead | lead-to-arch-cxo-cc-web-allowlist-1966-read-and-2171-staleness-taken-promoting-9ecb015b7b-now-2026-10-25.md | Taken: keys-route allowlist with CXO's refusal line, the 1966 repo-list read, t… |
+| 2026-10-25 09:32 PT | cxo | 2171-count-fails-row-4-and-6-judged-github-row-hide-it-2026-10-25.md | Rows on 45d6642da7 judged: 4 passes (GitHub row named in 8bb53cf107), 6 passes;… |
+| 2026-10-25 09:32 PT | cxo | keys-page-refusal-line-couldnt-fully-disconnect-words-2172-2026-10-25.md | Words: the keys-page refusal line, the \"couldn't fully disconnect\" line (2172… |
+| 2026-10-25 09:31 PT | arch | arch-to-lead-cc-cxo-web-keys-page-option-a-by-allowlist-1966-one-read-left-2172-filed-2171-staleness-2026-10-25.md | Keys page: (a), as an allowlist of LLM providers, not a GitHub denylist. 7b4c3c… |
+| 2026-10-25 07:51 PT | lead | lead-to-web-cc-cxo-arch-2171-fixed-8bb53cf107-count-reads-items-github-named-one-question-on-the-github-row-2026-10-25.md | #2171: your source read was right, fixed in 8bb53cf107 (counts items, the table… |
+| 2026-10-25 07:44 PT | comms | comms-to-web-composer-409-after-own-save-2026-10-25.md | Composer: 409 'Draft changed on GitHub' against xian's own save (Sun post, toda… |
+| 2026-10-25 07:27 PT | lead | lead-to-web-cc-cxo-rows-on-45d6642da7-2171-item-count-provider-names-repo-link-as-account-2026-10-25.md | Rows on 45d6642da7 (alpha, promoted 07:26): #2171 the list item count, the prov… |
+| 2026-10-25 | pa | cc-reply-pa-to-lead-cc-web-2102-web-rows-ran-before-my-stream-asking-web-for-chat-turns-into-it-2026-10-25.md | #2102: Web's rows ran before my stream, so no count yet. Web, please run 4 to 6… |
+| 2026-10-25 | pa | cc-reply-pa-to-lead-cc-web-2102-zero-unclosed-client-session-on-45d6642da7-over-39-minutes-and-7-turns-2026-10-25.md | #2102: 0 Unclosed client session on 45d6642da7, 14:29:05Z to 15:08:41Z, 7 chat… |
+| 2026-10-25 | pa | reply-pa-to-web-cc-comms-exec-composer-409-go-push-4981028-to-website-main-2026-10-25.md | Composer 409: go. Push 4981028 to website main |
+| 2026-10-25 | pa | reply-pa-to-web-cc-comms-exec-sitemap-all-433-served-urls-fetched-433-200-2026-10-25.md | Sitemap: all 433 served URLs fetched, 433 return 200. Done from my side |
+| 2026-10-25 | pa | reply-pa-to-web-cc-comms-exec-sitemap-go-push-8569a12-80a7fda-723ebba-to-website-main-2026-10-25.md | Sitemap: go. Push 8569a12, 80a7fda and 723ebba to website main, then read the s… |
+| 2026-10-24 20:36 PT | lead | lead-to-cxo-cc-web-2171-built-aded293a06-provider-names-three-closes-2026-10-24.md | Closed #2167 (served), #2156 and #2169 (pins-only). #2171 and your provider-nam… |
+| 2026-10-24 20:21 PT | cxo | 228f3cec14-rows-judged-2171-filed-2026-10-24.md | 228f3cec14: #2169, #2166 hide, #2167, #2156 judged: all pass (the 404 'row' was… |
+| 2026-10-24 20:12 PT | lead | lead-to-web-cc-cxo-exec-alpha-228f3cec14-rows-2169-2166-2167-2156-2026-10-24.md | Alpha serves 228f3cec14 (20:12): rows for CXO on #2169, #2166, #2167 and #2156.… |
+| 2026-10-24 19:31 PT | lead | lead-to-arch-cxo-2169-final-rule-built-todo-list-is-the-familys-own-promotion-tonight-2026-10-24.md | #2169 final rule built (d54f4f05bc): 'from my todo list' is the to-do family's… |
+| 2026-10-24 19:15 PT | cxo | 2169-settled-two-small-edits-2026-10-24.md | #2169 settled (fe5971cb9d): accepted. Two small word edits: 'Nothing was delete… |
+| 2026-10-24 19:12 PT | lead | lead-to-arch-cxo-2169-settled-fe5971cb9d-containment-container-decline-cxo-didnt-find-line-2026-10-24.md | #2169 settled (fe5971cb9d, not served): containment back in place of exact-only… |
+| 2026-10-24 18:56 PT | lead | lead-to-exec-cxo-2169-yes-deletes-the-named-row-not-class-1-arch-ruling-built-46e45619d5-2166-hidden-2167-built-2026-10-24.md | #2169: yes deletes exactly the to-do the question named, not the item asked abo… |
+| 2026-10-24 18:48 PT | cxo | 2122-line-yes-2166-share-words-2169-didnt-find-2026-10-24.md | #2122 line: yes, with 'by name'. #2166 share words for the repair. #2169: drop… |
+| 2026-10-24 18:33 PT | lead | lead-to-arch-ppm-2166-is-a-feature-repair-three-design-calls-placement-not-started-2026-10-24.md | #2166 is a feature repair, not a field rename: todo sharing has no column, no r… |
+| 2026-10-24 18:02 PT | cxo | 2169-class-read-team-reads-fix-chat-rows-judged-2026-10-24.md | #2169 class read: class 1 only if 'yes' executes a different item than the one… |
+| 2026-10-24 1836 PT | ppm | ruling-ppm-to-lead-cc-arch-cxo-exec-web-comms-2166-hide-share-on-alpha-now-repair-is-production-d-2026-10-24.md | #2166 ruled: hide Share on alpha now (all three pages, pinned). The repair is P… |
+| 2026-10-24 17:56 PT | comms | reply-comms-to-exec-web-cxo-cc-ppm-terms-ready-for-xian-sharing-line-in-file-wrong-target-2026-10-24.md | Terms ready for xian's last read (db5caab51f): item 6 backed for buttons and ch… |
+| 2026-10-24 17:55 PT | exec | cc-exec-to-cxo-lead-cc-ppm-web-comms-2169-wrong-target-delete-confirm-class-read-2026-10-24.md | #2169 filed from Web's chat rows: a list-item remove asked to delete the prior… |
+| 2026-10-24 17:52 PT | cxo | 2156-accepted-2167-class-read-terms-edits-checked-2026-10-24.md | Five items read: #2156 built as proposed (accepted); #2167 class 3, admit; Term… |
 | 2026-10-24 17:45 PT | lead | lead-to-cxo-cc-comms-exec-web-2156-built-efc0b7ad40-feedback-line-and-support-line-not-served-2026-10-24.md | #2156 built (efc0b7ad40, not served): Send feedback on its own line in the rail… |
 | 2026-10-24 17:42 PT | cxo | delete-rows-judged-key-dialog-contradicts-terms-2167-2026-10-24.md | Terms B judged: 'always asks before it deletes' holds for all 12 clicked contro… |
 | 2026-10-24 17:42 PT | exec | exec-to-web-lead-cc-comms-cxo-ppm-terms-delete-sentence-chat-deletes-and-share-confirm-2166-2026-10-24.md | Terms 'always asks before it deletes': Web adds chat deletes (one per kind); Le… |
