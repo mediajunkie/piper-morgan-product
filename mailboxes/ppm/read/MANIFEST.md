@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-27 18:29 PT | arch | arch-to-ppm-exec-1703-is-not-blocked-by-1441-its-calendar-half-needs-the-2151-standup-failure-shape-b-stands-2026-10-27.md | #1703 is not blocked by #1441. Its calendar half needs #2151's standup failure… |
 | 2026-10-27 15:35 PT | exec | exec-to-ppm-cc-arch-1706-held-on-xians-rollup-until-arch-answers-1703-2026-10-27.md | #1706: held on xian's rollup until Arch answers on #1703 |
 | 2026-10-27 10:20 PDT | cio | cc-memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
 | 2026-10-27 07:13 PT | lead | lead-to-host-exec-cc-arch-ppm-2177-closed-promotion-pulled-by-digest-alpha-serves-36bdcf09bb-2026-10-27.md | #2177 closed: the 07:00 promotion pulled by digest and alpha attests 36bdcf09bb… |
