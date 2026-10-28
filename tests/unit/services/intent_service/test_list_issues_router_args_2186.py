@@ -18,8 +18,10 @@ import pytest
 
 from services.domain.models import Intent
 from services.intent.intent_service import (
+    LIST_COUNT_CAP_LINE,
     LIST_REPO_UNRESOLVED_LINE,
     LIST_UNAPPLIED_LINE,
+    LIST_UNAPPLIED_PART_LINE,
     IntentService,
 )
 from services.mcp.consumer.connector import DegradationReason, DegradationResponse
@@ -209,8 +211,10 @@ async def test_unhonourable_state_appends_the_fixed_line(intent_service):
 @pytest.mark.asyncio
 async def test_count_over_the_cap_appends_the_fixed_line(intent_service):
     _stub, res = await _run(intent_service, _intent("show my last 80 issues", {"count": "80"}))
-    line = LIST_UNAPPLIED_LINE.format(qualifiers="count 80", pronoun="it")
+    # CXO 12:34: a cap, not a failed filter — its own sentence, and the first 50 shown.
+    line = LIST_COUNT_CAP_LINE.format(cap=50)
     assert line in res.message
+    assert "couldn't apply" not in res.message
     assert res.message.index(line) < res.message.index("Here are the most recent:")
 
 
@@ -400,3 +404,59 @@ def test_compose_capped_list_count_aware_trailer_keeps_the_rest_cashable():
         lines=lines[:3], cap=8, asked_count=8, kind="open issues", source_total=3
     )
     assert "you asked for" not in r2.body and r2.complete is not None
+
+
+# ── #2186 Open 1 (Arch 12:29 10-28): an undeclared key is named, never dropped ──
+
+
+@pytest.mark.asyncio
+async def test_undeclared_key_is_named_alongside_the_applied_one(intent_service):
+    stub, res = await _run(
+        intent_service,
+        _intent(
+            "show my open issues in the MVP milestone from this week",
+            {"milestone": "MVP", "timeframe": "this week", "sort": "created", "order": "desc"},
+        ),
+        total=3,
+    )
+    assert stub.await_args.kwargs.get("milestone") == "MVP"
+    # CXO 12:34: the user's phrase, quoted; never the router's field name.
+    line = LIST_UNAPPLIED_LINE.format(qualifiers='"this week"', pronoun="it")
+    assert line in res.message  # the applied key is not named; sort/order are rail-satisfied
+    assert res.message.index(line) < res.message.index("Here are the most recent:")
+    assert "timeframe" not in res.message and "sort" not in res.message
+
+
+@pytest.mark.asyncio
+async def test_undeclared_key_value_the_user_did_not_say_names_the_key_only(intent_service):
+    _, res = await _run(intent_service, _intent("show my open issues", {"priority": "P0"}), total=3)
+    # Neither the field name nor an unsaid value is printed: the plain sentence.
+    assert LIST_UNAPPLIED_PART_LINE in res.message
+    assert "priority" not in res.message and "P0" not in res.message
+
+
+@pytest.mark.asyncio
+async def test_pr_list_names_every_router_key_it_was_given(intent_service):
+    # "list my pull requests from this week" -> list_prs with timeframe="this week" (x3 on main, 10-28).
+    page = [
+        {"number": 7, "title": "Seven", "html_url": "https://github.com/o/r/pull/7", "labels": []},
+        {"number": 6, "title": "Six", "html_url": "https://github.com/o/r/pull/6", "labels": []},
+    ]
+    intent = Intent(
+        category=IntentCategory.QUERY,
+        action="list_prs_query",
+        context={
+            "original_message": "list my pull requests from this week",
+            "inversion_args": {"timeframe": "this week"},
+        },
+    )
+    intent.original_message = "list my pull requests from this week"
+    with patch(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_open_prs",
+        new=AsyncMock(return_value=GitHubIssuesResult(issues=page, total=2)),
+    ):
+        res = await intent_service._handle_list_prs_query(intent, "wf")
+    line = LIST_UNAPPLIED_LINE.format(qualifiers='"this week"', pronoun="it")
+    assert line in res.message
+    assert "timeframe" not in res.message
+    assert res.message.index(line) < res.message.index("Here are the most recent:")

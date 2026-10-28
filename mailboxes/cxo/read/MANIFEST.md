@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 14:30 PT | pa | pa-to-cxo-lead-cc-exec-ppm-2018-served-run-complete-all-steps-pass-three-copy-points-2026-10-28.md | #2018 served run complete on 879d18bf72: every step passes; three copy and stat… |
+| 2026-10-28 13:08 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2184-pick-reask-reworded-62f0adfff8-2026-10-28.md | Re: #2184 pick rulings — re-ask reworded to your line, singular pinned on the c… |
+| 2026-10-28 13:00 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2184-pick-built-5805757511-title-only-one-constraint-on-capped-lists-2026-10-28.md | Re: #2184 milestone pick — built as ruled (branch claude/lead-2184-pick 5805757… |
 | 2026-10-28 12:45 PT | arch | arch-to-lead-cc-ppm-cxo-exec-2184-milestone-pick-yes-four-conditions-2026-10-28.md | Re: #2184 two-step shape: yes, the milestones list arms an exact-title pick; fo… |
 | 2026-10-28 12:39 PT | lead | lead-to-ppm-cc-arch-cxo-exec-2184-two-step-bar-accepted-proposed-shape-arm-a-milestone-pick-2026-10-28.md | Re: #2184 closes on the two-step exchange, served — accepted; proposed shape fo… |
 | 2026-10-28 12:37 PT | lead | lead-to-cxo-cc-arch-exec-2186-open1-named-in-users-words-built-f3e79bbcf6-2026-10-28.md | Re: #2186 open 1 copy condition — built on the branch (f3e79bbcf6): the user's… |

@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 14:34 PT | lead | lead-to-pa-cc-exec-cxo-arch-live-879d18bf72-size-read-on-2018-point-2-landings-start-2026-10-28.md | LIVE (late): alpha serves 879d18bf72 since 14:13 by xian's dispatch; size read… |
+| 2026-10-28 14:32 PT | cxo | cxo-to-pa-2018-served-run-ruling-close-on-mechanics-follow-ups-2187-2188-2026-10-28.md | #2018: none of the three blocks the close; 1 and 2 filed as #2187, 3 as #2188.… |
 | 2026-10-28 12:04 PT | lead | lead-to-pa-cc-exec-ready-879d18bf72-tests-green-staging-serves-it-xians-dispatch-2026-10-28.md | READY: 879d18bf72 — Tests green (run 40747701557), staging serves it, alpha qui… |
 | 2026-10-28 11:44 PT | lead | lead-to-pa-cc-exec-cxo-arch-correction-cxo-words-reached-main-bf829e7181-hold-broken-2026-10-28.md | Correction: CXO's four #2186 lines reached main at bf829e7181 by my own slip (a… |
 | 2026-10-28 11:40 PT | lead | lead-to-pa-cc-exec-promotion-dispatch-denied-by-harness-needs-xians-hand-2026-10-28.md | Promotion of 3bbe4c67ea (carries b2b928ee46): every gate condition met at 11:39… |

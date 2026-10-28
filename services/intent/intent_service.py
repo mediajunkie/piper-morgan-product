@@ -497,18 +497,70 @@ LIST_UNAPPLIED_LINE = "I couldn't apply {qualifiers}, so this list isn't narrowe
 LIST_REPO_UNRESOLVED_LINE = (
     "I couldn't tell which repository \"{name}\" is, so this isn't narrowed to it."
 )
+# CXO 12:34 10-28: an undeclared key is named by the USER'S phrase, never the router's
+# field name; when no phrase is recoverable, this plain sentence, not a key.
+LIST_UNAPPLIED_PART_LINE = "I couldn't apply part of that, so this list isn't narrowed by it."
+# CXO 12:34 10-28: a count over the page cap is a cap, not a failed filter; its own
+# sentence, and the read shows the first {cap}.
+LIST_COUNT_CAP_LINE = "I can show up to {cap} at a time, so this is the first {cap}."
+_UNAPPLIED_UNNAMED = "\x00unnamed"
 
 
 def _unapplied_sentences(unhonoured: List[str], repo_unresolved: Optional[str]) -> str:
     """#2186 (CXO): the sentence(s) naming what the read could not apply, or ''."""
     parts: List[str] = []
-    if unhonoured:
-        joined = " and ".join(unhonoured)
-        pronoun = "them" if len(unhonoured) > 1 else "it"
+    named = [q for q in unhonoured if q != _UNAPPLIED_UNNAMED]
+    if named:
+        joined = " and ".join(named)
+        pronoun = "them" if len(named) > 1 else "it"
         parts.append(LIST_UNAPPLIED_LINE.format(qualifiers=joined, pronoun=pronoun))
+    if len(named) < len(unhonoured):
+        # Something was asked that neither a word nor a value can name honestly.
+        parts.append(LIST_UNAPPLIED_PART_LINE)
     if repo_unresolved:
         parts.append(LIST_REPO_UNRESOLVED_LINE.format(name=repo_unresolved))
     return " ".join(parts)
+
+
+# #2186 Open 1 (Arch 12:29 10-28, E4): keys the search rail already satisfies on
+# every read, so naming them would be noise, not honesty.
+_LIST_RAIL_SATISFIED_KEYS = frozenset({"sort", "order"})
+
+
+def _router_unapplied_keys(intent, applied: "frozenset[str]") -> List[str]:
+    """#2186 Open 1: every ``inversion_args`` key a list read did NOT apply, named.
+
+    ``applied`` is the set of keys the handler consumes (the issues read:
+    milestone, label, state, repo, count, limit; the PR read today: none).
+    Rail-satisfied keys (sort, order) are skipped. The user's own phrase is
+    quoted when every word of the value occurs in their message (the #1976
+    guard); otherwise the entry is the unnamed sentinel and the sentence says
+    "part of that" (CXO 12:34: a field name is never the user's word, and an
+    LLM-written value never reaches the user). Nothing is dropped without a word.
+    """
+    args = (intent.context or {}).get("inversion_args")
+    if not isinstance(args, dict):
+        return []
+    from services.onboarding.portfolio_service import user_said_every_word
+
+    message = getattr(intent, "original_message", None) or (intent.context or {}).get(
+        "original_message"
+    )
+    named: List[str] = []
+    for key in args:
+        if not isinstance(key, str) or key in applied or key in _LIST_RAIL_SATISFIED_KEYS:
+            continue
+        raw = args.get(key)
+        shown = None
+        if isinstance(raw, str) and raw and len(raw) <= _MAX_LIST_QUALIFIER_CHARS:
+            # CXO 12:34: the user's phrase, quoted; the router's field name is
+            # never user-facing. A value the user did not say is not quoted either.
+            shown = user_said_every_word(raw, message)
+        named.append(f'"{shown}"' if shown else _UNAPPLIED_UNNAMED)
+    return named
+
+
+_LIST_ISSUES_APPLIED_KEYS = frozenset({"milestone", "label", "state", "repo", "count", "limit"})
 
 
 # #2186: the largest count the list read can honour (the handler reads one 50-item page).
@@ -541,6 +593,7 @@ def _router_list_issue_args(intent) -> Dict[str, Any]:
         "label": None,
         "state": None,
         "count": None,
+        "count_capped": None,
         "unhonoured": [],
     }
     args = (intent.context or {}).get("inversion_args")
@@ -588,7 +641,11 @@ def _router_list_issue_args(intent) -> Dict[str, Any]:
         if count <= _MAX_LIST_COUNT:
             out["count"] = count
         else:
-            out["unhonoured"].append(f"count {count}")
+            # CXO 12:34: a cap, not a failed filter — show the first 50 and say so.
+            out["count"] = _MAX_LIST_COUNT
+            out["count_capped"] = count
+    # #2186 Open 1: a key this read never consumes is named, never dropped.
+    out["unhonoured"].extend(_router_unapplied_keys(intent, _LIST_ISSUES_APPLIED_KEYS))
     return out
 
 
@@ -8690,6 +8747,8 @@ class IntentService:
                 _unapplied = _unapplied_sentences(_unhonoured, _repo_unresolved)
                 if _unapplied:
                     message += " " + _unapplied
+                if _rargs.get("count_capped"):
+                    message += " " + LIST_COUNT_CAP_LINE.format(cap=_MAX_LIST_COUNT)
                 message += "\n\nHere are the most recent:"
                 # #1762 epic 6: render the WHOLE held set into lines, then let
                 # the shared renderer decide what to show and what to store —
@@ -9377,6 +9436,13 @@ class IntentService:
                     )
                 else:
                     message = f"You have **{pr_count} open PR{'s' if pr_count != 1 else ''}**."
+                # #2186 Open 1 (E4): the PR read applies no router key yet; name
+                # every one it was given, under the header, above the list.
+                _pr_unapplied = _unapplied_sentences(
+                    _router_unapplied_keys(intent, frozenset()), None
+                )
+                if _pr_unapplied:
+                    message += " " + _pr_unapplied
                 message += "\n\nHere are the most recent:"
                 # #1762 epic 6 — render the whole held set, cap at the shared
                 # renderer, store what the cap hid (GatherOutcome §5b).
@@ -9398,6 +9464,11 @@ class IntentService:
                 _complete = _capped.complete
             else:
                 message = "You don't have any open pull requests right now."
+                _pr_unapplied = _unapplied_sentences(
+                    _router_unapplied_keys(intent, frozenset()), None
+                )
+                if _pr_unapplied:
+                    message += " " + _pr_unapplied
 
             return IntentProcessingResult(
                 success=True,
