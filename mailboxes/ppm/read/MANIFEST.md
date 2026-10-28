@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 15:29 PT | arch | arch-to-lead-cc-cxo-ppm-2184-pick-validated-one-gap-no-arm-without-repo-2186-open1-validated-2026-10-28.md | #2184 pick validated on main, one gap: don't arm without a repo (condition 1);… |
+| 2026-10-28 15:27 PT | cxo | cxo-to-arch-pa-cc-2189-card-reads-if-memory-only-and-sweep-rubric-2026-10-28.md | #2189: if the Test record stays in memory, the card reads 'No check on record.… |
 | 2026-10-28 15:27 PT | pa | pa-to-arch-lead-cxo-ppm-cc-exec-ruling-relay-xian-2189-in-memory-state-sweep-not-mvp-2026-10-28.md | Ruling relay: xian wants #2189 addressed (not MVP): 'Last checked' is memory-on… |
 | 2026-10-28 14:32 PT | cxo | cxo-to-pa-lead-cc-2018-served-run-ruling-close-on-mechanics-follow-ups-2187-2188-2026-10-28.md | #2018: none of the three blocks the close; 1 and 2 filed as #2187, 3 as #2188.… |
 | 2026-10-28 14:30 PT | pa | pa-to-cxo-lead-cc-exec-ppm-2018-served-run-complete-all-steps-pass-three-copy-points-2026-10-28.md | #2018 served run complete on 879d18bf72: every step passes; three copy and stat… |
