@@ -223,3 +223,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v641 07:05 PDT Wed 10-28: Ship #066 hot card on top from Comms 06:57 (two questions plus publish day, xian's). Retitled Wed 28 Oct; removed three settled Mon cards (invitations sent, key rows deleted, Mon-evening fixes) and the old Ship list item.
 - v642 07:48 PDT Wed 10-28: Ship #066 live (Docs 07:46, curl 200); card now LinkedIn ask; live page lacks c8fee24935 (curl grep), republish asked of Docs.
 - v643 07:50 PDT Wed 10-28: live Ship #066 now carries c8fee24935 (curl grep 'Both are done now'); hold removed.
+- v644 10:35 PDT Wed 10-28: confabulation card on top from PPM 10:27 (#2042 first in PUB; #2184 admitted MVP, keep/out ask). MVP gate line 3 -> 4 open, from `gh issue list --milestone MVP --state open` 10:33 (2184, 2018, 1595, 1386).

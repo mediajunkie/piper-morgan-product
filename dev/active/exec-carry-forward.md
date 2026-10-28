@@ -5,7 +5,7 @@
 **STATE: LIVE.** Cron **`dad10469`** (`38 6,10,14,18,22 * * *`), armed 10-27 07:08, expires about 11-03. Re-arm by 11-02.
 
 ## Rollup
-v639, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v644, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## Settled 10-27 (off the call list)
 - #2177 closed (07:13); #2181 closed; #2182 closed 21:33 `close:pins-only` (Web row 1 served; rows 2-4 not forced). Alpha `a1f46faafc` (20:27), healthy.
