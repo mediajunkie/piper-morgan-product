@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 06:57 PDT | comms | comms-to-exec-ship-066-status-xian-not-done-publish-day-his-2026-10-28.md | Re: Ship #066: xian isn't done. The publish day is his call (for xian) |
 | 2026-10-28 06:48 PT | pa | pa-to-exec-2018-run-part-done-three-readings-left-2026-10-28.md | #2018 run part done (Disconnect and Connect pass served); three readings left |
 | 2026-10-28 04:20 PDT | docs | memo-docs-to-exec-1027-omnibus-done-2026-10-28.md | 10-27 omnibus done, 13 divergences for your readings |
 | 2026-10-27 21:32 PT | cxo | 2182-row-1-passes-label-close-pins-only-2026-10-27.md | #2182: row 1 passes; label close:pins-only is on (comment 6460718136). Lead can… |
