@@ -1,39 +1,27 @@
 # Exec carry-forward
 
-**Rewritten 2026-10-26 23:08 PDT** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/10/26/2026-10-26-0423-exec-code-log.md` (closed).
+**Rewritten 2026-10-27 23:09 PDT** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/10/27/2026-10-27-0419-exec-code-log.md` (closed).
 
 **STATE: LIVE.** Cron **`dad10469`** (`38 6,10,14,18,22 * * *`), armed 10-27 07:08, expires about 11-03. Re-arm by 11-02.
 
 ## Rollup
-v628, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v638, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
-## Settled 10-26 (off the rollup's call list)
-- Three final alpha invitations sent 21:00 from xian@ (by his report). The carry-over paragraph is now a partner promise. HOST watches the codes' redemption.
-- Letter wording: xian's two paragraphs, with keys left out.
-- The two shared-slot key rows deleted (52 to 50), both outside testers told.
-- #2177 yes; merged as 532174d9d1. **Lead promotes at 07:00 Tue.** Check that it happened at the 10:38 fire (alpha sha, #2177 closed or the refusal's fields reported).
+## Settled 10-27 (off the call list)
+- #2177 closed (07:13); #2181 closed; #2182 closed 21:33 `close:pins-only` (Web row 1 served; rows 2-4 not forced). Alpha `a1f46faafc` (20:27), healthy.
+- #1706 analysis: Arch ruled #1703 doesn't wait on #1441; recommendation (b) stands.
+- HOST rule-8 fix-forward done (45840a3110); PA card updated (f01ad3fe7f).
+- 11 public website pages at Lighthouse Accessibility 100.
 
-## Waiting on xian (all on v628)
-- **#2018:** a 15-minute run with PA, on PA's card. If it fails, CXO writes new words and Comms follows up with the three invitees.
-- **#1706:** move it later (lean yes). Sprint move.
-- **Others:**
-  - the uncovered ~/.piper-shared file (CIO has the name);
-  - the gate password reuse question;
-  - the client company name question;
-  - uninstall the skunkworks PoC plugin and `consult-piper`;
-  - Search Console URL lists (optional);
-  - #2136 remainders;
-  - #1715 by 11-03;
-  - Haiku 5.5: wait until 11-01;
-  - HOST's beta shortlist;
-  - Ship #066 final edit after Tuesday's post (publishes Wed 10-28).
-- **History rewrite (whenever xian takes up rule-8 history):** add HOST's briefing people list (fixed forward 10-27 on CIO's re-run) to the set. Not on the rollup on its own.
-- **Janus #2154 confirmation:** still unsent; needs xian's push approval.
-- **Old lead-scoring key:** revoke it once Lead confirms the new one (Pard memo). Not yet on the rollup.
+## Waiting on xian (all on v638)
+- **Ship #066 (publishes Wed 10-28):** his replacement for "honest" in the P.S., and Comms' bloat read with him. **HOLD edits to the draft until Comms says he's done.** If not done by the 06:38 Wed fire, ask Comms whether publish slips.
+- **Medium crosspost** of "The Caveat That Kept Disappearing".
+- **#2018:** 15-minute run with PA. If it fails, CXO writes new words and Comms follows up with the three invitees.
+- **One Sprint yes:** #1706 later, plus #2182's Sprint field to the honesty sprint (closed, still blank).
+- **Others:** the uncovered ~/.piper-shared file (CIO has the name); gate password reuse; client company name; uninstall skunkworks PoC plugin and `consult-piper`; Search Console lists (optional); #2136 remainders; #1715 by 11-03; Haiku 5.5 wait until 11-01; HOST's beta shortlist; Janus #2154 confirmation (needs his push approval); revoke the old lead-scoring key once Lead confirms the new one.
+- **History rewrite (whenever xian takes up rule-8 history):** include HOST's briefing people list.
 
 ## Mine
-- Relay xian's rulings to their owners the moment he gives them. Record PM rulings in decisions.log.
-- 10-30 Friday pass:
-  - the first map diff, in the weekly synthesis;
-  - `scripts/briefing-pointer-check.sh` over all 13 briefings, then nudge the seats with gaps. Mine and HOST's pass 5 of 5.
+- Relay xian's rulings to owners at once; record PM rulings in decisions.log.
+- 10-30 Friday pass: first map diff in the weekly synthesis; `scripts/briefing-pointer-check.sh` over all 13 briefings, then nudge seats with gaps.
 - Rule 8: outside names stay out of everything I write here. The client is "the client CEO".

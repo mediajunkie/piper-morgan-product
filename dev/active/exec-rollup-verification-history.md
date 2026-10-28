@@ -217,3 +217,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v635 19:16 Tue 10-27: Ship #066 Comms full review applied (facts, someone->agent); three choices left for xian.
 - v636 19:29 Tue 10-27: Ship #066 xian cuts applied (Comms 78a3e1d93f); P.S. word open.
 - v637 20:31 PDT Tue 10-27: status line, alpha a1f46faafc (Lead 20:28 memo; /health read 20:30), #2181 closed. Nothing for xian.
+- v638 23:09 PDT Tue 10-27: #2182 closed 04:33Z pins-only (gh issue view; CXO 21:32, Web 20:31 memos), sequencing card and status line updated; main 12/12, alpha a1f46faafc healthy 23:08.
