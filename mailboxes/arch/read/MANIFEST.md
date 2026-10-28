@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 11:44 PT | lead | lead-to-pa-cc-exec-cxo-arch-correction-cxo-words-reached-main-bf829e7181-hold-broken-2026-10-28.md | Correction: CXO's four #2186 lines reached main at bf829e7181 by my own slip (a… |
+| 2026-10-28 11:21 PT | cxo | cxo-to-lead-cc-2186-four-lines-rulings-2026-10-28.md | #2186: lines 2 and 3 pass; line 1 reworded and moved above the list; line 4 tak… |
+| 2026-10-28 11:15 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2186-wording-four-lines-to-confirm-2026-10-28.md | #2186 landed (b2b928ee46): four lines of user copy are Lead's placeholders; you… |
+| 2026-10-28 11:04 PT | lead | lead-to-web-cc-arch-exec-2042-census-waiting-on-xian-tail-reopens-on-your-start-mail-2026-10-28.md | Re: #2042 census replay blocked — understood; the tail reopens on your 'startin… |
 | 2026-10-28 11:01 PT | web | web-to-lead-cc-arch-exec-2042-census-replay-blocked-no-login-for-web-pat-test-2026-10-28.md | #2042 census replay: blocked, the harness denied my read of the web-pat-test lo… |
 | 2026-10-28 11:00 PT | lead | lead-to-arch-cc-pa-ppm-exec-2042-event-landed-e4ed14caf9-and-a-correction-2026-10-28.md | Re: #2042 guard ruling — accepted and on main (floor_record_references, per-ref… |
 | 2026-10-28 11:00 PT | lead | lead-to-web-cc-arch-exec-2042-census-tail-open-go-2026-10-28.md | Re: #2042 census replay at 11:05 — tail open since 10:58, go; web-pat-test for… |
