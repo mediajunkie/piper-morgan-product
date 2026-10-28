@@ -14,6 +14,11 @@ looks at the reply the user will see and records, per turn:
   and how many list lines it rendered;
 - which of those references appear NOWHERE in the prompt the model was given
   (history, context block, the user's own words) — the pure-invention signal;
+- for each reference, WHERE it came from: the provenance/context key whose
+  items carry that number, else ``history`` (a prior turn), else ``user`` (the
+  user's own words this turn), else ``absent`` — the mis-attribution datum
+  (``#2183 <- high_priority_issues`` on a turn whose router args said
+  ``milestone: MVP``);
 - which record-shaped reads the context assembler ran this turn, by provenance
   key and filter (``high_priority_issues[priority:high]``), so a week of events
   can be queried for "listed records with no read of that scope" without a
@@ -21,7 +26,7 @@ looks at the reply the user will see and records, per turn:
 
 What it does NOT do: change the reply. Arch's 10-15 ruling starts rung 2
 log-only; a redaction is a later decision on the measured rate. The event is
-``floor_listed_records``; the derived query Arch named,
+``floor_record_references`` (Arch's name, ruling 10:45 10-28); the derived query,
 ``floor_listed_records_without_read``, is a read over these events joined to
 ``inversion_live_decision`` by session, because the floor itself never sees the
 router's verdict (no inversion key reaches it — checked 2026-10-28).
@@ -33,7 +38,7 @@ zero, and this is a reader, not a binder. Token scanning is enough for ``#N``.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Mapping, Optional
+from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 _STRIP_CHARS = "*_`()[]{}<>\"'.,;:!?"
 _LIST_MARKERS = ("- ", "* ", "• ", "– ")
@@ -100,11 +105,60 @@ def context_reads(
     return out
 
 
+_NUMBER_FIELDS = ("number", "issue_number", "pr_number", "id")
+
+
+def _numbers_in(value: Any, out: set, depth: int = 0) -> None:
+    """Collect ``#N`` for every record number inside a context value (dicts,
+    lists, scalars; bounded depth). A dict's ``number``/``id``-style fields
+    count; so does any ``#N`` token inside a string."""
+    if depth > 6 or value is None:
+        return
+    if isinstance(value, Mapping):
+        for k, v in value.items():
+            if k in _NUMBER_FIELDS and isinstance(v, (int, str)) and str(v).isdigit():
+                out.add("#" + str(v))
+            else:
+                _numbers_in(v, out, depth + 1)
+    elif isinstance(value, (list, tuple, set)):
+        for v in value:
+            _numbers_in(v, out, depth + 1)
+    elif isinstance(value, str):
+        out.update(record_references(value))
+
+
+def reference_sources(
+    refs: List[str],
+    domain_context: Optional[Mapping[str, Any]],
+    history: Optional[Sequence[Mapping[str, Any]]] = None,
+    user_message: Optional[str] = None,
+) -> Dict[str, str]:
+    """Per reference, where it came from: the first context key (sorted) whose
+    items carry it, else ``history``, else ``user``, else ``absent``."""
+    by_key: Dict[str, set] = {}
+    for key in sorted(domain_context or {}):
+        found: set = set()
+        _numbers_in((domain_context or {}).get(key), found)
+        if found:
+            by_key[key] = found
+    hist = set()
+    for turn in history or []:
+        hist.update(record_references(str(turn.get("content", ""))))
+    user = set(record_references(user_message))
+    out: Dict[str, str] = {}
+    for r in refs:
+        src = next((k for k, nums in by_key.items() if r in nums), None)
+        out[r] = src or ("history" if r in hist else "user" if r in user else "absent")
+    return out
+
+
 def listed_records_event(
     message: Optional[str],
     prompt_text: Optional[str],
     provenance: Optional[Mapping[str, Mapping[str, Any]]] = None,
     domain_context: Optional[Mapping[str, Any]] = None,
+    history: Optional[Sequence[Mapping[str, Any]]] = None,
+    user_message: Optional[str] = None,
 ) -> Optional[Dict[str, Any]]:
     """The event payload for a reply that enumerates records, else ``None``.
 
@@ -123,6 +177,7 @@ def listed_records_event(
         "references": refs,
         "reference_count": len(refs),
         "unsourced_references": unsourced,
+        "reference_sources": reference_sources(refs, domain_context, history, user_message),
         "list_lines": lines,
         "context_reads": context_reads(provenance, domain_context),
     }
@@ -130,6 +185,7 @@ def listed_records_event(
 
 __all__ = (
     "record_references",
+    "reference_sources",
     "count_list_lines",
     "context_reads",
     "listed_records_event",

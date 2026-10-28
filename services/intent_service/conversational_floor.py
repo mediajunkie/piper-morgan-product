@@ -2047,10 +2047,12 @@ class ConversationalFloor:
                     prompt,
                     ctx.domain_context_provenance,
                     ctx.domain_context,
+                    ctx.conversation_history,
+                    ctx.user_message,
                 )
                 if _listed:
                     logger.info(
-                        "floor_listed_records",
+                        "floor_record_references",
                         session_id=ctx.session_id,
                         user_id=ctx.user_id,
                         intent_category=ctx.intent_category,
@@ -2059,7 +2061,7 @@ class ConversationalFloor:
                     )
             except Exception as e:  # silent-ok: LOGGED; a measurement must never break the turn
                 logger.warning(
-                    "floor_listed_records_error",
+                    "floor_record_references_error",
                     error=str(e),
                     session_id=ctx.session_id,
                 )

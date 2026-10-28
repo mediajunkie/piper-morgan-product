@@ -96,9 +96,28 @@ class TestShapes:
     def test_2040_shape_names_the_unsourced_numbers(self):
         reply = "You've got 7 open total — here are the two I didn't show yet: #2 and #1."
         prompt = "Recent conversation:\nPiper: You have 7 open issues: #7, #6, #5, #4, #3.\nUser: show me the rest"
-        ev = listed_records_event(reply, prompt, {})
+        history = [{"role": "assistant", "content": "You have 7 open issues: #7, #6, #5, #4, #3."}]
+        ev = listed_records_event(reply, prompt, {}, {}, history, "show me the rest")
         assert ev is not None
         assert ev["unsourced_references"] == ["#2", "#1"]
+        assert ev["reference_sources"] == {"#2": "absent", "#1": "absent"}
+
+    def test_sources_prefer_context_then_history_then_user(self):
+        from services.intent_service.floor_listed_records import reference_sources
+
+        ctx = {
+            "blocked_items": [{"number": 11, "title": "x"}],
+            "pending_todos": [{"text": "see #12"}],
+        }
+        hist = [{"role": "assistant", "content": "earlier: #13"}]
+        got = reference_sources(["#11", "#12", "#13", "#14", "#15"], ctx, hist, "what about #14?")
+        assert got == {
+            "#11": "blocked_items",
+            "#12": "pending_todos",
+            "#13": "history",
+            "#14": "user",
+            "#15": "absent",
+        }
 
     def test_one_sourced_reference_and_no_list_is_not_an_enumeration(self):
         assert (
@@ -162,7 +181,7 @@ class TestSeam:
         )
         with capture_logs() as events:
             resp = asyncio.run(floor.respond(ctx))
-        listed = [e for e in events if e.get("event") == "floor_listed_records"]
+        listed = [e for e in events if e.get("event") == "floor_record_references"]
         assert len(listed) == 1, [e.get("event") for e in events]
         ev = listed[0]
         assert ev["session_id"] == "s2042"
@@ -170,13 +189,19 @@ class TestSeam:
         assert ev["references"] == ["#2183", "#2151", "#2018"]
         assert ev["unsourced_references"] == []
         assert "high_priority_issues[priority:high]" in ev["context_reads"]
+        # Arch's mis-attribution datum: each number names the slice it came from.
+        assert ev["reference_sources"] == {
+            "#2183": "high_priority_issues",
+            "#2151": "high_priority_issues",
+            "#2018": "high_priority_issues",
+        }
         # Log-only: the user sees exactly what the model composed.
         assert resp.message == REPLY_2184
-        assert [e for e in events if e.get("event") == "floor_listed_records_error"] == []
+        assert [e for e in events if e.get("event") == "floor_record_references_error"] == []
 
     def test_plain_reply_logs_nothing(self):
         floor = _floor_returning("I couldn't pull up that list just now — want me to check again?")
         with capture_logs() as events:
             resp = asyncio.run(floor.respond(_ctx("show the MVP issues", intent_category="STATUS")))
-        assert [e for e in events if e.get("event") == "floor_listed_records"] == []
+        assert [e for e in events if e.get("event") == "floor_record_references"] == []
         assert resp.message.startswith("I couldn't pull up that list just now")
