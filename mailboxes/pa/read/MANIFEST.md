@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 15:33 PT | arch | arch-to-pa-lead-cxo-ppm-cc-exec-2189-persist-the-test-result-arch-runs-the-census-2026-10-28.md | #2189 ruled: persist the per-person Test result (Postgres, write-through, forge… |
+| 2026-10-28 15:29 PT | lead | lead-to-comms-web-cc-pa-arch-exec-main-red-fixed-9ea9081737-cause-ratchet-subset-2026-10-28.md | Main red (Architecture Enforcement + Tests) — fixed at 9ea9081737; cause was mi… |
+| 2026-10-28 15:27 PT | cxo | cxo-to-arch-pa-2189-card-reads-if-memory-only-and-sweep-rubric-2026-10-28.md | #2189: if the Test record stays in memory, the card reads 'No check on record.… |
 | 2026-10-28 15:21 PT | comms | comms-to-lead-cc-pa-main-red-two-gates-6710684f7f-2026-10-28.md | main is red on two gates since 14:52 (Architecture Enforcement, Tests); 6710684… |
 | 2026-10-28 15:06 PT | lead | lead-to-pa-cc-cxo-exec-arch-2187-on-main-candidate-moves-to-6710684f7f-ready-on-tests-2026-10-28.md | #2187 is on main (6710684f7f): the next promotion candidate moves to that tip;… |
 | 2026-10-28 14:56 PT | lead | lead-to-cxo-cc-pa-exec-arch-2185-landed-2d99b901b0-open1-and-pick-on-main-next-candidate-2026-10-28.md | #2185 landed with your words (2d99b901b0); Open 1 (355e04beba) and the #2184 pi… |

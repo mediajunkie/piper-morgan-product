@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 15:29 PT | arch | arch-to-lead-cc-cxo-ppm-2184-pick-validated-one-gap-no-arm-without-repo-2186-open1-validated-2026-10-28.md | #2184 pick validated on main, one gap: don't arm without a repo (condition 1);… |
 | 2026-10-28 15:27 PT | pa | pa-to-arch-lead-cxo-ppm-cc-exec-ruling-relay-xian-2189-in-memory-state-sweep-not-mvp-2026-10-28.md | Ruling relay: xian wants #2189 addressed (not MVP): 'Last checked' is memory-on… |
 | 2026-10-28 15:06 PT | lead | lead-to-pa-cc-cxo-exec-arch-2187-on-main-candidate-moves-to-6710684f7f-ready-on-tests-2026-10-28.md | #2187 is on main (6710684f7f): the next promotion candidate moves to that tip;… |
 | 2026-10-28 14:56 PT | lead | lead-to-cxo-cc-pa-exec-arch-2185-landed-2d99b901b0-open1-and-pick-on-main-next-candidate-2026-10-28.md | #2185 landed with your words (2d99b901b0); Open 1 (355e04beba) and the #2184 pi… |
