@@ -1,6 +1,6 @@
 ---
 image: ''
-alt: ''
+alt: ' Three scholars proudly display papers citing “M-45,” while a fourth discovers that the actual source warns against mistaking shared citations for independent evidence.'
 caption: ''
 ---
 
