@@ -17,7 +17,11 @@ from unittest.mock import AsyncMock, MagicMock, call, patch
 import pytest
 
 from services.domain.models import Intent
-from services.intent.intent_service import LIST_CANT_FILTER_LINE, IntentService
+from services.intent.intent_service import (
+    LIST_REPO_UNRESOLVED_LINE,
+    LIST_UNAPPLIED_LINE,
+    IntentService,
+)
 from services.mcp.consumer.connector import DegradationReason, DegradationResponse
 from services.mcp.consumer.github_adapter import GitHubIssuesResult
 from services.shared_types import IntentCategory
@@ -120,7 +124,7 @@ async def test_label_reaches_the_rail_and_names_its_scope(intent_service):
     )
     assert stub.await_args == call(None, limit=50, repository=None, label="needs-triage")
     assert res.message.startswith('You have **4 open issues** labeled "needs-triage".')
-    assert "can't filter" not in res.message
+    assert "couldn't" not in res.message
 
 
 # (c) state: closed
@@ -161,7 +165,8 @@ async def test_count_shows_the_newest_n_and_keeps_the_true_total(intent_service,
     assert res.message.startswith("You have **12 open issues**.")  # total unchanged
     assert "#100" in res.message and "#101" in res.message
     assert "#102" not in res.message
-    assert "That's all 2 I have in front of me, out of 12." in res.message
+    assert "That's the 2 you asked for, out of 12." in res.message
+    assert "say the word" not in res.message  # no offer after a slice the user chose
 
 
 @pytest.mark.asyncio
@@ -193,7 +198,10 @@ async def test_unhonourable_state_appends_the_fixed_line(intent_service):
         total=3,
     )
     assert stub.await_args == call(None, limit=50, repository=None, milestone="MVP")
-    assert res.message.endswith(LIST_CANT_FILTER_LINE.format(qualifier='state "all"'))
+    line = LIST_UNAPPLIED_LINE.format(qualifiers='state "all"', pronoun="it")
+    assert line in res.message
+    # CXO: under the count header, above the list.
+    assert res.message.index(line) < res.message.index("Here are the most recent:")
     assert 'in milestone "MVP"' in res.message  # the honourable one still applied
     assert res.intent_data["context"]["unhonoured_qualifiers"] == ['state "all"']
 
@@ -201,7 +209,9 @@ async def test_unhonourable_state_appends_the_fixed_line(intent_service):
 @pytest.mark.asyncio
 async def test_count_over_the_cap_appends_the_fixed_line(intent_service):
     _stub, res = await _run(intent_service, _intent("show my last 80 issues", {"count": "80"}))
-    assert res.message.endswith(LIST_CANT_FILTER_LINE.format(qualifier="count 80"))
+    line = LIST_UNAPPLIED_LINE.format(qualifiers="count 80", pronoun="it")
+    assert line in res.message
+    assert res.message.index(line) < res.message.index("Here are the most recent:")
 
 
 @pytest.mark.asyncio
@@ -225,8 +235,12 @@ async def test_native_fallback_names_every_qualifier_it_cannot_apply(intent_serv
         with patch(_NATIVE, return_value=native_router):
             res = await intent_service._handle_list_issues_query(intent, "wf")
     assert res.message.startswith("You have **1 open issue**.")  # no false filter claim
-    assert LIST_CANT_FILTER_LINE.format(qualifier='milestone "MVP"') in res.message
-    assert LIST_CANT_FILTER_LINE.format(qualifier='state "closed"') in res.message
+    # One sentence for every unapplied qualifier, joined with "and" (CXO).
+    assert (
+        LIST_UNAPPLIED_LINE.format(qualifiers='milestone "MVP" and state "closed"', pronoun="them")
+        in res.message
+    )
+    assert res.message.count("I couldn't apply") == 1
 
 
 # (h) router repo vs the regex fallback
@@ -254,9 +268,8 @@ async def test_bare_router_repo_without_a_user_is_named_not_dropped(intent_servi
         )
     # user_id None → no resolution attempted; the bare name is named, not dropped
     assert stub.await_args == call(None, limit=50, repository=None)
-    assert res.message.endswith(
-        LIST_CANT_FILTER_LINE.format(qualifier='repository "piper-morgan-product"')
-    )
+    assert LIST_REPO_UNRESOLVED_LINE.format(name="piper-morgan-product") in res.message
+    assert "couldn't apply" not in res.message  # a name that didn't match is a different fact
 
 
 @pytest.mark.asyncio
@@ -272,7 +285,7 @@ async def test_bare_router_repo_with_a_user_resolves(intent_service):
                 ),
             )
     assert stub.await_args == call(uid, limit=50, repository="mediajunkie/piper-morgan-product")
-    assert "can't filter" not in res.message
+    assert "couldn't" not in res.message
 
 
 @pytest.mark.asyncio
@@ -295,9 +308,8 @@ async def test_bare_router_repo_with_several_hits_is_named_not_guessed(intent_se
                 ),
             )
     assert stub.await_args == call(uid, limit=50, repository=None)
-    assert res.message.endswith(
-        LIST_CANT_FILTER_LINE.format(qualifier='repository "piper-morgan-product"')
-    )
+    assert LIST_REPO_UNRESOLVED_LINE.format(name="piper-morgan-product") in res.message
+    assert "couldn't apply" not in res.message  # a name that didn't match is a different fact
 
 
 # ── corpus rows and the scorer (#2186 step 6) ──
@@ -336,3 +348,55 @@ def test_scorer_compares_list_qualifiers_and_count():
     ok, note = mod.args_match({"count": "2"}, {"count": 3})
     assert not ok and note.startswith("count:")
     assert not mod.args_match({"count": "2"}, {})[0]
+
+
+# ── CXO's rulings of 2026-10-28 11:21 (#2186): singulars, the joined sentence, the trailer ──
+
+
+@pytest.mark.asyncio
+async def test_singular_count_line_open_and_closed(intent_service):
+    _, res = await _run(
+        intent_service,
+        _intent("show my open issues in the MVP milestone", {"milestone": "MVP"}),
+        issues=_page(1),
+        total=1,
+    )
+    assert '**1 open issue** in milestone "MVP".' in res.message
+    _, res = await _run(
+        intent_service,
+        _intent("what closed issues do I have", {"state": "closed"}),
+        issues=_page(1),
+        total=1,
+    )
+    assert "**1 closed issue**" in res.message
+
+
+@pytest.mark.asyncio
+async def test_empty_branch_puts_the_sentence_after_the_one_line_answer(intent_service):
+    _, res = await _run(
+        intent_service,
+        _intent(
+            "show my open issues in the MVP milestone with state all",
+            {"milestone": "MVP", "state": "all"},
+        ),
+        issues=[],
+        total=0,
+    )
+    assert res.message.startswith('You have no open issues assigned to you in milestone "MVP".')
+    assert LIST_UNAPPLIED_LINE.format(qualifiers='state "all"', pronoun="it") in res.message
+
+
+def test_compose_capped_list_count_aware_trailer_keeps_the_rest_cashable():
+    from services.intent_service.list_remainder import compose_capped_list
+
+    lines = [f"\n- item {i}" for i in range(10)]
+    r = compose_capped_list(lines=lines, cap=2, asked_count=2, kind="open issues", source_total=14)
+    assert r.body.endswith("That's the 2 you asked for, out of 14.")
+    assert "item 1" in r.body and "item 2" not in r.body
+    assert "say the word" not in r.body
+    assert r.remainder is not None and len(r.remainder.lines) == 8  # "the rest" still cashes
+    # Asked for more than is held: the ordinary logic (everything held is on screen).
+    r2 = compose_capped_list(
+        lines=lines[:3], cap=8, asked_count=8, kind="open issues", source_total=3
+    )
+    assert "you asked for" not in r2.body and r2.complete is not None

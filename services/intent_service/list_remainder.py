@@ -179,6 +179,7 @@ def compose_capped_list(
     kind: str,
     source_total: Optional[int],
     source_total_display: Optional[str] = None,
+    asked_count: Optional[int] = None,
 ) -> CappedListRender:
     """Render a capped list so its "and there are more" claim is CASHABLE.
 
@@ -192,6 +193,14 @@ def compose_capped_list(
             when the gather returned a page (search_issues total_count vs. a
             50-item page). None = the source stated no total, so what we hold
             is all there is known to be.
+        asked_count: #2186 (CXO's ruling 2026-10-28 11:21): the user ASKED for
+            this many ("show my last two"). When we hold more than that, show
+            exactly that many and close with ``That's the {n} you asked for,
+            out of {total}.`` — no offer (offering the rest after a slice the
+            user chose is an unsolicited nudge), but the rest of the held page
+            is still stored, so "show me the rest" cashes. When we hold no more
+            than was asked, the ordinary logic applies (everything held is on
+            screen). None = no count was asked; nothing changes.
         source_total_display: the denominator to PRINT, when the source's own
             count is not an exact integer. CXO §5b-i decision 3: *if the
             source says ``1000+``, we say ``1000+`` — a cap rendered as an
@@ -222,6 +231,20 @@ def compose_capped_list(
     total = max(total, held)
     display = source_total_display or str(total)
     unheld = total - held
+    if asked_count is not None and asked_count > 0 and held > asked_count:
+        # #2186: the user chose the size. Show it, name what they asked for
+        # against what exists, print no offer, keep the rest cashable.
+        trailer = f"That's the {asked_count} you asked for, out of {display}."
+        remainder = ListRemainder(
+            kind=kind,
+            shown=asked_count,
+            held_total=held,
+            source_total_display=display,
+            lines=tuple(lines[asked_count:]),
+            offer_text=trailer,
+            accepts_request_questions=True,
+        )
+        return CappedListRender("".join(lines[:asked_count]) + "\n\n" + trailer, remainder)
     hidden_held = max(0, held - cap)
 
     if hidden_held <= REMAINDER_OFFER_THRESHOLD:

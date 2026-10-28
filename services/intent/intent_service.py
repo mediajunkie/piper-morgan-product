@@ -489,8 +489,28 @@ def _router_document_title(intent) -> Optional[str]:
 
 
 # #2186: a list read names a qualifier it could not apply; never drops one silently.
-# CXO owns the wording (#2186); Lead's placeholder
-LIST_CANT_FILTER_LINE = "I can't filter by {qualifier} yet, so this is the full list."
+# CXO's words (ruling 2026-10-28 11:21): ONE sentence for every unapplied qualifier,
+# joined with "and", placed directly under the count header and above the list
+# (a caveat met after the answer is the silent drop with extra steps). The repo
+# case is a different fact (the name did not match) and has its own sentence.
+LIST_UNAPPLIED_LINE = "I couldn't apply {qualifiers}, so this list isn't narrowed by {pronoun}."
+LIST_REPO_UNRESOLVED_LINE = (
+    "I couldn't tell which repository \"{name}\" is, so this isn't narrowed to it."
+)
+
+
+def _unapplied_sentences(unhonoured: List[str], repo_unresolved: Optional[str]) -> str:
+    """#2186 (CXO): the sentence(s) naming what the read could not apply, or ''."""
+    parts: List[str] = []
+    if unhonoured:
+        joined = " and ".join(unhonoured)
+        pronoun = "them" if len(unhonoured) > 1 else "it"
+        parts.append(LIST_UNAPPLIED_LINE.format(qualifiers=joined, pronoun=pronoun))
+    if repo_unresolved:
+        parts.append(LIST_REPO_UNRESOLVED_LINE.format(name=repo_unresolved))
+    return " ".join(parts)
+
+
 # #2186: the largest count the list read can honour (the handler reads one 50-item page).
 _MAX_LIST_COUNT = 50
 _MAX_LIST_QUALIFIER_CHARS = 100
@@ -8514,10 +8534,11 @@ class IntentService:
             _named_repo = _rargs["repo"] or self._slotfill_issue_request(
                 intent.original_message or intent.context.get("original_message") or ""
             ).get("repository")
+            _repo_unresolved: Optional[str] = None
             if not _named_repo and _rargs["repo_bare"]:
                 _named_repo = await self._resolve_router_bare_repo(_user_id, _rargs["repo_bare"])
                 if not _named_repo:
-                    _unhonoured.append(f'repository "{_rargs["repo_bare"]}"')
+                    _repo_unresolved = _rargs["repo_bare"]
             _qualifiers = {
                 k: v
                 for k, v in (
@@ -8604,10 +8625,6 @@ class IntentService:
                     _filter_scope += f' labeled "{_qualifiers["label"]}"'
                 if "state" in _qualifiers:
                     _state_word = "closed"
-            if _count is not None:
-                # The newest N of the sorted page; total_count stays the true total.
-                issues = issues[:_count]
-
             _repo_open: Optional[Tuple[str, int]] = None
             if issues:
                 # total_count is the TRUE match count (search_issues total_count); `issues` is
@@ -8628,6 +8645,11 @@ class IntentService:
                         f"issue{'s' if total_count != 1 else ''}**"
                         f"{_scope}."
                     )
+                # #2186 (CXO): what the read could not apply goes HERE, under
+                # the count header and above the list, where it changes the reading.
+                _unapplied = _unapplied_sentences(_unhonoured, _repo_unresolved)
+                if _unapplied:
+                    message += " " + _unapplied
                 message += "\n\nHere are the most recent:"
                 # #1762 epic 6: render the WHOLE held set into lines, then let
                 # the shared renderer decide what to show and what to store —
@@ -8643,8 +8665,10 @@ class IntentService:
                     _lines.append(f"\n- **#{number}**: {title}{label_str}")
                 _capped = compose_capped_list(
                     lines=_lines,
-                    # #2186: an asked-for count over 5 shows that many.
-                    cap=max(5, _count or 0),
+                    # #2186: an asked-for count shows exactly that many (CXO's
+                    # count-aware trailer; the rest of the page stays cashable).
+                    cap=_count if _count is not None else 5,
+                    asked_count=_count,
                     kind=f"{_state_word} issues",
                     # total_count is the TRUE match count; `issues` is only a
                     # page, so the held set can be strictly smaller — the one
@@ -8684,12 +8708,12 @@ class IntentService:
                 else:
                     message = "You don't have any open issues right now."
 
-            if _unhonoured:
-                # #2186 (E4): a qualifier the read could not apply is named,
-                # never dropped silently.
-                message += "\n\n" + " ".join(
-                    LIST_CANT_FILTER_LINE.format(qualifier=q) for q in _unhonoured
-                )
+            if not issues:
+                # #2186 (E4): on the empty branches there is no list to sit above;
+                # the sentence follows the one-line answer.
+                _unapplied = _unapplied_sentences(_unhonoured, _repo_unresolved)
+                if _unapplied:
+                    message += " " + _unapplied
 
             _ctx: Dict[str, Any] = {"issue_count": total_count if issues else 0}
             if _assignee_scoped:
@@ -8698,6 +8722,8 @@ class IntentService:
                 _ctx["filters"] = dict(_qualifiers)
             if _unhonoured:
                 _ctx["unhonoured_qualifiers"] = list(_unhonoured)
+            if _repo_unresolved:
+                _ctx["unresolved_repo"] = _repo_unresolved
             if _repo_open is not None:
                 # The OUTCOME for next-turn context (#1738), not just the string.
                 _ctx["default_repo"] = _repo_open[0]
