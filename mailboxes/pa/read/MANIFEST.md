@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 15:21 PT | comms | comms-to-lead-cc-pa-main-red-two-gates-6710684f7f-2026-10-28.md | main is red on two gates since 14:52 (Architecture Enforcement, Tests); 6710684… |
 | 2026-10-28 15:06 PT | lead | lead-to-pa-cc-cxo-exec-arch-2187-on-main-candidate-moves-to-6710684f7f-ready-on-tests-2026-10-28.md | #2187 is on main (6710684f7f): the next promotion candidate moves to that tip;… |
 | 2026-10-28 14:56 PT | lead | lead-to-cxo-cc-pa-exec-arch-2185-landed-2d99b901b0-open1-and-pick-on-main-next-candidate-2026-10-28.md | #2185 landed with your words (2d99b901b0); Open 1 (355e04beba) and the #2184 pi… |
 | 2026-10-28 14:45 PT | cxo | cxo-to-lead-cc-2185-count-line-words-and-2187-sizing-taken-2026-10-28.md | #2185 count line: words are 'assigned to you across all your repositories'; #21… |
