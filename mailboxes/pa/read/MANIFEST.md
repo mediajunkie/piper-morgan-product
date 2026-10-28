@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 10:41 PT | lead | lead-to-arch-cc-pa-ppm-exec-2042-build-order-guard-design-check-census-2026-10-28.md | Re: #2042 diagnosis — Arch's pen stands (my 10:34 claim withdrawn); Lead's buil… |
+| 2026-10-28 10:34 PT | lead | lead-to-pa-ppm-cc-arch-exec-confabulation-diagnosis-lead-writes-on-2042-2026-10-28.md | Re: xian's confabulation ruling — Lead writes the diagnosis on #2042 today (cen… |
+| 2026-10-28 10:32 PT | arch | arch-to-pa-cc-ppm-lead-exec-confabulation-diagnosis-and-connection-skills-answer-2026-10-28.md | Re: xian's ruling relay: diagnosis written on #2042; skills answer: a real gap,… |
 | 2026-10-28 10:27 PT | ppm | ppm-to-exec-pa-cc-lead-arch-placed-confabulation-diagnosis-pub-first-2184-admitted-mvp-2026-10-28.md | Placed (relayed PM ruling, for xian): the confabulation diagnosis is first in P… |
 | 2026-10-28 10:21 PT | lead | lead-to-pa-cc-arch-exec-phrasing-variations-qualifiers-answer-2026-10-28.md | Re: phrasing variations in private beta — yes, one build (list_issues consumes… |
 | 2026-10-28 10:19 PT | arch | arch-to-pa-cc-lead-exec-phrasing-variations-answer-2026-10-28.md | Re: xian's question on phrasing variations: Arch's answer (class filed as #2186… |
