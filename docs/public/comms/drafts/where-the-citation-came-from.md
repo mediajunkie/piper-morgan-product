@@ -8,43 +8,61 @@ caption: ''
 
 *September 4–5, 2026*
 
-At the start of September my agents were working on a deceptively simple question: what makes a recurring duty actually keep happening? Some of their routine steps had quietly stopped running weeks earlier, and nothing had flagged it, not even the agents responsible for them. Over two days the question moved through much of the team, and the answer kept getting better. In the middle of it, a single wrong citation traveled through the same conversation and showed, by accident, exactly what one of our own principles warns about.
+At the start of September my agents were working on a deceptively simple question: what makes a recurring duty actually keep happening? Some of their routine steps had silently stopped running weeks earlier, and nothing had noticed, especially not the agents responsible for them. 
 
-# A question that kept improving
+Over two days the question moved through much of the team, and the answer kept getting better. As is the way of these things, right in the middle of the multi-agent dialogue a single wrong citation traveled through the same conversation, accidentally illustrating exactly what one of my own principles is supposed to warn againt.
 
-On Friday morning my chief of staff agent (Exec) proposed a way to sort recurring duties: the ones an agent triggers for themselves versus the ones something else triggers. My chief innovation officer agent (CIO) replaced that with a sharper test. Is the duty attached to a step that can't be skipped, or is it bolted on beside one, where skipping it breaks nothing visible? My head-of-sapient-trust agent (HOST) corrected a fact inside Exec's original proposal along the way, and later in the day sharpened another finding into a cleaner distinction: a record written by the machine at the moment something runs is evidence, and a note written afterward saying it ran is not.
+# Improving the question
 
-My experience-design agent (CXO) was about to write exactly that kind of after-the-fact note in their own log when they saw it, and wrote up the near-miss instead.
+On Friday morning my chief of staff agent (Exec) proposed a way to sort recurring duties: 
 
-CIO shipped a fix the same morning: a marker that records when each agent last actually ran their status heartbeat. That evening Exec checked its first readings and found it reporting my documentation agent (Docs) as having never run it, despite plenty of real activity. The fix had a blind spot of its own on its very first day.
+* the ones an agent triggers for themselves versus 
+* the ones something else triggers
 
-# The citation that didn't say what it said
+My chief innovation officer agent (CIO) countered with: Is the duty attached to a step that *can't* be skipped, or is it just bolted onto one in a way where skipping it leaves no visible trace? 
 
-Running through all of this was a reference. Several agents were citing one of the team's written principles, "methodology-45," as the source for the idea that an agent can't verify their own compliance by vouching for themselves. It was a reasonable-sounding citation, and it kept appearing in memos and logs.
+My head-of-sapient-trust agent (HOST) corrected a fact inside Exec's original proposal and offered a cleaner distinction: 
 
-Docs opened the actual document. Methodology-45 is called "Agreement Is Not Replication — Shared Procedure Manufactures False Consensus." It says nothing about self-verification. Docs flagged it, and CIO fixed that instance the same day.
+* a record written by the machine at the moment something runs is evidence, and 
+* a note written afterward saying it ran is not
 
-But by then the citation was already in other places that hadn't been checked.
+My experience-design agent (CXO) was about to write exactly that kind of note based on after-the-fact evidence in their own log when they saw this guidance and avoided the mistake (and of course narrated the near-miss instead, as all my agents like to do).
 
-# Following it back
+CIO shipped a process that records *when* each agent last actually ran their last status heartbeat. That evening Exec checked the first readings and found it incorrectly reporting that my documentation agent (Docs) had been idle despite plenty of real activity. The initial fix (naturally) had a blind spot of its own, at least for its first day.
 
-The next morning the corrections started arriving from the agents themselves. My assistant agent (Piper Alpha) found they had used the same wrong citation in two more documents. HOST found it twice in their own log from the day before. CXO reread the methodology file directly and corrected four places they'd repeated it.
+# The misrecalled citation
 
-Some of those corrections first described the mistakes as independent. Then my chief architect agent (Arch) did the forensic work. Using the version history to find when each phrase first appeared in each file, Arch traced the citation to its first durable appearance: a relay memo Arch had written two days earlier. That memo had attached CXO's correct, uncited idea to the wrong document number. The instances that had looked independent were downstream of it.
+Funny story: That multi-agent conversation involved a lot of the agents making a similar reference. Several were citing one of the team's written principles, "methodology-45," as the source for the idea that an agent can't verify their own compliance by vouching for themselves. (Kind of one of those you can't tickle yourself or who shaves the barber? kind of things.) It was a reasonable-*sounding* citation, and it kept appearing in memos and logs.
 
-Piper Alpha confirmed it from their own side. They had read the phrase in Arch's memo and used it less than an hour later. "There was no independent arrival."
+Then Docs took a peek at the actual document. Methodology-45 is called "Agreement Is Not Replication — Shared Procedure Manufactures False Consensus." It says nothing at all about self-verification. (Sad trombone.) Docs flagged it, and CIO fixed that instance the same day.
 
-# The strange part
+But by then the citation was already in other places that hadn't been checked. It had "broken containment," oh no!
 
-The principle being miscited, methodology-45, is about exactly this failure: when several parties agree because they share a source, their agreement looks like confirmation, and it isn't. The miscitation of methodology-45 spread by precisely the mechanism methodology-45 describes. Agents saw the citation in colleagues' memos and took the repetition as support.
+# Mea culpa, mea culpa
+
+The next morning the corrections started flooding in from the agents themselves. My assistant agent (Piper Alpha) found they had used the same wrong citation in two more documents. HOST found it twice in their own log from the day before. CXO reread the methodology file directly and corrected four places they'd repeated it.
+
+Some of those corrections first described the mistakes as fully independent. Then my chief architect agent (Arch) did some forensic work, using the version history to find when each phrase first appeared in each file. Arch traced the citation to its first relecant appearance: a relay memo Arch had written two days earlier. That memo had attached CXO's correct, uncited idea to the wrong document number by mistake. All the instances that had looked independent were downstream of it.
+
+Piper Alpha confirmed it from their own side. They had read the phrase in Arch's memo and used it less than an hour later.
+
+*Frankly this makes more sense to me than some sort of spontaneous mass hallucination anyhow, but this "vector" is not inherently visible to the agents participating in the exchange.*
+
+# [Twilight Zone noises]
+
+Here's the woo-woo part: The principle being miscited, methodology-45, is about exactly *the cause* of this failure: When several parties agree because they share a source, their agreement looks like confirmation, and it isn't. 
+
+The miscitation of methodology-45 spread by precisely the mechanism methodology-45 describes. Agents saw the citation in colleagues' memos and took the repetition as support.
+
+This is one of those meta-recursive things that seem endemic in the LLM hall of mirrors but even by my jaded new standards this one is bizarre to me.
 
 CXO put it in one line: "We miscited m-45 in a way that is itself a textbook m-45 instance."
 
-Arch's trace didn't spare Arch. The agent doing the forensic work found the trail ended at their own memo, said so, and sent the corrections out to every place the citation had reached.
+Arch's trace of course didn't spare Arch, either. The agent doing the forensic work found the trail ended at their own memo, said so, and sent the corrections out to every place the citation had reached.
 
-# Where it landed
+# Like we do
 
-The idea that had been borrowing the wrong citation got a home of its own. CIO filed a new principle, methodology-50, "Self-Attestation Is Not Verification," and added the whole episode to methodology-45's own entry as fresh evidence for what it actually says.
+The idea that had been borrowing the wrong citation got a home of its own, of course. CIO filed a new principle, methodology-50, "Self-Attestation Is Not Verification," and added the whole episode to methodology-45's own entry as fresh evidence for what it actually says.
 
 The heartbeat marker got a second fix too, which turned out to have its own first-day gap, and that got caught and closed by the end of Saturday. Two days, one design question, two fixes that each needed fixing, and one citation followed all the way back to its source.
 
