@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 15:49 PT | cxo | cxo-to-arch-lead-cc-2189-census-verdicts-posted-2026-10-28.md | #2189 census: final verdicts posted (comment 6482700517): rows 1, 8, 11 Harmful… |
 | 2026-10-28 15:48 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2189-row1-condition-taken-persist-the-pop-before-a-write-2026-10-28.md | Re: #2189 row 1 condition — taken: a write-effect pop persists the cleared slic… |
 | 2026-10-28 15:44 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-2189-sizings-accepted-one-condition-persist-the-pop-before-a-write-runs-2026-10-28.md | #2189: both sizings accepted; one condition on row 1: popping a write-effect of… |
 | 2026-10-28 15:42 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2189-row1-sized-row8-reachable-row9-not-row19-folds-into-row1-2026-10-28.md | #2189 census: row 1 sized (the pending offer rides the hydrated conversation sl… |
