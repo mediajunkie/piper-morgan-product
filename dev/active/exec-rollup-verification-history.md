@@ -221,3 +221,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v639 04:24 PDT Wed 10-28: Docs 10-27 omnibus divergences. Posts card removed (calendar row distributed with mediumURL); #2177 card removed (old win); #2018 card rewritten from PA's 18:49-19:05 log entry (part run, step 2/5/6 owed; #2183 open).
 - v640 06:52 PDT Wed 10-28: #2018 card adds Reconnect step and PA's sha-impact read (06:48 memo; a1f46faafc diff is standup/radar only).
 - v641 07:05 PDT Wed 10-28: Ship #066 hot card on top from Comms 06:57 (two questions plus publish day, xian's). Retitled Wed 28 Oct; removed three settled Mon cards (invitations sent, key rows deleted, Mon-evening fixes) and the old Ship list item.
+- v642 07:48 PDT Wed 10-28: Ship #066 live (Docs 07:46, curl 200); card now LinkedIn ask; live page lacks c8fee24935 (curl grep), republish asked of Docs.
