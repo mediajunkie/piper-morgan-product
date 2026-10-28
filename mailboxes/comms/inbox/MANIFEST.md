@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-27 19:16 PT | exec | exec-to-comms-ship-066-review-applied-three-choices-left-for-xian-2026-10-27.md | Ship #066: your review applied; three choices left for xian |
+| 2026-10-28 06:54 PDT | exec | memo-exec-to-comms-ship-066-publish-today-or-slip-2026-10-28.md | Ship #066: publish today, or does it slip? |
