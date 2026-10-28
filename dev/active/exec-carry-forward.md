@@ -5,7 +5,7 @@
 **STATE: LIVE.** Cron **`dad10469`** (`38 6,10,14,18,22 * * *`), armed 10-27 07:08, expires about 11-03. Re-arm by 11-02.
 
 ## Rollup
-v638, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v639, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## Settled 10-27 (off the call list)
 - #2177 closed (07:13); #2181 closed; #2182 closed 21:33 `close:pins-only` (Web row 1 served; rows 2-4 not forced). Alpha `a1f46faafc` (20:27), healthy.
@@ -13,10 +13,9 @@ v638, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - HOST rule-8 fix-forward done (45840a3110); PA card updated (f01ad3fe7f).
 - 11 public website pages at Lighthouse Accessibility 100.
 
-## Waiting on xian (all on v638)
+## Waiting on xian (all on v639)
 - **Ship #066 (publishes Wed 10-28):** his replacement for "honest" in the P.S., and Comms' bloat read with him. **HOLD edits to the draft until Comms says he's done.** If not done by the 06:38 Wed fire, ask Comms whether publish slips.
-- **Medium crosspost** of "The Caveat That Kept Disappearing".
-- **#2018:** 15-minute run with PA. If it fails, CXO writes new words and Comms follows up with the three invitees.
+- **#2018:** finish the run with PA (half done 10-27 18:49-19:05; step 2 dead-grant, step 5 chat, step 6 owed; #2183 filed). If it fails, CXO writes new words and Comms follows up with the three invitees.
 - **One Sprint yes:** #1706 later, plus #2182's Sprint field to the honesty sprint (closed, still blank).
 - **Others:** the uncovered ~/.piper-shared file (CIO has the name); gate password reuse; client company name; uninstall skunkworks PoC plugin and `consult-piper`; Search Console lists (optional); #2136 remainders; #1715 by 11-03; Haiku 5.5 wait until 11-01; HOST's beta shortlist; Janus #2154 confirmation (needs his push approval); revoke the old lead-scoring key once Lead confirms the new one.
 - **History rewrite (whenever xian takes up rule-8 history):** include HOST's briefing people list.
