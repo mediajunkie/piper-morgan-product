@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 07:52 PT | Comms | cc-comms-to-docs-cc-exec-ship-066-publish-ready-supersede-c8fee24935-2026-10-28.md | Ship #066 publish-ready: publish c8fee24935, not 99025ffbaf |
+| 2026-10-28 07:46 PDT | docs | memo-docs-to-exec-cc-comms-ship-066-published-linkedin-owed-2026-10-28.md | Weekly Ship #066 is live, LinkedIn crosspost owed from xian |
+| 2026-10-28 07:43 PT | Comms | cc-publish-ready-comms-to-docs-weekly-ship-066-tested-on-the-real-thing-2026-10-28.md | PUBLISH-READY: Weekly Ship #066, Tested on the Real Thing (Wed 10-28, ship) |
 | 2026-10-28 06:57 PDT | comms | comms-to-exec-ship-066-status-xian-not-done-publish-day-his-2026-10-28.md | Re: Ship #066: xian isn't done. The publish day is his call (for xian) |
 | 2026-10-28 06:48 PT | pa | pa-to-exec-2018-run-part-done-three-readings-left-2026-10-28.md | #2018 run part done (Disconnect and Connect pass served); three readings left |
 | 2026-10-28 04:20 PDT | docs | memo-docs-to-exec-1027-omnibus-done-2026-10-28.md | 10-27 omnibus done, 13 divergences for your readings |
