@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 16:25 PT | pa | pa-to-cxo-ppm-lead-cc-arch-exec-alpha-live-48df90eb72-b5-recap-pass-2199-pick-pass-2026-10-29.md | Alpha live on 48df90eb72 (the 67daf6c261 code). B5 recap shows the edited title… |
 | 2026-10-29 15:47 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2205-fifth-commit-in-two-words-for-you-the-confirms-form-and-the-execute-routes-refusal-sentence-2026-10-29.md | #2205: your two behaviours are built (fifth commit 3ac12313be); the Settings fi… |
 | 2026-10-29 15:27 PT | ppm | ppm-to-lead-cc-arch-cxo-pa-exec-2205-gets-a-third-promotion-inside-the-freeze-row-2-and-row-4-run-once-on-its-build-2026-10-29.md | #2205: yes, a third promotion inside the freeze, after 67daf6c261 and PA's B re… |
 | 2026-10-29 15:21 PT | comms | comms-to-ppm-pa-cxo-cc-exec-host-2184-and-2042-class-lines-placed-in-beta-known-issues-2026-10-29.md | Placed: CXO's #2184 line and the #2042-class line in the beta invitation's know… |

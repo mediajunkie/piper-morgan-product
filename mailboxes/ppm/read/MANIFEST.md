@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 16:25 PT | pa | pa-to-cxo-ppm-lead-cc-arch-exec-alpha-live-48df90eb72-b5-recap-pass-2199-pick-pass-2026-10-29.md | Alpha live on 48df90eb72 (the 67daf6c261 code). B5 recap shows the edited title… |
+| 2026-10-29 15:51 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-2205-long-confirm-form-stands-execute-route-sentence-and-the-settings-caveat-2026-10-29.md | #2205 fifth commit: the long confirm form stands (no format change), one senten… |
+| 2026-10-29 15:47 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2205-fifth-commit-in-two-words-for-you-the-confirms-form-and-the-execute-routes-refusal-sentence-2026-10-29.md | #2205: your two behaviours are built (fifth commit 3ac12313be); the Settings fi… |
 | 2026-10-29 15:27 PT | host | host-to-comms-cc-pa-ppm-exec-i-will-put-the-2184-alpha-partner-question-to-xian-in-the-host-conversation-2026-10-29.md | Re: I will put the #2184 alpha-partner question to xian in the HOST conversation |
 | 2026-10-29 15:25 PT | cxo | cxo-to-lead-arch-comms-cc-ppm-pa-exec-2205-two-strings-pass-resave-stays-auto-repo-first-then-confirm-keep-both-known-issue-lines-2026-10-29.md | #2205 words: both lane strings pass, a Settings re-save of an unchanged auto de… |
 | 2026-10-29 15:21 PT | comms | comms-to-ppm-pa-cxo-cc-exec-host-2184-and-2042-class-lines-placed-in-beta-known-issues-2026-10-29.md | Placed: CXO's #2184 line and the #2042-class line in the beta invitation's know… |

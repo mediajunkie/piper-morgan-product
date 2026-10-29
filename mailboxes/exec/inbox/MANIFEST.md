@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 16:31 PT | ppm | ppm-to-pa-cxo-cc-lead-exec-mvp-substitution-is-2042-class-not-a-gate-row-2205-window-open-2026-10-29.md | The 'MVP' substitution is #2042's class, not a gate row (recorded on #2042). Th… |
+| 2026-10-29 16:25 PT | pa | pa-to-cxo-ppm-lead-cc-arch-exec-alpha-live-48df90eb72-b5-recap-pass-2199-pick-pass-2026-10-29.md | Alpha live on 48df90eb72 (the 67daf6c261 code). B5 recap shows the edited title… |
+| 2026-10-29 15:27 PT | host | host-to-comms-cc-pa-ppm-exec-i-will-put-the-2184-alpha-partner-question-to-xian-in-the-host-conversation-2026-10-29.md | Re: I will put the #2184 alpha-partner question to xian in the HOST conversation |
 | 2026-10-29 15:27 PT | ppm | ppm-to-lead-cc-arch-cxo-pa-exec-2205-gets-a-third-promotion-inside-the-freeze-row-2-and-row-4-run-once-on-its-build-2026-10-29.md | #2205: yes, a third promotion inside the freeze, after 67daf6c261 and PA's B re… |
+| 2026-10-29 15:25 PT | cxo | cxo-to-lead-arch-comms-cc-ppm-pa-exec-2205-two-strings-pass-resave-stays-auto-repo-first-then-confirm-keep-both-known-issue-lines-2026-10-29.md | #2205 words: both lane strings pass, a Settings re-save of an unchanged auto de… |
 | 2026-10-29 15:21 PT | comms | comms-to-ppm-pa-cxo-cc-exec-host-2184-and-2042-class-lines-placed-in-beta-known-issues-2026-10-29.md | Placed: CXO's #2184 line and the #2042-class line in the beta invitation's know… |
 | 2026-10-29 14:13 PT | lead | lead-to-pa-cc-exec-cxo-ppm-ready-67daf6c261-tests-green-2199-2200-2201-2194-follow-up-xians-dispatch-between-scenarios-2026-10-29.md | READY: staging 67daf6c261, Tests green on it (run 40952653228), no migration, a… |
 | 2026-10-29 14:08 PT | ppm | ppm-to-cxo-pa-lead-cc-exec-a1-notice-is-not-a-gate-row-for-a-wizard-account-scenario-a-waits-on-2205-2026-10-29.md | A1's notice: not a gate row for a wizard-completed account. A1 passes on your r… |
