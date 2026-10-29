@@ -191,3 +191,98 @@ USER: What's my agenda Thursday?
 route: query/meeting_time floor_hit=None original_message=None
 PIPER: I can show today, tomorrow or this week, but I can't look up a particular weekday yet. Ask me for one of those.
 ```
+
+## After the 67daf6c261 promotion (alpha 48df90eb72, same code): B re-run and the #2199 arm path, 16:23
+
+Same account and harness. The first arm run answered "MVP", which is not a milestone on this account (it has only "Beta launch"). It is kept for the record. The scored arm run picks the listed name.
+
+```
+=== B on 48df90eb72, session 3ecc9b3c ===
+
+--- B1 [16:22:56, 12.8s, http 200] ---
+USER: I'm thinking through the search feature. Help me break it down.
+route: GUIDANCE/get_contextual_guidance floor_hit=None original_message="I'm thinking through the search feature. Help me break it down."
+PIPER: Let's dig in. A few questions to frame this right:
+
+**What's the scope?** Are we talking about search within a specific surface (a dashboard, a docs section, a product catalog), or is this more of a global/cross-product search?
+
+**What's the driver?** User complaints about findability, a new use case, or is this more of a "we know we need it eventually" push?
+
+**Where are you in the process?** Early discovery, already have some requirements, or are you trying to break it into shippable chunks for planning?
+
+Once I know those, I can help you structure it — whether that's a phased breakdown, a jobs-to-be-done framing, or just mapping out the decision points you need to resolve before scoping starts.
+
+---
+
+Also flagging: you've got three reminders to review PRs that are 6 days overdue. Worth a pass tonight or first thing tomorrow before they get staler.
+
+--- B2 [16:23:05, 6.9s, http 200] ---
+USER: Let's track this. Create a GitHub issue: 'Add search functionality to navigation bar'
+route: execution/create_ticket floor_hit=None original_message=None
+PIPER: Happy to shape this with you before anything gets filed. Here's a draft to start from:
+
+**Title**: Add search functionality to navigation bar
+
+What should the body say — the problem, steps to reproduce, impact? Tell me what to add or change. If this draft works as-is, say "file it as is" and I'll create it right now. (If you'd rather I just file things directly, say "just do things directly from now on" and I will.)
+
+--- B3 [16:23:10, 2.5s, http 200] ---
+USER: file it as is
+route: execution/create_ticket floor_hit=None original_message=None
+PIPER: Created issue #32, "Add search functionality to navigation bar", in dinp-machine/piper-test-activity.
+
+--- B4 [16:23:17, 5.4s, http 200] ---
+USER: Actually, change the title to 'Implement full-text search across nav and global search bar'
+route: query/update_issue floor_hit=None original_message=None
+PIPER: Updated issue #32: Implement full-text search across nav and global search bar
+
+--- B5 [16:23:25, 6.2s, http 200] ---
+USER: What issues did we create in this session?
+route: query/session_activity_query floor_hit=None original_message=None
+PIPER: Here's what we created this session:
+• dinp-machine/piper-test-activity#32 (issue) — Implement full-text search across nav and global search bar
+
+=== ARM on 48df90eb72, session 6f3ea6ef ===
+
+--- ARM1 [16:23:34, 6.1s, http 200] ---
+USER: what are my github milestones?
+route: query/list_milestones_query floor_hit=None original_message=None
+PIPER: You have **1 open milestone**.
+
+Upcoming:
+- **Beta launch** — Due 2026-10-29. (4 open issues)
+
+Which milestone do you want to see issues from? Say its name.
+
+--- ARM2 [16:23:52, 15.5s, http 200] ---
+USER: MVP
+route: query/get_information floor_hit=None original_message='MVP'
+PIPER: The Beta launch milestone has 4 open issues — want me to pull up the full list so you can see what's in scope?
+
+---
+
+**Also due:**
+Three reminders to review PRs, all 6 days overdue. Worth carving out time for those soon.
+
+=== ARMB on 48df90eb72, session 8a122d74 ===
+
+--- ARMB1 [16:24:06, 1.6s, http 200] ---
+USER: what are my github milestones?
+route: query/list_milestones_query floor_hit=None original_message=None
+PIPER: You have **1 open milestone**.
+
+Upcoming:
+- **Beta launch** — Due 2026-10-29. (4 open issues)
+
+Which milestone do you want to see issues from? Say its name.
+
+--- ARMB2 [16:24:09, 1.0s, http 200] ---
+USER: Beta launch
+route: query/list_issues_query floor_hit=None original_message=None
+PIPER: You have **4 open issues** in dinp-machine/piper-test-activity in milestone "Beta launch".
+
+Here are the most recent:
+- **#3**: Export report as CSV
+- **#4**: Dark mode flickers on first load
+- **#2**: Add search to the settings page
+- **#1**: Login page times out on slow networks (blocked)
+```
