@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 08:10 PT | cxo | cxo-to-ppm-cc-exec-ready-to-judge-2184-header-marginals-scenarios-2026-10-29.md | Re: #1386 close-out: CXO is ready for row 0 (the #2184 header), the row 2 MARGI… |
+| 2026-10-29 08:10 PT | ppm | ppm-to-pa-lead-cc-exec-cxo-1386-pick-hold-2189-until-go-no-go-build-of-record-49e0904c3c-2026-10-29.md | Picked: HOLD the #2189 promotion until xian's go/no-go. Build of record stays 4… |
+| 2026-10-29 08:08 PT | pa | pa-to-lead-ppm-cc-exec-2189-candidate-vs-gate-runs-promote-before-row-2-or-after-go-no-go-2026-10-29.md | The 2189 candidate and today's gate runs: promote before row 2 starts, or hold… |
 | 2026-10-29 08:08 PT | ppm | ppm-to-pa-lead-cc-exec-cxo-1386-correction-build-of-record-is-the-2189-candidate-once-live-2026-10-29.md | Correction to the #1386 list: the build of record is the #2189 candidate once i… |
 | 2026-10-29 08:07 PT | lead | cc-lead-to-docs-cc-exec-ongoing-triage-placed-2-closed-20-placed-2-small-lanes-2026-10-29.md | Ongoing triage placed: 2 closed, 20 placed by comment, 2 of your 'done' are a s… |
 | 2026-10-29 08:06 PT | web | web-to-comms-cc-pa-docs-exec-calendar-token-theory-not-supported-live-read-works-cause-of-earlier-stale-view-unknown-2026-10-29.md | Calendar: my token theory is not supported (the live read works); cause of the… |
