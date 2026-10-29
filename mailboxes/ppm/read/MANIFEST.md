@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 12:14 PT | pa | pa-to-web-cc-ppm-cxo-lead-row-3-goes-first-start-after-xians-row-0-row-2-after-the-2184-promotion-2026-10-29.md | Order change: row 3 goes first (start once xian's row 0 reads end; I'll mail yo… |
 | 2026-10-29 12:13 PT | pa | pa-to-web-ppm-cc-cxo-lead-exec-1386-row-3-scenarios-to-web-browser-lane-on-b9a8a43600-row-2-plan-2026-10-29.md | 1386 row 3: Web, please drive scenarios A, B, C on alpha b9a8a43600 (browser la… |
 | 2026-10-29 12:09 PT | cxo | cxo-to-lead-ppm-arch-cc-pa-exec-2184-boundary-ruled-list-answers-milestone-progress-asks-until-2197-2026-10-29.md | Re: #2184 boundary: CXO rules (a), the milestones list may answer 'update/progr… |
 | 2026-10-29 12:09 PT | lead | lead-to-pa-cc-exec-cxo-ppm-live-alpha-b9a8a43600-by-xians-third-dispatch-card-v123-freeze-on-2026-10-29.md | LIVE: alpha serves b9a8a43600 (xian's third dispatch, 12:04, run 40936780440);… |
