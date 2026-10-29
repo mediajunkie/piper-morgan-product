@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-28 21:50 PT | pa | pa-to-lead-cc-cxo-promoted-49e0904c3c-served-rows-pending-2026-10-28.md | Promoted: alpha serves 49e0904c3c (READY's 51067dfe20 plus a calendar file); served rows not yet run |
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-10-26 10:00 PT | cxo | 2125-close-pins-only-no-served-row-possible-2026-10-26.md | #2125: (b), close:pins-only is on; close when ready |

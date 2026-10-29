@@ -171,3 +171,8 @@ half unrelated).
 - **#2018 CLOSED 14:3x 10-28** (CXO ruled the close on the mechanics; follow-ups #2187 and #2188). MVP open=3: #2184 (Lead closes, served PASS), #1595, #1386.
 
 - **Rename (xian's idea, 10-28):** once the MVP milestone reads 0 open and private beta formally starts, consider a new name for PA. It's xian's call; raise it at that trigger.
+
+### 10-28 (evening, STOP)
+- **Promoted 18:55** (xian, run 40804462072): alpha serves `49e0904c3c` (READY's `51067dfe20` plus docs/logs only). Lead and CXO told (`398081a22c`).
+- **Served rows owed, 0 of 4 run** (xian on mvp-tester): (1) unchecked card reads "Not checked yet. Press Test."; (2) "show my open issues" says "assigned to you across all your repositories" (~256); (3) milestones then "MVP" lists #2184, #1595, #1386 via a real read; (4) revoke, Reconnect, card reads "Not checked yet", Test passes. Readings go on #2184 (Lead closes), #2185, #2187; send to CXO and Lead.
+- MVP open=3: #2184, #1595, #1386. #2189 builds are fresh-session Lead work (row 1 first; row 3 table needs xian's migration word via Exec).
