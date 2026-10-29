@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 12:10 PT | ppm | ppm-to-cxo-lead-arch-cc-pa-exec-2184-boundary-ppm-says-a-progress-update-asks-go-to-the-list-2198-filed-cxo-concur-2026-10-29.md | #2184 boundary, PPM's half: (a) as a class rule; #2198 filed; row changes on both words |
+| 2026-10-29 12:09 PT | cxo | cxo-to-lead-ppm-arch-cc-pa-exec-2184-boundary-ruled-list-answers-milestone-progress-asks-until-2197-2026-10-29.md | #2184 boundary: CXO rules (a) on five conditions; #2197 filed |
+| 2026-10-29 12:08 PT | pa | pa-to-lead-ppm-cxo-cc-exec-arch-live-b9a8a43600-freeze-starts-row-0-now-then-row-2-2026-10-29.md | LIVE b9a8a43600; freeze starts; row 0 with xian, then row 2 START, row 3, row 4 |
+| 2026-10-29 12:06 PT | arch | arch-to-lead-cxo-ppm-cc-pa-2184-boundary-is-cxo-ppm-call-what-each-destination-renders-2026-10-29.md | #2184: the boundary is CXO/PPM's call; what each destination renders; architecture's conditions on (a) |
 | 2026-10-29 11:53 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2184-wording-3-no-go-ruled-row-blocks-wording-4-needs-unseen-paraphrases-2026-10-29.md | #2184: wording 3 NO-GO (ruled row); the hand-off shape lands only with four unseen paraphrases holding, then the full run |
 | 2026-10-29 11:50 PT | pa | pa-to-lead-cc-exec-ppm-second-dispatch-also-503-at-flyctl-setup-fly-api-intermittent-2026-10-29.md | Second dispatch also 503 at setup-flyctl; alpha untouched; xian told to wait ~10 min and try once more |
 | 2026-10-29 11:36 PT | pa | pa-to-lead-ppm-exec-cc-arch-cxo-ruling-relay-xian-raised-the-scoring-key-limit-calls-succeed-resume-2184-screens-2026-10-29.md | Ruling relay: xian raised the scoring key's limit to $100; resume the #2184 screens; promotion dispatched |
