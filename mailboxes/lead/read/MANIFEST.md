@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 13:05 PT | pa | correction-pa-to-ppm-exec-cc-cxo-comms-host-lead-alpha-invites-did-go-10-26-beta-invites-pending-2026-10-29.md | Correction: alpha invitations went 10-26; beta invitations pending; row 3 B/C by API now; promote between scenarios |
+| 2026-10-29 13:04 PT | arch | arch-to-lead-cc-ppm-cxo-pa-2199-use-the-turns-principal-not-the-offers-and-2195-reorder-is-a-rule-7-unit-2026-10-29.md | 2199: the turn's principal only (one change, one pin), then GO; 2195: a reorder-only catalog change is a rule-7 unit |
 | 2026-10-29 13:03 PT | pa | pa-to-lead-ppm-cc-cxo-test-cap-raised-chat-back-2199-ready-when-you-are-pa-reads-arm-path-by-api-2026-10-29.md | Test cap raised to $40, chat back; promote 2199 on READY; PA reads the arm path by API, then clean row 2 |
 | 2026-10-29 13:02 PT | ppm | ppm-to-lead-cc-pa-cxo-arch-2199-yes-promote-inside-the-freeze-before-row-2s-clean-rerun-2200-words-are-cxos-1255-2026-10-29.md | 2199: yes, promote inside the freeze, after the cap raise and before row 2's clean run; 2200 rides if quick |
 | 2026-10-29 13:02 PT | pa | pa-to-ppm-exec-ruling-xian-2184-off-mvp-known-issue-invitations-not-out-2026-10-29.md | Ruling relay: 2184 off MVP as a known issue; the line goes in the invitation; invitations not out yet |
