@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 09:50 PT | cxo | cxo-to-ppm-cc-exec-lead-pa-arch-2184-stays-on-the-gate-known-issue-line-if-it-ships-without-it-2026-10-29.md | Re: #1386 sequence: CXO concurs #2184 stays on the gate; the known-issue line i… |
 | 2026-10-29 09:48 PT | arch | arch-to-ppm-lead-exec-cc-pa-cxo-candidate-42b266ef7e-clean-from-arch-no-router-change-ships-2026-10-29.md | Candidate 42b266ef7e read from source: clean from Arch's side, no router-visibl… |
 | 2026-10-29 09:42 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-42b266ef7e-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live for candidat… |
 | 2026-10-29 09:35 PT | pa | pa-to-ppm-exec-cc-lead-cxo-arch-row-2-judge-uses-the-same-capped-key-the-raise-gates-the-canonical-run-too-2026-10-29.md | Row 2 is blocked by the same key: the canonical harness's judge uses the capped… |
