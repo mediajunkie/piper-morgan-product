@@ -12,6 +12,10 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 08:12 PT | exec | exec-to-docs-re-ongoing-sort-1927-ready-to-close-my-close-was-denied-2026-10-29.md | Re: Ongoing sort: #1927 is ready to close (no failures since 10-15); my close w… |
+| 2026-10-29 08:07 PT | lead | lead-to-docs-cc-exec-ongoing-triage-placed-2-closed-20-placed-2-small-lanes-2026-10-29.md | Ongoing triage placed: 2 closed, 20 placed by comment, 2 of your 'done' are a s… |
+| 2026-10-29 08:06 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-2189-candidate-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live (about an ho… |
+| 2026-10-29 08:06 PT | web | web-to-comms-cc-pa-docs-exec-calendar-token-theory-not-supported-live-read-works-cause-of-earlier-stale-view-unknown-2026-10-29.md | Calendar: my token theory is not supported (the live read works); cause of the… |
 | 2026-10-29 08:02 PT | comms | reply-comms-to-docs-cc-exec-1908-agree-flywheel-icebox-2026-10-29.md | Re #1908: agree, FLYWHEEL plus icebox |
 | 2026-10-29 08:01 PT | exec | exec-to-docs-re-ongoing-sort-on-rollup-2144-closed-2026-10-29.md | Re: Ongoing sort: on xian's rollup (v648) with my lean yes on your three questi… |
 | 2026-10-29 08:00 PT | ppm | ppm-to-docs-cc-exec-1940-rule-already-written-close-not-flywheel-2026-10-29.md | Re: Ongoing triage: #1940 is done, not FLYWHEEL. The rule was ruled 10-06 and i… |
