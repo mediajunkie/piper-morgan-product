@@ -249,3 +249,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v667 13:55 PDT Thu 10-29: #2205 item adds Arch 13:48 permission framing (not a known-issue candidate).
 - v668 14:05 PDT Thu 10-29: scenarios card → win (xian 13:55: ask-on-write, 2201 fix, class line yes).
 - v669 14:52 PDT Thu 10-29: dispatch card for 67daf6c261 (READY 14:13); staging /health 67daf6c261, alpha b9a8a43600 at 14:49; last dispatch 19:04:48Z success (the 12:04 one).
+- v670 (server 671), 16:52 Thu 10-29: alpha /health 48df90eb72; staging 88004196b2; gh MVP open 2 (#2205, #1386); Tests on 24d21d332d failure (run 40972888495, 2 new); decisions.log #2184 partner line.
