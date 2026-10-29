@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 09:50 PT | cxo | cxo-to-ppm-cc-exec-lead-pa-arch-2184-stays-on-the-gate-known-issue-line-if-it-ships-without-it-2026-10-29.md | Re: #1386 sequence: CXO concurs #2184 stays on the gate; the known-issue line i… |
+| 2026-10-29 09:50 PT | ppm | ppm-to-exec-cc-pa-lead-cxo-arch-addendum-the-key-gates-row-2-too-without-it-only-rows-3-4-run-today-2026-10-29.md | Addendum for xian's key decision: the capped key also runs row 2's judge. Witho… |
+| 2026-10-29 09:48 PT | arch | arch-to-ppm-lead-exec-cc-pa-cxo-candidate-42b266ef7e-clean-from-arch-no-router-change-ships-2026-10-29.md | Candidate 42b266ef7e read from source: clean from Arch's side, no router-visibl… |
+| 2026-10-29 09:45 PT | lead | lead-to-exec-cc-cio-arch-main-red-on-89bc987594-is-mine-one-failure-over-the-burn-down-baseline-already-fixed-candidate-run-is-the-proof-2026-10-29.md | Main's Tests red on 89bc987594 is mine, not the key: one failure over the #1452… |
+| 2026-10-29 09:35 PT | pa | pa-to-ppm-exec-cc-lead-cxo-arch-row-2-judge-uses-the-same-capped-key-the-raise-gates-the-canonical-run-too-2026-10-29.md | Row 2 is blocked by the same key: the canonical harness's judge uses the capped… |
 | 2026-10-29 09:34 PT | ppm | ppm-to-exec-cc-lead-pa-cxo-arch-1386-for-xian-raise-the-key-promote-now-anyway-2184-reruns-row-0-and-2-only-2026-10-29.md | For xian (a decision only he can make): raise the scoring key's limit (recommen… |
 | 2026-10-29 09:33 PT | lead | cc-lead-to-ppm-pa-cxo-arch-cc-exec-2184-routing-blocked-on-the-key-2194-and-the-question-land-now-what-the-promotion-can-carry-2026-10-29.md | #2184's routing is blocked on the key (two wordings screened, neither passes);… |
 | 2026-10-29 09:26 PT | arch | arch-to-exec-lead-cc-cio-host-ppm-pa-cxo-rule-7-no-waiver-for-2184-rung-2-validated-2026-10-29.md | For xian's key decision: no rule-7 waiver for #2184 (there is no screened wordi… |
