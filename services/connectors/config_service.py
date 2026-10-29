@@ -66,11 +66,14 @@ class ConnectorConfigService:
         owner_id: Union[str, UUID, None],
         value: Optional[str],
         *,
-        source: str = SOURCE_USER,
+        source: str,
     ) -> None:
         """Set (value) or clear (None) the owner's default GitHub repo, preserving other keys.
-        #2205: ``source`` records who designated it; the default is ``user`` because every
-        caller but the #1314/#1590 auto-pick is a user's own choice."""
+        #2205: ``source`` records who designated it (``user`` or ``auto``). REQUIRED, no
+        default (Arch 14:39, condition 2): a permission-bearing value fails closed, so a
+        caller that forgets it fails at call time instead of minting a write target."""
+        if source not in (SOURCE_USER, SOURCE_AUTO):
+            raise ValueError(f"default repo source must be 'user' or 'auto', not {source!r}")
         config = await self.get_config(owner_id, GITHUB)
         if value is None:
             config.pop(DEFAULT_REPO_KEY, None)

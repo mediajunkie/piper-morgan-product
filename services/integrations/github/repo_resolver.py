@@ -496,7 +496,7 @@ async def apply_default_default_if_unset(
 
     No-ops (logs at debug) if ``repos`` is empty — nothing to default to yet.
     """
-    from services.connectors.config_service import ConnectorConfigService
+    from services.connectors.config_service import SOURCE_AUTO, ConnectorConfigService
     from services.database.session_factory import AsyncSessionFactory
 
     async with AsyncSessionFactory.session_scope() as session:
@@ -511,6 +511,6 @@ async def apply_default_default_if_unset(
             return
 
         # #2205: code picked it, so it serves reads and never a write without asking.
-        await config_service.set_default_repo(user_id, chosen, source="auto")
+        await config_service.set_default_repo(user_id, chosen, source=SOURCE_AUTO)
         # #1436: stdlib logger — kwargs raised TypeError when this line ran
         logger.info(f"default_repo_auto_set user={user_id} repo={chosen} repo_count={len(repos)}")

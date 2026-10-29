@@ -157,7 +157,7 @@ class TestTheSourceIsStored:
     async def test_clearing_the_default_clears_its_source(self, store):
         await _set(store, CHOSEN, source="user")
         async with store() as s:
-            await ConnectorConfigService(s).set_default_repo(_ALPHA, None)
+            await ConnectorConfigService(s).set_default_repo(_ALPHA, None, source="user")
             await s.commit()
         cfg = await _read(store)
         assert "default_repository" not in cfg and "default_repository_source" not in cfg
@@ -294,3 +294,54 @@ class TestIssueWritesAskToo:
             "Which repository is #7 in? Say owner/name, and I'll keep it as your default."
         )
         update.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+class TestSourceIsRequired:
+    """#2205 condition 2 (Arch 14:39): a permission-bearing value fails closed."""
+
+    async def test_forgetting_the_source_fails_at_call_time(self, store):
+        async with store() as s:
+            with pytest.raises(TypeError):
+                await ConnectorConfigService(s).set_default_repo(_ALPHA, CHOSEN)  # type: ignore[call-arg]
+        assert await _read(store) == {}
+
+    async def test_an_unknown_source_is_refused(self, store):
+        async with store() as s:
+            with pytest.raises(ValueError):
+                await ConnectorConfigService(s).set_default_repo(_ALPHA, CHOSEN, source="wizard")
+        assert await _read(store) == {}
+
+
+@pytest.mark.asyncio
+class TestTheWriteAskOffersNoDefaultToBind:
+    """#2205 condition 3 (Arch 14:39): the carrier binds ``payload["default_repo"]`` on a
+    bare "yes" or "…default…"; with ``persist_default`` that would store the auto pick as
+    ``user`` and write there (A3 through a "yes"). The write ask never carries one."""
+
+    async def test_the_armed_offer_has_no_default_repo(self, store, service):
+        await _set(store, AUTO, source="auto")
+        sid = f"s-2205c3-{uuid.uuid4()}"
+        with contextlib.ExitStack() as st:
+            for p in _create_patches(AsyncMock()):
+                st.enter_context(p)
+            await service._handle_create_issue(_create_intent(), "wf", sid, user_id=_ALPHA)
+        payload = service.workflow_offer_service._pending_offers[sid]["pending_action"]
+        assert payload["persist_default"] is True
+        assert payload["default_repo"] is None
+        assert payload["asked_name"] is None
+
+    async def test_yes_to_the_write_ask_writes_nothing_and_asks_again(self, store, service):
+        await _set(store, AUTO, source="auto")
+        sid = f"s-2205c3-{uuid.uuid4()}"
+        create = AsyncMock(return_value=_landed(AUTO))
+        with contextlib.ExitStack() as st:
+            for p in _create_patches(create):
+                st.enter_context(p)
+            await service._handle_create_issue(_create_intent(), "wf", sid, user_id=_ALPHA)
+            again = await service.process_intent(message="yes", session_id=sid, user_id=_ALPHA)
+        create.assert_not_awaited()
+        assert again.message == ASK  # the carrier's bare-yes re-dispatch re-asks
+        assert service.workflow_offer_service._pending_offers.get(sid) is not None  # re-armed
+        cfg = await _read(store)
+        assert (cfg["default_repository"], cfg["default_repository_source"]) == (AUTO, "auto")

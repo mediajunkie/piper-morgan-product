@@ -80,7 +80,7 @@ class _StatefulConfigService:
     async def get_default_repo(self, user_id) -> Optional[str]:
         return self._store.get(str(user_id))
 
-    async def set_default_repo(self, user_id, full_name: str, *, source: str = "user") -> None:
+    async def set_default_repo(self, user_id, full_name: str, *, source: str) -> None:
         self._store[str(user_id)] = full_name
         self._sources[str(user_id)] = source  # #2205
 

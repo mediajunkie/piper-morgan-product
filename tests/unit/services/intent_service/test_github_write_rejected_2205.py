@@ -24,6 +24,7 @@ from __future__ import annotations
 import contextlib
 import json
 import uuid
+from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -517,3 +518,163 @@ class TestReopenHandlerSaysTheRefusal:
             out = await service._handle_reopen_issue_query(intent, "wf", None)
         assert out.message == "GitHub wouldn't reopen #7 in mediajunkie/7cups-testbot: Forbidden."
         assert out.intent_data["write_refused"] is True
+
+
+# ── #2205 condition 1 (Arch 2026-10-29 14:39): the router is the choke point ──────────
+
+
+def _auto_only_default():
+    """The A3 account: a default code picked (source auto), none the user designated."""
+    from services.integrations.github import repo_resolver
+
+    return patch.object(
+        repo_resolver,
+        "get_user_default_repo_and_source",
+        new=AsyncMock(return_value=(FULL, "auto")),
+    )
+
+
+@pytest.mark.asyncio
+class TestRouterRefusesAnUndesignatedWriteTarget:
+    async def test_create_with_an_auto_only_default_raises_and_calls_nothing(self, sm):
+        from services.integrations.github.github_integration_router import (
+            GitHubWriteTargetUndesignated,
+        )
+
+        adapter = GitHubMCPSpatialAdapter()
+        calls = _fixture(adapter, write_text=DISABLED_410)
+        with _auto_only_default():
+            with pytest.raises(GitHubWriteTargetUndesignated) as exc:
+                await _router(adapter).create_issue(title=TITLE, body="b")
+        assert exc.value.verb == "create"
+        assert calls == {}  # no connector call at all: nothing guessed, nothing written
+
+    async def test_update_and_comment_with_an_auto_only_default_raise(self, sm):
+        from services.integrations.github.github_integration_router import (
+            GitHubWriteTargetUndesignated,
+        )
+
+        adapter = GitHubMCPSpatialAdapter()
+        calls = _fixture(adapter, write_text=FORBIDDEN_403, comment_text=FORBIDDEN_403)
+        with _auto_only_default():
+            with pytest.raises(GitHubWriteTargetUndesignated) as upd:
+                await _router(adapter).update_issue(7, state="closed")
+            with pytest.raises(GitHubWriteTargetUndesignated) as com:
+                await _router(adapter).add_comment(7, "hi")
+        assert (upd.value.verb, upd.value.issue_number) == ("update", 7)
+        assert (com.value.verb, com.value.issue_number) == ("comment on", 7)
+        assert calls == {}
+
+    async def test_no_principal_is_refused_too(self, sm):
+        from services.integrations.github.github_integration_router import (
+            GitHubWriteTargetUndesignated,
+        )
+
+        adapter = GitHubMCPSpatialAdapter()
+        calls = _fixture(adapter, write_text=DISABLED_410)
+        router = _router(adapter)
+        router._user_id = None
+        with pytest.raises(GitHubWriteTargetUndesignated):
+            await router.create_issue(title=TITLE, body="b")
+        assert calls == {}
+
+    async def test_a_user_designated_default_reaches_the_connector(self, sm):
+        from services.integrations.github import repo_resolver
+
+        adapter = GitHubMCPSpatialAdapter()
+        calls = _fixture(adapter, write_text=DISABLED_410)
+        with patch.object(
+            repo_resolver,
+            "get_user_default_repo_and_source",
+            new=AsyncMock(return_value=(FULL, "user")),
+        ):
+            with pytest.raises(GitHubWriteRejected) as exc:  # GitHub's own answer
+                await _router(adapter).create_issue(title=TITLE, body="b")
+        assert exc.value.repository == FULL
+        assert calls == {"issue_write": 1}
+
+    async def test_reads_still_use_the_auto_default(self, sm):
+        from services.integrations.github import repo_resolver
+
+        with patch.object(
+            repo_resolver,
+            "resolve_repo",
+            new=AsyncMock(return_value=SimpleNamespace(owner=OWNER, name=REPO)),
+        ):
+            assert await _router(GitHubMCPSpatialAdapter())._resolve_default_repo() == (
+                OWNER,
+                REPO,
+            )
+
+
+class TestRendererSaysTheUndesignatedRefusal:
+    def test_renderer_line_never_a_traceback(self, service):
+        from services.integrations.github.github_integration_router import (
+            GitHubWriteTargetUndesignated,
+        )
+        from services.intent.intent_service import WRITE_TARGET_NO_SESSION_LINE
+
+        for action, number in [
+            ("create_issue", None),
+            ("update_issue", 7),
+            ("close_issue", 7),
+            ("reopen_issue", 7),
+            ("comment_issue", 7),
+        ]:
+            out = service._unverified_write_result(
+                GitHubWriteTargetUndesignated(verb="x", issue_number=number),
+                _intent(action=action),
+                "wf",
+            )
+            assert out is not None, action
+            assert out.message == WRITE_TARGET_NO_SESSION_LINE
+            assert out.intent_data["write_target_undesignated"] is True
+
+
+@pytest.mark.asyncio
+class TestHandlersBeltAndBraces:
+    """If the router refuses even though a handler let the write through, each handler
+    says the no-session line (nothing written), never a generic error or a traceback."""
+
+    async def test_create_close_reopen_update(self, service):
+        from services.integrations.github.github_integration_router import (
+            GitHubWriteTargetUndesignated,
+        )
+        from services.intent.intent_service import WRITE_TARGET_NO_SESSION_LINE
+
+        refused = GitHubWriteTargetUndesignated(verb="x", issue_number=7)
+        base = [
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(f"{ROUTER}.get_issue", new=AsyncMock(side_effect=RuntimeError("no fetch"))),
+            patch(f"{ROUTER}.update_issue", new=AsyncMock(side_effect=refused)),
+        ]
+        with contextlib.ExitStack() as st:
+            for p in base:
+                st.enter_context(p)
+            created = await _create(service, f"s-{uuid.uuid4()}", AsyncMock(side_effect=refused))
+            closed = await service._handle_close_issue_query(
+                _intent(message=f"yes, close #7 in {FULL}", action="close_issue", repository=FULL),
+                "wf",
+                None,
+            )
+            reopened = await service._handle_reopen_issue_query(
+                _intent(
+                    message=f"reopen issue #7 in {FULL}", action="reopen_issue", repository=FULL
+                ),
+                "wf",
+                None,
+            )
+            updated = await service._handle_update_issue(
+                _intent(
+                    message=f"update issue #7 in {FULL} title to New",
+                    action="update_issue",
+                    repository=FULL,
+                    issue_number=7,
+                    title="New",
+                ),
+                "wf",
+                None,
+            )
+        for out in (created, closed, reopened, updated):
+            assert out.message == WRITE_TARGET_NO_SESSION_LINE, out.message

@@ -9188,7 +9188,10 @@ class IntentService:
             # session_scope() commits on clean exit (#1193), and set_default_repo
             # flushes-not-commits (caller owns the txn) — so the write persists here.
             async with AsyncSessionFactory.session_scope() as session:
-                await ConnectorConfigService(session).set_default_repo(_user_id, full_name)
+                # #2205: the user said it in chat, so source "user".
+                await ConnectorConfigService(session).set_default_repo(
+                    _user_id, full_name, source="user"
+                )
 
             return IntentProcessingResult(
                 success=True,
@@ -12675,8 +12678,25 @@ class IntentService:
             GitHubIssueNotFound,
             GitHubWriteRefused,
             GitHubWriteRejected,
+            GitHubWriteTargetUndesignated,
         )
 
+        if isinstance(e, GitHubWriteTargetUndesignated):
+            # #2205 condition 1: the router refused a write with no user-designated
+            # repository. The handlers ask before this; if one did not, nothing was
+            # written and the reply says what is needed (no unarmed question here).
+            return IntentProcessingResult(
+                success=True,
+                message=WRITE_TARGET_NO_SESSION_LINE,
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                    "write_target_undesignated": True,
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+            )
         if isinstance(e, GitHubWriteRejected):
             # #2205 (CXO's words, 2026-10-29): GitHub refused the write; say so in
             # GitHub's own words, never as an unknown outcome. A refused create invites

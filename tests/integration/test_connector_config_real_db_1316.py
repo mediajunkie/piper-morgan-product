@@ -32,7 +32,7 @@ async def test_configured_returns_repo_unconfigured_returns_none(integration_db,
     await create_test_user(configured)
     await create_test_user(unconfigured)
 
-    await svc.set_default_repo(configured, "octo/myrepo")
+    await svc.set_default_repo(configured, "octo/myrepo", source="user")
     await integration_db.flush()
 
     assert await svc.get_default_repo(configured) == "octo/myrepo"  # configured → repo
@@ -46,8 +46,8 @@ async def test_per_owner_isolation_real_db(integration_db, create_test_user):
     await create_test_user(a)
     await create_test_user(b)
 
-    await svc.set_default_repo(a, "alpha/repo")
-    await svc.set_default_repo(b, "beta/repo")
+    await svc.set_default_repo(a, "alpha/repo", source="user")
+    await svc.set_default_repo(b, "beta/repo", source="user")
     await integration_db.flush()
 
     assert await svc.get_default_repo(a) == "alpha/repo"
@@ -60,8 +60,8 @@ async def test_clearing_default_repo_reverts_to_unconfigured(integration_db, cre
     u = str(uuid.uuid4())
     await create_test_user(u)
 
-    await svc.set_default_repo(u, "octo/myrepo")
-    await svc.set_default_repo(u, None)
+    await svc.set_default_repo(u, "octo/myrepo", source="user")
+    await svc.set_default_repo(u, None, source="user")
     await integration_db.flush()
 
     assert await svc.get_default_repo(u) is None
