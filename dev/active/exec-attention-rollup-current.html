@@ -32,15 +32,18 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 29 October</h1>
-<p class="meta">Exec · v650, rebuilt 08:21 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v651, rebuilt 09:18 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
-<div class="card hot"><b>Closing MVP today: your hand is needed three times.</b> PPM&rsquo;s plan (08:03; HOLD picked 08:10): MVP has 3 open (#2184, #1595, #1386). Alpha stays on <code>49e0904c3c</code> as the build every run measures, and the #2189 update waits until after your go/no-go, so there&rsquo;s nothing to put live today. #2184 closes on the reads you&rsquo;re running with PA. The rest is about 3 hours of runs.
-<ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
-<li><b>One word on #1595, plus three read-only commands</b> (PA is asking you both now). The word: &ldquo;#1595 ships as a known issue; close MVP over it.&rdquo; <span style="color:var(--blue);font-weight:600">PPM and I recommend yes:</span> its remaining work is Production, and the testers were told. The commands check the database matches the code: <code>fly ssh console -a piper-morgan -C "python -m alembic current"</code>, the same with <code>heads</code>, and the same with <code>check</code>. Agents can&rsquo;t read the production database.</li>
-<li><b>Scenario A needs a fresh account</b> (one invite code), plus a Google sign-in for any Calendar row. That&rsquo;s after the canonical suite, so mid to late morning.</li>
-<li><b>Go/no-go on #1386,</b> last, once PPM posts the evidence table. The #2189 update goes live right after.</li>
-</ol>
-In parallel, nothing for you: Lead&rsquo;s security run on <code>49e0904c3c</code>, the encryption key check (passed), the migration step on the live release (passed), and PPM&rsquo;s stability and CI re-read at close. A real defect found in a run gets filed and admitted, and MVP closes when it closes. The 10-30 hard stop moves only on your word.</div>
+<div class="card hot"><b>Decide now: raise the Anthropic usage limit, or MVP can&rsquo;t close today.</b> At about 09:08 the key the agents use for testing (the <code>lead-scoring-2026-10</code> key you stored 10-26, masked sk-a&hellip;XgAA) hit its workspace usage limit: &ldquo;You will regain access on 2026-11-01 at 00:00 UTC.&rdquo; The OpenAI fallback has no credits either. Alpha is not affected (it runs on its own key; Lead checked <code>/health</code> and the logs). <b>What it blocks:</b> the #2184 fix must pass its router screens and full test run before it lands, and those call the model. (a) Raise the limit in the Anthropic console (or add OpenAI credit) today, and Lead resumes the screens at once; READY is still possible this afternoon. (b) Leave it, and #2184 can&rsquo;t land before 11-01, so MVP doesn&rsquo;t close today. <span style="color:var(--blue);font-weight:600">My recommendation: (a).</span> Lead did not borrow alpha&rsquo;s key, which would be spend on your product account without your word. Tell PA or me which, and say when it&rsquo;s raised.</div>
+
+<div class="card act"><b>Closing MVP: the plan changed since 08:21, and you have two hands left after the key.</b> Gate list (<code>gh</code> 09:18): 3 open, #2184, #2194, #1386.
+<ul style="margin:.3rem 0 .2rem 1.2rem;padding:0">
+<li><b>#1595 is closed on your split ruling</b> (Lead, 08:54). The unfinished Phase 3 is #2195, in Production, Sprint PUB. Router deletions are moving again: Arch gave the 31st its GO. Recorded in decisions.log.</li>
+<li><b>Your database check is done:</b> PA read current = heads = <code>s2014items</code>, and <code>check</code> found no new operations.</li>
+<li><b>Your two-step test failed</b> (&ldquo;MVP&rdquo; named the wrong issues). Lead is fixing it in Arch&rsquo;s form, ETA about three hours to READY, given the key. With it goes <b>#2194</b> (the &ldquo;across all your repositories&rdquo; header), which <b>PPM admitted to MVP</b> because CXO won&rsquo;t sign the build without it. One word, &ldquo;out&rdquo;, undoes that.</li>
+<li><b>New sequence (PPM 08:57; the HOLD is lifted):</b> fix lands, then one promotion carrying the fix and #2189, then row 0 again on that build, then a freeze and the full runs, then your go/no-go.</li>
+</ul>
+<b>Your remaining hands, after the key:</b> (1) a fresh account (one invite code) plus a Google sign-in for scenario A, after the promotion; (2) go/no-go on #1386, last. If the fix can&rsquo;t land and promote today, MVP doesn&rsquo;t close today; the 10-30 hard stop moves only on your word.</div>
 
 <div class="card act"><b>Two things only your hand unblocks (each a minute):</b>
 <ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
@@ -103,7 +106,7 @@ In parallel, nothing for you: Lead&rsquo;s security run on <code>49e0904c3c</cod
 <li>Mail v4 stays on three seats until the 11-05 review.</li>
 </ul></div>
 <h2>📊 Where things stand</h2>
-<div class="card">MVP gate: <b>3 open</b> (#2184, #1595, #1386; <code>gh</code> 04:19 Thu). #2018 closed Wed. Alpha <code>49e0904c3c</code> (21:50 Wed), healthy at 04:19. Main Tests and Architecture Enforcement green on <code>7238c09ba6</code> (red from about 14:46 to 15:56 Wed, when Tests on Lead&rsquo;s fix <code>9ea9081737</code> finished green).</div>
+<div class="card">MVP gate: <b>3 open</b> (#2184, #2194, #1386; <code>gh</code> 09:18 Thu). #1595 closed on xian&rsquo;s split (remainder #2195). #2018 closed Wed. Alpha <code>49e0904c3c</code> (21:50 Wed), healthy at 04:19. Main Tests and Architecture Enforcement green on <code>7238c09ba6</code> (red from about 14:46 to 15:56 Wed, when Tests on Lead&rsquo;s fix <code>9ea9081737</code> finished green).</div>
 <p class="meta">How I checked each version: <code>dev/active/exec-rollup-verification-history.md</code> (not needed to read this page).</p>
 
 </div>
