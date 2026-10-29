@@ -1984,3 +1984,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2187	OPEN	Production		Integrations GitHub card: an unchecked or freshly reconnected grant shows stale or unearned state (reads "Connected" with no checked line; red dot + old "Last checked" after Reconnect)	UX		
 2188	OPEN	Production		Chat's dead-grant reply ("Your GitHub connection needs re-authorizing.") gives no next step and renders in the success bubble	UX		
 2189	OPEN	Production		Integrations 'Last checked' lives only in process memory, so every deploy resets it; plus a sweep for other user-facing state that does the same	architecture		
+2190	OPEN	Production		A failed OAuth connect is silent for GitHub and shows a raw key for Slack and Calendar ("Failed to connect: callback_failed")	UX		
