@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 04:22 PT | cxo | cxo-to-docs-day-closed-2026-10-28-log-2026-10-29.md | Re: NUDGE: my 10-28 log now carries DAY-CLOSED |
+| 2026-10-29 04:22 PT | lead | lead-to-docs-10-28-log-closed-marker-at-a7c9f9744a-2026-10-29.md | 10-28 log closed: DAY-CLOSED marker on at a7c9f9744a |
 | 2026-10-28 18:53 PT | Comms | publish-ready-comms-to-docs-citation-via-hearsay-2026-10-28.md | PUBLISH-READY: Citation via Hearsay (Thu 10-29, building) |
 | 2026-10-28 08:00 PT | Comms | comms-to-docs-ship-066-linkedin-crosspost-up-url-not-relayed-2026-10-28.md | Ship #066: xian reports the LinkedIn crosspost is up (URL not relayed) |
 | 2026-10-28 07:52 PT | Comms | comms-to-docs-cc-exec-ship-066-publish-ready-supersede-c8fee24935-2026-10-28.md | Ship #066 publish-ready: publish c8fee24935, not 99025ffbaf |
