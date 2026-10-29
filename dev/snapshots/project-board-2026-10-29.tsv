@@ -1993,12 +1993,14 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2198	CLOSED	Production		Milestone progress asks get the whole milestones list: the list ignores the milestone named and shows no closed count (follow-up to #2184's boundary re-rule)	UX		NOT_PLANNED
 2197	OPEN	Production		A progress ask about a named milestone is answered with the list of every milestone and ignores the one named	UX		
 2196	OPEN	Ongoing		fly-deploy.yml promote job: no retry on the two Fly steps, so one transient 503 costs a dispatch			
-2199	OPEN	Production		Milestone pick: after the milestones list asks 'Which milestone…? Say its name.', replying 'MVP' gets 'I couldn't tell which repository you mean'	bug		
+2199	CLOSED	Production		Milestone pick: after the milestones list asks 'Which milestone…? Say its name.', replying 'MVP' gets 'I couldn't tell which repository you mean'	bug		COMPLETED
 2200	OPEN	Production		Milestone list prints "Ongoing — due no due date" for a milestone with no date	UX		
-2201	OPEN	MVP		"What issues did we create in this session?" lists the issue with its pre-edit title after an in-session title change	bug		
+2201	CLOSED	MVP		"What issues did we create in this session?" lists the issue with its pre-edit title after an in-session title change	bug		COMPLETED
 2202	OPEN	Production		Handler-route /api/v1/intent replies carry no intent.original_message field (the floor routes echo it; consumers still cannot rely on it)			
 2203	OPEN	Production		Asked to summarize Notion docs, chat answers about uploaded documents and never says Notion is not connected	UX		
 2204	OPEN	Production		"This week" calendar reads start at now, so a meeting earlier today drops out; the window should start at local midnight today	UX		
 2205	OPEN	MVP		A new user's first 'Create an issue' goes to an auto-picked oldest repo (issues disabled) and fails with 'GitHub didn't confirm it'	bug		
 2206	OPEN	Production		Setup wizard: 'Connect Your AI' offers an optional Notion key, while Slack and Calendar are 'later in Settings'	UX		
 2207	OPEN	Production		repo_clarification resolves a bare repo name under the OFFER's stored principal when the turn has none (the fallback ruled out for the milestone pick in 2199)			
+2208	OPEN	Production		Learned-pattern execute route reports a failed action as success (status error is counted as success)	bug		
+2209	OPEN	Production		Naming a milestone the account doesn't have gets another milestone's issues, with no word that it isn't there	UX		
