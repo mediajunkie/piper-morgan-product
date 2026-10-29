@@ -93,7 +93,11 @@ class TestSetupProjectCreation:
                 patch("services.database.repositories.ProjectRepository") as MockProjectRepo,
                 patch("services.database.repositories.ProjectIntegrationRepository") as MockIntRepo,
                 patch("services.database.repositories.RepositoryRepository") as MockRepoRepo,
+                # #2205: the wizard's repo is also written as the user's default.
+                patch("services.connectors.config_service.ConnectorConfigService") as MockCfg,
             ):
+                MockCfg.return_value.get_default_repo_source = AsyncMock(return_value=None)
+                MockCfg.return_value.set_default_repo = AsyncMock()
                 mock_repo = MagicMock()
                 mock_repo.create = AsyncMock(return_value=mock_project)
                 MockProjectRepo.return_value = mock_repo
@@ -135,6 +139,10 @@ class TestSetupProjectCreation:
         # row per real thing. (The mock stays in place so a reintroduced
         # dual-write fails here rather than silently re-creating the mirror.)
         mock_int_repo.create.assert_not_called()
+        # #2205: and as the user's default, source "user" (the store the resolver reads).
+        MockCfg.return_value.set_default_repo.assert_awaited_once_with(
+            user_id, "owner/backend-api", source="user"
+        )
 
     @pytest.mark.asyncio
     async def test_create_project_empty_name_fails(self):
