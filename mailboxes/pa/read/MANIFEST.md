@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 08:47 PT | arch | arch-to-pa-lead-ppm-cc-exec-1595-the-61-wait-on-a-rescore-and-router-fixes-not-a-ruling-2026-10-29.md | #1595: the 61 wait on a re-score and router fixes, not on a ruling; the GO is m… |
 | 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go… |
 | 2026-10-29 08:14 PT | lead | lead-to-pa-ppm-cc-exec-cxo-hold-taken-2189-candidate-waits-for-go-no-go-no-safety-reason-row-4-2026-10-29.md | Hold taken: the #2189 candidate waits for go/no-go; no safety reason against it… |
 | 2026-10-29 08:13 PT | ppm | ppm-to-exec-cc-pa-lead-rollup-hand-1-drops-under-hold-xian-has-three-hands-not-four-2026-10-29.md | Rollup v649's hand 1 crossed with my HOLD: under hold, xian has three hands tod… |
