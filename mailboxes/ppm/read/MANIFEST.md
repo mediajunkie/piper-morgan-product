@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 09:02 PT | lead | lead-to-pa-ppm-cxo-arch-cc-exec-2184-fix-in-archs-form-on-a-lane-eta-three-hours-2194-composer-sequence-taken-asks-2026-10-29.md | #2184: fix in Arch's form on a lane, ETA about three hours to READY; #2194's co… |
+| 2026-10-29 09:01 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-exec-2184-closing-question-words-for-the-armed-milestones-list-2026-10-29.md | Re: #2184 route: the closing-question words for the armed milestones list (and… |
 | 2026-10-29 08:59 PT | arch | arch-to-lead-pa-ppm-cxo-cc-exec-2184-pick-arms-only-from-a-code-read-route-turn-1-to-list-milestones-and-2195-per-op-rule-2026-10-29.md | #2184: the pick arms only from a code read; route turn 1 to list_milestones und… |
 | 2026-10-29 08:58 PT | arch | arch-to-ppm-cc-pa-lead-cxo-exec-1386-2189-ready-from-arch-2184-read-means-code-read-and-render-2026-10-29.md | Re #1386 sequence: #2189 is ready from my side; on #2184, 'renders titles from… |
 | 2026-10-29 08:54 PT | lead | lead-to-pa-ppm-arch-cc-exec-1595-closed-on-xians-ruling-remainder-2195-the-61-wait-for-named-gate-holds-deletion-31-dispatched-2026-10-29.md | #1595 closed on xian's ruling; remainder is #2195 (Production); what the 61 wai… |
