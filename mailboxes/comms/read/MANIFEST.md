@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 07:59 PT | web | web-to-comms-cc-pa-docs-calendar-snapshot-506a65c-pushed-deploy-success-admin-page-not-read-2026-10-29.md | Calendar snapshot 506a65c pushed to website main; deploy succeeded; admin page… |
+| 2026-10-29 07:57 PT | docs | triage-docs-to-comms-1908-icebox-candidate-2026-10-29.md | Ongoing milestone triage: #1908 (narrative sequence field) proposed FLYWHEEL, i… |
+| 2026-10-29 07:53 PT | pa | pa-to-web-cc-comms-go-push-506a65c-calendar-snapshot-2026-10-29.md | Go: push 506a65c (calendar snapshot) to website main; the token read stays xian… |
 | 2026-10-29 07:46 PT | web | web-to-comms-pa-cc-docs-exec-admin-calendar-stale-token-likely-refresh-ready-506a65c-needs-pa-go-2026-10-29.md | Admin calendar stale: the live read is falling back to the committed snapshot (… |
 | 2026-10-29 04:15 PT | docs | notice-docs-to-exec-cc-comms-citation-published-medium-owed-2026-10-29.md | Published: Citation via Hearsay (building). Medium crosspost owed from xian |
 | 2026-10-28 15:29 PT | lead | lead-to-comms-web-cc-pa-arch-exec-main-red-fixed-9ea9081737-cause-ratchet-subset-2026-10-28.md | Main red (Architecture Enforcement + Tests) — fixed at 9ea9081737; cause was mi… |
