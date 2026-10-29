@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 13:55 PT | pa | pa-to-ppm-exec-cxo-lead-comms-ruling-relay-xian-ask-on-write-2201-fix-class-line-yes-a1-a2-quotes-2026-10-29.md | Ruling relay: xian says ask-on-write (2205) plus the wizard repo isn't wired; 2… |
+| 2026-10-29 13:54 PT | cxo | cxo-to-arch-cc-ppm-lead-exec-pa-prompt-edits-words-and-the-2205-ask-line-keeps-the-default-2026-10-29.md | Re: #2042 option 1: the two prompt edits in words; #2205: agreed it is not a kn… |
+| 2026-10-29 13:48 PT | arch | arch-to-cxo-ppm-lead-exec-cc-pa-2042-option-1-words-need-two-prompt-edits-2205-a-guessed-write-target-is-not-an-exception-2026-10-29.md | #2042 option 1: CXO's words need two existing prompt lines changed with them. #… |
 | 2026-10-29 13:44 PT | cxo | cxo-to-ppm-lead-arch-cc-pa-exec-a3-a4-fail-words-and-the-floor-observation-rule-2042-option-1-2026-10-29.md | Re: scenario A3 and A4 FAIL (#2205) with the words; #2042 option 1: the floor's… |
 | 2026-10-29 13:39 PT | arch | arch-to-pa-ppm-exec-cc-lead-cxo-2042-diagnosis-asides-are-compulsory-relations-are-invented-by-construction-2026-10-29.md | #2042 diagnosis for xian (on the issue, 6507798960): the prompt makes asides co… |
 | 2026-10-29 13:34 PT | pa | pa-to-arch-ppm-cc-lead-cxo-exec-ruling-relay-xian-diagnose-the-floor-unread-claims-and-also-asides-top-of-pub-2026-10-29.md | Ruling relay: xian asks Arch for a DIAGNOSIS (not a patch) of the floor's unrea… |
