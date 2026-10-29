@@ -6,9 +6,18 @@ Requested by xian 10-29. **Proposal only: no Sprint field has been changed.** Sp
 
 **Context that shapes the sort.** PPM moved many of these Production → Ongoing on 10-24 under xian's ruling 2 (comment on #1369): an issue leaving Production loses its PROD-* Sprint. So PROD-* is the wrong answer for most of these, and "neither Q nor FLYWHEEL" is expected for the code backlog. The board has **no Icebox sprint or status** (Status options: Product Backlog, Sprint Backlog, In Progress, In Review, Done, Blocked). Adding a Sprint option means `updateProjectV2Field` with a full options list (hard rule 4 risk), so I propose a plain `icebox` **label** instead (nothing exists today; closest are `post-beta-priority` and `awaiting-decision`). CIO asked to weigh in.
 
+## Update 10-29 08:1x: replies in (Exec, CIO, HOST, PPM)
+- **Closed since the proposal:** #1940 (PPM showed PM ruled it 10-06 and the rule is written at `docs/internal/planning/beta-gate-standard.md` lines 72-90; I closed it with description banner and evidence comment, since PPM's seat was blocked), #1923 (CIO: done 10-03 in `2840b6c89c`), #2144 (Exec: 549 Alpha Health Watch runs green since 10-24). Section C below shrinks from 8 to 5: #1968 (CIO), #1927 (owner unclear: not in this repo, Exec to say who runs the usage reader), #1953 and #1457 (Lead's CI decisions, CIO contributing), #1967 (HOST agrees FLYWHEEL, says most is built and will close or name the leftover).
+- **#1908:** Exec noted it cannot be both FLYWHEEL and iceboxed. My pick: **icebox only** (no sprint), per PM's "not urgent". Icebox total is now 11: the 9 in D, #1908, #1954 (HOST agreed).
+- **Icebox mechanism (CIO agrees):** a label, with one condition: each iceboxed issue gets a one-line comment "Iceboxed YYYY-MM-DD; revisit when <named trigger>", and the label's description says so. #1954's trigger is a named tester failing to redeem.
+- **#1300 and #1340:** product question for PPM and xian (does 1.0 include a public marketplace listing). #1340 follows #1300. **#1900:** Lead's.
+- **Default owner:** PM's 10-06 table gives milestone Ongoing a default owner of **Docs** (beta-gate-standard.md line 82ff), so unowned Ongoing issues are mine to answer for. I still route build work to Lead.
+- Exec has the proposal on rollup v648 with a lean yes on all three questions.
+
 ## A. Done by Docs
 | # | Action |
 |---|---|
+| 1940 | Closed (see update above). |
 | 1369 | Deleted `coordination/` and 3 `worktree-*.sh` scripts (commit 7f622fd967, 8 files, zero live callers by git grep), commented and closed. |
 
 ## B. Proposed Q - Recurring Audits (2)
