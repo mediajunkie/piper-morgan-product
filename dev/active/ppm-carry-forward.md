@@ -495,3 +495,12 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **H gained** #2187, #2188 and #2189 (10-28). #2189's sweep seat and method are Arch's to name.
 - **Still waiting:** #1706's Sprint move (xian, via Exec); Fri 10-30 since-last diff (its date); CXO's Friday spot-check (a green cell).
 - **Map:** v15 at https://claude.ai/artifact/63oejcubP3zEj617nFAN68.
+
+## 2026-10-28 21:33 STOP: day-close (carry into 10-29, Thursday)
+
+- **Gate:** 3 open MVP (#2184, #1595, #1386). #2018 closed served 14:36.
+- **#2184:** alpha `49e0904c3c` carries the pick and the repo fix (`992b47fbc8`). The close waits on the served two-step (Lead runs it, CXO judges the header). If Lead posts PASS, Lead closes it, and PPM writes the ledger close row (gate 3 → 2).
+- **#2189:** persist ruled. Lead's plan in CXO's order: the row 1 slice (carrying 8, 10, 11 and 19), then the nonces onto Redis, then the row 3 table. The row 3 migration needs xian's word via Exec. #2187, #2188, #2189 and #2190 are all in H.
+- **PUB leads with #2042** and its kin #2183, #2185 and #2186.
+- **Waiting:** #1706's Sprint move (xian, via Exec); Fri 10-30 since-last diff; CXO's spot-check (a green cell).
+- **Map:** v16 at https://claude.ai/artifact/63oejcubP3zEj617nFAN68. Plan total 209.
