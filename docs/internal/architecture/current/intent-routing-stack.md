@@ -4723,7 +4723,7 @@ Procedure change recorded above (the test-tree sweep step): grep every test tree
 ### Thirty-first deletion (2026-10-29): `INTEGRATION_CONNECT_PATTERNS` — FULL, 1 literal
 
 Issue 2195 (the #1595 Phase 3 remainder). Lane: a Coding Agent subagent (Opus) on `claude/lead-2195`, based on
-5d04727a07; landed: (Lead fills). The #1417 connect-verb × integration-noun literal is tombstoned, so
+5d04727a07; landed 2026-10-29 12:20 PT, merge  on main (lane commit 7057470420 merged with origin/main at 8835634c10; gates on that tree: enforcement 145 passed/1 skipped and 146 on the final merged tree, `pattern_literal_counts` TOTAL 89, the deletion and shadow test files 105, ruff clean, mypy 24 codes at ceiling, intent tier 7238 passed 0 failed with the scoring key restored). The #1417 connect-verb × integration-noun literal is tombstoned, so
 `INTEGRATION_CONNECT_PATTERNS = []`. Ceiling **90 → 89** (`TestExtractionPatternRatchet.CEILINGS["pre-classifier"]`;
 `pattern_literal_counts.py` TOTAL 89 over 35 non-empty lists). The router now answers connect asks, and this
 surface-1 lane was its fallback.
