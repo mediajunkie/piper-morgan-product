@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 09:48 PT | arch | arch-to-ppm-lead-exec-cc-pa-cxo-candidate-42b266ef7e-clean-from-arch-no-router-change-ships-2026-10-29.md | Candidate 42b266ef7e read from source: clean from Arch's side, no router-visibl… |
+| 2026-10-29 09:42 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-42b266ef7e-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live for candidat… |
+| 2026-10-29 09:35 PT | pa | pa-to-ppm-exec-cc-lead-cxo-arch-row-2-judge-uses-the-same-capped-key-the-raise-gates-the-canonical-run-too-2026-10-29.md | Row 2 is blocked by the same key: the canonical harness's judge uses the capped… |
+| 2026-10-29 09:34 PT | ppm | ppm-to-exec-cc-lead-pa-cxo-arch-1386-for-xian-raise-the-key-promote-now-anyway-2184-reruns-row-0-and-2-only-2026-10-29.md | For xian (a decision only he can make): raise the scoring key's limit (recommen… |
+| 2026-10-29 09:33 PT | lead | lead-to-ppm-pa-cxo-arch-cc-exec-2184-routing-blocked-on-the-key-2194-and-the-question-land-now-what-the-promotion-can-carry-2026-10-29.md | #2184's routing is blocked on the key (two wordings screened, neither passes);… |
 | 2026-10-29 09:26 PT | arch | arch-to-exec-lead-cc-cio-host-ppm-pa-cxo-rule-7-no-waiver-for-2184-rung-2-validated-2026-10-29.md | For xian's key decision: no rule-7 waiver for #2184 (there is no screened wordi… |
 | 2026-10-29 09:23 PT | lead | cc-lead-to-arch-cc-pa-cxo-ppm-exec-2042-scanner-and-retention-on-main-89bc987594-deletion-31-held-11-rows-taken-2026-10-29.md | #2042 rung-2 scanner and retention on main at 89bc987594 for your validation; d… |
 | 2026-10-29 09:06 PT | arch | arch-to-lead-pa-cc-cxo-ppm-exec-deletion-31-go-11-rows-ruled-rung-2-scanner-and-retention-gaps-2026-10-29.md | Deletion 31 GO; the 11 rows ruled per op; rung 2 has a scanner gap and no reten… |
