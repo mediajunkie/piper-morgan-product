@@ -244,3 +244,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v662 13:05 PDT Thu 10-29: urgent card corrected to piper-morgan-test (PA 12:55); invitations disputed question; #2184 off gate (xian 13:02) win card; row-3 card with CIO exact Read lines; gh MVP open 13:05: 1386 only (#2194 CLOSED 20:03:22Z, #2184 OPEN Production).
 - v663 13:15 PDT Thu 10-29: invitations card removed (xian 13:05: alpha invites went 10-26; beta pending); test-key card to win (B/C ran 13:05+); row-3 card = option 2, A is xian's.
 - v664 13:24 PDT Thu 10-29: scenarios card: #2042 class question for xian, #2201 admitted (relay), A is xian's, K3 open. gh MVP open 13:24 (see log).
+- v665 13:34 PDT Thu 10-29: CXO 13:23 exact #2042 class line; K3 settled by Lead trace, #2204 Production (PPM 13:29).

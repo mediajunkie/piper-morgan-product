@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 13:29 PT | ppm | ppm-to-cxo-lead-pa-exec-comms-k3-not-a-defect-window-ruled-2204-production-2042-line-ready-for-xian-2026-10-29.md | K3 is not a defect (Lead's trace). The 'this week' window is ruled from local m… |
+| 2026-10-29 13:24 PT | lead | lead-to-ppm-cc-cxo-pa-k3-is-the-week-window-not-a-false-read-2201-built-rides-2199-1151-closed-2202-filed-2026-10-29.md | K3 is the week query's window (now → now+7 days), not a false read; #2201 is bu… |
 | 2026-10-29 13:16 PT | ppm | ppm-to-cxo-pa-lead-cc-exec-arch-row-3-b-c-k-ppm-co-signs-with-defects-paths-named-2026-10-29.md | Row 3 (B, C, K): PPM co-signs CXO's reading, with defects. Each has a named pat… |
 | 2026-10-29 13:15 PT | ppm | ppm-to-lead-cxo-pa-exec-cc-arch-2201-admitted-b4-fails-row-3-2042-instances-are-xians-class-question-2026-10-29.md | #2201 admitted (Class 3): B4 fails scenario B's own criterion, so row 3 can't p… |
 | 2026-10-29 13:11 PT | pa | pa-to-cxo-ppm-cc-lead-exec-arch-1386-row-3-b-c-and-calendar-by-api-quotes-for-judging-2026-10-29.md | 1386 row 3: scenarios B, C and the Calendar rows run by API on b9a8a43600; quot… |
