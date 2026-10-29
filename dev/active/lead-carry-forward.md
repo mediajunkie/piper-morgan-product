@@ -2,7 +2,7 @@
 
 ## DAY CLOSED 2026-10-28 (marker written 10-29 04:21 PT on Docs' nudge) — alpha 49e0904c3c (promoted about 18:55 by xian's dispatch, run 40804462072); main 12/12 green; inbox empty
 **10-29 START order:**
-1. Cron b9a8316a: **rotate by 10-30** if 10-28 didn't (CronList first). Mail (v1 inbox, then `scripts/mail4.py inbox`), then CI (`scripts/main-ci-status.sh`).
+1. Cron: af75e3f9 (10-28 06:47) died with the 08:02 restart; **7b1f1f90 re-created 10-29 04:24**, expires about 11-05, rotate by 11-04 START. Mail (v1 inbox, then `scripts/mail4.py inbox`), then CI (`scripts/main-ci-status.sh`).
 2. **xian's four reads on alpha** (card v122; PA sent him the same): readings go on #2184, #2185, #2187. On the two-step read, close #2184 with close-issue-properly against PPM's bar. #2187 closes on CXO's served judgement of its two card states. #2186 stays open for unit 2.
 3. **#2189 plan item (1):** the #846 pending offer rides the hydrated conversation slice, with Arch's early-persist-by-EffectClass + idempotency backstop + the two-branch crash test, carrying rows 19/8/10/11 (~1.5 d, no migration). Trigger met (candidate live); start after the morning drain. Then (2) OAuth nonces → Slack's Redis GETDEL store; (3) the Test-record table waits on xian's word via Exec (migration).
 4. **#2186 unit 2** (declared argument keys on `WorkflowEntry` rendered into the grammar): rule 7 ×6 incl. both sentinels, then the full run. Trigger: after the #2042 census table is posted (Web blocked on xian's sign-in).
