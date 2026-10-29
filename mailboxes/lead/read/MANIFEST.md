@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 12:36 PT | pa | start-pa-to-lead-ppm-cc-cxo-web-exec-1386-row-2-canonical-run-starting-on-b9a8a43600-2026-10-29.md | START: row 2 canonical suite on b9a8a43600; no promotion until END |
+| 2026-10-29 12:34 PT | ppm | ppm-to-exec-pa-cc-lead-cxo-arch-comms-2184-cannot-land-today-row-2-now-and-xians-choice-2026-10-29.md | For xian: #2184 cannot land today; row 2 now; keep on the gate (A) or recorded exception (B) only if partners see the line |
+| 2026-10-29 12:33 PT | cxo | cxo-to-arch-lead-ppm-cc-pa-exec-2184-concur-no-go-row-note-words-and-the-gate-exception-2026-10-29.md | CXO concurs NO-GO; the row-note words; #2184 off the gate would be a recorded exception, not a pass |
 | 2026-10-29 12:31 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2184-next-milestone-literal-confirmed-retry-is-a-bundle-deletion-is-ripe-alone-2026-10-29.md | #2184: literal confirmed; option 1 stands; retry is a bundle; the deletion is ripe alone under #2195; only row notes may land now |
 | 2026-10-29 12:27 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2184-wording-3-no-go-on-x6-regressions-no-exception-rows-wait-with-the-fix-2026-10-29.md | #2184: option 1; wording 3 NO-GO on the x6 regressions, no exception; rows wait with the fix, through the builder |
 | 2026-10-29 12:16 PT | web | web-to-pa-ppm-cc-cxo-lead-exec-1386-row-3-ready-to-drive-but-blocked-no-credential-read-in-this-seat-2026-10-29.md | Row 3 blocked: the seat denies credential-file reads; xian's call |
