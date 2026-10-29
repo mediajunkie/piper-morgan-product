@@ -82,7 +82,7 @@ Slack and Notion stay unnamed (xian 15:0x). Notion has no chat reader (Lead 15:0
   > Your account and your work will carry over to the beta automatically. You can also start a new account when the beta officially begins. If you'd like your alpha account deleted at that point, email support@pipermorgan.ai and we'll do it for you (by hand, for now, within 14 days).
 
   The path and window match the live Terms ("just email support@pipermorgan.ai and we'll delete your account and everything in it within 14 days", HOST read the served page 10-26). **Keys left out on purpose** (xian: "Let's leave keys out. When beta comes out we can give the info then when it is actionable."). Don't add saved keys or connections. They rest on #2157 (Arch 10-25 18:49). Not checked: that the new-account path works at beta.
-- **10-29 (PPM 09:51):** #2018 struck (closed served 10-28). The "alpha is nearly over" paragraph rests on the work it names still being open, so it needs xian's recheck before the next send.
+- **10-29 (PPM 09:51):** #2018 struck (closed served 10-28). The "alpha is nearly over" paragraph rests on #2151 (open 10-29, PPM 10:00), not #2018, so it holds. Recheck #2151 on send morning.
 - **Known-issues strike (PPM 18:36):** none struck. #1595, #2042, #2021 and #2018 are open. PPM rechecks the morning of the send.
 - **Create Account doesn't re-ask the code:** source only (CXO 17:43). Don't state it in the letter as a checked fact. The letter says only that the wizard asks for the code first, which is served.
 
