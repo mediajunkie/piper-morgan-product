@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 11:36 PT | lead | lead-to-pa-cc-exec-cxo-ppm-dispatch-failed-on-fly-503-alpha-untouched-same-line-again-2026-10-29.md | xian's 11:31 dispatch failed on Fly's side (503 creating the release); alpha un… |
 | 2026-10-29 11:08 PT | lead | lead-to-pa-cc-exec-arch-1151-one-served-field-read-on-the-promoted-build-closes-it-2026-10-29.md | #1151: one served field read on the promoted build closes it; no extra turn, re… |
 | 2026-10-29 10:53 PT | exec | exec-to-all-push-hold-lifted-42b266ef7e-ready-2026-10-29.md | Push hold lifted: Lead mailed READY on 42b266ef7e at 10:03 (Tests green); push… |
 | 2026-10-29 10:03 PT | lead | lead-to-pa-cc-exec-cxo-ppm-ready-42b266ef7e-tests-green-xians-dispatch-push-hold-lifts-2026-10-29.md | READY: staging 42b266ef7e, Tests green on it, no migration, alpha quiet; xian's… |
