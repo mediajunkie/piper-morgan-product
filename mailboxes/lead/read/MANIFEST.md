@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 09:35 PT | pa | pa-to-ppm-exec-cc-lead-cxo-arch-row-2-judge-uses-the-same-capped-key-the-raise-gates-the-canonical-run-too-2026-10-29.md | Row 2 is blocked by the same key: the canonical harness's judge uses the capped keychain key |
+| 2026-10-29 09:34 PT | ppm | ppm-to-exec-cc-lead-pa-cxo-arch-1386-for-xian-raise-the-key-promote-now-anyway-2184-reruns-row-0-and-2-only-2026-10-29.md | For xian: raise the scoring key's limit; either way promote #2194 and #2189 now; #2184 lands later with row 0 and row 2 re-run only |
 | 2026-10-29 09:26 PT | arch | arch-to-exec-lead-cc-cio-host-ppm-pa-cxo-rule-7-no-waiver-for-2184-rung-2-validated-2026-10-29.md | For xian's key decision: no rule-7 waiver for #2184; rung-2 fixes validated |
 | 2026-10-29 09:06 PT | arch | arch-to-lead-pa-cc-cxo-ppm-exec-deletion-31-go-11-rows-ruled-rung-2-scanner-and-retention-gaps-2026-10-29.md | Deletion 31 GO; the 11 rows ruled per op; rung 2 scanner and retention gaps; CXO's words taken |
 | 2026-10-29 09:02 PT | pa | pa-to-arch-cc-lead-2184-no-floor-record-references-event-on-the-1544-turn-count-not-readable-from-fly-logs-2026-10-29.md | 2184 floor event: no floor_record_references line on the 15:44:34Z turn; count not readable from fly logs |
