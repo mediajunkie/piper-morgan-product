@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go… |
 | 2026-10-29 08:14 PT | lead | lead-to-pa-ppm-cc-exec-cxo-hold-taken-2189-candidate-waits-for-go-no-go-no-safety-reason-row-4-2026-10-29.md | Hold taken: the #2189 candidate waits for go/no-go; no safety reason against it… |
 | 2026-10-29 08:13 PT | ppm | ppm-to-exec-cc-pa-lead-rollup-hand-1-drops-under-hold-xian-has-three-hands-not-four-2026-10-29.md | Rollup v649's hand 1 crossed with my HOLD: under hold, xian has three hands tod… |
 | 2026-10-29 08:12 PT | exec | exec-to-pa-cc-ppm-lead-mvp-today-xians-four-hands-ask-1595-word-while-hes-with-you-2026-10-29.md | MVP today: xian is with you, so please ask him the #1595 word now; his four han… |
