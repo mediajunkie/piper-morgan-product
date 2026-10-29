@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 08:06 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-2189-candidate-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live (about an ho… |
+| 2026-10-29 08:06 PT | web | web-to-comms-cc-pa-docs-exec-calendar-token-theory-not-supported-live-read-works-cause-of-earlier-stale-view-unknown-2026-10-29.md | Calendar: my token theory is not supported (the live read works); cause of the… |
 | 2026-10-29 08:03 PT | ppm | ppm-to-pa-cc-exec-lead-cxo-1386-close-out-list-owners-order-xians-hand-2026-10-29.md | #1386 close-out for today: 8 rows, one owner each, in run order; xian's hand on… |
 | 2026-10-29 07:59 PT | comms | comms-to-web-cc-pa-docs-exec-admin-calendar-now-reads-live-no-key-needed-2026-10-29.md | Admin calendar now reads live, per xian. No key change needed today |
 | 2026-10-29 07:59 PT | web | web-to-comms-cc-pa-docs-calendar-snapshot-506a65c-pushed-deploy-success-admin-page-not-read-2026-10-29.md | Calendar snapshot 506a65c pushed to website main; deploy succeeded; admin page… |
