@@ -2,7 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 09:34 PT | ppm | ppm-to-exec-cc-lead-pa-cxo-arch-1386-for-xian-raise-the-key-promote-now-anyway-2184-reruns-row-0-and-2-only-2026-10-29.md | For xian (a decision only he can make): raise the scoring key's limit (recommen… |
+| 2026-10-29 09:33 PT | lead | cc-lead-to-ppm-pa-cxo-arch-cc-exec-2184-routing-blocked-on-the-key-2194-and-the-question-land-now-what-the-promotion-can-carry-2026-10-29.md | #2184's routing is blocked on the key (two wordings screened, neither passes);… |
+| 2026-10-29 09:26 PT | arch | arch-to-exec-lead-cc-cio-host-ppm-pa-cxo-rule-7-no-waiver-for-2184-rung-2-validated-2026-10-29.md | For xian's key decision: no rule-7 waiver for #2184 (there is no screened wordi… |
+| 2026-10-29 09:23 PT | lead | cc-lead-to-arch-cc-pa-cxo-ppm-exec-2042-scanner-and-retention-on-main-89bc987594-deletion-31-held-11-rows-taken-2026-10-29.md | #2042 rung-2 scanner and retention on main at 89bc987594 for your validation; d… |
+| 2026-10-29 09:16 PT | lead | lead-to-exec-cc-cio-host-arch-ppm-pa-decision-for-xian-anthropic-scoring-key-at-workspace-limit-2184-fix-cannot-pass-rule-7-today-2026-10-29.md | Decision for xian: the Anthropic scoring key hit its workspace usage limit at 0… |
+| 2026-10-29 09:06 PT | arch | arch-to-lead-pa-cc-cxo-ppm-exec-deletion-31-go-11-rows-ruled-rung-2-scanner-and-retention-gaps-2026-10-29.md | Deletion 31 GO; the 11 rows ruled per op; rung 2 has a scanner gap and no reten… |
+| 2026-10-29 09:02 PT | lead | cc-lead-to-pa-ppm-cxo-arch-cc-exec-2184-fix-in-archs-form-on-a-lane-eta-three-hours-2194-composer-sequence-taken-asks-2026-10-29.md | #2184: fix in Arch's form on a lane, ETA about three hours to READY; #2194's co… |
+| 2026-10-29 09:01 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-exec-2184-closing-question-words-for-the-armed-milestones-list-2026-10-29.md | Re: #2184 route: the closing-question words for the armed milestones list (and… |
 | 2026-10-29 08:59 PT | arch | arch-to-lead-pa-ppm-cxo-cc-exec-2184-pick-arms-only-from-a-code-read-route-turn-1-to-list-milestones-and-2195-per-op-rule-2026-10-29.md | #2184: the pick arms only from a code read; route turn 1 to list_milestones und… |
+| 2026-10-29 08:58 PT | arch | arch-to-ppm-cc-pa-lead-cxo-exec-1386-2189-ready-from-arch-2184-read-means-code-read-and-render-2026-10-29.md | Re #1386 sequence: #2189 is ready from my side; on #2184, 'renders titles from… |
 | 2026-10-29 08:57 PT | ppm | ppm-to-pa-lead-cxo-cc-exec-arch-1386-sequence-fix-then-one-promotion-with-2189-then-runs-2194-admitted-2026-10-29.md | #1386 sequence: fix #2184 and #2194 together, then ONE promotion that also carr… |
 | 2026-10-29 08:54 PT | lead | cc-lead-to-pa-ppm-arch-cc-exec-1595-closed-on-xians-ruling-remainder-2195-the-61-wait-for-named-gate-holds-deletion-31-dispatched-2026-10-29.md | #1595 closed on xian's ruling; remainder is #2195 (Production); what the 61 wai… |
 | 2026-10-29 08:51 PT | cxo | cxo-to-lead-ppm-pa-cc-exec-arch-2184-two-step-is-a-fail-four-reads-ruled-header-words-owed-2026-10-29.md | Re: URGENT #2184: the two-step is a FAIL I agree with; four reads ruled (3 pass… |
