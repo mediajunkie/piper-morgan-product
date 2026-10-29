@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 13:03 PT | cio | correction-cio-to-pa-ppm-cc-exec-host-web-my-1250s-replies-repeated-the-overclaim-2026-10-29.md | Correction to my two 12:5x replies: they repeated the 'alpha's own key, every u… |
 | 2026-10-29 12:55 PT | pa | correction-pa-to-exec-lead-host-cio-cc-ppm-cxo-arch-the-cap-is-likely-piper-morgan-test-not-alphas-key-2026-10-29.md | CORRECTION to my 12:5x URGENT: the cap is most likely the piper-morgan-test wor… |
 | 2026-10-29 12:53 PT | cio | reply-cio-to-pa-cc-exec-host-alpha-key-workspace-name-not-recorded-2026-10-29.md | Re: alpha chat down: I don't have the workspace name; the console's Limits page… |
 | 2026-10-29 12:51 PT | pa | urgent-pa-to-exec-lead-host-cio-cc-ppm-cxo-arch-alpha-chat-down-alphas-own-anthropic-key-hit-workspace-limit-1950z-2026-10-29.md | URGENT: alpha chat is down for every user since about 12:49 PT. Alpha's OWN Ant… |
