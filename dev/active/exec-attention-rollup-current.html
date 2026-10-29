@@ -32,7 +32,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 29 October</h1>
-<p class="meta">Exec · v665, rebuilt 13:34 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v666, rebuilt 13:46 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <div class="card win"><b>Key limit raised ($90 to $100, your word via PA 11:36); calls succeed again (11:35).</b> Lead resumes the #2184 screens; row 2&rsquo;s judge works. Recorded in decisions.log; CIO and HOST told.</div>
 
@@ -40,15 +40,16 @@
 
 <div class="card win"><b>#2184 is off the MVP gate as a known issue</b> (your word, 13:02). Recorded in decisions.log with your priority rule: everything that left MVP goes to the top of triage for the first Production sprint. CXO&rsquo;s line goes in the first beta invitation (no sooner than 10-30, after your conversation with HOST); whether the three alpha partners get a note is a question for that conversation. Row 0 also passed #2194&rsquo;s headers and #2187&rsquo;s Reconnect card; the milestone pick still fails a different way, filed as #2199 in Production.</div>
 
-<div class="card hot"><b>Scenarios B and C: two calls for you, plus scenario A.</b> CXO judged them (PPM co-signs): most rows pass, with defects.
+<div class="card hot"><b>Scenarios: four short answers from you (PA has you).</b> Arch&rsquo;s diagnosis you asked for is on #2042: the fallback reply&rsquo;s prompt <i>requires</i> an observation on every reply, and nothing tells it which milestone an issue is in, so &ldquo;lines up with your Beta launch milestone&rdquo; is invented by construction. The fix (make the observation optional, have code supply the links) is now second in PUB.
 <ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
-<li><b>One class question.</b> Twice Piper tacked on a made-up detail: &ldquo;issue #31 &hellip; lines up with your Beta launch milestone&rdquo; (it has no milestone, and was two minutes old). That&rsquo;s #2042&rsquo;s class, the same as #2184, which you made a known issue at 13:02. <b>May the beta letter carry one known-issues line for the whole class</b> (CXO&rsquo;s exact words: &ldquo;Piper can state a detail about one of your records, such as a milestone or when something last changed, that it did not look up. Check anything that matters in GitHub before you rely on it.&rdquo; Struck only when #2042&rsquo;s served fix passes), with #2042 at the top of PUB? <span style="color:var(--blue);font-weight:600">PPM and I recommend yes;</span> otherwise each instance comes onto the gate.</li>
-<li><b>#2201 admitted to MVP</b> (PPM): after renaming an issue, &ldquo;what did we create this session?&rdquo; gave the old title. Scenario B can&rsquo;t pass with it. Lead is sizing it; if small, it ships with #2199 between scenarios and PA re-runs B. If not small today, it comes to you as an exception like #2184. One word, &ldquo;out&rdquo;, undoes the admission.</li>
-<li><b>Scenario A is yours next,</b> by hand in a private window with the fresh-account invite.</li>
+<li><b>#2205, keep it on the gate?</b> In your scenario A, with no default repo, &ldquo;Create an issue&rdquo; was silently sent to <code>7cups-testbot</code> (2017, issues disabled); nothing was created and the reply hid why. <span style="color:var(--blue);font-weight:600">PPM and I: keep it on.</span> <b>And your rule:</b> on a <i>write</i> with no default repo, Piper asks which repo instead of picking the oldest (your 07-04 rule can stay for reads). We recommend yes. Either way Lead passes GitHub&rsquo;s refusal reason through.</li>
+<li><b>#2201, keep it on the gate for now?</b> You said &ldquo;probably not an MVP blocker&rdquo;, but Lead has already built the fix and it rides the next release. <span style="color:var(--blue);font-weight:600">PPM and I: keep it;</span> it becomes a known issue only if that release slips.</li>
+<li><b>The one known-issues line for the made-up-details class</b> in the beta letter (CXO&rsquo;s words: &ldquo;Piper can state a detail about one of your records, such as a milestone or when something last changed, that it did not look up. Check anything that matters in GitHub before you rely on it.&rdquo;). <span style="color:var(--blue);font-weight:600">We recommend yes;</span> otherwise those cases come onto the gate.</li>
+<li><b>Scenario A&rsquo;s first two quotes</b> (A1, A2), for CXO to judge.</li>
 </ol>
-The calendar row is settled without you: Lead traced &ldquo;this week&rdquo; to a window starting now, so today&rsquo;s earlier meeting fell outside it. PPM ruled it should start at local midnight (#2204, after go/no-go).</div>
+Settled without you: the calendar row (counted from now, not midnight; #2204 later).</div>
 
-<div class="card act"><b>Closing MVP: where it stands.</b> Gate list (<code>gh</code> 13:24): <b>2 open, #2201 and #1386.</b> #2194 closed on CXO&rsquo;s pass; #2184 moved out.
+<div class="card act"><b>Closing MVP: where it stands.</b> Gate list (<code>gh</code> 13:46): <b>3 open, #2205, #2201 and #1386.</b> #2194 closed on CXO&rsquo;s pass; #2184 moved out.
 <ul style="margin:.3rem 0 .2rem 1.2rem;padding:0">
 <li><b>Done today:</b> #1595 closed on your split ruling (remainder #2195); the database check passed; your key raise; the promotion carrying #2194&rsquo;s header fix and #2189.</li>
 <li><b>#2184:</b> off the gate as a known issue (your word 13:02).</li>
@@ -116,7 +117,7 @@ The calendar row is settled without you: Lead traced &ldquo;this week&rdquo; to 
 <li>Mail v4 stays on three seats until the 11-05 review.</li>
 </ul></div>
 <h2>📊 Where things stand</h2>
-<div class="card">MVP gate: <b>2 open</b> (#2201, #1386; <code>gh</code> 13:24 Thu). #1595 closed on xian&rsquo;s split (remainder #2195). #2018 closed Wed. Alpha <code>b9a8a43600</code> (live 12:04 Thu, your third dispatch; the first two hit Fly 503s, #2196 filed for a retry), frozen until go/no-go. Main Tests red on <code>89bc987594</code> (Lead&rsquo;s, one test over the known baseline; the fix is on main and in candidate <code>42b266ef7e</code>, whose Tests run started 09:41). Arch read that candidate from source: clean, no router change (09:48). Tested-path push hold on until Lead&rsquo;s READY.</div>
+<div class="card">MVP gate: <b>3 open</b> (#2205, #2201, #1386; <code>gh</code> 13:46 Thu). #1595 closed on xian&rsquo;s split (remainder #2195). #2018 closed Wed. Alpha <code>b9a8a43600</code> (live 12:04 Thu, your third dispatch; the first two hit Fly 503s, #2196 filed for a retry), frozen until go/no-go. Main Tests red on <code>89bc987594</code> (Lead&rsquo;s, one test over the known baseline; the fix is on main and in candidate <code>42b266ef7e</code>, whose Tests run started 09:41). Arch read that candidate from source: clean, no router change (09:48). Tested-path push hold on until Lead&rsquo;s READY.</div>
 <p class="meta">How I checked each version: <code>dev/active/exec-rollup-verification-history.md</code> (not needed to read this page).</p>
 
 </div>
