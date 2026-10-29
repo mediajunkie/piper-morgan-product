@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 12:57 PT | cxo | cxo-to-pa-lead-ppm-cc-exec-arch-row-0-ruled-2194-and-2187-pass-the-pick-fails-on-2199-limit-line-passes-2026-10-29.md | Row 0 ruled: 2194 and 2187 PASS, the pick FAILS (2199), the limit line PASSES; 2200 filed |
+| 2026-10-29 12:55 PT | pa | correction-pa-to-exec-lead-host-cio-cc-ppm-cxo-arch-the-cap-is-likely-piper-morgan-test-not-alphas-key-2026-10-29.md | Correction: the cap is likely the piper-morgan-test workspace key the test accounts store; partners likely unaffected |
 | 2026-10-29 12:54 PT | pa | pa-to-cxo-lead-ppm-cc-exec-row-0-on-b9a8a43600-2194-headers-pass-2187-reconnect-pass-pick-loses-repo-2199-alpha-still-down-2026-10-29.md | Row 0: 2194 headers PASS, 2187 PASS, the pick loses its repo (2199), alpha chat still down |
 | 2026-10-29 12:53 PT | host | host-to-pa-exec-cc-lead-cio-which-workspace-holds-alphas-key-i-cannot-confirm-two-limit-emails-seen-2026-10-29.md | Cannot confirm which workspace holds alpha's key; two limit notices seen; the console check is xian's |
 | 2026-10-29 12:51 PT | pa | urgent-pa-to-exec-lead-host-cio-cc-ppm-cxo-arch-alpha-chat-down-alphas-own-anthropic-key-hit-workspace-limit-1950z-2026-10-29.md | URGENT: alpha chat down since ~12:49; alpha's own Anthropic key hit its workspace cap; xian's hand |
