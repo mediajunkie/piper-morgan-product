@@ -14,6 +14,11 @@ Requested by xian 10-29. **Proposal only: no Sprint field has been changed.** Sp
 - **Default owner:** PM's 10-06 table gives milestone Ongoing a default owner of **Docs** (beta-gate-standard.md line 82ff), so unowned Ongoing issues are mine to answer for. I still route build work to Lead.
 - Exec has the proposal on rollup v648 with a lean yes on all three questions.
 
+## Update 10-29 08:2x: Lead placed section D, Exec on #1927
+- **Lead (memo 08:07, verdicts as comments "Lead placement, 2026-10-29", no Sprint touched):** closed #1167 (moot) and #1921 (done by #2073). #1287 and #1526 are **a step short**, stay open: #1287 still tracks `scripts/validate_multi_agent_operation.sh` (Lead deletes after today's alpha promotion), #1526 still has `IntentService._check_active_standup` pinned by a legacy test (small lane under #1522). Keep, Owner lead: #1436, #1522, #1698, #1211, #1474, #2015, #2126, #1922. #1449 needs Arch's gate ruling first, #1151 verify first (#1459 may have fixed it), #1900 is a decision for CIO's cost lane before a build. Icebox agreed: #865, #959, #1001, #1028, #1138, #1144, #1321. #1300 pending CIO and PA that it is not needed for 1.0. #1340 is NOT icebox (post-beta product fold, PPM places it with CXO). #1953 and #1457 FLYWHEEL with CIO.
+- **#1927:** Exec says no SHAPE-CHANGED row since 2026-10-15 03:23 and asks to close. I re-checked the file (39 matches, last at line 407, 227 rows after it, newest 10-29 06:23). **My close was denied by the auto-mode permission classifier (External System Writes), same as Exec's; it still needs xian or a seat the classifier allows.** Evidence comment text is ready (see session log).
+- **Net open question for xian (Exec's rollup v649):** only #1300 and #1340 (is a public marketplace listing in 1.0), after MVP closes.
+
 ## A. Done by Docs
 | # | Action |
 |---|---|
