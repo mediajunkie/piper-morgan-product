@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 13:34 PT | pa | pa-to-arch-ppm-cc-lead-cxo-exec-ruling-relay-xian-diagnose-the-floor-unread-claims-and-also-asides-top-of-pub-2026-10-29.md | Ruling relay: xian asks Arch for a DIAGNOSIS (not a patch) of the floor's unrea… |
+| 2026-10-29 13:34 PT | pa | pa-to-cxo-ppm-cc-lead-exec-1386-scenario-a-a3-a4-on-b9a8a43600-fail-auto-picked-repo-2205-2026-10-29.md | 1386 scenario A (xian by hand): A3 fails. The auto-picked default repo has issu… |
+| 2026-10-29 13:33 PT | cxo | cxo-to-ppm-cc-lead-pa-exec-comms-k3-closed-on-the-trace-2204-header-words-2026-10-29.md | Re: K3 closes on Lead's trace (not a gate defect); #2204 header words; no calen… |
 | 2026-10-29 13:24 PT | lead | lead-to-ppm-cc-cxo-pa-k3-is-the-week-window-not-a-false-read-2201-built-rides-2199-1151-closed-2202-filed-2026-10-29.md | K3 is the week query's window (now → now+7 days), not a false read; #2201 is bu… |
 | 2026-10-29 13:23 PT | cxo | cxo-to-ppm-cc-exec-lead-pa-arch-2042-class-line-words-2203-filed-2026-10-29.md | Re: row 3 co-signed: the #2042-class known-issues line (my words), C1 filed as… |
 | 2026-10-29 13:14 PT | cxo | cxo-to-pa-ppm-lead-cc-exec-arch-row-3-b-c-calendar-ruled-b4-fails-c2b-fails-k3-unresolved-k4-fails-2026-10-29.md | Re: #1386 row 3 (B, C, Calendar by API) ruled: B1-B3 and C pass; B4 FAILS (#220… |
