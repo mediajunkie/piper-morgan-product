@@ -240,3 +240,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v658 11:41 PDT Thu 10-29: retry 40932742084 failed (503 in setup-flyctl); alpha 49e0904c3c healthy 11:40.
 - v659 12:25 PDT Thu 10-29: new hot card row-3 driver (PPM 12:19, three options); MVP card rebuilt (alpha live b9a8a43600 per Lead 12:09; #2184 boundary (a) PPM+CXO 12:13; freeze on). gh MVP open 12:25: 2194,2184,1386.
 - v660 12:38 PDT Thu 10-29: new hot card, #2184 A/B for xian (PPM 12:34, CXO 12:33: wording 3 NO-GO); recommend B with a short partner send.
+- v661 12:54 PDT Thu 10-29: URGENT top card, alpha chat down, alpha's own Anthropic workspace limit (PA 12:51, served replies + fly logs). My own fly logs read at 12:53 returned no lines (not re-confirmed by Exec).
