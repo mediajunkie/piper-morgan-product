@@ -2001,3 +2001,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2204	OPEN	Production		"This week" calendar reads start at now, so a meeting earlier today drops out; the window should start at local midnight today	UX		
 2205	OPEN	MVP		A new user's first 'Create an issue' goes to an auto-picked oldest repo (issues disabled) and fails with 'GitHub didn't confirm it'	bug		
 2206	OPEN	Production		Setup wizard: 'Connect Your AI' offers an optional Notion key, while Slack and Calendar are 'later in Settings'	UX		
+2207	OPEN	Production		repo_clarification resolves a bare repo name under the OFFER's stored principal when the turn has none (the fallback ruled out for the milestone pick in 2199)			
