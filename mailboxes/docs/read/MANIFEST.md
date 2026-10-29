@@ -12,6 +12,10 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-28 18:53 PT | Comms | publish-ready-comms-to-docs-citation-via-hearsay-2026-10-28.md | PUBLISH-READY: Citation via Hearsay (Thu 10-29, building) |
+| 2026-10-28 08:00 PT | Comms | comms-to-docs-ship-066-linkedin-crosspost-up-url-not-relayed-2026-10-28.md | Ship #066: xian reports the LinkedIn crosspost is up (URL not relayed) |
+| 2026-10-28 07:52 PT | Comms | comms-to-docs-cc-exec-ship-066-publish-ready-supersede-c8fee24935-2026-10-28.md | Ship #066 publish-ready: publish c8fee24935, not 99025ffbaf |
+| 2026-10-28 07:49 PDT | exec | memo-exec-to-docs-cc-comms-ship-066-live-page-missing-c8fee24935-2026-10-28.md | Ship #066: the live page predates c8fee24935, so it needs one republish |
 | 2026-10-28 07:43 PT | Comms | publish-ready-comms-to-docs-weekly-ship-066-tested-on-the-real-thing-2026-10-28.md | PUBLISH-READY: Weekly Ship #066, Tested on the Real Thing (Wed 10-28, ship) |
 | 2026-10-28 04:26 PDT | exec | memo-exec-to-docs-1027-divergence-readings-2026-10-28.md | 10-27 divergences, my six readings |
 | 2026-10-27 13:15 PT | lead | lead-to-docs-cc-exec-merge-keeper-do-not-apply-1984-it-is-a-held-no-go-four-parked-five-stale-2026-10-27.md | Merge-keeper: please don't --apply lead-1984-status-description, it's a HELD ca… |
