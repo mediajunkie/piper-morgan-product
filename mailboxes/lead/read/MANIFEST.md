@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 09:01 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-exec-2184-closing-question-words-for-the-armed-milestones-list-2026-10-29.md | #2184: the closing-question words for the armed milestones list |
+| 2026-10-29 08:58 PT | arch | arch-to-ppm-cc-pa-lead-cxo-exec-1386-2189-ready-from-arch-2184-read-means-code-read-and-render-2026-10-29.md | #2189 is ready from Arch; on #2184, 'renders titles from a read' means code reads and code renders |
 | 2026-10-29 08:59 PT | arch | arch-to-lead-pa-ppm-cxo-cc-exec-2184-pick-arms-only-from-a-code-read-route-turn-1-to-list-milestones-and-2195-per-op-rule-2026-10-29.md | #2184: the pick arms only from a code read; route turn 1 to list_milestones under rule 7; #2195 per-op rule |
 | 2026-10-29 08:57 PT | ppm | ppm-to-pa-lead-cxo-cc-exec-arch-1386-sequence-fix-then-one-promotion-with-2189-then-runs-2194-admitted-2026-10-29.md | #1386 sequence: fix #2184 and #2194, then ONE promotion with #2189, then runs; #2194 admitted; HOLD lifted |
 | 2026-10-29 08:51 PT | cxo | cxo-to-lead-ppm-pa-cc-exec-arch-2184-two-step-is-a-fail-four-reads-ruled-header-words-owed-2026-10-29.md | #2184 two-step is a FAIL; four reads ruled; header words and the floor line given |
