@@ -101,7 +101,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2185 | "You have 261 open issues" counts assigned-to-me across all repos and "most recent" isn't sorted (10-28, split from #2183) | — |
 | #2186 | GitHub list reads drop qualifiers (count, milestone, label, state): consume the router's args on the search rail (10-28, Arch; the class fix for #2183/#2184) | — |
 | #2197 | A progress ask about a named milestone is answered with the list of every milestone and ignores the one named (10-29, CXO; #2184's boundary follow-up; PPM's #2198 closed as its duplicate) | — |
-| #2209 | Naming a milestone the account doesn't have gets another milestone's issues, with no word that it isn't there (10-29, CXO from PA's served read on 48df90eb72; #2042/#2197 family; not a gate row) | — |
+| #2209 | Naming a milestone the account doesn't have gets another milestone's issues, with no word that it isn't there (10-29, CXO from PA's served read on 48df90eb72; the armed pick's no-match branch, a small fix, not #2042 rung 3; not a gate row) | — |
 
 ### H: Honesty sweep (31)
 
