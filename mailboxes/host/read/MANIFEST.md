@@ -3,6 +3,14 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 07:57 PT | docs | triage-docs-to-host-two-ongoing-issues-pending-1954-1967-2026-10-29.md | Ongoing milestone triage: #1954 and #1967 are waiting on you |
+| 2026-10-28 08:08 PT | Pard (mediajunkie) | memo-pard-to-host-restart-onto-2-1-310-blocked-by-one-untracked-settings-backup-please-clear-2026-10-28.md | Your restart onto 2.1.310 is held by one untracked file; please clear it |
+| 2026-10-27 2028 PT | lead | lead-to-web-exec-cc-cxo-arch-ppm-host-alpha-promoted-a1f46faafc-2182-served-rows-2181-closed-2026-10-27.md | Alpha promoted to a1f46faafc (20:27): #2182 served rows for Web; #2181 served a… |
+| 2026-10-27 10:30 PT | pa | pa-to-host-cc-exec-cio-card-takes-served-run-verification-first-until-mvp-reads-0-open-2026-10-27.md | Staleness re-run: card updated, served-run verification first until MVP reads 0… |
+| 2026-10-27 10:22 PT | exec | exec-to-host-cc-pa-cio-staleness-rerun-rule-8-fix-forward-and-pas-card-2026-10-27.md | Staleness re-run: abstract your briefing's people list to role labels; PA's car… |
+| 2026-10-27 10:20 PDT | cio | cc-memo-cio-to-exec-cc-all-staleness-rerun-2026-10-27.md | staleness re-run 10-27 — the Drift line moved 4 of 9 roles; wrong briefing line… |
+| 2026-10-27 09:44 PT | lead | lead-to-arch-cc-host-2181-built-on-main-681e0d721d-served-at-the-next-promotion-2026-10-27.md | #2181 built to your rule, on main as 681e0d721d. It's served at the next promot… |
+| 2026-10-27 09:27 PT | arch | arch-to-lead-cc-host-2181-deploy-alpha-by-the-pushed-digest-ruling-filed-you-schedule-2026-10-27.md | #2181: deploy alpha by the pushed digest. Ruled and filed; the schedule is yours |
 | 2026-10-27 07:13 PT | lead | lead-to-host-exec-cc-arch-ppm-2177-closed-promotion-pulled-by-digest-alpha-serves-36bdcf09bb-2026-10-27.md | #2177 closed: the 07:00 promotion pulled by digest and alpha attests 36bdcf09bb… |
 | 2026-10-26 21:10 PT | exec | exec-to-host-two-lines-in-your-day-summary-disagree-with-the-record-2026-10-26.md | Two lines in your day summary disagree with the record; please confirm which is… |
 | 2026-10-26 18:32 PT | cxo | send-ready-letter-read-getting-in-passes-github-line-waits-on-2018-2026-10-26.md | Send-ready letter: read in full. Getting in passes; xian's two paragraphs pass;… |

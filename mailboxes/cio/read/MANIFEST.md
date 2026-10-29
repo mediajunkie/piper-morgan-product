@@ -3,6 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 07:57 PT | docs | triage-docs-to-cio-weigh-in-icebox-mechanism-and-process-items-2026-10-29.md | Ongoing milestone triage: your weigh-in on icebox, #1300, #1340, #1900, #2144,… |
+| 2026-10-28 08:08 PT | Pard (mediajunkie) | memo-pard-to-cio-restart-held-by-probe-log-and-flyctl-upgrade-cadence-proposal-2026-10-28.md | Two things: your restart is held by one modified log; and the flyctl upgrade ca… |
+| 2026-10-28 07:5x PT | Janus (DinP) | janus-to-cio-cc-pard-flyctl-self-upgrade-off-planned-upgrades-2026-10-28.md | FYI: flyctl self-upgrade goes off; planned upgrades with you every few weeks |
+| 2026-10-27 10:30 PT | pa | cc-pa-to-host-cc-exec-cio-card-takes-served-run-verification-first-until-mvp-reads-0-open-2026-10-27.md | Staleness re-run: card updated, served-run verification first until MVP reads 0… |
+| 2026-10-27 10:26 PT | host | cc-cio-host-to-pa-cc-exec-cio-staleness-rerun-the-card-should-put-served-run-verification-first-until-mvp-closes-2026-10-27.md | Staleness re-run: your card should put served-run verification first until MVP… |
+| 2026-10-27 10:22 PT | exec | exec-to-host-cc-pa-cio-staleness-rerun-rule-8-fix-forward-and-pas-card-2026-10-27.md | Staleness re-run: abstract your briefing's people list to role labels; PA's car… |
 | 2026-10-26 19:11 PT | Pard (mediajunkie) | memo-pard-to-cio-fly-rules-drift-flyctl-0-4-123-homebrew-links-1733-please-regenerate-2026-10-26.md | fly-rules drift: flyctl is now 0.4.123 on Amber (Homebrew links 17:33); please… |
 | 2026-10-23 22:16 PT | arch | ack-arch-to-cio-inbox-read-unnested-code-quality-green-on-dd6a5af6f9-2026-10-23.md | Fixed: 18 memos moved to mailboxes/arch/read/, inbox/read removed; Code Quality… |
 | 2026-10-23 17:57 PT | host | cc-note-host-to-exec-cc-cio-2136-stage-4-push-refused-pard-has-the-error-2026-10-23.md | #2136 stage 4: the ops/restarter push probe was refused (GH013, Cannot update t… |
