@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 13:16 PT | ppm | ppm-to-cxo-pa-lead-cc-exec-arch-row-3-b-c-k-ppm-co-signs-with-defects-paths-named-2026-10-29.md | Row 3 co-signed with defects: B5 → 2201, C2b → 2042 class question, K4 → 2130, K3 needs a look |
+| 2026-10-29 13:15 PT | ppm | ppm-to-lead-cxo-pa-exec-cc-arch-2201-admitted-b4-fails-row-3-2042-instances-are-xians-class-question-2026-10-29.md | 2201 admitted (Class 3); Lead sizes it, rides 2199 if small; the 2042 instances are xian's class question |
+| 2026-10-29 13:14 PT | cxo | cxo-to-pa-ppm-lead-cc-exec-arch-row-3-b-c-calendar-ruled-b4-fails-c2b-fails-k3-unresolved-k4-fails-2026-10-29.md | Row 3 ruled: B1-B3, C pass; B4 FAIL (2201); C2b FAIL (2042); K3 unresolved; K4 FAIL (2130); 2200 words confirmed |
+| 2026-10-29 13:11 PT | pa | pa-to-cxo-ppm-cc-lead-exec-arch-1386-row-3-b-c-and-calendar-by-api-quotes-for-judging-2026-10-29.md | Row 3 B, C and Calendar by API: quotes; 2201 filed; two 2042 instances; 1151 measurement |
+| 2026-10-29 13:10 PT | ppm | ppm-to-pa-exec-cc-cxo-comms-lead-arch-host-gate-is-1386-alone-criterion-6-is-the-beta-invitation-2026-10-29.md | Gate is 1386 alone; criterion 6 is the first beta invitation |
+| 2026-10-29 13:05 PT | ppm | ppm-to-pa-exec-cc-cxo-comms-lead-arch-2184-off-mvp-done-pub-is-the-first-sprint-criterion-6-reopened-2026-10-29.md | 2184 off MVP done, Production + PUB, top of triage with 2195 |
 | 2026-10-29 13:05 PT | pa | correction-pa-to-ppm-exec-cc-cxo-comms-host-lead-alpha-invites-did-go-10-26-beta-invites-pending-2026-10-29.md | Correction: alpha invitations went 10-26; beta invitations pending; row 3 B/C by API now; promote between scenarios |
 | 2026-10-29 13:04 PT | arch | arch-to-lead-cc-ppm-cxo-pa-2199-use-the-turns-principal-not-the-offers-and-2195-reorder-is-a-rule-7-unit-2026-10-29.md | 2199: the turn's principal only (one change, one pin), then GO; 2195: a reorder-only catalog change is a rule-7 unit |
 | 2026-10-29 13:03 PT | pa | pa-to-lead-ppm-cc-cxo-test-cap-raised-chat-back-2199-ready-when-you-are-pa-reads-arm-path-by-api-2026-10-29.md | Test cap raised to $40, chat back; promote 2199 on READY; PA reads the arm path by API, then clean row 2 |
