@@ -962,7 +962,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1139	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	Audit task: which PremonitionService methods are dead vs used? frame_insight_for_surfacing IS production-used	priority: low		
 1140	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-06-01	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
 1141	CLOSED	MVP	FLYWHEEL - Process improvement	FLY-AUDIT template fixes: macOS-incompatible broken-link command + obsolete Claude-knowledge section	documentation,maintenance		COMPLETED
-1151	OPEN	Ongoing		INTENT-EMPTY-ORIGINAL-MESSAGE: /intent response returns intent.original_message as empty string			
+1151	CLOSED	Ongoing		INTENT-EMPTY-ORIGINAL-MESSAGE: /intent response returns intent.original_message as empty string			COMPLETED
 1149	CLOSED	MVP	M5 - Distribution + Polish	DEBUG-ROUTE-PROD-EXPOSURE: verify web/api/routes/debug.py /debug-markdown is dev-only / not auth-bypassable in prod	priority: low		COMPLETED
 1153	CLOSED	MVP	RECONNECT - Connector Refactor	DELTA-GEN-TOOLING: generate-delta.py role-parser mis-parse + no-prune accumulation	priority: low		COMPLETED
 1154	OPEN	Fast Follow		POST-MVP: Unified admin/dev console — consolidate scattered admin surfaces	enhancement		
@@ -1995,3 +1995,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2196	OPEN	Ongoing		fly-deploy.yml promote job: no retry on the two Fly steps, so one transient 503 costs a dispatch			
 2199	OPEN	Production		Milestone pick: after the milestones list asks 'Which milestone…? Say its name.', replying 'MVP' gets 'I couldn't tell which repository you mean'	bug		
 2200	OPEN	Production		Milestone list prints "Ongoing — due no due date" for a milestone with no date	UX		
+2201	OPEN	MVP		"What issues did we create in this session?" lists the issue with its pre-edit title after an in-session title change	bug		
+2202	OPEN	Production		Handler-route /api/v1/intent replies carry no intent.original_message field (the floor routes echo it; consumers still cannot rely on it)			
+2203	OPEN	Production		Asked to summarize Notion docs, chat answers about uploaded documents and never says Notion is not connected	UX		
+2204	OPEN	Production		"This week" calendar reads start at now, so a meeting earlier today drops out; the window should start at local midnight today	UX		
