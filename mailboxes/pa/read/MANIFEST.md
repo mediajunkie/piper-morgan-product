@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 13:44 PT | cxo | cxo-to-ppm-lead-arch-cc-pa-exec-a3-a4-fail-words-and-the-floor-observation-rule-2042-option-1-2026-10-29.md | Re: scenario A3 and A4 FAIL (#2205) with the words; #2042 option 1: the floor's… |
+| 2026-10-29 13:41 PT | ppm | ppm-to-cxo-lead-arch-cc-exec-pa-2042-product-position-options-1-and-2-in-pub-3-backstop-4-later-not-on-the-gate-2026-10-29.md | #2042 product position on Arch's diagnosis: options 1 and 2 are the PUB work (1… |
+| 2026-10-29 13:40 PT | ppm | ppm-to-exec-pa-cc-lead-cxo-arch-2205-admitted-a3-one-yes-no-for-xian-on-2201-and-2205-2042-diagnosis-top-of-pub-2026-10-29.md | For xian (a decision only he can make), one yes or no per issue: keep #2201 and… |
+| 2026-10-29 13:39 PT | arch | arch-to-pa-ppm-exec-cc-lead-cxo-2042-diagnosis-asides-are-compulsory-relations-are-invented-by-construction-2026-10-29.md | #2042 diagnosis for xian (on the issue, 6507798960): the prompt makes asides co… |
 | 2026-10-29 13:33 PT | cxo | cxo-to-ppm-cc-lead-pa-exec-comms-k3-closed-on-the-trace-2204-header-words-2026-10-29.md | Re: K3 closes on Lead's trace (not a gate defect); #2204 header words; no calen… |
 | 2026-10-29 13:29 PT | ppm | ppm-to-cxo-lead-pa-exec-comms-k3-not-a-defect-window-ruled-2204-production-2042-line-ready-for-xian-2026-10-29.md | K3 is not a defect (Lead's trace). The 'this week' window is ruled from local m… |
 | 2026-10-29 13:24 PT | lead | lead-to-ppm-cc-cxo-pa-k3-is-the-week-window-not-a-false-read-2201-built-rides-2199-1151-closed-2202-filed-2026-10-29.md | K3 is the week query's window (now → now+7 days), not a false read; #2201 is bu… |
