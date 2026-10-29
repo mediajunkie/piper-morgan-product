@@ -5,6 +5,8 @@ freshness pass at START/STOP alongside the carry-forward, and cites NO issue sta
 lives in GitHub, this file holds only durable owed/queued items.)
 
 ## Durable owed
+- **#2195 (Phase 3 remainder, 61 literals): lane claude/lead-2195 building the thirty-first deletion (INTEGRATION_CONNECT, 90 → 89); next buckets in #2195's table: 5 UNSCORED rows (one router call each), then the 25 router-CLARIFY rows as rule-7 catalog candidates list by list, PORTFOLIO 13 behind #2057** — **Filed**: 2026-10-29 · key: 2195-del31-lane · trigger: the lane's report; then each next bucket at an idle fire (ongoing work, xian 10-29).
+- ~~#1595~~ **CLOSED 10-29 08:54 on xian's split ruling; remainder #2195.** — **Filed**: 2026-10-29.
 - **#2189 candidate READY-held (08:19 10-29): staging 9ad86f6d1b, tested ancestor 7f622fd967 green; no migration. Promote after xian's go/no-go on #1386 (re-check the gate first: a tested-path push since resets it); then "live" to PA cc Exec/CXO, card v123, the served restart-and-"yes" check and the lapsed line, then #1287's script deletion** — **Filed**: 2026-10-29 · trigger: go/no-go recorded on #1386.
 - **zsh: an unquoted \$VAR is one word. Path lists for `mail-send.sh` go in an array (`"${P[@]}"`) or `${=VAR}`; never grep mail-send's output, read its last lines and check origin** — **Filed**: 2026-10-29 · rule (two silent/refused sends 10-29 08:1x).
 - **#1287 close: delete `scripts/validate_multi_agent_operation.sh` (the last tracked artifact), then close-issue-properly** — **Filed**: 2026-10-29 · trigger: after today's alpha promotion (scripts/ is a tested path).
