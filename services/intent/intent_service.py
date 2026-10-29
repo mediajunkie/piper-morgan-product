@@ -7364,6 +7364,27 @@ class IntentService:
             # just created ("Show me that issue." after "Created issue #22 …"), read
             # from the owner-scoped ledger, repo included. No match there → the ask.
             ledger_ref = None
+            refused_repo = None if match else self._last_create_refused_repo(session_id, _user_id)
+            if refused_repo:
+                # #2205 (CXO's A4 words): "that issue" is the create just refused, so
+                # there is nothing to show. An earlier landed create is not the referent.
+                return IntentProcessingResult(
+                    success=False,
+                    message=(
+                        "I couldn't find an issue to show, because the last create in "
+                        f"{refused_repo} didn't go through. Give me an issue number, or "
+                        "ask me to create it again."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                        "last_create_refused": True,
+                        "repository": refused_repo,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=True,
+                )
             if not match:
                 ledger_ref = await self._issue_referent_from_ledger(_user_id, session_id)
                 if ledger_ref is not None:
@@ -8354,6 +8375,11 @@ class IntentService:
 
         except Exception as e:
             self.logger.error(f"GitHub reopen issue query error: {e}")
+            # #2205: a refused (or unconfirmed / not-found) reopen is said as such,
+            # like close, comment and update, never as a generic error.
+            unverified = self._unverified_write_result(e, intent, workflow_id)
+            if unverified is not None:
+                return unverified
             return self._make_error_result(
                 intent=intent,
                 workflow_id=workflow_id,
@@ -12579,6 +12605,29 @@ class IntentService:
                     out["body"] = _b
         return out
 
+    @staticmethod
+    def _mark_last_create(
+        session_id: Optional[str], user_id: Optional[str], *, refused_repo: Optional[str]
+    ) -> None:
+        """#2205: record this session's last issue create as refused (its repo) or
+        landed (None) on the owner-scoped conversation context. No session, no mark."""
+        if not session_id:
+            return
+        from services.intent_service.conversation_context import get_or_create_context
+
+        get_or_create_context(session_id, user_id=user_id).last_create_refused_repo = refused_repo
+
+    @staticmethod
+    def _last_create_refused_repo(
+        session_id: Optional[str], user_id: Optional[str]
+    ) -> Optional[str]:
+        """#2205: the repo of this session's last create when GitHub refused it, else None."""
+        if not session_id:
+            return None
+        from services.intent_service.conversation_context import get_or_create_context
+
+        return get_or_create_context(session_id, user_id=user_id).last_create_refused_repo
+
     def _unverified_write_result(self, e, intent, workflow_id, repository=None):
         """#1220/#1322: a fired-but-unverified connector write raises with the
         "may or may not have landed" phrasing. Surface that honest uncertainty
@@ -12588,8 +12637,39 @@ class IntentService:
         from services.integrations.github.github_integration_router import (
             GitHubIssueNotFound,
             GitHubWriteRefused,
+            GitHubWriteRejected,
         )
 
+        if isinstance(e, GitHubWriteRejected):
+            # #2205 (CXO's words, 2026-10-29): GitHub refused the write; say so in
+            # GitHub's own words, never as an unknown outcome. A refused create invites
+            # another repository; any other refused write is said and left there.
+            where = e.repository or repository or "that repository"
+            reason = e.message.strip()
+            reason_end = reason if reason.endswith((".", "!", "?")) else f"{reason}."
+            if e.verb == "create":
+                message = (
+                    f"GitHub wouldn't create it in {where}: {reason_end} "
+                    "Tell me another repository and I'll try there."
+                )
+            else:
+                target = f" #{e.issue_number}" if e.issue_number is not None else ""
+                message = f"GitHub wouldn't {e.verb}{target} in {where}: {reason_end}"
+            return IntentProcessingResult(
+                success=True,
+                message=message,
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                    "write_refused": True,
+                    "github_status": e.status,
+                    "github_message": e.message,
+                    "repository": e.repository or repository,
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+            )
         if isinstance(e, GitHubWriteRefused):
             # #2106: the server refused the tool by name; nothing was written.
             # Say so, with the connector's hint; no "check the repository".
@@ -13136,6 +13216,9 @@ class IntentService:
             # #2097 (CXO's words): the number, the title and the full repo —
             # the reply a user can check against GitHub without guessing.
             _issue_number = issue.get("number")
+            self._mark_last_create(
+                session_id, user_id or _principal_from_intent(intent), refused_repo=None
+            )
             return IntentProcessingResult(
                 success=True,
                 message=(
@@ -13175,6 +13258,15 @@ class IntentService:
                 e, intent, workflow_id, repository=locals().get("repository")
             )
             if unverified is not None:
+                if (unverified.intent_data or {}).get("write_refused"):
+                    # #2205: a definite refusal, remembered for "Show me that issue."
+                    self._mark_last_create(
+                        session_id,
+                        user_id or _principal_from_intent(intent),
+                        refused_repo=(unverified.intent_data or {}).get("repository")
+                        or locals().get("repository")
+                        or "that repository",
+                    )
                 return unverified
             if any(
                 term in error_str

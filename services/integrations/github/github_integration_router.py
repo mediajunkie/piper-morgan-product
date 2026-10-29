@@ -46,6 +46,51 @@ class GitHubWriteRefused(RuntimeError):
         self.action_hint = action_hint
 
 
+class GitHubWriteRejected(RuntimeError):
+    """#2205: GitHub itself refused the write with a 4xx (410 issues disabled, 403 not
+    accessible, 422 validation failed), so nothing landed. Definite, unlike the
+    unverified "may or may not" RuntimeError, and distinct from #2106 (our MCP server
+    not offering the tool). ``message`` is GitHub's own text, verbatim; ``verb`` is the
+    write as the user would say it ("create", "update", "close", "reopen", "comment on")."""
+
+    def __init__(
+        self,
+        message: str,
+        status: int,
+        owner: Optional[str],
+        repo: Optional[str],
+        *,
+        verb: str = "update",
+        issue_number: Optional[int] = None,
+    ) -> None:
+        super().__init__(f"GitHub refused the write ({status}): {message}")
+        self.message = message
+        self.status = status
+        self.owner = owner
+        self.repo = repo
+        self.verb = verb
+        self.issue_number = issue_number
+
+    @property
+    def repository(self) -> Optional[str]:
+        return f"{self.owner}/{self.repo}" if self.owner and self.repo else None
+
+
+def _write_verb(method_name: str, kwargs: Dict[str, Any]) -> str:
+    """#2205: the write as the user would name it, from the call itself."""
+    if method_name == "create_issue_connector":
+        return "create"
+    if method_name == "add_comment_connector":
+        return "comment on"
+    state = kwargs.get("state")
+    other_fields = any(kwargs.get(k) is not None for k in ("title", "body", "labels", "assignees"))
+    if state == "closed" and not other_fields:
+        return "close"
+    if state == "open" and not other_fields:
+        return "reopen"
+    return "update"
+
+
 class GitHubIssueNotFound(RuntimeError):
     """#1858: an update-shaped GitHub write targeted an issue that does not
     exist — confirmed on both the write response and the same-session
@@ -368,6 +413,16 @@ class GitHubIntegrationRouter:
                 user_message=getattr(deg, "user_message", None)
                 or "GitHub's server refused that write, so nothing was created.",
                 action_hint=getattr(deg, "action_hint", None),
+            )
+        if getattr(wr, "rejected", False):
+            # #2205: GitHub answered the write with a refusal; nothing landed.
+            raise GitHubWriteRejected(
+                wr.github_message or "",
+                wr.github_status or 0,
+                kwargs.get("owner"),
+                kwargs.get("repo") or kwargs.get("repo_name"),
+                verb=_write_verb(method_name, kwargs),
+                issue_number=kwargs.get("issue_number"),
             )
         if getattr(wr, "not_found", False):
             # #1858: definitive — the target artifact does not exist, so the
