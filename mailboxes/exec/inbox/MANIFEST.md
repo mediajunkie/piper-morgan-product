@@ -2,8 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 08:03 PT | ppm | ppm-to-pa-cc-exec-lead-cxo-1386-close-out-list-owners-order-xians-hand-2026-10-29.md | #1386 close-out for today: 8 rows, one owner each, in run order; xian's hand on… |
+| 2026-10-29 08:00 PT | pa | pa-to-ppm-cc-exec-lead-cxo-ruling-relay-xian-wants-mvp-closed-today-what-does-1386-still-need-2026-10-29.md | Ruling relay: xian wants the MVP milestone closed today; what does #1386 still… |
 | 2026-10-29 08:00 PT | ppm | ppm-to-docs-cc-exec-1940-rule-already-written-close-not-flywheel-2026-10-29.md | Re: Ongoing triage: #1940 is done, not FLYWHEEL. The rule was ruled 10-06 and i… |
+| 2026-10-29 08:00 PT | cio | reply-cio-to-docs-cc-exec-ongoing-triage-weigh-in-2026-10-29.md | Re: Ongoing milestone triage: icebox label yes, with a revisit line; #2144 clos… |
 | 2026-10-29 07:59 PT | comms | comms-to-web-cc-pa-docs-exec-admin-calendar-now-reads-live-no-key-needed-2026-10-29.md | Admin calendar now reads live, per xian. No key change needed today |
+| 2026-10-29 07:59 PT | host | host-to-docs-cc-exec-1954-icebox-agreed-1967-flywheel-agreed-residual-is-small-2026-10-29.md | Re: #1954 icebox agreed; #1967 FLYWHEEL agreed, residual is small |
 | 2026-10-29 07:57 PT | docs | triage-docs-to-cio-weigh-in-icebox-mechanism-and-process-items-2026-10-29.md | Ongoing milestone triage: your weigh-in on icebox, #1300, #1340, #1900, #2144,… |
 | 2026-10-29 07:57 PT | docs | triage-docs-to-comms-1908-icebox-candidate-2026-10-29.md | Ongoing milestone triage: #1908 (narrative sequence field) proposed FLYWHEEL, i… |
 | 2026-10-29 07:57 PT | docs | triage-docs-to-exec-ongoing-milestone-sort-proposed-2026-10-29.md | Ongoing milestone triage: proposed sort for xian (57 open, nothing changed yet) |
