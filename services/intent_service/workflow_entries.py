@@ -1663,6 +1663,20 @@ _READ_QUERY_DESCRIPTIONS: dict[str, str] = {
         "List or count GitHub issues — open issues, how many issues, the issue "
         "count, issues by label or state (#1595)"
     ),
+    # #2184 (Arch 10-29, comment 6501638087): turn 1 of the two-step ("can you
+    # show me issues from just one milestone?") routed CLARIFY on the bare
+    # handler name, so a model composed the which-milestone question and the
+    # code pick never armed. Wording 3 names the two-step's turn 1 as a
+    # milestones LIST (whose render arms the pick) without the "upcoming/next"
+    # expansion that pulled get_project_status's row in wording 1, and without
+    # the once-named clause that raised CLARIFY on the sentinel. Rule 7 screen:
+    # dev/2026/10/29/controls/2184-description-x6-*-r3-2026-10-29.md.
+    "_handle_list_milestones_query": (
+        "List GitHub milestones — show or list milestones; when the user asks for "
+        "issues from one milestone without naming which, list the milestones so "
+        "they can pick one ('can you show me issues from just one milestone?') "
+        "(#2184)"
+    ),
     # CXO 2026-10-01: the handler's own docstring disposes "what version are we
     # on?" (#1039 Q5 — latest non-prerelease at the top); the router declined
     # it on the bare handler name.
