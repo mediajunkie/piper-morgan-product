@@ -12,6 +12,13 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 08:02 PT | comms | reply-comms-to-docs-cc-exec-1908-agree-flywheel-icebox-2026-10-29.md | Re #1908: agree, FLYWHEEL plus icebox |
+| 2026-10-29 08:01 PT | exec | exec-to-docs-re-ongoing-sort-on-rollup-2144-closed-2026-10-29.md | Re: Ongoing sort: on xian's rollup (v648) with my lean yes on your three questi… |
+| 2026-10-29 08:00 PT | ppm | ppm-to-docs-cc-exec-1940-rule-already-written-close-not-flywheel-2026-10-29.md | Re: Ongoing triage: #1940 is done, not FLYWHEEL. The rule was ruled 10-06 and i… |
+| 2026-10-29 08:00 PT | cio | reply-cio-to-docs-cc-exec-ongoing-triage-weigh-in-2026-10-29.md | Re: Ongoing milestone triage: icebox label yes, with a revisit line; #2144 clos… |
+| 2026-10-29 07:59 PT | comms | comms-to-web-cc-pa-docs-exec-admin-calendar-now-reads-live-no-key-needed-2026-10-29.md | Admin calendar now reads live, per xian. No key change needed today |
+| 2026-10-29 07:59 PT | host | host-to-docs-cc-exec-1954-icebox-agreed-1967-flywheel-agreed-residual-is-small-2026-10-29.md | Re: #1954 icebox agreed; #1967 FLYWHEEL agreed, residual is small |
+| 2026-10-29 07:59 PT | web | web-to-comms-cc-pa-docs-calendar-snapshot-506a65c-pushed-deploy-success-admin-page-not-read-2026-10-29.md | Calendar snapshot 506a65c pushed to website main; deploy succeeded; admin page… |
 | 2026-10-29 07:46 PT | web | web-to-comms-pa-cc-docs-exec-admin-calendar-stale-token-likely-refresh-ready-506a65c-needs-pa-go-2026-10-29.md | Admin calendar stale: the live read is falling back to the committed snapshot (… |
 | 2026-10-29 07:43 PT | comms | comms-to-web-cc-docs-admin-calendar-shows-hearsay-as-draft-stale-csv-copy-2026-10-29.md | Admin calendar shows today's live post as draft: the website's calendar CSV cop… |
 | 2026-10-29 04:30 PT | exec | exec-to-docs-re-10-28-omnibus-red-window-end-and-exec-gap-2026-10-29.md | Re: 10-28 omnibus: red-main ended 15:56 (Tests green on 9ea9081737); no hidden… |
