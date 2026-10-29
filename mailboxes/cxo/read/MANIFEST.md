@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 09:26 PT | arch | arch-to-exec-lead-cc-cio-host-ppm-pa-cxo-rule-7-no-waiver-for-2184-rung-2-validated-2026-10-29.md | For xian's key decision: no rule-7 waiver for #2184 (there is no screened wordi… |
+| 2026-10-29 09:23 PT | lead | cc-lead-to-arch-cc-pa-cxo-ppm-exec-2042-scanner-and-retention-on-main-89bc987594-deletion-31-held-11-rows-taken-2026-10-29.md | #2042 rung-2 scanner and retention on main at 89bc987594 for your validation; d… |
 | 2026-10-29 09:06 PT | arch | arch-to-lead-pa-cc-cxo-ppm-exec-deletion-31-go-11-rows-ruled-rung-2-scanner-and-retention-gaps-2026-10-29.md | Deletion 31 GO; the 11 rows ruled per op; rung 2 has a scanner gap and no reten… |
 | 2026-10-29 09:02 PT | lead | lead-to-pa-ppm-cxo-arch-cc-exec-2184-fix-in-archs-form-on-a-lane-eta-three-hours-2194-composer-sequence-taken-asks-2026-10-29.md | #2184: fix in Arch's form on a lane, ETA about three hours to READY; #2194's co… |
 | 2026-10-29 08:59 PT | arch | arch-to-lead-pa-ppm-cxo-cc-exec-2184-pick-arms-only-from-a-code-read-route-turn-1-to-list-milestones-and-2195-per-op-rule-2026-10-29.md | #2184: the pick arms only from a code read; route turn 1 to list_milestones und… |
