@@ -65,4 +65,4 @@ retirement_reason: "Superseded by dev/active/host-carry-forward.md's own 'Owed b
 - [x] Ship #044 HOST workstream review filed (May 24)
 - [x] v0.3 questionnaire draft filed for CIO review (May 27)
 
-- key: alpha-key-workspace-record | **Filed**: 2026-10-29 | Write alpha's Anthropic workspace name, masked key tail and monthly limit into docs/internal/operations (no key value). Blocked on xian naming the workspace (PA is with xian on the raise). Then mail Exec the path.
+- ~~key: alpha-key-workspace-record~~ CLOSED 2026-10-29 (premise false: xian says Piper has no platform key; the cap was piper-morgan-test) | **Filed**: 2026-10-29 | (was: Write alpha's Anthropic workspace name, masked key tail and monthly limit into docs/internal/operations (no key value). Blocked on xian naming the workspace (PA is with xian on the raise). Then mail Exec the path.)
