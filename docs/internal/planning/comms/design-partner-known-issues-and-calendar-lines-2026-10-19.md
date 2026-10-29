@@ -6,6 +6,8 @@
 - section A, xian 10-19 15:2x: "list both. if we fix then we can delist";
 - Calendar, xian 10-19 15:0x: "yes, name it, with caveats if need be (it's not an easy oauth setup yet, etc.)".
 
+**Surface, re-scoped 10-29 (PPM 13:10, #1386 criterion 6):** this list now goes with the **first beta invitation** (no sooner than 10-30, after xian's conversation with HOST). The 10-26 alpha letter is history. Criterion 6 ticks on the beta letter's final draft: GitHub and Calendar named with Calendar's caveat, CXO's #2184 line in, #2018's line gone. Comms sends PPM that draft when it's near final.
+
 **Review:** xian reviews the wording (section A is his to see), and CXO reviews too. **At send time, PPM strikes any line whose issue has closed** (criterion 6).
 
 ## 1. Known issues (the list that goes with the invitation)
@@ -16,16 +18,20 @@
 > - **An answer about your own data can be wrong.** Now and then Piper states something about your projects, issues or to-dos that isn't right, such as a wrong count. If an answer looks off, check the source and tell us. *(#2042)*
 > - **No undo for deleted to-dos.** Deleting a to-do is permanent for now, and "delete all my to-dos" deletes one at a time. *(#2019, #2021)*
 > - **Searching your documents from chat doesn't work yet.** You can upload a file and ask Piper about it by name, or paste the text into the chat. *(#2122)*
+> - **Asking for a milestone's issues in two steps ("show issues from one milestone", then the name) can list the wrong issues.** Ask in one step instead: "show my open issues in the MVP milestone". *(#2184)*
+> - **Piper can state a detail about one of your records, such as a milestone or when something last changed, that it did not look up.** Check anything that matters in GitHub before you rely on it. *(#2042 class)*
 
   *#2018 line: STRUCK 10-29 (PPM 09:51).* #2018 closed served 10-28 14:36, after xian's UI-only recovery run on alpha passed every step. xian 10-19: "if we fix then we can delist." The removed line read: "A broken GitHub connection can look fine. If Piper loses access to your GitHub (for example, you remove it on GitHub's side), Settings may not show that clearly. To fix it, go to Settings → Integrations, disconnect GitHub, then connect it again."
 
-**Contingent line (#2184, two-step milestone ask), CXO 09:50 10-29, via PPM 09:51:** goes in on the next partner surface once today's promotion is live **without** the #2184 routing fix (its fix waits on xian's key decision). CXO's wording, verbatim:
+**PLACED 10-29 15:2x (#2184 line, above).** xian 13:02 (PA relay): #2184 leaves the MVP gate as a known issue (PPM option B, ledger 3 → 2, #2184 to Production, Sprint PUB). PA 13:05: the line goes in the first **beta** invitation. Strike it when #2184 closes on a served pass. History of the staging: **Contingent line (#2184, two-step milestone ask), CXO 09:50 10-29, via PPM 09:51:** was to go in on the next partner surface once today's promotion is live **without** the #2184 routing fix (its fix waits on xian's key decision). CXO's wording, verbatim:
 
 > - **Asking for a milestone's issues in two steps ("show issues from one milestone", then the name) can list the wrong issues.** Ask in one step instead: "show my open issues in the MVP milestone".
 
   True today: the one-step read returned the right three on alpha (PA 08:43). **Strike it when #2184 closes on a served pass** (PPM tells Comms the same hour). Not added to the list above yet, because the promotion it depends on hasn't gone out.
 
 **Contingent fifth line (#2101, chat stall), CXO 16:20:** goes in only if xian rules the stall isn't fixed before partners. CXO's wording: "Piper may stop responding for a few minutes. Reload the page and try again." It's a fact only if the stall recovers by itself, which both observed stalls did. If that's in doubt on send morning, write "usually": "Piper may stop responding for a few minutes. Reloading the page and trying again usually works." *(#2101)*
+
+*#2042-class line (added 10-29 15:2x):* CXO's words verbatim (13:23), xian YES (PA relay 13:55: "to be reviewed if our attempts to fix it land"). Comms bolded the first sentence to match the list, no word changed. It covers C2b and K4 as served. **Strike it only on #2042 rung 3's served pass, not on the issue closing** (CXO). **Open for CXO:** the older #2042 line ("An answer about your own data can be wrong…") overlaps it. Keep both, or does the class line replace it?
 
 *#2122 line:* CXO's wording, 18:07 10-20. #2122 isn't Class 1–4 (Web's served turn showed no false result). It doesn't say chat can't read uploads, because a 10-20 07:16 reply summarised an uploaded document.
 
@@ -78,6 +84,7 @@ Slack and Notion stay unnamed (xian 15:0x). Notion has no chat reader (Lead 15:0
   > Alpha is nearly over! What you see now is pretty close already to what the first beta will be: the same Piper on the same servers. Right now I'm working on making sure Piper doesn't reply "none" just because it failed when it tried to read something.
 
   PPM rechecks on send morning that #2018 is still open and in work, since the paragraph says so.
+  **10-29 (Comms):** this paragraph was written for the alpha letter. Whether it fits the beta invitation ("Alpha is nearly over") is xian's, at the beta draft.
 - **The carry-over paragraph: IN, xian said yes (HOST relay 10-26 17:23).** HOST's tightening of xian's proposal, which xian approved for sending:
   > Your account and your work will carry over to the beta automatically. You can also start a new account when the beta officially begins. If you'd like your alpha account deleted at that point, email support@pipermorgan.ai and we'll do it for you (by hand, for now, within 14 days).
 
