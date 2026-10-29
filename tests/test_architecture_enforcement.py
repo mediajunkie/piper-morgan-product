@@ -3269,7 +3269,11 @@ class TestExtractionPatternRatchet:
         # 90 -> 89 (2026-10-29, #1595 Phase 3 thirty-first deletion, issue 2195):
         # INTEGRATION_CONNECT_PATTERNS (1 literal) tombstoned FULL; 8/8 claimed
         # rows route get_contextual_guidance on the router (live via group).
-        "pre-classifier": 89,
+        #
+        # 89 -> 88 (2026-10-29, Phase 3 thirty-second deletion, issue 2195):
+        # STATUS_PATTERNS loses `next milestone` (PARTIAL; Arch 12:31); its one
+        # row routes get_project_status on the router. 3 STATUS literals survive.
+        "pre-classifier": 88,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

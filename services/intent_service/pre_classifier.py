@@ -461,14 +461,16 @@ class PreClassifier:
     # (e.g. "any update on the next milestone", which does not match
     # MILESTONE_STATUS_INLINE_PATTERNS' "what's the next/upcoming
     # milestone" shape) and is one of the 4 load-bearing SURVIVORS below.
+    # (2026-10-29, issue 2195: it was then deleted as the thirty-second
+    # deletion once the router served its row; 3 survivors remain.)
     # See scripts/build_inversion_corpus_phase0.py's corrected block
     # comment (seventh-deletion correction) for the full account of why an
     # earlier deposit-time note about this literal's reachability went
     # stale once the fifth deletion (GITHUB_QUERY_PATTERNS) landed.
     #
     # Literals gone; the class attribute, the claim branch (`pre_classify`'s
-    # STATUS_PATTERNS if-block, ~line 1741, which still has 4 live
-    # literals to match) survive as a NON-empty, still-live check — this
+    # STATUS_PATTERNS if-block, which still has 3 live literals to match
+    # after the 2026-10-29 thirty-second deletion) survive as a NON-empty, still-live check — this
     # is NOT structurally-inert dead code like a full-deletion tombstone.
     # Ledger: `scripts/inversion_phase3_deleted_patterns.json`. Ceiling:
     # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 329 -> 277.
@@ -477,8 +479,10 @@ class PreClassifier:
         r"\bproject overview\b",
         # 2026-10-11 (#1595): "project landscape" tombstoned (router list_projects
         # @0.92 live via group; PARTIAL STATUS deletion, 2 more literals gone).
-        # Issue #898 Q25: Milestone queries are project status, not priority
-        r"\bnext milestone\b",
+        # 2026-10-29 (issue 2195, Arch 12:31): "next milestone" tombstoned
+        # (PARTIAL STATUS deletion, the thirty-second). Its one row, "any update
+        # on the next milestone", routes get_project_status x6 on main's catalog
+        # (dev/2026/10/29/controls/2184-description-x6-main-r3-2026-10-29.md).
         # 2026-10-11 (#1595): "upcoming milestones?" re-deleted under
         # misserved_at_deletion (Arch 2026-10-11: the 10-10 restore claimed
         # get_project_status for a list_milestones row and restored nothing; the
@@ -592,6 +596,8 @@ class PreClassifier:
     # duplicate, previously shadowed because GITHUB_QUERY_PATTERNS was
     # checked first in the if-chain) — AGREEING (STATUS_PATTERNS claims
     # get_project_status, the same ruled destination this row already had).
+    # (2026-10-29, issue 2195: that STATUS literal was deleted too, the
+    # thirty-second deletion; the row is now unclaimed and the router serves it.)
     # The other 65 phrases are genuinely unclaimed by any surviving list.
     # See the ledger's `known_reabsorptions` for the full account. Literals
     # gone; the class attribute, the claim branch (`pre_classify`'s
