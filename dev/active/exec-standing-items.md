@@ -213,3 +213,4 @@ misread until 2026-10-01.*
 | 168 | **Relay xian's answer on Docs' Ongoing sort and its three questions to Docs.** `key: ongoing-sort` | 2026-10-29 | waiting on xian (rollup v648) |
 | 169 | ~~**Record xian's #1595 exception word in decisions.log when PA or PPM relays it.** `key: 1595-decisions-log`~~ | 2026-10-29 | CLOSED 09:18 10-29: xian ruled split, not exception (PA 08:41); recorded in decisions.log |
 | 170 | ~~**Relay xian's answer on the Anthropic usage-limit raise (Lead 09:16) to Lead, PA, CIO, HOST same hour.** `key: anthropic-limit`~~ | 2026-10-29 | CLOSED 11:39 10-29: raised $90 to $100 (PA relayed to Lead 11:36; Exec to CIO, HOST); decisions.log |
+| 171 | **Relay xian's #2184 A/B (keep on gate, or recorded exception plus a partner surface) to PPM, CXO, Comms, Lead same hour; decisions.log.** `key: 2184-gate-choice` | 2026-10-29 | waiting on xian (rollup v660) |

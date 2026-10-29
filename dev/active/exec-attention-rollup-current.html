@@ -32,9 +32,16 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 29 October</h1>
-<p class="meta">Exec · v659, rebuilt 12:25 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v660, rebuilt 12:38 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <div class="card win"><b>Key limit raised ($90 to $100, your word via PA 11:36); calls succeed again (11:35).</b> Lead resumes the #2184 screens; row 2&rsquo;s judge works. Recorded in decisions.log; CIO and HOST told.</div>
+
+<div class="card hot"><b>New: #2184 can&rsquo;t land today. Keep MVP open on it, or close MVP with #2184 as a known issue?</b> The third wording passed its full run but moved &ldquo;where should my focus be today&rdquo; to the wrong handler 5 times in 6. Arch ruled no-go, and CXO and PPM agree: the fix can&rsquo;t break the most-used daily ask. A retry waits on a router model or catalog change, not a date. Lead and Arch have stopped on it for today (about $5.60 of your $10 spent).
+<ul style="margin:.3rem 0 .2rem 1.2rem;padding:0">
+<li><b>A. Keep #2184 on the gate.</b> MVP stays open until a retry passes, date unknown.</li>
+<li><b>B. Take it off the gate as a recorded exception,</b> like #1595. It stays open in Production; MVP closes when the remaining rows pass and you give go/no-go. CXO records it as an exception, not a pass.</li>
+</ul>
+<b>B needs partners to actually be told</b>, and today they wouldn&rsquo;t be: <code>/try/alpha</code> has no known-issues section and no partner email is scheduled. So B comes with one of: (1) a short email to partners carrying CXO&rsquo;s line (&ldquo;ask for a milestone&rsquo;s issues in one step&rdquo;, which Comms has staged), or (2) a known-issues section on <code>/try/alpha</code> (new public copy). <span style="color:var(--blue);font-weight:600">PPM and I recommend B with the short email:</span> the one-step ask works, and holding MVP open with no fix date measures the calendar, not the product. Without a way to tell partners, A. Meanwhile PA runs the canonical suite now on the live build.</div>
 
 <div class="card hot"><b>Scenarios (row 3) are stuck on how Web signs in: pick one of three.</b> Alpha is live on the ready build (<code>b9a8a43600</code>, your third dispatch, 12:04) and frozen until go/no-go. Web is set to drive scenarios A, B and C, but its seat is refused reading the credential files they need (invite and logins in <code>~/.piper-shared</code>), and it rightly won&rsquo;t work around that.
 <ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
@@ -47,8 +54,8 @@
 <div class="card act"><b>Closing MVP: where it stands.</b> Gate list: 3 open, #2184, #2194, #1386.
 <ul style="margin:.3rem 0 .2rem 1.2rem;padding:0">
 <li><b>Done today:</b> #1595 closed on your split ruling (remainder #2195); the database check passed; your key raise; the promotion carrying #2194&rsquo;s header fix and #2189.</li>
-<li><b>#2184:</b> CXO and PPM ruled that &ldquo;any update on the next milestone&rdquo; may be answered by the milestones list for now (better answer filed as #2197). Lead runs the router tests on wording 3 (about $1 of your $10). That fix is the one promotion allowed inside the freeze, before go/no-go; after it, only the two-step and the canonical suite re-run.</li>
-<li><b>Order now:</b> row 0 reads with PA (you, now), row 3 scenarios, row 4 security, row 2 canonical suite after the #2184 promotion, then PPM&rsquo;s rows 5 and 6, then your go/no-go on #1386. The 10-30 hard stop moves only on your word.</li>
+<li><b>#2184:</b> see the card above; no fix today.</li>
+<li><b>Order now:</b> row 0 reads with PA (you, now), row 3 scenarios, row 4 security, row 2 canonical suite (running now; no #2184 promotion today), then PPM&rsquo;s rows 5 and 6, then your go/no-go on #1386. The 10-30 hard stop moves only on your word.</li>
 </ul></div>
 
 <div class="card act"><b>Two things only your hand unblocks (each a minute):</b>
