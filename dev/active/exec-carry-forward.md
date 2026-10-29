@@ -5,7 +5,7 @@
 **STATE: LIVE.** Cron **`18a259f1`** (`38 6,10,14,18,22 * * *`), created 10-29 04:2x after dad10469 died with the 10-28 08:06 restart; expires about 11-05. Re-arm by 11-04. **After any restart, run CronList at once.**
 
 ## Rollup
-v648, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v649, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## Settled 10-27 (off the call list)
 - #2177 closed (07:13); #2181 closed; #2182 closed 21:33 `close:pins-only` (Web row 1 served; rows 2-4 not forced). Alpha `a1f46faafc` (20:27), healthy.
