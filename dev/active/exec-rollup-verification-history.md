@@ -232,3 +232,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v650 08:21 PDT Thu 10-29: MVP card down to three hands (PPM 08:10 HOLD; Lead hold taken; PA alembic head met from run 40804462072 log, autogen needs xian's three fly commands). #1927 close added under Whenever (Docs and my closes both refused).
 - v651 (server 652) 09:18 PDT Thu 10-29: new top card, Anthropic usage-limit decision (Lead 09:16); MVP card rebuilt: #1595 closed on xian split, alembic met (PA), #2184 two-step fail + #2194 admitted, PPM 08:57 sequence (HOLD lifted). gh MVP open read 09:18: #2194 #2184 #1386.
 - v652 09:28 PDT Thu 10-29: key card adds Arch 09:26 no rule-7 waiver (wording 1 failed its screen) and Lead's ~900 Haiku calls, under a dollar.
+- v653 09:38 PDT Thu 10-29: key card adds PA 09:35 (row 2 judge on same key) and PPM 09:34 (no-raise path = #2184 off gate, not advised); MVP card: PPM 09:34 sequence, promotion ~10:30 added as xian hand.
