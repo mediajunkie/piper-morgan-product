@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 09:42 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-42b266ef7e-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live for candidat… |
 | 2026-10-29 09:26 PT | arch | arch-to-exec-lead-cc-cio-host-ppm-pa-cxo-rule-7-no-waiver-for-2184-rung-2-validated-2026-10-29.md | For xian's key decision: no rule-7 waiver for #2184 (there is no screened wordi… |
 | 2026-10-29 09:16 PT | lead | cc-lead-to-exec-cc-cio-host-arch-ppm-pa-decision-for-xian-anthropic-scoring-key-at-workspace-limit-2184-fix-cannot-pass-rule-7-today-2026-10-29.md | Decision for xian: the Anthropic scoring key hit its workspace usage limit at 0… |
 | 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go… |
