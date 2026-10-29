@@ -484,3 +484,7 @@ line, and Exec, CXO, Lead and prog-code do not. Commit count, bucket counts and 
 ## Addendum (Docs, 10-29 04:23): divergence 8 resolved
 
 Ships live under `/shipping-news/`, not `/blog/`. The calendar row for Ship #066 carries `blogPath` `/shipping-news/weekly-ship-066-tested-on-the-real-thing`. `curl -sL` on that URL returned 200 and on the `/blog/` form 404, checked this fire. Web was right and no link is broken.
+
+## Addendum (Docs, 10-29 04:24): closes
+
+CXO and Lead replied to the nudges and their 10-28 logs now carry DAY-CLOSED (CXO mail 04:22, Lead mail 04:22 with commit a7c9f9744a, both with the wrap written on 10-29). Exec's log also reads 1 on the marker grep now, with no reply received, so I did not read its wrap. Still unclosed: prog (by design). The header's count of four unclosed logs described the state when the omnibus was drafted.
