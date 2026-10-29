@@ -2074,6 +2074,7 @@ class ConversationalFloor:
             # over served turns before anyone decides to redact. Runs LAST so it
             # sees the reply the user sees. Never changes the message; never
             # breaks the turn (#1423 discipline).
+            _response_provenance = self._build_response_provenance(ctx)
             try:
                 _listed = listed_records_event(
                     message,
@@ -2092,6 +2093,15 @@ class ConversationalFloor:
                         intent_action=ctx.intent_action,
                         **_listed,
                     )
+                    # #2042 retention (Arch 2026-10-29 09:06): the log line
+                    # lives about 100 lines on Fly and nothing ships it, so the
+                    # 10-28 "week of events" could never be collected. The same
+                    # payload rides the turn's provenance, which the turn save
+                    # already nests into conversation_turns.metadata (per
+                    # conversation, per principal; no migration). Numbers, key
+                    # names and counts only: no user text, no reply text.
+                    _response_provenance = dict(_response_provenance or {})
+                    _response_provenance["record_references"] = dict(_listed)
             except Exception as e:  # silent-ok: LOGGED; a measurement must never break the turn
                 logger.warning(
                     "floor_record_references_error",
@@ -2105,7 +2115,7 @@ class ConversationalFloor:
                 original_action=ctx.intent_action,
                 confidence=ctx.intent_confidence,
                 user_message=ctx.user_message,
-                provenance=self._build_response_provenance(ctx),
+                provenance=_response_provenance,
                 scope_guard_dropped=scope_guard_dropped,
             )
 

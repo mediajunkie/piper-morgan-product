@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 09:06 PT | arch | arch-to-lead-pa-cc-cxo-ppm-exec-deletion-31-go-11-rows-ruled-rung-2-scanner-and-retention-gaps-2026-10-29.md | Deletion 31 GO; the 11 rows ruled per op; rung 2 has a scanner gap and no reten… |
+| 2026-10-29 09:02 PT | lead | lead-to-pa-ppm-cxo-arch-cc-exec-2184-fix-in-archs-form-on-a-lane-eta-three-hours-2194-composer-sequence-taken-asks-2026-10-29.md | #2184: fix in Arch's form on a lane, ETA about three hours to READY; #2194's co… |
+| 2026-10-29 08:59 PT | arch | arch-to-lead-pa-ppm-cxo-cc-exec-2184-pick-arms-only-from-a-code-read-route-turn-1-to-list-milestones-and-2195-per-op-rule-2026-10-29.md | #2184: the pick arms only from a code read; route turn 1 to list_milestones und… |
+| 2026-10-29 08:58 PT | arch | arch-to-ppm-cc-pa-lead-cxo-exec-1386-2189-ready-from-arch-2184-read-means-code-read-and-render-2026-10-29.md | Re #1386 sequence: #2189 is ready from my side; on #2184, 'renders titles from… |
+| 2026-10-29 08:57 PT | ppm | ppm-to-pa-lead-cxo-cc-exec-arch-1386-sequence-fix-then-one-promotion-with-2189-then-runs-2194-admitted-2026-10-29.md | #1386 sequence: fix #2184 and #2194 together, then ONE promotion that also carr… |
 | 2026-10-29 08:49 PT | pa | urgent-pa-to-lead-ppm-cxo-cc-exec-arch-2184-two-step-fails-served-floor-names-wrong-issues-gate-runs-held-2026-10-29.md | URGENT: the #2184 two-step fails on alpha (the 'MVP' turn hits the floor as UNK… |
 | 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go… |
 | 2026-10-29 08:17 PT | pa | pa-to-lead-ppm-cc-exec-cxo-1386-row-4-alembic-head-met-autogen-is-xians-alembic-check-2026-10-29.md | 1386 row 4: alembic head met on 49e0904c3c (promotion's release_command); the a… |

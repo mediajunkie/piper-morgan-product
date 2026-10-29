@@ -48,22 +48,32 @@ _LIST_MARKERS = ("- ", "* ", "• ", "– ")
 
 
 def record_references(text: Optional[str]) -> List[str]:
-    """Every ``#N`` token in ``text``, first-seen order, de-duplicated.
+    """Every ``#N`` reference in ``text``, first-seen order, de-duplicated.
 
-    Markdown emphasis and surrounding punctuation are stripped before the
-    test, so ``**#2183**:`` and ``(#2018)`` both count. A bare ``#`` or a
-    ``#word`` is not a record reference.
+    A character scan, no regex (the #1595 ratchet): a ``#`` not preceded by a
+    letter or digit, followed by digits, is a reference wherever it sits, so
+    ``**#2183**:``, ``(#2018)``, a markdown link ``[#2194](…/issues/2194)``,
+    ``#2194—and``, and ``#2194/#2186`` all count (2026-10-29, Arch's probe on
+    the #2184 served turn: the old whitespace-token scan saw none of the last
+    three shapes and the rung-2 event stayed silent). ``a#1`` and a URL's
+    ``/issues/2194`` are not references. A bare ``#`` or ``#word`` is not one.
     """
     if not text:
         return []
     seen: List[str] = []
-    for raw in text.replace("\n", " ").split():
-        tok = raw.strip(_STRIP_CHARS)
-        if len(tok) < 2 or not tok.startswith("#"):
+    n = len(text)
+    i = 0
+    while i < n:
+        if text[i] == "#" and (i == 0 or not text[i - 1].isalnum()):
+            j = i + 1
+            while j < n and text[j].isdigit():
+                j += 1
+            digits = text[i + 1 : j]
+            if digits and digits not in {s[1:] for s in seen}:
+                seen.append("#" + digits)
+            i = j
             continue
-        digits = tok[1:]
-        if digits.isdigit() and digits not in {s[1:] for s in seen}:
-            seen.append("#" + digits)
+        i += 1
     return seen
 
 
