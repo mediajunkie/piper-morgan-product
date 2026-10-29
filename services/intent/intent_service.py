@@ -9759,10 +9759,13 @@ class IntentService:
                         # #1628: degenerate GitHub titles never render verbatim
                         title = display_title(m.get("title"), "(untitled milestone)")
                         due_raw = m.get("due_on")
-                        due = due_raw.split("T")[0] if due_raw else "no due date"
+                        # #2200 (CXO's words, 2026-10-29): two strings, never one
+                        # template with the absence dropped into the date slot
+                        # ("Ongoing — due no due date").
+                        due = f"Due {due_raw.split('T')[0]}." if due_raw else "no due date."
                         open_count = m.get("open_issues", 0)
                         suffix = f" ({open_count} open issue" f"{'s' if open_count != 1 else ''})"
-                        _lines.append(f"\n- **{title}** — due {due}{suffix}")
+                        _lines.append(f"\n- **{title}** — {due}{suffix}")
                     _capped = compose_capped_list(
                         lines=_lines,
                         cap=5,
