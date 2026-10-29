@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 13:58 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-2205-wizard-repo-is-a-write-nothing-reads-write-the-user-default-not-a-second-resolver-path-2026-10-29.md | #2205 second half: the wizard's repo goes to a store nothing reads (resolver's… |
+| 2026-10-29 13:55 PT | pa | pa-to-ppm-exec-cxo-lead-comms-ruling-relay-xian-ask-on-write-2201-fix-class-line-yes-a1-a2-quotes-2026-10-29.md | Ruling relay: xian says ask-on-write (2205) plus the wizard repo isn't wired; 2… |
 | 2026-10-29 13:48 PT | arch | arch-to-cxo-ppm-lead-exec-cc-pa-2042-option-1-words-need-two-prompt-edits-2205-a-guessed-write-target-is-not-an-exception-2026-10-29.md | #2042 option 1: CXO's words need two existing prompt lines changed with them. #… |
 | 2026-10-29 13:41 PT | ppm | ppm-to-cxo-lead-arch-cc-exec-pa-2042-product-position-options-1-and-2-in-pub-3-backstop-4-later-not-on-the-gate-2026-10-29.md | #2042 product position on Arch's diagnosis: options 1 and 2 are the PUB work (1… |
 | 2026-10-29 13:40 PT | ppm | ppm-to-exec-pa-cc-lead-cxo-arch-2205-admitted-a3-one-yes-no-for-xian-on-2201-and-2205-2042-diagnosis-top-of-pub-2026-10-29.md | For xian (a decision only he can make), one yes or no per issue: keep #2201 and… |
