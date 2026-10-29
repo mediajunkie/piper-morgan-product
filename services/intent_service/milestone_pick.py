@@ -1,8 +1,11 @@
 """#2184 — the milestones list ARMS an exact-title milestone pick (Arch's ruling 2026-10-28 12:45).
 
 xian's served exchange (alpha a1f46faafc, 10:12 PT): "can you show me issues from
-just one milestone?" (surface 1 claims it; the milestones handler lists six), then
-"MVP". The second turn routes CLARIFY @0.30 at the router (×3 on main, Lead's
+just one milestone?", then "MVP". (Corrected 2026-10-29, Arch's diagnosis of the
+49e0904c3c FAIL: turn 1 routes CLARIFY with no args and a MODEL composes the
+which-milestone question, so this module's arm site never ran. Turn 1 reaches the
+milestones read only through the router, a ``list_milestones`` description under
+rule 7.) The second turn routes CLARIFY @0.30 at the router (×3 on main, Lead's
 control), nothing claims it, and the floor composed three real issue numbers from
 the priority slice as "the MVP milestone's" (#2042's class). PPM's close bar for
 #2184 is that two-step exchange, served.
@@ -26,9 +29,13 @@ in code; a bare affirmative lands on the registered re-ask workflow
 (``clarify_milestone_pick``, action_triggered=False). No regex (the #1595 ratchet
 is untouched); the only text reads are strip/casefold.
 
-The arm is SILENT (no question is printed: the list is the question), so the
-record's decline copy is neutral; a decline after a milestones list means
-nothing happened and says so. The pick is skipped when the list armed a
+#2184 two-step (Arch 2026-10-29, comment 6501638087; CXO 2026-10-29 09:01):
+when the pick arms, the milestones reply ENDS with
+``MILESTONE_PICK_ARM_QUESTION`` (the handler appends it only when
+``arm_milestone_pick`` returned True), so a user who asked for "issues from
+just one milestone" is asked which one by code that read and rendered the
+titles. The record's stored ``question`` stays empty and its decline copy
+neutral: a decline after a milestones list means nothing happened and says so. The pick is skipped when the list armed a
 remainder offer (a capped list) — both live in the same one-slot store and the
 printed "say the word" promise wins.
 """
@@ -48,6 +55,11 @@ MAX_TITLES = 50
 
 # CXO ruled 13:04 10-28: a silent arm's decline has nothing to refuse; the shortest acknowledgement.
 PICK_DECLINE_LINE = "Okay."
+# CXO 2026-10-29 09:01: the closing line of a milestones reply that armed the pick,
+# appended by _handle_list_milestones_query only when arm_milestone_pick returned True
+# (CXO: on a plain "list my milestones" too, since the handler cannot tell the two
+# asks apart). Named *_QUESTION: the #1766 census's named-question-holder rule.
+MILESTONE_PICK_ARM_QUESTION = "Which milestone do you want to see issues from? Say its name."
 # CXO 13:04 10-28: no titles and no ellipsis; the list is on screen. Named *_QUESTION:
 # it is rendered only by run_clarify_milestone_pick_workflow, which stores it on the
 # #846 record and arms it (the #1766 census's named-question-holder rule).
@@ -237,6 +249,7 @@ __all__ = (
     "MILESTONE_PICK_KIND",
     "MILESTONE_PICK_WORKFLOW",
     "PICK_PENDING_FLAG",
+    "MILESTONE_PICK_ARM_QUESTION",
     "normalize_title",
     "match_title",
     "arm_milestone_pick",

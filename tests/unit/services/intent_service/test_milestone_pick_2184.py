@@ -252,6 +252,11 @@ async def test_milestones_handler_arms_with_the_listed_repo(intent_service):
         res = await intent_service._handle_list_milestones_query(intent, "wf", session_id=_SESSION)
     assert res.success and "MVP" in res.message
     assert res.intent_data[mp.PICK_PENDING_FLAG] is True
+    # #2184 two-step (Arch 10-29; CXO 09:01): an armed pick ends the reply with the question.
+    assert res.message.endswith("\n\n" + mp.MILESTONE_PICK_ARM_QUESTION)
+    assert mp.MILESTONE_PICK_ARM_QUESTION == (
+        "Which milestone do you want to see issues from? Say its name."
+    )
     pa = store.slot["pending_action"]
     assert (
         pa["kind"] == mp.MILESTONE_PICK_KIND
@@ -279,6 +284,7 @@ async def test_milestones_handler_does_not_arm_on_an_empty_read(intent_service):
     ):
         res = await intent_service._handle_list_milestones_query(intent, "wf", session_id=_SESSION)
     assert store.slot is None and mp.PICK_PENDING_FLAG not in res.intent_data
+    assert mp.MILESTONE_PICK_ARM_QUESTION not in res.message  # nothing armed, nothing asked
 
 
 @pytest.mark.asyncio
@@ -302,3 +308,32 @@ async def test_milestones_handler_does_not_arm_when_the_repo_cannot_be_resolved(
     ):
         res = await intent_service._handle_list_milestones_query(intent, "wf", session_id=_SESSION)
     assert res.success and store.slot is None and mp.PICK_PENDING_FLAG not in res.intent_data
+    assert mp.MILESTONE_PICK_ARM_QUESTION not in res.message  # nothing armed, nothing asked
+
+
+@pytest.mark.asyncio
+async def test_milestones_handler_asks_nothing_when_a_remainder_offer_was_armed(intent_service):
+    # A capped list arms the remainder offer instead (same one-slot store): no pick, no question.
+    store = _Store()
+    intent_service.workflow_offer_service = store
+    router = MagicMock()
+    router.initialize = AsyncMock()
+    router.list_milestones_via_mcp = AsyncMock(
+        return_value=[
+            {"title": f"M{i}", "due_on": None, "open_issues": 1, "closed_issues": 0}
+            for i in range(30)
+        ]
+    )
+    router._resolve_default_repo = AsyncMock(return_value=("o", "r"))
+    intent = Intent(
+        category=IntentCategory.QUERY,
+        action="list_milestones_query",
+        context={"original_message": "show milestones"},
+    )
+    with patch(
+        "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+        return_value=router,
+    ):
+        res = await intent_service._handle_list_milestones_query(intent, "wf", session_id=_SESSION)
+    assert res.success and mp.PICK_PENDING_FLAG not in res.intent_data
+    assert mp.MILESTONE_PICK_ARM_QUESTION not in res.message
