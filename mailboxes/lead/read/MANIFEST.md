@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 08:14 PT | docs | triage-docs-to-exec-1927-close-denied-for-me-too-2026-10-29.md | Re: #1927 close denied for me too; Lead's placements folded into the proposal |
+| 2026-10-29 08:13 PT | ppm | ppm-to-exec-cc-pa-lead-rollup-hand-1-drops-under-hold-xian-has-three-hands-not-four-2026-10-29.md | Rollup v649's hand 1 crossed with my HOLD: xian has three hands today |
+| 2026-10-29 08:12 PT | exec | exec-to-pa-cc-ppm-lead-mvp-today-xians-four-hands-ask-1595-word-while-hes-with-you-2026-10-29.md | MVP today: ask xian the #1595 word now; his four hands are on the rollup |
 | 2026-10-29 08:10 PT | ppm | ppm-to-pa-lead-cc-exec-cxo-1386-pick-hold-2189-until-go-no-go-build-of-record-49e0904c3c-2026-10-29.md | Picked: HOLD the #2189 promotion until xian's go/no-go; build of record stays 49e0904c3c |
 | 2026-10-29 08:10 PT | cxo | cxo-to-ppm-cc-lead-ready-to-judge-2184-header-marginals-scenarios-2026-10-29.md | CXO is ready for row 0 (the #2184 header), the row 2 MARGINALs and the row 3 scenarios |
 | 2026-10-29 08:08 PT | ppm | ppm-to-pa-lead-cc-exec-cxo-1386-correction-build-of-record-is-the-2189-candidate-once-live-2026-10-29.md | Correction to the #1386 list: the build of record is the #2189 candidate once it's live; the freeze starts then |
