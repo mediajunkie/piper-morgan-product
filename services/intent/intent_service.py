@@ -1431,50 +1431,42 @@ class IntentService:
         """
         if not user_id:
             return  # D1a — never write an owner-less activity row
-        # #2201: a handler that renamed something this session created declares
-        # ``intent_data['retitled_activity']`` ({target_ref, target_title}); the
-        # ledger row keeps the title the person now knows it by. Owner-scoped
-        # like every ledger write; a ref this session did not create is a no-op.
-        retitled = (result.intent_data or {}).get("retitled_activity")
-        if retitled and retitled.get("target_ref") and retitled.get("target_title"):
-            try:
-                from services.database.repositories import SessionActivityRepository
-                from services.database.session_factory import AsyncSessionFactory
-
-                async with AsyncSessionFactory.session_scope() as session:
-                    n = await SessionActivityRepository(session).retitle(
-                        owner_id=str(user_id),
-                        conversation_id=str(session_id),
-                        target_ref=retitled["target_ref"],
-                        target_title=retitled["target_title"],
-                    )
-                self.logger.info(
-                    "session_activity_retitled",
-                    session_id=session_id,
-                    target_ref=retitled["target_ref"],
-                    rows=n,
-                )
-            except Exception as e:
-                self.logger.warning(
-                    "Failed to retitle session activity (non-blocking)",
-                    session_id=session_id,
-                    error=str(e),
-                )
         created = (result.intent_data or {}).get("created_activity")
         if not created:
             # #2095: a create the handler could not declare in its result (the todo
             # handlers answer with a string) is parked on the session context by
             # _remember_created_todo; pop it here, once, for this owner's session.
             created = _pop_pending_created_activity(session_id, user_id)
-        if not created:
+        # #2201: a handler that renamed something this session created declares
+        # ``intent_data['retitled_activity']`` ({target_ref, target_title}); the
+        # ledger row keeps the title the person now knows it by. Owner-scoped
+        # like every ledger write; a ref this session did not create is a no-op.
+        # Same best-effort block as the creation write (one swallow, not two).
+        retitled = (result.intent_data or {}).get("retitled_activity")
+        if not (retitled and retitled.get("target_ref") and retitled.get("target_title")):
+            retitled = None
+        if not created and not retitled:
             return
         # #2094: a batch create parks a LIST; one ledger row per element.
-        rows = created if isinstance(created, list) else [created]
+        rows = (created if isinstance(created, list) else [created]) if created else []
         try:
             from services.database.repositories import SessionActivityRepository
             from services.database.session_factory import AsyncSessionFactory
 
             async with AsyncSessionFactory.session_scope() as session:
+                if retitled:
+                    n = await SessionActivityRepository(session).retitle(
+                        owner_id=str(user_id),
+                        conversation_id=str(session_id),
+                        target_ref=retitled["target_ref"],
+                        target_title=retitled["target_title"],
+                    )
+                    self.logger.info(
+                        "session_activity_retitled",
+                        session_id=session_id,
+                        target_ref=retitled["target_ref"],
+                        rows=n,
+                    )
                 for row in rows:
                     await SessionActivityRepository(session).record(
                         owner_id=str(user_id),
