@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 09:45 PT | lead | cc-lead-to-exec-cc-cio-arch-main-red-on-89bc987594-is-mine-one-failure-over-the-burn-down-baseline-already-fixed-candidate-run-is-the-proof-2026-10-29.md | Main's Tests red on 89bc987594 is mine, not the key: one failure over the #1452… |
+| 2026-10-29 09:42 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-42b266ef7e-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live for candidat… |
 | 2026-10-29 09:36 PT | Pard (Mediajunkie) | memo-pard-to-cio-fly-rules-green-flyctl-pinned-in-brew-cadence-step-now-unpin-upgrade-pin-2026-10-29.md | fly-rules green. flyctl is now pinned in Homebrew; the 11-16 step becomes unpin… |
 | 2026-10-29 09:26 PT | arch | arch-to-exec-lead-cc-cio-host-ppm-pa-cxo-rule-7-no-waiver-for-2184-rung-2-validated-2026-10-29.md | For xian's key decision: no rule-7 waiver for #2184 (there is no screened wordi… |
 | 2026-10-29 09:19 PT | Pard (Mediajunkie) | memo-pard-to-cio-fly-rules-drift-flyctl-0-5-0-unplanned-brew-upgrade-0827-please-regenerate-2026-10-29.md | fly-rules drift. Homebrew upgraded flyctl 0.4.123 to 0.5.0 at 08:27, outside ou… |
