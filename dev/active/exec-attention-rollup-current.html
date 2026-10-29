@@ -32,23 +32,24 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 29 October</h1>
-<p class="meta">Exec · v669, rebuilt 14:52 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v670, rebuilt 16:52 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <div class="card win"><b>Key limit raised ($90 to $100, your word via PA 11:36); calls succeed again (11:35).</b> Lead resumes the #2184 screens; row 2&rsquo;s judge works. Recorded in decisions.log; CIO and HOST told.</div>
 
 <div class="card win"><b>Test-account chat is working again:</b> PA&rsquo;s scenarios B and C ran on the seed account from 13:05. Partners were most likely never affected (CIO and PA both corrected their first alarms).</div>
 
-<div class="card win"><b>#2184 is off the MVP gate as a known issue</b> (your word, 13:02). Recorded in decisions.log with your priority rule: everything that left MVP goes to the top of triage for the first Production sprint. CXO&rsquo;s line goes in the first beta invitation (no sooner than 10-30, after your conversation with HOST); whether the three alpha partners get a note is a question for that conversation. Row 0 also passed #2194&rsquo;s headers and #2187&rsquo;s Reconnect card; the milestone pick still fails a different way, filed as #2199 in Production.</div>
+<div class="card win"><b>#2184 is off the MVP gate as a known issue</b> (your word, 13:02). Recorded in decisions.log with your priority rule: everything that left MVP goes to the top of triage for the first Production sprint. CXO&rsquo;s line goes in the first beta invitation (no sooner than 10-30, after your conversation with HOST); the three alpha partners get a line too (your yes via PA, 16:47); Comms proposes the form. Row 0 also passed #2194&rsquo;s headers and #2187&rsquo;s Reconnect card; the milestone pick still fails a different way, filed as #2199 in Production.</div>
 
 <div class="card win"><b>Your scenario answers are recorded (13:55, decisions.log):</b> #2205 asks which repo on a write (and the repo you picked in the setup wizard, which wasn&rsquo;t wired in, gets fixed with it; Arch: the wizard sets your default, one store); #2201 ships in the next release; yes to the one known-issues line in the beta letter. CXO is judging your A1 and A2 quotes. Lead sizes #2205: it joins the next release if small, otherwise it&rsquo;s a second release inside the freeze. </div>
 
-<div class="card hot"><b>Your hand: the second release is ready (Lead, 14:13), waiting on your dispatch since then.</b> Staging serves <code>67daf6c261</code>, Tests green on it; alpha still on <code>b9a8a43600</code> at 14:49. It carries #2199 (the milestone pick), #2200 (milestone due dates), #2201 (the renamed title in the recap) and a header follow-up. Not #2205, still being built. PA names the window between scenarios; then type <code>gh workflow run fly-deploy.yml -R mediajunkie/piper-morgan-product --ref main -f promote_to_alpha=true</code> (if Fly says 503, the same line again after a few minutes). After it, PA re-runs scenario B and the canonical suite. Scenario A re-runs after #2205 ships, on fresh accounts (with and without a repo named in the wizard). CXO and PPM passed A1 and A2.</div>
+<div class="card win"><b>The second release is live</b> (your dispatch 16:18, no 503; alpha serves <code>48df90eb72</code>, the READY code). PA re-ran scenario B and CXO passed it: the recap now shows the renamed title. <b>#2201 and #2199 closed.</b> #2200 (due dates) stays open until someone sees a milestone with no due date; that happens on your account in the A3/A4 pass.</div>
 
-<div class="card act"><b>Closing MVP: where it stands.</b> Gate list (<code>gh</code> 13:46): <b>3 open, #2205, #2201 and #1386.</b> #2194 closed on CXO&rsquo;s pass; #2184 moved out.
+<div class="card hot"><b>Next for your hand: one more release, then your A3/A4 re-run. Not yet.</b> #2205 (ask which repo on a write) landed on main at 16:27, but Tests went <b>red</b> on it: two new failures in exactly the code #2205 changed. I told Lead (16:51). When Lead mails READY (Tests green, plus Arch&rsquo;s re-read), I put the dispatch line here. After it, you re-run A3 and A4 on two fresh accounts, one with a repo picked in the setup wizard and one without. PPM ruled this third release fits the freeze; your dispatch is your word on it.</div>
+
+<div class="card act"><b>Closing MVP: where it stands.</b> Gate list (<code>gh</code> 16:52): <b>2 open, #2205 and #1386.</b>
 <ul style="margin:.3rem 0 .2rem 1.2rem;padding:0">
-<li><b>Done today:</b> #1595 closed on your split ruling (remainder #2195); the database check passed; your key raise; the promotion carrying #2194&rsquo;s header fix and #2189.</li>
-<li><b>#2184:</b> off the gate as a known issue (your word 13:02).</li>
-<li><b>Order now:</b> row 0 reads with PA (you, now), row 3 scenarios, row 4 security, row 2 canonical suite (running now; no #2184 promotion today), then PPM&rsquo;s rows 5 and 6, then your go/no-go on #1386. The 10-30 hard stop moves only on your word.</li>
+<li><b>Order now:</b> #2205 green and READY, then the third release on your dispatch, then your A3/A4 re-run (#2205 closes on CXO&rsquo;s ruling), then row 2 (PA&rsquo;s canonical suite) and row 4 (Lead&rsquo;s security suite) once each on that build, then PPM&rsquo;s rows 5 and 6 (the beta letter&rsquo;s final draft), then your go/no-go on #1386.</li>
+<li><b>Placed in Production, not gate rows:</b> #2209 (asking for a milestone you don&rsquo;t have gets a different one instead of &ldquo;no such milestone&rdquo;), #2208 (one route reports failures as success).</li>
 </ul></div>
 
 <div class="card act"><b>Two things only your hand unblocks (each a minute):</b>
@@ -112,7 +113,7 @@
 <li>Mail v4 stays on three seats until the 11-05 review.</li>
 </ul></div>
 <h2>📊 Where things stand</h2>
-<div class="card">MVP gate: <b>3 open</b> (#2205, #2201, #1386; <code>gh</code> 13:46 Thu). #1595 closed on xian&rsquo;s split (remainder #2195). #2018 closed Wed. Alpha <code>b9a8a43600</code> (live 12:04 Thu, your third dispatch; the first two hit Fly 503s, #2196 filed for a retry), frozen until go/no-go. Main Tests red on <code>89bc987594</code> (Lead&rsquo;s, one test over the known baseline; the fix is on main and in candidate <code>42b266ef7e</code>, whose Tests run started 09:41). Arch read that candidate from source: clean, no router change (09:48). Tested-path push hold on until Lead&rsquo;s READY.</div>
+<div class="card">MVP gate: <b>2 open</b> (#2205, #1386; <code>gh</code> 16:52 Thu). Alpha <code>48df90eb72</code> (live 16:18 Thu, your dispatch), frozen until go/no-go except gate-row fixes. Main Tests red on <code>24d21d332d</code> (#2205&rsquo;s landing, two new failures; Lead told 16:51). Staging serves <code>88004196b2</code>.</div>
 <p class="meta">How I checked each version: <code>dev/active/exec-rollup-verification-history.md</code> (not needed to read this page).</p>
 
 </div>
