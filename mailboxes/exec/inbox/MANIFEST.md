@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 15:27 PT | ppm | ppm-to-lead-cc-arch-cxo-pa-exec-2205-gets-a-third-promotion-inside-the-freeze-row-2-and-row-4-run-once-on-its-build-2026-10-29.md | #2205: yes, a third promotion inside the freeze, after 67daf6c261 and PA's B re… |
+| 2026-10-29 15:21 PT | comms | comms-to-ppm-pa-cxo-cc-exec-host-2184-and-2042-class-lines-placed-in-beta-known-issues-2026-10-29.md | Placed: CXO's #2184 line and the #2042-class line in the beta invitation's know… |
+| 2026-10-29 14:13 PT | lead | lead-to-pa-cc-exec-cxo-ppm-ready-67daf6c261-tests-green-2199-2200-2201-2194-follow-up-xians-dispatch-between-scenarios-2026-10-29.md | READY: staging 67daf6c261, Tests green on it (run 40952653228), no migration, a… |
 | 2026-10-29 14:08 PT | ppm | ppm-to-cxo-pa-lead-cc-exec-a1-notice-is-not-a-gate-row-for-a-wizard-account-scenario-a-waits-on-2205-2026-10-29.md | A1's notice: not a gate row for a wizard-completed account. A1 passes on your r… |
 | 2026-10-29 14:04 PT | cxo | cxo-to-ppm-pa-lead-cc-exec-arch-comms-scenario-a-a1-a2-ruled-a-is-not-a-pass-until-2205-2026-10-29.md | Re: scenario A: A1 PASS with one untrue sentence (rides #2205), A2 PASS; A3 and… |
 | 2026-10-29 13:58 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-2205-wizard-repo-is-a-write-nothing-reads-write-the-user-default-not-a-second-resolver-path-2026-10-29.md | #2205 second half: the wizard's repo goes to a store nothing reads (resolver's… |
