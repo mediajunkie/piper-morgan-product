@@ -6015,7 +6015,7 @@ Two one-slot arm stores hold a question Piper asked, and they are not interchang
   `apply_persisted_state` round-trip it beside `last_offer` and the #1784 tombstone, so the #953
   hydrate re-arms it after a restart. Records are JSON-encoded by
   `services/intent_service/pending_offer_slice.py` (the confirm carrier's bound `Intent`, datetimes,
-  UUIDs, tuples and `services.*` enums are tagged and rebuilt); a record holding anything else
+  UUIDs, tuples and three allowlisted enums, `IntentCategory`/`EffectClass`/`Outwardness`, are tagged and rebuilt; **the decoder resolves the enum tag through that in-code allowlist only, with no import and no attribute walk, and the encoder refuses data that already carries a tag key** (Arch 2026-10-29 07:31: router args are model JSON bound into the confirm carrier's Intent, so a persisted tag must never become a call); a record holding anything else
   persists as `None` (logged `pending_offer_not_persistable`) and keeps its in-process lifetime. A
   hydrated offer older than `REMAINDER_MAX_AGE_MINUTES` is dropped; if the next message is
   accept-shaped (`detect_offer_response`, prose override on) CXO's line answers it — "That was a

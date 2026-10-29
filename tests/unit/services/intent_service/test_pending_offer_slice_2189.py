@@ -619,3 +619,81 @@ class TestPushMuteOnSlice:
         first = cc.get_or_create_context(sid, user_id=_USER).push_session_muted_at
         cf._record_push_mute_on_slice(sid, _USER)  # idempotent: keeps the first time
         assert cc.get_or_create_context(sid, user_id=_USER).push_session_muted_at == first
+
+
+class TestCodecNeverTurnsDataIntoACall:
+    """Arch (#2189, 2026-10-29 07:31, comment 6499472026): router args are model
+    JSON on ``intent.context["inversion_args"]`` and the confirm carriers bind
+    that Intent into the record, so a persisted tag could name code. The
+    encoder refuses data carrying a reserved tag key; the decoder resolves the
+    enum tag through an in-code allowlist only, with no import and no
+    attribute walk. Mutation check: restore the module-path decode and
+    ``test_decoder_never_imports_from_a_persisted_tag`` fails."""
+
+    _PROBE = {
+        pos._ENUM_TAG: "services.intent_service.pending_offer_slice:importlib.import_module",
+        "value": "json",
+    }
+
+    @pytest.mark.parametrize("tag", sorted(pos._RESERVED_TAGS))
+    def test_encoder_refuses_model_data_carrying_a_reserved_tag_key(self, tag):
+        record = _confirm_record()
+        record["pending_action"]["intent"].context["inversion_args"] = {
+            tag: "services.intent_service.pending_offer_slice:importlib.import_module",
+            "value": "json",
+        }
+        with capture_logs() as logs:
+            assert pos.encode_offer_record(record) is None
+        assert any(e["event"] == "pending_offer_not_persistable" for e in logs)
+
+    def test_decoder_never_imports_from_a_persisted_tag(self, monkeypatch):
+        import importlib
+
+        calls: list = []
+        real = importlib.import_module
+
+        def spy(name, *a, **k):
+            calls.append(name)
+            return real(name, *a, **k)
+
+        monkeypatch.setattr(importlib, "import_module", spy)
+        assert pos.decode_offer_record({"x": self._PROBE}) is None
+        assert pos.decode_offer_record(self._PROBE) is None
+        assert "json" not in calls
+
+    def test_decoder_rejects_an_enum_outside_the_allowlist(self):
+        from services.shared_types import TodoStatus
+
+        tag = {pos._ENUM_TAG: "TodoStatus", "value": TodoStatus.PENDING.value}
+        assert pos.decode_offer_record({"status": tag}) is None
+        assert pos.decode_offer_record({"status": {pos._ENUM_TAG: "TodoStatus"}}) is None
+
+    def test_allowlisted_enums_round_trip_by_name_only(self):
+        encoded = pos.encode_offer_record(
+            {"workflow_type": "x", "cat": IntentCategory.EXECUTION, "eff": EffectClass.WRITE}
+        )
+        assert encoded["cat"] == {pos._ENUM_TAG: "IntentCategory", "value": "execution"}
+        assert ":" not in encoded["cat"][pos._ENUM_TAG]
+        decoded = pos.decode_offer_record(encoded)
+        assert decoded["cat"] is IntentCategory.EXECUTION
+        assert decoded["eff"] is EffectClass.WRITE
+
+    def test_encoder_refuses_an_enum_outside_the_allowlist(self):
+        from services.shared_types import TodoStatus
+
+        with capture_logs() as logs:
+            assert pos.encode_offer_record({"workflow_type": "x", "s": TodoStatus.PENDING}) is None
+        assert any(e["event"] == "pending_offer_not_persistable" for e in logs)
+
+    def test_hydrate_drops_an_offer_whose_persisted_record_carries_a_probe(self):
+        fresh = ConversationContext()
+        fresh.apply_persisted_state(
+            {
+                "pending_offer": {
+                    "offer_id": "probe",
+                    "armed_at": datetime.now().isoformat(),
+                    "record": {"workflow_type": "x", "pending_action": self._PROBE},
+                }
+            }
+        )
+        assert fresh.pending_offer is None

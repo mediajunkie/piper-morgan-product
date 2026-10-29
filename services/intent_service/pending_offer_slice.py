@@ -25,7 +25,6 @@ This module holds the pieces of that carrier that are not the context itself:
 
 from __future__ import annotations
 
-import importlib
 from collections import OrderedDict
 from datetime import datetime
 from enum import Enum
@@ -33,6 +32,8 @@ from typing import Any, Dict, Optional
 from uuid import UUID
 
 import structlog
+
+from services.shared_types import EffectClass, IntentCategory, Outwardness
 
 logger = structlog.get_logger(__name__)
 
@@ -47,6 +48,21 @@ _DATETIME_TAG = "__piper_datetime__"
 _UUID_TAG = "__piper_uuid__"
 _TUPLE_TAG = "__piper_tuple__"
 _ENUM_TAG = "__piper_enum__"
+_RESERVED_TAGS = frozenset({_INTENT_TAG, _DATETIME_TAG, _UUID_TAG, _TUPLE_TAG, _ENUM_TAG})
+
+# Arch (#2189, 2026-10-29 07:31, comment 6499472026): the decoder must never
+# turn persisted data into a call. Router args are unconstrained model JSON on
+# ``intent.context["inversion_args"]`` and the confirm carriers bind that
+# Intent into the record, so a tag that reached the slice could name code. The
+# enum tag therefore resolves ONLY through this in-code allowlist (tag name →
+# class), with no import and no attribute walk; an unknown name drops the
+# offer. Add a class here only when a record genuinely carries it.
+_ENUM_ALLOWLIST: Dict[str, type] = {
+    "IntentCategory": IntentCategory,
+    "EffectClass": EffectClass,
+    "Outwardness": Outwardness,
+}
+_ENUM_TAG_BY_CLASS: Dict[type, str] = {cls: name for name, cls in _ENUM_ALLOWLIST.items()}
 
 
 class OfferNotPersistable(Exception):
@@ -88,17 +104,21 @@ def _encode(value: Any) -> Any:
         for k, v in value.items():
             if not isinstance(k, str):
                 raise OfferNotPersistable(f"non-string key of type {type(k).__name__}")
+            if k in _RESERVED_TAGS:
+                # Arch 07:31: data that already carries a tag key (model JSON on
+                # the Intent's context, say) is refused outright, so it can never
+                # be mistaken for the codec's own tagging on the way back in.
+                raise OfferNotPersistable(f"reserved tag key {k!r} in data")
             out[k] = _encode(v)
         return out
     raise OfferNotPersistable(f"value of type {type(value).__name__}")
 
 
 def _encode_enum(value: Enum) -> Dict[str, Any]:
-    cls = type(value)
-    module = cls.__module__
-    if not module.startswith("services."):
-        raise OfferNotPersistable(f"enum {cls.__name__} outside services")
-    return {_ENUM_TAG: f"{module}:{cls.__qualname__}", "value": _encode(value.value)}
+    name = _ENUM_TAG_BY_CLASS.get(type(value))
+    if name is None:
+        raise OfferNotPersistable(f"enum {type(value).__name__} not in the codec allowlist")
+    return {_ENUM_TAG: name, "value": _encode(value.value)}
 
 
 def _decode(value: Any) -> Any:
@@ -116,13 +136,14 @@ def _decode(value: Any) -> Any:
         if _INTENT_TAG in value:
             return _decode_intent(value[_INTENT_TAG])
     if _ENUM_TAG in value and set(value) == {_ENUM_TAG, "value"}:
-        module_name, _, qualname = str(value[_ENUM_TAG]).partition(":")
-        if not module_name.startswith("services."):
-            raise ValueError("enum outside services")
-        cls: Any = importlib.import_module(module_name)
-        for part in qualname.split("."):
-            cls = getattr(cls, part)
+        cls = _ENUM_ALLOWLIST.get(str(value[_ENUM_TAG]))
+        if cls is None:
+            raise ValueError("enum tag not in the codec allowlist")
         return cls(_decode(value["value"]))
+    if _RESERVED_TAGS & set(value):
+        # A tag key beside other keys, or a tag the branches above did not
+        # claim: not the codec's own output. Drop the offer rather than guess.
+        raise ValueError("malformed tag")
     return {k: _decode(v) for k, v in value.items()}
 
 
