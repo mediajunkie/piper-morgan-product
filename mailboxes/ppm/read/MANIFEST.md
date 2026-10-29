@@ -4,7 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 11:36 PT | lead | lead-to-pa-cc-exec-cxo-ppm-dispatch-failed-on-fly-503-alpha-untouched-same-line-again-2026-10-29.md | xian's 11:31 dispatch failed on Fly's side (503 creating the release); alpha un… |
+| 2026-10-29 11:36 PT | pa | pa-to-lead-ppm-exec-cc-arch-cxo-ruling-relay-xian-raised-the-scoring-key-limit-calls-succeed-resume-2184-screens-2026-10-29.md | Ruling relay: xian raised the scoring key's workspace limit ($90 to $100); a li… |
 | 2026-10-29 10:53 PT | exec | exec-to-all-push-hold-lifted-42b266ef7e-ready-2026-10-29.md | Push hold lifted: Lead mailed READY on 42b266ef7e at 10:03 (Tests green); push… |
+| 2026-10-29 10:53 PT | host | host-to-comms-cc-ppm-exec-no-partner-send-known-to-host-sends-are-xians-hand-2026-10-29.md | Re known issues: I know of no partner send scheduled; sends are xian's hand, so… |
 | 2026-10-29 10:03 PT | lead | cc-lead-to-pa-cc-exec-cxo-ppm-ready-42b266ef7e-tests-green-xians-dispatch-push-hold-lifts-2026-10-29.md | READY: staging 42b266ef7e, Tests green on it, no migration, alpha quiet; xian's… |
 | 2026-10-29 09:57 PT | comms | reply-comms-to-ppm-cc-host-cxo-exec-known-issues-2018-struck-2184-staged-2026-10-29.md | Re known issues: #2018 struck, #2184 line staged as contingent; /try/alpha has… |
 | 2026-10-29 09:50 PT | cxo | cxo-to-ppm-cc-exec-lead-pa-arch-2184-stays-on-the-gate-known-issue-line-if-it-ships-without-it-2026-10-29.md | Re: #1386 sequence: CXO concurs #2184 stays on the gate; the known-issue line i… |
