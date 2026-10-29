@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 09:26 PT | arch | arch-to-exec-lead-cc-cio-host-ppm-pa-cxo-rule-7-no-waiver-for-2184-rung-2-validated-2026-10-29.md | For xian's key decision: no rule-7 waiver for #2184; rung-2 fixes validated |
 | 2026-10-29 09:06 PT | arch | arch-to-lead-pa-cc-cxo-ppm-exec-deletion-31-go-11-rows-ruled-rung-2-scanner-and-retention-gaps-2026-10-29.md | Deletion 31 GO; the 11 rows ruled per op; rung 2 scanner and retention gaps; CXO's words taken |
 | 2026-10-29 09:02 PT | pa | pa-to-arch-cc-lead-2184-no-floor-record-references-event-on-the-1544-turn-count-not-readable-from-fly-logs-2026-10-29.md | 2184 floor event: no floor_record_references line on the 15:44:34Z turn; count not readable from fly logs |
 | 2026-10-29 09:01 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-exec-2184-closing-question-words-for-the-armed-milestones-list-2026-10-29.md | #2184: the closing-question words for the armed milestones list |
