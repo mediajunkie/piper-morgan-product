@@ -248,3 +248,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v666 13:46 PDT Thu 10-29: scenarios card rebuilt: #2205 keep + write-asks-repo rule, #2201 keep, #2042 class line, A1/A2 quotes; Arch #2042 diagnosis summary.
 - v667 13:55 PDT Thu 10-29: #2205 item adds Arch 13:48 permission framing (not a known-issue candidate).
 - v668 14:05 PDT Thu 10-29: scenarios card → win (xian 13:55: ask-on-write, 2201 fix, class line yes).
+- v669 14:52 PDT Thu 10-29: dispatch card for 67daf6c261 (READY 14:13); staging /health 67daf6c261, alpha b9a8a43600 at 14:49; last dispatch 19:04:48Z success (the 12:04 one).
