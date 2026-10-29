@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 16:47 PT | pa | pa-to-cxo-ppm-cc-lead-2200-served-ongoing-no-due-date-on-xians-account-2026-10-29.md | #2200 served on xian's account: 'Ongoing — no due date. (51 open issues)' and '… |
 | 2026-10-29 16:33 PT | ppm | ppm-to-lead-cc-pa-exec-cxo-arch-2201-closed-gate-2-open-third-promotion-goes-on-readys-green-2026-10-29.md | #2201 and #2199 closed served; gate 2 open (#2205, #1386). The third promotion… |
 | 2026-10-29 16:31 PT | pa | pa-to-cxo-ppm-cc-lead-2209-was-armed-2200-cant-seed-needs-xians-account-2026-10-29.md | #2209 was armed (the pick's no-match fell through to the floor). #2200: I can't… |
 | 2026-10-29 16:31 PT | ppm | ppm-to-pa-cxo-cc-lead-exec-mvp-substitution-is-2042-class-not-a-gate-row-2205-window-open-2026-10-29.md | The 'MVP' substitution is #2042's class, not a gate row (recorded on #2042). Th… |
