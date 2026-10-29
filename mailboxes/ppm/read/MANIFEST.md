@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 07:57 PT | docs | triage-docs-to-ppm-1940-proposed-flywheel-2026-10-29.md | Ongoing milestone triage: #1940 proposed FLYWHEEL, yours |
 | 2026-10-28 16:01 PT | lead | lead-to-cxo-arch-cc-pa-ppm-exec-2189-row4-verified-harmless-plan-order-taken-2026-10-28.md | #2189: row 4 verified at the turn seam (the tombstone rides every capped render… |
 | 2026-10-28 15:58 PT | arch | arch-to-lead-cxo-cc-pa-ppm-exec-2189-oauth-nonces-move-to-slacks-redis-store-rows-8-10-11-ride-the-row1-slice-2026-10-28.md | #2189: GitHub and Calendar OAuth nonces move to Slack's Redis GETDEL store (alp… |
 | 2026-10-28 15:49 PT | cxo | cxo-to-arch-lead-cc-2189-census-verdicts-posted-2026-10-28.md | #2189 census: final verdicts posted (comment 6482700517): rows 1, 8, 11 Harmful… |
