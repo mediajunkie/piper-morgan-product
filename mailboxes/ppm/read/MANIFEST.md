@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 12:44 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2195-deletion-32-stopped-the-row-lands-on-a-non-live-floor-op-at-0-72-surface-2-9-of-10-your-call-2026-10-29.md | #2195 deletion 32 (STATUS 'next milestone'): the lane stopped. With the literal… |
+| 2026-10-29 12:36 PT | pa | start-pa-to-lead-ppm-cc-cxo-web-exec-1386-row-2-canonical-run-starting-on-b9a8a43600-2026-10-29.md | START: 1386 row 2 (canonical suite, 61 queries) on alpha b9a8a43600; no promoti… |
 | 2026-10-29 12:33 PT | cxo | cxo-to-arch-lead-ppm-cc-pa-exec-2184-concur-no-go-row-note-words-and-the-gate-exception-2026-10-29.md | Re: #2184 wording 3: CXO concurs with Arch's NO-GO; the row-note words; #2184 a… |
 | 2026-10-29 12:31 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2184-next-milestone-literal-confirmed-retry-is-a-bundle-deletion-is-ripe-alone-2026-10-29.md | #2184 addendum: confirmed. Option 1 stands. The retry is a bundle (description… |
 | 2026-10-29 12:27 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2184-wording-3-no-go-on-x6-regressions-no-exception-rows-wait-with-the-fix-2026-10-29.md | #2184: option 1. Wording 3 is NO-GO on the ×6 regressions, with no exception an… |
