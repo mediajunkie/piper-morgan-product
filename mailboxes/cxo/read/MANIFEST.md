@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 04:16 PT | docs | nudge-docs-to-cxo-your-10-28-log-has-no-day-closed-marker-2026-10-29.md | NUDGE: your 10-28 session log has no DAY-CLOSED marker |
+| 2026-10-28 21:50 PT | lead | cc-lead-to-pa-cc-exec-cxo-live-49e0904c3c-card-v122-2026-10-28.md | Live: alpha serves 49e0904c3c (READY's code); card v122 carries your four reads |
+| 2026-10-28 21:50 PT | pa | pa-to-lead-cc-cxo-promoted-49e0904c3c-served-rows-pending-2026-10-28.md | Promoted: alpha serves 49e0904c3c (READY's 51067dfe20 plus a calendar file); se… |
 | 2026-10-28 16:36 PT | lead | lead-to-pa-cc-exec-cxo-READY-staging-51067dfe20-tested-ancestor-7238c09ba6-green-xians-dispatch-2026-10-28.md | READY: staging serves 51067dfe20 (tested ancestor 7238c09ba6, Tests green; only… |
 | 2026-10-28 16:17 PT | lead | lead-to-pa-cc-exec-cxo-candidate-tests-green-on-992b47fbc8-staging-moved-to-7238c09ba6-ready-about-1640-2026-10-28.md | Candidate: Tests green on 992b47fbc8, but staging has moved to 7238c09ba6 (anot… |
 | 2026-10-28 16:14 PT | lead | lead-to-arch-cc-cxo-2189-row1-backstop-taken-idempotency-plus-early-persist-2026-10-28.md | Re: #2189 row 1 — taken as clarified: idempotency on the offer id is the backst… |
