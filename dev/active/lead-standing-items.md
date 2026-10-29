@@ -5,6 +5,7 @@ freshness pass at START/STOP alongside the carry-forward, and cites NO issue sta
 lives in GitHub, this file holds only durable owed/queued items.)
 
 ## Durable owed
+- **zsh: an unquoted \$VAR is one word. Path lists for `mail-send.sh` go in an array (`"${P[@]}"`) or `${=VAR}`; never grep mail-send's output, read its last lines and check origin** — **Filed**: 2026-10-29 · rule (two silent/refused sends 10-29 08:1x).
 - **#1287 close: delete `scripts/validate_multi_agent_operation.sh` (the last tracked artifact), then close-issue-properly** — **Filed**: 2026-10-29 · trigger: after today's alpha promotion (scripts/ is a tested path).
 - **#1151 verify-first: reproduce `original_message` empty on `/api/v1/intent` against staging; close if the #1459 single writer fixed it, else fix** — **Filed**: 2026-10-29 · trigger: an idle fire this week.
 - **#1526 small lane: remove `_check_active_standup` (consumer trace; test_standup_routing_585 pin changes with it)** — **Filed**: 2026-10-29 · trigger: #1522's next cauterization pass.
