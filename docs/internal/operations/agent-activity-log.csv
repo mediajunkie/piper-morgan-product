@@ -3085,3 +3085,15 @@ date,role,slug,environment,model,log_filename,notes
 2026-10-27,Lead Dev,lead,code,opus,2026-10-27-0647-lead-code-log.md,Lead work
 2026-10-27,Piper Alpha,pa,code,opus,2026-10-27-0647-pa-code-log.md,"Served-alpha checks, #2018 run"
 2026-10-27,Chief Innovation Officer,cio,code,opus,2026-10-27-1007-cio-code-log.md,Staleness re-run
+2026-10-28,Docs mgr,docs,code,sonnet,2026-10-28-0412-docs-code-log.md,"10-27 omnibus plus Exec addendum, Weekly Ship #066 published and distributed (3 website commits), Citation via Hearsay pre-flight and dry-run"
+2026-10-28,Chief of Staff,exec,code,opus,2026-10-28-0423-exec-code-log.md,"Rollup v639-v644, Ship #066 live-page republish check, v4 canary ack, #2184 keep-or-out ask to xian (log ends 10:31, no DAY-CLOSED)"
+2026-10-28,Web,web,code,sonnet,2026-10-28-0618-web-code-log.md,"Ship #066 deploy read, #2042 census replay held on a test-account sign-in, main-red report to Lead"
+2026-10-28,Comms,comms,code,opus,2026-10-28-0619-comms-code-log.md,"Ship #066 cuts, audit and publish-ready, main-red memo to Lead, Citation via Hearsay review, audit and publish-ready"
+2026-10-28,Head of Sapient Trust,host,code,sonnet,2026-10-28-0626-host-code-log.md,"Quiet wakes, restart onto 2.1.310 unblocked, main-red noted and no third memo sent"
+2026-10-28,Chief Architect,arch,code,opus,2026-10-28-0627-arch-code-log.md,"#2183, #2042 diagnosis, #2186 filed and validated, #2184 pick ruling and validation, #2189 persist ruling and 20-row census"
+2026-10-28,Chief Experience Officer,cxo,code,sonnet,2026-10-28-0631-cxo-code-log.md,"#2186 copy rulings, #2184 pick copy, #2018 close ruling with #2187 and #2188, #2189 verdicts and #2190 (log ends 21:31, no DAY-CLOSED)"
+2026-10-28,Principal PM,ppm,code,opus,2026-10-28-0633-ppm-code-log.md,"#2183 placed, #2042 first in PUB, #2184 admitted to MVP, #2018 closed (gate 4 to 3), #2187-#2190 placed, map v13-v16"
+2026-10-28,Lead Dev,lead,code,opus,2026-10-28-0647-lead-code-log.md,"#2042 guard, #2186 unit 1 and Open 1, #2184 pick, #2185, #2187, main-red fix, #2189 sizing, READY on staging (log ends 21:50, no DAY-CLOSED)"
+2026-10-28,Piper Alpha,pa,code,opus,2026-10-28-0647-pa-code-log.md,"#2018 served run and close, #2184 #2185 #2189 filed, xian relays on confabulations, two promotions tracked"
+2026-10-28,Chief Innovation Officer,cio,code,opus,2026-10-28-0754-cio-code-log.md,"flyctl upgrade cadence with Pard, mail v4 canary gap (false alarm) and mail4.py last-ack fix"
+2026-10-28,Programmer subagent,prog,code,opus,2026-10-28-1052-prog-code-log.md,"#2186 unit 1 build for Lead on claude/lead-2186-args (31 tests, no DAY-CLOSED)"
