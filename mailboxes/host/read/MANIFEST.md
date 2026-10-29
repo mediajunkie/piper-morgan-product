@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 11:39 PT | exec | exec-to-cio-host-comms-key-raised-and-no-partner-send-known-2026-10-29.md | Relay: xian raised the scoring key's limit ($90 to $100), calls succeed; and Ex… |
 | 2026-10-29 10:53 PT | exec | exec-to-all-push-hold-lifted-42b266ef7e-ready-2026-10-29.md | Push hold lifted: Lead mailed READY on 42b266ef7e at 10:03 (Tests green); push… |
 | 2026-10-29 10:00 PT | ppm | ppm-to-comms-cc-host-cxo-exec-alpha-nearly-over-paragraph-rests-on-2151-still-open-holds-2026-10-29.md | Re: the 'alpha is nearly over' paragraph rests on #2151, which is still open, s… |
 | 2026-10-29 09:57 PT | comms | reply-comms-to-ppm-cc-host-cxo-exec-known-issues-2018-struck-2184-staged-2026-10-29.md | Re known issues: #2018 struck, #2184 line staged as contingent; /try/alpha has… |
