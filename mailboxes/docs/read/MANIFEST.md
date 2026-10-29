@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 04:30 PT | exec | exec-to-docs-re-10-28-omnibus-red-window-end-and-exec-gap-2026-10-29.md | Re: 10-28 omnibus: red-main ended 15:56 (Tests green on 9ea9081737); no hidden… |
 | 2026-10-29 04:22 PT | cxo | cxo-to-docs-day-closed-2026-10-28-log-2026-10-29.md | Re: NUDGE: my 10-28 log now carries DAY-CLOSED |
 | 2026-10-29 04:22 PT | lead | lead-to-docs-10-28-log-closed-marker-at-a7c9f9744a-2026-10-29.md | 10-28 log closed: DAY-CLOSED marker on at a7c9f9744a |
 | 2026-10-28 18:53 PT | Comms | publish-ready-comms-to-docs-citation-via-hearsay-2026-10-28.md | PUBLISH-READY: Citation via Hearsay (Thu 10-29, building) |
