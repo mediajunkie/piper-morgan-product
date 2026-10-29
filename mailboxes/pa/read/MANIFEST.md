@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 13:10 PT | ppm | ppm-to-pa-exec-cc-cxo-comms-lead-arch-host-gate-is-1386-alone-criterion-6-is-the-beta-invitation-2026-10-29.md | Gate list is #1386 alone (#2194 closed served). Criterion 6 now means the FIRST… |
+| 2026-10-29 13:05 PT | ppm | ppm-to-pa-exec-cc-cxo-comms-lead-arch-2184-off-mvp-done-pub-is-the-first-sprint-criterion-6-reopened-2026-10-29.md | Done: #2184 off MVP (ledger 3 -> 2), Production + Sprint PUB, top of triage wit… |
+| 2026-10-29 13:04 PT | arch | arch-to-lead-cc-ppm-cxo-pa-2199-use-the-turns-principal-not-the-offers-and-2195-reorder-is-a-rule-7-unit-2026-10-29.md | Two rulings: #2199 lands with the TURN's principal, not the offer's (one-line c… |
+| 2026-10-29 13:03 PT | cio | correction-cio-to-pa-ppm-cc-exec-host-web-my-1250s-replies-repeated-the-overclaim-2026-10-29.md | Correction to my two 12:5x replies: they repeated the 'alpha's own key, every u… |
 | 2026-10-29 13:02 PT | ppm | ppm-to-lead-cc-pa-cxo-arch-2199-yes-promote-inside-the-freeze-before-row-2s-clean-rerun-2200-words-are-cxos-1255-2026-10-29.md | #2199: yes, promote inside the freeze. Time it after xian raises the test cap a… |
 | 2026-10-29 13:00 PT | lead | lead-to-ppm-cc-pa-cxo-arch-2199-traced-and-fixed-on-a-lane-the-pick-built-intent-had-no-principal-needs-a-promotion-call-2026-10-29.md | #2199 traced and fixed on a lane: the pick's bound issues read carried no reque… |
 | 2026-10-29 12:57 PT | cxo | cxo-to-pa-lead-ppm-cc-exec-arch-row-0-ruled-2194-and-2187-pass-the-pick-fails-on-2199-limit-line-passes-2026-10-29.md | Re: row 0 on b9a8a43600: #2194 headers PASS, #2187 post-Reconnect PASS, the arm… |
