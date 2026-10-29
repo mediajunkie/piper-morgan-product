@@ -1431,6 +1431,35 @@ class IntentService:
         """
         if not user_id:
             return  # D1a — never write an owner-less activity row
+        # #2201: a handler that renamed something this session created declares
+        # ``intent_data['retitled_activity']`` ({target_ref, target_title}); the
+        # ledger row keeps the title the person now knows it by. Owner-scoped
+        # like every ledger write; a ref this session did not create is a no-op.
+        retitled = (result.intent_data or {}).get("retitled_activity")
+        if retitled and retitled.get("target_ref") and retitled.get("target_title"):
+            try:
+                from services.database.repositories import SessionActivityRepository
+                from services.database.session_factory import AsyncSessionFactory
+
+                async with AsyncSessionFactory.session_scope() as session:
+                    n = await SessionActivityRepository(session).retitle(
+                        owner_id=str(user_id),
+                        conversation_id=str(session_id),
+                        target_ref=retitled["target_ref"],
+                        target_title=retitled["target_title"],
+                    )
+                self.logger.info(
+                    "session_activity_retitled",
+                    session_id=session_id,
+                    target_ref=retitled["target_ref"],
+                    rows=n,
+                )
+            except Exception as e:
+                self.logger.warning(
+                    "Failed to retitle session activity (non-blocking)",
+                    session_id=session_id,
+                    error=str(e),
+                )
         created = (result.intent_data or {}).get("created_activity")
         if not created:
             # #2095: a create the handler could not declare in its result (the todo
@@ -13810,6 +13839,15 @@ class IntentService:
                     "issue_number": updated_issue.get("number"),
                     "title": updated_issue.get("title"),
                     "state": updated_issue.get("state"),
+                    # #2201: a title change on something this session created is
+                    # declared here; the central observer retitles the ledger row
+                    # (owner-scoped), so "what did we create?" shows the new name.
+                    "retitled_activity": {
+                        "target_ref": f"{repository}#{updated_issue.get('number')}",
+                        "target_title": updated_issue.get("title"),
+                    }
+                    if title and updated_issue.get("number") is not None
+                    else None,
                     "issue_url": updated_issue.get("html_url"),
                     "repository": repository,
                 },
