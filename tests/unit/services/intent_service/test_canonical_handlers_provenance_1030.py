@@ -168,6 +168,57 @@ class TestProvenanceHandlerWithRecord:
         assert result["keys_cited"] == 1
 
 
+class TestProvenanceInstrumentationKeysAreNotCited2042:
+    """#2042 rung 2 (Arch 2026-10-29): the floor's listed-records event rides
+    the same provenance dict as ``record_references``. It is a measurement,
+    not a source, so the citation skips it; the real source is still named."""
+
+    @pytest.mark.asyncio
+    async def test_record_references_key_is_skipped_and_the_source_still_cited(self):
+        ch = CanonicalHandlers()
+        intent = _mk_intent()
+        ctx = _mk_context_with_turn_provenance(
+            "s-2042",
+            {
+                "calendar": {"source": "CalendarIntegrationRouter"},
+                "record_references": {
+                    "references": ["#2194", "#2186"],
+                    "reference_count": 2,
+                    "unsourced_references": ["#2194", "#2186"],
+                    "reference_sources": {"#2194": ["absent"], "#2186": ["absent"]},
+                    "list_lines": 0,
+                    "context_reads": ["active_milestones[?]"],
+                },
+            },
+        )
+        with patch(
+            "services.intent_service.conversation_context.get_or_create_context",
+            return_value=ctx,
+        ):
+            result = await ch._handle_provenance_query(
+                intent, session_id="s-2042", user_id="u-test"
+            )
+        assert "Google Calendar" in result["message"]
+        assert "record references" not in result["message"]
+        assert "record_references" not in result["message"]
+
+    @pytest.mark.asyncio
+    async def test_only_instrumentation_reads_as_no_record(self):
+        ch = CanonicalHandlers()
+        intent = _mk_intent()
+        ctx = _mk_context_with_turn_provenance(
+            "s-2042b", {"record_references": {"references": ["#1"], "reference_count": 1}}
+        )
+        with patch(
+            "services.intent_service.conversation_context.get_or_create_context",
+            return_value=ctx,
+        ):
+            result = await ch._handle_provenance_query(
+                intent, session_id="s-2042b", user_id="u-test"
+            )
+        assert "record references" not in result["message"]
+
+
 class TestProvenanceHandlerErrorPath:
     @pytest.mark.asyncio
     async def test_exception_is_fail_graceful(self):
