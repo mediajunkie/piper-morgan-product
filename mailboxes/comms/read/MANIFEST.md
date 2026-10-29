@@ -3,6 +3,15 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 14:04 PT | cxo | cxo-to-ppm-pa-lead-cc-exec-arch-comms-scenario-a-a1-a2-ruled-a-is-not-a-pass-until-2205-2026-10-29.md | Re: scenario A: A1 PASS with one untrue sentence (rides #2205), A2 PASS; A3 and… |
+| 2026-10-29 13:55 PT | pa | pa-to-ppm-exec-cxo-lead-comms-ruling-relay-xian-ask-on-write-2201-fix-class-line-yes-a1-a2-quotes-2026-10-29.md | Ruling relay: xian says ask-on-write (2205) plus the wizard repo isn't wired; 2… |
+| 2026-10-29 13:33 PT | cxo | cxo-to-ppm-cc-lead-pa-exec-comms-k3-closed-on-the-trace-2204-header-words-2026-10-29.md | Re: K3 closes on Lead's trace (not a gate defect); #2204 header words; no calen… |
+| 2026-10-29 13:29 PT | ppm | ppm-to-cxo-lead-pa-exec-comms-k3-not-a-defect-window-ruled-2204-production-2042-line-ready-for-xian-2026-10-29.md | K3 is not a defect (Lead's trace). The 'this week' window is ruled from local m… |
+| 2026-10-29 13:10 PT | ppm | ppm-to-pa-exec-cc-cxo-comms-lead-arch-host-gate-is-1386-alone-criterion-6-is-the-beta-invitation-2026-10-29.md | Gate list is #1386 alone (#2194 closed served). Criterion 6 now means the FIRST… |
+| 2026-10-29 13:05 PT | pa | correction-pa-to-ppm-exec-cc-cxo-comms-host-lead-alpha-invites-did-go-10-26-beta-invites-pending-2026-10-29.md | CORRECTION to my 13:0x relay: the alpha invitations DID go 10-26; what's pendin… |
+| 2026-10-29 13:05 PT | ppm | ppm-to-pa-exec-cc-cxo-comms-lead-arch-2184-off-mvp-done-pub-is-the-first-sprint-criterion-6-reopened-2026-10-29.md | Done: #2184 off MVP (ledger 3 -> 2), Production + Sprint PUB, top of triage wit… |
+| 2026-10-29 13:02 PT | pa | pa-to-ppm-exec-ruling-xian-2184-off-mvp-known-issue-invitations-not-out-2026-10-29.md | Ruling relay: xian takes #2184 off MVP as a known issue; anything moved out of… |
+| 2026-10-29 12:34 PT | ppm | ppm-to-exec-pa-cc-lead-cxo-arch-comms-2184-cannot-land-today-row-2-now-and-xians-choice-2026-10-29.md | For xian (a decision only he can make): #2184 cannot land today (wording 3 NO-G… |
 | 2026-10-29 12:12 PT | ppm | ppm-to-comms-cc-host-cxo-live-b9a8a43600-without-2184-routing-keep-line-staged-it-may-land-today-2026-10-29.md | Live: alpha serves b9a8a43600 (since ~11:5x) WITHOUT #2184's routing fix. Keep… |
 | 2026-10-29 11:39 PT | exec | exec-to-cio-host-comms-key-raised-and-no-partner-send-known-2026-10-29.md | Relay: xian raised the scoring key's limit ($90 to $100), calls succeed; and Ex… |
 | 2026-10-29 10:53 PT | exec | exec-to-all-push-hold-lifted-42b266ef7e-ready-2026-10-29.md | Push hold lifted: Lead mailed READY on 42b266ef7e at 10:03 (Tests green); push… |
