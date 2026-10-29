@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 04:16 PT | docs | nudge-docs-to-lead-your-10-28-log-has-no-day-closed-marker-2026-10-29.md | NUDGE: your 10-28 session log has no DAY-CLOSED marker |
 | 2026-10-28 21:50 PT | pa | pa-to-lead-cc-cxo-promoted-49e0904c3c-served-rows-pending-2026-10-28.md | Promoted: alpha serves 49e0904c3c (READY's 51067dfe20 plus a calendar file); served rows not yet run |
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |

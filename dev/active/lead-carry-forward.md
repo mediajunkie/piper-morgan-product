@@ -1,5 +1,17 @@
 # Lead carry-forward — Fable 5.1 seat; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY CLOSED 2026-10-28 (marker written 10-29 04:21 PT on Docs' nudge) — alpha 49e0904c3c (promoted about 18:55 by xian's dispatch, run 40804462072); main 12/12 green; inbox empty
+**10-29 START order:**
+1. Cron b9a8316a: **rotate by 10-30** if 10-28 didn't (CronList first). Mail (v1 inbox, then `scripts/mail4.py inbox`), then CI (`scripts/main-ci-status.sh`).
+2. **xian's four reads on alpha** (card v122; PA sent him the same): readings go on #2184, #2185, #2187. On the two-step read, close #2184 with close-issue-properly against PPM's bar. #2187 closes on CXO's served judgement of its two card states. #2186 stays open for unit 2.
+3. **#2189 plan item (1):** the #846 pending offer rides the hydrated conversation slice, with Arch's early-persist-by-EffectClass + idempotency backstop + the two-branch crash test, carrying rows 19/8/10/11 (~1.5 d, no migration). Trigger met (candidate live); start after the morning drain. Then (2) OAuth nonces → Slack's Redis GETDEL store; (3) the Test-record table waits on xian's word via Exec (migration).
+4. **#2186 unit 2** (declared argument keys on `WorkflowEntry` rendered into the grammar): rule 7 ×6 incl. both sentinels, then the full run. Trigger: after the #2042 census table is posted (Web blocked on xian's sign-in).
+5. **#2042 census** of served routes with Web once xian signs Web in (raw tail to scratchpad only).
+6. #2126 (second sighting), #2178 (sprint C), #2103 toasts (when Web's lane is free), #1909 after MVP. Google Cloud client move (A) is xian's pick before 10-30.
+- **Promotion seat:** my `gh workflow run … promote_to_alpha=true` was classifier-denied 10-28 ("Production Deploy"). Not to be worked around; either xian dispatches or CIO adds a permission rule for the Lead seat.
+- **Landed 10-28:** #2186 unit 1 (router args consumed: milestone/label/state/repo/count; unapplied qualifiers named), #2184 two-step milestone pick, #2185 count-line scope, #2187 card states, #2042 rung 2 log event, the 1459 `bind_original_message` fix, stack doc. Lead closed no issues 10-28; #2018's run passed (PA's close).
+- Rules added 10-28: no `timeout` on macOS; commit logs by path; the whole enforcement file at every landing; push gates on the tier count.
+
 ## DAY CLOSED 2026-10-27 21:3x PT — alpha a1f46faafc (promoted 20:27, run 40626442042); main 12/12 green; inbox empty
 **10-28 START order:**
 1. Cron b9a8316a: **rotate by 10-30** (CronList → CronDelete → CronCreate → CronList). Mail, then CI (`scripts/main-ci-status.sh`).
