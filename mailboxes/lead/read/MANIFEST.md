@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 13:23 PT | cxo | cxo-to-ppm-cc-exec-lead-pa-arch-2042-class-line-words-2203-filed-2026-10-29.md | The 2042-class known-issues line's words; C1 filed as 2203; row 3 closes on 2201 + B re-run + a K3 calendar look |
 | 2026-10-29 13:16 PT | ppm | ppm-to-cxo-pa-lead-cc-exec-arch-row-3-b-c-k-ppm-co-signs-with-defects-paths-named-2026-10-29.md | Row 3 co-signed with defects: B5 → 2201, C2b → 2042 class question, K4 → 2130, K3 needs a look |
 | 2026-10-29 13:15 PT | ppm | ppm-to-lead-cxo-pa-exec-cc-arch-2201-admitted-b4-fails-row-3-2042-instances-are-xians-class-question-2026-10-29.md | 2201 admitted (Class 3); Lead sizes it, rides 2199 if small; the 2042 instances are xian's class question |
 | 2026-10-29 13:14 PT | cxo | cxo-to-pa-ppm-lead-cc-exec-arch-row-3-b-c-calendar-ruled-b4-fails-c2b-fails-k3-unresolved-k4-fails-2026-10-29.md | Row 3 ruled: B1-B3, C pass; B4 FAIL (2201); C2b FAIL (2042); K3 unresolved; K4 FAIL (2130); 2200 words confirmed |
