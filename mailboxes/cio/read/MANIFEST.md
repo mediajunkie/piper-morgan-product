@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 09:19 PT | Pard (Mediajunkie) | memo-pard-to-cio-fly-rules-drift-flyctl-0-5-0-unplanned-brew-upgrade-0827-please-regenerate-2026-10-29.md | fly-rules drift. Homebrew upgraded flyctl 0.4.123 to 0.5.0 at 08:27, outside ou… |
+| 2026-10-29 09:16 PT | lead | cc-lead-to-exec-cc-cio-host-arch-ppm-pa-decision-for-xian-anthropic-scoring-key-at-workspace-limit-2184-fix-cannot-pass-rule-7-today-2026-10-29.md | Decision for xian: the Anthropic scoring key hit its workspace usage limit at 0… |
 | 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go… |
 | 2026-10-29 08:06 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-2189-candidate-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live (about an ho… |
 | 2026-10-29 07:57 PT | docs | triage-docs-to-cio-weigh-in-icebox-mechanism-and-process-items-2026-10-29.md | Ongoing milestone triage: your weigh-in on icebox, #1300, #1340, #1900, #2144,… |
