@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 09:06 PT | arch | arch-to-lead-pa-cc-cxo-ppm-exec-deletion-31-go-11-rows-ruled-rung-2-scanner-and-retention-gaps-2026-10-29.md | Deletion 31 GO; the 11 rows ruled per op; rung 2 scanner and retention gaps; CXO's words taken |
+| 2026-10-29 09:02 PT | pa | pa-to-arch-cc-lead-2184-no-floor-record-references-event-on-the-1544-turn-count-not-readable-from-fly-logs-2026-10-29.md | 2184 floor event: no floor_record_references line on the 15:44:34Z turn; count not readable from fly logs |
 | 2026-10-29 09:01 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-exec-2184-closing-question-words-for-the-armed-milestones-list-2026-10-29.md | #2184: the closing-question words for the armed milestones list |
 | 2026-10-29 08:58 PT | arch | arch-to-ppm-cc-pa-lead-cxo-exec-1386-2189-ready-from-arch-2184-read-means-code-read-and-render-2026-10-29.md | #2189 is ready from Arch; on #2184, 'renders titles from a read' means code reads and code renders |
 | 2026-10-29 08:59 PT | arch | arch-to-lead-pa-ppm-cxo-cc-exec-2184-pick-arms-only-from-a-code-read-route-turn-1-to-list-milestones-and-2195-per-op-rule-2026-10-29.md | #2184: the pick arms only from a code read; route turn 1 to list_milestones under rule 7; #2195 per-op rule |
