@@ -448,7 +448,7 @@ corpus:
     category: QUERY
     expected: REVIEW
     source: "#2184 alpha a1f46faafc 2026-10-28 10:12 (xian's served two-step exchange, turn 1)"
-    notes: "Router ×3 on main 10-28: CLARIFY @0.40 (sub-threshold). CORRECTED 2026-10-29 (alpha 49e0904c3c served FAIL, Arch's diagnosis on #2184): nothing claims the CLARIFY, so a MODEL composed 'Which milestone — MVP, Production, …?' from a context slice; the milestones handler never ran and the #2184 pick never armed (the earlier note's 'surface 1 claims it and the handler lists them' was wrong). The fix is a list_milestones router description (rule 7): wording 1's x6 routes this row list_milestones 6/6 @0.95 but flips the add-family sentinel, NO-GO (dev/2026/10/29/controls/). Context-dependent (Phase-0 convention: informational). REVIEW, not asserted."
+    notes: "Router ×3 on main 10-28: CLARIFY @0.40 (sub-threshold). CORRECTED 2026-10-29 (alpha 49e0904c3c served FAIL, Arch's diagnosis on #2184): nothing claims the CLARIFY, so a MODEL composed 'Which milestone — MVP, Production, …?' from a context slice; the milestones handler never ran and the #2184 pick never armed (the earlier note's 'surface 1 claims it and the handler lists them' was wrong). The fix is a list_milestones router description (rule 7): wording 1's x6 routes this row list_milestones 6/6 @0.95 but flips the add-family sentinel, NO-GO (dev/2026/10/29/controls/). LANDING 2026-10-29: wording 3 (no hand-off clause) routes it list_milestones 6/6 @0.95 with every sentinel held (…-candidate-r3-…); the milestones render arms the pick (#2184). Context-dependent (Phase-0 convention: informational). REVIEW, not asserted."
   - phrase: "MVP"
     category: QUERY
     expected: REVIEW
@@ -1636,9 +1636,19 @@ corpus:
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r\"\\blist.*milestones?\\b\""
   - phrase: "any update on the next milestone"
     category: QUERY
-    expected: action:get_project_status
+    expected: action:list_milestones
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r\"\\bnext milestone\\b\""
-    notes: "RULED 2026-10-01 (CXO/PPM): was action:review_issue_query — a milestone update is the floor-synthesized status destination"
+    notes: "RULED 2026-10-01 (CXO/PPM): was action:review_issue_query — a milestone update is the floor-synthesized status destination. RE-RULED 2026-10-29 (decisions.log 2026-10-29 12:13 PT, CXO 12:09 + PPM 12:10, a class rule under #2184): an update or progress ask about a milestone gets the milestones list (code's own read: titles, due dates, open counts) over the floor's synthesis, which is the surface that produced #2184's served confabulation. The list's gaps (the named milestone is ignored, no closed count, the closing question) are #2197 (the named-milestone read with counts; #2198 was its duplicate, closed). Measured: main get_project_status 6/6; wording 3 list_milestones 6/6 (dev/2026/10/29/controls/2184-description-x6-{main,candidate}-r3-2026-10-29.md)."
+  - phrase: "what's the progress on the MVP milestone?"
+    category: QUERY
+    expected: action:list_milestones
+    source: "#2184 Arch's unseen hand-off paraphrase, 2026-10-29 11:53 bar"
+    notes: "RULED 2026-10-29 (decisions.log 12:13 PT, CXO/PPM class rule, with the row above): a progress ask about a milestone gets the milestones list until #2197 reads the named milestone with open and closed counts. Measured on wording 3: main get_project_status 6/6, candidate list_milestones 6/6 (2184-paraphrases-x6-{main,candidate}-r3-2026-10-29.md)."
+  - phrase: "how is the next milestone going?"
+    category: QUERY
+    expected: action:get_project_status
+    source: "#2184 Arch's unseen hand-off paraphrase, 2026-10-29 11:53 bar"
+    notes: "RECORDED AS MEASURED 2026-10-29, not a boundary CXO endorses: get_project_status 6/6 on main and on wording 3 (2184-paraphrases-x6-*-r3). A user will not see the difference between this and the progress phrasing above; #2197 closes that gap (decisions.log 12:13 PT). The status path stays #2042's class (every quoted record measured)."
   - phrase: "what milestones do we have"
     category: QUERY
     expected: action:list_milestones_query
