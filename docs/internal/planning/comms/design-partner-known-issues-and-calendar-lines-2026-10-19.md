@@ -31,7 +31,7 @@
 
 **Contingent fifth line (#2101, chat stall), CXO 16:20:** goes in only if xian rules the stall isn't fixed before partners. CXO's wording: "Piper may stop responding for a few minutes. Reload the page and try again." It's a fact only if the stall recovers by itself, which both observed stalls did. If that's in doubt on send morning, write "usually": "Piper may stop responding for a few minutes. Reloading the page and trying again usually works." *(#2101)*
 
-*#2042-class line (added 10-29 15:2x):* CXO's words verbatim (13:23), xian YES (PA relay 13:55: "to be reviewed if our attempts to fix it land"). Comms bolded the first sentence to match the list, no word changed. It covers C2b and K4 as served. **Strike it only on #2042 rung 3's served pass, not on the issue closing** (CXO). **Open for CXO:** the older #2042 line ("An answer about your own data can be wrong…") overlaps it. Keep both, or does the class line replace it?
+*#2042-class line (added 10-29 15:2x):* CXO's words verbatim (13:23), xian YES (PA relay 13:55: "to be reviewed if our attempts to fix it land"). Comms bolded the first sentence to match the list, no word changed. It covers C2b and K4 as served. **Strike it only on #2042 rung 3's served pass, not on the issue closing** (CXO). **Keep both (CXO 15:25).** They name different failures: the older #2042 line is a wrong number (counts), the class line a detail Piper did not look up. Each strikes on its own trigger: the class line on #2042 rung 3's served pass, the older line when the count fix is served. No words change.
 
 *#2122 line:* CXO's wording, 18:07 10-20. #2122 isn't Class 1–4 (Web's served turn showed no false result). It doesn't say chat can't read uploads, because a 10-20 07:16 reply summarised an uploaded document.
 
