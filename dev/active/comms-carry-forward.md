@@ -1,6 +1,17 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-10-28 09:20 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-10-28 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/10/28/2026-10-28-0619-comms-code-log.md`, DAY-CLOSED. Close every log with exactly `<!-- DAY-CLOSED: YYYY-MM-DD -->`.
+- **Thu 10-29 "Citation via Hearsay":** PUBLISH-READY with Docs (memo 7f0534cde, cc Exec). Draft at 0013300cc3, row ready-for-docs (49e0904c3c). Medium crosspost is xian's after it goes live (building). If an admin-UI save lands after 0013300cc3, diff it before Docs publishes.
+- **Tue 11-03 "The Unguarded Entrance":** the title is FINAL (xian 10-28: "I decided that already. I check ahead now."). The scaffold is waiting on xian's prose. Then the review, art, audit, row, and publish-ready. Its footer tease needs a target, but nothing is scheduled after it.
+- **🔒 Weekend insights, Sat 10-31 and Sun 11-01: NOTHING slated or scaffolded** (confirmed to xian 10-28). Recommended in chat: Sat = mining candidates 1+2 (instrument before theory / read the machine), Sun = 3+4 (validate the guard on real output / a fail-loud test succeeds, sequel to "Described Is Not Running"). **Smallest unblock: xian says "go" or names other pairs.** Then scaffold both at once. Table: planning doc "Insight candidates, Oct 9–22" (10-23 log :17-29). Dated 2026-10-28.
+- **Calendar talk is now urgent:** there are no blog posts after 11-03 (Ship placeholders #067–#073 only), and 11-05 is open. Bring a proposed slate, not just the gap.
+- **Lesson (10-28):** an empty slot less than a week out gets a direct ask to xian the same day. Don't hold it for "the calendar talk". I carried the 10-31/11-01 gap for five days and xian found it himself.
+- **Ship #066:** published and distributed 10-28. Nothing owed.
+- **Standing:** the "what changed" note waits on the first user-visible Production ship (checked 10-28 21:2x: alpha serves 49e0904c3c, and it's MVP-milestone work. The MVP still has 3 open and Production hasn't started, so the trigger isn't met). Mining pass Fri 11-06. The narrative front is Sep 6.
+- **Planning doc:** https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86.
+
+## OLDER STATE — 2026-10-28 09:20 PT
 - **Log:** `dev/2026/10/28/2026-10-28-0619-comms-code-log.md`, open. Close every log with exactly `<!-- DAY-CLOSED: YYYY-MM-DD -->`.
 - **Ship #066:** published and distributed 10-28 (333f8c7b7a, LinkedIn done). Nothing owed.
 - **Thu 10-29 "Citation via Hearsay"** (`where-the-citation-came-from.md`): xian's rewrite not started (bbed820f88, 10-25 08:17). Then the ledger check (`fact-check-where-the-citation-came-from-2026-10-20.md`), ask about the 09-03 retro, art, template-audit, row, publish-ready. Tease targets Tue 11-03 "The Unguarded Entrance". Don't nudge. A day-before rewrite is normal.
