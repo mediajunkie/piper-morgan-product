@@ -330,7 +330,13 @@ class TestPatternIdentityThreading:
                 "MILESTONE_STATUS_INLINE_PATTERNS",
                 "get_project_status",
             ),
-            ("connect my github", "INTEGRATION_CONNECT_PATTERNS", "get_contextual_guidance"),
+            # #1595 Phase 3 thirty-first deletion (2026-10-29): the
+            # helper-guarded INTEGRATION_CONNECT_PATTERNS row ("connect my
+            # github") moved to test_deleted_phase3_lists_name_no_list —
+            # that list is now `[]`. REMINDER_QUERY_PATTERNS was the other
+            # helper-guarded name and is `[]` too; the synthetic
+            # MILESTONE_STATUS_INLINE_PATTERNS row above still covers a
+            # non-class-level name.
         ],
     )
     def test_pre_classify_surface_names_its_list(self, message, want_list, want_action):
@@ -340,7 +346,9 @@ class TestPatternIdentityThreading:
 
     @pytest.mark.parametrize(
         "message",
-        ["remind me to hydrate", "what reminders do I have?"],
+        # "connect my github": INTEGRATION_CONNECT_PATTERNS, emptied by the
+        # #1595 Phase 3 thirty-first deletion (2026-10-29).
+        ["remind me to hydrate", "what reminders do I have?", "connect my github"],
     )
     def test_deleted_phase3_lists_name_no_list(self, message):
         """#1595 Phase 3 (2026-09-27): REMINDER_PATTERNS and
@@ -374,9 +382,14 @@ class TestPatternIdentityThreading:
         assert by_action["analyze_blockers"] == "ANALYSIS_PATTERNS"
 
     def test_multi_surface_connect_substitution_named(self):
+        # #1595 Phase 3 thirty-first deletion (2026-10-29):
+        # INTEGRATION_CONNECT_PATTERNS is `[]` — the multi surface claims
+        # nothing for this phrase (the greeting declines with substantive
+        # residue, #1924), so no list is named and the lists stay aligned.
         result = PreClassifier.detect_multiple_intents("hi piper, connect my calendar")
-        by_action = dict(zip((i.action for i in result.intents), result.pattern_lists))
-        assert by_action["get_contextual_guidance"] == "INTEGRATION_CONNECT_PATTERNS"
+        assert len(result.pattern_lists) == len(result.intents)
+        assert "INTEGRATION_CONNECT_PATTERNS" not in result.pattern_lists
+        assert result.pattern_lists == []
 
     async def test_identity_reaches_telemetry_for_three_lists(self, monkeypatch, probe_on, log_rec):
         # #1595 Phase 3 (2026-09-27): "remind me to hydrate" no longer names

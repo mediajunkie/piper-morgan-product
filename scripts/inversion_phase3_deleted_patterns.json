@@ -2823,6 +2823,44 @@
       "shadowed_literals": {},
       "known_reabsorptions": {},
       "note": "gate --list COMPLETION_HISTORY_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (partial), deleting 3 of 5 literals (what date did / when was ... completed / how long ago did); ceiling 127 -> 124. The 3 rows_claimed_at_deletion each scored MATCH check_completion_status >=0.85 in inversion-phase3-rule10-completion-history-rows-score-2026-10-11-anthropic.md. Survivors and why: 'When did we launch the beta?' (router check_completion_status @0.72, under the 0.8 dispatch threshold) and 'show me when we shipped the API' (router shipped_this_week @0.72) both stand down to surface 2, and inversion-phase3-surface2-floor-probe-2026-10-11-n5-anthropic-completion.md shows surface 2 NOT landing STATUS for them ('When did we launch the beta?' TEMPORAL 3 / QUERY 2; 'show me when we shipped the API' QUERY/get_release_history 5/5), so those two literals are load-bearing and survive. No surface-2 credits are recorded for them."
+    },
+    {
+      "list": "INTEGRATION_CONNECT_PATTERNS",
+      "deleted_on": "2026-10-29",
+      "literals": 1,
+      "partial": false,
+      "rows_claimed_at_deletion": [
+        "can we connect my github?",
+        "connect my slack",
+        "help me set up github",
+        "connect my github",
+        "connect my notion",
+        "link my google calendar",
+        "connect my calendar",
+        "hi piper, connect my github"
+      ],
+      "verdict_report": [
+        "inversion-phase1-shadow-score-2026-09-25.md",
+        "inversion-week-calendar-description-full-score-2026-10-10-anthropic.md"
+      ],
+      "expected_ops": [
+        "get_contextual_guidance"
+      ],
+      "expected_op_by_phrase": {
+        "can we connect my github?": "get_contextual_guidance",
+        "connect my slack": "get_contextual_guidance",
+        "help me set up github": "get_contextual_guidance",
+        "connect my github": "get_contextual_guidance",
+        "connect my notion": "get_contextual_guidance",
+        "link my google calendar": "get_contextual_guidance",
+        "connect my calendar": "get_contextual_guidance",
+        "hi piper, connect my github": "get_contextual_guidance"
+      },
+      "misserved_at_deletion": {},
+      "surface2_verified_at_deletion": {},
+      "shadowed_literals": {},
+      "known_reabsorptions": {},
+      "note": "gate --list INTEGRATION_CONNECT_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (deletable) -- deleting removes 1 literals: ceiling 90 -> 89. 8/616 corpus rows claimed, all [OK], every one routed by the router to get_contextual_guidance (live via group): 3 asserted MATCH @0.95 from inversion-week-calendar-description-full-score-2026-10-10-anthropic.md ('can we connect my github?', 'connect my slack', 'help me set up github'), 5 REVIEW-agrees @0.8-0.9 from the 09-25 full report's review table. Every literal exercised by >=1 corpus row (rule 10). #1595 Phase 3 thirty-first deletion, issue 2195. FULL: the list is [] and the claim branch, _integration_connect_match (now always None), the detect_multiple_intents group entry and the pre-claim shadow probe's list-name threading survive as structurally-inert code. INTEGRATION_CONNECT_BLOCKERS survives (read before the empty loop)."
     }
   ],
   "RULED_SURVIVORS": {
