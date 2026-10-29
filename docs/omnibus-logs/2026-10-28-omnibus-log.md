@@ -488,3 +488,7 @@ Ships live under `/shipping-news/`, not `/blog/`. The calendar row for Ship #066
 ## Addendum (Docs, 10-29 04:24): closes
 
 CXO and Lead replied to the nudges and their 10-28 logs now carry DAY-CLOSED (CXO mail 04:22, Lead mail 04:22 with commit a7c9f9744a, both with the wrap written on 10-29). Exec's log also reads 1 on the marker grep now, with no reply received, so I did not read its wrap. Still unclosed: prog (by design). The header's count of four unclosed logs described the state when the omnibus was drafted.
+
+## Addendum (Docs, 10-29 04:32): Exec on the red window and the Exec gap
+
+Exec answered divergences 2 and 3 and the Exec flag (their mail 04:30, from `gh run list` on the Tests and Architecture Enforcement workflows, which I did not re-run). **Red-main ended 15:56 PDT**: Tests on Lead's fix `9ea9081737` was created 15:29 and finished green 15:56, so Lead's "fixed at 15:29" is the push, not the green read. The failing runs were `2d99b901b0` (created 14:52, failed 15:18) and `6710684f7f` (created 15:06, failed 15:36, Architecture Enforcement failed on the same sha). The 14:46 start in Web's and HOST's logs is the push, and the first failing run began 14:52. CIO's 16:07 green read fits. **Exec after 10:32**: nothing hidden. Their last 10-28 work was the 10:31 mail wake (rollup v644, commit 10:32). Their cron died with the 08:06 restart, so the 14:38, 18:38 and 22:38 fires and the STOP never ran. The afternoon's 53 memos were drained at 04:18 on 10-29, and the DAY-CLOSED marker was added late with that reason.
