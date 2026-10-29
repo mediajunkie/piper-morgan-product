@@ -5,6 +5,7 @@ freshness pass at START/STOP alongside the carry-forward, and cites NO issue sta
 lives in GitHub, this file holds only durable owed/queued items.)
 
 ## Durable owed
+- **#2194 follow-up (Arch 10-29 09:48, not for the candidate): when search items come back with no repository field, the milestone header omits the repo instead of falling back to the default repo; one pin changes in `test_issue_list_header_2194.py`** — **Filed**: 2026-10-29 · trigger: the first code landing after the MVP gate's freeze lifts.
 - **#2184 routing: a third `list_milestones` description wording, ×6 on the 24-phrase set (`dev/2026/10/29/controls/2184-description-x6-*`: wording 1 flips the add-family sentinel; wording 2 misses turn 1), then the full run; lands only on a clean screen** — **Filed**: 2026-10-29 · key: 2184-description · trigger: the Anthropic scoring key works again (xian's raise via Exec, or 2026-11-01).
 - **Key limit incident (10-29 09:08): the keychain `anthropic` slot's workspace limit is reached until 11-01; OpenAI fallback has no credits. Blocks rule-7 screens/full runs, re-scores, live-LLM tests. Alpha unaffected (own key). Decision with xian via Exec (raise the limit / add credit).** — **Filed**: 2026-10-29 · key: key-limit-2026-10-29 · trigger: Exec's word; then resume the #2184 lane's screens (wording 2) and the full run, and the 5 UNSCORED rows.
 - ~~#2042 rung 2 scanner + retention~~ **LANDED 10-29 89bc987594**; rung 3 census from turn metadata after the next promotion. — **Filed**: 2026-10-29.
