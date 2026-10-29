@@ -126,6 +126,12 @@ class TestAnswer:
         assert intent.action == "list_issues_query"
         assert intent.context["list_scope_milestone"] == "MVP"
         assert intent.context["list_scope_repository"] == REPO
+        # #2199: the bound Intent carries the request principal under the key
+        # process_intent stamps, so the issues read is credentialed and the
+        # handler's default-repo fallback never runs for a None user.
+        from services.intent.intent_service import _principal_from_intent
+
+        assert _principal_from_intent(intent) == _USER
         assert svc._handle_list_issues_query.await_args.kwargs == {"session_id": _SESSION}
 
     @pytest.mark.asyncio

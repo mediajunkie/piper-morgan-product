@@ -175,11 +175,21 @@ async def handle_milestone_pick_turn(
     from services.shared_types import IntentCategory
 
     repository = payload.get("repository")
+    # #2199 (xian's row-0 read on b9a8a43600, 2026-10-29 12:50): this Intent is
+    # built HERE, not at the host boundary, so nothing had stamped the request
+    # principal onto it. `_principal_from_intent` then read None, the connector
+    # read degraded for want of a credential, and the handler's native fallback
+    # resolved no default repo for a None user: the user who had just been
+    # promised "Say its name" got "I couldn't tell which repository you mean."
+    # The principal is the one the arm recorded (checked equal to this turn's
+    # user above), written under the same key process_intent uses.
+    principal = offer_user or user_id
     intent = Intent(
         category=IntentCategory.QUERY,
         action="list_issues_query",
         context={
             "original_message": message,
+            "user_id": str(principal) if principal else None,
             "list_scope_milestone": title,
             "list_scope_repository": repository if isinstance(repository, str) else None,
             "milestone_pick_bound": True,
