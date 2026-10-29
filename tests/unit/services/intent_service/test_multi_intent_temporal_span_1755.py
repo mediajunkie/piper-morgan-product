@@ -52,6 +52,9 @@ surface-1 mechanism.
 
 from services.intent_service.pre_classifier import PreClassifier
 from services.shared_types import IntentCategory
+from tests.unit.services.intent_service._inversion_pin_helper import (
+    assert_inversion_routes,
+)
 
 
 def _resolved(result):
@@ -104,26 +107,43 @@ def test_disjoint_temporal_survives_connect_claim_reordered_1755():
 # ---------------------------------------------------------------------------
 
 
-def test_connect_only_when_temporal_words_inside_connect_span_1755():
+async def test_connect_only_when_temporal_words_inside_connect_span_1755(monkeypatch):
     """'connect my calendar' — the temporal `\\bmy calendar\\b` pattern
     matches entirely INSIDE the connect match's span ('connect my
     calendar'). This is the original #1471 phantom shape: connect-only,
-    exactly as before this fix."""
+    exactly as before this fix.
+
+    #1595 Phase 3 thirty-first deletion (2026-10-29): INTEGRATION_CONNECT_
+    PATTERNS is `[]` too, so surface 1 claims nothing (no phantom is
+    possible) and the router routes the ask to guidance."""
     result = PreClassifier.detect_multiple_intents("connect my calendar")
-    assert _resolved(result) == [(IntentCategory.GUIDANCE, "get_contextual_guidance")]
-    assert result.intents[0].context.get("setup_target") == "calendar"
+    assert _resolved(result) == []
     assert not result.is_multi_intent
+    await assert_inversion_routes(
+        monkeypatch,
+        "connect my calendar",
+        live_categories="read_canonical",
+        expected_action="get_contextual_guidance",
+    )
 
 
-def test_connect_only_when_temporal_words_inside_connect_span_with_greeting_1755():
+async def test_connect_only_when_temporal_words_inside_connect_span_with_greeting_1755(
+    monkeypatch,
+):
     """Same containment shape, paired with a greeting — TEMPORAL must not
-    reappear beside GUIDANCE (the #1471 parity pin's exact shape,
-    reconfirmed under the new span-aware rule)."""
+    reappear (the #1471 parity pin's exact shape). Thirty-first deletion:
+    the greeting declines with substantive residue and the connect lane is
+    `[]`, so surface 1 claims nothing and the router routes guidance."""
     result = PreClassifier.detect_multiple_intents("hi piper, connect my calendar")
     categories = {i.category for i in result.intents}
     assert IntentCategory.TEMPORAL not in categories
-    assert IntentCategory.GUIDANCE in categories
-    assert IntentCategory.CONVERSATION in categories
+    assert _resolved(result) == []
+    await assert_inversion_routes(
+        monkeypatch,
+        "hi piper, connect my calendar",
+        live_categories="read_canonical",
+        expected_action="get_contextual_guidance",
+    )
 
 
 # ---------------------------------------------------------------------------

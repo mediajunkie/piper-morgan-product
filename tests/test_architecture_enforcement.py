@@ -3265,7 +3265,11 @@ class TestExtractionPatternRatchet:
         # session; no constructor passes an event_bus). List, both helpers, the
         # classifier read and tests/domain/test_file_reference_detection.py removed;
         # the deletion gate's NOT_ROUTING dict is now empty by name.
-        "pre-classifier": 90,
+        #
+        # 90 -> 89 (2026-10-29, #1595 Phase 3 thirty-first deletion, issue 2195):
+        # INTEGRATION_CONNECT_PATTERNS (1 literal) tombstoned FULL; 8/8 claimed
+        # rows route get_contextual_guidance on the router (live via group).
+        "pre-classifier": 89,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

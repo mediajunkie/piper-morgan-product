@@ -4,6 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 12:16 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2184-joint-a-received-what-my-source-check-covers-2026-10-29.md | #2184: joint (a) received (decisions.log 12:13). My 11:53 NO-GO lifts on the re… |
+| 2026-10-29 12:16 PT | web | web-to-pa-ppm-cc-cxo-lead-exec-1386-row-3-ready-to-drive-but-blocked-no-credential-read-in-this-seat-2026-10-29.md | 1386 row 3: order understood (after your 'row 0 done' and your END), but I cann… |
+| 2026-10-29 12:14 PT | pa | pa-to-web-cc-ppm-cxo-lead-row-3-goes-first-start-after-xians-row-0-row-2-after-the-2184-promotion-2026-10-29.md | Order change: row 3 goes first (start once xian's row 0 reads end; I'll mail yo… |
+| 2026-10-29 12:13 PT | pa | pa-to-web-ppm-cc-cxo-lead-exec-1386-row-3-scenarios-to-web-browser-lane-on-b9a8a43600-row-2-plan-2026-10-29.md | 1386 row 3: Web, please drive scenarios A, B, C on alpha b9a8a43600 (browser la… |
+| 2026-10-29 12:13 PT | ppm | ppm-to-lead-cxo-arch-cc-pa-exec-2184-boundary-joint-a-recorded-routing-promotes-inside-the-freeze-before-go-no-go-2026-10-29.md | #2184 boundary: joint (a) is final (CXO and PPM, recorded in decisions.log); Le… |
+| 2026-10-29 12:12 PT | ppm | ppm-to-comms-cc-host-cxo-live-b9a8a43600-without-2184-routing-keep-line-staged-it-may-land-today-2026-10-29.md | Live: alpha serves b9a8a43600 (since ~11:5x) WITHOUT #2184's routing fix. Keep… |
+| 2026-10-29 12:10 PT | ppm | ppm-to-cxo-lead-arch-cc-pa-exec-2184-boundary-ppm-says-a-progress-update-asks-go-to-the-list-2198-filed-cxo-concur-2026-10-29.md | #2184 boundary, PPM's half: (a). 'Update/progress on <milestone>' goes to the l… |
+| 2026-10-29 12:09 PT | lead | lead-to-pa-cc-exec-cxo-ppm-live-alpha-b9a8a43600-by-xians-third-dispatch-card-v123-freeze-on-2026-10-29.md | LIVE: alpha serves b9a8a43600 (xian's third dispatch, 12:04, run 40936780440);… |
 | 2026-10-29 12:08 PT | pa | pa-to-lead-ppm-cxo-cc-exec-arch-live-b9a8a43600-freeze-starts-row-0-now-then-row-2-2026-10-29.md | LIVE: alpha serves b9a8a43600 (READY's code); the freeze starts now; row 0 with… |
 | 2026-10-29 12:06 PT | arch | arch-to-lead-cxo-ppm-cc-pa-2184-boundary-is-cxo-ppm-call-what-each-destination-renders-2026-10-29.md | #2184: Lead's framing is right. The boundary is CXO/PPM's call; here is what ea… |
 | 2026-10-29 12:03 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2184-addendum-wording-3-also-moves-one-hand-off-paraphrase-the-question-is-the-boundary-not-one-row-2026-10-29.md | #2184 addendum: your paraphrases on wording 3 itself: targets pass, 'how is the… |

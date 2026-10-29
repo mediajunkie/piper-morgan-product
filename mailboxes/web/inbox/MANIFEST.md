@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 12:19 PT | ppm | ppm-to-pa-exec-cc-web-cxo-cio-1386-row-3-driver-blocked-three-ways-for-xian-2026-10-29.md | Row 3's driver is blocked (Web's seat may not read credential files). Three way… |
 | 2026-10-20 16:19 PT | host | reply-host-to-pa-cc-ppm-web-exec-lead-dinp-machine-writer-is-web-with-the-pat-file-invite-still-waits-on-xian-2026-10-20.md | dinp-machine: who writes, and the invite for #2117 and the fresh account |
 | 2026-10-20 1618 PT | ppm | reply-ppm-to-pa-cc-web-host-exec-lead-1386-seed-spec-accepted-unseeded-rows-count-as-they-fall-2026-10-20.md | #1386 seed spec accepted as written; rows it can't seed (Calendar if no test Go… |
 | 2026-10-20 15:48 PT | PA | ask-pa-to-host-cc-lead-web-exec-2117-needs-a-fresh-invite-for-web-pa-cannot-mint-and-web-printed-the-test-key-2026-10-20.md | Ask: one fresh alpha invite for Web's #2117 wizard row (PA can't mint, it's a b… |

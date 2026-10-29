@@ -448,8 +448,11 @@ class TestDeletedPatternListsLedger:
         cleanly under rule 10(A). Then the TWENTY-SEVENTH deletion, 2026-10-11:
         COMPLETION_HISTORY_PATTERNS (3 of 5 literals, PARTIAL, 2 survivors
         held by surface 2); its 3 rule-10 rows are plain live MATCHes
-        (check_completion_status). This assertion is
-        pinned to the
+        (check_completion_status). Then the THIRTY-FIRST deletion,
+        2026-10-29 (issue 2195): INTEGRATION_CONNECT_PATTERNS (1 literal,
+        FULL); its 8 claimed rows all route get_contextual_guidance on the
+        router (3 MATCH, 5 REVIEW-agrees, live via read_canonical). This
+        assertion is pinned to the
         CURRENT ledger contents, per this test's own prior docstring ("this
         assertion needs updating in the SAME commit as the deletion") — a
         future deletion updates it again, in that commit."""
@@ -483,6 +486,7 @@ class TestDeletedPatternListsLedger:
             "TODO_COMPLETE_PATTERNS",
             "PORTFOLIO_PATTERNS",
             "COMPLETION_HISTORY_PATTERNS",
+            "INTEGRATION_CONNECT_PATTERNS",
         }, (
             f"DELETED_PATTERN_LISTS contents changed — update this pin in the "
             f"same commit as the ledger change. Got: {sorted(names)}"

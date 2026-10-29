@@ -1134,10 +1134,25 @@ class PreClassifier:
     # decline — a false "still on the way" while the OAuth flow, settings page,
     # and a purpose-built chat answer all exist. Noun set is one-line-extensible
     # per integration (Arch ruling).
-    INTEGRATION_CONNECT_PATTERNS = [
-        r"\b(?:connect|set\s?up|link|hook\s+up|integrate|add|enable)\b.{0,40}?"
-        r"\b(?P<integration>github|slack|notion|(?:google\s+)?calendar)\b",
-    ]
+    #
+    # #1595 Phase 3, thirty-first deletion (2026-10-29, issue 2195): tombstoned.
+    # The gate (`scripts/inversion_phase3_deletion_gate.py --list
+    # INTEGRATION_CONNECT_PATTERNS --live read_status,...,complete_todo`) read
+    # "literals: 1 | rows claimed: 8/616" / "verdict: GO (deletable) — deleting
+    # removes 1 literals: ceiling 90 -> 89" — 8/8 claimed rows [OK], every one
+    # routed by the router to get_contextual_guidance (live via group): 3 MATCH
+    # @0.95, 5 REVIEW-agrees @0.8-0.9. The router now answers connect asks;
+    # this surface-1 lane was its fallback. Literal gone; the class attribute,
+    # `_integration_connect_match` (which now always returns None), the
+    # `_pre_classify_claim` branch, the `detect_multiple_intents` group entry
+    # and its identity-checked guard, and the pre-claim shadow probe's
+    # list-name threading all survive as structurally-inert code (an empty
+    # list can never claim), same as PRIORITY_PATTERNS / GUIDANCE_PATTERNS.
+    # INTEGRATION_CONNECT_BLOCKERS stays: `_integration_connect_match` still
+    # reads it before the (empty) loop. Ledger:
+    # `scripts/inversion_phase3_deleted_patterns.json`. Ceiling:
+    # `TestExtractionPatternRatchet.CEILINGS["pre-classifier"]` 90 -> 89.
+    INTEGRATION_CONNECT_PATTERNS = []  # type: List[str]
     # Collision guard (Arch ruling (a), the load-bearing one): an owner/name
     # slug or the word repo(sitory) means the repo-link lane (#862 handles it
     # earlier in the pass) — never integration setup. Same conservative

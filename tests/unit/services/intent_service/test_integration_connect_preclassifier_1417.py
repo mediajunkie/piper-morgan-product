@@ -10,6 +10,17 @@ canonical GUIDANCE/get_contextual_guidance (no new action; pure reachability).
 Coverage shape per Arch's ruling: positive rows, the COLLISION guard (repo
 slug / "repo" word stays in the #862 repo-link lane), and the REGRESSION row
 ("help me set up github" unchanged via the older #487 patterns).
+
+#1595 Phase 3, thirty-first deletion (2026-10-29, issue 2195):
+INTEGRATION_CONNECT_PATTERNS is now `[]` (tombstoned). Surface 1 no longer
+claims any connect phrasing; the Inversion router answers them (the gate's 8
+claimed corpus rows all route get_contextual_guidance, live via
+read_canonical). Every positive pin below is converted to the decline +
+inversion-routes idiom, not deleted: (a) surface 1 declines, (b) the
+Inversion (stubbed, deterministic, no live LLM) routes the phrase to
+get_contextual_guidance. `setup_target` is no longer asserted: it was a
+surface-1-only context key with no reader in services/ or web/. The
+collision-guard and negative rows still hold (an empty list can never hijack).
 """
 
 import pytest
@@ -25,32 +36,47 @@ def _classify(msg: str):
     return PreClassifier.pre_classify(msg)
 
 
+async def _declines_and_routes_to_guidance(monkeypatch, message: str):
+    """The thirty-first deletion's two-part pin (see module docstring)."""
+    intent = _classify(message)
+    assert intent is None, (
+        "INTEGRATION_CONNECT_PATTERNS is deleted — pre-classifier should no "
+        f"longer claim {message!r} (got {intent!r})"
+    )
+    routed = await assert_inversion_routes(
+        monkeypatch,
+        message,
+        live_categories="read_canonical",
+        expected_action="get_contextual_guidance",
+    )
+    assert routed.category == IntentCategory.GUIDANCE
+    return routed
+
+
 # ---------------------------------------------------------------------------
 # Positive: natural connect phrasings route deterministically
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "message,target",
+    "message",
     [
-        ("can we connect my github?", "github"),
-        ("connect my github", "github"),
-        ("Connect GitHub", "github"),
-        ("connect my slack", "slack"),
-        ("set up notion", "notion"),
-        ("setup notion for me", "notion"),
-        ("hook up google calendar", "google calendar"),
-        ("can you integrate slack with this?", "slack"),
-        ("link my github account", "github"),
-        ("enable the calendar integration", "calendar"),
+        "can we connect my github?",
+        "connect my github",
+        "Connect GitHub",
+        "connect my slack",
+        "set up notion",
+        "setup notion for me",
+        "hook up google calendar",
+        "can you integrate slack with this?",
+        "link my github account",
+        "enable the calendar integration",
     ],
 )
-def test_integration_connect_routes_to_guidance(message, target):
-    intent = _classify(message)
-    assert intent is not None, f"pre-classifier missed: {message!r}"
-    assert intent.category == IntentCategory.GUIDANCE
-    assert intent.action == "get_contextual_guidance"
-    assert intent.context.get("setup_target") == target
+async def test_integration_connect_routes_to_guidance(message, monkeypatch):
+    """#1595 Phase 3 thirty-first deletion: decline + inversion-routes."""
+    await _declines_and_routes_to_guidance(monkeypatch, message)
 
 
 # ---------------------------------------------------------------------------
@@ -98,11 +124,13 @@ def test_slug_link_still_reaches_repo_management():
 # ---------------------------------------------------------------------------
 
 
-def test_help_me_set_up_github_unchanged():
-    intent = _classify("help me set up github")
-    assert intent is not None
-    assert intent.category == IntentCategory.GUIDANCE
-    assert intent.action == "get_contextual_guidance"
+@pytest.mark.asyncio
+async def test_help_me_set_up_github_unchanged(monkeypatch):
+    """#1595 Phase 3 thirty-first deletion: this phrase's last surface-1
+    claim was INTEGRATION_CONNECT_PATTERNS (GUIDANCE_PATTERNS is `[]` since
+    2026-10-09). Its corpus row scores MATCH get_contextual_guidance @0.95
+    (inversion-week-calendar-description-full-score-2026-10-10-anthropic.md)."""
+    await _declines_and_routes_to_guidance(monkeypatch, "help me set up github")
 
 
 # ---------------------------------------------------------------------------
@@ -133,60 +161,76 @@ def test_no_integration_noun_no_match(message):
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "message,target",
+    "message",
     [
-        ("connect my calendar", "calendar"),
-        ("can you connect my calendar?", "calendar"),
-        ("link my calendar", "calendar"),
-        ("set up my calendar", "calendar"),
-        ("add my google calendar", "google calendar"),
+        "connect my calendar",
+        "can you connect my calendar?",
+        "link my calendar",
+        "set up my calendar",
+        "add my google calendar",
     ],
 )
-def test_connect_calendar_beats_temporal_1471(message, target):
-    intent = _classify(message)
-    assert intent is not None, f"pre-classifier missed: {message!r}"
-    assert intent.category == IntentCategory.GUIDANCE, (
-        f"{message!r} routed to {intent.category} — the temporal calendar "
-        f"pattern is winning over integration-connect again (#1471)"
-    )
-    assert intent.action == "get_contextual_guidance"
-    assert intent.context.get("setup_target") == target
+async def test_connect_calendar_beats_temporal_1471(message, monkeypatch):
+    """#1595 Phase 3 thirty-first deletion: neither the temporal calendar
+    patterns (`[]` since the fourth deletion) nor the connect lane claims
+    now; the #1471 property (never a current-time answer) is held by the
+    router, which routes the ask to get_contextual_guidance."""
+    await _declines_and_routes_to_guidance(monkeypatch, message)
 
 
-def test_connect_calendar_multi_intent_path_1471():
+@pytest.mark.asyncio
+async def test_connect_calendar_multi_intent_path_1471(monkeypatch):
     """The dominant chat path is classify_multiple → detect_multiple_intents,
     where TEMPORAL_PATTERNS matched before any connect handling existed —
-    the #1471 misroute lived here even after pre_classify was fixed."""
+    the #1471 misroute lived here even after pre_classify was fixed.
+
+    #1595 Phase 3 thirty-first deletion: the multi path claims nothing for
+    this phrase now (no TEMPORAL phantom, no surface-1 guidance), and the
+    routed intent still carries the #1460 original_message FIELD."""
     result = PreClassifier.detect_multiple_intents("connect my calendar")
     resolved = [(i.category, i.action) for i in result.intents]
-    assert resolved == [
-        (IntentCategory.GUIDANCE, "get_contextual_guidance")
-    ], f"multi-intent path resolved {resolved} (#1471)"
-    intent = result.intents[0]
-    assert intent.original_message == "connect my calendar"  # #1460 field
-    assert intent.context.get("setup_target") == "calendar"
+    assert resolved == [], f"multi-intent path resolved {resolved} (#1471)"
+    routed = await _declines_and_routes_to_guidance(monkeypatch, "connect my calendar")
+    assert routed.original_message == "connect my calendar"  # #1460 field
 
 
-def test_multi_intent_substitution_keeps_other_parts_1471():
-    """Substitution, not suppression: a greeting riding with the connect ask
-    survives, and the temporal phantom does not."""
+@pytest.mark.asyncio
+async def test_multi_intent_substitution_keeps_other_parts_1471(monkeypatch):
+    """Substitution, not suppression: the temporal phantom never appears.
+
+    #1595 Phase 3 thirty-first deletion: the greeting declines with
+    substantive residue (#1416/#1924) and the connect lane is `[]`, so the
+    multi path claims nothing and the whole message reaches the router, which
+    routes it to guidance (corpus: 'hi piper, connect my github' REVIEW-agrees
+    get_contextual_guidance @0.8)."""
     result = PreClassifier.detect_multiple_intents("hi piper, connect my calendar")
     categories = {i.category for i in result.intents}
     assert IntentCategory.TEMPORAL not in categories
-    assert IntentCategory.GUIDANCE in categories
+    assert result.intents == []
+    await assert_inversion_routes(
+        monkeypatch,
+        "hi piper, connect my calendar",
+        live_categories="read_canonical",
+        expected_action="get_contextual_guidance",
+    )
 
 
-def test_no_duplicate_guidance_when_both_lanes_match_1471():
-    """'help me set up my calendar' matches the #487 GUIDANCE patterns AND the
-    connect substitution — exactly one guidance intent must come out."""
+@pytest.mark.asyncio
+async def test_no_duplicate_guidance_when_both_lanes_match_1471(monkeypatch):
+    """'help me set up my calendar' once matched the #487 GUIDANCE patterns
+    AND the connect substitution — exactly one guidance intent had to come
+    out. #1595 Phase 3 thirty-first deletion: both lists are `[]`, so surface
+    1 produces none (no duplicate is possible) and the router answers."""
     result = PreClassifier.detect_multiple_intents("help me set up my calendar")
     guidance = [
         i
         for i in result.intents
         if i.category == IntentCategory.GUIDANCE and i.action == "get_contextual_guidance"
     ]
-    assert len(guidance) == 1, f"expected 1 guidance intent, got {len(guidance)}"
+    assert guidance == [], f"expected no surface-1 guidance intent, got {len(guidance)}"
+    await _declines_and_routes_to_guidance(monkeypatch, "help me set up my calendar")
 
 
 @pytest.mark.asyncio
@@ -243,19 +287,25 @@ def test_calendar_event_writes_stay_out_of_connect_lane_1471(message):
 # ---------------------------------------------------------------------------
 
 
-async def test_classifier_handoff_populates_original_message_field():
-    from services.intent_service.classifier import IntentClassifier
+# #1595 Phase 3 thirty-first deletion (2026-10-29): the classifier's Stage-1
+# (pre-classifier) return no longer claims "can we connect my github?", so
+# IntentClassifier().classify would reach the LLM (none in unit tests). The
+# served path is now the Inversion consult; both properties are pinned on the
+# intent IT returns: the original_message FIELD is populated, and the GUIDANCE
+# canonical setup gate fires on it.
 
-    classifier = IntentClassifier()
+
+@pytest.mark.asyncio
+async def test_classifier_handoff_populates_original_message_field(monkeypatch):
     msg = "can we connect my github?"
-    intent = await classifier.classify(msg, use_cache=False)
+    intent = await _declines_and_routes_to_guidance(monkeypatch, msg)
     assert intent.action == "get_contextual_guidance"
     assert intent.original_message == msg  # the FIELD, not just context
 
 
-async def test_setup_gate_fires_end_to_end_on_the_classified_intent():
+@pytest.mark.asyncio
+async def test_setup_gate_fires_end_to_end_on_the_classified_intent(monkeypatch):
     from services.intent_service.canonical_handlers import CanonicalHandlers
-    from services.intent_service.classifier import IntentClassifier
 
-    intent = await IntentClassifier().classify("can we connect my github?", use_cache=False)
+    intent = await _declines_and_routes_to_guidance(monkeypatch, "can we connect my github?")
     assert CanonicalHandlers()._detect_setup_request(intent) == "integrations"
