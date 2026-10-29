@@ -2,7 +2,7 @@
 type: methodology
 title: methodology-48 — A Proxy Count Is Not The Quantity (and at selection time it propagates)
 valid_from: "2026-08-10"
-last_updated: "2026-10-14"
+last_updated: "2026-10-29"
 ---
 
 # methodology-48 — A Proxy Count Is Not The Quantity (and at selection time it propagates)
@@ -68,6 +68,15 @@ artifact.**
 ### Second worked example, same filer, 2026-10-14: a citation count read as a status
 
 The 10-14 methodology audit's subagent marked 7 methodology docs SILENT, because no session log in 26 weeks cited them. I wrote them up as "undecided" and promised Docs dispositions. **The disposition already existed.** B3's tracker (Arch-ratified 09-01) had ruled all 7 EFFECTIVE, and said in plain words that "citation count mispredicts effective". The count measured *attention*, as this entry's rule says, and I substituted it for the quantity I cared about, *status*, at selection time: which docs to act on. Caught before any doc changed, by reading the tracker before writing the dispositions. Corrected in the audit and by mail the same hour. **What to do, sharpened:** before acting on a count-derived verdict about an artifact, look for the artifact's own decision record. A ratified disposition outranks a proxy.
+
+### Third and fourth worked examples, same filer, 2026-10-28/29: a signal of one act read as another
+
+Neither is a count. Both are the same substitution: an easy signal standing in for the act you care about.
+
+- **A canary read as "this seat reads its mail" (10-28).** `mail4.py check` said no canary from Exec since 10-23 or from Lead since 10-22. I mailed both that they hadn't read their v4 inbox in 5 to 6 days. Both had. The canary fires on one command, `mail4.py inbox`. Exec reads and acks each message with `read ID` and `ack ID`, which never runs `inbox`. The signal measured *which command ran*; I read it as *whether mail was read*. Fix: `check` now prints each seat's last non-canary ack beside a missing canary (`scripts/mail4.py`, `mail-v4-pilot.md`).
+- **An exit code read as "this command exists" (10-29).** To check whether flyctl 0.5.0 renamed any of the 75 gated commands, the obvious test is `fly <path> --help` and its exit code. A control run showed `fly apps zzznotreal --help` exits 0, printing the parent's help. Every path would have "passed". The usage line in the help text is what names the command; comparing that found 73 of 75, plus 2 deprecated ones.
+
+**What to do, sharpened:** before trusting a signal, run it once against a case you know is negative (a nonsense path, a seat you know is reading). If the negative case also passes, the signal measures something else.
 
 ## What to do
 
