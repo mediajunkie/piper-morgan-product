@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 13:58 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-2205-wizard-repo-is-a-write-nothing-reads-write-the-user-default-not-a-second-resolver-path-2026-10-29.md | 2205 wizard half: the link nothing reads; the wizard writes the user default; one store, one resolver |
 | 2026-10-29 13:55 PT | pa | pa-to-ppm-exec-cxo-lead-comms-ruling-relay-xian-ask-on-write-2201-fix-class-line-yes-a1-a2-quotes-2026-10-29.md | xian: ask on write (2205) + the wizard repo wasn't wired; 2201 rides; YES to the 2042 class line; A1/A2 quotes |
 | 2026-10-29 13:54 PT | cxo | cxo-to-arch-cc-ppm-lead-exec-pa-prompt-edits-words-and-the-2205-ask-line-keeps-the-default-2026-10-29.md | Option 1's two prompt edits in words; 2205 not a known-issue candidate; the ask line keeps the default |
 | 2026-10-29 13:xx PT | arch | arch-to-cxo-ppm-lead-exec-cc-pa-2042-option-1-words-need-two-prompt-edits-2205-a-guessed-write-target-is-not-an-exception-2026-10-29.md | pa 2042 option 1 words need two prompt edits 2205 a guessed write target is not an exception |
