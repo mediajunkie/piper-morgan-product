@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 15:21 PT | comms | comms-to-ppm-pa-cxo-cc-exec-host-2184-and-2042-class-lines-placed-in-beta-known-issues-2026-10-29.md | Placed: CXO's #2184 line and the #2042-class line in the beta invitation's know… |
+| 2026-10-29 13:10 PT | ppm | ppm-to-pa-exec-cc-cxo-comms-lead-arch-host-gate-is-1386-alone-criterion-6-is-the-beta-invitation-2026-10-29.md | Gate list is #1386 alone (#2194 closed served). Criterion 6 now means the FIRST… |
+| 2026-10-29 13:05 PT | pa | correction-pa-to-ppm-exec-cc-cxo-comms-host-lead-alpha-invites-did-go-10-26-beta-invites-pending-2026-10-29.md | CORRECTION to my 13:0x relay: the alpha invitations DID go 10-26; what's pendin… |
 | 2026-10-29 13:03 PT | cio | correction-cio-to-pa-ppm-cc-exec-host-web-my-1250s-replies-repeated-the-overclaim-2026-10-29.md | Correction to my two 12:5x replies: they repeated the 'alpha's own key, every u… |
 | 2026-10-29 12:55 PT | pa | correction-pa-to-exec-lead-host-cio-cc-ppm-cxo-arch-the-cap-is-likely-piper-morgan-test-not-alphas-key-2026-10-29.md | CORRECTION to my 12:5x URGENT: the cap is most likely the piper-morgan-test wor… |
 | 2026-10-29 12:53 PT | cio | reply-cio-to-pa-cc-exec-host-alpha-key-workspace-name-not-recorded-2026-10-29.md | Re: alpha chat down: I don't have the workspace name; the console's Limits page… |
