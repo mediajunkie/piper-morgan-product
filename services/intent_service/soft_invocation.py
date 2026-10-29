@@ -655,17 +655,85 @@ class WorkflowOfferService:
             self._offer_windows[key] = window
         window.record_offer(turn)
 
+    # #2189 row 1 (Arch's direction, 2026-10-28): the pending offer's RECORD is
+    # the session's ConversationContext slice (``pending_offer`` +
+    # ``pending_offer_armed_at`` + ``pending_offer_id``), which the #953
+    # hydrate restores after a restart. ``_pending_offers`` stays as this
+    # instance's cache: set and pop write through to the slice, and a cache
+    # miss reads the slice — which is how a restarted process (or the Slack
+    # path's separate IntentService, row 19) sees the same offer per session.
+    # The store stays session-keyed (#846): the slice lookup spans every
+    # principal key the registry holds for the session.
+
+    @staticmethod
+    def _slice_target(session_id: str, user_id: Optional[str]):
+        from services.intent_service.conversation_context import get_or_create_context
+
+        return get_or_create_context(str(session_id), user_id=str(user_id) if user_id else None)
+
+    @staticmethod
+    def _slice_contexts(session_id: str) -> list:
+        from services.intent_service.conversation_context import contexts_for_session
+
+        return contexts_for_session(str(session_id))
+
     def set_pending_offer(
         self, session_id: str, offer: Dict[str, Any], user_id: Optional[str] = None
     ) -> None:
-        """Store a pending offer awaiting user response."""
+        """Store a pending offer awaiting user response (cache + slice, #2189)."""
         self._pending_offers[self._offer_key(session_id)] = offer
+        if not session_id:
+            return
+        try:
+            target = self._slice_target(session_id, user_id)
+            for other in self._slice_contexts(session_id):
+                if other is not target and other.pending_offer is not None:
+                    # One slot per session: a newer arm under another principal
+                    # key replaces it (not a consumption, so no consumed id).
+                    other.pending_offer = None
+                    other.pending_offer_armed_at = None
+                    other.pending_offer_id = None
+            target.arm_pending_offer(offer)
+        except (
+            Exception
+        ) as e:  # silent-ok: logged; the cache still holds the offer for this process
+            logger.warning(
+                "pending_offer_slice_write_failed",
+                session_id=str(session_id),
+                error_type=type(e).__name__,
+            )
 
     def get_and_clear_pending_offer(
         self, session_id: str, user_id: Optional[str] = None
     ) -> Optional[Dict[str, Any]]:
-        """Retrieve and clear a pending offer. Returns None if no offer pending."""
-        return self._pending_offers.pop(self._offer_key(session_id), None)
+        """Retrieve and clear a pending offer. Returns None if no offer pending.
+
+        Pops the cache AND the slice (#2189). The cache answers first (it is
+        this process's own arm); on a miss the slice's record answers, which
+        is the offer a restart re-armed through the #953 hydrate."""
+        cached = self._pending_offers.pop(self._offer_key(session_id), None)
+        sliced: Optional[Dict[str, Any]] = None
+        if session_id:
+            try:
+                target = self._slice_target(session_id, user_id)
+                contexts = [target] + [
+                    c for c in self._slice_contexts(session_id) if c is not target
+                ]
+                for ctx in contexts:
+                    record = ctx.pop_pending_offer()
+                    if sliced is None and record is not None:
+                        sliced = record
+                    if record is not None and ctx is not target and ctx.last_consumed_offer_id:
+                        # The consumption is recorded where the next end-of-turn
+                        # write (and an early persist) will carry it.
+                        target.last_consumed_offer_id = ctx.last_consumed_offer_id
+            except Exception as e:  # silent-ok: logged; the cache pop above still answers this turn
+                logger.warning(
+                    "pending_offer_slice_pop_failed",
+                    session_id=str(session_id),
+                    error_type=type(e).__name__,
+                )
+        return cached if cached is not None else sliced
 
     def peek_pending_offer(
         self, session_id: str, user_id: Optional[str] = None
@@ -682,10 +750,34 @@ class WorkflowOfferService:
         keep using ``get_and_clear_pending_offer`` — the pop IS the #1529
         offer-binding semantic (off-intent abandons via the clear); a peek
         must never replace it on the dispatch path. Store is session-keyed
-        (#846); ``user_id`` is accepted for signature parity with the
-        get/set pair.
+        (#846); ``user_id`` picks the preferred principal key on a cache
+        miss (#2189: the miss reads the slice, so the guard sees a
+        rehydrated offer too).
         """
-        return self._pending_offers.get(self._offer_key(session_id))
+        cached = self._pending_offers.get(self._offer_key(session_id))
+        if cached is not None or not session_id:
+            return cached
+        try:
+            from services.intent_service.conversation_context import (
+                _context_key,
+                _conversation_contexts,
+            )
+
+            preferred = _conversation_contexts.get(
+                _context_key(str(session_id), str(user_id) if user_id else None)
+            )
+            if preferred is not None and preferred.pending_offer is not None:
+                return preferred.pending_offer
+            for ctx in self._slice_contexts(session_id):
+                if ctx.pending_offer is not None:
+                    return ctx.pending_offer
+        except Exception as e:  # silent-ok: logged; a failed slice read peeks as empty
+            logger.warning(
+                "pending_offer_slice_peek_failed",
+                session_id=str(session_id),
+                error_type=type(e).__name__,
+            )
+        return None
 
     def format_offer(self, offer: WorkflowOffer, base_response: str) -> str:
         """

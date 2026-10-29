@@ -933,6 +933,36 @@ def _render_recent_activity(domain_context: Dict[str, Any]) -> List[str]:
     return lines
 
 
+def _record_push_mute_on_slice(session_id: str, user_id: Optional[str]) -> None:
+    """#2189 row 11 (CXO: Harmful; Arch: the row 1 carrier): write the session
+    push mute onto the conversation slice that the #953 hydrate restores."""
+    try:
+        from services.intent_service.conversation_context import get_or_create_context
+
+        conv = get_or_create_context(str(session_id), user_id=str(user_id) if user_id else None)
+        if conv.push_session_muted_at is None:
+            conv.push_session_muted_at = datetime.now()
+    except Exception as e:  # silent-ok: logged; the in-process mute above still holds this process
+        logger.warning("push_mute_slice_write_failed", error=str(e), session_id=session_id)
+
+
+def _push_muted_on_slice(session_id: str, user_id: Optional[str]) -> bool:
+    """#2189 row 11: True when the session's slice carries the push mute (a
+    mute set before a restart and rehydrated). Reads the registry only."""
+    try:
+        from services.intent_service.conversation_context import (
+            _context_key,
+            _conversation_contexts,
+        )
+
+        conv = _conversation_contexts.get(
+            _context_key(str(session_id), str(user_id) if user_id else None)
+        )
+        return conv is not None and conv.push_session_muted_at is not None
+    except Exception:  # silent-ok: an unreadable slice reads as not muted (today's behaviour)
+        return False
+
+
 class ConversationalFloor:
     """
     Replaces dead-end deflections with contextual LLM conversations.
@@ -1893,6 +1923,9 @@ class ConversationalFloor:
                 if is_session_mute_trigger(ctx.user_message):
                     self._push_session_state.setdefault(ctx.session_id, {})
                     self._push_session_state[ctx.session_id]["mute_active"] = True
+                    # #2189 row 11: the mute rides the persisted conversation
+                    # slice too, so a restart does not quietly undo it.
+                    _record_push_mute_on_slice(ctx.session_id, ctx.user_id)
                     logger.info(
                         "push_session_muted",
                         session_id=ctx.session_id,
@@ -2253,7 +2286,9 @@ class ConversationalFloor:
 
         # Read session state (mute + cooldown)
         sess = self._push_session_state.setdefault(ctx.session_id, {})
-        mute_active = bool(sess.get("mute_active", False))
+        mute_active = bool(sess.get("mute_active", False)) or _push_muted_on_slice(
+            ctx.session_id, ctx.user_id
+        )
         last_push_at = sess.get("last_push_at")
 
         try:

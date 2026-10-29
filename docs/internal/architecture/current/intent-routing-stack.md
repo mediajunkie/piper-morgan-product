@@ -6005,6 +6005,36 @@ Two one-slot arm stores hold a question Piper asked, and they are not interchang
   `pending_action` (`kind`, …) and `decline_message`; an ACCEPT dispatches the registered landing
   for `workflow_type` (`dispatch_workflow`), a decline returns `decline_message`, and kind-specific
   turn handlers run first at the offer seam.
+  **Since #2189 (2026-10-29, Arch's direction + condition, CXO's verdicts) the record rides the
+  persisted conversation slice.** `ConversationContext.pending_offer` (+ `pending_offer_armed_at`,
+  `pending_offer_id`, a uuid4 minted per arm) is the record; `WorkflowOfferService._pending_offers`
+  is that instance's cache. `set_pending_offer` / `get_and_clear_pending_offer` write through, and a
+  cache miss reads the slice (`peek_pending_offer` included, so the #1753/#1770 no-clobber peek
+  sees a re-armed offer). Still session-keyed: the slice lookup spans every principal key the
+  registry holds for the session (`contexts_for_session`). `to_persistable_state` /
+  `apply_persisted_state` round-trip it beside `last_offer` and the #1784 tombstone, so the #953
+  hydrate re-arms it after a restart. Records are JSON-encoded by
+  `services/intent_service/pending_offer_slice.py` (the confirm carrier's bound `Intent`, datetimes,
+  UUIDs, tuples and `services.*` enums are tagged and rebuilt); a record holding anything else
+  persists as `None` (logged `pending_offer_not_persistable`) and keeps its in-process lifetime. A
+  hydrated offer older than `REMAINDER_MAX_AGE_MINUTES` is dropped; if the next message is
+  accept-shaped (`detect_offer_response`, prose override on) CXO's line answers it — "That was a
+  while ago, so I let it go. Ask me again and I'll pick it up." — otherwise silence.
+  **Early persist (Arch, #2189 22:44Z/23:10Z):** at the pop seam, a popped offer that is
+  write-effect (`offer_is_write_effect`: its `workflow_type` entry is WRITE/DESTRUCTIVE, the entry
+  is unknown, or the record carries a `pending_action`, because kind-specific seams can write under
+  a READ landing, e.g. #1648's reminder-time save) has its cleared slice written BEFORE any branch
+  runs the action (`IntentService._persist_slice_before_write_offer` →
+  `ConversationManager.persist_context_state`). READ offers ride the end-of-turn write. Both
+  writes take `snapshot_session_slice`. If the early write fails, the action still runs, the
+  warning `pending_offer_early_persist_failed` (session id, offer id, error type; no user text) is
+  logged, and idempotency on the offer id is the backstop: every pop records
+  `last_consumed_offer_id` (persisted) and a process-level consumed set, and a hydrated offer with
+  a consumed id is dropped. **Residue, stated:** if the early write fails AND the process dies
+  before the end-of-turn write, a new process has neither half of the consumed record and re-arms
+  the spent offer; the warning is the trace. The Slack path's `IntentService()` shares the slice
+  in-process (module-level registry) but is built without a `ConversationManager`, so its offers
+  neither hydrate nor persist across a restart. Pins: `test_pending_offer_slice_2189.py`.
 
 **Rule (Arch, #2035): an offer whose "yes" leads to a WRITE arms the #846 store with its own
 landing, never the #852 hint.** The served defect it closes: no projects → `list my projects` →

@@ -46,6 +46,7 @@ from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.intent_service.conversation_context import (
     build_recent_history,
     get_or_create_context,
+    snapshot_session_slice,
 )
 from services.intent_service.list_remainder import compose_capped_list, page_floor
 from services.intent_service.orchestrator import IntentOrchestrator
@@ -1272,6 +1273,89 @@ class IntentService:
             return f"{category}:{action}"
         return category or action or None
 
+    async def _persist_session_slice_now(self, session_id: str, user_id: Optional[str]) -> bool:
+        """#2189: write this session's Layer-4 slice to the DB now.
+
+        The early-persist half of the #846 pop seam (the end-of-turn half
+        writes the same ``snapshot_session_slice`` beside the turn save).
+        Raises on a DB failure; returns False when there is nothing to write
+        into (no conversation manager, no row yet, another principal's row).
+        """
+        if not self.conversation_manager or not session_id:
+            return False
+        state = snapshot_session_slice(session_id, user_id=user_id)
+        return await self.conversation_manager.persist_context_state(
+            session_id, state, user_id=user_id
+        )
+
+    async def _persist_slice_before_write_offer(
+        self, offer: Dict[str, Any], session_id: str, user_id: Optional[str]
+    ) -> None:
+        """#2189 (Arch 22:44Z, clarified 23:10Z): a popped WRITE/DESTRUCTIVE
+        offer persists its cleared slice before the action runs. If that write
+        fails, the action STILL runs (a confirmed request is not refused over
+        storage); the failure is logged and the consumed offer id is the
+        backstop against running it twice."""
+        from services.intent_service.pending_offer_slice import offer_is_write_effect
+
+        if not session_id or not offer_is_write_effect(offer):
+            return
+        offer_id = None
+        try:
+            offer_id = get_or_create_context(session_id, user_id=user_id).last_consumed_offer_id
+            written = await self._persist_session_slice_now(session_id, user_id)
+            self.logger.info(
+                "pending_offer_early_persisted",
+                session_id=session_id,
+                offer_id=offer_id,
+                written=written,
+            )
+        except Exception as e:  # silent-ok: Arch 23:10Z — logged, the action still runs, the offer id is the backstop
+            self.logger.warning(
+                "pending_offer_early_persist_failed",
+                session_id=session_id,
+                offer_id=offer_id,
+                error_type=type(e).__name__,
+            )
+
+    def _lapsed_offer_reply(
+        self, session_id: Optional[str], user_id: Optional[str], message: str
+    ) -> Optional[IntentProcessingResult]:
+        """#2189 (CXO 22:48Z): a hydrated offer older than
+        REMAINDER_MAX_AGE_MINUTES was dropped at hydrate, leaving a one-turn
+        marker (the #1784 tombstone's shape: hydrated, consumed here, never
+        able to fire anything). Silent unless this message is accept-shaped;
+        then CXO's line, rather than letting the "yes" run as a fresh
+        message. A fresher arm (the #852 last offer, a held list remainder)
+        answers its own "yes", so the line stands down for those."""
+        if not session_id:
+            return None
+        from services.intent_service.pending_offer_slice import LAPSED_OFFER_REPLY
+
+        try:
+            ctx = get_or_create_context(session_id, user_id=user_id)
+        except Exception:  # silent-ok: no context, no marker
+            return None
+        if not ctx.pending_offer_lapsed:
+            return None
+        ctx.pending_offer_lapsed = False
+        if ctx.last_offer is not None or ctx.pending_list_remainder is not None:
+            return None
+        # The shared offer detector, prose override on (#1631): a long aside
+        # that happens to open with "sure" is not a "yes".
+        if detect_offer_response(message or "") != "accept":
+            return None
+        self.logger.info("pending_offer_lapsed_word", session_id=session_id)
+        return IntentProcessingResult(
+            success=True,
+            message=LAPSED_OFFER_REPLY,
+            intent_data={
+                "category": "conversation",
+                "action": "pending_offer_lapsed",
+                "confidence": 1.0,
+            },
+        )
+
     async def _save_conversation_turn(
         self,
         session_id: str,
@@ -1549,7 +1633,10 @@ class IntentService:
                         turn_intent_for_db = self._resolve_turn_intent_label(latest_turn.intent)
                 # #953: capture the Layer-4 context slice (last_offer +
                 # floor flags) to persist alongside the turn so it survives restart/refresh.
-                context_state_for_db = conv_ctx.to_persistable_state()
+                # #2189: the same snapshot the #846 pop seam's early persist writes.
+                context_state_for_db = snapshot_session_slice(
+                    effective_session_id, user_id=effective_user_id
+                )
             except Exception:
                 pass  # Best-effort; persistence proceeds without provenance/context
 
@@ -1924,6 +2011,18 @@ class IntentService:
             pending_offer = self.workflow_offer_service.get_and_clear_pending_offer(
                 session_id, user_id=user_id
             )
+            if pending_offer:
+                # #2189 (Arch's condition, 22:44Z/23:10Z): a write-effect offer's
+                # cleared slice reaches the DB BEFORE any branch below can run
+                # its action, so a crash after the action cannot re-arm a spent
+                # offer. READ offers ride the end-of-turn write.
+                await self._persist_slice_before_write_offer(pending_offer, session_id, user_id)
+            else:
+                # #2189 (CXO 22:48Z): a restart dropped a stale offer; an
+                # accept-shaped reply gets CXO's line, anything else is silent.
+                _lapsed = self._lapsed_offer_reply(session_id, user_id, message)
+                if _lapsed is not None:
+                    return _lapsed
             if pending_offer:
                 # #1510 (inferred half, PM ruling via Exec 2026-08-13): on a
                 # verification read-back turn, meta-feedback about the

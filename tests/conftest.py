@@ -945,3 +945,25 @@ def _1452_usage_cap_headroom(request, monkeypatch):
         r.close()
     except Exception:
         pass
+
+
+@pytest.fixture(autouse=True)
+def _2189_reset_session_slice_offer_state():
+    """#2189: the #846 pending offer (and the row 11 push mute) now ride the
+    module-level ConversationContext registry, not a per-instance dict. Before
+    #2189 every fresh WorkflowOfferService started with an empty store; reset
+    exactly those slice fields between tests so that isolation holds and a
+    test's fixed session id never inherits another test's armed offer. The
+    rest of each context is left alone (its pre-#2189 sharing is unchanged)."""
+    yield
+    try:
+        from services.intent_service.conversation_context import _conversation_contexts
+    except Exception:
+        return
+    for _ctx in list(_conversation_contexts.values()):
+        _ctx.pending_offer = None
+        _ctx.pending_offer_armed_at = None
+        _ctx.pending_offer_id = None
+        _ctx.last_consumed_offer_id = None
+        _ctx.pending_offer_lapsed = False
+        _ctx.push_session_muted_at = None

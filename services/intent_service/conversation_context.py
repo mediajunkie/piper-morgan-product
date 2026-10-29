@@ -215,6 +215,28 @@ class ConversationContext:
     # only; a lost fact degrades to the hold-only line, never a false claim.
     last_list_complete: Optional[ListComplete] = None
 
+    # #2189 row 1 (Arch's direction, 2026-10-28): the #846 pending offer rides
+    # this slice. ``WorkflowOfferService`` keeps its session-keyed dict as a
+    # CACHE; this is the record, written through on every set/pop and
+    # round-tripped by to_persistable_state / apply_persisted_state, so a
+    # restart re-arms the offer instead of letting "yes" land on nothing.
+    # ``pending_offer_id`` (uuid4, minted at arm time) is the idempotency key:
+    # a pop records it as ``last_consumed_offer_id`` and a hydrated offer
+    # carrying a consumed id is dropped, never run twice. A hydrated offer
+    # older than REMAINDER_MAX_AGE_MINUTES is dropped and leaves
+    # ``pending_offer_lapsed`` for one turn (CXO's lapsed-offer word).
+    pending_offer: Optional[Dict[str, Any]] = None
+    pending_offer_armed_at: Optional[datetime] = None
+    pending_offer_id: Optional[str] = None
+    last_consumed_offer_id: Optional[str] = None
+    pending_offer_lapsed: bool = field(default=False, compare=False)
+
+    # #2189 row 11 (CXO: Harmful; Arch: same carrier): the session mute of
+    # proactive pushes ("stop suggesting things"), set by the floor at the
+    # mute utterance. Persisted with the slice so a restart does not quietly
+    # undo what the user asked for. No expiry: the mute is for the session.
+    push_session_muted_at: Optional[datetime] = None
+
     # Issue #1030 R4: per-turn provenance sidecar for "why did you suggest that?"
     # citations. Keyed by ConversationTurn.id. Values are dicts of
     # {domain_context_key: {source, identifier, fetch_timestamp, ...}} representing
@@ -302,6 +324,88 @@ class ConversationContext:
                 return turn
         return None
 
+    # ---- #2189: the pending offer on the slice ----
+
+    def arm_pending_offer(self, record: Dict[str, Any]) -> str:
+        """Arm ``record`` as this session's pending offer; returns its new
+        ``offer_id``. Every arm is a new offer, so a re-armed record (the
+        same dict re-set after a pop) gets a fresh id and is never mistaken
+        for the one already consumed."""
+        offer_id = str(uuid4())
+        self.pending_offer = record
+        self.pending_offer_armed_at = datetime.now()
+        self.pending_offer_id = offer_id
+        self.pending_offer_lapsed = False
+        return offer_id
+
+    def pop_pending_offer(self) -> Optional[Dict[str, Any]]:
+        """Clear and return the pending offer. A popped offer is spent: its id
+        becomes ``last_consumed_offer_id`` (persisted) and joins the
+        process-level consumed set, the two halves of the idempotency
+        backstop."""
+        from services.intent_service.pending_offer_slice import note_consumed
+
+        record = self.pending_offer
+        if record is not None and self.pending_offer_id:
+            self.last_consumed_offer_id = self.pending_offer_id
+            note_consumed(self.pending_offer_id)
+        self.pending_offer = None
+        self.pending_offer_armed_at = None
+        self.pending_offer_id = None
+        return record
+
+    def _hydrate_pending_offer(self, persisted: Any) -> None:
+        """Re-arm a persisted offer after a restart (#2189), fail-safe.
+
+        A live in-memory offer always wins (it is newer than the DB). Dropped
+        silently: a malformed record, a consumed id, an offer older than
+        REMAINDER_MAX_AGE_MINUTES (that one leaves ``pending_offer_lapsed``
+        for the next turn's accept-shaped check)."""
+        from services.intent_service.list_remainder import REMAINDER_MAX_AGE_MINUTES
+        from services.intent_service.pending_offer_slice import (
+            decode_offer_record,
+            was_consumed,
+        )
+
+        if self.pending_offer is not None or not isinstance(persisted, dict):
+            return
+        offer_id = persisted.get("offer_id")
+        if not isinstance(offer_id, str) or not offer_id:
+            return
+        if offer_id == self.last_consumed_offer_id or was_consumed(offer_id):
+            logger.info("pending_offer_hydrate_dropped_consumed", offer_id=offer_id)
+            return
+        try:
+            armed_at = datetime.fromisoformat(persisted["armed_at"])
+        except (KeyError, TypeError, ValueError):
+            armed_at = datetime.min  # fail toward STALE, as the tombstone does
+        age_seconds = (datetime.now() - armed_at).total_seconds()
+        if age_seconds > REMAINDER_MAX_AGE_MINUTES * 60:
+            self.pending_offer_lapsed = True
+            logger.info("pending_offer_hydrate_dropped_stale", offer_id=offer_id)
+            return
+        record = decode_offer_record(persisted.get("record"))
+        if record is None:
+            return
+        self.pending_offer = record
+        self.pending_offer_armed_at = armed_at
+        self.pending_offer_id = offer_id
+        logger.info("pending_offer_rehydrated", offer_id=offer_id)
+
+    def _persistable_pending_offer(self) -> Optional[Dict[str, Any]]:
+        from services.intent_service.pending_offer_slice import encode_offer_record
+
+        if self.pending_offer is None or not self.pending_offer_id:
+            return None
+        encoded = encode_offer_record(self.pending_offer)
+        if encoded is None:
+            return None
+        return {
+            "record": encoded,
+            "armed_at": (self.pending_offer_armed_at or datetime.now()).isoformat(),
+            "offer_id": self.pending_offer_id,
+        }
+
     # ---- Layer-4 persistence (#953 CONTEXT-PERSIST) ----
     # The persistable slice of context = the in-memory-only state that dies on
     # restart/refresh: last_offer + the floor-continuation flags. NOT turns
@@ -362,6 +466,16 @@ class ConversationContext:
                 if self.pending_list_remainder is not None
                 else None
             ),
+            # #2189 row 1: the #846 pending offer + its idempotency record.
+            # An unpersistable record writes None (logged), never a raise.
+            "pending_offer": self._persistable_pending_offer(),
+            "last_consumed_offer_id": self.last_consumed_offer_id,
+            # #2189 row 11: the session mute of proactive pushes.
+            "push_session_muted_at": (
+                self.push_session_muted_at.isoformat()
+                if self.push_session_muted_at is not None
+                else None
+            ),
         }
 
     def apply_persisted_state(self, state: Optional[dict[str, Any]]) -> None:
@@ -418,6 +532,20 @@ class ConversationContext:
                 )
             else:
                 self.pending_list_remainder = None
+        # #2189 row 1: the consumed id first, so a hydrated offer that was
+        # already spent is recognised and dropped.
+        consumed = state.get("last_consumed_offer_id")
+        if isinstance(consumed, str) and consumed and self.last_consumed_offer_id is None:
+            self.last_consumed_offer_id = consumed
+        if "pending_offer" in state:
+            self._hydrate_pending_offer(state.get("pending_offer"))
+        # #2189 row 11: the push mute. A live mute is never un-set by hydration.
+        muted_at = state.get("push_session_muted_at")
+        if isinstance(muted_at, str) and self.push_session_muted_at is None:
+            try:
+                self.push_session_muted_at = datetime.fromisoformat(muted_at)
+            except ValueError:
+                pass  # silent-ok: malformed timestamp leaves the mute unset (today's behaviour)
 
     @property
     def last_turn(self) -> Optional[ConversationTurn]:
@@ -501,6 +629,22 @@ def clear_context(session_id: str, user_id: Optional[str] = None) -> None:
     key = _context_key(session_id, user_id)
     if key in _conversation_contexts:
         del _conversation_contexts[key]
+
+
+def contexts_for_session(session_id: str) -> list[ConversationContext]:
+    """Every registered context for ``session_id``, whatever principal key it
+    sits under (#2189). The #846 offer is keyed by session alone (an auth
+    change between turns must not lose it), while the registry is keyed
+    principal:session, so the slice write-through looks across both."""
+    suffix = f":{session_id}"
+    return [ctx for key, ctx in list(_conversation_contexts.items()) if key.endswith(suffix)]
+
+
+def snapshot_session_slice(session_id: str, user_id: Optional[str] = None) -> dict[str, Any]:
+    """The persistable slice of this session's context, now (#2189). Both
+    persist seams call it: the end-of-turn write beside the turn save, and the
+    early write at the #846 pop seam for a write-effect offer."""
+    return get_or_create_context(session_id, user_id=user_id).to_persistable_state()
 
 
 def build_recent_history(

@@ -386,6 +386,32 @@ class ConversationManager:
         except Exception as e:
             logger.error(f"Failed to save turn to database: {e}")
 
+    async def persist_context_state(
+        self, conversation_id: str, context_state: dict, user_id: Optional[str] = None
+    ) -> bool:
+        """#2189: write this conversation's Layer-4 slice NOW, outside a turn save.
+
+        The end-of-turn write rides ``_save_turn_to_database`` (same
+        transaction as the turn, best-effort). The #846 pop seam needs the
+        cleared slice on disk BEFORE a write-effect offer's action runs, so
+        this writes the slice alone through the same repository call.
+
+        Unlike the turn save it does NOT swallow: a DB failure raises, so the
+        caller can log ``pending_offer_early_persist_failed`` and lean on the
+        offer-id backstop. Returns False (nothing written) when the row does
+        not exist yet or belongs to another principal (#1532 F3: never write
+        into someone else's conversation).
+        """
+        if not await self._principal_owns_conversation(
+            conversation_id, user_id, surface="persist_context_state"
+        ):
+            return False
+        async with AsyncSessionFactory.session_scope() as session:
+            from services.database.repositories import ConversationRepository
+
+            repo = ConversationRepository(session)
+            return bool(await repo.save_context_state(conversation_id, context_state))
+
     async def load_context_state(
         self, conversation_id: str, user_id=UNSCOPED_PRINCIPAL
     ) -> Optional[dict]:

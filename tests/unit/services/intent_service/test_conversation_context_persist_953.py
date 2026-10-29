@@ -83,6 +83,11 @@ class TestPersistableStateRoundTrip:
             "ftux_interview_answer",
             # #1784: the #1762 list-remainder TOMBSTONE (never the items).
             "pending_list_remainder",
+            # #2189 row 1: the #846 pending offer and its idempotency record.
+            "pending_offer",
+            "last_consumed_offer_id",
+            # #2189 row 11: the session mute of proactive pushes.
+            "push_session_muted_at",
         }
 
 
