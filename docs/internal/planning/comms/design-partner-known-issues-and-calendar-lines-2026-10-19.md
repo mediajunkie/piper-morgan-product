@@ -15,10 +15,15 @@
 > - **Piper sometimes misreads what you ask.** It may answer a different question or give a general reply. Rephrasing usually works. *(#1595)*
 > - **An answer about your own data can be wrong.** Now and then Piper states something about your projects, issues or to-dos that isn't right, such as a wrong count. If an answer looks off, check the source and tell us. *(#2042)*
 > - **No undo for deleted to-dos.** Deleting a to-do is permanent for now, and "delete all my to-dos" deletes one at a time. *(#2019, #2021)*
-> - **A broken GitHub connection can look fine.** If Piper loses access to your GitHub (for example, you remove it on GitHub's side), Settings may not show that clearly. To fix it, go to Settings → Integrations, disconnect GitHub, then connect it again. *(#2018)*
 > - **Searching your documents from chat doesn't work yet.** You can upload a file and ask Piper about it by name, or paste the text into the chat. *(#2122)*
 
-  *#2018 line, CXO 15:32:* when CXO judges the served recovery read, it changes to "Settings → Integrations → GitHub will say it needs reconnecting. Press Reconnect." If #2018 closes, PPM strikes the line.
+  *#2018 line: STRUCK 10-29 (PPM 09:51).* #2018 closed served 10-28 14:36, after xian's UI-only recovery run on alpha passed every step. xian 10-19: "if we fix then we can delist." The removed line read: "A broken GitHub connection can look fine. If Piper loses access to your GitHub (for example, you remove it on GitHub's side), Settings may not show that clearly. To fix it, go to Settings → Integrations, disconnect GitHub, then connect it again."
+
+**Contingent line (#2184, two-step milestone ask), CXO 09:50 10-29, via PPM 09:51:** goes in on the next partner surface once today's promotion is live **without** the #2184 routing fix (its fix waits on xian's key decision). CXO's wording, verbatim:
+
+> - **Asking for a milestone's issues in two steps ("show issues from one milestone", then the name) can list the wrong issues.** Ask in one step instead: "show my open issues in the MVP milestone".
+
+  True today: the one-step read returned the right three on alpha (PA 08:43). **Strike it when #2184 closes on a served pass** (PPM tells Comms the same hour). Not added to the list above yet, because the promotion it depends on hasn't gone out.
 
 **Contingent fifth line (#2101, chat stall), CXO 16:20:** goes in only if xian rules the stall isn't fixed before partners. CXO's wording: "Piper may stop responding for a few minutes. Reload the page and try again." It's a fact only if the stall recovers by itself, which both observed stalls did. If that's in doubt on send morning, write "usually": "Piper may stop responding for a few minutes. Reloading the page and trying again usually works." *(#2101)*
 
@@ -77,6 +82,7 @@ Slack and Notion stay unnamed (xian 15:0x). Notion has no chat reader (Lead 15:0
   > Your account and your work will carry over to the beta automatically. You can also start a new account when the beta officially begins. If you'd like your alpha account deleted at that point, email support@pipermorgan.ai and we'll do it for you (by hand, for now, within 14 days).
 
   The path and window match the live Terms ("just email support@pipermorgan.ai and we'll delete your account and everything in it within 14 days", HOST read the served page 10-26). **Keys left out on purpose** (xian: "Let's leave keys out. When beta comes out we can give the info then when it is actionable."). Don't add saved keys or connections. They rest on #2157 (Arch 10-25 18:49). Not checked: that the new-account path works at beta.
+- **10-29 (PPM 09:51):** #2018 struck (closed served 10-28). The "alpha is nearly over" paragraph rests on the work it names still being open, so it needs xian's recheck before the next send.
 - **Known-issues strike (PPM 18:36):** none struck. #1595, #2042, #2021 and #2018 are open. PPM rechecks the morning of the send.
 - **Create Account doesn't re-ask the code:** source only (CXO 17:43). Don't state it in the letter as a checked fact. The letter says only that the wizard asks for the code first, which is served.
 
