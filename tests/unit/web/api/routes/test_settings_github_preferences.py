@@ -287,6 +287,7 @@ class TestSaveGitHubPreferences:
                     "mediajunkie/other-project",
                 ],
                 "default_repository": "mediajunkie/piper-morgan-product",
+                "default_repository_source": "user",  # 2205: saved in Settings
             },
         )
         assert result.selected_repositories == [

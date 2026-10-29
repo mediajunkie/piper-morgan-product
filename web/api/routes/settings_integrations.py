@@ -12,7 +12,7 @@ Issue #570: Slack Channel Selection Settings
 import asyncio
 import json
 import os
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 from urllib.parse import quote
 
 import structlog
@@ -2503,9 +2503,14 @@ async def save_github_preferences(
     """
     try:
         # Store preferences for this user (WS-1: DB store is the single home)
-        user_prefs = {
+        # #2205: a default saved from Settings is the user's own choice (or their
+        # confirmation of the one shown), so writes may use it without asking.
+        from services.connectors.config_service import DEFAULT_REPO_SOURCE_KEY, SOURCE_USER
+
+        user_prefs: Dict[str, Any] = {
             "selected_repositories": preferences.selected_repositories,
             "default_repository": preferences.default_repository,
+            DEFAULT_REPO_SOURCE_KEY: SOURCE_USER if preferences.default_repository else None,
         }
         await _save_github_prefs_db(str(current_user.sub), user_prefs)
 

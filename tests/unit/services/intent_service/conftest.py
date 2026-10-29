@@ -80,3 +80,57 @@ def _stub_floor_llm_boundary_1821(request, monkeypatch):
 
     monkeypatch.setattr(LLMClient, "complete", _canned_complete)
     yield
+
+
+# #2205 (Arch 2026-10-29 13:48): a GitHub WRITE now uses only a default the USER
+# designated (source "user"); an auto-picked or source-less default asks first. These
+# files were written before the default carried a source: each sets up its default (or
+# its absence) through ``get_user_default_repo`` or a mocked router, and tests what a
+# write does GIVEN that default. For them, whatever default the test configured counts
+# as user-designated, so they keep testing what they test. The gate itself (auto,
+# legacy, user, the ask and its persisted answer) is pinned in
+# test_write_target_designated_2205.py, which is NOT in this set.
+_LEGACY_DESIGNATED_DEFAULT_FILES = frozenset(
+    {
+        "test_acceptance_contract_1739.py",
+        "test_action_fabrication_1648.py",
+        "test_comment_issue_graceful_1159.py",
+        "test_comment_issue_slotfill_1124.py",
+        "test_confirm_crisp_accept_1650.py",
+        "test_create_issue_title_1543.py",
+        "test_destructive_confirm_1190.py",
+        "test_drafted_issue_1571.py",
+        "test_drafted_issue_body_steal_1627.py",
+        "test_drafted_issue_explicit_slots_1649.py",
+        "test_drafted_issue_subjectless_1630.py",
+        "test_github_query_handlers.py",
+        "test_issue_close_reopen.py",
+        "test_repo_clarification_1567.py",
+        "test_repo_wiring_1641.py",
+        "test_update_issue_clarify_first_1411.py",
+    }
+)
+
+
+@pytest.fixture(autouse=True)
+def _legacy_default_is_user_designated_2205(request, monkeypatch):
+    """See ``_LEGACY_DESIGNATED_DEFAULT_FILES``. The configured default (possibly
+    patched by the test) is returned as the write target; with none configured, a
+    write in these files reaches the router's own resolution as before (the router
+    is mocked there), so the target reads as designated."""
+    if request.node.fspath.basename not in _LEGACY_DESIGNATED_DEFAULT_FILES:
+        yield
+        return
+
+    from services.integrations.github import repo_resolver
+
+    async def _designated(user_id):
+        if user_id is None:
+            return "legacy-test/designated-default"
+        from uuid import UUID
+
+        configured = await repo_resolver.get_user_default_repo(UUID(str(user_id)))
+        return configured or "legacy-test/designated-default"
+
+    monkeypatch.setattr(repo_resolver, "get_user_write_target", _designated)
+    yield

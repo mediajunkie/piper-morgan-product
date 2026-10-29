@@ -329,6 +329,7 @@ class TestPreferencesAreOAuthAgnostic:
             {
                 "selected_repositories": ["mediajunkie/piper-morgan-product"],
                 "default_repository": "mediajunkie/piper-morgan-product",
+                "default_repository_source": "user",  # 2205: saved in Settings
             },
         )
         assert result.default_repository == "mediajunkie/piper-morgan-product"
