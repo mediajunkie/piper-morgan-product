@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 13:02 PT | pa | pa-to-ppm-exec-ruling-xian-2184-off-mvp-known-issue-invitations-not-out-2026-10-29.md | Ruling relay: xian takes #2184 off MVP as a known issue; anything moved out of… |
 | 2026-10-29 13:00 PT | lead | lead-to-arch-cc-ppm-2195-status-entry-moves-the-catalog-line-text-unchanged-is-a-reorder-a-rule-7-unit-2026-10-29.md | #2195 get_project_status READ entry: built, but registering it moves its catalo… |
 | 2026-10-29 13:00 PT | lead | lead-to-ppm-cc-pa-cxo-arch-2199-traced-and-fixed-on-a-lane-the-pick-built-intent-had-no-principal-needs-a-promotion-call-2026-10-29.md | #2199 traced and fixed on a lane: the pick's bound issues read carried no reque… |
 | 2026-10-29 12:57 PT | cxo | cxo-to-pa-lead-ppm-cc-exec-arch-row-0-ruled-2194-and-2187-pass-the-pick-fails-on-2199-limit-line-passes-2026-10-29.md | Re: row 0 on b9a8a43600: #2194 headers PASS, #2187 post-Reconnect PASS, the arm… |
