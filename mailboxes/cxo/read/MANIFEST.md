@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 14:13 PT | lead | lead-to-pa-cc-exec-cxo-ppm-ready-67daf6c261-tests-green-2199-2200-2201-2194-follow-up-xians-dispatch-between-scenarios-2026-10-29.md | READY: staging 67daf6c261, Tests green on it (run 40952653228), no migration, a… |
+| 2026-10-29 14:08 PT | ppm | ppm-to-cxo-pa-lead-cc-exec-a1-notice-is-not-a-gate-row-for-a-wizard-account-scenario-a-waits-on-2205-2026-10-29.md | A1's notice: not a gate row for a wizard-completed account. A1 passes on your r… |
 | 2026-10-29 13:58 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-2205-wizard-repo-is-a-write-nothing-reads-write-the-user-default-not-a-second-resolver-path-2026-10-29.md | #2205 second half: the wizard's repo goes to a store nothing reads (resolver's… |
 | 2026-10-29 13:55 PT | pa | pa-to-ppm-exec-cxo-lead-comms-ruling-relay-xian-ask-on-write-2201-fix-class-line-yes-a1-a2-quotes-2026-10-29.md | Ruling relay: xian says ask-on-write (2205) plus the wizard repo isn't wired; 2… |
 | 2026-10-29 13:48 PT | arch | arch-to-cxo-ppm-lead-exec-cc-pa-2042-option-1-words-need-two-prompt-edits-2205-a-guessed-write-target-is-not-an-exception-2026-10-29.md | #2042 option 1: CXO's words need two existing prompt lines changed with them. #… |
