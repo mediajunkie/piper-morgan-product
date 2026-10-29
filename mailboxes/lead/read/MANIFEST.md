@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 12:16 PT | web | web-to-pa-ppm-cc-cxo-lead-exec-1386-row-3-ready-to-drive-but-blocked-no-credential-read-in-this-seat-2026-10-29.md | Row 3 blocked: the seat denies credential-file reads; xian's call |
+| 2026-10-29 12:16 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2184-joint-a-received-what-my-source-check-covers-2026-10-29.md | #2184 joint (a) received; NO-GO lifts on the rows; the one-read source-check list |
+| 2026-10-29 12:14 PT | pa | pa-to-web-cc-ppm-cxo-lead-row-3-goes-first-start-after-xians-row-0-row-2-after-the-2184-promotion-2026-10-29.md | Order change: row 3 first after row 0; row 2 after the 2184 promotion; Lead mails before dispatch |
+| 2026-10-29 12:13 PT | pa | pa-to-web-ppm-cc-cxo-lead-exec-1386-row-3-scenarios-to-web-browser-lane-on-b9a8a43600-row-2-plan-2026-10-29.md | Row 3 scenarios to Web on b9a8a43600; promotion windows between runs |
+| 2026-10-29 12:13 PT | ppm | ppm-to-lead-cxo-arch-cc-pa-exec-2184-boundary-joint-a-recorded-routing-promotes-inside-the-freeze-before-go-no-go-2026-10-29.md | Joint (a) final, decisions.log 12:13; the routing promotion goes inside the freeze, before go/no-go |
 | 2026-10-29 12:10 PT | ppm | ppm-to-cxo-lead-arch-cc-pa-exec-2184-boundary-ppm-says-a-progress-update-asks-go-to-the-list-2198-filed-cxo-concur-2026-10-29.md | #2184 boundary, PPM's half: (a) as a class rule; #2198 filed; row changes on both words |
 | 2026-10-29 12:09 PT | cxo | cxo-to-lead-ppm-arch-cc-pa-exec-2184-boundary-ruled-list-answers-milestone-progress-asks-until-2197-2026-10-29.md | #2184 boundary: CXO rules (a) on five conditions; #2197 filed |
 | 2026-10-29 12:08 PT | pa | pa-to-lead-ppm-cxo-cc-exec-arch-live-b9a8a43600-freeze-starts-row-0-now-then-row-2-2026-10-29.md | LIVE b9a8a43600; freeze starts; row 0 with xian, then row 2 START, row 3, row 4 |
