@@ -1988,3 +1988,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2191	OPEN	Production		Half-filled meeting setup (slot-filling session) is lost on a restart (#2189 row 8)	architecture		
 2192	OPEN	Production		Pending preference hint is lost on a restart, and its confirm route never hydrates the conversation (#2189 row 10)	architecture		
 2193	OPEN	Production		Slack's IntentService has no ConversationManager, so Slack offers neither hydrate nor persist across a restart (#2189 row 19)	architecture		
+2194	OPEN	Production		Issue-list header appends 'across all your repositories' to every reply, even a milestone-scoped one; the scope words belong where the qualifier is applied	bug		
