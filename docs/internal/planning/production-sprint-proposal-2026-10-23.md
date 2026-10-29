@@ -49,7 +49,7 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 16 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 220 open (#2202 to Q, #2203 to E, #2204 beside #2130, 10-29 from row 3; #2201 filed and admitted MVP 10-29, not counted here; #2184 moved MVP -> PUB 10-29 on xian's known-issue ruling, top of triage with #2195; #2199 added to PUB and #2200 to E 10-29, from row 0; #2197 added to PUB 10-29, #2184's boundary follow-up (#2198 closed as its duplicate); #2195 added to PUB 10-29, #1595's split, Sprint PUB on xian's word; #2194 admitted MVP 10-29, not counted here; #2191, #2192 and #2193 added to H 10-29, #2189 census rows 8, 10, 19; #2190 added to H 10-28, CXO from the #2189 census; #2187, #2188 and #2189 added to H 10-28, from #2018's served run and xian's 15:2x word; #2042 moved H to PUB, #2183 moved V to PUB, #2185 and #2186 added to PUB, 10-28 on xian's word, PA relay 10:22; #2184 admitted MVP, not counted here; #2183 added to V 10-28; #2182 closed in H 10-27 21:33, pins only; #2182 added to H 10-27, #2151's show_standup row; #2177 closed in Q 10-27 07:12; its follow-up #2181 placed Ongoing; #2109 closed in D and #2125, #2172, #2176 in H, 10-26 morning; #2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 222 open (recounted 10-29 from `gh issue list --milestone Production`; the generator reports 0 unplanned; #2206 added to E 10-29; #2205 filed and admitted MVP, not counted here; #2042 moved to the top of PUB on xian's 13:2x diagnosis ask; #2202 to Q, #2203 to E, #2204 beside #2130, 10-29 from row 3; #2201 filed and admitted MVP 10-29, not counted here; #2184 moved MVP -> PUB 10-29 on xian's known-issue ruling, top of triage with #2195; #2199 added to PUB and #2200 to E 10-29, from row 0; #2197 added to PUB 10-29, #2184's boundary follow-up (#2198 closed as its duplicate); #2195 added to PUB 10-29, #1595's split, Sprint PUB on xian's word; #2194 admitted MVP 10-29, not counted here; #2191, #2192 and #2193 added to H 10-29, #2189 census rows 8, 10, 19; #2190 added to H 10-28, CXO from the #2189 census; #2187, #2188 and #2189 added to H 10-28, from #2018's served run and xian's 15:2x word; #2042 moved H to PUB, #2183 moved V to PUB, #2185 and #2186 added to PUB, 10-28 on xian's word, PA relay 10:22; #2184 admitted MVP, not counted here; #2183 added to V 10-28; #2182 closed in H 10-27 21:33, pins only; #2182 added to H 10-27, #2151's show_standup row; #2177 closed in Q 10-27 07:12; its follow-up #2181 placed Ongoing; #2109 closed in D and #2125, #2172, #2176 in H, 10-26 morning; #2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -70,6 +70,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | # | Title | was |
 |---|---|---|
 | #2184 | Chat listed the wrong issues as the MVP milestone's (two-step milestone ask). **Top of PUB triage** (xian 10-29 13:02: "anything like this moved out of MVP … at the top of the triage for the first sprint of the Production milestone"); left MVP as a known issue; Sprint PUB set | MVP |
+| #2042 | Floor LLM narrates actions or data that code never produced. **Top of PUB triage: xian 10-29 13:2x asked Arch for a DIAGNOSIS, not a patch, of the floor's unread record claims and its unasked "Also…" asides**; Sprint PUB set | H |
 | #2195 | Inversion Phase 3 remainder: 61 surface-1 literals in 18 lists, deleted list by list under the gate (**top of PUB triage**, xian 10-29 13:02; 10-29, split from #1595 on xian's ruling; Sprint PUB set on his word) | — |
 | #1378 | Auth security polish (from #441 Phase 4): CSRF [PUBLIC-BETA GATE per PM 7/7] + lockout, timeout warnings, U… | PUB |
 | #1379 | Config hygiene follow-ups from #1324 audit (post-beta) | PUB |
@@ -92,7 +93,6 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1705 | MCP-path increment 6: "same Piper" cross-session memory (preferences/working-mode, resource not tool) | PUB |
 | #1706 | MCP-path increment 7: calendar tool exposure on the plugin surface (depends on #1441's connector port) | PUB |
 | #1707 | MCP-path increment 8: trust-gated proactivity — PLACEHOLDER, do not build until the plugin-surface trust-gr… | PUB |
-| #2042 | Floor LLM narrates actions or data that code never produced (class tracking; #2033, #2040). **The class diagnosis, moved from H 10-28 on xian's word** ("diagnosed and prioritized in the private beta sprint"); first in PUB | H |
 | #2164 | Waitlist sign-up with batch admission (after the inner-circle invitations) (10-24) | — |
 | #2165 | Per-account rate and abuse limits, with a user-facing line when a limit is hit (10-24) | — |
 | #2168 | Plugin surface rubric: ratify CXO's v0.1 and run it per increment as the precondition for #1701-#1707 (10-24) | PUB |
@@ -251,7 +251,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2169 | Chat delete: a list-item remove ask gets a confirmation for a different object (the prior turn's to-do) (10-24; closed, `close:pins-only` per CXO, not Class 1) | — |
 | #2170 | Chat: remove an item from a list (a list-item rail), with exact-match arming and an id-bound confirm (added 10-24: missing from the plan, found by the map generator) | — |
 
-### E: Experience polish (29)
+### E: Experience polish (30)
 
 | # | Title | was |
 |---|---|---|
@@ -283,6 +283,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2099 | Invites page: minting a code does not refresh the list (revoke does) on alpha e801b1a309; xian's read after… | — |
 | #2116 | [UX] "What makes you different?" asked a fifth time is answered with a question about motive, no answer (se… | — |
 | #2156 | UX: Send feedback is a quiet footer link, and absent from the setup wizard and error pages (10-24) (closed 10-24, `close:pins-only`) | — |
+| #2206 | Setup wizard 'Connect Your AI' offers only an optional Notion key (xian: "comprehensive or left out entirely") (10-29, PA from scenario A) | — |
 | #2200 | Milestone list prints "Ongoing — due no due date" for a milestone with no date (10-29, CXO; words given) | — |
 | #2203 | Asked to summarize Notion docs, chat answers about uploaded documents and never says Notion isn't readable (10-29, CXO; #1386 row 3 C1; words given) | — |
 
