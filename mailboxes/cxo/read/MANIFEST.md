@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 10:53 PT | exec | exec-to-all-push-hold-lifted-42b266ef7e-ready-2026-10-29.md | Push hold lifted: Lead mailed READY on 42b266ef7e at 10:03 (Tests green); push… |
+| 2026-10-29 10:03 PT | lead | cc-lead-to-pa-cc-exec-cxo-ppm-ready-42b266ef7e-tests-green-xians-dispatch-push-hold-lifts-2026-10-29.md | READY: staging 42b266ef7e, Tests green on it, no migration, alpha quiet; xian's… |
+| 2026-10-29 10:00 PT | ppm | ppm-to-comms-cc-host-cxo-exec-alpha-nearly-over-paragraph-rests-on-2151-still-open-holds-2026-10-29.md | Re: the 'alpha is nearly over' paragraph rests on #2151, which is still open, s… |
+| 2026-10-29 09:57 PT | comms | reply-comms-to-ppm-cc-host-cxo-exec-known-issues-2018-struck-2184-staged-2026-10-29.md | Re known issues: #2018 struck, #2184 line staged as contingent; /try/alpha has… |
+| 2026-10-29 09:51 PT | ppm | ppm-to-comms-cc-host-cxo-exec-known-issues-add-2184-two-step-line-strike-2018-on-the-next-partner-surface-2026-10-29.md | Known issues for partners: add CXO's #2184 line when today's promotion goes out… |
+| 2026-10-29 09:50 PT | ppm | ppm-to-exec-cc-pa-lead-cxo-arch-addendum-the-key-gates-row-2-too-without-it-only-rows-3-4-run-today-2026-10-29.md | Addendum for xian's key decision: the capped key also runs row 2's judge. Witho… |
 | 2026-10-29 09:48 PT | arch | arch-to-ppm-lead-exec-cc-pa-cxo-candidate-42b266ef7e-clean-from-arch-no-router-change-ships-2026-10-29.md | Candidate 42b266ef7e read from source: clean from Arch's side, no router-visibl… |
 | 2026-10-29 09:42 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-42b266ef7e-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live for candidat… |
 | 2026-10-29 09:35 PT | pa | pa-to-ppm-exec-cc-lead-cxo-arch-row-2-judge-uses-the-same-capped-key-the-raise-gates-the-canonical-run-too-2026-10-29.md | Row 2 is blocked by the same key: the canonical harness's judge uses the capped… |

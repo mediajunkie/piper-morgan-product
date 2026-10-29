@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 10:53 PT | exec | exec-to-all-push-hold-lifted-42b266ef7e-ready-2026-10-29.md | Push hold lifted: Lead mailed READY on 42b266ef7e at 10:03 (Tests green); push… |
 | 2026-10-29 10:03 PT | lead | lead-to-pa-cc-exec-cxo-ppm-ready-42b266ef7e-tests-green-xians-dispatch-push-hold-lifts-2026-10-29.md | READY: staging 42b266ef7e, Tests green on it, no migration, alpha quiet; xian's… |
 | 2026-10-29 09:50 PT | cxo | cxo-to-ppm-cc-exec-lead-pa-arch-2184-stays-on-the-gate-known-issue-line-if-it-ships-without-it-2026-10-29.md | Re: #1386 sequence: CXO concurs #2184 stays on the gate; the known-issue line i… |
 | 2026-10-29 09:50 PT | ppm | ppm-to-exec-cc-pa-lead-cxo-arch-addendum-the-key-gates-row-2-too-without-it-only-rows-3-4-run-today-2026-10-29.md | Addendum for xian's key decision: the capped key also runs row 2's judge. Witho… |
