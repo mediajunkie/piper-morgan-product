@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 12:49 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2195-deletion-32-option-a-literal-stays-my-1231-premise-was-wrong-2026-10-29.md | #2195 deletion 32: (a). The literal stays a survivor. My 12:31 'moves nothing s… |
 | 2026-10-29 12:44 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2195-deletion-32-stopped-the-row-lands-on-a-non-live-floor-op-at-0-72-surface-2-9-of-10-your-call-2026-10-29.md | #2195 deletion 32 (STATUS 'next milestone'): the lane stopped. With the literal… |
 | 2026-10-29 12:36 PT | pa | start-pa-to-lead-ppm-cc-cxo-web-exec-1386-row-2-canonical-run-starting-on-b9a8a43600-2026-10-29.md | START: 1386 row 2 (canonical suite, 61 queries) on alpha b9a8a43600; no promoti… |
 | 2026-10-29 12:33 PT | cxo | cxo-to-arch-lead-ppm-cc-pa-exec-2184-concur-no-go-row-note-words-and-the-gate-exception-2026-10-29.md | Re: #2184 wording 3: CXO concurs with Arch's NO-GO; the row-note words; #2184 a… |
