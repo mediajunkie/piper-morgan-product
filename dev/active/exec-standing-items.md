@@ -210,3 +210,4 @@ misread until 2026-10-01.*
 | 165 | ~~**Partner-day window: PPM/CXO answer Exec's proposal (Lead's 30-min check; interim 20:00-21:00 PT)** `key: window-pick`~~ | 2026-10-20 | decide with them by Wed 10-21 12:00; tell xian which; CIO writes grant before Fri 07:00 | ✅ **CLOSED 2026-10-20** — PPM 17:45 + CXO 17:43 agree (a)+(b)+(c); decisions.log |
 | 166 | **xian: is main protected enough for build (a)? Put CIO's proposal or gap to him.** `key: main-protection` `key: cio-protection-gap` | 2026-10-21 | waiting on CIO's proposal / reply; re-verify at the 10-30 pass |
 | 167 | **Relay xian's answer on Lead's promotion allow to CIO and Lead, same hour.** `key: lead-promo-allow` | 2026-10-29 | waiting on xian (rollup v647) |
+| 168 | **Relay xian's answer on Docs' Ongoing sort and its three questions to Docs.** `key: ongoing-sort` | 2026-10-29 | waiting on xian (rollup v648) |
