@@ -678,3 +678,63 @@ class TestHandlersBeltAndBraces:
             )
         for out in (created, closed, reopened, updated):
             assert out.message == WRITE_TARGET_NO_SESSION_LINE, out.message
+
+
+# ── CXO 15:51: the learned-pattern execute route's reply for a bare repo name ─────────
+
+
+@pytest.mark.asyncio
+class TestLearnedPatternBareRepoSaysCxosSentence:
+    """POST /api/v1/learning/patterns/{id}/execute → ActionRegistry create_github_issue →
+    GithubIssueCommand → GitHubDomainService.create_issue(repo_name="piper-test"): no
+    owner, so the router gets no repository; its domain-service router has no principal,
+    so ``GitHubWriteTargetUndesignated`` is raised before any connector call, and the
+    reply is CXO's sentence verbatim (the exception's text stays in ``detail``)."""
+
+    async def test_bare_repo_pattern_returns_the_sentence_and_calls_nothing(self):
+        from services.actions.commands.github_issue_command import BARE_REPO_REFUSAL_LINE
+        from web.api.routes.learning import execute_pattern
+
+        assert BARE_REPO_REFUSAL_LINE == (
+            "Nothing was created. This pattern names a repository without its owner. "
+            "Use owner/name."
+        )
+        adapter = GitHubMCPSpatialAdapter()
+        calls = _fixture(adapter, write_text=DISABLED_410)
+        router = _router(adapter)
+        router._user_id = None  # GitHubDomainService's own router is never given a principal
+        pattern_id = uuid.uuid4()
+        pattern = SimpleNamespace(
+            id=pattern_id,
+            user_id="user-1",
+            pattern_data={
+                "action_type": "create_github_issue",
+                "action_params": {"repo": "piper-test", "title": "Weekly sync notes"},
+            },
+            success_count=0,
+            failure_count=0,
+            confidence=0.5,
+            updated_at=None,
+        )
+        result = MagicMock()
+        result.scalar_one_or_none.return_value = pattern
+        session = AsyncMock()
+        session.execute = AsyncMock(return_value=result)
+        scope = MagicMock()
+        scope.__aenter__ = AsyncMock(return_value=session)
+        scope.__aexit__ = AsyncMock(return_value=None)
+        with (
+            patch("web.api.routes.learning.AsyncSessionFactory.session_scope", return_value=scope),
+            patch(
+                "services.domain.github_domain_service.GitHubIntegrationRouter",
+                return_value=router,
+            ),
+        ):
+            resp = await execute_pattern(
+                str(pattern_id), current_user=SimpleNamespace(user_id="user-1")
+            )
+        assert resp["message"] == BARE_REPO_REFUSAL_LINE
+        assert resp["result"]["status"] == "error"
+        assert resp["result"]["error"] == BARE_REPO_REFUSAL_LINE
+        assert "no user-designated repository" in resp["result"]["detail"]  # logs keep it
+        assert calls == {}  # no connector call: nothing guessed, nothing written

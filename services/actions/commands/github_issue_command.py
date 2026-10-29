@@ -14,8 +14,17 @@ together in the WIRE-* PR.
 from typing import Any, Dict, Optional
 
 from services.api.errors import GitHubAuthFailedError, GitHubRateLimitError
+from services.integrations.github.github_integration_router import (
+    GitHubWriteTargetUndesignated,
+)
 
 from .base_command import BaseCommand
+
+#: #2205 (CXO 2026-10-29 15:51, verbatim): a learned pattern names a repository
+#: without its owner and no user-designated default exists, so nothing was created.
+BARE_REPO_REFUSAL_LINE = (
+    "Nothing was created. This pattern names a repository without its owner. Use owner/name."
+)
 
 
 class GithubIssueCommand(BaseCommand):
@@ -80,6 +89,18 @@ class GithubIssueCommand(BaseCommand):
                 "message": f"Created issue: {title}",
             }
 
+        except GitHubWriteTargetUndesignated as e:
+            # #2205 (CXO 2026-10-29 15:51): a pattern whose repo has no owner reached the
+            # router with no user-designated default, so nothing was written. The reply
+            # is person-facing (the learned-pattern execute route returns ``message``);
+            # the exception's own text stays in ``detail`` for logs.
+            return {
+                "status": "error",
+                "action": "create_github_issue",
+                "error": BARE_REPO_REFUSAL_LINE,
+                "message": BARE_REPO_REFUSAL_LINE,
+                "detail": str(e),
+            }
         except GitHubAuthFailedError as e:
             return {
                 "status": "error",
