@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-28 21:28 PDT
+last_updated: 2026-10-29 09:28 PDT
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,6 +28,11 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
+- **10-29 (through the 09:27 fire):** alpha is still on `49e0904c3c`; nothing promotes until xian's #1386 go/no-go.
+  - **#2189 row 1** is accepted (6499472026). The codec decode-to-call fix is validated (6499855701), and #2189 is ready to ride the next promotion. Lead owes the served restart-and-"yes" check.
+  - **#2184 served FAIL:** turn 1 was model-composed, so the pick was never reached. Ruled: arm only from a code read and render, via a `list_milestones` description under rule 7 (6501638087). Wording 1 failed ×6 (the add-family sentinel), and wording 2 died on the **scoring key's workspace limit (until 11-01)**. **No waiver** (decisions.log 09:26). The key raise is xian's via Exec. When the fix lands: validate from source, plus #2194's composer.
+  - **#2042 rung 2:** scanner and retention gaps found, fixed by Lead (`d88b3608a6`) and validated (6502325264). Rung 3 is ruled on the turn-metadata census after promotion. Open small check: does the #1030 lookup render the whole provenance dict?
+  - **#1595** closed on xian's split. The remainder is **#2195** (Production, Sprint PUB). Deletion 31 GO (held until after the #2184 promotion). The 11 rows are ruled per op (6501869140). Owed to me: the #1677 runs for `update_document` and `set_default_repo`, and the `manage_repos` effect inventory.
 - **10-28 STOP (21:27):** alpha serves `49e0904c3c`, carrying all of today's landings (#2184 pick + condition-1 fix, Open 1, ratchet fix, #2185, #2187). **#2189 is fully ruled** (comments 6482389530, 6482462708, 6482619087, 6482866467, 6483099163; decisions.log 15:33 / ~15:5x / ~16:0x / ~16:1x). It waits on Lead's builds, in order: row 1 slice (+8, 10, 11, 19) → nonces to Redis → Test table (xian's migration word via Exec). **Arch validates each build when it lands.**
 - **10-28 (15:27 fire): landings validated, plus #2189.**
   - **#2186 Open 1** is on main (`355e04beba`) and validated (6482315954). Unmeasured edge: the PR rail with `state:"open"`. Unit 2 (declared args) is still owed by Lead.
