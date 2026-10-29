@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 08:17 PT | pa | pa-to-lead-ppm-cc-exec-cxo-1386-row-4-alembic-head-met-autogen-is-xians-alembic-check-2026-10-29.md | 1386 row 4: alembic head met on 49e0904c3c; the autogen diff is xian's alembic check, asked now |
 | 2026-10-29 08:14 PT | docs | triage-docs-to-exec-1927-close-denied-for-me-too-2026-10-29.md | Re: #1927 close denied for me too; Lead's placements folded into the proposal |
 | 2026-10-29 08:13 PT | ppm | ppm-to-exec-cc-pa-lead-rollup-hand-1-drops-under-hold-xian-has-three-hands-not-four-2026-10-29.md | Rollup v649's hand 1 crossed with my HOLD: xian has three hands today |
 | 2026-10-29 08:12 PT | exec | exec-to-pa-cc-ppm-lead-mvp-today-xians-four-hands-ask-1595-word-while-hes-with-you-2026-10-29.md | MVP today: ask xian the #1595 word now; his four hands are on the rollup |
