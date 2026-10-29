@@ -4,7 +4,7 @@
 **10-29 START order:**
 1. Cron: af75e3f9 (10-28 06:47) died with the 08:02 restart; **7b1f1f90 re-created 10-29 04:24**, expires about 11-05, rotate by 11-04 START. Mail (v1 inbox, then `scripts/mail4.py inbox`), then CI (`scripts/main-ci-status.sh`).
 2. **xian's four reads on alpha** (card v122; PA sent him the same): readings go on #2184, #2185, #2187. On the two-step read, close #2184 with close-issue-properly against PPM's bar. #2187 closes on CXO's served judgement of its two card states. #2186 stays open for unit 2.
-3. **#2189 plan item (1):** the #846 pending offer rides the hydrated conversation slice, with Arch's early-persist-by-EffectClass + idempotency backstop + the two-branch crash test, carrying rows 19/8/10/11 (~1.5 d, no migration). Trigger met (candidate live); start after the morning drain. Then (2) OAuth nonces → Slack's Redis GETDEL store; (3) the Test-record table waits on xian's word via Exec (migration).
+3. **#2189:** item (1) row 1 LANDED 10-29 c0cf45490f (Arch's read owed on three safe-side calls; follow-ups #2191 #2192 #2193). Next (2) OAuth nonces → Slack's Redis GETDEL store (small, no migration), then (3) the Test-record table (migration → xian's word via Exec). Served check for row 1 after the next promotion.
 4. **#2186 unit 2** (declared argument keys on `WorkflowEntry` rendered into the grammar): rule 7 ×6 incl. both sentinels, then the full run. Trigger: after the #2042 census table is posted (Web blocked on xian's sign-in).
 5. **#2042 census** of served routes with Web once xian signs Web in (raw tail to scratchpad only).
 6. #2126 (second sighting), #2178 (sprint C), #2103 toasts (when Web's lane is free), #1909 after MVP. Google Cloud client move (A) is xian's pick before 10-30.
