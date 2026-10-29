@@ -211,4 +211,5 @@ misread until 2026-10-01.*
 | 166 | **xian: is main protected enough for build (a)? Put CIO's proposal or gap to him.** `key: main-protection` `key: cio-protection-gap` | 2026-10-21 | waiting on CIO's proposal / reply; re-verify at the 10-30 pass |
 | 167 | **Relay xian's answer on Lead's promotion allow to CIO and Lead, same hour.** `key: lead-promo-allow` | 2026-10-29 | waiting on xian (rollup v647) |
 | 168 | **Relay xian's answer on Docs' Ongoing sort and its three questions to Docs.** `key: ongoing-sort` | 2026-10-29 | waiting on xian (rollup v648) |
-| 169 | **Record xian's #1595 exception word in decisions.log when PA or PPM relays it.** `key: 1595-decisions-log` | 2026-10-29 | waiting on xian via PA |
+| 169 | ~~**Record xian's #1595 exception word in decisions.log when PA or PPM relays it.** `key: 1595-decisions-log`~~ | 2026-10-29 | CLOSED 09:18 10-29: xian ruled split, not exception (PA 08:41); recorded in decisions.log |
+| 170 | **Relay xian's answer on the Anthropic usage-limit raise (Lead 09:16) to Lead, PA, CIO, HOST same hour.** `key: anthropic-limit` | 2026-10-29 | waiting on xian (rollup v651) |
