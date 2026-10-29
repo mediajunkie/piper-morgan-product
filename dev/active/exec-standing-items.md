@@ -216,3 +216,4 @@ misread until 2026-10-01.*
 | 171 | ~~**Relay xian's #2184 A/B to PPM, CXO, Comms, Lead same hour; decisions.log.** `key: 2184-gate-choice`~~ | 2026-10-29 | CLOSED 13:03 10-29: xian chose B (13:02); PA relayed to PPM cc CXO, Comms, Lead, Arch; decisions.log by Exec |
 | 172 | ~~**Test-account chat limit (PA 12:51/12:55).** `key: alpha-key-limit`~~ | 2026-10-29 | CLOSED 13:15 10-29: PA's seed-account scenarios ran from 13:05; card removed |
 | 173 | ~~**Get xian's answer on whether the 10-26 invitations went.** `key: invitations-out`~~ | 2026-10-29 | CLOSED 13:15 10-29: xian 13:05, alpha invites went 10-26; beta pending. decisions.log resolution line; Now page fixed by PPM |
+| 174 | **Relay xian's #2042 class answer (one known-issues line in the beta letter) to PPM, CXO, Comms same hour; decisions.log.** `key: 2042-class-line` | 2026-10-29 | waiting on xian (rollup v664) |
