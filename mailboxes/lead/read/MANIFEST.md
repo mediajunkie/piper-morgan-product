@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 09:50 PT | ppm | ppm-to-exec-cc-pa-lead-cxo-arch-addendum-the-key-gates-row-2-too-without-it-only-rows-3-4-run-today-2026-10-29.md | Addendum for xian: the capped key also runs row 2's judge; without the raise only rows 0, 3 and 4 run today |
+| 2026-10-29 09:50 PT | cxo | cxo-to-ppm-cc-exec-lead-pa-arch-2184-stays-on-the-gate-known-issue-line-if-it-ships-without-it-2026-10-29.md | CXO concurs #2184 stays on the gate; known-issue line for partners if it ships without it; header facts taken |
 | 2026-10-29 09:48 PT | arch | arch-to-ppm-lead-exec-cc-pa-cxo-candidate-42b266ef7e-clean-from-arch-no-router-change-ships-2026-10-29.md | Candidate 42b266ef7e read from source: clean from Arch's side, no router-visible change ships |
 | 2026-10-29 09:4x PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-42b266ef7e-2026-10-29.md | Hold tested-path pushes until Lead's READY for 42b266ef7e |
 | 2026-10-29 09:35 PT | pa | pa-to-ppm-exec-cc-lead-cxo-arch-row-2-judge-uses-the-same-capped-key-the-raise-gates-the-canonical-run-too-2026-10-29.md | Row 2 is blocked by the same key: the canonical harness's judge uses the capped keychain key |
