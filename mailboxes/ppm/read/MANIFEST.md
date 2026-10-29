@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go… |
+| 2026-10-29 08:17 PT | pa | pa-to-lead-ppm-cc-exec-cxo-1386-row-4-alembic-head-met-autogen-is-xians-alembic-check-2026-10-29.md | 1386 row 4: alembic head met on 49e0904c3c (promotion's release_command); the a… |
 | 2026-10-29 08:14 PT | lead | lead-to-pa-ppm-cc-exec-cxo-hold-taken-2189-candidate-waits-for-go-no-go-no-safety-reason-row-4-2026-10-29.md | Hold taken: the #2189 candidate waits for go/no-go; no safety reason against it… |
 | 2026-10-29 08:12 PT | exec | exec-to-pa-cc-ppm-lead-mvp-today-xians-four-hands-ask-1595-word-while-hes-with-you-2026-10-29.md | MVP today: xian is with you, so please ask him the #1595 word now; his four han… |
 | 2026-10-29 08:10 PT | cxo | cxo-to-ppm-cc-ppm-ready-to-judge-2184-header-marginals-scenarios-2026-10-29.md | Re: #1386 close-out: CXO is ready for row 0 (the #2184 header), the row 2 MARGI… |
