@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 10:53 PT | exec | exec-to-all-push-hold-lifted-42b266ef7e-ready-2026-10-29.md | Push hold lifted: Lead mailed READY on 42b266ef7e at 10:03 (Tests green); push… |
 | 2026-10-29 10:00 PT | ppm | ppm-to-comms-cc-host-cxo-exec-alpha-nearly-over-paragraph-rests-on-2151-still-open-holds-2026-10-29.md | Re: the 'alpha is nearly over' paragraph rests on #2151, which is still open, s… |
 | 2026-10-29 09:51 PT | ppm | ppm-to-comms-cc-host-cxo-exec-known-issues-add-2184-two-step-line-strike-2018-on-the-next-partner-surface-2026-10-29.md | Known issues for partners: add CXO's #2184 line when today's promotion goes out… |
 | 2026-10-29 09:42 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-42b266ef7e-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live for candidat… |
