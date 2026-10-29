@@ -32,7 +32,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 29 October</h1>
-<p class="meta">Exec · v667, rebuilt 13:55 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v668, rebuilt 14:05 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <div class="card win"><b>Key limit raised ($90 to $100, your word via PA 11:36); calls succeed again (11:35).</b> Lead resumes the #2184 screens; row 2&rsquo;s judge works. Recorded in decisions.log; CIO and HOST told.</div>
 
@@ -40,14 +40,7 @@
 
 <div class="card win"><b>#2184 is off the MVP gate as a known issue</b> (your word, 13:02). Recorded in decisions.log with your priority rule: everything that left MVP goes to the top of triage for the first Production sprint. CXO&rsquo;s line goes in the first beta invitation (no sooner than 10-30, after your conversation with HOST); whether the three alpha partners get a note is a question for that conversation. Row 0 also passed #2194&rsquo;s headers and #2187&rsquo;s Reconnect card; the milestone pick still fails a different way, filed as #2199 in Production.</div>
 
-<div class="card hot"><b>Scenarios: four short answers from you (PA has you).</b> Arch&rsquo;s diagnosis you asked for is on #2042: the fallback reply&rsquo;s prompt <i>requires</i> an observation on every reply, and nothing tells it which milestone an issue is in, so &ldquo;lines up with your Beta launch milestone&rdquo; is invented by construction. The fix (make the observation optional, have code supply the links) is now second in PUB.
-<ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
-<li><b>#2205, keep it on the gate?</b> In your scenario A, with no default repo, &ldquo;Create an issue&rdquo; was silently sent to <code>7cups-testbot</code> (2017, issues disabled); nothing was created and the reply hid why. <span style="color:var(--blue);font-weight:600">PPM and I: keep it on.</span> <b>And your rule:</b> on a <i>write</i> with no default repo, Piper asks which repo instead of picking the oldest (your 07-04 rule can stay for reads). We recommend yes. Either way Lead passes GitHub&rsquo;s refusal reason through. <b>Arch (13:48) puts it in permission terms:</b> code stored its guess exactly as if you had chosen it, so a write went to a repo you never picked. His architecture line is that writes go only to a repo you named or set; a guessed repo may serve reads, never writes. So a known-issue line here would be documenting writes to a repo the user never chose; he does not consider it a known-issue candidate. CXO has the ask-first words ready.</li>
-<li><b>#2201, keep it on the gate for now?</b> You said &ldquo;probably not an MVP blocker&rdquo;, but Lead has already built the fix and it rides the next release. <span style="color:var(--blue);font-weight:600">PPM and I: keep it;</span> it becomes a known issue only if that release slips.</li>
-<li><b>The one known-issues line for the made-up-details class</b> in the beta letter (CXO&rsquo;s words: &ldquo;Piper can state a detail about one of your records, such as a milestone or when something last changed, that it did not look up. Check anything that matters in GitHub before you rely on it.&rdquo;). <span style="color:var(--blue);font-weight:600">We recommend yes;</span> otherwise those cases come onto the gate.</li>
-<li><b>Scenario A&rsquo;s first two quotes</b> (A1, A2), for CXO to judge.</li>
-</ol>
-Settled without you: the calendar row (counted from now, not midnight; #2204 later).</div>
+<div class="card win"><b>Your scenario answers are recorded (13:55, decisions.log):</b> #2205 asks which repo on a write (and the repo you picked in the setup wizard, which wasn&rsquo;t wired in, gets fixed with it; Arch: the wizard sets your default, one store); #2201 ships in the next release; yes to the one known-issues line in the beta letter. CXO is judging your A1 and A2 quotes. Lead sizes #2205: it joins the next release if small, otherwise it&rsquo;s a second release inside the freeze. <b>Nothing for you until go/no-go</b>, unless a release needs your dispatch.</div>
 
 <div class="card act"><b>Closing MVP: where it stands.</b> Gate list (<code>gh</code> 13:46): <b>3 open, #2205, #2201 and #1386.</b> #2194 closed on CXO&rsquo;s pass; #2184 moved out.
 <ul style="margin:.3rem 0 .2rem 1.2rem;padding:0">
