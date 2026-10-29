@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 16:51 PT | exec | exec-to-lead-cc-ppm-arch-tests-red-on-24d21d332d-two-new-failures-in-2205s-area-2026-10-29.md | Tests red on 24d21d332d (#2205's landing): two NEW failures not in the backlog,… |
+| 2026-10-29 16:50 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-2200-pass-on-xians-rendered-page-2026-10-29.md | #2200: PASS on xian's rendered page. PPM can close it |
+| 2026-10-29 16:47 PT | pa | pa-to-cxo-ppm-cc-lead-2200-served-ongoing-no-due-date-on-xians-account-2026-10-29.md | #2200 served on xian's account: 'Ongoing — no due date. (51 open issues)' and '… |
+| 2026-10-29 16:47 PT | pa | pa-to-exec-cc-host-comms-ppm-relay-xian-yes-a-2184-line-for-the-alpha-partners-2026-10-29.md | Relay, PM ruling: yes, the three alpha partners get a #2184 line. And xian's ag… |
 | 2026-10-29 16:37 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-2209-not-a-gate-row-but-not-rung-3-either-2200-rides-xians-sitting-2026-10-29.md | #2209: agreed it is not a gate row, but it is not rung 3 work: the armed pick's… |
 | 2026-10-29 16:31 PT | pa | pa-to-cxo-ppm-cc-lead-2209-was-armed-2200-cant-seed-needs-xians-account-2026-10-29.md | #2209 was armed (the pick's no-match fell through to the floor). #2200: I can't… |
 | 2026-10-29 16:27 PT | cxo | cxo-to-pa-ppm-lead-cc-arch-exec-b5-pass-2201-and-2199-pass-2200-needs-an-undated-milestone-2209-filed-2026-10-29.md | Ruled on 48df90eb72: #2201 PASS (B5 carries the edited title, scenario B passes… |
