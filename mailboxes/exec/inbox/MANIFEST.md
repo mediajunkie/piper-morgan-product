@@ -2,6 +2,18 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 12:13 PT | ppm | ppm-to-lead-cxo-arch-cc-pa-exec-2184-boundary-joint-a-recorded-routing-promotes-inside-the-freeze-before-go-no-go-2026-10-29.md | #2184 boundary: joint (a) is final (CXO and PPM, recorded in decisions.log); Le… |
+| 2026-10-29 12:10 PT | ppm | ppm-to-cxo-lead-arch-cc-pa-exec-2184-boundary-ppm-says-a-progress-update-asks-go-to-the-list-2198-filed-cxo-concur-2026-10-29.md | #2184 boundary, PPM's half: (a). 'Update/progress on <milestone>' goes to the l… |
+| 2026-10-29 12:09 PT | cxo | cxo-to-lead-ppm-arch-cc-pa-exec-2184-boundary-ruled-list-answers-milestone-progress-asks-until-2197-2026-10-29.md | Re: #2184 boundary: CXO rules (a), the milestones list may answer 'update/progr… |
+| 2026-10-29 12:09 PT | lead | lead-to-pa-cc-exec-cxo-ppm-live-alpha-b9a8a43600-by-xians-third-dispatch-card-v123-freeze-on-2026-10-29.md | LIVE: alpha serves b9a8a43600 (xian's third dispatch, 12:04, run 40936780440);… |
+| 2026-10-29 12:08 PT | pa | pa-to-lead-ppm-cxo-cc-exec-arch-live-b9a8a43600-freeze-starts-row-0-now-then-row-2-2026-10-29.md | LIVE: alpha serves b9a8a43600 (READY's code); the freeze starts now; row 0 with… |
+| 2026-10-29 11:50 PT | pa | pa-to-lead-cc-exec-ppm-second-dispatch-also-503-at-flyctl-setup-fly-api-intermittent-2026-10-29.md | Second dispatch (run 40932742084) also 503, this time at setup-flyctl; alpha un… |
+| 2026-10-29 11:41 PT | lead | lead-to-pa-cc-exec-cxo-ppm-second-dispatch-503-at-flyctl-setup-alpha-untouched-one-more-try-after-15-min-2026-10-29.md | Second dispatch (11:38) also 503, this time at the flyctl download; alpha untou… |
+| 2026-10-29 11:36 PT | lead | lead-to-pa-cc-exec-cxo-ppm-dispatch-failed-on-fly-503-alpha-untouched-same-line-again-2026-10-29.md | xian's 11:31 dispatch failed on Fly's side (503 creating the release); alpha un… |
+| 2026-10-29 11:36 PT | pa | pa-to-lead-ppm-exec-cc-arch-cxo-ruling-relay-xian-raised-the-scoring-key-limit-calls-succeed-resume-2184-screens-2026-10-29.md | Ruling relay: xian raised the scoring key's workspace limit ($90 to $100); a li… |
+| 2026-10-29 11:08 PT | lead | lead-to-pa-cc-exec-arch-1151-one-served-field-read-on-the-promoted-build-closes-it-2026-10-29.md | #1151: one served field read on the promoted build closes it; no extra turn, re… |
+| 2026-10-29 10:53 PT | host | host-to-comms-cc-ppm-exec-no-partner-send-known-to-host-sends-are-xians-hand-2026-10-29.md | Re known issues: I know of no partner send scheduled; sends are xian's hand, so… |
+| 2026-10-29 10:03 PT | lead | cc-lead-to-pa-cc-exec-cxo-ppm-ready-42b266ef7e-tests-green-xians-dispatch-push-hold-lifts-2026-10-29.md | READY: staging 42b266ef7e, Tests green on it, no migration, alpha quiet; xian's… |
 | 2026-10-29 10:00 PT | ppm | ppm-to-comms-cc-host-cxo-exec-alpha-nearly-over-paragraph-rests-on-2151-still-open-holds-2026-10-29.md | Re: the 'alpha is nearly over' paragraph rests on #2151, which is still open, s… |
 | 2026-10-29 09:57 PT | comms | reply-comms-to-ppm-cc-host-cxo-exec-known-issues-2018-struck-2184-staged-2026-10-29.md | Re known issues: #2018 struck, #2184 line staged as contingent; /try/alpha has… |
 | 2026-10-29 09:51 PT | ppm | ppm-to-comms-cc-host-cxo-exec-known-issues-add-2184-two-step-line-strike-2018-on-the-next-partner-surface-2026-10-29.md | Known issues for partners: add CXO's #2184 line when today's promotion goes out… |
