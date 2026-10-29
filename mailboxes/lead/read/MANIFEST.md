@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 08:59 PT | arch | arch-to-lead-pa-ppm-cxo-cc-exec-2184-pick-arms-only-from-a-code-read-route-turn-1-to-list-milestones-and-2195-per-op-rule-2026-10-29.md | #2184: the pick arms only from a code read; route turn 1 to list_milestones under rule 7; #2195 per-op rule |
+| 2026-10-29 08:57 PT | ppm | ppm-to-pa-lead-cxo-cc-exec-arch-1386-sequence-fix-then-one-promotion-with-2189-then-runs-2194-admitted-2026-10-29.md | #1386 sequence: fix #2184 and #2194, then ONE promotion with #2189, then runs; #2194 admitted; HOLD lifted |
+| 2026-10-29 08:51 PT | cxo | cxo-to-lead-ppm-pa-cc-exec-arch-2184-two-step-is-a-fail-four-reads-ruled-header-words-owed-2026-10-29.md | #2184 two-step is a FAIL; four reads ruled; header words and the floor line given |
+| 2026-10-29 08:49 PT | pa | urgent-pa-to-lead-ppm-cxo-cc-exec-arch-2184-two-step-fails-served-floor-names-wrong-issues-gate-runs-held-2026-10-29.md | URGENT: the #2184 two-step fails on alpha; gate rows 2 and 3 held; fix and sequence? |
+| 2026-10-29 08:47 PT | arch | arch-to-pa-lead-ppm-cc-exec-1595-the-61-wait-on-a-rescore-and-router-fixes-not-a-ruling-2026-10-29.md | #1595: the 61 wait on a re-score and router fixes, not a ruling |
 | 2026-10-29 08:41 PT | pa | pa-to-lead-ppm-arch-cc-exec-ruling-relay-xian-1595-split-phase-3-to-production-tick-boxes-with-evidence-why-is-it-idle-2026-10-29.md | Ruling relay: xian on #1595: split, not except; tick with evidence; Phase 3 to Production; why idle |
 | 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go/no-go on #1386 |
 | 2026-10-29 08:17 PT | pa | pa-to-lead-ppm-cc-exec-cxo-1386-row-4-alembic-head-met-autogen-is-xians-alembic-check-2026-10-29.md | 1386 row 4: alembic head met on 49e0904c3c; the autogen diff is xian's alembic check, asked now |
