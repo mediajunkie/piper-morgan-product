@@ -8838,11 +8838,12 @@ class IntentService:
                     _state_word = "closed"
             _ms_repo: Optional[str] = None
             if _ms and _assignee_scoped and not _named_repo:
-                _repos_seen = {r for r in (repo_of_item(i) for i in issues or []) if r}
                 _ms_repo = shared_repo(issues or [])
-                if _ms_repo is None and len(_repos_seen) <= 1:
-                    # No item named a repo (or none came back): the default repo,
-                    # never a guess when the items span several repositories.
+                if _ms_repo is None and not issues:
+                    # None came back: the default repo names where the read looked.
+                    # Items that carry no repository field, or span several, leave
+                    # the repo OUT rather than name a wrong one (Arch 10-29 09:48,
+                    # CXO 09:50: "omit a repo rather than name a wrong one").
                     _ms_repo = await self._user_default_repo_or_none(_user_id)
             _scope_kw: Dict[str, Any] = {
                 "named_repo": _named_repo,
@@ -9759,10 +9760,13 @@ class IntentService:
                         # #1628: degenerate GitHub titles never render verbatim
                         title = display_title(m.get("title"), "(untitled milestone)")
                         due_raw = m.get("due_on")
-                        due = due_raw.split("T")[0] if due_raw else "no due date"
+                        # #2200 (CXO's words, 2026-10-29): two strings, never one
+                        # template with the absence dropped into the date slot
+                        # ("Ongoing — due no due date").
+                        due = f"Due {due_raw.split('T')[0]}." if due_raw else "no due date."
                         open_count = m.get("open_issues", 0)
                         suffix = f" ({open_count} open issue" f"{'s' if open_count != 1 else ''})"
-                        _lines.append(f"\n- **{title}** — due {due}{suffix}")
+                        _lines.append(f"\n- **{title}** — {due}{suffix}")
                     _capped = compose_capped_list(
                         lines=_lines,
                         cap=5,

@@ -126,6 +126,12 @@ class TestAnswer:
         assert intent.action == "list_issues_query"
         assert intent.context["list_scope_milestone"] == "MVP"
         assert intent.context["list_scope_repository"] == REPO
+        # #2199: the bound Intent carries the request principal under the key
+        # process_intent stamps, so the issues read is credentialed and the
+        # handler's default-repo fallback never runs for a None user.
+        from services.intent.intent_service import _principal_from_intent
+
+        assert _principal_from_intent(intent) == _USER
         assert svc._handle_list_issues_query.await_args.kwargs == {"session_id": _SESSION}
 
     @pytest.mark.asyncio
@@ -139,6 +145,19 @@ class TestAnswer:
                 )
                 is None
             )
+        svc._handle_list_issues_query.assert_not_awaited()
+
+    @pytest.mark.asyncio
+    async def test_no_turn_principal_declines_even_when_the_offer_names_one(self):
+        """#2199 (Arch 13:04): an offer armed for user A, popped on a turn with
+        no authenticated principal, binds nothing: the offer's recorded user is
+        evidence to compare against, never a credential to read under."""
+        rec = _armed_record()
+        svc = SimpleNamespace(_handle_list_issues_query=AsyncMock())
+        out = await mp.handle_milestone_pick_turn(
+            rec, "MVP", session_id=_SESSION, user_id=None, intent_service=svc
+        )
+        assert out is None
         svc._handle_list_issues_query.assert_not_awaited()
 
     @pytest.mark.asyncio

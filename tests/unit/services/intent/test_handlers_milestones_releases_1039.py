@@ -100,6 +100,11 @@ class TestListMilestonesHandler:
         assert "v1.0" in result.message
         assert "2026-06-01" in result.message  # ISO time stripped
         assert "no due date" in result.message  # for v0.9
+        # #2200 (CXO's words): two strings, not one template with the
+        # absence dropped into the date slot. "— due no due date" never renders.
+        assert "**v1.0** — Due 2026-06-01." in result.message
+        assert "**v0.9** — no due date." in result.message
+        assert "due no due date" not in result.message
         assert result.intent_data["context"]["milestone_count"] == 2
 
     async def test_single_milestone_singular_grammar(self, intent_service):
