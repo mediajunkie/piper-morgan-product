@@ -1107,7 +1107,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1289	CLOSED	Production	RECONNECT - Connector Refactor	Retire the hollow MorningStandupWorkflow (#1269 P6 — the fabricating /generate path)			COMPLETED
 1285	CLOSED	MVP	Beta Blockers - Hard Gates Only	BUG: naive/aware datetime subtraction in conversation_manager.transition_state (standup COMPLETE path)	beta:correctness-bugs		COMPLETED
 1286	CLOSED	Production	RECONNECT - Connector Refactor	[D2] Design-system foundation: grid + baseline typographic rhythm + padding/margin/tiling (mobile-first, progressive-rendering)			COMPLETED
-1287	OPEN	Ongoing		Tech-debt: triage + remove unwired Multi-Agent Coordinator code (superseded #118 artifacts)	enhancement		
+1287	CLOSED	Ongoing		Tech-debt: triage + remove unwired Multi-Agent Coordinator code (superseded #118 artifacts)	enhancement		COMPLETED
 1288	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[DESIGN] Standup content curation + home morning-card (#1269 follow-on, post-beta)	journey:come-back,promise:E3-daily-ritual,surface:web		
 1290	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[D2][DESIGN] Nav menu structure — work/learning/insights/settings top-level + a Settings submenu? (PM question for CXO)	journey:get-work-done,surface:web		
 1291	CLOSED	MVP	PROD-INFRA - Infra & Security Hardening	[REFACTOR] ADR-071 D4 — deeper user_id→owner_id read-threading (deferred from #1252)			NOT_PLANNED
@@ -1993,3 +1993,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2198	CLOSED	Production		Milestone progress asks get the whole milestones list: the list ignores the milestone named and shows no closed count (follow-up to #2184's boundary re-rule)	UX		NOT_PLANNED
 2197	OPEN	Production		A progress ask about a named milestone is answered with the list of every milestone and ignores the one named	UX		
 2196	OPEN	Ongoing		fly-deploy.yml promote job: no retry on the two Fly steps, so one transient 503 costs a dispatch			
+2199	OPEN	Production		Milestone pick: after the milestones list asks 'Which milestone…? Say its name.', replying 'MVP' gets 'I couldn't tell which repository you mean'	bug		
+2200	OPEN	Production		Milestone list prints "Ongoing — due no due date" for a milestone with no date	UX		
