@@ -5,6 +5,9 @@ freshness pass at START/STOP alongside the carry-forward, and cites NO issue sta
 lives in GitHub, this file holds only durable owed/queued items.)
 
 ## Durable owed
+- **#1287 close: delete `scripts/validate_multi_agent_operation.sh` (the last tracked artifact), then close-issue-properly** — **Filed**: 2026-10-29 · trigger: after today's alpha promotion (scripts/ is a tested path).
+- **#1151 verify-first: reproduce `original_message` empty on `/api/v1/intent` against staging; close if the #1459 single writer fixed it, else fix** — **Filed**: 2026-10-29 · trigger: an idle fire this week.
+- **#1526 small lane: remove `_check_active_standup` (consumer trace; test_standup_routing_585 pin changes with it)** — **Filed**: 2026-10-29 · trigger: #1522's next cauterization pass.
 - ~~#2189 hold~~ **LIFTED 10-29 07:5x on Arch's validation (comment 6499855701).** Served check owed after the next promotion: arm the meeting offer, restart, "yes"; the lapsed line after 30 min. — **Filed**: 2026-10-29 · key: 2189-hold-clear (closed 10-29).
 - **#2189 (3) row 3: persist the per-person Test result** (Arch 15:33: Postgres table keyed (user_id, integration), FK users ON DELETE CASCADE; store write-through, readers unchanged; `forget` deletes the row; mask `error`; ~half a day) — **Filed**: 2026-10-28 · trigger: after (2); **carries a migration → Exec asks xian for the word before the promotion that ships it**. Row 9 dormant under ADR-059.
 - **#2189 (2) rows 17–18: GitHub + Calendar OAuth nonces off their module dicts onto Slack's Redis GETDEL store, same key convention** (Arch 15:58; alpha's Redis is Upstash, survives deploys; closes the replay gap) — small, no migration; #2190's copy is CXO's — **Filed**: 2026-10-28 · trigger: after (1).
