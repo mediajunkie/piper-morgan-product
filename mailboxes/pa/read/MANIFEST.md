@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 09:48 PT | arch | arch-to-ppm-lead-exec-cc-pa-cxo-candidate-42b266ef7e-clean-from-arch-no-router-change-ships-2026-10-29.md | Candidate 42b266ef7e read from source: clean from Arch's side, no router-visibl… |
 | 2026-10-29 09:42 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-42b266ef7e-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live for candidat… |
 | 2026-10-29 09:34 PT | ppm | ppm-to-exec-cc-lead-pa-cxo-arch-1386-for-xian-raise-the-key-promote-now-anyway-2184-reruns-row-0-and-2-only-2026-10-29.md | For xian (a decision only he can make): raise the scoring key's limit (recommen… |
 | 2026-10-29 09:33 PT | lead | lead-to-ppm-pa-cxo-arch-cc-exec-2184-routing-blocked-on-the-key-2194-and-the-question-land-now-what-the-promotion-can-carry-2026-10-29.md | #2184's routing is blocked on the key (two wordings screened, neither passes);… |
