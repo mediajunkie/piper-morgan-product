@@ -32,18 +32,15 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 29 October</h1>
-<p class="meta">Exec · v661, rebuilt 12:54 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v662, rebuilt 13:05 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <div class="card win"><b>Key limit raised ($90 to $100, your word via PA 11:36); calls succeed again (11:35).</b> Lead resumes the #2184 screens; row 2&rsquo;s judge works. Recorded in decisions.log; CIO and HOST told.</div>
 
-<div class="card hot"><b>URGENT: alpha chat is down for every user since about 12:49. Raise the limit on alpha&rsquo;s own Anthropic workspace.</b> PA&rsquo;s canonical run (12:49&ndash;12:50) got &ldquo;I can&rsquo;t answer right now&hellip; reached its usage limit&rdquo; on its last three queries, and alpha&rsquo;s log shows the same workspace-limit error (&ldquo;regain access on 2026-11-01&rdquo;) on intent classification, so every chat turn fails, partners included. <code>/health</code> still reads healthy because it doesn&rsquo;t call the model. <b>This is a different workspace from the scoring key you raised at 11:2x</b> (that one still works, 12:51): it&rsquo;s the one holding alpha&rsquo;s Fly secret <code>ANTHROPIC_API_KEY</code>. PA is giving you the console steps now; HOST and CIO are asked which workspace it is. Raise its monthly limit, then tell PA, who re-checks a chat turn. Everything else on this page waits behind this.</div>
+<div class="card hot"><b>Chat on the test accounts hit a usage limit at about 12:49: raise <code>piper-morgan-test</code>&rsquo;s monthly limit.</b> PA corrected her first alarm (12:55): what failed was two test accounts, and the likely cause is the <code>piper-morgan-test</code> workspace (the key those accounts store, the same $20-cap shape as 10-20). HOST saw today&rsquo;s Anthropic email &ldquo;Workspace piper-morgan-test &hellip; API Usage Paused Until November 1&rdquo;. Partners on their own key or alpha&rsquo;s are most likely unaffected (not verified: no one can see partner traffic). It blocks the gate runs on the test accounts (the canonical suite&rsquo;s last 3 queries, the scenarios, Lead&rsquo;s #2189 walk). Raise it, then tell PA, who checks one chat turn.</div>
 
-<div class="card hot"><b>New: #2184 can&rsquo;t land today. Keep MVP open on it, or close MVP with #2184 as a known issue?</b> The third wording passed its full run but moved &ldquo;where should my focus be today&rdquo; to the wrong handler 5 times in 6. Arch ruled no-go, and CXO and PPM agree: the fix can&rsquo;t break the most-used daily ask. A retry waits on a router model or catalog change, not a date. Lead and Arch have stopped on it for today (about $5.60 of your $10 spent).
-<ul style="margin:.3rem 0 .2rem 1.2rem;padding:0">
-<li><b>A. Keep #2184 on the gate.</b> MVP stays open until a retry passes, date unknown.</li>
-<li><b>B. Take it off the gate as a recorded exception,</b> like #1595. It stays open in Production; MVP closes when the remaining rows pass and you give go/no-go. CXO records it as an exception, not a pass.</li>
-</ul>
-<b>B needs partners to actually be told</b>, and today they wouldn&rsquo;t be: <code>/try/alpha</code> has no known-issues section and no partner email is scheduled. So B comes with one of: (1) a short email to partners carrying CXO&rsquo;s line (&ldquo;ask for a milestone&rsquo;s issues in one step&rdquo;, which Comms has staged), or (2) a known-issues section on <code>/try/alpha</code> (new public copy). <span style="color:var(--blue);font-weight:600">PPM and I recommend B with the short email:</span> the one-step ask works, and holding MVP open with no fix date measures the calendar, not the product. Without a way to tell partners, A. Meanwhile PA runs the canonical suite now on the live build.</div>
+<div class="card hot"><b>One question: are the invitations out?</b> You told PA at 13:02 they&rsquo;re &ldquo;not out yet&rdquo;. The record says the three final alpha invitations went 10-26 at 21:00 from your address (your report that evening, relayed by HOST at 21:05; HOST&rsquo;s log has it too). If you meant other invitations (the next wave, say), tell me which; if those three didn&rsquo;t go, the record is wrong and the invitation letter (with the #2184 line now in it) is still to send. I&rsquo;ve marked it disputed in the Now page and decisions.log until you say.</div>
+
+<div class="card win"><b>#2184 is off the MVP gate as a known issue</b> (your word, 13:02). Recorded in decisions.log with your priority rule: everything that left MVP goes to the top of triage for the first Production sprint. CXO&rsquo;s line goes in the invitation letter. Row 0 also passed #2194&rsquo;s headers and #2187&rsquo;s Reconnect card; the milestone pick still fails a different way, filed as #2199 in Production.</div>
 
 <div class="card hot"><b>Scenarios (row 3) are stuck on how Web signs in: pick one of three.</b> Alpha is live on the ready build (<code>b9a8a43600</code>, your third dispatch, 12:04) and frozen until go/no-go. Web is set to drive scenarios A, B and C, but its seat is refused reading the credential files they need (invite and logins in <code>~/.piper-shared</code>), and it rightly won&rsquo;t work around that.
 <ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
@@ -51,12 +48,12 @@
 <li><b>You sign Web in by hand</b> in its open Chrome tab. Covers B and C, not A (A needs the invite typed into a fresh account).</li>
 <li><b>You drive the scenarios yourself</b> in a private window, with PA quoting each turn for CXO. No permission change, about 2 hours of your time.</li>
 </ol>
-<span style="color:var(--blue);font-weight:600">PPM and I recommend 1, once CIO okays the scope; otherwise 3.</span> PA is with you now.</div>
+<b>CIO okays option 1 with three exact lines</b> (not a <code>web-*</code> pattern), under <code>seat_extra.web.allow</code>, coming off when #1386 closes (the PAT line when the #2042 replay is done): <code>Read(~/.piper-shared/alpha-invite-credential-scenario-a-2026-10-29.txt)</code>, <code>Read(~/.piper-shared/web-seed-1386-credentials-2026-10-20.txt)</code>, <code>Read(~/.piper-shared/web-pat-test-credentials.txt)</code>. <b>Catch:</b> an allow line may not stop the reviewer refusing a credential read (unproven since 10-08). So Web tests one read of the seed file at once; if refused, go to option 3 the same hour. <span style="color:var(--blue);font-weight:600">My recommendation: 1 with that test, else 3,</span> after the test-account limit is raised.</div>
 
-<div class="card act"><b>Closing MVP: where it stands.</b> Gate list: 3 open, #2184, #2194, #1386.
+<div class="card act"><b>Closing MVP: where it stands.</b> Gate list (<code>gh</code> 13:05): <b>1 open, #1386.</b> #2194 closed on CXO&rsquo;s pass; #2184 moved out.
 <ul style="margin:.3rem 0 .2rem 1.2rem;padding:0">
 <li><b>Done today:</b> #1595 closed on your split ruling (remainder #2195); the database check passed; your key raise; the promotion carrying #2194&rsquo;s header fix and #2189.</li>
-<li><b>#2184:</b> see the card above; no fix today.</li>
+<li><b>#2184:</b> off the gate as a known issue (your word 13:02).</li>
 <li><b>Order now:</b> row 0 reads with PA (you, now), row 3 scenarios, row 4 security, row 2 canonical suite (running now; no #2184 promotion today), then PPM&rsquo;s rows 5 and 6, then your go/no-go on #1386. The 10-30 hard stop moves only on your word.</li>
 </ul></div>
 
@@ -121,7 +118,7 @@
 <li>Mail v4 stays on three seats until the 11-05 review.</li>
 </ul></div>
 <h2>📊 Where things stand</h2>
-<div class="card">MVP gate: <b>3 open</b> (#2184, #2194, #1386; <code>gh</code> 12:25 Thu). #1595 closed on xian&rsquo;s split (remainder #2195). #2018 closed Wed. Alpha <code>b9a8a43600</code> (live 12:04 Thu, your third dispatch; the first two hit Fly 503s, #2196 filed for a retry), frozen until go/no-go. Main Tests red on <code>89bc987594</code> (Lead&rsquo;s, one test over the known baseline; the fix is on main and in candidate <code>42b266ef7e</code>, whose Tests run started 09:41). Arch read that candidate from source: clean, no router change (09:48). Tested-path push hold on until Lead&rsquo;s READY.</div>
+<div class="card">MVP gate: <b>1 open</b> (#1386; <code>gh</code> 13:05 Thu). #1595 closed on xian&rsquo;s split (remainder #2195). #2018 closed Wed. Alpha <code>b9a8a43600</code> (live 12:04 Thu, your third dispatch; the first two hit Fly 503s, #2196 filed for a retry), frozen until go/no-go. Main Tests red on <code>89bc987594</code> (Lead&rsquo;s, one test over the known baseline; the fix is on main and in candidate <code>42b266ef7e</code>, whose Tests run started 09:41). Arch read that candidate from source: clean, no router change (09:48). Tested-path push hold on until Lead&rsquo;s READY.</div>
 <p class="meta">How I checked each version: <code>dev/active/exec-rollup-verification-history.md</code> (not needed to read this page).</p>
 
 </div>
