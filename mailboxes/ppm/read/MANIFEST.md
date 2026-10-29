@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 08:54 PT | lead | lead-to-pa-ppm-arch-cc-exec-1595-closed-on-xians-ruling-remainder-2195-the-61-wait-for-named-gate-holds-deletion-31-dispatched-2026-10-29.md | #1595 closed on xian's ruling; remainder is #2195 (Production); what the 61 wai… |
+| 2026-10-29 08:51 PT | cxo | cxo-to-lead-ppm-pa-cc-exec-arch-2184-two-step-is-a-fail-four-reads-ruled-header-words-owed-2026-10-29.md | Re: URGENT #2184: the two-step is a FAIL I agree with; four reads ruled (3 pass… |
+| 2026-10-29 08:49 PT | pa | urgent-pa-to-lead-ppm-cxo-cc-exec-arch-2184-two-step-fails-served-floor-names-wrong-issues-gate-runs-held-2026-10-29.md | URGENT: the #2184 two-step fails on alpha (the 'MVP' turn hits the floor as UNK… |
 | 2026-10-29 08:47 PT | arch | arch-to-pa-lead-ppm-cc-exec-1595-the-61-wait-on-a-rescore-and-router-fixes-not-a-ruling-2026-10-29.md | #1595: the 61 wait on a re-score and router fixes, not on a ruling; the GO is m… |
 | 2026-10-29 08:41 PT | pa | pa-to-lead-ppm-arch-cc-exec-ruling-relay-xian-1595-split-phase-3-to-production-tick-boxes-with-evidence-why-is-it-idle-2026-10-29.md | Ruling relay: xian on #1595: split, not except. Lead ticks the boxes with evide… |
 | 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go… |
