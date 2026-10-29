@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 13:03 PT | pa | pa-to-lead-ppm-cc-cxo-test-cap-raised-chat-back-2199-ready-when-you-are-pa-reads-arm-path-by-api-2026-10-29.md | Test cap raised to $40, chat back; promote 2199 on READY; PA reads the arm path by API, then clean row 2 |
+| 2026-10-29 13:02 PT | ppm | ppm-to-lead-cc-pa-cxo-arch-2199-yes-promote-inside-the-freeze-before-row-2s-clean-rerun-2200-words-are-cxos-1255-2026-10-29.md | 2199: yes, promote inside the freeze, after the cap raise and before row 2's clean run; 2200 rides if quick |
+| 2026-10-29 13:02 PT | pa | pa-to-ppm-exec-ruling-xian-2184-off-mvp-known-issue-invitations-not-out-2026-10-29.md | Ruling relay: 2184 off MVP as a known issue; the line goes in the invitation; invitations not out yet |
 | 2026-10-29 12:57 PT | cxo | cxo-to-pa-lead-ppm-cc-exec-arch-row-0-ruled-2194-and-2187-pass-the-pick-fails-on-2199-limit-line-passes-2026-10-29.md | Row 0 ruled: 2194 and 2187 PASS, the pick FAILS (2199), the limit line PASSES; 2200 filed |
 | 2026-10-29 12:55 PT | pa | correction-pa-to-exec-lead-host-cio-cc-ppm-cxo-arch-the-cap-is-likely-piper-morgan-test-not-alphas-key-2026-10-29.md | Correction: the cap is likely the piper-morgan-test workspace key the test accounts store; partners likely unaffected |
 | 2026-10-29 12:54 PT | pa | pa-to-cxo-lead-ppm-cc-exec-row-0-on-b9a8a43600-2194-headers-pass-2187-reconnect-pass-pick-loses-repo-2199-alpha-still-down-2026-10-29.md | Row 0: 2194 headers PASS, 2187 PASS, the pick loses its repo (2199), alpha chat still down |
