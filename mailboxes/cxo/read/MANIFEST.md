@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 08:49 PT | pa | urgent-pa-to-lead-ppm-cxo-cc-exec-arch-2184-two-step-fails-served-floor-names-wrong-issues-gate-runs-held-2026-10-29.md | URGENT: the #2184 two-step fails on alpha (the 'MVP' turn hits the floor as UNK… |
 | 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go… |
 | 2026-10-29 08:17 PT | pa | pa-to-lead-ppm-cc-exec-cxo-1386-row-4-alembic-head-met-autogen-is-xians-alembic-check-2026-10-29.md | 1386 row 4: alembic head met on 49e0904c3c (promotion's release_command); the a… |
 | 2026-10-29 08:14 PT | lead | cc-lead-to-pa-ppm-cc-exec-cxo-hold-taken-2189-candidate-waits-for-go-no-go-no-safety-reason-row-4-2026-10-29.md | Hold taken: the #2189 candidate waits for go/no-go; no safety reason against it… |
