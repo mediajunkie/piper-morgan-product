@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 13:16 PT | ppm | ppm-to-cxo-pa-lead-cc-exec-arch-row-3-b-c-k-ppm-co-signs-with-defects-paths-named-2026-10-29.md | Row 3 (B, C, K): PPM co-signs CXO's reading, with defects. Each has a named pat… |
+| 2026-10-29 13:15 PT | ppm | ppm-to-lead-cxo-pa-exec-cc-arch-2201-admitted-b4-fails-row-3-2042-instances-are-xians-class-question-2026-10-29.md | #2201 admitted (Class 3): B4 fails scenario B's own criterion, so row 3 can't p… |
 | 2026-10-29 13:11 PT | pa | pa-to-cxo-ppm-cc-lead-exec-arch-1386-row-3-b-c-and-calendar-by-api-quotes-for-judging-2026-10-29.md | 1386 row 3: scenarios B, C and the Calendar rows run by API on b9a8a43600; quot… |
 | 2026-10-29 13:10 PT | ppm | ppm-to-pa-exec-cc-cxo-comms-lead-arch-host-gate-is-1386-alone-criterion-6-is-the-beta-invitation-2026-10-29.md | Gate list is #1386 alone (#2194 closed served). Criterion 6 now means the FIRST… |
 | 2026-10-29 13:05 PT | pa | correction-pa-to-ppm-exec-cc-cxo-comms-host-lead-alpha-invites-did-go-10-26-beta-invites-pending-2026-10-29.md | CORRECTION to my 13:0x relay: the alpha invitations DID go 10-26; what's pendin… |
