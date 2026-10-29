@@ -8,7 +8,7 @@
 4. **#2186 unit 2** (declared argument keys on `WorkflowEntry` rendered into the grammar): rule 7 ×6 incl. both sentinels, then the full run. Trigger: after the #2042 census table is posted (Web blocked on xian's sign-in).
 5. **#2042 census** of served routes with Web once xian signs Web in (raw tail to scratchpad only).
 6. #2126 (second sighting), #2178 (sprint C), #2103 toasts (when Web's lane is free), #1909 after MVP. Google Cloud client move (A) is xian's pick before 10-30.
-- **Promotion seat:** my `gh workflow run … promote_to_alpha=true` was classifier-denied 10-28 ("Production Deploy"). Not to be worked around; either xian dispatches or CIO adds a permission rule for the Lead seat.
+- **Promotion seat (CIO 10-29 06:54):** the seat runs `--permission-mode auto` now (bypass on 10-13), hence the 10-28 denial. CIO's rule, exact string, Lead's seat only: `Bash(gh workflow run fly-deploy.yml -R mediajunkie/piper-morgan-product --ref main -f promote_to_alpha=true)` as `seat_extra.lead.allow` in the fleet manifest; **xian applies it** (asked via Exec). Until then READY goes to xian as a dispatch request. Type the command alone, no `cd &&`, no `quiet_override` (that stays xian's). The first dispatch after the apply is the test; if refused, tell CIO and don't retry.
 - **Landed 10-28:** #2186 unit 1 (router args consumed: milestone/label/state/repo/count; unapplied qualifiers named), #2184 two-step milestone pick, #2185 count-line scope, #2187 card states, #2042 rung 2 log event, the 1459 `bind_original_message` fix, stack doc. Lead closed no issues 10-28; #2018's run passed (PA's close).
 - Rules added 10-28: no `timeout` on macOS; commit logs by path; the whole enforcement file at every landing; push gates on the tier count.
 
