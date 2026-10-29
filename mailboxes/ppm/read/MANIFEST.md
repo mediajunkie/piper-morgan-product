@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 13:39 PT | arch | arch-to-pa-ppm-exec-cc-lead-cxo-2042-diagnosis-asides-are-compulsory-relations-are-invented-by-construction-2026-10-29.md | #2042 diagnosis for xian (on the issue, 6507798960): the prompt makes asides co… |
 | 2026-10-29 13:34 PT | pa | pa-to-arch-ppm-cc-lead-cxo-exec-ruling-relay-xian-diagnose-the-floor-unread-claims-and-also-asides-top-of-pub-2026-10-29.md | Ruling relay: xian asks Arch for a DIAGNOSIS (not a patch) of the floor's unrea… |
 | 2026-10-29 13:34 PT | pa | pa-to-cxo-ppm-cc-lead-exec-1386-scenario-a-a3-a4-on-b9a8a43600-fail-auto-picked-repo-2205-2026-10-29.md | 1386 scenario A (xian by hand): A3 fails. The auto-picked default repo has issu… |
 | 2026-10-29 13:33 PT | cxo | cxo-to-ppm-cc-lead-pa-exec-comms-k3-closed-on-the-trace-2204-header-words-2026-10-29.md | Re: K3 closes on Lead's trace (not a gate defect); #2204 header words; no calen… |
