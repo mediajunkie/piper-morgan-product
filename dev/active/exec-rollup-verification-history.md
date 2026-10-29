@@ -242,3 +242,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v660 12:38 PDT Thu 10-29: new hot card, #2184 A/B for xian (PPM 12:34, CXO 12:33: wording 3 NO-GO); recommend B with a short partner send.
 - v661 12:54 PDT Thu 10-29: URGENT top card, alpha chat down, alpha's own Anthropic workspace limit (PA 12:51, served replies + fly logs). My own fly logs read at 12:53 returned no lines (not re-confirmed by Exec).
 - v662 13:05 PDT Thu 10-29: urgent card corrected to piper-morgan-test (PA 12:55); invitations disputed question; #2184 off gate (xian 13:02) win card; row-3 card with CIO exact Read lines; gh MVP open 13:05: 1386 only (#2194 CLOSED 20:03:22Z, #2184 OPEN Production).
+- v663 13:15 PDT Thu 10-29: invitations card removed (xian 13:05: alpha invites went 10-26; beta pending); test-key card to win (B/C ran 13:05+); row-3 card = option 2, A is xian's.
