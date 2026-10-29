@@ -32,22 +32,28 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 29 October</h1>
-<p class="meta">Exec · v658, rebuilt 11:41 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v659, rebuilt 12:25 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <div class="card win"><b>Key limit raised ($90 to $100, your word via PA 11:36); calls succeed again (11:35).</b> Lead resumes the #2184 screens; row 2&rsquo;s judge works. Recorded in decisions.log; CIO and HOST told.</div>
 
-<div class="card act"><b>Closing MVP: the plan changed since 08:21, and you have three hands left after the key.</b> Gate list (<code>gh</code> 09:18): 3 open, #2184, #2194, #1386.
+<div class="card hot"><b>Scenarios (row 3) are stuck on how Web signs in: pick one of three.</b> Alpha is live on the ready build (<code>b9a8a43600</code>, your third dispatch, 12:04) and frozen until go/no-go. Web is set to drive scenarios A, B and C, but its seat is refused reading the credential files they need (invite and logins in <code>~/.piper-shared</code>), and it rightly won&rsquo;t work around that.
+<ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
+<li><b>One permission line for Web&rsquo;s seat</b>, reading only the scenario-A invite file and the <code>web-*</code> login files. Web then runs all three, about 2 hours, and you&rsquo;re needed only for a Google sign-in. It also frees the <code>web-pat-test</code> sign-in for Lead&rsquo;s #2042 census, so the separate item below goes away. CIO is asked whether the scope is acceptable.</li>
+<li><b>You sign Web in by hand</b> in its open Chrome tab. Covers B and C, not A (A needs the invite typed into a fresh account).</li>
+<li><b>You drive the scenarios yourself</b> in a private window, with PA quoting each turn for CXO. No permission change, about 2 hours of your time.</li>
+</ol>
+<span style="color:var(--blue);font-weight:600">PPM and I recommend 1, once CIO okays the scope; otherwise 3.</span> PA is with you now.</div>
+
+<div class="card act"><b>Closing MVP: where it stands.</b> Gate list: 3 open, #2184, #2194, #1386.
 <ul style="margin:.3rem 0 .2rem 1.2rem;padding:0">
-<li><b>#1595 is closed on your split ruling</b> (Lead, 08:54). The unfinished Phase 3 is #2195, in Production, Sprint PUB. Router deletions are moving again: Arch gave the 31st its GO. Recorded in decisions.log.</li>
-<li><b>Your database check is done:</b> PA read current = heads = <code>s2014items</code>, and <code>check</code> found no new operations.</li>
-<li><b>Your two-step test failed</b> (&ldquo;MVP&rdquo; named the wrong issues). Lead is fixing it in Arch&rsquo;s form, ETA about three hours to READY, given the key. With it goes <b>#2194</b> (the &ldquo;across all your repositories&rdquo; header), which <b>PPM admitted to MVP</b> because CXO won&rsquo;t sign the build without it. One word, &ldquo;out&rdquo;, undoes that.</li>
-<li><b>New sequence (PPM 09:34), so the gate doesn&rsquo;t wait on #2184:</b> promote at Lead&rsquo;s READY (about 10:30) with #2194&rsquo;s header fix and #2189; freeze; run the gate rows on that build. When #2184 lands (today with the key, else 11-01), only its two-step and the canonical suite re-run.</li>
-</ul>
-<b>Your remaining hands, after the key:</b> (1) <b>the promotion:</b> your 11:31 dispatch hit a Fly 503 (alpha untouched); your 11:38 retry failed too, this time a 503 while installing Fly&rsquo;s command-line tool (run 40932742084). Alpha is untouched and healthy on <code>49e0904c3c</code> (11:40). Two 503s read as a Fly-side incident; Lead will say when to try the same line again. <b>Don&rsquo;t retry until he does;</b> (2) a fresh account (one invite code) plus a Google sign-in for scenario A, after the promotion; (3) go/no-go on #1386, last. If the fix can&rsquo;t land and promote today, MVP doesn&rsquo;t close today; the 10-30 hard stop moves only on your word.</div>
+<li><b>Done today:</b> #1595 closed on your split ruling (remainder #2195); the database check passed; your key raise; the promotion carrying #2194&rsquo;s header fix and #2189.</li>
+<li><b>#2184:</b> CXO and PPM ruled that &ldquo;any update on the next milestone&rdquo; may be answered by the milestones list for now (better answer filed as #2197). Lead runs the router tests on wording 3 (about $1 of your $10). That fix is the one promotion allowed inside the freeze, before go/no-go; after it, only the two-step and the canonical suite re-run.</li>
+<li><b>Order now:</b> row 0 reads with PA (you, now), row 3 scenarios, row 4 security, row 2 canonical suite after the #2184 promotion, then PPM&rsquo;s rows 5 and 6, then your go/no-go on #1386. The 10-30 hard stop moves only on your word.</li>
+</ul></div>
 
 <div class="card act"><b>Two things only your hand unblocks (each a minute):</b>
 <ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
-<li><b>Sign in as <code>web-pat-test</code> in Web&rsquo;s open Chrome tab</b> (or allow Web to read its credential file). That starts the five-exchange replay Lead tails for the #2042 census. Held since 11:01 Wed; Web mails Lead five minutes before starting.</li>
+<li><b>Sign in as <code>web-pat-test</code> in Web&rsquo;s open Chrome tab</b> (option 1 in the scenarios card covers this too) (or allow Web to read its credential file). That starts the five-exchange replay Lead tails for the #2042 census. Held since 11:01 Wed; Web mails Lead five minutes before starting.</li>
 <li><b>Promotions: one permission line for Lead&rsquo;s seat.</b> Lead&rsquo;s seat now runs in auto mode, which refuses the alpha deploy command, so each promotion waits on you (you ran yesterday&rsquo;s at 21:50). CIO drafted one exact allow, nothing wider: in mediajunkie <code>docs/seat-permissions.json</code>, under <code>seat_extra.lead.allow</code>, add <code>Bash(gh workflow run fly-deploy.yml -R mediajunkie/piper-morgan-product --ref main -f promote_to_alpha=true)</code>, then run <code>scripts/seat-permissions.py --apply</code>. It does not cover the quiet-hours override (still your word), and the readiness gates stay in the workflow. <span style="color:var(--blue);font-weight:600">My recommendation: yes.</span> Answer &ldquo;yes, applied&rdquo; or &ldquo;no, I&rsquo;ll keep dispatching&rdquo;. Lead&rsquo;s first dispatch after the change is the test.</li>
 </ol></div>
 
@@ -106,7 +112,7 @@
 <li>Mail v4 stays on three seats until the 11-05 review.</li>
 </ul></div>
 <h2>📊 Where things stand</h2>
-<div class="card">MVP gate: <b>3 open</b> (#2184, #2194, #1386; <code>gh</code> 09:18 Thu). #1595 closed on xian&rsquo;s split (remainder #2195). #2018 closed Wed. Alpha <code>49e0904c3c</code> (21:50 Wed), healthy at 04:19. Main Tests red on <code>89bc987594</code> (Lead&rsquo;s, one test over the known baseline; the fix is on main and in candidate <code>42b266ef7e</code>, whose Tests run started 09:41). Arch read that candidate from source: clean, no router change (09:48). Tested-path push hold on until Lead&rsquo;s READY.</div>
+<div class="card">MVP gate: <b>3 open</b> (#2184, #2194, #1386; <code>gh</code> 12:25 Thu). #1595 closed on xian&rsquo;s split (remainder #2195). #2018 closed Wed. Alpha <code>b9a8a43600</code> (live 12:04 Thu, your third dispatch; the first two hit Fly 503s, #2196 filed for a retry), frozen until go/no-go. Main Tests red on <code>89bc987594</code> (Lead&rsquo;s, one test over the known baseline; the fix is on main and in candidate <code>42b266ef7e</code>, whose Tests run started 09:41). Arch read that candidate from source: clean, no router change (09:48). Tested-path push hold on until Lead&rsquo;s READY.</div>
 <p class="meta">How I checked each version: <code>dev/active/exec-rollup-verification-history.md</code> (not needed to read this page).</p>
 
 </div>
