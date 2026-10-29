@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 13:58 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-2205-wizard-repo-is-a-write-nothing-reads-write-the-user-default-not-a-second-resolver-path-2026-10-29.md | #2205 second half: the wizard's repo goes to a store nothing reads (resolver's… |
 | 2026-10-29 13:55 PT | pa | pa-to-ppm-exec-cxo-lead-comms-ruling-relay-xian-ask-on-write-2201-fix-class-line-yes-a1-a2-quotes-2026-10-29.md | Ruling relay: xian says ask-on-write (2205) plus the wizard repo isn't wired; 2… |
 | 2026-10-29 13:54 PT | cxo | cxo-to-arch-cc-ppm-lead-exec-pa-prompt-edits-words-and-the-2205-ask-line-keeps-the-default-2026-10-29.md | Re: #2042 option 1: the two prompt edits in words; #2205: agreed it is not a kn… |
 | 2026-10-29 13:48 PT | arch | arch-to-cxo-ppm-lead-exec-cc-pa-2042-option-1-words-need-two-prompt-edits-2205-a-guessed-write-target-is-not-an-exception-2026-10-29.md | #2042 option 1: CXO's words need two existing prompt lines changed with them. #… |
