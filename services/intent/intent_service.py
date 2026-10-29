@@ -8814,32 +8814,48 @@ class IntentService:
                     },
                 )
 
-            # #2186: name an applied milestone/label in the count line, the
-            # way _scope names a repo; a closed read says "closed".
-            _filter_scope = ""
+            # #2194 (CXO 10-29 08:51): ONE composer builds the scope words from
+            # the qualifiers the read applied (issue_list_header). The connector's
+            # default read is assignee:@me across every repo; a named/bound repo
+            # read is repo-wide with no assignee term (#2185); a milestone on the
+            # assignee read keeps "assigned to you" and names the milestone's repo
+            # (the one repo the items share, else the default repo, else nothing).
+            from services.intent_service.issue_list_header import (
+                compose_count_header,
+                compose_empty_line,
+                compose_scope,
+                repo_of_item,
+                shared_repo,
+            )
+
             _state_word = "open"
+            _ms: Optional[str] = None
+            _lbl: Optional[str] = None
             if _filters_applied:
-                if "milestone" in _qualifiers:
-                    _filter_scope += f' in milestone "{_qualifiers["milestone"]}"'
-                if "label" in _qualifiers:
-                    _filter_scope += f' labeled "{_qualifiers["label"]}"'
+                _ms = _qualifiers.get("milestone")
+                _lbl = _qualifiers.get("label")
                 if "state" in _qualifiers:
                     _state_word = "closed"
+            _ms_repo: Optional[str] = None
+            if _ms and _assignee_scoped and not _named_repo:
+                _repos_seen = {r for r in (repo_of_item(i) for i in issues or []) if r}
+                _ms_repo = shared_repo(issues or [])
+                if _ms_repo is None and len(_repos_seen) <= 1:
+                    # No item named a repo (or none came back): the default repo,
+                    # never a guess when the items span several repositories.
+                    _ms_repo = await self._user_default_repo_or_none(_user_id)
+            _scope_kw: Dict[str, Any] = {
+                "named_repo": _named_repo,
+                "assignee_scoped": _assignee_scoped,
+                "milestone": _ms,
+                "label": _lbl,
+                "milestone_repo": _ms_repo,
+            }
             _repo_open: Optional[Tuple[str, int]] = None
             if issues:
                 # total_count is the TRUE match count (search_issues total_count); `issues` is
                 # only a page (e.g. 30 of 179) — count by total_count, show a few recent (#1322).
-                # #2185 (CXO 14:45 10-28): the count names its scope, and only what
-                # the query did. The connector's default read is assignee:@me across
-                # every repo; a named/bound repo read is repo-wide with no assignee
-                # term, so it names the repo and nothing more.
-                if _named_repo:
-                    _scope = f" in {_named_repo}"
-                elif _assignee_scoped:
-                    _scope = " assigned to you across all your repositories"
-                else:
-                    _scope = ""
-                _scope += _filter_scope
+                _scope = compose_scope(**_scope_kw)
                 if _issues_window_full:
                     # CXO 10-24 16:11 (final): a full window is a floor, never a bare total.
                     # The 100 are open items (issues and PRs), so N can be under 100.
@@ -8849,10 +8865,8 @@ class IntentService:
                         "I read only the first 100 open items, so there may be more."
                     )
                 else:
-                    message = (
-                        f"You have **{total_count} {_state_word} "
-                        f"issue{'s' if total_count != 1 else ''}**"
-                        f"{_scope}."
+                    message = compose_count_header(
+                        total=total_count, state_word=_state_word, scope=_scope
                     )
                 # #2186 (CXO): what the read could not apply goes HERE, under
                 # the count header and above the list, where it changes the reading.
@@ -8893,10 +8907,8 @@ class IntentService:
             elif _filters_applied:
                 # #2186: a filtered read that found nothing names its whole
                 # scope; the #2040 default-repo count would not share the filter.
-                if _named_repo:
-                    message = f"No {_state_word} issues in {_named_repo}{_filter_scope} right now."
-                else:
-                    message = f"You have no {_state_word} issues assigned to you{_filter_scope}."
+                # #2194: same scope rule as the count header.
+                message = compose_empty_line(state_word=_state_word, **_scope_kw)
             else:
                 if _named_repo:
                     # A named repo is read repo-wide, so this line already
@@ -8983,6 +8995,20 @@ class IntentService:
         if hits and len(hits) == 1:
             return hits[0]
         return None
+
+    async def _user_default_repo_or_none(self, user_id: Optional[str]) -> Optional[str]:
+        """#2194: the user's default repo (the user-scoped store, no env fallback)
+        for a milestone header whose items named no repository; None on any miss."""
+        if not user_id:
+            return None
+        try:
+            from services.integrations.github.repo_resolver import get_user_default_repo
+
+            repo = await get_user_default_repo(UUID(str(user_id)))
+        except Exception as e:  # silent-ok: logged; the header then omits the repo
+            self.logger.warning("issue_header_default_repo_failed", error=str(e))
+            return None
+        return repo if isinstance(repo, str) and "/" in repo else None
 
     async def _default_repo_open_issue_count(
         self, user_id: Optional[str]
@@ -9788,6 +9814,14 @@ class IntentService:
                     Exception
                 ) as e:  # silent-ok: logged; an un-armed pick leaves today's behaviour
                     self.logger.warning("milestone_pick_arm_failed", error=str(e))
+            # #2184 two-step (Arch 10-29; CXO 09:01): an armed pick ends the reply
+            # with the which-milestone question; an unarmed list asks nothing.
+            if _pick_armed:
+                from services.intent_service.milestone_pick import (
+                    MILESTONE_PICK_ARM_QUESTION,
+                )
+
+                message += f"\n\n{MILESTONE_PICK_ARM_QUESTION}"
             return IntentProcessingResult(
                 success=True,
                 message=message,

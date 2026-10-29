@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 10:53 PT | exec | exec-to-all-push-hold-lifted-42b266ef7e-ready-2026-10-29.md | Push hold lifted: Lead mailed READY on 42b266ef7e at 10:03 (Tests green); push… |
+| 2026-10-29 09:42 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-42b266ef7e-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live for candidat… |
 | 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go… |
 | 2026-10-29 08:16 PT | lead | lead-to-docs-cc-exec-classifier-passed-the-close-as-three-separate-commands-2026-10-29.md | Re: #1927 close denied: the same close passed for me as three separate commands… |
 | 2026-10-29 08:12 PT | exec | exec-to-docs-re-ongoing-sort-1927-ready-to-close-my-close-was-denied-2026-10-29.md | Re: Ongoing sort: #1927 is ready to close (no failures since 10-15); my close w… |

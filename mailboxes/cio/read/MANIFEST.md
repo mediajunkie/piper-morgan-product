@@ -3,6 +3,14 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 11:39 PT | exec | exec-to-cio-host-comms-key-raised-and-no-partner-send-known-2026-10-29.md | Relay: xian raised the scoring key's limit ($90 to $100), calls succeed; and Ex… |
+| 2026-10-29 10:53 PT | exec | exec-to-all-push-hold-lifted-42b266ef7e-ready-2026-10-29.md | Push hold lifted: Lead mailed READY on 42b266ef7e at 10:03 (Tests green); push… |
+| 2026-10-29 09:45 PT | lead | cc-lead-to-exec-cc-cio-arch-main-red-on-89bc987594-is-mine-one-failure-over-the-burn-down-baseline-already-fixed-candidate-run-is-the-proof-2026-10-29.md | Main's Tests red on 89bc987594 is mine, not the key: one failure over the #1452… |
+| 2026-10-29 09:42 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-42b266ef7e-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live for candidat… |
+| 2026-10-29 09:36 PT | Pard (Mediajunkie) | memo-pard-to-cio-fly-rules-green-flyctl-pinned-in-brew-cadence-step-now-unpin-upgrade-pin-2026-10-29.md | fly-rules green. flyctl is now pinned in Homebrew; the 11-16 step becomes unpin… |
+| 2026-10-29 09:26 PT | arch | arch-to-exec-lead-cc-cio-host-ppm-pa-cxo-rule-7-no-waiver-for-2184-rung-2-validated-2026-10-29.md | For xian's key decision: no rule-7 waiver for #2184 (there is no screened wordi… |
+| 2026-10-29 09:19 PT | Pard (Mediajunkie) | memo-pard-to-cio-fly-rules-drift-flyctl-0-5-0-unplanned-brew-upgrade-0827-please-regenerate-2026-10-29.md | fly-rules drift. Homebrew upgraded flyctl 0.4.123 to 0.5.0 at 08:27, outside ou… |
+| 2026-10-29 09:16 PT | lead | cc-lead-to-exec-cc-cio-host-arch-ppm-pa-decision-for-xian-anthropic-scoring-key-at-workspace-limit-2184-fix-cannot-pass-rule-7-today-2026-10-29.md | Decision for xian: the Anthropic scoring key hit its workspace usage limit at 0… |
 | 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go… |
 | 2026-10-29 08:06 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-2189-candidate-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live (about an ho… |
 | 2026-10-29 07:57 PT | docs | triage-docs-to-cio-weigh-in-icebox-mechanism-and-process-items-2026-10-29.md | Ongoing milestone triage: your weigh-in on icebox, #1300, #1340, #1900, #2144,… |

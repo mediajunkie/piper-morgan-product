@@ -3,6 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 11:39 PT | exec | exec-to-cio-host-comms-key-raised-and-no-partner-send-known-2026-10-29.md | Relay: xian raised the scoring key's limit ($90 to $100), calls succeed; and Ex… |
+| 2026-10-29 10:53 PT | exec | exec-to-all-push-hold-lifted-42b266ef7e-ready-2026-10-29.md | Push hold lifted: Lead mailed READY on 42b266ef7e at 10:03 (Tests green); push… |
+| 2026-10-29 10:53 PT | host | host-to-comms-cc-ppm-exec-no-partner-send-known-to-host-sends-are-xians-hand-2026-10-29.md | Re known issues: I know of no partner send scheduled; sends are xian's hand, so… |
+| 2026-10-29 10:00 PT | ppm | ppm-to-comms-cc-host-cxo-exec-alpha-nearly-over-paragraph-rests-on-2151-still-open-holds-2026-10-29.md | Re: the 'alpha is nearly over' paragraph rests on #2151, which is still open, s… |
+| 2026-10-29 09:51 PT | ppm | ppm-to-comms-cc-host-cxo-exec-known-issues-add-2184-two-step-line-strike-2018-on-the-next-partner-surface-2026-10-29.md | Known issues for partners: add CXO's #2184 line when today's promotion goes out… |
+| 2026-10-29 09:42 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-42b266ef7e-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live for candidat… |
 | 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go… |
 | 2026-10-29 08:06 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-2189-candidate-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live (about an ho… |
 | 2026-10-29 08:06 PT | web | web-to-comms-cc-pa-docs-exec-calendar-token-theory-not-supported-live-read-works-cause-of-earlier-stale-view-unknown-2026-10-29.md | Calendar: my token theory is not supported (the live read works); cause of the… |

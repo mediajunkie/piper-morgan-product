@@ -213,9 +213,79 @@ class TestSeam:
         assert resp.message == REPLY_2184
         assert [e for e in events if e.get("event") == "floor_record_references_error"] == []
 
+    def test_enumerating_reply_rides_the_turn_provenance(self):
+        # #2042 retention (Arch 10-29): the event is also on the response's
+        # provenance, which the turn save nests into conversation_turns.metadata.
+        floor = _floor_returning(REPLY_2184)
+        ctx = _ctx(
+            "MVP",
+            intent_category="STATUS",
+            intent_action="none",
+            domain_context={"active_milestones": [{"title": "MVP", "number": 7}]},
+            domain_context_provenance=PROVENANCE_2184,
+        )
+        resp = asyncio.run(floor.respond(ctx))
+        rr = resp.provenance["record_references"]
+        assert rr["references"] and rr["reference_count"] == len(rr["references"])
+        assert "reference_sources" in rr and "context_reads" in rr
+        # Nothing of the user's or the model's text rides along.
+        assert "MVP" not in str(rr.values()) or rr["references"]
+        assert all(
+            k
+            in {
+                "references",
+                "reference_count",
+                "unsourced_references",
+                "reference_sources",
+                "list_lines",
+                "context_reads",
+            }
+            for k in rr
+        )
+
     def test_plain_reply_logs_nothing(self):
         floor = _floor_returning("I couldn't pull up that list just now — want me to check again?")
         with capture_logs() as events:
             resp = asyncio.run(floor.respond(_ctx("show the MVP issues", intent_category="STATUS")))
         assert [e for e in events if e.get("event") == "floor_record_references"] == []
         assert resp.message.startswith("I couldn't pull up that list just now")
+
+
+class TestLinkedReferences2184:
+    """#2184 served turn (2026-10-29 15:44Z): the floor's reply carried its
+    references as markdown links and the rung-2 event logged nothing (PA's
+    log read; the ``floor_unarmed_offer_enforced`` warning on the same turn
+    proves the hook ran). The scan now reads ``#N`` wherever it sits in a
+    token."""
+
+    def test_markdown_link_reference_is_seen(self):
+        text = "see [#2194](https://github.com/o/r/issues/2194) and [#2186](https://github.com/o/r/issues/2186)"
+        assert record_references(text) == ["#2194", "#2186"]
+
+    def test_bold_link_reference_is_seen(self):
+        assert record_references("**[#2194](https://github.com/o/r/issues/2194)**") == ["#2194"]
+
+    def test_url_number_without_hash_is_not_a_reference(self):
+        assert record_references("https://github.com/o/r/issues/2194") == []
+
+    def test_fragment_inside_a_word_is_not_a_reference(self):
+        assert record_references("note a#12 and C#9") == []
+
+    def test_arch_probe_shapes_dash_and_slash(self):
+        # Arch 2026-10-29 09:06: "#2194—and #2186." read only #2186; "#2194/#2186" read none.
+        assert record_references("#2194—and #2186.") == ["#2194", "#2186"]
+        assert record_references("#2194/#2186") == ["#2194", "#2186"]
+        assert record_references("see #2194,#2186;#2187") == ["#2194", "#2186", "#2187"]
+
+    def test_bare_hash_and_hash_word_are_not_references(self):
+        assert record_references("# heading and #todo and # 12") == []
+
+    def test_served_reply_shape_yields_an_event(self):
+        msg = (
+            "Here are the 3 open issues in the MVP milestone: The most recently touched one is "
+            "[#2194](https://github.com/o/r/issues/2194) — … The third open issue I'm seeing is "
+            "[#2186](https://github.com/o/r/issues/2186) — …"
+        )
+        ev = listed_records_event(msg, "", {}, {"active_milestones": [{"title": "MVP"}]}, [], "MVP")
+        assert ev["references"] == ["#2194", "#2186"]
+        assert ev["reference_sources"] == {"#2194": ["absent"], "#2186": ["absent"]}

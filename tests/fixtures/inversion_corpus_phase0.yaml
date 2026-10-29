@@ -448,12 +448,12 @@ corpus:
     category: QUERY
     expected: REVIEW
     source: "#2184 alpha a1f46faafc 2026-10-28 10:12 (xian's served two-step exchange, turn 1)"
-    notes: "Router ×3 on main 10-28: CLARIFY @0.40 (sub-threshold); surface 1 then claims list_milestones_query (\\bshow.*milestones?) and the milestones handler lists them. Since #2184 that handler ARMS an exact-title pick on the titles it rendered (milestone_pick.py). Context-dependent (Phase-0 convention: informational). REVIEW, not asserted."
+    notes: "Router ×3 on main 10-28: CLARIFY @0.40 (sub-threshold). CORRECTED 2026-10-29 (alpha 49e0904c3c served FAIL, Arch's diagnosis on #2184): nothing claims the CLARIFY, so a MODEL composed 'Which milestone — MVP, Production, …?' from a context slice; the milestones handler never ran and the #2184 pick never armed (the earlier note's 'surface 1 claims it and the handler lists them' was wrong). The fix is a list_milestones router description (rule 7): wording 1's x6 routes this row list_milestones 6/6 @0.95 but flips the add-family sentinel, NO-GO (dev/2026/10/29/controls/). Context-dependent (Phase-0 convention: informational). REVIEW, not asserted."
   - phrase: "MVP"
     category: QUERY
     expected: REVIEW
     source: "#2184 alpha a1f46faafc 2026-10-28 10:12 (xian's served two-step exchange, turn 2)"
-    notes: "Router ×3 on main 10-28: CLARIFY @0.30 (sub-threshold); nothing claims it; the floor composed three priority-slice issue numbers as the milestone's (#2042's class). Since #2184 the armed pick binds this exact title at the pop seam and runs the issues read with milestone='MVP' and the listed repo. Two-turn shape, context-dependent (informational). REVIEW."
+    notes: "Router ×3 on main 10-28: CLARIFY @0.30 (sub-threshold); nothing claims it; the floor composed three priority-slice issue numbers as the milestone's (#2042's class). Since #2184 the armed pick binds this exact title at the pop seam and runs the issues read with milestone='MVP' and the listed repo. Re-measured x6 10-29 on main: CLARIFY @0.40 x6. It binds only when turn 1 ran the milestones read and armed the pick (Arch 10-29: never from a model-written question). Two-turn shape, context-dependent (informational). REVIEW."
   - phrase: "Mark the first three complete and leave the fourth one pending."
     category: EXECUTION
     expected: action:complete_todo

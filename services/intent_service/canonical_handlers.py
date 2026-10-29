@@ -65,6 +65,12 @@ TIMEZONE_ABBREVIATIONS = {
 }
 
 
+# #2042 rung 2 (2026-10-29): keys in a turn's provenance dict that are
+# instrumentation (the floor's listed-records event), not sources the reply
+# drew on. The "why did you suggest that?" citation skips them.
+_PROVENANCE_INSTRUMENTATION_KEYS = frozenset({"record_references"})
+
+
 class CanonicalHandlers:
     """Handlers for canonical standup queries using PIPER.md context"""
 
@@ -6836,6 +6842,10 @@ What would you like to set up first?"""
             # Format colleague-prose citation
             phrases = []
             for key in prov.keys():
+                if key in _PROVENANCE_INSTRUMENTATION_KEYS:
+                    # #2042 (Arch 2026-10-29): measurement records ride the same
+                    # provenance dict but are not sources; never cite them.
+                    continue
                 phrase = self._PROVENANCE_PHRASES.get(key)
                 if phrase:
                     phrases.append(phrase)

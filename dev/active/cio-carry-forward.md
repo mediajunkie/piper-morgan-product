@@ -1,10 +1,10 @@
 ---
-last_updated: 2026-10-28
+last_updated: 2026-10-29
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — refreshed 2026-10-28 (22:07 STOP)
+# CIO carry-forward — refreshed 2026-10-29 (10:07 wake)
 
 **Now (10-28)**: Restarted onto Claude Code 2.1.310 (Pard, 10-28 batch); `FLY_NO_UPDATE_CHECK=1` set on this seat. 8z flyctl sitting agreed with Pard: 11-16, 12-07, 12-28 at the 10:07 START. v4 canary gap closed: Exec and Lead acked 01M61QRWX2, nothing dropped; `mail4.py check` now prints the last ack beside a missing canary. Note it at the 11-05 v4 review (8i). Next audit 8q by 12-09. Agent 360 re-run 11-06 (8r). The body below is the 10-12 state plus later notes; the standing items hold current rows.
 
@@ -25,12 +25,11 @@ origin/main, with `reply-to:` in the front matter.
 - **HOST fly split INSTALLED 10-12 17:03** (allow 87, ask 120, deny 1069); Pard's cycle-check fly-rules arm watches drift. Attended check in HOST's pane PASSED 10-13, 5 of 5; whether the matcher strips the `env` prefix is still unknown (recorded in the permissions doc). Deploy: xian chose **B** and removed the alpha reviewer 10-13. Joint CIO+Lead proposal to Exec (31c7cc0b4): a dispatch on his word, no auto-promote, no seat rule, an optional Tests-on-staging-sha check. Waiting: xian confirms in session. Bypass seats (lead, pa, web): ASK does nothing there; recorded in the permissions doc.
   After a deploy carries `prod_user_lookup.py`: HOST's end-to-end check. Mint grant swaps after its deploy.
 - **R6**: steps 1-4 done; baseline 56/60 (`dev/2026/10/08/r6-probe-baseline/`). Instrument decided 10-10:
-  keep `--permission-mode acceptEdits`. The slim CLAUDE.md waits on 🔒 D-E/D-F.
+  keep `--permission-mode acceptEdits`. The slim CLAUDE.md shipped 10-13 (D-E dropped, D-F one line, 10-12).
 - **#1967 OWED pilot**: my marker `owed-pilot-review` due 10-16 (row 8p).
 
 **Answered 10-12** (xian via Janus→Exec): D-C yes (Comms did it), D-D yes, D-E drop, D-F one line, all applied (`a2ce30228c`); D-G overtaken.
-**🔒 PM-gated (escalated to Exec, dated)**:
-routine deletion (10-04); R1-R7 walk-through (10-05); keep ask or (B) on HOST (10-10).
+**🔒 PM-gated**: none from the 10-12 list (re-verified 10-29: the routine was deleted 10-05, decisions.log 2367; R1-R7 were approved one by one, R3/R6 10-04, R7 10-05; xian chose (B) for HOST 10-13; the slim CLAUDE.md shipped 10-13). Open now: 9a (Lead's exact allow, on xian's rollup v647, Exec recommends yes).
 **Others**: Pard (marker cap, likely moot after R3); Exec's soak (8n); Lead joins v4 10-12 (flip roles.yaml).
 
 **Lessons in force**: `date` before any time; brace zsh vars before `:`; no `echo ====` in zsh; test the dangerous

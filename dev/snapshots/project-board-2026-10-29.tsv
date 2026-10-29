@@ -1412,7 +1412,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1590	CLOSED	MVP	Beta Blockers - Hard Gates Only	#1536 first-contact demo did NOT appear for a GitHub-connected account — which gate fired? (leading hypothesis: no default repo → silent no-demo)			COMPLETED
 1591	OPEN	Production	PUB - Public Beta	Standup two-modes: Production/PUB half — first-run interactive fallback + preference capture on #1510's declaration surface (split from #1511)	journey:come-back,surface:web		
 1594	CLOSED	Ongoing	Q - Recurring Audits	Post-reboot: dev Docker data services (postgres/redis/chromadb) do not restart, and nothing alerts on it			COMPLETED
-1595	OPEN	MVP	Beta Blockers - Hard Gates Only	EPIC: Understanding-Layer Inversion — one constrained LLM routing call does the understanding (Arch-RATIFIED 08-09, all 4 decisions + 2 amendments)	journey:get-work-done,promise:E5-one-authority,surface:mcp,surface:web		
+1595	CLOSED	MVP	Beta Blockers - Hard Gates Only	EPIC: Understanding-Layer Inversion — one constrained LLM routing call does the understanding (Arch-RATIFIED 08-09, all 4 decisions + 2 amendments)	journey:get-work-done,promise:E5-one-authority,surface:mcp,surface:web		COMPLETED
 1600	CLOSED	MVP	Beta Blockers - Hard Gates Only	🔴 CI RED ON MAIN 2 DAYS: silent-death + todo-marker ratchets over ceiling (gating smoke subset) and the mypy gate 17 errors over — untracked			COMPLETED
 1596	CLOSED	MVP	Beta Blockers - Hard Gates Only	Floor amnesia after a guided-flow escape — the escape works, the floor that catches it has no context			COMPLETED
 1597	CLOSED	MVP	Beta Blockers - Hard Gates Only	Live-verification backlog: four shipped fixes whose own stated live check has never been run			COMPLETED
@@ -1988,4 +1988,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2191	OPEN	Production		Half-filled meeting setup (slot-filling session) is lost on a restart (#2189 row 8)	architecture		
 2192	OPEN	Production		Pending preference hint is lost on a restart, and its confirm route never hydrates the conversation (#2189 row 10)	architecture		
 2193	OPEN	Production		Slack's IntentService has no ConversationManager, so Slack offers neither hydrate nor persist across a restart (#2189 row 19)	architecture		
-2194	OPEN	Production		Issue-list header appends 'across all your repositories' to every reply, even a milestone-scoped one; the scope words belong where the qualifier is applied	bug		
+2194	OPEN	MVP		Issue-list header appends 'across all your repositories' to every reply, even a milestone-scoped one; the scope words belong where the qualifier is applied	bug		
+2195	OPEN	Production	PUB - Public Beta	Inversion Phase 3 remainder: 61 surface-1 literals in 18 lists, deleted list by list under the gate (split from #1595 on xian's 10-29 ruling)	architecture		

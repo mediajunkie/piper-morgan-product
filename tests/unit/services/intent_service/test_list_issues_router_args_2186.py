@@ -37,7 +37,11 @@ _HITS = "services.intent.intent_service.IntentService._bare_repo_hits"
 def intent_service():
     with patch("services.intent.intent_service.LearningHandler"):
         with patch("services.intent.intent_service.ConversationKnowledgeGraphIntegration"):
-            return IntentService()
+            svc = IntentService()
+    # #2194: a milestone header whose items name no repo falls back to the user's
+    # default repo; pinned to None here so no test reads the store.
+    svc._user_default_repo_or_none = AsyncMock(return_value=None)
+    return svc
 
 
 def _intent(message, args=None):
@@ -112,9 +116,11 @@ async def test_milestone_reaches_the_rail_and_names_its_scope(intent_service):
         total=3,
     )
     assert stub.await_args == call(None, limit=50, repository=None, milestone="MVP")
-    assert res.message.startswith(
-        'You have **3 open issues** assigned to you across all your repositories in milestone "MVP".'
-    )
+    # #2194: a milestone read keeps "assigned to you" (the assignee term stays on
+    # the query) and never says "across all your repositories"; with no repo on
+    # the items and no default repo, the "in <repo>" part is left out.
+    assert res.message.startswith('You have **3 open issues** assigned to you in milestone "MVP".')
+    assert "across all your repositories" not in res.message
     assert res.intent_data["context"]["filters"] == {"milestone": "MVP"}
 
 
@@ -128,7 +134,7 @@ async def test_label_reaches_the_rail_and_names_its_scope(intent_service):
     )
     assert stub.await_args == call(None, limit=50, repository=None, label="needs-triage")
     assert res.message.startswith(
-        'You have **4 open issues** assigned to you across all your repositories labeled "needs-triage".'
+        'You have **4 open issues** assigned to you across all your repositories labelled "needs-triage".'
     )
     assert "couldn't" not in res.message
 
@@ -375,10 +381,7 @@ async def test_singular_count_line_open_and_closed(intent_service):
         issues=_page(1),
         total=1,
     )
-    assert (
-        '**1 open issue** assigned to you across all your repositories in milestone "MVP".'
-        in res.message
-    )
+    assert '**1 open issue** assigned to you in milestone "MVP".' in res.message
     _, res = await _run(
         intent_service,
         _intent("what closed issues do I have", {"state": "closed"}),
