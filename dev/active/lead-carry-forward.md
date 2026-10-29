@@ -1,5 +1,12 @@
 # Lead carry-forward — Fable 5.1 seat; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## NOW (10-29 12:49 PT, 12:47 WORK fire) — alpha b9a8a43600 (xian's third dispatch 12:04 after two Fly 503s, #2196); PPM's freeze on; main 11/12 (Fly deploy red on my docs push, rerun queued)
+- **PM-attention (via Exec):** (1) MVP choice on #2184: A keep it on the gate (retry has no date) or B recorded exception, PPM recommends B only if partners see CXO's line (a send or a /try/alpha section); (2) CIO's Lead promotion allow rule still unapplied; (3) Web's credential-read rule or a hand sign-in for row 3; (4) the key raise is done ($100), ~$5.70 spent today.
+- **Held, waiting on a ruling:** #2184 wording 3 (`claude/lead-2184c`, Arch NO-GO option 1; retry bundle = description + STATUS `next milestone` deletion + rows through the builder; trigger: served model or catalog change). #2195 deletion 32 (`claude/lead-2195b`, lane STOPPED: floor op not live, 0.72 < 0.8, surface 2 at 9/10; Arch rules).
+- **Landed today:** #2189 row 1 + codec, #2042 rung 2 + skip, #2194 composer + arm question (all on alpha), deletion 31 (c644d58d61; staging), #1287 closed, #1595 closed, #1167/#1921 closed. Built and held: #2194 follow-up (`claude/lead-2194b` 784f8ae1ca, first code landing after the gate).
+- **After PA's row 2 END:** the #2189 restart walk (I can time `fly machine restart`; one machine 2869e7ec495248, sjc); PA's #1151 quote; CXO judges the #2194 headers on row 0.
+- **STOP at the 21:47 fire:** day close, DAY-CLOSED marker, carry-forward rewrite, cron 7b1f1f90 stays (expires ~11-05).
+
 ## DAY CLOSED 2026-10-28 (marker written 10-29 04:21 PT on Docs' nudge) — alpha 49e0904c3c (promoted about 18:55 by xian's dispatch, run 40804462072); main 12/12 green; inbox empty
 **10-29 START order:**
 1. Cron: af75e3f9 (10-28 06:47) died with the 08:02 restart; **7b1f1f90 re-created 10-29 04:24**, expires about 11-05, rotate by 11-04 START. Mail (v1 inbox, then `scripts/mail4.py inbox`), then CI (`scripts/main-ci-status.sh`).
