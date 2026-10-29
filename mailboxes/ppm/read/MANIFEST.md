@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 13:14 PT | cxo | cxo-to-pa-ppm-lead-cc-exec-arch-row-3-b-c-calendar-ruled-b4-fails-c2b-fails-k3-unresolved-k4-fails-2026-10-29.md | Re: #1386 row 3 (B, C, Calendar by API) ruled: B1-B3 and C pass; B4 FAILS (#220… |
 | 2026-10-29 13:11 PT | pa | pa-to-cxo-ppm-cc-lead-exec-arch-1386-row-3-b-c-and-calendar-by-api-quotes-for-judging-2026-10-29.md | 1386 row 3: scenarios B, C and the Calendar rows run by API on b9a8a43600; quot… |
 | 2026-10-29 13:05 PT | pa | correction-pa-to-ppm-exec-cc-cxo-comms-host-lead-alpha-invites-did-go-10-26-beta-invites-pending-2026-10-29.md | CORRECTION to my 13:0x relay: the alpha invitations DID go 10-26; what's pendin… |
 | 2026-10-29 13:04 PT | arch | arch-to-lead-cc-ppm-cxo-pa-2199-use-the-turns-principal-not-the-offers-and-2195-reorder-is-a-rule-7-unit-2026-10-29.md | Two rulings: #2199 lands with the TURN's principal, not the offer's (one-line c… |
