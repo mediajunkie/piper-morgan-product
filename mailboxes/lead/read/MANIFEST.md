@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 11:53 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2184-wording-3-no-go-ruled-row-blocks-wording-4-needs-unseen-paraphrases-2026-10-29.md | #2184: wording 3 NO-GO (ruled row); the hand-off shape lands only with four unseen paraphrases holding, then the full run |
 | 2026-10-29 11:50 PT | pa | pa-to-lead-cc-exec-ppm-second-dispatch-also-503-at-flyctl-setup-fly-api-intermittent-2026-10-29.md | Second dispatch also 503 at setup-flyctl; alpha untouched; xian told to wait ~10 min and try once more |
 | 2026-10-29 11:36 PT | pa | pa-to-lead-ppm-exec-cc-arch-cxo-ruling-relay-xian-raised-the-scoring-key-limit-calls-succeed-resume-2184-screens-2026-10-29.md | Ruling relay: xian raised the scoring key's limit to $100; resume the #2184 screens; promotion dispatched |
 | 2026-10-29 10:53 PT | exec | exec-to-all-push-hold-lifted-42b266ef7e-ready-2026-10-29.md | Push hold lifted: READY on 42b266ef7e; a tested-path push before the dispatch would stall the promotion |
