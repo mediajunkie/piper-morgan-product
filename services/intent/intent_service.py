@@ -778,6 +778,22 @@ _CREATE_ISSUE_ACTIONS = frozenset(
     }
 )
 
+#: #2205 (CXO 2026-10-29 13:54, final): the ask when a write has no user-designated
+#: repository. The answer is kept as the user's default, source ``user``.
+WRITE_TARGET_CREATE_QUESTION = (
+    "Which repository should I create this in? Say owner/name, and I'll keep it as your default."
+)
+#: #2205: the same shape for an issue-anchored write (Lead's brief: "use the create
+#: line's shape"; CXO has not worded this one).
+WRITE_TARGET_ISSUE_QUESTION = (
+    "Which repository is #{number} in? Say owner/name, and I'll keep it as your default."
+)
+#: #2205: no session to hold the answer, so no question is asked (Gap-2). Words owed to CXO.
+WRITE_TARGET_NO_SESSION_LINE = (
+    "I only write to a repository you've chosen. Name it as owner/name in the request, "
+    "or set a default in Settings → Integrations → GitHub."
+)
+
 
 #: #2151 (CXO 10-23 18:12): Piper can't see the user's machine; offer what it can check.
 LOCAL_GIT_DECLINE_LINE = (
@@ -7385,6 +7401,27 @@ class IntentService:
             # just created ("Show me that issue." after "Created issue #22 …"), read
             # from the owner-scoped ledger, repo included. No match there → the ask.
             ledger_ref = None
+            refused_repo = None if match else self._last_create_refused_repo(session_id, _user_id)
+            if refused_repo:
+                # #2205 (CXO's A4 words): "that issue" is the create just refused, so
+                # there is nothing to show. An earlier landed create is not the referent.
+                return IntentProcessingResult(
+                    success=False,
+                    message=(
+                        "I couldn't find an issue to show, because the last create in "
+                        f"{refused_repo} didn't go through. Give me an issue number, or "
+                        "ask me to create it again."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                        "last_create_refused": True,
+                        "repository": refused_repo,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=True,
+                )
             if not match:
                 ledger_ref = await self._issue_referent_from_ledger(_user_id, session_id)
                 if ledger_ref is not None:
@@ -7905,6 +7942,13 @@ class IntentService:
             if _close_repo and "/" in _close_repo:
                 _cr_owner, _cr_name = _close_repo.split("/", 1)
                 _repo_kwargs = {"owner": _cr_owner, "repo_name": _cr_name}
+            else:
+                # #2205: no repository in the turn → only a user-designated default.
+                _target_ask = await self._write_target_ask(
+                    intent, issue_number, session_id, _user_id, workflow_id
+                )
+                if _target_ask is not None:
+                    return _target_ask
 
             # Issue #902: Check if this is a confirmed close (user already saw
             # the issue and confirmed). Pattern: "yes, close #123" or "confirm close #123"
@@ -8254,6 +8298,13 @@ class IntentService:
             if _reopen_repo and "/" in _reopen_repo:
                 _rr_owner, _rr_name = _reopen_repo.split("/", 1)
                 _repo_kwargs = {"owner": _rr_owner, "repo_name": _rr_name}
+            else:
+                # #2205: no repository in the turn → only a user-designated default.
+                _target_ask = await self._write_target_ask(
+                    intent, issue_number, session_id, _user_id, workflow_id
+                )
+                if _target_ask is not None:
+                    return _target_ask
 
             # Issue #902: Confirmation UX (mirrors close handler)
             # #1190: honor the rail confirmation gate's marker (see close handler).
@@ -8375,6 +8426,11 @@ class IntentService:
 
         except Exception as e:
             self.logger.error(f"GitHub reopen issue query error: {e}")
+            # #2205: a refused (or unconfirmed / not-found) reopen is said as such,
+            # like close, comment and update, never as a generic error.
+            unverified = self._unverified_write_result(e, intent, workflow_id)
+            if unverified is not None:
+                return unverified
             return self._make_error_result(
                 intent=intent,
                 workflow_id=workflow_id,
@@ -8582,6 +8638,13 @@ class IntentService:
             if _comment_repo and "/" in _comment_repo:
                 _cm_owner, _cm_name = _comment_repo.split("/", 1)
                 _repo_kwargs = {"owner": _cm_owner, "repo_name": _cm_name}
+            else:
+                # #2205: no repository in the turn → only a user-designated default.
+                _target_ask = await self._write_target_ask(
+                    intent, issue_number, session_id, _user_id, workflow_id
+                )
+                if _target_ask is not None:
+                    return _target_ask
 
             # Add the comment (Issue #1042: router resolves repo internally
             # when no explicit repo was named; #1641 threads a named repo
@@ -9146,7 +9209,10 @@ class IntentService:
             # session_scope() commits on clean exit (#1193), and set_default_repo
             # flushes-not-commits (caller owns the txn) — so the write persists here.
             async with AsyncSessionFactory.session_scope() as session:
-                await ConnectorConfigService(session).set_default_repo(_user_id, full_name)
+                # #2205: the user said it in chat, so source "user".
+                await ConnectorConfigService(session).set_default_repo(
+                    _user_id, full_name, source="user"
+                )
 
             return IntentProcessingResult(
                 success=True,
@@ -12600,6 +12666,29 @@ class IntentService:
                     out["body"] = _b
         return out
 
+    @staticmethod
+    def _mark_last_create(
+        session_id: Optional[str], user_id: Optional[str], *, refused_repo: Optional[str]
+    ) -> None:
+        """#2205: record this session's last issue create as refused (its repo) or
+        landed (None) on the owner-scoped conversation context. No session, no mark."""
+        if not session_id:
+            return
+        from services.intent_service.conversation_context import get_or_create_context
+
+        get_or_create_context(session_id, user_id=user_id).last_create_refused_repo = refused_repo
+
+    @staticmethod
+    def _last_create_refused_repo(
+        session_id: Optional[str], user_id: Optional[str]
+    ) -> Optional[str]:
+        """#2205: the repo of this session's last create when GitHub refused it, else None."""
+        if not session_id:
+            return None
+        from services.intent_service.conversation_context import get_or_create_context
+
+        return get_or_create_context(session_id, user_id=user_id).last_create_refused_repo
+
     def _unverified_write_result(self, e, intent, workflow_id, repository=None):
         """#1220/#1322: a fired-but-unverified connector write raises with the
         "may or may not have landed" phrasing. Surface that honest uncertainty
@@ -12609,8 +12698,56 @@ class IntentService:
         from services.integrations.github.github_integration_router import (
             GitHubIssueNotFound,
             GitHubWriteRefused,
+            GitHubWriteRejected,
+            GitHubWriteTargetUndesignated,
         )
 
+        if isinstance(e, GitHubWriteTargetUndesignated):
+            # #2205 condition 1: the router refused a write with no user-designated
+            # repository. The handlers ask before this; if one did not, nothing was
+            # written and the reply says what is needed (no unarmed question here).
+            return IntentProcessingResult(
+                success=True,
+                message=WRITE_TARGET_NO_SESSION_LINE,
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                    "write_target_undesignated": True,
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+            )
+        if isinstance(e, GitHubWriteRejected):
+            # #2205 (CXO's words, 2026-10-29): GitHub refused the write; say so in
+            # GitHub's own words, never as an unknown outcome. A refused create invites
+            # another repository; any other refused write is said and left there.
+            where = e.repository or repository or "that repository"
+            reason = e.message.strip()
+            reason_end = reason if reason.endswith((".", "!", "?")) else f"{reason}."
+            if e.verb == "create":
+                message = (
+                    f"GitHub wouldn't create it in {where}: {reason_end} "
+                    "Tell me another repository and I'll try there."
+                )
+            else:
+                target = f" #{e.issue_number}" if e.issue_number is not None else ""
+                message = f"GitHub wouldn't {e.verb}{target} in {where}: {reason_end}"
+            return IntentProcessingResult(
+                success=True,
+                message=message,
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                    "write_refused": True,
+                    "github_status": e.status,
+                    "github_message": e.message,
+                    "repository": e.repository or repository,
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+            )
         if isinstance(e, GitHubWriteRefused):
             # #2106: the server refused the tool by name; nothing was written.
             # Say so, with the connector's hint; no "check the repository".
@@ -13012,14 +13149,19 @@ class IntentService:
             # #1366 Component A: default_repository must come from the per-user,
             # DB-backed ConnectorConfigService, not the single unscoped file — on a
             # shared instance the file read would hand every user PM's own default repo.
-            if not repository and user_id:
-                from uuid import UUID
-
+            # #2205 (Arch 2026-10-29 13:48): a WRITE uses only a default the user
+            # designated; an auto-picked or source-less default asks CXO's question.
+            if not repository:
+                _target_ask = await self._write_target_ask(
+                    intent, None, session_id, user_id or _user_id, workflow_id
+                )
+                if _target_ask is not None:
+                    return _target_ask
                 from services.integrations.github.repo_resolver import (
-                    get_user_default_repo,
+                    get_user_write_target,
                 )
 
-                repository = await get_user_default_repo(UUID(user_id))
+                repository = await get_user_write_target(user_id or _user_id)
                 self.logger.info(
                     f"Using default repository from config: {repository}",
                     extra={"repository": repository, "session_id": session_id},
@@ -13157,6 +13299,9 @@ class IntentService:
             # #2097 (CXO's words): the number, the title and the full repo —
             # the reply a user can check against GitHub without guessing.
             _issue_number = issue.get("number")
+            self._mark_last_create(
+                session_id, user_id or _principal_from_intent(intent), refused_repo=None
+            )
             return IntentProcessingResult(
                 success=True,
                 message=(
@@ -13196,6 +13341,15 @@ class IntentService:
                 e, intent, workflow_id, repository=locals().get("repository")
             )
             if unverified is not None:
+                if (unverified.intent_data or {}).get("write_refused"):
+                    # #2205: a definite refusal, remembered for "Show me that issue."
+                    self._mark_last_create(
+                        session_id,
+                        user_id or _principal_from_intent(intent),
+                        refused_repo=(unverified.intent_data or {}).get("repository")
+                        or locals().get("repository")
+                        or "that repository",
+                    )
                 return unverified
             if any(
                 term in error_str
@@ -13383,6 +13537,53 @@ class IntentService:
         )
         return None, (ask if ask is not None else _refusal())
 
+    async def _write_target_ask(
+        self,
+        intent: Intent,
+        issue_number: Optional[int],
+        session_id: Optional[str],
+        user_id: Optional[str],
+        workflow_id: Optional[str] = None,
+    ) -> Optional[IntentProcessingResult]:
+        """#2205 (Arch 2026-10-29 13:48; CXO's line 13:54): a GitHub write with no
+        repository in the turn goes only to a default the USER designated. With none
+        (unset, auto-picked by #1314/#1590, or legacy with no source), ask, arming the
+        #1567 repo-question carrier with ``persist_default`` so the answer is kept as
+        the user's default (the line says so) and the held write re-dispatches there.
+        None = a user-designated default exists; the caller writes as before."""
+        from services.integrations.github.repo_resolver import get_user_write_target
+
+        if await get_user_write_target(user_id):
+            return None
+        if issue_number is None:
+            question = WRITE_TARGET_CREATE_QUESTION
+        else:
+            question = WRITE_TARGET_ISSUE_QUESTION.format(number=issue_number)
+        ask = await self._ask_for_repository(
+            intent,
+            issue_number,
+            session_id,
+            user_id,
+            operation="create the issue" if issue_number is None else None,
+            question_override=question,
+            persist_default=True,
+        )
+        if ask is not None:
+            return ask
+        # No session to bind an answer to: say what is needed, no dangling question.
+        return IntentProcessingResult(
+            success=True,
+            message=WRITE_TARGET_NO_SESSION_LINE,
+            intent_data={
+                "category": intent.category.value,
+                "action": intent.action,
+                "confidence": intent.confidence,
+                "write_target_undesignated": True,
+            },
+            workflow_id=workflow_id,
+            requires_clarification=False,
+        )
+
     async def _ask_for_repository(
         self,
         intent: Intent,
@@ -13393,6 +13594,8 @@ class IntentService:
         asked_name: Optional[str] = None,
         resolution=None,
         operation: Optional[str] = None,
+        question_override: Optional[str] = None,
+        persist_default: bool = False,
     ) -> Optional[IntentProcessingResult]:
         """#1567: ARM the repo-question carrier and return the ask, or None
         when there is no session to bind the answer to (callers fall through
@@ -13436,7 +13639,9 @@ class IntentService:
                 self.logger.debug("repo_question_default_lookup_failed", error=str(e))
                 default_repo = None
 
-        if asked_name and resolution is not None:
+        if question_override:
+            question = question_override  # #2205: CXO's write-target ask
+        elif asked_name and resolution is not None:
             question = repo_resolution_question(asked_name, resolution, default_repo)
         else:
             question = open_repo_question(issue_number, operation)
@@ -13451,6 +13656,7 @@ class IntentService:
             # #1665: the exact ask rendered below — open or closed-default
             # form, whichever this turn chose — stored verbatim.
             question=question,
+            persist_default=persist_default,
         )
         self.workflow_offer_service.set_pending_offer(session_id, offer, user_id=user_id)
         self.logger.info(
@@ -13745,6 +13951,12 @@ class IntentService:
                 # BEFORE erroring — PM said "in my default repository" and
                 # still got the refusal because this path never called the
                 # resolver that already powers first_contact/#1590.
+                # #2205: a write takes only a user-designated default; otherwise ask.
+                _target_ask = await self._write_target_ask(
+                    intent, issue_number, session_id, _user_id, workflow_id
+                )
+                if _target_ask is not None:
+                    return _target_ask
                 repository = await self._resolve_default_repository(_user_id)
 
             if not repository:

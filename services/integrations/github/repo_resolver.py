@@ -368,6 +368,26 @@ async def read_user_github_handle(user_id) -> Optional[str]:
 
 
 async def get_user_default_repo(user_id: UUID) -> Optional[str]:
+    """The user's default repo (see ``get_user_default_repo_and_source``)."""
+    return (await get_user_default_repo_and_source(user_id))[0]
+
+
+async def get_user_write_target(user_id: "UUID | str | None") -> Optional[str]:
+    """#2205 (Arch 2026-10-29 13:48): the default a WRITE may use without asking: only
+    one the user designated (source ``user``). An auto-picked default (#1314 / #1590) or
+    a legacy one with no source serves reads, never a write: None here, and the write
+    handler asks. Reads keep ``resolve_repo`` unchanged."""
+    if user_id is None:
+        return None
+    repo, source = await get_user_default_repo_and_source(UUID(str(user_id)))
+    from services.connectors.config_service import SOURCE_USER
+
+    return repo if repo and source == SOURCE_USER else None
+
+
+async def get_user_default_repo_and_source(
+    user_id: UUID,
+) -> "tuple[Optional[str], Optional[str]]":
     """WS-1 (#1226 / #1199): read ``default_repository`` from the DB-backed
     connector_configs store (ADR-070 D4) — the SOLE, per-user-scoped store as of P4.
     Best-effort — returns None on any DB error (honest-degrade: the user-default path
@@ -386,10 +406,13 @@ async def get_user_default_repo(user_id: UUID) -> Optional[str]:
         from services.database.session_factory import AsyncSessionFactory
 
         async with AsyncSessionFactory.session_scope() as session:
-            return await ConnectorConfigService(session).get_default_repo(user_id)
+            svc = ConnectorConfigService(session)
+            repo = await svc.get_default_repo(user_id)
+            source = await svc.get_default_repo_source(user_id) if repo else None
+        return repo, source
     except Exception as e:
         logger.warning("DB default-repo read failed: %s", e)
-        return None
+        return None, None
 
 
 async def _resolve_from_user_default(user_id: UUID) -> Optional[ResolvedRepo]:
@@ -473,7 +496,7 @@ async def apply_default_default_if_unset(
 
     No-ops (logs at debug) if ``repos`` is empty — nothing to default to yet.
     """
-    from services.connectors.config_service import ConnectorConfigService
+    from services.connectors.config_service import SOURCE_AUTO, ConnectorConfigService
     from services.database.session_factory import AsyncSessionFactory
 
     async with AsyncSessionFactory.session_scope() as session:
@@ -487,6 +510,7 @@ async def apply_default_default_if_unset(
             logger.debug("apply_default_default: no repos to default to for user %s", user_id)
             return
 
-        await config_service.set_default_repo(user_id, chosen)
+        # #2205: code picked it, so it serves reads and never a write without asking.
+        await config_service.set_default_repo(user_id, chosen, source=SOURCE_AUTO)
         # #1436: stdlib logger — kwargs raised TypeError when this line ran
         logger.info(f"default_repo_auto_set user={user_id} repo={chosen} repo_count={len(repos)}")

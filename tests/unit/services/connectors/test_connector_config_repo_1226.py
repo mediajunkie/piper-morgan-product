@@ -102,7 +102,7 @@ class TestRepoUpsert1226:
 class TestServiceDefaultRepo1226:
     async def test_set_then_get_default_repo(self, session):
         svc = ConnectorConfigService(session)
-        await svc.set_default_repo(_ALPHA, "owner/myrepo")
+        await svc.set_default_repo(_ALPHA, "owner/myrepo", source="user")
         await session.commit()
         assert await svc.get_default_repo(_ALPHA) == "owner/myrepo"
 
@@ -112,9 +112,9 @@ class TestServiceDefaultRepo1226:
 
     async def test_set_default_repo_none_clears(self, session):
         svc = ConnectorConfigService(session)
-        await svc.set_default_repo(_ALPHA, "owner/myrepo")
+        await svc.set_default_repo(_ALPHA, "owner/myrepo", source="user")
         await session.commit()
-        await svc.set_default_repo(_ALPHA, None)
+        await svc.set_default_repo(_ALPHA, None, source="user")
         await session.commit()
         assert await svc.get_default_repo(_ALPHA) is None
 
@@ -123,7 +123,7 @@ class TestServiceDefaultRepo1226:
         svc = ConnectorConfigService(session)
         await svc.set_config(_ALPHA, "github", {"other": "keep", "default_repository": "o/old"})
         await session.commit()
-        await svc.set_default_repo(_ALPHA, "o/new")
+        await svc.set_default_repo(_ALPHA, "o/new", source="user")
         await session.commit()
         cfg = await svc.get_config(_ALPHA, "github")
         assert cfg["default_repository"] == "o/new"

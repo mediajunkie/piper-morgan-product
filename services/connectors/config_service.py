@@ -23,6 +23,14 @@ from services.connectors.config_repository import ConnectorConfigRepository
 
 GITHUB = "github"
 DEFAULT_REPO_KEY = "default_repository"
+# #2205 (Arch 2026-10-29 13:48): who designated the default. "user" = set in Settings or
+# chat, answered to the write-time ask, or chosen in the setup wizard; "auto" = code picked
+# it (#1314's rule at OAuth first-run or #1590's read-time recovery). A default with no
+# source predates this key and counts as NOT user for writes (asked once). A sibling key in
+# the same JSON blob: no schema change.
+DEFAULT_REPO_SOURCE_KEY = "default_repository_source"
+SOURCE_USER = "user"
+SOURCE_AUTO = "auto"
 
 
 class ConnectorConfigService:
@@ -49,13 +57,28 @@ class ConnectorConfigService:
         """The owner's default GitHub repo as 'owner/name', or None if unset."""
         return (await self.get_config(owner_id, GITHUB)).get(DEFAULT_REPO_KEY)
 
+    async def get_default_repo_source(self, owner_id: Union[str, UUID, None]) -> Optional[str]:
+        """#2205: who designated the default ("user" | "auto"), or None (unset or legacy)."""
+        return (await self.get_config(owner_id, GITHUB)).get(DEFAULT_REPO_SOURCE_KEY)
+
     async def set_default_repo(
-        self, owner_id: Union[str, UUID, None], value: Optional[str]
+        self,
+        owner_id: Union[str, UUID, None],
+        value: Optional[str],
+        *,
+        source: str,
     ) -> None:
-        """Set (value) or clear (None) the owner's default GitHub repo, preserving other keys."""
+        """Set (value) or clear (None) the owner's default GitHub repo, preserving other keys.
+        #2205: ``source`` records who designated it (``user`` or ``auto``). REQUIRED, no
+        default (Arch 14:39, condition 2): a permission-bearing value fails closed, so a
+        caller that forgets it fails at call time instead of minting a write target."""
+        if source not in (SOURCE_USER, SOURCE_AUTO):
+            raise ValueError(f"default repo source must be 'user' or 'auto', not {source!r}")
         config = await self.get_config(owner_id, GITHUB)
         if value is None:
             config.pop(DEFAULT_REPO_KEY, None)
+            config.pop(DEFAULT_REPO_SOURCE_KEY, None)
         else:
             config[DEFAULT_REPO_KEY] = value
+            config[DEFAULT_REPO_SOURCE_KEY] = source
         await self.set_config(owner_id, GITHUB, config)

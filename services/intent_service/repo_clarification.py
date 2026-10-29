@@ -537,6 +537,7 @@ def build_repo_question_offer(
     default_repo: Optional[str] = None,
     operation: Optional[str] = None,
     question: Optional[str] = None,
+    persist_default: bool = False,
 ) -> Dict[str, Any]:
     """The #846 pending-offer record binding the ORIGINAL Intent while the
     repository slot fills. workflow_type is the #1190 confirm carrier, so a
@@ -551,7 +552,11 @@ def build_repo_question_offer(
     turn (open_repo_question / repo_resolution_question output — the caller
     picked which form). Stored verbatim so the SessionSnapshot never drifts
     from what the user saw; the re-arm seams update it when the re-ask copy
-    changes."""
+    changes.
+
+    ``persist_default`` (#2205): the ask said "and I'll keep it as your default", so
+    the bound answer is stored as the user's default with source ``user`` before the
+    held write re-dispatches."""
     if issue_number is not None:
         summary = f"{intent.action} for issue #{issue_number}"
     else:
@@ -570,6 +575,7 @@ def build_repo_question_offer(
             "default_repo": default_repo,
             "operation": operation,
             "restatement_verbs": list(restatement_verbs_for(intent.action)),
+            "persist_default": persist_default,
         },
         "decline_message": repo_question_decline_message(issue_number, operation),
     }
@@ -608,6 +614,55 @@ def _rearm(
     except Exception as e:  # silent-ok: a store failure must not crash the turn; logged ERROR and the copy stays honest (no false "ask again" claim)
         logger.error("repo_question_rearm_failed", error=str(e))
         return False
+
+
+async def _persist_user_default(user_id: str, full_name: str) -> None:
+    """#2205: store ``full_name`` as the user's default repo, source ``user``."""
+    from services.connectors.config_service import SOURCE_USER, ConnectorConfigService
+    from services.database.session_factory import AsyncSessionFactory
+
+    async with AsyncSessionFactory.session_scope() as session:
+        await ConnectorConfigService(session).set_default_repo(
+            user_id, full_name, source=SOURCE_USER
+        )
+    logger.info("default_repo_set_from_write_ask", user_id=user_id, repository=full_name)
+
+
+async def _arm_confirm_naming_repo(
+    intent: Any,
+    *,
+    session_id: str,
+    user_id: Optional[str],
+    intent_service: Any,
+) -> Dict[str, Any]:
+    """#2205: after a close/reopen's repository is answered, run the SAME #1959
+    resolve-then-confirm gate the rail runs (the repository now rides the intent),
+    arm its confirm on the #846 store and say it. A definitive passthrough (no such
+    issue, already closed/open) is said instead; nothing is armed then."""
+    from services.intent_service.destructive_confirm import build_close_reopen_confirmation
+
+    gate = await build_close_reopen_confirmation(intent, intent_service, None)
+    intent_data = {
+        "category": "execution",
+        "action": getattr(intent, "action", None),
+        "repository": (intent.context or {}).get("repository"),
+    }
+    if gate.passthrough_result is not None:
+        return {
+            "message": gate.passthrough_result["message"],
+            "intent_data": intent_data,
+            "requires_clarification": gate.passthrough_result.get("requires_clarification", False),
+        }
+    if gate.offer is None:  # no issue number: structurally unreachable for this arm
+        raise RuntimeError("close/reopen confirm had no issue number to name")
+    intent_service.workflow_offer_service.set_pending_offer(
+        session_id, gate.offer.offer, user_id=user_id
+    )
+    return {
+        "message": gate.offer.question,
+        "intent_data": {**intent_data, "destructive_confirmation_pending": True},
+        "requires_clarification": True,
+    }
 
 
 async def _bind_and_dispatch(
@@ -660,11 +715,22 @@ async def _bind_and_dispatch(
         logger.error("repo_question_dispatch_no_session")
     else:
         try:
-            result = await run_confirm_pending_action_workflow(
-                session_id=session_id,
-                user_id=user_id,
-                context={"pending_action": payload, "intent_service": intent_service},
-            )
+            if payload.get("persist_default") and user_id:
+                # #2205 (CXO 13:54): the ask promised to keep the answer as the
+                # user's default; a user-sourced default, so later writes use it.
+                await _persist_user_default(str(user_id), full_name)
+            if payload.get("then_confirm"):
+                # #2205 (CXO 15:25): repository first, THEN the destructive
+                # confirm, which names it. Nothing is written on this turn.
+                result = await _arm_confirm_naming_repo(
+                    intent, session_id=session_id, user_id=user_id, intent_service=intent_service
+                )
+            else:
+                result = await run_confirm_pending_action_workflow(
+                    session_id=session_id,
+                    user_id=user_id,
+                    context={"pending_action": payload, "intent_service": intent_service},
+                )
         except Exception as e:  # silent-ok: a raised dispatch must not crash the answer turn; logged ERROR + traceback, honest retained copy below
             logger.error("repo_question_dispatch_raised", error=str(e), exc_info=True)
             result = None

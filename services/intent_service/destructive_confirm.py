@@ -186,6 +186,9 @@ def offer_is_confirm(offer: Optional[Dict[str, Any]]) -> bool:
 # #123" regex) recognizes the rail confirmation and executes in ONE turn
 # instead of asking a second time.
 CONFIRMED_CONTEXT_KEY = "destructive_confirmed"
+# #2205 (CXO 15:25): the repository a close/reopen confirm names (display only; the
+# handler resolves its target from ``repository`` or the user's designated default).
+CONFIRM_REPOSITORY_CONTEXT_KEY = "confirm_repository"
 
 # Rail-key families whose handlers were READ (verify-first, 2026-08-10) to
 # take every mutating call ONLY after a successful issue-number parse: with
@@ -307,6 +310,10 @@ def build_confirmation_offer(intent: Intent) -> Optional[ConfirmationOffer]:
         summary = f"{verb} issue #{issue_number}"
         if title:
             summary += f" '{title}'"
+        # #2205 (CXO 15:25): a confirm whose repository is known names it.
+        repository = (intent.context or {}).get(CONFIRM_REPOSITORY_CONTEXT_KEY)
+        if repository:
+            summary += f" in {repository}"
         question = f"{summary[0].upper()}{summary[1:]}? (yes/no)"
     else:
         # Generic carrier: a future destructive rail action lands here with a
@@ -1069,6 +1076,25 @@ class CloseReopenGate:
     passthrough_result: Optional[Dict[str, Any]] = None
 
 
+def _repository_first_offer(
+    intent: Intent, issue_number: int, principal: Optional[str]
+) -> ConfirmationOffer:
+    """#2205 (CXO 15:25): close/reopen with no user-designated repository asks the
+    repository FIRST, on the #1567 repo-question carrier (``persist_default``: the
+    answer is kept as the user's default, as the question says). ``then_confirm``
+    tells the answer seam to arm THIS module's confirm, now naming the repository,
+    instead of firing the held write."""
+    from services.intent.intent_service import WRITE_TARGET_ISSUE_QUESTION
+    from services.intent_service.repo_clarification import build_repo_question_offer
+
+    question = WRITE_TARGET_ISSUE_QUESTION.format(number=issue_number)
+    offer = build_repo_question_offer(
+        intent, issue_number, principal, question=question, persist_default=True
+    )
+    offer["pending_action"]["then_confirm"] = True
+    return ConfirmationOffer(question=question, offer=offer)
+
+
 async def build_close_reopen_confirmation(
     intent: Intent,
     intent_service: Any,
@@ -1184,18 +1210,28 @@ async def build_close_reopen_confirmation(
                         # not-found.
                         return _fallback()
         if not _repo:
-            # No named repo at all: the #1411 quiet default-repo consult —
-            # None here is an honest "repo unresolvable" (no default
-            # configured), never a guess.
-            _repo = await intent_service._resolve_default_repository(_gh_user_id)
+            # No named repo at all. #2205 (Arch 13:48; CXO 15:25): a close/reopen
+            # is a WRITE, so only a default the USER designated serves it; with
+            # none (unset, auto-picked, legacy), ask the repository FIRST, then
+            # this confirm names it. No write precedes both answers.
+            from services.integrations.github.repo_resolver import get_user_write_target
+
+            _repo = await get_user_write_target(_gh_user_id)
             if not _repo:
-                return _fallback()
+                return CloseReopenGate(
+                    offer=_repository_first_offer(intent, issue_number, _gh_user_id)
+                )
 
         if "/" not in _repo:
             return _fallback()
         _owner, _name = _repo.split("/", 1)
         if not _owner or not _name:
             return _fallback()
+        # #2205 (CXO 15:25): the confirm names the repository it will act on. A
+        # named or answered repo already rides ``repository`` (the handler acts on
+        # it); a user default is the same one the handler's router resolves.
+        intent.context = dict(intent.context or {})
+        intent.context[CONFIRM_REPOSITORY_CONTEXT_KEY] = _repo
 
         from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
