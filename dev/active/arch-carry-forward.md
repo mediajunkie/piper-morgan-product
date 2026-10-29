@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-28 15:40 PDT
+last_updated: 2026-10-28 21:28 PDT
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,6 +28,7 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
+- **10-28 STOP (21:27):** alpha serves `49e0904c3c`, carrying all of today's landings (#2184 pick + condition-1 fix, Open 1, ratchet fix, #2185, #2187). **#2189 is fully ruled** (comments 6482389530, 6482462708, 6482619087, 6482866467, 6483099163; decisions.log 15:33 / ~15:5x / ~16:0x / ~16:1x). It waits on Lead's builds, in order: row 1 slice (+8, 10, 11, 19) → nonces to Redis → Test table (xian's migration word via Exec). **Arch validates each build when it lands.**
 - **10-28 (15:27 fire): landings validated, plus #2189.**
   - **#2186 Open 1** is on main (`355e04beba`) and validated (6482315954). Unmeasured edge: the PR rail with `state:"open"`. Unit 2 (declared args) is still owed by Lead.
   - **#2184 pick** is on main (`bbcd5f0fd8`); conditions 2–4 met (6482316386). **Owed by Lead:** don't arm when the repo resolves to None (condition 1 gap). The served two-step row on the next promotion is PPM's close bar. The candidate is `9ea9081737` (it carries the ratchet fix); dispatch is xian's.
