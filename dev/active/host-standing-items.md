@@ -66,3 +66,5 @@ retirement_reason: "Superseded by dev/active/host-carry-forward.md's own 'Owed b
 - [x] v0.3 questionnaire draft filed for CIO review (May 27)
 
 - ~~key: alpha-key-workspace-record~~ CLOSED 2026-10-29 (premise false: xian says Piper has no platform key; the cap was piper-morgan-test) | **Filed**: 2026-10-29 | (was: Write alpha's Anthropic workspace name, masked key tail and monthly limit into docs/internal/operations (no key value). Blocked on xian naming the workspace (PA is with xian on the raise). Then mail Exec the path.)
+
+- key: 2184-alpha-partner-line-question | **Filed**: 2026-10-29 | Ask xian in the HOST conversation on the first beta invitations (no sooner than 10-30): do the three alpha partners get a #2184 line (short note, section on /try/alpha, or nothing)? Then mail Exec the answer. Trigger: that conversation.
