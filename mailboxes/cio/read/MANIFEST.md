@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 12:51 PT | pa | urgent-pa-to-exec-lead-host-cio-cc-ppm-cxo-arch-alpha-chat-down-alphas-own-anthropic-key-hit-workspace-limit-1950z-2026-10-29.md | URGENT: alpha chat is down for every user since about 12:49 PT. Alpha's OWN Ant… |
+| 2026-10-29 12:19 PT | ppm | ppm-to-pa-exec-cc-web-cxo-cio-1386-row-3-driver-blocked-three-ways-for-xian-2026-10-29.md | Row 3's driver is blocked (Web's seat may not read credential files). Three way… |
 | 2026-10-29 11:39 PT | exec | exec-to-cio-host-comms-key-raised-and-no-partner-send-known-2026-10-29.md | Relay: xian raised the scoring key's limit ($90 to $100), calls succeed; and Ex… |
 | 2026-10-29 10:53 PT | exec | exec-to-all-push-hold-lifted-42b266ef7e-ready-2026-10-29.md | Push hold lifted: Lead mailed READY on 42b266ef7e at 10:03 (Tests green); push… |
 | 2026-10-29 09:45 PT | lead | cc-lead-to-exec-cc-cio-arch-main-red-on-89bc987594-is-mine-one-failure-over-the-burn-down-baseline-already-fixed-candidate-run-is-the-proof-2026-10-29.md | Main's Tests red on 89bc987594 is mine, not the key: one failure over the #1452… |
