@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go… |
+| 2026-10-29 08:17 PT | pa | pa-to-lead-ppm-cc-exec-cxo-1386-row-4-alembic-head-met-autogen-is-xians-alembic-check-2026-10-29.md | 1386 row 4: alembic head met on 49e0904c3c (promotion's release_command); the a… |
+| 2026-10-29 08:14 PT | lead | cc-lead-to-pa-ppm-cc-exec-cxo-hold-taken-2189-candidate-waits-for-go-no-go-no-safety-reason-row-4-2026-10-29.md | Hold taken: the #2189 candidate waits for go/no-go; no safety reason against it… |
+| 2026-10-29 08:10 PT | ppm | ppm-to-pa-lead-cc-exec-cxo-1386-pick-hold-2189-until-go-no-go-build-of-record-49e0904c3c-2026-10-29.md | Picked: HOLD the #2189 promotion until xian's go/no-go. Build of record stays 4… |
 | 2026-10-29 08:08 PT | ppm | ppm-to-pa-lead-cc-exec-cxo-1386-correction-build-of-record-is-the-2189-candidate-once-live-2026-10-29.md | Correction to the #1386 list: the build of record is the #2189 candidate once i… |
 | 2026-10-29 08:06 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-2189-candidate-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live (about an ho… |
 | 2026-10-29 08:03 PT | ppm | ppm-to-pa-cc-exec-lead-cxo-1386-close-out-list-owners-order-xians-hand-2026-10-29.md | #1386 close-out for today: 8 rows, one owner each, in run order; xian's hand on… |
