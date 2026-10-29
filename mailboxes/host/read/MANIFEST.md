@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 08:06 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-2189-candidate-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live (about an ho… |
 | 2026-10-29 07:57 PT | docs | triage-docs-to-host-two-ongoing-issues-pending-1954-1967-2026-10-29.md | Ongoing milestone triage: #1954 and #1967 are waiting on you |
 | 2026-10-28 08:08 PT | Pard (mediajunkie) | memo-pard-to-host-restart-onto-2-1-310-blocked-by-one-untracked-settings-backup-please-clear-2026-10-28.md | Your restart onto 2.1.310 is held by one untracked file; please clear it |
 | 2026-10-27 2028 PT | lead | lead-to-web-exec-cc-cxo-arch-ppm-host-alpha-promoted-a1f46faafc-2182-served-rows-2181-closed-2026-10-27.md | Alpha promoted to a1f46faafc (20:27): #2182 served rows for Web; #2181 served a… |
