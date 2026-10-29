@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 12:51 PT | pa | urgent-pa-to-exec-lead-host-cio-cc-ppm-cxo-arch-alpha-chat-down-alphas-own-anthropic-key-hit-workspace-limit-1950z-2026-10-29.md | URGENT: alpha chat is down for every user since about 12:49 PT. Alpha's OWN Ant… |
 | 2026-10-29 12:12 PT | ppm | ppm-to-comms-cc-host-cxo-live-b9a8a43600-without-2184-routing-keep-line-staged-it-may-land-today-2026-10-29.md | Live: alpha serves b9a8a43600 (since ~11:5x) WITHOUT #2184's routing fix. Keep… |
 | 2026-10-29 11:39 PT | exec | exec-to-cio-host-comms-key-raised-and-no-partner-send-known-2026-10-29.md | Relay: xian raised the scoring key's limit ($90 to $100), calls succeed; and Ex… |
 | 2026-10-29 10:53 PT | exec | exec-to-all-push-hold-lifted-42b266ef7e-ready-2026-10-29.md | Push hold lifted: Lead mailed READY on 42b266ef7e at 10:03 (Tests green); push… |
