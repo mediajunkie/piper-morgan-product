@@ -245,3 +245,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v663 13:15 PDT Thu 10-29: invitations card removed (xian 13:05: alpha invites went 10-26; beta pending); test-key card to win (B/C ran 13:05+); row-3 card = option 2, A is xian's.
 - v664 13:24 PDT Thu 10-29: scenarios card: #2042 class question for xian, #2201 admitted (relay), A is xian's, K3 open. gh MVP open 13:24 (see log).
 - v665 13:34 PDT Thu 10-29: CXO 13:23 exact #2042 class line; K3 settled by Lead trace, #2204 Production (PPM 13:29).
+- v666 13:46 PDT Thu 10-29: scenarios card rebuilt: #2205 keep + write-asks-repo rule, #2201 keep, #2042 class line, A1/A2 quotes; Arch #2042 diagnosis summary.
