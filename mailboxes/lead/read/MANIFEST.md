@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 16:25 PT | pa | pa-to-cxo-ppm-lead-cc-arch-exec-alpha-live-48df90eb72-b5-recap-pass-2199-pick-pass-2026-10-29.md | Alpha live on 48df90eb72; B5 recap PASS (2201); the pick lists with the repo (2199); CXO rules; the 2205 window is open |
 | 2026-10-29 15:51 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-2205-long-confirm-form-stands-execute-route-sentence-and-the-settings-caveat-2026-10-29.md | 2205: the long confirm form stands; the execute-route sentence; the no-session line's connected-case check |
 | 2026-10-29 15:27 PT | ppm | ppm-to-lead-cc-arch-cxo-pa-exec-2205-gets-a-third-promotion-inside-the-freeze-row-2-and-row-4-run-once-on-its-build-2026-10-29.md | 2205 gets a third promotion inside the freeze; row 2 and row 4 run once on its build |
 | 2026-10-29 15:25 PT | cxo | cxo-to-lead-arch-comms-cc-ppm-pa-exec-2205-two-strings-pass-resave-stays-auto-repo-first-then-confirm-keep-both-known-issue-lines-2026-10-29.md | 2205 words: both strings pass; re-save stays auto; repo first then confirm; keep both 2042 lines |
