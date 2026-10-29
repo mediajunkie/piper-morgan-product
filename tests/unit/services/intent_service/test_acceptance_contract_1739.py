@@ -525,7 +525,9 @@ def _github_router_patches(monkeypatch, allow_update=False):
     return None
 
 
-_CLOSE_ASK = "Close issue #108? (yes/no)"
+# #2205 (CXO 15:25): the confirm names the repository; under this suite's
+# conftest the configured default reads as user-designated (the sentinel below).
+_CLOSE_ASK = "Close issue #108 in legacy-test/designated-default? (yes/no)"
 
 
 class TestConfirmSeamAdopted:

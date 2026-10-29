@@ -345,3 +345,204 @@ class TestTheWriteAskOffersNoDefaultToBind:
         assert service.workflow_offer_service._pending_offers.get(sid) is not None  # re-armed
         cfg = await _read(store)
         assert (cfg["default_repository"], cfg["default_repository_source"]) == (AUTO, "auto")
+
+
+# ── CXO 15:25 (1): a Settings re-save of an UNCHANGED auto default stays auto ──────────
+
+
+async def _save_settings(store, monkeypatch, default, selected=None):
+    from types import SimpleNamespace
+
+    from web.api.routes.settings_integrations import (
+        GitHubPreferencesRequest,
+        save_github_preferences,
+    )
+
+    @contextlib.asynccontextmanager
+    async def _fresh():
+        async with store() as s:
+            yield s
+
+    monkeypatch.setattr(AsyncSessionFactory, "session_scope_fresh", staticmethod(_fresh))
+    await save_github_preferences(
+        GitHubPreferencesRequest(
+            selected_repositories=selected or [AUTO, CHOSEN], default_repository=default
+        ),
+        SimpleNamespace(sub=_ALPHA),
+    )
+
+
+async def _create_turn(service, create):
+    with contextlib.ExitStack() as st:
+        for p in _create_patches(create):
+            st.enter_context(p)
+        return await service._handle_create_issue(
+            _create_intent(), "wf", f"s-2205s-{uuid.uuid4()}", user_id=_ALPHA
+        )
+
+
+@pytest.mark.asyncio
+class TestSettingsResave:
+    async def test_unchanged_auto_default_stays_auto_and_a_create_still_asks(
+        self, store, service, monkeypatch
+    ):
+        await _set(store, AUTO, source="auto")
+        await _save_settings(store, monkeypatch, AUTO, selected=[AUTO])  # changed other prefs
+        cfg = await _read(store)
+        assert (cfg["default_repository"], cfg["default_repository_source"]) == (AUTO, "auto")
+        assert cfg["selected_repositories"] == [AUTO]
+        create = AsyncMock(return_value=_landed(AUTO))
+        out = await _create_turn(service, create)
+        assert out.message == ASK
+        create.assert_not_awaited()
+
+    async def test_a_changed_value_is_the_users_choice_and_a_create_goes_there(
+        self, store, service, monkeypatch
+    ):
+        await _set(store, AUTO, source="auto")
+        await _save_settings(store, monkeypatch, CHOSEN)
+        cfg = await _read(store)
+        assert (cfg["default_repository"], cfg["default_repository_source"]) == (CHOSEN, "user")
+        create = AsyncMock(return_value=_landed(CHOSEN))
+        out = await _create_turn(service, create)
+        assert out.message == f'Created issue #4, "{TITLE}", in {CHOSEN}.'
+
+    async def test_a_legacy_unchanged_default_stays_non_user(self, store, monkeypatch):
+        await _set(store, AUTO, source=None)
+        await _save_settings(store, monkeypatch, AUTO)
+        assert (await _read(store)).get("default_repository_source") is None
+        assert await rr.get_user_write_target(_ALPHA) is None
+
+    async def test_a_first_default_saved_is_the_users_choice(self, store, monkeypatch):
+        await _save_settings(store, monkeypatch, CHOSEN)
+        assert await rr.get_user_write_target(_ALPHA) == CHOSEN
+
+    async def test_an_unchanged_user_default_stays_user(self, store, monkeypatch):
+        await _set(store, CHOSEN, source="user")
+        await _save_settings(store, monkeypatch, CHOSEN)
+        assert (await _read(store))["default_repository_source"] == "user"
+
+
+# ── CXO 15:25 (3): close/reopen ask the repository FIRST, then the confirm names it ─────
+
+
+def _stub_classify(service, action):
+    async def _classify(message, *args, **kwargs):
+        if message.lower().startswith(("close issue", "reopen issue")):
+            return Intent(
+                category=IntentCategory.QUERY,
+                action=action,
+                confidence=1.0,
+                original_message=message,
+                context={"original_message": message},
+            )
+        raise AssertionError(f"LLM boundary touched (classify {message!r})")
+
+    service.intent_classifier.classify = _classify
+
+
+def _github_close_patches(update):
+    found = ("found", {"number": 7, "title": "Fix login", "state": "open"}, None)
+    reopenable = ("found", {"number": 7, "title": "Fix login", "state": "closed"}, None)
+    return (
+        found,
+        reopenable,
+        [
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(f"{ROUTER}.get_issue", new=AsyncMock(side_effect=AssertionError("no preview"))),
+            patch(f"{ROUTER}.update_issue", new=update),
+        ],
+    )
+
+
+PROBE = "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.probe_issue_connector"
+
+
+@pytest.mark.asyncio
+class TestCloseAsksTheRepositoryFirst:
+    async def test_auto_default_repo_first_then_confirm_names_it_then_yes_closes_there(
+        self, store, service
+    ):
+        await _set(store, AUTO, source="auto")
+        _stub_classify(service, "close_issue_query")
+        sid = f"s-2205close-{uuid.uuid4()}"
+        update = AsyncMock(
+            return_value={"number": 7, "title": "Fix login", "state": "closed", "html_url": ""}
+        )
+        found, _, patches = _github_close_patches(update)
+        with contextlib.ExitStack() as st:
+            for p in patches:
+                st.enter_context(p)
+            st.enter_context(patch(PROBE, new=AsyncMock(return_value=found)))
+            first = await service.process_intent(
+                message="close issue #7", session_id=sid, user_id=_ALPHA
+            )
+            assert first.message == (
+                "Which repository is #7 in? Say owner/name, and I'll keep it as your default."
+            )
+            update.assert_not_awaited()
+
+            confirm = await service.process_intent(message=CHOSEN, session_id=sid, user_id=_ALPHA)
+            assert CHOSEN in confirm.message
+            assert confirm.message == f"Close issue #7 'Fix login' in {CHOSEN}? (yes/no)"
+            update.assert_not_awaited()  # no write before both answers
+            cfg = await _read(store)
+            assert (cfg["default_repository"], cfg["default_repository_source"]) == (
+                CHOSEN,
+                "user",
+            )
+
+            closed = await service.process_intent(message="yes", session_id=sid, user_id=_ALPHA)
+        update.assert_awaited_once_with(
+            7, state="closed", owner="mediajunkie", repo_name="piper-test"
+        )
+        assert "Closed issue #7" in closed.message
+
+    async def test_user_default_skips_the_repo_ask_and_the_confirm_still_names_it(
+        self, store, service
+    ):
+        await _set(store, CHOSEN, source="user")
+        _stub_classify(service, "close_issue_query")
+        sid = f"s-2205close-{uuid.uuid4()}"
+        update = AsyncMock(
+            return_value={"number": 7, "title": "Fix login", "state": "closed", "html_url": ""}
+        )
+        found, _, patches = _github_close_patches(update)
+        with contextlib.ExitStack() as st:
+            for p in patches:
+                st.enter_context(p)
+            st.enter_context(patch(PROBE, new=AsyncMock(return_value=found)))
+            confirm = await service.process_intent(
+                message="close issue #7", session_id=sid, user_id=_ALPHA
+            )
+            assert confirm.message == f"Close issue #7 'Fix login' in {CHOSEN}? (yes/no)"
+            update.assert_not_awaited()
+            closed = await service.process_intent(message="yes", session_id=sid, user_id=_ALPHA)
+        update.assert_awaited_once_with(7, state="closed")  # the router resolves the user default
+        assert "Closed issue #7" in closed.message
+
+    async def test_reopen_has_the_same_order(self, store, service):
+        await _set(store, AUTO, source="auto")
+        _stub_classify(service, "reopen_issue_query")
+        sid = f"s-2205reopen-{uuid.uuid4()}"
+        update = AsyncMock(
+            return_value={"number": 7, "title": "Fix login", "state": "open", "html_url": ""}
+        )
+        _, reopenable, patches = _github_close_patches(update)
+        with contextlib.ExitStack() as st:
+            for p in patches:
+                st.enter_context(p)
+            st.enter_context(patch(PROBE, new=AsyncMock(return_value=reopenable)))
+            first = await service.process_intent(
+                message="reopen issue #7", session_id=sid, user_id=_ALPHA
+            )
+            assert first.message.startswith("Which repository is #7 in?")
+            confirm = await service.process_intent(message=CHOSEN, session_id=sid, user_id=_ALPHA)
+            assert confirm.message == f"Reopen issue #7 'Fix login' in {CHOSEN}? (yes/no)"
+            update.assert_not_awaited()
+            reopened = await service.process_intent(message="yes", session_id=sid, user_id=_ALPHA)
+        update.assert_awaited_once_with(
+            7, state="open", owner="mediajunkie", repo_name="piper-test"
+        )
+        assert "Reopened issue #7" in reopened.message

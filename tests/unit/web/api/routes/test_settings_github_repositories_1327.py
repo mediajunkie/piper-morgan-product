@@ -319,6 +319,10 @@ class TestPreferencesAreOAuthAgnostic:
         save_db = AsyncMock()
         with (
             patch("web.api.routes.settings_integrations._save_github_prefs_db", save_db),
+            patch(
+                "web.api.routes.settings_integrations._load_github_prefs_db",
+                AsyncMock(return_value={}),
+            ),
             patch("aiohttp.ClientSession", side_effect=AssertionError("native PAT used")),
             patch(_ADAPTER, side_effect=AssertionError("connector used for prefs")),
         ):

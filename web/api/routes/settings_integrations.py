@@ -22,6 +22,11 @@ from starlette.responses import RedirectResponse
 
 from services.auth.auth_middleware import get_current_user, require_admin
 from services.auth.jwt_service import JWTClaims
+from services.connectors.config_service import (
+    DEFAULT_REPO_KEY,
+    DEFAULT_REPO_SOURCE_KEY,
+    SOURCE_USER,
+)
 
 # #1327 gap 3: the Settings repo-config dropdown reads repos over the per-user OAuth connector
 # (mirroring the #1322 chat-read cutover). Imported at module level so the connector-first rail
@@ -2490,6 +2495,19 @@ async def get_github_preferences(current_user: JWTClaims = Depends(get_current_u
         )
 
 
+def _saved_default_source(stored: dict, incoming: Optional[str]) -> Optional[str]:
+    """#2205 (Arch 14:39; CXO 15:25): who designated the default a Settings save stores.
+    A new or changed value is the user's choice (``user``). An UNCHANGED value keeps its
+    stored source: saving the page to change something else does not confirm a repo Piper
+    guessed (``auto``), and a legacy default with no source stays without one (not user
+    for writes). No default saved, no source."""
+    if not incoming:
+        return None
+    if incoming == stored.get(DEFAULT_REPO_KEY):
+        return stored.get(DEFAULT_REPO_SOURCE_KEY)
+    return SOURCE_USER
+
+
 @router.post("/github/preferences", response_model=GitHubPreferencesResponse)
 async def save_github_preferences(
     preferences: GitHubPreferencesRequest,
@@ -2501,16 +2519,20 @@ async def save_github_preferences(
     Stores selected repositories and default repository designation.
     Issue #573: GitHub repository preferences
     """
+    # #2205: the stored default and its source decide what this save designates
+    # (an unchanged auto pick stays auto). A failed read is the #2154 503, never a guess.
+    try:
+        stored_github_prefs = await _load_github_prefs_db(str(current_user.sub))
+    except PreferencesReadFailed:
+        raise _prefs_unavailable("your GitHub preferences")
     try:
         # Store preferences for this user (WS-1: DB store is the single home)
-        # #2205: a default saved from Settings is the user's own choice (or their
-        # confirmation of the one shown), so writes may use it without asking.
-        from services.connectors.config_service import DEFAULT_REPO_SOURCE_KEY, SOURCE_USER
-
         user_prefs: Dict[str, Any] = {
             "selected_repositories": preferences.selected_repositories,
             "default_repository": preferences.default_repository,
-            DEFAULT_REPO_SOURCE_KEY: SOURCE_USER if preferences.default_repository else None,
+            DEFAULT_REPO_SOURCE_KEY: _saved_default_source(
+                stored_github_prefs, preferences.default_repository
+            ),
         }
         await _save_github_prefs_db(str(current_user.sub), user_prefs)
 

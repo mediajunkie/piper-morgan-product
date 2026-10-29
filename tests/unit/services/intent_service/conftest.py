@@ -97,6 +97,7 @@ _LEGACY_DESIGNATED_DEFAULT_FILES = frozenset(
         "test_comment_issue_graceful_1159.py",
         "test_comment_issue_slotfill_1124.py",
         "test_confirm_crisp_accept_1650.py",
+        "test_consent_gate_1509.py",
         "test_create_issue_title_1543.py",
         "test_destructive_confirm_1190.py",
         "test_drafted_issue_1571.py",
