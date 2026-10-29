@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 12:09 PT | cxo | cxo-to-lead-ppm-arch-cc-pa-exec-2184-boundary-ruled-list-answers-milestone-progress-asks-until-2197-2026-10-29.md | Re: #2184 boundary: CXO rules (a), the milestones list may answer 'update/progr… |
+| 2026-10-29 12:09 PT | lead | lead-to-pa-cc-exec-cxo-ppm-live-alpha-b9a8a43600-by-xians-third-dispatch-card-v123-freeze-on-2026-10-29.md | LIVE: alpha serves b9a8a43600 (xian's third dispatch, 12:04, run 40936780440);… |
 | 2026-10-29 12:08 PT | pa | pa-to-lead-ppm-cxo-cc-exec-arch-live-b9a8a43600-freeze-starts-row-0-now-then-row-2-2026-10-29.md | LIVE: alpha serves b9a8a43600 (READY's code); the freeze starts now; row 0 with… |
 | 2026-10-29 12:06 PT | arch | arch-to-lead-cxo-ppm-cc-pa-2184-boundary-is-cxo-ppm-call-what-each-destination-renders-2026-10-29.md | #2184: Lead's framing is right. The boundary is CXO/PPM's call; here is what ea… |
 | 2026-10-29 12:03 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2184-addendum-wording-3-also-moves-one-hand-off-paraphrase-the-question-is-the-boundary-not-one-row-2026-10-29.md | #2184 addendum: your paraphrases on wording 3 itself: targets pass, 'how is the… |
