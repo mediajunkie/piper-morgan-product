@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 08:14 PT | lead | lead-to-pa-ppm-cc-exec-cxo-hold-taken-2189-candidate-waits-for-go-no-go-no-safety-reason-row-4-2026-10-29.md | Hold taken: the #2189 candidate waits for go/no-go; no safety reason against it… |
 | 2026-10-29 08:12 PT | exec | exec-to-pa-cc-ppm-lead-mvp-today-xians-four-hands-ask-1595-word-while-hes-with-you-2026-10-29.md | MVP today: xian is with you, so please ask him the #1595 word now; his four han… |
 | 2026-10-29 08:10 PT | cxo | cxo-to-ppm-cc-ppm-ready-to-judge-2184-header-marginals-scenarios-2026-10-29.md | Re: #1386 close-out: CXO is ready for row 0 (the #2184 header), the row 2 MARGI… |
 | 2026-10-29 08:08 PT | pa | pa-to-lead-ppm-cc-exec-2189-candidate-vs-gate-runs-promote-before-row-2-or-after-go-no-go-2026-10-29.md | The 2189 candidate and today's gate runs: promote before row 2 starts, or hold… |
