@@ -32,16 +32,15 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 29 October</h1>
-<p class="meta">Exec · v649, rebuilt 08:11 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v650, rebuilt 08:21 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
-<div class="card hot"><b>Closing MVP today: your hand is needed four times, in this order.</b> PPM&rsquo;s plan (08:03, corrected 08:08): MVP has 3 open (#2184, #1595, #1386). #2184 closes on the reads you&rsquo;re running with PA now. The rest is about 3 hours of runs on alpha.
+<div class="card hot"><b>Closing MVP today: your hand is needed three times.</b> PPM&rsquo;s plan (08:03; HOLD picked 08:10): MVP has 3 open (#2184, #1595, #1386). Alpha stays on <code>49e0904c3c</code> as the build every run measures, and the #2189 update waits until after your go/no-go, so there&rsquo;s nothing to put live today. #2184 closes on the reads you&rsquo;re running with PA. The rest is about 3 hours of runs.
 <ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
-<li><b>Put the #2189 update live when Lead mails READY</b> (within the hour). It becomes the build every gate run measures, and nothing else goes live until your go/no-go. The canonical suite can&rsquo;t start until it&rsquo;s live, so this is on the critical path. Applying the one permission line below lets Lead do it instead.</li>
-<li><b>One word on #1595:</b> &ldquo;#1595 ships as a known issue; close MVP over it.&rdquo; Your 10-19 ruling put it in the letter&rsquo;s known issues; the gate needs it recorded as an exception. <span style="color:var(--blue);font-weight:600">PPM and I recommend yes:</span> #1595&rsquo;s remaining work is Production, and the testers were told.</li>
-<li><b>Scenario A needs a fresh account</b> (one invite code), plus a Google sign-in for any Calendar row, since Google refuses automated sign-in. That&rsquo;s after the canonical suite, so mid to late morning.</li>
-<li><b>Go/no-go on #1386,</b> last, once PPM posts the evidence table.</li>
+<li><b>One word on #1595, plus three read-only commands</b> (PA is asking you both now). The word: &ldquo;#1595 ships as a known issue; close MVP over it.&rdquo; <span style="color:var(--blue);font-weight:600">PPM and I recommend yes:</span> its remaining work is Production, and the testers were told. The commands check the database matches the code: <code>fly ssh console -a piper-morgan -C "python -m alembic current"</code>, the same with <code>heads</code>, and the same with <code>check</code>. Agents can&rsquo;t read the production database.</li>
+<li><b>Scenario A needs a fresh account</b> (one invite code), plus a Google sign-in for any Calendar row. That&rsquo;s after the canonical suite, so mid to late morning.</li>
+<li><b>Go/no-go on #1386,</b> last, once PPM posts the evidence table. The #2189 update goes live right after.</li>
 </ol>
-In parallel, with nothing needed from you: Lead runs the security and database checks, and PPM re-reads the stability window and CI at close. A real defect found in a run gets filed and admitted, and MVP closes when it closes. The 10-30 hard stop moves only on your word.</div>
+In parallel, nothing for you: Lead&rsquo;s security run on <code>49e0904c3c</code>, the encryption key check (passed), the migration step on the live release (passed), and PPM&rsquo;s stability and CI re-read at close. A real defect found in a run gets filed and admitted, and MVP closes when it closes. The 10-30 hard stop moves only on your word.</div>
 
 <div class="card act"><b>Two things only your hand unblocks (each a minute):</b>
 <ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
@@ -90,6 +89,7 @@ In parallel, with nothing needed from you: Lead runs the security and database c
 <h2>Whenever</h2>
 <div class="card"><ol style="margin:.2rem 0 .2rem 1.2rem;padding:0">
 <li><b>Maybe later: <code>.flycast</code> &rarr; <code>.internal</code></b> in <code>DATABASE_URL</code>; wait for Lead&rsquo;s word.</li>
+<li><b>Close #1927</b> (usage reader failures): none since 10-15 03:23, with 227 clean readings after it. Both my close and Docs&rsquo; were refused by our seats&rsquo; permissions, so nothing is posted on the issue yet. A one-line closing comment: &ldquo;No SHAPE-CHANGED rows since 10-15 03:23; reopen if one returns.&rdquo;</li>
 <li><b>Delete old revisions on 15 issues</b> (only you can): 297, 809, 1476, 1477, 1509, 1510, 1536&ndash;1540, 1718, 1830; comments on 377 and 646.</li>
 <li><b>&ldquo;Hide this chat&rdquo; control?</b> Lean: not before invites.</li>
 <li>Re-clone Kindbook; blog mining with Comms.</li>
