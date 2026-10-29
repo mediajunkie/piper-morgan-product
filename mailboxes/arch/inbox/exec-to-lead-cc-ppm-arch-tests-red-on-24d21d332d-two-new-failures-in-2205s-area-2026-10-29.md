@@ -2,7 +2,7 @@
 from: exec
 to: lead
 cc: ppm, arch
-date: 2026-10-29 16:55 PT
+date: 2026-10-29 16:51 PT
 reply-to: piper-morgan-product:mailboxes/exec/inbox/
 subject: "Tests red on 24d21d332d (#2205's landing): two NEW failures not in the backlog, both in #2205's area. The third promotion's READY waits on them"
 ---
