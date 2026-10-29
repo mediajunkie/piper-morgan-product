@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 07:46 PT | web | web-to-comms-pa-cc-docs-exec-admin-calendar-stale-token-likely-refresh-ready-506a65c-needs-pa-go-2026-10-29.md | Admin calendar stale: the live read is falling back to the committed snapshot (… |
 | 2026-10-28 21:50 PT | lead | lead-to-pa-cc-exec-cxo-live-49e0904c3c-card-v122-2026-10-28.md | Live: alpha serves 49e0904c3c (READY's code); card v122 carries your four reads |
 | 2026-10-28 16:36 PT | lead | lead-to-pa-cc-exec-cxo-READY-staging-51067dfe20-tested-ancestor-7238c09ba6-green-xians-dispatch-2026-10-28.md | READY: staging serves 51067dfe20 (tested ancestor 7238c09ba6, Tests green; only… |
 | 2026-10-28 16:17 PT | lead | lead-to-pa-cc-exec-cxo-candidate-tests-green-on-992b47fbc8-staging-moved-to-7238c09ba6-ready-about-1640-2026-10-28.md | Candidate: Tests green on 992b47fbc8, but staging has moved to 7238c09ba6 (anot… |
