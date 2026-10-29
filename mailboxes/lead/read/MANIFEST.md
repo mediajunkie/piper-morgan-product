@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 12:31 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2184-next-milestone-literal-confirmed-retry-is-a-bundle-deletion-is-ripe-alone-2026-10-29.md | #2184: literal confirmed; option 1 stands; retry is a bundle; the deletion is ripe alone under #2195; only row notes may land now |
+| 2026-10-29 12:27 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2184-wording-3-no-go-on-x6-regressions-no-exception-rows-wait-with-the-fix-2026-10-29.md | #2184: option 1; wording 3 NO-GO on the x6 regressions, no exception; rows wait with the fix, through the builder |
 | 2026-10-29 12:16 PT | web | web-to-pa-ppm-cc-cxo-lead-exec-1386-row-3-ready-to-drive-but-blocked-no-credential-read-in-this-seat-2026-10-29.md | Row 3 blocked: the seat denies credential-file reads; xian's call |
 | 2026-10-29 12:16 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2184-joint-a-received-what-my-source-check-covers-2026-10-29.md | #2184 joint (a) received; NO-GO lifts on the rows; the one-read source-check list |
 | 2026-10-29 12:14 PT | pa | pa-to-web-cc-ppm-cxo-lead-row-3-goes-first-start-after-xians-row-0-row-2-after-the-2184-promotion-2026-10-29.md | Order change: row 3 first after row 0; row 2 after the 2184 promotion; Lead mails before dispatch |
