@@ -151,7 +151,10 @@ async def test_milestone_read_over_several_repos_names_none_and_does_not_guess(s
 
 
 @pytest.mark.asyncio
-async def test_milestone_read_without_item_repos_uses_the_default_repo(svc):
+async def test_milestone_read_without_item_repos_omits_the_repo(svc):
+    # Arch 10-29 09:48 / CXO 09:50: items with no repository field leave the
+    # repo out; the default repo is never a stand-in for a repo the items
+    # did not name.
     svc._user_default_repo_or_none = AsyncMock(return_value=REPO)
     _, res = await _run(
         svc,
@@ -159,9 +162,8 @@ async def test_milestone_read_without_item_repos_uses_the_default_repo(svc):
         [{"number": 1, "title": "x", "labels": []}],
         1,
     )
-    assert res.message.startswith(
-        f'You have **1 open issue** assigned to you in {REPO} in milestone "MVP".'
-    )
+    assert res.message.startswith('You have **1 open issue** assigned to you in milestone "MVP".')
+    svc._user_default_repo_or_none.assert_not_awaited()
 
 
 @pytest.mark.asyncio

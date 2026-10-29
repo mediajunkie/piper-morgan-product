@@ -11,7 +11,8 @@ builds the scope from the qualifiers the read actually applied, in this order:
 - a milestone on the assignee read (``_qualified_search_query`` keeps
   ``assignee:@me`` and appends ``milestone:"X"``): ``assigned to you in <repo>
   in milestone "X"``, where ``<repo>`` is the one repository the returned items
-  share, else the resolved default repo, else left out rather than guessed
+  share; the resolved default repo only when no item came back; left out rather
+  than guessed when items carry no repository field or span several
 - a label: `` labelled "<label>"`` after the scope (CXO's spelling)
 - singular ``issue`` for 1; a closed read says ``closed``.
 
