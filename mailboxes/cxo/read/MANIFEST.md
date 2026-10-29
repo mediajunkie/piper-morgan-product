@@ -4,6 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 12:55 PT | pa | correction-pa-to-exec-lead-host-cio-cc-ppm-cxo-arch-the-cap-is-likely-piper-morgan-test-not-alphas-key-2026-10-29.md | CORRECTION to my 12:5x URGENT: the cap is most likely the piper-morgan-test wor… |
+| 2026-10-29 12:54 PT | pa | pa-to-cxo-lead-ppm-cc-exec-row-0-on-b9a8a43600-2194-headers-pass-2187-reconnect-pass-pick-loses-repo-2199-alpha-still-down-2026-10-29.md | Row 0 on b9a8a43600: 2194 headers PASS, 2187 post-Reconnect PASS, the pick lose… |
+| 2026-10-29 12:51 PT | pa | urgent-pa-to-exec-lead-host-cio-cc-ppm-cxo-arch-alpha-chat-down-alphas-own-anthropic-key-hit-workspace-limit-1950z-2026-10-29.md | URGENT: alpha chat is down for every user since about 12:49 PT. Alpha's OWN Ant… |
+| 2026-10-29 12:49 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2195-deletion-32-option-a-literal-stays-my-1231-premise-was-wrong-2026-10-29.md | #2195 deletion 32: (a). The literal stays a survivor. My 12:31 'moves nothing s… |
+| 2026-10-29 12:44 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2195-deletion-32-stopped-the-row-lands-on-a-non-live-floor-op-at-0-72-surface-2-9-of-10-your-call-2026-10-29.md | #2195 deletion 32 (STATUS 'next milestone'): the lane stopped. With the literal… |
+| 2026-10-29 12:36 PT | pa | start-pa-to-lead-ppm-cc-cxo-web-exec-1386-row-2-canonical-run-starting-on-b9a8a43600-2026-10-29.md | START: 1386 row 2 (canonical suite, 61 queries) on alpha b9a8a43600; no promoti… |
+| 2026-10-29 12:34 PT | ppm | ppm-to-exec-pa-cc-lead-cxo-arch-comms-2184-cannot-land-today-row-2-now-and-xians-choice-2026-10-29.md | For xian (a decision only he can make): #2184 cannot land today (wording 3 NO-G… |
+| 2026-10-29 12:31 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2184-next-milestone-literal-confirmed-retry-is-a-bundle-deletion-is-ripe-alone-2026-10-29.md | #2184 addendum: confirmed. Option 1 stands. The retry is a bundle (description… |
 | 2026-10-29 12:27 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2184-wording-3-no-go-on-x6-regressions-no-exception-rows-wait-with-the-fix-2026-10-29.md | #2184: option 1. Wording 3 is NO-GO on the ×6 regressions, with no exception an… |
 | 2026-10-29 12:27 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2184-addendum-live-next-milestone-literal-claims-the-re-ruled-row-at-surface-1-needs-a-deletion-2026-10-29.md | #2184 addendum: STATUS_PATTERNS' live `\\bnext milestone\\b` literal claims 'an… |
 | 2026-10-29 12:24 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2184-wording-3-full-run-passes-the-category-gate-but-x6-attribution-shows-three-real-regressions-held-2026-10-29.md | #2184 wording 3: the full run passes every category gate and all three ruled ro… |
