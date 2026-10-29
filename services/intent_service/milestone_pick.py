@@ -162,7 +162,11 @@ async def handle_milestone_pick_turn(
     if payload.get("kind") != MILESTONE_PICK_KIND:
         return None
     offer_user = payload.get("user_id")
-    if offer_user and user_id and str(offer_user) != str(user_id):
+    # #2199 (Arch 2026-10-29 13:04): the TURN's authenticated principal is the
+    # only one a read may run under. The offer's recorded user is evidence to
+    # compare against, never a credential to act as: no turn principal, or a
+    # different one, and the pick declines (the message routes normally).
+    if not user_id or (offer_user and str(offer_user) != str(user_id)):
         logger.warning(
             "milestone_pick_principal_mismatch", offer_user=offer_user, turn_user=user_id
         )
@@ -181,15 +185,14 @@ async def handle_milestone_pick_turn(
     # read degraded for want of a credential, and the handler's native fallback
     # resolved no default repo for a None user: the user who had just been
     # promised "Say its name" got "I couldn't tell which repository you mean."
-    # The principal is the one the arm recorded (checked equal to this turn's
-    # user above), written under the same key process_intent uses.
-    principal = offer_user or user_id
+    # The turn's principal (checked against the offer's above) is written under
+    # the same key process_intent uses.
     intent = Intent(
         category=IntentCategory.QUERY,
         action="list_issues_query",
         context={
             "original_message": message,
-            "user_id": str(principal) if principal else None,
+            "user_id": str(user_id),
             "list_scope_milestone": title,
             "list_scope_repository": repository if isinstance(repository, str) else None,
             "milestone_pick_bound": True,

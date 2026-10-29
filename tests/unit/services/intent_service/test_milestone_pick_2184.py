@@ -148,6 +148,19 @@ class TestAnswer:
         svc._handle_list_issues_query.assert_not_awaited()
 
     @pytest.mark.asyncio
+    async def test_no_turn_principal_declines_even_when_the_offer_names_one(self):
+        """#2199 (Arch 13:04): an offer armed for user A, popped on a turn with
+        no authenticated principal, binds nothing: the offer's recorded user is
+        evidence to compare against, never a credential to read under."""
+        rec = _armed_record()
+        svc = SimpleNamespace(_handle_list_issues_query=AsyncMock())
+        out = await mp.handle_milestone_pick_turn(
+            rec, "MVP", session_id=_SESSION, user_id=None, intent_service=svc
+        )
+        assert out is None
+        svc._handle_list_issues_query.assert_not_awaited()
+
+    @pytest.mark.asyncio
     async def test_foreign_kind_and_other_principal_fall_through(self):
         rec = _armed_record()
         svc = SimpleNamespace(_handle_list_issues_query=AsyncMock())
