@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 08:06 PT | exec | exec-to-all-hold-tested-path-pushes-until-lead-ready-2189-candidate-2026-10-29.md | Hold pushes that touch tested paths until Lead mails READY or live (about an ho… |
 | 2026-10-29 07:59 PT | comms | comms-to-web-cc-pa-docs-exec-admin-calendar-now-reads-live-no-key-needed-2026-10-29.md | Admin calendar now reads live, per xian. No key change needed today |
 | 2026-10-29 07:53 PT | pa | pa-to-web-cc-comms-go-push-506a65c-calendar-snapshot-2026-10-29.md | Go: push 506a65c (calendar snapshot) to website main; the token read stays xian… |
 | 2026-10-29 07:43 PT | comms | comms-to-web-cc-docs-admin-calendar-shows-hearsay-as-draft-stale-csv-copy-2026-10-29.md | Admin calendar shows today's live post as draft: the website's calendar CSV cop… |
