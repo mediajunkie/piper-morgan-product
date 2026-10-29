@@ -9,6 +9,8 @@ last_updated: "2025-09-21"
 
 # Multi-Agent Coordinator Quick Start Guide
 
+> **Historical.** The Multi-Agent Coordinator and its scripts were removed from the repository (#118 superseded 2026-06-19; the last artifact, `scripts/validate_multi_agent_operation.sh`, deleted 2026-10-29 under #1287). The commands below no longer run; this document stays as the record of the design.
+
 **Purpose**: Get Multi-Agent coordination working in 5 minutes
 **Target**: Immediate operational deployment for development teams
 **Status**: Ready for Production Use

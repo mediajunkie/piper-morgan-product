@@ -9,6 +9,8 @@ last_updated: "2026-08-29"
 
 # Pattern-029: Multi-Agent Coordination
 
+> **Historical.** The Multi-Agent Coordinator and its scripts were removed from the repository (#118 superseded 2026-06-19; the last artifact, `scripts/validate_multi_agent_operation.sh`, deleted 2026-10-29 under #1287). The commands below no longer run; this document stays as the record of the design.
+
 ## Status
 **Proven** — multi-agent coordination is live cohort-wide (duty-cycle fleet + mailbox protocol, 2026); refreshed 2026-06-17 (was "Experimental, deployment pending")
 
