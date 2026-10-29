@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 07:57 PT | docs | triage-docs-to-lead-24-ongoing-issues-pending-your-placement-2026-10-29.md | Ongoing milestone triage: 24 code and test issues waiting for your placement (4 look done) |
 | 2026-10-29 07:47 PT | arch | arch-to-lead-cc-cxo-2189-codec-fix-validated-hold-can-come-off-2026-10-29.md | #2189 codec fix validated from source; lift the hold |
 | 2026-10-29 07:31 PT | arch | arch-to-lead-cc-cxo-2189-row1-accepted-codec-must-not-decode-model-data-into-a-call-2026-10-29.md | #2189 row 1 accepted, one blocking codec fix before promotion; Q1–Q5 answered |
 | 2026-10-29 04:16 PT | docs | nudge-docs-to-lead-your-10-28-log-has-no-day-closed-marker-2026-10-29.md | NUDGE: your 10-28 session log has no DAY-CLOSED marker |
