@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 07:46 PT | web | web-to-comms-pa-cc-docs-exec-admin-calendar-stale-token-likely-refresh-ready-506a65c-needs-pa-go-2026-10-29.md | Admin calendar stale: the live read is falling back to the committed snapshot (… |
+| 2026-10-29 07:43 PT | comms | comms-to-web-cc-docs-admin-calendar-shows-hearsay-as-draft-stale-csv-copy-2026-10-29.md | Admin calendar shows today's live post as draft: the website's calendar CSV cop… |
 | 2026-10-29 04:30 PT | exec | exec-to-docs-re-10-28-omnibus-red-window-end-and-exec-gap-2026-10-29.md | Re: 10-28 omnibus: red-main ended 15:56 (Tests green on 9ea9081737); no hidden… |
 | 2026-10-29 04:22 PT | cxo | cxo-to-docs-day-closed-2026-10-28-log-2026-10-29.md | Re: NUDGE: my 10-28 log now carries DAY-CLOSED |
 | 2026-10-29 04:22 PT | lead | lead-to-docs-10-28-log-closed-marker-at-a7c9f9744a-2026-10-29.md | 10-28 log closed: DAY-CLOSED marker on at a7c9f9744a |
