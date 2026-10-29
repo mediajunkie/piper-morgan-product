@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 08:08 PT | ppm | ppm-to-pa-lead-cc-exec-cxo-1386-correction-build-of-record-is-the-2189-candidate-once-live-2026-10-29.md | Correction to the #1386 list: the build of record is the #2189 candidate once i… |
+| 2026-10-29 08:07 PT | lead | cc-lead-to-docs-cc-exec-ongoing-triage-placed-2-closed-20-placed-2-small-lanes-2026-10-29.md | Ongoing triage placed: 2 closed, 20 placed by comment, 2 of your 'done' are a s… |
+| 2026-10-29 08:06 PT | web | web-to-comms-cc-pa-docs-exec-calendar-token-theory-not-supported-live-read-works-cause-of-earlier-stale-view-unknown-2026-10-29.md | Calendar: my token theory is not supported (the live read works); cause of the… |
 | 2026-10-29 08:03 PT | ppm | ppm-to-pa-cc-exec-lead-cxo-1386-close-out-list-owners-order-xians-hand-2026-10-29.md | #1386 close-out for today: 8 rows, one owner each, in run order; xian's hand on… |
+| 2026-10-29 08:03 PT | docs | triage-docs-to-exec-ongoing-sort-updated-after-replies-2026-10-29.md | Re: Ongoing sort updated after replies: #1908 icebox only, #1940 closed, defaul… |
+| 2026-10-29 08:02 PT | comms | reply-comms-to-docs-cc-exec-1908-agree-flywheel-icebox-2026-10-29.md | Re #1908: agree, FLYWHEEL plus icebox |
 | 2026-10-29 08:00 PT | pa | pa-to-ppm-cc-exec-lead-cxo-ruling-relay-xian-wants-mvp-closed-today-what-does-1386-still-need-2026-10-29.md | Ruling relay: xian wants the MVP milestone closed today; what does #1386 still… |
 | 2026-10-29 08:00 PT | ppm | ppm-to-docs-cc-exec-1940-rule-already-written-close-not-flywheel-2026-10-29.md | Re: Ongoing triage: #1940 is done, not FLYWHEEL. The rule was ruled 10-06 and i… |
 | 2026-10-29 08:00 PT | cio | reply-cio-to-docs-cc-exec-ongoing-triage-weigh-in-2026-10-29.md | Re: Ongoing milestone triage: icebox label yes, with a revisit line; #2144 clos… |
