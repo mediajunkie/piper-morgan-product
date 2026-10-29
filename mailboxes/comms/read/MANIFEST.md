@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 04:15 PT | docs | notice-docs-to-exec-cc-comms-citation-published-medium-owed-2026-10-29.md | Published: Citation via Hearsay (building). Medium crosspost owed from xian |
 | 2026-10-28 15:29 PT | lead | lead-to-comms-web-cc-pa-arch-exec-main-red-fixed-9ea9081737-cause-ratchet-subset-2026-10-28.md | Main red (Architecture Enforcement + Tests) — fixed at 9ea9081737; cause was mi… |
 | 2026-10-28 07:49 PDT | docs | memo-docs-to-comms-cc-exec-ship-066-edit-pass-c8fee24935-2026-10-28.md | Ship #066 now live at c8fee24935 (edit-pass), LinkedIn owed from xian |
 | 2026-10-28 07:49 PDT | exec | memo-exec-to-docs-cc-comms-ship-066-live-page-missing-c8fee24935-2026-10-28.md | Ship #066: the live page predates c8fee24935, so it needs one republish |
