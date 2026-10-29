@@ -81,7 +81,9 @@ async def test_pm_bare_name_resolves_to_the_one_registered_repo(intent_service, 
         _intent("my default repo should be test-piper-morgan"), "wf-1"
     )
     assert result.success is True
-    writer.set_default_repo.assert_awaited_once_with(_USER, "mediajunkie/test-piper-morgan")
+    writer.set_default_repo.assert_awaited_once_with(
+        _USER, "mediajunkie/test-piper-morgan", source="user"
+    )
     assert "mediajunkie/test-piper-morgan" in result.message
 
 
@@ -112,7 +114,9 @@ async def test_owner_name_form_is_unchanged(intent_service, monkeypatch):
     result = await intent_service._handle_set_default_repo(
         _intent("set my default repo to mediajunkie/piper-morgan-product"), "wf-1"
     )
-    writer.set_default_repo.assert_awaited_once_with(_USER, "mediajunkie/piper-morgan-product")
+    writer.set_default_repo.assert_awaited_once_with(
+        _USER, "mediajunkie/piper-morgan-product", source="user"
+    )
     assert result.success is True
 
 
@@ -129,7 +133,9 @@ async def test_bare_name_resolves_against_the_current_default_with_no_registered
     result = await intent_service._handle_set_default_repo(
         _intent("my default repo should be test-piper-morgan"), "wf-1"
     )
-    writer.set_default_repo.assert_awaited_once_with(_USER, "mediajunkie/test-piper-morgan")
+    writer.set_default_repo.assert_awaited_once_with(
+        _USER, "mediajunkie/test-piper-morgan", source="user"
+    )
     assert "mediajunkie/test-piper-morgan" in result.message
 
 
@@ -145,7 +151,9 @@ async def test_bare_name_resolves_against_the_connected_accounts_repos(intent_se
     result = await intent_service._handle_set_default_repo(
         _intent("my default repo should be test-piper-morgan"), "wf-1"
     )
-    writer.set_default_repo.assert_awaited_once_with(_USER, "mediajunkie/test-piper-morgan")
+    writer.set_default_repo.assert_awaited_once_with(
+        _USER, "mediajunkie/test-piper-morgan", source="user"
+    )
     assert "mediajunkie/test-piper-morgan" in result.message
 
 

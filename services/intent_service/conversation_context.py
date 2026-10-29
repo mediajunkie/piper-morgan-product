@@ -189,6 +189,13 @@ class ConversationContext:
     # the central observer, which pops it after the turn. Owner-scoped by the
     # context's user_id; never read across sessions.
     pending_created_activity: Optional[Any] = None  # one dict, or a list of dicts (#2094)
+    # #2205 (CXO's A4 words, 2026-10-29): the repository of this session's LAST issue
+    # create when GitHub refused it, so a bare "Show me that issue." says the create
+    # didn't go through instead of asking for a number. Set by the create handler where
+    # it renders a definite refusal; cleared by the next create that lands. Owner-scoped
+    # by the context key (user, session); in-memory, never persisted (a restart forgets
+    # it and the read falls back to the plain ask, never a false claim).
+    last_create_refused_repo: Optional[str] = None
 
     # #1762 (epic 6): the unrendered tail of the most recent capped list, so
     # "…and N more" is a claim we can CASH (GatherOutcome §5b). DELIBERATELY

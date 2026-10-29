@@ -75,12 +75,17 @@ class _StatefulConfigService:
 
     def __init__(self, store: Dict[str, str]):
         self._store = store
+        self._sources: Dict[str, str] = {}
 
     async def get_default_repo(self, user_id) -> Optional[str]:
         return self._store.get(str(user_id))
 
-    async def set_default_repo(self, user_id, full_name: str) -> None:
+    async def set_default_repo(self, user_id, full_name: str, *, source: str) -> None:
         self._store[str(user_id)] = full_name
+        self._sources[str(user_id)] = source  # #2205
+
+    async def get_default_repo_source(self, user_id) -> Optional[str]:
+        return self._sources.get(str(user_id))
 
 
 class _Ctx:

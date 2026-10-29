@@ -1452,6 +1452,21 @@ async def create_setup_project(
                     is_primary=True,
                 )
 
+                # #2205 (Arch 2026-10-29 13:58): choosing a repo here is the user
+                # designating it. Nothing has read the project link since the
+                # resolver's project path retired (#1315), so the choice goes to the
+                # ONE store the resolver reads: the default, source "user", unless the
+                # user already designated one. Stored even when GitHub isn't connected
+                # yet; a refused write later says GitHub's reason (#2205 part 1).
+                from services.connectors.config_service import (
+                    SOURCE_USER,
+                    ConnectorConfigService,
+                )
+
+                configs = ConnectorConfigService(session)
+                if await configs.get_default_repo_source(user_id) != SOURCE_USER:
+                    await configs.set_default_repo(user_id, repo_name, source=SOURCE_USER)
+
             await session.commit()
 
         logger.info(

@@ -276,7 +276,14 @@ class TestSaveGitHubPreferences:
         )
 
         save_db = AsyncMock()
-        with patch("web.api.routes.settings_integrations._save_github_prefs_db", save_db):
+        with (
+            patch("web.api.routes.settings_integrations._save_github_prefs_db", save_db),
+            # #2205: the save reads the stored default to decide its source.
+            patch(
+                "web.api.routes.settings_integrations._load_github_prefs_db",
+                AsyncMock(return_value={}),
+            ),
+        ):
             result = await save_github_preferences(preferences=preferences, current_user=mock_user)
 
         save_db.assert_awaited_once_with(
@@ -287,6 +294,7 @@ class TestSaveGitHubPreferences:
                     "mediajunkie/other-project",
                 ],
                 "default_repository": "mediajunkie/piper-morgan-product",
+                "default_repository_source": "user",  # 2205: saved in Settings
             },
         )
         assert result.selected_repositories == [

@@ -10,6 +10,7 @@ import contextlib
 import html
 import json
 import logging
+import re
 import uuid
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
@@ -304,6 +305,55 @@ class GitHubWriteResult:
     # fired. attempted stays True (no native fallback may double-write on a
     # misconfigured connection); the caller says nothing was created.
     refused: bool = False
+    # #2205: GitHub itself answered the write with a 4xx error body (410 issues
+    # disabled, 403 not accessible, 422 validation failed): the write was
+    # refused and nothing landed. Definite, never the "may or may not" hedge;
+    # ``github_status``/``github_message`` are GitHub's own, carried verbatim.
+    rejected: bool = False
+    github_status: Optional[int] = None
+    github_message: Optional[str] = None
+
+
+# #2205: go-github's error text, as github-mcp-server returns it in-band:
+# "failed to create issue: POST https://api.github.com/repos/o/r/issues: 410 Issues are
+# disabled for this repo []" (method, URL, status, GitHub's message, the errors list).
+_GO_GITHUB_ERROR = re.compile(
+    r"\b(?:GET|POST|PATCH|PUT|DELETE)\s+https?://\S+:\s+(\d{3})\s+(.+?)(?:\s+\[.*\])?\s*$",
+    re.DOTALL,
+)
+# 401 belongs to the auth rail and 404 to #1858's two-leg not-found; every other 4xx
+# from GitHub is a refusal of this write.
+_NOT_A_REJECTION = frozenset({401, 404})
+
+
+def _github_rejection(text: Optional[str]) -> Optional[Tuple[int, str]]:
+    """#2205: ``(status, message)`` when a write's response is GitHub REFUSING it — its
+    JSON error body (``{"message": …, "status": "410"}``, no ``number``) or go-github's
+    error text — with a 4xx status other than 401/404. None otherwise (an issue
+    payload, unparseable text, a 5xx: the outcome stays unknown)."""
+    if not text:
+        return None
+    status: Optional[int] = None
+    message: Optional[str] = None
+    try:
+        data = json.loads(text)
+    except (ValueError, TypeError):
+        data = None
+    if isinstance(data, dict):
+        if "number" in data:
+            return None
+        raw_status, raw_message = data.get("status"), data.get("message")
+        if isinstance(raw_message, str) and str(raw_status or "").isdigit():
+            status, message = int(str(raw_status)), raw_message
+    else:
+        m = _GO_GITHUB_ERROR.search(text.strip())
+        if m:
+            status, message = int(m.group(1)), m.group(2)
+    if status is None or not message or not message.strip():
+        return None
+    if not 400 <= status < 500 or status in _NOT_A_REJECTION:
+        return None
+    return status, message.strip()
 
 
 def _github_404(text: Optional[str]) -> bool:
@@ -931,6 +981,20 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                     # answer "Unknown tool: …" as content, the live one raises; both
                     # mean the write never fired). Definite, never "may or may not".
                     return self._unknown_tool_refusal(tool)
+                rejection = _github_rejection(raw_text) if written is None else None
+                if rejection is not None:
+                    # #2205 (A3 on alpha b9a8a43600): GitHub answered 410 "Issues are
+                    # disabled for this repo"; the write fell to the title confirm and
+                    # the hedge. A refusal body is GitHub's answer: nothing landed, and
+                    # there is nothing to confirm or read back.
+                    _slog.warning("github_write_rejected", tool=tool, status=rejection[0])
+                    return GitHubWriteResult(
+                        verified=False,
+                        attempted=True,
+                        rejected=True,
+                        github_status=rejection[0],
+                        github_message=rejection[1],
+                    )
                 if written is None:
                     # The response wasn't a parseable artifact — often an in-band
                     # tool ERROR (e.g. "unknown tool") that call_tool surfaces as

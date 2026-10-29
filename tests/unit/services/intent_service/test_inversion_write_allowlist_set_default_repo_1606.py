@@ -170,7 +170,8 @@ def repo_boundary(monkeypatch):
 
     state = {"set": []}
 
-    async def _set_default_repo(self, owner_id, value):
+    async def _set_default_repo(self, owner_id, value, *, source):
+        assert source == "user"  # 2205: a chat-set default is the user's own choice
         state["set"].append((owner_id, value))
 
     monkeypatch.setattr(ConnectorConfigService, "set_default_repo", _set_default_repo)

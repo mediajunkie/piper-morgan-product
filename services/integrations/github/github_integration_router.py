@@ -46,6 +46,67 @@ class GitHubWriteRefused(RuntimeError):
         self.action_hint = action_hint
 
 
+class GitHubWriteRejected(RuntimeError):
+    """#2205: GitHub itself refused the write with a 4xx (410 issues disabled, 403 not
+    accessible, 422 validation failed), so nothing landed. Definite, unlike the
+    unverified "may or may not" RuntimeError, and distinct from #2106 (our MCP server
+    not offering the tool). ``message`` is GitHub's own text, verbatim; ``verb`` is the
+    write as the user would say it ("create", "update", "close", "reopen", "comment on")."""
+
+    def __init__(
+        self,
+        message: str,
+        status: int,
+        owner: Optional[str],
+        repo: Optional[str],
+        *,
+        verb: str = "update",
+        issue_number: Optional[int] = None,
+    ) -> None:
+        super().__init__(f"GitHub refused the write ({status}): {message}")
+        self.message = message
+        self.status = status
+        self.owner = owner
+        self.repo = repo
+        self.verb = verb
+        self.issue_number = issue_number
+
+    @property
+    def repository(self) -> Optional[str]:
+        return f"{self.owner}/{self.repo}" if self.owner and self.repo else None
+
+
+class GitHubWriteTargetUndesignated(RuntimeError):
+    """#2205 (Arch 2026-10-29 14:39): a write reached the router with no repository and
+    no default the user designated (an auto-picked, legacy or absent default). Nothing
+    was written and no repository was guessed. Handlers ask before this point; this is
+    the choke point that holds if one does not."""
+
+    def __init__(self, *, verb: str, issue_number: Optional[int] = None) -> None:
+        target = f" #{issue_number}" if issue_number is not None else ""
+        super().__init__(
+            f"GitHub write ({verb}{target}) refused: no user-designated repository; "
+            "nothing was written."
+        )
+        self.verb = verb
+        self.issue_number = issue_number
+
+
+def _write_verb(method_name: str, kwargs: Dict[str, Any]) -> str:
+    """#2205: the write as the user would name it, from the call itself."""
+    if method_name == "create_issue_connector":
+        return "create"
+    if method_name == "add_comment_connector":
+        return "comment on"
+    state = kwargs.get("state")
+    other_fields = any(kwargs.get(k) is not None for k in ("title", "body", "labels", "assignees"))
+    if state == "closed" and not other_fields:
+        return "close"
+    if state == "open" and not other_fields:
+        return "reopen"
+    return "update"
+
+
 class GitHubIssueNotFound(RuntimeError):
     """#1858: an update-shaped GitHub write targeted an issue that does not
     exist — confirmed on both the write response and the same-session
@@ -369,6 +430,16 @@ class GitHubIntegrationRouter:
                 or "GitHub's server refused that write, so nothing was created.",
                 action_hint=getattr(deg, "action_hint", None),
             )
+        if getattr(wr, "rejected", False):
+            # #2205: GitHub answered the write with a refusal; nothing landed.
+            raise GitHubWriteRejected(
+                wr.github_message or "",
+                wr.github_status or 0,
+                kwargs.get("owner"),
+                kwargs.get("repo") or kwargs.get("repo_name"),
+                verb=_write_verb(method_name, kwargs),
+                issue_number=kwargs.get("issue_number"),
+            )
         if getattr(wr, "not_found", False):
             # #1858: definitive — the target artifact does not exist, so the
             # write never landed. A different bucket from unverified: the
@@ -421,13 +492,7 @@ class GitHubIntegrationRouter:
         a real repo).
         """
         if owner is None or repo_name is None:
-            resolved = await self._resolve_default_repo()
-            if resolved is None:
-                raise RuntimeError(
-                    "Cannot create GitHub issue: no repo could be resolved. "
-                    "Pass owner/repo_name explicitly or configure default_repo."
-                )
-            owner, repo_name = resolved
+            owner, repo_name = await self._resolve_write_target("create")
         # #1220 write-path cutover: the user's OAuth grant first (read-back
         # verified, #1322 hard gate); native PAT only when the connector write
         # was definitively never fired (attempted=False) — a mid-flight failure
@@ -466,12 +531,7 @@ class GitHubIntegrationRouter:
         Raises ``RuntimeError`` if no repo resolves.
         """
         if owner is None or repo_name is None:
-            resolved = await self._resolve_default_repo()
-            if resolved is None:
-                raise RuntimeError(
-                    f"Cannot update GitHub issue #{issue_number}: no repo " "could be resolved."
-                )
-            owner, repo_name = resolved
+            owner, repo_name = await self._resolve_write_target("update", issue_number)
         # #1220: connector-first, no-double-write fallback (see create_issue).
         wr = await self._try_connector_write(
             "update_issue_connector",
@@ -505,13 +565,7 @@ class GitHubIntegrationRouter:
         Raises ``RuntimeError`` if no repo resolves.
         """
         if owner is None or repo_name is None:
-            resolved = await self._resolve_default_repo()
-            if resolved is None:
-                raise RuntimeError(
-                    f"Cannot add comment to GitHub issue #{issue_number}: "
-                    "no repo could be resolved."
-                )
-            owner, repo_name = resolved
+            owner, repo_name = await self._resolve_write_target("comment on", issue_number)
         # #1220: connector-first, no-double-write fallback (see create_issue).
         wr = await self._try_connector_write(
             "add_comment_connector",
@@ -595,6 +649,23 @@ class GitHubIntegrationRouter:
             return 4  # Week 4: Legacy removal
         else:
             return 5  # Post-deprecation
+
+    async def _resolve_write_target(
+        self, verb: str, issue_number: Optional[int] = None
+    ) -> "tuple[str, str]":
+        """#2205 (Arch 2026-10-29 14:39, condition 1): the repository a WRITE with no
+        repo passed may use: only the user's designated default (source ``user``),
+        never ``resolve_repo``'s auto default, env fallback or recovery guess. None →
+        ``GitHubWriteTargetUndesignated``. Reads keep ``_resolve_default_repo``."""
+        from services.integrations.github.repo_resolver import (
+            get_user_write_target,
+            parse_full_name,
+        )
+
+        target = await get_user_write_target(self._user_id) if self._user_id else None
+        if not target:
+            raise GitHubWriteTargetUndesignated(verb=verb, issue_number=issue_number)
+        return parse_full_name(target)
 
     async def _resolve_default_repo(self, project: Optional[str] = None) -> Optional[tuple]:
         """Issue #1042: resolve (owner, name) for general queries.

@@ -115,7 +115,9 @@ class TestApplyDefaultDefaultIfUnset:
 
             await apply_default_default_if_unset("user-1", repos)
 
-        mock_config_service.set_default_repo.assert_awaited_once_with("user-1", "owner/oldest")
+        mock_config_service.set_default_repo.assert_awaited_once_with(
+            "user-1", "owner/oldest", source="auto"
+        )  # #2205: code picked it
 
     async def test_noop_on_empty_repos(self):
         mock_config_service = MagicMock()
