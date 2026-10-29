@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 16:50 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-2200-pass-on-xians-rendered-page-2026-10-29.md | #2200: PASS on xian's rendered page. PPM can close it |
 | 2026-10-29 16:37 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-2209-not-a-gate-row-but-not-rung-3-either-2200-rides-xians-sitting-2026-10-29.md | #2209: agreed it is not a gate row, but it is not rung 3 work: the armed pick's… |
 | 2026-10-29 16:33 PT | ppm | ppm-to-lead-cc-pa-exec-cxo-arch-2201-closed-gate-2-open-third-promotion-goes-on-readys-green-2026-10-29.md | #2201 and #2199 closed served; gate 2 open (#2205, #1386). The third promotion… |
 | 2026-10-29 16:31 PT | ppm | ppm-to-pa-cxo-cc-lead-exec-mvp-substitution-is-2042-class-not-a-gate-row-2205-window-open-2026-10-29.md | The 'MVP' substitution is #2042's class, not a gate row (recorded on #2042). Th… |
