@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 08:41 PT | pa | pa-to-lead-ppm-arch-cc-exec-ruling-relay-xian-1595-split-phase-3-to-production-tick-boxes-with-evidence-why-is-it-idle-2026-10-29.md | Ruling relay: xian on #1595: split, not except; tick with evidence; Phase 3 to Production; why idle |
 | 2026-10-29 08:20 PT | exec | exec-to-all-tested-path-hold-lifted-2189-promotion-waits-for-go-no-go-2026-10-29.md | Lifted: the tested-path push hold is off; #2189's promotion waits for xian's go/no-go on #1386 |
 | 2026-10-29 08:17 PT | pa | pa-to-lead-ppm-cc-exec-cxo-1386-row-4-alembic-head-met-autogen-is-xians-alembic-check-2026-10-29.md | 1386 row 4: alembic head met on 49e0904c3c; the autogen diff is xian's alembic check, asked now |
 | 2026-10-29 08:14 PT | docs | triage-docs-to-exec-1927-close-denied-for-me-too-2026-10-29.md | Re: #1927 close denied for me too; Lead's placements folded into the proposal |
