@@ -3145,6 +3145,34 @@ class SessionActivityRepository(BaseRepository):
         await self.session.commit()
         return row.to_domain()
 
+    async def retitle(
+        self,
+        *,
+        owner_id: str,
+        conversation_id: str,
+        target_ref: str,
+        target_title: str,
+    ) -> int:
+        """#2201: the thing this session created was renamed; the ledger keeps the
+        title the person now knows it by. Same D1a scoping as the reader: owner_id
+        AND conversation_id are always in the WHERE, so a rename can never touch
+        another user's row. Returns the number of rows retitled (0 when this
+        session created no such record)."""
+        from services.database.models import SessionActivityDB
+
+        stmt = (
+            update(SessionActivityDB)
+            .where(
+                SessionActivityDB.owner_id == str(owner_id),
+                SessionActivityDB.conversation_id == str(conversation_id),
+                SessionActivityDB.target_ref == target_ref,
+            )
+            .values(target_title=target_title)
+        )
+        result = await self.session.execute(stmt)
+        await self.session.commit()
+        return int(result.rowcount or 0)
+
     async def list_for_session(
         self,
         owner_id: str,

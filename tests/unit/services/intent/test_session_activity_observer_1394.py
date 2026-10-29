@@ -84,6 +84,62 @@ class TestObserverWrites:
         assert rows[0].owner_id == _USER
 
 
+class TestObserverRetitles:
+    """#2201: a rename of something this session created updates the ledger
+    row's title (owner-scoped), so the session recap shows the new name."""
+
+    def _retitled_result(
+        self, ref="mediajunkie/test-piper-morgan#107", title="Fix the sign-in bug"
+    ):
+        return IntentProcessingResult(
+            success=True,
+            message=f"Updated issue #107: {title}",
+            intent_data={
+                "action": "update_issue",
+                "issue_number": 107,
+                "retitled_activity": {"target_ref": ref, "target_title": title},
+            },
+        )
+
+    async def test_rename_retitles_the_created_row(self, sm):
+        await IntentService._record_session_activity(
+            _observer_self(), session_id=_CONV, user_id=_USER, result=_created_issue_result()
+        )
+        await IntentService._record_session_activity(
+            _observer_self(), session_id=_CONV, user_id=_USER, result=self._retitled_result()
+        )
+        async with sm() as s:
+            rows = await SessionActivityRepository(s).list_for_session(_USER, _CONV)
+        assert len(rows) == 1
+        assert rows[0].target_title == "Fix the sign-in bug"
+        assert rows[0].action_type == "issue_created"
+
+    async def test_rename_by_another_owner_leaves_the_row_alone(self, sm):
+        await IntentService._record_session_activity(
+            _observer_self(), session_id=_CONV, user_id=_USER, result=_created_issue_result()
+        )
+        await IntentService._record_session_activity(
+            _observer_self(),
+            session_id=_CONV,
+            user_id="someone-else",
+            result=self._retitled_result(),
+        )
+        async with sm() as s:
+            rows = await SessionActivityRepository(s).list_for_session(_USER, _CONV)
+        assert rows[0].target_title == "Fix the login bug"
+
+    async def test_rename_of_a_ref_this_session_did_not_create_writes_nothing(self, sm):
+        await IntentService._record_session_activity(
+            _observer_self(),
+            session_id=_CONV,
+            user_id=_USER,
+            result=self._retitled_result(ref="mediajunkie/test-piper-morgan#999"),
+        )
+        async with sm() as s:
+            rows = await SessionActivityRepository(s).list_for_session(_USER, _CONV)
+        assert rows == []
+
+
 class TestObserverGuards:
     async def test_no_principal_writes_nothing(self, sm):
         """D1a — an owner-less result must never create a ledger row."""
