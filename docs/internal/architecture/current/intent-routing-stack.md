@@ -463,8 +463,9 @@ builds the count line's scope from the qualifiers the read applied, in order:** 
 → "in <repo>"; a milestone on the assignee read (the query keeps `assignee:@me`) → "assigned to you
 in <repo> in milestone "X"", where <repo> is the one repository every returned item carries
 (`repository_url` / `html_url`, which github-mcp-server v1.5.0's `search_issues` passes through as
-go-github's `IssuesSearchResult`), else the user's default repo when no item names one, else left
-out (never guessed when the items span repositories); a label → ` labelled "Y"` after the scope;
+go-github's `IssuesSearchResult`), else the user's default repo only when no item came back, else
+left out (items with no repository field, or spanning several, never get a guessed repo; Arch and
+CXO 10-29); a label → ` labelled "Y"` after the scope;
 singular for 1; "closed" on a closed read. "across all your repositories" appears only when no repo
 and no milestone was applied; the empty-result lines follow the same rule (the unscoped #2040 line is
 unchanged). The #2184 pick's bound read carries the repo, so it reads "in <repo> in milestone "X"".

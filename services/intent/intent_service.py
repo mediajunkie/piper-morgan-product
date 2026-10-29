@@ -8838,11 +8838,12 @@ class IntentService:
                     _state_word = "closed"
             _ms_repo: Optional[str] = None
             if _ms and _assignee_scoped and not _named_repo:
-                _repos_seen = {r for r in (repo_of_item(i) for i in issues or []) if r}
                 _ms_repo = shared_repo(issues or [])
-                if _ms_repo is None and len(_repos_seen) <= 1:
-                    # No item named a repo (or none came back): the default repo,
-                    # never a guess when the items span several repositories.
+                if _ms_repo is None and not issues:
+                    # None came back: the default repo names where the read looked.
+                    # Items that carry no repository field, or span several, leave
+                    # the repo OUT rather than name a wrong one (Arch 10-29 09:48,
+                    # CXO 09:50: "omit a repo rather than name a wrong one").
                     _ms_repo = await self._user_default_repo_or_none(_user_id)
             _scope_kw: Dict[str, Any] = {
                 "named_repo": _named_repo,
