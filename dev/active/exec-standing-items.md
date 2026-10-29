@@ -212,4 +212,4 @@ misread until 2026-10-01.*
 | 167 | **Relay xian's answer on Lead's promotion allow to CIO and Lead, same hour.** `key: lead-promo-allow` | 2026-10-29 | waiting on xian (rollup v647) |
 | 168 | **Relay xian's answer on Docs' Ongoing sort and its three questions to Docs.** `key: ongoing-sort` | 2026-10-29 | waiting on xian (rollup v648) |
 | 169 | ~~**Record xian's #1595 exception word in decisions.log when PA or PPM relays it.** `key: 1595-decisions-log`~~ | 2026-10-29 | CLOSED 09:18 10-29: xian ruled split, not exception (PA 08:41); recorded in decisions.log |
-| 170 | **Relay xian's answer on the Anthropic usage-limit raise (Lead 09:16) to Lead, PA, CIO, HOST same hour.** `key: anthropic-limit` | 2026-10-29 | waiting on xian (rollup v651) |
+| 170 | ~~**Relay xian's answer on the Anthropic usage-limit raise (Lead 09:16) to Lead, PA, CIO, HOST same hour.** `key: anthropic-limit`~~ | 2026-10-29 | CLOSED 11:39 10-29: raised $90 to $100 (PA relayed to Lead 11:36; Exec to CIO, HOST); decisions.log |

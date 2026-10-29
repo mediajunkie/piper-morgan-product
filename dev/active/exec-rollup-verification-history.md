@@ -236,3 +236,5 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v654 09:49 PDT Thu 10-29: status line: main Tests red on 89bc987594 (Lead 09:45, owned, fixed in 42b266ef7e); Arch 09:48 candidate clean; push hold on.
 - v655 09:59 PDT Thu 10-29: key card adds CXO concurrence (#2184 stays on gate), PPM 09:50 no-raise path (rows 0,3,4 only), Comms staged known-issue line.
 - v656 10:55 PDT Thu 10-29: MVP card hand 1 = promotion READY since 10:03 (Lead), dispatch line given; alpha /health 49e0904c3c, staging b9a8a43600 (tested-path-identical to 42b266ef7e).
+- v657 11:40 PDT Thu 10-29: key card → win (raised, PA 11:36); hand 1 = promotion retry after Fly 503 (run 40931685787 failed; 40932742084 in progress 18:38Z); alpha 49e0904c3c at 11:38.
+- v658 11:41 PDT Thu 10-29: retry 40932742084 failed (503 in setup-flyctl); alpha 49e0904c3c healthy 11:40.
