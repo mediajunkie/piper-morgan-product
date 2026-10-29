@@ -64,3 +64,5 @@ retirement_reason: "Superseded by dev/active/host-carry-forward.md's own 'Owed b
 - [x] 360 commitments tracker refresh filed (May 20)
 - [x] Ship #044 HOST workstream review filed (May 24)
 - [x] v0.3 questionnaire draft filed for CIO review (May 27)
+
+- key: alpha-key-workspace-record | **Filed**: 2026-10-29 | Write alpha's Anthropic workspace name, masked key tail and monthly limit into docs/internal/operations (no key value). Blocked on xian naming the workspace (PA is with xian on the raise). Then mail Exec the path.
