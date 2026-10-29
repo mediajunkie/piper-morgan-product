@@ -49,7 +49,7 @@ Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded 
 | — | **Q: Health lane** (CI, tests, mypy, dead code), proposed as a standing share of every sprint, not a sprint of its own | Main is red today and the CI target isn't ruled (Exec 16:57, "not ruled"). A share keeps it moving without parking product work. | 16 |
 | — | **R: Re-triage, done 10-23 (moved out)** (#371 time-series DB, #482 KMS, #557 WebSockets, #1061 multi-OAuth infra, #1209 mutating auto-exec) | Speculative infrastructure, likely Enterprise or Dot Releases. Placement is PPM's call, but I'll hold it until xian reads this. | 0 (moved out: #371, #1061 Enterprise; #557, #1209, #1219 Dot Releases; #482 back in D) |
 
-Total: 217 open (#2201 filed and admitted MVP 10-29, not counted here; #2184 moved MVP -> PUB 10-29 on xian's known-issue ruling, top of triage with #2195; #2199 added to PUB and #2200 to E 10-29, from row 0; #2197 added to PUB 10-29, #2184's boundary follow-up (#2198 closed as its duplicate); #2195 added to PUB 10-29, #1595's split, Sprint PUB on xian's word; #2194 admitted MVP 10-29, not counted here; #2191, #2192 and #2193 added to H 10-29, #2189 census rows 8, 10, 19; #2190 added to H 10-28, CXO from the #2189 census; #2187, #2188 and #2189 added to H 10-28, from #2018's served run and xian's 15:2x word; #2042 moved H to PUB, #2183 moved V to PUB, #2185 and #2186 added to PUB, 10-28 on xian's word, PA relay 10:22; #2184 admitted MVP, not counted here; #2183 added to V 10-28; #2182 closed in H 10-27 21:33, pins only; #2182 added to H 10-27, #2151's show_standup row; #2177 closed in Q 10-27 07:12; its follow-up #2181 placed Ongoing; #2109 closed in D and #2125, #2172, #2176 in H, 10-26 morning; #2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
+Total: 220 open (#2202 to Q, #2203 to E, #2204 beside #2130, 10-29 from row 3; #2201 filed and admitted MVP 10-29, not counted here; #2184 moved MVP -> PUB 10-29 on xian's known-issue ruling, top of triage with #2195; #2199 added to PUB and #2200 to E 10-29, from row 0; #2197 added to PUB 10-29, #2184's boundary follow-up (#2198 closed as its duplicate); #2195 added to PUB 10-29, #1595's split, Sprint PUB on xian's word; #2194 admitted MVP 10-29, not counted here; #2191, #2192 and #2193 added to H 10-29, #2189 census rows 8, 10, 19; #2190 added to H 10-28, CXO from the #2189 census; #2187, #2188 and #2189 added to H 10-28, from #2018's served run and xian's 15:2x word; #2042 moved H to PUB, #2183 moved V to PUB, #2185 and #2186 added to PUB, 10-28 on xian's word, PA relay 10:22; #2184 admitted MVP, not counted here; #2183 added to V 10-28; #2182 closed in H 10-27 21:33, pins only; #2182 added to H 10-27, #2151's show_standup row; #2177 closed in Q 10-27 07:12; its follow-up #2181 placed Ongoing; #2109 closed in D and #2125, #2172, #2176 in H, 10-26 morning; #2171 closed in H 10-26, served; #2176 to H, #2178 to C and #2177 to Q, 10-25 evening; #2175 added to PUB 10-25, CXO's invited x MCP; #2174 added to C 10-25, Arch's D3 check node; #2173 closed in H 10-25 15:35; #1242, #1244 and #1245 closed as superseded in Dist 10-25; #2173 added to H after the 10-25 snapshot, which matched the board at 206; #2123 closed in D, #2169 in V, #2045 in H and #2156 in E, found 10-25; #1966 closed in C 10-25; #2172 added to H 10-25; #2155 added to V 10-24; 12 filed or moved in, then 27 moved to Ongoing and 3 closed on ruling 2, 10-24) (refreshed 19:11 10-23 from the board, then #2137 closed and the round-2 C5/F29 moves at 21:36; 230 at 17:2x before R, #957, #958, #366, #2132's #2138 and #2152 left, and #2151 joined).
 
 ## Choices xian may want to make
 
@@ -182,7 +182,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2162 | Staging instance for destructive tests and promotion rehearsal: synthetic data only, never restored from … (10-24) | — |
 | #2166 | Todo/list/project Share: the UI sends user_to_share_with but the API requires user_id (422); with user_id the API answers 500 (10-24; E → D 10-24, hidden on alpha meanwhile) | — |
 
-### C: Connectors complete (25)
+### C: Connectors complete (26)
 
 | # | Title | was |
 |---|---|---|
@@ -209,6 +209,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2087 | Google OAuth consent screen is Internal user type: only Workspace accounts on PM's domain can connect Googl… | — |
 | #2106 | PAT-leg GitHub create fails with McpError unknown tool "issue_write", and the reply says it "may or may not… | — |
 | #2130 | Calendar asks: no weekday lookup; conflict check answers a multi-person question the user didn't ask | — |
+| #2204 | "This week" calendar read starts at now, so earlier-today meetings drop out; window from local midnight today (10-29, PPM's window call from #1386 row 3 K3) | — |
 | #2163 | GitHub identity: one app/token model and whose token serves a read (ADR plus carrying it into the six iss… (10-24) | — |
 | #2174 | ADR-081 D3 check: do github-mcp-server and our REST reads accept a GitHub App user access token? (10-25, Arch; blocks #2163 and #1514's GitHub part) | — |
 | #2178 | GitHub Disconnect doesn't revoke the OAuth grant at GitHub; revoke it, never a PAT (10-25, Arch) | — |
@@ -250,7 +251,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2169 | Chat delete: a list-item remove ask gets a confirmation for a different object (the prior turn's to-do) (10-24; closed, `close:pins-only` per CXO, not Class 1) | — |
 | #2170 | Chat: remove an item from a list (a list-item rail), with exact-match arming and an id-bound confirm (added 10-24: missing from the plan, found by the map generator) | — |
 
-### E: Experience polish (28)
+### E: Experience polish (29)
 
 | # | Title | was |
 |---|---|---|
@@ -283,6 +284,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2116 | [UX] "What makes you different?" asked a fifth time is answered with a question about motive, no answer (se… | — |
 | #2156 | UX: Send feedback is a quiet footer link, and absent from the setup wizard and error pages (10-24) (closed 10-24, `close:pins-only`) | — |
 | #2200 | Milestone list prints "Ongoing — due no due date" for a milestone with no date (10-29, CXO; words given) | — |
+| #2203 | Asked to summarize Notion docs, chat answers about uploaded documents and never says Notion isn't readable (10-29, CXO; #1386 row 3 C1; words given) | — |
 
 ### T: Trust and learning (15)
 
@@ -327,7 +329,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1245 | PIPER-SKILL-MERGE — Collapse ask-piper + consult-piper into one smart piper skill (closed, superseded 10-25) | PROD-ONBOARD |
 | #1282 | BYOC-DIST — Plugin packaging and marketplace distribution | PROD-DIST |
 
-### Q: Health lane (16)
+### Q: Health lane (17)
 
 | # | Title | was |
 |---|---|---|
@@ -348,3 +350,4 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #1528 | test_validate_openai_key_success hits the LIVE OpenAI API with the real keychain key — network-dependent te… | — |
 | #1549 | GET /api/v1/todos/shared-with-me is shadowed by /{todo_id} route order — matches as todo_id='shared-with-me' | — |
 | #2177 | Alpha promotion fails: staging's image tag returns 'manifest unknown' on pull (10-25, Lead; closed 10-27 07:12, served: run 40517175846 pulled by digest, alpha attests 36bdcf09bb) | — |
+| #2202 | Handler-route /api/v1/intent replies carry no intent.original_message field (10-29, Lead; #1151's follow-up; response assembly in one place) | — |
