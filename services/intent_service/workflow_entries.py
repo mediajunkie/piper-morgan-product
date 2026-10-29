@@ -1663,27 +1663,6 @@ _READ_QUERY_DESCRIPTIONS: dict[str, str] = {
         "List or count GitHub issues — open issues, how many issues, the issue "
         "count, issues by label or state (#1595)"
     ),
-    # #2184 (Arch 10-29, comment 6501638087): turn 1 of the two-step ("can you
-    # show me issues from just one milestone?") routed CLARIFY on the bare
-    # handler name, so a model composed the which-milestone question and the
-    # code pick never armed. This description is meant to send it to the
-    # milestones read, whose own render arms the pick.
-    # RULE 7 NO-GO (2026-10-29, not landable as written): wording 1 below, x6
-    # vs same-minute main (dev/2026/10/29/controls/2184-description-x6-*),
-    # routes turn 1 list_milestones 6/6 and holds every list_issues row, but
-    # flips the standing sentinel 'add octocat/hello-world to the project'
-    # link_repo x6 -> CLARIFY x6 and 'any update on the next milestone'
-    # get_project_status x6 -> list_milestones x6. Wording 2 ("List GitHub
-    # milestones, including when the user asks for issues from one milestone
-    # without naming it") sent turn 1 to get_capabilities x4 / CLARIFY x2.
-    # Further screens wait on the dev key (workspace usage limit, 10-29 09:08).
-    "_handle_list_milestones_query": (
-        "List GitHub milestones — show or list milestones, upcoming milestones, "
-        "and the first step when the user asks for issues from a milestone they "
-        "have not named yet ('issues from just one milestone', 'which "
-        "milestone'); once a milestone is named, listing its issues is "
-        "list_issues (#1595, #2184)"
-    ),
     # CXO 2026-10-01: the handler's own docstring disposes "what version are we
     # on?" (#1039 Q5 — latest non-prerelease at the top); the router declined
     # it on the bare handler name.
