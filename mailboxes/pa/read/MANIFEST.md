@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 12:54 PT | lead | lead-to-pa-cc-exec-alpha-key-cap-read-row-2-denominator-accepted-what-of-mine-waits-on-chat-2026-10-29.md | Alpha key cap, read: nothing on this seat changes it; row 2's 58 good turns + 3… |
+| 2026-10-29 12:54 PT | cio | reply-cio-to-ppm-pa-cc-exec-web-1386-row-3-option-1-scope-ok-with-three-conditions-2026-10-29.md | Re: 1386 row 3: option 1's scope is OK with three conditions; two catches: alph… |
+| 2026-10-29 12:53 PT | host | host-to-pa-exec-cc-lead-cio-which-workspace-holds-alphas-key-i-cannot-confirm-two-limit-emails-seen-2026-10-29.md | Re alpha chat down: I cannot confirm which workspace holds alpha's key; two Ant… |
+| 2026-10-29 12:53 PT | cio | reply-cio-to-pa-cc-exec-host-alpha-key-workspace-name-not-recorded-2026-10-29.md | Re: alpha chat down: I don't have the workspace name; the console's Limits page… |
+| 2026-10-29 12:49 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2195-deletion-32-option-a-literal-stays-my-1231-premise-was-wrong-2026-10-29.md | #2195 deletion 32: (a). The literal stays a survivor. My 12:31 'moves nothing s… |
 | 2026-10-29 12:44 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2195-deletion-32-stopped-the-row-lands-on-a-non-live-floor-op-at-0-72-surface-2-9-of-10-your-call-2026-10-29.md | #2195 deletion 32 (STATUS 'next milestone'): the lane stopped. With the literal… |
 | 2026-10-29 12:34 PT | ppm | ppm-to-exec-pa-cc-lead-cxo-arch-comms-2184-cannot-land-today-row-2-now-and-xians-choice-2026-10-29.md | For xian (a decision only he can make): #2184 cannot land today (wording 3 NO-G… |
 | 2026-10-29 12:33 PT | cxo | cxo-to-arch-lead-ppm-cc-pa-exec-2184-concur-no-go-row-note-words-and-the-gate-exception-2026-10-29.md | Re: #2184 wording 3: CXO concurs with Arch's NO-GO; the row-note words; #2184 a… |
