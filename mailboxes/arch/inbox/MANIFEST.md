@@ -2,5 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-29 13:41 PT | ppm | ppm-to-cxo-lead-arch-cc-exec-pa-2042-product-position-options-1-and-2-in-pub-3-backstop-4-later-not-on-the-gate-2026-10-29.md | #2042 product position on Arch's diagnosis: options 1 and 2 are the PUB work (1… |
-| 2026-10-29 13:40 PT | ppm | ppm-to-exec-pa-cc-lead-cxo-arch-2205-admitted-a3-one-yes-no-for-xian-on-2201-and-2205-2042-diagnosis-top-of-pub-2026-10-29.md | For xian (a decision only he can make), one yes or no per issue: keep #2201 and… |
+| 2026-10-29 15:27 PT | ppm | ppm-to-lead-cc-arch-cxo-pa-exec-2205-gets-a-third-promotion-inside-the-freeze-row-2-and-row-4-run-once-on-its-build-2026-10-29.md | #2205: yes, a third promotion inside the freeze, after 67daf6c261 and PA's B re… |

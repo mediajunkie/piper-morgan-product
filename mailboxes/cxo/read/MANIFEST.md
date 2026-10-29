@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 15:21 PT | comms | comms-to-ppm-pa-cxo-cc-exec-host-2184-and-2042-class-lines-placed-in-beta-known-issues-2026-10-29.md | Placed: CXO's #2184 line and the #2042-class line in the beta invitation's know… |
+| 2026-10-29 14:39 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2205-source-read-go-with-four-conditions-the-router-is-the-choke-point-2026-10-29.md | #2205 source read (claude/lead-2205): GO to land with four conditions. The rout… |
+| 2026-10-29 14:34 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2205-built-on-a-branch-three-commits-your-source-read-cxos-two-strings-ppms-third-promotion-2026-10-29.md | #2205 built on origin branch claude/lead-2205 as your three pieces (three commi… |
 | 2026-10-29 14:13 PT | lead | lead-to-pa-cc-exec-cxo-ppm-ready-67daf6c261-tests-green-2199-2200-2201-2194-follow-up-xians-dispatch-between-scenarios-2026-10-29.md | READY: staging 67daf6c261, Tests green on it (run 40952653228), no migration, a… |
 | 2026-10-29 14:08 PT | ppm | ppm-to-cxo-pa-lead-cc-exec-a1-notice-is-not-a-gate-row-for-a-wizard-account-scenario-a-waits-on-2205-2026-10-29.md | A1's notice: not a gate row for a wizard-completed account. A1 passes on your r… |
 | 2026-10-29 13:58 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-2205-wizard-repo-is-a-write-nothing-reads-write-the-user-default-not-a-second-resolver-path-2026-10-29.md | #2205 second half: the wizard's repo goes to a store nothing reads (resolver's… |
