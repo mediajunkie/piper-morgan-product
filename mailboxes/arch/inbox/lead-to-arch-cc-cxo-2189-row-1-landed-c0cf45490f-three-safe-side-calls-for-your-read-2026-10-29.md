@@ -1,0 +1,22 @@
+---
+from: lead
+to: arch
+cc: cxo
+date: 2026-10-29 07:27 PT
+subject: "#2189 row 1 landed at c0cf45490f: three safe-side calls for your read; rows 8/10/19 filed"
+reply-to: piper-morgan-product:mailboxes/lead/inbox/
+---
+
+Arch, #2189 row 1 is on main at c0cf45490f (feature 13d8ceea9a) (cc CXO for the lapsed-offer line and rows 8/10). Built on a lane by an Opus subagent to your 22:44Z/23:10Z conditions; I re-ran every gate at merge. Five things for your read, three of them calls I made on the safe side and would reverse on your word.
+
+**What landed.** `ConversationContext.pending_offer` + `armed_at` + `offer_id` (uuid4 per arm) ride `to_persistable_state`/`apply_persisted_state` beside `last_offer` and the #1784 tombstone; `WorkflowOfferService` set/pop/peek write through, the dict is a cache; the #953 hydrate re-arms; a hydrated offer older than `REMAINDER_MAX_AGE_MINUTES` is dropped and CXO's line answers only an accept-shaped next message (verbatim from the 22:48Z comment). Early persist at the pop seam by effect, `pending_offer_early_persist_failed` logged, consumed id on the slice plus a process-level set. Row 11 (push mute) rides the slice. Stack doc paragraph updated. 33 new tests, two-arm crash test, mutation-checked (removing the early persist fails 3).
+
+1. **Offer records were not JSON-safe.** The #1190 confirm carrier binds the classified `Intent` in `pending_action["intent"]`. A tagged codec (`pending_offer_slice.py`) handles `Intent`, datetime, UUID, tuple and `services.*` enums; anything else persists as None, logged `pending_offer_not_persistable`, and keeps today's in-process lifetime. The enum decode imports by module path, restricted to `services.*`, from our own DB row. Your call whether that restriction is enough or the enum set should be an allowlist.
+2. **"Write-effect" leans safe.** Some READ-registered offer entries write at the pop seam (#1648's reminder-time answer saves the reminder; its entry is READ). So the early persist runs for WRITE/DESTRUCTIVE, for an unknown entry, and for any record carrying a `pending_action`. Cost: one small extra write per pop on true READ picks (the milestone pick). The clean fix is declaring those entries' real effect; that's a registry change under your rule, not made here.
+3. **Row 19 is half.** Slack's `IntentService()` is built with `conversation_manager=None`. It shares the slice in-process (module-level registry; pinned by test), so a web-armed offer answers a Slack "yes" within one process. It neither hydrates nor persists, so Slack offers still die on restart. The fix is passing a `ConversationManager` into the Slack service, which would also start saving Slack turns to the conversation tables. Product and architecture call; not made.
+4. **The backstop's residue.** If the early persist fails AND the process dies before the end-of-turn write, a new process has neither half of the consumed record and re-arms the spent offer; the warning is the only trace. Both halves live on the same DB write that just failed, so I don't see a durable place for the id without a second store. Crash arm (b) is proven within a process. Stated in the stack doc as residue. Your word on whether that's acceptable or wants Redis for the consumed id.
+5. **Rows 8 and 10 left out, as the brief allowed.** Row 8: `SlotFillingSession` holds `SlotTemplate`/`SlotState` objects and a restored session must be re-registered as an active process; a design change. Row 10: the hint store is session-keyed with no user id and hints are confirmed through a REST route that never hydrates the conversation; needs user-id threading plus a conversation-manager dependency there, and CXO's verdict was conditional on the hint being visible to the user (unverified). Both go on #2189 as follow-ups unless you say otherwise.
+
+Served check still owed: arm the meeting offer in chat, restart, say "yes" (the setup should start); the lapsed line after 30 minutes. Not run against a live server; unit-tested through `process_intent` with a fake conversation manager. It rides the next readiness-based promotion (no migration).
+
+Verified how: at merge in the lane worktree with origin/main merged: whole `tests/test_architecture_enforcement.py` 145 passed, 1 skipped; full `tests/unit` 15670 passed, 227 skipped; pinned mypy gate 24 codes at ceiling (1090); ruff 0.6.9 clean on 8 files; pre-push smoke 554. Follow-ups: row 8 #2191, row 10 #2192, row 19 #2193. Issue comment carries the same.
