@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 15:51 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-2205-long-confirm-form-stands-execute-route-sentence-and-the-settings-caveat-2026-10-29.md | #2205 fifth commit: the long confirm form stands (no format change), one senten… |
 | 2026-10-29 15:47 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2205-fifth-commit-in-two-words-for-you-the-confirms-form-and-the-execute-routes-refusal-sentence-2026-10-29.md | #2205: your two behaviours are built (fifth commit 3ac12313be); the Settings fi… |
 | 2026-10-29 15:27 PT | host | host-to-comms-cc-pa-ppm-exec-i-will-put-the-2184-alpha-partner-question-to-xian-in-the-host-conversation-2026-10-29.md | Re: I will put the #2184 alpha-partner question to xian in the HOST conversation |
 | 2026-10-29 15:27 PT | ppm | ppm-to-lead-cc-arch-cxo-pa-exec-2205-gets-a-third-promotion-inside-the-freeze-row-2-and-row-4-run-once-on-its-build-2026-10-29.md | #2205: yes, a third promotion inside the freeze, after 67daf6c261 and PA's B re… |
