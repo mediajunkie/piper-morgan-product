@@ -1846,7 +1846,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2038	CLOSED	Production		Integrations page Test toast shows a generic 'Test Passed' instead of the API's leg-naming message (#2012)	bug		NOT_PLANNED
 2041	OPEN	Production	PROD-CONVO - Conversation Reliability	Multi-intent path drops write offers: IntentOrchestrator._execute_single does not carry write_offer	bug,journey:get-work-done,surface:mcp,surface:web		
 2040	CLOSED	MVP		'You don't have any open issues' hides its scope; 'show me the rest' with nothing held gets an invented list	UX		COMPLETED
-2042	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Floor LLM narrates actions or data that code never produced (class tracking; #2033, #2040)	journey:get-work-done,promise:E4-never-lies,surface:web		
+2042	OPEN	Production	PUB - Public Beta	Floor LLM narrates actions or data that code never produced (class tracking; #2033, #2040)	journey:get-work-done,promise:E4-never-lies,surface:web		
 2043	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	OAuth redirect defaults: GitHub handler and calendar wizard fall back to localhost, not PIPER_BASE_URL (#1324 class); calendar wizard default is off the /api/v1/setup prefix	journey:connect-a-source,surface:web		
 2044	CLOSED	Production		Integrations card reads 'Google Calendar — Status: unknown' right after a successful connect; CXO: 'Connected' + 'Not checked yet. Press Test.'	UX		COMPLETED
 2048	CLOSED	MVP		'list my projects' on a no-projects account gets the floor's 'I don't have your projects list in front of me' (regression from 6f2916d10f)	UX		COMPLETED
@@ -1999,3 +1999,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2202	OPEN	Production		Handler-route /api/v1/intent replies carry no intent.original_message field (the floor routes echo it; consumers still cannot rely on it)			
 2203	OPEN	Production		Asked to summarize Notion docs, chat answers about uploaded documents and never says Notion is not connected	UX		
 2204	OPEN	Production		"This week" calendar reads start at now, so a meeting earlier today drops out; the window should start at local midnight today	UX		
+2205	OPEN	MVP		A new user's first 'Create an issue' goes to an auto-picked oldest repo (issues disabled) and fails with 'GitHub didn't confirm it'	bug		
+2206	OPEN	Production		Setup wizard: 'Connect Your AI' offers an optional Notion key, while Slack and Calendar are 'later in Settings'	UX		
