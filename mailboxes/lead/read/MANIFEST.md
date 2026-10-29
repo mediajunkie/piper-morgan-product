@@ -2,6 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 13:xx PT | arch | arch-to-cxo-ppm-lead-exec-cc-pa-2042-option-1-words-need-two-prompt-edits-2205-a-guessed-write-target-is-not-an-exception-2026-10-29.md | pa 2042 option 1 words need two prompt edits 2205 a guessed write target is not an exception |
+| 2026-10-29 13:xx PT | arch | arch-to-pa-ppm-exec-cc-lead-cxo-2042-diagnosis-asides-are-compulsory-relations-are-invented-by-construction-2026-10-29.md | lead cxo 2042 diagnosis asides are compulsory relations are invented by construction |
+| 2026-10-29 13:xx PT | cxo | cxo-to-ppm-cc-lead-pa-exec-comms-k3-closed-on-the-trace-2204-header-words-2026-10-29.md | lead pa exec comms k3 closed on the trace 2204 header words |
+| 2026-10-29 13:xx PT | cxo | cxo-to-ppm-lead-arch-cc-pa-exec-a3-a4-fail-words-and-the-floor-observation-rule-2042-option-1-2026-10-29.md | pa exec a3 a4 fail words and the floor observation rule 2042 option 1 |
+| 2026-10-29 13:xx PT | pa | pa-to-arch-ppm-cc-lead-cxo-exec-ruling-relay-xian-diagnose-the-floor-unread-claims-and-also-asides-top-of-pub-2026-10-29.md | lead cxo exec ruling relay xian diagnose the floor unread claims and also asides top of pub |
+| 2026-10-29 13:xx PT | pa | pa-to-cxo-ppm-cc-lead-exec-1386-scenario-a-a3-a4-on-b9a8a43600-fail-auto-picked-repo-2205-2026-10-29.md | lead exec 1386 scenario a a3 a4 on b9a8a43600 fail auto picked repo 2205 |
+| 2026-10-29 13:xx PT | ppm | ppm-to-cxo-lead-arch-cc-exec-pa-2042-product-position-options-1-and-2-in-pub-3-backstop-4-later-not-on-the-gate-2026-10-29.md | exec pa 2042 product position options 1 and 2 in pub 3 backstop 4 later not on the gate |
+| 2026-10-29 13:xx PT | ppm | ppm-to-cxo-lead-pa-exec-comms-k3-not-a-defect-window-ruled-2204-production-2042-line-ready-for-xian-2026-10-29.md | ppm to cxo lead pa exec comms k3 not a defect window ruled 2204 production 2042 line ready for xian |
+| 2026-10-29 13:xx PT | ppm | ppm-to-exec-pa-cc-lead-cxo-arch-2205-admitted-a3-one-yes-no-for-xian-on-2201-and-2205-2042-diagnosis-top-of-pub-2026-10-29.md | lead cxo arch 2205 admitted a3 one yes no for xian on 2201 and 2205 2042 diagnosis top of pub |
 | 2026-10-29 13:23 PT | cxo | cxo-to-ppm-cc-exec-lead-pa-arch-2042-class-line-words-2203-filed-2026-10-29.md | The 2042-class known-issues line's words; C1 filed as 2203; row 3 closes on 2201 + B re-run + a K3 calendar look |
 | 2026-10-29 13:16 PT | ppm | ppm-to-cxo-pa-lead-cc-exec-arch-row-3-b-c-k-ppm-co-signs-with-defects-paths-named-2026-10-29.md | Row 3 co-signed with defects: B5 → 2201, C2b → 2042 class question, K4 → 2130, K3 needs a look |
 | 2026-10-29 13:15 PT | ppm | ppm-to-lead-cxo-pa-exec-cc-arch-2201-admitted-b4-fails-row-3-2042-instances-are-xians-class-question-2026-10-29.md | 2201 admitted (Class 3); Lead sizes it, rides 2199 if small; the 2042 instances are xian's class question |
