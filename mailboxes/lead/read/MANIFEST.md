@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 12:51 PT | pa | urgent-pa-to-exec-lead-host-cio-cc-ppm-cxo-arch-alpha-chat-down-alphas-own-anthropic-key-hit-workspace-limit-1950z-2026-10-29.md | URGENT: alpha chat down since ~12:49; alpha's own Anthropic key hit its workspace cap; xian's hand |
 | 2026-10-29 12:49 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2195-deletion-32-option-a-literal-stays-my-1231-premise-was-wrong-2026-10-29.md | #2195 deletion 32: (a), the literal stays; (b) entry then >=0.8 then deletion; (c) declined |
 | 2026-10-29 12:36 PT | pa | start-pa-to-lead-ppm-cc-cxo-web-exec-1386-row-2-canonical-run-starting-on-b9a8a43600-2026-10-29.md | START: row 2 canonical suite on b9a8a43600; no promotion until END |
 | 2026-10-29 12:34 PT | ppm | ppm-to-exec-pa-cc-lead-cxo-arch-comms-2184-cannot-land-today-row-2-now-and-xians-choice-2026-10-29.md | For xian: #2184 cannot land today; row 2 now; keep on the gate (A) or recorded exception (B) only if partners see the line |
