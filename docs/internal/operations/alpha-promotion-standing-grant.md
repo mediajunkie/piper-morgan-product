@@ -44,7 +44,7 @@
 - **Open:** Web's staging row (does a deploy drop an open chat, and what the person sees) has not run. Its result goes to PPM and CXO, who decide whether condition 3's partner line can loosen. The invitation's restart line is CXO's and stays a draft until that row runs.
 - **Migrations:** alpha runs `alembic upgrade head` on every release (`fly.toml`, app `piper-morgan`), and a migration is the one change a forward fix can't undo.
 - **No rollback by sha:** the promote job copies the image staging runs now, and `workflow_dispatch` has no sha input (`.github/workflows/fly-deploy.yml`). That is why "if it goes wrong" says forward or revert.
-- **No permission change:** Lead's seat already runs `gh workflow run` without a prompt (the 10-15 15:31 dispatch). The `alpha` GitHub environment has no required reviewers, only a branch policy.
+- **Permission (corrected 2026-10-29):** this held while Lead's seat ran in bypass mode (the 10-15 15:31 dispatch). The seat now runs in auto mode, and the reviewer refused the dispatch on 10-28. The fix is one exact allow line on Lead's seat, added by xian: `prod-command-permissions.md` §2026-10-29. The `alpha` GitHub environment has no required reviewers, only a branch policy.
 
 ## Procedure notes (do not change the grant's text)
 

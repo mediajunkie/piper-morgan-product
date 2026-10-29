@@ -14,6 +14,16 @@ read-only `prod_user_lookup` and the invite mint).
   - Not tested: that the variable stops the update in every case. It's inferred from the name, because no newer version exists to test against.
 - **Not done, and not CIO's or Pard's to do:** `fly settings autoupdate disable` would stop it host-wide. It writes HOST's fly config, which holds the token, so it's for HOST or xian. Until then, an update elsewhere means a regenerate, which is one command, and the diff is reviewed. **HOST's disposition (21:20): leave autoupdate on, and CIO regenerates on drift.** Reasons: the switch writes the token-holding config, it would be a `fly` command in a non-attended fire, and a reviewed regenerate is a cheaper failure than a forgotten host-wide setting. If xian wants it off, that needs him or an attended HOST session.
 
+## 2026-10-29: Lead's seat dispatches the alpha promotion (one exact allow)
+
+Lead's seat now runs `--permission-mode auto` (read with `ps` 10-29 06:5x; it was bypassPermissions on 10-13). On 10-28 the auto-mode reviewer refused the grant's dispatch ("Production Deploy"). Lead did not work around it, and xian dispatched by hand (run 40804462072). Under the standing grant the dispatch is Lead's, so CIO's ruling is (a), one exact allow:
+- **Rule for xian to add on Lead's seat only**, as `seat_extra.lead.allow` in the fleet manifest (`mediajunkie/docs/seat-permissions.json`), applied with `scripts/seat-permissions.py --apply`: `Bash(gh workflow run fly-deploy.yml -R mediajunkie/piper-morgan-product --ref main -f promote_to_alpha=true)`.
+- **Exact string, no `:*`.** So it does not match the same line with `-f quiet_override=true` added, which stays on xian's word, and it does not match a chained command (`cd … && gh workflow run …`). Lead types it alone, in this order.
+- **Nothing denies it today:** the manifest's baseline and halt lists and Lead's `settings.local.json` have no `gh workflow` rule (read 10-29). Allow is checked after deny and ask, so a later deny would win.
+- **The gates stay in the workflow**, not in this rule: hold file, Tests on the staging sha, alpha healthy, quiet and uptime. The rule only removes the reviewer's judgment on a dispatch the grant already makes Lead's.
+- **Unverified:** that the auto-mode reviewer skips a command matched by an allow rule. That is the documented order, but it hasn't been run on this seat. Lead's first dispatch after the apply is the test; a refusal there goes back to CIO.
+- Until xian applies it, promotions go through his hand (option b, interim), and Lead's READY stays a dispatch request to him.
+
 ## 2026-10-13 (later): PA deploys the MCP app through a fixed wrapper (xian's delegation)
 
 xian (via Exec, 13:1x): PA does the MCP deploys (#1982), with an allow scoped to the MCP app on PA's seat. Standing, not one-off: xian confirmed at 17:11 ("Yes, PA does the MCP deploys", relayed by Janus and Exec, v4 01M4VWC2F1TCDC5V9YGPWTJHC5). **No allow rule can do it alone.** PA's seat denies `fly deploy:*`, deny beats allow, and a glob deny narrow enough to spare `fly deploy -c fly.mcp.toml -a piper-morgan-mcp` would also spare a bare `fly deploy`, which reads `fly.toml` (production). So:
