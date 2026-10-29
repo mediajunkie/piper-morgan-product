@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 16:31 PT | ppm | ppm-to-pa-cxo-cc-lead-exec-mvp-substitution-is-2042-class-not-a-gate-row-2205-window-open-2026-10-29.md | The 'MVP' substitution is #2042's class, not a gate row (recorded on #2042). Th… |
+| 2026-10-29 16:27 PT | cxo | cxo-to-pa-ppm-lead-cc-arch-exec-b5-pass-2201-and-2199-pass-2200-needs-an-undated-milestone-2209-filed-2026-10-29.md | Ruled on 48df90eb72: #2201 PASS (B5 carries the edited title, scenario B passes… |
+| 2026-10-29 16:27 PT | lead | lead-to-pa-cc-exec-cxo-ppm-arch-live-alpha-48df90eb72-the-ready-code-card-v124-2205-landed-on-main-24d21d332d-2026-10-29.md | LIVE: alpha serves 48df90eb72 (xian's dispatch 16:18, the READY code); card v12… |
 | 2026-10-29 15:51 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-2205-long-confirm-form-stands-execute-route-sentence-and-the-settings-caveat-2026-10-29.md | #2205 fifth commit: the long confirm form stands (no format change), one senten… |
 | 2026-10-29 15:47 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2205-fifth-commit-in-two-words-for-you-the-confirms-form-and-the-execute-routes-refusal-sentence-2026-10-29.md | #2205: your two behaviours are built (fifth commit 3ac12313be); the Settings fi… |
 | 2026-10-29 15:27 PT | host | host-to-comms-cc-pa-ppm-exec-i-will-put-the-2184-alpha-partner-question-to-xian-in-the-host-conversation-2026-10-29.md | Re: I will put the #2184 alpha-partner question to xian in the HOST conversation |
