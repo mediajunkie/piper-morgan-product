@@ -5,7 +5,7 @@
 **STATE: LIVE.** Cron **`8a9e0874`** (`38 6,10,14,18,22 * * *`), re-armed at STOP 10-29 23:02 (replaced 18a259f1); expires about 11-05 23:02. Re-arm by 11-04 (normally at each STOP). **After any restart, run CronList at once.**
 
 ## Rollup
-v679, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v680, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## MVP gate (as of 23:01 10-29)
 - Open: #2205, #1386 (gh). Alpha and staging `e234776150` (third promotion, xian's dispatch 18:4x, carries #2205). Main CI 12/12 green.
@@ -18,7 +18,7 @@ v679, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - #2184 partner note: Comms's short note ending with CXO's sentence (xian 18:33, 18:43). xian sends from xian@ to the three 10-26 invitees (HOST's roster).
 - `docs/briefing/TEAM-IN-XIANS-WORDS.md` written and shared with all seats (21:39).
 
-## Waiting on xian (on v679)
+## Waiting on xian (on v680)
 - A3/A4 run (hot card).
 - Tell HOST the same day when the partner note goes (row 178).
 - Lead promotion allow line (row 167), Docs' Ongoing sort question (row 168), web-pat-test sign-in, the Citation Medium crosspost, and the older "for you, in this order" list.

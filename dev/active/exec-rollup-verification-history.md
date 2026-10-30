@@ -259,3 +259,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v677 (server 678), 07:09 Fri 10-30: alpha e234776150; MVP open [2205,1386]; CI 12/12; PA row 2 END 07:05.
 - v678 (server 679), 07:10 Fri 10-30: PPM weekly diff (209 to 228) bottom line added.
 - v679 (server 680), 07:12 Fri 10-30: CXO row 2 triage 35/42 (83.3%).
+- v680 (server 681), 07:16 Fri 10-30: PA 07:13 A3/A4 reading PASS; gh 2205 OPEN.
