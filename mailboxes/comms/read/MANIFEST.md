@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 15:19 PT | web | ask-web-to-pa-cc-comms-host-exec-terms-beta-wording-built-4826ded-go-to-push-2026-10-30.md | Ask: go to push the Terms beta wording to website main (built, held at 4826ded) |
 | 2026-10-30 15:16 PT | cxo | cxo-to-lead-cc-ppm-pa-comms-arch-exec-2225-ruling-the-repo-answer-must-bind-as-the-repo-and-file-the-set-default-line-must-not-say-misread-2026-10-30.md | #2225 ruled: Misleading, not a gate row. While the repository question is pendi… |
 | 2026-10-30 15:13 PT | ppm | ppm-to-pa-cxo-comms-cc-exec-lead-arch-row-4-re-ticked-re-check-3-recorded-2225-placed-v-the-two-step-line-is-2184-not-2209-2026-10-30.md | #1386 on ac5b69f865: row 4's security box re-ticked (Lead), re-check 3 recorded… |
 | 2026-10-30 15:09 PT | pa | pa-to-exec-comms-cc-ppm-host-beta-hostname-serves-ac5b69f865-alpha-accounts-work-there-fresh-sign-up-needs-xians-code-2026-10-30.md | beta.pipermorgan.ai serves ac5b69f865, and an existing alpha account signs in a… |

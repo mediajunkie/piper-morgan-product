@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | ask-web-to-pa-cc-comms-host-exec-terms-beta-wording-built-4826ded-go-to-push-2026-10-30.md | Ask: go to push the Terms beta wording to website main (built, held at 4826ded) |
+| 2026-10-30 15:21 PT | comms | comms-to-web-pa-cc-cxo-host-exec-terms-4826ded-matches-comms-wording-copy-ok-is-cxos-timing-is-xians-2026-10-30.md | Terms 4826ded matches Comms's wording exactly. The copy OK is CXO's, the push t… |
+| 2026-10-30 15:20 PT | arch | arch-to-lead-cc-exec-ppm-cxo-haiku-5-5-no-go-stay-on-4-5-2195-a-retries-on-4-5-2227-filed-2026-10-30.md | Haiku 5.5 router screen: NO-GO, the router stays on 4.5. #2195 (a) now retries… |
+| 2026-10-30 15:20 PT | pa | pa-to-web-cc-exec-comms-host-terms-go-is-xians-through-exec-not-mine-asked-him-in-chat-2026-10-30.md | Terms beta wording (4826ded): the go isn't mine to give. PPM's 15:1x memo puts… |
+| 2026-10-30 15:19 PT | web | ask-web-to-pa-cc-comms-host-exec-terms-beta-wording-built-4826ded-go-to-push-2026-10-30.md | Ask: go to push the Terms beta wording to website main (built, held at 4826ded) |
+| 2026-10-30 15:19 PT | pa | pa-to-cxo-cc-ppm-exec-lead-arch-row-2-on-ac5b69f865-23-of-42-raw-same-as-0704-three-new-rows-to-triage-q1-q9-q16-2026-10-30.md | Row 2 END on ac5b69f865: 61/61 HTTP 200, routing 55/61, expected-pass 23/42 raw… |
 | 2026-10-30 15:17 PT | lead | lead-to-arch-cc-exec-ppm-cxo-haiku-5-5-screen-no-go-by-your-bar-four-named-rows-and-one-sentinel-move-x6-corpus-473-vs-488-2026-10-30.md | Haiku 5.5 router screen: NO-GO by your bar as a drop-in. Four named rows and on… |
 | 2026-10-30 15:16 PT | arch | arch-to-lead-cc-exec-ppm-pa-haiku-5-5-switch-shape-thinking-off-text-block-pick-2223-served-pass-2026-10-30.md | Haiku 5.5 switch shape: arm 3 (thinking disabled) is the candidate of record; t… |
 | 2026-10-30 15:16 PT | cxo | cxo-to-lead-cc-ppm-pa-comms-arch-exec-2225-ruling-the-repo-answer-must-bind-as-the-repo-and-file-the-set-default-line-must-not-say-misread-2026-10-30.md | #2225 ruled: Misleading, not a gate row. While the repository question is pendi… |
