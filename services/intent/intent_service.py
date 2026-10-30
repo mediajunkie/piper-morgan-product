@@ -2076,6 +2076,41 @@ class IntentService:
                 _lapsed = self._lapsed_offer_reply(session_id, user_id, message)
                 if _lapsed is not None:
                     return _lapsed
+            # #2223: an offer dropped for its principal was still popped this
+            # turn, so the turn stays out of the inversion's flip-1 scope
+            # exactly as an off-intent abandon does.
+            _offer_dropped_for_principal = False
+            if pending_offer:
+                # #2223 (Arch 2026-10-30 10:36): an offer is acted on only
+                # under the principal that armed it. A record naming a
+                # principal (pending_action.user_id or the stored Intent's
+                # context.user_id) met by a None or different turn principal
+                # is DROPPED here, before any kind handler or the generic
+                # accept/decline: nothing from it runs and the turn routes
+                # normally. A kind whose handler already answers a different
+                # principal with its own hold-off line keeps that line.
+                from services.intent_service.offer_principal import (
+                    drop_offer_on_principal_mismatch,
+                )
+
+                _principal_drop = await drop_offer_on_principal_mismatch(
+                    pending_offer,
+                    message,
+                    session_id=session_id,
+                    user_id=user_id,
+                    intent_service=self,
+                )
+                if _principal_drop is not None:
+                    pending_offer = None
+                    _offer_dropped_for_principal = True
+                    _drop_reply = _principal_drop["reply"]
+                    if _drop_reply is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_drop_reply["message"],
+                            intent_data=_drop_reply["intent_data"],
+                            requires_clarification=_drop_reply.get("requires_clarification", False),
+                        )
             if pending_offer:
                 # #1510 (inferred half, PM ruling via Exec 2026-08-13): on a
                 # verification read-back turn, meta-feedback about the
@@ -3239,7 +3274,9 @@ class IntentService:
                     session_id=session_id,
                     user_id=user_id,
                     intent_service=self,
-                    turn_had_pending_offer=pending_offer is not None,
+                    turn_had_pending_offer=(
+                        pending_offer is not None or _offer_dropped_for_principal
+                    ),
                     turn_bound_contextual_offer=contextual_offer_bound,
                 )
             except Exception as e:  # silent-ok: LOGGED loudly right here — an inversion consult failure must never break the turn; the legacy chain below answers it (#1423 discipline)

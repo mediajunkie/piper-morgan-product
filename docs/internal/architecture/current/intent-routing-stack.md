@@ -6165,6 +6165,29 @@ Two one-slot arm stores hold a question Piper asked, and they are not interchang
   the spent offer; the warning is the trace. The Slack path's `IntentService()` shares the slice
   in-process (module-level registry) but is built without a `ConversationManager`, so its offers
   neither hydrate nor persist across a restart. Pins: `test_pending_offer_slice_2189.py`.
+  **#2223 (2026-10-30, Arch 10:36): an offer is acted on only under the principal that armed
+  it.** The store stays session-keyed and `/api/v1/intent` takes optional auth, so before this an
+  anonymous turn (cookie expiry) could pop an authenticated user's offer, and the generic accept
+  dispatched `confirm_pending_action`, which re-dispatched the stored Intent carrying the arming
+  user (Arch's probe: an anonymous "yes" on the #1567 default question dispatched `update_issue`
+  under that user). One check now sits at the pop seam in `_process_intent_internal`, right after
+  `get_and_clear_pending_offer` and the #2189 early persist, before every kind handler and the
+  generic accept/decline (`services/intent_service/offer_principal.py`,
+  `drop_offer_on_principal_mismatch`). The record's principal is every id it names:
+  `pending_action.user_id` and the stored Intent's `context.user_id`. A None or different turn
+  principal drops the offer (logged `pending_offer_dropped_principal_mismatch` with offer_user,
+  turn_user, kind, workflow_type): nothing from it runs, and the turn routes normally (it still
+  counts as an offer-popped turn for the inversion's flip-1 skip, as an off-intent abandon does).
+  The drop renders no line of its own; for a DIFFERENT authenticated principal, the kinds whose
+  handlers already answered with their own "Let's hold off on that" line (repo question, the
+  three add-project kinds, the delete-todo pick, the three reminder-clear kinds) still do, since
+  each reaches its mismatch check before any read or write. A record naming no principal (an
+  anonymous arm; the soft `meeting` offer; the canonical `action_required` offers, none
+  registered, so an accept routes to the floor) behaves as before. Every write-effect arm site
+  records its principal: the floor-bound offer (#1855 layer 2) was the one that did not and now
+  stores `user_id`; the shrink-only exception list `UNRECORDED_PRINCIPAL_WRITE_OFFER_KINDS` is
+  empty. The per-kind checks (#2199, #2207, #2222, #1532) stay in place. Pins:
+  `test_offer_principal_2223.py`. Landed: (Lead fills)
 
 **Rule (Arch, #2035): an offer whose "yes" leads to a WRITE arms the #846 store with its own
 landing, never the #852 hint.** The served defect it closes: no projects → `list my projects` →
