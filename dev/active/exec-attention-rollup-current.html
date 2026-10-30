@@ -32,23 +32,20 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 29 October</h1>
-<p class="meta">Exec · v681, rebuilt 07:23 PDT Fri 10-30 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
-
-<div class="card win"><b>Key limit raised ($90 to $100, your word via PA 11:36; raised again 18:59, your word to me); calls succeed again.</b> Lead resumes the #2184 screens; row 2&rsquo;s judge works. Recorded in decisions.log; CIO and HOST told.</div>
-
-<div class="card win"><b>Test-account chat is working again:</b> PA&rsquo;s scenarios B and C ran on the seed account from 13:05. Partners were most likely never affected (CIO and PA both corrected their first alarms).</div>
-
-<div class="card win"><b>#2184 is off the MVP gate as a known issue</b> (your word, 13:02). Recorded in decisions.log with your priority rule: everything that left MVP goes to the top of triage for the first Production sprint. CXO&rsquo;s line goes in the first beta invitation (no sooner than 10-30, after your conversation with HOST); the three alpha partners get a line too (your yes via PA, 16:47); Comms proposes the form. Row 0 also passed #2194&rsquo;s headers and #2187&rsquo;s Reconnect card; the milestone pick still fails a different way, filed as #2199 in Production.</div>
-
-<div class="card win"><b>Your scenario answers are recorded (13:55, decisions.log):</b> #2205 asks which repo on a write (and the repo you picked in the setup wizard, which wasn&rsquo;t wired in, gets fixed with it; Arch: the wizard sets your default, one store); #2201 ships in the next release; yes to the one known-issues line in the beta letter. CXO is judging your A1 and A2 quotes. Lead sizes #2205: it joins the next release if small, otherwise it&rsquo;s a second release inside the freeze. </div>
-
-<div class="card win"><b>The second release is live</b> (your dispatch 16:18, no 503; alpha serves <code>48df90eb72</code>, the READY code). PA re-ran scenario B and CXO passed it: the recap now shows the renamed title. <b>#2201 and #2199 closed.</b> #2200 (due dates) closed too, on CXO&rsquo;s read of your rendered page (16:50).</div>
-
-
+<p class="meta">Exec · v682, rebuilt 07:38 PDT Fri 10-30 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <div class="card win"><b>Scenario A passes, and so does #2205 (CXO, 07:19).</b> Your A3/A4 run (07:07&ndash;07:12) did what you ruled: with a repo picked in the wizard, it created the issue there with no question; with no repo, it asked first, then created the issue where you named. PPM closes #2205. Rows 2 and 4 already pass on this build.</div>
 
-<div class="card act"><b>After CXO&rsquo;s ruling, the gate&rsquo;s last steps:</b> PPM&rsquo;s row 5 final read, then row 6 (the beta letter&rsquo;s final draft, after your HOST conversation), then <b>your go/no-go on #1386</b>. PA asks one side question for CXO, not a gate item: new accounts skip the &ldquo;here&rsquo;s a draft&rdquo; step before creating.</div>
+<div class="card hot"><b>Your hands, two things (PPM 07:34; Pard 07:34):</b>
+<ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
+<li><b>Two Fly reads for gate row 4</b>, any time before go/no-go. They need your Fly login. (a) <code>fly ssh console</code> on alpha, then <code>alembic current</code>, <code>alembic heads</code>, <code>alembic check</code>. (b) <code>fly secrets list</code> on alpha, to confirm <code>ENCRYPTION_MASTER_KEY</code> is still set. Paste the output to PA, who quotes it onto #1386, and PPM ticks both boxes.</li>
+<li><b>Load the Ship-kickoff LaunchAgent</b> (Pard built and tested it; auto mode refused to load it for Pard). Paste:
+<pre style="white-space:pre-wrap;margin:.3rem 0">cp /Users/xian/Development/mediajunkie/docs/launchagents/com.xian.ship-kickoff.plist /Users/xian/Library/LaunchAgents/
+launchctl bootstrap gui/$(id -u) /Users/xian/Library/LaunchAgents/com.xian.ship-kickoff.plist</pre>
+It sends the Friday kickoff at 05:05 with no Claude session, first on 11-06. The duty-cycle skill step covers it until then.</li>
+</ol></div>
+
+<div class="card act"><b>The MVP gate is #1386 alone</b> (#2205 closed 07:29 on CXO&rsquo;s PASS). Rows 1&ndash;3 and row 4&rsquo;s security suite are done on alpha <code>e234776150</code>. Left: your two Fly reads above, PPM&rsquo;s row 5 at go/no-go (0 P0/P1 since 10-26 so far), row 6 (the beta letter, after your HOST conversation), then <b>your go/no-go</b>. Today is the hard stop; dates are yours alone, and PPM proposes no slip.</div>
 
 <div class="card win"><b>The partner note is settled</b> (your 18:33 and 18:43): Comms&rsquo;s short note, ending with CXO&rsquo;s &ldquo;This is a known issue and isn&rsquo;t fixed yet.&rdquo; Recorded in decisions.log. It goes from your own mailbox (xian@, as on 10-26) to the three 10-26 invitees whenever you like; HOST can read you the addresses. <b>Tell me when it&rsquo;s sent</b> so HOST can note it in the roster. The beta letter&rsquo;s line now uses the same &ldquo;Launch&rdquo; example.</div>
 
@@ -120,7 +117,7 @@
 </ul></div>
 <h2>📊 Where things stand</h2>
 <div class="card"><b>Production this week (PPM&rsquo;s first Friday diff, 10-24 to 10-30):</b> 209 to 228 open (+19 net: 30 in, 11 closed). The growth is mostly honesty and boundary findings from the gate&rsquo;s test runs, not new feature scope; every open issue sits in a planned sprint. 16 Production issues served this week, and 4 MVP issues closed. Detail: <code>dev/active/production-weekly-diff-2026-10-30.md</code>.</div>
-<div class="card">MVP gate: <b>2 open</b> (#2205, #1386; <code>gh</code> 07:08 Fri). Today is the 10-30 hard stop. Alpha <code>e234776150</code> (live 18:45 Thu, your dispatch; #2205), frozen until go/no-go except gate-row fixes. Main CI 12 of 12 green (07:08).</div>
+<div class="card">MVP gate: <b>1 open</b> (#1386; <code>gh</code> 07:38 Fri). Today is the 10-30 hard stop. Alpha <code>e234776150</code> (live 18:45 Thu, your dispatch; #2205), frozen until go/no-go except gate-row fixes. Main CI 12 of 12 green (07:08).</div>
 <p class="meta">How I checked each version: <code>dev/active/exec-rollup-verification-history.md</code> (not needed to read this page).</p>
 
 </div>
