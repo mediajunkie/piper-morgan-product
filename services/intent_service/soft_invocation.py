@@ -680,7 +680,16 @@ class WorkflowOfferService:
     def set_pending_offer(
         self, session_id: str, offer: Dict[str, Any], user_id: Optional[str] = None
     ) -> None:
-        """Store a pending offer awaiting user response (cache + slice, #2189)."""
+        """Store a pending offer awaiting user response (cache + slice, #2189).
+
+        #2223 (Arch 11:14): the pop seam acts on an offer only under the
+        principal that armed it, and treats a write offer naming no principal
+        as armed anonymously. So a record carrying a ``pending_action`` that
+        names no principal (no ``user_id``, no stored-Intent ``user_id``) is
+        stamped here with the arming ``user_id`` (in place), whatever arm
+        site built it. Records without a ``pending_action`` (the soft offer,
+        the canonical ``action_required`` offers) are stored unchanged."""
+        offer = self._stamp_arming_principal(offer, user_id)
         self._pending_offers[self._offer_key(session_id)] = offer
         if not session_id:
             return
@@ -702,6 +711,22 @@ class WorkflowOfferService:
                 session_id=str(session_id),
                 error_type=type(e).__name__,
             )
+
+    @staticmethod
+    def _stamp_arming_principal(offer: Dict[str, Any], user_id: Optional[str]) -> Dict[str, Any]:
+        if not user_id or not isinstance(offer, dict):
+            return offer
+        payload = offer.get("pending_action")
+        if not isinstance(payload, dict):
+            return offer
+        from services.intent_service.offer_principal import recorded_offer_principals
+
+        if recorded_offer_principals(offer):
+            return offer
+        # In place, so the stored record stays the one the arm site built
+        # (callers and pins compare the popped record by identity).
+        payload["user_id"] = str(user_id)
+        return offer
 
     def get_and_clear_pending_offer(
         self, session_id: str, user_id: Optional[str] = None

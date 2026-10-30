@@ -2076,6 +2076,29 @@ class IntentService:
                 _lapsed = self._lapsed_offer_reply(session_id, user_id, message)
                 if _lapsed is not None:
                     return _lapsed
+            # #2223: an offer dropped for its principal was still popped this
+            # turn, so the turn stays out of the inversion's flip-1 scope
+            # exactly as an off-intent abandon does.
+            _offer_dropped_for_principal = False
+            if pending_offer:
+                # #2223 (Arch 2026-10-30 10:36, 11:14): an offer is acted on
+                # only under the principal that armed it. A record naming a
+                # principal (pending_action.user_id or the stored Intent's
+                # context.user_id) met by a None or different turn principal,
+                # or an anonymously armed record whose workflow declares a
+                # non-READ effect met by a signed-in turn, is DROPPED here,
+                # before any kind handler or the generic accept/decline:
+                # nothing from it runs, no handler of its kind is called,
+                # nothing is rendered, and the turn routes normally.
+                from services.intent_service.offer_principal import (
+                    drop_offer_on_principal_mismatch,
+                )
+
+                if drop_offer_on_principal_mismatch(
+                    pending_offer, session_id=session_id, user_id=user_id
+                ):
+                    pending_offer = None
+                    _offer_dropped_for_principal = True
             if pending_offer:
                 # #1510 (inferred half, PM ruling via Exec 2026-08-13): on a
                 # verification read-back turn, meta-feedback about the
@@ -3239,7 +3262,9 @@ class IntentService:
                     session_id=session_id,
                     user_id=user_id,
                     intent_service=self,
-                    turn_had_pending_offer=pending_offer is not None,
+                    turn_had_pending_offer=(
+                        pending_offer is not None or _offer_dropped_for_principal
+                    ),
                     turn_bound_contextual_offer=contextual_offer_bound,
                 )
             except Exception as e:  # silent-ok: LOGGED loudly right here — an inversion consult failure must never break the turn; the legacy chain below answers it (#1423 discipline)

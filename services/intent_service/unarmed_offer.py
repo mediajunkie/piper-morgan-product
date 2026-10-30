@@ -357,7 +357,9 @@ FLOOR_BOUND_OFFER_KIND = "floor_bound_offer"
 ARMED_QUESTION_FORM: Optional[str] = "Want me to {command}? Say yes, or tell me otherwise."
 
 
-def build_floor_bound_offer_record(*, command: str, question: str, action: str) -> Dict[str, Any]:
+def build_floor_bound_offer_record(
+    *, command: str, question: str, action: str, user_id: Optional[Any] = None
+) -> Dict[str, Any]:
     """The #846 record an armed floor offer stores (the #1190 carrier's shape).
 
     ``question`` is the RENDERED ask — the sentence the user is reading this
@@ -367,6 +369,9 @@ def build_floor_bound_offer_record(*, command: str, question: str, action: str) 
     under the design's own names so the record reads as the design describes
     it. At the NAMED_OBJECT tier an accept against a record with no rendered
     ask is REFUSED (Arch condition (a)) — this record can never be that record.
+
+    ``user_id`` (#2223): the arming turn's principal, recorded so the pop seam
+    acts on the offer only under that principal (None on an anonymous arm).
     """
     from services.intent_service.destructive_confirm import (
         CONFIRM_PENDING_ACTION_WORKFLOW,
@@ -385,6 +390,9 @@ def build_floor_bound_offer_record(*, command: str, question: str, action: str) 
             "command": command,
             "action": action,
             "summary": command,
+            # #2223: only when there is one, so an anonymous arm keeps the
+            # carrier shape it always had.
+            **({"user_id": str(user_id)} if user_id else {}),
         },
         "decline_message": (f"No problem — I haven't done it. When you want it, say: {command}."),
     }
@@ -449,7 +457,9 @@ def _try_arm(
         sentence = ARMED_QUESTION_FORM.format(command=command)
         out = text[: offer.start] + sentence + text[offer.end :]
 
-    record = build_floor_bound_offer_record(command=command, question=sentence, action=family.name)
+    record = build_floor_bound_offer_record(
+        command=command, question=sentence, action=family.name, user_id=user_id
+    )
     try:
         armed = arm_offer(record)
     except Exception as exc:  # silent-ok: LOGGED, and it degrades to the rewrite — an arming store that raises must not cost the user their reply, and the fallback is the fail-safe direction (no question stands)
