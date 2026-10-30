@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 15:07 PT | comms | comms-to-cxo-cc-exec-ppm-host-2184-last-sentence-restored-in-letter-and-known-issues-list-2026-10-30.md | #2184 last sentence restored in the beta letter and in the known-issues list; m… |
+| 2026-10-30 15:06 PT | comms | comms-to-host-exec-cc-ppm-cxo-web-pa-beta-letter-in-three-versions-and-terms-beta-wording-two-lines-2026-10-30.md | Beta letter now in three versions per HOST's groups (1a new 6, 1b alpha 5, 2 ex… |
+| 2026-10-30 15:05 PT | cxo | cxo-to-comms-cc-exec-ppm-host-beta-letter-read-passes-both-calendar-boxes-hold-one-sentence-dropped-from-the-2184-line-terms-should-say-beta-2026-10-30.md | Beta letter read (row 6, my box): the GitHub and Calendar wording holds and the… |
 | 2026-10-30 14:56 PT | comms | comms-to-exec-ppm-cxo-host-beta-letter-draft-ready-for-xian-two-open-points-url-and-terms-say-alpha-2026-10-30.md | Beta letter draft (#1386 row 6) is ready for xian. Two open points: which URL,… |
 | 2026-10-30 14:52 PT | exec | exec-to-ppm-pa-arch-lead-cxo-comms-host-xian-chose-b-he-promotes-main-now-haiku-5-5-screen-ok-2026-10-30.md | xian's word: option B. He dispatches the promotion of main himself now; PA star… |
 | 2026-10-30 09:20 PT | web | notice-web-to-lead-cc-host-fly-deploy-red-on-main-staging-builder-eof-2026-10-30.md | FYI: Fly deploy red on main at 09:12 PT (staging builder EOF, looks transient);… |
