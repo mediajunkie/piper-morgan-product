@@ -40,8 +40,8 @@ same sentence as ``#N``, and for each one whether any slice item for ``#N``
 carries that milestone (today always false: no slice has the field). It measures
 the invented-relation subclass rung 2 could not see, because ``#31`` IS in
 context and so is "Beta launch"; only the claim that one belongs to the other
-is made up. A sentence runs between ``.``, ``!``, ``?`` or a newline; a title
-containing one of those (``v0.9``) can never match. A single-reference aside
+is made up. A sentence runs between ``.``, ``!`` or ``?`` followed by whitespace or the end
+of the text, or a newline, so a title like ``v0.9`` can match. A single-reference aside
 that asserts a relation now fires the event. Still log-only.
 
 No regular expressions: the binder ratchet (#1943, ``TestBinderFileRatchet``)
@@ -180,15 +180,17 @@ def reference_sources(
     return out
 
 
-_SENTENCE_ENDS = ".!?\n"
-
-
 def _sentences(text: str) -> List[str]:
-    """Spans of ``text`` between sentence terminators (a character scan)."""
+    """Spans of ``text`` between sentence terminators (a character scan).
+
+    ``.``, ``!`` and ``?`` end a sentence only when followed by whitespace or
+    the end of the text; a newline always does. So ``v0.9`` stays whole.
+    """
     out: List[str] = []
     start = 0
+    n = len(text)
     for i, ch in enumerate(text):
-        if ch in _SENTENCE_ENDS:
+        if ch == "\n" or (ch in ".!?" and (i + 1 == n or text[i + 1].isspace())):
             out.append(text[start:i])
             start = i + 1
     out.append(text[start:])

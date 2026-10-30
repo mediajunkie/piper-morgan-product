@@ -328,6 +328,16 @@ class TestReferenceRelations:
         msg = "Issue #31 is still open. Your Beta launch is due soon."
         assert reference_relations(msg, ["#31"], CTX_RELATIONS) == {}
 
+    def test_dotted_title_matches_in_the_same_sentence(self):
+        ctx = {"active_milestones": [{"title": "v0.9", "number": 5}]}
+        msg = "issue #31 is slated for v0.9 now."
+        assert reference_relations(msg, ["#31"], ctx) == {"#31": {"v0.9": False}}
+
+    def test_period_before_space_is_a_boundary(self):
+        ctx = {"active_milestones": [{"title": "v0.9", "number": 5}]}
+        msg = "Done with #31. v0.9 ships next week."
+        assert reference_relations(msg, ["#31"], ctx) == {}
+
     def test_newline_ends_a_sentence(self):
         msg = "Beta launch is due soon\n- #31 full-text search"
         assert reference_relations(msg, ["#31"], CTX_RELATIONS) == {}
