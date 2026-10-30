@@ -345,10 +345,39 @@ class TestArmedNoMatch:
         assert _marker(service, sid) is None  # discarded by the turn-end clear
         assert _pending(service, sid) is None  # not re-armed
 
-    async def test_pin8_the_guidance_door_does_not_consult_the_marker(self, service, floor, github):
-        """``_handle_guidance_via_floor`` is driven directly: a marker present for the session is neither
-        used nor consumed there (the turn-end clear discards it)."""
+    async def test_pin8_a_guidance_verdict_drops_the_marker_and_the_floor_renders(
+        self, service, floor, github
+    ):
+        """Arch 21:25: GUIDANCE is a chosen category; the floor only renders it. Armed, the marker set
+        at the pop seam, a GUIDANCE verdict floors through ``_handle_floor_with_context``'s GUIDANCE
+        branch: the guidance answer renders, no milestone line, no re-arm, the marker gone. (The dead
+        ``_handle_guidance_via_floor`` is #2211, not exercised here.)"""
         sid = "s2209-pin8"
+        _arm(service, sid)
+        seen_marker = []
+        real_head = service._handle_floor_with_context
+
+        async def _spy(intent, session_id, *a, **k):
+            seen_marker.append(dict(_marker(service, session_id) or {}))
+            return await real_head(intent, session_id, *a, **k)
+
+        service._handle_floor_with_context = _spy
+        _verdict(service, IntentCategory.GUIDANCE, "get_guidance", "how should I plan this week?")
+        with patch.object(service, "_assemble_guidance_context", new=AsyncMock(return_value={})):
+            result = await service.process_intent(
+                message="how should I plan this week?", session_id=sid, user_id=_USER
+            )
+        assert seen_marker and seen_marker[0].get("titles") == ["Beta launch"]  # it was armed
+        assert result.message.startswith("FLOOR:")
+        assert "don't see a milestone" not in result.message
+        floor.assert_awaited_once()
+        assert _marker(service, sid) is None
+        rec = _pending(service, sid)
+        assert rec is None or not rec["pending_action"].get(mp.REARMED_FLAG)
+
+    async def test_pin8b_the_guidance_branch_consumes_the_marker_itself(self, service, floor):
+        """Drop at the head, not only at turn end: a later door in the same turn finds no marker."""
+        sid = "s2209-pin8b"
         mp.set_no_match_marker(
             service,
             sid,
@@ -364,10 +393,9 @@ class TestArmedNoMatch:
             context={"original_message": "how should I plan this week?", "user_id": _USER},
         )
         with patch.object(service, "_assemble_guidance_context", new=AsyncMock(return_value={})):
-            result = await service._handle_guidance_via_floor(intent, sid, user_id=_USER)
-        assert result.message.startswith("FLOOR:")
-        floor.assert_awaited_once()
-        assert _marker(service, sid) is not None
+            result = await service._handle_floor_with_context(intent, sid, user_id=_USER)
+        assert result.message == FLOOR_TEXT
+        assert _marker(service, sid) is None
         assert _pending(service, sid) is None
 
 

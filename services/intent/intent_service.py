@@ -19777,9 +19777,9 @@ Add any additional information here.
         self, session_id: Optional[str]
     ) -> Optional[IntentProcessingResult]:
         """#2209 (Arch 2026-10-29 20:29/20:42/20:55): consulted at the head of
-        the two non-dispatch floor doors only (``_handle_floor_with_context``
-        and ``_handle_unknown_intent``; not the ethics denial door, not the
-        guidance door). Consumes this turn's no-match marker; with none,
+        the two non-dispatch floor doors only (``_handle_floor_with_context``,
+        except its GUIDANCE branch, and ``_handle_unknown_intent``; not the
+        ethics denial door, not the guidance door). Consumes this turn's no-match marker; with none,
         returns None. No GitHub read, no write; the pick re-arms once."""
         from services.intent_service.milestone_pick import take_no_match_reply
 
@@ -19810,9 +19810,16 @@ Add any additional information here.
         """
         # #2209: an armed milestone pick's no-match answers instead of the
         # floor, before any context assembly or model call. Un-armed: None.
-        _mp_no_match = self._milestone_pick_no_match_result(session_id)
-        if _mp_no_match is not None:
-            return _mp_no_match
+        # GUIDANCE is a chosen category and the floor only renders it (Arch
+        # 21:25): the marker drops, no line, no re-arm.
+        if intent.category is IntentCategory.GUIDANCE:
+            from services.intent_service.milestone_pick import clear_no_match_marker
+
+            clear_no_match_marker(self, session_id)
+        else:
+            _mp_no_match = self._milestone_pick_no_match_result(session_id)
+            if _mp_no_match is not None:
+                return _mp_no_match
         # #1394: principal recovery — see _handle_unknown_intent. The gate
         # call site threads user_id today; this guards any future caller.
         user_id = user_id or _principal_from_intent(intent)
