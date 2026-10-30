@@ -1901,6 +1901,25 @@ Full decision record: `docs/internal/architecture/adrs/adr-080-llm-decides-meani
    full run like any router input. Recorded 2026-10-11 after Lead and Arch both built a #1984 ruling on the
    opposite premise; the fact lived only in the function's docstring until this line.
 
+   **Catalog order is sorted by canonical name (#2195, Arch's ruling, decisions.log 2026-10-29 18:57).**
+   The two sources above decide WHICH ops are in the catalog, not where they sit: `derive_routing_grammar`
+   ends with `ops.sort(key=lambda op: op.name)`, replacing the old order (rail entries in
+   `get_action_workflows()` registration order, then `ACTION_REGISTRY` order). The reason is measured: on the
+   served router model a line's POSITION in the rendered catalog is a routing variable. A pure reorder with no
+   text change flipped the link_repo sentinel ×6 and moved the same borderline rows as four description
+   wordings (`dev/2026/10/29/controls/2195-status-entry-x6-main-2026-10-29.md`,
+   `…-candidate-2026-10-29.md`). With the sort, promoting a registry-only op to a rail entry with the same
+   description changes no byte of the rendered request. Only order changed: every line's text is
+   byte-identical, and no consumer of `grammar.operations` / `names()` depends on order apart from the
+   prompt renderer and the offline `scripts/decision_model_trial.py` criteria dict, which follows the same
+   order (the rest do membership, lookups or counts). Pins in
+   `tests/unit/services/intent_service/test_inversion_router_1595.py::TestCatalogOrder2195`: (1)
+   `test_rendered_catalog_lines_are_sorted_by_canonical_name` (on the rendered user prompt; NONE/CLARIFY stay
+   last); (2) `test_rail_entry_for_registry_only_op_leaves_request_byte_identical` (get_project_status through
+   the real `read_floor_2` factory, membership monkeypatched) and
+   `test_every_registry_only_op_promotes_byte_identically` (every registry-only op, system + user prompt).
+   Landed: (Lead fills).
+
 **Enforcement**: that same test is the no-LLM ratchet — every registry canonical must be
 rail-registered or explicitly ledgered as off-rail-but-surface-handled; the ledger only
 shrinks; corpus expectations must name known actions. The LLM half (behavioral corpus,

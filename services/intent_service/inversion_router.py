@@ -234,7 +234,8 @@ def derive_routing_grammar() -> RoutingGrammar:
     registry gained 4 keys in 5 days). A registry mutation MUST change the
     next grammar derivation; a test asserts exactly that.
 
-    Sources, in order:
+    Sources (the catalog ORDER is not source order: ops are emitted sorted by
+    canonical name, #2195 — see the sort at the end):
 
     1. **The action rail** (``get_action_workflows()`` — the #1124 dispatch
        surface). Aliases are collapsed by shared ``WorkflowEntry`` OBJECT
@@ -347,6 +348,14 @@ def derive_routing_grammar() -> RoutingGrammar:
         covered.add(action)
         alias_to_canonical[action] = action
 
+    # #2195 (Arch, decisions.log 2026-10-29 18:57): the catalog is emitted SORTED BY
+    # CANONICAL NAME, not in the source order above. On the served router model a
+    # line's POSITION in the rendered catalog is a routing variable (a pure reorder
+    # flipped the link_repo sentinel x6), so the order must not depend on which
+    # source an op came from: promoting a registry-only op to a rail entry with the
+    # same description now leaves the rendered request byte-identical. Derived, not
+    # hand-kept; names are unique by construction (`covered`), so there are no ties.
+    ops.sort(key=lambda op: op.name)
     return RoutingGrammar(operations=tuple(ops), alias_to_canonical=alias_to_canonical)
 
 

@@ -213,6 +213,104 @@ class TestGrammarDerivation:
             assert offer_only not in names
 
 
+class TestCatalogOrder2195:
+    """#2195 (Arch, decisions.log 2026-10-29 18:57): the catalog is sorted by
+    canonical name. Measured that day: a line's POSITION in the rendered catalog
+    is a routing variable on the served router model (a pure reorder flipped the
+    link_repo sentinel x6), so registering a rail entry for a registry-only op must
+    not move any line. Reports: dev/2026/10/29/controls/
+    2195-status-entry-x6-{main,candidate}-2026-10-29.md."""
+
+    PHRASE = "show milestones"
+
+    @staticmethod
+    def _catalog_names(prompt: str) -> list[str]:
+        lines = prompt.split("\n")
+        start = next(i for i, line in enumerate(lines) if line.startswith("Operation catalog"))
+        names = []
+        for line in lines[start + 1 :]:
+            if not line.startswith("- "):
+                break
+            names.append(line[2:].split(":", 1)[0])
+        return names
+
+    def _rendered_request(self) -> tuple[str, str]:
+        """The two prompt texts the live router sends (scripts/router_batch.py
+        renders the same pair): the system prompt and the catalog user prompt."""
+        from services.intent_service.inversion_router import _SYSTEM_PROMPT
+
+        return _SYSTEM_PROMPT, build_routing_prompt(self.PHRASE, derive_routing_grammar())
+
+    def test_rendered_catalog_lines_are_sorted_by_canonical_name(self):
+        grammar = derive_routing_grammar()
+        names = self._catalog_names(build_routing_prompt(self.PHRASE, grammar))
+        assert names[-2:] == [NONE_ROUTE, CLARIFY_ROUTE]  # the two fixed outcomes stay last
+        ops = names[:-2]
+        assert ops == list(grammar.names())  # every grammar op is rendered, in grammar order
+        assert len(ops) == len(set(ops)), "two catalog ops share a canonical name"
+        assert ops == sorted(ops)
+        # Both sources are interleaved by name, not blocked by source.
+        sources = {op.source for op in grammar.operations}
+        assert sources == {"rail", "action_registry"}
+
+    def test_rail_entry_for_registry_only_op_leaves_request_byte_identical(self, monkeypatch):
+        """Pin 2, on the op that motivated it: get_project_status promoted through
+        the real read_floor_2 adapter factory (monkeypatched membership, never
+        committed) renders the same system + user prompt, byte for byte."""
+        from services.intent_service import workflow_entries as we
+
+        op = "get_project_status"
+        grammar = derive_routing_grammar()
+        assert {o.name: o.source for o in grammar.operations}[op] == "action_registry"
+        before = self._rendered_request()
+
+        monkeypatch.setattr(we, "_READ_FLOOR_2_MEMBERS", {op: "STATUS"})
+        entry = we._read_floor_2_entries()[op]
+        try:
+            register_workflow(op, entry)
+            promoted = derive_routing_grammar()
+            assert {o.name: o.source for o in promoted.operations}[op] == "rail"
+            after = self._rendered_request()
+        finally:
+            WORKFLOW_REGISTRY.pop(op, None)
+        assert after[0] == before[0]
+        assert after[1] == before[1]
+
+    def test_every_registry_only_op_promotes_byte_identically(self):
+        """Pin 2 across the whole registry-only set: a rail entry carrying the op's
+        own ACTION_DESCRIPTIONS text (plus the issue marker the rail strips) leaves
+        the rendered request unchanged, so no op's example or description renders
+        differently by source."""
+        from services.intent_service.action_registry import ACTION_DESCRIPTIONS, ACTION_REGISTRY
+
+        async def _noop(session_id, user_id=None, context=None):  # pragma: no cover
+            return None
+
+        category_by_action = {a: c for (c, a) in ACTION_REGISTRY}
+        registry_only = [
+            o.name for o in derive_routing_grammar().operations if o.source == "action_registry"
+        ]
+        assert registry_only, "no registry-only ops left; pin is vacuous"
+        before = self._rendered_request()
+        differing = []
+        for op in registry_only:
+            text = ACTION_DESCRIPTIONS[(category_by_action[op], op)]
+            entry = WorkflowEntry(
+                entry_point=_noop,
+                effect=EffectClass.READ,
+                description=f"{text} (#2195 probe)",
+                action_triggered=True,
+            )
+            try:
+                register_workflow(op, entry)
+                if self._rendered_request() != before:
+                    differing.append(op)
+            finally:
+                WORKFLOW_REGISTRY.pop(op, None)
+        assert differing == []
+        assert self._rendered_request() == before
+
+
 # ---------------------------------------------------------------------------
 # Structured-output enforcement (route)
 # ---------------------------------------------------------------------------
