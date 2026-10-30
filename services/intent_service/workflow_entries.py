@@ -2047,6 +2047,7 @@ _READ_FLOOR_2_MEMBERS: dict[str, str] = {
     "check_completion_status": "STATUS",
     "write_stakeholder_update": "QUERY",
     "get_identity": "IDENTITY",
+    "get_project_status": "STATUS",
 }
 
 
