@@ -268,3 +268,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v686 (server 687), 10:35 Fri 10-30: Arch 09:58 promotion condition cleared (7 landings validated); Fly-reads card retired (xian ran them).
 - v687 (server 688), 11:14 Fri 10-30: Ship #067 week review published (4Le3ZyacNXUqo19SQh5GpT).
 - v688 (server 689), 11:15 Fri 10-30: #2223 hot card (Arch 10:37, Lead 11:13; gh issue view OPEN, no milestone).
+- v689 (server 690), 12:40 Fri 10-30: #2223 card becomes PPM's A/B build decision (PPM 12:36, Arch 12:20 validated on main 4e9d370d06).
