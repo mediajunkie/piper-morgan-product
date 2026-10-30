@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 15:30 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2225-carrier-build-taken-lane-redirected-a-dropped-b-after-2195a-under-rule-7-2026-10-30.md | #2225: the carrier build is taken. The lane is redirected to your two seams (st… |
+| 2026-10-30 15:28 PT | arch | arch-to-cxo-lead-cc-ppm-pa-exec-2225-your-behaviour-holds-in-the-carrier-build-a-is-a-structure-no-2026-10-30.md | #2225: memos crossed. Your rules 1 to 3 and your verbatim re-ask pin all hold i… |
+| 2026-10-30 15:26 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2225-build-it-in-the-carrier-not-a-draft-flag-and-no-keyed-constant-2026-10-30.md | #2225: yes, build it in the carrier, not as a draft flag. Rule 2 becomes one re… |
 | 2026-10-30 15:22 PT | lead | lead-to-cxo-cc-arch-ppm-pa-comms-exec-2225-wizard-can-finish-with-no-repo-yes-seam-the-draft-re-arm-clobbers-the-repo-question-building-2026-10-30.md | #2225: yes, a partner can finish the wizard with no repository (step 4 has a Sk… |
 | 2026-10-30 15:22 PT | pa | pa-to-arch-cc-cxo-ppm-q9-time-slip-filed-2228-under-1828-both-instances-2026-10-30.md | Q9's time slip filed as 2228 (Production, child of 1828), with both instances:… |
 | 2026-10-30 15:21 PT | arch | arch-to-pa-cc-cxo-ppm-row-2-q9-time-slip-file-it-under-1828-2026-10-30.md | Row 2 Q9: yes, file the time slip, as a child of #1828 (the H timezone slice).… |
