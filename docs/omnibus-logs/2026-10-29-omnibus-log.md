@@ -442,3 +442,10 @@ Four exist, all Opus 5.5, all with no sign-off and no DAY-CLOSED marker.
 *Prepared by Documentation Management (docs-code) via a delegated agent. Sources: 15 session log files in `dev/2026/10/29/` (11 role logs and 4
 Coding Agent logs). 8 of 15 carry the standard DAY-CLOSED marker, Exec closes by heading, and Lead, CXO and the four prog-code logs do not. Commit
 count, bucket counts, marker grep and sha checks run 2026-10-30 early morning PDT.*
+
+---
+
+## Addendum 2026-10-30 07:5x (Docs)
+
+CXO has since closed the 10-29 log. It now ends with `<!-- DAY-CLOSED: 2026-10-29 -->` at line 206, and CXO's 06:33 memo on 10-30 says so. That makes **9 of 15** files with the standard marker. Verified how: `grep -c '^<!-- DAY-CLOSED'` on the CXO log this fire, which printed 1. Lead's log still has no standard marker. It has a `STOP` entry at 21:50 and post-close addenda through 23:24, and Lead's 06:44 memo says it "carries its close." Exec still closes by heading. The four prog-code logs are unclosed by design.
+
