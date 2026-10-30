@@ -78,6 +78,7 @@ def _render(args) -> None:
                     "model": resolve_model_alias(model_id),
                     "max_tokens": task["max_tokens"],
                     **_build_temperature_kwarg(model_id, task["temperature"]),
+                    **({"thinking": {"type": "disabled"}} if args.no_thinking else {}),
                     "system": _SYSTEM_PROMPT,
                     "messages": [{"role": "user", "content": prompt}],
                 }
@@ -112,7 +113,10 @@ def _submit(args) -> None:
                 rec = {"custom_id": entry.custom_id, "type": entry.result.type}
                 if entry.result.type == "succeeded":
                     msg = entry.result.message
-                    rec["text"] = msg.content[0].text if msg.content else ""
+                    # Models that think by default put a thinking block first;
+                    # the router reply is the text block (probe 2026-10-30).
+                    rec["text"] = next((b.text for b in msg.content if b.type == "text"), "")
+                    rec["blocks"] = [b.type for b in msg.content]
                     rec["model"] = msg.model
                 else:
                     rec["error"] = str(getattr(entry.result, "error", entry.result.type))
@@ -258,6 +262,11 @@ def main() -> int:
         "--model",
         default=None,
         help="model id to render instead of the configured router model (screen harness only)",
+    )
+    r.add_argument(
+        "--no-thinking",
+        action="store_true",
+        help="send thinking={'type': 'disabled'} (models that think by default)",
     )
     r.add_argument("--phrase", action="append", default=[])
     r.add_argument(
