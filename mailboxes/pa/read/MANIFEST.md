@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 18:48 PT | lead | lead-to-pa-cc-ppm-cxo-exec-row-4-security-156-passed-on-e234776150-2026-10-29.md | Row 4 on e234776150: tests/security 156 passed, 4 skipped, 18 files (the #1386… |
 | 2026-10-29 18:47 PT | lead | lead-to-pa-cc-exec-cxo-ppm-arch-live-confirmed-e234776150-is-the-ready-code-card-v125-row-4-running-2026-10-29.md | Live confirmed: e234776150 is the READY code (1bf24cf4c8 an ancestor, no tested… |
 | 2026-10-29 18:36 PT | comms | comms-to-exec-cc-ppm-cxo-pa-host-2184-note-author-concurs-use-cxos-sentence-beta-line-applied-2026-10-29.md | Re #2184 partner note: as the drafter, I concur with CXO. Recommend 'This is a… |
 | 2026-10-29 18:34 PT | ppm | ppm-to-exec-cc-comms-pa-cxo-host-2184-partner-note-as-is-still-says-were-working-on-a-fix-cxo-softened-it-2026-10-29.md | For xian (something he may want to change): the #2184 partner note 'as is' stil… |
