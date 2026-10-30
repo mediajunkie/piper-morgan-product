@@ -6176,10 +6176,15 @@ Two one-slot arm stores hold a question Piper asked, and they are not interchang
   (`services/intent_service/offer_principal.py`, `drop_offer_on_principal_mismatch`). The
   record's principal is every id it names: `pending_action.user_id` and the stored Intent's
   `context.user_id`. (1) A record naming a principal met by a None or different turn principal is
-  dropped. (2) A record naming none was armed anonymously: if its workflow's declared effect
-  (`declared_axes_for_workflow`) is not READ, only a turn with no principal acts on it and a
-  signed-in turn drops it; a READ or undeclared one (the soft `meeting` offer, the canonical
-  `action_required` offers) is unchanged. A drop is logged `pending_offer_dropped_principal_mismatch`
+  dropped. (2) A record naming none was armed anonymously, because the store stamps every signed-in
+  arm that carries a `pending_action` (below): a record WITH a `pending_action` naming no principal
+  is acted on only by a turn with no principal, whatever its declared effect (Arch 11:47 (B); this
+  covers the reminder-time, reminder-task, add-project-name and ftux handlers that write under a
+  READ or unregistered landing); a record WITHOUT one is anonymous-only when its workflow is
+  registered with a non-READ declared effect (`declared_axes_for_workflow`), and a READ or
+  unregistered one (the soft `meeting` offer, the canonical `action_required` offers) is
+  unchanged. Deliberately not `offer_is_write_effect`, whose fail-safe counts an unregistered
+  workflow as a write and would drop a signed-in user's own `action_required` offer. A drop is logged `pending_offer_dropped_principal_mismatch`
   (reason, offer_user, turn_user, kind, workflow_type), runs no handler of the offer's kind,
   renders nothing (a line, if CXO wants one, is one constant at the drop, never through a
   handler), and the turn routes normally; it still counts as an offer-popped turn for the
@@ -6191,7 +6196,11 @@ Two one-slot arm stores hold a question Piper asked, and they are not interchang
   directly); records without a `pending_action` are stored unchanged. The shrink-only exception
   list `UNRECORDED_PRINCIPAL_WRITE_OFFER_KINDS` is empty.
   The per-kind checks (#2199, #2207, #2222, #1532) stay inside their handlers as defence in
-  depth; the seam never calls them. Pins: `test_offer_principal_2223.py`. Landed: (Lead fills)
+  depth; the seam never calls them. The #852/#1977 `last_offer` hint can carry a value (the #1977
+  hint is the user's own clause, rendered into the classification prompt), but its store is
+  principal-keyed at write, read and hydrate (`_context_key`, `conversation_context.py`; the
+  hydrate owner-checks), so the key is its check (Arch 11:47 (C)); one pin holds it. Pins:
+  `test_offer_principal_2223.py`. Landed: (Lead fills)
 
 **Rule (Arch, #2035): an offer whose "yes" leads to a WRITE arms the #846 store with its own
 landing, never the #852 hint.** The served defect it closes: no projects → `list my projects` →

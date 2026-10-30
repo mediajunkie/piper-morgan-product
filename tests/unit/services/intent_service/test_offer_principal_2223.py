@@ -22,7 +22,7 @@ patched at the router) and spy on ``dispatch_workflow``:
   exception list is pinned by size.
 """
 
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
@@ -246,8 +246,8 @@ class TestUnrecordedPrincipalBehavesAsBefore:
 
     @pytest.mark.asyncio
     async def test_anonymous_armed_write_offer_signed_in_yes_drops(self, service):
-        """Arch 11:14 (2): an anonymously armed confirm (declared DESTRUCTIVE)
-        is not acted on by a signed-in turn."""
+        """Arch 11:47 (B): an anonymously armed confirm (an unstamped
+        ``pending_action``) is not acted on by a signed-in turn."""
         from structlog.testing import capture_logs
 
         sid = "sess-2223-anon-armed-signed-in"
@@ -258,7 +258,7 @@ class TestUnrecordedPrincipalBehavesAsBefore:
         write.assert_not_awaited()
         assert _pending(service, sid) is None
         drops = [e for e in events if e["event"] == "pending_offer_dropped_principal_mismatch"]
-        assert [d["reason"] for d in drops] == ["anonymous_write_offer_signed_in_turn"]
+        assert [d["reason"] for d in drops] == ["anonymous_pending_action_signed_in_turn"]
         assert drops[0]["offer_user"] == [] and drops[0]["turn_user"] == _USER
 
     @pytest.mark.asyncio
@@ -281,6 +281,59 @@ class TestUnrecordedPrincipalBehavesAsBefore:
         with capture_logs() as events:
             result, dispatched, write = await _say(service, sid, "yes", _USER)
         assert dispatched[:1] == ["meeting"], dispatched
+        assert not [e for e in events if e["event"] == "pending_offer_dropped_principal_mismatch"]
+
+    @pytest.mark.asyncio
+    async def test_anonymous_armed_read_pending_action_signed_in_yes_drops(self, service):
+        """Arch 11:47 (B): the reminder time question (landing declared READ,
+        handler saves) armed anonymously; a signed-in "yes" drops it and its
+        handler never runs."""
+        from structlog.testing import capture_logs
+
+        from services.intent_service.todo_handlers import build_reminder_time_offer
+
+        sid = "sess-2223-anon-reminder-time"
+        service.workflow_offer_service.set_pending_offer(
+            sid,
+            build_reminder_time_offer("water the plants", None, question="When should I?"),
+            user_id=None,
+        )
+        assert op.recorded_offer_principals(_pending(service, sid)) == frozenset()
+        with (
+            patch(
+                "services.intent_service.todo_handlers.handle_reminder_time_turn", new=AsyncMock()
+            ) as handler,
+            capture_logs() as events,
+        ):
+            result, dispatched, write = await _say(service, sid, "yes", _USER)
+        handler.assert_not_awaited()
+        assert "clarify_reminder_time" not in dispatched, dispatched
+        assert _pending(service, sid) is None
+        drops = [e for e in events if e["event"] == "pending_offer_dropped_principal_mismatch"]
+        assert [d["reason"] for d in drops] == ["anonymous_pending_action_signed_in_turn"]
+
+    @pytest.mark.asyncio
+    async def test_signed_in_action_required_offer_accepted_by_same_user_not_dropped(self, service):
+        """Arch 11:47: the canonical ``action_required`` offer has no
+        ``pending_action`` (never stamped) and an unregistered workflow; a
+        signed-in user's own accept on the same session is NOT dropped and
+        reaches the generic accept as today."""
+        from structlog.testing import capture_logs
+
+        sid = "sess-2223-own-action-required"
+        service.workflow_offer_service.set_pending_offer(
+            sid,
+            {"workflow_type": "project_setup", "action_required": "configure_projects"},
+            user_id=_USER,
+        )
+        # Today's accept for an unregistered workflow: dispatch returns None
+        # and the turn goes to the floor door (stubbed here, no model).
+        floor = AsyncMock(return_value=MagicMock(message="floor", intent_data={}))
+        with patch.object(service, "_handle_unknown_intent", new=floor), capture_logs() as events:
+            result, dispatched, write = await _say(service, sid, "yes", _USER)
+        assert dispatched[:1] == ["project_setup"], dispatched
+        floor.assert_awaited_once()
+        assert floor.await_args.args[0].action == "project_setup"
         assert not [e for e in events if e["event"] == "pending_offer_dropped_principal_mismatch"]
 
     def test_action_required_offer_is_undeclared_and_unchanged(self):
@@ -320,22 +373,36 @@ class TestRecordedPrincipal:
         assert op.offer_principal_mismatch(rec, "a") is True
         assert op.offer_principal_mismatch(rec, "b") is True
 
-    def test_no_principal_read_or_undeclared_never_mismatches(self):
+    def test_no_principal_without_pending_action_read_or_unregistered_never_drops(self):
         for rec in (
             {"workflow_type": "meeting"},
-            {"pending_action": {"kind": "x", "user_id": None}},
-            {"pending_action": {"intent": self._intent()}},
+            {"workflow_type": "project_setup", "action_required": "configure_projects"},
+            {"question": "no workflow at all"},
         ):
-            assert op.offer_principal_mismatch(rec, None) is False
-            assert op.offer_principal_mismatch(rec, "b") is False
+            assert op.principal_drop_reason(rec, None) is None
+            assert op.principal_drop_reason(rec, "b") is None
 
-    def test_no_principal_write_offer_acts_only_for_anonymous_turns(self):
-        rec = {
-            "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
-            "pending_action": {"intent": self._intent()},
-        }
+    def test_no_principal_without_pending_action_registered_write_is_anonymous_only(self):
+        rec = {"workflow_type": "standup_interview"}  # registered WRITE, no pending_action
         assert op.principal_drop_reason(rec, None) is None
         assert op.principal_drop_reason(rec, "b") == "anonymous_write_offer_signed_in_turn"
+
+    def test_unstamped_pending_action_is_anonymous_only_whatever_its_effect(self):
+        """Arch 11:47 (B): the store stamps every signed-in arm, so an
+        unstamped ``pending_action`` came from an anonymous arm — READ landing
+        (reminder time question), unregistered, or a held Intent alike."""
+        from services.intent_service.todo_handlers import build_reminder_time_offer
+
+        for rec in (
+            build_reminder_time_offer("water the plants", None, question="When?"),
+            {"pending_action": {"kind": "x", "user_id": None}},
+            {
+                "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+                "pending_action": {"intent": self._intent()},
+            },
+        ):
+            assert op.principal_drop_reason(rec, None) is None
+            assert op.principal_drop_reason(rec, "b") == "anonymous_pending_action_signed_in_turn"
 
     def test_floor_bound_offer_records_its_principal(self):
         from services.intent_service.unarmed_offer import build_floor_bound_offer_record
@@ -388,3 +455,55 @@ class TestStoreStampsTheArmingPrincipal:
         soft = {"workflow_type": "meeting", "question": "Want me to?"}
         svc.set_pending_offer("s-soft", soft, user_id=_USER)
         assert svc._pending_offers["s-soft"] is soft
+
+
+class TestLastOfferIsPrincipalKeyed:
+    """Arch 11:47 (C): the #852 ``last_offer`` hint can carry a value (the #1977
+    hint is the user's own clause), and its store's principal key is the
+    check. User A's hint is written through the real ``_track_offer_hint``;
+    an anonymous turn and then a different signed-in turn on the SAME session
+    run through the real ``process_intent`` read (intent_service ~2928) and
+    see no hint (no ``contextual_offer_accepted`` / ``_expired`` event); A's
+    own next turn then does (the positive control)."""
+
+    pytestmark = pytest.mark.asyncio
+
+    @staticmethod
+    def _hint_events(events):
+        return [
+            e["event"]
+            for e in events
+            if e["event"] in ("contextual_offer_accepted", "contextual_offer_expired")
+        ]
+
+    async def test_anonymous_and_other_user_read_no_last_offer(self, service):
+        import uuid
+
+        from structlog.testing import capture_logs
+
+        from services.intent_service.conversation_context import get_or_create_context
+
+        sid = str(uuid.uuid4())
+        service._track_offer_hint(
+            {
+                "offer_hint": {
+                    "continuation_hint": "list the issues in acme/secret-repo",
+                    "offer_text": "Want me to list the issues in acme/secret-repo?",
+                }
+            },
+            sid,
+            user_id=_USER,
+        )
+        assert get_or_create_context(sid, user_id=_USER).last_offer is not None
+
+        for turn_user in (None, _OTHER):
+            with capture_logs() as events:
+                await _say(service, sid, "yes", turn_user)
+            assert self._hint_events(events) == [], (turn_user, self._hint_events(events))
+            assert get_or_create_context(sid, user_id=turn_user).last_offer is None
+        # A's hint is untouched by the other principals' turns ...
+        assert get_or_create_context(sid, user_id=_USER).last_offer is not None
+        # ... and A's own turn reads it (positive control: the read is real).
+        with capture_logs() as events:
+            await _say(service, sid, "yes", _USER)
+        assert self._hint_events(events) == ["contextual_offer_accepted"]

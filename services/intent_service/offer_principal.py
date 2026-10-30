@@ -21,12 +21,13 @@ right after ``get_and_clear_pending_offer``):
   rendered, and the turn routes normally (Arch 11:14 (1): the per-kind checks
   stay inside the handlers as defence in depth, but this check never calls
   them; a line, if CXO wants one, is one constant rendered at the drop).
-- A record naming NO principal was armed anonymously. If its workflow declares
-  a non-READ effect (``declared_axes_for_workflow``), only a turn with no
-  principal acts on it; a signed-in turn drops it the same way (Arch 11:14
-  (2)). A READ or undeclared workflow naming no principal (the soft
-  ``meeting`` offer, the canonical ``action_required`` offers) behaves exactly
-  as before.
+- A record naming NO principal was armed anonymously (the store stamps every
+  signed-in arm that carries a ``pending_action``). With a ``pending_action``,
+  only a turn with no principal acts on it, whatever its declared effect (Arch
+  11:47 (B)). Without one, only a registered non-READ workflow is
+  anonymous-only (``declared_axes_for_workflow``, Arch 11:14 (2)); a READ or
+  unregistered one (the soft ``meeting`` offer, the canonical
+  ``action_required`` offers) behaves exactly as before.
 
 The per-kind checks (#2199 milestone pick, #2207/#2222 repo question, the
 #1532/#1605 mismatch checks) stay in place; this check runs first.
@@ -95,11 +96,21 @@ def principal_drop_reason(record: Any, turn_user_id: Optional[Any]) -> Optional[
 
     - ``recorded_principal_mismatch``: the record names a principal and the
       turn's is None or different.
-    - ``anonymous_write_offer_signed_in_turn``: the record names no principal
-      (armed anonymously), its workflow declares a non-READ effect, and the
-      turn has a principal (Arch 11:14 (2)).
-    A record naming no principal whose workflow is READ or undeclared behaves
-    as before."""
+    - ``anonymous_pending_action_signed_in_turn``: the record carries a
+      ``pending_action`` naming no principal and the turn has one. The store
+      stamps every signed-in arm of such a record (``set_pending_offer``), so
+      an unstamped one can only come from an anonymous arm: whatever its
+      declared effect, only a turn with no principal acts on it (Arch 11:47
+      (B); covers kind handlers that write under a READ landing).
+    - ``anonymous_write_offer_signed_in_turn``: the record has NO
+      ``pending_action``, names no principal, its workflow is registered with
+      a non-READ declared effect, and the turn has a principal (Arch 11:14
+      (2)). Deliberately not ``offer_is_write_effect``: its fail-safe counts
+      an unregistered workflow as a write, which would drop a signed-in user's
+      own ``action_required`` offer (Arch 11:47).
+    A record without a ``pending_action`` naming no principal whose workflow
+    is READ or unregistered (the soft ``meeting`` offer, the canonical
+    ``action_required`` offers) behaves as before."""
     if not isinstance(record, dict):
         return None
     turn = str(turn_user_id) if turn_user_id else None
@@ -108,7 +119,11 @@ def principal_drop_reason(record: Any, turn_user_id: Optional[Any]) -> Optional[
         if turn is None or recorded != {turn}:
             return "recorded_principal_mismatch"
         return None
-    if turn is not None and _declares_non_read_effect(record):
+    if turn is None:
+        return None
+    if isinstance(record.get("pending_action"), dict):
+        return "anonymous_pending_action_signed_in_turn"
+    if _declares_non_read_effect(record):
         return "anonymous_write_offer_signed_in_turn"
     return None
 
