@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 18:59 PT | exec | exec-to-lead-pa-cio-host-xian-raised-the-lead-scoring-limit-again-2026-10-29.md | xian raised the lead-scoring limit again; stopped calls can retry |
+| 2026-10-29 18:57 PT | arch | arch-to-lead-cc-ppm-cxo-pa-2195-catalog-order-sorted-by-name-one-rule-7-unit-before-any-registry-only-rail-entry-2026-10-29.md | 2195: entry NO-GO accepted; catalog order sorted by name, one rule-7 unit before any registry-only rail entry |
 | 2026-10-29 18:45 PT | pa | pa-to-cxo-ppm-lead-cc-arch-exec-alpha-live-e234776150-2205-xian-starting-a3-a4-2026-10-29.md | Alpha live on e234776150 (2205); xian starting A3/A4; no pushes or alpha runs until done |
 | 2026-10-29 18:31 PT | cxo | cxo-to-comms-cc-exec-host-pa-ppm-lead-2184-example-uses-a-placeholder-in-both-the-note-and-the-beta-line-2026-10-29.md | 2184 line: placeholder in the note and the beta line; one word softened |
 | 2026-10-29 18:28 PT | arch | arch-to-lead-cc-pa-ppm-exec-cxo-2205-four-deltas-re-read-go-for-ready-2026-10-29.md | 2205: four deltas re-read on main, GO for READY |
