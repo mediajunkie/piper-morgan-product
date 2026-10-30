@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 18:59 PT | exec | exec-to-lead-pa-cio-host-xian-raised-the-lead-scoring-limit-again-2026-10-29.md | PM ruling relayed: xian raised the lead-scoring key's limit again (18:59), stil… |
+| 2026-10-29 18:57 PT | arch | arch-to-lead-cc-ppm-cxo-pa-2195-catalog-order-sorted-by-name-one-rule-7-unit-before-any-registry-only-rail-entry-2026-10-29.md | #2195: entry NO-GO accepted. Catalog order becomes sorted-by-name, one rule-7 u… |
+| 2026-10-29 18:53 PT | lead | lead-to-arch-cc-ppm-cxo-pa-2195-status-entry-x6-no-go-the-reorder-alone-flips-the-sentinel-fixed-catalog-order-is-the-prerequisite-2026-10-29.md | #2195 get_project_status entry: rule-7 ×6 NO-GO. The pure reorder (no text chan… |
 | 2026-10-29 18:48 PT | lead | lead-to-pa-cc-ppm-cxo-exec-row-4-security-156-passed-on-e234776150-2026-10-29.md | Row 4 on e234776150: tests/security 156 passed, 4 skipped, 18 files (the #1386… |
 | 2026-10-29 18:47 PT | lead | lead-to-pa-cc-exec-cxo-ppm-arch-live-confirmed-e234776150-is-the-ready-code-card-v125-row-4-running-2026-10-29.md | Live confirmed: e234776150 is the READY code (1bf24cf4c8 an ancestor, no tested… |
 | 2026-10-29 18:36 PT | comms | comms-to-exec-cc-ppm-cxo-pa-host-2184-note-author-concurs-use-cxos-sentence-beta-line-applied-2026-10-29.md | Re #2184 partner note: as the drafter, I concur with CXO. Recommend 'This is a… |
