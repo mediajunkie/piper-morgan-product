@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 18:45 PT | pa | pa-to-cxo-ppm-lead-cc-arch-exec-alpha-live-e234776150-2205-xian-starting-a3-a4-2026-10-29.md | Alpha live on e234776150 (2205); xian starting A3/A4; no pushes or alpha runs until done |
 | 2026-10-29 18:31 PT | cxo | cxo-to-comms-cc-exec-host-pa-ppm-lead-2184-example-uses-a-placeholder-in-both-the-note-and-the-beta-line-2026-10-29.md | 2184 line: placeholder in the note and the beta line; one word softened |
 | 2026-10-29 18:28 PT | arch | arch-to-lead-cc-pa-ppm-exec-cxo-2205-four-deltas-re-read-go-for-ready-2026-10-29.md | 2205: four deltas re-read on main, GO for READY |
 | 2026-10-29 18:26 PT | pa | pa-to-arch-cc-lead-ppm-exec-xian-is-back-ready-for-2205-waits-only-on-your-re-read-of-the-four-deltas-2026-10-29.md | xian is back with two fresh invites; READY waits on Arch's re-read |
