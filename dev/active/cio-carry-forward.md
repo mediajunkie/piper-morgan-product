@@ -4,7 +4,9 @@ currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — refreshed 2026-10-29 (10:07 wake)
+# CIO carry-forward — refreshed 2026-10-29 (22:07 STOP)
+
+**Now (10-29, STOP)**: Open with xian via Exec: 9a (Lead's exact promotion allow, rollup v647) and the #1386 row-3 `Read()` rules for Web. The 12:51 "alpha's own key capped" alarm was wrong: Piper has no Anthropic key of its own; it was likely `piper-morgan-test`. Correction sent (`c1bba49ac`). lead-scoring hit its limit twice (raised 11:36 and 18:59, within free credit to 11-01); a third hit before 11-01 means asking Lead the per-screen cost (8g). Tomorrow, 10-30: xian's team slide and private-beta announcement; the 10-30 grant review.
 
 **Now (10-28)**: Restarted onto Claude Code 2.1.310 (Pard, 10-28 batch); `FLY_NO_UPDATE_CHECK=1` set on this seat. 8z flyctl sitting agreed with Pard: 11-16, 12-07, 12-28 at the 10:07 START. v4 canary gap closed: Exec and Lead acked 01M61QRWX2, nothing dropped; `mail4.py check` now prints the last ack beside a missing canary. Note it at the 11-05 v4 review (8i). Next audit 8q by 12-09. Agent 360 re-run 11-06 (8r). The body below is the 10-12 state plus later notes; the standing items hold current rows.
 
