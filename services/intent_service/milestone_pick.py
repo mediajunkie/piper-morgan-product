@@ -64,6 +64,19 @@ MILESTONE_PICK_ARM_QUESTION = "Which milestone do you want to see issues from? S
 # it is rendered only by run_clarify_milestone_pick_workflow, which stores it on the
 # #846 record and arms it (the #1766 census's named-question-holder rule).
 MILESTONE_PICK_REASK_QUESTION = "Which milestone? Say its name from the list above."
+# #2209 (CXO's unquoted form, Arch 2026-10-29 20:55): an armed pick whose reply
+# matched no listed title and routed to no operation. Built from the stored
+# titles only. Named *_QUESTION: it is rendered only by take_no_match_reply,
+# which re-arms the pick (the #1766 census's named-question-holder rule).
+NO_MATCH_QUESTION = (
+    "I don't see a milestone by that name. Your open milestones: {titles}. Say one of those."
+)
+NO_OPEN_MILESTONES_LINE = "I don't see any open milestones in {repo}."
+NO_OPEN_MILESTONES_NO_REPO_LINE = "I don't see any open milestones."
+# The turn-local marker's home on the IntentService (a dict keyed by session).
+NO_MATCH_MARKER_ATTR = "_milestone_pick_no_match"
+# Set on the record the no-match line re-arms: the re-arm happens ONCE.
+REARMED_FLAG = "no_match_rearmed"
 
 
 def normalize_title(text: Optional[str]) -> str:
@@ -83,8 +96,9 @@ def _record(
     titles: List[str],
     repository: Optional[str],
     original_message: str,
+    rearmed: bool = False,
 ) -> Dict[str, Any]:
-    return {
+    record: Dict[str, Any] = {
         "workflow_type": MILESTONE_PICK_WORKFLOW,
         "question": "",
         "pending_action": {
@@ -98,6 +112,9 @@ def _record(
         },
         "decline_message": PICK_DECLINE_LINE,
     }
+    if rearmed:
+        record["pending_action"][REARMED_FLAG] = True
+    return record
 
 
 def arm_milestone_pick(
@@ -174,6 +191,13 @@ async def handle_milestone_pick_turn(
     titles = payload.get("pick_titles") or []
     title = match_title(message or "", titles)
     if title is None:
+        # #2209 (Arch 20:29/20:55): no title matched. Code does not judge
+        # whether this was a name attempt: the turn routes normally. A
+        # turn-local marker lets the two non-dispatch floor doors answer with
+        # the no-match line instead of the floor. A record that was already
+        # re-armed by that line sets no marker: the re-arm happens once.
+        if not payload.get(REARMED_FLAG):
+            set_no_match_marker(intent_service, session_id, payload, user_id, message or "")
         return None
     from services.domain.models import Intent
     from services.shared_types import IntentCategory
@@ -216,6 +240,98 @@ async def handle_milestone_pick_turn(
     }
 
 
+def _marker_slot(intent_service: Any) -> Optional[Dict[str, Dict[str, Any]]]:
+    slot = getattr(intent_service, NO_MATCH_MARKER_ATTR, None)
+    return slot if isinstance(slot, dict) else None
+
+
+def set_no_match_marker(
+    intent_service: Any,
+    session_id: Optional[str],
+    payload: Dict[str, Any],
+    user_id: Optional[str],
+    message: str,
+) -> None:
+    """#2209: record THIS turn's armed no-match (titles, repo, principal,
+    message). Cleared at the top of ``_process_intent_internal`` and in
+    ``process_intent``'s finally, so it never outlives the turn."""
+    slot = _marker_slot(intent_service)
+    if slot is None or not session_id:
+        return
+    slot[session_id] = {
+        "titles": [t for t in (payload.get("pick_titles") or []) if isinstance(t, str)],
+        "repository": payload.get("repository"),
+        "user_id": user_id,
+        "original_message": payload.get("original_message") or "",
+        "message": message,
+    }
+
+
+def clear_no_match_marker(intent_service: Any, session_id: Optional[str]) -> None:
+    """#2209: drop this session's marker (turn start and turn end)."""
+    slot = _marker_slot(intent_service)
+    if slot is not None and session_id:
+        slot.pop(session_id, None)
+
+
+def no_match_line(titles: List[str], repository: Optional[str]) -> str:
+    """CXO's words: the listed titles, comma-separated in listed order; with
+    none, the no-open-milestones line."""
+    if titles:
+        return NO_MATCH_QUESTION.format(titles=", ".join(titles))
+    if isinstance(repository, str) and repository:
+        return NO_OPEN_MILESTONES_LINE.format(repo=repository)
+    return NO_OPEN_MILESTONES_NO_REPO_LINE
+
+
+def take_no_match_reply(intent_service: Any, session_id: Optional[str]) -> Optional[Dict[str, Any]]:
+    """#2209: consulted at the head of the two non-dispatch floor doors
+    (``_handle_floor_with_context``, ``_handle_unknown_intent``). Consumes the
+    marker on first use; with none, returns None and the door runs unchanged.
+    With one: the no-match line from the stored titles (no read, no write) and
+    the same titles re-armed once (marked so a second no-match sets no marker)."""
+    slot = _marker_slot(intent_service)
+    if slot is None or not session_id:
+        return None
+    marker = slot.pop(session_id, None)
+    if marker is None:
+        return None
+    titles = marker.get("titles") or []
+    repository = marker.get("repository")
+    line = no_match_line(titles, repository)
+    rearmed = False
+    if titles:
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id,
+            _record(
+                marker.get("user_id"),
+                titles,
+                repository,
+                marker.get("original_message") or "",
+                rearmed=True,
+            )
+            | {"question": line},
+            user_id=marker.get("user_id"),
+        )
+        rearmed = True
+    logger.info(
+        "milestone_pick_no_match_answered",
+        session_id=session_id,
+        titles=len(titles),
+        rearmed=rearmed,
+    )
+    return {
+        "message": line,
+        "intent_data": {
+            "category": "query",
+            "action": MILESTONE_PICK_WORKFLOW,
+            PICK_PENDING_FLAG: rearmed,
+            "milestone_pick_no_match": True,
+        },
+        "requires_clarification": rearmed,
+    }
+
+
 async def run_clarify_milestone_pick_workflow(
     session_id: str,
     user_id: Optional[str] = None,
@@ -243,6 +359,8 @@ async def run_clarify_milestone_pick_workflow(
             titles,
             payload.get("repository"),
             payload.get("original_message") or "",
+            # #2209: a re-ask after the no-match line keeps the once-only mark.
+            rearmed=bool(payload.get(REARMED_FLAG)),
         )
         | {"question": question},
         user_id=user_id,
@@ -267,5 +385,10 @@ __all__ = (
     "match_title",
     "arm_milestone_pick",
     "handle_milestone_pick_turn",
+    "NO_MATCH_QUESTION",
+    "set_no_match_marker",
+    "clear_no_match_marker",
+    "no_match_line",
+    "take_no_match_reply",
     "run_clarify_milestone_pick_workflow",
 )

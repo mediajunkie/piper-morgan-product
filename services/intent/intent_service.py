@@ -876,6 +876,10 @@ class IntentService:
             UserFriendlyErrorService()
         )  # Issue #876: Conversational error messages
         self.logger = structlog.get_logger()
+        # #2209: the armed milestone pick's turn-local no-match marker, keyed by
+        # session. Set at the pop seam, consumed by the first non-dispatch floor
+        # door that consults it, and cleared at turn start and turn end.
+        self._milestone_pick_no_match: Dict[str, Dict[str, Any]] = {}
 
     _UNANSWERED_HALF_QUESTION = " Want me to?"
     _UNANSWERED_MAX_WORDS = 8  # CXO rule 4
@@ -1633,12 +1637,19 @@ class IntentService:
             pass  # Best-effort instrumentation, never block processing
 
         # Process the intent
-        result = await self._process_intent_internal(
-            message=message,
-            session_id=effective_session_id,
-            user_id=effective_user_id,
-            ctx=ctx,
-        )
+        try:
+            result = await self._process_intent_internal(
+                message=message,
+                session_id=effective_session_id,
+                user_id=effective_user_id,
+                ctx=ctx,
+            )
+        finally:
+            # #2209: the milestone pick's no-match marker never outlives the
+            # turn, whichever way the turn ended.
+            from services.intent_service.milestone_pick import clear_no_match_marker
+
+            clear_no_match_marker(self, effective_session_id)
 
         # Issue #563: Save conversation turn after processing (best-effort)
         # Only save successful responses with actual content
@@ -1983,6 +1994,11 @@ class IntentService:
             # nothing ahead of the consent gate needs more of ``self`` than a
             # logger (a refusal must propagate, never be swallowed).
             _last_list_complete = IntentService._pop_last_list_complete(session_id, user_id)
+            # #2209: a no-match marker is this turn's alone; none survives from
+            # an earlier turn (the pop seam below sets it afresh).
+            from services.intent_service.milestone_pick import clear_no_match_marker
+
+            clear_no_match_marker(self, session_id)
 
             # ── #1510 declaration surface (compose-vs-execute working mode) ──
             # An explicit standing declaration ("just do things directly from
@@ -2179,6 +2195,10 @@ class IntentService:
                 # IS one listed title and runs the issues read with that
                 # milestone and the listed repo (code-bound). Returning None
                 # falls through exactly as the delete pick does.
+                # #2209 (Arch 20:29/20:55): on no match it also sets the
+                # turn-local no-match marker; the turn routes normally and only
+                # a non-dispatch floor door answers with it
+                # (_milestone_pick_no_match_result).
                 elif _vi_payload.get("kind") == "milestone_pick_question":
                     from services.intent_service import milestone_pick as _mp
 
@@ -19753,6 +19773,26 @@ Add any additional information here.
             self.logger.warning(f"Trust stage resolution failed: {e}")
             return None
 
+    def _milestone_pick_no_match_result(
+        self, session_id: Optional[str]
+    ) -> Optional[IntentProcessingResult]:
+        """#2209 (Arch 2026-10-29 20:29/20:42/20:55): consulted at the head of
+        the two non-dispatch floor doors only (``_handle_floor_with_context``,
+        except its GUIDANCE branch, and ``_handle_unknown_intent``; not the
+        ethics denial door, not the guidance door). Consumes this turn's no-match marker; with none,
+        returns None. No GitHub read, no write; the pick re-arms once."""
+        from services.intent_service.milestone_pick import take_no_match_reply
+
+        reply = take_no_match_reply(self, session_id)
+        if reply is None:
+            return None
+        return IntentProcessingResult(
+            success=True,
+            message=reply["message"],
+            intent_data=reply["intent_data"],
+            requires_clarification=reply["requires_clarification"],
+        )
+
     async def _handle_floor_with_context(
         self,
         intent: Intent,
@@ -19768,6 +19808,18 @@ Add any additional information here.
         Uses ContextAssembler to gather structured data, then creates
         FloorContext and calls ConversationalFloor.respond().
         """
+        # #2209: an armed milestone pick's no-match answers instead of the
+        # floor, before any context assembly or model call. Un-armed: None.
+        # GUIDANCE is a chosen category and the floor only renders it (Arch
+        # 21:25): the marker drops, no line, no re-arm.
+        if intent.category is IntentCategory.GUIDANCE:
+            from services.intent_service.milestone_pick import clear_no_match_marker
+
+            clear_no_match_marker(self, session_id)
+        else:
+            _mp_no_match = self._milestone_pick_no_match_result(session_id)
+            if _mp_no_match is not None:
+                return _mp_no_match
         # #1394: principal recovery — see _handle_unknown_intent. The gate
         # call site threads user_id today; this guards any future caller.
         user_id = user_id or _principal_from_intent(intent)
@@ -20093,6 +20145,12 @@ Add any additional information here.
 
         GREAT-4D Phase 7: Completes intent handler coverage.
         """
+        # #2209: an armed milestone pick's no-match answers instead of the
+        # floor (PA's served "MVP" turn came through this door via the
+        # generic-QUERY fall-through). Un-armed: None, the door runs unchanged.
+        _mp_no_match = self._milestone_pick_no_match_result(session_id)
+        if _mp_no_match is not None:
+            return _mp_no_match
         # #1394: recover the principal when a caller dropped it. The registry
         # key is user-scoped (#817), and the outer seam records every turn
         # under the AUTHENTICATED key — a None user_id here made
