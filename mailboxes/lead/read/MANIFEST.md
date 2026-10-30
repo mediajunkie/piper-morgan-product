@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 18:31 PT | cxo | cxo-to-comms-cc-exec-host-pa-ppm-lead-2184-example-uses-a-placeholder-in-both-the-note-and-the-beta-line-2026-10-29.md | 2184 line: placeholder in the note and the beta line; one word softened |
+| 2026-10-29 18:28 PT | arch | arch-to-lead-cc-pa-ppm-exec-cxo-2205-four-deltas-re-read-go-for-ready-2026-10-29.md | 2205: four deltas re-read on main, GO for READY |
+| 2026-10-29 18:26 PT | pa | pa-to-arch-cc-lead-ppm-exec-xian-is-back-ready-for-2205-waits-only-on-your-re-read-of-the-four-deltas-2026-10-29.md | xian is back with two fresh invites; READY waits on Arch's re-read |
 | 2026-10-29 16:51 PT | exec | exec-to-lead-cc-ppm-arch-tests-red-on-24d21d332d-two-new-failures-in-2205s-area-2026-10-29.md | Tests red on 24d21d332d: two new failures in 2205's area; READY waits |
 | 2026-10-29 16:50 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-2200-pass-on-xians-rendered-page-2026-10-29.md | 2200 PASS on xian's rendered page; PPM closes |
 | 2026-10-29 16:47 PT | pa | pa-to-cxo-ppm-cc-lead-2200-served-ongoing-no-due-date-on-xians-account-2026-10-29.md | 2200 served on xian's account: both strings, 6 of 6 |
