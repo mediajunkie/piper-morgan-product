@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-29 15:28 PDT
+last_updated: 2026-10-29 21:28 PDT
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,13 +28,21 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
-- **10-29 (through the 15:27 fire):** alpha serves `b9a8a43600` (promoted 12:08). The freeze holds; fix promotions for gate rows go in between scenarios (PPM). **MVP gate: #2205, #2201, #1386.** Invitations are NOT out (xian 13:02).
-  - **#2184** is off MVP as a known issue (xian 13:02), with the line in the beta letter. Wording 3 is NO-GO on ×6 regressions (decisions.log 12:27). The retry is a bundle: the description plus deletion 32 (STATUS `next milestone`), which is NO-GO until get_project_status has an entry and clears ≥0.8 ×5. **The entry registration is a rule-7 unit (catalog reorder), decisions.log 13:04.** Top of PUB.
-  - **#2199** validated from source (comment 6509839184, 28 passed). Served re-read owed by PA, then CXO.
-  - **#2205** (guessed repo on a write): ruled 13:48 (user-designated write targets only; source field) and 13:58 (wizard writes the user default; one store). Lead's branch `claude/lead-2205` read at 14:39: **GO with 4 conditions** (router choke point, `source` required, a no-`default_repo` pin, standup-skill liveness). **Re-read the four deltas on Lead's landing sha.** Third promotion inside the freeze (PPM). Then row 2 and row 4 run once on that build.
-  - **#2042:** diagnosis posted (6507798960), covering compulsory asides and relations invented by construction. Option 1 (CXO's words plus the two prompt edits) is gated on `reference_relations` (spec'd to Lead) before and after. **Rung-3 census blocked: there's no read path for alpha's turn metadata** (asked Lead for a read-only aggregate).
-  - **Deletion 31** validated (main Tests run 40938956119 green).
-  - **Haiku 5.5 screen:** the scoring key is raised ($100); about $5.70 used today. Still waits on xian's word for the screen itself.
+- **10-29 STOP (21:27):** alpha serves `e234776150` (the third promotion, #2205). xian ran A3/A4 tonight. **PA's hold on tested-path pushes holds Lead's queue.** Landing order, each on its own gates; **Arch validates each on main:**
+  1. **ledger-only** `claude/lead-ledger-only` 400b21addb: the append-only catalog order, render byte-identical. decisions.log 19:39.
+  2. **#2042a** `reference_relations`: whole-word title match; a dot between alphanumerics is in-word. GO.
+  3. **#2207** (repo-question principal): GO.
+  4. **#2209** `claude/lead-2209` dd296fe38d: armed-pick no-match. One helper at the `_handle_floor_with_context` and `_handle_unknown_intent` heads; GUIDANCE category excluded; ethics door untouched; CXO's unquoted line; 22+1 pins. decisions.log 20:29.
+  5. **#2151 STATUS-gather FLOOR-ABSENT fix** (Lead's lane is running it).
+  6. then the **get_project_status entry** `claude/lead-2195-entry` c2643c4ddc. KNOWN_RED stays 14 (decisions.log 21:08); the entry lands with its FORCE row green or at the lowered ceiling.
+  - **Scorer baseline:** 491/550 from the entry's landing (the 10-02 read_floor clause).
+  - **After that:** a rule-7 description/example unit lifts "any update on the next milestone" from 0.72 to ≥0.8 ×5, paraphrases ×6 included, which licenses **deletion 32**. No per-op floor (ruled 20:04).
+  - **Sort-by-name is NO-GO** (495→477); my 18:57 shape is superseded.
+  - **#2211** filed: delete the dead `_handle_guidance_via_floor` on rule-10 gates.
+  - **#2205** re-read: GO 18:28 (comment 6512687247). Residual: the standup skill (CLI-only) must read `get_user_write_target` if it is ever chat-wired.
+  - **#2184** off MVP (known issue); the retry bundle's entry half waits on the ledger plus entry.
+  - **#2042 rung-3 census is blocked: no read path for alpha's turn metadata** (asked Lead for a read-only aggregate). Option 1 waits on 2042a landing.
+  - **Haiku 5.5 screen** waits on xian's word.
 - **10-28 STOP (21:27):** alpha serves `49e0904c3c`, carrying all of today's landings (#2184 pick + condition-1 fix, Open 1, ratchet fix, #2185, #2187). **#2189 is fully ruled** (comments 6482389530, 6482462708, 6482619087, 6482866467, 6483099163; decisions.log 15:33 / ~15:5x / ~16:0x / ~16:1x). It waits on Lead's builds, in order: row 1 slice (+8, 10, 11, 19) → nonces to Redis → Test table (xian's migration word via Exec). **Arch validates each build when it lands.**
 - **10-28 (15:27 fire): landings validated, plus #2189.**
   - **#2186 Open 1** is on main (`355e04beba`) and validated (6482315954). Unmeasured edge: the PR rail with `state:"open"`. Unit 2 (declared args) is still owed by Lead.
