@@ -1,0 +1,1249 @@
+# Inversion Phase-1 shadow score — CONSTRAINED ROUTER vs Phase-0 baseline
+Run: 2026-10-30 22:15Z · corpus: inversion_corpus_phase0.yaml (616 rows) · scripts/inversion_phase1_shadow_score.py
+Served (#1620 — resolved, post-fallback, per row): anthropic:claude-haiku-5-5 (616/616)
+
+LAYER (m-43): **router only, context-free** — one constrained Haiku-class call per row (683 LLM calls incl. repair retries; 0 ERROR, 67 REFUSED), grammar derived from the live registry at run time (72 canonical operations, 88 input-side aliases collapsed, + NONE/CLARIFY). The production chain was NOT executed in this run; the baseline column is Phase-0's FULL-CHAIN production decision (inversion-phase0-baseline-full-2026-08-12.md). Context-dependent rows (the 1529 offer/flow family) ran WITHOUT session state — their answers are informational for Phase 2, not its measured shape.
+
+## Per-category vs baseline (denominators stated — m-44)
+
+| category | rows | asserted | router match | baseline match | Δ | REVIEW | gate |
+|---|---|---|---|---|---|---|---|
+| QUERY | 177 | 160 | 136 | 12/13 | +124 | 17 | no regression |
+| TEMPORAL | 69 | 66 | 39 | 4/4 | +35 | 3 | no regression |
+| EXECUTION | 67 | 56 | 45 | 5/6 | +40 | 11 | no regression |
+| STATUS | 65 | 60 | 42 | 1/4 | +41 | 5 | no regression |
+| PORTFOLIO | 52 | 42 | 36 | 6/7 | +30 | 10 | no regression |
+| PRIORITY | 44 | 43 | 28 | 2/2 | +26 | 1 | no regression |
+| GUIDANCE | 32 | 27 | 23 | 1/1 | +22 | 5 | no regression |
+| DISCOVERY | 25 | 24 | 21 | 0/0 | +21 | 1 | no regression |
+| MEMORY | 23 | 21 | 19 | 1/1 | +18 | 2 | no regression |
+| ANALYSIS | 18 | 17 | 14 | 0/0 | +14 | 1 | no regression |
+| TRUST | 11 | 10 | 9 | 0/0 | +9 | 1 | no regression |
+| IDENTITY | 10 | 9 | 6 | 2/2 | +4 | 1 | no regression |
+| SYNTHESIS | 9 | 7 | 5 | 2/2 | +3 | 2 | no regression |
+| PROVENANCE | 9 | 8 | 5 | 0/0 | +5 | 1 | no regression |
+| CONVERSATION | 5 | 0 | 0 | 0/0 | — | 5 | **UNGATEABLE** (REVIEW-only denominator) |
+| **TOTAL** | 616 | 550 | 428 | 36/39 | +392 | 66 | (aggregate is NOT the gate) |
+
+### Target-set assertions (`expected_args`, Arch's (a))
+
+| category | rows asserting args | action AND args right | ARGS_MISMATCH rows |
+|---|---|---|---|
+| EXECUTION | 19 | 17 | 2 |
+| PORTFOLIO | 1 | 1 | 0 |
+| QUERY | 4 | 4 | 0 |
+
+ARGS_MISMATCH detail (expected vs served):
+
+- `Mark the first one complete and leave the second one pending.` → complete_todo; ARGS exclude: ['2']≠[]
+- `add a todo to web test one` → create_todo; ARGS text: 'web test one'≠None
+
+Gate reading (Arch condition 1 as amended 08-09 08:3x, PPM): **no category may regress; the aggregate is never the gate** (the M2 precedent: 72.1% aggregate passed while a category was broken). CONVERSATION / DISCOVERY / PROVENANCE / TRUST / ANALYSIS have REVIEW-only denominators in Phase 0 and remain **ungateable** here — same as Phase 0 stated; growing asserted expectations there is outstanding Phase-0 work, not a Phase-1 scoring artifact.
+
+⚠️ **m-44: the table above compares two different denominators** (this run's 116-row corpus vs the baseline's 93-row corpus) — its `Δ`/`gate` cells are INFORMATIONAL ONLY from this run forward. The shared-subset table below, scored on rows asserted in BOTH corpora, is the actual gate.
+
+## Shared-subset score vs 2026-08-12 baseline (m-44 fix — THIS is the gate)
+
+Matching rule: phrase normalized (strip + collapse whitespace + casefold), exact match required; on a miss, fall back to an unambiguous ≥20-char prefix match in either direction (markdown row-detail tables truncate long phrases with no ellipsis, at different fixed lengths in different docs). Only rows asserted (non-REVIEW) on BOTH sides are scored here; the per-category table above compares two different denominators and is informational only from this point forward.
+
+| category | shared asserted | router match | baseline match | gate |
+|---|---|---|---|---|
+| QUERY | 12 | 12/12 | 12/12 | no regression |
+| PORTFOLIO | 7 | 6/7 | 6/7 | no regression |
+| EXECUTION | 6 | 6/6 | 5/6 | no regression |
+| TEMPORAL | 4 | 4/4 | 4/4 | no regression |
+| STATUS | 2 | 1/2 | 1/2 | no regression |
+| PRIORITY | 2 | 1/2 | 2/2 | **REGRESSION** |
+| IDENTITY | 2 | 0/2 | 2/2 | **REGRESSION** |
+| SYNTHESIS | 2 | 1/2 | 2/2 | **REGRESSION** |
+| GUIDANCE | 1 | 1/1 | 1/1 | no regression |
+| MEMORY | 1 | 1/1 | 1/1 | no regression |
+
+**Named regressions** (baseline matched, router did not — the specific rows behind each REGRESSION cell above):
+- [IDENTITY] `who am I?`
+- [IDENTITY] `what's my role?`
+- [PORTFOLIO] `Archive my project "Test"`
+- [PRIORITY] `what should I focus on today?`
+- [STATUS] `what am I working on?`
+- [SYNTHESIS] `summarize the document`
+
+**Denominator deltas (m-44)** — rows in the 08-12 baseline no longer asserted in the current corpus (dropped), and rows asserted now that the baseline never saw (added). Neither is scored above; both are why the totals table's Δ column is informational, not the gate.
+
+Dropped (baseline-asserted, not in current corpus):
+- none
+
+Added (current-asserted, not in the 08-12 baseline):
+- [ANALYSIS] what is blocking this release
+- [ANALYSIS] what tasks are blocking our sprint
+- [ANALYSIS] blockers for the release
+- [ANALYSIS] what's the main obstacle here
+- [ANALYSIS] what's in the way of finishing this
+- [ANALYSIS] let's analyze the risk here
+- [ANALYSIS] I'd like a risk assessment for this project
+- [ANALYSIS] can you run an impact analysis on this change
+- [ANALYSIS] what risks does this project have
+- [ANALYSIS] what risk do we have in this plan
+- [ANALYSIS] please identify the risks in this plan
+- [ANALYSIS] risks we should flag before launch
+- [ANALYSIS] threats to our timeline this week
+- [ANALYSIS] what could threaten this deadline
+- [ANALYSIS] Analyze this document
+- [ANALYSIS] What does this document say?
+- [ANALYSIS] Analyze the document called PRD Writing Guidelines
+- [DISCOVERY] are you able to set my default repo for me conversationally?
+- [DISCOVERY] what are your capabilities?
+- [DISCOVERY] what services can you provide?
+- [DISCOVERY] what do you offer as an assistant?
+- [DISCOVERY] what features does piper have?
+- [DISCOVERY] what can you help me do today?
+- [DISCOVERY] show me your capabilities
+- [DISCOVERY] give me a menu of services
+- [DISCOVERY] can you list your capabilities
+- [DISCOVERY] I want to understand your capabilities better
+- [DISCOVERY] pull up the capability menu
+- [DISCOVERY] open the capabilities menu
+- [DISCOVERY] show me the menu
+- [DISCOVERY] what are you able to do for my project
+- [DISCOVERY] show me the features you offer
+- [DISCOVERY] what's available in terms of features
+- [DISCOVERY] help
+- [DISCOVERY] open the help menu
+- [DISCOVERY] can you show help topics
+- [DISCOVERY] I need help understanding something
+- [DISCOVERY] is there a bottleneck analysis available
+- [DISCOVERY] what can't you do here
+- [DISCOVERY] what are your limits as an assistant
+- [DISCOVERY] what's the capability boundary here
+- [EXECUTION] Mark the first three complete and leave the fourth one pending.
+- [EXECUTION] Mark the first one complete and leave the second one pending.
+- [EXECUTION] I want you to clear 'check the test card again,' and 'review the pr' — mark them done
+- [EXECUTION] clear the first two reminders
+- [EXECUTION] take care of the last reminder
+- [EXECUTION] clear all my reminders except the first one
+- [EXECUTION] delete the first two reminders
+- [EXECUTION] delete that reminder
+- [EXECUTION] delete a reminder
+- [EXECUTION] mark all my reminders done except for 'revise the pr'
+- [EXECUTION] mark the first two complete
+- [EXECUTION] complete the last one
+- [EXECUTION] mark #2 as done
+- [EXECUTION] mark todo 3 as complete
+- [EXECUTION] mark 1, 2 and 4 done
+- [EXECUTION] complete 'review the pr'
+- [EXECUTION] I'm done with the first and the third
+- [EXECUTION] mark the PR review todo as done
+- [EXECUTION] mark everything done except the last one
+- [EXECUTION] change the status of issue #108 to Done
+- [EXECUTION] add a todo to web test one
+- [EXECUTION] Add three todos for the launch: draft brief, book venue, send invites
+- [EXECUTION] add todo buy oat milk
+- [EXECUTION] close the completed issue
+- [EXECUTION] please close this issue
+- [EXECUTION] re-open issue 88
+- [EXECUTION] reopen the old issue
+- [EXECUTION] re-open the old issue
+- [EXECUTION] add comment to issue 99
+- [EXECUTION] reply to issue 99
+- [EXECUTION] comment on 99
+- [EXECUTION] edit the meeting notes document
+- [EXECUTION] modify the status document
+- [EXECUTION] change the spec doc
+- [EXECUTION] add to the notes document new items
+- [EXECUTION] append to the log doc
+- [EXECUTION] update project plan with new deadline
+- [EXECUTION] edit the report with corrections
+- [EXECUTION] modify the onboarding checklist with the new steps
+- [EXECUTION] change the title of issue 108 to test new regressions
+- [EXECUTION] finish todo about deployment
+- [EXECUTION] Can we just mark done here?
+- [EXECUTION] complete todo for the deploy checklist
+- [EXECUTION] use mediajunkie/piper-morgan-product as my default repo
+- [EXECUTION] make mediajunkie/piper-morgan-product my default repo
+- [EXECUTION] My default repo should be mediajunkie/piper-morgan-product.
+- [EXECUTION] Actually, change the title to 'Implement full-text search across nav and global search bar'
+- [EXECUTION] Also we should call it out in the release notes
+- [EXECUTION] Create a GitHub issue: "Served check colon quotes" in dinp-machine/piper-test-activity
+- [EXECUTION] Create a GitHub issue: "Served check bare form"
+- [GUIDANCE] where should I focus this week
+- [GUIDANCE] I could use some guidance on this
+- [GUIDANCE] do you have a recommendation
+- [GUIDANCE] what's your advice here
+- [GUIDANCE] ok that's merged, what now?
+- [GUIDANCE] what are the next steps
+- [GUIDANCE] what should I do about this bug
+- [GUIDANCE] advise me on this decision
+- [GUIDANCE] what's the process for filing a bug
+- [GUIDANCE] can you help me setup the integration
+- [GUIDANCE] can you help me configure the connector
+- [GUIDANCE] I need to setup my projects
+- [GUIDANCE] how do I configure my projects
+- [GUIDANCE] how do I setup the connector
+- [GUIDANCE] how do I configure the connector
+- [GUIDANCE] just getting started here
+- [GUIDANCE] can you help me set up the integration
+- [GUIDANCE] I want to set up my projects
+- [GUIDANCE] how do I set up the connector
+- [GUIDANCE] I'd like to set up my portfolio
+- [GUIDANCE] help me setup my projects
+- [GUIDANCE] help me setup projects
+- [GUIDANCE] How do I setup my projects?
+- [GUIDANCE] setup my projects
+- [GUIDANCE] help me set up my portfolio
+- [GUIDANCE] Help me set up my projects
+- [IDENTITY] Who are you and what do you do?
+- [IDENTITY] What's your name?
+- [IDENTITY] what's your name
+- [IDENTITY] your role
+- [IDENTITY] what do you do
+- [IDENTITY] tell me about yourself
+- [IDENTITY] introduce yourself
+- [MEMORY] how well do you know me by now
+- [MEMORY] what can you remember about our last conversation
+- [MEMORY] do you remember my last project update
+- [MEMORY] remember when we shipped the last release?
+- [MEMORY] can you show my conversation history
+- [MEMORY] our history together has been good
+- [MEMORY] let's look at past conversations we've had
+- [MEMORY] pull up my previous messages please
+- [MEMORY] can I see the conversation log
+- [MEMORY] find when I mentioned this bug before
+- [MEMORY] search history for that conversation topic
+- [MEMORY] what did we discuss in our last session
+- [MEMORY] what we discussed yesterday was helpful
+- [MEMORY] how long is your memory exactly
+- [MEMORY] what do you know about my work habits
+- [MEMORY] tell me what you've learned about my habits
+- [MEMORY] what insights do you have about my productivity
+- [MEMORY] show me what you've learned about my preferences
+- [MEMORY] what patterns have you noticed in my work
+- [MEMORY] what have you noticed about my habits lately
+- [PORTFOLIO] show me my archived projects
+- [PORTFOLIO] update my project name to Atlas
+- [PORTFOLIO] edit my project description
+- [PORTFOLIO] restore CoVa
+- [PORTFOLIO] Please list my archived projects
+- [PORTFOLIO] what are my projects?
+- [PORTFOLIO] list my archive projects
+- [PORTFOLIO] Archive my Test project, please.
+- [PORTFOLIO] Archive my project called "Test" please
+- [PORTFOLIO] archive CoVa
+- [PORTFOLIO] Add a project called Baz with description testing the description
+- [PORTFOLIO] connect my repository to the project
+- [PORTFOLIO] connect octocat/hello-world to the project
+- [PORTFOLIO] add octocat/hello-world to the project
+- [PORTFOLIO] please show my linked repos
+- [PORTFOLIO] can you show project repositories for this account
+- [PORTFOLIO] list my repos on github
+- [PORTFOLIO] show all of my repos
+- [PORTFOLIO] show my archived projects
+- [PORTFOLIO] show archived projects
+- [PORTFOLIO] view my archived projects
+- [PORTFOLIO] show my projects
+- [PORTFOLIO] list my archived projects (show all names)
+- [PORTFOLIO] list my archived projects and summarize my current work
+- [PORTFOLIO] list all projects
+- [PORTFOLIO] view my projects
+- [PORTFOLIO] hide the project Beta
+- [PORTFOLIO] put the old project away
+- [PORTFOLIO] restore project Epsilon
+- [PORTFOLIO] unarchive the old project
+- [PORTFOLIO] bring back my archived project
+- [PORTFOLIO] search projects for budget
+- [PORTFOLIO] find project deadline
+- [PORTFOLIO] add a new project
+- [PORTFOLIO] I'd like to start a new project
+- [PRIORITY] what's my top priority
+- [PRIORITY] this is top priority for the team
+- [PRIORITY] this is the highest priority item
+- [PRIORITY] mark this as priority one
+- [PRIORITY] show priorities for this sprint
+- [PRIORITY] list priorities for the team
+- [PRIORITY] what are my current priorities
+- [PRIORITY] what are the key priorities this quarter
+- [PRIORITY] what's most important right now
+- [PRIORITY] what matters most this week
+- [PRIORITY] what are the key tasks for this sprint
+- [PRIORITY] what are the key items on my plate
+- [PRIORITY] should i focus on the bug first
+- [PRIORITY] what could I focus on
+- [PRIORITY] where should my focus be today
+- [PRIORITY] what are my focus areas this sprint
+- [PRIORITY] let's focus on today's priorities
+- [PRIORITY] what's my focus this week
+- [PRIORITY] not sure what to focus next
+- [PRIORITY] what's urgent right now
+- [PRIORITY] what are my urgent tasks
+- [PRIORITY] what are my urgent items
+- [PRIORITY] what's my urgent work today
+- [PRIORITY] what's the most urgent thing
+- [PRIORITY] what needs my focus today
+- [PRIORITY] what requires attention right now
+- [PRIORITY] what's critical right now
+- [PRIORITY] what are my critical tasks
+- [PRIORITY] what are my critical items
+- [PRIORITY] what's my critical work today
+- [PRIORITY] what's the most critical thing
+- [PRIORITY] what should I do first
+- [PRIORITY] what should I tackle next
+- [PRIORITY] what's next for me
+- [PRIORITY] what should I review first
+- [PRIORITY] which project should get my focus today
+- [PRIORITY] which task should get my focus next
+- [PRIORITY] not sure what to do about this
+- [PRIORITY] what's my most important task right now
+- [PRIORITY] what is my most important work today
+- [PRIORITY] what should I work on next
+- [PROVENANCE] why are you always cautious about this suggestion
+- [PROVENANCE] Where did you get that from?
+- [PROVENANCE] How did you know about that?
+- [PROVENANCE] What made you mention the priority?
+- [PROVENANCE] How do you know about my schedule?
+- [PROVENANCE] Why is that on your list?
+- [PROVENANCE] Based on what?
+- [PROVENANCE] What's that based on?
+- [QUERY] show issue #123
+- [QUERY] show milestones
+- [QUERY] show me all project plans
+- [QUERY] show my last two new issues
+- [QUERY] show my open issues in the MVP milestone
+- [QUERY] open bugs labeled needs-triage
+- [QUERY] what closed issues do I have
+- [QUERY] show todos
+- [QUERY] list my todos
+- [QUERY] what are my todos
+- [QUERY] show me completed todos
+- [QUERY] show all todos
+- [QUERY] next todo
+- [QUERY] what should I do next
+- [QUERY] what do I have next to do
+- [QUERY] what is on my calendar
+- [QUERY] show me my calendar today
+- [QUERY] calendar today please
+- [QUERY] what meetings today
+- [QUERY] do i have any meetings
+- [QUERY] do i have meetings
+- [QUERY] what meetings do i have
+- [QUERY] what meetings are coming up
+- [QUERY] what's my schedule today
+- [QUERY] today's schedule please
+- [QUERY] what's the schedule for today
+- [QUERY] what's my agenda today
+- [QUERY] what's my agenda tomorrow
+- [QUERY] what's my agenda this week
+- [QUERY] what's my agenda next week
+- [QUERY] show me my agenda
+- [QUERY] show me calendar for tomorrow
+- [QUERY] tomorrow's calendar please
+- [QUERY] how many meetings do I have tomorrow
+- [QUERY] what's the schedule tomorrow
+- [QUERY] tomorrow's schedule please
+- [QUERY] what's happening tomorrow
+- [QUERY] show calendar this week
+- [QUERY] show calendar next week
+- [QUERY] what's the schedule this week
+- [QUERY] what's the schedule next week
+- [QUERY] how many meetings this week
+- [QUERY] how many meetings next week
+- [QUERY] how much time in meetings do I have
+- [QUERY] how much time do I spend sitting in meetings
+- [QUERY] time spent in meetings is high lately
+- [QUERY] what's my meeting time today
+- [QUERY] let's review my recurring meetings
+- [QUERY] audit my standing meetings
+- [QUERY] recurring meetings keep piling up
+- [QUERY] show me my week
+- [QUERY] what's the week ahead look like
+- [QUERY] show the week calendar
+- [QUERY] check my calendar for conflicts
+- [QUERY] is my calendar showing any conflict
+- [QUERY] does my calendar overlap with hers
+- [QUERY] is there a conflict on my calendar
+- [QUERY] find time for a 1:1 with sarah
+- [QUERY] find some time for a sync
+- [QUERY] schedule a quick call
+- [QUERY] book a slot with the team
+- [QUERY] what shipped recently
+- [QUERY] can you show what has shipped
+- [QUERY] what has shipped this past week
+- [QUERY] show our stale pull requests
+- [QUERY] any old prs lying around
+- [QUERY] prs needing review
+- [QUERY] review issue 101
+- [QUERY] issue 101 details
+- [QUERY] get issue 101
+- [QUERY] what are my issues
+- [QUERY] list the issues please
+- [QUERY] show the issues
+- [QUERY] what's the issue count
+- [QUERY] which issues are assigned to engineering
+- [QUERY] what issues are assigned to me?
+- [QUERY] show my pull requests
+- [QUERY] what are my prs looking like
+- [QUERY] where are my pull requests
+- [QUERY] list the prs
+- [QUERY] list all pull requests from this sprint
+- [QUERY] any open prs waiting on me
+- [QUERY] any prs assigned to me
+- [QUERY] any pull requests assigned to me
+- [QUERY] list the milestones for this quarter
+- [QUERY] any update on the next milestone
+- [QUERY] what milestones do we have
+- [QUERY] milestones due this month
+- [QUERY] when's the milestone deadline
+- [QUERY] any recent releases
+- [QUERY] show me the releases
+- [QUERY] list our releases
+- [QUERY] what version are we on
+- [QUERY] what's the current release
+- [QUERY] what's our latest release
+- [QUERY] what labels do we use
+- [QUERY] show me the labels
+- [QUERY] list the labels
+- [QUERY] what are the issue labels
+- [QUERY] labels count please
+- [QUERY] all labels please
+- [QUERY] show me the active branches
+- [QUERY] show which branches exist
+- [QUERY] list the branches
+- [QUERY] what feature branches do we have
+- [QUERY] what are the current branches
+- [QUERY] what branches do we have
+- [QUERY] what's changed since last week
+- [QUERY] show me the changes since last monday
+- [QUERY] show me everything that's changed
+- [QUERY] any changes since the last deploy
+- [QUERY] give me the activity since yesterday's standup
+- [QUERY] any updates since this morning
+- [QUERY] what needs attention right now
+- [QUERY] this project needs my attention today
+- [QUERY] show me what needs the most attention
+- [QUERY] the items that need attention haven't been touched
+- [QUERY] please list the attention items for review
+- [QUERY] which repository is my default
+- [QUERY] please show my default repository
+- [QUERY] my default repository
+- [QUERY] what branch am i on right now
+- [QUERY] which branch are we on at the moment
+- [QUERY] can you tell me the current branch
+- [QUERY] what's the working tree status
+- [QUERY] are there any uncommitted changes
+- [QUERY] do we have a dirty working tree
+- [QUERY] are we ahead of origin right now
+- [QUERY] are we behind upstream at all
+- [QUERY] do we have any unpushed commits
+- [QUERY] can you show the local git status
+- [QUERY] please run git status for me
+- [QUERY] show me my productivity report
+- [QUERY] can you share my productivity metrics
+- [QUERY] i'd like to check my productivity this week
+- [QUERY] what have we created so far
+- [QUERY] what did we make earlier
+- [QUERY] what did i create this session
+- [QUERY] what did we do this session
+- [QUERY] what issues did we open during the call
+- [QUERY] Tell me about Notion
+- [QUERY] How does the Slack integration work?
+- [QUERY] What is the Notion integration?
+- [QUERY] I'd like to learn more about the GitHub integration.
+- [QUERY] Can you give me information about the Slack integration?
+- [QUERY] Show me that issue.
+- [QUERY] Update issue #123
+- [QUERY] Find time for a 1:1 with the team lead
+- [STATUS] do a standup
+- [STATUS] let's do a standup
+- [STATUS] time for my stand-up
+- [STATUS] give me my stand up
+- [STATUS] give me a standup update
+- [STATUS] give me a standup report
+- [STATUS] what's my daily standup
+- [STATUS] show today's standup
+- [STATUS] show me my portfolio
+- [STATUS] list my active projects for this quarter
+- [STATUS] any upcoming milestones for this project
+- [STATUS] what's my current project
+- [STATUS] can you summarize my current work
+- [STATUS] what are my current projects
+- [STATUS] give me a project overview
+- [STATUS] what's the project landscape
+- [STATUS] what projects am I working on
+- [STATUS] tell me what I'm working on
+- [STATUS] quick check, working on now?
+- [STATUS] what are my active projects
+- [STATUS] show my active work
+- [STATUS] what's my status
+- [STATUS] give me a status update
+- [STATUS] what is my status
+- [STATUS] what's my work status
+- [STATUS] show the current status
+- [STATUS] what's the current status
+- [STATUS] I need a status report
+- [STATUS] what's my progress
+- [STATUS] give me a progress update
+- [STATUS] I need a progress report
+- [STATUS] what's the progress on this
+- [STATUS] show today's progress
+- [STATUS] what's the current progress
+- [STATUS] how's the progress going
+- [STATUS] what's the progress looking like
+- [STATUS] what are my tasks
+- [STATUS] show me my current tasks
+- [STATUS] what are my active tasks
+- [STATUS] list today's tasks
+- [STATUS] tasks I'm actively working on
+- [STATUS] what tasks do I have
+- [STATUS] what's the task status
+- [STATUS] what are my assignments
+- [STATUS] show me my current assignments
+- [STATUS] what's assigned to me
+- [STATUS] show today's assignments
+- [STATUS] When did I complete the API migration?
+- [STATUS] When did I complete the migration?
+- [STATUS] When did we launch the beta?
+- [STATUS] what date did I finish the onboarding project
+- [STATUS] show me when we shipped the API
+- [STATUS] when was the migration completed
+- [STATUS] how long ago did we ship the dashboard
+- [STATUS] What date did I finish the database project?
+- [STATUS] How long ago did I finish the redesign?
+- [STATUS] When was the auth refactor shipped?
+- [STATUS] summarize my current work and I need the archived list too
+- [SYNTHESIS] Write a short update for the client CEO on where we are with the Piper Morgan alpha testing.
+- [SYNTHESIS] Draft a status update for the board
+- [SYNTHESIS] Write something to send to Jake about the beta timeline
+- [SYNTHESIS] I need a stakeholder update on the alpha program
+- [SYNTHESIS] Summarize this file
+- [TEMPORAL] remind me at 3pm tomorrow to review the PR
+- [TEMPORAL] Remind me tomorrow at 3pm to review the PR
+- [TEMPORAL] delete my hydrate reminder
+- [TEMPORAL] remind me
+- [TEMPORAL] please clear the reminders except for "Review the PR" - also, are you able to set my default repo for me conversationally?
+- [TEMPORAL] add a reminder: test the safe clarification
+- [TEMPORAL] please remind me: ask Lead how to test "outwardness disclosure" today
+- [TEMPORAL] set a reminder for the dentist appointment
+- [TEMPORAL] create a reminder to call the plumber
+- [TEMPORAL] don't let me forget to submit the report
+- [TEMPORAL] I need to remember to submit my timesheet
+- [TEMPORAL] what are my reminders
+- [TEMPORAL] show reminders
+- [TEMPORAL] do I have any reminders
+- [TEMPORAL] what's the time
+- [TEMPORAL] current time please
+- [TEMPORAL] give me the time now
+- [TEMPORAL] tell me the time
+- [TEMPORAL] what day is it
+- [TEMPORAL] what's the date
+- [TEMPORAL] current date please
+- [TEMPORAL] today's date please
+- [TEMPORAL] what's today
+- [TEMPORAL] give me the date and time
+- [TEMPORAL] what day of the week is it
+- [TEMPORAL] tell me the date
+- [TEMPORAL] what date is it
+- [TEMPORAL] remind me today's day
+- [TEMPORAL] pull up my calendar
+- [TEMPORAL] show the team calendar
+- [TEMPORAL] pull up my schedule
+- [TEMPORAL] show the team schedule
+- [TEMPORAL] calendar check for today
+- [TEMPORAL] schedule check for today
+- [TEMPORAL] walk me through my appointments
+- [TEMPORAL] show all appointments
+- [TEMPORAL] walk me through my meetings
+- [TEMPORAL] what are the upcoming meetings
+- [TEMPORAL] when is my team meeting
+- [TEMPORAL] when am i in a meeting
+- [TEMPORAL] meeting check for today
+- [TEMPORAL] meeting check for tomorrow
+- [TEMPORAL] walk me through my events
+- [TEMPORAL] show all events
+- [TEMPORAL] what are the upcoming events
+- [TEMPORAL] events check for today
+- [TEMPORAL] events check for tomorrow
+- [TEMPORAL] when's the next event
+- [TEMPORAL] what did I work on today
+- [TEMPORAL] what happened in the meeting yesterday
+- [TEMPORAL] did I finish the report yesterday
+- [TEMPORAL] a lot happened yesterday
+- [TEMPORAL] when was the last time I worked on this
+- [TEMPORAL] how long have I been working on this
+- [TEMPORAL] this week's priorities, remind me
+- [TEMPORAL] next week's priorities, remind me
+- [TEMPORAL] this month's numbers, remind me
+- [TEMPORAL] when am i free
+- [TEMPORAL] when's my next free slot
+- [TEMPORAL] what's my available time
+- [TEMPORAL] when do I have free time
+- [TEMPORAL] what are my open slots
+- [TRUST] why won't you create issues for me
+- [TRUST] why don't you just do it yourself
+- [TRUST] do you trust me with this decision
+- [TRUST] how much do you trust my judgment
+- [TRUST] what's our relationship like these days
+- [TRUST] how do you see our relationship evolving
+- [TRUST] how do we work together on this project
+- [TRUST] why did you go ahead without asking
+- [TRUST] why do you always ask me the same thing
+- [TRUST] i didn't ask you to do that
+
+## Exhibit A (PM 2026-08-08 live transcript) + Arch's demanded row
+
+Selection rule: corpus `source` containing one of ('exhibit-a', 'issue-1559', 'issue-1492') → 16 rows (the 8 Exhibit-A failures), plus the demanded row `"what reminders do I have?"` (probe-row-11, REVIEW — the sharpest test of the thesis: the LLM classifier misrouted it until the pre-classifier claimed it).
+
+| phrase | expected | router route @conf | verdict | source |
+|---|---|---|---|---|
+| Yes please | REVIEW | `CLARIFY` @0.7 | REVIEW (informational) | exhibit-a/1529 (test_offer_binding_1529.py PM_YE |
+| end standup | REVIEW | `NONE` @0.55 | REVIEW (informational) | exhibit-a/1529 (test_offer_binding_1529.py PM_EN |
+| i am not doing the standup right now. restore CoVa | REVIEW | `restore_project` @0.9 | REVIEW (informational) | exhibit-a/1529 (test_flow_escape_1529.py PM_REFU |
+| restore CoVa | action:restore_project | `REFUSED` | MISMATCH | exhibit-a/1529 (PM live 2026-08-08 13:22, v38 —  |
+| Please list my archived projects | action:list_archived_projects | `list_archived_projects` @0.93 | MATCH | exhibit-a/1529 (PM live 2026-08-08 13:22, v38 —  |
+| what projects do I have? | action:list_projects | `list_projects` @0.85 | MATCH | exhibit-a/1530 (chat omitted active CoVa; wrong  |
+| what are my projects? | action:list_projects | `list_projects` @0.8 | MATCH | exhibit-a/1530 (PM live 2026-08-08 13:19, v38 —  |
+| remind me at 3pm tomorrow to review the PR | action:create_reminder | `create_reminder` @0.96 | MATCH | issue-1559 (turn-1 PM verbatim, #1517 T4 2026-08 |
+| remind me at 9:41 today to check in with the lead develope | action:create_reminder | `create_reminder` @0.95 | MATCH | issue-1559 (adjacency gap: 'remind me at <time>  |
+| Remind me tomorrow at 3pm to review the PR | action:create_reminder | `REFUSED` | MISMATCH | issue-1490 (PM 8/7 original verbatim: date-then- |
+| Archive my project Test. | action:archive_project | `archive_project` @0.95 | MATCH | issue-1492 (trailing punctuation breaks extracti |
+| Archive my project "Test" | action:archive_project | `REFUSED` | MISMATCH | issue-1492 (quoted name breaks extraction) |
+| Archive the project called Test | action:archive_project | `archive_project` @0.95 | MATCH | issue-1492 ('called X' phrasing breaks extractio |
+| Archive my Test project, please. | action:archive_project | `archive_project` @0.95 | MATCH | issue-1492 (PM 8/7 EXACT verbatim: adjective-pos |
+| Archive my project called "Test" please | action:archive_project | `archive_project` @0.95 | MATCH | issue-1492 (PM 8/7 EXACT verbatim: quoted 'calle |
+| archive CoVa | action:archive_project | `archive_project` @0.93 | MATCH | issue-1492 comment (PM live T6, 2026-08-08 13:19 |
+| what reminders do I have? | REVIEW | `list_reminders_query` @0.95 | REVIEW (informational) | probe-row-11 |
+
+## REVIEW rows — the router's answers as data (informational, unscored)
+
+These 54 rows are the Inversion's question book (36 probe-DISAGREEs by construction + PM's live failures). Nothing here is scored; the router's answer is recorded so the questions accumulate evidence.
+
+| phrase | category | router route @conf | rationale | source |
+|---|---|---|---|---|
+| can you clarify what you meant? | QUERY | `NONE` @0.6 | Request to rephrase a prior statement; best answered in pros | corpus-1283 |
+| what have you learned about my work style? | MEMORY | `pull_insights` @0.95 | Asks what the assistant has learned about user's work style  | probe-row-2 |
+| connect my github | GUIDANCE | `get_contextual_guidance` @0.85 | Connect-my-integration request routes to guidance for settin | probe-row-3 |
+| connect my notion | GUIDANCE | `get_contextual_guidance` @0.85 | Request to connect an integration maps to contextual guidanc | probe-row-4 |
+| link my google calendar | GUIDANCE | `get_contextual_guidance` @0.8 | Request to connect an integration (calendar), routed to guid | probe-row-6 |
+| add a repo to my portfolio | PORTFOLIO | `manage_repos` @0.6 | User wants to add a repository; manage_repos covers linking  | probe-row-7 |
+| show me my todos | QUERY | `REFUSED` |  | probe-row-8 |
+| connect my calendar | GUIDANCE | `get_contextual_guidance` @0.9 | Connecting an integration (calendar) routes to contextual gu | probe-row-10 |
+| what reminders do I have? | TEMPORAL | `list_reminders_query` @0.95 | User asks to list their reminders; matches reminder list que | probe-row-11 |
+| hello | CONVERSATION | `greeting` @0.97 | Message is only a pleasantry greeting. | probe-row-12 |
+| goodbye | CONVERSATION | `farewell` @0.97 | Message is only a goodbye pleasantry. | probe-row-13 |
+| thank you! | CONVERSATION | `thanks` @0.97 | Message is only an expression of gratitude, no other request | probe-row-14 |
+| what can you do? | DISCOVERY | `REFUSED` |  | probe-row-15 |
+| why did you suggest that? | PROVENANCE | `explain_suggestion` @0.95 | Asks for provenance of a prior suggestion, matching explain_ | probe-row-16 |
+| why can't you create issues? | TRUST | `explain_trust` @0.85 | Asks why the assistant cannot do something, which fits expla | probe-row-17 |
+| what do you remember about me? | MEMORY | `get_memory` @0.95 | Asks what the assistant remembers about the user, matching m | probe-row-18 |
+| what's my default repo? | QUERY | `get_default_repo` @0.95 | Asks for the user's default repository, matching get-default | probe-row-19 |
+| set my default repo to mediajunkie/piper-morgan-product | EXECUTION | `set_default_repo` @0.97 | Explicit request to set the default repository to a named ow | probe-row-20 |
+| write a short update for the CEO on the beta | SYNTHESIS | `write_stakeholder_update` @0.95 | Drafts an outbound progress update for a named audience (CEO | probe-row-21 |
+| update the roadmap doc with the new dates | EXECUTION | `REFUSED` |  | probe-row-22 |
+| tell me more about the github integration | QUERY | `get_feature_info` @0.9 | Asks for details about a specific integration, matching get_ | probe-row-23 |
+| who are you? | IDENTITY | `REFUSED` |  | probe-row-24 |
+| show my recurring meetings | QUERY | `recurring_meetings` @0.95 | User asks to show recurring meetings, matching recurring_mee | probe-row-28 |
+| what's my week look like? | QUERY | `week_calendar` @0.9 | Asks for the user's calendar over the coming week, a multi-d | probe-row-29 |
+| what's the next milestone? | STATUS | `list_milestones` @0.8 | Asks for upcoming milestone information, which matches the m | probe-row-30 |
+| what branch are we on? | QUERY | `local_git_status_query` @0.9 | Asks current git branch; matches local-git-status example. | probe-row-31 |
+| what did we ship this week? | QUERY | `shipped_this_week` @0.93 | Asks what was shipped in the current week, matching shipped_ | probe-row-32 |
+| show stale prs | QUERY | `stale_prs` @0.95 | User asks to see stale pull requests, matching the stale_prs | probe-row-33 |
+| close issue #123 | EXECUTION | `REFUSED` |  | probe-row-34 |
+| reopen issue #123 | EXECUTION | `REFUSED` |  | probe-row-35 |
+| comment on issue #123 | EXECUTION | `comment_issue` @0.9 | Explicit request to comment on a specific GitHub issue numbe | probe-row-36 |
+| how many open issues do we have? | QUERY | `REFUSED` |  | probe-row-37 |
+| show my prs | QUERY | `list_prs` @0.9 | User wants to see their pull requests, matching the PR listi | probe-row-38 |
+| what did we create this session? | QUERY | `session_activity_query` @0.95 | Asks what was created in the current session specifically. | probe-row-41 |
+| what's my productivity? | QUERY | `productivity` @0.85 | Direct productivity query matches the productivity operation | probe-row-42 |
+| remind me to review the roadmap tomorrow | EXECUTION | `create_reminder` @0.93 | Explicit remind-me request with a time, so create a reminder | probe-row-43 |
+| complete todo 3 | EXECUTION | `complete_todo` @0.95 | Explicit complete request for todo 3, a reversible status fl | probe-row-44 |
+| show all my todos | QUERY | `list_todos_query` @0.9 | User asks to view their todo list, not to modify it. | probe-row-45 |
+| what's my next todo? | QUERY | `list_todos_query` @0.93 | Asks for the next todo, which is a todo list/next query. | probe-row-46 |
+| when did I complete the onboarding project? | STATUS | `check_completion_status` @0.85 | Asks when past work (onboarding project) was completed; comp | probe-row-47 |
+| how do I get started? | GUIDANCE | `get_contextual_guidance` @0.9 | Getting-started question seeks contextual guidance and next  | probe-row-49 |
+| what's blocking the milestone? | ANALYSIS | `analyze_blockers` @0.95 | Asks what is blocking a milestone; matches analyze_blockers  | probe-row-50 |
+| what are my priorities? | PRIORITY | `get_top_priority` @0.6 | Asks what the user should prioritize, matching top-priority  | probe-row-52 |
+| can you show me issues from just one milestone? | QUERY | `get_capabilities` @0.7 | 'can you' phrasing asks whether the assistant can do this, s | #2184 alpha a1f46faafc 2026-10-28 10:12  |
+| MVP | QUERY | `CLARIFY` @0.4 | Single word 'MVP' could mean milestones, status, or blockers | #2184 alpha a1f46faafc 2026-10-28 10:12  |
+| finish the second one | EXECUTION | `complete_todo` @0.6 | User says 'finish' an ordinal item; maps to marking a todo d | phase3-args/complete_todo finish verb |
+| Yes please | CONVERSATION | `CLARIFY` @0.7 | Bare affirmation with no visible context; could confirm many | exhibit-a/1529 (test_offer_binding_1529. |
+| end standup | CONVERSATION | `NONE` @0.55 | Ending a standup is not a catalog operation; show_standup on | exhibit-a/1529 (test_offer_binding_1529. |
+| i am not doing the standup right now. restore CoVa | PORTFOLIO | `restore_project` @0.9 | Clear request to restore the archived project CoVa; standup  | exhibit-a/1529 (test_flow_escape_1529.py |
+| delete my reminders | TEMPORAL | `delete_todo` @0.9 | User explicitly says delete and names reminders, so destruct | issue-1527 (greedy portfolio delete patt |
+| hi piper, connect my github | EXECUTION | `get_contextual_guidance` @0.9 | Request to connect the GitHub integration routes to contextu | issue-1505 (multi-intent path drops the  |
+| what time is it? also connect my github | TEMPORAL | `PLAN[get_current_time→get_contextual_guidance]` |  | issue-1755 (found during the 1505 fix, 2 |
+| use the interview from now on | STATUS | `CLARIFY` @0.5 | Unclear what 'the interview' refers to or what operation is  | issue-1606 comment 2026-08-13 (PM 3:27-3 |
+| use the standup interview format by default from now on | STATUS | `NONE` @0.6 | Setting a standing standup format preference matches no cata | issue-1606 comment 2026-08-13 (floor imp |
+| please mark issue #108 in the mediajunkie/test-piper-mo | EXECUTION | `close_issue` @0.85 | User wants GitHub issue #108 marked complete, which means cl | issue-1606 comment 2026-08-13 (cross-dom |
+| please mark 1, 2, 4, and 5 done | EXECUTION | `complete_todo` @0.95 | Marking several todos done is a single complete_todo operati | PM live 2026-08-12 (#1603 session; multi |
+| Create a doc from this conversation | SYNTHESIS | `generate_content` @0.6 | Creating a new document from conversation content matches co | issue-1674 (canonical Q36 mode-4 drift,  |
+| show today's tasks | STATUS | `list_todos_query` @0.8 | User asks to see their tasks for today, a todo listing reque | phase3-conversion/STATUS_PATTERNS litera |
+| link my repository to the project | PORTFOLIO | `manage_repos` @0.7 | User wants to link a repository to a project; no repo or pro | phase3-conversion/REPO_MANAGEMENT_PATTER |
+| please unlink my repository from this project | PORTFOLIO | `unlink_repo` @0.85 | User asks to unlink a repository from a project; no project  | phase3-conversion/REPO_UNLINK_PATTERNS l |
+| please remove my repository from this project | PORTFOLIO | `unlink_repo` @0.8 | User asks to remove a repository from a project, which is un | phase3-conversion/REPO_UNLINK_PATTERNS l |
+| please disconnect my repository from this project | PORTFOLIO | `unlink_repo` @0.9 | User wants to disconnect a repository from a project, which  | phase3-conversion/REPO_UNLINK_PATTERNS l |
+| which repo connected to this project should i check | PORTFOLIO | `list_repos` @0.7 | Asks which repositories are linked to the current project. | phase3-conversion/REPO_MANAGEMENT_PATTER |
+| delete my project Gamma | PORTFOLIO | `manage_portfolio` @0.8 | User asks to delete a named project; manage_portfolio covers | phase3-rule10/PORTFOLIO_PATTERNS tests/u |
+| remove the project Delta | PORTFOLIO | `manage_portfolio` @0.6 | User asks to remove a named project; portfolio management co | phase3-rule10/PORTFOLIO_PATTERNS tests/u |
+| get rid of my test project | PORTFOLIO | `CLARIFY` @0.6 | 'Get rid of' could mean reversible archive or permanent dele | phase3-rule10/PORTFOLIO_PATTERNS tests/u |
+
+## Row detail (asserted rows)
+
+| phrase | category | expected | router route @conf | verdict | note | framing |
+|---|---|---|---|---|---|---|
+| give me my standup | STATUS | action:show_standup | `show_standup` @0.95 | MATCH |  | - |
+| what's on my calendar today? | TEMPORAL | action:meeting_time | `meeting_time` @0.85 | MATCH |  | - |
+| when is my next meeting? | TEMPORAL | action:meeting_time | `meeting_time` @0.9 | MATCH |  | - |
+| what am I working on? | STATUS | floor | `list_projects` @0.5 | MISMATCH | OPERATION | - |
+| what should I focus on today? | PRIORITY | action:attention_query | `get_top_priority` @0.7 | MISMATCH |  | - |
+| what are my top priorities? | PRIORITY | category:PRIORITY | `get_top_priority` @0.8 | MATCH |  | - |
+| who am I? | IDENTITY | action:get_identity | `get_memory` @0.55 | MISMATCH |  | - |
+| what's my role? | IDENTITY | category:IDENTITY | `get_memory` @0.5 | MISMATCH |  | - |
+| how do I create a ticket? | GUIDANCE | category:GUIDANCE | `get_contextual_guidance` @0.85 | MATCH |  | - |
+| create a ticket for the login bug | EXECUTION | action:create_issue | `create_issue` @0.9 | MATCH |  | execute:MISMATCH(none) |
+| analyze the file I uploaded | QUERY | action:analyze_document | `analyze_document` @0.8 | MATCH |  | - |
+| summarize the document | SYNTHESIS | action:summarize_document | `REFUSED` | MISMATCH | REFUSED | - |
+| what time is it? | TEMPORAL | category:TEMPORAL | `get_current_time` @0.97 | MATCH |  | - |
+| show my open issues | QUERY | action:list_issues_query | `list_issues` @0.93 | MATCH |  | - |
+| show my open pull requests | QUERY | action:list_prs_query | `list_prs` @0.9 | MATCH |  | - |
+| any stale PRs? | QUERY | action:stale_prs_query | `stale_prs` @0.93 | MATCH |  | - |
+| what needs my attention? | QUERY | action:attention_query | `attention_query` @0.93 | MATCH |  | - |
+| what changed since yesterday? | QUERY | action:changes_query | `changes_query` @0.95 | MATCH |  | - |
+| how productive was I this week? | QUERY | action:productivity_query | `productivity` @0.85 | MATCH |  | - |
+| list my projects | PORTFOLIO | action:list_projects | `list_projects` @0.7 | MATCH |  | - |
+| close issue 42 | EXECUTION | action:close_issue_query | `close_issue` @0.95 | MATCH |  | - |
+| comment on issue 42: looks good | EXECUTION | action:comment_issue_query | `comment_issue` @0.95 | MATCH |  | execute:MISMATCH(none) |
+| what have you learned about my workstyle? | MEMORY | action:pull_insights | `pull_insights` @0.93 | MATCH |  | - |
+| set my default repo to acme/widgets | EXECUTION | action:set_default_repo | `set_default_repo` @0.97 | MATCH |  | execute:MISMATCH(none) |
+| what is my default repo? | QUERY | action:get_default_repo | `get_default_repo` @0.97 | MATCH |  | - |
+| write a short update for the CEO on where we are | SYNTHESIS | action:write_stakeholder_update | `write_stakeholder_update` @0.93 | MATCH |  | - |
+| update the project plan doc with the new dates | EXECUTION | action:update_document_query | `update_document` @0.8 | MATCH |  | execute:MISMATCH(none) |
+| give me a project status report | EXECUTION | action:get_project_status | `get_project_status` @0.8 | MATCH |  | - |
+| can we connect my github? | QUERY | action:get_contextual_guidance | `get_contextual_guidance` @0.85 | MATCH |  | - |
+| connect my slack | QUERY | action:get_contextual_guidance | `get_contextual_guidance` @0.85 | MATCH |  | - |
+| link mediajunkie/test-piper-morgan to the project | QUERY | action:link_repo | `link_repo` @0.85 | MATCH |  | execute:MISMATCH(none) |
+| help me set up github | QUERY | action:get_contextual_guidance | `get_contextual_guidance` @0.85 | MATCH |  | - |
+| show me my archived projects | PORTFOLIO | action:list_archived_projects | `list_archived_projects` @0.95 | MATCH |  | - |
+| list my archived projects | PORTFOLIO | action:list_archived_projects | `list_archived_projects` @0.93 | MATCH |  | - |
+| what projects have I archived? | PORTFOLIO | action:list_archived_projects | `list_archived_projects` @0.95 | MATCH |  | - |
+| show issue #123 | QUERY | action:review_issue_query | `review_issue` @0.95 | MATCH |  | - |
+| show milestones | QUERY | action:list_milestones | `list_milestones` @0.9 | MATCH |  | - |
+| Mark the first three complete and leave the fourth one  | EXECUTION | action:complete_todo | `complete_todo` @0.9 | MATCH |  | execute:MISMATCH(none) |
+| Mark the first one complete and leave the second one pe | EXECUTION | action:complete_todo | `complete_todo` @0.85 | ARGS_MISMATCH | ARGS exclude: ['2']≠[] | execute:MISMATCH(none) |
+| I want you to clear 'check the test card again,' and 'r | EXECUTION | action:complete_todo | `complete_todo` @0.9 | MATCH |  | execute:MISMATCH(none) |
+| clear the first two reminders | EXECUTION | action:clear_todos | `clear_todos` @0.9 | MATCH |  | - |
+| take care of the last reminder | EXECUTION | action:clear_todos | `clear_todos` @0.85 | MATCH |  | - |
+| clear all my reminders except the first one | EXECUTION | action:clear_todos | `clear_todos` @0.93 | MATCH |  | - |
+| delete the first two reminders | EXECUTION | action:delete_todo | `delete_todo` @0.9 | MATCH |  | - |
+| delete that reminder | EXECUTION | action:delete_todo | `delete_todo` @0.85 | MATCH |  | - |
+| delete a reminder | EXECUTION | action:delete_todo | `delete_todo` @0.85 | MATCH |  | - |
+| mark all my reminders done except for 'revise the pr' | EXECUTION | action:complete_todo | `complete_todo` @0.93 | MATCH |  | execute:MISMATCH(none) |
+| mark the first two complete | EXECUTION | action:complete_todo | `complete_todo` @0.85 | MATCH |  | execute:MISMATCH(none) |
+| complete the last one | EXECUTION | action:complete_todo | `complete_todo` @0.7 | MATCH |  | execute:MISMATCH(none) |
+| mark #2 as done | EXECUTION | action:complete_todo | `complete_todo` @0.6 | MATCH |  | execute:MISMATCH(none) |
+| mark todo 3 as complete | EXECUTION | action:complete_todo | `complete_todo` @0.95 | MATCH |  | execute:MISMATCH(none) |
+| mark 1, 2 and 4 done | EXECUTION | action:complete_todo | `complete_todo` @0.85 | MATCH |  | execute:MISMATCH(none) |
+| complete 'review the pr' | EXECUTION | action:complete_todo | `complete_todo` @0.9 | MATCH |  | execute:MISMATCH(none) |
+| I'm done with the first and the third | EXECUTION | action:complete_todo | `complete_todo` @0.9 | MATCH |  | execute:MISMATCH(none) |
+| mark the PR review todo as done | EXECUTION | action:complete_todo | `complete_todo` @0.9 | MATCH |  | execute:MISMATCH(none) |
+| mark everything done except the last one | EXECUTION | action:complete_todo | `complete_todo` @0.93 | MATCH |  | execute:MISMATCH(none) |
+| update my project name to Atlas | PORTFOLIO | floor | `NONE` @0.7 | MATCH | NONE | - |
+| edit my project description | PORTFOLIO | floor | `NONE` @0.5 | MATCH | NONE | - |
+| show me all project plans | QUERY | action:search_documents | `list_projects` @0.5 | MISMATCH |  | - |
+| do a standup | STATUS | action:show_standup | `show_standup` @0.9 | MATCH |  | - |
+| let's do a standup | STATUS | action:show_standup | `show_standup` @0.92 | MATCH |  | - |
+| restore CoVa | PORTFOLIO | action:restore_project | `REFUSED` | MISMATCH | REFUSED | execute:MISMATCH(none) |
+| Please list my archived projects | PORTFOLIO | action:list_archived_projects | `list_archived_projects` @0.93 | MATCH |  | - |
+| what projects do I have? | PORTFOLIO | action:list_projects | `list_projects` @0.85 | MATCH |  | - |
+| what are my projects? | PORTFOLIO | action:list_projects | `list_projects` @0.8 | MATCH |  | - |
+| remind me at 3pm tomorrow to review the PR | TEMPORAL | action:create_reminder | `create_reminder` @0.96 | MATCH |  | execute:MISMATCH(none) |
+| remind me at 9:41 today to check in with the lead devel | TEMPORAL | action:create_reminder | `create_reminder` @0.95 | MATCH |  | execute:MISMATCH(none) |
+| Remind me tomorrow at 3pm to review the PR | TEMPORAL | action:create_reminder | `REFUSED` | MISMATCH | REFUSED | execute:MISMATCH(none) |
+| list my archive projects | PORTFOLIO | action:list_archived_projects | `list_archived_projects` @0.93 | MATCH |  | - |
+| Archive my project Test. | PORTFOLIO | action:archive_project | `archive_project` @0.95 | MATCH |  | execute:MISMATCH(none) |
+| Archive my project "Test" | PORTFOLIO | action:archive_project | `REFUSED` | MISMATCH | REFUSED | execute:MISMATCH(none) |
+| Archive the project called Test | PORTFOLIO | action:archive_project | `archive_project` @0.95 | MATCH |  | execute:MISMATCH(none) |
+| Archive my Test project, please. | PORTFOLIO | action:archive_project | `archive_project` @0.95 | MATCH |  | execute:MISMATCH(none) |
+| Archive my project called "Test" please | PORTFOLIO | action:archive_project | `archive_project` @0.95 | MATCH |  | execute:MISMATCH(none) |
+| archive CoVa | PORTFOLIO | action:archive_project | `archive_project` @0.93 | MATCH |  | execute:MISMATCH(none) |
+| delete my hydrate reminder | TEMPORAL | action:delete_todo | `delete_todo` @0.9 | MATCH |  | - |
+| remind me | TEMPORAL | action:create_reminder | `CLARIFY` @0.6 | MISMATCH | CLARIFY | execute:MISMATCH(none) |
+| please clear the reminders except for "Review the PR" - | TEMPORAL | plan | `REFUSED` | MISMATCH | REFUSED | - |
+| are you able to set my default repo for me conversation | DISCOVERY | action:get_capabilities | `get_capabilities` @0.93 | MATCH |  | - |
+| change the status of issue #108 to Done | EXECUTION | action:update_issue | `update_issue` @0.8 | MATCH |  | execute:MISMATCH(none) |
+| add a reminder: test the safe clarification | TEMPORAL | action:create_reminder | `REFUSED` | MISMATCH | REFUSED | execute:MISMATCH(none) |
+| please remind me: ask Lead how to test "outwardness dis | TEMPORAL | action:create_reminder | `REFUSED` | MISMATCH | REFUSED | execute:MISMATCH(none) |
+| add a todo to web test one | EXECUTION | action:create_todo | `create_todo` @0.93 | ARGS_MISMATCH | ARGS text: 'web test one'≠None | execute:MISMATCH(none) |
+| Add three todos for the launch: draft brief, book venue | EXECUTION | action:create_todo | `create_todo` @0.93 | MATCH |  | execute:MISMATCH(none) |
+| show my last two new issues | QUERY | action:list_issues_query | `list_issues` @0.8 | MATCH |  | - |
+| show my open issues in the MVP milestone | QUERY | action:list_issues_query | `list_issues` @0.85 | MATCH |  | - |
+| open bugs labeled needs-triage | QUERY | action:list_issues_query | `list_issues` @0.9 | MATCH |  | - |
+| what closed issues do I have | QUERY | action:list_issues_query | `list_issues` @0.8 | MATCH |  | - |
+| Add a project called Baz with description testing the d | PORTFOLIO | action:add_project | `add_project` @0.93 | MATCH |  | execute:MISMATCH(none) |
+| add todo buy oat milk | EXECUTION | action:create_todo | `create_todo` @0.95 | MATCH |  | execute:MISMATCH(none) |
+| set a reminder for the dentist appointment | TEMPORAL | action:create_reminder | `create_reminder` @0.9 | MATCH |  | execute:MISMATCH(none) |
+| create a reminder to call the plumber | TEMPORAL | action:create_reminder | `create_reminder` @0.95 | MATCH |  | execute:MISMATCH(none) |
+| don't let me forget to submit the report | TEMPORAL | action:create_reminder | `create_reminder` @0.8 | MATCH |  | execute:MISMATCH(none) |
+| I need to remember to submit my timesheet | TEMPORAL | action:create_todo | `REFUSED` | MISMATCH | REFUSED | execute:MISMATCH(none) |
+| what are my reminders | TEMPORAL | action:list_reminders_query | `REFUSED` | MISMATCH | REFUSED | - |
+| show reminders | TEMPORAL | action:list_reminders_query | `list_reminders_query` @0.93 | MATCH |  | - |
+| do I have any reminders | TEMPORAL | action:list_reminders_query | `list_reminders_query` @0.95 | MATCH |  | - |
+| show todos | QUERY | action:list_todos_query | `REFUSED` | MISMATCH | REFUSED | - |
+| list my todos | QUERY | action:list_todos_query | `list_todos_query` @0.95 | MATCH |  | - |
+| what are my todos | QUERY | action:list_todos_query | `list_todos_query` @0.95 | MATCH |  | - |
+| show me completed todos | QUERY | action:list_todos_query | `list_todos_query` @0.85 | MATCH |  | - |
+| show all todos | QUERY | action:list_todos_query | `list_todos_query` @0.9 | MATCH |  | - |
+| next todo | QUERY | action:list_todos_query | `list_todos_query` @0.85 | MATCH |  | - |
+| what should I do next | QUERY | action:get_top_priority | `get_contextual_guidance` @0.7 | MISMATCH |  | - |
+| what do I have next to do | QUERY | action:get_top_priority | `list_todos_query` @0.7 | MISMATCH |  | - |
+| where should I focus this week | GUIDANCE | action:get_top_priority | `get_top_priority` @0.7 | MATCH |  | - |
+| I could use some guidance on this | GUIDANCE | floor | `REFUSED` | MISMATCH | REFUSED | - |
+| do you have a recommendation | GUIDANCE | floor | `get_contextual_guidance` @0.7 | MISMATCH | OPERATION | - |
+| what's your advice here | GUIDANCE | floor | `get_contextual_guidance` @0.8 | MISMATCH | OPERATION | - |
+| ok that's merged, what now? | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.8 | MATCH |  | - |
+| what are the next steps | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.8 | MATCH |  | - |
+| what should I do about this bug | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.85 | MATCH |  | - |
+| advise me on this decision | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.7 | MATCH |  | - |
+| what's the process for filing a bug | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.9 | MATCH |  | - |
+| can you help me setup the integration | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.8 | MATCH |  | - |
+| can you help me configure the connector | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.6 | MATCH |  | - |
+| I need to setup my projects | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.8 | MATCH |  | - |
+| how do I configure my projects | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.9 | MATCH |  | - |
+| how do I setup the connector | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.85 | MATCH |  | - |
+| how do I configure the connector | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.85 | MATCH |  | - |
+| just getting started here | GUIDANCE | action:greeting | `REFUSED` | MISMATCH | REFUSED | - |
+| can you help me set up the integration | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.8 | MATCH |  | - |
+| I want to set up my projects | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.8 | MATCH |  | - |
+| how do I set up the connector | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.85 | MATCH |  | - |
+| I'd like to set up my portfolio | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.7 | MATCH |  | - |
+| what's my top priority | PRIORITY | action:get_top_priority | `REFUSED` | MISMATCH | REFUSED | - |
+| this is top priority for the team | PRIORITY | action:get_top_priority | `NONE` @0.6 | MATCH | FLOOR-expected: NONE | - |
+| this is the highest priority item | PRIORITY | action:get_top_priority | `REFUSED` | MISMATCH | REFUSED | - |
+| mark this as priority one | PRIORITY | action:prioritize | `REFUSED` | MISMATCH | REFUSED | - |
+| show priorities for this sprint | PRIORITY | floor | `prioritize` @0.7 | MISMATCH | OPERATION | - |
+| list priorities for the team | PRIORITY | floor | `prioritize` @0.6 | MISMATCH | OPERATION | - |
+| what are my current priorities | PRIORITY | action:get_top_priority | `get_top_priority` @0.6 | MATCH |  | - |
+| what are the key priorities this quarter | PRIORITY | action:get_top_priority | `strategic_planning` @0.6 | MISMATCH |  | - |
+| what's most important right now | PRIORITY | action:get_top_priority | `get_top_priority` @0.7 | MATCH |  | - |
+| what matters most this week | PRIORITY | action:get_top_priority | `get_top_priority` @0.6 | MATCH |  | - |
+| what are the key tasks for this sprint | PRIORITY | floor | `prioritize` @0.5 | MISMATCH | OPERATION | - |
+| what are the key items on my plate | PRIORITY | action:attention_query | `attention_query` @0.55 | MATCH |  | - |
+| should i focus on the bug first | PRIORITY | action:get_top_priority | `get_top_priority` @0.8 | MATCH |  | - |
+| what could I focus on | PRIORITY | action:get_top_priority | `get_top_priority` @0.7 | MATCH |  | - |
+| where should my focus be today | PRIORITY | action:attention_query | `get_top_priority` @0.7 | MISMATCH |  | - |
+| what are my focus areas this sprint | PRIORITY | action:get_top_priority | `prioritize` @0.6 | MISMATCH |  | - |
+| let's focus on today's priorities | PRIORITY | action:get_top_priority | `REFUSED` | MISMATCH | REFUSED | - |
+| what's my focus this week | PRIORITY | action:get_top_priority | `get_top_priority` @0.6 | MATCH |  | - |
+| not sure what to focus next | PRIORITY | action:get_top_priority | `get_top_priority` @0.7 | MATCH |  | - |
+| what's urgent right now | PRIORITY | action:attention_query | `attention_query` @0.9 | MATCH |  | - |
+| what are my urgent tasks | PRIORITY | action:attention_query | `attention_query` @0.8 | MATCH |  | - |
+| what are my urgent items | PRIORITY | action:attention_query | `attention_query` @0.85 | MATCH |  | - |
+| what's my urgent work today | PRIORITY | action:attention_query | `attention_query` @0.8 | MATCH |  | - |
+| what's the most urgent thing | PRIORITY | action:attention_query | `attention_query` @0.85 | MATCH |  | - |
+| what needs my focus today | PRIORITY | action:attention_query | `attention_query` @0.75 | MATCH |  | - |
+| what requires attention right now | PRIORITY | action:attention_query | `attention_query` @0.9 | MATCH |  | - |
+| what's critical right now | PRIORITY | action:attention_query | `attention_query` @0.85 | MATCH |  | - |
+| what are my critical tasks | PRIORITY | action:attention_query | `attention_query` @0.6 | MATCH |  | - |
+| what are my critical items | PRIORITY | action:attention_query | `attention_query` @0.7 | MATCH |  | - |
+| what's my critical work today | PRIORITY | action:attention_query | `attention_query` @0.8 | MATCH |  | - |
+| what's the most critical thing | PRIORITY | action:attention_query | `get_top_priority` @0.6 | MISMATCH |  | - |
+| what should I do first | PRIORITY | action:get_top_priority | `get_top_priority` @0.85 | MATCH |  | - |
+| what should I tackle next | PRIORITY | action:get_top_priority | `get_top_priority` @0.8 | MATCH |  | - |
+| what's next for me | PRIORITY | action:get_top_priority | `get_contextual_guidance` @0.6 | MISMATCH |  | - |
+| what should I review first | PRIORITY | action:get_top_priority | `REFUSED` | MISMATCH | REFUSED | - |
+| which project should get my focus today | PRIORITY | action:get_top_priority | `get_top_priority` @0.8 | MATCH |  | - |
+| which task should get my focus next | PRIORITY | action:get_top_priority | `get_top_priority` @0.85 | MATCH |  | - |
+| not sure what to do about this | PRIORITY | floor | `get_contextual_guidance` @0.6 | MISMATCH | OPERATION | - |
+| what is on my calendar | QUERY | action:week_calendar | `meeting_time` @0.6 | MISMATCH |  | - |
+| show me my calendar today | QUERY | action:meeting_time | `meeting_time` @0.85 | MATCH |  | - |
+| calendar today please | QUERY | action:meeting_time | `meeting_time` @0.9 | MATCH |  | - |
+| what meetings today | QUERY | action:meeting_time | `meeting_time` @0.93 | MATCH |  | - |
+| do i have any meetings | QUERY | action:meeting_time | `meeting_time` @0.7 | MATCH |  | - |
+| do i have meetings | QUERY | action:meeting_time | `meeting_time` @0.7 | MATCH |  | - |
+| what meetings do i have | QUERY | action:meeting_time | `meeting_time` @0.6 | MATCH |  | - |
+| what meetings are coming up | QUERY | action:week_calendar | `meeting_time` @0.7 | MISMATCH |  | - |
+| what's my schedule today | QUERY | action:meeting_time | `meeting_time` @0.8 | MATCH |  | - |
+| today's schedule please | QUERY | action:meeting_time | `meeting_time` @0.85 | MATCH |  | - |
+| what's the schedule for today | QUERY | action:meeting_time | `meeting_time` @0.85 | MATCH |  | - |
+| what's my agenda today | QUERY | action:meeting_time | `meeting_time` @0.9 | MATCH |  | - |
+| what's my agenda tomorrow | QUERY | action:meeting_time | `meeting_time` @0.9 | MATCH |  | - |
+| what's my agenda this week | QUERY | action:week_calendar | `week_calendar` @0.93 | MATCH |  | - |
+| what's my agenda next week | QUERY | action:week_calendar | `week_calendar` @0.93 | MATCH |  | - |
+| show me my agenda | QUERY | action:meeting_time | `meeting_time` @0.6 | MATCH |  | - |
+| show me calendar for tomorrow | QUERY | action:meeting_time | `meeting_time` @0.9 | MATCH |  | - |
+| tomorrow's calendar please | QUERY | action:meeting_time | `meeting_time` @0.85 | MATCH |  | - |
+| how many meetings do I have tomorrow | QUERY | action:meeting_time | `meeting_time` @0.9 | MATCH |  | - |
+| what's the schedule tomorrow | QUERY | action:meeting_time | `meeting_time` @0.85 | MATCH |  | - |
+| tomorrow's schedule please | QUERY | action:meeting_time | `meeting_time` @0.9 | MATCH |  | - |
+| what's happening tomorrow | QUERY | action:meeting_time | `meeting_time` @0.8 | MATCH |  | - |
+| show calendar this week | QUERY | action:week_calendar | `week_calendar` @0.93 | MATCH |  | - |
+| show calendar next week | QUERY | action:week_calendar | `week_calendar` @0.93 | MATCH |  | - |
+| what's the schedule this week | QUERY | action:week_calendar | `week_calendar` @0.93 | MATCH |  | - |
+| what's the schedule next week | QUERY | action:week_calendar | `week_calendar` @0.93 | MATCH |  | - |
+| how many meetings this week | QUERY | action:week_calendar | `REFUSED` | MISMATCH | REFUSED | - |
+| how many meetings next week | QUERY | action:week_calendar | `week_calendar` @0.85 | MATCH |  | - |
+| how much time in meetings do I have | QUERY | action:meeting_time | `meeting_time` @0.85 | MATCH |  | - |
+| how much time do I spend sitting in meetings | QUERY | action:meeting_time | `meeting_time` @0.7 | MATCH |  | - |
+| time spent in meetings is high lately | QUERY | floor | `productivity` @0.5 | MISMATCH | OPERATION | - |
+| what's my meeting time today | QUERY | action:meeting_time | `meeting_time` @0.93 | MATCH |  | - |
+| let's review my recurring meetings | QUERY | action:recurring_meetings | `recurring_meetings` @0.9 | MATCH |  | - |
+| audit my standing meetings | QUERY | action:recurring_meetings | `recurring_meetings` @0.85 | MATCH |  | - |
+| recurring meetings keep piling up | QUERY | floor | `CLARIFY` @0.5 | MATCH | CLARIFY | - |
+| show me my week | QUERY | action:week_calendar | `week_calendar` @0.85 | MATCH |  | - |
+| what's the week ahead look like | QUERY | action:week_calendar | `REFUSED` | MISMATCH | REFUSED | - |
+| show the week calendar | QUERY | action:week_calendar | `week_calendar` @0.9 | MATCH |  | - |
+| check my calendar for conflicts | QUERY | floor | `NONE` @0.6 | MATCH | NONE | - |
+| is my calendar showing any conflict | QUERY | floor | `REFUSED` | MISMATCH | REFUSED | - |
+| does my calendar overlap with hers | QUERY | floor | `NONE` @0.7 | MATCH | NONE | - |
+| is there a conflict on my calendar | QUERY | floor | `NONE` @0.6 | MATCH | NONE | - |
+| find time for a 1:1 with sarah | QUERY | floor | `NONE` @0.6 | MATCH | NONE | - |
+| find some time for a sync | QUERY | floor | `REFUSED` | MISMATCH | REFUSED | - |
+| schedule a quick call | QUERY | floor | `NONE` @0.6 | MATCH | NONE | - |
+| book a slot with the team | QUERY | floor | `NONE` @0.7 | MATCH | NONE | - |
+| what's the time | TEMPORAL | action:get_current_time | `REFUSED` | MISMATCH | REFUSED | - |
+| current time please | TEMPORAL | action:get_current_time | `REFUSED` | MISMATCH | REFUSED | - |
+| give me the time now | TEMPORAL | action:get_current_time | `get_current_time` @0.97 | MATCH |  | - |
+| tell me the time | TEMPORAL | action:get_current_time | `get_current_time` @0.97 | MATCH |  | - |
+| what day is it | TEMPORAL | action:get_current_time | `get_current_time` @0.9 | MATCH |  | - |
+| what's the date | TEMPORAL | action:get_current_time | `REFUSED` | MISMATCH | REFUSED | - |
+| current date please | TEMPORAL | action:get_current_time | `REFUSED` | MISMATCH | REFUSED | - |
+| today's date please | TEMPORAL | action:get_current_time | `get_current_time` @0.85 | MATCH |  | - |
+| what's today | TEMPORAL | action:get_current_time | `CLARIFY` @0.5 | MISMATCH | CLARIFY | - |
+| give me the date and time | TEMPORAL | action:get_current_time | `get_current_time` @0.9 | MATCH |  | - |
+| what day of the week is it | TEMPORAL | action:get_current_time | `get_current_time` @0.85 | MATCH |  | - |
+| tell me the date | TEMPORAL | action:get_current_time | `get_current_time` @0.85 | MATCH |  | - |
+| what date is it | TEMPORAL | action:get_current_time | `get_current_time` @0.9 | MATCH |  | - |
+| remind me today's day | TEMPORAL | action:get_current_time | `CLARIFY` @0.5 | MISMATCH | CLARIFY | - |
+| pull up my calendar | TEMPORAL | action:week_calendar | `CLARIFY` @0.6 | MISMATCH | CLARIFY | - |
+| show the team calendar | TEMPORAL | floor | `NONE` @0.6 | MATCH | NONE | - |
+| pull up my schedule | TEMPORAL | action:week_calendar | `CLARIFY` @0.6 | MISMATCH | CLARIFY | - |
+| show the team schedule | TEMPORAL | floor | `NONE` @0.7 | MATCH | NONE | - |
+| calendar check for today | TEMPORAL | action:meeting_time | `meeting_time` @0.85 | MATCH |  | - |
+| schedule check for today | TEMPORAL | action:week_calendar | `meeting_time` @0.8 | MISMATCH |  | - |
+| walk me through my appointments | TEMPORAL | action:week_calendar | `meeting_time` @0.6 | MISMATCH |  | - |
+| show all appointments | TEMPORAL | action:week_calendar | `week_calendar` @0.5 | MATCH |  | - |
+| walk me through my meetings | TEMPORAL | action:week_calendar | `CLARIFY` @0.55 | MISMATCH | CLARIFY | - |
+| what are the upcoming meetings | TEMPORAL | action:week_calendar | `meeting_time` @0.6 | MISMATCH |  | - |
+| when is my team meeting | TEMPORAL | action:meeting_time | `meeting_time` @0.85 | MATCH |  | - |
+| when am i in a meeting | TEMPORAL | action:meeting_time | `meeting_time` @0.93 | MATCH |  | - |
+| meeting check for today | TEMPORAL | action:meeting_time | `meeting_time` @0.85 | MATCH |  | - |
+| meeting check for tomorrow | TEMPORAL | action:meeting_time | `meeting_time` @0.85 | MATCH |  | - |
+| walk me through my events | TEMPORAL | action:week_calendar | `CLARIFY` @0.6 | MISMATCH | CLARIFY | - |
+| show all events | TEMPORAL | action:week_calendar | `CLARIFY` @0.6 | MISMATCH | CLARIFY | - |
+| what are the upcoming events | TEMPORAL | action:week_calendar | `week_calendar` @0.5 | MATCH |  | - |
+| events check for today | TEMPORAL | action:meeting_time | `meeting_time` @0.8 | MATCH |  | - |
+| events check for tomorrow | TEMPORAL | action:meeting_time | `meeting_time` @0.8 | MATCH |  | - |
+| when's the next event | TEMPORAL | action:meeting_time | `meeting_time` @0.85 | MATCH |  | - |
+| what did I work on today | TEMPORAL | action:session_activity_query | `session_activity_query` @0.8 | MATCH |  | - |
+| what happened in the meeting yesterday | TEMPORAL | floor | `meeting_time` @0.5 | MISMATCH | OPERATION | - |
+| did I finish the report yesterday | TEMPORAL | action:check_completion_status | `check_completion_status` @0.9 | MATCH |  | - |
+| a lot happened yesterday | TEMPORAL | action:changes_query | `changes_query` @0.85 | MATCH |  | - |
+| when was the last time I worked on this | TEMPORAL | floor | `CLARIFY` @0.5 | MATCH | CLARIFY | - |
+| how long have I been working on this | TEMPORAL | floor | `NONE` @0.5 | MATCH | NONE | - |
+| this week's priorities, remind me | TEMPORAL | plan | `CLARIFY` @0.6 | MISMATCH | CLARIFY | - |
+| next week's priorities, remind me | TEMPORAL | plan | `CLARIFY` @0.5 | MISMATCH | CLARIFY | - |
+| this month's numbers, remind me | TEMPORAL | plan | `CLARIFY` @0.6 | MISMATCH | CLARIFY | - |
+| when am i free | TEMPORAL | action:week_calendar | `week_calendar` @0.6 | MATCH |  | - |
+| when's my next free slot | TEMPORAL | action:week_calendar | `week_calendar` @0.6 | MATCH |  | - |
+| what's my available time | TEMPORAL | action:week_calendar | `REFUSED` | MISMATCH | REFUSED | - |
+| when do I have free time | TEMPORAL | action:week_calendar | `CLARIFY` @0.5 | MISMATCH | CLARIFY | - |
+| what are my open slots | TEMPORAL | action:week_calendar | `week_calendar` @0.6 | MATCH |  | - |
+| what shipped recently | QUERY | action:shipped_query | `REFUSED` | MISMATCH | REFUSED | - |
+| can you show what has shipped | QUERY | action:shipped_query | `shipped_this_week` @0.8 | MATCH |  | - |
+| what has shipped this past week | QUERY | action:shipped_query | `REFUSED` | MISMATCH | REFUSED | - |
+| show our stale pull requests | QUERY | action:stale_prs_query | `stale_prs` @0.9 | MATCH |  | - |
+| any old prs lying around | QUERY | action:stale_prs_query | `stale_prs` @0.85 | MATCH |  | - |
+| prs needing review | QUERY | action:list_prs_query | `list_prs` @0.85 | MATCH |  | - |
+| close the completed issue | EXECUTION | floor | `close_issue` @0.7 | MISMATCH | OPERATION | - |
+| please close this issue | EXECUTION | action:close_issue_query | `close_issue` @0.8 | MATCH |  | - |
+| re-open issue 88 | EXECUTION | action:reopen_issue_query | `reopen_issue` @0.95 | MATCH |  | - |
+| reopen the old issue | EXECUTION | floor | `reopen_issue` @0.8 | MISMATCH | OPERATION | - |
+| re-open the old issue | EXECUTION | floor | `reopen_issue` @0.8 | MISMATCH | OPERATION | - |
+| add comment to issue 99 | EXECUTION | action:comment_issue_query | `comment_issue` @0.9 | MATCH |  | execute:MISMATCH(none) |
+| reply to issue 99 | EXECUTION | action:comment_issue_query | `REFUSED` | MISMATCH | REFUSED | execute:MISMATCH(none) |
+| comment on 99 | EXECUTION | action:comment_issue_query | `REFUSED` | MISMATCH | REFUSED | execute:MISMATCH(none) |
+| review issue 101 | QUERY | action:review_issue_query | `review_issue` @0.95 | MATCH |  | - |
+| issue 101 details | QUERY | action:review_issue_query | `REFUSED` | MISMATCH | REFUSED | - |
+| get issue 101 | QUERY | action:review_issue_query | `review_issue` @0.95 | MATCH |  | - |
+| what are my issues | QUERY | action:list_issues_query | `list_issues` @0.8 | MATCH |  | - |
+| list the issues please | QUERY | action:list_issues_query | `list_issues` @0.9 | MATCH |  | - |
+| show the issues | QUERY | action:list_issues_query | `list_issues` @0.85 | MATCH |  | - |
+| what's the issue count | QUERY | action:list_issues_query | `list_issues` @0.9 | MATCH |  | - |
+| which issues are assigned to engineering | QUERY | action:list_issues_query | `REFUSED` | MISMATCH | REFUSED | - |
+| what issues are assigned to me? | QUERY | action:list_issues_query | `list_issues` @0.85 | MATCH |  | - |
+| show my pull requests | QUERY | action:list_prs_query | `list_prs` @0.9 | MATCH |  | - |
+| what are my prs looking like | QUERY | action:list_prs_query | `list_prs` @0.75 | MATCH |  | - |
+| where are my pull requests | QUERY | action:list_prs_query | `list_prs` @0.85 | MATCH |  | - |
+| list the prs | QUERY | action:list_prs_query | `list_prs` @0.95 | MATCH |  | - |
+| list all pull requests from this sprint | QUERY | action:list_prs_query | `list_prs` @0.85 | MATCH |  | - |
+| any open prs waiting on me | QUERY | action:list_prs_query | `list_prs` @0.8 | MATCH |  | - |
+| any prs assigned to me | QUERY | action:list_prs_query | `list_prs` @0.85 | MATCH |  | - |
+| any pull requests assigned to me | QUERY | action:list_prs_query | `list_prs` @0.8 | MATCH |  | - |
+| list the milestones for this quarter | QUERY | action:list_milestones_query | `list_milestones` @0.9 | MATCH |  | - |
+| any update on the next milestone | QUERY | action:get_project_status | `list_milestones` @0.6 | MISMATCH |  | - |
+| what milestones do we have | QUERY | action:list_milestones_query | `list_milestones` @0.93 | MATCH |  | - |
+| milestones due this month | QUERY | action:list_milestones_query | `list_milestones` @0.9 | MATCH |  | - |
+| when's the milestone deadline | QUERY | floor | `list_milestones` @0.8 | MISMATCH | OPERATION | - |
+| any recent releases | QUERY | action:list_releases_query | `list_releases` @0.92 | MATCH |  | - |
+| show me the releases | QUERY | action:list_releases_query | `list_releases` @0.93 | MATCH |  | - |
+| list our releases | QUERY | action:list_releases_query | `REFUSED` | MISMATCH | REFUSED | - |
+| what version are we on | QUERY | action:list_releases_query | `list_releases` @0.92 | MATCH |  | - |
+| what's the current release | QUERY | action:list_releases_query | `list_releases` @0.9 | MATCH |  | - |
+| what's our latest release | QUERY | action:list_releases_query | `list_releases` @0.95 | MATCH |  | - |
+| what labels do we use | QUERY | action:list_labels_query | `list_labels` @0.9 | MATCH |  | - |
+| show me the labels | QUERY | action:list_labels_query | `list_labels` @0.9 | MATCH |  | - |
+| list the labels | QUERY | action:list_labels_query | `list_labels` @0.9 | MATCH |  | - |
+| what are the issue labels | QUERY | action:list_labels_query | `list_labels` @0.9 | MATCH |  | - |
+| labels count please | QUERY | action:list_labels_query | `list_labels` @0.8 | MATCH |  | - |
+| all labels please | QUERY | action:list_labels_query | `list_labels` @0.9 | MATCH |  | - |
+| show me the active branches | QUERY | action:list_branches_query | `list_branches` @0.9 | MATCH |  | - |
+| show which branches exist | QUERY | action:list_branches_query | `list_branches` @0.9 | MATCH |  | - |
+| list the branches | QUERY | action:list_branches_query | `REFUSED` | MISMATCH | REFUSED | - |
+| what feature branches do we have | QUERY | action:list_branches_query | `list_branches` @0.8 | MATCH |  | - |
+| what are the current branches | QUERY | action:list_branches_query | `list_branches` @0.9 | MATCH |  | - |
+| what branches do we have | QUERY | action:list_branches_query | `list_branches` @0.9 | MATCH |  | - |
+| what's my most important task right now | PRIORITY | action:get_top_priority | `get_top_priority` @0.85 | MATCH |  | - |
+| what is my most important work today | PRIORITY | action:get_top_priority | `get_top_priority` @0.8 | MATCH |  | - |
+| what should I work on next | PRIORITY | action:get_top_priority | `get_top_priority` @0.7 | MATCH |  | - |
+| time for my stand-up | STATUS | action:show_standup | `REFUSED` | MISMATCH | REFUSED | - |
+| give me my stand up | STATUS | action:show_standup | `show_standup` @0.95 | MATCH |  | - |
+| give me a standup update | STATUS | action:show_standup | `show_standup` @0.95 | MATCH |  | - |
+| give me a standup report | STATUS | action:show_standup | `show_standup` @0.93 | MATCH |  | - |
+| what's my daily standup | STATUS | action:show_standup | `show_standup` @0.93 | MATCH |  | - |
+| show today's standup | STATUS | action:show_standup | `show_standup` @0.95 | MATCH |  | - |
+| show me my portfolio | STATUS | action:manage_portfolio | `manage_portfolio` @0.8 | MATCH |  | - |
+| list my active projects for this quarter | STATUS | action:list_projects | `list_projects` @0.7 | MATCH |  | - |
+| any upcoming milestones for this project | STATUS | action:list_milestones | `list_milestones` @0.85 | MATCH |  | - |
+| what's my current project | STATUS | action:get_project_status | `list_projects` @0.6 | MISMATCH |  | - |
+| can you summarize my current work | STATUS | action:get_project_status | `REFUSED` | MISMATCH | REFUSED | - |
+| what are my current projects | STATUS | action:list_projects | `list_projects` @0.85 | MATCH |  | - |
+| give me a project overview | STATUS | action:get_project_status | `get_project_status` @0.6 | MATCH |  | - |
+| what's the project landscape | STATUS | action:get_project_status | `list_projects` @0.7 | MISMATCH |  | - |
+| what projects am I working on | STATUS | action:list_projects | `list_projects` @0.85 | MATCH |  | - |
+| tell me what I'm working on | STATUS | floor | `list_projects` @0.5 | MISMATCH | OPERATION | - |
+| quick check, working on now? | STATUS | action:get_project_status | `CLARIFY` @0.5 | MISMATCH | CLARIFY | - |
+| what are my active projects | STATUS | action:manage_portfolio | `REFUSED` | MISMATCH | REFUSED | - |
+| show my active work | STATUS | floor | `CLARIFY` @0.55 | MATCH | CLARIFY | - |
+| what's my status | STATUS | action:get_project_status | `get_project_status` @0.6 | MATCH |  | - |
+| give me a status update | STATUS | action:get_project_status | `get_project_status` @0.6 | MATCH |  | - |
+| what is my status | STATUS | action:get_project_status | `get_project_status` @0.6 | MATCH |  | - |
+| what's my work status | STATUS | action:get_project_status | `get_project_status` @0.6 | MATCH |  | - |
+| show the current status | STATUS | action:get_project_status | `get_project_status` @0.6 | MATCH |  | - |
+| what's the current status | STATUS | action:get_project_status | `get_project_status` @0.7 | MATCH |  | - |
+| I need a status report | STATUS | action:get_project_status | `REFUSED` | MISMATCH | REFUSED | - |
+| what's my progress | STATUS | action:get_project_status | `get_project_status` @0.6 | MATCH |  | - |
+| give me a progress update | STATUS | action:get_project_status | `get_project_status` @0.6 | MATCH |  | - |
+| I need a progress report | STATUS | action:generate_report | `get_project_status` @0.6 | MISMATCH |  | - |
+| what's the progress on this | STATUS | action:get_project_status | `get_project_status` @0.6 | MATCH |  | - |
+| show today's progress | STATUS | action:session_activity_query | `productivity` @0.6 | MISMATCH |  | - |
+| what's the current progress | STATUS | action:get_project_status | `get_project_status` @0.6 | MATCH |  | - |
+| how's the progress going | STATUS | action:get_project_status | `get_project_status` @0.7 | MATCH |  | - |
+| what's the progress looking like | STATUS | action:get_project_status | `get_project_status` @0.6 | MATCH |  | - |
+| what are my tasks | STATUS | action:list_todos_query | `list_todos_query` @0.8 | MATCH |  | - |
+| show me my current tasks | STATUS | action:list_todos_query | `list_todos_query` @0.85 | MATCH |  | - |
+| what are my active tasks | STATUS | action:list_todos_query | `list_todos_query` @0.8 | MATCH |  | - |
+| list today's tasks | STATUS | action:list_todos_query | `list_todos_query` @0.8 | MATCH |  | - |
+| tasks I'm actively working on | STATUS | action:list_todos_query | `list_todos_query` @0.6 | MATCH |  | - |
+| what tasks do I have | STATUS | action:list_todos_query | `REFUSED` | MISMATCH | REFUSED | - |
+| what's the task status | STATUS | action:get_project_status | `CLARIFY` @0.5 | MISMATCH | CLARIFY | - |
+| what are my assignments | STATUS | floor | `REFUSED` | MISMATCH | REFUSED | - |
+| show me my current assignments | STATUS | floor | `REFUSED` | MISMATCH | REFUSED | - |
+| what's assigned to me | STATUS | floor | `list_issues` @0.6 | MISMATCH | OPERATION | - |
+| show today's assignments | STATUS | action:get_project_status | `list_todos_query` @0.5 | MISMATCH |  | - |
+| what are your capabilities? | DISCOVERY | action:get_capabilities | `get_capabilities` @0.97 | MATCH |  | - |
+| what services can you provide? | DISCOVERY | action:get_capabilities | `get_capabilities` @0.9 | MATCH |  | - |
+| what do you offer as an assistant? | DISCOVERY | action:get_capabilities | `get_capabilities` @0.9 | MATCH |  | - |
+| what features does piper have? | DISCOVERY | action:get_capabilities | `get_capabilities` @0.9 | MATCH |  | - |
+| what can you help me do today? | DISCOVERY | action:get_capabilities | `get_capabilities` @0.9 | MATCH |  | - |
+| show me your capabilities | DISCOVERY | action:get_capabilities | `get_capabilities` @0.97 | MATCH |  | - |
+| give me a menu of services | DISCOVERY | action:get_capabilities | `get_capabilities` @0.9 | MATCH |  | - |
+| can you list your capabilities | DISCOVERY | action:get_capabilities | `get_capabilities` @0.95 | MATCH |  | - |
+| I want to understand your capabilities better | DISCOVERY | action:get_capabilities | `get_capabilities` @0.9 | MATCH |  | - |
+| pull up the capability menu | DISCOVERY | action:get_capabilities | `get_capabilities` @0.9 | MATCH |  | - |
+| open the capabilities menu | DISCOVERY | action:get_capabilities | `get_capabilities` @0.9 | MATCH |  | - |
+| show me the menu | DISCOVERY | action:get_capabilities | `get_capabilities` @0.85 | MATCH |  | - |
+| what are you able to do for my project | DISCOVERY | action:get_capabilities | `get_capabilities` @0.9 | MATCH |  | - |
+| show me the features you offer | DISCOVERY | action:get_capabilities | `get_capabilities` @0.85 | MATCH |  | - |
+| what's available in terms of features | DISCOVERY | action:get_capabilities | `REFUSED` | MISMATCH | REFUSED | - |
+| help | DISCOVERY | action:get_capabilities | `get_capabilities` @0.95 | MATCH |  | - |
+| open the help menu | DISCOVERY | action:get_capabilities | `get_capabilities` @0.8 | MATCH |  | - |
+| can you show help topics | DISCOVERY | action:get_capabilities | `get_capabilities` @0.8 | MATCH |  | - |
+| I need help understanding something | DISCOVERY | action:get_capabilities | `CLARIFY` @0.6 | MISMATCH | CLARIFY | - |
+| what is blocking this release | ANALYSIS | action:analyze_blockers | `analyze_blockers` @0.9 | MATCH |  | - |
+| what tasks are blocking our sprint | ANALYSIS | action:analyze_blockers | `analyze_blockers` @0.85 | MATCH |  | - |
+| blockers for the release | ANALYSIS | action:analyze_blockers | `analyze_blockers` @0.9 | MATCH |  | - |
+| what's the main obstacle here | ANALYSIS | action:analyze_blockers | `analyze_blockers` @0.85 | MATCH |  | - |
+| what's in the way of finishing this | ANALYSIS | action:analyze_blockers | `analyze_blockers` @0.85 | MATCH |  | - |
+| let's analyze the risk here | ANALYSIS | action:analyze_blockers | `analyze_blockers` @0.85 | MATCH |  | - |
+| I'd like a risk assessment for this project | ANALYSIS | action:analyze_blockers | `analyze_blockers` @0.85 | MATCH |  | - |
+| can you run an impact analysis on this change | ANALYSIS | action:analyze_blockers | `get_capabilities` @0.7 | MISMATCH |  | - |
+| is there a bottleneck analysis available | DISCOVERY | action:get_capabilities | `get_capabilities` @0.8 | MATCH |  | - |
+| what risks does this project have | ANALYSIS | action:analyze_blockers | `analyze_blockers` @0.85 | MATCH |  | - |
+| what risk do we have in this plan | ANALYSIS | action:analyze_blockers | `analyze_blockers` @0.85 | MATCH |  | - |
+| please identify the risks in this plan | ANALYSIS | action:analyze_blockers | `REFUSED` | MISMATCH | REFUSED | - |
+| risks we should flag before launch | ANALYSIS | action:analyze_blockers | `analyze_blockers` @0.8 | MATCH |  | - |
+| threats to our timeline this week | ANALYSIS | action:analyze_blockers | `analyze_blockers` @0.82 | MATCH |  | - |
+| what could threaten this deadline | ANALYSIS | action:analyze_blockers | `analyze_blockers` @0.85 | MATCH |  | - |
+| why won't you create issues for me | TRUST | action:explain_trust | `explain_trust` @0.85 | MATCH |  | - |
+| why don't you just do it yourself | TRUST | action:explain_trust | `explain_trust` @0.8 | MATCH |  | - |
+| why are you always cautious about this suggestion | PROVENANCE | action:explain_suggestion | `explain_suggestion` @0.85 | MATCH |  | - |
+| what can't you do here | DISCOVERY | action:get_capabilities | `get_capabilities` @0.8 | MATCH |  | - |
+| what are your limits as an assistant | DISCOVERY | action:get_capabilities | `REFUSED` | MISMATCH | REFUSED | - |
+| what's the capability boundary here | DISCOVERY | action:get_capabilities | `get_capabilities` @0.8 | MATCH |  | - |
+| how well do you know me by now | MEMORY | action:pull_insights | `pull_insights` @0.6 | MATCH |  | - |
+| do you trust me with this decision | TRUST | action:explain_trust | `explain_trust` @0.8 | MATCH |  | - |
+| how much do you trust my judgment | TRUST | action:explain_trust | `explain_trust` @0.85 | MATCH |  | - |
+| what's our relationship like these days | TRUST | action:explain_trust | `explain_trust` @0.8 | MATCH |  | - |
+| how do you see our relationship evolving | TRUST | action:explain_trust | `explain_trust` @0.85 | MATCH |  | - |
+| how do we work together on this project | TRUST | action:explain_trust | `explain_trust` @0.7 | MATCH |  | - |
+| why did you go ahead without asking | TRUST | action:explain_trust | `REFUSED` | MISMATCH | REFUSED | - |
+| why do you always ask me the same thing | TRUST | action:explain_trust | `explain_trust` @0.9 | MATCH |  | - |
+| i didn't ask you to do that | TRUST | action:explain_trust | `explain_trust` @0.6 | MATCH |  | - |
+| what can you remember about our last conversation | MEMORY | action:get_memory | `get_memory` @0.9 | MATCH |  | - |
+| do you remember my last project update | MEMORY | action:get_memory | `get_memory` @0.85 | MATCH |  | - |
+| remember when we shipped the last release? | MEMORY | action:check_completion_status | `check_completion_status` @0.6 | MATCH |  | - |
+| can you show my conversation history | MEMORY | action:get_memory | `get_memory` @0.9 | MATCH |  | - |
+| our history together has been good | MEMORY | action:get_memory | `NONE` @0.8 | MISMATCH | NONE | - |
+| let's look at past conversations we've had | MEMORY | action:get_memory | `get_memory` @0.9 | MATCH |  | - |
+| pull up my previous messages please | MEMORY | action:get_memory | `get_memory` @0.85 | MATCH |  | - |
+| can I see the conversation log | MEMORY | action:get_memory | `get_memory` @0.8 | MATCH |  | - |
+| find when I mentioned this bug before | MEMORY | action:get_memory | `get_memory` @0.8 | MATCH |  | - |
+| search history for that conversation topic | MEMORY | action:get_memory | `get_memory` @0.85 | MATCH |  | - |
+| what did we discuss in our last session | MEMORY | action:get_memory | `get_memory` @0.85 | MATCH |  | - |
+| what we discussed yesterday was helpful | MEMORY | action:get_memory | `NONE` @0.8 | MISMATCH | NONE | - |
+| how long is your memory exactly | MEMORY | action:get_memory | `get_memory` @0.9 | MATCH |  | - |
+| connect my repository to the project | PORTFOLIO | action:manage_repos | `get_contextual_guidance` @0.6 | MISMATCH |  | execute:MISMATCH(none) |
+| connect octocat/hello-world to the project | PORTFOLIO | action:link_repo | `REFUSED` | MISMATCH | REFUSED | execute:MISMATCH(none) |
+| add octocat/hello-world to the project | PORTFOLIO | action:link_repo | `link_repo` @0.8 | MATCH |  | execute:MISMATCH(none) |
+| please show my linked repos | PORTFOLIO | action:list_repos | `list_repos` @0.93 | MATCH |  | - |
+| can you show project repositories for this account | PORTFOLIO | action:list_repos | `list_repos` @0.85 | MATCH |  | - |
+| list my repos on github | PORTFOLIO | action:list_repos | `list_repos` @0.85 | MATCH |  | - |
+| show all of my repos | PORTFOLIO | action:list_repos | `list_repos` @0.9 | MATCH |  | - |
+| what's changed since last week | QUERY | action:changes_query | `REFUSED` | MISMATCH | REFUSED | - |
+| show me the changes since last monday | QUERY | action:changes_query | `changes_query` @0.93 | MATCH |  | - |
+| show me everything that's changed | QUERY | action:changes_query | `changes_query` @0.8 | MATCH |  | - |
+| any changes since the last deploy | QUERY | action:changes_query | `changes_query` @0.85 | MATCH |  | - |
+| give me the activity since yesterday's standup | QUERY | action:changes_query | `changes_query` @0.8 | MATCH |  | - |
+| any updates since this morning | QUERY | action:changes_query | `changes_query` @0.9 | MATCH |  | - |
+| what needs attention right now | QUERY | action:attention_query | `attention_query` @0.9 | MATCH |  | - |
+| this project needs my attention today | QUERY | action:attention_query | `attention_query` @0.85 | MATCH |  | - |
+| show me what needs the most attention | QUERY | action:attention_query | `attention_query` @0.9 | MATCH |  | - |
+| the items that need attention haven't been touched | QUERY | action:attention_query | `attention_query` @0.6 | MATCH |  | - |
+| please list the attention items for review | QUERY | action:attention_query | `attention_query` @0.7 | MATCH |  | - |
+| which repository is my default | QUERY | action:get_default_repo | `get_default_repo` @0.93 | MATCH |  | - |
+| please show my default repository | QUERY | action:get_default_repo | `get_default_repo` @0.95 | MATCH |  | - |
+| my default repository | QUERY | action:get_default_repo | `get_default_repo` @0.6 | MATCH |  | - |
+| what do you know about my work habits | MEMORY | action:pull_insights | `pull_insights` @0.78 | MATCH |  | - |
+| tell me what you've learned about my habits | MEMORY | action:pull_insights | `pull_insights` @0.9 | MATCH |  | - |
+| what insights do you have about my productivity | MEMORY | action:pull_insights | `pull_insights` @0.8 | MATCH |  | - |
+| show me what you've learned about my preferences | MEMORY | action:pull_insights | `pull_insights` @0.9 | MATCH |  | - |
+| what patterns have you noticed in my work | MEMORY | action:pull_insights | `pull_insights` @0.9 | MATCH |  | - |
+| what have you noticed about my habits lately | MEMORY | action:pull_insights | `pull_insights` @0.85 | MATCH |  | - |
+| what branch am i on right now | QUERY | action:local_git_status_query | `local_git_status_query` @0.93 | MATCH |  | - |
+| which branch are we on at the moment | QUERY | action:local_git_status_query | `local_git_status_query` @0.93 | MATCH |  | - |
+| can you tell me the current branch | QUERY | action:local_git_status_query | `local_git_status_query` @0.9 | MATCH |  | - |
+| what's the working tree status | QUERY | action:local_git_status_query | `local_git_status_query` @0.9 | MATCH |  | - |
+| are there any uncommitted changes | QUERY | action:local_git_status_query | `local_git_status_query` @0.85 | MATCH |  | - |
+| do we have a dirty working tree | QUERY | action:local_git_status_query | `local_git_status_query` @0.9 | MATCH |  | - |
+| are we ahead of origin right now | QUERY | action:local_git_status_query | `local_git_status_query` @0.8 | MATCH |  | - |
+| are we behind upstream at all | QUERY | action:local_git_status_query | `local_git_status_query` @0.8 | MATCH |  | - |
+| do we have any unpushed commits | QUERY | action:local_git_status_query | `local_git_status_query` @0.7 | MATCH |  | - |
+| can you show the local git status | QUERY | action:local_git_status_query | `local_git_status_query` @0.9 | MATCH |  | - |
+| please run git status for me | QUERY | action:local_git_status_query | `local_git_status_query` @0.9 | MATCH |  | - |
+| show me my productivity report | QUERY | action:productivity_query | `productivity` @0.8 | MATCH |  | - |
+| can you share my productivity metrics | QUERY | action:productivity_query | `get_capabilities` @0.6 | MISMATCH |  | - |
+| i'd like to check my productivity this week | QUERY | action:productivity_query | `productivity` @0.9 | MATCH |  | - |
+| what have we created so far | QUERY | action:session_activity_query | `session_activity_query` @0.7 | MATCH |  | - |
+| what did we make earlier | QUERY | action:session_activity_query | `REFUSED` | MISMATCH | REFUSED | - |
+| what did i create this session | QUERY | action:session_activity_query | `session_activity_query` @0.95 | MATCH |  | - |
+| what did we do this session | QUERY | action:session_activity_query | `REFUSED` | MISMATCH | REFUSED | - |
+| what issues did we open during the call | QUERY | action:session_activity_query | `session_activity_query` @0.6 | MATCH |  | - |
+| Write a short update for the client CEO on where we are | SYNTHESIS | action:write_stakeholder_update | `write_stakeholder_update` @0.95 | MATCH |  | - |
+| help me setup my projects | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.8 | MATCH |  | - |
+| help me setup projects | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.8 | MATCH |  | - |
+| How do I setup my projects? | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.9 | MATCH |  | - |
+| setup my projects | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.85 | MATCH |  | - |
+| help me set up my portfolio | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.75 | MATCH |  | - |
+| Help me set up my projects | GUIDANCE | action:get_contextual_guidance | `get_contextual_guidance` @0.8 | MATCH |  | - |
+| When did I complete the API migration? | STATUS | action:check_completion_status | `check_completion_status` @0.93 | MATCH |  | - |
+| When did I complete the migration? | STATUS | action:check_completion_status | `check_completion_status` @0.9 | MATCH |  | - |
+| When did we launch the beta? | STATUS | action:check_completion_status | `check_completion_status` @0.6 | MATCH |  | - |
+| Who are you and what do you do? | IDENTITY | action:get_identity | `get_identity` @0.85 | MATCH |  | - |
+| What's your name? | IDENTITY | action:get_identity | `get_identity` @0.9 | MATCH |  | - |
+| what date did I finish the onboarding project | STATUS | action:check_completion_status | `check_completion_status` @0.9 | MATCH |  | - |
+| show me when we shipped the API | STATUS | action:check_completion_status | `check_completion_status` @0.8 | MATCH |  | - |
+| when was the migration completed | STATUS | action:check_completion_status | `check_completion_status` @0.9 | MATCH |  | - |
+| how long ago did we ship the dashboard | STATUS | action:check_completion_status | `check_completion_status` @0.85 | MATCH |  | - |
+| show my archived projects | PORTFOLIO | action:list_archived_projects | `list_archived_projects` @0.93 | MATCH |  | - |
+| show archived projects | PORTFOLIO | action:list_archived_projects | `list_archived_projects` @0.95 | MATCH |  | - |
+| view my archived projects | PORTFOLIO | action:list_archived_projects | `list_archived_projects` @0.95 | MATCH |  | - |
+| show my projects | PORTFOLIO | action:list_projects | `list_projects` @0.85 | MATCH |  | - |
+| list my archived projects (show all names) | PORTFOLIO | action:list_archived_projects | `list_archived_projects` @0.95 | MATCH |  | - |
+| What date did I finish the database project? | STATUS | action:check_completion_status | `check_completion_status` @0.9 | MATCH |  | - |
+| How long ago did I finish the redesign? | STATUS | action:check_completion_status | `check_completion_status` @0.9 | MATCH |  | - |
+| When was the auth refactor shipped? | STATUS | action:check_completion_status | `check_completion_status` @0.85 | MATCH |  | - |
+| list my archived projects and summarize my current work | PORTFOLIO | plan | `REFUSED` | MISMATCH | REFUSED | - |
+| list all projects | PORTFOLIO | action:list_projects | `list_projects` @0.7 | MATCH |  | - |
+| view my projects | PORTFOLIO | action:list_projects | `list_projects` @0.85 | MATCH |  | - |
+| summarize my current work and I need the archived list  | STATUS | plan | `REFUSED` | MISMATCH | REFUSED | - |
+| Where did you get that from? | PROVENANCE | action:explain_suggestion | `explain_suggestion` @0.8 | MATCH |  | - |
+| How did you know about that? | PROVENANCE | action:explain_suggestion | `REFUSED` | MISMATCH | REFUSED | - |
+| What made you mention the priority? | PROVENANCE | action:explain_suggestion | `explain_suggestion` @0.85 | MATCH |  | - |
+| How do you know about my schedule? | PROVENANCE | action:explain_suggestion | `explain_trust` @0.6 | MISMATCH |  | - |
+| Why is that on your list? | PROVENANCE | action:explain_suggestion | `REFUSED` | MISMATCH | REFUSED | - |
+| Based on what? | PROVENANCE | action:explain_suggestion | `explain_suggestion` @0.8 | MATCH |  | - |
+| What's that based on? | PROVENANCE | action:explain_suggestion | `explain_suggestion` @0.85 | MATCH |  | - |
+| hide the project Beta | PORTFOLIO | action:archive_project | `archive_project` @0.7 | MATCH |  | execute:MISMATCH(none) |
+| put the old project away | PORTFOLIO | action:archive_project | `archive_project` @0.7 | MATCH |  | execute:MISMATCH(none) |
+| restore project Epsilon | PORTFOLIO | action:restore_project | `restore_project` @0.95 | MATCH |  | execute:MISMATCH(none) |
+| unarchive the old project | PORTFOLIO | action:restore_project | `restore_project` @0.8 | MATCH |  | execute:MISMATCH(none) |
+| bring back my archived project | PORTFOLIO | action:restore_project | `restore_project` @0.8 | MATCH |  | execute:MISMATCH(none) |
+| search projects for budget | PORTFOLIO | action:search_projects | `search_projects` @0.93 | MATCH |  | - |
+| find project deadline | PORTFOLIO | action:search_projects | `REFUSED` | MISMATCH | REFUSED | - |
+| add a new project | PORTFOLIO | action:add_project | `add_project` @0.93 | MATCH |  | execute:MISMATCH(none) |
+| I'd like to start a new project | PORTFOLIO | action:add_project | `add_project` @0.6 | MATCH |  | ambiguous:MISMATCH(none) |
+| what's your name | IDENTITY | action:get_identity | `get_identity` @0.9 | MATCH |  | - |
+| your role | IDENTITY | action:get_identity | `get_identity` @0.85 | MATCH |  | - |
+| what do you do | IDENTITY | action:get_identity | `get_capabilities` @0.9 | MISMATCH |  | - |
+| tell me about yourself | IDENTITY | action:get_identity | `get_identity` @0.9 | MATCH |  | - |
+| introduce yourself | IDENTITY | action:get_identity | `get_identity` @0.9 | MATCH |  | - |
+| edit the meeting notes document | EXECUTION | action:update_document_query | `update_document` @0.8 | MATCH |  | execute:MISMATCH(none) |
+| modify the status document | EXECUTION | action:update_document_query | `update_document` @0.8 | MATCH |  | execute:MISMATCH(none) |
+| change the spec doc | EXECUTION | action:update_document_query | `update_document` @0.6 | MATCH |  | execute:MISMATCH(none) |
+| add to the notes document new items | EXECUTION | action:update_document_query | `REFUSED` | MISMATCH | REFUSED | execute:MISMATCH(none) |
+| append to the log doc | EXECUTION | action:update_document_query | `update_document` @0.8 | MATCH |  | execute:MISMATCH(none) |
+| update project plan with new deadline | EXECUTION | action:update_document_query | `update_document` @0.7 | MATCH |  | execute:MISMATCH(none) |
+| edit the report with corrections | EXECUTION | action:update_document_query | `REFUSED` | MISMATCH | REFUSED | execute:MISMATCH(none) |
+| modify the onboarding checklist with the new steps | EXECUTION | action:update_document_query | `update_document` @0.6 | MATCH |  | execute:MISMATCH(none) |
+| change the title of issue 108 to test new regressions | EXECUTION | action:update_issue | `update_issue` @0.93 | MATCH |  | execute:MISMATCH(none) |
+| Tell me about Notion | QUERY | action:get_feature_info | `get_feature_info` @0.85 | MATCH |  | - |
+| How does the Slack integration work? | QUERY | action:get_feature_info | `get_feature_info` @0.85 | MATCH |  | - |
+| What is the Notion integration? | QUERY | action:get_feature_info | `get_feature_info` @0.9 | MATCH |  | - |
+| I'd like to learn more about the GitHub integration. | QUERY | action:get_feature_info | `REFUSED` | MISMATCH | REFUSED | - |
+| Can you give me information about the Slack integration | QUERY | action:get_feature_info | `get_feature_info` @0.9 | MATCH |  | - |
+| Draft a status update for the board | SYNTHESIS | action:write_stakeholder_update | `write_stakeholder_update` @0.9 | MATCH |  | - |
+| Write something to send to Jake about the beta timeline | SYNTHESIS | action:write_stakeholder_update | `write_stakeholder_update` @0.72 | MATCH |  | - |
+| I need a stakeholder update on the alpha program | SYNTHESIS | action:write_stakeholder_update | `REFUSED` | MISMATCH | REFUSED | - |
+| finish todo about deployment | EXECUTION | action:complete_todo | `complete_todo` @0.93 | MATCH |  | execute:MISMATCH(none) |
+| Can we just mark done here? | EXECUTION | action:complete_todo | `REFUSED` | MISMATCH | REFUSED | ambiguous:MISMATCH(none) |
+| complete todo for the deploy checklist | EXECUTION | action:complete_todo | `complete_todo` @0.85 | MATCH |  | execute:MISMATCH(none) |
+| use mediajunkie/piper-morgan-product as my default repo | EXECUTION | action:set_default_repo | `set_default_repo` @0.95 | MATCH |  | execute:MISMATCH(none) |
+| make mediajunkie/piper-morgan-product my default repo | EXECUTION | action:set_default_repo | `set_default_repo` @0.95 | MATCH |  | execute:MISMATCH(none) |
+| My default repo should be mediajunkie/piper-morgan-prod | EXECUTION | action:set_default_repo | `set_default_repo` @0.85 | MATCH |  | ambiguous:MISMATCH(none) |
+| Actually, change the title to 'Implement full-text sear | EXECUTION | action:update_issue | `REFUSED` | MISMATCH | REFUSED | execute:MISMATCH(none) |
+| Also we should call it out in the release notes | EXECUTION | floor | `NONE` @0.5 | MATCH | NONE | - |
+| Create a GitHub issue: "Served check colon quotes" in d | EXECUTION | action:create_issue | `create_issue` @0.97 | MATCH |  | execute:MISMATCH(none) |
+| Create a GitHub issue: "Served check bare form" | EXECUTION | action:create_issue | `create_issue` @0.9 | MATCH |  | execute:MISMATCH(none) |
+| Show me that issue. | QUERY | action:review_issue_query | `review_issue` @0.6 | MATCH |  | - |
+| Update issue #123 | QUERY | action:update_issue | `update_issue` @0.7 | MATCH |  | execute:MISMATCH(none) |
+| Find time for a 1:1 with the team lead | QUERY | floor | `NONE` @0.7 | MATCH | NONE | - |
+| Analyze this document | ANALYSIS | action:analyze_document | `analyze_document` @0.85 | MATCH |  | - |
+| What does this document say? | ANALYSIS | action:analyze_document | `summarize_document` @0.6 | MISMATCH |  | - |
+| Summarize this file | SYNTHESIS | action:summarize_document | `summarize_document` @0.85 | MATCH |  | - |
+| Analyze the document called PRD Writing Guidelines | ANALYSIS | action:analyze_document | `analyze_document` @0.9 | MATCH |  | - |
+
+## Framing score (#1970 step (1)/(6))
+
+Per-value denominators (m-44) — rows with NO framing expectation (most of the corpus: READ actions, DESTRUCTIVE actions, REVIEW rows, anything the expected-framing mapping doesn't cover) are counted separately below, never folded into either side of the table.
+
+| expected framing | matched | expected | rate |
+|---|---|---|---|
+| execute | 0 | 69 | 0% |
+| ambiguous | 0 | 3 | 0% |
+| compose | 0 | 0 | — |
+| (no expectation) | — | 544 | — |
