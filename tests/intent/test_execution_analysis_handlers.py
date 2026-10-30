@@ -87,12 +87,14 @@ class TestExecutionHandlers:
     @pytest.mark.asyncio
     async def test_create_issue_uses_user_scoped_default_repo_1366(self, intent_service):
         """#1366 Component A: when no repository is named in the request, the
-        fallback default repo must come from the per-user get_user_default_repo
-        resolver, not piper_config_loader.load_github_config().default_repository
-        — on a shared instance the unscoped file read would hand every user PM's
-        own default repo."""
-        from uuid import UUID
+        fallback default repo must come from the per-user resolver, not
+        piper_config_loader.load_github_config().default_repository — on a shared
+        instance the unscoped file read would hand every user PM's own default repo.
 
+        #2205 (Arch 2026-10-29 13:48): a WRITE uses only a default the user
+        designated, read through ``get_user_write_target`` (source ``user``); an
+        auto-picked or source-less default asks instead. The per-user scoping this
+        test pins is unchanged: the lookup is made under THIS user's id."""
         user_id = "12345678-1234-5678-1234-567812345678"
         intent = Intent(
             original_message="create an issue about testing",
@@ -120,21 +122,25 @@ class TestExecutionHandlers:
                 new=AsyncMock(return_value={"number": 42, "title": "Test issue"}),
             ) as mock_create,
             patch(
-                "services.integrations.github.repo_resolver.get_user_default_repo",
+                "services.integrations.github.repo_resolver.get_user_write_target",
                 new_callable=AsyncMock,
-            ) as mock_get_default_repo,
+            ) as mock_write_target,
             patch(
                 "services.configuration.piper_config_loader.piper_config_loader"
             ) as mock_config_loader,
         ):
-            mock_get_default_repo.return_value = "scoped-owner/scoped-repo"
+            mock_write_target.return_value = "scoped-owner/scoped-repo"
             mock_config_loader.load_github_config.return_value = MagicMock(default_labels=None)
 
             result = await intent_service._handle_create_issue(
                 intent, workflow_id="wf-1", session_id="test", user_id=user_id
             )
 
-            mock_get_default_repo.assert_awaited_once_with(UUID(user_id))
+            # Every lookup was made under THIS user's id (the #1366 point) and
+            # through the user-designated-write-target accessor (the #2205 rule).
+            assert mock_write_target.await_count >= 1
+            for call in mock_write_target.await_args_list:
+                assert str(call.args[0]) == user_id
             assert result.success is True
             mock_create.assert_awaited_once()
             kwargs = mock_create.await_args.kwargs
@@ -223,7 +229,12 @@ class TestExecutionHandlers:
 
     @pytest.mark.asyncio
     async def test_update_issue_missing_repository(self, intent_service):
-        """Test update_issue returns error when repository is missing."""
+        """update_issue with no repository in the turn and no user-designated
+        default writes NOTHING (#2205, Arch 2026-10-29 13:48): with a session it
+        asks CXO's repository question; with none it says the no-session line.
+        Either way the reply names the repository as the missing thing and no
+        update is sent. (Before #2205 this pinned a validation failure; the
+        contract now is 'no write, and say why', not a flag.)"""
         intent = Intent(
             original_message="update issue 123",
             category=IntentCategory.EXECUTION,
@@ -233,19 +244,26 @@ class TestExecutionHandlers:
             # Missing repository
         )
 
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter.is_available",
-            AsyncMock(return_value=True),
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter.is_available",
+                AsyncMock(return_value=True),
+            ),
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter.update_issue",
+                new=AsyncMock(),
+            ) as mock_update,
+            patch(
+                "services.integrations.github.repo_resolver.get_user_write_target",
+                new=AsyncMock(return_value=None),
+            ),
         ):
             result = await intent_service._handle_update_issue(
                 intent=intent, workflow_id="test-workflow-123"
             )
 
-        # Should fail validation
-        assert result.success is False
+        mock_update.assert_not_awaited()
         assert "repository" in result.message.lower()
-        assert result.requires_clarification is True  # Validation errors require clarification
-        assert result.clarification_type == "repository_required"
 
     @pytest.mark.asyncio
     async def test_update_issue_no_placeholder_message(self, intent_service):
