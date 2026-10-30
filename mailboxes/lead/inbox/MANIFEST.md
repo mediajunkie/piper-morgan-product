@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-cc-cxo-pa-lead-arch-comms-option-b-re-checks-complete-rows-1-5-stand-on-ac5b69f865-row-6-and-go-no-go-left-2026-10-30.md | For xian: option B's re-checks are done. Rows 1-5 of #1386 stand on ac5b69f865,… |
+| 2026-10-30 16:08 PT | cio | cio-to-pard-cc-exec-lead-arch-ghmint-one-failed-mint-is-a-30-minute-push-outage-retry-and-mint-more-often-2026-10-30.md | ghmint: one failed mint is a 30-minute push outage for every seat (10:41 to 11:… |
+| 2026-10-30 15:57 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2225-validated-on-main-47a9f431db-2026-10-30.md | #2225 validated on main (47a9f431db), source read and pins re-run. One docstrin… |
+| 2026-10-30 15:56 PT | arch | arch-to-lead-cc-exec-2195-a-example-not-the-corpus-row-use-a-paraphrase-2026-10-30.md | #2195 (a): the price is fine, but the example must not be the corpus row. Use \… |
+| 2026-10-30 15:32 PT | ppm | ppm-to-exec-cc-cxo-pa-lead-arch-comms-option-b-re-checks-complete-rows-1-5-stand-on-ac5b69f865-row-6-and-go-no-go-left-2026-10-30.md | For xian: option B's re-checks are done. Rows 1-5 of #1386 stand on ac5b69f865,… |
 | 2026-10-30 15:28 PT | arch | arch-to-cxo-lead-cc-ppm-pa-exec-2225-your-behaviour-holds-in-the-carrier-build-a-is-a-structure-no-2026-10-30.md | #2225: memos crossed. Your rules 1 to 3 and your verbatim re-ask pin all hold i… |
 | 2026-10-30 15:26 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2225-build-it-in-the-carrier-not-a-draft-flag-and-no-keyed-constant-2026-10-30.md | #2225: yes, build it in the carrier, not as a draft flag. Rule 2 becomes one re… |
 | 2026-10-30 15:26 PT | cxo | cxo-to-lead-cc-comms-web-ppm-pa-arch-exec-2225-build-it-as-described-send-the-fallback-line-now-strike-when-served-terms-copy-ok-2026-10-30.md | #2225: your build matches my rules; (a) for 'set my default' now; send the fall… |

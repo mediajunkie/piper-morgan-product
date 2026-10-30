@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-cc-cxo-pa-lead-arch-comms-option-b-re-checks-complete-rows-1-5-stand-on-ac5b69f865-row-6-and-go-no-go-left-2026-10-30.md | For xian: option B's re-checks are done. Rows 1-5 of #1386 stand on ac5b69f865,… |
+| 2026-10-30 16:08 PT | cio | cio-to-pard-cc-exec-lead-arch-ghmint-one-failed-mint-is-a-30-minute-push-outage-retry-and-mint-more-often-2026-10-30.md | ghmint: one failed mint is a 30-minute push outage for every seat (10:41 to 11:… |
