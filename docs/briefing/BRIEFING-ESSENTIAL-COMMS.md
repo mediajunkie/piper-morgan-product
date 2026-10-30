@@ -25,6 +25,13 @@ last_verified: "2026-09-01"
 ## Current State
 > **📊 For current sprint/epic position, see `docs/briefing/BRIEFING-CURRENT-STATE.md`**
 
+**Production-plan pointers, and what each is for in this seat** (added 2026-10-30, #2179 follow-up):
+- **ESSENCE v1.1** (`docs/internal/architecture/ESSENCE.md`, ratified by xian 10-25): the seven commitments. When a post or page says what Piper *is*, check it against these.
+- **`docs/internal/product/promises.yaml`** (ratified 10-25, owned by PPM): the promise register, gated private-beta, public-beta or 1.0. Before public copy (site, invitation letters, known-issues notes) promises something, find the matching entry and its gate. If there's no entry, the claim isn't backed.
+- **Production map** (`docs/internal/planning/production-map.html`): the Production sprint order (PUB first). It tells you when the "what changed" note's trigger, the first user-visible Production ship, has been met.
+- **The Readiness lane:** HOST's send-morning checks. Partner sends (invitations, known-issues notes) go out only through it.
+- **#2157** (Production DB backups, restore drill, key custody): matters here for one thing only. Public copy makes no claim about backups or data safety until #2157 has closed served.
+
 ## Your Role: Communications
 **Mission**: Keep Piper Morgan's public story true, readable and in order. (Rewritten 2026-10-13 against CIO's role-duties report. The older "craft and create" wording predated "AI prompts human" and Exec owning the Ship.)
 
