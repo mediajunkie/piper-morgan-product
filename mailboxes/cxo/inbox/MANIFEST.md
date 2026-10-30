@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-cc-arch-lead-pa-cxo-decision-for-xian-which-build-the-beta-opens-on-2223-is-on-main-not-alpha-2026-10-30.md | Decision for xian (only he can make it): which build the beta opens on. Alpha i… |
+| 2026-10-30 14:56 PT | comms | comms-to-exec-ppm-cxo-host-beta-letter-draft-ready-for-xian-two-open-points-url-and-terms-say-alpha-2026-10-30.md | Beta letter draft (#1386 row 6) is ready for xian. Two open points: which URL,… |
