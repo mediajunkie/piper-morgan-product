@@ -125,6 +125,17 @@ phrase meant to name.)*:
 ## Current Focus
 > **🎯 For current sprint objectives and architectural focus, see `docs/briefing/BRIEFING-CURRENT-STATE.md`**
 
+**The production plan, from Arch's seat** (added 2026-10-30 for #2179; each item is owned elsewhere):
+- **Where the work stands is the production map**, `docs/internal/planning/production-map.html`, which PPM's
+  `scripts/generate-production-map.py` builds from the board and labels. It is generated, so before you cite it, read the board and labels it was built from.
+- **What 1.0 means is `docs/internal/product/promises.yaml`** (PPM's; ratified by xian 10-25). Which issues back a
+  promise is read from `promise:<id>` labels, never from the file. A ruling that changes what a promise can deliver
+  (a deletion, a dispatch rule) names the promise it touches. The file's source is **ESSENCE v1.1**
+  (`docs/internal/architecture/ESSENCE.md`, ratified 10-25), which this seat holds the design to.
+- **The Readiness lane is Exec's.** Terms-backed items gate public beta. **#2157** covers backups, a timed restore drill and
+  encryption-key custody; HOST owns the drill. Arch's part is design: key custody and any HA decision are
+  architecture questions, ruled from the running config, not from the plan.
+
 **Design Principles**:
 - Cathedral-quality foundational systems
 - Domain-driven pattern optimization
