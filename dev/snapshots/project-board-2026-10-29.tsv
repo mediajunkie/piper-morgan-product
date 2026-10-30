@@ -2004,3 +2004,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2207	OPEN	Production		repo_clarification resolves a bare repo name under the OFFER's stored principal when the turn has none (the fallback ruled out for the milestone pick in 2199)			
 2208	OPEN	Production		Learned-pattern execute route reports a failed action as success (status error is counted as success)	bug		
 2209	OPEN	Production		Naming a milestone the account doesn't have gets another milestone's issues, with no word that it isn't there	UX		
+2210	OPEN	Production		TEST: tests/web/test_smoke_static.py::test_template_renders fails on main (Jinja2Templates not initialized in app state)	testing		
+2211	OPEN	Production		Delete dead floor door _handle_guidance_via_floor (no callers) and correct the door-count comments			
