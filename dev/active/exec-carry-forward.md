@@ -11,7 +11,7 @@ DUTY CYCLE TICK (exec — v0.7 worktree-cycle). Autonomous fire; no human drivin
 ```
 
 ## Rollup
-v681, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v682, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## MVP gate (as of 23:01 10-29)
 - Open: #2205, #1386 (gh). Alpha and staging `e234776150` (third promotion, xian's dispatch 18:4x, carries #2205). Main CI 12/12 green.
@@ -24,7 +24,7 @@ v681, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - #2184 partner note: Comms's short note ending with CXO's sentence (xian 18:33, 18:43). xian sends from xian@ to the three 10-26 invitees (HOST's roster).
 - `docs/briefing/TEAM-IN-XIANS-WORDS.md` written and shared with all seats (21:39).
 
-## Waiting on xian (on v681)
+## Waiting on xian (on v682)
 - A3/A4 run (hot card).
 - Tell HOST the same day when the partner note goes (row 178).
 - Lead promotion allow line (row 167), Docs' Ongoing sort question (row 168), web-pat-test sign-in, the Citation Medium crosspost, and the older "for you, in this order" list.
