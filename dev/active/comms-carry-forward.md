@@ -1,6 +1,38 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-10-28 21:19 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-10-29 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/10/29/2026-10-29-0619-comms-code-log.md`, DAY-CLOSED.
+- **xian's priorities (10-29, in order):**
+  1. He picks the weekend posts and Comms scaffolds them (done).
+  2. Rosenverse slides for the 10-30 talk.
+  3. He writes and illustrates the weekend posts.
+  4. Next week's Now What newsletter.
+  5. The next tranche of narrative posts, with Comms.
+  6. Tuesday's post.
+  "It's not on you to press harder."
+- **Weekend scaffolds, both waiting on xian's prose and art** (f27bd930c5, 08:02):
+  - Sat 10-31 "Build the Instrument Before the Theory" (#2101 stall). Lead's quote has a semicolon, and the scaffold suggests a trim.
+  - Sun 11-01 "Read the Machine Before Debating Who Restarts It" (#2124 OOM).
+  - **Title lock:** Sunday's title must be final before Saturday goes to Docs, because Saturday's footer names it.
+  - Open for xian: does Docs change Thursday's live Hearsay footer to tease Saturday?
+  - After each prose lands: review, template-audit, row, then publish-ready to Docs.
+- **Tue 11-03 "The Unguarded Entrance":** the title is final. Waiting on xian's prose. Its footer tease has no target yet.
+- **Calendar from 11-05:** empty. Talk with xian (his priority 5). Pair 3+4 ("Validate the Guard…" / "A Fail-Loud Test…") is the likely next weekend. Planning doc https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86, insight table `mw29c853es4.8551`.
+- **Beta invitation known-issues list** (`docs/internal/planning/comms/design-partner-known-issues-and-calendar-lines-2026-10-19.md`):
+  - Now scoped to the **first beta invitation**: no sooner than 10-30, after xian's HOST conversation (PPM 13:10, #1386 criterion 6).
+  - Lines added: #2184, with CXO's "Launch" placeholder example, and the #2042-class line. CXO says keep both #2042 lines.
+  - The #2018 line is struck.
+  - When the draft is near final, send it to PPM for the line-by-line check.
+  - Ask xian whether the "Alpha is nearly over" paragraph fits a beta letter.
+- **#2184 note to the three alpha partners:** final (xian 18:43, ending with CXO's sentence). xian sends it from xian@, with recipients from HOST's roster. **Not reported sent.** When xian sends it, tell HOST the same day.
+- **MVP gate:** #1386 alone. #2184 and #2195 sit at the top of Sprint PUB, the first Production sprint.
+- **Standing:**
+  - "What changed" note: trigger is the first Production ship, not yet met.
+  - Mining pass: Fri 11-06.
+  - #2151 recheck on send morning.
+  - Narrative front: Sep 6.
+
+## OLDER STATE — 2026-10-28 21:19 PT
 - **Log:** `dev/2026/10/28/2026-10-28-0619-comms-code-log.md`, DAY-CLOSED. Close every log with exactly `<!-- DAY-CLOSED: YYYY-MM-DD -->`.
 - **Thu 10-29 "Citation via Hearsay":** PUBLISH-READY with Docs (memo 7f0534cde, cc Exec). Draft at 0013300cc3, row ready-for-docs (49e0904c3c). Medium crosspost is xian's after it goes live (building). If an admin-UI save lands after 0013300cc3, diff it before Docs publishes.
 - **Tue 11-03 "The Unguarded Entrance":** the title is FINAL (xian 10-28: "I decided that already. I check ahead now."). The scaffold is waiting on xian's prose. Then the review, art, audit, row, and publish-ready. Its footer tease needs a target, but nothing is scheduled after it.
