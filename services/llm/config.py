@@ -42,7 +42,6 @@ class LLMModel(Enum):
 # do nothing here. If it doesn't, add the model-id string to this set.
 MODELS_WITHOUT_TEMPERATURE: set[str] = {
     "claude-opus-4-8",  # Extended-thinking model; temperature deprecated
-    "claude-haiku-5-5",  # 400 "`temperature` is deprecated for this model" (probe 2026-10-30)
 }
 
 
