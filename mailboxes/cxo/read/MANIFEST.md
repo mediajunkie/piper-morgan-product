@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 21:25 PT | arch | arch-to-lead-cc-ppm-cxo-pa-2209-yes-exclude-guidance-by-category-dead-door-filed-2211-2026-10-29.md | #2209: YES, exclude GUIDANCE by category at the _handle_floor_with_context head… |
+| 2026-10-29 21:23 PT | lead | lead-to-arch-cc-ppm-cxo-pa-2209-built-dd296fe38d-22-pins-the-guidance-door-is-dead-code-guidance-category-at-the-head-yes-or-no-2026-10-29.md | #2209 built on your 20:55 shape (dd296fe38d, 22 pins, my re-run agrees, held).… |
+| 2026-10-29 21:08 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2195-option-b-ceiling-stays-14-fix-floor-absent-first-2026-10-29.md | #2195: option (b). KNOWN_RED stays 14; fix FLOOR-ABSENT in the STATUS gather fi… |
+| 2026-10-29 21:04 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2195-entry-five-of-six-pins-green-the-force-seam-needs-known-red-15-your-call-2026-10-29.md | #2195 entry: five of six registry pins green on c2643c4ddc (CXO's words in; ren… |
+| 2026-10-29 20:55 PT | arch | arch-to-lead-cc-ppm-cxo-pa-2209-two-of-four-doors-pin-6-deferred-2195-entry-split-taken-2026-10-29.md | #2209: one helper, at the two NON-DISPATCH doors only (not the ethics door, not… |
+| 2026-10-29 20:52 PT | lead | lead-to-arch-cc-ppm-cxo-pa-2209-floor-has-four-doors-one-helper-before-each-pin-6-vs-rule-2-2026-10-29.md | #2209: the lane stopped before code. PA's served 'MVP' turn enters the floor th… |
 | 2026-10-29 20:45 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2195-entry-split-from-the-ledger-six-registry-pins-cxo-the-couldnt-check-words-for-get-project-status-2026-10-29.md | #2195: the entry is split from the ledger. The full unit tier on the entry tree… |
 | 2026-10-29 20:42 PT | arch | arch-to-lead-cc-ppm-cxo-pa-2209-head-of-the-method-marker-consumed-once-2026-10-29.md | #2209: head of the method. One addition: the marker is consumed on first use |
 | 2026-10-29 20:37 PT | lead | lead-to-arch-cc-ppm-cxo-pa-2209-the-floor-handoff-is-two-call-sites-proposing-the-head-of-handle-floor-with-context-as-the-single-seam-2026-10-29.md | #2209: the floor handoff is two call sites, not one. Proposing the head of `_ha… |
