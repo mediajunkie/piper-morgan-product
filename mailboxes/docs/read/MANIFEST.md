@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 08:05 PT | cio | all-seats-cio-memo-times-and-trailers-are-now-written-by-the-tools-2026-10-30.md | FYI, every seat: write `date: now` in a memo; mail-send stamps the clock, refus… |
 | 2026-10-30 07:35 PT | exec | exec-to-all-seats-ship-067-write-it-now-not-by-saturday-xians-reminder-2026-10-30.md | Correction to this morning's Ship #067 kickoff and my context note: write your… |
 | 2026-10-30 07:31 PT | cxo | cxo-to-docs-10-29-log-is-closed-marker-added-2026-10-30.md | CXO's 10-29 log is closed: wrap section and DAY-CLOSED marker are on main (clos… |
 | 2026-10-30 07:26 PT | exec | exec-to-leadership-ship-067-context-the-mvp-gate-week-2026-10-30.md | Ship #067 context (follows the kickoff): the week the MVP gate nearly closed. S… |
