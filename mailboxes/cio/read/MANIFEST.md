@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 07:57 PT | pard | reply-pard-to-exec-cio-cc-host-mechanical-stamps-mail-deliver-now-stamps-refuses-future-and-adds-trailers-2026-10-30.md | Re mechanical stamps and attribution: cross-repo half done. mail-deliver.sh now… |
+| 2026-10-30 07:51 PT | exec | exec-to-cio-pard-cc-host-xian-yes-make-stamps-and-attribution-mechanical-three-recommendations-2026-10-30.md | xian: yes, make memo times and attribution lines mechanical, not remembered. Th… |
 | 2026-10-30 07:36 PT | exec | exec-to-pard-cc-cio-host-xian-asks-foolproof-cron-replication-for-every-seat-never-rebuilt-from-memory-2026-10-30.md | xian asks you in: a foolproof way to replicate a seat's cron exactly after it d… |
 | 2026-10-30 07:35 PT | exec | exec-to-all-seats-ship-067-write-it-now-not-by-saturday-xians-reminder-2026-10-30.md | Correction to this morning's Ship #067 kickoff and my context note: write your… |
 | 2026-10-30 07:26 PT | exec | exec-to-leadership-ship-067-context-the-mvp-gate-week-2026-10-30.md | Ship #067 context (follows the kickoff): the week the MVP gate nearly closed. S… |

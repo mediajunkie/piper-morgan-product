@@ -172,7 +172,12 @@ address. Mail to a role in *this* repo still goes to `mailboxes/{role}/inbox/` v
    spurious non-fast-forward rejections.
 3. **Stage your own file by exact path** and commit. Other agents' uncommitted memos routinely sit on
    disk in those checkouts. Never `git add -A` or a directory-level add there.
-4. **Easiest: `scripts/mail-send-external.sh <repo> <mail-dir> <memo>`** (10-20) does steps 2 to 4 for you. It runs the
+4. **Use `scripts/mail-send-external.sh <repo> <mail-dir> <memo>`; don't hand-commit into another repo** (10-20; since
+   10-30 the one way, xian's yes via Exec). Write `date: now` and it stamps the clock; it refuses a stamp ahead of the
+   clock by even a minute; and it adds this session's `Co-Authored-By` and `Claude-Session` trailers itself
+   (`scripts/session_trailers.sh`, derived, never guessed). Make the in-repo cc copies *after* it runs, so they carry
+   the stamped time; `mail-send.sh` stamps `date: now` the same way for in-repo mail. Seats outside this repo use
+   Pard's `mediajunkie:scripts/mail-deliver.sh`, which follows the same three rules. It runs the
    stamp check and bearer lint that `mail-send.sh` runs here, builds the commit on the recipient's fresh `origin/main`
    with a scratch index (that checkout's working tree is never touched), pushes, and confirms the blob landed. Write
    the memo in your own `sent/` and pass that path. Why it exists: a hand-built delivery bypasses those checks, and on
