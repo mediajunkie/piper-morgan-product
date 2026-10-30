@@ -32,7 +32,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 29 October</h1>
-<p class="meta">Exec · v672, rebuilt 18:22 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v673, rebuilt 18:36 PDT Thu 10-29 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <div class="card win"><b>Key limit raised ($90 to $100, your word via PA 11:36); calls succeed again (11:35).</b> Lead resumes the #2184 screens; row 2&rsquo;s judge works. Recorded in decisions.log; CIO and HOST told.</div>
 
@@ -44,15 +44,17 @@
 
 <div class="card win"><b>The second release is live</b> (your dispatch 16:18, no 503; alpha serves <code>48df90eb72</code>, the READY code). PA re-ran scenario B and CXO passed it: the recap now shows the renamed title. <b>#2201 and #2199 closed.</b> #2200 (due dates) closed too, on CXO&rsquo;s read of your rendered page (16:50).</div>
 
-<div class="card hot"><b>Next for your hand: one more release, then your A3/A4 re-run. Not yet.</b> #2205 (ask which repo on a write) landed on main at 16:27, and Tests went red on it. Lead traced the two failures to old tests that checked the behavior #2205 changes on purpose; the rewritten tests landed at <code>1bf24cf4c8</code> (17:46), and Tests are <b>green</b> on it (18:22). Left before READY: Arch&rsquo;s re-read. When Lead mails READY (Tests green, plus Arch&rsquo;s re-read), I put the dispatch line here. After it, you re-run A3 and A4 on two fresh accounts, one with a repo picked in the setup wizard and one without. PPM ruled this third release fits the freeze; your dispatch is your word on it.</div>
 
-<div class="card act"><b>The #2184 line for the three alpha partners: Comms proposes a short note, not a /try/alpha section</b> (18:20). A note reaches the three of them with no upkeep, while a page section would be new public copy that has to come down when the fix ships. Draft:
-<blockquote style="margin:.3rem 0 .3rem 1rem;color:var(--muted)"><b>Subject: One known issue in Piper right now</b><br>A quick heads-up on something we found after your invitation went out. Asking for a milestone&rsquo;s issues in two steps (&ldquo;show issues from one milestone&rdquo;, then the name) can list the wrong issues. Ask in one step instead, with your milestone&rsquo;s name in the same sentence, for example &ldquo;show my open issues in the Launch milestone&rdquo;. We&rsquo;re working on a fix.</blockquote>
-Answer &ldquo;note, send as is&rdquo;, your rewrite, or &ldquo;section&rdquo;. HOST knows the sending route. CXO is checking the example (&ldquo;Launch&rdquo; instead of our own &ldquo;MVP&rdquo;).</div>
+
+<div class="card hot"><b>Your hand: the third release (#2205) is ready (Lead, 18:33).</b> Tests green, Arch&rsquo;s re-read GO (18:28), no migration, alpha quiet. Staging serves <code>e12e5ad9ed</code>; alpha on <code>48df90eb72</code> at 18:35. Type:
+<pre style="white-space:pre-wrap;margin:.3rem 0">gh workflow run fly-deploy.yml -R mediajunkie/piper-morgan-product --ref main -f promote_to_alpha=true</pre>
+(if Fly says 503, the same line again after a few minutes). When Lead mails &ldquo;live&rdquo;, run A3 and A4 on your two fresh accounts. <b>With a repo named in the wizard:</b> &ldquo;Create an issue&rdquo; creates there with no question, and &ldquo;Show me that issue&rdquo; shows it. <b>Without one:</b> it asks <i>Which repository should I create this in?</i>; answer <code>owner/name</code> and it creates there. CXO rules on your quotes; #2205 closes on them.</div>
+
+<div class="card act"><b>The partner note: one sentence before you send it.</b> Recorded: your &ldquo;send as is&rdquo; (18:33). CXO had asked (18:31) that the last line, &ldquo;We&rsquo;re working on a fix.&rdquo;, become <b>&ldquo;This is a known issue and isn&rsquo;t fixed yet.&rdquo;</b>, because no one has confirmed work under way on #2184 and it has no date. Keep yours or take CXO&rsquo;s. The send is from your own mailbox; HOST can read you the three addresses from the roster.</div>
 
 <div class="card act"><b>Closing MVP: where it stands.</b> Gate list (<code>gh</code> 16:52): <b>2 open, #2205 and #1386.</b>
 <ul style="margin:.3rem 0 .2rem 1.2rem;padding:0">
-<li><b>Order now:</b> #2205 green and READY, then the third release on your dispatch, then your A3/A4 re-run (#2205 closes on CXO&rsquo;s ruling), then row 2 (PA&rsquo;s canonical suite) and row 4 (Lead&rsquo;s security suite) once each on that build, then PPM&rsquo;s rows 5 and 6 (the beta letter&rsquo;s final draft), then your go/no-go on #1386.</li>
+<li><b>Order now:</b> the third release on your dispatch (READY 18:33), then your A3/A4 re-run (#2205 closes on CXO&rsquo;s ruling), then row 2 (PA&rsquo;s canonical suite) and row 4 (Lead&rsquo;s security suite) once each on that build, then PPM&rsquo;s rows 5 and 6 (the beta letter&rsquo;s final draft), then your go/no-go on #1386.</li>
 <li><b>Placed in Production, not gate rows:</b> #2209 (asking for a milestone you don&rsquo;t have gets a different one instead of &ldquo;no such milestone&rdquo;), #2208 (one route reports failures as success).</li>
 </ul></div>
 
@@ -117,7 +119,7 @@ Answer &ldquo;note, send as is&rdquo;, your rewrite, or &ldquo;section&rdquo;. H
 <li>Mail v4 stays on three seats until the 11-05 review.</li>
 </ul></div>
 <h2>📊 Where things stand</h2>
-<div class="card">MVP gate: <b>2 open</b> (#2205, #1386; <code>gh</code> 16:52 Thu). Alpha <code>48df90eb72</code> (live 16:18 Thu, your dispatch), frozen until go/no-go except gate-row fixes. Main Tests red on <code>24d21d332d</code> (two old tests pinned the pre-#2205 rule); Lead&rsquo;s rewrite <code>1bf24cf4c8</code> green 18:22. Staging serves <code>88004196b2</code>.</div>
+<div class="card">MVP gate: <b>2 open</b> (#2205, #1386; <code>gh</code> 16:52 Thu). Alpha <code>48df90eb72</code> (live 16:18 Thu, your dispatch), frozen until go/no-go except gate-row fixes. Main Tests red on <code>24d21d332d</code> (two old tests pinned the pre-#2205 rule); Lead&rsquo;s rewrite <code>1bf24cf4c8</code> green 18:22. Staging serves <code>e12e5ad9ed</code> (READY 18:33).</div>
 <p class="meta">How I checked each version: <code>dev/active/exec-rollup-verification-history.md</code> (not needed to read this page).</p>
 
 </div>

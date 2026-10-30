@@ -252,3 +252,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v670 (server 671), 16:52 Thu 10-29: alpha /health 48df90eb72; staging 88004196b2; gh MVP open 2 (#2205, #1386); Tests on 24d21d332d failure (run 40972888495, 2 new); decisions.log #2184 partner line.
 - v671 (server 672), 17:49 Thu 10-29: #2200 CLOSED (gh); MVP open [2205,1386]; Tests on 1bf24cf4c8 in_progress (run 40981709903).
 - v672 (server 673), 18:22 Thu 10-29: Tests on 1bf24cf4c8 success; Comms 18:20 #2184 note card added.
+- v673 (server 674), 18:36 Thu 10-29: staging e12e5ad9ed, alpha 48df90eb72; Lead READY 18:33; partner-note sentence card.
