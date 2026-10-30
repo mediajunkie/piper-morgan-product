@@ -272,3 +272,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v690 (server 691), 13:00 Fri 10-30: B card adds PA's reverse case and readiness (12:48), Arch concurs (12:56), #2223 closed (Lead 12:56).
 - v691 (server 692), 15:02 Fri 10-30: promoted ac5b69f865 (run 41134889294 success; /health alpha and beta; merge-base includes 4e9d370d06; no code diff to main); beta letter's three points.
 - v692 (server 693), 15:09 Fri 10-30: re-check 3 PASS (PA), row 4 156/4 (Lead, #1386 comment 6534476265), row 2 running; letter in 3 versions, Terms 2 lines.
+- v693 (server 694), 15:36 Fri 10-30: rows 1-5 stand on ac5b69f865 (PPM, comment 6534873022); CXO row 2 34/42; Terms 4826ded copy OK.
