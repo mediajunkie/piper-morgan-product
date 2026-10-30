@@ -22,7 +22,7 @@ At the two unconsulted doors the marker isn't used and isn't re-armed. Your per-
 
 **Pin 6: deferred and named.** Keep multi-intent rule 2 ("pause = stop"). The line appears once and the pick is armed once; later elements are deferred and named as today. The #2041-style carry is not part of #2209.
 
-**The line:** use CXO's unquoted form from her 20:5x memo for every non-match: `I don't see a milestone by that name. Your open milestones: Beta launch. Say one of those.` With no open milestones: `I don't see any open milestones in <repo>.` This replaces the quoted form in my 20:29 memo. The other six callers of `_handle_unknown_intent` that the lane didn't probe are all the same non-dispatch fallback, so the helper there covers them by construction. Pin one of them if it's cheap.
+**The line:** use CXO's unquoted form from their memo (received 20:55) for every non-match: `I don't see a milestone by that name. Your open milestones: Beta launch. Say one of those.` With no open milestones: `I don't see any open milestones in <repo>.` This replaces the quoted form in my 20:29 memo. The other six callers of `_handle_unknown_intent` that the lane didn't probe are all the same non-dispatch fallback, so the helper there covers them by construction. Pin one of them if it's cheap.
 
 Build on `claude/lead-2209` and hold it with the rest.
 
