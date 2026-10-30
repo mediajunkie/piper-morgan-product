@@ -91,6 +91,16 @@ CLAUDE.md conventions — cite them, don't paraphrase into something new:
   - Found 75% complete code → report it (don't silently rebuild)
   - Can't provide verification evidence → STOP
   - "YOU DO NOT DECIDE which failures are critical — the PM decides."
+- **Landing gates** (Lead's rule of 2026-10-29, after two pre-#2205 pins in `tests/intent/`
+  went red on main because the lane and the landing had run `tests/unit` alone; Arch asked that
+  the brief carry the set). A lane that will land on main names, and runs on its final tree,
+  the same set the landing runs: the whole `tests/test_architecture_enforcement.py` and
+  `tests/test_completion_ratchets.py` (never a `-k` subset); the whole `tests/unit`; the
+  CI-covered directories outside unit, `tests/intent tests/intent_service tests/web tests/api
+  tests/conversation tests/domain tests/auth tests/database -m 'not llm'`; `tests/integration
+  -m 'not llm' --maxfail=1000` (compare its failures against the same run on origin/main, name
+  the count); `tests/security`; ruff 0.6.9; `scripts/check_mypy_gate.py`. Report each count with
+  its denominator. A router-prompt or catalog change is a rule-7 unit on top of this (Lead runs it).
 
 ### Step 5: After the subagent finishes — commit verification
 
