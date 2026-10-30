@@ -2020,4 +2020,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2223	CLOSED	Production		Generic offer accept runs a stored request under the arming user when the turn has no principal (anonymous 'yes' after cookie expiry); one check at the pop seam	architecture		COMPLETED
 2224	OPEN	Production		check_completion_status answers completion questions from a gather that never reads completed todos or closed issues (the NOT_PERFORMED row's product gap)	architecture		
 2226	OPEN	Production		Document search from chat doesn't work on a partner account (needs an OpenAI key for embeddings; chat says 'can't search yet'): the beta known-issue line's open home			
-2225	OPEN	Production		Draft path with no user default repo: the answer to 'Which repository should I create this in?' is added to the draft body, so the draft can't be filed by naming the repo			
+2225	OPEN	Production		Draft path with no user default repo: the answer to 'Which repository should I create this in?' is added to the draft body, so the draft can't be filed by naming the repo	UX		
+2227	OPEN	Ongoing		Router on Haiku 5.5: re-baseline, not a drop-in (screen NO-GO 10-30)			
+2228	OPEN	Production		False relative time on the STATUS floor: #35, created 15:04 PT today, described as 'updated yesterday evening'; the GUIDANCE floor gets the server's naive clock as the user's time (child of 1828)			
