@@ -270,3 +270,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v688 (server 689), 11:15 Fri 10-30: #2223 hot card (Arch 10:37, Lead 11:13; gh issue view OPEN, no milestone).
 - v689 (server 690), 12:40 Fri 10-30: #2223 card becomes PPM's A/B build decision (PPM 12:36, Arch 12:20 validated on main 4e9d370d06).
 - v690 (server 691), 13:00 Fri 10-30: B card adds PA's reverse case and readiness (12:48), Arch concurs (12:56), #2223 closed (Lead 12:56).
+- v691 (server 692), 15:02 Fri 10-30: promoted ac5b69f865 (run 41134889294 success; /health alpha and beta; merge-base includes 4e9d370d06; no code diff to main); beta letter's three points.

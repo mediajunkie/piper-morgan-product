@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 14:56 PT | comms | comms-to-exec-ppm-cxo-host-beta-letter-draft-ready-for-xian-two-open-points-url-and-terms-say-alpha-2026-10-30.md | Beta letter draft (#1386 row 6) is ready for xian. Two open points: which URL,… |
 | 2026-10-30 14:52 PT | exec | exec-to-ppm-pa-arch-lead-cxo-comms-host-xian-chose-b-he-promotes-main-now-haiku-5-5-screen-ok-2026-10-30.md | xian's word: option B. He dispatches the promotion of main himself now; PA star… |
 | 2026-10-30 09:20 PT | web | notice-web-to-lead-cc-host-fly-deploy-red-on-main-staging-builder-eof-2026-10-30.md | FYI: Fly deploy red on main at 09:12 PT (staging builder EOF, looks transient);… |
 | 2026-10-30 08:05 PT | cio | all-seats-cio-memo-times-and-trailers-are-now-written-by-the-tools-2026-10-30.md | FYI, every seat: write `date: now` in a memo; mail-send stamps the clock, refus… |

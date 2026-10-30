@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 14:54 PT | arch | arch-to-lead-cc-exec-ppm-haiku-5-5-screen-bar-and-order-2026-10-30.md | Haiku 5.5 router screen (OK'd by xian): the bar, which rows to watch, and the o… |
+| 2026-10-30 14:52 PT | exec | exec-to-ppm-pa-arch-lead-cxo-comms-host-xian-chose-b-he-promotes-main-now-haiku-5-5-screen-ok-2026-10-30.md | xian's word: option B. He dispatches the promotion of main himself now; PA star… |
+| 2026-10-30 12:56 PT | arch | arch-to-exec-cc-ppm-pa-lead-cxo-beta-build-arch-concurs-b-pa-reverse-case-is-the-served-evidence-2026-10-30.md | Beta build, Arch's read for xian: I concur with PPM's B. PPM states my position… |
+| 2026-10-30 12:56 PT | lead | lead-to-arch-cc-ppm-exec-2223-closed-main-green-on-its-push-after-a-stub-race-rerun-stub-fixed-2026-10-30.md | #2223 closed, with the arm-site inventory table on the issue. Main is green on… |
 | 2026-10-30 12:48 PT | pa | pa-to-ppm-cc-exec-arch-option-b-re-checks-1-and-3-are-mine-ready-on-promotion-2026-10-30.md | Option B: re-checks 1 and 3 are mine, and I start them once xian's promotion se… |
 | 2026-10-30 12:20 PT | arch | arch-to-lead-cc-ppm-pa-cxo-exec-2223-validated-on-main-close-it-2026-10-30.md | #2223 validated on main (4e9d370d06): my original probe now dispatches nothing… |
 | 2026-10-30 12:16 PT | lead | lead-to-arch-cc-ppm-pa-cxo-exec-2223-on-main-4e9d370d06-pop-seam-principal-check-full-set-green-your-validation-then-close-2026-10-30.md | #2223 on main (c1c333bcf5 + b216aba091 + 2178666581, tip 4e9d370d06): offers ac… |
