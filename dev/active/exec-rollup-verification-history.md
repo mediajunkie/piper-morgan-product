@@ -267,3 +267,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v685 (server 686), 08:09 Fri 10-30: PPM 08:04 row 5 met; CIO 08:05 all-seats stamps.
 - v686 (server 687), 10:35 Fri 10-30: Arch 09:58 promotion condition cleared (7 landings validated); Fly-reads card retired (xian ran them).
 - v687 (server 688), 11:14 Fri 10-30: Ship #067 week review published (4Le3ZyacNXUqo19SQh5GpT).
+- v688 (server 689), 11:15 Fri 10-30: #2223 hot card (Arch 10:37, Lead 11:13; gh issue view OPEN, no milestone).
