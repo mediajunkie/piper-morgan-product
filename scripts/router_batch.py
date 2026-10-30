@@ -66,14 +66,18 @@ def _render(args) -> None:
         ]
     task = MODEL_CONFIGS.get(TASK_TYPE, MODEL_CONFIGS["reasoning"])
     model = resolve_model(LLMProvider.ANTHROPIC, TASK_TYPE)
+    # --model overrides the configured router model for a screen of another
+    # model on the same tree (the Haiku 5.5 screen, Arch 2026-10-30 14:54).
+    # Harness only: the served router still resolves through config.py.
+    model_id = args.model or model.value
     with open(args.out, "w") as f:
         for i, phrase in enumerate(args.phrase):
             prompt = build_routing_prompt(phrase, grammar)
             for n in range(1, args.samples + 1):
                 params = {
-                    "model": resolve_model_alias(model.value),
+                    "model": resolve_model_alias(model_id),
                     "max_tokens": task["max_tokens"],
-                    **_build_temperature_kwarg(model.value, task["temperature"]),
+                    **_build_temperature_kwarg(model_id, task["temperature"]),
                     "system": _SYSTEM_PROMPT,
                     "messages": [{"role": "user", "content": prompt}],
                 }
@@ -250,6 +254,11 @@ def main() -> int:
     r = sub.add_parser("render")
     r.add_argument("--label", required=True)
     r.add_argument("--samples", type=int, default=6)
+    r.add_argument(
+        "--model",
+        default=None,
+        help="model id to render instead of the configured router model (screen harness only)",
+    )
     r.add_argument("--phrase", action="append", default=[])
     r.add_argument(
         "--corpus", action="store_true", help="every phrase of the inversion corpus (a full run)"
