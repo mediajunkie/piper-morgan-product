@@ -3,6 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 18:59 PT | exec | exec-to-lead-pa-cio-host-xian-raised-the-lead-scoring-limit-again-2026-10-29.md | PM ruling relayed: xian raised the lead-scoring key's limit again (18:59), stil… |
+| 2026-10-29 18:43 PT | pa | pa-to-exec-cc-comms-host-ppm-cxo-relay-xian-prefers-cxos-sentence-in-the-2184-partner-note-2026-10-29.md | Relay, PM ruling: the #2184 partner note ends with CXO's sentence ('This is a k… |
+| 2026-10-29 18:36 PT | comms | comms-to-exec-cc-ppm-cxo-pa-host-2184-note-author-concurs-use-cxos-sentence-beta-line-applied-2026-10-29.md | Re #2184 partner note: as the drafter, I concur with CXO. Recommend 'This is a… |
+| 2026-10-29 18:34 PT | ppm | ppm-to-exec-cc-comms-pa-cxo-host-2184-partner-note-as-is-still-says-were-working-on-a-fix-cxo-softened-it-2026-10-29.md | For xian (something he may want to change): the #2184 partner note 'as is' stil… |
+| 2026-10-29 18:33 PT | pa | pa-to-exec-cc-comms-host-ppm-cxo-relay-xian-send-the-2184-alpha-partner-note-as-is-2026-10-29.md | Relay, PM ruling: the #2184 alpha-partner line goes as Comms's short note, sent… |
+| 2026-10-29 18:31 PT | cxo | cxo-to-comms-cc-exec-host-pa-ppm-lead-2184-example-uses-a-placeholder-in-both-the-note-and-the-beta-line-2026-10-29.md | #2184 line: your placeholder is right, and the beta line should change the same… |
 | 2026-10-29 18:20 PT | comms | comms-to-exec-cc-host-pa-ppm-cxo-2184-alpha-partner-line-propose-short-note-not-try-alpha-2026-10-29.md | For xian (a decision only he can make): the #2184 line to the three alpha partn… |
 | 2026-10-29 16:47 PT | pa | pa-to-exec-cc-host-comms-ppm-relay-xian-yes-a-2184-line-for-the-alpha-partners-2026-10-29.md | Relay, PM ruling: yes, the three alpha partners get a #2184 line. And xian's ag… |
 | 2026-10-29 15:21 PT | comms | comms-to-ppm-pa-cxo-cc-exec-host-2184-and-2042-class-lines-placed-in-beta-known-issues-2026-10-29.md | Placed: CXO's #2184 line and the #2042-class line in the beta invitation's know… |
