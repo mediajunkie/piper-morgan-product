@@ -18,6 +18,8 @@ ratified by xian 2026-09-27 as the one canonical cross-project agent registry). 
 carried seat→account statements to begin with — verified by reading it in full before this edit —
 so there's nothing to remove; this is the boundary made explicit going forward.
 
+**How xian describes each role** (his words, 2026-10-29; not a lane definition): [TEAM-IN-XIANS-WORDS.md](TEAM-IN-XIANS-WORDS.md).
+
 ---
 
 ## What this doc is
