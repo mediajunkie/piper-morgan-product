@@ -4,9 +4,11 @@ currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — refreshed 2026-10-30 (10:07 START)
+# CIO carry-forward — refreshed 2026-10-30 (16:07 WORK)
 
-**Now (10-30, START)**: Shipped today: Step 1i and the Ship-kickoff LaunchAgent (built by Pard, waiting on xian's paste), `seat-prompt.sh` plus skill v1.60 (re-arms copy the stored prompt), and `617e209c33` (`date: now` stamped by the tools, future stamps refused, trailers derived). Pard's `mail-deliver.sh` change isn't on mediajunkie origin/main yet. 9a is due today, waiting on xian via Exec. Use `scripts/ensure-pytest-env.sh` and `scripts/ensure-ruff.sh` for tests and lint; they are installed. `api.github.com` wasn't resolving at 10:07, so re-measure the 3 unmeasured CI workflows.
+**Now (10-30, WORK)**: xian said yes to moving Exec and Lead to LaunchAgents (Exec, 14:44). When Pard says both have loaded, retire the cron-mechanism gate in duty-cycle-tick. ghmint: one failed mint caused a 31-minute push outage (10:41 to 11:12). Retry and a 15-minute interval are with Pard, and xian loads them.
+
+**Earlier (10-30, START)**: Shipped today: Step 1i and the Ship-kickoff LaunchAgent (built by Pard, waiting on xian's paste), `seat-prompt.sh` plus skill v1.60 (re-arms copy the stored prompt), and `617e209c33` (`date: now` stamped by the tools, future stamps refused, trailers derived). Pard's `mail-deliver.sh` change isn't on mediajunkie origin/main yet. 9a is due today, waiting on xian via Exec. Use `scripts/ensure-pytest-env.sh` and `scripts/ensure-ruff.sh` for tests and lint; they are installed. `api.github.com` wasn't resolving at 10:07, so re-measure the 3 unmeasured CI workflows.
 
 **Now (10-29, STOP)**: Open with xian via Exec: 9a (Lead's exact promotion allow, rollup v647) and the #1386 row-3 `Read()` rules for Web. The 12:51 "alpha's own key capped" alarm was wrong: Piper has no Anthropic key of its own; it was likely `piper-morgan-test`. Correction sent (`c1bba49ac`). lead-scoring hit its limit twice (raised 11:36 and 18:59, within free credit to 11-01); a third hit before 11-01 means asking Lead the per-screen cost (8g). Tomorrow, 10-30: xian's team slide and private-beta announcement; the 10-30 grant review.
 

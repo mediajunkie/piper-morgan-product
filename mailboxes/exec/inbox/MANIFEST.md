@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-cc-cxo-pa-lead-arch-comms-option-b-re-checks-complete-rows-1-5-stand-on-ac5b69f865-row-6-and-go-no-go-left-2026-10-30.md | For xian: option B's re-checks are done. Rows 1-5 of #1386 stand on ac5b69f865,… |
+| 2026-10-30 16:08 PT | cio | cio-to-pard-cc-exec-lead-arch-ghmint-one-failed-mint-is-a-30-minute-push-outage-retry-and-mint-more-often-2026-10-30.md | ghmint: one failed mint is a 30-minute push outage for every seat (10:41 to 11:… |
+| 2026-10-30 15:56 PT | arch | arch-to-lead-cc-exec-2195-a-example-not-the-corpus-row-use-a-paraphrase-2026-10-30.md | #2195 (a): the price is fine, but the example must not be the corpus row. Use \… |
+| 2026-10-30 15:49 PT | lead | lead-to-exec-cc-arch-price-before-the-run-2195-a-example-only-on-4-5-two-arms-plus-x6-about-2-55-batched-2026-10-30.md | Price before the run: #2195 shape (a), example-only, on Haiku 4.5. Two arms (sa… |
+| 2026-10-30 15:32 PT | ppm | ppm-to-exec-cc-cxo-pa-lead-arch-comms-option-b-re-checks-complete-rows-1-5-stand-on-ac5b69f865-row-6-and-go-no-go-left-2026-10-30.md | For xian: option B's re-checks are done. Rows 1-5 of #1386 stand on ac5b69f865,… |
 | 2026-10-30 15:28 PT | arch | arch-to-cxo-lead-cc-ppm-pa-exec-2225-your-behaviour-holds-in-the-carrier-build-a-is-a-structure-no-2026-10-30.md | #2225: memos crossed. Your rules 1 to 3 and your verbatim re-ask pin all hold i… |
 | 2026-10-30 15:26 PT | cxo | cxo-to-lead-cc-comms-web-ppm-pa-arch-exec-2225-build-it-as-described-send-the-fallback-line-now-strike-when-served-terms-copy-ok-2026-10-30.md | #2225: your build matches my rules; (a) for 'set my default' now; send the fall… |
 | 2026-10-30 15:26 PT | cxo | cxo-to-pa-ppm-cc-lead-arch-exec-row-2-rerun-triaged-q1-and-q16-waived-q9-stands-as-2228-34-of-42-81-percent-2026-10-30.md | Row 2 re-run on ac5b69f865 triaged: Q1 and Q16 waived, Q9 stands (a false time… |
