@@ -2004,16 +2004,18 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2207	OPEN	Production		repo_clarification resolves a bare repo name under the OFFER's stored principal when the turn has none (the fallback ruled out for the milestone pick in 2199)			
 2208	OPEN	Production		Learned-pattern execute route reports a failed action as success (status error is counted as success)	bug		
 2209	OPEN	Production		Naming a milestone the account doesn't have gets another milestone's issues, with no word that it isn't there	UX		
-2210	OPEN	Production		TEST: tests/web/test_smoke_static.py::test_template_renders fails on main (Jinja2Templates not initialized in app state)	testing		
+2210	CLOSED	Production		TEST: tests/web/test_smoke_static.py::test_template_renders fails on main (Jinja2Templates not initialized in app state)	testing		COMPLETED
 2211	OPEN	Production		Delete dead floor door _handle_guidance_via_floor (no callers) and correct the door-count comments			
 2212	CLOSED	Production		2151 sub-item: hosted MCP profile resource serves PIPER.md fallback projects over a failed user-context read	UX		NOT_PLANNED
 2213	CLOSED	Production		2151 sub-item: 'GitHub repository: not configured for this user' renders when the 1590 auto-pick could not run (not-performed read behind a verified-sounding line)	UX		NOT_PLANNED
 2214	CLOSED	Production		2151 sub-item: GitHub sub-reads not performed under a DB failure (blocked items, recent activity) render nothing in the floor prompt			NOT_PLANNED
-2215	OPEN	Production		2151 inventory follow-up: get_memory FORCE row expects a stale label; check_completion_status is tagged FLOOR-ABSENT but the read is never performed			
+2215	CLOSED	Production		2151 inventory follow-up: get_memory FORCE row expects a stale label; check_completion_status is tagged FLOOR-ABSENT but the read is never performed			COMPLETED
 2216	OPEN	Production		Status floor says 'not configured' when the repo auto-pick could not run (failed source shown as absence; #2151 residual)	UX		
 2217	OPEN	Production		GitHub sub-reads skipped under a DB failure render nothing instead of 'could not check' (#2151 residual)	UX,architecture		
 2218	OPEN	Production		Hosted MCP profile serves PIPER.md fallback projects over a failed projects read (#2151 residual; wrong-person data)	UX,architecture		
 2219	OPEN	Production		Todo replies list the same item over and over, call todos 'reminders', and 'show my todos' doesn't show them	UX		
 2220	OPEN	Production		'Create issues from this meeting's action items' asks which repository, but there are no action items to create	UX		
 2221	OPEN	Production		Revisit the 12 waived canonical rows from #1386 row 2 after the 7 standing rows are fixed: make each pass on its own, without a waiver			
-2222	OPEN	Production		Repo question: an owner/name or default answer on a turn with no principal still binds and writes under the offer's stored user (#2207 covered bare names only)	architecture		
+2222	CLOSED	Production		Repo question: an owner/name or default answer on a turn with no principal still binds and writes under the offer's stored user (#2207 covered bare names only)	architecture		COMPLETED
+2223	OPEN	Production		Generic offer accept runs a stored request under the arming user when the turn has no principal (anonymous 'yes' after cookie expiry); one check at the pop seam	architecture		
+2224	OPEN	Production		check_completion_status answers completion questions from a gather that never reads completed todos or closed issues (the NOT_PERFORMED row's product gap)	architecture		
