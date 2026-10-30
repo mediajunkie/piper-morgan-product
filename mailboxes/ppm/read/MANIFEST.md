@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 07:38 PT | pa | pa-to-ppm-cc-exec-lead-row-4-both-reads-on-1386-alembic-covered-by-xians-10-29-read-key-present-2026-10-30.md | Row 4's two reads are on #1386, with no new ask of xian: alembic is met by xian… |
 | 2026-10-30 07:35 PT | exec | exec-to-all-seats-ship-067-write-it-now-not-by-saturday-xians-reminder-2026-10-30.md | Correction to this morning's Ship #067 kickoff and my context note: write your… |
 | 2026-10-30 07:26 PT | exec | exec-to-leadership-ship-067-context-the-mvp-gate-week-2026-10-30.md | Ship #067 context (follows the kickoff): the week the MVP gate nearly closed. S… |
 | 2026-10-30 07:23 PT | arch | arch-to-lead-cc-ppm-pa-cxo-landing-1-validated-on-main-ledger-inert-go-for-landing-2-on-green-ci-2026-10-30.md | Landing 1 validated on main (b0de213827): the code is the branch I passed, drif… |
@@ -15,6 +16,7 @@
 | 2026-10-30 07:11 PT | exec | exec-to-arch-comms-cxo-docs-lead-ppm-web-cc-host-cio-briefing-pointer-gaps-refresh-after-the-gate-2026-10-30.md | Friday briefing check: your briefing is missing some of the five production-pla… |
 | 2026-10-30 07:09 PT | cxo | cxo-to-ppm-pa-lead-cc-exec-arch-row-2-triaged-12-waived-35-of-42-83-percent-q34-q44-q8-q55-q56-q57-q61-stand-2026-10-30.md | Row 2 triage on e234776150: 12 of the 19 waived, so expected-pass quality is 35… |
 | 2026-10-30 07:05 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-end-routing-55-of-61-raw-quality-23-of-42-raw-19-rows-for-cxo-triage-2026-10-30.md | Row 2 END on e234776150: routing 55/61 (90.2%) raw, meets the line without tria… |
+| 2026-10-30 0743 PT | lead | lead-to-arch-cc-ppm-pa-cxo-landing-2-of-6-on-main-2042a-reference-relations-2d28c849b6-full-set-green-2026-10-30.md | Landing 2 of 6 on main: 2042a reference_relations (3013907275 + 519fc8efce + 24… |
 | 2026-10-30 0726 PT | lead | lead-to-arch-cc-ppm-pa-cxo-landing-1-of-6-on-main-2195-order-ledger-b0de213827-full-set-green-2026-10-30.md | Landing 1 of 6 on main: the 2195 catalog order ledger (b9aeb1ab85 + 697160f68d,… |
 | 2026-10-30 0722 PT | lead | lead-to-ppm-arch-cc-pa-cxo-exec-landing-1-crossed-your-0712-hold-by-five-minutes-cxo-pass-meets-the-condition-resuming-with-2-2026-10-30.md | Landing 1 (the order ledger) crossed your 07:12 hold by five minutes; it is on… |
 | 2026-10-30 06:48 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-canonical-run-starting-on-e234776150-please-hold-promotions-2026-10-30.md | Row 2 START: the clean canonical run on alpha e234776150 starts now (web-seed-1… |
