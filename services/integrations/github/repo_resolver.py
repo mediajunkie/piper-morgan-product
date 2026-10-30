@@ -387,6 +387,8 @@ async def get_user_write_target(user_id: "UUID | str | None") -> Optional[str]:
 
 async def get_user_default_repo_and_source(
     user_id: UUID,
+    *,
+    strict: bool = False,
 ) -> "tuple[Optional[str], Optional[str]]":
     """WS-1 (#1226 / #1199): read ``default_repository`` from the DB-backed
     connector_configs store (ADR-070 D4) — the SOLE, per-user-scoped store as of P4.
@@ -400,6 +402,9 @@ async def get_user_default_repo_and_source(
     codebase. Every caller that previously read `PIPER.user.md`'s GitHub section
     directly (unscoped, same value for every user on a shared instance) must resolve
     through this function instead.
+
+    ``strict=True`` (#2151): a failed DB read RAISES instead of returning (None, None),
+    so a caller can tell a verified "no default repo" from a read that didn't happen.
     """
     try:
         from services.connectors.config_service import ConnectorConfigService
@@ -412,6 +417,8 @@ async def get_user_default_repo_and_source(
         return repo, source
     except Exception as e:
         logger.warning("DB default-repo read failed: %s", e)
+        if strict:
+            raise
         return None, None
 
 

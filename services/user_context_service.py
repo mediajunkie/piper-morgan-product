@@ -1,6 +1,6 @@
 """User context service for multi-user support - GREAT-4C Phase 0."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, Dict, Optional
 from uuid import UUID
 
@@ -22,6 +22,15 @@ class UserContext:
     # "config". Lets the cache-hit refresh path know whether an empty DB read
     # means "all archived, rebuild fallback" or "DB was never the source".
     projects_source: str = "config"
+    # #2151 FLOOR-ABSENT (Arch 2026-10-29 21:08): a per-user read behind this context
+    # FAILED, so the field it feeds holds the generic fallback, not the user's own data.
+    # ``projects_read_failed``: the projects-table read (or, with no project rows, the
+    # preferences read the fallback consults) failed. ``preferences_read_failed``: the
+    # preferences read failed, so priorities and organization are PIPER.md's. A context
+    # with either flag set is never cached; readers say "couldn't check", never the
+    # fallback as the user's own.
+    projects_read_failed: bool = False
+    preferences_read_failed: bool = False
 
 
 class UserContextService:
@@ -83,6 +92,11 @@ class UserContextService:
         # Load context (with user preferences if user_id provided)
         context = await self._load_context_from_config(session_id, user_id)
 
+        # #2151: a context built over a failed read is not cached, so the next turn
+        # reads again instead of serving the fallback for the process lifetime.
+        if context.projects_read_failed or context.preferences_read_failed:
+            return context
+
         # Cache it
         self.cache[cache_key] = context
         logger.debug(
@@ -113,13 +127,21 @@ class UserContextService:
           projects stand, exactly as on cold load.
         """
         db_projects = await self._load_projects_from_db(user_id)
+        if db_projects is None:
+            # #2151: the re-read FAILED. The cached list may be stale, so say so on a
+            # copy (the cached context stays as it was for the next re-read).
+            return replace(context, projects_read_failed=True)
         if db_projects:
             context.projects = db_projects
             context.projects_source = "database"
             return context
         if context.projects_source == "database":
             context = await self._load_context_from_config(session_id, user_id)
-            self.cache[cache_key] = context
+            if context.projects_read_failed or context.preferences_read_failed:
+                # #2151: a rebuild over a failed read is not cached.
+                self.cache.pop(cache_key, None)
+            else:
+                self.cache[cache_key] = context
         return context
 
     async def _load_context_from_config(
@@ -148,18 +170,26 @@ class UserContextService:
             generic_config = piper_config_loader.load_config()
 
             # 2. Load user-specific preferences from database if user_id provided
-            user_prefs = {}
+            user_prefs: Dict[str, Any] = {}
+            preferences_read_failed = False
             if user_id:
-                user_prefs = await self._load_user_preferences_from_db(user_id)
+                loaded_prefs = await self._load_user_preferences_from_db(user_id)
+                # #2151: None is a FAILED read (an empty dict is a verified "none set").
+                preferences_read_failed = loaded_prefs is None
+                user_prefs = loaded_prefs or {}
 
             # 3. Merge configurations (user preferences override generic)
             merged_config = {**generic_config, **user_prefs}
 
             # 4. Issue #582: Load projects from database (portfolio)
             # Database projects take precedence over config-based projects
-            db_projects = []
+            db_projects: list = []
+            projects_db_failed = False
             if user_id:
-                db_projects = await self._load_projects_from_db(user_id)
+                loaded_projects = await self._load_projects_from_db(user_id)
+                # #2151: None is a FAILED read (an empty list is verified-empty).
+                projects_db_failed = loaded_projects is None
+                db_projects = loaded_projects or []
 
             # 5. Determine project source with priority:
             #    - Database projects (from portfolio onboarding) - highest priority
@@ -187,6 +217,11 @@ class UserContextService:
                     else self._extract_priorities(merged_config)
                 ),
                 preferences=user_prefs,  # Store raw preferences for advanced use
+                # #2151: the projects fallback below the DB rows is the preferences
+                # read, so with no rows a failed preferences read fails projects too.
+                projects_read_failed=projects_db_failed
+                or (preferences_read_failed and not db_projects),
+                preferences_read_failed=preferences_read_failed,
             )
 
             logger.info(
@@ -209,10 +244,15 @@ class UserContextService:
                 user_id=user_id,
                 error=str(e),
             )
-            # Return empty context
-            return UserContext(user_id=user_id or session_id)
+            # Return empty context. #2151: the load FAILED, so it is marked failed (and
+            # not cached), never served as a user with no projects or priorities.
+            return UserContext(
+                user_id=user_id or session_id,
+                projects_read_failed=True,
+                preferences_read_failed=True,
+            )
 
-    async def _load_projects_from_db(self, user_id: UUID) -> list:
+    async def _load_projects_from_db(self, user_id: UUID) -> Optional[list]:
         """
         Issue #582: Load projects from the projects table.
 
@@ -223,7 +263,8 @@ class UserContextService:
             user_id: User UUID
 
         Returns:
-            List of project names, or empty list if none found
+            List of project names, or empty list if none found. #2151: None when the
+            read FAILED (never an empty list, which is a verified "no projects").
         """
         try:
             from services.database.repositories import ProjectRepository
@@ -252,9 +293,9 @@ class UserContextService:
                 user_id=user_id,
                 error=str(e),
             )
-            return []
+            return None
 
-    async def _load_user_preferences_from_db(self, user_id: UUID) -> Dict[str, Any]:
+    async def _load_user_preferences_from_db(self, user_id: UUID) -> Optional[Dict[str, Any]]:
         """
         Load user preferences from alpha_users.preferences JSONB field.
 
@@ -262,7 +303,8 @@ class UserContextService:
             user_id: User UUID
 
         Returns:
-            Dictionary of user preferences, or empty dict if not found
+            Dictionary of user preferences, or empty dict if not found. #2151: None
+            when the read FAILED (never an empty dict, which is a verified "none set").
 
         Issue #280: Enables per-user data isolation
         """
@@ -296,7 +338,7 @@ class UserContextService:
 
         except Exception as e:
             logger.warning("user_preferences_load_failed", user_id=user_id, error=str(e))
-            return {}
+            return None
 
     def _extract_projects_from_prefs(self, prefs: Dict) -> list:
         """

@@ -175,27 +175,30 @@ surfaces:
   effect: READ
   reads: floor ANALYSIS context (falls to the status/priority gather; blocked issues of the default repo)
   handler: services/intent/intent_service.py:IntentService._handle_floor_with_context
-  states: {verified: conflated:not_performed, failed: conflated:verified, narrowed: distinct, not_performed: conflated:verified, substituted: conflated:verified}
+  states: {verified: conflated:not_performed, failed: distinct, narrowed: distinct, not_performed: conflated:verified, substituted: conflated:verified}
   verdict: red
   notes: >-
     ANALYSIS is not a gather_context branch, so it takes the else baseline
-    (_gather_status_priority_context). A failed blocked-items read returns None
-    (FLOOR-ABSENT) beside "- GitHub: connected", so "what's blocking X?" can be answered
-    as nothing blocked; a GitHub status failure renders "GitHub: not connected"
-    (ISS-STATUS); the repo can be ENV-REPO. unverified: served wording.
+    (_gather_status_priority_context). Since 2026-10-29 (FLOOR-ABSENT, the STATUS
+    gather) every failed read in that gather arms a registered flag, and the forcing
+    test's three runs pass (GitHub reads, the status check, the database). Still red:
+    a blocked-items read that was not performed (no repo resolved) renders nothing, so
+    "what's blocking X?" can be answered as nothing blocked; the repo can be ENV-REPO.
+    unverified: served wording.
 
 - id: get_feature_info
   kind: rail
   effect: READ
   reads: floor QUERY context (status/priority baseline) to answer about a Piper feature
   handler: services/intent/intent_service.py:IntentService._handle_floor_with_context
-  states: {verified: distinct, failed: conflated:verified, narrowed: n/a, not_performed: n/a, substituted: conflated:verified}
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: conflated:verified}
   verdict: red
   notes: >-
     The question is about Piper, but the reply can name the user's connection state, which
-    comes from the status/priority gather: a failed GitHub status reads "GitHub: not
-    connected" (ISS-STATUS) and env credentials read as connected. Lower risk than the
-    data questions.
+    comes from the status/priority gather. A failed GitHub status is "couldn't check
+    integrations" (ISS-STATUS, fixed), and the gather's other failed reads are stated
+    (FLOOR-ABSENT, 2026-10-29). Still red: env credentials read as connected
+    (substituted). Lower risk than the data questions.
 
 - id: check_completion_status
   kind: rail
@@ -215,13 +218,15 @@ surfaces:
   effect: READ
   reads: floor QUERY context (status/priority baseline) to draft an update
   handler: services/intent/intent_service.py:IntentService._handle_floor_with_context
-  states: {verified: distinct, failed: conflated:not_performed, narrowed: distinct, not_performed: conflated:verified, substituted: conflated:verified}
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: conflated:verified, substituted: conflated:verified}
   verdict: red
   notes: >-
-    The draft is built from whatever the status/priority gather returned. Failed
-    milestones, blocked items, recent activity or high-priority issues are absent
-    (FLOOR-ABSENT), so the draft can understate progress or risk with no caveat.
-    unverified: served wording.
+    The draft is built from whatever the status/priority gather returned. Since
+    2026-10-29 a failed milestones, blocked-items, recent-activity, high-priority-issues,
+    projects or priorities read is stated in the prompt (FLOOR-ABSENT, fixed). Still red:
+    a read that was not performed renders nothing, so the draft can understate progress
+    with no caveat, and with no project rows the projects can be PIPER.md's
+    (substituted). unverified: served wording.
 
 - id: get_identity
   kind: rail
@@ -1198,9 +1203,25 @@ surfaces:
     verified: "- PROJECTS: none — the user's project list was checked ..."
   verdict: green
   notes: >-
-    Armed only on the TEMPORAL gather (_get_projects_cached). The STATUS/PRIORITY gather
-    reads projects through user_context_service instead, with no flag (see
+    Armed on the TEMPORAL gather (_get_projects_cached) and, since 2026-10-29, on the
+    STATUS/PRIORITY gather, which reads projects through user_context_service: a failed
+    projects read (or, with no project rows, a failed preferences read) raises
+    _UserContextReadFailed and arms this flag (see
     floor:assembler._gather_status_priority_context).
+
+- id: floor:priorities_source_failed
+  kind: floor
+  effect: READ
+  reads: the user's preferences row (stated priorities and organization), via user_context_service
+  handler: services/intent_service/context_assembler.py:ContextAssembler._compute_user_context
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: n/a}
+  verdict: green
+  notes: >-
+    #2151 FLOOR-ABSENT (2026-10-29). Armed on the STATUS/PRIORITY gather when the
+    preferences read failed: the PIPER.md priorities and organization are left out
+    instead of served as the user's, and the aggregate names "priorities". Verified
+    priorities render as "User's stated priorities"; no user is not performed (no read,
+    no flag). Pins: test_status_gather_floor_absent_2151.py.
 
 - id: floor:pending_todos_source_failed
   kind: floor
@@ -1369,18 +1390,21 @@ surfaces:
   effect: READ
   reads: calendar, user context (projects/priorities/org), pending todos, GitHub status, blocked, milestones, activity, high-priority issues
   handler: services/intent_service/context_assembler.py:ContextAssembler._gather_status_priority_context
-  states: {verified: distinct, failed: conflated:verified, narrowed: distinct, not_performed: conflated:verified, substituted: conflated:verified}
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: conflated:verified, substituted: conflated:verified}
   texts:
-    failed: '"- GitHub: not connected (issue/PR data unavailable until connected)" when get_status raises'
+    failed: '"DATA CHECKS FAILED this turn — could not check: <the failed reads>" (the 1717 aggregate)'
   verdict: red
   notes: >-
     The baseline for STATUS, PRIORITY, ANALYSIS, QUERY, UNKNOWN and CONVERSATION floor
-    turns, so the widest floor exposure. (1) get_status raising sets github_connected=False,
-    rendered as "GitHub: not connected" (failed as a negative verdict); ISS-STATUS's inner
-    swallow does the same without raising. (2) Projects come from user_context_service with
-    no source-failed flag: a failed read returns None and the projects line is absent. (3)
-    Its fallback to the shared PIPER.md is substituted, latent today (0 projects from
-    config/PIPER.md, executed offline). (4) The GitHub sub-sources are FLOOR-ABSENT.
+    turns, so the widest floor exposure. Failed is distinct since 2026-10-29 (FLOOR-ABSENT):
+    (1) a status check that couldn't run arms integrations_source_failed (ISS-STATUS);
+    (2) a failed projects or preferences read arms projects_source_failed or
+    priorities_source_failed, and the PIPER.md fallback is not served over it; (3) the
+    GitHub sub-sources, the todos and the calendar arm their flags; (4) a failed
+    default-repo read arms open_issues_source_failed, never "not configured". Still red:
+    with verified-empty preferences and no project rows, projects and priorities fall back
+    to the shared PIPER.md (substituted, latent: 0 projects from config/PIPER.md, executed
+    offline), and a not-performed GitHub sub-read renders nothing.
 
 - id: floor:assembler._gather_temporal_context
   kind: floor

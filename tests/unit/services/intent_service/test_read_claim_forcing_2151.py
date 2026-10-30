@@ -453,10 +453,18 @@ def gh(
 
 # The status/priority baseline gather: its GitHub reads (blocked items, milestones, recent
 # activity, high-priority issues), the GitHub connection status, and the pending todos.
+# #2151 FLOOR-ABSENT (2026-10-29): each run names the checks its failure must arm, by the
+# registered labels of the reads it fails (``SOURCE_FAILED_FLAGS``). Step 2 wrote "GitHub"
+# here before the per-read flags existed; no STATUS read is registered as "GitHub", so the
+# row could not pass however the gather stated the failure. A failed GitHub read must name
+# all four GitHub reads; a failed status check is "integrations" (ISS-STATUS); a failed
+# database must name the todos, the user's projects and priorities (user context), and
+# the open issues (the default-repo read under them, never "no repo configured").
+_GH_STATUS_CHECKS = ("open issues", "blocked items", "milestones", "recent repository activity")
 _GH_STATUS_FLOOR = (
-    gh(native=False, checks=("GitHub",))
-    + one("iss", checks=("GitHub",))
-    + one("db", checks=("pending todos",))
+    gh(native=False, checks=_GH_STATUS_CHECKS)
+    + one("iss", checks=("integrations",))
+    + one("db", checks=("pending todos", "projects", "priorities", "open issues"))
 )
 
 FORCE: Dict[str, Force] = {
@@ -475,16 +483,18 @@ FORCE: Dict[str, Force] = {
     ),
     # the status/priority baseline: GitHub reads, the GitHub status, the todos.
     "analyze_blockers": Force(
-        _GH_STATUS_FLOOR, "what's blocking the launch?", floor_checks=("GitHub",)
+        _GH_STATUS_FLOOR, "what's blocking the launch?", floor_checks=_GH_STATUS_CHECKS
     ),
     "get_feature_info": Force(
-        _GH_STATUS_FLOOR, "what does the standup feature do?", floor_checks=("GitHub",)
+        _GH_STATUS_FLOOR, "what does the standup feature do?", floor_checks=_GH_STATUS_CHECKS
     ),
     "check_completion_status": Force(
         one("db"), "when did I finish the onboarding work?", floor_checks=("completed todos",)
     ),
     "write_stakeholder_update": Force(
-        _GH_STATUS_FLOOR, "write a stakeholder update for this week", floor_checks=("GitHub",)
+        _GH_STATUS_FLOOR,
+        "write a stakeholder update for this week",
+        floor_checks=_GH_STATUS_CHECKS,
     ),
     # ── Piper's own store (the database) ──
     "changes_query": Force(one("db"), "what changed since yesterday?"),
@@ -669,9 +679,6 @@ KNOWN_RED: Dict[str, str] = {
     # WRITE entries: a raise still falls through (the #2151 step-3 fix covers READ entries)
     # floor adapters: the failed read reaches the floor prompt as nothing at all
     "get_memory": "FLOOR-ABSENT",
-    "analyze_blockers": "FLOOR-ABSENT",
-    "get_feature_info": "FLOOR-ABSENT",
-    "write_stakeholder_update": "FLOOR-ABSENT",
     "check_completion_status": "FLOOR-ABSENT",
     # GitHub
     "close_issue": "GH-NONSTRICT",
@@ -687,7 +694,7 @@ KNOWN_RED: Dict[str, str] = {
     # Piper's own store
     "explain_suggestion": "SWALLOW-EMPTY",
 }
-KNOWN_RED_CEILING = 14
+KNOWN_RED_CEILING = 11
 
 
 # ─── Harness ────────────────────────────────────────────────────────────────
