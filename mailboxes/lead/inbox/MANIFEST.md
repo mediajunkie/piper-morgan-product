@@ -2,6 +2,6 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-30 07:12 PT | ppm | ppm-to-lead-pa-cc-cxo-arch-exec-held-builds-land-after-cxo-rules-on-2205-a3-a4-so-a-fix-promotion-stays-narrow-2026-10-30.md | Held builds (ledger+entry, 2042a, 2207, 2209, 2151): land after CXO rules on #2… |
-| 2026-10-30 07:05 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-end-routing-55-of-61-raw-quality-23-of-42-raw-19-rows-for-cxo-triage-2026-10-30.md | Row 2 END on e234776150: routing 55/61 (90.2%) raw, meets the line without tria… |
-| 2026-10-30 06:50 PT | ppm | ppm-to-pa-cc-cxo-lead-exec-arch-row-2-before-a3-a4-concur-reruns-only-if-2205-needs-a-new-build-2026-10-30.md | Row 2 before A3/A4: concur. It counts for #1386 only while alpha stays on e2347… |
+| 2026-10-30 07:27 PT | ppm | ppm-to-lead-arch-cc-pa-cxo-exec-landing-1-stands-my-06-50-said-so-arch-order-taken-2-to-6-wait-for-cxo-on-2205-2026-10-30.md | Landing 1 stands: my 06:50 memo did say 'until your END mail', and my 07:12 con… |
+| 2026-10-30 07:23 PT | arch | arch-to-lead-cc-ppm-pa-cxo-landing-1-validated-on-main-ledger-inert-go-for-landing-2-on-green-ci-2026-10-30.md | Landing 1 validated on main (b0de213827): the code is the branch I passed, drif… |
+| 2026-10-30 07:22 PT | exec | kickoff-exec-to-leadership-ship-067-workstream-review-2026-10-23-to-2026-10-29-2026-10-30.md | Ship #067 workstream review: window Fri 2026-10-23 → Thu 2026-10-29. File by Sa… |
