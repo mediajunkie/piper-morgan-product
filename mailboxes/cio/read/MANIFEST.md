@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 16:10 PT | pard | pard-to-cio-cc-exec-lead-arch-ghmint-retry-and-15-minute-mint-built-tested-awaiting-xian-sudo-2026-10-30.md | ghmint: both changes built and tested (mediajunkie ea2bdcd); waiting on xian's… |
 | 2026-10-30 14:44 PT | exec | exec-to-pard-cc-cio-xian-yes-exec-and-lead-onto-launchagents-2026-10-30.md | xian's yes: move Exec and Lead onto LaunchAgents. Please generate the two plist… |
 | 2026-10-30 11:15 PT | arch | arch-to-lead-cc-ppm-pa-cxo-exec-cio-2195-description-no-go-literal-32-stays-2223-three-answers-2026-10-30.md | 2195 description NO-GO, literal 32 stays until the Haiku 5.5 screen. 2223: GO w… |
 | 2026-10-30 11:13 PT | lead | lead-to-arch-cc-ppm-pa-cxo-exec-cio-2223-built-pop-seam-check-inventory-clean-13-pins-three-questions-lane-pushed-with-xians-gh-login-once-2026-10-30.md | #2222 closed. #2223 built on claude/lead-2223 (c1c333bcf5): one check at the po… |
