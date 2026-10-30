@@ -1,0 +1,336 @@
+From f8baed75b22615a1aefac742414e008f64c99832 Mon Sep 17 00:00:00 2001
+From: mediajunkie <3227378+mediajunkie@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 16:51:11 -0700
+Subject: [PATCH] feat(router): 2225 set_default_github_repo rail op, a
+ Settings pointer that writes nothing
+
+The second shape of 2225: 'Set my default GitHub repository to owner/name' classified
+to execution/set_default_github_repo with no handler. The op is now an action-triggered
+WorkflowEntry whose handler returns CXO's line and reads/writes nothing. Axes declared
+READ x PRIVATE as the handler behaves now (Arch 16:23). Catalog ledger appended; render
+diff main to candidate is exactly the one new op line. EXEMPT row in the 2151 forcing
+test is for Arch to review.
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01UG2nRrP5D3DZQgvkL7zChk
+---
+ services/intent/intent_service.py             |  28 ++++
+ services/intent_service/action_registry.py    |   7 +
+ services/intent_service/rail_read_failure.py  |   1 +
+ .../intent_service/router_catalog_order.py    |   1 +
+ services/intent_service/workflow_entries.py   |  24 ++++
+ .../intent_service/test_action_registry.py    |   1 +
+ .../test_read_claim_forcing_2151.py           |   3 +
+ .../test_set_default_repo_pointer_2225b.py    | 130 ++++++++++++++++++
+ 8 files changed, 195 insertions(+)
+ create mode 100644 tests/unit/services/intent_service/test_set_default_repo_pointer_2225b.py
+
+diff --git a/services/intent/intent_service.py b/services/intent/intent_service.py
+index 000fb90dab..5f36b5dae6 100644
+--- a/services/intent/intent_service.py
++++ b/services/intent/intent_service.py
+@@ -319,6 +319,12 @@ _RESUME_ARMED_ONLY_DECLINES = frozenset(
+     }
+ )
+ 
++# #2225 second shape (CXO 15:16/15:26): the exact Settings pointer line.
++SET_DEFAULT_GITHUB_REPO_POINTER = (
++    "I can't change your default repository from chat. "
++    "Open Settings \u2192 Integrations \u2192 GitHub to set it."
++)
++
+ # #1769 axes source: accepting the resume offer re-enters the #585 standup
+ # interview — the SAME flow whose start the registry declares at this entry
+ # (WRITE×PRIVATE, #1557-classified by reading the handler; resuming mutates
+@@ -9211,6 +9217,28 @@ class IntentService:
+             self.logger.warning("default_repo_open_issue_count_failed", error=str(e))
+             return None
+ 
++    async def _handle_set_default_github_repo(
++        self, intent: Intent, workflow_id: str
++    ) -> IntentProcessingResult:
++        """#2225 second shape: a read-only pointer to Settings (CXO 15:26, verbatim).
++
++        Reads no default, writes no default, makes no GitHub call, asks no confirm.
++        The conversational setter is ``_handle_set_default_repo`` (#1327/#2205); this
++        op exists so "Set my default GitHub repository to owner/name" lands on a
++        true line instead of the no-match line.
++        """
++        return IntentProcessingResult(
++            success=True,
++            message=SET_DEFAULT_GITHUB_REPO_POINTER,
++            intent_data={
++                "category": intent.category.value,
++                "action": intent.action,
++                "confidence": intent.confidence,
++            },
++            workflow_id=workflow_id,
++            requires_clarification=False,
++        )
++
+     async def _handle_set_default_repo(
+         self, intent: Intent, workflow_id: str
+     ) -> IntentProcessingResult:
+diff --git a/services/intent_service/action_registry.py b/services/intent_service/action_registry.py
+index d9d402f4bd..ce0ad2c754 100644
+--- a/services/intent_service/action_registry.py
++++ b/services/intent_service/action_registry.py
+@@ -268,6 +268,11 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
+     ("EXECUTION", "list_todos"): ActionDisposition.WORKFLOW,
+     ("EXECUTION", "next_todo"): ActionDisposition.WORKFLOW,
+     ("EXECUTION", "delete_todo"): ActionDisposition.WORKFLOW,
++    # #2225 (second shape, CXO 15:26): "Set my default GitHub repository to owner/name"
++    # was classified execution/set_default_github_repo with no handler. Today it is a
++    # read-only pointer to Settings (writes nothing); the rail entry is in
++    # workflow_entries.py.
++    ("EXECUTION", "set_default_github_repo"): ActionDisposition.WORKFLOW,
+     # ---- ANALYSIS (was stub → now floor) ----
+     ("ANALYSIS", "analyze_blockers"): ActionDisposition.FLOOR,
+     # ---- SYNTHESIS ----
+@@ -359,6 +364,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
+     ("EXECUTION", "list_todos"): "Show me my open todos",
+     ("EXECUTION", "next_todo"): "Pull up whichever todo you think comes next",
+     ("EXECUTION", "delete_todo"): "Scrap the todo about renaming things",
++    ("EXECUTION", "set_default_github_repo"): "Set my default GitHub repository to owner/name",
+     # 2026-10-14 (Lead; Arch's standing-member rule, decisions.log 10-13/10-14): the
+     # ANALYSIS margin fix — an ADDITIVE example (the least-perturbing lever) for
+     # the corpus row "let's analyze the risk here" (expects analyze_blockers), which
+@@ -710,6 +716,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
+     "list_prs_query": Verb.LIST,
+     "review_issue_query": Verb.GET,
+     "set_default_repo": Verb.SET,  # RECONNECT #1327
++    "set_default_github_repo": Verb.SET,  # #2225 second shape (Settings pointer)
+     "get_default_repo": Verb.GET,  # RECONNECT #1327 build #2
+     "set_timezone": Verb.SET,  # #1876
+     "list_milestones_query": Verb.LIST,
+diff --git a/services/intent_service/rail_read_failure.py b/services/intent_service/rail_read_failure.py
+index 3bad011bcd..2a07368460 100644
+--- a/services/intent_service/rail_read_failure.py
++++ b/services/intent_service/rail_read_failure.py
+@@ -99,6 +99,7 @@ NO_USER_DATA_READ: Dict[str, str] = {
+     "prioritize": "computes over the items in the request itself",
+     "strategic_planning": "plans from the request's own goal and timeframe",
+     "get_contextual_guidance": "advice, no claim about stored data",
++    "set_default_github_repo": "a fixed Settings pointer (2225); reads and writes nothing",
+ }
+ 
+ 
+diff --git a/services/intent_service/router_catalog_order.py b/services/intent_service/router_catalog_order.py
+index 36bbd654dd..5413ab9f62 100644
+--- a/services/intent_service/router_catalog_order.py
++++ b/services/intent_service/router_catalog_order.py
+@@ -98,6 +98,7 @@ CATALOG_ORDER_LEDGER: tuple[str, ...] = (
+     "get_top_priority",
+     "manage_portfolio",
+     "manage_repos",
++    "set_default_github_repo",  # 2225 second shape: appended at the end (rule above)
+ )
+ 
+ 
+diff --git a/services/intent_service/workflow_entries.py b/services/intent_service/workflow_entries.py
+index 9d0a5089e2..199a2386d7 100644
+--- a/services/intent_service/workflow_entries.py
++++ b/services/intent_service/workflow_entries.py
+@@ -3209,6 +3209,29 @@ def register_default_workflows() -> None:
+         flip_write_allowlist_key="set_default_repo",
+     )
+ 
++    # #2225 second shape (CXO 15:26): "Set my default GitHub repository to
++    # owner/name" classifies to execution/set_default_github_repo, which had no
++    # handler and fell to the no-match line. Until a setter is built the handler
++    # returns CXO's Settings line and writes nothing (Arch 16:23: declare the axes
++    # as the handler behaves NOW, never as the setter it will become).
++    # effect: READ, outwardness: PRIVATE — the weakest truthful pair. The handler
++    # reads no preference, writes no preference, calls no GitHub API; READ is the
++    # floor of EffectClass and PRIVATE the floor of Outwardness (nobody else is
++    # handed anything). When a real setter replaces it, these become WRITE/PRIVATE
++    # and flip_write_allowlist_key etc. must be re-run as a new unit.
++    set_default_github_repo_entry = WorkflowEntry(
++        entry_point=_make_query_dispatch_entry_point("_handle_set_default_github_repo"),
++        effect=EffectClass.READ,
++        outwardness=Outwardness.PRIVATE,
++        description="Set the default GitHub repository for writes",
++        requires_context=["intent", "intent_service"],
++        action_triggered=True,
++        # flip_group read_status (same as get_default_repo, its settings sibling):
++        # a READ-by-behavior pointer, so the per-group flip may reach it; the
++        # 1667 audit forbids an ungrouped READ op.
++        flip_group="read_status",
++    )
++
+     # #1560: create_reminder onto the rail (the structural half of the #1517
+     # capability-gaslighting incident). Its only dispatch was the legacy
+     # `elif mapped_action == "create_reminder"` inside _handle_execution_intent —
+@@ -4073,6 +4096,7 @@ def register_default_workflows() -> None:
+         "clear_todos": clear_todos_entry,
+         # RECONNECT #1327 gap 1: set-default-repo (QUERY category, pre-classifier action).
+         "set_default_repo": set_default_repo_entry,
++        "set_default_github_repo": set_default_github_repo_entry,
+         # RECONNECT #1327 build #2: get-default-repo (read counterpart).
+         "get_default_repo": get_default_repo_entry,
+         # #1876: set-timezone (QUERY category, pre-classifier reachable only via
+diff --git a/tests/unit/services/intent_service/test_action_registry.py b/tests/unit/services/intent_service/test_action_registry.py
+index a941e06ac1..5ee21f1455 100644
+--- a/tests/unit/services/intent_service/test_action_registry.py
++++ b/tests/unit/services/intent_service/test_action_registry.py
+@@ -409,6 +409,7 @@ class TestNoStubPhrases:
+             "list_todos",
+             "next_todo",
+             "delete_todo",
++            "set_default_github_repo",  # 2225: rail entry, Settings pointer
+         }
+ 
+         for cat, act in workflow_actions:
+diff --git a/tests/unit/services/intent_service/test_read_claim_forcing_2151.py b/tests/unit/services/intent_service/test_read_claim_forcing_2151.py
+index 9858bd739f..afd452c053 100644
+--- a/tests/unit/services/intent_service/test_read_claim_forcing_2151.py
++++ b/tests/unit/services/intent_service/test_read_claim_forcing_2151.py
+@@ -647,6 +647,9 @@ EXEMPT: Dict[str, str] = {
+     # Lead 10-23 (#2151, CXO + Arch): declines on hosted (the server's tree is not the
+     # user's) and when the local read fails; reads none of the user's data. Arch to review.
+     "local_git_status_query": "declines plainly (CXO's line); never reads the user's data",
++    # Lead 10-30 (#2225 second shape, CXO 15:26): a fixed Settings pointer; reads no
++    # default, writes nothing, makes no claim about the user's data. Arch to review.
++    "set_default_github_repo": "fixed Settings pointer; reads and writes nothing",
+ }
+ 
+ # Row-level causes used beside the inventory header's shared ones.
+diff --git a/tests/unit/services/intent_service/test_set_default_repo_pointer_2225b.py b/tests/unit/services/intent_service/test_set_default_repo_pointer_2225b.py
+new file mode 100644
+index 0000000000..5932dd80cd
+--- /dev/null
++++ b/tests/unit/services/intent_service/test_set_default_repo_pointer_2225b.py
+@@ -0,0 +1,130 @@
++"""#2225 second shape: ``set_default_github_repo`` is a registered rail op whose
++handler returns CXO's Settings line and writes nothing.
++
++LAYER: unit; the real IntentService rail (``_dispatch_action_rail``) with the LLM
++boundary explosive and the repo-default setters patched to fail. DENOMINATOR: the one
++op (dispatch, no-write, declared axes, catalog render).
++"""
++
++from unittest.mock import AsyncMock
++
++import pytest
++
++OP = "set_default_github_repo"
++LINE = (
++    "I can't change your default repository from chat. "
++    "Open Settings → Integrations → GitHub to set it."
++)
++USER = "5a2c9d10-2225-4b00-9e00-00000000bbbb"
++
++
++class _ExplosiveLLM:
++    def __getattr__(self, name):
++        raise AssertionError(f"LLM boundary touched ({name})")
++
++
++@pytest.fixture
++def service():
++    from services.intent.intent_service import IntentService
++    from services.intent_service.classifier import IntentClassifier
++    from services.intent_service.workflow_entries import register_default_workflows
++
++    register_default_workflows()
++    return IntentService(intent_classifier=IntentClassifier(llm_service=_ExplosiveLLM()))
++
++
++def _intent():
++    from services.domain.models import Intent
++    from services.shared_types import IntentCategory
++
++    msg = "Set my default GitHub repository to mediajunkie/piper-morgan-product"
++    return Intent(
++        category=IntentCategory.EXECUTION,
++        action=OP,
++        confidence=1.0,
++        original_message=msg,
++        context={"user_id": USER, "original_message": msg},
++    )
++
++
++async def _rail(service):
++    return await service._dispatch_action_rail(
++        _intent(),
++        message="Set my default GitHub repository to mediajunkie/piper-morgan-product",
++        session_id="s-2225b",
++        user_id=USER,
++        workflow_id=None,
++        all_suggestions=None,
++        preferences=None,
++    )
++
++
++@pytest.mark.asyncio
++class TestPointerDispatch:
++    async def test_dispatches_through_the_rail_and_returns_cxos_line_verbatim(self, service):
++        outcome = await _rail(service)
++        assert outcome.on_rail is True
++        assert outcome.result is not None
++        assert outcome.result.message == LINE
++        assert outcome.result.success is True
++
++    async def test_no_setter_and_no_github_write(self, service, monkeypatch):
++        from services.connectors.config_service import ConnectorConfigService
++        from services.intent.intent_service import IntentService
++
++        boom = AsyncMock(side_effect=AssertionError("a default-repo setter was called"))
++        monkeypatch.setattr(ConnectorConfigService, "set_default_repo", boom)
++        monkeypatch.setattr(IntentService, "_handle_set_default_repo", boom)
++        import services.integrations.github.repo_resolver as rr
++
++        for name in dir(rr):
++            if name.startswith(("set_", "save_", "write_", "persist_")) and callable(
++                getattr(rr, name)
++            ):
++                monkeypatch.setattr(rr, name, boom)
++        from services.integrations.github.github_integration_router import (
++            GitHubIntegrationRouter,
++        )
++
++        write_boundaries = [
++            n
++            for n in dir(GitHubIntegrationRouter)
++            if n.startswith(("create_", "update_", "close_", "reopen_", "comment_"))
++        ]
++        for name in write_boundaries:
++            monkeypatch.setattr(GitHubIntegrationRouter, name, boom)
++        outcome = await _rail(service)
++        assert outcome.result.message == LINE
++        boom.assert_not_called()
++
++
++class TestRegistrationAndAxes:
++    def test_declared_axes_are_read_private(self):
++        from services.intent_service.acceptance import declared_axes_for_workflow
++        from services.shared_types import EffectClass, Outwardness
++
++        assert declared_axes_for_workflow(OP) == (EffectClass.READ, Outwardness.PRIVATE)
++
++    def test_registered_action_triggered(self):
++        from services.intent_service.workflow_dispatcher import get_action_workflows
++        from services.intent_service.workflow_entries import register_default_workflows
++
++        register_default_workflows()
++        entry = get_action_workflows()[OP]
++        assert entry.action_triggered is True
++
++    def test_renders_into_the_router_catalog_with_description_and_example(self):
++        from services.intent_service.inversion_router import derive_routing_grammar
++
++        ops = {o.name: o for o in derive_routing_grammar().operations}
++        assert OP in ops
++        assert ops[OP].description == "Set the default GitHub repository for writes"
++        assert ops[OP].example == "Set my default GitHub repository to owner/name"
++
++    def test_axes_do_not_render_into_the_catalog_text(self):
++        """Report-only pin of Arch's question: the declared axes are not catalog text."""
++        from services.intent_service.inversion_router import derive_routing_grammar
++
++        op = next(o for o in derive_routing_grammar().operations if o.name == OP)
++        text = repr(op)
++        assert "READ" not in text and "PRIVATE" not in text
+-- 
+2.50.1 (Apple Git-155)
+
