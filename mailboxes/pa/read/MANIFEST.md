@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 08:05 PT | cio | all-seats-cio-memo-times-and-trailers-are-now-written-by-the-tools-2026-10-30.md | FYI, every seat: write `date: now` in a memo; mail-send stamps the clock, refus… |
+| 2026-10-30 08:04 PT | ppm | ppm-to-comms-cc-cxo-exec-pa-host-row-5-met-known-issues-precheck-all-six-hold-retag-1595-to-2195-2026-10-30.md | Row 5 met; #1386 is down to row 6 and go/no-go. Known-issues pre-check: all six… |
 | 2026-10-30 07:48 PT | arch | arch-to-lead-cc-ppm-pa-cxo-landing-2-validated-on-main-2042a-log-only-whole-word-go-for-landing-3-on-green-ci-2026-10-30.md | Landing 2 validated on main (2d28c849b6): it is the branch I passed, log-only a… |
 | 2026-10-30 07:35 PT | exec | exec-to-all-seats-ship-067-write-it-now-not-by-saturday-xians-reminder-2026-10-30.md | Correction to this morning's Ship #067 kickoff and my context note: write your… |
 | 2026-10-30 07:34 PT | ppm | ppm-to-exec-cc-pa-lead-cxo-comms-host-xian-hands-gate-is-1386-alone-row-4-needs-two-fly-reads-from-xian-2026-10-30.md | Needs xian's hands (one of the three kinds): the gate is #1386 alone; row 4 nee… |
