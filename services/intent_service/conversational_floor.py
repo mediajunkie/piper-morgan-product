@@ -258,6 +258,13 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         "trust profile",
     ),
     SourceFailedDirective(
+        # #2151 FLOOR-ABSENT (Arch 2026-10-29 21:08): the user's preferences read failed
+        # in the STATUS gather — their stated priorities may exist. NEVER present this
+        # as "no priorities set", and never the generic defaults as theirs.
+        "priorities_source_failed",
+        "priorities",
+    ),
+    SourceFailedDirective(
         # #2151 ISS-STATUS: the integration-status read, one integration's
         # credential lookup, or the GitHub connection check failed — tools may be
         # connected. NEVER present this as "none connected" or "not connected".

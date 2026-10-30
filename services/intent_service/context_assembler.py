@@ -28,7 +28,7 @@ not prompt-prefix-based.
 """
 
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import structlog
 
@@ -250,6 +250,19 @@ def _calendar_feature_off(exc: BaseException) -> bool:
     return isinstance(exc, RuntimeError) and str(exc).startswith(
         "No calendar integration available"
     )
+
+
+class _UserContextReadFailed(Exception):
+    """#2151 FLOOR-ABSENT (Arch 2026-10-29 21:08): a user-context read that FAILED for
+    part or all of the context. ``partial`` holds the parts that were read (shown, per
+    CXO's bar: one failure must not blank the rest); ``flags`` are the registered
+    source-failed flags the STATUS gather arms. Raised, so the context cache never
+    stores a failure."""
+
+    def __init__(self, partial: Dict[str, Any], flags: Tuple[str, ...]) -> None:
+        super().__init__(", ".join(flags))
+        self.partial = partial
+        self.flags = flags
 
 
 class _SlackReadFailed(Exception):
@@ -1119,7 +1132,15 @@ class ContextAssembler:
 
         # #984: Cached user context (TTL-only, 5min — slow-changing).
         if user_id:
-            user_ctx_data = await self._get_user_context_cached(user_id)
+            try:
+                user_ctx_data = await self._get_user_context_cached(user_id)
+            except _UserContextReadFailed as failed:
+                # #2151 FLOOR-ABSENT: a failed projects or preferences read is stated
+                # ("couldn't check projects"), never a user with none; the parts that
+                # were read still render.
+                user_ctx_data = failed.partial
+                for flag in failed.flags:
+                    context[flag] = True
             if user_ctx_data:
                 context.update(user_ctx_data)
 
@@ -1753,7 +1774,12 @@ class ContextAssembler:
         )
 
     async def _compute_user_context(self, user_id: str) -> Optional[Dict[str, Any]]:
-        """Compute user_context_service output (uncached) for cache miss."""
+        """Compute user_context_service output (uncached) for cache miss.
+
+        #2151 FLOOR-ABSENT: a failed read RAISES ``_UserContextReadFailed`` (so nothing
+        is cached) carrying the parts that were read; a projects or preferences read the
+        service marks failed is left out, never served as the PIPER.md fallback."""
+        failed_flags: List[str] = []
         try:
             from services.user_context_service import user_context_service
 
@@ -1761,7 +1787,14 @@ class ContextAssembler:
             if not user_ctx:
                 return None
             result: Dict[str, Any] = {}
-            if hasattr(user_ctx, "projects") and user_ctx.projects:
+            # ``is True``: only the service's own bool arms a flag.
+            projects_failed = getattr(user_ctx, "projects_read_failed", False) is True
+            preferences_failed = getattr(user_ctx, "preferences_read_failed", False) is True
+            if projects_failed:
+                failed_flags.append("projects_source_failed")
+            if preferences_failed:
+                failed_flags.append("priorities_source_failed")
+            if not projects_failed and hasattr(user_ctx, "projects") and user_ctx.projects:
                 result["projects"] = [
                     {"name": p} if isinstance(p, str) else p for p in user_ctx.projects[:10]
                 ]
@@ -1770,7 +1803,7 @@ class ContextAssembler:
                 # of a truncated slice. The floor renders this explicitly so
                 # the LLM never derives a denominator the query didn't produce.
                 result["project_count"] = len(user_ctx.projects)
-            if hasattr(user_ctx, "priorities") and user_ctx.priorities:
+            if not preferences_failed and hasattr(user_ctx, "priorities") and user_ctx.priorities:
                 # #496: the floor formatter (conversational_floor._format_domain_context)
                 # reads domain_context["priorities"] as a DICT (p.get("user_priorities")),
                 # matching intent_service.py's other producer. Emitting a bare list here
@@ -1786,12 +1819,21 @@ class ContextAssembler:
                     "user_priorities": user_ctx.priorities[:5],
                     "user_priority_count": len(user_ctx.priorities),
                 }
-            if hasattr(user_ctx, "organization") and user_ctx.organization:
+            if (
+                not preferences_failed
+                and hasattr(user_ctx, "organization")
+                and user_ctx.organization
+            ):
                 result["organization"] = user_ctx.organization
-            return result or None
         except Exception as e:
+            # #2151 FLOOR-ABSENT: the read failed, which is not "no projects".
             logger.warning("context_assembler_user_context_error", error=str(e))
-            return None
+            raise _UserContextReadFailed(
+                {}, ("projects_source_failed", "priorities_source_failed")
+            ) from e
+        if failed_flags:
+            raise _UserContextReadFailed(result, tuple(failed_flags))
+        return result or None
 
     # ------------------------------------------------------------------
     # #983: Blocked-items gatherer
@@ -2013,7 +2055,11 @@ class ContextAssembler:
         (the caller's gather arms ``open_issues_source_failed``)."""
         from uuid import UUID
 
-        from services.integrations.github.repo_resolver import UnresolvedRepoError, resolve_repo
+        from services.integrations.github.repo_resolver import (
+            UnresolvedRepoError,
+            get_user_default_repo_and_source,
+            resolve_repo,
+        )
 
         try:
             uid = UUID(user_id) if user_id and user_id != "system" else None
@@ -2023,6 +2069,12 @@ class ContextAssembler:
             await resolve_repo(user_id=uid)
             return True
         except UnresolvedRepoError:
+            # #2151 FLOOR-ABSENT (Arch 2026-10-29 21:08): the resolver reads the user's
+            # default repo best-effort, so a FAILED read also ends here. Re-read it
+            # strictly: a failure raises (the gather arms ``open_issues_source_failed``),
+            # and only a verified absence is "no repo configured".
+            if uid is not None:
+                await get_user_default_repo_and_source(uid, strict=True)
             return False
 
     # ------------------------------------------------------------------
