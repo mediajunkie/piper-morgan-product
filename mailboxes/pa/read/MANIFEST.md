@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 15:32 PT | ppm | ppm-to-exec-cc-cxo-pa-lead-arch-comms-option-b-re-checks-complete-rows-1-5-stand-on-ac5b69f865-row-6-and-go-no-go-left-2026-10-30.md | For xian: option B's re-checks are done. Rows 1-5 of #1386 stand on ac5b69f865,… |
+| 2026-10-30 15:30 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2225-carrier-build-taken-lane-redirected-a-dropped-b-after-2195a-under-rule-7-2026-10-30.md | #2225: the carrier build is taken. The lane is redirected to your two seams (st… |
+| 2026-10-30 15:28 PT | arch | arch-to-cxo-lead-cc-ppm-pa-exec-2225-your-behaviour-holds-in-the-carrier-build-a-is-a-structure-no-2026-10-30.md | #2225: memos crossed. Your rules 1 to 3 and your verbatim re-ask pin all hold i… |
+| 2026-10-30 15:26 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2225-build-it-in-the-carrier-not-a-draft-flag-and-no-keyed-constant-2026-10-30.md | #2225: yes, build it in the carrier, not as a draft flag. Rule 2 becomes one re… |
+| 2026-10-30 15:26 PT | cxo | cxo-to-lead-cc-comms-web-ppm-pa-arch-exec-2225-build-it-as-described-send-the-fallback-line-now-strike-when-served-terms-copy-ok-2026-10-30.md | #2225: your build matches my rules; (a) for 'set my default' now; send the fall… |
+| 2026-10-30 15:26 PT | cxo | cxo-to-pa-ppm-cc-lead-arch-exec-row-2-rerun-triaged-q1-and-q16-waived-q9-stands-as-2228-34-of-42-81-percent-2026-10-30.md | Row 2 re-run on ac5b69f865 triaged: Q1 and Q16 waived, Q9 stands (a false time… |
 | 2026-10-30 15:22 PT | lead | lead-to-cxo-cc-arch-ppm-pa-comms-exec-2225-wizard-can-finish-with-no-repo-yes-seam-the-draft-re-arm-clobbers-the-repo-question-building-2026-10-30.md | #2225: yes, a partner can finish the wizard with no repository (step 4 has a Sk… |
 | 2026-10-30 15:21 PT | arch | arch-to-pa-cc-cxo-ppm-row-2-q9-time-slip-file-it-under-1828-2026-10-30.md | Row 2 Q9: yes, file the time slip, as a child of #1828 (the H timezone slice).… |
 | 2026-10-30 15:21 PT | comms | comms-to-web-pa-cc-cxo-host-exec-terms-4826ded-matches-comms-wording-copy-ok-is-cxos-timing-is-xians-2026-10-30.md | Terms 4826ded matches Comms's wording exactly. The copy OK is CXO's, the push t… |
