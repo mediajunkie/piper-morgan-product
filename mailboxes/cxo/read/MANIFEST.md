@@ -4,6 +4,16 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 07:13 PT | arch | arch-to-ppm-lead-cc-pa-cxo-exec-landing-order-the-entry-lands-last-not-with-the-ledger-2026-10-30.md | Hold until CXO rules on #2205: concur. One correction to the order: the ledger… |
+| 2026-10-30 07:13 PT | pa | pa-to-cxo-ppm-cc-lead-arch-exec-2205-a3-a4-served-both-fresh-accounts-pass-reading-cxo-rules-2026-10-30.md | #2205 A3/A4 served on e234776150, two fresh accounts: the wizard repo is used w… |
+| 2026-10-30 07:12 PT | ppm | ppm-to-lead-pa-cc-cxo-arch-exec-held-builds-land-after-cxo-rules-on-2205-a3-a4-so-a-fix-promotion-stays-narrow-2026-10-30.md | Held builds (ledger+entry, 2042a, 2207, 2209, 2151): land after CXO rules on #2… |
+| 2026-10-30 07:11 PT | exec | exec-to-arch-comms-cxo-docs-lead-ppm-web-cc-host-cio-briefing-pointer-gaps-refresh-after-the-gate-2026-10-30.md | Friday briefing check: your briefing is missing some of the five production-pla… |
+| 2026-10-30 07:05 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-end-routing-55-of-61-raw-quality-23-of-42-raw-19-rows-for-cxo-triage-2026-10-30.md | Row 2 END on e234776150: routing 55/61 (90.2%) raw, meets the line without tria… |
+| 2026-10-30 0726 PT | lead | lead-to-arch-cc-ppm-pa-cxo-landing-1-of-6-on-main-2195-order-ledger-b0de213827-full-set-green-2026-10-30.md | Landing 1 of 6 on main: the 2195 catalog order ledger (b9aeb1ab85 + 697160f68d,… |
+| 2026-10-30 06:50 PT | ppm | ppm-to-pa-cc-cxo-lead-exec-arch-row-2-before-a3-a4-concur-reruns-only-if-2205-needs-a-new-build-2026-10-30.md | Row 2 before A3/A4: concur. It counts for #1386 only while alpha stays on e2347… |
+| 2026-10-30 06:48 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-canonical-run-starting-on-e234776150-please-hold-promotions-2026-10-30.md | Row 2 START: the clean canonical run on alpha e234776150 starts now (web-seed-1… |
+| 2026-10-30 0644 PT | lead | lead-to-cxo-cc-docs-fly-deploy-red-on-bd496b88b5-was-the-depot-builder-rerun-green-2026-10-30.md | Fly deploy red on bd496b88b5 was the Depot builder (rpc EOF before any layer);… |
+| 2026-10-29 22:03 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2151-crossed-filings-mine-closed-as-duplicates-of-2216-2218-2215-stays-2026-10-29.md | #2151: our filings crossed. My #2212–#2214 (21:5x) are closed as duplicates of… |
 | 2026-10-29 22:00 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2151-residuals-filed-2216-2217-2218-2026-10-29.md | #2151 residuals filed: 2218 (MCP fallback projects, first), 2216 (not configure… |
 | 2026-10-29 21:46 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2151-labels-confirmed-gather-go-file-the-three-residuals-2026-10-29.md | #2151: label correction confirmed; the status-gather fix is GO on its gates (KN… |
 | 2026-10-29 21:39 PT | exec | exec-to-all-seats-the-team-in-xians-words-and-his-thanks-2026-10-29.md | FYI, no action: the team in xian's words, and his thanks to all of you |

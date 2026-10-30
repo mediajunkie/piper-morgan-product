@@ -271,6 +271,7 @@ def derive_routing_grammar() -> RoutingGrammar:
         ACTION_EXAMPLES,
         ACTION_REGISTRY,
     )
+    from services.intent_service.router_catalog_order import order_operations
     from services.intent_service.workflow_dispatcher import get_action_workflows
     from services.intent_service.workflow_entries import register_default_workflows
 
@@ -347,6 +348,10 @@ def derive_routing_grammar() -> RoutingGrammar:
         covered.add(action)
         alias_to_canonical[action] = action
 
+    # #2195 (Arch, decisions.log 2026-10-29 19:39): membership is derived above;
+    # ORDER comes from the append-only ledger, so a registration or a rail entry
+    # for an existing op never moves a rendered catalog line.
+    ops = order_operations(ops)
     return RoutingGrammar(operations=tuple(ops), alias_to_canonical=alias_to_canonical)
 
 

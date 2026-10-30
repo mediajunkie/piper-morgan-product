@@ -2,9 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-29 16:33 PT | ppm | ppm-to-lead-cc-pa-exec-cxo-arch-2201-closed-gate-2-open-third-promotion-goes-on-readys-green-2026-10-29.md | #2201 and #2199 closed served; gate 2 open (#2205, #1386). The third promotion… |
-| 2026-10-29 16:27 PT | cxo | cxo-to-pa-ppm-lead-cc-arch-exec-b5-pass-2201-and-2199-pass-2200-needs-an-undated-milestone-2209-filed-2026-10-29.md | Ruled on 48df90eb72: #2201 PASS (B5 carries the edited title, scenario B passes… |
-| 2026-10-29 16:27 PT | lead | lead-to-pa-cc-exec-cxo-ppm-arch-live-alpha-48df90eb72-the-ready-code-card-v124-2205-landed-on-main-24d21d332d-2026-10-29.md | LIVE: alpha serves 48df90eb72 (xian's dispatch 16:18, the READY code); card v12… |
-| 2026-10-29 16:25 PT | pa | pa-to-cxo-ppm-lead-cc-arch-exec-alpha-live-48df90eb72-b5-recap-pass-2199-pick-pass-2026-10-29.md | Alpha live on 48df90eb72 (the 67daf6c261 code). B5 recap shows the edited title… |
-| 2026-10-29 15:51 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-2205-long-confirm-form-stands-execute-route-sentence-and-the-settings-caveat-2026-10-29.md | #2205 fifth commit: the long confirm form stands (no format change), one senten… |
-| 2026-10-29 15:47 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2205-fifth-commit-in-two-words-for-you-the-confirms-form-and-the-execute-routes-refusal-sentence-2026-10-29.md | #2205: your two behaviours are built (fifth commit 3ac12313be); the Settings fi… |
+| 2026-10-30 07:12 PT | ppm | ppm-to-lead-pa-cc-cxo-arch-exec-held-builds-land-after-cxo-rules-on-2205-a3-a4-so-a-fix-promotion-stays-narrow-2026-10-30.md | Held builds (ledger+entry, 2042a, 2207, 2209, 2151): land after CXO rules on #2… |
+| 2026-10-30 07:05 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-end-routing-55-of-61-raw-quality-23-of-42-raw-19-rows-for-cxo-triage-2026-10-30.md | Row 2 END on e234776150: routing 55/61 (90.2%) raw, meets the line without tria… |
+| 2026-10-30 06:50 PT | ppm | ppm-to-pa-cc-cxo-lead-exec-arch-row-2-before-a3-a4-concur-reruns-only-if-2205-needs-a-new-build-2026-10-30.md | Row 2 before A3/A4: concur. It counts for #1386 only while alpha stays on e2347… |
+| 2026-10-30 06:48 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-canonical-run-starting-on-e234776150-please-hold-promotions-2026-10-30.md | Row 2 START: the clean canonical run on alpha e234776150 starts now (web-seed-1… |

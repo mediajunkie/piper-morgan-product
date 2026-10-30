@@ -5,7 +5,7 @@
 **STATE: LIVE.** Cron **`8a9e0874`** (`38 6,10,14,18,22 * * *`), re-armed at STOP 10-29 23:02 (replaced 18a259f1); expires about 11-05 23:02. Re-arm by 11-04 (normally at each STOP). **After any restart, run CronList at once.**
 
 ## Rollup
-v676, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v680, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## MVP gate (as of 23:01 10-29)
 - Open: #2205, #1386 (gh). Alpha and staging `e234776150` (third promotion, xian's dispatch 18:4x, carries #2205). Main CI 12/12 green.
@@ -18,12 +18,14 @@ v676, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - #2184 partner note: Comms's short note ending with CXO's sentence (xian 18:33, 18:43). xian sends from xian@ to the three 10-26 invitees (HOST's roster).
 - `docs/briefing/TEAM-IN-XIANS-WORDS.md` written and shared with all seats (21:39).
 
-## Waiting on xian (on v676)
+## Waiting on xian (on v680)
 - A3/A4 run (hot card).
 - Tell HOST the same day when the partner note goes (row 178).
 - Lead promotion allow line (row 167), Docs' Ongoing sort question (row 168), web-pat-test sign-in, the Citation Medium crosspost, and the older "for you, in this order" list.
 
+- **Rule-8 history (whenever xian takes it up):** HOST's briefing people list; issue #1509's title (an alpha tester's first name, rendered by the production map).
+
 ## Mine
 - Relay xian's rulings to owners at once; record PM rulings in decisions.log. Run `date` before every timestamp (two guesses caught today).
-- 10-30 Friday pass: first map diff in the weekly synthesis; `scripts/briefing-pointer-check.sh` over all 13 briefings, then nudge seats with gaps; re-verify row 166.
+- 10-30 Friday pass DONE (map diff on the rollup; briefing gaps mailed, due Mon 11-02, recheck then; row 166 closed). Next Friday 11-06: map diff again.
 - Rule 8: outside names stay out of everything I write here.

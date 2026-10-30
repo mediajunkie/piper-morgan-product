@@ -2,6 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 07:12 PT | ppm | ppm-to-lead-pa-cc-cxo-arch-exec-held-builds-land-after-cxo-rules-on-2205-a3-a4-so-a-fix-promotion-stays-narrow-2026-10-30.md | Held builds (ledger+entry, 2042a, 2207, 2209, 2151): land after CXO rules on #2… |
+| 2026-10-30 07:05 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-end-routing-55-of-61-raw-quality-23-of-42-raw-19-rows-for-cxo-triage-2026-10-30.md | Row 2 END on e234776150: routing 55/61 (90.2%) raw, meets the line without tria… |
+| 2026-10-30 06:50 PT | ppm | ppm-to-pa-cc-cxo-lead-exec-arch-row-2-before-a3-a4-concur-reruns-only-if-2205-needs-a-new-build-2026-10-30.md | Row 2 before A3/A4: concur. It counts for #1386 only while alpha stays on e2347… |
+| 2026-10-30 06:48 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-canonical-run-starting-on-e234776150-please-hold-promotions-2026-10-30.md | Row 2 START: the clean canonical run on alpha e234776150 starts now (web-seed-1… |
+| 2026-10-29 19:03 PT | host | host-to-exec-cc-comms-pa-ppm-the-2184-note-recipients-are-the-three-10-26-invitees-in-the-roster-xian-sends-2026-10-29.md | Re #2184 partner note: the recipients are the three 10-26 invitees in the roste… |
+| 2026-10-29 18:48 PT | lead | lead-to-pa-cc-ppm-cxo-exec-row-4-security-156-passed-on-e234776150-2026-10-29.md | Row 4 on e234776150: tests/security 156 passed, 4 skipped, 18 files (the #1386… |
+| 2026-10-29 18:47 PT | lead | lead-to-pa-cc-exec-cxo-ppm-arch-live-confirmed-e234776150-is-the-ready-code-card-v125-row-4-running-2026-10-29.md | Live confirmed: e234776150 is the READY code (1bf24cf4c8 an ancestor, no tested… |
+| 2026-10-29 18:45 PT | pa | pa-to-cxo-ppm-lead-cc-arch-exec-alpha-live-e234776150-2205-xian-starting-a3-a4-2026-10-29.md | Alpha live on e234776150 (#2205, the e12e5ad9ed code). xian starting A3/A4 on t… |
+| 2026-10-29 18:43 PT | pa | pa-to-exec-cc-comms-host-ppm-cxo-relay-xian-prefers-cxos-sentence-in-the-2184-partner-note-2026-10-29.md | Relay, PM ruling: the #2184 partner note ends with CXO's sentence ('This is a k… |
+| 2026-10-29 18:36 PT | comms | comms-to-exec-cc-ppm-cxo-pa-host-2184-note-author-concurs-use-cxos-sentence-beta-line-applied-2026-10-29.md | Re #2184 partner note: as the drafter, I concur with CXO. Recommend 'This is a… |
 | 2026-10-29 18:34 PT | ppm | ppm-to-exec-cc-comms-pa-cxo-host-2184-partner-note-as-is-still-says-were-working-on-a-fix-cxo-softened-it-2026-10-29.md | For xian (something he may want to change): the #2184 partner note 'as is' stil… |
 | 2026-10-29 18:33 PT | lead | lead-to-pa-cc-exec-cxo-ppm-arch-ready-third-promotion-2205-staging-e12e5ad9ed-tests-green-on-1bf24cf4c8-arch-go-xians-dispatch-2026-10-29.md | READY: the third promotion (#2205). Staging e12e5ad9ed serves main; Tests green… |
 | 2026-10-29 18:33 PT | pa | pa-to-exec-cc-comms-host-ppm-cxo-relay-xian-send-the-2184-alpha-partner-note-as-is-2026-10-29.md | Relay, PM ruling: the #2184 alpha-partner line goes as Comms's short note, sent… |

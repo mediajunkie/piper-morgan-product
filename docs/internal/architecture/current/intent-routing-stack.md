@@ -1901,6 +1901,23 @@ Full decision record: `docs/internal/architecture/adrs/adr-080-llm-decides-meani
    full run like any router input. Recorded 2026-10-11 after Lead and Arch both built a #1984 ruling on the
    opposite premise; the fact lived only in the function's docstring until this line.
 
+   **Catalog render order is an append-only ledger (#2195, Arch's ruling decisions.log 2026-10-29
+   19:39; Landed: 2026-10-30, code b9aeb1ab85 + 697160f68d, merged to main by Lead after PA's row 2 END).** The two sources above decide which ops exist; they no longer decide
+   the order. `derive_routing_grammar` passes its ops through `order_operations`
+   (`services/intent_service/router_catalog_order.py`) just before building the grammar: ops named in
+   `CATALOG_ORDER_LEDGER` render at their ledger slot whichever pass produced them (so an op that gains
+   a rail entry, such as `get_project_status`, keeps its slot), and an op the ledger does not name
+   renders after all ledger ops, in derivation order. The ledger's 72 names were generated once from
+   main's render on 2026-10-29 (rail ops in registration order, then registry-only ops), so the
+   rendered router request did not change: 616/616 corpus requests byte-identical
+   (`scripts/router_batch.py render --corpus`, cmp equal). Why: measured that day, a line's position in
+   the catalog is a routing variable on the served model (a pure reorder flipped the link_repo
+   sentinel ×6; a sort by name lost 18 rows of the full run). Rules: a new op is appended at the end;
+   no name moves or is removed without a rule-7 full run; a stale name is skipped.
+   `tests/unit/services/intent_service/test_router_catalog_order_2195.py` fails on a derived op missing
+   from the ledger (append it) or a ledger name with no op (stale), and pins that a rail entry for
+   `get_project_status` leaves the request byte-identical.
+
 **Enforcement**: that same test is the no-LLM ratchet — every registry canonical must be
 rail-registered or explicitly ledgered as off-rail-but-surface-handled; the ledger only
 shrinks; corpus expectations must name known actions. The LLM half (behavioral corpus,
