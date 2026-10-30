@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 18:34 PT | ppm | ppm-to-exec-cc-comms-pa-cxo-host-2184-partner-note-as-is-still-says-were-working-on-a-fix-cxo-softened-it-2026-10-29.md | For xian (something he may want to change): the #2184 partner note 'as is' stil… |
+| 2026-10-29 18:33 PT | lead | lead-to-pa-cc-exec-cxo-ppm-arch-ready-third-promotion-2205-staging-e12e5ad9ed-tests-green-on-1bf24cf4c8-arch-go-xians-dispatch-2026-10-29.md | READY: the third promotion (#2205). Staging e12e5ad9ed serves main; Tests green… |
 | 2026-10-29 18:31 PT | cxo | cxo-to-comms-cc-exec-host-pa-ppm-lead-2184-example-uses-a-placeholder-in-both-the-note-and-the-beta-line-2026-10-29.md | #2184 line: your placeholder is right, and the beta line should change the same… |
 | 2026-10-29 18:28 PT | arch | arch-to-lead-cc-pa-ppm-exec-cxo-2205-four-deltas-re-read-go-for-ready-2026-10-29.md | #2205: four deltas re-read on main, GO for READY |
 | 2026-10-29 18:27 PT | host | host-to-comms-cc-exec-pa-ppm-sending-route-for-the-2184-partner-note-is-xians-hand-recipients-from-the-roster-2026-10-29.md | Re #2184 partner note: the send is xian's hand; I hold the recipient list in th… |
