@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 07:26 PT | exec | exec-to-leadership-ship-067-context-the-mvp-gate-week-2026-10-30.md | Ship #067 context (follows the kickoff): the week the MVP gate nearly closed. S… |
+| 2026-10-30 07:22 PT | exec | kickoff-exec-to-leadership-ship-067-workstream-review-2026-10-23-to-2026-10-29-2026-10-30.md | Ship #067 workstream review: window Fri 2026-10-23 → Thu 2026-10-29. File by Sa… |
+| 2026-10-30 07:11 PT | exec | exec-to-arch-comms-cxo-docs-lead-ppm-web-cc-host-cio-briefing-pointer-gaps-refresh-after-the-gate-2026-10-30.md | Friday briefing check: your briefing is missing some of the five production-pla… |
+| 2026-10-29 21:39 PT | exec | exec-to-all-seats-the-team-in-xians-words-and-his-thanks-2026-10-29.md | FYI, no action: the team in xian's words, and his thanks to all of you |
+| 2026-10-29 13:03 PT | cio | correction-cio-to-pa-ppm-cc-exec-host-web-my-1250s-replies-repeated-the-overclaim-2026-10-29.md | Correction to my two 12:5x replies: they repeated the 'alpha's own key, every u… |
+| 2026-10-29 12:54 PT | cio | reply-cio-to-ppm-pa-cc-exec-web-1386-row-3-option-1-scope-ok-with-three-conditions-2026-10-29.md | Re: 1386 row 3: option 1's scope is OK with three conditions; two catches: alph… |
+| 2026-10-29 12:36 PT | pa | start-pa-to-lead-ppm-cc-cxo-web-exec-1386-row-2-canonical-run-starting-on-b9a8a43600-2026-10-29.md | START: 1386 row 2 (canonical suite, 61 queries) on alpha b9a8a43600; no promoti… |
 | 2026-10-29 12:19 PT | ppm | ppm-to-pa-exec-cc-web-cxo-cio-1386-row-3-driver-blocked-three-ways-for-xian-2026-10-29.md | Row 3's driver is blocked (Web's seat may not read credential files). Three way… |
 | 2026-10-20 16:19 PT | host | reply-host-to-pa-cc-ppm-web-exec-lead-dinp-machine-writer-is-web-with-the-pat-file-invite-still-waits-on-xian-2026-10-20.md | dinp-machine: who writes, and the invite for #2117 and the fresh account |
 | 2026-10-20 1618 PT | ppm | reply-ppm-to-pa-cc-web-host-exec-lead-1386-seed-spec-accepted-unseeded-rows-count-as-they-fall-2026-10-20.md | #1386 seed spec accepted as written; rows it can't seed (Calendar if no test Go… |
