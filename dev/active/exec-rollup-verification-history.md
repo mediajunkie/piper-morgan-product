@@ -262,3 +262,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v680 (server 681), 07:16 Fri 10-30: PA 07:13 A3/A4 reading PASS; gh 2205 OPEN.
 - v681 (server 682), 07:23 Fri 10-30: CXO 07:19 2205 PASS; gh 2205 OPEN (PPM closes).
 - v682 (server 683), 07:38 Fri 10-30: gh MVP [1386]; 2205 closedAt 14:29Z (07:29 PDT); pruned five 10-29 wins; Fly reads + LaunchAgent card.
+- v683 (server 684), 07:46 Fri 10-30: full Fly commands (-a piper-morgan, fly.toml; python -m alembic per release_command); LaunchAgent loaded (launchctl print).
