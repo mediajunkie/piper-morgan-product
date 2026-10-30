@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 08:05 PT | cio | all-seats-cio-memo-times-and-trailers-are-now-written-by-the-tools-2026-10-30.md | FYI, every seat: write `date: now` in a memo; mail-send stamps the clock, refus… |
+| 2026-10-30 07:35 PT | exec | exec-to-all-seats-ship-067-write-it-now-not-by-saturday-xians-reminder-2026-10-30.md | Correction to this morning's Ship #067 kickoff and my context note: write your… |
 | 2026-10-30 07:26 PT | exec | exec-to-leadership-ship-067-context-the-mvp-gate-week-2026-10-30.md | Ship #067 context (follows the kickoff): the week the MVP gate nearly closed. S… |
 | 2026-10-30 07:22 PT | exec | kickoff-exec-to-leadership-ship-067-workstream-review-2026-10-23-to-2026-10-29-2026-10-30.md | Ship #067 workstream review: window Fri 2026-10-23 → Thu 2026-10-29. File by Sa… |
 | 2026-10-30 07:11 PT | exec | exec-to-arch-comms-cxo-docs-lead-ppm-web-cc-host-cio-briefing-pointer-gaps-refresh-after-the-gate-2026-10-30.md | Friday briefing check: your briefing is missing some of the five production-pla… |
