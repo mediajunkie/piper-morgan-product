@@ -40,6 +40,11 @@ def _copy_run(tmp_path, push_line, dst_repo_digests=()):
     stub.write_text(
         "#!/bin/bash\n"
         f'echo "$@" >> "{log}"\n'
+        # The real `docker login --password-stdin` reads stdin to EOF. The stub must too:
+        # under the step's `set -euo pipefail`, `echo "$TOKEN" | docker login …` gets
+        # SIGPIPE (exit 141) if the stub exits before echo has written, which showed once
+        # on a CI runner (2026-10-30, run 41113728280) and never locally.
+        'if [ "$1" = "login" ]; then cat >/dev/null; fi\n'
         'if [ "$1" = "image" ] && [ "$2" = "inspect" ]; then\n'
         f'  if [ "${{@: -1}}" = "{SRC}" ]; then echo "{SRC}"; else printf \'%s\\n\' {dst_lines}; fi\n'
         "fi\n"
