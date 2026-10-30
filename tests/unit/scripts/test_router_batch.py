@@ -70,3 +70,28 @@ async def test_replay_answers_the_router_prompt_and_its_repair(tmp_path):
     assert await llm.complete(task_type="t", prompt=repair) == '{"x":1}'
     with pytest.raises(RuntimeError):
         await llm.complete(task_type="t", prompt="User message: 'something else'")
+
+
+def test_render_model_and_no_thinking_flags(tmp_path):
+    """--model renders another model id on the same tree (temperature as served
+    for that id); --no-thinking adds thinking=disabled. Harness only (Arch
+    2026-10-30 15:20 item 4); neither flag touches the served router."""
+    import json
+
+    out = tmp_path / "r.jsonl"
+    rb._render(
+        SimpleNamespace(
+            label="screen",
+            samples=1,
+            phrase=["show my todos"],
+            corpus=False,
+            out=str(out),
+            model="claude-opus-4-8",
+            no_thinking=True,
+        )
+    )
+    rec = json.loads(out.read_text().splitlines()[0])
+    assert rec["params"]["model"] == "claude-opus-4-8"
+    assert "temperature" not in rec["params"]  # opus-4-8 is in MODELS_WITHOUT_TEMPERATURE
+    assert rec["params"]["thinking"] == {"type": "disabled"}
+    assert rec["custom_id"] == "screen-0-1"

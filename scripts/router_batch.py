@@ -69,7 +69,8 @@ def _render(args) -> None:
     # --model overrides the configured router model for a screen of another
     # model on the same tree (the Haiku 5.5 screen, Arch 2026-10-30 14:54).
     # Harness only: the served router still resolves through config.py.
-    model_id = args.model or model.value
+    model_id = getattr(args, "model", None) or model.value
+    no_thinking = bool(getattr(args, "no_thinking", False))
     with open(args.out, "w") as f:
         for i, phrase in enumerate(args.phrase):
             prompt = build_routing_prompt(phrase, grammar)
@@ -78,7 +79,7 @@ def _render(args) -> None:
                     "model": resolve_model_alias(model_id),
                     "max_tokens": task["max_tokens"],
                     **_build_temperature_kwarg(model_id, task["temperature"]),
-                    **({"thinking": {"type": "disabled"}} if args.no_thinking else {}),
+                    **({"thinking": {"type": "disabled"}} if no_thinking else {}),
                     "system": _SYSTEM_PROMPT,
                     "messages": [{"role": "user", "content": prompt}],
                 }
