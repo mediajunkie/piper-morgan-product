@@ -193,9 +193,11 @@ async def handle_milestone_pick_turn(
     if title is None:
         # #2209 (Arch 20:29/20:55): no title matched. Code does not judge
         # whether this was a name attempt: the turn routes normally. A
-        # turn-local marker lets the two non-dispatch floor doors answer with
-        # the no-match line instead of the floor. A record that was already
-        # re-armed by that line sets no marker: the re-arm happens once.
+        # turn-local marker lets the two floor doors answer with the no-match
+        # line instead of the floor, unless the turn commits to a registered
+        # operation first (dropped at dispatch, Arch 2026-10-30 08:57). A record
+        # that was already re-armed by that line sets no marker: the re-arm
+        # happens once.
         if not payload.get(REARMED_FLAG):
             set_no_match_marker(intent_service, session_id, payload, user_id, message or "")
         return None
@@ -267,11 +269,14 @@ def set_no_match_marker(
     }
 
 
-def clear_no_match_marker(intent_service: Any, session_id: Optional[str]) -> None:
-    """#2209: drop this session's marker (turn start and turn end)."""
+def clear_no_match_marker(intent_service: Any, session_id: Optional[str]) -> bool:
+    """#2209: drop this session's marker (turn start, turn end, the GUIDANCE
+    head, and the dispatch commit points of Arch 2026-10-30 08:57). Returns
+    True when a marker was there to drop (the dispatch seams log it)."""
     slot = _marker_slot(intent_service)
     if slot is not None and session_id:
-        slot.pop(session_id, None)
+        return slot.pop(session_id, None) is not None
+    return False
 
 
 def no_match_line(titles: List[str], repository: Optional[str]) -> str:
@@ -285,8 +290,11 @@ def no_match_line(titles: List[str], repository: Optional[str]) -> str:
 
 
 def take_no_match_reply(intent_service: Any, session_id: Optional[str]) -> Optional[Dict[str, Any]]:
-    """#2209: consulted at the head of the two non-dispatch floor doors
-    (``_handle_floor_with_context``, ``_handle_unknown_intent``). Consumes the
+    """#2209: consulted at the head of the two floor doors
+    (``_handle_floor_with_context``, ``_handle_unknown_intent``). A turn that
+    committed to a registered operation already dropped the marker at its
+    dispatch seam (Arch 2026-10-30 08:57), so this fires only on a turn that
+    dispatched nothing. Consumes the
     marker on first use; with none, returns None and the door runs unchanged.
     With one: the no-match line from the stored titles (no read, no write) and
     the same titles re-armed once (marked so a second no-match sets no marker)."""
