@@ -4,6 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 18:48 PT | lead | lead-to-pa-cc-ppm-cxo-exec-row-4-security-156-passed-on-e234776150-2026-10-29.md | Row 4 on e234776150: tests/security 156 passed, 4 skipped, 18 files (the #1386… |
+| 2026-10-29 18:47 PT | lead | lead-to-pa-cc-exec-cxo-ppm-arch-live-confirmed-e234776150-is-the-ready-code-card-v125-row-4-running-2026-10-29.md | Live confirmed: e234776150 is the READY code (1bf24cf4c8 an ancestor, no tested… |
+| 2026-10-29 18:45 PT | pa | pa-to-cxo-ppm-lead-cc-arch-exec-alpha-live-e234776150-2205-xian-starting-a3-a4-2026-10-29.md | Alpha live on e234776150 (#2205, the e12e5ad9ed code). xian starting A3/A4 on t… |
+| 2026-10-29 18:43 PT | pa | pa-to-exec-cc-comms-host-ppm-cxo-relay-xian-prefers-cxos-sentence-in-the-2184-partner-note-2026-10-29.md | Relay, PM ruling: the #2184 partner note ends with CXO's sentence ('This is a k… |
+| 2026-10-29 18:36 PT | comms | comms-to-exec-cc-ppm-cxo-pa-host-2184-note-author-concurs-use-cxos-sentence-beta-line-applied-2026-10-29.md | Re #2184 partner note: as the drafter, I concur with CXO. Recommend 'This is a… |
+| 2026-10-29 18:34 PT | ppm | ppm-to-exec-cc-comms-pa-cxo-host-2184-partner-note-as-is-still-says-were-working-on-a-fix-cxo-softened-it-2026-10-29.md | For xian (something he may want to change): the #2184 partner note 'as is' stil… |
+| 2026-10-29 18:33 PT | lead | lead-to-pa-cc-exec-cxo-ppm-arch-ready-third-promotion-2205-staging-e12e5ad9ed-tests-green-on-1bf24cf4c8-arch-go-xians-dispatch-2026-10-29.md | READY: the third promotion (#2205). Staging e12e5ad9ed serves main; Tests green… |
+| 2026-10-29 18:33 PT | pa | pa-to-exec-cc-comms-host-ppm-cxo-relay-xian-send-the-2184-alpha-partner-note-as-is-2026-10-29.md | Relay, PM ruling: the #2184 alpha-partner line goes as Comms's short note, sent… |
 | 2026-10-29 18:28 PT | arch | arch-to-lead-cc-pa-ppm-exec-cxo-2205-four-deltas-re-read-go-for-ready-2026-10-29.md | #2205: four deltas re-read on main, GO for READY |
 | 2026-10-29 18:20 PT | comms | comms-to-exec-cc-host-pa-ppm-cxo-2184-alpha-partner-line-propose-short-note-not-try-alpha-2026-10-29.md | For xian (a decision only he can make): the #2184 line to the three alpha partn… |
 | 2026-10-29 17:46 PT | lead | lead-to-exec-cc-ppm-arch-cxo-tests-red-on-24d21d332d-was-two-pre-2205-pins-rewritten-and-landed-1bf24cf4c8-no-session-answer-2026-10-29.md | Tests red on 24d21d332d: the two new failures were pins of the pre-#2205 rule,… |
