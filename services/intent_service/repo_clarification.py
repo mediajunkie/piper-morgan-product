@@ -911,6 +911,32 @@ async def handle_repo_question_turn(
                 user_id=user_id,
                 intent_service=intent_service,
             )
+        stored_question = pending_offer.get("question")
+        if payload.get("persist_default") and stored_question:
+            # #2225 (Arch 2026-10-30 15:26): a held write waiting ONLY for its
+            # repository (#2205's ask — e.g. a drafted issue the user already
+            # said "yes" to) is not abandoned by prose that names no repository.
+            # Re-arm the same offer and re-ask with the stored question, the
+            # same move as the unresolved-name branch below. The guards above
+            # (a different issue, an imperative outside the family, a bare exit
+            # or decline) already returned None, so a clear command still routes.
+            rearmed = _rearm(intent_service, session_id, user_id, pending_offer)
+            copy = stored_question
+            if not rearmed:
+                copy += (
+                    " (I couldn't keep the question pending — please give me the "
+                    "full request again.)"
+                )
+            logger.info(
+                "repo_question_reasked_no_repo_named",
+                session_id=session_id,
+                rearmed=rearmed,
+            )
+            return {
+                "message": copy,
+                "intent_data": _pending_intent_data(payload),
+                "requires_clarification": True,
+            }
         return None  # not an answer → generic accept / off-intent flow
 
     if "/" in ref:
