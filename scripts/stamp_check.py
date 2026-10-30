@@ -5,12 +5,14 @@ xian, 2026-10-16 (Ship #065 week review, via Exec): "Yes, date-check seems sound
 guessed times in the week of 10-09, and every one had to be corrected. Writing the rule down (duty-cycle-tick
 v1.50) wasn't enough, so the tool checks instead. The clock is `America/Los_Angeles` now.
 
+  stamp_check.py --stamp-now PATH... replace a front-matter `date: now` with the clock (mail-send calls this first)
   stamp_check.py --mail PATH...    memos about to be sent (scripts/mail-send.sh calls this)
   stamp_check.py --log-staged      session-log headings in `git diff --cached` (check-branch.sh calls this)
 
 Mail mode looks only at memos that are new: a file whose exact content is already on origin/main (a move
 to read/, a triage of someone else's memo) is skipped. For each new memo's front-matter `date:`:
-  BLOCK  a time more than 5 minutes ahead of now, or an `HH:Mx` form more than 10 minutes from now
+  BLOCK  a time ahead of now by even a minute (since 10-30; it was 5), or an `HH:Mx` form more than
+         10 minutes from now
   WARN   an `HH:Mx` or `~HH:MM` form near now (v1.50 bans both; write the minute), a time more than
          30 minutes behind now (drafted earlier? say so), or a date-only stamp that isn't today
 `MAIL_STAMP_CHECK=warn` turns every BLOCK into a WARN, for a memo deliberately stamped another time.
@@ -20,6 +22,9 @@ one behind (a heading can fairly carry the time a wake began). It also reads tod
 attributions on added lines of BRIEFING-CURRENT-STATE.md (10-17: the briefing held 7 `HH:Mx` stamps, two
 of them CIO's, because it passed through neither mail-send nor a log heading), and today-dated lines added
 to decisions.log, both the leading stamp and any `HH:Mx` inside the line (10-19: "recorded by Exec 10:0x").
+Stamp-now mode (xian 10-30 via Exec, "make it easier to do such things without having to remember"): a memo
+may say `date: now` (or `date: now PT`), and every such file in one call gets the same clock reading, so the
+sent mirror and every recipient copy match. A time nobody types can't be a guess.
 Exit 0 = nothing blocking; 1 = a BLOCK (mail mode only). Owner: CIO. Review: 2026-12-08.
 """
 
@@ -31,7 +36,7 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 PT = ZoneInfo("America/Los_Angeles")
-AHEAD = timedelta(minutes=5)
+AHEAD = timedelta(0)  # 10-30: a legitimate stamp is never in the future (Exec's rec 3, xian's yes)
 BEHIND = timedelta(minutes=30)
 MX = re.compile(r"\b(\d{1,2}):(\d)[xX]\b")
 NEAR = timedelta(minutes=10)
@@ -99,6 +104,26 @@ def front_date(text: str):
     fm = text.split("---", 2)[1] if text.count("---") >= 2 else ""
     m = re.search(r"^date:[ \t]*(\S.*)$", fm, re.M)
     return m.group(1).strip().strip("\"'") if m else None
+
+
+NOW_LINE = re.compile(r"^(date:[ \t]*)[\"']?now(?:[ \t]+PT)?[\"']?[ \t]*$", re.M | re.I)
+
+
+def stamp_now(paths, now) -> int:
+    """Write the clock into every front-matter `date: now`. One reading for all files, so copies match."""
+    for p in paths:
+        if not os.path.isfile(p):
+            continue
+        text = open(p, encoding="utf-8").read()
+        if not text.startswith("---") or text.count("---") < 2:
+            continue
+        _, fm, rest = text.split("---", 2)
+        new_fm, n = NOW_LINE.subn(lambda m: f"{m.group(1)}{now:%Y-%m-%d %H:%M} PT", fm, count=1)
+        if n:
+            with open(p, "w", encoding="utf-8") as f:
+                f.write(f"---{new_fm}---{rest}")
+            print(f"stamp-now: {p}: date: {now:%Y-%m-%d %H:%M} PT", file=sys.stderr)
+    return 0
 
 
 def mail(paths, now) -> int:
@@ -178,6 +203,8 @@ def briefing_stamps(line: str, today: str):
 
 def main(argv) -> int:
     now = datetime.now(PT).replace(second=0, microsecond=0)
+    if argv[:1] == ["--stamp-now"]:
+        return stamp_now(argv[1:], now)
     if argv[:1] == ["--mail"]:
         return mail(argv[1:], now)
     if argv == ["--log-staged"]:

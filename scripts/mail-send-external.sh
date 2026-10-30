@@ -39,6 +39,7 @@ git -C "$DEST_REPO" rev-parse --git-dir >/dev/null 2>&1 || { echo "mail-send-ext
 grep -q '^reply-to:' "$MEMO" || { echo "mail-send-external: ⛔ $MEMO has no reply-to: line" >&2; exit 1; }
 
 set +e
+python3 "$REPO/scripts/stamp_check.py" --stamp-now "$MEMO"  # `date: now` becomes the clock (10-30); copy cc's after
 python3 "$REPO/scripts/stamp_check.py" --mail "$MEMO"
 rc=$?
 set -e
@@ -54,6 +55,7 @@ python3 "$REPO/scripts/mailbox_bearer_lint.py" --files "$MEMO" >&2 || {
   exit 1
 }
 
+TRAILERS=$("$REPO/scripts/session_trailers.sh" || true)  # derived attribution (10-30); warns, never guesses
 IDX=$(mktemp "${TMPDIR:-/tmp}/mail-send-external.XXXXXX")
 trap 'rm -f "${IDX:?}"' EXIT
 BLOB=$(git -C "$DEST_REPO" hash-object -w "$MEMO")
@@ -64,7 +66,7 @@ for i in 1 2 3; do
   GIT_INDEX_FILE=$IDX git -C "$DEST_REPO" update-index --add --cacheinfo "100644,${BLOB},${DEST_DIR}/${NAME}"
   TREE=$(GIT_INDEX_FILE=$IDX git -C "$DEST_REPO" write-tree)
   [ -n "$TREE" ] && [ -n "$PARENT" ] || { echo "mail-send-external: ⛔ empty tree or parent hash; nothing pushed" >&2; exit 1; }
-  COMMIT=$(git -C "$DEST_REPO" commit-tree "$TREE" -p "$PARENT" -m "$MSG")
+  COMMIT=$(git -C "$DEST_REPO" commit-tree "$TREE" -p "$PARENT" -m "$MSG" ${TRAILERS:+-m "$TRAILERS"})
   if git -C "$DEST_REPO" push -q origin "${COMMIT}:refs/heads/main" 2>/dev/null; then
     git -C "$DEST_REPO" fetch -q origin main
     if [ "$(git -C "$DEST_REPO" rev-parse "origin/main:${DEST_DIR}/${NAME}" 2>/dev/null)" = "$BLOB" ]; then
