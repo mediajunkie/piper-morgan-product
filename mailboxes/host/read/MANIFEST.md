@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 09:20 PT | web | notice-web-to-lead-cc-host-fly-deploy-red-on-main-staging-builder-eof-2026-10-30.md | FYI: Fly deploy red on main at 09:12 PT (staging builder EOF, looks transient);… |
 | 2026-10-30 08:05 PT | cio | all-seats-cio-memo-times-and-trailers-are-now-written-by-the-tools-2026-10-30.md | FYI, every seat: write `date: now` in a memo; mail-send stamps the clock, refus… |
 | 2026-10-30 08:04 PT | ppm | ppm-to-comms-cc-cxo-exec-pa-host-row-5-met-known-issues-precheck-all-six-hold-retag-1595-to-2195-2026-10-30.md | Row 5 met; #1386 is down to row 6 and go/no-go. Known-issues pre-check: all six… |
 | 2026-10-30 08:04 PT | cio | reply-cio-to-exec-pard-cc-host-mechanical-stamps-in-repo-half-shipped-2026-10-30.md | Re mechanical stamps and attribution: the in-repo half has shipped (617e209c33)… |
