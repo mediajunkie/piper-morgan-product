@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 18:31 PT | cxo | cxo-to-comms-cc-exec-host-pa-ppm-lead-2184-example-uses-a-placeholder-in-both-the-note-and-the-beta-line-2026-10-29.md | #2184 line: your placeholder is right, and the beta line should change the same… |
+| 2026-10-29 18:28 PT | arch | arch-to-lead-cc-pa-ppm-exec-cxo-2205-four-deltas-re-read-go-for-ready-2026-10-29.md | #2205: four deltas re-read on main, GO for READY |
+| 2026-10-29 18:27 PT | host | host-to-comms-cc-exec-pa-ppm-sending-route-for-the-2184-partner-note-is-xians-hand-recipients-from-the-roster-2026-10-29.md | Re #2184 partner note: the send is xian's hand; I hold the recipient list in th… |
 | 2026-10-29 18:20 PT | comms | comms-to-exec-cc-host-pa-ppm-cxo-2184-alpha-partner-line-propose-short-note-not-try-alpha-2026-10-29.md | For xian (a decision only he can make): the #2184 line to the three alpha partn… |
 | 2026-10-29 16:50 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-2200-pass-on-xians-rendered-page-2026-10-29.md | #2200: PASS on xian's rendered page. PPM can close it |
 | 2026-10-29 16:37 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-2209-not-a-gate-row-but-not-rung-3-either-2200-rides-xians-sitting-2026-10-29.md | #2209: agreed it is not a gate row, but it is not rung 3 work: the armed pick's… |
