@@ -73,6 +73,22 @@ def _record_serving(provider_value: str, model: str) -> None:
         pass
 
 
+def _first_text_block(response: Any) -> str:
+    """Text of the FIRST content block whose `type == "text"` (Arch 10-30 15:20 item 3).
+
+    A reply from an extended-thinking model can lead with a thinking block, so
+    `content[0].text` is a latent fault. With no text block at all (thinking
+    only, or empty content) this RAISES, never returns "": an empty router reply
+    must fail loudly. The RuntimeError lands in `_complete_raw`'s provider-failure
+    path like any other provider error. Text-first replies return the same string
+    as before.
+    """
+    for block in getattr(response, "content", None) or []:
+        if getattr(block, "type", None) == "text":
+            return block.text
+    raise RuntimeError("Anthropic reply contained no text block")
+
+
 class AllProvidersFailed(RuntimeError):
     """Every attempted LLM provider (primary + fallbacks) failed, and #1809's
     refusal carve-out did not apply (a refusal is `LLMKeyRequiredError`,
@@ -621,7 +637,7 @@ class LLMClient:
         completion_tokens = (
             response.usage.output_tokens
             if hasattr(response, "usage")
-            else len(response.content[0].text) // 4
+            else len(_first_text_block(response)) // 4
         )
 
         # Log usage - non-blocking
@@ -645,7 +661,7 @@ class LLMClient:
         except Exception as e:
             logger.warning(f"Failed to log usage: {e}")
 
-        return response.content[0].text
+        return _first_text_block(response)
 
     async def _openai_complete(
         self,
