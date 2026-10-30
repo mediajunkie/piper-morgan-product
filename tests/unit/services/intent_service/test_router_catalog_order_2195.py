@@ -107,29 +107,21 @@ class TestCatalogOrderLedger2195:
         missing, stale = ledger_drift(derive_routing_grammar().names())
         assert (missing, stale) == ([], []), _drift_message(missing, stale)
 
-    def test_rail_entry_for_registry_only_op_keeps_its_slot(self, monkeypatch):
-        """(c) get_project_status promoted through the real read_floor_2 adapter
-        factory (monkeypatched membership, never committed) keeps its ledger slot:
-        the rendered ORDER of catalog names is unchanged. Measured 2026-10-29: the
-        whole request is byte-identical too, so it is pinned."""
+    def test_get_project_status_entry_is_rail_at_its_ledger_slot(self):
+        """(c) get_project_status has its READ ``WorkflowEntry`` (read_floor_2,
+        #2195, 2026-10-29) and renders as ``rail`` at the same ledger slot it held
+        as a registry-only op. The entry was measured byte-identical to the
+        ledger-only render (616/616 corpus requests, cmp equal) before landing;
+        (a) above keeps the order pinned and (c2) below keeps every remaining
+        registry-only op's promotion byte-identical."""
         from services.intent_service import workflow_entries as we
 
         op = "get_project_status"
+        assert we._READ_FLOOR_2_MEMBERS[op] == "STATUS"
         grammar = derive_routing_grammar()
-        assert {o.name: o.source for o in grammar.operations}[op] == "action_registry"
-        before = _rendered_request()
-
-        monkeypatch.setattr(we, "_READ_FLOOR_2_MEMBERS", {op: "STATUS"})
-        entry = we._read_floor_2_entries()[op]
-        try:
-            register_workflow(op, entry)
-            promoted = derive_routing_grammar()
-            assert {o.name: o.source for o in promoted.operations}[op] == "rail"
-            after = _rendered_request()
-        finally:
-            WORKFLOW_REGISTRY.pop(op, None)
-        assert _catalog_names(after[1]) == _catalog_names(before[1])
-        assert after == before
+        assert {o.name: o.source for o in grammar.operations}[op] == "rail"
+        names = _catalog_names(build_routing_prompt(PHRASE, grammar))
+        assert names.index(op) == CATALOG_ORDER_LEDGER.index(op)
 
     def test_every_registry_only_op_promotes_without_moving_a_line(self):
         """(c), registry-wide: a rail entry carrying each registry-only op's own

@@ -2047,6 +2047,30 @@ _READ_FLOOR_2_MEMBERS: dict[str, str] = {
     "check_completion_status": "STATUS",
     "write_stakeholder_update": "QUERY",
     "get_identity": "IDENTITY",
+    # `get_project_status` (STATUS, GET) — added 2026-10-29, issue 2195 (Arch,
+    # comment 6501869140: "Register a READ WorkflowEntry ... It then flips with
+    # its category group under the per-category gate"). Same STATUS category
+    # as check_completion_status above; registry disposition stays FLOOR.
+    # Membership checks, one line each with the grep run:
+    #   - persists nothing: `git grep -n get_project_status -- services/`, every
+    #     hit read — registry rows (action_registry.py), topic label
+    #     (orchestrator.py), prompt example (prompts.py), pre_classifier emits
+    #     and sibling filters, comments in intent_service.py; the one handler
+    #     call (slack/webhook_router.py) is the Slack surface's canonical
+    #     _handle_status_query, not this chat floor path. No save/repository write.
+    #   - floor path read-only: `grep -n 'elif category in ("STATUS", "PRIORITY")'
+    #     services/intent_service/context_assembler.py` → gather_context's STATUS
+    #     branch calls _gather_status_priority_context (reads + TTL caches only,
+    #     the same branch check_completion_status already uses); and
+    #     `grep -n "def _handle_floor_with_context" services/intent/intent_service.py`
+    #     writes only the in-process ConversationContext turn/provenance sidecar
+    #     (every floor turn does this; not a domain write).
+    #   - surface-1 paths today (unchanged by this entry): `grep -n
+    #     'STATUS_PATTERNS\|MILESTONE_STATUS_INLINE_PATTERNS'
+    #     services/intent_service/pre_classifier.py` → STATUS_PATTERNS (4
+    #     literals: current work, project overview, next milestone, status
+    #     report) and the inline MILESTONE_STATUS_INLINE_PATTERNS (3 literals).
+    "get_project_status": "STATUS",
 }
 
 
