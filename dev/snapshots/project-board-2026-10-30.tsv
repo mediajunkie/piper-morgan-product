@@ -2013,3 +2013,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2216	OPEN	Production		Status floor says 'not configured' when the repo auto-pick could not run (failed source shown as absence; #2151 residual)	UX		
 2217	OPEN	Production		GitHub sub-reads skipped under a DB failure render nothing instead of 'could not check' (#2151 residual)	UX,architecture		
 2218	OPEN	Production		Hosted MCP profile serves PIPER.md fallback projects over a failed projects read (#2151 residual; wrong-person data)	UX,architecture		
+2219	OPEN	Production		Todo replies list the same item over and over, call todos 'reminders', and 'show my todos' doesn't show them	UX		
+2220	OPEN	Production		'Create issues from this meeting's action items' asks which repository, but there are no action items to create	UX		
+2221	OPEN	Production		Revisit the 12 waived canonical rows from #1386 row 2 after the 7 standing rows are fixed: make each pass on its own, without a waiver			

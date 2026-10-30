@@ -341,6 +341,14 @@ Request additional detail for:
 
 ## Product Artifacts
 
+**Production plan (PPM-owned since 10-23; read these before placing a Production issue):**
+- **The sprint plan**, `docs/internal/planning/production-sprint-proposal-2026-10-23.md`. Every open Production issue has a row in one sprint: PUB, H, D, C, V, E, T, Doc, Dist or Q. Its Total line must match `gh issue list --milestone Production`.
+- **The production map**, `docs/internal/planning/production-map.html`, published at https://claude.ai/artifact/63oejcubP3zEj617nFAN68. To rebuild it, run `./scripts/snapshot-project-board.sh`, then `python3 scripts/generate-production-map.py` (it should report 0 unplanned), then publish. A weekly since-last diff runs on Fridays (first: `dev/active/production-weekly-diff-2026-10-30.md`).
+- **`docs/internal/product/promises.yaml`**, ratified 10-25. These are the 1.0 promises, and their `promise:`, `journey:` and `seam:` labels drive the map's grid.
+- **The Readiness lane** (ruling 7, owned by Exec). It holds the Terms-backed items that gate public beta, with #2062's children: **#2157** (backups, the restore drill and its five proofs, master-key custody, the HA decision) and #2158 (deletion). The map shows it as its own row.
+- **ESSENCE v1.1**, `docs/internal/architecture/ESSENCE.md`, ratified by xian 10-25. It's the product's commitments, and a milestone or PDR call that would cut against one goes to Exec as xian's call.
+
+
 **Core Documents**:
 - Product Decision Records (PDRs)
 - Roadmap versions
