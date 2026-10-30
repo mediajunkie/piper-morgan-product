@@ -266,3 +266,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v684 (server 685), 07:49 Fri 10-30: PA 07:38 row 4 reads on #1386 (comment 6525413406); CIO 07:39 + Pard 07:44 LaunchAgent ask.
 - v685 (server 686), 08:09 Fri 10-30: PPM 08:04 row 5 met; CIO 08:05 all-seats stamps.
 - v686 (server 687), 10:35 Fri 10-30: Arch 09:58 promotion condition cleared (7 landings validated); Fly-reads card retired (xian ran them).
+- v687 (server 688), 11:14 Fri 10-30: Ship #067 week review published (4Le3ZyacNXUqo19SQh5GpT).

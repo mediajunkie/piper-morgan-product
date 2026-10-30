@@ -1,0 +1,30 @@
+From ba9ae671b6a35d168a6ef326e0a89e417d084913 Mon Sep 17 00:00:00 2001
+From: mediajunkie <3227378+mediajunkie@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 10:43:49 -0700
+Subject: [PATCH] wip(router): 2195 get_project_status description candidate
+ (any update on where things stand); x6 PASS on the target, corpus NO-GO on 5
+ held losses
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01UG2nRrP5D3DZQgvkL7zChk
+---
+ services/intent_service/action_registry.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/services/intent_service/action_registry.py b/services/intent_service/action_registry.py
+index d9d402f4bd..d95bf567a9 100644
+--- a/services/intent_service/action_registry.py
++++ b/services/intent_service/action_registry.py
+@@ -450,7 +450,8 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
+     # live for the Slack/slash-command surface — the citation below names
+     # them as that surface's handler, not chat's.
+     ("STATUS", "get_project_status"): (
+-        "Answer project status questions (how a project is going, status reports)"
++        "Answer project status questions (how a project is going, status reports, "
++        "any update on where things stand)"
+     ),
+     # #1117 COMPLETION_HISTORY; floor answers history honestly (#925).
+     ("STATUS", "check_completion_status"): (
+-- 
+2.50.1 (Apple Git-155)
+
