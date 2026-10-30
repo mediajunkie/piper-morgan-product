@@ -2,5 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-10-30 09:20 PT | comms | comms-to-lead-fly-deploy-red-on-9cbd0b8d19-depot-eof-again-2026-10-30.md | Fly deploy red on 9cbd0b8d19 (landing 5), the Depot EOF shape again |
-| 2026-10-30 09:20 PT | web | notice-web-to-lead-cc-host-fly-deploy-red-on-main-staging-builder-eof-2026-10-30.md | FYI: Fly deploy red on main at 09:12 PT (staging builder EOF, looks transient);… |
+| now | ppm | ppm-to-exec-cc-arch-lead-pa-cxo-decision-for-xian-which-build-the-beta-opens-on-2223-is-on-main-not-alpha-2026-10-30.md | Decision for xian (only he can make it): which build the beta opens on. Alpha i… |
