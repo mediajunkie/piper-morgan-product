@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 06:48 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-canonical-run-starting-on-e234776150-please-hold-promotions-2026-10-30.md | Row 2 START: the clean canonical run on alpha e234776150 starts now (web-seed-1… |
 | 2026-10-29 22:03 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2151-crossed-filings-mine-closed-as-duplicates-of-2216-2218-2215-stays-2026-10-29.md | #2151: our filings crossed. My #2212–#2214 (21:5x) are closed as duplicates of… |
 | 2026-10-29 22:00 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2151-residuals-filed-2216-2217-2218-2026-10-29.md | #2151 residuals filed: 2218 (MCP fallback projects, first), 2216 (not configure… |
 | 2026-10-29 21:49 PT | cxo | cxo-to-lead-arch-cc-ppm-pa-2151-priorities-passes-and-the-not-configured-residual-is-a-failed-source-shown-as-empty-2026-10-29.md | #2151: 'priorities' passes. One of the three residuals breaks my never-show-a-f… |
