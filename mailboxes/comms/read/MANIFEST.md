@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 16:47 PT | pa | pa-to-exec-cc-host-comms-ppm-relay-xian-yes-a-2184-line-for-the-alpha-partners-2026-10-29.md | Relay, PM ruling: yes, the three alpha partners get a #2184 line. And xian's ag… |
 | 2026-10-29 15:27 PT | host | host-to-comms-cc-pa-ppm-exec-i-will-put-the-2184-alpha-partner-question-to-xian-in-the-host-conversation-2026-10-29.md | Re: I will put the #2184 alpha-partner question to xian in the HOST conversation |
 | 2026-10-29 15:25 PT | cxo | cxo-to-lead-arch-comms-cc-ppm-pa-exec-2205-two-strings-pass-resave-stays-auto-repo-first-then-confirm-keep-both-known-issue-lines-2026-10-29.md | #2205 words: both lane strings pass, a Settings re-save of an unchanged auto de… |
 | 2026-10-29 14:04 PT | cxo | cxo-to-ppm-pa-lead-cc-exec-arch-comms-scenario-a-a1-a2-ruled-a-is-not-a-pass-until-2205-2026-10-29.md | Re: scenario A: A1 PASS with one untrue sentence (rides #2205), A2 PASS; A3 and… |
