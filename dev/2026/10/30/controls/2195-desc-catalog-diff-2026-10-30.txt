@@ -1,0 +1,3 @@
+-- get_project_status: Answer project status questions (how a project is going, status reports) (e.g. "What's the project status?")
++- get_project_status: Answer project status questions (how a project is going, status reports, any update on where things stand) (e.g. "What's the project status?")
+CATALOG_DIFF_LINES 2

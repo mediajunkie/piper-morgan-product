@@ -476,7 +476,7 @@ FORCE: Dict[str, Force] = {
         one("db"), "how much do you trust me?", floor_inband=("Trust relationship stage: unknown",)
     ),
     "get_memory": Force(
-        one("db"), "do you remember what we discussed?", floor_checks=("conversation history",)
+        one("db"), "do you remember what we discussed?", floor_checks=("past conversations",)
     ),
     "pull_insights": Force(
         one("db"), "what have you learned about me?", floor_checks=("insights",)
@@ -658,6 +658,7 @@ CAUSE_TAGS = {
     "ENV-REPO": "a host-wide PIPER_DEFAULT_REPO resolves the repo",
     "TODO-CAP": "the 100-row todo window",
     "FLOOR-ABSENT": "a floor gather returns {}/None on error, the floor prompt says nothing",
+    "NOT-PERFORMED": "the product never performs the read the row asks about (fourth state)",
     "NOTION-SEARCH": "NotionMCPAdapter.search_notion returns [] on any exception",
     # row-level
     "CAL-SWALLOW": (
@@ -682,9 +683,9 @@ CAUSE_TAGS = {
 
 KNOWN_RED: Dict[str, str] = {
     # WRITE entries: a raise still falls through (the #2151 step-3 fix covers READ entries)
-    # floor adapters: the failed read reaches the floor prompt as nothing at all
-    "get_memory": "FLOOR-ABSENT",
-    "check_completion_status": "FLOOR-ABSENT",
+    # floor adapters: get_memory left on 2026-10-30 (#2215: its row expected a label no
+    # read registers; on the registered "past conversations" the prompt names the failure).
+    # check_completion_status moved to NOT_PERFORMED the same day (#2215, part 2).
     # GitHub
     "close_issue": "GH-NONSTRICT",
     "reopen_issue": "GH-NONSTRICT",
@@ -699,7 +700,21 @@ KNOWN_RED: Dict[str, str] = {
     # Piper's own store
     "explain_suggestion": "SWALLOW-EMPTY",
 }
-KNOWN_RED_CEILING = 11
+KNOWN_RED_CEILING = 9
+
+# #2215 part 2 (2026-10-30; Arch 10-29 21:46, the four-state rule's fourth state): rows whose
+# forced read is NOT PERFORMED by the product at all, so no failure can be stated and the row
+# can never pass. They stay in FORCE (every rail entry is forced: the coverage pin below) and
+# stay red, but they are not silent failures (KNOWN_RED): the honest fix is a product one,
+# tracked on the read-claim inventory's ``not_performed`` state, not a stated-failure seam.
+# Shrink-only, like KNOWN_RED. A row leaves when the product performs the read (it then either
+# passes or joins KNOWN_RED with a cause tag) or the rail entry is deleted.
+NOT_PERFORMED: Dict[str, str] = {
+    # STATUS gathers pending todos but no completed todos and no closed issues; a
+    # completion-history ask reaches the floor without the data it asks about.
+    "check_completion_status": "NOT-PERFORMED",
+}
+NOT_PERFORMED_CEILING = 1
 
 
 # ─── Harness ────────────────────────────────────────────────────────────────
@@ -933,6 +948,19 @@ def test_known_red_ceiling_only_falls():
         assert tag in CAUSE_TAGS, f"{entry_id}: unknown cause tag {tag!r}"
 
 
+def test_not_performed_ceiling_only_falls():
+    """#2215 part 2: the fourth state has its own shrink-only list; a row is forced (coverage),
+    red (nothing can be stated), and not a silent failure (never in KNOWN_RED)."""
+    assert len(NOT_PERFORMED) <= NOT_PERFORMED_CEILING, (
+        f"NOT_PERFORMED has {len(NOT_PERFORMED)} rows, over the ceiling {NOT_PERFORMED_CEILING}: "
+        "a read the product does not perform is a product gap to fix, not a row to add."
+    )
+    assert set(NOT_PERFORMED) <= set(FORCE), "NOT_PERFORMED rows must be forced rows"
+    assert not (set(NOT_PERFORMED) & set(KNOWN_RED)), "a row is not performed OR silently failed"
+    assert set(NOT_PERFORMED.values()) == {"NOT-PERFORMED"}
+    assert "NOT-PERFORMED" in CAUSE_TAGS
+
+
 @pytest.mark.parametrize("entry_id", sorted(FORCE))
 async def test_forced_read_failure_is_not_said_as_verified(entry_id):
     outcomes = await force_entry(entry_id)
@@ -947,6 +975,11 @@ async def test_forced_read_failure_is_not_said_as_verified(entry_id):
         assert (
             not passed
         ), f"fixed: remove {entry_id} from KNOWN_RED and lower KNOWN_RED_CEILING. {detail}"
+    elif entry_id in NOT_PERFORMED:
+        assert not passed, (
+            f"{entry_id}: the product now performs this read; move it out of NOT_PERFORMED "
+            f"(to green, or to KNOWN_RED with a cause tag) and lower NOT_PERFORMED_CEILING. {detail}"
+        )
     else:
         assert passed, f"{entry_id}: a forced read failure was not said as failed. {detail}"
 

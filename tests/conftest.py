@@ -556,6 +556,23 @@ def client_with_intent():
             conversation_handler=ConversationHandler(),
         )
 
+    # #2210: templates are set only by the lifespan's startup phase (web/startup.py,
+    # "Phase 4: Web Components"), and this client never enters the lifespan. In a whole
+    # suite some earlier test enters it on the shared app and later tests inherit the
+    # templates by order; alone, a template route answered 500 "Jinja2Templates not
+    # initialized in app state". Set them here the way startup does, so the fixture does
+    # not depend on test order.
+    if getattr(app.state, "templates", None) is None:
+        from pathlib import Path
+
+        from fastapi.templating import Jinja2Templates
+
+        templates = Jinja2Templates(
+            directory=str(Path(__file__).resolve().parent.parent / "templates")
+        )
+        templates.env.globals["asset_v"] = "dev"
+        app.state.templates = templates
+
     client = TestClient(app)
     return client
 
