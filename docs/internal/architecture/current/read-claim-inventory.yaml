@@ -218,16 +218,19 @@ surfaces:
   effect: READ
   reads: floor STATUS context (the status/priority gather, covering milestones, high-priority issues, pending todos and GitHub status)
   handler: services/intent/intent_service.py:IntentService._handle_floor_with_context
-  states: {verified: distinct, failed: conflated:verified, narrowed: distinct, not_performed: conflated:verified, substituted: conflated:verified}
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: conflated:verified, substituted: conflated:verified}
   verdict: red
   notes: >-
-    Added 2026-10-29 with the entry (2195). STATUS routes to _gather_status_priority_context,
-    the same gather analyze_blockers and write_stakeholder_update ride. A failed milestones,
-    blocked-items or high-priority-issues read returns {} / None (FLOOR-ABSENT) beside
-    "- GitHub: connected", so a status question can be answered as nothing pending; a failed
-    GitHub status renders "GitHub: not connected" (ISS-STATUS); the repo can be ENV-REPO.
-    Dispatch-inert today (0.72 under the 0.8 live floor; the pre-classifier literal still
-    claims the phrase). unverified: served wording.
+    Added 2026-10-29 with the entry (2195); aligned 2026-10-30 with write_stakeholder_update
+    after the 2151 status-gather landing. STATUS routes to _gather_status_priority_context,
+    the same gather analyze_blockers and write_stakeholder_update ride. Since 2026-10-29 a
+    failed milestones, blocked-items, recent-activity, high-priority-issues, projects or
+    priorities read is stated in the prompt (FLOOR-ABSENT, fixed), and a failed default-repo
+    read under the open issues arms open_issues_source_failed instead of "not configured".
+    Still red: a read that was not performed renders nothing, so a status question can be
+    answered as nothing pending with no caveat, and with no project rows the projects can
+    be PIPER.md's (substituted). Dispatch-inert today (0.72 under the 0.8 live floor; the
+    pre-classifier literal still claims the phrase). unverified: served wording.
 
 - id: write_stakeholder_update
   kind: rail
