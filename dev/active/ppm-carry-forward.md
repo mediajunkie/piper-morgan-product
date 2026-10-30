@@ -528,3 +528,10 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **#1386 rows:** row 4's tests/security box green on `e234776150` (ticked); alembic-head and `ENCRYPTION_MASTER_KEY` boxes open, owner unnamed, confirm at row 5. Row 2 (PA) once on `e234776150` after A3/A4. Row 5 is mine: no P0/P1 since 10-26, CI green (12/12 at 21:33). Row 6: beta letter final draft (Comms, after HOST and xian, 10-30 at the earliest). Then xian's go/no-go.
 - **Production 224 open**, plan matches (0 unplanned). #2210 and #2211 placed in Production, Q, 21:36; map v28. Strike #2184's lines (partner note record, beta known-issues) when it closes served.
 - **Carried:** xian's call on the 5 set-aside closed issues (#1647, #1662, #2081, #2083, #2146); the #1706 Sprint move (xian via Exec); Friday's since-last diff; CXO's spot-check.
+
+## 2026-10-30 06:33 START (interim)
+
+- Friday since-last diff done (`dev/active/production-weekly-diff-2026-10-30.md`); the generator no longer counts closed-in-both issues as scope. Next weekly diff: Fri 11-06 against `project-board-2026-10-30.tsv`.
+- #2216-#2218 replace #2212-#2214 in H. Production 228.
+- Today is the gate standard's hard stop (10-30); gate 2 open (#2205, #1386). Dates are xian's.
+- Otherwise as at 10-29 STOP.
