@@ -63,7 +63,7 @@ async def test_the_anthropic_leg_sends_the_blocks():
     def create(**kw):
         sent.update(kw)
         return SimpleNamespace(
-            content=[SimpleNamespace(text="{}")],
+            content=[SimpleNamespace(type="text", text="{}")],
             usage=SimpleNamespace(
                 input_tokens=10,
                 output_tokens=2,

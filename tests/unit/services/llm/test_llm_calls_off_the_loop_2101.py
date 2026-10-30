@@ -39,7 +39,7 @@ class _Recorder:
 def _anthropic_fake():
     response = SimpleNamespace(
         usage=SimpleNamespace(input_tokens=3, output_tokens=2),
-        content=[SimpleNamespace(text="hi")],
+        content=[SimpleNamespace(type="text", text="hi")],
     )
     rec = _Recorder(response)
     client = SimpleNamespace(messages=SimpleNamespace(create=rec))

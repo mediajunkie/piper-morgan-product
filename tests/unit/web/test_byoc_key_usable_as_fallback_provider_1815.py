@@ -95,9 +95,9 @@ OPENAI_OUTAGE = "openai upstream returned 503 service_unavailable"
 
 
 class _FakeAnthropicResponse:
-    """The shape `_anthropic_complete` actually reads: `.content[0].text` and `.usage`."""
+    """The shape `_anthropic_complete` actually reads: the first text block and `.usage`."""
 
-    content = [SimpleNamespace(text="Here's what I can help with.")]
+    content = [SimpleNamespace(type="text", text="Here's what I can help with.")]
     usage = SimpleNamespace(input_tokens=11, output_tokens=7)
 
 

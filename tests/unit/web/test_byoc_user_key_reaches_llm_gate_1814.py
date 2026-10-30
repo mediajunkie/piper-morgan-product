@@ -80,9 +80,9 @@ _PROVIDER_ENV_VARS = (
 
 
 class _FakeAnthropicResponse:
-    """Shape `_anthropic_complete` actually reads: `.content[0].text` and `.usage`."""
+    """Shape `_anthropic_complete` actually reads: the first text block and `.usage`."""
 
-    content = [SimpleNamespace(text="Here's what I can help with.")]
+    content = [SimpleNamespace(type="text", text="Here's what I can help with.")]
     usage = SimpleNamespace(input_tokens=11, output_tokens=7)
 
 
