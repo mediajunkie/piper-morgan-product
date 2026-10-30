@@ -1,0 +1,29 @@
+From 9dbace1b757d919c2ace0ef42006379d76765568 Mon Sep 17 00:00:00 2001
+From: mediajunkie <3227378+mediajunkie@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 15:50:06 -0700
+Subject: [PATCH] 2195 (a): get_project_status example becomes a
+ milestone-status paraphrase (Arch 15:56; rule-7 candidate, not for main until
+ screened)
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01UG2nRrP5D3DZQgvkL7zChk
+---
+ services/intent_service/action_registry.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/services/intent_service/action_registry.py b/services/intent_service/action_registry.py
+index d9d402f4bd..fa2179d8ab 100644
+--- a/services/intent_service/action_registry.py
++++ b/services/intent_service/action_registry.py
+@@ -293,7 +293,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
+     ("MEMORY", "get_memory"): "What do you remember about me?",
+     ("MEMORY", "pull_insights"): "What have you learned about my work style?",
+     ("TEMPORAL", "get_current_time"): "What time is it?",
+-    ("STATUS", "get_project_status"): "What's the project status?",
++    ("STATUS", "get_project_status"): "How's the next milestone coming along?",
+     ("STATUS", "check_completion_status"): "When did I complete the login fix?",
+     ("PRIORITY", "get_top_priority"): "What should I work on first?",
+     ("GUIDANCE", "get_contextual_guidance"): "How should I approach this sprint?",
+-- 
+2.50.1 (Apple Git-155)
+

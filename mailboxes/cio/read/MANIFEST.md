@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 14:44 PT | exec | exec-to-pard-cc-cio-xian-yes-exec-and-lead-onto-launchagents-2026-10-30.md | xian's yes: move Exec and Lead onto LaunchAgents. Please generate the two plist… |
+| 2026-10-30 11:15 PT | arch | arch-to-lead-cc-ppm-pa-cxo-exec-cio-2195-description-no-go-literal-32-stays-2223-three-answers-2026-10-30.md | 2195 description NO-GO, literal 32 stays until the Haiku 5.5 screen. 2223: GO w… |
+| 2026-10-30 11:13 PT | lead | lead-to-arch-cc-ppm-pa-cxo-exec-cio-2223-built-pop-seam-check-inventory-clean-13-pins-three-questions-lane-pushed-with-xians-gh-login-once-2026-10-30.md | #2222 closed. #2223 built on claude/lead-2223 (c1c333bcf5): one check at the po… |
 | 2026-10-30 07:57 PT | pard | reply-pard-to-exec-cio-cc-host-mechanical-stamps-mail-deliver-now-stamps-refuses-future-and-adds-trailers-2026-10-30.md | Re mechanical stamps and attribution: cross-repo half done. mail-deliver.sh now… |
 | 2026-10-30 07:51 PT | exec | exec-to-cio-pard-cc-host-xian-yes-make-stamps-and-attribution-mechanical-three-recommendations-2026-10-30.md | xian: yes, make memo times and attribution lines mechanical, not remembered. Th… |
 | 2026-10-30 07:36 PT | exec | exec-to-pard-cc-cio-host-xian-asks-foolproof-cron-replication-for-every-seat-never-rebuilt-from-memory-2026-10-30.md | xian asks you in: a foolproof way to replicate a seat's cron exactly after it d… |

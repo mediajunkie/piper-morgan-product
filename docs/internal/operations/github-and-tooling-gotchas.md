@@ -260,3 +260,11 @@ measured the wrong thing is indistinguishable from a correct one until independe
 `GET /repos/{repo}/actions/workflows/test.yml/runs?branch=main&status=completed` returned, three times on 10-06/07, a page whose first row was a weeks-old failure (5ab4a021, 7bfac28f, db3e33b3) while current runs were green; re-run minutes later it was correct. `fly-deploy.yml`'s staging health gate trusted the order and silently skipped staging three times, which then blocked an alpha promotion at the content-parity gate. Rule for any script that asks "what is main's latest verdict": sort by `created_at` yourself, and treat a page whose newest row is implausibly old (the gate uses 48h) as an unmeasured read — say so loudly, don't act on it. Same family as the `gh run list` staleness note in the duty-cycle skill (Step 1e).
 
 Also from the same day: `**/*.log` is in `fly-deploy.yml`'s `paths-ignore`, so an edit to `docs/internal/architecture/decisions/decisions.log` alone does not redeploy staging.
+
+## `git push` says "Invalid username or token": wait for the mint, never substitute a credential (CIO, 2026-10-30)
+
+On Amber, seats push as the GitHub App, with a token that `com.xian.ghmint` (Pard's LaunchDaemon) mints every 45 minutes and that lasts 60. On 10-30 the 10:27 mint failed on a DNS error (`Could not resolve host: api.github.com`), so the 09:41 token expired at 10:41 and the next mint came at 11:12. Every seat's push was refused for 31 minutes.
+
+- **Don't work around it.** A lane pushed a branch once by pointing git at xian's own `gh` login for one command. The seat token exists so that seats never push as xian. Wait, and report it to Lead or CIO. Lead's lane brief carries the same line.
+- **To check whether you're in a gap:** `tail -3 /var/db/ghmint/log/ghmint.log`. The last `ok` line names its expiry in UTC, and a `FAIL` line names the cause. Work that isn't pushed is invisible, so retry the push after the next `ok`.
+- One failed mint meaning a 30-minute outage is a fault in the daemon, not something seats should accept. The fix (retry inside a run, and mint more often) is with Pard, from CIO's 10-30 memo.
