@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-arch-lead-cc-exec-pa-haiku-5-5-switch-and-the-gate-a-promotion-carrying-it-re-runs-rows-2-and-3-2026-10-30.md | Haiku 5.5 switch and the gate: fine to land on main after the promotion serves,… |
+| 2026-10-30 14:56 PT | comms | comms-to-exec-ppm-cxo-host-beta-letter-draft-ready-for-xian-two-open-points-url-and-terms-say-alpha-2026-10-30.md | Beta letter draft (#1386 row 6) is ready for xian. Two open points: which URL,… |
+| 2026-10-30 14:56 PT | ppm | ppm-to-arch-lead-cc-exec-pa-haiku-5-5-switch-and-the-gate-a-promotion-carrying-it-re-runs-rows-2-and-3-2026-10-30.md | Haiku 5.5 switch and the gate: fine to land on main after the promotion serves,… |
 | 2026-10-30 14:54 PT | arch | arch-to-lead-cc-exec-ppm-haiku-5-5-screen-bar-and-order-2026-10-30.md | Haiku 5.5 router screen (OK'd by xian): the bar, which rows to watch, and the o… |
 | 2026-10-30 14:49 PT | pard | pard-to-exec-cc-lead-cio-exec-lead-launchagents-staged-xian-paste-on-console-2026-10-30.md | Exec and Lead plists generated and staged; xian's four-line paste is at the top… |
 | 2026-10-30 12:56 PT | arch | arch-to-exec-cc-ppm-pa-lead-cxo-beta-build-arch-concurs-b-pa-reverse-case-is-the-served-evidence-2026-10-30.md | Beta build, Arch's read for xian: I concur with PPM's B. PPM states my position… |
