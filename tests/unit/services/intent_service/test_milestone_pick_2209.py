@@ -17,7 +17,7 @@ The shape under test:
 * the ethics denial door and the guidance door do not consult it.
 * amended 2026-10-30 (Arch 08:57): a turn that commits to a registered operation drops the marker at
   dispatch (the action rail, the Action Gate's floor call for a registered op, synthesis over a fetched
-  source), so the doors, which also handle those ops, answer the line only on a turn that dispatched
+  source, and the main path's canonical-generic fallback for a registered op or GUIDANCE), so the doors, which also handle those ops, answer the line only on a turn that dispatched
   nothing (``TestDispatchedOpDropsTheMarker``).
 
 Layer honesty (m-43): the real ``IntentService.process_intent`` with an EXPLOSIVE LLM; the classifier's
@@ -777,6 +777,113 @@ class TestDispatchedOpDropsTheMarker:
         assert dropped == []
         assert result.message.startswith("I don't see a milestone by that name.")
         floor.assert_not_awaited()
+
+    def _force_generic(self, service):
+        checks = []
+
+        def _generic(canonical_result, message):
+            checks.append(message)
+            return True
+
+        service._is_generic_canonical_response = _generic
+        return checks
+
+    async def test_main_path_canonical_generic_fallback_for_a_registered_op_drops_at_seam_4(
+        self, service, floor, github
+    ):
+        """Arch 09:28: a CanonicalHandlers answer for a registered op that comes back generic falls
+        back to _handle_unknown_intent; that is the op's dispatch rerouted, agreeing with the rail's
+        reroute: no line, the floor path as before. CanonicalHandlers.can_handle declines any EXACT
+        rail key (Arch 2026-10-04), so TEMPORAL/get_current_time itself goes to the rail (next pin);
+        the main-path fallback sees a registered op only as a near-miss emission that normalize_action
+        maps onto a rail key. ``fetch_get_current_time`` -> ``get_current_time`` is that case."""
+        import services.intent_service.workflow_dispatcher as wd
+
+        sid = "s2209-cg-main-time"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        checks = self._force_generic(service)
+        never = AsyncMock(side_effect=AssertionError("dispatch_workflow awaited"))
+        _verdict(service, IntentCategory.TEMPORAL, "fetch_get_current_time", "what time is it", 1.0)
+        assert service.canonical_handlers.can_handle(
+            service.intent_classifier.classify.return_value
+        )
+        with patch.object(wd, "dispatch_workflow", never):
+            result = await service.process_intent(
+                message="what time is it", session_id=sid, user_id=_USER
+            )
+        never.assert_not_awaited()  # the main canonical path, not the rail
+        assert checks, "the main path's generic check never ran"
+        assert result.message == FLOOR_TEXT
+        assert "don't see a milestone" not in result.message
+        floor.assert_awaited_once()
+        assert dropped == ["canonical_generic_fallback"]
+        assert _marker(service, sid) is None
+        rec = _pending(service, sid)
+        assert rec is None or not rec["pending_action"].get(mp.REARMED_FLAG)
+
+    async def test_exact_temporal_get_current_time_generic_reroutes_on_the_rail_seam_1(
+        self, service, floor, github
+    ):
+        """The exact rail key under TEMPORAL: can_handle declines it, the rail dispatches it, and a
+        generic answer reroutes in _finalize_canonical_rail_result. Seam 1 drops the marker."""
+        sid = "s2209-cg-rail-time"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        checks = self._force_generic(service)
+        _verdict(service, IntentCategory.TEMPORAL, "get_current_time", "what time is it", 1.0)
+        assert not service.canonical_handlers.can_handle(
+            service.intent_classifier.classify.return_value
+        )
+        result = await service.process_intent(
+            message="what time is it", session_id=sid, user_id=_USER
+        )
+        assert checks
+        assert result.message == FLOOR_TEXT
+        floor.assert_awaited_once()
+        assert dropped == ["action_rail"]
+
+    async def test_main_path_canonical_generic_fallback_for_greeting_keeps_the_line(
+        self, service, floor, github
+    ):
+        """greeting is not a registered op: the same fallback is not a dispatch, the line answers."""
+        sid = "s2209-cg-main-greeting"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        checks = self._force_generic(service)
+        _verdict(service, IntentCategory.CONVERSATION, "greeting", "hi", 1.0)
+        result = await service.process_intent(message="hi", session_id=sid, user_id=_USER)
+        assert checks, "the main path's generic check never ran"
+        assert result.message == LINE_ONE
+        floor.assert_not_awaited()
+        assert dropped == []
+
+    async def test_main_path_canonical_generic_fallback_for_guidance_drops_no_rearm(
+        self, service, floor, github
+    ):
+        """GUIDANCE (Arch 21:25, a chosen category) reaching the fallback drops the marker: no line,
+        no re-arm. A setup request is the GUIDANCE landing that takes the canonical path."""
+        sid = "s2209-cg-main-guidance"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        checks = self._force_generic(service)
+        service.canonical_handlers._detect_setup_request = lambda intent: "github"
+        service.canonical_handlers.handle = AsyncMock(
+            return_value={"message": "Focus: Deep work", "intent": {}}
+        )
+        _verdict(service, IntentCategory.GUIDANCE, "get_guidance", "help me set up github", 1.0)
+        result = await service.process_intent(
+            message="help me set up github", session_id=sid, user_id=_USER
+        )
+        service.canonical_handlers.handle.assert_awaited_once()
+        assert checks, "the main path's generic check never ran"
+        assert result.message == FLOOR_TEXT
+        assert "don't see a milestone" not in result.message
+        floor.assert_awaited_once()
+        assert dropped == ["canonical_generic_fallback"]
+        assert _marker(service, sid) is None
+        rec = _pending(service, sid)
+        assert rec is None or not rec["pending_action"].get(mp.REARMED_FLAG)
 
     async def test_the_drop_is_a_no_op_without_a_marker(self, service):
         assert mp.clear_no_match_marker(service, "s2209-none-here") is False

@@ -3867,6 +3867,28 @@ class IntentService:
                         action=intent.action,
                         **_utterance_fields(intent.original_message, key="original_message"),
                     )
+                    # #2209 (Arch 2026-10-30 09:28): a CanonicalHandlers answer
+                    # for a REGISTERED op that came back generic is that op's
+                    # dispatch rerouted to the floor, the same as the rail's
+                    # canonical-generic reroute (seam 1), so an armed pick's
+                    # no-match marker drops. GUIDANCE drops too (Arch 21:25: a
+                    # chosen category; this door is _handle_unknown_intent,
+                    # which has no GUIDANCE exclusion). An unregistered action
+                    # (greeting, get_current_date, manage_portfolio) keeps it.
+                    from services.intent_service.workflow_dispatcher import (
+                        get_action_workflows as _cg_action_workflows,
+                    )
+                    from services.intent_service.workflow_dispatcher import (
+                        normalize_action as _cg_normalize_action,
+                    )
+
+                    if (
+                        intent.category is IntentCategory.GUIDANCE
+                        or _cg_normalize_action(intent.action) in _cg_action_workflows()
+                    ):
+                        self._drop_milestone_pick_marker_at_dispatch(
+                            session_id, seam="canonical_generic_fallback", action=intent.action
+                        )
                     result = await self._handle_unknown_intent(
                         intent,
                         None,
@@ -19810,11 +19832,13 @@ Add any additional information here.
         a new request and the marker drops HERE, before the op's handler runs.
         The op's handler may itself be a floor door (the read-floor adapters,
         the canonical-generic reroute, synthesis over a fetched source); with
-        the marker gone the door runs as today. Called at three commit points
+        the marker gone the door runs as today. Called at four commit points
         only: the action rail (a registered op, before its gates and handler),
         the Action Gate's floor call when the verdict names a registered op,
-        and synthesis once a source was fetched. A category fall-through ("no
-        specialized handler") passes none of them and keeps the line."""
+        synthesis once a source was fetched, and the main path's
+        canonical-generic fallback when the op is registered or the category is
+        GUIDANCE (Arch 09:28). A category fall-through ("no specialized
+        handler") passes none of them and keeps the line."""
         from services.intent_service.milestone_pick import clear_no_match_marker
 
         if clear_no_match_marker(self, session_id):
