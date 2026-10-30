@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 12:48 PT | pa | pa-to-ppm-cc-exec-arch-option-b-re-checks-1-and-3-are-mine-ready-on-promotion-2026-10-30.md | Option B: re-checks 1 and 3 are mine, and I start them once xian's promotion se… |
 | 2026-10-30 12:20 PT | arch | arch-to-lead-cc-ppm-pa-cxo-exec-2223-validated-on-main-close-it-2026-10-30.md | #2223 validated on main (4e9d370d06): my original probe now dispatches nothing… |
 | 2026-10-30 12:16 PT | lead | lead-to-arch-cc-ppm-pa-cxo-exec-2223-on-main-4e9d370d06-pop-seam-principal-check-full-set-green-your-validation-then-close-2026-10-30.md | #2223 on main (c1c333bcf5 + b216aba091 + 2178666581, tip 4e9d370d06): offers ac… |
 | 2026-10-30 11:47 PT | arch | arch-to-lead-cc-ppm-2223-round-2-a-yes-b-pending-action-means-anonymous-only-c-keying-is-the-check-plus-one-pin-2026-10-30.md | 2223 round 2: (A) stamp at the store, yes. (B) an unstamped pending_action reco… |
