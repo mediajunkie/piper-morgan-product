@@ -23,6 +23,7 @@ from services.intent_service.floor_listed_records import (
     count_list_lines,
     listed_records_event,
     record_references,
+    reference_relations,
 )
 
 # The #2184 served reply (alpha a1f46faafc, 10:12 PT 2026-10-28), shape only.
@@ -239,6 +240,7 @@ class TestSeam:
                 "reference_sources",
                 "list_lines",
                 "context_reads",
+                "reference_relations",
             }
             for k in rr
         )
@@ -289,3 +291,137 @@ class TestLinkedReferences2184:
         ev = listed_records_event(msg, "", {}, {"active_milestones": [{"title": "MVP"}]}, [], "MVP")
         assert ev["references"] == ["#2194", "#2186"]
         assert ev["reference_sources"] == {"#2194": ["absent"], "#2186": ["absent"]}
+
+
+# #2042 reference_relations (Arch 2026-10-29): the two served sentences.
+C3 = (
+    "On other things I can see \u2014 issue #31 (full-text search across nav and global "
+    "search bar) was just updated yesterday, which lines up with your Beta launch "
+    "milestone due at the end of October."
+)
+K2 = (
+    "especially with the Beta launch milestone coming up in late October and "
+    "issue #31 (full-text search) still open against it."
+)
+CTX_RELATIONS = {
+    "active_milestones": [{"title": "Beta launch", "number": 4, "due_on": "2026-10-31"}],
+    "open_issues": [{"number": 31, "title": "Full-text search"}],
+}
+
+
+class TestReferenceRelations:
+    def test_c3_title_after_reference_is_a_relation_no_slice_carries(self):
+        assert reference_relations(C3, record_references(C3), CTX_RELATIONS) == {
+            "#31": {"Beta launch": False}
+        }
+
+    def test_k2_title_before_reference_is_a_relation_no_slice_carries(self):
+        assert reference_relations(K2, record_references(K2), CTX_RELATIONS) == {
+            "#31": {"Beta launch": False}
+        }
+
+    def test_case_insensitive(self):
+        msg = "Issue #31 is part of the beta LAUNCH work."
+        assert reference_relations(msg, ["#31"], CTX_RELATIONS) == {"#31": {"Beta launch": False}}
+
+    def test_title_in_a_different_sentence_is_no_relation(self):
+        msg = "Issue #31 is still open. Your Beta launch is due soon."
+        assert reference_relations(msg, ["#31"], CTX_RELATIONS) == {}
+
+    def test_dotted_title_matches_in_the_same_sentence(self):
+        ctx = {"active_milestones": [{"title": "v0.9", "number": 5}]}
+        msg = "issue #31 is slated for v0.9 now."
+        assert reference_relations(msg, ["#31"], ctx) == {"#31": {"v0.9": False}}
+
+    def test_period_before_space_is_a_boundary(self):
+        ctx = {"active_milestones": [{"title": "v0.9", "number": 5}]}
+        msg = "Done with #31. v0.9 ships next week."
+        assert reference_relations(msg, ["#31"], ctx) == {}
+
+    def test_newline_ends_a_sentence(self):
+        msg = "Beta launch is due soon\n- #31 full-text search"
+        assert reference_relations(msg, ["#31"], CTX_RELATIONS) == {}
+
+    def test_true_only_when_a_slice_item_carries_the_milestone(self):
+        ctx = {
+            "active_milestones": [{"title": "Beta launch", "number": 4}],
+            "open_issues": [
+                {"number": 31, "milestone": {"title": "beta launch"}},
+                {"number": 32, "milestone": "Other"},
+            ],
+        }
+        msg = "#31 and #32 sit under Beta launch."
+        assert reference_relations(msg, ["#31", "#32"], ctx) == {
+            "#31": {"Beta launch": True},
+            "#32": {"Beta launch": False},
+        }
+
+    def test_no_titles_or_no_context_is_empty(self):
+        assert reference_relations(C3, ["#31"], {}) == {}
+        assert reference_relations(C3, ["#31"], None) == {}
+        assert reference_relations(C3, ["#31"], {"active_milestones": [{"title": ""}]}) == {}
+
+    def test_single_reference_aside_now_fires_the_event(self):
+        ev = listed_records_event(C3, "#31 Beta launch", None, CTX_RELATIONS)
+        assert ev is not None
+        assert ev["reference_relations"] == {"#31": {"Beta launch": False}}
+        assert ev["unsourced_references"] == []
+
+    def test_single_reference_without_relation_still_silent(self):
+        assert listed_records_event("Issue #31 is open.", "#31", None, CTX_RELATIONS) is None
+
+    def test_seam_logs_relation_and_message_is_byte_identical(self):
+        for served in (C3, K2):
+            floor = _floor_returning(served)
+            ctx = _ctx(
+                "what should I look at?",
+                intent_category="STATUS",
+                domain_context=CTX_RELATIONS,
+                domain_context_provenance=PROVENANCE_2184,
+            )
+            with capture_logs() as events:
+                resp = asyncio.run(floor.respond(ctx))
+            ev = [e for e in events if e.get("event") == "floor_record_references"]
+            assert len(ev) == 1
+            assert ev[0]["reference_relations"] == {"#31": {"Beta launch": False}}
+            assert resp.message == served
+            assert resp.provenance["record_references"]["reference_relations"] == {
+                "#31": {"Beta launch": False}
+            }
+
+
+class TestReferenceRelationsWordBoundary:
+    """Arch's condition (2026-10-29 20:06): a title matches only as a whole
+    word; ``v1`` inside ``v1.2`` and ``MVP`` inside ``MVPs`` are not relations."""
+
+    def _ctx(self, *titles):
+        return {
+            "active_milestones": [{"title": t, "number": i + 1} for i, t in enumerate(titles)],
+            "high_priority_issues": [{"number": 5, "title": "Search"}],
+        }
+
+    def test_v1_inside_v1_2_is_not_a_relation(self):
+        from services.intent_service.floor_listed_records import reference_relations
+
+        assert reference_relations("#5 is in v1.2 work.", ["#5"], self._ctx("v1")) == {}
+
+    def test_v1_2_matches_its_own_title(self):
+        from services.intent_service.floor_listed_records import reference_relations
+
+        got = reference_relations("#5 is in v1.2 work.", ["#5"], self._ctx("v1", "v1.2"))
+        assert got == {"#5": {"v1.2": False}}
+
+    def test_mvp_inside_mvps_is_not_a_relation(self):
+        from services.intent_service.floor_listed_records import reference_relations
+
+        assert reference_relations("#5 is one of the MVPs here", ["#5"], self._ctx("MVP")) == {}
+
+    def test_mvp_at_sentence_edge_and_before_punctuation_matches(self):
+        from services.intent_service.floor_listed_records import reference_relations
+
+        assert reference_relations("MVP includes #5", ["#5"], self._ctx("MVP")) == {
+            "#5": {"MVP": False}
+        }
+        assert reference_relations("#5 is in (MVP), I think", ["#5"], self._ctx("MVP")) == {
+            "#5": {"MVP": False}
+        }

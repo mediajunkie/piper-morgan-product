@@ -2,10 +2,10 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.59
+version: 1.60
 created: 2026-06-06
 concept: "Concept: docs/internal/operations/liveness-current-state.md (the wake, heartbeat and alert chain this procedure runs inside); history: docs/internal/operations/duty-cycle-tick-changelog.log"
-changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.59 (2026-10-30) — Step 1i: Exec runs ship-kickoff.sh --if-due every fire."
+changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.60 (2026-10-30) — every re-arm copies the stored prompt (scripts/seat-prompt.sh); the prompt holds constants only."
 ---
 
 # duty-cycle-tick
@@ -99,6 +99,23 @@ populations simultaneously. Whoever does that final cleanup should also fold `cr
 the registry from "the arm-date/offset ledger these seats hand-track" to purely "the schedule of
 record Pard's generator reads from" — the column stays either way, only the prose describing it
 changes.
+
+### ⚠️ Every re-arm copies the stored prompt; nobody types it (v1.60, 2026-10-30, xian: "Let's not rebuild cron jobs from memory!")
+
+This applies wherever a step below says `CronCreate`: Gap-C self-heal, the proactive re-arm, the STOP
+delete-then-create, and any re-arm after a restart. The prompt text comes from
+`scripts/seat-prompt.sh <role>`, which prints the verbatim one-line prompt stored in mediajunkie
+`docs/seat-prompts/pm-<role>.md`. That file is generated from the registry by Pard's
+`pm-cascade-provision.sh`, and it is the same file a LaunchAgent seat's fires send. Pass that output to
+`CronCreate` unchanged. Then run `CronList`, save the job's prompt to a scratch file, and check it with
+`scripts/seat-prompt.sh <role> --check <file>`. Exit 0 means it matches; exit 1 shows the diff, so delete
+and re-arm. If the script exits 3 (it couldn't read the store), say so in the fire entry. Don't fall back
+to typing the prompt; mail CIO and Pard instead.
+
+**The prompt holds constants only.** A duty in the prompt is a bug: it lives in one place that a re-arm
+can drop. Exec's Ship kickoff did exactly that on 10-29, and it moved to Step 1i. A new per-seat duty goes
+in this skill as a role-gated step. A changed constant (cron, worktree) goes in the registry, and Pard
+regenerates the prompt files from it.
 
 ### Step 1 — Date + cron state (+ Gap-C self-heal)
 Run `date "+%H:%M %Z (%A %Y-%m-%d)"` and `CronList`. Confirm exactly ONE cron job for your expression:
