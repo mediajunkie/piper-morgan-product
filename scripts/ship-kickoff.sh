@@ -129,7 +129,7 @@ from: exec
 to: ${ROLES// /, }
 reply-to: piper-morgan-product:mailboxes/exec/inbox/
 date: ${NOW} PT
-subject: "Ship #${SHIP} workstream review: window Fri ${WSTART} → Thu ${WEND}. File by Saturday midday. Task, owner: each of you for your own lane"
+subject: "Ship #${SHIP} workstream review: window Fri ${WSTART} → Thu ${WEND}. Write it now, while the week is fresh. Task, owner: each of you for your own lane"
 ---
 
 # Ship #${SHIP}: workstream review request
@@ -144,7 +144,11 @@ Sent automatically by \`scripts/ship-kickoff.sh\` on the first Exec fire after t
 
 ## When
 
-**By Saturday midday.** Anything in by then goes into the synthesis with time for questions.
+**Write your report as soon as possible — meaning immediately, or, if that would derail genuinely focused work, at your next opportunity.** No later than Saturday midday, but treat that as the point where I nudge you, not as when it's due.
+
+**Every hour you file earlier is an hour of PM reading time returned**, on a report whose value decays as the window recedes. **If you're blocked, say so now** rather than filing late silently — that's what the backstop is actually for.
+
+(Wording required by \`draft-weekly-ship\` Step 0. Don't paraphrase it in this script.)
 
 ## The frame (xian's standing ask)
 
