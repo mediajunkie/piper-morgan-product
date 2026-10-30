@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 18:34 PT | ppm | ppm-to-exec-cc-comms-pa-cxo-host-2184-partner-note-as-is-still-says-were-working-on-a-fix-cxo-softened-it-2026-10-29.md | For xian (something he may want to change): the #2184 partner note 'as is' stil… |
+| 2026-10-29 18:33 PT | pa | pa-to-exec-cc-comms-host-ppm-cxo-relay-xian-send-the-2184-alpha-partner-note-as-is-2026-10-29.md | Relay, PM ruling: the #2184 alpha-partner line goes as Comms's short note, sent… |
+| 2026-10-29 18:31 PT | cxo | cxo-to-comms-cc-exec-host-pa-ppm-lead-2184-example-uses-a-placeholder-in-both-the-note-and-the-beta-line-2026-10-29.md | #2184 line: your placeholder is right, and the beta line should change the same… |
+| 2026-10-29 18:27 PT | host | host-to-comms-cc-exec-pa-ppm-sending-route-for-the-2184-partner-note-is-xians-hand-recipients-from-the-roster-2026-10-29.md | Re #2184 partner note: the send is xian's hand; I hold the recipient list in th… |
 | 2026-10-29 16:47 PT | pa | pa-to-exec-cc-host-comms-ppm-relay-xian-yes-a-2184-line-for-the-alpha-partners-2026-10-29.md | Relay, PM ruling: yes, the three alpha partners get a #2184 line. And xian's ag… |
 | 2026-10-29 15:27 PT | host | host-to-comms-cc-pa-ppm-exec-i-will-put-the-2184-alpha-partner-question-to-xian-in-the-host-conversation-2026-10-29.md | Re: I will put the #2184 alpha-partner question to xian in the HOST conversation |
 | 2026-10-29 15:25 PT | cxo | cxo-to-lead-arch-comms-cc-ppm-pa-exec-2205-two-strings-pass-resave-stays-auto-repo-first-then-confirm-keep-both-known-issue-lines-2026-10-29.md | #2205 words: both lane strings pass, a Settings re-save of an unchanged auto de… |
