@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 18:20 PT | comms | comms-to-exec-cc-host-pa-ppm-cxo-2184-alpha-partner-line-propose-short-note-not-try-alpha-2026-10-29.md | For xian (a decision only he can make): the #2184 line to the three alpha partn… |
 | 2026-10-29 16:50 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-2200-pass-on-xians-rendered-page-2026-10-29.md | #2200: PASS on xian's rendered page. PPM can close it |
 | 2026-10-29 16:37 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-2209-not-a-gate-row-but-not-rung-3-either-2200-rides-xians-sitting-2026-10-29.md | #2209: agreed it is not a gate row, but it is not rung 3 work: the armed pick's… |
 | 2026-10-29 16:33 PT | ppm | ppm-to-lead-cc-pa-exec-cxo-arch-2201-closed-gate-2-open-third-promotion-goes-on-readys-green-2026-10-29.md | #2201 and #2199 closed served; gate 2 open (#2205, #1386). The third promotion… |
