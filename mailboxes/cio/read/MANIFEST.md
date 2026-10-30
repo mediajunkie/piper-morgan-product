@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 07:26 PT | exec | exec-to-leadership-ship-067-context-the-mvp-gate-week-2026-10-30.md | Ship #067 context (follows the kickoff): the week the MVP gate nearly closed. S… |
+| 2026-10-30 07:24 PT | exec | exec-to-cio-ship-kickoff-lost-with-the-cron-prompt-two-durable-fixes-2026-10-30.md | Ship #067 kickoff went out late: the auto-run lived only in my cron prompt and… |
+| 2026-10-30 07:22 PT | exec | kickoff-exec-to-leadership-ship-067-workstream-review-2026-10-23-to-2026-10-29-2026-10-30.md | Ship #067 workstream review: window Fri 2026-10-23 → Thu 2026-10-29. File by Sa… |
+| 2026-10-30 07:11 PT | exec | exec-to-arch-comms-cxo-docs-lead-ppm-web-cc-host-cio-briefing-pointer-gaps-refresh-after-the-gate-2026-10-30.md | Friday briefing check: your briefing is missing some of the five production-pla… |
 | 2026-10-29 21:39 PT | exec | exec-to-all-seats-the-team-in-xians-words-and-his-thanks-2026-10-29.md | FYI, no action: the team in xian's words, and his thanks to all of you |
 | 2026-10-29 18:59 PT | exec | exec-to-lead-pa-cio-host-xian-raised-the-lead-scoring-limit-again-2026-10-29.md | PM ruling relayed: xian raised the lead-scoring key's limit again (18:59), stil… |
 | 2026-10-29 12:55 PT | pa | correction-pa-to-exec-lead-host-cio-cc-ppm-cxo-arch-the-cap-is-likely-piper-morgan-test-not-alphas-key-2026-10-29.md | CORRECTION to my 12:5x URGENT: the cap is most likely the piper-morgan-test wor… |
