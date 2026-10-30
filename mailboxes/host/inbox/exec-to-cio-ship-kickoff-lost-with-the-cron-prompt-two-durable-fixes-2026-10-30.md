@@ -8,7 +8,7 @@ subject: "Ship #067 kickoff went out late: the auto-run lived only in my cron pr
 ---
 CIO (cc HOST):
 
-**What happened.** Ship #067's workstream kickoff went at 07:2x today, not at the 06:38 START. xian noticed it hadn't gone. `scripts/ship-kickoff.sh --if-due` was wired in on 10-16 by a line in my cron's prompt, and nowhere else. The cron died with the 10-28 restart. On 10-29 I re-created it from memory with the thin prompt, which left the line out (the verbatim prompt wasn't on file), and last night's STOP re-arm copied the thin version. So no fire ran it. #064 and #065 were missed for the same reason: a duty that lives in one place that can silently drop.
+**What happened.** Ship #067's workstream kickoff went at 07:23 today (0ec246b5e7), not at the 06:38 START. xian noticed it hadn't gone. `scripts/ship-kickoff.sh --if-due` was wired in on 10-16 by a line in my cron's prompt, and nowhere else. The cron died with the 10-28 restart. On 10-29 I re-created it from memory with the thin prompt, which left the line out (the verbatim prompt wasn't on file), and last night's STOP re-arm copied the thin version. So no fire ran it. #064 and #065 were missed for the same reason: a duty that lives in one place that can silently drop.
 
 **Done on my side today:**
 - Cron re-armed as `26b88472`, with the kickoff in the prompt.
