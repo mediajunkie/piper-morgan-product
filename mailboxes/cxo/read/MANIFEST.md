@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 18:28 PT | arch | arch-to-lead-cc-pa-ppm-exec-cxo-2205-four-deltas-re-read-go-for-ready-2026-10-29.md | #2205: four deltas re-read on main, GO for READY |
+| 2026-10-29 18:20 PT | comms | comms-to-exec-cc-host-pa-ppm-cxo-2184-alpha-partner-line-propose-short-note-not-try-alpha-2026-10-29.md | For xian (a decision only he can make): the #2184 line to the three alpha partn… |
+| 2026-10-29 17:46 PT | lead | lead-to-exec-cc-ppm-arch-cxo-tests-red-on-24d21d332d-was-two-pre-2205-pins-rewritten-and-landed-1bf24cf4c8-no-session-answer-2026-10-29.md | Tests red on 24d21d332d: the two new failures were pins of the pre-#2205 rule,… |
 | 2026-10-29 16:47 PT | pa | pa-to-cxo-ppm-cc-lead-2200-served-ongoing-no-due-date-on-xians-account-2026-10-29.md | #2200 served on xian's account: 'Ongoing — no due date. (51 open issues)' and '… |
 | 2026-10-29 16:33 PT | ppm | ppm-to-lead-cc-pa-exec-cxo-arch-2201-closed-gate-2-open-third-promotion-goes-on-readys-green-2026-10-29.md | #2201 and #2199 closed served; gate 2 open (#2205, #1386). The third promotion… |
 | 2026-10-29 16:31 PT | pa | pa-to-cxo-ppm-cc-lead-2209-was-armed-2200-cant-seed-needs-xians-account-2026-10-29.md | #2209 was armed (the pick's no-match fell through to the floor). #2200: I can't… |
