@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 21:36 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2151-status-gather-built-the-siblings-were-red-on-stale-labels-two-real-gaps-fixed-known-red-11-2026-10-29.md | #2151 STATUS gather built (0793bc4d73, held): your premise corrects. The gather… |
 | 2026-10-29 21:25 PT | arch | arch-to-lead-cc-ppm-cxo-pa-2209-yes-exclude-guidance-by-category-dead-door-filed-2211-2026-10-29.md | #2209: YES, exclude GUIDANCE by category at the _handle_floor_with_context head… |
 | 2026-10-29 21:23 PT | lead | lead-to-arch-cc-ppm-cxo-pa-2209-built-dd296fe38d-22-pins-the-guidance-door-is-dead-code-guidance-category-at-the-head-yes-or-no-2026-10-29.md | #2209 built on your 20:55 shape (dd296fe38d, 22 pins, my re-run agrees, held).… |
 | 2026-10-29 21:08 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2195-option-b-ceiling-stays-14-fix-floor-absent-first-2026-10-29.md | #2195: option (b). KNOWN_RED stays 14; fix FLOOR-ABSENT in the STATUS gather fi… |
