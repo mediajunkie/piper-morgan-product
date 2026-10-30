@@ -3762,6 +3762,22 @@ class IntentService:
                     bare.suggestions = all_suggestions
                     bare.preferences = preferences
                     return bare
+                # #2209 (Arch 2026-10-30 08:57): a verdict that names a
+                # registered op (e.g. DISCOVERY/get_capabilities) is answered
+                # here by the floor, the same handler its rail adapter calls:
+                # the turn committed to that op, so an armed pick's no-match
+                # marker drops. An unregistered action (chitchat) keeps it.
+                from services.intent_service.workflow_dispatcher import (
+                    get_action_workflows as _gate_action_workflows,
+                )
+                from services.intent_service.workflow_dispatcher import (
+                    normalize_action as _gate_normalize_action,
+                )
+
+                if _gate_normalize_action(intent.action) in _gate_action_workflows():
+                    self._drop_milestone_pick_marker_at_dispatch(
+                        session_id, seam="action_gate_floor", action=intent.action
+                    )
                 # Floor with context assembly
                 result = await self._handle_floor_with_context(
                     intent,
@@ -3851,6 +3867,28 @@ class IntentService:
                         action=intent.action,
                         **_utterance_fields(intent.original_message, key="original_message"),
                     )
+                    # #2209 (Arch 2026-10-30 09:28): a CanonicalHandlers answer
+                    # for a REGISTERED op that came back generic is that op's
+                    # dispatch rerouted to the floor, the same as the rail's
+                    # canonical-generic reroute (seam 1), so an armed pick's
+                    # no-match marker drops. GUIDANCE drops too (Arch 21:25: a
+                    # chosen category; this door is _handle_unknown_intent,
+                    # which has no GUIDANCE exclusion). An unregistered action
+                    # (greeting, get_current_date, manage_portfolio) keeps it.
+                    from services.intent_service.workflow_dispatcher import (
+                        get_action_workflows as _cg_action_workflows,
+                    )
+                    from services.intent_service.workflow_dispatcher import (
+                        normalize_action as _cg_normalize_action,
+                    )
+
+                    if (
+                        intent.category is IntentCategory.GUIDANCE
+                        or _cg_normalize_action(intent.action) in _cg_action_workflows()
+                    ):
+                        self._drop_milestone_pick_marker_at_dispatch(
+                            session_id, seam="canonical_generic_fallback", action=intent.action
+                        )
                     result = await self._handle_unknown_intent(
                         intent,
                         None,
@@ -14790,6 +14828,12 @@ class IntentService:
         if fetched:
             _content, _meta = fetched
             summary_dc = {"summary_source": {"content": _content, "metadata": _meta or {}}}
+            # #2209 (Arch 2026-10-30 08:57): a fetched source means the turn
+            # ran the summarize-of-source operation; the floor renders it, so
+            # an armed pick's no-match marker drops before the door.
+            self._drop_milestone_pick_marker_at_dispatch(
+                session_id, seam="synthesis_fetched_source", action=intent.action
+            )
         return await self._handle_unknown_intent(
             intent, workflow, session_id, domain_context=summary_dc
         )
@@ -19210,6 +19254,13 @@ Add any additional information here.
         _action_workflows = get_action_workflows()
         if intent.action not in _action_workflows:
             return _RailOutcome(on_rail=False)
+        # #2209 (Arch 2026-10-30 08:57): the turn commits to a registered op
+        # here, before any gate or handler; an armed pick's no-match marker
+        # drops so the op's own floor (read_floor adapters, the
+        # canonical-generic reroute) runs as today.
+        self._drop_milestone_pick_marker_at_dispatch(
+            session_id, seam="action_rail", action=intent.action
+        )
 
         # ── #1190 destructive-mutation confirmation gate ──────────
         # A rail entry whose declared effect derives needs_confirm
@@ -19773,14 +19824,43 @@ Add any additional information here.
             self.logger.warning(f"Trust stage resolution failed: {e}")
             return None
 
+    def _drop_milestone_pick_marker_at_dispatch(
+        self, session_id: Optional[str], *, seam: str, action: Optional[str]
+    ) -> None:
+        """#2209 (Arch 2026-10-30 08:57, amends 20:29/20:55): the turn has
+        committed to a registered operation, so the armed pick's no-match was
+        a new request and the marker drops HERE, before the op's handler runs.
+        The op's handler may itself be a floor door (the read-floor adapters,
+        the canonical-generic reroute, synthesis over a fetched source); with
+        the marker gone the door runs as today. Called at four commit points
+        only: the action rail (a registered op, before its gates and handler),
+        the Action Gate's floor call when the verdict names a registered op,
+        synthesis once a source was fetched, and the main path's
+        canonical-generic fallback when the op is registered or the category is
+        GUIDANCE (Arch 09:28). A category fall-through ("no specialized
+        handler") passes none of them and keeps the line."""
+        from services.intent_service.milestone_pick import clear_no_match_marker
+
+        if clear_no_match_marker(self, session_id):
+            self.logger.info(
+                "milestone_pick_no_match_dropped_at_dispatch",
+                session_id=session_id,
+                seam=seam,
+                action=action,
+            )
+
     def _milestone_pick_no_match_result(
         self, session_id: Optional[str]
     ) -> Optional[IntentProcessingResult]:
         """#2209 (Arch 2026-10-29 20:29/20:42/20:55): consulted at the head of
-        the two non-dispatch floor doors only (``_handle_floor_with_context``,
-        except its GUIDANCE branch, and ``_handle_unknown_intent``; not the
-        ethics denial door, not the guidance door). Consumes this turn's no-match marker; with none,
-        returns None. No GitHub read, no write; the pick re-arms once."""
+        the two floor doors only (``_handle_floor_with_context``, except its
+        GUIDANCE branch, and ``_handle_unknown_intent``; not the ethics denial
+        door, not the guidance door). A turn that committed to a registered
+        operation dropped the marker at dispatch (Arch 2026-10-30 08:57,
+        ``_drop_milestone_pick_marker_at_dispatch``), so this answers only on a
+        turn that dispatched nothing. Consumes this turn's no-match marker;
+        with none, returns None. No GitHub read, no write; the pick re-arms
+        once."""
         from services.intent_service.milestone_pick import take_no_match_reply
 
         reply = take_no_match_reply(self, session_id)

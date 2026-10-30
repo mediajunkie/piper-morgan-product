@@ -15,6 +15,10 @@ The shape under test:
   marker at their head, before any context assembly or model call: CXO's line from the stored titles, no
   GitHub read, no write, the same titles re-armed ONCE;
 * the ethics denial door and the guidance door do not consult it.
+* amended 2026-10-30 (Arch 08:57): a turn that commits to a registered operation drops the marker at
+  dispatch (the action rail, the Action Gate's floor call for a registered op, synthesis over a fetched
+  source, and the main path's canonical-generic fallback for a registered op or GUIDANCE), so the doors, which also handle those ops, answer the line only on a turn that dispatched
+  nothing (``TestDispatchedOpDropsTheMarker``).
 
 Layer honesty (m-43): the real ``IntentService.process_intent`` with an EXPLOSIVE LLM; the classifier's
 verdict is stubbed (the LLM chooses it live); the floor's model is stubbed at ``ConversationalFloor.respond``
@@ -563,3 +567,332 @@ class TestMultiIntentPerElementDoor:
         assert result.intent_data.get("multi_intent_inversion") is None
         assert all(out is None for out in returned)  # the path declined (or never ran)
         assert _pending(service, sid)["pending_action"][mp.REARMED_FLAG] is True
+
+
+# ---------------------------------------------------------------------------
+# Arch 2026-10-30 08:57 (amends 20:29/20:55): a turn that commits to a registered operation drops
+# the marker AT DISPATCH, before the op's handler runs. The two floor doors are also the handlers of
+# dispatched ops; with the marker gone they run as today. The door consult then answers only on a turn
+# that dispatched nothing (pins 1, 1b, 1c, 5 above).
+# ---------------------------------------------------------------------------
+
+# op -> the registry category its read_floor adapter engages under (workflow_entries
+# _READ_FLOOR_MEMBERS / _READ_FLOOR_2_MEMBERS). Under its own category the six whose category is
+# Action-Gate floor-routed (DISCOVERY, TRUST, MEMORY, STATUS, IDENTITY) reach the floor through the
+# Action Gate's floor call in _process_intent_internal, never through dispatch_workflow; the other
+# three (ANALYSIS, QUERY) reach it through the rail -> dispatch_workflow -> run_read_floor_workflow.
+READ_FLOOR_OPS = [
+    ("get_capabilities", IntentCategory.DISCOVERY, "what can you do?", "action_gate_floor"),
+    ("explain_trust", IntentCategory.TRUST, "how does trust work here?", "action_gate_floor"),
+    ("get_memory", IntentCategory.MEMORY, "what do you remember about me?", "action_gate_floor"),
+    ("pull_insights", IntentCategory.MEMORY, "any insights from last week?", "action_gate_floor"),
+    ("analyze_blockers", IntentCategory.ANALYSIS, "what's blocking us?", "action_rail"),
+    ("get_feature_info", IntentCategory.QUERY, "tell me about the todo feature", "action_rail"),
+    ("check_completion_status", IntentCategory.STATUS, "is the release done?", "action_gate_floor"),
+    ("write_stakeholder_update", IntentCategory.QUERY, "draft a stakeholder update", "action_rail"),
+    ("get_identity", IntentCategory.IDENTITY, "who are you?", "action_gate_floor"),
+]
+
+
+def _spy_drop_seams(service):
+    """Records each dispatch seam that dropped a live marker (the seam name), and still drops it."""
+    dropped = []
+    real = service._drop_milestone_pick_marker_at_dispatch
+
+    def _spy(session_id, *, seam, action):
+        if _marker(service, session_id) is not None:
+            dropped.append(seam)
+        return real(session_id, seam=seam, action=action)
+
+    service._drop_milestone_pick_marker_at_dispatch = _spy
+    return dropped
+
+
+@pytest.mark.asyncio
+class TestDispatchedOpDropsTheMarker:
+    @pytest.mark.parametrize(
+        "op,category,message,seam", READ_FLOOR_OPS, ids=[o[0] for o in READ_FLOOR_OPS]
+    )
+    async def test_each_read_floor_op_reaches_the_floor_without_the_line(
+        self, service, floor, github, op, category, message, seam
+    ):
+        """Arch's probe, all nine: armed pick, the classifier names the op at 1.0. The floor answers
+        (awaited once), no no-match line, no re-arm, the marker gone, dropped at the expected seam."""
+        sid = f"s2209-disp-{op}"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        _verdict(service, category, op, message, 1.0)
+        result = await service.process_intent(message=message, session_id=sid, user_id=_USER)
+        assert result.message == FLOOR_TEXT
+        assert "don't see a milestone" not in result.message
+        assert result.intent_data.get("milestone_pick_no_match") is None
+        floor.assert_awaited_once()
+        assert dropped == [seam]
+        assert _marker(service, sid) is None
+        rec = _pending(service, sid)
+        assert rec is None or not rec["pending_action"].get(mp.REARMED_FLAG)
+
+    @pytest.mark.parametrize("op", [o[0] for o in READ_FLOOR_OPS])
+    async def test_each_read_floor_op_under_query_drops_at_the_rail(
+        self, service, floor, github, op
+    ):
+        """The same nine named under QUERY (the rail's honest default; not Action-Gate floor-routed):
+        each dispatches through the rail, which drops the marker before run_read_floor_workflow."""
+        import services.intent_service.workflow_dispatcher as wd
+
+        sid = f"s2209-dispq-{op}"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        dispatched = []
+        real_dispatch = wd.dispatch_workflow
+
+        async def _spy_dispatch(workflow_type, *a, **k):
+            dispatched.append(workflow_type)
+            return await real_dispatch(workflow_type, *a, **k)
+
+        _verdict(service, IntentCategory.QUERY, op, "the ask", 1.0)
+        with patch.object(wd, "dispatch_workflow", _spy_dispatch):
+            result = await service.process_intent(message="the ask", session_id=sid, user_id=_USER)
+        assert result.message == FLOOR_TEXT
+        floor.assert_awaited_once()
+        assert dispatched == [op]
+        assert dropped == ["action_rail"]
+        assert _marker(service, sid) is None
+
+    async def test_get_memory_takes_the_action_gate_not_dispatch_workflow(
+        self, service, floor, github
+    ):
+        """Why Arch's 10-30 probe saw no line for get_memory: it never ran. pytest.ini's addopts carry
+        ``-x --maxfail=1``; the get_capabilities case failed first and the run stopped (``1 failed, 23
+        passed`` of 25 collected). Run alone on 8f03c920db it answers the line, floor awaited 0. The
+        path it takes: MEMORY is Action-Gate floor-routed, so _process_intent_internal's gate calls
+        _handle_floor_with_context directly; dispatch_workflow is never awaited. A seam in
+        dispatch_workflow alone would not have dropped this marker."""
+        import services.intent_service.workflow_dispatcher as wd
+
+        sid = "s2209-get-memory-path"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        never = AsyncMock(side_effect=AssertionError("dispatch_workflow awaited"))
+        _verdict(
+            service, IntentCategory.MEMORY, "get_memory", "what do you remember about me?", 1.0
+        )
+        with patch.object(wd, "dispatch_workflow", never):
+            result = await service.process_intent(
+                message="what do you remember about me?", session_id=sid, user_id=_USER
+            )
+        never.assert_not_awaited()
+        assert dropped == ["action_gate_floor"]
+        assert result.message == FLOOR_TEXT
+        floor.assert_awaited_once()
+
+    async def test_canonical_generic_reroute_runs_without_the_line(self, service, floor, github):
+        """The rail's canonical-generic reroute (workflow_entries._finalize_canonical_rail_result): a
+        canonical-wrapping rail entry whose answer is generic reroutes to the floor. Armed, the marker
+        dropped at the rail; the rerouted floor runs, no line."""
+        sid = "s2209-canonical-generic"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        generic_checks = []
+
+        def _generic(canonical_result, message):
+            generic_checks.append(message)
+            return True
+
+        service._is_generic_canonical_response = _generic
+        _verdict(service, IntentCategory.QUERY, "get_current_time", "what time is it", 1.0)
+        result = await service.process_intent(
+            message="what time is it", session_id=sid, user_id=_USER
+        )
+        assert generic_checks, "the canonical adapter's generic check never ran"
+        assert result.message == FLOOR_TEXT
+        assert "don't see a milestone" not in result.message
+        floor.assert_awaited_once()
+        assert dropped == ["action_rail"]
+        assert _marker(service, sid) is None
+
+    async def test_synthesis_with_a_fetched_source_runs_without_the_line(
+        self, service, floor, github
+    ):
+        """Synthesis over a fetched source (#1187): the source was read, so the turn ran the op; the
+        floor renders the summary from it. No line."""
+        sid = "s2209-synth-fetched"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        service._fetch_summary_source_content = AsyncMock(
+            return_value=("Issue 12 body", {"number": 12})
+        )
+        _verdict(service, IntentCategory.SYNTHESIS, "summarize", "summarize github issue 12", 1.0)
+        result = await service.process_intent(
+            message="summarize github issue 12", session_id=sid, user_id=_USER
+        )
+        service._fetch_summary_source_content.assert_awaited_once()
+        assert result.message == FLOOR_TEXT
+        assert "don't see a milestone" not in result.message
+        floor.assert_awaited_once()
+        assert dropped == ["synthesis_fetched_source"]
+        assert _marker(service, sid) is None
+
+    async def test_synthesis_with_no_fetched_source_is_a_fall_through_and_keeps_the_line(
+        self, service, floor, github
+    ):
+        """Counter-pin: a synthesis verdict with nothing fetched is a category fall-through; the
+        line answers (the same door as pin 1c)."""
+        sid = "s2209-synth-none"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        service._fetch_summary_source_content = AsyncMock(return_value=None)
+        _verdict(service, IntentCategory.SYNTHESIS, "summarize", "MVP", 1.0)
+        result = await service.process_intent(message="MVP", session_id=sid, user_id=_USER)
+        assert result.message == LINE_ONE
+        floor.assert_not_awaited()
+        assert dropped == []
+
+    @pytest.mark.parametrize(
+        "category,action,message",
+        [
+            (IntentCategory.QUERY, "get_information", "MVP"),  # PA's served turn (pin 1)
+            (IntentCategory.CONVERSATION, "chitchat", "the alpha one"),  # pin 1b
+            (IntentCategory.ANALYSIS, "analyze_something_unrailed", "MVP"),  # pin 1c
+        ],
+        ids=["mvp_query_fall_through", "conversation_floor", "analysis_fall_through"],
+    )
+    async def test_the_non_dispatch_turns_pass_no_dispatch_seam(
+        self, service, floor, github, category, action, message
+    ):
+        """The served "MVP" QUERY turn's chain (classifier -> Action Gate: QUERY not floor-routed ->
+        rail: get_information not a registered op, returns before the seam -> _handle_query_intent ->
+        _handle_generic_query -> _handle_unknown_intent) passes no dispatch seam with the marker live.
+        Same for the CONVERSATION and ANALYSIS fall-throughs. Each gets the line."""
+        import services.intent_service.workflow_dispatcher as wd
+
+        sid = f"s2209-nodisp-{action}"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        never = AsyncMock(side_effect=AssertionError("dispatch_workflow awaited"))
+        _verdict(service, category, action, message)
+        with patch.object(wd, "dispatch_workflow", never):
+            result = await service.process_intent(message=message, session_id=sid, user_id=_USER)
+        never.assert_not_awaited()
+        assert dropped == []
+        assert result.message.startswith("I don't see a milestone by that name.")
+        floor.assert_not_awaited()
+
+    def _force_generic(self, service):
+        checks = []
+
+        def _generic(canonical_result, message):
+            checks.append(message)
+            return True
+
+        service._is_generic_canonical_response = _generic
+        return checks
+
+    async def test_main_path_canonical_generic_fallback_for_a_registered_op_drops_at_seam_4(
+        self, service, floor, github
+    ):
+        """Arch 09:28: a CanonicalHandlers answer for a registered op that comes back generic falls
+        back to _handle_unknown_intent; that is the op's dispatch rerouted, agreeing with the rail's
+        reroute: no line, the floor path as before. CanonicalHandlers.can_handle declines any EXACT
+        rail key (Arch 2026-10-04), so TEMPORAL/get_current_time itself goes to the rail (next pin);
+        the main-path fallback sees a registered op only as a near-miss emission that normalize_action
+        maps onto a rail key. ``fetch_get_current_time`` -> ``get_current_time`` is that case."""
+        import services.intent_service.workflow_dispatcher as wd
+
+        sid = "s2209-cg-main-time"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        checks = self._force_generic(service)
+        never = AsyncMock(side_effect=AssertionError("dispatch_workflow awaited"))
+        _verdict(service, IntentCategory.TEMPORAL, "fetch_get_current_time", "what time is it", 1.0)
+        assert service.canonical_handlers.can_handle(
+            service.intent_classifier.classify.return_value
+        )
+        with patch.object(wd, "dispatch_workflow", never):
+            result = await service.process_intent(
+                message="what time is it", session_id=sid, user_id=_USER
+            )
+        never.assert_not_awaited()  # the main canonical path, not the rail
+        assert checks, "the main path's generic check never ran"
+        assert result.message == FLOOR_TEXT
+        assert "don't see a milestone" not in result.message
+        floor.assert_awaited_once()
+        assert dropped == ["canonical_generic_fallback"]
+        assert _marker(service, sid) is None
+        rec = _pending(service, sid)
+        assert rec is None or not rec["pending_action"].get(mp.REARMED_FLAG)
+
+    async def test_exact_temporal_get_current_time_generic_reroutes_on_the_rail_seam_1(
+        self, service, floor, github
+    ):
+        """The exact rail key under TEMPORAL: can_handle declines it, the rail dispatches it, and a
+        generic answer reroutes in _finalize_canonical_rail_result. Seam 1 drops the marker."""
+        sid = "s2209-cg-rail-time"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        checks = self._force_generic(service)
+        _verdict(service, IntentCategory.TEMPORAL, "get_current_time", "what time is it", 1.0)
+        assert not service.canonical_handlers.can_handle(
+            service.intent_classifier.classify.return_value
+        )
+        result = await service.process_intent(
+            message="what time is it", session_id=sid, user_id=_USER
+        )
+        assert checks
+        assert result.message == FLOOR_TEXT
+        floor.assert_awaited_once()
+        assert dropped == ["action_rail"]
+
+    async def test_main_path_canonical_generic_fallback_for_greeting_keeps_the_line(
+        self, service, floor, github
+    ):
+        """greeting is not a registered op: the same fallback is not a dispatch, the line answers."""
+        sid = "s2209-cg-main-greeting"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        checks = self._force_generic(service)
+        _verdict(service, IntentCategory.CONVERSATION, "greeting", "hi", 1.0)
+        result = await service.process_intent(message="hi", session_id=sid, user_id=_USER)
+        assert checks, "the main path's generic check never ran"
+        assert result.message == LINE_ONE
+        floor.assert_not_awaited()
+        assert dropped == []
+
+    async def test_main_path_canonical_generic_fallback_for_guidance_drops_no_rearm(
+        self, service, floor, github
+    ):
+        """GUIDANCE (Arch 21:25, a chosen category) reaching the fallback drops the marker: no line,
+        no re-arm. A setup request is the GUIDANCE landing that takes the canonical path."""
+        sid = "s2209-cg-main-guidance"
+        _arm(service, sid)
+        dropped = _spy_drop_seams(service)
+        checks = self._force_generic(service)
+        service.canonical_handlers._detect_setup_request = lambda intent: "github"
+        service.canonical_handlers.handle = AsyncMock(
+            return_value={"message": "Focus: Deep work", "intent": {}}
+        )
+        _verdict(service, IntentCategory.GUIDANCE, "get_guidance", "help me set up github", 1.0)
+        result = await service.process_intent(
+            message="help me set up github", session_id=sid, user_id=_USER
+        )
+        service.canonical_handlers.handle.assert_awaited_once()
+        assert checks, "the main path's generic check never ran"
+        assert result.message == FLOOR_TEXT
+        assert "don't see a milestone" not in result.message
+        floor.assert_awaited_once()
+        assert dropped == ["canonical_generic_fallback"]
+        assert _marker(service, sid) is None
+        rec = _pending(service, sid)
+        assert rec is None or not rec["pending_action"].get(mp.REARMED_FLAG)
+
+    async def test_the_drop_is_a_no_op_without_a_marker(self, service):
+        assert mp.clear_no_match_marker(service, "s2209-none-here") is False
+        mp.set_no_match_marker(
+            service,
+            "s2209-one",
+            {"pick_titles": ["Beta launch"], "repository": _REPO, "original_message": _ARM_ASK},
+            _USER,
+            "MVP",
+        )
+        assert mp.clear_no_match_marker(service, "s2209-one") is True
+        assert _marker(service, "s2209-one") is None
