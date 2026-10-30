@@ -2,10 +2,10 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.58
+version: 1.59
 created: 2026-06-06
 concept: "Concept: docs/internal/operations/liveness-current-state.md (the wake, heartbeat and alert chain this procedure runs inside); history: docs/internal/operations/duty-cycle-tick-changelog.log"
-changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.58 (2026-10-22) — mail v4: the first inbox read of the day runs the canary; check names seats without one."
+changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.59 (2026-10-30) — Step 1i: Exec runs ship-kickoff.sh --if-due every fire."
 ---
 
 # duty-cycle-tick
@@ -186,6 +186,13 @@ Run `date "+%H:%M %Z (%A %Y-%m-%d)"` and `CronList`. Confirm exactly ONE cron jo
   name its owner and blocker in the `Drain:` line. It's read-only and takes seconds. It carries the
   `piper-shared names under a deny` check, which prints counts only, never names (hard rule 8). The
   procedure lives in `docs/internal/operations/whats-armed.md`.
+
+  🟢 **Step 1i — Exec only, every fire, added 2026-10-30 (v1.59; xian wants the Ship kickoff automatic).**
+  Run `scripts/ship-kickoff.sh --if-due` before the heartbeat. It is silent Monday to Thursday and
+  idempotent: once that Ship's kickoff is in `mailboxes/exec/sent/`, it does nothing. Until 10-30 the call
+  lived only in Exec's cron prompt. A re-arm from memory dropped it, and #064, #065 and #067 went late. A
+  step here can't be dropped that way, because the skill is read at every fire. The backstop that needs no
+  session is a Friday LaunchAgent, which is Pard's to build.
 
 ### Step 2 — Sync (worktree model depends on your host)
 

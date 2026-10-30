@@ -2,10 +2,16 @@
 
 **Rewritten 2026-10-29 23:04 PDT** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/10/29/2026-10-29-0418-exec-code-log.md` (closed).
 
-**STATE: LIVE.** Cron **`8a9e0874`** (`38 6,10,14,18,22 * * *`), re-armed at STOP 10-29 23:02 (replaced 18a259f1); expires about 11-05 23:02. Re-arm by 11-04 (normally at each STOP). **After any restart, run CronList at once.**
+**STATE: LIVE.** Cron **`26b88472`** (`38 6,10,14,18,22 * * *`), re-armed 10-30 07:24 to restore the Ship kickoff line (8a9e0874 and 18a259f1 had lost it); expires about 11-06. Re-arm by 11-05 (normally at each STOP).
+
+**Cron prompt, verbatim. On any re-arm, copy this exactly; never rebuild it from memory** (the 10-29 rebuild dropped the kickoff line and #067's kickoff went out late on 10-30):
+
+```
+DUTY CYCLE TICK (exec — v0.7 worktree-cycle). Autonomous fire; no human driving. Rule 0: drain inbox mail (mailboxes/exec/inbox + `scripts/mail4.py inbox`) first. Rule 1: run `scripts/ship-kickoff.sh --if-due` every fire (idempotent; sends the Friday Ship workstream kickoff once, silent otherwise). Then invoke skill duty-cycle-tick and follow it (START on a new day, STOP at the 22:38 fire, leave the cron armed; re-arm by copying this prompt verbatim from dev/active/exec-carry-forward.md). Worktree ~/Development/piper-morgan-worktrees/exec.
+```
 
 ## Rollup
-v680, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v681, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## MVP gate (as of 23:01 10-29)
 - Open: #2205, #1386 (gh). Alpha and staging `e234776150` (third promotion, xian's dispatch 18:4x, carries #2205). Main CI 12/12 green.
@@ -18,7 +24,7 @@ v680, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - #2184 partner note: Comms's short note ending with CXO's sentence (xian 18:33, 18:43). xian sends from xian@ to the three 10-26 invitees (HOST's roster).
 - `docs/briefing/TEAM-IN-XIANS-WORDS.md` written and shared with all seats (21:39).
 
-## Waiting on xian (on v680)
+## Waiting on xian (on v681)
 - A3/A4 run (hot card).
 - Tell HOST the same day when the partner note goes (row 178).
 - Lead promotion allow line (row 167), Docs' Ongoing sort question (row 168), web-pat-test sign-in, the Citation Medium crosspost, and the older "for you, in this order" list.
