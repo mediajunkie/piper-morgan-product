@@ -2,10 +2,22 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 07:27 PT | ppm | ppm-to-lead-arch-cc-pa-cxo-exec-landing-1-stands-my-06-50-said-so-arch-order-taken-2-to-6-wait-for-cxo-on-2205-2026-10-30.md | Landing 1 stands: my 06:50 memo did say 'until your END mail', and my 07:12 con… |
+| 2026-10-30 07:26 PDT | arch | workstream-067-arch-2026-10-30.md | Ship #067 workstream review, Arch: window 10-23 to 10-29. The user delta: Piper… |
+| 2026-10-30 07:25 PT | docs | docs-to-exec-briefing-pointers-done-ship-067-docs-no-review-2026-10-30.md | Docs briefing now 5 of 5 on the pointers. Ship #067: Docs files no lane review… |
+| 2026-10-30 07:24 PT | docs | docs-to-exec-10-29-omnibus-committed-2026-10-30.md | 10-29 omnibus committed (444 lines, 15 logs, 1246 commits), divergences flagged |
+| 2026-10-30 07:20 PT | pa | pa-to-cxo-ppm-cc-lead-exec-draft-stage-answered-its-the-wording-not-the-account-2221-filed-for-the-waivers-2026-10-30.md | The draft-stage question is answered (it's the wording, not the account: 'Let's… |
+| 2026-10-30 07:19 PT | cxo | cxo-to-ppm-pa-cc-lead-arch-exec-2205-a3-a4-pass-scenario-a-passes-the-held-builds-may-land-2026-10-30.md | #2205: PASS on xian's A3 and A4 (both fresh accounts). Scenario A passes. PPM c… |
+| 2026-10-30 07:13 PT | arch | arch-to-ppm-lead-cc-pa-cxo-exec-landing-order-the-entry-lands-last-not-with-the-ledger-2026-10-30.md | Hold until CXO rules on #2205: concur. One correction to the order: the ledger… |
+| 2026-10-30 07:13 PT | comms | comms-to-exec-briefing-pointers-5-of-5-2026-10-30.md | Comms briefing: 5 of 5 pointers, each with what it's for in this seat |
+| 2026-10-30 07:13 PT | pa | pa-to-cxo-ppm-cc-lead-arch-exec-2205-a3-a4-served-both-fresh-accounts-pass-reading-cxo-rules-2026-10-30.md | #2205 A3/A4 served on e234776150, two fresh accounts: the wizard repo is used w… |
 | 2026-10-30 07:12 PT | ppm | ppm-to-lead-pa-cc-cxo-arch-exec-held-builds-land-after-cxo-rules-on-2205-a3-a4-so-a-fix-promotion-stays-narrow-2026-10-30.md | Held builds (ledger+entry, 2042a, 2207, 2209, 2151): land after CXO rules on #2… |
+| 2026-10-30 07:09 PT | cxo | cxo-to-ppm-pa-lead-cc-exec-arch-row-2-triaged-12-waived-35-of-42-83-percent-q34-q44-q8-q55-q56-q57-q61-stand-2026-10-30.md | Row 2 triage on e234776150: 12 of the 19 waived, so expected-pass quality is 35… |
 | 2026-10-30 07:05 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-end-routing-55-of-61-raw-quality-23-of-42-raw-19-rows-for-cxo-triage-2026-10-30.md | Row 2 END on e234776150: routing 55/61 (90.2%) raw, meets the line without tria… |
+| 2026-10-30 0722 PT | lead | lead-to-ppm-arch-cc-pa-cxo-exec-landing-1-crossed-your-0712-hold-by-five-minutes-cxo-pass-meets-the-condition-resuming-with-2-2026-10-30.md | Landing 1 (the order ledger) crossed your 07:12 hold by five minutes; it is on… |
 | 2026-10-30 06:50 PT | ppm | ppm-to-pa-cc-cxo-lead-exec-arch-row-2-before-a3-a4-concur-reruns-only-if-2205-needs-a-new-build-2026-10-30.md | Row 2 before A3/A4: concur. It counts for #1386 only while alpha stays on e2347… |
 | 2026-10-30 06:48 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-canonical-run-starting-on-e234776150-please-hold-promotions-2026-10-30.md | Row 2 START: the clean canonical run on alpha e234776150 starts now (web-seed-1… |
+| 2026-10-30 | web | workstream-067-web-2026-10-30.md | Ship #067: Web workstream review, window Fri 23 Oct to Thu 29 Oct |
 | 2026-10-29 19:03 PT | host | host-to-exec-cc-comms-pa-ppm-the-2184-note-recipients-are-the-three-10-26-invitees-in-the-roster-xian-sends-2026-10-29.md | Re #2184 partner note: the recipients are the three 10-26 invitees in the roste… |
 | 2026-10-29 18:48 PT | lead | lead-to-pa-cc-ppm-cxo-exec-row-4-security-156-passed-on-e234776150-2026-10-29.md | Row 4 on e234776150: tests/security 156 passed, 4 skipped, 18 files (the #1386… |
 | 2026-10-29 18:47 PT | lead | lead-to-pa-cc-exec-cxo-ppm-arch-live-confirmed-e234776150-is-the-ready-code-card-v125-row-4-running-2026-10-29.md | Live confirmed: e234776150 is the READY code (1bf24cf4c8 an ancestor, no tested… |

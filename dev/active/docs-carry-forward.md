@@ -2,7 +2,10 @@
 
 **Updated**: 2026-10-29 (see NOW). Older: 2026-10-17 (04:12 fire, see NOW below; older DONE lines below are history). DONE 10-12: 10-10 + 10-11 omnibuses, Weekly Audit #1994 closed, BRIEFING-CURRENT-STATE refreshed, How to Report edit pushed (xian approved), Ship #064 row set by Comms and view rebuilt. Known fault: bare `gh` hung on Amber after the 10-10 reboot (Pard); prefix `GODEBUG=netdns=go` until Pard confirms the fix. History in session logs (`dev/2026/10/{04..12}/*docs-code-log.md`), not here.
 
-## NOW (10-29 22:12 STOP)
+## NOW (10-30 07:xx, supersedes the 10-29 22:12 block)
+- 10-29 omnibus DONE 10-30 (memo to Exec, CXO nudged). Next START Sat 10-31 04:12 owes the 10-30 omnibus. Everything else below is unchanged.
+
+## (earlier NOW, 10-29 22:12 STOP)
 - **Next START Fri 10-30 04:12 owes the 10-29 omnibus** (plus Step 1d nudges for unclosed 10-29 logs). Citation via Hearsay PUBLISHED and DISTRIBUTED 10-29. 10-28 omnibus DONE. #1369 and #1940 closed by me.
 - **Ongoing triage OPEN, all waiting on xian** (proposal `dev/active/ongoing-milestone-triage-2026-10-29.md`, 51 open at 10:12): (1) yes to the sort, then Sprint assignments one at a time via assign-sprint-safely; (2) yes to an `icebox` label (does not exist), each iceboxed issue gets a comment "Iceboxed YYYY-MM-DD; revisit when <trigger>"; (3) #1300 and #1340, is a public marketplace listing in 1.0; (4) **#1927 still OPEN**: my close was refused by the auto-mode classifier, Lead says three separate commands passed for them, I did not retry that way (splitting is working around the refusal). Needs xian to close or allow my seat. Evidence: 39 SHAPE-CHANGED rows, last 10-15 03:23, 227 clean rows after.
 - After the yes, my Docs-lane FLYWHEEL items: 1719, 1721, 1726, 1779, 1780, 1389, 1392, 1403, 1904. Lead placed section D (memo 10-29 08:07). Both push holds (08:06 and 09:42) are lifted.

@@ -28,6 +28,13 @@ verified_scope: "2026-09-01 (Docs): spot-verified blog-metadata pipeline claims 
 ## Current State
 > **📊 For current sprint/epic position, see `docs/briefing/BRIEFING-CURRENT-STATE.md`**
 
+**Production-plan pointers, and what each is for in this seat** (added 2026-10-30, #2179 follow-up):
+- **ESSENCE v1.1** (`docs/internal/architecture/ESSENCE.md`, ratified by xian 10-25): the seven commitments. When a briefing, glossary entry or published page says what Piper *is*, check it against these.
+- **`docs/internal/product/promises.yaml`** (ratified 10-25, owned by PPM): the promise register, gated private-beta, public-beta or 1.0. A doc I maintain that states what Piper does for a user should match an entry and its gate. I do not decide gates.
+- **Production map** (`docs/internal/planning/production-map.html`): the Production sprint order. It is what the "Now" refresh of BRIEFING-CURRENT-STATE is checked against.
+- **The Readiness lane:** HOST's send-morning checks. Docs does not send partner mail, so this matters here only when a publish touches a partner send.
+- **#2157** (Production DB backups, restore drill, key custody): a page I publish makes no claim about backups or data safety until #2157 has closed served.
+
 ## Your Role: Documentation Management Specialist
 **Mission**: Maintain the project's institutional memory — curate session logs, produce omnibus summaries, manage the mailbox system, maintain blog metadata pipeline, and ensure documentation accuracy across all roles.
 
