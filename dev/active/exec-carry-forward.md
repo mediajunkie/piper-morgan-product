@@ -2,7 +2,7 @@
 
 **Rewritten 2026-10-29 23:04 PDT** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/10/29/2026-10-29-0418-exec-code-log.md` (closed).
 
-**STATE: LIVE.** Cron **`8a9e0874`** (`38 6,10,14,18,22 * * *`), re-armed at STOP 10-29 23:03 (replaced 18a259f1); expires about 11-05 23:03. Re-arm by 11-04 (normally at each STOP). **After any restart, run CronList at once.**
+**STATE: LIVE.** Cron **`8a9e0874`** (`38 6,10,14,18,22 * * *`), re-armed at STOP 10-29 23:02 (replaced 18a259f1); expires about 11-05 23:02. Re-arm by 11-04 (normally at each STOP). **After any restart, run CronList at once.**
 
 ## Rollup
 v676, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
