@@ -40,6 +40,7 @@ from services.intent_service.repo_clarification import (
     RepoNameResolution,
     extract_natural_repo_name,
     extract_repo_answer,
+    handle_repo_question_turn,
     resolve_repo_name,
     strip_trailing_repo_clause,
 )
@@ -827,3 +828,77 @@ class TestClosePathRepoClarification:
         assert result.success is False
         assert result.clarification_type == "repository_required"
         assert "set my default repo to" in result.message
+
+
+class TestNoTurnPrincipal2207:
+    """#2207: a bare repo name answered on a turn with NO principal resolves
+    nothing and writes nothing, even though the offer stores user A (Arch's
+    13:04 10-29 rule: the turn's principal is the only one a read runs under)."""
+
+    pytestmark = pytest.mark.asyncio
+
+    async def test_bare_name_without_turn_principal_resolves_nothing(self, service):
+        offer = {
+            "pending_action": {
+                "kind": REPO_QUESTION_KIND,
+                "user_id": _USER,
+                "issue_number": 108,
+                "workflow_type": "update_issue",
+                "original_message": ASK_NO_REPO,
+            }
+        }
+        with (
+            patch(
+                "services.intent_service.repo_clarification.resolve_repo_name",
+                new=AsyncMock(),
+            ) as resolve,
+            patch(
+                "services.intent_service.repo_clarification._bind_and_dispatch",
+                new=AsyncMock(),
+            ) as bind,
+            patch(
+                "services.intent_service.repo_clarification._persist_user_default",
+                new=AsyncMock(),
+            ) as persist,
+        ):
+            result = await handle_repo_question_turn(
+                offer,
+                "test-piper-morgan",
+                session_id="t-2207",
+                user_id=None,
+                intent_service=service,
+            )
+        assert result is None  # declined: the message routes normally
+        resolve.assert_not_awaited()
+        bind.assert_not_awaited()
+        persist.assert_not_awaited()
+
+    async def test_bare_name_with_turn_principal_resolves_under_it(self, service):
+        """The positive side: with a principal, resolution runs under THAT id."""
+        offer = {
+            "pending_action": {
+                "kind": REPO_QUESTION_KIND,
+                "user_id": _USER,
+                "issue_number": 108,
+                "workflow_type": "update_issue",
+                "original_message": ASK_NO_REPO,
+            }
+        }
+        unresolved = RepoNameResolution(status="not_found", full_name=None)
+        with (
+            patch(
+                "services.intent_service.repo_clarification.resolve_repo_name",
+                new=AsyncMock(return_value=unresolved),
+            ) as resolve,
+            patch("services.intent_service.repo_clarification._rearm", return_value=True),
+        ):
+            result = await handle_repo_question_turn(
+                offer,
+                "test-piper-morgan",
+                session_id="t-2207b",
+                user_id=_USER,
+                intent_service=service,
+            )
+        resolve.assert_awaited_once()
+        assert resolve.await_args.args[0] == _USER
+        assert result is not None and result.get("requires_clarification") is True

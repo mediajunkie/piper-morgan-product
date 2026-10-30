@@ -909,8 +909,19 @@ async def handle_repo_question_turn(
             intent_service=intent_service,
         )
 
-    principal = str(user_id) if user_id else payload.get("user_id")
-    resolution = await resolve_repo_name(principal, ref)
+    # #2207 (Arch's 2026-10-29 13:04 rule, the same change as #2199's fix): a
+    # bare name is matched against the TURN's principal's repositories, never
+    # the offer's stored user. No turn principal → no resolution; the pick
+    # declines and the message routes normally (nothing read, nothing written).
+    if not user_id:
+        logger.info(
+            "repo_question_no_turn_principal",
+            name=ref,
+            offer_user=payload.get("user_id"),
+            session_id=session_id,
+        )
+        return None
+    resolution = await resolve_repo_name(str(user_id), ref)
     # ``and full_name``: a "resolved" status always carries one (see
     # resolve_repo_name) — the narrow is for mypy; the impossible
     # resolved-without-a-name shape re-arms honestly below.
