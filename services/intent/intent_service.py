@@ -319,6 +319,12 @@ _RESUME_ARMED_ONLY_DECLINES = frozenset(
     }
 )
 
+# #2225 second shape (CXO 15:16/15:26): the exact Settings pointer line.
+SET_DEFAULT_GITHUB_REPO_POINTER = (
+    "I can't change your default repository from chat. "
+    "Open Settings \u2192 Integrations \u2192 GitHub to set it."
+)
+
 # #1769 axes source: accepting the resume offer re-enters the #585 standup
 # interview — the SAME flow whose start the registry declares at this entry
 # (WRITE×PRIVATE, #1557-classified by reading the handler; resuming mutates
@@ -9210,6 +9216,28 @@ class IntentService:
         except Exception as e:  # silent-ok: logged; the reply keeps only the scoped line
             self.logger.warning("default_repo_open_issue_count_failed", error=str(e))
             return None
+
+    async def _handle_set_default_github_repo(
+        self, intent: Intent, workflow_id: str
+    ) -> IntentProcessingResult:
+        """#2225 second shape: a read-only pointer to Settings (CXO 15:26, verbatim).
+
+        Reads no default, writes no default, makes no GitHub call, asks no confirm.
+        The conversational setter is ``_handle_set_default_repo`` (#1327/#2205); this
+        op exists so "Set my default GitHub repository to owner/name" lands on a
+        true line instead of the no-match line.
+        """
+        return IntentProcessingResult(
+            success=True,
+            message=SET_DEFAULT_GITHUB_REPO_POINTER,
+            intent_data={
+                "category": intent.category.value,
+                "action": intent.action,
+                "confidence": intent.confidence,
+            },
+            workflow_id=workflow_id,
+            requires_clarification=False,
+        )
 
     async def _handle_set_default_repo(
         self, intent: Intent, workflow_id: str

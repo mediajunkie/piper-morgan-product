@@ -99,6 +99,7 @@ NO_USER_DATA_READ: Dict[str, str] = {
     "prioritize": "computes over the items in the request itself",
     "strategic_planning": "plans from the request's own goal and timeframe",
     "get_contextual_guidance": "advice, no claim about stored data",
+    "set_default_github_repo": "a fixed Settings pointer (2225); reads and writes nothing",
 }
 
 

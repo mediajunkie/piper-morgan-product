@@ -268,6 +268,11 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("EXECUTION", "list_todos"): ActionDisposition.WORKFLOW,
     ("EXECUTION", "next_todo"): ActionDisposition.WORKFLOW,
     ("EXECUTION", "delete_todo"): ActionDisposition.WORKFLOW,
+    # #2225 (second shape, CXO 15:26): "Set my default GitHub repository to owner/name"
+    # was classified execution/set_default_github_repo with no handler. Today it is a
+    # read-only pointer to Settings (writes nothing); the rail entry is in
+    # workflow_entries.py.
+    ("EXECUTION", "set_default_github_repo"): ActionDisposition.WORKFLOW,
     # ---- ANALYSIS (was stub → now floor) ----
     ("ANALYSIS", "analyze_blockers"): ActionDisposition.FLOOR,
     # ---- SYNTHESIS ----
@@ -359,6 +364,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("EXECUTION", "list_todos"): "Show me my open todos",
     ("EXECUTION", "next_todo"): "Pull up whichever todo you think comes next",
     ("EXECUTION", "delete_todo"): "Scrap the todo about renaming things",
+    ("EXECUTION", "set_default_github_repo"): "Set my default GitHub repository to owner/name",
     # 2026-10-14 (Lead; Arch's standing-member rule, decisions.log 10-13/10-14): the
     # ANALYSIS margin fix — an ADDITIVE example (the least-perturbing lever) for
     # the corpus row "let's analyze the risk here" (expects analyze_blockers), which
@@ -710,6 +716,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "list_prs_query": Verb.LIST,
     "review_issue_query": Verb.GET,
     "set_default_repo": Verb.SET,  # RECONNECT #1327
+    "set_default_github_repo": Verb.SET,  # #2225 second shape (Settings pointer)
     "get_default_repo": Verb.GET,  # RECONNECT #1327 build #2
     "set_timezone": Verb.SET,  # #1876
     "list_milestones_query": Verb.LIST,

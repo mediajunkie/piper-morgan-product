@@ -647,6 +647,9 @@ EXEMPT: Dict[str, str] = {
     # Lead 10-23 (#2151, CXO + Arch): declines on hosted (the server's tree is not the
     # user's) and when the local read fails; reads none of the user's data. Arch to review.
     "local_git_status_query": "declines plainly (CXO's line); never reads the user's data",
+    # Lead 10-30 (#2225 second shape, CXO 15:26): a fixed Settings pointer; reads no
+    # default, writes nothing, makes no claim about the user's data. Arch to review.
+    "set_default_github_repo": "fixed Settings pointer; reads and writes nothing",
 }
 
 # Row-level causes used beside the inventory header's shared ones.

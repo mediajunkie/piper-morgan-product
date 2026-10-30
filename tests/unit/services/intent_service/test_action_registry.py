@@ -409,6 +409,7 @@ class TestNoStubPhrases:
             "list_todos",
             "next_todo",
             "delete_todo",
+            "set_default_github_repo",  # 2225: rail entry, Settings pointer
         }
 
         for cat, act in workflow_actions:

@@ -98,6 +98,7 @@ CATALOG_ORDER_LEDGER: tuple[str, ...] = (
     "get_top_priority",
     "manage_portfolio",
     "manage_repos",
+    "set_default_github_repo",  # 2225 second shape: appended at the end (rule above)
 )
 
 

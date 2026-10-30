@@ -3209,6 +3209,29 @@ def register_default_workflows() -> None:
         flip_write_allowlist_key="set_default_repo",
     )
 
+    # #2225 second shape (CXO 15:26): "Set my default GitHub repository to
+    # owner/name" classifies to execution/set_default_github_repo, which had no
+    # handler and fell to the no-match line. Until a setter is built the handler
+    # returns CXO's Settings line and writes nothing (Arch 16:23: declare the axes
+    # as the handler behaves NOW, never as the setter it will become).
+    # effect: READ, outwardness: PRIVATE — the weakest truthful pair. The handler
+    # reads no preference, writes no preference, calls no GitHub API; READ is the
+    # floor of EffectClass and PRIVATE the floor of Outwardness (nobody else is
+    # handed anything). When a real setter replaces it, these become WRITE/PRIVATE
+    # and flip_write_allowlist_key etc. must be re-run as a new unit.
+    set_default_github_repo_entry = WorkflowEntry(
+        entry_point=_make_query_dispatch_entry_point("_handle_set_default_github_repo"),
+        effect=EffectClass.READ,
+        outwardness=Outwardness.PRIVATE,
+        description="Set the default GitHub repository for writes",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+        # flip_group read_status (same as get_default_repo, its settings sibling):
+        # a READ-by-behavior pointer, so the per-group flip may reach it; the
+        # 1667 audit forbids an ungrouped READ op.
+        flip_group="read_status",
+    )
+
     # #1560: create_reminder onto the rail (the structural half of the #1517
     # capability-gaslighting incident). Its only dispatch was the legacy
     # `elif mapped_action == "create_reminder"` inside _handle_execution_intent —
@@ -4073,6 +4096,7 @@ def register_default_workflows() -> None:
         "clear_todos": clear_todos_entry,
         # RECONNECT #1327 gap 1: set-default-repo (QUERY category, pre-classifier action).
         "set_default_repo": set_default_repo_entry,
+        "set_default_github_repo": set_default_github_repo_entry,
         # RECONNECT #1327 build #2: get-default-repo (read counterpart).
         "get_default_repo": get_default_repo_entry,
         # #1876: set-timezone (QUERY category, pre-classifier reachable only via
