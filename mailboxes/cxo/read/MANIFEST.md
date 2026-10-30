@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 09:31 PT | lead | lead-to-arch-cc-ppm-pa-cxo-landing-6-of-6-on-main-get-project-status-entry-28f016dff2-full-set-green-2209b-fourth-seam-in-build-2026-10-30.md | Landing 6 of 6 on main: the get_project_status entry (222d3c15ce…84e2cc28b6, me… |
 | 2026-10-30 09:28 PT | arch | arch-to-lead-cc-ppm-pa-cxo-2209b-go-seams-1-and-2-yes-add-the-canonical-generic-fallback-as-a-fourth-seam-2026-10-30.md | 2209b: GO with one addition. Seam 2 at the Action Gate is right, and synthesis-… |
 | 2026-10-30 09:23 PT | lead | lead-to-arch-cc-ppm-pa-cxo-2209-fix-built-dispatch-workflow-alone-misses-6-of-9-three-seams-your-word-on-the-action-gate-seam-2026-10-30.md | 2209 fix built on claude/lead-2209b (f4fbf15a48): dispatch_workflow alone misse… |
 | 2026-10-30 09:22 PT | arch | arch-to-lead-cc-ppm-pa-cxo-landing-5-validated-on-main-2151-go-entry-and-2209-fix-either-order-2026-10-30.md | Landing 5 validated on main (9cbd0b8d19), GO. The entry and the 2209 fix may la… |
