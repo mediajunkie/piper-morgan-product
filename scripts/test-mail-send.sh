@@ -27,7 +27,7 @@ printf 'manifest\n' > "$SEED/mailboxes/lead/read/MANIFEST.md"
 git -C "$SEED" add -A; git -C "$SEED" commit -qm "seed"; git -C "$SEED" push -q origin HEAD:main
 SRC_SCRIPTS="$(cd "$(dirname "$0")" && pwd)"
 # mail-send.sh runs the #1691 / #1845 / #1616 guards out of $REPO/scripts, so each clone needs them (untracked)
-clone(){ git clone -q "$ORIGIN" "$T/$1"; mkdir -p "$T/$1/scripts"; cp "$SRC_SCRIPTS"/check_autoclose_keywords.py "$SRC_SCRIPTS"/mailbox_bearer_lint.py "$SRC_SCRIPTS"/mailbox_filename_lint.py "$SRC_SCRIPTS"/stamp_check.py "$SRC_SCRIPTS"/draft_births.py "$T/$1/scripts/"; }   # a fresh worktree-clone = one agent
+clone(){ git clone -q "$ORIGIN" "$T/$1"; mkdir -p "$T/$1/scripts"; cp "$SRC_SCRIPTS"/check_autoclose_keywords.py "$SRC_SCRIPTS"/mailbox_bearer_lint.py "$SRC_SCRIPTS"/mailbox_filename_lint.py "$SRC_SCRIPTS"/stamp_check.py "$SRC_SCRIPTS"/draft_births.py "$SRC_SCRIPTS"/session_trailers.sh "$T/$1/scripts/"; }   # a fresh worktree-clone = one agent
 
 echo "── T1: happy-path add (memo lands on origin/main) ──"
 clone wtA
@@ -438,6 +438,23 @@ DA_OUT=$(PIPER_REPO="$T/wtDA" bash "$V3" "mail(da): draft age" mailboxes/cxo/inb
 git -C "$T/wtDA" fetch -q origin
 onmain "$T/wtDA" mailboxes/cxo/inbox/memo-da.md && ok "stale draft still sends (advisory)" || no "stale draft NOT sent"
 printf '%s' "$DA_OUT" | grep -q "draft-age WARN: mailboxes/cxo/inbox/memo-da.md was first written" && ok "draft-age WARN printed" || no "no draft-age WARN"
+
+echo ""
+echo "── T-stamp-now (10-30): 'date: now' becomes one clock reading in every copy; a stamp ahead is refused; the commit carries derived trailers ──"
+clone wtSN
+printf -- '---\nfrom: cio\ndate: now\n---\nbody\n' > "$T/wtSN/mailboxes/cxo/inbox/memo-sn.md"
+cp "$T/wtSN/mailboxes/cxo/inbox/memo-sn.md" "$T/wtSN/mailboxes/lead/inbox/memo-sn.md"
+CLAUDE_CODE_BRIDGE_SESSION_ID=session_TEST PIPER_REPO="$T/wtSN" bash "$V3" "mail(sn): now" mailboxes/cxo/inbox/memo-sn.md mailboxes/lead/inbox/memo-sn.md >/dev/null 2>&1
+git -C "$T/wtSN" fetch -q origin
+SN_A=$(git -C "$T/wtSN" show origin/main:mailboxes/cxo/inbox/memo-sn.md 2>/dev/null | sed -n 's/^date: //p')
+SN_B=$(git -C "$T/wtSN" show origin/main:mailboxes/lead/inbox/memo-sn.md 2>/dev/null | sed -n 's/^date: //p')
+printf '%s' "$SN_A" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2} PT$' && [ "$SN_A" = "$SN_B" ] && ok "date: now stamped, same in both copies ($SN_A)" || no "date: now not stamped alike ('$SN_A' / '$SN_B')"
+git -C "$T/wtSN" log -1 --format=%B origin/main | grep -q "^Claude-Session: https://claude.ai/code/session_TEST$" && ok "commit carries the derived Claude-Session trailer" || no "no Claude-Session trailer"
+AHEAD1=$(TZ=America/Los_Angeles date -v+2M '+%Y-%m-%d %H:%M')
+printf -- '---\nfrom: cio\ndate: %s PT\n---\nbody\n' "$AHEAD1" > "$T/wtSN/mailboxes/cxo/inbox/memo-ahead.md"
+PIPER_REPO="$T/wtSN" bash "$V3" "mail(sn): ahead" mailboxes/cxo/inbox/memo-ahead.md >/dev/null 2>&1; SN_RC=$?
+git -C "$T/wtSN" fetch -q origin
+[ "$SN_RC" -ne 0 ] && ! onmain "$T/wtSN" mailboxes/cxo/inbox/memo-ahead.md && ok "a stamp 2 min ahead is refused" || no "a stamp 2 min ahead was sent (rc $SN_RC)"
 [ "$(printf '%s\n' "$DA_OUT" | tail -1 | grep -c 'first written over an hour ago')" = "1" ] && ok "summary is the last line (survives | tail -1)" || no "summary not last"
 [ ! -s "$T/wtDA/dev/state/draft-births.tsv" ] && ok "ledger row dropped after send" || no "ledger row kept"
 

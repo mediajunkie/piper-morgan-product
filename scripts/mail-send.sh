@@ -135,10 +135,13 @@ fi
 
 # --- STAMP GUARD at the doorway (xian 2026-10-16, "Yes, date-check seems sound", via Exec): a memo's
 # `date:` must be a reading of the clock. 7 of 10 roles wrote guessed times in the week of 10-09; the
-# prose rule (duty-cycle-tick v1.50) didn't hold. Blocks a time >5 min ahead of now or an HH:Mx form
+# prose rule (duty-cycle-tick v1.50) didn't hold. Blocks a time ahead of now or an HH:Mx form
 # >10 min from now; warns on a near HH:Mx, a time >30 min behind, or a past date-only stamp. Only NEW
 # memos are checked: a file whose content is already on origin/main (a move to read/) is skipped.
 # MAIL_STAMP_CHECK=warn turns blocks into warnings for a memo deliberately stamped another time.
+# 10-30 (xian's yes via Exec): write `date: now` and the tool stamps the clock, one reading for the memo and
+# every copy; and a stamp ahead of the clock by even a minute is refused (it was 5).
+(cd "$REPO" && python3 "$REPO/scripts/stamp_check.py" --stamp-now "$@")
 (cd "$REPO" && python3 "$REPO/scripts/stamp_check.py" --mail "$@"); STAMP_RC=$?
 if [ "$STAMP_RC" -eq 1 ]; then
     echo "mail-send: ⛔ REFUSING — a memo's date: above isn't a clock reading. Run TZ=America/Los_Angeles date, fix the date: line, re-run. Nothing was sent." >&2
@@ -310,7 +313,9 @@ while :; do
     fi
 
     # commit-tree uses the agent's configured git identity (user.name/email) — all our agents have it set.
-    commit=$(G commit-tree "$tree" -p "$base" -m "$MSG") || { echo "mail-send: commit-tree failed" >&2; exit 1; }
+    # Attribution trailers, derived from the session, never typed (10-30); none derivable means none added.
+    TRAILERS=$("$REPO/scripts/session_trailers.sh" 2>/dev/null || true)
+    commit=$(G commit-tree "$tree" -p "$base" -m "$MSG" ${TRAILERS:+-m "$TRAILERS"}) || { echo "mail-send: commit-tree failed" >&2; exit 1; }
     if G push "$REMOTE" "$commit:refs/heads/$BRANCH" 2>/dev/null; then
         echo "mail-send v3: pushed ${commit:0:9} → $REMOTE/$BRANCH ✓ (attempt $attempt)"
         # --- #1310: self-reconcile the worktree residue ------------------------------------------
