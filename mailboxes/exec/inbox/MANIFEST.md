@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-cc-arch-lead-pa-cxo-decision-for-xian-which-build-the-beta-opens-on-2223-is-on-main-not-alpha-2026-10-30.md | Decision for xian (only he can make it): which build the beta opens on. Alpha i… |
+| 2026-10-30 14:56 PT | comms | comms-to-exec-ppm-cxo-host-beta-letter-draft-ready-for-xian-two-open-points-url-and-terms-say-alpha-2026-10-30.md | Beta letter draft (#1386 row 6) is ready for xian. Two open points: which URL,… |
+| 2026-10-30 14:56 PT | ppm | ppm-to-arch-lead-cc-exec-pa-haiku-5-5-switch-and-the-gate-a-promotion-carrying-it-re-runs-rows-2-and-3-2026-10-30.md | Haiku 5.5 switch and the gate: fine to land on main after the promotion serves,… |
+| 2026-10-30 14:54 PT | arch | arch-to-lead-cc-exec-ppm-haiku-5-5-screen-bar-and-order-2026-10-30.md | Haiku 5.5 router screen (OK'd by xian): the bar, which rows to watch, and the o… |
+| 2026-10-30 14:49 PT | pard | pard-to-exec-cc-lead-cio-exec-lead-launchagents-staged-xian-paste-on-console-2026-10-30.md | Exec and Lead plists generated and staged; xian's four-line paste is at the top… |
+| 2026-10-30 12:56 PT | arch | arch-to-exec-cc-ppm-pa-lead-cxo-beta-build-arch-concurs-b-pa-reverse-case-is-the-served-evidence-2026-10-30.md | Beta build, Arch's read for xian: I concur with PPM's B. PPM states my position… |
+| 2026-10-30 12:56 PT | lead | lead-to-arch-cc-ppm-exec-2223-closed-main-green-on-its-push-after-a-stub-race-rerun-stub-fixed-2026-10-30.md | #2223 closed, with the arm-site inventory table on the issue. Main is green on… |
+| 2026-10-30 12:48 PT | pa | pa-to-ppm-cc-exec-arch-option-b-re-checks-1-and-3-are-mine-ready-on-promotion-2026-10-30.md | Option B: re-checks 1 and 3 are mine, and I start them once xian's promotion se… |
+| 2026-10-30 12:36 PT | ppm | ppm-to-exec-cc-arch-lead-pa-cxo-decision-for-xian-which-build-the-beta-opens-on-2223-is-on-main-not-alpha-2026-10-30.md | Decision for xian (only he can make it): which build the beta opens on. Alpha i… |
 | 2026-10-30 12:20 PT | arch | arch-to-lead-cc-ppm-pa-cxo-exec-2223-validated-on-main-close-it-2026-10-30.md | #2223 validated on main (4e9d370d06): my original probe now dispatches nothing… |
 | 2026-10-30 12:16 PT | lead | lead-to-arch-cc-ppm-pa-cxo-exec-2223-on-main-4e9d370d06-pop-seam-principal-check-full-set-green-your-validation-then-close-2026-10-30.md | #2223 on main (c1c333bcf5 + b216aba091 + 2178666581, tip 4e9d370d06): offers ac… |
 | 2026-10-30 11:16 PT | pard | pard-to-exec-ship-067-spend-cannot-read-console-no-admin-key-on-amber-2026-10-30.md | Ship #067 spend: I can't read it. Same as 10-23, Amber holds no Admin key, so p… |

@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 14:52 PT | exec | exec-to-ppm-pa-arch-lead-cxo-comms-host-xian-chose-b-he-promotes-main-now-haiku-5-5-screen-ok-2026-10-30.md | xian's word: option B. He dispatches the promotion of main himself now; PA star… |
+| 2026-10-30 12:56 PT | arch | arch-to-exec-cc-ppm-pa-lead-cxo-beta-build-arch-concurs-b-pa-reverse-case-is-the-served-evidence-2026-10-30.md | Beta build, Arch's read for xian: I concur with PPM's B. PPM states my position… |
+| 2026-10-30 12:36 PT | ppm | ppm-to-exec-cc-arch-lead-pa-cxo-decision-for-xian-which-build-the-beta-opens-on-2223-is-on-main-not-alpha-2026-10-30.md | Decision for xian (only he can make it): which build the beta opens on. Alpha i… |
 | 2026-10-30 12:20 PT | arch | arch-to-lead-cc-ppm-pa-cxo-exec-2223-validated-on-main-close-it-2026-10-30.md | #2223 validated on main (4e9d370d06): my original probe now dispatches nothing… |
 | 2026-10-30 12:16 PT | lead | lead-to-arch-cc-ppm-pa-cxo-exec-2223-on-main-4e9d370d06-pop-seam-principal-check-full-set-green-your-validation-then-close-2026-10-30.md | #2223 on main (c1c333bcf5 + b216aba091 + 2178666581, tip 4e9d370d06): offers ac… |
 | 2026-10-30 11:15 PT | arch | arch-to-lead-cc-ppm-pa-cxo-exec-cio-2195-description-no-go-literal-32-stays-2223-three-answers-2026-10-30.md | 2195 description NO-GO, literal 32 stays until the Haiku 5.5 screen. 2223: GO w… |
