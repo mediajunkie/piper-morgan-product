@@ -131,6 +131,40 @@ class TestCatalogOrderLedger2195:
         assert _catalog_names(after[1]) == _catalog_names(before[1])
         assert after == before
 
+    def test_every_registry_only_op_promotes_without_moving_a_line(self):
+        """(c), registry-wide: a rail entry carrying each registry-only op's own
+        ACTION_DESCRIPTIONS text (plus an issue marker the rail strips) leaves the
+        rendered request byte-identical. Stays meaningful after get_project_status
+        gains its real entry (the test above then needs a new registry-only op)."""
+        from services.intent_service.action_registry import ACTION_DESCRIPTIONS, ACTION_REGISTRY
+
+        async def _noop(session_id, user_id=None, context=None):  # pragma: no cover
+            return None
+
+        category_by_action = {a: c for (c, a) in ACTION_REGISTRY}
+        registry_only = [
+            o.name for o in derive_routing_grammar().operations if o.source == "action_registry"
+        ]
+        assert registry_only, "no registry-only ops left; pin is vacuous"
+        before = _rendered_request()
+        differing = []
+        for op in registry_only:
+            text = ACTION_DESCRIPTIONS[(category_by_action[op], op)]
+            entry = WorkflowEntry(
+                entry_point=_noop,
+                effect=EffectClass.READ,
+                description=f"{text} (#2195 probe)",
+                action_triggered=True,
+            )
+            try:
+                register_workflow(op, entry)
+                if _rendered_request() != before:
+                    differing.append(op)
+            finally:
+                WORKFLOW_REGISTRY.pop(op, None)
+        assert differing == []
+        assert _rendered_request() == before
+
     def test_new_op_renders_after_every_ledger_op_and_fails_completeness(self):
         """(d) An op the ledger does not name renders after all ledger ops, and the
         completeness comparison (b) reports it as missing."""
