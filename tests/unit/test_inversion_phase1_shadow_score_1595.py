@@ -261,9 +261,16 @@ class TestRouterMatchesFloorDisposition:
 
         return SimpleNamespace(outcome=outcome, operation=operation, route_label=outcome)
 
-    def test_get_project_status_is_floor_disposition(self):
+    def test_registry_only_floor_op_is_floor_disposition(self):
         cats = p1._op_category_map()
-        assert p1._expected_action_is_floor_disposition("get_project_status", cats) is True
+        # get_top_priority: registry FLOOR, no rail entry → the lenient rule holds.
+        assert p1._expected_action_is_floor_disposition("get_top_priority", cats) is True
+        # get_project_status gained its read_floor_2 rail entry on 2026-10-29
+        # (#2195, on the order ledger): a decline is no longer "the same
+        # destination" for it, so the lenient rule ends (the 2026-10-02 clause).
+        # Measured: tonight's main results re-scored under this rule lose 4
+        # STATUS rows (495 → 491 of 550), with identical router output.
+        assert p1._expected_action_is_floor_disposition("get_project_status", cats) is False
         # A rail-served read is NOT floor, and an unknown action is NOT floor.
         assert p1._expected_action_is_floor_disposition("list_todos_query", cats) is False
         assert p1._expected_action_is_floor_disposition("no_such_action_xyz", cats) is False
@@ -271,18 +278,18 @@ class TestRouterMatchesFloorDisposition:
     def test_none_and_clarify_match_a_floor_disposition_expectation(self):
         cats = p1._op_category_map()
         for outcome in ("none", "clarify"):
-            ok, note = p1.router_matches("action:get_project_status", self._decision(outcome), cats)
+            ok, note = p1.router_matches("action:get_top_priority", self._decision(outcome), cats)
             assert ok is True, (outcome, note)
             assert note.startswith("FLOOR-expected")
 
     def test_same_op_matches_and_a_different_op_does_not(self):
         cats = p1._op_category_map()
         ok, _ = p1.router_matches(
-            "action:get_project_status", self._decision("operation", "get_project_status"), cats
+            "action:get_top_priority", self._decision("operation", "get_top_priority"), cats
         )
         assert ok is True
         ok, _ = p1.router_matches(
-            "action:get_project_status", self._decision("operation", "list_todos_query"), cats
+            "action:get_top_priority", self._decision("operation", "list_todos_query"), cats
         )
         assert ok is False
 
