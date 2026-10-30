@@ -255,3 +255,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v673 (server 674), 18:36 Thu 10-29: staging e12e5ad9ed, alpha 48df90eb72; Lead READY 18:33; partner-note sentence card.
 - v674 (server 675), 18:49 Thu 10-29: alpha /health e234776150; Lead row 4 156/4; xian 18:43 note sentence.
 - v675 (server 676), 18:59 Thu 10-29: xian's direct word, key limit raised again.
+- v676 (server 677), 19:06 Thu 10-29: HOST 19:03 recipients/sender; ask xian to say when sent.
