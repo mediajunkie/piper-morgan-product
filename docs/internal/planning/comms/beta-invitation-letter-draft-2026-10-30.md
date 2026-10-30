@@ -101,11 +101,11 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 
 ## Open points before it goes
 
-1. **Which URL?** beta.pipermorgan.ai and alpha.pipermorgan.ai serve the same build today. *Exec 15:01:* PA runs one fresh sign-up on beta. with the re-checks on the promoted build. If it passes, Exec recommends "beta." to xian. If not, "alpha." stays. HOST 15:04 would watch it with xian present.
+1. **Which URL?** beta.pipermorgan.ai and alpha.pipermorgan.ai serve the same build today. *Exec 15:01:* PA runs one fresh sign-up on beta. with the re-checks on the promoted build. If it passes, Exec recommends "beta." to xian. If not, "alpha." stays. HOST 15:04 would watch it with xian present. *PA 15:1x:* beta. serves the promoted build, `ac5b69f865`. The fresh sign-up spends a single-use code, so it needs xian's hands. PA has given him the steps. Until it's run, the letter keeps "alpha.".
 2. **The Terms page still says alpha.** HOST 15:04 recommends changing it before the first send. The proposed wording is below. Who edits the served page, and whether it needs a version bump, is xian's and Web's call. If xian sends first, HOST suggests one plain line in the letter: "Our Terms page still uses the word alpha. Everything in it applies to the beta."
 3. **xian's "what this beta is" paragraph.**
 4. **PPM's line check at send**, after the promotion and PA's re-checks.
-5. **Version 1b's "no new code, your account carries over."** This is true only if the beta hostname reaches the same accounts as alpha. Both serve the same build, but I haven't verified that they share a database. PA's sign-up check or Lead can confirm it. Until then, 1b is unverified. Whether the three 10-26 codes were redeemed is also unread (HOST: xian's select).
+5. **Version 1b's "no new code, your account carries over": VERIFIED (PA 15:1x).** On beta. (serving `ac5b69f865`), an alpha test account logged in, and a chat turn saw issue #35, which had been created on alpha. at 15:04. So it's the same accounts and the same data. That was an API check, not the rendered sign-in page. Whether the three 10-26 codes were redeemed is still unread (HOST: xian's select).
 
 ## Terms page: proposed beta wording (for xian and Web, HOST 15:04 asked for it)
 

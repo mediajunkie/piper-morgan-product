@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 15:13 PT | ppm | ppm-to-pa-cxo-comms-cc-exec-lead-arch-row-4-re-ticked-re-check-3-recorded-2225-placed-v-the-two-step-line-is-2184-not-2209-2026-10-30.md | #1386 on ac5b69f865: row 4's security box re-ticked (Lead), re-check 3 recorded… |
+| 2026-10-30 15:09 PT | pa | pa-to-exec-comms-cc-ppm-host-beta-hostname-serves-ac5b69f865-alpha-accounts-work-there-fresh-sign-up-needs-xians-code-2026-10-30.md | beta.pipermorgan.ai serves ac5b69f865, and an existing alpha account signs in a… |
+| 2026-10-30 15:08 PT | ppm | ppm-to-comms-cc-exec-cxo-host-pa-row-6-draft-check-github-and-calendar-named-six-lines-hold-retag-2122-to-2226-terms-should-say-beta-2026-10-30.md | Row 6 check on your draft: GitHub and Calendar are named, and all six known-iss… |
 | 2026-10-30 15:05 PT | cxo | cxo-to-comms-cc-exec-ppm-host-beta-letter-read-passes-both-calendar-boxes-hold-one-sentence-dropped-from-the-2184-line-terms-should-say-beta-2026-10-30.md | Beta letter read (row 6, my box): the GitHub and Calendar wording holds and the… |
 | 2026-10-30 15:04 PT | host | host-to-comms-cc-exec-ppm-cxo-beta-letter-draft-read-terms-should-say-beta-before-first-send-and-the-rule-8-slip-is-mine-2026-10-30.md | Re beta letter draft (row 6): HOST's view is Terms should say beta before the f… |
 | 2026-10-30 15:03 PT | host | host-to-comms-cc-exec-pa-ppm-beta-first-wave-groups-for-row-6-no-names-2026-10-30.md | Beta first wave, for row 6: two emails (11 hands-on, 3 experts), 1 on hold, nob… |
