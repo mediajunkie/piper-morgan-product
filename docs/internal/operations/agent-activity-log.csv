@@ -3097,3 +3097,18 @@ date,role,slug,environment,model,log_filename,notes
 2026-10-28,Piper Alpha,pa,code,opus,2026-10-28-0647-pa-code-log.md,"#2018 served run and close, #2184 #2185 #2189 filed, xian relays on confabulations, two promotions tracked"
 2026-10-28,Chief Innovation Officer,cio,code,opus,2026-10-28-0754-cio-code-log.md,"flyctl upgrade cadence with Pard, mail v4 canary gap (false alarm) and mail4.py last-ack fix"
 2026-10-28,Programmer subagent,prog,code,opus,2026-10-28-1052-prog-code-log.md,"#2186 unit 1 build for Lead on claude/lead-2186-args (31 tests, no DAY-CLOSED)"
+2026-10-29,Docs mgr,docs,code,sonnet,2026-10-29-0412-docs-code-log.md,"10-28 omnibus, Citation via Hearsay published and distributed, Ongoing milestone triage (#1369 and #1940 closed), #1927 close denied"
+2026-10-29,Chief of Staff,exec,code,opus,2026-10-29-0418-exec-code-log.md,"rollups v648 to v649, two push holds and lifts, DAY-CLOSED as a heading"
+2026-10-29,Lead Dev,lead,code,fable,2026-10-29-0418-lead-code-log.md,"twelve lanes, Ongoing section D placements, third alpha promotion b9a8a43600, candidate 42b266ef7e READY, no standard DAY-CLOSED"
+2026-10-29,Web,web,code,sonnet,2026-10-29-0618-web-code-log.md,web lane work and late mail entries
+2026-10-29,Comms,comms,code,opus,2026-10-29-0619-comms-code-log.md,"Citation via Hearsay handoff, weekend posts approved"
+2026-10-29,Head of Sapient Trust,host,code,sonnet,2026-10-29-0626-host-code-log.md,"triage reply on Ongoing items, trust lane work"
+2026-10-29,Chief Architect,arch,code,opus,2026-10-29-0627-arch-code-log.md,"2151 residual filings (2216 to 2218), gate rulings"
+2026-10-29,CXO,cxo,code,sonnet,2026-10-29-0631-cxo-code-log.md,"2184 and 1386 rows judged, 2151 residuals, no DAY-CLOSED (ends 22:02)"
+2026-10-29,Principal PM,ppm,code,opus,2026-10-29-0633-ppm-code-log.md,"MVP gate sequence, Production to Ongoing moves, triage reply"
+2026-10-29,Piper Alpha,pa,code,opus,2026-10-29-0647-pa-code-log.md,"alpha chat failures and key-limit premise withdrawn, scenario A3 and A4 (#2205 open)"
+2026-10-29,Programmer subagent,prog,code,opus,2026-10-29-0652-prog-code-log.md,lane build for Lead (no DAY-CLOSED)
+2026-10-29,Chief Innovation Officer,cio,code,opus,2026-10-29-0654-cio-code-log.md,"alpha key-limit alert triage, mail canary, triage reply"
+2026-10-29,Programmer subagent,prog,code,opus,2026-10-29-0854-prog-code-log.md,lane build for Lead (no DAY-CLOSED)
+2026-10-29,Programmer subagent,prog,code,opus,2026-10-29-0901-prog-code-log.md,lane build for Lead (no DAY-CLOSED)
+2026-10-29,Programmer subagent,prog,code,opus,2026-10-29-1349-prog-code-log.md,lane build for Lead (no DAY-CLOSED)
