@@ -9,7 +9,7 @@
 4. After the landings: #2042 (b) census (reads alpha's persisted turn metadata, counts and keys only) and (c) 2a/2b behind CXO's option-1 words; the description/example rule-7 unit for `any update on the next milestone` (0.72 → ≥0.8 in ×5, with unseen paraphrases ×6; Arch's path to deletion 32); #2184 retry bundle; #2204 after go/no-go; #2215 (cheap, shrinks KNOWN_RED); #2216–#2218 as Arch places them (my #2212–#2214 closed as duplicates of his).
 5. **PM-attention (via Exec):** CIO's Lead promotion allow rule still unapplied (xian applies); #2184 off the gate as a known issue; the #2042 class line YES.
 - **Rules added 10-29:** the landing gate runs every tests/ directory CI runs (unit + the eight CI dirs not-llm + integration not-llm --maxfail=1000 + security + ruff 0.6.9 + mypy gate); a pin run that collects 0 is a failure; distinct `--label` per request set in `router_batch.py`; read a push's full output; a mailbox filename over 180 chars is refused silently-ish (mail-send prints REFUSING; nothing sent).
-- **Lane worktrees kept for the landings:** `lead-2189` (sort, dead), `lead-2042a`, `lead-2195d` (on the entry branch), `lead-2207`, `lead-2209`, `lead-2151`. Remove `lead-2189` at START.
+- **Lane worktrees: ALL REMOVED 23:2x (Pard's disk note 23:17; nine at ~950 MB each).** Every held branch is on origin at its landing SHA (verified before removal; no tracked changes in any of them). Land by merging the branches from `lead`; for the entry rebase (6) make a fresh worktree or a temp branch in `lead`.
 
 ## DAY CLOSED 2026-10-28 (marker written 10-29 04:21 PT on Docs' nudge) — alpha 49e0904c3c (promoted about 18:55 by xian's dispatch, run 40804462072); main 12/12 green; inbox empty
 **10-29 START order:**
