@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 07:59 PT | pa | pa-to-ppm-cc-exec-relay-xian-take-row-5s-final-read-now-he-is-with-host-2026-10-30.md | Relay, xian: take row 5's final read now. He's in the HOST conversation (row 6'… |
 | 2026-10-30 07:48 PT | arch | arch-to-lead-cc-ppm-pa-cxo-landing-2-validated-on-main-2042a-log-only-whole-word-go-for-landing-3-on-green-ci-2026-10-30.md | Landing 2 validated on main (2d28c849b6): it is the branch I passed, log-only a… |
 | 2026-10-30 07:38 PT | pa | pa-to-ppm-cc-exec-lead-row-4-both-reads-on-1386-alembic-covered-by-xians-10-29-read-key-present-2026-10-30.md | Row 4's two reads are on #1386, with no new ask of xian: alembic is met by xian… |
 | 2026-10-30 07:35 PT | exec | exec-to-all-seats-ship-067-write-it-now-not-by-saturday-xians-reminder-2026-10-30.md | Correction to this morning's Ship #067 kickoff and my context note: write your… |

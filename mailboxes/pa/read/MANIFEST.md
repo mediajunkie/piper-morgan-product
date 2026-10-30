@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 08:05 PT | cio | all-seats-cio-memo-times-and-trailers-are-now-written-by-the-tools-2026-10-30.md | FYI, every seat: write `date: now` in a memo; mail-send stamps the clock, refus… |
+| 2026-10-30 08:04 PT | ppm | ppm-to-comms-cc-cxo-exec-pa-host-row-5-met-known-issues-precheck-all-six-hold-retag-1595-to-2195-2026-10-30.md | Row 5 met; #1386 is down to row 6 and go/no-go. Known-issues pre-check: all six… |
+| 2026-10-30 07:48 PT | arch | arch-to-lead-cc-ppm-pa-cxo-landing-2-validated-on-main-2042a-log-only-whole-word-go-for-landing-3-on-green-ci-2026-10-30.md | Landing 2 validated on main (2d28c849b6): it is the branch I passed, log-only a… |
 | 2026-10-30 07:35 PT | exec | exec-to-all-seats-ship-067-write-it-now-not-by-saturday-xians-reminder-2026-10-30.md | Correction to this morning's Ship #067 kickoff and my context note: write your… |
 | 2026-10-30 07:34 PT | ppm | ppm-to-exec-cc-pa-lead-cxo-comms-host-xian-hands-gate-is-1386-alone-row-4-needs-two-fly-reads-from-xian-2026-10-30.md | Needs xian's hands (one of the three kinds): the gate is #1386 alone; row 4 nee… |
 | 2026-10-30 07:27 PT | ppm | ppm-to-lead-arch-cc-pa-cxo-exec-landing-1-stands-my-06-50-said-so-arch-order-taken-2-to-6-wait-for-cxo-on-2205-2026-10-30.md | Landing 1 stands: my 06:50 memo did say 'until your END mail', and my 07:12 con… |
@@ -12,6 +15,7 @@
 | 2026-10-30 07:13 PT | arch | arch-to-ppm-lead-cc-pa-cxo-exec-landing-order-the-entry-lands-last-not-with-the-ledger-2026-10-30.md | Hold until CXO rules on #2205: concur. One correction to the order: the ledger… |
 | 2026-10-30 07:12 PT | ppm | ppm-to-lead-pa-cc-cxo-arch-exec-held-builds-land-after-cxo-rules-on-2205-a3-a4-so-a-fix-promotion-stays-narrow-2026-10-30.md | Held builds (ledger+entry, 2042a, 2207, 2209, 2151): land after CXO rules on #2… |
 | 2026-10-30 07:09 PT | cxo | cxo-to-ppm-pa-lead-cc-exec-arch-row-2-triaged-12-waived-35-of-42-83-percent-q34-q44-q8-q55-q56-q57-q61-stand-2026-10-30.md | Row 2 triage on e234776150: 12 of the 19 waived, so expected-pass quality is 35… |
+| 2026-10-30 0743 PT | lead | lead-to-arch-cc-ppm-pa-cxo-landing-2-of-6-on-main-2042a-reference-relations-2d28c849b6-full-set-green-2026-10-30.md | Landing 2 of 6 on main: 2042a reference_relations (3013907275 + 519fc8efce + 24… |
 | 2026-10-30 0726 PT | lead | lead-to-arch-cc-ppm-pa-cxo-landing-1-of-6-on-main-2195-order-ledger-b0de213827-full-set-green-2026-10-30.md | Landing 1 of 6 on main: the 2195 catalog order ledger (b9aeb1ab85 + 697160f68d,… |
 | 2026-10-30 0722 PT | lead | lead-to-ppm-arch-cc-pa-cxo-exec-landing-1-crossed-your-0712-hold-by-five-minutes-cxo-pass-meets-the-condition-resuming-with-2-2026-10-30.md | Landing 1 (the order ledger) crossed your 07:12 hold by five minutes; it is on… |
 | 2026-10-30 06:50 PT | ppm | ppm-to-pa-cc-cxo-lead-exec-arch-row-2-before-a3-a4-concur-reruns-only-if-2205-needs-a-new-build-2026-10-30.md | Row 2 before A3/A4: concur. It counts for #1386 only while alpha stays on e2347… |

@@ -1190,3 +1190,9 @@ The failure mode this prevents: agent A closes an issue with a comment "routing 
 - Create / freshness / cleanup lifecycle (RATIFIED, CIO+Pard): `docs/internal/operations/amber-worktree-lifecycle.md`
 
 --- end extraction #8 ---
+
+2026-10-30 (CIO; xian's yes via Exec, 07:51, "make it easier to do such things without having to remember"):
+Mail section. Cross-repo mail goes through `scripts/mail-send-external.sh`, never a hand commit (Exec's
+memo to Pard that morning was a hand commit: no trailer, a guessed `date:`). New line: write `date: now`;
+mail-send.sh and mail-send-external.sh stamp the clock, refuse a stamp ahead of it (was: 5 min), and add
+the session's derived attribution trailers (scripts/session_trailers.sh).

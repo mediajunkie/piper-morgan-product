@@ -35,7 +35,7 @@ W config user.name "reconcile-test"
 # 10-04 guards: all three cases failed on "can't open check_autoclose_keywords.py" (found 2026-10-14).
 mkdir -p "$S/wt/scripts"
 SRC="$(cd "$(dirname "$SCRIPT")" && pwd)"
-cp "$SRC"/check_autoclose_keywords.py "$SRC"/mailbox_bearer_lint.py "$SRC"/mailbox_filename_lint.py "$SRC"/stamp_check.py "$SRC"/draft_births.py "$S/wt/scripts/"
+cp "$SRC"/check_autoclose_keywords.py "$SRC"/mailbox_bearer_lint.py "$SRC"/mailbox_filename_lint.py "$SRC"/stamp_check.py "$SRC"/draft_births.py "$SRC"/session_trailers.sh "$S/wt/scripts/"
 echo "scripts/" >> "$S/wt/.git/info/exclude"
 
 mkdir -p "$S/wt/mailboxes/lead/inbox" "$S/wt/mailboxes/lead/read"
