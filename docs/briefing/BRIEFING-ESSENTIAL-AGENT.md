@@ -159,6 +159,10 @@ Plugins: 4
 GitHub Updated: Issue #199 task 3 marked complete with evidence
 ```
 
+## The promise your issue serves (added 2026-10-30)
+
+When the issue you are building serves a 1.0 promise, Lead's brief names it. The promises, with their wording, source and gate, are `docs/internal/product/promises.yaml`; their source is ESSENCE v1.1 (`docs/internal/architecture/ESSENCE.md`). Read the named promise before writing user-facing words, and do not narrow it to make a test pass. Placement (the production map) and the Readiness lane are Lead's and Exec's to read, not yours: build the issue as briefed.
+
 ## References
 
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md` (sprint position, active issues)
