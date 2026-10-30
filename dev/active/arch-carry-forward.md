@@ -34,7 +34,7 @@ Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are re
   3. 2207 `8a07c8da26` (GO; residual **#2222**, owner/name and default binds with no turn principal, Lead's unit after the six);
   4. 2209 `9d0c7709ce`: **NOT promotable** until the fix `claude/lead-2209b` lands. Seams: the rail, the Action Gate on the registered-op test, synthesis on a fetched source, plus the canonical-generic fallback (~3854) and GUIDANCE (decisions.log 08:57 and 09:3x).
   5. 2151 status gather `9cbd0b8d19` (GO; KNOWN_RED 11).
-  - Still to land: the entry and the 2209b fix, in either order. Arch validates both before any promotion carrying `9d0c7709ce`.
+  - **All seven landed and validated by 09:5x:** the entry `28f016dff2` (the ledger holds slot 68) and 2209b `6c27f92a28` (four seams). **Arch's promotion condition is cleared**; the go/no-go is xian's. Open: #2222 (Lead), the rule-7 description unit, then deletion 32, and #2211.
   - Ship #067 review filed. Briefing pointers 5 of 5.
 - **10-29 STOP (21:27):** alpha serves `e234776150` (the third promotion, #2205). xian ran A3/A4 tonight. **PA's hold on tested-path pushes holds Lead's queue.** Landing order, each on its own gates; **Arch validates each on main:**
   1. **ledger-only** `claude/lead-ledger-only` 400b21addb: the append-only catalog order, render byte-identical. decisions.log 19:39.
