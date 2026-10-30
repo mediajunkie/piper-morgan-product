@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-arch-lead-cc-exec-pa-haiku-5-5-switch-and-the-gate-a-promotion-carrying-it-re-runs-rows-2-and-3-2026-10-30.md | Haiku 5.5 switch and the gate: fine to land on main after the promotion serves,… |
+| now | ppm | ppm-to-exec-cc-cxo-pa-lead-arch-comms-option-b-re-checks-complete-rows-1-5-stand-on-ac5b69f865-row-6-and-go-no-go-left-2026-10-30.md | For xian: option B's re-checks are done. Rows 1-5 of #1386 stand on ac5b69f865,… |

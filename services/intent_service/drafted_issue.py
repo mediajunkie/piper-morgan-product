@@ -1063,6 +1063,28 @@ async def handle_drafted_issue_turn(
         # The rail answered but did NOT verifiably create (degraded-connector
         # copy, clarification ask, honest failure). Pass its honest message
         # through and keep the draft bound.
+        # #2225 (Arch 2026-10-30): the draft was popped before the dispatch, so
+        # anything now in the store is an INNER arm (the #1567 repo question, a
+        # future confirm). Re-arming the draft would overwrite it. Check the
+        # store, not a flag: pass the inner reply through, no retained-line tail.
+        inner_armed = None
+        try:
+            inner_armed = intent_service.workflow_offer_service.peek_pending_offer(
+                session_id, user_id=user_id
+            )
+        except Exception as e:  # silent-ok: #2225 — a failed peek reads as empty, which keeps today's re-arm behaviour; logged
+            logger.warning("drafted_issue_inner_arm_peek_failed", error=str(e))
+        if inner_armed is not None:
+            logger.info(
+                "drafted_issue_inner_arm_kept",
+                session_id=session_id,
+                inner_kind=(inner_armed.get("pending_action") or {}).get("kind"),
+            )
+            return {
+                "message": result.get("message", ""),
+                "intent_data": dict(intent_data),
+                "requires_clarification": result.get("requires_clarification", True),
+            }
         rearmed = _rearm()
         logger.info(
             "drafted_issue_create_unverified_draft_retained",

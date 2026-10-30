@@ -51,7 +51,7 @@ Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are re
   - **#2205** re-read: GO 18:28 (comment 6512687247). Residual: the standup skill (CLI-only) must read `get_user_write_target` if it is ever chat-wired.
   - **#2184** off MVP (known issue); the retry bundle's entry half waits on the ledger plus entry.
   - **#2042 rung-3 census is blocked: no read path for alpha's turn metadata** (asked Lead for a read-only aggregate). Option 1 waits on 2042a landing.
-  - **Haiku 5.5 screen** waits on xian's word.
+  - **Haiku 5.5 screen: NO-GO 15:20** (4 named rows + 1 sentinel move ×6; corpus 473 vs 488). Router stays on 4.5; #2227 re-baseline filed. #2195 (a) retries on 4.5; #2184 w3 parked to #2149; text-block pick + harness flags land alone. #2225: build in the carrier (one binder; re-ask gated on persist_default); (a) rejected, (b) under rule 7 after #2195 (a). #2228 (Q9 time slip, H/#1828) filed by PA. #2223 validated served (PA re-check 3, ac5b69f865).
 - **10-28 STOP (21:27):** alpha serves `49e0904c3c`, carrying all of today's landings (#2184 pick + condition-1 fix, Open 1, ratchet fix, #2185, #2187). **#2189 is fully ruled** (comments 6482389530, 6482462708, 6482619087, 6482866467, 6483099163; decisions.log 15:33 / ~15:5x / ~16:0x / ~16:1x). It waits on Lead's builds, in order: row 1 slice (+8, 10, 11, 19) → nonces to Redis → Test table (xian's migration word via Exec). **Arch validates each build when it lands.**
 - **10-28 (15:27 fire): landings validated, plus #2189.**
   - **#2186 Open 1** is on main (`355e04beba`) and validated (6482315954). Unmeasured edge: the PR rail with `state:"open"`. Unit 2 (declared args) is still owed by Lead.
