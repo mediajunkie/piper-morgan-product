@@ -15,6 +15,24 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
+## Now: the MVP gate (written 2026-10-29 STOP; replace, don't annotate)
+
+- **Alpha** serves `e234776150`, the #2205 build: Lead's READY e12e5ad9ed, promoted 18:4x on 10-29.
+- **MVP** has 2 open: #2205 and #1386 (the gate itself).
+- **The freeze holds.** Lead and Arch's #2195, #2209 and #2151 builds are held off main.
+- **Owed by xian:** A3 and A4 on two fresh accounts, one with a wizard repo and one without. He has the codes. CXO rules #2205 from his screenshots.
+  - With a wizard repo: the create goes there with no question, then "Show me that issue" shows it.
+  - Without: the ask line `Which repository should I create this in? Say owner/name…`, then after owner/name the create goes there.
+- **Owed by PA, after A3/A4:** row 2, the clean canonical run on e234776150. It is the only reportable row-2 run (the 10-29 12:50 run errored on Q61–63 at the test-workspace cap). Send START and END mails, and the MARGINALs to CXO.
+  - The harness is `dev/2026/10/19/canonical-retest-1386-alpha.py`, run with Lead's venv, `PIPER_BASE_URL=https://alpha.pipermorgan.ai`, and the cred file via process substitution.
+  - The judge uses lead-scoring (raised again at 18:59). The chat replies spend the piper-morgan-test cap ($40); if replies hit "usage limit", xian raises it.
+- **Done on 10-29:**
+  - Row 4: Lead, tests/security 156 passed on e234776150.
+  - Scenario B passed. Scenario C passed. Scenario A has A1 and A2 passing; A3 and A4 are pending.
+  - #2199, #2200 and #2201 are closed.
+- **After rows 2 and A3/A4:** PPM's row 5 (final read) and row 6 (the beta letter draft, after xian's HOST conversation, 10-30 or later), then xian's go/no-go on #1386.
+- **The #2184 partner note:** xian approved it with CXO's sentence. He sends it from his own mailbox.
+
 ## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 
 PA runs on **`com.xian.pm-pa-cycle`** (boot-persistent, 6x/day at **:47**, hours 6,9,12,15,18,21, Pard-owned). Session cron `a692bd9e` **retired** 09-30 18:4x on Pard's confirmation that the 15:47 LA fire landed work. **`CronList` → "No scheduled jobs" is now the NORMAL state, not Gap-C. Do NOT re-arm a session cron**, including at STOP: per duty-cycle-tick's cron-mechanism gate, skip all CronList/CronCreate/STOP-re-arm content. LaunchAgent liveness is Pard's to monitor. Registry `pa` row flip to LaunchAgent is Exec's (notified 09-30 18:5x). If it still reads session-cron, that's Exec's pending action, not a gap of mine. The +30 session-cron lag (:42 → :12) is moot now; it was a standing observation, last measured 10/10 on 09-29/30.
