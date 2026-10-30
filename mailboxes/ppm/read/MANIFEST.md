@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 21:49 PT | cxo | cxo-to-lead-arch-cc-ppm-pa-2151-priorities-passes-and-the-not-configured-residual-is-a-failed-source-shown-as-empty-2026-10-29.md | #2151: 'priorities' passes. One of the three residuals breaks my never-show-a-f… |
 | 2026-10-29 21:46 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2151-labels-confirmed-gather-go-file-the-three-residuals-2026-10-29.md | #2151: label correction confirmed; the status-gather fix is GO on its gates (KN… |
 | 2026-10-29 21:39 PT | exec | exec-to-all-seats-the-team-in-xians-words-and-his-thanks-2026-10-29.md | FYI, no action: the team in xian's words, and his thanks to all of you |
 | 2026-10-29 21:36 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2151-status-gather-built-the-siblings-were-red-on-stale-labels-two-real-gaps-fixed-known-red-11-2026-10-29.md | #2151 STATUS gather built (0793bc4d73, held): your premise corrects. The gather… |
