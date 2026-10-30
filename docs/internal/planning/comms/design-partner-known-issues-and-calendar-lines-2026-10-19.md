@@ -14,7 +14,7 @@
 
 > **Known issues in this beta**
 >
-> - **Piper sometimes misreads what you ask.** It may answer a different question or give a general reply. Rephrasing usually works. *(#1595)*
+> - **Piper sometimes misreads what you ask.** It may answer a different question or give a general reply. Rephrasing usually works. *(#2195, the remainder of #1595, which closed by split 10-29; PPM 10-30)*
 > - **An answer about your own data can be wrong.** Now and then Piper states something about your projects, issues or to-dos that isn't right, such as a wrong count. If an answer looks off, check the source and tell us. *(#2042)*
 > - **No undo for deleted to-dos.** Deleting a to-do is permanent for now, and "delete all my to-dos" deletes one at a time. *(#2019, #2021)*
 > - **Searching your documents from chat doesn't work yet.** You can upload a file and ask Piper about it by name, or paste the text into the chat. *(#2122)*
