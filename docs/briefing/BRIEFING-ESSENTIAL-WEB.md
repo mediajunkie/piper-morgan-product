@@ -97,6 +97,16 @@ Full detail with consent-gradient (freely / sign-off / unilateral) per seam: `RO
 - **Mailbox/mail-send mechanics** → CLAUDE.md §"Branch / Worktree / Mailbox Discipline"
 - **Carried lessons, open threads** → `dev/active/web-carry-forward.md`, `dev/active/web-standing-items.md`
 
+## Production-plan pointers (added 2026-10-30, Exec's #2179 follow-up)
+
+Where the beta work stands, and why it matters for the site:
+
+- **Where the work stands** is the production map, `docs/internal/planning/production-map.html` (PPM builds it from the board). Read it before claiming a site page is "current".
+- **What 1.0 promises** is `docs/internal/product/promises.yaml` (PPM's, ratified 10-25). Public-site accuracy (priority 2) means no page may say more than a promise there backs; Comms owns the words, I flag a page that outruns the file.
+- **ESSENCE v1.1** (`docs/internal/architecture/ESSENCE.md`, ratified 10-25) is the source for those promises. Cite it; don't paraphrase it on the site.
+- **The Readiness lane is Exec's.** Its standing check is HOST's send-morning list. If Lead, CXO or PA ask for a served check inside it, that is priority 4 and it comes first that morning.
+- **#2157** (backups and a timed restore drill) is HOST's spec and gates the invitation's "your account carries over" line. Not my lane; I only check the served page says nothing stronger than the drill proves.
+
 ## References
 
 - **Predecessor handoff** (honest VERIFIED/BELIEVED framing): `dev/2026/07/29/handoff-web-predecessor-2026-07-29.md`
