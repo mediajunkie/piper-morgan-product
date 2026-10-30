@@ -264,3 +264,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v682 (server 683), 07:38 Fri 10-30: gh MVP [1386]; 2205 closedAt 14:29Z (07:29 PDT); pruned five 10-29 wins; Fly reads + LaunchAgent card.
 - v683 (server 684), 07:46 Fri 10-30: full Fly commands (-a piper-morgan, fly.toml; python -m alembic per release_command); LaunchAgent loaded (launchctl print).
 - v684 (server 685), 07:49 Fri 10-30: PA 07:38 row 4 reads on #1386 (comment 6525413406); CIO 07:39 + Pard 07:44 LaunchAgent ask.
+- v685 (server 686), 08:09 Fri 10-30: PPM 08:04 row 5 met; CIO 08:05 all-seats stamps.
