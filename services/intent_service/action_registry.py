@@ -293,7 +293,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("MEMORY", "get_memory"): "What do you remember about me?",
     ("MEMORY", "pull_insights"): "What have you learned about my work style?",
     ("TEMPORAL", "get_current_time"): "What time is it?",
-    ("STATUS", "get_project_status"): "What's the project status?",
+    ("STATUS", "get_project_status"): "How's the next milestone coming along?",
     ("STATUS", "check_completion_status"): "When did I complete the login fix?",
     ("PRIORITY", "get_top_priority"): "What should I work on first?",
     ("GUIDANCE", "get_contextual_guidance"): "How should I approach this sprint?",
