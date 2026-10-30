@@ -1216,9 +1216,21 @@ class TestPriorityPatternsVerdictIsReported:
         # MISMATCH-but-the-router's-own-route-is-live (the consult owns it),
         # so that ONE row now passes; the other 3 still FAIL. It is NOT
         # deleted here (not in the six-restore brief; flagged to Lead).
+        # 2026-10-29 (2195): get_project_status gained its READ WorkflowEntry
+        # (read_floor_2, flip_group STATUS, STATUS live). Before it, the gate said
+        # "not-live (no WorkflowEntry)" for every row expecting that op, so 3 rows
+        # failed. Now the live consult can serve the op by name (resolve_live_match:
+        # "live via group"), so they credit: 'I need a status report' (MISMATCH whose
+        # router route is a live op), 'can you summarize my current work' and 'give me
+        # a project overview' (MATCH, live via group). The sub-threshold rule still
+        # applies in every arm (_sub_threshold), so a known score under 0.8 would fail
+        # the row; the one row at 0.72 ('any update on the next milestone') still does.
         ok_phrases = {r.phrase for r in lv.rows if r.row_ok}
         assert ok_phrases == {
             "give me a project status report",
+            "I need a status report",
+            "can you summarize my current work",
+            "give me a project overview",
         }, ok_phrases
         assert lv.deletable is False, "a list with any FAIL row is NO-GO, not GO"
 

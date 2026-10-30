@@ -61,6 +61,10 @@ RAIL_READ_SOURCES: Dict[str, Tuple[str, str]] = {
     "get_feature_info": ("your connected tools", "how that feature is set up for you"),
     "get_identity": ("your connected tools and projects", "what I'm set up to help you with"),
     "get_memory": ("what I've stored about you", "what I remember"),
+    "get_project_status": (
+        "your project status",
+        "where things stand",
+    ),  # #2195 read_floor_2 entry (CXO 2026-10-29 20:48)
     "learn_pattern": ("your history", "what patterns it shows"),
     "list_archived_projects": ("your archived projects", "which ones are archived"),
     "list_branches": ("your GitHub branches", "which branches there are"),

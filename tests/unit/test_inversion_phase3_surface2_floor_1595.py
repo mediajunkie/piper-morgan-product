@@ -25,6 +25,14 @@ CLAIM = gate.ClaimResult(
     entry_surface="pre_classify",
 )
 LIVE = gate.CURRENT_LIVE_CATEGORIES
+# The claim for the two floor-op tests below: the pattern claims the SAME op the row rules
+# (so the "pattern mis-serves this row" credit cannot apply and only the probe decides).
+PRIORITY_CLAIM = gate.ClaimResult(
+    pattern_list="PRIORITY_PATTERNS",
+    action="get_top_priority",
+    category="PRIORITY",
+    entry_surface="pre_classify",
+)
 
 
 def _probe_file(tmp_path, rows):
@@ -62,12 +70,17 @@ def test_parse_report_round_trips(tmp_path):
     assert [r["category"] for r in parsed["show today's progress"]] == ["STATUS", "STATUS"]
 
 
+# 2026-10-29 (2195): both tests below used get_project_status as their FLOOR op with no
+# rail entry. It gained a read_floor_2 rail entry, so the evaluator no longer gives it the
+# lenient floor rule (the 2026-10-02 clause in _expected_action_is_floor_disposition). They
+# use get_top_priority (registry FLOOR, no rail entry; PRIORITY category) with the same
+# meaning: a unanimous probe in the op's category is OK, one dissenting sample is not.
 def test_floor_row_with_unanimous_probe_is_ok(tmp_path, monkeypatch):
     rows = [
         {
             "phrase": "show today's progress",
             "sample": n,
-            "category": "STATUS",
+            "category": "PRIORITY",
             "action": "a",
             "confidence": 0.9,
         }
@@ -75,7 +88,11 @@ def test_floor_row_with_unanimous_probe_is_ok(tmp_path, monkeypatch):
     ]
     monkeypatch.setattr(gate, "SURFACE2_FLOOR_PROBES", [_probe_file(tmp_path, rows)])
     ok, reason = gate.row_disposition(
-        CLAIM, _sub_threshold(), "action:get_project_status", LIVE, phrase="show today's progress"
+        PRIORITY_CLAIM,
+        _sub_threshold(),
+        "action:get_top_priority",
+        LIVE,
+        phrase="show today's progress",
     )
     assert ok is True, reason
     assert "3/3 probe samples" in reason
@@ -86,21 +103,25 @@ def test_one_dissenting_sample_is_not_ok(tmp_path, monkeypatch):
         {
             "phrase": "show today's progress",
             "sample": 1,
-            "category": "STATUS",
+            "category": "PRIORITY",
             "action": "a",
             "confidence": 0.9,
         },
         {
             "phrase": "show today's progress",
             "sample": 2,
-            "category": "PRIORITY",
+            "category": "STATUS",
             "action": "b",
             "confidence": 0.9,
         },
     ]
     monkeypatch.setattr(gate, "SURFACE2_FLOOR_PROBES", [_probe_file(tmp_path, rows)])
     ok, reason = gate.row_disposition(
-        CLAIM, _sub_threshold(), "action:get_project_status", LIVE, phrase="show today's progress"
+        PRIORITY_CLAIM,
+        _sub_threshold(),
+        "action:get_top_priority",
+        LIVE,
+        phrase="show today's progress",
     )
     assert ok is False
     assert "1/2 probe samples" in reason
