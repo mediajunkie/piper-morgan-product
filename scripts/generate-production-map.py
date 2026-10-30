@@ -182,8 +182,10 @@ def since_last(cur, prev, plan, rows_c, rows_p):
     if not prev:
         return ["<p>No previous snapshot found; nothing to compare.</p>"], "no previous snapshot"
     pc = {n: r for n, r in prev.items()}
-    added = sorted(set(rows_c) - set(rows_p))
-    removed = sorted(set(rows_p) - set(rows_c))
+    # an issue closed in both snapshots is not a scope change (a sprint backfill on closed issues, 10-29)
+    shut = lambda d, n: n in d and d[n]["state"] == "CLOSED"
+    added = sorted(n for n in set(rows_c) - set(rows_p) if not (shut(cur, n) and shut(pc, n)))
+    removed = sorted(n for n in set(rows_p) - set(rows_c) if not (shut(cur, n) and shut(pc, n)))
     common = sorted(set(rows_c) & set(rows_p))
     moved = [
         n for n in common if rows_c[n] != rows_p[n] or cur[n]["milestone"] != pc[n]["milestone"]
