@@ -50,6 +50,11 @@
 #                     the line, and the aggregate "DATA CHECKS FAILED" directive only
 #                     rides when a registered flag is armed. What the model says over
 #                     the gap is LLM-mediated and was not served for this inventory.
+#   NOT-PERFORMED     The product never performs the read the surface is asked about (the
+#                     four-state rule's fourth state, #2215 part 2, 2026-10-30): nothing can
+#                     be stated as failed, the row is red on the inventory's not_performed
+#                     state, and the forcing test lists it under NOT_PERFORMED (shrink-only),
+#                     never under KNOWN_RED. check_completion_status is the one row.
 #   CAL-SWALLOW       GoogleCalendarMCPAdapter swallows a failed read into []/None
 #                     (get_recurring_events without last_read_error; get_temporal_summary
 #                     reports success=True with events_read_established=False), and the
@@ -148,13 +153,14 @@ surfaces:
   effect: READ
   reads: floor MEMORY context (this session's turns plus persistent conversation history)
   handler: services/intent/intent_service.py:IntentService._handle_floor_with_context
-  states: {verified: distinct, failed: conflated:not_performed, narrowed: distinct, not_performed: conflated:verified, substituted: n/a}
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: conflated:verified, substituted: n/a}
   verdict: red
   notes: >-
-    Rides floor:assembler._gather_memory_context. A failed UserHistoryService read leaves
-    persistent_memory absent, the same as having no history (FLOOR-ABSENT), so "do you
-    remember X?" can be answered as no memory. unverified: the model's served wording over
-    the gap.
+    Rides floor:assembler._gather_memory_context. A failed UserHistoryService read arms the
+    registered "past conversations" flag, so the prompt names it (the forcing row expected a
+    stale label until 2026-10-30, #2215). Still red: a read not performed (no principal)
+    renders nothing, so "do you remember X?" can be answered as no memory. unverified: the
+    model's served wording over the gap.
 
 - id: pull_insights
   kind: rail
