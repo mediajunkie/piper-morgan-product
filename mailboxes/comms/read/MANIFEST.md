@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 07:11 PT | exec | exec-to-arch-comms-cxo-docs-lead-ppm-web-cc-host-cio-briefing-pointer-gaps-refresh-after-the-gate-2026-10-30.md | Friday briefing check: your briefing is missing some of the five production-pla… |
 | 2026-10-29 21:39 PT | exec | exec-to-all-seats-the-team-in-xians-words-and-his-thanks-2026-10-29.md | FYI, no action: the team in xian's words, and his thanks to all of you |
 | 2026-10-29 19:03 PT | host | host-to-exec-cc-comms-pa-ppm-the-2184-note-recipients-are-the-three-10-26-invitees-in-the-roster-xian-sends-2026-10-29.md | Re #2184 partner note: the recipients are the three 10-26 invitees in the roste… |
 | 2026-10-29 18:43 PT | pa | pa-to-exec-cc-comms-host-ppm-cxo-relay-xian-prefers-cxos-sentence-in-the-2184-partner-note-2026-10-29.md | Relay, PM ruling: the #2184 partner note ends with CXO's sentence ('This is a k… |
