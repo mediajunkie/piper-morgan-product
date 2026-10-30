@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-29 21:28 PDT
+last_updated: 2026-10-30 09:29 PDT
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,6 +28,14 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
+- **10-30 (09:27 fire):** alpha still on `e234776150`. #2205 PASS (CXO 07:19), and row 2 recorded (35/42, routing 55/61). Landings on main, each validated by Arch:
+  1. ledger `b0de213827` (GO);
+  2. 2042a `2d28c849b6` (GO);
+  3. 2207 `8a07c8da26` (GO; residual **#2222**, owner/name and default binds with no turn principal, Lead's unit after the six);
+  4. 2209 `9d0c7709ce`: **NOT promotable** until the fix `claude/lead-2209b` lands. Seams: the rail, the Action Gate on the registered-op test, synthesis on a fetched source, plus the canonical-generic fallback (~3854) and GUIDANCE (decisions.log 08:57 and 09:3x).
+  5. 2151 status gather `9cbd0b8d19` (GO; KNOWN_RED 11).
+  - Still to land: the entry and the 2209b fix, in either order. Arch validates both before any promotion carrying `9d0c7709ce`.
+  - Ship #067 review filed. Briefing pointers 5 of 5.
 - **10-29 STOP (21:27):** alpha serves `e234776150` (the third promotion, #2205). xian ran A3/A4 tonight. **PA's hold on tested-path pushes holds Lead's queue.** Landing order, each on its own gates; **Arch validates each on main:**
   1. **ledger-only** `claude/lead-ledger-only` 400b21addb: the append-only catalog order, render byte-identical. decisions.log 19:39.
   2. **#2042a** `reference_relations`: whole-word title match; a dot between alphanumerics is in-word. GO.
