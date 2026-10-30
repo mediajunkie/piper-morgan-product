@@ -664,9 +664,9 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 825	CLOSED	MVP	M0 - Conversational Glue	Slot filling module built but never integrated into any workflow	enhancement,intelligence,sprint-2		COMPLETED
 828	OPEN	Fast Follow	DIST - Desktop distro	EPIC: DIST — Distribution Packaging (MCP-Native + Desktop)	distribution,epic,packaging		
 829	CLOSED	Production	PROD-DIST - MCP Marketplace Distribution	DIST-MCP-PACKAGE: Package Piper as MCP server	distribution,mcp,packaging		COMPLETED
-830	CLOSED	Production		DIST-MCP-DOCS: Integration documentation for MCP clients	distribution,documentation,mcp		NOT_PLANNED
-831	CLOSED	Production		DIST-MCP-REGISTRY: Publish to package registries	distribution,infrastructure,mcp		NOT_PLANNED
-832	CLOSED	Production		DIST-MCP-TEST: Integration testing with MCP clients	distribution,mcp,testing		NOT_PLANNED
+830	CLOSED	Production	PROD-DIST - MCP Marketplace Distribution	DIST-MCP-DOCS: Integration documentation for MCP clients	distribution,documentation,mcp		NOT_PLANNED
+831	CLOSED	Production	PROD-DIST - MCP Marketplace Distribution	DIST-MCP-REGISTRY: Publish to package registries	distribution,infrastructure,mcp		NOT_PLANNED
+832	CLOSED	Production	PROD-DIST - MCP Marketplace Distribution	DIST-MCP-TEST: Integration testing with MCP clients	distribution,mcp,testing		NOT_PLANNED
 833	OPEN	Fast Follow	DIST - Desktop distro	DIST-SQLITE: SQLite adapter for repositories	desktop,distribution		
 834	OPEN	Fast Follow	DIST - Desktop distro	DIST-WRAPPER: Desktop application wrapper	desktop,distribution,packaging		
 835	OPEN	Fast Follow	DIST - Desktop distro	DIST-UPDATE: Auto-update mechanism	desktop,distribution,infrastructure		
@@ -1314,7 +1314,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1493	CLOSED	MVP	Beta Blockers - Hard Gates Only	Naive-local datetime class in todo layer: repository writes/cutoffs and temporal_utils reminder parsing use datetime.now() (local, naive) against timestamptz	bug		COMPLETED
 1494	OPEN	Production		ADR-059 blanket skip on test_portfolio_service.py also disables pins for the LIVE archive/restore extraction path	bug		
 1495	OPEN	Production		localStorage chat fallback never persists assistant replies — the degraded-render surface that made #1489 present as user-bubbles-only	bug,journey:come-back,promise:E4-never-lies,surface:web		
-1459	CLOSED	Production		Intent.original_message dual-surface storage: 39 read sites / 3 idioms / 2 setter surfaces — #1332's class never closed, needs single access authority + ratchet	bug,technical-debt		COMPLETED
+1459	CLOSED	Production	Q - Recurring Audits	Intent.original_message dual-surface storage: 39 read sites / 3 idioms / 2 setter surfaces — #1332's class never closed, needs single access authority + ratchet	bug,technical-debt		COMPLETED
 1496	CLOSED	MVP	Beta Blockers - Hard Gates Only	Slash commands have no live transport — /link (#1466) and /standup unreachable in production	bug		COMPLETED
 1504	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY] Auth-exempt /api/v1/setup/* writes GLOBAL credentials (anthropic/openai LLM keys, slack client creds) with no setup-complete lockout	bug		COMPLETED
 1508	CLOSED	MVP	Beta Blockers - Hard Gates Only	Four /api/admin cache-clear routes have 'admin only' docstrings and no admin check — any authenticated user can clear ALL users' cached context	bug		COMPLETED
@@ -1365,32 +1365,32 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1569	CLOSED	MVP	Beta Blockers - Hard Gates Only	PRODUCT QUESTION (PPM/CXO): reminders ARE todos in the data model — they surface in the /todos list. Keep the unified model, or present them as distinct?			COMPLETED
 1511	CLOSED	MVP	Beta Blockers - Hard Gates Only	Two standups wear one name: web /standup runs an interview whose answers never feed the summary Slack /standup generates — semantic divergence per surface	bug		COMPLETED
 1497	OPEN	Fast Follow		Slack settings page is three generations of config stacked with no stated order — PM: 'a dog's breakfast, needs reorg, refactor'	bug		
-1498	CLOSED	Production		Live 'Good afternoon' greeting banner renders above historical conversation views — 8:33 AM turns under a 2:30 PM header	bug		COMPLETED
+1498	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Live 'Good afternoon' greeting banner renders above historical conversation views — 8:33 AM turns under a 2:30 PM header	bug		COMPLETED
 1499	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Route-surface audit (PM-directed, 8/7): 7 unmounted routers, 4 duplicate-purpose OAuth starts, UI calls to nonexistent routes, stale exception list	bug,surface:web		
 1506	OPEN	Production		tests/domain/test_file_reference_detection.py classification tests fail keyless (ContainerNotInitializedError) — need the llm marker or a container stub	bug		
 1528	OPEN	Production		test_validate_openai_key_success hits the LIVE OpenAI API with the real keychain key — network-dependent test flakes on timeouts (and burns quota)			
 1531	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	tests/security/test_cross_user_isolation.py has NO teardown — hardcoded fixture rows persist in shared dev DB, second runs collide (killed-sweep amplifier)			
 1546	OPEN	Production		Dialog copy voice pass: honest but awkward phrasing on delete/remove dialogs — PM: 'strangely written, sounds like ESL'	journey:manage-my-data,surface:web		
 1555	OPEN	Production	PROD-CONVO - Conversation Reliability	Surface-1 self-inconsistency: pre_classify vs _get_github_action diverge on milestone routing — one decision, two implementations	journey:get-work-done,surface:mcp,surface:web		
-1556	CLOSED	Production		Naive-datetime class outside the #1493 audit scope: universal_list_repository (6 writes), file_repository (1 write + 3 cutoffs), todo_knowledge_service (2 sites)			COMPLETED
+1556	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Naive-datetime class outside the #1493 audit scope: universal_list_repository (6 writes), file_repository (1 write + 3 cutoffs), todo_knowledge_service (2 sites)			COMPLETED
 1561	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	ProjectQueryService by-id reads remain owner-unscoped + ProjectContext.resolve_project does global cross-tenant reads (dead code) — #1501 siblings			
 1563	OPEN	Production	PROD-CONVO - Conversation Reliability	Floor-prose offers dangle: 'Want me to pull up your reminders?' → 'yes' executes nothing (offer-binding covers registered offers only)	journey:get-work-done,surface:mcp,surface:web		
 1564	OPEN	Production		iPad Safari layout float: large empty content block, composer detached mid-page, greeting scrolls under toolbar	journey:get-work-done,surface:web		
-1565	CLOSED	Production		what-day answer appends calendar event as location: 'You're currently in: Sandra and Brian'			COMPLETED
-1574	CLOSED	Production		UserPreferenceManager is in-memory only — ALL user preferences silently reset every process restart; tz preference is a facade (audit F6)			COMPLETED
-1575	CLOSED	Production		Calendar adapter contains TWO different 'today' computations that disagree (audit F3)			COMPLETED
-1576	CLOSED	Production		Standup/agenda datetime renders: naive + raw-ISO faces (audit F2 slice)			COMPLETED
-1577	CLOSED	Production		document_service 'yesterday' is a rolling 24h window + range defaults disagree with temporal_utils (audit F3/F7 slice)			COMPLETED
-1580	CLOSED	Production		STATUS-gather projects-source coherence: floor STATUS context and portfolio handler read different project sources (from #1570 diagnosis)			COMPLETED
-1582	CLOSED	Production		Consolidate inline escapeHtml/escapeAttr helpers into a shared static asset (duplicated per-template by #1578/#1581)			COMPLETED
+1565	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	what-day answer appends calendar event as location: 'You're currently in: Sandra and Brian'			COMPLETED
+1574	CLOSED	Production	PROD-DATA - Data Boundaries, Privacy & Terms	UserPreferenceManager is in-memory only — ALL user preferences silently reset every process restart; tz preference is a facade (audit F6)			COMPLETED
+1575	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Calendar adapter contains TWO different 'today' computations that disagree (audit F3)			COMPLETED
+1576	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Standup/agenda datetime renders: naive + raw-ISO faces (audit F2 slice)			COMPLETED
+1577	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	document_service 'yesterday' is a rolling 24h window + range defaults disagree with temporal_utils (audit F3/F7 slice)			COMPLETED
+1580	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	STATUS-gather projects-source coherence: floor STATUS context and portfolio handler read different project sources (from #1570 diagnosis)			COMPLETED
+1582	CLOSED	Production	Q - Recurring Audits	Consolidate inline escapeHtml/escapeAttr helpers into a shared static asset (duplicated per-template by #1578/#1581)			COMPLETED
 1583	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-08-10	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
 1584	CLOSED	Ongoing	Q - Recurring Audits	docs: ~240 broken internal links across docs/ (5 systemic clusters + individual cases), plus 2 methodology cross-ref drifts	documentation,maintenance		COMPLETED
 1585	CLOSED	Ongoing	Q - Recurring Audits	docs: 11 stale current-state docs (up to 11mo old) + 6 duplicate-file clusters needing reconciliation	documentation,maintenance		COMPLETED
 1586	OPEN	Production	PROD-CONVO - Conversation Reliability	Collapse the #902 in-handler close-confirm into the #1190 rail gate (redundant two-step UX on the rail path)	journey:get-work-done,surface:mcp,surface:web		
-1587	CLOSED	Production		WorkItemProvider conflates read-failure with emptiness ([] both ways) and assignee-filters new bindings to empty (from #1536 build)			COMPLETED
-1588	CLOSED	Production		Audit context-over-param principal overrides in conversation_handler.py (one fixed in #1536; siblings suspected)			COMPLETED
+1587	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	WorkItemProvider conflates read-failure with emptiness ([] both ways) and assignee-filters new bindings to empty (from #1536 build)			COMPLETED
+1588	CLOSED	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Audit context-over-param principal overrides in conversation_handler.py (one fixed in #1536; siblings suspected)			COMPLETED
 1500	OPEN	Fast Follow		Slack DMs with file attachments (and edits) are silently ignored — tester sends a screenshot, gets no reply, reads it as flakiness	enhancement		
-1502	CLOSED	Production		request.state.is_admin is read in files.py/ui.py but never assigned — admin bypasses permanently False (dead concept)	bug		COMPLETED
+1502	CLOSED	Production	Q - Recurring Audits	request.state.is_admin is read in files.py/ui.py but never assigned — admin bypasses permanently False (dead concept)	bug		COMPLETED
 1503	OPEN	Fast Follow		No API path to clear or rotate slack_app_token (overwrite-only)	enhancement		
 1509	OPEN	Production		TRUST-CONSENT: consent gate + capability legibility — one feature (Jake alpha FTUX; PPM's hold-a-release item)	journey:get-work-done,promise:T4-asks-before-acting,surface:mcp,surface:web		REOPENED
 1514	OPEN	Production		Published OAuth apps for ALL FOUR core connectors (Calendar, Slack, GitHub, Notion) — kill bring-your-own-client setup	enhancement,journey:connect-a-source,surface:web	2174	
@@ -1401,7 +1401,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1524	CLOSED	MVP		GitHub query cohort (PRs/milestones/releases/labels/branches) returns success=True on failure — and existing tests ASSERT the lie			COMPLETED
 1525	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Todo handlers' string-return contract cannot carry failure — call sites wrap ALL returns in success=True (residue after 1423 narrowing)	journey:get-work-done,promise:E4-never-lies,surface:web		
 1526	OPEN	Ongoing		StandupToChatBridge is dead code (zero prod callers) + deprecated _check_active_standup — delete-module-safely candidates worth ~3 ratchet points			
-1533	CLOSED	Production		Principal-dropping audit (PM-directed): report + guard implementation + 33 test-blind suites need authenticated variants			COMPLETED
+1533	CLOSED	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Principal-dropping audit (PM-directed): report + guard implementation + 33 test-blind suites need authenticated variants			COMPLETED
 1535	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Reminder times display in UTC — per-user timezone rendering (1521 follow-on)	journey:get-work-done,surface:web		
 1549	OPEN	Production		GET /api/v1/todos/shared-with-me is shadowed by /{todo_id} route order — matches as todo_id='shared-with-me'	journey:get-work-done,surface:web		
 1550	OPEN	Production	PROD-HONESTY - Failed Reads Say So	All-day calendar events render as 'at 12am' — technically the stored time, maladroit to humans	journey:come-back,surface:web		
@@ -1417,13 +1417,13 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1596	CLOSED	MVP	Beta Blockers - Hard Gates Only	Floor amnesia after a guided-flow escape — the escape works, the floor that catches it has no context			COMPLETED
 1597	CLOSED	MVP	Beta Blockers - Hard Gates Only	Live-verification backlog: four shipped fixes whose own stated live check has never been run			COMPLETED
 1599	CLOSED	MVP	Beta Blockers - Hard Gates Only	BETA BLOCKER: no user has is_admin=true, so #1485 + #1508's require_admin routes 403 everyone including PM — blocks #1201 Slack app-token save			COMPLETED
-1601	CLOSED	Production		str(ctx.user_id) stringifies None into the literal "None" at intent_service.py:536 — pre-existing, now load-bearing for #1532's ownership check			COMPLETED
+1601	CLOSED	Production	PROD-DATA - Data Boundaries, Privacy & Terms	str(ctx.user_id) stringifies None into the literal "None" at intent_service.py:536 — pre-existing, now load-bearing for #1532's ownership check			COMPLETED
 1602	CLOSED	Ongoing	FLYWHEEL - Process improvement	e2e suites became ONE-SHOT after #1532: fixed session_ids + per-run random users → ownership 404 on every rerun against the same DB			COMPLETED
 1603	CLOSED	MVP	Beta Blockers - Hard Gates Only	Chat 'complete todo N' ALWAYS fails: varchar = uuid operator error — a #1436 type-appeasement (UUID(todo.id)) broke the live path while the mocked tests stayed green			COMPLETED
 1604	CLOSED	MVP	Beta Blockers - Hard Gates Only	Floor teaches a settings path that does not exist: 'Settings → Integrations → GitHub → set a default repo' — there is no default-repo control on that page			COMPLETED
 1605	CLOSED	MVP	Beta Blockers - Hard Gates Only	Reminders: floor OFFERS 'want me to clear any of these?' then DENIES on acceptance ('I can't do that from chat yet') — while complete_todo is wired and reminders are todos			COMPLETED
 1606	CLOSED	MVP	Beta Blockers - Hard Gates Only	CORPUS: two-part message 'please clear the reminders except X — also, can you set my default repo conversationally?' dropped request 1 AND misparsed request 2 (a question) as a malformed set-command			COMPLETED
-1607	CLOSED	Production		UI: switching back to a chat briefly flashes the PREVIOUS chat's user messages before the new chat renders			COMPLETED
+1607	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	UI: switching back to a chat briefly flashes the PREVIOUS chat's user messages before the new chat renders			COMPLETED
 1608	OPEN	Ongoing	FLYWHEEL - Process improvement	CI liveness detector: flag workflows with zero recent successes — the 'red nobody sees' half of the #1600 postmortem (3 instances, one 2.5 months old)			
 1609	OPEN	Production		No user-reachable surface exists for editing personal context (role/priorities) — the overlay is file-only (PIPER.user.md), unreachable from the hosted beta	journey:set-up,surface:web		
 1610	CLOSED	MVP	Beta Blockers - Hard Gates Only	ALPHA_AGREEMENT_v2.md ships with a literal [contact email] placeholder — open since Oct 2025	bug		COMPLETED
@@ -1440,7 +1440,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1624	OPEN	Production	PUB - Public Beta	Chat document-summarize: finish #1187's deferred branch — the capability PM remembers has not worked in chat since 2025-08-22 (Arch's loss audit 2026-10-19; forensics 2026-08-15 corrected); the deferral was closed with no successor	journey:get-work-done,surface:web		
 1625	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	Reminder surfacing is relentless — PM design ruling: pin due reminders to the top of Radar, mention in conversation ONCE, not every reply	journey:get-work-done,surface:web		
 1626	CLOSED	MVP	Beta Blockers - Hard Gates Only	Reminder-clearing bug: single reminder deletion clears all reminders			COMPLETED
-1592	CLOSED	Production		Calendar adapters constructed without user scope log ERROR 'Google client secrets file not found: credentials.json' on Fly (file absent in container)			COMPLETED
+1592	CLOSED	Production	PROD-RECONNECT - Complete Connector Migration	Calendar adapters constructed without user scope log ERROR 'Google client secrets file not found: credentials.json' on Fly (file absent in container)			COMPLETED
 1593	CLOSED	Ongoing	Q - Recurring Audits	CI: link-checker.yml detects broken links correctly but never fails the workflow	documentation		COMPLETED
 1598	CLOSED	MVP	Beta Blockers - Hard Gates Only	Six read-only /api/admin metrics + health routes are deliberately ungated — any authenticated user can read cache metrics			COMPLETED
 1611	CLOSED	Ongoing		mac-dock-integration.md: likely-stale two-process architecture + built entirely around PM's personal routine, not visitor-appropriate as written	bug		COMPLETED
@@ -1661,7 +1661,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1839	CLOSED	MVP	Beta Blockers - Hard Gates Only	[ARCH] /health reported a hardcoded version and environment — alpha has been saying environment=staging for months	architecture		COMPLETED
 1840	CLOSED	MVP	Beta Blockers - Hard Gates Only	[OPS] mail-send half-landed a triage batch: read/ additions pushed, inbox deletions silently dropped (8 memos read as unread on origin for ~9h) — 1746-adjacent, mechanism undiagnosed	bug		COMPLETED
 1841	OPEN	Production	PROD-CONVO - Conversation Reliability	[TESTS] pm039 live-LLM param 'show me all project plans' consistently classified manage_portfolio by gpt-4o — deterministic drift, fails at origin/main baseline			
-1842	CLOSED	Production		[TESTS] tests/intent/test_classification_accuracy.py live suite fails at baseline: classifier's deprecated container fallback raises ContainerNotInitializedError (fixture injects no llm_service)			COMPLETED
+1842	CLOSED	Production	Q - Recurring Audits	[TESTS] tests/intent/test_classification_accuracy.py live suite fails at baseline: classifier's deprecated container fallback raises ContainerNotInitializedError (fixture injects no llm_service)			COMPLETED
 1843	CLOSED	MVP	Beta Blockers - Hard Gates Only	[ROUTING] ACCEPT_PATTERNS row 2 ('^please\s') fires on short imperative REQUESTS — 'please remove the fluff' FINALIZES a standup draft instead of editing it			COMPLETED
 1844	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-09-21	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
 1845	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY/OPS] Invite codes have been traveling through mailboxes/ — a PUBLIC repo. Janne's code sat exposed 8 days AND was minted on the wrong instance (Fly, not alpha) — the invite would have bounced at the gate			COMPLETED
@@ -1755,13 +1755,13 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1937	CLOSED	Ongoing		FLY-AUDIT: Monthly Housekeeping - 2026-10	documentation,fly-audit,maintenance,monthly-audit		COMPLETED
 1938	CLOSED	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-10-05	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
 1940	CLOSED	Ongoing		Rule: who assigns gate issues vs build work; role lives in an Owner: body line, Assignee stays the PM login			COMPLETED
-1941	CLOSED	Production		[HONESTY] close of a nonexistent issue hedged again on alpha v169 — read-back 404 arrives as a wrapped McpError, not content text (1858, third shape)			COMPLETED
-1944	CLOSED	Production		[GITHUB] 'my default repo should be test-piper-morgan' should resolve a bare name against the user's registered repos			COMPLETED
+1941	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] close of a nonexistent issue hedged again on alpha v169 — read-back 404 arrives as a wrapped McpError, not content text (1858, third shape)			COMPLETED
+1944	CLOSED	Production	PROD-RECONNECT - Complete Connector Migration	[GITHUB] 'my default repo should be test-piper-morgan' should resolve a bare name against the user's registered repos			COMPLETED
 1945	OPEN	Production		[UX] Project Config page lists the same repo under 'Linked Repositories' and 'Integrations'; no surface shows the default repo or a default project	journey:connect-a-source,surface:web		
 1946	OPEN	Production		[RADAR] Radar did not refresh after a reminder was completed in chat — the cleared reminder stayed pinned at the top until reload	journey:get-work-done,surface:web		
-1948	CLOSED	Production		app_shell applies no body font-family, so pages fall back to the browser serif default (journal, connected apps)	UX		COMPLETED
+1948	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	app_shell applies no body font-family, so pages fall back to the browser serif default (journal, connected apps)	UX		COMPLETED
 1947	CLOSED	Ongoing		[CI] Architecture Enforcement (the 1436 mypy signature-drift ratchet) has been red for 41 consecutive runs since 2026-10-01 20:02Z — nobody's 'CI green' check names this workflow			COMPLETED
-1950	CLOSED	Production		--font-family-mono token is referenced but never defined (inline code and kbd render sans)	UX		COMPLETED
+1950	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	--font-family-mono token is referenced but never defined (inline code and kbd render sans)	UX		COMPLETED
 1942	CLOSED	MVP		[ROUTING] Router-served Intent carried no context['original_message'] — 'get issue 101' answered 'I couldn't find an issue number' on alpha v169 (1858-style dual-field gap, fixed at the source)			COMPLETED
 1943	OPEN	Production	PROD-CONVO - Conversation Reliability	[ARCH] Todo/reminder target + clear-verb interpretation should consume the router's extracted args, not regex binders — PM's 2026-10-05 live round (C: 'first three'; the clear-default answer with the list)	journey:get-work-done,promise:E5-one-authority,surface:mcp,surface:web		
 1951	CLOSED	MVP		[CORPUS] 12 Phase-0/Phase-3 row expectations predate the 10-05 catalog growth (link_repo, unlink_repo, read_canonical, calendar ops): the first full-corpus run since (10-06) shows 9 asserted regressions + 1 deleted-list ledger regression, all attributed to stale expectations by ×6 controls — re-judge needed before the report can be wired into the gate			COMPLETED
@@ -1773,46 +1773,46 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1957	OPEN	Production		[WEB] Personality page: 'Reset to Defaults' reloads with a query string and leaves Warmth at its saved value	journey:set-up,surface:web		
 1962	OPEN	Production	PROD-CONVO - Conversation Reliability	Subject-less advice asks ("what's your advice here"): 'you might have sent that before it was ready' blames the user; unrelated overdue-reminder nudge appended	UX,journey:get-work-done,surface:mcp,surface:web		
 1963	OPEN	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] Populated Radar with a failed source shows no disclosure (partial render reads as complete) — follow-up to #1889	UX,journey:something-goes-wrong,promise:E4-never-lies,surface:web		
-1964	CLOSED	Production		[HONESTY] /generate standup formatters: raw user id in the heading, 'Saved 0m' footer, 'Blockers' (not Watch), and 'No blockers ✅' under a partial read	UX		COMPLETED
+1964	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] /generate standup formatters: raw user id in the heading, 'Saved 0m' footer, 'Blockers' (not Watch), and 'No blockers ✅' under a partial read	UX		COMPLETED
 1965	CLOSED	MVP		[HONESTY] Radar/standup GitHub work items: a failed or unauthenticated read comes back as 'verified empty', so #1587/#1889's disclosure never fires; on alpha an OAuth-connected account shows no work items and no failure			COMPLETED
-1966	CLOSED	Production		GitHub has two credential resolvers (OAuth grant vs per-user PAT) that disagree; converge on one resolver in the adapter	close:pins-only,journey:get-work-done,promise:E4-never-lies,seam:resolver,surface:mcp,surface:web		COMPLETED
-1958	CLOSED	Production		Reminder confirmation says 'scheduled for next Friday' when the user wrote 'on Friday' (label hardcodes 'next')	UX		COMPLETED
-1959	CLOSED	Production		[UX] close/reopen asks 'Close issue #N? (yes/no)' before checking the issue exists — the confirm comes first, the 'no such issue' after	enhancement		COMPLETED
-1960	CLOSED	Production		[COPY] consent check says set-default-repo 'writes outside our conversation (to your connected tools)' — it writes Piper's own preference store	enhancement		COMPLETED
+1966	CLOSED	Production	PROD-RECONNECT - Complete Connector Migration	GitHub has two credential resolvers (OAuth grant vs per-user PAT) that disagree; converge on one resolver in the adapter	close:pins-only,journey:get-work-done,promise:E4-never-lies,seam:resolver,surface:mcp,surface:web		COMPLETED
+1958	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Reminder confirmation says 'scheduled for next Friday' when the user wrote 'on Friday' (label hardcodes 'next')	UX		COMPLETED
+1959	CLOSED	Production	PROD-CONVO - Conversation Reliability	[UX] close/reopen asks 'Close issue #N? (yes/no)' before checking the issue exists — the confirm comes first, the 'no such issue' after	enhancement		COMPLETED
+1960	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	[COPY] consent check says set-default-repo 'writes outside our conversation (to your connected tools)' — it writes Piper's own preference store	enhancement		COMPLETED
 1961	OPEN	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] 'show my todos' reply renders an OPEN overdue todo with strikethrough (~~revise the pr~~) — LLM-composed markup implies done	bug,journey:get-work-done,promise:E4-never-lies,surface:web		
 1970	OPEN	Production	PROD-CONVO - Conversation Reliability	Consent framing (imperative vs ambiguous) moves to the router as a structured arg; _EXECUTE_RE becomes a ratcheted fallback (ADR-080 D1/D6)	enhancement,promise:E5-one-authority		
-1971	CLOSED	Production		inversion-phase3-deletion-gate: a corpus row's MATCH verdict can't see a DIFFERENT pre-classifier list intercepting the phrase first	bug		COMPLETED
-1973	CLOSED	Production		Phase 3 gate credits sub-threshold MATCH/REVIEW rows the live consult won't dispatch; 9 rows of past deletions (TEMPORAL 7, ANALYSIS 2) already stand down on alpha			COMPLETED
-1975	CLOSED	Production		[CHAT] Deleting an UPCOMING reminder: confirm names it, then 'yes' answers "couldn't find it in your due reminders" — confirm and executor search different sets			COMPLETED
-1976	CLOSED	Production		[ARGS] 'add a todo to web test one' stores the title as 'to web test one' — the verb phrase's 'to' is kept in the extracted title			COMPLETED
-1977	CLOSED	Production		Surface-1 fallback swallows a two-topic turn whole when one half's literal is deleted (armed-snapshot / router-decline branch): generalize the #1416 residue rule			COMPLETED
+1971	CLOSED	Production	PROD-CONVO - Conversation Reliability	inversion-phase3-deletion-gate: a corpus row's MATCH verdict can't see a DIFFERENT pre-classifier list intercepting the phrase first	bug		COMPLETED
+1973	CLOSED	Production	PROD-CONVO - Conversation Reliability	Phase 3 gate credits sub-threshold MATCH/REVIEW rows the live consult won't dispatch; 9 rows of past deletions (TEMPORAL 7, ANALYSIS 2) already stand down on alpha			COMPLETED
+1975	CLOSED	Production	PROD-CONVO - Conversation Reliability	[CHAT] Deleting an UPCOMING reminder: confirm names it, then 'yes' answers "couldn't find it in your due reminders" — confirm and executor search different sets			COMPLETED
+1976	CLOSED	Production	PROD-CONVO - Conversation Reliability	[ARGS] 'add a todo to web test one' stores the title as 'to web test one' — the verb phrase's 'to' is kept in the extracted title			COMPLETED
+1977	CLOSED	Production	PROD-CONVO - Conversation Reliability	Surface-1 fallback swallows a two-topic turn whole when one half's literal is deleted (armed-snapshot / router-decline branch): generalize the #1416 residue rule			COMPLETED
 1978	CLOSED	MVP		[SETTINGS] Anthropic key format rule refuses valid current keys: `^sk-ant-…{100,}` demands ≥100 chars after the prefix, org-workspace keys have 99 (106 total)			COMPLETED
-1979	CLOSED	Production		Two-topic "summarize my current work and …" gets an upload-a-document prompt (summarize_document rail runs on a conversation-sourced turn)	UX		COMPLETED
+1979	CLOSED	Production	PROD-CONVO - Conversation Reliability	Two-topic "summarize my current work and …" gets an upload-a-document prompt (summarize_document rail runs on a conversation-sourced turn)	UX		COMPLETED
 1981	OPEN	Fast Follow		MCP/plugin: first-time user setup path from a directory listing (later, per PM)			
-1982	CLOSED	Production		MCP server can't read GitHub issues: GITHUB_MCP_SERVER_URL unset and ENCRYPTION_MASTER_KEY absent on piper-morgan-mcp			COMPLETED
+1982	CLOSED	Production	PUB - Public Beta	MCP server can't read GitHub issues: GITHUB_MCP_SERVER_URL unset and ENCRYPTION_MASTER_KEY absent on piper-morgan-mcp			COMPLETED
 1983	OPEN	Production		Settings → GitHub: recommend fine-grained read-only PATs (not classic repo-scope) in the token hint	journey:connect-a-source,surface:web		
 1984	OPEN	Production	PROD-CONVO - Conversation Reliability	[KNOWN MISS] Cold two-topic 'summarize my current work and I need the archived list too': router reads 'my work' as session activity (ledgered 2026-10-12; served reply honest; description/rail levers measured NO-GO)	UX,journey:get-work-done,surface:mcp,surface:web		
-1985	CLOSED	Production		[HONESTY] attention_query answers 'nothing urgent' while the account has overdue and due-today todos — the handler scopes TodoDB by session_id, not the user (the #1395 principal-confusion class, two queries left)			COMPLETED
-1986	CLOSED	Production		[UX] 'thank you!' as a cold first turn serves a todo briefing, not a short warm acknowledgement — CONVERSATION/thanks and farewell fall to the floor; only greeting has the pure-pleasantry canned path (#1974's bar)			COMPLETED
-1987	CLOSED	Production		[ROUTING] 'delete that reminder' right after 'Reminder saved: …' in the same session asks 'Which todo should I remove? Try: delete todo [number]' and deletes nothing — the just-created reminder is not resolved as the referent			COMPLETED
-1988	CLOSED	Production		[COPY] Served reply renders 'say "set my timezone to "' — the <city> placeholder in canonical_handlers.py:347 is eaten as an HTML tag by the chat renderer			COMPLETED
-1989	CLOSED	Production		Alpha c613beabf5: "thank you!" in a fresh session serves a todo briefing, not an acknowledgement (#1974 served confirmation failed)	UX		COMPLETED
-1990	CLOSED	Production		"show today's tasks" serves "nothing urgent" while the account has an overdue and a due-today todo	UX		COMPLETED
-1991	CLOSED	Production		Timezone hint "set my timezone to <city>" loses its placeholder in the rendered chat reply	UX		COMPLETED
-1992	CLOSED	Production		Bot reply renderer drops angle-bracket text (<city>, <title>) instead of showing it			COMPLETED
-1993	CLOSED	Production		TEST: test_action_registry fails 47 rows when run after the #1818 spend-free ratchet test (registry state leak, order-dependent)			COMPLETED
+1985	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] attention_query answers 'nothing urgent' while the account has overdue and due-today todos — the handler scopes TodoDB by session_id, not the user (the #1395 principal-confusion class, two queries left)			COMPLETED
+1986	CLOSED	Production	PROD-CONVO - Conversation Reliability	[UX] 'thank you!' as a cold first turn serves a todo briefing, not a short warm acknowledgement — CONVERSATION/thanks and farewell fall to the floor; only greeting has the pure-pleasantry canned path (#1974's bar)			COMPLETED
+1987	CLOSED	Production	PROD-CONVO - Conversation Reliability	[ROUTING] 'delete that reminder' right after 'Reminder saved: …' in the same session asks 'Which todo should I remove? Try: delete todo [number]' and deletes nothing — the just-created reminder is not resolved as the referent			COMPLETED
+1988	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	[COPY] Served reply renders 'say "set my timezone to "' — the <city> placeholder in canonical_handlers.py:347 is eaten as an HTML tag by the chat renderer			COMPLETED
+1989	CLOSED	Production	PROD-CONVO - Conversation Reliability	Alpha c613beabf5: "thank you!" in a fresh session serves a todo briefing, not an acknowledgement (#1974 served confirmation failed)	UX		COMPLETED
+1990	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	"show today's tasks" serves "nothing urgent" while the account has an overdue and a due-today todo	UX		COMPLETED
+1991	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Timezone hint "set my timezone to <city>" loses its placeholder in the rendered chat reply	UX		COMPLETED
+1992	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Bot reply renderer drops angle-bracket text (<city>, <title>) instead of showing it			COMPLETED
+1993	CLOSED	Production	Q - Recurring Audits	TEST: test_action_registry fails 47 rows when run after the #1818 spend-free ratchet test (registry state leak, order-dependent)			COMPLETED
 1994	CLOSED	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-10-12	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
-1998	CLOSED	Production		[HONESTY] Compound 'thanks, and what's on my list today?' says the todo list is clear and calls days-overdue items 'due today'	UX		NOT_PLANNED
-1999	CLOSED	Production		'show today's tasks': '(0 days overdue)' label and the day count moves between turns (4 -> 5 days in minutes)	UX		NOT_PLANNED
+1998	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] Compound 'thanks, and what's on my list today?' says the todo list is clear and calls days-overdue items 'due today'	UX		NOT_PLANNED
+1999	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	'show today's tasks': '(0 days overdue)' label and the day count moves between turns (4 -> 5 days in minutes)	UX		NOT_PLANNED
 1995	OPEN	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] GitHub token missing a permission reads as an empty result (e.g. no Pull requests: Read -> 'my pull requests' empty, not 'I can't see them')	UX,journey:something-goes-wrong,promise:E4-never-lies,surface:mcp,surface:web		
-2000	CLOSED	Production		TEST: unarmed-ask census (#1766) misses asks whose '?' is mid-line ('Which todo should I remove? Try: …')	architecture		COMPLETED
-2001	CLOSED	Production		[UX] 'Today:' list says '(1 days overdue)' — singular is 'day'	UX		COMPLETED
+2000	CLOSED	Production	Q - Recurring Audits	TEST: unarmed-ask census (#1766) misses asks whose '?' is mid-line ('Which todo should I remove? Try: …')	architecture		COMPLETED
+2001	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	[UX] 'Today:' list says '(1 days overdue)' — singular is 'day'	UX		COMPLETED
 2002	CLOSED	Production		[UX] numbered delete ask: closing sentence renders inside the last list item	UX		COMPLETED
-2003	CLOSED	Production		[HONESTY] armed delete pick: a name that matches nothing is matched to a different reminder	UX		COMPLETED
-2004	CLOSED	Production		[UX] bare 'never mind' with nothing open answers with an unrequested todo list	UX		COMPLETED
-2005	CLOSED	Production		MCP github-issues resource reports a 30-item page as the full set (drops total_count); Claude told PM 30 open issues, GitHub has 278			COMPLETED
-2007	CLOSED	Production		Fresh standup ask orphans a SUSPENDED standup: the in-progress branch never sees SUSPENDED (include_suspended defaults False)			COMPLETED
-2008	CLOSED	Production		[UX] standup invents a reason for an empty day: "looks like you were in planning mode"	UX		COMPLETED
+2003	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] armed delete pick: a name that matches nothing is matched to a different reminder	UX		COMPLETED
+2004	CLOSED	Production	PROD-CONVO - Conversation Reliability	[UX] bare 'never mind' with nothing open answers with an unrequested todo list	UX		COMPLETED
+2005	CLOSED	Production	PUB - Public Beta	MCP github-issues resource reports a 30-item page as the full set (drops total_count); Claude told PM 30 open issues, GitHub has 278			COMPLETED
+2007	CLOSED	Production	PROD-CONVO - Conversation Reliability	Fresh standup ask orphans a SUSPENDED standup: the in-progress branch never sees SUSPENDED (include_suspended defaults False)			COMPLETED
+2008	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	[UX] standup invents a reason for an empty day: "looks like you were in planning mode"	UX		COMPLETED
 2009	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	owner_id is NULLABLE on 8 user-data tables that have no other owner column: count the NULLs, then NOT NULL			
 2010	OPEN	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] list_projects renderer offers things nothing is armed to do (empty state and closing question)	UX,journey:first-conversation,promise:E4-never-lies,surface:web		
 2011	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Unarmed-ask census (#1766) scans 2 packages; 67 holder sites elsewhere in services/ escape it (34 in consciousness, which renders day-one replies)			
@@ -1821,45 +1821,45 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2012	CLOSED	MVP		[HONESTY] Integration Health 'Test' reports GitHub 'connection successful' on a revoked OAuth grant: _test_github returns success when a binding row exists, with no GitHub call			COMPLETED
 2015	OPEN	Ongoing		update_todo_relationships passes edge_type as a str where KnowledgeGraphService.create_edge calls .value: every call raises AttributeError, swallowed by the broad except, so todo relationships are never written			
 2016	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	10 DB-bound unit tests insert rows with random owner ids and fail on an empty migrated database (users FK): they pass only where a users row already exists			
-2019	CLOSED	Production		Cap bulk todo deletes at one item in the delete handler until soft delete exists (xian's 10-14 ruling, PPM's interim B)			COMPLETED
+2019	CLOSED	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Cap bulk todo deletes at one item in the delete handler until soft delete exists (xian's 10-14 ruling, PPM's interim B)			COMPLETED
 2017	CLOSED	MVP		Integrations page: GitHub card's Disconnect button does nothing when clicked (no confirm dialog, no request)			COMPLETED
 2018	CLOSED	MVP	Beta Blockers - Hard Gates Only	Settings → Integrations: a GitHub user with a dead connection can't recover from the UI (tracking: false 'connected', dead Disconnect, no reconnect path, unreachable GitHub settings page)	journey:something-goes-wrong,promise:E4-never-lies,surface:web	2172	COMPLETED
-2020	CLOSED	Production		Standup interview decline says a quick report 'stays exactly as it is' when none exists	UX		COMPLETED
+2020	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Standup interview decline says a quick report 'stays exactly as it is' when none exists	UX		COMPLETED
 2021	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Soft delete with an undo window for todos, then bulk delete may return (xian's 10-14 ruling, PPM's option C; lifts #2019)	journey:get-work-done,surface:mcp,surface:web		
 2022	OPEN	Production	PROD-HONESTY - Failed Reads Say So	MCP github-issues payload doesn't say what it searched (assignee:@me across all repos), so Claude attributes the total to one repo	journey:get-work-done,promise:E4-never-lies,surface:mcp		
 2023	OPEN	Production	PROD-CONVO - Conversation Reliability	Standup interview swallows the user's own requests as answers (a question or 'do a standup' lands in the draft)	UX,journey:get-work-done,surface:mcp,surface:web		
 2024	OPEN	Production	PROD-CONVO - Conversation Reliability	Contextual offers (#852 offer_hint) arm only on a single yes/no question: drop directive arms, single-offer copy, census hardening	architecture,journey:get-work-done,surface:mcp,surface:web		
 2025	OPEN	Production	PROD-CONVO - Conversation Reliability	Delete gate reads 'delete todo 1 and 2' as todo 1 only; the second item is silently dropped	bug,journey:get-work-done,surface:mcp,surface:web		
-2026	CLOSED	Production		Off-topic and off-intent exits at the standup invitation still say 'I've paused it' after the unstarted standup now closes	bug		COMPLETED
-2027	CLOSED	Production		Standup interview suggestions ('nothing', 'skip') are never rendered as chips on the web chat	bug		COMPLETED
-2028	CLOSED	Production		Standup interview suggestions ("nothing", "skip") are emitted at 7 sites but never rendered: render chips or delete them			NOT_PLANNED
-2029	CLOSED	Production		GitHub settings page says Connected and hides 'Connect with GitHub' for a revoked grant (oauth-status reads the binding, never GitHub)			COMPLETED
+2026	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Off-topic and off-intent exits at the standup invitation still say 'I've paused it' after the unstarted standup now closes	bug		COMPLETED
+2027	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Standup interview suggestions ('nothing', 'skip') are never rendered as chips on the web chat	bug		COMPLETED
+2028	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Standup interview suggestions ("nothing", "skip") are emitted at 7 sites but never rendered: render chips or delete them			NOT_PLANNED
+2029	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	GitHub settings page says Connected and hides 'Connect with GitHub' for a revoked grant (oauth-status reads the binding, never GitHub)			COMPLETED
 2030	OPEN	Production	PROD-CONVO - Conversation Reliability	Multi-intent path renders canonical builders' questions unarmed: IntentOrchestrator._execute_single keeps only the message	bug,journey:get-work-done,surface:mcp,surface:web		
-2031	CLOSED	Production		Integrations card shows 'Not configured' for a STALE GitHub binding (after 2029), and says 'MCP connector' when bound			COMPLETED
-2032	CLOSED	Production		Bare 'cancel' with no standup active replies 'standup cancelled' (claims a state that does not exist)	UX		NOT_PLANNED
-2033	CLOSED	Production		Bare 'cancel' or 'skip the standup' with no standup running says 'standup cancelled' / 'standup skipped'	bug		COMPLETED
-2035	CLOSED	Production		'yes' to 'Would you like to add one?' (no projects) meets a second confirmation for a nameless add	UX		COMPLETED
-2034	CLOSED	Production		A 'yes' to Piper's own add-project offer gets a second consent check ('asking me to add project')	bug		NOT_PLANNED
-2039	CLOSED	Production		Settings → GitHub can't be found by a likely URL: /settings/github is a raw 404, and the Settings index has no GitHub entry			COMPLETED
+2031	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Integrations card shows 'Not configured' for a STALE GitHub binding (after 2029), and says 'MCP connector' when bound			COMPLETED
+2032	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Bare 'cancel' with no standup active replies 'standup cancelled' (claims a state that does not exist)	UX		NOT_PLANNED
+2033	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Bare 'cancel' or 'skip the standup' with no standup running says 'standup cancelled' / 'standup skipped'	bug		COMPLETED
+2035	CLOSED	Production	PROD-CONVO - Conversation Reliability	'yes' to 'Would you like to add one?' (no projects) meets a second confirmation for a nameless add	UX		COMPLETED
+2034	CLOSED	Production	PROD-CONVO - Conversation Reliability	A 'yes' to Piper's own add-project offer gets a second consent check ('asking me to add project')	bug		NOT_PLANNED
+2039	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Settings → GitHub can't be found by a likely URL: /settings/github is a raw 404, and the Settings index has no GitHub entry			COMPLETED
 2036	OPEN	Production		GitHub Test says 'needs re-authorizing' after a deliberate Disconnect when a personal token serves	journey:connect-a-source,promise:E4-never-lies,surface:web		
-2037	CLOSED	Production		Integrations Test toast and card ignore the leg-naming reply (#2012 line never reaches the user)	UX		COMPLETED
-2038	CLOSED	Production		Integrations page Test toast shows a generic 'Test Passed' instead of the API's leg-naming message (#2012)	bug		NOT_PLANNED
+2037	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Integrations Test toast and card ignore the leg-naming reply (#2012 line never reaches the user)	UX		COMPLETED
+2038	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Integrations page Test toast shows a generic 'Test Passed' instead of the API's leg-naming message (#2012)	bug		NOT_PLANNED
 2041	OPEN	Production	PROD-CONVO - Conversation Reliability	Multi-intent path drops write offers: IntentOrchestrator._execute_single does not carry write_offer	bug,journey:get-work-done,surface:mcp,surface:web		
 2040	CLOSED	MVP		'You don't have any open issues' hides its scope; 'show me the rest' with nothing held gets an invented list	UX		COMPLETED
 2042	OPEN	Production	PUB - Public Beta	Floor LLM narrates actions or data that code never produced (class tracking; #2033, #2040)	journey:get-work-done,promise:E4-never-lies,surface:web		
 2043	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	OAuth redirect defaults: GitHub handler and calendar wizard fall back to localhost, not PIPER_BASE_URL (#1324 class); calendar wizard default is off the /api/v1/setup prefix	journey:connect-a-source,surface:web		
-2044	CLOSED	Production		Integrations card reads 'Google Calendar — Status: unknown' right after a successful connect; CXO: 'Connected' + 'Not checked yet. Press Test.'	UX		COMPLETED
+2044	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Integrations card reads 'Google Calendar — Status: unknown' right after a successful connect; CXO: 'Connected' + 'Not checked yet. Press Test.'	UX		COMPLETED
 2048	CLOSED	MVP		'list my projects' on a no-projects account gets the floor's 'I don't have your projects list in front of me' (regression from 6f2916d10f)	UX		COMPLETED
-2049	CLOSED	Production		Integrations card keeps 'Not checked yet' and '0 of 4' after a successful Test; last-checked shows a raw UTC timestamp	UX		NOT_PLANNED
-2050	CLOSED	Production		'delete the first two reminders' with no list on screen says 'There's no number 1'; confirms call one object 'todo' and 'reminder'	UX		NOT_PLANNED
-2047	CLOSED	Production		'list my projects' (the card's S3 phrase) classifies manage_portfolio 3 of 3 on an empty-projects account; the floor then narrates 'I don't have your projects list in front of me'	bug		NOT_PLANNED
+2049	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Integrations card keeps 'Not checked yet' and '0 of 4' after a successful Test; last-checked shows a raw UTC timestamp	UX		NOT_PLANNED
+2050	CLOSED	Production	PROD-CONVO - Conversation Reliability	'delete the first two reminders' with no list on screen says 'There's no number 1'; confirms call one object 'todo' and 'reminder'	UX		NOT_PLANNED
+2047	CLOSED	Production	PROD-CONVO - Conversation Reliability	'list my projects' (the card's S3 phrase) classifies manage_portfolio 3 of 3 on an empty-projects account; the floor then narrates 'I don't have your projects list in front of me'	bug		NOT_PLANNED
 2045	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Integrations card after a successful Test keeps 'Not checked yet. Press Test.' and '0 of 4 healthy' until reload; the reloaded line is a raw ISO UTC stamp	UX,journey:connect-a-source,promise:E4-never-lies,surface:web		COMPLETED
-2046	CLOSED	Production		Ordinal todo deletes need a list shown first ('There's no number 1' with 2 reminders), and the two delete confirms differ ('Delete todo:' vs 'Delete the reminder')	UX		COMPLETED
-2051	CLOSED	Production		'what issues are assigned to me?' offers to look instead of answering (unarmed offer, 'let me pull that up' with nothing pulled)	UX		COMPLETED
-2052	CLOSED	Production		Repeat 'show my open issues' in the same chat kept the old count (9) after five issues were unassigned; a new chat was right (floor composing from history, #2042 class)	bug		NOT_PLANNED
+2046	CLOSED	Production	PROD-CONVO - Conversation Reliability	Ordinal todo deletes need a list shown first ('There's no number 1' with 2 reminders), and the two delete confirms differ ('Delete todo:' vs 'Delete the reminder')	UX		COMPLETED
+2051	CLOSED	Production	PROD-CONVO - Conversation Reliability	'what issues are assigned to me?' offers to look instead of answering (unarmed offer, 'let me pull that up' with nothing pulled)	UX		COMPLETED
+2052	CLOSED	Production	PUB - Public Beta	Repeat 'show my open issues' in the same chat kept the old count (9) after five issues were unassigned; a new chat was right (floor composing from history, #2042 class)	bug		NOT_PLANNED
 2053	OPEN	Production		Stale grant with a PAT serving: the Integrations card has no Reconnect button, and pressing Test prints the 'needs re-authorizing' line twice	UX,journey:connect-a-source,surface:web		
 2054	CLOSED	MVP		Intent cache shares one mutable context dict across every hit, so per-turn state and the principal leak between turns and users	architecture,bug		COMPLETED
-2055	CLOSED	Production		ADR-075 OQ-3 first-response notice shows under data answers; CXO/Arch: show it only on the next greeting or help reply, never under a list or result	UX		COMPLETED
+2055	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	ADR-075 OQ-3 first-response notice shows under data answers; CXO/Arch: show it only on the next greeting or help reply, never under a list or result	UX		COMPLETED
 2057	OPEN	Production	PROD-CONVO - Conversation Reliability	Surface 1 claims 'how do I archive my project Foo?' as PORTFOLIO/manage_portfolio, and the legacy branch archives it	journey:get-work-done,promise:T4-asks-before-acting,surface:mcp,surface:web		
 2056	OPEN	Production		Preference hook never fires on a cache hit or a context-free miss (reads user_id from an empty context); context_assembler's own cache unchecked for the #2054 sharing pattern	bug		
 2058	CLOSED	Ongoing		check_intent_bypasses.py reads an empty route body: find('@get') never matches '@router.get', so its intent check can't pass			COMPLETED
@@ -1870,30 +1870,30 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2061	CLOSED	MVP		Uploaded-file writes fall back to plaintext in production when ENCRYPTION_MASTER_KEY is unset (the encrypted columns refuse; #1387 asymmetry)	architecture,promise:T1-your-work-is-yours		COMPLETED
 2064	CLOSED	MVP		The live /privacy promise ('we'll delete your account and everything in it within 14 days') has no erasure path: a naive user delete fails on 13 FKs and orphans 13 tables	architecture		COMPLETED
 2065	CLOSED	MVP		UX: no way to hide or delete a chat; Settings 'Export/delete data' promises actions the page does not offer	UX		COMPLETED
-2066	CLOSED	Production		Integrations card: the OAuth-leg GitHub card carries no last_check, so #2045's 'Healthy. Checked just now.' / 'Last checked at …' line never shows for an OAuth-connected account	UX		COMPLETED
+2066	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Integrations card: the OAuth-leg GitHub card carries no last_check, so #2045's 'Healthy. Checked just now.' / 'Last checked at …' line never shows for an OAuth-connected account	UX		COMPLETED
 2067	CLOSED	MVP		Integrations page: an expired sign-in shows as an integration failure ('Token has expired' under GitHub) instead of sending the person back to sign in	UX		COMPLETED
-2068	CLOSED	Production		UX: Integrations headline says 'Multiple Issues' and '0 of 4 healthy' when GitHub works and three integrations are simply not connected	UX		COMPLETED
-2069	CLOSED	Production		[UX] 'Add a project called Baz with description …' stores the description inside the project's name; the reply promises a description it did not keep	bug		COMPLETED
-2070	CLOSED	Production		[COPY] Consent line for an ambiguous archive drops the project's name: 'asking me to archive project, which saves a change…'	bug		COMPLETED
+2068	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	UX: Integrations headline says 'Multiple Issues' and '0 of 4 healthy' when GitHub works and three integrations are simply not connected	UX		COMPLETED
+2069	CLOSED	Production	PROD-CONVO - Conversation Reliability	[UX] 'Add a project called Baz with description …' stores the description inside the project's name; the reply promises a description it did not keep	bug		COMPLETED
+2070	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	[COPY] Consent line for an ambiguous archive drops the project's name: 'asking me to archive project, which saves a change…'	bug		COMPLETED
 2071	CLOSED	MVP		Integrations Test result is host-global: one account's Test sets the status, error text and check time every other account sees, on the card and in chat			COMPLETED
 2072	CLOSED	MVP		[HONESTY] A STALE GitHub binding reads as 'not configured' to the radar and standup gate, so a revoked grant is silently skipped instead of disclosed (regression of #1965's served pass since #2029 marks the binding STALE)	bug		COMPLETED
-2073	CLOSED	Production		build_inversion_corpus_phase0.py has drifted behind hand edits to inversion_corpus_phase0.yaml (regenerating reverts a ruled row)	technical-debt		COMPLETED
+2073	CLOSED	Production	PROD-CONVO - Conversation Reliability	build_inversion_corpus_phase0.py has drifted behind hand edits to inversion_corpus_phase0.yaml (regenerating reverts a ruled row)	technical-debt		COMPLETED
 2074	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Revoked Calendar/Slack tokens still read 'connected' on the four #2072 surfaces: extend needs-reconnecting to each integration's own auth-rejection state	journey:something-goes-wrong,promise:E4-never-lies,surface:web		
-2076	CLOSED	Production		Plain focus and standup replies don't say GitHub can't be read when the grant is revoked (failed source shown as empty)	UX		COMPLETED
-2075	CLOSED	Production		Integrations headline says All Systems Healthy for an OAuth-bound integration that has never been tested	UX		COMPLETED
+2076	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Plain focus and standup replies don't say GitHub can't be read when the grant is revoked (failed source shown as empty)	UX		COMPLETED
+2075	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Integrations headline says All Systems Healthy for an OAuth-bound integration that has never been tested	UX		COMPLETED
 2077	CLOSED	MVP		Settings → GitHub token field may be filled with the saved Piper password (Chrome ignores autocomplete=off on password inputs)			COMPLETED
 2078	CLOSED	MVP		Setup wizard ends in 'Setup Failed' for every invited tester on alpha: /setup/complete is gated by require_setup_incomplete, so the account is created but keys are not stored and the button sticks on 'Creating…'	bug		COMPLETED
 2080	CLOSED	MVP		Empty-projects offer chain: after 'What would you like to call it?' the name reply falls to the floor, which improvises a consent question; 'Yes' then creates nothing and says so (xian, alpha 118241587e)	bug		COMPLETED
-2079	CLOSED	Production		Standup reply opens 'Good morning!' at any hour (hardcoded), seen at 4:29 PM on alpha while the page header says Good afternoon	bug		COMPLETED
+2079	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Standup reply opens 'Good morning!' at any hour (hardcoded), seen at 4:29 PM on alpha while the page header says Good afternoon	bug		COMPLETED
 2081	CLOSED	Production		Admin Invites page: mint, list (masked), and revoke alpha invite codes from the signed-in admin account instead of fly ssh console	promise:T8-invite-code		COMPLETED
-2082	CLOSED	Production		A declarative add with no name ('I'd like to start a new project') asks consent for 'add project' before any name exists; CXO rules name first, then the one confirm			COMPLETED
+2082	CLOSED	Production	PROD-CONVO - Conversation Reliability	A declarative add with no name ('I'd like to start a new project') asks consent for 'add project' before any name exists; CXO rules name first, then the one confirm			COMPLETED
 2083	CLOSED	Production		/health reports 'healthy' while the production database is unreachable (alpha login 500, release_command cannot connect) — add a DB ping to the health verdict			COMPLETED
 2087	OPEN	Production		Google OAuth consent screen is Internal user type: only Workspace accounts on PM's domain can connect Google Calendar; design partners will be refused. Decide External + publishing status + verification before 10-30	journey:connect-a-source,surface:web		
 2086	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Admin grant on Fly was never applied: migration a1599 keys on username 'dinp', which does not exist in the production users table; make the grant durable for the account xian named (mvp-tester)			
 2085	CLOSED	MVP		Production Postgres died inside a started machine (~05:25 PT 2026-10-19) and nothing restarted or alerted it for 4+ hours — restart policy and an alert on the pg check	promise:T6-restarts-and-outages		COMPLETED
-2088	CLOSED	Production		Setup wizard asks for the invite code at step 3 of 5 (after System Requirements and Connect Your AI); xian: the invite requirement belongs at the start; interim: invitations must say the code is asked at step 3	UX		COMPLETED
+2088	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Setup wizard asks for the invite code at step 3 of 5 (after System Requirements and Connect Your AI); xian: the invite requirement belongs at the start; interim: invitations must say the code is asked at step 3	UX		COMPLETED
 2089	CLOSED	MVP	Beta Blockers - Hard Gates Only	Hosted setup wizard still shows the local System Requirements check (Docker, Postgres, Redis, Temporal) and the Temporal line always fails on alpha; skip or replace the step when running hosted	UX		COMPLETED
-2090	CLOSED	Production		MCP: backfill GitHub-context rows for PATs saved before the dual write (runbook 2b, after 1982)			COMPLETED
+2090	CLOSED	Production	PUB - Public Beta	MCP: backfill GitHub-context rows for PATs saved before the dual write (runbook 2b, after 1982)			COMPLETED
 2091	CLOSED	MVP	Beta Blockers - Hard Gates Only	Calendar in chat ignores a weekday target: "what's my agenda Thursday?" and "how about on Thursday?" answer "You have no meetings scheduled for today."	bug		COMPLETED
 2092	CLOSED	MVP	Beta Blockers - Hard Gates Only	Chat reads no events from a Google Calendar that Settings → Test reports healthy: "Do I have any meetings this week?" → "I didn't find any events in the calendar for the next 7 days" (to confirm: wrong calendar or credential, or an empty week)	bug		COMPLETED
 2093	OPEN	Production	PROD-HONESTY - Failed Reads Say So	"Is my calendar connected?" answers with the integrations setup boilerplate: lists all four as Connected, then "Popular integrations to connect" naming the same four, then setup guidance	UX,journey:connect-a-source,promise:E4-never-lies,surface:web		
@@ -1909,34 +1909,34 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2103	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Ten templates call an undefined global showToast() (121 call sites); toast.js exposes Toast.success/error, so their toasts throw	journey:connect-a-source,surface:web		
 2105	CLOSED	MVP		[UX] Calendar settings 'Refresh List' on an unconnected calendar shows the signed-out modal while the session is valid (served ef907b2cd7)			COMPLETED
 2106	OPEN	Production		PAT-leg GitHub create fails with McpError unknown tool "issue_write", and the reply says it "may or may not have" landed	journey:something-goes-wrong,promise:E2-judgment-artifacts,promise:E4-never-lies,surface:mcp,surface:web		
-2108	CLOSED	Production		Command palette 'Start private session' does nothing: PrivacyMode component is never loaded			COMPLETED
+2108	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Command palette 'Start private session' does nothing: PrivacyMode component is never loaded			COMPLETED
 2109	CLOSED	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Inversion and preclaim shadows spend the requesting user's own LLM key (the task inherits the request's key contextvar)	architecture,journey:get-work-done,promise:T3-your-key,surface:mcp,surface:web		COMPLETED
-2111	CLOSED	Production		[HONESTY] A GitHub 404 on an issue read says "GitHub's MCP server is unreachable right now"			COMPLETED
+2111	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	[HONESTY] A GitHub 404 on an issue read says "GitHub's MCP server is unreachable right now"			COMPLETED
 2112	CLOSED	MVP	Beta Blockers - Hard Gates Only	Calendar asks ("Check my calendar for conflicts", "Find time for a 1:1") are answered with today's date and time			COMPLETED
-2113	CLOSED	Production		"Update issue #123" is routed to the Notion document-update path ("Notion isn't configured yet")			COMPLETED
-2110	CLOSED	Production		[UX] Colon-and-quotes create ('Create a GitHub issue: "<title>" in <repo>') asks "What should the issue be about?" though a title was given (served 54a5ba990f)	UX,promise:E2-judgment-artifacts		COMPLETED
+2113	CLOSED	Production	PROD-CONVO - Conversation Reliability	"Update issue #123" is routed to the Notion document-update path ("Notion isn't configured yet")			COMPLETED
+2110	CLOSED	Production	PROD-CONVO - Conversation Reliability	[UX] Colon-and-quotes create ('Create a GitHub issue: "<title>" in <repo>') asks "What should the issue be about?" though a title was given (served 54a5ba990f)	UX,promise:E2-judgment-artifacts		COMPLETED
 2116	OPEN	Production		[UX] "What makes you different?" asked a fifth time is answered with a question about motive, no answer (served 54a5ba990f, canonical Q5)	UX,journey:get-work-done,surface:web		
 2117	CLOSED	MVP		[UX] Wizard key check says "Valid (claude-3.5 access confirmed)"; the model is a constant, nothing was checked (served 54a5ba990f)	UX		COMPLETED
-2119	CLOSED	Production		"Generate a status report" answers with a commit-count line ("commit_analysis report … 0 commits")			COMPLETED
-2120	CLOSED	Production		"Close completed issues" says it found no matching issues and asks for a number, without looking for completed ones			COMPLETED
-2121	CLOSED	Production		ANALYSIS reads (generate_report, analyze_commits, recent activity) use the native-PAT REST path and cannot read for an OAuth-only account			COMPLETED
-2122	CLOSED	Production		Document search on an Anthropic-only account: embeddings need an OpenAI key; what the partner sees is unverified			COMPLETED
+2119	CLOSED	Production	PROD-CONVO - Conversation Reliability	"Generate a status report" answers with a commit-count line ("commit_analysis report … 0 commits")			COMPLETED
+2120	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	"Close completed issues" says it found no matching issues and asks for a number, without looking for completed ones			COMPLETED
+2121	CLOSED	Production	PROD-RECONNECT - Complete Connector Migration	ANALYSIS reads (generate_report, analyze_commits, recent activity) use the native-PAT REST path and cannot read for an OAuth-only account			COMPLETED
+2122	CLOSED	Production	PROD-DOCS - Documents/Files/Artifacts	Document search on an Anthropic-only account: embeddings need an OpenAI key; what the partner sees is unverified			COMPLETED
 2123	CLOSED	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Activity reads (status report, analyze commits) use the deployment's GitHub token instead of the account's grant when an env token is set	close:pins-only,journey:get-work-done,surface:mcp,surface:web		COMPLETED
 2125	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Setup wizard reports the server's encryption misconfiguration as a key 'Validation error' (staging: 'master_key must be 32 bytes (AES-256); got 48 bytes')	close:pins-only,journey:set-up,promise:E4-never-lies,surface:web		COMPLETED
-2127	CLOSED	Production		OpenAI-only account: multi-intent classification is sent to provider 'anthropic' and the turn returns the missing-key refusal			COMPLETED
+2127	CLOSED	Production	PROD-DATA - Data Boundaries, Privacy & Terms	OpenAI-only account: multi-intent classification is sent to provider 'anthropic' and the turn returns the missing-key refusal			COMPLETED
 2128	CLOSED	MVP		GitHub 'this week' reads miss closed work: 'What's my productivity this week?' says 'Issues/PRs Closed: 0' and 'What did we ship this week?' finds none, while the same repo shows 19 closed			COMPLETED
-2129	CLOSED	Production		Singular/plural slips in chat replies: "1 meetings", "1 items", "1 active projects"	UX		COMPLETED
+2129	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Singular/plural slips in chat replies: "1 meetings", "1 items", "1 active projects"	UX		COMPLETED
 2130	OPEN	Production		Calendar asks: no weekday lookup; conflict check answers a multi-person question the user didn't ask	UX,journey:get-work-done,surface:mcp,surface:web		
-2131	CLOSED	Production		LLM calls made for a user without user_id resolve the server's provider and consent list (8 sites; the class behind #2127)	architecture		COMPLETED
+2131	CLOSED	Production	PROD-DATA - Data Boundaries, Privacy & Terms	LLM calls made for a user without user_id resolve the server's provider and consent list (8 sites; the class behind #2127)	architecture		COMPLETED
 2132	CLOSED	MVP		Document asks with no document in the chat are answered with repository metrics ("Analyze this document", "Compare these two documents")	close:pins-only		COMPLETED
 2133	OPEN	Production	PROD-CONVO - Conversation Reliability	"Create issues from this meeting's action items" gets a single-subject prompt: #886's batch decline is stranded by the create_ticket alias	journey:get-work-done,surface:mcp,surface:web		
 2134	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Semantic boundary detector: a failed check is cached as clear and recorded as a pass (48/63 turns off, unseen, on PA's OpenAI run)	architecture		
 2135	OPEN	Production		Trust stage never progresses: no turn path records an interaction, so every account stays at Stage 1 and stage-gated features are unreachable	journey:come-back,surface:web		
-2137	CLOSED	Production		Stale-PR and list-PR answers count zero PRs on the native-PAT fallback: the filter reads a pull_request key neither open-issue path provides	close:served		COMPLETED
+2137	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Stale-PR and list-PR answers count zero PRs on the native-PAT fallback: the filter reads a pull_request key neither open-issue path provides	close:served		COMPLETED
 2139	OPEN	Production		"Create a doc from this conversation" and "Synthesize these sources" on an OpenAI-only account reply with the internal string "Content type is required for content generation."	journey:something-goes-wrong,surface:web		
-2140	CLOSED	Production		"What changed since yesterday?" says 'No activity detected' without saying it checked only Piper's own records, not the repo (1386 Q29)			COMPLETED
+2140	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	"What changed since yesterday?" says 'No activity detected' without saying it checked only Piper's own records, not the repo (1386 Q29)			COMPLETED
 2142	CLOSED	MVP		"Tell me more about the GitHub integration" attributes the user's calendar events to their repo and lists capabilities from model recall	UX		COMPLETED
-2143	CLOSED	Production		"What changed in the past hour?" reads an empty window: the parser returns 0 days, so since_time is now and nothing can be found			COMPLETED
+2143	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	"What changed in the past hour?" reads an empty window: the parser returns 0 days, so since_time is now and nothing can be found			COMPLETED
 2136	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Seat identity: GitHub App for agents so seats stop acting as the admin account (xian approved the route 10-22; needs a named owner)	sapient-trust		
 2144	CLOSED	Ongoing		Alpha health watch: failing			COMPLETED
 2145	OPEN	Production	PROD-CONVO - Conversation Reliability	Router and classifier calls send the full ~3.3k-token catalog uncached: enable Anthropic prompt caching on the static prefix			
@@ -1947,9 +1947,9 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2150	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Calendar: a later revoke of calendar access in the user's Google account leaves Settings saying connected until Test runs	journey:something-goes-wrong,promise:E4-never-lies,surface:web		
 1918	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	MCP: 'Connected apps' in Settings, so users can see and revoke ChatGPT/Claude access from Piper	journey:manage-my-data,surface:mcp,surface:web		
 2107	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Chat says 'usually a brief outage — try again in a moment' when the cause is the Anthropic workspace usage limit (locked until a dated reset); the 400's text names the case	journey:something-goes-wrong,promise:E4-never-lies,surface:web		
-2138	CLOSED	Production		Analyze an uploaded file: chat declines (and names Notion) one turn after it summarized the same file	UX,close:served		COMPLETED
+2138	CLOSED	Production	PROD-DOCS - Documents/Files/Artifacts	Analyze an uploaded file: chat declines (and names Notion) one turn after it summarized the same file	UX,close:served		COMPLETED
 2151	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Sweep: every reply that reads user data says 'none / 0 / not connected / can't see it' only on a verified read (failed, narrowed and not-performed reads say so)	journey:something-goes-wrong,promise:E4-never-lies,seam:resolver,surface:web		
-2152	CLOSED	Production		comment_issue says 'Successfully added comment' when the native-path POST failed (a write claiming success)	bug,close:pins-only		COMPLETED
+2152	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	comment_issue says 'Successfully added comment' when the native-path POST failed (a write claiming success)	bug,close:pins-only		COMPLETED
 2154	CLOSED	MVP		Settings preferences: a failed preferences read shows defaults, and Save writes them over the user's stored values (Slack, GitHub, Calendar, Notion; calendars list; Notion databases)	close:pins-only		COMPLETED
 2155	OPEN	Production	PROD-CONVO - Conversation Reliability	UX: "What's on my agenda?" with no calendar answers about meeting-time analysis	UX,journey:get-work-done,surface:mcp,surface:web		
 2157	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Production DB: scheduled backups and retention, one timed restore drill on a short-lived copy (five proofs), master-key custody, and a recorded HA decision	journey:something-goes-wrong,promise:R1-backups-and-restore,promise:T9-carry-over,seam:db-durability		
@@ -1961,7 +1961,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2163	OPEN	Production		GitHub identity: one app/token model and whose token serves a read (ADR plus carrying it into the six issues)	journey:connect-a-source,seam:github-identity,surface:mcp,surface:web	2151,2174	
 2164	OPEN	Production		Waitlist sign-up with batch admission (after the inner-circle invitations)	journey:invited,surface:web		
 2165	OPEN	Production		Per-account rate and abuse limits, with a user-facing line when a limit is hit	journey:something-goes-wrong,surface:web		
-2156	CLOSED	Production		UX: Send feedback is a quiet footer link, and absent from the setup wizard and error pages	UX,close:pins-only,journey:something-goes-wrong,promise:T5-feedback-is-read,surface:web		COMPLETED
+2156	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	UX: Send feedback is a quiet footer link, and absent from the setup wizard and error pages	UX,close:pins-only,journey:something-goes-wrong,promise:T5-feedback-is-read,surface:web		COMPLETED
 2166	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Todo/list/project Share: the UI sends user_to_share_with but the API requires user_id (422); with user_id the API answers 500	bug,journey:get-work-done,surface:web		
 2167	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	UX (class 3): the API key Remove dialog says "we destroy our copy immediately"; backups keep it up to about five days	UX,close:served,journey:manage-my-data,promise:E4-never-lies,promise:T3-your-key,surface:web		COMPLETED
 2168	OPEN	Production	PUB - Public Beta	Plugin surface rubric: ratify CXO's v0.1 and run it per increment as the precondition for #1701-#1707	promise:E6-surfaces,surface:mcp		
@@ -1972,11 +1972,11 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2173	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Standup and Radar show every open GitHub issue as the person's own work when no GitHub username is saved; default to the signed-in login	architecture,close:pins-only,journey:come-back,promise:E4-never-lies,seam:resolver,surface:web		COMPLETED
 2174	OPEN	Production		ADR-081 D3 check: do github-mcp-server and our REST reads accept a GitHub App user access token?	architecture		
 2175	OPEN	Production		UX: a person arriving through the plugin or MCP endpoint has no clear path to an invite and an account (journey grid: invited x MCP, red)	UX,journey:invited,surface:mcp		
-2176	CLOSED	Production		UX (class 3): setup wizard step 2 shows Slack and Google Calendar app-credential forms to a new tester (a failed status read falls back to 'not configured')	UX,close:pins-only,journey:set-up,promise:E4-never-lies,surface:web		COMPLETED
-2177	CLOSED	Production		Alpha promotion fails: staging's image tag returns 'manifest unknown' on pull (runs 40253965692, 40254107119)	bug		COMPLETED
+2176	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	UX (class 3): setup wizard step 2 shows Slack and Google Calendar app-credential forms to a new tester (a failed status read falls back to 'not configured')	UX,close:pins-only,journey:set-up,promise:E4-never-lies,surface:web		COMPLETED
+2177	CLOSED	Production	Q - Recurring Audits	Alpha promotion fails: staging's image tag returns 'manifest unknown' on pull (runs 40253965692, 40254107119)	bug		COMPLETED
 2178	OPEN	Production		GitHub Disconnect doesn't revoke the OAuth grant at GitHub (Slack and Google do); revoke it, and never revoke a PAT	architecture		
 2181	CLOSED	Ongoing		Promote deploys alpha by the pushed digest, not the promote-<sha12> tag (2177 follow-up)	architecture		COMPLETED
-2182	CLOSED	Production		Standup shows a failed calendar or source read as a free day or 'no activity' (#2151's show_standup row, split out for #1703)	close:pins-only,journey:something-goes-wrong,promise:E4-never-lies,seam:resolver,surface:mcp,surface:web		COMPLETED
+2182	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Standup shows a failed calendar or source read as a free day or 'no activity' (#2151's show_standup row, split out for #1703)	close:pins-only,journey:something-goes-wrong,promise:E4-never-lies,seam:resolver,surface:mcp,surface:web		COMPLETED
 2183	OPEN	Production		Chat ignores a count in "show my last two new issues" and lists every open issue	journey:get-work-done,surface:mcp,surface:web		
 2184	OPEN	Production	PUB - Public Beta	Chat listed the wrong issues as the MVP milestone's (no read lists a milestone's issues; E4)	bug		
 2185	OPEN	Production		"You have 261 open issues" counts assigned-to-me across all repos (archived too) and 'most recent' isn't sorted	bug		
@@ -1990,16 +1990,16 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2193	OPEN	Production		Slack's IntentService has no ConversationManager, so Slack offers neither hydrate nor persist across a restart (#2189 row 19)	architecture		
 2194	CLOSED	MVP		Issue-list header appends 'across all your repositories' to every reply, even a milestone-scoped one; the scope words belong where the qualifier is applied	bug		COMPLETED
 2195	OPEN	Production	PUB - Public Beta	Inversion Phase 3 remainder: 61 surface-1 literals in 18 lists, deleted list by list under the gate (split from #1595 on xian's 10-29 ruling)	architecture		
-2198	CLOSED	Production		Milestone progress asks get the whole milestones list: the list ignores the milestone named and shows no closed count (follow-up to #2184's boundary re-rule)	UX		NOT_PLANNED
+2198	CLOSED	Production	PUB - Public Beta	Milestone progress asks get the whole milestones list: the list ignores the milestone named and shows no closed count (follow-up to #2184's boundary re-rule)	UX		NOT_PLANNED
 2197	OPEN	Production		A progress ask about a named milestone is answered with the list of every milestone and ignores the one named	UX		
 2196	OPEN	Ongoing		fly-deploy.yml promote job: no retry on the two Fly steps, so one transient 503 costs a dispatch			
-2199	CLOSED	Production		Milestone pick: after the milestones list asks 'Which milestone…? Say its name.', replying 'MVP' gets 'I couldn't tell which repository you mean'	bug		COMPLETED
-2200	OPEN	Production		Milestone list prints "Ongoing — due no due date" for a milestone with no date	UX		
+2199	CLOSED	Production	PUB - Public Beta	Milestone pick: after the milestones list asks 'Which milestone…? Say its name.', replying 'MVP' gets 'I couldn't tell which repository you mean'	bug		COMPLETED
+2200	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Milestone list prints "Ongoing — due no due date" for a milestone with no date	UX		COMPLETED
 2201	CLOSED	MVP		"What issues did we create in this session?" lists the issue with its pre-edit title after an in-session title change	bug		COMPLETED
 2202	OPEN	Production		Handler-route /api/v1/intent replies carry no intent.original_message field (the floor routes echo it; consumers still cannot rely on it)			
 2203	OPEN	Production		Asked to summarize Notion docs, chat answers about uploaded documents and never says Notion is not connected	UX		
 2204	OPEN	Production		"This week" calendar reads start at now, so a meeting earlier today drops out; the window should start at local midnight today	UX		
-2205	OPEN	MVP		A new user's first 'Create an issue' goes to an auto-picked oldest repo (issues disabled) and fails with 'GitHub didn't confirm it'	bug		
+2205	OPEN	MVP	Beta Blockers - Hard Gates Only	A new user's first 'Create an issue' goes to an auto-picked oldest repo (issues disabled) and fails with 'GitHub didn't confirm it'	bug		
 2206	OPEN	Production		Setup wizard: 'Connect Your AI' offers an optional Notion key, while Slack and Calendar are 'later in Settings'	UX		
 2207	OPEN	Production		repo_clarification resolves a bare repo name under the OFFER's stored principal when the turn has none (the fallback ruled out for the milestone pick in 2199)			
 2208	OPEN	Production		Learned-pattern execute route reports a failed action as success (status error is counted as success)	bug		
