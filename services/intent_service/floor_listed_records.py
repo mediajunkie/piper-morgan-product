@@ -232,6 +232,38 @@ def _milestones_of_number(value: Any, number: str, out: set, depth: int = 0) -> 
             _milestones_of_number(v, number, out, depth + 1)
 
 
+def _is_boundary(hay: str, at: int, beyond: int) -> bool:
+    """The character at ``at`` separates words: not alphanumeric, and not a
+    ``.`` that joins two alphanumerics (``v1.2`` is one token, so ``v1`` does
+    not end at its dot)."""
+    ch = hay[at]
+    if ch.isalnum():
+        return False
+    if ch == "." and 0 <= beyond < len(hay) and hay[beyond].isalnum():
+        return False
+    return True
+
+
+def _whole_word_in(needle: str, hay: str) -> bool:
+    """``needle`` occurs in ``hay`` with a non-alphanumeric character (or the
+    text's edge) on both sides (Arch's condition, 2026-10-29 20:06: a bare
+    substring made ``v1`` a relation inside ``v1.2``, and ``MVP`` inside
+    ``MVPs``). A character check, no regex."""
+    if not needle:
+        return False
+    start = 0
+    while True:
+        i = hay.find(needle, start)
+        if i < 0:
+            return False
+        j = i + len(needle)
+        before_ok = i == 0 or _is_boundary(hay, i - 1, i - 2)
+        after_ok = j == len(hay) or _is_boundary(hay, j, j + 1)
+        if before_ok and after_ok:
+            return True
+        start = i + 1
+
+
 def reference_relations(
     message: Optional[str],
     refs: Sequence[str],
@@ -254,7 +286,7 @@ def reference_relations(
     out: Dict[str, Dict[str, bool]] = {}
     for sentence in _sentences(message):
         low = sentence.lower()
-        present = [t for t in titles if t.lower() in low]
+        present = [t for t in titles if _whole_word_in(t.lower(), low)]
         if not present:
             continue
         for r in record_references(sentence):

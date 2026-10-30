@@ -388,3 +388,40 @@ class TestReferenceRelations:
             assert resp.provenance["record_references"]["reference_relations"] == {
                 "#31": {"Beta launch": False}
             }
+
+
+class TestReferenceRelationsWordBoundary:
+    """Arch's condition (2026-10-29 20:06): a title matches only as a whole
+    word; ``v1`` inside ``v1.2`` and ``MVP`` inside ``MVPs`` are not relations."""
+
+    def _ctx(self, *titles):
+        return {
+            "active_milestones": [{"title": t, "number": i + 1} for i, t in enumerate(titles)],
+            "high_priority_issues": [{"number": 5, "title": "Search"}],
+        }
+
+    def test_v1_inside_v1_2_is_not_a_relation(self):
+        from services.intent_service.floor_listed_records import reference_relations
+
+        assert reference_relations("#5 is in v1.2 work.", ["#5"], self._ctx("v1")) == {}
+
+    def test_v1_2_matches_its_own_title(self):
+        from services.intent_service.floor_listed_records import reference_relations
+
+        got = reference_relations("#5 is in v1.2 work.", ["#5"], self._ctx("v1", "v1.2"))
+        assert got == {"#5": {"v1.2": False}}
+
+    def test_mvp_inside_mvps_is_not_a_relation(self):
+        from services.intent_service.floor_listed_records import reference_relations
+
+        assert reference_relations("#5 is one of the MVPs here", ["#5"], self._ctx("MVP")) == {}
+
+    def test_mvp_at_sentence_edge_and_before_punctuation_matches(self):
+        from services.intent_service.floor_listed_records import reference_relations
+
+        assert reference_relations("MVP includes #5", ["#5"], self._ctx("MVP")) == {
+            "#5": {"MVP": False}
+        }
+        assert reference_relations("#5 is in (MVP), I think", ["#5"], self._ctx("MVP")) == {
+            "#5": {"MVP": False}
+        }
