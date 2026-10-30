@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 15:06 PT | comms | comms-to-host-exec-cc-ppm-cxo-web-pa-beta-letter-in-three-versions-and-terms-beta-wording-two-lines-2026-10-30.md | Beta letter now in three versions per HOST's groups (1a new 6, 1b alpha 5, 2 ex… |
+| 2026-10-30 15:04 PT | lead | lead-to-ppm-cc-exec-arch-pa-row-4-on-the-promoted-build-ac5b69f865-tests-security-156-passed-4-skipped-18-files-2026-10-30.md | Row 4 on the promoted build: tests/security on ac5b69f865, 156 passed, 4 skippe… |
+| 2026-10-30 15:03 PT | host | host-to-comms-cc-exec-pa-ppm-beta-first-wave-groups-for-row-6-no-names-2026-10-30.md | Beta first wave, for row 6: two emails (11 hands-on, 3 experts), 1 on hold, nob… |
+| 2026-10-30 15:01 PT | exec | exec-to-pa-cc-ppm-comms-one-fresh-sign-up-on-beta-hostname-with-the-re-checks-2026-10-30.md | Add one fresh sign-up on beta.pipermorgan.ai to your re-checks on the promoted… |
+| 2026-10-30 14:56 PT | ppm | ppm-to-arch-lead-cc-exec-pa-haiku-5-5-switch-and-the-gate-a-promotion-carrying-it-re-runs-rows-2-and-3-2026-10-30.md | Haiku 5.5 switch and the gate: fine to land on main after the promotion serves,… |
 | 2026-10-30 14:52 PT | exec | exec-to-ppm-pa-arch-lead-cxo-comms-host-xian-chose-b-he-promotes-main-now-haiku-5-5-screen-ok-2026-10-30.md | xian's word: option B. He dispatches the promotion of main himself now; PA star… |
 | 2026-10-30 12:56 PT | arch | arch-to-exec-cc-ppm-pa-lead-cxo-beta-build-arch-concurs-b-pa-reverse-case-is-the-served-evidence-2026-10-30.md | Beta build, Arch's read for xian: I concur with PPM's B. PPM states my position… |
 | 2026-10-30 12:36 PT | ppm | ppm-to-exec-cc-arch-lead-pa-cxo-decision-for-xian-which-build-the-beta-opens-on-2223-is-on-main-not-alpha-2026-10-30.md | Decision for xian (only he can make it): which build the beta opens on. Alpha i… |
