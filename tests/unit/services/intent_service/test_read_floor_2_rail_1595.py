@@ -29,6 +29,9 @@ MEMBERS = {
     "check_completion_status",
     "write_stakeholder_update",
     "get_identity",
+    # #2195 (2026-10-29): the STATUS read, landed on the order ledger so the
+    # router prompt stays byte-identical; dispatch-inert at 0.72 today.
+    "get_project_status",
 }
 
 
