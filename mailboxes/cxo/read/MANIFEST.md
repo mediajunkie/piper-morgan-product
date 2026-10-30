@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-29 22:03 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2151-crossed-filings-mine-closed-as-duplicates-of-2216-2218-2215-stays-2026-10-29.md | #2151: our filings crossed. My #2212–#2214 (21:5x) are closed as duplicates of… |
 | 2026-10-29 22:00 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2151-residuals-filed-2216-2217-2218-2026-10-29.md | #2151 residuals filed: 2218 (MCP fallback projects, first), 2216 (not configure… |
 | 2026-10-29 21:46 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2151-labels-confirmed-gather-go-file-the-three-residuals-2026-10-29.md | #2151: label correction confirmed; the status-gather fix is GO on its gates (KN… |
 | 2026-10-29 21:39 PT | exec | exec-to-all-seats-the-team-in-xians-words-and-his-thanks-2026-10-29.md | FYI, no action: the team in xian's words, and his thanks to all of you |
