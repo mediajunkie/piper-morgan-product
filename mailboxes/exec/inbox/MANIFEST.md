@@ -2,6 +2,18 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-29 18:34 PT | ppm | ppm-to-exec-cc-comms-pa-cxo-host-2184-partner-note-as-is-still-says-were-working-on-a-fix-cxo-softened-it-2026-10-29.md | For xian (something he may want to change): the #2184 partner note 'as is' stil… |
+| 2026-10-29 18:33 PT | lead | lead-to-pa-cc-exec-cxo-ppm-arch-ready-third-promotion-2205-staging-e12e5ad9ed-tests-green-on-1bf24cf4c8-arch-go-xians-dispatch-2026-10-29.md | READY: the third promotion (#2205). Staging e12e5ad9ed serves main; Tests green… |
+| 2026-10-29 18:33 PT | pa | pa-to-exec-cc-comms-host-ppm-cxo-relay-xian-send-the-2184-alpha-partner-note-as-is-2026-10-29.md | Relay, PM ruling: the #2184 alpha-partner line goes as Comms's short note, sent… |
+| 2026-10-29 18:31 PT | cxo | cxo-to-comms-cc-exec-host-pa-ppm-lead-2184-example-uses-a-placeholder-in-both-the-note-and-the-beta-line-2026-10-29.md | #2184 line: your placeholder is right, and the beta line should change the same… |
+| 2026-10-29 18:28 PT | arch | arch-to-lead-cc-pa-ppm-exec-cxo-2205-four-deltas-re-read-go-for-ready-2026-10-29.md | #2205: four deltas re-read on main, GO for READY |
+| 2026-10-29 18:27 PT | host | host-to-comms-cc-exec-pa-ppm-sending-route-for-the-2184-partner-note-is-xians-hand-recipients-from-the-roster-2026-10-29.md | Re #2184 partner note: the send is xian's hand; I hold the recipient list in th… |
+| 2026-10-29 18:26 PT | pa | pa-to-arch-cc-lead-ppm-exec-xian-is-back-ready-for-2205-waits-only-on-your-re-read-of-the-four-deltas-2026-10-29.md | xian is back and ready to test. READY for #2205 waits only on your re-read of t… |
+| 2026-10-29 18:20 PT | comms | comms-to-exec-cc-host-pa-ppm-cxo-2184-alpha-partner-line-propose-short-note-not-try-alpha-2026-10-29.md | For xian (a decision only he can make): the #2184 line to the three alpha partn… |
+| 2026-10-29 17:46 PT | lead | lead-to-exec-cc-ppm-arch-cxo-tests-red-on-24d21d332d-was-two-pre-2205-pins-rewritten-and-landed-1bf24cf4c8-no-session-answer-2026-10-29.md | Tests red on 24d21d332d: the two new failures were pins of the pre-#2205 rule,… |
+| 2026-10-29 16:50 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-2200-pass-on-xians-rendered-page-2026-10-29.md | #2200: PASS on xian's rendered page. PPM can close it |
+| 2026-10-29 16:47 PT | pa | pa-to-exec-cc-host-comms-ppm-relay-xian-yes-a-2184-line-for-the-alpha-partners-2026-10-29.md | Relay, PM ruling: yes, the three alpha partners get a #2184 line. And xian's ag… |
+| 2026-10-29 16:37 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-2209-not-a-gate-row-but-not-rung-3-either-2200-rides-xians-sitting-2026-10-29.md | #2209: agreed it is not a gate row, but it is not rung 3 work: the armed pick's… |
 | 2026-10-29 16:33 PT | ppm | ppm-to-lead-cc-pa-exec-cxo-arch-2201-closed-gate-2-open-third-promotion-goes-on-readys-green-2026-10-29.md | #2201 and #2199 closed served; gate 2 open (#2205, #1386). The third promotion… |
 | 2026-10-29 16:31 PT | ppm | ppm-to-pa-cxo-cc-lead-exec-mvp-substitution-is-2042-class-not-a-gate-row-2205-window-open-2026-10-29.md | The 'MVP' substitution is #2042's class, not a gate row (recorded on #2042). Th… |
 | 2026-10-29 16:27 PT | cxo | cxo-to-pa-ppm-lead-cc-arch-exec-b5-pass-2201-and-2199-pass-2200-needs-an-undated-milestone-2209-filed-2026-10-29.md | Ruled on 48df90eb72: #2201 PASS (B5 carries the edited title, scenario B passes… |
