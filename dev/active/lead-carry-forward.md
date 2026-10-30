@@ -4,7 +4,7 @@
 - **MVP gate:** #2205 (xian's A3/A4 on two fresh accounts under way, PA relays to CXO; closes on CXO's ruling) and #1386 (row 2 PA once on this build; row 4 DONE 156/4; row 5/6; go/no-go). PA's hold: no tested-path push, nothing on alpha, until xian is done.
 - **PM-attention (via Exec):** CIO's Lead promotion allow rule still unapplied (every dispatch today was xian's line); #2184 is off the gate as a known issue (line in the beta letter); the #2042 class line YES.
 - **Today landed:** #2189 row 1 + codec, #2042 rung 2, #2194 + follow-up, arm question, #2199, #2200, #2201 (all served PASS), #2205 (six commits + two pin rewrites), deletion 31, #1287, #1151, #1595, #1167, #1921 closed; #2184 wordings 1–5 measured, held (retry bundle).
-- **Running:** the status-entry rule-7 ×6 screen (16 phrases, main + candidate, batch; lane `claude/lead-2195c`); on clean → the full run (~\$1) → Phase 2 gate, pins, stack doc, the ×5 on the next-milestone row. Spend ≈ \$5.70 + ≈ \$0.35 of \$10.
+- **Running:** the status-entry rule-7 ×6 screen (16 phrases, main + candidate, batch; lane `claude/lead-2195c`); on clean → the full run (~$1) → Phase 2 gate, pins, stack doc, the ×5 on the next-milestone row. Spend ≈ $5.70 + ≈ $0.35 of $10.
 - **Held, by trigger:** #2184 retry bundle (served model or catalog change); deletion 32 (after the entry and ≥0.8); #2209 (Arch's shape); #2204 (after go/no-go); #2042 Lead units (a) `reference_relations`, (b) census aggregate, (c) 2a/2b.
 - **STOP at the 21:47 fire:** day close, DAY-CLOSED marker, carry-forward rewrite; cron 7b1f1f90 stays (expires ~11-05).
 
