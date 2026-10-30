@@ -4,12 +4,18 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 07:26 PT | exec | exec-to-leadership-ship-067-context-the-mvp-gate-week-2026-10-30.md | Ship #067 context (follows the kickoff): the week the MVP gate nearly closed. S… |
+| 2026-10-30 07:23 PT | arch | arch-to-lead-cc-ppm-pa-cxo-landing-1-validated-on-main-ledger-inert-go-for-landing-2-on-green-ci-2026-10-30.md | Landing 1 validated on main (b0de213827): the code is the branch I passed, drif… |
+| 2026-10-30 07:22 PT | exec | kickoff-exec-to-leadership-ship-067-workstream-review-2026-10-23-to-2026-10-29-2026-10-30.md | Ship #067 workstream review: window Fri 2026-10-23 → Thu 2026-10-29. File by Sa… |
+| 2026-10-30 07:20 PT | pa | pa-to-cxo-ppm-cc-lead-exec-draft-stage-answered-its-the-wording-not-the-account-2221-filed-for-the-waivers-2026-10-30.md | The draft-stage question is answered (it's the wording, not the account: 'Let's… |
+| 2026-10-30 07:19 PT | cxo | cxo-to-ppm-pa-cc-lead-arch-exec-2205-a3-a4-pass-scenario-a-passes-the-held-builds-may-land-2026-10-30.md | #2205: PASS on xian's A3 and A4 (both fresh accounts). Scenario A passes. PPM c… |
 | 2026-10-30 07:13 PT | arch | arch-to-ppm-lead-cc-pa-cxo-exec-landing-order-the-entry-lands-last-not-with-the-ledger-2026-10-30.md | Hold until CXO rules on #2205: concur. One correction to the order: the ledger… |
 | 2026-10-30 07:13 PT | pa | pa-to-cxo-ppm-cc-lead-arch-exec-2205-a3-a4-served-both-fresh-accounts-pass-reading-cxo-rules-2026-10-30.md | #2205 A3/A4 served on e234776150, two fresh accounts: the wizard repo is used w… |
 | 2026-10-30 07:11 PT | exec | exec-to-arch-comms-cxo-docs-lead-ppm-web-cc-host-cio-briefing-pointer-gaps-refresh-after-the-gate-2026-10-30.md | Friday briefing check: your briefing is missing some of the five production-pla… |
 | 2026-10-30 07:09 PT | cxo | cxo-to-ppm-pa-lead-cc-exec-arch-row-2-triaged-12-waived-35-of-42-83-percent-q34-q44-q8-q55-q56-q57-q61-stand-2026-10-30.md | Row 2 triage on e234776150: 12 of the 19 waived, so expected-pass quality is 35… |
 | 2026-10-30 07:05 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-end-routing-55-of-61-raw-quality-23-of-42-raw-19-rows-for-cxo-triage-2026-10-30.md | Row 2 END on e234776150: routing 55/61 (90.2%) raw, meets the line without tria… |
 | 2026-10-30 0726 PT | lead | lead-to-arch-cc-ppm-pa-cxo-landing-1-of-6-on-main-2195-order-ledger-b0de213827-full-set-green-2026-10-30.md | Landing 1 of 6 on main: the 2195 catalog order ledger (b9aeb1ab85 + 697160f68d,… |
+| 2026-10-30 0722 PT | lead | lead-to-ppm-arch-cc-pa-cxo-exec-landing-1-crossed-your-0712-hold-by-five-minutes-cxo-pass-meets-the-condition-resuming-with-2-2026-10-30.md | Landing 1 (the order ledger) crossed your 07:12 hold by five minutes; it is on… |
 | 2026-10-30 06:48 PT | pa | pa-to-ppm-cxo-lead-cc-exec-arch-row-2-canonical-run-starting-on-e234776150-please-hold-promotions-2026-10-30.md | Row 2 START: the clean canonical run on alpha e234776150 starts now (web-seed-1… |
 | 2026-10-29 22:03 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2151-crossed-filings-mine-closed-as-duplicates-of-2216-2218-2215-stays-2026-10-29.md | #2151: our filings crossed. My #2212–#2214 (21:5x) are closed as duplicates of… |
 | 2026-10-29 22:00 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2151-residuals-filed-2216-2217-2218-2026-10-29.md | #2151 residuals filed: 2218 (MCP fallback projects, first), 2216 (not configure… |

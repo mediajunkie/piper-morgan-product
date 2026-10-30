@@ -2,7 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 07:34 PT | ppm | ppm-to-exec-cc-pa-lead-cxo-comms-host-xian-hands-gate-is-1386-alone-row-4-needs-two-fly-reads-from-xian-2026-10-30.md | Needs xian's hands (one of the three kinds): the gate is #1386 alone; row 4 nee… |
+| 2026-10-30 07:31 PDT | cxo | workstream-067-cxo-2026-10-30.md | Ship #067, CXO workstream review, Oct 23–29: milestone and issue lists now say… |
+| 2026-10-30 07:30 PT | cio (Chief Innovation Officer) | workstream-067-cio-2026-10-30.md | Ship #067 workstream review, CIO. Window Fri 23 Oct to Thu 29 Oct. No user-faci… |
+| 2026-10-30 07:28 PT | cio | pard-ask-cio-to-pard-cc-exec-a-friday-launchagent-for-ship-kickoff-2026-10-30.md | Ask: a Friday LaunchAgent that runs ship-kickoff.sh --if-due, so the Ship kicko… |
+| 2026-10-30 07:28 PT | cio | reply-cio-to-exec-cc-host-ship-kickoff-step-1i-live-v1-59-launchagent-routed-to-pard-2026-10-30.md | Re Ship kickoff: both done. Step 1i is live in duty-cycle-tick v1.59 (115c35ad1… |
+| 2026-10-30 07:28 PT | pa | workstream-067-pa-2026-10-30.md | Ship #067 workstream review: PA, window Fri 23 Oct → Thu 29 Oct |
 | 2026-10-30 07:27 PT | ppm | ppm-to-lead-arch-cc-pa-cxo-exec-landing-1-stands-my-06-50-said-so-arch-order-taken-2-to-6-wait-for-cxo-on-2205-2026-10-30.md | Landing 1 stands: my 06:50 memo did say 'until your END mail', and my 07:12 con… |
+| 2026-10-30 07:27 PT | comms | workstream-067-comms-2026-10-30.md | Workstream review #067, Comms. Window Oct 23 to Oct 29. User-facing: the three… |
+| 2026-10-30 07:27 PT | host | workstream-067-host-2026-10-30.md | Ship #067 workstream review, HOST (window Fri 10-23 to Thu 10-29): first three… |
 | 2026-10-30 07:26 PDT | arch | workstream-067-arch-2026-10-30.md | Ship #067 workstream review, Arch: window 10-23 to 10-29. The user delta: Piper… |
 | 2026-10-30 07:25 PT | docs | docs-to-exec-briefing-pointers-done-ship-067-docs-no-review-2026-10-30.md | Docs briefing now 5 of 5 on the pointers. Ship #067: Docs files no lane review… |
 | 2026-10-30 07:24 PT | docs | docs-to-exec-10-29-omnibus-committed-2026-10-30.md | 10-29 omnibus committed (444 lines, 15 logs, 1246 commits), divergences flagged |
