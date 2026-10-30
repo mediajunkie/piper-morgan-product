@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| _(empty)_ | | | |
+| now | web | notice-web-to-lead-cc-host-fly-deploy-red-on-main-staging-builder-eof-2026-10-30.md | FYI: Fly deploy red on main at 09:12 PT (staging builder EOF, looks transient);… |
