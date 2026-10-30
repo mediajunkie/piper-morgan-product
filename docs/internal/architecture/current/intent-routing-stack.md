@@ -1902,7 +1902,7 @@ Full decision record: `docs/internal/architecture/adrs/adr-080-llm-decides-meani
    opposite premise; the fact lived only in the function's docstring until this line.
 
    **Catalog render order is an append-only ledger (#2195, Arch's ruling decisions.log 2026-10-29
-   19:39; Landed: (Lead fills)).** The two sources above decide which ops exist; they no longer decide
+   19:39; Landed: 2026-10-30, code b9aeb1ab85 + 697160f68d, merged to main by Lead after PA's row 2 END).** The two sources above decide which ops exist; they no longer decide
    the order. `derive_routing_grammar` passes its ops through `order_operations`
    (`services/intent_service/router_catalog_order.py`) just before building the grammar: ops named in
    `CATALOG_ORDER_LEDGER` render at their ledger slot whichever pass produced them (so an op that gains
