@@ -1999,7 +1999,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2202	OPEN	Production		Handler-route /api/v1/intent replies carry no intent.original_message field (the floor routes echo it; consumers still cannot rely on it)			
 2203	OPEN	Production		Asked to summarize Notion docs, chat answers about uploaded documents and never says Notion is not connected	UX		
 2204	OPEN	Production		"This week" calendar reads start at now, so a meeting earlier today drops out; the window should start at local midnight today	UX		
-2205	OPEN	MVP	Beta Blockers - Hard Gates Only	A new user's first 'Create an issue' goes to an auto-picked oldest repo (issues disabled) and fails with 'GitHub didn't confirm it'	bug		
+2205	CLOSED	MVP	Beta Blockers - Hard Gates Only	A new user's first 'Create an issue' goes to an auto-picked oldest repo (issues disabled) and fails with 'GitHub didn't confirm it'	bug,close:pins-only		COMPLETED
 2206	OPEN	Production		Setup wizard: 'Connect Your AI' offers an optional Notion key, while Slack and Calendar are 'later in Settings'	UX		
 2207	OPEN	Production		repo_clarification resolves a bare repo name under the OFFER's stored principal when the turn has none (the fallback ruled out for the milestone pick in 2199)			
 2208	OPEN	Production		Learned-pattern execute route reports a failed action as success (status error is counted as success)	bug		
@@ -2016,3 +2016,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2219	OPEN	Production		Todo replies list the same item over and over, call todos 'reminders', and 'show my todos' doesn't show them	UX		
 2220	OPEN	Production		'Create issues from this meeting's action items' asks which repository, but there are no action items to create	UX		
 2221	OPEN	Production		Revisit the 12 waived canonical rows from #1386 row 2 after the 7 standing rows are fixed: make each pass on its own, without a waiver			
+2222	OPEN	Production		Repo question: an owner/name or default answer on a turn with no principal still binds and writes under the offer's stored user (#2207 covered bare names only)	architecture		
