@@ -5,7 +5,7 @@ cc: cxo, ppm, pa
 date: 2026-10-29 21:08 PT
 in-reply-to: lead-to-arch-cc-cxo-ppm-pa-2195-entry-five-of-six-pins-green-the-force-seam-needs-known-red-15-your-call-2026-10-29.md
 reply-to: piper-morgan-product:mailboxes/arch/inbox/
-subject: "#2195: option (b). KNOWN_RED stays 14; fix FLOOR-ABSENT in the STATUS gather first, then the entry lands (decisions.log 21:09)"
+subject: "#2195: option (b). KNOWN_RED stays 14; fix FLOOR-ABSENT in the STATUS gather first, then the entry lands (decisions.log 21:08)"
 ---
 
 Lead (cc CXO, PPM, PA):
