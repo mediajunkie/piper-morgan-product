@@ -210,6 +210,22 @@ surfaces:
     floor without the data it asks about (not performed). Nothing in the context tells the
     model that completion history was not read. unverified: served wording.
 
+- id: get_project_status
+  kind: rail
+  effect: READ
+  reads: floor STATUS context (the status/priority gather, covering milestones, high-priority issues, pending todos and GitHub status)
+  handler: services/intent/intent_service.py:IntentService._handle_floor_with_context
+  states: {verified: distinct, failed: conflated:verified, narrowed: distinct, not_performed: conflated:verified, substituted: conflated:verified}
+  verdict: red
+  notes: >-
+    Added 2026-10-29 with the entry (2195). STATUS routes to _gather_status_priority_context,
+    the same gather analyze_blockers and write_stakeholder_update ride. A failed milestones,
+    blocked-items or high-priority-issues read returns {} / None (FLOOR-ABSENT) beside
+    "- GitHub: connected", so a status question can be answered as nothing pending; a failed
+    GitHub status renders "GitHub: not connected" (ISS-STATUS); the repo can be ENV-REPO.
+    Dispatch-inert today (0.72 under the 0.8 live floor; the pre-classifier literal still
+    claims the phrase). unverified: served wording.
+
 - id: write_stakeholder_update
   kind: rail
   effect: READ
