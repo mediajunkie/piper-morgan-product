@@ -32,20 +32,15 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 29 October</h1>
-<p class="meta">Exec · v682, rebuilt 07:38 PDT Fri 10-30 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v684, rebuilt 07:49 PDT Fri 10-30 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <div class="card win"><b>Scenario A passes, and so does #2205 (CXO, 07:19).</b> Your A3/A4 run (07:07&ndash;07:12) did what you ruled: with a repo picked in the wizard, it created the issue there with no question; with no repo, it asked first, then created the issue where you named. PPM closes #2205. Rows 2 and 4 already pass on this build.</div>
 
-<div class="card hot"><b>Your hands, two things (PPM 07:34; Pard 07:34):</b>
-<ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
-<li><b>Two Fly reads for gate row 4</b>, any time before go/no-go. They need your Fly login. (a) <code>fly ssh console</code> on alpha, then <code>alembic current</code>, <code>alembic heads</code>, <code>alembic check</code>. (b) <code>fly secrets list</code> on alpha, to confirm <code>ENCRYPTION_MASTER_KEY</code> is still set. Paste the output to PA, who quotes it onto #1386, and PPM ticks both boxes.</li>
-<li><b>Load the Ship-kickoff LaunchAgent</b> (Pard built and tested it; auto mode refused to load it for Pard). Paste:
-<pre style="white-space:pre-wrap;margin:.3rem 0">cp /Users/xian/Development/mediajunkie/docs/launchagents/com.xian.ship-kickoff.plist /Users/xian/Library/LaunchAgents/
-launchctl bootstrap gui/$(id -u) /Users/xian/Library/LaunchAgents/com.xian.ship-kickoff.plist</pre>
-It sends the Friday kickoff at 05:05 with no Claude session, first on 11-06. The duty-cycle skill step covers it until then.</li>
-</ol></div>
+<div class="card hot"><b>Your call: move Exec and Lead onto LaunchAgents like the other nine seats</b> (CIO 07:39, Pard 07:44). That retires the &ldquo;cron died at restart&rdquo; class for good: the schedule lives in launchd, and the prompt text is in a stored file. Both seats&rsquo; prompt files exist. Exec&rsquo;s has been held since 10-08 waiting on the &ldquo;seat 9&ndash;11 designation&rdquo;. On your yes, Pard generates the two plists and you paste the loads (auto mode won&rsquo;t let Pard load them). Until then: re-arms copy the stored prompt (skill v1.60), and Pard&rsquo;s restart tool now sends a restarted seat its stored prompt. <span style="color:var(--blue);font-weight:600">My recommendation: yes.</span> The Ship-kickoff LaunchAgent you loaded is already in place.</div>
 
-<div class="card act"><b>The MVP gate is #1386 alone</b> (#2205 closed 07:29 on CXO&rsquo;s PASS). Rows 1&ndash;3 and row 4&rsquo;s security suite are done on alpha <code>e234776150</code>. Left: your two Fly reads above, PPM&rsquo;s row 5 at go/no-go (0 P0/P1 since 10-26 so far), row 6 (the beta letter, after your HOST conversation), then <b>your go/no-go</b>. Today is the hard stop; dates are yours alone, and PPM proposes no slip.</div>
+<div class="card win"><b>Your Fly reads aren&rsquo;t needed.</b> PA put your 10-29 alembic read on #1386 (current = heads, no new operations, nothing schema-related changed since), and confirmed <code>ENCRYPTION_MASTER_KEY</code> is present with a names-only read. Gate row 4 is done.</div>
+
+<div class="card act"><b>The MVP gate is #1386 alone</b> (#2205 closed 07:29 on CXO&rsquo;s PASS). Rows 1&ndash;4 are done on alpha <code>e234776150</code>. Left: PPM&rsquo;s row 5 at go/no-go (0 P0/P1 since 10-26 so far), row 6 (the beta letter, after your HOST conversation), then <b>your go/no-go</b>. Today is the hard stop; dates are yours alone, and PPM proposes no slip.</div>
 
 <div class="card win"><b>The partner note is settled</b> (your 18:33 and 18:43): Comms&rsquo;s short note, ending with CXO&rsquo;s &ldquo;This is a known issue and isn&rsquo;t fixed yet.&rdquo; Recorded in decisions.log. It goes from your own mailbox (xian@, as on 10-26) to the three 10-26 invitees whenever you like; HOST can read you the addresses. <b>Tell me when it&rsquo;s sent</b> so HOST can note it in the roster. The beta letter&rsquo;s line now uses the same &ldquo;Launch&rdquo; example.</div>
 
