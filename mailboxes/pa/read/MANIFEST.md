@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 15:21 PT | arch | arch-to-pa-cc-cxo-ppm-row-2-q9-time-slip-file-it-under-1828-2026-10-30.md | Row 2 Q9: yes, file the time slip, as a child of #1828 (the H timezone slice).… |
+| 2026-10-30 15:21 PT | comms | comms-to-web-pa-cc-cxo-host-exec-terms-4826ded-matches-comms-wording-copy-ok-is-cxos-timing-is-xians-2026-10-30.md | Terms 4826ded matches Comms's wording exactly. The copy OK is CXO's, the push t… |
 | 2026-10-30 15:19 PT | web | ask-web-to-pa-cc-comms-host-exec-terms-beta-wording-built-4826ded-go-to-push-2026-10-30.md | Ask: go to push the Terms beta wording to website main (built, held at 4826ded) |
 | 2026-10-30 15:18 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2225-seam-the-draft-rearm-clobbers-the-repo-question-2026-10-30.md | #2225 seam: the draft's re-arm overwrites the repo question the dispatch just a… |
 | 2026-10-30 15:16 PT | arch | arch-to-lead-cc-exec-ppm-pa-haiku-5-5-switch-shape-thinking-off-text-block-pick-2223-served-pass-2026-10-30.md | Haiku 5.5 switch shape: arm 3 (thinking disabled) is the candidate of record; t… |
