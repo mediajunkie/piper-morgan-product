@@ -830,6 +830,88 @@ class TestClosePathRepoClarification:
         assert "set my default repo to" in result.message
 
 
+class TestNoTurnPrincipal2222:
+    """#2222 (Arch 2026-10-30 08:21): with NO turn principal, the other three
+    answers to the repo question — ``owner/name``, a bare "yes" on the default
+    question, "use the default" — bind nothing and dispatch nothing either.
+    The stored offer carries user A; the decline sits above
+    ``_principal_mismatch`` (which is False for a None principal) and above
+    the acceptance evaluation, so nothing is even evaluated."""
+
+    pytestmark = pytest.mark.asyncio
+
+    @staticmethod
+    def _offer():
+        return {
+            "pending_action": {
+                "kind": REPO_QUESTION_KIND,
+                "user_id": _USER,
+                "issue_number": 108,
+                "workflow_type": "update_issue",
+                "original_message": ASK_NO_REPO,
+                "default_repo": "acme/widgets",
+            },
+            "question": "Should I update it in acme/widgets?",
+        }
+
+    @pytest.mark.parametrize(
+        "answer",
+        ["acme/widgets", "yes", "use the default", "test-piper-morgan"],
+        ids=["owner-name", "yes-on-default", "use-the-default", "bare-name"],
+    )
+    async def test_no_turn_principal_binds_nothing(self, service, answer):
+        with (
+            patch(
+                "services.intent_service.repo_clarification.resolve_repo_name",
+                new=AsyncMock(),
+            ) as resolve,
+            patch(
+                "services.intent_service.repo_clarification._bind_and_dispatch",
+                new=AsyncMock(),
+            ) as bind,
+            patch(
+                "services.intent_service.repo_clarification._persist_user_default",
+                new=AsyncMock(),
+            ) as persist,
+            patch(
+                "services.intent_service.acceptance.evaluate_acceptance",
+            ) as evaluate,
+        ):
+            result = await handle_repo_question_turn(
+                self._offer(),
+                answer,
+                session_id="t-2222",
+                user_id=None,
+                intent_service=service,
+            )
+        assert result is None  # declined before anything is evaluated
+        evaluate.assert_not_called()
+        resolve.assert_not_awaited()
+        bind.assert_not_awaited()
+        persist.assert_not_awaited()
+
+    async def test_owner_name_with_turn_principal_binds_under_it(self, service):
+        """The positive side: with a principal, ``owner/name`` reaches the bind
+        with THAT id, never the offer's stored user."""
+        offer = self._offer()
+        offer["pending_action"]["user_id"] = "user-B"
+        with patch(
+            "services.intent_service.repo_clarification._bind_and_dispatch",
+            new=AsyncMock(return_value={"message": "bound"}),
+        ) as bind:
+            result = await handle_repo_question_turn(
+                offer,
+                "acme/widgets",
+                session_id="t-2222b",
+                user_id="user-B",
+                intent_service=service,
+            )
+        assert result == {"message": "bound"}
+        bind.assert_awaited_once()
+        assert bind.await_args.kwargs["user_id"] == "user-B"
+        assert bind.await_args.args[2] == "acme/widgets"
+
+
 class TestNoTurnPrincipal2207:
     """#2207: a bare repo name answered on a turn with NO principal resolves
     nothing and writes nothing, even though the offer stores user A (Arch's

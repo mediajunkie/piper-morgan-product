@@ -796,6 +796,21 @@ async def handle_repo_question_turn(
     if detect_bare_exit(text):
         return None  # "cancel" / "forget it" → generic decline path
 
+    # #2222 (Arch's 2026-10-30 08:21 residual of #2207, generalising the
+    # 2026-10-29 13:04 rule): with NO turn principal, no answer may bind or
+    # act — not ``owner/name``, not a bare "yes" on the default question, not
+    # "use the default", not a bare name. ``_principal_mismatch`` is False
+    # when the turn's principal is None, and the stored Intent carries the
+    # arming turn's user, so the decline sits ABOVE that check. Nothing is
+    # read or written; the turn routes normally through the generic seam.
+    if not user_id:
+        logger.info(
+            "repo_question_no_turn_principal",
+            offer_user=payload.get("user_id"),
+            session_id=session_id,
+        )
+        return None
+
     if _principal_mismatch(payload, user_id):
         logger.warning(
             "repo_question_principal_mismatch",
@@ -911,16 +926,8 @@ async def handle_repo_question_turn(
 
     # #2207 (Arch's 2026-10-29 13:04 rule, the same change as #2199's fix): a
     # bare name is matched against the TURN's principal's repositories, never
-    # the offer's stored user. No turn principal → no resolution; the pick
-    # declines and the message routes normally (nothing read, nothing written).
-    if not user_id:
-        logger.info(
-            "repo_question_no_turn_principal",
-            name=ref,
-            offer_user=payload.get("user_id"),
-            session_id=session_id,
-        )
-        return None
+    # the offer's stored user. The no-principal decline now sits at the top of
+    # this function (#2222), so ``user_id`` is set here.
     resolution = await resolve_repo_name(str(user_id), ref)
     # ``and full_name``: a "resolved" status always carries one (see
     # resolve_repo_name) — the narrow is for mypy; the impossible
