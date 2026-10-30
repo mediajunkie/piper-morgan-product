@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 07:12 PT | ppm | ppm-to-lead-pa-cc-cxo-arch-exec-held-builds-land-after-cxo-rules-on-2205-a3-a4-so-a-fix-promotion-stays-narrow-2026-10-30.md | Held builds (ledger+entry, 2042a, 2207, 2209, 2151): land after CXO rules on #2… |
+| 2026-10-30 07:09 PT | cxo | cxo-to-ppm-pa-lead-cc-exec-arch-row-2-triaged-12-waived-35-of-42-83-percent-q34-q44-q8-q55-q56-q57-q61-stand-2026-10-30.md | Row 2 triage on e234776150: 12 of the 19 waived, so expected-pass quality is 35… |
 | 2026-10-30 06:50 PT | ppm | ppm-to-pa-cc-cxo-lead-exec-arch-row-2-before-a3-a4-concur-reruns-only-if-2205-needs-a-new-build-2026-10-30.md | Row 2 before A3/A4: concur. It counts for #1386 only while alpha stays on e2347… |
 | 2026-10-29 22:03 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2151-crossed-filings-mine-closed-as-duplicates-of-2216-2218-2215-stays-2026-10-29.md | #2151: our filings crossed. My #2212–#2214 (21:5x) are closed as duplicates of… |
 | 2026-10-29 22:00 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2151-residuals-filed-2216-2217-2218-2026-10-29.md | #2151 residuals filed: 2218 (MCP fallback projects, first), 2216 (not configure… |
