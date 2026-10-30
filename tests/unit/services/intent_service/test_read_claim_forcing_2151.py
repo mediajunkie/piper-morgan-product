@@ -488,6 +488,11 @@ FORCE: Dict[str, Force] = {
     "get_feature_info": Force(
         _GH_STATUS_FLOOR, "what does the standup feature do?", floor_checks=_GH_STATUS_CHECKS
     ),
+    # #2195: get_project_status rides the same STATUS floor branch
+    # (context_assembler.gather_context -> _gather_status_priority_context).
+    "get_project_status": Force(
+        _GH_STATUS_FLOOR, "give me a project overview", floor_checks=_GH_STATUS_CHECKS
+    ),
     "check_completion_status": Force(
         one("db"), "when did I finish the onboarding work?", floor_checks=("completed todos",)
     ),
