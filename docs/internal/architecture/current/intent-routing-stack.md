@@ -6200,7 +6200,7 @@ Two one-slot arm stores hold a question Piper asked, and they are not interchang
   hint is the user's own clause, rendered into the classification prompt), but its store is
   principal-keyed at write, read and hydrate (`_context_key`, `conversation_context.py`; the
   hydrate owner-checks), so the key is its check (Arch 11:47 (C)); one pin holds it. Pins:
-  `test_offer_principal_2223.py`. Landed: (Lead fills)
+  `test_offer_principal_2223.py`. Landed: 2026-10-30, code c1c333bcf5 + b216aba091 + 2178666581, merged to main by Lead after Arch's 10:36, 11:15 and 11:47 rulings
 
 **Rule (Arch, #2035): an offer whose "yes" leads to a WRITE arms the #846 store with its own
 landing, never the #852 hint.** The served defect it closes: no projects → `list my projects` →
