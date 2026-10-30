@@ -30,6 +30,7 @@ router/LLM stub is needed either.
 
 from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
+from unittest.mock import AsyncMock, patch
 from uuid import uuid4
 
 import pytest
@@ -658,8 +659,25 @@ class TestPrincipalMismatch:
         sid = "e2e-1906-principal"
         await _arm_pick_target(monkeypatch, live_service, sid, todo_boundary)
         other_user = str(uuid4())
-        result = await live_service.process_intent(
-            message="the first one", session_id=sid, user_id=other_user
-        )
-        assert "nothing has been changed" in result.message.lower()
+        # #2223 (Arch 2026-10-30 11:14): a different principal's turn drops the
+        # offer at the pop seam, silently — no handler of the offer's kind runs
+        # (the handler's own hold-off check stays as defence in depth) and the
+        # turn routes normally (here, to the explosive model boundary).
+        from services.intent.intent_service import IntentProcessingError
+
+        with patch.object(rc, "handle_reminder_clear_turn", new=AsyncMock()) as handler:
+            try:
+                result = await live_service.process_intent(
+                    message="the first one", session_id=sid, user_id=other_user
+                )
+                assert "nothing has been changed" not in (result.message or "").lower()
+            except IntentProcessingError as exc:
+                assert "LLM boundary touched" in str(exc) or "INTENT_CLASSIFICATION_FAILED" in str(
+                    exc
+                ), str(exc)
+        handler.assert_not_awaited()
+        # The armed pick is gone; whatever the routed turn armed is its own
+        # (here the other user's own consent ask), never the first user's pick.
+        after = _pending_offers(live_service).get(sid)
+        assert after is None or after["pending_action"].get("kind") != rc.CLEAR_PICK_TARGET_KIND
         assert todo_boundary["completed"] == [] and todo_boundary["deleted"] == []

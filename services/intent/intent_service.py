@@ -2081,36 +2081,24 @@ class IntentService:
             # exactly as an off-intent abandon does.
             _offer_dropped_for_principal = False
             if pending_offer:
-                # #2223 (Arch 2026-10-30 10:36): an offer is acted on only
-                # under the principal that armed it. A record naming a
+                # #2223 (Arch 2026-10-30 10:36, 11:14): an offer is acted on
+                # only under the principal that armed it. A record naming a
                 # principal (pending_action.user_id or the stored Intent's
-                # context.user_id) met by a None or different turn principal
-                # is DROPPED here, before any kind handler or the generic
-                # accept/decline: nothing from it runs and the turn routes
-                # normally. A kind whose handler already answers a different
-                # principal with its own hold-off line keeps that line.
+                # context.user_id) met by a None or different turn principal,
+                # or an anonymously armed record whose workflow declares a
+                # non-READ effect met by a signed-in turn, is DROPPED here,
+                # before any kind handler or the generic accept/decline:
+                # nothing from it runs, no handler of its kind is called,
+                # nothing is rendered, and the turn routes normally.
                 from services.intent_service.offer_principal import (
                     drop_offer_on_principal_mismatch,
                 )
 
-                _principal_drop = await drop_offer_on_principal_mismatch(
-                    pending_offer,
-                    message,
-                    session_id=session_id,
-                    user_id=user_id,
-                    intent_service=self,
-                )
-                if _principal_drop is not None:
+                if drop_offer_on_principal_mismatch(
+                    pending_offer, session_id=session_id, user_id=user_id
+                ):
                     pending_offer = None
                     _offer_dropped_for_principal = True
-                    _drop_reply = _principal_drop["reply"]
-                    if _drop_reply is not None:
-                        return IntentProcessingResult(
-                            success=True,
-                            message=_drop_reply["message"],
-                            intent_data=_drop_reply["intent_data"],
-                            requires_clarification=_drop_reply.get("requires_clarification", False),
-                        )
             if pending_offer:
                 # #1510 (inferred half, PM ruling via Exec 2026-08-13): on a
                 # verification read-back turn, meta-feedback about the

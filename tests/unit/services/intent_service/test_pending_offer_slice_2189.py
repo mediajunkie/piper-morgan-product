@@ -458,7 +458,11 @@ class TestWriteOfferEarlyPersistCrash:
     pytestmark = pytest.mark.asyncio
 
     async def _arm_and_persist(self, svc, db, sid):
-        svc.workflow_offer_service.set_pending_offer(sid, _write_offer(), user_id=_USER)
+        # #2223: a write offer armed for a signed-in user names its principal
+        # (every production write arm site does); one naming none reads as
+        # armed anonymously and a signed-in "yes" drops it.
+        record = {**_write_offer(), "pending_action": {"kind": "test_write", "user_id": _USER}}
+        svc.workflow_offer_service.set_pending_offer(sid, record, user_id=_USER)
         db.state[sid] = _json_round_trip(cc.snapshot_session_slice(sid, user_id=_USER))
         armed_id = db.state[sid]["pending_offer"]["offer_id"]
         assert armed_id
