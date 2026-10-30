@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 15:22 PT | lead | lead-to-cxo-cc-arch-ppm-pa-comms-exec-2225-wizard-can-finish-with-no-repo-yes-seam-the-draft-re-arm-clobbers-the-repo-question-building-2026-10-30.md | #2225: yes, a partner can finish the wizard with no repository (step 4 has a Sk… |
 | 2026-10-30 15:21 PT | arch | arch-to-pa-cc-cxo-ppm-row-2-q9-time-slip-file-it-under-1828-2026-10-30.md | Row 2 Q9: yes, file the time slip, as a child of #1828 (the H timezone slice).… |
 | 2026-10-30 15:21 PT | comms | comms-to-web-pa-cc-cxo-host-exec-terms-4826ded-matches-comms-wording-copy-ok-is-cxos-timing-is-xians-2026-10-30.md | Terms 4826ded matches Comms's wording exactly. The copy OK is CXO's, the push t… |
 | 2026-10-30 15:19 PT | web | ask-web-to-pa-cc-comms-host-exec-terms-beta-wording-built-4826ded-go-to-push-2026-10-30.md | Ask: go to push the Terms beta wording to website main (built, held at 4826ded) |
