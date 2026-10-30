@@ -101,6 +101,9 @@ CLAUDE.md conventions — cite them, don't paraphrase into something new:
   -m 'not llm' --maxfail=1000` (compare its failures against the same run on origin/main, name
   the count); `tests/security`; ruff 0.6.9; `scripts/check_mypy_gate.py`. Report each count with
   its denominator. A router-prompt or catalog change is a rule-7 unit on top of this (Lead runs it).
+  A pin run that collects 0 tests (a wrong path, a typo in a filename) counts as a FAILURE, never
+  as a pass: read the collected count, not only the exit code (Arch, 2026-10-29 20:30, after a
+  census pin was missed exactly this way).
 
 ### Step 5: After the subagent finishes — commit verification
 
