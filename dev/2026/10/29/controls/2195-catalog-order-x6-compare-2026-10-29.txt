@@ -1,0 +1,19 @@
+=== x6 compare
+give me a project status report                | `get_project_status` ×6          | `get_project_status` ×6         
+any update on the next milestone               | `get_project_status` ×5, `analyze_blockers` ×1 | `get_project_status` ×6           <-- differs
+can you summarize my current work              | `NONE` ×6                        | `CLARIFY` ×6                      <-- differs
+give me a project overview                     | `get_project_status` ×6          | `get_project_status` ×6         
+I need a status report                         | `get_project_status` ×6          | `get_project_status` ×6         
+modify the onboarding checklist with the new s | `update_document` ×6             | `CLARIFY` ×6                      <-- differs
+modify the status document                     | `update_document` ×6             | `CLARIFY` ×6                      <-- differs
+bring back my archived project                 | `CLARIFY` ×5, `restore_project` ×1 | `CLARIFY` ×6                      <-- differs
+where should my focus be today                 | `get_top_priority` ×3, `attention_query` ×3 | `get_top_priority` ×6             <-- differs
+Update issue #123                              | `update_issue` ×4, `CLARIFY` ×2  | `CLARIFY` ×5, `update_issue` ×1   <-- differs
+show today's assignments                       | `NONE` ×6                        | `NONE` ×6                       
+show all events                                | `week_calendar` ×6               | `CLARIFY` ×6                      <-- differs
+add octocat/hello-world to the project         | `link_repo` ×6                   | `link_repo` ×6                  
+let's analyze the risk here                    | `analyze_blockers` ×6            | `analyze_blockers` ×6           
+what's the next milestone?                     | `list_milestones` ×6             | `NONE` ×6                         <-- differs
+when's the milestone deadline                  | `CLARIFY` ×6                     | `CLARIFY` ×6                    
+can you show me issues from just one milestone | `CLARIFY` ×6                     | `CLARIFY` ×6                    
+show my open issues in the MVP milestone       | `list_issues` ×6                 | `list_issues` ×6                
