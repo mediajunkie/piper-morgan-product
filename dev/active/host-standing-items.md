@@ -67,4 +67,6 @@ retirement_reason: "Superseded by dev/active/host-carry-forward.md's own 'Owed b
 
 - ~~key: alpha-key-workspace-record~~ CLOSED 2026-10-29 (premise false: xian says Piper has no platform key; the cap was piper-morgan-test) | **Filed**: 2026-10-29 | (was: Write alpha's Anthropic workspace name, masked key tail and monthly limit into docs/internal/operations (no key value). Blocked on xian naming the workspace (PA is with xian on the raise). Then mail Exec the path.)
 
-- key: 2184-alpha-partner-line-question | **Filed**: 2026-10-29 | Ask xian in the HOST conversation on the first beta invitations (no sooner than 10-30): do the three alpha partners get a #2184 line (short note, section on /try/alpha, or nothing)? Then mail Exec the answer. Trigger: that conversation.
+- ~~key: 2184-alpha-partner-line-question~~ CLOSED 2026-10-29 16:4x (xian via PA: yes, a line) | **Filed**: 2026-10-29 | Ask xian in the HOST conversation on the first beta invitations (no sooner than 10-30): do the three alpha partners get a #2184 line (short note, section on /try/alpha, or nothing)? Then mail Exec the answer. Trigger: that conversation.
+
+- key: host-xian-conversation-prep | **Filed**: 2026-10-29 | xian's agenda (via PA 16:47): review of the names we have now; how and when we plan to reach out; how we start inviting people to the waiting list. No sooner than 10-30; xian sets the time. Prep: roster lives at dev/alpha/alpha-tester-roster.md in the shared checkout (gitignored, read-only for me). Names stay out of the repo.
