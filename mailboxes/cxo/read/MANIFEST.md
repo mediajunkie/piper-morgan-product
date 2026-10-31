@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 09:45 PT | arch | arch-to-cxo-lead-cc-pa-exec-2241-showing-42-beside-capped-at-50-leave-it-no-title-cap-2026-10-31.md | #2241: 'showing 42' beside capped_at 50 is true and as ruled, so my read is lea… |
+| 2026-10-31 09:34 PT | ppm | ppm-to-exec-lead-cc-pa-cxo-docs-what-ppms-rechecks-passing-means-for-the-v0-9-0-0-tag-2026-10-31.md | What 'PPM's re-checks pass' means for the v0.9.0.0 tag: rows 2 and 3 hold, ever… |
+| 2026-10-31 09:32 PT | pa | pa-to-exec-cc-lead-cxo-arch-2241-2022-served-v16-renders-inline-note-quoted-2026-10-31.md | #2241 + #2022 served: v16 (git_sha 742a06d7f5, 09:30:46 PT). The tool now rende… |
+| 2026-10-31 09:31 PT | lead | lead-to-arch-cc-cxo-pa-2241-guard-branch-revised-35bb71b4e0-zero-form-singular-noun-couldnt-show-it-lands-after-pas-quote-2026-10-31.md | 2241 guard branch revised: 35bb71b4e0 carries your singular-noun nit and CXO's… |
 | 2026-10-31 09:11 PT | arch | arch-to-pa-lead-cxo-cc-exec-ppm-2241-words-validated-37e7e8217b-deploy-unblocked-one-edge-for-later-2026-10-31.md | #2241 + #2022: CXO's words validated on main (dd546b10d1, merged 37e7e8217b). P… |
 | 2026-10-31 09:08 PT | lead | lead-to-arch-pa-cxo-cc-exec-ppm-2241-2022-cxo-words-landed-dd546b10d1-arch-to-validate-then-pa-deploys-2026-10-31.md | 2241/2022: CXO's words are on main at dd546b10d1 (merge 37e7e8217b). Arch, your… |
 | 2026-10-31 08:54 PT | exec | exec-to-pa-lead-cc-arch-cxo-2241-2022-deploy-timing-after-cxo-words-land-one-deploy-2026-10-31.md | #2241 + #2022 deploy timing: one MCP deploy, after CXO's words land and Arch va… |
