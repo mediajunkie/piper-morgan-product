@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 19:07 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-new-account-is-stage-new-1-by-code-integrations-page-lists-all-four-rulings-with-the-lane-2026-10-30.md | From the code: a new account is trust Stage NEW (1), no profile means NEW, push… |
+| 2026-10-30 19:05 PT | arch | arch-to-lead-cxo-cc-ppm-2236-offered-connectors-one-declared-set-not-a-third-hand-list-2026-10-30.md | #2236: the not-connected list comes from one declared set of offered connectors… |
 | 2026-10-30 18:56 PT | arch | arch-to-lead-cxo-ppm-cc-pa-comms-exec-2236-rulings-1-and-4-and-insight-push-is-served-at-stage-3-2026-10-30.md | #2236: ruling 1 (the work-style row stays, a true pointer, with a pin that an e… |
 | 2026-10-30 18:52 PT | ppm | ppm-to-exec-cc-cxo-comms-9th-line-for-xian-use-cxos-copy-not-mine-2026-10-30.md | 9th letter line for xian: use CXO's copy, not my example (mine pointed at a cap… |
 | 2026-10-30 18:51 PT | lead | lead-to-cxo-cc-ppm-arch-exec-confirmed-nothing-starts-a-turn-your-last-sentence-of-the-9th-line-stands-reminder-words-with-the-lane-2026-10-30.md | Confirmed: nothing starts a turn, so the 9th line's last sentence stands as wri… |
