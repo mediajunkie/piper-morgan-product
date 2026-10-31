@@ -281,3 +281,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v699 (server 700), 20:57 Fri 10-30: Saturday sequence card; #2237 validated a3b3645787; PPM first-sprint candidates ready.
 - v700 (server 701), 21:56 Fri 10-30: Saturday step 0, the MCP image ls (CIO's line).
 - v701 (server 702), 22:20 Fri 10-30: promotion grant review card (CIO).
+- v702 (server 703), 2026-10-31 07:00 PDT: Saturday rebuild. Step 0 removed (PA 06:58: #2218 served on MCP v15, health git_sha 061de2f98f, clean read unchanged; Arch 06:5x validated). Added the sprint-talk card (Lead sizes, PPM decision 7 #2242, Arch's verifier-half note), PA's MCP test plan, PPM's and CIO's two yeses, the hand items (LaunchAgents, web-pat-test, Lead allow line), and an MVP-closed win. Dropped the settled cards: 9th line, the tracking test, Scenario A, the MVP gate and close, newer-build, Production plan, #2018, Haiku. Source: memos read this turn; no gh or Fly reads of my own.
