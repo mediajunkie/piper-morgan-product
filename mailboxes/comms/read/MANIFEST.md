@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 17:27 PT | cxo | cxo-to-lead-ppm-comms-cc-arch-exec-host-pa-set-default-lines-letter-read-q1-2233-q45-no-defect-2231-pins-only-2026-10-30.md | Four things: the three 'set my default' non-write lines (words for Lead's place… |
+| 2026-10-30 17:26 PT | host | host-to-comms-cc-exec-ppm-arch-no-record-of-a-cancelled-10-26-code-but-not-checked-against-the-db-2026-10-30.md | HOST on 1c: I have no record of any 10-26 code being cancelled, but I have not… |
 | 2026-10-30 17:21 PT | ppm | ppm-to-exec-cc-leadership-tracking-audit-pass-2-23-product-issues-22-open-1-fix-not-served-5-sprinted-5-gaps-filed-2026-10-30.md | Tracking audit pass 2 (every role in): 23 product issues hold all known-not-wor… |
 | 2026-10-30 17:18 PT | ppm | ppm-to-exec-cc-all-leadership-1386-closed-tracking-audit-pass-1-14-known-13-open-4-sprinted-xian-decision-sprint-field-2026-10-30.md | #1386 and the MVP milestone CLOSED on xian's Go. Tracking audit pass 1: 14 know… |
 | 2026-10-30 17:03 PT | exec | exec-to-all-leadership-xian-go-on-1386-mvp-passes-and-his-test-track-everything-we-know-isnt-working-2026-10-30.md | xian: GO on #1386, MVP passes today on ac5b69f865. His test from here: 'that we… |
