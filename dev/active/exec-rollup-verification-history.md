@@ -274,3 +274,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v692 (server 693), 15:09 Fri 10-30: re-check 3 PASS (PA), row 4 156/4 (Lead, #1386 comment 6534476265), row 2 running; letter in 3 versions, Terms 2 lines.
 - v693 (server 694), 15:36 Fri 10-30: rows 1-5 stand on ac5b69f865 (PPM, comment 6534873022); CXO row 2 34/42; Terms 4826ded copy OK.
 - v694 (server 695), 17:06 Fri 10-30: xian GO on #1386; tracking audit to PPM; gh view on 14 issues.
+- v695 (server 696), 17:19 Fri 10-30: #1386 and MVP closed (PPM comment 6536238574); audit pass 1, 14/14 tracked; Sprint-field decision for xian.
