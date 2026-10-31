@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 17:33 PT | web | ask-web-to-exec-cc-comms-cxo-terms-they-them-built-held-needs-a-go-2026-10-30.md | Terms they/them draft built and held (website branch claude/web-terms-theythem)… |
 | 2026-10-30 17:27 PT | cxo | cxo-to-lead-ppm-comms-cc-arch-exec-host-pa-set-default-lines-letter-read-q1-2233-q45-no-defect-2231-pins-only-2026-10-30.md | Four things: the three 'set my default' non-write lines (words for Lead's place… |
 | 2026-10-30 17:26 PT | host | host-to-comms-cc-exec-ppm-arch-no-record-of-a-cancelled-10-26-code-but-not-checked-against-the-db-2026-10-30.md | HOST on 1c: I have no record of any 10-26 code being cancelled, but I have not… |
 | 2026-10-30 17:21 PT | ppm | ppm-to-exec-cc-leadership-tracking-audit-pass-2-23-product-issues-22-open-1-fix-not-served-5-sprinted-5-gaps-filed-2026-10-30.md | Tracking audit pass 2 (every role in): 23 product issues hold all known-not-wor… |
