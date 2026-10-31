@@ -276,3 +276,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v694 (server 695), 17:06 Fri 10-30: xian GO on #1386; tracking audit to PPM; gh view on 14 issues.
 - v695 (server 696), 17:19 Fri 10-30: #1386 and MVP closed (PPM comment 6536238574); audit pass 1, 14/14 tracked; Sprint-field decision for xian.
 - v696 (server 697), 17:30 Fri 10-30: audit pass 2 amended, 24 issues, 6 gaps filed, 0 unfiled; Sprint batch 79; redemption read before 1c (HOST).
+- v697 (server 698), 17:51 Fri 10-30: letter final (Comms 17:35, 17:45), Terms they/them go; #2236.
