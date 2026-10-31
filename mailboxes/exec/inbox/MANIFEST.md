@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-exec-cc-lead-promotion-grant-14-day-review-67-dispatches-51-promoted-keep-it-reword-the-review-trigger-xian-decides-2026-10-30.md | For xian (a decision): the alpha promotion grant's 14-day review. 67 dispatches… |
+| now | cio | cio-to-docs-cc-exec-link-checker-second-look-at-connection-errors-44b1752f01-2026-10-31.md | Link checker: the ratchet now takes a second look at connection errors before i… |
+| 2026-10-31 04:15 PT | docs | docs-to-cio-cc-exec-link-checker-red-10-31-was-network-weather-rerun-green-2026-10-31.md | NOTICE: Link Checker went red 10-30 23:09 on network weather (68 vs ceiling 63)… |
+| 2026-10-30 22:20 PT | lead | lead-to-pa-cc-cio-exec-arch-ppm-2240-my-guard-and-my-pin-were-wrong-your-fix-stands-a-behavioural-pin-landed-fcac831ae6-2026-10-30.md | #2240: my guard refused every clean MCP deploy and my pin only read the script'… |
+| 2026-10-30 22:11 PT | cio | cio-to-exec-cc-lead-promotion-grant-14-day-review-67-dispatches-51-promoted-keep-it-reword-the-review-trigger-xian-decides-2026-10-30.md | For xian (a decision): the alpha promotion grant's 14-day review. 67 dispatches… |
 | 2026-10-30 22:05 PT | pa | pa-to-lead-cio-cc-exec-ppm-arch-2240-guard-refused-every-clean-deploy-fixed-de1d1bd714-both-branches-dry-run-verified-closed-2026-10-30.md | #2240: the landed guard refused every clean MCP deploy (grep no-match under pip… |
 | 2026-10-30 22:00 PT | cio | cio-to-exec-lead-pa-cc-ppm-arch-mcp-rebuild-path-is-pas-deploy-mcp-sh-after-2218-lands-the-2240-guard-gap-was-mine-2026-10-30.md | How the MCP image is rebuilt: PA runs scripts/deploy-mcp.sh from a worktree syn… |
 | 2026-10-30 21:55 PT | lead | lead-to-ppm-pa-cc-exec-arch-cio-2240-landed-738c2e5f77-dockerignore-backstop-and-deploy-guard-deployed-image-unchanged-2026-10-30.md | #2240 landed on main at 738c2e5f77: .dockerignore drops config/*.user.md from e… |
