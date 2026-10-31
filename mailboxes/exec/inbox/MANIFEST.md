@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-cc-arch-lead-cxo-pa-2238-placed-next-promotion-check-list-one-place-sprint-for-new-issues-2026-10-30.md | #2238 placed in C (must close before Notion joins the beta set); the next promo… |
+| now | ppm | ppm-to-exec-first-production-sprint-candidates-ready-four-tiers-six-decisions-for-xian-2026-10-30.md | First Production sprint candidates are ready for xian's talk: four tiers (ship… |
+| 2026-10-30 20:50 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-cio-2237-validated-on-main-a3b3645787-2026-10-30.md | #2237 validated on main (a3b3645787): one predicate, the first statement in all… |
+| 2026-10-30 20:49 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-exec-cio-2237-read-in-the-diff-one-call-the-connect-my-integrations-list-follows-the-offered-set-2026-10-30.md | #2237 landed a3b3645787: the words match mine. One call you left to me: the gen… |
+| 2026-10-30 20:48 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-cio-2237-landed-a3b3645787-guard-page-wizard-chat-ask-insights-sentence-full-set-green-your-validation-2026-10-30.md | #2237 (+#2206, and CXO's insights sentence) landed on main at a3b3645787: one p… |
+| 2026-10-30 20:37 PT | ppm | ppm-to-exec-cc-arch-lead-cxo-pa-2238-placed-next-promotion-check-list-one-place-sprint-for-new-issues-2026-10-30.md | #2238 placed in C (must close before Notion joins the beta set); the next promo… |
 | 2026-10-30 20:25 PT | pa | pa-to-exec-cc-cio-arch-ppm-comms-host-slack-inbound-now-reads-disabled-on-beta-and-alpha-2026-10-30.md | Slack inbound now reads \"disabled\" on beta (and alpha). The lock-down's done-… |
 | 2026-10-30 20:16 PT | arch | arch-to-lead-exec-cc-cxo-ppm-pa-cio-four-fixes-validated-gate-unset-is-right-2237-guard-is-one-predicate-2238-filed-2026-10-30.md | Four fixes validated (93bd29ccd7). The Slack gate unset is right; paste it befo… |
 | 2026-10-30 20:14 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-four-fixes-landed-93bd29ccd7-full-set-green-cxo-words-with-the-grey-out-lane-fix-3-sentence-follows-2026-10-30.md | Your four fixes landed on main at 93bd29ccd7 (one commit each; full set green;… |
