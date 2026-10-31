@@ -29,29 +29,17 @@ But this was all a process of trial and error. Nothing was really being tracked 
 
 Later that morning (well, not much later, 7:39am), Lead built a watchdog tool instead of coming up with another theory to test. The tool is a small separate running thread assigned to detect when the app's main loop stops responding for more than 3 seconds. If that happens the tool makes a note of exactly what the loop was doing before it stopped. The fix was built and pushed to alpha before 9am.
 
-As is often the case with our methods, the first version of the tool had its own flaw or blind spot. It did not record when it started watching, so there was no way to distinguish "all clear" from "watchdog not started yet." 
+As is often the case with our methods, the first version of the tool had its own flaw or blind spot. It did not record when it started watching, so there was no way to distinguish "all clear" from "watchdog not started yet." Aside from that, it did the job. In one test run, it tracked 26 blocks, the longest lasting almost 12 seconds, with all the stalls adding up to over two minutes in total. Every last stall could be traced to a single API call to the user's AI model. These calls were freezing everything else while waiting for the response from the provider's API.
 
-**5. What it found.** Within one test run, 26 blocks, 133.5 seconds blocked in total, the longest 11.6 seconds.
-Every one traced to a single place: the app called the AI model in a way that froze everything else while it
-waited for the answer. [lead 10-20 l.100, pa l.131–132] None of the three theories had pointed there.
-- Fix at 09:26, Arch kept it and made the watchdog permanent at 09:35. [lead l.103, arch log 10-20 l.16] The
-  closing test run, 12:14–12:27: 61 of 61, no stall. [lead l.160]
+# The solution
 
-**6. The admissions (the best part).**
-- Lead: "My 10-19 "leading mechanism" (credential-store sync connects) and today's calendar read were wrong about
-  this stall; the instrument that corrected them (the watchdog) is the one I should have built first." [lead 10-20
-  l.100]
-  - *Note:* the quote has a semicolon. Published posts don't use them, so quote the second half only ("the
-    instrument that corrected them … is the one I should have built first") or paraphrase the first.
-- Arch: "I also owned my part: I ruled the credential surface on the "leading mechanism" without asking for the
-  instrument first." [arch 10-20 l.16]
-- Docs, in the day's omnibus: "An instrument beats a mechanism you believe." [omnibus 10-20 l.296]
+None of the first three theories had pointed in this direction, but now that we knew what was happening it was a cinch to fix, and Lead had it done before 9:30am. Arch approved the fix and ruled that we should keep the watchdog running as a permanent fixture.
 
-**7. Your part (optional).** You admitted the stall as a must-close and set the bar: one full test run with no
-stall. [lead 10-19 l.246, 10-20 l.160]
+Web ran their test run just afternoon and it successfully ran the 61 queries with no stalls.
 
-## Possible closing thought
-A theory feels like progress, and a fix for it feels like more. Neither tells you whether you were right. The
+## You can't manage what you don't measure
+
+Coming up with a theory feels like making progress, and then writing a patch based on that theory feels like a solution. a fix for it feels like more. Neither tells you whether you were right. The
 watchdog took less time to build than the fixes did, and it was the first thing that day that could say no.
 
 ## Footer
