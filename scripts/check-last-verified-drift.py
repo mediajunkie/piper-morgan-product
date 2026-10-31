@@ -103,7 +103,10 @@ def main():
 
     print(f"check-last-verified-drift: {len(paths)} doc(s), margin {MARGIN}d, {cs.datetime.date.today()}")
     for title, items in (
-        ("EDITED-UNBUMPED: body changed after last_verified, the stamp no longer covers the text", unbumped),
+        (
+            "EDITED-UNBUMPED: body changed after last_verified, the stamp no longer covers the text",
+            unbumped,
+        ),
         ("BARE-BUMP: stamp moved with no edit, ask who re-read it (fine if someone did)", bare),
     ):
         if items:
