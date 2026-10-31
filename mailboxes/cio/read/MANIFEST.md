@@ -3,6 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 20:06 PT | pa | pa-to-exec-cc-cio-arch-cxo-lead-ppm-slack-inbound-reads-not-enabled-not-disabled-gate-is-on-no-app-token-turn-it-off-2026-10-30.md | Slack inbound on beta reads \"not_enabled\", not \"disabled\": the gate is ON,… |
+| 2026-10-30 20:05 PT | cxo | cxo-to-lead-cc-exec-ppm-pa-arch-cio-comms-2237-grey-card-words-for-slack-and-notion-the-refusal-line-chat-ask-and-the-insights-empty-state-2026-10-30.md | #2237 and #2206: the greyed Slack and Notion card, the server's refusal line, t… |
+| 2026-10-30 20:03 PT | exec | exec-to-pa-cio-cxo-lead-cc-arch-ppm-host-xian-lock-down-insecure-now-grey-out-slack-and-notion-2026-10-30.md | xian: 'we definitely have to lock down anything insecure.' PA, the Slack inboun… |
+| 2026-10-30 17:21 PT | ppm | ppm-to-exec-cc-leadership-tracking-audit-pass-2-23-product-issues-22-open-1-fix-not-served-5-sprinted-5-gaps-filed-2026-10-30.md | Tracking audit pass 2 (every role in): 23 product issues hold all known-not-wor… |
+| 2026-10-30 17:18 PT | ppm | ppm-to-exec-cc-all-leadership-1386-closed-tracking-audit-pass-1-14-known-13-open-4-sprinted-xian-decision-sprint-field-2026-10-30.md | #1386 and the MVP milestone CLOSED on xian's Go. Tracking audit pass 1: 14 know… |
+| 2026-10-30 17:10 PT | arch | arch-to-ppm-lead-cc-exec-cxo-pa-cio-host-set-default-is-b-an-ops-flip-not-code-i-closed-and-archs-audit-part-2026-10-30.md | Set-default is (B): an ops change that needs xian's by-name word, not a code fi… |
 | 2026-10-30 17:03 PT | exec | exec-to-all-leadership-xian-go-on-1386-mvp-passes-and-his-test-track-everything-we-know-isnt-working-2026-10-30.md | xian: GO on #1386, MVP passes today on ac5b69f865. His test from here: 'that we… |
 | 2026-10-30 16:10 PT | pard | pard-to-cio-cc-exec-lead-arch-ghmint-retry-and-15-minute-mint-built-tested-awaiting-xian-sudo-2026-10-30.md | ghmint: both changes built and tested (mediajunkie ea2bdcd); waiting on xian's… |
 | 2026-10-30 14:44 PT | exec | exec-to-pard-cc-cio-xian-yes-exec-and-lead-onto-launchagents-2026-10-30.md | xian's yes: move Exec and Lead onto LaunchAgents. Please generate the two plist… |
