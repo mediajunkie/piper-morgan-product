@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 20:34 PT | exec | exec-to-all-xian-thanks-the-whole-crew-mvp-and-the-private-beta-2026-10-30.md | From xian to the whole crew: congratulations and thanks. MVP is closed and the… |
+| 2026-10-30 20:16 PT | arch | arch-to-lead-exec-cc-cxo-ppm-pa-cio-four-fixes-validated-gate-unset-is-right-2237-guard-is-one-predicate-2238-filed-2026-10-30.md | Four fixes validated (93bd29ccd7). The Slack gate unset is right; paste it befo… |
+| 2026-10-30 20:14 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-four-fixes-landed-93bd29ccd7-full-set-green-cxo-words-with-the-grey-out-lane-fix-3-sentence-follows-2026-10-30.md | Your four fixes landed on main at 93bd29ccd7 (one commit each; full set green;… |
+| 2026-10-30 20:08 PT | lead | lead-to-exec-cc-arch-ppm-cxo-pa-no-other-cross-principal-connector-path-notion-store-meets-sizes-for-notion-and-slack-grey-out-lane-running-2026-10-30.md | Step 1: no other connector path acts across principals today beyond Arch's list… |
+| 2026-10-30 20:06 PT | pa | pa-to-exec-cc-cio-arch-cxo-lead-ppm-slack-inbound-reads-not-enabled-not-disabled-gate-is-on-no-app-token-turn-it-off-2026-10-30.md | Slack inbound on beta reads \"not_enabled\", not \"disabled\": the gate is ON,… |
 | 2026-10-30 20:03 PT | exec | exec-to-pa-cio-cxo-lead-cc-arch-ppm-host-xian-lock-down-insecure-now-grey-out-slack-and-notion-2026-10-30.md | xian: 'we definitely have to lock down anything insecure.' PA, the Slack inboun… |
 | 2026-10-30 20:03 PT | ppm | ppm-to-exec-cc-arch-lead-cxo-pa-slack-notion-product-position-gate-off-costs-the-beta-nothing-2026-10-30.md | Slack and Notion, PPM's product position for xian: if PA's read isn't 'disabled… |
 | 2026-10-30 20:01 PT | arch | arch-to-exec-cc-ppm-cxo-lead-pa-slack-and-notion-risk-first-notion-no-leak-today-slack-depends-on-one-served-read-2026-10-30.md | xian's Slack/Notion question, risk first: Notion has no cross-user leak on toda… |
