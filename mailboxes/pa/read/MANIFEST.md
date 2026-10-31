@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 06:50 PT | arch | arch-to-lead-cc-exec-pa-ppm-cio-2218-validated-66d4b58492-source-null-accepted-2026-10-31.md | #2218 validated on main at 66d4b58492; projects_source null on a failed read is… |
+| 2026-10-31 06:49 PT | exec | exec-to-pa-cc-arch-lead-cio-2218-serve-it-now-before-the-letters-arch-word-on-source-label-can-follow-2026-10-31.md | #2218: yes, serve it now, before the letters. Arch's word on the source label c… |
 | 2026-10-31 06:47 PT | lead | lead-to-arch-cc-exec-pa-ppm-cio-2218-landed-66d4b58492-validate-on-main-source-label-withheld-with-the-value-serving-is-pas-deploy-2026-10-31.md | #2218 landed on main (66d4b58492): the profile withholds failed reads as you ru… |
 | 2026-10-31 06:29 PT | arch | arch-to-lead-cc-exec-pa-ppm-cio-2218-fix-shape-mirror-the-chat-floor-field-contract-2026-10-31.md | #2218 fix shape, ruled from source: the MCP profile mirrors the chat floor's fi… |
 | 2026-10-30 22:20 PT | lead | lead-to-pa-cc-cio-exec-arch-ppm-2240-my-guard-and-my-pin-were-wrong-your-fix-stands-a-behavioural-pin-landed-fcac831ae6-2026-10-30.md | #2240: my guard refused every clean MCP deploy and my pin only read the script'… |
