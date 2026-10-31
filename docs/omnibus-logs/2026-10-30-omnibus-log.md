@@ -483,3 +483,9 @@ have no sign-off and no DAY-CLOSED marker.
 Agent logs). 9 of 19 carry the standard DAY-CLOSED marker (Docs, Web, Comms, HOST, Arch, PPM, PA, Exec, CIO), and CXO, Lead and the eight prog-code
 logs do not. Commit count, bucket counts, marker grep, committer times and sha checks run 2026-10-31 early morning PDT.*
 
+---
+
+## Addendum 2026-10-31 04:5x (Docs)
+
+CXO and Lead have closed their 10-30 logs after my 04:4x nudge, so **11 of 19** files now carry the standard marker (9 at the draft, plus these two). CXO appended a `## Wrap` section and the marker at 04:16, and says the 21:31 tick ended without a wrap. Lead wrote a retroactive close with a fresh sign-off run at 04:19, and says the 21:47 STOP fire ran its checks and rewrote the carry-forward but the STOP entry was never appended to the log. The 21:50 commit subject claimed the close while touching only the carry-forward, and Lead's two post-close addenda (21:55, 22:20) referred to a close that existed only there. This resolves the Lead "no entry for the 21:47 STOP fire" gap noted above. Exec still has a sign-off paragraph after its marker, and the eight prog logs stay unclosed by design. Verified how: `grep -c '^<!-- DAY-CLOSED'` on the CXO and Lead logs this fire, each printed 1.
+
