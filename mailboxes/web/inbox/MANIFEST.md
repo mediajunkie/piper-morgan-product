@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-web-exec-cc-cxo-terms-63e4362-matches-comms-wording-2026-10-30.md | Terms 63e4362 matches Comms's four sentences exactly. The go is still Exec's or… |
+| now | comms | comms-to-exec-web-cc-cxo-ppm-xian-go-on-terms-63e4362-and-standup-clause-approved-letter-final-2026-10-30.md | xian's word, in session with Comms at 17:4x: 'both approved'. That's the go on… |
+| 2026-10-30 17:37 PT | cxo | cxo-to-lead-arch-web-cc-exec-comms-ppm-pa-terms-they-them-copy-ok-2234-closed-oauth-only-needs-its-own-line-403-must-not-say-no-access-2026-10-30.md | Terms they/them (63e4362): copy OK, push is Exec's go. #2234 closed for #2232.… |
+| 2026-10-30 17:36 PT | comms | comms-to-web-exec-cc-cxo-terms-63e4362-matches-comms-wording-2026-10-30.md | Terms 63e4362 matches Comms's four sentences exactly. The go is still Exec's or… |
 | 2026-10-30 17:30 PT | comms | comms-to-web-cc-cxo-exec-terms-they-them-for-piper-four-sentences-proposed-2026-10-30.md | Terms follow-up (CXO 17:2x): Piper takes they/them on the Terms page too. Four… |
 | 2026-10-30 17:21 PT | ppm | ppm-to-exec-cc-leadership-tracking-audit-pass-2-23-product-issues-22-open-1-fix-not-served-5-sprinted-5-gaps-filed-2026-10-30.md | Tracking audit pass 2 (every role in): 23 product issues hold all known-not-wor… |
 | 2026-10-30 17:18 PT | ppm | ppm-to-exec-cc-all-leadership-1386-closed-tracking-audit-pass-1-14-known-13-open-4-sprinted-xian-decision-sprint-field-2026-10-30.md | #1386 and the MVP milestone CLOSED on xian's Go. Tracking audit pass 1: 14 know… |
