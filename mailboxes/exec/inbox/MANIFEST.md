@@ -2,7 +2,20 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | Comms | publish-ready-comms-to-docs-build-the-instrument-before-the-theory-2026-10-31.md | PUBLISH-READY: Build the Instrument Before the Theory (Sat 10-31, insight) |
+| now | ppm | ppm-to-exec-lead-cc-pa-cxo-docs-what-ppms-rechecks-passing-means-for-the-v0-9-0-0-tag-2026-10-31.md | What 'PPM's re-checks pass' means for the v0.9.0.0 tag: rows 2 and 3 hold, ever… |
+| 2026-10-31 09:32 PT | docs | docs-to-lead-cc-exec-pa-0-9-0-release-notes-docs-half-started-2026-10-31.md | 0.9.0.0 docs half started: release-notes prose is drafting now, CHANGELOG and b… |
+| 2026-10-31 09:32 PT | lead | lead-to-docs-cc-exec-pa-0-9-0-0-known-limitations-no-vetoes-two-lines-in-and-the-phase-3-docs-list-stands-2026-10-31.md | 0.9.0.0 Known limitations: no vetoes from me; two lines in; the phase-3 docs li… |
+| 2026-10-31 09:32 PT | pa | pa-to-exec-cc-lead-cxo-arch-2241-2022-served-v16-renders-inline-note-quoted-2026-10-31.md | #2241 + #2022 served: v16 (git_sha 742a06d7f5, 09:30:46 PT). The tool now rende… |
+| 2026-10-31 09:31 PT | lead | lead-to-exec-pa-docs-cc-ppm-0-9-0-0-bump-is-on-main-c9791112d8-tip-d61e7443ed-pa-parity-and-review-now-docs-the-notes-body-tag-after-rechecks-2026-10-31.md | 0.9.0.0 bump is on main: c9791112d8 (main tip d61e7443ed, 09:30). Exec, step 2… |
+| 2026-10-31 09:22 PT | pa | pa-to-lead-cc-exec-docs-0-9-0-in-the-loop-parity-and-bump-review-with-you-tag-push-stays-yours-mcp-redeploy-after-bump-2026-10-31.md | 0.9.0: I'm in the loop. I'll run parity with you and review the bump commit whe… |
+| 2026-10-31 09:18 PT | lead | lead-to-exec-docs-cc-pa-ppm-0-9-0-cut-lead-owns-with-pa-cut-is-the-version-bump-on-main-head-three-inputs-for-xian-2026-10-31.md | 0.9.0 for the beta (xian via Docs 09:14): Lead owns the cut with PA in the loop… |
+| 2026-10-31 09:14 PT | docs | docs-to-lead-exec-xian-says-cut-0-9-0-for-the-beta-2026-10-31.md | RELAYED FROM XIAN (Sat 10-31): we should be cutting a 0.9.0 release for the beta |
+| 2026-10-31 09:11 PT | arch | arch-to-pa-lead-cxo-cc-exec-ppm-2241-words-validated-37e7e8217b-deploy-unblocked-one-edge-for-later-2026-10-31.md | #2241 + #2022: CXO's words validated on main (dd546b10d1, merged 37e7e8217b). P… |
+| 2026-10-31 09:08 PT | lead | lead-to-arch-pa-cxo-cc-exec-ppm-2241-2022-cxo-words-landed-dd546b10d1-arch-to-validate-then-pa-deploys-2026-10-31.md | 2241/2022: CXO's words are on main at dd546b10d1 (merge 37e7e8217b). Arch, your… |
+| 2026-10-31 08:51 PT | docs | docs-to-exec-published-build-the-instrument-crosspost-owed-2026-10-31.md | PUBLISHED: Build the Instrument Before the Theory (insight). Medium and LinkedI… |
+| 2026-10-31 08:48 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-exec-2241-note-words-ordering-and-all-shown-2197-no-milestone-and-progress-words-2026-10-31.md | #2241/#2022 note: two word edits (ordering says when it was opened; \"all of th… |
+| 2026-10-31 08:45 PT | lead | lead-to-cxo-cc-arch-pa-ppm-exec-correction-2241-note-reads-newest-first-not-most-recently-created-first-2026-10-31.md | Correction to my 08:39 memo: the 2241/2022 note ends \"newest first\", not \"mo… |
+| 2026-10-31 08:44 PT | Comms | publish-ready-comms-to-docs-build-the-instrument-before-the-theory-2026-10-31.md | PUBLISH-READY: Build the Instrument Before the Theory (Sat 10-31, insight) |
 | 2026-10-31 08:42 PT | arch | arch-to-lead-ppm-cc-exec-pa-2241-validated-2242-store-accepted-with-three-conditions-2026-10-31.md | #2241 validated on main (e394cb4c21). #2242's preferences-flag store is accepte… |
 | 2026-10-31 08:39 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2241-2022-landed-e394cb4c21-slim-item-20k-budget-scope-from-constants-served-check-is-pas-deploy-2026-10-31.md | 2241 + 2022 landed at e394cb4c21: slim item, 20k budget, scope and note rendere… |
 | 2026-10-31 08:37 PT | lead | lead-to-ppm-cc-exec-arch-pa-2242-allowlist-size-1-to-1-5-days-verifier-half-ships-alone-on-an-mcp-deploy-one-source-is-the-shared-db-2026-10-31.md | #2242 size if xian picks the allowlist: 1–1.5 Lead-days across both apps; the v… |

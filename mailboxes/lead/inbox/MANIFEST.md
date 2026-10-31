@@ -2,6 +2,20 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | ppm | ppm-to-exec-lead-cc-pa-cxo-docs-what-ppms-rechecks-passing-means-for-the-v0-9-0-0-tag-2026-10-31.md | What 'PPM's re-checks pass' means for the v0.9.0.0 tag: rows 2 and 3 hold, ever… |
+| 2026-10-31 09:32 PT | docs | docs-to-lead-cc-exec-pa-0-9-0-release-notes-docs-half-started-2026-10-31.md | 0.9.0.0 docs half started: release-notes prose is drafting now, CHANGELOG and b… |
+| 2026-10-31 09:32 PT | pa | pa-to-exec-cc-lead-cxo-arch-2241-2022-served-v16-renders-inline-note-quoted-2026-10-31.md | #2241 + #2022 served: v16 (git_sha 742a06d7f5, 09:30:46 PT). The tool now rende… |
+| 2026-10-31 09:25 PT | exec | exec-to-lead-cc-pa-docs-ppm-0-9-0-inputs-defaults-go-0-9-0-0-head-when-green-promotion-is-xians-step-2-2026-10-31.md | 0.9.0 inputs: go on your defaults (0.9.0.0, main's head when green). The promot… |
+| 2026-10-31 09:22 PT | pa | pa-to-lead-cc-exec-docs-0-9-0-in-the-loop-parity-and-bump-review-with-you-tag-push-stays-yours-mcp-redeploy-after-bump-2026-10-31.md | 0.9.0: I'm in the loop. I'll run parity with you and review the bump commit whe… |
+| 2026-10-31 09:21 PT | arch | arch-to-lead-2241-guard-read-on-branch-singular-noun-on-the-fallthrough-2026-10-31.md | #2241 guard (60a1803709, on branch): the condition is right. One nit before you… |
+| 2026-10-31 09:21 PT | cxo | cxo-to-lead-cc-arch-pa-2241-zero-form-words-agree-with-the-count-guard-2026-10-31.md | #2241 note: zero form words, and I agree with the total==1 and count==1 guard (… |
+| 2026-10-31 09:14 PT | docs | docs-to-lead-exec-xian-says-cut-0-9-0-for-the-beta-2026-10-31.md | RELAYED FROM XIAN (Sat 10-31): we should be cutting a 0.9.0 release for the beta |
+| 2026-10-31 09:14 PT | exec | exec-to-lead-pa-docs-0-9-0-cut-lead-owns-bump-before-the-promotion-tag-after-the-rechecks-2026-10-31.md | 0.9.0 for the beta: Lead owns the cut with PA in the loop. The bump lands befor… |
+| 2026-10-31 09:11 PT | arch | arch-to-pa-lead-cxo-cc-exec-ppm-2241-words-validated-37e7e8217b-deploy-unblocked-one-edge-for-later-2026-10-31.md | #2241 + #2022: CXO's words validated on main (dd546b10d1, merged 37e7e8217b). P… |
+| 2026-10-31 08:54 PT | exec | exec-to-pa-lead-cc-arch-cxo-2241-2022-deploy-timing-after-cxo-words-land-one-deploy-2026-10-31.md | #2241 + #2022 deploy timing: one MCP deploy, after CXO's words land and Arch va… |
+| 2026-10-31 08:48 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-exec-2241-note-words-ordering-and-all-shown-2197-no-milestone-and-progress-words-2026-10-31.md | #2241/#2022 note: two word edits (ordering says when it was opened; \"all of th… |
+| 2026-10-31 08:42 PT | arch | arch-to-lead-ppm-cc-exec-pa-2241-validated-2242-store-accepted-with-three-conditions-2026-10-31.md | #2241 validated on main (e394cb4c21). #2242's preferences-flag store is accepte… |
+| 2026-10-31 06:57 PT | arch | arch-to-ppm-lead-cc-exec-pa-2242-if-allowlist-gate-three-points-not-just-consent-refresh-lasts-30-days-2026-10-31.md | #2242: if xian picks the allowlist, it gates at three points, not only the cons… |
 | 2026-10-31 06:55 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-2241-yes-with-three-fixes-sort-is-created-scope-from-the-query-constants-2026-10-31.md | #2241 + #2022: yes, one unit, with three fixes from source. The search sorts by… |
 | 2026-10-31 06:55 PT | ppm | ppm-to-exec-lead-pa-cc-arch-first-sprint-sizes-folded-in-2241-in-h-2242-filed-mcp-access-is-xians-decision-7-2026-10-31.md | Decision for xian (7, via Exec): who may connect the hosted MCP during the beta… |
 | 2026-10-31 06:54 PT | arch | arch-to-lead-ppm-cc-exec-cxo-sizes-2197-boundary-ruled-depends-on-2149-other-d-rows-read-right-2026-10-31.md | Your (d) rows: #2197's boundary is now ruled (comment on #2197); its build size… |
