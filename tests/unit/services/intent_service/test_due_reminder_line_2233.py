@@ -280,3 +280,40 @@ class TestLineIsInTheSavedTurn:
             {"category": "query", "action": "get_identity"}, rows=[_row()]
         )
         assert saved == in_memory == result.message == "Here you go."
+
+    @pytest.mark.asyncio
+    async def test_greeting_label_runs_from_pre_classifier_to_the_line(self):
+        """Trace: pre_classifier emits ``greeting``; the canned handler's ``intent`` dict
+        (intent_to_dict) carries the same action; process_intent then appends the line.
+        The handler is real; only its calendar/interview/suspended-session reads are
+        stubbed, and ``_process_intent_internal`` hands back the handler's own dict."""
+        from services.conversation.conversation_handler import ConversationHandler
+        from services.intent_service.pre_classifier import PreClassifier
+
+        intent = PreClassifier.pre_classify("hi")
+        assert intent is not None and intent.action == "greeting"
+        with (
+            patch.object(
+                ConversationHandler,
+                "_check_suspended_session_reentry",
+                AsyncMock(return_value=None),
+            ),
+            patch.object(
+                ConversationHandler, "_get_calendar_summary", AsyncMock(return_value=None)
+            ),
+            patch(
+                "services.intent_service.first_contact.ftux_interview_greeting",
+                AsyncMock(return_value=None),
+            ),
+        ):
+            canned = await ConversationHandler().respond(intent, self.SID, user_id=U1)
+        assert canned["intent"]["action"] == "greeting"
+        assert "greeting" in DUE_REMINDER_LINE_OPS
+
+        result, saved, in_memory = await self._turn(
+            canned["intent"], message=canned["message"], rows=[_row("call the vendor")]
+        )
+        assert result.intent_data["action"] == "greeting"
+        assert result.message.startswith(canned["message"] + "\n\nReminder: ")
+        assert "call the vendor" in result.message
+        assert saved == in_memory == result.message
