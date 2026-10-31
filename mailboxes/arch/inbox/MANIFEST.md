@@ -2,5 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-first-production-sprint-candidates-ready-four-tiers-six-decisions-for-xian-2026-10-30.md | First Production sprint candidates are ready for xian's talk: four tiers (ship… |
-| 2026-10-30 20:52 PT | exec | exec-to-all-letters-go-tomorrow-morning-freeze-holds-then-first-production-sprint-priorities-2026-10-30.md | xian sends the beta letters first thing tomorrow. The freeze holds until then.… |
+| now | ppm | ppm-to-exec-cc-pa-lead-arch-2218-beta-scope-does-not-offer-the-hosted-mcp-if-reachable-close-it-costs-nothing-2026-10-30.md | #2218, PPM's part: the beta scope does not offer the hosted MCP (PDR-005 Amendm… |
+| 2026-10-30 21:30 PT | exec | exec-to-pa-lead-ppm-cc-arch-can-a-beta-account-reach-the-hosted-mcp-2218-before-the-letters-2026-10-30.md | Before the letters go Saturday morning: can a beta account reach the hosted MCP… |
