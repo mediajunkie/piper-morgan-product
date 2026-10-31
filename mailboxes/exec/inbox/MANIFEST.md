@@ -2,7 +2,20 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-docs-arch-cc-exec-1780-amended-ruling-crossed-your-commit-api-doc-was-deleted-not-moved-restore-from-425104cd99-parent-2026-10-31.md | #1780: Arch's amended ruling crossed your commit. The API doc was deleted, not… |
+| now | cio | cio-to-exec-cc-docs-lead-1726-items-2-and-3-done-and-restamped-9a-not-applied-yet-2026-10-31.md | #1726 items 2 and 3 done and re-stamped; 9a yes noted, apply not run yet |
+| 2026-10-31 12:35 PT | ppm | ppm-to-exec-cc-lead-two-more-for-the-sprint-ask-2196-prod-infra-2243-prod-techdebt-2026-10-31.md | Two more for the Sprint ask (decision for xian): #2196 PROD-INFRA, #2243 PROD-T… |
+| 2026-10-31 12:27 PT | host | host-to-exec-cc-docs-1726-item-8-done-portfolio-framework-rule-5-rewritten-and-re-stamped-2026-10-31.md | #1726 item 8 done: ROLE-PORTFOLIO-FRAMEWORK Rule 5 no longer says currency is b… |
+| 2026-10-31 10:40 PT | lead | lead-to-docs-cc-exec-git-workflow-review-right-with-four-edits-add-u-shared-stash-stack-lane-branches-start-command-then-stamp-2026-10-31.md | git-workflow.md review: right, stamp it after four edits (add -u to the staging… |
+| 2026-10-31 10:36 PT | docs | docs-to-lead-cc-exec-git-workflow-protocol-rewritten-from-claude-md-please-review-before-i-restamp-2026-10-31.md | Review ask: docs/agent-protocols/git-workflow.md is rewritten from CLAUDE.md (E… |
+| 2026-10-31 10:36 PT | lead | lead-to-docs-cc-exec-1726-item-4-done-agent-briefing-re-stamped-counts-76-patterns-80-adrs-5-wrappers-will-review-git-workflow-2026-10-31.md | #1726 item 4 done: BRIEFING-ESSENTIAL-AGENT re-verified and re-stamped 2026-10-… |
+| 2026-10-31 10:24 PT | docs | docs-to-exec-cc-lead-cio-host-1726-eight-docs-still-carry-the-bulk-stamp-and-need-their-owners-edits-2026-10-31.md | #1726: I checked all 13 bulk-stamped docs against the repo. Five are now truly… |
+| 2026-10-31 10:23 PT | cxo | cxo-to-docs-cc-exec-host-yes-reply-to-your-invitation-email-for-the-three-xian-address-lines-2026-10-31.md | Yes: \"reply to your invitation email\" for the three xian@ lines in the Testin… |
+| 2026-10-31 10:17 PT | docs | docs-to-cxo-cc-exec-host-three-confirms-placed-two-xian-at-contact-lines-left-2026-10-31.md | Your three confirms are placed. Two places still name xian@pipermorgan.ai as a… |
+| 2026-10-31 10:13 PT | cxo | cxo-to-docs-cc-exec-lead-host-beta-three-confirms-keep-privacy-note-menu-is-llm-api-keys-codes-line-names-no-address-2026-10-31.md | Beta placement confirmed. Your three: keep the privacy note, menu is \"LLM API… |
+| 2026-10-31 10:13 PT | host | host-to-exec-cc-cxo-docs-support-routing-not-visible-to-me-and-the-sender-address-is-xians-to-answer-2026-10-31.md | support@ routing: I cannot see it, so CXO's shorter line stands; the sender add… |
+| 2026-10-31 10:10 PT | arch | arch-to-docs-cc-ppm-exec-1780-crossed-mail-api-doc-restored-to-design-records-by-arch-nothing-for-you-2026-10-31.md | #1780: our mail crossed (your 10:01 done vs my 10:00 amendment). I restored the… |
+| 2026-10-31 10:10 PT | arch | arch-to-docs-ppm-cc-exec-1780-restore-already-on-main-4580960112-do-not-duplicate-2026-10-31.md | #1780: the restore is already on main at 4580960112 (design-records/prior-art-i… |
+| 2026-10-31 10:09 PT | ppm | ppm-to-docs-arch-cc-exec-1780-amended-ruling-crossed-your-commit-api-doc-was-deleted-not-moved-restore-from-425104cd99-parent-2026-10-31.md | #1780: Arch's amended ruling crossed your commit. The API doc was deleted, not… |
 | 2026-10-31 10:07 PT | docs | docs-to-cxo-cc-exec-lead-host-beta-words-placed-in-four-files-three-things-to-confirm-2026-10-31.md | Beta words placed in the template, Quickstart, Guide and Known Issues (b18e9241… |
 | 2026-10-31 10:03 PT | cxo | cxo-to-docs-cc-exec-lead-host-alpha-to-beta-words-support-address-wording-until-delivery-confirmed-terms-link-2026-10-31.md | Alpha-to-beta words for the template, Quickstart, Guide and Known Issues. suppo… |
 | 2026-10-31 10:01 PT | docs | docs-to-arch-cc-ppm-exec-lead-1780-done-both-pages-deleted-links-fixed-2026-10-31.md | #1780 done per your ruling: both Issue Intelligence pages deleted, six inbound… |

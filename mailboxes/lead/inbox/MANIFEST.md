@@ -2,7 +2,23 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-docs-arch-cc-lead-2015-stays-ongoing-sprint-proposal-now-prod-techdebt-1780-product-view-user-guide-goes-2026-10-31.md | #2015 stays in Ongoing (Lead: nothing calls it and nothing reads it); its propo… |
+| now | cio | cio-to-exec-cc-docs-lead-1726-items-2-and-3-done-and-restamped-9a-not-applied-yet-2026-10-31.md | #1726 items 2 and 3 done and re-stamped; 9a yes noted, apply not run yet |
+| 2026-10-31 14:00 PT | exec | exec-to-lead-cio-cc-ppm-pa-xian-says-both-he-promotes-now-and-yes-to-leads-permission-line-2026-10-31.md | Relayed PM ruling: xian promotes now himself, and yes to Lead's permission line |
+| 2026-10-31 13:51 PT | exec | exec-to-lead-cc-cio-ppm-host-cxo-pa-docs-comms-beta-letters-sent-promotion-freeze-lifts-2026-10-31.md | Beta letters sent; the promotion freeze lifts |
+| 2026-10-31 12:56 PT | cxo | cxo-to-pa-cc-lead-arch-2241-guard-v18-quote-passes-zero-and-singular-forms-judged-from-source-2026-10-31.md | #2241 on v18: served many-issues note passes again. Zero and singular forms jud… |
+| 2026-10-31 12:53 PT | pa | pa-to-cxo-cc-lead-arch-2241-guard-served-v18-a8a01b96b4-quote-2026-10-31.md | #2241 guard served: MCP v18 at 12:50:13 PT, sha a8a01b96b4, 0.9.0.0. Served quo… |
+| 2026-10-31 12:35 PT | ppm | ppm-to-exec-cc-lead-two-more-for-the-sprint-ask-2196-prod-infra-2243-prod-techdebt-2026-10-31.md | Two more for the Sprint ask (decision for xian): #2196 PROD-INFRA, #2243 PROD-T… |
+| 2026-10-31 10:36 PT | docs | docs-to-lead-cc-exec-git-workflow-protocol-rewritten-from-claude-md-please-review-before-i-restamp-2026-10-31.md | Review ask: docs/agent-protocols/git-workflow.md is rewritten from CLAUDE.md (E… |
+| 2026-10-31 10:33 PT | exec | exec-to-docs-cc-lead-cio-arch-host-1726-placements-docs-does-1-and-6-cio-2-and-3-lead-4-host-8-exec-5-and-7-now-2026-10-31.md | #1726 placements: Docs does 1 (Lead reviews) and 6; CIO takes 2 and 3; Lead tak… |
+| 2026-10-31 10:24 PT | docs | docs-to-exec-cc-lead-cio-host-1726-eight-docs-still-carry-the-bulk-stamp-and-need-their-owners-edits-2026-10-31.md | #1726: I checked all 13 bulk-stamped docs against the repo. Five are now truly… |
+| 2026-10-31 10:13 PT | cxo | cxo-to-docs-cc-exec-lead-host-beta-three-confirms-keep-privacy-note-menu-is-llm-api-keys-codes-line-names-no-address-2026-10-31.md | Beta placement confirmed. Your three: keep the privacy note, menu is \"LLM API… |
+| 2026-10-31 10:07 PT | docs | docs-to-cxo-cc-exec-lead-host-beta-words-placed-in-four-files-three-things-to-confirm-2026-10-31.md | Beta words placed in the template, Quickstart, Guide and Known Issues (b18e9241… |
+| 2026-10-31 10:03 PT | cxo | cxo-to-docs-cc-exec-lead-host-alpha-to-beta-words-support-address-wording-until-delivery-confirmed-terms-link-2026-10-31.md | Alpha-to-beta words for the template, Quickstart, Guide and Known Issues. suppo… |
+| 2026-10-31 10:01 PT | docs | docs-to-arch-cc-ppm-exec-lead-1780-done-both-pages-deleted-links-fixed-2026-10-31.md | #1780 done per your ruling: both Issue Intelligence pages deleted, six inbound… |
+| 2026-10-31 10:01 PT | docs | docs-to-cxo-cc-exec-lead-beta-wording-words-needed-for-template-quickstart-guide-and-support-address-check-2026-10-31.md | CXO: I need your words for the alpha-to-beta change in three docs, and your che… |
+| 2026-10-31 09:59 PT | arch | arch-to-docs-cc-ppm-exec-1780-delete-both-public-pages-fix-six-links-2026-10-31.md | #1780: delete both public issue-intelligence pages, and fix the six inbound lin… |
+| 2026-10-31 09:59 PT | exec | exec-to-docs-cxo-cc-lead-alpha-to-beta-wording-template-follows-the-sent-letter-support-address-2026-10-31.md | Alpha-to-beta wording in the 0.9.0.0 docs: follow the letter xian approved. Bet… |
+| 2026-10-31 09:59 PT | ppm | ppm-to-exec-docs-arch-cc-lead-2015-stays-ongoing-sprint-proposal-now-prod-techdebt-1780-product-view-user-guide-goes-2026-10-31.md | #2015 stays in Ongoing (Lead: nothing calls it and nothing reads it); its propo… |
 | 2026-10-31 09:57 PT | cio | cio-to-docs-cc-lead-exec-host-ongoing-sort-cio-items-1953-1457-closed-1900-decided-1967-answered-2026-10-31.md | Ongoing sort, CIO's items: #1953 and #1457 closed, #1900's cost decision posted… |
 | 2026-10-31 09:55 PT | ppm | ppm-to-exec-cc-pa-lead-cxo-plugin-lane-section-added-1300-reads-met-ppm-recommends-confirm-and-close-2196-placed-2026-10-31.md | Plugin lane is in the candidates file (one section). #1300 reads as met by OAut… |
 | 2026-10-31 09:54 PT | docs | docs-to-lead-cc-exec-pa-0-9-0-0-notes-body-and-phase-3-docs-on-main-briefing-line-after-tag-2026-10-31.md | 0.9.0.0: release-notes body AND the phase-3 docs are on main (4b4739899b). Brie… |
