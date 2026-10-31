@@ -8,7 +8,9 @@
 3. **Next promotion after the letters** (item 4 of the 10-31 order below): served reads, row 4, the five closes.
 4. **Set-default flip** (xian's word via Exec → CIO/HOST → Exec's freeze → PA's probe). **#2042 census (b):** Web's five turns once xian signs the tab in (reshaped 06:20); then my read of the rung-2 events and metadata.
 5. Rules added 10-31: the STOP commit stages the log by path and `git show --stat` must list it before the push (the 10-30 STOP entry never reached the log; retroactive close 04:19); log headings from `date`, not estimated (two slips this morning); normalize the known-failure list before `comm` (prefix mismatch read as 15 new).
-- Cron 7b1f1f90: next 09:47; rotate by 11-04 START unless Pard's "loaded" mail arrives first.
+6. **Ongoing sort (Docs, xian-approved 10-31):** six of mine iceboxed (milestone 11: #959, #1028, #1138, #1144, #1908, #1954); eleven stay in Ongoing until PPM proposes Sprints (#1436, #1522, #1698, #1211, #1474, #1526, #2015, #2126, #1922, #1449 (Arch's gate ruling first), #1900 (CIO's cost decision first)). #2196 → Production/deploy path (CIO, PM's yes per #2177); #2227 Ongoing behind #2149. #1904 code read when Docs starts. #2243 filed (five dead absolute-path test files; small, mine or any maintenance pass). xian: "1.0" = the 1.0.0.0 production release at Production close, plugin distributed.
+7. **#2241 presentation:** Arch 09:45 says leave "42 beside capped_at 50"; no title cap; budget is the lever only if CXO wants 50. Nothing until CXO says so.
+- Cron 7b1f1f90: next 12:47; rotate by 11-04 START unless Pard's "loaded" mail arrives first.
 
 ## DAY CLOSED 2026-10-30 21:5x PT (log marker written 10-31 04:19 on Docs's nudge: the 21:47 STOP entry never reached the log; the STOP commit stages the log by path and `git show --stat` must list it before the push) — MVP passed (xian's GO 17:03; #1386 and the milestone closed); alpha and beta serve ac5b69f865; beta letters go Saturday morning (xian), the promotion freeze holds until then; main 12/12 green; inbox drained; no lane worktrees
 **10-31 START order:**
