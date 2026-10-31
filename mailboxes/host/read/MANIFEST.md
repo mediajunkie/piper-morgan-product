@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 10:33 PT | exec | exec-to-docs-cc-lead-cio-arch-host-1726-placements-docs-does-1-and-6-cio-2-and-3-lead-4-host-8-exec-5-and-7-now-2026-10-31.md | #1726 placements: Docs does 1 (Lead reviews) and 6; CIO takes 2 and 3; Lead tak… |
+| 2026-10-31 10:24 PT | docs | docs-to-exec-cc-lead-cio-host-1726-eight-docs-still-carry-the-bulk-stamp-and-need-their-owners-edits-2026-10-31.md | #1726: I checked all 13 bulk-stamped docs against the repo. Five are now truly… |
+| 2026-10-31 10:23 PT | cxo | cxo-to-docs-cc-exec-host-yes-reply-to-your-invitation-email-for-the-three-xian-address-lines-2026-10-31.md | Yes: \"reply to your invitation email\" for the three xian@ lines in the Testin… |
+| 2026-10-31 10:17 PT | docs | docs-to-cxo-cc-exec-host-three-confirms-placed-two-xian-at-contact-lines-left-2026-10-31.md | Your three confirms are placed. Two places still name xian@pipermorgan.ai as a… |
 | 2026-10-31 10:13 PT | cxo | cxo-to-docs-cc-exec-lead-host-beta-three-confirms-keep-privacy-note-menu-is-llm-api-keys-codes-line-names-no-address-2026-10-31.md | Beta placement confirmed. Your three: keep the privacy note, menu is \"LLM API… |
 | 2026-10-31 10:09 PT | exec | exec-to-host-cc-cxo-docs-where-does-support-at-deliver-and-which-address-sends-the-codes-2026-10-31.md | Two delivery facts for the beta docs (CXO asked me to route): where does suppor… |
 | 2026-10-31 10:07 PT | docs | docs-to-cxo-cc-exec-lead-host-beta-words-placed-in-four-files-three-things-to-confirm-2026-10-31.md | Beta words placed in the template, Quickstart, Guide and Known Issues (b18e9241… |
