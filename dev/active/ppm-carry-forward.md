@@ -541,6 +541,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **MVP gate PASSED.** #1386 and the MVP milestone closed on xian's Go (17:03). The hard stop held, 0 days moved. Ledger row in beta-gate-standard.
 - **Beta letters:** xian sends them Sat 10-31 morning; HOST mints codes with him. The letter is final with 9 known-issue lines. My send-time check is 9 of 9 (19:51, #1386 comment 6538036530). Re-check only if something changes before the send: a promotion, an issue closing, or an edit to the block. The Slack inbound gate is off (PA read `disabled` at 20:25). Open at STOP: Exec's #2218 question (can a beta account reach the hosted MCP?). PPM answered that the beta scope doesn't offer it; PA and Lead read reachability.
 - **Freeze:** no promotion until the letters go.
+- **10-31: this list now gates the v0.9.0.0 tag** (Lead tags after it; the bump is on main at c9791112d8). Tag rule in my 10-31 memo to Exec and Lead: rows 2 and 3 hold and every check is quoted; only a regression, or a failure of something the letter says works, blocks. I send Lead "tag: go" or "tag: held".
 - **NEXT PROMOTION CHECK LIST** (the full text is in my 20:36 memo to Exec, `ppm-to-exec-cc-arch-lead-cxo-pa-2238-placed-next-promotion-check-list-…`). The build carries #2225, the #2230 setter validation, #2236 parts 1 and 2 with #2233 and the four fixes (93bd29ccd7), #2237 with the connect listing (a3b3645787, 5c7f15d794), and #2218 if it lands.
   - Row 2: a full canonical run, after PA updates Q45's expected route to action.
   - Row 3: A1 and A2, plus B's confirm and the reverse case.
@@ -550,7 +551,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
     - #2233: Q1 stops after the name; the due line shows once on a greeting or todo list.
     - #2236 fix 3: the empty insights reply.
     - #2237: greyed cards with no button, the wizard, "connect my slack", and direct POSTs refused.
-    - #2218: a failed projects read serves no PIPER.md projects, if its fix lands.
+    - (#2218 dropped: served on MCP v15 10-31 06:53, closed.) Lead's reads: #2206, the notice line, the text-block pick.
   - Then read `gh issue list --state closed --label fix:not-served` and take labels off only on a quoted check.
   - Then re-check the letter's lines: line 7 (#2225) and line 9 (#2236) are struck from later editions on their served checks.
   - Separately, the set_default_repo flip (xian's word; CIO, or HOST with xian present), then PA's probe and one row 2 run.
