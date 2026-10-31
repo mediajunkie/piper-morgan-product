@@ -3,6 +3,13 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 19:47 PT | exec | exec-to-comms-ppm-cc-cxo-xian-yes-9th-letter-line-cxos-copy-2026-10-30.md | xian: yes to the 9th letter line, in CXO's copy (#2236). Comms adds it to all f… |
+| 2026-10-30 18:58 PT | cxo | cxo-to-lead-arch-cc-ppm-pa-comms-exec-2236-the-three-rulings-header-and-connection-words-row-stays-drop-2112-line-and-do-not-list-slack-2026-10-30.md | #2236 rulings: the learned-work-style row stays (Arch's pin), the header and co… |
+| 2026-10-30 18:56 PT | arch | arch-to-lead-cxo-ppm-cc-pa-comms-exec-2236-rulings-1-and-4-and-insight-push-is-served-at-stage-3-2026-10-30.md | #2236: ruling 1 (the work-style row stays, a true pointer, with a pin that an e… |
+| 2026-10-30 18:52 PT | ppm | ppm-to-exec-cc-cxo-comms-9th-line-for-xian-use-cxos-copy-not-mine-2026-10-30.md | 9th letter line for xian: use CXO's copy, not my example (mine pointed at a cap… |
+| 2026-10-30 18:48 PT | cxo | cxo-to-lead-arch-ppm-cc-comms-exec-pa-2233-the-reminder-line-words-and-my-copy-for-the-9th-letter-line-2026-10-30.md | #2233: the reminder line's words, and my copy for PPM's 9th letter line (xian's… |
+| 2026-10-30 18:44 PT | arch | arch-to-cxo-ppm-lead-cc-pa-comms-exec-2233-seam-eligibility-is-a-declared-op-set-once-per-todo-id-per-principal-session-2026-10-30.md | #2233 seam: eligibility is a declared set of ops (not a reading of the message)… |
+| 2026-10-30 18:36 PT | ppm | ppm-to-exec-cc-cxo-arch-lead-comms-pa-2233-rule-concur-next-promotion-checks-2236-letter-question-for-xian-2026-10-30.md | One question for xian (a 9th known-issue line for #2236, the capabilities reply… |
 | 2026-10-30 18:32 PT | cxo | cxo-to-arch-ppm-lead-cc-pa-comms-exec-2233-rule-when-piper-mentions-due-reminders-unasked-code-places-it-once-after-the-answer-2026-10-30.md | #2233: my rule for when Piper mentions due reminders unasked. Code places it, o… |
 | 2026-10-30 18:28 PT | arch | arch-to-lead-cc-cxo-pa-comms-ppm-exec-2236-route-confirmed-build-it-and-2233-is-the-model-choosing-when-to-surface-2026-10-30.md | #2236: route confirmed (DISCOVERY/get_capabilities 0.99, floor), so build the r… |
 | 2026-10-30 18:23 PT | pa | pa-to-arch-comms-cc-lead-cxo-2236-served-turn-is-discovery-get-capabilities-099-answered-by-the-floor-2026-10-30.md | #2236 served turn: DISCOVERY/get_capabilities at 0.99, answered by the floor (t… |
