@@ -75,6 +75,7 @@ from services.mcp.server.resources import (  # noqa: E402
     GITHUB_ISSUES_PAGE_CAP,
     GITHUB_ISSUES_URI,
     PROFILE_URI,
+    slim_issue,
 )
 from services.user_context_service import UserContext, user_context_service  # noqa: E402
 
@@ -375,9 +376,14 @@ class TestGithubIssuesResource:
             payload_a = await _read_json(asgi_app, raw_a, GITHUB_ISSUES_URI)
             payload_b = await _read_json(asgi_app, raw_b, GITHUB_ISSUES_URI)
 
-        assert payload_a == {
-            "available": True,
-            "issues": [{"number": 1, "title": "A's issue"}],
+        # #2241: items are slim (exactly ISSUE_ITEM_KEYS; absent fields None / []), and the
+        # payload states its scope (#2022). Those shapes are pinned in
+        # test_github_issues_slim_2241.py; here only the per-user isolation and the #2005
+        # fields are the claim.
+        assert payload_a["available"] is True
+        assert payload_a["issues"] == [slim_issue({"number": 1, "title": "A's issue"})]
+        assert payload_a["issues"][0]["number"] == 1
+        assert {k: payload_a[k] for k in ("count", "total", "truncated", "capped_at")} == {
             "count": 1,
             "total": 1,
             "truncated": False,

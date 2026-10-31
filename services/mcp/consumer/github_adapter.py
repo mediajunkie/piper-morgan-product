@@ -79,6 +79,12 @@ _MY_OPEN_ISSUES_QUERY = "assignee:@me is:open is:issue archived:false"
 # PRs (#1322 P3): search_pull_requests, same payload shape, user-wide "PRs I opened".
 _PRS_TOOL = "search_pull_requests"
 _MY_OPEN_PRS_QUERY = "author:@me is:open is:pr"
+# #2186/#2241: the one ordering every search page is read in. The MCP github resource
+# renders its scope sentence FROM these two names (resources.render_issues_scope), so a
+# change here changes the sentence and its pin, never a sentence left describing an old
+# call (Arch's ruling on #2241, 2026-10-31).
+_SEARCH_SORT = "created"
+_SEARCH_ORDER = "desc"
 
 
 def _search_quote(value: str) -> str:
@@ -1259,8 +1265,8 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                     {
                         "query": query,
                         "perPage": max(1, min(limit, 100)),
-                        "sort": "created",
-                        "order": "desc",
+                        "sort": _SEARCH_SORT,
+                        "order": _SEARCH_ORDER,
                     },
                 )
                 items, total = self._parse_issue_search(self._tool_text(result), limit=limit)
