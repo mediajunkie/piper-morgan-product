@@ -98,6 +98,7 @@ from services.mcp.server.resources import (  # noqa: E402
     GITHUB_ISSUES_URI,
     PROFILE_URI,
     WHAT_PIPER_KNOWS_TOOL,
+    slim_issue,
 )
 from services.user_context_service import UserContext, user_context_service  # noqa: E402
 
@@ -336,10 +337,11 @@ class TestTwoCallersInterleavedAcrossAllThreeResourcesAndTheTool:
         assert results["A.colleague"] != results["B.colleague"]
 
         # ---- github issues ----
-        assert results["A.github"]["issues"] == [{"number": 101, "title": "A's issue"}]
+        # #2241: items are the slim shape; this pin's claim is the per-caller isolation.
+        assert results["A.github"]["issues"] == [slim_issue({"number": 101, "title": "A's issue"})]
         assert results["B.github"]["issues"] == [
-            {"number": 202, "title": "B's issue"},
-            {"number": 203, "title": "B's other"},
+            slim_issue({"number": 202, "title": "B's issue"}),
+            slim_issue({"number": 203, "title": "B's other"}),
         ]
         assert results["A.github"] != results["B.github"]
 
@@ -350,7 +352,7 @@ class TestTwoCallersInterleavedAcrossAllThreeResourcesAndTheTool:
             {"key": "pref_a", "value": "A-only-value", "verified_at": "2026-09-01T00:00:00+00:00"}
         ]
         assert results["A.tool"]["github_issues"]["issues"] == [
-            {"number": 101, "title": "A's issue"}
+            slim_issue({"number": 101, "title": "A's issue"})
         ]
 
         assert results["B.tool"]["profile"]["organization"] == "Org-B"
@@ -358,8 +360,8 @@ class TestTwoCallersInterleavedAcrossAllThreeResourcesAndTheTool:
             {"key": "pref_b", "value": "B-only-value", "verified_at": "2026-09-02T00:00:00+00:00"}
         ]
         assert results["B.tool"]["github_issues"]["issues"] == [
-            {"number": 202, "title": "B's issue"},
-            {"number": 203, "title": "B's other"},
+            slim_issue({"number": 202, "title": "B's issue"}),
+            slim_issue({"number": 203, "title": "B's other"}),
         ]
         assert results["A.tool"] != results["B.tool"]
 
