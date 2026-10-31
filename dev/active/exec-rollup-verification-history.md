@@ -286,3 +286,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v704 (server 706), 2026-10-31 07:45 PDT: ghmint fix paste added first under 'Your hand' (CIO 07:4x; Pard console v185, mediajunkie ea2bdcd and 961868f, read with git log).
 - v705, 2026-10-31 08:55 PDT: Build the Instrument crosspost card (Docs); the test-plan card notes #2241/#2022 on main, deploy after CXO's words (Exec timing memo).
 - v706, 2026-10-31 09:15 PDT: 0.9.0 on step 2 (xian via Docs; Exec placement); #2241 card: words validated 09:11.
+- v707, 2026-10-31 09:25 PDT: 0.9.0.0-or-0.9.0 question on step 2 (Lead 09:2x).
