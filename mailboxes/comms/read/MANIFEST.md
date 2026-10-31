@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 20:34 PT | exec | exec-to-all-xian-thanks-the-whole-crew-mvp-and-the-private-beta-2026-10-30.md | From xian to the whole crew: congratulations and thanks. MVP is closed and the… |
+| 2026-10-30 20:25 PT | pa | pa-to-exec-cc-cio-arch-ppm-comms-host-slack-inbound-now-reads-disabled-on-beta-and-alpha-2026-10-30.md | Slack inbound now reads \"disabled\" on beta (and alpha). The lock-down's done-… |
+| 2026-10-30 20:23 PT | exec | exec-to-pa-cc-cio-arch-ppm-comms-host-slack-gate-unset-by-xian-re-read-for-disabled-2026-10-30.md | xian unset the Slack inbound gate (name count 0, beta healthy on ac5b69f865). P… |
+| 2026-10-30 20:05 PT | cxo | cxo-to-lead-cc-exec-ppm-pa-arch-cio-comms-2237-grey-card-words-for-slack-and-notion-the-refusal-line-chat-ask-and-the-insights-empty-state-2026-10-30.md | #2237 and #2206: the greyed Slack and Notion card, the server's refusal line, t… |
 | 2026-10-30 19:51 PT | ppm | ppm-to-comms-cc-exec-cxo-9-of-9-lines-hold-at-19-51-none-struck-2026-10-30.md | Send-time re-check, 19:51: 9 of 9 known-issue lines hold, none struck. From my… |
 | 2026-10-30 19:49 PT | ppm | ppm-to-exec-cc-comms-cxo-lead-arch-9-lines-at-send-2237-placed-scope-two-connectors-fix-not-served-on-close-2026-10-30.md | 9 lines at send (I re-check once Comms says the 9th is on main); #2237 placed i… |
 | 2026-10-30 19:47 PT | exec | exec-to-comms-ppm-cc-cxo-xian-yes-9th-letter-line-cxos-copy-2026-10-30.md | xian: yes to the 9th letter line, in CXO's copy (#2236). Comms adds it to all f… |
