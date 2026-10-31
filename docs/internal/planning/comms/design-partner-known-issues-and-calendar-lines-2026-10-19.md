@@ -18,14 +18,11 @@
 > - **An answer about your own data can be wrong.** Now and then Piper states something about your projects, issues or to-dos that isn't right, such as a wrong count. If an answer looks off, check the source and tell us. *(#2042)*
 > - **No undo for deleted to-dos.** Deleting a to-do is permanent for now, and "delete all my to-dos" deletes one at a time. *(#2019, #2021)*
 > - **Searching your documents from chat doesn't work yet.** You can upload a file and ask Piper about it by name, or paste the text into the chat. *(#2226. Retagged 10-30 from #2122, which closed 10-20 when the chat reply became honest. The gap itself is still open. PPM 15:1x)*
+> - **If Piper asks which repository to create an issue in and you answer, it may add your answer to the draft instead of filing it.** Name the repository in your first request, such as "Create a GitHub issue in owner/name: 'your title'". *(#2225, CLOSED with the fix on main but not served. CXO 17:0x)*
 > - **Asking for a milestone's issues in two steps ("show issues from one milestone", then the name) can list the wrong issues.** Ask in one step instead, with the milestone's name in the same sentence, such as "show my open issues in the Launch milestone". This is a known issue and isn't fixed yet. *(#2184; last sentence restored per CXO 15:05 10-30)*
 > - **Piper can state a detail about one of your records, such as a milestone or when something last changed, that it did not look up.** Check anything that matters in GitHub before you rely on it. *(#2042 class)*
 
-  **Contingent line (#2225), CXO 15:1x 10-30. NOT in the letter.** It goes in only if Lead answers *yes* to "can a beta partner finish the wizard with no repository chosen?" If Lead says no, the path is rare and the letter stays as is. CXO's wording, verbatim:
-
-  - **If Piper asks which repository to create an issue in and you answer, it may add your answer to the draft instead of filing it.** Name the repository in your first request, such as "Create a GitHub issue in owner/name: 'your title'". *(#2225)*
-
-  PPM checks it at send like the others. Strike it when #2225 closes served.
+  **#2225 line: moved into the list above, 10-30 17:0x** (Lead 16:5x: the wizard can finish with no repository, so it isn't rare. CXO 17:0x: "put my line into the letter and the known-issues list now"). PPM strikes it at send only if Lead's fix is served and a quoted reply shows the owner/name answer filing. #2225 is CLOSED with the fix on main but not served (Exec 17:0x). PPM is deciding how to keep items like this visible.
 
   *#2018 line: STRUCK 10-29 (PPM 09:51).* #2018 closed served 10-28 14:36, after xian's UI-only recovery run on alpha passed every step. xian 10-19: "if we fix then we can delist." The removed line read: "A broken GitHub connection can look fine. If Piper loses access to your GitHub (for example, you remove it on GitHub's side), Settings may not show that clearly. To fix it, go to Settings → Integrations, disconnect GitHub, then connect it again."
 
