@@ -363,7 +363,6 @@ python main.py issues status
 
 ### Technical Resources
 
-- [Issue Intelligence Feature Documentation](../features/issue-intelligence.md) - Complete feature reference
 - [Canonical Queries Architecture](../../../internal/architecture/canonical-queries-architecture.md) - Technical architecture
 - [CLI Development Guide](../../../internal/development/tools/CLI_STANDUP_IMPLEMENTATION.md) - For developers
 
@@ -629,8 +628,6 @@ Options:
 **Ready to transform your workflow?**
 
 **[🚀 Start with Morning Standup](../../../internal/development/tools/MORNING_STANDUP_MVP_GUIDE.md)**
-
-**[📊 Master Issue Intelligence](../features/issue-intelligence.md)**
 
 **[🔄 Understand the Learning System](../../../internal/architecture/canonical-queries-architecture.md)**
 

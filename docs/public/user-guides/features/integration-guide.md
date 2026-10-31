@@ -266,7 +266,6 @@ if integration_time > 200:  # 200ms threshold
 
 - [Canonical Queries Architecture](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/canonical-queries-architecture.md)
 - [Morning Standup User Guide](morning-standup.md)
-- [Issue Intelligence User Guide](issue-intelligence.md)
 - [API Reference](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/api-reference.md)
 
 ### Code Examples
