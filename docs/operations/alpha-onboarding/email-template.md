@@ -1,8 +1,8 @@
-# Alpha Tester Invitation Email Template
+# Beta Tester Invitation Email Template
 
 **Version**: 3.0
 **For**: Piper Morgan 0.9.0.0 Private Beta Release (hosted)
-**Purpose**: Internal template for PM to send to invited alpha testers
+**Purpose**: Internal template for PM to send to invited beta testers
 **Last Updated**: October 31, 2026
 
 **v3.0 rewrite (2026-09-21, Lead — closes #1830)**: v2.x of this template described the
@@ -17,9 +17,9 @@ they adapt — if the two drift, fix THIS file and re-derive.
 
 ## Subject Lines (A/B test these)
 
-- "Your Piper Morgan alpha invite"
-- "Piper Morgan alpha access — your invite code inside"
-- "[Name], your Piper Morgan alpha account awaits"
+- "Your Piper Morgan beta invite"
+- "Piper Morgan beta access — your invite code inside"
+- "[Name], your Piper Morgan beta account awaits"
 
 ---
 
@@ -28,69 +28,43 @@ they adapt — if the two drift, fix THIS file and re-derive.
 ```
 Hey [Name],
 
-You mentioned interest in testing Piper Morgan — excited to have you as an early alpha
-tester!
+You mentioned interest in testing Piper Morgan, and I'm glad to have you in the private beta.
 
-Piper Morgan runs as a hosted app now, so there's nothing to install. Getting started
-takes about ten minutes:
+Piper runs as a hosted app, so there's nothing to install.
 
-**GETTING STARTED**
+**Getting in.** Go to https://beta.pipermorgan.ai and choose "Create your account". The first step asks for your invite code:
 
-1. Go to https://alpha.pipermorgan.ai/setup
-2. Create your account — you'll need this invite code (single-use, just for you):
+[INVITE_CODE]
 
-   [INVITE_CODE]
+It works once, for one account, so please don't share it. The next step asks for your Anthropic API key, so have one ready.
 
-3. Log in, then open Settings → LLM Keys and paste an API key of your own:
-   - an Anthropic key (https://console.anthropic.com/), and/or
-   - an OpenAI key (https://platform.openai.com/api-keys)
-4. Say hello.
+**What you can connect.** Piper works with GitHub and Google Calendar. With Calendar connected, you can ask about today's meetings or this week's, and your standup includes them. Piper only reads your calendar. They can't change it.
 
-**THE ONE REAL REQUIREMENT**
+When Google asks, make sure the box next to "See and download any calendar you can access using your Google Calendar" is ticked, or Piper can't read your calendar.
 
-Piper runs on YOUR LLM key and bills YOUR account — it never spends anyone else's.
-That's a design principle, not a limitation: your data and your costs stay yours.
-Budget roughly $5–20 in API usage over the alpha period, and keep an eye on your
-provider's usage dashboard (that's also a great way to verify the promise!).
+**Who sees it.** Piper sends your messages, and anything they add from the tools you connect (such as calendar or GitHub items you ask about), to Anthropic under your own key. From there, Anthropic's own terms and privacy policy apply. Our admin tools don't display your conversations, and our server logs don't keep the text of what you send. The app has no analytics or ad tracking.
 
-Optional, for the integration features: a GitHub personal access token, a Notion API
-key, or a Slack workspace — all connectable later under Settings → Integrations.
-None are needed for core chat, lists, files, or standups.
+**Your key.** Piper runs on your own Anthropic key. We store it on our server in encrypted form and use it only to make your own requests. We hold the key that unlocks it, so in principle we could read it. Please use a key with a spending limit you're comfortable with. We don't read it on purpose. You can remove your key in Settings at any time, and that deletes it from our live database. Our encrypted backups can keep it for up to about five days. To cut off access completely, also revoke the key in Anthropic's console, so it stops working for Piper too.
 
-**CRITICAL DISCLAIMERS**
+**What you're agreeing to.** The plain-language terms are at https://pipermorgan.ai/terms/ and our privacy page is at https://pipermorgan.ai/privacy/. Please read them before you start.
 
-This is PRIVATE BETA software (version 0.9.0.0). That means:
-- It will have bugs and rough edges
-- The alpha instance's data may be lost at any time — use test data only
-- Security is not fully audited yet. Your API key and your conversations are stored encrypted.
-- You're responsible for your own API charges
-- Not for mission-critical work or sensitive information
+**Known issues in this beta**
 
-How Piper handles your data: pipermorgan.ai/privacy. There's no separate Terms page yet.
+- **Piper sometimes misreads what you ask.** They may answer a different question or give a general reply. Rephrasing usually works.
+- **An answer about your own data can be wrong.** Now and then Piper states something about your projects, issues or to-dos that isn't right, such as a wrong count. If an answer looks off, check the source and tell us.
+- **Piper can state a detail about one of your records, such as a milestone or when something last changed, that they did not look up.** Check anything that matters in GitHub before you rely on it.
+- **Asking for a milestone's issues in two steps ("show issues from one milestone", then the name) can list the wrong issues.** Ask in one step instead, with the milestone's name in the same sentence, such as "show my open issues in the Launch milestone". This is a known issue and isn't fixed yet.
+- **No undo for deleted to-dos.** Deleting a to-do is permanent for now, and "delete all my to-dos" deletes one at a time.
+- **Searching your documents from chat doesn't work yet.** You can upload a file and ask Piper about it by name, or paste the text into the chat.
+- **If Piper asks which repository to create an issue in and you answer, they may add your answer to the draft instead of filing it.** Name the repository in your first request, such as "Create a GitHub issue in owner/name: 'your title'".
+- **Piper can't change your default repository from chat yet.** Open Settings → Integrations → GitHub to set it.
+- **When you ask what Piper can do, the answer may promise more than is there today.** For example, Piper may say they will notice things on their own. They don't start conversations or send anything unprompted.
 
-**WHAT TO EXPECT**
+**Feedback and help.** When you find something new, send feedback from the left-hand menu once you're in the app, or email support@pipermorgan.ai. Either way the message will be read by the team, including by me (xian), the human who owns this particular loop.
 
-Week 1: try it on real-ish PM work (test data!), tell me what confused you
-Week 2-3: you test, I fix what you find
-Week 4+: quick weekly check-ins if you're up for them
+Thank you for trying it.
 
-One thing we care about more than anything: **if Piper ever tells you something that
-turns out not to be true — about your data, your tools, or what it just did — that's
-our top-priority bug class.** Polite lies count double. Please report those first.
-Reply to this email or write to alpha@pipermorgan.ai.
-
-**STILL INTERESTED?**
-
-Reply with:
-1. Which LLM provider you'll use (Anthropic / OpenAI / both)
-2. Your biggest PM pain point you hope Piper helps with
-3. Anything that blocked or confused you in the first ten minutes
-
-Best,
-Christian
-
-P.S. We're keeping the alpha cohort small so I can provide proper support — your
-invite code is single-use and yours alone.
+xian
 ```
 
 ---
@@ -149,7 +123,7 @@ Before sending:
 
 ## Notes
 
-**Email Tone**: friendly but honest about alpha status. Set realistic expectations
+**Email Tone**: friendly and plain about beta status. Set realistic expectations
 upfront.
 
 **Documentation References**: always reference official docs by filename

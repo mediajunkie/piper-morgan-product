@@ -1,10 +1,10 @@
-# Piper Morgan Alpha - Quick Start
+# Piper Morgan Beta - Quick Start
 
 **Rewritten 2026-08-31 (PPM), per #1708 and PM's in-conversation ruling ("yes I bless the plan").**
 This doc previously told testers to build a local copy from an abandoned branch. It doesn't
 anymore — see the note below for what changed and why.
 
-**For**: Alpha testers who want to try Piper Morgan.
+**For**: Beta testers who want to try Piper Morgan.
 **For engineers who want to run the code locally or contribute**: see `CONTRIBUTING.md` — local
 setup now lives there, not here.
 
@@ -24,17 +24,15 @@ setup now lives there, not here.
 ## Getting Started
 
 Piper Morgan runs as a hosted app — there's nothing to install. Go to
-**[alpha.pipermorgan.ai](https://alpha.pipermorgan.ai)** and log in.
+**[beta.pipermorgan.ai](https://beta.pipermorgan.ai)** and log in.
 
-*(URL updated 2026-09-21: this doc previously pointed at a `fly.dev` address; the alpha
-testers' instance — the one invites are issued for — is `alpha.pipermorgan.ai`, matching
-`docs/README.md` and your invite email.)*
+*(URL updated 2026-10-31 to the beta host, matching your invite email.)*
 
-New tester? Alpha is invite-only — codes come directly from **xian@pipermorgan.ai**. With
+New tester? The beta is invite-only. Codes come directly from **xian@pipermorgan.ai**. With
 your invite code in hand: go to
-**[alpha.pipermorgan.ai/setup](https://alpha.pipermorgan.ai/setup)**, create your account
+**[beta.pipermorgan.ai](https://beta.pipermorgan.ai)**, choose "Create your account"
 (the form asks for the invite code), log in, then add your own LLM key under
-**Settings → LLM Keys** (an Anthropic or OpenAI key — Piper runs on *your* key and can't
+**Settings → LLM Keys** (an Anthropic key — Piper runs on *your* key and can't
 answer substantive requests without one).
 
 That's it — no clone, no Docker, no Python version to check. **Time to first use: however
@@ -100,7 +98,7 @@ for the full setup (Python, Docker, Postgres, the setup wizard). Point at `main`
 
 ### Via UI Features
 
-After logging in at [alpha.pipermorgan.ai](https://alpha.pipermorgan.ai):
+After logging in at [beta.pipermorgan.ai](https://beta.pipermorgan.ai):
 
 1. **Lists Management** → Click "Lists" → "Create New List"
    - Add list name and description
@@ -190,14 +188,14 @@ See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for current limitations.
 - **Full Guide**: [ALPHA_TESTING_GUIDE.md](ALPHA_TESTING_GUIDE.md) — deeper testing
   walkthrough (rewritten 2026-09-21 for the hosted flow; the two docs now agree).
 - **Known Issues**: [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) (bugs and status)
-- **Legal**: [ALPHA_AGREEMENT_v2.md](ALPHA_AGREEMENT_v2.md) (terms and conditions)
+- **Terms**: [pipermorgan.ai/terms](https://pipermorgan.ai/terms/) (plain-language terms)
 - **Version Info**: [VERSION_NUMBERING.md](VERSION_NUMBERING.md) (what 0.9.0.0 means)
 
 ---
 
 ## Remember
 
-This is **private beta software** (0.9.0.0). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
+This is **private beta software** (0.9.0.0). Expect bugs. Don't use for production. You're responsible for API costs. See the Terms at https://pipermorgan.ai/terms/ for details.
 
 **Testing Focus**: Does setup finish for you? Does every integration status match what is really happening? When Piper cannot read something, does it say so?
 

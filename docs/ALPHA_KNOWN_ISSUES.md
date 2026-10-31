@@ -83,7 +83,7 @@ WHAT HAPPENED: [actual result]
 ERROR MESSAGE: [if any]
 ```
 
-- **Private**: email alpha@pipermorgan.ai. It goes to the team and stays there unless you ask us to share it.
+- **Private**: email support@pipermorgan.ai. The team reads it, including xian.
 - **Public**: a [GitHub issue](https://github.com/mediajunkie/piper-morgan-product/issues/new). A GitHub issue is public, so leave out anything you would not post on a public page.
 
 ---

@@ -1,4 +1,4 @@
-# Piper Morgan Alpha Testing Guide
+# Piper Morgan Beta Testing Guide
 
 **Version**: 0.9.0.0
 **Last Updated**: October 31, 2026
@@ -6,8 +6,8 @@
 
 **Rewritten 2026-09-21 (Lead), closing #1804.** This guide previously walked testers
 through a local clone/Docker/setup-wizard install — a flow retired by #1708 (2026-08-31):
-Piper Morgan's alpha is a **hosted app** at
-[alpha.pipermorgan.ai](https://alpha.pipermorgan.ai), and that's what this guide now
+Piper Morgan's beta is a **hosted app** at
+[beta.pipermorgan.ai](https://beta.pipermorgan.ai), and that's what this guide now
 describes. Engineers who want to run the code locally: see `CONTRIBUTING.md` — local
 setup lives there, not here.
 
@@ -42,36 +42,32 @@ an account, your LLM key, and (optionally) your tool connections.
 - [ ] A modern browser
 - [ ] **Your invite code** — the private beta is invite-only; codes come directly from
       **xian@pipermorgan.ai**. If you don't have one, that's the address to write.
-- [ ] **At least one LLM API key of your own**:
-  - An [Anthropic API key](https://console.anthropic.com/) (Claude), and/or
-  - An [OpenAI API key](https://platform.openai.com/api-keys) (GPT-4-class models)
+- [ ] **Your own Anthropic API key** from [console.anthropic.com](https://console.anthropic.com/). Use a key with a spending limit you're comfortable with.
 - [ ] Budget roughly $5–20 for LLM API costs over the beta period — **Piper runs on
       your key and your account**; it never bills anyone else's (see What's New).
 
 **Optional (for the integration features):**
 
-- [ ] A GitHub personal access token (issue creation/management features)
-- [ ] A Notion API key (document features)
-- [ ] A Slack workspace you can connect (notifications, chat-with-Piper-from-Slack)
+- [ ] A GitHub account to connect (issue creation and management features)
+- [ ] A Google account to connect Google Calendar (today's and this week's meetings, and your standup includes them; Piper only reads your calendar)
 
 **Time commitment**: ~10 minutes to first conversation; 15–30 minutes weekly for
 feedback during the beta period.
 
 ## Step 1 — Create your account
 
-1. Go to **[alpha.pipermorgan.ai/setup](https://alpha.pipermorgan.ai/setup)**
+1. Go to **[beta.pipermorgan.ai](https://beta.pipermorgan.ai)** and choose "Create your account"
 2. Choose a username and password, and enter your email
 3. Enter your **invite code** — account creation is invite-gated; the form won't
    proceed without a valid, unused code
-4. Log in at [alpha.pipermorgan.ai](https://alpha.pipermorgan.ai)
+4. Log in at [beta.pipermorgan.ai](https://beta.pipermorgan.ai)
 
 ## Step 2 — Add your LLM key (the one required step)
 
 Piper can't answer anything substantive until it has a key of yours to run on:
 
 1. Open **Settings → LLM Keys**
-2. Paste your Anthropic and/or OpenAI key and save
-3. If you add both, you can pick a default provider; either alone works
+2. Paste your Anthropic key and save
 
 Until you do this, Piper will tell you so honestly — a keyless "hi" gets a greeting and
 a pointer to Settings, and a keyless request gets a refusal that names exactly what's
@@ -79,8 +75,7 @@ missing. That's by design (see What's New): **no key, no spend, no borrowing**.
 
 ## Step 3 (optional) — Connect your tools
 
-In **Settings → Integrations**: GitHub (personal access token), Notion (API key),
-Slack (OAuth). Each is optional; core chat, lists, files, and standups work without any.
+In **Settings → Integrations**: GitHub and Google Calendar. Each is optional; core chat, lists, files, and standups work without either. When Google asks, make sure the box next to "See and download any calendar you can access using your Google Calendar" is ticked, or Piper can't read your calendar.
 
 ## Important Disclaimers — Please Read
 
@@ -89,14 +84,14 @@ Slack (OAuth). Each is optional; core chat, lists, files, and standups work with
 This is private beta software (version 0.9.0.0). By proceeding, you acknowledge:
 
 1. **Expected Issues**: bugs, rough edges, and incomplete features are normal
-2. **Data Loss Risk**: your data on the alpha instance may be lost at any time
+2. **Data Loss Risk**: your data on the beta instance may be lost at any time
 3. **No Production Use**: do NOT use it for mission-critical or time-sensitive work
 4. **API Charges**: you are responsible for all LLM API costs your key incurs
 5. **Security**: not security audited — use test data only, no sensitive information
 6. **No Warranty**: provided "as-is", without any warranty whatsoever
 7. **No Support SLA**: best-effort support only, no guaranteed response times
 
-See `ALPHA_AGREEMENT_v2.md` for complete terms.
+See the Terms at https://pipermorgan.ai/terms/ for complete terms.
 
 ---
 
@@ -241,7 +236,7 @@ The six walks below are suggested scenarios built from this release's fixes. The
 
 ## Exploring Piper's Features
 
-All URLs below are on the hosted app — e.g. `https://alpha.pipermorgan.ai/lists`.
+All URLs below are on the hosted app — e.g. `https://beta.pipermorgan.ai/lists`.
 
 ### Lists, Todos, and Projects
 
@@ -291,9 +286,9 @@ whitespace. If it still fails, yours may already have been consumed; email
 **xian@pipermorgan.ai** for a fresh one.
 
 **Forgot your password?** Email **xian@pipermorgan.ai** — there's no self-serve reset
-in the alpha yet.
+in the beta yet.
 
-**Can't reach the site?** Check `https://alpha.pipermorgan.ai/health` — if it doesn't
+**Can't reach the site?** Check `https://beta.pipermorgan.ai/health` — if it doesn't
 return a healthy JSON response, the instance is down; please report it.
 
 ### Key & chat issues
@@ -303,7 +298,7 @@ yet (or it didn't save) — Settings → LLM Keys. This message is working as in
 keyless accounts.
 
 **Honest key error after adding a key?** Verify the key works in your provider's own
-console; regenerate it if in doubt. Anthropic keys start `sk-ant-`, OpenAI keys `sk-`.
+console; regenerate it if in doubt. Anthropic keys start `sk-ant-`.
 
 **"Something unexpected happened"?** That generic message on a key-shaped problem is
 itself a bug we're hunting ([#1824](https://github.com/mediajunkie/piper-morgan-product/issues/1824)) —
@@ -339,7 +334,7 @@ We need your feedback to improve! Please report:
 
 ### How to Report
 
-1. **Private**: email alpha@pipermorgan.ai. It goes to the alpha team and stays there unless you ask us to share it.
+1. **Private**: email support@pipermorgan.ai. The team reads it, including xian.
 2. **Public**: a [GitHub issue](https://github.com/mediajunkie/piper-morgan-product/issues/new), for anything you are happy to have public. A GitHub issue is public, so leave out anything you would not post on a public page.
 3. **Weekly check-in**: optional 15-minute calls available
 
@@ -357,12 +352,12 @@ SEVERITY: [blocker/major/minor]
 
 ## Privacy & Data Collection
 
-- Your LLM API keys are stored encrypted (AES-256-GCM field encryption) on the alpha
+- Your LLM API keys are stored encrypted (AES-256-GCM field encryption) on the beta
   instance and used only to make your own requests; they are never shown back or shared
 - Your files, lists, todos, and projects are private by default; sharing requires an
   explicit grant from you
 - Error logs may be reviewed by the team to fix bugs
-- This is a small, curated alpha — the operators can technically access the instance's
+- This is a small, curated beta — the operators can technically access the instance's
   database; don't put anything sensitive in it (see the disclaimers above)
 - **Note**: not everything is encrypted field by field. Your chat messages, conversation context, uploaded artifact content and API keys are. Todos, projects, profile and preference data are stored as ordinary database columns
 
@@ -379,7 +374,7 @@ an early adopter. 🚀
 
 - `ALPHA_QUICKSTART.md` — the 2-minute version of Chapter 1
 - `ALPHA_KNOWN_ISSUES.md` — current bugs and limitations
-- `ALPHA_AGREEMENT_v2.md` — terms and conditions
+- [Terms](https://pipermorgan.ai/terms/) — plain-language terms
 - `VERSION_NUMBERING.md` — what 0.9.0.0 means
 - `CONTRIBUTING.md` — running the code locally (engineers)
 
