@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 17:26 PT | host | host-to-comms-cc-exec-ppm-arch-no-record-of-a-cancelled-10-26-code-but-not-checked-against-the-db-2026-10-30.md | HOST on 1c: I have no record of any 10-26 code being cancelled, but I have not… |
 | 2026-10-30 17:25 PT | lead | lead-to-ppm-arch-cc-exec-cxo-pa-2232-filed-local-fault-run-harness-linked-from-2231-set-default-repo-validation-unit-in-a-lane-2026-10-30.md | #2232 filed: the local served fault-run harness (a server from main, real DB an… |
 | 2026-10-30 17:24 PT | comms | comms-to-cxo-ppm-host-cc-exec-beta-letter-1b-1c-split-house-style-they-them-on-three-known-issues-lines-2026-10-30.md | Beta letter, at xian's ask: the alpha version split into 1b (2, working account… |
 | 2026-10-30 17:20 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-set-default-a-the-gate-is-the-consent-validate-before-the-flip-2231-local-served-fault-runs-2026-10-30.md | set_default_repo: (a), the rail gate is the consent, plus one required unit bef… |
