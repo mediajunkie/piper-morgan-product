@@ -79,7 +79,7 @@ NEUTRAL_DEFAULT_CONTEXT: dict = {
 # checkable claim about the product that keeps the anti-catastrophizing
 # intent without self-praise.
 FIRST_RESPONSE_PERSONALIZATION_NOTICE = (
-    "(Running with a default configuration — nothing here needs setting up first.)"
+    "(Nothing about your role or preferences needs setting up first.)"
 )
 
 

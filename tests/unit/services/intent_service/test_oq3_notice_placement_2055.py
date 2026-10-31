@@ -20,7 +20,7 @@ from services.intent_service.conversation_context import clear_context
 
 _SID = "sess-2055-test"
 _UID = "user-2055-test"
-_NOTICE = "(Running with a default configuration — nothing here needs setting up first.)"
+_NOTICE = "(Nothing about your role or preferences needs setting up first.)"
 
 
 class _FakeNoticeService:
