@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-AGENT
 valid_from: "2025-10-19"
-last_updated: "2026-03-10"
-last_verified: "2026-06-19"
+last_updated: "2026-10-31"
+last_verified: "2026-10-31"
 ---
 
 # BRIEFING-ESSENTIAL-AGENT
@@ -33,14 +33,20 @@ last_verified: "2026-06-19"
 # Step 1: Fix end-of-file newlines (REQUIRED)
 ./scripts/fix-newlines.sh
 
-# Step 2: Stage changes
-git add -u
+# Step 2: Stage the files you changed, by explicit path (never -A or -u; CLAUDE.md "Git")
+git add services/<path>.py tests/<path>.py
 
-# Step 3: Commit
+# Step 3: Commit in a separate call (the mailbox hook reads the index first)
 git commit -m "your message"
 ```
 
-**Why**: Pre-commit hooks (trailing-whitespace, end-of-file-fixer, black, isort) will auto-fix files, causing commit to fail and requiring re-stage + re-commit. Running `fix-newlines.sh` first prevents this cycle.
+**Why**: Pre-commit hooks (ruff, ruff-format, trailing-whitespace, end-of-file-fixer, plus the repo's
+smoke-tests and documentation checks) auto-fix or refuse, so a commit can fail and need a re-stage.
+Running `fix-newlines.sh` first prevents that cycle. Formatting is ruff 0.6.9 (`ruff format --check`,
+`ruff check`), the same pin CI runs; black and isort are not used.
+
+Lead's brief names your worktree and branch. Commit there and push finished units with
+`git push origin HEAD:main` as CLAUDE.md says; never work in PM's shared checkout.
 
 **See**: `docs/dev-tips/preventing-pre-commit-failures.md` for details.
 
@@ -60,8 +66,10 @@ git commit -m "your message"
 
 **Plugin System**:
 
-- Interface + Registry + Wrapper pattern
-- 7 active plugins (Slack, GitHub, Notion, Calendar, MCP, Spatial, Demo)
+- Interface + Registry (`services/plugins/`) + one wrapper per integration
+- 5 plugin wrappers, each beside its integration: `services/integrations/<service>/<service>_plugin.py`
+  (calendar, demo, github, notion, slack); the registry discovers and loads them
+  (`PluginRegistry.discover_plugins` / `load_enabled_plugins`)
 - Config services standardized across all integrations
 
 ## Current Focus
@@ -104,9 +112,9 @@ services/integrations/[service]/
 └── tests/ (comprehensive test coverage)
 
 services/plugins/
-├── plugin_interface.py (from 3A)
-├── plugin_registry.py (from 3A)
-└── [service]_plugin.py (wrapper pattern)
+├── plugin_interface.py
+└── plugin_registry.py
+services/integrations/[service]/[service]_plugin.py   (the wrapper lives with its integration)
 ```
 
 **Implementation Requirements**:
@@ -149,12 +157,12 @@ Files Modified:
 - tests/plugins/test_registry.py: +89 lines
 
 Tests Passing:
-PYTHONPATH=. python -m pytest tests/plugins/ -v
+python -m pytest tests/plugins/ -v
 ========================= 3 passed, 0 failed =========================
 
 Verification:
 python -c "from services.plugins.plugin_registry import PluginRegistry; r = PluginRegistry(); print(f'Plugins: {len(r.list_plugins())}')"
-Plugins: 4
+Plugins: 5
 
 GitHub Updated: Issue #199 task 3 marked complete with evidence
 ```
@@ -168,10 +176,10 @@ When the issue you are building serves a 1.0 promise, Lead's brief names it. The
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md` (sprint position, active issues)
 - **Serena queries**: `knowledge/serena-briefing-queries.md` (live system state)
 - **Implementation guides**: `knowledge/agent-prompt-template.md`
-- **Patterns**: `docs/internal/architecture/patterns/` (63 patterns)
-- **ADRs**: `docs/internal/architecture/adrs/` (61 decisions)
+- **Patterns**: `docs/internal/architecture/patterns/` (76 numbered pattern files, counted 2026-10-31)
+- **ADRs**: `docs/internal/architecture/adrs/` (80 numbered ADRs, counted 2026-10-31)
 - **Testing**: pytest configured in pytest.ini (no PYTHONPATH prefix needed)
 
 ---
 
-*Last Updated: March 10, 2026*
+*Last Updated: October 31, 2026 (#1726 re-verification: ruff not black/isort, explicit-path staging, 5 wrappers, counts)*
