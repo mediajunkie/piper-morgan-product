@@ -138,6 +138,7 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 3. **xian's "what this beta is" paragraph: DRAFTED** from xian's dictation (17:3x). It needs his OK and a CXO read of the new claims: "most of the core functionality… is in place" and the remember-and-shape test.
 4. **PPM's line check at send**, after the promotion and PA's re-checks.
 5. **Version 1b's "no new code, your account carries over": VERIFIED (PA 15:1x).** On beta. (serving `ac5b69f865`), an alpha test account logged in, and a chat turn saw issue #35, which had been created on alpha. at 15:04. So it's the same accounts and the same data. That was an API check, not the rendered sign-in page. Whether the three 10-26 codes were redeemed is still unread (HOST: xian's select).
+6. **Version 1c's "the code from my October 26 email still works" rests on "no record", not on a read (HOST 17:2x).** HOST's logs show no cancel or revoke of those three codes, but the stored state is unread. A used code is fine for 1c, because that person signs in. A cancelled one isn't. The fix is xian's redemption read of the three codes (`used_at` and any cancel), one query, before the 1c send. HOST and Comms both recommend running it.
 
 ## Terms page: proposed beta wording (for xian and Web, HOST 15:04 asked for it)
 
