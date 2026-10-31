@@ -75,8 +75,38 @@ GITHUB_ISSUES_DESCRIPTION = (
     "pretending to be 'no issues'. issues is ONE PAGE: count is the page length, total is "
     "GitHub's full match count (total_count), truncated is total > count, and capped_at is "
     "the page cap. Report total as the number of open issues, never count (#2005: a 30-item "
-    "page was read as the full set of 278)."
+    "page was read as the full set of 278). scope and note say exactly what was searched and "
+    "how the page is ordered (#2022): quote them rather than inferring a repository from the "
+    "items. Each item is slim (#2241): number, title, repository, state, labels (names), "
+    "assignees (logins), created_at, updated_at, html_url, no body; the section is kept under "
+    "a size budget by dropping items from the tail of the page, so count may be below "
+    "capped_at with truncated true."
 )
+
+# #2241: the serialized github section's size budget. One served call shipped 431,097
+# characters (50 raw GitHub REST objects); a client may truncate or refuse that. Items are
+# slimmed to ISSUE_ITEM_KEYS and, if a page still exceeds the budget, dropped from the TAIL
+# (count falls; truncated stays derived as total > count; capped_at stays the page cap).
+GITHUB_SECTION_BUDGET_CHARS = 20_000
+ISSUE_ITEM_KEYS = (
+    "number",
+    "title",
+    "repository",
+    "state",
+    "labels",
+    "assignees",
+    "created_at",
+    "updated_at",
+    "html_url",
+)
+# The ordering word in the scope sentence, keyed on the adapter's own (sort, order). A
+# (sort, order) with no entry renders the raw pair, so a new sort is never described by
+# an old word (Arch, #2241: the sentence is rendered from the constants that build the call).
+_ORDERING_WORDS = {
+    ("created", "desc"): "newest first",
+    ("created", "asc"): "oldest first",
+    ("updated", "desc"): "most recently updated first",
+}
 
 # Mirrors the chat surface's list_open_issues default page size
 # (services/intent/intent_service.py's GitHubMCPSpatialAdapter().list_open_issues call) —
@@ -195,27 +225,125 @@ async def _read_colleague_model() -> str:
     return _json(payload)
 
 
+def _repository_of(item: dict[str, Any]) -> str | None:
+    """``owner/name`` parsed from GitHub's ``repository_url`` (``.../repos/owner/name``),
+    else from ``html_url`` (``github.com/owner/name/issues/N``), else None. Code-parsed,
+    never a label the model infers from the items (#2022)."""
+    repo_url = item.get("repository_url")
+    if isinstance(repo_url, str) and "/repos/" in repo_url:
+        tail = repo_url.split("/repos/", 1)[1].strip("/")
+        parts = tail.split("/")
+        if len(parts) >= 2 and parts[0] and parts[1]:
+            return f"{parts[0]}/{parts[1]}"
+    html_url = item.get("html_url")
+    if isinstance(html_url, str) and "github.com/" in html_url:
+        parts = html_url.split("github.com/", 1)[1].strip("/").split("/")
+        if len(parts) >= 2 and parts[0] and parts[1]:
+            return f"{parts[0]}/{parts[1]}"
+    return None
+
+
+def _names(values: Any, key: str) -> list[str]:
+    """Label names / assignee logins only; a raw GitHub object or a bare string each count."""
+    out: list[str] = []
+    for v in values if isinstance(values, list) else []:
+        if isinstance(v, dict) and isinstance(v.get(key), str):
+            out.append(v[key])
+        elif isinstance(v, str):
+            out.append(v)
+    return out
+
+
+def slim_issue(item: dict[str, Any]) -> dict[str, Any]:
+    """#2241: exactly ``ISSUE_ITEM_KEYS``, in that order; no body, no ``*_url`` beyond
+    ``html_url``, no reactions/user/node_id. Missing fields are None (lists: empty)."""
+    return {
+        "number": item.get("number"),
+        "title": item.get("title"),
+        "repository": _repository_of(item),
+        "state": item.get("state"),
+        "labels": _names(item.get("labels"), "name"),
+        "assignees": _names(item.get("assignees"), "login"),
+        "created_at": item.get("created_at"),
+        "updated_at": item.get("updated_at"),
+        "html_url": item.get("html_url"),
+    }
+
+
+def render_issues_scope(
+    *, query: str | None = None, sort: str | None = None, order: str | None = None
+) -> tuple[str, str]:
+    """#2022: the scope phrase and its ordering word, rendered FROM the adapter's own query
+    and sort constants (not a hand-written string beside them), so the sentence can only
+    say what the call does. Returns ``(scope, ordering)``.
+
+    Qualifiers are read from the query: ``assignee:@me`` -> assigned to you; ``is:open``;
+    ``is:issue``/``is:pr``; ``archived:false`` -> archived repositories excluded. The
+    repositories covered are those the user's GitHub connection can see, never "all".
+    """
+    from services.mcp.consumer import github_adapter as gh
+
+    q = query if query is not None else gh._MY_OPEN_ISSUES_QUERY
+    s = sort if sort is not None else gh._SEARCH_SORT
+    o = order if order is not None else gh._SEARCH_ORDER
+    terms = set(q.split())
+    state = "open " if "is:open" in terms else ""
+    kind = "pull requests" if "is:pr" in terms else "issues"
+    who = (
+        " assigned to you"
+        if "assignee:@me" in terms
+        else (" you opened" if "author:@me" in terms else "")
+    )
+    repos = "in the repositories your GitHub connection can see"
+    if "archived:false" in terms:
+        repos += ", archived repositories excluded"
+    ordering = _ORDERING_WORDS.get((s, o), f"ordered by {s} {o}")
+    return f"{state}{kind}{who}, {repos}", ordering
+
+
+def _issues_note(*, total: int, count: int, scope: str, ordering: str) -> str:
+    """The one sentence a client can quote (#2022; words are CXO's inside the two facts the
+    constants fix: what was searched, and how the page is ordered)."""
+    phrase = scope.replace("issues", "issue", 1) if total == 1 else scope
+    return f"{total} {phrase}; showing {count} of them, {ordering}."
+
+
+def _github_issues_payload(issues: list[dict[str, Any]], total: int | None) -> dict[str, Any]:
+    """Slim the page, state its scope, and keep the serialized section under the budget by
+    dropping items from the tail. ``truncated`` is always derived (total > count), including
+    after a trim; ``capped_at`` stays the page cap (Arch, #2241)."""
+    items = [slim_issue(i) for i in issues if isinstance(i, dict)]
+    scope, ordering = render_issues_scope()
+
+    def _build(page: list[dict[str, Any]]) -> dict[str, Any]:
+        count = len(page)
+        # #2005: a missing total falls back to the page length, honestly not truncated as
+        # far as this payload can tell.
+        full_total = total if total is not None else len(items)
+        return {
+            "available": True,
+            "scope": scope,
+            "note": _issues_note(total=full_total, count=count, scope=scope, ordering=ordering),
+            "issues": page,
+            "count": count,
+            "total": full_total,
+            "truncated": full_total > count,
+            "capped_at": GITHUB_ISSUES_PAGE_CAP,
+        }
+
+    payload = _build(items)
+    while items and len(_json(payload)) > GITHUB_SECTION_BUDGET_CHARS:
+        items = items[:-1]
+        payload = _build(items)
+    return payload
+
+
 async def _read_github_issues() -> str:
     """``piper://me/github/issues`` — the user's open issues via their GitHub binding."""
     user_id = current_user_id()
     result = await GitHubMCPSpatialAdapter().list_open_issues(user_id, limit=GITHUB_ISSUES_PAGE_CAP)
     if result.issues is not None:
-        count = len(result.issues)
-        # #2005: GitHub search returns a page (its default is 30) with an authoritative
-        # total_count; the page length is not the number of issues. A missing total (a
-        # list_issues-shaped payload, or an unparseable one) falls back to the page length,
-        # which is then honestly not truncated as far as this payload can tell.
-        total = result.total if result.total is not None else count
-        return _json(
-            {
-                "available": True,
-                "issues": result.issues,
-                "count": count,
-                "total": total,
-                "truncated": total > count,
-                "capped_at": GITHUB_ISSUES_PAGE_CAP,
-            }
-        )
+        return _json(_github_issues_payload(result.issues, result.total))
     degradation = result.degradation
     payload: dict[str, Any] = {
         "available": False,
