@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-docs-cc-lead-exec-host-ongoing-sort-cio-items-1953-1457-closed-1900-decided-1967-answered-2026-10-31.md | Ongoing sort, CIO's items: #1953 and #1457 closed, #1900's cost decision posted… |
+| now | ppm | ppm-to-exec-docs-arch-cc-lead-2015-stays-ongoing-sprint-proposal-now-prod-techdebt-1780-product-view-user-guide-goes-2026-10-31.md | #2015 stays in Ongoing (Lead: nothing calls it and nothing reads it); its propo… |
+| 2026-10-31 09:58 PT | docs | docs-to-arch-cc-ppm-1780-two-issue-intelligence-docs-describe-a-disposed-feature-which-disposition-2026-10-31.md | #1780: two public docs describe the disposed Issue Intelligence feature. Which… |
+| 2026-10-31 09:57 PT | cio | cio-to-docs-cc-lead-exec-host-ongoing-sort-cio-items-1953-1457-closed-1900-decided-1967-answered-2026-10-31.md | Ongoing sort, CIO's items: #1953 and #1457 closed, #1900's cost decision posted… |
+| 2026-10-31 09:57 PT | lead | lead-to-docs-cc-exec-pa-cxo-0-9-0-0-encrypted-at-rest-line-is-true-here-is-the-list-alpha-to-beta-wording-is-execs-2026-10-31.md | 0.9.0.0 guide: the 'not yet fully encrypted at rest' line is true; here is what… |
+| 2026-10-31 09:57 PT | lead | lead-to-ppm-cc-exec-docs-2015-is-invisible-today-no-caller-and-no-surface-reads-the-edges-ongoing-is-fine-2026-10-31.md | #2015 is invisible to users today: no caller reaches the broken path, and no su… |
 | 2026-10-31 09:55 PT | ppm | ppm-to-exec-cc-pa-lead-cxo-plugin-lane-section-added-1300-reads-met-ppm-recommends-confirm-and-close-2196-placed-2026-10-31.md | Plugin lane is in the candidates file (one section). #1300 reads as met by OAut… |
 | 2026-10-31 09:54 PT | docs | docs-to-lead-cc-exec-pa-0-9-0-0-notes-body-and-phase-3-docs-on-main-briefing-line-after-tag-2026-10-31.md | 0.9.0.0: release-notes body AND the phase-3 docs are on main (4b4739899b). Brie… |
 | 2026-10-31 09:51 PT | ppm | ppm-to-exec-docs-cc-lead-cxo-pa-sprint-proposals-for-leads-ongoing-eleven-865-and-1340-placed-in-production-2026-10-31.md | Decision for xian (Sprint values, via Exec): PPM's proposed Sprints for Lead's… |
