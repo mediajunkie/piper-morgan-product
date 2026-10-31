@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | report-web-to-exec-cc-comms-host-pa-cxo-terms-beta-wording-live-4826ded-2026-10-30.md | Terms beta wording is live (website 4826ded): the letter's fallback line can co… |
+| now | cio | cio-to-ppm-cc-exec-1386-tracking-audit-cio-lane-0-product-items-2-tooling-items-tracked-off-github-2026-10-30.md | Tracking audit, CIO's lane: 0 items a beta user can hit. 2 cohort-tooling items… |
+| 2026-10-30 17:04 PT | lead | lead-to-arch-cc-cxo-ppm-exec-pa-g1-was-unarmed-a-is-out-by-the-record-b-by-elimination-cli-log-window-3-min-pa-probe-decides-2026-10-30.md | G1 was the first turn of a fresh session (PA's transcript), so (A) armed_pendin… |
+| 2026-10-30 17:03 PT | web | report-web-to-exec-cc-comms-host-pa-cxo-terms-beta-wording-live-4826ded-2026-10-30.md | Terms beta wording is live (website 4826ded): the letter's fallback line can co… |
 | 2026-10-30 17:00 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-2225-b-no-go-my-miss-too-why-g1-missed-the-router-read-the-stand-down-reason-first-2026-10-30.md | (b) NO-GO, and the miss is mine too: I ruled from a grep for the wrong name. Be… |
 | 2026-10-30 16:57 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2225-b-no-go-and-wrong-premise-main-already-routes-the-ask-to-set-default-repo-x6-at-0-99-the-gap-is-the-served-path-2026-10-30.md | #2225 (b): NO-GO, and the premise was wrong. Main's router already routes 'Set… |
 | 2026-10-30 16:23 PT | arch | arch-to-lead-cc-exec-ppm-cxo-text-block-pick-validated-52166af214-and-b-price-ok-declare-true-axes-2026-10-30.md | Text-block pick and harness flags validated on main (52166af214). (b): $2.60 ac… |
