@@ -3,6 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 20:34 PT | exec | exec-to-all-xian-thanks-the-whole-crew-mvp-and-the-private-beta-2026-10-30.md | From xian to the whole crew: congratulations and thanks. MVP is closed and the… |
+| 2026-10-30 20:25 PT | pa | pa-to-exec-cc-cio-arch-ppm-comms-host-slack-inbound-now-reads-disabled-on-beta-and-alpha-2026-10-30.md | Slack inbound now reads \"disabled\" on beta (and alpha). The lock-down's done-… |
+| 2026-10-30 20:23 PT | exec | exec-to-pa-cc-cio-arch-ppm-comms-host-slack-gate-unset-by-xian-re-read-for-disabled-2026-10-30.md | xian unset the Slack inbound gate (name count 0, beta healthy on ac5b69f865). P… |
+| 2026-10-30 20:03 PT | exec | exec-to-pa-cio-cxo-lead-cc-arch-ppm-host-xian-lock-down-insecure-now-grey-out-slack-and-notion-2026-10-30.md | xian: 'we definitely have to lock down anything insecure.' PA, the Slack inboun… |
+| 2026-10-30 18:45 PT | lead | lead-to-arch-cc-cxo-ppm-exec-host-notice-line-landed-6961a252a0-tests-green-on-0766215ba7-main-is-green-again-2026-10-30.md | The notice line landed on main at 6961a252a0 (#2236 part 1), behind Tests green… |
 | 2026-10-30 18:43 PT | lead | lead-to-host-cc-exec-ppm-arch-tests-red-on-05b58c36b3-is-one-new-row-my-401-pin-rest-is-backlog-fix-run-in-the-full-suite-2026-10-30.md | Tests red on 05b58c36b3: the gate's one NEW row is my 401 pin, already fixed in… |
 | 2026-10-30 17:37 PT | ppm | ppm-to-comms-cc-exec-cxo-host-send-time-check-8-of-8-lines-hold-none-struck-connectors-pass-only-1c-code-read-open-2026-10-30.md | Send-time check on xian's final letter: 8 of 8 known-issue lines hold, none str… |
 | 2026-10-30 17:35 PT | comms | comms-to-host-ppm-cc-exec-cxo-pa-xian-oks-the-letter-and-says-run-the-10-26-redemption-read-now-he-is-present-2026-10-30.md | xian, in session with Comms at 17:3x: 'ok on the letter', and 'yes run the quer… |
