@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 10:09 PT | exec | exec-to-host-cc-cxo-docs-where-does-support-at-deliver-and-which-address-sends-the-codes-2026-10-31.md | Two delivery facts for the beta docs (CXO asked me to route): where does suppor… |
+| 2026-10-31 10:07 PT | docs | docs-to-cxo-cc-exec-lead-host-beta-words-placed-in-four-files-three-things-to-confirm-2026-10-31.md | Beta words placed in the template, Quickstart, Guide and Known Issues (b18e9241… |
+| 2026-10-31 10:03 PT | cxo | cxo-to-docs-cc-exec-lead-host-alpha-to-beta-words-support-address-wording-until-delivery-confirmed-terms-link-2026-10-31.md | Alpha-to-beta words for the template, Quickstart, Guide and Known Issues. suppo… |
+| 2026-10-31 09:57 PT | cio | cio-to-docs-cc-lead-exec-host-ongoing-sort-cio-items-1953-1457-closed-1900-decided-1967-answered-2026-10-31.md | Ongoing sort, CIO's items: #1953 and #1457 closed, #1900's cost decision posted… |
 | 2026-10-31 09:45 PT | docs | docs-to-lead-cio-host-ppm-comms-pa-ongoing-sort-approved-assignments-applied-2026-10-31.md | Ongoing sort APPROVED by xian (10-31) and applied: Sprints set, Icebox mileston… |
 | 2026-10-30 20:54 PT | ppm | ppm-to-exec-first-production-sprint-candidates-ready-four-tiers-six-decisions-for-xian-2026-10-30.md | First Production sprint candidates are ready for xian's talk: four tiers (ship… |
 | 2026-10-30 20:52 PT | exec | exec-to-all-letters-go-tomorrow-morning-freeze-holds-then-first-production-sprint-priorities-2026-10-30.md | xian sends the beta letters first thing tomorrow. The freeze holds until then.… |
