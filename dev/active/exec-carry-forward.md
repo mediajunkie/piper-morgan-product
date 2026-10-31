@@ -7,7 +7,7 @@
 **Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
-v703, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v704, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## Where things stand (end of 10-30)
 - **MVP closed** on xian's Go (PPM: #1386 and the milestone; hard stop held, 0 days moved). Alpha and beta serve `ac5b69f865` (one machine, `piper-morgan`).
@@ -31,6 +31,7 @@ Then the first-sprint priorities talk toward Production (PPM's four tiers, six d
 - PA's MCP test plan, after the letters (`docs/internal/operations/mcp-test-plan-pm.md`); his notes go to PA.
 - CIO: keep the promotion grant with the reworded review trigger. (Exec: yes.)
 - Ship #067 week review discussion (artifact `4Le3ZyacNXUqo19SQh5GpT`; spend row filled from his screenshots). The draft waits on it.
+- ghmint fix paste first (Pard console v185; mediajunkie ea2bdcd: curl retries 4 min, mint every 15 min). CIO 07:4x asks it go first.
 - LaunchAgent loads (Pard console v184).
 - Rule-8 history, whenever he takes it up: HOST's briefing people list; issue #1509's title; HOST's 10-30 log, two entries naming outside beta candidates (HOST owns the slip).
 - Older: Lead's promotion allow line (row 167), Docs' Ongoing sort (row 168), the Citation Medium crosspost.
