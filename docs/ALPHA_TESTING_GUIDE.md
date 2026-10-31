@@ -176,6 +176,8 @@ Trust is the focus. **Does setup finish for you? Does every status you see match
 really happening? When Piper cannot read something, does it say so?** Send the exact wording
 of anything that looks wrong. Each report becomes a test row.
 
+The six walks below are suggested scenarios built from this release's fixes. They have **not yet been walked** by the team, so treat a surprise as a finding, not as your mistake.
+
 ### Test Walk 1: Setup as an invited tester ([#2078](https://github.com/mediajunkie/piper-morgan-product/issues/2078), [#1875](https://github.com/mediajunkie/piper-morgan-product/issues/1875))
 
 1. Create your account at `/setup` with your invite code and run the setup wizard
@@ -362,7 +364,7 @@ SEVERITY: [blocker/major/minor]
 - Error logs may be reviewed by the team to fix bugs
 - This is a small, curated alpha — the operators can technically access the instance's
   database; don't put anything sensitive in it (see the disclaimers above)
-- **Note**: data is not yet fully encrypted at rest
+- **Note**: not everything is encrypted field by field. Your chat messages, conversation context, uploaded artifact content and API keys are. Todos, projects, profile and preference data are stored as ordinary database columns
 
 ---
 
