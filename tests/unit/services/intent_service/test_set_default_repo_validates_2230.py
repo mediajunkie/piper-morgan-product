@@ -51,7 +51,7 @@ def _res(**kw):
 
 @pytest.mark.asyncio
 async def test_exists_writes_and_confirms(intent_service):
-    v = _res(validated=True, exists=True, accessible=True, status_code=200)
+    v = _res(validated=True, exists=True, accessible=True)
     result, writer = await _run(intent_service, v)
     v.assert_awaited_once_with("mediajunkie/piper-morgan-product", "user-123")
     writer.set_default_repo.assert_awaited_once()
@@ -64,10 +64,12 @@ async def test_exists_writes_and_confirms(intent_service):
 
 @pytest.mark.asyncio
 async def test_not_found_writes_nothing_and_says_so(intent_service):
-    v = _res(validated=True, exists=False, accessible=False, status_code=404, error="nf")
+    v = _res(
+        validated=True, exists=False, accessible=False, error="Repository 'x' not found on GitHub"
+    )
     result, writer = await _run(intent_service, v)
     writer.set_default_repo.assert_not_awaited()
-    assert "couldn't find mediajunkie/piper-morgan-product" in result.message
+    assert "couldn't find mediajunkie/piper-morgan-product on GitHub" in result.message
     assert "haven't changed your default" in result.message
     assert result.requires_clarification is True
     assert result.intent_data["validation_outcome"] == "not_found"
@@ -77,14 +79,19 @@ async def test_not_found_writes_nothing_and_says_so(intent_service):
 @pytest.mark.parametrize(
     "kw",
     [
-        dict(validated=True, exists=False, accessible=False, status_code=401),
-        dict(validated=True, exists=True, accessible=False, status_code=403),
+        dict(
+            validated=True,
+            exists=False,
+            accessible=False,
+            error="GitHub token is invalid or expired",
+        ),
+        dict(validated=True, exists=True, accessible=False),
     ],
 )
 async def test_no_access_writes_nothing_and_says_so(intent_service, kw):
     result, writer = await _run(intent_service, _res(**kw))
     writer.set_default_repo.assert_not_awaited()
-    assert "can't access mediajunkie/piper-morgan-product" in result.message
+    assert "can't see mediajunkie/piper-morgan-product" in result.message
     assert result.requires_clarification is True
     assert result.intent_data["validation_outcome"] == "no_access"
 
@@ -94,7 +101,9 @@ async def test_no_access_writes_nothing_and_says_so(intent_service, kw):
     "validator",
     [
         _res(validated=False, exists=False, accessible=False),  # no token
-        _res(validated=True, exists=False, accessible=False, status_code=500, error="s"),
+        _res(
+            validated=True, exists=False, accessible=False, error="GitHub API returned status 500"
+        ),
         AsyncMock(side_effect=RuntimeError("boom")),
     ],
     ids=["no_token", "unexpected_status", "exception"],
@@ -104,7 +113,7 @@ async def test_check_that_did_not_run_writes_nothing_and_says_the_check_failed(
 ):
     result, writer = await _run(intent_service, validator)
     writer.set_default_repo.assert_not_awaited()
-    assert "couldn't check mediajunkie/piper-morgan-product with GitHub" in result.message
+    assert "couldn't check mediajunkie/piper-morgan-product just now" in result.message
     assert "wasn't able to save" not in result.message
     assert "couldn't find" not in result.message
     assert result.success is False

@@ -68,11 +68,7 @@ def _registry(monkeypatch, full_names, current_default=None, account_repos=()):
 
     monkeypatch.setattr(
         "services.infrastructure.github_repo_validator.validate_github_repo_for_account",
-        AsyncMock(
-            return_value=RepoValidationResult(
-                validated=True, exists=True, accessible=True, status_code=200
-            )
-        ),
+        AsyncMock(return_value=RepoValidationResult(validated=True, exists=True, accessible=True)),
     )
     adapter = MagicMock()
     adapter.search_user_repositories = AsyncMock(

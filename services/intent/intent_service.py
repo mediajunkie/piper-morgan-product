@@ -9233,6 +9233,18 @@ class IntentService:
             return "not_checked"
         if not result.validated:
             return "not_checked"
+        if result.exists and result.accessible:
+            return "exists"
+        if result.exists:  # the validator's 403 branch: found, but not readable
+            return "no_access"
+        # The validator sets validated=True, exists=False for 404, 401 and any other status;
+        # it exposes no status field, so they are told apart by the error it sets.
+        error = result.error or ""
+        if "invalid or expired" in error:  # 401
+            return "no_access"
+        if "not found on GitHub" in error:  # 404 (also a private repo the token can't see)
+            return "not_found"
+        return "not_checked"  # "GitHub API returned status N": never read as not found
         if result.status_code == 200 and result.exists and result.accessible:
             return "exists"
         if result.status_code == 404:
@@ -9245,21 +9257,21 @@ class IntentService:
         self, outcome: str, full_name: str, workflow_id: str
     ) -> IntentProcessingResult:
         """#2230: the reply when validation stopped the write (nothing was changed)."""
-        # CXO wording owed: all three replies below are placeholders.
         if outcome == "not_found":
             message = (
-                f"I couldn't find {full_name} in your GitHub account, so I haven't "
-                "changed your default. Check the owner/name and try again."
+                f"I couldn't find {full_name} on GitHub, so I haven't changed your default. "
+                "Check the spelling and say it again as owner/name."
             )
         elif outcome == "no_access":
             message = (
-                f"Your GitHub account can't access {full_name}, so I haven't "
-                "changed your default. Check the owner/name and try again."
+                f"Your GitHub connection can't see {full_name}, so I haven't changed your "
+                "default. Pick a repository your account can reach, or check the connection "
+                "in Settings \u2192 Integrations \u2192 GitHub."
             )
         else:
             message = (
-                f"I couldn't check {full_name} with GitHub just now, so I haven't "
-                "changed your default. Try again in a moment."
+                f"I couldn't check {full_name} just now, so I haven't changed your default. "
+                "Try again in a moment."
             )
         intent_data = {
             "category": "query",
