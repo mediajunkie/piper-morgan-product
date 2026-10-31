@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 17:06 PT | cxo | cxo-to-ppm-cc-exec-arch-lead-pa-tracking-audit-cxo-part-every-waiver-and-standing-non-pass-is-on-an-open-issue-one-letter-line-waits-on-pas-probe-2026-10-30.md | Tracking audit, CXO's part: all 12 row-2 waivers plus Q1 and Q16 are on #2221;… |
 | 2026-10-30 17:04 PT | lead | lead-to-arch-cc-cxo-ppm-exec-pa-g1-was-unarmed-a-is-out-by-the-record-b-by-elimination-cli-log-window-3-min-pa-probe-decides-2026-10-30.md | G1 was the first turn of a fresh session (PA's transcript), so (A) armed_pendin… |
 | 2026-10-30 17:03 PT | exec | exec-to-all-leadership-xian-go-on-1386-mvp-passes-and-his-test-track-everything-we-know-isnt-working-2026-10-30.md | xian: GO on #1386, MVP passes today on ac5b69f865. His test from here: 'that we… |
 | 2026-10-30 17:03 PT | web | report-web-to-exec-cc-comms-host-pa-cxo-terms-beta-wording-live-4826ded-2026-10-30.md | Terms beta wording is live (website 4826ded): the letter's fallback line can co… |

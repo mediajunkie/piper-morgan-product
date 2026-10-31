@@ -115,3 +115,33 @@ USER: yes
 route: execution/create_github_issue floor_hit=None original_message=None
 PIPER: Created issue #35, "Re-check forward 1507", in dinp-machine/piper-test-activity.
 ```
+
+## Arch's set-default probe, 17:06 PT on ac5b69f865 (two sessions; nothing written, newest issue still #35)
+
+```
+=== on ac5b69f865
+
+## P1 unarmed, session 3cf08d98
+
+--- P1a [17:06:22, http 200] route execution/set_default_github_repo
+USER: Set my default GitHub repository to dinp-machine/piper-test-activity
+PIPER: I didn't recognize that as something I can do from chat — I may have misread the ask rather than being unable to do it. What I heard was: "Set my default GitHub repository to dinp\-machine\/piper\-test\-activity." If I misread it, try saying it another way. If not, it may already be doable in Piper's own pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub).
+
+## P2 after an armed draft, session 40358c24
+
+--- P2a [17:06:31, http 200] route execution/create_ticket
+USER: Let's track this. Create a GitHub issue: 'Probe draft 1720'
+PIPER: Happy to shape this with you before anything gets filed. Here's a draft to start from:
+
+**Title**: Probe draft 1720
+
+What should the body say — the problem, steps to reproduce, impact? Tell me what to add or change. If this draft works as-is, say "file it as is" and I'll create it right now. (If you'd rather I just file things directly, say "just do things directly from now on" and I will.)
+
+--- P2b [17:06:35, http 200] route execution/set_default_github_repo
+USER: Set my default GitHub repository to dinp-machine/piper-test-activity
+PIPER: I didn't recognize that as something I can do from chat — I may have misread the ask rather than being unable to do it. What I heard was: "Set my default GitHub repository to dinp\-machine\/piper\-test\-activity." If I misread it, try saying it another way. If not, it may already be doable in Piper's own pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub).
+
+--- P2d [17:06:47, http 200] route CONVERSATION/clarification_needed
+USER: no
+PIPER: Okay.
+```
