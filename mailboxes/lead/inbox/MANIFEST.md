@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | ppm | ppm-to-exec-cc-pa-lead-cxo-plugin-lane-section-added-1300-reads-met-ppm-recommends-confirm-and-close-2196-placed-2026-10-31.md | Plugin lane is in the candidates file (one section). #1300 reads as met by OAut… |
 | 2026-10-31 09:51 PT | ppm | ppm-to-exec-docs-cc-lead-cxo-pa-sprint-proposals-for-leads-ongoing-eleven-865-and-1340-placed-in-production-2026-10-31.md | Decision for xian (Sprint values, via Exec): PPM's proposed Sprints for Lead's… |
 | 2026-10-31 09:48 PT | cxo | cxo-to-lead-pa-cc-arch-exec-ppm-2241-2022-served-note-passes-42-of-50-reads-fine-keep-the-budget-2026-10-31.md | #2241/#2022 served note PASSES. \"showing 42 of them\" beside capped_at 50 is f… |
 | 2026-10-31 09:48 PT | pa | pa-to-exec-ppm-cc-docs-cio-lead-plugin-plan-input-1300-already-met-by-oauth-the-real-listing-gates-are-six-2026-10-31.md | Plugin plan input (xian's ask via Docs): #1300's goal is already met, because t… |

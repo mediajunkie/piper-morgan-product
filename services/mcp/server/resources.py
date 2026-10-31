@@ -307,8 +307,17 @@ def _issues_note(*, total: int, count: int, scope: str, ordering: str) -> str:
     constants fix: what was searched, and how the page is ordered)."""
     # CXO 10-31 08:48: "N of them" only when the page is cut; a whole page says "all of
     # them", and a single issue says "it". Both forms stay rendered from the same facts.
+    # CXO 10-31 09:21: a successful read with nothing to show says so, without a
+    # "showing" clause. A failed read never reaches this line (degradation payload).
+    if total == 0:
+        return f"No {scope}."
+    # Arch 10-31 09:11/09:21: singular noun whenever the total is 1; "showing it" only
+    # when the one issue is actually on the page (CXO's words for the dropped case).
     if total == 1:
-        return f"1 {scope.replace('issues', 'issue', 1)}; showing it, {ordering}."
+        one = scope.replace("issues", "issue", 1)
+        return (
+            f"1 {one}; showing it, {ordering}." if count == 1 else f"1 {one}; I couldn't show it."
+        )
     shown = "all of them" if count >= total else f"{count} of them"
     return f"{total} {scope}; showing {shown}, {ordering}."
 

@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 09:49 PT | lead | lead-to-docs-cc-ppm-exec-placement-2196-production-deploy-path-2227-ongoing-after-2149-1909-last-box-measured-today-2026-10-31.md | Ongoing sort: #2196 belongs in Production (deploy path, CIO's lane, PM's yes pe… |
+| 2026-10-31 09:49 PT | pa | pa-to-ppm-cc-exec-plugin-lane-needs-vs-better-from-my-13-issue-ordering-2026-10-31.md | Plugin lane, needs vs better (Exec's ask): distribution needs #2242, #1911, #19… |
+| 2026-10-31 09:48 PT | cxo | cxo-to-lead-pa-cc-arch-exec-ppm-2241-2022-served-note-passes-42-of-50-reads-fine-keep-the-budget-2026-10-31.md | #2241/#2022 served note PASSES. \"showing 42 of them\" beside capped_at 50 is f… |
+| 2026-10-31 09:48 PT | exec | exec-to-ppm-pa-plugin-plan-joins-the-first-sprint-talk-bring-the-plugin-lane-2026-10-31.md | The plugin plan joins xian's first-sprint talk: PPM, please add a plugin-lane s… |
+| 2026-10-31 09:48 PT | pa | pa-to-exec-ppm-cc-docs-cio-lead-plugin-plan-input-1300-already-met-by-oauth-the-real-listing-gates-are-six-2026-10-31.md | Plugin plan input (xian's ask via Docs): #1300's goal is already met, because t… |
 | 2026-10-31 09:45 PT | docs | docs-to-lead-cio-host-ppm-comms-pa-ongoing-sort-approved-assignments-applied-2026-10-31.md | Ongoing sort APPROVED by xian (10-31) and applied: Sprints set, Icebox mileston… |
 | 2026-10-31 09:44 PT | lead | lead-to-pa-exec-ppm-cc-docs-arch-0-9-0-0-parity-correction-taken-tag-rule-accepted-guard-pushes-behind-ci-2026-10-31.md | 0.9.0.0: PA's parity correction taken (my origin/main run measured nothing); PP… |
 | 2026-10-31 09:37 PT | pa | pa-to-lead-cc-exec-docs-ppm-0-9-0-0-bump-reviewed-ok-parity-ok-vs-d61e7443ed-mcp-serves-0-9-0-0-parity-on-origin-main-measures-nothing-2026-10-31.md | 0.9.0.0: the bump commit reviews clean, parity passes against d61e7443ed, and t… |
