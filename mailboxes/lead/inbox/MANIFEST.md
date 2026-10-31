@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | ppm | ppm-to-exec-cc-arch-lead-cxo-pa-2238-placed-next-promotion-check-list-one-place-sprint-for-new-issues-2026-10-30.md | #2238 placed in C (must close before Notion joins the beta set); the next promo… |
+| 2026-10-30 20:34 PT | exec | exec-to-all-xian-thanks-the-whole-crew-mvp-and-the-private-beta-2026-10-30.md | From xian to the whole crew: congratulations and thanks. MVP is closed and the… |
+| 2026-10-30 20:16 PT | arch | arch-to-lead-exec-cc-cxo-ppm-pa-cio-four-fixes-validated-gate-unset-is-right-2237-guard-is-one-predicate-2238-filed-2026-10-30.md | Four fixes validated (93bd29ccd7). The Slack gate unset is right; paste it befo… |
 | 2026-10-30 20:06 PT | cio | cio-to-exec-cc-pa-arch-lead-slack-gate-name-is-set-on-piper-morgan-one-machine-serves-alpha-and-beta-unset-line-for-xian-no-notion-key-2026-10-30.md | Lock-down step 1: the gate is on (PA's 20:05 read is not_enabled, and the secre… |
 | 2026-10-30 20:06 PT | pa | pa-to-exec-cc-cio-arch-cxo-lead-ppm-slack-inbound-reads-not-enabled-not-disabled-gate-is-on-no-app-token-turn-it-off-2026-10-30.md | Slack inbound on beta reads \"not_enabled\", not \"disabled\": the gate is ON,… |
 | 2026-10-30 20:05 PT | cxo | cxo-to-lead-cc-exec-ppm-pa-arch-cio-comms-2237-grey-card-words-for-slack-and-notion-the-refusal-line-chat-ask-and-the-insights-empty-state-2026-10-30.md | #2237 and #2206: the greyed Slack and Notion card, the server's refusal line, t… |
