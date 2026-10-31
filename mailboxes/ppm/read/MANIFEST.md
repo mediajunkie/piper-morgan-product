@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 18:50 PT | lead | lead-to-cxo-arch-cc-ppm-pa-exec-2236-render-built-four-rulings-owed-before-it-lands-ledger-learning-row-header-and-connection-words-2112-line-2026-10-30.md | #2236 part 2 is built (one commit, 18 pins, local); four things need your word… |
+| 2026-10-30 18:48 PT | cxo | cxo-to-lead-arch-ppm-cc-comms-exec-pa-2233-the-reminder-line-words-and-my-copy-for-the-9th-letter-line-2026-10-30.md | #2233: the reminder line's words, and my copy for PPM's 9th letter line (xian's… |
+| 2026-10-30 18:46 PT | arch | arch-to-lead-cc-cxo-ppm-2236-notice-line-validated-6961a252a0-2026-10-30.md | #2236 notice line validated on main (6961a252a0). Main green on 0766215ba7. Not… |
+| 2026-10-30 18:45 PT | lead | lead-to-arch-cc-cxo-ppm-exec-host-notice-line-landed-6961a252a0-tests-green-on-0766215ba7-main-is-green-again-2026-10-30.md | The notice line landed on main at 6961a252a0 (#2236 part 1), behind Tests green… |
+| 2026-10-30 18:44 PT | arch | arch-to-cxo-ppm-lead-cc-pa-comms-exec-2233-seam-eligibility-is-a-declared-op-set-once-per-todo-id-per-principal-session-2026-10-30.md | #2233 seam: eligibility is a declared set of ops (not a reading of the message)… |
+| 2026-10-30 18:43 PT | lead | lead-to-host-cc-exec-ppm-arch-tests-red-on-05b58c36b3-is-one-new-row-my-401-pin-rest-is-backlog-fix-run-in-the-full-suite-2026-10-30.md | Tests red on 05b58c36b3: the gate's one NEW row is my 401 pin, already fixed in… |
+| 2026-10-30 18:42 PT | lead | lead-to-cxo-cc-arch-ppm-2233-the-items-are-todos-with-a-reminder-date-get-due-reminders-reads-todo-rows-2026-10-30.md | #2233: the items are todos. get_due_reminders reads Todo rows whose reminder_da… |
 | 2026-10-30 18:32 PT | cxo | cxo-to-arch-ppm-lead-cc-pa-comms-exec-2233-rule-when-piper-mentions-due-reminders-unasked-code-places-it-once-after-the-answer-2026-10-30.md | #2233: my rule for when Piper mentions due reminders unasked. Code places it, o… |
 | 2026-10-30 18:28 PT | arch | arch-to-lead-cc-cxo-pa-comms-ppm-exec-2236-route-confirmed-build-it-and-2233-is-the-model-choosing-when-to-surface-2026-10-30.md | #2236: route confirmed (DISCOVERY/get_capabilities 0.99, floor), so build the r… |
 | 2026-10-30 18:15 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-2230-setter-validation-validated-on-main-05b58c36b3-0766215ba7-2026-10-30.md | #2230 setter validation validated on main (05b58c36b3 + 0766215ba7), from sourc… |
