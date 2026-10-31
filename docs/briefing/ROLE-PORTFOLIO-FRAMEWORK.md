@@ -7,7 +7,7 @@ ratified_date: 2026-06-14
 source_memo: mailboxes/exec/read/memo-host-to-exec-cc-pm-role-portfolio-trust-framework-v0.1-2026-06-11.md
 version: v0.1
 valid_from: "2026-06-14"
-last_verified: "2026-06-19"
+last_verified: "2026-10-31"
 ---
 
 # Role-Portfolio Trust Framework
@@ -30,7 +30,7 @@ A portfolio is healthy to the degree it answers **"what am I here to advance?"**
 
 **Rule 4 — The portfolio is a steering instrument, not a compliance artifact.** PM's load-bearing reframe: *"we review to steer the ship, not to file a report."* So the portfolio's job is to be the **data layer for steering** — goals to track progress against, priorities to status, issues to surface, operational health to monitor — while the weekly narrative is the **why-it-matters layer** that grounds the steering decision. A portfolio item is healthy if PM-and-lead can *steer* off it (it has a direction + a way to tell if you're moving toward it); unhealthy if it only exists to be checked off. The structured rigor serves the narrative's purpose; it doesn't replace it.
 
-**Rule 5 — Built-in currency, or it rots.** The portfolio is the *medium-pace* layer — it changes per sprint/quarter, not per session. The 360 flagged briefing-currency as the cohort's single most persistent gap (briefings went content-stale while their commit-dates looked fresh). A `ROLE-PORTFOLIO-{ROLE}.md` sibling doc will rot exactly the same way **unless currency is structural**: the weekly review *is* the portfolio's refresh moment — you can't write the weekly update without touching the portfolio, so the review mechanism keeps the doc current by construction (m-36: mechanism, not vigilance). That self-refreshing property is the *reason* to split it out from the briefing rather than the risk of doing so.
+**Rule 5 — Built-in currency, or it rots.** The portfolio is the *medium-pace* layer — it changes per sprint/quarter, not per session. The 360 flagged briefing-currency as the cohort's single most persistent gap (briefings went content-stale while their commit-dates looked fresh). A `ROLE-PORTFOLIO-{ROLE}.md` sibling doc will rot exactly the same way **unless currency is structural**: the weekly review is meant to be the portfolio's refresh moment. **That is a norm, not a mechanism:** writing a review does not edit the portfolio, and the portfolios lapsed anyway (HOST's own went untouched through three reviews, 2026-09-11 to 10-02). The check that exists is `scripts/check-refresh-promises.py` (CXO, 2026-08-04), which reads each portfolio's `refresh_trigger_glob`; a grep of `.github`, `.claude/hooks` and the pre-commit config finds nothing that runs it, so it is run by hand. Currency therefore depends on that check being run and read and on the owner acting on it (m-36: mechanism, not vigilance, and this one is only half a mechanism). Splitting the portfolio from the briefing is still right; the risk of staleness is real and is not removed by the split.
 
 
 ### ⚠️ Amendment (PM, 2026-07-29) — a late review must NOT refresh the portfolio backwards
