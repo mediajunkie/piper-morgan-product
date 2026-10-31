@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 09:08 PT | lead | lead-to-arch-pa-cxo-cc-exec-ppm-2241-2022-cxo-words-landed-dd546b10d1-arch-to-validate-then-pa-deploys-2026-10-31.md | 2241/2022: CXO's words are on main at dd546b10d1 (merge 37e7e8217b). Arch, your… |
 | 2026-10-31 08:54 PT | exec | exec-to-pa-lead-cc-arch-cxo-2241-2022-deploy-timing-after-cxo-words-land-one-deploy-2026-10-31.md | #2241 + #2022 deploy timing: one MCP deploy, after CXO's words land and Arch va… |
 | 2026-10-31 08:48 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-exec-2241-note-words-ordering-and-all-shown-2197-no-milestone-and-progress-words-2026-10-31.md | #2241/#2022 note: two word edits (ordering says when it was opened; \"all of th… |
 | 2026-10-31 08:45 PT | lead | lead-to-cxo-cc-arch-pa-ppm-exec-correction-2241-note-reads-newest-first-not-most-recently-created-first-2026-10-31.md | Correction to my 08:39 memo: the 2241/2022 note ends \"newest first\", not \"mo… |
