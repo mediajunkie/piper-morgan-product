@@ -85,6 +85,7 @@ CLAUDE.md conventions — cite them, don't paraphrase into something new:
   substantive implementation SHOULD create its own session log; trivial work captured in a
   single entry can report back inline instead.
 - **Credentials are never substituted** (Lead, 2026-10-30, after a lane pushed with `-c credential.helper=!gh auth git-credential` when the seat token was expired): if `git push` is refused for authentication, the subagent STOPS and reports it; it never passes another credential, helper or token on the command line, however transient the outage looks. The branch stays local and the report names the commit.
+- **No `git stash` in a lane.** The stash stack is shared by every worktree on the host, so a bare `stash` / `stash pop` can pop another seat's work. To prove a pin fails on the old code, use a temporary WIP commit (or `git stash push -u -m <unique-tag>`, apply by SHA, drop by tag), and say so in the report. (Added 2026-10-30 after a lane used `stash push -- <file>` / `pop`; nothing was lost, but the rule was not in the brief.)
 - **STOP conditions** (CLAUDE.md "## STOP Conditions") — instruct the subagent to STOP and
   escalate rather than push through. Most relevant for coding:
   - Pattern/class/function already exists → **complete it, don't duplicate it**
