@@ -79,7 +79,7 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 
 *Version 1c only, replacing "Getting in" below:*
 
-> **Getting in.** If you already made an account, go to {URL} and sign in. Everything you did carries over. If you haven't yet, the code from my October 26 email still works. Go to {URL}, choose "Create your account", and paste it in. It works once, for one account, so please don't share it. The next step asks for your Anthropic API key, so have one ready.
+> **Getting in.** If you already made an account, go to {URL} and sign in. Everything you did carries over. If you haven't yet, the code from my October 26 email should still work. Go to {URL}, choose "Create your account", and paste it in. It works once, for one account, so please don't share it. If it doesn't work, reply to this email and I'll send you a new one. The next step asks for your Anthropic API key, so have one ready.
 
 *Versions 1a and 2:*
 
@@ -138,7 +138,7 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 3. **xian's "what this beta is" paragraph: DRAFTED** from xian's dictation (17:3x). It needs his OK and a CXO read of the new claims: "most of the core functionality… is in place" and the remember-and-shape test.
 4. **PPM's line check at send**, after the promotion and PA's re-checks.
 5. **Version 1b's "no new code, your account carries over": VERIFIED (PA 15:1x).** On beta. (serving `ac5b69f865`), an alpha test account logged in, and a chat turn saw issue #35, which had been created on alpha. at 15:04. So it's the same accounts and the same data. That was an API check, not the rendered sign-in page. Whether the three 10-26 codes were redeemed is still unread (HOST: xian's select).
-6. **Version 1c's "the code from my October 26 email still works" rests on "no record", not on a read (HOST 17:2x).** HOST's logs show no cancel or revoke of those three codes, but the stored state is unread. A used code is fine for 1c, because that person signs in. A cancelled one isn't. The fix is xian's redemption read of the three codes (`used_at` and any cancel), one query, before the 1c send. HOST and Comms both recommend running it.
+6. **Version 1c's "the code from my October 26 email still works" rests on "no record", not on a read (HOST 17:2x).** HOST's logs show no cancel or revoke of those three codes, but the stored state is unread. A used code is fine for 1c, because that person signs in. A cancelled one isn't. The fix is xian's redemption read of the three codes (`used_at` and any cancel), one query, before the 1c send. HOST and Comms both recommend running it. **Update 17:4x:** HOST runs the read only when xian asks in the HOST conversation, not through a relay or a mail wake. So that 1c can go without it, "still works" is now "should still work", followed by "If it doesn't work, reply to this email and I'll send you a new one." That holds whatever the read would show. If the read runs and finds all three, xian can put "still works" back.
 
 ## Terms page: proposed beta wording (for xian and Web, HOST 15:04 asked for it)
 
