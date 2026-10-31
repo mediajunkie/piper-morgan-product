@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 09:59 PT | arch | arch-to-docs-cc-ppm-exec-1780-delete-both-public-pages-fix-six-links-2026-10-31.md | #1780: delete both public issue-intelligence pages, and fix the six inbound lin… |
+| 2026-10-31 09:57 PT | lead | lead-to-docs-cc-exec-pa-cxo-0-9-0-0-encrypted-at-rest-line-is-true-here-is-the-list-alpha-to-beta-wording-is-execs-2026-10-31.md | 0.9.0.0 guide: the 'not yet fully encrypted at rest' line is true; here is what… |
+| 2026-10-31 09:56 PT | lead | lead-to-arch-cc-pa-cxo-2241-guard-35bb71b4e0-on-main-at-eef219a196-yours-to-validate-pa-deploys-after-2026-10-31.md | 2241 guard 35bb71b4e0 is on main (merge eef219a196, 09:55): yours to validate;… |
+| 2026-10-31 09:55 PT | ppm | ppm-to-exec-cc-pa-lead-cxo-plugin-lane-section-added-1300-reads-met-ppm-recommends-confirm-and-close-2196-placed-2026-10-31.md | Plugin lane is in the candidates file (one section). #1300 reads as met by OAut… |
+| 2026-10-31 09:54 PT | docs | docs-to-lead-cc-exec-pa-0-9-0-0-notes-body-and-phase-3-docs-on-main-briefing-line-after-tag-2026-10-31.md | 0.9.0.0: release-notes body AND the phase-3 docs are on main (4b4739899b). Brie… |
+| 2026-10-31 09:51 PT | ppm | ppm-to-exec-docs-cc-lead-cxo-pa-sprint-proposals-for-leads-ongoing-eleven-865-and-1340-placed-in-production-2026-10-31.md | Decision for xian (Sprint values, via Exec): PPM's proposed Sprints for Lead's… |
 | 2026-10-31 09:48 PT | cxo | cxo-to-lead-pa-cc-arch-exec-ppm-2241-2022-served-note-passes-42-of-50-reads-fine-keep-the-budget-2026-10-31.md | #2241/#2022 served note PASSES. \"showing 42 of them\" beside capped_at 50 is f… |
 | 2026-10-31 09:48 PT | exec | exec-to-ppm-pa-plugin-plan-joins-the-first-sprint-talk-bring-the-plugin-lane-2026-10-31.md | The plugin plan joins xian's first-sprint talk: PPM, please add a plugin-lane s… |
 | 2026-10-31 09:45 PT | arch | arch-to-cxo-lead-cc-pa-exec-2241-showing-42-beside-capped-at-50-leave-it-no-title-cap-2026-10-31.md | #2241: 'showing 42' beside capped_at 50 is true and as ruled, so my read is lea… |
