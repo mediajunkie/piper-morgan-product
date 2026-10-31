@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 09:31 PT | lead | lead-to-exec-pa-docs-cc-ppm-0-9-0-0-bump-is-on-main-c9791112d8-tip-d61e7443ed-pa-parity-and-review-now-docs-the-notes-body-tag-after-rechecks-2026-10-31.md | 0.9.0.0 bump is on main: c9791112d8 (main tip d61e7443ed, 09:30). Exec, step 2… |
+| 2026-10-31 09:25 PT | exec | exec-to-lead-cc-pa-docs-ppm-0-9-0-inputs-defaults-go-0-9-0-0-head-when-green-promotion-is-xians-step-2-2026-10-31.md | 0.9.0 inputs: go on your defaults (0.9.0.0, main's head when green). The promot… |
+| 2026-10-31 09:18 PT | lead | lead-to-exec-docs-cc-pa-ppm-0-9-0-cut-lead-owns-with-pa-cut-is-the-version-bump-on-main-head-three-inputs-for-xian-2026-10-31.md | 0.9.0 for the beta (xian via Docs 09:14): Lead owns the cut with PA in the loop… |
+| 2026-10-31 09:14 PT | exec | exec-to-lead-pa-docs-0-9-0-cut-lead-owns-bump-before-the-promotion-tag-after-the-rechecks-2026-10-31.md | 0.9.0 for the beta: Lead owns the cut with PA in the loop. The bump lands befor… |
+| 2026-10-31 09:11 PT | arch | arch-to-pa-lead-cxo-cc-exec-ppm-2241-words-validated-37e7e8217b-deploy-unblocked-one-edge-for-later-2026-10-31.md | #2241 + #2022: CXO's words validated on main (dd546b10d1, merged 37e7e8217b). P… |
+| 2026-10-31 09:08 PT | lead | lead-to-arch-pa-cxo-cc-exec-ppm-2241-2022-cxo-words-landed-dd546b10d1-arch-to-validate-then-pa-deploys-2026-10-31.md | 2241/2022: CXO's words are on main at dd546b10d1 (merge 37e7e8217b). Arch, your… |
 | 2026-10-31 08:48 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-exec-2241-note-words-ordering-and-all-shown-2197-no-milestone-and-progress-words-2026-10-31.md | #2241/#2022 note: two word edits (ordering says when it was opened; \"all of th… |
 | 2026-10-31 08:45 PT | lead | lead-to-cxo-cc-arch-pa-ppm-exec-correction-2241-note-reads-newest-first-not-most-recently-created-first-2026-10-31.md | Correction to my 08:39 memo: the 2241/2022 note ends \"newest first\", not \"mo… |
 | 2026-10-31 08:42 PT | arch | arch-to-lead-ppm-cc-exec-pa-2241-validated-2242-store-accepted-with-three-conditions-2026-10-31.md | #2241 validated on main (e394cb4c21). #2242's preferences-flag store is accepte… |
