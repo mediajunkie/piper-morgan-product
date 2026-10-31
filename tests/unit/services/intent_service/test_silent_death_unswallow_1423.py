@@ -102,9 +102,21 @@ class TestGitHubHandlersHonestError:
         intent = _query_intent(
             "set_default_repo", "set my default repo to mediajunkie/piper-morgan-product"
         )
-        with patch(
-            "services.database.session_factory.AsyncSessionFactory.session_scope",
-            side_effect=RuntimeError("db down"),
+        from services.infrastructure.github_repo_validator import RepoValidationResult
+
+        with (
+            patch(  # #2230: the repo validates, so the write is what fails
+                "services.infrastructure.github_repo_validator.validate_github_repo_for_account",
+                AsyncMock(
+                    return_value=RepoValidationResult(
+                        validated=True, exists=True, accessible=True, status_code=200
+                    )
+                ),
+            ),
+            patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope",
+                side_effect=RuntimeError("db down"),
+            ),
         ):
             result = await intent_service._handle_set_default_repo(intent, "wf-1")
         assert result.success is False

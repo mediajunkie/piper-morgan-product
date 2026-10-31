@@ -62,6 +62,18 @@ def _registry(monkeypatch, full_names, current_default=None, account_repos=()):
     monkeypatch.setattr(
         "services.connectors.config_service.ConnectorConfigService", lambda session: writer
     )
+    # #2230: the repo validates as existing on the account (outcome pins live in
+    # test_set_default_repo_validates_2230.py).
+    from services.infrastructure.github_repo_validator import RepoValidationResult
+
+    monkeypatch.setattr(
+        "services.infrastructure.github_repo_validator.validate_github_repo_for_account",
+        AsyncMock(
+            return_value=RepoValidationResult(
+                validated=True, exists=True, accessible=True, status_code=200
+            )
+        ),
+    )
     adapter = MagicMock()
     adapter.search_user_repositories = AsyncMock(
         return_value=SimpleNamespace(repositories=[{"full_name": n} for n in account_repos])

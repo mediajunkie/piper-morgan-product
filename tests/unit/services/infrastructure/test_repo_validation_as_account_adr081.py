@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[4]
 _USER = "5a2c9d10-0810-4b00-9e00-00000000aaaa"
 CALLERS = {
     "services/conversation/conversation_handler.py": 1,
+    "services/intent/intent_service.py": 1,  # 2230: the chat default-repo setter
     "services/intent_service/canonical_handlers.py": 2,
     "web/api/routes/repositories.py": 1,
     "web/api/routes/setup.py": 1,

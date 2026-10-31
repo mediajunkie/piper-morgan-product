@@ -454,6 +454,17 @@ class TestFlippedTurnReachesTheRail:
         already did. This is the positive assertion the sibling suites make:
         the flipped turn reaches the same handler AND the row is written for
         the token's owner."""
+        from services.infrastructure.github_repo_validator import RepoValidationResult
+
+        async def _validates(full_name, user_id):  # #2230: the repo exists on the account
+            return RepoValidationResult(
+                validated=True, exists=True, accessible=True, status_code=200
+            )
+
+        monkeypatch.setattr(
+            "services.infrastructure.github_repo_validator.validate_github_repo_for_account",
+            _validates,
+        )
         result, _ = await self._run(monkeypatch, _MSG, spy_calls=[])
         assert result.success is True
         assert not result.requires_clarification

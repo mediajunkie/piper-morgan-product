@@ -28,6 +28,24 @@ from services.shared_types import IntentCategory
 # ---------------------------------------------------------------------------
 
 
+@pytest.fixture(autouse=True)
+def repo_validates_as_existing():
+    """#2230: the handler checks the repo against the account before writing. These tests
+    are about persist/shape, so the repo validates as existing (outcome pins:
+    test_set_default_repo_validates_2230.py)."""
+    from services.infrastructure.github_repo_validator import RepoValidationResult
+
+    with patch(
+        "services.infrastructure.github_repo_validator.validate_github_repo_for_account",
+        AsyncMock(
+            return_value=RepoValidationResult(
+                validated=True, exists=True, accessible=True, status_code=200
+            )
+        ),
+    ) as m:
+        yield m
+
+
 @pytest.fixture
 def intent_service():
     """IntentService instance with heavy deps patched out (mirrors cohort tests)."""

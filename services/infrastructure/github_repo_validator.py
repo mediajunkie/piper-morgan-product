@@ -29,6 +29,10 @@ class RepoValidationResult:
     language: Optional[str] = None
     visibility: Optional[str] = None  # "public", "private", "internal"
     default_branch: Optional[str] = None
+    # HTTP status GitHub answered with; None when no response was read (no token, network
+    # error). Lets a caller tell 404 (not found) from 401/403 (no access) from other statuses
+    # without parsing ``error`` text (#2230).
+    status_code: Optional[int] = None
 
     @property
     def metadata_available(self) -> bool:
@@ -96,6 +100,7 @@ async def validate_github_repo(
                         language=data.get("language"),
                         visibility=data.get("visibility"),
                         default_branch=data.get("default_branch"),
+                        status_code=200,
                     )
                 elif resp.status == 404:
                     logger.warning("github_repo_validation_not_found", full_name=full_name)
@@ -104,6 +109,7 @@ async def validate_github_repo(
                         exists=False,
                         accessible=False,
                         error=f"Repository '{full_name}' not found on GitHub",
+                        status_code=404,
                     )
                 elif resp.status == 401:
                     logger.warning("github_repo_validation_auth_failed", full_name=full_name)
@@ -112,6 +118,7 @@ async def validate_github_repo(
                         exists=False,
                         accessible=False,
                         error="GitHub token is invalid or expired",
+                        status_code=401,
                     )
                 elif resp.status == 403:
                     logger.warning(
@@ -124,6 +131,7 @@ async def validate_github_repo(
                         exists=True,
                         accessible=False,
                         error="GitHub API rate limit or insufficient permissions",
+                        status_code=403,
                     )
                 else:
                     logger.warning(
@@ -136,6 +144,7 @@ async def validate_github_repo(
                         exists=False,
                         accessible=False,
                         error=f"GitHub API returned status {resp.status}",
+                        status_code=resp.status,
                     )
 
     except aiohttp.ClientError as e:

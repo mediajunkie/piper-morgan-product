@@ -9211,6 +9211,79 @@ class IntentService:
             self.logger.warning("default_repo_open_issue_count_failed", error=str(e))
             return None
 
+    async def _validate_default_repo_for_account(self, full_name: str, user_id: Any) -> str:
+        """#2230: check ``full_name`` against the user's own GitHub account.
+
+        Returns ``exists`` / ``not_found`` / ``no_access`` / ``not_checked``. Only a 404 reads
+        as ``not_found`` and only a 401/403 as ``no_access``; no token, any other status or
+        an exception is ``not_checked`` (#2151: a failed read is never "not found").
+        """
+        try:
+            from services.infrastructure.github_repo_validator import (
+                validate_github_repo_for_account,
+            )
+
+            result = await validate_github_repo_for_account(
+                full_name, str(user_id) if user_id else None
+            )
+        except (
+            Exception
+        ) as e:  # silent-ok: logged; the caller answers "couldn't check" and writes nothing
+            self.logger.warning("default_repo_validation_failed", error=str(e), exc_info=True)
+            return "not_checked"
+        if not result.validated:
+            return "not_checked"
+        if result.status_code == 200 and result.exists and result.accessible:
+            return "exists"
+        if result.status_code == 404:
+            return "not_found"
+        if result.status_code in (401, 403):
+            return "no_access"
+        return "not_checked"
+
+    def _default_repo_not_written_result(
+        self, outcome: str, full_name: str, workflow_id: str
+    ) -> IntentProcessingResult:
+        """#2230: the reply when validation stopped the write (nothing was changed)."""
+        # CXO wording owed: all three replies below are placeholders.
+        if outcome == "not_found":
+            message = (
+                f"I couldn't find {full_name} in your GitHub account, so I haven't "
+                "changed your default. Check the owner/name and try again."
+            )
+        elif outcome == "no_access":
+            message = (
+                f"Your GitHub account can't access {full_name}, so I haven't "
+                "changed your default. Check the owner/name and try again."
+            )
+        else:
+            message = (
+                f"I couldn't check {full_name} with GitHub just now, so I haven't "
+                "changed your default. Try again in a moment."
+            )
+        intent_data = {
+            "category": "query",
+            "action": "set_default_repo",
+            "context": {"error": f"repo_{outcome}"},
+            "validation_outcome": outcome,
+        }
+        if outcome == "not_checked":
+            return IntentProcessingResult(
+                success=False,
+                message=message,
+                intent_data=intent_data,
+                workflow_id=workflow_id,
+                error="default repo validation did not run",
+                error_type="set_default_repo_validation_unavailable",
+            )
+        return IntentProcessingResult(
+            success=True,
+            message=message,
+            intent_data=intent_data,
+            workflow_id=workflow_id,
+            requires_clarification=True,
+        )
+
     async def _handle_set_default_repo(
         self, intent: Intent, workflow_id: str
     ) -> IntentProcessingResult:
@@ -9285,6 +9358,12 @@ class IntentService:
 
         full_name = f"{owner}/{name}"
 
+        # #2230: the gate is the consent, and the value must be a repo this account can see.
+        # A failed read never stands in for "not found" (#2151).
+        outcome = await self._validate_default_repo_for_account(full_name, _user_id)
+        if outcome != "exists":
+            return self._default_repo_not_written_result(outcome, full_name, workflow_id)
+
         try:
             from services.connectors.config_service import ConnectorConfigService
             from services.database.session_factory import AsyncSessionFactory
@@ -9307,6 +9386,7 @@ class IntentService:
                     "category": "query",
                     "action": "set_default_repo",
                     "context": {"default_repo": full_name},
+                    "validation_outcome": "exists",
                 },
                 workflow_id=workflow_id,
             )
