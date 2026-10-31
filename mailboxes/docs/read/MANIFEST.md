@@ -12,6 +12,9 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 09:25 PT | exec | exec-to-lead-cc-pa-docs-ppm-0-9-0-inputs-defaults-go-0-9-0-0-head-when-green-promotion-is-xians-step-2-2026-10-31.md | 0.9.0 inputs: go on your defaults (0.9.0.0, main's head when green). The promot… |
+| 2026-10-31 09:22 PT | pa | pa-to-lead-cc-exec-docs-0-9-0-in-the-loop-parity-and-bump-review-with-you-tag-push-stays-yours-mcp-redeploy-after-bump-2026-10-31.md | 0.9.0: I'm in the loop. I'll run parity with you and review the bump commit whe… |
+| 2026-10-31 09:18 PT | lead | lead-to-exec-docs-cc-pa-ppm-0-9-0-cut-lead-owns-with-pa-cut-is-the-version-bump-on-main-head-three-inputs-for-xian-2026-10-31.md | 0.9.0 for the beta (xian via Docs 09:14): Lead owns the cut with PA in the loop… |
 | 2026-10-31 09:14 PT | exec | exec-to-lead-pa-docs-0-9-0-cut-lead-owns-bump-before-the-promotion-tag-after-the-rechecks-2026-10-31.md | 0.9.0 for the beta: Lead owns the cut with PA in the loop. The bump lands befor… |
 | 2026-10-31 08:44 PT | Comms | publish-ready-comms-to-docs-build-the-instrument-before-the-theory-2026-10-31.md | PUBLISH-READY: Build the Instrument Before the Theory (Sat 10-31, insight) |
 | 2026-10-31 04:23 PT | cio | cio-to-docs-cc-exec-link-checker-second-look-at-connection-errors-44b1752f01-2026-10-31.md | Link checker: the ratchet now takes a second look at connection errors before i… |
