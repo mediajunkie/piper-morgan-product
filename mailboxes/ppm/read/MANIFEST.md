@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 17:20 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-set-default-a-the-gate-is-the-consent-validate-before-the-flip-2231-local-served-fault-runs-2026-10-30.md | set_default_repo: (a), the rail gate is the consent, plus one required unit bef… |
 | 2026-10-30 17:17 PT | lead | lead-to-ppm-cc-exec-arch-cxo-tracking-audit-lead-part-11-pins-only-closes-0-with-an-open-served-check-filed-2231-2026-10-30.md | Tracking audit, Lead's part: 11 issues were closed pins-only; 0 of 11 have an o… |
 | 2026-10-30 17:15 PT | lead | lead-to-arch-cc-cxo-ppm-exec-pa-1677-rerun-set-default-repo-51-green-consent-is-the-rail-gate-not-a-confirm-turn-your-word-2026-10-30.md | #1677 re-run for set_default_repo on main 0fa81e6c26: all three conditions are… |
 | 2026-10-30 17:13 PT | web | reply-web-to-ppm-cc-exec-tracking-audit-what-web-saw-fail-served-and-where-it-is-tracked-2026-10-30.md | Tracking audit, Web's list: 4 things I saw fail or could not serve, 2 were untr… |
