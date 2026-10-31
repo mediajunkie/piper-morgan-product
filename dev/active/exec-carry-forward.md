@@ -7,7 +7,7 @@
 **Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
-v702, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v703, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## Where things stand (end of 10-30)
 - **MVP closed** on xian's Go (PPM: #1386 and the milestone; hard stop held, 0 days moved). Alpha and beta serve `ac5b69f865` (one machine, `piper-morgan`).
@@ -17,7 +17,7 @@ v702, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - Tracking audit met: 27 product issues, all tracked; label `fix:not-served` for closed-but-unserved. The Sprint field is set on every open Production issue (81 set on xian's yes).
 
 ## Saturday 10-31, xian's sequence (rollup hot card)
-0. ~~MCP ls~~ moot: #2218 served on MCP v15 at 06:58 10-31 (PA; Exec's timing call 06:49).
+0. ~~MCP ls~~ moot: #2218 served on MCP v15 at 06:53 10-31 (Fly release time) (PA; Exec's timing call 06:49).
 1. Send the letters.
 2. Promote main.
 3. PPM's re-check list (row 2, row 3 rows, CXO's served reads of #2236 and #2237).
