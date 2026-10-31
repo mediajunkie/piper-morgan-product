@@ -219,7 +219,11 @@ class TestPullInsightsRowStaysHonest:
     def test_empty_repository_says_nothing_yet_and_implies_no_pattern(self):
         out = self._prompt({"insights": {"is_empty": True, "total_count": 0}})
         assert "NONE YET" in out
-        assert "you have not yet learned patterns" in out
+        # CXO 2026-10-30: the directive instructs exactly this sentence, nothing after it.
+        assert "I don't have any insights about your work yet." in out
+        assert "and nothing after it" in out
+        for promise in ("as you work together", "will emerge", "Insight Journal", "soon", "later"):
+            assert promise not in out, promise
         assert "Do not fabricate" in out
         assert "HIGH CONFIDENCE" not in out
 
@@ -235,3 +239,4 @@ class TestPullInsightsRowStaysHonest:
         out = self._prompt({"insights_source_failed": True})
         assert "could not check: insights" in out
         assert "NONE YET" not in out
+        assert "I don't have any insights about your work yet." not in out
