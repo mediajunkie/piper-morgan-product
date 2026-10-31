@@ -43,16 +43,6 @@ Coming up with a theory feels like making progress, and then writing a patch bas
 
 ---
 
-*Next on Building Piper Morgan: "Read the Machine Before Debating Who Restarts It" (working
-  title). The title has to be final before this post goes to Docs, since this footer names it. Suggested tease:
-  *the next day, the database goes down, and the team spends half an hour on who may restart it before one look at
-  the machine changes the question.*
-- **Reader question idea:** *How many fixes has your team shipped for a cause nobody measured?*
+*Next on Building Piper Morgan: "Check the Machine First," in which the database goes down, and the team spends half an hour debating who may restart it before taking a look at the machine itself, changing the question.*
 
-## Left out on purpose
-- The 11:03 run that went 61 of 61 but mostly hit usage-cap refusals, so it didn't count. Too fiddly.
-- Ship #066 says the stall held sessions "for minutes". The logs show blocks of 3 to 12 seconds. Don't repeat
-  "minutes".
-- Arch's three conditions (timeouts, a dedicated worker pool, a code pin) and the untested concurrency case.
-  Engineering detail.
-- The one-off third deploy you granted that day.
+*How many times has your team shipped a fix for a problem without actually measuring it first*
