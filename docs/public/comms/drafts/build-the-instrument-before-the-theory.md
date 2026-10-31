@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'build-the-instrument-before-the-theory-measure-first-bake-better.jpg'
+alt: 'Two luminous AI bakers stand beside failed cakes: one offers another egg while the other places a thermometer inside the oven.'
 caption: ''
 ---
 
