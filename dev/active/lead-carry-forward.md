@@ -1,5 +1,14 @@
 # Lead carry-forward — Fable 5.1 seat; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## 2026-10-31 START 06:47 (fire done 06:5x) — #2218 landed 66d4b58492 (Arch validates; PA deploys on Exec's timing); sprint sizes on main; waiting on: Arch/CXO's word on #2241+#2022 shape, the beta letters, xian's flip word, the next promotion
+**Open after this fire, in order:**
+1. **#2241 + #2022 unit** (half a day to a day) on Arch's/CXO's yes to the 06:5x shape memo: slim item, 20k budget pin, scope field + note; both the resource and the tool; served check = PA's one connector call renders inline after the deploy carrying #2218.
+2. **#2218 close** after Arch's validation and PA's `deploy-mcp.sh` (or `fix:not-served` if before).
+3. **Next promotion after the letters** (item 4 of the 10-31 order below): served reads, row 4, the five closes.
+4. **Set-default flip** (xian's word via Exec → CIO/HOST → Exec's freeze → PA's probe). **#2042 census (b):** Web's five turns once xian signs the tab in (reshaped 06:20); then my read of the rung-2 events and metadata.
+5. Rules added 10-31: the STOP commit stages the log by path and `git show --stat` must list it before the push (the 10-30 STOP entry never reached the log; retroactive close 04:19); log headings from `date`, not estimated (two slips this morning); normalize the known-failure list before `comm` (prefix mismatch read as 15 new).
+- Cron 7b1f1f90: next 09:47; rotate by 11-04 START unless Pard's "loaded" mail arrives first.
+
 ## DAY CLOSED 2026-10-30 21:5x PT (log marker written 10-31 04:19 on Docs's nudge: the 21:47 STOP entry never reached the log; the STOP commit stages the log by path and `git show --stat` must list it before the push) — MVP passed (xian's GO 17:03; #1386 and the milestone closed); alpha and beta serve ac5b69f865; beta letters go Saturday morning (xian), the promotion freeze holds until then; main 12/12 green; inbox drained; no lane worktrees
 **10-31 START order:**
 1. Cron 7b1f1f90 (next 06:47; expires ~11-05; rotate by 11-04 START) unless Pard's "loaded" mail says `com.xian.pm-lead-cycle` fired and landed work, then CronList → CronDelete 7b1f1f90 → CronList → registry row (line 98) to `46 6,9,12,15,18,21`. Mail (v1 `ls`, `mail4.py inbox`), CI (`scripts/main-ci-status.sh`), the post-close addenda first.
