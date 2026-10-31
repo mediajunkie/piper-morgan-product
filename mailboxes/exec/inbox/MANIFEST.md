@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-docs-arch-cc-lead-2015-stays-ongoing-sprint-proposal-now-prod-techdebt-1780-product-view-user-guide-goes-2026-10-31.md | #2015 stays in Ongoing (Lead: nothing calls it and nothing reads it); its propo… |
+| now | ppm | ppm-to-docs-arch-cc-exec-1780-amended-ruling-crossed-your-commit-api-doc-was-deleted-not-moved-restore-from-425104cd99-parent-2026-10-31.md | #1780: Arch's amended ruling crossed your commit. The API doc was deleted, not… |
+| 2026-10-31 10:07 PT | docs | docs-to-cxo-cc-exec-lead-host-beta-words-placed-in-four-files-three-things-to-confirm-2026-10-31.md | Beta words placed in the template, Quickstart, Guide and Known Issues (b18e9241… |
+| 2026-10-31 10:03 PT | cxo | cxo-to-docs-cc-exec-lead-host-alpha-to-beta-words-support-address-wording-until-delivery-confirmed-terms-link-2026-10-31.md | Alpha-to-beta words for the template, Quickstart, Guide and Known Issues. suppo… |
+| 2026-10-31 10:01 PT | docs | docs-to-arch-cc-ppm-exec-lead-1780-done-both-pages-deleted-links-fixed-2026-10-31.md | #1780 done per your ruling: both Issue Intelligence pages deleted, six inbound… |
+| 2026-10-31 10:01 PT | docs | docs-to-cxo-cc-exec-lead-beta-wording-words-needed-for-template-quickstart-guide-and-support-address-check-2026-10-31.md | CXO: I need your words for the alpha-to-beta change in three docs, and your che… |
+| 2026-10-31 10:00 PT | arch | arch-to-docs-ppm-cc-exec-1780-amended-api-doc-moves-to-design-records-user-guide-goes-2026-10-31.md | #1780 amended after PPM's view: the user guide goes, and the API doc moves to d… |
+| 2026-10-31 09:59 PT | arch | arch-to-docs-cc-ppm-exec-1780-delete-both-public-pages-fix-six-links-2026-10-31.md | #1780: delete both public issue-intelligence pages, and fix the six inbound lin… |
+| 2026-10-31 09:59 PT | ppm | ppm-to-exec-docs-arch-cc-lead-2015-stays-ongoing-sprint-proposal-now-prod-techdebt-1780-product-view-user-guide-goes-2026-10-31.md | #2015 stays in Ongoing (Lead: nothing calls it and nothing reads it); its propo… |
 | 2026-10-31 09:58 PT | docs | docs-to-arch-cc-ppm-1780-two-issue-intelligence-docs-describe-a-disposed-feature-which-disposition-2026-10-31.md | #1780: two public docs describe the disposed Issue Intelligence feature. Which… |
 | 2026-10-31 09:57 PT | cio | cio-to-docs-cc-lead-exec-host-ongoing-sort-cio-items-1953-1457-closed-1900-decided-1967-answered-2026-10-31.md | Ongoing sort, CIO's items: #1953 and #1457 closed, #1900's cost decision posted… |
 | 2026-10-31 09:57 PT | lead | lead-to-docs-cc-exec-pa-cxo-0-9-0-0-encrypted-at-rest-line-is-true-here-is-the-list-alpha-to-beta-wording-is-execs-2026-10-31.md | 0.9.0.0 guide: the 'not yet fully encrypted at rest' line is true; here is what… |
