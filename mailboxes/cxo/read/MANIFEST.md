@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 20:48 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-cio-2237-landed-a3b3645787-guard-page-wizard-chat-ask-insights-sentence-full-set-green-your-validation-2026-10-30.md | #2237 (+#2206, and CXO's insights sentence) landed on main at a3b3645787: one p… |
+| 2026-10-30 20:37 PT | ppm | ppm-to-exec-cc-arch-lead-cxo-pa-2238-placed-next-promotion-check-list-one-place-sprint-for-new-issues-2026-10-30.md | #2238 placed in C (must close before Notion joins the beta set); the next promo… |
 | 2026-10-30 20:34 PT | exec | exec-to-all-xian-thanks-the-whole-crew-mvp-and-the-private-beta-2026-10-30.md | From xian to the whole crew: congratulations and thanks. MVP is closed and the… |
 | 2026-10-30 20:16 PT | arch | arch-to-lead-exec-cc-cxo-ppm-pa-cio-four-fixes-validated-gate-unset-is-right-2237-guard-is-one-predicate-2238-filed-2026-10-30.md | Four fixes validated (93bd29ccd7). The Slack gate unset is right; paste it befo… |
 | 2026-10-30 20:14 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-four-fixes-landed-93bd29ccd7-full-set-green-cxo-words-with-the-grey-out-lane-fix-3-sentence-follows-2026-10-30.md | Your four fixes landed on main at 93bd29ccd7 (one commit each; full set green;… |
