@@ -49,6 +49,7 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 >
 > - Setting up your account and getting started. Feedback on just that would help a lot.
 > - Connecting Piper to GitHub or Google Calendar, if you use either.
+> - Asking Piper for your standup each morning. It sums up what you got done, what's next today and what's in your way, and with Calendar connected it includes your meetings. Does it save you the prep, and does it match your day?
 > - Talking with Piper about the work you're doing and how you like to work, then seeing whether Piper remembers any of that and lets it shape the help you get.
 > - The broad strokes. Does anything seem out of place, make no sense, or feel redundant or unnecessary? First impressions and specific bug reports are both welcome.
 >
@@ -57,6 +58,7 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 *Edit notes (Comms):*
 - *Cut as redundant with the rest of the letter:* "we'll share that information with you" (the known-issues list follows), and which sources are supported "so far" (the "What you can connect" paragraph names them).
 - *Version 1b:* the five alpha people already have accounts. For them, the first bullet could read "Getting started again, now that it's a beta." Or drop it.
+- *Standup bullet (added at xian's ask, 17:2x):* the three parts match the standup's sections in code (`StandupResult`: yesterday's accomplishments, today's priorities, blockers). "Includes your meetings" is the alpha letter's already-sent claim. "Each morning" is an invitation, not a schedule: Piper doesn't send it on its own, and nothing says it does.
 - *No pronoun for Piper* in the new prose. The third bullet says "Piper" twice instead of "it".
 - *Kept your phrase "minimally valuable"* rather than the house term "Minimum Valuable Product". Change it if you'd like the term.
 
