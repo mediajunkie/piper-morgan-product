@@ -743,7 +743,10 @@ DUE_REMINDER_LINE_OPS = frozenset(
 #: Of those, the ops whose OWN answer already shows the due reminders: they record the
 #: ids as surfaced and add no line. Also the only ops whose handler may see
 #: ``due_reminders`` in its context (the reminder list needs them for its answer).
-DUE_REMINDER_SELF_RENDERING_OPS = frozenset({"get_standup", "list_reminders_query"})
+#: ``get_standup`` is NOT here (Arch 2026-10-30): the standup renders no due-reminder
+#: section (no reminder/``reminder_date`` reference under services/standup or in its
+#: handler), so the line follows its answer.
+DUE_REMINDER_SELF_RENDERING_OPS = frozenset({"list_reminders_query"})
 
 
 async def dispatch_workflow(

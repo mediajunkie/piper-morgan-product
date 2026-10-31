@@ -68,6 +68,7 @@ def test_declared_set_is_pinned():
         "list_reminders_query",
         "greeting",
     }
+    assert DUE_REMINDER_SELF_RENDERING_OPS == {"list_reminders_query"}
     assert DUE_REMINDER_SELF_RENDERING_OPS <= DUE_REMINDER_LINE_OPS
     for banned in ("get_identity", "get_capabilities"):
         assert banned not in DUE_REMINDER_LINE_OPS
@@ -134,10 +135,15 @@ class TestOncePerTodoPerPrincipalSession:
         log.warning.assert_called()
 
     @pytest.mark.asyncio
-    async def test_standup_marks_surfaced_and_adds_no_line(self):
-        rows = [_row()]
+    async def test_standup_turn_shows_the_line_once(self):
+        # The standup renders no due-reminder section, so the line follows it (Arch).
+        rows = [_row("file the report")]
+        first = await _line("get_standup", rows)
+        assert first and "file the report" in first
+        assert "get_standup" not in DUE_REMINDER_SELF_RENDERING_OPS
+        # second standup turn, same principal session: same ids not repeated
         assert await _line("get_standup", rows) is None
-        assert await _line("greeting", rows) is None  # no duplicate later either
+        assert await _line("greeting", rows) is None
 
     @pytest.mark.asyncio
     async def test_reminder_list_turn_adds_no_second_mention(self):
