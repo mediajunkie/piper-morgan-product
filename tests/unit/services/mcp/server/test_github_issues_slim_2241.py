@@ -134,7 +134,7 @@ async def test_payload_states_scope_and_note_and_keeps_2005_fields(monkeypatch) 
     )
     assert p["note"] == (
         "255 open issues assigned to you, in the repositories your GitHub connection can "
-        "see, archived repositories excluded; showing 2 of them, newest first."
+        "see, archived repositories excluded; showing 2 of them, most recently opened first."
     )
     assert "all your repositories" not in json.dumps(p)
 
@@ -144,7 +144,20 @@ async def test_missing_total_falls_back_to_page_length_not_truncated(monkeypatch
     _stub([_raw(1)], total=None, monkeypatch=monkeypatch)
     p = await _payload()
     assert p["total"] == 1 and p["count"] == 1 and p["truncated"] is False
-    assert p["note"].startswith("1 open issue assigned to you")
+    assert p["note"] == (
+        "1 open issue assigned to you, in the repositories your GitHub connection can see, "
+        "archived repositories excluded; showing it, most recently opened first."
+    )
+
+
+@pytest.mark.asyncio
+async def test_whole_page_says_all_of_them_not_n_of_them(monkeypatch) -> None:
+    """CXO 10-31: "showing 3 of them" when total is 3 reads as if something is missing."""
+    _stub([_raw(1), _raw(2), _raw(3)], total=3, monkeypatch=monkeypatch)
+    p = await _payload()
+    assert p["count"] == 3 and p["total"] == 3 and p["truncated"] is False
+    assert p["note"].endswith("; showing all of them, most recently opened first.")
+    assert " of them" not in p["note"].replace("all of them", "")
 
 
 # ---- the sentence is rendered from the constants that build the call -----------------
@@ -155,7 +168,7 @@ def test_scope_and_ordering_are_rendered_from_the_adapter_constants() -> None:
     # The adapter's real constants today: created desc, archived excluded.
     assert gh._SEARCH_SORT == "created" and gh._SEARCH_ORDER == "desc"
     assert "archived:false" in gh._MY_OPEN_ISSUES_QUERY
-    assert ordering == "newest first"
+    assert ordering == "most recently opened first"
     assert "archived repositories excluded" in scope
 
 
@@ -163,7 +176,7 @@ def test_changing_the_sort_constant_changes_the_ordering_word(monkeypatch) -> No
     monkeypatch.setattr(gh, "_SEARCH_SORT", "updated")
     _, ordering = render_issues_scope()
     assert ordering == "most recently updated first"
-    assert ordering != "newest first"
+    assert ordering != "most recently opened first"
     monkeypatch.setattr(gh, "_SEARCH_SORT", "comments")
     _, ordering = render_issues_scope()
     assert ordering == "ordered by comments desc"  # an unknown sort is never an old word

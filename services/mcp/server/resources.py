@@ -103,8 +103,9 @@ ISSUE_ITEM_KEYS = (
 # (sort, order) with no entry renders the raw pair, so a new sort is never described by
 # an old word (Arch, #2241: the sentence is rendered from the constants that build the call).
 _ORDERING_WORDS = {
-    ("created", "desc"): "newest first",
-    ("created", "asc"): "oldest first",
+    # CXO 10-31 08:48: the words name the date the sort uses (opened, not touched).
+    ("created", "desc"): "most recently opened first",
+    ("created", "asc"): "oldest opened first",
     ("updated", "desc"): "most recently updated first",
 }
 
@@ -304,8 +305,12 @@ def render_issues_scope(
 def _issues_note(*, total: int, count: int, scope: str, ordering: str) -> str:
     """The one sentence a client can quote (#2022; words are CXO's inside the two facts the
     constants fix: what was searched, and how the page is ordered)."""
-    phrase = scope.replace("issues", "issue", 1) if total == 1 else scope
-    return f"{total} {phrase}; showing {count} of them, {ordering}."
+    # CXO 10-31 08:48: "N of them" only when the page is cut; a whole page says "all of
+    # them", and a single issue says "it". Both forms stay rendered from the same facts.
+    if total == 1:
+        return f"1 {scope.replace('issues', 'issue', 1)}; showing it, {ordering}."
+    shown = "all of them" if count >= total else f"{count} of them"
+    return f"{total} {scope}; showing {shown}, {ordering}."
 
 
 def _github_issues_payload(issues: list[dict[str, Any]], total: int | None) -> dict[str, Any]:
