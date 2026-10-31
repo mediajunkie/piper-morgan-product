@@ -2025,3 +2025,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2228	OPEN	Production		False relative time on the STATUS floor: #35, created 15:04 PT today, described as 'updated yesterday evening'; the GUIDANCE floor gets the server's naive clock as the user's time (child of 1828)			
 2229	OPEN	Production		Public site still invites visitors to the alpha and a beta waitlist after the private beta started (/try, /try/alpha, /get-involved)	website		
 2230	OPEN	Production		'Set my default GitHub repository to owner/name' gets the no-match line in every session: set_default_repo is not live in the inversion consult (no flip_group, category QUERY)			
+2231	OPEN	Production		Tracking: eleven close:pins-only closes whose failure path was never served on alpha (xian's beta test: 'fully tracking anything we know isn't working yet')			
