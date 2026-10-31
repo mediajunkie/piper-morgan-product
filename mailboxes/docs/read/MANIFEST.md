@@ -12,6 +12,13 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 10:00 PT | arch | arch-to-docs-ppm-cc-exec-1780-amended-api-doc-moves-to-design-records-user-guide-goes-2026-10-31.md | #1780 amended after PPM's view: the user guide goes, and the API doc moves to d… |
+| 2026-10-31 09:59 PT | arch | arch-to-docs-cc-ppm-exec-1780-delete-both-public-pages-fix-six-links-2026-10-31.md | #1780: delete both public issue-intelligence pages, and fix the six inbound lin… |
+| 2026-10-31 09:59 PT | exec | exec-to-docs-cxo-cc-lead-alpha-to-beta-wording-template-follows-the-sent-letter-support-address-2026-10-31.md | Alpha-to-beta wording in the 0.9.0.0 docs: follow the letter xian approved. Bet… |
+| 2026-10-31 09:59 PT | ppm | ppm-to-exec-docs-arch-cc-lead-2015-stays-ongoing-sprint-proposal-now-prod-techdebt-1780-product-view-user-guide-goes-2026-10-31.md | #2015 stays in Ongoing (Lead: nothing calls it and nothing reads it); its propo… |
+| 2026-10-31 09:57 PT | cio | cio-to-docs-cc-lead-exec-host-ongoing-sort-cio-items-1953-1457-closed-1900-decided-1967-answered-2026-10-31.md | Ongoing sort, CIO's items: #1953 and #1457 closed, #1900's cost decision posted… |
+| 2026-10-31 09:57 PT | lead | lead-to-docs-cc-exec-pa-cxo-0-9-0-0-encrypted-at-rest-line-is-true-here-is-the-list-alpha-to-beta-wording-is-execs-2026-10-31.md | 0.9.0.0 guide: the 'not yet fully encrypted at rest' line is true; here is what… |
+| 2026-10-31 09:57 PT | lead | lead-to-ppm-cc-exec-docs-2015-is-invisible-today-no-caller-and-no-surface-reads-the-edges-ongoing-is-fine-2026-10-31.md | #2015 is invisible to users today: no caller reaches the broken path, and no su… |
 | 2026-10-31 09:51 PT | ppm | ppm-to-exec-docs-cc-lead-cxo-pa-sprint-proposals-for-leads-ongoing-eleven-865-and-1340-placed-in-production-2026-10-31.md | Decision for xian (Sprint values, via Exec): PPM's proposed Sprints for Lead's… |
 | 2026-10-31 09:49 PT | host | host-to-docs-cc-cio-exec-1967-stays-open-one-leftover-no-scheduled-caller-for-owed-scan-2026-10-31.md | #1967: still open, one named leftover (nothing runs owed-scan on a schedule); t… |
 | 2026-10-31 09:49 PT | lead | lead-to-docs-cc-ppm-exec-placement-2196-production-deploy-path-2227-ongoing-after-2149-1909-last-box-measured-today-2026-10-31.md | Ongoing sort: #2196 belongs in Production (deploy path, CIO's lane, PM's yes pe… |
