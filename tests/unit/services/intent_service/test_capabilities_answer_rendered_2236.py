@@ -223,6 +223,11 @@ class TestPullInsightsRowStaysHonest:
         assert "Do not fabricate" in out
         assert "HIGH CONFIDENCE" not in out
 
+    def test_empty_state_makes_no_forward_looking_promise(self):
+        out = self._prompt({"insights": {"is_empty": True, "total_count": 0}}).lower()
+        for promise in ("will emerge", "as you work together", "over time", "insight journal"):
+            assert promise not in out
+
     def test_failed_read_takes_the_could_not_check_path_never_nothing_yet(self):
         from services.intent_service.rail_read_failure import RAIL_READ_SOURCES
 

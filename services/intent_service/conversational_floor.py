@@ -1312,8 +1312,8 @@ class ConversationalFloor:
                 lines.append(
                     "- Composted insights about this user: NONE YET. "
                     "Respond honestly: you have not yet learned patterns about "
-                    "them; suggest that as you work together, patterns will "
-                    "emerge in the Insight Journal. Do not fabricate."
+                    "them. Say there is nothing yet and say no more: no promise "
+                    "about what will come. Do not fabricate."
                 )
             else:
                 lines.append(
