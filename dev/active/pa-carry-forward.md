@@ -15,19 +15,16 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Now (written 2026-10-31 07:2x; replace, don't annotate)
+## Now (written 2026-10-31 12:5x; replace, don't annotate)
 
-- **#2218 SERVED 10-31 ~06:58:** mcp.pipermorgan.ai is Fly **v15**, `git_sha` 061de2f98f (the first served sha). The clean-read profile is identical before and after. v14 is retired, so xian's `ls` and the stop question are moot (Exec agreed). Lead closes #2218.
-- **The beta letters go out today (10-31)** from xian's mailbox. **No promotion to alpha until they've gone** (Exec's freeze, `piper-morgan` app only).
-- **#2241 (PA filed):** the tool returns 431k chars, because the github section is raw GitHub objects. Lead builds it together with #2022 as one unit. Arch ruled 06:55: slim item, 20k budget, created-desc sort, scope line from the query constants, no "all your repositories". **PA owes:** the deploy with `scripts/deploy-mcp.sh` once it lands, then one connector call that must render inline.
-- **#2242 (PPM filed):** who may connect the hosted MCP during the beta is xian's decision 7, via Exec. PPM recommends an allowlist.
-- **xian's MCP test plan:** `docs/internal/operations/mcp-test-plan-pm.md`, sent to Exec to place after the letters. When his notes come back: file the failures, and ask CIO or xian to read alpha's log for step 8 (revoke).
-- **Owed on the first promotion after the letters** (PPM's list):
-  - row 2: a full canonical run (Q45 expects `action`);
-  - row 3: A1, A2, B confirm and the reverse case; rebuild the harnesses from the 10-30 log;
-  - served checks with CXO: #2225, #2236, #2233, #2237.
-- **Owed after the set_default_repo flip:** a fresh-session probe of the setter, confirm and clear it, then row 2.
-- **Record if xian quotes them:** his beta wizard's end and his first reply.
+- **MCP app is Fly v18** (12:50:13 PT), sha a8a01b96b4, `/health` version 0.9.0.0. History today: v15 06:53 (#2218), v16 09:30 (#2241 + #2022), v17 09:35 (0.9.0.0 bump), v18 12:50 (#2241 zero/one-issue guard). Served note at v18: "245 open issues ... showing 42 of them". Quote sent to CXO. Lead closed #2241/#2022/#2218.
+- **0.9.0.0 cut (Lead owns, PA in the loop):** letters → xian's promotion → PA `/health` on alpha and beta + row 2 → PPM re-checks → tag-time parity with Lead on the served sha (name the sha; `origin/main` self-compares) → Lead tags on PPM's "tag: go". At 12:53 alpha and beta still serve ac5b69f865 / 0.8.14.0.
+- **Owed on that promotion:** row 2 full canonical run (Q45 expects `action`); row 3 (A1, A2, B confirm, reverse; rebuild harnesses from the 10-30 log); served checks with CXO: #2225, #2236, #2233, #2237.
+- **#2242** (who may connect): xian's decision 7 via Exec; PPM recommends allowlist; Lead 1–1.5 days; the verifier half ships on an MCP deploy, then PA runs served refusal checks.
+- **Plugin plan to 1.0:** gates are #2242, #1911, #1918, #2175, xian's test-plan run, and his 10-08 rulings (support address, privacy MCP section, reviewer invite). #1300 is met by OAuth (evidence on the issue); PPM recommends xian confirm and close. Better-only: #2174, #1701–#1706.
+- **xian's MCP test plan:** `docs/internal/operations/mcp-test-plan-pm.md` (updated for v18). When notes return: file failures; CIO or xian reads alpha's log for step 8 (revoke).
+- **Owed after the set_default_repo flip:** fresh-session probe, confirm and clear, then row 2.
+- **Record if xian quotes them:** his beta wizard's end and first reply.
 
 ## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 
