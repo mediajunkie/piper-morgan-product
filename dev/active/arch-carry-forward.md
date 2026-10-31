@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-30 09:29 PDT
+last_updated: 2026-10-30 21:28 PDT
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,15 +28,15 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
-- **10-30 (09:27 fire):** alpha still on `e234776150`. #2205 PASS (CXO 07:19), and row 2 recorded (35/42, routing 55/61). Landings on main, each validated by Arch:
-  1. ledger `b0de213827` (GO);
-  2. 2042a `2d28c849b6` (GO);
-  3. 2207 `8a07c8da26` (GO; residual **#2222**, owner/name and default binds with no turn principal, Lead's unit after the six);
-  4. 2209 `9d0c7709ce`: **NOT promotable** until the fix `claude/lead-2209b` lands. Seams: the rail, the Action Gate on the registered-op test, synthesis on a fetched source, plus the canonical-generic fallback (~3854) and GUIDANCE (decisions.log 08:57 and 09:3x).
-  5. 2151 status gather `9cbd0b8d19` (GO; KNOWN_RED 11).
-  - **All seven landed and validated by 09:5x:** the entry `28f016dff2` (the ledger holds slot 68) and 2209b `6c27f92a28` (four seams). **Arch's promotion condition is cleared**; the go/no-go is xian's. Open: #2211.
-  - **After 10:30:** #2222 validated and closed. #2223 (offers act only under the principal that armed them; one pop-seam check, a store stamp, anonymous pending_action records for anonymous turns only) validated on main at 4e9d370d06. #2215 validated (KNOWN_RED 9 + NOT_PERFORMED 1). #2224 filed (completion reads never performed; PPM places it). **#2195 description NO-GO; literal 32 stays** until the Haiku 5.5 screen (example-only first, today's five rows as sentinels). The 10:41 App-token gap blocked pushes about 10:41–11:13.
-  - Ship #067 review filed. Briefing pointers 5 of 5.
+- **10-30 STOP (21:27): MVP passed (xian's Go on #1386 at 17:03). Alpha and beta both serve `ac5b69f865`, one machine. Letters go Sat 10-31 AM; no promotion until they've gone (landing on main is fine).**
+  - **Validated on main today:** the seven morning landings; #2222; #2223 (also served: PA re-check 3, a "yes" without sign-in wrote nothing); #2215; #2225 (`47a9f431db`, closed, `fix:not-served`); the text-block pick plus harness flags (`52166af214`); the #2230 setter validation (`05b58c36b3`, writes only on 200); the #2236 notice (`6961a252a0`); #2236 render plus #2233 reminder line (`878e244157`) and the four fixes (`93bd29ccd7`); #2237 guard, page and wizard (`a3b3645787`); the connect listing (`5c7f15d794`). CI 12/12 green at 21:27.
+  - **NO-GOs today:** Haiku 5.5 drop-in (router stays 4.5; **#2227** re-baseline); #2195 (a) example (literal 32 stays; **#2195 waits on #2149**, no more single-field STATUS edits); (b) set_default_github_repo pointer (wrong premise: `set_default_repo` exists).
+  - **Lock-down done:** the Slack inbound gate is unset (xian, 20:23) and PA's served read at 20:25 is `disabled` on both hosts. CIO's names-only read: no global Notion or Slack keys.
+  - **Waiting on xian:** the by-name word to add `set_default_repo` to `PIPER_INVERSION_LIVE_CATEGORIES` (exactly that name, never QUERY), applied by CIO/HOST (HOST only with xian present), timed after the letters. Then PA's probe: it writes, PA confirms, then clears.
+  - **Next promotion (after the letters):** served checks on PPM's list (row 2 full, row 3 A1/A2 + B confirm/reverse; #2225 three turns; #2236 capability reply; #2233 Q1 + greeting/list line; #2237 page, wizard, "connect my slack"; "what have you learned" empty). I validate any landing in between.
+  - **Filed today:** #2222, #2223, #2224, #2227, #2235 (validator reads PAT only; OAuth accounts never validated), #2238 (Notion N1/C1 plus store caveat).
+  - **Rules recorded:** search for the capability, not the string, before ruling it missing; a ruling resting on another component's behaviour says whether that was verified; gate chains use pipefail and push only through `&&` from pytest; code-appended lines are computed before the turn is saved.
+  - **First Production sprint:** PPM's candidates name my #2149 (catalog shape) and #2042 (diagnosis then first fix). Both wait on xian's priorities talk.
 - **10-29 STOP (21:27):** alpha serves `e234776150` (the third promotion, #2205). xian ran A3/A4 tonight. **PA's hold on tested-path pushes holds Lead's queue.** Landing order, each on its own gates; **Arch validates each on main:**
   1. **ledger-only** `claude/lead-ledger-only` 400b21addb: the append-only catalog order, render byte-identical. decisions.log 19:39.
   2. **#2042a** `reference_relations`: whole-word title match; a dot between alphanumerics is in-word. GO.
