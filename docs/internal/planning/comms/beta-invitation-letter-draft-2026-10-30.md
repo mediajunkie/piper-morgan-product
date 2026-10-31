@@ -2,7 +2,7 @@
 
 **Drafted:** Comms, 2026-10-30 15:0x PT, after Exec's 14:52 relay ("xian announced at his talk today that private beta starts today").
 **Built from:** the 10-26 alpha letter (`design-partner-invitation-send-ready-2026-10-26.md`), which partners have already received, and the known-issues list (`design-partner-known-issues-and-calendar-lines-2026-10-19.md` §1, PPM pre-check 08:04 10-30: all six hold).
-**Placeholders:** `{NAME}`, `{CODE}` and `{URL}`. Never put a real name or code in this repo. Names and categories stay in HOST's roster.
+**Placeholders:** `{NAME}`, `{CODE}` and `https://beta.pipermorgan.ai`. Never put a real name or code in this repo. Names and categories stay in HOST's roster.
 **Not settled by this draft:** who gets it and when (xian's walk with HOST, in progress), and the four open points at the bottom.
 **Row 6 path:** xian edits → CXO reads → PPM checks each known-issues line against GitHub at send and strikes any whose issue has closed served → xian's go on #1386.
 
@@ -75,15 +75,15 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 
 *Version 1b only, replacing "Getting in" below:*
 
-> **Getting in.** Go to {URL} and sign in with the account you already have.
+> **Getting in.** Go to https://beta.pipermorgan.ai and sign in with the account you already have.
 
 *Version 1c only, replacing "Getting in" below:*
 
-> **Getting in.** If you already made an account, go to {URL} and sign in. Everything you did carries over. If you haven't yet, the code from my October 26 email should still work. Go to {URL}, choose "Create your account", and paste it in. It works once, for one account, so please don't share it. If it doesn't work, reply to this email and I'll send you a new one. The next step asks for your Anthropic API key, so have one ready.
+> **Getting in.** If you already made an account, go to https://beta.pipermorgan.ai and sign in. Everything you did carries over. If you haven't yet, the code from my October 26 email should still work. Go to https://beta.pipermorgan.ai, choose "Create your account", and paste it in. It works once, for one account, so please don't share it. If it doesn't work, reply to this email and I'll send you a new one. The next step asks for your Anthropic API key, so have one ready.
 
 *Versions 1a and 2:*
 
-> **Getting in.** Go to {URL} and choose "Create your account". The first step asks for your invite code:
+> **Getting in.** Go to https://beta.pipermorgan.ai and choose "Create your account". The first step asks for your invite code:
 >
 > {CODE}
 >
@@ -125,7 +125,7 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 | Openings | New: 1a, 1b and 2 (HOST's groups, 15:03) | Three groups, and not every opening is a cold one |
 | "Alpha is nearly over" | Out, replaced by a slot for xian | It describes the alpha |
 | Carry-over paragraph | Out, folded into opening 1b as one sentence | Only the five alpha people have accounts that carry over |
-| Getting in | URL is now `{URL}` | See open point 1 |
+| Getting in | URL is now `https://beta.pipermorgan.ai` | See open point 1 |
 | Known issues | Heading "in this beta". Eight lines, not five: the #2018 GitHub line is struck (closed served 10-28), the two 10-29 lines (#2042 class, #2184) are in, #2225 is in (CXO 17:0x), and #2230 is in (PPM 17:2x, CXO's words). Order puts the two "wrong answer" lines together | PPM 10-29 and 10-30. Issue numbers are dropped from the letter, as in the alpha one. They're in the known-issues doc |
 | Everything else | Unchanged, verbatim | Final pieces the alpha partners already have |
 
@@ -133,7 +133,11 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 
 ## Open points before it goes
 
-1. **Which URL?** beta.pipermorgan.ai and alpha.pipermorgan.ai serve the same build today. *Exec 15:01:* PA runs one fresh sign-up on beta. with the re-checks on the promoted build. If it passes, Exec recommends "beta." to xian. If not, "alpha." stays. HOST 15:04 would watch it with xian present. *PA 15:1x:* beta. serves the promoted build, `ac5b69f865`. The fresh sign-up spends a single-use code, so it needs xian's hands. PA has given him the steps. Until it's run, the letter keeps "alpha.". **Exec 17:0x: xian did the beta. sign-up by hand** (a new account, "beta xian", one code spent). The letter uses https://beta.pipermorgan.ai once his quote of the wizard's end and the first reply is recorded here. Not yet received by Comms.
+1. **URL: RESOLVED, https://beta.pipermorgan.ai** (applied in every version). xian, signed in on beta. with the account he made by hand ("beta xian"), quoted to Comms at 17:39:
+   - "What can you help me with?" got a capabilities list, written fresh by the model (no fixed text in code except the closing "(Running with a default configuration — nothing here needs setting up first.)"), ending "connect GitHub or Google Calendar in Settings → Integrations".
+   - "What's my standup?" got "I don't have anything to build your standup from yet — no observed activity in your connected tools. Want to do a quick guided standup interview instead? … (yes/no)". That's the fixed empty-state reply (`standup_preferences.py`).
+   - The setup wizard's last screen wasn't quoted, but the account exists and chat answers, so sign-up worked end to end.
+   - Three points in the capabilities reply went to CXO 17:4x: the "proactively" claim, the default-configuration line after "connect", and the word "honest". Not a letter blocker.
 2. **Terms: RESOLVED.** xian's "go" (Exec 16:59). Web pushed website `4826ded`, and the served `/terms/` reads "What this beta is" with 0 "alpha" in the page HTML (Web 17:0x, curl and Lighthouse). HOST's fallback line is struck and not in the letter. CXO's copy OK was given 15:2x and reconfirmed 17:0x.
 3. **xian's "what this beta is" paragraph: DRAFTED** from xian's dictation (17:3x). It needs his OK and a CXO read of the new claims: "most of the core functionality… is in place" and the remember-and-shape test.
 4. **PPM's line check at send**, after the promotion and PA's re-checks.
