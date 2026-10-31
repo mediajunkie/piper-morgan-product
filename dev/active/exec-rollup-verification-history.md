@@ -292,3 +292,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v710, 2026-10-31 10:00 PDT: plugin lane (PPM and PA) and the #1300 confirm-close question; PPM's Sprint proposal widened into the first yes.
 - v711, 2026-10-31 10:00 PDT: #2015's proposed Sprint is now PROD-TECHDEBT (PPM).
 - v712, 2026-10-31 10:09 PDT: step 1 notes the sender address (designinproduct.com drafts against the Quickstart's xian@pipermorgan.ai).
+- v713, 2026-10-31 10:13 PDT: Lead's allow line moved into step 2 with the exact line (CIO's one escalation, v4).

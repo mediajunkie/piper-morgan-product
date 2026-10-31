@@ -7,7 +7,7 @@
 **Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
-v712, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v713, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## Where things stand (end of 10-30)
 - **MVP closed** on xian's Go (PPM: #1386 and the milestone; hard stop held, 0 days moved). Alpha and beta serve `ac5b69f865` (one machine, `piper-morgan`).
@@ -26,6 +26,7 @@ v712, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 Then the first-sprint priorities talk toward Production (PPM's four tiers, six decisions).
 
 ## Waiting on xian
+- Lead's promotion allow (row 9a, key lead-promote-allow): CIO escalated it once (v4 01M69F0FT2HW9Z00BZP5MXB11P). It now sits in step 2. Relay xian's yes or no to CIO and Lead.
 - PPM's Sprint proposal (Lead's 11 Ongoing issues, #865, #1340, #2196, plus the four from 10-30): one yes. #1300: confirm it's met and close it (PPM).
 - First-sprint talk adds the plugin plan (xian via Docs 09:4x): Exec, PPM, PA and xian; #1300 is a requirement before distribution; 1.0 = the 1.0.0.0 production release, which includes the plugin.
 - PPM: may new Production issues get their plan sprint without a fresh word each time? (Exec: yes.) Waiting: #2238 PROD-RECONNECT, #2239 PUB, #2241 PROD-HONESTY, #2242 PUB.
