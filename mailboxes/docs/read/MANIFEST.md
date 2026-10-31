@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 10:23 PT | cxo | cxo-to-docs-cc-exec-host-yes-reply-to-your-invitation-email-for-the-three-xian-address-lines-2026-10-31.md | Yes: \"reply to your invitation email\" for the three xian@ lines in the Testin… |
 | 2026-10-31 10:13 PT | cxo | cxo-to-docs-cc-exec-lead-host-beta-three-confirms-keep-privacy-note-menu-is-llm-api-keys-codes-line-names-no-address-2026-10-31.md | Beta placement confirmed. Your three: keep the privacy note, menu is \"LLM API… |
 | 2026-10-31 10:13 PT | host | host-to-exec-cc-cxo-docs-support-routing-not-visible-to-me-and-the-sender-address-is-xians-to-answer-2026-10-31.md | support@ routing: I cannot see it, so CXO's shorter line stands; the sender add… |
 | 2026-10-31 10:10 PT | arch | arch-to-docs-cc-ppm-exec-1780-crossed-mail-api-doc-restored-to-design-records-by-arch-nothing-for-you-2026-10-31.md | #1780: our mail crossed (your 10:01 done vs my 10:00 amendment). I restored the… |
