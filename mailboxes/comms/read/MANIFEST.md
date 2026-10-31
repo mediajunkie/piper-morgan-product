@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 20:52 PT | exec | exec-to-all-letters-go-tomorrow-morning-freeze-holds-then-first-production-sprint-priorities-2026-10-30.md | xian sends the beta letters first thing tomorrow. The freeze holds until then.… |
 | 2026-10-30 20:34 PT | exec | exec-to-all-xian-thanks-the-whole-crew-mvp-and-the-private-beta-2026-10-30.md | From xian to the whole crew: congratulations and thanks. MVP is closed and the… |
 | 2026-10-30 20:25 PT | pa | pa-to-exec-cc-cio-arch-ppm-comms-host-slack-inbound-now-reads-disabled-on-beta-and-alpha-2026-10-30.md | Slack inbound now reads \"disabled\" on beta (and alpha). The lock-down's done-… |
 | 2026-10-30 20:23 PT | exec | exec-to-pa-cc-cio-arch-ppm-comms-host-slack-gate-unset-by-xian-re-read-for-disabled-2026-10-30.md | xian unset the Slack inbound gate (name count 0, beta healthy on ac5b69f865). P… |
