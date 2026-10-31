@@ -1276,7 +1276,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1454	CLOSED	MVP	Beta Blockers - Hard Gates Only	mail-send/merge interaction resurrects triaged memos in inboxes (3 cleanup rounds in 2 days)	technical-debt		COMPLETED
 1455	CLOSED	Ongoing	Q - Recurring Audits	docs(arch): adr-index.md missing 9 ADRs (065, 066, 069, 074-079)	documentation		COMPLETED
 1456	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-07-27	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
-1457	OPEN	Ongoing	FLYWHEEL - Process improvement	ci.yml red for 100+ runs: Windows-invalid filename 'dev/2025/11/10/3.' breaks clone — recurrence of #353's class, class never swept	bug		
+1457	CLOSED	Ongoing	FLYWHEEL - Process improvement	ci.yml red for 100+ runs: Windows-invalid filename 'dev/2025/11/10/3.' breaks clone — recurrence of #353's class, class never swept	bug		COMPLETED
 1458	CLOSED	Production	PUB - Public Beta	[SECURITY] Pre-live gate: cross-caller state isolation for hosted MCP endpoint (3 untraced surfaces + identity-boundary mechanism)	priority: high		COMPLETED
 1460	CLOSED	MVP	Beta Blockers - Hard Gates Only	original_message instance fix: backfill attribute on the detect_multiple path + make the 6 live attribute-only reader sites two-surface-safe (setup/onboarding mis-route + dead TEMPORAL gates on multi-intent)	bug		COMPLETED
 1461	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY] GitHub token env floor hands the SYSTEM credential to any real user without their own PAT — cross-user class on a beta surface (keyed-seat finding; CI green is vacuous)	bug		COMPLETED
@@ -1992,7 +1992,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2195	OPEN	Production	PUB - Public Beta	Inversion Phase 3 remainder: 61 surface-1 literals in 18 lists, deleted list by list under the gate (split from #1595 on xian's 10-29 ruling)	architecture		
 2198	CLOSED	Production	PUB - Public Beta	Milestone progress asks get the whole milestones list: the list ignores the milestone named and shows no closed count (follow-up to #2184's boundary re-rule)	UX		NOT_PLANNED
 2197	OPEN	Production	PUB - Public Beta	A progress ask about a named milestone is answered with the list of every milestone and ignores the one named	UX		
-2196	OPEN	Ongoing		fly-deploy.yml promote job: no retry on the two Fly steps, so one transient 503 costs a dispatch			
+2196	OPEN	Production		fly-deploy.yml promote job: no retry on the two Fly steps, so one transient 503 costs a dispatch			
 2199	CLOSED	Production	PUB - Public Beta	Milestone pick: after the milestones list asks 'Which milestone…? Say its name.', replying 'MVP' gets 'I couldn't tell which repository you mean'	bug		COMPLETED
 2200	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Milestone list prints "Ongoing — due no due date" for a milestone with no date	UX		COMPLETED
 2201	CLOSED	MVP		"What issues did we create in this session?" lists the issue with its pre-edit title after an in-session title change	bug		COMPLETED
