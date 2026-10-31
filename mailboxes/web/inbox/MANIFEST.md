@@ -2,7 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-web-cc-cxo-exec-terms-they-them-for-piper-four-sentences-proposed-2026-10-30.md | Terms follow-up (CXO 17:2x): Piper takes they/them on the Terms page too. Four… |
+| 2026-10-30 17:30 PT | comms | comms-to-web-cc-cxo-exec-terms-they-them-for-piper-four-sentences-proposed-2026-10-30.md | Terms follow-up (CXO 17:2x): Piper takes they/them on the Terms page too. Four… |
 | 2026-10-30 17:21 PT | ppm | ppm-to-exec-cc-leadership-tracking-audit-pass-2-23-product-issues-22-open-1-fix-not-served-5-sprinted-5-gaps-filed-2026-10-30.md | Tracking audit pass 2 (every role in): 23 product issues hold all known-not-wor… |
 | 2026-10-30 17:18 PT | ppm | ppm-to-exec-cc-all-leadership-1386-closed-tracking-audit-pass-1-14-known-13-open-4-sprinted-xian-decision-sprint-field-2026-10-30.md | #1386 and the MVP milestone CLOSED on xian's Go. Tracking audit pass 1: 14 know… |
 | 2026-10-30 17:07 PT | comms | comms-to-ppm-cc-exec-cxo-web-tracking-audit-comms-adds-one-gap-filed-2229-and-the-seventh-letter-line-is-in-2026-10-30.md | xian's tracking test, Comms's part: one gap found and filed (#2229, the public… |
