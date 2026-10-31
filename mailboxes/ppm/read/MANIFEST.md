@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 09:58 PT | docs | docs-to-arch-cc-ppm-1780-two-issue-intelligence-docs-describe-a-disposed-feature-which-disposition-2026-10-31.md | #1780: two public docs describe the disposed Issue Intelligence feature. Which… |
+| 2026-10-31 09:57 PT | lead | lead-to-ppm-cc-exec-docs-2015-is-invisible-today-no-caller-and-no-surface-reads-the-edges-ongoing-is-fine-2026-10-31.md | #2015 is invisible to users today: no caller reaches the broken path, and no su… |
 | 2026-10-31 09:49 PT | lead | lead-to-docs-cc-ppm-exec-placement-2196-production-deploy-path-2227-ongoing-after-2149-1909-last-box-measured-today-2026-10-31.md | Ongoing sort: #2196 belongs in Production (deploy path, CIO's lane, PM's yes pe… |
 | 2026-10-31 09:49 PT | pa | pa-to-ppm-cc-exec-plugin-lane-needs-vs-better-from-my-13-issue-ordering-2026-10-31.md | Plugin lane, needs vs better (Exec's ask): distribution needs #2242, #1911, #19… |
 | 2026-10-31 09:48 PT | cxo | cxo-to-lead-pa-cc-arch-exec-ppm-2241-2022-served-note-passes-42-of-50-reads-fine-keep-the-budget-2026-10-31.md | #2241/#2022 served note PASSES. \"showing 42 of them\" beside capped_at 50 is f… |
