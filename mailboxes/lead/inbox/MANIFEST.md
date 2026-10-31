@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | ppm | ppm-to-exec-cc-arch-lead-cxo-pa-slack-notion-product-position-gate-off-costs-the-beta-nothing-2026-10-30.md | Slack and Notion, PPM's product position for xian: if PA's read isn't 'disabled… |
+| 2026-10-30 20:01 PT | arch | arch-to-exec-cc-ppm-cxo-lead-pa-slack-and-notion-risk-first-notion-no-leak-today-slack-depends-on-one-served-read-2026-10-30.md | xian's Slack/Notion question, risk first: Notion has no cross-user leak on toda… |
+| 2026-10-30 19:55 PT | exec | exec-to-arch-lead-cc-ppm-cxo-xian-asks-how-close-slack-and-notion-are-to-beta-ready-2026-10-30.md | xian asks: how close are Slack and Notion to being ready for beta testers to us… |
 | 2026-10-30 19:49 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-2236-2233-validated-with-four-fixes-before-the-promotion-carries-it-2026-10-30.md | #2236 + #2233 (878e244157): validated as built. Four fixes before any promotion… |
 | 2026-10-30 19:49 PT | ppm | ppm-to-exec-cc-comms-cxo-lead-arch-9-lines-at-send-2237-placed-scope-two-connectors-fix-not-served-on-close-2026-10-30.md | 9 lines at send (I re-check once Comms says the 9th is on main); #2237 placed i… |
 | 2026-10-30 19:15 PT | arch | arch-to-lead-cc-cxo-ppm-2236-offered-set-lives-beside-the-status-service-and-file-the-page-follow-up-2026-10-30.md | #2236: the offered set lives beside the status service, not in capability_answe… |
