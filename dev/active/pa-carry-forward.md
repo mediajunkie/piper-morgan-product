@@ -15,35 +15,43 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Now: the MVP gate (written 2026-10-29 STOP; replace, don't annotate)
+## Now: MVP passed; beta letters Saturday 10-31; MCP is priority 1 again (written 2026-10-30 STOP; replace, don't annotate)
 
-- **Alpha** serves `e234776150`, the #2205 build: Lead's READY e12e5ad9ed, promoted 18:4x on 10-29.
-- **MVP** has 2 open: #2205 and #1386 (the gate itself).
-- **The freeze holds.** Lead and Arch's #2195, #2209 and #2151 builds are held off main.
-- **Owed by xian:** A3 and A4 on two fresh accounts, one with a wizard repo and one without. He has the codes. CXO rules #2205 from his screenshots.
-  - With a wizard repo: the create goes there with no question, then "Show me that issue" shows it.
-  - Without: the ask line `Which repository should I create this in? Say owner/name…`, then after owner/name the create goes there.
-- **Owed by PA, after A3/A4:** row 2, the clean canonical run on e234776150. It is the only reportable row-2 run (the 10-29 12:50 run errored on Q61–63 at the test-workspace cap). Send START and END mails, and the MARGINALs to CXO.
-  - The harness is `dev/2026/10/19/canonical-retest-1386-alpha.py`, run with Lead's venv, `PIPER_BASE_URL=https://alpha.pipermorgan.ai`, and the cred file via process substitution.
-  - The judge uses lead-scoring (raised again at 18:59). The chat replies spend the piper-morgan-test cap ($40); if replies hit "usage limit", xian raises it.
-- **Done on 10-29:**
-  - Row 4: Lead, tests/security 156 passed on e234776150.
-  - Scenario B passed. Scenario C passed. Scenario A has A1 and A2 passing; A3 and A4 are pending.
-  - #2199, #2200 and #2201 are closed.
-- **After rows 2 and A3/A4:** PPM's row 5 (final read) and row 6 (the beta letter draft, after xian's HOST conversation, 10-30 or later), then xian's go/no-go on #1386.
-- **The #2184 partner note:** xian approved it with CXO's sentence. He sends it from his own mailbox.
+- **MVP passed** on `ac5b69f865` (xian's go 17:03; PPM closed #1386; milestone 0 open). alpha and beta.pipermorgan.ai are one host and share accounts. Both serve `ac5b69f865`.
+- **The beta letters go out Saturday morning (10-31) from xian's mailbox.** HOST mints the codes with him. **No promotion to alpha until they've gone** (Exec's freeze). Landing on main is fine.
+- **Slack inbound gate:** xian unset it at 03:22Z, and PA read `disabled` at 20:25 on 10-30. Nothing more needed.
+- **Open at STOP, the #2218 lock-down question.** Any signed-in account, beta included, can connect the hosted MCP: a session plus a consent click, no allowlist. Exec asked CIO for one `ls /app/config` on `piper-morgan-mcp`.
+  - If `PIPER.user.md` is absent: no lock-down.
+  - If present: stop the MCP app before the letters. That cuts xian's connector too.
+  - PA's own `fly ssh` read was **denied** by the auto-mode classifier (production read), so don't retry it. Ask xian for a permission rule if PA is meant to do these.
+  - PA told Exec and CIO at 21:5x that v14 came from Amber (likely absent). Filed #2240.
+  - PA offered Exec a served OAuth-by-API profile proof. It writes 1 client row and 1 token, so it waits on Exec's yes.
+- **Owed by PA on the first promotion after the letters** (PPM's list in `ppm-to-exec-...-2238-placed-next-promotion-check-list...`):
+  - Row 2: a full canonical run. Q45 already expects `action`, so routing reads 56/61 on 10-30.
+  - Row 3: A1, A2, B's confirm, and the reverse case (`scratchpad` harnesses are gone after this session, so rebuild them from the 10-30 log).
+  - Served checks with CXO: #2225, #2236 (capability reply), #2233 (Q1 name, then stop), #2237 (grey Slack/Notion cards), #2218 if landed.
+- **Owed by PA after the set_default_repo flip** (xian's word, then CIO/HOST applies it): a fresh-session probe where the setter writes, PA confirms the value and then clears it, then one row 2 run. The test account has a PAT, so this exercises the 200 path.
+- **Record if xian quotes them:** his beta wizard's end and his first reply ("beta xian" account).
+- **Issues PA filed on 10-30:** #2225 (closed, fix not served, label `fix:not-served`), #2228, #2230.
 
 ## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 
 PA runs on **`com.xian.pm-pa-cycle`** (boot-persistent, 6x/day at **:47**, hours 6,9,12,15,18,21, Pard-owned). Session cron `a692bd9e` **retired** 09-30 18:4x on Pard's confirmation that the 15:47 LA fire landed work. **`CronList` → "No scheduled jobs" is now the NORMAL state, not Gap-C. Do NOT re-arm a session cron**, including at STOP: per duty-cycle-tick's cron-mechanism gate, skip all CronList/CronCreate/STOP-re-arm content. LaunchAgent liveness is Pard's to monitor. Registry `pa` row flip to LaunchAgent is Exec's (notified 09-30 18:5x). If it still reads session-cron, that's Exec's pending action, not a gap of mine. The +30 session-cron lag (:42 → :12) is moot now; it was a standing observation, last measured 10/10 on 09-29/30.
 
-## MCP program — the live thread (standing #1), as of 2026-10-01 STOP
+## MCP program — standing #1 again (rewritten 2026-10-30 STOP; replaces the stale 10-01 section)
 
-- **Live**: MCP **v9** `fcd07b850b` = Host-allowlist fix + read-only tool `what_piper_knows_about_me` (Arch's 4 conditions). PM first contact 10-01 ~10:5x found the 421 (fixed) and the zero-tools gap (fixed by v9). **Neither verified with an authenticated call yet.**
-- **PM is unwell (10-02, said so directly) and will send an update when able. Don't nudge or chase the test.** Nothing here is time-critical. When PM resumes, in order: (1) re-add ChatGPT connector (look at the new consent page), ask what Piper knows; (2) Settings → Connected apps should list ChatGPT; (3) Claude; (4) remove the ChatGPT connector → I check **alpha** (`fly logs -a piper-morgan`) for `/mcp/oauth/revoke`. Watch both log buffers live when PM says they're testing.
-- **#1918 + #1911 — all code on main, awaiting Lead's next alpha deploy** (as of 10-02 13:xx; alpha was `c49c5c82b2`): backend `549b78e5f4` (LIVE), #1911 identity+branding `45ab41bf48`, #1918 page `2a01c82fa3` (chat_invisible 27→28, Arch-approved). **After the deploy, mine, in order:** (1) live render check of `/settings/connected-apps` + the consent page: **both are LIVE on alpha since ~15:4x 10-02; the check is folded into PM's test** (the consent page appears naturally on reconnect; plus 'glance at Settings → Connected apps, which should list ChatGPT'). My local-browser attempt hit a deny rule on `.env`, so a PA instance can't reach the dev DB's test account (see the 10-02 log), (2) **then** add #1911's revoke-path sentence per CXO spec §1c (gated on #1918 being LIVE, not merely merged), (3) route the §1c/§2c copy for Comms' voice pass, (4) watch `client_name` nulls in real data.
-- Gates: ~~#1458~~ CLOSED 10-05 (MCP v10 `e3dde4b26f`, rate limit 30/min × N=2 machines, memory backend; Upstash = trigger for leaving probe scale); the #1911 isolation-claim re-check trigger is standing Watch #2.
-- Commit hygiene: `dev/state/pa-last-pm-scan` is **untracked + gitignored since 10-07** (CIO `0e46701667`). **Don't stage it**, since `git add` on it now aborts the whole add.
+- **Live:** `mcp.pipermorgan.ai` is v14, deployed by PA at 17:49 PT on 10-13 (00:49Z 10-14) from this Amber worktree, via `scripts/deploy-mcp.sh`, from `c6c26a596f`. `/health` returns 200 with `git_sha` "unknown", because v14 predates the script's `--build-arg PIPER_GIT_SHA` (added 10-16). **The next `scripts/deploy-mcp.sh` run sets the sha by itself**, so check `/health` after. No commits to the MCP server's own paths since then. **#2240:** the script's stray-file guard skips gitignored files, so a local `config/PIPER.user.md` would ship. Check `ls config/` before any deploy until it's fixed.
+- **Auth:** the protected-resource metadata points to alpha's `/mcp/oauth`. Dynamic registration is open, and `/authorize` needs an alpha session plus Approve. There is no allowlist, so the beta scope (PDR-005 Am. 1: MCP not offered) isn't enforced in code. Lead sized a consent-page allowlist as a web-app unit (a promotion).
+- **Re-entry plan (START 10-31, fresh session):**
+  1. Settle #2218 per the Now section, then deploy the fix (Lead's unit) with `scripts/deploy-mcp.sh` after `ls config/` shows no `PIPER.user.md` (#2240), and check that `/health` shows the sha.
+  2. An authenticated live check of v14+: `what_piper_knows_about_me` through xian's Claude connector (PA has the `Piper_Morgan_Alpha_MCP` tool in-session) plus the profile/colleague-model resources. Never verified by an authenticated call since v9.
+  3. Re-read the open MCP issues and order them for the first Production sprint discussion (PPM is preparing candidates):
+     - #1462 epic; #1918 Connected apps; #1911 consent branding; #2022 payload scope; #2174 ADR-081 D3; #2175 MCP → invite path;
+     - increments #1701 (create issue), #1702 (todos), #1703 (standup), #1704 (docs), #1705 (memory), #1706 (calendar).
+     - Send PA's ordering to PPM before the sprint talk.
+  4. Write the MCP test plan xian runs (connect, ask, Settings → Connected apps, revoke → PA checks alpha logs for `/mcp/oauth/revoke`). The 10-01 version of the plan was never run.
+  5. R7 listing copy and the Registry publish stay behind 1–4.
+- Commit hygiene: `dev/state/pa-last-pm-scan` is untracked and gitignored. **Don't stage it.**
 
 ## R7 (PM ruling 10-05): MVP is a capability set across surfaces; beta.pipermorgan.ai stays the target
 
