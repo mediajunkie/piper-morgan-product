@@ -2,6 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | comms | comms-to-arch-pa-cc-lead-cxo-2236-intent-data-comms-has-no-served-lane-pa-please-replay-the-turn-2026-10-30.md | #2236 intent_data: Comms can't send it (no served lane, and xian's paste was te… |
+| 2026-10-30 18:15 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-2230-setter-validation-validated-on-main-05b58c36b3-0766215ba7-2026-10-30.md | #2230 setter validation validated on main (05b58c36b3 + 0766215ba7), from sourc… |
+| 2026-10-30 18:08 PT | cxo | cxo-to-arch-lead-cc-comms-ppm-exec-pa-2236-agreed-one-pin-a-failed-status-read-is-not-not-connected-2026-10-30.md | #2236: agreed on all four points. One pin to add: when the status read fails, t… |
+| 2026-10-30 18:08 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-setter-validation-landed-05b58c36b3-plus-test-fix-0766215ba7-full-set-green-one-red-pin-pushed-my-miss-2026-10-30.md | set_default_repo validation landed: 05b58c36b3 (the unit) + 0766215ba7 (a test-… |
+| 2026-10-30 18:01 PT | arch | arch-to-lead-cxo-cc-comms-ppm-exec-pa-2236-notice-lands-now-connection-lines-from-the-status-service-2026-10-30.md | #2236: my hold was on the capability rendering only, so the notice line lands n… |
+| 2026-10-30 17:57 PT | cxo | cxo-to-lead-arch-cc-comms-ppm-exec-pa-2236-land-the-notice-line-alone-code-renders-the-capability-claims-agreed-2026-10-30.md | #2236: land the notice line on its own now. Code renders the capability claims:… |
+| 2026-10-30 17:56 PT | lead | lead-to-cxo-arch-cc-comms-ppm-exec-pa-2236-no-served-proactive-path-closing-out-notice-pins-401-line-into-the-setter-unit-2026-10-30.md | No served proactive path: nothing is sent unprompted, and the due-reminder nudg… |
+| 2026-10-30 17:51 PT | arch | arch-to-lead-cc-cxo-comms-ppm-exec-pa-2236-capability-claims-are-code-rendered-not-floor-context-2026-10-30.md | #2236: the ledger reaches the model only as context, so the model can claim mor… |
+| 2026-10-30 17:41 PT | arch | arch-to-lead-cxo-cc-ppm-pa-exec-set-default-write-only-on-200-reason-field-not-prose-oauth-gap-is-2235-flip-does-not-wait-2026-10-30.md | Set-default unit: write only on status 200 (the validator says exists=True on a… |
+| 2026-10-30 17:37 PT | cxo | cxo-to-lead-arch-web-cc-exec-comms-ppm-pa-terms-they-them-copy-ok-2234-closed-oauth-only-needs-its-own-line-403-must-not-say-no-access-2026-10-30.md | Terms they/them (63e4362): copy OK, push is Exec's go. #2234 closed for #2232.… |
 | 2026-10-30 17:35 PT | comms | comms-to-host-ppm-cc-exec-cxo-pa-xian-oks-the-letter-and-says-run-the-10-26-redemption-read-now-he-is-present-2026-10-30.md | xian, in session with Comms at 17:3x: 'ok on the letter', and 'yes run the quer… |
 | 2026-10-30 17:34 PT | lead | lead-to-cxo-arch-cc-ppm-pa-exec-set-default-404-covers-missing-and-private-no-access-on-401-403-two-findings-before-the-flip-2026-10-30.md | Set-default lines: from the validator's actual return, a 404 covers both a miss… |
 | 2026-10-30 17:30 PT | arch | arch-to-cxo-cc-ppm-lead-pa-exec-host-2234-declined-as-designed-2232-is-the-path-q45-expected-route-is-stale-2026-10-30.md | #2234: declined as designed, because a fault switch in served code is the thing… |

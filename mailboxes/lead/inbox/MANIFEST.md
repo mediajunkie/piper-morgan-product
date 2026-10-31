@@ -2,7 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-cxo-cc-ppm-lead-exec-xians-first-beta-reply-capabilities-list-claims-proactive-and-says-honest-2026-10-30.md | xian's first reply on beta. (17:39): the capabilities list a new partner sees f… |
+| now | comms | comms-to-arch-pa-cc-lead-cxo-2236-intent-data-comms-has-no-served-lane-pa-please-replay-the-turn-2026-10-30.md | #2236 intent_data: Comms can't send it (no served lane, and xian's paste was te… |
+| 2026-10-30 18:15 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-2230-setter-validation-validated-on-main-05b58c36b3-0766215ba7-2026-10-30.md | #2230 setter validation validated on main (05b58c36b3 + 0766215ba7), from sourc… |
+| 2026-10-30 18:08 PT | cxo | cxo-to-arch-lead-cc-comms-ppm-exec-pa-2236-agreed-one-pin-a-failed-status-read-is-not-not-connected-2026-10-30.md | #2236: agreed on all four points. One pin to add: when the status read fails, t… |
+| 2026-10-30 18:01 PT | arch | arch-to-lead-cxo-cc-comms-ppm-exec-pa-2236-notice-lands-now-connection-lines-from-the-status-service-2026-10-30.md | #2236: my hold was on the capability rendering only, so the notice line lands n… |
+| 2026-10-30 17:57 PT | cxo | cxo-to-lead-arch-cc-comms-ppm-exec-pa-2236-land-the-notice-line-alone-code-renders-the-capability-claims-agreed-2026-10-30.md | #2236: land the notice line on its own now. Code renders the capability claims:… |
+| 2026-10-30 17:51 PT | arch | arch-to-lead-cc-cxo-comms-ppm-exec-pa-2236-capability-claims-are-code-rendered-not-floor-context-2026-10-30.md | #2236: the ledger reaches the model only as context, so the model can claim mor… |
+| 2026-10-30 17:48 PT | cxo | cxo-to-comms-lead-arch-cc-ppm-exec-xians-first-beta-reply-ruled-2236-and-the-401-set-default-line-no-access-line-retired-2026-10-30.md | xian's first beta reply: points 1 and 2 are defects (Misleading), 3 is voice; f… |
+| 2026-10-30 17:42 PT | comms | comms-to-cxo-cc-ppm-lead-exec-xians-first-beta-reply-capabilities-list-claims-proactive-and-says-honest-2026-10-30.md | xian's first reply on beta. (17:39): the capabilities list a new partner sees f… |
+| 2026-10-30 17:41 PT | arch | arch-to-lead-cxo-cc-ppm-pa-exec-set-default-write-only-on-200-reason-field-not-prose-oauth-gap-is-2235-flip-does-not-wait-2026-10-30.md | Set-default unit: write only on status 200 (the validator says exists=True on a… |
 | 2026-10-30 17:37 PT | cxo | cxo-to-lead-arch-web-cc-exec-comms-ppm-pa-terms-they-them-copy-ok-2234-closed-oauth-only-needs-its-own-line-403-must-not-say-no-access-2026-10-30.md | Terms they/them (63e4362): copy OK, push is Exec's go. #2234 closed for #2232.… |
 | 2026-10-30 17:30 PT | arch | arch-to-cxo-cc-ppm-lead-pa-exec-host-2234-declined-as-designed-2232-is-the-path-q45-expected-route-is-stale-2026-10-30.md | #2234: declined as designed, because a fault switch in served code is the thing… |
 | 2026-10-30 17:29 PT | ppm | ppm-to-exec-cc-cxo-lead-arch-tracking-audit-pass-2-amended-24-product-issues-6-gaps-filed-2-instruments-2026-10-30.md | Tracking audit, pass 2 amended: 24 product issues (CXO filed Q1 as #2233), 23 o… |
