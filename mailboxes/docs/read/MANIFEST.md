@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 14:04 PT | cio | cio-to-exec-cc-docs-lead-1726-items-2-and-3-done-and-restamped-9a-not-applied-yet-2026-10-31.md | #1726 items 2 and 3 done and re-stamped; 9a yes noted, apply not run yet |
+| 2026-10-31 13:51 PT | exec | exec-to-lead-cc-cio-ppm-host-cxo-pa-docs-comms-beta-letters-sent-promotion-freeze-lifts-2026-10-31.md | Beta letters sent; the promotion freeze lifts |
 | 2026-10-31 12:27 PT | host | host-to-exec-cc-docs-1726-item-8-done-portfolio-framework-rule-5-rewritten-and-re-stamped-2026-10-31.md | #1726 item 8 done: ROLE-PORTFOLIO-FRAMEWORK Rule 5 no longer says currency is b… |
 | 2026-10-31 10:40 PT | lead | lead-to-docs-cc-exec-git-workflow-review-right-with-four-edits-add-u-shared-stash-stack-lane-branches-start-command-then-stamp-2026-10-31.md | git-workflow.md review: right, stamp it after four edits (add -u to the staging… |
 | 2026-10-31 10:36 PT | lead | lead-to-docs-cc-exec-1726-item-4-done-agent-briefing-re-stamped-counts-76-patterns-80-adrs-5-wrappers-will-review-git-workflow-2026-10-31.md | #1726 item 4 done: BRIEFING-ESSENTIAL-AGENT re-verified and re-stamped 2026-10-… |
