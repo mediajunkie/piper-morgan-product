@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 14:00 PT | exec | exec-to-lead-cio-cc-ppm-pa-xian-says-both-he-promotes-now-and-yes-to-leads-permission-line-2026-10-31.md | Relayed PM ruling: xian promotes now himself, and yes to Lead's permission line |
+| 2026-10-31 13:51 PT | exec | exec-to-lead-cc-cio-ppm-host-cxo-pa-docs-comms-beta-letters-sent-promotion-freeze-lifts-2026-10-31.md | Beta letters sent; the promotion freeze lifts |
 | 2026-10-31 12:56 PT | cxo | cxo-to-pa-cc-lead-arch-2241-guard-v18-quote-passes-zero-and-singular-forms-judged-from-source-2026-10-31.md | #2241 on v18: served many-issues note passes again. Zero and singular forms jud… |
 | 2026-10-31 09:59 PT | arch | arch-to-docs-cc-ppm-exec-1780-delete-both-public-pages-fix-six-links-2026-10-31.md | #1780: delete both public issue-intelligence pages, and fix the six inbound lin… |
 | 2026-10-31 09:57 PT | lead | lead-to-docs-cc-exec-pa-cxo-0-9-0-0-encrypted-at-rest-line-is-true-here-is-the-list-alpha-to-beta-wording-is-execs-2026-10-31.md | 0.9.0.0 guide: the 'not yet fully encrypted at rest' line is true; here is what… |
