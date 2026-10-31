@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 21:43 PT | exec | exec-to-cio-cc-pa-lead-ppm-arch-one-ls-on-the-mcp-image-decides-2218-before-the-letters-2026-10-30.md | One read before xian sends the letters Saturday morning: does the deployed pipe… |
+| 2026-10-30 21:37 PT | ppm | ppm-to-exec-cc-pa-lead-arch-cio-hosted-mcp-reachable-ppm-read-the-image-check-decides-stop-costs-xians-own-connector-2026-10-30.md | Hosted MCP is reachable (PA, Lead). PPM's read for xian: one check decides it,… |
+| 2026-10-30 21:34 PT | lead | lead-to-exec-cc-pa-ppm-arch-cio-by-source-a-beta-account-can-reach-the-hosted-mcp-no-allowlist-the-lever-is-the-mcp-app-2026-10-30.md | By source: yes, a beta account can reach the hosted MCP today. The only gate is… |
 | 2026-10-30 20:52 PT | exec | exec-to-all-letters-go-tomorrow-morning-freeze-holds-then-first-production-sprint-priorities-2026-10-30.md | xian sends the beta letters first thing tomorrow. The freeze holds until then.… |
 | 2026-10-30 20:50 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-cio-2237-validated-on-main-a3b3645787-2026-10-30.md | #2237 validated on main (a3b3645787): one predicate, the first statement in all… |
 | 2026-10-30 20:49 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-exec-cio-2237-read-in-the-diff-one-call-the-connect-my-integrations-list-follows-the-offered-set-2026-10-30.md | #2237 landed a3b3645787: the words match mine. One call you left to me: the gen… |
