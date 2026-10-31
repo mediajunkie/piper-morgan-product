@@ -66,7 +66,7 @@ feedback during the beta period.
 
 Piper can't answer anything substantive until it has a key of yours to run on:
 
-1. Open **Settings → LLM Keys**
+1. Open **Settings → LLM API Keys**
 2. Paste your Anthropic key and save
 
 Until you do this, Piper will tell you so honestly — a keyless "hi" gets a greeting and
@@ -294,7 +294,7 @@ return a healthy JSON response, the instance is down; please report it.
 ### Key & chat issues
 
 **"Piper runs on an LLM key of your own…" on every message?** You haven't added a key
-yet (or it didn't save) — Settings → LLM Keys. This message is working as intended for
+yet (or it didn't save) — Settings → LLM API Keys. This message is working as intended for
 keyless accounts.
 
 **Honest key error after adding a key?** Verify the key works in your provider's own
@@ -304,7 +304,7 @@ console; regenerate it if in doubt. Anthropic keys start `sk-ant-`.
 itself a bug we're hunting ([#1824](https://github.com/mediajunkie/piper-morgan-product/issues/1824)) —
 please report the exact message and what you did.
 
-**High API costs?** Piper uses GPT-4-class/Claude models. Watch your provider dashboard;
+**High API costs?** Piper runs on your own Anthropic key. Watch your provider dashboard;
 concise-preference settings reduce token use.
 
 ### Feature issues
@@ -359,7 +359,7 @@ SEVERITY: [blocker/major/minor]
 - Error logs may be reviewed by the team to fix bugs
 - This is a small, curated beta — the operators can technically access the instance's
   database; don't put anything sensitive in it (see the disclaimers above)
-- **Note**: not everything is encrypted field by field. Your chat messages, conversation context, uploaded artifact content and API keys are. Todos, projects, profile and preference data are stored as ordinary database columns
+- **Note**: your chat messages, conversation context, uploaded artifact content and API keys are encrypted field by field. Your todos, projects, profile and preferences are stored in the database without that extra field-level encryption
 
 ---
 

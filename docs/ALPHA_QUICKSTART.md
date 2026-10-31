@@ -28,11 +28,11 @@ Piper Morgan runs as a hosted app — there's nothing to install. Go to
 
 *(URL updated 2026-10-31 to the beta host, matching your invite email.)*
 
-New tester? The beta is invite-only. Codes come directly from **xian@pipermorgan.ai**. With
+New tester? The beta is invite-only. Codes come directly from xian, by email. With
 your invite code in hand: go to
 **[beta.pipermorgan.ai](https://beta.pipermorgan.ai)**, choose "Create your account"
 (the form asks for the invite code), log in, then add your own LLM key under
-**Settings → LLM Keys** (an Anthropic key — Piper runs on *your* key and can't
+**Settings → LLM API Keys** (an Anthropic key — Piper runs on *your* key and can't
 answer substantive requests without one).
 
 That's it — no clone, no Docker, no Python version to check. **Time to first use: however

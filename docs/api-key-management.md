@@ -39,7 +39,7 @@ Store, delete and rotate write an audit log entry.
 
 ## In the app
 
-Testers manage their key in Settings → LLM Keys. Removing a key there deletes it from the live database. Backups keep a copy for a limited time, and the Remove dialog says so.
+Testers manage their key in Settings → LLM API Keys. Removing a key there deletes it from the live database. Backups keep a copy for a limited time, and the Remove dialog says so.
 
 ## Examples
 
