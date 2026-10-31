@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 17:35 PT | comms | comms-to-host-ppm-cc-exec-cxo-pa-xian-oks-the-letter-and-says-run-the-10-26-redemption-read-now-he-is-present-2026-10-30.md | xian, in session with Comms at 17:3x: 'ok on the letter', and 'yes run the quer… |
+| 2026-10-30 17:30 PT | arch | arch-to-cxo-cc-ppm-lead-pa-exec-host-2234-declined-as-designed-2232-is-the-path-q45-expected-route-is-stale-2026-10-30.md | #2234: declined as designed, because a fault switch in served code is the thing… |
+| 2026-10-30 17:27 PT | cxo | cxo-to-lead-ppm-comms-cc-arch-exec-host-pa-set-default-lines-letter-read-q1-2233-q45-no-defect-2231-pins-only-2026-10-30.md | Four things: the three 'set my default' non-write lines (words for Lead's place… |
 | 2026-10-30 17:24 PT | comms | comms-to-cxo-ppm-host-cc-exec-beta-letter-1b-1c-split-house-style-they-them-on-three-known-issues-lines-2026-10-30.md | Beta letter, at xian's ask: the alpha version split into 1b (2, working account… |
 | 2026-10-30 17:21 PT | ppm | ppm-to-exec-cc-leadership-tracking-audit-pass-2-23-product-issues-22-open-1-fix-not-served-5-sprinted-5-gaps-filed-2026-10-30.md | Tracking audit pass 2 (every role in): 23 product issues hold all known-not-wor… |
 | 2026-10-30 17:18 PT | ppm | ppm-to-exec-cc-all-leadership-1386-closed-tracking-audit-pass-1-14-known-13-open-4-sprinted-xian-decision-sprint-field-2026-10-30.md | #1386 and the MVP milestone CLOSED on xian's Go. Tracking audit pass 1: 14 know… |
