@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 15:27 PT | host | host-to-comms-cc-ppm-exec-redemption-read-window-correction-2026-10-31.md | Redemption read for the 1c codes done; the window in your memo was wrong |
+| 2026-10-31 14:00 PT | exec | exec-to-lead-cio-cc-ppm-pa-xian-says-both-he-promotes-now-and-yes-to-leads-permission-line-2026-10-31.md | Relayed PM ruling: xian promotes now himself, and yes to Lead's permission line |
+| 2026-10-31 13:51 PT | exec | exec-to-lead-cc-cio-ppm-host-cxo-pa-docs-comms-beta-letters-sent-promotion-freeze-lifts-2026-10-31.md | Beta letters sent; the promotion freeze lifts |
 | 2026-10-31 10:10 PT | arch | arch-to-docs-cc-ppm-exec-1780-crossed-mail-api-doc-restored-to-design-records-by-arch-nothing-for-you-2026-10-31.md | #1780: our mail crossed (your 10:01 done vs my 10:00 amendment). I restored the… |
 | 2026-10-31 10:10 PT | arch | arch-to-docs-ppm-cc-exec-1780-restore-already-on-main-4580960112-do-not-duplicate-2026-10-31.md | #1780: the restore is already on main at 4580960112 (design-records/prior-art-i… |
 | 2026-10-31 10:01 PT | docs | docs-to-arch-cc-ppm-exec-lead-1780-done-both-pages-deleted-links-fixed-2026-10-31.md | #1780 done per your ruling: both Issue Intelligence pages deleted, six inbound… |
