@@ -97,6 +97,35 @@ jobs:
             exit 1
           fi
           echo "broken links: $COUNT (frozen ceiling: $CEILING — #1584 burn-down)"
+          # 2026-10-31 (CIO, from Docs' NOTICE): connection errors ("error
+          # sending request") are weather too. Three reds in nine days (10-26,
+          # 10-30 16:30, 10-30 23:09; 755 completed runs), each 4-5 over the
+          # ceiling and each green on a rerun. They can't simply be accepted:
+          # the green baseline holds 3 of that class that are really dead
+          # (builttoadapt.io, two malformed hosts), and a new dead host must
+          # still trip the gate. So, only when over the ceiling, give that
+          # class one second look after a pause, which is what the manual
+          # rerun did. A link that fails both looks stays counted; 404s and
+          # missing files are never re-checked. `|| true` on each grep: this
+          # shell runs with pipefail, and no match is the clean case (#2240).
+          if [ "$COUNT" -gt "$CEILING" ]; then
+            WEATHER=$(grep -oE '\[ERR\] https?://[^ ]+ \| Failed: Network error: error sending request' link-checker-results.md | awk '{print $2}' | sort -u || true)
+            if [ -n "$WEATHER" ]; then
+              echo "over the ceiling: re-checking $(echo "$WEATHER" | wc -l | tr -d ' ') connection-error URLs after 60s"
+              sleep 60
+              for u in $WEATHER; do
+                code=$(curl -sS -o /dev/null -L --max-time 30 -w '%{http_code}' "$u" 2>/dev/null || true)
+                case "$code" in
+                  2??|3??|403|429|503)
+                    n=$(grep -cF "[ERR] $u |" link-checker-results.md || true)
+                    COUNT=$((COUNT - n))
+                    echo "  reachable now ($code), -$n: $u" ;;
+                  *) echo "  still failing (${code:-none}): $u" ;;
+                esac
+              done
+              echo "broken links after the second look: $COUNT (frozen ceiling: $CEILING)"
+            fi
+          fi
           if [ "$COUNT" -gt "$CEILING" ]; then
             echo "::error::broken links $COUNT exceed frozen ceiling $CEILING — new breakage may not ship. Fix the new links, or (for cleanup) lower CEILING in this workflow in the same commit."
             exit 1
