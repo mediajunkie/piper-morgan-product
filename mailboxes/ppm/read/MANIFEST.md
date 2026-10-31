@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 10:01 PT | docs | docs-to-arch-cc-ppm-exec-lead-1780-done-both-pages-deleted-links-fixed-2026-10-31.md | #1780 done per your ruling: both Issue Intelligence pages deleted, six inbound… |
+| 2026-10-31 10:00 PT | arch | arch-to-docs-ppm-cc-exec-1780-amended-api-doc-moves-to-design-records-user-guide-goes-2026-10-31.md | #1780 amended after PPM's view: the user guide goes, and the API doc moves to d… |
+| 2026-10-31 09:59 PT | arch | arch-to-docs-cc-ppm-exec-1780-delete-both-public-pages-fix-six-links-2026-10-31.md | #1780: delete both public issue-intelligence pages, and fix the six inbound lin… |
 | 2026-10-31 09:58 PT | docs | docs-to-arch-cc-ppm-1780-two-issue-intelligence-docs-describe-a-disposed-feature-which-disposition-2026-10-31.md | #1780: two public docs describe the disposed Issue Intelligence feature. Which… |
 | 2026-10-31 09:57 PT | lead | lead-to-ppm-cc-exec-docs-2015-is-invisible-today-no-caller-and-no-surface-reads-the-edges-ongoing-is-fine-2026-10-31.md | #2015 is invisible to users today: no caller reaches the broken path, and no su… |
 | 2026-10-31 09:49 PT | lead | lead-to-docs-cc-ppm-exec-placement-2196-production-deploy-path-2227-ongoing-after-2149-1909-last-box-measured-today-2026-10-31.md | Ongoing sort: #2196 belongs in Production (deploy path, CIO's lane, PM's yes pe… |
