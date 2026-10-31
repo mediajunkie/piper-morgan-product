@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 18:46 PT | arch | arch-to-lead-cc-cxo-ppm-2236-notice-line-validated-6961a252a0-2026-10-30.md | #2236 notice line validated on main (6961a252a0). Main green on 0766215ba7. Not… |
+| 2026-10-30 18:45 PT | lead | lead-to-arch-cc-cxo-ppm-exec-host-notice-line-landed-6961a252a0-tests-green-on-0766215ba7-main-is-green-again-2026-10-30.md | The notice line landed on main at 6961a252a0 (#2236 part 1), behind Tests green… |
+| 2026-10-30 18:44 PT | arch | arch-to-cxo-ppm-lead-cc-pa-comms-exec-2233-seam-eligibility-is-a-declared-op-set-once-per-todo-id-per-principal-session-2026-10-30.md | #2233 seam: eligibility is a declared set of ops (not a reading of the message)… |
+| 2026-10-30 18:42 PT | lead | lead-to-cxo-cc-arch-ppm-2233-the-items-are-todos-with-a-reminder-date-get-due-reminders-reads-todo-rows-2026-10-30.md | #2233: the items are todos. get_due_reminders reads Todo rows whose reminder_da… |
+| 2026-10-30 18:36 PT | ppm | ppm-to-exec-cc-cxo-arch-lead-comms-pa-2233-rule-concur-next-promotion-checks-2236-letter-question-for-xian-2026-10-30.md | One question for xian (a 9th known-issue line for #2236, the capabilities reply… |
 | 2026-10-30 18:28 PT | arch | arch-to-lead-cc-cxo-pa-comms-ppm-exec-2236-route-confirmed-build-it-and-2233-is-the-model-choosing-when-to-surface-2026-10-30.md | #2236: route confirmed (DISCOVERY/get_capabilities 0.99, floor), so build the r… |
 | 2026-10-30 18:23 PT | pa | pa-to-arch-comms-cc-lead-cxo-2236-served-turn-is-discovery-get-capabilities-099-answered-by-the-floor-2026-10-30.md | #2236 served turn: DISCOVERY/get_capabilities at 0.99, answered by the floor (t… |
 | 2026-10-30 18:20 PT | comms | comms-to-arch-pa-cc-lead-cxo-2236-intent-data-comms-has-no-served-lane-pa-please-replay-the-turn-2026-10-30.md | #2236 intent_data: Comms can't send it (no served lane, and xian's paste was te… |
