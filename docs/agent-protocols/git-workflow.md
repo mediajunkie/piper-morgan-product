@@ -7,83 +7,100 @@ last_verified: "2026-06-19"
 
 # Git Workflow Protocol
 
-Feature branch discipline for Claude Code sessions.
+How agents use git in this repo. The rules live in `CLAUDE.md` ("Worktrees", "Hard rules", "Git, push, sign-off"). This page is the working summary. If it ever disagrees with `CLAUDE.md`, `CLAUDE.md` wins and this page is stale.
+
+*Rewritten 2026-10-31 (Docs, issue 1726). The earlier version described session-ID feature branches and a rule never to push to `main`. That is no longer how this cohort works.*
 
 ---
 
-## Critical Rule
+## Where you work
 
-**Never develop on `main`**. Every session has an assigned feature branch.
-
-Branch format:
-- Starts with `claude/`
-- Ends with session ID
-- Example: `claude/ux-quick-wins-015W99syFQ7b9HrV2WoB9S48`
+- **Amber (the cohort host):** your stable worktree `~/Development/piper-morgan-worktrees/{role}` on branch `claude/{role}-cycle`, reused every session.
+- **Claude Desktop:** the ephemeral worktree Desktop creates for the session.
+- **Never** work in the shared checkout `~/Development/piper-morgan-product`. It is the PM's live workspace with uncommitted edits.
+- If a session's own instructions assign you a specific branch, follow them.
 
 ---
 
-## Session Start
+## Session start
 
 ```bash
-# Look up assigned branch from session instructions
-# (Listed in "Git Development Branch Requirements")
-
-git fetch origin <your-assigned-branch>
-git checkout <your-assigned-branch>
-
-# Verify
-git branch  # Should show: * claude/your-branch-[SESSION_ID]
-            # NOT: * main
+git fetch origin main
+git rev-list --count HEAD..origin/main   # must be 0; if not, git merge origin/main
+git branch --show-current                # your claude/{role}-cycle branch, not main in the shared checkout
 ```
 
+Before reading git or file state to answer a question, fetch and fast-forward again if more than a few minutes have passed.
+
 ---
 
-## Development Workflow
+## Development workflow
 
 ```bash
-# 1. Make changes on feature branch (never main)
+# 1. Make changes in your worktree
 
-# 2. Before committing - ALWAYS run this first
+# 2. Before committing
 ./scripts/fix-newlines.sh
 
-# 3. Commit
-git add <specific-files>  # Prefer specific files over "git add ."
+# 3. Stage in one call, commit in the next
+git add <specific-files>        # explicit paths, never "git add ." or "git add -A"
 git commit -m "your message"
 
-# 4. Push to YOUR branch only
-git push -u origin <your-assigned-branch>
+# 4. Push the finished unit to main
+git push origin HEAD:main
 ```
 
+Why two calls for stage and commit: a mailbox hook reads the index before a compound `git add && git commit` runs.
+
+Work that is not on `origin/main` is invisible to other agents, so push each finished unit as you go. Commit your session-log entry with the unit it describes.
+
+Mail files are the exception: write the memo and send it with `scripts/mail-send.sh`. Do not `git add` or commit mailbox files yourself.
+
+If the push is rejected because another agent pushed first, `git fetch origin main && git merge origin/main`, then push again.
+
 ---
 
-## Branch Checklist
+## Commit message trap
 
-Before EVERY commit:
+A commit message that pairs close, fix or resolve with `#N` closes issue N, whatever the surrounding words. Write the number without `#`, or add the trailer `Auto-Close: intentional` when closing is intended. `.claude/hooks/autoclose-guard.sh` enforces this.
 
-- [ ] `git branch` shows your assigned branch (not main)
-- [ ] Branch starts with `claude/`
-- [ ] Branch ends with your session ID
+---
+
+## Before every commit
+
+- [ ] `git branch --show-current` shows your own branch
 - [ ] You ran `./scripts/fix-newlines.sh`
+- [ ] You staged explicit paths
+- [ ] After subagent work, `git status` shows nothing unexplained left in `services/`, `tests/` or `web/`
 
 ---
 
-## If You Accidentally Worked on Main
+## Sign-off
 
 ```bash
-# Don't panic
-git checkout <your-assigned-branch>
-git log main..HEAD  # See commits that shouldn't be there
-# Ask PM how to recover
+git status
+git fetch origin main
+git rev-parse --verify -q origin/main >/dev/null || echo "STOP: origin/main did not resolve; the check below did not run"
+git log --oneline origin/main..HEAD   # must be empty
 ```
+
+If it is not empty: `git fetch origin main && git merge origin/main && git push origin HEAD:main`, or leave a NOTICE memo saying why the work is held, or ask the PM. At idle points run `scripts/sync-pm-local.sh` to fast-forward the PM's checkout (it never touches the PM's prose edits).
 
 ---
 
-## Why This Matters
+## Hard rules for the shared checkout
 
-- 403 errors on push to main are **intentional**
-- Feature branches prevent conflicts
-- Session ID in branch proves authorization
-- Work stays isolated until merged
+In `~/Development/piper-morgan-product` never run: `git checkout -- <path>` or `.`, `git reset --hard`, `git stash`, `git clean`, or anything else that discards working-tree changes. If a merge or rebase there is blocked by unstaged changes, stop and push from your own worktree instead.
+
+Before any `git checkout <ref> -- <path>` anywhere, run `git diff HEAD -- <path>`. If it is non-empty you are about to discard uncommitted work.
+
+On a worktree shared with other sessions, prefer a temporary WIP commit to `git stash`.
+
+---
+
+## If you worked in the wrong place
+
+Stop. Do not reset or clean anything. Check `git status` and `git log origin/main..HEAD`, then ask the PM how to recover.
 
 ---
 

@@ -3,7 +3,7 @@ type: briefing
 title: BRIEFING-ESSENTIAL-ETA
 valid_from: "2026-03-20"
 last_updated: "2026-03-20"
-last_verified: "2026-06-19"
+last_verified: "2026-10-31"
 ---
 
 # BRIEFING-ESSENTIAL-ETA
@@ -18,7 +18,7 @@ last_verified: "2026-06-19"
 ## Your Role: Exploratory Testing Agent (ETA)
 
 **Role slug**: `test`
-**Session log naming**: `YYYY-MM-DD-HHMM-test-{tool}-{model}-log.md`
+**Session log naming**: `dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-test-code-log.md` (the model goes in the log header, not the filename; March 2026 logs with `-haiku` or `-opus` suffixes are historical)
 
 **Mission**: Test Piper Morgan's systems from the agent perspective — surfacing friction, capability gaps, and experience quality that functional QA alone cannot detect.
 
@@ -114,7 +114,7 @@ Request additional detail for:
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
 - **Pattern catalog**: `docs/internal/architecture/patterns/`
 - **Methodology core**: `docs/internal/development/methodology-core/`
-- **Session logs**: `dev/YYYY/MM/DD/` (ETA logs use `test` slug)
+- **Session logs**: `dev/YYYY/MM/DD/` (ETA logs use the `test-code` slug)
 - **Omnibus logs**: `docs/omnibus-logs/` (daily synthesis)
 
 ---
