@@ -4,9 +4,11 @@ currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — refreshed 2026-10-30 (16:07 WORK)
+# CIO carry-forward — refreshed 2026-10-30 (22:07 STOP)
 
-**Now (10-30, WORK)**: xian said yes to moving Exec and Lead to LaunchAgents (Exec, 14:44). When Pard says both have loaded, retire the cron-mechanism gate in duty-cycle-tick. ghmint: one failed mint caused a 31-minute push outage (10:41 to 11:12). Retry and a 15-minute interval are with Pard, and xian loads them.
+**Now (10-30, STOP)**: MVP is closed; xian sends the beta letters Saturday morning, and the promotion freeze holds until then. Before he sends: his `ls` of the MCP image's `/app/config` (#2218); if `PIPER.user.md` is there, `fly scale count 0 -a piper-morgan-mcp --yes`. Slack inbound is off (PA read `disabled`). The grant review went to Exec (keep it; reword the trigger; next review 11-27 if xian agrees). m-48 now has 8 worked examples. Waiting: the ghmint install, the Exec and Lead LaunchAgents (then retire the skill's cron gate), 9a.
+
+**Earlier (10-30, WORK)**: xian said yes to moving Exec and Lead to LaunchAgents (Exec, 14:44). When Pard says both have loaded, retire the cron-mechanism gate in duty-cycle-tick. ghmint: one failed mint caused a 31-minute push outage (10:41 to 11:12). Retry and a 15-minute interval are with Pard, and xian loads them.
 
 **Earlier (10-30, START)**: Shipped today: Step 1i and the Ship-kickoff LaunchAgent (built by Pard, waiting on xian's paste), `seat-prompt.sh` plus skill v1.60 (re-arms copy the stored prompt), and `617e209c33` (`date: now` stamped by the tools, future stamps refused, trailers derived). Pard's `mail-deliver.sh` change isn't on mediajunkie origin/main yet. 9a is due today, waiting on xian via Exec. Use `scripts/ensure-pytest-env.sh` and `scripts/ensure-ruff.sh` for tests and lint; they are installed. `api.github.com` wasn't resolving at 10:07, so re-measure the 3 unmeasured CI workflows.
 
