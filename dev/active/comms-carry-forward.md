@@ -1,6 +1,22 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-10-29 21:19 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-10-30 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/10/30/2026-10-30-0619-comms-code-log.md`, DAY-CLOSED.
+- **MVP closed and the private beta started 10-30** (xian's Go on #1386, `ac5b69f865`). xian thanked the whole crew.
+- **Beta letters go Sat 10-31 morning** from xian's mailbox (Exec 20:52). The letter is `docs/internal/planning/comms/beta-invitation-letter-draft-2026-10-30.md`, final, with versions 1a, 1b, 1c and 2, and 9 known-issues lines (the 9th, #2236, at `49696bbcc9`). PPM's 19:51 check: 9 of 9 hold. If anyone edits the letter before the send, tell PPM to re-check. After it goes: the record of what partners were told is that file. A stale line later is a follow-up note, xian's call.
+- **Promotion freeze** until the letters go. Then a breather and a first-sprint talk toward Production (PPM prepares, nothing for Comms).
+- **The 10-29 #2184 note to the three alpha partners:** never reported sent. The beta letter's 1b/1c openings say its known issues replace anything said before, so the note is likely moot. Ask xian only if it comes up.
+- **Weekend posts, both waiting on xian's prose and art** (scaffolds f27bd930c5):
+  - Sat 10-31 "Build the Instrument Before the Theory". Sun 11-01 "Read the Machine Before Debating Who Restarts It".
+  - **Title lock:** Sunday's title must be final before Saturday goes to Docs.
+  - After each prose lands: review, template-audit, row, publish-ready to Docs. Don't nudge. A day-of rewrite is normal.
+- **Tue 11-03 "The Unguarded Entrance":** waiting on xian's prose. Its footer tease has no target.
+- **#2229 site copy** (/try, /try/alpha, /get-involved still say alpha): xian decides what a visitor does now. Then Comms words it, CXO OKs it, Web builds it. #2237 (Slack/Notion grey cards) is Lead's, with CXO's words, no letter change.
+- **Calendar from 11-05:** empty. xian's priority 5 (narrative tranche). Planning doc https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86.
+- **Waiting:** Ship #067 External fact-check (Exec's draft). Rosenverse (xian and Themis). Optional 10-26 code read (xian in HOST).
+- **Standing:** "what changed" note at the first user-visible Production ship (not yet). Mining pass Fri 11-06. Narrative front Sep 6.
+
+## OLDER STATE — 2026-10-29 21:19 PT
 - **Log:** `dev/2026/10/29/2026-10-29-0619-comms-code-log.md`, DAY-CLOSED.
 - **xian's priorities (10-29, in order):**
   1. He picks the weekend posts and Comms scaffolds them (done).
