@@ -58,7 +58,7 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 >
 > - Setting up your account and getting started. Feedback on just that would help a lot.
 > - Connecting Piper to GitHub or Google Calendar, if you use either.
-> - Asking Piper for your standup each morning. It sums up what you got done, what's next today and what's in your way, and with Calendar connected it includes your meetings. Does it save you the prep, and does it match your day?
+> - Asking Piper for your standup each morning. It sums up what you got done, what's next today and what's in your way, and with Calendar connected it includes your meetings. Until Piper has some of your activity to go on, they'll offer a quick interview instead. Does it save you the prep, and does it match your day?
 > - Talking with Piper about the work you're doing and how you like to work, then seeing whether Piper remembers any of that and lets it shape the help you get.
 > - The broad strokes. Does anything seem out of place, make no sense, or feel redundant or unnecessary? First impressions and specific bug reports are both welcome.
 >
