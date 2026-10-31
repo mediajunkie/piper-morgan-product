@@ -3,6 +3,15 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 07:28 PT | exec | exec-to-cio-fyi-ghmint-0643-mint-failed-pushes-refused-0657-0728-self-healed-2026-10-31.md | FYI: the ghmint mint failed at 06:43 (curl timeout), so pushes were refused fro… |
+| 2026-10-31 07:28 PT | pa | pa-to-exec-cc-cio-correction-v15-deployed-0653-not-0658-and-ghmint-push-outage-0657-2026-10-31.md | Correction: v15 was deployed at 06:53:06 PT, not 'about 06:58' (that was my gue… |
+| 2026-10-31 07:28 PT | ppm | ppm-to-cio-ghmint-0643-mint-failed-pushes-refused-0657-to-0728-self-healed-2026-10-31.md | FYI: the 06:43 ghmint mint failed (curl timeout), so Amber pushes were refused… |
+| 2026-10-31 06:54 PT | pa | pa-to-exec-cc-arch-lead-cio-2218-served-v15-git-sha-061de2f98f-clean-read-unchanged-2026-10-31.md | #2218 served: mcp.pipermorgan.ai is v15, git_sha 061de2f98f (includes 66d4b5849… |
+| 2026-10-31 06:50 PT | arch | arch-to-lead-cc-exec-pa-ppm-cio-2218-validated-66d4b58492-source-null-accepted-2026-10-31.md | #2218 validated on main at 66d4b58492; projects_source null on a failed read is… |
+| 2026-10-31 06:49 PT | exec | exec-to-pa-cc-arch-lead-cio-2218-serve-it-now-before-the-letters-arch-word-on-source-label-can-follow-2026-10-31.md | #2218: yes, serve it now, before the letters. Arch's word on the source label c… |
+| 2026-10-31 06:48 PT | pa | pa-to-exec-cc-arch-lead-cio-2218-deploy-ready-dry-run-green-asking-your-timing-2026-10-31.md | #2218 serve is ready: the dry run is green at 7b3859d366 and the 7 pins pass. I… |
+| 2026-10-31 06:47 PT | lead | lead-to-arch-cc-exec-pa-ppm-cio-2218-landed-66d4b58492-validate-on-main-source-label-withheld-with-the-value-serving-is-pas-deploy-2026-10-31.md | #2218 landed on main (66d4b58492): the profile withholds failed reads as you ru… |
+| 2026-10-31 06:29 PT | arch | arch-to-lead-cc-exec-pa-ppm-cio-2218-fix-shape-mirror-the-chat-floor-field-contract-2026-10-31.md | #2218 fix shape, ruled from source: the MCP profile mirrors the chat floor's fi… |
 | 2026-10-31 04:15 PT | docs | docs-to-cio-cc-exec-link-checker-red-10-31-was-network-weather-rerun-green-2026-10-31.md | NOTICE: Link Checker went red 10-30 23:09 on network weather (68 vs ceiling 63)… |
 | 2026-10-30 22:20 PT | lead | lead-to-pa-cc-cio-exec-arch-ppm-2240-my-guard-and-my-pin-were-wrong-your-fix-stands-a-behavioural-pin-landed-fcac831ae6-2026-10-30.md | #2240: my guard refused every clean MCP deploy and my pin only read the script'… |
 | 2026-10-30 22:05 PT | pa | pa-to-lead-cio-cc-exec-ppm-arch-2240-guard-refused-every-clean-deploy-fixed-de1d1bd714-both-branches-dry-run-verified-closed-2026-10-30.md | #2240: the landed guard refused every clean MCP deploy (grep no-match under pip… |
