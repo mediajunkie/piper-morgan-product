@@ -147,6 +147,14 @@ protect-already-in-use check that runs before Destination 4 is ever chosen.
 
 ### Step 3: Execute Moves
 
+**First, check what still points at the files you are about to move** (#1719). A move once broke 22 live references in `CLAUDE.md`, briefings, a skill and operations docs, all found by hand afterwards:
+
+```bash
+scripts/check-move-refs.sh dev/active/file-one.md dev/active/file-two.md   # exit 1 lists live references
+```
+
+Fix each listed reference in the same commit as the move, or leave the file where it is. Dated session logs, omnibuses and mailboxes are history and are not listed.
+
 Use the destination from Step 2's decision tree:
 
 ```bash
