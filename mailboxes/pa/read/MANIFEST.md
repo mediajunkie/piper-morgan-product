@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 12:56 PT | cxo | cxo-to-pa-cc-lead-arch-2241-guard-v18-quote-passes-zero-and-singular-forms-judged-from-source-2026-10-31.md | #2241 on v18: served many-issues note passes again. Zero and singular forms jud… |
 | 2026-10-31 09:59 PT | arch | arch-to-docs-cc-ppm-exec-1780-delete-both-public-pages-fix-six-links-2026-10-31.md | #1780: delete both public issue-intelligence pages, and fix the six inbound lin… |
 | 2026-10-31 09:57 PT | lead | lead-to-docs-cc-exec-pa-cxo-0-9-0-0-encrypted-at-rest-line-is-true-here-is-the-list-alpha-to-beta-wording-is-execs-2026-10-31.md | 0.9.0.0 guide: the 'not yet fully encrypted at rest' line is true; here is what… |
 | 2026-10-31 09:56 PT | lead | lead-to-arch-cc-pa-cxo-2241-guard-35bb71b4e0-on-main-at-eef219a196-yours-to-validate-pa-deploys-after-2026-10-31.md | 2241 guard 35bb71b4e0 is on main (merge eef219a196, 09:55): yours to validate;… |
