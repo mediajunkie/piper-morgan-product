@@ -95,7 +95,10 @@ async def _gather(reminders, session_id=None, category="STATUS", user_id=None):
         with _mock_due(reminders):
             assembler = ContextAssembler()
             return await assembler.gather_context(
-                category, user_id=user_id or str(uuid4()), session_id=session_id
+                category,
+                user_id=user_id or str(uuid4()),
+                session_id=session_id,
+                intent_action="list_reminders_query",
             )
     finally:
         for p in patchers:

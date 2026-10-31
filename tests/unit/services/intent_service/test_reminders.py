@@ -466,7 +466,9 @@ class TestReminderContextSurfacing:
             )
             MockHandlers.return_value = mock_instance
 
-            context = await assembler.gather_context("CONVERSATION", user_id=str(uuid4()))
+            context = await assembler.gather_context(
+                "CONVERSATION", user_id=str(uuid4()), intent_action="list_reminders_query"
+            )
 
             assert "due_reminders" in context
             assert len(context["due_reminders"]) == 2
@@ -484,7 +486,9 @@ class TestReminderContextSurfacing:
             mock_instance.get_due_reminders = AsyncMock(return_value=[])
             MockHandlers.return_value = mock_instance
 
-            context = await assembler.gather_context("CONVERSATION", user_id=str(uuid4()))
+            context = await assembler.gather_context(
+                "CONVERSATION", user_id=str(uuid4()), intent_action="list_reminders_query"
+            )
 
             assert "due_reminders" not in context
 
@@ -586,7 +590,9 @@ class TestDueReminderTZGuard1491:
             "services.intent_service.todo_handlers.TodoManagementService",
             return_value=mock_service,
         ):
-            context = await assembler.gather_context("CONVERSATION", user_id=str(uuid4()))
+            context = await assembler.gather_context(
+                "CONVERSATION", user_id=str(uuid4()), intent_action="list_reminders_query"
+            )
 
         assert context.get("source_failed") is not True
         assert (

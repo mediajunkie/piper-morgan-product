@@ -2225,7 +2225,10 @@ class TestPendingTodosDedupedAgainstDueReminders1985:
             ),
         ):
             context = await assembler.gather_context(
-                "TEMPORAL", user_id=user_id, session_id="s-1985"
+                "TEMPORAL",
+                user_id=user_id,
+                session_id="s-1985",
+                intent_action="list_reminders_query",
             )
         assert context["due_reminders"] == ["revise the pr"]
         assert [t["text"] for t in context["pending_todos"]] == ["send the invoice"]
@@ -2272,7 +2275,10 @@ class TestPendingTodosDedupedAgainstDueReminders1985:
             ),
         ):
             context = await assembler.gather_context(
-                "TEMPORAL", user_id=user_id, session_id="s-1997"
+                "TEMPORAL",
+                user_id=user_id,
+                session_id="s-1997",
+                intent_action="list_reminders_query",
             )
         assert context["pending_todos"] == []
         assert context["pending_todos_in_reminders"] == 2

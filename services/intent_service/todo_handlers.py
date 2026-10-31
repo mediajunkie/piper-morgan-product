@@ -1374,6 +1374,29 @@ class TodoIntentHandlers:
             logger.warning("created_todo_recall_failed", error=str(e), session_id=session_id)
             return None
 
+    async def get_due_reminder_rows(self, user_id: UUID) -> Optional[List[Todo]]:
+        """#2233: the due-reminder Todo rows (ids and reminder_date), or None when the
+        read FAILED, so a failure is never "no reminders" (#2151). Same filter as
+        ``get_due_reminders``, which keeps its text-only return shape."""
+        from datetime import datetime, timezone
+
+        from services.utils.datetime_utils import ensure_utc
+
+        try:
+            todos = await self.todo_service.list_todos(user_id=user_id, include_completed=False)
+            now = datetime.now(timezone.utc)
+            rows: List[Todo] = []
+            for t in todos:
+                when = getattr(t, "reminder_date", None)
+                if when is not None and not t.completed and ensure_utc(when) <= now:
+                    rows.append(t)
+            return rows
+        except (
+            Exception
+        ) as e:  # silent-ok: logged at error; None tells the caller the read failed (#2151)
+            logger.error("Due reminder rows lookup failed", error=str(e), exc_info=True)
+            return None
+
     async def _due_reminder_todos(self, user_id: UUID) -> List[Todo]:
         """The SAME filter ``get_due_reminders`` applies (reminder_date set,
         not completed, reminder_date <= now), but returning the full Todo

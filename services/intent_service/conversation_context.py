@@ -184,6 +184,10 @@ class ConversationContext:
     # last_numbered_list: in-memory, within-session, forgotten on restart
     # (the gate then falls to the honest which-todo ask).
     last_created_todo: Optional["CreatedTodo"] = None
+    # #2233: todo ids whose due-reminder line this principal's session has been
+    # shown (once per reminder per session). In-memory, like the fields above; keyed by
+    # _context_key(session, principal), so another principal starts empty.
+    surfaced_reminder_ids: set[str] = field(default_factory=set)
     # #2095 (ADR-078 D1 amendment): a create that the handler could not declare in
     # its result (the todo handlers answer with a plain string) is parked here for
     # the central observer, which pops it after the turn. Owner-scoped by the

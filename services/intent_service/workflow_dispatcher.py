@@ -732,6 +732,20 @@ def get_action_workflows() -> Dict[str, WorkflowEntry]:
     return {k: v for k, v in WORKFLOW_REGISTRY.items() if v.action_triggered}
 
 
+#: #2233 (Arch/CXO 2026-10-30): the ops whose turn is about the user's own work. Only on
+#: these may code place the due-reminder line after the answer. The router's verdict
+#: decides the op (never a reading of the message); the exclusions (identity,
+#: capability, declines, errors, anonymous turns) win and live in due_reminder_line.py.
+DUE_REMINDER_LINE_OPS = frozenset(
+    {"get_standup", "list_todos_query", "list_reminders_query", "greeting"}
+)
+
+#: Of those, the ops whose OWN answer already shows the due reminders: they record the
+#: ids as surfaced and add no line. Also the only ops whose handler may see
+#: ``due_reminders`` in its context (the reminder list needs them for its answer).
+DUE_REMINDER_SELF_RENDERING_OPS = frozenset({"get_standup", "list_reminders_query"})
+
+
 async def dispatch_workflow(
     workflow_type: str,
     session_id: str,

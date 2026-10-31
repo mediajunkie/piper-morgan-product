@@ -1717,6 +1717,25 @@ class IntentService:
             except Exception:
                 pass  # Best-effort — don't block response delivery
 
+            # #2233: the due-reminder line, placed by code after the answer on the
+            # declared ops only (DUE_REMINDER_LINE_OPS); best-effort, never blocks.
+            try:
+                from services.intent_service.due_reminder_line import due_reminder_line
+
+                _intent_data = getattr(result, "intent_data", None)
+                _line = await due_reminder_line(
+                    action=_intent_data.get("action") if isinstance(_intent_data, dict) else None,
+                    result=result,
+                    user_id=effective_user_id,
+                    session_id=effective_session_id,
+                )
+                if _line:
+                    result.message = f"{result.message}\n\n{_line}"
+            except (
+                Exception
+            ) as e:  # silent-ok: logged; an unrequested line must never block the answer
+                self.logger.warning("due_reminder_line_failed", error=str(e))
+
             # ADR-075 OQ-3 (CXO UX direction): one-time first-response notice
             # for a principal running on the seeded neutral default — appended
             # AFTER the answer (capability first, metadata second), never

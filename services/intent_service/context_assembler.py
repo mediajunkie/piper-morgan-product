@@ -514,8 +514,20 @@ class ContextAssembler:
         # hits. #1425 honesty preserved: a failed lookup merges
         # source_failed=True, which the floor renders as "couldn't check",
         # never "none due".
+        # #2233 (Arch/CXO): the model sees ``due_reminders`` only on an op whose handler
+        # needs it for its own answer (the reminder list). Everywhere else code places
+        # one line after the answer (due_reminder_line.py), so the model never voices it.
+        from services.intent_service.workflow_dispatcher import (
+            DUE_REMINDER_SELF_RENDERING_OPS,
+            normalize_action,
+        )
+
+        _ride_reminders = (
+            bool(intent_action)
+            and normalize_action(str(intent_action)) in DUE_REMINDER_SELF_RENDERING_OPS
+        )
         try:
-            reminder_ctx = await self._gather_reminder_context(user_id)
+            reminder_ctx = await self._gather_reminder_context(user_id) if _ride_reminders else {}
             # #1625: gate the conversational mention AFTER the #984 cache (the
             # cached slice is per-user; the mention gate is per-session — gating
             # inside the cached compute would leak one session's quiet into

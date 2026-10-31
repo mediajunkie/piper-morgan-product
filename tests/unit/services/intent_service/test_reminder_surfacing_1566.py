@@ -83,7 +83,9 @@ async def _gather(category, reminders):
         with _mock_due(reminders):
             assembler = ContextAssembler()
             # Fresh user_id per call -> no cross-test cache hits (#984 keys by user)
-            return await assembler.gather_context(category, user_id=str(uuid4()))
+            return await assembler.gather_context(
+                category, user_id=str(uuid4()), intent_action="list_reminders_query"
+            )
     finally:
         for p in patchers:
             p.stop()
@@ -140,7 +142,9 @@ class TestReminderContextRidesEveryCategory1566:
                 _mock_due(["submit the report"]),
             ):
                 assembler = ContextAssembler()
-                context = await assembler.gather_context("STATUS", user_id=str(uuid4()))
+                context = await assembler.gather_context(
+                    "STATUS", user_id=str(uuid4()), intent_action="list_reminders_query"
+                )
         finally:
             for p in patchers:
                 p.stop()
