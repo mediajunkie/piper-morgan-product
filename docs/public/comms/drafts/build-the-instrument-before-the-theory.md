@@ -39,8 +39,7 @@ Web ran their test run just afternoon and it successfully ran the 61 queries wit
 
 ## You can't manage what you don't measure
 
-Coming up with a theory feels like making progress, and then writing a patch based on that theory feels like a solution. a fix for it feels like more. Neither tells you whether you were right. The
-watchdog took less time to build than the fixes did, and it was the first thing that day that could say no.
+Coming up with a theory feels like making progress, and then writing a patch based on that theory feels like a solution. But the feeling is deceptive if nothing is anchored to measurable data. That watchdog instrument took less time to build than the fixes did, and it was the first thing that day that could say no.
 
 ## Footer
 - **Next on Building Piper Morgan:** Sunday's insight, "Read the Machine Before Debating Who Restarts It" (working
