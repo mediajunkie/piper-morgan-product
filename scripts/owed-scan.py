@@ -24,13 +24,15 @@ FLAGS (per open OWED, i.e. no later OWED-CLOSED with the same key by the same ow
   NO-ROW    the owner's dev/active/{role}-standing-items.md or -carry-forward.md has no line containing `key: <slug>`
   OVERDUE   `by:` is a date in the past
   BAD-BY    `by:` is neither a YYYY-MM-DD date nor `trigger: ...`
-  UNPARSED  an `OWED[` the pattern above can't read (most often no `]:` and no text after). One line per log,
+  BAD-FORM  a bare key, `OWED[slug]: ...`, with no to: or by: (10-31; was NO-ROW plus BAD-BY)
+  UNPARSED  an `OWED[` the pattern above can't read. Since 10-31 the trailing tag `<what>. OWED[key: ...].`
+            (no `]:`) is read when it has `key:`, with the sentence before it as the text. One line per log,
             with a count. Added 2026-10-16: Exec's pilot report found 85 of its 96 markers skipped in silence,
             so the pilot's "0 flags" measured almost nothing on that seat.
 Free-text "owed" is ignored on purpose, and so is a marker inside inline code (`OWED[...]`, an example). Window: logs from the last --days (default 14).
 
 Always prints its denominator. Exit 0 = no flags and nothing unparsed; 1 = either; 3 = nothing scanned (no logs in the window).
-Cost: one pass over ~14 days of logs. Benefit: none yet: measuring. Review: 2026-11-20. Owner: CIO (script), HOST (convention).
+Cost: one pass over ~14 days of logs. Benefit: none yet: measuring. Runs at every seat's START as `--role <slug>` (duty-cycle-tick v1.61). Review: 2026-11-20. Owner: CIO (script), HOST (convention).
 """
 
 import argparse
@@ -42,6 +44,10 @@ from pathlib import Path
 OWED = re.compile(
     r"(?<!`)OWED\[([^\]]*)\]:\s*(.*?)(?=\s*(?<!`)OWED(?:-CLOSED)?\[|$)"
 )  # (?<!`): a quoted example is not a marker
+# 10-31: the trailing tag `<what>. OWED[key: k; to: r; by: ...].` (no `]:`) carries every field, and Exec
+# wrote it for two weeks while it sat UNPARSED with nobody running the scan. Read it when it has `key:`;
+# the <what> is the sentence before it.
+TAG = re.compile(r"(?<!`)OWED\[([^\]]*\bkey\s*:[^\]]*)\](?!:)")
 ANY = re.compile(r"(?<!`)OWED\[")  # every marker start, parsed or not
 CLOSED = re.compile(r"(?<!`)OWED-CLOSED\[([^\]]*)\]")
 LOGNAME = re.compile(r"^\d{4}-\d{2}-\d{2}-\d{4}-([a-z0-9]+)-code(?:-[a-z0-9-]+)?-log\.md$")
@@ -61,6 +67,7 @@ def main():
     ap.add_argument("--root", default=".", help="repo root (default: cwd)")
     ap.add_argument("--days", type=int, default=14)
     ap.add_argument("--today", help="YYYY-MM-DD, for tests")
+    ap.add_argument("--role", help="report only this owner's markers (a seat's START check)")
     a = ap.parse_args()
     root = Path(a.root)
     today = dt.date.fromisoformat(a.today) if a.today else dt.date.today()
@@ -83,6 +90,8 @@ def main():
 
     opened, closed, unparsed = {}, set(), {}
     for day, f, role in logs:
+        if a.role and role != a.role:
+            continue
         for ln in f.read_text(errors="ignore").splitlines():
             for c in CLOSED.finditer(ln):
                 k = fields(c.group(1)).get("key")
@@ -90,24 +99,36 @@ def main():
                     closed.add((role, k))
             ln = ln.replace("OWED-CLOSED[", "\0")  # don't read a close as an open
             parsed = list(OWED.finditer(ln))  # finditer: a line can carry two markers
-            starts = {m.start() for m in parsed}
+            tags = [t for t in TAG.finditer(ln) if t.start() not in {m.start() for m in parsed}]
+            starts = {m.start() for m in parsed} | {t.start() for t in tags}
             for s in ANY.finditer(ln):
                 if s.start() not in starts:
                     unparsed.setdefault(str(f.relative_to(root)), []).append(
                         ln[s.start() : s.start() + 60]
                     )
-            for m in parsed:
-                fd = fields(m.group(1))
-                key = fd.get("key") or f"(no key) {m.group(2)[:30]}"
-                opened[(role, key)] = dict(
-                    fd, what=m.group(2).strip(), log=str(f.relative_to(root)), day=day
-                )
+            items = [(m.group(1), m.group(2).strip()) for m in parsed]
+            for t in tags:
+                before = ln[: t.start()].rstrip(" .;").replace("\0", "OWED-CLOSED[")
+                what = re.split(r"(?<=[.;])\s+", before)[-1].lstrip("- ")
+                items.append((t.group(1), what or "(marker alone on its line; see the log)"))
+            for raw, what in items:
+                if ":" not in raw:  # bare `OWED[slug]: ...`: a key, but no to: or by:
+                    opened[(role, raw.strip())] = dict(
+                        bad_form=True, what=what, log=str(f.relative_to(root)), day=day
+                    )
+                    continue
+                fd = fields(raw)
+                key = fd.get("key") or f"(no key) {what[:30]}"
+                opened[(role, key)] = dict(fd, what=what, log=str(f.relative_to(root)), day=day)
 
     flags, open_n = [], 0
     for (role, key), o in sorted(opened.items()):
         if (role, key) in closed:
             continue
         open_n += 1
+        if o.get("bad_form"):
+            flags.append(("BAD-FORM", role, key, o))
+            continue
         by = o.get("by", "")
         rows = ""
         for name in (f"{role}-standing-items.md", f"{role}-carry-forward.md"):
@@ -122,8 +143,9 @@ def main():
         elif not by.startswith("trigger:") or len(by) <= len("trigger:") + 1:
             flags.append(("BAD-BY", role, key, o))
 
+    scope = f" · role={a.role}" if a.role else ""
     print(
-        f"owed-scan · {len(logs)} session logs since {since} · {len(opened)} OWED markers, "
+        f"owed-scan{scope} · {sum(1 for x in logs if not a.role or x[2] == a.role)} session logs since {since} · {len(opened)} OWED markers, "
         f"{len(opened) - open_n} closed, {open_n} open · {len(flags)} flags · "
         f"{sum(map(len, unparsed.values()))} markers not parsed"
     )

@@ -310,52 +310,18 @@ python cli/commands/test_issues_integration.py
 
 ## 🎉 What's Next
 
-## 🔄 Morning Standup Integration
+## Morning Standup Integration
 
-**Status**: ✅ **ACTIVE INTEGRATION** - Available since August 24, 2025
-
-### Integration Overview
-
-Issue Intelligence now integrates seamlessly with Morning Standup to provide contextual priority issues in daily standups.
-
-### Usage with Morning Standup
+The standup command no longer has a `--with-issues` flag (it was removed when the command moved to `StandupWorkflowSkill`). To get a standup built from GitHub issues, call the REST API with `mode` set to `issues` or `trifecta`:
 
 ```bash
-# Generate morning standup with integrated issue priorities
-python cli/commands/standup.py --with-issues
-
-# Standard standup without issue integration
-python cli/commands/standup.py
-
-# Slack-formatted output with issues
-python cli/commands/standup.py --with-issues --format slack
+curl -X POST http://localhost:8001/api/v1/standup/generate \
+  -H "Authorization: Bearer <your token>" \
+  -H "Content-Type: application/json" \
+  -d '{"mode": "issues", "format": "markdown"}'
 ```
 
-### Integration Features
-
-- **Top Priority Issues**: Automatically includes top 3 priority issues in standup
-- **Contextual Relevance**: Issues filtered based on current project focus
-- **Graceful Degradation**: Standup continues normally if Issue Intelligence unavailable
-- **Performance Optimized**: Integration adds minimal overhead to standup generation
-
-### Technical Architecture
-
-- **Canonical Query Pattern**: Both features use shared CanonicalHandlers infrastructure
-- **Cross-Feature Learning**: Issue patterns inform standup prioritization
-- **Async Integration**: Non-blocking issue priority retrieval
-- **Error Handling**: Comprehensive fallback mechanisms
-
-### Integration Output
-
-When `--with-issues` is used, standup includes:
-
-```
-🎯 Today's Priorities
-  • Continue work on piper-morgan
-  • Issue #123: Fix authentication bug
-  • Issue #124: Implement user preferences
-  • Issue #125: Update documentation
-```
+See the [Morning Standup guide](morning-standup.md) for the full list of modes and formats.
 
 ### Code Agent Integration
 
@@ -375,6 +341,6 @@ The CLI is ready to integrate with the Code Agent's Issue Intelligence classes:
 ---
 
 **Status**: ✅ **PRODUCTION READY** with **ACTIVE MORNING STANDUP INTEGRATION**
-**Integration**: Morning Standup CLI `--with-issues` flag functional
+**Integration**: standup from issues via the REST API (`mode: issues`), see the Morning Standup guide. The `--with-issues` CLI flag no longer exists.
 **Next Enhancement**: Fix Issue Intelligence initialization in integration context (PM-124)
 **Support**: Integration tests and comprehensive documentation available

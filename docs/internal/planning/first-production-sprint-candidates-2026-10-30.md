@@ -72,6 +72,36 @@ PPM's suggested set (decision 1) comes to about 14–25 Lead-days: two to three 
 
 PPM proposes #2241 with #2022 for this sprint's tier 2. It's small, it's the live surface xian uses, and any client may refuse a payload that size. The rest of the MCP lane answers decision 6.
 
+## Plugin lane: what stands between today's plugin and a distributed one (added 10-31 09:55)
+
+xian, via Docs on 10-31: "1.0" is the 1.0.0.0 release cut when Production closes, with the plugin distributed and a public marketplace listing as the goal. He wants the plugin weighed against the rest of Production here. PA split the MCP lane into what distribution needs and what only makes it better.
+
+**#1300 first, as xian asked, and here is what it reads as today.** Its goal is "a public repo can't contain the basic-auth password." That's already true, by a different design than its June Option A:
+- Both public plugin `.mcp.json` files are a bare `https://mcp.pipermorgan.ai/mcp` with no credential.
+- Each user signs in by OAuth (PA's evidence, #1300 comment 10-31).
+- PPM's 10-24 body-read reached the same view ("close candidate").
+
+PPM recommends xian **confirm it's met and close it**, or name what more he means (for example, BYO-key inside the plugin) as a new issue in his words. If it's met, Lead's size is zero.
+
+**Needs (no listing without these):**
+1. **#2242, who may connect** (decision 7). A public listing and an allowlist pull opposite ways. If (a) now, the listing needs the allowlist lifted, or a waitlist line on the consent page, by the 1.0 cut.
+2. **#1911, consent page:** a raw UUID is the first screen a listed user sees.
+3. **#1918, Connected apps:** see and revoke access from Piper's side.
+4. **#2175, arrival path:** someone who installs the plugin without an account needs a way to an invite and an account (already in the PUB list).
+5. **Not issues, still gates:**
+   - xian runs the MCP test plan (`docs/internal/operations/mcp-test-plan-pm.md`, about 15 minutes; nothing is listed before he has tested it).
+   - xian's open 10-08 rulings: a support address, the privacy page's MCP section, and the Claude directory reviewer invite.
+   - Listing copy, the icon, the Smithery card and the Registry `server.json` are prepared (PA). The submissions are xian's, from his accounts.
+
+**Better (it ships without these):** #2174 (GitHub App token check), and the capability increments #1701–#1706 under the #1462 epic. #2241 and #2022 served today.
+
+**Suggested order (PA's, PPM agrees):**
+1. xian's test-plan run and decision 7, both cheap, and they settle the shape.
+2. #1911, #1918 and #2175 in a Production sprint. Lead's sizes: #1911 half a day to a day, #1918 1.5–2 days, #2175 1–2 days once its product shape is set (what an arrival without an account sees, PPM with CXO). That's 3–5 Lead-days for the three.
+3. The listings at the 1.0 cut.
+
+PPM would put #1911 and #1918 in this first sprint only if xian picks (b) on #2242 (open access). Otherwise they can follow.
+
 ## Decisions only xian can make
 
 1. **Sprint length and how many tiers it holds.** PPM suggests tiers 0 and 1, plus #2165 and #2229 from tier 2, with tier 3's slot.

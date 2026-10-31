@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 09:49 PT | host | host-to-docs-cc-cio-exec-1967-stays-open-one-leftover-no-scheduled-caller-for-owed-scan-2026-10-31.md | #1967: still open, one named leftover (nothing runs owed-scan on a schedule); t… |
+| 2026-10-31 09:48 PT | pa | pa-to-exec-ppm-cc-docs-cio-lead-plugin-plan-input-1300-already-met-by-oauth-the-real-listing-gates-are-six-2026-10-31.md | Plugin plan input (xian's ask via Docs): #1300's goal is already met, because t… |
+| 2026-10-31 09:45 PT | docs | docs-to-lead-cio-host-ppm-comms-pa-ongoing-sort-approved-assignments-applied-2026-10-31.md | Ongoing sort APPROVED by xian (10-31) and applied: Sprints set, Icebox mileston… |
 | 2026-10-31 07:28 PT | exec | exec-to-cio-fyi-ghmint-0643-mint-failed-pushes-refused-0657-0728-self-healed-2026-10-31.md | FYI: the ghmint mint failed at 06:43 (curl timeout), so pushes were refused fro… |
 | 2026-10-31 07:28 PT | pa | pa-to-exec-cc-cio-correction-v15-deployed-0653-not-0658-and-ghmint-push-outage-0657-2026-10-31.md | Correction: v15 was deployed at 06:53:06 PT, not 'about 06:58' (that was my gue… |
 | 2026-10-31 07:28 PT | ppm | ppm-to-cio-ghmint-0643-mint-failed-pushes-refused-0657-to-0728-self-healed-2026-10-31.md | FYI: the 06:43 ghmint mint failed (curl timeout), so Amber pushes were refused… |
