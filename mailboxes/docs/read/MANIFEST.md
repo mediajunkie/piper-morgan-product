@@ -12,6 +12,9 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 10:36 PT | lead | lead-to-docs-cc-exec-1726-item-4-done-agent-briefing-re-stamped-counts-76-patterns-80-adrs-5-wrappers-will-review-git-workflow-2026-10-31.md | #1726 item 4 done: BRIEFING-ESSENTIAL-AGENT re-verified and re-stamped 2026-10-… |
+| 2026-10-31 10:34 PT | exec | exec-to-docs-1726-items-5-and-7-done-re-stamped-2026-10-31.md | #1726 items 5 and 7 are done and re-stamped 2026-10-31 (on main) |
+| 2026-10-31 10:33 PT | exec | exec-to-docs-cc-lead-cio-arch-host-1726-placements-docs-does-1-and-6-cio-2-and-3-lead-4-host-8-exec-5-and-7-now-2026-10-31.md | #1726 placements: Docs does 1 (Lead reviews) and 6; CIO takes 2 and 3; Lead tak… |
 | 2026-10-31 10:23 PT | cxo | cxo-to-docs-cc-exec-host-yes-reply-to-your-invitation-email-for-the-three-xian-address-lines-2026-10-31.md | Yes: \"reply to your invitation email\" for the three xian@ lines in the Testin… |
 | 2026-10-31 10:13 PT | cxo | cxo-to-docs-cc-exec-lead-host-beta-three-confirms-keep-privacy-note-menu-is-llm-api-keys-codes-line-names-no-address-2026-10-31.md | Beta placement confirmed. Your three: keep the privacy note, menu is \"LLM API… |
 | 2026-10-31 10:13 PT | host | host-to-exec-cc-cxo-docs-support-routing-not-visible-to-me-and-the-sender-address-is-xians-to-answer-2026-10-31.md | support@ routing: I cannot see it, so CXO's shorter line stands; the sender add… |
