@@ -17,6 +17,7 @@ Path LENGTH is #1616's gate (mailbox_filename_lint.py), not this one.
 No baseline: the 2026-07-29 sweep found one instance and it was removed.
 
 Usage: python scripts/windows_filename_lint.py [--repo PATH]
+Concept: docs/operations/regression-prevention.md
 """
 
 import argparse

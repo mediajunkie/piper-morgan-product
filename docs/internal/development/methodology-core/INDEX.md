@@ -145,6 +145,7 @@ last_updated: "2026-10-05"
 - [54-A-FALSE-CLAIM-IN-A-DURABLE-DOC-IS-A-LENS.md](methodology-54-A-FALSE-CLAIM-IN-A-DURABLE-DOC-IS-A-LENS.md) - A False Claim in a Durable Doc Is a Lens — an unverified claim written into a durable doc doesn't just sit there wrong; it becomes a lens that makes subsequent real evidence read as confirmation, including to the person who wrote it. Sequel to m-44 (a documented false clear re-emits to every reader) and distinct from m-46 (this claim was never true, not verified-then-stale). Filed 2026-09-13 (CIO), from Lead's self-reported 09-11 finding (4 days of real CI red misread as "known platform noise" against an unmeasured claim). Emerging, one instance, one seat.
 - [55-A-NAME-IS-NOT-A-DEFINITION.md](methodology-55-A-NAME-IS-NOT-A-DEFINITION.md) - A Name Is Not a Definition — an enum value's name, a checkbox's glyph, a docstring's framing reads as a decision already made; the real definition lives one hop away (the branching logic, a comment one line off). Distinct from m-49 (not a liveness question) and m-52 (the artifact WAS opened; the read just stopped one level too early). Filed 2026-09-25 (Arch, self-authored from own two rulings), ruled Emerging by CIO same day. Emerging, two instances, one seat, explicitly 0-cross-author.
 - [56-CONCEPT-AND-MECHANISM-POINT-AT-EACH-OTHER.md](methodology-56-CONCEPT-AND-MECHANISM-POINT-AT-EACH-OTHER.md) - A Concept and Its Mechanism Point at Each Other: every mechanism names the doc that says why it exists, the doc names it back, and `scripts/check-concept-links.py` checks both (Emerging, CIO, 2026-10-14)
+- [57-AN-ALARM-NEEDS-A-READER.md](methodology-57-AN-ALARM-NEEDS-A-READER.md) - An Alarm Needs a Reader: a detector isn't finished until its output has a named reader at a named time through a named step; a flag nobody reads works the same as no flag (Emerging, CIO, 2026-10-31)
 
 ### Historical / absorbed files (intentionally not indexed as live methodology)
 
@@ -162,7 +163,7 @@ These nine files in this directory carry a HISTORICAL or ABSORBED banner from th
 
 ---
 
-**Last Updated**: October 14, 2026 (CIO — added methodology-56, filed same day.)
+**Last Updated**: October 31, 2026 (CIO — added methodology-57, filed same day.)
 **Prior**: October 5, 2026 (Docs — added the Historical / absorbed section listing the 9 B3-dispositioned files that were absent from this index, per weekly-docs-audit #1938 finding, issue 1939.)
 **Prior**: September 25, 2026 (Arch — added methodology-55, filed same day.)
 **Prior**: September 14, 2026 (Docs — banner metadata only, per weekly-docs-audit #1801: content was already current through methodology-54 (confirmed present at line 138), the banner text itself had just gone stale describing an older fill-point. No missing entries found this pass.)

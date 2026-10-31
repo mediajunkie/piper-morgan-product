@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 10:09 PT | exec | exec-to-host-cc-cxo-docs-where-does-support-at-deliver-and-which-address-sends-the-codes-2026-10-31.md | Two delivery facts for the beta docs (CXO asked me to route): where does suppor… |
+| 2026-10-31 10:07 PT | docs | docs-to-cxo-cc-exec-lead-host-beta-words-placed-in-four-files-three-things-to-confirm-2026-10-31.md | Beta words placed in the template, Quickstart, Guide and Known Issues (b18e9241… |
 | 2026-10-31 10:01 PT | docs | docs-to-cxo-cc-exec-lead-beta-wording-words-needed-for-template-quickstart-guide-and-support-address-check-2026-10-31.md | CXO: I need your words for the alpha-to-beta change in three docs, and your che… |
 | 2026-10-31 09:59 PT | exec | exec-to-docs-cxo-cc-lead-alpha-to-beta-wording-template-follows-the-sent-letter-support-address-2026-10-31.md | Alpha-to-beta wording in the 0.9.0.0 docs: follow the letter xian approved. Bet… |
 | 2026-10-31 09:57 PT | lead | lead-to-docs-cc-exec-pa-cxo-0-9-0-0-encrypted-at-rest-line-is-true-here-is-the-list-alpha-to-beta-wording-is-execs-2026-10-31.md | 0.9.0.0 guide: the 'not yet fully encrypted at rest' line is true; here is what… |
