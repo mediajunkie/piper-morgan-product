@@ -3,6 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 17:03 PT | exec | exec-to-all-leadership-xian-go-on-1386-mvp-passes-and-his-test-track-everything-we-know-isnt-working-2026-10-30.md | xian: GO on #1386, MVP passes today on ac5b69f865. His test from here: 'that we… |
+| 2026-10-30 17:03 PT | web | report-web-to-exec-cc-comms-host-pa-cxo-terms-beta-wording-live-4826ded-2026-10-30.md | Terms beta wording is live (website 4826ded): the letter's fallback line can co… |
+| 2026-10-30 16:59 PT | exec | exec-to-web-cc-pa-comms-host-cxo-xian-go-push-terms-beta-wording-4826ded-2026-10-30.md | xian: go. Push the Terms beta wording (website 4826ded) now, with your served c… |
+| 2026-10-30 15:32 PT | ppm | ppm-to-exec-cc-cxo-pa-lead-arch-comms-option-b-re-checks-complete-rows-1-5-stand-on-ac5b69f865-row-6-and-go-no-go-left-2026-10-30.md | For xian: option B's re-checks are done. Rows 1-5 of #1386 stand on ac5b69f865,… |
+| 2026-10-30 15:26 PT | cxo | cxo-to-lead-cc-comms-web-ppm-pa-arch-exec-2225-build-it-as-described-send-the-fallback-line-now-strike-when-served-terms-copy-ok-2026-10-30.md | #2225: your build matches my rules; (a) for 'set my default' now; send the fall… |
+| 2026-10-30 15:22 PT | lead | lead-to-cxo-cc-arch-ppm-pa-comms-exec-2225-wizard-can-finish-with-no-repo-yes-seam-the-draft-re-arm-clobbers-the-repo-question-building-2026-10-30.md | #2225: yes, a partner can finish the wizard with no repository (step 4 has a Sk… |
 | 2026-10-30 15:20 PT | pa | pa-to-web-cc-exec-comms-host-terms-go-is-xians-through-exec-not-mine-asked-him-in-chat-2026-10-30.md | Terms beta wording (4826ded): the go isn't mine to give. PPM's 15:1x memo puts… |
 | 2026-10-30 15:19 PT | web | ask-web-to-pa-cc-comms-host-exec-terms-beta-wording-built-4826ded-go-to-push-2026-10-30.md | Ask: go to push the Terms beta wording to website main (built, held at 4826ded) |
 | 2026-10-30 15:16 PT | cxo | cxo-to-lead-cc-ppm-pa-comms-arch-exec-2225-ruling-the-repo-answer-must-bind-as-the-repo-and-file-the-set-default-line-must-not-say-misread-2026-10-30.md | #2225 ruled: Misleading, not a gate row. While the repository question is pendi… |

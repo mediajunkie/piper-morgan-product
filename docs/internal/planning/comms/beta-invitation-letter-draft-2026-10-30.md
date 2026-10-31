@@ -77,6 +77,7 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 > - **Asking for a milestone's issues in two steps ("show issues from one milestone", then the name) can list the wrong issues.** Ask in one step instead, with the milestone's name in the same sentence, such as "show my open issues in the Launch milestone". This is a known issue and isn't fixed yet.
 > - **No undo for deleted to-dos.** Deleting a to-do is permanent for now, and "delete all my to-dos" deletes one at a time.
 > - **Searching your documents from chat doesn't work yet.** You can upload a file and ask Piper about it by name, or paste the text into the chat.
+> - **If Piper asks which repository to create an issue in and you answer, it may add your answer to the draft instead of filing it.** Name the repository in your first request, such as "Create a GitHub issue in owner/name: 'your title'".
 >
 > **Feedback and help.** When you find something new, send feedback from the left-hand menu once you're in the app, or email support@pipermorgan.ai. Either way the message will be read by the team, including by me (xian), the human who owns this particular loop.
 >
@@ -94,15 +95,15 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 | "Alpha is nearly over" | Out, replaced by a slot for xian | It describes the alpha |
 | Carry-over paragraph | Out, folded into opening 1b as one sentence | Only the five alpha people have accounts that carry over |
 | Getting in | URL is now `{URL}` | See open point 1 |
-| Known issues | Heading "in this beta". Six lines, not five: the #2018 GitHub line is struck (closed served 10-28), and the two 10-29 lines (#2042 class, #2184) are in. Order puts the two "wrong answer" lines together | PPM 10-29 and 10-30. Issue numbers are dropped from the letter, as in the alpha one. They're in the known-issues doc |
+| Known issues | Heading "in this beta". Seven lines, not five: the #2018 GitHub line is struck (closed served 10-28), the two 10-29 lines (#2042 class, #2184) are in, and #2225 is in (CXO 17:0x). Order puts the two "wrong answer" lines together | PPM 10-29 and 10-30. Issue numbers are dropped from the letter, as in the alpha one. They're in the known-issues doc |
 | Everything else | Unchanged, verbatim | Final pieces the alpha partners already have |
 
 **Served facts, re-read by Comms 10-30 14:5x (curl, text not rendered):** alpha and beta `/health` both 200, both `git_sha` e234776150. Alpha `/login` has "Create your account". Alpha `/setup` has "Invite", "Paste the code you received." and "API Keys". `/terms/` and `/privacy/` 200. The Terms still carry "We hold the key that unlocks it" and "Our admin tools don't display your conversations". Exec's 14:52: a promotion of main is about to go out, so re-read these after it serves.
 
 ## Open points before it goes
 
-1. **Which URL?** beta.pipermorgan.ai and alpha.pipermorgan.ai serve the same build today. *Exec 15:01:* PA runs one fresh sign-up on beta. with the re-checks on the promoted build. If it passes, Exec recommends "beta." to xian. If not, "alpha." stays. HOST 15:04 would watch it with xian present. *PA 15:1x:* beta. serves the promoted build, `ac5b69f865`. The fresh sign-up spends a single-use code, so it needs xian's hands. PA has given him the steps. Until it's run, the letter keeps "alpha.".
-2. **The Terms page still says alpha.** HOST 15:04 recommends changing it before the first send. The proposed wording is below. Who edits the served page, and whether it needs a version bump, is xian's and Web's call. If xian sends first, HOST suggests one plain line in the letter: "Our Terms page still uses the word alpha. Everything in it applies to the beta."
+1. **Which URL?** beta.pipermorgan.ai and alpha.pipermorgan.ai serve the same build today. *Exec 15:01:* PA runs one fresh sign-up on beta. with the re-checks on the promoted build. If it passes, Exec recommends "beta." to xian. If not, "alpha." stays. HOST 15:04 would watch it with xian present. *PA 15:1x:* beta. serves the promoted build, `ac5b69f865`. The fresh sign-up spends a single-use code, so it needs xian's hands. PA has given him the steps. Until it's run, the letter keeps "alpha.". **Exec 17:0x: xian did the beta. sign-up by hand** (a new account, "beta xian", one code spent). The letter uses https://beta.pipermorgan.ai once his quote of the wizard's end and the first reply is recorded here. Not yet received by Comms.
+2. **Terms: RESOLVED.** xian's "go" (Exec 16:59). Web pushed website `4826ded`, and the served `/terms/` reads "What this beta is" with 0 "alpha" in the page HTML (Web 17:0x, curl and Lighthouse). HOST's fallback line is struck and not in the letter. CXO's copy OK was given 15:2x and reconfirmed 17:0x.
 3. **xian's "what this beta is" paragraph.**
 4. **PPM's line check at send**, after the promotion and PA's re-checks.
 5. **Version 1b's "no new code, your account carries over": VERIFIED (PA 15:1x).** On beta. (serving `ac5b69f865`), an alpha test account logged in, and a chat turn saw issue #35, which had been created on alpha. at 15:04. So it's the same accounts and the same data. That was an API check, not the rendered sign-in page. Whether the three 10-26 codes were redeemed is still unread (HOST: xian's select).
