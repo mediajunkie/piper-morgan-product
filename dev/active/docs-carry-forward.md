@@ -2,7 +2,13 @@
 
 **Updated**: 2026-10-29 (see NOW). Older: 2026-10-17 (04:12 fire, see NOW below; older DONE lines below are history). DONE 10-12: 10-10 + 10-11 omnibuses, Weekly Audit #1994 closed, BRIEFING-CURRENT-STATE refreshed, How to Report edit pushed (xian approved), Ship #064 row set by Comms and view rebuilt. Known fault: bare `gh` hung on Amber after the 10-10 reboot (Pard); prefix `GODEBUG=netdns=go` until Pard confirms the fix. History in session logs (`dev/2026/10/{04..12}/*docs-code-log.md`), not here.
 
-## NOW (10-30 07:xx, supersedes the 10-29 22:12 block)
+## NOW (10-30 22:12 STOP, supersedes the 07:xx block)
+- **Next START Sat 10-31 04:12 owes the 10-30 omnibus** (plus Step 1d nudges). 10-29 omnibus DONE and committed 10-30 (addendum for CXO's close). Sat 10-31 "Build the Instrument Before the Theory" and Sun 11-01 "Read the Machine Before Debating Who Restarts It" are `drafted`: publish only on Comms' ready-for-docs memo (dry-run first, work-date from the calendar row). xian sends the beta letters Sat morning, promotion freeze until then.
+- **Ongoing triage OPEN, all waiting on xian** (`dev/active/ongoing-milestone-triage-2026-10-29.md`): yes to the sort then Sprints one at a time via assign-sprint-safely; yes to an `icebox` label (does not exist); #1300 and #1340 (public marketplace listing in 1.0); **#1927 still OPEN** (my close refused by the classifier, I did not retry split, needs xian or an allowance for my seat). The first-Production-sprint priorities discussion may be where he looks. After the yes: my Docs-lane FLYWHEEL items 1719, 1721, 1726, 1779, 1780, 1389, 1392, 1403, 1904.
+- Done 10-30: DOCS briefing carries the five production-plan pointers (Exec's check), CURRENT-STATE alpha sha and open-MVP lines refreshed (MVP closed 17:03). No Docs lane review for Ship #067 (standing ruling, told Exec, no reply asking otherwise). Mail now: write `date: now` in memo front matter, mail-send stamps it.
+- Held: #1909 fixtures box (Lead's now MVP closed), weekly audit Mon 11-02 (also monthly housekeeping), glossary re-verify about 11-30. `scripts/main-ci-status.sh` reads "unmeasured" when the network drops, retry before reporting.
+
+## (earlier NOW, 10-30 07:xx)
 - 10-29 omnibus DONE 10-30 (memo to Exec, CXO nudged). Next START Sat 10-31 04:12 owes the 10-30 omnibus. Everything else below is unchanged.
 
 ## (earlier NOW, 10-29 22:12 STOP)
