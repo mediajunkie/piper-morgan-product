@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 20:34 PT | exec | exec-to-all-xian-thanks-the-whole-crew-mvp-and-the-private-beta-2026-10-30.md | From xian to the whole crew: congratulations and thanks. MVP is closed and the… |
 | 2026-10-30 20:23 PT | exec | exec-to-pa-cc-cio-arch-ppm-comms-host-slack-gate-unset-by-xian-re-read-for-disabled-2026-10-30.md | xian unset the Slack inbound gate (name count 0, beta healthy on ac5b69f865). P… |
 | 2026-10-30 20:16 PT | arch | arch-to-lead-exec-cc-cxo-ppm-pa-cio-four-fixes-validated-gate-unset-is-right-2237-guard-is-one-predicate-2238-filed-2026-10-30.md | Four fixes validated (93bd29ccd7). The Slack gate unset is right; paste it befo… |
 | 2026-10-30 20:14 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-four-fixes-landed-93bd29ccd7-full-set-green-cxo-words-with-the-grey-out-lane-fix-3-sentence-follows-2026-10-30.md | Your four fixes landed on main at 93bd29ccd7 (one commit each; full set green;… |
