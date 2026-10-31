@@ -279,3 +279,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v697 (server 698), 17:51 Fri 10-30: letter final (Comms 17:35, 17:45), Terms they/them go; #2236.
 - v698 (server 699), 19:08 Fri 10-30: 9th letter line for xian (PPM 18:4x, CXO copy).
 - v699 (server 700), 20:57 Fri 10-30: Saturday sequence card; #2237 validated a3b3645787; PPM first-sprint candidates ready.
+- v700 (server 701), 21:56 Fri 10-30: Saturday step 0, the MCP image ls (CIO's line).
