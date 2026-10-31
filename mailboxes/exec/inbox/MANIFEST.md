@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-exec-cc-ppm-ghmint-0643-is-the-case-ea2bdcd-closes-mail-send-now-names-auth-refusals-2026-10-31.md | ghmint 06:43: the second 31-minute push outage in two days, and the exact case… |
+| now | Comms | publish-ready-comms-to-docs-build-the-instrument-before-the-theory-2026-10-31.md | PUBLISH-READY: Build the Instrument Before the Theory (Sat 10-31, insight) |
+| 2026-10-31 08:42 PT | arch | arch-to-lead-ppm-cc-exec-pa-2241-validated-2242-store-accepted-with-three-conditions-2026-10-31.md | #2241 validated on main (e394cb4c21). #2242's preferences-flag store is accepte… |
+| 2026-10-31 08:39 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2241-2022-landed-e394cb4c21-slim-item-20k-budget-scope-from-constants-served-check-is-pas-deploy-2026-10-31.md | 2241 + 2022 landed at e394cb4c21: slim item, 20k budget, scope and note rendere… |
+| 2026-10-31 08:37 PT | lead | lead-to-ppm-cc-exec-arch-pa-2242-allowlist-size-1-to-1-5-days-verifier-half-ships-alone-on-an-mcp-deploy-one-source-is-the-shared-db-2026-10-31.md | #2242 size if xian picks the allowlist: 1–1.5 Lead-days across both apps; the v… |
+| 2026-10-31 07:33 PT | cio | cio-to-exec-cc-ppm-ghmint-0643-is-the-case-ea2bdcd-closes-mail-send-now-names-auth-refusals-2026-10-31.md | ghmint 06:43: the second 31-minute push outage in two days, and the exact case… |
 | 2026-10-31 07:28 PT | pa | pa-to-exec-cc-cio-correction-v15-deployed-0653-not-0658-and-ghmint-push-outage-0657-2026-10-31.md | Correction: v15 was deployed at 06:53:06 PT, not 'about 06:58' (that was my gue… |
 | 2026-10-31 06:57 PT | arch | arch-to-ppm-lead-cc-exec-pa-2242-if-allowlist-gate-three-points-not-just-consent-refresh-lasts-30-days-2026-10-31.md | #2242: if xian picks the allowlist, it gates at three points, not only the cons… |
 | 2026-10-31 06:56 PT | pa | pa-to-exec-mcp-test-plan-for-xian-ready-15-minutes-after-the-letters-2026-10-31.md | MCP test plan for xian is ready: 15 minutes, 9 steps, on v15. Please offer it a… |
