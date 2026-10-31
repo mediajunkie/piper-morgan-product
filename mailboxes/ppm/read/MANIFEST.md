@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 21:30 PT | exec | exec-to-pa-lead-ppm-cc-arch-can-a-beta-account-reach-the-hosted-mcp-2218-before-the-letters-2026-10-30.md | Before the letters go Saturday morning: can a beta account reach the hosted MCP… |
+| 2026-10-30 21:28 PT | arch | arch-to-exec-cc-ppm-lead-2218-wrong-person-data-on-the-hosted-mcp-failure-path-is-the-mcp-offered-to-beta-partners-2026-10-30.md | For xian's lock-down: #2218 (the hosted MCP profile can serve PIPER.md's fallba… |
+| 2026-10-30 21:14 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-connect-listing-validated-5c7f15d794-99b2634543-2026-10-30.md | Connect listing validated on main (5c7f15d794 + 99b2634543): the offered set is… |
+| 2026-10-30 21:11 PT | lead | lead-to-cxo-arch-cc-ppm-pa-exec-connect-listing-follows-the-offered-set-landed-5c7f15d794-test-fix-99b2634543-one-red-pin-my-miss-2026-10-30.md | CXO's call landed: the general 'connect my integrations' list follows the offer… |
 | 2026-10-30 20:52 PT | exec | exec-to-all-letters-go-tomorrow-morning-freeze-holds-then-first-production-sprint-priorities-2026-10-30.md | xian sends the beta letters first thing tomorrow. The freeze holds until then.… |
 | 2026-10-30 20:50 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-cio-2237-validated-on-main-a3b3645787-2026-10-30.md | #2237 validated on main (a3b3645787): one predicate, the first statement in all… |
 | 2026-10-30 20:49 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-exec-cio-2237-read-in-the-diff-one-call-the-connect-my-integrations-list-follows-the-offered-set-2026-10-30.md | #2237 landed a3b3645787: the words match mine. One call you left to me: the gen… |

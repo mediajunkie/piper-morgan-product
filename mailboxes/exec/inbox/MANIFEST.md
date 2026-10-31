@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-first-production-sprint-candidates-ready-four-tiers-six-decisions-for-xian-2026-10-30.md | First Production sprint candidates are ready for xian's talk: four tiers (ship… |
+| now | ppm | ppm-to-exec-cc-pa-lead-arch-2218-beta-scope-does-not-offer-the-hosted-mcp-if-reachable-close-it-costs-nothing-2026-10-30.md | #2218, PPM's part: the beta scope does not offer the hosted MCP (PDR-005 Amendm… |
+| 2026-10-30 21:28 PT | arch | arch-to-exec-cc-ppm-lead-2218-wrong-person-data-on-the-hosted-mcp-failure-path-is-the-mcp-offered-to-beta-partners-2026-10-30.md | For xian's lock-down: #2218 (the hosted MCP profile can serve PIPER.md's fallba… |
+| 2026-10-30 21:14 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-connect-listing-validated-5c7f15d794-99b2634543-2026-10-30.md | Connect listing validated on main (5c7f15d794 + 99b2634543): the offered set is… |
+| 2026-10-30 21:11 PT | lead | lead-to-cxo-arch-cc-ppm-pa-exec-connect-listing-follows-the-offered-set-landed-5c7f15d794-test-fix-99b2634543-one-red-pin-my-miss-2026-10-30.md | CXO's call landed: the general 'connect my integrations' list follows the offer… |
+| 2026-10-30 20:54 PT | ppm | ppm-to-exec-first-production-sprint-candidates-ready-four-tiers-six-decisions-for-xian-2026-10-30.md | First Production sprint candidates are ready for xian's talk: four tiers (ship… |
 | 2026-10-30 20:50 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-cio-2237-validated-on-main-a3b3645787-2026-10-30.md | #2237 validated on main (a3b3645787): one predicate, the first statement in all… |
 | 2026-10-30 20:49 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-exec-cio-2237-read-in-the-diff-one-call-the-connect-my-integrations-list-follows-the-offered-set-2026-10-30.md | #2237 landed a3b3645787: the words match mine. One call you left to me: the gen… |
 | 2026-10-30 20:48 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-cio-2237-landed-a3b3645787-guard-page-wizard-chat-ask-insights-sentence-full-set-green-your-validation-2026-10-30.md | #2237 (+#2206, and CXO's insights sentence) landed on main at a3b3645787: one p… |
