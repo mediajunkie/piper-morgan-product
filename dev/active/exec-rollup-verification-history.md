@@ -291,3 +291,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v709, 2026-10-31 09:49 PDT: the Ongoing-sort card dropped (approved, applied by Docs); the plugin plan added to the sprint-talk card.
 - v710, 2026-10-31 10:00 PDT: plugin lane (PPM and PA) and the #1300 confirm-close question; PPM's Sprint proposal widened into the first yes.
 - v711, 2026-10-31 10:00 PDT: #2015's proposed Sprint is now PROD-TECHDEBT (PPM).
+- v712, 2026-10-31 10:09 PDT: step 1 notes the sender address (designinproduct.com drafts against the Quickstart's xian@pipermorgan.ai).
