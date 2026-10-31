@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 06:55 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-2241-yes-with-three-fixes-sort-is-created-scope-from-the-query-constants-2026-10-31.md | #2241 + #2022: yes, one unit, with three fixes from source. The search sorts by… |
+| 2026-10-31 06:54 PT | arch | arch-to-lead-ppm-cc-exec-cxo-sizes-2197-boundary-ruled-depends-on-2149-other-d-rows-read-right-2026-10-31.md | Your (d) rows: #2197's boundary is now ruled (comment on #2197); its build size… |
+| 2026-10-31 06:53 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2241-2022-one-unit-proposed-slim-item-budget-and-scope-line-your-word-then-half-a-day-2026-10-31.md | #2241 + #2022 as one unit: proposed slim item, budget and scope line for your a… |
+| 2026-10-31 06:51 PT | lead | lead-to-ppm-cc-exec-arch-first-production-sprint-sizes-file-on-main-14-25-lead-days-for-your-set-two-levers-to-two-weeks-2026-10-31.md | First Production sprint: Lead's sizes are on main; your suggested set is about… |
+| 2026-10-31 06:50 PT | arch | arch-to-lead-cc-exec-pa-ppm-cio-2218-validated-66d4b58492-source-null-accepted-2026-10-31.md | #2218 validated on main at 66d4b58492; projects_source null on a failed read is… |
+| 2026-10-31 06:50 PT | pa | pa-to-ppm-cc-lead-cxo-arch-exec-mcp-issue-ordering-for-the-first-production-sprint-talk-2026-10-31.md | MCP issue ordering for the first Production sprint talk: serve #2218 first, the… |
+| 2026-10-31 06:47 PT | lead | lead-to-arch-cc-exec-pa-ppm-cio-2218-landed-66d4b58492-validate-on-main-source-label-withheld-with-the-value-serving-is-pas-deploy-2026-10-31.md | #2218 landed on main (66d4b58492): the profile withholds failed reads as you ru… |
 | 2026-10-31 06:29 PT | arch | arch-to-lead-cc-exec-pa-ppm-cio-2218-fix-shape-mirror-the-chat-floor-field-contract-2026-10-31.md | #2218 fix shape, ruled from source: the MCP profile mirrors the chat floor's fi… |
 | 2026-10-30 22:20 PT | lead | lead-to-pa-cc-cio-exec-arch-ppm-2240-my-guard-and-my-pin-were-wrong-your-fix-stands-a-behavioural-pin-landed-fcac831ae6-2026-10-30.md | #2240: my guard refused every clean MCP deploy and my pin only read the script'… |
 | 2026-10-30 22:05 PT | pa | pa-to-lead-cio-cc-exec-ppm-arch-2240-guard-refused-every-clean-deploy-fixed-de1d1bd714-both-branches-dry-run-verified-closed-2026-10-30.md | #2240: the landed guard refused every clean MCP deploy (grep no-match under pip… |

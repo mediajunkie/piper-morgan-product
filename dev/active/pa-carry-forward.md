@@ -15,24 +15,19 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Now: MVP passed; beta letters Saturday 10-31; MCP is priority 1 again (written 2026-10-30 STOP; replace, don't annotate)
+## Now (written 2026-10-31 07:2x; replace, don't annotate)
 
-- **MVP passed** on `ac5b69f865` (xian's go 17:03; PPM closed #1386; milestone 0 open). alpha and beta.pipermorgan.ai are one host and share accounts. Both serve `ac5b69f865`.
-- **The beta letters go out Saturday morning (10-31) from xian's mailbox.** HOST mints the codes with him. **No promotion to alpha until they've gone** (Exec's freeze). Landing on main is fine.
-- **Slack inbound gate:** xian unset it at 03:22Z, and PA read `disabled` at 20:25 on 10-30. Nothing more needed.
-- **Open at STOP, the #2218 lock-down question.** Any signed-in account, beta included, can connect the hosted MCP: a session plus a consent click, no allowlist. Exec asked CIO for one `ls /app/config` on `piper-morgan-mcp`.
-  - If `PIPER.user.md` is absent: no lock-down.
-  - If present: stop the MCP app before the letters. That cuts xian's connector too.
-  - PA's own `fly ssh` read was **denied** by the auto-mode classifier (production read), so don't retry it. Ask xian for a permission rule if PA is meant to do these.
-  - PA told Exec and CIO at 21:5x that v14 came from Amber (likely absent). Filed #2240.
-  - PA offered Exec a served OAuth-by-API profile proof. It writes 1 client row and 1 token, so it waits on Exec's yes.
-- **Owed by PA on the first promotion after the letters** (PPM's list in `ppm-to-exec-...-2238-placed-next-promotion-check-list...`):
-  - Row 2: a full canonical run. Q45 already expects `action`, so routing reads 56/61 on 10-30.
-  - Row 3: A1, A2, B's confirm, and the reverse case (`scratchpad` harnesses are gone after this session, so rebuild them from the 10-30 log).
-  - Served checks with CXO: #2225, #2236 (capability reply), #2233 (Q1 name, then stop), #2237 (grey Slack/Notion cards), #2218 if landed.
-- **Owed by PA after the set_default_repo flip** (xian's word, then CIO/HOST applies it): a fresh-session probe where the setter writes, PA confirms the value and then clears it, then one row 2 run. The test account has a PAT, so this exercises the 200 path.
-- **Record if xian quotes them:** his beta wizard's end and his first reply ("beta xian" account).
-- **Issues PA filed on 10-30:** #2225 (closed, fix not served, label `fix:not-served`), #2228, #2230.
+- **#2218 SERVED 10-31 ~06:58:** mcp.pipermorgan.ai is Fly **v15**, `git_sha` 061de2f98f (the first served sha). The clean-read profile is identical before and after. v14 is retired, so xian's `ls` and the stop question are moot (Exec agreed). Lead closes #2218.
+- **The beta letters go out today (10-31)** from xian's mailbox. **No promotion to alpha until they've gone** (Exec's freeze, `piper-morgan` app only).
+- **#2241 (PA filed):** the tool returns 431k chars, because the github section is raw GitHub objects. Lead builds it together with #2022 as one unit. Arch ruled 06:55: slim item, 20k budget, created-desc sort, scope line from the query constants, no "all your repositories". **PA owes:** the deploy with `scripts/deploy-mcp.sh` once it lands, then one connector call that must render inline.
+- **#2242 (PPM filed):** who may connect the hosted MCP during the beta is xian's decision 7, via Exec. PPM recommends an allowlist.
+- **xian's MCP test plan:** `docs/internal/operations/mcp-test-plan-pm.md`, sent to Exec to place after the letters. When his notes come back: file the failures, and ask CIO or xian to read alpha's log for step 8 (revoke).
+- **Owed on the first promotion after the letters** (PPM's list):
+  - row 2: a full canonical run (Q45 expects `action`);
+  - row 3: A1, A2, B confirm and the reverse case; rebuild the harnesses from the 10-30 log;
+  - served checks with CXO: #2225, #2236, #2233, #2237.
+- **Owed after the set_default_repo flip:** a fresh-session probe of the setter, confirm and clear it, then row 2.
+- **Record if xian quotes them:** his beta wizard's end and his first reply.
 
 ## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 
@@ -40,9 +35,9 @@ PA runs on **`com.xian.pm-pa-cycle`** (boot-persistent, 6x/day at **:47**, hours
 
 ## MCP program — standing #1 again (rewritten 2026-10-30 STOP; replaces the stale 10-01 section)
 
-- **Live:** `mcp.pipermorgan.ai` is v14, deployed by PA at 17:49 PT on 10-13 (00:49Z 10-14) from this Amber worktree, via `scripts/deploy-mcp.sh`, from `c6c26a596f`. `/health` returns 200 with `git_sha` "unknown", because v14 predates the script's `--build-arg PIPER_GIT_SHA` (added 10-16). **The next `scripts/deploy-mcp.sh` run sets the sha by itself**, so check `/health` after. No commits to the MCP server's own paths since then. **#2240 closed 10-30:** `.dockerignore` drops `config/*.user.md` and the script refuses an overlay (Lead `738c2e5f77`). The guard's clean-tree silent exit 1 was fixed by PA in `de1d1bd714`. Clean dry run passes on main.
+- **Live (superseded 10-31: now v15, sha 061de2f98f, see Now):** `mcp.pipermorgan.ai` was v14, deployed by PA at 17:49 PT on 10-13 (00:49Z 10-14) from this Amber worktree, via `scripts/deploy-mcp.sh`, from `c6c26a596f`. `/health` returns 200 with `git_sha` "unknown", because v14 predates the script's `--build-arg PIPER_GIT_SHA` (added 10-16). **The next `scripts/deploy-mcp.sh` run sets the sha by itself**, so check `/health` after. No commits to the MCP server's own paths since then. **#2240 closed 10-30:** `.dockerignore` drops `config/*.user.md` and the script refuses an overlay (Lead `738c2e5f77`). The guard's clean-tree silent exit 1 was fixed by PA in `de1d1bd714`. Clean dry run passes on main.
 - **Auth:** the protected-resource metadata points to alpha's `/mcp/oauth`. Dynamic registration is open, and `/authorize` needs an alpha session plus Approve. There is no allowlist, so the beta scope (PDR-005 Am. 1: MCP not offered) isn't enforced in code. Lead sized a consent-page allowlist as a web-app unit (a promotion).
-- **Re-entry plan (START 10-31, fresh session):**
+- **Re-entry plan: steps 1-4 DONE 10-31 (served v15, live check, ordering to PPM, test plan). Step 5 (R7) waits on PM per standing item 2:**
   1. Settle #2218 per the Now section, then deploy the fix (Lead's unit) with `scripts/deploy-mcp.sh --dry-run` then the real run (CIO's order), and check that `/health` shows the sha.
   2. An authenticated live check of v14+: `what_piper_knows_about_me` through xian's Claude connector (PA has the `Piper_Morgan_Alpha_MCP` tool in-session) plus the profile/colleague-model resources. Never verified by an authenticated call since v9.
   3. Re-read the open MCP issues and order them for the first Production sprint discussion (PPM is preparing candidates):
