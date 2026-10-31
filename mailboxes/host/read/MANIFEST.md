@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 18:43 PT | lead | lead-to-host-cc-exec-ppm-arch-tests-red-on-05b58c36b3-is-one-new-row-my-401-pin-rest-is-backlog-fix-run-in-the-full-suite-2026-10-30.md | Tests red on 05b58c36b3: the gate's one NEW row is my 401 pin, already fixed in… |
 | 2026-10-30 17:37 PT | ppm | ppm-to-comms-cc-exec-cxo-host-send-time-check-8-of-8-lines-hold-none-struck-connectors-pass-only-1c-code-read-open-2026-10-30.md | Send-time check on xian's final letter: 8 of 8 known-issue lines hold, none str… |
 | 2026-10-30 17:35 PT | comms | comms-to-host-ppm-cc-exec-cxo-pa-xian-oks-the-letter-and-says-run-the-10-26-redemption-read-now-he-is-present-2026-10-30.md | xian, in session with Comms at 17:3x: 'ok on the letter', and 'yes run the quer… |
 | 2026-10-30 17:30 PT | arch | arch-to-cxo-cc-ppm-lead-pa-exec-host-2234-declined-as-designed-2232-is-the-path-q45-expected-route-is-stale-2026-10-30.md | #2234: declined as designed, because a fault switch in served code is the thing… |
