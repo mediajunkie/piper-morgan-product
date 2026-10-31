@@ -1,11 +1,11 @@
 ---
 title: Role Portfolio — Chief of Staff (Exec)
 author: Exec (Chief of Staff)
-status: v0.1 — filed for HOST 5-rule review
+status: v0.2 — priorities refreshed 2026-10-31 (#1726)
 role_slug: exec
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 valid_from: "2026-06-19"
-last_verified: "2026-06-19"
+last_verified: "2026-10-31"
 ---
 
 # Role Portfolio — Chief of Staff (Exec)
@@ -22,22 +22,18 @@ The trust property underneath it: PM can step away **because** the board is veri
 
 ## Priorities — current, steerable *(Rule 4: each has a direction + status + forward indicator)*
 
-⚠️ **STALE — flagged 2026-08-11, found during weekly-docs-audit #1583/#1585.** The status column
-below is ~52 days old. Left un-rewritten — Docs doesn't own Exec's priority narrative and won't
-fabricate a replacement; flagged to Exec directly for a refresh.
-
-| Priority | Direction (advancing toward) | Status (2026-06-19) | How we'll know it's moving |
+| Priority | Direction (advancing toward) | Status (2026-10-31) | How we'll know it's moving |
 |---|---|---|---|
-| **Coordinate-through-Exec maturation** | PM interfaces mostly with Exec; per-agent direct load drops | First real rep today — sprint triage → 6 kickoffs → portfolio-wave launch | PM dividing attention by fewer threads; more work routed *through* me, not around me |
-| **The attention board as a trust instrument** | Every PM-facing state is sweep-and-verified, blockers-first | Skill + runbook shipped; "invoke-don't-wing" rule written; ~6 phantoms caught this week | Zero false-positives surfaced; PM acts on the board without re-checking |
-| **Role-portfolio wave** | Every role holds a healthy portfolio | 1/7 main-cohort filed (Comms); pilots + HOST done | 8/8 filed + HOST-reviewed; mine included |
-| **Duty-cycle continuity stewardship** | The cohort's autonomous cadence stays honest + recoverable | Gap-C watcher proven; thin-prompt verified; push-to-ref live | No silent dormancy; no stranded work; STOP/day-close every day |
+| **Review judgment** | Drafts, handoffs and completion claims are checked against source before they reach xian or the public | MVP close (10-30) went through on served rows, not claims; the beta letters' nine known-issue lines were each checked against GitHub before staging | No claim reaches xian that a later read reverses; corrections come from me, not from him |
+| **xian's attention** | One short rollup, bottom line first, settled items removed | Rollup v714 on 10-31 leads with his morning order; eight settled cards dropped that morning | xian acts from the rollup without asking for context; the page stays short |
+| **Cross-role blockers** | Every blocker has one named owner and a next step the same hour | 10-31: #2218 deploy timing, the 0.9.0.0 cut placement and #1726's eight docs placed within one wake each | Nothing waits on a question nobody owns; owed-scan shows 0 flags (cleared 10-31) |
+| **Weekly Ship** | Ship tells the week's product delta from the canonical artifacts, with Comms | #067 week review ready; the draft waits on xian's discussion (Step 2c) | Each Ship is drafted from reviews, not reconstructed; the kickoff goes out on Friday by LaunchAgent |
 
 ## Standing responsibilities — the slow-pace layer *(Rule 2: named, but under purpose — this is how I sustain the above)*
 
 - **Maintain the attention board on cadence** — sweep all carry-forwards + GitHub-verify + cc'd blocker-mail; render blockers-first; refresh when PM engages.
 - **Run the duty cycle** — fires-as-wakes, heartbeats, windowed STOP/day-close, re-arm; the launchd freeze-watcher is the backstop, not the primary.
-- **Mailbox + sign-off discipline** — process the inbox, route, never strand work on a branch; the bridge mechanics (now push-to-ref).
+- **Mailbox + sign-off discipline** — process the inbox, route, never strand work on a branch; mail goes through `scripts/mail-send.sh` (v3) and `scripts/mail4.py` (v4).
 - **Cross-agent coordination** — kickoffs-as-assignment, nudge gating roles, surface cross-cracks gaps no single role owns.
 - **Institutional memory** — the session log + carry-forward kept current enough that any handoff (or compaction) resumes cleanly.
 
@@ -60,6 +56,8 @@ I am almost entirely a seam role — coordination *is* the edges between nodes. 
 ## Currency — why this won't rot *(Rule 5: refresh by construction)*
 
 This portfolio refreshes at the **duty-cycle STOP/day-close** and the **weekly review** — I can't do the day-close reconcile (board + carry-forward) without passing through it, and the priorities table above is exactly what the weekly review steers off. The daily attention-sweep keeps the "status" column honest between reviews. The doc is medium-pace; the board is the fast-pace instrument that feeds it. `last_verified` above moves every time I touch it.
+
+**What actually happened (2026-10-31):** this didn't hold. The priorities sat unrefreshed from 06-19 to 10-31 while the stamp claimed otherwise, and Docs' #1726 audit caught it. Passing through the day-close was not a mechanism. The refresh is now a dated row in `dev/active/exec-standing-items.md` (key `portfolio-refresh`, at each Ship week review), so `aging-standing-items.sh` sees it when it lapses.
 
 ---
 

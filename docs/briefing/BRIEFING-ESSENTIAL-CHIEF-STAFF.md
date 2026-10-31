@@ -3,7 +3,7 @@ type: briefing
 title: BRIEFING-ESSENTIAL-CHIEF-STAFF
 valid_from: "2025-10-19"
 last_updated: "2026-04-27"
-last_verified: "2026-06-19"
+last_verified: "2026-10-31"
 max_age_days: 90
 ---
 
@@ -96,7 +96,7 @@ The discipline: protect time for review judgment; let commodity work be commodit
 - HOST: Role health checks, agent network monitoring, migration checklist stewardship
 - PA: Operational tactics, cross-pollination routing, watch-items, Janus relay
 
-**The CoS↔Comms axis** is the closest working partnership in the role: Comms drafts the workstream memo; exec synthesizes across all six leadership workstream memos plus omnibus logs to produce the Ship narrative; PM does the personal voice pass and publishes. Exec sits adjacent to the CXO↔Comms↔Docs quality-control triangle as the synthesis layer.
+**The Exec↔Comms axis** is the closest working partnership in the role: Comms drafts the workstream memo; exec synthesizes across all six leadership workstream memos plus omnibus logs to produce the Ship narrative; PM does the personal voice pass and publishes. Exec sits adjacent to the CXO↔Comms↔Docs quality-control triangle as the synthesis layer.
 
 ### PA↔Exec Coordination (Direct in Code)
 
@@ -138,7 +138,7 @@ Across the Apr 22–26 migration wave, exec produced three discrete artifacts pe
 **The pattern is not yet codified** — it exists across six review memos but not as a referenceable artifact (skill, methodology doc, pattern entry).
 
 Predecessor flagged this in handoff §6 as the **biggest methodology debt** of the role. ~half-day work to codify; first-month task per startup prompt. Until codified, the pattern lives in:
-- HOST migration checklist (`dev/active/memo-host-migration-checklist-2026-04-22.md`) — process scaffold
+- Migration checklist (`docs/internal/operations/migration-checklist.md`; the 04-22 original is `dev/2026/04/22/memo-host-migration-checklist-2026-04-22.md`) — process scaffold
 - Six review memos in `mailboxes/exec/sent/` (Apr 22–26) — instances
 - This briefing — pointer
 
@@ -179,8 +179,8 @@ These norms have been adopted across the leadership team and are load-bearing:
 | **Workstream memo naming standard** | `memo-exec-to-all-workstream-naming-standard-2026-04-19.md` | `workstream-{ship#}-{role}-{date}.md`. Effective Ship #040 onward. Six leadership role memos route to `mailboxes/exec/inbox/`; exec synthesizes the Ship narrative. |
 | **Verifiable-claims discipline** | `memo-exec-to-host-verifiable-claims-2026-04-19.md` | Originally to HOST, applies as general norm. Flag unverified comparative claims ("most productive week," "first time," "more than ever") — they need source-checking against canonical sources (commit log, retest output, issue tracker, primary session logs), not against omnibus summaries. |
 | **Workstream review source discipline (Code-era, effective Ship #041)** | Docs Apr 27 omnibus reframing memo | Workstream reviews read primary session logs directly for the Fri–Thu window; omnibus is a coverage check afterward, not the synthesis input. Code-era filesystem access makes 7-day session-log reads efficient + higher fidelity than omnibus-primary. Coverage-check feedback flows back to Docs as omnibus amendment candidates. |
-| **Per-memo commit-and-push norm** | CXO-established 2026-04-26; codified in CLAUDE.md | On filing any outbound memo, immediately git add+commit+push (memo + CC copies + sent mirror + paired triage). ~30s/memo. Eliminates asymmetric-visibility windows. |
-| **Mailbox discipline** | Docs-landed 2026-04-26; CLAUDE.md "Mailbox Discipline" section | Files in `mailboxes/` commit to `main` only. `check-branch.sh` hook enforces. Cross-agent infrastructure must arrive at trunk synchronously. |
+| **Send each memo at once** | CXO-established 2026-04-26; CLAUDE.md "Mail" | On filing any outbound memo, send it straight away with `scripts/mail-send.sh` (memo, cc copies and sent mirror). Eliminates asymmetric-visibility windows. |
+| **Mailbox discipline** | CLAUDE.md "Mail"; `docs/internal/operations/branch-worktree-mailbox-discipline.md` | Never `git add` or commit mailbox files yourself; `scripts/mail-send.sh` puts them on `main`. Mail to an agent outside this repo goes through `scripts/mail-send-external.sh`. |
 | **Disposition policy** | Predecessor handoff §4 | Tracker items with no progress >14 days force a do/defer/drop decision. Apply at every reconciliation. |
 | **Six-section handoff structure** | Validated across seven migrations Apr 22–26 | Stable container (1: live threads; 2: open threads; 3: relationships; 4: lessons; 5: what changes; 6: candor). Content tracks role identity. |
 | **Singleton-pair-many framing** | Predecessor session logs Apr 22+ | One decider on each axis. Applied generally to role-naming and ownership questions. |
@@ -205,7 +205,7 @@ Before producing anything, work this checklist:
 | Operation | How |
 |-----------|-----|
 | Find/read documents | `Read`, `Grep`, `Glob` directly on filesystem (not project_knowledge_search) |
-| Send mail to other roles | Write directly to `mailboxes/[role]/inbox/` (per Mailbox Discipline: commit on main) |
+| Send mail to other roles | Write memo, cc copies and sent mirror under `mailboxes/`, then `scripts/mail-send.sh "mail(exec): …" <paths>` (CLAUDE.md "Mail") |
 | Read workstream memos | Direct `Read` on `mailboxes/exec/inbox/workstream-{ship#}-{role}-{date}.md` |
 | Read GitHub issue body | `gh issue view {number}` |
 | Read Ship drafts at draft stage | Direct `Read` on `docs/public/comms/drafts/` — review can happen pre-publication |
@@ -233,7 +233,7 @@ Request additional detail for:
 - **Vision (V2.3)**: `docs/internal/planning/current/vision.md`
 - **Strategic context**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
 - **Weekly Ship guide**: `docs/internal/development/weekly-ship-process-guide.md`
-- **Migration checklist** (HOST-owned): `dev/active/memo-host-migration-checklist-2026-04-22.md`
+- **Migration checklist** (HOST-owned): `docs/internal/operations/migration-checklist.md`
 
 ## Team Coordination Status
 
@@ -272,7 +272,7 @@ Request additional detail for:
 - **Pattern catalog**: `docs/internal/architecture/patterns/`
 - **Omnibus logs**: `docs/omnibus-logs/` (daily synthesis)
 - **Session logs**: `dev/YYYY/MM/DD/` (raw execution evidence)
-- **Mailbox discipline + per-memo commit-and-push**: `CLAUDE.md` "Mailbox Discipline" section
+- **Mailbox discipline + send each memo at once**: `CLAUDE.md` "Mail" section and `docs/internal/operations/branch-worktree-mailbox-discipline.md`
 
 ---
 
