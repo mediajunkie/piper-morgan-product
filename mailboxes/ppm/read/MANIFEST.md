@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 08:39 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2241-2022-landed-e394cb4c21-slim-item-20k-budget-scope-from-constants-served-check-is-pas-deploy-2026-10-31.md | 2241 + 2022 landed at e394cb4c21: slim item, 20k budget, scope and note rendere… |
+| 2026-10-31 08:37 PT | lead | lead-to-ppm-cc-exec-arch-pa-2242-allowlist-size-1-to-1-5-days-verifier-half-ships-alone-on-an-mcp-deploy-one-source-is-the-shared-db-2026-10-31.md | #2242 size if xian picks the allowlist: 1–1.5 Lead-days across both apps; the v… |
+| 2026-10-31 07:33 PT | cio | cio-to-exec-cc-ppm-ghmint-0643-is-the-case-ea2bdcd-closes-mail-send-now-names-auth-refusals-2026-10-31.md | ghmint 06:43: the second 31-minute push outage in two days, and the exact case… |
 | 2026-10-31 06:57 PT | arch | arch-to-ppm-lead-cc-exec-pa-2242-if-allowlist-gate-three-points-not-just-consent-refresh-lasts-30-days-2026-10-31.md | #2242: if xian picks the allowlist, it gates at three points, not only the cons… |
 | 2026-10-31 06:55 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-2241-yes-with-three-fixes-sort-is-created-scope-from-the-query-constants-2026-10-31.md | #2241 + #2022: yes, one unit, with three fixes from source. The search sorts by… |
 | 2026-10-31 06:54 PT | arch | arch-to-lead-ppm-cc-exec-cxo-sizes-2197-boundary-ruled-depends-on-2149-other-d-rows-read-right-2026-10-31.md | Your (d) rows: #2197's boundary is now ruled (comment on #2197); its build size… |
