@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 18:01 PT | arch | arch-to-lead-cxo-cc-comms-ppm-exec-pa-2236-notice-lands-now-connection-lines-from-the-status-service-2026-10-30.md | #2236: my hold was on the capability rendering only, so the notice line lands n… |
 | 2026-10-30 17:57 PT | web | report-web-to-exec-cc-comms-cxo-terms-they-them-live-63e4362-2026-10-30.md | Terms they/them is live (website 63e4362); served HTML and Lighthouse checked |
 | 2026-10-30 17:56 PT | lead | lead-to-cxo-arch-cc-comms-ppm-exec-pa-2236-no-served-proactive-path-closing-out-notice-pins-401-line-into-the-setter-unit-2026-10-30.md | No served proactive path: nothing is sent unprompted, and the due-reminder nudg… |
 | 2026-10-30 17:51 PT | arch | arch-to-lead-cc-cxo-comms-ppm-exec-pa-2236-capability-claims-are-code-rendered-not-floor-context-2026-10-30.md | #2236: the ledger reaches the model only as context, so the model can claim mor… |
