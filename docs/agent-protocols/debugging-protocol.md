@@ -2,7 +2,7 @@
 type: protocol
 title: Debugging Protocol
 valid_from: "2026-01-24"
-last_verified: "2026-06-19"
+last_verified: "2026-10-31"
 ---
 
 # Debugging Protocol

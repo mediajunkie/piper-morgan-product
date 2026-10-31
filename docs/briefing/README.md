@@ -3,7 +3,7 @@ type: briefing
 title: Briefing
 valid_from: "2025-10-01"
 last_updated: "2026-03-03"
-last_verified: "2026-06-19"
+last_verified: "2026-10-31"
 ---
 
 # Briefing
@@ -23,6 +23,8 @@ This directory contains documentation for briefing in the Piper Morgan system.
 - **[Agent](BRIEFING-ESSENTIAL-AGENT.md)** | **[Architect](BRIEFING-ESSENTIAL-ARCHITECT.md)** | **[Chief of Staff](BRIEFING-ESSENTIAL-CHIEF-STAFF.md)**
 - **[CIO](BRIEFING-ESSENTIAL-CIO.md)** | **[Comms](BRIEFING-ESSENTIAL-COMMS.md)** | **[CXO](BRIEFING-ESSENTIAL-CXO.md)**
 - **[HOST](BRIEFING-ESSENTIAL-HOST.md)** | **[Lead Dev](BRIEFING-ESSENTIAL-LEAD-DEV.md)** | **[PPM](BRIEFING-ESSENTIAL-PPM.md)**
+- **[Docs](BRIEFING-ESSENTIAL-DOCS.md)** | **[Web](BRIEFING-ESSENTIAL-WEB.md)** | **[Piper Alpha](BRIEFING-piper-alpha.md)** | **[ETA](BRIEFING-ESSENTIAL-ETA.md)**
+- **[Roster](ROSTER.md)**: roles, tiers and slugs. **[Role portfolios](ROLE-PORTFOLIO-FRAMEWORK.md)**: the `ROLE-PORTFOLIO-{ROLE}.md` files.
 
 ## Navigation
 
@@ -30,5 +32,5 @@ This directory contains documentation for briefing in the Piper Morgan system.
 
 ---
 
-**Last Updated**: March 3, 2026
+**Last Updated**: October 31, 2026
 **Maintained By**: Documentation Team

@@ -2,7 +2,7 @@
 type: protocol
 title: Issue Closure Protocol
 valid_from: "2026-01-24"
-last_verified: "2026-06-19"
+last_verified: "2026-10-31"
 ---
 
 # Issue Closure Protocol
@@ -71,6 +71,8 @@ Before `gh issue close <number>`:
 
 ## Tooling: Automatic Lint (#1083)
 
+Accidental closes are a separate rule: hard rule 5 in CLAUDE.md (a commit message that pairs close/fix/resolve with `#N` closes issue N, so write the number without `#` or add the trailer `Auto-Close: intentional`). `.claude/hooks/autoclose-guard.sh` enforces it.
+
 A PostToolUse hook at `.claude/hooks/issue-checkbox-lint.sh` runs after every
 `git commit` and warns when the commit message contains close-magic-strings
 (`Closes #N` / `Fixes #N` / `Resolves #N` and case/tense variants) targeting
@@ -79,7 +81,7 @@ an issue whose description body still has `[ ]` unchecked checkboxes.
 The hook:
 - Reads the most-recent commit message via `git log -1`
 - Extracts referenced issue numbers via close-keyword regex
-- Fetches each issue body via `gh issue view N --json body`
+- Fetches each issue body and state via `gh issue view N --json body,state` and only warns for OPEN issues (issue 1618 fix)
 - Counts lines matching `^[[:space:]]*[-*][[:space:]]+\[[[:space:]]\]`
 - Warns to stderr with a recommendation to update the body via
   `gh issue edit N --body-file ...` BEFORE pushing
