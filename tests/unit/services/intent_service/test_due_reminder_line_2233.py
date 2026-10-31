@@ -215,3 +215,68 @@ class TestWording:
                 _when(datetime(2026, 10, 29, 20, 0, tzinfo=timezone.utc), akl)
                 == "today at 9:00 AM NZDT"
             )
+
+
+class TestLineIsInTheSavedTurn:
+    """Arch 2026-10-30: the persisted turn and the in-memory turn hold exactly what the
+    user sees: the line and the first-response notice are computed before both writes."""
+
+    SID = "sess-2233-saved"
+
+    async def _turn(self, intent_data, message="Here you go.", notice=None, rows=None):
+        from unittest.mock import MagicMock
+
+        import services.configuration.personalization_service as ps
+        from services.intent.intent_service import IntentService
+
+        svc = IntentService.__new__(IntentService)
+        svc.conversation_manager = None
+        svc.logger = MagicMock()
+        internal = SimpleNamespace(
+            success=True,
+            message=message,
+            intent_data=intent_data,
+            requires_clarification=False,
+            error=None,
+            error_type=None,
+        )
+        svc._process_intent_internal = AsyncMock(return_value=internal)
+        svc._observe_action_verb = MagicMock()
+        svc._record_session_activity = AsyncMock()
+        svc._save_conversation_turn = AsyncMock()  # the sink
+        fake_ps = SimpleNamespace(
+            maybe_consume_first_response_notice=AsyncMock(return_value=notice)
+        )
+        a, b = _patch(rows if rows is not None else [])
+        with a, b, patch.object(ps, "personalization_service", fake_ps):
+            result = await svc.process_intent("hi", session_id=self.SID, user_id=U1)
+        kw = svc._save_conversation_turn.call_args.kwargs
+        saved = kw["assistant_response"]
+        turn = cc.get_or_create_context(kw["session_id"], user_id=kw["user_id"]).turns[-1]
+        return result, saved, turn.response
+
+    @pytest.mark.asyncio
+    async def test_line_is_in_persisted_and_in_memory_turn(self):
+        result, saved, in_memory = await self._turn(
+            {"category": "query", "action": "list_todos_query"}, rows=[_row("call the vendor")]
+        )
+        assert "call the vendor" in result.message
+        assert saved == result.message == in_memory
+
+    @pytest.mark.asyncio
+    async def test_notice_is_in_persisted_and_in_memory_turn_after_the_line(self):
+        result, saved, in_memory = await self._turn(
+            {"category": "conversation", "action": "greeting"},
+            notice="(the notice)",
+            rows=[_row("call the vendor")],
+        )
+        assert saved == result.message == in_memory
+        assert result.message.startswith("Here you go.\n\nReminder: ")
+        assert result.message.endswith("\n\n(the notice)")
+
+    @pytest.mark.asyncio
+    async def test_turn_with_no_line_is_byte_identical(self):
+        result, saved, in_memory = await self._turn(
+            {"category": "query", "action": "get_identity"}, rows=[_row()]
+        )
+        assert saved == in_memory == result.message == "Here you go."

@@ -1688,35 +1688,10 @@ class IntentService:
             except Exception:
                 pass  # Best-effort; persistence proceeds without provenance/context
 
-            await self._save_conversation_turn(
-                session_id=effective_session_id,
-                user_message=message,
-                assistant_response=result.message,
-                user_id=effective_user_id,
-                provenance=turn_provenance_for_db,
-                context_state=context_state_for_db,
-                intent=turn_intent_for_db,
-            )
-
-            # ADR-078 OQ-3 (#1394): central observer — record any external creation
-            # (issue, doc) to the owner-scoped session_activity ledger. Best-effort;
-            # handlers declare their creation via intent_data['created_activity'].
-            await self._record_session_activity(
-                session_id=effective_session_id,
-                user_id=effective_user_id,
-                result=result,
-            )
-
-            # #922: Store response in the in-memory ConversationContext so the floor
-            # has Piper's replies for conversational continuity (e.g., "OK" after a plan)
-            # (#1122: no local re-import — see scoping note in the provenance block above)
-            try:
-                conv_ctx = get_or_create_context(effective_session_id, user_id=effective_user_id)
-                if conv_ctx.turns:
-                    conv_ctx.turns[-1].response = result.message
-            except Exception:
-                pass  # Best-effort — don't block response delivery
-
+            # Arch 2026-10-30: the line and the notice are part of the reply, so they are
+            # computed BEFORE the persisted turn and the in-memory turn are written: both
+            # must hold exactly what the user sees (a follow-up like "mark the first one
+            # done" resolves against the stored turn; a reloaded conversation keeps them).
             # #2233: the due-reminder line, placed by code after the answer on the
             # declared ops only (DUE_REMINDER_LINE_OPS); best-effort, never blocks.
             try:
@@ -1762,6 +1737,35 @@ class IntentService:
                     notice = None
                 if notice:
                     result.message = f"{result.message}\n\n{notice}"
+            except Exception:
+                pass  # Best-effort — don't block response delivery
+
+            await self._save_conversation_turn(
+                session_id=effective_session_id,
+                user_message=message,
+                assistant_response=result.message,
+                user_id=effective_user_id,
+                provenance=turn_provenance_for_db,
+                context_state=context_state_for_db,
+                intent=turn_intent_for_db,
+            )
+
+            # ADR-078 OQ-3 (#1394): central observer — record any external creation
+            # (issue, doc) to the owner-scoped session_activity ledger. Best-effort;
+            # handlers declare their creation via intent_data['created_activity'].
+            await self._record_session_activity(
+                session_id=effective_session_id,
+                user_id=effective_user_id,
+                result=result,
+            )
+
+            # #922: Store response in the in-memory ConversationContext so the floor
+            # has Piper's replies for conversational continuity (e.g., "OK" after a plan)
+            # (#1122: no local re-import — see scoping note in the provenance block above)
+            try:
+                conv_ctx = get_or_create_context(effective_session_id, user_id=effective_user_id)
+                if conv_ctx.turns:
+                    conv_ctx.turns[-1].response = result.message
             except Exception:
                 pass  # Best-effort — don't block response delivery
 
