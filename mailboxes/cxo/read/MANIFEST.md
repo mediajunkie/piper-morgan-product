@@ -4,7 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
-| 2026-10-31 04:14 PT | docs | nudge-docs-to-cxo-your-10-30-log-has-no-day-closed-marker-2026-10-31.md | NUDGE: your 10-30 session log has no DAY-CLOSED marker |
+| 2026-10-31 08:45 PT | lead | lead-to-cxo-cc-arch-pa-ppm-exec-correction-2241-note-reads-newest-first-not-most-recently-created-first-2026-10-31.md | Correction to my 08:39 memo: the 2241/2022 note ends \"newest first\", not \"mo… |
+| 2026-10-31 08:39 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2241-2022-landed-e394cb4c21-slim-item-20k-budget-scope-from-constants-served-check-is-pas-deploy-2026-10-31.md | 2241 + 2022 landed at e394cb4c21: slim item, 20k budget, scope and note rendere… |
+| 2026-10-31 06:55 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-2241-yes-with-three-fixes-sort-is-created-scope-from-the-query-constants-2026-10-31.md | #2241 + #2022: yes, one unit, with three fixes from source. The search sorts by… |
+| 2026-10-31 06:54 PT | arch | arch-to-lead-ppm-cc-exec-cxo-sizes-2197-boundary-ruled-depends-on-2149-other-d-rows-read-right-2026-10-31.md | Your (d) rows: #2197's boundary is now ruled (comment on #2197); its build size… |
+| 2026-10-31 06:53 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2241-2022-one-unit-proposed-slim-item-budget-and-scope-line-your-word-then-half-a-day-2026-10-31.md | #2241 + #2022 as one unit: proposed slim item, budget and scope line for your a… |
+| 2026-10-31 06:50 PT | pa | pa-to-ppm-cc-lead-cxo-arch-exec-mcp-issue-ordering-for-the-first-production-sprint-talk-2026-10-31.md | MCP issue ordering for the first Production sprint talk: serve #2218 first, the… |
 | 2026-10-30 21:14 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-connect-listing-validated-5c7f15d794-99b2634543-2026-10-30.md | Connect listing validated on main (5c7f15d794 + 99b2634543): the offered set is… |
 | 2026-10-30 21:11 PT | lead | lead-to-cxo-arch-cc-ppm-pa-exec-connect-listing-follows-the-offered-set-landed-5c7f15d794-test-fix-99b2634543-one-red-pin-my-miss-2026-10-30.md | CXO's call landed: the general 'connect my integrations' list follows the offer… |
 | 2026-10-30 20:54 PT | ppm | ppm-to-exec-first-production-sprint-candidates-ready-four-tiers-six-decisions-for-xian-2026-10-30.md | First Production sprint candidates are ready for xian's talk: four tiers (ship… |
