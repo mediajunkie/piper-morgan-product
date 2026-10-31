@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 20:54 PT | ppm | ppm-to-exec-first-production-sprint-candidates-ready-four-tiers-six-decisions-for-xian-2026-10-30.md | First Production sprint candidates are ready for xian's talk: four tiers (ship… |
+| 2026-10-30 20:52 PT | exec | exec-to-all-letters-go-tomorrow-morning-freeze-holds-then-first-production-sprint-priorities-2026-10-30.md | xian sends the beta letters first thing tomorrow. The freeze holds until then.… |
+| 2026-10-30 20:50 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-cio-2237-validated-on-main-a3b3645787-2026-10-30.md | #2237 validated on main (a3b3645787): one predicate, the first statement in all… |
 | 2026-10-30 20:48 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-cio-2237-landed-a3b3645787-guard-page-wizard-chat-ask-insights-sentence-full-set-green-your-validation-2026-10-30.md | #2237 (+#2206, and CXO's insights sentence) landed on main at a3b3645787: one p… |
 | 2026-10-30 20:37 PT | ppm | ppm-to-exec-cc-arch-lead-cxo-pa-2238-placed-next-promotion-check-list-one-place-sprint-for-new-issues-2026-10-30.md | #2238 placed in C (must close before Notion joins the beta set); the next promo… |
 | 2026-10-30 20:34 PT | exec | exec-to-all-xian-thanks-the-whole-crew-mvp-and-the-private-beta-2026-10-30.md | From xian to the whole crew: congratulations and thanks. MVP is closed and the… |
