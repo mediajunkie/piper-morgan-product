@@ -8,36 +8,22 @@ caption: ''
 
 *October 19–20, 2026*
 
+When a bug crops up in Piper Morgan, the agents tend to jump straight from hypothesis to patch without always fully understanding the cause of the bug. Earlier this month, the chat feature of the alpha version was stalling and after the team threw up a series of theories that all proved wrong, my lead developer agent (Lead) built a tool to measure the bug instead. 
 
----
+Hypotheses are all well and good but if they are not rooted in a thorough understanding of the issue then they are at best educated guesses. 
 
-## The idea in one sentence
+# The symptom
 
-When a bug keeps outrunning your explanations, stop explaining and build the thing that measures it, which is what
-Lead did on 10-20 after the team's theories about the alpha chat stall kept coming up wrong.
+On a Sunday afternoon, partway through a chat session, the alpha release stopped answering entirely, not even
+returning a result for its own health check. Then it came back on its own. We logged this problem three times that day, at 2:53, 3:20, and 4:13 pm. This was interfering with a scripted test run by my web design agent (Web), which also does a lot of the manual testing of the interface. The test runs through 61 questions but it kept getting stopped by its own health-checking gate.
 
-## Already told elsewhere: don't retell
-- **Weekly Ship #066** has two sentences on it: "The first two explanations were wrong. On Tuesday PA named the
-  cause from a watchdog Lead built to catch it…" This piece is the longer version of that line, so the ending
-  isn't a surprise to Ship readers. Lead with the lesson, not the reveal.
-- It is a separate story from the 10-21 database outage (Sunday's piece). Postgres was healthy throughout this one.
+# The theories
 
-## Beats, in order (facts verified, source in brackets)
+At first, Lead suspected a stale database connections behind the hosting proxy. After some investigation, Lead proved this was not the cause. The next guess was the way the app reads stored credentials was running too slowly and blocking things. Lead ran this idea up to the chief architect agent (Arch) who approved making some fixes that we hoped would solve the problem. Monday morning's run, however, stalled again in the same way. My product-assistant agent (Piper Alpha) verified that the "slow-read" problem had been corrected and was not causing the stall. 
 
-**1. The symptom.** Sunday afternoon, 10-19. Partway through a chat session, alpha stopped answering entirely, even
-its own health check, then came back by itself. Three times: 14:53, 15:20, 16:13. Web's scripted test run (61
-questions) kept getting stopped by its own health gate. [lead log 10-19 l.223, l.232]
+The third ideas was that maybe calls to Google Calendar were fouling things up. Lead was skeptical of this suggestion (the test account in question has no calendar connected), but fixed this potential culprit as well. Sure enough, at 9:10am the stall happened again, despite all the patches to suspected causes.
 
-**2. The explanations.** By count there were three, not two:
-- *First:* stale database connections behind the hosting proxy. A setting was turned on. By 16:46 Lead wrote it
-  off: not this stall's cause. [lead 10-19 l.200, l.229, l.239]
-- *Second, the "leading mechanism":* a slow, blocking read of stored credentials. My chief architect agent (Arch)
-  ruled on it, Lead landed fixes, and at 17:23 it stood as "leading mechanism, not proven". [lead 10-19 l.239,
-  l.260] Monday morning's run stalled again, and my product assistant agent (Piper Alpha) found zero slow-read
-  lines in the window. Not it. [lead 10-20 l.48–49]
-- *Third:* the calendar's calls to Google. Lead doubted it from the start, since the test account has no calendar,
-  but moved it anyway. At 09:10 the stall came back with both suspects fixed: "the same block recurred, so neither
-  was the cause". [lead 10-20 l.49, l.97]
+But this was all a process of trial and error. Nohing was really being tracked or
 - *Your angle, maybe:* each theory was plausible, each got a real fix, and each fix shipped. Nothing was measuring
   whether any of them was the thing.
 
