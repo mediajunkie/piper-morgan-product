@@ -287,3 +287,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v705, 2026-10-31 08:55 PDT: Build the Instrument crosspost card (Docs); the test-plan card notes #2241/#2022 on main, deploy after CXO's words (Exec timing memo).
 - v706, 2026-10-31 09:15 PDT: 0.9.0 on step 2 (xian via Docs; Exec placement); #2241 card: words validated 09:11.
 - v707, 2026-10-31 09:25 PDT: 0.9.0.0-or-0.9.0 question on step 2 (Lead 09:2x).
+- v708, 2026-10-31 09:38 PDT: the 0.9.0.0 question is settled (xian via Docs); the bump is on main and step 2 carries it; #2241/#2022 are served (MCP v16, v17 on 0.9.0.0); #1927 closed (Docs) and dropped from the list; the Ongoing-sort card now reads as under review.

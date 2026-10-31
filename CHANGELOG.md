@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 MVP milestone closed 2026-10-30; first 0.9 release. Full notes:
 [docs/releases/RELEASE-NOTES-v0.9.0.0.md](docs/releases/RELEASE-NOTES-v0.9.0.0.md)
-(Docs fills What's New before the tag). The GREAT-3B block below was carried in `[Unreleased]`
+The GREAT-3B block below was carried in `[Unreleased]`
 since 2025-10-03 and shipped in 0.8.x releases without a label; it stays here as history.
 
 ### Added - GREAT-3B (2025-10-03)
