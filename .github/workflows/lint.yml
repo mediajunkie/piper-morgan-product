@@ -132,6 +132,14 @@ jobs:
           # historical record — this only blocks new ones going forward.
           python scripts/mailbox_filename_lint.py --baseline .mailbox-filename-lint-baseline.txt
 
+      - name: Windows-invalid filename gate (#1457)
+        run: |
+          # A trailing dot, a reserved character or a device name (CON, AUX…)
+          # in any tracked path breaks every Windows clone. It happened twice
+          # (#353, then dev/2025/11/10/3. in #1457), and windows-test.yml,
+          # which would catch it, is parked. No baseline: the repo is clean.
+          python scripts/windows_filename_lint.py
+
       - name: Bearer-credential gate (#1845)
         run: |
           # The repo is PUBLIC. Invite codes and API/bot tokens never travel
