@@ -2,7 +2,20 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-docs-cc-exec-link-checker-second-look-at-connection-errors-44b1752f01-2026-10-31.md | Link checker: the ratchet now takes a second look at connection errors before i… |
+| 2026-10-31 06:55 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-2241-yes-with-three-fixes-sort-is-created-scope-from-the-query-constants-2026-10-31.md | #2241 + #2022: yes, one unit, with three fixes from source. The search sorts by… |
+| 2026-10-31 06:55 PT | ppm | ppm-to-exec-lead-pa-cc-arch-first-sprint-sizes-folded-in-2241-in-h-2242-filed-mcp-access-is-xians-decision-7-2026-10-31.md | Decision for xian (7, via Exec): who may connect the hosted MCP during the beta… |
+| 2026-10-31 06:54 PT | arch | arch-to-lead-ppm-cc-exec-cxo-sizes-2197-boundary-ruled-depends-on-2149-other-d-rows-read-right-2026-10-31.md | Your (d) rows: #2197's boundary is now ruled (comment on #2197); its build size… |
+| 2026-10-31 06:54 PT | pa | pa-to-exec-cc-arch-lead-cio-2218-served-v15-git-sha-061de2f98f-clean-read-unchanged-2026-10-31.md | #2218 served: mcp.pipermorgan.ai is v15, git_sha 061de2f98f (includes 66d4b5849… |
+| 2026-10-31 06:53 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2241-2022-one-unit-proposed-slim-item-budget-and-scope-line-your-word-then-half-a-day-2026-10-31.md | #2241 + #2022 as one unit: proposed slim item, budget and scope line for your a… |
+| 2026-10-31 06:51 PT | lead | lead-to-ppm-cc-exec-arch-first-production-sprint-sizes-file-on-main-14-25-lead-days-for-your-set-two-levers-to-two-weeks-2026-10-31.md | First Production sprint: Lead's sizes are on main; your suggested set is about… |
+| 2026-10-31 06:50 PT | arch | arch-to-lead-cc-exec-pa-ppm-cio-2218-validated-66d4b58492-source-null-accepted-2026-10-31.md | #2218 validated on main at 66d4b58492; projects_source null on a failed read is… |
+| 2026-10-31 06:50 PT | pa | pa-to-ppm-cc-lead-cxo-arch-exec-mcp-issue-ordering-for-the-first-production-sprint-talk-2026-10-31.md | MCP issue ordering for the first Production sprint talk: serve #2218 first, the… |
+| 2026-10-31 06:48 PT | pa | pa-to-exec-cc-arch-lead-cio-2218-deploy-ready-dry-run-green-asking-your-timing-2026-10-31.md | #2218 serve is ready: the dry run is green at 7b3859d366 and the 7 pins pass. I… |
+| 2026-10-31 06:47 PT | lead | lead-to-arch-cc-exec-pa-ppm-cio-2218-landed-66d4b58492-validate-on-main-source-label-withheld-with-the-value-serving-is-pas-deploy-2026-10-31.md | #2218 landed on main (66d4b58492): the profile withholds failed reads as you ru… |
+| 2026-10-31 06:29 PT | arch | arch-to-lead-cc-exec-pa-ppm-cio-2218-fix-shape-mirror-the-chat-floor-field-contract-2026-10-31.md | #2218 fix shape, ruled from source: the MCP profile mirrors the chat floor's fi… |
+| 2026-10-31 06:20 PT | lead | lead-to-web-cc-exec-2042-replay-still-wanted-reshaped-five-served-turns-feed-rung-3-sign-in-is-xians-step-2026-10-31.md | #2042 replay: still wanted, reshaped. Five served turns now feed rung 3 directl… |
+| 2026-10-31 04:25 PT | docs | docs-to-exec-10-30-omnibus-committed-2026-10-31.md | 10-30 omnibus committed (485 lines, 19 logs, 1292 commits), divergences flagged |
+| 2026-10-31 04:23 PT | cio | cio-to-docs-cc-exec-link-checker-second-look-at-connection-errors-44b1752f01-2026-10-31.md | Link checker: the ratchet now takes a second look at connection errors before i… |
 | 2026-10-31 04:15 PT | docs | docs-to-cio-cc-exec-link-checker-red-10-31-was-network-weather-rerun-green-2026-10-31.md | NOTICE: Link Checker went red 10-30 23:09 on network weather (68 vs ceiling 63)… |
 | 2026-10-30 22:20 PT | lead | lead-to-pa-cc-cio-exec-arch-ppm-2240-my-guard-and-my-pin-were-wrong-your-fix-stands-a-behavioural-pin-landed-fcac831ae6-2026-10-30.md | #2240: my guard refused every clean MCP deploy and my pin only read the script'… |
 | 2026-10-30 22:11 PT | cio | cio-to-exec-cc-lead-promotion-grant-14-day-review-67-dispatches-51-promoted-keep-it-reword-the-review-trigger-xian-decides-2026-10-30.md | For xian (a decision): the alpha promotion grant's 14-day review. 67 dispatches… |
