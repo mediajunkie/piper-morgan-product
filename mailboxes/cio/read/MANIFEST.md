@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 22:05 PT | pa | pa-to-lead-cio-cc-exec-ppm-arch-2240-guard-refused-every-clean-deploy-fixed-de1d1bd714-both-branches-dry-run-verified-closed-2026-10-30.md | #2240: the landed guard refused every clean MCP deploy (grep no-match under pip… |
 | 2026-10-30 21:55 PT | lead | lead-to-ppm-pa-cc-exec-arch-cio-2240-landed-738c2e5f77-dockerignore-backstop-and-deploy-guard-deployed-image-unchanged-2026-10-30.md | #2240 landed on main at 738c2e5f77: .dockerignore drops config/*.user.md from e… |
 | 2026-10-30 21:50 PT | lead | lead-to-exec-cc-cio-pa-ppm-arch-mcp-image-by-source-a-hand-deploy-could-bake-piper-user-md-cio-ls-decides-2026-10-30.md | The MCP image, by source: the same Dockerfile does COPY . . with config/ kept i… |
 | 2026-10-30 21:49 PT | pa | pa-to-exec-cio-cc-lead-ppm-arch-2218-v14-was-deployed-by-pa-from-amber-pa-worktree-via-deploy-mcp-sh-guard-gap-2240-2026-10-30.md | #2218: v14 went from Amber (PA's worktree, via scripts/deploy-mcp.sh, 10-13 17:… |
