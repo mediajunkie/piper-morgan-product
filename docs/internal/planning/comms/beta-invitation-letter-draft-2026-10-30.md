@@ -15,7 +15,8 @@
 | Version | Who | Count | Differs in |
 |---|---|---|---|
 | **1a** hands-on, new to the hosted app | practitioners plus one QA tester | 6 | opening, gets `{CODE}` |
-| **1b** hands-on, already in the alpha | the two 07-12 hosted-alpha users and the three 10-26 invitees | 5 | opening, and "Getting in" says sign in with their account, no code (see open point 5) |
+| **1b** hands-on, alpha accounts in use | the two who used the hosted alpha (07-12 on) | 2 | opening, and "Getting in" says sign in as usual, no code |
+| **1c** hands-on, invited 10-26 | the three sent the 10-26 alpha letter. Whether they redeemed is unread (HOST) | 3 | opening, and "Getting in" covers both cases: sign in if they made an account, otherwise use the 10-26 code |
 | **2** expert group | friends and advisors, not practising PMs | 3 | opening and one framing line (xian wants it a little different) |
 | Hold | not in the first send | 1 (plus a referral) | send nothing |
 
@@ -29,11 +30,19 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 
 *If they used the local-run alpha, add after the first sentence:* "You saw an early version when it still ran on your own machine. This one runs on our servers, and it has come a long way since."
 
-## Opening 1b: hands-on, already in the alpha
+## Opening 1b: hands-on, alpha accounts in use (2)
 
 > Hi {NAME},
 >
-> Thank you for trying the alpha. The private beta starts now, and you're in it. You don't need a new code. Your account and your work carry over.
+> Thank you for being one of the first to use Piper on our servers. The private beta starts now, and you're already in it. There's nothing to do to join. Sign in as usual, and your account and your work are all still there.
+>
+> Piper has changed a good deal since the summer. The known issues below are the current list, and they replace anything I told you before.
+
+## Opening 1c: hands-on, invited 10-26 (3)
+
+> Hi {NAME},
+>
+> On October 26 I sent you an invitation to the Piper Morgan alpha. The private beta starts now, and that invitation now gets you into the beta. You don't need a new code.
 
 ## Opening 2: expert group
 
@@ -43,7 +52,7 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 
 ## What this beta is (xian's words, edited down by Comms 10-30 17:3x. xian edits freely)
 
-> **What this beta is.** The goal is for Piper Morgan to be a helpful product assistant who, over time, learns enough about your work and how you like to do it to be of more and more help to you. Being a beta means we believe most of the core functionality a minimally valuable Piper Morgan needs is now in place. It isn't a production release yet. There are still bugs and known issues keeping it from being ready for prime time, and the ones we know about are listed below.
+> **What this beta is.** The goal is for Piper Morgan to be a helpful product assistant who, over time, learns enough about your work and how you like to do it to be of more and more help to you. Being a beta means we believe most of the core functionality of a Minimum Valuable Product is now in place. It isn't a production release yet. There are still bugs and known issues keeping it from being ready for prime time, and the ones we know about are listed below.
 >
 > **What I'd love you to try.** Any of these, and tell me how it went:
 >
@@ -57,16 +66,20 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 
 *Edit notes (Comms):*
 - *Cut as redundant with the rest of the letter:* "we'll share that information with you" (the known-issues list follows), and which sources are supported "so far" (the "What you can connect" paragraph names them).
-- *Version 1b:* the five alpha people already have accounts. For them, the first bullet could read "Getting started again, now that it's a beta." Or drop it.
+- *Versions 1b and 1c (xian 17:2x, "more nuanced for existing alpha users"):* 1b has working accounts, so drop the "Setting up your account" bullet for them. 1c may or may not have signed up, so keep it. Facts behind 1c: an invite code has no expiry and stays valid until used (`InviteToken.used_at` NULL = valid, `services/database/models.py`). PA showed at 15:1x that alpha accounts work on beta. So "the code from my October 26 email still works" is true for any of the three who didn't redeem, and "sign in" is true for any who did. No redemption read is needed to send it. 1b and 1c already have the 10-26 or July letters, so xian may trim the repeated "Who sees it", "Your key" and Terms paragraphs for them.
 - *Standup bullet (added at xian's ask, 17:2x):* the three parts match the standup's sections in code (`StandupResult`: yesterday's accomplishments, today's priorities, blockers). "Includes your meetings" is the alpha letter's already-sent claim. "Each morning" is an invitation, not a schedule: Piper doesn't send it on its own, and nothing says it does.
 - *No pronoun for Piper* in the new prose. The third bullet says "Piper" twice instead of "it".
-- *Kept your phrase "minimally valuable"* rather than the house term "Minimum Valuable Product". Change it if you'd like the term.
+- *House style applied (xian 17:2x):* "Minimum Valuable Product" (blog style guide, glossary). Piper takes they/them in five places in the body and the known-issues lines that said "it" (blog style guide, PM 09-29). The "Who sees it" paragraph is the Terms text, so the letter now differs from the served Terms by one pronoun. The Terms page still calls Piper "it". That's a follow-up for Web and CXO, not a send blocker.
 
 ## Body (from the alpha letter, unchanged except where marked)
 
 *Version 1b only, replacing "Getting in" below:*
 
 > **Getting in.** Go to {URL} and sign in with the account you already have.
+
+*Version 1c only, replacing "Getting in" below:*
+
+> **Getting in.** If you already made an account, go to {URL} and sign in. Everything you did carries over. If you haven't yet, the code from my October 26 email still works. Go to {URL}, choose "Create your account", and paste it in. It works once, for one account, so please don't share it. The next step asks for your Anthropic API key, so have one ready.
 
 *Versions 1a and 2:*
 
@@ -76,11 +89,11 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 >
 > It works once, for one account, so please don't share it. The next step asks for your Anthropic API key, so have one ready.
 >
-> **What you can connect.** Piper works with GitHub and Google Calendar. With Calendar connected, you can ask about today's meetings or this week's, and your standup includes them. Piper only reads your calendar. It can't change it.
+> **What you can connect.** Piper works with GitHub and Google Calendar. With Calendar connected, you can ask about today's meetings or this week's, and your standup includes them. Piper only reads your calendar. They can't change it.
 >
 > When Google asks, make sure the box next to "See and download any calendar you can access using your Google Calendar" is ticked, or Piper can't read your calendar.
 >
-> **Who sees it.** Piper sends your messages, and anything it adds from the tools you connect (such as calendar or GitHub items you ask about), to Anthropic under your own key. From there, Anthropic's own terms and privacy policy apply. Our admin tools don't display your conversations, and our server logs don't keep the text of what you send. The app has no analytics or ad tracking.
+> **Who sees it.** Piper sends your messages, and anything they add from the tools you connect (such as calendar or GitHub items you ask about), to Anthropic under your own key. From there, Anthropic's own terms and privacy policy apply. Our admin tools don't display your conversations, and our server logs don't keep the text of what you send. The app has no analytics or ad tracking.
 >
 > **Your key.** Piper runs on your own Anthropic key. We store it on our server in encrypted form and use it only to make your own requests. We hold the key that unlocks it, so in principle we could read it. Please use a key with a spending limit you're comfortable with. We don't read it on purpose. You can remove your key in Settings at any time, and that deletes it from our live database. Our encrypted backups can keep it for up to about five days. To cut off access completely, also revoke the key in Anthropic's console, so it stops working for Piper too.
 >
@@ -88,13 +101,13 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 >
 > **Known issues in this beta**
 >
-> - **Piper sometimes misreads what you ask.** It may answer a different question or give a general reply. Rephrasing usually works.
+> - **Piper sometimes misreads what you ask.** They may answer a different question or give a general reply. Rephrasing usually works.
 > - **An answer about your own data can be wrong.** Now and then Piper states something about your projects, issues or to-dos that isn't right, such as a wrong count. If an answer looks off, check the source and tell us.
-> - **Piper can state a detail about one of your records, such as a milestone or when something last changed, that it did not look up.** Check anything that matters in GitHub before you rely on it.
+> - **Piper can state a detail about one of your records, such as a milestone or when something last changed, that they did not look up.** Check anything that matters in GitHub before you rely on it.
 > - **Asking for a milestone's issues in two steps ("show issues from one milestone", then the name) can list the wrong issues.** Ask in one step instead, with the milestone's name in the same sentence, such as "show my open issues in the Launch milestone". This is a known issue and isn't fixed yet.
 > - **No undo for deleted to-dos.** Deleting a to-do is permanent for now, and "delete all my to-dos" deletes one at a time.
 > - **Searching your documents from chat doesn't work yet.** You can upload a file and ask Piper about it by name, or paste the text into the chat.
-> - **If Piper asks which repository to create an issue in and you answer, it may add your answer to the draft instead of filing it.** Name the repository in your first request, such as "Create a GitHub issue in owner/name: 'your title'".
+> - **If Piper asks which repository to create an issue in and you answer, they may add your answer to the draft instead of filing it.** Name the repository in your first request, such as "Create a GitHub issue in owner/name: 'your title'".
 >
 > **Feedback and help.** When you find something new, send feedback from the left-hand menu once you're in the app, or email support@pipermorgan.ai. Either way the message will be read by the team, including by me (xian), the human who owns this particular loop.
 >
