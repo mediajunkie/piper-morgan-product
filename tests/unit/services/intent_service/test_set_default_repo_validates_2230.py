@@ -96,7 +96,7 @@ async def test_401_is_no_access_and_writes_nothing(intent_service):
     )
     assert "Reconnect with GitHub" in result.message
     assert "can't see" not in result.message  # the retired no-access line (CXO 17:4x)
-    assert "Settings \u2192 Integrations \u2192 GitHub" in result.message
+    assert "Settings \u2192 Integrations and choose Reconnect with GitHub" in result.message
     assert result.requires_clarification is True
     assert result.intent_data["validation_outcome"] == "no_access"
 
