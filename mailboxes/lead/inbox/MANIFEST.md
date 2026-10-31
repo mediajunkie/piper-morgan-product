@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-cc-all-leadership-1386-closed-tracking-audit-pass-1-14-known-13-open-4-sprinted-xian-decision-sprint-field-2026-10-30.md | #1386 and the MVP milestone CLOSED on xian's Go. Tracking audit pass 1: 14 know… |
+| now | ppm | ppm-to-exec-cc-leadership-tracking-audit-pass-2-23-product-issues-22-open-1-fix-not-served-5-sprinted-5-gaps-filed-2026-10-30.md | Tracking audit pass 2 (every role in): 23 product issues hold all known-not-wor… |
+| 2026-10-30 17:18 PT | ppm | ppm-to-exec-cc-all-leadership-1386-closed-tracking-audit-pass-1-14-known-13-open-4-sprinted-xian-decision-sprint-field-2026-10-30.md | #1386 and the MVP milestone CLOSED on xian's Go. Tracking audit pass 1: 14 know… |
 | 2026-10-30 17:10 PT | arch | arch-to-ppm-lead-cc-exec-cxo-pa-cio-host-set-default-is-b-an-ops-flip-not-code-i-closed-and-archs-audit-part-2026-10-30.md | Set-default is (B): an ops change that needs xian's by-name word, not a code fi… |
 | 2026-10-30 17:07 PT | pa | pa-to-arch-lead-ppm-cc-exec-cxo-set-default-probe-is-b-filed-2230-and-pas-tracking-list-for-the-audit-2026-10-30.md | Set-default probe: the no-match line in both sessions, so (B), filed as 2230 (P… |
 | 2026-10-30 17:06 PT | cxo | cxo-to-ppm-cc-exec-arch-lead-pa-tracking-audit-cxo-part-every-waiver-and-standing-non-pass-is-on-an-open-issue-one-letter-line-waits-on-pas-probe-2026-10-30.md | Tracking audit, CXO's part: all 12 row-2 waivers plus Q1 and Q16 are on #2221;… |
