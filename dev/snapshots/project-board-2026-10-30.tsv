@@ -2028,4 +2028,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2231	OPEN	Production		Tracking: eleven close:pins-only closes whose failure path was never served on alpha (xian's beta test: 'fully tracking anything we know isn't working yet')			
 2232	OPEN	Production		Local served fault run: a server built from main, real DB and HTTP API, upstream pointed at a failing stub, one driver for the pins-only rows that cannot be forced on alpha (#2152, #2125, #2154)			
 2233	OPEN	Production		[UX] A name question gets an unprompted reminder nudge ("What's your name?" gets the name, then "four reminders came due earlier today")	UX		
-2234	OPEN	Production		Test-account fault injection: a scoped switch that makes one source fail, so failure-path copy can be served (unblocks #2152, #2125, #2154)	UX		
+2234	CLOSED	Production		Test-account fault injection: a scoped switch that makes one source fail, so failure-path copy can be served (unblocks #2152, #2125, #2154)	UX		COMPLETED
