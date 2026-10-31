@@ -4,7 +4,7 @@ alt: ''
 caption: ''
 ---
 
-# Read the Machine Before Debating Who Restarts It
+# Check the Machine First
 
 *October 21, 2026*
 

@@ -1,100 +1,47 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'build-the-instrument-before-the-theory-measure-first-bake-better.jpg'
+alt: 'Two luminous AI bakers stand beside failed cakes: one offers another egg while the other places a thermometer inside the oven.'
+caption: '"Maybe another egg?"'
 ---
 
 # Build the Instrument Before the Theory
 
 *October 19–20, 2026*
 
-<!--
-SCAFFOLD, not a draft ("AI prompts human", PM ruling 2026-10-07). Comms supplies the shape, the verified facts and
-the quotes. PM writes the prose. Everything below the line is notes for PM. Delete it as the prose replaces it.
-Title is the working title from the 10-23 mining table, rename freely.
-Slot: Sat 2026-10-31 (insight). Paired with Sun 11-01 "Read the Machine Before Debating Who Restarts It": measure
-first, then believe what the measurement says. Sources: Lead, PA, Arch logs 10-19 and 10-20, the 10-20 omnibus.
-Facts gathered by an Opus subagent, key lines re-read by Comms.
--->
+When a bug crops up in Piper Morgan, the agents tend to jump straight from hypothesis to patch without always fully understanding the cause of the bug. Earlier this month, the chat feature of the alpha version was stalling, and after the team threw up a series of theories that all proved wrong, my lead developer agent (Lead) built a tool to measure the bug instead.
+
+Hypotheses are all well and good, but if they are not rooted in a thorough understanding of the issue, then they are at best educated guesses.
+
+# The symptom
+
+On a Monday afternoon, partway through a chat session, the alpha release stopped answering entirely, not even returning a result for its own health check. Then it came back on its own. We logged this problem three times that day, at 2:53, 3:20, and 4:13pm. This was interfering with a scripted test run by my web design agent (Web), which also does a lot of the hands-on testing of the interface. The test runs through 61 questions, but it kept getting stopped by its own health-checking gate.
+
+# The theories
+
+At first, Lead suspected stale database connections behind the hosting proxy. After some investigation, Lead proved this was not the cause. The next guess was the way the app reads stored credentials was running too slowly and blocking things. Lead ran this idea up to the chief architect agent (Arch), who approved making some fixes that we hoped would solve the problem. Tuesday morning's run, however, stalled again in the same way. My product-assistant agent (Piper Alpha) found no slow reads at all in the window when it stalled, so that wasn't it either.
+
+The third idea was that maybe calls to Google Calendar were fouling things up. Lead was skeptical of this suggestion (the test account in question has no calendar connected), but fixed this potential culprit as well.
+
+But this was all a process of trial and error. Nothing was really being tracked or measured yet. We were taking stabs at it and not hitting the target.
+
+# The instrumentation
+
+That same morning, at 7:39am, before the next stall, Lead stopped guessing and built a watchdog tool instead of coming up with another theory to test. The tool is a small separate running thread assigned to detect when the app's main loop stops responding for more than 3 seconds. If that happens, the tool makes a note of exactly what the loop was doing before it stopped. The watchdog was live on alpha by 8:54am, along with the calendar fix. Sure enough, at 9:10am the stall happened again, despite all the patches to suspected causes. This time, though, something was watching.
+
+As is often the case with our methods, the first version of the tool had its own flaw or blind spot. Its "I'm running" signal didn't show up in alpha's logs, so silence could mean either "all clear" or "not running." Aside from that, it did the job. In one test run, it tracked 26 blocks, the longest lasting almost 12 seconds, with all the stalls adding up to over two minutes in total. Every last stall could be traced to a single API call to the user's AI model. These calls were freezing everything else while waiting for the response from the provider's API.
+
+# The solution
+
+None of the first three theories had pointed in this direction, but now that we knew what was happening, it was a cinch to fix, and Lead had it done before 9:30am. Arch approved the fix and ruled that we should keep the watchdog running as a permanent fixture.
+
+Web's test run, just after noon, got through all 61 questions with no stalls.
+
+# You can't manage what you don't measure
+
+Coming up with a theory feels like making progress, and then writing a patch based on that theory feels like a solution. But the feeling is deceptive if nothing is anchored to measurable data. That watchdog instrument took less time to build than any one of the fixes did, and until we figured that out, we were just winging it, hoping to hit a bullseye without aiming or even seeing where the other arrows had landed first.
 
 ---
 
-## The idea in one sentence
+*Next on Building Piper Morgan: "Check the Machine First," in which the database goes down, and the team spends half an hour debating who may restart it before a look at the machine itself changes the question.*
 
-When a bug keeps outrunning your explanations, stop explaining and build the thing that measures it, which is what
-Lead did on 10-20 after the team's theories about the alpha chat stall kept coming up wrong.
-
-## Already told elsewhere: don't retell
-- **Weekly Ship #066** has two sentences on it: "The first two explanations were wrong. On Tuesday PA named the
-  cause from a watchdog Lead built to catch it…" This piece is the longer version of that line, so the ending
-  isn't a surprise to Ship readers. Lead with the lesson, not the reveal.
-- It is a separate story from the 10-21 database outage (Sunday's piece). Postgres was healthy throughout this one.
-
-## Beats, in order (facts verified, source in brackets)
-
-**1. The symptom.** Sunday afternoon, 10-19. Partway through a chat session, alpha stopped answering entirely, even
-its own health check, then came back by itself. Three times: 14:53, 15:20, 16:13. Web's scripted test run (61
-questions) kept getting stopped by its own health gate. [lead log 10-19 l.223, l.232]
-
-**2. The explanations.** By count there were three, not two:
-- *First:* stale database connections behind the hosting proxy. A setting was turned on. By 16:46 Lead wrote it
-  off: not this stall's cause. [lead 10-19 l.200, l.229, l.239]
-- *Second, the "leading mechanism":* a slow, blocking read of stored credentials. My chief architect agent (Arch)
-  ruled on it, Lead landed fixes, and at 17:23 it stood as "leading mechanism, not proven". [lead 10-19 l.239,
-  l.260] Monday morning's run stalled again, and my product assistant agent (Piper Alpha) found zero slow-read
-  lines in the window. Not it. [lead 10-20 l.48–49]
-- *Third:* the calendar's calls to Google. Lead doubted it from the start, since the test account has no calendar,
-  but moved it anyway. At 09:10 the stall came back with both suspects fixed: "the same block recurred, so neither
-  was the cause". [lead 10-20 l.49, l.97]
-- *Your angle, maybe:* each theory was plausible, each got a real fix, and each fix shipped. Nothing was measuring
-  whether any of them was the thing.
-
-**3. The instrument.** At 07:39 Monday, Lead built a watchdog instead of another theory: a small separate thread
-that notices when the app's main loop stops responding for more than 3 seconds and writes down exactly what it
-was doing. It reached alpha at 08:54. [lead 10-20 l.49, l.53, l.87]
-
-**4. The instrument's own blind spot (optional, but it fits).** PA's first look found the watchdog silent. Was the
-loop fine, or was the watchdog not running? Its "I've started" line was logged at a level alpha doesn't record.
-PA: "The start can't be seen, so a silent watchdog can't be told from one that never started." And: "The
-watchdog's silence isn't a finding today." [pa log 10-20 l.117, l.130] Lead's rule after that: a stall with no
-watchdog line is "unverified watchdog", not a clean result. [lead 10-20 l.93–94]
-- Echoes "Citation via Hearsay" and the heartbeat that reported "never": a measurement is only as good as your
-  proof that it's running.
-
-**5. What it found.** Within one test run, 26 blocks, 133.5 seconds blocked in total, the longest 11.6 seconds.
-Every one traced to a single place: the app called the AI model in a way that froze everything else while it
-waited for the answer. [lead 10-20 l.100, pa l.131–132] None of the three theories had pointed there.
-- Fix at 09:26, Arch kept it and made the watchdog permanent at 09:35. [lead l.103, arch log 10-20 l.16] The
-  closing test run, 12:14–12:27: 61 of 61, no stall. [lead l.160]
-
-**6. The admissions (the best part).**
-- Lead: "My 10-19 "leading mechanism" (credential-store sync connects) and today's calendar read were wrong about
-  this stall; the instrument that corrected them (the watchdog) is the one I should have built first." [lead 10-20
-  l.100]
-  - *Note:* the quote has a semicolon. Published posts don't use them, so quote the second half only ("the
-    instrument that corrected them … is the one I should have built first") or paraphrase the first.
-- Arch: "I also owned my part: I ruled the credential surface on the "leading mechanism" without asking for the
-  instrument first." [arch 10-20 l.16]
-- Docs, in the day's omnibus: "An instrument beats a mechanism you believe." [omnibus 10-20 l.296]
-
-**7. Your part (optional).** You admitted the stall as a must-close and set the bar: one full test run with no
-stall. [lead 10-19 l.246, 10-20 l.160]
-
-## Possible closing thought
-A theory feels like progress, and a fix for it feels like more. Neither tells you whether you were right. The
-watchdog took less time to build than the fixes did, and it was the first thing that day that could say no.
-
-## Footer
-- **Next on Building Piper Morgan:** Sunday's insight, "Read the Machine Before Debating Who Restarts It" (working
-  title). The title has to be final before this post goes to Docs, since this footer names it. Suggested tease:
-  *the next day, the database goes down, and the team spends half an hour on who may restart it before one look at
-  the machine changes the question.*
-- **Reader question idea:** *How many fixes has your team shipped for a cause nobody measured?*
-
-## Left out on purpose
-- The 11:03 run that went 61 of 61 but mostly hit usage-cap refusals, so it didn't count. Too fiddly.
-- Ship #066 says the stall held sessions "for minutes". The logs show blocks of 3 to 12 seconds. Don't repeat
-  "minutes".
-- Arch's three conditions (timeouts, a dedicated worker pool, a code pin) and the untested concurrency case.
-  Engineering detail.
-- The one-off third deploy you granted that day.
+*How many times has your team shipped a fix for a problem without actually measuring it first?*

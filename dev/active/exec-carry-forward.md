@@ -7,7 +7,7 @@
 **Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
-v701, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v704, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## Where things stand (end of 10-30)
 - **MVP closed** on xian's Go (PPM: #1386 and the milestone; hard stop held, 0 days moved). Alpha and beta serve `ac5b69f865` (one machine, `piper-morgan`).
@@ -17,7 +17,7 @@ v701, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - Tracking audit met: 27 product issues, all tracked; label `fix:not-served` for closed-but-unserved. The Sprint field is set on every open Production issue (81 set on xian's yes).
 
 ## Saturday 10-31, xian's sequence (rollup hot card)
-0. `fly ssh console -a piper-morgan-mcp -C "ls -la /app/config"`. If `PIPER.user.md` is listed: `fly scale count 0 -a piper-morgan-mcp --yes` before sending (#2218; cuts xian's own connector).
+0. ~~MCP ls~~ moot: #2218 served on MCP v15 at 06:53 10-31 (Fly release time) (PA; Exec's timing call 06:49).
 1. Send the letters.
 2. Promote main.
 3. PPM's re-check list (row 2, row 3 rows, CXO's served reads of #2236 and #2237).
@@ -26,9 +26,12 @@ v701, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 Then the first-sprint priorities talk toward Production (PPM's four tiers, six decisions).
 
 ## Waiting on xian
-- PPM: may new Production issues get their plan sprint without a fresh word each time? (Exec: yes.)
+- PPM: may new Production issues get their plan sprint without a fresh word each time? (Exec: yes.) Waiting: #2238 PROD-RECONNECT, #2239 PUB, #2241 PROD-HONESTY, #2242 PUB.
+- Decision 7, #2242 (who may connect the hosted MCP): PPM (a) allowlist; Exec (a), in the sprint.
+- PA's MCP test plan, after the letters (`docs/internal/operations/mcp-test-plan-pm.md`); his notes go to PA.
 - CIO: keep the promotion grant with the reworded review trigger. (Exec: yes.)
 - Ship #067 week review discussion (artifact `4Le3ZyacNXUqo19SQh5GpT`; spend row filled from his screenshots). The draft waits on it.
+- ghmint fix paste first (Pard console v185; mediajunkie ea2bdcd: curl retries 4 min, mint every 15 min). CIO 07:4x asks it go first.
 - LaunchAgent loads (Pard console v184).
 - Rule-8 history, whenever he takes it up: HOST's briefing people list; issue #1509's title; HOST's 10-30 log, two entries naming outside beta candidates (HOST owns the slip).
 - Older: Lead's promotion allow line (row 167), Docs' Ongoing sort (row 168), the Citation Medium crosspost.

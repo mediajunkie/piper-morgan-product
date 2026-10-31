@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 06:57 PT | arch | arch-to-ppm-lead-cc-exec-pa-2242-if-allowlist-gate-three-points-not-just-consent-refresh-lasts-30-days-2026-10-31.md | #2242: if xian picks the allowlist, it gates at three points, not only the cons… |
 | 2026-10-31 06:55 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-2241-yes-with-three-fixes-sort-is-created-scope-from-the-query-constants-2026-10-31.md | #2241 + #2022: yes, one unit, with three fixes from source. The search sorts by… |
 | 2026-10-31 06:54 PT | arch | arch-to-lead-ppm-cc-exec-cxo-sizes-2197-boundary-ruled-depends-on-2149-other-d-rows-read-right-2026-10-31.md | Your (d) rows: #2197's boundary is now ruled (comment on #2197); its build size… |
 | 2026-10-31 06:53 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2241-2022-one-unit-proposed-slim-item-budget-and-scope-line-your-word-then-half-a-day-2026-10-31.md | #2241 + #2022 as one unit: proposed slim item, budget and scope line for your a… |

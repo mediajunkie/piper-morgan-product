@@ -316,7 +316,7 @@ while :; do
     # Attribution trailers, derived from the session, never typed (10-30); none derivable means none added.
     TRAILERS=$("$REPO/scripts/session_trailers.sh" 2>/dev/null || true)
     commit=$(G commit-tree "$tree" -p "$base" -m "$MSG" ${TRAILERS:+-m "$TRAILERS"}) || { echo "mail-send: commit-tree failed" >&2; exit 1; }
-    if G push "$REMOTE" "$commit:refs/heads/$BRANCH" 2>/dev/null; then
+    if PUSH_ERR=$(G push "$REMOTE" "$commit:refs/heads/$BRANCH" 2>&1 >/dev/null); then
         echo "mail-send v3: pushed ${commit:0:9} → $REMOTE/$BRANCH ✓ (attempt $attempt)"
         # --- #1310: self-reconcile the worktree residue ------------------------------------------
         # The just-sent paths now live on origin/main but still sit uncommitted in THIS worktree
@@ -581,8 +581,17 @@ while :; do
         exit 0
     fi
 
+    # An auth refusal is not contention (10-30 and 10-31: an expired ghmint token was reported as
+    # "persistent contention" after 6 rebuilds). Say what it is and stop; rebuilding can't fix it.
+    if printf '%s' "$PUSH_ERR" | grep -qiE 'Invalid username or token|Authentication failed|could not read Username|returned error: 403'; then
+        echo "mail-send: push refused by AUTHENTICATION, not contention — nothing was sent:" >&2
+        printf '%s\n' "$PUSH_ERR" | grep -iE 'invalid|auth|username|403' | head -2 | sed 's/^/  /' >&2
+        echo "mail-send: on Amber this is an expired GitHub App token (ghmint). Wait for the next mint (the token file's mtime changes), then resend the same command. Never substitute a credential." >&2
+        exit 1
+    fi
     if [ "$attempt" -ge "$MAX" ]; then
         echo "mail-send: push rejected after $MAX attempts (persistent contention on $REMOTE/$BRANCH) — retry shortly" >&2
+        printf '%s\n' "$PUSH_ERR" | tail -2 | sed 's/^/  last push said: /' >&2
         exit 1
     fi
     echo "mail-send: non-fast-forward (another agent pushed first) — rebuilding on the new tip (attempt $attempt)" >&2

@@ -458,5 +458,15 @@ git -C "$T/wtSN" fetch -q origin
 [ "$(printf '%s\n' "$DA_OUT" | tail -1 | grep -c 'first written over an hour ago')" = "1" ] && ok "summary is the last line (survives | tail -1)" || no "summary not last"
 [ ! -s "$T/wtDA/dev/state/draft-births.tsv" ] && ok "ledger row dropped after send" || no "ledger row kept"
 
+echo ""
+echo "── T-auth (10-31): an auth refusal is named as auth on the first attempt, not 'contention' after 6 ──"
+clone wtAU
+printf '#!/bin/sh\necho "Invalid username or token. Password authentication is not supported." >&2\nexit 1\n' > "$ORIGIN/hooks/pre-receive"; chmod +x "$ORIGIN/hooks/pre-receive"
+printf 'auth\n' > "$T/wtAU/mailboxes/cxo/inbox/memo-au.md"
+AU_OUT=$(PIPER_REPO="$T/wtAU" bash "$V3" "mail(au): auth" mailboxes/cxo/inbox/memo-au.md 2>&1); AU_RC=$?
+rm -f "$ORIGIN/hooks/pre-receive"
+[ "$AU_RC" -ne 0 ] && printf '%s' "$AU_OUT" | grep -q "refused by AUTHENTICATION" && ok "auth refusal named (rc $AU_RC)" || no "auth refusal not named (rc $AU_RC)"
+printf '%s' "$AU_OUT" | grep -qE "persistent contention|attempt 2" && no "still retried or said contention" || ok "no retry, no 'contention'"
+
 echo "════════ RESULT: $PASS passed, $FAIL failed ════════"
 [ "$FAIL" = 0 ] && exit 0 || exit 1

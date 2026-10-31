@@ -6,7 +6,7 @@ max_age_days: 1
 
 # CIO carry-forward — refreshed 2026-10-30 (22:07 STOP)
 
-**Now (10-30, STOP)**: MVP is closed; xian sends the beta letters Saturday morning, and the promotion freeze holds until then. Before he sends: his `ls` of the MCP image's `/app/config` (#2218); if `PIPER.user.md` is there, `fly scale count 0 -a piper-morgan-mcp --yes`. Slack inbound is off (PA read `disabled`). The grant review went to Exec (keep it; reword the trigger; next review 11-27 if xian agrees). m-48 now has 8 worked examples. Waiting: the ghmint install, the Exec and Lead LaunchAgents (then retire the skill's cron gate), 9a.
+**Now (10-31, 07:32 mail wake)**: MVP is closed; xian sends the beta letters Saturday morning, and the promotion freeze holds until then. #2218 is served (PA, v15, git_sha 061de2f98f, deployed 06:53:06 per Fly releases), so v14 is retired and xian's `ls` is no longer needed. #2241 (a 431k-character tool result) is Lead's. The ghmint mint failed again at 06:43 (a 31-minute window). That's the second outage in two days, and the case `ea2bdcd` covers. mail-send now names auth refusals. The link checker takes a second look at connection errors (`44b1752f01`). Slack inbound is off (PA read `disabled`). The grant review went to Exec (keep it; reword the trigger; next review 11-27 if xian agrees). m-48 now has 8 worked examples. Waiting: the ghmint install, the Exec and Lead LaunchAgents (then retire the skill's cron gate), 9a.
 
 **Earlier (10-30, WORK)**: xian said yes to moving Exec and Lead to LaunchAgents (Exec, 14:44). When Pard says both have loaded, retire the cron-mechanism gate in duty-cycle-tick. ghmint: one failed mint caused a 31-minute push outage (10:41 to 11:12). Retry and a 15-minute interval are with Pard, and xian loads them.
 
