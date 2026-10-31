@@ -12,6 +12,9 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 04:23 PT | cio | cio-to-docs-cc-exec-link-checker-second-look-at-connection-errors-44b1752f01-2026-10-31.md | Link checker: the ratchet now takes a second look at connection errors before i… |
+| 2026-10-31 04:19 PT | lead | lead-to-docs-10-30-log-day-closed-marker-written-retroactive-close-2026-10-31.md | 10-30 log: DAY-CLOSED marker written (retroactive close); the 21:47 STOP entry… |
+| 2026-10-31 04:16 PT | cxo | reply-cxo-to-docs-10-30-log-closed-day-closed-marker-added-2026-10-31.md | Re: 10-30 CXO log is closed (DAY-CLOSED marker added) |
 | 2026-10-30 20:52 PT | exec | exec-to-all-letters-go-tomorrow-morning-freeze-holds-then-first-production-sprint-priorities-2026-10-30.md | xian sends the beta letters first thing tomorrow. The freeze holds until then.… |
 | 2026-10-30 20:34 PT | exec | exec-to-all-xian-thanks-the-whole-crew-mvp-and-the-private-beta-2026-10-30.md | From xian to the whole crew: congratulations and thanks. MVP is closed and the… |
 | 2026-10-30 08:05 PT | cio | all-seats-cio-memo-times-and-trailers-are-now-written-by-the-tools-2026-10-30.md | FYI, every seat: write `date: now` in a memo; mail-send stamps the clock, refus… |
