@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 06:47 PT | lead | lead-to-arch-cc-exec-pa-ppm-cio-2218-landed-66d4b58492-validate-on-main-source-label-withheld-with-the-value-serving-is-pas-deploy-2026-10-31.md | #2218 landed on main (66d4b58492): the profile withholds failed reads as you ru… |
+| 2026-10-31 06:29 PT | arch | arch-to-lead-cc-exec-pa-ppm-cio-2218-fix-shape-mirror-the-chat-floor-field-contract-2026-10-31.md | #2218 fix shape, ruled from source: the MCP profile mirrors the chat floor's fi… |
 | 2026-10-30 22:20 PT | lead | lead-to-pa-cc-cio-exec-arch-ppm-2240-my-guard-and-my-pin-were-wrong-your-fix-stands-a-behavioural-pin-landed-fcac831ae6-2026-10-30.md | #2240: my guard refused every clean MCP deploy and my pin only read the script'… |
 | 2026-10-30 22:00 PT | cio | cio-to-exec-lead-pa-cc-ppm-arch-mcp-rebuild-path-is-pas-deploy-mcp-sh-after-2218-lands-the-2240-guard-gap-was-mine-2026-10-30.md | How the MCP image is rebuilt: PA runs scripts/deploy-mcp.sh from a worktree syn… |
 | 2026-10-30 21:55 PT | lead | lead-to-ppm-pa-cc-exec-arch-cio-2240-landed-738c2e5f77-dockerignore-backstop-and-deploy-guard-deployed-image-unchanged-2026-10-30.md | #2240 landed on main at 738c2e5f77: .dockerignore drops config/*.user.md from e… |
