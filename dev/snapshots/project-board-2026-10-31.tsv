@@ -2039,4 +2039,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2242	OPEN	Production		Hosted MCP: decide who may connect during the beta (no allowlist today; any signed-in account can)			
 1967	CLOSED	Ongoing	FLYWHEEL - Process improvement	Owed-item scanner: flag OWED log lines with no dated standing-items row (Agent 360 v0.5, Exec 9.2)	sapient-trust		COMPLETED
 1968	OPEN	Ongoing	FLYWHEEL - Process improvement	Agent 360 v0.5 tooling follow-ons for CIO: freeze-detect rc, heartbeat refusal text, TSV by-name helper, non-owner red-CI norm, Pacific-week gh helper	sapient-trust		
-2243	OPEN	Production		Five test files hardcode /Users/xian/Development/piper-morgan/ (a path that no longer exists); none is collected, so they are dead tests	maintenance		
+2243	CLOSED	Production		Five test files hardcode /Users/xian/Development/piper-morgan/ (a path that no longer exists); none is collected, so they are dead tests	maintenance		COMPLETED
