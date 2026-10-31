@@ -90,7 +90,12 @@ async def test_401_is_no_access_and_writes_nothing(intent_service):
     )
     result, writer = await _run(intent_service, v)
     writer.set_default_repo.assert_not_awaited()
-    assert "Your GitHub connection can't see mediajunkie/piper-morgan-product" in result.message
+    assert (
+        "Your GitHub connection needs re-authorizing, so I couldn't check "
+        "mediajunkie/piper-morgan-product and haven't changed your default." in result.message
+    )
+    assert "Reconnect with GitHub" in result.message
+    assert "can't see" not in result.message  # the retired no-access line (CXO 17:4x)
     assert "Settings \u2192 Integrations \u2192 GitHub" in result.message
     assert result.requires_clarification is True
     assert result.intent_data["validation_outcome"] == "no_access"
@@ -104,6 +109,7 @@ async def test_403_writes_nothing_and_says_try_again_not_no_access(intent_servic
     writer.set_default_repo.assert_not_awaited()
     assert "couldn't check mediajunkie/piper-morgan-product just now" in result.message
     assert "Try again in a moment" in result.message
+    assert "needs re-authorizing" not in result.message  # a 403 is not a 401
     assert "can't see" not in result.message
     assert result.success is False
     assert result.intent_data["validation_outcome"] == "not_checked"

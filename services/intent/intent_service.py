@@ -9254,10 +9254,14 @@ class IntentService:
                 "Check the spelling and say it again as owner/name."
             )
         elif outcome == "no_access":
+            # CXO 2026-10-30 17:4x: a 401 is the connection, not the repo (Arch's
+            # classification: a failed sign-in is a failed read). The earlier
+            # "can't see <repo>" line is retired; nothing in the validator can
+            # honestly produce it.
             message = (
-                f"Your GitHub connection can't see {full_name}, so I haven't changed your "
-                "default. Pick a repository your account can reach, or check the connection "
-                "in Settings \u2192 Integrations \u2192 GitHub."
+                f"Your GitHub connection needs re-authorizing, so I couldn't check {full_name} "
+                "and haven't changed your default. Open Settings \u2192 Integrations and choose "
+                "Reconnect with GitHub."
             )
         elif outcome == "no_credential":
             message = (
