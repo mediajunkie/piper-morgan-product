@@ -38,6 +38,11 @@ git diff --quiet origin/main -- || die "tracked files differ from origin/main ($
 git diff --cached --quiet origin/main -- || die "staged changes differ from origin/main"
 stray="$(git ls-files --others --exclude-standard | head -5)"
 [ -z "$stray" ] || die "untracked files would be uploaded to the build: $(echo "$stray" | tr '\n' ' ')"
+# #2240: --exclude-standard skips gitignored files, and config/*.user.md is gitignored, so an
+# operator overlay would have passed the guard above. .dockerignore now drops it from the context;
+# refuse here too so the operator sees why, instead of a silent omission.
+overlay="$(git ls-files --others --ignored --exclude-standard -- config/ | grep -E '\.user\.md$' | head -5)"
+[ -z "$overlay" ] || die "operator overlay in config/ would be excluded by .dockerignore; move it aside before deploying: $(echo "$overlay" | tr '\n' ' ')"
 
 # The sha goes in as a build arg so the MCP /health names the deployed commit, as alpha's does (PA,
 # 2026-10-16: it read "unknown" because nothing passed it). It is origin/main, checked above, not an input.

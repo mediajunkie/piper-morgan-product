@@ -11,3 +11,6 @@ node_modules/
 *.log
 .dockerignore
 deploy/fly/
+# #2240: an operator's local overlay must never ship in an image (alpha's or the MCP app's).
+# It is gitignored, so deploy-mcp.sh's stray-file guard never saw it; this line is the backstop.
+config/*.user.md
