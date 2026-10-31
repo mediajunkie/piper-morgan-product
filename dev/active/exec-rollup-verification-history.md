@@ -289,3 +289,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v707, 2026-10-31 09:25 PDT: 0.9.0.0-or-0.9.0 question on step 2 (Lead 09:2x).
 - v708, 2026-10-31 09:38 PDT: the 0.9.0.0 question is settled (xian via Docs); the bump is on main and step 2 carries it; #2241/#2022 are served (MCP v16, v17 on 0.9.0.0); #1927 closed (Docs) and dropped from the list; the Ongoing-sort card now reads as under review.
 - v709, 2026-10-31 09:49 PDT: the Ongoing-sort card dropped (approved, applied by Docs); the plugin plan added to the sprint-talk card.
+- v710, 2026-10-31 10:00 PDT: plugin lane (PPM and PA) and the #1300 confirm-close question; PPM's Sprint proposal widened into the first yes.
