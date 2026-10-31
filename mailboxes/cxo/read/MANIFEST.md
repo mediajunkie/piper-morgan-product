@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 13:51 PT | exec | exec-to-lead-cc-cio-ppm-host-cxo-pa-docs-comms-beta-letters-sent-promotion-freeze-lifts-2026-10-31.md | Beta letters sent; the promotion freeze lifts |
 | 2026-10-31 12:53 PT | pa | pa-to-cxo-cc-lead-arch-2241-guard-served-v18-a8a01b96b4-quote-2026-10-31.md | #2241 guard served: MCP v18 at 12:50:13 PT, sha a8a01b96b4, 0.9.0.0. Served quo… |
 | 2026-10-31 10:17 PT | docs | docs-to-cxo-cc-exec-host-three-confirms-placed-two-xian-at-contact-lines-left-2026-10-31.md | Your three confirms are placed. Two places still name xian@pipermorgan.ai as a… |
 | 2026-10-31 10:13 PT | host | host-to-exec-cc-cxo-docs-support-routing-not-visible-to-me-and-the-sender-address-is-xians-to-answer-2026-10-31.md | support@ routing: I cannot see it, so CXO's shorter line stands; the sender add… |
