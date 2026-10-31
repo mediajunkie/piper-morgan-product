@@ -2,7 +2,7 @@
 type: protocol
 title: Git Workflow Protocol
 valid_from: "2026-01-24"
-last_verified: "2026-06-19"
+last_verified: "2026-10-31"
 ---
 
 # Git Workflow Protocol
@@ -18,7 +18,7 @@ How agents use git in this repo. The rules live in `CLAUDE.md` ("Worktrees", "Ha
 - **Amber (the cohort host):** your stable worktree `~/Development/piper-morgan-worktrees/{role}` on branch `claude/{role}-cycle`, reused every session.
 - **Claude Desktop:** the ephemeral worktree Desktop creates for the session.
 - **Never** work in the shared checkout `~/Development/piper-morgan-product`. It is the PM's live workspace with uncommitted edits.
-- If a session's own instructions assign you a specific branch, follow them.
+- **Lane branches.** A worktree or subagent on `claude/{role}-{issue}` commits there and pushes the branch itself (`git push origin claude/{role}-{issue}`), never `HEAD:main`. The lane's owner merges it into their cycle branch, runs the landing gate and pushes to `main`, so a coding agent on a lane never lands its own work. Desktop and Web seats push `HEAD:main` the same way as any cycle branch.
 
 ---
 
@@ -43,7 +43,7 @@ Before reading git or file state to answer a question, fetch and fast-forward ag
 ./scripts/fix-newlines.sh
 
 # 3. Stage in one call, commit in the next
-git add <specific-files>        # explicit paths, never "git add ." or "git add -A"
+git add <specific-files>        # explicit paths, never "git add .", "-A" or "-u"
 git commit -m "your message"
 
 # 4. Push the finished unit to main
@@ -56,7 +56,7 @@ Work that is not on `origin/main` is invisible to other agents, so push each fin
 
 Mail files are the exception: write the memo and send it with `scripts/mail-send.sh`. Do not `git add` or commit mailbox files yourself.
 
-If the push is rejected because another agent pushed first, `git fetch origin main && git merge origin/main`, then push again.
+If the push is rejected because another agent pushed first, `git fetch origin main && git merge origin/main`, then push again. A push is a dispatch, so re-read your inbox before the retry when more than a few minutes have passed.
 
 ---
 
@@ -94,7 +94,9 @@ In `~/Development/piper-morgan-product` never run: `git checkout -- <path>` or `
 
 Before any `git checkout <ref> -- <path>` anywhere, run `git diff HEAD -- <path>`. If it is non-empty you are about to discard uncommitted work.
 
-On a worktree shared with other sessions, prefer a temporary WIP commit to `git stash`.
+The stash stack is shared across the main checkout and all worktrees, and other sessions push and pop it concurrently. Never run bare `git stash` or `git stash pop`, a pop can take someone else's work. Prefer a temporary WIP commit. If you must stash: `git stash push -u -m "<unique-tag>"`, record its SHA from `git stash list --format='%H %gs'`, restore with `git stash apply <sha>` (not pop), then drop the entry by re-finding it by tag.
+
+No `git push --force` or `--force-with-lease` to `main`, and no `git reset --hard` on a lane branch. Both are denied on the auto-mode seats, and hard rule 7 covers force-push.
 
 ---
 
@@ -116,11 +118,13 @@ kill <PID>
 # Verify port is free
 lsof -i :8001  # Should return nothing
 
-# Start fresh
-python main.py
+# Start fresh, from a Claude Code shell: strip the inherited Anthropic variables or every LLM call fails
+export JWT_SECRET_KEY=$(python -c 'import secrets; print(secrets.token_urlsafe(32))')   # main.py refuses to start without it
+env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
+  POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &
 
 # Verify
 lsof -i :8001  # Should show new PID
 ```
 
-Note: `pkill -f "python main.py"` may fail if process name differs. Use port-based detection.
+Note: use the port-based `kill <PID>` above. `pkill` is denied on the auto-mode seats, and `pkill -f "python main.py"` can miss a process whose name differs. The same start command is in CLAUDE.md "Quick reference".
