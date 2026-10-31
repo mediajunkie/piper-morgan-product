@@ -1,9 +1,9 @@
 # Alpha Tester Invitation Email Template
 
 **Version**: 3.0
-**For**: Piper Morgan 0.8.14.0 Alpha Release (hosted)
+**For**: Piper Morgan 0.9.0.0 Private Beta Release (hosted)
 **Purpose**: Internal template for PM to send to invited alpha testers
-**Last Updated**: September 23, 2026
+**Last Updated**: October 31, 2026
 
 **v3.0 rewrite (2026-09-21, Lead — closes #1830)**: v2.x of this template described the
 retired local-install flow (clone, Docker, Python, guided setup calls) and told
@@ -59,7 +59,7 @@ None are needed for core chat, lists, files, or standups.
 
 **CRITICAL DISCLAIMERS**
 
-This is ALPHA software (version 0.8.14.0). That means:
+This is PRIVATE BETA software (version 0.9.0.0). That means:
 - It will have bugs and rough edges
 - The alpha instance's data may be lost at any time — use test data only
 - Security is not fully audited yet. Your API key and your conversations are stored encrypted.
@@ -141,7 +141,7 @@ Before sending:
 
 - [ ] Mint a fresh invite code (never reuse; never send the same code to two people)
 - [ ] Personalize the name
-- [ ] Verify all technical claims are current for version 0.8.14.0
+- [ ] Verify all technical claims are current for version 0.9.0.0
 - [ ] Attach/link current documentation (from docs/)
 - [ ] HOST records the invitee ↔ code pairing in the roster (PII stays out of the repo)
 
@@ -154,7 +154,7 @@ upfront.
 
 **Documentation References**: always reference official docs by filename
 (`ALPHA_TESTING_GUIDE.md`), and versions by number
-(0.8.14.0, not "latest").
+(0.9.0.0, not "latest").
 
 **Support Commitment**: only promise what you can deliver. Small cohort is what makes
 close support possible.
@@ -170,5 +170,5 @@ close support possible.
 ---
 
 _Template Version: 3.0_
-_For Software Version: 0.8.14.0_
-_Last Updated: September 23, 2026_
+_For Software Version: 0.9.0.0_
+_Last Updated: October 31, 2026_

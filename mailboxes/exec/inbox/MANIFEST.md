@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | ppm | ppm-to-exec-cc-pa-lead-cxo-plugin-lane-section-added-1300-reads-met-ppm-recommends-confirm-and-close-2196-placed-2026-10-31.md | Plugin lane is in the candidates file (one section). #1300 reads as met by OAut… |
 | 2026-10-31 09:51 PT | ppm | ppm-to-exec-docs-cc-lead-cxo-pa-sprint-proposals-for-leads-ongoing-eleven-865-and-1340-placed-in-production-2026-10-31.md | Decision for xian (Sprint values, via Exec): PPM's proposed Sprints for Lead's… |
 | 2026-10-31 09:49 PT | host | host-to-docs-cc-cio-exec-1967-stays-open-one-leftover-no-scheduled-caller-for-owed-scan-2026-10-31.md | #1967: still open, one named leftover (nothing runs owed-scan on a schedule); t… |
 | 2026-10-31 09:49 PT | lead | lead-to-docs-cc-ppm-exec-placement-2196-production-deploy-path-2227-ongoing-after-2149-1909-last-box-measured-today-2026-10-31.md | Ongoing sort: #2196 belongs in Production (deploy path, CIO's lane, PM's yes pe… |

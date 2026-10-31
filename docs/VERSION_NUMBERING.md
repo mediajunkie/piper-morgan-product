@@ -6,8 +6,8 @@
 > rule that `scripts/check-version-consistency.py` enforces. They overlap on the current-version
 > header only.
 
-**Current Version**: 0.8.14.0 (Alpha, released 2026-09-23 — "On Your Clock": preferences persist, every clock face in the user's timezone, agenda TBD fixed, one-line add-project, honest GitHub-write outcomes; first release targeting the Fly-served alpha)
-**Last Updated**: July 3, 2026
+**Current Version**: 0.9.0.0 (Private beta, released 2026-10-31 — first private beta release, closes the MVP milestone: invited-tester setup works, Integrations and chat replies reflect what actually happens, failed reads are reported as failures)
+**Last Updated**: October 31, 2026
 
 ---
 
@@ -109,7 +109,8 @@ Within each milestone, marks incremental updates, bug fixes, and improvements.
 - **0.8.11.0** (July 17, 2026) - Finish-the-Unfinished: multi-tenancy correctness, honest conversation, completion ratchets
 - **0.8.12.0** (September 20, 2026) - "Your Key, Your Account": BYOC end to end, honest keyless refusals, security six, acceptance contract; first full-belt-green cut
 - **0.8.13.0** (September 21, 2026) - "Nothing Invented, Nothing Borrowed": standup trust rebuild, keyless first contact, server-key concept deleted. `main` and `production` converged at the cut.
-- **0.8.14.0** (September 23, 2026) - "On Your Clock": preferences persist (#1574), user-zone clock faces + agenda TBD fixed (#1576/#1575/#1577/#1556), one-line add-project (#1856), honest 404-close (#1858), preferences routes fixed (#1864) ← **CURRENT (released)**. Cut from `main`; `production` NOT advanced (retires with the droplet).
+- **0.8.14.0** (September 23, 2026) - "On Your Clock": preferences persist (#1574), user-zone clock faces + agenda TBD fixed (#1576/#1575/#1577/#1556), one-line add-project (#1856), honest 404-close (#1858), preferences routes fixed (#1864). Cut from `main`; `production` NOT advanced (retires with the droplet).
+- **0.9.0.0** (October 31, 2026) - First private beta release, closes the MVP milestone: invited-tester setup works (#2078), Integrations Test and status reflect the real connection (#2012, #2045), failed calendar and GitHub reads are reported as failures (#2182); 361 issues closed since 0.8.14.0 ← **CURRENT (released)**. Cut from `main`.
 
 ### Beta Era (Planned)
 - **0.9.0** - Beta / MVP release (wider testing, more self-service, UUID bearer auth)
@@ -237,5 +238,5 @@ No. Alpha versions (0.8.x) are explicitly **not** for production use. See ALPHA_
 
 ---
 
-_Last Updated: June 22, 2026_
+_Last Updated: October 31, 2026_
 _Applies To: Piper Morgan 0.8.0+_
