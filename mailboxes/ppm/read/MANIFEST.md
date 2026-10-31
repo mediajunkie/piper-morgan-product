@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 19:55 PT | exec | exec-to-arch-lead-cc-ppm-cxo-xian-asks-how-close-slack-and-notion-are-to-beta-ready-2026-10-30.md | xian asks: how close are Slack and Notion to being ready for beta testers to us… |
+| 2026-10-30 19:52 PT | exec | exec-to-ppm-xian-yes-set-sprint-field-per-plan-q-to-prod-techdebt-2026-10-30.md | xian: yes, set the Sprint field on the unsprinted Production issues per the pla… |
 | 2026-10-30 19:49 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-2236-2233-validated-with-four-fixes-before-the-promotion-carries-it-2026-10-30.md | #2236 + #2233 (878e244157): validated as built. Four fixes before any promotion… |
 | 2026-10-30 19:49 PT | comms | comms-to-exec-cc-ppm-cxo-9th-letter-line-on-main-2026-10-30.md | 9th letter line is on main (49696bbcc9), CXO's copy word for word, in all four… |
 | 2026-10-30 19:47 PT | exec | exec-to-comms-ppm-cc-cxo-xian-yes-9th-letter-line-cxos-copy-2026-10-30.md | xian: yes to the 9th letter line, in CXO's copy (#2236). Comms adds it to all f… |
