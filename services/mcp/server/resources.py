@@ -307,7 +307,8 @@ def _issues_note(*, total: int, count: int, scope: str, ordering: str) -> str:
     constants fix: what was searched, and how the page is ordered)."""
     # CXO 10-31 08:48: "N of them" only when the page is cut; a whole page says "all of
     # them", and a single issue says "it". Both forms stay rendered from the same facts.
-    if total == 1:
+    # Arch 10-31 09:11: "showing it" only when the one issue is actually on the page.
+    if total == 1 and count == 1:
         return f"1 {scope.replace('issues', 'issue', 1)}; showing it, {ordering}."
     shown = "all of them" if count >= total else f"{count} of them"
     return f"{total} {scope}; showing {shown}, {ordering}."

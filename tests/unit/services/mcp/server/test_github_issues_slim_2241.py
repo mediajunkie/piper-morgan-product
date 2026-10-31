@@ -33,6 +33,7 @@ from services.mcp.server.resources import (
     GITHUB_ISSUES_PAGE_CAP,
     GITHUB_SECTION_BUDGET_CHARS,
     ISSUE_ITEM_KEYS,
+    _issues_note,
     render_issues_scope,
     slim_issue,
 )
@@ -147,6 +148,18 @@ async def test_missing_total_falls_back_to_page_length_not_truncated(monkeypatch
     assert p["note"] == (
         "1 open issue assigned to you, in the repositories your GitHub connection can see, "
         "archived repositories excluded; showing it, most recently opened first."
+    )
+
+
+def test_showing_it_needs_the_one_issue_on_the_page() -> None:
+    """Arch 10-31: total 1 with an empty page (the item was filtered out) must not say
+    "showing it"; it says what is there, 0 of them."""
+    scope, ordering = render_issues_scope()
+    assert _issues_note(total=1, count=1, scope=scope, ordering=ordering).endswith(
+        f"; showing it, {ordering}."
+    )
+    assert _issues_note(total=1, count=0, scope=scope, ordering=ordering).endswith(
+        f"; showing 0 of them, {ordering}."
     )
 
 
