@@ -296,3 +296,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v714, 2026-10-31 10:19 PDT: the sender note is replaced (CXO's no-address codes line); support@ routing is a small question for xian; HOST's mint needs him in the HOST conversation.
 - v715, 2026-10-31 11:09 PDT: top restructured for scanning at xian's ask ('wall o' text'): sections, short cards, lists, the permission line in a details block; letter counts from the draft's version table (14 people, 4 templates, 9 new codes).
 - v716, 2026-10-31 12:43 PDT: #2243 added to the Sprint yes (PPM 12:4x).
+- v717, 2026-10-31 13:51 PDT: step 1 removed, letters sent (xian in conversation); moved to the Done card; step 2 marked next.
