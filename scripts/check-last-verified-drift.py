@@ -26,7 +26,9 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-_spec = importlib.util.spec_from_file_location("check_staleness", os.path.join(HERE, "check-staleness.py"))
+_spec = importlib.util.spec_from_file_location(
+    "check_staleness", os.path.join(HERE, "check-staleness.py")
+)
 cs = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(cs)
 
@@ -97,11 +99,17 @@ def main():
         if edit:
             ed = datetime.date.fromisoformat(edit[1])
             if (ed - newest_stamp).days > MARGIN:
-                unbumped.append((rel, f"body edited {edit[1]} ({edit[0]}), newest stamp {newest_stamp}"))
+                unbumped.append(
+                    (rel, f"body edited {edit[1]} ({edit[0]}), newest stamp {newest_stamp}")
+                )
         if bump:
-            bare.append((rel, f"last_verified moved with no body change on {bump[1]} ({bump[0]}), now {lv}"))
+            bare.append(
+                (rel, f"last_verified moved with no body change on {bump[1]} ({bump[0]}), now {lv}")
+            )
 
-    print(f"check-last-verified-drift: {len(paths)} doc(s), margin {MARGIN}d, {cs.datetime.date.today()}")
+    print(
+        f"check-last-verified-drift: {len(paths)} doc(s), margin {MARGIN}d, {cs.datetime.date.today()}"
+    )
     for title, items in (
         (
             "EDITED-UNBUMPED: body changed after last_verified, the stamp no longer covers the text",
