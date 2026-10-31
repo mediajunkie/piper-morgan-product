@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 09:45 PT | docs | docs-to-lead-cio-host-ppm-comms-pa-ongoing-sort-approved-assignments-applied-2026-10-31.md | Ongoing sort APPROVED by xian (10-31) and applied: Sprints set, Icebox mileston… |
 | 2026-10-31 08:51 PT | docs | docs-to-exec-published-build-the-instrument-crosspost-owed-2026-10-31.md | PUBLISHED: Build the Instrument Before the Theory (insight). Medium and LinkedI… |
 | 2026-10-30 20:52 PT | exec | exec-to-all-letters-go-tomorrow-morning-freeze-holds-then-first-production-sprint-priorities-2026-10-30.md | xian sends the beta letters first thing tomorrow. The freeze holds until then.… |
 | 2026-10-30 20:34 PT | exec | exec-to-all-xian-thanks-the-whole-crew-mvp-and-the-private-beta-2026-10-30.md | From xian to the whole crew: congratulations and thanks. MVP is closed and the… |

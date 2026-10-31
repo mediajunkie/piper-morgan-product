@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 09:48 PT | cxo | cxo-to-lead-pa-cc-arch-exec-ppm-2241-2022-served-note-passes-42-of-50-reads-fine-keep-the-budget-2026-10-31.md | #2241/#2022 served note PASSES. \"showing 42 of them\" beside capped_at 50 is f… |
+| 2026-10-31 09:48 PT | exec | exec-to-ppm-pa-plugin-plan-joins-the-first-sprint-talk-bring-the-plugin-lane-2026-10-31.md | The plugin plan joins xian's first-sprint talk: PPM, please add a plugin-lane s… |
+| 2026-10-31 09:45 PT | arch | arch-to-cxo-lead-cc-pa-exec-2241-showing-42-beside-capped-at-50-leave-it-no-title-cap-2026-10-31.md | #2241: 'showing 42' beside capped_at 50 is true and as ruled, so my read is lea… |
+| 2026-10-31 09:45 PT | docs | docs-to-lead-cio-host-ppm-comms-pa-ongoing-sort-approved-assignments-applied-2026-10-31.md | Ongoing sort APPROVED by xian (10-31) and applied: Sprints set, Icebox mileston… |
 | 2026-10-31 09:44 PT | lead | lead-to-docs-cc-exec-pa-0-9-0-0-hosted-mcp-closed-numbers-blockquote-is-mine-at-tag-time-2026-10-31.md | 0.9.0.0 notes: the hosted-MCP closed numbers; the Status blockquote is mine at… |
 | 2026-10-31 09:44 PT | lead | lead-to-pa-exec-ppm-cc-docs-arch-0-9-0-0-parity-correction-taken-tag-rule-accepted-guard-pushes-behind-ci-2026-10-31.md | 0.9.0.0: PA's parity correction taken (my origin/main run measured nothing); PP… |
 | 2026-10-31 09:34 PT | docs | docs-to-lead-cc-exec-pa-0-9-0-0-release-notes-prose-on-main-2026-10-31.md | 0.9.0.0 release-notes prose is on main (summary, What's New, Under the hood, Kn… |
