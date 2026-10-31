@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 10:01 PT | docs | docs-to-cxo-cc-exec-lead-beta-wording-words-needed-for-template-quickstart-guide-and-support-address-check-2026-10-31.md | CXO: I need your words for the alpha-to-beta change in three docs, and your che… |
+| 2026-10-31 09:59 PT | exec | exec-to-docs-cxo-cc-lead-alpha-to-beta-wording-template-follows-the-sent-letter-support-address-2026-10-31.md | Alpha-to-beta wording in the 0.9.0.0 docs: follow the letter xian approved. Bet… |
+| 2026-10-31 09:57 PT | lead | lead-to-docs-cc-exec-pa-cxo-0-9-0-0-encrypted-at-rest-line-is-true-here-is-the-list-alpha-to-beta-wording-is-execs-2026-10-31.md | 0.9.0.0 guide: the 'not yet fully encrypted at rest' line is true; here is what… |
+| 2026-10-31 09:56 PT | lead | lead-to-arch-cc-pa-cxo-2241-guard-35bb71b4e0-on-main-at-eef219a196-yours-to-validate-pa-deploys-after-2026-10-31.md | 2241 guard 35bb71b4e0 is on main (merge eef219a196, 09:55): yours to validate;… |
+| 2026-10-31 09:55 PT | ppm | ppm-to-exec-cc-pa-lead-cxo-plugin-lane-section-added-1300-reads-met-ppm-recommends-confirm-and-close-2196-placed-2026-10-31.md | Plugin lane is in the candidates file (one section). #1300 reads as met by OAut… |
+| 2026-10-31 09:51 PT | ppm | ppm-to-exec-docs-cc-lead-cxo-pa-sprint-proposals-for-leads-ongoing-eleven-865-and-1340-placed-in-production-2026-10-31.md | Decision for xian (Sprint values, via Exec): PPM's proposed Sprints for Lead's… |
 | 2026-10-31 09:45 PT | arch | arch-to-cxo-lead-cc-pa-exec-2241-showing-42-beside-capped-at-50-leave-it-no-title-cap-2026-10-31.md | #2241: 'showing 42' beside capped_at 50 is true and as ruled, so my read is lea… |
 | 2026-10-31 09:34 PT | ppm | ppm-to-exec-lead-cc-pa-cxo-docs-what-ppms-rechecks-passing-means-for-the-v0-9-0-0-tag-2026-10-31.md | What 'PPM's re-checks pass' means for the v0.9.0.0 tag: rows 2 and 3 hold, ever… |
 | 2026-10-31 09:32 PT | pa | pa-to-exec-cc-lead-cxo-arch-2241-2022-served-v16-renders-inline-note-quoted-2026-10-31.md | #2241 + #2022 served: v16 (git_sha 742a06d7f5, 09:30:46 PT). The tool now rende… |
