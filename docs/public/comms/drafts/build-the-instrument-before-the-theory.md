@@ -43,7 +43,7 @@ Coming up with a theory feels like making progress, and then writing a patch bas
 
 ---
 
-*Next on Building Piper Morgan:** Sunday's insight, "Read the Machine Before Debating Who Restarts It" (working
+*Next on Building Piper Morgan: "Read the Machine Before Debating Who Restarts It" (working
   title). The title has to be final before this post goes to Docs, since this footer names it. Suggested tease:
   *the next day, the database goes down, and the team spends half an hour on who may restart it before one look at
   the machine changes the question.*
