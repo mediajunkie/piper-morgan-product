@@ -4,7 +4,7 @@
 
 **An AI-powered product management assistant — and an experiment in human-AI collaboration.**
 
-Current version: **v0.8.14.0 alpha** · [pipermorgan.ai](https://pipermorgan.ai) · [GitHub](https://github.com/mediajunkie/piper-morgan-product)
+Current version: **v0.9.0.0 private beta** · [pipermorgan.ai](https://pipermorgan.ai) · [GitHub](https://github.com/mediajunkie/piper-morgan-product)
 
 ---
 
@@ -26,7 +26,7 @@ If you're part of the alpha:
 - **[Testing Guide](ALPHA_TESTING_GUIDE.md)** — what to test and how to give feedback
 - **[Known Issues](ALPHA_KNOWN_ISSUES.md)** — current limitations
 - **[Alpha Agreement](ALPHA_AGREEMENT_v2.md)** — terms and expectations
-- **[Release Notes v0.8.14.0](releases/RELEASE-NOTES-v0.8.14.0.md)** — what changed in the latest release
+- **[Release Notes v0.9.0.0](releases/RELEASE-NOTES-v0.9.0.0.md)** — what changed in the latest release
 
 Not in the alpha yet? You can follow along at [pipermorgan.ai](https://pipermorgan.ai) — we publish weekly ships, building narratives, and insights about what we're learning.
 
@@ -107,7 +107,7 @@ The working corpus lives in [the repository](https://github.com/mediajunkie/pipe
 
 ## What's next
 
-Piper Morgan is in invite-only alpha, working toward the **0.9.0 beta**. There's no fixed target date — the MVP milestone *is* the beta gate, and beta ships when it closes. The release sequence from here: **MVP** (the beta gate — alpha findings that must land before the private beta), then **Production** (required for the public beta), then **Fast Follow**.
+Piper Morgan is in invite-only private beta (v0.9.0.0, cut 2026-10-31). The MVP milestone closed 2026-10-30. The release sequence from here: **Production** (required for the public release, cut as 1.0.0.0 when the Production milestone closes), then **Fast Follow**.
 
 Follow the weekly ships at [pipermorgan.ai/shipping-news](https://pipermorgan.ai/shipping-news) to see what's shipping.
 

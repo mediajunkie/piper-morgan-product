@@ -42,38 +42,40 @@ long it takes to log in and paste a key.**
 
 ---
 
-## What's New in 0.8.14
+## What's New in 0.9.0
 
-A fast follow to v0.8.13.0 — cut two days later, and the first release deployed to the
-consolidated host (alpha.pipermorgan.ai has been served by Fly since 2026-09-22; you were
-asked to log in again once — that was the move). Theme: **on your clock**.
+The first private beta release, cut 2026-10-31 after v0.8.14.0 (2026-09-23). The MVP milestone
+closed with it. Theme: **trust in what Piper tells you**. Most of the 361 issues closed since
+0.8.14 were cases where Piper said something that was not true, or did not say something that
+was. Each now has a fix, and many have a regression test pinned to the exact wording that failed.
 
-**Your preferences survive restarts** (#1574) — timezone, reminder settings, working mode,
-and the calendar-setup offer used to reset silently on every deploy ("why does it keep
-asking me?"). They now persist per user.
+**Setup works for an invited tester** (#2078, #1875, #2089, #2176) — the wizard no longer ends in
+"Setup Failed", Step 1 no longer blocks new users, and the hosted app no longer shows the local
+System Requirements check. Current Anthropic keys are no longer refused (#1978).
 
-**Every clock face is yours, and labeled** (#1576, #1575, #1577, #1556) — standup exports,
-the agenda, and "what's my day look like" answers render in *your* timezone with the zone
-named ("3:00 PM PDT"). "Today" and "yesterday" are your calendar days, and free-time blocks
-are computed on your clock — after 5pm Pacific you no longer get tomorrow's day.
+**Integrations say what is true** (#2012, #2029, #2045, #2071, #2148) — the Integrations Test no
+longer reports success on a revoked GitHub grant, the card updates after a successful Test, the
+result is per account, and Calendar connect no longer says "Connected" when you left Google's
+consent screen. Chat now reads a Google Calendar that Settings reports as healthy (#2092).
 
-**The agenda shows real meeting times** (#1576) — it had been printing "TBD" for everyone
-with a connected calendar (a key mismatch, not a missing meeting). Fixed, along with the
-unreachable "Focus Time Available" section.
+**Piper tells you when it could not read something** (#2182, #1965, #2072, #2076) — a failed
+calendar or GitHub read is no longer shown as a free day or "no activity". Replies no longer say
+"Your todo list is clear" while overdue or pending todos exist (#1985, #1990).
 
-**Add a project in one line** (#1856) — `add project One Job with repo
-Design-in-Product/one-job` creates and links it in one turn. Leave the name out and Piper
-tells you the exact line to type.
+**Todos, reminders, projects and GitHub issues in chat** — "Add three todos for the launch: ..."
+works (#2094), "delete that reminder" targets the reminder you just saved (#1987), a project's
+Remove button does what it says (#1912), and a new user's first "Create an issue" no longer goes
+to an auto-picked repository with issues disabled (#2205). Closing a nonexistent issue says so
+and changes nothing (#1941).
 
-**Honest outcomes on GitHub writes** (#1858) — closing an issue that doesn't exist now says
-"There's no issue #99999 in owner/repo — nothing was changed" instead of "it may or may not
-have gone through".
+**Feedback and your data** — Send feedback is reachable from inside the app (#2096, #2156), you
+can hide or delete a chat (#2065), and the privacy page's 14-day deletion promise now has an
+erasure path behind it (#2064).
 
-**The preferences pages work again** (#1864) — every `/api/v1/preferences/*` route had
-errored since its auth dependency landed. Also: one "Add to Slack" path instead of four
-(#1499), and the four honest LLM-key error sentences from 0.8.13 are now actually deployed.
+Also new: a hosted MCP server at mcp.pipermorgan.ai (private-beta work, rougher than the web
+app) and an Admin Invites page for minting and revoking invite codes (#2081).
 
-See [Release Notes v0.8.14.0](releases/RELEASE-NOTES-v0.8.14.0.md) for full details.
+See [Release Notes v0.9.0.0](releases/RELEASE-NOTES-v0.9.0.0.md) for full details.
 
 ---
 
@@ -123,72 +125,61 @@ After logging in at [alpha.pipermorgan.ai](https://alpha.pipermorgan.ai):
 
 ---
 
-## Testing Focus for 0.8.14
+## Testing Focus for 0.9.0
 
 **What's Stable** (light testing recommended):
 - ✅ Login/authentication; invite-gated account creation
-- ✅ Lists, Todos, Projects management (chat todos are real; the REST `/api/v1/todos` endpoint is still mocked, #1427)
+- ✅ Lists, Todos, Projects management
 - ✅ Files upload/download/preview/tagging
-- ✅ GitHub connector reads (issue summaries, repo resolution)
 - ✅ Per-user API keys, encrypted at rest
-- ✅ The standup interview and free-form draft edits (0.8.13's focus — carried, not re-tested)
+- ✅ The standup interview and free-form draft edits (carried from 0.8.13 and 0.8.14)
 
 **Where to Focus Testing** (these need your attention):
-- 🔍 **Your clock**: set your timezone under Settings → Preferences, then ask "what's my
-  agenda today" / export a standup — is every time labeled with YOUR zone? Does "today"
-  match your calendar, not UTC's (try after 5pm Pacific)?
-- 🔍 **Preferences persist**: change a preference, wait for a deploy (or just come back
-  tomorrow) — is it still set? Does the calendar-setup offer stay dismissed?
-- 🔍 **Agenda times**: with a connected Google Calendar, do meetings show real times, never
-  "TBD"? Does "Focus Time Available" appear?
-- 🔍 **Add project in one line**: `add project <name> with repo <owner>/<repo>` — one turn?
-  Leave out the name — do you get the exact line to type, not the same question twice?
-- 🔍 **Honest GitHub writes**: "close issue 99999 in <a repo you own>" — do you get
-  "There's no issue #99999… nothing was changed"?
+- 🔍 **Setup**: as a new invited tester, does the wizard finish without "Setup Failed" and keep
+  your key? Does a conversation you start before adding a key stay in your sidebar?
+- 🔍 **Integrations**: run Test on GitHub and Google Calendar. Does the card update its status
+  and "last checked" line? Does a revoked grant show as broken, not Connected?
+- 🔍 **Failed reads**: if GitHub or your calendar cannot be read, does Piper say so instead of
+  showing a free day or "no activity"?
+- 🔍 **Todos and reminders**: "add three todos for the launch: a, b, c", "delete that reminder"
+  right after saving one, and a "show my todos" reply when some are overdue.
+- 🔍 **GitHub issues in chat**: your first "Create an issue", "show me that issue" right after
+  creating one, and closing an issue number that does not exist.
+- 🔍 **Your data**: hide or delete a chat, and use Send feedback from inside the app.
 
-## What's Working in 0.8.14
+Send the exact wording of anything that looks wrong. Each report becomes a test row.
+
+## What's Working in 0.9.0
+
+✅ **Setup and sign-in**:
+   - Invited accounts are created and keys stored through the setup wizard (#2078)
+   - Invite-gated account creation, with invite codes minted and revoked from an Admin Invites page (#2081)
+
+✅ **Integrations (GitHub and Google Calendar)**:
+   - Test results are per account and update the card (#2071, #2045)
+   - Disconnect works, and a dead GitHub connection can recover from Settings (#2017, #2018)
+   - Chat reads events from a healthy Google Calendar, and "agenda Thursday" honors the weekday (#2092, #2091)
+   - GitHub reads in chat use your own account's grant (#2123)
+   - Other connectors are not offered in this beta
 
 ✅ **Conversational AI**:
-   - LLM-grounded responses in Piper's voice, drawing on your work context
-   - Guided standup interview that actually runs, drafts built only from your words, free-form draft edits (#1837)
-   - Greeting + question handled together — your question gets answered (#1416)
-   - Honest answers when a data source fails — "I couldn't check" instead of a false "nothing found" (#1425)
-   - Honest error messages when your LLM key is missing, invalid, or out of quota (#1414, #1823, #1824)
-   - Honest outcomes on GitHub writes — a 404 is "nothing was changed", never "may or may not" (#1858)
-   - Session memory: "what did we create this session?" recalls what you actually did (#1394)
+   - Replies say when a source could not be read, instead of reporting an empty day (#2182, #2076)
+   - "What changed since yesterday?" explains the window it read (#2140, #2143)
+   - Guided standup interview, with suggestion chips and a greeting that matches the hour (#2027, #2079)
 
-✅ **Time, on your clock** (new):
-   - Every user-facing time carries your zone label; "today" is your calendar day (#1576, #1575, #1577, #1556)
-   - Agenda shows real meeting times and focus blocks (#1576)
+✅ **Todos, Lists & Projects**:
+   - Create, delete and manage todos, reminders and projects in chat and in the UI
+   - The Lists page shows the right item count (#2171)
 
-✅ **Todos, Lists & Projects (via chat and UI)**:
-   - Create and manage todos conversationally — chat todos are real and persist
-   - Add a project with its repo in one line (#1856)
-   - List/todo metadata persists correctly (#1435)
-   - Note: the REST `/api/v1/todos` endpoint is still mocked (#1427) — use chat or the UI pages
+✅ **GitHub issues in chat**:
+   - Create, show, comment and close, with failures reported as failures (#2152, #1941)
 
-✅ **Personalization**:
-   - Preferences (timezone, reminders, working mode) persist across restarts (#1574)
-   - Personality questionnaire shapes Piper's warmth, confidence, and depth (#1422)
-   - Per-user LLM provider selection — one valid key from any provider is enough (#1415, #1823)
-   - Per-user API keys, encrypted at rest (AES-256-GCM)
+✅ **Your data**:
+   - Hide or delete a chat, Send feedback from anywhere in the app, and a deletion path behind the privacy page (#2065, #2096, #2064)
+   - Uploaded-file writes no longer fall back to plaintext when the encryption key is missing (#2061)
 
 ✅ **Files**:
-   - Upload, download, and in-browser preview
-   - Search by name, filter by type, freeform tags
-   - Drag & drop multi-file upload, bulk download as zip
-
-✅ **Integrations**:
-   - GitHub connector reads: issue summarization from live data, repo resolution
-   - "Connect my GitHub"-style questions get real setup guidance (#1417)
-   - Slack outbound, DMs, @-mentions (the `/standup` command has known gaps, #1429)
-
-✅ **Core Infrastructure**:
-   - Hosted on the consolidated Fly host as of 2026-09-22 (alpha.pipermorgan.ai)
-   - Multi-user support with owner-scoped data access (#1420, #1421, #1434)
-   - JWT auth, bcrypt passwords; session-token revocation survives cache restarts (#1808)
-   - PostgreSQL, Redis, ChromaDB
-   - Smoke gate: 534 tests green at release cut
+   - Upload, download, and in-browser preview, search, filter and tags
 
 See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for current limitations.
 
@@ -200,18 +191,18 @@ See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for current limitations.
   walkthrough (rewritten 2026-09-21 for the hosted flow; the two docs now agree).
 - **Known Issues**: [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) (bugs and status)
 - **Legal**: [ALPHA_AGREEMENT_v2.md](ALPHA_AGREEMENT_v2.md) (terms and conditions)
-- **Version Info**: [VERSION_NUMBERING.md](VERSION_NUMBERING.md) (what 0.8.14.0 means)
+- **Version Info**: [VERSION_NUMBERING.md](VERSION_NUMBERING.md) (what 0.9.0.0 means)
 
 ---
 
 ## Remember
 
-This is **alpha software** (0.8.14.0). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
+This is **private beta software** (0.9.0.0). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
 
-**Testing Focus**: Is every time you see on YOUR clock, with the zone named? Do your preferences stay set across deploys? Does the agenda show real times? Does a one-line add-project work — and does a bad GitHub write say so honestly?
+**Testing Focus**: Does setup finish for you? Does every integration status match what is really happening? When Piper cannot read something, does it say so?
 
 ---
 
 **Happy testing!** 🚀
 
-_Last Updated: September 23, 2026_
+_Last Updated: October 31, 2026_
