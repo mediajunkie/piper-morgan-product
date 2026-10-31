@@ -72,7 +72,9 @@ class TestSetupGuidanceUsesCanonicalService:
         ):
             result = await handlers._format_integration_setup_guidance(user_id="u1")
         not_connected = result["intent"]["context"]["available_integrations"]
-        assert set(not_connected) == {"slack", "calendar", "notion"}
+        # #2237 (CXO 2026-10-30): the list follows BETA_OFFERED_CONNECTORS (github,
+        # calendar) minus what is connected; slack and notion are never listed.
+        assert set(not_connected) == {"calendar"}
 
     @pytest.mark.asyncio
     async def test_demo_never_enumerated(self, handlers):

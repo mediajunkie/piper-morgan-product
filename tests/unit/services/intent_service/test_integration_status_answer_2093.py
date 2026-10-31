@@ -154,15 +154,26 @@ class TestGeneralAsk:
 
     @pytest.mark.asyncio
     async def test_one_missing_guides_only_for_it(self, handlers):
+        # #2237 (CXO 2026-10-30): the "Not connected yet" list follows the offered set
+        # (GitHub, Google Calendar). A missing connector outside it (Notion) is not
+        # listed, so with only Notion missing there is no block at all; with Calendar
+        # missing the block names Calendar alone.
         st = dict(ALL_FOUR, notion=_off(), slack=_untested())
         out = await _ask(handlers, st, "what integrations do I have?")
         m = out["message"]
         assert "  - Slack (not tested yet)" in m
-        assert "⚪ **Not connected yet:**" in m
-        assert "  - Notion — connect it in Settings → Integrations → Notion." in m
+        assert "⚪ **Not connected yet:**" not in m
+        assert "Notion — connect it in" not in m
         assert "Popular integrations" not in m
-        # the guidance names only the missing one
-        assert m.count("connect it in Settings → Integrations →") == 1
+        st2 = dict(ALL_FOUR, calendar=_off(), notion=_off())
+        m2 = (await _ask(handlers, st2, "what integrations do I have?"))["message"]
+        assert "⚪ **Not connected yet:**" in m2
+        assert (
+            "  - Google Calendar — connect it in Settings → Integrations → Google Calendar." in m2
+        )
+        assert "Notion" not in m2.split("Not connected yet", 1)[1]
+        # the guidance names only the missing OFFERED one
+        assert m2.count("connect it in Settings → Integrations →") == 1
 
     @pytest.mark.asyncio
     async def test_status_check_failure_is_said_plainly(self, handlers):

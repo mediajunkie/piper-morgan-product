@@ -2573,7 +2573,16 @@ Ask me how project context works any time. Are you ready to set up your first pr
             for n, st in statuses.items()
             if _state(st) in ("connected_ok", "connected_untested", "connected_failed")
         ]
-        not_configured = [n for n, st in statuses.items() if _state(st) == "not_connected"]
+        # #2237 (CXO 2026-10-30 20:5x): the general "Not connected yet" list follows the
+        # offered set, the same source as the Integrations page's cards and the
+        # capability block (BETA_OFFERED_CONNECTORS). A connector the beta doesn't offer
+        # is never listed as "not connected yet": that invites a connect the page and
+        # the server refuse. Asked about by name, it gets the not-offered sentence above.
+        not_configured = [
+            n
+            for n, st in statuses.items()
+            if _state(st) == "not_connected" and n in BETA_OFFERED_CONNECTORS
+        ]
         unchecked = [n for n, st in statuses.items() if _state(st) == "check_failed"]
         asked = self._asked_integration(original_message)
 
@@ -2633,6 +2642,8 @@ Ask me how project context works any time. Are you ready to set up your first pr
                     "You can connect integrations in **Settings → Integrations** (/settings/integrations):"
                 )
                 for name in KNOWN_INTEGRATIONS:
+                    if name not in BETA_OFFERED_CONNECTORS:  # #2237: offered set only
+                        continue
                     lines.append(f"  - {_display(name)}")
             else:
                 if configured:
