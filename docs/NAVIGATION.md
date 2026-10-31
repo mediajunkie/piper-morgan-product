@@ -162,7 +162,7 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 - **[Alpha Agreement](ALPHA_AGREEMENT_v2.md)** - Legal terms and conditions
 - **[Email Templates](operations/alpha-onboarding/email-template.md)** - Internal onboarding communications
 - **[Collaborator Profile Template](operations/alpha-onboarding/human-collaborator-profile-template.md)** - Template for creating new collaborator profiles
-- **[Setup Screenshots](assets/images/alpha-onboarding/)** - GUI setup wizard screenshots (5 images for documentation)
+- **[Setup Screenshots](assets/images/alpha-onboarding/)** - placeholder folder for GUI setup wizard screenshots (README only, no images captured yet)
 
 ---
 
@@ -348,7 +348,7 @@ Weekly/monthly session consolidations - 100+ consolidated logs for historical re
 #### Documentation Assets (`docs/assets/`)
 ```
 └── images/                   # Documentation images
-    └── alpha-onboarding/     # GUI setup wizard screenshots (5 images)
+    └── alpha-onboarding/     # placeholder for setup wizard screenshots (README only)
 ```
 **Note**: `docs/assets/` is for documentation-embedded images (alpha guides, user docs). Root `assets/` is for general project assets.
 
