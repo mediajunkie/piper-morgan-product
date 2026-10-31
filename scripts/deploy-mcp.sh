@@ -41,7 +41,7 @@ stray="$(git ls-files --others --exclude-standard | head -5)"
 # #2240: --exclude-standard skips gitignored files, and config/*.user.md is gitignored, so an
 # operator overlay would have passed the guard above. .dockerignore now drops it from the context;
 # refuse here too so the operator sees why, instead of a silent omission.
-overlay="$(git ls-files --others --ignored --exclude-standard -- config/ | grep -E '\.user\.md$' | head -5)"
+overlay="$(git ls-files --others --ignored --exclude-standard -- config/ | grep -E '\.user\.md$' | head -5 || true)"
 [ -z "$overlay" ] || die "operator overlay in config/ would be excluded by .dockerignore; move it aside before deploying: $(echo "$overlay" | tr '\n' ' ')"
 
 # The sha goes in as a build arg so the MCP /health names the deployed commit, as alpha's does (PA,
