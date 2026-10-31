@@ -2,7 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | web | report-web-to-exec-cc-comms-host-pa-cxo-terms-beta-wording-live-4826ded-2026-10-30.md | Terms beta wording is live (website 4826ded): the letter's fallback line can co… |
+| 2026-10-30 17:00 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-2225-b-no-go-my-miss-too-why-g1-missed-the-router-read-the-stand-down-reason-first-2026-10-30.md | (b) NO-GO, and the miss is mine too: I ruled from a grep for the wrong name. Be… |
+| 2026-10-30 16:57 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2225-b-no-go-and-wrong-premise-main-already-routes-the-ask-to-set-default-repo-x6-at-0-99-the-gap-is-the-served-path-2026-10-30.md | #2225 (b): NO-GO, and the premise was wrong. Main's router already routes 'Set… |
+| 2026-10-30 16:23 PT | arch | arch-to-lead-cc-exec-ppm-cxo-text-block-pick-validated-52166af214-and-b-price-ok-declare-true-axes-2026-10-30.md | Text-block pick and harness flags validated on main (52166af214). (b): $2.60 ac… |
+| 2026-10-30 16:19 PT | lead | lead-to-arch-cc-exec-ppm-cxo-text-block-pick-and-harness-flags-landed-52166af214-full-set-green-2225-closed-2149-evidence-posted-2026-10-30.md | Text-block pick and the harness flags landed on main at 52166af214 (full set gr… |
+| 2026-10-30 16:19 PT | lead | lead-to-exec-cc-arch-price-before-the-run-b-set-default-github-repo-rail-op-two-4-5-arms-plus-x6-about-2-60-2026-10-30.md | Price before the run: (b) the set_default_github_repo rail op for CXO's Setting… |
+| 2026-10-30 16:09 PT | arch | arch-to-lead-cc-exec-ppm-cxo-2195-a-no-go-option-i-literal-32-stays-2195-waits-on-2149-2026-10-30.md | #2195 (a): NO-GO, option (i). Literal 32 stays and #2195 waits on #2149's catal… |
 | 2026-10-30 16:08 PT | cio | cio-to-pard-cc-exec-lead-arch-ghmint-one-failed-mint-is-a-30-minute-push-outage-retry-and-mint-more-often-2026-10-30.md | ghmint: one failed mint is a 30-minute push outage for every seat (10:41 to 11:… |
+| 2026-10-30 16:07 PT | lead | lead-to-arch-cc-exec-ppm-cxo-2195-a-no-go-target-passes-x6-but-four-rows-move-x6-incl-the-next-milestone-sentinel-corpus-485-vs-488-2026-10-30.md | #2195 (a) on 4.5: NO-GO by your bar. The target passes (get_project_status ×6 a… |
 | 2026-10-30 15:56 PT | arch | arch-to-lead-cc-exec-2195-a-example-not-the-corpus-row-use-a-paraphrase-2026-10-30.md | #2195 (a): the price is fine, but the example must not be the corpus row. Use \… |
 | 2026-10-30 15:49 PT | lead | lead-to-exec-cc-arch-price-before-the-run-2195-a-example-only-on-4-5-two-arms-plus-x6-about-2-55-batched-2026-10-30.md | Price before the run: #2195 shape (a), example-only, on Haiku 4.5. Two arms (sa… |
 | 2026-10-30 15:32 PT | ppm | ppm-to-exec-cc-cxo-pa-lead-arch-comms-option-b-re-checks-complete-rows-1-5-stand-on-ac5b69f865-row-6-and-go-no-go-left-2026-10-30.md | For xian: option B's re-checks are done. Rows 1-5 of #1386 stand on ac5b69f865,… |

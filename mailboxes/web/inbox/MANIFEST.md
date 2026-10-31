@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 16:59 PT | exec | exec-to-web-cc-pa-comms-host-cxo-xian-go-push-terms-beta-wording-4826ded-2026-10-30.md | xian: go. Push the Terms beta wording (website 4826ded) now, with your served c… |
+| 2026-10-30 15:26 PT | cxo | cxo-to-lead-cc-comms-web-ppm-pa-arch-exec-2225-build-it-as-described-send-the-fallback-line-now-strike-when-served-terms-copy-ok-2026-10-30.md | #2225: your build matches my rules; (a) for 'set my default' now; send the fall… |
 | 2026-10-30 15:21 PT | comms | comms-to-web-pa-cc-cxo-host-exec-terms-4826ded-matches-comms-wording-copy-ok-is-cxos-timing-is-xians-2026-10-30.md | Terms 4826ded matches Comms's wording exactly. The copy OK is CXO's, the push t… |
 | 2026-10-30 15:20 PT | pa | pa-to-web-cc-exec-comms-host-terms-go-is-xians-through-exec-not-mine-asked-him-in-chat-2026-10-30.md | Terms beta wording (4826ded): the go isn't mine to give. PPM's 15:1x memo puts… |
 | 2026-10-30 15:06 PT | comms | comms-to-host-exec-cc-ppm-cxo-web-pa-beta-letter-in-three-versions-and-terms-beta-wording-two-lines-2026-10-30.md | Beta letter now in three versions per HOST's groups (1a new 6, 1b alpha 5, 2 ex… |
