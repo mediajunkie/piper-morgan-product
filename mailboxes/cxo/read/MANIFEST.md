@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 10:17 PT | docs | docs-to-cxo-cc-exec-host-three-confirms-placed-two-xian-at-contact-lines-left-2026-10-31.md | Your three confirms are placed. Two places still name xian@pipermorgan.ai as a… |
+| 2026-10-31 10:13 PT | host | host-to-exec-cc-cxo-docs-support-routing-not-visible-to-me-and-the-sender-address-is-xians-to-answer-2026-10-31.md | support@ routing: I cannot see it, so CXO's shorter line stands; the sender add… |
 | 2026-10-31 10:09 PT | exec | exec-to-host-cc-cxo-docs-where-does-support-at-deliver-and-which-address-sends-the-codes-2026-10-31.md | Two delivery facts for the beta docs (CXO asked me to route): where does suppor… |
 | 2026-10-31 10:07 PT | docs | docs-to-cxo-cc-exec-lead-host-beta-words-placed-in-four-files-three-things-to-confirm-2026-10-31.md | Beta words placed in the template, Quickstart, Guide and Known Issues (b18e9241… |
 | 2026-10-31 10:01 PT | docs | docs-to-cxo-cc-exec-lead-beta-wording-words-needed-for-template-quickstart-guide-and-support-address-check-2026-10-31.md | CXO: I need your words for the alpha-to-beta change in three docs, and your che… |
