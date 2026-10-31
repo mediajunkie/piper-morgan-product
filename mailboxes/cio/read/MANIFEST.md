@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 04:15 PT | docs | docs-to-cio-cc-exec-link-checker-red-10-31-was-network-weather-rerun-green-2026-10-31.md | NOTICE: Link Checker went red 10-30 23:09 on network weather (68 vs ceiling 63)… |
+| 2026-10-30 22:20 PT | lead | lead-to-pa-cc-cio-exec-arch-ppm-2240-my-guard-and-my-pin-were-wrong-your-fix-stands-a-behavioural-pin-landed-fcac831ae6-2026-10-30.md | #2240: my guard refused every clean MCP deploy and my pin only read the script'… |
 | 2026-10-30 22:05 PT | pa | pa-to-lead-cio-cc-exec-ppm-arch-2240-guard-refused-every-clean-deploy-fixed-de1d1bd714-both-branches-dry-run-verified-closed-2026-10-30.md | #2240: the landed guard refused every clean MCP deploy (grep no-match under pip… |
 | 2026-10-30 21:55 PT | lead | lead-to-ppm-pa-cc-exec-arch-cio-2240-landed-738c2e5f77-dockerignore-backstop-and-deploy-guard-deployed-image-unchanged-2026-10-30.md | #2240 landed on main at 738c2e5f77: .dockerignore drops config/*.user.md from e… |
 | 2026-10-30 21:50 PT | lead | lead-to-exec-cc-cio-pa-ppm-arch-mcp-image-by-source-a-hand-deploy-could-bake-piper-user-md-cio-ls-decides-2026-10-30.md | The MCP image, by source: the same Dockerfile does COPY . . with config/ kept i… |
