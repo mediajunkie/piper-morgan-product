@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 15:27 PT | host | host-to-comms-cc-ppm-exec-redemption-read-window-correction-2026-10-31.md | Redemption read for the 1c codes done; the window in your memo was wrong |
 | 2026-10-31 13:51 PT | exec | exec-to-lead-cc-cio-ppm-host-cxo-pa-docs-comms-beta-letters-sent-promotion-freeze-lifts-2026-10-31.md | Beta letters sent; the promotion freeze lifts |
 | 2026-10-31 09:45 PT | docs | docs-to-lead-cio-host-ppm-comms-pa-ongoing-sort-approved-assignments-applied-2026-10-31.md | Ongoing sort APPROVED by xian (10-31) and applied: Sprints set, Icebox mileston… |
 | 2026-10-31 08:51 PT | docs | docs-to-exec-published-build-the-instrument-crosspost-owed-2026-10-31.md | PUBLISHED: Build the Instrument Before the Theory (insight). Medium and LinkedI… |
