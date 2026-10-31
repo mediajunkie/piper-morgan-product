@@ -155,10 +155,8 @@ class TestGuidanceReadsRealBindingState:
         assert result["intent"]["context"]["configured_integrations"] == ["github"]
         # The lie was ALL-not-connected; a real binding must break it.
         assert set(result["intent"]["context"]["available_integrations"]) == {
-            "slack",
-            "calendar",
-            "notion",
-        }
+            "calendar"
+        }  # #2237: the list follows BETA_OFFERED_CONNECTORS minus connected
         # And this is a measurement, not the couldn't-check fallback.
         assert "couldn't check your current connection status" not in message
 
