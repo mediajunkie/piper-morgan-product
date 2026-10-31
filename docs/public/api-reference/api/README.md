@@ -8,7 +8,6 @@ This directory contains detailed API documentation, including technical specific
 
 ### Core API
 - **[Error Handling](error-handling.md)** - REST-compliant error responses and status codes
-- **[Issue Intelligence API](issue-intelligence-api.md)** - AI-powered GitHub issue analysis
 - **[Personality Enhancement API](personality-enhancement-api.md)** - Personality profiling and enhancement
 - **[Plugin API Reference](plugin-api-reference.md)** - Plugin development and integration
 
