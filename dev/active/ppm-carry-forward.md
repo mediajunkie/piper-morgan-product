@@ -535,3 +535,27 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - #2216-#2218 replace #2212-#2214 in H. Production 228.
 - Today is the gate standard's hard stop (10-30); gate 2 open (#2205, #1386). Dates are xian's.
 - Otherwise as at 10-29 STOP.
+
+## 2026-10-30 21:33 STOP: day-close (carry into 10-31, Saturday, letters morning)
+
+- **MVP gate PASSED.** #1386 and the MVP milestone closed on xian's Go (17:03). The hard stop held, 0 days moved. Ledger row in beta-gate-standard.
+- **Beta letters:** xian sends them Sat 10-31 morning; HOST mints codes with him. The letter is final with 9 known-issue lines. My send-time check is 9 of 9 (19:51, #1386 comment 6538036530). Re-check only if something changes before the send: a promotion, an issue closing, or an edit to the block. The Slack inbound gate is off (PA read `disabled` at 20:25). Open at STOP: Exec's #2218 question (can a beta account reach the hosted MCP?). PPM answered that the beta scope doesn't offer it; PA and Lead read reachability.
+- **Freeze:** no promotion until the letters go.
+- **NEXT PROMOTION CHECK LIST** (the full text is in my 20:36 memo to Exec, `ppm-to-exec-cc-arch-lead-cxo-pa-2238-placed-next-promotion-check-list-…`). The build carries #2225, the #2230 setter validation, #2236 parts 1 and 2 with #2233 and the four fixes (93bd29ccd7), #2237 with the connect listing (a3b3645787, 5c7f15d794), and #2218 if it lands.
+  - Row 2: a full canonical run, after PA updates Q45's expected route to action.
+  - Row 3: A1 and A2, plus B's confirm and the reverse case.
+  - Served checks, each quoted:
+    - #2225: three turns.
+    - #2236: the capability reply, plus "couldn't check" on a failed status read.
+    - #2233: Q1 stops after the name; the due line shows once on a greeting or todo list.
+    - #2236 fix 3: the empty insights reply.
+    - #2237: greyed cards with no button, the wizard, "connect my slack", and direct POSTs refused.
+    - #2218: a failed projects read serves no PIPER.md projects, if its fix lands.
+  - Then read `gh issue list --state closed --label fix:not-served` and take labels off only on a quoted check.
+  - Then re-check the letter's lines: line 7 (#2225) and line 9 (#2236) are struck from later editions on their served checks.
+  - Separately, the set_default_repo flip (xian's word; CIO, or HOST with xian present), then PA's probe and one row 2 run.
+- **Tracking audit (xian's test):** 28 product issues, 27 open plus #2225 (`fix:not-served`). Rule in decisions.log 17:09.
+- **Board:** Sprint set on all open Production issues on xian's yes (81, 19:5x). New ones since have empty Sprints: #2238 (C → PROD-RECONNECT) and #2239 (PUB). I asked Exec whether xian's yes stands for new placements.
+- **Plan:** 241 open, 0 unplanned. Map v44 at https://claude.ai/artifact/63oejcubP3zEj617nFAN68; republish after this STOP's rebuild.
+- **First Production sprint candidates** are ready for xian's priorities talk after the letters (`docs/internal/planning/first-production-sprint-candidates-2026-10-30.md`). Exec sets up the conversation.
+- **Carried:** xian's call on the 5 set-aside closed issues (#1647, #1662, #2081, #2083, #2146), via Exec; the #1706 Sprint move (xian via Exec, not resolved today); CXO's spot-check. Next weekly diff Fri 11-06 against `project-board-2026-10-30.tsv`.

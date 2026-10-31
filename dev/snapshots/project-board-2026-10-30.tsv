@@ -2033,3 +2033,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2236	OPEN	Production	PROD-HONESTY - Failed Reads Say So	[UX] "What can you help me with?" is written fresh by the model: it promises learning and proactivity, calls itself honest, and contradicts the setup line	UX		
 2237	OPEN	Production	PUB - Public Beta	Integrations page: move its hard-coded connector lists (OAUTH_INTEGRATIONS, API_KEY_INTEGRATIONS) onto the one declared OFFERED_CONNECTORS set the capability answer reads (#2236 follow-up)			
 2238	OPEN	Production		Notion on hosted: a global env key beats the user's own, and a keyless user falls back to it (N1/C1); saved key can miss the chat read			
+2239	OPEN	Production		Stale or crafted OAuth callback for a non-offered connector returns a JSON 409 body, not a friendly page (#2237 edge, UX low)	UX		
