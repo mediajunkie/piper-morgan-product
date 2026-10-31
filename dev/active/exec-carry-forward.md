@@ -7,7 +7,7 @@
 **Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
-v707, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v708, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## Where things stand (end of 10-30)
 - **MVP closed** on xian's Go (PPM: #1386 and the milestone; hard stop held, 0 days moved). Alpha and beta serve `ac5b69f865` (one machine, `piper-morgan`).
@@ -35,8 +35,8 @@ Then the first-sprint priorities talk toward Production (PPM's four tiers, six d
 - LaunchAgent loads (Pard console v184).
 - Rule-8 history, whenever he takes it up: HOST's briefing people list; issue #1509's title; HOST's 10-30 log, two entries naming outside beta candidates (HOST owns the slip).
 - Crossposts: Build the Instrument (Medium + LinkedIn, Docs 08:5x), Citation via Hearsay (Medium).
-- #2241/#2022: CXO's words landed (dd546b10d1), Arch validated 09:11 (37e7e8217b); PA deploys once CI is green.
-- 0.9.0 (xian via Docs): Lead owns, the bump lands before step 2, the tag after re-checks. Tell xian when the bump is on main. Defaults: 0.9.0.0, head when green (Exec 09:2x). xian's word on 0.9.0.0 vs 0.9.0 is on the rollup.
+- #2241/#2022 served on MCP v16 09:30; v17 09:35 serves 0.9.0.0 (3d1e7e08e8). Lead closes them.
+- 0.9.0 (xian via Docs): Lead owns, the bump lands before step 2, the tag after re-checks. The bump is on main (c9791112d8, 09:30), and xian's word via Docs is 0.9.0.0. PPM's tag rule is in its 09:3x memo. Docs is writing the notes body and the phase-3 docs.
 - Older: Lead's promotion allow line (row 167), Docs' Ongoing sort (row 168), the Citation Medium crosspost.
 
 ## Mine
