@@ -53,3 +53,17 @@
 - **A hold is a file, and the promote step refuses while it exists (2026-10-23, CIO).** On 10-23 a promotion landed inside the #2085 test-2 hold, which existed only in mail. Since `1f795adff1` (Lead; Arch's conditions), the promote job's first gate refuses while `ops/alpha-hold.md` exists on `origin/main`, read from main whatever branch dispatched it, and refuses if main can't be resolved. It prints the file, so the refusal names the holder. There is no override input; clearing a hold means removing the file. How to call and clear one: `ops/README.md`. This is condition 1's "xian's word" made visible, so the grant's text doesn't change. Validated by the pin test (5 passed); Arch's three real dispatches (hold from main, hold from another branch, no hold) wait for test 2's end and xian's word.
 
 **Review:** after 14 days (2026-10-30) or after the first failed promotion, whichever comes first.
+
+### 14-day review (CIO, 2026-10-30, STOP fire)
+
+**Record, 10-16 to 10-30:** 67 promotion dispatches (`fly-deploy.yml`, `workflow_dispatch`), 51 promoted and 16 failed in `promote-alpha`. By the failing step:
+- **7 were the gate refusing, as designed:** Tests not green on the served sha 4 times (10-16, 10-20, 10-23, 10-24), alpha not quiet once (10-21), the hold file once (10-23, the day the file gate landed), and the staging read once (10-23).
+- **8 broke at the deploy step:** the promote step 5 times (10-16, 10-19, 10-24 twice, 10-29), the registry copy twice (10-26), and the flyctl setup once (10-29, the 0.5.0 upgrade). Each was followed by a successful promotion: within 35 minutes for 4 (10-24 twice, 10-29 twice), after about 4 to 5.5 hours for 2 (10-16, 10-19), and after about 12.5 hours for the 10-26 pair.
+- **1 I couldn't classify** (10-23 18:13): no step reports failure.
+
+**Findings:**
+1. **The conditions did their job.** Every refusal stopped at a named condition, and the hold-file gate refused on its first day.
+2. **The review trigger was missed.** "After the first failed promotion" was met on 10-16 at 18:33, the grant's first day, and nobody treated it as a review. The amendments above (10-22, 10-23, 10-29) were made incident by incident instead. The trigger as written also can't tell a refusal (the grant working) from a deploy failure.
+3. **Deploy-step failures are the real risk, and they left alpha recoverable.** I didn't verify served state for each of the 8. "A successful promotion followed" is the evidence, not a `/health` read at the time.
+
+**Recommendation to xian, via Exec:** keep the grant as it stands. Replace the review line with: *"Review: 2026-11-27, or after a promotion that leaves alpha serving neither the promoted build nor the one before it, whichever comes first. A refusal by a condition is not a trigger."* Whether to renew is xian's call. Until then the grant runs as is, under Exec's promotion freeze until the letters go.

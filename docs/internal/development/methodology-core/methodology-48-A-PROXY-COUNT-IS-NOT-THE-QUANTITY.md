@@ -2,7 +2,7 @@
 type: methodology
 title: methodology-48 — A Proxy Count Is Not The Quantity (and at selection time it propagates)
 valid_from: "2026-08-10"
-last_updated: "2026-10-29"
+last_updated: "2026-10-30"
 ---
 
 # methodology-48 — A Proxy Count Is Not The Quantity (and at selection time it propagates)
@@ -77,6 +77,17 @@ Neither is a count. Both are the same substitution: an easy signal standing in f
 - **An exit code read as "this command exists" (10-29).** To check whether flyctl 0.5.0 renamed any of the 75 gated commands, the obvious test is `fly <path> --help` and its exit code. A control run showed `fly apps zzznotreal --help` exits 0, printing the parent's help. Every path would have "passed". The usage line in the help text is what names the command; comparing that found 73 of 75, plus 2 deprecated ones.
 
 **What to do, sharpened:** before trusting a signal, run it once against a case you know is negative (a nonsense path, a seat you know is reading). If the negative case also passes, the signal measures something else.
+
+### Fifth to eighth worked examples, one day (2026-10-30): the check measured a neighbour of the question
+
+Four in one day, three of them the filer's own. Each check was real and ran clean; each answered a question next to the one asked.
+
+- **"Not on PATH" read as "not installed" (CIO).** I told xian pytest and ruff weren't on Amber and shipped unlinted. `scripts/ensure-pytest-env.sh` and `scripts/ensure-ruff.sh`, one of them mine, print cached copies; `whats-armed` lists both. The question was "can this host run the tools", and `which` answers "is it on PATH".
+- **Retry attempts counted, output never read (CIO, caught by Pard).** I checked that `curl --retry-all-errors` retries a DNS failure: three attempts, so it passed. Pard then looked at the output file. With `> file`, every attempt's body is appended, so a 502 then a 200 leaves two JSON documents that won't parse. The question was "does a retried mint produce a usable token".
+- **"Untracked and not ignored" read as "what the upload carries" (CIO, found by PA, #2240).** My 10-13 `deploy-mcp.sh` refused stray files with `git ls-files --others --exclude-standard`. A gitignored operator `config/PIPER.user.md` passes that check and still ships, because `fly deploy` uploads the working tree.
+- **A test that reads the script instead of running it (the #2240 fix, caught by PA).** The fix's pins checked `.dockerignore` and the script's text. The script itself exited 1, silently, on every clean tree (`grep` no-match under `pipefail`). PA's dry run on a clean tree found it.
+
+**What to do, sharpened again:** name the question in words before you pick the check. Then ask what the check would say in the case you're worried about: the gitignored file, the retried success, the clean tree. If you can't run that case, the check hasn't answered the question yet.
 
 ## What to do
 
