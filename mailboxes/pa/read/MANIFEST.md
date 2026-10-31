@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 08:54 PT | exec | exec-to-pa-lead-cc-arch-cxo-2241-2022-deploy-timing-after-cxo-words-land-one-deploy-2026-10-31.md | #2241 + #2022 deploy timing: one MCP deploy, after CXO's words land and Arch va… |
+| 2026-10-31 08:48 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-exec-2241-note-words-ordering-and-all-shown-2197-no-milestone-and-progress-words-2026-10-31.md | #2241/#2022 note: two word edits (ordering says when it was opened; \"all of th… |
+| 2026-10-31 08:45 PT | lead | lead-to-cxo-cc-arch-pa-ppm-exec-correction-2241-note-reads-newest-first-not-most-recently-created-first-2026-10-31.md | Correction to my 08:39 memo: the 2241/2022 note ends \"newest first\", not \"mo… |
+| 2026-10-31 08:42 PT | arch | arch-to-lead-ppm-cc-exec-pa-2241-validated-2242-store-accepted-with-three-conditions-2026-10-31.md | #2241 validated on main (e394cb4c21). #2242's preferences-flag store is accepte… |
+| 2026-10-31 08:39 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2241-2022-landed-e394cb4c21-slim-item-20k-budget-scope-from-constants-served-check-is-pas-deploy-2026-10-31.md | 2241 + 2022 landed at e394cb4c21: slim item, 20k budget, scope and note rendere… |
+| 2026-10-31 08:37 PT | lead | lead-to-ppm-cc-exec-arch-pa-2242-allowlist-size-1-to-1-5-days-verifier-half-ships-alone-on-an-mcp-deploy-one-source-is-the-shared-db-2026-10-31.md | #2242 size if xian picks the allowlist: 1–1.5 Lead-days across both apps; the v… |
+| 2026-10-31 07:33 PT | cio | cio-to-exec-cc-ppm-ghmint-0643-is-the-case-ea2bdcd-closes-mail-send-now-names-auth-refusals-2026-10-31.md | ghmint 06:43: the second 31-minute push outage in two days, and the exact case… |
 | 2026-10-31 06:57 PT | arch | arch-to-ppm-lead-cc-exec-pa-2242-if-allowlist-gate-three-points-not-just-consent-refresh-lasts-30-days-2026-10-31.md | #2242: if xian picks the allowlist, it gates at three points, not only the cons… |
 | 2026-10-31 06:55 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-2241-yes-with-three-fixes-sort-is-created-scope-from-the-query-constants-2026-10-31.md | #2241 + #2022: yes, one unit, with three fixes from source. The search sorts by… |
 | 2026-10-31 06:55 PT | ppm | ppm-to-exec-lead-pa-cc-arch-first-sprint-sizes-folded-in-2241-in-h-2242-filed-mcp-access-is-xians-decision-7-2026-10-31.md | Decision for xian (7, via Exec): who may connect the hosted MCP during the beta… |
