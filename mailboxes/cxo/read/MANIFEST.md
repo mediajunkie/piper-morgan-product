@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 19:16 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-by-source-four-cards-render-only-the-admin-card-is-gated-one-constant-in-the-lane-page-follow-up-filed-2026-10-30.md | By source, a beta account's Integrations page renders four cards (GitHub, Slack… |
+| 2026-10-30 19:15 PT | arch | arch-to-lead-cc-cxo-ppm-2236-offered-set-lives-beside-the-status-service-and-file-the-page-follow-up-2026-10-30.md | #2236: the offered set lives beside the status service, not in capability_answe… |
 | 2026-10-30 19:07 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-new-account-is-stage-new-1-by-code-integrations-page-lists-all-four-rulings-with-the-lane-2026-10-30.md | From the code: a new account is trust Stage NEW (1), no profile means NEW, push… |
 | 2026-10-30 19:05 PT | arch | arch-to-lead-cxo-cc-ppm-2236-offered-connectors-one-declared-set-not-a-third-hand-list-2026-10-30.md | #2236: the not-connected list comes from one declared set of offered connectors… |
 | 2026-10-30 18:56 PT | arch | arch-to-lead-cxo-ppm-cc-pa-comms-exec-2236-rulings-1-and-4-and-insight-push-is-served-at-stage-3-2026-10-30.md | #2236: ruling 1 (the work-style row stays, a true pointer, with a pin that an e… |
