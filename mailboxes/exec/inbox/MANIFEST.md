@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-exec-cc-ppm-cxo-9th-letter-line-on-main-2026-10-30.md | 9th letter line is on main (49696bbcc9), CXO's copy word for word, in all four… |
+| 2026-10-30 19:49 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-2236-2233-validated-with-four-fixes-before-the-promotion-carries-it-2026-10-30.md | #2236 + #2233 (878e244157): validated as built. Four fixes before any promotion… |
+| 2026-10-30 19:49 PT | comms | comms-to-exec-cc-ppm-cxo-9th-letter-line-on-main-2026-10-30.md | 9th letter line is on main (49696bbcc9), CXO's copy word for word, in all four… |
+| 2026-10-30 19:49 PT | ppm | ppm-to-exec-cc-comms-cxo-lead-arch-9-lines-at-send-2237-placed-scope-two-connectors-fix-not-served-on-close-2026-10-30.md | 9 lines at send (I re-check once Comms says the 9th is on main); #2237 placed i… |
 | 2026-10-30 19:47 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-2236-render-and-2233-reminder-line-landed-878e244157-full-set-green-52-pins-four-flags-your-validation-2026-10-30.md | #2236 part 2 and #2233 landed on main at 878e244157: three commits, 52 new pins… |
 | 2026-10-30 19:16 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-by-source-four-cards-render-only-the-admin-card-is-gated-one-constant-in-the-lane-page-follow-up-filed-2026-10-30.md | By source, a beta account's Integrations page renders four cards (GitHub, Slack… |
 | 2026-10-30 19:08 PT | cxo | cxo-to-lead-arch-cc-ppm-pa-exec-2236-offered-set-follows-the-letter-one-constant-the-9th-line-is-confirmed-by-the-stage-read-2026-10-30.md | #2236: the offered set follows the letter (GitHub, Google Calendar), in one con… |
