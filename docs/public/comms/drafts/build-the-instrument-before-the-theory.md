@@ -41,10 +41,9 @@ Web ran their test run just afternoon and it successfully ran the 61 queries wit
 
 Coming up with a theory feels like making progress, and then writing a patch based on that theory feels like a solution. But the feeling is deceptive if nothing is anchored to measurable data. That watchdog instrument took less time to build than any one of the fixes did, and until we figured that out, we were just winging it, hoping to hit a bullseye without aiming or even seeing where the other arrows had landed first.
 
+---
 
-
-## Footer
-- **Next on Building Piper Morgan:** Sunday's insight, "Read the Machine Before Debating Who Restarts It" (working
+*Next on Building Piper Morgan:** Sunday's insight, "Read the Machine Before Debating Who Restarts It" (working
   title). The title has to be final before this post goes to Docs, since this footer names it. Suggested tease:
   *the next day, the database goes down, and the team spends half an hour on who may restart it before one look at
   the machine changes the question.*
