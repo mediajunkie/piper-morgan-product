@@ -158,9 +158,17 @@ def test_showing_it_needs_the_one_issue_on_the_page() -> None:
     assert _issues_note(total=1, count=1, scope=scope, ordering=ordering).endswith(
         f"; showing it, {ordering}."
     )
-    assert _issues_note(total=1, count=0, scope=scope, ordering=ordering).endswith(
-        f"; showing 0 of them, {ordering}."
-    )
+    dropped = _issues_note(total=1, count=0, scope=scope, ordering=ordering)
+    assert dropped == f"1 {scope.replace('issues', 'issue', 1)}; I couldn't show it."
+    assert "issues" not in dropped.split(";")[0]  # singular noun on the fallthrough (Arch)
+
+
+def test_zero_total_says_no_issues_without_a_showing_clause() -> None:
+    """CXO 10-31: a successful empty read is "No open issues assigned to you, <scope>."."""
+    scope, ordering = render_issues_scope()
+    note = _issues_note(total=0, count=0, scope=scope, ordering=ordering)
+    assert note == f"No {scope}."
+    assert "showing" not in note and ordering not in note
 
 
 @pytest.mark.asyncio
