@@ -41,7 +41,7 @@ an account, your LLM key, and (optionally) your tool connections.
 
 - [ ] A modern browser
 - [ ] **Your invite code** — the private beta is invite-only; codes come directly from
-      **xian@pipermorgan.ai**. If you don't have one, that's the address to write.
+      xian, by email. If you don't have one, reply to your invitation email.
 - [ ] **Your own Anthropic API key** from [console.anthropic.com](https://console.anthropic.com/). Use a key with a spending limit you're comfortable with.
 - [ ] Budget roughly $5–20 for LLM API costs over the beta period — **Piper runs on
       your key and your account**; it never bills anyone else's (see What's New).
@@ -282,10 +282,10 @@ appear, [#2027](https://github.com/mediajunkie/piper-morgan-product/issues/2027)
 ### Login & account issues
 
 **Invite code rejected?** Codes are single-use and exact — check for copy/paste
-whitespace. If it still fails, yours may already have been consumed; email
-**xian@pipermorgan.ai** for a fresh one.
+whitespace. If it still fails, yours may already have been consumed; reply to your
+invitation email and ask for a new one.
 
-**Forgot your password?** Email **xian@pipermorgan.ai** — there's no self-serve reset
+**Forgot your password?** Reply to your invitation email. There's no self-serve reset
 in the beta yet.
 
 **Can't reach the site?** Check `https://beta.pipermorgan.ai/health` — if it doesn't
