@@ -2035,3 +2035,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2238	OPEN	Production		Notion on hosted: a global env key beats the user's own, and a keyless user falls back to it (N1/C1); saved key can miss the chat read			
 2239	OPEN	Production		Stale or crafted OAuth callback for a non-offered connector returns a JSON 409 body, not a friendly page (#2237 edge, UX low)	UX		
 2240	CLOSED	Production		deploy-mcp.sh: the stray-file guard skips gitignored files, so a local config/PIPER.user.md would ship in the MCP image	bug		COMPLETED
+2241	OPEN	Production		MCP what_piper_knows_about_me returns 431k characters: the github section ships 50 raw GitHub API issue objects, too big for a client to show			
+2242	OPEN	Production		Hosted MCP: decide who may connect during the beta (no allowlist today; any signed-in account can)			

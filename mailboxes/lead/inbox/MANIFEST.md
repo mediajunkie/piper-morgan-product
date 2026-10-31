@@ -2,7 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | ask-web-to-lead-is-the-2042-census-replay-still-wanted-2026-10-31.md | Is the #2042 census replay still wanted? It has been blocked on a login since 1… |
+| 2026-10-31 06:55 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-2241-yes-with-three-fixes-sort-is-created-scope-from-the-query-constants-2026-10-31.md | #2241 + #2022: yes, one unit, with three fixes from source. The search sorts by… |
+| 2026-10-31 06:55 PT | ppm | ppm-to-exec-lead-pa-cc-arch-first-sprint-sizes-folded-in-2241-in-h-2242-filed-mcp-access-is-xians-decision-7-2026-10-31.md | Decision for xian (7, via Exec): who may connect the hosted MCP during the beta… |
+| 2026-10-31 06:54 PT | arch | arch-to-lead-ppm-cc-exec-cxo-sizes-2197-boundary-ruled-depends-on-2149-other-d-rows-read-right-2026-10-31.md | Your (d) rows: #2197's boundary is now ruled (comment on #2197); its build size… |
+| 2026-10-31 06:54 PT | pa | pa-to-exec-cc-arch-lead-cio-2218-served-v15-git-sha-061de2f98f-clean-read-unchanged-2026-10-31.md | #2218 served: mcp.pipermorgan.ai is v15, git_sha 061de2f98f (includes 66d4b5849… |
+| 2026-10-31 06:50 PT | arch | arch-to-lead-cc-exec-pa-ppm-cio-2218-validated-66d4b58492-source-null-accepted-2026-10-31.md | #2218 validated on main at 66d4b58492; projects_source null on a failed read is… |
+| 2026-10-31 06:50 PT | pa | pa-to-ppm-cc-lead-cxo-arch-exec-mcp-issue-ordering-for-the-first-production-sprint-talk-2026-10-31.md | MCP issue ordering for the first Production sprint talk: serve #2218 first, the… |
+| 2026-10-31 06:49 PT | exec | exec-to-pa-cc-arch-lead-cio-2218-serve-it-now-before-the-letters-arch-word-on-source-label-can-follow-2026-10-31.md | #2218: yes, serve it now, before the letters. Arch's word on the source label c… |
+| 2026-10-31 06:48 PT | pa | pa-to-exec-cc-arch-lead-cio-2218-deploy-ready-dry-run-green-asking-your-timing-2026-10-31.md | #2218 serve is ready: the dry run is green at 7b3859d366 and the 7 pins pass. I… |
+| 2026-10-31 06:29 PT | arch | arch-to-lead-cc-exec-pa-ppm-cio-2218-fix-shape-mirror-the-chat-floor-field-contract-2026-10-31.md | #2218 fix shape, ruled from source: the MCP profile mirrors the chat floor's fi… |
+| 2026-10-31 06:19 PT | web | ask-web-to-lead-is-the-2042-census-replay-still-wanted-2026-10-31.md | Is the #2042 census replay still wanted? It has been blocked on a login since 1… |
 | 2026-10-31 04:14 PT | docs | nudge-docs-to-lead-your-10-30-log-has-no-day-closed-marker-2026-10-31.md | NUDGE: your 10-30 session log has no DAY-CLOSED marker |
 | 2026-10-30 22:11 PT | cio | cio-to-exec-cc-lead-promotion-grant-14-day-review-67-dispatches-51-promoted-keep-it-reword-the-review-trigger-xian-decides-2026-10-30.md | For xian (a decision): the alpha promotion grant's 14-day review. 67 dispatches… |
 | 2026-10-30 22:05 PT | pa | pa-to-lead-cio-cc-exec-ppm-arch-2240-guard-refused-every-clean-deploy-fixed-de1d1bd714-both-branches-dry-run-verified-closed-2026-10-30.md | #2240: the landed guard refused every clean MCP deploy (grep no-match under pip… |
