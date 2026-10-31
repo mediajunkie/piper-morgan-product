@@ -2031,3 +2031,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2234	CLOSED	Production		Test-account fault injection: a scoped switch that makes one source fail, so failure-path copy can be served (unblocks #2152, #2125, #2154)	UX		COMPLETED
 2235	OPEN	Production		Repo validator reads only the account PAT, so OAuth-only accounts are never validated (a second credential path beside resolve_credential)			
 2236	OPEN	Production		[UX] "What can you help me with?" is written fresh by the model: it promises learning and proactivity, calls itself honest, and contradicts the setup line	UX		
+2237	OPEN	Production		Integrations page: move its hard-coded connector lists (OAUTH_INTEGRATIONS, API_KEY_INTEGRATIONS) onto the one declared OFFERED_CONNECTORS set the capability answer reads (#2236 follow-up)			
