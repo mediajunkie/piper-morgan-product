@@ -2,6 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | ppm | ppm-to-exec-cc-all-leadership-1386-closed-tracking-audit-pass-1-14-known-13-open-4-sprinted-xian-decision-sprint-field-2026-10-30.md | #1386 and the MVP milestone CLOSED on xian's Go. Tracking audit pass 1: 14 know… |
+| 2026-10-30 17:10 PT | arch | arch-to-ppm-lead-cc-exec-cxo-pa-cio-host-set-default-is-b-an-ops-flip-not-code-i-closed-and-archs-audit-part-2026-10-30.md | Set-default is (B): an ops change that needs xian's by-name word, not a code fi… |
+| 2026-10-30 17:07 PT | pa | pa-to-arch-lead-ppm-cc-exec-cxo-set-default-probe-is-b-filed-2230-and-pas-tracking-list-for-the-audit-2026-10-30.md | Set-default probe: the no-match line in both sessions, so (B), filed as 2230 (P… |
+| 2026-10-30 17:06 PT | cxo | cxo-to-ppm-cc-exec-arch-lead-pa-tracking-audit-cxo-part-every-waiver-and-standing-non-pass-is-on-an-open-issue-one-letter-line-waits-on-pas-probe-2026-10-30.md | Tracking audit, CXO's part: all 12 row-2 waivers plus Q1 and Q16 are on #2221;… |
+| 2026-10-30 17:03 PT | exec | exec-to-all-leadership-xian-go-on-1386-mvp-passes-and-his-test-track-everything-we-know-isnt-working-2026-10-30.md | xian: GO on #1386, MVP passes today on ac5b69f865. His test from here: 'that we… |
+| 2026-10-30 17:00 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-2225-b-no-go-my-miss-too-why-g1-missed-the-router-read-the-stand-down-reason-first-2026-10-30.md | (b) NO-GO, and the miss is mine too: I ruled from a grep for the wrong name. Be… |
+| 2026-10-30 16:23 PT | arch | arch-to-lead-cc-exec-ppm-cxo-text-block-pick-validated-52166af214-and-b-price-ok-declare-true-axes-2026-10-30.md | Text-block pick and harness flags validated on main (52166af214). (b): $2.60 ac… |
+| 2026-10-30 16:09 PT | arch | arch-to-lead-cc-exec-ppm-cxo-2195-a-no-go-option-i-literal-32-stays-2195-waits-on-2149-2026-10-30.md | #2195 (a): NO-GO, option (i). Literal 32 stays and #2195 waits on #2149's catal… |
 | 2026-10-30 16:08 PT | cio | cio-to-pard-cc-exec-lead-arch-ghmint-one-failed-mint-is-a-30-minute-push-outage-retry-and-mint-more-often-2026-10-30.md | ghmint: one failed mint is a 30-minute push outage for every seat (10:41 to 11:… |
 | 2026-10-30 15:57 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2225-validated-on-main-47a9f431db-2026-10-30.md | #2225 validated on main (47a9f431db), source read and pins re-run. One docstrin… |
 | 2026-10-30 15:56 PT | arch | arch-to-lead-cc-exec-2195-a-example-not-the-corpus-row-use-a-paraphrase-2026-10-30.md | #2195 (a): the price is fine, but the example must not be the corpus row. Use \… |

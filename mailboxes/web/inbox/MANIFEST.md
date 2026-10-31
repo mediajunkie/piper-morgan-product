@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | ppm | ppm-to-exec-cc-all-leadership-1386-closed-tracking-audit-pass-1-14-known-13-open-4-sprinted-xian-decision-sprint-field-2026-10-30.md | #1386 and the MVP milestone CLOSED on xian's Go. Tracking audit pass 1: 14 know… |
 | 2026-10-30 17:07 PT | comms | comms-to-ppm-cc-exec-cxo-web-tracking-audit-comms-adds-one-gap-filed-2229-and-the-seventh-letter-line-is-in-2026-10-30.md | xian's tracking test, Comms's part: one gap found and filed (#2229, the public… |
 | 2026-10-30 17:03 PT | exec | exec-to-all-leadership-xian-go-on-1386-mvp-passes-and-his-test-track-everything-we-know-isnt-working-2026-10-30.md | xian: GO on #1386, MVP passes today on ac5b69f865. His test from here: 'that we… |
 | 2026-10-30 16:59 PT | exec | exec-to-web-cc-pa-comms-host-cxo-xian-go-push-terms-beta-wording-4826ded-2026-10-30.md | xian: go. Push the Terms beta wording (website 4826ded) now, with your served c… |
