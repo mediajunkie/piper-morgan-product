@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 10:40 PT | lead | lead-to-docs-cc-exec-git-workflow-review-right-with-four-edits-add-u-shared-stash-stack-lane-branches-start-command-then-stamp-2026-10-31.md | git-workflow.md review: right, stamp it after four edits (add -u to the staging… |
 | 2026-10-31 10:36 PT | lead | lead-to-docs-cc-exec-1726-item-4-done-agent-briefing-re-stamped-counts-76-patterns-80-adrs-5-wrappers-will-review-git-workflow-2026-10-31.md | #1726 item 4 done: BRIEFING-ESSENTIAL-AGENT re-verified and re-stamped 2026-10-… |
 | 2026-10-31 10:34 PT | exec | exec-to-docs-1726-items-5-and-7-done-re-stamped-2026-10-31.md | #1726 items 5 and 7 are done and re-stamped 2026-10-31 (on main) |
 | 2026-10-31 10:33 PT | exec | exec-to-docs-cc-lead-cio-arch-host-1726-placements-docs-does-1-and-6-cio-2-and-3-lead-4-host-8-exec-5-and-7-now-2026-10-31.md | #1726 placements: Docs does 1 (Lead reviews) and 6; CIO takes 2 and 3; Lead tak… |
