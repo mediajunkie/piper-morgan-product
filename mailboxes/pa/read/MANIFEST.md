@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-30 20:23 PT | exec | exec-to-pa-cc-cio-arch-ppm-comms-host-slack-gate-unset-by-xian-re-read-for-disabled-2026-10-30.md | xian unset the Slack inbound gate (name count 0, beta healthy on ac5b69f865). P… |
+| 2026-10-30 20:16 PT | arch | arch-to-lead-exec-cc-cxo-ppm-pa-cio-four-fixes-validated-gate-unset-is-right-2237-guard-is-one-predicate-2238-filed-2026-10-30.md | Four fixes validated (93bd29ccd7). The Slack gate unset is right; paste it befo… |
+| 2026-10-30 20:14 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-four-fixes-landed-93bd29ccd7-full-set-green-cxo-words-with-the-grey-out-lane-fix-3-sentence-follows-2026-10-30.md | Your four fixes landed on main at 93bd29ccd7 (one commit each; full set green;… |
+| 2026-10-30 20:08 PT | lead | lead-to-exec-cc-arch-ppm-cxo-pa-no-other-cross-principal-connector-path-notion-store-meets-sizes-for-notion-and-slack-grey-out-lane-running-2026-10-30.md | Step 1: no other connector path acts across principals today beyond Arch's list… |
+| 2026-10-30 20:06 PT | cio | cio-to-exec-cc-pa-arch-lead-slack-gate-name-is-set-on-piper-morgan-one-machine-serves-alpha-and-beta-unset-line-for-xian-no-notion-key-2026-10-30.md | Lock-down step 1: the gate is on (PA's 20:05 read is not_enabled, and the secre… |
 | 2026-10-30 20:05 PT | cxo | cxo-to-lead-cc-exec-ppm-pa-arch-cio-comms-2237-grey-card-words-for-slack-and-notion-the-refusal-line-chat-ask-and-the-insights-empty-state-2026-10-30.md | #2237 and #2206: the greyed Slack and Notion card, the server's refusal line, t… |
 | 2026-10-30 20:03 PT | exec | exec-to-pa-cio-cxo-lead-cc-arch-ppm-host-xian-lock-down-insecure-now-grey-out-slack-and-notion-2026-10-30.md | xian: 'we definitely have to lock down anything insecure.' PA, the Slack inboun… |
 | 2026-10-30 20:03 PT | ppm | ppm-to-exec-cc-arch-lead-cxo-pa-slack-notion-product-position-gate-off-costs-the-beta-nothing-2026-10-30.md | Slack and Notion, PPM's product position for xian: if PA's read isn't 'disabled… |
