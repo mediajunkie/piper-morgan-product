@@ -1,33 +1,39 @@
 # Exec carry-forward
 
-**Rewritten 2026-10-29 23:04 PDT** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/10/29/2026-10-29-0418-exec-code-log.md` (closed).
+**Rewritten 2026-10-30 23:09 PDT** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/10/30/2026-10-30-0708-exec-code-log.md` (closed).
 
-**STATE: LIVE.** Cron **`83d41b6a`** (`38 6,10,14,18,22 * * *`), re-armed 10-30 07:49 from the stored prompt; `seat-prompt.sh exec --check` rc=0. Expires about 11-06; re-arm by 11-05 (normally at each STOP).
+**STATE: LIVE.** Cron **`b3c6dc73`** (`38 6,10,14,18,22 * * *`), re-armed 10-30 at STOP from the stored prompt; `seat-prompt.sh exec --check` rc=0. Expires about 11-06; re-arm at each STOP. LaunchAgent `com.xian.pm-exec-cycle` (:01 at 6,10,14,18,22, idle-check skip) is staged by Pard and not yet loaded (xian's paste, Pard console v184). On Pard's load notice and the first :01 fire that lands work, CronDelete the session cron and flip the registry row (row 179).
 
-**Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt from mediajunkie `docs/seat-prompts/pm-exec.md` on origin/main. Pass it to CronCreate unchanged, then CronList and `--check`. Never rebuild from memory (xian 10-30). The Ship kickoff is skill Step 1i plus Pard's LaunchAgent `com.xian.ship-kickoff`, which xian loaded 10-30; it is not in the prompt.
+**Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
 v701, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
-## MVP gate (as of 23:01 10-29)
-- Open: #2205, #1386 (gh). Alpha and staging `e234776150` (third promotion, xian's dispatch 18:4x, carries #2205). Main CI 12/12 green.
-- Next: xian's A3/A4 on two fresh accounts (wizard repo / none) → CXO rules → #2205 closes → PA's row 2 once on e234776150 → PPM rows 5 and 6 (beta letter final draft) → xian's go/no-go on #1386. Row 4 already green on e234776150 (156/4, Lead 18:48).
-- PA's hold is on (no tested-path push, nothing on alpha) until A3/A4 are done; Lead's 10-30 landing order waits on PA's "hold lifted".
-- 10-30: xian's Rosenverse talk announces the private beta. He knows the gate needs A3/A4 first.
+## Where things stand (end of 10-30)
+- **MVP closed** on xian's Go (PPM: #1386 and the milestone; hard stop held, 0 days moved). Alpha and beta serve `ac5b69f865` (one machine, `piper-morgan`).
+- **Slack inbound gate unset** by xian; PA read "disabled" on beta and alpha (20:25).
+- **Beta letters final** (9 known-issue lines, PPM 9/9). Four Gmail drafts in xian's **designinproduct.com** account (ids r-5017300857877623593 1a, r-6829984518040049075 1b, r-9172552273556573429 1c, r-7695891930464179739 2), with no recipients and no codes. HOST mints 9 codes with xian.
+- **Promotion freeze** until the letters go. On main and validated, waiting for the next promotion: #2225, the #2230 setter validation, #2236 parts 1 and 2, #2233 and the four fixes (93bd29ccd7), #2237's grey-out plus server guard (a3b3645787), the connect listing (5c7f15d794), #2240's guard (de1d1bd714). PPM holds the re-check list.
+- Tracking audit met: 27 product issues, all tracked; label `fix:not-served` for closed-but-unserved. The Sprint field is set on every open Production issue (81 set on xian's yes).
 
-## Settled 10-29 (off the call list)
-- #1595 split; key limit raised twice (11:36, 18:59); #2184 off the gate as a known issue; #2201, #2199, #2200, #2194 closed; three releases live (12:04, 16:18, 18:4x).
-- #2184 partner note: Comms's short note ending with CXO's sentence (xian 18:33, 18:43). xian sends from xian@ to the three 10-26 invitees (HOST's roster).
-- `docs/briefing/TEAM-IN-XIANS-WORDS.md` written and shared with all seats (21:39).
+## Saturday 10-31, xian's sequence (rollup hot card)
+0. `fly ssh console -a piper-morgan-mcp -C "ls -la /app/config"`. If `PIPER.user.md` is listed: `fly scale count 0 -a piper-morgan-mcp --yes` before sending (#2218; cuts xian's own connector).
+1. Send the letters.
+2. Promote main.
+3. PPM's re-check list (row 2, row 3 rows, CXO's served reads of #2236 and #2237).
+4. xian's by-name word on `set_default_repo`, applied by HOST or CIO with him present.
+5. PA's probe, then one row 2.
+Then the first-sprint priorities talk toward Production (PPM's four tiers, six decisions).
 
-## Waiting on xian (on v701)
-- A3/A4 run (hot card).
-- Tell HOST the same day when the partner note goes (row 178).
-- Lead promotion allow line (row 167), Docs' Ongoing sort question (row 168), web-pat-test sign-in, the Citation Medium crosspost, and the older "for you, in this order" list.
-
-- **Rule-8 history (whenever xian takes it up):** HOST's briefing people list; issue #1509's title (an alpha tester's first name, rendered by the production map).
+## Waiting on xian
+- PPM: may new Production issues get their plan sprint without a fresh word each time? (Exec: yes.)
+- CIO: keep the promotion grant with the reworded review trigger. (Exec: yes.)
+- Ship #067 week review discussion (artifact `4Le3ZyacNXUqo19SQh5GpT`; spend row filled from his screenshots). The draft waits on it.
+- LaunchAgent loads (Pard console v184).
+- Rule-8 history, whenever he takes it up: HOST's briefing people list; issue #1509's title; HOST's 10-30 log, two entries naming outside beta candidates (HOST owns the slip).
+- Older: Lead's promotion allow line (row 167), Docs' Ongoing sort (row 168), the Citation Medium crosspost.
 
 ## Mine
-- Relay xian's rulings to owners at once; record PM rulings in decisions.log. Run `date` before every timestamp (two guesses caught today).
-- 10-30 Friday pass DONE (map diff on the rollup; briefing gaps mailed, due Mon 11-02, recheck then; Lead's briefing 5/5 and AGENT 4/5 with #2157 exempt there (Lead's call 10:31, accepted); row 166 closed). Next Friday 11-06: map diff again.
+- Relay xian's rulings at once; record them in decisions.log. Timestamps from `date`, or the source memo's own stamp, never "xx:5x".
+- Briefing-pointer recheck Mon 11-02 (AGENT counts 4/5, #2157 exempt). Ship-kickoff check Fri 11-06. Map diff Fri 11-06.
 - Rule 8: outside names stay out of everything I write here.
