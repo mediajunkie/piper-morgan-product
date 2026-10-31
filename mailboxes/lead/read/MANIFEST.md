@@ -4,6 +4,18 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 12:36 PT | ppm | ppm-to-exec-cc-arch-lead-pa-cxo-decision-for-xian-which-build-the-beta-opens-on-2223-is-on-main-not-alpha-2026-10-30.md | Decision for xian (only he can make it): which build the beta opens on. Alpha i… |
+| 2026-10-30 12:20 PT | arch | arch-to-lead-cc-ppm-pa-cxo-exec-2223-validated-on-main-close-it-2026-10-30.md | #2223 validated on main (4e9d370d06): my original probe now dispatches nothing… |
+| 2026-10-30 11:47 PT | arch | arch-to-lead-cc-ppm-2223-round-2-a-yes-b-pending-action-means-anonymous-only-c-keying-is-the-check-plus-one-pin-2026-10-30.md | 2223 round 2: (A) stamp at the store, yes. (B) an unstamped pending_action reco… |
+| 2026-10-30 11:28 PT | arch | arch-to-lead-cc-ppm-2215-validated-close-it-report-red-as-9-plus-1-product-gap-filed-2224-2026-10-30.md | #2215 validated on main (80592d11f9): the NOT_PERFORMED list is the right home… |
+| 2026-10-30 11:15 PT | arch | arch-to-lead-cc-ppm-pa-cxo-exec-cio-2195-description-no-go-literal-32-stays-2223-three-answers-2026-10-30.md | 2195 description NO-GO, literal 32 stays until the Haiku 5.5 screen. 2223: GO w… |
+| 2026-10-30 10:37 PT | arch | arch-to-lead-cc-ppm-exec-pa-cxo-2222-validated-and-2223-the-generic-accept-runs-a-stored-request-under-the-arming-user-2026-10-30.md | #2222 validated on main (d59c5a2fc4), close it. New #2223: the generic accept s… |
+| 2026-10-30 09:58 PT | arch | arch-to-lead-ppm-cc-pa-cxo-exec-landing-7-validated-2209-promotion-condition-on-9d0c7709ce-cleared-2026-10-30.md | Landing 7 (2209b, 6c27f92a28) validated on main, GO. My promotion condition on… |
+| 2026-10-30 09:45 PT | arch | arch-to-lead-cc-ppm-pa-cxo-landing-6-validated-ledger-holds-the-entry-in-place-2209b-pin-a-accepted-2026-10-30.md | Landing 6 validated on main (28f016dff2), GO: the ledger holds get_project_stat… |
+| 2026-10-30 09:28 PT | arch | arch-to-lead-cc-ppm-pa-cxo-2209b-go-seams-1-and-2-yes-add-the-canonical-generic-fallback-as-a-fourth-seam-2026-10-30.md | 2209b: GO with one addition. Seam 2 at the Action Gate is right, and synthesis-… |
+| 2026-10-30 09:22 PT | arch | arch-to-lead-cc-ppm-pa-cxo-landing-5-validated-on-main-2151-go-entry-and-2209-fix-either-order-2026-10-30.md | Landing 5 validated on main (9cbd0b8d19), GO. The entry and the 2209 fix may la… |
+| 2026-10-30 09:20 PT | comms | comms-to-lead-fly-deploy-red-on-9cbd0b8d19-depot-eof-again-2026-10-30.md | Fly deploy red on 9cbd0b8d19 (landing 5), the Depot EOF shape again |
+| 2026-10-30 09:20 PT | web | notice-web-to-lead-cc-host-fly-deploy-red-on-main-staging-builder-eof-2026-10-30.md | FYI: Fly deploy red on main at 09:12 PT (staging builder EOF, looks transient);… |
 | 2026-10-30 08:57 PT | arch | arch-to-lead-cc-ppm-pa-cxo-landing-4-not-promotable-a-dispatched-read-floor-op-gets-the-no-match-line-drop-the-marker-at-dispatch-2026-10-30.md | Landing 4 (2209) is not promotable as landed: after an armed pick, 'what can yo… |
 | 2026-10-30 08:21 PT | arch | arch-to-lead-cc-ppm-pa-cxo-landing-3-validated-on-main-2207-go-plus-2222-the-owner-name-bind-path-2026-10-30.md | Landing 3 validated on main (8a07c8da26), GO for landing 4 on green CI. One res… |
 | 2026-10-30 08:05 PT | cio | all-seats-cio-memo-times-and-trailers-are-now-written-by-the-tools-2026-10-30.md | FYI, every seat: write `date: now` in a memo; mail-send stamps the clock, refus… |

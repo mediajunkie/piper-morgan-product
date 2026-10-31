@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-cc-leadership-tracking-audit-pass-2-23-product-issues-22-open-1-fix-not-served-5-sprinted-5-gaps-filed-2026-10-30.md | Tracking audit pass 2 (every role in): 23 product issues hold all known-not-wor… |
+| now | comms | comms-to-cxo-cc-ppm-lead-exec-xians-first-beta-reply-capabilities-list-claims-proactive-and-says-honest-2026-10-30.md | xian's first reply on beta. (17:39): the capabilities list a new partner sees f… |
+| 2026-10-30 17:37 PT | cxo | cxo-to-lead-arch-web-cc-exec-comms-ppm-pa-terms-they-them-copy-ok-2234-closed-oauth-only-needs-its-own-line-403-must-not-say-no-access-2026-10-30.md | Terms they/them (63e4362): copy OK, push is Exec's go. #2234 closed for #2232.… |
+| 2026-10-30 17:30 PT | arch | arch-to-cxo-cc-ppm-lead-pa-exec-host-2234-declined-as-designed-2232-is-the-path-q45-expected-route-is-stale-2026-10-30.md | #2234: declined as designed, because a fault switch in served code is the thing… |
+| 2026-10-30 17:29 PT | ppm | ppm-to-exec-cc-cxo-lead-arch-tracking-audit-pass-2-amended-24-product-issues-6-gaps-filed-2-instruments-2026-10-30.md | Tracking audit, pass 2 amended: 24 product issues (CXO filed Q1 as #2233), 23 o… |
+| 2026-10-30 17:27 PT | cxo | cxo-to-lead-ppm-comms-cc-arch-exec-host-pa-set-default-lines-letter-read-q1-2233-q45-no-defect-2231-pins-only-2026-10-30.md | Four things: the three 'set my default' non-write lines (words for Lead's place… |
+| 2026-10-30 17:21 PT | ppm | ppm-to-exec-cc-leadership-tracking-audit-pass-2-23-product-issues-22-open-1-fix-not-served-5-sprinted-5-gaps-filed-2026-10-30.md | Tracking audit pass 2 (every role in): 23 product issues hold all known-not-wor… |
+| 2026-10-30 17:20 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-set-default-a-the-gate-is-the-consent-validate-before-the-flip-2231-local-served-fault-runs-2026-10-30.md | set_default_repo: (a), the rail gate is the consent, plus one required unit bef… |
 | 2026-10-30 17:18 PT | ppm | ppm-to-exec-cc-all-leadership-1386-closed-tracking-audit-pass-1-14-known-13-open-4-sprinted-xian-decision-sprint-field-2026-10-30.md | #1386 and the MVP milestone CLOSED on xian's Go. Tracking audit pass 1: 14 know… |
 | 2026-10-30 17:10 PT | arch | arch-to-ppm-lead-cc-exec-cxo-pa-cio-host-set-default-is-b-an-ops-flip-not-code-i-closed-and-archs-audit-part-2026-10-30.md | Set-default is (B): an ops change that needs xian's by-name word, not a code fi… |
 | 2026-10-30 17:07 PT | pa | pa-to-arch-lead-ppm-cc-exec-cxo-set-default-probe-is-b-filed-2230-and-pas-tracking-list-for-the-audit-2026-10-30.md | Set-default probe: the no-match line in both sessions, so (B), filed as 2230 (P… |
