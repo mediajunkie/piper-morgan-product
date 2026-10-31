@@ -6,9 +6,9 @@ This directory contains release notes for all Piper Morgan versions.
 
 ## Current Version
 
-**v0.8.14.0** (September 23, 2026) - [Release Notes](RELEASE-NOTES-v0.8.14.0.md)
+**v0.9.0.0** (October 31, 2026) - [Release Notes](RELEASE-NOTES-v0.9.0.0.md)
 
-"Nothing Invented, Nothing Borrowed" — one-day fast follow carrying the first dogfood session's fixes: standup interview keeps its word (offer→interview, no fabricated drafts, free-form edits via the floor on your key, verified-diff honesty); keyless first contact acknowledged like a person (#1818b); server-key concept DELETED from code (#1812 steps 5–6 — no representable path to a product credential); /health reports real deploy identity (#1839); keychain collision guard (#1764).
+"Trust in what Piper tells you" — the first private beta release, closing the MVP milestone. Invited-tester setup no longer ends in "Setup Failed" (#2078), the Integrations Test and status reflect the real connection (#2012, #2045), failed calendar and GitHub reads are reported as failures rather than empty days (#2182), and chat fixes cover todos, reminders and GitHub issues. Send feedback and chat delete are reachable in the app (#2096, #2065), and a hosted MCP server ships at mcp.pipermorgan.ai.
 
 ---
 
@@ -16,6 +16,7 @@ This directory contains release notes for all Piper Morgan versions.
 
 | Version | Date | Type | Highlights |
 |---------|------|------|------------|
+| [v0.9.0.0](RELEASE-NOTES-v0.9.0.0.md) | Oct 31, 2026 | Beta | First private beta release, closes the MVP milestone (1,138 code commits and 361 issues closed since v0.8.14.0): invited-tester setup works (#2078), Integrations Test and status reflect the real connection (#2012, #2045), failed calendar and GitHub reads reported as failures (#2182), todo/reminder/GitHub-issue chat fixes, send-feedback and chat delete, hosted MCP server at mcp.pipermorgan.ai; seven Alembic migrations |
 | [v0.8.14.0](RELEASE-NOTES-v0.8.14.0.md) | Sep 23, 2026 | Fast follow | "On Your Clock": preferences persist (#1574), every clock face in the user's zone + agenda 'TBD' fixed (#1576/#1575/#1577/#1556), add-project one-liner (#1856), honest 404-close (#1858), any-provider gate + four honest LLM-error sentences first deployed (#1823/#1824), preferences routes fixed (#1864), one Slack OAuth start (#1499), 13 dead modules + 5 dead tables removed (#1774/#1797); first release targeting the Fly-served alpha |
 | [v0.8.13.0](RELEASE-NOTES-v0.8.13.0.md) | Sep 21, 2026 | Fast follow | Dogfood fixes: standup trust rebuild (#1837/#1836), keyless first contact (#1818b), server-key concept deleted (#1812 complete), /health deploy identity (#1839) |
 | [v0.8.12.0](RELEASE-NOTES-v0.8.12.0.md) | Sep 20, 2026 | Feature | BYOC/tenancy arc complete — your key/your billing, honest refusals, security six, acceptance contract, truth-in-rendering; first full-belt-green cut |
@@ -67,4 +68,4 @@ For current known issues and limitations, see [ALPHA_KNOWN_ISSUES.md](../ALPHA_K
 
 ---
 
-*Last updated: September 21, 2026*
+*Last updated: October 31, 2026*

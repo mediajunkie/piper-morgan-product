@@ -112,7 +112,7 @@ Each fix below has a regression test. PPM's re-check on the served build runs be
 - The github-issues resource reports the real total instead of presenting a 30-item page as the full set (#2005).
 - The profile resource no longer serves PIPER.md fallback projects over a failed read (#2212, #2218).
 - The image build guard now covers gitignored local config files (#2240).
-- The OAuth authorization server, the access-token tables and the `what_piper_knows_about_me` tool ship in this release as part of the hosted MCP epic (#1462, still open).
+- The OAuth authorization server, the access-token tables and the `what_piper_knows_about_me` tool ship in this release as part of the hosted MCP epic (#1462, still open). The MCPB bundle and the MCP docs, registry listing and client tests also closed in this range (#957, #830, #831, #832). The MCP app serves its fixes on its own deploys, not on the web promotion: the profile-read honesty fix (#2218) and the oversized-payload and zero-form fixes (#2241, #2022) are served on the MCP app today.
 
 **Screening harness**
 
