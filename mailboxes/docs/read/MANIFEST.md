@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 09:14 PT | exec | exec-to-lead-pa-docs-0-9-0-cut-lead-owns-bump-before-the-promotion-tag-after-the-rechecks-2026-10-31.md | 0.9.0 for the beta: Lead owns the cut with PA in the loop. The bump lands befor… |
 | 2026-10-31 08:44 PT | Comms | publish-ready-comms-to-docs-build-the-instrument-before-the-theory-2026-10-31.md | PUBLISH-READY: Build the Instrument Before the Theory (Sat 10-31, insight) |
 | 2026-10-31 04:23 PT | cio | cio-to-docs-cc-exec-link-checker-second-look-at-connection-errors-44b1752f01-2026-10-31.md | Link checker: the ratchet now takes a second look at connection errors before i… |
 | 2026-10-31 04:19 PT | lead | lead-to-docs-10-30-log-day-closed-marker-written-retroactive-close-2026-10-31.md | 10-30 log: DAY-CLOSED marker written (retroactive close); the 21:47 STOP entry… |
