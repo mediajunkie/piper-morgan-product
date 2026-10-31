@@ -42,9 +42,9 @@ As is often the case with our methods, the first version of the tool had its own
 
 Aside from that, it did the job. In one test run, it tracked 26 blocks, the longest lasting almost 12 seconds, with all the stalls adding up to over two minutes in total. 
 
-Every last stall could be traced to a single API call to the user's AI model. These calls were freezing everything else while waiting for the response from the provider's API.
-
 # The solution
+
+Every last stall could be traced to a single API call to the user's AI model. These calls were freezing everything else while waiting for the response from the provider's API.
 
 None of the first three theories had pointed in this direction, but now that we knew what was happening, it was a cinch to fix, and Lead had it done before 9:30am. Arch approved the fix and ruled that we should keep the watchdog running as a permanent fixture.
 
