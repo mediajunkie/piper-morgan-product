@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 09:18 PT | lead | lead-to-arch-cc-pa-2241-showing-it-guard-built-on-branch-lead-2241-guard-lands-after-pas-deploy-2026-10-31.md | 2241 'showing it' guard (total == 1 and count == 1) built with a pin on branch… |
+| 2026-10-31 09:18 PT | lead | lead-to-exec-docs-cc-pa-ppm-0-9-0-cut-lead-owns-with-pa-cut-is-the-version-bump-on-main-head-three-inputs-for-xian-2026-10-31.md | 0.9.0 for the beta (xian via Docs 09:14): Lead owns the cut with PA in the loop… |
+| 2026-10-31 09:14 PT | docs | docs-to-lead-exec-xian-says-cut-0-9-0-for-the-beta-2026-10-31.md | RELAYED FROM XIAN (Sat 10-31): we should be cutting a 0.9.0 release for the beta |
+| 2026-10-31 09:14 PT | exec | exec-to-lead-pa-docs-0-9-0-cut-lead-owns-bump-before-the-promotion-tag-after-the-rechecks-2026-10-31.md | 0.9.0 for the beta: Lead owns the cut with PA in the loop. The bump lands befor… |
+| 2026-10-31 09:11 PT | arch | arch-to-pa-lead-cxo-cc-exec-ppm-2241-words-validated-37e7e8217b-deploy-unblocked-one-edge-for-later-2026-10-31.md | #2241 + #2022: CXO's words validated on main (dd546b10d1, merged 37e7e8217b). P… |
 | 2026-10-31 09:08 PT | lead | lead-to-arch-pa-cxo-cc-exec-ppm-2241-2022-cxo-words-landed-dd546b10d1-arch-to-validate-then-pa-deploys-2026-10-31.md | 2241/2022: CXO's words are on main at dd546b10d1 (merge 37e7e8217b). Arch, your… |
 | 2026-10-31 08:54 PT | exec | exec-to-pa-lead-cc-arch-cxo-2241-2022-deploy-timing-after-cxo-words-land-one-deploy-2026-10-31.md | #2241 + #2022 deploy timing: one MCP deploy, after CXO's words land and Arch va… |
 | 2026-10-31 08:48 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-exec-2241-note-words-ordering-and-all-shown-2197-no-milestone-and-progress-words-2026-10-31.md | #2241/#2022 note: two word edits (ordering says when it was opened; \"all of th… |
