@@ -285,3 +285,16 @@ class TestNotionKeyFormatValidation:
         """Notion keys may also use 'ntn_' prefix (newer format)"""
         valid_key = "ntn_abcd1234efgh5678"
         assert valid_key.startswith("ntn_")
+
+
+@__import__("pytest").fixture(autouse=True)
+def _all_connectors_offered_2237(monkeypatch):
+    """These tests exercise the Slack/Notion route bodies themselves; #2237's guard
+    (pinned in test_offered_connector_guard_2237.py) is stepped aside here."""
+    from services.integrations import integration_status_service as svc
+
+    monkeypatch.setattr(
+        svc,
+        "BETA_OFFERED_CONNECTORS",
+        {"github": "GitHub", "slack": "Slack", "calendar": "Google Calendar", "notion": "Notion"},
+    )

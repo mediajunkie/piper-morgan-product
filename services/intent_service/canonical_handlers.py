@@ -2531,10 +2531,13 @@ Ask me how project context works any time. Are you ready to set up your first pr
         status_check_failed = False
         try:
             from services.integrations.integration_status_service import (
+                BETA_OFFERED_CONNECTORS,
                 DISPLAY_NAMES,
                 KNOWN_INTEGRATIONS,
+                NOT_OFFERED_ALTERNATIVE,
                 IntegrationStatusService,
                 needs_reconnecting,
+                not_offered_message,
             )
 
             raw = await IntegrationStatusService().get_all(user_id)
@@ -2587,6 +2590,9 @@ Ask me how project context works any time. Are you ready to set up your first pr
                     f"I couldn't check {disp} just now, so I can't say whether it's connected. "
                     "Try again in a moment; if it keeps failing, tell us."
                 )
+            elif state == "not_connected" and asked not in BETA_OFFERED_CONNECTORS:
+                # #2237 (CXO 10-30): a connect ask for a connector outside the offered set.
+                message = f"{not_offered_message(asked)} {NOT_OFFERED_ALTERNATIVE}"
             elif state == "not_connected":
                 # CXO 10-23 21:22: "No," answers a yes/no ask ("is Notion connected?");
                 # opening a how-ask ("how do I connect Google Calendar?") with it reads

@@ -71,6 +71,39 @@ BETA_OFFERED_CONNECTORS: Dict[str, str] = {"github": "GitHub", "calendar": "Goog
 
 BINDING_CHECK_FAILED = "check_failed"
 
+#: #2237 (CXO 2026-10-30): the refusal a connect route gives, and the page card's body, for
+#: a connector outside ``BETA_OFFERED_CONNECTORS``. ``{name}`` is the connector's own name.
+NOT_OFFERED_MESSAGE = "{name} isn't available in this beta yet."
+#: The pointer reply's second sentence (chat "connect my slack").
+NOT_OFFERED_ALTERNATIVE = (
+    "You can connect GitHub or Google Calendar in Settings \u2192 Integrations."
+)
+
+
+def connector_offered(name: str) -> bool:
+    """True when ``name`` (as the health payload keys it) is in ``BETA_OFFERED_CONNECTORS``."""
+    return name in BETA_OFFERED_CONNECTORS
+
+
+def not_offered_message(name: str) -> str:
+    return NOT_OFFERED_MESSAGE.format(name=DISPLAY_NAMES.get(name, name.capitalize()))
+
+
+def refuse_unless_offered(name: str) -> None:
+    """The one server-side guard (#2237) for every connect / OAuth-start / credential-save
+    route of a connector. Call it as the route body's first statement.
+
+    Outside ``BETA_OFFERED_CONNECTORS`` it raises HTTP 409 (the shape the Slack app-token
+    route already uses), so no OAuth redirect, no key validation and no write happens.
+    Reads the constant at call time. Disconnect routes do not call it: a user may still
+    clear a stale connection.
+    """
+    if not connector_offered(name):
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=409, detail=not_offered_message(name))
+
+
 #: ``via`` for a GitHub binding GitHub has rejected (#2072): configured, and broken.
 VIA_OAUTH_BINDING_STALE = "oauth_binding_stale"
 

@@ -105,9 +105,10 @@ class TestOneIntegrationAsked:
     async def test_not_connected(self, handlers):
         st = dict(ALL_FOUR, notion=_off())
         out = await _ask(handlers, st, "is notion connected?")
-        assert (
-            out["message"]
-            == "No, Notion isn't connected. You can connect it in Settings → Integrations → Notion."
+        # #2237 (CXO): Notion is outside the offered set, so it is not offered as a path.
+        assert out["message"] == (
+            "Notion isn't available in this beta yet. "
+            "You can connect GitHub or Google Calendar in Settings → Integrations."
         )
 
     @pytest.mark.asyncio

@@ -29,6 +29,10 @@ from services.config.llm_config_service import KEY_CHECK_UNAVAILABLE_MESSAGE, Ke
 from services.database.models import User
 from services.database.session_factory import AsyncSessionFactory
 from services.infrastructure.deployment import is_hosted_deployment
+from services.integrations.integration_status_service import (
+    connector_offered,
+    refuse_unless_offered,
+)
 from services.security.field_encryption import KeyStoreConfigError
 from services.security.user_api_key_service import UserAPIKeyService
 
@@ -690,6 +694,9 @@ async def validate_api_key(req: ApiKeyValidateRequest):
     Returns:
         ApiKeyValidateResponse with validation result
     """
+    # #2237: Notion is outside the offered set; refuse before any call to Notion.
+    if req.provider == "notion":
+        refuse_unless_offered("notion")
     try:
         if req.provider == "github":
             # #2151 route group 3: a real check (it answered valid=True and "saved" with
@@ -956,6 +963,7 @@ async def save_slack_credentials_setup(credentials: SlackCredentialsRequest):
 
     Security Note: Credentials are stored in OS keychain, never logged.
     """
+    refuse_unless_offered("slack")  # #2237
     from services.integrations.integration_config_service import IntegrationConfigService
 
     try:
@@ -1205,7 +1213,8 @@ async def complete_setup(
                     logger.warning("anthropic_key_storage_failed", user_id=user_id, error=str(e))
 
             # Store Notion key (Issue #527: ALPHA-SETUP-NOTION)
-            if req.notion_key:
+            # #2237: Notion is outside the offered set; a key sent anyway is not stored.
+            if req.notion_key and connector_offered("notion"):
                 try:
                     await service.store_user_key(
                         user_id=user_id,
@@ -1519,6 +1528,7 @@ async def start_slack_oauth(
     Returns:
         dict with auth_url and state
     """
+    refuse_unless_offered("slack")  # #2237
     try:
         from services.integrations.slack.config_service import SlackConfigService
         from services.integrations.slack.oauth_handler import SlackOAuthHandler
@@ -1594,6 +1604,7 @@ async def handle_slack_oauth_callback(
     Returns:
         RedirectResponse to setup wizard with status
     """
+    refuse_unless_offered("slack")  # #2237
     from urllib.parse import quote
 
     from starlette.responses import RedirectResponse

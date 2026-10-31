@@ -31,6 +31,7 @@ from services.connectors.config_service import (
 # #1327 gap 3: the Settings repo-config dropdown reads repos over the per-user OAuth connector
 # (mirroring the #1322 chat-read cutover). Imported at module level so the connector-first rail
 # in get_github_repositories is patchable in tests.
+from services.integrations.integration_status_service import refuse_unless_offered
 from services.mcp.consumer.connector import DegradationReason
 from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
@@ -518,6 +519,7 @@ async def connect_slack(
     Returns authorization URL for OAuth. After completion,
     redirects back to /settings/integrations with status.
     """
+    refuse_unless_offered("slack")  # #2237
     try:
         from services.integrations.slack.oauth_handler import SlackOAuthHandler
 
@@ -569,6 +571,7 @@ async def handle_slack_callback(
 
     Redirects back to /settings/integrations with status.
     """
+    refuse_unless_offered("slack")  # #2237
     # Handle OAuth error
     if error:
         logger.warning("slack_settings_oauth_denied", error=error)
@@ -1846,6 +1849,7 @@ async def save_notion_key(
     FastAPI treats `api_key: str` as a query parameter → 422 on every save.
     Issue #540: ALPHA-SETUP-NOTION stuck state recovery
     """
+    refuse_unless_offered("notion")  # #2237
     from services.database.session_factory import AsyncSessionFactory
     from services.security.user_api_key_service import UserAPIKeyService
     from web.api.routes.setup import (
@@ -2653,6 +2657,7 @@ async def get_slack_oauth_url(
     Both response shapes are preserved deliberately — renaming either page's fields is a
     separate, user-visible change with no reason to ride along here.
     """
+    refuse_unless_offered("slack")  # #2237
     result = await connect_slack(current_user=current_user)
 
     return {
