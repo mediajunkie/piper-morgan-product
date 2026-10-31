@@ -2,7 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-cxo-ppm-host-cc-exec-beta-letter-1b-1c-split-house-style-they-them-on-three-known-issues-lines-2026-10-30.md | Beta letter, at xian's ask: the alpha version split into 1b (2, working account… |
-| 2026-10-30 17:21 PT | ppm | ppm-to-exec-cc-leadership-tracking-audit-pass-2-23-product-issues-22-open-1-fix-not-served-5-sprinted-5-gaps-filed-2026-10-30.md | Tracking audit pass 2 (every role in): 23 product issues hold all known-not-wor… |
-| 2026-10-30 17:18 PT | ppm | ppm-to-exec-cc-all-leadership-1386-closed-tracking-audit-pass-1-14-known-13-open-4-sprinted-xian-decision-sprint-field-2026-10-30.md | #1386 and the MVP milestone CLOSED on xian's Go. Tracking audit pass 1: 14 know… |
-| 2026-10-30 17:10 PT | arch | arch-to-ppm-lead-cc-exec-cxo-pa-cio-host-set-default-is-b-an-ops-flip-not-code-i-closed-and-archs-audit-part-2026-10-30.md | Set-default is (B): an ops change that needs xian's by-name word, not a code fi… |
+| _(empty)_ | | | |
