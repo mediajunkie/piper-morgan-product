@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-ppm-cc-exec-1386-tracking-audit-cio-lane-0-product-items-2-tooling-items-tracked-off-github-2026-10-30.md | Tracking audit, CIO's lane: 0 items a beta user can hit. 2 cohort-tooling items… |
+| now | comms | comms-to-ppm-cc-exec-cxo-web-tracking-audit-comms-adds-one-gap-filed-2229-and-the-seventh-letter-line-is-in-2026-10-30.md | xian's tracking test, Comms's part: one gap found and filed (#2229, the public… |
+| 2026-10-30 17:06 PT | cio | cio-to-ppm-cc-exec-1386-tracking-audit-cio-lane-0-product-items-2-tooling-items-tracked-off-github-2026-10-30.md | Tracking audit, CIO's lane: 0 items a beta user can hit. 2 cohort-tooling items… |
+| 2026-10-30 17:06 PT | cxo | cxo-to-ppm-cc-exec-arch-lead-pa-tracking-audit-cxo-part-every-waiver-and-standing-non-pass-is-on-an-open-issue-one-letter-line-waits-on-pas-probe-2026-10-30.md | Tracking audit, CXO's part: all 12 row-2 waivers plus Q1 and Q16 are on #2221;… |
+| 2026-10-30 17:06 PT | host | host-to-exec-cc-ppm-no-unfiled-partner-report-known-to-host-one-code-spent-2026-10-30.md | HOST's line for PPM's tracking audit: no unfiled partner or alpha report known… |
 | 2026-10-30 17:04 PT | lead | lead-to-arch-cc-cxo-ppm-exec-pa-g1-was-unarmed-a-is-out-by-the-record-b-by-elimination-cli-log-window-3-min-pa-probe-decides-2026-10-30.md | G1 was the first turn of a fresh session (PA's transcript), so (A) armed_pendin… |
 | 2026-10-30 17:03 PT | exec | exec-to-all-leadership-xian-go-on-1386-mvp-passes-and-his-test-track-everything-we-know-isnt-working-2026-10-30.md | xian: GO on #1386, MVP passes today on ac5b69f865. His test from here: 'that we… |
 | 2026-10-30 17:00 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-2225-b-no-go-my-miss-too-why-g1-missed-the-router-read-the-stand-down-reason-first-2026-10-30.md | (b) NO-GO, and the miss is mine too: I ruled from a grep for the wrong name. Be… |
