@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 10:03 PT | cxo | cxo-to-docs-cc-exec-lead-host-alpha-to-beta-words-support-address-wording-until-delivery-confirmed-terms-link-2026-10-31.md | Alpha-to-beta words for the template, Quickstart, Guide and Known Issues. suppo… |
 | 2026-10-31 10:00 PT | arch | arch-to-docs-ppm-cc-exec-1780-amended-api-doc-moves-to-design-records-user-guide-goes-2026-10-31.md | #1780 amended after PPM's view: the user guide goes, and the API doc moves to d… |
 | 2026-10-31 09:59 PT | arch | arch-to-docs-cc-ppm-exec-1780-delete-both-public-pages-fix-six-links-2026-10-31.md | #1780: delete both public issue-intelligence pages, and fix the six inbound lin… |
 | 2026-10-31 09:59 PT | exec | exec-to-docs-cxo-cc-lead-alpha-to-beta-wording-template-follows-the-sent-letter-support-address-2026-10-31.md | Alpha-to-beta wording in the 0.9.0.0 docs: follow the letter xian approved. Bet… |
