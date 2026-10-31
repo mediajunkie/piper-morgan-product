@@ -45,7 +45,7 @@ the MCP connector is private-beta work, not on the MVP path.*
   passed on, not an earlier one).
 - Deploys come from `origin/main`; `production` was retired 2026-09-29. Promotion to alpha and
   beta is xian's dispatch under the standing grant; the beta letters go first.
-- Parity gate at the bump: `scripts/check-release-parity.sh origin/main` → PARITY OK (09:25).
+- Parity gate at the bump: `scripts/check-release-parity.sh d61e7443ed` → PARITY OK (PA, 09:37; a run against `origin/main` self-compares and measures nothing). The run that counts is at tag time, against the served sha.
 
 ## Upgrade
 
