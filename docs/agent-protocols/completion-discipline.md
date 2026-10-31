@@ -2,7 +2,7 @@
 type: protocol
 title: Completion Discipline Protocol
 valid_from: "2026-01-24"
-last_verified: "2026-06-19"
+last_verified: "2026-10-31"
 ---
 
 # Completion Discipline Protocol
@@ -28,17 +28,13 @@ If you catch yourself thinking "this is good enough" → STOP and escalate immed
 
 ---
 
-## Pattern-046: Beads Completion Discipline
+## Pattern-046: Completion Discipline (formerly "Beads Completion Discipline")
 
 **Core principle**: You cannot skip work by rationalizing it as "optional" or "nice-to-have."
 
-### Session Start Protocol
-
-```bash
-bd ready --json    # Find work with no blockers
-bd list            # Orient to current state
-bd status          # Beads database health
-```
+The principle stands. The Beads (`bd`) commands this section used to carry are retired (CIO, 2026-10-31,
+#1726): `.beads/` stopped being tracked on 2026-02-03, `bd` is not installed on Amber, and GitHub is the
+tracker (CIO ruling 2026-10-05). Session start and end follow CLAUDE.md ("Session start" and "Sign-off").
 
 ### Proactive Issue Creation
 
@@ -49,14 +45,14 @@ bd status          # Beads database health
 
 ### Completion Criteria Enforcement
 
-**Before closing ANY issue**:
-1. Read acceptance criteria from gameplan
-2. Every criterion met? → Can close
-3. Criterion not met? → Complete it OR add `@PM-approval-needed: <reason>`
+**Before closing ANY issue** (skill `close-issue-properly`):
+1. Read the acceptance criteria from the issue and gameplan
+2. Every criterion met, with evidence? → Can close
+3. Criterion not met? → Complete it, or ask PM (through Exec) to defer it and record the answer on the issue
 4. No criteria listed? → STOP, escalate: "Missing completion matrix"
 
 **Before closing ANY epic**:
-1. `bd list --parent <epic>` → Check children
+1. `gh issue view <epic>` and read its task list or sub-issues
 2. All closed? → Can close epic
 3. Any open? → Complete them OR get PM approval for each
 
@@ -66,38 +62,13 @@ bd status          # Beads database health
 - If you think it's skippable → ask PM with evidence
 - Never close with rationalization like "core works" or "post-MVP"
 
-### Session End Protocol ("Landing the Plane")
+### Before ending a session
 
-Execute IN ORDER before ending ANY session:
-
-1. **File all remaining work as issues**
-   ```bash
-   bd create "Thing discovered but not fixed"
-   bd dep add <new> <parent> --type discovered-from
-   ```
-
-2. **Run quality gates** (if code changed)
-   ```bash
-   pytest tests/  # All tests must pass
-   # If tests fail → file P0 blocker issue, keep parent open
-   ```
-
-3. **Close completed issues only**
-   ```bash
-   ./scripts/bd-safe close <issue>
-   ```
-
-4. **Sync database**
-   ```bash
-   bd sync
-   git status  # Must show clean state
-   ```
-
-5. **Verify no open children**
-   ```bash
-   bd list | grep <your-epic>
-   # All children must be closed OR have @PM-approved deferral
-   ```
+1. **File all remaining work as issues** with `gh issue create`, naming the parent.
+2. **Run the quality gates** if code changed: `python -m pytest tests/unit/ -v` at least. Failing tests → file a
+   P0 blocker issue and keep the parent open.
+3. **Close only completed issues**, with skill `close-issue-properly`.
+4. **Run the CLAUDE.md sign-off block.** `git log --oneline origin/main..HEAD` must be empty.
 
 ---
 

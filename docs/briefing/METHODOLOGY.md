@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-METHODOLOGY.md - How We Work
 valid_from: "2025-09-25"
-last_updated: "2026-05-12"
-last_verified: "2026-06-19"
+last_updated: "2026-10-31"
+last_verified: "2026-10-31"
 ---
 
 # BRIEFING-METHODOLOGY.md - How We Work
@@ -29,10 +29,11 @@ This file maps all documentation locations and purposes.
 
 This briefing captures foundational principles that have been stable since 2025. For the live methodology corpus, consult:
 
-- **`docs/internal/development/methodology-core/INDEX.md`** — canonical numbered methodologies (Methodology-20 Omnibus Session Logs, Methodology-23 close-issue-properly, Methodology-24 Branch-or-Anchor, Methodology-25 Workstream Review Cadence, and others)
-- **`docs/internal/architecture/patterns/`** — pattern catalog (75 patterns as of 2026-06-19, including the 062 family covering Assembly Assumption + the recently-Emerging 066/067/068/069 around stacked failures, issue-body reality, silent state mutation in shared working tree, and coarse-triggers-causing-false-positive-triage-cost)
+- **`docs/internal/development/methodology-core/INDEX.md`** — canonical numbered methodologies (Methodology-20 Omnibus Session Logs, Methodology-23 M1 Innovations, Methodology-24 Branch-or-Anchor, Methodology-25 Workstream Review Cadence, and others)
+- **`.claude/skills/close-issue-properly/`** — how issues are closed (description first, then the evidence comment, then close)
+- **`docs/internal/architecture/patterns/`** — pattern catalog (numbered through pattern-075, including the 062 family covering Assembly Assumption + the recently-Emerging 066/067/068/069 around stacked failures, issue-body reality, silent state mutation in shared working tree, and coarse-triggers-causing-false-positive-triage-cost)
 - **`docs/internal/architecture/current/anti-pattern-index.md`** — 51 indexed anti-patterns (P-01 through P-17)
-- **Excellence Flywheel v2.0** — reformulated 2026-04-17 (CIO M1 methodology audit) into three layers: Concept (the causal loop), Practices (5 currently: TDD/Verify-before-build/Audit-cascade/Branch-or-anchor/**Audit the composition** added 2026-04-17 from Pattern-062), Mnemonics (per-role compact recalls)
+- **Excellence Flywheel v3.0** (2026-09-11) — three layers: Concept (the causal loop), Practice (five practices; see "The Excellence Flywheel" below), Mnemonic (per-role recalls). v3.0 re-derived the Practice layer for autonomous agent-pull operation.
 
 The foundational principles below remain canonical regardless of catalog evolution.
 
@@ -62,34 +63,13 @@ A task is only complete when:
 **Not Done**: "It should work" / "It's mostly complete" / "Just needs cleanup"
 **Done**: "Here's the test proving it works, the lock preventing regression, and the updated docs"
 
-## GitHub Progress Discipline (MANDATORY)
+## GitHub Progress Discipline
 
-### PM Validates Checkboxes
-This is critical methodology:
-- **Agents UPDATE** progress descriptions with evidence
-- **PM VALIDATES** by checking boxes
-- **Include "(PM will validate)"** in all acceptance criteria
-- **Evidence required** before PM checks any box
-
-### Format for Issues
-```markdown
-## Acceptance Criteria
-- [ ] Task description with clear completion definition (PM will validate)
-- [ ] Another task with evidence requirement (PM will validate)
-  - Evidence: [terminal output or test results will go here]
-```
-
-### Progress Updates
-Agents update in issue DESCRIPTION (not comments):
-```markdown
-## Progress
-- [ ] Investigation complete
-  - Found root cause: session management issue
-  - Evidence: [link to specific line in engine.py]
-- [ ] Fix implemented
-  - Changed initialization in commit abc123
-  - Tests passing: see output below
-```
+Agents update the issue DESCRIPTION with evidence, not just comments, and the closing agent checks the
+boxes. Close with skill `close-issue-properly`: description first (status banner, every box checked or
+explained), then the evidence comment with a `Verified how:` line, then close. (Until mid-2026 this section
+said PM validated by checking boxes and asked for "(PM will validate)" on every criterion. CLAUDE.md's
+Evidence rule and the skill replaced that.)
 
 ## Test Scope Specification
 
@@ -104,108 +84,31 @@ All acceptance criteria must specify test types:
 ### Example Format
 ```markdown
 ## Testing Requirements
-- [ ] Unit tests: QueryRouter initialization (PM will validate)
-- [ ] Integration tests: Intent → Engine → Router flow (PM will validate)
-- [ ] Performance tests: <500ms response time (PM will validate)
-- [ ] Regression tests: Prevent QueryRouter disabling (PM will validate)
+- [ ] Unit tests: QueryRouter initialization
+- [ ] Integration tests: Intent → Engine → Router flow
+- [ ] Performance tests: <500ms response time
+- [ ] Regression tests: Prevent QueryRouter disabling
 ```
 
-## Document Creation Guidelines
+## Where Documents Go
 
-### Use Artifacts When:
-- Creating prompts for agents
-- Creating final deliverables for PM
-- Creating reusable templates
-- Want it visible in project artifacts
-
-### Use Filesystem When:
-- Creating session logs
-- Creating working documents
-- Need permanent record
-- Multiple files in sequence
-
-### Use Sandbox When:
-- Quick temporary calculations
-- Testing code snippets
-- Throwaway explorations
-
-### Documentation Location Priority When in Doubt (Use First Available)
-
-1. **Artifacts** (when reliable)
-   - Pros: Attached to project, versioning, easy navigation
-   - Cons: Intermittent bugs, download naming issues
-   - Backup: Download periodically with -HHMM timestamp
-
-2. **Filesystem** (when available)
-   - Pros: Secure, real-time, repository integration
-   - Cons: Not available in standard Claude.ai (only Desktop)
-   - Path: `/Users/xian/Development/piper-morgan/dev/YYYY/MM/DD/`
-
-3. **Sandbox** (fallback)
-   - Pros: Usually available
-   - Cons: Update failures, no project attachment
-   - Backup: Download with -HHMM timestamps
-
-### Verification Discipline
-After EVERY file write:
-- Run: `tail -5 [filename]` to verify
-- Report failures immediately
-- Fall back to next location if failed
-
-## Session Log Standard v2
-
-### Framework and instructions
-
-**If in Claude.ai or Claude Desktop with access to project knowledge**
-* session-log-framework.md
-* session-log-instructions.md
-
-**If access you have access to the local filesystem**
-* `User/xian/Development/piper-morgan/docs/internal/development/tools/session-log-framework.md`
-* `User/xian/Development/piper-morgan/docs/internal/development/tools/session-log-instructions.md`
-
-### Format
-```
-YYYY-MM-DD-HHMM-[role]-[product]-log.md
-```
-
-### Standard Slugs
-**Roles**:
-- `exec` (Chief of Staff)
-- `arch` (Chief Architect)
-- `lead` (Lead Developer)
-- `prog` (Programmer)
-
-**Products**:
-- `opus` (Claude Opus)
-- `sonnet` (Claude Sonnet)
-- `code` (Claude Code)
-- `cursor` (Cursor Agent)
-
-### Examples
-```
-2025-09-22-0816-arch-opus-log.md
-2025-09-22-1046-lead-sonnet-log.md
-2025-09-22-1400-prog-code-log.md
-```
-
-### Creation Command
-```bash
-# Generic format (replace [role] and [product])
-mkdir -p dev/$(date +%Y)/$(date +%m)/$(date +%d)
-echo "# Session Log - $(date +%Y-%m-%d %H:%M)" > dev/$(date +%Y)/$(date +%m)/$(date +%d)/$(date +%Y-%m-%d-%H%M)-[role]-[product]-log.md
-```
+Every cohort role runs in Claude Code with a worktree, so the old claude.ai guidance (Artifacts, then
+Filesystem, then Sandbox) is retired. Durable work goes in the repo and is pushed to main. Session logs
+follow CLAUDE.md ("Role and session log"): `dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-{slug}-log.md` in your
+worktree, where the slug is the role's from the CLAUDE.md table (for example `cio-code`), the model is
+recorded in the log header, and the time comes from `TZ=America/Los_Angeles date`. Create or resume it
+with skill `create-session-log`. One log per role per day.
 
 ## The Excellence Flywheel
 
-**Canonical**: `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md` (v2.0 three-layer reformulation, Apr 2026).
+**Canonical**: `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md` (v3.0, 2026-09-11; Layer 2 re-derived for autonomous agent-pull operation).
 
 The Flywheel is presented at three layers in the canonical doc:
 - **Concept** (the causal loop, stable): quality compounds into velocity, which enables higher quality
 - **Practice** (5 practices, enumerable + versioned): (1) Verify Before Building, (2) Test What Matters Not What's Easy, (3) Coordinate Through Structure, (4) Track to Completion with Evidence, (5) Audit the Composition
 - **Mnemonic** (role-adapted recall aids; traceable to Practice → Concept)
 
-The pre-v2 "Four Pillars" formulation (July 2025 → April 2026) is superseded; canonical doc explains the v1 → v2 derivation.
+v2.0 (Apr 26 – Sept 11, 2026) and the v1 "Four Pillars" (July 2025 – Apr 2026) are superseded; the canonical doc records both derivations.
 
 For role-specific applications, see each role's BRIEFING-ESSENTIAL-{ROLE}.md "Critical vs. Commodity Work" section.
 
@@ -222,8 +125,10 @@ Every piece of work must be tracked:
 
 ### Linking Everything
 - Every TODO has an issue: `# TODO(#184): Fix this`
-- Every commit references issue: `git commit -m "fix: Initialize QueryRouter (#180)"`
-- Every PR links to issue: `Closes #180`
+- Every commit references its issue. A commit message that pairs close/fix/resolve with `#N` closes
+  issue N (CLAUDE.md hard rule 5), so write the number without `#` unless you mean to close it:
+  `git commit -m "fix: Initialize QueryRouter (issue 180)"`
+- Every PR links to its issue: `Closes #180` when the PR finishes it
 
 ## Template Adaptation
 
@@ -244,9 +149,9 @@ The goal is effective work, not perfect adherence to templates.
 
 > **📍 Complete Reference**: [methodology-02-AGENT-COORDINATION.md](../internal/development/methodology-core/methodology-02-AGENT-COORDINATION.md#canonical-agent-strengths-single-source-of-truth) - Authoritative agent strengths
 
-**Quick Summary**:
-- **Claude Code**: Multi-file implementations, architecture design, subagent coordination
-- **Cursor**: API endpoints, testing, documentation, UI/UX implementation
+**Quick Summary**: the cohort's seats all run Claude Code; roles and lanes are in `docs/briefing/ROSTER.md`.
+The Claude Code / Cursor split below this point comes from the 2025 two-agent era. The deployment
+modes (cross-validation, parallel separation) still apply between seats or subagents.
 
 ### Deployment Patterns
 
@@ -315,7 +220,7 @@ $ python benchmark.py
 Average response time: 247ms (target: <500ms) ✓
 
 # Good: Show it actually works
-$ curl -X POST http://localhost:8001/api/intent \
+$ curl -X POST http://localhost:8001/api/v1/intent \
     -d '{"message": "create github issue about login bug"}'
 {"status": "success", "issue_url": "github.com/..."}
 ```
@@ -373,11 +278,12 @@ End each session:
 2. Update GitHub issues
 3. Note any discoveries or surprises
 4. Flag any blockers for next session
-5. Complete satisfaction assessment (see below)
+5. Run the CLAUDE.md sign-off block
 
-## Session Satisfaction Protocol
+## Session Satisfaction Protocol (historical)
 
-Before ending any session, complete satisfaction check:
+Not part of the current session procedure: CLAUDE.md has no satisfaction step, and duty-cycle seats have no
+session end to attach it to. Kept as a record of the 2025 practice.
 
 1. **Quick 5-point assessment** in session log
 2. **Ask PM each metric**, compare answers and discuss:
@@ -389,9 +295,6 @@ Before ending any session, complete satisfaction check:
    - **Overall**: 😊 / 🙂 / 😐 / 😕 / 😞
 3. **GitHub issue emoji close** (🎉 great, ✅ good, 🤔 meh, 😤 rough)
 
-This is MANDATORY for session completion. The satisfaction data helps improve our processes and prevent burnout.
-
-Reference: session-log-instructions.md
 
 ## Session Failure Conditions
 
@@ -402,7 +305,7 @@ The session has failed our standards if ANY of these occur:
 - Work happens outside GitHub tracking
 - Multiple fixes without architectural review
 - Assumptions made without checking
-- Lead Developer skips 00-START-HERE-LEAD-DEV
+- Lead Developer skips BRIEFING-ESSENTIAL-LEAD-DEV.md
 
 When failure conditions occur, stop and reset methodology compliance.
 
@@ -440,4 +343,4 @@ When you find yourself guessing - STOP. That's the moment to engage, not push th
 ---
 
 *Excellence comes from completion, not perfection.*
-*Last Updated: 2026-05-12 (foundational content preserved from Sep 22, 2025; Current Methodology Corpus pointer index added to track post-2025 corpus evolution)*
+*Last Updated: 2026-10-31 (CIO, #1726: Flywheel v3.0, session-log format from CLAUDE.md, claude.ai-era document guidance retired, PM-validates-checkboxes replaced by close-issue-properly, satisfaction protocol marked historical. Foundational content preserved from Sep 22, 2025.)*
