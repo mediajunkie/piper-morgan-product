@@ -853,7 +853,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1046	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	BUG: tests/intent_service/test_action_mapper.py::test_mapping_count drift (expects 26, gets 31)	bug		COMPLETED
 999	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Owner-review: services/mcp/consumer/ fallback paths (from #997 sweep)	M2g,help wanted,priority: low		COMPLETED
 1000	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Owner-review: services/auth/ fallback paths (from #997 sweep)	M2g,help wanted,priority: medium		COMPLETED
-1001	OPEN	Ongoing		Owner-review: services/publishing/publisher.py retry/fallback (from #997 sweep)	help wanted,priority: low		
+1001	OPEN	Icebox		Owner-review: services/publishing/publisher.py retry/fallback (from #997 sweep)	help wanted,priority: low		
 1002	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Pre-classifier keyword-match dispatch shadows ethics floor for handler-adjacent input	bug,component: ai,priority: critical		COMPLETED
 1003	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Phase E S1 r2: Harassment-vector input classified as GUIDANCE intent; ethics infrastructure did not engage	bug,component: ai,priority: critical		COMPLETED
 1004	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	BoundaryEnforcer: replace substring detector with semantic LLM detector (Fix B+C1, sibling to #1002)	bug,component: ai,priority: critical		COMPLETED
@@ -1143,7 +1143,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1322	CLOSED	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT: retire simulation-only MCP transport (MCPProtocolClient/consumer_core) → migrate query_router to the real MCPClient	architecture,mcp		NOT_PLANNED
 1323	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT tech-debt: extract BindingBackedConnector mixin (dedupe connector-protocol logic across adapters)	enhancement,mcp		
 1325	CLOSED	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT D3-ideal end-state: adopt GitHub-App installation-token auth for self-hosted github-mcp-server (when supported)	enhancement,mcp		NOT_PLANNED
-1321	OPEN	Ongoing		Sweep and resolve scattered implementation TODOs in services/ (M5)	technical-debt		
+1321	OPEN	Icebox		Sweep and resolve scattered implementation TODOs in services/ (M5)	technical-debt		
 1324	CLOSED	MVP	Beta Blockers - Hard Gates Only	audit: hardcoded config values that should be env vars or configurable	beta:routing-integrity,bug		COMPLETED
 1327	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT: GitHub target resolution — hierarchy (explicit→infer→ask→default) + default-repo mechanism	journey:get-work-done,surface:mcp,surface:web		
 1326	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	M4: Introduce-person flow — People entity (Option A, user_confirmed provenance)	enhancement,journey:get-work-done		
@@ -1208,7 +1208,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1386	CLOSED	MVP	Beta Blockers - Hard Gates Only	BETA-GATE: Beta Blockers close-out gate — canonical suite + three CXO/PPM multi-turn scenarios + sign-off	beta:verification		COMPLETED
 1387	CLOSED	MVP	Beta Blockers - Hard Gates Only	Field-encryption (#1305) silently writes PLAINTEXT if ENCRYPTION_MASTER_KEY unset — enforce as prod-fatal before Fly cutover (#1278)			COMPLETED
 1388	CLOSED	MVP	Beta Blockers - Hard Gates Only	Issue-list reads ignore an explicitly-named repo — default repo wins (read-path sibling of the #1220 slot-fill fix)	beta:correctness-bugs		COMPLETED
-1389	OPEN	Ongoing	FLYWHEEL - Process improvement	Blog sort: three structural problems with blog-first pubDate ordering	bug		
+1389	CLOSED	Ongoing	FLYWHEEL - Process improvement	Blog sort: three structural problems with blog-first pubDate ordering	bug		COMPLETED
 1390	CLOSED	MVP	Beta Blockers - Hard Gates Only	Usage-cap concurrency gauge: unauthenticated scanner IPs exhaust the 10-session cap, denying authenticated users (found live on beta.pipermorgan.ai)	beta:correctness-bugs		COMPLETED
 1391	OPEN	Ongoing	FLYWHEEL - Process improvement	Admin editing interface: resume pipermorgan.ai/admin for canonical-doc lookup, in-browser edit, git commit-back			
 1392	OPEN	Ongoing	FLYWHEEL - Process improvement	Blog audit: fix 2 metadata-in-title posts, 3 double-hero-image posts; establish calendar-canonical generation			
@@ -1222,7 +1222,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1400	CLOSED	MVP	Beta Blockers - Hard Gates Only	Hosted-audit: per-user connector preferences live in local JSON files — vanish on every Fly deploy, invisible to pg_dump, outside the DB isolation model	beta:deploy-portability		COMPLETED
 1401	CLOSED	MVP	Beta Blockers - Hard Gates Only	Hosted-audit: uploaded files land on the app machine's EPHEMERAL filesystem — every Fly deploy deletes all tester uploads (doc-upload is in the beta surface)	beta:deploy-portability		COMPLETED
 1402	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-07-13	documentation,fly-audit,maintenance,weekly-audit		NOT_PLANNED
-1403	OPEN	Ongoing	FLYWHEEL - Process improvement	Blog post PNG images silently blocked by .gitignore — never committed, incl. already-published posts	bug		
+1403	CLOSED	Ongoing	FLYWHEEL - Process improvement	Blog post PNG images silently blocked by .gitignore — never committed, incl. already-published posts	bug		COMPLETED
 1404	CLOSED	MVP	Beta Blockers - Hard Gates Only	Chat path emits misleading-transient error for permanent LLM-key failures	bug		COMPLETED
 1405	CLOSED	MVP	Beta Blockers - Hard Gates Only	Chat greeting leaks server UTC as user day-part (#1381 second surface)	bug		COMPLETED
 1406	CLOSED	Ongoing	FLYWHEEL - Process improvement	Editorial calendar: ~30 legacy backlog rows have non-canonical canonicalSite values (drafted/started/insight)	bug		NOT_PLANNED
@@ -1518,9 +1518,9 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1707	OPEN	Production	PUB - Public Beta	MCP-path increment 8: trust-gated proactivity — PLACEHOLDER, do not build until the plugin-surface trust-gradient question is decided	journey:get-work-done,surface:mcp		
 1717	CLOSED	MVP	Beta Blockers - Hard Gates Only	The #1425 honest-degrade directives compose additively — five sites now, no aggregation, and a multi-failure turn may enumerate every broken subsystem			COMPLETED
 1718	CLOSED	MVP	Beta Blockers - Hard Gates Only	BYOC key validation discards the failure reason — 'invalid' shown for auth errors AND quota/billing errors alike	bug		COMPLETED
-1719	OPEN	Ongoing	FLYWHEEL - Process improvement	Structural: file-moved-but-cross-refs-not-updated recurs 3+ times, needs a systemic fix not repeated manual sweeps			
+1719	CLOSED	Ongoing	FLYWHEEL - Process improvement	Structural: file-moved-but-cross-refs-not-updated recurs 3+ times, needs a systemic fix not repeated manual sweeps			COMPLETED
 1720	CLOSED	Ongoing	FLYWHEEL - Process improvement	Two public user guides reference removed MorningStandupWorkflow class (#1289 retired it)	documentation		COMPLETED
-1721	OPEN	Ongoing	FLYWHEEL - Process improvement	docs: 5 missing onboarding screenshots referenced in ALPHA_TESTING_GUIDE.md	documentation		
+1721	CLOSED	Ongoing	FLYWHEEL - Process improvement	docs: 5 missing onboarding screenshots referenced in ALPHA_TESTING_GUIDE.md	documentation		COMPLETED
 1690	CLOSED	MVP	Beta Blockers - Hard Gates Only	Demo plugin enables and mounts live routes by default in every production deployment	bug		COMPLETED
 1691	CLOSED	Ongoing	FLYWHEEL - Process improvement	Commit-message guard: block GitHub auto-close keywords adjacent to issue numbers (documented gotcha has now fired twice)			COMPLETED
 1692	CLOSED	Ongoing	FLYWHEEL - Process improvement	docs/internal/planning/roadmap/CORE/CORE-ALPHA-LEARNING-BASIC.md: 2 broken links to files that never existed			COMPLETED
@@ -1592,8 +1592,8 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1776	CLOSED	MVP	Beta Blockers - Hard Gates Only	Gather-layer caps without a companion count: the floor's denominator silently becomes the cap (the #1762 census's class (d))			COMPLETED
 1777	CLOSED	MVP	Beta Blockers - Hard Gates Only	Agenda response crashes on a todo-source failure: agenda_sources['todos'] is an unguarded len() over the #1425 None sentinel			COMPLETED
 1778	CLOSED	MVP	Beta Blockers - Hard Gates Only	Companion counts derived from a capped external fetch: honest to 100 open issues, silently wrong past it (the #1776 census's second-order shape)			COMPLETED
-1779	OPEN	Ongoing	FLYWHEEL - Process improvement	docs: morning-standup.md is built around a --with-issues CLI flag that no longer exists (8+ references)			
-1780	OPEN	Ongoing	FLYWHEEL - Process improvement	docs: issue-intelligence-api.md (542 lines, labeled 'Production-Ready') documents a class that was never actually wired and has since been disposed			
+1779	CLOSED	Ongoing	FLYWHEEL - Process improvement	docs: morning-standup.md is built around a --with-issues CLI flag that no longer exists (8+ references)			COMPLETED
+1780	CLOSED	Ongoing	FLYWHEEL - Process improvement	docs: issue-intelligence-api.md (542 lines, labeled 'Production-Ready') documents a class that was never actually wired and has since been disposed			COMPLETED
 1781	CLOSED	MVP	Beta Blockers - Hard Gates Only	Native GitHub list reads page once at per_page=100 and present len(page) as the total — a fabricated denominator on any repo past 100			COMPLETED
 1782	CLOSED	MVP	Beta Blockers - Hard Gates Only	The PR handler's native-PAT path counts PRs out of a 100-issue page — 'You have N open PRs' is false past 100 open issues			COMPLETED
 1783	CLOSED	MVP	Beta Blockers - Hard Gates Only	Acceptance contract axis (a) treats an interrogative REQUEST as a state question — 'can I see the rest?' cannot accept any offer			COMPLETED
@@ -1721,7 +1721,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1900	OPEN	Ongoing		[COST] Prompt caching is off across the runtime — 113 Anthropic call sites, zero cache_control; system prompt sent as a plain string. Measure before/after, then enable at the stable-prefix boundary	enhancement		
 1901	CLOSED	MVP	Beta Blockers - Hard Gates Only	[RENDER] #1855 unarmed-offer rewriter mangles a compound question: 'Want me to try again, or is there a specific area…?' → 'If you'd like me to try again, or is there a specific area…, just tell me directly.'	bug		COMPLETED
 1903	CLOSED	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-09-28	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
-1904	OPEN	Ongoing	Q - Recurring Audits	docs: 3 procedural docs 300+ days stale, describe old issues as 'Production Ready' -- TESTING.md, database-production-setup.md, api-key-management.md	documentation		
+1904	CLOSED	Ongoing	Q - Recurring Audits	docs: 3 procedural docs 300+ days stale, describe old issues as 'Production Ready' -- TESTING.md, database-production-setup.md, api-key-management.md	documentation		COMPLETED
 1907	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[RENDER] iPad (Safari) layout on alpha: portrait new-chat shows an empty full-height gray panel with the composer pushed off-screen; Send button clipped at the bottom in both orientations; Radar cards print raw ISO timestamps; timezone hint has a dangling 'set my timezone to ""'	bug,journey:get-work-done,surface:web		
 1908	OPEN	Icebox		Building-narrative sequence number as a separate field from pubDate (PM idea, not urgent)	documentation		
 1909	OPEN	Ongoing	Q - Recurring Audits	Quarterly Maintenance Sweep - Q4 2026	documentation,maintenance		
@@ -2037,5 +2037,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2240	CLOSED	Production		deploy-mcp.sh: the stray-file guard skips gitignored files, so a local config/PIPER.user.md would ship in the MCP image	bug		COMPLETED
 2241	CLOSED	Production		MCP what_piper_knows_about_me returns 431k characters: the github section ships 50 raw GitHub API issue objects, too big for a client to show			COMPLETED
 2242	OPEN	Production		Hosted MCP: decide who may connect during the beta (no allowlist today; any signed-in account can)			
-1967	OPEN	Ongoing	FLYWHEEL - Process improvement	Owed-item scanner: flag OWED log lines with no dated standing-items row (Agent 360 v0.5, Exec 9.2)	sapient-trust		
+1967	CLOSED	Ongoing	FLYWHEEL - Process improvement	Owed-item scanner: flag OWED log lines with no dated standing-items row (Agent 360 v0.5, Exec 9.2)	sapient-trust		COMPLETED
 1968	OPEN	Ongoing	FLYWHEEL - Process improvement	Agent 360 v0.5 tooling follow-ons for CIO: freeze-detect rc, heartbeat refusal text, TSV by-name helper, non-owner red-CI norm, Pacific-week gh helper	sapient-trust		
+2243	OPEN	Production		Five test files hardcode /Users/xian/Development/piper-morgan/ (a path that no longer exists); none is collected, so they are dead tests	maintenance		
