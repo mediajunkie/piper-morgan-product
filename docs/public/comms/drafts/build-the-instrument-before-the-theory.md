@@ -8,14 +8,6 @@ caption: ''
 
 *October 19–20, 2026*
 
-<!--
-SCAFFOLD, not a draft ("AI prompts human", PM ruling 2026-10-07). Comms supplies the shape, the verified facts and
-the quotes. PM writes the prose. Everything below the line is notes for PM. Delete it as the prose replaces it.
-Title is the working title from the 10-23 mining table, rename freely.
-Slot: Sat 2026-10-31 (insight). Paired with Sun 11-01 "Read the Machine Before Debating Who Restarts It": measure
-first, then believe what the measurement says. Sources: Lead, PA, Arch logs 10-19 and 10-20, the 10-20 omnibus.
-Facts gathered by an Opus subagent, key lines re-read by Comms.
--->
 
 ---
 
