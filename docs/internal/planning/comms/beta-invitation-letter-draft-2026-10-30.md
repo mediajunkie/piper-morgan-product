@@ -109,6 +109,7 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 > - **Searching your documents from chat doesn't work yet.** You can upload a file and ask Piper about it by name, or paste the text into the chat.
 > - **If Piper asks which repository to create an issue in and you answer, they may add your answer to the draft instead of filing it.** Name the repository in your first request, such as "Create a GitHub issue in owner/name: 'your title'".
 > - **Piper can't change your default repository from chat yet.** Open Settings → Integrations → GitHub to set it.
+> - **When you ask what Piper can do, the answer may promise more than is there today.** For example, Piper may say they will notice things on their own. They don't start conversations or send anything unprompted.
 >
 > **Feedback and help.** When you find something new, send feedback from the left-hand menu once you're in the app, or email support@pipermorgan.ai. Either way the message will be read by the team, including by me (xian), the human who owns this particular loop.
 >
@@ -126,7 +127,7 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 | "Alpha is nearly over" | Out, replaced by a slot for xian | It describes the alpha |
 | Carry-over paragraph | Out, folded into opening 1b as one sentence | Only the five alpha people have accounts that carry over |
 | Getting in | URL is now `https://beta.pipermorgan.ai` | See open point 1 |
-| Known issues | Heading "in this beta". Eight lines, not five: the #2018 GitHub line is struck (closed served 10-28), the two 10-29 lines (#2042 class, #2184) are in, #2225 is in (CXO 17:0x), and #2230 is in (PPM 17:2x, CXO's words). Order puts the two "wrong answer" lines together | PPM 10-29 and 10-30. Issue numbers are dropped from the letter, as in the alpha one. They're in the known-issues doc |
+| Known issues | Heading "in this beta". Nine lines, not five: the #2018 GitHub line is struck (closed served 10-28), the two 10-29 lines (#2042 class, #2184) are in, #2225 is in (CXO 17:0x), and #2230 is in (PPM 17:2x, CXO's words). The 9th, #2236 (capability answer over-promises), is CXO's copy, xian "sure add that" via Exec 19:47. PPM strikes it only after a served check of the #2236 fix Order puts the two "wrong answer" lines together | PPM 10-29 and 10-30. Issue numbers are dropped from the letter, as in the alpha one. They're in the known-issues doc |
 | Everything else | Unchanged, verbatim | Final pieces the alpha partners already have |
 
 **Served facts, re-read by Comms 10-30 14:5x (curl, text not rendered):** alpha and beta `/health` both 200, both `git_sha` e234776150. Alpha `/login` has "Create your account". Alpha `/setup` has "Invite", "Paste the code you received." and "API Keys". `/terms/` and `/privacy/` 200. The Terms still carry "We hold the key that unlocks it" and "Our admin tools don't display your conversations". Exec's 14:52: a promotion of main is about to go out, so re-read these after it serves.
