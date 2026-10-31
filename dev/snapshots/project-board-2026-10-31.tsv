@@ -698,7 +698,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 863	CLOSED	MVP	M0 - Conversational Glue	FEAT: Portfolio onboarding — ask for repos during project setup	enhancement		COMPLETED
 868	CLOSED	MVP	M0 - Conversational Glue	Fix 90+ failing unit tests from route refactoring and API versioning	bug		COMPLETED
 867	CLOSED	MVP	M0 - Conversational Glue	FEAT: GitHub API repo validation for link operations			COMPLETED
-865	OPEN	Ongoing		REFACTOR: Extract setup wizard into component-based steps			
+865	OPEN	Production		REFACTOR: Extract setup wizard into component-based steps			
 858	CLOSED	MVP	M0 - Conversational Glue	SPEC: Conversation lifecycle specification	MUX,UX		COMPLETED
 866	CLOSED	MVP	M0 - Conversational Glue	REFACTOR: Repository as first-class domain entity (M2M with Project)			COMPLETED
 869	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Project configuration IA: Project Detail as primary, Settings as overview	UX,architecture		COMPLETED
@@ -787,7 +787,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 956	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	LEARNING-SURFACE: Trust-graduated learning surfacing	enhancement,journey:come-back		
 957	CLOSED	Production	PROD-DIST - MCP Marketplace Distribution	DIST-MCPB-BUNDLE: MCPB packaging for Claude Desktop one-click install	desktop,distribution,enhancement,packaging		NOT_PLANNED
 958	OPEN	Fast Follow		DIST-PROJECT-TEMPLATE: Claude Project template for Piper persona	distribution,enhancement		
-959	OPEN	Ongoing		DIST-MCP-APPS: Artifact canvas via MCP Apps (in-chat UI)	desktop,distribution,enhancement		
+959	OPEN	Icebox		DIST-MCP-APPS: Artifact canvas via MCP Apps (in-chat UI)	desktop,distribution,enhancement		
 960	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Floor LLM can fabricate user data when context missing — needs hard guardrails	bug		COMPLETED
 961	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Audit: catalog all routes that can reach the floor without domain context	type: research		COMPLETED
 962	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Audit: where else do we 'shortcut around the LLM' in ways that invert the right sequence?	type: research		COMPLETED
@@ -832,7 +832,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1014	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH-CLEANUP: AuthMiddleware exclude_paths refactor — group 34 entries by category	architecture,technical-debt		COMPLETED
 1018	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH-CLEANUP: Persist ethics audit log to durable storage (currently in-memory only)	architecture,priority: critical		COMPLETED
 1027	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Re-point LLMModel.CLAUDE_OPUS to Opus 4 when Anthropic ships it	technical-debt		COMPLETED
-1028	OPEN	Ongoing		PERPLEXITY broader sweep — 4 files still reference perplexity beyond the LLMProvider enum	architecture,technical-debt		
+1028	OPEN	Icebox		PERPLEXITY broader sweep — 4 files still reference perplexity beyond the LLMProvider enum	architecture,technical-debt		
 1029	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Wire APIUsageTracker into LLMClient (cost tracking from sync call sites)	M2f,enhancement		COMPLETED
 1030	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MUX-INSIGHT-PULL: Pull-mode insight surfacing (user-initiated query)	enhancement		COMPLETED
 1031	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MUX-INSIGHT-PASSIVE: Passive-mode insight surfacing (Insight Journal navigation)	enhancement		COMPLETED
@@ -958,7 +958,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1135	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	INSIGHT-PULL-NOT-WIRED: #1030 chat pull-mode does not consult InsightRepository (claimed-but-not-built)	bug,priority: high		COMPLETED
 1136	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	INSIGHT-PUSH-NOT-WIRED: #1032 push-mode orchestration exists but has zero consumer code (sibling of #1135)	bug,priority: high		COMPLETED
 1137	CLOSED	MVP	M5 - Distribution + Polish	test-drift: meeting_time graceful-degradation test expects stale string 'Calendar isn't configured yet'	bug,priority: low		COMPLETED
-1138	OPEN	Ongoing		Naming clarity: ActionDisposition.CANONICAL is misleading for floor-routed categories (STATUS/PRIORITY)	priority: low		
+1138	OPEN	Icebox		Naming clarity: ActionDisposition.CANONICAL is misleading for floor-routed categories (STATUS/PRIORITY)	priority: low		
 1139	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	Audit task: which PremonitionService methods are dead vs used? frame_insight_for_surfacing IS production-used	priority: low		
 1140	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-06-01	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
 1141	CLOSED	MVP	FLYWHEEL - Process improvement	FLY-AUDIT template fixes: macOS-incompatible broken-link command + obsolete Claude-knowledge section	documentation,maintenance		COMPLETED
@@ -968,7 +968,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1154	OPEN	Fast Follow		POST-MVP: Unified admin/dev console — consolidate scattered admin surfaces	enhancement		
 1152	OPEN	Fast Follow		FUTURE: Multi-LLM / local-model fallback when primary provider is unreachable			
 1143	CLOSED	MVP	M3 - Artifact Persistence	COMPOSTING-DEV-TRIGGER: admin affordance to kick a composting cycle on demand (M3 test infrastructure)	priority: low		COMPLETED
-1144	OPEN	Ongoing		TEST-DISCIPLINE-REFACTOR: use real SurfaceableInsight + ExtractedLearning fixtures, not MagicMock defaults (R4 lesson)	priority: low		
+1144	OPEN	Icebox		TEST-DISCIPLINE-REFACTOR: use real SurfaceableInsight + ExtractedLearning fixtures, not MagicMock defaults (R4 lesson)	priority: low		
 1145	CLOSED	MVP	SKUNK - Skunkworks projects	SKUNKWORKS-BYOC-THIN-POC: thin plugin (MCP on /intent + skill) — first payoff-loop rung			COMPLETED
 1146	CLOSED	MVP	M3 - Artifact Persistence	NAV-WIRE-ORPHAN-PAGES: wire 15 nav-orphan UI routes into navigation (M3; folds #1134)	component: ui,priority: high		COMPLETED
 1147	CLOSED	MVP	M3 - Artifact Persistence	DOCUMENTS-TRUST-STAGE: /documents handler doesn't server-render trust_stage (same bug #1132 fixed for /insights)	bug,component: ui,priority: medium		COMPLETED
@@ -1159,7 +1159,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1337	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT: Notion integration health is env-var-only — misses user-scoped keychain creds (parallel #1329)			COMPLETED
 1338	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS7: Slack user-token request path + migrate _fetch_slack_mentions_items onto the router (deferred from #1110)			COMPLETED
 1339	CLOSED	MVP	RECONNECT - Connector Refactor	Slack webhook _get_oauth_authorization_url calls generate_authorization_url without user_id (latent ValueError)			COMPLETED
-1340	OPEN	Ongoing		RECONNECT: fold Anthropic-key capture into /connect onboarding (deferred from #1185 Phase 3, ties #1300)	post-beta-priority		
+1340	OPEN	Production		RECONNECT: fold Anthropic-key capture into /connect onboarding (deferred from #1185 Phase 3, ties #1300)	post-beta-priority		
 1341	CLOSED	Ongoing	Q - Recurring Audits	Quarterly Maintenance Sweep - Q3 2026	documentation,maintenance		COMPLETED
 1342	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS3 Phase 2: connector-agnostic target resolution (generalize resolve_repo; Arch-gated)			COMPLETED
 1364	OPEN	Fast Follow		Slack: port to #1232 Connector contract (status() needs live Socket Mode state, not just credential check)	enhancement		
@@ -1276,7 +1276,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1454	CLOSED	MVP	Beta Blockers - Hard Gates Only	mail-send/merge interaction resurrects triaged memos in inboxes (3 cleanup rounds in 2 days)	technical-debt		COMPLETED
 1455	CLOSED	Ongoing	Q - Recurring Audits	docs(arch): adr-index.md missing 9 ADRs (065, 066, 069, 074-079)	documentation		COMPLETED
 1456	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-07-27	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
-1457	OPEN	Ongoing		ci.yml red for 100+ runs: Windows-invalid filename 'dev/2025/11/10/3.' breaks clone — recurrence of #353's class, class never swept	bug		
+1457	OPEN	Ongoing	FLYWHEEL - Process improvement	ci.yml red for 100+ runs: Windows-invalid filename 'dev/2025/11/10/3.' breaks clone — recurrence of #353's class, class never swept	bug		
 1458	CLOSED	Production	PUB - Public Beta	[SECURITY] Pre-live gate: cross-caller state isolation for hosted MCP endpoint (3 untraced surfaces + identity-boundary mechanism)	priority: high		COMPLETED
 1460	CLOSED	MVP	Beta Blockers - Hard Gates Only	original_message instance fix: backfill attribute on the detect_multiple path + make the 6 live attribute-only reader sites two-surface-safe (setup/onboarding mis-route + dead TEMPORAL gates on multi-intent)	bug		COMPLETED
 1461	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY] GitHub token env floor hands the SYSTEM credential to any real user without their own PAT — cross-user class on a beta surface (keyed-seat finding; CI green is vacuous)	bug		COMPLETED
@@ -1721,10 +1721,10 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1900	OPEN	Ongoing		[COST] Prompt caching is off across the runtime — 113 Anthropic call sites, zero cache_control; system prompt sent as a plain string. Measure before/after, then enable at the stable-prefix boundary	enhancement		
 1901	CLOSED	MVP	Beta Blockers - Hard Gates Only	[RENDER] #1855 unarmed-offer rewriter mangles a compound question: 'Want me to try again, or is there a specific area…?' → 'If you'd like me to try again, or is there a specific area…, just tell me directly.'	bug		COMPLETED
 1903	CLOSED	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-09-28	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
-1904	OPEN	Ongoing		docs: 3 procedural docs 300+ days stale, describe old issues as 'Production Ready' -- TESTING.md, database-production-setup.md, api-key-management.md	documentation		
+1904	OPEN	Ongoing	Q - Recurring Audits	docs: 3 procedural docs 300+ days stale, describe old issues as 'Production Ready' -- TESTING.md, database-production-setup.md, api-key-management.md	documentation		
 1907	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[RENDER] iPad (Safari) layout on alpha: portrait new-chat shows an empty full-height gray panel with the composer pushed off-screen; Send button clipped at the bottom in both orientations; Radar cards print raw ISO timestamps; timezone hint has a dangling 'set my timezone to ""'	bug,journey:get-work-done,surface:web		
-1908	OPEN	Ongoing		Building-narrative sequence number as a separate field from pubDate (PM idea, not urgent)	documentation		
-1909	OPEN	Ongoing		Quarterly Maintenance Sweep - Q4 2026	documentation,maintenance		
+1908	OPEN	Icebox		Building-narrative sequence number as a separate field from pubDate (PM idea, not urgent)	documentation		
+1909	OPEN	Ongoing	Q - Recurring Audits	Quarterly Maintenance Sweep - Q4 2026	documentation,maintenance		
 1898	CLOSED	MVP	Beta Blockers - Hard Gates Only	_handle_set_default_repo reads only intent.context["original_message"] — drops the repo under the Inversion flip (#1595/#1606)			COMPLETED
 1902	CLOSED	Ongoing	Q - Recurring Audits	ROLE-HEALTH-CHECK: 2026-09-28	process,role-health-check,sapient-trust		COMPLETED
 1905	CLOSED	Ongoing	Q - Recurring Audits	Blog Eras: 2 posts published 09-26/27 with empty cluster — publish-post.js --cluster silently defaults to ''	bug		COMPLETED
@@ -1746,7 +1746,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1929	CLOSED	MVP		spend-free canonical ratchet (1818): 7 SPENDS params fail in CI only, root cause unconfirmed (backlogged as triage)	bug		COMPLETED
 1930	CLOSED	MVP		Portfolio 'delete my project' asks to confirm, but nothing executes the delete (75% pattern)	bug		COMPLETED
 1931	OPEN	Production	PROD-CONVO - Conversation Reliability	Completed todos can't be reopened from chat (reopen_todo exists, no chat route)	enhancement,journey:get-work-done,surface:mcp,surface:web		
-1927	OPEN	Ongoing		usage-read.sh returns SHAPE-CHANGED (TypeError) on 16 of 44 overnight readings (00:23 and 03:23 slots), 6 of 134 otherwise			
+1927	CLOSED	Ongoing		usage-read.sh returns SHAPE-CHANGED (TypeError) on 16 of 44 overnight readings (00:23 and 03:23 slots), 6 of 134 otherwise			COMPLETED
 1932	OPEN	Production	PROD-CONVO - Conversation Reliability	Chat cannot edit/rename/update a project (no update capability; floor is the honest answer until built)	enhancement,journey:get-work-done,surface:mcp,surface:web		
 1933	CLOSED	MVP		Deletion gate: the mis-serve credit assumes the fallback can't be worse, but it can be a WRITE mis-route (PORTFOLIO edit-project → update_document_query 10/10)	bug		COMPLETED
 1934	CLOSED	Ongoing		Commit-message bearer guard misses -am, --message, -F, git -C/-c, and its block reason never reaches the committer	sapient-trust		COMPLETED
@@ -1766,8 +1766,8 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1943	OPEN	Production	PROD-CONVO - Conversation Reliability	[ARCH] Todo/reminder target + clear-verb interpretation should consume the router's extracted args, not regex binders — PM's 2026-10-05 live round (C: 'first three'; the clear-default answer with the list)	journey:get-work-done,promise:E5-one-authority,surface:mcp,surface:web		
 1951	CLOSED	MVP		[CORPUS] 12 Phase-0/Phase-3 row expectations predate the 10-05 catalog growth (link_repo, unlink_repo, read_canonical, calendar ops): the first full-corpus run since (10-06) shows 9 asserted regressions + 1 deleted-list ledger regression, all attributed to stale expectations by ×6 controls — re-judge needed before the report can be wired into the gate			COMPLETED
 1949	OPEN	Production	PROD-CONVO - Conversation Reliability	[ROUTING] 'show me all project plans' classifies as PORTFOLIO/manage_portfolio, not a document search (live llm-marked contract test, 2026-10-05)			
-1953	OPEN	Ongoing		[CI] Decide whether CI runs tests/intent/ -m "not llm" (split from the contract-test issue)			
-1954	OPEN	Ongoing		[OPS] Mint two replacement beta invites and re-record the roster (residue of the invite-token exposure issue)			
+1953	CLOSED	Ongoing	FLYWHEEL - Process improvement	[CI] Decide whether CI runs tests/intent/ -m "not llm" (split from the contract-test issue)			COMPLETED
+1954	OPEN	Icebox		[OPS] Mint two replacement beta invites and re-record the roster (residue of the invite-token exposure issue)			
 1955	OPEN	Production	PROD-CONVO - Conversation Reliability	Ask-and-wait dead end: "which reminder would you like to close?" leaves the next reply with nothing to land on	journey:get-work-done,surface:mcp,surface:web		
 1956	CLOSED	Ongoing		Scheduled E2E & AAXT Tests failed 2026-10-07 07:20Z: CI Anthropic key 'credit balance too low' (billing, not code)			COMPLETED
 1957	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[WEB] Personality page: 'Reset to Defaults' reloads with a query string and leaves Warmth at its saved value	journey:set-up,surface:web		
@@ -1826,7 +1826,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2018	CLOSED	MVP	Beta Blockers - Hard Gates Only	Settings → Integrations: a GitHub user with a dead connection can't recover from the UI (tracking: false 'connected', dead Disconnect, no reconnect path, unreachable GitHub settings page)	journey:something-goes-wrong,promise:E4-never-lies,surface:web	2172	COMPLETED
 2020	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Standup interview decline says a quick report 'stays exactly as it is' when none exists	UX		COMPLETED
 2021	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Soft delete with an undo window for todos, then bulk delete may return (xian's 10-14 ruling, PPM's option C; lifts #2019)	journey:get-work-done,surface:mcp,surface:web		
-2022	OPEN	Production	PROD-HONESTY - Failed Reads Say So	MCP github-issues payload doesn't say what it searched (assignee:@me across all repos), so Claude attributes the total to one repo	journey:get-work-done,promise:E4-never-lies,surface:mcp		
+2022	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	MCP github-issues payload doesn't say what it searched (assignee:@me across all repos), so Claude attributes the total to one repo	journey:get-work-done,promise:E4-never-lies,surface:mcp		COMPLETED
 2023	OPEN	Production	PROD-CONVO - Conversation Reliability	Standup interview swallows the user's own requests as answers (a question or 'do a standup' lands in the draft)	UX,journey:get-work-done,surface:mcp,surface:web		
 2024	OPEN	Production	PROD-CONVO - Conversation Reliability	Contextual offers (#852 offer_hint) arm only on a single yes/no question: drop directive arms, single-offer copy, census hardening	architecture,journey:get-work-done,surface:mcp,surface:web		
 2025	OPEN	Production	PROD-CONVO - Conversation Reliability	Delete gate reads 'delete todo 1 and 2' as todo 1 only; the second item is silently dropped	bug,journey:get-work-done,surface:mcp,surface:web		
@@ -2035,5 +2035,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2238	OPEN	Production		Notion on hosted: a global env key beats the user's own, and a keyless user falls back to it (N1/C1); saved key can miss the chat read			
 2239	OPEN	Production		Stale or crafted OAuth callback for a non-offered connector returns a JSON 409 body, not a friendly page (#2237 edge, UX low)	UX		
 2240	CLOSED	Production		deploy-mcp.sh: the stray-file guard skips gitignored files, so a local config/PIPER.user.md would ship in the MCP image	bug		COMPLETED
-2241	OPEN	Production		MCP what_piper_knows_about_me returns 431k characters: the github section ships 50 raw GitHub API issue objects, too big for a client to show			
+2241	CLOSED	Production		MCP what_piper_knows_about_me returns 431k characters: the github section ships 50 raw GitHub API issue objects, too big for a client to show			COMPLETED
 2242	OPEN	Production		Hosted MCP: decide who may connect during the beta (no allowlist today; any signed-in account can)			
+1967	OPEN	Ongoing	FLYWHEEL - Process improvement	Owed-item scanner: flag OWED log lines with no dated standing-items row (Agent 360 v0.5, Exec 9.2)	sapient-trust		
+1968	OPEN	Ongoing	FLYWHEEL - Process improvement	Agent 360 v0.5 tooling follow-ons for CIO: freeze-detect rc, heartbeat refusal text, TSV by-name helper, non-owner red-CI norm, Pacific-week gh helper	sapient-trust		

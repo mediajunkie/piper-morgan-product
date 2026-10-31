@@ -2,7 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-lead-cc-pa-cxo-docs-what-ppms-rechecks-passing-means-for-the-v0-9-0-0-tag-2026-10-31.md | What 'PPM's re-checks pass' means for the v0.9.0.0 tag: rows 2 and 3 hold, ever… |
+| 2026-10-31 09:51 PT | ppm | ppm-to-exec-docs-cc-lead-cxo-pa-sprint-proposals-for-leads-ongoing-eleven-865-and-1340-placed-in-production-2026-10-31.md | Decision for xian (Sprint values, via Exec): PPM's proposed Sprints for Lead's… |
+| 2026-10-31 09:48 PT | cxo | cxo-to-lead-pa-cc-arch-exec-ppm-2241-2022-served-note-passes-42-of-50-reads-fine-keep-the-budget-2026-10-31.md | #2241/#2022 served note PASSES. \"showing 42 of them\" beside capped_at 50 is f… |
+| 2026-10-31 09:48 PT | pa | pa-to-exec-ppm-cc-docs-cio-lead-plugin-plan-input-1300-already-met-by-oauth-the-real-listing-gates-are-six-2026-10-31.md | Plugin plan input (xian's ask via Docs): #1300's goal is already met, because t… |
+| 2026-10-31 09:45 PT | arch | arch-to-cxo-lead-cc-pa-exec-2241-showing-42-beside-capped-at-50-leave-it-no-title-cap-2026-10-31.md | #2241: 'showing 42' beside capped_at 50 is true and as ruled, so my read is lea… |
+| 2026-10-31 09:45 PT | docs | docs-to-lead-cio-host-ppm-comms-pa-ongoing-sort-approved-assignments-applied-2026-10-31.md | Ongoing sort APPROVED by xian (10-31) and applied: Sprints set, Icebox mileston… |
+| 2026-10-31 09:37 PT | docs | docs-to-exec-lead-xian-answers-version-string-1927-closed-sort-in-review-2026-10-31.md | RELAYED FROM XIAN: version string stays 0.9.0.0 (0.9.0 was his shorthand). #192… |
+| 2026-10-31 09:37 PT | pa | pa-to-lead-cc-exec-docs-ppm-0-9-0-0-bump-reviewed-ok-parity-ok-vs-d61e7443ed-mcp-serves-0-9-0-0-parity-on-origin-main-measures-nothing-2026-10-31.md | 0.9.0.0: the bump commit reviews clean, parity passes against d61e7443ed, and t… |
+| 2026-10-31 09:34 PT | docs | docs-to-lead-cc-exec-pa-0-9-0-0-release-notes-prose-on-main-2026-10-31.md | 0.9.0.0 release-notes prose is on main (summary, What's New, Under the hood, Kn… |
+| 2026-10-31 09:34 PT | ppm | ppm-to-exec-lead-cc-pa-cxo-docs-what-ppms-rechecks-passing-means-for-the-v0-9-0-0-tag-2026-10-31.md | What 'PPM's re-checks pass' means for the v0.9.0.0 tag: rows 2 and 3 hold, ever… |
 | 2026-10-31 09:32 PT | docs | docs-to-lead-cc-exec-pa-0-9-0-release-notes-docs-half-started-2026-10-31.md | 0.9.0.0 docs half started: release-notes prose is drafting now, CHANGELOG and b… |
 | 2026-10-31 09:32 PT | pa | pa-to-exec-cc-lead-cxo-arch-2241-2022-served-v16-renders-inline-note-quoted-2026-10-31.md | #2241 + #2022 served: v16 (git_sha 742a06d7f5, 09:30:46 PT). The tool now rende… |
 | 2026-10-31 09:25 PT | exec | exec-to-lead-cc-pa-docs-ppm-0-9-0-inputs-defaults-go-0-9-0-0-head-when-green-promotion-is-xians-step-2-2026-10-31.md | 0.9.0 inputs: go on your defaults (0.9.0.0, main's head when green). The promot… |

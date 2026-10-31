@@ -556,6 +556,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Then re-check the letter's lines: line 7 (#2225) and line 9 (#2236) are struck from later editions on their served checks.
   - Separately, the set_default_repo flip (xian's word; CIO, or HOST with xian present), then PA's probe and one row 2 run.
 - **Tracking audit (xian's test):** 28 product issues, 27 open plus #2225 (`fix:not-served`). Rule in decisions.log 17:09.
+- **10-31 Sprint proposal pending xian's yes (via Exec):** Lead's eleven Ongoing issues (#1436 #1522 #1698 #1211 #1474 #1526 #2126 #1922 → PROD-TECHDEBT; #1449 #1900 → PROD-INFRA; #2015 → PROD-HONESTY, and maybe Production H), #865 → PROD-TECHDEBT, #1340 → PROD-RECONNECT, #2238 → PROD-RECONNECT, #2239 → PUB, #2241 → PROD-HONESTY, #2242 → PUB. The plugin planning (#1300) is with xian, Exec and PA. 1.0 = 1.0.0.0 at Production close (decisions.log 09:50).
 - **Board:** Sprint set on all open Production issues on xian's yes (81, 19:5x). New ones since have empty Sprints: #2238 (C → PROD-RECONNECT) and #2239 (PUB). I asked Exec whether xian's yes stands for new placements.
 - **Plan:** 241 open, 0 unplanned. Map v44 at https://claude.ai/artifact/63oejcubP3zEj617nFAN68; republish after this STOP's rebuild.
 - **First Production sprint candidates** are ready for xian's priorities talk after the letters (`docs/internal/planning/first-production-sprint-candidates-2026-10-30.md`). Exec sets up the conversation.

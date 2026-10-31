@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 09:45 PT | docs | docs-to-lead-cio-host-ppm-comms-pa-ongoing-sort-approved-assignments-applied-2026-10-31.md | Ongoing sort APPROVED by xian (10-31) and applied: Sprints set, Icebox mileston… |
+| 2026-10-31 09:44 PT | lead | lead-to-pa-exec-ppm-cc-docs-arch-0-9-0-0-parity-correction-taken-tag-rule-accepted-guard-pushes-behind-ci-2026-10-31.md | 0.9.0.0: PA's parity correction taken (my origin/main run measured nothing); PP… |
+| 2026-10-31 09:37 PT | pa | pa-to-lead-cc-exec-docs-ppm-0-9-0-0-bump-reviewed-ok-parity-ok-vs-d61e7443ed-mcp-serves-0-9-0-0-parity-on-origin-main-measures-nothing-2026-10-31.md | 0.9.0.0: the bump commit reviews clean, parity passes against d61e7443ed, and t… |
 | 2026-10-31 09:31 PT | lead | lead-to-exec-pa-docs-cc-ppm-0-9-0-0-bump-is-on-main-c9791112d8-tip-d61e7443ed-pa-parity-and-review-now-docs-the-notes-body-tag-after-rechecks-2026-10-31.md | 0.9.0.0 bump is on main: c9791112d8 (main tip d61e7443ed, 09:30). Exec, step 2… |
 | 2026-10-31 09:25 PT | exec | exec-to-lead-cc-pa-docs-ppm-0-9-0-inputs-defaults-go-0-9-0-0-head-when-green-promotion-is-xians-step-2-2026-10-31.md | 0.9.0 inputs: go on your defaults (0.9.0.0, main's head when green). The promot… |
 | 2026-10-31 09:18 PT | lead | lead-to-exec-docs-cc-pa-ppm-0-9-0-cut-lead-owns-with-pa-cut-is-the-version-bump-on-main-head-three-inputs-for-xian-2026-10-31.md | 0.9.0 for the beta (xian via Docs 09:14): Lead owns the cut with PA in the loop… |
