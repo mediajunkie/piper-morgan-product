@@ -14,8 +14,11 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 
+from services.integrations.integration_status_service import BETA_OFFERED_CONNECTORS
+
 REPO_ROOT = Path(__file__).resolve().parents[3]
-LINE = "You can connect Slack and Google Calendar later, in Settings → Integrations."
+# #2237: Slack is outside the offered set, so the line no longer promises it.
+LINE = "You can connect Google Calendar later, in Settings → Integrations."
 FORM_IDS = (
     "slack-config-needed",
     "slack-client-id",
@@ -30,7 +33,9 @@ FORM_IDS = (
 
 def _render(hosted: bool) -> str:
     env = Environment(loader=FileSystemLoader(str(REPO_ROOT / "templates")))
-    return env.get_template("setup.html").render(asset_v="t", hosted=hosted)
+    return env.get_template("setup.html").render(
+        asset_v="t", hosted=hosted, offered_connectors=list(BETA_OFFERED_CONNECTORS)
+    )
 
 
 def _step2(html: str) -> str:
@@ -51,9 +56,11 @@ class TestHostedStep2:
     def test_the_connect_later_line_is_present_once(self):
         assert _step2(_render(True)).count(LINE) == 1
 
-    def test_notion_box_is_kept(self):
+    def test_notion_box_is_removed(self):
+        # #2237 (CXO): Notion is outside the offered set; the step does not offer it.
         step2 = _step2(_render(True))
-        assert 'id="notion-key"' in step2
+        assert 'id="notion-key"' not in step2
+        assert "Notion" not in step2
         assert "Optional integrations" in step2
 
 
@@ -61,9 +68,10 @@ class TestSelfHostStep2:
     def test_forms_are_kept_and_the_line_is_absent(self):
         step2 = _step2(_render(False))
         for element_id in FORM_IDS:
-            assert f'id="{element_id}"' in step2, element_id
+            greyed = element_id.startswith(("slack", "save-slack"))  # #2237
+            assert (f'id="{element_id}"' in step2) is not greyed, element_id
         assert LINE not in step2
-        assert 'id="notion-key"' in step2
+        assert 'id="notion-key"' not in step2
 
 
 class TestHostedWizardMakesNoStatusCall:

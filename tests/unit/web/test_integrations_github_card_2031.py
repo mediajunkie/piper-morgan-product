@@ -99,6 +99,7 @@ def _renderer(body: str) -> str:
 
 def _render(body: str, integration: dict) -> str:
     script = (
+        "const window = { __OFFERED_CONNECTORS__: ['github', 'calendar'] };\n"
         "const out = {};\n"
         "const document = { getElementById(id) {\n"
         "  if (id === 'integrations-list') return out;\n"

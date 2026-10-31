@@ -51,6 +51,7 @@ def _run(last_check: str, now: str, status="healthy", msg="Healthy") -> tuple[st
     start = PAGE_SRC.index("function renderIntegrations(integrations) {")
     end = PAGE_SRC.index("async function testConnection(integrationName)")
     script = (
+        "const window = { __OFFERED_CONNECTORS__: ['github', 'calendar'] };\n"
         "const out = {};\n"
         "const document = { getElementById(id) {\n"
         "  if (id === 'integrations-list') return out;\n"

@@ -194,6 +194,7 @@ def test_page_renders_connected_and_the_not_checked_line(client):
         "show_test": True,
     }
     script = (
+        "const window = { __OFFERED_CONNECTORS__: ['github', 'calendar'] };\n"
         "const out = {};\n"
         "const document = { getElementById(id) {\n"
         "  if (id === 'integrations-list') return out;\n"

@@ -458,6 +458,8 @@
         <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #e0e0e0;" />
         <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.75rem;">Optional integrations</p>
 
+        {# #2237 (CXO): a connector outside the offered set is not offered here at all. #}
+        {% if 'notion' in offered_connectors | default([]) %}
         <div class="form-group">
           <label for="notion-key">Notion API Key (optional)</label>
           <div class="key-validation">
@@ -484,14 +486,16 @@
             ></small
           >
         </div>
+        {% endif %}
 
         {% if hosted %}
         <!-- #2176 (CXO 2026-10-25): on a hosted instance the person in the wizard is
              never the site's admin, so the Slack and Google Calendar app-credential
              forms are not theirs to fill (PM 2026-10-01: a non-admin never sees the
              app-credential card). They connect both in Settings after sign-in. -->
-        <p id="connect-later-line" style="font-size: 0.9rem; color: #666;">You can connect Slack and Google Calendar later, in Settings → Integrations.</p>
+        <p id="connect-later-line" style="font-size: 0.9rem; color: #666;">{% if 'slack' in offered_connectors | default([]) %}You can connect Slack and Google Calendar later, in Settings → Integrations.{% else %}You can connect Google Calendar later, in Settings → Integrations.{% endif %}</p>
         {% else %}
+        {% if 'slack' in offered_connectors | default([]) %}
         <!-- Slack OAuth Integration (Issue #528: ALPHA-SETUP-SLACK) -->
         <!-- Issue #576: Added credential configuration before OAuth -->
         <div class="form-group">
@@ -576,6 +580,7 @@
             ></div>
           </div>
         </div>
+        {% endif %}
 
         <!-- Google Calendar OAuth Integration (Issue #529: ALPHA-SETUP-CALENDAR) -->
         <!-- Issue #577: Added credential configuration before OAuth -->

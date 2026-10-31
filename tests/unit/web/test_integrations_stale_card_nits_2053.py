@@ -83,6 +83,7 @@ NO_TOKEN_CARD = {
 
 def _render(body: str, card: dict, owns_line=None) -> str:
     script = (
+        "const window = { __OFFERED_CONNECTORS__: ['github', 'calendar'] };\n"
         "const out = {};\n"
         "const document = { getElementById(id) { return id === 'integrations-list' ? out : null; } };\n"
         + _consts_and_renderer(body)

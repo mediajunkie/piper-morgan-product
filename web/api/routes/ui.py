@@ -391,8 +391,16 @@ async def setup_page(request: Request):
     """
     templates = _get_templates(request)
     # #2089/#2088: hosted has no System step and asks for the invite first.
+    # #2237: connectors outside the offered set render greyed as "coming".
+    from services.integrations import integration_status_service
+
     return templates.TemplateResponse(
-        "setup.html", {"request": request, "hosted": wizard_is_hosted()}
+        "setup.html",
+        {
+            "request": request,
+            "hosted": wizard_is_hosted(),
+            "offered_connectors": list(integration_status_service.BETA_OFFERED_CONNECTORS),
+        },
     )
 
 
@@ -561,8 +569,17 @@ async def integrations_page(request: Request):
     """Integrations management page - Coming soon"""
     templates = _get_templates(request)
     user_context = _extract_user_context(request)
+    # #2237: the page's connectable cards come from the one offered-set constant, read
+    # at request time. Everything else renders greyed as "coming".
+    from services.integrations import integration_status_service
+
     return templates.TemplateResponse(
-        "integrations.html", {"request": request, "user": user_context}
+        "integrations.html",
+        {
+            "request": request,
+            "user": user_context,
+            "offered_connectors": list(integration_status_service.BETA_OFFERED_CONNECTORS),
+        },
     )
 
 

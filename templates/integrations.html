@@ -271,6 +271,17 @@
         color: #2c3e50;
       }
 
+      .not-in-beta-label {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #777;
+      }
+
+      .not-in-beta-line {
+        font-size: 0.9rem;
+        color: #777;
+      }
+
       .connect-btn {
         color: white;
         background: #27ae60;
@@ -418,6 +429,9 @@
 {% block scripts %}
 <script src="/static/js/api-error-parser.js"></script>
 <script>
+  window.__OFFERED_CONNECTORS__ = {{ offered_connectors | default([]) | tojson }};
+</script>
+<script>
   // Integration icons mapping
   const ICONS = {
     notion: '📝',
@@ -425,6 +439,13 @@
     github: '🐙',
     calendar: '📅'
   };
+
+  // #2237: the connectors this beta offers, from BETA_OFFERED_CONNECTORS (the one
+  // source; the server also refuses a connect for anything outside it). A card outside
+  // this list renders as "Not in this beta": no Connect, Reconnect, Settings or Test.
+  const OFFERED_CONNECTORS = window.__OFFERED_CONNECTORS__ || [];
+  const NOT_IN_BETA_LABEL = 'Not in this beta';  // CXO 2026-10-30
+  const notInBetaLine = (name) => `${name} isn't available in this beta yet.`;
 
   // OAuth-based integrations that support Connect/Disconnect
   const OAUTH_INTEGRATIONS = ['slack', 'calendar'];
@@ -550,14 +571,26 @@
     }
 
     container.innerHTML = integrations.map(integration => {
-      const isOAuth = OAUTH_INTEGRATIONS.includes(integration.name);
-      const isAPIKey = API_KEY_INTEGRATIONS.includes(integration.name);
+      const isOffered = OFFERED_CONNECTORS.includes(integration.name);
+      const isOAuth = isOffered && OAUTH_INTEGRATIONS.includes(integration.name);
+      const isAPIKey = isOffered && API_KEY_INTEGRATIONS.includes(integration.name);
       const isConnected = integration.status !== 'not_configured';
 
       // Determine action buttons based on integration type
       let actionButtons = '';
 
-      if (integration.action === 'reconnect') {
+      if (!isOffered) {
+        // #2237 (CXO): not in this beta. A pre-existing connection can still be cleared.
+        actionButtons = isConnected ? `
+          <button
+            class="action-btn disconnect-btn"
+            id="disconnect-btn-${integration.name}"
+            onclick="${API_KEY_INTEGRATIONS.includes(integration.name) ? 'disconnectAPIKeyIntegration' : 'disconnectIntegration'}('${integration.name}')"
+          >
+            Disconnect
+          </button>
+        ` : '';
+      } else if (integration.action === 'reconnect') {
         // #2031: a grant the service no longer accepts. One Reconnect, to the
         // integration's settings page (Settings → GitHub re-grants in one step).
         actionButtons = `
@@ -627,12 +660,14 @@
       }
 
       return `
-        <div class="integration-card" id="card-${integration.name}">
+        <div class="integration-card${isOffered ? '' : ' not-in-beta'}" id="card-${integration.name}"${isOffered ? '' : ' aria-disabled="true"'}>
           <div class="integration-info">
             <div class="integration-icon">${ICONS[integration.name] || '🔌'}</div>
             <div class="integration-details">
               <h3>${integration.display_name}</h3>
-              <div class="integration-status">
+              ${isOffered ? '' : `<div class="not-in-beta-label" id="not-in-beta-${integration.name}">${NOT_IN_BETA_LABEL}</div>
+              <div class="not-in-beta-line" id="not-in-beta-line-${integration.name}">${notInBetaLine(integration.display_name)}</div>`}
+              ${(!isOffered && !isConnected) ? '' : `<div class="integration-status">
                 <span class="status-dot ${integration.status}"></span>
                 ${integration.status_icon ? `<span class="status-icon-inline" id="status-icon-${integration.name}">${integration.status_icon}</span>` : ''}
                 <span class="status-message ${integration.error ? 'error' : ''}" id="status-${integration.name}">
@@ -649,10 +684,11 @@
                   ${integration.fix_suggestion}
                 </div>
               ` : ''}
+              `}
             </div>
           </div>
           <div class="integration-actions">
-            ${integration.show_test === false ? '' : `
+            ${(!isOffered || integration.show_test === false) ? '' : `
             <button
               class="action-btn test-btn"
               id="test-btn-${integration.name}"
