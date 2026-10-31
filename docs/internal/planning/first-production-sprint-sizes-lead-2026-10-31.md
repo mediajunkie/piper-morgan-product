@@ -50,3 +50,19 @@ Tiers 0 and 1, plus #2165 and #2229, with tier 3's slot: about 14–25 Lead-days
 #1442 Google connector port 3–5 days; Slack #1481 2–3 days plus #1514 (xian's); #2232 local fault-run harness about 1 day; #2239 half a day; #2227 (Haiku 5.5 re-baseline) is design, not a build.
 
 Verified how: each issue's body and latest comment read with `gh issue view` this morning (#2186, #2183, #2185, #2197, #2209, #2149, #2021, #2226, #2165, #1378, #2235), PPM's candidates file at origin/main, and the landing history in Lead's 10-28 to 10-30 logs. Layer: issue text and the source paths the issues cite; no new source read for the sizes beyond what the issues name. These are estimates from the shape of each item, not measurements.
+
+## Addendum 06:5x: PA's MCP ordering (PA to PPM, 06:50; PA gave no sizes)
+
+MCP completion gates the public beta (PDR-005 Am. 1); none of these block the hosted web beta. Sizes marked (r) are rough: the increments are specified at epic level and each needs its own ruling before a lane.
+
+| PA's order | Issue | Lead size | Notes |
+|---|---|---|---|
+| 1 | #2218 | 0 | Landed 66d4b58492; serving is PA's deploy on Exec's timing. |
+| 2, 3 | #2241 slim item + size budget, with #2022's scope line | half a day to 1 day, one unit | Field set is CXO's and Arch's call, the budget Arch's, the words CXO's. Proposed shape sent to Arch 06:5x. Served check: one connector call renders inline (PA). |
+| 4 | Who may connect the hosted MCP | 1 day (d) if the answer is "not beta accounts" | A consent-page allowlist or an invite-class check in the web app's AS; a promotion, not an MCP deploy. The stop lever (scale the MCP app to zero) stays minutes. |
+| 5 | #1911 consent page branding | half a day to 1 day | Copy CXO's; template work is Web's or Lead's. |
+| 6 | #1918 Connected apps in Settings, with revoke | 1.5–2 days | A read and a revoke over `mcp_access_tokens`, a Settings card, pins, a served revoke check. |
+| 7 | #2175 arrival path to an invite and an account | 1–2 days (d) | Needs the product shape (what an arrival without an account sees). |
+| 8 | #2174 ADR-081 D3 token check | 0 for Lead | Arch's read. |
+| 9 | #1705 "same Piper" memory; #1703 morning standup | 2–3 days (r); 1–2 days (r) | Each is a new MCP tool over an existing chat read; #1703 carries the honesty probe. |
+| 10 | #1701 create issue; #1702 todos; #1704 docs knowledge base; #1706 calendar | 1–2 (r); 1–2 (r); 2–3 (r); after #1441 | Writes through MCP are the first write surface on that app; the consent and audit shape should be ruled once for all four before the first lands. |
