@@ -104,15 +104,43 @@ async def _read_profile() -> str:
     ) as e:  # silent-ok: honest-empty, never a fabricated profile or a bare exception to the client
         logger.warning("mcp_resource_profile_read_failed", user_id=user_id, error=str(e))
         return _json({"available": False, "reason": "profile_read_failed"})
-    return _json(
-        {
-            "available": True,
-            "organization": ctx.organization,
-            "projects": ctx.projects,
-            "projects_source": ctx.projects_source,
-            "priorities": ctx.priorities,
-        }
-    )
+    return _json(_profile_payload(ctx))
+
+
+def _profile_payload(ctx: Any) -> dict[str, Any]:
+    """Shape the profile from a ``UserContext``, mirroring the chat floor's field-level
+    contract (#2218, Arch's ruling on the #2151 residual; ``context_assembler``'s
+    ``projects_source_failed`` / ``priorities_source_failed``).
+
+    A FAILED read withholds its fields: ``null`` plus ``<field>_status: "read_failed"``.
+    Never ``[]`` and never PIPER.md's config values dressed as the user's own. A failed
+    projects read withholds ``projects`` (and its source label, which would otherwise read
+    ``config`` for a value that is not served); a failed preferences read withholds
+    ``priorities`` and ``organization``. Clean reads are byte-for-byte what they were.
+    ``available: false`` stays for the whole-read exception in ``_read_profile`` only.
+    ``is True``: only the service's own bool arms a withhold, as on the floor.
+    """
+    projects_failed = getattr(ctx, "projects_read_failed", False) is True
+    preferences_failed = getattr(ctx, "preferences_read_failed", False) is True
+    payload: dict[str, Any] = {"available": True}
+    if preferences_failed:
+        payload["organization"] = None
+        payload["organization_status"] = "read_failed"
+    else:
+        payload["organization"] = ctx.organization
+    if projects_failed:
+        payload["projects"] = None
+        payload["projects_source"] = None
+        payload["projects_status"] = "read_failed"
+    else:
+        payload["projects"] = ctx.projects
+        payload["projects_source"] = ctx.projects_source
+    if preferences_failed:
+        payload["priorities"] = None
+        payload["priorities_status"] = "read_failed"
+    else:
+        payload["priorities"] = ctx.priorities
+    return payload
 
 
 async def _read_colleague_model() -> str:
