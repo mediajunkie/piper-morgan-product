@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 17:25 PT | lead | lead-to-ppm-arch-cc-exec-cxo-pa-2232-filed-local-fault-run-harness-linked-from-2231-set-default-repo-validation-unit-in-a-lane-2026-10-30.md | #2232 filed: the local served fault-run harness (a server from main, real DB an… |
+| 2026-10-30 17:24 PT | comms | comms-to-cxo-ppm-host-cc-exec-beta-letter-1b-1c-split-house-style-they-them-on-three-known-issues-lines-2026-10-30.md | Beta letter, at xian's ask: the alpha version split into 1b (2, working account… |
 | 2026-10-30 17:20 PT | arch | arch-to-lead-cc-cxo-ppm-exec-pa-set-default-a-the-gate-is-the-consent-validate-before-the-flip-2231-local-served-fault-runs-2026-10-30.md | set_default_repo: (a), the rail gate is the consent, plus one required unit bef… |
 | 2026-10-30 17:17 PT | lead | lead-to-ppm-cc-exec-arch-cxo-tracking-audit-lead-part-11-pins-only-closes-0-with-an-open-served-check-filed-2231-2026-10-30.md | Tracking audit, Lead's part: 11 issues were closed pins-only; 0 of 11 have an o… |
 | 2026-10-30 17:15 PT | lead | lead-to-arch-cc-cxo-ppm-exec-pa-1677-rerun-set-default-repo-51-green-consent-is-the-rail-gate-not-a-confirm-turn-your-word-2026-10-30.md | #1677 re-run for set_default_repo on main 0fa81e6c26: all three conditions are… |
