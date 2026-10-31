@@ -822,6 +822,14 @@ def _judge(force: Force, out: RunOutcome) -> str:
     if out.result_none:
         return "fell through (None)"
     if force.floor:
+        # #2236: on the capability/identity answer, code renders the failed-read
+        # sentence into the reply (capability_answer.COULDNT_CHECK_LINE); the model's
+        # prompt no longer carries the integrations block, so the reply is the evidence.
+        if "integrations" in force.floor_checks:
+            from services.intent_service.capability_answer import COULDNT_CHECK_LINE
+
+            if COULDNT_CHECK_LINE in out.message:
+                return "pass"
         if any(line in out.prompt for line in force.floor_inband):
             return "pass"
         m = _AGGREGATE_RE.search(out.prompt)

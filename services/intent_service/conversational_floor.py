@@ -19,6 +19,7 @@ Architecture: One new terminal node in the routing graph. Everything upstream
 untouched. The floor replaces a dead-end with a conversation.
 """
 
+import dataclasses
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -26,6 +27,11 @@ from typing import Any, Callable, Dict, List, NamedTuple, Optional, Tuple
 
 import structlog
 
+from services.intent_service.capability_answer import (
+    CAPABILITY_TURN_INSTRUCTION,
+    compose_capability_reply,
+    is_capability_turn,
+)
 from services.intent_service.floor_listed_records import listed_records_event
 from services.intent_service.scope_guard import apply_scope_guard
 from services.intent_service.unarmed_offer import detect_offer_questions, enforce_armed_offers
@@ -592,6 +598,12 @@ def capability_manifest_block() -> str:
 # Exposed for the #1517 prompt-content tests: the static prose must stay free
 # of hand-written capability names (the derived list is the only carrier).
 setattr(capability_manifest_block, "__wrapped_static__", _CAPABILITY_MANIFEST_STATIC)
+
+
+#: #2236: the domain_context keys the floor model never sees on a capability turn.
+_CAPABILITY_RENDERED_KEYS = frozenset(
+    {"capabilities", "integrations", "integrations_source_failed"}
+)
 
 
 # ---- Data Classes ----
@@ -1916,7 +1928,23 @@ class ConversationalFloor:
             FloorResponse with LLM-generated message and instrumentation data
         """
         system_prompt = await self._get_system_prompt(ctx)
-        prompt = self._build_prompt(ctx)
+        # #2236 (ADR-080): on the capability answer, code renders the capability
+        # claims (the #1428 ledger lines) and the connection state (the #1547
+        # status read) AFTER the model replies; the model sees neither and
+        # contributes at most one opener (see capability_answer.py).
+        capability_turn = is_capability_turn(ctx.intent_action, ctx.domain_context)
+        if capability_turn:
+            model_ctx = dataclasses.replace(
+                ctx,
+                domain_context={
+                    k: v
+                    for k, v in (ctx.domain_context or {}).items()
+                    if k not in _CAPABILITY_RENDERED_KEYS
+                },
+            )
+            prompt = f"{self._build_prompt(model_ctx)}\n\n{CAPABILITY_TURN_INSTRUCTION}"
+        else:
+            prompt = self._build_prompt(ctx)
 
         # Issue #1032 INSIGHT-PUSH Step 4: detect NL session-mute trigger
         # in the user's current message. If detected, flip session state
@@ -2025,7 +2053,8 @@ class ConversationalFloor:
             #   - Sessions in NL-detected mute state (just flipped or already on)
             #   - Caller's own opt-out (no user_id or no session_id)
             try:
-                message = await self._maybe_append_push(message, ctx)
+                if not capability_turn:  # #2236: the rendered block is the whole reply
+                    message = await self._maybe_append_push(message, ctx)
             except Exception as e:
                 logger.warning(
                     "push_integration_error",
@@ -2073,6 +2102,11 @@ class ConversationalFloor:
                     user_id=ctx.user_id,
                     intent_category=ctx.intent_category,
                 )
+
+            if capability_turn:
+                # #2236: the guarded opener (or none) above the code-rendered
+                # block; whatever capability sentence the model wrote is gone.
+                message = compose_capability_reply(message, ctx.domain_context or {})
 
             # #2042 rung 2 (Arch's diagnosis 2026-10-28), LOG-ONLY: record what
             # the finished reply enumerates against what the prompt carried and
