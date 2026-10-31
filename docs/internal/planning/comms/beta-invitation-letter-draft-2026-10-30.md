@@ -41,9 +41,24 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 >
 > The private beta of Piper Morgan starts now, and I'd love your eyes on it. You don't need to be a working product manager to be useful here. I'd value your read on whether it makes sense, what feels off, and where it should go. Give it a try when you feel like it.
 
-## What this beta is (xian's paragraph, not drafted)
+## What this beta is (xian's words, edited down by Comms 10-30 17:3x. xian edits freely)
 
-*Slot for your own words. The alpha letter's "Alpha is nearly over!" paragraph doesn't fit a beta letter, so it's out. Prompts, if useful: what a tester can expect day to day, how rough it still is, and what you most want them to try. Keep it to what is true today (no promised fix dates).*
+> **What this beta is.** The goal is for Piper Morgan to be a helpful product assistant who, over time, learns enough about your work and how you like to do it to be of more and more help to you. Being a beta means we believe most of the core functionality a minimally valuable Piper Morgan needs is now in place. It isn't a production release yet. There are still bugs and known issues keeping it from being ready for prime time, and the ones we know about are listed below.
+>
+> **What I'd love you to try.** Any of these, and tell me how it went:
+>
+> - Setting up your account and getting started. Feedback on just that would help a lot.
+> - Connecting Piper to GitHub or Google Calendar, if you use either.
+> - Talking with Piper about the work you're doing and how you like to work, then seeing whether Piper remembers any of that and lets it shape the help you get.
+> - The broad strokes. Does anything seem out of place, make no sense, or feel redundant or unnecessary? First impressions and specific bug reports are both welcome.
+>
+> Most of all, I want to know whether anything here gets past being a novelty and becomes a useful habit. I'm still testing that myself.
+
+*Edit notes (Comms):*
+- *Cut as redundant with the rest of the letter:* "we'll share that information with you" (the known-issues list follows), and which sources are supported "so far" (the "What you can connect" paragraph names them).
+- *Version 1b:* the five alpha people already have accounts. For them, the first bullet could read "Getting started again, now that it's a beta." Or drop it.
+- *No pronoun for Piper* in the new prose. The third bullet says "Piper" twice instead of "it".
+- *Kept your phrase "minimally valuable"* rather than the house term "Minimum Valuable Product". Change it if you'd like the term.
 
 ## Body (from the alpha letter, unchanged except where marked)
 
@@ -104,7 +119,7 @@ Several in 1a have used the earlier local-run alpha (2025 to Jan 2026), so not e
 
 1. **Which URL?** beta.pipermorgan.ai and alpha.pipermorgan.ai serve the same build today. *Exec 15:01:* PA runs one fresh sign-up on beta. with the re-checks on the promoted build. If it passes, Exec recommends "beta." to xian. If not, "alpha." stays. HOST 15:04 would watch it with xian present. *PA 15:1x:* beta. serves the promoted build, `ac5b69f865`. The fresh sign-up spends a single-use code, so it needs xian's hands. PA has given him the steps. Until it's run, the letter keeps "alpha.". **Exec 17:0x: xian did the beta. sign-up by hand** (a new account, "beta xian", one code spent). The letter uses https://beta.pipermorgan.ai once his quote of the wizard's end and the first reply is recorded here. Not yet received by Comms.
 2. **Terms: RESOLVED.** xian's "go" (Exec 16:59). Web pushed website `4826ded`, and the served `/terms/` reads "What this beta is" with 0 "alpha" in the page HTML (Web 17:0x, curl and Lighthouse). HOST's fallback line is struck and not in the letter. CXO's copy OK was given 15:2x and reconfirmed 17:0x.
-3. **xian's "what this beta is" paragraph.**
+3. **xian's "what this beta is" paragraph: DRAFTED** from xian's dictation (17:3x). It needs his OK and a CXO read of the new claims: "most of the core functionality… is in place" and the remember-and-shape test.
 4. **PPM's line check at send**, after the promotion and PA's re-checks.
 5. **Version 1b's "no new code, your account carries over": VERIFIED (PA 15:1x).** On beta. (serving `ac5b69f865`), an alpha test account logged in, and a chat turn saw issue #35, which had been created on alpha. at 15:04. So it's the same accounts and the same data. That was an API check, not the rendered sign-in page. Whether the three 10-26 codes were redeemed is still unread (HOST: xian's select).
 
