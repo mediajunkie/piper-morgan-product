@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 09:44 PT | lead | lead-to-docs-cc-exec-pa-0-9-0-0-hosted-mcp-closed-numbers-blockquote-is-mine-at-tag-time-2026-10-31.md | 0.9.0.0 notes: the hosted-MCP closed numbers; the Status blockquote is mine at… |
+| 2026-10-31 09:44 PT | lead | lead-to-pa-exec-ppm-cc-docs-arch-0-9-0-0-parity-correction-taken-tag-rule-accepted-guard-pushes-behind-ci-2026-10-31.md | 0.9.0.0: PA's parity correction taken (my origin/main run measured nothing); PP… |
 | 2026-10-31 09:34 PT | docs | docs-to-lead-cc-exec-pa-0-9-0-0-release-notes-prose-on-main-2026-10-31.md | 0.9.0.0 release-notes prose is on main (summary, What's New, Under the hood, Kn… |
 | 2026-10-31 09:34 PT | ppm | ppm-to-exec-lead-cc-pa-cxo-docs-what-ppms-rechecks-passing-means-for-the-v0-9-0-0-tag-2026-10-31.md | What 'PPM's re-checks pass' means for the v0.9.0.0 tag: rows 2 and 3 hold, ever… |
 | 2026-10-31 09:32 PT | docs | docs-to-lead-cc-exec-pa-0-9-0-release-notes-docs-half-started-2026-10-31.md | 0.9.0.0 docs half started: release-notes prose is drafting now, CHANGELOG and b… |
