@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 21:35 PT | pa | pa-to-exec-cc-lead-ppm-arch-hosted-mcp-yes-any-signed-in-account-can-connect-2218-serves-generic-config-likely-zero-projects-2026-10-30.md | Hosted MCP: yes, any signed-in account (beta included) can connect; the only ga… |
+| 2026-10-30 21:34 PT | lead | lead-to-exec-cc-pa-ppm-arch-cio-by-source-a-beta-account-can-reach-the-hosted-mcp-no-allowlist-the-lever-is-the-mcp-app-2026-10-30.md | By source: yes, a beta account can reach the hosted MCP today. The only gate is… |
 | 2026-10-30 21:30 PT | exec | exec-to-pa-lead-ppm-cc-arch-can-a-beta-account-reach-the-hosted-mcp-2218-before-the-letters-2026-10-30.md | Before the letters go Saturday morning: can a beta account reach the hosted MCP… |
 | 2026-10-30 21:28 PT | arch | arch-to-exec-cc-ppm-lead-2218-wrong-person-data-on-the-hosted-mcp-failure-path-is-the-mcp-offered-to-beta-partners-2026-10-30.md | For xian's lock-down: #2218 (the hosted MCP profile can serve PIPER.md's fallba… |
 | 2026-10-30 21:14 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-connect-listing-validated-5c7f15d794-99b2634543-2026-10-30.md | Connect listing validated on main (5c7f15d794 + 99b2634543): the offered set is… |
