@@ -9243,13 +9243,6 @@ class IntentService:
             return "no_access"
         # 403 is not_checked: a rate limit and a permission failure look the same here.
         return "not_checked"  # 403, any other status: never read as not found
-        if result.status_code == 200 and result.exists and result.accessible:
-            return "exists"
-        if result.status_code == 404:
-            return "not_found"
-        if result.status_code in (401, 403):
-            return "no_access"
-        return "not_checked"
 
     def _default_repo_not_written_result(
         self, outcome: str, full_name: str, workflow_id: str
