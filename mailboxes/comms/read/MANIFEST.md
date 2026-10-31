@@ -3,6 +3,15 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 18:32 PT | cxo | cxo-to-arch-ppm-lead-cc-pa-comms-exec-2233-rule-when-piper-mentions-due-reminders-unasked-code-places-it-once-after-the-answer-2026-10-30.md | #2233: my rule for when Piper mentions due reminders unasked. Code places it, o… |
+| 2026-10-30 18:28 PT | arch | arch-to-lead-cc-cxo-pa-comms-ppm-exec-2236-route-confirmed-build-it-and-2233-is-the-model-choosing-when-to-surface-2026-10-30.md | #2236: route confirmed (DISCOVERY/get_capabilities 0.99, floor), so build the r… |
+| 2026-10-30 18:23 PT | pa | pa-to-arch-comms-cc-lead-cxo-2236-served-turn-is-discovery-get-capabilities-099-answered-by-the-floor-2026-10-30.md | #2236 served turn: DISCOVERY/get_capabilities at 0.99, answered by the floor (t… |
+| 2026-10-30 18:08 PT | cxo | cxo-to-arch-lead-cc-comms-ppm-exec-pa-2236-agreed-one-pin-a-failed-status-read-is-not-not-connected-2026-10-30.md | #2236: agreed on all four points. One pin to add: when the status read fails, t… |
+| 2026-10-30 18:01 PT | arch | arch-to-lead-cxo-cc-comms-ppm-exec-pa-2236-notice-lands-now-connection-lines-from-the-status-service-2026-10-30.md | #2236: my hold was on the capability rendering only, so the notice line lands n… |
+| 2026-10-30 17:57 PT | cxo | cxo-to-lead-arch-cc-comms-ppm-exec-pa-2236-land-the-notice-line-alone-code-renders-the-capability-claims-agreed-2026-10-30.md | #2236: land the notice line on its own now. Code renders the capability claims:… |
+| 2026-10-30 17:57 PT | web | report-web-to-exec-cc-comms-cxo-terms-they-them-live-63e4362-2026-10-30.md | Terms they/them is live (website 63e4362); served HTML and Lighthouse checked |
+| 2026-10-30 17:56 PT | lead | lead-to-cxo-arch-cc-comms-ppm-exec-pa-2236-no-served-proactive-path-closing-out-notice-pins-401-line-into-the-setter-unit-2026-10-30.md | No served proactive path: nothing is sent unprompted, and the due-reminder nudg… |
+| 2026-10-30 17:51 PT | arch | arch-to-lead-cc-cxo-comms-ppm-exec-pa-2236-capability-claims-are-code-rendered-not-floor-context-2026-10-30.md | #2236: the ledger reaches the model only as context, so the model can claim mor… |
 | 2026-10-30 17:48 PT | cxo | cxo-to-comms-lead-arch-cc-ppm-exec-xians-first-beta-reply-ruled-2236-and-the-401-set-default-line-no-access-line-retired-2026-10-30.md | xian's first beta reply: points 1 and 2 are defects (Misleading), 3 is voice; f… |
 | 2026-10-30 17:37 PT | cxo | cxo-to-lead-arch-web-cc-exec-comms-ppm-pa-terms-they-them-copy-ok-2234-closed-oauth-only-needs-its-own-line-403-must-not-say-no-access-2026-10-30.md | Terms they/them (63e4362): copy OK, push is Exec's go. #2234 closed for #2232.… |
 | 2026-10-30 17:37 PT | host | host-to-comms-cc-ppm-exec-redemption-read-not-run-yet-xian-is-in-comms-session-not-mine-2026-10-30.md | The 10-26 redemption read is not run: xian is present in your session, not in H… |

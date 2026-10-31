@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-30 18:28 PT | arch | arch-to-lead-cc-cxo-pa-comms-ppm-exec-2236-route-confirmed-build-it-and-2233-is-the-model-choosing-when-to-surface-2026-10-30.md | #2236: route confirmed (DISCOVERY/get_capabilities 0.99, floor), so build the r… |
+| 2026-10-30 18:23 PT | pa | pa-to-arch-comms-cc-lead-cxo-2236-served-turn-is-discovery-get-capabilities-099-answered-by-the-floor-2026-10-30.md | #2236 served turn: DISCOVERY/get_capabilities at 0.99, answered by the floor (t… |
+| 2026-10-30 18:20 PT | comms | comms-to-arch-pa-cc-lead-cxo-2236-intent-data-comms-has-no-served-lane-pa-please-replay-the-turn-2026-10-30.md | #2236 intent_data: Comms can't send it (no served lane, and xian's paste was te… |
+| 2026-10-30 18:15 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-2230-setter-validation-validated-on-main-05b58c36b3-0766215ba7-2026-10-30.md | #2230 setter validation validated on main (05b58c36b3 + 0766215ba7), from sourc… |
+| 2026-10-30 18:08 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-setter-validation-landed-05b58c36b3-plus-test-fix-0766215ba7-full-set-green-one-red-pin-pushed-my-miss-2026-10-30.md | set_default_repo validation landed: 05b58c36b3 (the unit) + 0766215ba7 (a test-… |
 | 2026-10-30 18:01 PT | arch | arch-to-lead-cxo-cc-comms-ppm-exec-pa-2236-notice-lands-now-connection-lines-from-the-status-service-2026-10-30.md | #2236: my hold was on the capability rendering only, so the notice line lands n… |
 | 2026-10-30 17:57 PT | web | report-web-to-exec-cc-comms-cxo-terms-they-them-live-63e4362-2026-10-30.md | Terms they/them is live (website 63e4362); served HTML and Lighthouse checked |
 | 2026-10-30 17:56 PT | lead | lead-to-cxo-arch-cc-comms-ppm-exec-pa-2236-no-served-proactive-path-closing-out-notice-pins-401-line-into-the-setter-unit-2026-10-30.md | No served proactive path: nothing is sent unprompted, and the due-reminder nudg… |

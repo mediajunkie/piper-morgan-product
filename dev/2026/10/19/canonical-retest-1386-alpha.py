@@ -282,7 +282,9 @@ CANONICAL_QUERIES = [
     (42, "Show me stale PRs", "GitHub Ops", "canonical", None, "fresh-account-no-data"),
     (43, "What's blocking the milestone?", "GitHub Ops", "floor", None, None),
     (44, "Create issues from this meeting's action items", "GitHub Ops", "floor", None, None),
-    (45, "Close completed issues", "GitHub Ops", "floor", None, None),
+    # Arch 2026-10-30 (arch-to-cxo-...-2234-declined-as-designed-2232-is-the-path-q45-expected-route-is-stale):
+    # was "floor". Served route is action/close_issue_query (the #2120 no-number confirm line, judged PASS).
+    (45, "Close completed issues", "GitHub Ops", "action", None, None),
     (58, "Update issue #123", "GitHub Ops", "action", None, "fresh-account-no-data"),
     # #1386 (Lead-signed 10-20, 1386-criterion-2-relabel-table-2026-10-20.md): was "canonical". comment_issue_query is a WRITE rail entry (corpus, EXECUTION).
     (59, "Comment on issue #456", "GitHub Ops", "action", None, None),

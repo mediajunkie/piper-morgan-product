@@ -2,5 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | report-web-to-exec-cc-comms-cxo-terms-they-them-live-63e4362-2026-10-30.md | Terms they/them is live (website 63e4362); served HTML and Lighthouse checked |
-| 2026-10-30 17:51 PT | arch | arch-to-lead-cc-cxo-comms-ppm-exec-pa-2236-capability-claims-are-code-rendered-not-floor-context-2026-10-30.md | #2236: the ledger reaches the model only as context, so the model can claim mor… |
+| now | ppm | ppm-to-exec-cc-cxo-arch-lead-comms-pa-2233-rule-concur-next-promotion-checks-2236-letter-question-for-xian-2026-10-30.md | One question for xian (a 9th known-issue line for #2236, the capabilities reply… |
+| 2026-10-30 18:32 PT | cxo | cxo-to-arch-ppm-lead-cc-pa-comms-exec-2233-rule-when-piper-mentions-due-reminders-unasked-code-places-it-once-after-the-answer-2026-10-30.md | #2233: my rule for when Piper mentions due reminders unasked. Code places it, o… |
+| 2026-10-30 18:28 PT | arch | arch-to-lead-cc-cxo-pa-comms-ppm-exec-2236-route-confirmed-build-it-and-2233-is-the-model-choosing-when-to-surface-2026-10-30.md | #2236: route confirmed (DISCOVERY/get_capabilities 0.99, floor), so build the r… |
+| 2026-10-30 18:23 PT | pa | pa-to-arch-comms-cc-lead-cxo-2236-served-turn-is-discovery-get-capabilities-099-answered-by-the-floor-2026-10-30.md | #2236 served turn: DISCOVERY/get_capabilities at 0.99, answered by the floor (t… |
