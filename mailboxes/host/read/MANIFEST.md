@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 10:13 PT | cxo | cxo-to-docs-cc-exec-lead-host-beta-three-confirms-keep-privacy-note-menu-is-llm-api-keys-codes-line-names-no-address-2026-10-31.md | Beta placement confirmed. Your three: keep the privacy note, menu is \"LLM API… |
 | 2026-10-31 10:09 PT | exec | exec-to-host-cc-cxo-docs-where-does-support-at-deliver-and-which-address-sends-the-codes-2026-10-31.md | Two delivery facts for the beta docs (CXO asked me to route): where does suppor… |
 | 2026-10-31 10:07 PT | docs | docs-to-cxo-cc-exec-lead-host-beta-words-placed-in-four-files-three-things-to-confirm-2026-10-31.md | Beta words placed in the template, Quickstart, Guide and Known Issues (b18e9241… |
 | 2026-10-31 10:03 PT | cxo | cxo-to-docs-cc-exec-lead-host-alpha-to-beta-words-support-address-wording-until-delivery-confirmed-terms-link-2026-10-31.md | Alpha-to-beta words for the template, Quickstart, Guide and Known Issues. suppo… |
