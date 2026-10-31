@@ -3112,3 +3112,22 @@ date,role,slug,environment,model,log_filename,notes
 2026-10-29,Programmer subagent,prog,code,opus,2026-10-29-0854-prog-code-log.md,lane build for Lead (no DAY-CLOSED)
 2026-10-29,Programmer subagent,prog,code,opus,2026-10-29-0901-prog-code-log.md,lane build for Lead (no DAY-CLOSED)
 2026-10-29,Programmer subagent,prog,code,opus,2026-10-29-1349-prog-code-log.md,lane build for Lead (no DAY-CLOSED)
+2026-10-30,Docs mgr,docs,code,sonnet,2026-10-30-0412-docs-code-log.md,"10-29 omnibus, CXO nudge, DOCS briefing pointers, CURRENT-STATE alpha and open-MVP lines, Ship 067 no lane review"
+2026-10-30,Chief of Staff,exec,code,opus,2026-10-30-0708-exec-code-log.md,"MVP gate hard stop held, beta letters Saturday, Ship 067 kickoff and correction, closes by sign-off paragraph after marker"
+2026-10-30,Lead Dev,lead,code,fable,2026-10-30-0635-lead-code-log.md,"MVP gate build lanes, 2223 and 2240 fixes, landings, no standard DAY-CLOSED"
+2026-10-30,Web,web,code,sonnet,2026-10-30-0618-web-code-log.md,web lane work for the gate day
+2026-10-30,Comms,comms,code,opus,2026-10-30-0619-comms-code-log.md,"beta letter drafts staged, weekend posts, briefing pointers"
+2026-10-30,Head of Sapient Trust,host,code,sonnet,2026-10-30-0626-host-code-log.md,Readiness lane and beta invitation prep
+2026-10-30,Chief Architect,arch,code,opus,2026-10-30-0627-arch-code-log.md,"landings validated, NO-GOs, Ship 067 review, sign-off lacks origin check"
+2026-10-30,CXO,cxo,code,sonnet,2026-10-30-0631-cxo-code-log.md,"gate row judgments, no DAY-CLOSED (last entry 21:31)"
+2026-10-30,Principal PM,ppm,code,opus,2026-10-30-0633-ppm-code-log.md,"MVP gate PASSED and milestone closed, Sprint batch, Production plan, entries after marker"
+2026-10-30,Piper Alpha,pa,code,opus,2026-10-30-0647-pa-code-log.md,"gate rows and scenario A on the build partners use, three markers"
+2026-10-30,Programmer subagent,prog,code,opus,2026-10-30-0900-prog-code-log.md,lane build for Lead (no DAY-CLOSED)
+2026-10-30,Chief Innovation Officer,cio,code,opus,2026-10-30-0726-cio-code-log.md,"mail-send date stamping and trailers, briefing pointer check"
+2026-10-30,Programmer subagent,prog,code,opus,2026-10-30-1039-prog-code-log.md,2223 lane (no DAY-CLOSED)
+2026-10-30,Programmer subagent,prog,code,sonnet,2026-10-30-1523-prog-code-log.md,"lane build for Lead (stub, no DAY-CLOSED)"
+2026-10-30,Programmer subagent,prog,code,sonnet,2026-10-30-1544-prog-code-log.md,"revert haiku-5-5 config entry for Arch (stub, no DAY-CLOSED)"
+2026-10-30,Programmer subagent,prog,code,sonnet,2026-10-30-1733-prog-code-log.md,"lane build for Lead (stub, no DAY-CLOSED)"
+2026-10-30,Programmer subagent,prog,code,sonnet,2026-10-30-1828-prog-code-log.md,"lane build for Lead (stub, no DAY-CLOSED)"
+2026-10-30,Programmer subagent,prog,code,fable,2026-10-30-1952-prog-code-log.md,"Arch's four fixes on the 2236/2233 landing (stub, no DAY-CLOSED)"
+2026-10-30,Programmer subagent,prog,code,sonnet,2026-10-30-2034-prog-code-log.md,"2237 lock-down (stub, no DAY-CLOSED)"
