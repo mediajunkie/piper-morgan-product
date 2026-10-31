@@ -30,10 +30,13 @@ def _ctx(integrations=None, failed=False):
 
 CONNECTED = [
     {"name": "github", "status": "active"},
+    {"name": "calendar", "status": "inactive"},
     {"name": "slack", "status": "inactive"},
     {"name": "notion", "status": "inactive"},
 ]
-NONE_CONNECTED = [{"name": n, "status": "inactive"} for n in ("github", "slack", "notion")]
+NONE_CONNECTED = [
+    {"name": n, "status": "inactive"} for n in ("github", "calendar", "slack", "notion")
+]
 
 
 async def _serve(model_text, domain_context, category="DISCOVERY", action="get_capabilities"):
@@ -81,7 +84,7 @@ class TestLedgerRendered:
     @pytest.mark.asyncio
     async def test_bare_block_without_opener_is_valid(self):
         msg, _ = await _serve("NONE", _ctx(CONNECTED))
-        assert msg.startswith("Here is what you can ask me for:")
+        assert msg.startswith("What I can do today:")
 
     @pytest.mark.asyncio
     async def test_clean_opener_rides_above_the_block(self):
@@ -106,11 +109,17 @@ class TestConnectionState:
         block = render_capability_block(_ctx(CONNECTED))
         assert "- GitHub: chat reads" in block
         assert "Not connected, so I'm not using them" in block
-        assert "Slack, Notion" in block
+        assert (
+            "Not connected, so I'm not using them (connect in Settings → Integrations): Google Calendar"
+            in block
+        )
+        assert "Slack" not in block and "Notion" not in block
 
     def test_nothing_connected_says_so_and_implies_no_source_in_use(self):
         block = render_capability_block(_ctx(NONE_CONNECTED))
         assert "None of your tools are connected yet, so I'm not reading from any of them." in block
+        assert "You can connect GitHub or Google Calendar in Settings → Integrations." in block
+        assert "Not connected" not in block
         assert "what I read from each" not in block
         assert COULDNT_CHECK_LINE not in block
 
@@ -126,6 +135,47 @@ class TestConnectionState:
         block = render_capability_block(_ctx([{"name": "github", "status": "needs_reconnecting"}]))
         assert "Needs reconnecting" in block and "GitHub" in block
         assert "Connected, and what I read" not in block
+
+    def test_not_connected_list_names_only_beta_connectors(self):
+        payload = [
+            {"name": "slack", "status": "active"},
+            {"name": "github", "status": "inactive"},
+            {"name": "calendar", "status": "inactive"},
+            {"name": "notion", "status": "inactive"},
+        ]
+        block = render_capability_block(_ctx(payload))
+        assert block.endswith(
+            "Not connected, so I'm not using them (connect in Settings → Integrations): "
+            "GitHub, Google Calendar"
+        )
+        assert "Notion" not in block
+        assert "- Slack: " in block  # a connected tool may still be listed
+
+    def test_offered_connectors_is_exactly_github_and_calendar(self):
+        from services.integrations.integration_status_service import BETA_OFFERED_CONNECTORS
+
+        assert BETA_OFFERED_CONNECTORS == {"github": "GitHub", "calendar": "Google Calendar"}
+
+    def test_not_connected_list_is_the_constant_minus_connected(self):
+        from services.integrations.integration_status_service import BETA_OFFERED_CONNECTORS
+
+        payload = [{"name": k, "status": "inactive"} for k in BETA_OFFERED_CONNECTORS]
+        payload[0] = {"name": payload[0]["name"], "status": "active"}
+        block = render_capability_block(_ctx(payload))
+        remaining = [v for k, v in BETA_OFFERED_CONNECTORS.items() if k != payload[0]["name"]]
+        assert block.endswith(": " + ", ".join(remaining))
+
+    def test_block_reads_the_shared_constant_not_a_copy(self, monkeypatch):
+        import services.integrations.integration_status_service as svc
+
+        monkeypatch.setattr(svc, "BETA_OFFERED_CONNECTORS", {"notion": "Notion X"})
+        payload = [
+            {"name": "github", "status": "active"},
+            {"name": "notion", "status": "inactive"},
+            {"name": "calendar", "status": "inactive"},
+        ]
+        block = render_capability_block(_ctx(payload))
+        assert block.endswith(": Notion X")
 
 
 class TestOpenerGuard:
@@ -154,3 +204,29 @@ class TestOpenerGuard:
     def test_compose_without_opener_is_the_bare_block(self):
         dc = _ctx(CONNECTED)
         assert compose_capability_reply(None, dc) == render_capability_block(dc)
+
+
+class TestPullInsightsRowStaysHonest:
+    """Arch ruling 1 (2236): the ledger row "what have you learned about my work style?"
+    stays only while an empty or failed insights read cannot be voiced as a learned
+    pattern. LAYER: the floor prompt the model is handed (served prose is model-composed
+    and not measured here)."""
+
+    def _prompt(self, domain_context):
+        floor = ConversationalFloor(llm_client=MagicMock(), system_prompt_base="x")
+        return floor._format_domain_context(domain_context)
+
+    def test_empty_repository_says_nothing_yet_and_implies_no_pattern(self):
+        out = self._prompt({"insights": {"is_empty": True, "total_count": 0}})
+        assert "NONE YET" in out
+        assert "you have not yet learned patterns" in out
+        assert "Do not fabricate" in out
+        assert "HIGH CONFIDENCE" not in out
+
+    def test_failed_read_takes_the_could_not_check_path_never_nothing_yet(self):
+        from services.intent_service.rail_read_failure import RAIL_READ_SOURCES
+
+        assert "pull_insights" in RAIL_READ_SOURCES
+        out = self._prompt({"insights_source_failed": True})
+        assert "could not check: insights" in out
+        assert "NONE YET" not in out

@@ -63,6 +63,12 @@ DISPLAY_NAMES: Dict[str, str] = {
 #: #2151 ISS-STATUS: the binding check itself raised (distinct from "no binding").
 #: Neither ``bound`` nor broken, so ``github_oauth_bound`` and
 #: ``github_needs_reconnecting`` read it as False, as they read None.
+#: The connectors Piper reads in chat and the beta letter offers (CXO 2026-10-30; Slack
+#: descoped 08-27). Keyed as the status/health payload names them. The Integrations
+#: page's own JS lists (templates/integrations.html:430-433, OAUTH_INTEGRATIONS /
+#: API_KEY_INTEGRATIONS) move onto this constant under a follow-up issue.
+BETA_OFFERED_CONNECTORS: Dict[str, str] = {"github": "GitHub", "calendar": "Google Calendar"}
+
 BINDING_CHECK_FAILED = "check_failed"
 
 #: ``via`` for a GitHub binding GitHub has rejected (#2072): configured, and broken.

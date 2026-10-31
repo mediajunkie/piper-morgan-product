@@ -429,6 +429,7 @@ class Force:
     slots: Optional[Dict[str, Any]] = None
     floor_checks: Tuple[str, ...] = ()
     floor_inband: Tuple[str, ...] = ()
+    reply_is_evidence: bool = False  # #2236: the served reply, not the prompt, is the evidence
 
     @property
     def floor(self) -> bool:
@@ -470,7 +471,9 @@ _GH_STATUS_FLOOR = (
 FORCE: Dict[str, Force] = {
     # ── floor-riding adapters: the floor prompt is the evidence ──
     # identity / capabilities: the per-user integration status (ISS) and the user context.
-    "get_capabilities": Force(one("iss"), "what can you do?", floor_checks=("integrations",)),
+    "get_capabilities": Force(
+        one("iss"), "what can you do?", floor_checks=("integrations",), reply_is_evidence=True
+    ),
     "get_identity": Force(one("iss"), "who are you?", floor_checks=("integrations",)),
     "explain_trust": Force(
         one("db"), "how much do you trust me?", floor_inband=("Trust relationship stage: unknown",)
@@ -822,14 +825,21 @@ def _judge(force: Force, out: RunOutcome) -> str:
     if out.result_none:
         return "fell through (None)"
     if force.floor:
-        # #2236: on the capability/identity answer, code renders the failed-read
-        # sentence into the reply (capability_answer.COULDNT_CHECK_LINE); the model's
-        # prompt no longer carries the integrations block, so the reply is the evidence.
-        if "integrations" in force.floor_checks:
+        # #2236 (Arch ruling 4): the capability answer renders the failed-read sentence in
+        # code, so for get_capabilities ONLY the evidence is the served reply, strictly:
+        # exactly the couldn't-check line and no connection facts. get_identity keeps the
+        # prompt evidence below (identity turns still hand the model the integrations block).
+        if force.reply_is_evidence:
             from services.intent_service.capability_answer import COULDNT_CHECK_LINE
 
-            if COULDNT_CHECK_LINE in out.message:
+            low = out.message.lower()
+            if (
+                COULDNT_CHECK_LINE in out.message
+                and "not connected" not in low
+                and "none of your tools" not in low
+            ):
                 return "pass"
+            return "capability reply lacks the exact couldn't-check line or states connection facts"
         if any(line in out.prompt for line in force.floor_inband):
             return "pass"
         m = _AGGREGATE_RE.search(out.prompt)

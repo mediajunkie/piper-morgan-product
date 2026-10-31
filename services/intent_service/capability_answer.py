@@ -95,6 +95,7 @@ def render_connection_lines(domain_context: Dict[str, Any]) -> List[str]:
     A failed or missing read yields only CXO's couldn't-check line: no connection
     facts, never "not connected" as a default.
     """
+    from services.integrations.integration_status_service import BETA_OFFERED_CONNECTORS
     from services.intent_service.capability_legibility import (
         INTEGRATION_DISPLAY,
         chat_reads_line,
@@ -120,19 +121,22 @@ def render_connection_lines(domain_context: Dict[str, Any]) -> List[str]:
 
     connected = _keys("active")
     reconnect = [_disp(k) for k in _keys("needs_reconnecting")]
-    absent = [_disp(k) for k in _keys("inactive")]
+    absent = [BETA_OFFERED_CONNECTORS[k] for k in BETA_OFFERED_CONNECTORS if k in _keys("inactive")]
 
     lines: List[str] = []
     if connected:
         lines.append("Connected, and what I read from each:")
         lines.extend(f"- {_disp(key)}: {chat_reads_line(key)}" for key in connected)
     else:
-        lines.append("None of your tools are connected yet, so I'm not reading from any of them.")
+        lines.append(
+            "None of your tools are connected yet, so I'm not reading from any of them. "
+            "You can connect GitHub or Google Calendar in Settings → Integrations."
+        )
     if reconnect:
         lines.append(
             "Needs reconnecting (reconnect in Settings → Integrations): " + ", ".join(reconnect)
         )
-    if absent:
+    if absent and connected:
         lines.append(
             "Not connected, so I'm not using them (connect in Settings → Integrations): "
             + ", ".join(absent)
@@ -151,7 +155,7 @@ def render_capability_block(domain_context: Dict[str, Any]) -> str:
     caps = [str(c) for c in (domain_context.get("capabilities") or [])]
     parts: List[str] = []
     if caps:
-        parts.append("Here is what you can ask me for:\n" + "\n".join(f"- {c}" for c in caps))
+        parts.append("What I can do today:\n" + "\n".join(f"- {c}" for c in caps))
         marker = describe_outwardness(Outwardness.OUTWARD)
         if marker and any(marker in c for c in caps):
             parts.append(OUTWARDNESS_CONVENTION)
