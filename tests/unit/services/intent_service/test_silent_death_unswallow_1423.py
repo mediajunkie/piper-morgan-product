@@ -108,7 +108,9 @@ class TestGitHubHandlersHonestError:
             patch(  # #2230: the repo validates, so the write is what fails
                 "services.infrastructure.github_repo_validator.validate_github_repo_for_account",
                 AsyncMock(
-                    return_value=RepoValidationResult(validated=True, exists=True, accessible=True)
+                    return_value=RepoValidationResult(
+                        validated=True, exists=True, accessible=True, status_code=200
+                    )
                 ),
             ),
             patch(

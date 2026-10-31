@@ -51,7 +51,7 @@ def _res(**kw):
 
 @pytest.mark.asyncio
 async def test_exists_writes_and_confirms(intent_service):
-    v = _res(validated=True, exists=True, accessible=True)
+    v = _res(validated=True, exists=True, accessible=True, status_code=200)
     result, writer = await _run(intent_service, v)
     v.assert_awaited_once_with("mediajunkie/piper-morgan-product", "user-123")
     writer.set_default_repo.assert_awaited_once()
@@ -65,7 +65,11 @@ async def test_exists_writes_and_confirms(intent_service):
 @pytest.mark.asyncio
 async def test_not_found_writes_nothing_and_says_so(intent_service):
     v = _res(
-        validated=True, exists=False, accessible=False, error="Repository 'x' not found on GitHub"
+        validated=True,
+        exists=False,
+        accessible=False,
+        status_code=404,
+        error="Repository 'x' not found on GitHub",
     )
     result, writer = await _run(intent_service, v)
     writer.set_default_repo.assert_not_awaited()
@@ -76,46 +80,75 @@ async def test_not_found_writes_nothing_and_says_so(intent_service):
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "kw",
-    [
-        dict(
-            validated=True,
-            exists=False,
-            accessible=False,
-            error="GitHub token is invalid or expired",
-        ),
-        dict(validated=True, exists=True, accessible=False),
-    ],
-)
-async def test_no_access_writes_nothing_and_says_so(intent_service, kw):
-    result, writer = await _run(intent_service, _res(**kw))
+async def test_401_is_no_access_and_writes_nothing(intent_service):
+    v = _res(
+        validated=True,
+        exists=False,
+        accessible=False,
+        status_code=401,
+        error="GitHub token is invalid or expired",
+    )
+    result, writer = await _run(intent_service, v)
     writer.set_default_repo.assert_not_awaited()
-    assert "can't see mediajunkie/piper-morgan-product" in result.message
+    assert "Your GitHub connection can't see mediajunkie/piper-morgan-product" in result.message
+    assert "Settings \u2192 Integrations \u2192 GitHub" in result.message
     assert result.requires_clarification is True
     assert result.intent_data["validation_outcome"] == "no_access"
+
+
+@pytest.mark.asyncio
+async def test_403_writes_nothing_and_says_try_again_not_no_access(intent_service):
+    # The validator's 403 branch returns exists=True, accessible=False: never key on exists.
+    v = _res(validated=True, exists=True, accessible=False, status_code=403, error="rate limit")
+    result, writer = await _run(intent_service, v)
+    writer.set_default_repo.assert_not_awaited()
+    assert "couldn't check mediajunkie/piper-morgan-product just now" in result.message
+    assert "Try again in a moment" in result.message
+    assert "can't see" not in result.message
+    assert result.success is False
+    assert result.intent_data["validation_outcome"] == "not_checked"
+
+
+@pytest.mark.asyncio
+async def test_no_credential_writes_nothing_and_points_to_settings(intent_service):
+    v = _res(validated=False, exists=False, accessible=False, not_checked_reason="no_credential")
+    result, writer = await _run(intent_service, v)
+    writer.set_default_repo.assert_not_awaited()
+    assert result.message == (
+        "I can't check mediajunkie/piper-morgan-product from here, so I haven't changed "
+        "your default. Set it in Settings \u2192 Integrations \u2192 GitHub."
+    )
+    assert result.intent_data["validation_outcome"] == "no_credential"
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "validator",
     [
-        _res(validated=False, exists=False, accessible=False),  # no token
+        _res(validated=False, exists=False, accessible=False, not_checked_reason="network"),
+        _res(validated=False, exists=False, accessible=False, not_checked_reason="error"),
+        _res(validated=False, exists=False, accessible=False),
         _res(
-            validated=True, exists=False, accessible=False, error="GitHub API returned status 500"
+            validated=True,
+            exists=False,
+            accessible=False,
+            status_code=500,
+            error="GitHub API returned status 500",
+            not_checked_reason="error",
         ),
         AsyncMock(side_effect=RuntimeError("boom")),
     ],
-    ids=["no_token", "unexpected_status", "exception"],
+    ids=["network", "error", "no_reason", "status_500", "exception"],
 )
 async def test_check_that_did_not_run_writes_nothing_and_says_the_check_failed(
     intent_service, validator
 ):
     result, writer = await _run(intent_service, validator)
     writer.set_default_repo.assert_not_awaited()
-    assert "couldn't check mediajunkie/piper-morgan-product just now" in result.message
-    assert "wasn't able to save" not in result.message
-    assert "couldn't find" not in result.message
+    assert (
+        result.message == "I couldn't check mediajunkie/piper-morgan-product just now, so I "
+        "haven't changed your default. Try again in a moment."
+    )
     assert result.success is False
     assert result.error_type == "set_default_repo_validation_unavailable"
     assert result.intent_data["validation_outcome"] == "not_checked"

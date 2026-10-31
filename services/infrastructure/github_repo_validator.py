@@ -5,6 +5,7 @@ Issue #867: Optionally validate repos exist and pull metadata when linking.
 Soft validation: if token unavailable or API fails, warn but don't block.
 """
 
+import asyncio
 from dataclasses import dataclass
 from typing import Optional
 
@@ -29,6 +30,14 @@ class RepoValidationResult:
     language: Optional[str] = None
     visibility: Optional[str] = None  # "public", "private", "internal"
     default_branch: Optional[str] = None
+    # HTTP status GitHub answered with; None when no response was read (no token, network
+    # error). Lets a caller tell 404 (not found) from 401/403 (no access) from other statuses
+    # without parsing ``error`` text (#2230).
+    status_code: Optional[int] = None
+    # Why the check did not run or settle: "no_credential" (no token for the account),
+    # "network" (connection or timeout), "error" (unexpected exception or status). None when
+    # GitHub gave a definite answer (200, 404, 401, 403). Callers that ignore it are unaffected.
+    not_checked_reason: Optional[str] = None
 
     @property
     def metadata_available(self) -> bool:
@@ -67,7 +76,9 @@ async def validate_github_repo(
 
     if not resolved_token:
         logger.info("github_repo_validation_skipped", full_name=full_name, reason="no_token")
-        return RepoValidationResult(validated=False, exists=False, accessible=False)
+        return RepoValidationResult(
+            validated=False, exists=False, accessible=False, not_checked_reason="no_credential"
+        )
 
     url = f"{GITHUB_API_BASE}/repos/{full_name}"
     headers = {
@@ -96,6 +107,7 @@ async def validate_github_repo(
                         language=data.get("language"),
                         visibility=data.get("visibility"),
                         default_branch=data.get("default_branch"),
+                        status_code=200,
                     )
                 elif resp.status == 404:
                     logger.warning("github_repo_validation_not_found", full_name=full_name)
@@ -104,6 +116,7 @@ async def validate_github_repo(
                         exists=False,
                         accessible=False,
                         error=f"Repository '{full_name}' not found on GitHub",
+                        status_code=404,
                     )
                 elif resp.status == 401:
                     logger.warning("github_repo_validation_auth_failed", full_name=full_name)
@@ -112,6 +125,7 @@ async def validate_github_repo(
                         exists=False,
                         accessible=False,
                         error="GitHub token is invalid or expired",
+                        status_code=401,
                     )
                 elif resp.status == 403:
                     logger.warning(
@@ -124,6 +138,7 @@ async def validate_github_repo(
                         exists=True,
                         accessible=False,
                         error="GitHub API rate limit or insufficient permissions",
+                        status_code=403,
                     )
                 else:
                     logger.warning(
@@ -136,17 +151,27 @@ async def validate_github_repo(
                         exists=False,
                         accessible=False,
                         error=f"GitHub API returned status {resp.status}",
+                        status_code=resp.status,
+                        not_checked_reason="error",
                     )
 
-    except aiohttp.ClientError as e:
+    except (aiohttp.ClientError, asyncio.TimeoutError) as e:
         logger.warning("github_repo_validation_network_error", full_name=full_name, error=str(e))
         return RepoValidationResult(
-            validated=False, exists=False, accessible=False, error=f"Network error: {e}"
+            validated=False,
+            exists=False,
+            accessible=False,
+            error=f"Network error: {e}",
+            not_checked_reason="network",
         )
     except Exception as e:
         logger.error("github_repo_validation_unexpected_error", full_name=full_name, error=str(e))
         return RepoValidationResult(
-            validated=False, exists=False, accessible=False, error=f"Unexpected error: {e}"
+            validated=False,
+            exists=False,
+            accessible=False,
+            error=f"Unexpected error: {e}",
+            not_checked_reason="error",
         )
 
 

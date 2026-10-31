@@ -457,7 +457,9 @@ class TestFlippedTurnReachesTheRail:
         from services.infrastructure.github_repo_validator import RepoValidationResult
 
         async def _validates(full_name, user_id):  # #2230: the repo exists on the account
-            return RepoValidationResult(validated=True, exists=True, accessible=True)
+            return RepoValidationResult(
+                validated=True, exists=True, accessible=True, status_code=200
+            )
 
         monkeypatch.setattr(
             "services.infrastructure.github_repo_validator.validate_github_repo_for_account",

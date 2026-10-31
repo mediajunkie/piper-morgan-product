@@ -37,7 +37,11 @@ def repo_validates_as_existing():
 
     with patch(
         "services.infrastructure.github_repo_validator.validate_github_repo_for_account",
-        AsyncMock(return_value=RepoValidationResult(validated=True, exists=True, accessible=True)),
+        AsyncMock(
+            return_value=RepoValidationResult(
+                validated=True, exists=True, accessible=True, status_code=200
+            )
+        ),
     ) as m:
         yield m
 

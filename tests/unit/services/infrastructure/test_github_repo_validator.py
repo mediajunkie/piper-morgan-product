@@ -59,6 +59,7 @@ class TestValidateGithubRepo:
             result = await validate_github_repo("owner/repo", token=None)
         assert result.validated is False
         assert result.error is None  # Not an error — token simply absent
+        assert result.not_checked_reason == "no_credential"
 
     @staticmethod
     def _mock_aiohttp(mock_response):
@@ -108,6 +109,8 @@ class TestValidateGithubRepo:
         assert result.language == "Python"
         assert result.visibility == "public"
         assert result.default_branch == "main"
+        assert result.status_code == 200
+        assert result.not_checked_reason is None
 
     @pytest.mark.asyncio
     async def test_404_returns_not_found(self):
@@ -125,6 +128,8 @@ class TestValidateGithubRepo:
         assert result.validated is True
         assert result.exists is False
         assert "not found" in result.error
+        assert result.status_code == 404
+        assert result.not_checked_reason is None
 
     @pytest.mark.asyncio
     async def test_401_returns_auth_error(self):
@@ -142,6 +147,26 @@ class TestValidateGithubRepo:
         assert result.validated is True
         assert result.accessible is False
         assert "invalid or expired" in result.error
+        assert result.status_code == 401
+        assert result.not_checked_reason is None
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("status", [403, 500, 502])
+    async def test_403_and_other_statuses_set_status_code(self, status):
+        mock_response = MagicMock()
+        mock_response.status = status
+
+        mock_session_cm, _ = self._mock_aiohttp(mock_response)
+
+        with patch(
+            "services.infrastructure.github_repo_validator.aiohttp.ClientSession",
+            return_value=mock_session_cm,
+        ):
+            result = await validate_github_repo("owner/repo", token="ghp_test")
+
+        assert result.validated is True
+        assert result.status_code == status
+        assert result.not_checked_reason == (None if status == 403 else "error")
 
     @pytest.mark.asyncio
     async def test_network_error_returns_graceful_failure(self):
@@ -163,6 +188,24 @@ class TestValidateGithubRepo:
 
         assert result.validated is False
         assert "Network error" in result.error
+        assert result.not_checked_reason == "network"
+
+    @pytest.mark.asyncio
+    async def test_unexpected_exception_reason_is_error(self):
+        mock_session = MagicMock()
+        mock_session.get.side_effect = RuntimeError("boom")
+        mock_session_cm = MagicMock()
+        mock_session_cm.__aenter__ = AsyncMock(return_value=mock_session)
+        mock_session_cm.__aexit__ = AsyncMock(return_value=False)
+
+        with patch(
+            "services.infrastructure.github_repo_validator.aiohttp.ClientSession",
+            return_value=mock_session_cm,
+        ):
+            result = await validate_github_repo("owner/repo", token="ghp_test")
+
+        assert result.validated is False
+        assert result.not_checked_reason == "error"
 
 
 class TestApplyValidationMetadata:

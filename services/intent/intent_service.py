@@ -9214,9 +9214,9 @@ class IntentService:
     async def _validate_default_repo_for_account(self, full_name: str, user_id: Any) -> str:
         """#2230: check ``full_name`` against the user's own GitHub account.
 
-        Returns ``exists`` / ``not_found`` / ``no_access`` / ``not_checked``. Only a 404 reads
-        as ``not_found`` and only a 401/403 as ``no_access``; no token, any other status or
-        an exception is ``not_checked`` (#2151: a failed read is never "not found").
+        Returns ``exists`` / ``not_found`` / ``no_access`` / ``no_credential`` / ``not_checked``.
+        Only a 200 writes, a 404 is ``not_found``, a 401 ``no_access``; a 403, any other status,
+        a network error or an exception is ``not_checked`` (#2151: a failed read is never "not found").
         """
         try:
             from services.infrastructure.github_repo_validator import (
@@ -9232,19 +9232,17 @@ class IntentService:
             self.logger.warning("default_repo_validation_failed", error=str(e), exc_info=True)
             return "not_checked"
         if not result.validated:
-            return "not_checked"
-        if result.exists and result.accessible:
+            return (
+                "no_credential" if result.not_checked_reason == "no_credential" else "not_checked"
+            )
+        if result.status_code == 200:
             return "exists"
-        if result.exists:  # the validator's 403 branch: found, but not readable
-            return "no_access"
-        # The validator sets validated=True, exists=False for 404, 401 and any other status;
-        # it exposes no status field, so they are told apart by the error it sets.
-        error = result.error or ""
-        if "invalid or expired" in error:  # 401
-            return "no_access"
-        if "not found on GitHub" in error:  # 404 (also a private repo the token can't see)
+        if result.status_code == 404:  # also a private repo the token can't see
             return "not_found"
-        return "not_checked"  # "GitHub API returned status N": never read as not found
+        if result.status_code == 401:
+            return "no_access"
+        # 403 is not_checked: a rate limit and a permission failure look the same here.
+        return "not_checked"  # 403, any other status: never read as not found
         if result.status_code == 200 and result.exists and result.accessible:
             return "exists"
         if result.status_code == 404:
@@ -9267,6 +9265,11 @@ class IntentService:
                 f"Your GitHub connection can't see {full_name}, so I haven't changed your "
                 "default. Pick a repository your account can reach, or check the connection "
                 "in Settings \u2192 Integrations \u2192 GitHub."
+            )
+        elif outcome == "no_credential":
+            message = (
+                f"I can't check {full_name} from here, so I haven't changed your default. "
+                "Set it in Settings \u2192 Integrations \u2192 GitHub."
             )
         else:
             message = (
