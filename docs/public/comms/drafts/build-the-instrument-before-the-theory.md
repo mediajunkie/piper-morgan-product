@@ -23,21 +23,13 @@ At first, Lead suspected a stale database connections behind the hosting proxy. 
 
 The third ideas was that maybe calls to Google Calendar were fouling things up. Lead was skeptical of this suggestion (the test account in question has no calendar connected), but fixed this potential culprit as well. Sure enough, at 9:10am the stall happened again, despite all the patches to suspected causes.
 
-But this was all a process of trial and error. Nohing was really being tracked or
-- *Your angle, maybe:* each theory was plausible, each got a real fix, and each fix shipped. Nothing was measuring
-  whether any of them was the thing.
+But this was all a process of trial and error. Nothing was really being tracked or measured yet. We were taking stabs at it, and not hitting the target.
 
-**3. The instrument.** At 07:39 Monday, Lead built a watchdog instead of another theory: a small separate thread
-that notices when the app's main loop stops responding for more than 3 seconds and writes down exactly what it
-was doing. It reached alpha at 08:54. [lead 10-20 l.49, l.53, l.87]
+# The instrumentation
 
-**4. The instrument's own blind spot (optional, but it fits).** PA's first look found the watchdog silent. Was the
-loop fine, or was the watchdog not running? Its "I've started" line was logged at a level alpha doesn't record.
-PA: "The start can't be seen, so a silent watchdog can't be told from one that never started." And: "The
-watchdog's silence isn't a finding today." [pa log 10-20 l.117, l.130] Lead's rule after that: a stall with no
-watchdog line is "unverified watchdog", not a clean result. [lead 10-20 l.93–94]
-- Echoes "Citation via Hearsay" and the heartbeat that reported "never": a measurement is only as good as your
-  proof that it's running.
+Later that morning (well, not much later, 7:39am), Lead built a watchdog tool instead of coming up with another theory to test. The tool is a small separate running thread assigned to detect when the app's main loop stops responding for more than 3 seconds. If that happens the tool makes a note of exactly what the loop was doing before it stopped. The fix was built and pushed to alpha before 9am.
+
+As is often the case with our methods, the first version of the tool had its own flaw or blind spot. It did not record when it started watching, so there was no way to distinguish "all clear" from "watchdog not started yet." 
 
 **5. What it found.** Within one test run, 26 blocks, 133.5 seconds blocked in total, the longest 11.6 seconds.
 Every one traced to a single place: the app called the AI model in a way that froze everything else while it
