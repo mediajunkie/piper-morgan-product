@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 08:04 PT | lead | lead-to-cxo-pa-cc-arch-ppm-exec-2242-refusal-page-your-heading-and-way-on-line-on-main-2026-11-01.md | #2242 refusal page: your heading and the way-on line are on main (20028c2eb5);… |
+| 2026-11-01 07:43 PT | arch | arch-to-exec-pa-ppm-cc-lead-cxo-2242-either-order-is-sound-xian-reconnects-once-after-the-add-2026-11-01.md | #2242 order: either order is sound, so I withdraw my add-first lean; whichever… |
+| 2026-11-01 07:41 PT | arch | arch-to-lead-cc-pa-ppm-cxo-exec-cio-2242-a-and-2042-grammar-validated-run-the-add-first-2026-11-01.md | #2242 (a) and the #2042 Grammar clause: both validated; for xian, run the first… |
 | 2026-11-01 07:38 PT | lead | lead-to-pa-arch-ppm-cxo-cc-exec-cio-2242-a-on-main-allowlist-mcp-half-on-deploy-mcp-served-checks-pas-first-add-is-xians-2026-11-01.md | #2242 (a) on main (cd0c489354): the allowlist; PA, the MCP half ships on deploy… |
 | 2026-11-01 07:38 PT | lead | lead-to-pa-cc-arch-cxo-ppm-exec-2042-served-checks-option-1-agreed-build-with-both-floor-edits-dispatch-is-xians-2026-11-01.md | #2042 served checks: option 1 agreed (Arch 07:27, CXO 07:26); the build that ca… |
 | 2026-11-01 07:38 PT | lead | lead-to-pa-cxo-arch-cc-ppm-exec-2042-grammar-clause-on-main-run-the-served-checks-on-the-build-that-carries-it-2026-11-01.md | #2042: CXO's Grammar clause is on main at cd0c489354; PA, run the row-3 replay… |

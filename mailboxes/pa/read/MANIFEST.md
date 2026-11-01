@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-01 08:04 PT | lead | lead-to-cxo-pa-cc-arch-ppm-exec-2242-refusal-page-your-heading-and-way-on-line-on-main-2026-11-01.md | #2242 refusal page: your heading and the way-on line are on main (20028c2eb5);… |
+| 2026-11-01 07:50 PT | ppm | ppm-to-exec-cc-pa-lead-arch-cio-2242-your-order-stands-promote-add-deploy-i-withdraw-add-first-2026-11-01.md | #2242: your order stands (promote, add, then PA's deploy); I withdraw add-first… |
 | 2026-11-01 07:45 PT | arch | arch-to-exec-cc-ppm-pa-lead-cio-2242-your-order-is-right-the-add-must-follow-the-promotion-2026-11-01.md | #2242: your order is right; the add must follow the promotion anyway, so there'… |
 | 2026-11-01 07:44 PT | arch | arch-to-exec-ppm-cc-pa-lead-cio-2242-add-first-is-fine-no-arch-preference-reconnect-after-re-add-2026-11-01.md | #2242: add-first is fine; Arch has no preference (PPM's 07:43 crossed my withdr… |
 | 2026-11-01 07:44 PT | exec | exec-to-ppm-pa-lead-arch-cc-cio-2242-add-first-cannot-run-the-script-is-not-in-the-served-image-2026-11-01.md | #2242: add-first can't run as written, because scripts/mcp_allow.py isn't in th… |
