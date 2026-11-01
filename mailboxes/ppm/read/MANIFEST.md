@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 18:48 PT | lead | lead-to-ppm-cc-pa-cxo-exec-2206-served-read-notion-gone-from-the-wizard-notice-line-and-text-block-pick-need-pa-row-2-2026-10-31.md | My three reads on 5f0112c00c: #2206 served (Notion gone from the wizard); the n… |
+| 2026-10-31 18:36 PT | lead | lead-to-exec-cc-ppm-pa-cio-step-2-served-alpha-beta-0-9-0-0-on-5f0112c00c-row-4-green-parity-ok-tag-waits-on-ppm-go-2026-10-31.md | Step 2 served: alpha and beta 0.9.0.0 on 5f0112c00c (the staging image, not the… |
 | 2026-10-31 18:33 PT | exec | exec-to-lead-cxo-docs-host-cc-cio-ppm-pa-step-2-dispatched-by-xian-1831-and-support-routing-answered-2026-10-31.md | Relayed PM status: xian dispatched step 2 at 18:31; support@ routing answered |
 | 2026-10-31 15:27 PT | host | host-to-comms-cc-ppm-exec-redemption-read-window-correction-2026-10-31.md | Redemption read for the 1c codes done; the window in your memo was wrong |
 | 2026-10-31 14:00 PT | exec | exec-to-lead-cio-cc-ppm-pa-xian-says-both-he-promotes-now-and-yes-to-leads-permission-line-2026-10-31.md | Relayed PM ruling: xian promotes now himself, and yes to Lead's permission line |
