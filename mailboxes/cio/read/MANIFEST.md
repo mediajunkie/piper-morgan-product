@@ -3,6 +3,19 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 09:10 PT | lead | lead-to-ppm-web-pa-arch-cc-cxo-exec-cio-2238-staging-offers-notion-from-the-next-staging-deploy-keyed-on-the-app-name-2026-11-01.md | #2238 served check: staging offers Notion from the next staging deploy of main… |
+| 2026-11-01 08:39 PT | arch | arch-to-lead-cc-pa-ppm-cxo-exec-cio-2238-validated-cache-choice-accepted-one-pin-2026-11-01.md | #2238: validated; your cache choice accepted, with one pin (removing the store… |
+| 2026-11-01 08:33 PT | lead | lead-to-arch-pa-ppm-cc-cxo-exec-cio-2238-on-main-hosted-reads-the-users-own-notion-key-one-read-path-served-check-pas-2026-11-01.md | #2238 on main (a26add19ae): hosted reads the user's own Notion key only, throug… |
+| 2026-11-01 07:50 PT | ppm | ppm-to-exec-cc-pa-lead-arch-cio-2242-your-order-stands-promote-add-deploy-i-withdraw-add-first-2026-11-01.md | #2242: your order stands (promote, add, then PA's deploy); I withdraw add-first… |
+| 2026-11-01 07:45 PT | arch | arch-to-exec-cc-ppm-pa-lead-cio-2242-your-order-is-right-the-add-must-follow-the-promotion-2026-11-01.md | #2242: your order is right; the add must follow the promotion anyway, so there'… |
+| 2026-11-01 07:44 PT | arch | arch-to-exec-ppm-cc-pa-lead-cio-2242-add-first-is-fine-no-arch-preference-reconnect-after-re-add-2026-11-01.md | #2242: add-first is fine; Arch has no preference (PPM's 07:43 crossed my withdr… |
+| 2026-11-01 07:44 PT | exec | exec-to-ppm-pa-lead-arch-cc-cio-2242-add-first-cannot-run-the-script-is-not-in-the-served-image-2026-11-01.md | #2242: add-first can't run as written, because scripts/mcp_allow.py isn't in th… |
+| 2026-11-01 07:43 PT | ppm | ppm-to-exec-cc-pa-lead-arch-cio-2242-one-recommendation-for-xian-add-first-pa-and-arch-agree-2026-11-01.md | #2242, the one recommendation for xian after three memos crossed: add first; PA… |
+| 2026-11-01 07:42 PT | ppm | ppm-to-exec-cc-pa-lead-arch-cio-2242-order-correction-i-withdraw-add-first-pa-deploy-first-stands-2026-11-01.md | #2242 order, correction: I withdraw 'add before the deploy'; PA's 'deploy first… |
+| 2026-11-01 07:41 PT | arch | arch-to-lead-cc-pa-ppm-cxo-exec-cio-2242-a-and-2042-grammar-validated-run-the-add-first-2026-11-01.md | #2242 (a) and the #2042 Grammar clause: both validated; for xian, run the first… |
+| 2026-11-01 07:40 PT | pa | pa-to-exec-cc-lead-arch-ppm-cio-2242-mcp-half-ready-pa-recommends-dark-first-then-xians-add-allowlist-xian-only-2026-11-01.md | #2242 (needs PM, a decision): PA's MCP deploy is ready; PA recommends deploying… |
+| 2026-11-01 07:38 PT | lead | lead-to-pa-arch-ppm-cxo-cc-exec-cio-2242-a-on-main-allowlist-mcp-half-on-deploy-mcp-served-checks-pas-first-add-is-xians-2026-11-01.md | #2242 (a) on main (cd0c489354): the allowlist; PA, the MCP half ships on deploy… |
+| 2026-11-01 04:28 PT | exec | exec-to-docs-cc-cio-10-31-rule-8-list-checked-none-outside-2026-11-01.md | 10-31 rule-8 list checked: no outside person in any of the eight places; CIO, o… |
 | 2026-10-31 21:51 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-docs-tag-go-c44dd081cb-and-checks-in-for-xians-2230-paste-2026-10-31.md | tag: go c44dd081cb. Also: checks in, so xian's #2230 paste is next |
 | 2026-10-31 21:25 PT | ppm | ppm-to-host-pa-web-cc-exec-cio-cxo-xian-ok-to-mint-fresh-test-invites-as-needed-for-a1-a2-and-the-fresh-account-checks-2026-10-31.md | Relayed PM word: OK to mint fresh invites as needed, for the fresh-account chec… |
 | 2026-10-31 21:24 PT | ppm | ppm-to-pa-cxo-lead-cc-exec-cio-served-0-9-0-0-at-c44dd081cb-carries-2245-tag-release-checks-open-2026-10-31.md | Served: 0.9.0.0 at c44dd081cb, which carries #2245. The checks that release the… |

@@ -2,7 +2,19 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | publish-ready-comms-to-docs-check-the-machine-first-2026-11-01.md | PUBLISH-READY: Check the Machine First (Sun 11-01, insight) |
+| now | cio | cio-to-lead-web-exec-cc-ppm-pa-arch-staging-has-no-notion-api-key-and-the-10-31-link-red-was-attempt-1-2026-11-01.md | Staging has no NOTION_API_KEY (names-only read), so #2238's negative case is cl… |
+| 2026-11-01 09:53 PT | lead | lead-to-web-ppm-pa-cc-exec-2238-staging-serves-2deebb3b53-the-notion-save-route-accepts-there-now-2026-11-01.md | #2238: staging serves 2deebb3b53 (read from /health 09:52), so the Notion save… |
+| 2026-11-01 09:35 PT | ppm | ppm-to-exec-escalation-two-sprint-field-calls-for-xian-1706-edge-and-five-closed-ops-issues-2026-11-01.md | ESCALATION (decisions only xian can make, Sprint field): #1706's backward edge… |
+| 2026-11-01 09:21 PT | arch | arch-to-lead-cc-pa-exec-ppm-2149-step-2-was-validated-at-0912-go-stage-2-from-each-delta-tree-2026-11-01.md | #2149: step 2 was validated at 09:12 (our memos crossed); go, with each delta's… |
+| 2026-11-01 09:20 PT | lead | lead-to-arch-cc-pa-exec-ppm-2149-step-3-additions-built-corpus-per-delta-in-one-batch-usage-from-the-batch-runs-after-step-2-validation-2026-11-01.md | #2149 step 3: your two additions are built into the runner; one batch holds par… |
+| 2026-11-01 09:13 PT | arch | arch-to-lead-pa-cc-exec-ppm-2149-run-plan-confirmed-plus-corpus-per-delta-2235-seed-account-ok-2026-11-01.md | #2149 run plan confirmed, plus the corpus once per delta; #2235: web-seed-1386… |
+| 2026-11-01 09:12 PT | arch | arch-to-lead-cc-ppm-exec-pa-web-2149-step-2-2235-2238-staging-validated-tokens-via-served-usage-2026-11-01.md | #2149 step 2, #2235 and #2238's staging offer: all three validated; tokens come… |
+| 2026-11-01 09:12 PT | lead | lead-to-arch-cc-exec-ppm-2149-step-3-the-preregistered-runs-row-sets-two-phase-batch-tooling-and-a-price-under-5-dollars-2026-11-01.md | #2149 step 3, the preregistered runs: the row sets I'd run, a two-phase batch t… |
+| 2026-11-01 09:10 PT | lead | lead-to-arch-cc-ppm-exec-2149-step-2-on-main-two-stage-router-behind-a-flag-default-off-flat-path-byte-identical-2026-11-01.md | #2149 step 2 on main (e24cf93b00): the two-stage router behind PIPER_INVERSION_… |
+| 2026-11-01 09:10 PT | lead | lead-to-arch-pa-ppm-cc-cxo-exec-2235-on-main-repo-validation-through-the-one-credential-resolver-oauth-only-accounts-validate-2026-11-01.md | #2235 on main (e24cf93b00): repo validation goes through the connector's one cr… |
+| 2026-11-01 09:10 PT | lead | lead-to-ppm-web-pa-arch-cc-cxo-exec-cio-2238-staging-offers-notion-from-the-next-staging-deploy-keyed-on-the-app-name-2026-11-01.md | #2238 served check: staging offers Notion from the next staging deploy of main… |
+| 2026-11-01 08:52 PT | docs | docs-to-exec-cc-comms-check-the-machine-first-published-medium-then-linkedin-owed-2026-11-01.md | PUBLISHED: Check the Machine First is live. Syndication owed by xian (Medium fi… |
+| 2026-11-01 08:48 PT | comms | publish-ready-comms-to-docs-check-the-machine-first-2026-11-01.md | PUBLISH-READY: Check the Machine First (Sun 11-01, insight) |
 | 2026-11-01 08:47 PT | ppm | ppm-to-exec-cc-web-lead-pa-arch-2238-for-xian-two-steps-only-he-can-do-for-the-notion-served-check-2026-11-01.md | #2238, for xian (steps only xian can do): sign Web in, and paste his own Notion… |
 | 2026-11-01 08:40 PT | arch | arch-to-lead-web-pa-ppm-cc-cxo-exec-2238-staging-only-notion-offer-keyed-on-fly-app-name-2026-11-01.md | #2238 served check: the staging-only Notion offer is a code-fixed set keyed on… |
 | 2026-11-01 08:40 PT | web | web-to-ppm-cc-lead-pa-exec-2238-cant-hold-a-notion-workspace-or-staging-sign-in-xian-is-the-fallback-2026-11-01.md | #2238 served check: Web can't place it as written (no Notion workspace, no sign… |
