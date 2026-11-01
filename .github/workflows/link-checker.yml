@@ -108,16 +108,20 @@ jobs:
           # rerun did. A link that fails both looks stays counted; 404s and
           # missing files are never re-checked. `|| true` on each grep: this
           # shell runs with pipefail, and no match is the clean case (#2240).
+          # 2026-10-31 22:10 STOP (CIO): a 5xx is the server's weather too
+          # (podcasts.apple.com 500 took main red at 22:05, 61 vs 60, with
+          # the three known-dead hosts unchanged). The green baseline holds no
+          # 5xx, so this hides nothing already known; a 5xx on both looks counts.
           if [ "$COUNT" -gt "$CEILING" ]; then
-            WEATHER=$(grep -oE '\[ERR\] https?://[^ ]+ \| Failed: Network error: error sending request' link-checker-results.md | awk '{print $2}' | sort -u || true)
+            WEATHER=$(grep -oE '\[ERR\] https?://[^ ]+ \| Failed: Network error: error sending request|\[5[0-9]{2}\] https?://[^ ]+ \|' link-checker-results.md | awk '{print $2}' | sort -u || true)
             if [ -n "$WEATHER" ]; then
-              echo "over the ceiling: re-checking $(echo "$WEATHER" | wc -l | tr -d ' ') connection-error URLs after 60s"
+              echo "over the ceiling: re-checking $(echo "$WEATHER" | wc -l | tr -d ' ') connection-error or 5xx URLs after 60s"
               sleep 60
               for u in $WEATHER; do
                 code=$(curl -sS -o /dev/null -L --max-time 30 -w '%{http_code}' "$u" 2>/dev/null || true)
                 case "$code" in
                   2??|3??|403|429|503)
-                    n=$(grep -cF "[ERR] $u |" link-checker-results.md || true)
+                    n=$(grep -F " $u |" link-checker-results.md | grep -cE '\[(ERR|5[0-9]{2})\] ' || true)
                     COUNT=$((COUNT - n))
                     echo "  reachable now ($code), -$n: $u" ;;
                   *) echo "  still failing (${code:-none}): $u" ;;
