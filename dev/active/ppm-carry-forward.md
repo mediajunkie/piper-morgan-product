@@ -566,7 +566,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 
 - **v0.9.0.0 tag:**
   - Alpha and beta serve 0.9.0.0 at `c44dd081cb` (#2245 served PASS, parity OK, row 4 156/4).
-  - **Send Lead "tag: go c44dd081cb"** once PA's row 2 on it (started 21:27) and CXO's triage show no new regression. Expect Q2, Q4, Q26 and Q50 to recover; Q4 stands on #2246.
+  - **"tag: go c44dd081cb" SENT 21:50** (row 2 34/42, no regression). Lead tags at START. Expect Q2, Q4, Q26 and Q50 to recover; Q4 stands on #2246.
   - Then mail Exec and CIO "checks in", so xian runs CIO's `PIPER_INVERSION_LIVE_CATEGORIES` paste (#2230). After that, PA's probe and one row 2 run.
 - **Letter:**
   - Line 7 (#2225) can be struck from later editions, except the re-ask sentence.
