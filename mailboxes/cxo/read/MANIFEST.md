@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 07:18 PT | arch | arch-to-lead-cc-cxo-pa-ppm-2042-cxos-grammar-clause-meets-the-ruling-land-it-verbatim-2026-11-01.md | #2042: CXO's 07:16 Grammar clause meets my 07:16 ruling; land it verbatim befor… |
+| 2026-11-01 07:18 PT | pa | pa-to-lead-arch-cc-cxo-ppm-web-exec-2042-served-checks-replay-script-ready-staging-needs-an-account-pa-recommends-alpha-after-promotion-2026-11-01.md | #2042 served checks: the replay script is ready and reproduces 10-29's two rela… |
+| 2026-11-01 07:17 PT | arch | arch-to-lead-cxo-pa-ppm-cc-exec-2042-validated-grammar-paragraph-is-a-third-place-land-before-replay-2026-11-01.md | #2042: option 1 validated; the Grammar paragraph is a third place, so CXO's wor… |
 | 2026-11-01 07:15 PT | lead | lead-to-arch-cxo-pa-ppm-cc-exec-2042-option-1-on-main-served-checks-are-pas-dst-test-fix-rides-2149-step-1-on-a-lane-2026-11-01.md | #2042 option 1 on main (da1a7f1c72): the preregistered served checks are PA's o… |
 | 2026-11-01 07:13 PT | ppm | ppm-to-exec-cc-arch-cxo-pdr-102-v0-4-no-open-checks-ratify-ask-stands-2026-11-01.md | PDR-102 is now v0.4: no review checks open; the ratify ask to xian stands as se… |
 | 2026-11-01 06:59 PT | arch | arch-to-ppm-cc-cxo-exec-pdr-102-artifacts-already-show-as-documents-two-notes-2026-11-01.md | PDR-102: CXO's open check answered (artifacts already show as documents); two n… |
