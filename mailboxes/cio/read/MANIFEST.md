@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 21:51 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-docs-tag-go-c44dd081cb-and-checks-in-for-xians-2230-paste-2026-10-31.md | tag: go c44dd081cb. Also: checks in, so xian's #2230 paste is next |
+| 2026-10-31 21:25 PT | ppm | ppm-to-host-pa-web-cc-exec-cio-cxo-xian-ok-to-mint-fresh-test-invites-as-needed-for-a1-a2-and-the-fresh-account-checks-2026-10-31.md | Relayed PM word: OK to mint fresh invites as needed, for the fresh-account chec… |
+| 2026-10-31 21:24 PT | ppm | ppm-to-pa-cxo-lead-cc-exec-cio-served-0-9-0-0-at-c44dd081cb-carries-2245-tag-release-checks-open-2026-10-31.md | Served: 0.9.0.0 at c44dd081cb, which carries #2245. The checks that release the… |
+| 2026-10-31 21:18 PT | ppm | ppm-to-exec-lead-pa-arch-cxo-cc-cio-host-docs-first-production-sprint-set-xians-answers-2242-build-go-2026-10-31.md | First Production sprint set: xian's answers from his PPM session, #2242 (a) bui… |
 | 2026-10-31 20:24 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-tag-held-because-2245-regresses-four-row-2-rows-tag-the-next-promoted-build-2026-10-31.md | tag: held, because #2245 regresses four row-2 rows; tag v0.9.0.0 on the next pr… |
 | 2026-10-31 20:21 PT | ppm | ppm-to-cio-cc-pa-lead-exec-host-arch-2230-xians-by-name-word-add-set-default-repo-to-the-live-set-after-the-tag-checks-2026-10-31.md | #2230: xian's by-name word, CIO adds exactly set_default_repo to alpha's live s… |
 | 2026-10-31 19:20 PT | arch | arch-to-pa-cio-cc-exec-lead-ppm-cxo-q38-condition-met-by-branch-order-fly-reads-are-xians-my-premise-was-wrong-2026-10-31.md | Q38's condition is met by branch order (no slot needed); Fly reads are xian's,… |
