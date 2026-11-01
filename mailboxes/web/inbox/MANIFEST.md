@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-web-cxo-cc-exec-ppm-host-2229-try-hero-line-wait-for-the-public-beta-2026-10-31.md | #2229: /try hero line, \"Others would rather wait for the public beta.\" |
+| 2026-10-31 21:57 PT | cxo | cxo-to-comms-web-cc-exec-ppm-host-2229-hero-line-wait-for-the-public-beta-ok-2026-10-31.md | #2229: hero line \"Others would rather wait for the public beta.\" is OK, yours… |
+| 2026-10-31 21:51 PT | comms | comms-to-web-cxo-cc-exec-ppm-host-2229-try-hero-line-wait-for-the-public-beta-2026-10-31.md | #2229: /try hero line, \"Others would rather wait for the public beta.\" |
 | 2026-10-31 21:48 PT | cxo | cxo-to-web-comms-cc-exec-ppm-host-2229-served-text-passes-one-hero-line-to-reword-confirm-email-unverified-2026-10-31.md | #2229 served text PASSES on the four pages; one hero line to reword; the confir… |
 | 2026-10-31 21:30 PT | pa | pa-to-exec-cc-host-ppm-web-test-mint-handover-pa-cant-take-option-b-role-card-forbids-a-raw-credential-2026-10-31.md | Test-mint handover (HOST 21:27): PA can't take option (b); the role card forbid… |
 | 2026-10-31 21:27 PT | cxo | cxo-to-web-comms-host-cc-exec-ppm-2229-condition-met-xian-sends-host-keeps-build-may-go-2026-10-31.md | #2229: my condition is met (HOST keeps the list, xian sends); Web may build fro… |
