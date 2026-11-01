@@ -97,6 +97,10 @@ class TestStageMetricsCarryTokens:
         assert all(
             m["input_tokens"] == 100 and m["output_tokens"] == 7 for m in decision.stage_metrics
         )
+        assert decision.usage == {
+            "input_tokens": 200,
+            "output_tokens": 14,
+        }, "the decision sums its stages"
 
     async def test_tokens_absent_when_the_provider_reported_none(self, monkeypatch):
         from services.intent_service import inversion_router as ir
@@ -119,6 +123,7 @@ class TestStageMetricsCarryTokens:
         decision = await ir.route("add a todo", None, llm_service=_LLM(), user_id=None)
         assert decision.operation == "create_todo"
         assert all("input_tokens" not in m for m in decision.stage_metrics), "never estimated"
+        assert decision.usage is None
 
     async def test_flag_off_path_is_unchanged(self, monkeypatch):
         from services.intent_service import inversion_router as ir
@@ -138,3 +143,5 @@ class TestStageMetricsCarryTokens:
         decision = await ir.route("add a todo", None, llm_service=_LLM(), user_id=None)
         assert decision.operation == "create_todo" and decision.stage_metrics is None
         assert len(calls) == 1 and calls[0][1] == ir._SYSTEM_PROMPT
+        # Arch 09:12: the flat path records usage too, like for like.
+        assert decision.usage == {"input_tokens": 5, "output_tokens": 1}

@@ -254,6 +254,25 @@ def _request_params(system: str, prompt: str, model_id: str, no_thinking: bool) 
     }
 
 
+def _tree_sha() -> str:
+    """The sha of the tree this render runs in (Arch 2026-11-01 09:21: each arm's stage 1
+    AND stage 2 are rendered from the arm's own tree, and the report says which)."""
+    import subprocess
+
+    try:
+        return subprocess.run(
+            ["git", "rev-parse", "--short=10", "HEAD"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip()
+    except (
+        Exception
+    ):  # silent-ok: a render outside a checkout still renders; the header then says "unknown"
+        return "unknown"
+
+
 def _router_model_id(args) -> str:
     from services.intent_service.inversion_router import TASK_TYPE
     from services.llm.config import LLMProvider, resolve_model
@@ -268,6 +287,7 @@ def _render_stage1(args) -> None:
     phrases = _phrases(args)
     model_id = _router_model_id(args)
     no_thinking = bool(getattr(args, "no_thinking", False))
+    tree = _tree_sha()
     with open(args.out, "w") as f:
         for i, phrase in enumerate(phrases):
             prompt = build_stage1_prompt(phrase)
@@ -276,6 +296,7 @@ def _render_stage1(args) -> None:
                     "custom_id": f"{args.label}-{i}-{n}",
                     "phrase": phrase,
                     "stage": 1,
+                    "tree": tree,
                     "params": _request_params(_STAGE1_SYSTEM_PROMPT, prompt, model_id, no_thinking),
                 }
                 f.write(json.dumps(rec) + "\n")
@@ -301,6 +322,7 @@ def _render_stage2(args) -> None:
     grammar = derive_routing_grammar()
     model_id = _router_model_id(args)
     no_thinking = bool(getattr(args, "no_thinking", False))
+    tree = _tree_sha()
     results = {}
     for line in Path(args.results).read_text().splitlines():
         r = json.loads(line)
@@ -328,6 +350,7 @@ def _render_stage2(args) -> None:
                     "custom_id": f"{req['custom_id']}-s2-{k}",
                     "phrase": req["phrase"],
                     "stage": 2,
+                    "tree": tree,
                     "parent": req["custom_id"],
                     "group": group.value,
                     "part_text": part_text,
@@ -432,6 +455,15 @@ def _parse_two_stage(args) -> None:
         u = (res or {}).get("usage") or {}
         return (u.get("input_tokens") or 0, u.get("output_tokens") or 0)
 
+    s1_trees = Counter(
+        json.loads(l).get("tree", "unknown")
+        for l in Path(args.s1_requests).read_text().splitlines()
+    )
+    s2_trees = Counter(
+        json.loads(l).get("tree", "unknown")
+        for l in Path(args.s2_requests).read_text().splitlines()
+    )
+
     label = None
     rows = []
     prev = os.environ.get("PIPER_INVERSION_TWO_STAGE")
@@ -491,6 +523,16 @@ def _parse_two_stage(args) -> None:
         f"Parsed {datetime.now(timezone.utc):%Y-%m-%d %H:%MZ} · {len(rows)} decisions · "
         f"{refused} REFUSED (no repair in a batch) · {errors} ERROR · served: "
         + "; ".join(f"{k} ({v}/{len(rows)})" for k, v in served_c.most_common()),
+        "",
+        "Rendered from: stage 1 tree "
+        + ", ".join(f"`{k}` ({v})" for k, v in s1_trees.most_common())
+        + " · stage 2 tree "
+        + (", ".join(f"`{k}` ({v})" for k, v in s2_trees.most_common()) or "(no stage-2 requests)")
+        + (
+            ""
+            if set(s1_trees) == set(s2_trees) or not s2_trees
+            else " · **stage 1 and stage 2 trees differ: not one arm**"
+        ),
         "",
         "## Stage 1 picks",
         "",

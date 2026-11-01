@@ -38,6 +38,7 @@ def test_render_stage1_builds_the_live_stage1_request(tmp_path):
     rows = [json.loads(line) for line in out.read_text().splitlines()]
     assert [r["custom_id"] for r in rows] == ["ts-0-1", "ts-0-2"]
     assert rows[0]["stage"] == 1
+    assert rows[0]["tree"] and rows[0]["tree"] != "unknown", "the rendering tree is recorded"
     p = rows[0]["params"]
     assert p["system"] == _STAGE1_SYSTEM_PROMPT
     assert p["messages"] == [{"role": "user", "content": build_stage1_prompt("show my todos")}]
@@ -59,7 +60,15 @@ def test_render_stage2_renders_one_request_per_pick_by_build_stage2_prompt_unalt
             ["add a todo", "hello there", "list issues and my week", "garbage"]
         ):
             f.write(
-                json.dumps({"custom_id": f"ts-{i}-1", "phrase": phrase, "stage": 1, "params": {}})
+                json.dumps(
+                    {
+                        "custom_id": f"ts-{i}-1",
+                        "phrase": phrase,
+                        "stage": 1,
+                        "tree": rb._tree_sha(),
+                        "params": {},
+                    }
+                )
                 + "\n"
             )
     s1_res = tmp_path / "s1-res.jsonl"
@@ -95,7 +104,15 @@ def test_parse_two_stage_reconstructs_decisions_through_route(tmp_path, monkeypa
     with open(s1_reqs, "w") as f:
         for i, phrase in enumerate(phrases):
             f.write(
-                json.dumps({"custom_id": f"ts-{i}-1", "phrase": phrase, "stage": 1, "params": {}})
+                json.dumps(
+                    {
+                        "custom_id": f"ts-{i}-1",
+                        "phrase": phrase,
+                        "stage": 1,
+                        "tree": rb._tree_sha(),
+                        "params": {},
+                    }
+                )
                 + "\n"
             )
     s1_res = tmp_path / "s1-res.jsonl"
@@ -157,6 +174,9 @@ def test_parse_two_stage_reconstructs_decisions_through_route(tmp_path, monkeypa
     assert "stage 1 in 0 / out 0 · stage 2 in 1350 / out 75" in report
     assert "2 REFUSED" in report or "1 REFUSED" in report
     assert "## Group confusion" in report
+    # Arch 09:21: the report says which tree rendered each stage of this arm.
+    assert "Rendered from: stage 1 tree `" in report and "· stage 2 tree `" in report
+    assert "trees differ" not in report
     assert "| todos_and_reminders | todos_and_reminders | 1 |" in report
     assert "| assistant_and_conversation | NONE | 1 |" in report
     assert "| issues | issues | 1 |" in report

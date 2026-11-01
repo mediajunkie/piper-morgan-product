@@ -241,6 +241,10 @@ class RoutingDecision:
     # served provider/model, never usage, and nothing here estimates them.
     route_group: Optional[str] = None
     stage_metrics: Optional[List[Dict[str, Any]]] = None
+    # #2149 step 3 (Arch 09:12): the provider's own token counts for this decision,
+    # summed over its calls (both paths), present only when the provider reported
+    # usage; never estimated. Flat and two-stage are then compared like for like.
+    usage: Optional[Dict[str, int]] = None
 
     @property
     def route_label(self) -> str:
@@ -726,6 +730,17 @@ async def _complete_with_repair(
     return result
 
 
+def _usage_of(*results: "_StageResult") -> Optional[Dict[str, int]]:
+    """Token counts summed over the given stage results, or None when none reported any."""
+    reported = [r for r in results if r.input_tokens is not None]
+    if not reported:
+        return None
+    return {
+        "input_tokens": sum(r.input_tokens or 0 for r in reported),
+        "output_tokens": sum(r.output_tokens or 0 for r in reported),
+    }
+
+
 def _flat_repair_prompt(prompt: str, last_error: Optional[str]) -> str:
     # #1595 unit 4b: SHAPE-AWARE repair. Arch flagged this exact spot
     # (2026-09-26 ruling): the pre-4b repair prompt hard-coded "exactly
@@ -1004,6 +1019,7 @@ async def _route_two_stage(
     llm_calls = 0
     repaired = False
     picked: Optional[str] = None
+    stage_results: List[_StageResult] = []  # for RoutingDecision.usage (Arch 09:12)
 
     def decision(outcome: str, **kw: Any) -> RoutingDecision:
         return RoutingDecision(
@@ -1014,6 +1030,7 @@ async def _route_two_stage(
             served_model=served.get("model"),
             route_group=picked,
             stage_metrics=list(metrics),
+            usage=_usage_of(*stage_results),
             **kw,
         )
 
@@ -1027,6 +1044,7 @@ async def _route_two_stage(
                 error=res.llm_error,
                 route_group=picked,
                 stage_metrics=list(metrics),
+                usage=_usage_of(*stage_results),
             )
         logger.warning("inversion_route_refused", reason=res.validation_error, llm_calls=llm_calls)
         return decision("refused", error=res.validation_error, raw_response=res.raw)
@@ -1041,6 +1059,7 @@ async def _route_two_stage(
         user_id=user_id,
         served=served,
     )
+    stage_results.append(res1)
     llm_calls += res1.llm_calls
     repaired = repaired or res1.repair_attempted
     s1 = res1.parsed
@@ -1068,6 +1087,7 @@ async def _route_two_stage(
                 framing=s1.get("framing"),
                 route_group=picked,
                 stage_metrics=list(metrics),
+                usage=_usage_of(res1),
             )
         parts = [(RouteGroup(picked), None)]
 
@@ -1088,6 +1108,7 @@ async def _route_two_stage(
             user_id=user_id,
             served=served,
         )
+        stage_results.append(res2)
         llm_calls += res2.llm_calls
         repaired = repaired or res2.repair_attempted
         last_raw = res2.raw
@@ -1186,6 +1207,7 @@ async def route(
             llm_calls=llm_calls,
             repair_attempted=repair_attempted,
             error=res.llm_error,
+            usage=_usage_of(res),
         )
     parsed = res.parsed
     raw = res.raw
@@ -1202,6 +1224,7 @@ async def route(
                 served_provider=served.get("provider"),
                 served_model=served.get("model"),
                 framing=parsed.get("framing"),
+                usage=_usage_of(res),
             )
         operation = parsed["operation"]
         outcome = (
@@ -1223,6 +1246,7 @@ async def route(
             served_provider=served.get("provider"),
             served_model=served.get("model"),
             framing=parsed.get("framing"),
+            usage=_usage_of(res),
         )
 
     # Both attempts failed validation → REFUSED, recorded honestly. Never a
@@ -1236,4 +1260,5 @@ async def route(
         raw_response=res.raw,
         served_provider=served.get("provider"),
         served_model=served.get("model"),
+        usage=_usage_of(res),
     )

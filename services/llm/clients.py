@@ -7,7 +7,7 @@ Uses LLMConfigService for secure key management and validation.
 
 import asyncio
 from collections import Counter
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, cast
 
 import structlog
 from openai import OpenAI
@@ -425,8 +425,9 @@ class LLMClient:
             if served is not None:  # #1620: per-call resolved provider+model
                 served["provider"] = primary_provider.value
                 served["model"] = served_model
-                if getattr(self, "_last_usage", None):  # #2149 step 3: the provider's own usage
-                    served["usage"] = dict(self._last_usage)
+                usage_now = getattr(self, "_last_usage", None)
+                if usage_now:  # #2149 step 3: the provider's own usage, never estimated
+                    cast(Dict[str, Any], served)["usage"] = dict(usage_now)
             return result
         except LLMKeyRequiredError as e:
             # #1809: a key refusal from the provider leg (the inverted chokepoint —
@@ -506,8 +507,9 @@ class LLMClient:
                 if served is not None:  # #1620: per-call resolved provider+model
                     served["provider"] = fallback_provider.value
                     served["model"] = fallback_served_model
-                    if getattr(self, "_last_usage", None):  # #2149 step 3
-                        served["usage"] = dict(self._last_usage)
+                    usage_now = getattr(self, "_last_usage", None)
+                    if usage_now:  # #2149 step 3
+                        cast(Dict[str, Any], served)["usage"] = dict(usage_now)
                 return result
             except LLMKeyRequiredError:
                 # #1809/#1819: the gate above (`_is_provider_configured`) is
