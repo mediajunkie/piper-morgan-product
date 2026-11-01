@@ -313,3 +313,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v731 2026-11-01 06:53 PST: PDR-102 ratification added to Your word (PPM 06:51); Buttondown line notes HOST prefers the sign-up (HOST 06:27). Verified: memos read in full this wake; PDR file exists on main.
 - v732 2026-11-01 07:44 PST: added step 3, promote then #2242 allowlist add (script absent from served c44dd081cb, git cat-file); hot card retitled 'four steps'. Verified: Lead 07:38, Arch 07:41, PPM 07:43, PA 07:40/07:41 read; gh run list Tests cd0c in progress, fly-deploy cd0c success.
 - v732 (server 736) 07:45 PST: reconnect line added to step 3 (Arch 07:43, 07:44).
+- v733 2026-11-01 08:50 PST: step 3 unblocked (Tests cd0c489354 success, gh run list); #2238 Notion-key step and web-pat-test widened (PPM 08:47, Web 08:40).
