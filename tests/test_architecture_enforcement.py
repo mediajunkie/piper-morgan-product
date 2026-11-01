@@ -9212,3 +9212,17 @@ class TestRouteGroupRatchet2149:
         assert "route_group" not in rendered
         for line in ROUTE_GROUP_LINES.values():
             assert line not in rendered
+
+    def test_stage1_prompt_names_no_op(self):
+        """#2149 step 2: a group line must not leak op names into the stage-1 prompt."""
+        from services.intent_service.inversion_router import (
+            _STAGE1_SYSTEM_PROMPT,
+            build_stage1_prompt,
+        )
+
+        rendered = _STAGE1_SYSTEM_PROMPT + "\n" + build_stage1_prompt("hello", None)
+        for op in self._grammar().operations:
+            if "_" in op.name:
+                assert op.name not in rendered, f"stage-1 prompt names op {op.name}"
+            else:
+                assert f"- {op.name}:" not in rendered, f"stage-1 prompt names op {op.name}"
