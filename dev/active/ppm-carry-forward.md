@@ -593,4 +593,5 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - the #1706 Sprint move;
   - CXO's spot-check;
   - the next weekly diff, Fri 11-06;
-  - a document-model vision PDR draft with Arch and CXO (xian's 10-31 vision line, decisions.log 18:51), PPM's to start.
+  - **PDR-102 (document model) v0.3**, Arch and CXO reviewed 11-01. 🔒 Sent to xian via Exec 11-01 for ratification (smallest answer: "ratify"). Open check: Arch on whether an artifact can be shown as a generated document. Comms holds public "data you own" copy until C7 is verified and C8 has a surface.
+  - **Rule from PDR-102:** when PPM places a connector-ingest unit, mail Arch the same day (his ADR trigger for C2).
