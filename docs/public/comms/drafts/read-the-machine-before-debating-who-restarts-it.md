@@ -26,40 +26,26 @@ I was busy doing other things, essentially tying up the whole team behind this b
 
 This is reasonable stuff to discuss! Very prudent. Sober even. But it's focused on a logistical triviality instead of the real question, which was why did the database need to be restarted at all.
 
-# The likely cause
+# Verifying the likely cause
 
-Arch had offered a working hypothesis in their memo, that an out-of-memory (OOM) , already named the likely cause, in the same memo: "My working
-hypothesis is an OOM kill on a small Postgres VM. It is unverified and only a log read confirms or refutes it."
-[Arch memo l.21] So the answer was on the table as a guess. No agent had looked.
+Arch had offered a working hypothesis in their memo, that the Postgres (database) virtual machine had exhausted its available physical memory (RAM) and swap space, forcing the system kernel to terminate a process to avoid a total system crash, something called an "out-of-memory (OOM) kill." They also noted that this could be verified or refuted by checking the logs, but no agent had bothered to look yet.
 
-**4. The read.** My product assistant agent (Piper Alpha) did. "Arch, CIO and HOST had all asked for the evidence to
-be captured before any restart, and nobody had done it, so I did it with read-only fly commands." [pa log 10-21
-l.58] The kernel log showed the system had run out of memory and killed the database process at about 11:19, on a
-256 MB machine with no swap. Monday's earlier crash read the same way. [pa l.59, PA memo 10-21 l.12–21]
-- PA's memo, 12:48: "Cause, read on the machine (Arch's hypothesis, now confirmed)." [PA memo l.12]
-- And the line that made the restart debate moot: "A restart alone leaves the same OOM risk. On today's evidence,
-  that's about two days." [PA memo l.34] HOST noted two days would land on 10-23, the day of your checkpoint
-  before partners. [host l.46]
+My prototypical product assistant agent (Piper Alpha) picked up on this noting that the other three agents had all called for the evidence to be captured before any restart, but none had bothered to actually do so. Perhaps because they are leadership and Piper is staff, they took the initiative to ready the logs on our hosting service (Fly.io).
 
-**5. The question changed.** PA's own summary: "the restart-workflow thread ran for 30 minutes on recovery mechanics
-while the cause sat one read-only `dmesg` away. Reading the machine first changed the question from "who restarts
-it" to "how much memory"." [pa l.63]
-- Lead chose 512 MB at 12:56, one command that restarts and cures at once. [lead l.114] You ran it about 14:12 and
-  every health check passed. Down roughly 2h53m. [host l.51]
-- *Timing note:* "30 minutes" is PA's phrase. By memo times the restart thread ran about 21 minutes (12:27 to
-  12:48). "About half an hour" is safe.
+The kernel log showed that the system had indeed run out of memory and killed the database process at about 11:19, on a
+256 MB machine with no swap. Monday's earlier crash had the same sort of footprint. Piper confirmed the hypothesis and pointed out that restarting the database in this state would leave the same OOM risk, with the next shutdown liking happening two days hence, right when I was supposed to be making the call about whether we were on track for an October 30 beta launch (SPOILER: we made it).
 
-**6. Second instance, same afternoon (optional).** The team then leaned toward "turn on automatic restart". PA read
-the config and the source and found it was already on, and can't fire for this kind of database. PA: ""turn on
-automatic restart" sounded like a fix, but it was already on." [pa l.76–81] Use it as a one-line echo, or leave it
-for the narrative, which covers that setting.
+# The real question
 
-## Possible closing thought
-A guess about the cause, however good, doesn't change the plan until someone checks it. The look was cheap,
-read-only and a few minutes long, and it was the one thing every agent had asked for and none had done.
+The debate about the proper way to restart the database unfolded over half an hour when the answer sat in an unexamined log. The fix took much less time.
 
-## Footer
-- **Next on Building Piper Morgan:** "The Unguarded Entrance" (Tue 11-03, title final). Suggested tease: *on a
+Now that the real question was clear, Lead bumped the database memory to 512 MB. By that afternoon I was available to oversee the restart and the database came back fine, passing all health checks.
+
+# Winning the wrong argument
+
+I don't think agents are unique in their ability to go off on long tangents or even "bike shed" arguments without first checking the facts of a situation. I'm fairly certain I've seen human-only teams do this many times in my storied career. Regardless of who or what is running into that rabbithole the solution is the same. Check first!
+
+*Next on Building Piper Morgan, we resume the building narrative with "The Unguarded Entrance" Suggested tease: *on a
   holiday Sunday, my chief of staff agent finds a hole in the routine every agent runs, and by evening finds the
   worst case of it in their own seat.* (The same line Thursday's post used.)
 - **Reader question idea:** *When something breaks, how long does your team debate the fix before anyone looks at
