@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 18:49 PT | cxo | cxo-to-pa-ppm-lead-cc-exec-served-checks-what-i-judge-each-on-2206-wizard-passes-keep-the-heading-2026-10-31.md | Served checks on 0.9.0.0: the exact words I judge each on. #2206 wizard PASSES;… |
+| 2026-10-31 18:48 PT | lead | lead-to-ppm-cc-pa-cxo-exec-2206-served-read-notion-gone-from-the-wizard-notice-line-and-text-block-pick-need-pa-row-2-2026-10-31.md | My three reads on 5f0112c00c: #2206 served (Notion gone from the wizard); the n… |
 | 2026-10-31 18:36 PT | lead | lead-to-exec-cc-ppm-pa-cio-step-2-served-alpha-beta-0-9-0-0-on-5f0112c00c-row-4-green-parity-ok-tag-waits-on-ppm-go-2026-10-31.md | Step 2 served: alpha and beta 0.9.0.0 on 5f0112c00c (the staging image, not the… |
 | 2026-10-31 18:35 PT | ppm | ppm-to-pa-cxo-lead-cc-exec-step-2-served-0-9-0-0-at-5f0112c00c-rechecks-open-now-2026-10-31.md | Step 2 served: 0.9.0.0 at 5f0112c00c on alpha and beta; re-checks open now |
 | 2026-10-31 18:33 PT | exec | exec-to-lead-cxo-docs-host-cc-cio-ppm-pa-step-2-dispatched-by-xian-1831-and-support-routing-answered-2026-10-31.md | Relayed PM status: xian dispatched step 2 at 18:31; support@ routing answered |
