@@ -678,10 +678,20 @@ class TwoStageCorpusReplayLLM:
             for l in Path(s2_results).read_text().splitlines()
         }
         self._s1: dict = {}
+        seen_phrases: dict = {}
         for line in Path(s1_requests).read_text().splitlines():
             req = json.loads(line)
             key = f"User message: {req['phrase']!r}"
-            if key not in self._s1 and req["custom_id"] in s1_res:
+            # route() carries no sample index, so this replay answers each PHRASE once. A
+            # multi-sample render (--samples > 1) would silently repeat sample 1; refuse it
+            # and point at parse-two-stage, which replays per sample (the 11-01 misread).
+            seen_phrases[req["phrase"]] = seen_phrases.get(req["phrase"], 0) + 1
+            if seen_phrases[req["phrase"]] > 1:
+                raise ValueError(
+                    "TwoStageCorpusReplayLLM takes a one-sample-per-phrase render (the corpus); "
+                    f"{req['phrase']!r} appears more than once. For a ×N screen use parse-two-stage."
+                )
+            if req["custom_id"] in s1_res:
                 self._s1[key] = (req["custom_id"], s1_res[req["custom_id"]])
         self._s2: dict = {}
         for line in Path(s2_requests).read_text().splitlines():

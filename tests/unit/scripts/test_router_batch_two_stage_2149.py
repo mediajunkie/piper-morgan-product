@@ -283,6 +283,37 @@ def test_corpus_replay_answers_route_by_phrase_for_one_arm(tmp_path, monkeypatch
         )
 
 
+def test_corpus_replay_refuses_a_multi_sample_render(tmp_path):
+    """The 11-01 misread: a ×6 render fed to the per-phrase replay repeated sample 1 six
+    times. It now refuses, and names the per-sample tool."""
+    s1_reqs = tmp_path / "s1.jsonl"
+    with open(s1_reqs, "w") as f:
+        for n in (1, 2):
+            f.write(
+                json.dumps(
+                    {
+                        "custom_id": f"x-0-{n}",
+                        "phrase": "add a todo",
+                        "stage": 1,
+                        "tree": "t",
+                        "params": {},
+                    }
+                )
+                + "\n"
+            )
+    s1_res = tmp_path / "s1-res.jsonl"
+    _results(
+        s1_res,
+        {"x-0-1": '{"group": "todos_and_reminders"}', "x-0-2": '{"group": "todos_and_reminders"}'},
+    )
+    s2_reqs = tmp_path / "s2.jsonl"
+    s2_reqs.write_text("")
+    s2_res = tmp_path / "s2-res.jsonl"
+    s2_res.write_text("")
+    with pytest.raises(ValueError, match="parse-two-stage"):
+        rb.TwoStageCorpusReplayLLM(str(s1_reqs), str(s1_res), str(s2_reqs), str(s2_res))
+
+
 def test_replay_matches_stage2_by_group_and_part_never_by_the_users_words():
     from services.intent_service.inversion_router import (
         _STAGE1_SYSTEM_PROMPT,
