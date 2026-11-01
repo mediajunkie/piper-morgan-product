@@ -20158,8 +20158,8 @@ Add any additional information here.
         )
 
         github_router = GitHubIntegrationRouter()
-        await github_router.initialize(user_id=user_id)
         try:
+            await github_router.initialize(user_id=user_id)
             candidates = await github_router.list_milestones_via_mcp(state="all")
         except (GitHubReadFailed, SQLAlchemyError) as rf:
             # A failed or not-performed read (and a DB failure under the
