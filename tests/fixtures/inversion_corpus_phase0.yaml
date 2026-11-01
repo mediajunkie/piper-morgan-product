@@ -318,10 +318,11 @@ corpus:
     probe_verdict: "DISAGREE"
   - phrase: "what's the next milestone?"
     category: STATUS
-    expected: REVIEW
+    expected: action:list_milestones
     source: "probe-row-30"
     surface1_claim: "status/get_project_status"
     probe_verdict: "DISAGREE"
+    notes: "CXO/PPM destination ruling 2026-11-01 11:17/11:19 (#2197): the milestones read, with code's earliest-due open pick (Arch 11:01); was REVIEW (probe-row-30)"
   - phrase: "what branch are we on?"
     category: QUERY
     expected: REVIEW
@@ -444,6 +445,21 @@ corpus:
     source: "probe-row-52"
     surface1_claim: "priority/get_top_priority"
     probe_verdict: "DISAGREE"
+  - phrase: "what's the progress on the MVP milestone?"
+    category: STATUS
+    expected: action:get_project_status
+    source: "#2197 CXO's phrasing list 2026-11-01 11:17"
+    notes: "CXO/PPM destination ruling 2026-11-01 11:17/11:19"
+  - phrase: "how is the Production milestone going"
+    category: STATUS
+    expected: action:get_project_status
+    source: "#2197 CXO's phrasing list 2026-11-01 11:17"
+    notes: "CXO/PPM destination ruling 2026-11-01 11:17/11:19"
+  - phrase: "status of the Fast Follow milestone"
+    category: STATUS
+    expected: action:get_project_status
+    source: "#2197 CXO's phrasing list 2026-11-01 11:17"
+    notes: "CXO/PPM destination ruling 2026-11-01 11:17/11:19. Known router miss: review_issue x6 in the 11-01 x6 control; no description edit for it alone (Rule 7, Arch)"
   - phrase: "can you show me issues from just one milestone?"
     category: QUERY
     expected: REVIEW
@@ -1649,9 +1665,9 @@ corpus:
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r\"\\bmilestones?\\s+(?:status|count|list|due)\\b\""
   - phrase: "when's the milestone deadline"
     category: QUERY
-    expected: floor
+    expected: action:list_milestones
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r\"\\bwhen.*milestone\\b\""
-    notes: "RULED 2026-10-01 (CXO): no named milestone and no current-milestone default — CLARIFY is honest"
+    notes: "CXO/PPM destination ruling 2026-11-01 11:17/11:19 (#2197): the milestones read answers it, and code picks the one milestone when the ask names or means one; was floor (RULED 2026-10-01, CXO: no named milestone and no current-milestone default). Known miss: CLARIFY x6 in the 11-01 control"
   - phrase: "any recent releases"
     category: QUERY
     expected: action:list_releases_query

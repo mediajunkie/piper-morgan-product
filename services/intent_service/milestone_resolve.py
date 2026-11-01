@@ -93,9 +93,7 @@ def _int_or_zero(value: Any) -> int:
 
 def build_resolver_prompt(message: str, candidates: List[Dict[str, Any]]) -> str:
     """The user's message plus the candidates exactly as code read them."""
-    lines = [
-        "Milestones read from the repository (index | title | state | due | open | closed):"
-    ]
+    lines = ["Milestones read from the repository (index | title | state | due | open | closed):"]
     for i, m in enumerate(candidates):
         title = display_title(m.get("title"), "(untitled milestone)")
         lines.append(

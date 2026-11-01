@@ -83,6 +83,33 @@ _ACTION_CATEGORY = {
 # Inversion's question to answer, not an assertion.
 # ---------------------------------------------------------------------------
 HAND_ROWS = [
+    # #2197 (CXO's list 2026-11-01 11:17; PPM's placement 11:18/11:19; Arch's destination (A)):
+    # a progress ask about a named milestone routes get_project_status, whose handler resolves
+    # the milestone op-locally from this turn's read. No router change for any of these.
+    {
+        "phrase": "what's the progress on the MVP milestone?",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": "#2197 CXO's phrasing list 2026-11-01 11:17",
+        "notes": "CXO/PPM destination ruling 2026-11-01 11:17/11:19",
+    },
+    {
+        "phrase": "how is the Production milestone going",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": "#2197 CXO's phrasing list 2026-11-01 11:17",
+        "notes": "CXO/PPM destination ruling 2026-11-01 11:17/11:19",
+    },
+    {
+        "phrase": "status of the Fast Follow milestone",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": "#2197 CXO's phrasing list 2026-11-01 11:17",
+        "notes": (
+            "CXO/PPM destination ruling 2026-11-01 11:17/11:19. Known router miss: review_issue x6 "
+            "in the 11-01 x6 control; no description edit for it alone (Rule 7, Arch)"
+        ),
+    },
     {
         "phrase": "can you show me issues from just one milestone?",
         "category": "QUERY",
@@ -4824,8 +4851,12 @@ RULED_EXPECTATIONS: dict = {
         "RULED 2026-10-01 (CXO): neither list_prs (author-scoped) nor stale_prs (age-based) computes reviewer-requested status — capability gap, tracked",
     ),
     "when's the milestone deadline": (
-        "floor",
-        "RULED 2026-10-01 (CXO): no named milestone and no current-milestone default — CLARIFY is honest",
+        "action:list_milestones",
+        "CXO/PPM destination ruling 2026-11-01 11:17/11:19 (#2197): the milestones read answers it, and code picks the one milestone when the ask names or means one; was floor (RULED 2026-10-01, CXO: no named milestone and no current-milestone default). Known miss: CLARIFY x6 in the 11-01 control",
+    ),
+    "what's the next milestone?": (
+        "action:list_milestones",
+        "CXO/PPM destination ruling 2026-11-01 11:17/11:19 (#2197): the milestones read, with code's earliest-due open pick (Arch 11:01); was REVIEW (probe-row-30)",
     ),
     "what version are we on": (
         "action:list_releases_query",
