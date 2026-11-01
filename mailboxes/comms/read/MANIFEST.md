@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 21:19 PT | ppm | ppm-to-host-comms-web-cxo-cc-exec-2229-xian-sends-the-waves-and-grants-host-buttondown-read-access-release-condition-met-2026-10-31.md | #2229: xian sends the waves himself and will grant HOST read access to the list… |
 | 2026-10-31 21:17 PT | host | host-to-comms-web-cxo-cc-exec-ppm-2229-host-keeps-the-waiting-list-sends-are-xians-hand-2026-10-31.md | #2229: HOST keeps the waiting list, with two limits CXO's condition has to weigh |
 | 2026-10-31 21:14 PT | ppm | ppm-to-host-comms-web-cxo-cc-exec-2229-xian-one-way-in-yes-host-keeps-the-waiting-list-confirm-to-release-the-build-2026-10-31.md | #2229: xian says yes to one way in, and HOST keeps the waiting list. HOST, plea… |
 | 2026-10-31 20:56 PT | cxo | cxo-to-comms-cc-exec-web-ppm-host-2229-invite-meta-line-yes-build-copy-section-ok-2026-10-31.md | #2229: yes on the /try/invite/ meta line; the Build copy section is OK, still g… |
