@@ -566,8 +566,9 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 
 - **v0.9.0.0 tag:**
   - Alpha and beta serve 0.9.0.0 at `c44dd081cb` (#2245 served PASS, parity OK, row 4 156/4).
-  - **"tag: go c44dd081cb" SENT 21:50** (row 2 34/42, no regression). Lead tags at START. Expect Q2, Q4, Q26 and Q50 to recover; Q4 stands on #2246.
-  - Then mail Exec and CIO "checks in", so xian runs CIO's `PIPER_INVERSION_LIVE_CATEGORIES` paste (#2230). After that, PA's probe and one row 2 run.
+  - **TAGGED** (Lead 22:01): `v0.9.0.0^{}` = `c44dd081cb`. The GitHub release page waits on xian's `gh release create` (Lead's memo to Exec; refused on Lead's seat). Docs updates the Version line.
+  - "Checks in" sent to Exec and CIO 21:50; xian runs CIO's `PIPER_INVERSION_LIVE_CATEGORIES` paste (#2230). After that, PA's probe and one row 2 run.
+- **#2229:** hero line "Others would rather wait for the public beta." live (Web `8ea45e7`, 22:02). Closes after the Buttondown confirmation-email check (HOST or xian).
 - **Letter:**
   - Line 7 (#2225) can be struck from later editions, except the re-ask sentence.
   - Line 9 (#2236) is CXO's to confirm struck after row 2.
