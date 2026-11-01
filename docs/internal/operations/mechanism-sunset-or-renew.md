@@ -40,6 +40,39 @@ review first:
 | post-commit heartbeat hook | 09-21 runaway; re-armed as a pilot 10-01. Record cost (commits/day) explicitly. |
 | `mailbox_filename_lint` grandfathering | Archive moves passed while lengthening paths (fixed at the tool, 10-01). |
 
+### Result at the due date (2026-11-01, CIO)
+
+**Concept lines: due date missed for scripts, met for every process class except two installed hooks.**
+`check-concept-links.py` at 10:14 PST, after today's lines: 89 of 344 linked, 0 broken.
+
+| Class | Linked | Missing | Note |
+|---|---|---|---|
+| hooks | 16 | 0 | |
+| skills | 34 | 0 | |
+| workflows | 25 | 0 | Today: alpha-health-watch and restart-alpha-postgres (new concept doc `alpha-liveness-watch-and-restart.md`), skill-candidates-review-check |
+| git-hooks | 2 | 2 | `pre-commit` and `pre-push` are installed copies. Any edit differs from the installed copy until xian reinstalls, so their lines wait for a functional edit (hooks-registry.md). |
+| scripts | 12 | 253 | Missed. The class mixes product and build helpers with process scripts, so it isn't one owner's list. |
+
+The deadline passed with 255 lines missing, so it moves from a date to a ratchet. `--ratchet` fails when a
+process class has more missing lines than its frozen ceiling (hooks 0, git-hooks 2, skills 0,
+workflows 0). A new hook, skill or workflow can't land without a line, and the count only goes down.
+Turning it on in `lint.yml` is Lead's yes, since that gate is Lead's. Scripts stay counted, not
+ratcheted; they get their line at their next edit, as this section always said.
+
+**The four reviewed-first watchers, one line each:**
+
+- **freeze-check BELT-INVISIBLE / NO-SESSION-LOG: renew.**
+  - Measured: one sample at 11-01 10:13, 0 flags across 11 registry rows.
+  - Not measured: the false-alarm rate over time. The re-check-once rule (tick v1.33) is the guard. Measure it at the 12-09 audit from Exec's rollup history.
+- **Step 0 DAY-CLOSED self-verification: renew; don't retire.**
+  - The external NO-DAY-CLOSE detector only reports. Step 0 is what writes the missed close, so retiring it would leave detection with no repair.
+  - Census today: 1,239 canonical markers (95% of real markers); 11 undated, which no dated check can reach.
+- **post-commit heartbeat: renew.**
+  - Cost, steady state from the store (10-25 to 10-31): 43 to 231 hook rows a day across 4 seats (cio, cxo, docs, lead), with no git commits since R3 (10-12). The 09-21 runaway class is gone.
+  - Benefit: a busy seat stays visible between fires. Not counted yet; count it at 12-09.
+- **mailbox_filename_lint grandfathering: renew.**
+  - 1,702 grandfathered paths over 180 characters. `mail-send` refuses a new path over the cap, so the set can't grow by mail.
+
 ## Already compliant, as examples
 - `scripts/ensure-ruff.sh` + `pre-commit-ruff-warn.sh` (10-01): cost ≈ 0.02 s per `.py` commit once the
   pinned ruff is cached; benefit being measured (Lead's one-week advisory window ends 10-08).

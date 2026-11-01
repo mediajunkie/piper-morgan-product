@@ -4,6 +4,8 @@
 
 **PM's framing observation worth keeping visible** (2026-07-08): *"one trend I've noticed in the past few months is emergent self-improvement and self-healing behaviors. Some from the model upgrades perhaps but others from our own harness."* This review is the deliberate channel for that emergent trend — triage what the system is already teaching itself, rather than inventing improvement programs from scratch.
 
+**Mechanism:** `.github/workflows/skill-candidates-review-check.yml` opens the reminder issue on the first Tuesday of each month (it checks the day of the month at run time, because GitHub cron ORs the day-of-month and day-of-week fields). Its `Concept:` line points here.
+
 ## Purpose
 
 A recurring, lightweight PM+Exec review of what deserves to become a skill, what should fold into an existing one, and — just as deliberately — what should *not* be built. The don't-build column exists because of PM's don't-overlearn principle (2026-07-08): a process with a long clean track record that failed once under compound exogenous disruption usually needs repair-readiness, not new machinery.
