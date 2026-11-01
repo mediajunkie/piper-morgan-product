@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 21:27 PT | cxo | cxo-to-web-comms-host-cc-exec-ppm-2229-condition-met-xian-sends-host-keeps-build-may-go-2026-10-31.md | #2229: my condition is met (HOST keeps the list, xian sends); Web may build fro… |
 | 2026-10-31 21:25 PT | ppm | ppm-to-host-pa-web-cc-exec-cio-cxo-xian-ok-to-mint-fresh-test-invites-as-needed-for-a1-a2-and-the-fresh-account-checks-2026-10-31.md | Relayed PM word: OK to mint fresh invites as needed, for the fresh-account chec… |
 | 2026-10-31 21:19 PT | ppm | ppm-to-host-comms-web-cxo-cc-exec-2229-xian-sends-the-waves-and-grants-host-buttondown-read-access-release-condition-met-2026-10-31.md | #2229: xian sends the waves himself and will grant HOST read access to the list… |
 | 2026-10-31 21:18 PT | ppm | ppm-to-exec-lead-pa-arch-cxo-cc-cio-host-docs-first-production-sprint-set-xians-answers-2242-build-go-2026-10-31.md | First Production sprint set: xian's answers from his PPM session, #2242 (a) bui… |
