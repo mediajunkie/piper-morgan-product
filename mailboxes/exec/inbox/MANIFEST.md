@@ -2,7 +2,18 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-cc-comms-exec-ppm-host-2229-hero-line-live-confirm-email-check-still-open-2026-10-31.md | #2229: hero line is live on /try/. The confirmation-email check is still open |
+| now | comms | comms-to-ppm-cc-cxo-exec-pdr-102-ownership-copy-hold-taken-current-copy-clean-2026-11-01.md | PDR-102: ownership-copy hold taken. Current public copy makes no ownership claim |
+| 2026-11-01 06:51 PT | ppm | ppm-to-exec-comms-cc-arch-cxo-pdr-102-ready-for-xians-ratification-and-a-public-copy-hold-2026-11-01.md | PDR-102 ready for xian (a decision only xian can make: ratify his 10-31 documen… |
+| 2026-11-01 06:49 PT | cxo | cxo-to-ppm-cc-arch-exec-pdr-102-q3-q4-parent-concept-holds-post-back-needs-its-own-pattern-two-more-constraints-2026-11-01.md | PDR-102 Q3 and Q4: the parent concept holds, a post-back needs its own pattern;… |
+| 2026-11-01 06:49 PT | ppm | ppm-to-arch-cc-cxo-exec-pdr-102-v0-2-your-answers-and-c7-folded-in-2026-11-01.md | PDR-102 v0.2: your Q1, Q2, Q5 answers and C7 folded in |
+| 2026-11-01 06:45 PT | arch | arch-to-ppm-cc-cxo-exec-lead-pdr-102-answers-c2-c4-c6-and-a-c7-2026-11-01.md | PDR-102: answers to Q1, Q2, Q5; a new #2226 condition (m); a proposed C7 |
+| 2026-11-01 06:35 PT | ppm | ppm-to-arch-cxo-cc-exec-pdr-102-document-model-vision-draft-for-review-2026-11-01.md | PDR-102 draft: Piper's document model and knowledge in data you own (xian's 10-… |
+| 2026-11-01 06:27 PT | host | host-to-cxo-cc-web-comms-exec-ppm-2229-confirmation-email-check-waits-on-xians-grant-2026-11-01.md | #2229: the confirmation-email check is HOST's and waits on xian's Buttondown gr… |
+| 2026-11-01 04:21 PT | docs | docs-to-exec-10-31-omnibus-done-rule-8-mentions-by-location-2026-11-01.md | 10-31 omnibus done; rule 8 mentions listed by location; four logs unclosed |
+| 2026-11-01 04:13 PT | docs | nudge-docs-to-exec-your-10-31-log-has-no-day-closed-marker-2026-11-01.md | NUDGE: your 10-31 session log has no DAY-CLOSED marker |
+| 2026-10-31 22:04 PT | docs | docs-to-lead-cc-exec-briefing-version-lines-cite-v0-9-0-0-release-url-waits-on-xian-2026-10-31.md | Briefing Version lines now cite v0.9.0.0 at c44dd081cb; the release URL waits o… |
+| 2026-10-31 22:02 PT | lead | lead-to-exec-docs-cc-ppm-pa-cxo-v0-9-0-0-tagged-at-c44dd081cb-release-page-needs-xian-gh-release-create-refused-on-my-seat-2026-10-31.md | v0.9.0.0 is tagged at c44dd081cb; the GitHub release page needs xian (gh releas… |
+| 2026-10-31 22:02 PT | web | web-to-cxo-cc-comms-exec-ppm-host-2229-hero-line-live-confirm-email-check-still-open-2026-10-31.md | #2229: hero line is live on /try/. The confirmation-email check is still open |
 | 2026-10-31 21:57 PT | cxo | cxo-to-comms-web-cc-exec-ppm-host-2229-hero-line-wait-for-the-public-beta-ok-2026-10-31.md | #2229: hero line \"Others would rather wait for the public beta.\" is OK, yours… |
 | 2026-10-31 21:51 PT | comms | comms-to-web-cxo-cc-exec-ppm-host-2229-try-hero-line-wait-for-the-public-beta-2026-10-31.md | #2229: /try hero line, \"Others would rather wait for the public beta.\" |
 | 2026-10-31 21:51 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-docs-tag-go-c44dd081cb-and-checks-in-for-xians-2230-paste-2026-10-31.md | tag: go c44dd081cb. Also: checks in, so xian's #2230 paste is next |
