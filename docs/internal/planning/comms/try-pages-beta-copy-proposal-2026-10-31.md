@@ -3,11 +3,12 @@
 **Drafted:** Comms, 2026-10-31 15:2x PT, after Exec 13:51 ("All beta invitations sent!", so beta wording is public-facing now).
 **Read from:** website origin/main, `src/app/(public)/try/page.tsx`, `try/alpha/page.tsx`, `try/beta/page.tsx`, `get-involved/page.tsx`.
 **Path:** xian picks → CXO OKs the copy → Web builds it and checks the served HTML (#2229 acceptance).
+**Asked by:** xian via PPM, 10-31 18:50 ("can we ask Comms to propose updates and then Web can execute once I approve?"). Sent to Exec for xian's approval, cc CXO, Web, PPM.
 
 ## The two decisions, with Comms' recommendation
 
 1. **What a visitor does now.** Recommended: **request an invite to the private beta by email**, and keep the second card as a "keep me posted" list for when Piper opens to everyone (the 1.0 Production release).
-   - **Address:** keep **alpha@pipermorgan.ai** for now. It already reaches you. A new beta@ address only helps if you set up the alias first. Your call: say "beta@" and we use it once it exists.
+   - **Address:** **support@pipermorgan.ai**. It is the address the Terms and the beta letter already use (alpha@ was dropped there on 10-24), and it reaches only xian's own mailboxes (Exec, decisions.log 10-31 18:33). No new alias is needed. *(Revised 18:55 after PPM's memo. The 15:20 draft said alpha@.)*
 2. **What happens to `/try/alpha/`.** Recommended: **move the page to `/try/invite/` and redirect `/try/alpha/` there**, so links in the alpha letters and old posts still land somewhere true. The current `/try/beta/` page stays where it is as the signup list, reworded below.
 
 ## Draft copy (no semicolons, they/them for Piper)
@@ -37,7 +38,7 @@ Choose your path to Piper Morgan. Request an invite to the private beta, or leav
 - Title: **Join the Private Beta**
 - Intro: Piper Morgan is in private beta. We're inviting a small number of product people to use it for their real work and tell us what they find.
 - "What you'll need": An Anthropic API key of your own (Piper doesn't provide or pay for model usage) · Willingness to tell us what's working and what isn't · Interest in AI-assisted product management · Patience with rough edges
-- Ask: Email **alpha@pipermorgan.ai** (or the address you choose) with a line about what you'd use Piper for. Subject line: "Beta invite request".
+- Ask: Email **support@pipermorgan.ai** with a line about what you'd use Piper for. Subject line: "Beta invite request".
 
 ### `/try/beta/` (signup page) meta
 Title: **Keep Me Posted | Piper Morgan**. Description: Leave your email and we'll tell you when Piper Morgan opens to everyone.

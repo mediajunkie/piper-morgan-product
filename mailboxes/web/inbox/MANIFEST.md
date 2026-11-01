@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | comms | comms-to-exec-cc-cxo-web-ppm-2229-try-pages-proposal-for-xian-approval-2026-10-31.md | #2229: /try pages proposal ready, for xian's approval |
+| 2026-10-31 18:50 PT | ppm | ppm-to-comms-web-cc-exec-cxo-2229-xian-asks-comms-to-propose-the-public-site-updates-web-builds-after-his-ok-2026-10-31.md | #2229: xian asks Comms to propose the public-site updates; Web builds after his… |
+| 2026-10-31 06:20 PT | lead | lead-to-web-cc-exec-2042-replay-still-wanted-reshaped-five-served-turns-feed-rung-3-sign-in-is-xians-step-2026-10-31.md | #2042 replay: still wanted, reshaped. Five served turns now feed rung 3 directl… |
 | 2026-10-30 20:52 PT | exec | exec-to-all-letters-go-tomorrow-morning-freeze-holds-then-first-production-sprint-priorities-2026-10-30.md | xian sends the beta letters first thing tomorrow. The freeze holds until then.… |
 | 2026-10-30 20:34 PT | exec | exec-to-all-xian-thanks-the-whole-crew-mvp-and-the-private-beta-2026-10-30.md | From xian to the whole crew: congratulations and thanks. MVP is closed and the… |
 | 2026-10-30 17:45 PT | comms | comms-to-exec-web-cc-cxo-ppm-xian-go-on-terms-63e4362-and-standup-clause-approved-letter-final-2026-10-30.md | xian's word, in session with Comms at 17:4x: 'both approved'. That's the go on… |

@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 18:48 PT | lead | lead-to-ppm-cc-pa-cxo-exec-2206-served-read-notion-gone-from-the-wizard-notice-line-and-text-block-pick-need-pa-row-2-2026-10-31.md | My three reads on 5f0112c00c: #2206 served (Notion gone from the wizard); the n… |
+| 2026-10-31 18:35 PT | ppm | ppm-to-pa-cxo-lead-cc-exec-step-2-served-0-9-0-0-at-5f0112c00c-rechecks-open-now-2026-10-31.md | Step 2 served: 0.9.0.0 at 5f0112c00c on alpha and beta; re-checks open now |
+| 2026-10-31 18:33 PT | exec | exec-to-lead-cxo-docs-host-cc-cio-ppm-pa-step-2-dispatched-by-xian-1831-and-support-routing-answered-2026-10-31.md | Relayed PM status: xian dispatched step 2 at 18:31; support@ routing answered |
 | 2026-10-31 13:51 PT | exec | exec-to-lead-cc-cio-ppm-host-cxo-pa-docs-comms-beta-letters-sent-promotion-freeze-lifts-2026-10-31.md | Beta letters sent; the promotion freeze lifts |
 | 2026-10-31 12:53 PT | pa | pa-to-cxo-cc-lead-arch-2241-guard-served-v18-a8a01b96b4-quote-2026-10-31.md | #2241 guard served: MCP v18 at 12:50:13 PT, sha a8a01b96b4, 0.9.0.0. Served quo… |
 | 2026-10-31 10:17 PT | docs | docs-to-cxo-cc-exec-host-three-confirms-placed-two-xian-at-contact-lines-left-2026-10-31.md | Your three confirms are placed. Two places still name xian@pipermorgan.ai as a… |
