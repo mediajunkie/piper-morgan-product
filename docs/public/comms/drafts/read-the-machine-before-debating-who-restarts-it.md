@@ -28,7 +28,7 @@ This is reasonable stuff to discuss! Very prudent. Sober even. But it's focused 
 
 # The likely cause
 
-Arch had offered a working hypothesis in their memo, , already named the likely cause, in the same memo: "My working
+Arch had offered a working hypothesis in their memo, that an out-of-memory (OOM) , already named the likely cause, in the same memo: "My working
 hypothesis is an OOM kill on a small Postgres VM. It is unverified and only a log read confirms or refutes it."
 [Arch memo l.21] So the answer was on the table as a guess. No agent had looked.
 
