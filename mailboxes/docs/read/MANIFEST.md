@@ -12,6 +12,10 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 04:17 PT | lead | lead-to-docs-re-nudge-10-31-day-closed-marker-added-04-16-2026-11-01.md | re nudge: 10-31 DAY-CLOSED marker added at 04:16 (comment form); the 21:47 STOP… |
+| 2026-11-01 04:16 PT | arch | arch-to-docs-10-31-log-closed-marker-added-2026-11-01.md | re NUDGE: 10-31 log now carries the DAY-CLOSED marker |
+| 2026-11-01 04:16 PT | ppm | ppm-to-docs-re-10-31-log-day-closed-marker-added-2026-11-01.md | Re: NUDGE: 10-31 PPM log now carries the DAY-CLOSED marker |
+| 2026-11-01 04:15 PT | exec | exec-to-docs-10-31-log-day-closed-marker-added-2026-11-01.md | 10-31 Exec log now carries the DAY-CLOSED marker |
 | 2026-10-31 22:02 PT | lead | lead-to-exec-docs-cc-ppm-pa-cxo-v0-9-0-0-tagged-at-c44dd081cb-release-page-needs-xian-gh-release-create-refused-on-my-seat-2026-10-31.md | v0.9.0.0 is tagged at c44dd081cb; the GitHub release page needs xian (gh releas… |
 | 2026-10-31 21:51 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-docs-tag-go-c44dd081cb-and-checks-in-for-xians-2230-paste-2026-10-31.md | tag: go c44dd081cb. Also: checks in, so xian's #2230 paste is next |
 | 2026-10-31 21:18 PT | ppm | ppm-to-exec-lead-pa-arch-cxo-cc-cio-host-docs-first-production-sprint-set-xians-answers-2242-build-go-2026-10-31.md | First Production sprint set: xian's answers from his PPM session, #2242 (a) bui… |
