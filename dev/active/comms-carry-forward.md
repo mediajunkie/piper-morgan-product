@@ -1,11 +1,11 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-01 06:53 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-11-01 08:49 PT. Read this first. It supersedes everything below.
 - **Log:** `dev/2026/11/01/2026-11-01-0619-comms-code-log.md` (10-31 is DAY-CLOSED).
 - **HOLD (PPM 06:51 11-01, from CXO's PDR-102 review):** no ownership claim ("knowledge in data you own" or similar) in a letter, the site or partner copy until PDR-102 **C7** (derived data deleted with the document or account) is verified and **C8** (the user can see and remove what Piper kept) has a surface. Current copy is clean (checked 06:53, memo to PPM). Check C7/C8 status before any new copy that mentions data.
 - **Beta letters sent 10-31 13:51** (Exec). The promotion freeze is lifted, but promotion is still xian's go. HOST confirmed the three 10-26 codes exist and are unused, so letter version 1c holds. Find codes by their masked form, not by creation date (they were created 10-18).
-- **Sat 10-31 "Build the Instrument Before the Theory":** PUBLISHED by Docs 08:51, LinkedIn URL set. **The Medium crosspost is xian's, still owed.** When it lands, Docs sets the URL and marks it `distributed`. This was the first run of the new "AI prompts human" process, and xian said it "went well".
-- **Sun 11-01 "Check the Machine First"** (retitled `773a30c435`): the file is still my scaffold (last edit 07:55 10-31, frontmatter empty, dateline wrong). Waiting on xian's prose and art. Then review, template-audit, calendar row `ready-for-docs`, publish-ready to Docs. Its footer teases Tue 11-03. A day-of rewrite is normal. Don't nudge.
+- **Sat 10-31 "Build the Instrument Before the Theory":** distributed (Medium and LinkedIn URLs set). Done.
+- **Sun 11-01 "Check the Machine First":** xian wrote it, Comms reviewed. Fixes at 621e05771a and eea366a339 (xian's calls). Template audit 16 of 16. Row `ready-for-docs` (22e4fc27dc). PUBLISH-READY sent to Docs 08:48. Next: Docs publishes. xian's seam for "we made it" is the MVP milestone close (10-30 17:07 PT).
 - **Tue 11-03 "The Unguarded Entrance":** waiting on xian's prose. Its tease has no target until the calendar past 11-05 exists.
 - **#2229 /try pages:** the copy is final. Use the "Build copy" section of `docs/internal/planning/comms/try-pages-beta-copy-proposal-2026-10-31.md`.
   - CXO OK'd it at 20:56. xian said yes at 21:14: the waiting-list form is the one way in, email (support@) is for questions, `/try/alpha/` → `/try/invite/` redirect, and HOST keeps the list.
