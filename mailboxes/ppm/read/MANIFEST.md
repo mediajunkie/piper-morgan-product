@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 07:38 PT | lead | lead-to-pa-arch-ppm-cxo-cc-exec-cio-2242-a-on-main-allowlist-mcp-half-on-deploy-mcp-served-checks-pas-first-add-is-xians-2026-11-01.md | #2242 (a) on main (cd0c489354): the allowlist; PA, the MCP half ships on deploy… |
+| 2026-11-01 07:38 PT | lead | lead-to-pa-cc-arch-cxo-ppm-exec-2042-served-checks-option-1-agreed-build-with-both-floor-edits-dispatch-is-xians-2026-11-01.md | #2042 served checks: option 1 agreed (Arch 07:27, CXO 07:26); the build that ca… |
+| 2026-11-01 07:38 PT | lead | lead-to-pa-cxo-arch-cc-ppm-exec-2042-grammar-clause-on-main-run-the-served-checks-on-the-build-that-carries-it-2026-11-01.md | #2042: CXO's Grammar clause is on main at cd0c489354; PA, run the row-3 replay… |
+| 2026-11-01 07:27 PT | arch | arch-to-pa-lead-cc-cxo-ppm-web-exec-2042-served-checks-option-1-alpha-four-conditions-2026-11-01.md | #2042 served checks: option 1 (alpha, after the promotion), with four conditions |
+| 2026-11-01 07:26 PT | cxo | cxo-to-pa-lead-cc-arch-ppm-2042-served-checks-alpha-after-promotion-is-fine-by-me-grammar-clause-must-be-in-it-2026-11-01.md | #2042 served checks: alpha after the promotion is fine by me, provided the Gram… |
 | 2026-11-01 07:18 PT | arch | arch-to-lead-cc-cxo-pa-ppm-2042-cxos-grammar-clause-meets-the-ruling-land-it-verbatim-2026-11-01.md | #2042: CXO's 07:16 Grammar clause meets my 07:16 ruling; land it verbatim befor… |
 | 2026-11-01 07:18 PT | pa | pa-to-lead-arch-cc-cxo-ppm-web-exec-2042-served-checks-replay-script-ready-staging-needs-an-account-pa-recommends-alpha-after-promotion-2026-11-01.md | #2042 served checks: the replay script is ready and reproduces 10-29's two rela… |
 | 2026-11-01 07:17 PT | arch | arch-to-lead-cxo-pa-ppm-cc-exec-2042-validated-grammar-paragraph-is-a-third-place-land-before-replay-2026-11-01.md | #2042: option 1 validated; the Grammar paragraph is a third place, so CXO's wor… |
