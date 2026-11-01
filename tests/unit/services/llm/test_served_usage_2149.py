@@ -1,6 +1,7 @@
 """#2149 step 3 (Arch 2026-11-01 09:13): the live path's ``served`` dict carries the
-provider's OWN token usage, never an estimate; the two-stage router's ``stage_metrics``
-carry it per stage when present and omit it when not."""
+provider's OWN token usage, never an estimate, and ``RoutingDecision.usage`` sums it over
+the router's calls (the two-stage router that first consumed it was removed 2026-11-01;
+the flat path keeps the counts, Arch 09:12 "like for like")."""
 
 from __future__ import annotations
 
@@ -71,64 +72,10 @@ class TestServedUsage:
         assert client._last_usage is None, "reset per call; an estimate is never recorded"
 
 
-class TestStageMetricsCarryTokens:
-    async def test_tokens_present_when_the_provider_reported_them(self, monkeypatch):
+class TestFlatPathUsage:
+    async def test_flat_path_records_usage(self, monkeypatch):
         from services.intent_service import inversion_router as ir
 
-        monkeypatch.setenv("PIPER_INVERSION_TWO_STAGE", "1")
-        replies = iter(
-            [
-                '{"group": "todos_and_reminders", "confidence": 0.9}',
-                '{"operation": "create_todo", "args": {}, "confidence": 0.9, "rationale": "r"}',
-            ]
-        )
-
-        class _LLM:
-            async def complete(self, *, served=None, **_):
-                if served is not None:
-                    served["provider"] = "anthropic"
-                    served["model"] = "m"
-                    served["usage"] = {"input_tokens": 100, "output_tokens": 7}
-                return next(replies)
-
-        decision = await ir.route("add a todo", None, llm_service=_LLM(), user_id=None)
-        assert decision.operation == "create_todo"
-        assert [m["stage"] for m in decision.stage_metrics] == [1, 2]
-        assert all(
-            m["input_tokens"] == 100 and m["output_tokens"] == 7 for m in decision.stage_metrics
-        )
-        assert decision.usage == {
-            "input_tokens": 200,
-            "output_tokens": 14,
-        }, "the decision sums its stages"
-
-    async def test_tokens_absent_when_the_provider_reported_none(self, monkeypatch):
-        from services.intent_service import inversion_router as ir
-
-        monkeypatch.setenv("PIPER_INVERSION_TWO_STAGE", "1")
-        replies = iter(
-            [
-                '{"group": "todos_and_reminders", "confidence": 0.9}',
-                '{"operation": "create_todo", "args": {}, "confidence": 0.9, "rationale": "r"}',
-            ]
-        )
-
-        class _LLM:
-            async def complete(self, *, served=None, **_):
-                if served is not None:
-                    served["provider"] = "anthropic"
-                    served["model"] = "m"
-                return next(replies)
-
-        decision = await ir.route("add a todo", None, llm_service=_LLM(), user_id=None)
-        assert decision.operation == "create_todo"
-        assert all("input_tokens" not in m for m in decision.stage_metrics), "never estimated"
-        assert decision.usage is None
-
-    async def test_flag_off_path_is_unchanged(self, monkeypatch):
-        from services.intent_service import inversion_router as ir
-
-        monkeypatch.delenv("PIPER_INVERSION_TWO_STAGE", raising=False)
         calls = []
 
         class _LLM:
@@ -141,7 +88,7 @@ class TestStageMetricsCarryTokens:
                 )
 
         decision = await ir.route("add a todo", None, llm_service=_LLM(), user_id=None)
-        assert decision.operation == "create_todo" and decision.stage_metrics is None
+        assert decision.operation == "create_todo"
         assert len(calls) == 1 and calls[0][1] == ir._SYSTEM_PROMPT
-        # Arch 09:12: the flat path records usage too, like for like.
+        # Arch 09:12: the flat path records the provider's own usage; never an estimate.
         assert decision.usage == {"input_tokens": 5, "output_tokens": 1}

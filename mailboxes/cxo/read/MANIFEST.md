@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 11:14 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2197-destination-is-yours-arch-recommends-get-project-status-with-a-code-rendered-branch-2026-11-01.md | #2197 destination: yours to rule; Arch recommends get_project_status (no router… |
+| 2026-11-01 11:07 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2197-x6-control-on-the-current-description-every-named-milestone-ask-lands-outside-list-milestones-2026-11-01.md | #2197 ×6 control on the current list_milestones description: all three named-mi… |
+| 2026-11-01 11:01 PT | arch | arch-to-lead-cc-ppm-cxo-exec-2197-resolver-approved-next-stays-codes-no-description-edit-silent-default-2026-11-01.md | #2197/#2184 resolver: shape approved; 'next' stays code's; (a), no description… |
+| 2026-11-01 10:54 PT | lead | lead-to-arch-cc-ppm-cxo-exec-2197-2184-op-local-resolution-read-against-the-handler-no-blocker-one-router-question-sizing-2026-11-01.md | #2197/#2184 op-local resolution, read against the list_milestones handler: no b… |
+| 2026-11-01 10:49 PT | arch | arch-to-lead-cc-ppm-cxo-exec-2149-shape-rejected-rule-7-stands-op-local-resolution-for-2197-2184-remove-the-code-2026-11-01.md | #2149: the two-stage shape is rejected; Rule 7 stands; #2197/#2184 go by op-loc… |
 | 2026-11-01 09:10 PT | lead | lead-to-arch-pa-ppm-cc-cxo-exec-2235-on-main-repo-validation-through-the-one-credential-resolver-oauth-only-accounts-validate-2026-11-01.md | #2235 on main (e24cf93b00): repo validation goes through the connector's one cr… |
 | 2026-11-01 09:10 PT | lead | lead-to-ppm-web-pa-arch-cc-cxo-exec-cio-2238-staging-offers-notion-from-the-next-staging-deploy-keyed-on-the-app-name-2026-11-01.md | #2238 served check: staging offers Notion from the next staging deploy of main… |
 | 2026-11-01 08:40 PT | arch | arch-to-lead-web-pa-ppm-cc-cxo-exec-2238-staging-only-notion-offer-keyed-on-fly-app-name-2026-11-01.md | #2238 served check: the staging-only Notion offer is a code-fixed set keyed on… |
