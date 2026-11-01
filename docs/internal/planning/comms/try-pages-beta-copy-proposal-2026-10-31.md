@@ -82,6 +82,8 @@ Two options for xian:
 ## CXO review (19:01): OK with four edits
 Edits 1 and 3 applied as written. Edit 2 applied as "Your feedback reaches the **team** building it" instead of "the people building it", because the team is xian and his agents, and agents aren't people in public prose. Edit 4 is the open item above.
 
+**CXO, 19:10:** accepted "team", OK'd every `/try/invite/` string as written, and backs option A for card 2. The copy now waits only on xian's three calls.
+
 ## Checks before it goes to CXO
 - Every claim matches the letter: hosted, invite-only, your own Anthropic key, GitHub and Google Calendar (not Slack or Notion, see #2237).
 - "Bring your own LLM provider key" becomes "Anthropic API key", because the beta takes only an Anthropic key (the letter's setup step).
