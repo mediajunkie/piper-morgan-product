@@ -63,7 +63,6 @@ registries only).
 from __future__ import annotations
 
 import json
-import os
 import re
 import time
 from dataclasses import dataclass, field
@@ -71,31 +70,13 @@ from typing import Any, Callable, Dict, List, Mapping, Optional, Tuple
 
 import structlog
 
-from services.shared_types import ROUTE_GROUP_LINES, RouteGroup
-
 logger = structlog.get_logger(__name__)
 
 # Sentinel routes (part of the grammar alongside the canonical operations).
 NONE_ROUTE = "NONE"  # no operation applies → conversational floor
 CLARIFY_ROUTE = "CLARIFY"  # the utterance is genuinely ambiguous → ask
 
-# #2149 build step 2: stage 2 of the two-stage router offers this instead of an op when the
-# stage-1 group was wrong. It renders as a clarify decision; code never re-routes it.
-OTHER_GROUP_ROUTE = "OTHER_GROUP"
-
 TASK_TYPE = "inversion_routing"
-
-#: #2149 step 2: the most groups a stage-1 plan may name.
-MAX_PLAN_GROUPS = 3
-
-_TWO_STAGE_TRUTHY = {"1", "true", "on", "yes"}  # same set as inversion_shadow._TRUTHY
-
-
-def two_stage_enabled() -> bool:
-    """The #2149 two-stage router flag, read at call time. Default OFF: with it off,
-    ``route()`` runs the flat one-call path exactly as before."""
-    return os.environ.get("PIPER_INVERSION_TWO_STAGE", "").strip().lower() in _TWO_STAGE_TRUTHY
-
 
 # Registry descriptions carry internal migration markers ("via action
 # dispatch (#1124)") that are prompt noise for the router; strip them
@@ -112,10 +93,6 @@ class RoutingOperation:
     example: Optional[str]  # from ACTION_EXAMPLES where present
     aliases: Tuple[str, ...]  # input-side only; never shown to the model
     source: str  # "rail" | "action_registry"
-    # #2149 build step 1: the op's declared RouteGroup (entry metadata for rail ops,
-    # ROUTE_GROUPS for registry ops). NOT read by build_routing_prompt: the flat catalog
-    # renders byte-identically with or without it.
-    route_group: Optional[RouteGroup] = None
 
 
 @dataclass(frozen=True)
@@ -233,17 +210,9 @@ class RoutingDecision:
     served_provider: Optional[str] = None
     served_model: Optional[str] = None
     framing: Optional[str] = None
-    # #2149 step 2 (two-stage router, flag PIPER_INVERSION_TWO_STAGE; both None when the flag
-    # is off): ``route_group`` is the stage-1 pick (a plan: the picked groups joined by
-    # ","); ``stage_metrics`` holds one dict per stage call sequence:
-    # {"stage": 1|2, "latency_ms", "prompt_chars", "response_chars", "llm_calls", "pick"}
-    # (+ "group" on stage 2). Token counts are absent: ``complete()`` exposes only the
-    # served provider/model, never usage, and nothing here estimates them.
-    route_group: Optional[str] = None
-    stage_metrics: Optional[List[Dict[str, Any]]] = None
     # #2149 step 3 (Arch 09:12): the provider's own token counts for this decision,
-    # summed over its calls (both paths), present only when the provider reported
-    # usage; never estimated. Flat and two-stage are then compared like for like.
+    # summed over its calls, present only when the provider reported usage; never
+    # estimated (kept when the two-stage router that first compared it was removed).
     usage: Optional[Dict[str, int]] = None
 
     @property
@@ -306,7 +275,6 @@ def derive_routing_grammar() -> RoutingGrammar:
         ACTION_DESCRIPTIONS,
         ACTION_EXAMPLES,
         ACTION_REGISTRY,
-        ROUTE_GROUPS,
     )
     from services.intent_service.router_catalog_order import order_operations
     from services.intent_service.workflow_dispatcher import get_action_workflows
@@ -350,7 +318,6 @@ def derive_routing_grammar() -> RoutingGrammar:
                 example=examples_by_action.get(rec["canonical"]),
                 aliases=tuple(rec["aliases"]),
                 source="rail",
-                route_group=getattr(rec["entry"], "route_group", None),
             )
         )
         covered.add(rec["canonical"])
@@ -381,7 +348,6 @@ def derive_routing_grammar() -> RoutingGrammar:
                 example=example,
                 aliases=(),
                 source="action_registry",
-                route_group=ROUTE_GROUPS.get((category, action)),
             )
         )
         covered.add(action)
@@ -439,7 +405,7 @@ _SYSTEM_PROMPT = (
 
 
 def _session_state_lines(session_state: Optional[SessionSnapshot]) -> List[str]:
-    """The session-state block, shared by the flat prompt and both two-stage prompts."""
+    """The session-state block of the routing prompt."""
     lines: List[str] = []
     if session_state is not None and not session_state.is_empty():
         lines.append("")
@@ -682,8 +648,7 @@ async def _complete_with_repair(
     served: Dict[str, str],
 ) -> _StageResult:
     """The router's call loop: one call, then ONE repair retry on a parse/validation
-    failure. Shared by the flat path and each two-stage stage, so the single
-    transport-failure handler below serves both."""
+    failure, with the single transport-failure handler below."""
     result = _StageResult()
     started = time.perf_counter()
     last_error: Optional[str] = None
@@ -764,409 +729,6 @@ def _flat_repair_prompt(prompt: str, last_error: Optional[str]) -> str:
     )
 
 
-# ---------------------------------------------------------------------------
-# #2149 build step 2: the two-stage router (flag PIPER_INVERSION_TWO_STAGE, default OFF).
-# Stage 1 picks a RouteGroup (or NONE / CLARIFY / a plan of groups); stage 2 picks an op
-# inside that group (or CLARIFY / OTHER_GROUP). The LLM chooses meaning at both stages;
-# code only derives the prompts from the registry and validates the answers. There is no
-# phrasing check here, and OTHER_GROUP is never re-routed by code to another group.
-# ---------------------------------------------------------------------------
-
-_STAGE1_SYSTEM_PROMPT = (
-    "You are the intent router for Piper Morgan, a product-management "
-    "assistant. Your ONLY job, at this first step, is to select which ONE "
-    "group of operations should handle the user's message. You never answer "
-    "the message yourself, and you do not pick an operation yet.\n\n"
-    "Rules:\n"
-    "- Choose exactly ONE group name from the provided list, or "
-    f"{NONE_ROUTE} when no group applies (the message is conversational, "
-    "out of scope, or best answered in prose), or "
-    f"{CLARIFY_ROUTE} when the message is genuinely ambiguous between "
-    "materially different groups.\n"
-    "- Route what the user asked for, never the steps you would take to do "
-    "it. A destructive ask goes to the group that holds the destructive "
-    "operation, never to a listing 'first'.\n"
-    "- If the message contains a refusal or topic change while a flow is "
-    "active, route the user's actual words, not the flow's expectation.\n"
-    "- Respond with STRICT JSON only, no prose, no markdown fences, as a "
-    "single object:\n"
-    '{"group": "<group name>", "confidence": <0.0-1.0>, '
-    '"rationale": "<at most 15 words>"}\n'
-    "- Rare exception — a message that EXPLICITLY asks for two or more "
-    f"DIFFERENT operations (at most {MAX_PLAN_GROUPS}), typically joined by "
-    "'and', 'also' or 'then': reply with a plan object listing the group "
-    "for each requested operation in the user's order:\n"
-    '{"outcome": "plan", "groups": [{"group": "<group name>", '
-    '"text": "<the user\'s own words for this part, copied exactly>"}, ...]}\n'
-    "  Use the plan form only for that case; one request is always a single "
-    "object, however many clauses it has."
-)
-
-_STAGE2_SYSTEM_PROMPT = (
-    "You are the intent router for Piper Morgan, a product-management "
-    "assistant. A first step has already chosen the group of operations "
-    "below. Your ONLY job is to select which single operation in that group "
-    "should handle the user's message. You never answer the message "
-    "yourself.\n\n"
-    "Rules:\n"
-    "- Choose exactly ONE operation name from the provided list, or "
-    f"{CLARIFY_ROUTE} when the message is genuinely ambiguous between "
-    f"materially different operations in it, or {OTHER_GROUP_ROUTE} when "
-    "none of the listed operations is what the user asked for because the "
-    "message belongs to a different group.\n"
-    "- Route what the user asked for, never the steps you would take to do "
-    "it: 'archive the project' is the archive operation alone, not a lookup "
-    "followed by an archive.\n"
-    "- The same operation applied to several targets ('mark 1, 2 and 4 "
-    "done') is ONE operation with those targets in args.\n"
-    "- Extract obvious arguments (issue numbers, project names, times, "
-    "repo names) into args as simple key/value strings.\n"
-    "- Respond with STRICT JSON only, no prose, no markdown fences, as a "
-    "single object:\n"
-    '{"operation": "<name>", "args": {}, "confidence": <0.0-1.0>, '
-    '"rationale": "<at most 15 words>"}'
-)
-
-
-def build_stage1_prompt(
-    utterance: str,
-    session_state: Optional[SessionSnapshot] = None,
-    grammar: Optional[RoutingGrammar] = None,
-) -> str:
-    """Stage 1 user prompt: one line per RouteGroup (enum order), each followed by
-    its operations' NAMES (names only: no description, no example), + NONE +
-    CLARIFY + the session state + the message.
-
-    Arch's one redraft after the step-3 runs (2026-11-01 10:15): the first stage-1
-    (group lines alone) lost 48 of the flat router's rows at stage 1 ("open the help
-    menu", "help me set up my projects", "when was the auth refactor shipped"), rows
-    the flat router gets from the operation itself. Names carry that; descriptions
-    and examples stay in stage 2, so an edit to an op's text still touches only its
-    group's stage-2 prompt. An op add or rename now touches stage 1, which is a real
-    catalog change under Rule 7.
-    """
-    if grammar is None:
-        grammar = derive_routing_grammar()
-    names_by_group: Dict[str, List[str]] = {}
-    for op in grammar.operations:
-        if op.route_group is not None:
-            names_by_group.setdefault(op.route_group.value, []).append(op.name)
-    lines = [
-        "Group list (choose exactly one; a message explicitly asking for two "
-        "or more different operations may use the plan form in the system "
-        "instructions). Each group lists the names of its operations; the "
-        "operation itself is chosen at the next step:"
-    ]
-    for group in RouteGroup:
-        names = ", ".join(names_by_group.get(group.value, []))
-        lines.append(f"- {group.value}: {ROUTE_GROUP_LINES[group]} Operations: {names}.")
-    lines.append(f"- {NONE_ROUTE}: no group applies")
-    lines.append(f"- {CLARIFY_ROUTE}: genuinely ambiguous; ask the user")
-    lines.extend(_session_state_lines(session_state))
-    lines.append("")
-    lines.append(f"User message: {utterance!r}")
-    return "\n".join(lines)
-
-
-def build_stage2_prompt(
-    utterance: str,
-    grammar: RoutingGrammar,
-    group: RouteGroup,
-    session_state: Optional[SessionSnapshot] = None,
-    part_text: Optional[str] = None,
-) -> str:
-    """Stage 2 user prompt: ONLY ``group``'s operations (same per-op line as the flat
-    catalog) + CLARIFY + OTHER_GROUP + the session state + the message. ``part_text``
-    is a plan element's own words, when this call serves one part of a plan."""
-    lines = [f"Operations in the {group.value} group (choose exactly one):"]
-    for op in grammar.operations:
-        if op.route_group is not group:
-            continue
-        entry = f"- {op.name}: {op.description}"
-        if op.example:
-            entry += f' (e.g. "{op.example}")'
-        lines.append(entry)
-    lines.append(f"- {CLARIFY_ROUTE}: genuinely ambiguous; ask the user")
-    lines.append(
-        f"- {OTHER_GROUP_ROUTE}: none of the operations above is what the "
-        "user asked for; the message belongs to a different group"
-    )
-    lines.extend(_session_state_lines(session_state))
-    lines.append("")
-    lines.append(f"User message: {utterance!r}")
-    if part_text:
-        lines.append(f"Route only this part of the message now: {part_text!r}")
-    return "\n".join(lines)
-
-
-def _parse_stage1(response: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
-    """Parse a stage-1 reply: ``{"group": <RouteGroup value | NONE | CLARIFY>, ...}`` or
-    the plan form ``{"outcome": "plan", "groups": [...]}`` (2..MAX_PLAN_GROUPS)."""
-    raw = _extract_json_object(response or "")
-    if not raw:
-        return None, "no JSON object found in reply"
-    try:
-        parsed = json.loads(raw)
-    except json.JSONDecodeError as e:
-        return None, f"invalid JSON: {e}"
-    if not isinstance(parsed, dict):
-        return None, "top-level JSON value is not an object"
-    valid_groups = {g.value for g in RouteGroup}
-
-    if parsed.get("outcome") == "plan":
-        groups = parsed.get("groups")
-        if not isinstance(groups, list):
-            return None, "'groups' must be a list when outcome is 'plan'"
-        if len(groups) < 2 or len(groups) > MAX_PLAN_GROUPS:
-            return None, f"a plan must carry 2 to {MAX_PLAN_GROUPS} groups"
-        elements: List[Dict[str, Any]] = []
-        for i, element in enumerate(groups):
-            if not isinstance(element, dict):
-                return None, f"plan groups[{i}] is not an object"
-            name = element.get("group")
-            if not isinstance(name, str) or name.strip() not in valid_groups:
-                return None, f"plan groups[{i}]: not a group in the list"
-            elements.append({"group": name.strip(), "text": str(element.get("text") or "")[:500]})
-        return {"outcome": "plan", "groups": elements, "framing": _extract_framing(parsed)}, None
-
-    name = parsed.get("group")
-    if not isinstance(name, str) or not name.strip():
-        return None, "missing or non-string 'group'"
-    name = name.strip()
-    if name not in valid_groups and name not in (NONE_ROUTE, CLARIFY_ROUTE):
-        return None, (
-            f"'{name}' is not in the group list (and is not {NONE_ROUTE}/{CLARIFY_ROUTE})"
-        )
-    confidence = parsed.get("confidence")
-    if confidence is not None and not isinstance(confidence, (int, float)):
-        return None, "'confidence' must be a number"
-    return {
-        "group": name,
-        "confidence": max(0.0, min(1.0, float(confidence))) if confidence is not None else None,
-        "rationale": str(parsed.get("rationale") or "")[:200],
-        "framing": _extract_framing(parsed),
-    }, None
-
-
-def _parse_stage2(
-    response: str, grammar: RoutingGrammar, group: RouteGroup
-) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
-    """Parse a stage-2 reply. Validation is the existing ``_parse_and_validate`` against
-    the FULL grammar, plus: the op must belong to the stage-1 ``group`` (NONE and plans
-    are not offered at this stage). OTHER_GROUP is returned as ``{"operation":
-    OTHER_GROUP_ROUTE, ...}``."""
-    raw = _extract_json_object(response or "")
-    if raw:
-        try:
-            loose = json.loads(raw)
-        except json.JSONDecodeError:
-            loose = None
-        if isinstance(loose, dict) and loose.get("operation") == OTHER_GROUP_ROUTE:
-            return {
-                "operation": OTHER_GROUP_ROUTE,
-                "args": {},
-                "confidence": None,
-                "rationale": str(loose.get("rationale") or "")[:200],
-                "framing": _extract_framing(loose),
-            }, None
-    parsed, err = _parse_and_validate(response, grammar)
-    if parsed is None:
-        return None, err
-    if parsed.get("outcome") == "plan":
-        return None, "a plan is not offered at this step; choose one operation"
-    operation = parsed["operation"]
-    if operation == NONE_ROUTE:
-        return None, f"{NONE_ROUTE} is not offered at this step"
-    if operation != CLARIFY_ROUTE:
-        member = next((op for op in grammar.operations if op.name == operation), None)
-        if member is None or member.route_group is not group:
-            return None, f"'{operation}' is not in the {group.value} group"
-    return parsed, None
-
-
-def _stage1_repair_prompt(prompt: str, last_error: Optional[str]) -> str:
-    return (
-        f"{prompt}\n\n"
-        f"Your previous reply was invalid: {last_error}.\n"
-        "Reply again with STRICT JSON only — either "
-        '{"group": "<group name>", "confidence": <0.0-1.0>, '
-        '"rationale": "<short>"}, or, only if the message genuinely asks '
-        'for 2 or more distinct operations, {"outcome": "plan", "groups": '
-        '[{"group": "<group name>", "text": "<the user\'s words>"}, ...]}.'
-    )
-
-
-def _stage2_repair_prompt(prompt: str, last_error: Optional[str]) -> str:
-    return (
-        f"{prompt}\n\n"
-        f"Your previous reply was invalid: {last_error}.\n"
-        "Reply again with STRICT JSON only, a single object of the form "
-        '{"operation": "<name>", "args": {}, "confidence": <0.0-1.0>, '
-        '"rationale": "<short>"}.'
-    )
-
-
-def _stage_metric(
-    stage: int, result: _StageResult, pick: Optional[str], group: Optional[str] = None
-) -> Dict[str, Any]:
-    metric: Dict[str, Any] = {
-        "stage": stage,
-        "latency_ms": result.latency_ms,
-        "prompt_chars": result.prompt_chars,
-        "response_chars": result.response_chars,
-        "llm_calls": result.llm_calls,
-        "pick": pick,
-    }
-    if result.input_tokens is not None:  # present only when the provider reported usage
-        metric["input_tokens"] = result.input_tokens
-        metric["output_tokens"] = result.output_tokens
-    if group is not None:
-        metric["group"] = group
-    return metric
-
-
-async def _route_two_stage(
-    utterance: str,
-    session_state: Optional[SessionSnapshot],
-    *,
-    llm_service: Any,
-    grammar: RoutingGrammar,
-    user_id: Optional[str],
-) -> RoutingDecision:
-    served: Dict[str, str] = {}
-    metrics: List[Dict[str, Any]] = []
-    llm_calls = 0
-    repaired = False
-    picked: Optional[str] = None
-    stage_results: List[_StageResult] = []  # for RoutingDecision.usage (Arch 09:12)
-
-    def decision(outcome: str, **kw: Any) -> RoutingDecision:
-        return RoutingDecision(
-            outcome=outcome,
-            llm_calls=llm_calls,
-            repair_attempted=repaired,
-            served_provider=served.get("provider"),
-            served_model=served.get("model"),
-            route_group=picked,
-            stage_metrics=list(metrics),
-            usage=_usage_of(*stage_results),
-            **kw,
-        )
-
-    def failure(res: _StageResult) -> RoutingDecision:
-        if res.llm_error is not None:
-            # served is not reported on an error decision (as in the flat path)
-            return RoutingDecision(
-                outcome="error",
-                llm_calls=llm_calls,
-                repair_attempted=repaired,
-                error=res.llm_error,
-                route_group=picked,
-                stage_metrics=list(metrics),
-                usage=_usage_of(*stage_results),
-            )
-        logger.warning("inversion_route_refused", reason=res.validation_error, llm_calls=llm_calls)
-        return decision("refused", error=res.validation_error, raw_response=res.raw)
-
-    # ---- stage 1
-    res1 = await _complete_with_repair(
-        llm_service,
-        system=_STAGE1_SYSTEM_PROMPT,
-        prompt=build_stage1_prompt(utterance, session_state, grammar),
-        parse=_parse_stage1,
-        repair_prompt=_stage1_repair_prompt,
-        user_id=user_id,
-        served=served,
-    )
-    stage_results.append(res1)
-    llm_calls += res1.llm_calls
-    repaired = repaired or res1.repair_attempted
-    s1 = res1.parsed
-    if s1 is None:
-        metrics.append(_stage_metric(1, res1, None))
-        return failure(res1)
-    if s1.get("outcome") == "plan":
-        picked = ",".join(el["group"] for el in s1["groups"])
-        metrics.append(_stage_metric(1, res1, "PLAN"))
-        parts = [(RouteGroup(el["group"]), el["text"]) for el in s1["groups"]]
-    else:
-        picked = s1["group"]
-        metrics.append(_stage_metric(1, res1, picked))
-        if picked in (NONE_ROUTE, CLARIFY_ROUTE):
-            outcome = "none" if picked == NONE_ROUTE else "clarify"
-            return RoutingDecision(
-                outcome=outcome,
-                confidence=s1["confidence"],
-                rationale=s1["rationale"],
-                llm_calls=llm_calls,
-                repair_attempted=repaired,
-                raw_response=res1.raw,
-                served_provider=served.get("provider"),
-                served_model=served.get("model"),
-                framing=s1.get("framing"),
-                route_group=picked,
-                stage_metrics=list(metrics),
-                usage=_usage_of(res1),
-            )
-        parts = [(RouteGroup(picked), None)]
-
-    # ---- stage 2: one call per planned group (a single pick is one part)
-    ops: List[Dict[str, Any]] = []
-    last_raw: Optional[str] = res1.raw
-    for group, part_text in parts:
-
-        def parse_stage2(r: str, g: RouteGroup = group) -> Tuple[Optional[Any], Optional[str]]:
-            return _parse_stage2(r, grammar, g)
-
-        res2 = await _complete_with_repair(
-            llm_service,
-            system=_STAGE2_SYSTEM_PROMPT,
-            prompt=build_stage2_prompt(utterance, grammar, group, session_state, part_text),
-            parse=parse_stage2,
-            repair_prompt=_stage2_repair_prompt,
-            user_id=user_id,
-            served=served,
-        )
-        stage_results.append(res2)
-        llm_calls += res2.llm_calls
-        repaired = repaired or res2.repair_attempted
-        last_raw = res2.raw
-        s2 = res2.parsed
-        metrics.append(_stage_metric(2, res2, s2["operation"] if s2 else None, group.value))
-        if s2 is None:
-            return failure(res2)
-        if s2["operation"] in (CLARIFY_ROUTE, OTHER_GROUP_ROUTE):
-            # OTHER_GROUP renders as clarify; code never re-routes it to another group.
-            return decision(
-                "clarify",
-                rationale=s2["rationale"],
-                confidence=s2["confidence"],
-                raw_response=res2.raw,
-                framing=s2.get("framing"),
-            )
-        if part_text is not None:
-            s2 = dict(s2, text=part_text)
-        ops.append(s2)
-
-    if len(parts) == 1:
-        only = ops[0]
-        return decision(
-            "operation",
-            operation=only["operation"],
-            args=only["args"],
-            confidence=only["confidence"],
-            rationale=only["rationale"],
-            raw_response=last_raw,
-            framing=only.get("framing"),
-        )
-    if len({o["operation"] for o in ops}) < 2:
-        err = "a plan must name at least 2 DISTINCT operations"
-        logger.warning("inversion_route_refused", reason=err, llm_calls=llm_calls)
-        return decision("refused", error=err, raw_response=last_raw)
-    plan_ops = [{k: v for k, v in o.items() if k != "framing"} for o in ops]
-    return decision("plan", operations=plan_ops, raw_response=last_raw, framing=s1.get("framing"))
-
-
 async def route(
     utterance: str,
     session_state: Optional[SessionSnapshot] = None,
@@ -1187,9 +749,6 @@ async def route(
     ``user_id`` threads to ``LLMClient.complete`` for per-principal provider
     selection (#1415) — the router itself reads no user state.
 
-    #2149 step 2: with ``PIPER_INVERSION_TWO_STAGE`` truthy (default OFF, read at
-    call time) the op is chosen in two stages (:func:`_route_two_stage`); with it
-    off this is the flat one-call path, unchanged.
     """
     if grammar is None:
         grammar = derive_routing_grammar()
@@ -1197,11 +756,6 @@ async def route(
         from services.llm.clients import LLMClient
 
         llm_service = LLMClient()
-
-    if two_stage_enabled():
-        return await _route_two_stage(
-            utterance, session_state, llm_service=llm_service, grammar=grammar, user_id=user_id
-        )
 
     prompt = build_routing_prompt(utterance, grammar, session_state)
     served: Dict[str, str] = {}  # #1620: populated on a successful complete() call

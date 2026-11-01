@@ -45,7 +45,7 @@ from services.intent_service.workflow_dispatcher import (
     WorkflowEntry,
     register_workflow,
 )
-from services.shared_types import EffectClass, IntentCategory, Outwardness, RouteGroup
+from services.shared_types import EffectClass, IntentCategory, Outwardness
 
 logger = structlog.get_logger(__name__)
 
@@ -2930,97 +2930,6 @@ _ANALYSIS_QUERY_COHORT: dict[str, list[str]] = {
 }
 
 
-#: #2149 build step 1: route_group by CANONICAL op name (the first-registered key of each
-#: rail entry; aliases share the entry object and so its one group). Applied to the entries
-#: in register_default_workflows. The Lead's accepted cut, verbatim.
-_ROUTE_GROUP_BY_OP: dict[str, RouteGroup] = {
-    "create_issue": RouteGroup.ISSUES,
-    "update_issue": RouteGroup.ISSUES,
-    "close_issue": RouteGroup.ISSUES,
-    "reopen_issue": RouteGroup.ISSUES,
-    "comment_issue": RouteGroup.ISSUES,
-    "review_issue": RouteGroup.ISSUES,
-    "list_issues": RouteGroup.ISSUES,
-    "list_prs": RouteGroup.REPO_ACTIVITY,
-    "stale_prs": RouteGroup.REPO_ACTIVITY,
-    "shipped_this_week": RouteGroup.REPO_ACTIVITY,
-    "list_milestones": RouteGroup.REPO_ACTIVITY,
-    "list_releases": RouteGroup.REPO_ACTIVITY,
-    "list_labels": RouteGroup.REPO_ACTIVITY,
-    "list_branches": RouteGroup.REPO_ACTIVITY,
-    "analyze_commits": RouteGroup.REPO_ACTIVITY,
-    "local_git_status_query": RouteGroup.REPO_ACTIVITY,
-    "set_default_repo": RouteGroup.REPO_ACTIVITY,
-    "get_default_repo": RouteGroup.REPO_ACTIVITY,
-    "list_projects": RouteGroup.PROJECTS_AND_REPOS,
-    "search_projects": RouteGroup.PROJECTS_AND_REPOS,
-    "add_project": RouteGroup.PROJECTS_AND_REPOS,
-    "archive_project": RouteGroup.PROJECTS_AND_REPOS,
-    "restore_project": RouteGroup.PROJECTS_AND_REPOS,
-    "list_archived_projects": RouteGroup.PROJECTS_AND_REPOS,
-    "link_repo": RouteGroup.PROJECTS_AND_REPOS,
-    "unlink_repo": RouteGroup.PROJECTS_AND_REPOS,
-    "list_repos": RouteGroup.PROJECTS_AND_REPOS,
-    "meeting_time": RouteGroup.CALENDAR_AND_TIME,
-    "week_calendar": RouteGroup.CALENDAR_AND_TIME,
-    "recurring_meetings": RouteGroup.CALENDAR_AND_TIME,
-    "get_current_time": RouteGroup.CALENDAR_AND_TIME,
-    "set_timezone": RouteGroup.CALENDAR_AND_TIME,
-    "create_todo": RouteGroup.TODOS_AND_REMINDERS,
-    "create_reminder": RouteGroup.TODOS_AND_REMINDERS,
-    "list_todos_query": RouteGroup.TODOS_AND_REMINDERS,
-    "list_reminders_query": RouteGroup.TODOS_AND_REMINDERS,
-    "complete_todo": RouteGroup.TODOS_AND_REMINDERS,
-    "delete_todo": RouteGroup.TODOS_AND_REMINDERS,
-    "clear_todos": RouteGroup.TODOS_AND_REMINDERS,
-    "summarize_document": RouteGroup.DOCUMENTS_AND_WRITING,
-    "analyze_document": RouteGroup.DOCUMENTS_AND_WRITING,
-    "search_documents": RouteGroup.DOCUMENTS_AND_WRITING,
-    "update_document": RouteGroup.DOCUMENTS_AND_WRITING,
-    "generate_content": RouteGroup.DOCUMENTS_AND_WRITING,
-    "generate_report": RouteGroup.DOCUMENTS_AND_WRITING,
-    "write_stakeholder_update": RouteGroup.DOCUMENTS_AND_WRITING,
-    "get_project_status": RouteGroup.STATUS_AND_PRIORITIES,
-    "attention_query": RouteGroup.STATUS_AND_PRIORITIES,
-    "prioritize": RouteGroup.STATUS_AND_PRIORITIES,
-    "analyze_blockers": RouteGroup.STATUS_AND_PRIORITIES,
-    "changes_query": RouteGroup.STATUS_AND_PRIORITIES,
-    "check_completion_status": RouteGroup.STATUS_AND_PRIORITIES,
-    "productivity": RouteGroup.STATUS_AND_PRIORITIES,
-    "show_standup": RouteGroup.STATUS_AND_PRIORITIES,
-    "analyze_data": RouteGroup.STATUS_AND_PRIORITIES,
-    "strategic_planning": RouteGroup.STATUS_AND_PRIORITIES,
-    "get_memory": RouteGroup.MEMORY_AND_INSIGHTS,
-    "pull_insights": RouteGroup.MEMORY_AND_INSIGHTS,
-    "learn_pattern": RouteGroup.MEMORY_AND_INSIGHTS,
-    "session_activity_query": RouteGroup.MEMORY_AND_INSIGHTS,
-    "explain_suggestion": RouteGroup.MEMORY_AND_INSIGHTS,
-    "get_identity": RouteGroup.ASSISTANT_AND_CONVERSATION,
-    "get_capabilities": RouteGroup.ASSISTANT_AND_CONVERSATION,
-    "explain_trust": RouteGroup.ASSISTANT_AND_CONVERSATION,
-    "get_feature_info": RouteGroup.ASSISTANT_AND_CONVERSATION,
-    "get_contextual_guidance": RouteGroup.ASSISTANT_AND_CONVERSATION,
-}
-
-
-def _apply_route_groups(entries: dict[str, WorkflowEntry]) -> None:
-    """Set ``route_group`` on each rail entry from its canonical (first) key (#2149).
-
-    Aliases share one entry object, so the first key an entry appears under is the
-    canonical name the grammar derives; its group is the entry's. An entry already
-    carrying an explicit ``route_group`` is left alone. An entry whose canonical is not
-    in the map (offer-only and router-hidden entries) stays ``None``; the ratchet in
-    ``TestRouteGroupRatchet2149`` is what fails a router-visible op without a group.
-    """
-    seen: set[int] = set()
-    for key, entry in entries.items():
-        if id(entry) in seen:
-            continue
-        seen.add(id(entry))
-        if entry.route_group is None:
-            entry.route_group = _ROUTE_GROUP_BY_OP.get(key)
-
-
 def register_default_workflows() -> None:
     """
     Register all default workflow entry points.
@@ -4581,8 +4490,6 @@ def register_default_workflows() -> None:
     # such a patch stayed the mock forever, "already" read as empty, and the
     # strict register_workflow raised on the second call. Ordering-dependent,
     # file-only failure; green in the full run by accident.
-    _apply_route_groups(_default_entries)
-
     already = _workflow_dispatcher.WORKFLOW_REGISTRY
     newly_registered: list[str] = []
     for workflow_type, entry in _default_entries.items():

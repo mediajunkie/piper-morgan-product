@@ -2124,53 +2124,31 @@ go at the FRONT of `PHASE3_REPORTS` in `scripts/inversion_phase3_deletion_gate.p
 first; a re-score overrides). `scripts/inversion_phase1_shadow_score.py` has `--phrase` for a
 one-row re-score and `--source-prefix` for a deposit batch.
 
-### `route_group`: each routable op declares a group (#2149 build step 1, 2026-11-01; no behaviour change)
+### The two-stage router (#2149, 2026-11-01): built behind a flag, measured, rejected, removed
 
-Every operation `derive_routing_grammar()` lists carries a `route_group` from the closed
-`RouteGroup` enum (nine groups, accepted by Arch 2026-11-01; `services/shared_types.py`, which
-also holds each group's one stage-1 line in `ROUTE_GROUP_LINES`). Rail ops get theirs on
-`WorkflowEntry.route_group` (applied by canonical name from `_ROUTE_GROUP_BY_OP` in
-`workflow_entries.py`; aliases share the entry, so one value per entry); the six registry-only
-canonicals carry theirs in `ROUTE_GROUPS` beside `ACTION_DESCRIPTIONS`; `RoutingOperation.route_group`
-is filled from those, so the grammar is still derived. **The flat router prompt does not read the
-field**: the rendered catalog is byte-identical before and after, and a test pins that it names no
-group and no stage-1 line. It exists so the two-stage router (later steps, behind a flag, default
-off) can derive stage 1 from the registry. The ratchet is `TestRouteGroupRatchet2149` in
-`tests/test_architecture_enforcement.py`: every op has a group, the groups partition
-`grammar.names()`, none is empty or over 12 ops, membership equals its `EXPECTED` table (a move is
-a deliberate edit there), and the enum order is pinned.
+Arch's #2149 question was whether a grouped catalog (stage 1 picks one of nine `RouteGroup`s,
+stage 2 picks an op inside it) could replace the flat per-op catalog and lift Rule 7's stop on
+description edits. It was built in three steps the same day (`route_group` on every op with a
+ratchet; `_route_two_stage` behind `PIPER_INVERSION_TWO_STAGE`, default off; a two-phase batch
+runner and replay scorer) and run twice on Haiku 4.5 against a same-batch flat baseline, the
+second time after the one redraft Arch allowed (stage 1 carrying each group's op names).
+Isolation held both times; parity failed both times (412, then 428, against about 490 of 550
+asserted rows) and stage 1's own error stayed over the 3% bar (4.3%, 4.1%). By the preregistered
+condition the shape was rejected (Arch, decisions.log 2026-11-01 10:48; design record
+`docs/internal/architecture/design-records/2149-router-catalog-shape.md`; reports
+`dev/2026/11/01/controls/2149-step3-*` and `2149-step3b-*`). **Rule 7 stands unchanged on the
+flat catalog.** Sub-choices inside an op (which milestone a message names) are resolved
+op-locally, in the handler, after the router has picked the op (ruling (2) there).
 
-#### Step 2: the two-stage router (#2149, 2026-11-01; flag `PIPER_INVERSION_TWO_STAGE`, default OFF)
-
-`route()` reads `PIPER_INVERSION_TWO_STAGE` at call time (truthy set `1/true/on/yes`, as
-`PIPER_INVERSION_SHADOW`). **Off: the flat one-call path, unchanged** (a test pins one
-`complete()` call whose `prompt` equals `build_routing_prompt(...)` and whose `system` equals
-`_SYSTEM_PROMPT`). The preregistered runs in the design record license the flip; nothing flips
-it yet.
-
-On, `_route_two_stage` makes the choice in two LLM stages (each: one call plus at most one repair
-retry), all derived from the registry, none of it a phrasing check:
-
-- **Stage 1** (`build_stage1_prompt`, `_STAGE1_SYSTEM_PROMPT`): one line per `RouteGroup` in enum
-  order (`ROUTE_GROUP_LINES`), plus `NONE` and `CLARIFY`, the same session-state block, and the
-  message. It names no op. Reply `{"group": <RouteGroup value | NONE | CLARIFY>, ...}` or the plan
-  form `{"outcome": "plan", "groups": [{"group", "text"}, ...]}` (2 to `MAX_PLAN_GROUPS` = 3).
-  `NONE`/`CLARIFY` end here with the usual decision shapes.
-- **Stage 2** (`build_stage2_prompt`, `_STAGE2_SYSTEM_PROMPT`; one call per planned group): only
-  that group's ops in the flat per-op line format, plus `CLARIFY` and `OTHER_GROUP`. The op is
-  validated by the unchanged `_parse_and_validate` against the FULL grammar, and must also belong
-  to the stage-1 group (and `NONE` is not offered), else it is an invalid reply (repair, then
-  `refused`). **`OTHER_GROUP` renders as a `clarify` decision; code never re-routes it to another
-  group** (a retry over groups would be code choosing meaning, ADR-080). Its rate is the measure
-  of stage 1's error.
-- **Metrics**: `RoutingDecision.route_group` (the stage-1 pick; a plan: the groups joined by `,`;
-  `NONE`/`CLARIFY` when stage 1 ended there) and `stage_metrics`, a list of per-stage dicts
-  `{"stage", "latency_ms", "prompt_chars", "response_chars", "llm_calls", "pick"}` (stage 2 adds
-  `"group"`). Both are `None` with the flag off. Token counts are absent: `complete()` exposes
-  only the served provider/model, and nothing estimates them. `llm_calls` counts both stages.
-- Downstream is unchanged: consent, dispatch and the four-state contract see the same
-  `RoutingDecision`. `TestRouteGroupRatchet2149` also pins that the stage-1 prompt names no op.
-- Tests: `tests/unit/services/intent_service/test_two_stage_router_2149.py`.
+The code came out the same day (`delete-module-safely`): the flag, both stage prompts and
+parsers, `_route_two_stage`, `RoutingDecision.route_group`/`stage_metrics`, the `RouteGroup`
+enum with `ROUTE_GROUP_LINES`, `WorkflowEntry.route_group`, `_ROUTE_GROUP_BY_OP`,
+`ROUTE_GROUPS`, `RoutingOperation.route_group`, the ratchet `TestRouteGroupRatchet2149`, the
+runner's `render-stage1`/`render-stage2`/`parse-two-stage` and the scorer's
+`--replay-two-stage`. The flat render is byte-identical before and after (the four hashes in
+the removal's decisions.log line). What stayed, because the flat path uses it: the shared
+one-call-plus-one-repair loop `_complete_with_repair` and the provider's own token counts in
+`served["usage"]` → `RoutingDecision.usage` (Arch 09:12, both paths alike; never estimated).
 
 ### First deletion (2026-09-27): `REMINDER_PATTERNS` + `REMINDER_QUERY_PATTERNS`
 
