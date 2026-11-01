@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'read-the-machine-before-debating-who-restarts-it-measure-first-bake-better.jpg'
+alt: 'Three translucent AI agents debate restart procedures around a table piled with policy manuals, while a fourth points to a nearby machine’s MEMORY gauge, its needle buried in the red.'
+caption: '"This isn''t good, right?"'
 ---
 
 # Check the Machine First
