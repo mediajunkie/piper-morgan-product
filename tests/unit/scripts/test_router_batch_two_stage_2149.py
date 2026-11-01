@@ -206,7 +206,10 @@ def test_render_stage2_arm_prefix_keeps_ids_distinct_for_a_shared_stage1(tmp_pat
     )
     a = json.loads(out_a.read_text())
     b = json.loads(out_b.read_text())
-    assert a["custom_id"] == "d1:main-0-1-s2-0" and a["arm"] == "d1" and a["parent"] == "main-0-1"
+    assert a["custom_id"] == "d1__main-0-1-s2-0" and a["arm"] == "d1" and a["parent"] == "main-0-1"
+    import re
+
+    assert re.fullmatch(r"[A-Za-z0-9_-]{1,64}", a["custom_id"]), "a batch custom_id's allowed set"
     assert b["custom_id"] == "main-0-1-s2-0" and b["arm"] is None
     assert a["params"] == b["params"], "the arm prefix changes the id only"
 

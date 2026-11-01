@@ -351,7 +351,8 @@ def _render_stage2(args) -> None:
                     # --arm prefixes the id so several arms can share one stage-1 result set
                     # (stage 1 names no op, so its prompts are identical across arms) and
                     # still submit in one batch.
-                    "custom_id": (f"{arm}:" if arm else "") + f"{req['custom_id']}-s2-{k}",
+                    # Batch custom_ids allow only [A-Za-z0-9_-], so the arm joins with "__".
+                    "custom_id": (f"{arm}__" if arm else "") + f"{req['custom_id']}-s2-{k}",
                     "arm": arm,
                     "phrase": req["phrase"],
                     "stage": 2,
