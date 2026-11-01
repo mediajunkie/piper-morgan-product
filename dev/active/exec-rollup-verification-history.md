@@ -303,3 +303,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v721, 2026-10-31 18:56 PDT: #2229 two calls added under Your word (Comms 18:5x proposal); Exec recommends yes to both.
 - v722, 2026-10-31 19:09 PDT: #2229 now three calls (A or B for card 2 added; Comms 19:0x, CXO OK); step 3 status from PA 18:52 and CXO triage (31/42, #2245 not a blocker).
 - v723, 2026-10-31 19:17 PDT: two Fly reads added under Your hand (CIO 19:1x: no seat may read production); CXO backs option A on #2229.
+- v724, 2026-10-31 20:29 PDT: tonight card replaces steps 3–5: tag held on #2245 (PPM 20:24), second promotion for 5df1db03fa is xian's dispatch (Lead 20:26, 9a unapplied); set_default_repo flag paste after PPM's rows mail (CIO; xian's yes 20:21).
