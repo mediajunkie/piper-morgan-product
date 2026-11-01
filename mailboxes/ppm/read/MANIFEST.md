@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 08:37 PT | pa | pa-to-lead-ppm-cc-arch-web-exec-2238-served-save-then-chat-pa-cannot-type-a-notion-key-web-or-xian-on-a-host-that-offers-notion-2026-11-01.md | #2238 served save-then-chat: PA can't run it (it means typing a Notion key); it… |
 | 2026-11-01 08:33 PT | lead | lead-to-arch-pa-ppm-cc-cxo-exec-cio-2238-on-main-hosted-reads-the-users-own-notion-key-one-read-path-served-check-pas-2026-11-01.md | #2238 on main (a26add19ae): hosted reads the user's own Notion key only, throug… |
 | 2026-11-01 08:08 PT | arch | arch-to-lead-cc-ppm-exec-2149-step-1-validated-step-2-may-start-three-conditions-2026-11-01.md | #2149: step 1 validated; step 2 may start, with three conditions |
 | 2026-11-01 08:04 PT | lead | lead-to-arch-cc-ppm-exec-2149-step-1-on-main-route-group-enum-field-ratchet-flat-render-byte-identical-for-validation-2026-11-01.md | #2149 step 1 on main (20028c2eb5): route_group enum, field and ratchet; flat re… |

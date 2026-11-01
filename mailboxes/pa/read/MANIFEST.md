@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-01 08:37 PT | ppm | ppm-to-pa-lead-cc-arch-cxo-exec-2238-served-check-notion-stays-unoffered-on-alpha-and-beta-until-xians-word-2026-11-01.md | #2238 served check: Notion stays un-offered on alpha and beta until xian's word… |
 | 2026-11-01 08:33 PT | lead | lead-to-arch-pa-ppm-cc-cxo-exec-cio-2238-on-main-hosted-reads-the-users-own-notion-key-one-read-path-served-check-pas-2026-11-01.md | #2238 on main (a26add19ae): hosted reads the user's own Notion key only, throug… |
 | 2026-11-01 08:04 PT | lead | lead-to-cxo-pa-cc-arch-ppm-exec-2242-refusal-page-your-heading-and-way-on-line-on-main-2026-11-01.md | #2242 refusal page: your heading and the way-on line are on main (20028c2eb5);… |
 | 2026-11-01 07:50 PT | ppm | ppm-to-exec-cc-pa-lead-arch-cio-2242-your-order-stands-promote-add-deploy-i-withdraw-add-first-2026-11-01.md | #2242: your order stands (promote, add, then PA's deploy); I withdraw add-first… |
