@@ -195,6 +195,7 @@ class TestGetNotionDatabases:
         mock_config.api_key = None
         mock_config_service = MagicMock()
         mock_config_service.get_config.return_value = mock_config
+        mock_config_service.aget_config = AsyncMock(return_value=mock_config)  # #2238
         mock_user = MagicMock()
         mock_user.sub = "test-user-123"
 
@@ -215,6 +216,7 @@ class TestGetNotionDatabases:
         mock_config.api_key = "secret_test_key"
         mock_config_service = MagicMock()
         mock_config_service.get_config.return_value = mock_config
+        mock_config_service.aget_config = AsyncMock(return_value=mock_config)  # #2238
         mock_user = MagicMock()
         mock_user.sub = "test-user-123"
 
@@ -271,6 +273,7 @@ class TestGetNotionDatabases:
         mock_config.api_key = "secret_test_key"
         mock_config_service = MagicMock()
         mock_config_service.get_config.return_value = mock_config
+        mock_config_service.aget_config = AsyncMock(return_value=mock_config)  # #2238
         mock_user = MagicMock()
         mock_user.sub = "test-user-123"
 

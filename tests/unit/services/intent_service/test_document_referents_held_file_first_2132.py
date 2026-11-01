@@ -43,6 +43,7 @@ def intent_service():
 def _notion_router():
     r = MagicMock()
     r.is_available.return_value = True
+    r.ais_available = AsyncMock(return_value=True)  # #2238: the async gate
     r.connect_for_user = AsyncMock()
     r.search_notion = AsyncMock(return_value=[{"id": "page-x", "properties": {}}])
     r.get_page = AsyncMock(return_value={"title": "Some Page", "url": "u"})
@@ -77,6 +78,7 @@ class TestHeldFileFirst:
         intent = _analyze_intent("Analyze launch-notes-2131.txt", user_id=_USER)
         router = _notion_router()
         router.is_available.return_value = False
+        router.ais_available = AsyncMock(return_value=False)  # #2238
         held = AsyncMock(return_value=[{"file_id": "f-1", "filename": None}])
         analyze = AsyncMock(
             return_value={
@@ -98,6 +100,7 @@ class TestHeldFileFirst:
         analyze.assert_awaited_once_with("f-1", _USER)
         router.search_notion.assert_not_called()
         router.is_available.assert_not_called()
+        router.ais_available.assert_not_awaited()  # #2238: the held file is answered before any gate
         assert "Notion" not in result.message
         assert "can't read your Notion pages" not in result.message
         assert result.message.startswith("I read 'launch-notes-2131.txt' from your files.")
@@ -126,6 +129,7 @@ class TestHeldFileFirst:
         intent = _analyze_intent("Analyze launch-notes-2131.txt", user_id=_USER)
         router = _notion_router()
         router.is_available.return_value = False
+        router.ais_available = AsyncMock(return_value=False)  # #2238
         analyze = AsyncMock()
         with (
             patch(_NOTION, return_value=router),
