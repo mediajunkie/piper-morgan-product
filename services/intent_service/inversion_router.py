@@ -661,6 +661,10 @@ class _StageResult:
     prompt_chars: int = 0
     response_chars: int = 0
     latency_ms: float = 0.0
+    # #2149 step 3: the provider's own token counts, summed over the stage's calls,
+    # when complete() reported them in served["usage"]; None when it did not.
+    input_tokens: Optional[int] = None
+    output_tokens: Optional[int] = None
 
 
 async def _complete_with_repair(
@@ -702,6 +706,15 @@ async def _complete_with_repair(
             break
         result.raw = raw
         result.response_chars += len(raw) if isinstance(raw, str) else 0
+        usage = served.get("usage") if isinstance(served, dict) else None
+        if isinstance(usage, dict) and usage.get("input_tokens") is not None:
+            result.input_tokens = (result.input_tokens or 0) + int(usage.get("input_tokens") or 0)
+            result.output_tokens = (result.output_tokens or 0) + int(
+                usage.get("output_tokens") or 0
+            )
+            served.pop(
+                "usage", None
+            )  # one call's numbers, consumed here; never carried to the next
         parsed, err = parse(raw)
         if parsed is not None:
             result.parsed = parsed
@@ -970,6 +983,9 @@ def _stage_metric(
         "llm_calls": result.llm_calls,
         "pick": pick,
     }
+    if result.input_tokens is not None:  # present only when the provider reported usage
+        metric["input_tokens"] = result.input_tokens
+        metric["output_tokens"] = result.output_tokens
     if group is not None:
         metric["group"] = group
     return metric

@@ -425,6 +425,8 @@ class LLMClient:
             if served is not None:  # #1620: per-call resolved provider+model
                 served["provider"] = primary_provider.value
                 served["model"] = served_model
+                if getattr(self, "_last_usage", None):  # #2149 step 3: the provider's own usage
+                    served["usage"] = dict(self._last_usage)
             return result
         except LLMKeyRequiredError as e:
             # #1809: a key refusal from the provider leg (the inverted chokepoint —
@@ -504,6 +506,8 @@ class LLMClient:
                 if served is not None:  # #1620: per-call resolved provider+model
                     served["provider"] = fallback_provider.value
                     served["model"] = fallback_served_model
+                    if getattr(self, "_last_usage", None):  # #2149 step 3
+                        served["usage"] = dict(self._last_usage)
                 return result
             except LLMKeyRequiredError:
                 # #1809/#1819: the gate above (`_is_provider_configured`) is
@@ -576,6 +580,10 @@ class LLMClient:
         system=None,
     ) -> str:
         """Route to the appropriate provider's completion method."""
+        # #2149 step 3 (Arch 2026-11-01): the provider's OWN usage for this one
+        # call, read back by complete() into served["usage"]. None when the
+        # response carried no usage object; never an estimate.
+        self._last_usage: Optional[Dict[str, int]] = None
         if provider == LLMProvider.ANTHROPIC:
             return await self._anthropic_complete(prompt, config, response_format, context, system)
         elif provider == LLMProvider.OPENAI:
@@ -639,6 +647,11 @@ class LLMClient:
             if hasattr(response, "usage")
             else len(_first_text_block(response)) // 4
         )
+        if hasattr(response, "usage"):  # the real numbers only (#2149 step 3)
+            self._last_usage = {
+                "input_tokens": int(response.usage.input_tokens),
+                "output_tokens": int(response.usage.output_tokens),
+            }
 
         # Log usage - non-blocking
         try:
@@ -725,6 +738,11 @@ class LLMClient:
             if hasattr(response, "usage")
             else len(response.choices[0].message.content) // 4
         )
+        if hasattr(response, "usage"):  # the real numbers only (#2149 step 3)
+            self._last_usage = {
+                "input_tokens": int(response.usage.prompt_tokens),
+                "output_tokens": int(response.usage.completion_tokens),
+            }
 
         # Log usage - non-blocking
         try:
