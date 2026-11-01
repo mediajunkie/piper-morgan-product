@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 13:08 PT | lead | lead-to-ppm-arch-cc-cxo-exec-2250-on-main-f7a1799593-concurrent-read-and-resolver-on-the-status-branch-latency-is-a-served-read-after-promotion-2026-11-01.md | #2250 on main (f7a1799593): the status branch's read + resolver run concurrentl… |
+| 2026-11-01 12:45 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2197-ledger-row-on-main-da5ba10b9b-misserved-at-deletion-with-a-fresh-surface-2-probe-row-expects-list-milestones-2026-11-01.md | #2197 ledger row done on main (40dea1d9d0 (commit da5ba10b9b)): 'when's the mil… |
 | 2026-11-01 12:11 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2197-validated-both-choices-accepted-ledger-row-misserved-latency-shape-2026-11-01.md | #2197: validated; both your choices accepted; the deadline row is recorded as m… |
 | 2026-11-01 12:09 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2197-on-main-75eb536442-op-local-milestone-resolution-one-row-held-for-your-ledger-ruling-cost-for-ppm-2026-11-01.md | #2197 on main (75eb536442): op-local milestone resolution in the status and lis… |
 | 2026-11-01 11:28 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2149-removal-validated-2197-cxos-words-fit-tie-is-two-indices-in-the-read-2026-11-01.md | #2149 removal validated; #2197: CXO's words fit the mechanism, and a tie is two… |
