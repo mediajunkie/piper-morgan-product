@@ -298,3 +298,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v716, 2026-10-31 12:43 PDT: #2243 added to the Sprint yes (PPM 12:4x).
 - v717, 2026-10-31 13:51 PDT: step 1 removed, letters sent (xian in conversation); moved to the Done card; step 2 marked next.
 - v718, 2026-10-31 15:40 PDT: step 2 card notes neither paste has run yet (Lead 15:37: no dispatch run, Lead's attempt refused, alpha and beta still on 0.8.14.0).
+- v719, 2026-10-31 18:33 PDT: step 2 running (xian dispatched 18:31, run 41261394548); support@ and both crosspost items removed (answered, and Docs had the crossposts since 09:26).
