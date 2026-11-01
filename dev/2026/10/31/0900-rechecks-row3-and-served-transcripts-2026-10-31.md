@@ -1,6 +1,6 @@
 # v0.9.0.0 re-checks on alpha 5f0112c00c: row 3 (B confirm and reverse) and the served checks (#2236, #2233, #2237, #2225), 2026-10-31
 
-PA, by API. Account `web-seed-1386`, one session per block, replies verbatim from `/api/v1/intent`. Reverse-case confirms go on a fresh `requests.Session()` with no bearer and no cookie. Test repo `dinp-machine/piper-test-activity`: newest #35 before, #36 after (from block D3 only). Layer: API text and served page source, not the rendered page. Row 2's CSV and report: `dev/2026/10/19/canonical-retest-1386-alpha-20261031-1852-*`.
+PA, by API. Account `web-seed-1386`, one session per block, replies verbatim from `/api/v1/intent`. Reverse-case confirms go on a fresh `requests.Session()` with no bearer and no cookie. Test repo `dinp-machine/piper-test-activity`: newest #35 before; #36 (block D3) and #37 (block E2) after. Layer: API text and served page source, not the rendered page. Row 2's CSV and report: `dev/2026/10/19/canonical-retest-1386-alpha-20261031-1852-*`.
 
 ```
 === #2223 re-check on 5f0112c00c ===
@@ -147,4 +147,40 @@ POST /api/v1/settings/integrations/notion/save (form) -> http 409 body='{"messag
 ## #2237 wizard page source (curl /setup, unauthenticated)
 id="connect-later-line": You can connect Google Calendar later, in Settings → Integrations.
 Notion key section and Slack connect button: absent (0 matches).
+
+## Second run (after CXO's criteria arrived)
+=== 0.9.0.0 served checks on 5f0112c00c as web-seed-1386 ===
+
+## #2236 fix 3, CXO's prompt, session d1e858e7
+
+--- I2 [18:57:43, 7.4s, http 200] ---
+USER: what have you learned about my work style?
+route: MEMORY/pull_insights
+PIPER: I don't have any insights about your work style yet.
+
+## #2225 non-owner/name reply re-asks, session 5a63e867
+
+--- E1 [18:57:53, 8.1s, http 200] ---
+USER: Let's track this. Create a GitHub issue: 'Served check 2225b 1905'
+route: execution/create_ticket
+PIPER: Happy to shape this with you before anything gets filed. Here's a draft to start from:
+
+**Title**: Served check 2225b 1905
+
+What should the body say — the problem, steps to reproduce, impact? Tell me what to add or change. If this draft works as-is, say "file it as is" and I'll create it right now. (If you'd rather I just file things directly, say "just do things directly from now on" and I will.)
+
+--- E2 [18:57:58, 2.1s, http 200] ---
+USER: yes
+route: execution/create_ticket
+PIPER: Created issue #37, "Served check 2225b 1905", in dinp-machine/piper-test-activity.
+
+--- E3 [18:58:15, 15.2s, http 200] ---
+USER: the test one
+route: CONVERSATION/clarification_needed
+PIPER: Which test issue are you referring to — #34 "A3 no default test" or #33 "A3 wizard repo test"? And what do you want to do with it?
+
+--- E4 [18:58:30, 13.5s, http 200] ---
+USER: dinp-machine/piper-test-activity
+route: query/get_repository_activity
+PIPER: That's the repo where #37 lives — is there something specific you want to do with it, or were you clarifying where the issue was filed?
 ```
