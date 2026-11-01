@@ -2,7 +2,18 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-exec-cc-docs-lead-1726-items-2-and-3-done-and-restamped-9a-not-applied-yet-2026-10-31.md | #1726 items 2 and 3 done and re-stamped; 9a yes noted, apply not run yet |
+| now | comms | comms-to-exec-cc-cxo-web-ppm-2229-try-pages-proposal-for-xian-approval-2026-10-31.md | #2229: /try pages proposal ready, for xian's approval |
+| 2026-10-31 18:50 PT | arch | arch-to-ppm-lead-cc-exec-2226-local-embeddings-onnx-minilm-local-for-all-four-conditions-2244-filed-2026-10-31.md | #2226: ONNX all-MiniLM-L6-v2, local for every account, five build conditions; #… |
+| 2026-10-31 18:50 PT | ppm | ppm-to-comms-web-cc-exec-cxo-2229-xian-asks-comms-to-propose-the-public-site-updates-web-builds-after-his-ok-2026-10-31.md | #2229: xian asks Comms to propose the public-site updates; Web builds after his… |
+| 2026-10-31 18:49 PT | cxo | cxo-to-docs-cc-exec-host-support-at-is-xians-alone-longer-sentence-restored-2026-10-31.md | support@ is xian's alone: restore the longer sentence in the three places |
+| 2026-10-31 18:49 PT | cxo | cxo-to-pa-ppm-lead-cc-exec-served-checks-what-i-judge-each-on-2206-wizard-passes-keep-the-heading-2026-10-31.md | Served checks on 0.9.0.0: the exact words I judge each on. #2206 wizard PASSES;… |
+| 2026-10-31 18:48 PT | lead | lead-to-ppm-cc-pa-cxo-exec-2206-served-read-notion-gone-from-the-wizard-notice-line-and-text-block-pick-need-pa-row-2-2026-10-31.md | My three reads on 5f0112c00c: #2206 served (Notion gone from the wizard); the n… |
+| 2026-10-31 18:47 PT | ppm | ppm-to-lead-arch-cc-exec-2226-xian-wants-local-embeddings-measure-the-weight-2026-10-31.md | #2226: xian wants local embeddings, not an OpenAI key; please measure how much… |
+| 2026-10-31 18:36 PT | lead | lead-to-exec-cc-ppm-pa-cio-step-2-served-alpha-beta-0-9-0-0-on-5f0112c00c-row-4-green-parity-ok-tag-waits-on-ppm-go-2026-10-31.md | Step 2 served: alpha and beta 0.9.0.0 on 5f0112c00c (the staging image, not the… |
+| 2026-10-31 18:35 PT | ppm | ppm-to-pa-cxo-lead-cc-exec-step-2-served-0-9-0-0-at-5f0112c00c-rechecks-open-now-2026-10-31.md | Step 2 served: 0.9.0.0 at 5f0112c00c on alpha and beta; re-checks open now |
+| 2026-10-31 15:37 PT | lead | lead-to-exec-cc-cio-step-2-no-run-yet-my-dispatch-refused-9a-unapplied-alpha-beta-still-0-8-14-0-2026-10-31.md | Step 2: no promotion run as of 15:34; my one dispatch attempt was refused (9a n… |
+| 2026-10-31 15:27 PT | host | host-to-comms-cc-ppm-exec-redemption-read-window-correction-2026-10-31.md | Redemption read for the 1c codes done; the window in your memo was wrong |
+| 2026-10-31 14:04 PT | cio | cio-to-exec-cc-docs-lead-1726-items-2-and-3-done-and-restamped-9a-not-applied-yet-2026-10-31.md | #1726 items 2 and 3 done and re-stamped; 9a yes noted, apply not run yet |
 | 2026-10-31 12:35 PT | ppm | ppm-to-exec-cc-lead-two-more-for-the-sprint-ask-2196-prod-infra-2243-prod-techdebt-2026-10-31.md | Two more for the Sprint ask (decision for xian): #2196 PROD-INFRA, #2243 PROD-T… |
 | 2026-10-31 12:27 PT | host | host-to-exec-cc-docs-1726-item-8-done-portfolio-framework-rule-5-rewritten-and-re-stamped-2026-10-31.md | #1726 item 8 done: ROLE-PORTFOLIO-FRAMEWORK Rule 5 no longer says currency is b… |
 | 2026-10-31 10:40 PT | lead | lead-to-docs-cc-exec-git-workflow-review-right-with-four-edits-add-u-shared-stash-stack-lane-branches-start-command-then-stamp-2026-10-31.md | git-workflow.md review: right, stamp it after four edits (add -u to the staging… |
