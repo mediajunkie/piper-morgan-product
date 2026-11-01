@@ -10,7 +10,7 @@ this one canonical implementation (the legacy module is now a re-export shim).
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock
+from unittest.mock import AsyncMock, MagicMock
 
 from services.mcp.consumer.connector import (
     Binding,
@@ -28,6 +28,7 @@ def _adapter_with_config(is_configured: bool) -> NotionMCPAdapter:
     stubbed, isolating these tests from real keychain/env/PIPER.user.md state."""
     mock_config_service = MagicMock()
     mock_config_service.is_configured.return_value = is_configured
+    mock_config_service.ais_configured = AsyncMock(return_value=is_configured)  # #2238
     return NotionMCPAdapter(config_service=mock_config_service)
 
 

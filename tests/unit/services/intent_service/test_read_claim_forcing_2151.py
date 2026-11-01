@@ -88,6 +88,11 @@ from unittest.mock import patch
 
 import pytest
 
+
+async def _gate_open_async(self, *a, **k):  # #2238: the Notion chat gate is async now
+    return True
+
+
 REPO_OWNER, REPO_NAME = "forced-owner", "forced-repo"
 REPO = f"{REPO_OWNER}/{REPO_NAME}"
 
@@ -224,7 +229,7 @@ def _seam_notion(hits: _Hits) -> List[Any]:
         return True
 
     return [
-        patch.object(NotionIntegrationRouter, "is_available", lambda self, *a, **k: True),
+        patch.object(NotionIntegrationRouter, "ais_available", _gate_open_async),  # #2238
         patch.object(NotionMCPAdapter, "connect_with_token", _connect),
     ]
 

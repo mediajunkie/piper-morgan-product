@@ -1953,7 +1953,7 @@ async def get_notion_databases(current_user: JWTClaims = Depends(get_current_use
     try:
         config_service = NotionConfigService()
         # #1120: get_config requires user_id (refactor-miss recovery)
-        config = config_service.get_config(user_id=current_user.sub)
+        config = await config_service.aget_config(user_id=current_user.sub)  # #2238
         api_key = config.api_key
 
         if not api_key:

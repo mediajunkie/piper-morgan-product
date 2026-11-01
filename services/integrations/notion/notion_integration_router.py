@@ -14,10 +14,14 @@ import warnings
 from typing import Any, Dict, List, Optional, Tuple
 from uuid import UUID
 
+import structlog
+
 from services.infrastructure.config.feature_flags import FeatureFlags
 from services.integrations.spatial_adapter import SpatialContext, SpatialPosition
 
 from .config_service import NotionConfigService
+
+logger = structlog.get_logger(__name__)
 
 
 class NotionIntegrationRouter:
@@ -177,22 +181,47 @@ class NotionIntegrationRouter:
         except Exception:
             return False
 
+    async def ais_available(self, user_id: Optional[str] = None) -> bool:
+        """``is_available`` through the one read path (#2238): the user's key is
+        read the way the save wrote it (``NotionConfigService.ais_configured``).
+        Same contract as :meth:`is_available`: principal-less callers fall back
+        to the global check, and it never raises."""
+        if user_id:
+            try:
+                cfg = self.config_service or NotionConfigService()
+                return await cfg.ais_configured(user_id)
+            except Exception:
+                return False
+        try:
+            return self.is_configured()
+        except Exception:
+            return False
+
     async def connect_for_user(self, user_id: Optional[str] = None) -> bool:
         """Connect using the USER's resolved token (#1383).
 
         The bare ``connect()`` resolves from static/env config only, so on
         hosted a user's UI-saved key never reached the client even after the
-        gate passed. Resolves the same chain as :meth:`is_available` and passes
-        the token explicitly; with no principal or no user token it falls back
-        to ``connect()``'s legacy resolution (local single-tenant unchanged).
+        gate passed. Resolves the user's key through the one read path (#2238)
+        and passes the token explicitly. With no principal, or no user token on
+        a LOCAL deployment, it falls back to ``connect()``'s legacy resolution
+        (single-tenant unchanged). On a HOSTED deployment a missing user token
+        is "not connected": no legacy connect, no client built from an env key
+        (#2238 requirement 1; #1442's N1/C1).
         """
         token: Optional[str] = None
         if user_id:
             try:
                 cfg = self.config_service or NotionConfigService()
-                token = cfg.get_config(user_id).get_api_key() or None
+                token = (await cfg.aget_config(user_id)).get_api_key() or None
             except Exception:
                 token = None
+            if token is None:
+                from services.infrastructure.deployment import is_hosted_deployment
+
+                if is_hosted_deployment():
+                    logger.info("notion_connect_refused_no_user_key", user_id=str(user_id))
+                    return False
         return await self.connect(integration_token=token)
 
     def is_configured(self) -> bool:

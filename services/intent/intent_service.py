@@ -6374,7 +6374,7 @@ class IntentService:
             # not the global no-user check that #781 documents as always-False
             # until a user context exists. Same shape as the GitHub #1220 fix.
             _user_id = _principal_from_intent(intent)
-            if not notion_router.is_available(_user_id):
+            if not await notion_router.ais_available(_user_id):  # #2238: the one read path
                 return IntentProcessingResult(
                     success=True,
                     # #2122 (CXO's words, 2026-10-20): no env var, no workspace promise;
@@ -6522,7 +6522,7 @@ class IntentService:
             # not the global no-user check that #781 documents as always-False
             # until a user context exists. Same shape as the GitHub #1220 fix.
             _user_id = _principal_from_intent(intent)
-            if not notion_router.is_available(_user_id):
+            if not await notion_router.ais_available(_user_id):  # #2238: the one read path
                 return IntentProcessingResult(
                     success=True,
                     # #2138 (CXO and Arch, 2026-10-22, served fc183c41bc): this branch
@@ -6833,7 +6833,7 @@ class IntentService:
             # not the global no-user check that #781 documents as always-False
             # until a user context exists. Same shape as the GitHub #1220 fix.
             _user_id = _principal_from_intent(intent)
-            if not notion_router.is_available(_user_id):
+            if not await notion_router.ais_available(_user_id):  # #2238: the one read path
                 return IntentProcessingResult(
                     success=True,
                     # #2100/#2122 (CXO's words, 2026-10-20): no promise of a Notion write.

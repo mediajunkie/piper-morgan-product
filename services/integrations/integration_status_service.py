@@ -201,7 +201,14 @@ async def get_config_status(
     lookup_failed = False
     try:
         if integration_id == "notion":
-            if os.environ.get("NOTION_API_TOKEN") or os.environ.get("NOTION_API_KEY"):
+            # #2238: on a hosted deployment the user's own key is the only
+            # source, so an env key is not "configured" there (a keyless user
+            # would otherwise be told they're connected to a global workspace).
+            from services.infrastructure.deployment import is_hosted_deployment
+
+            if not is_hosted_deployment() and (
+                os.environ.get("NOTION_API_TOKEN") or os.environ.get("NOTION_API_KEY")
+            ):
                 return "configured", "env"
             # #1337: user-scoped path. save_notion_key stores the key in the #358
             # user-secret store (UserAPIKeyService, provider "notion") — NOT the keychain

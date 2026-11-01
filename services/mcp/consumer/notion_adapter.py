@@ -958,7 +958,7 @@ class NotionMCPAdapter(BaseSpatialAdapter):
         is a pointer to that keychain grant (Arch's Layer-2 ruling: keychain is
         just another encrypted grant store, not a contract variant)."""
         config_service = self.config_service or NotionConfigService()
-        if config_service.is_configured(user_id):
+        if await config_service.ais_configured(user_id):  # #2238: the one read path
             return Binding(binding_id=f"notion-keychain:{user_id}")
         return ConnectRequired(degradation=await self.degrade(DegradationReason.CONNECT_REQUIRED))
 
@@ -966,7 +966,7 @@ class NotionMCPAdapter(BaseSpatialAdapter):
         """The user's Notion connection health -- keychain-backed, no separate
         binding row to query (D3/D5: health without a resource fetch or token)."""
         config_service = self.config_service or NotionConfigService()
-        if config_service.is_configured(user_id):
+        if await config_service.ais_configured(user_id):  # #2238
             return ConnectorStatus(
                 state=ConnectorStatusState.BOUND, detail="Notion API key configured."
             )
@@ -982,7 +982,7 @@ class NotionMCPAdapter(BaseSpatialAdapter):
         today (checked: no default-database/default-page concept found). Revisit
         if/when a default-database preference is added."""
         config_service = self.config_service or NotionConfigService()
-        if not config_service.is_configured(user_id):
+        if not await config_service.ais_configured(user_id):  # #2238
             return ResolveMiss(await self.degrade(DegradationReason.CONNECT_REQUIRED))
         return ResolveMiss(await self.degrade(DegradationReason.RESOURCE_NOT_FOUND))
 

@@ -337,6 +337,7 @@ class TestNotionIntegration:
 
         mock_config_service = MagicMock()
         mock_config_service.get_config.return_value = mock_config
+        mock_config_service.aget_config = AsyncMock(return_value=mock_config)  # #2238
 
         mock_response = AsyncMock()
         mock_response.status = 200
@@ -371,6 +372,7 @@ class TestNotionIntegration:
 
         mock_config_service = MagicMock()
         mock_config_service.get_config.return_value = mock_config
+        mock_config_service.aget_config = AsyncMock(return_value=mock_config)  # #2238
 
         mock_response = AsyncMock()
         mock_response.status = 401
@@ -406,6 +408,7 @@ class TestNotionIntegration:
 
         mock_config_service = MagicMock()
         mock_config_service.get_config.return_value = mock_config
+        mock_config_service.aget_config = AsyncMock(return_value=mock_config)  # #2238
 
         with patch(
             "services.integrations.notion.config_service.NotionConfigService",

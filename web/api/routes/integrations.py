@@ -679,7 +679,7 @@ async def _test_notion(user_id: Optional[str] = None) -> Dict[str, Any]:
         from services.integrations.notion.config_service import NotionConfigService
 
         config_service = NotionConfigService()
-        config = config_service.get_config(user_id or "system")
+        config = await config_service.aget_config(user_id or "system")  # #2238
         api_key = config.api_key
 
         if not api_key:

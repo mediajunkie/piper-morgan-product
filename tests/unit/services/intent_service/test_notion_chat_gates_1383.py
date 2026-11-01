@@ -36,9 +36,15 @@ def _router_with_config(is_configured=None, api_key=None, raises=None):
     if raises:
         cfg.is_configured.side_effect = raises
         cfg.get_config.side_effect = raises
+        cfg.ais_configured = AsyncMock(side_effect=raises)  # #2238: the async read path
+        cfg.aget_config = AsyncMock(side_effect=raises)
     else:
         cfg.is_configured.return_value = bool(is_configured)
         cfg.get_config.return_value.get_api_key.return_value = api_key or ""
+        cfg.ais_configured = AsyncMock(return_value=bool(is_configured))  # #2238
+        resolved = MagicMock()
+        resolved.get_api_key.return_value = api_key or ""
+        cfg.aget_config = AsyncMock(return_value=resolved)
     r = NotionIntegrationRouter(config_service=cfg)
     return r, cfg
 
@@ -115,17 +121,17 @@ def svc():
 class TestSearchHandlerThreadsPrincipal:
     @pytest.mark.asyncio
     async def test_unavailable_user_gets_settings_guidance(self, svc):
-        with patch(f"{ROUTER}.is_available", return_value=False) as gate:
+        with patch(f"{ROUTER}.ais_available", new=AsyncMock(return_value=False)) as gate:
             result = await svc._handle_search_documents_notion(_search_intent(), "wf-1", "sess-1")
         # #2122 (CXO's words, 2026-10-20): the search reply no longer points at
         # Settings; it says chat can't search documents or read Notion pages yet.
         assert "I can't search your documents from chat yet" in result.message
-        gate.assert_called_once_with("694d8f4e-0000-0000-0000-000000000042")
+        gate.assert_awaited_once_with("694d8f4e-0000-0000-0000-000000000042")
 
     @pytest.mark.asyncio
     async def test_available_user_connects_as_themselves(self, svc):
         with (
-            patch(f"{ROUTER}.is_available", return_value=True),
+            patch(f"{ROUTER}.ais_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.connect_for_user", new=AsyncMock(return_value=True)) as cfu,
             patch(f"{ROUTER}.search_notion", new=AsyncMock(return_value=[])),
         ):

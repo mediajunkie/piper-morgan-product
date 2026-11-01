@@ -147,6 +147,7 @@ class TestUpdateDocumentNotConfigured:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = False
             mock_router.is_available.return_value = False  # #1383 gate
+            mock_router.ais_available = AsyncMock(return_value=False)  # #2238: the async gate
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_update_document_notion(
@@ -199,6 +200,7 @@ class TestUpdateDocumentNotFound:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.is_available.return_value = True  # #1383 gate
+            mock_router.ais_available = AsyncMock(return_value=True)  # #2238: the async gate
             mock_router.connect = AsyncMock()
             mock_router.connect_for_user = AsyncMock()  # #1383
             mock_router.search_notion = AsyncMock(return_value=[])
@@ -252,6 +254,7 @@ class TestUpdateDocumentMultipleMatches:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.is_available.return_value = True  # #1383 gate
+            mock_router.ais_available = AsyncMock(return_value=True)  # #2238: the async gate
             mock_router.connect = AsyncMock()
             mock_router.connect_for_user = AsyncMock()  # #1383
             mock_router.search_notion = AsyncMock(
@@ -303,6 +306,7 @@ class TestUpdateDocumentMultipleMatches:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.is_available.return_value = True
+            mock_router.ais_available = AsyncMock(return_value=True)  # #2238: the async gate
             mock_router.connect = AsyncMock()
             mock_router.connect_for_user = AsyncMock()
             mock_router.search_notion = AsyncMock(
@@ -346,6 +350,7 @@ class TestUpdateDocumentMultipleMatches:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.is_available.return_value = True
+            mock_router.ais_available = AsyncMock(return_value=True)  # #2238: the async gate
             mock_router.connect = AsyncMock()
             mock_router.connect_for_user = AsyncMock()
             mock_router.search_notion = AsyncMock(
@@ -415,6 +420,7 @@ class TestUpdateDocumentSuccess:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.is_available.return_value = True  # #1383 gate
+            mock_router.ais_available = AsyncMock(return_value=True)  # #2238: the async gate
             mock_router.connect = AsyncMock()
             mock_router.connect_for_user = AsyncMock()  # #1383
             mock_router.search_notion = AsyncMock(

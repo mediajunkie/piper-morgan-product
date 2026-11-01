@@ -14,14 +14,25 @@ Legacy file preserved for backward compatibility during migration
 
 import os
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, AsyncContextManager, Callable, Dict, Optional
 
+import structlog
 import yaml
 
 from services.infrastructure.config.feature_flags import FeatureFlags
+
+logger = structlog.get_logger(__name__)
+
+
+def _hosted() -> bool:
+    # Function-local import so tests can patch ``services.infrastructure.deployment
+    # .is_hosted_deployment`` (the #2151 convention).
+    from services.infrastructure.deployment import is_hosted_deployment
+
+    return is_hosted_deployment()
 
 
 class NotionEnvironment(Enum):
@@ -75,10 +86,21 @@ class NotionConfigService:
     All user-scoped methods now require user_id parameter.
     """
 
-    def __init__(self, feature_flags: Optional[FeatureFlags] = None):
+    def __init__(
+        self,
+        feature_flags: Optional[FeatureFlags] = None,
+        *,
+        user_key_service: Optional[Any] = None,
+        session_scope: Optional[Callable[[], AsyncContextManager[Any]]] = None,
+    ):
         self.feature_flags = feature_flags or FeatureFlags()
         # Per-user config cache (keyed by user_id)
         self._config_cache: Dict[str, NotionConfig] = {}
+        # #2238: the user-key read is the SAME read the save writes
+        # (UserAPIKeyService.retrieve_user_key: the encrypted row, then the
+        # keychain). Injectable for tests; resolved lazily otherwise.
+        self._user_key_service = user_key_service
+        self._session_scope = session_scope
 
     def get_config(self, user_id: str) -> NotionConfig:
         """
@@ -173,14 +195,24 @@ class NotionConfigService:
         Issue #579: Added keychain fallback for UI-configured keys.
         Issue #734: Keychain lookups now scoped by user_id.
         """
-        # Load from PIPER.user.md first (base layer)
-        user_config = self._load_from_user_config()
+        # #2238 (N1/C1): on a hosted deployment the user's own key is the ONLY
+        # source. A global env key would override every user's own key, and a
+        # keyless user would read the global workspace: a cross-user read one
+        # env var away. PIPER.user.md is a single-tenant file and is not read
+        # either. Local single-tenant behaviour is unchanged. Decided by the
+        # deployment signal (services/infrastructure/deployment.py), never by
+        # probing local state.
+        hosted = _hosted()
+
+        # Load from PIPER.user.md first (base layer); never on hosted.
+        user_config = {} if hosted else self._load_from_user_config()
 
         # Get authentication section (with fallback to empty dict)
         auth_config = user_config.get("authentication", {})
 
         # Get API key with fallback chain: env var > user config > user-scoped keychain
-        api_key = os.getenv("NOTION_API_KEY", auth_config.get("api_key", ""))
+        # (hosted: the user-scoped store only).
+        api_key = "" if hosted else os.getenv("NOTION_API_KEY", auth_config.get("api_key", ""))
 
         # Issue #579/#734: Fallback to user-scoped keychain if not found in env or user config
         if not api_key:
@@ -224,6 +256,74 @@ class NotionConfigService:
                 os.getenv("NOTION_ENVIRONMENT", user_config.get("environment", "development"))
             ),
         )
+
+    # ── #2238: the one read path for the user's key ──────────────────────────
+
+    async def aget_user_api_key(self, user_id: str) -> Optional[str]:
+        """The user's Notion key, read the way ``save_notion_key`` wrote it.
+
+        ``UserAPIKeyService.retrieve_user_key`` reads the encrypted ``user_api_keys``
+        row first and the keychain second, which is exactly what ``store_user_key``
+        writes (the keychain best-effort, the row always when an encryptor exists).
+        The integration status surface already reads through it (#1337), so after
+        #2238 status and chat agree by construction: a key that status sees is a
+        key chat can use, and a half-save (keychain write failed, row written) is
+        read back the same way instead of being invisible to chat.
+
+        ``None`` means no key OR a failed read; both are logged with a reason and
+        both gate to "not connected" (the chat gates degrade, they don't 500).
+        """
+        try:
+            service = self._user_key_service
+            if service is None:
+                from services.security.user_api_key_service import UserAPIKeyService
+
+                service = UserAPIKeyService()
+            scope = self._session_scope
+            if scope is None:
+                from services.database.session_factory import AsyncSessionFactory
+
+                scope = AsyncSessionFactory.session_scope_fresh
+            async with scope() as session:
+                key = await service.retrieve_user_key(session, str(user_id), "notion")
+            if not key:
+                logger.debug("notion_user_key_absent", user_id=str(user_id))
+                return None
+            return key
+        except Exception as e:  # silent-ok: LOGGED; a failed read gates closed, never 500s a turn
+            logger.warning(
+                "notion_user_key_read_failed", user_id=str(user_id), error=type(e).__name__
+            )
+            return None
+
+    async def aget_config(self, user_id: str) -> NotionConfig:
+        """``get_config`` with the user's key resolved through the one read path.
+
+        Hosted: the user store is the only source, whatever env or file says.
+        Local: env > PIPER.user.md > keychain as before, then the user store as the
+        last fallback (so a local tester with a UI-saved key is unchanged).
+        The resolved config replaces the cached entry, so a later sync read on
+        the same service instance sees the same key.
+        """
+        if not user_id:
+            raise ValueError("user_id is required")
+        base = self.get_config(user_id)
+        hosted = _hosted()
+        if not hosted and base.api_key:
+            return base
+        user_key = await self.aget_user_api_key(user_id) or ""
+        api_key = user_key if hosted else (base.api_key or user_key)
+        if api_key == base.api_key:
+            return base
+        resolved = replace(base, api_key=api_key)
+        self._config_cache[user_id] = resolved
+        return resolved
+
+    async def ais_configured(self, user_id: str) -> bool:
+        """``is_configured`` through the one read path (#2238)."""
+        if not user_id:
+            raise ValueError("user_id is required")
+        return (await self.aget_config(user_id)).validate()
 
     def is_configured(self, user_id: str) -> bool:
         """

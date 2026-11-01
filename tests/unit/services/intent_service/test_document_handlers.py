@@ -246,6 +246,7 @@ class TestNotionNotConfiguredGracefulDegradation:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = False
             mock_router.is_available.return_value = False  # #1383 gate
+            mock_router.ais_available = AsyncMock(return_value=False)  # #2238: the async gate
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_search_documents_notion(
@@ -276,6 +277,7 @@ class TestNotionNotConfiguredGracefulDegradation:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = False
             mock_router.is_available.return_value = False  # #1383 gate
+            mock_router.ais_available = AsyncMock(return_value=False)  # #2238: the async gate
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_analyze_document_notion(
@@ -327,6 +329,7 @@ class TestDocumentSearchResults:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.is_available.return_value = True  # #1383 gate
+            mock_router.ais_available = AsyncMock(return_value=True)  # #2238: the async gate
             mock_router.connect = AsyncMock()
             mock_router.connect_for_user = AsyncMock()  # #1383
             mock_router.search_notion = AsyncMock(return_value=mock_search_results)
@@ -360,6 +363,7 @@ class TestDocumentSearchResults:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.is_available.return_value = True  # #1383 gate
+            mock_router.ais_available = AsyncMock(return_value=True)  # #2238: the async gate
             mock_router.connect = AsyncMock()
             mock_router.connect_for_user = AsyncMock()  # #1383
             mock_router.search_notion = AsyncMock(return_value=[])
@@ -422,6 +426,7 @@ class TestDocumentAnalysisResults:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.is_available.return_value = True  # #1383 gate
+            mock_router.ais_available = AsyncMock(return_value=True)  # #2238: the async gate
             mock_router.connect = AsyncMock()
             mock_router.connect_for_user = AsyncMock()  # #1383
             mock_router.get_page = AsyncMock(return_value=mock_page_data)
@@ -455,6 +460,7 @@ class TestDocumentAnalysisResults:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.is_available.return_value = True  # #1383 gate
+            mock_router.ais_available = AsyncMock(return_value=True)  # #2238: the async gate
             mock_router.connect = AsyncMock()
             mock_router.connect_for_user = AsyncMock()  # #1383
             mock_router.search_notion = AsyncMock(return_value=[])
@@ -487,6 +493,7 @@ class TestDocumentHandlerErrors:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.is_available.return_value = True  # #1383 gate
+            mock_router.ais_available = AsyncMock(return_value=True)  # #2238: the async gate
             mock_router.connect = AsyncMock(side_effect=Exception("API connection failed"))
             mock_router.connect_for_user = AsyncMock(
                 side_effect=Exception("API connection failed")
@@ -525,6 +532,7 @@ class TestDocumentHandlerErrors:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.is_available.return_value = True  # #1383 gate
+            mock_router.ais_available = AsyncMock(return_value=True)  # #2238: the async gate
             mock_router.connect = AsyncMock()
             mock_router.connect_for_user = AsyncMock()  # #1383
             mock_router.get_page = AsyncMock(side_effect=Exception("Page not accessible"))

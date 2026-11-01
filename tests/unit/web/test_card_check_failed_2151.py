@@ -43,6 +43,7 @@ class _Session:
 def _notion_with_key():
     service = MagicMock()
     service.get_config = MagicMock(return_value=MagicMock(api_key="fake-notion-key"))
+    service.aget_config = AsyncMock(return_value=MagicMock(api_key="fake-notion-key"))  # #2238
     return patch(
         "services.integrations.notion.config_service.NotionConfigService", return_value=service
     )
