@@ -160,11 +160,14 @@ jobs:
       - name: Concept-link gate (methodology-56)
         run: |
           # Every declared `Concept:` path must exist and name the mechanism back
-          # (scripts/check-concept-links.py). A missing Concept line is counted, not
-          # failed, until 2026-11-01 (mechanism-sunset-or-renew). Only a BROKEN link
-          # (renamed/deleted concept doc, or a doc edit that drops the mechanism's
-          # name) turns main red. CIO's proposal 2026-10-14; Lead's gate, Lead's yes.
-          python scripts/check-concept-links.py
+          # (scripts/check-concept-links.py). A BROKEN link (renamed/deleted concept
+          # doc, or a doc edit that drops the mechanism's name) turns main red, and
+          # since 2026-11-01 (mechanism-sunset-or-renew; Lead's yes to CIO, 10:2x) so
+          # does a process class with more missing `Concept:` lines than its frozen
+          # ceiling (--ratchet: hooks 0, git-hooks 2, skills 0, workflows 0; the count
+          # only goes down). scripts/ stays counted, not ratcheted: it mixes product
+          # helpers with process scripts. CIO's proposal 2026-10-14; Lead's gate.
+          python scripts/check-concept-links.py --ratchet
 
       - name: Quality summary
         run: |
