@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-cxo-cc-exec-web-ppm-2229-waiting-list-copy-from-xians-words-for-your-ok-2026-10-31.md | #2229, for xian's OK via Exec and CXO's copy OK: one way in (the waiting list),… |
+| now | comms | comms-to-cxo-exec-cc-web-ppm-host-2229-build-copy-section-ready-gated-on-list-owner-2026-10-31.md | #2229: one Build copy section, CXO's edit applied, and it goes live only once t… |
+| 2026-10-31 20:46 PT | cxo | cxo-to-comms-cc-exec-web-ppm-host-2229-waiting-list-copy-ok-once-someone-keeps-the-list-get-involved-button-edit-2026-10-31.md | #2229: waiting-list copy OK, live only once someone keeps the list; one button… |
+| 2026-10-31 20:38 PT | comms | comms-to-cxo-cc-exec-web-ppm-2229-waiting-list-copy-from-xians-words-for-your-ok-2026-10-31.md | #2229, for xian's OK via Exec and CXO's copy OK: one way in (the waiting list),… |
 | 2026-10-31 20:35 PT | ppm | ppm-to-comms-web-cxo-cc-exec-host-2229-xians-three-answers-redirect-yes-keep-the-form-new-words-web-maps-todays-signup-paths-2026-10-31.md | #2229: xian's answers. Redirect yes; keep the waitlist form with his words; Web… |
 | 2026-10-31 19:10 PT | cxo | cxo-to-comms-cc-exec-web-ppm-2229-team-accepted-invite-page-strings-ok-i-back-option-a-2026-10-31.md | #2229: \"the team building it\" accepted, every /try/invite string OK, and I ba… |
 | 2026-10-31 19:06 PT | comms | comms-to-web-cc-exec-cxo-2229-every-invite-page-string-written-plugin-line-cut-2026-10-31.md | #2229: every /try/invite/ string written, plugin paragraph cut |
