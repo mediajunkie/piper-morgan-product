@@ -553,3 +553,77 @@ class SlotFillingState(str, Enum):
     CONFIRMING = "confirming"  # All required slots filled, confirming
     COMPLETE = "complete"  # User confirmed, process done
     CANCELLED = "cancelled"  # User cancelled mid-flow
+
+
+class RouteGroup(str, Enum):
+    """
+    The declared routing group of a router-visible operation (#2149 build step 1).
+
+    The closed enum from Lead's first cut, accepted by Arch 2026-11-01 (design
+    record ``2149-route-group-enum-first-cut-lead-2026-11-01.md``): nine groups,
+    declared in the order below. Groups follow what the user is ASKING ABOUT, not
+    the rollout cohort (``flip_group``) and not the legacy classifier category.
+
+    NO BEHAVIOUR CHANGE: this is entry metadata, like ``outwardness``. The flat
+    router prompt does not read it. It exists so stage 1 of the two-stage router
+    (a later build step, behind a flag) can derive its group list from the
+    registry rather than from a hand-written list. Each group's stage-1 line is
+    held beside the enum in ``ROUTE_GROUP_LINES`` (the only source). Moving an op
+    between groups is a deliberate edit of ``ROUTE_GROUPS`` / the entry's
+    ``route_group`` AND of the ``EXPECTED`` table in ``TestRouteGroupRatchet2149``.
+    """
+
+    ISSUES = "issues"
+    REPO_ACTIVITY = "repo_activity"
+    PROJECTS_AND_REPOS = "projects_and_repos"
+    CALENDAR_AND_TIME = "calendar_and_time"
+    TODOS_AND_REMINDERS = "todos_and_reminders"
+    DOCUMENTS_AND_WRITING = "documents_and_writing"
+    STATUS_AND_PRIORITIES = "status_and_priorities"
+    MEMORY_AND_INSIGHTS = "memory_and_insights"
+    ASSISTANT_AND_CONVERSATION = "assistant_and_conversation"
+
+
+#: The stage-1 line for each group: the only text shared across groups (#2149).
+#: Keys must equal the RouteGroup members (pinned by TestRouteGroupRatchet2149).
+ROUTE_GROUP_LINES: dict[RouteGroup, str] = {
+    RouteGroup.ISSUES: (
+        "GitHub issues: create, change, close or reopen, comment on, show or " "list them."
+    ),
+    RouteGroup.REPO_ACTIVITY: (
+        "What is happening in the code and the repositories: pull requests, "
+        "what shipped, milestones, releases, labels, branches, commits, the "
+        "local branch, and which repo is the default."
+    ),
+    RouteGroup.PROJECTS_AND_REPOS: (
+        "The user's projects and portfolio: list, search, add, archive or "
+        "restore projects, and link, unlink or list the repositories attached "
+        "to them."
+    ),
+    RouteGroup.CALENDAR_AND_TIME: (
+        "Calendar, meetings and the clock: today's or the week's schedule, "
+        "recurring meetings, what time it is, the user's timezone."
+    ),
+    RouteGroup.TODOS_AND_REMINDERS: (
+        "Todos and reminders: add, list, complete, delete or clear them."
+    ),
+    RouteGroup.DOCUMENTS_AND_WRITING: (
+        "Documents and drafting: summarize, analyze, search or update a "
+        "document; write content, a report or a stakeholder update."
+    ),
+    RouteGroup.STATUS_AND_PRIORITIES: (
+        "How things are going and what matters now: project status, what needs "
+        "attention, the top priority, blockers, what changed, completion "
+        "history, productivity, standup, metrics, a plan."
+    ),
+    RouteGroup.MEMORY_AND_INSIGHTS: (
+        "What the assistant remembers or has learned: memory of the user and "
+        "past conversations, insights and patterns, this session's activity, "
+        "why it suggested something."
+    ),
+    RouteGroup.ASSISTANT_AND_CONVERSATION: (
+        "About the assistant itself, and pleasantries: who it is, what it can "
+        "do, how it works with the user, a feature's details, how-do-I "
+        "guidance; greetings, thanks and goodbyes."
+    ),
+}

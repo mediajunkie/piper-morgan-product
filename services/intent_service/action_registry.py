@@ -13,6 +13,8 @@ If no specialized handler exists, route to the conversational floor.
 from enum import Enum
 from typing import Optional
 
+from services.shared_types import RouteGroup
+
 
 class ActionDisposition(Enum):
     """What should happen when this (category, action) pair is encountered."""
@@ -565,6 +567,17 @@ ACTION_DESCRIPTIONS: dict[tuple[str, str], str] = {
         "release, sprint, plan or project — blockers, bottlenecks, obstacles "
         "and risks to analyze"
     ),
+}
+
+#: #2149 build step 1: the route_group of each registry-only canonical (the six ops with
+#: no rail key), beside ACTION_DESCRIPTIONS. The rail ops carry theirs on the WorkflowEntry.
+ROUTE_GROUPS: dict[tuple[str, str], RouteGroup] = {
+    ("PORTFOLIO", "manage_portfolio"): RouteGroup.PROJECTS_AND_REPOS,
+    ("PORTFOLIO", "manage_repos"): RouteGroup.PROJECTS_AND_REPOS,
+    ("PRIORITY", "get_top_priority"): RouteGroup.STATUS_AND_PRIORITIES,
+    ("CONVERSATION", "greeting"): RouteGroup.ASSISTANT_AND_CONVERSATION,
+    ("CONVERSATION", "farewell"): RouteGroup.ASSISTANT_AND_CONVERSATION,
+    ("CONVERSATION", "thanks"): RouteGroup.ASSISTANT_AND_CONVERSATION,
 }
 
 
