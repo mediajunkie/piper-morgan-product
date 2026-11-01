@@ -42,36 +42,40 @@ class TestValidatesAsTheAccount:
         assert (result.validated, result.error) == (False, None)
 
     async def test_the_accounts_own_token_is_the_one_sent(self):
+        """#2235: the credential now comes from the connector's one resolver
+        (``_grant_headers_or_raise``: the OAuth grant or the PAT, as Bearer), never
+        from a PAT read of the validator's own."""
         seen = {}
 
-        async def _validate(full_name, token=None):
+        async def _validate(full_name, token=None, *, headers=None):
             seen["token"] = token
+            seen["headers"] = headers
             return grv.RepoValidationResult(validated=True, exists=True, accessible=True)
 
         with (
             patch.object(
-                GitHubMCPSpatialAdapter, "_user_pat_at_rest", AsyncMock(return_value=None)
-            ),
-            patch.object(
-                GitHubMCPSpatialAdapter, "_user_pat", MagicMock(return_value="fake-token-account")
+                GitHubMCPSpatialAdapter,
+                "_grant_headers_or_raise",
+                AsyncMock(return_value={"Authorization": "Bearer fake-token-account"}),
             ),
             patch.object(grv, "validate_github_repo", _validate),
         ):
             await grv.validate_github_repo_for_account("owner/repo", _USER)
-        assert seen == {"token": "fake-token-account"}
+        assert seen == {"token": None, "headers": {"Authorization": "Bearer fake-token-account"}}
 
     async def test_a_failed_read_is_not_checked(self, monkeypatch):
         monkeypatch.setenv("GITHUB_TOKEN", "fake-token-deployment")
         with (
             patch.object(
                 GitHubMCPSpatialAdapter,
-                "_user_pat_at_rest",
+                "_grant_headers_or_raise",
                 AsyncMock(side_effect=RuntimeError("store down")),
             ),
             _no_http(),
         ):
             result = await grv.validate_github_repo_for_account("owner/repo", _USER)
         assert (result.validated, result.exists) == (False, False)
+        assert result.not_checked_reason == "error"  # #2235: a stated reason, never "not found"
 
     async def test_no_account_is_not_checked(self, monkeypatch):
         monkeypatch.setenv("GITHUB_TOKEN", "fake-token-deployment")
