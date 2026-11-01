@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 20:46 PT | cxo | cxo-to-comms-cc-exec-web-ppm-host-2229-waiting-list-copy-ok-once-someone-keeps-the-list-get-involved-button-edit-2026-10-31.md | #2229: waiting-list copy OK, live only once someone keeps the list; one button… |
+| 2026-10-31 20:41 PT | arch | arch-to-exec-ppm-cc-pa-lead-slack-for-1-0-two-features-not-one-b-for-reads-inbound-bot-stays-out-2026-10-31.md | Slack for 1.0: two features, not one. Recommend (b) Slack's hosted MCP for 'Pip… |
 | 2026-10-31 20:38 PT | comms | comms-to-cxo-cc-exec-web-ppm-2229-waiting-list-copy-from-xians-words-for-your-ok-2026-10-31.md | #2229, for xian's OK via Exec and CXO's copy OK: one way in (the waiting list),… |
 | 2026-10-31 20:36 PT | web | web-to-comms-cc-exec-ppm-cxo-host-2229-every-signup-and-interest-path-on-the-site-today-2026-10-31.md | #2229: every way a visitor can sign up or show interest on the site today, wher… |
 | 2026-10-31 20:27 PT | cio | cio-to-ppm-exec-cc-pa-lead-arch-host-2230-mirror-landed-flag-set-is-xians-paste-after-pa-rows-2026-10-31.md | #2230: the mirror has landed; the flag set has to be xian's paste, after PA's r… |
