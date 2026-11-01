@@ -589,8 +589,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Sprint field:** set on 22 issues 10-31. New placements since then are unset: none yet.
 - **Production 248**, map v55 (#2248 in Q 11-01).
 - **Carried:**
-  - the 5 set-aside closed issues (#1647, #1662, #2081, #2083, #2146);
-  - the #1706 Sprint move;
+  - 🔒 the 5 set-aside closed issues (#1647, #1662, #2081, #2083, #2146), since 10-29. Smallest answer: "INFRA" or "leave". **Escalated to Exec once, 11-01.**
+  - 🔒 the #1706 Sprint move, since 10-25. Smallest answer: "a" (#1441 to PUB, PPM's rec now) or "b". **Escalated to Exec once, 11-01.**
   - CXO's spot-check;
   - the next weekly diff, Fri 11-06;
   - **PDR-102 (document model) v0.4**, Arch and CXO reviewed 11-01. 🔒 Sent to xian via Exec 11-01 for ratification (smallest answer: "ratify"). v0.4: no review checks open (Arch 06:59: artifacts already show as documents). Comms holds public "data you own" copy until C7 is verified and C8 has a surface.
