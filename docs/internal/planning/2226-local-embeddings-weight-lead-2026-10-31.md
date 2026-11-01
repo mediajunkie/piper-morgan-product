@@ -36,3 +36,18 @@ Reading: **torch in the web process is 450–850 MB on its own and does not fit 
 ## Verified how
 
 Scripts in the Lead scratchpad (`emb-torch.py`, `emb-onnx.py`, `emb-onnx2.py`, `emb-bge.py`), each run this evening in the repo venv with the Anthropic env stripped; `resource.getrusage` maxrss; `huggingface_hub` downloads of the two models' files with their on-disk sizes; `du -sm` of the venv's site-packages; `grep` of the app tree for the five imports; `gh run view` for the deploy step timing; `fly machine status` for the machine size; the ingestion source for chunking and the inline await. Layer: local process measurements and repository facts. Not measured: anything on the Fly machine (server RSS, CPU speed), and the models' retrieval quality, which is Arch's choice to make.
+
+## Addendum 19:0x: Arch's pick, Chroma's built-in `ONNXMiniLM_L6_V2`, measured as it ships
+
+Arch (18:50) picked `all-MiniLM-L6-v2` through chromadb 0.4.22's built-in `ONNXMiniLM_L6_V2` (onnxruntime, already a dependency). Its source: it downloads `onnx.tar.gz` (model.onnx 90.4 MB, tokenizer, vocab; 168 MB in `~/.cache/chroma/onnx_models` after extraction) from an S3 URL with a pinned sha256 on first use, truncates and pads to 256 tokens, batches 32 at a time, and passes no session options. Measured, cache warm, fresh process each, 50 chunks of 200 words (256 tokens padded), process maxrss:
+
+| Configuration | loaded | peak | ms/chunk |
+|---|---|---|---|
+| **default on this Mac: CoreML execution provider** | 850 MB | **9,811 MB** | 71 |
+| CPU provider, default threads (10 cpus), batch 32 (the class default) | 274 MB | 578 MB | 17 |
+| CPU provider, 1 thread, batch 32 | 274 MB | 579 MB | 77 |
+| CPU provider, 1 thread, **batch 4** | 283 MB | **302 MB** | 72 |
+
+Readings. (1) The first row is a developer-machine hazard, not a Fly one: onnxruntime on macOS picks the CoreML provider by default, and the class ran at 9.8 GB on a laptop; pass `preferred_providers=["CPUExecutionProvider"]` (the constructor takes it) so dev runs and tests behave like Linux. (2) On the CPU provider, which is all Fly has, the class costs **about 275 MB loaded (chromadb imported too) and 580 MB peak at its default batch of 32, or 300 MB peak at batch 4**; the batch size is fixed at 32 inside `_forward`, so the build must call `_forward(..., batch_size=4)` or subclass. (3) Per chunk at one thread it is 72–77 ms with 256-token padding, the same as the unpadded run; the 17 ms figure uses ten cores the Fly machine does not have. (4) A 10-page PDF re-chunked to 200 words (≈30 chunks) is about 2.3 s at one thread here, so several seconds on the shared vCPU, inside the upload request as the code stands. Two conditions to add to Arch's five: the CPU provider named explicitly, and the batch capped at 4 (or a measured 8) on the 1 GB machine.
+
+**#2244 (Arch's condition d):** this seat cannot run `fly ssh`, so the runtime confirmation (`ls /app/data /data` on the web machine, and the collection count across a deploy) is PA's or CIO's. The repo text reads the same to me: `DocumentIngester(chroma_path="./data/chromadb")` with no caller passing a path, `WORKDIR /app`, volume at `/data` used only by `UPLOAD_DIR`. Size of #2244 itself: half a day (a `CHROMA_PATH` setting defaulting to `/data/chromadb` under Fly and `./data/chromadb` locally, the setup check reporting it, a deploy-spanning served count).
