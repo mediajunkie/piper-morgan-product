@@ -696,6 +696,18 @@ Served acceptance after the flip (Arch): wording (a) stores name 'Baz' and the d
 start a new project" gets a name ask and no row; telemetry `live_match=operation`. Lesson: before building
 a handler-side args fix, check which surface dispatches the op on alpha (`resolve_live_match`, one call).
 
+**#2230 set-default: the same shape, flipped by name (2026-10-31)**: `set_default_repo` is on
+`FLIP_WRITE_ALLOWLIST` but had no `flip_group` and registry category QUERY, so it wasn't named live and
+PA's probe got no-match in a fresh session and an armed one. **Ruling (Arch, 10-30 17:11):** add the
+single op token `set_default_repo`, never QUERY, which would sweep in `create_issue` and `close_issue`.
+A router consult at the no-match line is ruled out as a second door around the live set. Conditions:
+the setter validation on main (`05b58c36b3` + `0766215ba7`, Arch-validated), xian's by-name word (10-31
+20:21), Exec's freeze lifted, and the token set after PA's v0.9.0.0 tag checks so the restart doesn't
+land under them. The gate's `CURRENT_LIVE_CATEGORIES` mirror is committed first (this commit); the
+token is appended to the flag as read on the machine, never to a value rebuilt from this mirror. Served
+check after: PA's fresh-session probe gets the setter's confirm and declines it, then one row 2 run.
+OAuth-only accounts can't have the repo validated until #2235.
+
 **#2082 name first; consent arms only on a resolved target (Arch 2026-10-18 09:28, agreeing with CXO
 08:27; built the same morning)**: with `add_project` live, a collaborate-mode declarative with no name
 ("I'd like to start a new project") reached the rail's consent block as a held WRITE and got the generic

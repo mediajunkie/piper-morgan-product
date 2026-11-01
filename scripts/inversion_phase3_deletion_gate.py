@@ -599,6 +599,10 @@ CURRENT_LIVE_CATEGORIES: frozenset = frozenset(
         # path with no router args because the op was not live. Mirror
         # commit lands BEFORE xian sets the token on piper-morgan (Arch's
         # condition 3); near-miss screen 9/9 clean (condition 2).
+        # + SET_DEFAULT_REPO (2026-10-31, CIO; Arch's #2230 ruling, one op
+        # token, never QUERY; xian's by-name word 20:21): allowlisted WRITE
+        # with no flip_group, so the turn got no-match. Mirror commit lands
+        # BEFORE the token is set on piper-morgan, after the v0.9.0.0 checks.
         "ADD_PROJECT",
         "COMPLETE_TODO",
         "CREATE_REMINDER",
@@ -613,6 +617,7 @@ CURRENT_LIVE_CATEGORIES: frozenset = frozenset(
         "READ_STRATEGIC",
         "READ_SYNTHESIS",
         "READ_TEMPORAL",
+        "SET_DEFAULT_REPO",
     }
 )
 
