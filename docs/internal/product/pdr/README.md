@@ -4,7 +4,7 @@
 
 This directory contains Product Decision Records (PDRs) that document significant product decisions, their context, rationale, and implications for design and implementation.
 
-**Total PDRs**: 9 records (001-007, 101, plus the PDR-002 appendix). Index checked against the files 2026-10-23 (PPM); currency notes are in PPM's 10-23 PDR check memo to Exec.
+**Total PDRs**: 10 records (001-007, 101, 102, plus the PDR-002 appendix). Index checked against the files 2026-10-23 (PPM); currency notes are in PPM's 10-23 PDR check memo to Exec.
 
 ## What is a PDR?
 
@@ -40,6 +40,7 @@ Major feature decisions that build on foundational PDRs. These define significan
 | PDR | Title | Status | Date |
 |-----|-------|--------|------|
 | [PDR-101](PDR-101-multi-entity-conversation.md) | Multi-Entity Conversation Support | Draft v2, dormant (Slack on Fast Follow) | Jan 4, 2026 |
+| [PDR-102](PDR-102-document-model-vision.md) | Piper's Document Model, and Knowledge in Data You Own | Draft v0.1, for Arch and CXO review (xian's 10-31 vision) | Nov 1, 2026 |
 
 ### Tier 2xx: Integration Patterns
 *(Reserved for future use)*
