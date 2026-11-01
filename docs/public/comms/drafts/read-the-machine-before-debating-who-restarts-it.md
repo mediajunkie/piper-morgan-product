@@ -45,13 +45,6 @@ Now that the real question was clear, Lead bumped the database memory to 512 MB.
 
 I don't think agents are unique in their ability to go off on long tangents or even "bike shed" arguments without first checking the facts of a situation. I'm fairly certain I've seen human-only teams do this many times in my storied career. Regardless of who or what is running into that rabbithole the solution is the same. Check first!
 
-*Next on Building Piper Morgan, we resume the building narrative with "The Unguarded Entrance" Suggested tease: *on a
-  holiday Sunday, my chief of staff agent finds a hole in the routine every agent runs, and by evening finds the
-  worst case of it in their own seat.* (The same line Thursday's post used.)
-- **Reader question idea:** *When something breaks, how long does your team debate the fix before anyone looks at
-  what actually happened?*
+*Next on Building Piper Morgan, we resume the building narrative with "The Unguarded Entrance" from September 6, in which my chief of staff agent (Exec) finds a hole in a routine every agent runs, with the worst example in their own seat.*
 
-## Left out on purpose
-- The outage's start time disagrees across logs (10:55–11:21). The piece doesn't need it.
-- Who relayed what to you while you were in other sessions. Not the point, and it names other projects' agents.
-- The token and permission details of the restart workflow. Engineering detail.
+*When something breaks, does your team get to clarity on what actually happened before launching into a debate about how to fix it?
