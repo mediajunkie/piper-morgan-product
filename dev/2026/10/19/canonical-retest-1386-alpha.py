@@ -96,6 +96,20 @@ WARM_PASSWORD = "canonical-test-warm-2026"
 OUTPUT_DIR = Path(__file__).parent
 
 
+def _find_key(obj, key):
+    """First value stored under ``key`` anywhere in a nested dict/list (the intent's slots move between keys)."""
+    if isinstance(obj, dict):
+        if key in obj:
+            return obj[key]
+        obj = list(obj.values())
+    if isinstance(obj, list):
+        for v in obj:
+            found = _find_key(v, key)
+            if found is not None:
+                return found
+    return None
+
+
 def _load_cred_file():
     path = os.environ.get("PIPER_CRED_FILE")
     if not path:
@@ -266,13 +280,17 @@ CANONICAL_QUERIES = [
     (35, "Review my recurring meetings", "Scheduling", "canonical", None, None),
     # Documents (4) — Q36-38/40 M2-pending (Documents handler not yet shipped)
     (36, "Create a doc from this conversation", "Documents", "floor", "M2", "M2-feature-pending"),
-    (37, "Compare these two documents", "Documents", "floor", "M2", "M2-feature-pending"),
-    # #1386 (Lead-signed 10-22 19:2x, 1386-criterion-2-relabel-table-2026-10-22.md addendum): was "canonical", replacing the 10-20 signature. No upload named, so summarize_document returns to the SYNTHESIS floor (Arch's #1979 ruling, decisions.log).
+    # #1386 (Arch 2026-10-31 19:11, decisions.log 19:15): was "floor". The served compare_documents action asks for the two documents, which beats a floor guess (CXO triage 19:01).
+    (37, "Compare these two documents", "Documents", "canonical", "M2", "M2-feature-pending"),
+    # #1386 (Arch 2026-10-31 19:11, decisions.log 19:15): was "floor" (Lead-signed 10-22 on #1979). #1979 returns
+    # summarize_document to the floor only when the classifier's source_type is text or conversation; with nothing
+    # uploaded the served action asks for the file. Condition: each run records Q38's source_type slot
+    # (intent_source_type column); text or conversation there is a #1979 regression, not a stale label.
     (
         38,
         "Synthesize these sources into a summary",
         "Documents",
-        "floor",
+        "canonical",
         "M2",
         "M2-feature-pending",
     ),
@@ -696,6 +714,7 @@ def run_query(
         "actual_routing_category": None,
         "actual_intent_category": None,
         "actual_intent_action": None,
+        "intent_source_type": None,
         "http_status": None,
         "response_text": "",
         "response_preview": "",
@@ -742,6 +761,8 @@ def run_query(
 
         result["actual_intent_category"] = intent_data.get("category")
         result["actual_intent_action"] = intent_data.get("action")
+        # Arch 10-31: the Q38 condition (source_type slot recorded every run)
+        result["intent_source_type"] = _find_key(intent_data, "source_type")
         result["response_text"] = message
         result["response_preview"] = message[:200]
         result["actual_routing"] = determine_actual_routing(intent_data, message, data)
@@ -832,6 +853,7 @@ CSV_FIELDS = [
     "routing_pass",
     "actual_intent_category",
     "actual_intent_action",
+    "intent_source_type",
     "tier_a_verdict",
     "judge_relevance",
     "judge_context",
