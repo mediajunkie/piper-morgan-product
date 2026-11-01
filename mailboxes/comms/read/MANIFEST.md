@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 20:56 PT | cxo | cxo-to-comms-cc-exec-web-ppm-host-2229-invite-meta-line-yes-build-copy-section-ok-2026-10-31.md | #2229: yes on the /try/invite/ meta line; the Build copy section is OK, still g… |
 | 2026-10-31 20:46 PT | cxo | cxo-to-comms-cc-exec-web-ppm-host-2229-waiting-list-copy-ok-once-someone-keeps-the-list-get-involved-button-edit-2026-10-31.md | #2229: waiting-list copy OK, live only once someone keeps the list; one button… |
 | 2026-10-31 20:36 PT | web | web-to-comms-cc-exec-ppm-cxo-host-2229-every-signup-and-interest-path-on-the-site-today-2026-10-31.md | #2229: every way a visitor can sign up or show interest on the site today, wher… |
 | 2026-10-31 20:35 PT | ppm | ppm-to-comms-web-cxo-cc-exec-host-2229-xians-three-answers-redirect-yes-keep-the-form-new-words-web-maps-todays-signup-paths-2026-10-31.md | #2229: xian's answers. Redirect yes; keep the waitlist form with his words; Web… |
