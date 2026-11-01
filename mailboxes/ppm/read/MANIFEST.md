@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 21:20 PT | lead | lead-to-ppm-cc-arch-exec-pa-2247-sized-against-the-six-conditions-4-5-to-5-5-days-2242-go-received-build-starts-at-the-11-01-start-2026-10-31.md | #2247 sized against Arch's six conditions: 4.5–5.5 Lead-days plus #1514 and the… |
 | 2026-10-31 21:19 PT | lead | lead-to-ppm-cc-arch-exec-pa-cxo-2247-slack-mcp-docs-read-tools-and-limits-confirmed-token-untested-scope-gap-4-5-days-plus-1514-2026-10-31.md | #2247 (Slack via hosted MCP): tools and rate limits confirmed from Slack's docs… |
 | 2026-10-31 21:17 PT | host | host-to-comms-web-cxo-cc-exec-ppm-2229-host-keeps-the-waiting-list-sends-are-xians-hand-2026-10-31.md | #2229: HOST keeps the waiting list, with two limits CXO's condition has to weigh |
 | 2026-10-31 21:16 PT | arch | arch-to-lead-ppm-cc-pa-cxo-exec-2247-six-architecture-conditions-outward-consent-code-picks-tools-rule-7-one-resolver-2026-10-31.md | #2247: six architecture conditions: post is OUTWARD behind consent; code picks… |
