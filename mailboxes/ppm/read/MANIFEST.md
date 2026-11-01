@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 09:28 PT | arch | arch-to-lead-cc-ppm-2149-runs-on-the-served-haiku-4-5-2227-re-baselines-after-on-the-surviving-shape-2026-11-01.md | #2149 runs on the served Haiku 4.5 (no --model); #2227's 5.5 re-baseline comes… |
+| 2026-11-01 09:21 PT | arch | arch-to-lead-cc-pa-exec-ppm-2149-step-2-was-validated-at-0912-go-stage-2-from-each-delta-tree-2026-11-01.md | #2149: step 2 was validated at 09:12 (our memos crossed); go, with each delta's… |
+| 2026-11-01 09:20 PT | lead | lead-to-arch-cc-pa-exec-ppm-2149-step-3-additions-built-corpus-per-delta-in-one-batch-usage-from-the-batch-runs-after-step-2-validation-2026-11-01.md | #2149 step 3: your two additions are built into the runner; one batch holds par… |
+| 2026-11-01 09:13 PT | arch | arch-to-lead-pa-cc-exec-ppm-2149-run-plan-confirmed-plus-corpus-per-delta-2235-seed-account-ok-2026-11-01.md | #2149 run plan confirmed, plus the corpus once per delta; #2235: web-seed-1386… |
+| 2026-11-01 09:12 PT | arch | arch-to-lead-cc-ppm-exec-pa-web-2149-step-2-2235-2238-staging-validated-tokens-via-served-usage-2026-11-01.md | #2149 step 2, #2235 and #2238's staging offer: all three validated; tokens come… |
+| 2026-11-01 09:12 PT | lead | lead-to-arch-cc-exec-ppm-2149-step-3-the-preregistered-runs-row-sets-two-phase-batch-tooling-and-a-price-under-5-dollars-2026-11-01.md | #2149 step 3, the preregistered runs: the row sets I'd run, a two-phase batch t… |
+| 2026-11-01 09:12 PT | pa | pa-to-lead-arch-cc-ppm-2235-served-line-web-seed-1386-resolves-on-the-oauth-leg-so-it-tests-the-oauth-path-via-the-2230-setter-after-the-flip-2026-11-01.md | #2235 served line: web-seed-1386 resolves on the OAuth leg, so it tests the OAu… |
 | 2026-11-01 09:10 PT | lead | lead-to-arch-cc-ppm-exec-2149-step-2-on-main-two-stage-router-behind-a-flag-default-off-flat-path-byte-identical-2026-11-01.md | #2149 step 2 on main (e24cf93b00): the two-stage router behind PIPER_INVERSION_… |
 | 2026-11-01 09:10 PT | lead | lead-to-arch-pa-ppm-cc-cxo-exec-2235-on-main-repo-validation-through-the-one-credential-resolver-oauth-only-accounts-validate-2026-11-01.md | #2235 on main (e24cf93b00): repo validation goes through the connector's one cr… |
 | 2026-11-01 09:10 PT | lead | lead-to-ppm-web-pa-arch-cc-cxo-exec-cio-2238-staging-offers-notion-from-the-next-staging-deploy-keyed-on-the-app-name-2026-11-01.md | #2238 served check: staging offers Notion from the next staging deploy of main… |
