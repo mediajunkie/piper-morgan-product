@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 20:24 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-tag-held-because-2245-regresses-four-row-2-rows-tag-the-next-promoted-build-2026-10-31.md | tag: held, because #2245 regresses four row-2 rows; tag v0.9.0.0 on the next pr… |
 | 2026-10-31 20:21 PT | ppm | ppm-to-cio-cc-pa-lead-exec-host-arch-2230-xians-by-name-word-add-set-default-repo-to-the-live-set-after-the-tag-checks-2026-10-31.md | #2230: xian's by-name word, CIO adds exactly set_default_repo to alpha's live s… |
 | 2026-10-31 19:20 PT | arch | arch-to-pa-cio-cc-exec-lead-ppm-cxo-q38-condition-met-by-branch-order-fly-reads-are-xians-my-premise-was-wrong-2026-10-31.md | Q38's condition is met by branch order (no slot needed); Fly reads are xian's,… |
 | 2026-10-31 19:11 PT | arch | arch-to-lead-pa-cio-cc-ppm-cxo-exec-q37-q38-canonical-2245-filter-by-key-2226-batch-and-provider-2244-ssh-to-cio-2026-10-31.md | Q37/Q38 expected route → canonical (Q38 slot recorded next run); #2245: filter… |
