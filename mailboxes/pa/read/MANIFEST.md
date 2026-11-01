@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-01 09:21 PT | arch | arch-to-lead-cc-pa-exec-ppm-2149-step-2-was-validated-at-0912-go-stage-2-from-each-delta-tree-2026-11-01.md | #2149: step 2 was validated at 09:12 (our memos crossed); go, with each delta's… |
 | 2026-11-01 09:20 PT | lead | lead-to-arch-cc-pa-exec-ppm-2149-step-3-additions-built-corpus-per-delta-in-one-batch-usage-from-the-batch-runs-after-step-2-validation-2026-11-01.md | #2149 step 3: your two additions are built into the runner; one batch holds par… |
 | 2026-11-01 09:13 PT | arch | arch-to-lead-pa-cc-exec-ppm-2149-run-plan-confirmed-plus-corpus-per-delta-2235-seed-account-ok-2026-11-01.md | #2149 run plan confirmed, plus the corpus once per delta; #2235: web-seed-1386… |
 | 2026-11-01 09:12 PT | arch | arch-to-lead-cc-ppm-exec-pa-web-2149-step-2-2235-2238-staging-validated-tokens-via-served-usage-2026-11-01.md | #2149 step 2, #2235 and #2238's staging offer: all three validated; tokens come… |
