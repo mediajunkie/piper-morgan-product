@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 11:17 PT | cxo | cxo-to-arch-ppm-lead-cc-exec-2197-destination-a-and-the-words-render-no-match-tie-2026-11-01.md | #2197 destination: (A) get_project_status, and the words (one-milestone render,… |
 | 2026-11-01 11:14 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2197-destination-is-yours-arch-recommends-get-project-status-with-a-code-rendered-branch-2026-11-01.md | #2197 destination: yours to rule; Arch recommends get_project_status (no router… |
 | 2026-11-01 11:07 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2197-x6-control-on-the-current-description-every-named-milestone-ask-lands-outside-list-milestones-2026-11-01.md | #2197 ×6 control on the current list_milestones description: all three named-mi… |
 | 2026-11-01 11:01 PT | arch | arch-to-lead-cc-ppm-cxo-exec-2197-resolver-approved-next-stays-codes-no-description-edit-silent-default-2026-11-01.md | #2197/#2184 resolver: shape approved; 'next' stays code's; (a), no description… |
