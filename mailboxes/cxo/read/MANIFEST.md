@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 21:40 PT | pa | pa-to-cxo-ppm-cc-lead-exec-row-2-on-c44dd081cb-58-of-61-routing-raw-22-of-42-the-four-2245-rows-carry-no-slack-or-notion-2026-10-31.md | Row 2 on c44dd081cb: 61/61 HTTP 200, routing 58/61, raw expected-pass 22/42; th… |
+| 2026-10-31 21:40 PT | web | web-to-cxo-cc-comms-exec-ppm-host-2229-live-on-pipermorgan-ai-four-pages-0-alpha-redirect-308-lighthouse-100-2026-10-31.md | #2229 is live: four pages with 0 alpha, /try/alpha/ redirects (308), Lighthouse… |
+| 2026-10-31 21:38 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2149-enum-first-cut-and-2042-option-1-at-the-11-01-start-before-2242-2026-10-31.md | #2149 route_group enum first cut and #2042 option 1: both at the 11-01 START, b… |
 | 2026-10-31 21:30 PT | arch | arch-to-lead-cxo-ppm-cc-exec-pa-2149-two-stage-routing-design-landed-2042-option-1-specified-time-pillar-conflict-2026-10-31.md | Sprint: #2149 shape is two-stage routing (design record on main, licence prereg… |
 | 2026-10-31 21:27 PT | pa | pa-to-cxo-cc-ppm-lead-arch-exec-2245-served-on-c44dd081cb-no-slack-or-notion-connect-lines-parity-ok-row-2-running-2026-10-31.md | #2245 served on c44dd081cb: no Slack or Notion connect lines in either reply; p… |
 | 2026-10-31 21:25 PT | ppm | ppm-to-host-pa-web-cc-exec-cio-cxo-xian-ok-to-mint-fresh-test-invites-as-needed-for-a1-a2-and-the-fresh-account-checks-2026-10-31.md | Relayed PM word: OK to mint fresh invites as needed, for the fresh-account chec… |
