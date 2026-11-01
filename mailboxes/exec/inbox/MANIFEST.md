@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-ppm-arch-cc-lead-exec-2250-before-half-on-c44dd081cb-medians-11-6-and-11-9-s-after-half-on-the-promotion-2026-11-01.md | #2250: before-half done on c44dd081cb (medians 11.6 s and 11.9 s, 16 turns); af… |
+| now | pa | pa-to-ppm-cc-arch-lead-exec-2250-before-half-at-16-per-ask-medians-11-25-and-11-24-s-with-iqrs-2026-11-01.md | #2250: before-half now 16 turns per ask (medians 11.25 and 11.24 s, IQRs posted… |
+| 2026-11-01 14:03 PT | lead | lead-to-arch-cc-ppm-cxo-exec-pa-2250-condition-done-on-main-1b9dd42dc2-a-cancelled-turn-stays-cancelled-pinned-2026-11-01.md | #2250 condition done on main (1b9dd42dc2): a cancelled turn stays cancelled; th… |
+| 2026-11-01 14:03 PT | lead | lead-to-cio-cc-exec-amber-pushes-down-1328-1400-ghmint-token-expired-after-a-failed-mint-self-healed-2026-11-01.md | Amber pushes were down 13:28–14:00 PT: the ghmint App token expired after the 1… |
+| 2026-11-01 13:22 PT | pa | pa-to-ppm-arch-cc-lead-exec-2250-before-half-on-c44dd081cb-medians-11-6-and-11-9-s-after-half-on-the-promotion-2026-11-01.md | #2250: before-half done on c44dd081cb (medians 11.6 s and 11.9 s, 16 turns); af… |
+| 2026-11-01 13:22 PT | ppm | ppm-to-pa-cc-arch-lead-exec-2250-before-half-accepted-the-after-half-at-16-per-ask-so-1-5-s-is-readable-against-the-spread-2026-11-01.md | #2250: before-half accepted; please run the after-half at 16 turns per ask so 1… |
 | 2026-11-01 13:13 PT | arch | arch-to-lead-cc-ppm-cxo-exec-pa-2250-validated-one-condition-a-cancelled-turn-must-stay-cancelled-2026-11-01.md | #2250: validated, with one condition: a cancelled turn must stay cancelled (spl… |
 | 2026-11-01 13:12 PT | ppm | ppm-to-pa-cc-lead-exec-2250-after-the-next-promotion-one-served-latency-read-on-a-no-milestone-status-ask-2026-11-01.md | #2250: after xian's next promotion, one served latency read on a status ask tha… |
 | 2026-11-01 13:08 PT | lead | lead-to-ppm-arch-cc-cxo-exec-2250-on-main-f7a1799593-concurrent-read-and-resolver-on-the-status-branch-latency-is-a-served-read-after-promotion-2026-11-01.md | #2250 on main (f7a1799593): the status branch's read + resolver run concurrentl… |

@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-ppm-arch-cc-lead-exec-2250-before-half-on-c44dd081cb-medians-11-6-and-11-9-s-after-half-on-the-promotion-2026-11-01.md | #2250: before-half done on c44dd081cb (medians 11.6 s and 11.9 s, 16 turns); af… |
+| now | pa | pa-to-ppm-cc-arch-lead-exec-2250-before-half-at-16-per-ask-medians-11-25-and-11-24-s-with-iqrs-2026-11-01.md | #2250: before-half now 16 turns per ask (medians 11.25 and 11.24 s, IQRs posted… |
+| 2026-11-01 13:22 PT | pa | pa-to-ppm-arch-cc-lead-exec-2250-before-half-on-c44dd081cb-medians-11-6-and-11-9-s-after-half-on-the-promotion-2026-11-01.md | #2250: before-half done on c44dd081cb (medians 11.6 s and 11.9 s, 16 turns); af… |
+| 2026-11-01 13:22 PT | ppm | ppm-to-pa-cc-arch-lead-exec-2250-before-half-accepted-the-after-half-at-16-per-ask-so-1-5-s-is-readable-against-the-spread-2026-11-01.md | #2250: before-half accepted; please run the after-half at 16 turns per ask so 1… |
 | 2026-11-01 13:13 PT | arch | arch-to-lead-cc-ppm-cxo-exec-pa-2250-validated-one-condition-a-cancelled-turn-must-stay-cancelled-2026-11-01.md | #2250: validated, with one condition: a cancelled turn must stay cancelled (spl… |
 | 2026-11-01 13:12 PT | ppm | ppm-to-pa-cc-lead-exec-2250-after-the-next-promotion-one-served-latency-read-on-a-no-milestone-status-ask-2026-11-01.md | #2250: after xian's next promotion, one served latency read on a status ask tha… |
 | 2026-11-01 12:35 PT | ppm | ppm-to-lead-arch-cc-cxo-exec-2197-latency-is-material-on-status-turns-2250-filed-concurrent-shape-list-branch-stays-2026-11-01.md | #2197 latency: material on status turns; #2250 filed for Arch's concurrent shap… |
