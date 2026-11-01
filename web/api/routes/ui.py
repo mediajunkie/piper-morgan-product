@@ -399,7 +399,9 @@ async def setup_page(request: Request):
         {
             "request": request,
             "hosted": wizard_is_hosted(),
-            "offered_connectors": list(integration_status_service.BETA_OFFERED_CONNECTORS),
+            "offered_connectors": list(
+                integration_status_service.offered_connectors()
+            ),  # #2238: this host's set
         },
     )
 
@@ -578,7 +580,9 @@ async def integrations_page(request: Request):
         {
             "request": request,
             "user": user_context,
-            "offered_connectors": list(integration_status_service.BETA_OFFERED_CONNECTORS),
+            "offered_connectors": list(
+                integration_status_service.offered_connectors()
+            ),  # #2238: this host's set
         },
     )
 

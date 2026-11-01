@@ -80,9 +80,30 @@ NOT_OFFERED_ALTERNATIVE = (
 )
 
 
+#: #2238 (PPM 2026-11-01 08:4x): the served save-then-chat check for Notion runs where no
+#: partner can reach it. Staging is the one Fly app that may offer these connectors in
+#: addition to the beta set. Keyed on the app's own name, which alpha and beta
+#: (``piper-morgan``) never carry, so no env knob, no flag and no promotion can offer
+#: them there. Empty this dict when the check is done, or when xian offers the connector
+#: for real (then it moves into ``BETA_OFFERED_CONNECTORS``).
+STAGING_APP_NAME = "piper-morgan-staging"
+STAGING_ONLY_OFFERED_CONNECTORS: Dict[str, str] = {"notion": "Notion"}
+
+
+def offered_connectors() -> Dict[str, str]:
+    """The connectors this host offers: the beta set, plus the staging-only extras when
+    and only when this process is the staging app (``FLY_APP_NAME``). Read at call time.
+    Every surface that shows, guards or lists the offered set reads THIS, so the staging
+    extra reaches the save route, the chat lines and the integrations page together."""
+    offered = dict(BETA_OFFERED_CONNECTORS)
+    if os.environ.get("FLY_APP_NAME") == STAGING_APP_NAME:
+        offered.update(STAGING_ONLY_OFFERED_CONNECTORS)
+    return offered
+
+
 def connector_offered(name: str) -> bool:
-    """True when ``name`` (as the health payload keys it) is in ``BETA_OFFERED_CONNECTORS``."""
-    return name in BETA_OFFERED_CONNECTORS
+    """True when ``name`` (as the health payload keys it) is offered on this host."""
+    return name in offered_connectors()
 
 
 def not_offered_message(name: str) -> str:
@@ -93,7 +114,7 @@ def refuse_unless_offered(name: str) -> None:
     """The one server-side guard (#2237) for every connect / OAuth-start / credential-save
     route of a connector. Call it as the route body's first statement.
 
-    Outside ``BETA_OFFERED_CONNECTORS`` it raises HTTP 409 (the shape the Slack app-token
+    Outside ``offered_connectors()`` it raises HTTP 409 (the shape the Slack app-token
     route already uses), so no OAuth redirect, no key validation and no write happens.
     Reads the constant at call time. Disconnect routes do not call it: a user may still
     clear a stale connection.

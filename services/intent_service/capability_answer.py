@@ -95,7 +95,9 @@ def render_connection_lines(domain_context: Dict[str, Any]) -> List[str]:
     A failed or missing read yields only CXO's couldn't-check line: no connection
     facts, never "not connected" as a default.
     """
-    from services.integrations.integration_status_service import BETA_OFFERED_CONNECTORS
+    from services.integrations.integration_status_service import offered_connectors
+
+    BETA_OFFERED_CONNECTORS = offered_connectors()  # #2238: this host's set, read at call time
     from services.intent_service.capability_legibility import (
         INTEGRATION_DISPLAY,
         chat_reads_line,

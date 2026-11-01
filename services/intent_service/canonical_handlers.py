@@ -2531,14 +2531,16 @@ Ask me how project context works any time. Are you ready to set up your first pr
         status_check_failed = False
         try:
             from services.integrations.integration_status_service import (
-                BETA_OFFERED_CONNECTORS,
                 DISPLAY_NAMES,
                 KNOWN_INTEGRATIONS,
                 NOT_OFFERED_ALTERNATIVE,
                 IntegrationStatusService,
                 needs_reconnecting,
                 not_offered_message,
+                offered_connectors,
             )
+
+            BETA_OFFERED_CONNECTORS = offered_connectors()  # #2238: this host's offered set
 
             raw = await IntegrationStatusService().get_all(user_id)
             for name in KNOWN_INTEGRATIONS:

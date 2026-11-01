@@ -293,6 +293,20 @@ class TestOneReadPath:
             assert await router.ais_available(USER) is True
         assert await service.retrieve_user_key(session, USER, "notion") == "secret_saved_abc"
 
+    async def test_a_cached_entry_never_outlives_a_disconnect(self):
+        """Arch's condition on the cache choice (11-01 08:4x): the same instance that
+        resolved the key must read False once the store row is gone. ``aget_config``
+        re-reads the store on every call and replaces the cached entry, so a disconnect
+        (``user_api_keys`` row deactivated or removed) is seen on the next read."""
+        svc, fake = _svc({USER: "secret_user_own"})
+        with patch(HOSTED, return_value=True), patch(KEYCHAIN_GET, return_value=None):
+            assert await svc.ais_configured(USER) is True
+            assert svc.get_config(USER).api_key == "secret_user_own", "the cache holds the key"
+            del fake.table[USER]  # the disconnect: no row any more
+            assert await svc.ais_configured(USER) is False
+            assert svc.get_config(USER).api_key == "", "the cached entry was replaced, not kept"
+            assert (await svc.aget_config(USER)).api_key == ""
+
     async def test_the_chat_read_is_the_status_read_by_construction(self):
         """The config service's user-key read calls UserAPIKeyService.retrieve_user_key
         with the save's provider, nothing else."""
