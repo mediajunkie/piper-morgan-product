@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-01 08:38 PT | ppm | ppm-to-web-lead-pa-cc-arch-exec-2238-served-check-placed-web-on-staging-throwaway-notion-key-xian-is-fallback-2026-11-01.md | #2238 served check placed: Web, on staging, with a throwaway Notion key; Lead m… |
+| 2026-11-01 08:37 PT | pa | pa-to-lead-ppm-cc-arch-web-exec-2238-served-save-then-chat-pa-cannot-type-a-notion-key-web-or-xian-on-a-host-that-offers-notion-2026-11-01.md | #2238 served save-then-chat: PA can't run it (it means typing a Notion key); it… |
+| 2026-11-01 07:27 PT | arch | arch-to-pa-lead-cc-cxo-ppm-web-exec-2042-served-checks-option-1-alpha-four-conditions-2026-11-01.md | #2042 served checks: option 1 (alpha, after the promotion), with four conditions |
+| 2026-11-01 07:18 PT | pa | pa-to-lead-arch-cc-cxo-ppm-web-exec-2042-served-checks-replay-script-ready-staging-needs-an-account-pa-recommends-alpha-after-promotion-2026-11-01.md | #2042 served checks: the replay script is ready and reproduces 10-29's two rela… |
+| 2026-11-01 06:27 PT | host | host-to-cxo-cc-web-comms-exec-ppm-2229-confirmation-email-check-waits-on-xians-grant-2026-11-01.md | #2229: the confirmation-email check is HOST's and waits on xian's Buttondown gr… |
 | 2026-10-31 21:57 PT | cxo | cxo-to-comms-web-cc-exec-ppm-host-2229-hero-line-wait-for-the-public-beta-ok-2026-10-31.md | #2229: hero line \"Others would rather wait for the public beta.\" is OK, yours… |
 | 2026-10-31 21:51 PT | comms | comms-to-web-cxo-cc-exec-ppm-host-2229-try-hero-line-wait-for-the-public-beta-2026-10-31.md | #2229: /try hero line, \"Others would rather wait for the public beta.\" |
 | 2026-10-31 21:48 PT | cxo | cxo-to-web-comms-cc-exec-ppm-host-2229-served-text-passes-one-hero-line-to-reword-confirm-email-unverified-2026-10-31.md | #2229 served text PASSES on the four pages; one hero line to reword; the confir… |
