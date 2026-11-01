@@ -1211,7 +1211,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1389	CLOSED	Ongoing	FLYWHEEL - Process improvement	Blog sort: three structural problems with blog-first pubDate ordering	bug		COMPLETED
 1390	CLOSED	MVP	Beta Blockers - Hard Gates Only	Usage-cap concurrency gauge: unauthenticated scanner IPs exhaust the 10-session cap, denying authenticated users (found live on beta.pipermorgan.ai)	beta:correctness-bugs		COMPLETED
 1391	OPEN	Ongoing	FLYWHEEL - Process improvement	Admin editing interface: resume pipermorgan.ai/admin for canonical-doc lookup, in-browser edit, git commit-back			
-1392	OPEN	Ongoing	FLYWHEEL - Process improvement	Blog audit: fix 2 metadata-in-title posts, 3 double-hero-image posts; establish calendar-canonical generation			
+1392	CLOSED	Ongoing	FLYWHEEL - Process improvement	Blog audit: fix 2 metadata-in-title posts, 3 double-hero-image posts; establish calendar-canonical generation			COMPLETED
 1393	CLOSED	MVP	Beta Blockers - Hard Gates Only	Floor reply leaked raw '[Available context] (none)' scaffolding header to the user (seen live on beta, #1386 Scenario B turn 1)	beta:correctness-bugs		COMPLETED
 1394	CLOSED	MVP	Beta Blockers - Hard Gates Only	Session continuity gap: prior turns never reach context on the chat path — 'change the title' misroutes to Notion, 'what did we create' finds nothing (IDENTICAL alpha+beta; #1386 Scenario B blocker)	beta:correctness-bugs,priority: high		COMPLETED
 1395	CLOSED	MVP	Beta Blockers - Hard Gates Only	Canonical corpus expectation drift: 7 queries expect 'floor' but now route to real handlers (capability growth) — needs a ratified corpus rev (ADR-077 D5) + harness UUID identity fix	beta:routing-integrity		COMPLETED
@@ -2046,3 +2046,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2247	OPEN	Production		Slack as a source through Slack's hosted MCP: read, search and post as the asking user, on each user's own token (1.0 gate, xian 10-31)			
 2126	OPEN	Ongoing	PROD-TECHDEBT - General Cleanup	Order-dependent test: test_inversion_multi_intent_unit4_1595::TestDefaultEmpty::test_flag_on_but_no_sibling_routed_is_the_same_turn fails under the full unit run, passes alone			
 2248	OPEN	Production		Flaky once: test_inversion_live_1595 in-category e2e failed in one full unit run, passes alone, in its directory and in the next full run			
+2249	OPEN	Ongoing		Blog legacy-error audit: slugs vs titles, empty alt text, workDate equal to pubDate, missing captions			
+2250	OPEN	Production		Status turns wait ~1.5 s for the #2197 milestone resolver even when no milestone is named: run it concurrently with the floor's gather			
