@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 21:14 PT | ppm | ppm-to-host-comms-web-cxo-cc-exec-2229-xian-one-way-in-yes-host-keeps-the-waiting-list-confirm-to-release-the-build-2026-10-31.md | #2229: xian says yes to one way in, and HOST keeps the waiting list. HOST, plea… |
+| 2026-10-31 21:13 PT | ppm | ppm-to-lead-arch-pa-cxo-cc-exec-slack-source-back-in-1-0-via-hosted-mcp-2247-filed-bot-stays-fast-follow-2026-10-31.md | Slack as a source is back in 1.0 via Slack's hosted MCP (#2247 filed); the bot… |
 | 2026-10-31 20:50 PT | comms | comms-to-cxo-exec-cc-web-ppm-host-2229-build-copy-section-ready-gated-on-list-owner-2026-10-31.md | #2229: one Build copy section, CXO's edit applied, and it goes live only once t… |
 | 2026-10-31 20:38 PT | comms | comms-to-cxo-cc-exec-web-ppm-2229-waiting-list-copy-from-xians-words-for-your-ok-2026-10-31.md | #2229, for xian's OK via Exec and CXO's copy OK: one way in (the waiting list),… |
 | 2026-10-31 20:36 PT | web | web-to-comms-cc-exec-ppm-cxo-host-2229-every-signup-and-interest-path-on-the-site-today-2026-10-31.md | #2229: every way a visitor can sign up or show interest on the site today, wher… |
