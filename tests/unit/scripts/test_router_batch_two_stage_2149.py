@@ -206,9 +206,81 @@ def test_render_stage2_arm_prefix_keeps_ids_distinct_for_a_shared_stage1(tmp_pat
     )
     a = json.loads(out_a.read_text())
     b = json.loads(out_b.read_text())
-    assert a["custom_id"] == "d1:main-0-1-s2-0" and a["arm"] == "d1" and a["parent"] == "main-0-1"
+    assert a["custom_id"] == "d1__main-0-1-s2-0" and a["arm"] == "d1" and a["parent"] == "main-0-1"
+    import re
+
+    assert re.fullmatch(r"[A-Za-z0-9_-]{1,64}", a["custom_id"]), "a batch custom_id's allowed set"
     assert b["custom_id"] == "main-0-1-s2-0" and b["arm"] is None
     assert a["params"] == b["params"], "the arm prefix changes the id only"
+
+
+def test_corpus_replay_answers_route_by_phrase_for_one_arm(tmp_path, monkeypatch):
+    """The scorer's seam: one replay over a whole two-phase batch, keyed by phrase; the
+    arm selects which stage-2 requests answer. route() under the flag then reconstructs
+    the decision exactly as parse-two-stage does."""
+    import asyncio
+
+    from services.intent_service import inversion_router as ir
+
+    s1_reqs = tmp_path / "s1.jsonl"
+    s1_reqs.write_text(
+        json.dumps(
+            {"custom_id": "main-0-1", "phrase": "add a todo", "stage": 1, "tree": "t", "params": {}}
+        )
+        + "\n"
+    )
+    s1_res = tmp_path / "s1-res.jsonl"
+    _results(s1_res, {"main-0-1": '{"group": "todos_and_reminders", "confidence": 0.9}'})
+    s2_reqs = tmp_path / "s2.jsonl"
+    with open(s2_reqs, "w") as f:
+        for arm, cid in ((None, "main-0-1-s2-0"), ("d1", "d1__main-0-1-s2-0")):
+            f.write(
+                json.dumps(
+                    {
+                        "custom_id": cid,
+                        "phrase": "add a todo",
+                        "stage": 2,
+                        "tree": "t",
+                        "parent": "main-0-1",
+                        "group": "todos_and_reminders",
+                        "part_text": None,
+                        "arm": arm,
+                        "params": {},
+                    }
+                )
+                + "\n"
+            )
+    s2_res = tmp_path / "s2-res.jsonl"
+    _results(
+        s2_res,
+        {
+            "main-0-1-s2-0": '{"operation": "create_todo", "args": {}, "confidence": 0.9, "rationale": "r"}',
+            "d1__main-0-1-s2-0": '{"operation": "create_reminder", "args": {}, "confidence": 0.9, "rationale": "r"}',
+        },
+    )
+    monkeypatch.setenv("PIPER_INVERSION_TWO_STAGE", "1")
+    main_arm = rb.TwoStageCorpusReplayLLM(
+        str(s1_reqs), str(s1_res), str(s2_reqs), str(s2_res), arm=None
+    )
+    d1_arm = rb.TwoStageCorpusReplayLLM(
+        str(s1_reqs), str(s1_res), str(s2_reqs), str(s2_res), arm="d1"
+    )
+    assert (
+        asyncio.run(ir.route("add a todo", None, llm_service=main_arm, user_id=None)).operation
+        == "create_todo"
+    )
+    assert (
+        asyncio.run(ir.route("add a todo", None, llm_service=d1_arm, user_id=None)).operation
+        == "create_reminder"
+    )
+    with pytest.raises(RuntimeError):
+        asyncio.run(
+            main_arm.complete(
+                task_type="t",
+                prompt="User message: 'unknown phrase'",
+                system=ir._STAGE1_SYSTEM_PROMPT,
+            )
+        )
 
 
 def test_replay_matches_stage2_by_group_and_part_never_by_the_users_words():

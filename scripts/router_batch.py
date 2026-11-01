@@ -351,7 +351,8 @@ def _render_stage2(args) -> None:
                     # --arm prefixes the id so several arms can share one stage-1 result set
                     # (stage 1 names no op, so its prompts are identical across arms) and
                     # still submit in one batch.
-                    "custom_id": (f"{arm}:" if arm else "") + f"{req['custom_id']}-s2-{k}",
+                    # Batch custom_ids allow only [A-Za-z0-9_-], so the arm joins with "__".
+                    "custom_id": (f"{arm}__" if arm else "") + f"{req['custom_id']}-s2-{k}",
                     "arm": arm,
                     "phrase": req["phrase"],
                     "stage": 2,
@@ -654,6 +655,72 @@ class ReplayLLM:
             served["provider"] = "anthropic"
             served["model"] = res.get("model")
         return res["text"]
+
+
+class TwoStageCorpusReplayLLM:
+    """An ``llm_service`` for ``route()`` under the two-stage flag over a WHOLE finished
+    two-phase batch, keyed by phrase (the scorer's seam, like ``ReplayLLM`` for the flat
+    path). Stage is told by the system prompt object; stage 1 is found by the prompt's
+    ``User message:`` line; stage 2 by that line plus the group on the prompt's first
+    line and the plan part on its last. One arm at a time: ``arm`` selects the stage-2
+    requests rendered with ``--arm`` (None selects the unprefixed ones). A repair gets
+    the same reply again and ends REFUSED, as a batch can't repair."""
+
+    def __init__(
+        self, s1_requests: str, s1_results: str, s2_requests: str, s2_results: str, arm=None
+    ):
+        s1_res = {
+            json.loads(l)["custom_id"]: json.loads(l)
+            for l in Path(s1_results).read_text().splitlines()
+        }
+        s2_res = {
+            json.loads(l)["custom_id"]: json.loads(l)
+            for l in Path(s2_results).read_text().splitlines()
+        }
+        self._s1: dict = {}
+        for line in Path(s1_requests).read_text().splitlines():
+            req = json.loads(line)
+            key = f"User message: {req['phrase']!r}"
+            if key not in self._s1 and req["custom_id"] in s1_res:
+                self._s1[key] = (req["custom_id"], s1_res[req["custom_id"]])
+        self._s2: dict = {}
+        for line in Path(s2_requests).read_text().splitlines():
+            req = json.loads(line)
+            if (req.get("arm") or None) != (arm or None):
+                continue
+            key = (req["parent"], req["group"], req.get("part_text"))
+            if key not in self._s2:
+                self._s2[key] = s2_res.get(req["custom_id"])
+
+    async def complete(
+        self,
+        *,
+        task_type,
+        prompt,
+        system=None,
+        response_format=None,
+        user_id=None,
+        served=None,
+        **_,
+    ):
+        import ast
+
+        from services.intent_service.inversion_router import _STAGE1_SYSTEM_PROMPT
+
+        msg_line = next((ln for ln in prompt.splitlines() if ln.startswith("User message: ")), None)
+        if msg_line is None or msg_line not in self._s1:
+            raise RuntimeError("no batch result for this prompt")
+        parent, s1 = self._s1[msg_line]
+        if system == _STAGE1_SYSTEM_PROMPT:
+            return TwoStageReplayLLM._answer(s1, served)
+        group = None
+        part = None
+        for ln in prompt.splitlines():
+            if ln.startswith("Operations in the ") and group is None:
+                group = ln[len("Operations in the ") :].split(" group", 1)[0]
+            elif ln.startswith("Route only this part of the message now: "):
+                part = ast.literal_eval(ln[len("Route only this part of the message now: ") :])
+        return TwoStageReplayLLM._answer(self._s2.get((parent, group, part)), served)
 
 
 def main() -> int:

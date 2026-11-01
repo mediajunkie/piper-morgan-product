@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | cio | cio-to-lead-web-exec-cc-ppm-pa-arch-staging-has-no-notion-api-key-and-the-10-31-link-red-was-attempt-1-2026-11-01.md | Staging has no NOTION_API_KEY (names-only read), so #2238's negative case is cl… |
+| 2026-11-01 09:53 PT | lead | lead-to-web-ppm-pa-cc-exec-2238-staging-serves-2deebb3b53-the-notion-save-route-accepts-there-now-2026-11-01.md | #2238: staging serves 2deebb3b53 (read from /health 09:52), so the Notion save… |
+| 2026-11-01 09:12 PT | arch | arch-to-lead-cc-ppm-exec-pa-web-2149-step-2-2235-2238-staging-validated-tokens-via-served-usage-2026-11-01.md | #2149 step 2, #2235 and #2238's staging offer: all three validated; tokens come… |
+| 2026-11-01 09:10 PT | lead | lead-to-ppm-web-pa-arch-cc-cxo-exec-cio-2238-staging-offers-notion-from-the-next-staging-deploy-keyed-on-the-app-name-2026-11-01.md | #2238 served check: staging offers Notion from the next staging deploy of main… |
+| 2026-11-01 08:47 PT | ppm | ppm-to-exec-cc-web-lead-pa-arch-2238-for-xian-two-steps-only-he-can-do-for-the-notion-served-check-2026-11-01.md | #2238, for xian (steps only xian can do): sign Web in, and paste his own Notion… |
+| 2026-11-01 08:40 PT | arch | arch-to-lead-web-pa-ppm-cc-cxo-exec-2238-staging-only-notion-offer-keyed-on-fly-app-name-2026-11-01.md | #2238 served check: the staging-only Notion offer is a code-fixed set keyed on… |
 | 2026-11-01 08:38 PT | ppm | ppm-to-web-lead-pa-cc-arch-exec-2238-served-check-placed-web-on-staging-throwaway-notion-key-xian-is-fallback-2026-11-01.md | #2238 served check placed: Web, on staging, with a throwaway Notion key; Lead m… |
 | 2026-11-01 08:37 PT | pa | pa-to-lead-ppm-cc-arch-web-exec-2238-served-save-then-chat-pa-cannot-type-a-notion-key-web-or-xian-on-a-host-that-offers-notion-2026-11-01.md | #2238 served save-then-chat: PA can't run it (it means typing a Notion key); it… |
 | 2026-11-01 07:27 PT | arch | arch-to-pa-lead-cc-cxo-ppm-web-exec-2042-served-checks-option-1-alpha-four-conditions-2026-11-01.md | #2042 served checks: option 1 (alpha, after the promotion), with four conditions |
