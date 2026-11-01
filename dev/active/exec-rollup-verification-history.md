@@ -300,3 +300,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v718, 2026-10-31 15:40 PDT: step 2 card notes neither paste has run yet (Lead 15:37: no dispatch run, Lead's attempt refused, alpha and beta still on 0.8.14.0).
 - v719, 2026-10-31 18:33 PDT: step 2 running (xian dispatched 18:31, run 41261394548); support@ and both crosspost items removed (answered, and Docs had the crossposts since 09:26).
 - v720, 2026-10-31 18:39 PDT: step 2 served (alpha and beta 0.9.0.0, 5f0112c00c; Lead and PPM 18:35, Exec curl 18:38); step 3 shown as running; Lead's permission moved to Your hand as optional.
+- v721, 2026-10-31 18:56 PDT: #2229 two calls added under Your word (Comms 18:5x proposal); Exec recommends yes to both.
