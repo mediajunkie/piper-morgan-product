@@ -282,15 +282,20 @@ def _router_model_id(args) -> str:
 
 def _render_stage1(args) -> None:
     """Phase 1 of a two-stage run: one stage-1 request per phrase per sample."""
-    from services.intent_service.inversion_router import _STAGE1_SYSTEM_PROMPT, build_stage1_prompt
+    from services.intent_service.inversion_router import (
+        _STAGE1_SYSTEM_PROMPT,
+        build_stage1_prompt,
+        derive_routing_grammar,
+    )
 
+    grammar = derive_routing_grammar()
     phrases = _phrases(args)
     model_id = _router_model_id(args)
     no_thinking = bool(getattr(args, "no_thinking", False))
     tree = _tree_sha()
     with open(args.out, "w") as f:
         for i, phrase in enumerate(phrases):
-            prompt = build_stage1_prompt(phrase)
+            prompt = build_stage1_prompt(phrase, None, grammar)
             for n in range(1, args.samples + 1):
                 rec = {
                     "custom_id": f"{args.label}-{i}-{n}",

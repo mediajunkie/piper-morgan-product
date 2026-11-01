@@ -129,24 +129,30 @@ class TestStage1Prompt:
     def test_lists_the_nine_groups_in_enum_order_with_their_lines(self):
         prompt = build_stage1_prompt("hello there", None)
         lines = [ln for ln in prompt.splitlines() if ln.startswith("- ")]
-        expected = [f"- {g.value}: {ROUTE_GROUP_LINES[g]}" for g in RouteGroup]
-        assert lines[:9] == expected
+        # Arch's one redraft (11-01 10:15): each group line, then " Operations: " and
+        # the group's op names (names only), in enum order.
+        for ln, g in zip(lines[:9], RouteGroup):
+            assert ln.startswith(f"- {g.value}: {ROUTE_GROUP_LINES[g]} Operations: "), ln
+            assert ln.endswith(".")
+        assert [ln.split(":", 1)[0] for ln in lines[:9]] == [f"- {g.value}" for g in RouteGroup]
         assert lines[9:] == [
             f"- {NONE_ROUTE}: no group applies",
             f"- {CLARIFY_ROUTE}: genuinely ambiguous; ask the user",
         ]
         assert len(RouteGroup) == 9
 
-    def test_names_no_op(self, grammar):
-        rendered = _STAGE1_SYSTEM_PROMPT + "\n" + build_stage1_prompt("hello there", None)
+    def test_carries_op_names_only(self, grammar):
+        """Arch's one redraft (11-01 10:15): names under their group; no description or
+        example; the group line text itself is unchanged."""
+        from services.shared_types import ROUTE_GROUP_LINES, RouteGroup
+
+        rendered = _STAGE1_SYSTEM_PROMPT + "\n" + build_stage1_prompt("hello there", None, grammar)
         for op in grammar.operations:
-            if "_" in op.name:
-                assert op.name not in rendered, f"stage 1 leaks op {op.name}"
-            else:
-                assert f"- {op.name}:" not in rendered, f"stage 1 leaks op {op.name}"
+            assert op.name in rendered
             if op.example:
                 assert op.example not in rendered
-            assert op.description not in rendered
+        for group in RouteGroup:
+            assert ROUTE_GROUP_LINES[group] in rendered
 
     def test_session_state_block_is_the_same_as_flat(self, grammar):
         snap = SessionSnapshot(active_flow="onboarding", entity_names=["Atlas", "Beacon"])

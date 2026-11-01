@@ -831,16 +831,35 @@ _STAGE2_SYSTEM_PROMPT = (
 def build_stage1_prompt(
     utterance: str,
     session_state: Optional[SessionSnapshot] = None,
+    grammar: Optional[RoutingGrammar] = None,
 ) -> str:
-    """Stage 1 user prompt: one line per RouteGroup (enum order) + NONE + CLARIFY +
-    the session state + the message. Names no operation."""
+    """Stage 1 user prompt: one line per RouteGroup (enum order), each followed by
+    its operations' NAMES (names only: no description, no example), + NONE +
+    CLARIFY + the session state + the message.
+
+    Arch's one redraft after the step-3 runs (2026-11-01 10:15): the first stage-1
+    (group lines alone) lost 48 of the flat router's rows at stage 1 ("open the help
+    menu", "help me set up my projects", "when was the auth refactor shipped"), rows
+    the flat router gets from the operation itself. Names carry that; descriptions
+    and examples stay in stage 2, so an edit to an op's text still touches only its
+    group's stage-2 prompt. An op add or rename now touches stage 1, which is a real
+    catalog change under Rule 7.
+    """
+    if grammar is None:
+        grammar = derive_routing_grammar()
+    names_by_group: Dict[str, List[str]] = {}
+    for op in grammar.operations:
+        if op.route_group is not None:
+            names_by_group.setdefault(op.route_group.value, []).append(op.name)
     lines = [
         "Group list (choose exactly one; a message explicitly asking for two "
         "or more different operations may use the plan form in the system "
-        "instructions):"
+        "instructions). Each group lists the names of its operations; the "
+        "operation itself is chosen at the next step:"
     ]
     for group in RouteGroup:
-        lines.append(f"- {group.value}: {ROUTE_GROUP_LINES[group]}")
+        names = ", ".join(names_by_group.get(group.value, []))
+        lines.append(f"- {group.value}: {ROUTE_GROUP_LINES[group]} Operations: {names}.")
     lines.append(f"- {NONE_ROUTE}: no group applies")
     lines.append(f"- {CLARIFY_ROUTE}: genuinely ambiguous; ask the user")
     lines.extend(_session_state_lines(session_state))
@@ -1053,7 +1072,7 @@ async def _route_two_stage(
     res1 = await _complete_with_repair(
         llm_service,
         system=_STAGE1_SYSTEM_PROMPT,
-        prompt=build_stage1_prompt(utterance, session_state),
+        prompt=build_stage1_prompt(utterance, session_state, grammar),
         parse=_parse_stage1,
         repair_prompt=_stage1_repair_prompt,
         user_id=user_id,

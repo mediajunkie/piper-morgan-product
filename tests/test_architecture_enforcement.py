@@ -9213,16 +9213,26 @@ class TestRouteGroupRatchet2149:
         for line in ROUTE_GROUP_LINES.values():
             assert line not in rendered
 
-    def test_stage1_prompt_names_no_op(self):
-        """#2149 step 2: a group line must not leak op names into the stage-1 prompt."""
+    def test_stage1_prompt_carries_op_names_and_no_op_description_or_example(self):
+        """#2149 step 3 redraft (Arch 2026-11-01 10:15): stage 1 carries every op's NAME
+        under its group, and no op description or example (those stay in stage 2, so
+        an edit to an op's text touches only its group's stage-2 prompt)."""
         from services.intent_service.inversion_router import (
             _STAGE1_SYSTEM_PROMPT,
             build_stage1_prompt,
         )
 
-        rendered = _STAGE1_SYSTEM_PROMPT + "\n" + build_stage1_prompt("hello", None)
-        for op in self._grammar().operations:
-            if "_" in op.name:
-                assert op.name not in rendered, f"stage-1 prompt names op {op.name}"
-            else:
-                assert f"- {op.name}:" not in rendered, f"stage-1 prompt names op {op.name}"
+        grammar = self._grammar()
+        rendered = _STAGE1_SYSTEM_PROMPT + "\n" + build_stage1_prompt("hello", None, grammar)
+        for op in grammar.operations:
+            assert op.name in rendered, f"stage-1 prompt lacks op {op.name}"
+            desc = (op.description or "").strip()
+            if len(desc) >= 24:  # a short description can equal the name; the full text never does
+                assert desc not in rendered, f"stage-1 prompt carries {op.name}'s description"
+            if op.example:
+                assert op.example not in rendered, f"stage-1 prompt carries {op.name}'s example"
+        # Each group's names sit on that group's own line, in enum order.
+        for group, members in self.EXPECTED.items():
+            line = next(ln for ln in rendered.splitlines() if ln.startswith(f"- {group}:"))
+            for name in members:
+                assert name in line, f"{name} is not on {group}'s line"
