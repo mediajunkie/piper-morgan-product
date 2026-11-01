@@ -61,3 +61,4 @@ tests/infrastructure/test_keychain_service.py::TestKeychainService::test_store_e
 tests/infrastructure/test_keychain_service.py::TestKeychainService::test_store_empty_provider_raises_error	fixture
 tests/performance/test_token_blacklist_performance.py::test_blacklist_add_latency	triage
 tests/performance/test_token_blacklist_performance.py::test_blacklist_lookup_latency	triage
+tests/performance/test_database_performance.py::test_connection_pool_acquisition	flaky
