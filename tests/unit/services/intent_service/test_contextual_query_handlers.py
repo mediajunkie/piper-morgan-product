@@ -1110,16 +1110,22 @@ class TestAttentionReplyShape1985b:
                 self._intent(), "wf-1996", "session-1996", None
             )
         now = datetime.now(timezone.utc)
-        local_midnight = (
-            now.astimezone(ZoneInfo("America/Los_Angeles"))
-            .replace(hour=0, minute=0, second=0, microsecond=0)
-            .astimezone(timezone.utc)
+        local_today = now.astimezone(ZoneInfo("America/Los_Angeles")).replace(
+            hour=0, minute=0, second=0, microsecond=0
         )
+        local_midnight = local_today.astimezone(timezone.utc)
+        # The window's end is the NEXT local midnight, which is a calendar
+        # step on the user's clock, not 24 hours. On a DST transition day the
+        # two differ by an hour (2026-11-01, the fall-back day, is when this
+        # assertion first failed with `local_midnight + timedelta(days=1)`
+        # computed in UTC); aware-datetime arithmetic in the local zone is
+        # wall-clock arithmetic, which is what the handler does.
+        next_local_midnight = (local_today + timedelta(days=1)).astimezone(timezone.utc)
         two_bound = [d for d in seen if len(d) == 2]
         one_bound = [d for d in seen if len(d) == 1]
         assert two_bound and one_bound, seen
         assert two_bound[0][0] == local_midnight
-        assert two_bound[0][1] == local_midnight + timedelta(days=1)
+        assert two_bound[0][1] == next_local_midnight
         assert one_bound[0][0] == local_midnight
         assert local_midnight <= now
 
