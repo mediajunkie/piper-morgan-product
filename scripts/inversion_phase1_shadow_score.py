@@ -41,7 +41,6 @@ from __future__ import annotations
 
 import argparse
 import asyncio
-import os
 import re
 import sys
 from collections import defaultdict
@@ -947,8 +946,6 @@ async def run(
     phrase: Optional[str] = None,
     provider: Optional[str] = None,
     replay: Optional[tuple] = None,
-    replay_two_stage: Optional[tuple] = None,
-    two_stage_arm: Optional[str] = None,
 ) -> int:
     from services.intent_service.inversion_router import derive_routing_grammar, route
 
@@ -1054,14 +1051,6 @@ async def run(
 
         llm = ReplayLLM(*replay)  # type: ignore[assignment]
         provider = None
-    if replay_two_stage:
-        # #2149 step 3: score a finished TWO-PHASE batch through the real two-stage
-        # route() (flag set for the scoring only), with the same scorer code, so the
-        # two-stage arm and the flat baseline are scored like for like.
-        from router_batch import TwoStageCorpusReplayLLM
-
-        llm = TwoStageCorpusReplayLLM(*replay_two_stage, arm=two_stage_arm)  # type: ignore[assignment]
-        provider = None
     if provider:
         # 2026-10-01: alpha's router runs on the USER's stored key — Anthropic
         # for PM, so `inversion_routing` resolves to the Haiku-class model —
@@ -1075,18 +1064,7 @@ async def run(
     async def router_fn(phrase: str):
         return await route(phrase, None, llm_service=llm, grammar=grammar, user_id=None)
 
-    # #2149 step 3: the two-stage arm is scored with the flag set for the scoring only.
-    _prev_flag = os.environ.get("PIPER_INVERSION_TWO_STAGE")
-    if replay_two_stage:
-        os.environ["PIPER_INVERSION_TWO_STAGE"] = "1"
-    try:
-        decisions = await route_all(rows, router_fn)
-    finally:
-        if replay_two_stage:
-            if _prev_flag is None:
-                os.environ.pop("PIPER_INVERSION_TWO_STAGE", None)
-            else:
-                os.environ["PIPER_INVERSION_TWO_STAGE"] = _prev_flag
+    decisions = await route_all(rows, router_fn)
     scored = score(rows, decisions)
     calls = sum(getattr(d, "llm_calls", 0) for d in decisions)
     errors = sum(1 for d in decisions if getattr(d, "outcome", "") == "error")
@@ -1136,18 +1114,6 @@ if __name__ == "__main__":
         default=None,
         help="score a finished Message Batch (scripts/router_batch.py render/submit) instead of live calls",
     )
-    ap.add_argument(
-        "--replay-two-stage",
-        nargs=4,
-        metavar=("S1_REQUESTS", "S1_RESULTS", "S2_REQUESTS", "S2_RESULTS"),
-        default=None,
-        help="#2149 step 3: score a finished two-phase batch through the two-stage route() (flag set for the scoring)",
-    )
-    ap.add_argument(
-        "--two-stage-arm",
-        default=None,
-        help="with --replay-two-stage: the --arm the stage-2 requests were rendered with (None = unprefixed)",
-    )
     args = ap.parse_args()
     # #1812 aftermath: scripts must bind the developer's own keys — the
     # server-key fallback this instrument silently relied on is gone.
@@ -1165,8 +1131,6 @@ if __name__ == "__main__":
                     args.phrase,
                     args.provider,
                     tuple(args.replay) if args.replay else None,
-                    tuple(args.replay_two_stage) if args.replay_two_stage else None,
-                    args.two_stage_arm,
                 )
             )
         )
