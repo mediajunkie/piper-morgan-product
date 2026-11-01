@@ -31,6 +31,7 @@ def intent_service():
 def _router():
     r = MagicMock()
     r.is_available.return_value = True
+    r.ais_available = AsyncMock(return_value=True)  # #2238: the async gate
     r.connect_for_user = AsyncMock()
     r.search_notion = AsyncMock(
         return_value=[
