@@ -8,45 +8,27 @@ caption: ''
 
 *October 21, 2026*
 
-<!--
-SCAFFOLD, not a draft ("AI prompts human", PM ruling 2026-10-07). Comms supplies the shape, the verified facts and
-the quotes. PM writes the prose. Everything below the line is notes for PM. Delete it as the prose replaces it.
-Title is the working title from the 10-23 mining table, rename freely.
-Slot: Sun 2026-11-01 (insight). Paired with Sat 10-31 "Build the Instrument Before the Theory": measure first,
-then believe what the measurement says. Sources: PA, Lead, HOST, Exec logs 10-21, the 10-21 omnibus, PA's and
-Arch's 10-21 memos. Facts gathered by an Opus subagent, key lines re-read by Comms.
--->
+Now that I've turned my agents into a debating society, I've noticed that sometimes they will devote quite a few loops to hashing out a disagreement before one of them checks the actual facts. At this point, it can turn out that the real discussion needs to be about something else entirely.
 
----
+A few weeks ago, this happened when a long discussion trying to determine which agent is allowed to restart the database involved them all talking past the real question at hand:  "how much memory does it need?"
 
-## The idea in one sentence
+# The database goes quite
 
-When something is down, one read-only look at the live machine can change the question you're debating, and on
-10-21 it turned "who is allowed to restart the database" into "how much memory does it need".
+Late that morning, the alpha database had stopped responding. The app itself was still running, the  health page
+reporting "web: healthy" but "database: unreachable" and my lead developer agent (Lead) reported "Every sign-in and chat fails until the database answers" and asked me to do a manual restart with an agent capturing the machine state before I did so.
 
-## Already told elsewhere: don't retell
-- **The outage itself** got one line in Weekly Ship #066. The longer story (the restart setting that couldn't
-  fire, the external restarter and its test) belongs to the Oct 20–22 narrative beat, which isn't written yet.
-  Keep this piece to the window between the outage and the read.
+I was busy doing other things, essentially tying up the whole team behind this bottleneck and this led to a discussion among several agents:
 
-## Beats, in order (facts verified, source in brackets)
+- My chief innovation officer agent (CIO) suggested that the project needed a new, narrower access token, and a restart policy as well before any agent could be allowed to restart the database.
+- My chief architect agent (Arch) defined three guards to any restart, one of which was "Capture before you restart … because a restart erases the evidence."
+- Lead then withdrew the proposal. 
+-My head-of-sapient-trust agent (HOST) offered a ruling on whether a "gated restart" should be allowed at all. [lead l.110, 
 
-**1. The symptom.** Late morning, the alpha database stopped answering. The app itself was up, so the health page
-read "database: unreachable" next to "web: healthy". Lead: "Every sign-in and chat fails until the database
-answers." [lead log 10-21 l.93. The omnibus has the health watch red at 11:21]
+This is reasonable stuff to discuss! Very prudent. Sober even. But it's focused on a logistical triviality instead of the real question, which was why did the database need to be restarted at all.
 
-**2. The debate.** Lead asked for a restart, attended, on your hand, with the machine state captured first.
-[lead l.94, 11:28] You were deep in other work, so a fix waited on you. Around 12:27 Lead proposed a workflow any
-agent could run to restart the database. Within minutes:
-- My chief innovation officer agent (CIO) said it needed a new, narrower access token, and a restart policy first.
-- My chief architect agent (Arch) set three guards, including "Capture before you restart … because a restart
-  erases the evidence." [Arch memo 10-21 l.17]
-- Lead withdrew the proposal at 12:37. My head-of-sapient-trust agent (HOST) ruled on whether a gated restart was
-  allowed at all at 12:42. [lead l.110, host l.41]
-- Every agent in the thread was designing the *recovery*. *Your angle, maybe:* careful, reasonable governance work, aimed at the
-  wrong question.
+# The likely cause
 
-**3. The detail that makes it sharper.** Arch had already named the likely cause, in the same memo: "My working
+Arch had offered a working hypothesis in their memo, , already named the likely cause, in the same memo: "My working
 hypothesis is an OOM kill on a small Postgres VM. It is unverified and only a log read confirms or refutes it."
 [Arch memo l.21] So the answer was on the table as a guess. No agent had looked.
 
