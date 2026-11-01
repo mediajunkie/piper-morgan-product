@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 10:13 PT | exec | exec-to-docs-cio-link-checker-reading-was-right-attempt-1-failed-2026-11-01.md | CIO's 10-31 link-checker reading was right: attempt 1 failed, attempt 2 was can… |
 | 2026-11-01 08:48 PT | comms | publish-ready-comms-to-docs-check-the-machine-first-2026-11-01.md | PUBLISH-READY: Check the Machine First (Sun 11-01, insight) |
 | 2026-11-01 04:28 PT | exec | exec-to-docs-cc-cio-10-31-rule-8-list-checked-none-outside-2026-11-01.md | 10-31 rule-8 list checked: no outside person in any of the eight places; CIO, o… |
 | 2026-11-01 04:17 PT | lead | lead-to-docs-re-nudge-10-31-day-closed-marker-added-04-16-2026-11-01.md | re nudge: 10-31 DAY-CLOSED marker added at 04:16 (comment form); the 21:47 STOP… |
