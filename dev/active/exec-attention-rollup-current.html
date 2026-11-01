@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Saturday 31 October</h1>
-<p class="meta">Exec · v726, rebuilt 20:49 PDT Sat 10-31 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v727, rebuilt 21:20 PDT Sat 10-31 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -59,11 +59,8 @@ Then tell me what both printed, and I&rsquo;ll pass it to CIO.</li>
 
 <div class="card act">
 <ul>
-<li><b>Sprints for 16 issues (PPM).</b> The eleven from your Ongoing sort, plus #865, #1340, #2196, #2243 (test files that are never collected), and the four from 10-30. Better: one standing yes for new issues. <span class="rec">Yes.</span></li>
-<li><b>#1300, the plugin credential.</b> PPM and PA say it&rsquo;s met: each user signs in by OAuth, and no secret ships. Confirm and it closes, or name what more you meant.</li>
-<li><b>#2229, the public site: two follow-ups to your three answers.</b> Your answers to PPM are recorded: move and redirect yes, and keep the form with your new words.<ol><li><b>One way in?</b> The waiting-list form becomes the only route to an invitation, and email is for questions. Today invite requests land in your email and waiting-list signups in Buttondown, so two places. Cost: the form doesn&rsquo;t ask what someone would use Piper for. <span class="rec">Yes, one way in.</span></li><li><b>Who keeps the list</b> and sends the waves and the public-beta note? PPM suggests HOST, which already runs partner intake. <span class="rec">HOST.</span> CXO won&rsquo;t let the waiting-list wording go live until the owner is named and agrees to send the waves and the public-beta note.</li><li><i>Separate, whenever:</i> where do contribute@ (on /get-involved) and privacy@ (on /privacy) go? Web couldn&rsquo;t verify either.</li></ol>CXO has approved the wording and agrees with one way in. Web builds after your yes.</li>
-<li><b>Slack in 1.0: two features, not one (Arch).</b> <b>Slack as a source</b> means Piper reads and searches your Slack, and posts as you, through Slack&rsquo;s own hosted MCP, each person on their own token. That&rsquo;s 3&ndash;5 Lead-days plus Slack&rsquo;s review of a published app (#1514), whose timing isn&rsquo;t ours. <b>Slack as a place to talk to Piper</b> (the bot) stays out of 1.0, gate off, and so do #1481 and #1500. <span class="rec">Agree with Arch: the source in 1.0, the bot later.</span> Lead confirms Slack&rsquo;s auth and tool list while sizing it.</li>
 <li><b>CIO&rsquo;s alpha promotion grant.</b> Keep it, with the review reworded to &ldquo;11-27, or after a promotion that leaves alpha on neither build.&rdquo; <span class="rec">Yes.</span></li>
+<li><b>Whenever:</b> where do contribute@ (on /get-involved) and privacy@ (on /privacy) go? Web couldn&rsquo;t verify either.</li>
 </ul>
 </div>
 
@@ -76,6 +73,8 @@ Then tell me what both printed, and I&rsquo;ll pass it to CIO.</li>
 <li><b>Two reads on the Fly server, no rush</b> (no agent seat is allowed to read production). For #2244, run <code>fly ssh console -a piper-morgan -C "ls -la /app/data /data"</code> and paste the output on the issue. For #2226, read the peak on the memory panel for app piper-morgan, under Metrics, against 1,024 MB. Both inform the sprint talk; neither blocks tonight.</li>
 <li><b>Optional: Lead&rsquo;s promotion permission</b> (the 14:00 paste), so Lead runs later promotions without you.</li>
 <li><b>Sign Web&rsquo;s tab in as <code>web-pat-test</code></b>, for Lead&rsquo;s #2042 replay.</li>
+<li><b>Give HOST read access to the Buttondown <code>beta-waitlist</code> list</b>, as you told PPM you would. HOST keeps the list. You send each wave, and HOST prepares it.</li>
+<li><b>Later, in parallel with the next sprint: submit the Slack app for review (#1514).</b> Slack controls how long the review takes, so it&rsquo;s the long pole for Slack in 1.0 (#2247). Lead can start on an internal app meanwhile.</li>
 </ol>
 </div>
 
@@ -90,22 +89,14 @@ Then tell me what both printed, and I&rsquo;ll pass it to CIO.</li>
 </ul>
 </div>
 
-<div class="card act">
-<p class="ct">The first-sprint talk</p>
-<ul>
-<li><b>Size:</b> PPM&rsquo;s set is 14&ndash;25 Lead-days. Two weeks if #2021 moves to the next sprint and #2226 takes its half-day option.</li>
-<li><b>Decision 7 (#2242): who may connect the hosted MCP.</b> Today any signed-in account can. <span class="rec">(a), you and the test accounts only, built in the sprint.</span></li>
-<li><b>The plugin plan:</b> a listing needs #2242, #1911 (consent page), #1918 (revoke), #2175 (arrival path), your test run and three 10-08 answers. About 3&ndash;5 Lead-days.</li>
-<li>Also open: #1706 needs #1441, which sits in a later sprint.</li>
-</ul>
-</div>
+
 
 <div class="card act">
 <p class="ct">Ship #067 week review</p>
 <p><a href="https://claude.ai/artifact/4Le3ZyacNXUqo19SQh5GpT">Ready for our discussion</a>. Five questions at the bottom. The draft waits on it.</p>
 </div>
 
-<div class="card win"><b>Done:</b> The beta letters went out today (step 1). Alpha and beta serve 0.9.0.0 on <code>5f0112c00c</code> (step 2, your run at 18:31; Lead and PPM read it at 18:35, Exec at 18:38). MVP closed 10-30. The hosted MCP serves 0.9.0.0 with #2218, #2241 and #2022 fixed. The beta docs and release notes are written.</div>
+<div class="card win"><b>Done:</b> The first sprint is set (you with PPM tonight): 22 issues in, with about 30% held back for partner reports. #2242 is the allowlist (a). #1300 closed. Slack as a source is back in 1.0 (#2247), and the bot stays in Fast Follow. #2229: one way in, HOST keeps the list, and Web builds once CXO agrees. The beta letters went out today (step 1). Alpha and beta serve 0.9.0.0 on <code>5f0112c00c</code> (step 2, your run at 18:31; Lead and PPM read it at 18:35, Exec at 18:38). MVP closed 10-30. The hosted MCP serves 0.9.0.0 with #2218, #2241 and #2022 fixed. The beta docs and release notes are written.</div>
 
 <h2>Older, at your pace</h2>
 

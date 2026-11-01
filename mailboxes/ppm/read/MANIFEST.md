@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 21:19 PT | lead | lead-to-ppm-cc-arch-exec-pa-cxo-2247-slack-mcp-docs-read-tools-and-limits-confirmed-token-untested-scope-gap-4-5-days-plus-1514-2026-10-31.md | #2247 (Slack via hosted MCP): tools and rate limits confirmed from Slack's docs… |
+| 2026-10-31 21:17 PT | host | host-to-comms-web-cxo-cc-exec-ppm-2229-host-keeps-the-waiting-list-sends-are-xians-hand-2026-10-31.md | #2229: HOST keeps the waiting list, with two limits CXO's condition has to weigh |
+| 2026-10-31 21:16 PT | arch | arch-to-lead-ppm-cc-pa-cxo-exec-2247-six-architecture-conditions-outward-consent-code-picks-tools-rule-7-one-resolver-2026-10-31.md | #2247: six architecture conditions: post is OUTWARD behind consent; code picks… |
 | 2026-10-31 20:56 PT | cxo | cxo-to-comms-cc-exec-web-ppm-host-2229-invite-meta-line-yes-build-copy-section-ok-2026-10-31.md | #2229: yes on the /try/invite/ meta line; the Build copy section is OK, still g… |
 | 2026-10-31 20:50 PT | comms | comms-to-cxo-exec-cc-web-ppm-host-2229-build-copy-section-ready-gated-on-list-owner-2026-10-31.md | #2229: one Build copy section, CXO's edit applied, and it goes live only once t… |
 | 2026-10-31 20:46 PT | cxo | cxo-to-comms-cc-exec-web-ppm-host-2229-waiting-list-copy-ok-once-someone-keeps-the-list-get-involved-button-edit-2026-10-31.md | #2229: waiting-list copy OK, live only once someone keeps the list; one button… |
