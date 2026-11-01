@@ -1,0 +1,54 @@
+"""#2149 step 3 ×6 isolation, PER SAMPLE: each (phrase, sample) decision is reconstructed through
+the real route() under the flag with TwoStageReplayLLM (the parse-two-stage path), for the
+no-delta arm and each delta arm; a sample "moves" when its route label differs. Pass: no sample
+whose shared stage-1 group is outside the edited op's group moves. Also the per-phrase spread
+(route label counts over the 6 samples) per arm."""
+import asyncio, collections, json, os, sys
+from pathlib import Path
+ROOT = Path("/Users/xian/Development/piper-morgan-worktrees/lead")
+sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(ROOT / "scripts"))
+from router_batch import TwoStageReplayLLM  # noqa: E402
+from services.intent_service.inversion_router import derive_routing_grammar, route  # noqa: E402
+
+S = Path(sys.argv[1])
+DELTA_GROUP = {"d1": "calendar_and_time", "d2": "status_and_priorities", "d3": "status_and_priorities"}
+grammar = derive_routing_grammar()
+os.environ["PIPER_INVERSION_TWO_STAGE"] = "1"
+s1_reqs = [json.loads(l) for l in (S / "s1-mainx6.jsonl").read_text().splitlines()]
+s1_res = {json.loads(l)["custom_id"]: json.loads(l) for l in (S / "s1-results.jsonl").read_text().splitlines()}
+s2_res = {json.loads(l)["custom_id"]: json.loads(l) for l in (S / "s2-results.jsonl").read_text().splitlines()}
+
+def decisions(arm):
+    f = S / ("s2-main-mainx6.jsonl" if arm is None else f"s2-{arm}-mainx6.jsonl")
+    by_parent = collections.defaultdict(dict)
+    for l in f.read_text().splitlines():
+        r = json.loads(l); by_parent[r["parent"]][(r["group"], r.get("part_text"))] = s2_res.get(r["custom_id"])
+    out = {}
+    for req in s1_reqs:
+        llm = TwoStageReplayLLM(s1_res.get(req["custom_id"]), by_parent.get(req["custom_id"], {}))
+        d = asyncio.run(route(req["phrase"], None, llm_service=llm, grammar=grammar, user_id=None))
+        out[req["custom_id"]] = (req["phrase"], d.route_label, d.route_group, d.outcome)
+    return out
+
+main = decisions(None)
+print(f"# Isolation on the ×6 set, per sample: {len(main)} decisions per arm ({len(set(v[0] for v in main.values()))} phrases × 6)\n")
+def spread(dec):
+    s = collections.defaultdict(collections.Counter)
+    for k, v in dec.items(): s[v[0]][v[1]] += 1
+    return s
+ms = spread(main)
+for arm, g in DELTA_GROUP.items():
+    d = decisions(arm)
+    moved = [(k, main[k], d[k]) for k in main if main[k][1] != d[k][1]]
+    inside = [m for m in moved if (m[1][2] or "").split(",")[0] == g]
+    outside = [m for m in moved if (m[1][2] or "").split(",")[0] != g]
+    print(f"## {arm} (edited op's group: {g}): moved {len(moved)} / {len(main)} samples; inside the group {len(inside)}; OUTSIDE {len(outside)}")
+    for k, a, b in outside:
+        print(f"   OUTSIDE  {k} {a[0]!r}: main {a[1]} [{a[2]}] -> {arm} {b[1]} [{b[2]}]")
+    for k, a, b in inside:
+        print(f"   inside   {k} {a[0]!r}: main {a[1]} [{a[2]}] -> {arm} {b[1]} [{b[2]}]")
+    ds = spread(d); changed = [p for p in ms if ms[p] != ds[p]]
+    print(f"   per-phrase spread differs on {len(changed)} / {len(ms)} phrases:")
+    for p in changed:
+        print(f"     {p!r}: main {dict(ms[p])} -> {arm} {dict(ds[p])}")
+    print()

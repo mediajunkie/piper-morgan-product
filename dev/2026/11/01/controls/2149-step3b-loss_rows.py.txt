@@ -1,0 +1,46 @@
+"""Row-by-row parity: flat vs two-stage on the asserted action:<op> rows, from the two scorer
+reports' Row detail tables plus the two-stage parse report's stage-1 group per phrase."""
+import re, sys, collections
+from pathlib import Path
+R = Path(sys.argv[1])
+def rows(p):
+    out = {}; on = False
+    for line in (R / p).read_text().splitlines():
+        if line.startswith("## Row detail"): on = True; continue
+        if on and line.startswith("## "): break
+        if on and line.startswith("| ") and not line.startswith("| phrase") and not line.startswith("|---"):
+            c = [x.strip() for x in line.strip("|").split("|")]
+            route = re.sub(r"\s*@.*$", "", c[3]).strip("`")
+            out[c[0]] = (c[1], c[2], route, c[4])
+    return out
+def groups(p):
+    out = {}; on = False
+    for line in (R / p).read_text().splitlines():
+        if line.startswith("## Decisions"): on = True; continue
+        if on and line.startswith("## "): break
+        if on and line.startswith("| ") and not line.startswith("| phrase") and not line.startswith("|---"):
+            c = [x.strip() for x in line.strip("|").split("|")]
+            out[c[0]] = c[2].split("×")[0].strip().strip("`")
+    return out
+flat, two, grp = rows("parity-flat.md"), rows("parity-two-stage.md"), groups("two-stage-main-corpus.md")
+sys.path.insert(0, "/Users/xian/Development/piper-morgan-worktrees/lead")
+from services.intent_service.inversion_router import derive_routing_grammar
+gof = {op.name: (op.route_group.value if op.route_group else None) for op in derive_routing_grammar().operations}
+lost, gained = [], []
+for ph, (cat, exp, froute, fv) in flat.items():
+    if not exp.startswith("action:") or ph not in two: continue
+    tv = two[ph][3]
+    if fv == "MATCH" and tv != "MATCH": lost.append((cat, ph, exp[7:], froute, two[ph][2], grp.get(ph, "?")))
+    elif tv == "MATCH" and fv != "MATCH": gained.append((cat, ph, exp[7:], froute, two[ph][2], grp.get(ph, "?")))
+def shape(exp, troute, g):
+    if g in ("NONE", "CLARIFY"): return "stage-1 NONE/CLARIFY"
+    if troute in ("CLARIFY", "NONE"): return "stage-2 CLARIFY/OTHER_GROUP"
+    if gof.get(exp) and g.split(",")[0] != gof[exp]: return "wrong group"
+    return "wrong op in right group"
+print(f"# Parity, row by row (expected = action:<op> rows only count): flat right & two-stage wrong {len(lost)}; two-stage right & flat wrong {len(gained)}\n")
+print("## lost by category:", dict(collections.Counter(r[0] for r in lost).most_common()))
+print("## lost by shape:", dict(collections.Counter(shape(r[2], r[4], r[5]) for r in lost).most_common()), "\n")
+print("| category | phrase | expected | flat | two-stage | stage-1 group |\n|---|---|---|---|---|---|")
+for r in sorted(lost): print("| " + " | ".join(r) + " |")
+print("\n## gained (two-stage right, flat wrong)\n\n| category | phrase | expected | flat | two-stage | stage-1 group |\n|---|---|---|---|---|---|")
+for r in sorted(gained): print("| " + " | ".join(r) + " |")
