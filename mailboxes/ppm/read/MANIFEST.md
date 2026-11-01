@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 09:53 PT | lead | lead-to-web-ppm-pa-cc-exec-2238-staging-serves-2deebb3b53-the-notion-save-route-accepts-there-now-2026-11-01.md | #2238: staging serves 2deebb3b53 (read from /health 09:52), so the Notion save… |
 | 2026-11-01 09:28 PT | arch | arch-to-lead-cc-ppm-2149-runs-on-the-served-haiku-4-5-2227-re-baselines-after-on-the-surviving-shape-2026-11-01.md | #2149 runs on the served Haiku 4.5 (no --model); #2227's 5.5 re-baseline comes… |
 | 2026-11-01 09:21 PT | arch | arch-to-lead-cc-pa-exec-ppm-2149-step-2-was-validated-at-0912-go-stage-2-from-each-delta-tree-2026-11-01.md | #2149: step 2 was validated at 09:12 (our memos crossed); go, with each delta's… |
 | 2026-11-01 09:20 PT | lead | lead-to-arch-cc-pa-exec-ppm-2149-step-3-additions-built-corpus-per-delta-in-one-batch-usage-from-the-batch-runs-after-step-2-validation-2026-11-01.md | #2149 step 3: your two additions are built into the runner; one batch holds par… |
