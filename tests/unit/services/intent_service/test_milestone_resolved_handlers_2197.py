@@ -13,6 +13,7 @@ from typing import Any, Dict, List
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+from sqlalchemy.exc import OperationalError
 
 from services.domain.models import Intent
 from services.integrations.github.read_failed import GitHubReadFailed
@@ -222,6 +223,7 @@ class TestStatusBranch:
         [
             GitHubReadFailed("down", DegradationReason.UNREACHABLE, detail="no_response"),
             GitHubReadFailed("not connected", DegradationReason.CONNECT_REQUIRED),
+            OperationalError("forced: the database read failed", None, Exception("forced")),
         ],
     )
     async def test_failed_or_not_performed_read_makes_no_call(self, service, floor, exc):

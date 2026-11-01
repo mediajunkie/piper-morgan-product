@@ -4851,8 +4851,8 @@ RULED_EXPECTATIONS: dict = {
         "RULED 2026-10-01 (CXO): neither list_prs (author-scoped) nor stale_prs (age-based) computes reviewer-requested status — capability gap, tracked",
     ),
     "when's the milestone deadline": (
-        "action:list_milestones",
-        "CXO/PPM destination ruling 2026-11-01 11:17/11:19 (#2197): the milestones read answers it, and code picks the one milestone when the ask names or means one; was floor (RULED 2026-10-01, CXO: no named milestone and no current-milestone default). Known miss: CLARIFY x6 in the 11-01 control",
+        "floor",
+        "RULED 2026-10-01 (CXO): no named milestone and no current-milestone default — CLARIFY is honest",
     ),
     "what's the next milestone?": (
         "action:list_milestones",

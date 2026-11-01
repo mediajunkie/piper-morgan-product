@@ -20137,6 +20137,8 @@ Add any additional information here.
         ``(None, "")`` for the silent default (no read, a failed or
         not-performed read (#2151: the assembler's own failed-source handling
         stands), an empty read, or outcome none/failed/skipped)."""
+        from sqlalchemy.exc import SQLAlchemyError
+
         from services.integrations.github.github_integration_router import (
             GitHubIntegrationRouter,
         )
@@ -20159,10 +20161,15 @@ Add any additional information here.
         await github_router.initialize(user_id=user_id)
         try:
             candidates = await github_router.list_milestones_via_mcp(state="all")
-        except GitHubReadFailed as rf:
+        except (GitHubReadFailed, SQLAlchemyError) as rf:
+            # A failed or not-performed read (and a DB failure under the
+            # credential/repo resolution, which the router does not wrap)
+            # falls through: the floor renders and the assembler's own
+            # failed-source handling says what it could not check (#2151).
             self.logger.info(
                 "milestone_resolver_read_not_available",
                 session_id=session_id,
+                error_class=type(rf).__name__,
                 reason=getattr(getattr(rf, "reason", None), "value", None),
             )
             return None, ""

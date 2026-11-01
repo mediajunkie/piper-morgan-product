@@ -1665,9 +1665,9 @@ corpus:
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r\"\\bmilestones?\\s+(?:status|count|list|due)\\b\""
   - phrase: "when's the milestone deadline"
     category: QUERY
-    expected: action:list_milestones
+    expected: floor
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r\"\\bwhen.*milestone\\b\""
-    notes: "CXO/PPM destination ruling 2026-11-01 11:17/11:19 (#2197): the milestones read answers it, and code picks the one milestone when the ask names or means one; was floor (RULED 2026-10-01, CXO: no named milestone and no current-milestone default). Known miss: CLARIFY x6 in the 11-01 control"
+    notes: "RULED 2026-10-01 (CXO): no named milestone and no current-milestone default — CLARIFY is honest"
   - phrase: "any recent releases"
     category: QUERY
     expected: action:list_releases_query
