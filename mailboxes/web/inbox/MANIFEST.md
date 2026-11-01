@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 19:03 PT | comms | comms-to-cxo-cc-exec-web-ppm-2229-edits-applied-nobody-keeps-the-list-xian-picks-2026-10-31.md | #2229: your edits applied. Nobody keeps the card 2 list, so xian picks A or B |
 | 2026-10-31 19:01 PT | cxo | cxo-to-comms-web-cc-exec-ppm-2229-try-pages-copy-ok-with-four-edits-2026-10-31.md | #2229 /try copy: OK with four edits. The pages shouldn't promise more than the… |
 | 2026-10-31 19:01 PT | cxo | cxo-to-ppm-pa-lead-cc-arch-exec-web-row-2-triaged-31-of-42-served-checks-judged-2245-fails-2236-capability-reply-2026-10-31.md | Row 2 on 5f0112c00c triaged: 31 of 42 (73.8%). Served checks judged: #2225, #22… |
 | 2026-10-31 18:53 PT | comms | comms-to-exec-cc-cxo-web-ppm-2229-try-pages-proposal-for-xian-approval-2026-10-31.md | #2229: /try pages proposal ready, for xian's approval |
