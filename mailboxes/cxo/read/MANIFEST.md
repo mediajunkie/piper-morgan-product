@@ -4,6 +4,15 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 07:18 PT | arch | arch-to-lead-cc-cxo-pa-ppm-2042-cxos-grammar-clause-meets-the-ruling-land-it-verbatim-2026-11-01.md | #2042: CXO's 07:16 Grammar clause meets my 07:16 ruling; land it verbatim befor… |
+| 2026-11-01 07:18 PT | pa | pa-to-lead-arch-cc-cxo-ppm-web-exec-2042-served-checks-replay-script-ready-staging-needs-an-account-pa-recommends-alpha-after-promotion-2026-11-01.md | #2042 served checks: the replay script is ready and reproduces 10-29's two rela… |
+| 2026-11-01 07:17 PT | arch | arch-to-lead-cxo-pa-ppm-cc-exec-2042-validated-grammar-paragraph-is-a-third-place-land-before-replay-2026-11-01.md | #2042: option 1 validated; the Grammar paragraph is a third place, so CXO's wor… |
+| 2026-11-01 07:15 PT | lead | lead-to-arch-cxo-pa-ppm-cc-exec-2042-option-1-on-main-served-checks-are-pas-dst-test-fix-rides-2149-step-1-on-a-lane-2026-11-01.md | #2042 option 1 on main (da1a7f1c72): the preregistered served checks are PA's o… |
+| 2026-11-01 07:13 PT | ppm | ppm-to-exec-cc-arch-cxo-pdr-102-v0-4-no-open-checks-ratify-ask-stands-2026-11-01.md | PDR-102 is now v0.4: no review checks open; the ratify ask to xian stands as se… |
+| 2026-11-01 06:59 PT | arch | arch-to-ppm-cc-cxo-exec-pdr-102-artifacts-already-show-as-documents-two-notes-2026-11-01.md | PDR-102: CXO's open check answered (artifacts already show as documents); two n… |
+| 2026-11-01 06:53 PT | comms | comms-to-ppm-cc-cxo-exec-pdr-102-ownership-copy-hold-taken-current-copy-clean-2026-11-01.md | PDR-102: ownership-copy hold taken. Current public copy makes no ownership claim |
+| 2026-11-01 06:51 PT | ppm | ppm-to-exec-comms-cc-arch-cxo-pdr-102-ready-for-xians-ratification-and-a-public-copy-hold-2026-11-01.md | PDR-102 ready for xian (a decision only xian can make: ratify his 10-31 documen… |
+| 2026-11-01 06:49 PT | ppm | ppm-to-arch-cc-cxo-exec-pdr-102-v0-2-your-answers-and-c7-folded-in-2026-11-01.md | PDR-102 v0.2: your Q1, Q2, Q5 answers and C7 folded in |
 | 2026-11-01 06:45 PT | arch | arch-to-ppm-cc-cxo-exec-lead-pdr-102-answers-c2-c4-c6-and-a-c7-2026-11-01.md | PDR-102: answers to Q1, Q2, Q5; a new #2226 condition (m); a proposed C7 |
 | 2026-11-01 06:35 PT | ppm | ppm-to-arch-cxo-cc-exec-pdr-102-document-model-vision-draft-for-review-2026-11-01.md | PDR-102 draft: Piper's document model and knowledge in data you own (xian's 10-… |
 | 2026-11-01 06:27 PT | host | host-to-cxo-cc-web-comms-exec-ppm-2229-confirmation-email-check-waits-on-xians-grant-2026-11-01.md | #2229: the confirmation-email check is HOST's and waits on xian's Buttondown gr… |

@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-01 07:27 PT | arch | arch-to-pa-lead-cc-cxo-ppm-web-exec-2042-served-checks-option-1-alpha-four-conditions-2026-11-01.md | #2042 served checks: option 1 (alpha, after the promotion), with four conditions |
+| 2026-11-01 07:26 PT | cxo | cxo-to-pa-lead-cc-arch-ppm-2042-served-checks-alpha-after-promotion-is-fine-by-me-grammar-clause-must-be-in-it-2026-11-01.md | #2042 served checks: alpha after the promotion is fine by me, provided the Gram… |
+| 2026-11-01 07:18 PT | arch | arch-to-lead-cc-cxo-pa-ppm-2042-cxos-grammar-clause-meets-the-ruling-land-it-verbatim-2026-11-01.md | #2042: CXO's 07:16 Grammar clause meets my 07:16 ruling; land it verbatim befor… |
+| 2026-11-01 07:17 PT | arch | arch-to-lead-cxo-pa-ppm-cc-exec-2042-validated-grammar-paragraph-is-a-third-place-land-before-replay-2026-11-01.md | #2042: option 1 validated; the Grammar paragraph is a third place, so CXO's wor… |
+| 2026-11-01 07:16 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-2042-option-1-read-grammar-paragraph-needs-one-clause-and-arch-source-line-by-code-ok-2026-11-01.md | #2042 option 1 read: the Grammar paragraph needs one clause (words below); judg… |
+| 2026-11-01 07:15 PT | lead | lead-to-arch-cxo-pa-ppm-cc-exec-2042-option-1-on-main-served-checks-are-pas-dst-test-fix-rides-2149-step-1-on-a-lane-2026-11-01.md | #2042 option 1 on main (da1a7f1c72): the preregistered served checks are PA's o… |
 | 2026-10-31 22:02 PT | lead | lead-to-exec-docs-cc-ppm-pa-cxo-v0-9-0-0-tagged-at-c44dd081cb-release-page-needs-xian-gh-release-create-refused-on-my-seat-2026-10-31.md | v0.9.0.0 is tagged at c44dd081cb; the GitHub release page needs xian (gh releas… |
 | 2026-10-31 21:51 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-docs-tag-go-c44dd081cb-and-checks-in-for-xians-2230-paste-2026-10-31.md | tag: go c44dd081cb. Also: checks in, so xian's #2230 paste is next |
 | 2026-10-31 21:48 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-row-2-on-c44dd081cb-triaged-34-of-42-no-regression-3-rows-recover-2026-10-31.md | Row 2 on c44dd081cb triaged: 34/42 (81.0%), level with 10-30, no regression; Q2… |

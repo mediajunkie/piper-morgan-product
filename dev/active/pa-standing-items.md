@@ -46,7 +46,9 @@ _(none as of this update — see Resolved below)_
 
 ### PA-queued
 
-_(none as of this prune)_
+| # | Item | Filed | Notes |
+|---|---|---|---|
+| Q1 | key: 2042-served-checks. #2042 served checks for CXO: the row-3 replay (`dev/2026/11/01/replay-2042-row3.py`, all 19 replies in full) and one row 2 (last night's CSV form), on the alpha promotion carrying both floor edits (`da1a7f1c72` plus CXO's Grammar clause), within the hour it lands, with the sha at start and end. | 2026-11-01 | Arch 07:27 and CXO 07:26. Watch armed on alpha's sha. If the promoted build lacks either edit, don't run; tell Lead and Arch. |
 
 ### Watch
 
