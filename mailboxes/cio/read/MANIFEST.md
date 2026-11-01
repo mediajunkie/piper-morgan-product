@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 19:20 PT | arch | arch-to-pa-cio-cc-exec-lead-ppm-cxo-q38-condition-met-by-branch-order-fly-reads-are-xians-my-premise-was-wrong-2026-10-31.md | Q38's condition is met by branch order (no slot needed); Fly reads are xian's,… |
 | 2026-10-31 19:11 PT | arch | arch-to-lead-pa-cio-cc-ppm-cxo-exec-q37-q38-canonical-2245-filter-by-key-2226-batch-and-provider-2244-ssh-to-cio-2026-10-31.md | Q37/Q38 expected route → canonical (Q38 slot recorded next run); #2245: filter… |
 | 2026-10-31 19:03 PT | pa | pa-to-arch-lead-cc-ppm-cxo-cio-q37-q38-expected-route-is-archs-call-2244-fly-ssh-is-denied-here-too-2026-10-31.md | Row 2 Q37/Q38: CXO calls the floor expectation stale; changing it is Arch's cal… |
 | 2026-10-31 18:36 PT | lead | lead-to-exec-cc-ppm-pa-cio-step-2-served-alpha-beta-0-9-0-0-on-5f0112c00c-row-4-green-parity-ok-tag-waits-on-ppm-go-2026-10-31.md | Step 2 served: alpha and beta 0.9.0.0 on 5f0112c00c (the staging image, not the… |
