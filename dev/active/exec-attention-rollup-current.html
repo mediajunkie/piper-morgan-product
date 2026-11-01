@@ -37,27 +37,14 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Saturday 31 October</h1>
-<p class="meta">Exec · v719, rebuilt 18:33 PDT Sat 10-31 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v720, rebuilt 18:39 PDT Sat 10-31 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
-<div class="card hot">
-<p class="ct">2. Promote main: beta goes to 0.9.0.0 (next)</p>
-<ul>
-<li><b>Running: you started it at 18:31 (run 41261394548, main <code>6e4e0479cf</code>).</b> Lead watches and confirms when 0.9.0.0 is served. Lead&rsquo;s permission for later runs is still not in place; the paste from 14:00 still works whenever you like.</li>
-<li>Lead&rsquo;s version change is on main, and PA reviewed it. Lead tags the release after step 3.</li>
-<li>It also carries #2225, #2230, #2236, #2233, #2237 (Slack and Notion greyed out) and the connect listing, all validated by Arch.</li>
-<li><b>Your choice:</b> dispatch it yourself, or say yes to Lead&rsquo;s permission line and Lead dispatches this one and every later one. <span class="rec">My recommendation: yes.</span></li>
-</ul>
-<details><summary>The permission line</summary>
-<p>In mediajunkie <code>docs/seat-permissions.json</code>, under <code>seat_extra.lead.allow</code>, add <code>Bash(gh workflow run fly-deploy.yml -R mediajunkie/piper-morgan-product --ref main -f promote_to_alpha=true)</code>, then run <code>scripts/seat-permissions.py --apply</code>. The readiness checks stay in the workflow.</p>
-</details>
-</div>
-
 <div class="card act">
-<p class="ct">3&ndash;5. After the promotion</p>
+<p class="ct">3&ndash;5. Now that beta serves 0.9.0.0</p>
 <ul>
-<li>(3) PPM&rsquo;s re-checks run on the promoted build.</li>
+<li>(3) <b>Running now, nothing for you:</b> PA, CXO and Lead re-check on the served build. PPM then sends Lead &ldquo;tag: go&rdquo; for v0.9.0.0.</li>
 <li>(4) Your by-name word on <code>set_default_repo</code>, with HOST or CIO there to apply it.</li>
 <li>(5) PA&rsquo;s probe and one row 2 run.</li>
 </ul>
@@ -79,6 +66,7 @@
 <ol>
 <li><b>Token-renewal fix</b> (Pard&rsquo;s console v185, one sudo paste). Do this one first: the renewal failed at 06:43 and blocked every seat&rsquo;s pushes for 31 minutes.</li>
 <li><b>Load the Exec and Lead LaunchAgents</b> (console v184).</li>
+<li><b>Optional: Lead&rsquo;s promotion permission</b> (the 14:00 paste), so Lead runs later promotions without you.</li>
 <li><b>Sign Web&rsquo;s tab in as <code>web-pat-test</code></b>, for Lead&rsquo;s #2042 replay.</li>
 </ol>
 </div>
@@ -109,7 +97,7 @@
 <p><a href="https://claude.ai/artifact/4Le3ZyacNXUqo19SQh5GpT">Ready for our discussion</a>. Five questions at the bottom. The draft waits on it.</p>
 </div>
 
-<div class="card win"><b>Done:</b> The beta letters went out today (step 1, all four templates). MVP closed 10-30. The hosted MCP serves 0.9.0.0 with #2218, #2241 and #2022 fixed. The beta docs and release notes are written.</div>
+<div class="card win"><b>Done:</b> The beta letters went out today (step 1). Alpha and beta serve 0.9.0.0 on <code>5f0112c00c</code> (step 2, your run at 18:31; Lead and PPM read it at 18:35, Exec at 18:38). MVP closed 10-30. The hosted MCP serves 0.9.0.0 with #2218, #2241 and #2022 fixed. The beta docs and release notes are written.</div>
 
 <h2>Older, at your pace</h2>
 
