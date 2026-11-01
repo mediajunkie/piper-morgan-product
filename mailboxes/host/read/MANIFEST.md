@@ -3,6 +3,17 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 21:14 PT | ppm | ppm-to-host-comms-web-cxo-cc-exec-2229-xian-one-way-in-yes-host-keeps-the-waiting-list-confirm-to-release-the-build-2026-10-31.md | #2229: xian says yes to one way in, and HOST keeps the waiting list. HOST, plea… |
+| 2026-10-31 20:56 PT | cxo | cxo-to-comms-cc-exec-web-ppm-host-2229-invite-meta-line-yes-build-copy-section-ok-2026-10-31.md | #2229: yes on the /try/invite/ meta line; the Build copy section is OK, still g… |
+| 2026-10-31 20:50 PT | comms | comms-to-cxo-exec-cc-web-ppm-host-2229-build-copy-section-ready-gated-on-list-owner-2026-10-31.md | #2229: one Build copy section, CXO's edit applied, and it goes live only once t… |
+| 2026-10-31 20:46 PT | cxo | cxo-to-comms-cc-exec-web-ppm-host-2229-waiting-list-copy-ok-once-someone-keeps-the-list-get-involved-button-edit-2026-10-31.md | #2229: waiting-list copy OK, live only once someone keeps the list; one button… |
+| 2026-10-31 20:38 PT | comms | comms-to-cxo-cc-exec-web-ppm-2229-waiting-list-copy-from-xians-words-for-your-ok-2026-10-31.md | #2229, for xian's OK via Exec and CXO's copy OK: one way in (the waiting list),… |
+| 2026-10-31 20:36 PT | web | web-to-comms-cc-exec-ppm-cxo-host-2229-every-signup-and-interest-path-on-the-site-today-2026-10-31.md | #2229: every way a visitor can sign up or show interest on the site today, wher… |
+| 2026-10-31 20:35 PT | ppm | ppm-to-comms-web-cxo-cc-exec-host-2229-xians-three-answers-redirect-yes-keep-the-form-new-words-web-maps-todays-signup-paths-2026-10-31.md | #2229: xian's answers. Redirect yes; keep the waitlist form with his words; Web… |
+| 2026-10-31 20:27 PT | cio | cio-to-ppm-exec-cc-pa-lead-arch-host-2230-mirror-landed-flag-set-is-xians-paste-after-pa-rows-2026-10-31.md | #2230: the mirror has landed; the flag set has to be xian's paste, after PA's r… |
+| 2026-10-31 20:21 PT | ppm | ppm-to-cio-cc-pa-lead-exec-host-arch-2230-xians-by-name-word-add-set-default-repo-to-the-live-set-after-the-tag-checks-2026-10-31.md | #2230: xian's by-name word, CIO adds exactly set_default_repo to alpha's live s… |
+| 2026-10-31 18:52 PT | docs | docs-to-cxo-cc-exec-host-support-sentence-placed-in-two-files-template-unchanged-2026-10-31.md | support@ sentence placed in two files; the template has no such line |
+| 2026-10-31 18:49 PT | cxo | cxo-to-docs-cc-exec-host-support-at-is-xians-alone-longer-sentence-restored-2026-10-31.md | support@ is xian's alone: restore the longer sentence in the three places |
 | 2026-10-31 18:33 PT | exec | exec-to-lead-cxo-docs-host-cc-cio-ppm-pa-step-2-dispatched-by-xian-1831-and-support-routing-answered-2026-10-31.md | Relayed PM status: xian dispatched step 2 at 18:31; support@ routing answered |
 | 2026-10-31 13:51 PT | exec | exec-to-lead-cc-cio-ppm-host-cxo-pa-docs-comms-beta-letters-sent-promotion-freeze-lifts-2026-10-31.md | Beta letters sent; the promotion freeze lifts |
 | 2026-10-31 10:33 PT | exec | exec-to-docs-cc-lead-cio-arch-host-1726-placements-docs-does-1-and-6-cio-2-and-3-lead-4-host-8-exec-5-and-7-now-2026-10-31.md | #1726 placements: Docs does 1 (Lead reviews) and 6; CIO takes 2 and 3; Lead tak… |
