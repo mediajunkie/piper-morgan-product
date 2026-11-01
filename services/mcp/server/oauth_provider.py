@@ -93,6 +93,7 @@ from services.database.models import (
     MCPOAuthRefreshToken,
 )
 from services.database.session_factory import AsyncSessionFactory
+from services.mcp.server.allowlist import may_connect_mcp
 from services.mcp.server.identity import (
     RESOURCE_READ_SCOPE,
     hash_credential,
@@ -143,6 +144,9 @@ class _Refusal(str, enum.Enum):
     REFRESH_WRONG_CLIENT = "refresh_wrong_client"
     REFRESH_REVOKED = "refresh_revoked"
     REFRESH_EXPIRED = "refresh_expired"
+    # #2242: the account is not on the beta allowlist (consent and refresh).
+    NOT_ALLOWLISTED = "not_allowlisted"
+    REFRESH_NOT_ALLOWLISTED = "refresh_not_allowlisted"
 
 
 # ── The consenting-identity contextvar ───────────────────────────────────────
@@ -427,6 +431,21 @@ class PiperMCPOAuthProvider:
                     "No authenticated Piper Morgan session has consented to this "
                     "authorization request."
                 ),
+            )
+
+        # #2242 (Arch's first gate point, provider side): a consenting identity
+        # that is not on the beta allowlist gets no code. The consent route shows
+        # the user the line; this refusal holds for any caller of authorize().
+        if not await may_connect_mcp(user_id, session_scope=self._scope):
+            logger.warning(
+                "mcp_oauth_authorize_refused",
+                reason=_Refusal.NOT_ALLOWLISTED.value,
+                client_id=client.client_id,
+                user_id=str(user_id),
+            )
+            raise AuthorizeError(
+                error="access_denied",
+                error_description="This account may not connect the Piper Morgan connector yet.",
             )
 
         raw_code = CODE_PREFIX + secrets.token_urlsafe(32)  # 256 bits of entropy
@@ -794,6 +813,21 @@ class PiperMCPOAuthProvider:
                 client_id=client.client_id,
             )
             raise TokenError(error="invalid_grant", error_description="refresh token has expired")
+
+        # #2242 (Arch's second gate point): refresh tokens last 30 days, so an
+        # account removed from the beta allowlist would otherwise keep renewing.
+        # The presented token is already rotated (revoked) above; refusing here
+        # mints nothing, which is the closed direction.
+        if not await may_connect_mcp(owner_id, session_scope=self._scope):
+            logger.warning(
+                "mcp_oauth_refresh_refused",
+                reason=_Refusal.REFRESH_NOT_ALLOWLISTED.value,
+                client_id=client.client_id,
+                user_id=owner_id,
+            )
+            raise TokenError(
+                error="invalid_grant", error_description="refresh token is no longer valid"
+            )
 
         return await self._mint_pair(
             grant="refresh_token",

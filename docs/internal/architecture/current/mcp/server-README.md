@@ -220,6 +220,32 @@ garbage token reads nothing — via a real MCP client (`mcp.client.streamable_ht
 `ClientSession`) round-tripping `initialize` + `resources/read` over an in-process ASGI transport,
 against a resource stub that calls `current_user_id()`.
 
+### Who may connect during the beta (#2242)
+
+Until the Claude connector is offered, only xian's account and the cohort's named test accounts
+may connect the hosted MCP (xian's decision, 2026-10-31). The mechanism is Arch's (#2242): **one
+predicate**, `services/mcp/server/allowlist.py:may_connect_mcp(user_id)`, reading **one list
+source**, the reserved key `mcp_connect_allowed` in `users.preferences` (JSON `true` lists an
+account; nothing else does), **checked at three points, all failing closed**:
+
+- the consent step — `web/routers/mcp_oauth.py` shows the refusal line in place of the form (403,
+  no hidden fields, no code), and `PiperMCPOAuthProvider.authorize()` refuses independently;
+- the refresh grant — `exchange_refresh_token()` answers `invalid_grant` after rotating the
+  presented token, so an account removed from the list cannot renew for the 30-day refresh life;
+- the verifier — `MCPTokenVerifier.verify_token()` returns `None` for a valid token whose owner is
+  not listed, the same way it does for a revoked one. This is what makes a removal bite on the
+  next request, and it covers operator-minted tokens, which never saw consent.
+
+A failed list read is a refusal, logged (`mcp_allowlist_refused reason=backend_fault`). The key
+is stripped before `user_context_service` merges preferences into the model's context, so being
+listed changes nothing the user or the model sees. **The one writer** is `scripts/mcp_allow.py`
+(`add` / `remove` / `list`, dry-run by default, atomic JSONB updates; `add` re-reads the list so
+the operator sees what stuck); an enforcement pin
+(`tests/test_architecture_enforcement.py::TestMcpAllowlistSingleWriter2242`) keeps it the only
+one. Rollout: the MCP half (`identity.py` + `allowlist.py`) ships on `scripts/deploy-mcp.sh`; the
+web half (consent and refresh) rides a promotion. Widening the list when the connector is offered
+is a config change, not code.
+
 ## Capability set: resources only, zero tools, zero prompts
 
 FastMCP's constructor unconditionally wires `list_tools`/`call_tool`/`list_prompts`/`get_prompt`

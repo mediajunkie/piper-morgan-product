@@ -8905,3 +8905,106 @@ class TestSyncCredentialCallsInAsyncRatchet:
             f"a sync credential call was migrated: lower its ceiling in this commit: {slack} "
             "(file: (measured, ceiling))"
         )
+
+
+class TestMcpAllowlistSingleWriter2242:
+    """#2242 — the hosted-MCP beta allowlist has ONE writer, the operator script.
+
+    The list is a reserved key in ``users.preferences`` (Arch's accepted store,
+    #2242 comment 6545549190, condition 2): "an enforcement pin, in the style of
+    the existing ratchets, asserts that the reserved key's name appears as a
+    write only in ``scripts/mcp_allow.py``. Then a future preferences route that
+    accepts a client dict can't become a self-grant without that pin going red."
+
+    Three holds:
+    1. the key's LITERAL lives in exactly one production file, the allowlist
+       module (every other use imports the name, so a grep for the literal is
+       a complete census of who could spell it);
+    2. the set of production files that name ``MCP_ALLOW_KEY`` at all is pinned
+       (a new toucher fails loudly and must be classified here);
+    3. a write-shaped line naming the key exists only in the script.
+    """
+
+    LITERAL = "mcp_connect_allowed"
+    NAME = "MCP_ALLOW_KEY"
+    ROOTS = ("services", "web", "cli", "scripts")
+    # The one file that may spell the literal.
+    LITERAL_HOME = "services/mcp/server/allowlist.py"
+    # The one writer.
+    WRITER = "scripts/mcp_allow.py"
+    # Every production file that names the key, and why:
+    #   allowlist.py          — defines it (the predicate and the strip)
+    #   mcp_allow.py          — THE ONE WRITER (add / remove / list)
+    KNOWN_TOUCHERS = {LITERAL_HOME, WRITER}
+    # A write: the key used as a dict subscript target, in a JSONB merge/set, or
+    # bound into an UPDATE. Reads (`.get(KEY)`, `k != KEY`, imports) never match.
+    WRITE_SHAPES = (
+        re.compile(r"\[\s*MCP_ALLOW_KEY\s*\]\s*="),
+        re.compile(r"jsonb_build_object|jsonb_set|UPDATE users SET preferences", re.I),
+        re.compile(r"MCP_ALLOW_KEY\s*:\s*True"),
+    )
+
+    def _production_files(self):
+        repo_root = Path(__file__).resolve().parents[1]
+        for root in self.ROOTS:
+            base = repo_root / root
+            if not base.exists():
+                continue
+            for path in base.rglob("*.py"):
+                if "tests" in path.parts or "__pycache__" in path.parts:
+                    continue
+                yield (
+                    path.relative_to(repo_root).as_posix(),
+                    path.read_text(encoding="utf-8", errors="ignore"),
+                )
+        main_py = repo_root / "main.py"
+        if main_py.exists():
+            yield "main.py", main_py.read_text(encoding="utf-8", errors="ignore")
+
+    def test_the_literal_is_spelled_in_exactly_one_production_file(self):
+        homes = sorted(rel for rel, text in self._production_files() if self.LITERAL in text)
+        assert homes == [self.LITERAL_HOME], (
+            f"'{self.LITERAL}' is spelled in {homes}; only {self.LITERAL_HOME} may. "
+            "Import MCP_ALLOW_KEY instead, and if the new file WRITES it, stop: "
+            "scripts/mcp_allow.py is the one writer (#2242)."
+        )
+
+    def test_the_files_that_name_the_key_are_exactly_the_known_set(self):
+        found = {
+            rel
+            for rel, text in self._production_files()
+            if self.NAME in text or self.LITERAL in text
+        }
+        new = sorted(found - self.KNOWN_TOUCHERS)
+        gone = sorted(self.KNOWN_TOUCHERS - found)
+        assert not new, (
+            f"NEW production file(s) name {self.NAME}: {new}. Classify each here: a "
+            "reader is fine (add it to KNOWN_TOUCHERS with its reason); a writer is "
+            "not (#2242: the allowlist has one writer, scripts/mcp_allow.py)."
+        )
+        assert not gone, f"Known toucher(s) no longer name the key: {gone} — update KNOWN_TOUCHERS."
+
+    def test_only_the_script_writes_the_key(self):
+        writers = []
+        for rel, text in self._production_files():
+            if self.NAME not in text and self.LITERAL not in text:
+                continue
+            for line in text.splitlines():
+                stripped = line.strip()
+                if stripped.startswith("#"):
+                    continue
+                if any(shape.search(line) for shape in self.WRITE_SHAPES):
+                    writers.append(rel)
+                    break
+        assert writers == [
+            self.WRITER
+        ], f"Expected exactly one writer of the allowlist key ({self.WRITER}); found {writers}."
+
+    def test_the_script_is_the_writer_the_pin_claims(self):
+        """m-44: the scan must see the writer it lets through."""
+        repo_root = Path(__file__).resolve().parents[1]
+        text = (repo_root / self.WRITER).read_text(encoding="utf-8")
+        assert any(shape.search(text) for shape in self.WRITE_SHAPES[1:2]), (
+            "scripts/mcp_allow.py no longer looks like a writer to this pin; "
+            "update WRITE_SHAPES with the script, never loosen it to pass."
+        )

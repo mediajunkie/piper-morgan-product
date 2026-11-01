@@ -6,6 +6,8 @@ from uuid import UUID
 
 import structlog
 
+from services.mcp.server.allowlist import strip_reserved_keys
+
 logger = structlog.get_logger()
 
 
@@ -176,7 +178,11 @@ class UserContextService:
                 loaded_prefs = await self._load_user_preferences_from_db(user_id)
                 # #2151: None is a FAILED read (an empty dict is a verified "none set").
                 preferences_read_failed = loaded_prefs is None
-                user_prefs = loaded_prefs or {}
+                # #2242: the hosted-MCP allowlist flag lives in this column and
+                # must not change the user's own context (the merge below and the
+                # `elif user_prefs` branch would both see it). Stripped here, so a
+                # listed and an unlisted account read identically.
+                user_prefs = strip_reserved_keys(loaded_prefs or {})
 
             # 3. Merge configurations (user preferences override generic)
             merged_config = {**generic_config, **user_prefs}

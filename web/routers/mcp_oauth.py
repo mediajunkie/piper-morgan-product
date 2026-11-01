@@ -76,6 +76,7 @@ from starlette.requests import Request
 from starlette.responses import HTMLResponse, JSONResponse, RedirectResponse, Response
 from starlette.routing import Route
 
+from services.mcp.server.allowlist import may_connect_mcp
 from services.mcp.server.identity import RESOURCE_READ_SCOPE
 from services.mcp.server.oauth_provider import PiperMCPOAuthProvider, consenting_user
 from services.mcp.server.resources import (
@@ -294,6 +295,59 @@ _CONSENT_PAGE = """<!DOCTYPE html>
 """
 
 
+# #2242: the line a signed-in account that is NOT on the beta allowlist sees in
+# place of the consent form. The draft wording is the issue's; CXO owns the words.
+MCP_NOT_OFFERED_LINE = "The Claude connector isn't part of this beta yet."
+
+_NOT_OFFERED_PAGE = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Piper Morgan</title>
+<link rel="stylesheet" href="/static/css/tokens.css">
+<style>
+  body {{ font: 16px/1.5 var(--font-family);
+         margin: 0; padding: 2rem 1rem; display: flex; justify-content: center; }}
+  main {{ max-width: 34rem; width: 100%; }}
+  .brand {{ font-weight: var(--font-weight-semibold); color: var(--color-primary);
+           font-size: var(--font-size-lg); margin-bottom: var(--space-md); }}
+  h1 {{ font-size: 1.35rem; margin: 0 0 1rem; }}
+  .who {{ color: var(--color-text-secondary); font-size: 0.9rem; }}
+</style>
+</head>
+<body>
+<main>
+  <div class="brand">Piper Morgan</div>
+  <h1>{line}</h1>
+  <p>{client_label} asked to connect to your Piper Morgan account, and nothing was connected.</p>
+  <p class="who">{who_html}</p>
+</main>
+</body>
+</html>
+"""
+
+
+async def _render_not_offered_page(*, user_id: str, client_label: str) -> HTMLResponse:
+    """#2242: no consent form, no hidden fields, no code. 403 so a client that
+    follows the browser sees a refusal, not a page it could mistake for consent."""
+    identity = await _lookup_user_identity(user_id)
+    if identity is not None:
+        username, email = identity
+        who_html = f"Signed in as <strong>{html.escape(username)}</strong> ({html.escape(email)})."
+    else:
+        who_html = f"Signed in as <code>{html.escape(user_id)}</code>."
+    return HTMLResponse(
+        _NOT_OFFERED_PAGE.format(
+            line=html.escape(MCP_NOT_OFFERED_LINE),
+            client_label=html.escape(client_label),
+            who_html=who_html,
+        ),
+        status_code=403,
+        headers={"Cache-Control": "no-store"},
+    )
+
+
 def _hidden(name: str, value: str | None) -> str:
     if value is None:
         return ""
@@ -400,6 +454,16 @@ def build_authorize_endpoint(provider: PiperMCPOAuthProvider):
             # PKCE is mandatory (the SDK's own AuthorizationRequest requires S256);
             # refuse before showing a consent page we could not honor.
             return _oauth_error("invalid_request", "code_challenge is required (PKCE S256)")
+
+        # #2242 (Arch's first gate point, the consent step): an account that is
+        # not on the beta allowlist sees the line instead of the form, on GET and
+        # on POST alike, and no code is issued. The provider's authorize() refuses
+        # independently, so a forged POST past this page still mints nothing.
+        if not await may_connect_mcp(user_id):
+            logger.info("mcp_oauth_authorize_refused_not_offered", client_id=client_id)
+            return await _render_not_offered_page(
+                user_id=user_id, client_label=client.client_name or "This application"
+            )
 
         if request.method == "GET":
             expires_at = int(time.time()) + CONSENT_TTL_SECONDS

@@ -85,6 +85,8 @@ from urllib.parse import parse_qs, urlsplit
 import pytest
 import pytest_asyncio
 
+from services.mcp.server import allowlist as _allowlist
+
 aiosqlite = pytest.importorskip("aiosqlite")
 
 import httpx  # noqa: E402
@@ -151,6 +153,20 @@ def _reset_sse_starlette_loop_singleton():
 
 
 # ─────────────────────────── fixtures ────────────────────────────────────────
+
+
+@pytest.fixture(autouse=True)
+def _every_account_is_listed(monkeypatch):
+    """#2242: the beta allowlist is part of the identity boundary now (checked in
+    the verifier, the consent step and the refresh grant). This file is about the
+    token half, so every account is listed; the allowlist's own refusals are
+    pinned in test_mcp_allowlist_2242.py. The in-memory SQLite here cannot hold
+    the ``users`` table (UUID column), hence the reader is replaced, not seeded."""
+
+    async def _listed(_user_id, **_kwargs):
+        return {_allowlist.MCP_ALLOW_KEY: True}
+
+    monkeypatch.setattr(_allowlist, "read_preferences", _listed)
 
 
 @pytest_asyncio.fixture

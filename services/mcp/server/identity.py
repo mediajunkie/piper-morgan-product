@@ -45,6 +45,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from services.database.models import MCPAccessToken
 from services.database.session_factory import AsyncSessionFactory
+from services.mcp.server.allowlist import may_connect_mcp
 
 SessionScopeFactory = Callable[[], AsyncContextManager[AsyncSession]]
 
@@ -66,6 +67,7 @@ class _RefusalReason(str, enum.Enum):
     NOT_FOUND = "not_found"
     REVOKED = "revoked"
     EXPIRED = "expired"
+    NOT_ALLOWLISTED = "not_allowlisted"  # #2242: the owner may not connect the MCP (beta allowlist)
     BACKEND_FAULT = "backend_fault"  # the store could not answer — refuse, never serve
 
 
@@ -178,6 +180,19 @@ class MCPTokenVerifier(TokenVerifier):
             if (expires_at := _as_aware_utc(row.expires_at)) is not None and expires_at <= now:
                 logger.warning(
                     "mcp_identity_refused", token=masked, reason=_RefusalReason.EXPIRED.value
+                )
+                return None
+
+            # #2242 (Arch's third gate point): a valid token whose owner is not on
+            # the beta allowlist reads nothing, the same way a revoked one does.
+            # Checked on every request, so a removal bites on the next call and
+            # operator-minted tokens (which never saw consent) are covered too.
+            # Fails closed inside may_connect_mcp (a failed list read is a no).
+            if not await may_connect_mcp(row.user_id, session_scope=self._session_scope):
+                logger.warning(
+                    "mcp_identity_refused",
+                    token=masked,
+                    reason=_RefusalReason.NOT_ALLOWLISTED.value,
                 )
                 return None
 
