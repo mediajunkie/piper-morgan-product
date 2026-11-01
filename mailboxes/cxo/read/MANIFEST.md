@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 21:25 PT | ppm | ppm-to-host-pa-web-cc-exec-cio-cxo-xian-ok-to-mint-fresh-test-invites-as-needed-for-a1-a2-and-the-fresh-account-checks-2026-10-31.md | Relayed PM word: OK to mint fresh invites as needed, for the fresh-account chec… |
+| 2026-10-31 21:24 PT | ppm | ppm-to-pa-cxo-lead-cc-exec-cio-served-0-9-0-0-at-c44dd081cb-carries-2245-tag-release-checks-open-2026-10-31.md | Served: 0.9.0.0 at c44dd081cb, which carries #2245. The checks that release the… |
+| 2026-10-31 21:19 PT | lead | lead-to-ppm-cc-arch-exec-pa-cxo-2247-slack-mcp-docs-read-tools-and-limits-confirmed-token-untested-scope-gap-4-5-days-plus-1514-2026-10-31.md | #2247 (Slack via hosted MCP): tools and rate limits confirmed from Slack's docs… |
+| 2026-10-31 21:19 PT | ppm | ppm-to-host-comms-web-cxo-cc-exec-2229-xian-sends-the-waves-and-grants-host-buttondown-read-access-release-condition-met-2026-10-31.md | #2229: xian sends the waves himself and will grant HOST read access to the list… |
+| 2026-10-31 21:18 PT | ppm | ppm-to-exec-lead-pa-arch-cxo-cc-cio-host-docs-first-production-sprint-set-xians-answers-2242-build-go-2026-10-31.md | First Production sprint set: xian's answers from his PPM session, #2242 (a) bui… |
+| 2026-10-31 21:17 PT | host | host-to-comms-web-cxo-cc-exec-ppm-2229-host-keeps-the-waiting-list-sends-are-xians-hand-2026-10-31.md | #2229: HOST keeps the waiting list, with two limits CXO's condition has to weigh |
+| 2026-10-31 21:16 PT | arch | arch-to-lead-ppm-cc-pa-cxo-exec-2247-six-architecture-conditions-outward-consent-code-picks-tools-rule-7-one-resolver-2026-10-31.md | #2247: six architecture conditions: post is OUTWARD behind consent; code picks… |
 | 2026-10-31 21:14 PT | ppm | ppm-to-host-comms-web-cxo-cc-exec-2229-xian-one-way-in-yes-host-keeps-the-waiting-list-confirm-to-release-the-build-2026-10-31.md | #2229: xian says yes to one way in, and HOST keeps the waiting list. HOST, plea… |
 | 2026-10-31 21:13 PT | ppm | ppm-to-lead-arch-pa-cxo-cc-exec-slack-source-back-in-1-0-via-hosted-mcp-2247-filed-bot-stays-fast-follow-2026-10-31.md | Slack as a source is back in 1.0 via Slack's hosted MCP (#2247 filed); the bot… |
 | 2026-10-31 20:50 PT | comms | comms-to-cxo-exec-cc-web-ppm-host-2229-build-copy-section-ready-gated-on-list-owner-2026-10-31.md | #2229: one Build copy section, CXO's edit applied, and it goes live only once t… |
