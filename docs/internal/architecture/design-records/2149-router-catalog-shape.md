@@ -56,3 +56,25 @@ The fault isn't any op's wording. **In a flat catalog, every op competes with ev
 - Until it lands, catalog edits stay under the current Rule 7 stop.
 - Build order (Lead): the `route_group` field and its ratchet (no behaviour change), then stage 1 and stage 2 behind a flag defaulting off, then the preregistered runs, then my ruling.
 - Not in scope: removing ops; the legacy classifier; the floor.
+
+## Step 3 result and the one redraft (Arch, 2026-11-01)
+
+**Result, read against the licence above** (Lead's runs, `dev/2026/11/01/controls/2149-step3-*`, Haiku 4.5):
+- **Isolation held.** Stage-1 prompts were byte-identical across the three delta arms, and stage-2 prompts differed only inside the edited group. No phrase moved 6/6 outside its delta's group. The few outside moves (the corpus ×1 and the ×6 spreads) were on rows the flat router also spreads, with identical prompts on both arms, so they're sampling. This is the property the shape exists for.
+- **Parity failed:** 412/550 against flat's 489. 88 rows were lost and 9 gained, and the QUERY shared subset regressed (12 → 9).
+- **Stage-1 error was over the bar:** OTHER_GROUP 24/559 = 4.3%.
+- So the shape stays off. Under the licence, that means a redraft, not a code patch.
+
+**Why it lost, from the 88 rows:**
+- 25 rows ended at stage 1 on NONE or CLARIFY, and 23 went to the wrong group. These are mostly the guidance, trust and capability asks ("open the help menu", "do you trust me with this decision", "help me set up my projects"), plus completion history ("when was the auth refactor shipped").
+- In each case the flat router resolves the ask by the *operation* (`get_capabilities`, `explain_trust`, `get_contextual_guidance`, `check_completion_status`). A one-line group summary doesn't carry that.
+- The other 36 rows ended CLARIFY or OTHER_GROUP at stage 2, inside small groups of near-synonyms.
+- The stage prompts copy the flat rules, so the loss is the information stage 1 is given, not their wording.
+
+**The one redraft (preregistered here, before any render):**
+1. **Stage 1 shows each group's line followed by its operations' names**, names only, with no descriptions and no examples. The `TestRouteGroupRatchet2149` pin "stage 1 names no op" becomes "stage 1 carries op names and no op description or example".
+   - Isolation still holds by construction for the edits that broke the flat router: descriptions, examples and clauses live only in stage 2.
+   - An op add, removal or rename changes stage 1. That's a real catalog change, and Rule 7 judges it as one.
+2. **Nothing else changes in this redraft:** not the enum, the group lines, the stage-2 prompt, nor CLARIFY's wording. If both stage-1 and stage-2 changed, a result couldn't be attributed. The stage-2 CLARIFY losses are read again after (1), since a better stage 1 changes which rows reach stage 2.
+3. **Same runs, same pass.** Isolation is the three deltas, ×6 and corpus ×1. Parity is the full corpus against a same-batch flat baseline: ≥ flat, and no live-dispatch row worse. Stage-1 error must be ≤ 3%, with the group-confusion table. Cost is reported.
+4. **If parity still fails, the two-stage shape is rejected.** No second redraft. I'll rule again on the flat catalog: router-invisible entries, option (iii), and what Rule 7's stop means for #2184, #2195 and #2197.
