@@ -28,6 +28,7 @@ from services.intent_service.chat_pointers import (
     CHAT_POINTERS,
     CORE_CAPABILITIES,
     POINTER,
+    answer_utterances,
     capability_answer_lines,
     pointer_utterances,
 )
@@ -39,9 +40,11 @@ from services.intent_service.chat_pointers import (
 
 class TestCapabilityAnswerDerivesFromLedger:
     def test_every_pointer_utterance_appears_in_the_answer(self):
-        """Every POINTER row's utterance is offered as an example ask."""
+        """Every POINTER row's utterance the beta offers is an example ask
+        (#2245: rows keyed to a connector outside BETA_OFFERED_CONNECTORS are
+        the one exclusion; ``answer_utterances`` is the answer's base)."""
         lines = capability_answer_lines()
-        for utterance in pointer_utterances():
+        for utterance in answer_utterances():
             assert any(utterance in line for line in lines), (
                 f"POINTER utterance {utterance!r} missing from the capability "
                 f"answer — the answer must derive from the ledger, not a "
@@ -88,7 +91,7 @@ class TestCapabilityAnswerDerivesFromLedger:
         """No extra hand-maintained entries: lines == core + one per unique
         POINTER utterance, exactly."""
         lines = capability_answer_lines()
-        assert len(lines) == len(CORE_CAPABILITIES) + len(pointer_utterances())
+        assert len(lines) == len(CORE_CAPABILITIES) + len(answer_utterances())  # #2245 base
 
 
 # ---------------------------------------------------------------------------

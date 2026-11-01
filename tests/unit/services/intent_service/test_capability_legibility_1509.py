@@ -249,8 +249,10 @@ class TestDiscoveryAnswerOutwardness:
     def test_decoration_is_a_pure_suffix_over_the_1428_answer(self):
         """Never forks #1428's construction: same length, same order, each
         line either equals the base line or base + ' — ' + marker."""
-        base = pointer_utterances()
-        from services.intent_service.chat_pointers import capability_answer_lines
+        # #2245: the answer's base is the offered-filtered list, in both renderers.
+        from services.intent_service.chat_pointers import answer_utterances, capability_answer_lines
+
+        base = answer_utterances()
 
         base_lines = capability_answer_lines()
         decorated = legibility.capability_answer_lines_with_outwardness()

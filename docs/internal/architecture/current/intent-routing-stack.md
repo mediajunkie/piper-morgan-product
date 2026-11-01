@@ -1944,7 +1944,16 @@ a single source imported by BOTH the ratchet and the product's "what can you do?
 path (`context_assembler._gather_identity_context` derives the DISCOVERY/IDENTITY
 capability list from the ledger's POINTER rows via `capability_answer_lines()`, replacing
 the rail-descriptions-only build that understated capabilities and leaked internal
-markers like "(#1124)" — census F8). The ratchet derives
+markers like "(#1124)" — census F8). **#2245 (2026-10-31):** the answer's base is
+`chat_pointers.answer_utterances()`, which is `pointer_utterances()` minus every utterance
+whose ledger rows all name a connector outside `BETA_OFFERED_CONNECTORS` (keys
+`integration:<name>` and `page:/settings/integrations/<name>`, decided from the key, never
+the words); both renderers (`capability_answer_lines` and
+`capability_legibility.capability_answer_lines_with_outwardness`, the served #2236 reply)
+use it, nothing is added in a dropped line's place, and the ledger, the ratchet's
+denominator and the #1462 catalog examples are untouched, so "connect my slack" still
+routes to its #2237 refusal while the answer stops suggesting it. Pins:
+`test_capability_list_offered_connectors_2245.py`. The ratchet derives
 the product-surface set (ui.py page routes + connectable integrations + decline-copy
 capabilities) at collection time, requires a ledger row per surface (a POINTER utterance
 that resolves DETERMINISTICALLY through this stack's surfaces 1/3/4 with the resolution

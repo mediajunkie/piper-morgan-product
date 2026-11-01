@@ -209,7 +209,7 @@ def capability_answer_lines_with_outwardness() -> List[str]:
         CHAT_POINTERS,
         CORE_CAPABILITIES,
         POINTER,
-        pointer_utterances,
+        answer_utterances,
     )
     from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
     from services.intent_service.workflow_entries import register_default_workflows
@@ -225,7 +225,9 @@ def capability_answer_lines_with_outwardness() -> List[str]:
             action_by_utterance[row.utterance] = action
 
     lines: List[str] = list(CORE_CAPABILITIES)
-    for utterance in pointer_utterances():
+    # #2245: the same offered-connector filter as capability_answer_lines, so
+    # the decorated answer stays a pure suffix over the #1428 answer.
+    for utterance in answer_utterances():
         line = f'you can ask me: "{utterance}"'
         entry = WORKFLOW_REGISTRY.get(action_by_utterance.get(utterance, ""))
         outwardness = getattr(entry, "outwardness", None)

@@ -296,14 +296,55 @@ def pointer_utterances(ledger=None):
     return seen
 
 
+def connector_of_pointer_key(key: str):
+    """The connector a ledger KEY names, or None for a row that names no connector.
+
+    Two key shapes name one: ``integration:<name>`` and
+    ``page:/settings/integrations/<name>``. Decided from the key alone, never
+    from the utterance's words (#2245: the filter must not become a phrase match).
+    """
+    if key.startswith("integration:"):
+        return key[len("integration:") :]
+    prefix = "page:/settings/integrations/"
+    if key.startswith(prefix):
+        return key[len(prefix) :].split("/", 1)[0]
+    return None
+
+
+def answer_utterances(ledger=None):
+    """The example asks the capability ANSWER may teach: ``pointer_utterances``
+    minus every utterance whose ledger rows all name a connector outside
+    ``BETA_OFFERED_CONNECTORS`` (#2245; the same single source the Integrations
+    page, the wizard and the connect routes read under #2237). Nothing is added
+    in a dropped line's place. The ledger itself is untouched: the #1433
+    reachability ratchet and the catalog still see every POINTER row, so
+    "connect my slack" keeps routing to its honest refusal while the answer
+    stops suggesting it.
+    """
+    from services.integrations.integration_status_service import BETA_OFFERED_CONNECTORS
+
+    if ledger is None:
+        ledger = CHAT_POINTERS
+    offered_rows = {}
+    for key, row in ledger.items():
+        if not isinstance(row, POINTER):
+            continue
+        connector = connector_of_pointer_key(key)
+        offered = connector is None or connector in BETA_OFFERED_CONNECTORS
+        offered_rows[row.utterance] = offered_rows.get(row.utterance, False) or offered
+    return [u for u in pointer_utterances(ledger) if offered_rows.get(u, False)]
+
+
 def capability_answer_lines(ledger=None):
     """User-register capability lines for the 'what can you do?' answer.
 
     Derived from the ledger: one example-ask line per unique POINTER
-    utterance, plus the CORE_CAPABILITIES conversational lines. CHAT_INVISIBLE
-    surfaces contribute nothing — the answer never claims a capability chat
-    cannot reach (honesty per capability state, #1428 AC).
+    utterance the beta offers (``answer_utterances``, #2245), plus the
+    CORE_CAPABILITIES conversational lines. CHAT_INVISIBLE surfaces and rows
+    for connectors outside the offered set contribute nothing — the answer
+    never claims a capability chat cannot reach, and never suggests a prompt
+    this beta refuses (honesty per capability state, #1428 AC).
     """
     lines = list(CORE_CAPABILITIES)
-    lines.extend(f'you can ask me: "{utterance}"' for utterance in pointer_utterances(ledger))
+    lines.extend(f'you can ask me: "{utterance}"' for utterance in answer_utterances(ledger))
     return lines
