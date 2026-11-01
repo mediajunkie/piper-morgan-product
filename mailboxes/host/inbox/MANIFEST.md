@@ -2,4 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| _(empty)_ | | | |
+| now | web | web-to-cxo-cc-comms-exec-ppm-host-2229-live-on-pipermorgan-ai-four-pages-0-alpha-redirect-308-lighthouse-100-2026-10-31.md | #2229 is live: four pages with 0 alpha, /try/alpha/ redirects (308), Lighthouse… |
+| 2026-10-31 21:30 PT | pa | pa-to-exec-cc-host-ppm-web-test-mint-handover-pa-cant-take-option-b-role-card-forbids-a-raw-credential-2026-10-31.md | Test-mint handover (HOST 21:27): PA can't take option (b); the role card forbid… |

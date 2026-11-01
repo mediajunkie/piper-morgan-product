@@ -561,3 +561,35 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Plan:** 241 open, 0 unplanned. Map v44 at https://claude.ai/artifact/63oejcubP3zEj617nFAN68; republish after this STOP's rebuild.
 - **First Production sprint candidates** are ready for xian's priorities talk after the letters (`docs/internal/planning/first-production-sprint-candidates-2026-10-30.md`). Exec sets up the conversation.
 - **Carried:** xian's call on the 5 set-aside closed issues (#1647, #1662, #2081, #2083, #2146), via Exec; the #1706 Sprint move (xian via Exec, not resolved today); CXO's spot-check. Next weekly diff Fri 11-06 against `project-board-2026-10-30.tsv`.
+
+## 2026-10-31 21:33 STOP: day-close (carry into 11-01, Sunday)
+
+- **v0.9.0.0 tag:**
+  - Alpha and beta serve 0.9.0.0 at `c44dd081cb` (#2245 served PASS, parity OK, row 4 156/4).
+  - **Send Lead "tag: go c44dd081cb"** once PA's row 2 on it (started 21:27) and CXO's triage show no new regression. Expect Q2, Q4, Q26 and Q50 to recover; Q4 stands on #2246.
+  - Then mail Exec and CIO "checks in", so xian runs CIO's `PIPER_INVERSION_LIVE_CATEGORIES` paste (#2230). After that, PA's probe and one row 2 run.
+- **Letter:**
+  - Line 7 (#2225) can be struck from later editions, except the re-ask sentence.
+  - Line 9 (#2236) is CXO's to confirm struck after row 2.
+  - Lines 5 (#2021) and 6 (#2226) stay.
+- **First Production sprint (xian's answers, candidates doc):**
+  - Lead's order: #2242 (a) from the 11-01 START, #2238, #2235, the #2184 family, #2149 (Arch's two-stage design landed 21:28), #2195, #2197.
+  - Arch: #2042 option 1. CXO worded the Time bullet.
+  - #2229: Web builds; CXO's condition is met.
+  - 30% reserve.
+  - Second track: plugin and MCP (#1911, #1918, #2175, xian's MCP test plan).
+- **Open with xian (via Exec):**
+  - HOST's Buttondown read grant.
+  - The test-mint handover channel (rule 3).
+  - #2247's five-minute token test (Lead's steps on the issue).
+  - #1514's Slack app review.
+- **#2226 local embeddings:** Lead 3 days, Arch's (a)–(j), #2244 first. The memory fit (server memory on Fly plus about 190 MB against 1 GB) is unmeasured. xian's direction: no OpenAI. When to build is still xian's call.
+- **#2247:** 4.5–5.5 Lead-days plus #1514. Not in the first sprint.
+- **Sprint field:** set on 22 issues 10-31. New placements since then are unset: none yet.
+- **Production 247**, map v54.
+- **Carried:**
+  - the 5 set-aside closed issues (#1647, #1662, #2081, #2083, #2146);
+  - the #1706 Sprint move;
+  - CXO's spot-check;
+  - the next weekly diff, Fri 11-06;
+  - a document-model vision PDR draft with Arch and CXO (xian's 10-31 vision line, decisions.log 18:51), PPM's to start.
