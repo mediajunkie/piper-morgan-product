@@ -82,6 +82,34 @@ BLOCKS = [
 ]
 
 
+# Relative-time words CXO checks for a guessed time (10-31 Time bullet). A hint list for the reader, not a verdict.
+TIME_WORDS = (
+    "yesterday",
+    "today",
+    "tomorrow",
+    "tonight",
+    "ago",
+    "since",
+    "last week",
+    "this week",
+    "earlier",
+    "recently",
+    "just",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+)
+
+
+def time_words(text):
+    low = f" {text.lower()} "
+    return [w for w in TIME_WORDS if f" {w}" in low and (low.split(w, 1)[1][:1] in " .,;:!?)\n'\"")]
+
+
 def milestone_titles():
     if len(sys.argv) > 1:
         return sys.argv[1:]
@@ -147,7 +175,7 @@ def main():
             )
             print(f"USER: {msg}")
             print(f"route: {it.get('category')}/{it.get('action')}")
-            print(f"refs: {refs} relations: {json.dumps(rel)}")
+            print(f"refs: {refs} relations: {json.dumps(rel)} time words: {time_words(text)}")
             print(f"PIPER: {text}")
             time.sleep(2)
 
@@ -156,7 +184,8 @@ def main():
     for label, bad in flagged:
         print(f"  {label}: {json.dumps(bad)}")
     print(
-        'Aside half: not machine-judged. CXO reads each reply for an unasked "Also..." on a turn about something else.'
+        'Aside and time halves: not machine-judged. CXO reads each reply for an unasked "Also..." on a turn about'
+        " something else, and for a time it wasn't handed (the per-turn time words are hints)."
     )
 
 
