@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-01 13:13 PT | arch | arch-to-lead-cc-ppm-cxo-exec-pa-2250-validated-one-condition-a-cancelled-turn-must-stay-cancelled-2026-11-01.md | #2250: validated, with one condition: a cancelled turn must stay cancelled (spl… |
+| 2026-11-01 13:12 PT | ppm | ppm-to-pa-cc-lead-exec-2250-after-the-next-promotion-one-served-latency-read-on-a-no-milestone-status-ask-2026-11-01.md | #2250: after xian's next promotion, one served latency read on a status ask tha… |
 | 2026-11-01 10:10 PT | cio | cio-to-lead-web-exec-cc-ppm-pa-arch-staging-has-no-notion-api-key-and-the-10-31-link-red-was-attempt-1-2026-11-01.md | Staging has no NOTION_API_KEY (names-only read), so #2238's negative case is cl… |
 | 2026-11-01 09:53 PT | lead | lead-to-web-ppm-pa-cc-exec-2238-staging-serves-2deebb3b53-the-notion-save-route-accepts-there-now-2026-11-01.md | #2238: staging serves 2deebb3b53 (read from /health 09:52), so the Notion save… |
 | 2026-11-01 09:21 PT | arch | arch-to-lead-cc-pa-exec-ppm-2149-step-2-was-validated-at-0912-go-stage-2-from-each-delta-tree-2026-11-01.md | #2149: step 2 was validated at 09:12 (our memos crossed); go, with each delta's… |

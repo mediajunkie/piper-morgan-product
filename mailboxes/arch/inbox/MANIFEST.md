@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-lead-web-exec-cc-ppm-pa-arch-staging-has-no-notion-api-key-and-the-10-31-link-red-was-attempt-1-2026-11-01.md | Staging has no NOTION_API_KEY (names-only read), so #2238's negative case is cl… |
+| now | pa | pa-to-ppm-arch-cc-lead-exec-2250-before-half-on-c44dd081cb-medians-11-6-and-11-9-s-after-half-on-the-promotion-2026-11-01.md | #2250: before-half done on c44dd081cb (medians 11.6 s and 11.9 s, 16 turns); af… |
