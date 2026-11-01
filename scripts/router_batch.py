@@ -135,6 +135,14 @@ def _submit(args) -> None:
                     rec["text"] = next((b.text for b in msg.content if b.type == "text"), "")
                     rec["blocks"] = [b.type for b in msg.content]
                     rec["model"] = msg.model
+                    # #2149 step 3 (Arch 09:13): token counts come from the batch
+                    # result's own usage, never estimated.
+                    usage = getattr(msg, "usage", None)
+                    if usage is not None:
+                        rec["usage"] = {
+                            "input_tokens": getattr(usage, "input_tokens", None),
+                            "output_tokens": getattr(usage, "output_tokens", None),
+                        }
                 else:
                     rec["error"] = str(getattr(entry.result, "error", entry.result.type))
                 f.write(json.dumps(rec) + "\n")
@@ -420,6 +428,10 @@ def _parse_two_stage(args) -> None:
         op.name: (op.route_group.value if op.route_group else None) for op in grammar.operations
     }
 
+    def _usage(res) -> tuple:
+        u = (res or {}).get("usage") or {}
+        return (u.get("input_tokens") or 0, u.get("output_tokens") or 0)
+
     label = None
     rows = []
     prev = os.environ.get("PIPER_INVERSION_TWO_STAGE")
@@ -435,6 +447,9 @@ def _parse_two_stage(args) -> None:
                 route(req["phrase"], None, llm_service=replay, grammar=grammar, user_id=None)
             )
             served = next((m for m in [decision.served_model] if m), None)
+            s1_in, s1_out = _usage(s1_res.get(req["custom_id"]))
+            s2_in = sum(_usage(r)[0] for r in s2_by_parent.get(req["custom_id"], {}).values())
+            s2_out = sum(_usage(r)[1] for r in s2_by_parent.get(req["custom_id"], {}).values())
             rows.append(
                 {
                     "phrase": req["phrase"],
@@ -445,6 +460,7 @@ def _parse_two_stage(args) -> None:
                     "served": f"anthropic:{served}" if served else "unresolved",
                     "error": decision.error,
                     "metrics": decision.stage_metrics or [],
+                    "tokens": {"s1_in": s1_in, "s1_out": s1_out, "s2_in": s2_in, "s2_out": s2_out},
                 }
             )
     finally:
@@ -482,7 +498,13 @@ def _parse_two_stage(args) -> None:
         "|---|---|",
     ]
     lines += [f"| {k} | {v} |" for k, v in stage1_picks.most_common()]
+    tok = {k: sum(r["tokens"][k] for r in rows) for k in ("s1_in", "s1_out", "s2_in", "s2_out")}
     lines += [
+        "",
+        f"Tokens (from the batch results' usage; 0 when a result carries none): "
+        f"stage 1 in {tok['s1_in']} / out {tok['s1_out']} · stage 2 in {tok['s2_in']} / out {tok['s2_out']} · "
+        f"per decision in {(tok['s1_in'] + tok['s2_in']) / max(len(rows), 1):.0f} / "
+        f"out {(tok['s1_out'] + tok['s2_out']) / max(len(rows), 1):.0f}",
         "",
         f"Stage 2: OTHER_GROUP {other_group} · CLARIFY {stage2_clarify} "
         f"(stage-1 error rate, OTHER_GROUP over decisions that reached stage 2: "

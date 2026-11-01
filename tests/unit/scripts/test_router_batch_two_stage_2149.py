@@ -19,10 +19,12 @@ rb = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(rb)
 
 
-def _results(path: Path, texts: dict) -> None:
+def _results(path: Path, texts: dict, usage: dict | None = None) -> None:
     with open(path, "w") as f:
         for cid, text in texts.items():
             rec = {"custom_id": cid, "type": "succeeded", "text": text, "model": "claude-haiku-4-5"}
+            if usage and cid in usage:
+                rec["usage"] = usage[cid]
             f.write(json.dumps(rec) + "\n")
 
 
@@ -42,7 +44,7 @@ def test_render_stage1_builds_the_live_stage1_request(tmp_path):
     assert p["model"].startswith("claude-") and p["max_tokens"] > 0
 
 
-def test_render_stage2_renders_one_request_per_pick(tmp_path):
+def test_render_stage2_renders_one_request_per_pick_by_build_stage2_prompt_unaltered(tmp_path):
     from services.intent_service.inversion_router import (
         _STAGE2_SYSTEM_PROMPT,
         build_stage2_prompt,
@@ -118,6 +120,11 @@ def test_parse_two_stage_reconstructs_decisions_through_route(tmp_path, monkeypa
             "ts-2-1-s2-1": '{"operation": "week_calendar", "args": {}, "confidence": 0.9, "rationale": "r"}',
             "ts-4-1-s2-0": '{"operation": "OTHER_GROUP", "rationale": "belongs elsewhere"}',
         },
+        usage={
+            "ts-0-1-s2-0": {"input_tokens": 500, "output_tokens": 30},
+            "ts-2-1-s2-0": {"input_tokens": 400, "output_tokens": 20},
+            "ts-2-1-s2-1": {"input_tokens": 450, "output_tokens": 25},
+        },
     )
     expected = tmp_path / "expected.yaml"
     expected.write_text(
@@ -145,6 +152,9 @@ def test_parse_two_stage_reconstructs_decisions_through_route(tmp_path, monkeypa
     assert "| garbage | `REFUSED` ×1 |" in report
     assert "| close it | `CLARIFY` ×1 | `issues` ×1 | 2 |" in report
     assert "Stage 2: OTHER_GROUP 1 · CLARIFY 0" in report
+    # Arch 09:13: token counts come from the batch results' own usage, never estimated;
+    # stage 1 carried none here (0), stage 2 sums the three results that did.
+    assert "stage 1 in 0 / out 0 · stage 2 in 1350 / out 75" in report
     assert "2 REFUSED" in report or "1 REFUSED" in report
     assert "## Group confusion" in report
     assert "| todos_and_reminders | todos_and_reminders | 1 |" in report
