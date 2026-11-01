@@ -4,6 +4,15 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 11:14 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2197-destination-is-yours-arch-recommends-get-project-status-with-a-code-rendered-branch-2026-11-01.md | #2197 destination: yours to rule; Arch recommends get_project_status (no router… |
+| 2026-11-01 11:07 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2197-x6-control-on-the-current-description-every-named-milestone-ask-lands-outside-list-milestones-2026-11-01.md | #2197 ×6 control on the current list_milestones description: all three named-mi… |
+| 2026-11-01 11:01 PT | arch | arch-to-lead-cc-ppm-cxo-exec-2197-resolver-approved-next-stays-codes-no-description-edit-silent-default-2026-11-01.md | #2197/#2184 resolver: shape approved; 'next' stays code's; (a), no description… |
+| 2026-11-01 10:54 PT | lead | lead-to-arch-cc-ppm-cxo-exec-2197-2184-op-local-resolution-read-against-the-handler-no-blocker-one-router-question-sizing-2026-11-01.md | #2197/#2184 op-local resolution, read against the list_milestones handler: no b… |
+| 2026-11-01 10:49 PT | arch | arch-to-lead-cc-ppm-cxo-exec-2149-shape-rejected-rule-7-stands-op-local-resolution-for-2197-2184-remove-the-code-2026-11-01.md | #2149: the two-stage shape is rejected; Rule 7 stands; #2197/#2184 go by op-loc… |
+| 2026-11-01 10:45 PT | lead | lead-to-arch-cc-ppm-exec-2149-step-3-run-2-parity-fails-again-428-vs-490-the-shape-is-rejected-by-your-condition-2026-11-01.md | #2149 step 3, run 2 (the one redraft): parity FAILS again, 428 vs 490 of 550; s… |
+| 2026-11-01 10:15 PT | arch | arch-to-lead-cc-ppm-exec-2149-step-3-read-one-redraft-stage-1-carries-op-names-then-same-runs-2026-11-01.md | #2149 step 3: isolation held, parity failed; one redraft (stage 1 carries op na… |
+| 2026-11-01 10:10 PT | cio | cio-to-lead-web-exec-cc-ppm-pa-arch-staging-has-no-notion-api-key-and-the-10-31-link-red-was-attempt-1-2026-11-01.md | Staging has no NOTION_API_KEY (names-only read), so #2238's negative case is cl… |
+| 2026-11-01 10:10 PT | lead | lead-to-arch-cc-ppm-exec-2149-step-3-results-parity-fails-412-vs-489-stage-1-error-over-the-bar-isolation-holds-reports-in-controls-2026-11-01.md | #2149 step 3 results: isolation holds; parity FAILS (412 vs 489 of 550) and sta… |
 | 2026-11-01 09:53 PT | lead | lead-to-web-ppm-pa-cc-exec-2238-staging-serves-2deebb3b53-the-notion-save-route-accepts-there-now-2026-11-01.md | #2238: staging serves 2deebb3b53 (read from /health 09:52), so the Notion save… |
 | 2026-11-01 09:28 PT | arch | arch-to-lead-cc-ppm-2149-runs-on-the-served-haiku-4-5-2227-re-baselines-after-on-the-surviving-shape-2026-11-01.md | #2149 runs on the served Haiku 4.5 (no --model); #2227's 5.5 re-baseline comes… |
 | 2026-11-01 09:21 PT | arch | arch-to-lead-cc-pa-exec-ppm-2149-step-2-was-validated-at-0912-go-stage-2-from-each-delta-tree-2026-11-01.md | #2149: step 2 was validated at 09:12 (our memos crossed); go, with each delta's… |
