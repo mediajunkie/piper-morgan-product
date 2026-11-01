@@ -1113,7 +1113,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1291	CLOSED	MVP	PROD-INFRA - Infra & Security Hardening	[REFACTOR] ADR-071 D4 — deeper user_id→owner_id read-threading (deferred from #1252)			NOT_PLANNED
 1292	CLOSED	MVP	FLYWHEEL - Process improvement	Reconcile mailbox discipline doc Rule 3 with #1259 push-to-ref; retire obsolete incoming/ + DELIVERY-LOG.md			COMPLETED
 1293	CLOSED	MVP	RECONNECT - Connector Refactor	Floor quality: 'How do I get help?' (Identity) deflects instead of answering — canonical Q4 marginal (6/9)			COMPLETED
-1300	OPEN	Ongoing		BYOC-CRED-DECOUPLE: decouple the plugin credential (Option A) — public-marketplace gate + BYO-key on-ramp			
+1300	CLOSED	Ongoing		BYOC-CRED-DECOUPLE: decouple the plugin credential (Option A) — public-marketplace gate + BYO-key on-ramp			COMPLETED
 1294	CLOSED	MVP	SKUNK - Skunkworks projects	BYOC-DIST: Add connector-absent handling to bridge skills (ask-piper, consult-piper)	enhancement		COMPLETED
 1295	OPEN	Ongoing	SKUNK - Skunkworks projects	BYOC-DIST: MCP-only scenario — skills discovery hint in ask_piper response	enhancement		
 1296	CLOSED	Ongoing	FLYWHEEL - Process improvement	mail-send.sh push-to-ref leaves uncommitted worktree residue → blocks sender's next git merge (#1259 follow-on)			COMPLETED
@@ -1545,7 +1545,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1723	CLOSED	MVP	Beta Blockers - Hard Gates Only	GitHubOperations Protocol: type the router's contract, delete dead dispatches, implement the 4 live-unbacked operations	architecture		COMPLETED
 1724	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Monthly Housekeeping - 2026-09	documentation,fly-audit,maintenance,monthly-audit		COMPLETED
 1725	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-09-07	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
-1726	OPEN	Ongoing	FLYWHEEL - Process improvement	Structural fix needed: last_verified bulk-stamp anti-pattern re-diagnosed 5 weeks running with no cohort-wide fix	documentation		
+1726	CLOSED	Ongoing	FLYWHEEL - Process improvement	Structural fix needed: last_verified bulk-stamp anti-pattern re-diagnosed 5 weeks running with no cohort-wide fix	documentation		COMPLETED
 1727	CLOSED	Ongoing	FLYWHEEL - Process improvement	docs: 8 broken links to non-existent PM-034-conversation-api-documentation.md + 2 other vanished targets in legacy-user-guides	documentation		COMPLETED
 1728	CLOSED	Ongoing	FLYWHEEL - Process improvement	mailboxes/DIRECTORY.md: 'incoming' staging-area row is stale — directory removed by #1259, never pruned from docs	documentation		COMPLETED
 1729	CLOSED	MVP	Beta Blockers - Hard Gates Only	Doc-summary output renders as one run-on bullet with stray '• -' separators instead of a list (PM live 2026-09-08, v70)			COMPLETED
@@ -2020,7 +2020,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2223	CLOSED	Production		Generic offer accept runs a stored request under the arming user when the turn has no principal (anonymous 'yes' after cookie expiry); one check at the pop seam	architecture		COMPLETED
 2224	OPEN	Production	PROD-HONESTY - Failed Reads Say So	check_completion_status answers completion questions from a gather that never reads completed todos or closed issues (the NOT_PERFORMED row's product gap)	architecture		
 2226	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	Document search from chat doesn't work on a partner account (needs an OpenAI key for embeddings; chat says 'can't search yet'): the beta known-issue line's open home			
-2225	CLOSED	Production		Draft path with no user default repo: the answer to 'Which repository should I create this in?' is added to the draft body, so the draft can't be filed by naming the repo	UX,fix:not-served		COMPLETED
+2225	CLOSED	Production		Draft path with no user default repo: the answer to 'Which repository should I create this in?' is added to the draft body, so the draft can't be filed by naming the repo	UX		COMPLETED
 2227	OPEN	Ongoing		Router on Haiku 5.5: re-baseline, not a drop-in (screen NO-GO 10-30)			
 2228	OPEN	Production	PROD-HONESTY - Failed Reads Say So	False relative time on the STATUS floor: #35, created 15:04 PT today, described as 'updated yesterday evening'; the GUIDANCE floor gets the server's naive clock as the user's time (child of 1828)			
 2229	OPEN	Production	PUB - Public Beta	Public site still invites visitors to the alpha and a beta waitlist after the private beta started (/try, /try/alpha, /get-involved)	website		
@@ -2040,3 +2040,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1967	CLOSED	Ongoing	FLYWHEEL - Process improvement	Owed-item scanner: flag OWED log lines with no dated standing-items row (Agent 360 v0.5, Exec 9.2)	sapient-trust		COMPLETED
 1968	OPEN	Ongoing	FLYWHEEL - Process improvement	Agent 360 v0.5 tooling follow-ons for CIO: freeze-detect rc, heartbeat refusal text, TSV by-name helper, non-owner red-CI norm, Pacific-week gh helper	sapient-trust		
 2243	CLOSED	Production		Five test files hardcode /Users/xian/Development/piper-morgan/ (a path that no longer exists); none is collected, so they are dead tests	maintenance		COMPLETED
+2244	OPEN	Production		Document vector store is written inside the container (/app/data/chromadb), not on the /data volume: by the repo text it empties on every deploy	bug		
+2245	OPEN	Production		Capability reply suggests "connect my slack" and "connect my notion", which this beta refuses (#2236's list doesn't read BETA_OFFERED_CONNECTORS)	UX		
+2246	OPEN	Production		[UX] "How do I get help?" gets the capabilities list, with no way to reach a person	UX		
