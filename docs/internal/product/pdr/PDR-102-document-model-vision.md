@@ -1,6 +1,6 @@
 # PDR-102: Piper's Document Model, and Knowledge in Data You Own
 
-**Status:** Draft v0.1 (PPM, 2026-11-01). For Arch and CXO review. Not ratified.
+**Status:** Draft v0.3 (PPM, 2026-11-01). Arch's answers (06:45; decisions.log 06:44) and CXO's (06:49) folded in. One check open: Arch confirms an artifact can be shown as a generated document (C1). Ready for xian's ratification through Exec. Not ratified.
 **Source:** xian, in his PPM session of 2026-10-31 (decisions.log 18:46 and 18:51 PT, PPM lines).
 **Tier:** 1xx, feature and capability. It sets a direction and the constraints that keep it reachable. It schedules nothing, and it admits nothing to a milestone.
 **Stakeholders:** xian (owner of the vision), Arch (how), CXO (how it feels), Lead (builds), PA (MCP surface), Pard (local-model experiments on Amber).
@@ -35,11 +35,30 @@ On documents, the same evening:
 These bind any new document-touching design, at any milestone. Each is a product rule. Arch says how, or says one can't hold.
 
 - **C1. Document is the parent concept, with a source.** A document is uploaded, generated, or read through a connector. This is xian's 06-17 model on #1270 (uploaded, generated, federated). New code keeps the source on the record and doesn't add a fourth page or object that splits the concept again.
+  - *CXO, 11-01:* the concept holds. The user sees the source as a plain label (*You uploaded it*, *Piper wrote it*, *From GitHub*). "Federated" is an internal word and never reaches the page.
+  - **An artifact is a generated document to the user.** Something Piper made that the user keeps lives with their documents, not on another page. Arch is to confirm `artifacts` can be shown that way without a second object.
+  - **The page says where a connector document lives,** in words like *Stays in <connector>. Piper keeps what it learned from it, and you can remove that.*
+  - The Documents page layout is still #1270's open question, and it's CXO's.
 - **C2. A connector document keeps its address.** Anything ingested through a connector keeps which connector, which item, and which version it came from. Without that, roundtrip posting can't happen later. An anonymous copy is the one shape that closes off (c) and roundtrip for good.
+  - *Arch, 11-01:* uploads meet C2 once #2226's condition (m) lands. The knowledge id becomes the owner's `uploaded_files.id`, with a full content hash as the version. Today the id is a file hash shared across accounts, which is latent because the web upload route doesn't ingest yet. Connector documents can't meet C2 with today's schema: `documents.source` is a free string. **Trigger:** Arch writes an ADR (typed source plus connector, external id and version) when the first connector-ingest unit is placed. #2226 and #1624 don't need it.
 - **C3. Derived knowledge is the user's and stays in Piper.** Embeddings and other derived data are computed and stored inside Piper, in durable storage (#2244 first), under the account. No new dependency on a hosted embedding vendor. This applies xian's 10-31 #2226 ruling: local embeddings, no OpenAI. Arch's int8 MiniLM conditions (decisions.log 18:50) are the first instance.
-- **C4. A generated artifact records what it came from.** That means the source documents and their versions. It makes "where did this come from" answerable, and it's what a roundtrip needs.
-- **C5. Writing to someone else's system is always the user's choice.** Edits and post-backs through a connector follow the existing confirm-before-write pattern and the trust gradient (PDR-004). Piper never writes back silently. CXO owns the words.
+- **C4. A generated artifact records what it came from, and a reply says it.** The artifact records the source documents and their versions. When Piper answers from a document, the reply names that document (CXO, 11-01). Provenance that's recorded but never shown doesn't answer "where did this come from". The record is what a roundtrip needs.
+  - *Arch, 11-01:* holds with no ADR. The first unit that persists a document-derived artifact records `derived_from` (document id and version) in the artifact, with a pin test. #1624's summarize answers in chat and doesn't persist one, so it isn't that unit unless its scope changes.
+- **C5. Writing to someone else's system is always the user's choice, and a post-back has its own pattern.** Today's confirm-before-write isn't enough (CXO, 11-01): a post-back changes a document others may be reading, and closing the chat can't undo it. The pattern's seven parts:
+  1. Show what and where before asking: the document, the connector, the place in it, and the exact text.
+  2. Prefer adding to replacing. Replacing gets its own confirm, naming the text it replaces.
+  3. Check the version (C2). If the source changed since Piper read it, say so first.
+  4. End with one yes/no question, in the existing offer shape.
+  5. Afterwards, say what happened and where, with a link. Offer an undo only if Piper can really do it.
+  6. A failed or partial write never reads as if nothing happened.
+  7. Say who else sees it only when the connector reports it.
+  - It follows the trust gradient (PDR-004). CXO writes the words when a connector post-back is scheduled. #2247's post-as-the-user is the first instance.
 - **C6. No design assumes one model vendor.** Where a model reads or writes documents, the choice of model stays swappable, so a local model can take a part when one is good enough. Pard's experiments on Amber are the way to find out when; the cohort brings him an experiment when one suggests itself.
+  - *Arch, 11-01:* true for generative calls across hosted vendors (Anthropic, OpenAI, Gemini per user, #2131). A local provider would be a new provider member, not a redesign. **One single-vendor point remains: embeddings are OpenAI-only today.** #2226's local MiniLM closes it. Unverified: whether the analyzer's JSON response format works on every provider.
+- **C7. Derived knowledge has its source's scope and lifetime** (Arch's proposal, 11-01). Chunks, embeddings and summaries are readable by exactly who can read the document. #1238's owner scoping already does this on reads. They're deleted when the document or the account is deleted. Without C7, C3's "your data" has no delete half. Unverified: whether an account delete removes its vector-store chunks today (`documents.owner_id` has no declared cascade). Whoever builds #2226 checks and pins it.
+- **C8. What Piper kept from a document is visible and removable by the user, in words** (CXO's proposal, 11-01). There's a place to see what Piper learned from a document and remove it. The removal says what it removes: Piper's copy of what it learned, not the original. C7 is the system's delete half. C8 gives it to the person. Without a surface, "data you own" is a claim the user can't act on.
+
+**Public copy holds until C7 is verified and C8 has a surface** (CXO, 11-01). "Knowledge in data you own" stays out of the letter, the site and partner-facing copy until then.
 
 ## Where today's issues sit against the five capabilities
 
@@ -62,16 +81,16 @@ From issue titles and bodies read 11-01. This isn't a plan or an order.
 
 ## Questions for review
 
-1. **Arch:** can C2 (source address) and C4 (provenance) hold with today's upload and knowledge tables? Or does one need an ADR before the next document-touching unit lands (#2226, #1624)?
-2. **Arch:** is C6 already true where models touch documents, or is there a single-vendor assumption to record?
-3. **CXO:** is #1270's three-source model still right as the parent concept, so C1 can cite it? It was blocked on CXO and PPM alignment in June, and PPM's half is now this PDR's C1.
-4. **CXO:** for C5, is the existing confirm-before-write wording enough for a post-back, or does a post-back need its own pattern? (It changes a document someone else may also be reading.)
-5. **Both:** is there a constraint missing that would close the future off and that today's work could break?
+1. ~~**Arch:** can C2 (source address) and C4 (provenance) hold with today's upload and knowledge tables? Or does one need an ADR before the next document-touching unit lands (#2226, #1624)?~~ Answered 11-01 (under C2 and C4).
+2. ~~**Arch:** is C6 already true where models touch documents, or is there a single-vendor assumption to record?~~ Answered 11-01 (under C6).
+3. ~~**CXO:** is #1270's three-source model still right as the parent concept, so C1 can cite it? It was blocked on CXO and PPM alignment in June, and PPM's half is now this PDR's C1.~~ Answered 11-01 (under C1).
+4. ~~**CXO:** for C5, is the existing confirm-before-write wording enough for a post-back, or does a post-back need its own pattern? (It changes a document someone else may also be reading.)~~ Answered 11-01: it needs its own pattern (C5).
+5. **Both:** is there a constraint missing that would close the future off and that today's work could break? Arch proposed C7 and CXO proposed C8 and the C4 reply rule (11-01).
 
 ## Next steps
 
-- Arch and CXO review (mail 11-01). PPM folds their answers into v0.2.
-- Then it goes to xian through Exec for ratification. He's the owner of the vision.
-- Once ratified, PPM checks new document-touching issues against C1–C6 when placing them, and notes the constraint on the issue.
+- Arch and CXO reviewed 11-01, and their answers are in v0.3. Arch's artifact-as-document check is the one open read.
+- Sent to xian through Exec for ratification (11-01). He owns the vision.
+- Once ratified, PPM checks new document-touching issues against C1–C8 when placing them, and notes the constraint on the issue.
 
-Verified how: the two quotes are xian's chat words of 10-31, as recorded in the PPM session log and the decisions.log lines 18:46 and 18:51 (read 11-01). #1270, #302, #712 and #1624 bodies read with `gh issue view` 11-01. The other issues are from titles in `gh issue list --search "document in:title"` 11-01, plus #2238, #2203, #2244 and #2247 read on 10-31. Layer: repo text and GitHub. Nothing was built or measured.
+Verified how (v0.3): CXO's memo of 06:49 read in full. Verified how (v0.2): Arch's memo of 06:45 read in full. His code reads are his; PPM didn't re-run them. Verified how (v0.1): the two quotes are xian's chat words of 10-31, as recorded in the PPM session log and the decisions.log lines 18:46 and 18:51 (read 11-01). #1270, #302, #712 and #1624 bodies read with `gh issue view` 11-01. The other issues are from titles in `gh issue list --search "document in:title"` 11-01, plus #2238, #2203, #2244 and #2247 read on 10-31. Layer: repo text and GitHub. Nothing was built or measured.
