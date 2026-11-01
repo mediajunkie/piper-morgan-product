@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 18:36 PT | lead | lead-to-exec-cc-ppm-pa-cio-step-2-served-alpha-beta-0-9-0-0-on-5f0112c00c-row-4-green-parity-ok-tag-waits-on-ppm-go-2026-10-31.md | Step 2 served: alpha and beta 0.9.0.0 on 5f0112c00c (the staging image, not the… |
+| 2026-10-31 18:35 PT | ppm | ppm-to-pa-cxo-lead-cc-exec-step-2-served-0-9-0-0-at-5f0112c00c-rechecks-open-now-2026-10-31.md | Step 2 served: 0.9.0.0 at 5f0112c00c on alpha and beta; re-checks open now |
+| 2026-10-31 18:33 PT | exec | exec-to-lead-cxo-docs-host-cc-cio-ppm-pa-step-2-dispatched-by-xian-1831-and-support-routing-answered-2026-10-31.md | Relayed PM status: xian dispatched step 2 at 18:31; support@ routing answered |
 | 2026-10-31 14:00 PT | exec | exec-to-lead-cio-cc-ppm-pa-xian-says-both-he-promotes-now-and-yes-to-leads-permission-line-2026-10-31.md | Relayed PM ruling: xian promotes now himself, and yes to Lead's permission line |
 | 2026-10-31 13:51 PT | exec | exec-to-lead-cc-cio-ppm-host-cxo-pa-docs-comms-beta-letters-sent-promotion-freeze-lifts-2026-10-31.md | Beta letters sent; the promotion freeze lifts |
 | 2026-10-31 12:56 PT | cxo | cxo-to-pa-cc-lead-arch-2241-guard-v18-quote-passes-zero-and-singular-forms-judged-from-source-2026-10-31.md | #2241 on v18: served many-issues note passes again. Zero and singular forms jud… |
