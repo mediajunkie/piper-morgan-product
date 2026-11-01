@@ -20308,7 +20308,7 @@ Add any additional information here.
                 )
                 # Issue #1030 R4: capture per-gatherer provenance map to pass to floor
                 domain_context_provenance = assembler.get_last_provenance()
-        except BaseException:
+        except Exception:
             # #2250: the gather failed; the resolver task must not dangle. A
             # milestone it resolved still answers (the serial shape returned
             # it before any gather ran); otherwise the gather's failure stands.
@@ -20316,6 +20316,13 @@ Add any additional information here.
                 _resolved_result, _milestone_prefix = await _resolve_task
                 if _resolved_result is not None:
                     return _resolved_result
+            raise
+        except BaseException:
+            # #2250 (Arch 13:13): a cancelled turn stays cancelled. On
+            # CancelledError (a client disconnect, a shutdown) or any other
+            # non-Exception, never wait on the resolver: cancel it and re-raise.
+            if _resolve_task is not None and not _resolve_task.done():
+                _resolve_task.cancel()
             raise
 
         if _resolve_task is not None:

@@ -213,3 +213,54 @@ class TestConcurrentStatusBranch:
         ctor.assert_not_called()
         assert llm.calls == []
         assert res.message == FLOOR_TEXT
+
+
+class HangingLLM:
+    """A resolver whose call never returns; records whether it was cancelled."""
+
+    def __init__(self):
+        self.cancelled = False
+        self.calls = 0
+
+    async def complete(self, **kwargs):
+        self.calls += 1
+        try:
+            await asyncio.Event().wait()
+        except asyncio.CancelledError:
+            self.cancelled = True
+            raise
+
+
+class TestCancelledTurnStaysCancelled:
+    async def test_cancel_during_the_gather_cancels_the_resolver_and_propagates(self, service):
+        """Arch 2026-11-01 13:13: a turn cancelled mid-gather must not wait on the
+        resolver, and a resolver pick must not swallow the cancellation."""
+        llm = HangingLLM()
+        respond = AsyncMock(return_value=FloorResponse(message=FLOOR_TEXT))
+        gather_entered = asyncio.Event()
+
+        async def hanging_gather(*args, **kwargs):
+            gather_entered.set()
+            await asyncio.Event().wait()
+
+        service.llm_client = llm
+        with (
+            patch(ROUTER, return_value=_router()),
+            patch(FLOOR_RESPOND, new=respond),
+            patch(GATHER, new=AsyncMock(side_effect=hanging_gather)),
+        ):
+            turn = asyncio.ensure_future(
+                service._handle_floor_with_context(_intent(), "s2250", user_id=_USER)
+            )
+            await asyncio.wait_for(gather_entered.wait(), timeout=1.0)
+            await asyncio.sleep(0)  # the resolver task reaches its call
+            turn.cancel()
+            with pytest.raises(asyncio.CancelledError):
+                await turn
+            await asyncio.sleep(0)  # the inner cancellation is delivered
+        assert llm.calls == 1 and llm.cancelled is True, "the resolver task was cancelled"
+        respond.assert_not_awaited()
+        pending = [
+            t for t in asyncio.all_tasks() if not t.done() and t is not asyncio.current_task()
+        ]
+        assert not pending, f"dangling tasks: {pending}"
