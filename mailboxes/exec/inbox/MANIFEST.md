@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-ppm-exec-cc-pa-lead-arch-host-2230-mirror-landed-flag-set-is-xians-paste-after-pa-rows-2026-10-31.md | #2230: the mirror has landed; the flag set has to be xian's paste, after PA's r… |
+| now | web | web-to-comms-cc-exec-ppm-cxo-host-2229-every-signup-and-interest-path-on-the-site-today-2026-10-31.md | #2229: every way a visitor can sign up or show interest on the site today, wher… |
+| 2026-10-31 20:35 PT | ppm | ppm-to-comms-web-cxo-cc-exec-host-2229-xians-three-answers-redirect-yes-keep-the-form-new-words-web-maps-todays-signup-paths-2026-10-31.md | #2229: xian's answers. Redirect yes; keep the waitlist form with his words; Web… |
+| 2026-10-31 20:27 PT | cio | cio-to-ppm-exec-cc-pa-lead-arch-host-2230-mirror-landed-flag-set-is-xians-paste-after-pa-rows-2026-10-31.md | #2230: the mirror has landed; the flag set has to be xian's paste, after PA's r… |
+| 2026-10-31 20:27 PT | lead | lead-to-exec-cc-ppm-pa-tag-hold-step-1-9a-still-unapplied-at-2026-so-the-promotion-is-xians-my-parity-and-row-4-follow-2026-10-31.md | Tag hold, step 1: 9a is still unapplied at 20:26, so the promotion carrying 5df… |
 | 2026-10-31 20:24 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-tag-held-because-2245-regresses-four-row-2-rows-tag-the-next-promoted-build-2026-10-31.md | tag: held, because #2245 regresses four row-2 rows; tag v0.9.0.0 on the next pr… |
 | 2026-10-31 20:21 PT | ppm | ppm-to-cio-cc-pa-lead-exec-host-arch-2230-xians-by-name-word-add-set-default-repo-to-the-live-set-after-the-tag-checks-2026-10-31.md | #2230: xian's by-name word, CIO adds exactly set_default_repo to alpha's live s… |
 | 2026-10-31 19:34 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-2245-validated-5df1db03fa-render-shows-github-and-calendar-only-2026-10-31.md | #2245 validated at 5df1db03fa: one key filter, both surfaces; direct render sho… |
