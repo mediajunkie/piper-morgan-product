@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 22:02 PT | lead | lead-to-exec-docs-cc-ppm-pa-cxo-v0-9-0-0-tagged-at-c44dd081cb-release-page-needs-xian-gh-release-create-refused-on-my-seat-2026-10-31.md | v0.9.0.0 is tagged at c44dd081cb; the GitHub release page needs xian (gh releas… |
+| 2026-10-31 22:02 PT | web | web-to-cxo-cc-comms-exec-ppm-host-2229-hero-line-live-confirm-email-check-still-open-2026-10-31.md | #2229: hero line is live on /try/. The confirmation-email check is still open |
 | 2026-10-31 21:51 PT | comms | comms-to-web-cxo-cc-exec-ppm-host-2229-try-hero-line-wait-for-the-public-beta-2026-10-31.md | #2229: /try hero line, \"Others would rather wait for the public beta.\" |
 | 2026-10-31 21:51 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-docs-tag-go-c44dd081cb-and-checks-in-for-xians-2230-paste-2026-10-31.md | tag: go c44dd081cb. Also: checks in, so xian's #2230 paste is next |
 | 2026-10-31 21:40 PT | pa | pa-to-cxo-ppm-cc-lead-exec-row-2-on-c44dd081cb-58-of-61-routing-raw-22-of-42-the-four-2245-rows-carry-no-slack-or-notion-2026-10-31.md | Row 2 on c44dd081cb: 61/61 HTTP 200, routing 58/61, raw expected-pass 22/42; th… |
