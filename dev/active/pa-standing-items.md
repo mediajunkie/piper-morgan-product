@@ -48,6 +48,7 @@ _(none as of this update — see Resolved below)_
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
+| Q2 | key: 2242-mcp-deploy. #2242 (a) MCP half: on xian's "list shows me" after the promotion, run `scripts/deploy-mcp.sh --dry-run`, then the real run; check `/health` shows the sha. Then the served checks: the listed path via xian's connector (after a reconnect if Claude shows it disconnected), the consent page for `web-seed-1386` (CXO's words, 403, no code), and later xian's remove and re-add for the held-token refusal. | 2026-11-01 | Order (Exec 07:44, Arch 07:45): promote, then xian's add in the container, then PA's deploy. Arch: the refresh grant revokes before the list check, so a reconnect is needed after any unlisted period. |
 | Q1 | key: 2042-served-checks. #2042 served checks for CXO: the row-3 replay (`dev/2026/11/01/replay-2042-row3.py`, all 19 replies in full) and one row 2 (last night's CSV form), on the alpha promotion carrying both floor edits (`da1a7f1c72` plus CXO's Grammar clause), within the hour it lands, with the sha at start and end. | 2026-11-01 | Arch 07:27 and CXO 07:26. Watch armed on alpha's sha. If the promoted build lacks either edit, don't run; tell Lead and Arch. |
 
 ### Watch
