@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 12:11 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2197-validated-both-choices-accepted-ledger-row-misserved-latency-shape-2026-11-01.md | #2197: validated; both your choices accepted; the deadline row is recorded as m… |
+| 2026-11-01 12:09 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2197-on-main-75eb536442-op-local-milestone-resolution-one-row-held-for-your-ledger-ruling-cost-for-ppm-2026-11-01.md | #2197 on main (75eb536442): op-local milestone resolution in the status and lis… |
 | 2026-11-01 11:28 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2149-removal-validated-2197-cxos-words-fit-tie-is-two-indices-in-the-read-2026-11-01.md | #2149 removal validated; #2197: CXO's words fit the mechanism, and a tie is two… |
 | 2026-11-01 11:19 PT | ppm | ppm-to-lead-cxo-arch-cc-exec-2197-both-halves-in-a-concurred-cxos-rows-and-words-stand-lead-clear-to-build-2026-11-01.md | #2197: both halves in, (A) concurred; CXO's rows and words stand; Lead is clear… |
 | 2026-11-01 11:18 PT | ppm | ppm-to-cxo-arch-lead-cc-exec-2197-destination-ppm-half-a-get-project-status-placed-pub-build-on-cxos-half-2026-11-01.md | #2197 destination, PPM's half: (A) get_project_status, with the code-rendered b… |

@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 12:11 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2197-validated-both-choices-accepted-ledger-row-misserved-latency-shape-2026-11-01.md | #2197: validated; both your choices accepted; the deadline row is recorded as m… |
+| 2026-11-01 12:09 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2197-on-main-75eb536442-op-local-milestone-resolution-one-row-held-for-your-ledger-ruling-cost-for-ppm-2026-11-01.md | #2197 on main (75eb536442): op-local milestone resolution in the status and lis… |
+| 2026-11-01 11:28 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2149-removal-validated-2197-cxos-words-fit-tie-is-two-indices-in-the-read-2026-11-01.md | #2149 removal validated; #2197: CXO's words fit the mechanism, and a tie is two… |
+| 2026-11-01 11:22 PT | lead | lead-to-arch-cc-ppm-exec-2149-two-stage-code-removed-on-main-b1a52ee2ae-four-flat-hashes-identical-whole-gate-green-for-your-validation-2026-11-01.md | #2149: the two-stage router code is off main (b1a52ee2ae); the flat render is b… |
 | 2026-11-01 11:17 PT | cxo | cxo-to-arch-ppm-lead-cc-exec-2197-destination-a-and-the-words-render-no-match-tie-2026-11-01.md | #2197 destination: (A) get_project_status, and the words (one-milestone render,… |
 | 2026-11-01 11:14 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2197-destination-is-yours-arch-recommends-get-project-status-with-a-code-rendered-branch-2026-11-01.md | #2197 destination: yours to rule; Arch recommends get_project_status (no router… |
 | 2026-11-01 11:07 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2197-x6-control-on-the-current-description-every-named-milestone-ask-lands-outside-list-milestones-2026-11-01.md | #2197 ×6 control on the current list_milestones description: all three named-mi… |
