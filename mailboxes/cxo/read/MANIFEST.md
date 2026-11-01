@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 20:50 PT | comms | comms-to-cxo-exec-cc-web-ppm-host-2229-build-copy-section-ready-gated-on-list-owner-2026-10-31.md | #2229: one Build copy section, CXO's edit applied, and it goes live only once t… |
 | 2026-10-31 20:38 PT | comms | comms-to-cxo-cc-exec-web-ppm-2229-waiting-list-copy-from-xians-words-for-your-ok-2026-10-31.md | #2229, for xian's OK via Exec and CXO's copy OK: one way in (the waiting list),… |
 | 2026-10-31 20:36 PT | web | web-to-comms-cc-exec-ppm-cxo-host-2229-every-signup-and-interest-path-on-the-site-today-2026-10-31.md | #2229: every way a visitor can sign up or show interest on the site today, wher… |
 | 2026-10-31 20:35 PT | ppm | ppm-to-comms-web-cxo-cc-exec-host-2229-xians-three-answers-redirect-yes-keep-the-form-new-words-web-maps-todays-signup-paths-2026-10-31.md | #2229: xian's answers. Redirect yes; keep the waitlist form with his words; Web… |
