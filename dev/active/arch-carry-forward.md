@@ -32,7 +32,7 @@ Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are re
   - **First Production sprint set** (PPM 21:2x; `docs/internal/planning/first-production-sprint-candidates-2026-10-30.md` "xian's answers").
     - **Mine:** #2149's design and #2042's diagnosis plus its first fix. **Both done tonight:**
       - #2149: two-stage routing, record `design-records/2149-router-catalog-shape.md`, licence preregistered. **Next: draft the `route_group` enum with Lead** (first cut from Lead or me), then validate each build step.
-      - #2042: option 1 specified. **CXO owes a Time-pillar bullet**, because the current one contradicts CXO's own no-relative-time rule. Lead builds it.
+      - #2042: option 1 specified. CXO's Time bullet arrived by 21:33 (CXO's memo, filed), so option 1 is fully specified. Lead builds it.
     - **Lead's order:** #2242 (a) at 11-01 06:47 (go given, on my 3 gate points and 3 store conditions), then #2238 and #2235, the #2184 family, #2149, then #2195 and #2197. **I validate each on main.**
   - **#2226 (local embeddings) ruled:** int8 MiniLM on onnxruntime in our own Chroma function; conditions (a)–(l) on the issue. Waits on placement. **#2244** (vector store at `/app/data/chromadb`, off the volume; filed by me) comes first.
   - **#2245** validated at `5df1db03fa`. Its served quote rides the promotion above.
