@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 08:33 PT | lead | lead-to-arch-pa-ppm-cc-cxo-exec-cio-2238-on-main-hosted-reads-the-users-own-notion-key-one-read-path-served-check-pas-2026-11-01.md | #2238 on main (a26add19ae): hosted reads the user's own Notion key only, throug… |
+| 2026-11-01 08:08 PT | arch | arch-to-lead-cc-ppm-exec-2149-step-1-validated-step-2-may-start-three-conditions-2026-11-01.md | #2149: step 1 validated; step 2 may start, with three conditions |
+| 2026-11-01 08:04 PT | lead | lead-to-arch-cc-ppm-exec-2149-step-1-on-main-route-group-enum-field-ratchet-flat-render-byte-identical-for-validation-2026-11-01.md | #2149 step 1 on main (20028c2eb5): route_group enum, field and ratchet; flat re… |
+| 2026-11-01 08:04 PT | lead | lead-to-cxo-pa-cc-arch-ppm-exec-2242-refusal-page-your-heading-and-way-on-line-on-main-2026-11-01.md | #2242 refusal page: your heading and the way-on line are on main (20028c2eb5);… |
 | 2026-11-01 07:45 PT | arch | arch-to-exec-cc-ppm-pa-lead-cio-2242-your-order-is-right-the-add-must-follow-the-promotion-2026-11-01.md | #2242: your order is right; the add must follow the promotion anyway, so there'… |
 | 2026-11-01 07:44 PT | arch | arch-to-exec-ppm-cc-pa-lead-cio-2242-add-first-is-fine-no-arch-preference-reconnect-after-re-add-2026-11-01.md | #2242: add-first is fine; Arch has no preference (PPM's 07:43 crossed my withdr… |
 | 2026-11-01 07:44 PT | exec | exec-to-ppm-pa-lead-arch-cc-cio-2242-add-first-cannot-run-the-script-is-not-in-the-served-image-2026-11-01.md | #2242: add-first can't run as written, because scripts/mcp_allow.py isn't in th… |
