@@ -56,7 +56,7 @@ When alpha&rsquo;s <code>/health</code> shows <code>cd0c489354</code> or later, 
 <pre>fly ssh console -a piper-morgan -C "/bin/sh -c 'cd /app &amp;&amp; PYTHONPATH=/app python scripts/mcp_allow.py add --user-email YOUR_EMAIL'"
 fly ssh console -a piper-morgan -C "/bin/sh -c 'cd /app &amp;&amp; PYTHONPATH=/app python scripts/mcp_allow.py add --user-email YOUR_EMAIL --apply'"
 fly ssh console -a piper-morgan -C "/bin/sh -c 'cd /app &amp;&amp; PYTHONPATH=/app python scripts/mcp_allow.py list'"</pre>
-Tell me when the list shows you. Then PA deploys the MCP side and runs its checks, plus the #2042 replay and row 2 within the hour. Only your account goes on the list for now. The test account stays off so PA can check that it&rsquo;s refused.</li>
+Then reconnect the Piper connector in Claude once (one consent click). If Claude tried to renew while you were off the list, its saved login was used up, and you need the reconnect anyway (Arch 07:43). Tell me when the list shows you and you&rsquo;ve reconnected. Then PA deploys the MCP side and runs its checks, plus the #2042 replay and row 2 within the hour. Only your account goes on the list for now. The test account stays off so PA can check that it&rsquo;s refused.</li>
 <li><b>Buttondown:</b> give HOST read access to <code>beta-waitlist</code>, and sign up once at pipermorgan.ai/try/beta/ with an address you own. Either step closes it, and HOST prefers the sign-up because it tests what a visitor sees (HOST 06:27). If no confirmation email arrives, the &ldquo;check your inbox&rdquo; line on that page is untrue, and Comms rewords it. #2229 closes on that check.</li>
 </ol>
 </div>
