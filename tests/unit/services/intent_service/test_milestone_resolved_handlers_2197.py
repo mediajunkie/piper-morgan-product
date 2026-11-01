@@ -144,9 +144,13 @@ class TestStatusBranch:
             "Want to see the open issues?"
         )
         assert "INVENTED" not in res.message and "2026-11-19" not in res.message
-        # Arch's condition: the floor and the context assembler are not called on this branch.
+        # Arch's condition: the floor is never called on this branch and never receives
+        # the milestone. #2250 (PPM 12:35, Arch's 12:10 shape): the context gather now runs
+        # CONCURRENTLY with the read + resolver and is discarded on a pick, so it is awaited
+        # once and nothing of it reaches the reply (test_concurrent_status_branch_2250).
         floor.respond.assert_not_awaited()
-        floor.gather.assert_not_awaited()
+        floor.gather.assert_awaited_once()
+        assert FLOOR_TEXT not in res.message
         assert "floor_hit" not in res.intent_data
         router.list_milestones_via_mcp.assert_awaited_once_with(state="all")
         # The one-title pick is armed with the read's title and repo.

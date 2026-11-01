@@ -20258,18 +20258,22 @@ Add any additional information here.
         category = intent.category.value.upper()
 
         # #2197 destination (A): a project-status ask that names ONE milestone
-        # is answered about that milestone from this turn's read, before any
-        # context assembly or model call; the floor is never called on that
-        # branch and never receives the resolved milestone (Arch's condition).
-        # Named-absent / tie: the floor renders today's answer, and the fixed
-        # line goes before it. Only get_project_status under STATUS.
+        # is answered about that milestone from this turn's read; the floor is
+        # never called on that branch and never receives the resolved
+        # milestone (Arch's condition). Named-absent / tie: the floor renders
+        # today's answer, and the fixed line goes before it. Only
+        # get_project_status under STATUS.
+        # #2250 (PPM 12:35, Arch's allowed shape 12:10): the read + resolver
+        # run CONCURRENTLY with the floor's context gather below, so a status
+        # turn that names no milestone pays the slower of the two, not both;
+        # when a milestone resolves, the gather is discarded (awaited, never
+        # rendered). No wording gate: the task starts on the router's pick.
         _milestone_prefix = ""
+        _resolve_task: Optional["asyncio.Task[Any]"] = None
         if intent.category is IntentCategory.STATUS and intent.action == "get_project_status":
-            _resolved_result, _milestone_prefix = await self._try_resolved_milestone_status(
-                intent, session_id, user_id
+            _resolve_task = asyncio.ensure_future(
+                self._try_resolved_milestone_status(intent, session_id, user_id)
             )
-            if _resolved_result is not None:
-                return _resolved_result
 
         self.logger.info(
             "action_gate_routing_to_floor",
@@ -20287,22 +20291,39 @@ Add any additional information here.
         domain_context_provenance: Optional[Dict[str, Dict[str, Any]]] = None
 
         # For GUIDANCE, use the existing specialized context assembler
-        if category == "GUIDANCE":
-            domain_context = await self._assemble_guidance_context(intent, session_id, user_id)
-        else:
-            # Use the new ContextAssembler for other categories
-            assembler = ContextAssembler()
-            # Issue #1030: pass intent_action so MEMORY/pull_insights gets
-            # InsightRepository enrichment distinct from MEMORY/get_memory.
-            intent_action = getattr(intent, "action", None) if intent else None
-            domain_context = await assembler.gather_context(
-                intent_category=category,
-                user_id=user_id,
-                session_id=session_id,
-                intent_action=intent_action,
-            )
-            # Issue #1030 R4: capture per-gatherer provenance map to pass to floor
-            domain_context_provenance = assembler.get_last_provenance()
+        try:
+            if category == "GUIDANCE":
+                domain_context = await self._assemble_guidance_context(intent, session_id, user_id)
+            else:
+                # Use the new ContextAssembler for other categories
+                assembler = ContextAssembler()
+                # Issue #1030: pass intent_action so MEMORY/pull_insights gets
+                # InsightRepository enrichment distinct from MEMORY/get_memory.
+                intent_action = getattr(intent, "action", None) if intent else None
+                domain_context = await assembler.gather_context(
+                    intent_category=category,
+                    user_id=user_id,
+                    session_id=session_id,
+                    intent_action=intent_action,
+                )
+                # Issue #1030 R4: capture per-gatherer provenance map to pass to floor
+                domain_context_provenance = assembler.get_last_provenance()
+        except BaseException:
+            # #2250: the gather failed; the resolver task must not dangle. A
+            # milestone it resolved still answers (the serial shape returned
+            # it before any gather ran); otherwise the gather's failure stands.
+            if _resolve_task is not None:
+                _resolved_result, _milestone_prefix = await _resolve_task
+                if _resolved_result is not None:
+                    return _resolved_result
+            raise
+
+        if _resolve_task is not None:
+            _resolved_result, _milestone_prefix = await _resolve_task
+            if _resolved_result is not None:
+                # #2250: the milestone resolved; the gathered context is
+                # discarded here and the floor is never called (#2197's pin).
+                return _resolved_result
 
         # #1596: the escape's state handoff — a guided flow ended or paused
         # on this very turn. Hand the fact to the renderer; without it the
