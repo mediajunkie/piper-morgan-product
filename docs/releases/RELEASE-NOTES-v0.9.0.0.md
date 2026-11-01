@@ -4,12 +4,6 @@
 2026-10-30 17:03 PT on xian's GO) · **Hosting**: alpha.pipermorgan.ai and beta.pipermorgan.ai are
 both served by Fly from the same cut; the beta invitations go out with this release.
 
-> **Status of this file (2026-10-31 09:28 PT, Lead):** the version files and this skeleton land on
-> main ahead of the morning's promotion so the promoted build reports 0.9.0.0. The prose sections
-> marked *Docs* are written by Docs before the tag; the tag and the GitHub release follow PPM's
-> re-check list on the served build (Exec's order, 09:14). Until the tag exists, the version
-> mechanics below are the plan, not the record.
-
 ## Summary
 
 0.9.0.0 closes the MVP milestone and opens the invitation-only private beta. Since v0.8.14.0
