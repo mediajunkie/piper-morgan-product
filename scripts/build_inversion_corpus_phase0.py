@@ -4851,8 +4851,8 @@ RULED_EXPECTATIONS: dict = {
         "RULED 2026-10-01 (CXO): neither list_prs (author-scoped) nor stale_prs (age-based) computes reviewer-requested status — capability gap, tracked",
     ),
     "when's the milestone deadline": (
-        "floor",
-        "RULED 2026-10-01 (CXO): no named milestone and no current-milestone default — CLARIFY is honest",
+        "action:list_milestones",
+        "CXO/PPM destination ruling 2026-11-01 11:17/11:19 (#2197): the milestones read, with code's earliest-due open pick (Arch 11:01); a known router miss (CLARIFY x6 at 0.50-0.60, the 11-01 x6 control), recorded under GITHUB_QUERY_PATTERNS' misserved_at_deletion per Arch 12:11; no description edit. Was floor (RULED 2026-10-01, CXO: no named milestone and no current-milestone default)",
     ),
     "what's the next milestone?": (
         "action:list_milestones",

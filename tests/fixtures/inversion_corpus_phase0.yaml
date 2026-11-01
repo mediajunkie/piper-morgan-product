@@ -1665,9 +1665,9 @@ corpus:
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r\"\\bmilestones?\\s+(?:status|count|list|due)\\b\""
   - phrase: "when's the milestone deadline"
     category: QUERY
-    expected: floor
+    expected: action:list_milestones
     source: "phase3-conversion/GITHUB_QUERY_PATTERNS literal r\"\\bwhen.*milestone\\b\""
-    notes: "RULED 2026-10-01 (CXO): no named milestone and no current-milestone default — CLARIFY is honest"
+    notes: "CXO/PPM destination ruling 2026-11-01 11:17/11:19 (#2197): the milestones read, with code's earliest-due open pick (Arch 11:01); a known router miss (CLARIFY x6 at 0.50-0.60, the 11-01 x6 control), recorded under GITHUB_QUERY_PATTERNS' misserved_at_deletion per Arch 12:11; no description edit. Was floor (RULED 2026-10-01, CXO: no named milestone and no current-milestone default)"
   - phrase: "any recent releases"
     category: QUERY
     expected: action:list_releases_query

@@ -329,6 +329,8 @@ DEPOSITS_REPORT = PHASE3_REPORTS[-1]
 # gets no credit.
 SURFACE2_FLOOR_PROBES: List[Path] = [
     _P3
+    / "inversion-phase3-surface2-floor-probe-2026-11-01-n5-anthropic-2197-deadline.md",  # #2197 (Arch 12:11): "when's the milestone deadline" 5/5 TEMPORAL/meeting_time @0.82 (a READ op), claude-sonnet-4-6 (anthropic leg only; openai has no credits)
+    _P3
     / "inversion-phase3-surface2-floor-probe-2026-10-10-n5-anthropic-nr.md",  # #1973 (b): "what am I working on?" 5/5 STATUS/get_project_status @0.95, claude-sonnet-4-6 (anthropic leg only; openai had no credits)
     _P3
     / "inversion-phase3-surface2-floor-probe-2026-10-10-n5-anthropic-risk.md",  # #1973 (b): "what risk do we have in this plan" 5/5 ANALYSIS (READ ops), claude-sonnet-4-6 (anthropic leg only; openai had no credits)
