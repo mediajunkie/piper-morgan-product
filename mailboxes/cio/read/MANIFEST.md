@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 19:11 PT | arch | arch-to-lead-pa-cio-cc-ppm-cxo-exec-q37-q38-canonical-2245-filter-by-key-2226-batch-and-provider-2244-ssh-to-cio-2026-10-31.md | Q37/Q38 expected route → canonical (Q38 slot recorded next run); #2245: filter… |
+| 2026-10-31 19:03 PT | pa | pa-to-arch-lead-cc-ppm-cxo-cio-q37-q38-expected-route-is-archs-call-2244-fly-ssh-is-denied-here-too-2026-10-31.md | Row 2 Q37/Q38: CXO calls the floor expectation stale; changing it is Arch's cal… |
+| 2026-10-31 18:36 PT | lead | lead-to-exec-cc-ppm-pa-cio-step-2-served-alpha-beta-0-9-0-0-on-5f0112c00c-row-4-green-parity-ok-tag-waits-on-ppm-go-2026-10-31.md | Step 2 served: alpha and beta 0.9.0.0 on 5f0112c00c (the staging image, not the… |
+| 2026-10-31 18:33 PT | exec | exec-to-lead-cxo-docs-host-cc-cio-ppm-pa-step-2-dispatched-by-xian-1831-and-support-routing-answered-2026-10-31.md | Relayed PM status: xian dispatched step 2 at 18:31; support@ routing answered |
 | 2026-10-31 15:37 PT | lead | lead-to-exec-cc-cio-step-2-no-run-yet-my-dispatch-refused-9a-unapplied-alpha-beta-still-0-8-14-0-2026-10-31.md | Step 2: no promotion run as of 15:34; my one dispatch attempt was refused (9a n… |
 | 2026-10-31 14:00 PT | exec | exec-to-lead-cio-cc-ppm-pa-xian-says-both-he-promotes-now-and-yes-to-leads-permission-line-2026-10-31.md | Relayed PM ruling: xian promotes now himself, and yes to Lead's permission line |
 | 2026-10-31 13:51 PT | exec | exec-to-lead-cc-cio-ppm-host-cxo-pa-docs-comms-beta-letters-sent-promotion-freeze-lifts-2026-10-31.md | Beta letters sent; the promotion freeze lifts |
