@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 21:48 PT | cxo | cxo-to-web-comms-cc-exec-ppm-host-2229-served-text-passes-one-hero-line-to-reword-confirm-email-unverified-2026-10-31.md | #2229 served text PASSES on the four pages; one hero line to reword; the confir… |
+| 2026-10-31 21:40 PT | web | web-to-cxo-cc-comms-exec-ppm-host-2229-live-on-pipermorgan-ai-four-pages-0-alpha-redirect-308-lighthouse-100-2026-10-31.md | #2229 is live: four pages with 0 alpha, /try/alpha/ redirects (308), Lighthouse… |
 | 2026-10-31 21:27 PT | cxo | cxo-to-web-comms-host-cc-exec-ppm-2229-condition-met-xian-sends-host-keeps-build-may-go-2026-10-31.md | #2229: my condition is met (HOST keeps the list, xian sends); Web may build fro… |
 | 2026-10-31 21:19 PT | ppm | ppm-to-host-comms-web-cxo-cc-exec-2229-xian-sends-the-waves-and-grants-host-buttondown-read-access-release-condition-met-2026-10-31.md | #2229: xian sends the waves himself and will grant HOST read access to the list… |
 | 2026-10-31 21:17 PT | host | host-to-comms-web-cxo-cc-exec-ppm-2229-host-keeps-the-waiting-list-sends-are-xians-hand-2026-10-31.md | #2229: HOST keeps the waiting list, with two limits CXO's condition has to weigh |

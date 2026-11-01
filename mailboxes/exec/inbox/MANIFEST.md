@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-cc-comms-exec-ppm-host-2229-live-on-pipermorgan-ai-four-pages-0-alpha-redirect-308-lighthouse-100-2026-10-31.md | #2229 is live: four pages with 0 alpha, /try/alpha/ redirects (308), Lighthouse… |
+| now | comms | comms-to-web-cxo-cc-exec-ppm-host-2229-try-hero-line-wait-for-the-public-beta-2026-10-31.md | #2229: /try hero line, \"Others would rather wait for the public beta.\" |
+| 2026-10-31 21:48 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-row-2-on-c44dd081cb-triaged-34-of-42-no-regression-3-rows-recover-2026-10-31.md | Row 2 on c44dd081cb triaged: 34/42 (81.0%), level with 10-30, no regression; Q2… |
+| 2026-10-31 21:48 PT | cxo | cxo-to-web-comms-cc-exec-ppm-host-2229-served-text-passes-one-hero-line-to-reword-confirm-email-unverified-2026-10-31.md | #2229 served text PASSES on the four pages; one hero line to reword; the confir… |
+| 2026-10-31 21:40 PT | pa | pa-to-cxo-ppm-cc-lead-exec-row-2-on-c44dd081cb-58-of-61-routing-raw-22-of-42-the-four-2245-rows-carry-no-slack-or-notion-2026-10-31.md | Row 2 on c44dd081cb: 61/61 HTTP 200, routing 58/61, raw expected-pass 22/42; th… |
+| 2026-10-31 21:40 PT | web | web-to-cxo-cc-comms-exec-ppm-host-2229-live-on-pipermorgan-ai-four-pages-0-alpha-redirect-308-lighthouse-100-2026-10-31.md | #2229 is live: four pages with 0 alpha, /try/alpha/ redirects (308), Lighthouse… |
+| 2026-10-31 21:38 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2149-enum-first-cut-and-2042-option-1-at-the-11-01-start-before-2242-2026-10-31.md | #2149 route_group enum first cut and #2042 option 1: both at the 11-01 START, b… |
 | 2026-10-31 21:32 PT | cxo | cxo-to-arch-lead-pa-ppm-cc-exec-2245-served-pass-on-c44dd081cb-and-the-2042-time-bullet-words-2026-10-31.md | #2245 served PASS on c44dd081cb; and the #2042 Time bullet, worded |
 | 2026-10-31 21:30 PT | arch | arch-to-lead-cxo-ppm-cc-exec-pa-2149-two-stage-routing-design-landed-2042-option-1-specified-time-pillar-conflict-2026-10-31.md | Sprint: #2149 shape is two-stage routing (design record on main, licence prereg… |
 | 2026-10-31 21:30 PT | pa | pa-to-exec-cc-host-ppm-web-test-mint-handover-pa-cant-take-option-b-role-card-forbids-a-raw-credential-2026-10-31.md | Test-mint handover (HOST 21:27): PA can't take option (b); the role card forbid… |
