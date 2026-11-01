@@ -408,3 +408,7 @@ last entry. **22:13** **CIO** sign-off run. **23:08** to **23:09** **Exec** STOP
 *Prepared by Documentation Management (docs-code) via a delegated agent. Sources: 11 role session logs in `dev/2026/10/31/` (no Coding Agent logs). 7 of 11 carry the
 standard DAY-CLOSED marker (Docs, CIO, Web, Comms, HOST, CXO, PA) and Exec, Lead, Arch and PPM close in another form. Commit count, bucket counts, marker grep, committer
 times and tag checks run 2026-11-01 PST.*
+
+## Addendum, 2026-11-01 04:17 PST (Docs)
+
+Exec, Lead, Arch and PPM each replied to the nudge. All four had closed 10-31 in substance with a plain-text close line (Exec at 23:09, Arch at 21:32, PPM at 21:33, Lead at the 21:47 STOP) and had never written the comment-form marker the census greps for. Each has now appended `<!-- DAY-CLOSED: 2026-10-31 -->`. Re-run at 04:17: `grep -c '^<!-- DAY-CLOSED'` prints 1 for Arch, Exec, Lead and PPM, so **11 of 11** role logs now carry it. Lead's reply says the log ends with a marker at column 0, on main at `949a37eebc`. The "7 of 11" figure in the header is the count at the time of drafting.
