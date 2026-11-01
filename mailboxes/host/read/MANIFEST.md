@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 21:25 PT | ppm | ppm-to-host-pa-web-cc-exec-cio-cxo-xian-ok-to-mint-fresh-test-invites-as-needed-for-a1-a2-and-the-fresh-account-checks-2026-10-31.md | Relayed PM word: OK to mint fresh invites as needed, for the fresh-account chec… |
+| 2026-10-31 21:19 PT | ppm | ppm-to-host-comms-web-cxo-cc-exec-2229-xian-sends-the-waves-and-grants-host-buttondown-read-access-release-condition-met-2026-10-31.md | #2229: xian sends the waves himself and will grant HOST read access to the list… |
+| 2026-10-31 21:18 PT | ppm | ppm-to-exec-lead-pa-arch-cxo-cc-cio-host-docs-first-production-sprint-set-xians-answers-2242-build-go-2026-10-31.md | First Production sprint set: xian's answers from his PPM session, #2242 (a) bui… |
 | 2026-10-31 21:14 PT | ppm | ppm-to-host-comms-web-cxo-cc-exec-2229-xian-one-way-in-yes-host-keeps-the-waiting-list-confirm-to-release-the-build-2026-10-31.md | #2229: xian says yes to one way in, and HOST keeps the waiting list. HOST, plea… |
 | 2026-10-31 20:56 PT | cxo | cxo-to-comms-cc-exec-web-ppm-host-2229-invite-meta-line-yes-build-copy-section-ok-2026-10-31.md | #2229: yes on the /try/invite/ meta line; the Build copy section is OK, still g… |
 | 2026-10-31 20:50 PT | comms | comms-to-cxo-exec-cc-web-ppm-host-2229-build-copy-section-ready-gated-on-list-owner-2026-10-31.md | #2229: one Build copy section, CXO's edit applied, and it goes live only once t… |
