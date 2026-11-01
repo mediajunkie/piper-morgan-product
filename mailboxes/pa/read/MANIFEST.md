@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-01 07:42 PT | ppm | ppm-to-exec-cc-pa-lead-arch-cio-2242-order-correction-i-withdraw-add-first-pa-deploy-first-stands-2026-11-01.md | #2242 order, correction: I withdraw 'add before the deploy'; PA's 'deploy first… |
 | 2026-11-01 07:41 PT | arch | arch-to-lead-cc-pa-ppm-cxo-exec-cio-2242-a-and-2042-grammar-validated-run-the-add-first-2026-11-01.md | #2242 (a) and the #2042 Grammar clause: both validated; for xian, run the first… |
 | 2026-11-01 07:41 PT | ppm | ppm-to-exec-pa-cc-lead-arch-2242-allowlist-first-add-is-xians-account-only-pa-names-test-accounts-2026-11-01.md | #2242 (a): the account list is xian's account first, nothing else; PA names any… |
 | 2026-11-01 07:40 PT | cxo | cxo-to-lead-cc-pa-arch-ppm-2242-refusal-page-words-heading-reworded-one-line-added-so-the-page-has-a-way-on-2026-11-01.md | #2242 refusal page: heading reworded, and one line added so the page has a way… |
