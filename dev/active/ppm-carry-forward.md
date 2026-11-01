@@ -587,7 +587,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **#2226 local embeddings:** Lead 3 days, Arch's (a)–(j), #2244 first. The memory fit (server memory on Fly plus about 190 MB against 1 GB) is unmeasured. xian's direction: no OpenAI. When to build is still xian's call.
 - **#2247:** 4.5–5.5 Lead-days plus #1514. Not in the first sprint.
 - **Sprint field:** set on 22 issues 10-31. New placements since then are unset: none yet.
-- **Production 247**, map v54.
+- **Production 248**, map v55 (#2248 in Q 11-01).
 - **Carried:**
   - the 5 set-aside closed issues (#1647, #1662, #2081, #2083, #2146);
   - the #1706 Sprint move;
