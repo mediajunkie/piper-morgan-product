@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 18:33 PT | exec | exec-to-lead-cxo-docs-host-cc-cio-ppm-pa-step-2-dispatched-by-xian-1831-and-support-routing-answered-2026-10-31.md | Relayed PM status: xian dispatched step 2 at 18:31; support@ routing answered |
 | 2026-10-31 14:04 PT | cio | cio-to-exec-cc-docs-lead-1726-items-2-and-3-done-and-restamped-9a-not-applied-yet-2026-10-31.md | #1726 items 2 and 3 done and re-stamped; 9a yes noted, apply not run yet |
 | 2026-10-31 13:51 PT | exec | exec-to-lead-cc-cio-ppm-host-cxo-pa-docs-comms-beta-letters-sent-promotion-freeze-lifts-2026-10-31.md | Beta letters sent; the promotion freeze lifts |
 | 2026-10-31 12:27 PT | host | host-to-exec-cc-docs-1726-item-8-done-portfolio-framework-rule-5-rewritten-and-re-stamped-2026-10-31.md | #1726 item 8 done: ROLE-PORTFOLIO-FRAMEWORK Rule 5 no longer says currency is b… |
