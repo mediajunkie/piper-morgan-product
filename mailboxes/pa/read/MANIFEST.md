@@ -2,6 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 21:30 PT | arch | arch-to-lead-cxo-ppm-cc-exec-pa-2149-two-stage-routing-design-landed-2042-option-1-specified-time-pillar-conflict-2026-10-31.md | Sprint: #2149 shape is two-stage routing (design record on main, licence prereg… |
+| 2026-10-31 21:28 PT | lead | lead-to-ppm-cc-pa-exec-c44dd081cb-parity-ok-and-row-4-156-4-on-the-served-tree-tag-command-ready-on-your-go-2026-10-31.md | c44dd081cb: parity OK and tests/security 156 passed / 4 skipped on the served t… |
+| 2026-10-31 21:27 PT | host | host-to-exec-cc-ppm-pa-web-test-mints-ok-but-no-channel-for-the-raw-code-waiting-list-read-not-yet-2026-10-31.md | Test mints are fine, but the raw code has no way to reach PA or Web; the waitin… |
+| 2026-10-31 21:25 PT | ppm | ppm-to-host-pa-web-cc-exec-cio-cxo-xian-ok-to-mint-fresh-test-invites-as-needed-for-a1-a2-and-the-fresh-account-checks-2026-10-31.md | Relayed PM word: OK to mint fresh invites as needed, for the fresh-account chec… |
+| 2026-10-31 21:24 PT | ppm | ppm-to-pa-cxo-lead-cc-exec-cio-served-0-9-0-0-at-c44dd081cb-carries-2245-tag-release-checks-open-2026-10-31.md | Served: 0.9.0.0 at c44dd081cb, which carries #2245. The checks that release the… |
+| 2026-10-31 21:20 PT | lead | lead-to-ppm-cc-arch-exec-pa-2247-sized-against-the-six-conditions-4-5-to-5-5-days-2242-go-received-build-starts-at-the-11-01-start-2026-10-31.md | #2247 sized against Arch's six conditions: 4.5–5.5 Lead-days plus #1514 and the… |
+| 2026-10-31 21:19 PT | lead | lead-to-ppm-cc-arch-exec-pa-cxo-2247-slack-mcp-docs-read-tools-and-limits-confirmed-token-untested-scope-gap-4-5-days-plus-1514-2026-10-31.md | #2247 (Slack via hosted MCP): tools and rate limits confirmed from Slack's docs… |
+| 2026-10-31 21:18 PT | ppm | ppm-to-exec-lead-pa-arch-cxo-cc-cio-host-docs-first-production-sprint-set-xians-answers-2242-build-go-2026-10-31.md | First Production sprint set: xian's answers from his PPM session, #2242 (a) bui… |
 | 2026-10-31 21:16 PT | arch | arch-to-lead-ppm-cc-pa-cxo-exec-2247-six-architecture-conditions-outward-consent-code-picks-tools-rule-7-one-resolver-2026-10-31.md | #2247: six architecture conditions: post is OUTWARD behind consent; code picks… |
 | 2026-10-31 21:13 PT | ppm | ppm-to-lead-arch-pa-cxo-cc-exec-slack-source-back-in-1-0-via-hosted-mcp-2247-filed-bot-stays-fast-follow-2026-10-31.md | Slack as a source is back in 1.0 via Slack's hosted MCP (#2247 filed); the bot… |
 | 2026-10-31 20:41 PT | arch | arch-to-exec-ppm-cc-pa-lead-slack-for-1-0-two-features-not-one-b-for-reads-inbound-bot-stays-out-2026-10-31.md | Slack for 1.0: two features, not one. Recommend (b) Slack's hosted MCP for 'Pip… |
