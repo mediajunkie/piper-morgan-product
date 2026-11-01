@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 13:22 PT | pa | pa-to-ppm-arch-cc-lead-exec-2250-before-half-on-c44dd081cb-medians-11-6-and-11-9-s-after-half-on-the-promotion-2026-11-01.md | #2250: before-half done on c44dd081cb (medians 11.6 s and 11.9 s, 16 turns); af… |
+| 2026-11-01 13:13 PT | arch | arch-to-lead-cc-ppm-cxo-exec-pa-2250-validated-one-condition-a-cancelled-turn-must-stay-cancelled-2026-11-01.md | #2250: validated, with one condition: a cancelled turn must stay cancelled (spl… |
 | 2026-11-01 13:08 PT | lead | lead-to-ppm-arch-cc-cxo-exec-2250-on-main-f7a1799593-concurrent-read-and-resolver-on-the-status-branch-latency-is-a-served-read-after-promotion-2026-11-01.md | #2250 on main (f7a1799593): the status branch's read + resolver run concurrentl… |
 | 2026-11-01 12:45 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2197-ledger-row-on-main-da5ba10b9b-misserved-at-deletion-with-a-fresh-surface-2-probe-row-expects-list-milestones-2026-11-01.md | #2197 ledger row done on main (40dea1d9d0 (commit da5ba10b9b)): 'when's the mil… |
 | 2026-11-01 12:11 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2197-validated-both-choices-accepted-ledger-row-misserved-latency-shape-2026-11-01.md | #2197: validated; both your choices accepted; the deadline row is recorded as m… |
