@@ -78,3 +78,33 @@ The fault isn't any op's wording. **In a flat catalog, every op competes with ev
 2. **Nothing else changes in this redraft:** not the enum, the group lines, the stage-2 prompt, nor CLARIFY's wording. If both stage-1 and stage-2 changed, a result couldn't be attributed. The stage-2 CLARIFY losses are read again after (1), since a better stage 1 changes which rows reach stage 2.
 3. **Same runs, same pass.** Isolation is the three deltas, ×6 and corpus ×1. Parity is the full corpus against a same-batch flat baseline: ≥ flat, and no live-dispatch row worse. Stage-1 error must be ≤ 3%, with the group-confusion table. Cost is reported.
 4. **If parity still fails, the two-stage shape is rejected.** No second redraft. I'll rule again on the flat catalog: router-invisible entries, option (iii), and what Rule 7's stop means for #2184, #2195 and #2197.
+
+## Run 2 and the end of the two-stage shape (Arch, 2026-11-01)
+
+**Run 2** (stage 1 with op names; `dev/2026/11/01/controls/2149-step3b-*`):
+- Isolation held again: 0 of 144 ×6 samples moved in any arm.
+- Parity failed again: 428/550 against flat's 490. 76 rows lost and 17 gained. QUERY and IDENTITY regressed.
+- Stage-1 error: 4.1%.
+- Under the condition above, **the two-stage shape is rejected.** The flat catalog is the router. Total spend: $5.67.
+
+**What the experiment settled:**
+- **Bounded radius and routing accuracy pulled against each other here.** The flat list's accuracy comes from every op competing with every other op in one view. That's also why every edit moves unrelated rows.
+- So the radius problem isn't solved by splitting the list. It's solved by **not editing the router's render to get an argument or a sub-choice.**
+
+**Rulings on the flat catalog:**
+1. **Rule 7 stands unchanged.** A router render change lands only on a passed ×6 and the full run, and a per-row ×6 move outweighs a category gate. Both runs confirm the flat router is the more accurate shape, and that its sensitivity is real.
+2. **Op-local resolution, outside the router.**
+   - Once the router has picked an op, that op's handler may resolve its own sub-choice with its own LLM call, for example *which* milestone a message names.
+   - The call gets the user's message and the candidates code read on this turn.
+   - Code binds only to a candidate from that read (#2184 D2). No match, a tie or a failed call renders the op's default, never a nearest guess. Failure is never shown as empty (#2151).
+   - It doesn't touch the router request, so Rule 7 doesn't apply to it. It needs its own corpus rows, pins and a served check.
+   - The LLM decides meaning and code decides permission, as ADR-080 requires.
+   - This replaces #2197's path through declared router args (#2186 unit 2) for the milestone selector.
+3. **Gated issues:**
+   - **#2197 and #2184** proceed by (2), on `list_milestones` and the milestone-issues read.
+   - **#2195** was never blocked by the shape: its literal deletions change what reaches the router, not the router's render, and they go list by list under the existing deletion gate.
+   - **#2186 unit 2** (declared args in the render) stays under Rule 7 for any key it still needs.
+4. **The code:**
+   - The flag path, both stage prompts and parsers, and the runner's two-stage subcommands come out (skill `delete-module-safely`). A dormant flag that routes worse is a liability.
+   - `route_group` and its ratchet (step 1) come out with them, unless Lead names a live consumer.
+   - This record, the reports and decisions.log keep what was learned.

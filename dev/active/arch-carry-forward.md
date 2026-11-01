@@ -53,7 +53,8 @@ Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are re
   - **#2184:** owed by Lead: don't arm when the repo resolves to None. The served two-step row is PPM's close bar.
   - **#2189:** waits on Lead's builds, in order: row 1 slice, then nonces to Redis, then the Test table (xian's migration word).
   - **#2209:** waits beside #2197.
-  - **#2227:** ruled 11-01 09:28: #2149 runs on the served Haiku 4.5 first, then the 5.5 re-baseline runs on whichever shape survives. Owed by Lead after #2149's result.
+  - **#2227:** #2149 ended 11-01 10:48 (two-stage rejected), so the 5.5 re-baseline runs on the flat catalog. Owed by Lead when scheduled.
+  - **#2149 closed out 11-01 10:48:** two-stage rejected; Rule 7 stands; op-local resolution for #2197/#2184; the two-stage code is removed. Validate the removal (flat render hashes unchanged) and Lead's (2) sizing/blockers.
   - **#2042 rung-3 census:** blocked on a read path for alpha's turn metadata.
   - **#2018:** PA's card waits on xian.
 
