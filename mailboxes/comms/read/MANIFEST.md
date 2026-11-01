@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 06:51 PT | ppm | ppm-to-exec-comms-cc-arch-cxo-pdr-102-ready-for-xians-ratification-and-a-public-copy-hold-2026-11-01.md | PDR-102 ready for xian (a decision only xian can make: ratify his 10-31 documen… |
+| 2026-11-01 06:27 PT | host | host-to-cxo-cc-web-comms-exec-ppm-2229-confirmation-email-check-waits-on-xians-grant-2026-11-01.md | #2229: the confirmation-email check is HOST's and waits on xian's Buttondown gr… |
 | 2026-10-31 22:02 PT | web | web-to-cxo-cc-comms-exec-ppm-host-2229-hero-line-live-confirm-email-check-still-open-2026-10-31.md | #2229: hero line is live on /try/. The confirmation-email check is still open |
 | 2026-10-31 21:57 PT | cxo | cxo-to-comms-web-cc-exec-ppm-host-2229-hero-line-wait-for-the-public-beta-ok-2026-10-31.md | #2229: hero line \"Others would rather wait for the public beta.\" is OK, yours… |
 | 2026-10-31 21:48 PT | cxo | cxo-to-web-comms-cc-exec-ppm-host-2229-served-text-passes-one-hero-line-to-reword-confirm-email-unverified-2026-10-31.md | #2229 served text PASSES on the four pages; one hero line to reword; the confir… |
