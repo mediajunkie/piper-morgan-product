@@ -146,9 +146,10 @@ def test_parse_two_stage_reconstructs_decisions_through_route(tmp_path, monkeypa
     expected = tmp_path / "expected.yaml"
     expected.write_text(
         "corpus:\n"
-        "  - phrase: add a todo\n    expected_action: create_todo\n"
-        "  - phrase: hello there\n    expected_action: greeting\n"
-        "  - phrase: close it\n    expected_action: close_issue\n"
+        "  - phrase: add a todo\n    expected: action:create_todo\n"
+        "  - phrase: hello there\n    expected: action:greeting\n"
+        "  - phrase: close it\n    expected: action:close_issue\n"
+        "  - phrase: garbage\n    expected: REVIEW\n"
     )
     out = tmp_path / "report.md"
     rb._parse_two_stage(
@@ -180,6 +181,34 @@ def test_parse_two_stage_reconstructs_decisions_through_route(tmp_path, monkeypa
     assert "| todos_and_reminders | todos_and_reminders | 1 |" in report
     assert "| assistant_and_conversation | NONE | 1 |" in report
     assert "| issues | issues | 1 |" in report
+    assert "| n/a | REFUSED/ERROR | 1 |" in report  # a REVIEW row is unscored, never a group
+
+
+def test_render_stage2_arm_prefix_keeps_ids_distinct_for_a_shared_stage1(tmp_path):
+    """Stage 1 names no op, so its prompts are identical across arms; the arms share one
+    stage-1 result set and --arm keeps their stage-2 ids distinct in one batch."""
+    s1_reqs = tmp_path / "s1.jsonl"
+    s1_reqs.write_text(
+        json.dumps(
+            {"custom_id": "main-0-1", "phrase": "add a todo", "stage": 1, "tree": "t", "params": {}}
+        )
+        + "\n"
+    )
+    s1_res = tmp_path / "s1-res.jsonl"
+    _results(s1_res, {"main-0-1": '{"group": "todos_and_reminders", "confidence": 0.9}'})
+    out_a = tmp_path / "a.jsonl"
+    out_b = tmp_path / "b.jsonl"
+    rb._render_stage2(
+        SimpleNamespace(requests=str(s1_reqs), results=str(s1_res), arm="d1", out=str(out_a))
+    )
+    rb._render_stage2(
+        SimpleNamespace(requests=str(s1_reqs), results=str(s1_res), arm=None, out=str(out_b))
+    )
+    a = json.loads(out_a.read_text())
+    b = json.loads(out_b.read_text())
+    assert a["custom_id"] == "d1:main-0-1-s2-0" and a["arm"] == "d1" and a["parent"] == "main-0-1"
+    assert b["custom_id"] == "main-0-1-s2-0" and b["arm"] is None
+    assert a["params"] == b["params"], "the arm prefix changes the id only"
 
 
 def test_replay_matches_stage2_by_group_and_part_never_by_the_users_words():

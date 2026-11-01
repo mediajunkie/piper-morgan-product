@@ -343,11 +343,16 @@ def _render_stage2(args) -> None:
                 continue
             else:
                 parts = [(parsed["group"], None)]
+            arm = getattr(args, "arm", None)
             for k, (group_name, part_text) in enumerate(parts):
                 group = RouteGroup(group_name)
                 prompt = build_stage2_prompt(req["phrase"], grammar, group, None, part_text)
                 rec = {
-                    "custom_id": f"{req['custom_id']}-s2-{k}",
+                    # --arm prefixes the id so several arms can share one stage-1 result set
+                    # (stage 1 names no op, so its prompts are identical across arms) and
+                    # still submit in one batch.
+                    "custom_id": (f"{arm}:" if arm else "") + f"{req['custom_id']}-s2-{k}",
+                    "arm": arm,
                     "phrase": req["phrase"],
                     "stage": 2,
                     "tree": tree,
@@ -446,7 +451,9 @@ def _parse_two_stage(args) -> None:
                 None,
             )
             if isinstance(op, str) and r.get("phrase") not in expected:
-                expected[r["phrase"]] = op
+                # The phase-0 corpus writes `action:<op>`, `floor`, `plan`, `REVIEW` (unscored)
+                # or `category:<X>`; the first maps to a group, the rest are their own buckets.
+                expected[r["phrase"]] = op[len("action:") :] if op.startswith("action:") else op
     group_of = {
         op.name: (op.route_group.value if op.route_group else None) for op in grammar.operations
     }
@@ -462,6 +469,9 @@ def _parse_two_stage(args) -> None:
     s2_trees = Counter(
         json.loads(l).get("tree", "unknown")
         for l in Path(args.s2_requests).read_text().splitlines()
+    )
+    arms = Counter(
+        json.loads(l).get("arm") for l in Path(args.s2_requests).read_text().splitlines()
     )
 
     label = None
@@ -518,7 +528,8 @@ def _parse_two_stage(args) -> None:
     refused = sum(1 for r in rows if r["outcome"] == "refused")
     errors = sum(1 for r in rows if r["outcome"] == "error")
     lines = [
-        f"# Router batch, two-stage — {label}",
+        f"# Router batch, two-stage — {label}"
+        + (f" · arm {', '.join(str(a) for a in arms if a)}" if any(arms) else ""),
         "",
         f"Parsed {datetime.now(timezone.utc):%Y-%m-%d %H:%MZ} · {len(rows)} decisions · "
         f"{refused} REFUSED (no repair in a batch) · {errors} ERROR · served: "
@@ -568,11 +579,14 @@ def _parse_two_stage(args) -> None:
         confusion: Counter = Counter()
         for r in rows:
             exp_op = expected.get(r["phrase"])
-            exp_group = (
-                group_of.get(exp_op, exp_op if exp_op in ("NONE", "CLARIFY") else "n/a")
-                if exp_op
-                else "n/a"
-            )
+            if not exp_op:
+                exp_group = "n/a"
+            elif exp_op in group_of:
+                exp_group = group_of[exp_op]
+            elif exp_op in ("NONE", "CLARIFY", "floor", "plan"):
+                exp_group = exp_op
+            else:
+                exp_group = "n/a"  # REVIEW rows and category-only expectations are unscored here
             picked = r["group"] or "REFUSED/ERROR"
             confusion[(str(exp_group), str(picked).split(",")[0])] += 1
         lines += [
@@ -686,6 +700,11 @@ def main() -> int:
     s2.add_argument("--results", required=True, help="the stage-1 results file")
     s2.add_argument("--model", default=None)
     s2.add_argument("--no-thinking", action="store_true")
+    s2.add_argument(
+        "--arm",
+        default=None,
+        help="prefix for this arm's stage-2 ids when several arms share one stage-1 result set",
+    )
     s2.add_argument("--out", required=True)
     pt = sub.add_parser("parse-two-stage", help="reconstruct decisions through route() and report")
     pt.add_argument("--s1-requests", required=True)
