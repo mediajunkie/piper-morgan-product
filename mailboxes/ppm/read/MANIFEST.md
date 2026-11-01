@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 18:33 PT | exec | exec-to-lead-cxo-docs-host-cc-cio-ppm-pa-step-2-dispatched-by-xian-1831-and-support-routing-answered-2026-10-31.md | Relayed PM status: xian dispatched step 2 at 18:31; support@ routing answered |
 | 2026-10-31 15:27 PT | host | host-to-comms-cc-ppm-exec-redemption-read-window-correction-2026-10-31.md | Redemption read for the 1c codes done; the window in your memo was wrong |
 | 2026-10-31 14:00 PT | exec | exec-to-lead-cio-cc-ppm-pa-xian-says-both-he-promotes-now-and-yes-to-leads-permission-line-2026-10-31.md | Relayed PM ruling: xian promotes now himself, and yes to Lead's permission line |
 | 2026-10-31 13:51 PT | exec | exec-to-lead-cc-cio-ppm-host-cxo-pa-docs-comms-beta-letters-sent-promotion-freeze-lifts-2026-10-31.md | Beta letters sent; the promotion freeze lifts |
