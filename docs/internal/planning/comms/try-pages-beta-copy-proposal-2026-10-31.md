@@ -3,6 +3,8 @@
 **Drafted:** Comms, 2026-10-31 15:2x PT, after Exec 13:51 ("All beta invitations sent!", so beta wording is public-facing now).
 **Read from:** website origin/main, `src/app/(public)/try/page.tsx`, `try/alpha/page.tsx`, `try/beta/page.tsx`, `get-involved/page.tsx`.
 **Path:** xian picks → CXO OKs the copy → Web builds it and checks the served HTML (#2229 acceptance).
+
+> **Web: build from the "Build copy" section only.** Everything below it is history. **Status 20:50:** CXO OK'd the build copy (20:49) **on one hard condition:** it goes live only after Exec names the waiting-list owner and that owner confirms they will send invitations in waves and the public-beta note. If xian wants it live sooner, use CXO's fallback on card 2, `/try/beta/` and the "Want in?" block: "Join the waiting list. We may invite you, and we'll tell you if we can." Still waiting on xian's yes to one way in, and the owner (both via Exec).
 **Asked by:** xian via PPM, 10-31 18:50 ("can we ask Comms to propose updates and then Web can execute once I approve?"). Sent to Exec for xian's approval, cc CXO, Web, PPM.
 
 ## xian's answers (via PPM, 10-31 20:35)
@@ -22,20 +24,20 @@ Web's list (memo 20:36) shows two intake lists in two places today: invite reque
 - The cost, which Web named: the form doesn't capture "what you'd use Piper for". If xian wants that line, the alternative is to keep the email ask on `/try/invite/` and accept two lists that the owner checks.
 - Not changed by #2229: `contribute@` on `/get-involved/` and `privacy@` on `/privacy/`. Web marked both routes unverified. I'm sending that to Exec separately from this copy.
 
-**Strings that change under this recommendation** (they replace the matching lines below):
+**Strings that change under this recommendation** *(applied into the Build copy section at 20:50, so this list is history)*:
 - `/try/` card 1 button: **See what the beta is like →** (to `/try/invite/`)
 - `/try/invite/` "Want in?": Join the waiting list. We're sending invitations in waves, so we can meet the needs of our beta testers, and we can't promise when yours will come. Button: **Join the waiting list →** (to `/try/beta/`)
 - `/try/invite/` "Have questions first?": Email us at **support@pipermorgan.ai**. We're happy to chat, and to hear about the product work you do.
 - `/try/` meta description: Choose your path to Piper Morgan. See what the private beta is like, or join the waiting list for an invitation or a note when the public beta starts. og description: See the private beta, or join the waiting list.
 - `/get-involved/` line: Join the waiting list for the private beta if you're ready to dive in. Button: **Join the private beta →** (to `/try/invite/`)
 
-## The two decisions, with Comms' recommendation (as sent 18:53, kept for the record)
+## SUPERSEDED: the two decisions, with Comms' recommendation (as sent 18:53, kept for the record)
 
 1. **What a visitor does now.** Recommended: **request an invite to the private beta by email**, and keep the second card as a "keep me posted" list for when Piper opens to everyone (the 1.0 Production release).
    - **Address:** **support@pipermorgan.ai**. It is the address the Terms and the beta letter already use (alpha@ was dropped there on 10-24), and it reaches only xian's own mailboxes (Exec, decisions.log 10-31 18:33). No new alias is needed. *(Revised 18:55 after PPM's memo. The 15:20 draft said alpha@.)*
 2. **What happens to `/try/alpha/`.** Recommended: **move the page to `/try/invite/` and redirect `/try/alpha/` there**, so links in the alpha letters and old posts still land somewhere true. The current `/try/beta/` page stays where it is as the signup list, reworded below.
 
-## Draft copy (no semicolons, they/them for Piper)
+## Build copy (one way in, updated 20:50. No semicolons, they/them for Piper)
 
 ### `/try/` card 1 (replaces the Alpha card)
 - Eyebrow: **For early adopters**
@@ -46,7 +48,7 @@ Web's list (memo 20:36) shows two intake lists in two places today: invite reque
   - Bring your own Anthropic API key. Piper doesn't cover model costs
   - Works with GitHub and Google Calendar
   - Your feedback reaches the team building it
-- Button: **Request a beta invite →** (to `/try/invite/`)
+- Button: **See what the beta is like →** (to `/try/invite/`)
 
 ### `/try/` card 2 (replaces the Beta card), from xian's 20:35 words
 - Eyebrow: **For the curious** *(unchanged)*
@@ -56,13 +58,12 @@ Web's list (memo 20:36) shows two intake lists in two places today: invite reque
 - Button: **Join the waiting list →** (to `/try/beta/`)
 
 ### `/try/` page description (meta) and og description
-- Description: Choose your path to Piper Morgan. Request an invite to the private beta, or join the waiting list and hear when the public beta starts.
-- og description: Request a beta invite, or join the waiting list.
-- *(The first half may change when the invite path is reconciled, answer 1.)*
+- Description: Choose your path to Piper Morgan. See what the private beta is like, or join the waiting list for an invitation or a note when the public beta starts.
+- og description: See the private beta, or join the waiting list.
 
 ### `/try/invite/` (the old alpha page, moved): every string, in page order
 *(Rewritten 19:06 after Web's 19:03 memo listed six alpha strings the first draft didn't cover. Each line below replaces the string at that spot on `try/alpha/page.tsx`.)*
-- Page title: **Join the Private Beta | Piper Morgan**. Description: Request an invite to the Piper Morgan private beta and help shape AI-assisted product management.
+- Page title: **Join the Private Beta | Piper Morgan**. Description: See what the Piper Morgan private beta is like, and join the waiting list for an invitation. *(changed 20:50 for one way in. The 19:06 text said "Request an invite".)*
 - og title: **Join the Piper Morgan Private Beta**. og description: unchanged ("Help shape the future of AI-assisted product management.").
 - Hero headline: **Join the private beta**
 - Hero subline: Piper Morgan is in private beta. We're inviting a small number of product people to use it for their real work and tell us what they find.
@@ -73,9 +74,9 @@ Web's list (memo 20:36) shows two intake lists in two places today: invite reque
   3. **Your voice matters.** Your feedback reaches the team building it. *(was "Alpha feedback directly influences what we build next", a promise per CXO's edits 1 and 2)*
   4. **Real access.** You'll use Piper for your actual work, not a sandbox. *(unchanged)*
 - "What we're looking for": An Anthropic API key of your own. Piper doesn't provide or pay for model usage · Willingness to report what's working and what isn't · Interest in AI-assisted product management · Patience with rough edges
-- "Want in?": Email us with a line about the product work you do and what you'd use Piper for. We're sending invites a few at a time, so we can't promise one.
-  - Button: **Request an invite →** to `mailto:support@pipermorgan.ai?subject=Beta%20invite%20request`
-- "Have questions first?": Email us at **support@pipermorgan.ai**. We're happy to chat before you commit. *(the em dash becomes a full stop, and both alpha@ uses become support@)*
+- "Want in?": Join the waiting list. We're sending invitations in waves, so we can meet the needs of our beta testers, and we can't promise when yours will come.
+  - Button: **Join the waiting list →** (to `/try/beta/`)
+- "Have questions first?": Email us at **support@pipermorgan.ai**. We're happy to chat, and to hear about the product work you do. *(both alpha@ uses become support@)*
 - Back link "← Back to options": unchanged.
 
 Expected "alpha" matches on the served `/try/invite/` page after this: 0 in copy. Any match left in the HTML should be a framework or path artifact, for Web to justify.
@@ -92,11 +93,11 @@ Expected "alpha" matches on the served `/try/invite/` page after this: 0 in copy
 - Back link: unchanged.
 
 ### `/get-involved/`
-- Meta: "…Join the private beta, contribute code, or share your expertise."
-- Line: Request a beta invite if you're ready to dive in.
-- Button: **Request a beta invite →** (to `/try/invite/`)
+- Meta: "…Join the waiting list for the private beta, contribute code, or share your expertise."
+- Line: Join the waiting list for the private beta if you're ready to dive in.
+- Button: **Join the waiting list →** (to `/try/beta/`) *(CXO 20:49: the line and the button say the same thing, and the button goes where it says)*
 
-## Who keeps the card 2 list (CXO edit 4). xian chose B at 20:35, so the owner is now Exec's to confirm with xian
+## SUPERSEDED in part: who keeps the card 2 list (CXO edit 4). xian chose B at 20:35, so options A and B below are history. The owner is Exec's to confirm with xian, and the build copy waits on it (CXO 20:49)
 
 CXO asked who keeps the "Keep me posted" list and sends the note. **Nobody does today.** The `/try/beta/` form posts to the Buttondown list (`NewsletterSignup`, tag `beta-waitlist`, website origin/main read 19:05). Web's 09-20 audit found that list dormant: 0-1 subscribers and nothing ever sent (`dev/active/web-standing-items.md` row 3a). On 10-02 xian took the /blog form off that list for the same reason and pointed it at LinkedIn and Medium. The preference-based signup that would fix it (row 3b) is waiting on xian's review of Web's straw plan.
 
