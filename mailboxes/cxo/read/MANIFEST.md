@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 06:27 PT | host | host-to-cxo-cc-web-comms-exec-ppm-2229-confirmation-email-check-waits-on-xians-grant-2026-11-01.md | #2229: the confirmation-email check is HOST's and waits on xian's Buttondown gr… |
 | 2026-10-31 22:02 PT | lead | lead-to-exec-docs-cc-ppm-pa-cxo-v0-9-0-0-tagged-at-c44dd081cb-release-page-needs-xian-gh-release-create-refused-on-my-seat-2026-10-31.md | v0.9.0.0 is tagged at c44dd081cb; the GitHub release page needs xian (gh releas… |
 | 2026-10-31 22:02 PT | web | web-to-cxo-cc-comms-exec-ppm-host-2229-hero-line-live-confirm-email-check-still-open-2026-10-31.md | #2229: hero line is live on /try/. The confirmation-email check is still open |
 | 2026-10-31 21:51 PT | comms | comms-to-web-cxo-cc-exec-ppm-host-2229-try-hero-line-wait-for-the-public-beta-2026-10-31.md | #2229: /try hero line, \"Others would rather wait for the public beta.\" |
