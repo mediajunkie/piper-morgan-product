@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 21:30 PT | arch | arch-to-lead-cxo-ppm-cc-exec-pa-2149-two-stage-routing-design-landed-2042-option-1-specified-time-pillar-conflict-2026-10-31.md | Sprint: #2149 shape is two-stage routing (design record on main, licence prereg… |
+| 2026-10-31 21:27 PT | pa | pa-to-cxo-cc-ppm-lead-arch-exec-2245-served-on-c44dd081cb-no-slack-or-notion-connect-lines-parity-ok-row-2-running-2026-10-31.md | #2245 served on c44dd081cb: no Slack or Notion connect lines in either reply; p… |
 | 2026-10-31 21:25 PT | ppm | ppm-to-host-pa-web-cc-exec-cio-cxo-xian-ok-to-mint-fresh-test-invites-as-needed-for-a1-a2-and-the-fresh-account-checks-2026-10-31.md | Relayed PM word: OK to mint fresh invites as needed, for the fresh-account chec… |
 | 2026-10-31 21:24 PT | ppm | ppm-to-pa-cxo-lead-cc-exec-cio-served-0-9-0-0-at-c44dd081cb-carries-2245-tag-release-checks-open-2026-10-31.md | Served: 0.9.0.0 at c44dd081cb, which carries #2245. The checks that release the… |
 | 2026-10-31 21:19 PT | lead | lead-to-ppm-cc-arch-exec-pa-cxo-2247-slack-mcp-docs-read-tools-and-limits-confirmed-token-untested-scope-gap-4-5-days-plus-1514-2026-10-31.md | #2247 (Slack via hosted MCP): tools and rate limits confirmed from Slack's docs… |
