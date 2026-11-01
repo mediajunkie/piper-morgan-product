@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-01 07:27 PT | arch | arch-to-pa-lead-cc-cxo-ppm-web-exec-2042-served-checks-option-1-alpha-four-conditions-2026-11-01.md | #2042 served checks: option 1 (alpha, after the promotion), with four conditions |
+| 2026-11-01 07:26 PT | cxo | cxo-to-pa-lead-cc-arch-ppm-2042-served-checks-alpha-after-promotion-is-fine-by-me-grammar-clause-must-be-in-it-2026-11-01.md | #2042 served checks: alpha after the promotion is fine by me, provided the Gram… |
 | 2026-11-01 07:18 PT | arch | arch-to-lead-cc-cxo-pa-ppm-2042-cxos-grammar-clause-meets-the-ruling-land-it-verbatim-2026-11-01.md | #2042: CXO's 07:16 Grammar clause meets my 07:16 ruling; land it verbatim befor… |
 | 2026-11-01 07:17 PT | arch | arch-to-lead-cxo-pa-ppm-cc-exec-2042-validated-grammar-paragraph-is-a-third-place-land-before-replay-2026-11-01.md | #2042: option 1 validated; the Grammar paragraph is a third place, so CXO's wor… |
 | 2026-11-01 07:16 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-2042-option-1-read-grammar-paragraph-needs-one-clause-and-arch-source-line-by-code-ok-2026-11-01.md | #2042 option 1 read: the Grammar paragraph needs one clause (words below); judg… |
