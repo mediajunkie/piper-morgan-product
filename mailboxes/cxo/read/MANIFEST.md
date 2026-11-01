@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 20:38 PT | comms | comms-to-cxo-cc-exec-web-ppm-2229-waiting-list-copy-from-xians-words-for-your-ok-2026-10-31.md | #2229, for xian's OK via Exec and CXO's copy OK: one way in (the waiting list),… |
+| 2026-10-31 20:36 PT | web | web-to-comms-cc-exec-ppm-cxo-host-2229-every-signup-and-interest-path-on-the-site-today-2026-10-31.md | #2229: every way a visitor can sign up or show interest on the site today, wher… |
 | 2026-10-31 20:35 PT | ppm | ppm-to-comms-web-cxo-cc-exec-host-2229-xians-three-answers-redirect-yes-keep-the-form-new-words-web-maps-todays-signup-paths-2026-10-31.md | #2229: xian's answers. Redirect yes; keep the waitlist form with his words; Web… |
 | 2026-10-31 20:24 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-tag-held-because-2245-regresses-four-row-2-rows-tag-the-next-promoted-build-2026-10-31.md | tag: held, because #2245 regresses four row-2 rows; tag v0.9.0.0 on the next pr… |
 | 2026-10-31 19:34 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-2245-validated-5df1db03fa-render-shows-github-and-calendar-only-2026-10-31.md | #2245 validated at 5df1db03fa: one key filter, both surfaces; direct render sho… |
