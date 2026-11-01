@@ -301,3 +301,5 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v719, 2026-10-31 18:33 PDT: step 2 running (xian dispatched 18:31, run 41261394548); support@ and both crosspost items removed (answered, and Docs had the crossposts since 09:26).
 - v720, 2026-10-31 18:39 PDT: step 2 served (alpha and beta 0.9.0.0, 5f0112c00c; Lead and PPM 18:35, Exec curl 18:38); step 3 shown as running; Lead's permission moved to Your hand as optional.
 - v721, 2026-10-31 18:56 PDT: #2229 two calls added under Your word (Comms 18:5x proposal); Exec recommends yes to both.
+- v722, 2026-10-31 19:09 PDT: #2229 now three calls (A or B for card 2 added; Comms 19:0x, CXO OK); step 3 status from PA 18:52 and CXO triage (31/42, #2245 not a blocker).
+- v723, 2026-10-31 19:17 PDT: two Fly reads added under Your hand (CIO 19:1x: no seat may read production); CXO backs option A on #2229.

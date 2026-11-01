@@ -7,7 +7,7 @@
 **Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
-v721, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v723, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## Where things stand (end of 10-30)
 - **MVP closed** on xian's Go (PPM: #1386 and the milestone; hard stop held, 0 days moved). Alpha and beta serve `ac5b69f865` (one machine, `piper-morgan`).
@@ -52,3 +52,4 @@ Then the first-sprint priorities talk toward Production (PPM's four tiers, six d
 - key: exec-launchagent-cutover2. Filed: 2026-10-31. CronDelete the session cron and flip registry row 179 on Pard's load notice.
 - key: 1715-review. Filed: 2026-10-31. The #1715 skills walk with xian, due Tue 11-03.
 - key: crossposts-1031. Filed: 2026-10-31. Relay xian's crosspost URLs to Docs.
+- key: 2229-relay. Filed: 2026-10-31. Relay xian's three #2229 calls to Comms, Web and CXO in the same hour he gives them.

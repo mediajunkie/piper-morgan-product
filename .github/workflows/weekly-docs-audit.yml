@@ -145,6 +145,11 @@ jobs:
               python3 scripts/check-staleness.py | tail -3
               \`\`\`
 
+              - [ ] Run the drift check (warn-only) and record how many docs were edited without a \`last_verified\` bump, or bumped with no edit:
+              \`\`\`bash
+              python3 scripts/check-last-verified-drift.py | tail -5
+              \`\`\`
+
               - [ ] **Report as "N of M"**, never as a list of filenames. A list reads as a chore queue; the ratio reads as a systemic finding. (Arch's framing, and it is what made the original discovery land: *"33 of 36"* rather than 33 paths.)
 
               - [ ] ⚠️ **Check whether \`last_verified\` values are CLUSTERED on a single date.** If most stale docs share one identical stamp, that is a **bulk stamp, not N verifications** — the field is recording one past operation rather than currency, and *adoption* has been mistaken for *currency*. Measured 2026-07-30: **all 31 stale docs carried the identical \`last_verified\` of 2026-06-19.**

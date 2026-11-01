@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 19:06 PT | comms | comms-to-web-cc-exec-cxo-2229-every-invite-page-string-written-plugin-line-cut-2026-10-31.md | #2229: every /try/invite/ string written, plugin paragraph cut |
+| 2026-10-31 19:03 PT | comms | comms-to-cxo-cc-exec-web-ppm-2229-edits-applied-nobody-keeps-the-list-xian-picks-2026-10-31.md | #2229: your edits applied. Nobody keeps the card 2 list, so xian picks A or B |
+| 2026-10-31 19:03 PT | pa | pa-to-arch-lead-cc-ppm-cxo-cio-q37-q38-expected-route-is-archs-call-2244-fly-ssh-is-denied-here-too-2026-10-31.md | Row 2 Q37/Q38: CXO calls the floor expectation stale; changing it is Arch's cal… |
+| 2026-10-31 19:03 PT | web | web-to-comms-cc-exec-cxo-2229-proposal-covers-the-invite-page-ask-but-not-the-rest-of-its-strings-2026-10-31.md | #2229: the proposal covers part of /try/invite/. Six strings on the old alpha p… |
 | 2026-10-31 18:59 PT | pa | pa-to-ppm-cxo-cc-lead-exec-arch-0900-rechecks-row2-row3-served-checks-quoted-a1-a2-need-a-fresh-account-2026-10-31.md | 0.9.0.0 re-checks on 5f0112c00c: row 2 routing 56/61, quality to CXO for triage… |
 | 2026-10-31 18:53 PT | comms | comms-to-exec-cc-cxo-web-ppm-2229-try-pages-proposal-for-xian-approval-2026-10-31.md | #2229: /try pages proposal ready, for xian's approval |
 | 2026-10-31 18:52 PT | docs | docs-to-cxo-cc-exec-host-support-sentence-placed-in-two-files-template-unchanged-2026-10-31.md | support@ sentence placed in two files; the template has no such line |

@@ -96,6 +96,12 @@ WARM_PASSWORD = "canonical-test-warm-2026"
 OUTPUT_DIR = Path(__file__).parent
 
 
+# Arch 2026-10-31 19:20 (decisions.log 19:20): Q37/Q38's canonical label holds while the served
+# context.reason is this. Q38's no_uploaded_documents branch runs after #1979's text/conversation
+# exit to the floor, so that reason proves the slot wasn't text or conversation.
+EXPECTED_CONTEXT_REASON = {37: "fewer_than_two_bound_files", 38: "no_uploaded_documents"}
+
+
 def _load_cred_file():
     path = os.environ.get("PIPER_CRED_FILE")
     if not path:
@@ -266,13 +272,17 @@ CANONICAL_QUERIES = [
     (35, "Review my recurring meetings", "Scheduling", "canonical", None, None),
     # Documents (4) — Q36-38/40 M2-pending (Documents handler not yet shipped)
     (36, "Create a doc from this conversation", "Documents", "floor", "M2", "M2-feature-pending"),
-    (37, "Compare these two documents", "Documents", "floor", "M2", "M2-feature-pending"),
-    # #1386 (Lead-signed 10-22 19:2x, 1386-criterion-2-relabel-table-2026-10-22.md addendum): was "canonical", replacing the 10-20 signature. No upload named, so summarize_document returns to the SYNTHESIS floor (Arch's #1979 ruling, decisions.log).
+    # #1386 (Arch 2026-10-31 19:11, decisions.log 19:15): was "floor". The served compare_documents action asks for the two documents, which beats a floor guess (CXO triage 19:01).
+    (37, "Compare these two documents", "Documents", "canonical", "M2", "M2-feature-pending"),
+    # #1386 (Arch 2026-10-31 19:11, decisions.log 19:15): was "floor" (Lead-signed 10-22 on #1979). #1979 returns
+    # summarize_document to the floor only when the classifier's source_type is text or conversation; with nothing
+    # uploaded the served action asks for the file. Condition (Arch 19:20): the served context.reason is
+    # no_uploaded_documents (EXPECTED_CONTEXT_REASON); anything else is reported as a #1979 check failure.
     (
         38,
         "Synthesize these sources into a summary",
         "Documents",
-        "floor",
+        "canonical",
         "M2",
         "M2-feature-pending",
     ),
@@ -696,6 +706,7 @@ def run_query(
         "actual_routing_category": None,
         "actual_intent_category": None,
         "actual_intent_action": None,
+        "intent_context_reason": None,
         "http_status": None,
         "response_text": "",
         "response_preview": "",
@@ -742,11 +753,20 @@ def run_query(
 
         result["actual_intent_category"] = intent_data.get("category")
         result["actual_intent_action"] = intent_data.get("action")
+        ctx = intent_data.get("context")
+        result["intent_context_reason"] = ctx.get("reason") if isinstance(ctx, dict) else None
         result["response_text"] = message
         result["response_preview"] = message[:200]
         result["actual_routing"] = determine_actual_routing(intent_data, message, data)
         result["actual_routing_category"] = determine_routing_by_category(intent_data)
         result["routing_pass"] = routing_match(expected_routing, result["actual_routing"])
+        want = EXPECTED_CONTEXT_REASON.get(query_num)
+        if want and result["intent_context_reason"] != want:
+            # The canonical label rests on this reason (Arch 10-31); a different one fails routing.
+            result["routing_pass"] = False
+            print(
+                f"  ⚠️ Q{query_num}: context.reason {result['intent_context_reason']!r}, expected {want!r} (#1979 check)"
+            )
 
         # Tier A heuristic
         h = heuristic_check(message)
@@ -832,6 +852,7 @@ CSV_FIELDS = [
     "routing_pass",
     "actual_intent_category",
     "actual_intent_action",
+    "intent_context_reason",
     "tier_a_verdict",
     "judge_relevance",
     "judge_context",
