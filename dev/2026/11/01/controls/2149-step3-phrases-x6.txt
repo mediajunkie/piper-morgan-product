@@ -1,0 +1,24 @@
+any update on the next milestone
+can you summarize my current work
+give me a project overview
+I need a status report
+modify the onboarding checklist with the new steps
+modify the status document
+bring back my archived project
+where should my focus be today
+Update issue #123
+show today's assignments
+show all events
+add octocat/hello-world to the project
+let's analyze the risk here
+what's the next milestone?
+when's the milestone deadline
+can you show me issues from just one milestone?
+show my open issues in the MVP milestone
+what's the current status
+just getting started here
+what did we make earlier
+show me my portfolio
+are we behind upstream at all
+mark this as priority one
+delete that reminder
