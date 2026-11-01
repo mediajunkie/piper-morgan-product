@@ -594,4 +594,5 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - CXO's spot-check;
   - the next weekly diff, Fri 11-06;
   - **PDR-102 (document model) v0.4**, Arch and CXO reviewed 11-01. 🔒 Sent to xian via Exec 11-01 for ratification (smallest answer: "ratify"). v0.4: no review checks open (Arch 06:59: artifacts already show as documents). Comms holds public "data you own" copy until C7 is verified and C8 has a surface.
+  - **key: notion-offer-ask** (Filed 2026-11-01; to: exec; by: trigger: Web's #2238 served check passes). Send Exec the one-line "offer Notion in the beta: yes or no" for xian. CXO's card words come first.
   - **Rule from PDR-102:** when PPM places a connector-ingest unit, mail Arch the same day (his ADR trigger for C2).

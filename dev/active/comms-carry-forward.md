@@ -1,17 +1,17 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-01 06:53 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-11-01 08:49 PT. Read this first. It supersedes everything below.
 - **Log:** `dev/2026/11/01/2026-11-01-0619-comms-code-log.md` (10-31 is DAY-CLOSED).
 - **HOLD (PPM 06:51 11-01, from CXO's PDR-102 review):** no ownership claim ("knowledge in data you own" or similar) in a letter, the site or partner copy until PDR-102 **C7** (derived data deleted with the document or account) is verified and **C8** (the user can see and remove what Piper kept) has a surface. Current copy is clean (checked 06:53, memo to PPM). Check C7/C8 status before any new copy that mentions data.
 - **Beta letters sent 10-31 13:51** (Exec). The promotion freeze is lifted, but promotion is still xian's go. HOST confirmed the three 10-26 codes exist and are unused, so letter version 1c holds. Find codes by their masked form, not by creation date (they were created 10-18).
-- **Sat 10-31 "Build the Instrument Before the Theory":** PUBLISHED by Docs 08:51, LinkedIn URL set. **The Medium crosspost is xian's, still owed.** When it lands, Docs sets the URL and marks it `distributed`. This was the first run of the new "AI prompts human" process, and xian said it "went well".
-- **Sun 11-01 "Check the Machine First"** (retitled `773a30c435`): the file is still my scaffold (last edit 07:55 10-31, frontmatter empty, dateline wrong). Waiting on xian's prose and art. Then review, template-audit, calendar row `ready-for-docs`, publish-ready to Docs. Its footer teases Tue 11-03. A day-of rewrite is normal. Don't nudge.
+- **Sat 10-31 "Build the Instrument Before the Theory":** distributed (Medium and LinkedIn URLs set). Done.
+- **Sun 11-01 "Check the Machine First":** xian wrote it, Comms reviewed. Fixes at 621e05771a and eea366a339 (xian's calls). Template audit 16 of 16. Row `ready-for-docs` (22e4fc27dc). PUBLISH-READY sent to Docs 08:48. Next: Docs publishes. xian's seam for "we made it" is the MVP milestone close (10-30 17:07 PT).
 - **Tue 11-03 "The Unguarded Entrance":** waiting on xian's prose. Its tease has no target until the calendar past 11-05 exists.
 - **#2229 /try pages:** the copy is final. Use the "Build copy" section of `docs/internal/planning/comms/try-pages-beta-copy-proposal-2026-10-31.md`.
   - CXO OK'd it at 20:56. xian said yes at 21:14: the waiting-list form is the one way in, email (support@) is for questions, `/try/alpha/` → `/try/invite/` redirect, and HOST keeps the list.
   - HOST (21:17) accepts, with limits. xian sends, and HOST prepares. HOST can't read Buttondown yet. PPM (21:19): xian sends each wave himself and will grant HOST read access. CXO (21:27): condition met, and Web may build. The copy stays true only while xian sends, so if that changes, tell CXO. **Live 21:40, 4 of 4 pages. CXO 21:48: served text PASSES.** Hero line LIVE (Web 22:02, website `8ea45e7`). One thing open: HOST (06:27 11-01) owns the check and waits on xian's Buttondown read grant, or xian submits one address he owns on `/try/beta/`. HOST or xian checks that Buttondown sends the confirmation email before #2229 closes. Comms owes nothing more.
   - Web builds after that. **Comms owes nothing until Web quotes the served HTML.** Then check every string against the Build copy section.
-- **Calendar from 11-05 and the beta comms plan:** xian is working on it this weekend. Planning doc https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86.
+- **Calendar from 11-05: conversation walk under way (11-01).** Walk list A-F is in the planning doc; one item at a time, async OK. A (Thu 11-05 = beat 1 as scaffold) asked first, since Tuesday's footer needs it. Planning doc https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86.
 - **Waiting:** Ship #067 External fact-check (Exec's draft). Rosenverse (xian and Themis).
 - **Standing:** "what changed" note at the first user-visible Production ship (not yet). Mining pass Fri 11-06. Narrative front Sep 6.
 - **Lesson (10-31):** stamps written into docs by a script, weekdays, and a memo's time all get looked up (`date`, or the memo header), never typed. That's four slips today, all caught before commit except the weekday one. Recorded in memory `feedback_verify_timestamps_never_guess`.

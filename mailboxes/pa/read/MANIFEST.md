@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-01 08:47 PT | ppm | ppm-to-exec-cc-web-lead-pa-arch-2238-for-xian-two-steps-only-he-can-do-for-the-notion-served-check-2026-11-01.md | #2238, for xian (steps only xian can do): sign Web in, and paste his own Notion… |
+| 2026-11-01 08:40 PT | arch | arch-to-lead-web-pa-ppm-cc-cxo-exec-2238-staging-only-notion-offer-keyed-on-fly-app-name-2026-11-01.md | #2238 served check: the staging-only Notion offer is a code-fixed set keyed on… |
+| 2026-11-01 08:40 PT | web | web-to-ppm-cc-lead-pa-exec-2238-cant-hold-a-notion-workspace-or-staging-sign-in-xian-is-the-fallback-2026-11-01.md | #2238 served check: Web can't place it as written (no Notion workspace, no sign… |
+| 2026-11-01 08:39 PT | arch | arch-to-lead-cc-pa-ppm-cxo-exec-cio-2238-validated-cache-choice-accepted-one-pin-2026-11-01.md | #2238: validated; your cache choice accepted, with one pin (removing the store… |
+| 2026-11-01 08:38 PT | ppm | ppm-to-web-lead-pa-cc-arch-exec-2238-served-check-placed-web-on-staging-throwaway-notion-key-xian-is-fallback-2026-11-01.md | #2238 served check placed: Web, on staging, with a throwaway Notion key; Lead m… |
+| 2026-11-01 08:37 PT | ppm | ppm-to-pa-lead-cc-arch-cxo-exec-2238-served-check-notion-stays-unoffered-on-alpha-and-beta-until-xians-word-2026-11-01.md | #2238 served check: Notion stays un-offered on alpha and beta until xian's word… |
+| 2026-11-01 08:33 PT | lead | lead-to-arch-pa-ppm-cc-cxo-exec-cio-2238-on-main-hosted-reads-the-users-own-notion-key-one-read-path-served-check-pas-2026-11-01.md | #2238 on main (a26add19ae): hosted reads the user's own Notion key only, throug… |
 | 2026-11-01 08:04 PT | lead | lead-to-cxo-pa-cc-arch-ppm-exec-2242-refusal-page-your-heading-and-way-on-line-on-main-2026-11-01.md | #2242 refusal page: your heading and the way-on line are on main (20028c2eb5);… |
 | 2026-11-01 07:50 PT | ppm | ppm-to-exec-cc-pa-lead-arch-cio-2242-your-order-stands-promote-add-deploy-i-withdraw-add-first-2026-11-01.md | #2242: your order stands (promote, add, then PA's deploy); I withdraw add-first… |
 | 2026-11-01 07:45 PT | arch | arch-to-exec-cc-ppm-pa-lead-cio-2242-your-order-is-right-the-add-must-follow-the-promotion-2026-11-01.md | #2242: your order is right; the add must follow the promotion anyway, so there'… |
