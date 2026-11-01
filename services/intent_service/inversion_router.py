@@ -69,6 +69,8 @@ from typing import Any, Dict, List, Mapping, Optional, Tuple
 
 import structlog
 
+from services.shared_types import RouteGroup
+
 logger = structlog.get_logger(__name__)
 
 # Sentinel routes (part of the grammar alongside the canonical operations).
@@ -92,6 +94,10 @@ class RoutingOperation:
     example: Optional[str]  # from ACTION_EXAMPLES where present
     aliases: Tuple[str, ...]  # input-side only; never shown to the model
     source: str  # "rail" | "action_registry"
+    # #2149 build step 1: the op's declared RouteGroup (entry metadata for rail ops,
+    # ROUTE_GROUPS for registry ops). NOT read by build_routing_prompt: the flat catalog
+    # renders byte-identically with or without it.
+    route_group: Optional[RouteGroup] = None
 
 
 @dataclass(frozen=True)
@@ -270,6 +276,7 @@ def derive_routing_grammar() -> RoutingGrammar:
         ACTION_DESCRIPTIONS,
         ACTION_EXAMPLES,
         ACTION_REGISTRY,
+        ROUTE_GROUPS,
     )
     from services.intent_service.router_catalog_order import order_operations
     from services.intent_service.workflow_dispatcher import get_action_workflows
@@ -313,6 +320,7 @@ def derive_routing_grammar() -> RoutingGrammar:
                 example=examples_by_action.get(rec["canonical"]),
                 aliases=tuple(rec["aliases"]),
                 source="rail",
+                route_group=getattr(rec["entry"], "route_group", None),
             )
         )
         covered.add(rec["canonical"])
@@ -343,6 +351,7 @@ def derive_routing_grammar() -> RoutingGrammar:
                 example=example,
                 aliases=(),
                 source="action_registry",
+                route_group=ROUTE_GROUPS.get((category, action)),
             )
         )
         covered.add(action)

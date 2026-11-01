@@ -18,7 +18,7 @@ from typing import Any, Callable, Coroutine, Dict, Optional
 
 import structlog
 
-from services.shared_types import EffectClass, Outwardness
+from services.shared_types import EffectClass, Outwardness, RouteGroup
 
 logger = structlog.get_logger(__name__)
 
@@ -602,6 +602,15 @@ class WorkflowEntry:
     # alias principle (input-side only) applied to a whole entry. A hidden entry
     # cannot hold a flip group: a flip group means the ROUTER may dispatch it.
     router_visible: bool = True
+
+    # #2149 build step 1 (Arch 2026-11-01): the declared routing group of this operation,
+    # from the closed RouteGroup enum. Entry metadata like ``outwardness``: it is NOT read
+    # by the flat router prompt (no behaviour change); a later build step's stage 1 derives
+    # its group list from it. Aliases share the entry object, so one value per entry. Most
+    # entries get theirs from ``_ROUTE_GROUP_BY_OP`` in workflow_entries (factory-built
+    # groups share one constructor call across ops); TestRouteGroupRatchet2149 fails any
+    # router-visible op without one.
+    route_group: Optional[RouteGroup] = None
 
     def __post_init__(self) -> None:
         """Reject an unrepresentable flip declaration LOUDLY, at construction.

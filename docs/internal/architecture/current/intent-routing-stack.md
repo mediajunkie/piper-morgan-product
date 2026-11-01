@@ -2124,6 +2124,22 @@ go at the FRONT of `PHASE3_REPORTS` in `scripts/inversion_phase3_deletion_gate.p
 first; a re-score overrides). `scripts/inversion_phase1_shadow_score.py` has `--phrase` for a
 one-row re-score and `--source-prefix` for a deposit batch.
 
+### `route_group`: each routable op declares a group (#2149 build step 1, 2026-11-01; no behaviour change)
+
+Every operation `derive_routing_grammar()` lists carries a `route_group` from the closed
+`RouteGroup` enum (nine groups, accepted by Arch 2026-11-01; `services/shared_types.py`, which
+also holds each group's one stage-1 line in `ROUTE_GROUP_LINES`). Rail ops get theirs on
+`WorkflowEntry.route_group` (applied by canonical name from `_ROUTE_GROUP_BY_OP` in
+`workflow_entries.py`; aliases share the entry, so one value per entry); the six registry-only
+canonicals carry theirs in `ROUTE_GROUPS` beside `ACTION_DESCRIPTIONS`; `RoutingOperation.route_group`
+is filled from those, so the grammar is still derived. **The flat router prompt does not read the
+field**: the rendered catalog is byte-identical before and after, and a test pins that it names no
+group and no stage-1 line. It exists so the two-stage router (later steps, behind a flag, default
+off) can derive stage 1 from the registry. The ratchet is `TestRouteGroupRatchet2149` in
+`tests/test_architecture_enforcement.py`: every op has a group, the groups partition
+`grammar.names()`, none is empty or over 12 ops, membership equals its `EXPECTED` table (a move is
+a deliberate edit there), and the enum order is pinned.
+
 ### First deletion (2026-09-27): `REMINDER_PATTERNS` + `REMINDER_QUERY_PATTERNS`
 
 The gate's `--list REMINDER_PATTERNS` / `--list REMINDER_QUERY_PATTERNS` calls (run
