@@ -96,18 +96,10 @@ WARM_PASSWORD = "canonical-test-warm-2026"
 OUTPUT_DIR = Path(__file__).parent
 
 
-def _find_key(obj, key):
-    """First value stored under ``key`` anywhere in a nested dict/list (the intent's slots move between keys)."""
-    if isinstance(obj, dict):
-        if key in obj:
-            return obj[key]
-        obj = list(obj.values())
-    if isinstance(obj, list):
-        for v in obj:
-            found = _find_key(v, key)
-            if found is not None:
-                return found
-    return None
+# Arch 2026-10-31 19:20 (decisions.log 19:20): Q37/Q38's canonical label holds while the served
+# context.reason is this. Q38's no_uploaded_documents branch runs after #1979's text/conversation
+# exit to the floor, so that reason proves the slot wasn't text or conversation.
+EXPECTED_CONTEXT_REASON = {37: "fewer_than_two_bound_files", 38: "no_uploaded_documents"}
 
 
 def _load_cred_file():
@@ -284,8 +276,8 @@ CANONICAL_QUERIES = [
     (37, "Compare these two documents", "Documents", "canonical", "M2", "M2-feature-pending"),
     # #1386 (Arch 2026-10-31 19:11, decisions.log 19:15): was "floor" (Lead-signed 10-22 on #1979). #1979 returns
     # summarize_document to the floor only when the classifier's source_type is text or conversation; with nothing
-    # uploaded the served action asks for the file. Condition: each run records Q38's source_type slot
-    # (intent_source_type column); text or conversation there is a #1979 regression, not a stale label.
+    # uploaded the served action asks for the file. Condition (Arch 19:20): the served context.reason is
+    # no_uploaded_documents (EXPECTED_CONTEXT_REASON); anything else is reported as a #1979 check failure.
     (
         38,
         "Synthesize these sources into a summary",
@@ -714,7 +706,7 @@ def run_query(
         "actual_routing_category": None,
         "actual_intent_category": None,
         "actual_intent_action": None,
-        "intent_source_type": None,
+        "intent_context_reason": None,
         "http_status": None,
         "response_text": "",
         "response_preview": "",
@@ -761,13 +753,20 @@ def run_query(
 
         result["actual_intent_category"] = intent_data.get("category")
         result["actual_intent_action"] = intent_data.get("action")
-        # Arch 10-31: the Q38 condition (source_type slot recorded every run)
-        result["intent_source_type"] = _find_key(intent_data, "source_type")
+        ctx = intent_data.get("context")
+        result["intent_context_reason"] = ctx.get("reason") if isinstance(ctx, dict) else None
         result["response_text"] = message
         result["response_preview"] = message[:200]
         result["actual_routing"] = determine_actual_routing(intent_data, message, data)
         result["actual_routing_category"] = determine_routing_by_category(intent_data)
         result["routing_pass"] = routing_match(expected_routing, result["actual_routing"])
+        want = EXPECTED_CONTEXT_REASON.get(query_num)
+        if want and result["intent_context_reason"] != want:
+            # The canonical label rests on this reason (Arch 10-31); a different one fails routing.
+            result["routing_pass"] = False
+            print(
+                f"  ⚠️ Q{query_num}: context.reason {result['intent_context_reason']!r}, expected {want!r} (#1979 check)"
+            )
 
         # Tier A heuristic
         h = heuristic_check(message)
@@ -853,7 +852,7 @@ CSV_FIELDS = [
     "routing_pass",
     "actual_intent_category",
     "actual_intent_action",
-    "intent_source_type",
+    "intent_context_reason",
     "tier_a_verdict",
     "judge_relevance",
     "judge_context",
