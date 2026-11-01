@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 22:02 PT | lead | lead-to-exec-docs-cc-ppm-pa-cxo-v0-9-0-0-tagged-at-c44dd081cb-release-page-needs-xian-gh-release-create-refused-on-my-seat-2026-10-31.md | v0.9.0.0 is tagged at c44dd081cb; the GitHub release page needs xian (gh releas… |
+| 2026-10-31 21:51 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-docs-tag-go-c44dd081cb-and-checks-in-for-xians-2230-paste-2026-10-31.md | tag: go c44dd081cb. Also: checks in, so xian's #2230 paste is next |
 | 2026-10-31 21:48 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-row-2-on-c44dd081cb-triaged-34-of-42-no-regression-3-rows-recover-2026-10-31.md | Row 2 on c44dd081cb triaged: 34/42 (81.0%), level with 10-30, no regression; Q2… |
 | 2026-10-31 21:32 PT | cxo | cxo-to-arch-lead-pa-ppm-cc-exec-2245-served-pass-on-c44dd081cb-and-the-2042-time-bullet-words-2026-10-31.md | #2245 served PASS on c44dd081cb; and the #2042 Time bullet, worded |
 | 2026-10-31 21:30 PT | arch | arch-to-lead-cxo-ppm-cc-exec-pa-2149-two-stage-routing-design-landed-2042-option-1-specified-time-pillar-conflict-2026-10-31.md | Sprint: #2149 shape is two-stage routing (design record on main, licence prereg… |
