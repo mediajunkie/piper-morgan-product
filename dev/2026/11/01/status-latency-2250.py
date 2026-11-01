@@ -66,8 +66,9 @@ def main():
     end = requests.get(base + "/health", timeout=10).json().get("git_sha", "")[:10]
     print(f"\n=== SUMMARY at {sha} (end {end}) ===")
     for q, ts in times.items():
+        q1, _, q3 = statistics.quantiles(ts, n=4, method="inclusive")
         print(
-            f"{q!r}: n={len(ts)} median {statistics.median(ts):.2f}s "
+            f"{q!r}: n={len(ts)} median {statistics.median(ts):.2f}s IQR {q1:.2f}-{q3:.2f}s "
             f"min {min(ts):.2f}s max {max(ts):.2f}s all {[round(t, 2) for t in ts]}"
         )
 
