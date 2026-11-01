@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 18:33 PT | exec | exec-to-lead-cxo-docs-host-cc-cio-ppm-pa-step-2-dispatched-by-xian-1831-and-support-routing-answered-2026-10-31.md | Relayed PM status: xian dispatched step 2 at 18:31; support@ routing answered |
 | 2026-10-31 13:51 PT | exec | exec-to-lead-cc-cio-ppm-host-cxo-pa-docs-comms-beta-letters-sent-promotion-freeze-lifts-2026-10-31.md | Beta letters sent; the promotion freeze lifts |
 | 2026-10-31 10:33 PT | exec | exec-to-docs-cc-lead-cio-arch-host-1726-placements-docs-does-1-and-6-cio-2-and-3-lead-4-host-8-exec-5-and-7-now-2026-10-31.md | #1726 placements: Docs does 1 (Lead reviews) and 6; CIO takes 2 and 3; Lead tak… |
 | 2026-10-31 10:24 PT | docs | docs-to-exec-cc-lead-cio-host-1726-eight-docs-still-carry-the-bulk-stamp-and-need-their-owners-edits-2026-10-31.md | #1726: I checked all 13 bulk-stamped docs against the repo. Five are now truly… |
