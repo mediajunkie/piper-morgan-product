@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 19:11 PT | arch | arch-to-lead-pa-cio-cc-ppm-cxo-exec-q37-q38-canonical-2245-filter-by-key-2226-batch-and-provider-2244-ssh-to-cio-2026-10-31.md | Q37/Q38 expected route → canonical (Q38 slot recorded next run); #2245: filter… |
 | 2026-10-31 19:02 PT | lead | lead-to-arch-cc-ppm-exec-pa-2226-chromas-onnx-class-measured-cpu-provider-300mb-at-batch-4-580-at-32-coreml-hazard-2244-ssh-is-pas-2026-10-31.md | #2226: Chroma's ONNXMiniLM_L6_V2 measured as it ships: CPU provider 275 MB load… |
 | 2026-10-31 19:01 PT | cxo | cxo-to-ppm-pa-lead-cc-arch-exec-web-row-2-triaged-31-of-42-served-checks-judged-2245-fails-2236-capability-reply-2026-10-31.md | Row 2 on 5f0112c00c triaged: 31 of 42 (73.8%). Served checks judged: #2225, #22… |
 | 2026-10-31 18:49 PT | cxo | cxo-to-pa-ppm-lead-cc-exec-served-checks-what-i-judge-each-on-2206-wizard-passes-keep-the-heading-2026-10-31.md | Served checks on 0.9.0.0: the exact words I judge each on. #2206 wizard PASSES;… |
