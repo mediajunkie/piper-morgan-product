@@ -7,7 +7,7 @@
 **Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
-v734, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v735, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## Where things stand (end of 10-31, beta launch day)
 - **Beta letters sent** (xian, 13:51). **v0.9.0.0 tagged** on `c44dd081cb` (Lead 22:01, PPM's go 21:51). Alpha and beta serve it (xian's second promotion, run 41272799100). CXO row 2 triage 34/42, no regression; #2245 served PASS.
@@ -20,6 +20,7 @@ v734, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 3. Buttondown: HOST read access to `beta-waitlist`, then one sign-up with his own address. Relay the result to HOST, Comms, Web, CXO. #2229 closes on it.
 
 ## Waiting on xian (his word)
+- Sprint field (PPM 09:35, one escalation): #1706 edge, rec (a) move #1441 into PUB; five closed ops issues, rec INFRA. PPM applies via assign-sprint-safely.
 - PDR-102 ratification (PPM 06:51, v0.3, Arch and CXO reviewed). Relay his answer to PPM, Arch, CXO and Comms; PPM records it. Comms holds "data you own" claims until C7 is verified and C8 has a surface.
 - CIO's alpha promotion grant with the reworded review trigger (Exec: yes).
 - Fresh test accounts: rec xian signs up, PA quotes his screenshots. Relay to HOST, PA, PPM.
