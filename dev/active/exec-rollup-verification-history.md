@@ -309,3 +309,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v727, 2026-10-31 21:20 PDT: first sprint set via PPM 21:17, so Sprint yes, #1300, #2229 follow-ups, Slack 1.0 and the first-sprint card come off; Buttondown access and #1514 submission added to Your hand.
 - v728, 2026-10-31 21:30 PDT: second promotion done (c44dd081cb); tag and flag moved to tomorrow morning; HOST's test-code channel question added (rec a).
 - v729, 2026-10-31 21:40 PDT: #2229 live (Web 21:5x) on the Done card; the code-channel question is reframed after PA's no-raw-credential rule, recommending xian runs the fresh-account turns, as on 10-29 and 10-30.
+- v730, 2026-10-31 22:04 PDT: tag v0.9.0.0 on c44dd081cb (Lead 22:01) moved to Done; the morning card is three pastes: gh release create (refused on Lead's seat), the set_default_repo flag, and a Buttondown grant plus confirm-email test.

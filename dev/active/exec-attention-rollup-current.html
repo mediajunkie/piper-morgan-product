@@ -37,20 +37,20 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Saturday 31 October</h1>
-<p class="meta">Exec · v729, rebuilt 21:40 PDT Sat 10-31 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v730, rebuilt 22:04 PDT Sat 10-31 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
 <div class="card hot">
-<p class="ct">Tomorrow morning: the tag, then the switch</p>
+<p class="ct">Tomorrow morning: three pastes, about 10 minutes</p>
 <ol>
-<li><b>Done:</b> you ran the second promotion. Alpha and beta serve 0.9.0.0 at <code>c44dd081cb</code>, which includes the #2245 fix (PPM and PA read it at 21:24 and 21:25).</li>
-<li><b>Nothing for you:</b> Lead checks what&rsquo;s served, PA quotes the two capability replies, and CXO judges them. Then PPM sends &ldquo;tag: go&rdquo;.</li>
-<li><b>Only after PPM mails &ldquo;rows 2 and 3 are in&rdquo;: switch on <code>set_default_repo</code>.</b> You said yes to PPM at 20:21. CIO can&rsquo;t read or set the Fly secret from its seat, so it&rsquo;s your paste. Setting it restarts the machine, which is why it waits. Run the first line, then put its exact output into the second:
+<li><b>Publish the v0.9.0.0 release page.</b> Lead tagged <code>c44dd081cb</code> at 22:01 on PPM&rsquo;s go, but Claude Code&rsquo;s auto-mode safety check stops agents from publishing the release page. GitHub still shows v0.8.14.0 as Latest. Run this from an up-to-date checkout:
+<pre>gh release create v0.9.0.0 -R mediajunkie/piper-morgan-product --title "v0.9.0.0 &mdash; private beta" --notes-file docs/releases/RELEASE-NOTES-v0.9.0.0.md --latest</pre></li>
+<li><b>Switch on <code>set_default_repo</code></b>, which you said yes to at 20:21. The checks are done (PPM, 21:51). Run the first line, then put its exact output into the second:
 <pre>fly ssh console -a piper-morgan -C "printenv PIPER_INVERSION_LIVE_CATEGORIES"
 fly secrets set -a piper-morgan PIPER_INVERSION_LIVE_CATEGORIES="&lt;the value printed above&gt;,set_default_repo"</pre>
-Then tell me what both printed, and I&rsquo;ll pass it to CIO.</li>
-<li>Then PA&rsquo;s probe and one row 2 run.</li>
+Tell me what both printed, and I&rsquo;ll pass it to CIO. Then PA runs its probe and one row 2.</li>
+<li><b>Buttondown:</b> give HOST read access to <code>beta-waitlist</code>, and sign up once at pipermorgan.ai/try/beta/ with an address you own. If no confirmation email arrives, the &ldquo;check your inbox&rdquo; line on that page is untrue, and Comms rewords it. #2229 closes on that check.</li>
 </ol>
 </div>
 
@@ -96,7 +96,7 @@ Then tell me what both printed, and I&rsquo;ll pass it to CIO.</li>
 <p><a href="https://claude.ai/artifact/4Le3ZyacNXUqo19SQh5GpT">Ready for our discussion</a>. Five questions at the bottom. The draft waits on it.</p>
 </div>
 
-<div class="card win"><b>Done:</b> The public site no longer invites people to the alpha (#2229, live 21:5x): 0 &ldquo;alpha&rdquo; on all four pages, <code>/try/alpha/</code> redirects to <code>/try/invite/</code>, and the waiting list is the one way in. The first sprint is set (you with PPM tonight): 22 issues in, with about 30% held back for partner reports. #2242 is the allowlist (a). #1300 closed. Slack as a source is back in 1.0 (#2247), and the bot stays in Fast Follow. #2229: one way in, HOST keeps the list, and Web builds once CXO agrees. The beta letters went out today (step 1). Alpha and beta serve 0.9.0.0 on <code>5f0112c00c</code> (step 2, your run at 18:31; Lead and PPM read it at 18:35, Exec at 18:38). MVP closed 10-30. The hosted MCP serves 0.9.0.0 with #2218, #2241 and #2022 fixed. The beta docs and release notes are written.</div>
+<div class="card win"><b>Done:</b> <b>v0.9.0.0 is tagged</b> on <code>c44dd081cb</code> (Lead, 22:01). Every release check passed: CXO&rsquo;s triage is 34 of 42, the same as 10-30, with no regression and #2245 served clean. The public site no longer invites people to the alpha (#2229, live 21:5x): 0 &ldquo;alpha&rdquo; on all four pages, <code>/try/alpha/</code> redirects to <code>/try/invite/</code>, and the waiting list is the one way in. The first sprint is set (you with PPM tonight): 22 issues in, with about 30% held back for partner reports. #2242 is the allowlist (a). #1300 closed. Slack as a source is back in 1.0 (#2247), and the bot stays in Fast Follow. #2229: one way in, HOST keeps the list, and Web builds once CXO agrees. The beta letters went out today (step 1). Alpha and beta serve 0.9.0.0 on <code>5f0112c00c</code> (step 2, your run at 18:31; Lead and PPM read it at 18:35, Exec at 18:38). MVP closed 10-30. The hosted MCP serves 0.9.0.0 with #2218, #2241 and #2022 fixed. The beta docs and release notes are written.</div>
 
 <h2>Older, at your pace</h2>
 

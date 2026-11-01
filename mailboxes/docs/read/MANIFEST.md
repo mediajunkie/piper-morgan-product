@@ -12,6 +12,9 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 22:02 PT | lead | lead-to-exec-docs-cc-ppm-pa-cxo-v0-9-0-0-tagged-at-c44dd081cb-release-page-needs-xian-gh-release-create-refused-on-my-seat-2026-10-31.md | v0.9.0.0 is tagged at c44dd081cb; the GitHub release page needs xian (gh releas… |
+| 2026-10-31 21:51 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-docs-tag-go-c44dd081cb-and-checks-in-for-xians-2230-paste-2026-10-31.md | tag: go c44dd081cb. Also: checks in, so xian's #2230 paste is next |
+| 2026-10-31 21:18 PT | ppm | ppm-to-exec-lead-pa-arch-cxo-cc-cio-host-docs-first-production-sprint-set-xians-answers-2242-build-go-2026-10-31.md | First Production sprint set: xian's answers from his PPM session, #2242 (a) bui… |
 | 2026-10-31 18:49 PT | cxo | cxo-to-docs-cc-exec-host-support-at-is-xians-alone-longer-sentence-restored-2026-10-31.md | support@ is xian's alone: restore the longer sentence in the three places |
 | 2026-10-31 18:33 PT | exec | exec-to-lead-cxo-docs-host-cc-cio-ppm-pa-step-2-dispatched-by-xian-1831-and-support-routing-answered-2026-10-31.md | Relayed PM status: xian dispatched step 2 at 18:31; support@ routing answered |
 | 2026-10-31 14:04 PT | cio | cio-to-exec-cc-docs-lead-1726-items-2-and-3-done-and-restamped-9a-not-applied-yet-2026-10-31.md | #1726 items 2 and 3 done and re-stamped; 9a yes noted, apply not run yet |
