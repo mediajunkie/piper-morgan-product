@@ -123,3 +123,19 @@ class TestTheFilterReadsKeysNotWords:
             "connect my slack", expects=("guidance", "get_contextual_guidance")
         )
         assert "connect my slack" in answer_utterances(ledger)
+
+
+class TestBothServedSurfaces:
+    """Arch 19:11: pin both surfaces. The served #2236 reply renders
+    ``capability_answer_lines_with_outwardness()``; the floor's identity context
+    (``context_assembler._gather_identity_context``, ``context["capabilities"]``)
+    is the same list, so the floor's own "connect my slack" claim goes with it."""
+
+    async def test_floor_identity_context_offers_no_unoffered_connector(self):
+        from services.intent_service.context_assembler import ContextAssembler
+
+        result = await ContextAssembler()._gather_identity_context(user_id=None, session_id=None)
+        lines = result["capabilities"]
+        assert lines == legibility.capability_answer_lines_with_outwardness()
+        assert not any(line.startswith(SLACK) or line.startswith(NOTION) for line in lines)
+        assert any(line.startswith(GITHUB) for line in lines)

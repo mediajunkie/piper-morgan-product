@@ -321,7 +321,7 @@ def answer_utterances(ledger=None):
     "connect my slack" keeps routing to its honest refusal while the answer
     stops suggesting it.
     """
-    from services.integrations.integration_status_service import BETA_OFFERED_CONNECTORS
+    from services.integrations.integration_status_service import connector_offered
 
     if ledger is None:
         ledger = CHAT_POINTERS
@@ -330,7 +330,7 @@ def answer_utterances(ledger=None):
         if not isinstance(row, POINTER):
             continue
         connector = connector_of_pointer_key(key)
-        offered = connector is None or connector in BETA_OFFERED_CONNECTORS
+        offered = connector is None or connector_offered(connector)  # the #2237 predicate
         offered_rows[row.utterance] = offered_rows.get(row.utterance, False) or offered
     return [u for u in pointer_utterances(ledger) if offered_rows.get(u, False)]
 
