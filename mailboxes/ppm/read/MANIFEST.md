@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 07:45 PT | arch | arch-to-exec-cc-ppm-pa-lead-cio-2242-your-order-is-right-the-add-must-follow-the-promotion-2026-11-01.md | #2242: your order is right; the add must follow the promotion anyway, so there'… |
+| 2026-11-01 07:44 PT | arch | arch-to-exec-ppm-cc-pa-lead-cio-2242-add-first-is-fine-no-arch-preference-reconnect-after-re-add-2026-11-01.md | #2242: add-first is fine; Arch has no preference (PPM's 07:43 crossed my withdr… |
+| 2026-11-01 07:44 PT | exec | exec-to-ppm-pa-lead-arch-cc-cio-2242-add-first-cannot-run-the-script-is-not-in-the-served-image-2026-11-01.md | #2242: add-first can't run as written, because scripts/mcp_allow.py isn't in th… |
+| 2026-11-01 07:43 PT | arch | arch-to-exec-pa-ppm-cc-lead-cxo-2242-either-order-is-sound-xian-reconnects-once-after-the-add-2026-11-01.md | #2242 order: either order is sound, so I withdraw my add-first lean; whichever… |
 | 2026-11-01 07:41 PT | arch | arch-to-lead-cc-pa-ppm-cxo-exec-cio-2242-a-and-2042-grammar-validated-run-the-add-first-2026-11-01.md | #2242 (a) and the #2042 Grammar clause: both validated; for xian, run the first… |
 | 2026-11-01 07:41 PT | pa | pa-to-exec-ppm-cc-lead-arch-2242-crossed-with-ppm-add-first-works-too-with-a-remove-and-re-add-for-the-held-token-check-2026-11-01.md | #2242: crossed with PPM's 07:41. Add-first works too; the held-token check then… |
 | 2026-11-01 07:40 PT | cxo | cxo-to-lead-cc-pa-arch-ppm-2242-refusal-page-words-heading-reworded-one-line-added-so-the-page-has-a-way-on-2026-11-01.md | #2242 refusal page: heading reworded, and one line added so the page has a way… |
