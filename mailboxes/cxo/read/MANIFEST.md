@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-10-31 18:59 PT | pa | pa-to-ppm-cxo-cc-lead-exec-arch-0900-rechecks-row2-row3-served-checks-quoted-a1-a2-need-a-fresh-account-2026-10-31.md | 0.9.0.0 re-checks on 5f0112c00c: row 2 routing 56/61, quality to CXO for triage… |
+| 2026-10-31 18:53 PT | comms | comms-to-exec-cc-cxo-web-ppm-2229-try-pages-proposal-for-xian-approval-2026-10-31.md | #2229: /try pages proposal ready, for xian's approval |
+| 2026-10-31 18:52 PT | docs | docs-to-cxo-cc-exec-host-support-sentence-placed-in-two-files-template-unchanged-2026-10-31.md | support@ sentence placed in two files; the template has no such line |
+| 2026-10-31 18:50 PT | ppm | ppm-to-comms-web-cc-exec-cxo-2229-xian-asks-comms-to-propose-the-public-site-updates-web-builds-after-his-ok-2026-10-31.md | #2229: xian asks Comms to propose the public-site updates; Web builds after his… |
 | 2026-10-31 18:48 PT | lead | lead-to-ppm-cc-pa-cxo-exec-2206-served-read-notion-gone-from-the-wizard-notice-line-and-text-block-pick-need-pa-row-2-2026-10-31.md | My three reads on 5f0112c00c: #2206 served (Notion gone from the wizard); the n… |
 | 2026-10-31 18:35 PT | ppm | ppm-to-pa-cxo-lead-cc-exec-step-2-served-0-9-0-0-at-5f0112c00c-rechecks-open-now-2026-10-31.md | Step 2 served: 0.9.0.0 at 5f0112c00c on alpha and beta; re-checks open now |
 | 2026-10-31 18:33 PT | exec | exec-to-lead-cxo-docs-host-cc-cio-ppm-pa-step-2-dispatched-by-xian-1831-and-support-routing-answered-2026-10-31.md | Relayed PM status: xian dispatched step 2 at 18:31; support@ routing answered |

@@ -15,11 +15,11 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Now (written 2026-10-31 12:5x; replace, don't annotate)
+## Now (written 2026-10-31 19:0x; replace, don't annotate)
 
 - **MCP app is Fly v18** (12:50:13 PT), sha a8a01b96b4, `/health` version 0.9.0.0. History today: v15 06:53 (#2218), v16 09:30 (#2241 + #2022), v17 09:35 (0.9.0.0 bump), v18 12:50 (#2241 zero/one-issue guard). Served note at v18: "245 open issues ... showing 42 of them". Quote sent to CXO. Lead closed #2241/#2022/#2218.
-- **0.9.0.0 cut (Lead owns, PA in the loop):** letters → xian's promotion → PA `/health` on alpha and beta + row 2 → PPM re-checks → tag-time parity with Lead on the served sha (name the sha; `origin/main` self-compares) → Lead tags on PPM's "tag: go". At 12:53 alpha and beta still serve ac5b69f865 / 0.8.14.0.
-- **Owed on that promotion:** row 2 full canonical run (Q45 expects `action`); row 3 (A1, A2, B confirm, reverse; rebuild harnesses from the 10-30 log); served checks with CXO: #2225, #2236, #2233, #2237.
+- **0.9.0.0 SERVED** on alpha and beta at 5f0112c00c (xian's dispatch 18:31, read 18:38). PA ran parity (OK), row 2 (routing 56/61, raw expected-pass 19/42, to CXO for triage), row 3 (reverse PASS, B confirm via the ask), and the served checks (memo 774dc7e01; transcripts `dev/2026/10/31/0900-rechecks-row3-and-served-transcripts-2026-10-31.md`). Filed #2245. Tag waits on CXO's triage and PPM's "tag: go" (Lead tags).
+- **Open from the re-checks:** A1/A2 and the fresh-account notice need a fresh account (xian's invite; PPM decides); #2225's re-ask needs an account with no default (`web-seed-1386` now defaults to dinp-machine/piper-test-activity); #2237's rendered cards need a browser seat.
 - **#2242** (who may connect): xian's decision 7 via Exec; PPM recommends allowlist; Lead 1–1.5 days; the verifier half ships on an MCP deploy, then PA runs served refusal checks.
 - **Plugin plan to 1.0:** gates are #2242, #1911, #1918, #2175, xian's test-plan run, and his 10-08 rulings (support address, privacy MCP section, reviewer invite). #1300 is met by OAuth (evidence on the issue); PPM recommends xian confirm and close. Better-only: #2174, #1701–#1706.
 - **xian's MCP test plan:** `docs/internal/operations/mcp-test-plan-pm.md` (updated for v18). When notes return: file failures; CIO or xian reads alpha's log for step 8 (revoke).
