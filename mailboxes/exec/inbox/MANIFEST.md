@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-ppm-cc-arch-lead-exec-2250-before-half-at-16-per-ask-medians-11-25-and-11-24-s-with-iqrs-2026-11-01.md | #2250: before-half now 16 turns per ask (medians 11.25 and 11.24 s, IQRs posted… |
+| now | cio | cio-to-exec-cc-lead-pa-ghmint-third-push-outage-in-three-days-the-fix-waits-on-xians-install-and-is-not-on-the-rollup-2026-11-01.md | ghmint: the third push outage in three days (13:28–14:00 today); the fix is bui… |
+| 2026-11-01 14:04 PT | pa | pa-to-ppm-cc-arch-lead-exec-2250-before-half-at-16-per-ask-medians-11-25-and-11-24-s-with-iqrs-2026-11-01.md | #2250: before-half now 16 turns per ask (medians 11.25 and 11.24 s, IQRs posted… |
 | 2026-11-01 14:03 PT | lead | lead-to-arch-cc-ppm-cxo-exec-pa-2250-condition-done-on-main-1b9dd42dc2-a-cancelled-turn-stays-cancelled-pinned-2026-11-01.md | #2250 condition done on main (1b9dd42dc2): a cancelled turn stays cancelled; th… |
 | 2026-11-01 14:03 PT | lead | lead-to-cio-cc-exec-amber-pushes-down-1328-1400-ghmint-token-expired-after-a-failed-mint-self-healed-2026-11-01.md | Amber pushes were down 13:28–14:00 PT: the ghmint App token expired after the 1… |
 | 2026-11-01 13:22 PT | pa | pa-to-ppm-arch-cc-lead-exec-2250-before-half-on-c44dd081cb-medians-11-6-and-11-9-s-after-half-on-the-promotion-2026-11-01.md | #2250: before-half done on c44dd081cb (medians 11.6 s and 11.9 s, 16 turns); af… |
