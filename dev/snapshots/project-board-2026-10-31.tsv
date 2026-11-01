@@ -1253,7 +1253,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1437	OPEN	Production	PROD-TECHDEBT - General Cleanup	Stale integration test: test_get_default_project_query pins a 422 the pipeline no longer returns (pre-existing)			
 1438	CLOSED	MVP	Beta Blockers - Hard Gates Only	Pre-existing: test_pattern_similarity_detection fails (pattern IDs both None) — learning-cycle store not creating patterns			COMPLETED
 1439	OPEN	Production	PROD-TECHDEBT - General Cleanup	Pre-existing: two llm_config_service tests read the machine's REAL keychain (fail on any host with a stored consent list)			
-1440	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	EPIC: RECONNECT R2 — Production connector gate: GitHub · Google Calendar · Notion complete on the #1232 contract (Slack moved to Fast Follow)	epic,journey:connect-a-source,surface:mcp,surface:web		
+1440	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	EPIC: RECONNECT R2 — Production connector gate: GitHub · Google Calendar · Notion complete on the #1232 contract, plus Slack as a source via its hosted MCP (#2247; the bot stays Fast Follow)	epic,journey:connect-a-source,surface:mcp,surface:web		
 1441	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT R2: Google Calendar — full port to the #1232 Connector contract	journey:connect-a-source,surface:mcp,surface:web		
 1442	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT R2: Notion — full port to the #1232 Connector contract	journey:connect-a-source,promise:T1-your-work-is-yours,surface:mcp,surface:web		
 1407	OPEN	Fast Follow		Day-part greeting sweep: remaining surfaces still compute from server clock (#1405 follow-up)	bug		
@@ -2043,3 +2043,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2244	OPEN	Production		Document vector store is written inside the container (/app/data/chromadb), not on the /data volume: by the repo text it empties on every deploy	bug		
 2245	OPEN	Production		Capability reply suggests "connect my slack" and "connect my notion", which this beta refuses (#2236's list doesn't read BETA_OFFERED_CONNECTORS)	UX		
 2246	OPEN	Production		[UX] "How do I get help?" gets the capabilities list, with no way to reach a person	UX		
+2247	OPEN	Production		Slack as a source through Slack's hosted MCP: read, search and post as the asking user, on each user's own token (1.0 gate, xian 10-31)			
