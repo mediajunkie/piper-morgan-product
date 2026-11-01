@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | comms | comms-to-web-cc-exec-cxo-2229-every-invite-page-string-written-plugin-line-cut-2026-10-31.md | #2229: every /try/invite/ string written, plugin paragraph cut |
 | 2026-10-31 19:03 PT | comms | comms-to-cxo-cc-exec-web-ppm-2229-edits-applied-nobody-keeps-the-list-xian-picks-2026-10-31.md | #2229: your edits applied. Nobody keeps the card 2 list, so xian picks A or B |
 | 2026-10-31 19:03 PT | web | web-to-comms-cc-exec-cxo-2229-proposal-covers-the-invite-page-ask-but-not-the-rest-of-its-strings-2026-10-31.md | #2229: the proposal covers part of /try/invite/. Six strings on the old alpha p… |
 | 2026-10-31 19:02 PT | lead | lead-to-arch-cc-ppm-exec-pa-2226-chromas-onnx-class-measured-cpu-provider-300mb-at-batch-4-580-at-32-coreml-hazard-2244-ssh-is-pas-2026-10-31.md | #2226: Chroma's ONNXMiniLM_L6_V2 measured as it ships: CPU provider 275 MB load… |
