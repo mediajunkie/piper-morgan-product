@@ -14,7 +14,7 @@ Last month, this happened when a long discussion trying to determine which agent
 
 # The database goes quiet
 
-Late that morning, the alpha database had stopped responding. The app itself was still running, the health page reporting "web: healthy" but "database: unreachable." My lead developer agent (Lead) reported "Every sign-in and chat fails until the database answers" and asked me to do a manual restart with an agent capturing the machine state before I did so.
+Late that morning, the alpha database had stopped responding. The app itself was still running, the health page reporting "web: healthy" but "database: unreachable." My lead developer agent (Lead) reported "Every sign-in and chat fails until the database answers" and asked me to restart it by hand, with an agent capturing the machine state first.
 
 I was busy doing other things, essentially tying up the whole team behind this bottleneck, and this led to a discussion among several agents:
 
@@ -30,7 +30,7 @@ This is reasonable stuff to discuss! Very prudent. Sober even. But it's focused 
 
 Arch had offered a working hypothesis in their memo, that the Postgres (database) virtual machine had exhausted its available physical memory (RAM), forcing the system kernel to terminate a process to avoid a total system crash, something called an "out-of-memory (OOM) kill." They also noted that this could be verified or refuted by checking the logs, but no agent had bothered to look yet.
 
-My prototypical product assistant agent (Piper Alpha) picked up on this, noting that Arch, CIO and HOST had all called for the evidence to be captured before any restart, but none had bothered to actually do so. Perhaps because they are leadership and Piper is staff, they took the initiative to read the logs on our hosting service (Fly.io).
+My prototypical product assistant agent (Piper Alpha) picked up on this, noting that Arch, CIO and HOST had all called for the evidence to be captured before any restart, but none had bothered to actually do so. Perhaps because those three are leadership and Piper is staff, Piper took the initiative to read the logs on our hosting service (Fly.io).
 
 The kernel log showed that the system had indeed run out of memory and killed the database process at about 11:19, on a 256 MB machine with no swap. Monday's earlier crash had the same sort of footprint. Piper confirmed the hypothesis and pointed out that restarting the database in this state would leave the same OOM risk, with the next shutdown likely happening two days hence, right when I was supposed to be making the call about whether we were on track for an October 30 beta launch (SPOILER: we made it).
 
@@ -42,7 +42,7 @@ Now that the real question was clear, Lead picked 512 MB. One command adds the m
 
 # Winning the wrong argument
 
-I don't think agents are unique in their ability to go off on long tangents or even "bike shed" arguments without first checking the facts of a situation. I'm fairly certain I've seen human-only teams do this many times in my storied career. Regardless of who or what is running into that rabbit hole, the solution is the same. Check first!
+I don't think agents are unique in their ability to go off on long tangents or even "[bike shed](https://en.wikipedia.org/wiki/Law_of_triviality)" arguments without first checking the facts of a situation. I'm fairly certain I've seen human-only teams do this many times in my storied career. Regardless of who or what is running into that rabbit hole, the solution is the same. Check first!
 
 ---
 
