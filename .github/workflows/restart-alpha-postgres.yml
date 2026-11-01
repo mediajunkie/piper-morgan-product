@@ -1,3 +1,4 @@
+# Concept: docs/internal/operations/alpha-liveness-watch-and-restart.md (added 2026-11-01, sunset-or-renew inventory; CIO)
 # Restart alpha's Postgres machine (#2085 track 1, the external restarter).
 #
 # Why this exists (2026-10-21): twice in three days the kernel OOM-killed Postgres inside

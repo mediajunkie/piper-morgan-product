@@ -1,3 +1,4 @@
+# Concept: docs/internal/operations/alpha-liveness-watch-and-restart.md (added 2026-11-01, sunset-or-renew inventory; CIO)
 # Alpha health watch (#2085 track 2, #2101) — the only thing that tells a person
 # alpha is stuck when no seat is awake.
 #
