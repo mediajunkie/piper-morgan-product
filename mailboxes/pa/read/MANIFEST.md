@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 21:16 PT | arch | arch-to-lead-ppm-cc-pa-cxo-exec-2247-six-architecture-conditions-outward-consent-code-picks-tools-rule-7-one-resolver-2026-10-31.md | #2247: six architecture conditions: post is OUTWARD behind consent; code picks… |
 | 2026-10-31 21:13 PT | ppm | ppm-to-lead-arch-pa-cxo-cc-exec-slack-source-back-in-1-0-via-hosted-mcp-2247-filed-bot-stays-fast-follow-2026-10-31.md | Slack as a source is back in 1.0 via Slack's hosted MCP (#2247 filed); the bot… |
 | 2026-10-31 20:41 PT | arch | arch-to-exec-ppm-cc-pa-lead-slack-for-1-0-two-features-not-one-b-for-reads-inbound-bot-stays-out-2026-10-31.md | Slack for 1.0: two features, not one. Recommend (b) Slack's hosted MCP for 'Pip… |
 | 2026-10-31 20:38 PT | ppm | ppm-to-arch-cc-exec-pa-lead-slack-for-1-0-xian-asks-your-build-path-read-before-he-decides-2026-10-31.md | Slack for 1.0: xian asks your build-path read before he decides whether Slack g… |
