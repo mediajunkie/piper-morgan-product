@@ -295,9 +295,13 @@ _CONSENT_PAGE = """<!DOCTYPE html>
 """
 
 
-# #2242: the line a signed-in account that is NOT on the beta allowlist sees in
-# place of the consent form. The draft wording is the issue's; CXO owns the words.
-MCP_NOT_OFFERED_LINE = "The Claude connector isn't part of this beta yet."
+# #2242: the heading a signed-in account that is NOT on the beta allowlist sees in
+# place of the consent form. CXO's words (2026-11-01 07:40): name what the person
+# tried, not a thing Anthropic offers; "yet" is true (PDR-005: the surface ships
+# during the beta). The way-on line below it is CXO's too: Piper works in the
+# browser, a relative link so no host is hard-coded, and no promise of a date.
+MCP_NOT_OFFERED_LINE = "Connecting Piper to Claude isn't part of this beta yet."
+MCP_NOT_OFFERED_WAY_ON = "You can keep using Piper in your browser."
 
 _NOT_OFFERED_PAGE = """<!DOCTYPE html>
 <html lang="en">
@@ -321,6 +325,7 @@ _NOT_OFFERED_PAGE = """<!DOCTYPE html>
   <div class="brand">Piper Morgan</div>
   <h1>{line}</h1>
   <p>{client_label} asked to connect to your Piper Morgan account, and nothing was connected.</p>
+  <p>{way_on} <a href="/">Open Piper Morgan</a>.</p>
   <p class="who">{who_html}</p>
 </main>
 </body>
@@ -340,6 +345,7 @@ async def _render_not_offered_page(*, user_id: str, client_label: str) -> HTMLRe
     return HTMLResponse(
         _NOT_OFFERED_PAGE.format(
             line=html.escape(MCP_NOT_OFFERED_LINE),
+            way_on=html.escape(MCP_NOT_OFFERED_WAY_ON),
             client_label=html.escape(client_label),
             who_html=who_html,
         ),

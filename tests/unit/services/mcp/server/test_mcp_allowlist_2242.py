@@ -460,6 +460,32 @@ class TestConsentPageRefusesUnlisted:
         assert "consent_token" not in resp.text
         assert 'value="approve"' not in resp.text
 
+    def test_the_words_are_cxos(self):
+        """CXO 07:40 (11-01): the heading names what the person tried; the page has
+        a way on (Piper in the browser, a relative link, no promised date)."""
+        assert (
+            mcp_oauth.MCP_NOT_OFFERED_LINE
+            == "Connecting Piper to Claude isn't part of this beta yet."
+        )
+        assert mcp_oauth.MCP_NOT_OFFERED_WAY_ON == "You can keep using Piper in your browser."
+
+    async def test_the_page_has_a_way_on_and_still_no_form(self, wired, listing):
+        factory, scope = wired
+        client = await _register(PiperMCPOAuthProvider(session_scope=scope))
+        async with _alpha(UNLISTED) as http:
+            resp = await http.get(
+                mcp_oauth.AUTHORIZE_PATH,
+                params=_authorize_query(client.client_id, self.CHALLENGE),
+                headers={"Accept": "text/html"},
+            )
+        assert resp.status_code == 403
+        assert "You can keep using Piper in your browser." in resp.text
+        assert '<a href="/">Open Piper Morgan</a>' in resp.text
+        assert "nothing was connected" in resp.text
+        assert "<form" not in resp.text
+        assert 'type="hidden"' not in resp.text
+        assert "code=" not in resp.text
+
     async def test_a_forged_approve_post_mints_no_code(self, wired, listing):
         """Even with a valid consent token (as if the form had been shown), the
         POST is refused and no code row exists. Two independent refusals: the
