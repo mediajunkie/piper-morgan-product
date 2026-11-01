@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-CURRENT-STATE.md - Where We Are Right Now
 valid_from: "2025-09-30"
-last_updated: 2026-10-30
+last_updated: 2026-10-31
 last_verified: 2026-10-27
 size_cap_bytes: 12000
 ---
@@ -35,8 +35,7 @@ log, never here. Bump `last_updated` to the newest line's date, or CI fails. Ski
   *(CIO, 10-16:)* the **standing promotion grant is in force** since xian confirmed it 10-16 08:10 (decisions.log 10-16;
   `docs/internal/operations/alpha-promotion-standing-grant.md`): Lead promotes when Step 0 is READY, no new migration, 07:00-21:00 PT, with no daily count since 10-20 (xian): the next promotion waits for one green Alpha Health Watch run. From 10-23 (partners invited), a promotion waits for alpha's /health `services.chat_turns_last_30m.quiet` = true and `services.uptime_seconds` ≥ 1800; the promote step refuses otherwise (grant condition 3; count served 10-21 on 8e61423f1a, uptime check in the step from 8cdd2afbeb). `origin/main` builds; the droplet
   and `origin/production` are gone (09-29).
-- **Version** *(CIO, 2026-10-08, `git tag`)*: latest tag **v0.8.14.0** ("On Your Clock", 09-23). 0.9.0 is
-  reserved for beta.
+- **Version** *(Docs, 2026-10-31 22:04 PT, `git ls-remote --tags origin` and Lead's served reads)*: latest tag **v0.9.0.0** at `c44dd081cb74`, the private beta, served on alpha and beta. Prior tag v0.8.14.0 ("On Your Clock", 09-23). The GitHub release page is not created yet (`gh release create` was refused on Lead's seat, so it waits on xian); notes are `docs/releases/RELEASE-NOTES-v0.9.0.0.md`. 1.0.0.0 is the production release, cut when the Production milestone closes.
 - **MVP gate** *(PPM, 2026-10-30 17:11 PDT, `gh api …/milestones/5`; alpha `/health` git_sha `ac5b69f865`)*: **PASSED. #1386 and the MVP milestone closed on xian's Go (17:03 via Exec); hard stop Fri 10-30 held.** Alpha and beta serve `ac5b69f865`; no promotion before the first invitations (a new build re-runs rows 2-3). Open: PPM's send-time line check on xian's final letter; xian's tracking test (PPM's audit, pass 1: 14 known items, 13 open + #2225 `fix:not-served`).
   *3 not done (2 In Progress, 1 Product Backlog), 1,284 done. `gh issue list --milestone MVP --state open` also returns 3. On 10-19 it was 7 not done, 1,260 done.)* The MVP milestone **is**
   the beta gate. **Dates: design partners Fri 10-23, hard stop Fri 10-30** (baseline 10-05; slips are logged in

@@ -168,8 +168,7 @@ Piper Morgan is an AI-powered product management assistant being built in public
 *Refreshed 2026-09-22 by PA, per Docs' staleness flag during the context-floor-reduction audit
 (item 1) — the August section is superseded and available in git history for comparison.*
 
-- **Version**: v0.8.14.0 (tagged 2026-09-23; prior v0.8.13.0 2026-09-21), verified via `pyproject.toml` + `git tag`, not
-  copied from the prior snapshot.
+- **Version**: v0.9.0.0 (private beta, tag at `c44dd081cb74`, 2026-10-31; prior v0.8.14.0 2026-09-23), verified via `git ls-remote --tags origin` and Lead's served `/health` reads.
 - **Host + hosting**: the cohort still runs on Amber (Claude Code, persistent tmux, Model A stable
   per-agent worktrees) — unchanged since the 2026-07-25 migration. **New this week**: the
   product's own hosting migrated to Fly.io — alpha cut over 2026-09-22, joining beta on the same
