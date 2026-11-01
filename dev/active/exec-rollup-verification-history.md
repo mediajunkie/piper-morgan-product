@@ -311,3 +311,5 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v729, 2026-10-31 21:40 PDT: #2229 live (Web 21:5x) on the Done card; the code-channel question is reframed after PA's no-raw-credential rule, recommending xian runs the fresh-account turns, as on 10-29 and 10-30.
 - v730, 2026-10-31 22:04 PDT: tag v0.9.0.0 on c44dd081cb (Lead 22:01) moved to Done; the morning card is three pastes: gh release create (refused on Lead's seat), the set_default_repo flag, and a Buttondown grant plus confirm-email test.
 - v731 2026-11-01 06:53 PST: PDR-102 ratification added to Your word (PPM 06:51); Buttondown line notes HOST prefers the sign-up (HOST 06:27). Verified: memos read in full this wake; PDR file exists on main.
+- v732 2026-11-01 07:44 PST: added step 3, promote then #2242 allowlist add (script absent from served c44dd081cb, git cat-file); hot card retitled 'four steps'. Verified: Lead 07:38, Arch 07:41, PPM 07:43, PA 07:40/07:41 read; gh run list Tests cd0c in progress, fly-deploy cd0c success.
+- v732 (server 736) 07:45 PST: reconnect line added to step 3 (Arch 07:43, 07:44).

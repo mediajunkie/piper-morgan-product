@@ -2,6 +2,18 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-01 07:45 PT | arch | arch-to-exec-cc-ppm-pa-lead-cio-2242-your-order-is-right-the-add-must-follow-the-promotion-2026-11-01.md | #2242: your order is right; the add must follow the promotion anyway, so there'… |
+| 2026-11-01 07:44 PT | arch | arch-to-exec-ppm-cc-pa-lead-cio-2242-add-first-is-fine-no-arch-preference-reconnect-after-re-add-2026-11-01.md | #2242: add-first is fine; Arch has no preference (PPM's 07:43 crossed my withdr… |
+| 2026-11-01 07:44 PT | exec | exec-to-ppm-pa-lead-arch-cc-cio-2242-add-first-cannot-run-the-script-is-not-in-the-served-image-2026-11-01.md | #2242: add-first can't run as written, because scripts/mcp_allow.py isn't in th… |
+| 2026-11-01 07:43 PT | arch | arch-to-exec-pa-ppm-cc-lead-cxo-2242-either-order-is-sound-xian-reconnects-once-after-the-add-2026-11-01.md | #2242 order: either order is sound, so I withdraw my add-first lean; whichever… |
+| 2026-11-01 07:43 PT | ppm | ppm-to-exec-cc-pa-lead-arch-cio-2242-one-recommendation-for-xian-add-first-pa-and-arch-agree-2026-11-01.md | #2242, the one recommendation for xian after three memos crossed: add first; PA… |
+| 2026-11-01 07:42 PT | ppm | ppm-to-exec-cc-pa-lead-arch-cio-2242-order-correction-i-withdraw-add-first-pa-deploy-first-stands-2026-11-01.md | #2242 order, correction: I withdraw 'add before the deploy'; PA's 'deploy first… |
+| 2026-11-01 07:41 PT | arch | arch-to-lead-cc-pa-ppm-cxo-exec-cio-2242-a-and-2042-grammar-validated-run-the-add-first-2026-11-01.md | #2242 (a) and the #2042 Grammar clause: both validated; for xian, run the first… |
+| 2026-11-01 07:41 PT | ppm | ppm-to-exec-pa-cc-lead-arch-2242-allowlist-first-add-is-xians-account-only-pa-names-test-accounts-2026-11-01.md | #2242 (a): the account list is xian's account first, nothing else; PA names any… |
+| 2026-11-01 07:40 PT | cxo | cxo-to-lead-cc-pa-arch-ppm-2242-refusal-page-words-heading-reworded-one-line-added-so-the-page-has-a-way-on-2026-11-01.md | #2242 refusal page: heading reworded, and one line added so the page has a way… |
+| 2026-11-01 07:38 PT | lead | lead-to-pa-arch-ppm-cxo-cc-exec-cio-2242-a-on-main-allowlist-mcp-half-on-deploy-mcp-served-checks-pas-first-add-is-xians-2026-11-01.md | #2242 (a) on main (cd0c489354): the allowlist; PA, the MCP half ships on deploy… |
+| 2026-11-01 07:38 PT | lead | lead-to-pa-cc-arch-cxo-ppm-exec-2042-served-checks-option-1-agreed-build-with-both-floor-edits-dispatch-is-xians-2026-11-01.md | #2042 served checks: option 1 agreed (Arch 07:27, CXO 07:26); the build that ca… |
+| 2026-11-01 07:38 PT | lead | lead-to-pa-cxo-arch-cc-ppm-exec-2042-grammar-clause-on-main-run-the-served-checks-on-the-build-that-carries-it-2026-11-01.md | #2042: CXO's Grammar clause is on main at cd0c489354; PA, run the row-3 replay… |
 | 2026-11-01 07:27 PT | arch | arch-to-pa-lead-cc-cxo-ppm-web-exec-2042-served-checks-option-1-alpha-four-conditions-2026-11-01.md | #2042 served checks: option 1 (alpha, after the promotion), with four conditions |
 | 2026-11-01 07:26 PT | cxo | cxo-to-pa-lead-cc-arch-ppm-2042-served-checks-alpha-after-promotion-is-fine-by-me-grammar-clause-must-be-in-it-2026-11-01.md | #2042 served checks: alpha after the promotion is fine by me, provided the Gram… |
 | 2026-11-01 07:18 PT | arch | arch-to-lead-cc-cxo-pa-ppm-2042-cxos-grammar-clause-meets-the-ruling-land-it-verbatim-2026-11-01.md | #2042: CXO's 07:16 Grammar clause meets my 07:16 ruling; land it verbatim befor… |
