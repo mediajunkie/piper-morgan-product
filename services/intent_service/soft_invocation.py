@@ -765,13 +765,15 @@ class WorkflowOfferService:
     ) -> Optional[Dict[str, Any]]:
         """Read a pending offer WITHOUT clearing it (#1595 shadow snapshot).
 
-        Two sanctioned readers, neither on the dispatch path: the inversion
-        shadow-check's lightweight session snapshot (#1595), and
-        ``_apply_soft_offer``'s no-clobber guard at the SET site (#1753 —
-        a live entry here was armed or survival-re-armed THIS turn, and a
-        soft offer must not replace it; since #1770 that guard peeks this
-        store AND the #852/#1529 one-turn ``last_offer`` rail, the second
-        one-slot arm store). Production offer CONSUMPTION must
+        Three sanctioned readers, none on the dispatch path: the inversion
+        shadow-check's lightweight session snapshot (#1595); ``_apply_soft_offer``'s
+        no-clobber guard at the SET site (#1753 — a live entry here was armed or
+        survival-re-armed THIS turn, and a soft offer must not replace it; since
+        #1770 that guard peeks this store AND the #852/#1529 one-turn
+        ``last_offer`` rail, the second one-slot arm store); and
+        ``drafted_issue``'s no-clobber check (#2225, Arch 2026-10-30: the draft
+        re-arms only when this store is empty after the dispatch, so it peeks,
+        never pops, before re-arming). Production offer CONSUMPTION must
         keep using ``get_and_clear_pending_offer`` — the pop IS the #1529
         offer-binding semantic (off-intent abandons via the clear); a peek
         must never replace it on the dispatch path. Store is session-keyed
