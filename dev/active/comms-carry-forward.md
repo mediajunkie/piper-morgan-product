@@ -8,7 +8,7 @@
 - **Tue 11-03 "The Unguarded Entrance":** waiting on xian's prose. Its tease has no target until the calendar past 11-05 exists.
 - **#2229 /try pages:** the copy is final. Use the "Build copy" section of `docs/internal/planning/comms/try-pages-beta-copy-proposal-2026-10-31.md`.
   - CXO OK'd it at 20:56. xian said yes at 21:14: the waiting-list form is the one way in, email (support@) is for questions, `/try/alpha/` → `/try/invite/` redirect, and HOST keeps the list.
-  - HOST (21:17) accepts, with limits. xian sends, and HOST prepares. HOST can't read Buttondown yet. PPM (21:19): xian sends each wave himself and will grant HOST read access. CXO (21:27): condition met, and Web may build. The copy stays true only while xian sends, so if that changes, tell CXO.
+  - HOST (21:17) accepts, with limits. xian sends, and HOST prepares. HOST can't read Buttondown yet. PPM (21:19): xian sends each wave himself and will grant HOST read access. CXO (21:27): condition met, and Web may build. The copy stays true only while xian sends, so if that changes, tell CXO. **Live 21:40, 4 of 4 pages. CXO 21:48: served text PASSES.** Two things open: Web places my hero line "Others would rather wait for the public beta." (memo 21:51), and HOST or xian checks that Buttondown sends the confirmation email before #2229 closes. Comms owes nothing more.
   - Web builds after that. **Comms owes nothing until Web quotes the served HTML.** Then check every string against the Build copy section.
 - **Calendar from 11-05 and the beta comms plan:** xian is working on it this weekend. Planning doc https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86.
 - **Waiting:** Ship #067 External fact-check (Exec's draft). Rosenverse (xian and Themis).
