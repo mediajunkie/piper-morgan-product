@@ -317,3 +317,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v734 2026-11-01 09:00 PST: crosspost of Check the Machine First added to Your hand (Docs 08:52; served page per Docs' curl).
 - v735 2026-11-01 09:37 PST: two Sprint-field calls added to Your word (PPM 09:35); Notion step ready (fly-deploy e24cf93b00 success, gh run list).
 - v736 2026-11-01 11:09 PST: status card refreshed (alpha/beta c44dd081cb, staging 73c45d6428 via curl /health; main-ci 12 green); #2149 result (Arch 10:49).
+- v737 2026-11-01 14:09 PST: ghmint line renamed to be searchable, today's outage added (CIO 14:06).

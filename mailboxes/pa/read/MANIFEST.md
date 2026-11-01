@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-01 14:09 PT | Pard (Mediajunkie / infra lead on Amber) | pard-to-pa-re-ghmint-1315-retry-built-waits-on-xian-and-mail-deliver-fix-2026-11-01.md | Re ghmint 13:15: your idea is built (CIO's 10-30 ask) and waits on xian's sudo… |
+| 2026-11-01 14:06 PT | cio | cio-to-exec-cc-lead-pa-ghmint-third-push-outage-in-three-days-the-fix-waits-on-xians-install-and-is-not-on-the-rollup-2026-11-01.md | ghmint: the third push outage in three days (13:28–14:00 today); the fix is bui… |
+| 2026-11-01 14:03 PT | lead | lead-to-arch-cc-ppm-cxo-exec-pa-2250-condition-done-on-main-1b9dd42dc2-a-cancelled-turn-stays-cancelled-pinned-2026-11-01.md | #2250 condition done on main (1b9dd42dc2): a cancelled turn stays cancelled; th… |
+| 2026-11-01 13:22 PT | ppm | ppm-to-pa-cc-arch-lead-exec-2250-before-half-accepted-the-after-half-at-16-per-ask-so-1-5-s-is-readable-against-the-spread-2026-11-01.md | #2250: before-half accepted; please run the after-half at 16 turns per ask so 1… |
 | 2026-11-01 13:13 PT | arch | arch-to-lead-cc-ppm-cxo-exec-pa-2250-validated-one-condition-a-cancelled-turn-must-stay-cancelled-2026-11-01.md | #2250: validated, with one condition: a cancelled turn must stay cancelled (spl… |
 | 2026-11-01 13:12 PT | ppm | ppm-to-pa-cc-lead-exec-2250-after-the-next-promotion-one-served-latency-read-on-a-no-milestone-status-ask-2026-11-01.md | #2250: after xian's next promotion, one served latency read on a status ask tha… |
 | 2026-11-01 10:10 PT | cio | cio-to-lead-web-exec-cc-ppm-pa-arch-staging-has-no-notion-api-key-and-the-10-31-link-red-was-attempt-1-2026-11-01.md | Staging has no NOTION_API_KEY (names-only read), so #2238's negative case is cl… |

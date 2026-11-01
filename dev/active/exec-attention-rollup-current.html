@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Saturday 31 October</h1>
-<p class="meta">Exec · v736, rebuilt 11:09 PST Sun 11-01 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v737, rebuilt 14:09 PST Sun 11-01 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -77,7 +77,7 @@ Then reconnect the Piper connector in Claude once (one consent click). If Claude
 
 <div class="card act">
 <ol>
-<li><b>Token-renewal fix</b> (Pard&rsquo;s console v185, one sudo paste). Do this one first: the renewal failed at 06:43 and blocked every seat&rsquo;s pushes for 31 minutes.</li>
+<li><b>GitHub token-renewal fix (ghmint)</b> (Pard&rsquo;s console v185, one sudo paste; mediajunkie <code>ea2bdcd</code>: retries within a run, a new token every 15 minutes). Do this one first. A single failed renewal stops every seat&rsquo;s pushes for about 30 minutes, and it has happened three days running: 10-30 (31 min), 10-31 (31 min), today 13:28 to 14:00 (32 min) (CIO 14:06).</li>
 <li><b>Load the Exec and Lead LaunchAgents</b> (console v184).</li>
 <li><b>Two reads on the Fly server, no rush</b> (no agent seat is allowed to read production). For #2244, run <code>fly ssh console -a piper-morgan -C "ls -la /app/data /data"</code> and paste the output on the issue. For #2226, read the peak on the memory panel for app piper-morgan, under Metrics, against 1,024 MB. Both inform the sprint talk; neither blocks tonight.</li>
 <li><b>Optional: Lead&rsquo;s promotion permission</b> (the 14:00 paste), so Lead runs later promotions without you.</li>
