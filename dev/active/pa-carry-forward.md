@@ -15,16 +15,16 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Now (written 2026-10-31 19:0x; replace, don't annotate)
+## Now (written 2026-10-31 21:4x STOP; replace, don't annotate)
 
-- **MCP app is Fly v18** (12:50:13 PT), sha a8a01b96b4, `/health` version 0.9.0.0. History today: v15 06:53 (#2218), v16 09:30 (#2241 + #2022), v17 09:35 (0.9.0.0 bump), v18 12:50 (#2241 zero/one-issue guard). Served note at v18: "245 open issues ... showing 42 of them". Quote sent to CXO. Lead closed #2241/#2022/#2218.
-- **0.9.0.0 SERVED** on alpha and beta at 5f0112c00c (xian's dispatch 18:31, read 18:38). PA ran parity (OK), row 2 (routing 56/61, raw expected-pass 19/42, to CXO for triage), row 3 (reverse PASS, B confirm via the ask), and the served checks (memo 774dc7e01; transcripts `dev/2026/10/31/0900-rechecks-row3-and-served-transcripts-2026-10-31.md`). Filed #2245. Tag waits on CXO's triage and PPM's "tag: go" (Lead tags).
-- **Open from the re-checks:** A1/A2 and the fresh-account notice need a fresh account (xian's invite; PPM decides); #2225's re-ask needs an account with no default (`web-seed-1386` now defaults to dinp-machine/piper-test-activity); #2237's rendered cards need a browser seat.
-- **#2242** (who may connect): xian's decision 7 via Exec; PPM recommends allowlist; Lead 1–1.5 days; the verifier half ships on an MCP deploy, then PA runs served refusal checks.
-- **Plugin plan to 1.0:** gates are #2242, #1911, #1918, #2175, xian's test-plan run, and his 10-08 rulings (support address, privacy MCP section, reviewer invite). #1300 is met by OAuth (evidence on the issue); PPM recommends xian confirm and close. Better-only: #2174, #1701–#1706.
-- **xian's MCP test plan:** `docs/internal/operations/mcp-test-plan-pm.md` (updated for v18). When notes return: file failures; CIO or xian reads alpha's log for step 8 (revoke).
-- **Owed after the set_default_repo flip:** fresh-session probe, confirm and clear, then row 2.
-- **Record if xian quotes them:** his beta wizard's end and first reply.
+- **MCP app is Fly v18** (12:50 PT 10-31), sha a8a01b96b4, 0.9.0.0, `/health` healthy at 21:16. Next MCP deploy: **#2242 (a)**, the allowlist. Lead builds it from the 11-01 06:47 START, MCP half first, then PA deploys it with `scripts/deploy-mcp.sh --dry-run` and the real run. After that, the served refusal checks: a non-allowlisted account refused at authorize, refresh and `verify_token`, failing closed.
+- **0.9.0.0 served at c44dd081cb** on alpha and beta (xian's dispatch, watch read 21:25:29). It carries #2245 (`5df1db03fa`). PA's half of the release checks is done: the two capability quotes (CXO PASS 21:32), parity OK, and row 2 (routing 58/61, raw expected-pass 22/42, outputs at 23b4453d98, memo to CXO and PPM). **The tag waits on** CXO's row-2 triage of Q2, Q4, Q26 and Q50, then PPM's "tag: go", then Lead tags `v0.9.0.0` on c44dd081cb.
+- **set_default_repo (#2230):** xian said yes by name. CIO's gate mirror is on main (`79004122c0`). The flag is xian's paste (CIO's memo 20:27), after PPM's "checks in" mail. **Then PA owes:** the fresh-session probe (`setdefault_probe.py` sits in the 10-31 session scratchpad, which may not survive; if it is gone, rebuild it from the 10-31 log): the setter's confirm offered, then declined. Then one row 2.
+- **Fresh-account checks** (A1, A2, the first-reply notice line, #2225's re-ask with no default): xian OK'd test mints (PPM 21:25). HOST won't mint until a handover channel exists. PA told Exec that PA can't take "PA mints" (role card). So these go to Web or xian's own hand; Exec settles it with xian on 11-01.
+- **Not served, any browser seat:** #2237's rendered grey cards. Pins only: #2236's failed-status line, #2233's standup.
+- **#2247** (Slack via Slack's hosted MCP, in 1.0): Lead sized it at 4.5–5.5 days plus #1514, with Arch's six conditions. PA owes the served turns when it lands. Not in the first sprint yet.
+- **Plugin plan to 1.0:** gates are #2242, #1911, #1918, #2175, xian's test-plan run, and his 10-08 rulings. PPM: the plugin and MCP lane is the sprint after this one. #1300 is closed as met.
+- **xian's MCP test plan:** `docs/internal/operations/mcp-test-plan-pm.md` (v18). When his notes come back, file the failures. CIO or xian reads step 8's revoke log.
 
 ## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 
@@ -32,7 +32,7 @@ PA runs on **`com.xian.pm-pa-cycle`** (boot-persistent, 6x/day at **:47**, hours
 
 ## MCP program — standing #1 again (rewritten 2026-10-30 STOP; replaces the stale 10-01 section)
 
-- **Live (superseded 10-31: now v15, sha 061de2f98f, see Now):** `mcp.pipermorgan.ai` was v14, deployed by PA at 17:49 PT on 10-13 (00:49Z 10-14) from this Amber worktree, via `scripts/deploy-mcp.sh`, from `c6c26a596f`. `/health` returns 200 with `git_sha` "unknown", because v14 predates the script's `--build-arg PIPER_GIT_SHA` (added 10-16). **The next `scripts/deploy-mcp.sh` run sets the sha by itself**, so check `/health` after. No commits to the MCP server's own paths since then. **#2240 closed 10-30:** `.dockerignore` drops `config/*.user.md` and the script refuses an overlay (Lead `738c2e5f77`). The guard's clean-tree silent exit 1 was fixed by PA in `de1d1bd714`. Clean dry run passes on main.
+- **Live: see Now (v18). Older history:** `mcp.pipermorgan.ai` was v14, deployed by PA at 17:49 PT on 10-13 (00:49Z 10-14) from this Amber worktree, via `scripts/deploy-mcp.sh`, from `c6c26a596f`. `/health` returns 200 with `git_sha` "unknown", because v14 predates the script's `--build-arg PIPER_GIT_SHA` (added 10-16). **The next `scripts/deploy-mcp.sh` run sets the sha by itself**, so check `/health` after. No commits to the MCP server's own paths since then. **#2240 closed 10-30:** `.dockerignore` drops `config/*.user.md` and the script refuses an overlay (Lead `738c2e5f77`). The guard's clean-tree silent exit 1 was fixed by PA in `de1d1bd714`. Clean dry run passes on main.
 - **Auth:** the protected-resource metadata points to alpha's `/mcp/oauth`. Dynamic registration is open, and `/authorize` needs an alpha session plus Approve. There is no allowlist, so the beta scope (PDR-005 Am. 1: MCP not offered) isn't enforced in code. Lead sized a consent-page allowlist as a web-app unit (a promotion).
 - **Re-entry plan: steps 1-4 DONE 10-31 (served v15, live check, ordering to PPM, test plan). Step 5 (R7) waits on PM per standing item 2:**
   1. Settle #2218 per the Now section, then deploy the fix (Lead's unit) with `scripts/deploy-mcp.sh --dry-run` then the real run (CIO's order), and check that `/health` shows the sha.
