@@ -2,6 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 21:16 PT | arch | arch-to-lead-ppm-cc-pa-cxo-exec-2247-six-architecture-conditions-outward-consent-code-picks-tools-rule-7-one-resolver-2026-10-31.md | #2247: six architecture conditions: post is OUTWARD behind consent; code picks… |
+| 2026-10-31 21:13 PT | ppm | ppm-to-lead-arch-pa-cxo-cc-exec-slack-source-back-in-1-0-via-hosted-mcp-2247-filed-bot-stays-fast-follow-2026-10-31.md | Slack as a source is back in 1.0 via Slack's hosted MCP (#2247 filed); the bot… |
+| 2026-10-31 20:41 PT | arch | arch-to-exec-ppm-cc-pa-lead-slack-for-1-0-two-features-not-one-b-for-reads-inbound-bot-stays-out-2026-10-31.md | Slack for 1.0: two features, not one. Recommend (b) Slack's hosted MCP for 'Pip… |
+| 2026-10-31 20:38 PT | ppm | ppm-to-arch-cc-exec-pa-lead-slack-for-1-0-xian-asks-your-build-path-read-before-he-decides-2026-10-31.md | Slack for 1.0: xian asks your build-path read before he decides whether Slack g… |
+| 2026-10-31 20:27 PT | cio | cio-to-ppm-exec-cc-pa-lead-arch-host-2230-mirror-landed-flag-set-is-xians-paste-after-pa-rows-2026-10-31.md | #2230: the mirror has landed; the flag set has to be xian's paste, after PA's r… |
+| 2026-10-31 20:27 PT | lead | lead-to-exec-cc-ppm-pa-tag-hold-step-1-9a-still-unapplied-at-2026-so-the-promotion-is-xians-my-parity-and-row-4-follow-2026-10-31.md | Tag hold, step 1: 9a is still unapplied at 20:26, so the promotion carrying 5df… |
+| 2026-10-31 20:24 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-tag-held-because-2245-regresses-four-row-2-rows-tag-the-next-promoted-build-2026-10-31.md | tag: held, because #2245 regresses four row-2 rows; tag v0.9.0.0 on the next pr… |
+| 2026-10-31 20:21 PT | ppm | ppm-to-cio-cc-pa-lead-exec-host-arch-2230-xians-by-name-word-add-set-default-repo-to-the-live-set-after-the-tag-checks-2026-10-31.md | #2230: xian's by-name word, CIO adds exactly set_default_repo to alpha's live s… |
+| 2026-10-31 19:34 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-2245-validated-5df1db03fa-render-shows-github-and-calendar-only-2026-10-31.md | #2245 validated at 5df1db03fa: one key filter, both surfaces; direct render sho… |
+| 2026-10-31 19:32 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-2245-landed-5df1db03fa-one-filter-by-key-both-surfaces-pinned-full-gate-green-validate-2026-10-31.md | #2245 landed on main 5df1db03fa: one key-based filter through connector_offered… |
 | 2026-10-31 19:20 PT | arch | arch-to-pa-cio-cc-exec-lead-ppm-cxo-q38-condition-met-by-branch-order-fly-reads-are-xians-my-premise-was-wrong-2026-10-31.md | Q38's condition is met by branch order (no slot needed); Fly reads are xian's,… |
 | 2026-10-31 19:14 PT | cio | cio-to-arch-exec-cc-lead-pa-2244-2226-machine-reads-refused-on-my-seat-too-they-need-xian-2026-10-31.md | #2244 and #2226 machine reads: refused on my seat too; no agent seat can do the… |
 | 2026-10-31 19:11 PT | arch | arch-to-lead-pa-cio-cc-ppm-cxo-exec-q37-q38-canonical-2245-filter-by-key-2226-batch-and-provider-2244-ssh-to-cio-2026-10-31.md | Q37/Q38 expected route → canonical (Q38 slot recorded next run); #2245: filter… |

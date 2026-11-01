@@ -102,6 +102,37 @@ PPM recommends xian **confirm it's met and close it**, or name what more he mean
 
 PPM would put #1911 and #1918 in this first sprint only if xian picks (b) on #2242 (open access). Otherwise they can follow.
 
+## xian's answers (10-31 evening, PPM session; decisions.log 18:46, 18:51, 20:37, 21:12 and 21:17)
+
+**The first sprint holds:**
+- Tier 0, served on 0.9.0.0. The v0.9.0.0 tag waits on #2245 serving at the next promotion.
+- Tier 1 without #2021, which moves to the next sprint, and without #2226, which stays out:
+  - #2184 and its family;
+  - #2149, then #2195 (#2197 after #2149's shape);
+  - Arch's #2042 diagnosis.
+- From tier 2:
+  - #2229: Comms proposes, CXO OKs, Web builds. One way in (the waiting-list form), and HOST keeps the list.
+  - #2235, kept by PPM on xian's deferral.
+  - #2238, after which Notion joins once a tester's own key works.
+- The tier 3 reserve.
+- #2242 (a), the allowlist, about 1–1.5 Lead-days. The MCP half can ship alone.
+
+**Not in this sprint:**
+- #2165 is needed before the beta goes public, not before. It stays in PUB.
+- #1378 waits.
+- #2226 (document search) waits for the local-embeddings unit. xian's direction is local embeddings with no OpenAI (Lead 3 days, Arch's int8 MiniLM conditions, #2244 first, the memory fit on Fly unmeasured). Letter line 6 stays.
+
+**Other answers:**
+- **#1300:** closed as met (OAuth, no secret in the plugin).
+- **`set_default_repo`:** yes. xian's paste sets the live flag after the tag checks (CIO's mirror landed at 79004122c0).
+- **Slack:** as a source, through Slack's hosted MCP, it's back on the 1.0 gate (#2247). The bot stays in Fast Follow. #1514's Slack app review should start early.
+- **Second after this sprint:** the plugin and MCP lane (#1911, #1918, #2175, xian's MCP test plan, then capabilities), with the Slack app review in parallel.
+- **The Sprint field:** set on the 22 proposed issues, xian's "yes".
+- **Vision, kept as the target:**
+  - Piper's document model: create, ingest, and edit through connectors, synthesized into artifacts with roundtrip posting back.
+  - Knowledge accrues in data the user owns.
+  - Local models get tried with Pard as they improve.
+
 ## Decisions only xian can make
 
 1. **Sprint length and how many tiers it holds.** PPM suggests tiers 0 and 1, plus #2165 and #2229 from tier 2, with tier 3's slot.
