@@ -56,7 +56,7 @@ review first:
 The deadline passed with 255 lines missing, so it moves from a date to a ratchet. `--ratchet` fails when a
 process class has more missing lines than its frozen ceiling (hooks 0, git-hooks 2, skills 0,
 workflows 0). A new hook, skill or workflow can't land without a line, and the count only goes down.
-Turning it on in `lint.yml` is Lead's yes, since that gate is Lead's. Scripts stay counted, not
+Lead said yes at 10:18. `lint.yml` has run `--ratchet` since `97fb374e26` (10:35), first green in run 41337377565. Scripts stay counted, not
 ratcheted; they get their line at their next edit, as this section always said.
 
 **The four reviewed-first watchers, one line each:**
