@@ -192,11 +192,19 @@ fix when the class is next touched, not a transport claim to trust from the name
 **Purpose**: Notion integration token
 **Type**: String (starts with `secret_`)
 **Required**: Yes (for Notion integration)
-**Resolution order — corrected 2026-09-23**: env var → PIPER.user.md `authentication.api_key` →
-user-scoped keychain (`services/integrations/notion/config_service.py:183-194`, Issue #579/#734).
+**Resolution order (local, single-tenant) — corrected 2026-09-23**: env var → PIPER.user.md
+`authentication.api_key` → the user's own key (`services/integrations/notion/config_service.py`,
+Issue #579/#734; the user-store fallback via `UserAPIKeyService` since #2238).
 Note this is the **opposite precedence from LLM provider keys** (which check keychain before
 env var — see LLM Provider Configuration below): for Notion, an env var wins over a
-keychain-stored key.
+keychain-stored key **locally**.
+**On a hosted deployment (#2238, 2026-11-01) this variable is NOT read for the key.** The user's
+own key is the only source (`is_hosted_deployment()`, `services/infrastructure/deployment.py`):
+a global key would override every user's own key and a keyless user would read the global
+workspace (#1442's N1/C1). A keyless user is "not connected"; there is no env or file fallback.
+The user's key is read the way `save_notion_key` wrote it, through
+`UserAPIKeyService.retrieve_user_key` (the encrypted `user_api_keys` row, then the keychain),
+so the status surface and chat read the same thing.
 **Example**: `secret_YOUR_NOTION_API_KEY_HERE`
 
 #### `NOTION_WORKSPACE_ID`
