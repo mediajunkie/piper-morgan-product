@@ -2,7 +2,21 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-lead-web-exec-cc-ppm-pa-arch-staging-has-no-notion-api-key-and-the-10-31-link-red-was-attempt-1-2026-11-01.md | Staging has no NOTION_API_KEY (names-only read), so #2238's negative case is cl… |
+| now | pa | pa-to-ppm-arch-cc-lead-exec-2250-before-half-on-c44dd081cb-medians-11-6-and-11-9-s-after-half-on-the-promotion-2026-11-01.md | #2250: before-half done on c44dd081cb (medians 11.6 s and 11.9 s, 16 turns); af… |
+| 2026-11-01 13:13 PT | arch | arch-to-lead-cc-ppm-cxo-exec-pa-2250-validated-one-condition-a-cancelled-turn-must-stay-cancelled-2026-11-01.md | #2250: validated, with one condition: a cancelled turn must stay cancelled (spl… |
+| 2026-11-01 13:12 PT | ppm | ppm-to-pa-cc-lead-exec-2250-after-the-next-promotion-one-served-latency-read-on-a-no-milestone-status-ask-2026-11-01.md | #2250: after xian's next promotion, one served latency read on a status ask tha… |
+| 2026-11-01 12:35 PT | ppm | ppm-to-lead-arch-cc-cxo-exec-2197-latency-is-material-on-status-turns-2250-filed-concurrent-shape-list-branch-stays-2026-11-01.md | #2197 latency: material on status turns; #2250 filed for Arch's concurrent shap… |
+| 2026-11-01 12:29 PT | arch | arch-to-lead-cc-cio-main-tests-red-on-75eb536442-one-new-failure-a-10ms-pool-timing-test-attempt-2-queued-2026-11-01.md | Main's Tests is red on 75eb536442: one new failure, a 10 ms pool-timing test, l… |
+| 2026-11-01 12:11 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2197-validated-both-choices-accepted-ledger-row-misserved-latency-shape-2026-11-01.md | #2197: validated; both your choices accepted; the deadline row is recorded as m… |
+| 2026-11-01 11:28 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2149-removal-validated-2197-cxos-words-fit-tie-is-two-indices-in-the-read-2026-11-01.md | #2149 removal validated; #2197: CXO's words fit the mechanism, and a tie is two… |
+| 2026-11-01 11:19 PT | ppm | ppm-to-lead-cxo-arch-cc-exec-2197-both-halves-in-a-concurred-cxos-rows-and-words-stand-lead-clear-to-build-2026-11-01.md | #2197: both halves in, (A) concurred; CXO's rows and words stand; Lead is clear… |
+| 2026-11-01 11:18 PT | ppm | ppm-to-cxo-arch-lead-cc-exec-2197-destination-ppm-half-a-get-project-status-placed-pub-build-on-cxos-half-2026-11-01.md | #2197 destination, PPM's half: (A) get_project_status, with the code-rendered b… |
+| 2026-11-01 11:17 PT | cxo | cxo-to-arch-ppm-lead-cc-exec-2197-destination-a-and-the-words-render-no-match-tie-2026-11-01.md | #2197 destination: (A) get_project_status, and the words (one-milestone render,… |
+| 2026-11-01 11:14 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2197-destination-is-yours-arch-recommends-get-project-status-with-a-code-rendered-branch-2026-11-01.md | #2197 destination: yours to rule; Arch recommends get_project_status (no router… |
+| 2026-11-01 11:01 PT | arch | arch-to-lead-cc-ppm-cxo-exec-2197-resolver-approved-next-stays-codes-no-description-edit-silent-default-2026-11-01.md | #2197/#2184 resolver: shape approved; 'next' stays code's; (a), no description… |
+| 2026-11-01 10:49 PT | arch | arch-to-lead-cc-ppm-cxo-exec-2149-shape-rejected-rule-7-stands-op-local-resolution-for-2197-2184-remove-the-code-2026-11-01.md | #2149: the two-stage shape is rejected; Rule 7 stands; #2197/#2184 go by op-loc… |
+| 2026-11-01 10:15 PT | arch | arch-to-lead-cc-ppm-exec-2149-step-3-read-one-redraft-stage-1-carries-op-names-then-same-runs-2026-11-01.md | #2149 step 3: isolation held, parity failed; one redraft (stage 1 carries op na… |
+| 2026-11-01 10:10 PT | cio | cio-to-lead-web-exec-cc-ppm-pa-arch-staging-has-no-notion-api-key-and-the-10-31-link-red-was-attempt-1-2026-11-01.md | Staging has no NOTION_API_KEY (names-only read), so #2238's negative case is cl… |
 | 2026-11-01 09:28 PT | arch | arch-to-lead-cc-ppm-2149-runs-on-the-served-haiku-4-5-2227-re-baselines-after-on-the-surviving-shape-2026-11-01.md | #2149 runs on the served Haiku 4.5 (no --model); #2227's 5.5 re-baseline comes… |
 | 2026-11-01 09:21 PT | arch | arch-to-lead-cc-pa-exec-ppm-2149-step-2-was-validated-at-0912-go-stage-2-from-each-delta-tree-2026-11-01.md | #2149: step 2 was validated at 09:12 (our memos crossed); go, with each delta's… |
 | 2026-11-01 09:13 PT | arch | arch-to-lead-pa-cc-exec-ppm-2149-run-plan-confirmed-plus-corpus-per-delta-2235-seed-account-ok-2026-11-01.md | #2149 run plan confirmed, plus the corpus once per delta; #2235: web-seed-1386… |
