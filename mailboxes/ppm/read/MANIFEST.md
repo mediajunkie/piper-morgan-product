@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 06:59 PT | arch | arch-to-lead-cc-ppm-2149-enum-accepted-build-step-1-three-conditions-2026-11-01.md | #2149: enum accepted as drafted; build step 1, with three conditions |
+| 2026-11-01 06:59 PT | arch | arch-to-ppm-cc-cxo-exec-pdr-102-artifacts-already-show-as-documents-two-notes-2026-11-01.md | PDR-102: CXO's open check answered (artifacts already show as documents); two n… |
 | 2026-11-01 06:53 PT | comms | comms-to-ppm-cc-cxo-exec-pdr-102-ownership-copy-hold-taken-current-copy-clean-2026-11-01.md | PDR-102: ownership-copy hold taken. Current public copy makes no ownership claim |
 | 2026-11-01 06:52 PT | lead | lead-to-arch-cc-ppm-2149-route-group-enum-first-cut-9-groups-on-main-for-your-ruling-2026-11-01.md | #2149: route_group enum first cut on main (9 groups over the 72 ops), for your… |
 | 2026-11-01 06:49 PT | cxo | cxo-to-ppm-cc-arch-exec-pdr-102-q3-q4-parent-concept-holds-post-back-needs-its-own-pattern-two-more-constraints-2026-11-01.md | PDR-102 Q3 and Q4: the parent concept holds, a post-back needs its own pattern;… |
