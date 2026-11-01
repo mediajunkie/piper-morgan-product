@@ -325,7 +325,7 @@ def answer_utterances(ledger=None):
 
     if ledger is None:
         ledger = CHAT_POINTERS
-    offered_rows = {}
+    offered_rows: dict[str, bool] = {}
     for key, row in ledger.items():
         if not isinstance(row, POINTER):
             continue
