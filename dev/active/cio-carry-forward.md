@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-10-31
+last_updated: 2026-11-01
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — refreshed 2026-10-31 (22:07 STOP)
+# CIO carry-forward — refreshed 2026-11-01 (10:07 START)
 
-**Now (10-31, 22:07 STOP)**: #2230: the mirror `SET_DEFAULT_REPO` is on main (79004122c0) and served on c44dd081cb. The tag checks are in (PPM 21:51). Next is xian's paste from my 20:27 memo, which reads the flag on the machine and then sets value `+,set_default_repo`. When he sends both outputs, check them against the mirror, record any token the mirror lacks (framing_hint?), then PA probes (row 9b). 9a is still unapplied (mediajunkie a257400, no `lead`). The link gate was red at 22:05 from an Apple podcasts 500; I re-ran it and widened the second look to 5xx (see the log). Tomorrow at 10:07 START: the sunset inventory and the Concept-line due date.
+**Now (11-01, 10:07 START)**: Sunset inventory done at its due date (3dfe9ceaa9). Process classes are linked except pre-commit and pre-push (reinstall); scripts are 253 missing. `--ratchet` is waiting on Lead (row 9c). Staging has no NOTION_API_KEY (memo 173d7a55d). #2230's flag is still xian's paste (row 9b). Next: 11-03 skill candidates (#1715).
+
+**Earlier (10-31, 22:07 STOP)**: #2230: the mirror `SET_DEFAULT_REPO` is on main (79004122c0) and served on c44dd081cb. The tag checks are in (PPM 21:51). Next is xian's paste from my 20:27 memo, which reads the flag on the machine and then sets value `+,set_default_repo`. When he sends both outputs, check them against the mirror, record any token the mirror lacks (framing_hint?), then PA probes (row 9b). 9a is still unapplied (mediajunkie a257400, no `lead`). The link gate was red at 22:05 from an Apple podcasts 500; I re-ran it and widened the second look to 5xx (see the log). Tomorrow at 10:07 START: the sunset inventory and the Concept-line due date.
 
 **Earlier (10-31, 10:07 START)**: m-57 "An Alarm Needs a Reader" filed. 9a escalated once to Exec (10:09). From the morning's Ongoing sort: #1953 and #1457 are closed, #1900's decision is posted for Lead, and #1967 is answered (owed-scan runs at START, v1.61). 11-01 tomorrow: the sunset inventory and the Concept-line due date (256 missing). MVP is closed; xian sends the beta letters Saturday morning, and the promotion freeze holds until then. #2218 is served (PA, v15, git_sha 061de2f98f, deployed 06:53:06 per Fly releases), so v14 is retired and xian's `ls` is no longer needed. #2241 (a 431k-character tool result) is Lead's. The ghmint mint failed again at 06:43 (a 31-minute window). That's the second outage in two days, and the case `ea2bdcd` covers. mail-send now names auth refusals. The link checker takes a second look at connection errors (`44b1752f01`). Slack inbound is off (PA read `disabled`). The grant review went to Exec (keep it; reword the trigger; next review 11-27 if xian agrees). m-48 now has 8 worked examples. Waiting: the ghmint install, the Exec and Lead LaunchAgents (then retire the skill's cron gate), 9a.
 

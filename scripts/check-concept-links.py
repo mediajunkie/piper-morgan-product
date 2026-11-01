@@ -17,11 +17,15 @@ with --all. A file can name several concept docs on one line; it passes if any o
 points back.
 
 Exit 0 = every declared concept resolves and points back. Exit 1 = at least one BROKEN link (a path
-that doesn't exist, or a doc that doesn't name the mechanism). A missing Concept line is not a failure
-yet: existing mechanisms get theirs by 2026-11-01 (mechanism-sunset-or-renew.md); this reports how
-many are left.
+that doesn't exist, or a doc that doesn't name the mechanism). A missing Concept line was due by
+2026-11-01 (mechanism-sunset-or-renew.md) and is counted. With --ratchet it is also failed when a
+process class (hooks, git-hooks, skills, workflows) has more missing lines than RATCHET below, so a
+new mechanism can't arrive without one and the count only goes down. scripts/ is counted, not
+ratcheted: it mixes product helpers with process scripts.
 
-Usage: scripts/check-concept-links.py [--all]   (--all also lists scripts/ files with no Concept line)
+Usage: scripts/check-concept-links.py [--all] [--ratchet]
+  --all      also lists scripts/ files with no Concept line
+  --ratchet  exit 1 when a process class's missing count is above its ceiling
 
 Layer: textual. It checks that the pointers exist and agree, not that the doc's claims match the
 code's behaviour. That part is a reader's job (the audit's spot-checks).
@@ -92,8 +96,16 @@ def resolve(path: str, mech: Path) -> Path | None:
     return None
 
 
+# Missing-Concept ceilings per process class, frozen 2026-11-01 (the inventory's due date) and
+# lowered by hand as lines land. git-hooks' 2 are pre-commit and pre-push: any edit makes the
+# installed copy differ from source until xian reinstalls, so their lines wait for a functional edit
+# (hooks-registry.md).
+RATCHET = {"hooks": 0, "git-hooks": 2, "skills": 0, "workflows": 0}
+
+
 def main() -> int:
     show_all = "--all" in sys.argv[1:]
+    ratchet = "--ratchet" in sys.argv[1:]
     broken: list[str] = []
     totals: dict[str, list[int]] = {}
     missing: dict[str, list[str]] = {}
@@ -149,9 +161,17 @@ def main() -> int:
     print(f"{'all':<10} {t[0]:>6} {len(broken):>6} {t[1]:>5} {t[2]:>6}")
     print(
         "check-concept-links: textual layer (pointers exist and agree), not behaviour. "
-        "Missing Concept lines are due by 2026-11-01 (mechanism-sunset-or-renew.md)."
+        "Missing Concept lines were due 2026-11-01 (mechanism-sunset-or-renew.md)."
     )
-    return 1 if broken else 0
+    over = [
+        f"RATCHET  {cls}: {totals[cls][1]} missing, ceiling {ceiling}"
+        for cls, ceiling in RATCHET.items()
+        if cls in totals and totals[cls][1] > ceiling
+    ]
+    if ratchet:
+        for line in over:
+            print(line)
+    return 1 if broken or (ratchet and over) else 0
 
 
 if __name__ == "__main__":

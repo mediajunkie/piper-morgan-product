@@ -2,6 +2,7 @@
 # Synthetic end-to-end test of the old-history guard in scripts/git-hooks/pre-push.
 # Usage: scripts/git-hooks/test-old-history-guard.sh <new empty scratch dir> scripts/git-hooks/pre-push
 # Builds a bare remote, an old history, a rewrite and a seat clone, then pushes 9 ways. Touches nothing else.
+# Concept: docs/internal/operations/history-rewrite-runbook.md (added 2026-11-01, sunset-or-renew inventory; CIO)
 set -u
 S="$1"; HOOK="$(cd "$(dirname "$2")" && pwd)/$(basename "$2")"
 mkdir -p "$S" && cd "$S" || exit 2
