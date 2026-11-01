@@ -131,6 +131,23 @@ class TestNothingLoosened:
     def test_grammar_paragraph_remains(self):
         assert "Grammar — frame observations as entities experiencing moments in places" in _NORM
 
+    def test_grammar_paragraph_takes_a_moment_only_from_handed_time_words(self):
+        """CXO 07:16 / Arch 07:16-07:18 (11-01): the Grammar paragraph was a third
+        place asking for a time ("how long it has been waiting or when it last
+        moved"); with ISO-only slices the model could meet it only by working a
+        duration out. CXO's one parenthetical ties the moment to handed words.
+        Pin (CXO's): the clause is present, and the telemetry-register sentence
+        still stands."""
+        start = _NORM.index("Grammar — frame observations")
+        end = _NORM.index("Use the context you have.", start)
+        grammar = _NORM[start:end]
+        assert (
+            "how long it has been waiting or when it last moved (only in the time words "
+            "your context already gives you), and where it lives" in grammar
+        )
+        assert "Telemetry register" in grammar and "is not grammatical" in grammar
+        assert "Only prose is a colleague speaking" in grammar
+
     def test_critical_sections_remain(self):
         assert "CRITICAL — Never fabricate user data" in _NORM
         assert "CRITICAL — Never claim an action happened" in _NORM
