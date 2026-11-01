@@ -10025,6 +10025,51 @@ class IntentService:
             except GitHubReadFailed as rf:
                 return self._github_list_read_failed(rf, "list_milestones_query", "milestones")
 
+            # #2197 (Arch 2026-11-01; #2184's "next"/deadline asks): with a
+            # non-empty read, the resolver says whether the message is about
+            # ONE of these milestones. picked / code's "next" → the one-milestone
+            # render (and the one-title offer); named_absent / tie → the fixed
+            # line before today's list; none / failed / skipped → today's list.
+            _list_prefix = ""
+            if milestones:
+                from services.intent_service.milestone_render import (
+                    LIST_LEAD_IN,
+                    NAMED_ABSENT_LINE,
+                    TIE_LINE,
+                    prefix_lines,
+                )
+                from services.intent_service.milestone_resolve import (
+                    OUTCOME_NAMED_ABSENT,
+                    OUTCOME_NEXT,
+                    OUTCOME_PICKED,
+                    OUTCOME_TIE,
+                    pick_next_index,
+                )
+
+                _candidates = [m for m in milestones if isinstance(m, dict)]
+                _resolution = await self._resolve_milestone_in_read(intent, _candidates)
+                _one: Optional[int] = None
+                if _resolution.outcome == OUTCOME_PICKED:
+                    _one = _resolution.index
+                elif _resolution.outcome == OUTCOME_NEXT:
+                    _one = pick_next_index(_candidates)
+                    if _one is None:
+                        _list_prefix = prefix_lines(TIE_LINE, LIST_LEAD_IN)
+                elif _resolution.outcome == OUTCOME_NAMED_ABSENT:
+                    _list_prefix = prefix_lines(NAMED_ABSENT_LINE, LIST_LEAD_IN)
+                elif _resolution.outcome == OUTCOME_TIE:
+                    _list_prefix = prefix_lines(TIE_LINE, LIST_LEAD_IN)
+                if _one is not None:
+                    return await self._render_resolved_milestone(
+                        intent,
+                        session_id,
+                        _candidates[_one],
+                        github_router,
+                        category="query",
+                        action="list_milestones_query",
+                        outcome=_resolution.outcome,
+                    )
+
             if milestones:
                 count = len(milestones)
                 # #1781: full page -> floor, not total.
@@ -10113,7 +10158,7 @@ class IntentService:
                 message += f"\n\n{MILESTONE_PICK_ARM_QUESTION}"
             return IntentProcessingResult(
                 success=True,
-                message=message,
+                message=_list_prefix + message,
                 intent_data={
                     "category": "query",
                     "action": "list_milestones_query",
@@ -19989,6 +20034,173 @@ Add any additional information here.
                 action=action,
             )
 
+    async def _resolve_milestone_in_read(self, intent: Intent, candidates: List[Dict[str, Any]]):
+        """#2197 (Arch 2026-11-01 10:48 (2), 11:01, 11:14, 11:28): which of the
+        milestones read THIS turn the message names, one small LLM call under
+        the turn's principal (``milestone_resolve``). Never raises for a
+        provider/key/parse failure: those are outcome ``failed``."""
+        from services.intent_service.milestone_resolve import resolve_milestone
+
+        # Lazy-init LLM client (same pattern as _handle_update_document_notion)
+        if not hasattr(self, "llm_client") or self.llm_client is None:
+            from services.llm.clients import LLMClient
+
+            self.llm_client = LLMClient()
+        return await resolve_milestone(
+            intent.original_message or "",
+            candidates,
+            llm_service=self.llm_client,
+            user_id=_principal_from_intent(intent),
+        )
+
+    async def _render_resolved_milestone(
+        self,
+        intent: Intent,
+        session_id: Optional[str],
+        milestone: Dict[str, Any],
+        github_router: Any,
+        *,
+        category: str,
+        action: str,
+        outcome: str,
+    ) -> IntentProcessingResult:
+        """#2197: CXO's one-milestone render (11:17) from the READ dict, plus
+        the open-issues offer armed as a one-title #2184 pick carrying the repo
+        the read came from. No repo (or no session) → no arm and no offer
+        line. Nothing the resolver's model wrote is rendered, and no floor or
+        context assembler is called (Arch's condition)."""
+        from services.intent_service.milestone_pick import (
+            ORIGIN_RESOLVED,
+            PICK_PENDING_FLAG,
+            arm_milestone_pick,
+        )
+        from services.intent_service.milestone_render import (
+            OPEN_ISSUES_OFFER_QUESTION,
+            UNTITLED_MILESTONE,
+            open_count,
+            render_one_milestone,
+        )
+
+        message = render_one_milestone(milestone)
+        title = display_title(milestone.get("title"), UNTITLED_MILESTONE)
+        armed = False
+        if open_count(milestone) > 0:
+            _resolved = await github_router._resolve_default_repo()
+            _repo_full = (
+                f"{_resolved[0]}/{_resolved[1]}"
+                if isinstance(_resolved, tuple) and len(_resolved) == 2 and all(_resolved)
+                else None
+            )
+            if _repo_full:
+                armed = arm_milestone_pick(
+                    session_id=session_id,
+                    principal=_principal_from_intent(intent),
+                    offer_service=self.workflow_offer_service,
+                    titles=[title],
+                    repository=_repo_full,
+                    original_message=intent.original_message or "",
+                    origin=ORIGIN_RESOLVED,
+                )
+            else:
+                self.logger.info(
+                    "milestone_resolved_offer_not_armed_no_repo", session_id=session_id
+                )
+        if armed:
+            message += f"\n\n{OPEN_ISSUES_OFFER_QUESTION}"
+        self.logger.info(
+            "milestone_resolved_rendered",
+            session_id=session_id,
+            action=action,
+            outcome=outcome,
+            offer_armed=armed,
+        )
+        return IntentProcessingResult(
+            success=True,
+            message=message,
+            intent_data={
+                "category": category,
+                "action": action,
+                "milestone_resolved": outcome,
+                **({PICK_PENDING_FLAG: True} if armed else {}),
+            },
+            requires_clarification=False,
+        )
+
+    async def _try_resolved_milestone_status(
+        self, intent: Intent, session_id: Optional[str], user_id: Optional[str]
+    ) -> Tuple[Optional[IntentProcessingResult], str]:
+        """#2197 destination (A): a ``get_project_status`` turn about ONE
+        named milestone is answered about that milestone, by code, from this
+        turn's read. Returns ``(result, "")`` when the milestone was resolved
+        (the floor is not called), ``(None, prefix)`` when the named-absent or
+        tie line goes before the floor's whole-project answer, and
+        ``(None, "")`` for the silent default (no read, a failed or
+        not-performed read (#2151: the assembler's own failed-source handling
+        stands), an empty read, or outcome none/failed/skipped)."""
+        from sqlalchemy.exc import SQLAlchemyError
+
+        from services.integrations.github.github_integration_router import (
+            GitHubIntegrationRouter,
+        )
+        from services.integrations.github.read_failed import GitHubReadFailed
+        from services.intent_service.milestone_render import (
+            NAMED_ABSENT_LINE,
+            STATUS_LEAD_IN,
+            TIE_LINE,
+            prefix_lines,
+        )
+        from services.intent_service.milestone_resolve import (
+            OUTCOME_NAMED_ABSENT,
+            OUTCOME_NEXT,
+            OUTCOME_PICKED,
+            OUTCOME_TIE,
+            pick_next_index,
+        )
+
+        github_router = GitHubIntegrationRouter()
+        try:
+            await github_router.initialize(user_id=user_id)
+            candidates = await github_router.list_milestones_via_mcp(state="all")
+        except (GitHubReadFailed, SQLAlchemyError) as rf:
+            # A failed or not-performed read (and a DB failure under the
+            # credential/repo resolution, which the router does not wrap)
+            # falls through: the floor renders and the assembler's own
+            # failed-source handling says what it could not check (#2151).
+            self.logger.info(
+                "milestone_resolver_read_not_available",
+                session_id=session_id,
+                error_class=type(rf).__name__,
+                reason=getattr(getattr(rf, "reason", None), "value", None),
+            )
+            return None, ""
+        candidates = [m for m in (candidates or []) if isinstance(m, dict)]
+        if not candidates:
+            return None, ""
+        resolution = await self._resolve_milestone_in_read(intent, candidates)
+        index: Optional[int] = None
+        if resolution.outcome == OUTCOME_PICKED:
+            index = resolution.index
+        elif resolution.outcome == OUTCOME_NEXT:
+            index = pick_next_index(candidates)
+            if index is None:
+                return None, prefix_lines(TIE_LINE, STATUS_LEAD_IN)
+        elif resolution.outcome == OUTCOME_NAMED_ABSENT:
+            return None, prefix_lines(NAMED_ABSENT_LINE, STATUS_LEAD_IN)
+        elif resolution.outcome == OUTCOME_TIE:
+            return None, prefix_lines(TIE_LINE, STATUS_LEAD_IN)
+        if index is None:
+            return None, ""
+        result = await self._render_resolved_milestone(
+            intent,
+            session_id,
+            candidates[index],
+            github_router,
+            category="STATUS",
+            action=intent.action,
+            outcome=resolution.outcome,
+        )
+        return result, ""
+
     def _milestone_pick_no_match_result(
         self, session_id: Optional[str]
     ) -> Optional[IntentProcessingResult]:
@@ -20044,6 +20256,20 @@ Add any additional information here.
         # call site threads user_id today; this guards any future caller.
         user_id = user_id or _principal_from_intent(intent)
         category = intent.category.value.upper()
+
+        # #2197 destination (A): a project-status ask that names ONE milestone
+        # is answered about that milestone from this turn's read, before any
+        # context assembly or model call; the floor is never called on that
+        # branch and never receives the resolved milestone (Arch's condition).
+        # Named-absent / tie: the floor renders today's answer, and the fixed
+        # line goes before it. Only get_project_status under STATUS.
+        _milestone_prefix = ""
+        if intent.category is IntentCategory.STATUS and intent.action == "get_project_status":
+            _resolved_result, _milestone_prefix = await self._try_resolved_milestone_status(
+                intent, session_id, user_id
+            )
+            if _resolved_result is not None:
+                return _resolved_result
 
         self.logger.info(
             "action_gate_routing_to_floor",
@@ -20173,7 +20399,7 @@ Add any additional information here.
 
         return IntentProcessingResult(
             success=True,
-            message=response.message,
+            message=_milestone_prefix + response.message,
             intent_data={
                 "category": category,
                 "action": intent.action,

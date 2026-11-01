@@ -131,6 +131,16 @@ MODEL_CONFIGS: Dict[str, Dict[str, Any]] = {
         "temperature": 0.1,
         "max_tokens": 400,
     },
+    # #2197 (Arch 2026-11-01): the op-local milestone resolver — one small call
+    # after the router picked get_project_status / list_milestones, whose reply
+    # is a tiny JSON object (an index into the milestones code read). Same tier
+    # and temperature as the router; without an entry it would fall through to
+    # "reasoning" (heavy tier, #1829).
+    "milestone_resolution": {
+        "model_tier": "light",
+        "temperature": 0.1,
+        "max_tokens": 100,
+    },
 }
 
 

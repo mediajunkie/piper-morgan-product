@@ -77,6 +77,14 @@ NO_OPEN_MILESTONES_NO_REPO_LINE = "I don't see any open milestones."
 NO_MATCH_MARKER_ATTR = "_milestone_pick_no_match"
 # Set on the record the no-match line re-arms: the re-arm happens ONCE.
 REARMED_FLAG = "no_match_rearmed"
+# #2197: where the pick was armed. "list" is the #2184 milestones list (every
+# open title the read returned); "resolved" is the #2197 one-milestone render
+# ("Want to see the open issues?"), which armed ONE title. A resolved arm sets
+# no #2209 no-match marker: its line ("Your open milestones: <titles>") would
+# name one milestone as if it were the whole open set.
+ORIGIN_KEY = "pick_origin"
+ORIGIN_LIST = "list"
+ORIGIN_RESOLVED = "resolved"
 
 
 def normalize_title(text: Optional[str]) -> str:
@@ -97,6 +105,7 @@ def _record(
     repository: Optional[str],
     original_message: str,
     rearmed: bool = False,
+    origin: str = ORIGIN_LIST,
 ) -> Dict[str, Any]:
     record: Dict[str, Any] = {
         "workflow_type": MILESTONE_PICK_WORKFLOW,
@@ -109,6 +118,7 @@ def _record(
             "repository": repository,
             "original_message": original_message,
             "summary": "pick a milestone to list its issues",
+            ORIGIN_KEY: origin,
         },
         "decline_message": PICK_DECLINE_LINE,
     }
@@ -125,9 +135,12 @@ def arm_milestone_pick(
     titles: List[str],
     repository: Optional[str],
     original_message: str,
+    origin: str = ORIGIN_LIST,
 ) -> bool:
     """The ARM half, called by ``_handle_list_milestones_query`` after its own
-    successful, non-empty read. Returns True when armed. Never raises."""
+    successful, non-empty read (and, #2197, by the one-milestone render with
+    exactly one title, ``origin=ORIGIN_RESOLVED``). Returns True when armed.
+    Never raises."""
     if not session_id or offer_service is None:
         return False
     clean = [t for t in (titles or []) if isinstance(t, str) and normalize_title(t)]
@@ -136,7 +149,9 @@ def arm_milestone_pick(
     clean = clean[:MAX_TITLES]
     try:
         offer_service.set_pending_offer(
-            session_id, _record(principal, clean, repository, original_message), user_id=principal
+            session_id,
+            _record(principal, clean, repository, original_message, origin=origin),
+            user_id=principal,
         )
     except Exception as e:  # silent-ok: logged; an un-armed pick leaves today's behaviour
         logger.warning("milestone_pick_arm_failed", error=str(e), session_id=session_id)
@@ -146,6 +161,7 @@ def arm_milestone_pick(
         session_id=session_id,
         titles=len(clean),
         repository=repository,
+        origin=origin,
     )
     return True
 
@@ -198,13 +214,36 @@ async def handle_milestone_pick_turn(
         # operation first (dropped at dispatch, Arch 2026-10-30 08:57). A record
         # that was already re-armed by that line sets no marker: the re-arm
         # happens once.
-        if not payload.get(REARMED_FLAG):
+        # #2197: a one-title pick armed by the resolved render sets none.
+        if not payload.get(REARMED_FLAG) and payload.get(ORIGIN_KEY) != ORIGIN_RESOLVED:
             set_no_match_marker(intent_service, session_id, payload, user_id, message or "")
         return None
+    return await _run_bound_issues_read(
+        intent_service,
+        title=title,
+        repository=payload.get("repository"),
+        message=message or "",
+        session_id=session_id,
+        user_id=user_id,
+        seam="milestone_pick",
+    )
+
+
+async def _run_bound_issues_read(
+    intent_service: Any,
+    *,
+    title: str,
+    repository: Any,
+    message: str,
+    session_id: Optional[str],
+    user_id: str,
+    seam: str,
+) -> Dict[str, Any]:
+    """The issues read for ONE listed title, scope bound by code (the exact
+    title at the pop seam, and #2197's one-title accept)."""
     from services.domain.models import Intent
     from services.shared_types import IntentCategory
 
-    repository = payload.get("repository")
     # #2199 (xian's row-0 read on b9a8a43600, 2026-10-29 12:50): this Intent is
     # built HERE, not at the host boundary, so nothing had stamped the request
     # principal onto it. `_principal_from_intent` then read None, the connector
@@ -231,6 +270,7 @@ async def handle_milestone_pick_turn(
         session_id=session_id,
         milestone=title,
         repository=repository,
+        seam=seam,
     )
     result = await intent_service._handle_list_issues_query(
         intent, "milestone_pick", session_id=session_id
@@ -359,6 +399,28 @@ async def run_clarify_milestone_pick_workflow(
         )
         return None
     titles = [t for t in (payload.get("pick_titles") or []) if isinstance(t, str)]
+    # #2197 (the one-title accept, Lead's design inside Arch's shape): a pick
+    # holding exactly ONE title was armed by an offer about that title ("Want
+    # to see the open issues?"), so the generic seam's bare affirmative has one
+    # reading: run the bound issues read for it. Same #2199 principal rule as
+    # the exact-title path: only under the turn's own principal. No text is
+    # classified here; the generic seam already decided this was an accept.
+    if len(titles) == 1:
+        offer_user = payload.get("user_id")
+        if user_id and not (offer_user and str(offer_user) != str(user_id)):
+            return await _run_bound_issues_read(
+                intent_service,
+                title=titles[0],
+                repository=payload.get("repository"),
+                message=titles[0],
+                session_id=session_id,
+                user_id=user_id,
+                seam="milestone_pick_one_title_accept",
+            )
+        logger.warning(
+            "milestone_pick_principal_mismatch", offer_user=offer_user, turn_user=user_id
+        )
+        return None
     question = MILESTONE_PICK_REASK_QUESTION
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
@@ -369,6 +431,7 @@ async def run_clarify_milestone_pick_workflow(
             payload.get("original_message") or "",
             # #2209: a re-ask after the no-match line keeps the once-only mark.
             rearmed=bool(payload.get(REARMED_FLAG)),
+            origin=payload.get(ORIGIN_KEY) or ORIGIN_LIST,
         )
         | {"question": question},
         user_id=user_id,
@@ -389,6 +452,9 @@ __all__ = (
     "MILESTONE_PICK_WORKFLOW",
     "PICK_PENDING_FLAG",
     "MILESTONE_PICK_ARM_QUESTION",
+    "ORIGIN_KEY",
+    "ORIGIN_LIST",
+    "ORIGIN_RESOLVED",
     "normalize_title",
     "match_title",
     "arm_milestone_pick",
