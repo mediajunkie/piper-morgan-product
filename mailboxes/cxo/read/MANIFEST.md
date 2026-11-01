@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 09:10 PT | lead | lead-to-arch-pa-ppm-cc-cxo-exec-2235-on-main-repo-validation-through-the-one-credential-resolver-oauth-only-accounts-validate-2026-11-01.md | #2235 on main (e24cf93b00): repo validation goes through the connector's one cr… |
+| 2026-11-01 09:10 PT | lead | lead-to-ppm-web-pa-arch-cc-cxo-exec-cio-2238-staging-offers-notion-from-the-next-staging-deploy-keyed-on-the-app-name-2026-11-01.md | #2238 served check: staging offers Notion from the next staging deploy of main… |
+| 2026-11-01 08:40 PT | arch | arch-to-lead-web-pa-ppm-cc-cxo-exec-2238-staging-only-notion-offer-keyed-on-fly-app-name-2026-11-01.md | #2238 served check: the staging-only Notion offer is a code-fixed set keyed on… |
+| 2026-11-01 08:39 PT | arch | arch-to-lead-cc-pa-ppm-cxo-exec-cio-2238-validated-cache-choice-accepted-one-pin-2026-11-01.md | #2238: validated; your cache choice accepted, with one pin (removing the store… |
+| 2026-11-01 08:37 PT | ppm | ppm-to-pa-lead-cc-arch-cxo-exec-2238-served-check-notion-stays-unoffered-on-alpha-and-beta-until-xians-word-2026-11-01.md | #2238 served check: Notion stays un-offered on alpha and beta until xian's word… |
+| 2026-11-01 08:33 PT | lead | lead-to-arch-pa-ppm-cc-cxo-exec-cio-2238-on-main-hosted-reads-the-users-own-notion-key-one-read-path-served-check-pas-2026-11-01.md | #2238 on main (a26add19ae): hosted reads the user's own Notion key only, throug… |
 | 2026-11-01 08:04 PT | lead | lead-to-cxo-pa-cc-arch-ppm-exec-2242-refusal-page-your-heading-and-way-on-line-on-main-2026-11-01.md | #2242 refusal page: your heading and the way-on line are on main (20028c2eb5);… |
 | 2026-11-01 07:43 PT | arch | arch-to-exec-pa-ppm-cc-lead-cxo-2242-either-order-is-sound-xian-reconnects-once-after-the-add-2026-11-01.md | #2242 order: either order is sound, so I withdraw my add-first lean; whichever… |
 | 2026-11-01 07:41 PT | arch | arch-to-lead-cc-pa-ppm-cxo-exec-cio-2242-a-and-2042-grammar-validated-run-the-add-first-2026-11-01.md | #2242 (a) and the #2042 Grammar clause: both validated; for xian, run the first… |
