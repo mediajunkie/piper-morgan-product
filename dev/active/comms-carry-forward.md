@@ -1,6 +1,21 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-10-30 21:19 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-10-31 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/10/31/2026-10-31-0619-comms-code-log.md`, DAY-CLOSED.
+- **Beta letters sent 10-31 13:51** (Exec). The promotion freeze is lifted, but promotion is still xian's go. HOST confirmed the three 10-26 codes exist and are unused, so letter version 1c holds. Find codes by their masked form, not by creation date (they were created 10-18).
+- **Sat 10-31 "Build the Instrument Before the Theory":** PUBLISHED by Docs 08:51, LinkedIn URL set. **The Medium crosspost is xian's, still owed.** When it lands, Docs sets the URL and marks it `distributed`. This was the first run of the new "AI prompts human" process, and xian said it "went well".
+- **Sun 11-01 "Check the Machine First"** (retitled `773a30c435`): the file is still my scaffold (last edit 07:55 10-31, frontmatter empty, dateline wrong). Waiting on xian's prose and art. Then review, template-audit, calendar row `ready-for-docs`, publish-ready to Docs. Its footer teases Tue 11-03. A day-of rewrite is normal. Don't nudge.
+- **Tue 11-03 "The Unguarded Entrance":** waiting on xian's prose. Its tease has no target until the calendar past 11-05 exists.
+- **#2229 /try pages:** the copy is final. Use the "Build copy" section of `docs/internal/planning/comms/try-pages-beta-copy-proposal-2026-10-31.md`.
+  - CXO OK'd it at 20:56. xian said yes at 21:14: the waiting-list form is the one way in, email (support@) is for questions, `/try/alpha/` → `/try/invite/` redirect, and HOST keeps the list.
+  - HOST (21:17) accepts, with limits. xian sends, and HOST prepares. HOST can't read Buttondown yet. Whether that meets CXO's go-live condition is CXO's and Exec's call.
+  - Web builds after that. **Comms owes nothing until Web quotes the served HTML.** Then check every string against the Build copy section.
+- **Calendar from 11-05 and the beta comms plan:** xian is working on it this weekend. Planning doc https://claude.ai/artifact/5vc7f1CTHhadvvPBB73h86.
+- **Waiting:** Ship #067 External fact-check (Exec's draft). Rosenverse (xian and Themis).
+- **Standing:** "what changed" note at the first user-visible Production ship (not yet). Mining pass Fri 11-06. Narrative front Sep 6.
+- **Lesson (10-31):** stamps written into docs by a script, weekdays, and a memo's time all get looked up (`date`, or the memo header), never typed. That's four slips today, all caught before commit except the weekday one. Recorded in memory `feedback_verify_timestamps_never_guess`.
+
+## OLDER STATE — 2026-10-30 21:19 PT
 - **Log:** `dev/2026/10/30/2026-10-30-0619-comms-code-log.md`, DAY-CLOSED.
 - **MVP closed and the private beta started 10-30** (xian's Go on #1386, `ac5b69f865`). xian thanked the whole crew.
 - **Beta letters go Sat 10-31 morning** from xian's mailbox (Exec 20:52). The letter is `docs/internal/planning/comms/beta-invitation-letter-draft-2026-10-30.md`, final, with versions 1a, 1b, 1c and 2, and 9 known-issues lines (the 9th, #2236, at `49696bbcc9`). PPM's 19:51 check: 9 of 9 hold. If anyone edits the letter before the send, tell PPM to re-check. After it goes: the record of what partners were told is that file. A stale line later is a follow-up note, xian's call.
