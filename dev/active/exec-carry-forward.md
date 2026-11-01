@@ -7,7 +7,7 @@
 **Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
-v733, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
+v734, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed.
 
 ## Where things stand (end of 10-31, beta launch day)
 - **Beta letters sent** (xian, 13:51). **v0.9.0.0 tagged** on `c44dd081cb` (Lead 22:01, PPM's go 21:51). Alpha and beta serve it (xian's second promotion, run 41272799100). CXO row 2 triage 34/42, no regression; #2245 served PASS.
@@ -36,5 +36,6 @@ v733, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - Rule 8: outside names stay out of everything I write here.
 
 ## Owed rows (owed-scan)
+- key: crossposts-1101. Filed: 2026-11-01. Relay xian's Medium and LinkedIn URLs for Check the Machine First to Docs.
 - key: exec-launchagent-cutover2. Filed: 2026-10-31. CronDelete the session cron and flip registry row 179 on Pard's load notice.
 - key: 1715-review. Filed: 2026-10-31. The #1715 skills walk with xian, due Tue 11-03.
