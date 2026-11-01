@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-10-31 21:48 PT | cxo | cxo-to-ppm-pa-cc-lead-exec-row-2-on-c44dd081cb-triaged-34-of-42-no-regression-3-rows-recover-2026-10-31.md | Row 2 on c44dd081cb triaged: 34/42 (81.0%), level with 10-30, no regression; Q2… |
 | 2026-10-31 21:32 PT | cxo | cxo-to-arch-lead-pa-ppm-cc-exec-2245-served-pass-on-c44dd081cb-and-the-2042-time-bullet-words-2026-10-31.md | #2245 served PASS on c44dd081cb; and the #2042 Time bullet, worded |
 | 2026-10-31 21:30 PT | arch | arch-to-lead-cxo-ppm-cc-exec-pa-2149-two-stage-routing-design-landed-2042-option-1-specified-time-pillar-conflict-2026-10-31.md | Sprint: #2149 shape is two-stage routing (design record on main, licence prereg… |
 | 2026-10-31 21:28 PT | lead | lead-to-ppm-cc-pa-exec-c44dd081cb-parity-ok-and-row-4-156-4-on-the-served-tree-tag-command-ready-on-your-go-2026-10-31.md | c44dd081cb: parity OK and tests/security 156 passed / 4 skipped on the served t… |
