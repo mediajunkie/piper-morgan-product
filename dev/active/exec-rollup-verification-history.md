@@ -307,3 +307,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v725, 2026-10-31 20:39 PDT: #2229 card now holds two follow-ups (one-way-in, list owner) plus contribute@ and privacy@ routing; xian's three answers via PPM 20:35 recorded.
 - v726, 2026-10-31 20:49 PDT: Slack-in-1.0 choice added (Arch 20:4x: source via hosted MCP, bot out); CXO's OK on #2229 one-way-in, with the copy gated on the list owner.
 - v727, 2026-10-31 21:20 PDT: first sprint set via PPM 21:17, so Sprint yes, #1300, #2229 follow-ups, Slack 1.0 and the first-sprint card come off; Buttondown access and #1514 submission added to Your hand.
+- v728, 2026-10-31 21:30 PDT: second promotion done (c44dd081cb); tag and flag moved to tomorrow morning; HOST's test-code channel question added (rec a).
