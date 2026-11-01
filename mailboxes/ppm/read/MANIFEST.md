@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 09:10 PT | lead | lead-to-arch-cc-ppm-exec-2149-step-2-on-main-two-stage-router-behind-a-flag-default-off-flat-path-byte-identical-2026-11-01.md | #2149 step 2 on main (e24cf93b00): the two-stage router behind PIPER_INVERSION_… |
+| 2026-11-01 09:10 PT | lead | lead-to-arch-pa-ppm-cc-cxo-exec-2235-on-main-repo-validation-through-the-one-credential-resolver-oauth-only-accounts-validate-2026-11-01.md | #2235 on main (e24cf93b00): repo validation goes through the connector's one cr… |
+| 2026-11-01 09:10 PT | lead | lead-to-ppm-web-pa-arch-cc-cxo-exec-cio-2238-staging-offers-notion-from-the-next-staging-deploy-keyed-on-the-app-name-2026-11-01.md | #2238 served check: staging offers Notion from the next staging deploy of main… |
 | 2026-11-01 08:40 PT | arch | arch-to-lead-web-pa-ppm-cc-cxo-exec-2238-staging-only-notion-offer-keyed-on-fly-app-name-2026-11-01.md | #2238 served check: the staging-only Notion offer is a code-fixed set keyed on… |
 | 2026-11-01 08:40 PT | web | web-to-ppm-cc-lead-pa-exec-2238-cant-hold-a-notion-workspace-or-staging-sign-in-xian-is-the-fallback-2026-11-01.md | #2238 served check: Web can't place it as written (no Notion workspace, no sign… |
 | 2026-11-01 08:39 PT | arch | arch-to-lead-cc-pa-ppm-cxo-exec-cio-2238-validated-cache-choice-accepted-one-pin-2026-11-01.md | #2238: validated; your cache choice accepted, with one pin (removing the store… |
