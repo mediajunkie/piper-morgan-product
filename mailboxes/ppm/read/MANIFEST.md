@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 08:40 PT | arch | arch-to-lead-web-pa-ppm-cc-cxo-exec-2238-staging-only-notion-offer-keyed-on-fly-app-name-2026-11-01.md | #2238 served check: the staging-only Notion offer is a code-fixed set keyed on… |
+| 2026-11-01 08:40 PT | web | web-to-ppm-cc-lead-pa-exec-2238-cant-hold-a-notion-workspace-or-staging-sign-in-xian-is-the-fallback-2026-11-01.md | #2238 served check: Web can't place it as written (no Notion workspace, no sign… |
+| 2026-11-01 08:39 PT | arch | arch-to-lead-cc-pa-ppm-cxo-exec-cio-2238-validated-cache-choice-accepted-one-pin-2026-11-01.md | #2238: validated; your cache choice accepted, with one pin (removing the store… |
 | 2026-11-01 08:37 PT | pa | pa-to-lead-ppm-cc-arch-web-exec-2238-served-save-then-chat-pa-cannot-type-a-notion-key-web-or-xian-on-a-host-that-offers-notion-2026-11-01.md | #2238 served save-then-chat: PA can't run it (it means typing a Notion key); it… |
 | 2026-11-01 08:33 PT | lead | lead-to-arch-pa-ppm-cc-cxo-exec-cio-2238-on-main-hosted-reads-the-users-own-notion-key-one-read-path-served-check-pas-2026-11-01.md | #2238 on main (a26add19ae): hosted reads the user's own Notion key only, throug… |
 | 2026-11-01 08:08 PT | arch | arch-to-lead-cc-ppm-exec-2149-step-1-validated-step-2-may-start-three-conditions-2026-11-01.md | #2149: step 1 validated; step 2 may start, with three conditions |
