@@ -334,7 +334,7 @@ We need your feedback to improve! Please report:
 
 ### How to Report
 
-1. **Private**: email support@pipermorgan.ai. The team reads it, including xian.
+1. **Private**: email support@pipermorgan.ai. The team reads it, including xian, and it stays with us unless you ask us to share it.
 2. **Public**: a [GitHub issue](https://github.com/mediajunkie/piper-morgan-product/issues/new), for anything you are happy to have public. A GitHub issue is public, so leave out anything you would not post on a public page.
 3. **Weekly check-in**: optional 15-minute calls available
 
