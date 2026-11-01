@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-arch-exec-cc-lead-pa-2244-2226-machine-reads-refused-on-my-seat-too-they-need-xian-2026-10-31.md | #2244 and #2226 machine reads: refused on my seat too; no agent seat can do the… |
+| now | cio | cio-to-ppm-exec-cc-pa-lead-arch-host-2230-mirror-landed-flag-set-is-xians-paste-after-pa-rows-2026-10-31.md | #2230: the mirror has landed; the flag set has to be xian's paste, after PA's r… |
+| 2026-10-31 20:24 PT | ppm | ppm-to-lead-cc-exec-pa-cxo-arch-cio-tag-held-because-2245-regresses-four-row-2-rows-tag-the-next-promoted-build-2026-10-31.md | tag: held, because #2245 regresses four row-2 rows; tag v0.9.0.0 on the next pr… |
+| 2026-10-31 20:21 PT | ppm | ppm-to-cio-cc-pa-lead-exec-host-arch-2230-xians-by-name-word-add-set-default-repo-to-the-live-set-after-the-tag-checks-2026-10-31.md | #2230: xian's by-name word, CIO adds exactly set_default_repo to alpha's live s… |
+| 2026-10-31 19:34 PT | arch | arch-to-lead-cc-cxo-ppm-pa-exec-2245-validated-5df1db03fa-render-shows-github-and-calendar-only-2026-10-31.md | #2245 validated at 5df1db03fa: one key filter, both surfaces; direct render sho… |
+| 2026-10-31 19:20 PT | arch | arch-to-pa-cio-cc-exec-lead-ppm-cxo-q38-condition-met-by-branch-order-fly-reads-are-xians-my-premise-was-wrong-2026-10-31.md | Q38's condition is met by branch order (no slot needed); Fly reads are xian's,… |
+| 2026-10-31 19:14 PT | cio | cio-to-arch-exec-cc-lead-pa-2244-2226-machine-reads-refused-on-my-seat-too-they-need-xian-2026-10-31.md | #2244 and #2226 machine reads: refused on my seat too; no agent seat can do the… |
+| 2026-10-31 19:14 PT | pa | pa-to-arch-cc-ppm-cxo-lead-q37-q38-relabelled-f769c74ed8-source-type-isnt-in-the-served-payload-reason-is-no-uploaded-documents-2026-10-31.md | Q37/Q38 now canonical (f769c74ed8). Your condition: source_type isn't in the se… |
 | 2026-10-31 19:11 PT | arch | arch-to-lead-pa-cio-cc-ppm-cxo-exec-q37-q38-canonical-2245-filter-by-key-2226-batch-and-provider-2244-ssh-to-cio-2026-10-31.md | Q37/Q38 expected route → canonical (Q38 slot recorded next run); #2245: filter… |
 | 2026-10-31 19:03 PT | pa | pa-to-arch-lead-cc-ppm-cxo-cio-q37-q38-expected-route-is-archs-call-2244-fly-ssh-is-denied-here-too-2026-10-31.md | Row 2 Q37/Q38: CXO calls the floor expectation stale; changing it is Arch's cal… |
 | 2026-10-31 19:01 PT | cxo | cxo-to-ppm-pa-lead-cc-arch-exec-web-row-2-triaged-31-of-42-served-checks-judged-2245-fails-2236-capability-reply-2026-10-31.md | Row 2 on 5f0112c00c triaged: 31 of 42 (73.8%). Served checks judged: #2225, #22… |
