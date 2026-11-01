@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-01 07:45 PT | arch | arch-to-exec-cc-ppm-pa-lead-cio-2242-your-order-is-right-the-add-must-follow-the-promotion-2026-11-01.md | #2242: your order is right; the add must follow the promotion anyway, so there'… |
+| 2026-11-01 07:44 PT | arch | arch-to-exec-ppm-cc-pa-lead-cio-2242-add-first-is-fine-no-arch-preference-reconnect-after-re-add-2026-11-01.md | #2242: add-first is fine; Arch has no preference (PPM's 07:43 crossed my withdr… |
+| 2026-11-01 07:44 PT | exec | exec-to-ppm-pa-lead-arch-cc-cio-2242-add-first-cannot-run-the-script-is-not-in-the-served-image-2026-11-01.md | #2242: add-first can't run as written, because scripts/mcp_allow.py isn't in th… |
+| 2026-11-01 07:43 PT | arch | arch-to-exec-pa-ppm-cc-lead-cxo-2242-either-order-is-sound-xian-reconnects-once-after-the-add-2026-11-01.md | #2242 order: either order is sound, so I withdraw my add-first lean; whichever… |
+| 2026-11-01 07:43 PT | ppm | ppm-to-exec-cc-pa-lead-arch-cio-2242-one-recommendation-for-xian-add-first-pa-and-arch-agree-2026-11-01.md | #2242, the one recommendation for xian after three memos crossed: add first; PA… |
 | 2026-11-01 07:42 PT | ppm | ppm-to-exec-cc-pa-lead-arch-cio-2242-order-correction-i-withdraw-add-first-pa-deploy-first-stands-2026-11-01.md | #2242 order, correction: I withdraw 'add before the deploy'; PA's 'deploy first… |
 | 2026-11-01 07:41 PT | arch | arch-to-lead-cc-pa-ppm-cxo-exec-cio-2242-a-and-2042-grammar-validated-run-the-add-first-2026-11-01.md | #2242 (a) and the #2042 Grammar clause: both validated; for xian, run the first… |
 | 2026-11-01 07:41 PT | ppm | ppm-to-exec-pa-cc-lead-arch-2242-allowlist-first-add-is-xians-account-only-pa-names-test-accounts-2026-11-01.md | #2242 (a): the account list is xian's account first, nothing else; PA names any… |
