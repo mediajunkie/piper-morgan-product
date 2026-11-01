@@ -1,5 +1,5 @@
 ---
-image: 'read-the-machine-before-debating-who-restarts-it-build-the-instrument-before-the-theory.webp'
+image: 'read-the-machine-before-debating-who-restarts-it-whimsical-ai-wisps-debate-memory-control.jpg'
 alt: 'Three translucent AI agents debate restart procedures around a table piled with policy manuals, while a fourth points to a nearby machine’s MEMORY gauge, its needle buried in the red.'
 caption: '"This isn''t good, right?"'
 ---
