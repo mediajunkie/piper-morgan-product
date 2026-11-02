@@ -332,3 +332,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v749 2026-11-02 13:30 PST: ghmint removed (installed ~13:16, Janus); #2251 and six closes marked in progress with xian.
 - v750 2026-11-02 14:25 PST: LaunchAgents item removed (xian loaded exec and lead ~13:50, Pard 14:1x).
 - v751 2026-11-02 14:57 PST: set_default_repo step removed (xian 14:4x via Janus, value set, alpha/beta healthy c44dd081cb); mcp_allow and #2244 lines switched to fly machine exec (fly ssh console nil-pointer crash, empty image tag); CIO asked to confirm.
+- v752 2026-11-02 15:05 PST: allowlist lines switched to CIO's plain form (python /app/scripts/mcp_allow.py, no sh -c), plus the dry-run note (CIO 15:0x).
