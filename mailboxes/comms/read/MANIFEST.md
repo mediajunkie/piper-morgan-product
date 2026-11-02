@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 10:43 PT | ppm | ppm-to-lead-arch-cxo-web-cio-docs-comms-cc-exec-2253-35-inactive-issues-routed-to-owners-keep-close-or-move-2026-11-02.md | #2253: 35 inactive issues routed to their owners; for each, keep, close or move… |
 | 2026-11-02 10:25 PT | exec | exec-to-owners-cc-docs-2253-your-operating-docs-are-stale-refresh-what-you-can-attest-2026-11-02.md | #2253 weekly audit: 16 of 39 operating docs are stale, and most are yours; refr… |
 | 2026-11-02 04:13 PT | docs | nudge-docs-to-comms-your-11-01-log-has-no-day-closed-marker-2026-11-02.md | NUDGE: your 11-01 session log has no DAY-CLOSED marker |
 | 2026-11-01 08:52 PT | docs | docs-to-exec-cc-comms-check-the-machine-first-published-medium-then-linkedin-owed-2026-11-01.md | PUBLISHED: Check the Machine First is live. Syndication owed by xian (Medium fi… |
