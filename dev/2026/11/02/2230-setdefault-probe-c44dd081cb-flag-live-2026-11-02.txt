@@ -1,0 +1,26 @@
+=== on c44dd081cb
+
+## P1 unarmed, session 68689105
+
+--- P1a [15:07:18, http 200] route query/set_default_repo
+USER: Set my default GitHub repository to dinp-machine/piper-test-activity
+PIPER: I can't check dinp-machine/piper-test-activity from here, so I haven't changed your default. Set it in Settings → Integrations → GitHub.
+
+## P2 after an armed draft, session 6eec946d
+
+--- P2a [15:07:28, http 200] route execution/create_github_issue
+USER: Let's track this. Create a GitHub issue: 'Probe draft 1720'
+PIPER: Happy to shape this with you before anything gets filed. Here's a draft to start from:
+
+**Title**: Probe draft 1720
+
+What should the body say — the problem, steps to reproduce, impact? Tell me what to add or change. If this draft works as-is, say "file it as is" and I'll create it right now. (If you'd rather I just file things directly, say "just do things directly from now on" and I will.)
+
+--- P2b [15:07:36, http 200] route execution/set_default_github_repo
+USER: Set my default GitHub repository to dinp-machine/piper-test-activity
+PIPER: I didn't recognize that as something I can do from chat — I may have misread the ask rather than being unable to do it. What I heard was: "Set my default GitHub repository to dinp\-machine\/piper\-test\-activity." If I misread it, try saying it another way. If not, it may already be doable in Piper's own pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub).
+
+--- P2d [15:07:48, http 200] route CONVERSATION/clarification_needed
+USER: no
+PIPER: Okay.
+end c44dd081cb
