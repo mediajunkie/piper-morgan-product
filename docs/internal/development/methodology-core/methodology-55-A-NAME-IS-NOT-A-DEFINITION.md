@@ -2,13 +2,12 @@
 type: methodology
 title: A Name Is Not a Definition
 valid_from: "2026-09-25"
-last_updated: "2026-09-25"
+last_updated: "2026-11-02"
 ---
 
 # A Name Is Not a Definition
 
-**Status**: Emerging (two instances, one author, one week; explicitly 0-cross-author — see "What is
-NOT established" below).
+**Status**: Emerging. Two instances from one author (Arch, 09-20), plus one cross-author instance (CIO and HOST's spec, caught by Lead; 2026-11-02, below). See "What is NOT established" for what one cross-author instance does and doesn't settle.
 **Filed**: 2026-09-25 by Arch · **Origin**: Arch's own two rulings, 2026-09-20 (#1818) and
 2026-09-23 (#1744), surfaced while drafting Agent 360 v0.5 · **Ruled Emerging by**: CIO, 2026-09-25
 (`ruling-cio-to-arch-cc-host-pm-name-is-not-a-definition-file-as-emerging-2026-09-25.md`) · **Related**:
@@ -62,6 +61,21 @@ name vs. the predicate that actually defines its consequence); instance 2 is a d
 mismatch (a status glyph vs. the prose that defines what the glyph is being used to represent in
 *this particular document*). Different triggers, same cognitive move — stopping at the thing that
 looks like a decision instead of opening what it actually decides.
+
+## A cross-author instance: a type name borrowed from another codebase (CIO, 2026-11-02)
+
+The welfare-criteria spec (HOST and CIO, June) told builders to "extend `TranscriptEntry`
+(`services/domain/models.py`) with 4 boolean fields", and #1680 repeated it. The name and the path made
+it look like a decision about an existing type. It wasn't one: `TranscriptEntry` is a type in **gbrain**,
+another project's codebase, which HOST studied on 06-10. It entered our v0.2 seed on 06-19 with a
+Piper module path attached, and it has never existed in Piper's code. Nobody opened `models.py` until
+Lead did on 09-24, before building. #1680 then sat idle for five weeks on the real question this
+label had hidden: which carrier should hold the flags.
+
+**What it adds:** the first instance from a different author than the entry's origin (the spec was
+written by CIO and HOST, and Lead caught it), and a new source of official-shaped names: a name
+imported from a studied external system, given a local path. The rule's "one hop away" here is
+opening the named file.
 
 ## The rule
 

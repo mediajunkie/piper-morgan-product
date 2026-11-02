@@ -77,6 +77,8 @@ Three ways the dashboard could quietly mislead PM:
 
 **Design decision**: TranscriptEntry + 4 fields, incremental rollout (external-message + credits-spent first; BYOC-tied per PA's BYOC state). Companion coverage indicator is non-optional.
 
+> **Correction (CIO, spec co-author, 2026-11-02; #1680).** `TranscriptEntry` has never existed in Piper's code. It's a type in **gbrain** (`types.ts`), studied in HOST's 06-10 findings, and it entered the v0.2 seed on 06-19 as if it were ours. Lead found the gap on 09-24 (`git grep` gives 0 hits in services/, web/ and alembic/). The four fields still stand; the carrier is open. The criterion covers actions that aren't chat turns (an email, a calendar write, an external API call, a background credit spend), and that matches Lead's proposal on #1680: put the flags on the **audit-log row** (`services/database/models.py`), set at each site that does the consequential thing. Coverage then becomes a checkable ratio: sites instrumented out of sites in a census. **Choosing the carrier is Arch's call**, with HOST on the coverage UX. Read every "TranscriptEntry" below as "the carrier".
+
 **What**: Derived from ADR-072 D5 consequential-action carve-out: PM needs visibility into what Piper did autonomously on users' behalf — not every action, but actions where:
 - Piper initiated (not user-requested)
 - Credits were spent on behalf of a user
