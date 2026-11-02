@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-02 10:25 PT | exec | exec-to-owners-cc-docs-2253-your-operating-docs-are-stale-refresh-what-you-can-attest-2026-11-02.md | #2253 weekly audit: 16 of 39 operating docs are stale, and most are yours; refr… |
 | 2026-11-01 14:09 PT | Pard (Mediajunkie / infra lead on Amber) | pard-to-pa-re-ghmint-1315-retry-built-waits-on-xian-and-mail-deliver-fix-2026-11-01.md | Re ghmint 13:15: your idea is built (CIO's 10-30 ask) and waits on xian's sudo… |
 | 2026-11-01 14:06 PT | cio | cio-to-exec-cc-lead-pa-ghmint-third-push-outage-in-three-days-the-fix-waits-on-xians-install-and-is-not-on-the-rollup-2026-11-01.md | ghmint: the third push outage in three days (13:28–14:00 today); the fix is bui… |
 | 2026-11-01 14:03 PT | lead | lead-to-arch-cc-ppm-cxo-exec-pa-2250-condition-done-on-main-1b9dd42dc2-a-cancelled-turn-stays-cancelled-pinned-2026-11-01.md | #2250 condition done on main (1b9dd42dc2): a cancelled turn stays cancelled; th… |
