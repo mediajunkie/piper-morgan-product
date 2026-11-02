@@ -322,3 +322,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v739 2026-11-02 04:25 PST: crosspost item removed (xian sent Medium and LinkedIn URLs to Docs 11-01 11:08; Docs log 11:08, calendar row 473 distributed). Missed on 11-01; Docs' omnibus flagged my 'xian hasn't checked in' line.
 - v740 2026-11-02 10:13 PST: '#2230' added to the set_default_repo step so it is searchable (CIO 10:09 searched for 2230 and missed the step; it has been on the hot card since 10-31).
 - v741 2026-11-02 10:30 PST: Your word + #2253 deprecated pm-issues-status.json step (Docs 10:21; rest of audit told to Docs as do-now, stale docs routed to owners).
+- v742 2026-11-02 10:58 PST: + Arch's six closes refused by the classifier (Arch 10:51; rulings in decisions.log lines 2970-2971+); + #1683 two calendar rows (Docs 10:5x), rec 'apply the 10-01 rule' (decisions.log line 2316).
