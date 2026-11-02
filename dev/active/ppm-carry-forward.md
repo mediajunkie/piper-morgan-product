@@ -587,12 +587,13 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **#2226 local embeddings:** Lead 3 days, Arch's (a)–(j), #2244 first. The memory fit (server memory on Fly plus about 190 MB against 1 GB) is unmeasured. xian's direction: no OpenAI. When to build is still xian's call.
 - **#2247:** 4.5–5.5 Lead-days plus #1514. Not in the first sprint.
 - **Sprint field:** set on 22 issues 10-31. New placements since then are unset: none yet.
-- **Production 249**, map v56 (#2248 in Q 11-01; #2250 in PUB beside #2197 11-01, the latency follow-up). #2197 landed `75eb536442` and Arch validated it. CXO judges it served after the promotion. #2249 is in Ongoing (Docs, blog audit). #2149 closed out: two-stage shape rejected, code removed `b1a52ee2ae`. #2250 landed `f7a1799593` plus the cancel condition `1b9dd42dc2`; AC 3 is PA's after-half on the promotion, at 16 turns per ask; pass = both medians inside the before-IQRs (10.74–13.38 s, 10.87–12.74 s).
+- **Production 238 on 11-02**, map v58. The drop is 8 closed by Lead and 3 by PPM on the #2253 review, and #1441 moved C to PUB on xian's word. **Earlier, 249 at** map v56 (#2248 in Q 11-01; #2250 in PUB beside #2197 11-01, the latency follow-up). #2197 landed `75eb536442` and Arch validated it. CXO judges it served after the promotion. #2249 is in Ongoing (Docs, blog audit). #2149 closed out: two-stage shape rejected, code removed `b1a52ee2ae`. #2250 landed `f7a1799593` plus the cancel condition `1b9dd42dc2`; AC 3 is PA's after-half on the promotion, at 16 turns per ask; pass = both medians inside the before-IQRs (10.74–13.38 s, 10.87–12.74 s).
 - **Carried:**
-  - 🔒 the 5 set-aside closed issues (#1647, #1662, #2081, #2083, #2146), since 10-29. Smallest answer: "INFRA" or "leave". **Escalated to Exec once, 11-01.**
-  - 🔒 the #1706 Sprint move, since 10-25. Smallest answer: "a" (#1441 to PUB, PPM's rec now) or "b". **Escalated to Exec once, 11-01.**
+  - ✅ the 5 set-aside issues went to PROD-INFRA 11-02, and #1441 went to PUB 11-02 (xian 12:0x via Exec). Done.
+  - 🔒 **the six Arch closes** (#272, #309, #315, #335, #337, #1011): xian granted them, but the classifier refused them twice (10:2x, 12:3x). They're on rollup v746 as xian's hand: a `gh issue` permission rule, or he posts them. After they close, take #1011's plan row out and recount to 237.
+  - **#1680:** the build is complete (landings A–C, `4678c47e9e`, Arch validated). Owed by PPM: the served check after the promotion (`github.chat.comment_issue | success | f t t t`, headline "16 of 16").
   - CXO's spot-check;
   - the next weekly diff, Fri 11-06;
-  - **PDR-102 (document model) v0.4**, Arch and CXO reviewed 11-01. 🔒 Sent to xian via Exec 11-01 for ratification (smallest answer: "ratify"). v0.4: no review checks open (Arch 06:59: artifacts already show as documents). Comms holds public "data you own" copy until C7 is verified and C8 has a surface.
+  - **PDR-102 RATIFIED 11-02** (xian, no changes); its status line is set. From now on, check new document-touching issues against C1–C8 when placing them. v0.4: no review checks open (Arch 06:59: artifacts already show as documents). Comms holds public "data you own" copy until C7 is verified and C8 has a surface.
   - **key: notion-offer-ask** (Filed 2026-11-01; to: exec; by: trigger: Web's #2238 served check passes). Send Exec the one-line "offer Notion in the beta: yes or no" for xian. CXO's card words come first.
   - **Rule from PDR-102:** when PPM places a connector-ingest unit, mail Arch the same day (his ADR trigger for C2).
