@@ -2,8 +2,9 @@
 type: briefing
 title: PROJECT.md - Piper Morgan Development
 valid_from: "2025-09-25"
-last_updated: "2026-09-22"
-last_verified: "2026-09-22"
+last_updated: "2026-11-02"
+last_verified: "2026-11-02"
+verified_scope: "2026-11-02 (Docs): every path and command in the doc checked against the tree (services dirs, config, roadmap dir, docker-compose db settings, ADR-035, methodology-00), Team & Accounts against ROSTER.md and CLAUDE.md role table, branch discipline against git. Fixed the production branch, the web/app.py line count and the orchestration row. Vision and Learning Philosophy prose is values, not checkable."
 ---
 
 # PROJECT.md - Piper Morgan Development
@@ -101,7 +102,7 @@ config/             # PIPER.md and user config
 |--------|----------|---------|
 | Intent Classification | `services/intent_service/` | Universal entry point for all requests |
 | Integrations | `services/integrations/` | Slack, GitHub, Notion, Calendar, MCP, Spatial |
-| Orchestration | `services/orchestration/` | Workflow coordination |
+| Workflow dispatch | `services/intent_service/workflow_entries.py` | Registered workflow entries that handlers dispatch through (`services/orchestration/` was deleted) |
 | Learning | `services/learning/` | Preference and pattern learning |
 | Knowledge | `services/knowledge/` | RAG system with embeddings |
 
@@ -172,6 +173,6 @@ _Welcome to the Piper Morgan project. Your contribution matters._
 
 **Document Maintenance**: This document describes stable project context. For current state (version, sprint position, active issues), always check `docs/briefing/BRIEFING-CURRENT-STATE.md`.
 
-*Last Updated: 2026-09-22 (added Team & Accounts section at PM's request; web/app.py line count
+*Last Updated: 2026-11-02 (re-verified by Docs, see verified_scope). Earlier: 2026-09-22 (added Team & Accounts section at PM's request; web/app.py line count
 refreshed 933 → 319 on 2026-05-12; otherwise stable since Mar 14, 2026; for live state see
 BRIEFING-CURRENT-STATE.md)*

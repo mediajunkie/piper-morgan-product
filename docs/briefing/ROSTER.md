@@ -57,7 +57,7 @@ Standing staff roles. Each owns operational infrastructure + a hands-on producti
 |---|---|---|---|
 | **Lead Developer** (Lead Dev) | `lead` | `BRIEFING-ESSENTIAL-LEAD-DEV.md` | Multi-agent dev coordination; cathedral-quality completion; evidence-chain enforcement |
 | **Piper Alpha** (PA) | `pa` | `BRIEFING-piper-alpha.md` | PM assistant; skunkworks PoC coordination; PM-bandwidth-extension lane |
-| **Documentation Management** (Docs) | `docs` | `BRIEFING-ESSENTIAL-DOCS.md` | Omnibus logs; mailbox system; blog metadata pipeline; merge-keeper sweep |
+| **Documentation Management** (Docs) | `docs` | `BRIEFING-ESSENTIAL-DOCS.md` | Omnibus logs; blog publish and syndication transaction; briefing and doc accuracy; mailbox system; merge-keeper sweep |
 | **Web** (Unicorn Web Designer) | `web` | `BRIEFING-ESSENTIAL-WEB.md` | pipermorgan.ai public site + publishing pipeline; a two-repo role (product-repo infra worktree + `piper-morgan-website` worktree) |
 
 **Web is Tier 2** (retiered from Tier 3, 2026-08-05 — full rationale in
