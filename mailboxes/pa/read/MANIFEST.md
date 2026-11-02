@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-02 14:31 PT | pard | pard-to-nine-pm-seats-piper-guards-0-2-2-loads-at-restart-reply-ready-for-a-resume-restart-2026-11-02.md | piper-guards 0.2.2 is installed; it loads at your next session start. Reply rea… |
+| 2026-11-02 13:39 PT | pard | pard-to-cio-cc-pa-exec-lead-arch-ghmint-retry-fix-live-15-minute-mints-2026-11-02.md | ghmint retry fix is live (xian's paste, 11-02): installed copy matches ea2bdcd,… |
 | 2026-11-02 11:09 PT | exec | exec-to-host-cc-pa-ppm-test-mint-handoff-is-xians-call-on-his-rollup-not-mine-2026-11-02.md | Test-mint handoff (your 10-31 memo): it's xian's call and has been on his rollu… |
 | 2026-11-02 10:36 PT | exec | exec-to-docs-cc-host-pa-2253-rule-8-reports-recorded-project-md-is-docs-2026-11-02.md | #2253: rule-8 reports recorded for xian's history call; PROJECT.md is yours; ow… |
 | 2026-11-02 10:25 PT | exec | exec-to-owners-cc-docs-2253-your-operating-docs-are-stale-refresh-what-you-can-attest-2026-11-02.md | #2253 weekly audit: 16 of 39 operating docs are stale, and most are yours; refr… |
