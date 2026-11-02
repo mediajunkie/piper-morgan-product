@@ -734,6 +734,7 @@ class TestConsequentialSiteCensusRatchet:
             check=True,
         ).stdout.split()
         calls = []
+        non_literal = []
         for path in files:
             if path in self.EXCLUDED or "/tests/" in path:
                 continue
@@ -741,17 +742,21 @@ class TestConsequentialSiteCensusRatchet:
             if "outer_site(" not in src:
                 continue
             for func, node in self._enclosing_functions(ast.parse(src)):
-                if (
-                    isinstance(node, ast.Call)
-                    and (
-                        (isinstance(node.func, ast.Name) and node.func.id == "outer_site")
-                        or (isinstance(node.func, ast.Attribute) and node.func.attr == "outer_site")
-                    )
-                    and node.args
-                    and isinstance(node.args[0], ast.Constant)
-                    and isinstance(node.args[0].value, str)
+                if isinstance(node, ast.Call) and (
+                    (isinstance(node.func, ast.Name) and node.func.id == "outer_site")
+                    or (isinstance(node.func, ast.Attribute) and node.func.attr == "outer_site")
                 ):
-                    calls.append((path, func, node.args[0].value, node.lineno))
+                    arg = node.args[0] if node.args else None
+                    if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
+                        calls.append((path, func, arg.value, node.lineno))
+                    else:
+                        # Arch 2026-11-02 14:02: a non-literal key would otherwise be
+                        # skipped silently and the set equality could not see it.
+                        non_literal.append(f"{path}:{node.lineno} in {func}")
+        assert not non_literal, (
+            "outer_site needs a literal site key (a string constant) so the census can "
+            "read it; non-literal calls: " + "; ".join(non_literal)
+        )
         assert calls, "no outer_site(...) call found; the scan is not looking where it should"
         problems = []
         for path, func, key, line in calls:
