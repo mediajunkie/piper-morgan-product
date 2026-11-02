@@ -3,8 +3,8 @@ type: role-portfolio
 role: CXO (Chief Experience Officer)
 status: v0.1
 self-authored-by: CXO
-last_updated: 2026-08-28
-refreshed: 2026-08-28 (section 2 per workstream #058; sections 2+3 amended same day for PM's ratified floor/ethics-watch split — retire the floor-quality half, convert the voice half to triggered)
+last_updated: 2026-11-02
+refreshed: 2026-11-02 (CXO, #2253: partial. Checked only that the sibling briefing and the portfolio framework still exist and that the Current Focus items cited elsewhere match GitHub; sections 1 to 4 are NOT re-read and stand on the 08-28 refresh, so treat their workstream numbers as 08-28 facts.) Earlier: 2026-08-28 (section 2 per workstream #058; sections 2+3 amended same day for PM's ratified floor/ethics-watch split — retire the floor-quality half, convert the voice half to triggered)
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-CXO.md
 refresh_discipline: "sections 2 and 4 on each workstream review; sections 1 and 3 on role-scope drift — NOW CHECKED, see refresh_trigger_glob and §5"

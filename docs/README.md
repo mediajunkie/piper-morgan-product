@@ -16,19 +16,19 @@ It's built by a team of AI agents working alongside a human PM. That's both the 
 
 ---
 
-## Alpha testing
+## Private beta
 
-Piper Morgan is currently in **invite-only alpha** at [alpha.pipermorgan.ai](https://alpha.pipermorgan.ai).
+Piper Morgan is currently in **invite-only private beta** at [beta.pipermorgan.ai](https://beta.pipermorgan.ai).
 
-If you're part of the alpha:
+If you're part of the beta:
 
-- **[Alpha Quick Start](ALPHA_QUICKSTART.md)** — get running in a few minutes
+- **[Beta Quick Start](ALPHA_QUICKSTART.md)** — get running in a few minutes
 - **[Testing Guide](ALPHA_TESTING_GUIDE.md)** — what to test and how to give feedback
 - **[Known Issues](ALPHA_KNOWN_ISSUES.md)** — current limitations
-- **[Alpha Agreement](ALPHA_AGREEMENT_v2.md)** — terms and expectations
+- **[Terms](https://pipermorgan.ai/terms/)** — terms and expectations
 - **[Release Notes v0.9.0.0](releases/RELEASE-NOTES-v0.9.0.0.md)** — what changed in the latest release
 
-Not in the alpha yet? You can follow along at [pipermorgan.ai](https://pipermorgan.ai) — we publish weekly ships, building narratives, and insights about what we're learning.
+Not in the beta yet? You can follow along at [pipermorgan.ai](https://pipermorgan.ai) — we publish weekly ships, building narratives, and insights about what we're learning.
 
 ---
 
@@ -117,5 +117,5 @@ Follow the weekly ships at [pipermorgan.ai/shipping-news](https://pipermorgan.ai
 
 - **Docs**: [pmorgan.tech](https://pmorgan.tech) (you're here)
 - **Issues**: [GitHub Issues](https://github.com/mediajunkie/piper-morgan-product/issues)
-- **Alpha support**: [support@pipermorgan.ai](mailto:support@pipermorgan.ai)
+- **Beta support**: [support@pipermorgan.ai](mailto:support@pipermorgan.ai)
 - **Blog**: [pipermorgan.ai](https://pipermorgan.ai)
