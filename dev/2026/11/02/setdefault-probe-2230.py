@@ -45,4 +45,6 @@ sid = str(uuid.uuid4())
 print(f"\n## P2 after an armed draft, session {sid[:8]}")
 turn("P2a", sid, "Let's track this. Create a GitHub issue: 'Probe draft 1720'")
 maybe_no("P2c", sid, turn("P2b", sid, ASK))
+# Lead 11-02 15:25: read whether the draft survived the set ask (read-only; files nothing).
+turn("P2e", sid, "What's in my draft?")
 turn("P2d", sid, "no")
