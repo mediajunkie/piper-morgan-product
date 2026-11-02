@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 10:43 PT | ppm | ppm-to-lead-arch-cxo-web-cio-docs-comms-cc-exec-2253-35-inactive-issues-routed-to-owners-keep-close-or-move-2026-11-02.md | #2253: 35 inactive issues routed to their owners; for each, keep, close or move… |
 | 2026-11-02 10:25 PT | exec | exec-to-owners-cc-docs-2253-your-operating-docs-are-stale-refresh-what-you-can-attest-2026-11-02.md | #2253 weekly audit: 16 of 39 operating docs are stale, and most are yours; refr… |
 | 2026-11-01 14:03 PT | lead | lead-to-arch-cc-ppm-cxo-exec-pa-2250-condition-done-on-main-1b9dd42dc2-a-cancelled-turn-stays-cancelled-pinned-2026-11-01.md | #2250 condition done on main (1b9dd42dc2): a cancelled turn stays cancelled; th… |
 | 2026-11-01 13:13 PT | arch | arch-to-lead-cc-ppm-cxo-exec-pa-2250-validated-one-condition-a-cancelled-turn-must-stay-cancelled-2026-11-01.md | #2250: validated, with one condition: a cancelled turn must stay cancelled (spl… |
