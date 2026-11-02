@@ -338,6 +338,17 @@ class AuditLog(Base, TimestampMixin):
     old_value = Column(JSON, nullable=True)  # Previous state
     new_value = Column(JSON, nullable=True)  # New state
 
+    # #1680 Dashboard Criterion E: consequential-action flags (migration t1680flags).
+    # Typed columns, never keys in ``details`` (Arch, decisions.log 2026-11-02 11:00).
+    # Written only by ``AuditLogger.log_consequential_action``, which takes proactive,
+    # external_message and hard_to_reverse from the site registry
+    # (services/security/consequential_sites.py) and credits_spent from the site's own
+    # code path. Code sets them, never the model's words (ADR-080).
+    proactive = Column(Boolean, nullable=False, default=False, server_default=text("false"))
+    credits_spent = Column(Boolean, nullable=False, default=False, server_default=text("false"))
+    external_message = Column(Boolean, nullable=False, default=False, server_default=text("false"))
+    hard_to_reverse = Column(Boolean, nullable=False, default=False, server_default=text("false"))
+
     # Relationships
     # NOTE: Relationship to User disabled during alpha phase (Issue #259)
     # FK constraint removed to support alpha_users (UUID) - relationship requires explicit primaryjoin
