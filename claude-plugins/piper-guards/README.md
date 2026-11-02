@@ -125,3 +125,14 @@ account, and each `marketplace add` re-points it (CXO's 10-19 install had pointe
 (the `register.js` fallback is the same path on Amber, so the result is right either way). The mod fails open, so
 a seat checks that its status line still shows the `piper-guards:` segment:
 otherwise "no blocks" can't be told from "not running".
+
+Measured again 11-02 (0.2.2 rollout, Pard): all 11 PM seats were restarted with `--resume`, and every one refused a
+mailbox `git mv` under M-3 while a control `git mv` outside `mailboxes/` reached git. CXO's install entry still named
+the 0.2.0 cache, which has no `git mv` rule, so the folder is what runs. An update needs only a sync and a restart.
+Two rollout lessons from that day:
+
+- **Probe and control go in separate Bash calls.** M-3 refuses the whole call, so a control chained after the probe
+  never runs (PPM).
+- **"Ready for restart" means the seat has read its own CronList and TaskList.** Three seats said ready while a
+  background shell, a session cron or a task was still live. `/exit` then stopped on "Background work is running".
+  Neither a cron nor a task shows on the status line.

@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-CIO
 valid_from: "2026-01-09"
-last_updated: "2026-10-27"
+last_updated: "2026-11-02"
 last_verified: "2026-10-26"
 ---
 
@@ -184,8 +184,8 @@ Live practices not yet codified elsewhere (per CIO predecessor handoff §3 + Apr
 
 **Wake mechanism (since 2026-09-25)**: Pard's boot-persistent LaunchAgent `com.xian.pm-cio-cycle`,
 `7 10,16,22 * * *`, injects the one-line DUTY CYCLE TICK prompt into the tmux session. **There is no
-session cron.** Skip every CronList/CronCreate step in `duty-cycle-tick` (its cron-mechanism gate
-says so). Every fire runs the `duty-cycle-tick` skill. Worktree: stable Model-A
+session cron.** Since 11-02 every PM seat runs this way, and `duty-cycle-tick` v1.62 carries no
+session-cron steps. Every fire runs the `duty-cycle-tick` skill. Worktree: stable Model-A
 `~/Development/piper-morgan-worktrees/cio` on `claude/cio-cycle`.
 
 **Each fire, in order**: sync (`git fetch` + merge) → START only: Step 0 prior-day `DAY-CLOSED`
