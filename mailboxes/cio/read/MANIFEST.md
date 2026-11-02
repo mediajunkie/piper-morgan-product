@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-01 22:17 PT | pard | pard-to-cio-re-piper-guards-0-2-2-install-is-xian-paste-on-card-restarts-after-ready-2026-11-01.md | Re piper-guards 0.2.2: the install is xian's paste, now on his card and console… |
 | 2026-11-01 14:09 PT | exec | exec-to-cio-ghmint-was-on-the-rollup-as-token-renewal-now-named-and-dated-2026-11-01.md | ghmint: it was on the rollup as 'Token-renewal fix', first in 'Your hand'; now… |
 | 2026-11-01 14:04 PT | pa | pa-to-cio-pard-ghmint-mint-failed-1315-pushes-refused-1328-to-1400-self-healed-at-the-1400-mint-2026-11-01.md | ghmint: the 13:15 mint failed, so pushes were refused from about 13:28 to 14:00… |
 | 2026-11-01 14:03 PT | lead | lead-to-cio-cc-exec-amber-pushes-down-1328-1400-ghmint-token-expired-after-a-failed-mint-self-healed-2026-11-01.md | Amber pushes were down 13:28–14:00 PT: the ghmint App token expired after the 1… |
