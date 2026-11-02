@@ -68,6 +68,9 @@ from services.process.standup_copy import (
     STANDUP_RESUME_NOT_FOUND_REPLY,
 )
 from services.repositories.user_trust_profile_repository import UserTrustProfileRepository
+from services.security.consequential_outcomes import (
+    github_write_outcome as _github_write_audit_outcome,
+)
 from services.shared_types import IntentCategory, TrustStage
 from services.slot_filling.slot_filling_adapter import SlotFillingProcessAdapter
 from services.slot_filling.slot_template import MEETING_TEMPLATE
@@ -419,45 +422,6 @@ def _principal_from_intent(intent) -> Optional[str]:
     """
     context = intent.context or {}
     return context.get("user_id")
-
-
-def _github_write_audit_outcome(exc: BaseException) -> Tuple[str, Dict[str, Any]]:
-    """#1680: the consequential-row status for a GitHub write that raised.
-
-    "failed" only when the exception proves nothing was written (a refusal, a
-    not-found, an undesignated target, no resolvable repo). Anything else raised
-    without a verifiable result, so it is "unconfirmed", never "success" and never
-    a clean "failed" (#1220/#1322: a fired write may or may not have landed).
-    """
-    from services.integrations.github.github_integration_router import (
-        GitHubIssueNotFound,
-        GitHubWriteRefused,
-        GitHubWriteRejected,
-        GitHubWriteTargetUndesignated,
-    )
-
-    name = type(exc).__name__
-    if isinstance(
-        exc,
-        (
-            GitHubWriteRefused,
-            GitHubWriteRejected,
-            GitHubWriteTargetUndesignated,
-            GitHubIssueNotFound,
-        ),
-    ):
-        return "failed", {"error_type": name}
-    if isinstance(exc, RuntimeError) and "no repo could be resolved" in str(exc):
-        return "failed", {"error_type": name, "reason": "no_repo_resolved"}
-    if "may or may not have landed" in str(exc):
-        return "unconfirmed", {
-            "error_type": name,
-            "write_unconfirmed": "may_or_may_not_have_landed",
-        }
-    return "unconfirmed", {
-        "error_type": name,
-        "write_unconfirmed": "raised_without_verifiable_result",
-    }
 
 
 # #2132: words that carry no document name on their own. A router ``title``

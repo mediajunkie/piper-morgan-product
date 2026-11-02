@@ -17,6 +17,10 @@ from services.api.errors import GitHubAuthFailedError, GitHubRateLimitError
 from services.integrations.github.github_integration_router import (
     GitHubWriteTargetUndesignated,
 )
+from services.security.consequential_outcomes import (
+    github_write_outcome,
+    github_write_result_outcome,
+)
 
 from .base_command import BaseCommand
 
@@ -66,12 +70,38 @@ class GithubIssueCommand(BaseCommand):
                 }
 
             github_service = self._get_github_service()
-            issue_data = await github_service.create_issue(
-                repo_name=repo,
-                title=title,
-                body=body,
-                labels=labels,
-                assignees=assignees,
+            # #1680: the consequential row is written right after the call, on every
+            # outcome (recorded, then re-raised into the envelopes below);
+            # credits_spent=False (this method makes no LLM call).
+            from services.security.audit_logger import audit_logger
+
+            _audit_kwargs: Dict[str, Any] = {
+                "site": "github.command.create_issue",
+                "user_id": self.context.get("user_id"),
+                "resource_type": "github_repository",
+                "resource_id": repo,
+                "message": f"Create issue in {repo} (learned-pattern command)",
+                "credits_spent": False,
+            }
+            try:
+                issue_data = await github_service.create_issue(
+                    repo_name=repo,
+                    title=title,
+                    body=body,
+                    labels=labels,
+                    assignees=assignees,
+                )
+            except Exception as _write_err:
+                _a_status, _a_details = github_write_outcome(_write_err)
+                await audit_logger.log_consequential_action(
+                    status=_a_status, details=_a_details, **_audit_kwargs
+                )
+                raise
+            _a_status, _a_details = github_write_result_outcome(issue_data)
+            if _a_status == "success" and isinstance(issue_data, dict):
+                _a_details = {"issue_number": issue_data.get("number") or issue_data.get("id")}
+            await audit_logger.log_consequential_action(
+                status=_a_status, details=_a_details, **_audit_kwargs
             )
 
             # Result envelope: real issue identity replaces mock-123.

@@ -12,6 +12,10 @@ import structlog
 
 from services.api.errors import GitHubAuthFailedError, GitHubRateLimitError
 from services.integrations.github.github_integration_router import GitHubIntegrationRouter
+from services.security.consequential_outcomes import (
+    github_write_outcome,
+    github_write_result_outcome,
+)
 
 # Re-export exceptions for clean domain boundary
 __all__ = ["GitHubDomainService", "GitHubAuthFailedError", "GitHubRateLimitError"]
@@ -128,25 +132,54 @@ class GitHubDomainService:
 
         - "owner/name" full slug — split and passed explicitly to router
         - bare "name" — router resolves owner via its default-repo config
+
+        #1680: one consequential site across both branches; the row is written right
+        after the call on every outcome (recorded, then re-raised). The domain service
+        holds no acting user, so ``user_id`` is None; credits_spent=False (no LLM call).
         """
+        from services.security.audit_logger import audit_logger
+
+        _audit_kwargs: Dict[str, Any] = {
+            "site": "github.domain.create_issue",
+            "user_id": None,
+            "resource_type": "github_repository",
+            "resource_id": repo_name,
+            "message": f"Create issue in {repo_name} (domain service)",
+            "credits_spent": False,
+        }
         try:
-            if "/" in repo_name:
-                owner, repo = repo_name.split("/", 1)
-                return await self._github_agent.create_issue(
-                    title=title,
-                    body=body,
-                    labels=labels,
-                    assignees=assignees,
-                    owner=owner,
-                    repo_name=repo,
+            try:
+                if "/" in repo_name:
+                    owner, repo = repo_name.split("/", 1)
+                    issue = await self._github_agent.create_issue(
+                        title=title,
+                        body=body,
+                        labels=labels,
+                        assignees=assignees,
+                        owner=owner,
+                        repo_name=repo,
+                    )
+                else:
+                    issue = await self._github_agent.create_issue(
+                        title=title,
+                        body=body,
+                        labels=labels,
+                        assignees=assignees,
+                        repo_name=repo_name,
+                    )
+            except Exception as _write_err:
+                _a_status, _a_details = github_write_outcome(_write_err)
+                await audit_logger.log_consequential_action(
+                    status=_a_status, details=_a_details, **_audit_kwargs
                 )
-            return await self._github_agent.create_issue(
-                title=title,
-                body=body,
-                labels=labels,
-                assignees=assignees,
-                repo_name=repo_name,
+                raise
+            _a_status, _a_details = github_write_result_outcome(issue)
+            if _a_status == "success" and isinstance(issue, dict):
+                _a_details = {"issue_number": issue.get("number")}
+            await audit_logger.log_consequential_action(
+                status=_a_status, details=_a_details, **_audit_kwargs
             )
+            return issue
         except GitHubAuthFailedError:
             logger.error("GitHub authentication failed for issue creation", repo=repo_name)
             raise
@@ -167,14 +200,55 @@ class GitHubDomainService:
         labels: Optional[List[str]] = None,
         assignees: Optional[List[str]] = None,
     ) -> Dict[str, Any]:
-        """Update existing GitHub issue for domain consumption"""
-        try:
-            # #1436 B13: router signature is (issue_number, title, body, state,
-            # labels, assignees, *, owner, repo_name) — the old call shifted
-            # every argument by one.
-            return await self._github_agent.update_issue(
-                issue_number, title, body, state, labels, assignees, repo_name=repo_name
+        """Update existing GitHub issue for domain consumption
+
+        #1680: the consequential row is written right after the call on every outcome
+        (recorded, then re-raised). No acting user is held here, so ``user_id`` is None;
+        credits_spent=False (no LLM call)."""
+        from services.security.audit_logger import audit_logger
+
+        _fields = [
+            name
+            for name, value in (
+                ("title", title),
+                ("body", body),
+                ("state", state),
+                ("labels", labels),
+                ("assignees", assignees),
             )
+            if value is not None
+        ]
+        _audit_kwargs: Dict[str, Any] = {
+            "site": "github.domain.update_issue",
+            "user_id": None,
+            "resource_type": "github_issue",
+            "resource_id": str(issue_number),
+            "message": f"Update issue #{issue_number} in {repo_name} (domain service)",
+            "credits_spent": False,
+        }
+        try:
+            try:
+                # #1436 B13: router signature is (issue_number, title, body, state,
+                # labels, assignees, *, owner, repo_name) — the old call shifted
+                # every argument by one.
+                updated = await self._github_agent.update_issue(
+                    issue_number, title, body, state, labels, assignees, repo_name=repo_name
+                )
+            except Exception as _write_err:
+                _a_status, _a_details = github_write_outcome(_write_err)
+                await audit_logger.log_consequential_action(
+                    status=_a_status,
+                    details={**_a_details, "repo": repo_name, "fields": _fields},
+                    **_audit_kwargs,
+                )
+                raise
+            _a_status, _a_details = github_write_result_outcome(updated)
+            await audit_logger.log_consequential_action(
+                status=_a_status,
+                details={**_a_details, "repo": repo_name, "fields": _fields},
+                **_audit_kwargs,
+            )
+            return updated
         except GitHubAuthFailedError:
             logger.error(
                 "GitHub authentication failed for issue update", repo=repo_name, issue=issue_number

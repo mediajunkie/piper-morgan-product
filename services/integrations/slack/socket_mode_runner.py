@@ -23,6 +23,10 @@ from typing import Any, Optional
 import structlog
 
 from services.integrations.slack.mrkdwn import markdown_to_mrkdwn
+from services.security.consequential_outcomes import (
+    slack_sdk_error_outcome,
+    slack_sdk_outcome,
+)
 
 logger = structlog.get_logger(__name__)
 
@@ -129,7 +133,32 @@ class SlackSocketModeRunner:
             if response_url and response:
                 from slack_sdk.webhook.async_client import AsyncWebhookClient
 
-                await AsyncWebhookClient(response_url).send_dict(response)
+                # #1680: the consequential row is written right after the webhook
+                # reply, on every outcome. The Slack sender is the principal (a
+                # "U…" id goes in details); credits_spent=False: the reply is built
+                # by _process_slash_command's deterministic handlers, no LLM call.
+                from services.security.audit_logger import audit_logger
+
+                _audit_kwargs: dict = {
+                    "site": "slack.socket.slash_reply",
+                    "user_id": payload.get("user_id"),
+                    "resource_type": "slack_channel",
+                    "resource_id": payload.get("channel_id"),
+                    "message": f"Slack slash-command reply ({payload.get('command')})",
+                    "credits_spent": False,
+                }
+                try:
+                    sent = await AsyncWebhookClient(response_url).send_dict(response)
+                except Exception as _send_err:
+                    _a_status, _a_details = slack_sdk_error_outcome(_send_err)
+                    await audit_logger.log_consequential_action(
+                        status=_a_status, details=_a_details, **_audit_kwargs
+                    )
+                    raise
+                _a_status, _a_details = slack_sdk_outcome(sent)
+                await audit_logger.log_consequential_action(
+                    status=_a_status, details=_a_details, **_audit_kwargs
+                )
         except Exception as e:
             logger.error(
                 "slack_slash_command_failed",
@@ -160,11 +189,39 @@ class SlackSocketModeRunner:
             # place with the real reply (or an honest error) when done.
             thread_ts = event.get("thread_ts")
             placeholder_ts = None
+            # #1680: the placeholder is a consequential send; its row is written right
+            # after the call, on every outcome. credits_spent=False: it posts BEFORE
+            # process_intent runs, so no LLM call precedes this write.
+            from services.security.audit_logger import audit_logger
+
+            _audit_kwargs: dict = {
+                "site": "slack.socket.placeholder",
+                "user_id": self.bound_user_id,
+                "resource_type": "slack_channel",
+                "resource_id": channel,
+                "message": "Slack thinking placeholder",
+                "credits_spent": False,
+            }
             try:
-                placeholder = await self._web.chat_postMessage(
-                    channel=channel,
-                    text="_…thinking…_",
-                    thread_ts=thread_ts,
+                try:
+                    placeholder = await self._web.chat_postMessage(
+                        channel=channel,
+                        text="_…thinking…_",
+                        thread_ts=thread_ts,
+                    )
+                except Exception as _send_err:
+                    _a_status, _a_details = slack_sdk_error_outcome(_send_err)
+                    await audit_logger.log_consequential_action(
+                        status=_a_status,
+                        details={**_a_details, "slack_user": event.get("user")},
+                        **_audit_kwargs,
+                    )
+                    raise
+                _a_status, _a_details = slack_sdk_outcome(placeholder)
+                await audit_logger.log_consequential_action(
+                    status=_a_status,
+                    details={**_a_details, "slack_user": event.get("user")},
+                    **_audit_kwargs,
                 )
                 placeholder_ts = placeholder.get("ts") if placeholder else None
             except Exception as e:
@@ -197,14 +254,58 @@ class SlackSocketModeRunner:
         self, channel: str, ts: Optional[str], text: str, thread_ts: Optional[str]
     ) -> None:
         """Replace the #1228 thinking placeholder with the final text in place;
-        fall back to a fresh post if there's no placeholder or the update fails."""
+        fall back to a fresh post if there's no placeholder or the update fails.
+
+        #1680: one consequential row per Slack call made here (the update, and the
+        fresh post when it runs), each written right after its call on every outcome
+        with ``details["call"]`` naming which. credits_spent=False: this function makes
+        no LLM call; the chat turn's spend belongs to its caller's process_intent.
+        """
+        from services.security.audit_logger import audit_logger
+
+        _audit_kwargs: dict = {
+            "site": "slack.socket.reply",
+            "user_id": self.bound_user_id,
+            "resource_type": "slack_channel",
+            "resource_id": channel,
+            "message": "Slack reply",
+            "credits_spent": False,
+        }
         if ts:
             try:
-                await self._web.chat_update(channel=channel, ts=ts, text=text)
+                try:
+                    updated = await self._web.chat_update(channel=channel, ts=ts, text=text)
+                except Exception as _send_err:
+                    _a_status, _a_details = slack_sdk_error_outcome(_send_err)
+                    await audit_logger.log_consequential_action(
+                        status=_a_status,
+                        details={**_a_details, "call": "chat_update"},
+                        **_audit_kwargs,
+                    )
+                    raise
+                _a_status, _a_details = slack_sdk_outcome(updated)
+                await audit_logger.log_consequential_action(
+                    status=_a_status, details={**_a_details, "call": "chat_update"}, **_audit_kwargs
+                )
                 return
             except Exception as e:
                 logger.warning("slack_chat_update_failed", error=str(e))
-        await self._web.chat_postMessage(channel=channel, text=text, thread_ts=thread_ts)
+        try:
+            posted = await self._web.chat_postMessage(
+                channel=channel, text=text, thread_ts=thread_ts
+            )
+        except Exception as _send_err:
+            _a_status, _a_details = slack_sdk_error_outcome(_send_err)
+            await audit_logger.log_consequential_action(
+                status=_a_status,
+                details={**_a_details, "call": "chat_postMessage"},
+                **_audit_kwargs,
+            )
+            raise
+        _a_status, _a_details = slack_sdk_outcome(posted)
+        await audit_logger.log_consequential_action(
+            status=_a_status, details={**_a_details, "call": "chat_postMessage"}, **_audit_kwargs
+        )
 
     async def stop(self) -> None:
         self._connected = False  # #1201

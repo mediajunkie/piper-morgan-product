@@ -25,6 +25,12 @@ from services.integrations.slack.slack_client import SlackClient
 from services.integrations.slack.spatial_adapter import SlackSpatialAdapter
 from services.intent_service.classifier import IntentClassifier
 from services.llm.request_key import LLMKeyRequiredError, request_api_key
+from services.security.consequential_outcomes import (
+    slack_send_error_outcome as _slack_send_error_outcome,
+)
+from services.security.consequential_outcomes import (
+    slack_send_outcome as _slack_send_audit_outcome,
+)
 from services.shared_types import IntentCategory
 
 logger = logging.getLogger(__name__)
@@ -112,37 +118,6 @@ def check_workflow_rate_limit(user_id: str) -> bool:
         f"✅ Workflow rate check passed for user {user_id} ({len(user_timestamps)}/{MAX_WORKFLOWS_PER_MINUTE})"
     )
     return True
-
-
-def _slack_send_audit_outcome(response: Any) -> Tuple[str, Dict[str, Any]]:
-    """#1680: the consequential-row status for a Slack send that returned.
-
-    SlackResponse carries ``success`` (a raw Slack dict carries ``ok``): True is
-    "success", False is Slack saying it refused ("failed"); anything else returned
-    without a verifiable result is "unconfirmed", never "success"."""
-    ok = response.get("ok") if isinstance(response, dict) else getattr(response, "success", None)
-    if ok is True:
-        return "success", {}
-    if ok is False:
-        error = (
-            response.get("error")
-            if isinstance(response, dict)
-            else getattr(response, "error", None)
-        )
-        return "failed", {"error": str(getattr(error, "message", error) or "unknown")}
-    return "unconfirmed", {"write_unconfirmed": f"unverifiable_result:{type(response).__name__}"}
-
-
-def _slack_send_error_outcome(exc: BaseException) -> Tuple[str, Dict[str, Any]]:
-    """#1680: the status for a Slack send that raised. Only "no integration" proves
-    nothing went out; any other exception is "unconfirmed"."""
-    name = type(exc).__name__
-    if isinstance(exc, RuntimeError) and "No Slack integration available" in str(exc):
-        return "failed", {"error_type": name, "reason": "no_slack_integration"}
-    return "unconfirmed", {
-        "error_type": name,
-        "write_unconfirmed": "raised_without_verifiable_result",
-    }
 
 
 class SlackResponseHandler:
