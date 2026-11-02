@@ -562,6 +562,161 @@ class TestPreFloorDispatchSiteRatchet:
         )
 
 
+class TestConsequentialSiteCensusRatchet:
+    """#1680 Dashboard Criterion E: the consequential-site census is held by code.
+
+    Arch condition 4 / HOST condition 2: the consequential sites live in one registry
+    (``services/security/consequential_sites.py``) and the build fails when an external
+    send/write path calls its client outside it.
+
+    SCOPE: every production call, resolved with the AST to its enclosing function
+    (``Class.method``), whose callee attribute is one of the EIGHT client methods
+    ``send_message``, ``chat_postMessage``, ``chat_update``, ``send_dict``,
+    ``post_message``, ``create_issue``, ``update_issue``, ``add_comment``, in git-tracked
+    ``services/**.py`` and ``web/**.py``. Excluded: ``TRANSPORT_MODULES`` (forwarders that
+    implement those methods), the registry, the helper module, and ``tests/``. Comments
+    and docstrings never count (AST, not grep). DENOMINATOR: the registry's 16 sites
+    (2026-11-02: 7 Slack, 9 GitHub).
+
+    (a) every in-scope call resolves to a registered (module, function);
+    (b) every ``instrumented=True`` entry calls ``log_consequential_action(`` inside its
+        enclosing function;
+    (c) RATCHET: uninstrumented sites can only go down. Lower MAX_UNINSTRUMENTED_SITES
+        in the commit that instruments a site; never raise it;
+    (d) the dashboard headline matches the registry.
+    """
+
+    # 2026-11-02 landing A: 16 censused, 7 instrumented -> 9 left (landing B).
+    MAX_UNINSTRUMENTED_SITES = 9
+    HEADLINE = "7 of 16 sites instrumented"
+
+    CLIENT_METHODS = frozenset(
+        {
+            "send_message",
+            "chat_postMessage",
+            "chat_update",
+            "send_dict",
+            "post_message",
+            "create_issue",
+            "update_issue",
+            "add_comment",
+        }
+    )
+    EXCLUDED = frozenset(
+        {
+            "services/security/consequential_sites.py",
+            "services/security/audit_logger.py",
+        }
+    )
+
+    @staticmethod
+    def _enclosing_functions(tree):
+        """Yield (dotted enclosing function, node) for every node under a def."""
+
+        def walk(node, stack):
+            for ch in ast.iter_child_nodes(node):
+                if isinstance(ch, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                    yield from walk(ch, stack + [ch.name])
+                else:
+                    yield ".".join(stack), ch
+                    yield from walk(ch, stack)
+
+        yield from walk(tree, [])
+
+    def _client_calls(self):
+        from services.security.consequential_sites import TRANSPORT_MODULES
+
+        files = subprocess.run(
+            ["git", "ls-files", "services/*.py", "web/*.py"],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.split()
+        assert files, "git ls-files returned nothing; the census scan would be vacuous"
+        hits = []
+        for path in files:
+            if path in TRANSPORT_MODULES or path in self.EXCLUDED or "/tests/" in path:
+                continue
+            src = Path(path).read_text(encoding="utf-8")
+            if not any(f"{m}(" in src for m in self.CLIENT_METHODS):
+                continue
+            for func, node in self._enclosing_functions(ast.parse(src)):
+                if (
+                    isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute)
+                    and node.func.attr in self.CLIENT_METHODS
+                ):
+                    hits.append((path, func, node.func.attr, node.lineno))
+        return hits
+
+    def test_every_client_call_is_a_registered_site(self):
+        from services.security.consequential_sites import CONSEQUENTIAL_SITES
+
+        registered = {(s.module, s.function) for s in CONSEQUENTIAL_SITES.values()}
+        hits = self._client_calls()
+        assert hits, "the scan found no client calls at all; it is not looking where it should"
+        unregistered = [h for h in hits if (h[0], h[1]) not in registered]
+        assert not unregistered, (
+            "#1680: these external send/write calls are not consequential sites in the "
+            "registry:\n"
+            + "\n".join(
+                f"  {p}:{ln} {fn or '<module>'} calls .{m}(" for p, fn, m, ln in unregistered
+            )
+            + "\nAdd a ConsequentialSite entry in services/security/consequential_sites.py "
+            "(and instrument it with audit_logger.log_consequential_action), or, if the "
+            "module only forwards to the integration, add it to TRANSPORT_MODULES."
+        )
+
+    def test_instrumented_sites_call_the_helper(self):
+        from services.security.consequential_sites import CONSEQUENTIAL_SITES
+
+        missing = []
+        for site in CONSEQUENTIAL_SITES.values():
+            if not site.instrumented:
+                continue
+            tree = ast.parse(Path(site.module).read_text(encoding="utf-8"))
+            found = any(
+                isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Attribute)
+                and node.func.attr == "log_consequential_action"
+                for func, node in self._enclosing_functions(tree)
+                if func == site.function
+            )
+            if not found:
+                missing.append(f"{site.key} ({site.module} {site.function})")
+        assert not missing, (
+            "#1680: registry entries marked instrumented=True with no "
+            f"log_consequential_action( call in their function: {missing}"
+        )
+
+    def _uninstrumented(self) -> int:
+        from services.security.consequential_sites import CONSEQUENTIAL_SITES
+
+        return sum(1 for s in CONSEQUENTIAL_SITES.values() if not s.instrumented)
+
+    def test_uninstrumented_sites_only_go_down(self):
+        count = self._uninstrumented()
+        assert count <= self.MAX_UNINSTRUMENTED_SITES, (
+            f"#1680: {count} consequential sites are uninstrumented, over the ratchet "
+            f"target {self.MAX_UNINSTRUMENTED_SITES}. A new site must be instrumented "
+            "when it is added. Lower MAX_UNINSTRUMENTED_SITES in the commit that "
+            "instruments a site; never raise it."
+        )
+
+    def test_ratchet_target_stays_tight(self):
+        count = self._uninstrumented()
+        assert count == self.MAX_UNINSTRUMENTED_SITES, (
+            f"Ratchet drift: {count} uninstrumented sites but MAX_UNINSTRUMENTED_SITES is "
+            f"{self.MAX_UNINSTRUMENTED_SITES}. Set it to {count} in this commit (lower it "
+            "in the commit that instruments a site; never raise it)."
+        )
+
+    def test_coverage_headline(self):
+        from services.security.consequential_sites import coverage_headline
+
+        assert coverage_headline() == self.HEADLINE
+
+
 class TestSessionScopeCommitContract:
     """#1193 guard (m-41): `session_scope()` MUST commit on clean exit.
 

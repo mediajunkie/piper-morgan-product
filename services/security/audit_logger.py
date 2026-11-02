@@ -36,7 +36,7 @@ Issue #249 CORE-AUDIT-LOGGING
 import logging
 import uuid
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union, cast
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -55,6 +55,7 @@ class EventType:
     DATA = "data"  # Data modifications
     SYSTEM = "system"  # System events
     SECURITY = "security"  # Security events
+    CONSEQUENTIAL = "consequential"  # #1680: external send/write by a censused site
 
 
 class Action:
@@ -97,8 +98,118 @@ class Severity:
     CRITICAL = "critical"  # Critical security/system events
 
 
+# #1680: the outcome a consequential site reports. "unconfirmed" is a call that returned
+# (or raised) without a verifiable result; it is never mapped to "success".
+CONSEQUENTIAL_STATUSES = frozenset({"success", "failed", "unconfirmed"})
+
+# #1680 (Arch condition 3): a consequential row that could not be written is counted
+# here, so a lost row reads as a coverage gap, never as "0 actions".
+_consequential_write_failures = 0
+
+
+def consequential_write_failures() -> int:
+    """How many consequential audit rows failed to write in this process."""
+    return _consequential_write_failures
+
+
+def _coerce_principal(user_id: Union[str, UUID, None]) -> tuple[Optional[UUID], Optional[str]]:
+    """(UUID for audit_logs.user_id, raw principal for details) — a non-UUID
+    principal such as a Slack "U123" goes in details, never in the FK column."""
+    if user_id is None:
+        return None, None
+    if isinstance(user_id, UUID):
+        return user_id, None
+    try:
+        return UUID(str(user_id)), None
+    except ValueError:
+        return None, str(user_id)
+
+
 class AuditLogger:
     """Centralized audit logging service"""
+
+    async def log_consequential_action(
+        self,
+        *,
+        site: str,
+        status: str,
+        user_id: Union[str, UUID, None],
+        message: str,
+        credits_spent: bool,
+        resource_type: Optional[str] = None,
+        resource_id: Optional[str] = None,
+        details: Optional[Dict[str, Any]] = None,
+        session_id: Optional[str] = None,
+    ) -> Optional[AuditLog]:
+        """#1680 Criterion E: write one consequential-action row, in its own commit.
+
+        Await it AFTER the external call returns (or raises), with ``status`` from the
+        call's outcome: "success", "failed" or "unconfirmed". ``proactive``,
+        ``external_message`` and ``hard_to_reverse`` come from the site's registry entry
+        (services/security/consequential_sites.py); ``credits_spent`` is the site's own
+        code path (did it call the LLM). Code sets every flag, never the model's words
+        (ADR-080).
+
+        The row is written in a fresh session and committed here, so the caller's
+        rollback can never erase an action that already left the system. A failed write
+        is logged at error level, counted (``consequential_write_failures()``) and
+        returns None; it never raises into the caller. An unknown ``site`` or
+        ``status`` raises ``ValueError`` (a programming error, caught by tests).
+        """
+        global _consequential_write_failures
+        from services.security.consequential_sites import CONSEQUENTIAL_SITES
+
+        entry = CONSEQUENTIAL_SITES.get(site)
+        if entry is None:
+            raise ValueError(f"#1680: unknown consequential site {site!r}; add a registry entry")
+        if status not in CONSEQUENTIAL_STATUSES:
+            raise ValueError(
+                f"#1680: status must be one of {sorted(CONSEQUENTIAL_STATUSES)}, got {status!r}"
+            )
+
+        row_user_id, raw_principal = _coerce_principal(user_id)
+        row_details: Dict[str, Any] = dict(details or {})
+        if raw_principal is not None:
+            row_details["principal"] = raw_principal
+
+        try:
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope_fresh() as session:
+                log = AuditLog(
+                    id=str(uuid.uuid4()),
+                    # the column's plugin type (_UUID_RETURN) is not uuid.UUID to mypy
+                    user_id=cast(Any, row_user_id),
+                    session_id=session_id,
+                    event_type=EventType.CONSEQUENTIAL,
+                    action=entry.key,
+                    resource_type=resource_type,
+                    resource_id=None if resource_id is None else str(resource_id),
+                    status=status,
+                    severity=Severity.INFO,
+                    message=message,
+                    details=row_details or None,
+                    proactive=entry.proactive,
+                    credits_spent=bool(credits_spent),
+                    external_message=entry.external_message,
+                    hard_to_reverse=entry.hard_to_reverse,
+                )
+                session.add(log)
+                await session.commit()
+        except Exception as e:  # silent-ok: #1680 write guard — counted + logged at error, never raised into the site that already acted
+            _consequential_write_failures += 1
+            logger.error(
+                f"AUDIT: consequential row write failed | site={site} | status={status} | "
+                f"error={type(e).__name__}: {e}",
+                extra={"action": site, "status": status},
+            )
+            return None
+
+        logger.info(
+            f"AUDIT: consequential.{entry.key} | user={row_user_id} | status={status}",
+            extra={"audit_log_id": log.id, "action": entry.key, "status": status},
+        )
+        return log
 
     async def log_event(
         self,

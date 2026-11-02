@@ -15,7 +15,7 @@ import contextlib
 import logging
 import time
 from collections import defaultdict
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 from uuid import UUID
 
 import structlog
@@ -112,6 +112,37 @@ def check_workflow_rate_limit(user_id: str) -> bool:
         f"✅ Workflow rate check passed for user {user_id} ({len(user_timestamps)}/{MAX_WORKFLOWS_PER_MINUTE})"
     )
     return True
+
+
+def _slack_send_audit_outcome(response: Any) -> Tuple[str, Dict[str, Any]]:
+    """#1680: the consequential-row status for a Slack send that returned.
+
+    SlackResponse carries ``success`` (a raw Slack dict carries ``ok``): True is
+    "success", False is Slack saying it refused ("failed"); anything else returned
+    without a verifiable result is "unconfirmed", never "success"."""
+    ok = response.get("ok") if isinstance(response, dict) else getattr(response, "success", None)
+    if ok is True:
+        return "success", {}
+    if ok is False:
+        error = (
+            response.get("error")
+            if isinstance(response, dict)
+            else getattr(response, "error", None)
+        )
+        return "failed", {"error": str(getattr(error, "message", error) or "unknown")}
+    return "unconfirmed", {"write_unconfirmed": f"unverifiable_result:{type(response).__name__}"}
+
+
+def _slack_send_error_outcome(exc: BaseException) -> Tuple[str, Dict[str, Any]]:
+    """#1680: the status for a Slack send that raised. Only "no integration" proves
+    nothing went out; any other exception is "unconfirmed"."""
+    name = type(exc).__name__
+    if isinstance(exc, RuntimeError) and "No Slack integration available" in str(exc):
+        return "failed", {"error_type": name, "reason": "no_slack_integration"}
+    return "unconfirmed", {
+        "error_type": name,
+        "write_unconfirmed": "raised_without_verifiable_result",
+    }
 
 
 class SlackResponseHandler:
@@ -325,8 +356,30 @@ class SlackResponseHandler:
             "user_id"
         )
 
-        # Send consolidated message
-        response = await self.slack_client.send_message(**message_params)
+        # Send consolidated message. #1680: the consequential row is written right
+        # after the call, on every outcome; credits_spent=False (no LLM call here).
+        from services.security.audit_logger import audit_logger
+
+        _audit_kwargs: Dict[str, Any] = {
+            "site": "slack.response.consolidated",
+            "user_id": message_params["user_id"],
+            "resource_type": "slack_channel",
+            "resource_id": slack_context.get("channel_id"),
+            "message": f"Slack consolidated reply ({len(messages)} messages)",
+            "credits_spent": False,
+        }
+        try:
+            response = await self.slack_client.send_message(**message_params)
+        except Exception as _send_err:
+            _a_status, _a_details = _slack_send_error_outcome(_send_err)
+            await audit_logger.log_consequential_action(
+                status=_a_status, details=_a_details, **_audit_kwargs
+            )
+            raise
+        _a_status, _a_details = _slack_send_audit_outcome(response)
+        await audit_logger.log_consequential_action(
+            status=_a_status, details=_a_details, **_audit_kwargs
+        )
 
         # Clear buffer after sending
         self._clear_consolidation_buffer(consolidation_key)
@@ -942,8 +995,30 @@ class SlackResponseHandler:
                 "user_id"
             )
 
-            # Send message via Slack client
-            response = await self.slack_client.send_message(**message_params)
+            # Send message via Slack client. #1680: the consequential row is written
+            # right after the call, on every outcome; credits_spent=False (no LLM here).
+            from services.security.audit_logger import audit_logger
+
+            _audit_kwargs: Dict[str, Any] = {
+                "site": "slack.response.individual",
+                "user_id": message_params["user_id"],
+                "resource_type": "slack_channel",
+                "resource_id": slack_context.get("channel_id"),
+                "message": "Slack reply",
+                "credits_spent": False,
+            }
+            try:
+                response = await self.slack_client.send_message(**message_params)
+            except Exception as _send_err:
+                _a_status, _a_details = _slack_send_error_outcome(_send_err)
+                await audit_logger.log_consequential_action(
+                    status=_a_status, details=_a_details, **_audit_kwargs
+                )
+                raise
+            _a_status, _a_details = _slack_send_audit_outcome(response)
+            await audit_logger.log_consequential_action(
+                status=_a_status, details=_a_details, **_audit_kwargs
+            )
 
             self.logger.info(
                 f"Sent individual Slack response to channel {slack_context.get('channel_id')} "

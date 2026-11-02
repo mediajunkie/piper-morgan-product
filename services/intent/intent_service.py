@@ -421,6 +421,45 @@ def _principal_from_intent(intent) -> Optional[str]:
     return context.get("user_id")
 
 
+def _github_write_audit_outcome(exc: BaseException) -> Tuple[str, Dict[str, Any]]:
+    """#1680: the consequential-row status for a GitHub write that raised.
+
+    "failed" only when the exception proves nothing was written (a refusal, a
+    not-found, an undesignated target, no resolvable repo). Anything else raised
+    without a verifiable result, so it is "unconfirmed", never "success" and never
+    a clean "failed" (#1220/#1322: a fired write may or may not have landed).
+    """
+    from services.integrations.github.github_integration_router import (
+        GitHubIssueNotFound,
+        GitHubWriteRefused,
+        GitHubWriteRejected,
+        GitHubWriteTargetUndesignated,
+    )
+
+    name = type(exc).__name__
+    if isinstance(
+        exc,
+        (
+            GitHubWriteRefused,
+            GitHubWriteRejected,
+            GitHubWriteTargetUndesignated,
+            GitHubIssueNotFound,
+        ),
+    ):
+        return "failed", {"error_type": name}
+    if isinstance(exc, RuntimeError) and "no repo could be resolved" in str(exc):
+        return "failed", {"error_type": name, "reason": "no_repo_resolved"}
+    if "may or may not have landed" in str(exc):
+        return "unconfirmed", {
+            "error_type": name,
+            "write_unconfirmed": "may_or_may_not_have_landed",
+        }
+    return "unconfirmed", {
+        "error_type": name,
+        "write_unconfirmed": "raised_without_verifiable_result",
+    }
+
+
 # #2132: words that carry no document name on their own. A router ``title``
 # arg made ONLY of these ("this document", "the file", "it") names nothing, the
 # same value check as add_project's "a bare 'project' is the noun, not a name"
@@ -8121,10 +8160,29 @@ class IntentService:
             # Confirmed close (or fallback if fetch failed)
             # (Issue #1042: router resolves repo internally when no explicit
             # repo was named; #1567 threads a named repo through.)
+            # #1680: the consequential row is written right after the call, on every outcome.
+            from services.security.audit_logger import audit_logger
+
+            _audit_kwargs: Dict[str, Any] = {
+                "site": "github.chat.close_issue",
+                "user_id": _user_id,
+                "resource_type": "github_issue",
+                "resource_id": str(issue_number),
+                "message": f"Close issue #{issue_number}",
+                "credits_spent": False,
+                "session_id": session_id,
+            }
             try:
-                updated_issue = await github_router.update_issue(
-                    issue_number, state="closed", **_repo_kwargs
-                )
+                try:
+                    updated_issue = await github_router.update_issue(
+                        issue_number, state="closed", **_repo_kwargs
+                    )
+                except Exception as _write_err:
+                    _a_status, _a_details = _github_write_audit_outcome(_write_err)
+                    await audit_logger.log_consequential_action(
+                        status=_a_status, details={**_a_details, **_repo_kwargs}, **_audit_kwargs
+                    )
+                    raise
             except RuntimeError as _rt_err:
                 if "no repo could be resolved" not in str(_rt_err):
                     raise
@@ -8150,6 +8208,13 @@ class IntentService:
                     requires_clarification=True,
                     clarification_type="repository_required",
                 )
+            await audit_logger.log_consequential_action(
+                status="success" if updated_issue else "unconfirmed",
+                details=dict(_repo_kwargs)
+                if updated_issue
+                else {**_repo_kwargs, "write_unconfirmed": "empty_result"},
+                **_audit_kwargs,
+            )
 
             # Get issue title for success message
             # #1628: degenerate GitHub titles never render verbatim
@@ -8471,10 +8536,29 @@ class IntentService:
             # Confirmed reopen (or fallback if fetch failed)
             # (Issue #1042: router resolves repo internally when no explicit
             # repo was named; #1641 threads a named repo through.)
+            # #1680: the consequential row is written right after the call, on every outcome.
+            from services.security.audit_logger import audit_logger
+
+            _audit_kwargs: Dict[str, Any] = {
+                "site": "github.chat.reopen_issue",
+                "user_id": _user_id,
+                "resource_type": "github_issue",
+                "resource_id": str(issue_number),
+                "message": f"Reopen issue #{issue_number}",
+                "credits_spent": False,
+                "session_id": session_id,
+            }
             try:
-                updated_issue = await github_router.update_issue(
-                    issue_number, state="open", **_repo_kwargs
-                )
+                try:
+                    updated_issue = await github_router.update_issue(
+                        issue_number, state="open", **_repo_kwargs
+                    )
+                except Exception as _write_err:
+                    _a_status, _a_details = _github_write_audit_outcome(_write_err)
+                    await audit_logger.log_consequential_action(
+                        status=_a_status, details={**_a_details, **_repo_kwargs}, **_audit_kwargs
+                    )
+                    raise
             except RuntimeError as _rt_err:
                 if "no repo could be resolved" not in str(_rt_err):
                     raise
@@ -8501,6 +8585,13 @@ class IntentService:
                     requires_clarification=True,
                     clarification_type="repository_required",
                 )
+            await audit_logger.log_consequential_action(
+                status="success" if updated_issue else "unconfirmed",
+                details=dict(_repo_kwargs)
+                if updated_issue
+                else {**_repo_kwargs, "write_unconfirmed": "empty_result"},
+                **_audit_kwargs,
+            )
 
             # Get issue title for success message
             # #1628: degenerate GitHub titles never render verbatim
@@ -8755,10 +8846,30 @@ class IntentService:
             # Add the comment (Issue #1042: router resolves repo internally
             # when no explicit repo was named; #1641 threads a named repo
             # through, and the no-repo dead-end becomes a bindable question).
+            # #1680: the consequential row is written right after the call, on every
+            # outcome. credits_spent=True: extract_slots called the LLM above.
+            from services.security.audit_logger import audit_logger
+
+            _audit_kwargs: Dict[str, Any] = {
+                "site": "github.chat.comment_issue",
+                "user_id": _user_id,
+                "resource_type": "github_issue",
+                "resource_id": str(issue_number),
+                "message": f"Comment on issue #{issue_number}",
+                "credits_spent": True,
+                "session_id": session_id,
+            }
             try:
-                comment_result = await github_router.add_comment(
-                    issue_number, comment_body, **_repo_kwargs
-                )
+                try:
+                    comment_result = await github_router.add_comment(
+                        issue_number, comment_body, **_repo_kwargs
+                    )
+                except Exception as _write_err:
+                    _a_status, _a_details = _github_write_audit_outcome(_write_err)
+                    await audit_logger.log_consequential_action(
+                        status=_a_status, details={**_a_details, **_repo_kwargs}, **_audit_kwargs
+                    )
+                    raise
             except RuntimeError as _rt_err:
                 if "no repo could be resolved" not in str(_rt_err):
                     raise
@@ -8783,6 +8894,15 @@ class IntentService:
                     requires_clarification=True,
                     clarification_type="repository_required",
                 )
+
+            # #1680: a None result is CXO's outcome-unknown case below → "unconfirmed".
+            await audit_logger.log_consequential_action(
+                status="success" if comment_result else "unconfirmed",
+                details=dict(_repo_kwargs)
+                if comment_result
+                else {**_repo_kwargs, "write_unconfirmed": "add_comment_returned_none"},
+                **_audit_kwargs,
+            )
 
             # #2152: never "Successfully…" over an unchecked result. The native POST
             # returns None for a refused write (401/403/other status) AND for an
@@ -13530,13 +13650,39 @@ class IntentService:
                         workflow_id=workflow_id,
                         requires_clarification=True,
                     )
-            issue = await github_router.create_issue(
-                title=title,
-                body=description,
-                labels=labels or [],
-                assignees=intent.context.get("assignees", []),
-                owner=_owner,
-                repo_name=_repo,
+            # #1680: the consequential row is written right after the call, on every outcome.
+            from services.security.audit_logger import audit_logger
+
+            _audit_kwargs: Dict[str, Any] = {
+                "site": "github.chat.create_issue",
+                "user_id": _user_id,
+                "resource_type": "github_repository",
+                "resource_id": repository,
+                "message": f"Create issue in {repository}",
+                "credits_spent": False,
+                "session_id": session_id,
+            }
+            try:
+                issue = await github_router.create_issue(
+                    title=title,
+                    body=description,
+                    labels=labels or [],
+                    assignees=intent.context.get("assignees", []),
+                    owner=_owner,
+                    repo_name=_repo,
+                )
+            except Exception as _write_err:
+                _a_status, _a_details = _github_write_audit_outcome(_write_err)
+                await audit_logger.log_consequential_action(
+                    status=_a_status, details=_a_details, **_audit_kwargs
+                )
+                raise
+            await audit_logger.log_consequential_action(
+                status="success" if issue else "unconfirmed",
+                details={"issue_number": issue.get("number")}
+                if issue
+                else {"write_unconfirmed": "empty_result"},
+                **_audit_kwargs,
             )
 
             # #2097 (CXO's words): the number, the title and the full repo —
@@ -14265,15 +14411,52 @@ class IntentService:
             # with the #1322 read-back guard; the legacy GitHubDomainService call
             # this replaces bypassed it.
             _owner, _repo = repository.split("/", 1)
-            updated_issue = await github_router.update_issue(
-                issue_number=issue_number,
-                title=title,
-                body=body,
-                state=state,
-                labels=labels,
-                assignees=assignees,
-                owner=_owner,
-                repo_name=_repo,
+            # #1680: the consequential row is written right after the call, on every outcome.
+            from services.security.audit_logger import audit_logger
+
+            _audit_kwargs: Dict[str, Any] = {
+                "site": "github.chat.update_issue",
+                "user_id": _user_id,
+                "resource_type": "github_issue",
+                "resource_id": str(issue_number),
+                "message": f"Update issue #{issue_number} in {repository}",
+                "credits_spent": False,
+                "session_id": session_id,
+            }
+            _fields = sorted(
+                k
+                for k, v in {
+                    "title": title,
+                    "body": body,
+                    "state": state,
+                    "labels": labels,
+                    "assignees": assignees,
+                }.items()
+                if v
+            )
+            try:
+                updated_issue = await github_router.update_issue(
+                    issue_number=issue_number,
+                    title=title,
+                    body=body,
+                    state=state,
+                    labels=labels,
+                    assignees=assignees,
+                    owner=_owner,
+                    repo_name=_repo,
+                )
+            except Exception as _write_err:
+                _a_status, _a_details = _github_write_audit_outcome(_write_err)
+                await audit_logger.log_consequential_action(
+                    status=_a_status, details={**_a_details, "fields": _fields}, **_audit_kwargs
+                )
+                raise
+            await audit_logger.log_consequential_action(
+                status="success" if updated_issue else "unconfirmed",
+                details={"fields": _fields}
+                if updated_issue
+                else {"fields": _fields, "write_unconfirmed": "empty_result"},
+                **_audit_kwargs,
             )
 
             return IntentProcessingResult(
