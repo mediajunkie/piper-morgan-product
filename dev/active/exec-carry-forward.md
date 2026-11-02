@@ -7,7 +7,7 @@
 **Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
-v738, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
+v739, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
 
 ## Where things stand (end of 11-01)
 - **v0.9.0.0 complete.** xian published the release page at 11:10 PST; Lead confirmed at 20:15 that the tag is the served sha and the post-release audit is clean. Docs adds the URL to the briefing Version line (told at 20:2x).
@@ -20,7 +20,7 @@ v738, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 2. `set_default_repo`: printenv, then `fly secrets set` with the value appended. Relay both outputs to CIO.
 3. Promote (dispatch line), then the #2242 allowlist add (three lines with his email), reconnect if needed. Relay `list` to PA, Lead, Arch, PPM.
 4. Buttondown: HOST read access to `beta-waitlist`, or one sign-up with his own address (HOST prefers the sign-up). Relay to HOST, Comms, Web, CXO. #2229 closes on it.
-- Also his hand: crosspost "Check the Machine First" (Medium, LinkedIn), web-pat-test sign-in, Notion key on staging for #2238, LaunchAgents (v184), Fly reads #2244 and #2226, #1514.
+- Also his hand: web-pat-test sign-in, Notion key on staging for #2238, LaunchAgents (v184), Fly reads #2244 and #2226, #1514.
 
 ## Waiting on xian (his word)
 - PDR-102 ratification (PPM's v0.4, C1–C8). Relay to PPM, Arch, CXO, Comms.
@@ -37,6 +37,5 @@ v738, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - DAY-CLOSED in grep form `<!-- DAY-CLOSED: YYYY-MM-DD -->` as the log's last line.
 
 ## Owed rows (owed-scan)
-- key: crossposts-1101. Filed: 2026-11-01. Relay xian's Medium and LinkedIn URLs for Check the Machine First to Docs (by 11-03).
 - key: exec-launchagent-cutover2. Filed: 2026-10-31. CronDelete the session cron and flip registry row 179 on Pard's load notice.
 - key: 1715-review. Filed: 2026-10-31. The #1715 skills walk with xian, due Tue 11-03.
