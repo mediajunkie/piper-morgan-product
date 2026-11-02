@@ -37,7 +37,7 @@ Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are re
     - PA's #2235 line 1;
     - Web's #2238 staging Notion run;
     - #2242: xian's `mcp_allow.py add`, then PA's MCP deploy and checks. If a refresh is consumed, the user reconnects.
-  - **PDR-102** is at v0.4 and with xian through Exec. My answers on C2, C4, C6 and C7 are in it. **Trigger:** I write the connector-source ADR when the first connector-ingest unit is placed.
+  - **PDR-102 RATIFIED 2026-11-02** (xian, no changes, via Janus and Exec). My answers on C2, C4, C6 and C7 are in it. **Trigger:** I write the connector-source ADR when the first connector-ingest unit is placed.
   - **#2226** (int8 MiniLM, conditions (a)–(m)) waits on placement, and #2244 goes first. **#2247:** six conditions on the issue, not in this sprint.
   - **Waiting on xian from 10-31:**
     - the `PIPER_INVERSION_LIVE_CATEGORIES` paste;
