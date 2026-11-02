@@ -2,7 +2,7 @@
 type: pattern
 number: "048"
 title: "Periodic Background Job"
-status: "Unknown"
+status: "Proven"
 valid_from: "2026-01-10"
 last_updated: "2026-08-29"
 ---

@@ -1,7 +1,7 @@
 ---
 type: adr
 title: "Architecture Decision Records (ADRs)"
-status: "Unknown"
+status: "Index"
 valid_from: "2025-10-01"
 last_updated: "2026-08-29"
 ---

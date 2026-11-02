@@ -2,7 +2,7 @@
 type: pattern
 number: "N/A"
 title: "Grammar Application Patterns"
-status: "Unknown"
+status: "Index"
 valid_from: "2026-01-22"
 last_updated: "2026-08-29"
 ---

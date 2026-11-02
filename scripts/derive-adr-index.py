@@ -109,7 +109,7 @@ def generate() -> str:
         "---",
         "type: adr",
         'title: "Architectural Decision Records (ADR) Index — DERIVED VIEW"',
-        'status: "Unknown"',
+        'status: "Index"',
         'valid_from: "2025-08-29"',
         f'last_updated: "{max(stamps) if stamps else "2025-08-29"}"',
         "---",

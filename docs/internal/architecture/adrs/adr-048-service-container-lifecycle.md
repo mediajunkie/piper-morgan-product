@@ -2,7 +2,7 @@
 type: adr
 number: 48
 title: "ServiceContainer Lifecycle Management"
-status: "Unknown"
+status: "Accepted"
 valid_from: "2026-01-04"
 last_updated: "2026-08-29"
 ---
