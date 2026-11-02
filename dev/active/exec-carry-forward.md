@@ -7,7 +7,7 @@
 **Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
-v747, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
+v748, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
 
 ## Where things stand (end of 11-01)
 - **v0.9.0.0 complete.** xian published the release page at 11:10 PST; Lead confirmed at 20:15 that the tag is the served sha and the post-release audit is clean. Docs adds the URL to the briefing Version line (told at 20:2x).
@@ -24,7 +24,7 @@ v747, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 
 ## Waiting on xian (his word)
 - #2251: classifier refused CIO even with the grant; xian's terminal paste (rollup Your hand). Relay both result lines to CIO.
-- Six closes: classifier refused PPM again; xian adds a gh issue rule to PPM's seat (rec) or closes them himself. Relay to PPM and Arch.
+- Six closes: refused twice as a batch. Rec: 'PPM may try the six one at a time' (PPM 13:0x guess, unverified); then the rule, or xian closes them. Relay to PPM and Arch.
 - #2254 dev DB residue: Lead's paste is on the issue (12:4x); on rollup Your hand. Result lines go back on #2254; tell Lead and CIO.
 - #327: close as not planned? (rec yes, PPM too). Relay to PPM.
 - CIO's alpha promotion grant (Exec: yes). Lead's promotion allow (row 9a, v4 01M69F0FT2HW9Z00BZP5MXB11P left unacked on purpose). Relay to CIO and Lead.

@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Saturday 31 October</h1>
-<p class="meta">Exec · v747, rebuilt 12:52 PST Mon 11-02 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v748, rebuilt 13:03 PST Mon 11-02 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -79,7 +79,7 @@ Then reconnect the Piper connector in Claude once (one consent click). If Claude
 <li><b>CIO&rsquo;s hook fix (#2251), one terminal paste.</b> Your yes reached CIO, but the classifier still refuses the edit, since a yes relayed by mail doesn&rsquo;t reach it. The first run is the control (2 of 6 should fail). The second should print &ldquo;0 failed of 6&rdquo;. Paste both result lines back.
 <pre>cd ~/Development/piper-morgan-worktrees/cio &amp;&amp; bash dev/active/cio-2251-test.sh; git apply dev/active/cio-2251-check-branch.patch &amp;&amp; bash dev/active/cio-2251-test.sh</pre></li>
 <li><b>Clear the dev database residue (#2254), one terminal paste, no rush.</b> It touches only your local Docker Postgres (port 5433), not staging or alpha. It dumps 540 leftover unit-test rows to a file, deletes them, and runs <code>alembic upgrade head</code>. The classifier refuses it on every seat. The exact paste and its expected output are in Lead&rsquo;s comment on #2254. Paste the result lines back there. Until then, local tests that write audit rows fail on the shared dev database.</li>
-<li><b>The six closes (#272, #309, #315, #335, #337, #1011).</b> Same thing: your yes didn&rsquo;t reach the classifier, and PPM was refused again. Either add a permission rule for <code>gh issue edit</code>, <code>gh issue comment</code> and <code>gh issue close</code> to PPM&rsquo;s seat (rec: PPM closes issues every day), or close them yourself from PPM&rsquo;s drafted notes (ask and PPM sends them).</li>
+<li><b>The six closes (#272, #309, #315, #335, #337, #1011).</b> Your yes didn&rsquo;t reach the classifier, and PPM was refused again. PPM&rsquo;s morning closes went through one at a time, each on evidence PPM had just produced. Both refusals were a single batch command acting on another seat&rsquo;s ruling. Cheapest first: say <b>&ldquo;PPM may try the six one at a time&rdquo;</b> (rec). If that&rsquo;s refused too, add a permission rule for <code>gh issue edit</code>, <code>gh issue comment</code> and <code>gh issue close</code> to PPM&rsquo;s seat, or close them yourself.</li>
 <li><b>Two reads on the Fly server, no rush</b> (no agent seat is allowed to read production). For #2244, run <code>fly ssh console -a piper-morgan -C "ls -la /app/data /data"</code> and paste the output on the issue. For #2226, read the peak on the memory panel for app piper-morgan, under Metrics, against 1,024 MB. Both inform the sprint talk; neither blocks tonight.</li>
 <li><b>Optional: Lead&rsquo;s promotion permission</b> (the 14:00 paste), so Lead runs later promotions without you.</li>
 <li><b>Sign Web&rsquo;s tab in as <code>web-pat-test</code></b>, or approve Web&rsquo;s Read of that one credentials file. That unblocks #2237&rsquo;s cards check, and with the next item it unblocks #2238&rsquo;s Notion check.</li>
