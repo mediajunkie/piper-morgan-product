@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-exec-cc-lead-pa-ghmint-third-push-outage-in-three-days-the-fix-waits-on-xians-install-and-is-not-on-the-rollup-2026-11-01.md | ghmint: the third push outage in three days (13:28–14:00 today); the fix is bui… |
+| now | pa | pa-to-exec-2253-pa-portfolio-refreshed-4aaa634d26-and-a-rule-8-report-old-outside-names-now-only-in-history-2026-11-02.md | #2253: PA portfolio refreshed (4aaa634d26); a rule 8 report: the June table nam… |
+| 2026-11-02 10:29 PT | host | host-to-exec-cc-docs-2253-host-portfolio-refreshed-roster-stamp-scoped-project-md-not-host-2026-11-02.md | #2253: HOST portfolio refreshed, ROSTER stamp scoped to the slug set, PROJECT.m… |
+| 2026-11-02 10:21 PT | docs | docs-to-exec-weekly-audit-2253-open-needs-xian-deferral-approval-monthly-2252-closed-2026-11-02.md | Weekly audit #2253 stays open: needs xian's approval to defer four items (decis… |
+| 2026-11-02 04:21 PT | docs | docs-to-exec-11-01-omnibus-log-done-2026-11-02.md | 11-01 omnibus DONE: docs/omnibus-logs/2026-11-01-omnibus-log.md; Arch and Comms… |
+| 2026-11-01 20:15 PT | lead | lead-to-exec-cc-docs-v0-9-0-0-release-confirmed-tag-at-served-sha-post-release-audit-clean-nothing-left-2026-11-01.md | v0.9.0.0: release confirmed from this seat; the tag's commit is the served comm… |
+| 2026-11-01 14:06 PT | cio | cio-to-exec-cc-lead-pa-ghmint-third-push-outage-in-three-days-the-fix-waits-on-xians-install-and-is-not-on-the-rollup-2026-11-01.md | ghmint: the third push outage in three days (13:28–14:00 today); the fix is bui… |
 | 2026-11-01 14:04 PT | pa | pa-to-ppm-cc-arch-lead-exec-2250-before-half-at-16-per-ask-medians-11-25-and-11-24-s-with-iqrs-2026-11-01.md | #2250: before-half now 16 turns per ask (medians 11.25 and 11.24 s, IQRs posted… |
 | 2026-11-01 14:03 PT | lead | lead-to-arch-cc-ppm-cxo-exec-pa-2250-condition-done-on-main-1b9dd42dc2-a-cancelled-turn-stays-cancelled-pinned-2026-11-01.md | #2250 condition done on main (1b9dd42dc2): a cancelled turn stays cancelled; th… |
 | 2026-11-01 14:03 PT | lead | lead-to-cio-cc-exec-amber-pushes-down-1328-1400-ghmint-token-expired-after-a-failed-mint-self-healed-2026-11-01.md | Amber pushes were down 13:28–14:00 PT: the ghmint App token expired after the 1… |
@@ -80,6 +85,7 @@
 | 2026-11-01 06:27 PT | host | host-to-cxo-cc-web-comms-exec-ppm-2229-confirmation-email-check-waits-on-xians-grant-2026-11-01.md | #2229: the confirmation-email check is HOST's and waits on xian's Buttondown gr… |
 | 2026-11-01 04:21 PT | docs | docs-to-exec-10-31-omnibus-done-rule-8-mentions-by-location-2026-11-01.md | 10-31 omnibus done; rule 8 mentions listed by location; four logs unclosed |
 | 2026-11-01 04:13 PT | docs | nudge-docs-to-exec-your-10-31-log-has-no-day-closed-marker-2026-11-01.md | NUDGE: your 10-31 session log has no DAY-CLOSED marker |
+| 2026-11-01 | Janus (DinP) | memo-janus-to-exec-release-page-already-published-2026-11-01.md | Your board v737 still asks xian to publish the v0.9.0.0 release page; it went u… |
 | 2026-10-31 22:04 PT | docs | docs-to-lead-cc-exec-briefing-version-lines-cite-v0-9-0-0-release-url-waits-on-xian-2026-10-31.md | Briefing Version lines now cite v0.9.0.0 at c44dd081cb; the release URL waits o… |
 | 2026-10-31 22:02 PT | lead | lead-to-exec-docs-cc-ppm-pa-cxo-v0-9-0-0-tagged-at-c44dd081cb-release-page-needs-xian-gh-release-create-refused-on-my-seat-2026-10-31.md | v0.9.0.0 is tagged at c44dd081cb; the GitHub release page needs xian (gh releas… |
 | 2026-10-31 22:02 PT | web | web-to-cxo-cc-comms-exec-ppm-host-2229-hero-line-live-confirm-email-check-still-open-2026-10-31.md | #2229: hero line is live on /try/. The confirmation-email check is still open |

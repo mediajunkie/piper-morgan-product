@@ -3,8 +3,8 @@ type: role-portfolio
 role: PPM (Principal Product Manager)
 status: v0.1 — main-cohort wave
 self-authored-by: PPM
-last_updated: 2026-09-11
-refreshed: 2026-09-11
+last_updated: 2026-11-02
+refreshed: 2026-11-02
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-PPM.md
 refresh_discipline: "section 2 updated as part of each weekly workstream review — can't write the Ship/workstream without restating priorities + status, so the review keeps this current by construction (Rule 5)"
@@ -29,27 +29,23 @@ The why: PM can't synthesize every cross-role lens in real time. PPM exists so t
 
 ---
 
-## 2. Current goals & priorities — September 2026 (MVP convergence + MCP-path front-load; beta date is PM's to set)
+## 2. Current goals & priorities — November 2026 (MVP closed; Production toward 1.0)
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has direction + current status + how we'll know it's moving. Rule 5: refreshed at each weekly workstream review. -->
 
-> **Sprint context, updated**: **the MVP milestone IS the private-beta gate** (v0.9.0, invitation-
-> only, existing surface, `due_on` now 2026-10-30 — a planning target, not a promise). **A second,
-> narrower gate exists above it**: ESSENCE v1.0 makes MCP-path completion the **PUBLIC-BETA GATE**.
-> Full model: `docs/internal/planning/release-model.md`. ⚠️ **Do not carry a specific beta date
-> here** — still PM's to set. **Refreshed 2026-09-11 per Rule 5**, filed with Ship #060's
-> workstream review, window Fri Sep 4–Thu Sep 10 — this pass replaces the entire table, not just
-> the header.
+> **Sprint context, refreshed 2026-11-02 (PPM, on Exec's #2253 staleness memo):** the MVP milestone,
+> which was the private-beta gate, **closed 2026-10-30** on xian's Go. **v0.9.0.0** is tagged at
+> `c44dd081cb`, and its release page went up 11-01. The work is now the **Production milestone**
+> (249 open on 11-01), which closes at 1.0. The public-beta gate is the PUB sprint inside it. Model:
+> `docs/internal/planning/release-model.md`. Dates are xian's, so none are carried here. The
+> September table this replaces is in git history (`git log -p` on this file).
 
-| Priority | What I'm advancing | Status (Sep 10 close) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (11-02) | How we'll know it's moving |
 |---|---|---|---|
-| **#1386 beta gate** | The shape-level gate for beta: does "done" mean the right thing was built | 🟡 **Shape corrected, not closed**: criterion 6 (PM sign-off) fires at MVP close (2026-10-30); criteria 2/3/4/5 all re-run fresh THEN (their evidence is point-in-time and expires as the deployed artifact changes); only criterion 1 stands unqualified. Corrected from an earlier "only criterion 6" shorthand that undercounted the real remaining work | Not actionable before MVP close — keep the corrected shape from drifting back to the shorthand |
-| **`dev/active/mvp-epic-order-2026-09-09.md`** *(new, 09-09)* | The ordered-epics source of truth Lead actually works from, per PM's directive following a real-data correction to Exec's throughput narrative | ✅ **Live and maintained** — 37 items, 8 dependency-ordered epics, 6 singletons; 3 closures marked and 2 epics' shapes corrected under real findings this week alone | Keep current every fire something routes to it; watch it decay into staleness the way other board artifacts have |
-| **Scope-guard (7t)** *(new, 09-09/10)* | Named as an open mechanism question (a periodic PPM review would decay like every bolt-on) rather than fake-solved | 🟡 **Built, dispatch-tested, real synthetic test caught a genuine false-clear** (bot couldn't push to protected main, a retry loop swallowed the failure) — fixed. **Blocked on one PM repo-settings decision**, not a PPM call | Watch for PM's decision; `#1744` stays open until the delivery path is observed working end to end |
-| **`#1688` (FTUX empty-state interview)** *(closed, 09-08)* | PM overruled PPM's HOLD ("flip ftux"); both the flag-state and an adjacent honesty-copy finding needed resolving | ✅ **CLOSED** — render confirmed live, third-line finding resolved to a cut matching PPM's own 09-03 scope ruling | Closed |
-| **Mailbox nesting defect (`#1743`/`#1745`)** *(closed, 09-10)* | A month-old recurring structural error in PPM's own triage practice (found once 08-10, silently repeated 9x bigger by 09-10) | ✅ **CLOSED with a real fix, not a fourth cleanup** — CI-enforced invariant installed, watched-it-fire green on a live Actions run | Closed; the invariant is the standing safeguard now, not memory |
-| **Proactive board-drift triage** *(ongoing practice, established 09-02)* | Checking `sprint-truth.py`'s unmilestoned count every fire rather than waiting on routed mail | ✅ **Generalized this week by PM's own work-queue ruling** (09-11): carried work + mail + newly-observed GitHub issues meeting role-relevant criteria, idle only when all three are empty — PPM's own informal practice all week turns out to already match the shape PM named for the whole cohort. ~10 more issues caught this way this window (`#1729`→`#1745`), none routed by mail | Keep running every fire; the criteria line is now explicit, not just habit |
-| **Flywheel v3 (D6/Q1 contribution)** *(closed, 09-11)* | PPM's Q1 answer on duty-cycle backlog eligibility fed the re-evaluation Arch led | ✅ **RATIFIED** — D6 adopted PPM's contribution verbatim (capability-scoped eligibility, `Blocked`-status return path, Product→Sprint promotion stays a permanent human act) | Closed — workstream closes on Arch's side too, no standing duty |
-| **Board visibility** | Sprint/milestone state readable at all | Same recurring finding as prior windows, still true | Ongoing discipline, not a closeable item |
+| **Production plan and map** | Every open Production issue sits in one sprint of `production-sprint-proposal-2026-10-23.md`, ordered by what the next audience would hit first, and the map shows it | ✅ Live. Total 249 matches `gh issue list --milestone Production`; the generator reports 0 unplanned; map v56 | Total and map stay matched after every placement; the Friday weekly diff runs |
+| **PDR-102, the document model** | xian's 10-31 vision (create, ingest, edit, synthesize, round-trip; derived knowledge in data you own) as constraints C1–C8 that keep that future reachable | 🟡 Draft v0.4, reviewed by Arch and CXO, with xian through Exec for ratification | Ratified, then C1–C8 checked as each new document-touching issue is placed |
+| **Spec-pipeline rulings** | Product destinations where CXO and Arch need a product call | ✅ Working. #2197's destination (A) was ruled with CXO on 11-01, built and validated the same day; latency follow-up #2250 filed and landed | Each ruling lands in decisions.log and on the issue the same day |
+| **Served-check bars** | What "done" must show on the served build (#2197, #2250, #2238) | 🟡 Waiting on xian's next promotion. #2250's baseline is measured (PA, 16 turns per ask) | Each issue closes on a served quote with its denominator |
+| **Board hygiene** | No open issue without a milestone; recurring audits and tooling go to Ongoing | ✅ The criteria line runs every fire; 0 unplaced at 11-02 09:33 | Keep running it every fire |
 
 ---
 
