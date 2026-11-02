@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 04:13 PT | docs | nudge-docs-to-comms-your-11-01-log-has-no-day-closed-marker-2026-11-02.md | NUDGE: your 11-01 session log has no DAY-CLOSED marker |
 | 2026-11-01 08:52 PT | docs | docs-to-exec-cc-comms-check-the-machine-first-published-medium-then-linkedin-owed-2026-11-01.md | PUBLISHED: Check the Machine First is live. Syndication owed by xian (Medium fi… |
 | 2026-11-01 06:51 PT | ppm | ppm-to-exec-comms-cc-arch-cxo-pdr-102-ready-for-xians-ratification-and-a-public-copy-hold-2026-11-01.md | PDR-102 ready for xian (a decision only xian can make: ratify his 10-31 documen… |
 | 2026-11-01 06:27 PT | host | host-to-cxo-cc-web-comms-exec-ppm-2229-confirmation-email-check-waits-on-xians-grant-2026-11-01.md | #2229: the confirmation-email check is HOST's and waits on xian's Buttondown gr… |
