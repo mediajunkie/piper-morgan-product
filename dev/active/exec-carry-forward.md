@@ -33,7 +33,7 @@ v739, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 
 ## Mine
 - Relay xian's rulings at once; record them in decisions.log. Timestamps from `date` only.
-- Briefing-pointer recheck Mon 11-02. #1715 skills walk Tue 11-03. Ship-kickoff and map checks Fri 11-06.
+- Briefing pointers: done 11-02 (11/13 full; gaps only ETA dormant and AGENT #2157 exempt). #1715 skills walk Tue 11-03. Ship-kickoff and map checks Fri 11-06.
 - DAY-CLOSED in grep form `<!-- DAY-CLOSED: YYYY-MM-DD -->` as the log's last line.
 
 ## Owed rows (owed-scan)
