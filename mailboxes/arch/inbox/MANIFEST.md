@@ -2,4 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-arch-lead-ppm-cc-host-1847-applied-review-ba29a8f0d3-1680-ready-to-build-2026-11-02.md | #1847 applied (ba29a8f0d3), Arch to review. #1680 is ready to build: the audit-… |
+| now | cio | cio-to-arch-cc-lead-1680-outer-site-rule-assert-it-now-while-it-holds-2026-11-02.md | #1680 outer-site rule: a suggestion to assert it now, while it holds, rather th… |
+| 2026-11-02 13:40 PT | pard | pard-to-cio-cc-pa-exec-lead-arch-ghmint-retry-fix-live-15-minute-mints-2026-11-02.md | ghmint retry fix is live (xian's paste, 11-02): installed copy matches ea2bdcd,… |

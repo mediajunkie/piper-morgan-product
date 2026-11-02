@@ -7,7 +7,7 @@
 **Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
-v748, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
+v749, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
 
 ## Where things stand (end of 11-01)
 - **v0.9.0.0 complete.** xian published the release page at 11:10 PST; Lead confirmed at 20:15 that the tag is the served sha and the post-release audit is clean. Docs adds the URL to the briefing Version line (told at 20:2x).
@@ -16,7 +16,7 @@ v748, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - **#2149:** two-stage routing rejected ($5.67, parity failed twice); #2197/#2184 by op-local resolution; #2250 on main.
 
 ## xian's hand, in order (rollup hot card)
-1. ghmint fix (Pard console v185, mediajunkie `ea2bdcd`). Three outages (10-30, 10-31, 11-01 13:28–14:00). Relay to CIO and Pard; row 9d closes when mints are 15 minutes apart.
+1. ghmint fix: INSTALLED 11-02 ~13:16 (Janus). CIO closes 9d after two mints 15 min apart; Pard told.
 2. `set_default_repo`: printenv, then `fly secrets set` with the value appended. Relay both outputs to CIO.
 3. Promote (dispatch line), then the #2242 allowlist add (three lines with his email), reconnect if needed. Relay `list` to PA, Lead, Arch, PPM.
 4. Buttondown: HOST read access to `beta-waitlist`, or one sign-up with his own address (HOST prefers the sign-up). Relay to HOST, Comms, Web, CXO. #2229 closes on it.

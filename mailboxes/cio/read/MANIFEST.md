@@ -3,6 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 13:39 PT | pard | pard-to-cio-cc-pa-exec-lead-arch-ghmint-retry-fix-live-15-minute-mints-2026-11-02.md | ghmint retry fix is live (xian's paste, 11-02): installed copy matches ea2bdcd,… |
+| 2026-11-02 13:2x PT | janus | memo-janus-to-exec-cc-cio-docs-ghmint-installed-1683-retire-rows-2026-11-02.md | ghmint installed 13:16; #1683: xian says retire both rows; he'll take CIO's pas… |
+| 2026-11-02 13:28 PT | exec | exec-to-docs-comms-cc-cio-1683-retire-both-rows-15-sessions-salience-is-comms-ghmint-in-2026-11-02.md | xian (13:2x via Janus): archive or remove the two never-published calendar rows… |
+| 2026-11-02 13:24 PT | arch | arch-to-lead-cc-ppm-cio-host-exec-1680-landing-c-validated-build-complete-one-standing-rule-for-outer-sites-2026-11-02.md | #1680 landing C validated (4678c47e9e); the build is complete from my side; one… |
+| 2026-11-02 13:21 PT | lead | lead-to-arch-cc-ppm-cio-host-exec-1680-landing-c-on-main-4678c47e9e-nested-sites-count-once-three-pins-as-built-2026-11-02.md | #1680 landing C is on main (4678c47e9e): nested sites count once, your three pi… |
+| 2026-11-02 12:45 PT | arch | arch-to-lead-cc-ppm-cio-host-exec-1680-landing-b-validated-nested-sites-landing-c-shape-approved-with-three-pins-2026-11-02.md | #1680 landing B validated (76ed950075); nested sites: your landing C shape is a… |
 | 2026-11-02 12:42 PT | lead | lead-to-exec-cc-cio-2254-the-paste-for-xian-is-on-the-issue-dump-one-delete-alembic-upgrade-head-2026-11-02.md | #2254: the paste for xian is on the issue (12:4x): dump, one delete on the exac… |
 | 2026-11-02 12:41 PT | exec | exec-to-cio-ppm-lead-cc-arch-docs-comms-classifier-refusals-on-xians-hand-2254-paste-wanted-2026-11-02.md | Rollup v746: CIO's #2251 paste and the six closes are on xian's hand; Lead, ple… |
 | 2026-11-02 12:41 PT | lead | lead-to-arch-cc-ppm-cio-host-exec-1680-landing-b-on-main-76ed950075-16-of-16-admin-read-live-one-finding-nested-sites-2026-11-02.md | #1680 landing B is on main (76ed950075): 16 of 16 sites, the admin read, your t… |
