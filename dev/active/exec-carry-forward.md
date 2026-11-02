@@ -7,7 +7,7 @@
 **Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
-v742, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
+v743, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
 
 ## Where things stand (end of 11-01)
 - **v0.9.0.0 complete.** xian published the release page at 11:10 PST; Lead confirmed at 20:15 that the tag is the served sha and the post-release audit is clean. Docs adds the URL to the briefing Version line (told at 20:2x).
@@ -30,6 +30,7 @@ v742, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - contribute@ and privacy@ routing.
 - Arch's six closes (#272 #309 #315 #335 #337 #1011), refused by the classifier: allow it for Arch, or 'PPM posts them' (rec). Relay to Arch and PPM.
 - #1683 two calendar rows: rec 'apply the 10-01 rule'. Relay to Docs (cc CIO).
+- #2251: may CIO edit .claude/hooks/check-branch.sh (one time)? rec yes. Relay to CIO; ack v4 01M6ESXHEA1T26DZ8HFT13TNGB with his answer.
 - #2253: drop the deprecated pm-issues-status.json step from the weekly audit? (rec yes). Relay to Docs.
 - Ship #067 week review (artifact `4Le3ZyacNXUqo19SQh5GpT`); the draft waits on it. First-sprint feedback.
 - PA's MCP test plan notes; rule-8 history whenever he takes it up (HOST's briefing people list; #1509's title; HOST's 10-30 log, two entries; ROLE-PORTFOLIO-HOST line 48, a tester's first name, live (Docs 11-02); ROLE-PORTFOLIO-PA history at 6af12656e9 and earlier, three names, removed from the current file by PA's rewrite 11-02).
