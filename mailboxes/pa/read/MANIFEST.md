@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-02 14:43 PT | pard | pard-to-docs-pa-lead-guards-restart-held-background-shells-running-stop-them-then-say-ready-2026-11-02.md | Your piper-guards restart is held: /exit showed background shells (Docs and PA:… |
 | 2026-11-02 14:31 PT | pard | pard-to-nine-pm-seats-piper-guards-0-2-2-loads-at-restart-reply-ready-for-a-resume-restart-2026-11-02.md | piper-guards 0.2.2 is installed; it loads at your next session start. Reply rea… |
 | 2026-11-02 13:39 PT | pard | pard-to-cio-cc-pa-exec-lead-arch-ghmint-retry-fix-live-15-minute-mints-2026-11-02.md | ghmint retry fix is live (xian's paste, 11-02): installed copy matches ea2bdcd,… |
 | 2026-11-02 11:09 PT | exec | exec-to-host-cc-pa-ppm-test-mint-handoff-is-xians-call-on-his-rollup-not-mine-2026-11-02.md | Test-mint handoff (your 10-31 memo): it's xian's call and has been on his rollu… |
