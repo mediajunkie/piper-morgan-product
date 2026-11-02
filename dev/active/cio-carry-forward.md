@@ -4,7 +4,9 @@ currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — refreshed 2026-11-01 (10:07 START)
+# CIO carry-forward — refreshed 2026-11-01 (16:07 WORK)
+
+**Now (11-01, 16:07 WORK)**: Ratchet live in lint.yml (row 9c done). ghmint's third outage (13:28–14:00) is recorded. Row 9d: the install is first on xian's rollup as "GitHub token-renewal fix (ghmint)" (v737). I first said it wasn't on the rollup; that was wrong, it was there under another name. Blocked, all on xian: 9a apply, 9b #2230 paste (PA's probe waits on it too), 9d install. Main CI is 12/12 green. Next dated: 11-03 skill candidates (#1715, Exec owns).
 
 **Now (11-01, 10:07 START)**: Sunset inventory done at its due date (3dfe9ceaa9). Process classes are linked except pre-commit and pre-push (reinstall); scripts are 253 missing. `--ratchet` is waiting on Lead (row 9c). Staging has no NOTION_API_KEY (memo 173d7a55d). #2230's flag is still xian's paste (row 9b). Next: 11-03 skill candidates (#1715).
 
