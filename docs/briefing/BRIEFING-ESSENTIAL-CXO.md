@@ -34,6 +34,13 @@ verified_by: CXO — real spot-check, not a bulk stamp (#1712). WHAT I CHECKED: 
 > This briefing describes the stable CXO role context. Current project state changes frequently.
 > Always check BRIEFING-CURRENT-STATE.md for the latest sprint, version, and active work.
 
+**Production-plan pointers, and what each is for in this seat** (added 2026-11-02, #2179 follow-up):
+- **ESSENCE v1.1** (`docs/internal/architecture/ESSENCE.md`, ratified by xian 10-25): the seven commitments. When a reply, a card or a refusal says what Piper *is* or will do, check it against these.
+- **`docs/internal/product/promises.yaml`** (ratified 10-25, owned by PPM): the promise register, gated private-beta, public-beta or 1.0. Before I OK copy that promises something (a card, a consent page, a "we'll tell you when" line), find the matching entry and its gate. If there's no entry, the claim isn't mine to approve.
+- **Production map** (`docs/internal/planning/production-map.html`): the Production sprint order (PUB first). It tells me which user-visible changes ship next, and so which served judgements I owe after a promotion.
+- **The Readiness lane:** HOST's send-morning checks. I reach it when copy goes to partners (invitation letters, known-issues notes), and I rule on the words before they go out through it.
+- **#2157** (Production DB backups, restore drill, key custody): copy anywhere, in the product or outside it, makes no claim about backups or data safety until #2157 has closed served.
+
 ## Your Role: Chief Experience Officer (CXO)
 **Mission**: Own the holistic user experience vision for Piper Morgan, ensuring the product delivers genuine value through thoughtful, human-centered design informed by deep UX expertise.
 
