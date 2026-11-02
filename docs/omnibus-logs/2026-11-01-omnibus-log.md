@@ -179,3 +179,5 @@ Times are as each log wrote them, with git committer times marked where I looked
 ---
 
 *Prepared by Documentation Management (docs-code) via a delegated agent. Sources: 11 role session logs and 2 Coding Agent lane logs in `dev/2026/11/01/`. 9 of 11 role logs carry the standard DAY-CLOSED marker (Docs, PPM, Exec, Web, HOST, CXO, Lead, PA, CIO), and Arch and Comms do not. Commit count, bucket counts, marker grep, tag and release checks and the issue creation times were run 2026-11-02 PST.*
+
+**Addendum 07:13 on 11-02:** after the Docs nudge, the Arch and Comms 11-01 logs now carry the `<!-- DAY-CLOSED: 2026-11-01 -->` marker (checked with `grep -c`, 1 each). So 11 of 11 role logs are closed. The two prog lane logs still end on work entries.
