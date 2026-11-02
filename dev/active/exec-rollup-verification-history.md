@@ -327,3 +327,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v744 2026-11-02 11:05 PST: six-closes line rewritten (PPM 11:0x: refused on PPM's seat too; options are a one-time allow for PPM or xian closes); + #327 close-not-planned rec.
 - v745 2026-11-02 12:35 PST: removed PDR-102, Sprint field, #2253, #2251, #1683 (xian 12:0x via Janus, decisions.log); six-closes line now only #327.
 - v746 2026-11-02 12:45 PST: + Your hand: CIO #2251 terminal paste (classifier refused despite grant, CIO 12:3x); six closes refused again on PPM (PPM 12:3x), options rule-for-PPM (rec) or xian closes.
+- v747 2026-11-02 12:52 PST: + Your hand: #2254 dev-DB paste (Lead's comment on the issue, local Docker DB only).
