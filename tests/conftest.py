@@ -984,3 +984,31 @@ def _2189_reset_session_slice_offer_state():
         _ctx.last_consumed_offer_id = None
         _ctx.pending_offer_lapsed = False
         _ctx.push_session_muted_at = None
+
+
+@pytest.fixture(autouse=True)
+def _1680_consequential_audit_stub(request, monkeypatch):
+    """#1680: instrumented send/write sites await
+    ``audit_logger.log_consequential_action``, which opens its OWN fresh session and
+    commits a row. A test that mocks the GitHub/Slack client but not the helper would
+    otherwise write real ``audit_logs`` rows into whatever database the run points at.
+    Replace the write with a stub that keeps the helper's argument contract (unknown
+    site or status still raises ``ValueError``) and returns None. Tests that exercise
+    the real write opt out with ``@pytest.mark.consequential_audit_db``; site pin tests
+    patch the helper themselves on top of this."""
+    if request.node.get_closest_marker("consequential_audit_db"):
+        return
+    try:
+        from services.security import audit_logger as _al
+        from services.security.consequential_sites import CONSEQUENTIAL_SITES
+    except Exception:  # silent-ok: module absent in a partial tree -> nothing to stub
+        return
+
+    async def _stub(self, *, site, status, **_kwargs):
+        if site not in CONSEQUENTIAL_SITES:
+            raise ValueError(f"#1680: unknown consequential site {site!r}")
+        if status not in _al.CONSEQUENTIAL_STATUSES:
+            raise ValueError(f"#1680: bad consequential status {status!r}")
+        return None
+
+    monkeypatch.setattr(_al.AuditLogger, "log_consequential_action", _stub)
