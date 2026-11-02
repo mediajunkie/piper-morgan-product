@@ -104,12 +104,34 @@ CONSEQUENTIAL_STATUSES = frozenset({"success", "failed", "unconfirmed"})
 
 # #1680 (Arch condition 3): a consequential row that could not be written is counted
 # here, so a lost row reads as a coverage gap, never as "0 actions".
+#
+# The count is per process: it starts at 0 when the process starts and every deploy or
+# restart resets it, so it is only ever read with its window
+# (``consequential_write_failures_window()``) and never presented as a durable "no
+# failed writes" (Arch, landing A validation, owed item 2). It is not persisted in this
+# landing; if persistence is wanted, it goes in ``audit_logs`` itself (a row for the
+# failed write, written when the database is back), not in a second store.
 _consequential_write_failures = 0
 
 
 def consequential_write_failures() -> int:
     """How many consequential audit rows failed to write in this process."""
     return _consequential_write_failures
+
+
+def consequential_write_failures_window() -> Dict[str, Any]:
+    """The failed-write count with the window it covers.
+
+    ``since`` is this process's start as ISO-8601 UTC, taken from
+    ``services.infrastructure.turn_activity.PROCESS_STARTED_AT``: the same source
+    ``/health``'s uptime uses (``web/api/routes/admin.py::_uptime_seconds``), so the
+    two always agree on when the process (and this count) began."""
+    from datetime import timezone
+
+    from services.infrastructure.turn_activity import PROCESS_STARTED_AT
+
+    since = datetime.fromtimestamp(PROCESS_STARTED_AT, tz=timezone.utc).isoformat()
+    return {"count": _consequential_write_failures, "since": since}
 
 
 def _coerce_principal(user_id: Union[str, UUID, None]) -> tuple[Optional[UUID], Optional[str]]:

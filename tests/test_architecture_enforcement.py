@@ -586,9 +586,10 @@ class TestConsequentialSiteCensusRatchet:
     (d) the dashboard headline matches the registry.
     """
 
-    # 2026-11-02 landing A: 16 censused, 7 instrumented -> 9 left (landing B).
-    MAX_UNINSTRUMENTED_SITES = 9
-    HEADLINE = "7 of 16 sites instrumented"
+    # 2026-11-02 landing A: 16 censused, 7 instrumented -> 9 left.
+    # 2026-11-02 landing B: all 16 instrumented -> 0 (HOST's rollout trigger).
+    MAX_UNINSTRUMENTED_SITES = 0
+    HEADLINE = "16 of 16 sites instrumented"
 
     CLIENT_METHODS = frozenset(
         {

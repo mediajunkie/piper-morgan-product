@@ -11,9 +11,16 @@ The registry carries three of the four flags because they are facts about the si
 code, not about any one call: ``proactive`` (Piper initiated it, not the user's own
 request), ``external_message`` (it leaves Piper) and ``hard_to_reverse``. The fourth,
 ``credits_spent``, is NOT a registry default: each instrumented site passes it from its
-own code path (did this function itself call the LLM before the write). Each entry's
-``credits_note`` records what was found there. Code sets every flag, never the model's
-words (ADR-080).
+own code path, by this rule (Arch, landing A validation, owed item 3):
+
+    A site passes ``credits_spent=True`` exactly when its own function body (including
+    what that body calls, but not the site's callers) made an LLM call for this action
+    before the write; otherwise it passes False.
+
+A spend in a caller (the chat turn's ``process_intent`` before a Slack reply) belongs to
+that turn, not to the send. Each entry's ``credits_note`` records the value, what in the
+body decides it, and the date it was checked against the code. Code sets every flag,
+never the model's words (ADR-080).
 
 Held by ``tests/test_architecture_enforcement.py::TestConsequentialSiteCensusRatchet``:
 a production call to one of the scanned client methods outside a registered site fails
@@ -63,8 +70,12 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         family=SLACK,
         proactive=False,
         hard_to_reverse=True,
-        instrumented=False,
-        credits_note="No LLM call in the function (landing B confirms when instrumented).",
+        instrumented=True,
+        credits_note=(
+            "False: validates user_id, builds kwargs and calls "
+            "SlackIntegrationRouter.send_message; no LLM call in the body. Checked "
+            "2026-11-02."
+        ),
     ),
     ConsequentialSite(
         key="slack.response.consolidated",
@@ -76,8 +87,8 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         hard_to_reverse=True,
         instrumented=True,
         credits_note=(
-            "False: formats buffered workflow results and posts them; the LLM ran "
-            "upstream in handle_spatial_event, not in this function."
+            "False: formats buffered workflow results and posts them; the LLM ran upstream "
+            "in handle_spatial_event, not in this function. Checked 2026-11-02."
         ),
     ),
     ConsequentialSite(
@@ -90,8 +101,9 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         hard_to_reverse=True,
         instrumented=True,
         credits_note=(
-            "False: formats the workflow result (plus Notion refs) and posts it; the "
-            "LLM ran upstream in handle_spatial_event, not in this function."
+            "False: formats the workflow result (plus Notion refs) and posts it; the LLM "
+            "ran upstream in handle_spatial_event, not in this function. Checked "
+            "2026-11-02."
         ),
     ),
     ConsequentialSite(
@@ -102,8 +114,12 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         family=SLACK,
         proactive=True,
         hard_to_reverse=True,
-        instrumented=False,
-        credits_note="No LLM call in the function (landing B confirms when instrumented).",
+        instrumented=True,
+        credits_note=(
+            "False: preference lookup, user_timezone_name and _format_for_slack (string "
+            "formatting) before SlackDomainService.post_message; no LLM call. Checked "
+            "2026-11-02."
+        ),
     ),
     ConsequentialSite(
         key="slack.socket.placeholder",
@@ -113,10 +129,11 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         family=SLACK,
         proactive=True,
         hard_to_reverse=True,
-        instrumented=False,
+        instrumented=True,
         credits_note=(
-            "The placeholder posts BEFORE process_intent runs, so the post itself "
-            "spends no credits (landing B confirms when instrumented)."
+            "False: the placeholder posts BEFORE _handle_event calls process_intent, so no "
+            "LLM call precedes this write; the later process_intent spend belongs to the "
+            "chat turn, not to the send. Checked 2026-11-02."
         ),
     ),
     ConsequentialSite(
@@ -127,10 +144,11 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         family=SLACK,
         proactive=False,
         hard_to_reverse=True,
-        instrumented=False,
+        instrumented=True,
         credits_note=(
-            "No LLM call in the function; its caller _handle_event ran process_intent "
-            "(landing B decides how the caller's spend is passed)."
+            "False: the body makes no LLM call (chat_update, then chat_postMessage as "
+            "fallback); its caller _handle_event ran process_intent, and that spend belongs "
+            "to the chat turn and is not attributed to the send. Checked 2026-11-02."
         ),
     ),
     ConsequentialSite(
@@ -141,8 +159,12 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         family=SLACK,
         proactive=False,
         hard_to_reverse=True,
-        instrumented=False,
-        credits_note="Not yet traced through _process_slash_command (landing B).",
+        instrumented=True,
+        credits_note=(
+            "False: _process_slash_command routes to deterministic handlers in "
+            "webhook_router.py and canonical_handlers.py (git grep -i llm in both: 0 hits); "
+            "no LLM call before send_dict. Checked 2026-11-02."
+        ),
     ),
     # ── GitHub writes ──────────────────────────────────────────────────────────
     ConsequentialSite(
@@ -155,8 +177,9 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         hard_to_reverse=True,
         instrumented=True,
         credits_note=(
-            "False: deterministic slot-fill (_slotfill_issue_request) and the "
-            "collaborate-first gate (evaluate_consent, no LLM) only."
+            "False: deterministic slot-fill (_slotfill_issue_request), classify_framing "
+            "(regex) and the collaborate-first gate (evaluate_consent, no LLM) only. "
+            "Checked 2026-11-02."
         ),
     ),
     ConsequentialSite(
@@ -168,7 +191,10 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         proactive=False,
         hard_to_reverse=False,
         instrumented=True,
-        credits_note="False: regex issue number, deterministic fuzzy title match, no LLM.",
+        credits_note=(
+            "False: regex issue number, deterministic fuzzy title match, no LLM. Checked "
+            "2026-11-02."
+        ),
     ),
     ConsequentialSite(
         key="github.chat.reopen_issue",
@@ -179,7 +205,10 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         proactive=False,
         hard_to_reverse=False,
         instrumented=True,
-        credits_note="False: regex issue number, deterministic fuzzy title match, no LLM.",
+        credits_note=(
+            "False: regex issue number, deterministic fuzzy title match, no LLM. Checked "
+            "2026-11-02."
+        ),
     ),
     ConsequentialSite(
         key="github.chat.comment_issue",
@@ -191,8 +220,8 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         hard_to_reverse=True,
         instrumented=True,
         credits_note=(
-            "True: extract_slots(COMMENT_ISSUE_TEMPLATE, llm_service=self.llm_client) "
-            "runs on every path that reaches add_comment."
+            "True: extract_slots(COMMENT_ISSUE_TEMPLATE, llm_service=self.llm_client) runs "
+            "on every path that reaches add_comment. Checked 2026-11-02."
         ),
     ),
     ConsequentialSite(
@@ -204,7 +233,9 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         proactive=False,
         hard_to_reverse=True,
         instrumented=True,
-        credits_note="False: deterministic slot-fill and regex issue number, no LLM.",
+        credits_note=(
+            "False: deterministic slot-fill and regex issue number, no LLM. Checked " "2026-11-02."
+        ),
     ),
     ConsequentialSite(
         key="github.command.create_issue",
@@ -214,8 +245,11 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         family=GITHUB,
         proactive=False,
         hard_to_reverse=True,
-        instrumented=False,
-        credits_note="No LLM call in the function (landing B confirms when instrumented).",
+        instrumented=True,
+        credits_note=(
+            "False: reads params/context and calls GitHubDomainService.create_issue; no LLM "
+            "call (the learned pattern was approved upstream). Checked 2026-11-02."
+        ),
     ),
     ConsequentialSite(
         key="github.domain.create_issue",
@@ -225,8 +259,11 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         family=GITHUB,
         proactive=False,
         hard_to_reverse=True,
-        instrumented=False,
-        credits_note="No LLM call; one site, two create_issue branches.",
+        instrumented=True,
+        credits_note=(
+            "False: splits the owner/name slug and calls the router; one site, two "
+            "create_issue branches; no LLM call. Checked 2026-11-02."
+        ),
     ),
     ConsequentialSite(
         key="github.domain.update_issue",
@@ -236,8 +273,8 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         family=GITHUB,
         proactive=False,
         hard_to_reverse=True,
-        instrumented=False,
-        credits_note="No LLM call in the function (landing B confirms when instrumented).",
+        instrumented=True,
+        credits_note=("False: forwards the fields to the router; no LLM call. Checked 2026-11-02."),
     ),
     ConsequentialSite(
         key="github.standup.create_issue",
@@ -247,8 +284,11 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         family=GITHUB,
         proactive=True,
         hard_to_reverse=True,
-        instrumented=False,
-        credits_note="No LLM call in the function (landing B confirms when instrumented).",
+        instrumented=True,
+        credits_note=(
+            "False: _extract_action_items and _format_github_issue_body are string work "
+            "over the assembled standup; no LLM call. Checked 2026-11-02."
+        ),
     ),
 )
 

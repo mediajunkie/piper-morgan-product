@@ -22,6 +22,12 @@ from services.domain.notion_domain_service import NotionDomainService
 from services.domain.slack_domain_service import SlackDomainService
 from services.domain.user_preference_manager import UserPreferenceManager
 from services.integrations.mcp.skills.base_skill import BaseSkill
+from services.security.consequential_outcomes import (
+    domain_send_result_outcome,
+    github_write_outcome,
+    github_write_result_outcome,
+    slack_send_error_outcome,
+)
 from services.standup.assembler import build_user_standup_summary
 from services.utils.datetime_utils import format_iso_as_user_datetime, user_timezone_name
 
@@ -271,12 +277,36 @@ class StandupWorkflowSkill(BaseSkill):
 
             # Post to Slack — user_id scopes the send to the acting user, never
             # the connector owner (#1110/#1466/#1481, #1871).
-            result = await self.slack_service.post_message(
-                channel=slack_workspace.get("default_channel", "#standups"),
-                message=slack_formatted["text"],
-                user_id=user_id,
-                blocks=slack_formatted.get("blocks"),
-                thread_ts=slack_formatted.get("thread_ts"),
+            # #1680: the consequential row is written right after the call, on every
+            # outcome; credits_spent=False (no LLM call in this method).
+            from services.security.audit_logger import audit_logger
+
+            channel = slack_workspace.get("default_channel", "#standups")
+            _audit_kwargs: Dict[str, Any] = {
+                "site": "slack.standup.post",
+                "user_id": user_id,
+                "resource_type": "slack_channel",
+                "resource_id": channel,
+                "message": "Standup posted to Slack",
+                "credits_spent": False,
+            }
+            try:
+                result = await self.slack_service.post_message(
+                    channel=channel,
+                    message=slack_formatted["text"],
+                    user_id=user_id,
+                    blocks=slack_formatted.get("blocks"),
+                    thread_ts=slack_formatted.get("thread_ts"),
+                )
+            except Exception as _send_err:
+                _a_status, _a_details = slack_send_error_outcome(_send_err)
+                await audit_logger.log_consequential_action(
+                    status=_a_status, details=_a_details, **_audit_kwargs
+                )
+                raise
+            _a_status, _a_details = domain_send_result_outcome(result)
+            await audit_logger.log_consequential_action(
+                status=_a_status, details=_a_details, **_audit_kwargs
             )
 
             if not result.get("success"):
@@ -339,6 +369,19 @@ class StandupWorkflowSkill(BaseSkill):
             # here) — same source as every other user-facing face (#1869).
             tz_name = await user_timezone_name(user_id)
 
+            # #1680: one consequential row per create_issue call, written right after
+            # it on every outcome; credits_spent=False (no LLM call in this method).
+            from services.security.audit_logger import audit_logger
+
+            _audit_kwargs: Dict[str, Any] = {
+                "site": "github.standup.create_issue",
+                "user_id": user_id,
+                "resource_type": "github_repository",
+                "resource_id": repo,
+                "message": f"Standup item filed as an issue in {repo}",
+                "credits_spent": False,
+            }
+
             # Create issues for action items
             for item in action_items:
                 try:
@@ -348,10 +391,21 @@ class StandupWorkflowSkill(BaseSkill):
                         body=self._format_github_issue_body(item, standup, tz_name),
                         labels=["standup", item.get("category", "task")],
                     )
-                    created_issues.append(issue)
-                    issues_created += 1
                 except Exception as e:
+                    _a_status, _a_details = github_write_outcome(e)
+                    await audit_logger.log_consequential_action(
+                        status=_a_status, details=_a_details, **_audit_kwargs
+                    )
                     print(f"Failed to create issue for '{item}': {e}")
+                    continue
+                _a_status, _a_details = github_write_result_outcome(issue)
+                if _a_status == "success" and isinstance(issue, dict):
+                    _a_details = {"issue_number": issue.get("number")}
+                await audit_logger.log_consequential_action(
+                    status=_a_status, details=_a_details, **_audit_kwargs
+                )
+                created_issues.append(issue)
+                issues_created += 1
 
             return {
                 "success": True,

@@ -15,6 +15,10 @@ from services.domain.models import SpatialEvent
 from services.integrations.slack.response_handler import SlackResponseHandler
 from services.integrations.slack.slack_integration_router import SlackIntegrationRouter
 from services.integrations.slack.webhook_router import SlackWebhookRouter
+from services.security.consequential_outcomes import (
+    slack_send_error_outcome,
+    slack_send_outcome,
+)
 
 # Re-export exceptions for clean domain boundary
 __all__ = ["SlackDomainService", "SlackAuthFailedError"]
@@ -129,15 +133,35 @@ class SlackDomainService:
             kwargs["thread_ts"] = thread_ts
 
         router = self._get_integration_router()
+        # #1680: the consequential row is written right after the send, on every
+        # outcome; credits_spent=False (this method makes no LLM call).
+        from services.security.audit_logger import audit_logger
+
+        _audit_kwargs: Dict[str, Any] = {
+            "site": "slack.domain.post_message",
+            "user_id": user_id,
+            "resource_type": "slack_channel",
+            "resource_id": channel,
+            "message": "Slack post (domain service)",
+            "credits_spent": False,
+        }
         try:
             response = await router.send_message(channel, message, user_id=user_id, **kwargs)
         except (
             Exception
         ) as e:  # silent-ok: transport failure is returned as success=False with the reason
+            _a_status, _a_details = slack_send_error_outcome(e)
+            await audit_logger.log_consequential_action(
+                status=_a_status, details=_a_details, **_audit_kwargs
+            )
             logger.error(
                 "Slack post_message failed", error=str(e), channel=channel, user_id=user_id
             )
             return {"success": False, "error": str(e)}
+        _a_status, _a_details = slack_send_outcome(response)
+        await audit_logger.log_consequential_action(
+            status=_a_status, details=_a_details, **_audit_kwargs
+        )
 
         if not response.success:
             error_msg = (
