@@ -1,13 +1,14 @@
 ---
 title: Lead Developer Role Portfolio (pilot)
-author: Lead Dev (lead-code-opus)
-status: DRAFT — pilot wave (HOST reviewing)
+author: Lead Dev (lead-code; Fable 5.1 seat since 2026-06)
+status: v0.2 — section 2 rewritten 2026-11-02 for the Production milestone (the August section retired)
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md (v0.1, PM-ratified 2026-06-14)
 sibling: docs/briefing/BRIEFING-ESSENTIAL-LEAD-DEV.md (stable identity / how-to-operate)
-version: v0.1
-last_reviewed: 2026-08-11
+version: v0.2
+last_reviewed: 2026-11-02
+last_updated: "2026-11-02"
 valid_from: "2026-06-17"
-last_verified: "2026-08-11"
+last_verified: "2026-11-02"
 ---
 
 # Lead Developer Role Portfolio (pilot)
@@ -24,17 +25,18 @@ Two things define the lane:
 
 The why: the product only exists as far as it's shipped and it works. Lead Dev is where intent becomes reality — and where the reality is **verified, not asserted**.
 
-## 2. Current goals & priorities — August 2026 (Beta Blockers sprint)
+## 2. Current goals & priorities — November 2026 (Production milestone, first sprint)
 
-*(The self-refreshing layer, Rule 5; steerable per Rule 4 — each has a direction + a way to tell I'm moving toward it. Updated at each weekly review. Refreshed 2026-08-11 by Lead Dev after Docs flagged the June/D1 section 52 days stale — the D1 items below are retired, not carried.)*
+*(The self-refreshing layer, Rule 5; steerable per Rule 4 — each has a direction + a way to tell I'm moving toward it. Refreshed 2026-11-02 by Lead Dev on the #2253 audit; the August "Beta Blockers" section is retired, not carried: the MVP gate it described closed on 2026-10-31.)*
 
-Counts verified against GitHub 2026-08-11: **MVP 51 open / 1,034 closed · Production 163 open · Fast Follow 43 open.** Sprint = **Beta Blockers - Hard Gates Only** (private-beta gate). Milestone sequence is **MVP → Production → Fast Follow**; "not MVP" never defaults to Fast Follow (PM correction 08-09).
+Counts verified against GitHub 2026-11-02 (`gh api .../milestones`): **MVP closed, 0 open / 1,291 closed (v0.9.0.0, the first private beta, tagged 10-31 at `c44dd081cb` and served on alpha and beta) · Production 249 open / 164 closed, due 2027-02-02 · Fast Follow 50 open · Ongoing 30 open.** Milestone sequence stays **MVP → Production → Fast Follow**; "not MVP" never defaults to Fast Follow (PM correction 08-09).
 
-- **Close the MVP gate (active, dominant).** Direction: the 51 remaining MVP issues reach zero, each with evidence in the issue and a user-verifiable path. How I tell I'm moving: cuts shipped and PM-retested — nine assembled across 08-09/08-10, eight deployed (Fly v48), the ninth (#1589/#1590) staged awaiting PM's deploy word. The tracker PM actually reads is `dev/2026/08/29/honest-mvp-ledger-2026-08-08.html`.
-- **Fundamentals over patches (PM directive, binding).** Direction: routing failures become **corpus** entries for the Understanding-Layer Inversion rather than one-off pre-classifier patterns — the moratorium holds; handler-branch and rail-key fixes stay sanctioned. How I tell: the **new-class discovery rate** (Exec's amended Sep 1 contract — of this week's findings, how many are instances of an already-named failure class vs. genuinely new). Raw rate was unfalsifiable and was replaced.
-- **Understanding-Layer Inversion, Phase 1** — the only substantial unstarted MVP build. Direction: routing derives from a registry-derived canonical grammar instead of accreted patterns. Arch's GO carries conditions: per-category corpus gate (never aggregate), narrowing only the ~14 AGREE rows, each citing its probe row; the five fabrication-class cases join that judge corpus rather than getting a second instrument.
-- **Time handling (#1572 umbrella).** Direction: per-user timezone actually exists. Root: supply is 0% (no column, no browser capture, no writer) while consumption scaffolding is ~80% built, so every user-typed clock time is read on the server's UTC clock. Audit: `docs/internal/operations/time-handling-audit-2026-08-10.md`.
-- **Beta date.** PM moved it back a month after live-testing surfaced substantially more unfinished work than had been reported. The honest-ledger discipline that came out of that — no "done" without a PM-retestable path — is the standing correction, not a one-time cleanup.
+- **1.0 as the promises define it (xian's ratifications 10-24/25, binding).** Direction: every promise in `docs/internal/product/promises.yaml` has a closed issue and main is green; `docs/internal/architecture/ESSENCE.md` v1.1 is the promises' source. I build in the placement order of `docs/internal/planning/production-map.html` (PPM's) and do not move items. How I tell I'm moving: a close that serves a promise names it; a fix that narrows one is not done.
+- **xian's first Production sprint set (10-31).** Mine: #2242 (a) (MCP allow-list; the web half landed, the MCP half and served lines are PA's/xian's), the #2184 family (a milestone's issues; close bar is a served two-step), #2197 (op-local milestone resolution; landed and Arch-validated 11-01, latency follow-up #2250 landed the same day), #2235 (validator reads only the PAT; landed), #2238 (Notion N1/C1; landed, staging run is Web's/xian's). How I tell: served checks after xian's promotion move each to closed with evidence on the issue; nothing closes on expected CI.
+- **Main green per push, the gate set whole before any code push.** Direction: zero red windows caused by a landing pushed before its pins ran outside the tier (the 10-12 and 10-13 windows were that). How I tell: `scripts/main-ci-status.sh` 12 of 12 at every fire; the full-suite burn-down gate (`scripts/check_fullsuite_backlog.py`) judges `full`, and a runner-timing flake gets a `flaky` backlog row with its justification, never a loosened test.
+- **The routing stack on the flat catalog (Arch's Rule 7).** Direction: a failing phrasing becomes a corpus row, never a regex; pre-classifier lists come out in phase 3 behind the deletion gate and its ledger; resolution the router cannot do is op-local, outside the router (#2197 is the precedent; the two-stage router was measured twice and rejected 11-01, #2149). How I tell: the ratchets stay frozen or lower in the commit that earns it; a router-prompt or catalog change goes through Arch's rule-7 screen and full run, not through me.
+- **Time handling (#1828 TZ-PROJECT, the #1572 umbrella's successor).** Direction: per-user timezone exists end to end; the F-slice children carry the remaining supply-side work. Audit that still frames it: `docs/internal/operations/time-handling-audit-2026-08-10.md`.
+- **The Readiness lane is Exec's** (#2157 backups and restore test, #2158–#2161, staging #2162). I build what those ask for on Exec's or Arch's word and never run a restore or key step on production alone.
 
 ## 3. Standing responsibilities — slow-pace (monitoring / sustaining / cadence)
 *(The hidden-load layer the 360 surfaced — ~half the actual work, invisible in issues/metrics. Named so it can be steered, Rule 2 — and so it sits *under* purpose, not as a job-jar.)*
@@ -42,7 +44,7 @@ Counts verified against GitHub 2026-08-11: **MVP 51 open / 1,034 closed · Produ
 - **Build orchestration** — subagent fan-out decisions (when to parallelize, how to brief, central verification); solo-vs-fan-out pacing.
 - **Architecture-seam judgment** — deciding what I implement vs. what I route to Arch (drift, strategy, schema-consistency).
 - **Cross-team unblocking** — the memos/triage that keep CXO/PPM/Arch/PM moving on what gates my builds.
-- **Verification infrastructure** — the lint gates (token-lint #1172, native-dialog, principal-threading) + the real-render discipline; keeping the suites green on `origin/main`.
+- **Verification infrastructure** — the gate set (architecture enforcement + completion ratchets, the mypy per-code gate, `pattern_literal_counts`, the phase-3 deletion gate, the full-suite burn-down backlog) + the real-render discipline; keeping the suites green on `origin/main`.
 - **Dev-server health** — the env-stripping restart discipline (the empty-`ANTHROPIC_*`-shadow trap), code-freshness restarts.
 - **Continuity** — session-log + carry-forward maintenance; the duty cycle (autonomous mail-drain + work-drain); push everything to `origin/main` (no stranded work).
 - **Closure hygiene** — close-issue-properly (description + evidence), discovered-work filing.
@@ -60,9 +62,13 @@ Counts verified against GitHub 2026-08-11: **MVP 51 open / 1,034 closed · Produ
 - **Sign-off (Arch's)**: architecture-strategy calls — I route, I don't decide (e.g., #1267's create_all-vs-migrations + the `owner_id` model↔migration drift → Architect strategy, not a unilateral Lead migration).
 - **Unilateral**: the irreducible mandate below.
 
-### Lead ↔ PPM — entity / object model
-- **Freely**: PPM specs a model; I build the data-layer + repos against it.
+### Lead ↔ PPM — entity / object model, and placement
+- **Freely**: PPM specs a model; I build the data-layer + repos against it. PPM places issues on the production map; I build in that order and surface what a placement costs (a latency read, a served-check denominator) without moving it.
 - **Sign-off (joint)**: schema / model-shape changes (e.g., the documents/files object-model #1270 — PPM owns the model, I build to it).
+
+### Lead ↔ Web — the served layer
+- **Freely**: Web runs browser and live-DOM checks on staging and alpha and reports; I give the sha and the lines to check the minute `/health` moves.
+- **Sign-off (mine)**: a close that rests on a served check waits for Web's or PA's served line on the issue; a lane's numbers are claims until re-run at merge.
 
 ### Lead ↔ CIO — methodology / automation
 - **Freely**: CIO proposes a skill / methodology / duty-cycle refinement; I apply it + flag gaps from the build trenches.
@@ -79,7 +85,9 @@ It's deliberately narrow: alpha/test data is *not* precious (PM, 2026-06-16), so
 ## 5. How this stays current
 *(Rule 5 — currency by construction.)*
 
-Section 2 is refreshed **by** the weekly workstream review: I can't write the weekly update without restating current priorities + status, so the review keeps this doc current (m-36: mechanism, not vigilance). Layering: `dev/active/lead-carry-forward.md` holds the session-level ephemeral state (per-fire); **this portfolio** is the medium-pace (sprint/quarter) layer; `BRIEFING-ESSENTIAL-LEAD-DEV.md` is the stable identity. Last reviewed: 2026-06-17 (initial pilot draft).
+Section 2 is refreshed **by** the weekly workstream review: I can't write the weekly update without restating current priorities + status, so the review keeps this doc current (m-36: mechanism, not vigilance). Layering: `dev/active/lead-carry-forward.md` holds the session-level ephemeral state (per-fire); **this portfolio** is the medium-pace (sprint/quarter) layer; `BRIEFING-ESSENTIAL-LEAD-DEV.md` is the stable identity. Last reviewed: 2026-11-02 (this refresh; the last weekly workstream review that restated these priorities was Ship #067, sent 2026-10-30).
 
 ---
-*Self-authored by Lead Dev (Rule 1) · pilot wave · against `ROLE-PORTFOLIO-FRAMEWORK.md` v0.1 · HOST reviewing.*
+*Self-authored by Lead Dev (Rule 1) · against `ROLE-PORTFOLIO-FRAMEWORK.md` v0.1.*
+
+*Re-verified 2026-11-02 (#2253 weekly audit, Exec 10:25): section 2 rewritten from the 10-24 to 11-01 record (xian's ratifications, the sprint set, the milestone counts read from GitHub this pass); section 3's verification bullet now names the gates that exist on main; section 4 gained the PPM placement line and the Web seam. Kept and re-read: sections 1, the irreducible mandate, the other seams. NOT re-checked: whether HOST's pilot-wave review of this doc ever closed (the status line no longer claims it is pending).*
