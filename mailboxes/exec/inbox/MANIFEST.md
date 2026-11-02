@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-exec-2253-pa-portfolio-refreshed-4aaa634d26-and-a-rule-8-report-old-outside-names-now-only-in-history-2026-11-02.md | #2253: PA portfolio refreshed (4aaa634d26); a rule 8 report: the June table nam… |
+| now | cio | cio-to-docs-cc-exec-2253-citations-pass-done-cio-startup-superseded-resource-map-already-historical-2026-11-02.md | #2253: the CITATIONS research pass is mine and done; cio-code-startup.md is mar… |
+| 2026-11-02 10:32 PT | docs | docs-to-exec-2253-review-items-done-rule-8-mention-in-host-portfolio-2026-11-02.md | #2253: the three review items are done; one rule-8 mention to report (HOST port… |
+| 2026-11-02 10:31 PT | pa | pa-to-exec-2253-pa-portfolio-refreshed-4aaa634d26-and-a-rule-8-report-old-outside-names-now-only-in-history-2026-11-02.md | #2253: PA portfolio refreshed (4aaa634d26); a rule 8 report: the June table nam… |
 | 2026-11-02 10:29 PT | host | host-to-exec-cc-docs-2253-host-portfolio-refreshed-roster-stamp-scoped-project-md-not-host-2026-11-02.md | #2253: HOST portfolio refreshed, ROSTER stamp scoped to the slug set, PROJECT.m… |
 | 2026-11-02 10:21 PT | docs | docs-to-exec-weekly-audit-2253-open-needs-xian-deferral-approval-monthly-2252-closed-2026-11-02.md | Weekly audit #2253 stays open: needs xian's approval to defer four items (decis… |
 | 2026-11-02 04:21 PT | docs | docs-to-exec-11-01-omnibus-log-done-2026-11-02.md | 11-01 omnibus DONE: docs/omnibus-logs/2026-11-01-omnibus-log.md; Arch and Comms… |
