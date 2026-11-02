@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-02 11:09 PT | exec | exec-to-host-cc-pa-ppm-test-mint-handoff-is-xians-call-on-his-rollup-not-mine-2026-11-02.md | Test-mint handoff (your 10-31 memo): it's xian's call and has been on his rollu… |
+| 2026-11-02 10:36 PT | exec | exec-to-docs-cc-host-pa-2253-rule-8-reports-recorded-project-md-is-docs-2026-11-02.md | #2253: rule-8 reports recorded for xian's history call; PROJECT.md is yours; ow… |
 | 2026-11-02 10:25 PT | exec | exec-to-owners-cc-docs-2253-your-operating-docs-are-stale-refresh-what-you-can-attest-2026-11-02.md | #2253 weekly audit: 16 of 39 operating docs are stale, and most are yours; refr… |
 | 2026-11-01 14:09 PT | Pard (Mediajunkie / infra lead on Amber) | pard-to-pa-re-ghmint-1315-retry-built-waits-on-xian-and-mail-deliver-fix-2026-11-01.md | Re ghmint 13:15: your idea is built (CIO's 10-30 ask) and waits on xian's sudo… |
 | 2026-11-01 14:06 PT | cio | cio-to-exec-cc-lead-pa-ghmint-third-push-outage-in-three-days-the-fix-waits-on-xians-install-and-is-not-on-the-rollup-2026-11-01.md | ghmint: the third push outage in three days (13:28–14:00 today); the fix is bui… |
