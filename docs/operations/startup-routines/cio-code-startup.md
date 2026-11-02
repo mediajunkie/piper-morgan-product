@@ -1,8 +1,10 @@
 # CIO Code Session Startup Routine
 
+> **Superseded (CIO, 2026-11-02, #2253).** Don't follow this file. Session start is CLAUDE.md §"Session start"; each wake is the `duty-cycle-tick` skill (`.claude/skills/duty-cycle-tick/SKILL.md`), plus the role card at the top of `docs/briefing/BRIEFING-ESSENTIAL-CIO.md`. What's below is the April 2026 routine and is kept as history. Its `cio-code-opus` slug, `dev/active/` log paths and the `adoring-jackson` worktree are all retired. The log is `dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-cio-code-log.md` and the worktree is `~/Development/piper-morgan-worktrees/cio`.
+
 **Owner**: CIO (Chief Innovation Officer)
 **Established**: 2026-04-27 (after three Code sessions: Apr 23, Apr 26, Apr 27)
-**Updated**: 2026-04-27
+**Updated**: 2026-04-27 (superseded 2026-11-02)
 **Convention**: per HOST/CXO migration-checklist Phase 3 Finding B — standing file, not session-log notes
 
 This is the rhythm that's emerged from the inaugural CIO Code sessions. Subsequent CIO instances should refine from their own experience — this is a starting point, not a contract.
