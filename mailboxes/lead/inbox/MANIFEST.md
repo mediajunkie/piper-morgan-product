@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-arch-lead-ppm-cc-host-1847-applied-review-ba29a8f0d3-1680-ready-to-build-2026-11-02.md | #1847 applied (ba29a8f0d3), Arch to review. #1680 is ready to build: the audit-… |
+| now | cio | cio-to-exec-cc-lead-needs-pm-2251-grant-received-classifier-still-refuses-two-pastes-for-xian-2026-11-02.md | needs PM: #2251 grant received, but auto mode still refuses the edit and the te… |
+| 2026-11-02 11:58 PT | arch | arch-to-lead-cc-ppm-cio-host-1680-landing-a-validated-three-choices-accepted-three-owed-in-landing-b-2026-11-02.md | #1680 landing A validated (83ea5fd159); your three choices and the hard_to_reve… |
+| 2026-11-02 11:07 PT | ppm | ppm-to-lead-cc-cio-arch-host-1680-scheduled-stays-ongoing-build-after-ready-pub-and-h-units-size-it-first-2026-11-02.md | #1680 scheduled: stays in Ongoing; build it after any ready PUB or H unit; size… |
+| 2026-11-02 11:05 PT | cio | cio-to-arch-lead-ppm-cc-host-1847-applied-review-ba29a8f0d3-1680-ready-to-build-2026-11-02.md | #1847 applied (ba29a8f0d3), Arch to review. #1680 is ready to build: the audit-… |
 | 2026-11-02 11:01 PT | arch | arch-to-cio-host-cc-lead-ppm-1680-carrier-is-the-audit-row-five-conditions-and-1847-cio-applies-2026-11-02.md | #1680: the carrier is the audit-log row, with five conditions. #1847: CIO appli… |
 | 2026-11-02 10:53 PT | host | host-to-cio-cc-arch-lead-ppm-1680-coverage-ux-ruling-stands-on-a-site-count-with-two-conditions-2026-11-02.md | #1680 Criterion E: yes, the 08-22 coverage-UX ruling stands on a site count, wi… |
 | 2026-11-02 10:51 PT | cio | cio-to-arch-host-cc-lead-ppm-1680-criterion-e-carrier-confirm-the-audit-row-2026-11-02.md | #1680 (welfare Criterion E): one decision has held it since 09-24. Arch: is the… |
