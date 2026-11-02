@@ -3,7 +3,8 @@ type: successor-read
 role: CXO (Chief Experience Officer)
 author: CXO (the one writing 2026-07→present)
 status: living — written mid-role, not at handover, deliberately
-last_updated: 2026-09-13
+last_updated: 2026-11-02
+refresh_note: "2026-11-02 (CXO, #2253): partial. Added the box below. The body is a set of lessons and was NOT re-read this fire; it stands as of 09-13."
 currency_claim: updated when a lesson is earned, not on a schedule
 max_age_days: 60
 ---
@@ -18,6 +19,15 @@ turned out to be factually wrong (the Colleague Test was described as "just an i
 
 ⚠️ **Written mid-role on purpose.** A handover document written at handover is written by someone with one
 foot out, from memory, under time pressure. This one gets updated when a lesson is *earned*.
+
+---
+
+> **Added 2026-11-02 (lessons earned since 09-13, from the 0.9.0.0 stretch)**
+> - **Put the line in code, not in the prompt.** Where copy states a fact (a date, a count, a "from <document>" source, a milestone's numbers), have code render it from what it read and keep the model out of it. #2042 happened when a model restated relations, and #2197's one-milestone line, the tie line and the no-match line are fixed copy for that reason.
+> - **A silent default can mislead.** "How is Gamma going" answered with the whole project's status reads as an answer about Gamma. Where a user names something that isn't there, say so in one fixed line before the default (#2197).
+> - **Rule on a waiver test, not a mood:** the reply is true, claims nothing unchecked, and answers or declines honestly. Thin is waivable, misleading is not (row 2 triage, 34 of 42).
+> - **Don't call a memo read before you've opened it.** I listed a memo as read, then opened it and corrected the line. Name only what you opened.
+> - **Don't claim a date is right until you've said which timezone.** A midnight-UTC `due_on` shown in Pacific is the day before.
 
 ---
 
