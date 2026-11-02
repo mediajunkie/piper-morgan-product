@@ -1,8 +1,10 @@
 # Canonical Sprint Order — Piper Morgan
 
+> **HISTORICAL (PPM, 2026-11-02, from Docs' #2253 audit).** This page records the July 2026 Beta Blockers order. The MVP milestone, which was the beta gate, **closed 2026-10-30**, and v0.9.0.0 is tagged at `c44dd081cb`. The Beta Blockers sprint is retired. For the current order, read `production-sprint-proposal-2026-10-23.md` (every open Production issue, by sprint) and the map at https://claude.ai/artifact/63oejcubP3zEj617nFAN68. The release model is `release-model.md`. The milestone dates in the table below are July's. GitHub's milestone list is the source for dates now, and only xian sets them.
+
 **Owner**: PPM  
 **Last updated**: 2026-07-04 (PPM — PM ratified Jul 4; Beta Blockers sprint added; MVP milestone = beta gate; milestone dates updated from GitHub; RECONNECT status corrected)  
-**Status**: PM-ratified 2026-07-04  
+**Status**: Historical (superseded 2026-10-23 by the Production sprint plan; MVP closed 2026-10-30). Was: PM-ratified 2026-07-04  
 **Purpose**: Single source of truth for sprint sequence. Reference this when "what's the order?" comes up — not roadmap prose.
 
 ---

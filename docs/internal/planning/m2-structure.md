@@ -1,5 +1,7 @@
 # M2 Super-Epic Structure: Conscious Floor + Action Handlers
 
+> **HISTORICAL (PPM, 2026-11-02, from Docs' #2253 audit).** M2 closed 2026-06-03, and its sub-epic statuses below are as they stood then. One part is still cited: §Sub-Epic Gating Protocol item 5, the interface-verification DoD (Layer A, `docs/internal/development/interface-verification-dod-layer-a.md`, #683 closed 11-02). For current work, read `production-sprint-proposal-2026-10-23.md`.
+
 **Created**: 2026-04-14
 **Last Updated**: 2026-04-16 (Lead Dev — M2b/M2c closure + follow-up index)
 **Sprint theme**: Make the differentiator stack's first two pillars operational

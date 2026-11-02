@@ -2,7 +2,7 @@
 
 **Owner**: PPM (Principal Product Manager)
 **Established**: 2026-04-26 (after PPM's second Code session)
-**Updated**: 2026-04-26
+**Updated**: 2026-11-02 (PPM: log slug and path corrected, per Docs' #2253 audit. Where this file and CLAUDE.md or the `duty-cycle-tick` skill differ, they win: CLAUDE.md §Role and session log, and §Session start.)
 **Convention**: per HOST/CXO migration-checklist Phase 3 Finding B — standing file, not session-log notes
 
 This is the rhythm that emerged from the inaugural PPM Code sessions (Apr 25 + Apr 26). Subsequent PPM instances should refine from their own experience — this is a starting point, not a contract.
@@ -14,7 +14,7 @@ This is the rhythm that emerged from the inaugural PPM Code sessions (Apr 25 + A
 ### 1. SessionStart hook output (passive; runs automatically)
 
 The CLAUDE.md SessionStart hook surfaces:
-- **Today's session logs**: filenames present in `dev/active/`. If a `*ppm-code-opus*` log exists for today, *resume that one* — do not create a new log.
+- **Today's session logs**: filenames present in `dev/YYYY/MM/DD/`. If a `*-ppm-code-log.md` exists for today, *resume that one* — do not create a new log.
 - **Mailbox unread counts** + up to 3 sample filenames per role.
 - **xpoll brief availability** (if cross-pollination work is pending).
 - **ROLE assignment** (or reminder to check for one).
@@ -24,7 +24,7 @@ Read the hook output before doing anything else. It catches the most common sess
 ### 2. Session log: resume or create
 
 - **If today's log exists**: resume by adding a "Session Resumed" entry. One log per role per day.
-- **If no log exists**: create at `dev/active/YYYY-MM-DD-HHMM-ppm-code-opus-log.md`. Use the slug `ppm-code-opus` (mirrors `docs-code-opus`, `cxo-code-opus`; distinguishes Code from Chat era's `ppm-opus`).
+- **If no log exists**: create at `dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-ppm-code-log.md` (Pacific time) with skill `create-session-log`. The slug is `ppm-code` (CLAUDE.md's role table); the model goes in the log's header, not its name. The April `ppm-code-opus` slug and `dev/active/` path are retired.
 
 ### 3. Mailbox triage
 
@@ -49,7 +49,7 @@ If any disagrees with the predecessor handoff or memory, **verify before acting 
 
 - **Most recent omnibus log** in `docs/omnibus-logs/` if synthesized through last session.
 - If omnibus is behind (often is), `git log --since="3 days ago" --oneline` for the gap.
-- Today's session logs in `dev/active/`: `ls dev/active/YYYY-MM-DD-*-log.md` to see who's working in parallel.
+- Today's session logs in `dev/YYYY/MM/DD/`: `ls dev/YYYY/MM/DD/*-log.md` to see who's working in parallel.
 
 ### 6. Decide what to produce
 

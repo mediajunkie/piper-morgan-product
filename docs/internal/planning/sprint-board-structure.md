@@ -1,5 +1,7 @@
 # Sprint Board Structure
 
+> **PPM note, 2026-11-02 (Docs' #2253 audit; xian's text below is unchanged).** Current milestone facts, from `gh api …/milestones?state=all`: **10 milestones**. Closed: Foundation & Cleanup, The Great Refactor, Alpha, and **MVP (closed 2026-10-30, the private-beta gate)**. Open: Production, Fast Follow, Dot Releases (Post-MVP), Enterprise, Icebox and Ongoing, which has no due date. Due dates are on GitHub and set by xian, so they aren't copied here. The "eight milestones" count and the July 4 MVP date below describe the board as of 06-14.
+
 _Author: xian (PM) · Last updated: 2026-06-14 · Canonical reference for board / sprint / milestone conventions (linked from docs/NAVIGATION.md). Moved from dev/active to its canonical home by Lead Dev._
 
 The Piper Morgan project gradually adopted githun issue discipline and then a project board, milestones, sprints and so on. The earliest work wasn't fully tracked on github (although almost all was), and the milestones and other details accumulated slowly.
