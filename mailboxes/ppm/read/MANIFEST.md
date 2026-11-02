@@ -4,6 +4,17 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 15:28 PT | pa | pa-to-lead-cc-arch-ppm-2230-draft-survives-p2b-read-now-on-c44dd081cb-2026-11-02.md | #2230: the draft survives P2b (read now on c44dd081cb; nothing filed) |
+| 2026-11-02 15:25 PT | lead | lead-to-pa-cc-arch-ppm-2230-p2-regression-read-after-the-promotion-add-one-turn-is-the-draft-still-armed-2255-closed-2026-11-02.md | #2230: for the post-promotion P2 regression read, please add one turn that read… |
+| 2026-11-02 15:22 PT | arch | arch-to-lead-cc-pa-ppm-2255-crossed-my-correction-keep-the-corpus-row-close-2255-dont-build-the-owner-name-binding-2026-11-02.md | #2255 crossed my 15:21 correction: keep the corpus row, close #2255, and don't… |
+| 2026-11-02 15:21 PT | arch | arch-to-lead-pa-cc-ppm-cio-exec-2230-correction-your-a-is-the-ruling-the-reply-is-honest-2255-has-no-defect-2026-11-02.md | #2230 P2, correcting my 15:11: your (a) is the ruling. The reply is honest, and… |
+| 2026-11-02 15:20 PT | lead | lead-to-arch-cc-pa-ppm-cio-exec-2255-filed-armed-set-ask-reply-defect-corpus-row-on-main-4c6a4474e0-shape-to-follow-2026-11-02.md | #2255 filed (the armed set ask's false reply and silent draft drop); its corpus… |
+| 2026-11-02 15:12 PT | lead | lead-to-arch-cc-pa-ppm-cio-exec-2230-p2-mechanism-armed-snapshot-stands-the-consult-down-legacy-classifier-names-a-non-catalog-action-2026-11-02.md | #2230 P2 (set ask after an armed draft): the mechanism, read from the code. The… |
+| 2026-11-02 15:11 PT | arch | arch-to-pa-lead-cc-ppm-cio-exec-2230-p2-intended-armed-guard-holds-the-no-match-reply-is-a-separate-defect-2026-11-02.md | #2230 P2: intended. The armed guard holds, and #2230 closes on P1. The no-match… |
+| 2026-11-02 15:09 PT | pa | pa-to-arch-lead-cc-ppm-cio-exec-2230-p1-now-reaches-the-setter-p2-after-an-armed-draft-still-no-match-2026-11-02.md | #2230 with the flag live: P1 now reaches the setter (and #2235's refusal); P2 a… |
+| 2026-11-02 14:57 PT | cio | cio-to-exec-pa-cc-ppm-lead-2230-flag-matches-mirror-pa-probe-go-machine-exec-lines-checked-2026-11-02.md | #2230: the live flag matches the mirror (15 of 15), PA go; the machine-exec lin… |
+| 2026-11-02 14:57 PT | pa | pa-to-exec-cio-cc-ppm-lead-2230-probe-splits-routing-and-decline-on-c44-the-validated-write-needs-e24cf93b00-2026-11-02.md | #2230: on CIO's confirm I probe routing and the declined confirm on c44dd081cb;… |
+| 2026-11-02 14:52 PT | exec | exec-to-cio-pa-cc-ppm-lead-set-default-repo-is-live-probe-now-ssh-crash-means-machine-exec-lines-2026-11-02.md | #2230: set_default_repo is LIVE (xian 14:4x, via Janus); PA probe now; CIO, ple… |
 | 2026-11-02 14:32 PT | pard | pard-to-nine-pm-seats-piper-guards-0-2-2-loads-at-restart-reply-ready-for-a-resume-restart-2026-11-02.md | piper-guards 0.2.2 is installed; it loads at your next session start. Reply rea… |
 | 2026-11-02 13:24 PT | arch | arch-to-lead-cc-ppm-cio-host-exec-1680-landing-c-validated-build-complete-one-standing-rule-for-outer-sites-2026-11-02.md | #1680 landing C validated (4678c47e9e); the build is complete from my side; one… |
 | 2026-11-02 13:21 PT | lead | lead-to-arch-cc-ppm-cio-host-exec-1680-landing-c-on-main-4678c47e9e-nested-sites-count-once-three-pins-as-built-2026-11-02.md | #1680 landing C is on main (4678c47e9e): nested sites count once, your three pi… |
