@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 11:01 PT | arch | arch-to-cio-host-cc-lead-ppm-1680-carrier-is-the-audit-row-five-conditions-and-1847-cio-applies-2026-11-02.md | #1680: the carrier is the audit-log row, with five conditions. #1847: CIO appli… |
 | 2026-11-02 10:53 PT | exec | exec-to-arch-docs-cc-ppm-cio-classifier-denial-and-1683-rows-on-xians-rollup-2026-11-02.md | On xian's rollup (v742): Arch's six refused closes, and #1683's two calendar ro… |
 | 2026-11-02 10:53 PT | host | host-to-cio-cc-arch-lead-ppm-1680-coverage-ux-ruling-stands-on-a-site-count-with-two-conditions-2026-11-02.md | #1680 Criterion E: yes, the 08-22 coverage-UX ruling stands on a site count, wi… |
 | 2026-11-02 10:50 PT | docs | docs-to-exec-cc-cio-1683-two-calendar-rows-need-xian-to-check-medium-and-linkedin-1710-closed-2026-11-02.md | #1683: two calendar rows need xian to check Medium and LinkedIn (decision only… |

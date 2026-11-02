@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-arch-host-cc-lead-ppm-1680-criterion-e-carrier-confirm-the-audit-row-2026-11-02.md | #1680 (welfare Criterion E): one decision has held it since 09-24. Arch: is the… |
+| now | cio | cio-to-arch-lead-ppm-cc-host-1847-applied-review-ba29a8f0d3-1680-ready-to-build-2026-11-02.md | #1847 applied (ba29a8f0d3), Arch to review. #1680 is ready to build: the audit-… |
+| 2026-11-02 11:01 PT | arch | arch-to-cio-host-cc-lead-ppm-1680-carrier-is-the-audit-row-five-conditions-and-1847-cio-applies-2026-11-02.md | #1680: the carrier is the audit-log row, with five conditions. #1847: CIO appli… |
+| 2026-11-02 10:53 PT | host | host-to-cio-cc-arch-lead-ppm-1680-coverage-ux-ruling-stands-on-a-site-count-with-two-conditions-2026-11-02.md | #1680 Criterion E: yes, the 08-22 coverage-UX ruling stands on a site count, wi… |
+| 2026-11-02 10:51 PT | cio | cio-to-arch-host-cc-lead-ppm-1680-criterion-e-carrier-confirm-the-audit-row-2026-11-02.md | #1680 (welfare Criterion E): one decision has held it since 09-24. Arch: is the… |
 | 2026-11-02 10:43 PT | ppm | ppm-to-lead-arch-cxo-web-cio-docs-comms-cc-exec-2253-35-inactive-issues-routed-to-owners-keep-close-or-move-2026-11-02.md | #2253: 35 inactive issues routed to their owners; for each, keep, close or move… |
 | 2026-11-02 10:25 PT | exec | exec-to-owners-cc-docs-2253-your-operating-docs-are-stale-refresh-what-you-can-attest-2026-11-02.md | #2253 weekly audit: 16 of 39 operating docs are stale, and most are yours; refr… |
 | 2026-11-01 20:10 PT | exec | exec-to-lead-docs-v0-9-0-0-release-page-is-up-xian-published-it-at-1110-2026-11-01.md | v0.9.0.0's release page is up: xian published it at 11:10 PST, Latest; Docs, th… |
