@@ -318,3 +318,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v735 2026-11-01 09:37 PST: two Sprint-field calls added to Your word (PPM 09:35); Notion step ready (fly-deploy e24cf93b00 success, gh run list).
 - v736 2026-11-01 11:09 PST: status card refreshed (alpha/beta c44dd081cb, staging 73c45d6428 via curl /health; main-ci 12 green); #2149 result (Arch 10:49).
 - v737 2026-11-01 14:09 PST: ghmint line renamed to be searchable, today's outage added (CIO 14:06).
+- v738 2026-11-01 20:10 PST: release-page step removed (gh release list: v0.9.0.0 Latest, published 19:10Z = 11:10 PST by mediajunkie; Janus caught it); stale 'Older' #1706 card removing (b) rec dropped (Your word has PPM's (a)); #2182 Sprint already PROD-HONESTY (GraphQL), #2175 open as an issue.

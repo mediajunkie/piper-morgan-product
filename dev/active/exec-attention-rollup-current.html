@@ -37,15 +37,13 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Saturday 31 October</h1>
-<p class="meta">Exec · v737, rebuilt 14:09 PST Sun 11-01 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v738, rebuilt 20:10 PST Sun 11-01 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
 <div class="card hot">
-<p class="ct">This morning: four steps, about 20 minutes</p>
+<p class="ct">Three steps left, about 15 minutes</p>
 <ol>
-<li><b>Publish the v0.9.0.0 release page.</b> Lead tagged <code>c44dd081cb</code> at 22:01 on PPM&rsquo;s go, but Claude Code&rsquo;s auto-mode safety check stops agents from publishing the release page. GitHub still shows v0.8.14.0 as Latest. Run this from an up-to-date checkout:
-<pre>gh release create v0.9.0.0 -R mediajunkie/piper-morgan-product --title "v0.9.0.0 &mdash; private beta" --notes-file docs/releases/RELEASE-NOTES-v0.9.0.0.md --latest</pre></li>
 <li><b>Switch on <code>set_default_repo</code></b>, which you said yes to at 20:21. The checks are done (PPM, 21:51). Run the first line, then put its exact output into the second:
 <pre>fly ssh console -a piper-morgan -C "printenv PIPER_INVERSION_LIVE_CATEGORIES"
 fly secrets set -a piper-morgan PIPER_INVERSION_LIVE_CATEGORIES="&lt;the value printed above&gt;,set_default_repo"</pre>
@@ -116,8 +114,6 @@ Then reconnect the Piper connector in Claude once (one consent click). If Claude
 
 
 
-<div class="card act"><b>One sequencing call left from the map&rsquo;s dependency edges.</b> #1706 (calendar on the plugin, in the Public Beta sprint) needs #1441 (the Calendar connector port), which sits in a later sprint. (a) Pull #1441 into Public Beta, or (b) move #1706 later. <span style="color:var(--blue);font-weight:600">My recommendation: (b), move #1706 later.</span> PPM found the morning standup (#1703, in Public Beta) also reads Calendar, so I held this. Arch ruled from source (18:29 Tue) that the standup doesn&rsquo;t wait on the port: its calendar read is already per-account, and what it lacks (saying so when the read fails, not showing a free day) is already filed under #2151. So the standup keeps its calendar half, and the letter&rsquo;s &ldquo;your standup includes them&rdquo; holds. PPM filed that fix as #2182, and it is now live on alpha and closed (21:33 Tue). Web saw the no-calendar standup served; the failure wording is covered by tests only, since forcing it would break a shared account. <b>One yes covers both Sprint moves:</b> #1706 later, and #2182&rsquo;s Sprint field set to the honesty sprint (still blank; closed issues keep their sprint for the record). Arch confirms the edge is hard (#1706&rsquo;s own body says not to start before #1441 closes) and has no preference. A Sprint move, so it needs your yes.
-<br>The other call (whether to admit #2172 to MVP) settled itself: #2172 closed this morning (09:34), so #2018 no longer waits on it. Also from the map&rsquo;s first review: CXO filed #2175 (no path to an invite for someone arriving through the plugin).</div>
 
 <div class="card act"><b>For you, in this order (none urgent):</b>
 <ol style="margin:.3rem 0 .2rem 1.2rem;padding:0">
