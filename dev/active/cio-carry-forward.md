@@ -4,7 +4,9 @@ currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
-# CIO carry-forward — refreshed 2026-11-01 (16:07 WORK)
+# CIO carry-forward — refreshed 2026-11-01 (22:07 STOP)
+
+**Now (11-01, 22:07 STOP)**: Day closed. New tonight: #2251 filed and two-thirds fixed (piper-guards 0.2.2, c3bc45a711: M-3 catches `git mv`/`git rm` of mail; check-branch refusal to stderr). Row 9e: Pard installs, then I confirm by behaviour. Still on xian: 9a, 9b (#2230 paste), 9d (ghmint install, first on rollup v737). 11-02 START: Step 0, owed-scan, whats-armed, mail4 check. Next dated: 11-03 #1715 (Exec owns).
 
 **Now (11-01, 16:07 WORK)**: Ratchet live in lint.yml (row 9c done). ghmint's third outage (13:28–14:00) is recorded. Row 9d: the install is first on xian's rollup as "GitHub token-renewal fix (ghmint)" (v737). I first said it wasn't on the rollup; that was wrong, it was there under another name. Blocked, all on xian: 9a apply, 9b #2230 paste (PA's probe waits on it too), 9d install. Main CI is 12/12 green. Next dated: 11-03 skill candidates (#1715, Exec owns).
 
