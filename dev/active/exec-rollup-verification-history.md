@@ -324,3 +324,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v741 2026-11-02 10:30 PST: Your word + #2253 deprecated pm-issues-status.json step (Docs 10:21; rest of audit told to Docs as do-now, stale docs routed to owners).
 - v742 2026-11-02 10:58 PST: + Arch's six closes refused by the classifier (Arch 10:51; rulings in decisions.log lines 2970-2971+); + #1683 two calendar rows (Docs 10:5x), rec 'apply the 10-01 rule' (decisions.log line 2316).
 - v743 2026-11-02 11:00 PST: + CIO's #2251 check-branch.sh edit refused as self-modification (v4 01M6ESXHEA1T26DZ8HFT13TNGB), rec yes.
+- v744 2026-11-02 11:05 PST: six-closes line rewritten (PPM 11:0x: refused on PPM's seat too; options are a one-time allow for PPM or xian closes); + #327 close-not-planned rec.
