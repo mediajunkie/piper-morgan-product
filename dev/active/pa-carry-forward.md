@@ -15,16 +15,17 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Now (written 2026-10-31 21:4x STOP; replace, don't annotate)
+## Now (written 2026-11-01 21:47 STOP; replace, don't annotate)
 
-- **MCP app is Fly v18** (12:50 PT 10-31), sha a8a01b96b4, 0.9.0.0, `/health` healthy at 21:16. Next MCP deploy: **#2242 (a)**, the allowlist. Lead builds it from the 11-01 06:47 START, MCP half first, then PA deploys it with `scripts/deploy-mcp.sh --dry-run` and the real run. After that, the served refusal checks: a non-allowlisted account refused at authorize, refresh and `verify_token`, failing closed.
-- **0.9.0.0 served at c44dd081cb** on alpha and beta (xian's dispatch, watch read 21:25:29). It carries #2245 (`5df1db03fa`). PA's half of the release checks is done: the two capability quotes (CXO PASS 21:32), parity OK, and row 2 (routing 58/61, raw expected-pass 22/42, outputs at 23b4453d98, memo to CXO and PPM). CXO triaged row 2 at 34/42 with no regression (21:48). **The tag waits only on** PPM's "tag: go", then Lead tags `v0.9.0.0` on c44dd081cb.
-- **set_default_repo (#2230):** xian said yes by name. CIO's gate mirror is on main (`79004122c0`). The flag is xian's paste (CIO's memo 20:27), after PPM's "checks in" mail. **Then PA owes:** the fresh-session probe (`setdefault_probe.py` sits in the 10-31 session scratchpad, which may not survive; if it is gone, rebuild it from the 10-31 log): the setter's confirm offered, then declined. Then one row 2.
-- **Fresh-account checks** (A1, A2, the first-reply notice line, #2225's re-ask with no default): xian OK'd test mints (PPM 21:25). HOST won't mint until a handover channel exists. PA told Exec that PA can't take "PA mints" (role card). So these go to Web or xian's own hand; Exec settles it with xian on 11-01.
-- **Not served, any browser seat:** #2237's rendered grey cards. Pins only: #2236's failed-status line, #2233's standup.
-- **#2247** (Slack via Slack's hosted MCP, in 1.0): Lead sized it at 4.5–5.5 days plus #1514, with Arch's six conditions. PA owes the served turns when it lands. Not in the first sprint yet.
-- **Plugin plan to 1.0:** gates are #2242, #1911, #1918, #2175, xian's test-plan run, and his 10-08 rulings. PPM: the plugin and MCP lane is the sprint after this one. #1300 is closed as met.
-- **xian's MCP test plan:** `docs/internal/operations/mcp-test-plan-pm.md` (v18). When his notes come back, file the failures. CIO or xian reads step 8's revoke log.
+- **Served at 21:47 on 11-01:** alpha and beta on c44dd081cb (0.9.0.0, tagged), MCP on Fly v18 a8a01b96b4, staging on fcc325ee4c. Nothing was promoted on 11-01. Watch **b0ir1bpgz** polls alpha's sha every 2 minutes until about 07:31 on 11-02. If it has ended or the session is fresh, re-arm it.
+- **On the next alpha promotion, run within the hour, in this order (standing rows Q1 then Q4):**
+  1. **#2042 (Q1):** check `git merge-base --is-ancestor cd0c489354 <sha>`. If it's missing, don't run; tell Lead and Arch. Then run `dev/2026/11/01/replay-2042-row3.py` (all 19 replies) plus one row 2 (`dev/2026/10/19/canonical-retest-1386-alpha.py`, last night's CSV form), with the sha at start and end. Send to CXO. Baseline: 10-31 row 2, 34/42.
+  2. **#2250 (Q4):** run `dev/2026/11/01/status-latency-2250.py 16` with web-seed-1386 (needs `66512be739` in the build). The before-half on c44dd081cb, 16 turns per ask: status 11.25 s, IQR 10.74–13.38 s; going 11.24 s, IQR 10.87–12.74 s (issuecomment-6564196010). Pass (PPM): both after-medians inside the before-IQRs, with no shift of about 1.5 s in the same direction. Post on #2250 and mail PPM.
+- **#2242 MCP deploy (Q2):** waits on xian's `mcp_allow.py list` showing him. Then `scripts/deploy-mcp.sh --dry-run`, the real run, `/health`, the listed path (reconnect first if Claude shows it disconnected), and the consent-page quote for web-seed-1386 (served at or after `20028c2eb5`; 403, no code). Later, xian's remove and re-add.
+- **#2230/#2235 (Q3):** waits on xian's flag paste. In one session on web-seed-1386: the GitHub card read, then the set_default_repo probe, then one row 2.
+- **#2238 served line:** xian's own Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`. Staging holds no NOTION_API_KEY (CIO, names only). PA's pins box is ticked.
+- **ghmint:** push outages on 10-30, 10-31 and 11-01, each about 30 minutes. Pard's fix (mediajunkie ea2bdcd) waits on xian's sudo paste; CIO tracks it as row 9d. During an outage: wait for the next `ok` line and push once.
+- **Fresh-account checks:** wait on the mint handover (Exec with xian). **#2237 rendered cards:** a browser seat. **#2247:** Lead's build. **xian's MCP test plan** (`docs/internal/operations/mcp-test-plan-pm.md`): when his notes come back, file the failures.
 
 ## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 
