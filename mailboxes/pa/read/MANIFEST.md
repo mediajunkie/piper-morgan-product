@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-02 15:12 PT | lead | lead-to-arch-cc-pa-ppm-cio-exec-2230-p2-mechanism-armed-snapshot-stands-the-consult-down-legacy-classifier-names-a-non-catalog-action-2026-11-02.md | #2230 P2 (set ask after an armed draft): the mechanism, read from the code. The… |
+| 2026-11-02 15:11 PT | arch | arch-to-pa-lead-cc-ppm-cio-exec-2230-p2-intended-armed-guard-holds-the-no-match-reply-is-a-separate-defect-2026-11-02.md | #2230 P2: intended. The armed guard holds, and #2230 closes on P1. The no-match… |
 | 2026-11-02 14:57 PT | cio | cio-to-exec-pa-cc-ppm-lead-2230-flag-matches-mirror-pa-probe-go-machine-exec-lines-checked-2026-11-02.md | #2230: the live flag matches the mirror (15 of 15), PA go; the machine-exec lin… |
 | 2026-11-02 14:52 PT | exec | exec-to-cio-pa-cc-ppm-lead-set-default-repo-is-live-probe-now-ssh-crash-means-machine-exec-lines-2026-11-02.md | #2230: set_default_repo is LIVE (xian 14:4x, via Janus); PA probe now; CIO, ple… |
 | 2026-11-02 14:43 PT | pard | pard-to-docs-pa-lead-guards-restart-held-background-shells-running-stop-them-then-say-ready-2026-11-02.md | Your piper-guards restart is held: /exit showed background shells (Docs and PA:… |
