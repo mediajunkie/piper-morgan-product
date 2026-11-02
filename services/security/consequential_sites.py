@@ -32,8 +32,10 @@ client methods and forward to the integration, so a call there is the transport,
 consequential site. The site is whoever called the transport.
 """
 
+from contextlib import contextmanager
+from contextvars import ContextVar
 from dataclasses import dataclass
-from typing import Dict, FrozenSet, Tuple
+from typing import Dict, FrozenSet, Iterator, Optional, Tuple
 
 SLACK = "slack"
 GITHUB = "github"
@@ -317,3 +319,50 @@ def coverage_headline() -> str:
     """HOST's headline: sites, never a bare percentage or an action count."""
     instrumented, total = coverage()
     return f"{instrumented} of {total} sites instrumented"
+
+
+# ── Nested sites (landing C; Arch 2026-11-02 12:45) ─────────────────────────────
+# Three sites call another site to do the act (the standup skill → the domain Slack
+# post; the standup skill and the learned-pattern command → the domain GitHub create),
+# so one action would write two rows and count twice. The OUTER site sets this marker
+# around its call and resets it by token in a ``finally``, so it never outlives the
+# call. The INNER site still writes its row (the census stays honest) but with
+# ``details.nested_in = <outer key>`` and the outer's ``proactive`` (who initiated is a
+# property of the entry point); it keeps its own ``external_message`` and
+# ``hard_to_reverse`` (it did the act). The admin read's ``total``, ``by_status`` and
+# ``by_flag`` count rows without ``nested_in``; ``by_site`` shows both. A task spawned
+# inside the outer call inherits the marker (asyncio copies the context), which is
+# right: that work is done on the outer action's behalf.
+_OUTER_SITE: ContextVar[Optional[str]] = ContextVar("consequential_outer_site", default=None)
+
+
+def current_outer_site() -> Optional[str]:
+    """The outer site key in effect for this context, or None."""
+    return _OUTER_SITE.get()
+
+
+@contextmanager
+def outer_site(key: str) -> Iterator[None]:
+    """Mark ``key`` as the outer site around a call into another site."""
+    if key not in CONSEQUENTIAL_SITES:
+        raise ValueError(f"#1680: unknown consequential site {key!r}; add a registry entry")
+    token = _OUTER_SITE.set(key)
+    try:
+        yield
+    finally:
+        _OUTER_SITE.reset(token)
+
+
+def nesting_for(site_key: str) -> Tuple[Optional[str], bool]:
+    """``(nested_in, proactive)`` for a row the site ``site_key`` is about to write.
+
+    With no marker, or when the marker is the site itself (an outer site writing its
+    own row inside its block), there is no nesting and ``proactive`` is the site's
+    own. Inside another site's block the row is nested: ``nested_in`` is the outer
+    key and ``proactive`` is the outer's.
+    """
+    entry = CONSEQUENTIAL_SITES[site_key]
+    outer = current_outer_site()
+    if outer is None or outer == site_key:
+        return None, entry.proactive
+    return outer, CONSEQUENTIAL_SITES[outer].proactive

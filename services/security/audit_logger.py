@@ -179,7 +179,7 @@ class AuditLogger:
         ``status`` raises ``ValueError`` (a programming error, caught by tests).
         """
         global _consequential_write_failures
-        from services.security.consequential_sites import CONSEQUENTIAL_SITES
+        from services.security.consequential_sites import CONSEQUENTIAL_SITES, nesting_for
 
         entry = CONSEQUENTIAL_SITES.get(site)
         if entry is None:
@@ -193,6 +193,11 @@ class AuditLogger:
         row_details: Dict[str, Any] = dict(details or {})
         if raw_principal is not None:
             row_details["principal"] = raw_principal
+        # Landing C: a row written inside another site's call is nested; it carries
+        # the outer key and the outer's proactive (who initiated is the entry point's).
+        nested_in, row_proactive = nesting_for(entry.key)
+        if nested_in is not None:
+            row_details["nested_in"] = nested_in
 
         try:
             from services.database.session_factory import AsyncSessionFactory
@@ -211,7 +216,7 @@ class AuditLogger:
                     severity=Severity.INFO,
                     message=message,
                     details=row_details or None,
-                    proactive=entry.proactive,
+                    proactive=row_proactive,
                     credits_spent=bool(credits_spent),
                     external_message=entry.external_message,
                     hard_to_reverse=entry.hard_to_reverse,

@@ -43,14 +43,16 @@ _COUNTS_SQL = text(
         action,
         GROUPING(action) AS grouped,
         (now() - make_interval(days => :days)) AS since,
-        count(*) AS total,
-        count(*) FILTER (WHERE status = 'success') AS success,
-        count(*) FILTER (WHERE status = 'failed') AS failed,
-        count(*) FILTER (WHERE status = 'unconfirmed') AS unconfirmed,
-        count(*) FILTER (WHERE proactive) AS proactive,
-        count(*) FILTER (WHERE credits_spent) AS credits_spent,
-        count(*) FILTER (WHERE external_message) AS external_message,
-        count(*) FILTER (WHERE hard_to_reverse) AS hard_to_reverse
+        count(*) AS rows_all,
+        count(*) FILTER (WHERE details->>'nested_in' IS NOT NULL) AS nested,
+        count(*) FILTER (WHERE details->>'nested_in' IS NULL) AS total,
+        count(*) FILTER (WHERE status = 'success' AND details->>'nested_in' IS NULL) AS success,
+        count(*) FILTER (WHERE status = 'failed' AND details->>'nested_in' IS NULL) AS failed,
+        count(*) FILTER (WHERE status = 'unconfirmed' AND details->>'nested_in' IS NULL) AS unconfirmed,
+        count(*) FILTER (WHERE proactive AND details->>'nested_in' IS NULL) AS proactive,
+        count(*) FILTER (WHERE credits_spent AND details->>'nested_in' IS NULL) AS credits_spent,
+        count(*) FILTER (WHERE external_message AND details->>'nested_in' IS NULL) AS external_message,
+        count(*) FILTER (WHERE hard_to_reverse AND details->>'nested_in' IS NULL) AS hard_to_reverse
     FROM audit_logs
     WHERE event_type = :event_type
       AND created_at >= now() - make_interval(days => :days)
@@ -100,6 +102,10 @@ async def _action_counts(days: int) -> Dict[str, Any]:
         "window_days": days,
         "since": since.isoformat() if hasattr(since, "isoformat") else str(since),
         "total": int(totals["total"]),
+        # Landing C: rows written inside another site's call (details.nested_in) are
+        # the same action seen twice; they are excluded from total/by_status/by_flag
+        # and shown here and in by_site.
+        "nested": int(totals["nested"]),
         "by_status": {
             "success": int(totals["success"]),
             "failed": int(totals["failed"]),
@@ -111,7 +117,7 @@ async def _action_counts(days: int) -> Dict[str, Any]:
             "external_message": int(totals["external_message"]),
             "hard_to_reverse": int(totals["hard_to_reverse"]),
         },
-        "by_site": {r["action"]: int(r["total"]) for r in rows if r["grouped"] == 0},
+        "by_site": {r["action"]: int(r["rows_all"]) for r in rows if r["grouped"] == 0},
     }
 
 

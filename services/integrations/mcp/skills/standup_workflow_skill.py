@@ -28,6 +28,7 @@ from services.security.consequential_outcomes import (
     github_write_result_outcome,
     slack_send_error_outcome,
 )
+from services.security.consequential_sites import outer_site
 from services.standup.assembler import build_user_standup_summary
 from services.utils.datetime_utils import format_iso_as_user_datetime, user_timezone_name
 
@@ -291,13 +292,16 @@ class StandupWorkflowSkill(BaseSkill):
                 "credits_spent": False,
             }
             try:
-                result = await self.slack_service.post_message(
-                    channel=channel,
-                    message=slack_formatted["text"],
-                    user_id=user_id,
-                    blocks=slack_formatted.get("blocks"),
-                    thread_ts=slack_formatted.get("thread_ts"),
-                )
+                # Landing C: the domain post is the inner site; mark this one as outer
+                # so its row carries nested_in and the action counts once.
+                with outer_site("slack.standup.post"):
+                    result = await self.slack_service.post_message(
+                        channel=channel,
+                        message=slack_formatted["text"],
+                        user_id=user_id,
+                        blocks=slack_formatted.get("blocks"),
+                        thread_ts=slack_formatted.get("thread_ts"),
+                    )
             except Exception as _send_err:
                 _a_status, _a_details = slack_send_error_outcome(_send_err)
                 await audit_logger.log_consequential_action(
@@ -385,12 +389,14 @@ class StandupWorkflowSkill(BaseSkill):
             # Create issues for action items
             for item in action_items:
                 try:
-                    issue = await self.github_service.create_issue(
-                        repo_name=repo,
-                        title=item.get("title"),
-                        body=self._format_github_issue_body(item, standup, tz_name),
-                        labels=["standup", item.get("category", "task")],
-                    )
+                    # Landing C: the domain create is the inner site (nested_in this one).
+                    with outer_site("github.standup.create_issue"):
+                        issue = await self.github_service.create_issue(
+                            repo_name=repo,
+                            title=item.get("title"),
+                            body=self._format_github_issue_body(item, standup, tz_name),
+                            labels=["standup", item.get("category", "task")],
+                        )
                 except Exception as e:
                     _a_status, _a_details = github_write_outcome(e)
                     await audit_logger.log_consequential_action(

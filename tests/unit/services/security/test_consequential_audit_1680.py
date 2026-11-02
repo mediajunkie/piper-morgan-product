@@ -380,3 +380,80 @@ class TestFailedWriteWindow:
         after = al.consequential_write_failures_window()
         assert after["count"] == before["count"] + 1
         assert after["since"] == before["since"]
+
+
+class TestNestedSitesMarker:
+    """Landing C (Arch 2026-11-02 12:45): the outer-site marker. No database: these pin
+    the pure resolution in ``nesting_for`` and the marker's lifetime. The counting pins
+    (one action through an outer site counts once) are DB-marked in
+    ``tests/unit/web/api/routes/test_admin_consequential_1680.py``."""
+
+    def test_no_marker_means_no_nesting_and_the_sites_own_proactive(self):
+        from services.security.consequential_sites import current_outer_site, nesting_for
+
+        assert current_outer_site() is None
+        assert nesting_for("github.domain.create_issue") == (None, False)
+        assert nesting_for("slack.standup.post") == (None, True)
+
+    def test_inside_an_outer_block_the_inner_row_is_nested_with_the_outers_proactive(self):
+        from services.security.consequential_sites import nesting_for, outer_site
+
+        with outer_site("github.command.create_issue"):
+            assert nesting_for("github.domain.create_issue") == (
+                "github.command.create_issue",
+                False,
+            )
+        with outer_site("github.standup.create_issue"):
+            # the standup is proactive; the domain create inherits it (entry point rule)
+            assert nesting_for("github.domain.create_issue") == (
+                "github.standup.create_issue",
+                True,
+            )
+        with outer_site("slack.standup.post"):
+            assert nesting_for("slack.domain.post_message") == ("slack.standup.post", True)
+
+    def test_an_outer_site_writing_its_own_row_inside_its_block_is_not_nested(self):
+        from services.security.consequential_sites import nesting_for, outer_site
+
+        with outer_site("github.standup.create_issue"):
+            assert nesting_for("github.standup.create_issue") == (None, True)
+
+    def test_marker_is_unset_after_return_and_after_raise(self):
+        from services.security.consequential_sites import current_outer_site, outer_site
+
+        with outer_site("github.command.create_issue"):
+            assert current_outer_site() == "github.command.create_issue"
+        assert current_outer_site() is None
+        with pytest.raises(RuntimeError):
+            with outer_site("github.command.create_issue"):
+                raise RuntimeError("the inner call blew up")
+        assert current_outer_site() is None
+
+    def test_blocks_nest_and_restore_by_token(self):
+        from services.security.consequential_sites import current_outer_site, outer_site
+
+        with outer_site("github.standup.create_issue"):
+            with outer_site("github.command.create_issue"):
+                assert current_outer_site() == "github.command.create_issue"
+            assert current_outer_site() == "github.standup.create_issue"
+        assert current_outer_site() is None
+
+    async def test_a_task_spawned_inside_the_block_inherits_the_marker(self):
+        import asyncio
+
+        from services.security.consequential_sites import current_outer_site, outer_site
+
+        async def read():
+            return current_outer_site()
+
+        with outer_site("slack.standup.post"):
+            inherited = await asyncio.create_task(read())
+        assert inherited == "slack.standup.post"
+        assert await asyncio.create_task(read()) is None
+
+    def test_unknown_outer_key_raises(self):
+        from services.security.consequential_sites import outer_site
+
+        with pytest.raises(ValueError):
+            with outer_site("not.a.site"):
+                pass

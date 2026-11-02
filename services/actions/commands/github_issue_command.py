@@ -21,6 +21,7 @@ from services.security.consequential_outcomes import (
     github_write_outcome,
     github_write_result_outcome,
 )
+from services.security.consequential_sites import outer_site
 
 from .base_command import BaseCommand
 
@@ -84,13 +85,15 @@ class GithubIssueCommand(BaseCommand):
                 "credits_spent": False,
             }
             try:
-                issue_data = await github_service.create_issue(
-                    repo_name=repo,
-                    title=title,
-                    body=body,
-                    labels=labels,
-                    assignees=assignees,
-                )
+                # Landing C: the domain create is the inner site (nested_in this one).
+                with outer_site("github.command.create_issue"):
+                    issue_data = await github_service.create_issue(
+                        repo_name=repo,
+                        title=title,
+                        body=body,
+                        labels=labels,
+                        assignees=assignees,
+                    )
             except Exception as _write_err:
                 _a_status, _a_details = github_write_outcome(_write_err)
                 await audit_logger.log_consequential_action(

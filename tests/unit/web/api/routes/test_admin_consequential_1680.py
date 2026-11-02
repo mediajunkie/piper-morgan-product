@@ -39,6 +39,7 @@ _ZERO_COUNTS = {
     "window_days": 7,
     "since": "2026-10-26T00:00:00+00:00",
     "total": 0,
+    "nested": 0,
     "by_status": {"success": 0, "failed": 0, "unconfirmed": 0},
     "by_flag": {"proactive": 0, "credits_spent": 0, "external_message": 0, "hard_to_reverse": 0},
     "by_site": {},
@@ -167,3 +168,134 @@ class TestCountsFromTheDatabase:
                     text("DELETE FROM audit_logs WHERE id = ANY(:ids)"), {"ids": written}
                 )
                 await s.commit()
+
+
+@pytest.mark.consequential_audit_db
+class TestNestedRowsCountOnce:
+    """Landing C's three pins (Arch 2026-11-02 12:45), against the scratch database:
+    (1) one action through an outer site counts once in ``total`` and ``by_flag``;
+    (2) the inner site called on its own counts once, with no ``nested_in``;
+    (3) the marker is unset once the outer call returns (read back through the helper)."""
+
+    async def _read_row(self, row_id):
+        from services.database.session_factory import AsyncSessionFactory
+
+        async with AsyncSessionFactory.session_scope_fresh() as s:
+            return (
+                (
+                    await s.execute(
+                        text(
+                            "SELECT action, proactive, external_message, hard_to_reverse, "
+                            "details FROM audit_logs WHERE id = :id"
+                        ),
+                        {"id": row_id},
+                    )
+                )
+                .mappings()
+                .first()
+            )
+
+    async def _cleanup(self, ids):
+        from services.database.session_factory import AsyncSessionFactory
+
+        async with AsyncSessionFactory.session_scope_fresh() as s:
+            await s.execute(text("DELETE FROM audit_logs WHERE id = ANY(:ids)"), {"ids": ids})
+            await s.commit()
+
+    async def test_one_action_through_an_outer_site_counts_once(self):
+        from unittest.mock import MagicMock
+
+        from services.domain.github_domain_service import GitHubDomainService
+        from services.security.consequential_sites import current_outer_site, outer_site
+
+        await _db_ready()
+        before = _client().get(PATH).json()["actions"]
+        tag = uuid.uuid4().hex[:8]
+        agent = MagicMock()
+        agent.create_issue = AsyncMock(return_value={"number": 424242, "title": tag})
+        written = []
+        # the real inner site, inside the outer marker (as the standup skill calls it)
+        with outer_site("github.standup.create_issue"):
+            await GitHubDomainService(github_agent=agent).create_issue("o/r", tag, body="b")
+        assert current_outer_site() is None  # pin 3: unset once the outer call returns
+        # the outer site's own row, written after its call returns (no marker in effect)
+        outer_row = await al.audit_logger.log_consequential_action(
+            site="github.standup.create_issue",
+            status="success",
+            user_id=None,
+            message=f"#1680 nested pin outer {tag}",
+            credits_spent=False,
+        )
+        assert outer_row is not None
+        written.append(outer_row.id)
+        try:
+            after = _client().get(PATH).json()["actions"]
+            # find the inner row by its title tag
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope_fresh() as s:
+                inner_id = (
+                    await s.execute(
+                        text(
+                            "SELECT id FROM audit_logs WHERE event_type = 'consequential' "
+                            "AND action = 'github.domain.create_issue' "
+                            "AND details->>'nested_in' = 'github.standup.create_issue' "
+                            "ORDER BY created_at DESC LIMIT 1"
+                        )
+                    )
+                ).scalar()
+            assert inner_id is not None, "the inner row was not written or not marked nested"
+            written.append(inner_id)
+            inner = await self._read_row(inner_id)
+            assert inner["details"]["nested_in"] == "github.standup.create_issue"
+            assert inner["proactive"] is True  # the outer's (the standup is proactive)
+            assert inner["external_message"] is True and inner["hard_to_reverse"] is True
+            # pin 1: one action, counted once
+            assert after["total"] - before["total"] == 1
+            assert after["nested"] - before["nested"] == 1
+            assert after["by_flag"]["proactive"] - before["by_flag"]["proactive"] == 1
+            assert after["by_flag"]["external_message"] - before["by_flag"]["external_message"] == 1
+            assert after["by_status"]["success"] - before["by_status"]["success"] == 1
+            # HOST's drill-in keeps both rows
+            for site in ("github.standup.create_issue", "github.domain.create_issue"):
+                assert after["by_site"][site] - before["by_site"].get(site, 0) == 1
+        finally:
+            await self._cleanup(written)
+
+    async def test_inner_site_on_its_own_counts_once_with_no_nested_in(self):
+        from unittest.mock import MagicMock
+
+        from services.domain.github_domain_service import GitHubDomainService
+
+        await _db_ready()
+        before = _client().get(PATH).json()["actions"]
+        tag = uuid.uuid4().hex[:8]
+        agent = MagicMock()
+        agent.create_issue = AsyncMock(return_value={"number": 434343, "title": tag})
+        await GitHubDomainService(github_agent=agent).create_issue("o/r", tag, body="b")
+        from services.database.session_factory import AsyncSessionFactory
+
+        async with AsyncSessionFactory.session_scope_fresh() as s:
+            row_id = (
+                await s.execute(
+                    text(
+                        "SELECT id FROM audit_logs WHERE event_type = 'consequential' "
+                        "AND action = 'github.domain.create_issue' "
+                        "ORDER BY created_at DESC LIMIT 1"
+                    )
+                )
+            ).scalar()
+        try:
+            row = await self._read_row(row_id)
+            assert not (row["details"] or {}).get("nested_in")
+            assert row["proactive"] is False  # its own
+            after = _client().get(PATH).json()["actions"]
+            assert after["total"] - before["total"] == 1
+            assert after["nested"] - before["nested"] == 0
+            assert (
+                after["by_site"]["github.domain.create_issue"]
+                - before["by_site"].get("github.domain.create_issue", 0)
+                == 1
+            )
+        finally:
+            await self._cleanup([row_id])
