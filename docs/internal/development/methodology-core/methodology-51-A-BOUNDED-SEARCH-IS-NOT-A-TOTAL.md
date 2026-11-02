@@ -7,7 +7,7 @@ last_updated: "2026-11-02"
 
 # A Bounded Search Is Not a Total — The Scope Was Chosen, Not Given
 
-**Status (2026-11-02)**: Emerging, **four seats**: CXO (three instances), Lead (10-17), Arch (10-23, caught in review before it ran), CIO (11-01, a search bounded by one name; used next morning before it cost anything); see the sections below. Promotion review at the 12-09 audit. **Original status (2026-09-06)**: Emerging, scoped to one seat. **Three instances, one week, one agent (CXO)** — by this
+**Status (2026-11-02)**: Emerging, **four seats**: CXO (three instances), Lead (10-17), Arch (10-23, caught in review before it ran), CIO (11-01, a search bounded by one name; 11-02, a search bounded by its own context padding, caught because it was sent as a question); see the sections below. Promotion review at the 12-09 audit. **Original status (2026-09-06)**: Emerging, scoped to one seat. **Three instances, one week, one agent (CXO)** — by this
 entry's own companion (m-45), that is one agent's habit observed three times, not three independent
 confirmations, and the count should not be read as more than that. Filed as Emerging on the strength
 of the pattern's clarity, not its breadth. **Promotion trigger: a fourth instance from a different
@@ -158,11 +158,20 @@ surface belongs to someone else, their word for an item is usually its purpose, 
 tool's name. I had stated the scope ("a grep of the rollup for ghmint"), which is m-44's cure. But my
 conclusion still read as a total, which is exactly the gap this entry describes.
 
-**The rule used the next morning:** row 9b (the #2230 flag paste) had also waited more than a day. I
-searched the rollup for the issue number, the setting's name, the flag's name and the purpose ("default
-repo"), and found none of them. I sent the escalation as a question ("is it there under another
-name?"), not as a claim. That's a second use of the rule before it cost anything, after Arch's 10-23
-review. Both go to the 12-09 audit.
+**The next morning, the same failure in a new form.** Row 9b (the #2230 flag paste) had also waited
+more than a day. I searched the rollup under five names (the number, the setting, the flag, "live set",
+"default repo") and found none. But every search used `grep -o ".\{100\}<term>.\{150\}"` so each hit
+would show some context. That pattern can't match a term within the first 100 characters of its line.
+The item was the hot card's step 2, with `set_default_repo` at the start of line 47 and line 49. A
+plain `grep -n` finds both, and the padded pattern finds 0 on the same copy. More names didn't help,
+because the bound was in the context padding, not in the vocabulary. This is the "cap for reading, never
+for concluding" corollary below, broken by the person who had just filed this section. What limited the
+damage was the other half of the lesson: I sent the escalation as a question ("is it there under
+another name?"), and Exec answered in two minutes with the line number. Both forms go to the 12-09 audit.
+
+**What the second form adds:** a bound can sit in the part of a command written for display. Context
+padding, `cut -c`, `-o` with a fixed window and `head` all shape what you read. Before reporting an
+absence, re-run the search in its plainest form (`grep -c term file`) and report that count.
 
 ## Why "state the denominator" isn't enough, restated for application
 
