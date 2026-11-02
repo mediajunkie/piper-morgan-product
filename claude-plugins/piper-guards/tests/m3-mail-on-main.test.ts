@@ -11,6 +11,8 @@ test('M-3 parses mailbox staging, including the compound idiom', async () => {
   expect(ops('git add -A mailboxes/')).toEqual(['add'])
   expect(ops('git commit -am "x"')).toEqual(['commit-all'])
   expect(ops('git commit --all -m x')).toEqual(['commit-all'])
+  expect(ops('git mv mailboxes/cio/inbox/m.md mailboxes/cio/read/m.md')).toEqual(['add'])
+  expect(ops('git rm -q mailboxes/cio/inbox/m.md')).toEqual(['add'])
 })
 
 test('M-3 ignores everything else', async () => {
@@ -18,6 +20,8 @@ test('M-3 ignores everything else', async () => {
   expect(ops('git commit -m "mail: add mailboxes/x"')).toEqual([])
   expect(ops('scripts/mail-send.sh "mail(cio): s" mailboxes/exec/inbox/m.md')).toEqual([])
   expect(ops('git status')).toEqual([])
+  expect(ops('mv mailboxes/cio/inbox/m.md mailboxes/cio/read/m.md')).toEqual([])
+  expect(ops('git mv docs/a.md docs/b.md')).toEqual([])
 })
 
 const run = (stdout: string, exitCode = 0) => ({ exitCode, stdout, stderr: '', isStdoutTruncated: false, isStderrTruncated: false })

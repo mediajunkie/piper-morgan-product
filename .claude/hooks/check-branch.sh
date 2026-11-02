@@ -52,6 +52,7 @@ fi
 STAGED_MAIL=$(git diff --cached --name-only 2>/dev/null | grep -E '^mailboxes/' | head -5)
 
 if [ -n "$STAGED_MAIL" ]; then
+    exec 1>&2   # the refusal goes to stderr, or the harness shows only "No stderr output" (#2251)
     echo "BLOCKED: You are on branch '$CURRENT_BRANCH' and trying to commit mailbox files."
     echo ""
     echo "Files in mailboxes/ are cross-agent infrastructure. They MUST commit to main"

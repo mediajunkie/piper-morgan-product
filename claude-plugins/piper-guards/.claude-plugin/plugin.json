@@ -1,6 +1,6 @@
 {
   "name": "piper-guards",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Piper Morgan cohort guards as a Claude Code mod (R6 step 6). M-1: refuse destructive git aimed at PM's main checkout. Runs alongside the settings hooks during the parallel week; does not replace them yet.",
   "userConfig": {
     "pm_checkout": {

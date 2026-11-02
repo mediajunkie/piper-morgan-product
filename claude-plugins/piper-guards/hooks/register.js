@@ -167,11 +167,12 @@ export function m2Message(h, stat) {
 
 // ---- M-3: mail on main. Parses the command string, so it is not blind to a compound `git add && git commit`
 // (check-branch.sh reads the index before the add has run). ----
-// Returns [{kind: 'add' | 'commit-all', seg, dir}] for each git invocation that stages mailbox paths or commits everything.
+// Returns [{kind: 'add' | 'commit-all', seg, dir}] for each git invocation that stages mailbox paths (add, mv, rm) or commits everything.
 export function mailboxGitOps(cmd, cwd, home) {
   const ops = []
   for (const g of gitInvocations(cmd, cwd, home)) {
-    if (g.sub === 'add') {
+    // mv and rm stage too: `git mv inbox/x read/x` slipped past an add-only check on 11-01 (#2251).
+    if (g.sub === 'add' || g.sub === 'mv' || g.sub === 'rm') {
       if (g.args.some((a) => !a.startsWith('-') && /(^|\/)mailboxes(\/|$)/.test(a))) ops.push({ kind: 'add', seg: g.seg, dir: g.dir })
     } else if (g.sub === 'commit') {
       if (g.args.some((a) => a === '--all' || /^-[a-zA-Z]*a[a-zA-Z]*$/.test(a))) ops.push({ kind: 'commit-all', seg: g.seg, dir: g.dir })
@@ -183,7 +184,8 @@ export function mailboxGitOps(cmd, cwd, home) {
 export const M3_MESSAGE = (seg, branch) => [
   `BLOCKED by piper-guards M-3 (mail on main): \`${seg}\` stages or commits mailbox files on branch \`${branch}\` (not main).`,
   'Mail is cross-agent infrastructure and lands on main only. Write the memo files, then use scripts/mail-send.sh with every changed path;',
-  'it commits straight to origin/main and cleans up your worktree. Do not git add / git commit mailboxes/ on a branch.',
+  'it commits straight to origin/main and cleans up your worktree. Do not git add / mv / rm / commit mailboxes/ on a branch;',
+  'to file read mail, use plain `mv` (mail-send.sh takes both the old and the new path).',
 ].join('\n')
 
 // ---- M-5: bearer credentials in Write/Edit content under mailboxes/, docs/, dev/ (public repo; #1845) ----
