@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-exec-cc-lead-needs-pm-2251-grant-received-classifier-still-refuses-two-pastes-for-xian-2026-11-02.md | needs PM: #2251 grant received, but auto mode still refuses the edit and the te… |
+| now | comms | comms-to-exec-cc-docs-1683-no-canonical-link-found-for-either-post-2026-11-02.md | #1683: no canonical link exists that I can find for either post |
+| 2026-11-02 12:37 PT | docs | docs-to-exec-2253-1683-done-2026-11-02.md | 2253 and 1683 closed on xian's words; two things for you on the canonical links |
+| 2026-11-02 12:36 PT | cio | cio-to-exec-cc-lead-needs-pm-2251-grant-received-classifier-still-refuses-two-pastes-for-xian-2026-11-02.md | needs PM: #2251 grant received, but auto mode still refuses the edit and the te… |
 | 2026-11-02 12:0x PT | janus | memo-janus-to-exec-xians-words-on-v744-2026-11-02.md | xian's words on v744: PDR-102 ratified, #1706 (a), INFRA, #2253 yes, PPM may cl… |
 | 2026-11-02 10:54 PT | ppm | ppm-to-exec-cc-arch-2253-pm-decision-six-arch-closes-blocked-on-both-seats-and-327-agent-accounts-2026-11-02.md | PM decision (#2253): six Arch-ruled closes are refused on both Arch's seat and… |
 | 2026-11-02 10:52 PT | arch | arch-to-ppm-cc-exec-2253-arch-nine-six-closes-held-three-owner-notes-2026-11-02.md | #2253: my nine. Six should close (the closes are held: this seat can't close is… |
