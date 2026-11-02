@@ -717,6 +717,64 @@ class TestConsequentialSiteCensusRatchet:
 
         assert coverage_headline() == self.HEADLINE
 
+    def test_every_outer_site_call_declares_its_wraps(self):
+        """Landing C + Arch's 13:24 standing rule, asserted now (CIO 13:41, m-36):
+        every ``outer_site("<key>")`` call in production sits inside the function of
+        the site ``<key>`` and that registry entry declares what it wraps (``wraps``),
+        so a fourth outer site must name its inner pair or this fails; the inequality
+        on the pair's flags is held in tests/unit/services/security/
+        test_consequential_audit_1680.py. Scope: ``services/`` and ``web/``, every
+        ``outer_site`` call with a string literal argument."""
+        from services.security.consequential_sites import CONSEQUENTIAL_SITES
+
+        files = subprocess.run(
+            ["git", "ls-files", "services/*.py", "web/*.py"],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.split()
+        calls = []
+        for path in files:
+            if path in self.EXCLUDED or "/tests/" in path:
+                continue
+            src = Path(path).read_text(encoding="utf-8")
+            if "outer_site(" not in src:
+                continue
+            for func, node in self._enclosing_functions(ast.parse(src)):
+                if (
+                    isinstance(node, ast.Call)
+                    and (
+                        (isinstance(node.func, ast.Name) and node.func.id == "outer_site")
+                        or (isinstance(node.func, ast.Attribute) and node.func.attr == "outer_site")
+                    )
+                    and node.args
+                    and isinstance(node.args[0], ast.Constant)
+                    and isinstance(node.args[0].value, str)
+                ):
+                    calls.append((path, func, node.args[0].value, node.lineno))
+        assert calls, "no outer_site(...) call found; the scan is not looking where it should"
+        problems = []
+        for path, func, key, line in calls:
+            entry = CONSEQUENTIAL_SITES.get(key)
+            if entry is None:
+                problems.append(f"{path}:{line} outer_site({key!r}) names no registered site")
+            elif (entry.module, entry.function) != (path, func):
+                problems.append(
+                    f"{path}:{line} outer_site({key!r}) is not inside that site's function "
+                    f"({entry.module}:{entry.function}); the outer key must be the caller"
+                )
+            elif not entry.wraps:
+                problems.append(
+                    f"{path}:{line} outer_site({key!r}): the registry entry declares no "
+                    f"``wraps``; name the inner site(s) so the flag rule can be checked"
+                )
+        assert not problems, "\n".join(problems)
+        declared = {k for k, s_ in CONSEQUENTIAL_SITES.items() if s_.wraps}
+        used = {key for _, _, key, _ in calls}
+        assert (
+            declared == used
+        ), f"registry outer sites {sorted(declared)} != outer_site() callers {sorted(used)}"
+
 
 class TestSessionScopeCommitContract:
     """#1193 guard (m-41): `session_scope()` MUST commit on clean exit.

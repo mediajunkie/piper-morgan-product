@@ -60,6 +60,11 @@ class ConsequentialSite:
     instrumented: bool
     external_message: bool = True
     credits_note: str = ""
+    # Landing C: the inner sites this site wraps with ``outer_site(key)``. A site with
+    # ``wraps`` is an OUTER site; its counted row stands for the inner's act, so its
+    # ``external_message`` and ``hard_to_reverse`` must be at least every wrapped site's
+    # (Arch, decisions.log 2026-11-02 13:24; held by a test).
+    wraps: Tuple[str, ...] = ()
 
 
 _SITES: Tuple[ConsequentialSite, ...] = (
@@ -117,6 +122,7 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         proactive=True,
         hard_to_reverse=True,
         instrumented=True,
+        wraps=("slack.domain.post_message",),
         credits_note=(
             "False: preference lookup, user_timezone_name and _format_for_slack (string "
             "formatting) before SlackDomainService.post_message; no LLM call. Checked "
@@ -248,6 +254,7 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         proactive=False,
         hard_to_reverse=True,
         instrumented=True,
+        wraps=("github.domain.create_issue",),
         credits_note=(
             "False: reads params/context and calls GitHubDomainService.create_issue; no LLM "
             "call (the learned pattern was approved upstream). Checked 2026-11-02."
@@ -287,6 +294,7 @@ _SITES: Tuple[ConsequentialSite, ...] = (
         proactive=True,
         hard_to_reverse=True,
         instrumented=True,
+        wraps=("github.domain.create_issue",),
         credits_note=(
             "False: _extract_action_items and _format_github_issue_body are string work "
             "over the assembled standup; no LLM call. Checked 2026-11-02."

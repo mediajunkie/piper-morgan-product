@@ -457,3 +457,37 @@ class TestNestedSitesMarker:
         with pytest.raises(ValueError):
             with outer_site("not.a.site"):
                 pass
+
+
+class TestOuterSitesDoNotUnderstateTheirInnerSites:
+    """Arch's standing rule (2026-11-02 13:24, decisions.log), asserted now rather
+    than at the next outer site (CIO 13:41, m-36): for a nested action the counted
+    row is the outer's, so an outer site's ``external_message`` and ``hard_to_reverse``
+    must be at least those of every site it wraps. The pairs live in the registry
+    (``wraps``); the enforcement file checks that every ``outer_site(key)`` call in
+    production declares its ``wraps``."""
+
+    def test_wrapped_keys_exist_and_outer_flags_are_at_least_the_inners(self):
+        outers = {k: s for k, s in CONSEQUENTIAL_SITES.items() if s.wraps}
+        assert set(outers) == {
+            "slack.standup.post",
+            "github.standup.create_issue",
+            "github.command.create_issue",
+        }, "a new outer site must declare what it wraps (and this list grows with it)"
+        for key, outer in outers.items():
+            for inner_key in outer.wraps:
+                assert inner_key in CONSEQUENTIAL_SITES, f"{key} wraps unknown site {inner_key}"
+                inner = CONSEQUENTIAL_SITES[inner_key]
+                assert (
+                    outer.external_message >= inner.external_message
+                ), f"{key} understates external_message of {inner_key}"
+                assert (
+                    outer.hard_to_reverse >= inner.hard_to_reverse
+                ), f"{key} understates hard_to_reverse of {inner_key}"
+                assert inner_key != key
+
+    def test_inner_sites_are_never_themselves_outer(self):
+        # one level of nesting is what the marker models; a chain would need a ruling
+        for key, site in CONSEQUENTIAL_SITES.items():
+            for inner_key in site.wraps:
+                assert not CONSEQUENTIAL_SITES[inner_key].wraps, f"{key} -> {inner_key} chains"
