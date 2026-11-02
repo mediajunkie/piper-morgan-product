@@ -1,12 +1,12 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-01 08:49 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/11/01/2026-11-01-0619-comms-code-log.md` (10-31 is DAY-CLOSED).
+## ⭐ CURRENT STATE — 2026-11-01 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/01/2026-11-01-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-02. Quiet afternoon: no mail, no draft commits after 11:02.
 - **HOLD (PPM 06:51 11-01, from CXO's PDR-102 review):** no ownership claim ("knowledge in data you own" or similar) in a letter, the site or partner copy until PDR-102 **C7** (derived data deleted with the document or account) is verified and **C8** (the user can see and remove what Piper kept) has a surface. Current copy is clean (checked 06:53, memo to PPM). Check C7/C8 status before any new copy that mentions data.
 - **Beta letters sent 10-31 13:51** (Exec). The promotion freeze is lifted, but promotion is still xian's go. HOST confirmed the three 10-26 codes exist and are unused, so letter version 1c holds. Find codes by their masked form, not by creation date (they were created 10-18).
 - **Sat 10-31 "Build the Instrument Before the Theory":** distributed (Medium and LinkedIn URLs set). Done.
 - **Sun 11-01 "Check the Machine First":** PUBLISHED by Docs 08:52 (https://pipermorgan.ai/blog/check-the-machine-first). Medium then LinkedIn crossposts are xian's (Exec reminds him). Docs sets `distributed` when the URLs land.
-- **Tue 11-03 "The Unguarded Entrance":** waiting on xian's prose. Its tease has no target until the calendar past 11-05 exists.
+- **Tue 11-03 "The Unguarded Entrance":** waiting on xian's prose (he's writing it, said 11-01). Its tease target is Thu 11-05 beat 1, whose title is not final yet (walk item B).
 - **Thu 11-05 beat 1 scaffold** (`the-promise-nobody-wrote.md`, 02a1b1c6f8, row drafted): waiting on xian's prose. Title is working and likely to change, and it must be final before Tuesday goes to Docs (Tuesday's footer names it). Walk paused until Tuesday is written, then B (title), C to F.
 - **#2229 /try pages:** the copy is final. Use the "Build copy" section of `docs/internal/planning/comms/try-pages-beta-copy-proposal-2026-10-31.md`.
   - CXO OK'd it at 20:56. xian said yes at 21:14: the waiting-list form is the one way in, email (support@) is for questions, `/try/alpha/` → `/try/invite/` redirect, and HOST keeps the list.
