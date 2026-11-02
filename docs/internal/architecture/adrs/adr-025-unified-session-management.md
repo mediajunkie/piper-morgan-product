@@ -2,7 +2,7 @@
 type: adr
 number: 25
 title: "Unified Session Management Architecture"
-status: "Unknown"
+status: "Accepted"
 valid_from: "2025-08-08"
 last_updated: "2026-08-29"
 ---

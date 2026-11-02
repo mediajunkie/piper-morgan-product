@@ -2,7 +2,7 @@
 type: pattern
 number: "050"
 title: "Context Dataclass Pair"
-status: "Unknown"
+status: "Proven"
 valid_from: "2026-01-22"
 last_updated: "2026-08-29"
 ---

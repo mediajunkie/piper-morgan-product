@@ -2,7 +2,7 @@
 type: pattern
 number: "053"
 title: "Warmth Calibration"
-status: "Unknown"
+status: "Deprecated"
 valid_from: "2026-01-22"
 last_updated: "2026-08-29"
 ---

@@ -1,7 +1,7 @@
 ---
 type: adr
 title: "ADR Metadata Field Analysis Report"
-status: "Unknown"
+status: "Historical"
 valid_from: "2025-08-29"
 last_updated: "2026-08-29"
 ---
