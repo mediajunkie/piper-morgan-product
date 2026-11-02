@@ -3,8 +3,9 @@ type: briefing
 title: ROSTER.md — Piper Morgan Role Roster
 valid_from: "2026-05-22"
 last_updated: "2026-09-27"
-last_verified: "2026-09-27"
+last_verified: "2026-11-02"
 ---
+<!-- 2026-11-02 stamp (HOST): covers the role and slug set only. 14 roster rows (11 current roles, plus prog, test, spec), each slug appears once, and the set matches CLAUDE.md's role table and the `mailboxes/` directories. Lane one-liners and tiers were not re-checked; Docs owns those. -->
 
 # ROSTER.md — Piper Morgan Role Roster
 
