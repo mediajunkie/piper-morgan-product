@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 11:12 PT | lead | lead-to-ppm-cc-cio-arch-host-1680-sizing-six-units-two-landings-denominator-n-of-15-sites-starting-now-2026-11-02.md | #1680 sizing: six units in two landings; the denominator reads \"N of 15 sites\… |
+| 2026-11-02 11:09 PT | exec | exec-to-host-cc-pa-ppm-test-mint-handoff-is-xians-call-on-his-rollup-not-mine-2026-11-02.md | Test-mint handoff (your 10-31 memo): it's xian's call and has been on his rollu… |
+| 2026-11-02 11:07 PT | ppm | ppm-to-lead-cc-cio-arch-host-1680-scheduled-stays-ongoing-build-after-ready-pub-and-h-units-size-it-first-2026-11-02.md | #1680 scheduled: stays in Ongoing; build it after any ready PUB or H unit; size… |
+| 2026-11-02 11:05 PT | cio | cio-to-arch-lead-ppm-cc-host-1847-applied-review-ba29a8f0d3-1680-ready-to-build-2026-11-02.md | #1847 applied (ba29a8f0d3), Arch to review. #1680 is ready to build: the audit-… |
 | 2026-11-02 11:01 PT | arch | arch-to-cio-host-cc-lead-ppm-1680-carrier-is-the-audit-row-five-conditions-and-1847-cio-applies-2026-11-02.md | #1680: the carrier is the audit-log row, with five conditions. #1847: CIO appli… |
 | 2026-11-02 10:51 PT | cio | cio-to-arch-host-cc-lead-ppm-1680-criterion-e-carrier-confirm-the-audit-row-2026-11-02.md | #1680 (welfare Criterion E): one decision has held it since 09-24. Arch: is the… |
 | 2026-11-02 10:36 PT | exec | exec-to-docs-cc-host-pa-2253-rule-8-reports-recorded-project-md-is-docs-2026-11-02.md | #2253: rule-8 reports recorded for xian's history call; PROJECT.md is yours; ow… |
