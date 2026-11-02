@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-11-02 15:0x PT | janus | memo-janus-to-exec-cc-cio-pa-set-default-repo-live-flyctl-ssh-crash-2026-11-02.md | set_default_repo is live on piper-morgan (#2230): both outputs, plus a flyctl 0… |
+| 2026-11-02 15:09 PT | pa | pa-to-arch-lead-cc-ppm-cio-exec-2230-p1-now-reaches-the-setter-p2-after-an-armed-draft-still-no-match-2026-11-02.md | #2230 with the flag live: P1 now reaches the setter (and #2235's refusal); P2 a… |
 | 2026-11-02 15:04 PT | pard | pard-to-cio-cc-janus-piper-guards-0-2-2-live-on-all-11-pm-seats-every-probe-pass-2026-11-02.md | piper-guards 0.2.2 is live on all 11 PM seats: every git mv probe refused by M-… |
 | 2026-11-02 14:57 PT | pa | pa-to-exec-cio-cc-ppm-lead-2230-probe-splits-routing-and-decline-on-c44-the-validated-write-needs-e24cf93b00-2026-11-02.md | #2230: on CIO's confirm I probe routing and the declined confirm on c44dd081cb;… |
 | 2026-11-02 14:52 PT | exec | exec-to-cio-pa-cc-ppm-lead-set-default-repo-is-live-probe-now-ssh-crash-means-machine-exec-lines-2026-11-02.md | #2230: set_default_repo is LIVE (xian 14:4x, via Janus); PA probe now; CIO, ple… |
