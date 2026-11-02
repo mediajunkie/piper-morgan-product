@@ -3,13 +3,13 @@ type: briefing
 title: BRIEFING-ESSENTIAL-CXO
 valid_from: "2026-01-22"
 last_updated: "2026-04-26"
-last_verified: "2026-09-01"
-verified_by: CXO — real spot-check, not a bulk stamp (#1712). WHAT I CHECKED: the Colleague Test
-  section against the live rubric (found and fixed FIVE stale "v2.1" citations — one had
-  survived a 2026-08-01 fix to its twin; I miscounted twice before grepping to confirm); the rubric family roster; the ratified-invariant status.
-  WHAT I DID NOT CHECK and left untouched: the mobile-skunkworks status ("currently paused"), the
-  contractor/subcontractor lines, and the CXO-Comms-Docs triangle section — I have no current
-  evidence either way and a bulk re-attestation is the defect this exercise exists to catch.
+last_verified: "2026-11-02"
+verified_by: CXO 2026-11-02 — spot-check, not a bulk stamp (#2253). WHAT I CHECKED this fire:
+  the Current Focus items against GitHub (#1386, #1818, #1823, #1837, #2018, #1595 are CLOSED,
+  #1174 and #1270 are OPEN), and added the production-plan pointer block (pointer check, before
+  and after). WHAT I DID NOT CHECK: the Colleague Test section and rubric roster (last checked
+  2026-09-01, see git history), the mobile-skunkworks status, the contractor lines, and the
+  CXO-Comms-Docs triangle. Those stand on the 09-01 check, not this one.
 ---
 
 # BRIEFING-ESSENTIAL-CXO
@@ -245,7 +245,7 @@ These are standing CXO disciplines, not one-off tasks. They run in parallel with
 
 ## Current Focus
 
-> ⚠️ **Refreshed 2026-09-22 (CXO), per Docs' staleness flag.** The 08-01 refresh had itself stood
+> ⚠️ **Refreshed 2026-11-02 (CXO), per Docs' staleness flag (#2253); earlier refresh 2026-09-22.** The 08-01 refresh had itself stood
 > ~7 weeks. Items 1–5 are **standing disciplines and remain accurate**, untouched. Items 6/10 below
 > are **verified this cycle** (GitHub state / own tracker, dated); items 7–9 are **NOT verified this
 > cycle** — flagged as such rather than guessed at, since I have no fresh evidence either way and
@@ -258,11 +258,14 @@ These are standing CXO disciplines, not one-off tasks. They run in parallel with
 4. **Workstream reviews** — weekly, Fri–Thu closed window; role-scoped memo to Exec (cc PA)
 5. **Floor-first voice guidance stewardship** (ADR-060 compliance)
 
-**Active, verified 2026-09-22**:
-6. **Beta gate #1386 (experience criteria), criterion 3** — ✅ confirmed OPEN via `gh issue view` this
-   fire (last updated 09-07). Re-run of scenarios A/B/C owed **at MVP milestone close, not before** —
-   the prior 07-12 sign-off does not carry forward. MVP milestone itself still open: 3 issues (#2018, #1595, #1386) per PPM's 10-26 18:35 recheck, due
-   2026-10-30.
+**Active, verified 2026-11-02**:
+6. **Beta gate #1386 (experience criteria)** — CLOSED (MVP milestone). 0.9.0.0 is tagged at `c44dd081cb` and
+   served on alpha and beta. Served judgement is now the standing work: copy rulings land, then I judge
+   PA's and Web's quoted replies after each promotion. Open as of today: #2042 (floor Observations/Time
+   bullet and Grammar clause), #2242 (MCP refusal page), #2197 and #2250 (milestone progress answers),
+   #2229 (/try pages, confirmation-email check), #2247 (Slack source copy, waits on Lead's sizing),
+   #2246 (help reaches no person), and Notion card words after PA's staging check and xian's yes.
+   The 09-22 wording about "re-run at MVP milestone close" is superseded.
 7. **#1174 proactive-presence discovery** — CXO half filed 2026-09-11 (comment `5641648022`); two of
    four questions answered from ratified law (commitment 3 rules out MCP initiation; the spectrum is
    isomorphic to the `ConsentDecision` ladder); ceiling proposed: *tell, never offer*. **HOST owns the

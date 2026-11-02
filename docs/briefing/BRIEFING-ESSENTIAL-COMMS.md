@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-COMMS
 valid_from: "2025-10-19"
-last_updated: "2026-09-01"
-last_verified: "2026-09-01"
+last_updated: "2026-11-02"
+last_verified: "2026-11-02"
 ---
 
 # BRIEFING-ESSENTIAL-COMMS
@@ -30,6 +30,7 @@ last_verified: "2026-09-01"
 - **`docs/internal/product/promises.yaml`** (ratified 10-25, owned by PPM): the promise register, gated private-beta, public-beta or 1.0. Before public copy (site, invitation letters, known-issues notes) promises something, find the matching entry and its gate. If there's no entry, the claim isn't backed.
 - **Production map** (`docs/internal/planning/production-map.html`): the Production sprint order (PUB first). It tells you when the "what changed" note's trigger, the first user-visible Production ship, has been met.
 - **The Readiness lane:** HOST's send-morning checks. Partner sends (invitations, known-issues notes) go out only through it.
+- **PDR-102** (`docs/internal/product/pdr/PDR-102-document-model-vision.md`): a copy hold since 11-01 (PPM, from CXO's review). No claim that users own their data, in letters, the site or partner copy, until C7 (derived data deleted with the document or account) is verified and C8 (the user can see and remove what Piper kept) has a surface. Check both before any copy that mentions data.
 - **#2157** (Production DB backups, restore drill, key custody): matters here for one thing only. Public copy makes no claim about backups or data safety until #2157 has closed served.
 
 ## Your Role: Communications
@@ -153,5 +154,7 @@ Request "Loading [topic] details" for:
 - **Building-narrative method**: `docs/internal/planning/comms/building-narrative-method.md` — **Required reading before drafting or teasing narrative posts.** Documents the two-track model: narratives are chronological (advance the front, never backfill); insights are time-decoupled. Includes the slate concept, how to use the editorial calendar for pacing, and the `continue-narrative` skill pointer.
 
 ---
+
+*Verification pass, 2026-11-02 (Comms, at Exec's #2253 ask). **Checked**: all 21 file paths this doc cites exist (`test -e`, 21 of 21), including ESSENCE.md, promises.yaml, the production map, the five skills and the five comms planning docs. ADR-034, ADR-038 and ADR-039 exist by filename (content not re-read). template-audit is v1.16 (its frontmatter). #2157 is still open (`gh issue view`), so the no-backup-claims line holds. Added the PDR-102 copy hold. **Not re-verified**: the illustrative Key Achievements, the Communication Themes bullets and the Apr 22-26 Critical vs. Commodity framing, all as flagged in the 09-01 pass below.*
 
 *Verification pass, 2026-09-01 (Comms, self-verification per CIO's #1712 cohort-wide ask). **What I checked**: every file path in the References section (found and fixed 1 broken reference — BRIEFING-METHODOLOGY.md renamed to METHODOLOGY.md at some point without this doc being updated); the calendar-ownership description (corrected — this doc implied sole Comms ownership, actual model is multi-writer by column); the Weekly Ship division of labor (corrected — Exec drives drafting now, wasn't reflected here); added the 5 skills that are actually load-bearing to daily work but were entirely absent from this doc. **What I did NOT re-verify**: ADR-038/034/039's current content or continued existence (only checked they're referenced consistently, not that they still say what this doc implies); the "Key Achievements" section's historical examples (flagged as illustrative-only rather than researched fresh — would need a real pass against the omnibus history to update responsibly, out of scope for this pass); the "Critical vs. Commodity" section's Apr 22-26 framing (left as-is, still reads as directionally true from lived experience but not independently re-confirmed against its own source).*

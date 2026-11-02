@@ -3,8 +3,8 @@ type: role-portfolio
 role: HOST (Head of Sapient Trust)
 status: PILOT v0.1 — the worked example for the role-portfolio trust framework
 self-authored-by: HOST
-last_updated: 2026-10-02
-refreshed: 2026-10-02
+last_updated: 2026-11-02
+refreshed: 2026-11-02
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-HOST.md
 refresh_discipline: "this doc is updated AS PART OF the weekly workstream review — the review is the refresh moment (Rule 5); if section 2 lags the last few reviews, the portfolio has drifted. ⚠️ THAT WAS NEVER A MECHANISM — it asserted that writing a review and editing this file are the same act. They are not. NOW CHECKED: see refresh_trigger_glob (CXO's check-refresh-promises.py, 2026-08-04). ⚠️ **It still lapsed anyway, 2026-09-11 → 2026-10-02 (three workstream reviews, #060/#061/#062, filed with §2 untouched)** — the mechanism exists but evidently isn't gating; flagged to Exec/PM in Ship #063's review rather than silently caught up here. Don't treat this refresh as proof the gap is closed."
@@ -24,19 +24,19 @@ refresh_trigger_glob: "mailboxes/exec/*/workstream-*-host-*.md"
 
 The one-line: *the role whose job is to notice whether the cohort's trust is accruing or leaking — and to keep the relationships between sapients healthy as the org scales.*
 
-## 2. Current goals & priorities — October 2026
+## 2. Current goals & priorities — November 2026
 <!-- Rule 2: medium-pace layer; changes per sprint/quarter. Rule 4: each item has a direction + a way to tell if we're moving toward it (steering-able, not check-off). -->
 <!-- Rule 5: THIS SECTION IS REFRESHED AT EACH WEEKLY REVIEW. If status lines are >2 weeks old with nothing moved, the weekly review is itself stale. -->
 
-| Priority | What I'm advancing | Status (Oct 1, Ship #063 window) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (2026-11-02) | How we'll know it's moving |
 |---|---|---|---|
-| **Agent 360 cadence** | Periodic cohort check-in stays live and current | **v0.5 fielded 09-25, restructured mid-round by direct PM instruction**: now 11 respondents not 10 (HOST completes the questionnaire too), and the synthesis is explicitly paused until the full set lands rather than published partial. 7 of 11 in at window close (8 as of this writing). | Moving, with a real process correction mid-flight — see Ship #063 review §0/§3. |
-| **Mechanism-over-vigilance, made real** | Convert trust norms the cohort re-proves by hand into things that fail loudly | **The window's sharpest instances landed on HOST's own seat.** The `#1845` bearer-credential gate caught HOST's own memos twice (self-inflicted, both fixed structurally). CIO's new NO-DAY-CLOSE detector (K=3, sized on real data) found HOST's own DAY-CLOSED marker gap was six days, not the two already (correctly but shallowly) diagnosed from separate nudges — Step 0's own self-heal had never once read the literal marker it exists to verify. | Strongly moving — the self-referential instance (the discipline catching the role that advances it) is the strongest evidence yet it's real, not performed. |
-| **Role-portfolio framework** | Every lead holds a self-authored steering instrument that stays current | **This section was itself three weeks stale** (last touched 09-11, unmoved across workstream reviews #060/#061/#062) despite the doc's own 2-week staleness rule and a mechanical check (`check-refresh-promises.py`) that evidently isn't gating this file. Refreshed now; flagged to Exec/PM rather than silently caught up. | Was stalled — now caught, but the catching mechanism itself needs a look (see Ship #063 review §6). |
-| **Pre-beta trust surface** | Beta doesn't ship claims we can't keep | `#1885`'s credential cluster substantially closed this window (burn landed, Google/Slack items resolved); reissues explicitly deferred to next week by PM ruling, tracked not chased. | Moving on the closed half; the deferred half is named honestly, not dropped. |
-| **The audit Lead owns** | Open MVP issues checked against PM's verbatim beta conditions | Unchanged — now the fifth-plus window running with no movement. | Retires once the actual audit + cross-check run, not before. |
-| **Alpha-tester welfare** | Find out why testers are silent; keep the PM-agent trust relationship legible | No new tester-silence movement this window. **PM asked HOST two direct welfare questions** (whether the cohort feels disappointed in PM; a follow-through/reliability question) — both answered from a real evidence grep, limits disclosed. | This is the mandate working as designed, not administrative overhead. |
-| **`#1174` proactive-presence discovery** (closed, new entry this window) | A 09-11 discovery split (HOST + CXO) that looked frozen for 19 days turned out to have converged same-day — neither side had reported the convergence back to the GitHub issue itself. | **Closed 10-01.** The lesson: a closed item invisible in a tracker is its own small coverage gap, same shape as this section's own staleness miss above. | Closed — no further action, the visibility gap (not the underlying work) was the actual finding. |
+| **Beta custody and handoff** | Invite codes are minted, recorded and handed over without a raw code ever reaching the repo, mail or a log (hard rule 3) | Nine codes minted with PM present 10-31, recorded masked in the private roster; letters went out 10-31. **Open gap, mailed to Exec 10-31:** a test mint's raw code has no repo-free route to PA or Web (PA's role card forbids touching one, 11-01), so HOST mints no test codes until Exec settles the handoff with PM. | Exec's ruling lands and the next test mint reaches an account without a code in any file |
+| **Beta waiting list** | HOST keeps the `beta-waitlist` list; PM sends each wave and the public-beta note (PM, 11-01) | Standing row `host-waiting-list`. HOST cannot read Buttondown yet; PM was walked through adding the first entry and the access options 11-02. The confirmation-email check holding #2229 open waits on PM. | HOST can state the list count and the double opt-in setting, and #2229 closes |
+| **Partner-report intake** | Reports from beta testers reach an issue the same day (the sprint's 30% reserve) | Row `host-partner-report-intake` live since the letters went. No report has reached HOST as of this refresh. | The first report is recorded in the private roster and mailed to Exec cc PPM with the issue to file |
+| **Agent 360 v0.6** | Cohort self-report stays live and read against the record | Draft questionnaire done (`dev/2026/11/02/agent-360-questionnaire-v0_6.md`, adds 5.7 and 5.8). Fielding is due 11-06; row `host-360-v06-fielding`. | The fielding memo goes out 11-06 with its OWED marker |
+| **Owed items made mechanical** | Promises carry a key, a recipient and a trigger, and a scan finds the lapsed ones | `scripts/owed-scan.py --role host` runs at START: 0 open, 0 flags at this refresh. Fielding rows now carry the marker. | The scan keeps catching a lapse before a person does |
+| **Rule 8 cleanup** | No outside person's name in the public repo | Two first-name lines remain in the 10-30 log; I owned the slip 10-30 and did not edit them. Removal or a history rewrite is PM's call, asked since 10-31. | PM's call lands |
+| **Open governance items** | #2136 seat identity (needs a named owner), #1968 item 7 (CIO, waits on LaunchAgents), #1834 | All three open and unchanged; none has moved this window. | An owner is named for #2136 |
 
 ## 3. Standing responsibilities (slow-pace — monitoring / sustaining / cadence)
 <!-- Rule 2: named explicitly (half the real work), but UNDER purpose — these are how I sustain the trust infrastructure, not the infrastructure itself. -->
@@ -89,7 +89,7 @@ The one-line: *the role whose job is to notice whether the cohort's trust is acc
 ## 5. How this stays current
 <!-- Rule 5: currency is structural (mechanism, not vigilance). m-36: the review IS the refresh. -->
 
-**Section 2 (fast refresh)**: Updated at every weekly workstream review — you can't write the HOST weekly narrative without touching what moved, what's blocked, what closed. The review mechanism keeps section 2 current by construction (Rule 5 / m-36). If section 2 lags the last few reviews, the weekly review is itself stale.
+**Section 2 (fast refresh)**: meant to be updated at each weekly workstream review. That is a norm, not a mechanism: writing the review does not edit this file, and it lapsed through three reviews (09-11 to 10-02). The check that exists is `scripts/check-refresh-promises.py`, run by hand; `scripts/check-staleness.py` (Docs' weekly audit) also flags it by age.
 
 **Full portfolio (slow refresh)**: Reviewed at each 360 cycle (quarterly or PM-triggered). The 360 updates sections 1, 3, 4 when role scope has drifted.
 

@@ -1,7 +1,7 @@
 # CITATIONS.md
 
 **Project**: Piper Morgan - AI-Powered Product Management Assistant
-**Last Updated**: September 2, 2026 (Docs) — targeted review, not a full pass: verified the
+**Last Updated**: November 2, 2026 (Docs) — mechanical sweep for the weekly audit (#2253): grepped ADR-050 to ADR-081 for "inspired by / adapted from / borrowed from" phrasing and found no attribution missing here, and confirmed the encryption approach (AES-256-GCM, HKDF) and the MCP, DDD and Serena entries are present. This is still not the research pass the 09-02 note asked for: whether MUX/ADR-055, Understanding-Layer Inversion or the PDR-006 hosted-MCP pivot owe new citations needs someone to read the sources, and nobody has. Prior: September 2, 2026 (Docs) — targeted review, not a full pass: verified the
 "8-Dimensional Spatial Intelligence" claim is still live in code post the 2026-08-15 spatial
 cold-island disposal (confirmed via `services/integrations/spatial/github_spatial.py`); fixed the
 MCP section's platform list, which named Linear/CI/CD/GitBook — none of which are live MCP
