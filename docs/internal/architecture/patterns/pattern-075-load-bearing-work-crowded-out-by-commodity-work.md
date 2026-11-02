@@ -2,7 +2,7 @@
 type: pattern
 number: "075"
 title: "Load-Bearing Work Crowded Out by Commodity Work"
-status: "**Emerging** — elevated 2026-10-13 by CIO from proto-pattern PP-002 (observed 2026-04-27), on the 10-13 role-duties measurement."
+status: "Emerging"
 valid_from: "2026-10-13"
 last_updated: "2026-10-13"
 ---

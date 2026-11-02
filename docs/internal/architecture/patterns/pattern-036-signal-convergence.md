@@ -2,7 +2,7 @@
 type: pattern
 number: "036"
 title: "Signal Convergence for Breakthrough Detection"
-status: "Active"
+status: "Proven"
 valid_from: "2025-11-04"
 last_updated: "2026-08-29"
 ---

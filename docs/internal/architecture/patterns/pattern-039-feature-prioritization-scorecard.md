@@ -2,7 +2,7 @@
 type: pattern
 number: "039"
 title: "Feature Prioritization Scorecard"
-status: "**Deprecated** — never validated or adopted in practice; status was template-contaminated (all four tiers listed); retired 2026-06-17 per stale-pattern triage"
+status: "Deprecated"
 valid_from: "2025-11-20"
 last_updated: "2026-08-29"
 ---

@@ -2,7 +2,7 @@
 type: pattern
 number: "040"
 title: "Integration Swappability Guide"
-status: "**Proven** | Emerging | Experimental | Deprecated"
+status: "Proven"
 valid_from: "2025-11-20"
 last_updated: "2026-08-29"
 ---

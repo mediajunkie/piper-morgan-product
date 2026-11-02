@@ -2,7 +2,7 @@
 type: pattern
 number: "013"
 title: "Database Session Management Pattern"
-status: "**Proven**"
+status: "Proven"
 valid_from: "2025-09-16"
 last_updated: "2026-08-29"
 ---

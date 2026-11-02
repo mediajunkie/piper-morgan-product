@@ -2,7 +2,7 @@
 type: pattern
 number: "055"
 title: "Multi-Intent Decomposition"
-status: "**Proven** — demonstrated in #595 MUX-INTENT-MULTI (promoted 2026-06-17, instance verified)"
+status: "Proven"
 valid_from: "2026-01-21"
 last_updated: "2026-08-29"
 ---

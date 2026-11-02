@@ -2,7 +2,7 @@
 type: pattern
 number: "033"
 title: "Notion Publishing"
-status: "**Proven** - Implemented and validated with real API integration testing"
+status: "Proven"
 valid_from: "2025-10-12"
 last_updated: "2026-08-29"
 ---

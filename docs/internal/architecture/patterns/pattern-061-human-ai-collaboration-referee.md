@@ -2,7 +2,7 @@
 type: pattern
 number: "061"
 title: "Human-AI Collaboration Referee"
-status: "**Proven** — Production ready since July 2025, validated across multiple sprints"
+status: "Proven"
 valid_from: "2026-03-04"
 last_updated: "2026-08-29"
 ---

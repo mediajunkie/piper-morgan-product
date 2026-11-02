@@ -2,7 +2,7 @@
 type: pattern
 number: "031"
 title: "Plugin Wrapper Pattern"
-status: "Active"
+status: "Proven"
 valid_from: "2025-10-04"
 last_updated: "2026-08-29"
 ---

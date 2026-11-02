@@ -2,7 +2,7 @@
 type: pattern
 number: "059"
 title: "Leadership Caucus"
-status: "**Absorbed** — absorbed into `methodology-22-ROUNDTABLE-SYNTHESIS.md`, per Arch's B3 synthesis"
+status: "Superseded"
 valid_from: "2026-01-26"
 last_updated: "2026-09-01"
 ---

@@ -2,7 +2,7 @@
 type: pattern
 number: "006"
 title: "Verification-First Pattern"
-status: "**Absorbed** — absorbed into `methodology-07-VERIFICATION-FIRST.md`, ruled canonical 2026-09-01 by"
+status: "Superseded"
 valid_from: "2025-09-16"
 last_updated: "2026-09-01"
 ---

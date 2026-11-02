@@ -2,7 +2,7 @@
 type: pattern
 number: "046"
 title: "Beads Completion Discipline"
-status: "Established"
+status: "Proven"
 valid_from: "2025-12-28"
 last_updated: "2026-08-29"
 ---

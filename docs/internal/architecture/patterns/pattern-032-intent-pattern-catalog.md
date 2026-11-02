@@ -2,7 +2,7 @@
 type: pattern
 number: "032"
 title: "Intent Pattern Catalog"
-status: "Proven (Established October 5, 2025 - GREAT-4A validation)"
+status: "Proven"
 valid_from: "2025-10-05"
 last_updated: "2026-08-29"
 ---

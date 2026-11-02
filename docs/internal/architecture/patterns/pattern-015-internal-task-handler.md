@@ -2,7 +2,7 @@
 type: pattern
 number: "015"
 title: "Internal Task Handler Pattern"
-status: "**Proven**"
+status: "Historical"
 valid_from: "2025-09-16"
 last_updated: "2026-08-29"
 ---
@@ -11,7 +11,7 @@ last_updated: "2026-08-29"
 
 ## Status
 
-**Proven**
+**Historical** (was Proven). The 2026-08 architectural review's B3 pass found zero code hits for an internal task handler in `services/`, and Arch ratified HISTORICAL on 09-01 (`docs/internal/architecture/reviews/2026-08-architectural-review/b3-patterns-disposition.md`). Kept for history; don't follow it as current practice. (Status set 2026-11-02, CIO, #1847.)
 
 ## Context
 

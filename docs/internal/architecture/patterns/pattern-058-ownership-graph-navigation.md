@@ -2,7 +2,7 @@
 type: pattern
 number: "058"
 title: "Ownership Graph Navigation"
-status: "**Proven** — demonstrated in #435 Ownership-Model (promoted 2026-06-17, instance verified)"
+status: "Proven"
 valid_from: "2026-01-22"
 last_updated: "2026-08-29"
 ---

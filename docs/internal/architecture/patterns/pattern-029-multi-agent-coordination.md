@@ -2,7 +2,7 @@
 type: pattern
 number: "029"
 title: "Multi-Agent Coordination"
-status: "**Proven** — multi-agent coordination is live cohort-wide (duty-cycle fleet + mailbox protocol, 2026); refreshed 2026-06-17 (was \"Experimental, deployment pending\")"
+status: "Proven"
 valid_from: "2025-09-16"
 last_updated: "2026-08-29"
 ---

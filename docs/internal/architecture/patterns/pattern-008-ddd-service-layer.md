@@ -2,7 +2,7 @@
 type: pattern
 number: "008"
 title: "DDD Service Layer Pattern"
-status: "**Proven**"
+status: "Proven"
 valid_from: "2025-09-16"
 last_updated: "2026-08-29"
 ---

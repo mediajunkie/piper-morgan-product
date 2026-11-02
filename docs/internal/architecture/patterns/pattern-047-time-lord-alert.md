@@ -2,7 +2,7 @@
 type: pattern
 number: "047"
 title: "Time Lord Alert"
-status: "Established"
+status: "Proven"
 valid_from: "2025-12-28"
 last_updated: "2026-08-29"
 ---

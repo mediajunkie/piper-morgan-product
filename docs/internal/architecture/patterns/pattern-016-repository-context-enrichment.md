@@ -2,7 +2,7 @@
 type: pattern
 number: "016"
 title: "Repository Context Enrichment Pattern"
-status: "**Proven**"
+status: "Historical"
 valid_from: "2025-09-16"
 last_updated: "2026-08-29"
 ---
@@ -11,7 +11,7 @@ last_updated: "2026-08-29"
 
 ## Status
 
-**Proven**
+**Historical** (was Proven). The B3 pass found only one tangential comment in `action_registry.py` and no real implementation, and Arch ratified LIKELY HISTORICAL on 09-01 (`b3-patterns-disposition.md`). Kept for history; don't follow it as current practice. (Status set 2026-11-02, CIO, #1847.)
 
 ## Context
 
