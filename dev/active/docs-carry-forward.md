@@ -1,14 +1,15 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-10-31 (see NOW). Older: 2026-10-17 (04:12 fire, see NOW below; older DONE lines below are history). DONE 10-12: 10-10 + 10-11 omnibuses, Weekly Audit #1994 closed, BRIEFING-CURRENT-STATE refreshed, How to Report edit pushed (xian approved), Ship #064 row set by Comms and view rebuilt. Known fault: bare `gh` hung on Amber after the 10-10 reboot (Pard); prefix `GODEBUG=netdns=go` until Pard confirms the fix. History in session logs (`dev/2026/10/{04..12}/*docs-code-log.md`), not here.
+**Updated**: 2026-11-01 (see NOW). Older: 2026-10-17 (04:12 fire, see NOW below; older DONE lines below are history). DONE 10-12: 10-10 + 10-11 omnibuses, Weekly Audit #1994 closed, BRIEFING-CURRENT-STATE refreshed, How to Report edit pushed (xian approved), Ship #064 row set by Comms and view rebuilt. Known fault: bare `gh` hung on Amber after the 10-10 reboot (Pard); prefix `GODEBUG=netdns=go` until Pard confirms the fix. History in session logs (`dev/2026/10/{04..12}/*docs-code-log.md`), not here.
 
-## NOW (10-31 22:05 STOP, supersedes the 10-30 block)
-- **Next START Sun 11-01 04:12 owes the 10-31 omnibus** (plus Step 1d nudges for unclosed 10-31 logs). Sun 11-01 "Read the Machine Before Debating Who Restarts It" is `drafted`: publish only on Comms' ready-for-docs memo (dry-run first, work-date from the calendar row). Sat 10-31 "Build the Instrument" is published and distributed.
-- **v0.9.0.0 tagged** at c44dd081cb74 (Lead, 22:01). Briefing Version lines (CURRENT-STATE, piper-alpha) cite it. **OPEN: the GitHub release page**, xian's `gh release create` (Lead refused on seat); when Exec says it exists, add the release URL to the Version line. Notes and phase-3 docs are on main.
-- Ongoing sort applied (Sprints, Icebox milestone #11 with 8 issues, #1927 closed). Remaining Ongoing: Lead's backlog (PPM proposing Sprints), #865/#1340 (PPM), #1300 closed as met by PPM. Weekly audit Mon 11-02 should check icebox triggers; also monthly housekeeping.
-- Done 10-31: #1726 closed (13 of 13 stamped), #1779 #1721 #1403 #1780 #1904 #1719 #1389 closed, support@ sentence restored (Guide, Known Issues), link ceiling 60 and drift check wired into the weekly audit (green on e09d350d89).
-- **Open, waiting on xian:** #1392 (`thirteen-mailboxes` post, changed shape). Held: #1909 fixtures box (Lead), glossary re-verify about 11-30. Template has no support@ "Private" line (asked CXO, no reply needed).
-- Mail: write `date: now`; mail-send stamps it. Main CI 12 of 12 green at 19:12.
+## NOW (11-01 22:12 STOP, supersedes the 10-31 block)
+- **Next START Mon 11-02 04:12 owes the 11-01 omnibus** (plus Step 1d nudges: at 22:12 the 11-01 logs for arch, comms, exec and prog (0714, 0830) had no DAY-CLOSED; re-check at START). Also due Mon 11-02: weekly audit (with the new drift step, check Icebox triggers) and monthly housekeeping.
+- **Publishing:** "Check the Machine First" is PUBLISHED and DISTRIBUTED (row 473 `distributed`; website a4ce1d2, art fixed b405c17 and verified live). Next post "The Unguarded Entrance" (Tue 11-03, building, Comms owns): publish only on a Comms ready-for-docs memo, and open the image against its alt before the dry-run.
+- **v0.9.0.0 DONE:** tag c44dd081cb74, release page live (xian, 11-01 11:10 PST), both briefing Version lines cite the URL. Lead confirmed nothing is left.
+- **Closed 11-01:** #1392 (xian deferred to my keep-the-body-image call). **Filed #2249** (blog legacy-error audit: slug vs title, empty alt, workDate = pubDate, missing captions, calendar vs site). Not scheduled, no Sprint, my lane.
+- **Nothing waiting on xian.** Held: #1909 fixtures box (Lead), glossary re-verify about 11-30. The stray baking-art webp in `drafts/published/` stays unless xian asks. Template has no support@ line; CXO must send words if they want one.
+- Not mine: Lead's backlog Sprints and #865/#1340 (PPM).
+- Mail: write `date: now`; mail-send stamps it; check byte count first. Read each attempt of a rerun workflow (`gh api .../attempts/N`). Main CI 12 of 12 green at 22:12.
 
 ## (earlier NOW, 10-30 22:12 STOP)
 - **Next START Sat 10-31 04:12 owes the 10-30 omnibus** (plus Step 1d nudges). 10-29 omnibus DONE and committed 10-30 (addendum for CXO's close). Sat 10-31 "Build the Instrument Before the Theory" and Sun 11-01 "Read the Machine Before Debating Who Restarts It" are `drafted`: publish only on Comms' ready-for-docs memo (dry-run first, work-date from the calendar row). xian sends the beta letters Sat morning, promotion freeze until then.
