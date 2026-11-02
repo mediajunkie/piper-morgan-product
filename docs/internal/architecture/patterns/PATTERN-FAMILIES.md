@@ -2,7 +2,7 @@
 type: pattern
 number: "N/A"
 title: "Pattern Family Index"
-status: "Unknown"
+status: "Index"
 valid_from: "2026-02-06"
 last_updated: "2026-08-29"
 ---

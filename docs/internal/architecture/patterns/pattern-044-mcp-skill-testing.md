@@ -2,7 +2,7 @@
 type: pattern
 number: "044"
 title: "MCP Skill Testing Pattern"
-status: "Unknown"
+status: "Established"
 valid_from: "2025-11-22"
 last_updated: "2026-08-29"
 ---

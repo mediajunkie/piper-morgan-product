@@ -2,7 +2,7 @@
 type: pattern
 number: "038"
 title: "Temporal Clustering for Coordination Analysis"
-status: "Unknown"
+status: "Active"
 valid_from: "2025-11-04"
 last_updated: "2026-08-29"
 ---

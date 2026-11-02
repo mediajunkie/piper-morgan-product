@@ -2,7 +2,7 @@
 type: adr
 number: 13
 title: "MCP + Spatial Intelligence Integration Pattern"
-status: "Unknown"
+status: "Superseded by ADR-038"
 valid_from: "2025-08-12"
 last_updated: "2026-09-02"
 ---

@@ -1,7 +1,7 @@
 # CITATIONS.md
 
 **Project**: Piper Morgan - AI-Powered Product Management Assistant
-**Last Updated**: November 2, 2026 (Docs) — mechanical sweep for the weekly audit (#2253): grepped ADR-050 to ADR-081 for "inspired by / adapted from / borrowed from" phrasing and found no attribution missing here, and confirmed the encryption approach (AES-256-GCM, HKDF) and the MCP, DDD and Serena entries are present. This is still not the research pass the 09-02 note asked for: whether MUX/ADR-055, Understanding-Layer Inversion or the PDR-006 hosted-MCP pivot owe new citations needs someone to read the sources, and nobody has. Prior: September 2, 2026 (Docs) — targeted review, not a full pass: verified the
+**Last Updated**: November 2, 2026 (CIO) — the research pass the 09-02 and 11-02 notes asked for (#2253). I read the three named sources. ADR-055 (MUX object model) names no external source; its references are all internal, and its native, federated and synthetic ownership model and experience framing are presented as original, so no citation is added. Understanding-Layer Inversion builds on LLM tool use and constrained output, so a new entry under Architectural Patterns credits OpenAI, Anthropic, and Willard and Louf. PDR-006 extends MCP's "Used in" to the hosted server and names the client plugin platforms. Publication dates were checked by web search on 11-02. Not checked: whether ADR-045 (which ADR-055 implements) draws on outside object-model work. Earlier, November 2, 2026 (Docs) — mechanical sweep for the weekly audit (#2253): grepped ADR-050 to ADR-081 for "inspired by / adapted from / borrowed from" phrasing and found no attribution missing here, and confirmed the encryption approach (AES-256-GCM, HKDF) and the MCP, DDD and Serena entries are present. This is still not the research pass the 09-02 note asked for: whether MUX/ADR-055, Understanding-Layer Inversion or the PDR-006 hosted-MCP pivot owe new citations needs someone to read the sources, and nobody has. Prior: September 2, 2026 (Docs) — targeted review, not a full pass: verified the
 "8-Dimensional Spatial Intelligence" claim is still live in code post the 2026-08-15 spatial
 cold-island disposal (confirmed via `services/integrations/spatial/github_spatial.py`); fixed the
 MCP section's platform list, which named Linear/CI/CD/GitBook — none of which are live MCP
@@ -150,6 +150,24 @@ pass, not a mechanical check, flagged rather than guessed at. Prior: March 3, 20
 - *Used in: connector integration (GitHub, Google Calendar, Notion, Slack — `services/mcp/consumer/`);
   corrected 2026-09-02, the prior platform list (Linear, CI/CD, GitBook) no longer matched the
   live integrations*
+- *Also used in (2026-11-02, CIO): Piper as a hosted MCP **server** for clients such as Claude and
+  ChatGPT, under PDR-006 (`docs/internal/product/pdr/PDR-006-hosted-mcp-plugin-distribution.md`).
+  It follows the MCP lifecycle spec (2025-06-18) for capability negotiation. Distribution relies on
+  the clients' own plugin and connector systems (Anthropic's Claude Code plugins; ChatGPT's MCP
+  support from OpenAI). Those are platforms we build on, not ideas of ours.*
+
+### LLM Tool Use and Constrained Output
+**OpenAI** - Function calling (API, 13 June 2023); Structured Outputs, strict JSON-Schema adherence (6 August 2024)
+**Anthropic** - Tool use in the Claude API
+**Brandon T. Willard and Rémi Louf** - "Efficient Guided Generation for Large Language Models" (arXiv:2307.09702, 2023; the Outlines library)
+- An LLM chooses a tool by emitting a structured call against declared schemas
+- Output constrained to a schema or grammar, so the model can't emit an undeclared value
+- *Used in: the Understanding-Layer Inversion
+  (`docs/internal/architecture/current/understanding-layer-inversion-proposal-2026-08-08.md`;
+  `intent-routing-stack.md`). One routing call per turn is constrained to the action registry, which
+  becomes the grammar. The technique is theirs. Ours is applying it to replace regex pre-classifiers,
+  and making the registry itself the grammar, with one source for the router, the dispatch and the
+  floor's capability manifest.*
 
 ### Domain-Driven Design (DDD)
 **Eric Evans** - "Domain-Driven Design: Tackling Complexity in the Heart of Software" (2003)

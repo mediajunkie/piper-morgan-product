@@ -2,7 +2,7 @@
 type: pattern
 number: "051"
 title: "Parallel Place Gathering"
-status: "Unknown"
+status: "Proven"
 valid_from: "2026-01-22"
 last_updated: "2026-08-29"
 ---

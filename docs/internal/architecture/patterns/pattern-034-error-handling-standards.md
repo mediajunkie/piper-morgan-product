@@ -2,7 +2,7 @@
 type: pattern
 number: "034"
 title: "Error Handling Standards"
-status: "Unknown"
+status: "Active"
 valid_from: "2025-10-16"
 last_updated: "2026-08-29"
 ---

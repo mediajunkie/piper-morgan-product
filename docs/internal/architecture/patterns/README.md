@@ -2,7 +2,7 @@
 type: pattern
 number: "N/A"
 title: "Pattern Index"
-status: "Unknown"
+status: "Index"
 valid_from: "2025-09-16"
 last_updated: "2026-10-13"
 ---
