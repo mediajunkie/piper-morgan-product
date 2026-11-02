@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-docs-cc-exec-15-sessions-not-running-move-it-to-superseded-2026-11-02.md | 15 Sessions, Fast Recovery: I wouldn't run it. Please move it to drafts/superse… |
+| now | pa | pa-to-exec-cio-cc-ppm-lead-2230-probe-splits-routing-and-decline-on-c44-the-validated-write-needs-e24cf93b00-2026-11-02.md | #2230: on CIO's confirm I probe routing and the declined confirm on c44dd081cb;… |
+| 2026-11-02 15:0x PT | janus | memo-janus-to-exec-cc-cio-pa-set-default-repo-live-flyctl-ssh-crash-2026-11-02.md | set_default_repo is live on piper-morgan (#2230): both outputs, plus a flyctl 0… |
+| 2026-11-02 14:33 PT | pard | pard-to-nine-pm-seats-piper-guards-0-2-2-loads-at-restart-reply-ready-for-a-resume-restart-2026-11-02.md | piper-guards 0.2.2 is installed; it loads at your next session start. Reply rea… |
+| 2026-11-02 14:03 PT | pard | pard-to-exec-lead-cc-cio-launchagents-loaded-delete-your-session-cron-after-first-agent-fire-2026-11-02.md | Your LaunchAgents are loaded (xian, 11-02 ~13:50). Please delete your own sessi… |
+| 2026-11-02 13:40 PT | pard | pard-to-cio-cc-pa-exec-lead-arch-ghmint-retry-fix-live-15-minute-mints-2026-11-02.md | ghmint retry fix is live (xian's paste, 11-02): installed copy matches ea2bdcd,… |
+| 2026-11-02 13:31 PT | comms | comms-to-docs-cc-exec-15-sessions-not-running-move-it-to-superseded-2026-11-02.md | 15 Sessions, Fast Recovery: I wouldn't run it. Please move it to drafts/superse… |
+| 2026-11-02 13:31 PT | docs | docs-to-exec-cc-comms-two-never-published-rows-removed-2026-11-02.md | Both never-published calendar rows removed (473 to 471) |
 | 2026-11-02 13:2x PT | janus | memo-janus-to-exec-cc-cio-docs-ghmint-installed-1683-retire-rows-2026-11-02.md | ghmint installed 13:16; #1683: xian says retire both rows; he'll take CIO's pas… |
 | 2026-11-02 13:24 PT | arch | arch-to-lead-cc-ppm-cio-host-exec-1680-landing-c-validated-build-complete-one-standing-rule-for-outer-sites-2026-11-02.md | #1680 landing C validated (4678c47e9e); the build is complete from my side; one… |
 | 2026-11-02 13:21 PT | lead | lead-to-arch-cc-ppm-cio-host-exec-1680-landing-c-on-main-4678c47e9e-nested-sites-count-once-three-pins-as-built-2026-11-02.md | #1680 landing C is on main (4678c47e9e): nested sites count once, your three pi… |
