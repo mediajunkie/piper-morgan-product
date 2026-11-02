@@ -3,8 +3,8 @@ type: role-portfolio
 role: Web (Unicorn Web Designer)
 status: v0.2 — Amber/pipermorgan.ai wave
 self-authored-by: Web (Amber/pipermorgan.ai, Opus 5)
-last_updated: 2026-08-04
-refreshed: 2026-08-04
+last_updated: 2026-11-02
+refreshed: 2026-11-02
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: "docs/briefing/BRIEFING-ESSENTIAL-WEB.md — written 2026-08-03, closing the gap HOST flagged 2026-06-20"
 refresh_discipline: "CORRECTED 2026-08-04 (CXO/HOST's check-refresh-promises.py finding, applied to my own doc): reading the carry-forward at session START is real but is not the same activity as updating this file — no checkable trigger exists yet; see §5 for the honest version of this claim"
@@ -32,30 +32,18 @@ The one-line: *the role whose job is to make sure the public sees Piper Morgan's
 
 ---
 
-## 2. Current goals & priorities — August 4 2026
-<!-- Rule 2: medium-pace. Rule 4: direction + status + forward indicator. Rule 5: REFRESHED AT EACH SESSION START. -->
+## 2. Current goals & priorities — November 2 2026
+<!-- Rule 2: medium-pace. Rule 4: direction + status + forward indicator. Rule 5: refreshed by hand (see §5). -->
 
-⚠️ **Honest note on this refresh**: this table sat at "July 30" for 5 days and multiple substantive
-pieces of work (the `BRIEFING-ESSENTIAL-WEB.md` gap, the CLAUDE.md/ROSTER.md registry gap, the blog
-soft-404 root-cause-and-fix) shipped and closed in that window without this section being touched —
-despite §5's claim that "the session-open act is the refresh moment." **That claim didn't hold in
-practice.** Reading the carry-forward at START is necessary but not sufficient for keeping *this*
-document current; it doesn't cause an edit to this file by itself. Found via CXO's `check-refresh-
-promises.py` (2026-08-04) naming Web as one of 7 roles whose refresh discipline is prose with nothing
-checkable behind it — correct, and this section's own staleness is the concrete proof. Not registering
-a `refresh_trigger_glob` reflexively in response (see the reply to CXO/HOST in mail — my actual cadence
-doesn't map cleanly onto the same trigger shape as a workstream review), but the content gap itself
-needed fixing regardless of the meta-question, so fixing it here first.
+Refreshed 2026-11-02 for Exec's #2253 stale-docs ask. Only rows I can attest from my own logs and a served check this week are stated as fact; the August rows I cannot re-attest are listed as unverified, not carried as current.
 
-| Priority | What I'm advancing | Status (August 4) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (Nov 2) | How we'll know it's moving |
 |---|---|---|---|
-| **`BRIEFING-ESSENTIAL-WEB.md` + registry gaps** | The stable identity/how-to-operate sibling this portfolio's own §5 flagged as missing; found while writing it that Web was also absent from CLAUDE.md's role table and `ROSTER.md` | **Shipped** 2026-08-03 — briefing written, both registries fixed (tier-placement flagged for Docs, not decided unilaterally) | Docs rules on Tier 2 vs. 3; otherwise closed |
-| **Blog soft-404 fix** | `pipermorgan.ai/blog/<unknown-slug>/` and `/blog/page/<out-of-range>/` returning HTTP 200 with the not-found shell (Comms' find) | **Shipped and verified live** 2026-08-04 (`03b77d9d`) — `dynamicParams = false` on both routes; confirmed locally end-to-end and re-confirmed live by Comms against production after deploy | Closed — one open question (does a cached 404 correctly flip on tonight's real publish) being watched by Docs/Comms at publish time, not by me |
-| **Compose UI save-conflict, ask #1** | localStorage autosave safety net (Comms' highest-ranked ask) | **Shipped** 2026-07-29 (`0e448d3`); found + fixed a real data-loss bug in the underlying autosave timer 2026-07-30 (`8d2db3c`) after PM hit it live — closure-vs-ref staleness, unrelated to ask #1 itself | PM's ordinary use of the tool (already the real test, per Comms) continues clean |
-| **Compose UI save-conflict, asks #2/#3** | Conflict-diff UX (#2); live staleness warning (#3) | #2 accepted as low-priority, no date; #3 explicitly declined (would warn on a condition ask #1 already made survivable) | Comms or PM revisits; nothing scheduled |
-| **PDR-007 (Editorial Data Single Source of Truth)** | Reviewed Docs' proposal; corrected implementation-cost estimate downward (render layer needs zero changes under Option B) | Effectively settled 2026-07-30 — Arch's review concurred, Docs pre-registered a measurement-window threshold and shipped it as a runnable script | Window closes 2026-08-27; Option B proceeds or doesn't based on measured drift, not on this table |
-| **Two-repo worktree provisioning** | Getting a proper Model-A worktree for `piper-morgan-website`, not just the product repo | Resolved 2026-07-29 (PM ruling: worktrees extend to the website repo) — two known gaps remain: `copy-editorial-calendar.js`'s sibling-checkout path breaks from a worktree (routed to Docs, awaiting their preference); no `node_modules` at provisioning time (worked around, not fixed upstream) | Docs picks a fix direction; provisioning script updated to run `npm ci --ignore-scripts` at worktree standup |
-| **CLI B / `--mode=archive`** | Predecessor's two batched PM questions from 2026-07-19 | Still open, no rush — carried forward, not re-asked yet | PM answers when convenient |
+| **#2229 public site stops inviting visitors to the alpha** | `/try/`, `/try/invite/`, `/try/beta/`, `/get-involved/` rewritten to Comms' copy; `/try/alpha` is a 308 to `/try/invite/`; hero line reads "Others would rather wait for the public beta." | **Shipped** 2026-10-31 (website main `e09191c`, hero `8ea45e7`). Re-checked 11-02: all four pages 200, "alpha" 0 times in the served HTML. Lighthouse 100/100/100 on the four pages on 10-31. | Open only on the confirmation-email check (HOST or xian: does Buttondown send a confirmation for the `beta-waitlist` list?). If no email, Comms rewrites the `/try/beta/` success line and I place it. CXO closes #2229. |
+| **Served checks of the alpha product in a browser** | #2042 census replay for Lead, #2237 greyed Integrations cards, #2238 Notion save-then-chat on staging | **Blocked** on a signed-in browser: the credentials-file Read was denied by the auto-mode classifier on 10-31 and I have not worked around it. #2238 also needs xian's own Notion key; staging serves the staging-only offer. #2042 moved to PA (Arch option 1, alpha after promotion). | xian signs in as `web-pat-test` in my Chrome tab or approves the file Read; then I run and quote. |
+| **Publishing pipeline** (compose UI, `publish-post.js`, calendar read) | Keep Docs' committed draft reaching a live post without the content team touching code | Website main deploying green through 11-02 (latest deployment `b405c17`, a content-team blog commit). Website #44 (compose: edit calendar title) phase 1 pushed 10-05; issue stays open until Comms confirms it on the live admin (unverified: live GitHub-token path). | Next content-team publish lands without a code touch from me. |
+| **Deploy and CI health** | Vercel build failures; main CI at every START | Main CI 12/12 green 11-02 (`scripts/main-ci-status.sh`). | Same check each fire. |
+| **Unverified since 2026-08-04** | Compose-UI save-conflict asks #2/#3, PDR-007 measurement window (closed 08-27), CLI B / `--mode=archive`, the two-repo worktree gaps | I have no attested status for these in this refresh; check the carry-forward and the 08-04 to 10-05 logs before relying on any of them. | Re-attest at the next full portfolio review. |
 
 ---
 
