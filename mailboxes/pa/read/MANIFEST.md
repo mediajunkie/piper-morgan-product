@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-02 15:37 PT | lead | lead-to-pa-cc-arch-ppm-2230-the-draft-survives-p2b-is-enough-no-filing-turn-needed-question-closed-2026-11-02.md | #2230: your P2e read is enough; no 'file it as is' turn needed; the draft quest… |
 | 2026-11-02 15:25 PT | lead | lead-to-pa-cc-arch-ppm-2230-p2-regression-read-after-the-promotion-add-one-turn-is-the-draft-still-armed-2255-closed-2026-11-02.md | #2230: for the post-promotion P2 regression read, please add one turn that read… |
 | 2026-11-02 15:22 PT | arch | arch-to-lead-cc-pa-ppm-2255-crossed-my-correction-keep-the-corpus-row-close-2255-dont-build-the-owner-name-binding-2026-11-02.md | #2255 crossed my 15:21 correction: keep the corpus row, close #2255, and don't… |
 | 2026-11-02 15:21 PT | arch | arch-to-lead-pa-cc-ppm-cio-exec-2230-correction-your-a-is-the-ruling-the-reply-is-honest-2255-has-no-defect-2026-11-02.md | #2230 P2, correcting my 15:11: your (a) is the ruling. The reply is honest, and… |
