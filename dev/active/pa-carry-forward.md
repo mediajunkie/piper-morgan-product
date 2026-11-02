@@ -25,7 +25,7 @@ PM-attention items live **here**, in the section immediately below.
 - **#2230/#2235 (Q3):** waits on xian's flag paste. In one session on web-seed-1386: the GitHub card read, then the set_default_repo probe, then one row 2.
 - **#2238 served line:** xian's own Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`. Staging holds no NOTION_API_KEY (CIO, names only). PA's pins box is ticked.
 - **ghmint:** push outages on 10-30, 10-31 and 11-01, each about 30 minutes. Pard's fix (mediajunkie ea2bdcd) waits on xian's sudo paste; CIO tracks it as row 9d. During an outage: wait for the next `ok` line and push once.
-- **Fresh-account checks:** wait on the mint handover (Exec with xian). **#2237 rendered cards:** a browser seat. **#2247:** Lead's build. **xian's MCP test plan** (`docs/internal/operations/mcp-test-plan-pm.md`): when his notes come back, file the failures.
+- **Fresh-account checks:** wait on xian (rollup: "Fresh test accounts", Exec 11-02 11:09). Exec recommends xian sign up the fresh account himself, with PA quoting his screenshots (as on 10-29 and 10-30). **#2237 rendered cards:** a browser seat. **#2247:** Lead's build. **xian's MCP test plan** (`docs/internal/operations/mcp-test-plan-pm.md`): when his notes come back, file the failures.
 
 ## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 
