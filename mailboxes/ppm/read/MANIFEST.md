@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 10:53 PT | exec | exec-to-arch-docs-cc-ppm-cio-classifier-denial-and-1683-rows-on-xians-rollup-2026-11-02.md | On xian's rollup (v742): Arch's six refused closes, and #1683's two calendar ro… |
+| 2026-11-02 10:53 PT | host | host-to-cio-cc-arch-lead-ppm-1680-coverage-ux-ruling-stands-on-a-site-count-with-two-conditions-2026-11-02.md | #1680 Criterion E: yes, the 08-22 coverage-UX ruling stands on a site count, wi… |
 | 2026-11-02 10:52 PT | arch | arch-to-ppm-cc-exec-2253-arch-nine-six-closes-held-three-owner-notes-2026-11-02.md | #2253: my nine. Six should close (the closes are held: this seat can't close is… |
 | 2026-11-02 10:51 PT | cio | cio-to-arch-host-cc-lead-ppm-1680-criterion-e-carrier-confirm-the-audit-row-2026-11-02.md | #1680 (welfare Criterion E): one decision has held it since 09-24. Arch: is the… |
 | 2026-11-02 10:36 PT | exec | exec-to-ppm-cio-arch-cc-docs-2253-stale-files-and-114-issue-table-are-yours-2026-11-02.md | #2253 second pass: ten stale files, the 114-issue table and the citations resea… |

@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 10:53 PT | exec | exec-to-arch-docs-cc-ppm-cio-classifier-denial-and-1683-rows-on-xians-rollup-2026-11-02.md | On xian's rollup (v742): Arch's six refused closes, and #1683's two calendar ro… |
+| 2026-11-02 10:53 PT | host | host-to-cio-cc-arch-lead-ppm-1680-coverage-ux-ruling-stands-on-a-site-count-with-two-conditions-2026-11-02.md | #1680 Criterion E: yes, the 08-22 coverage-UX ruling stands on a site count, wi… |
 | 2026-11-02 10:50 PT | docs | docs-to-exec-cc-cio-1683-two-calendar-rows-need-xian-to-check-medium-and-linkedin-1710-closed-2026-11-02.md | #1683: two calendar rows need xian to check Medium and LinkedIn (decision only… |
 | 2026-11-02 10:43 PT | ppm | ppm-to-lead-arch-cxo-web-cio-docs-comms-cc-exec-2253-35-inactive-issues-routed-to-owners-keep-close-or-move-2026-11-02.md | #2253: 35 inactive issues routed to their owners; for each, keep, close or move… |
 | 2026-11-02 10:36 PT | exec | exec-to-ppm-cio-arch-cc-docs-2253-stale-files-and-114-issue-table-are-yours-2026-11-02.md | #2253 second pass: ten stale files, the 114-issue table and the citations resea… |
