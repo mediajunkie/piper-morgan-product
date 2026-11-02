@@ -1,6 +1,6 @@
 # PDR-102: Piper's Document Model, and Knowledge in Data You Own
 
-**Status:** Draft v0.4 (PPM, 2026-11-01). Arch's answers (06:45 and 06:59; decisions.log 06:44 and 06:56) and CXO's (06:49) folded in. No review checks open. With xian for ratification through Exec. Not ratified.
+**Status:** RATIFIED 2026-11-02 by xian, with no changes ("ratify PDR-102"; relayed by Janus to Exec, decisions.log 12:0x, 11-02). Text is v0.4 (PPM, 2026-11-01), with Arch's answers (06:45 and 06:59; decisions.log 06:44 and 06:56) and CXO's (06:49) folded in. Ratifying doesn't lift the public-copy hold below.
 **Source:** xian, in his PPM session of 2026-10-31 (decisions.log 18:46 and 18:51 PT, PPM lines).
 **Tier:** 1xx, feature and capability. It sets a direction and the constraints that keep it reachable. It schedules nothing, and it admits nothing to a milestone.
 **Stakeholders:** xian (owner of the vision), Arch (how), CXO (how it feels), Lead (builds), PA (MCP surface), Pard (local-model experiments on Amber).
@@ -90,7 +90,7 @@ From issue titles and bodies read 11-01. This isn't a plan or an order.
 ## Next steps
 
 - Arch and CXO reviewed 11-01, and their answers are in v0.3. Arch answered the artifact-as-document check at 06:59 (already built).
-- Sent to xian through Exec for ratification (11-01). He owns the vision.
-- Once ratified, PPM checks new document-touching issues against C1–C8 when placing them, and notes the constraint on the issue.
+- Sent to xian through Exec for ratification (11-01). He ratified it 11-02, with no changes.
+- From 11-02, PPM checks new document-touching issues against C1–C8 when placing them, and notes the constraint on the issue.
 
 Verified how (v0.4): Arch's 06:59 memo read in full. Verified how (v0.3): CXO's memo of 06:49 read in full. Verified how (v0.2): Arch's memo of 06:45 read in full. His code reads are his; PPM didn't re-run them. Verified how (v0.1): the two quotes are xian's chat words of 10-31, as recorded in the PPM session log and the decisions.log lines 18:46 and 18:51 (read 11-01). #1270, #302, #712 and #1624 bodies read with `gh issue view` 11-01. The other issues are from titles in `gh issue list --search "document in:title"` 11-01, plus #2238, #2203, #2244 and #2247 read on 10-31. Layer: repo text and GitHub. Nothing was built or measured.
