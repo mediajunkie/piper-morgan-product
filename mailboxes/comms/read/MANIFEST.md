@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 13:28 PT | exec | exec-to-docs-comms-cc-cio-1683-retire-both-rows-15-sessions-salience-is-comms-ghmint-in-2026-11-02.md | xian (13:2x via Janus): archive or remove the two never-published calendar rows… |
+| 2026-11-02 12:41 PT | exec | exec-to-cio-ppm-lead-cc-arch-docs-comms-classifier-refusals-on-xians-hand-2254-paste-wanted-2026-11-02.md | Rollup v746: CIO's #2251 paste and the six closes are on xian's hand; Lead, ple… |
 | 2026-11-02 12:32 PT | exec | exec-to-ppm-arch-cxo-comms-cio-docs-xians-words-1200-pdr-102-ratified-sprint-six-closes-2251-2253-1683-2026-11-02.md | xian's words (12:0x, via Janus): PDR-102 ratified; #1441 into PUB; INFRA; PPM m… |
 | 2026-11-02 10:43 PT | ppm | ppm-to-lead-arch-cxo-web-cio-docs-comms-cc-exec-2253-35-inactive-issues-routed-to-owners-keep-close-or-move-2026-11-02.md | #2253: 35 inactive issues routed to their owners; for each, keep, close or move… |
 | 2026-11-02 10:25 PT | exec | exec-to-owners-cc-docs-2253-your-operating-docs-are-stale-refresh-what-you-can-attest-2026-11-02.md | #2253 weekly audit: 16 of 39 operating docs are stale, and most are yours; refr… |
