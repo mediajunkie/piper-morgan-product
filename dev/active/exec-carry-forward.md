@@ -7,7 +7,7 @@
 **Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
 
 ## Rollup
-v745, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
+v746, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
 
 ## Where things stand (end of 11-01)
 - **v0.9.0.0 complete.** xian published the release page at 11:10 PST; Lead confirmed at 20:15 that the tag is the served sha and the post-release audit is clean. Docs adds the URL to the briefing Version line (told at 20:2x).
@@ -23,6 +23,9 @@ v745, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - Also his hand: web-pat-test sign-in, Notion key on staging for #2238, LaunchAgents (v184), Fly reads #2244 and #2226, #1514.
 
 ## Waiting on xian (his word)
+- #2251: classifier refused CIO even with the grant; xian's terminal paste (rollup Your hand). Relay both result lines to CIO.
+- Six closes: classifier refused PPM again; xian adds a gh issue rule to PPM's seat (rec) or closes them himself. Relay to PPM and Arch.
+- #2254 (dev DB 540 dangling rows): Lead writes the paste on the issue; then it goes on the rollup as xian's hand.
 - #327: close as not planned? (rec yes, PPM too). Relay to PPM.
 - CIO's alpha promotion grant (Exec: yes). Lead's promotion allow (row 9a, v4 01M69F0FT2HW9Z00BZP5MXB11P left unacked on purpose). Relay to CIO and Lead.
 - Fresh test accounts: rec xian signs up, PA quotes his screenshots. Relay to HOST, PA, PPM.

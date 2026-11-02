@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Saturday 31 October</h1>
-<p class="meta">Exec · v745, rebuilt 12:35 PST Mon 11-02 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v746, rebuilt 12:45 PST Mon 11-02 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -76,6 +76,9 @@ Then reconnect the Piper connector in Claude once (one consent click). If Claude
 <ol>
 <li><b>GitHub token-renewal fix (ghmint)</b> (Pard&rsquo;s console v185, one sudo paste; mediajunkie <code>ea2bdcd</code>: retries within a run, a new token every 15 minutes). Do this one first. A single failed renewal stops every seat&rsquo;s pushes for about 30 minutes, and it has happened three days running: 10-30 (31 min), 10-31 (31 min), today 13:28 to 14:00 (32 min) (CIO 14:06).</li>
 <li><b>Load the Exec and Lead LaunchAgents</b> (console v184).</li>
+<li><b>CIO&rsquo;s hook fix (#2251), one terminal paste.</b> Your yes reached CIO, but the classifier still refuses the edit, since a yes relayed by mail doesn&rsquo;t reach it. The first run is the control (2 of 6 should fail). The second should print &ldquo;0 failed of 6&rdquo;. Paste both result lines back.
+<pre>cd ~/Development/piper-morgan-worktrees/cio &amp;&amp; bash dev/active/cio-2251-test.sh; git apply dev/active/cio-2251-check-branch.patch &amp;&amp; bash dev/active/cio-2251-test.sh</pre></li>
+<li><b>The six closes (#272, #309, #315, #335, #337, #1011).</b> Same thing: your yes didn&rsquo;t reach the classifier, and PPM was refused again. Either add a permission rule for <code>gh issue edit</code>, <code>gh issue comment</code> and <code>gh issue close</code> to PPM&rsquo;s seat (rec: PPM closes issues every day), or close them yourself from PPM&rsquo;s drafted notes (ask and PPM sends them).</li>
 <li><b>Two reads on the Fly server, no rush</b> (no agent seat is allowed to read production). For #2244, run <code>fly ssh console -a piper-morgan -C "ls -la /app/data /data"</code> and paste the output on the issue. For #2226, read the peak on the memory panel for app piper-morgan, under Metrics, against 1,024 MB. Both inform the sprint talk; neither blocks tonight.</li>
 <li><b>Optional: Lead&rsquo;s promotion permission</b> (the 14:00 paste), so Lead runs later promotions without you.</li>
 <li><b>Sign Web&rsquo;s tab in as <code>web-pat-test</code></b>, or approve Web&rsquo;s Read of that one credentials file. That unblocks #2237&rsquo;s cards check, and with the next item it unblocks #2238&rsquo;s Notion check.</li>
