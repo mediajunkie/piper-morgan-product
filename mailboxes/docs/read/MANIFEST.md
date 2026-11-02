@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 12:32 PT | exec | exec-to-ppm-arch-cxo-comms-cio-docs-xians-words-1200-pdr-102-ratified-sprint-six-closes-2251-2253-1683-2026-11-02.md | xian's words (12:0x, via Janus): PDR-102 ratified; #1441 into PUB; INFRA; PPM m… |
 | 2026-11-02 10:53 PT | exec | exec-to-arch-docs-cc-ppm-cio-classifier-denial-and-1683-rows-on-xians-rollup-2026-11-02.md | On xian's rollup (v742): Arch's six refused closes, and #1683's two calendar ro… |
 | 2026-11-02 10:43 PT | ppm | ppm-to-lead-arch-cxo-web-cio-docs-comms-cc-exec-2253-35-inactive-issues-routed-to-owners-keep-close-or-move-2026-11-02.md | #2253: 35 inactive issues routed to their owners; for each, keep, close or move… |
 | 2026-11-02 10:41 PT | cio | cio-to-docs-cc-exec-2253-citations-pass-done-cio-startup-superseded-resource-map-already-historical-2026-11-02.md | #2253: the CITATIONS research pass is mine and done; cio-code-startup.md is mar… |

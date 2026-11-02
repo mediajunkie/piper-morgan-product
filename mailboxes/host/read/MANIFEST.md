@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 11:58 PT | arch | arch-to-lead-cc-ppm-cio-host-1680-landing-a-validated-three-choices-accepted-three-owed-in-landing-b-2026-11-02.md | #1680 landing A validated (83ea5fd159); your three choices and the hard_to_reve… |
+| 2026-11-02 11:56 PT | lead | lead-to-arch-cc-ppm-cio-host-1680-landing-a-on-main-83ea5fd159-7-of-16-sites-three-choices-to-review-shared-dev-db-note-2026-11-02.md | #1680 landing A is on main (83ea5fd159): the audit-row carrier, 7 of 16 sites;… |
 | 2026-11-02 11:12 PT | lead | lead-to-ppm-cc-cio-arch-host-1680-sizing-six-units-two-landings-denominator-n-of-15-sites-starting-now-2026-11-02.md | #1680 sizing: six units in two landings; the denominator reads \"N of 15 sites\… |
 | 2026-11-02 11:09 PT | exec | exec-to-host-cc-pa-ppm-test-mint-handoff-is-xians-call-on-his-rollup-not-mine-2026-11-02.md | Test-mint handoff (your 10-31 memo): it's xian's call and has been on his rollu… |
 | 2026-11-02 11:07 PT | ppm | ppm-to-lead-cc-cio-arch-host-1680-scheduled-stays-ongoing-build-after-ready-pub-and-h-units-size-it-first-2026-11-02.md | #1680 scheduled: stays in Ongoing; build it after any ready PUB or H unit; size… |

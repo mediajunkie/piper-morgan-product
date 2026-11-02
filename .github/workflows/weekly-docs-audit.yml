@@ -180,7 +180,7 @@ jobs:
 
               ### 📊 GitHub Issues Sync
 
-              - [ ] Run: \`gh issue list --state all --json number,title,state,labels --limit 200 > docs/planning/pm-issues-status.json\`
+              - [ ] **Note**: the pm-issues-status.json regeneration step was dropped 2026-11-02 (xian, #2253): GitHub is the source of truth
               - [ ] Verify open issues have milestone assignment (TRACK-EPIC convention retired Apr 7, 2026)
               - [ ] **Note**: backlog.md deprecated - use GitHub Projects for planning
               - [ ] Identify stale issues (no activity >30 days)
