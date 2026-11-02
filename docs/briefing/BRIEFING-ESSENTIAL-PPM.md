@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-PPM
 valid_from: "2026-01-09"
-last_updated: 2026-08-01
-last_verified: 2026-08-01
+last_updated: 2026-11-02
+last_verified: 2026-11-02
 ---
 
 # BRIEFING-ESSENTIAL-PPM
@@ -29,6 +29,7 @@ last_verified: 2026-08-01
 - **Spec-pipeline translation and roundtable synthesis**: keep. Trigger: CXO, Arch and others independently assess one product question, or an experience finding needs a product position. Not exercised 09-13 to 10-13 in a way my logs name; the month was gate-ledger work. That is a drift to watch, not a retirement.
 - **PDR stewardship**: keep. Trigger: a decision that behaves like a PDR (see `docs/internal/planning/ppm-placement-and-disclosure-rules-2026-10-13.md`) or a PDR-shaped ask from Arch/CXO. Whether an architecture ruling needs a PDR is Arch's call.
 - **Roadmap and vision stewardship**: keep. Trigger: a milestone/date ruling or a fold of accumulated changes (v19.0 on 2026-10-10; v19.1 on 2026-10-26, a Current Position re-fold on Docs' staleness notice). Version check: read the head of `roadmap.md` and `vision.md`.
+- **Since the MVP closed (2026-10-30)**: the gate work became Production-plan stewardship. Every open Production issue has a row in one sprint of `docs/internal/planning/production-sprint-proposal-2026-10-23.md`, its Total matches `gh issue list --milestone Production`, and the map is rebuilt after each placement (see Product Artifacts). The bullet below is the MVP-era mechanism, kept for its scripts.
 - **Gate and order stewardship**: moved into a mechanism and still alive. `dev/active/mvp-epic-order-2026-09-09.md` is the ordered-epic source; the third-queue criteria line is carried by `scripts/ppm-criteria-line.sh` (MVP open of total open, MVP issues missing from the order doc, open issues with no milestone), run every START and after each placement. The ledger is `beta-gate-standard.md`; the ceiling recount is `scripts/pattern_literal_counts.py`.
 - **Startup reading (omnibus logs, coverage check, cross-pollination brief)**: retired as routine steps. The omnibus is read on demand; the coverage check applies only when writing a workstream memo; the cross-pollination brief is read when a task touches cross-project work, and I do not read it every start.
 - **Colleague Test and per-category quality-threshold scoring**: keep, on trigger only (a feature or PDR claims a quality threshold, or CXO asks for a scored round). Not a routine duty; it did not occur in the window.
@@ -157,7 +158,7 @@ What makes a PDR actionable vs. aspirational:
 - **Boundary-respecting**: a PDR captures a *product* decision. Implementation choices belong in ADRs (Architect) or session logs (Lead Dev). PDR-004's PDR-vs-ADR distinction is canonical.
 - **Verifiable claims**: any comparative claim ("most X to date," "first Y," "more than Z") needs source-checking before the PDR ships. Verifiable-claims norm (Apr 19) applies.
 
-The discipline is *not* "more PDRs" — it's "fewer, more decisive PDRs that compound." 4 ratified + PDR-101 + BYOC-as-PDR-005 candidate is right-sized for the project's current scope.
+The discipline is *not* "more PDRs" — it's "fewer, more decisive PDRs that compound." As of 2026-11-02 the index holds 10 records (001–007, 101, 102, plus the PDR-002 appendix; `docs/internal/product/pdr/README.md`). PDR-102, the document model, is a draft with xian.
 
 ### UX Vision (with CXO)
 **Modeled UX**:
@@ -187,11 +188,11 @@ the standing job description):
    fresh (never a quoted number), watching its "NOT ON THE BOARD" and unmilestoned lines, which
    recur even with the filing convention in place. Fix at the source (add-to-board/set-milestone),
    never a convention change.
-2. **`dev/active/mvp-epic-order-2026-09-09.md` stewardship** — the ordered-epic source of truth for
-   what Lead works next, one epic at a time. Every MVP item needs an epic home, no exceptions (PM's
-   2026-09-12 ruling); the **third-queue-source criteria line** (adopted 2026-09-22, documented in
-   `dev/active/ppm-carry-forward.md`) catches MVP-open issues with no epic home — a different check
-   than milestone/board correctness, run at every START/WATCH.
+2. **Production plan stewardship** (since the MVP closed 10-30; replaces the MVP epic-order doc,
+   `dev/active/mvp-epic-order-2026-09-09.md`, now history): each new Production issue gets a row in
+   one sprint section of `production-sprint-proposal-2026-10-23.md`, the Total line is recounted, and
+   the map is rebuilt and published. `scripts/ppm-criteria-line.sh` still runs every START: its
+   "open with no milestone" field is the live one, and MVP open reads 0.
 3. **Issue triage against precedent** — new issues (especially ones arriving outside the
    `piper-draft-issue` skill path, which skip its board-add step) get milestoned and epic-placed by
    checking how the closest-shaped prior issue was handled, not by guessing from the title.
@@ -201,9 +202,10 @@ the standing job description):
    PPM's), route it plainly, and don't chase an answer that hasn't come yet.
 
 **Product Milestones**: MVP → Production → Fast Follow is the ratified sequence (PM, 2026-08-09) —
-**"not MVP" never defaults to Fast Follow**. MVP milestone `due_on` is 2026-10-30, a planning target
-not a promise — **do not cite a fixed beta date; every prior one has been wrong.** Private beta
-(v0.9.0) gates on MVP closing; the PUBLIC-beta gate is MCP-path completion specifically (the four
+**"not MVP" never defaults to Fast Follow**. **The MVP milestone closed 2026-10-30 on xian's Go**
+(`gh api …/milestones/5`: closed 2026-10-31T00:07Z), and v0.9.0.0, the private beta, is tagged at
+`c44dd081cb` with its release page published 2026-11-01. Production closes at 1.0. Don't cite a date
+for it; dates are xian's. the PUBLIC-beta gate is MCP-path completion specifically (the four
 named items #1462/#1458/#1509/#1688, per the milestone #9 description text — PM-ratified 2026-08-30,
 ESSENCE v1.0). Full model: `docs/internal/planning/release-model.md` — cite that, don't re-derive.
 Current denominator: always a fresh `sprint-truth.py` pull, never a number quoted from this file.
@@ -260,7 +262,7 @@ gh project item-edit --id <item-id> --project-id PVT_kwHOADE-8s4A-JwA \
 
 Run the three as plain commands, not a shell function or loop of `gh` writes (those were denied). Add a comment on the issue with the reason.
 
-**Placing in MVP is a ledger event, in the same fire** (missed once: #1965, 10-08, found 10-09): (1) the issue body carries a `Gate class:` line (1-4, `beta-gate-standard.md`) and an `Owner:` line; (2) a row goes into the slip ledger in `docs/internal/planning/beta-gate-standard.md`, gate count before and after; (3) check whether it is the second slip, which fires the brake (PM chooses; PPM proposes no date). Closes and moves out get rows too.
+**Placing in MVP is a ledger event, in the same fire** (MVP is closed since 10-30; a reopening is xian's call, so this applies only if he reopens it) (missed once: #1965, 10-08, found 10-09): (1) the issue body carries a `Gate class:` line (1-4, `beta-gate-standard.md`) and an `Owner:` line; (2) a row goes into the slip ledger in `docs/internal/planning/beta-gate-standard.md`, gate count before and after; (3) check whether it is the second slip, which fires the brake (PM chooses; PPM proposes no date). Closes and moves out get rows too.
 
 Criteria line (every START and after each placement): `scripts/ppm-criteria-line.sh` prints MVP open of total open, MVP issues missing from the order doc, and open issues with no milestone; exit 0 = nothing to place.
 
@@ -415,7 +417,7 @@ PA's Apr 16 Klatch-vocabulary retraction is the canonical example: PA initially 
 
 ---
 
-*Last Updated: April 27, 2026*
+*Last Updated: November 2, 2026 (PPM: post-MVP refresh of the duties, standing priorities, milestones and PDR count; the April-era sections below Current Focus are kept as role history)*
 *Owner: PPM (PM (xian) is escalation surface)*
 *Workstream: Product & Experience*
 *Note: This describes stable role context. For current project state, see BRIEFING-CURRENT-STATE.md*
