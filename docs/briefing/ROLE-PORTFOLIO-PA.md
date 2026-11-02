@@ -1,10 +1,10 @@
 ---
 type: role-portfolio
 role: PA (Piper Alpha)
-status: v0.1 — main-cohort wave
+status: v0.2 — refreshed for the private beta (0.9.0.0)
 self-authored-by: PA
-last_updated: 2026-06-20
-refreshed: 2026-06-20
+last_updated: 2026-11-02
+refreshed: 2026-11-02
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-piper-alpha.md
 refresh_discipline: "section 2 updated at every release cut and major milestone close — can't write the release notes without touching what's current (Rule 5)"
@@ -27,34 +27,30 @@ This is also why PA is PM's closest strategic partner in the cohort — not beca
 
 ---
 
-## 2. Current goals & priorities — June 2026
-
-⚠️ **STALE — flagged 2026-08-11, found during weekly-docs-audit #1583/#1585.** This section is
-~51 days old, despite this file's own frontmatter mandating refresh at every release cut (several
-have happened since). Left un-rewritten — Docs doesn't own PA's priority narrative and won't
-fabricate a replacement; flagged to PA directly for a refresh.
+## 2. Current goals & priorities — November 2026
 <!-- Rule 2: medium-pace; changes per sprint/milestone. Rule 4: direction + status + forward indicator. Rule 5: REFRESH AT EVERY RELEASE CUT. -->
 
-| Priority | What I'm advancing | Status (June 20) | How we'll know it's moving |
+Refreshed 2026-11-02 by PA, replacing the June table (it described the Droplet, the `production` branch and PA-owned release cuts, all gone since). The order follows the role card in `BRIEFING-piper-alpha.md` (updated 10-30). Status is as PA read it on 11-02, from `/health` on each host and PA's standing items (`dev/active/pa-standing-items.md`).
+
+| Priority | What I'm advancing | Status (11-02) | How we'll know it's moving |
 |---|---|---|---|
-| **BYOC distribution path** | A tester can install Piper's MCP skills / MCPB plugin without cloning the repo | v0.1.1 MCPB shipped + validated; MCP skill bundle tested (Cowork + Code); 4-scenario model ratified | Cindy Chastain (or another non-technical tester) installs and connects without repo clone |
-| **Hosted alpha path** | `alpha.pipermorgan.ai` is a reliable, documented deployment target | v0.8.8 on `production` branch; Droplet hosting confirmed; deploy runbook stub written; Lead Dev working on deploy mechanism | Deployment runbook complete; alpha URL reliably serves v0.8.8 |
-| **Alpha tester ecosystem** | A small roster of testers actively using Piper and giving signal | Justin M. confirmed; Jake K. tentative; onboarding infrastructure at v0.8.8 | First external tester installs + completes a week of use; PA has their feedback |
-| **Cross-project intelligence** | PM has visibility into openlaws / DinP portfolio signals that are relevant to Piper decisions | PA↔PO signal pattern established; PR #154 (Streamable HTTP + per-customer token) surfaced as reference implementation; openlaws-research-agent cloned and read | Signal dispatches result in a concrete Piper decision at least once a month |
-| **Product honesty in distribution** | What we say Piper does matches what it actually does — especially in tester-facing materials | `ALPHA_QUICKSTART` refreshed for v0.8.8; release notes written from real issue evidence; #1289 standup-skill migrated off hollow engine | No tester reports a feature as "not working" that was described as working |
-| **#1289 hollow path retirement** | `MorningStandupWorkflow` / `StandupOrchestrationService` fully retired | Skill swap done (MCP standup now uses honest engine); remaining callers: `/generate` route, `conversation_handler.py`, URL refs | All callers migrated; `morning_standup.py` + `standup_orchestration_service.py` deleted |
+| **1. The MCP program** | `mcp.pipermorgan.ai` works and is verified live. PA owns MCP app deploys (`scripts/deploy-mcp.sh` only) and writes the test plan xian runs. | Fly v18, sha `a8a01b96b4`, healthy. Next deploy is #2242 (a), the allowlist: on main, dry run passed 11-01, and it waits on xian's `mcp_allow.py list`. Test plan: `docs/internal/operations/mcp-test-plan-pm.md`, waiting on xian's run. Open on the surface: #1911 (consent page shows a raw ID), #1918 (no Connected apps page). | xian runs the test plan and PA files what fails; #2242's refusal checks pass when served. Nothing is listed anywhere until xian has tested it. |
+| **2. R7 packaging** | Listing copy, the plugin repo and the MCP Registry publish. xian submits Smithery and the Claude directory from his own accounts. | Gated on #2242, #1911, #1918, #2175 and xian's test-plan run. PPM placed the plugin and MCP lane in the sprint after the current one. | The gates close, then the copy and the plugin repo go to xian to submit. |
+| **3. Served checks on alpha** | The checks the cohort assigns PA on each alpha promotion: the #1386 canonical rows, the #2042 floor replay, the #2250 status latency. | Alpha and beta serve `c44dd081cb` (v0.9.0.0). Row 2 on that build: routing 58/61, CXO-triaged 34/42. The #2042 replay and the #2250 after-half wait on the next promotion. The #2250 before-half is done: 16 turns per ask on #2250. | Each check runs within the hour of the promotion, with the sha at start and end and its denominator. |
+| **4. Research signal and PM-assist** | Floor, ceiling and path moments in the session log; triage, briefings and recommendations as xian asks. | Ongoing, in the daily log. | xian asks for it, or a log moment changes a design decision. |
 
 ---
 
-## 3. Standing responsibilities (slow-pace — sustaining the product-reach function)
+## 3. Standing responsibilities (slow-pace)
 <!-- Rule 2: named and real (half the work), but UNDER purpose. -->
 
-- **Release ownership** — PA now owns the end-to-end release process (pyproject bump, release notes, doc updates, git tagging, GitHub Release, production branch). Uses the `cut-release` skill. Delegates implementation work to coding agents; holds the coordination and judgment calls.
-- **Alpha tester coordination** — roster management, onboarding infrastructure, tester communication (including outreach emails). The tester relationship is the most externally-facing thing PA touches.
-- **BYOC/distribution strategy** — the skunkworks tracker, the 4-scenario distribution model, the MCPB plugin versioning, the hosted vs. local decision. PA maintains these and keeps them current with product reality.
-- **Cross-project signals** — the PA↔PO signal to the openlaws Dispatch. Read-only access to openlaws repos; signal-write only (no code commits to openlaws). Dispatch when PA observes something relevant to both portfolios.
-- **Product assistant functions** — PM's strategic sounding board when the question is "where should we be going?" rather than "how do we build this?" PA is not the implementer but is the first voice on product direction.
-- **Distribution documentation** — the hosted distribution guide, BYOC docs, alpha onboarding docs. PA keeps these accurate to the current product.
+- **MCP app deploys and live checks:** only via `scripts/deploy-mcp.sh`, dry run first. After each deploy, check `/health` for the sha, then run the served checks. PA never puts the master key on the MCP app.
+- **The MCP test plan:** written and kept current by PA, run by xian from his own accounts. PA reads his notes and files the failures as MCP-lane issues.
+- **Filing in the MCP lane:** PA files issues in the MCP lane on its own call. Code in `services/` and `tests/` is Lead's.
+- **Served checks on promotion:** as assigned by Arch, CXO, PPM or Lead, run on the test account `web-seed-1386` with credentials passed by process substitution and never printed.
+- **Release:** no longer PA's. v0.9.0.0 was tagged by Lead on PPM's go, and xian created the release page (11-01). PA's part of a release is the served capability quotes and row 2 when asked.
+- **Alpha testers:** no longer PA's to coordinate. Fresh accounts and invites go through Exec and xian. PA doesn't mint or spend invites.
+- **Cross-project signals (openlaws Dispatch):** the read-only, signal-only rule below stands. PA hasn't used this channel recently, and its current state is unverified.
 
 ---
 
@@ -62,9 +58,9 @@ fabricate a replacement; flagged to PA directly for a refresh.
 <!-- Rule 3: make the graph legible — what I co-own, with whom, and the tier that governs cross-role asks. -->
 
 ### PA ↔ Lead Dev — distribution architecture seam
-**Co-own**: the technical distribution path (MCPB plugin, MCP skill bundle, Droplet deploy, `/api/v1/standup/` migration), release execution, product-quality gates before release.
+**Co-own**: the hosted MCP path. Lead builds the MCP server code; PA deploys the MCP app and runs the served checks. PA also runs the served checks for Lead's alpha promotions when asked.
 - **Freely**: PA brings distribution questions, Lead Dev brings technical constraints — no sign-off needed for reconnaissance and scoping.
-- **Sign-off**: PA can file issues in Lead Dev's sprint backlog (e.g., #1289), but Lead Dev scopes and schedules them. PA doesn't prioritize or sequence Lead Dev's work unilaterally.
+- **Sign-off**: PA files MCP-lane issues; Lead scopes and schedules the code work. PA doesn't prioritize or sequence Lead Dev's work unilaterally.
 - **Unilateral (mine)**: the product-honesty call (see below). If Lead Dev ships something whose behavior diverges from what tester-facing docs claim, PA names that gap even when it creates rework.
 
 ### PA ↔ CXO — tester experience seam

@@ -3,8 +3,8 @@ type: role-portfolio
 role: Comms (Communications Director)
 status: v0.1 — main-cohort wave
 self-authored-by: Comms
-last_updated: 2026-10-09
-refreshed: 2026-10-09
+last_updated: 2026-11-02
+refreshed: 2026-11-02
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-COMMS.md
 refresh_discipline: "updated AS PART OF the weekly workstream review — the review is the refresh moment (Rule 5); if section 2 lags the last few reviews, the portfolio has drifted"
@@ -25,17 +25,17 @@ The one-line: *the role that turns what we're building into a durable, coherent 
 
 ---
 
-## 2. Current goals & priorities — October 2026
+## 2. Current goals & priorities — November 2026
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has direction + status + "how we'll know it's moving." Rule 5: REFRESHED EACH WEEKLY REVIEW. -->
 
-| Priority | What I'm advancing | Status (Oct 9, window Oct 2 – Oct 8) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (Nov 2, from the calendar CSV and my logs) | How we'll know it's moving |
 |---|---|---|---|
-| **Building narrative cadence** | Keep the Tue/Thu narrative + Sat/Sun insight schedule flowing | **5 published in-window**, all crossposted. Calendar filled through 10-29. **Narrative front: Sep 6** (scaffold for Tue 11-03). Next in order: Sep 7–10. | No empty Tue/Thu/Sat/Sun slot in the next 14 days; tease chain verified end to end |
-| **Drafting process: "AI prompts human"** | PM writes the prose, Comms supplies scaffolds and reviews (PM 10-05 feedback, ruled 10-07) | **First scaffold built** (Sep 6 beat, 10-08). Blog template updated with scaffold mode (10-08). PM is rewriting queued drafts in their own voice, and my reviews are light-touch: facts, typos, they/them. | PM's prose on the first scaffold, then PM's verdict on the method |
-| **Product copy** | Plain, true, sourced wording for what testers and users read | **Live**: privacy Section A (the AI-assistant connector), the Revoke paragraph (two-sentence version), the widened opening sentence, and /support (Web shipped, my wording). **Approved, not sent**: beta invitation. **Drafted, waiting on 4 PM decisions**: privacy Section C (Piper accounts). Plugin listing copy sourced line by line and waiting on PM. | Every claim on a live page traces to a cited fact |
-| **Editorial mechanism upgrades** | Turn recurring one-off catches into permanent checks, not vigilance | Blog template review (10-08). Ship template v4.1 metrics fixed to bullets (CIO R6 P4). Pending PM's D-C: template-audit as the single source for Ship rules. | A caught defect becomes a check the same day |
-| **Verification discipline** | Make my own checks falsifiable, not just my subjects' | Owned this window: a 4-day deferral on a misread "usage window" blocker; triage by listing loop (twice); a missed retitle in a pre-check; a curl 200 on an unpublished Ship, caught before reporting. Each one is logged where it happened. | Corrections are named by me before someone else finds them |
-| **Biweekly editorial mining pass** | Prevent the narrative backlog from silently re-forming | **Second pass 10-09** (Sep 25–Oct 8, 14/14, 11 candidate / 3 thin), sent to Exec for PM. Next due 10-23. | The pass runs on its date and PM gets a decision-ready report |
+| **Building narrative cadence** | Keep the Tue/Thu narrative + Sat/Sun insight schedule flowing | **6 posts and Ship #066 distributed 10-24 to 11-01.** Tue 11-03 "The Unguarded Entrance" (Sep 6) waits on PM's prose. Thu 11-05 beat 1 (Sep 7-8) scaffolded 11-01. **Narrative front: Sep 6.** No posts are on the calendar after 11-05 except Ships. | The 11-01 planning walk fills 11-07 onward (planning doc, walk items B to F) |
+| **Drafting process: "AI prompts human"** | PM writes the prose, Comms supplies scaffolds and reviews | Running. PM wrote the 10-31 and 11-01 posts from Comms scaffolds. My reviews cover facts, typos and they/them, and PM rules on judgment calls (four on 11-01). | Each post lands from PM's prose, reviewed and audited before Docs |
+| **Product copy** | Plain, true, sourced wording for what testers and users read | **Live**: the `/try` pages beta copy (#2229, CXO passed the served text 10-31). **Sent**: the beta invitation letter (10-31). **Holding**: no data-ownership claim until PDR-102 C7 and C8 are met. **Open**: #2229 closes after the Buttondown confirmation-email check (xian or HOST). | Every claim on a live page traces to a cited fact |
+| **Editorial mechanism upgrades** | Turn recurring one-off catches into permanent checks | template-audit is at v1.16 (16 checks). The title lock (a tease's title is final before the teasing post goes to Docs) is in check 6. | A caught defect becomes a check the same day |
+| **Biweekly editorial mining pass** | Prevent the narrative backlog from silently re-forming | Next pass due Fri 11-06. | The pass runs on its date and PM gets a decision-ready report |
+
 ---
 
 ## 3. Standing responsibilities (slow-pace — sustaining the editorial infrastructure)

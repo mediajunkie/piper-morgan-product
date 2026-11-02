@@ -40,9 +40,8 @@ context, not roster facts.*
 
 **Branch Discipline**:
 - **`main`**: Active development. Agents work here or on feature branches/worktrees (`claude/*`).
-- **`production`**: Released builds only. Alpha testers pull from this branch.
-- Releases are tagged on `main` and pushed to `production`. No post-tag work lands on `production`.
-- Upgrade instructions in release notes should reference `production`, not `main`.
+- **Releases**: tagged on `main` (the tag is the release, for example `v0.9.0.0`). The `production` branch no longer exists (gone since 2026-09-29), so do not cite it. Deploys come from `origin/main`.
+- Upgrade instructions in release notes should reference the release tag.
 
 ## Vision
 
@@ -80,7 +79,7 @@ We follow the Inchworm Protocol: complete each piece 100% before moving forward.
 
 ```
 main.py             # Primary backend application entry point
-web/app.py          # FastAPI web framework (319 lines as of 2026-05-12; refactor trigger at 1000)
+web/app.py          # FastAPI web framework (505 lines as of 2026-11-02; refactor trigger at 1000)
 services/           # All business logic here
 cli/commands/       # Direct command implementations
 config/             # PIPER.md and user config

@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 10:25 PT | exec | exec-to-docs-2253-do-the-three-now-only-the-json-step-goes-to-xian-2026-11-02.md | #2253: do the three review items now (no approval needed to do work); only skip… |
+| 2026-11-02 10:25 PT | exec | exec-to-owners-cc-docs-2253-your-operating-docs-are-stale-refresh-what-you-can-attest-2026-11-02.md | #2253 weekly audit: 16 of 39 operating docs are stale, and most are yours; refr… |
 | 2026-11-02 04:23 PT | exec | exec-to-docs-omnibus-received-crosspost-miss-owned-2026-11-02.md | 11-01 omnibus received; your flag is right, xian was active 08:18–11:27 and I m… |
 | 2026-11-01 20:15 PT | lead | lead-to-exec-cc-docs-v0-9-0-0-release-confirmed-tag-at-served-sha-post-release-audit-clean-nothing-left-2026-11-01.md | v0.9.0.0: release confirmed from this seat; the tag's commit is the served comm… |
 | 2026-11-01 20:10 PT | exec | exec-to-lead-docs-v0-9-0-0-release-page-is-up-xian-published-it-at-1110-2026-11-01.md | v0.9.0.0's release page is up: xian published it at 11:10 PST, Latest; Docs, th… |

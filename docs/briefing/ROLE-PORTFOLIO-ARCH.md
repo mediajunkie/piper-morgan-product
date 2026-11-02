@@ -3,8 +3,8 @@ type: role-portfolio
 role: Architect (Chief Architect)
 status: v0.1 — main-cohort wave (after the CIO + Lead-Dev pilots passed), against the role-portfolio trust framework v0.1
 self-authored-by: Architect
-last_updated: 2026-07-30
-refreshed: 2026-07-30
+last_updated: 2026-11-02
+refreshed: 2026-11-02 (section 2 and the section 5 note; sections 1, 3 and 4 re-read, not rewritten)
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-ARCHITECT.md
 refresh_discipline: "updated AS PART OF the weekly workstream review — the review is the refresh moment (Rule 5); if section 2 lags the last few reviews, the portfolio has drifted"
@@ -25,24 +25,19 @@ The one-line: *the role whose job is to keep the system composable as it scales 
 
 The cross-cutting lever is **derive-don't-maintain / make-drift-impossible-by-construction** (m-41): the best contract is one that *can't* drift, not one everyone has to remember to honor. (It's been the recurring architectural move — ADR-072's frontmatter-derive, #1283's registration-derive, #1106's MANIFEST-derive — and it has a live product dimension, see the question-box.)
 
-## 2. Current goals & priorities — July 2026
+## 2. Current goals & priorities — November 2026
 
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has a direction + a forward indicator. Rule 5: REFRESHED EACH WEEKLY REVIEW. -->
 
-**Refreshed 2026-07-30** after 40 days stale — see the note at the end of §5, which is a finding rather than an apology.
+**Refreshed 2026-11-02** on Exec's #2253 ask, after 95 days stale. The July table is retired whole. Its threads are resolved or carried in decisions.log, and I didn't re-verify them one by one. Source for this table: my carry-forward, decisions.log 10-31 to 11-01, and the issues named.
 
-| Priority | What I'm advancing | Status (Jul 30) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (Nov 2) | How we'll know it's moving |
 |---|---|---|---|
-| **Spatial committed-theory review → decision brief** | PM-directed (7/18); I convene + own architectural history and ADR disposition | **Map filed** (`spatial-intelligence-layer-map-and-costed-options.md`), ADR-038 **Amendment A filed**, ADR-affected map complete | PM decides on the 10-module cold island; open inputs = PPM's roadmap slice + Lead's L4 monitoring-loop estimate |
-| **`Intent.original_message` single authority + ratchet (#1459)** | kill a class that has now survived **two** instance fixes (#1332, #1417) | live bug traced by Lead (setup/onboarding silently floor-routes); instance fix proposed for beta, class fix Production | the **ratchet** lands, counting raw reads of *every* key carrying the value — not just the accessor |
-| **PDR-006 hosted-MCP + plugin distribution** | the distribution architecture for alpha/beta | **Reviewed; Q2 resolved** (PM had decided it 2026-01-08); no objection to ratifying | CXO + PPM reviews land → ratifies → **the caller-identity boundary is built fail-closed**, since all ADR-079 owner-scoping sits downstream of it |
-| **Enforcement-mechanism layer (ADR-077 / ADR-079 lints + ratchets)** | contracts that hold by construction, not by memory | ADR-079 D2b/D3 + forward-guard ratified; **debt migration 36→0 in flight (Lead)** | ceiling reaches 0 → the growth-ratchet flips to a full CI block by itself |
-| **Make-drift-impossible as practice, not slogan** | the cross-cutting lever (m-41) | now includes **tooling**: `scripts/reachability-map.py` (2026-07-29) makes "is this layer live?" a command instead of a recollection | the next layer question is answered by re-running a command; **no ADR evidences a pattern with a perishable implementation fact** (ADR-038 Amendment A's forward rule) |
-
-**Retired from this table since June** — recorded rather than silently dropped:
-- **#1283 routing-integrity → "ADR-073"** — landed as **ADR-077**, not a new ADR-073 slot (my 7/9 ruling). Build conformance-checked D1–D5; #1283 closed.
-- **RECONNECT / ADR-070 → #1232** — ADR-070 shipped and has since taken **Amendment A** (env-resolved `mcp_server_ref` indirection, 7/10).
-- **ADR-072 Skill-Routing → Wave P** — ratified v0.2; ⚠️ **I have not verified Wave P / #1245 build status this week and am not asserting it.**
+| **ADR-080 inversion: the LLM decides meaning, code decides permission** | No phrasing checks in code. The interpretation layer only shrinks. | Holding. #2195 (61 surface-1 literals, deleted list by list under the gate) is open. | Each deletion lands with its corpus and screen evidence, and the literal count goes down |
+| **Router discipline (Rule 7)** | A router render change needs a passed ×6 screen plus the full corpus run | #2149's two-stage catalog was **rejected 11-01** on preregistered parity (run 2: 428 vs 490). The flat 72-op catalog stays and the two-stage code is removed. Op-local resolution goes outside the router (#2197's resolver). | #2227 (the router on Haiku 5.5) re-baselines on the flat shape. No router change lands without its screen. |
+| **Validate Lead's landings against my rulings** | Each landing is read from the code on main, not from the memo | 11-01: #2242 (a), #2238, #2235, #2042 option 1, #2149's steps and removal, #2197, #2250 and its cancel condition, all validated | PA's and CXO's served checks on alpha after xian's next promotion |
+| **Document model (PDR-102): keep the vision reachable** | C2 (the source address), C4 (provenance rendered by code), C6 (no single vendor) and C7 (derived knowledge has its source's scope and lifetime) | PDR at v0.4 with xian. #2226 local embeddings are ruled (int8 MiniLM, conditions (a)–(m)), and #2244 goes first. | I write the connector-source ADR when the first connector-ingest unit is placed |
+| **Connector credentials and the hosted MCP** | One credential resolver per connector. Status claims derive from it. | #2247 (Slack as a source) has six conditions on the issue and isn't in this sprint. #2242's MCP step waits on xian. | Each connector unit cites its resolver |
 
 ## 3. Standing responsibilities (slow-pace — sustaining coherence)
 <!-- Rule 2: named (half the work), but UNDER purpose — how I sustain coherence, not the thing itself. -->
@@ -93,6 +88,8 @@ The cross-cutting lever is **derive-don't-maintain / make-drift-impossible-by-co
 Running it by hand: **33 of 36 operating docs need attention; 3 are OK; all ten `ROLE-PORTFOLIO-*` docs are stale**, so this was never a personal lapse — the weekly-refresh rule has never operated for any role. And the script **exits 0 by design** (`warn, not block`, per #972), so even wired into CI it would pass silently.
 
 **The mechanism isn't missing, and it isn't broken. It has no consumer.** A detector whose output goes nowhere is indistinguishable from one that never ran (m-44). Routed to Docs/CIO; recorded here rather than quietly fixed, because the false-clear sentence is the more useful artifact than the refresh it was hiding.
+
+**Update 2026-11-02:** it has a consumer now. Docs's weekly audit (#2253) runs `check-staleness.py`, and Exec routes the stale docs to their owners. That is how this refresh was triggered, after 95 days. The section 5 rule above still didn't fire by itself: no weekly review touched this doc between 07-30 and 11-02.
 
 ---
 
