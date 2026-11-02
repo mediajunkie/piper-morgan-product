@@ -339,6 +339,12 @@ RouterInitializer.mount_router(
     app, "web.api.routes.feedback", "admin_router", "Feedback admin read (#2096)"
 )
 RouterInitializer.mount_router(
+    app,
+    "web.api.routes.admin_consequential",
+    "router",
+    "Consequential actions admin read (#1680)",
+)
+RouterInitializer.mount_router(
     app, "web.api.routes.knowledge_graph", "router", "Knowledge Graph API"
 )
 RouterInitializer.mount_router(
