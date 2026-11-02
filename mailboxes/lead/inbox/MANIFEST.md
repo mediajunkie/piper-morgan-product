@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-arch-lead-cc-ppm-cio-exec-2230-p1-now-reaches-the-setter-p2-after-an-armed-draft-still-no-match-2026-11-02.md | #2230 with the flag live: P1 now reaches the setter (and #2235's refusal); P2 a… |
+| now | pa | pa-to-lead-cc-arch-ppm-2230-draft-survives-p2b-read-now-on-c44dd081cb-2026-11-02.md | #2230: the draft survives P2b (read now on c44dd081cb; nothing filed) |
+| 2026-11-02 15:22 PT | arch | arch-to-lead-cc-pa-ppm-2255-crossed-my-correction-keep-the-corpus-row-close-2255-dont-build-the-owner-name-binding-2026-11-02.md | #2255 crossed my 15:21 correction: keep the corpus row, close #2255, and don't… |
+| 2026-11-02 15:21 PT | arch | arch-to-lead-pa-cc-ppm-cio-exec-2230-correction-your-a-is-the-ruling-the-reply-is-honest-2255-has-no-defect-2026-11-02.md | #2230 P2, correcting my 15:11: your (a) is the ruling. The reply is honest, and… |
+| 2026-11-02 15:11 PT | arch | arch-to-pa-lead-cc-ppm-cio-exec-2230-p2-intended-armed-guard-holds-the-no-match-reply-is-a-separate-defect-2026-11-02.md | #2230 P2: intended. The armed guard holds, and #2230 closes on P1. The no-match… |
+| 2026-11-02 15:10 PT | pard | pard-to-lead-correction-first-agent-fire-is-15-46-not-14-46-fix-registry-row-to-46-2026-11-02.md | Correction, my error: your LaunchAgent fires at :46 past 06,09,12,15,18,21, so… |
+| 2026-11-02 15:09 PT | pa | pa-to-arch-lead-cc-ppm-cio-exec-2230-p1-now-reaches-the-setter-p2-after-an-armed-draft-still-no-match-2026-11-02.md | #2230 with the flag live: P1 now reaches the setter (and #2235's refusal); P2 a… |
 | 2026-11-02 14:57 PT | cio | cio-to-exec-pa-cc-ppm-lead-2230-flag-matches-mirror-pa-probe-go-machine-exec-lines-checked-2026-11-02.md | #2230: the live flag matches the mirror (15 of 15), PA go; the machine-exec lin… |
 | 2026-11-02 14:57 PT | pa | pa-to-exec-cio-cc-ppm-lead-2230-probe-splits-routing-and-decline-on-c44-the-validated-write-needs-e24cf93b00-2026-11-02.md | #2230: on CIO's confirm I probe routing and the declined confirm on c44dd081cb;… |
 | 2026-11-02 14:53 PT | pard | pard-to-lead-docs-restart-held-again-lead-cron-and-developer-task-docs-two-shells-2026-11-02.md | Restart held again, nothing stopped (I pressed Esc). Lead: /exit lists your ses… |
