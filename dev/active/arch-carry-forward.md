@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-10-31 21:30 PDT (STOP)
+last_updated: 2026-11-01 21:28 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,33 +28,28 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
-- **10-31 STOP (21:27 fire, closed 21:30).** **Alpha serves 0.9.0.0 `c44dd081cb` (the #2245 promotion, which carries `5df1db03fa`); the morning build `5f0112c00c` carried every landing I validated today (`66d4b58492`, `e394cb4c21`, `eef219a196`, `4580960112`). xian dispatched the #2245 promotion tonight (run 41272799100). **PPM holds the v0.9.0.0 tag** until that build's PA quote, parity and row 2 are in. The hosted MCP serves v18 `a8a01b96b4`, with no services/mcp diff from the validated guard.
-  - **First Production sprint set** (PPM 21:2x; `docs/internal/planning/first-production-sprint-candidates-2026-10-30.md` "xian's answers").
-    - **Mine:** #2149's design and #2042's diagnosis plus its first fix. **Both done tonight:**
-      - #2149: two-stage routing, record `design-records/2149-router-catalog-shape.md`, licence preregistered. **Next: draft the `route_group` enum with Lead** (first cut from Lead or me), then validate each build step.
-      - #2042: option 1 specified. CXO's Time bullet arrived by 21:33 (CXO's memo, filed), so option 1 is fully specified. Lead builds it.
-    - **Lead's order:** #2242 (a) at 11-01 06:47 (go given, on my 3 gate points and 3 store conditions), then #2238 and #2235, the #2184 family, #2149, then #2195 and #2197. **I validate each on main.**
-  - **#2226 (local embeddings) ruled:** int8 MiniLM on onnxruntime in our own Chroma function; conditions (a)–(l) on the issue. Waits on placement. **#2244** (vector store at `/app/data/chromadb`, off the volume; filed by me) comes first.
-  - **#2245** validated at `5df1db03fa`. Its served quote rides the promotion above.
-  - **#2247** (Slack as a source via the hosted MCP, back in 1.0 on xian's word): six conditions are on the issue. Lead sized it at 4.5–5.5 days. It needs xian's `tools/list` token test and #1514's app review (xian's). Not in this sprint.
-  - **Q37/Q38** relabelled to canonical (`f769c74ed8`). The #1979 condition is met by branch order (`workflow_entries.py:1277` before `:1383`).
-  - **Waiting on xian:**
-    - the `PIPER_INVERSION_LIVE_CATEGORIES` paste (CIO's memo: printenv, then append exactly `set_default_repo`), after the tag's row 2. CIO's mirror `79004122c0` is read and correct.
-    - the #2244 `ls` and #2226 condition (i)'s RSS. **No agent seat can do Fly production reads.**
-    - a fresh account for A1/A2 (PPM's call).
-  - **Rules learned today:**
-    - read the clock before every stamp; I wrote four stamps ahead of it today, all corrected;
-    - quote a sha only from origin/main after the push;
-    - wait for a likely product view before ruling a disposition (#1780);
-    - read the call before naming a second site (#2245);
-    - don't assume a seat can do production reads.
+- **11-01 STOP (21:27 fire).** Main is green, 12 of 12 workflows. Code was quiet after 14:05. Every ruling and validation for today is in decisions.log (06:44 to 14:05) and on the issues.
+  - **Landings I validated on main today:** #2242 (a), #2238 (with the staging-only Notion offer), #2235, #2042 option 1, #2149's steps and its removal `b1a52ee2ae`, #2197 `75eb536442` plus its ledger row, and #2250 with its cancel condition `e312c4f249`.
+  - **Waiting on xian's alpha promotion** (the dispatch is his). After it, I review each result:
+    - PA's #2042 replay and row 2;
+    - CXO's #2197 served judgement;
+    - PA's #2250 after-half (the before-half at 16 per ask has medians of 11.25 s and 11.24 s);
+    - PA's #2235 line 1;
+    - Web's #2238 staging Notion run;
+    - #2242: xian's `mcp_allow.py add`, then PA's MCP deploy and checks. If a refresh is consumed, the user reconnects.
+  - **PDR-102** is at v0.4 and with xian through Exec. My answers on C2, C4, C6 and C7 are in it. **Trigger:** I write the connector-source ADR when the first connector-ingest unit is placed.
+  - **#2226** (int8 MiniLM, conditions (a)–(m)) waits on placement, and #2244 goes first. **#2247:** six conditions on the issue, not in this sprint.
+  - **Waiting on xian from 10-31:**
+    - the `PIPER_INVERSION_LIVE_CATEGORIES` paste;
+    - the #2244 `ls` and #2226 (i)'s RSS. No agent seat can do Fly production reads.
+    - a fresh account for A1/A2.
 - **Still open from 10-27..10-30** (the full text is in git history and those days' logs):
   - **#2186:** unit 2 (declared args keys) is owed by Lead, with Rule 7. `timeframe` still drops silently.
   - **#2184:** owed by Lead: don't arm when the repo resolves to None. The served two-step row is PPM's close bar.
   - **#2189:** waits on Lead's builds, in order: row 1 slice, then nonces to Redis, then the Test table (xian's migration word).
   - **#2209:** waits beside #2197.
   - **#2227:** #2149 ended 11-01 10:48 (two-stage rejected), so the 5.5 re-baseline runs on the flat catalog. Owed by Lead when scheduled.
-  - **#2149 closed out 11-01 10:48:** two-stage rejected; Rule 7 stands; op-local resolution for #2197/#2184; the two-stage code is removed. Validate the removal (flat render hashes unchanged) and Lead's (2) sizing/blockers.
+  - **#2184:** now goes through the #2197 resolver (op-local, per #2149's close-out).
   - **#2042 rung-3 census:** blocked on a read path for alpha's turn metadata.
   - **#2018:** PA's card waits on xian.
 
