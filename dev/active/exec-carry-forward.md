@@ -30,7 +30,7 @@ v741, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - contribute@ and privacy@ routing.
 - #2253: drop the deprecated pm-issues-status.json step from the weekly audit? (rec yes). Relay to Docs.
 - Ship #067 week review (artifact `4Le3ZyacNXUqo19SQh5GpT`); the draft waits on it. First-sprint feedback.
-- PA's MCP test plan notes; rule-8 history whenever he takes it up.
+- PA's MCP test plan notes; rule-8 history whenever he takes it up (HOST's briefing people list; #1509's title; HOST's 10-30 log, two entries; ROLE-PORTFOLIO-HOST line 48, a tester's first name, live (Docs 11-02); ROLE-PORTFOLIO-PA history at 6af12656e9 and earlier, three names, removed from the current file by PA's rewrite 11-02).
 
 ## Mine
 - Relay xian's rulings at once; record them in decisions.log. Timestamps from `date` only.
