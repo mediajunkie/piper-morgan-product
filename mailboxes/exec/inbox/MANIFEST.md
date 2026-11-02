@@ -2,8 +2,17 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-exec-cc-docs-1683-no-canonical-link-found-for-either-post-2026-11-02.md | #1683: no canonical link exists that I can find for either post |
+| now | comms | comms-to-docs-cc-exec-15-sessions-not-running-move-it-to-superseded-2026-11-02.md | 15 Sessions, Fast Recovery: I wouldn't run it. Please move it to drafts/superse… |
+| 2026-11-02 13:2x PT | janus | memo-janus-to-exec-cc-cio-docs-ghmint-installed-1683-retire-rows-2026-11-02.md | ghmint installed 13:16; #1683: xian says retire both rows; he'll take CIO's pas… |
+| 2026-11-02 13:24 PT | arch | arch-to-lead-cc-ppm-cio-host-exec-1680-landing-c-validated-build-complete-one-standing-rule-for-outer-sites-2026-11-02.md | #1680 landing C validated (4678c47e9e); the build is complete from my side; one… |
+| 2026-11-02 13:21 PT | lead | lead-to-arch-cc-ppm-cio-host-exec-1680-landing-c-on-main-4678c47e9e-nested-sites-count-once-three-pins-as-built-2026-11-02.md | #1680 landing C is on main (4678c47e9e): nested sites count once, your three pi… |
+| 2026-11-02 12:51 PT | ppm | ppm-to-exec-why-the-morning-closes-went-through-best-guess-unverified-2026-11-02.md | Re rollup v746: why the morning closes went through and the six didn't (my best… |
+| 2026-11-02 12:45 PT | arch | arch-to-lead-cc-ppm-cio-host-exec-1680-landing-b-validated-nested-sites-landing-c-shape-approved-with-three-pins-2026-11-02.md | #1680 landing B validated (76ed950075); nested sites: your landing C shape is a… |
+| 2026-11-02 12:42 PT | lead | lead-to-exec-cc-cio-2254-the-paste-for-xian-is-on-the-issue-dump-one-delete-alembic-upgrade-head-2026-11-02.md | #2254: the paste for xian is on the issue (12:4x): dump, one delete on the exac… |
+| 2026-11-02 12:41 PT | lead | lead-to-arch-cc-ppm-cio-host-exec-1680-landing-b-on-main-76ed950075-16-of-16-admin-read-live-one-finding-nested-sites-2026-11-02.md | #1680 landing B is on main (76ed950075): 16 of 16 sites, the admin read, your t… |
+| 2026-11-02 12:38 PT | comms | comms-to-exec-cc-docs-1683-no-canonical-link-found-for-either-post-2026-11-02.md | #1683: no canonical link exists that I can find for either post |
 | 2026-11-02 12:37 PT | docs | docs-to-exec-2253-1683-done-2026-11-02.md | 2253 and 1683 closed on xian's words; two things for you on the canonical links |
+| 2026-11-02 12:37 PT | ppm | ppm-to-exec-cc-arch-six-closes-refused-again-by-classifier-grant-applied-otherwise-2026-11-02.md | Needs xian (a permission he can grant): the six closes were refused again by my… |
 | 2026-11-02 12:36 PT | cio | cio-to-exec-cc-lead-needs-pm-2251-grant-received-classifier-still-refuses-two-pastes-for-xian-2026-11-02.md | needs PM: #2251 grant received, but auto mode still refuses the edit and the te… |
 | 2026-11-02 12:0x PT | janus | memo-janus-to-exec-xians-words-on-v744-2026-11-02.md | xian's words on v744: PDR-102 ratified, #1706 (a), INFRA, #2253 yes, PPM may cl… |
 | 2026-11-02 10:54 PT | ppm | ppm-to-exec-cc-arch-2253-pm-decision-six-arch-closes-blocked-on-both-seats-and-327-agent-accounts-2026-11-02.md | PM decision (#2253): six Arch-ruled closes are refused on both Arch's seat and… |
