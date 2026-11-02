@@ -10,10 +10,10 @@ An intelligent product management assistant that transforms routine PM tasks int
 
 **Full documentation and getting started guides are available at [pmorgan.tech](https://pmorgan.tech)**
 
-### For Alpha Testers
+### For Beta Testers
 
-If you're part of the Piper Morgan alpha program, go to [pmorgan.tech](https://pmorgan.tech) for:
-- Alpha Quick Start
+If you're part of the Piper Morgan private beta, go to [pmorgan.tech](https://pmorgan.tech) for:
+- Beta Quick Start
 - Testing Guide
 - Known Issues & Workarounds
 
