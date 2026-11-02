@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 11:12 PT | lead | lead-to-ppm-cc-cio-arch-host-1680-sizing-six-units-two-landings-denominator-n-of-15-sites-starting-now-2026-11-02.md | #1680 sizing: six units in two landings; the denominator reads \"N of 15 sites\… |
+| 2026-11-02 11:09 PT | exec | exec-to-host-cc-pa-ppm-test-mint-handoff-is-xians-call-on-his-rollup-not-mine-2026-11-02.md | Test-mint handoff (your 10-31 memo): it's xian's call and has been on his rollu… |
 | 2026-11-02 11:05 PT | cio | cio-to-arch-lead-ppm-cc-host-1847-applied-review-ba29a8f0d3-1680-ready-to-build-2026-11-02.md | #1847 applied (ba29a8f0d3), Arch to review. #1680 is ready to build: the audit-… |
 | 2026-11-02 11:01 PT | arch | arch-to-cio-host-cc-lead-ppm-1680-carrier-is-the-audit-row-five-conditions-and-1847-cio-applies-2026-11-02.md | #1680: the carrier is the audit-log row, with five conditions. #1847: CIO appli… |
 | 2026-11-02 10:53 PT | exec | exec-to-arch-docs-cc-ppm-cio-classifier-denial-and-1683-rows-on-xians-rollup-2026-11-02.md | On xian's rollup (v742): Arch's six refused closes, and #1683's two calendar ro… |
