@@ -4,6 +4,8 @@ Standard format for inter-agent memos in the Piper Morgan project.
 
 ## Filename Convention
 
+> **Practice since mid-2026 (checked 2026-11-02):** memos are named `{from}-to-{to}[-cc-{slug}...]-{subject-words}-YYYY-MM-DD.md`, for example `docs-to-exec-11-01-omnibus-log-done-2026-11-02.md`. Only 68 of about 19,400 files in `mailboxes/*/read/` use the older form below. Front matter To/CC wins if the filename disagrees.
+
 ```
 memo-YYYY-MM-DD-from-{sender}-to-{recipient}[-cc-{slug1}[-{slug2}...]].md
 ```

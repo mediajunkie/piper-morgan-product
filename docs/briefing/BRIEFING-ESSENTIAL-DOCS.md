@@ -2,9 +2,9 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-DOCS
 valid_from: "2026-03-19"
-last_updated: "2026-10-27"
-last_verified: "2026-09-01"
-verified_scope: "2026-09-01 (Docs): spot-verified blog-metadata pipeline claims against a live publish, merge-keeper section, PreCompact-hook note, cross-repo worktree warning, and Amber image-toolchain note against actual practice. Content confirmed current, no drift found. Verification history: docs/internal/architecture/decisions/claude-md-history.log."
+last_updated: "2026-11-02"
+last_verified: "2026-11-02"
+verified_scope: "2026-11-02 (Docs): re-read against practice. Fixed memo naming and weekly-audit timing, confirmed every script, hook and skill path named here exists, and the blog pipeline (publish-post.js, edit-pass, the sharp fallback) as used 10-29 to 11-01. Earlier, 2026-09-01 (Docs): spot-verified blog-metadata pipeline claims against a live publish, merge-keeper section, PreCompact-hook note, cross-repo worktree warning, and Amber image-toolchain note against actual practice. Content confirmed current, no drift found. Verification history: docs/internal/architecture/decisions/claude-md-history.log."
 ---
 
 # BRIEFING-ESSENTIAL-DOCS
@@ -82,7 +82,7 @@ The discipline: protect time for omnibus synthesis + canonical verification + me
 - `mailboxes/DIRECTORY.md` is the canonical slug-to-role mapping
 - `mailboxes/DELIVERY-LOG.md` no longer exists: the pre-#1259 delivery artifacts were removed from the live tree on 2026-06-21 (`c6c73b2773`); push-to-ref (`mail-send.sh`) does not write one
 - Each role has `inbox/`, `read/`, `sent/`, and `inbox/MANIFEST.md`
-- Memo naming: `memo-YYYY-MM-DD-from-{slug}-to-{slug}[-cc-{slug}...].md`
+- Memo naming in practice: `{from}-to-{to}[-cc-{slug}...]-{subject-words}-YYYY-MM-DD.md` (for example `docs-to-exec-11-01-omnibus-log-done-2026-11-02.md`). The older `memo-YYYY-MM-DD-from-...` form in the memo guide is history: 68 of about 19,400 files in `read/` use it. The front matter To/CC wins if the two disagree.
 - See `docs/internal/development/memo-format-guide.md` for full spec
 - Mailboxes are committed to git — mail is the cross-agent signaling layer (mailbox writes go to `main` only, never on feature branches)
 
@@ -105,7 +105,7 @@ The dry-run **skips sync+fetch**, so it structurally cannot catch a missing tool
 is not a proven path.
 
 **Duties that moved into mechanisms** (the concept stays written here, the mechanism carries it):
-- **Weekly docs audit**: a GitHub issue opens every Monday around 09:20 PT from `.github/workflows/weekly-docs-audit.yml`. I do the audit, close it by description, comment, close, and log the date in `staggered-audit-calendar-2026.md`.
+- **Weekly docs audit**: a GitHub issue opens every Monday around 08:15 PST (09:15 PDT) from `.github/workflows/weekly-docs-audit.yml` (cron `7 16 * * 1`, so the Pacific hour moves with the clock change). On the first Monday of the month a second issue, Monthly Housekeeping, opens beside it. I do the audit, close it by description, comment, close, and log the date in `staggered-audit-calendar-2026.md`.
 - **Mail delivery**: one memo, one `scripts/mail-send.sh` call (recipient copy, cc copies, sent mirror, push). Old `read/` memos from completed quarters are archived by `scripts/archive-mailbox-read.py`. No hand shuttling.
 - **Staleness and startup checks**: `.claude/hooks/session-start.sh` prints the role card, the briefing-age count, mail and log status at every start and compaction. I read it instead of re-deriving it, and still verify any claim I repeat.
 
@@ -209,7 +209,7 @@ Overlap zone: blog post count updates, editorial calendar data. PM sequences the
 - **Omnibus logs**: `docs/omnibus-logs/` (your output)
 - **Session logs**: `dev/YYYY/MM/DD/` (your source material)
 - **Mailboxes**: `mailboxes/[role]/inbox/` (delivery targets)
-- **Blog metadata**: `piper-morgan-website/data/blog-metadata.csv`
+- **Blog metadata**: `piper-morgan-website/data/blog-metadata.csv` (the calendar of record is `docs/internal/planning/comms/editorial-calendar.csv` in this repo)
 - **Blog build**: `piper-morgan-website/scripts/fetch-blog-posts.js`
 - **Session templates**: `docs/internal/development/tools/session-log-templates/`
 - **Log index**: `docs/internal/planning/log-index-*.csv`
@@ -217,4 +217,4 @@ Overlap zone: blog post count updates, editorial calendar data. PM sequences the
 
 ---
 
-*Last Updated: October 27, 2026 (v1.6 reference and footer fixed per CIO's staleness re-run)*
+*Last Updated: November 2, 2026 (re-verified 11-02: memo naming, audit timing, file and skill references; v1.6 reference and footer fixed 10-27 per CIO's staleness re-run)*

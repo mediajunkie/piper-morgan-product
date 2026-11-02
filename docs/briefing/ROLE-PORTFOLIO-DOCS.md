@@ -3,9 +3,9 @@ type: role-portfolio
 role: Docs (Documentation Management)
 status: DRAFT v0.1
 self-authored-by: Docs (docs-code)
-last_updated: 2026-09-01
-refreshed: 2026-07-30
-verified_scope: "every section-2 row re-measured against live state; check-staleness watcher claim tested (no consumer); omnibus coverage counted; BRIEFING-CURRENT-STATE age checked"
+last_updated: 2026-11-02
+refreshed: 2026-11-02
+verified_scope: "2026-11-02 (Docs): section 2 rewritten from live measurements (omnibus files counted and gaps computed, check-staleness and check-last-verified-drift run, publishing state from the 11-01 log); section 4 Comms seam updated to the ready-for-docs trigger. Sections 1, 3 and the rest of 4 and 5 re-read, not changed."
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-DOCS.md
 refresh_discipline: "Section 2 updated AS PART OF the weekly workstream review — the review is the refresh moment (Rule 5); if section 2 lags the last few reviews, the portfolio has drifted"
@@ -30,20 +30,16 @@ This is the knowledge side of continuity. CIO builds the mechanisms that preserv
 
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has a direction + a way to tell it's moving. Rule 5: REFRESHED EACH WEEKLY REVIEW. -->
 
-⚠️ **This section was 37 days stale when refreshed (last touched 2026-06-22) under a rule that says
-"REFRESHED EACH WEEKLY REVIEW."** Arch found the same on their own portfolio at 40 days and established
-it is **not a personal lapse: all ten role portfolios are stale, so the weekly-refresh rule has never
-operated for any role.** Recording that here so the next reader doesn't absorb a systemic gap as
-individual carelessness.
+*Section 2 was rewritten 2026-11-02 against live state. It had been stale since 2026-07-30, a systemic gap (all ten portfolios) that the 07-30 audit found and the weekly staleness report now makes visible.*
 
-| Priority | What I'm advancing | Status (2026-07-30) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (2026-11-02) | How we'll know it's moving |
 |---|---|---|---|
-| **Omnibus cadence** | daily synthesis ≤1-day lag | **414 logs, gap-free since June 2025.** A 4-day hole (Jul 24–27) opened and was closed 07-28; 07-28 synthesized 07-29. Caught at 1 day, but only because I went looking | lag ≤1 day at any START fire; cross-ref gate passes without escalation. **Nothing alarms on this** — see §5 |
-| **MEM-TEMPORAL frontmatter (#972)** | every doc class carries `valid_from` / `last_verified` so staleness is *detectable* | 🔴 **CORRECTED — this row asserted a false clear.** It read *"check-staleness.py watches them."* It does not: the script works, is correctly configured, and **is invoked by nothing** (Arch, 07-30; verified independently). **31 of 36 docs stale, all carrying the identical `last_verified` of 2026-06-19** — a bulk stamp, not 31 verifications. Frontmatter adoption was achieved; **currency was not** | a *consumer* exists that reads the output and acts. Taking it to the weekly docs-audit issue — the session-start surface is over-subscribed and measurably cannot take it |
-| **MEM-EVAL pilot (#974)** | evaluate which memory/briefing surfaces are load-bearing | Collection continuing; every session log carries the 3-bucket section | evaluation doc completed; dead weight removed |
-| **Briefing currency** | BRIEFING-CURRENT-STATE ≤7 days old | ✅ **4 days old, genuinely current.** But `BRIEFING-ESSENTIAL-DOCS` was **41 days** stale with three false claims until 07-30 — the *essential* briefings had no watcher either | hook doesn't fire STALE; the any-agent refresh norm holds |
-| **Publishing pipeline** | posts ship on calendar; calendar stays current | ✅ Operational and materially hardened this week: Weekly Ship #053 and "RECONNECT's Keystone" both published → syndicated → archived. **Column ownership PM-ratified** (`update-calendar` v1.4); **per-column validator shipped** (catches column shift, which no field-count check can see); **all 7 stale `draftPath`s repaired** and the cause fixed at Step 4b | calendar row complete on publish day; `validate-editorial-calendar.py` clean; `measure-editorial-drift.py` inside the PDR-007 criterion |
-| **PDR-007 — editorial single source of truth** | decide whether 4 representations of a post should collapse to 1 | ✅ **RATIFIED 2026-08-28** (Arch, Web, CIO all reviewed, no objection) — closed as adopted-without-migration (Option A); the `.md` frontmatter stays authoritative, calendar CSV stays derived/convenience. *(Row spot-corrected 2026-09-01 — was showing "awaiting CIO," stale by 4 days; rest of Section 2 not re-verified this pass, see 2026-07-30 dates throughout.)* | Closed — no further measurement needed |
+| **Omnibus cadence** | daily synthesis, lag of at most 1 day | 511 omnibus files from 2025-05-27 to 2026-11-01. The last hole in the sequence is 2026-04-20, and every day since has one (11-01's was written 11-02). Counted by listing `docs/omnibus-logs/`, not recalled | Lag at most 1 day at each START. Step 1d nudges go out for unclosed logs. **Nothing alarms if it lapses**, so START is the only net |
+| **Doc currency (#972, #1726)** | every operating doc carries a stamp that means a verification | `check-staleness.py` 2026-11-02: 18 of 39 operating docs stale before I refreshed my own two (16 of 39 after), 1 with no dates, 20 OK. `check-last-verified-drift.py` (wired into the weekly audit 10-31) flags edited-but-unbumped and bumped-but-unedited docs. #1726 closed 10-31 with 13 of 13 stamped | The ratio is reported every weekly audit, as "N of M". Others' stale docs go to their owners, not silently refreshed |
+| **Briefing currency** | BRIEFING-CURRENT-STATE at most 7 days old | Refreshed 11-01 (Version line cites the v0.9.0.0 release page). Docs-owned briefing and this portfolio re-verified 11-02 | Staleness report does not list Docs' own files |
+| **Publishing pipeline** | posts ship on the pubDate, with the right art, then distribute | Operating. Latest: "Check the Machine First" published 11-01 and distributed the same day. The wrong art went live for about 2 hours because I did not open the image before publishing, and the fix is now a standing step (open the image, compare it to the alt, before the dry-run). Next: "The Unguarded Entrance" (Tue 11-03, Comms owns) | Row `distributed` with URLs. Validator clean. Image checked by eye, not by file presence |
+| **Blog legacy audit (#2249)** | find old posts with slug/title mismatch, empty alt, workDate equal to pubDate, missing captions | Filed 11-01, not scheduled, no Sprint | Counts reported as "N of M" when run |
+| **PDR-007 editorial single source** | the `.md` frontmatter stays authoritative, the calendar CSV stays derived | Ratified 2026-08-28 (Option A), unchanged | No new request to collapse the representations |
 
 ---
 
@@ -72,8 +68,8 @@ individual carelessness.
 ### Docs ↔ Comms — publishing pipeline seam
 **Co-own**: editorial calendar accuracy; blog publish workflow; draft-to-publish handoff protocol.
 - **Freely**: Comms delivers a finished draft → I note it's on-deck. I surface calendar rows that are stale or missing fields.
-- **Sign-off (mine)**: I hold the publish until PM's explicit final-edit handoff signal — not Comms's "ready" alone. PM's handoff is the trigger, not the schedule.
-- **Unilateral (mine)**: I will not publish without PM's explicit handoff signal, regardless of calendar date. (Not a veto — just the trigger I hold. PM can override by providing the signal.)
+- **Sign-off (mine)**: I publish on Comms' `ready-for-docs` memo (xian's final pass is done upstream of that), not on the calendar date alone, and not on a draft that has changed since the memo. I run the dry-run, open the image against its alt, publish, and check the live page.
+- **Unilateral (mine)**: I will not publish without that memo, regardless of calendar date. (Not a veto, just the trigger I hold. xian can override by telling me directly.)
 
 ### Docs ↔ Exec — workstream review inputs
 **Co-own**: the omnibus as the primary input Exec uses for workstream reviews and the cohort-attention rollup.
