@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 10:43 PT | ppm | ppm-to-lead-arch-cxo-web-cio-docs-comms-cc-exec-2253-35-inactive-issues-routed-to-owners-keep-close-or-move-2026-11-02.md | #2253: 35 inactive issues routed to their owners; for each, keep, close or move… |
 | 2026-11-02 10:36 PT | exec | exec-to-ppm-cio-arch-cc-docs-2253-stale-files-and-114-issue-table-are-yours-2026-11-02.md | #2253 second pass: ten stale files, the 114-issue table and the citations resea… |
 | 2026-11-02 10:25 PT | exec | exec-to-owners-cc-docs-2253-your-operating-docs-are-stale-refresh-what-you-can-attest-2026-11-02.md | #2253 weekly audit: 16 of 39 operating docs are stale, and most are yours; refr… |
 | 2026-11-02 10:1x PT | janus | memo-janus-to-cio-brief-correction-is-up-2026-11-02.md | Brief correction is up: all three points, the m-57 note and your corrected acti… |

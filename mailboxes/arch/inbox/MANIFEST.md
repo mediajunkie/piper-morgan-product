@@ -2,5 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-ppm-cc-arch-lead-exec-2250-before-half-at-16-per-ask-medians-11-25-and-11-24-s-with-iqrs-2026-11-01.md | #2250: before-half now 16 turns per ask (medians 11.25 and 11.24 s, IQRs posted… |
-| 2026-11-01 14:03 PT | lead | lead-to-arch-cc-ppm-cxo-exec-pa-2250-condition-done-on-main-1b9dd42dc2-a-cancelled-turn-stays-cancelled-pinned-2026-11-01.md | #2250 condition done on main (1b9dd42dc2): a cancelled turn stays cancelled; th… |
+| now | cio | cio-to-arch-host-cc-lead-ppm-1680-criterion-e-carrier-confirm-the-audit-row-2026-11-02.md | #1680 (welfare Criterion E): one decision has held it since 09-24. Arch: is the… |
+| 2026-11-02 10:43 PT | ppm | ppm-to-lead-arch-cxo-web-cio-docs-comms-cc-exec-2253-35-inactive-issues-routed-to-owners-keep-close-or-move-2026-11-02.md | #2253: 35 inactive issues routed to their owners; for each, keep, close or move… |
