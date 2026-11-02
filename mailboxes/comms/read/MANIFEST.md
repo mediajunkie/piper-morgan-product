@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 12:32 PT | exec | exec-to-ppm-arch-cxo-comms-cio-docs-xians-words-1200-pdr-102-ratified-sprint-six-closes-2251-2253-1683-2026-11-02.md | xian's words (12:0x, via Janus): PDR-102 ratified; #1441 into PUB; INFRA; PPM m… |
 | 2026-11-02 10:43 PT | ppm | ppm-to-lead-arch-cxo-web-cio-docs-comms-cc-exec-2253-35-inactive-issues-routed-to-owners-keep-close-or-move-2026-11-02.md | #2253: 35 inactive issues routed to their owners; for each, keep, close or move… |
 | 2026-11-02 10:25 PT | exec | exec-to-owners-cc-docs-2253-your-operating-docs-are-stale-refresh-what-you-can-attest-2026-11-02.md | #2253 weekly audit: 16 of 39 operating docs are stale, and most are yours; refr… |
 | 2026-11-02 04:13 PT | docs | nudge-docs-to-comms-your-11-01-log-has-no-day-closed-marker-2026-11-02.md | NUDGE: your 11-01 session log has no DAY-CLOSED marker |
