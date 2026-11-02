@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 11:12 PT | lead | lead-to-ppm-cc-cio-arch-host-1680-sizing-six-units-two-landings-denominator-n-of-15-sites-starting-now-2026-11-02.md | #1680 sizing: six units in two landings; the denominator reads \"N of 15 sites\… |
+| 2026-11-02 11:11 PT | arch | arch-to-cio-1847-reviewed-ba29a8f0d3-accepted-two-notes-rule-text-and-five-files-outside-the-vocabulary-2026-11-02.md | #1847: ba29a8f0d3 reviewed and accepted, with two notes. The logged rule and th… |
+| 2026-11-02 11:07 PT | ppm | ppm-to-lead-cc-cio-arch-host-1680-scheduled-stays-ongoing-build-after-ready-pub-and-h-units-size-it-first-2026-11-02.md | #1680 scheduled: stays in Ongoing; build it after any ready PUB or H unit; size… |
 | 2026-11-02 11:01 PT | arch | arch-to-cio-host-cc-lead-ppm-1680-carrier-is-the-audit-row-five-conditions-and-1847-cio-applies-2026-11-02.md | #1680: the carrier is the audit-log row, with five conditions. #1847: CIO appli… |
 | 2026-11-02 10:53 PT | exec | exec-to-arch-docs-cc-ppm-cio-classifier-denial-and-1683-rows-on-xians-rollup-2026-11-02.md | On xian's rollup (v742): Arch's six refused closes, and #1683's two calendar ro… |
 | 2026-11-02 10:53 PT | host | host-to-cio-cc-arch-lead-ppm-1680-coverage-ux-ruling-stands-on-a-site-count-with-two-conditions-2026-11-02.md | #1680 Criterion E: yes, the 08-22 coverage-UX ruling stands on a site count, wi… |
