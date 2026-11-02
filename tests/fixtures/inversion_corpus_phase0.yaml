@@ -445,6 +445,11 @@ corpus:
     source: "probe-row-52"
     surface1_claim: "priority/get_top_priority"
     probe_verdict: "DISAGREE"
+  - phrase: "Set my default GitHub repository to owner/name"
+    category: EXECUTION
+    expected: action:set_default_repo
+    source: "#2255 (PA's armed-draft P2 probe 2026-11-02 15:07; Arch 15:11)"
+    notes: "Armed-draft context: the consult stands down on the turn after an armed draft (#1190), so the served reply there is #2255's fix, not this row's. On the flat router the phrase routes set_default_repo (PA's P1, 2026-11-02 15:07)."
   - phrase: "what's the progress on the MVP milestone?"
     category: STATUS
     expected: action:get_project_status

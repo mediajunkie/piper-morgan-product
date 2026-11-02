@@ -83,6 +83,24 @@ _ACTION_CATEGORY = {
 # Inversion's question to answer, not an assertion.
 # ---------------------------------------------------------------------------
 HAND_ROWS = [
+    # #2255 (PA's P2 probe 2026-11-02 15:07; Arch's ruling 15:11, decisions.log): the armed set
+    # ask. On the turn right after an armed issue draft the live consult stands down by design
+    # (#1190's armed guard) and the legacy path answers with a false "didn't recognize" while the
+    # draft is dropped. The routing is intended; the reply is #2255's defect. This row holds the
+    # phrase's destination on the flat router (P1, the fresh-session ask, routes it since #2230's
+    # flag). No alias for the legacy name set_default_github_repo (Arch: the interpretation layer
+    # only shrinks).
+    {
+        "phrase": "Set my default GitHub repository to owner/name",
+        "category": "EXECUTION",
+        "expected": "action:set_default_repo",
+        "source": "#2255 (PA's armed-draft P2 probe 2026-11-02 15:07; Arch 15:11)",
+        "notes": (
+            "Armed-draft context: the consult stands down on the turn after an armed draft "
+            "(#1190), so the served reply there is #2255's fix, not this row's. On the flat "
+            "router the phrase routes set_default_repo (PA's P1, 2026-11-02 15:07)."
+        ),
+    },
     # #2197 (CXO's list 2026-11-01 11:17; PPM's placement 11:18/11:19; Arch's destination (A)):
     # a progress ask about a named milestone routes get_project_status, whose handler resolves
     # the milestone op-locally from this turn's read. No router change for any of these.
