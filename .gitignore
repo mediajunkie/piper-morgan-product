@@ -194,6 +194,9 @@ dev/active/duty-cycle-watchdog-nudge-state.tsv
 dev/state/*-last-pm-scan
 # draft_births.py ledger: when each unsent mailbox file first appeared, per worktree (10-19)
 dev/state/draft-births.tsv
+# CIO's seat-local submission ledger (PROBE-userpromptsubmit.sh): appended on every prompt, so tracking it dirtied
+# the tree on every wake and blocked seat-restart.sh (Pard, 11-02). Untracked 11-02; the file stays on disk.
+dev/state/probe-userpromptsubmit-*.log
 
 # Agent mailboxes — fully tracked for cross-machine sync
 # (Previously ignored read/ but this prevented syncing mail state across devices)

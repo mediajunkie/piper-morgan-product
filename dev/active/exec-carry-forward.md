@@ -2,12 +2,12 @@
 
 **Rewritten 2026-11-01 23:1x PST at STOP** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/01/2026-11-01-0429-exec-code-log.md` (closed).
 
-**STATE: LIVE.** Cron **`ed995092`** (`38 6,10,14,18,22 * * *`), re-armed 11-01 at STOP from the stored prompt; `seat-prompt.sh exec --check` rc=0. Expires about 11-08; re-arm at each STOP. LaunchAgent `com.xian.pm-exec-cycle` is staged by Pard and not yet loaded (xian's paste, Pard console v184). On Pard's load notice and the first :01 fire that lands work, CronDelete the session cron and flip the registry row (row 179).
+**STATE: LIVE on LaunchAgent** `com.xian.pm-exec-cycle` (fires :01 at 6,10,14,18,22), loaded by xian 11-02 ~13:50; first fire 14:01 landed work. Session cron ed995092 deleted 14:2x; CronList empty is the normal state now. No STOP re-arm. Agent liveness is Pard's.
 
-**Re-arm only from the store** (duty-cycle-tick v1.60): `scripts/seat-prompt.sh exec` prints the verbatim prompt. Pass it to CronCreate unchanged, then CronList and `--check <file>`. Never rebuild from memory (xian 10-30).
+**Cron gate:** the duty-cycle-tick cron-management steps (CronList self-heal, STOP re-arm) don't apply on a LaunchAgent.
 
 ## Rollup
-v749, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
+v750, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
 
 ## Where things stand (end of 11-01)
 - **v0.9.0.0 complete.** xian published the release page at 11:10 PST; Lead confirmed at 20:15 that the tag is the served sha and the post-release audit is clean. Docs adds the URL to the briefing Version line (told at 20:2x).
@@ -20,7 +20,7 @@ v749, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 2. `set_default_repo`: printenv, then `fly secrets set` with the value appended. Relay both outputs to CIO.
 3. Promote (dispatch line), then the #2242 allowlist add (three lines with his email), reconnect if needed. Relay `list` to PA, Lead, Arch, PPM.
 4. Buttondown: HOST read access to `beta-waitlist`, or one sign-up with his own address (HOST prefers the sign-up). Relay to HOST, Comms, Web, CXO. #2229 closes on it.
-- Also his hand: web-pat-test sign-in, Notion key on staging for #2238, LaunchAgents (v184), Fly reads #2244 and #2226, #1514.
+- Also his hand: web-pat-test sign-in, Notion key on staging for #2238, Fly reads #2244 and #2226, #1514.
 
 ## Waiting on xian (his word)
 - #2251: classifier refused CIO even with the grant; xian's terminal paste (rollup Your hand). Relay both result lines to CIO.
@@ -42,5 +42,4 @@ PDR-102 ratified; #1441 into PUB; five ops issues INFRA; #2253 step dropped; PPM
 - DAY-CLOSED in grep form `<!-- DAY-CLOSED: YYYY-MM-DD -->` as the log's last line.
 
 ## Owed rows (owed-scan)
-- key: exec-launchagent-cutover2. Filed: 2026-10-31. CronDelete the session cron and flip registry row 179 on Pard's load notice.
 - key: 1715-review. Filed: 2026-10-31. The #1715 skills walk with xian, due Tue 11-03.
