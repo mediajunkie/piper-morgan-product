@@ -208,7 +208,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 146	CLOSED	Ongoing	FLYWHEEL - Process improvement	FLY-VERIFY: Implement Three-Tier Verification Pyramid	architecture,enhancement		COMPLETED
 147	CLOSED	Ongoing	FLYWHEEL - Process improvement	FLY-VERIFY-HAND: Implement Mandatory Handoff Protocol with Verification	architecture,component: workflow,enhancement,priority: high		COMPLETED
 148	CLOSED	Ongoing	FLYWHEEL - Process improvement	FLY-VERIFY-CONFIG: Extract Configuration Layer from Mandatory Handoff Protocol	component: workflow,enhancement,priority: high,status: needs-implementation		COMPLETED
-87	OPEN	Enterprise		FEAT-GRAPH: Visual knowledge graph interface			
+87	CLOSED	Enterprise		FEAT-GRAPH: Visual knowledge graph interface			NOT_PLANNED
 65	OPEN	Enterprise		FEAT-VISION: Visual Content Analysis Pipeline	component: ai,enhancement,size: large		
 58	OPEN	Enterprise		FEAT-DASH: Analytics Dashboard Integration	component: integration,enhancement,size: large		
 57	OPEN	Enterprise		FEAT-MEET: Transcript Analysis & Visualization	component: ai,enhancement,size: medium		
@@ -280,7 +280,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 326	OPEN	Fast Follow		ARCH-MULT-ORG: Design multi-organization (multi-tenant) support architecture	architecture,enhancement		
 327	OPEN	Fast Follow		PROCESS-AI-ACCOUNTS: Create separate GitHub accounts for AI agents (Ted suggestion)	enhancement		
 328	OPEN	Fast Follow		OBSERV-CENTRAL: Implement centralized logging, metrics, and monitoring	enhancement,infrastructure		
-329	OPEN	Fast Follow		DATA-ANNOTAT: Implement database annotation system for change rationale tracking	architecture,enhancement,innovation		
+329	OPEN	Icebox		DATA-ANNOTAT: Implement database annotation system for change rationale tracking	architecture,enhancement,innovation		
 330	OPEN	Fast Follow		INTEG-EMAIL-MCP: Email integration via Gmail MCP adapter	component: integration,enhancement		
 331	CLOSED	MVP	W (Quick Wins)	docs: Document application-layer stored procedures pattern (ADR)			COMPLETED
 332	CLOSED	MVP	M1 - MVP Foundation	DOCUMENTATION-STORED-PROCS: Document Application-Layer Stored Procedures Pattern (ADR)	documentation		COMPLETED
@@ -529,7 +529,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 680	CLOSED	MVP	P2 - MUX Document Management	TRUST-CALIBRATION-DOCS: Add threshold calibration note to code	documentation		COMPLETED
 681	CLOSED	MVP	P2 - MUX Document Management	TEST-FAILURE: document_update_queries routing to PORTFOLIO instead of QUERY	bug		COMPLETED
 682	CLOSED	MVP	P1 - MUX Navigation Crisis	MUX-WIRE-USERNAME: Fix username display in header			COMPLETED
-683	OPEN	Ongoing	FLYWHEEL - Process improvement	MUX-WIRE-DOD: Update Definition of Done to require interface verification			
+683	CLOSED	Ongoing	FLYWHEEL - Process improvement	MUX-WIRE-DOD: Update Definition of Done to require interface verification			COMPLETED
 684	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-NAV-PLACES: Places as Windows Design	P1,enhancement		COMPLETED
 685	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-LIFECYCLE-OBJECTS: Define lifecycle tracking for all object types	UX		COMPLETED
 686	OPEN	Fast Follow		MUX-LIFECYCLE-ANIMATIONS: Add transition animations for lifecycle stage changes	enhancement		
@@ -951,7 +951,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1103	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-05-19	documentation,fly-audit,maintenance,weekly-audit		NOT_PLANNED
 1104	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Postgres data wiped on container restart (~2026-05-19 21:00 PT) — named volume should have persisted	bug,component: database,priority: high		COMPLETED
 1130	CLOSED	MVP	M5 - Distribution + Polish	SPRINT-MEMBERSHIP-TSV: agent-readable sprint metadata via TSV export (workaround for read:project scope gap)	enhancement,priority: low		COMPLETED
-1131	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	CANONICAL-TODO-JUDGE-ARTIFACT: stateless judge flags honest todo responses as fabrication (canonical-test user has 4 accumulated todos)	bug,priority: low		
+1131	CLOSED	Production	PROD-TRUST - Trust + Learning Continuation	CANONICAL-TODO-JUDGE-ARTIFACT: stateless judge flags honest todo responses as fabrication (canonical-test user has 4 accumulated todos)	bug,priority: low		NOT_PLANNED
 1132	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	TRUST-STAGE-HARDCODED: #1031 AC Q4 marked closed but ui.py hardcodes trust_stage=1 with TODO (Pattern-045 instance)	bug,priority: medium		COMPLETED
 1133	CLOSED	MVP	M3 - Artifact Persistence	HISTORY-SIDEBAR-UNWIRED: home.html shows History column but no backing endpoint (#566 follow-up; PM-observed)	bug,component: ui,priority: medium		COMPLETED
 1134	CLOSED	MVP	M5 - Distribution + Polish	INSIGHT-JOURNAL-INTEGRATION-GAP: page renders but is design-isolated from the rest of the site (MUX vision without integration)	component: ui,enhancement,priority: medium		COMPLETED
@@ -1040,7 +1040,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1214	CLOSED	MVP	M3 - Artifact Persistence	Composting seed insights leak into live home 'recently' module (with duplicates)	bug		COMPLETED
 1215	CLOSED	MVP	M3 - Artifact Persistence	Calendar 'Connect' returns 503 — Google OAuth not configured (credentials.json + GOOGLE_CLIENT_ID/SECRET missing)	bug		COMPLETED
 1216	CLOSED	MVP	Beta Blockers - Hard Gates Only	'What have you learned about my workstyle' claims a seed-vs-real distinction the system cannot make	beta:correctness-bugs,bug		COMPLETED
-1224	OPEN	Production	PROD-TECHDEBT - General Cleanup	Pre-existing test failures (3 clusters: standup conversation-state, perf-indexes, error-message integration) — found during #1180/#1204	technical-debt,testing		
+1224	CLOSED	Production	PROD-TECHDEBT - General Cleanup	Pre-existing test failures (3 clusters: standup conversation-state, perf-indexes, error-message integration) — found during #1180/#1204	technical-debt,testing		COMPLETED
 1217	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	ETHICS-FLOOR-PERSONHOOD-ASSUMPTION: floor should not assume sapient/human personhood for role-named parties without explicit signal	bug,journey:get-work-done		
 1218	CLOSED	MVP	D1 - Beta design quality	INTENT-ROUTING-ISSUENUMBER-TRIGGER: #NNN patterns in context messages trigger close_issue_query at 1.0 confidence	bug		COMPLETED
 1219	OPEN	Dot Releases (Post-MVP)		ActionClassifier false-negatives block 2 allow-listed reads from auto-exec (list_releases_query, shipped_this_week)	priority: low		
@@ -1135,7 +1135,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1313	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-06-22	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
 1314	CLOSED	MVP	RECONNECT - Connector Refactor	Auto-default / first-run GitHub repo setup (RECONNECT WS-1 follow-up)	enhancement		COMPLETED
 1315	CLOSED	MVP	RECONNECT - Connector Refactor	Populate (or retire) project↔repo links — activate latent resolution paths (RECONNECT WS-1 follow-up)	enhancement		COMPLETED
-1316	OPEN	Dot Releases (Post-MVP)		RECONNECT residual cleanup: federated_search degrade + WS-1 integration test + ADR-058 identity note	technical-debt		
+1316	CLOSED	Dot Releases (Post-MVP)		RECONNECT residual cleanup: federated_search degrade + WS-1 integration test + ADR-058 identity note	technical-debt		COMPLETED
 1317	CLOSED	MVP	Beta Blockers - Hard Gates Only	RECONNECT WS-5 ports: implement per-connector MCP-consumer adapters onto the Connector contract	beta:connector-cutover,enhancement		COMPLETED
 1318	CLOSED	MVP	SKUNK - Skunkworks projects	[alpha] Setup system-check fails on hosted Droplet — checks localhost ports instead of Docker-internal addresses	bug		COMPLETED
 1319	CLOSED	MVP	M5 - Distribution + Polish	[mobile] Welcome card tiny and low on screen — onboarding not mobile-first	bug		COMPLETED
@@ -1167,7 +1167,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1354	CLOSED	MVP	RECONNECT - Connector Refactor	test_calendar_config_loading.py: 8 tests broken — get_config() now requires user_id			COMPLETED
 1355	CLOSED	MVP	RECONNECT - Connector Refactor	5 integration tests fail (3 github_spatial, 2 calendar_integration) — likely accumulated refactor drift, needs triage			COMPLETED
 1356	CLOSED	Ongoing		tests/archive/ is collected by pytest despite its name (1+ import errors); run_pm012_github_tests.py references deleted test files			COMPLETED
-1357	OPEN	Production	PROD-TECHDEBT - General Cleanup	test_github_api_connection.py's live 401s appear only in large combined test runs — likely GitHub rate-limiting, not confirmed			
+1357	CLOSED	Production	PROD-TECHDEBT - General Cleanup	test_github_api_connection.py's live 401s appear only in large combined test runs — likely GitHub rate-limiting, not confirmed			NOT_PLANNED
 1358	CLOSED	Ongoing	FLYWHEEL - Process improvement	Cross-project mail-routing reference doc never created (Track 1 from Apr-28 escalation) — 2 recurring incidents			COMPLETED
 1359	CLOSED	Production	PROD-RECONNECT - Complete Connector Migration	cli/commands/notion.py: self.adapter referenced 10x but never assigned (AttributeError waiting to happen)			COMPLETED
 1360	CLOSED	Production	PUB - Public Beta	Security: add API key gate to /api/v1/intent (replace theater left by Caddy basic-auth removal)			COMPLETED
@@ -1180,8 +1180,8 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1368	CLOSED	Ongoing	FLYWHEEL - Process improvement	UX: smarter sync-pm-local.sh — skip only on PM's prose edits, not on agent noise			COMPLETED
 1369	CLOSED	Ongoing		Dead code cleanup: async-prompt-queue system (coordination/manifest.json, methodology/coordination/*, worktree-*.sh)			COMPLETED
 1370	CLOSED	MVP	Beta Blockers - Hard Gates Only	ADR-076: Usage-cap enforcement middleware (rate limit + concurrency cap, Redis-backed)	enhancement		COMPLETED
-1371	OPEN	Production	PROD-TECHDEBT - General Cleanup	Test-collection fragility: ModuleNotFoundError for real packages (services.configuration/services.cache) when specific files run together	bug		
-1372	OPEN	Production	PROD-TECHDEBT - General Cleanup	tests/intent/contracts/: 42 pre-existing failures, ContainerNotInitializedError (ServiceContainer test fragility)	bug		
+1371	CLOSED	Production	PROD-TECHDEBT - General Cleanup	Test-collection fragility: ModuleNotFoundError for real packages (services.configuration/services.cache) when specific files run together	bug		NOT_PLANNED
+1372	CLOSED	Production	PROD-TECHDEBT - General Cleanup	tests/intent/contracts/: 42 pre-existing failures, ContainerNotInitializedError (ServiceContainer test fragility)	bug		COMPLETED
 1373	CLOSED	MVP	Beta Blockers - Hard Gates Only	ADR-075 Component B: per-user system-prompt personalization (owner_id-scoped, neutral-default degradation)	enhancement		COMPLETED
 1374	CLOSED	Ongoing	FLYWHEEL - Process improvement	mail-send.sh residue reconcile fails when caller passes both sides of a staged rename	bug		COMPLETED
 1375	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-07-07	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
@@ -1195,7 +1195,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1347	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	Conversation history viewer: full backward pagination + transcript-completeness failsafe (follow-on to #1235)	component: api,component: ui,enhancement,journey:come-back,priority: low,surface:web		
 1348	CLOSED	MVP	Beta Blockers - Hard Gates Only	[BUG] create_user 500s with a confusing error when email is omitted (CreateUserRequest.email is Optional but User.email is NOT NULL)	beta:auth-lifecycle,bug,component: api,priority: low		COMPLETED
 1349	OPEN	Production	PROD-TECHDEBT - General Cleanup	[BUG] test_github_place_has_name asserts repo name in Place.name but Place.name is just 'GitHub' (pre-existing, unrelated to #1344)	bug,component: knowledge,priority: low		
-1350	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[BUG] settings_projects.html missing tokens.css / toast.js / nav include — 3 test failures (pre-existing, unrelated to #1344)	bug,component: ui,priority: low		
+1350	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	[BUG] settings_projects.html missing tokens.css / toast.js / nav include — 3 test failures (pre-existing, unrelated to #1344)	bug,component: ui,priority: low		COMPLETED
 1351	CLOSED	Production	PUB - Public Beta	[SECURITY] MCPB's connect() credential is theater (Caddy removal broke it) + shared session_id needs a full cross-request-bleed audit	bug,component: api,priority: high		COMPLETED
 1352	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT-WS4 follow-up: migrate calendar to the shared degrade(reason) contract + apply to other connectors + general enforcement test	component: integration,journey:something-goes-wrong,priority: medium,surface:mcp,surface:web		
 1380	CLOSED	MVP	Beta Blockers - Hard Gates Only	Settings has no LLM key management — /api/v1/keys backend is UI-orphaned	priority: high		COMPLETED
@@ -1254,7 +1254,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1438	CLOSED	MVP	Beta Blockers - Hard Gates Only	Pre-existing: test_pattern_similarity_detection fails (pattern IDs both None) — learning-cycle store not creating patterns			COMPLETED
 1439	OPEN	Production	PROD-TECHDEBT - General Cleanup	Pre-existing: two llm_config_service tests read the machine's REAL keychain (fail on any host with a stored consent list)			
 1440	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	EPIC: RECONNECT R2 — Production connector gate: GitHub · Google Calendar · Notion complete on the #1232 contract, plus Slack as a source via its hosted MCP (#2247; the bot stays Fast Follow)	epic,journey:connect-a-source,surface:mcp,surface:web		
-1441	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT R2: Google Calendar — full port to the #1232 Connector contract	journey:connect-a-source,surface:mcp,surface:web		
+1441	OPEN	Production	PUB - Public Beta	RECONNECT R2: Google Calendar — full port to the #1232 Connector contract	journey:connect-a-source,surface:mcp,surface:web		
 1442	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT R2: Notion — full port to the #1232 Connector contract	journey:connect-a-source,promise:T1-your-work-is-yours,surface:mcp,surface:web		
 1407	OPEN	Fast Follow		Day-part greeting sweep: remaining surfaces still compute from server clock (#1405 follow-up)	bug		
 1408	CLOSED	MVP	Beta Blockers - Hard Gates Only	Droplet/Fly deploys re-download the full dependency set (~45min) — add pip BuildKit cache mount	bug		COMPLETED
@@ -1263,14 +1263,14 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1411	CLOSED	MVP	Beta Blockers - Hard Gates Only	update_issue is elif-dispatched only — invisible to ACTION_REGISTRY/rail/prompt (mode-4 reachability fragility)	bug		COMPLETED
 1412	CLOSED	MVP	Beta Blockers - Hard Gates Only	Migrate create_issue onto the rail+registry (same mode-4 gap as #1411; live beta write path)	bug		COMPLETED
 1443	OPEN	Fast Follow		Stale integration test: test_create_tables_from_scratch expects retired 'todo_lists' table (pre-existing)			
-1444	OPEN	Fast Follow		Stale test: test_canonical_query_engine_initialization asserts the hardcoded 'xian' default #909 removed (pre-existing)			
+1444	CLOSED	Fast Follow		Stale test: test_canonical_query_engine_initialization asserts the hardcoded 'xian' default #909 removed (pre-existing)			NOT_PLANNED
 1445	CLOSED	MVP	Beta Blockers - Hard Gates Only	Canonical e2e fixture teardown FK violation: users delete blocked by personalization_contexts (Q48-Slack, pre-existing)			COMPLETED
 1446	CLOSED	Fast Follow		Stale test: test_security_framework TestFederationReadiness uses nonexistent 'test_client' fixture (pre-existing)			COMPLETED
 1447	CLOSED	MVP	Beta Blockers - Hard Gates Only	Stale test: test_database_backup_and_recovery's MockCoordinatorAgent lacks create_database_backup (pre-existing)			NOT_PLANNED
-1448	OPEN	Fast Follow		Stale test: test_create_todo_extracts_text gets honest-degrade copy — mock likely drifted (pre-existing)			
+1448	CLOSED	Fast Follow		Stale test: test_create_todo_extracts_text gets honest-degrade copy — mock likely drifted (pre-existing)			COMPLETED
 1449	OPEN	Ongoing	PROD-INFRA - Infra & Security Hardening	Real performance + coverage gates for the live system (replace deleted fossil CI jobs)	technical-debt		
 1450	CLOSED	MVP	Beta Blockers - Hard Gates Only	download_file serves ciphertext when at-rest encryption is on — FileResponse bypasses the #1306 decrypt seam	bug		COMPLETED
-1451	OPEN	Production	PROD-TECHDEBT - General Cleanup	settings/projects template test fails: test_template_includes_navigation (pre-existing)	bug		
+1451	CLOSED	Production	PROD-TECHDEBT - General Cleanup	settings/projects template test fails: test_template_includes_navigation (pre-existing)	bug		COMPLETED
 1452	OPEN	Production	PROD-TECHDEBT - General Cleanup	Full Test Suite backlog: 413 failed + 71 errors (suite's first real run in weeks) — burn-down + honest interim gate	seam:green-ci,technical-debt		
 1453	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-07-20	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
 1454	CLOSED	MVP	Beta Blockers - Hard Gates Only	mail-send/merge interaction resurrects triaged memos in inboxes (3 cleanup rounds in 2 days)	technical-debt		COMPLETED
@@ -1367,7 +1367,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1497	OPEN	Fast Follow		Slack settings page is three generations of config stacked with no stated order — PM: 'a dog's breakfast, needs reorg, refactor'	bug		
 1498	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Live 'Good afternoon' greeting banner renders above historical conversation views — 8:33 AM turns under a 2:30 PM header	bug		COMPLETED
 1499	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Route-surface audit (PM-directed, 8/7): 7 unmounted routers, 4 duplicate-purpose OAuth starts, UI calls to nonexistent routes, stale exception list	bug,surface:web		
-1506	OPEN	Production	PROD-TECHDEBT - General Cleanup	tests/domain/test_file_reference_detection.py classification tests fail keyless (ContainerNotInitializedError) — need the llm marker or a container stub	bug		
+1506	CLOSED	Production	PROD-TECHDEBT - General Cleanup	tests/domain/test_file_reference_detection.py classification tests fail keyless (ContainerNotInitializedError) — need the llm marker or a container stub	bug		NOT_PLANNED
 1528	OPEN	Production	PROD-TECHDEBT - General Cleanup	test_validate_openai_key_success hits the LIVE OpenAI API with the real keychain key — network-dependent test flakes on timeouts (and burns quota)			
 1531	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	tests/security/test_cross_user_isolation.py has NO teardown — hardcoded fixture rows persist in shared dev DB, second runs collide (killed-sweep amplifier)			
 1546	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	Dialog copy voice pass: honest but awkward phrasing on delete/remove dialogs — PM: 'strangely written, sounds like ESL'	journey:manage-my-data,surface:web		
@@ -1448,7 +1448,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1618	CLOSED	Ongoing	Q - Recurring Audits	issue-checkbox-lint.sh false-positives on commit-message '#N' that isn't a GitHub issue reference	bug		COMPLETED
 1627	CLOSED	MVP	Beta Blockers - Hard Gates Only	Draft-flow body composition is stealable mid-compose — project-lookup pattern claimed PM's issue-body answer (#1623 family, member 2)			COMPLETED
 1628	CLOSED	MVP	Beta Blockers - Hard Gates Only	Chat-side issue listings render titles verbatim — degenerate-title guard (#1622) covers only the Radar seam			COMPLETED
-1629	OPEN	Ongoing	FLYWHEEL - Process improvement	session_activity.owner_id model/DB drift (varchar vs declared UUID) silently aborted the whole e2e cleanup cascade — 38 test users leaked in dev DB			
+1629	CLOSED	Ongoing	FLYWHEEL - Process improvement	session_activity.owner_id model/DB drift (varchar vs declared UUID) silently aborted the whole e2e cleanup cascade — 38 test users leaked in dev DB			COMPLETED
 1630	CLOSED	MVP	Beta Blockers - Hard Gates Only	Unarmed draft opening is still stealable: 'help me write a ticket' with no subject arms no offer, so the answer to 'What's it about?' routes through the greedy chain			COMPLETED
 1631	CLOSED	MVP	Beta Blockers - Hard Gates Only	Greedy accept/decline rows can claim long free-text replies to ANY armed offer — 'yes,'/'please' prefixes and unanchored decline phrases match into prose			COMPLETED
 1632	OPEN	Production	PROD-CONVO - Conversation Reliability	Capability-legibility catalog should state outwardness per action ('visible to others') now that the axis exists	journey:get-work-done,surface:mcp,surface:web		
@@ -1468,8 +1468,8 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1688	CLOSED	Production	PUB - Public Beta	FTUX empty-state interview: cold users on Web + MCP meet a plain greeting instead of the value-delivering first question			COMPLETED
 1658	OPEN	Production	PUB - Public Beta	PROTOTYPE PARITY: chat-side file upload (UI element + drag-drop), file→project connection, and contextual layers existed in the original prototype and are absent today — PM's parity callout	journey:get-work-done,surface:web		
 1661	CLOSED	Production	PUB - Public Beta	Temporal file references ('summarize the file', '...I uploaded last month') cap at a 7-day window — aged documents get the honest-empty reply while the Files page lists them	bug		COMPLETED
-1662	CLOSED	Production		Upload writability probe (#1656) printed nothing on the v60 prod boot — wiring discrepancy between web/startup.py phases and the actual boot sequence			COMPLETED
-1647	CLOSED	Production		pre-commit-broad-staging-warn.sh blocks unconditionally instead of warning, per its own header comments			COMPLETED
+1662	CLOSED	Production	PROD-INFRA - Infra & Security Hardening	Upload writability probe (#1656) printed nothing on the v60 prod boot — wiring discrepancy between web/startup.py phases and the actual boot sequence			COMPLETED
+1647	CLOSED	Production	PROD-INFRA - Infra & Security Hardening	pre-commit-broad-staging-warn.sh blocks unconditionally instead of warning, per its own header comments			COMPLETED
 1644	CLOSED	Ongoing	Q - Recurring Audits	Weekly Docs Audit #1643 residual: 56 tracked broken links + roadmap.md date discrepancy			COMPLETED
 1654	CLOSED	MVP	Beta Blockers - Hard Gates Only	Reminder task-clarify ask is unarmed — 'I didn't catch what you'd like to be reminded about' orphans its answer into the routing chain (#1648's class, one question earlier)			COMPLETED
 1655	CLOSED	MVP	Beta Blockers - Hard Gates Only	Prompt-hygiene sweep: example reply strings in guidance become live replies — four incidents traced (1544 x2, 1648 x2); sweep all prompt surfaces			COMPLETED
@@ -1534,7 +1534,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1700	CLOSED	MVP	Beta Blockers - Hard Gates Only	CLI-BROKEN-IMPORT: cli/commands/notion.py imports Batch-1-deleted notion_spatial — cli notion command dead on main; cli/ is a census/sweep blind spot	bug		COMPLETED
 1708	CLOSED	MVP	Beta Blockers - Hard Gates Only	ALPHA_QUICKSTART tells testers to clone a branch 7,614 commits stale and calls the live hosted app a future plan			COMPLETED
 1709	CLOSED	MVP	Beta Blockers - Hard Gates Only	get_recent_activity has no underlying implementation — the router delegates to a method neither integration defines			COMPLETED
-1710	OPEN	Ongoing	Q - Recurring Audits	Pattern-catalog Status field vocabulary contamination — standardize on the canonical tier set	documentation		
+1710	CLOSED	Ongoing	Q - Recurring Audits	Pattern-catalog Status field vocabulary contamination — standardize on the canonical tier set	documentation		NOT_PLANNED
 1711	CLOSED	MVP	Beta Blockers - Hard Gates Only	macOS Keychain ACL hang: server startup blocks INDEFINITELY and silently in SecItemCopyMatching when the venv's python binary differs from the ACL'd one (rebuilt venv / second checkout)			COMPLETED
 1712	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-08-31	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
 1713	CLOSED	Ongoing	Q - Recurring Audits	Both Monday-scheduled GH Actions (weekly-docs-audit, monthly-housekeeping-audit) silently did not fire on 2026-08-31			COMPLETED
@@ -1666,7 +1666,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1844	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-09-21	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
 1845	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY/OPS] Invite codes have been traveling through mailboxes/ — a PUBLIC repo. Janne's code sat exposed 8 days AND was minted on the wrong instance (Fly, not alpha) — the invite would have bounced at the gate			COMPLETED
 1846	CLOSED	Ongoing	Q - Recurring Audits	docs: environment-variables.md stale ~1 year (header Oct 2025, no last_verified, not in any tracked lane)	documentation		COMPLETED
-1847	OPEN	Ongoing	Q - Recurring Audits	docs: pattern frontmatter status field needs real fix, not just vocabulary swap -- 15/74 literally 'Unknown', rest inherit body's free-text contamination	documentation		
+1847	CLOSED	Ongoing	Q - Recurring Audits	docs: pattern frontmatter status field needs real fix, not just vocabulary swap -- 15/74 literally 'Unknown', rest inherit body's free-text contamination	documentation		COMPLETED
 1848	CLOSED	Ongoing	Q - Recurring Audits	docs: 5 pre-modern-era session-log gaps (2025-08-16 to 09-20) -- one recoverable from an orphan branch, others confirmed unreachable	documentation		COMPLETED
 1849	CLOSED	Ongoing	Beta Blockers - Hard Gates Only	Fly build path leaves /health git_sha 'unknown' — deploy-identity (#1839) sha not injected at fly deploy	bug		COMPLETED
 1851	CLOSED	MVP	Beta Blockers - Hard Gates Only	Droplet Redis listens on 0.0.0.0:6379 (public) — auth held, exploit-attempt keys present; verify Fly redis is private-only at cutover	bug		COMPLETED
@@ -1885,9 +1885,9 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2078	CLOSED	MVP		Setup wizard ends in 'Setup Failed' for every invited tester on alpha: /setup/complete is gated by require_setup_incomplete, so the account is created but keys are not stored and the button sticks on 'Creating…'	bug		COMPLETED
 2080	CLOSED	MVP		Empty-projects offer chain: after 'What would you like to call it?' the name reply falls to the floor, which improvises a consent question; 'Yes' then creates nothing and says so (xian, alpha 118241587e)	bug		COMPLETED
 2079	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Standup reply opens 'Good morning!' at any hour (hardcoded), seen at 4:29 PM on alpha while the page header says Good afternoon	bug		COMPLETED
-2081	CLOSED	Production		Admin Invites page: mint, list (masked), and revoke alpha invite codes from the signed-in admin account instead of fly ssh console	promise:T8-invite-code		COMPLETED
+2081	CLOSED	Production	PROD-INFRA - Infra & Security Hardening	Admin Invites page: mint, list (masked), and revoke alpha invite codes from the signed-in admin account instead of fly ssh console	promise:T8-invite-code		COMPLETED
 2082	CLOSED	Production	PROD-CONVO - Conversation Reliability	A declarative add with no name ('I'd like to start a new project') asks consent for 'add project' before any name exists; CXO rules name first, then the one confirm			COMPLETED
-2083	CLOSED	Production		/health reports 'healthy' while the production database is unreachable (alpha login 500, release_command cannot connect) — add a DB ping to the health verdict			COMPLETED
+2083	CLOSED	Production	PROD-INFRA - Infra & Security Hardening	/health reports 'healthy' while the production database is unreachable (alpha login 500, release_command cannot connect) — add a DB ping to the health verdict			COMPLETED
 2087	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	Google OAuth consent screen is Internal user type: only Workspace accounts on PM's domain can connect Google Calendar; design partners will be refused. Decide External + publishing status + verification before 10-30	journey:connect-a-source,surface:web		
 2086	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Admin grant on Fly was never applied: migration a1599 keys on username 'dinp', which does not exist in the production users table; make the grant durable for the account xian named (mvp-tester)			
 2085	CLOSED	MVP		Production Postgres died inside a started machine (~05:25 PT 2026-10-19) and nothing restarted or alerted it for 4+ hours — restart policy and an alert on the pg check	promise:T6-restarts-and-outages		COMPLETED
@@ -1940,7 +1940,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2136	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	Seat identity: GitHub App for agents so seats stop acting as the admin account (xian approved the route 10-22; needs a named owner)	sapient-trust		
 2144	CLOSED	Ongoing		Alpha health watch: failing			COMPLETED
 2145	OPEN	Production	PROD-CONVO - Conversation Reliability	Router and classifier calls send the full ~3.3k-token catalog uncached: enable Anthropic prompt caching on the static prefix			
-2146	CLOSED	Production		Alpha Postgres recovery waits on two human presses (dispatch and alpha-db approval): auto-dispatch from the health watch and drop the required reviewer	close:served		COMPLETED
+2146	CLOSED	Production	PROD-INFRA - Infra & Security Hardening	Alpha Postgres recovery waits on two human presses (dispatch and alpha-db approval): auto-dispatch from the health watch and drop the required reviewer	close:served		COMPLETED
 2147	OPEN	Production	PROD-HONESTY - Failed Reads Say So	"show all events" answers with today's meeting time only and omits the week's other events, without saying it covered today	journey:get-work-done,promise:E4-never-lies,surface:web		
 2148	CLOSED	MVP		Calendar connect says 'Calendar Connected' even when the user left Google's calendar box unticked			COMPLETED
 2149	OPEN	Production	PROD-CONVO - Conversation Reliability	Router catalog size: single op or example additions move unrelated rows; decide a catalog shape before more ops are added	promise:E5-one-authority,seam:catalog		
@@ -2050,4 +2050,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2250	OPEN	Production		Status turns wait ~1.5 s for the #2197 milestone resolver even when no milestone is named: run it concurrently with the floor's gather			
 2251	OPEN	Ongoing		piper-guards M-3 misses git mv of mailbox paths; staged mail then makes check-branch.sh block non-commit commands	process		
 2252	CLOSED	Ongoing		FLY-AUDIT: Monthly Housekeeping - 2026-11	documentation,fly-audit,maintenance,monthly-audit		COMPLETED
-2253	OPEN	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-11-02	documentation,fly-audit,maintenance,weekly-audit		
+2253	CLOSED	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-11-02	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
