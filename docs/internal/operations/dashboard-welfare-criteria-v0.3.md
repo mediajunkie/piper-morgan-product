@@ -84,7 +84,14 @@ Three ways the dashboard could quietly mislead PM:
 > 2. **The census is a maintained list, not one written once.** The build says where it lives and what fails when a new consequential site appears outside it. A check in the build is preferred to trusting the list.
 > 3. **Rollout trigger ("adoption is sufficient"):** every censused site is instrumented. The headline leaves its distinct state only at 100%.
 >
-> The carrier itself still waits on Arch.
+> **Carrier ruled (Arch, 2026-11-02 11:00, decisions.log): the audit-log row** (`AuditLog`, `services/database/models.py`; writer `services/security/audit_logger.py`). Five conditions for the build:
+> 1. **Typed columns:** the four flags are non-null booleans that default to false, added in one migration. They don't go in `details` JSON.
+> 2. **One writer, and code sets the flags:** a single `audit_logger` helper for consequential actions. Each site sets the flags from what its code did, never from the model's words (ADR-080).
+> 3. **Its own commit, after the call:** the row is written once the external call returns, in its own session, with its success or failure status. A failed audit write is logged as an error and counts against coverage; it never reads as "0 actions" (#2151).
+> 4. **The census is code, held by a test:** the consequential sites live in one registry. A test fails when an external send or write path skips the helper. The builder names the test's scope and its denominator. This is HOST's condition 2 made mechanical.
+> 5. **Scope and lifetime:** `audit_logs.user_id` already cascades on user delete, so there's no change.
+>
+> Every "TranscriptEntry" below means this audit row.
 
 **What**: Derived from ADR-072 D5 consequential-action carve-out: PM needs visibility into what Piper did autonomously on users' behalf — not every action, but actions where:
 - Piper initiated (not user-requested)
