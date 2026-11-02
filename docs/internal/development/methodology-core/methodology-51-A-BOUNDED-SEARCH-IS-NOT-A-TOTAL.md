@@ -2,12 +2,12 @@
 type: methodology
 title: A Bounded Search Is Not a Total — The Scope Was Chosen, Not Given
 valid_from: "2026-09-06"
-last_updated: "2026-10-23"
+last_updated: "2026-11-02"
 ---
 
 # A Bounded Search Is Not a Total — The Scope Was Chosen, Not Given
 
-**Status (2026-10-23)**: Emerging, **three seats**: CXO (three instances), Lead (10-17), Arch (10-23, caught in review before it ran); see the sections below. Promotion review at the 12-09 audit. **Original status (2026-09-06)**: Emerging, scoped to one seat. **Three instances, one week, one agent (CXO)** — by this
+**Status (2026-11-02)**: Emerging, **four seats**: CXO (three instances), Lead (10-17), Arch (10-23, caught in review before it ran), CIO (11-01, a search bounded by one name; used next morning before it cost anything); see the sections below. Promotion review at the 12-09 audit. **Original status (2026-09-06)**: Emerging, scoped to one seat. **Three instances, one week, one agent (CXO)** — by this
 entry's own companion (m-45), that is one agent's habit observed three times, not three independent
 confirmations, and the count should not be read as more than that. Filed as Emerging on the strength
 of the pattern's clarity, not its breadth. **Promotion trigger: a fourth instance from a different
@@ -144,6 +144,25 @@ read can be correct when written and become wrong when something upstream change
 thing grows. When a change raises the rate of the thing a guard counts, re-read every `--limit` in that
 guard. This is the first instance caught before it ran, so it's a use of the rule changing an outcome.
 Whether that meets the promotion bar is for the 12-09 audit.
+
+## A fourth seat: a search bounded by one name (CIO, 2026-11-01)
+
+Pard's ghmint fix had waited on xian's install since 10-30. After the third push outage, I grepped
+Exec's rollup for "ghmint", found nothing, and mailed Exec that the install "isn't on the rollup".
+It had been the first item in "Your hand" since 10-31, written as "Token-renewal fix". Exec corrected
+me within the hour and renamed the item to include both words.
+
+**What it adds:** the bound doesn't have to be a number. `head` and `--since` cap a search by count or
+time. A search term caps it by vocabulary: it finds the item only if the author used my word. When the
+surface belongs to someone else, their word for an item is usually its purpose, and mine was the
+tool's name. I had stated the scope ("a grep of the rollup for ghmint"), which is m-44's cure. But my
+conclusion still read as a total, which is exactly the gap this entry describes.
+
+**The rule used the next morning:** row 9b (the #2230 flag paste) had also waited more than a day. I
+searched the rollup for the issue number, the setting's name, the flag's name and the purpose ("default
+repo"), and found none of them. I sent the escalation as a question ("is it there under another
+name?"), not as a claim. That's a second use of the rule before it cost anything, after Arch's 10-23
+review. Both go to the 12-09 audit.
 
 ## Why "state the denominator" isn't enough, restated for application
 

@@ -320,3 +320,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v737 2026-11-01 14:09 PST: ghmint line renamed to be searchable, today's outage added (CIO 14:06).
 - v738 2026-11-01 20:10 PST: release-page step removed (gh release list: v0.9.0.0 Latest, published 19:10Z = 11:10 PST by mediajunkie; Janus caught it); stale 'Older' #1706 card removing (b) rec dropped (Your word has PPM's (a)); #2182 Sprint already PROD-HONESTY (GraphQL), #2175 open as an issue.
 - v739 2026-11-02 04:25 PST: crosspost item removed (xian sent Medium and LinkedIn URLs to Docs 11-01 11:08; Docs log 11:08, calendar row 473 distributed). Missed on 11-01; Docs' omnibus flagged my 'xian hasn't checked in' line.
+- v740 2026-11-02 10:13 PST: '#2230' added to the set_default_repo step so it is searchable (CIO 10:09 searched for 2230 and missed the step; it has been on the hot card since 10-31).
