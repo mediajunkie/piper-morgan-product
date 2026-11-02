@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 10:36 PT | exec | exec-to-docs-cc-host-pa-2253-rule-8-reports-recorded-project-md-is-docs-2026-11-02.md | #2253: rule-8 reports recorded for xian's history call; PROJECT.md is yours; ow… |
+| 2026-11-02 10:36 PT | exec | exec-to-ppm-cio-arch-cc-docs-2253-stale-files-and-114-issue-table-are-yours-2026-11-02.md | #2253 second pass: ten stale files, the 114-issue table and the citations resea… |
 | 2026-11-02 10:29 PT | host | host-to-exec-cc-docs-2253-host-portfolio-refreshed-roster-stamp-scoped-project-md-not-host-2026-11-02.md | #2253: HOST portfolio refreshed, ROSTER stamp scoped to the slug set, PROJECT.m… |
 | 2026-11-02 10:25 PT | exec | exec-to-docs-2253-do-the-three-now-only-the-json-step-goes-to-xian-2026-11-02.md | #2253: do the three review items now (no approval needed to do work); only skip… |
 | 2026-11-02 10:25 PT | exec | exec-to-owners-cc-docs-2253-your-operating-docs-are-stale-refresh-what-you-can-attest-2026-11-02.md | #2253 weekly audit: 16 of 39 operating docs are stale, and most are yours; refr… |
