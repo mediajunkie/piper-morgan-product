@@ -7,6 +7,31 @@
 > **Web: build from the "Build copy" section only.** Everything below it is history. **Status 20:50:** CXO OK'd the build copy (20:49) **on one hard condition:** it goes live only after Exec names the waiting-list owner and that owner confirms they will send invitations in waves and the public-beta note. If xian wants it live sooner, use CXO's fallback on card 2, `/try/beta/` and the "Want in?" block: "Join the waiting list. We may invite you, and we'll tell you if we can." **CXO 20:56: the whole Build copy section is OK as written**, including the `/try/invite/` meta line. **xian, 21:14 via PPM: yes to one way in, and HOST keeps the waiting list.** Web builds once HOST confirms they'll send invitations in waves and the public-beta note. **HOST, 21:17:** accepts keeping the list, with two limits: (1) xian sends the invitations and the note, and HOST prepares them, so whether that meets CXO's condition is CXO's and Exec's call. (2) HOST can't read Buttondown yet and needs xian to paste the signups or grant access. The copy is true as long as xian sends. **PPM, 21:19:** xian sends each wave himself and will grant HOST read access to the list. PPM reads CXO's condition as met. **CXO, 21:27: condition met. Web may build.** **Live 21:40** (Web): 4 of 4 pages, 0 alpha, `/try/alpha/` 308 to `/try/invite/`. **CXO 21:48: served text PASSES.** Still open: the hero line above, and whether Buttondown actually sends the confirmation email (HOST or xian to check) before #2229 closes.
 **Asked by:** xian via PPM, 10-31 18:50 ("can we ask Comms to propose updates and then Web can execute once I approve?"). Sent to Exec for xian's approval, cc CXO, Web, PPM.
 
+## v3 amendment: the words now match xian's waiting-list model (Comms, 11-02 ~17:45, for CXO). Changed strings only. Everything else in v2 below stands
+
+xian's model (Exec 17:30, verbatim in #2164): anyone can join, and xian invites in waves or moves one person to the front. If the public beta opens while you're on the list, you hear first, before the announcement. The list keeps metering onboarding through the public beta, and it ends at production. So "or just to hear when the public beta starts" is wrong in two ways. It reads as if the public beta needs no waiting, and as if hearing about it is a separate choice. And "invite you to the private beta" is too narrow, since invitations go on through the public beta.
+
+**Live now (Web shipped these from v2 at 94b1f4a). Replace:**
+
+| Where | v2 (live) | v3 |
+|---|---|---|
+| `/try/beta/`, the one sentence | We're sending invitations in waves. Join the waiting list for an invitation, or just to hear when the public beta starts. | We're sending invitations in waves. Join the waiting list for an invitation, and you'll hear about the public beta before it's announced. |
+| `/try/`, "Want in?" | Join the waiting list for an invitation, or just to hear when the public beta starts. We're sending invitations in waves, and we can't promise when yours will come. | Join the waiting list for an invitation. We're sending invitations in waves, and we can't promise when yours will come. You'll also hear about the public beta before it's announced. |
+| `/try/` meta description | …and join the waiting list for an invitation or a note when the public beta starts. | Piper Morgan is in private beta. See what it asks of you, and join the waiting list for an invitation. |
+| `/try/beta/` meta description | …for a private beta invitation, or a note when the public beta starts. | Join the Piper Morgan waiting list for an invitation. You'll hear about the public beta before it's announced. |
+
+**Rides the switch (not live). Replace:**
+
+| Where | v3 |
+|---|---|
+| Form description | We'll email you about your invitation, and before the public beta is announced. We'll tell you before sending anything else. |
+| Confirmation email, the "Next" line | Next, we'll email you when we can invite you, and again before the public beta is announced. We'll tell you before sending anything else. |
+| `/privacy`, "How We Use", Beta Waiting List | We use your email address only to send the confirmation email, to invite you to Piper Morgan, and to tell you about the public beta before it's announced. We'll tell you before sending anything else. |
+| `/privacy`, a removal line (HOST's second-store point, #2164) | To leave the waiting list, use the unsubscribe link in any email from it. |
+
+- **The removal line is true only under option (a).** Buttondown handles unsubscribe. Under (b), a form and a sheet, there's no unsubscribe link unless someone builds one. So the removal line waits for the mechanism. If it's (b), I rewrite it to a removal-by-request line once privacy@ routing is settled (it's on xian's open list).
+- **HOST's yes-or-no on xian's rollup** should now read "wave invitations and the early public-beta heads-up". The wording above depends on that answer just as v2 did.
+
 ## Sign-up fixes from xian's 11-02 walk, v2 (Comms, after CXO's 17:10 ruling and HOST's 17:10 answer). No semicolons, they/them for Piper
 
 **Status: CXO OK'd v2 as written, 17:20, no edits.** Ships now: section 4 (the `/try/` merge and redirects), and on `/try/beta/` the heading, the one sentence, no ticks, no "No spam" line, and the back link. Rides the newsletter switch, live together and never before: the form description, the checkbox, the confirmation email and the `/privacy` lines. Until the switch, the live checkbox stays. After it, HOST checks that an address that never confirms gets nothing further (if not, Comms rewrites the email's last line), and one real sign-up gets quoted end to end for CXO before #2256 closes.
