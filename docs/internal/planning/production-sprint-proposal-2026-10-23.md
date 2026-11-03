@@ -99,7 +99,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2165 | Per-account rate and abuse limits, with a user-facing line when a limit is hit (10-24) | — |
 | #2168 | Plugin surface rubric: ratify CXO's v0.1 and run it per increment as the precondition for #1701-#1707 (10-24) | PUB |
 | #2175 | UX: a person arriving through the plugin or MCP endpoint has no clear path to an invite and an account (10-25, CXO; journey grid invited x MCP) | — |
-| #2242 | Hosted MCP: decide who may connect during the beta (no allowlist today; any signed-in account can) (10-31, PPM from PA's MCP ordering; xian's decision via Exec, PPM recommends an allowlist; allowlist in place, xian reconnected the test account 11-03 12:56 with one tool showing, PA deploying and checking) | — |
+| #2242 | Hosted MCP: decide who may connect during the beta (no allowlist today; any signed-in account can) (10-31, PPM from PA's MCP ordering; xian's decision via Exec, PPM recommends an allowlist; allowlist served 11-03: MCP v19 `53685c4601`, a listed account reads through both gates, an unlisted one gets the 403 consent page (PA, 13:11); one tool is the whole served surface; last row, a held token refused after `remove`, waits on xian's remove and re-add via Exec) | — |
 | #2183 | Chat ignores a count in "show my last two new issues" and lists every open issue (10-28; moved from V 10-28 with its kin on xian's word) | V |
 | #2185 | "You have 261 open issues" counts assigned-to-me across all repos and "most recent" isn't sorted (10-28, split from #2183) | — |
 | #2186 | GitHub list reads drop qualifiers (count, milestone, label, state): consume the router's args on the search rail (10-28, Arch; the class fix for #2183/#2184) | — |
