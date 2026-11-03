@@ -1,0 +1,287 @@
+=== #2250 status latency on https://alpha.pipermorgan.ai at 3297ea797b as web-seed-1386 ===
+
+--- run 1 [18:35:18, 19.52s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and a few things worth flagging:
+
+**Beta launch milestone** is overdue (was due 2026-10-29) with 4 open issues still on it and none closed. That's the most pressing thing to address.
+
+The issues I'm seeing most active recently are all around **full-text search** (#38, #32, #31) — three separate issues tracking
+
+--- run 1 [18:35:34, 14.78s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two tracked projects — **Piper Test Activity** and **zz share-hide project** — and a few things worth flagging:
+
+**Beta launch milestone is past due.** It was set for Oct 29 and still has 4 open issues against it, none closed. That's the most pressing thing to dig into.
+
+**The full-text search work has a lot of open threads.** Issues #38, #32, and #31 are all variations of "Implement fu
+
+--- run 2 [18:35:49, 12.20s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and things look a bit backed up right now.
+
+A few things standing out:
+
+**Beta launch milestone is past due.** It had a deadline and is sitting at 4 open issues, 0 closed. That's worth a look — want me to pull the full issue list for that milestone so you can triage what's blocking it?
+
+**Five overdue "review 
+
+--- run 2 [18:36:01, 10.71s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and a few things worth flagging:
+
+**Beta launch milestone is past due.** It was set for October 29th and still has 4 open issues, none closed. That's a concern if Beta launch is a real external commitment.
+
+**The full-text search work (#38, #32, #31) is getting a lot of attention** — three issues around the sa
+
+--- run 3 [18:36:15, 11.96s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and things look a bit backed up right now.
+
+The most pressing signal: the **Beta launch** milestone has 4 open issues and 0 closed, and it was due 2026-10-29. That's already past due with nothing shipped against it. The full-text search work (issues #31, #32, #38) shows up repeatedly in recent activity, so tha
+
+--- run 3 [18:36:31, 13.73s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — "Piper Test Activity" and "zz share-hide project." A few things stand out:
+
+**Beta launch milestone is in rough shape.** It was due 2026-10-29 with 4 open issues and 0 closed — so it's past due with nothing shipped against it yet. The full-text search work (#38, #32, #31) looks like it's been the most active thread, with updates running through this week.
+
+**16 hig
+
+--- run 4 [18:36:42, 9.19s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project**.
+
+A few things stand out:
+
+**Beta launch milestone is in rough shape.** It's sitting at 4 open issues, 0 closed, and the due date has already passed. The full-text search work (#38, #32, #31) looks like it's been the most active thread recently, so that may be the current focus — but nothing's crossed the finish
+
+--- run 4 [18:36:55, 10.91s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project**. Here's where things stand:
+
+**Beta launch milestone** is the most pressing thing — it's already past due and sitting at 4 open issues, 0 closed. That's worth a close look.
+
+The full-text search feature (#38, #32, #31) has been the most active thread lately, with multiple issues tracking it. Looks like it's stil
+
+--- run 5 [18:37:09, 11.36s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and things look a bit backed up right now.
+
+The **Beta launch** milestone is the most pressing thing: it has 4 open issues and 0 closed, and it's already past its due date. The full-text search work (issues #31, #32, #38) has been getting the most recent attention, with #38 updated most recently. The other ope
+
+--- run 5 [18:37:21, 10.30s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — "Piper Test Activity" and "zz share-hide project." A few things stand out:
+
+**Beta launch milestone is past due.** It was set for Oct 29 with 4 open issues and nothing closed yet. That's the most pressing signal — zero progress closed against it.
+
+**The full-text search work (#38, #32, #31) has been the most active thread** recently, with #38 getting the latest upd
+
+--- run 6 [18:37:36, 12.87s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project**.
+
+Here's what stands out:
+
+**Beta launch milestone is past due.** It had a hard due date and still has 4 open issues against it, nothing closed. The full-text search work (issues #38, #32, #31) has been the most active thread recently, so that's likely where the energy is going — but it's worth a quick check on 
+
+--- run 6 [18:37:48, 10.25s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and a few things worth flagging:
+
+**Beta launch milestone is past due.** It was set for Oct 29 with 4 open issues and nothing closed yet. The full-text search work (issues #38, #32, #31) has seen the most recent movement, so that thread seems active, but the milestone itself hasn't been cleared.
+
+**The PR revi
+
+--- run 7 [18:38:00, 9.66s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and a few things worth flagging:
+
+**Beta launch milestone** is past due (was set for Oct 29) with 4 open issues and nothing closed yet. The full-text search work (#38, #32, #31) has seen the most recent movement, so that's likely the active thread. The other open issues — the "Served check" and "A3" ones — loo
+
+--- run 7 [18:38:11, 9.72s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and a few things worth flagging:
+
+**Beta launch milestone is past due.** It had a 2026-10-29 deadline with 4 open issues and nothing closed yet. That's the most pressing thing to address.
+
+**The full-text search work (#38) is the most active thread** — three issues tracking it (#38, #32, #31) with the latest u
+
+--- run 8 [18:38:24, 10.09s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project**.
+
+Here's what stands out:
+
+**Beta launch milestone is past due.** It was set for 2026-10-29 and still has 4 open issues with nothing closed. If you'd like me to pull the full issue list for that milestone so you can assess what's blocking it, just tell me directly.
+
+**Open issues are piling up.** There are 16 hi
+
+--- run 8 [18:38:37, 11.58s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and a few things worth flagging:
+
+**Beta launch milestone is past due.** It was set for October 29th and still has 4 open issues, 0 closed. That's the most pressing thing to address.
+
+**The full-text search work (#38, #32, #31) has been getting a lot of activity** — three separate issues tracking what looks li
+
+--- run 9 [18:38:51, 11.43s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and things look a bit backed up.
+
+The most pressing signal: the **Beta launch** milestone has 4 open issues and 0 closed, and it was due 2026-10-29. That's already past due with nothing shipped against it yet.
+
+The open issue getting the most recent attention is **#38 — Implement full-text search across nav an
+
+--- run 9 [18:39:02, 9.57s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and a few things worth flagging:
+
+**Beta launch milestone is past due.** It was set for October 29th and still has 4 open issues against it, none closed. That's the most pressing thing to address.
+
+**Full-text search (#38) is the most active issue right now** — it's been updated most recently and has three sep
+
+--- run 10 [18:39:15, 10.86s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project**.
+
+Here's what stands out:
+
+**Beta launch milestone is past due** — it was set for 2026-10-29 with 4 open issues and nothing closed yet. The full-text search work (issues #38, #32, #31) looks like it's seen the most recent movement, with #38 updated most recently. That's probably the thread worth pulling on first
+
+--- run 10 [18:39:28, 11.08s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and a few things worth flagging:
+
+**Beta launch milestone is in rough shape.** It's sitting at 4 open issues, 0 closed, and the due date has already passed. That's a stall worth addressing directly.
+
+**The full-text search work has a lot of noise around it.** Issues #38, #32, and #31 are all open and titled "I
+
+--- run 11 [18:39:41, 10.79s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and things look a bit backed up right now.
+
+The **Beta launch** milestone is the most pressing thing: it has 4 open issues and 0 closed, and it's already past its due date. The full-text search work (issues #38, #32, #31) has seen the most recent movement, so that thread seems active. The other open issues — t
+
+--- run 11 [18:39:54, 11.10s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — "Piper Test Activity" and "zz share-hide project" — and here's the honest picture:
+
+**The Beta launch milestone is overdue.** It was due 2026-10-29 with 4 open issues and nothing closed yet. The full-text search work (#38, #32, #31) has seen the most recent movement, but it's still open. That's a concern if it was scoped for Beta.
+
+**There's a PR review backlog pil
+
+--- run 12 [18:40:07, 10.94s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project**.
+
+Here's what stands out:
+
+**Beta launch milestone** is past due with 4 open issues and nothing closed yet. The full-text search work (issues #31, #32, #38) has been the most active thread recently, with #38 being the latest update. That looks like it might be the main push for the milestone, but with 4 open and
+
+--- run 12 [18:40:22, 13.13s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project**. Here's what I'm seeing across both:
+
+**Beta launch milestone is past due.** It was set for Oct 29 and still has 4 open issues against it, none closed. That's worth a look.
+
+**Issue activity has been steady** — 8 issues touched in the last week, mostly around the full-text search feature (issues #31, #32, #38 al
+
+--- run 13 [18:40:35, 10.85s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and a few things worth flagging:
+
+**Beta launch milestone** is past due (was set for Oct 29) with 4 open issues and nothing closed yet. The full-text search work (#38, #32, #31) has been the most active lately, with #38 getting the most recent update. That looks like your main in-flight feature.
+
+**Todo backlo
+
+--- run 13 [18:40:48, 10.64s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and a few things worth flagging:
+
+**Beta launch milestone is past due.** It had a hard due date and is sitting at 4 open issues, 0 closed. That's the most pressing thing to address.
+
+**The full-text search work (#38, #32, #31) has the most recent activity** and looks like it's been iterated on — three separate
+
+--- run 14 [18:41:00, 10.59s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project**.
+
+Here's what stands out:
+
+**Beta launch milestone is past due** — it was set for October 29th with 4 open issues and nothing closed yet. That's a concern worth addressing directly.
+
+**16 open high-priority issues**, with the most active being the full-text search work (issues #31, #32, #38 all touching that fea
+
+--- run 14 [18:41:14, 11.61s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two projects tracked — **Piper Test Activity** and **zz share-hide project**. Here's what I'm seeing across both:
+
+**The Beta launch milestone is past due** — it was set for Oct 29 with 4 open issues and nothing closed yet. That's the most pressing thing to address.
+
+The full-text search work (issues #31, #32, #38) has been active, with #38 getting the most recent movement. That one loo
+
+--- run 15 [18:41:25, 9.43s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and things look a bit backed up right now.
+
+The most pressing signal: the **Beta launch** milestone is past due (it was set for Oct 29) with 4 open issues and nothing closed yet. The full-text search work (#38, #32, #31) has been the most active thread recently, with #38 seeing the latest movement. A handful o
+
+--- run 15 [18:41:39, 11.33s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project**. Here's the honest picture:
+
+**Beta launch milestone is in rough shape.** It was due 2026-10-29 and still has 4 open issues, 0 closed. That's a milestone that's slipped with nothing shipped against it yet.
+
+**Issue activity is picking up, but spread thin.** Eight issues moved recently, and the full-text search w
+
+--- run 16 [18:41:52, 11.12s, http 200] ---
+USER: What's the status of my project?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project**.
+
+Here's what stands out:
+
+**Beta launch milestone** is past due (was set for Oct 29) with 4 open issues and nothing closed yet. The full-text search work (#38, #32, #31) has been the most active thread recently, with #38 getting the latest update. The "Served check" and "Re-check forward" issues (#37, #36, #35)
+
+--- run 16 [18:42:04, 10.74s, http 200] ---
+USER: How is my project going?
+route: STATUS/get_project_status
+PIPER: You've got two active projects — **Piper Test Activity** and **zz share-hide project** — and a few things worth flagging:
+
+**Beta launch milestone is in rough shape.** It's sitting at 4 open issues, 0 closed, and the due date has already passed. The full-text search work (issues #31, #32, #38) looks like it's been getting the most attention recently, with #38 being the latest update. That one's pr
+
+=== SUMMARY at 3297ea797b (end 3297ea797b) ===
+"What's the status of my project?": n=16 median 10.90s IQR 10.46-11.56s min 9.19s max 19.52s all [19.52, 12.2, 11.96, 9.19, 11.36, 12.87, 9.66, 10.09, 11.43, 10.86, 10.79, 10.94, 10.85, 10.59, 9.43, 11.12]
+'How is my project going?': n=16 median 11.00s IQR 10.56-11.59s min 9.57s max 14.78s all [14.78, 10.71, 13.73, 10.91, 10.3, 10.25, 9.72, 11.58, 9.57, 11.08, 11.1, 13.13, 10.64, 11.61, 11.33, 10.74]
