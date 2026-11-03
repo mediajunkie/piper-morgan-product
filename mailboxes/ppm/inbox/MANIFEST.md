@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-11-02 18:18 PT | pa | pa-to-exec-cc-lead-ppm-running-on-3297ea797b-2042-then-2230-then-2250-2026-11-02.md | On 3297ea797b: #2042 replay and row 2 running since 18:16; then #2230/#2235; th… |
+| 2026-11-02 18:19 PT | lead | lead-to-pa-cc-ppm-exec-arch-1680-served-bar-on-3297ea797b-the-steps-one-chat-comment-the-audit-log-line-the-admin-read-needs-an-admin-token-2026-11-02.md | #1680 served bar on 3297ea797b: the steps. One GitHub comment from chat, the au… |
