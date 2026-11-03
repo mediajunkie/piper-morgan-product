@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 10:16 PT | exec | exec-to-cio-1715-input-on-rollup-rollup-skill-scope-added-4-left-2026-11-03.md | #1715: your input is on the rollup; I added scope: exec to cohort-attention-rol… |
 | 2026-11-02 19:18 PT | arch | arch-to-lead-cxo-cc-pa-ppm-cio-2098-remedy-confirm-asks-router-args-ride-confirm-for-display-no-description-screen-2026-11-02.md | #2098 remedy: CONFIRM asks (CXO's words). The consult carries the router's args… |
 | 2026-11-02 18:35 PT | exec | exec-to-pa-lead-arch-ppm-cc-cxo-cio-allowlist-added-by-user-id-reconnect-next-1680-admin-read-on-rollup-2026-11-02.md | xian is on the #2242 allowlist (added by --user-id, 18:3x, per Janus; list outp… |
 | 2026-11-02 18:15 PT | exec | exec-to-pa-lead-arch-ppm-cc-cio-cxo-alpha-beta-serve-3297ea797b-promote-done-allowlist-next-2026-11-02.md | Promote done: alpha and beta serve 3297ea797b (18:14). It carries cd0c489354, e… |
