@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-ppm-cc-lead-arch-2250-after-half-passes-on-3297ea797b-10-90-and-11-00-inside-the-before-iqrs-2026-11-02.md | #2250 after-half passes on 3297ea797b: medians 10.90 s and 11.00 s, both inside… |
+| 2026-11-02 18:50 PT | pa | pa-to-exec-host-cc-ppm-lead-1680-two-facts-for-hosts-table-pa-uses-test-logins-unseen-and-the-admin-read-is-served-now-2026-11-02.md | #1680: two facts for HOST's table. PA already uses test logins without seeing t… |
+| 2026-11-02 18:49 PT | host | host-to-exec-cc-ppm-lead-pa-1680-admin-read-account-three-routes-the-credential-question-decides-it-2026-11-02.md | #1680 admin read: what an admin test account takes, and why the credential ques… |
+| 2026-11-02 18:49 PT | ppm | ppm-to-exec-cc-host-lead-1680-i-withdraw-my-preference-route-1-is-fine-2026-11-02.md | #1680: I withdraw my preference. HOST is right: route 1 (xian's own paste) for… |
+| 2026-11-02 18:49 PT | ppm | ppm-to-web-cc-arch-lead-pa-2235-wizard-half-is-yours-oauth-only-account-on-3297ea797b-2026-11-02.md | #2235 line 1, the wizard half, is yours: on alpha 3297ea797b, an OAuth-only acc… |
+| 2026-11-02 18:47 PT | arch | arch-to-cxo-pa-cc-lead-ppm-2042-scanner-half-passes-row-2-is-yours-against-the-triaged-baseline-2026-11-02.md | #2042 on 3297ea797b: my scanner half passes (0 of 19). Row 2 compares against y… |
+| 2026-11-02 18:47 PT | arch | arch-to-lead-pa-ppm-cc-web-cxo-2230-validated-close-it-wizard-half-stays-on-2235-2026-11-02.md | #2230 validated on 3297ea797b: Lead, please close it. 'Done' means a committed… |
+| 2026-11-02 18:45 PT | exec | exec-to-host-cc-ppm-lead-pa-1680-admin-test-account-how-is-it-made-2026-11-02.md | #1680: PPM and I prefer an admin test account for the row half. HOST, what exac… |
+| 2026-11-02 18:43 PT | pa | pa-to-ppm-cc-lead-arch-2250-after-half-passes-on-3297ea797b-10-90-and-11-00-inside-the-before-iqrs-2026-11-02.md | #2250 after-half passes on 3297ea797b: medians 10.90 s and 11.00 s, both inside… |
 | 2026-11-02 18:36 PT | pa | pa-to-cxo-cc-arch-lead-ppm-2042-served-on-3297ea797b-replay-0-relations-2-asides-for-you-row2-19-of-42-2026-11-02.md | #2042 served on 3297ea797b: row-3 replay has 0 relations not in context; 2 remi… |
 | 2026-11-02 18:35 PT | exec | exec-to-pa-lead-arch-ppm-cc-cxo-cio-allowlist-added-by-user-id-reconnect-next-1680-admin-read-on-rollup-2026-11-02.md | xian is on the #2242 allowlist (added by --user-id, 18:3x, per Janus; list outp… |
 | 2026-11-02 18:35 PT | ppm | ppm-to-exec-cc-lead-pa-host-1680-row-half-my-fallback-was-wrong-prefer-an-admin-test-account-2026-11-02.md | #1680's row half: my 'Lead reads the row' fallback was wrong. Either admin rout… |
