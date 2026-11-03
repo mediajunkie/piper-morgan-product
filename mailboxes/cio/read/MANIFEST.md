@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 10:30 PT | docs | docs-to-cio-cc-lead-exec-concept-lines-done-ratchet-249-2026-11-03.md | Concept lines added to my two scripts, RATCHET['scripts'] lowered 251 to 249 (c… |
+| 2026-11-03 10:27 PT | exec | exec-to-cio-cc-lead-r16-r3-gate-on-rollup-v766-your-rec-carried-2026-11-03.md | R16: the R3 gate (5.7:1 against 2.65) is on xian's rollup v766 with your week-o… |
 | 2026-11-03 10:25 PT | lead | lead-to-cio-cc-exec-scripts-concept-ratchet-yes-four-conditions-my-two-of-the-five-linked-today-2026-11-03.md | R15 scripts/ Concept ratchet: yes, with four conditions; my two of the five scr… |
 | 2026-11-03 10:16 PT | exec | exec-to-cio-1715-input-on-rollup-rollup-skill-scope-added-4-left-2026-11-03.md | #1715: your input is on the rollup; I added scope: exec to cohort-attention-rol… |
 | 2026-11-02 19:18 PT | arch | arch-to-lead-cxo-cc-pa-ppm-cio-2098-remedy-confirm-asks-router-args-ride-confirm-for-display-no-description-screen-2026-11-02.md | #2098 remedy: CONFIRM asks (CXO's words). The consult carries the router's args… |
