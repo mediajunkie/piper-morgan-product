@@ -1,8 +1,16 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-11-01 (see NOW). Older: 2026-10-17 (04:12 fire, see NOW below; older DONE lines below are history). DONE 10-12: 10-10 + 10-11 omnibuses, Weekly Audit #1994 closed, BRIEFING-CURRENT-STATE refreshed, How to Report edit pushed (xian approved), Ship #064 row set by Comms and view rebuilt. Known fault: bare `gh` hung on Amber after the 10-10 reboot (Pard); prefix `GODEBUG=netdns=go` until Pard confirms the fix. History in session logs (`dev/2026/10/{04..12}/*docs-code-log.md`), not here.
+**Updated**: 2026-11-02 22:12 STOP (see NOW). Older: 2026-10-17 (04:12 fire, see NOW below; older DONE lines below are history). DONE 10-12: 10-10 + 10-11 omnibuses, Weekly Audit #1994 closed, BRIEFING-CURRENT-STATE refreshed, How to Report edit pushed (xian approved), Ship #064 row set by Comms and view rebuilt. Known fault: bare `gh` hung on Amber after the 10-10 reboot (Pard); prefix `GODEBUG=netdns=go` until Pard confirms the fix. History in session logs (`dev/2026/10/{04..12}/*docs-code-log.md`), not here.
 
-## NOW (11-01 22:12 STOP, supersedes the 10-31 block)
+## NOW (11-02 22:12 STOP, supersedes the 11-01 block)
+- **Next START Tue 11-03 04:12 owes the 11-02 omnibus** (plus Step 1d nudges). At 22:12 all 10 other role logs for 11-02 carry DAY-CLOSED. The prog lane logs (1114, 1202, 1736, 1907, 1921) are unclosed by design. Mine closes in this STOP.
+- **Done 11-02:** 11-01 omnibus, monthly #2252 and weekly #2253 both CLOSED (pm-issues-status step dropped from the template, calendar weekly row Nov 2 / next Nov 9), #1710 closed, #1683 closed (Ship #048 LinkedIn URL filled, "Building for Learning" and "15 Sessions" rows removed on xian's word, 473 to 471 rows, 15 Sessions draft moved to `drafts/superseded/`). Briefing files, PROJECT.md, ROSTER, README and docs/README refreshed. piper-guards 0.2.2 probe PASSED: **M-3 now refuses `git mv` on mailbox paths, so triage mail with plain `mv`** then `mail-send.sh` with old and new paths plus MANIFESTs (it takes mailbox paths only, not the log).
+- **Publishing:** "The Unguarded Entrance" (Tue 11-03, building, Comms owns) publishes only on a Comms ready-for-docs memo. Open the image against its alt before the dry-run. None was in by 22:12.
+- **Nothing waiting on xian for Docs.** Held: #1909 fixtures box (Lead), glossary re-verify about 11-30, #2249 (blog legacy-error audit, not scheduled), the stray baking-art webp in `drafts/published/` (delete only if xian asks), rule-8 name in `ROLE-PORTFOLIO-HOST.md` (xian decides with history). Not mine: Arch's 27 status-Unknown files, #1847, PPM's issue routing.
+- xian 11-02 on pace: keep steady, no urgency-driven deadlines, but unblocked work still doesn't wait without a named trigger.
+- Main CI 12 of 12 green at 22:12. `gh`: prefix `GODEBUG=netdns=go`.
+
+## (earlier NOW, 11-01 22:12 STOP)
 - **Next START Mon 11-02 04:12 owes the 11-01 omnibus** (plus Step 1d nudges: at 22:12 the 11-01 logs for arch, comms, exec and prog (0714, 0830) had no DAY-CLOSED; re-check at START). Also due Mon 11-02: weekly audit (with the new drift step, check Icebox triggers) and monthly housekeeping.
 - **Publishing:** "Check the Machine First" is PUBLISHED and DISTRIBUTED (row 473 `distributed`; website a4ce1d2, art fixed b405c17 and verified live). Next post "The Unguarded Entrance" (Tue 11-03, building, Comms owns): publish only on a Comms ready-for-docs memo, and open the image against its alt before the dry-run.
 - **v0.9.0.0 DONE:** tag c44dd081cb74, release page live (xian, 11-01 11:10 PST), both briefing Version lines cite the URL. Lead confirmed nothing is left.
