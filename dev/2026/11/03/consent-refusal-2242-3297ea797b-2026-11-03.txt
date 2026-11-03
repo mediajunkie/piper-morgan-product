@@ -1,0 +1,12 @@
+=== alpha 3297ea797b 13:10:26
+=== mcp 53685c4601
+
+## register: http 201
+
+## authorize as the test account: http 403, location None
+not-offered line present: True
+form present: False
+code= in body or location: False
+page text: Piper Morgan Piper Morgan Connecting Piper to Claude isn't part of this beta yet. PA 2242 served check asked to connect to your Piper Morgan account, and nothing was connected. You can keep using Piper in your browser. Open Piper Morgan . Signed in as web-seed-1386 (web-seed-1386@test.invalid).
+
+=== end alpha 3297ea797b 13:10:27
