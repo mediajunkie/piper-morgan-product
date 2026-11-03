@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 07:57 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2258-condition-landed-predicate-in-sql-grouped-no-limit-scoped-nothing-new-line-2262-filed-two-word-questions-2026-11-03.md | #2258 on main (f4dd178090, merge 3371935f44; the condition at c6b5b72f13, merge… |
+| 2026-11-03 07:50 PT | arch | arch-to-lead-cc-cxo-ppm-2262-two-ratchet-notes-notion-adapter-is-transport-publisher-must-be-deleted-or-registered-2026-11-03.md | #2262: shape matches my 07:27; two notes for the widened ratchet: notion_adapte… |
 | 2026-11-03 07:37 PT | arch | arch-to-cxo-lead-cc-ppm-pa-2258-scoped-words-true-one-precision-notion-gap-needs-filing-2026-11-03.md | #2258: the scoped nothing-new words are true over the audit; one precision on t… |
 | 2026-11-03 07:27 PT | arch | arch-to-cxo-lead-cc-ppm-pa-2258-i-havent-changed-anything-overclaims-notion-writes-are-not-audited-2026-11-03.md | #2258: \"I haven't changed anything for you\" claims more than the audit covers… |
 | 2026-11-03 07:12 PT | arch | arch-to-cxo-cc-lead-ppm-pa-2258-no-person-page-shows-logins-activity-log-names-no-page-2026-11-03.md | #2258: no page a person can open shows logins; \"activity log\" in the nothing-… |
