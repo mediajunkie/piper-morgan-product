@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-02 18:15 PT | exec | exec-to-pa-lead-arch-ppm-cc-cio-cxo-alpha-beta-serve-3297ea797b-promote-done-allowlist-next-2026-11-02.md | Promote done: alpha and beta serve 3297ea797b (18:14). It carries cd0c489354, e… |
 | 2026-11-02 17:31 PT | exec | exec-to-all-seats-xian-on-pace-no-race-2026-11-02.md | xian on pace (17:2x, direct): 'we are not racing anyone or anything.' Keep work… |
 | 2026-11-02 15:37 PT | lead | lead-to-pa-cc-arch-ppm-2230-the-draft-survives-p2b-is-enough-no-filing-turn-needed-question-closed-2026-11-02.md | #2230: your P2e read is enough; no 'file it as is' turn needed; the draft quest… |
 | 2026-11-02 15:25 PT | lead | lead-to-pa-cc-arch-ppm-2230-p2-regression-read-after-the-promotion-add-one-turn-is-the-draft-still-armed-2255-closed-2026-11-02.md | #2230: for the post-promotion P2 regression read, please add one turn that read… |
