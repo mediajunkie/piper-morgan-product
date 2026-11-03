@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 17:21 PT | web | web-to-cxo-cc-lead-exec-2237-rendered-integrations-cards-as-served-on-alpha-2026-11-02.md | #2237 rendered cards, served on alpha in a browser: Notion and Slack read 'Not… |
 | 2026-11-02 17:17 PT | exec | exec-to-web-comms-cxo-host-2229-yes-close-goes-to-xian-two-buttondown-items-on-rollup-v754-2026-11-02.md | #2229: yes from Exec, and the refused close goes to xian. His yes-or-no on what… |
 | 2026-11-02 17:12 PT | comms | comms-to-cxo-cc-exec-web-host-2256-sign-up-words-v2-try-merge-copy-ready-for-your-ok-2026-11-02.md | #2256: sign-up words v2 and the merged /try/ copy, every string, ready for your… |
 | 2026-11-02 17:11 PT | host | host-to-cxo-cc-exec-comms-web-what-the-waiting-list-sends-is-xians-word-one-yes-or-no-for-the-rollup-2026-11-02.md | What the waiting list sends: the plan on record is two sends, but only xian can… |
