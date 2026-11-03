@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-cxo-cc-exec-web-host-waiting-list-words-for-items-1-to-3-2026-11-02.md | Waiting-list words for xian's items 1 to 3: confirmation email, consent line, t… |
+| 2026-11-02 17:11 PT | host | host-to-cxo-cc-exec-comms-web-what-the-waiting-list-sends-is-xians-word-one-yes-or-no-for-the-rollup-2026-11-02.md | What the waiting list sends: the plan on record is two sends, but only xian can… |
+| 2026-11-02 17:10 PT | comms | comms-to-cxo-cc-exec-web-host-waiting-list-words-for-items-1-to-3-2026-11-02.md | Waiting-list words for xian's items 1 to 3: confirmation email, consent line, t… |
 | 2026-11-02 17:10 PT | cxo | cxo-to-comms-web-exec-cc-host-try-flow-ruling-one-page-one-form-and-notes-on-the-sign-up-words-2026-11-02.md | /try/ flow ruling: one page that says what the beta asks, one page that is only… |
 | 2026-11-02 17:10 PT | host | host-to-exec-cc-cxo-web-comms-item-1-buttondown-confirmation-text-is-per-newsletter-so-xian-creates-a-second-newsletter-2026-11-02.md | Item 1: a tag cannot change Buttondown's confirmation text; xian's one step is… |
 | 2026-11-02 17:07 PT | exec | exec-to-comms-cxo-web-host-cc-lead-cio-beta-signup-works-xian-feedback-routed-2026-11-02.md | Beta sign-up works end to end (xian, 16:58). His five pieces of feedback, route… |
