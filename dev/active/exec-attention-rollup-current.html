@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Saturday 31 October</h1>
-<p class="meta">Exec · v753, rebuilt 17:09 PST Mon 11-02 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v754, rebuilt 17:20 PST Mon 11-02 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -61,6 +61,7 @@ Then reconnect the Piper connector in Claude once (one consent click). If Claude
 
 <div class="card act">
 <ul>
+<li><b>What the beta waiting list sends (HOST, CXO, Comms).</b> &ldquo;The waiting list is used only for wave invitations and the one public-beta note, and anything else gets announced to its members first. OK to say so on the sign-up page?&rdquo; That&rsquo;s the plan on record. A yes makes the new confirmation email and the sign-up line true: &ldquo;We&rsquo;ll email you about your invitation and when the public beta starts, and we&rsquo;ll tell you before sending anything else.&rdquo; Comms also changed the checkbox to name exactly what people agree to, instead of &ldquo;marketing communications&rdquo;. Whether a lawyer reads it is up to you. <span class="rec">Yes.</span></li>
 <li><b>CIO&rsquo;s alpha promotion grant.</b> Keep it, with the review reworded to &ldquo;11-27, or after a promotion that leaves alpha on neither build.&rdquo; <span class="rec">Yes.</span></li>
 <li><b>Who signs up the fresh test accounts? (HOST, PA)</b> You OK&rsquo;d fresh test invites, but a raw code can&rsquo;t go in the repo, mail or logs. PA&rsquo;s rules also bar it from seeing a full code, so neither handing one to PA nor PA minting its own works. <span class="rec">Do what we did on 10-29 and 10-30: HOST mints with you there, you sign up the fresh account and run the few turns, and PA quotes your screenshots.</span> It&rsquo;s about 10 minutes, and it covers A1, A2, the first-reply notice line and #2225&rsquo;s re-ask. None of these holds the tag.</li>
 <li><b>Whenever: #327, separate GitHub accounts for agents.</b> Close as not planned? PPM and I recommend yes, since agent commits already carry Claude trailers.</li>
@@ -80,7 +81,8 @@ Then reconnect the Piper connector in Claude once (one consent click). If Claude
 <li><b>Optional: Lead&rsquo;s promotion permission</b> (the 14:00 paste), so Lead runs later promotions without you.</li>
 <li><b>Sign Web&rsquo;s tab in as <code>web-pat-test</code></b>, or approve Web&rsquo;s Read of that one credentials file. That unblocks #2237&rsquo;s cards check, and with the next item it unblocks #2238&rsquo;s Notion check.</li>
 <li><b>Paste your own Notion key on staging (#2238)</b>, now: staging offers Notion as of the deploy of <code>e24cf93b00</code> (Lead 09:10, deploy succeeded). Alpha and beta can&rsquo;t offer it. Web runs the chat and quotes the reply with the key masked. A pass lets PPM ask you &ldquo;offer Notion in the beta?&rdquo; Nothing testers use waits on it.</li>
-<li><b>Give HOST read access to the Buttondown <code>beta-waitlist</code> list</b>, as you told PPM you would. HOST keeps the list. You send each wave, and HOST prepares it.</li>
+<li><b>Buttondown: create a second newsletter for the waiting list</b>, after you say yes above and CXO approves Comms&rsquo; words. A tag can&rsquo;t change the confirmation email, because each newsletter has a single confirmation template (HOST, from Buttondown&rsquo;s docs). Open the newsletter dropdown (top left), choose <b>Add newsletter</b>, and name it something like &ldquo;Piper Morgan Beta Waiting List&rdquo;. Under <b>Settings &gt; Subscribing &gt; Confirmation</b>, paste Comms&rsquo; text. Then send Web the new form address, and Web repoints <code>/try/beta/</code> to it. HOST couldn&rsquo;t confirm from the docs whether your plan allows a second newsletter, and the Add newsletter screen will tell you. After that, check it with one sign-up of your own. HOST&rsquo;s read access now applies to the new newsletter, and HOST asked that the first waiting-list person be held until it exists.</li>
+<li><b>Close #2229, or allow Web&rsquo;s seat to close issues.</b> It&rsquo;s done: your sign-up showed the last check (CXO&rsquo;s confirmation email condition) is met, and Web&rsquo;s served check of the four pages found 0 &ldquo;alpha&rdquo;. The classifier refused Web&rsquo;s close. The page cleanup moved to #2256.</li>
 <li><b>Later, in parallel with the next sprint: submit the Slack app for review (#1514).</b> Slack controls how long the review takes, so it&rsquo;s the long pole for Slack in 1.0 (#2247). Lead can start on an internal app meanwhile.</li>
 </ol>
 </div>

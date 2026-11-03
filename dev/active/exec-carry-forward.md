@@ -7,7 +7,7 @@
 **Cron gate:** the duty-cycle-tick cron-management steps (CronList self-heal, STOP re-arm) don't apply on a LaunchAgent.
 
 ## Rollup
-v753, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
+v754, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
 
 ## Where things stand (end of 11-01)
 - **v0.9.0.0 complete.** xian published the release page at 11:10 PST; Lead confirmed at 20:15 that the tag is the served sha and the post-release audit is clean. Docs adds the URL to the briefing Version line (told at 20:2x).
@@ -19,7 +19,7 @@ v753, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 1. ghmint fix: INSTALLED 11-02 ~13:16 (Janus). CIO closes 9d after two mints 15 min apart; Pard told.
 2. `set_default_repo`: printenv, then `fly secrets set` with the value appended. Relay both outputs to CIO.
 3. Promote (dispatch line), then the #2242 allowlist add (three lines with his email), reconnect if needed. Relay `list` to PA, Lead, Arch, PPM.
-4. Buttondown: DONE 16:58 (xian's sign-up, Janus 17:04). Five pieces of feedback routed 17:07 (Comms, CXO, Web, HOST; gate idea to Lead+CIO, joint answer owed to Exec). HOST read access still his.
+4. Buttondown: DONE 16:58 (xian's sign-up, Janus 17:04). Five pieces of feedback routed 17:07 (Comms, CXO, Web, HOST; gate idea to Lead+CIO, joint answer owed to Exec). Now on the rollup: his yes-or-no on what the list sends (relay to Web, Comms, CXO, HOST); the second newsletter (he sends the form address to Web); the #2229 close (Web was refused). CXO OKs Comms' v2. #2256 is the page cleanup.
 - Promote: 16:50 dispatch failed at SHRINK-LOCK; Lead retagged flaky on dfa3363d5b; re-run on Lead's green (Tests 41556514327).
 - Also his hand: web-pat-test sign-in, Notion key on staging for #2238, Fly reads #2244 and #2226, #1514.
 
