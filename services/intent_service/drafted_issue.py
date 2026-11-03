@@ -113,7 +113,7 @@ contract):
 from __future__ import annotations
 
 import re
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Tuple
 
 import structlog
 
@@ -706,6 +706,36 @@ def _bind_body_prose(
 
 _TITLE_CONSULT_OPERATIONS = frozenset({"update_issue"})
 
+# #2098 (reopened 2026-11-02; Arch's remedy ruling, CXO's words as amended
+# 19:21): on a held draft a title-change consult that comes back CONFIRM ASKS,
+# re-arming the draft with its OLD title. One constant per case, pinned by text.
+# ``{title}`` is filled with ``str.format`` so the person's own text renders
+# character for character (quotes, apostrophes, braces unchanged).
+# Case 1: the consult handed back a title (a CONFIRM carrying ``args["title"]``,
+# display only; it applies only on the person's yes).
+TITLE_QUESTION_WITH_TITLE = (
+    'Do you want the draft\'s title changed to "{title}"? Nothing is filed yet.'
+)
+# Case 2: no title came back (Ba3 itself: the router answers CLARIFY).
+TITLE_QUESTION_NO_TITLE = (
+    "I couldn't tell what you wanted changed. What should the draft's title be? "
+    "Nothing is filed yet, and the draft keeps its current title until you say."
+)
+# After a yes (case 1) or a title given (either case): the capture line.
+TITLE_CHANGED_LINE = (
+    'The draft\'s title is now "{title}". Nothing is filed yet. '
+    'Say "file it as is" when it\'s ready, or tell me a different title.'
+)
+# After a declining answer: the old title stays, the draft stays armed.
+TITLE_KEPT_LINE = 'Okay, I\'m keeping "{title}".'
+
+# The armed title question rides the draft's OWN pending record (no new store):
+# ``pending_action[TITLE_QUESTION_KEY] = {"old_title": …, "proposed_title": …}``.
+TITLE_QUESTION_KEY = "title_question"
+
+_TITLE_BIND = "bind"
+_TITLE_ASK = "ask"
+
 
 async def _consult_title_change(
     message: str,
@@ -713,18 +743,24 @@ async def _consult_title_change(
     session_id: str,
     user_id: Optional[str],
     intent_service: Any,
-) -> Optional[str]:
-    """#2098 (Arch's shape, 2026-10-19): the drafted-issue carrier consults the
-    router on a held turn through the ADR-080 armed-turn idiom, with
-    ``update_issue`` as THIS carrier's own answering operation. Returns the new
-    title only on a BIND that names ``update_issue`` with a non-empty ``title``
-    arg; every other outcome returns None and the turn continues down today's
-    path unchanged (a router ``none`` keeps the body-prose bind; a RELEASE keeps
-    the #1627 hold, since prose on a held draft never leaves the seam; CONFIRM
-    means uncertain meaning or no router, and the instruction lands visibly in
-    the body rather than retitling on a guess). No word list reads the message
-    here: the marker-list version (reverted at f260d8ed5b) was a binder that
-    retitled on "we should call it out in the release notes"."""
+) -> Optional[Tuple[str, Optional[str]]]:
+    """#2098 (Arch's shape, 2026-10-19; tri-state since Arch's remedy ruling,
+    2026-11-02): the drafted-issue carrier consults the router on a held turn
+    through the ADR-080 armed-turn idiom, with ``update_issue`` as THIS
+    carrier's own answering operation.
+
+    - ``(_TITLE_BIND, title)``: a BIND naming ``update_issue`` with a non-empty
+      ``title`` arg. The caller retitles.
+    - ``(_TITLE_ASK, title_or_None)``: a CONFIRM (clarify, sub-threshold, a
+      consult failure). The caller asks: CXO's case 1 when the CONFIRM carried a
+      ``title`` arg (display only; it applies on the person's yes), case 2
+      otherwise. The draft keeps its old title until the answer.
+    - ``None``: RELEASE, a router ``none``, or an ``update_issue`` BIND with no
+      title value. The turn continues down today's path unchanged.
+
+    No word list reads the message here: the marker-list version (reverted at
+    f260d8ed5b) was a binder that retitled on "we should call it out in the
+    release notes"."""
     from services.intent_service.armed_turn_consult import (
         ArmedReplyOutcome,
         classify_armed_reply,
@@ -746,9 +782,20 @@ async def _consult_title_change(
                 confidence=consult.confidence,
                 title_chars=len(title.strip()),
             )
-            return title.strip()
+            return (_TITLE_BIND, title.strip())
         logger.info("drafted_issue_title_change_without_value", session_id=session_id)
         return None
+    if consult.outcome is ArmedReplyOutcome.CONFIRM:
+        shown = (consult.args or {}).get("title")
+        proposed = shown.strip() if isinstance(shown, str) and shown.strip() else None
+        logger.info(
+            "drafted_issue_title_consult_confirm",
+            session_id=session_id,
+            reason=consult.reason,
+            operation=consult.operation,
+            title_shown=proposed is not None,
+        )
+        return (_TITLE_ASK, proposed)
     logger.info(
         "drafted_issue_title_consult_passed",
         session_id=session_id,
@@ -756,6 +803,238 @@ async def _consult_title_change(
         operation=consult.operation,
     )
     return None
+
+
+def _store_draft(
+    pending_offer: Dict[str, Any],
+    *,
+    session_id: str,
+    user_id: Optional[str],
+    intent_service: Any,
+    event: str,
+) -> bool:
+    """Re-arm the draft's own record. False when the store write failed, so the
+    copy never claims a held draft that isn't there."""
+    try:
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id, pending_offer, user_id=user_id
+        )
+        return True
+    except Exception as e:  # silent-ok: #2098 — a store failure must not crash the turn; logged ERROR, and the caller's copy never claims a held draft
+        logger.error(event, error=str(e))
+        return False
+
+
+_TITLE_QUESTION_UNHELD = (
+    "I couldn't keep the draft bound — nothing was filed. Ask me to draft the "
+    "issue again and we'll rebuild it."
+)
+
+
+def _ask_title_question(
+    pending_offer: Dict[str, Any],
+    pending_action: Dict[str, Any],
+    proposed_title: Optional[str],
+    *,
+    session_id: str,
+    user_id: Optional[str],
+    intent_service: Any,
+    reasked: bool = False,
+) -> Dict[str, Any]:
+    """#2098 — a CONFIRM on a held draft: re-arm the SAME offer (same pending
+    action, title unchanged) with the title question on the draft's own record,
+    and ask in CXO's words. The ask is stored the way #1665 stores a pending ask
+    (what's stored is what's said)."""
+    draft = pending_action.get("draft") or {}
+    old_title = draft.get("title") or ""
+    title_question: Dict[str, Any] = {
+        "old_title": old_title,
+        "proposed_title": proposed_title,
+    }
+    if reasked:
+        # Arch (2026-11-02 19:3x): an unclear answer re-asks once; the marker
+        # lets the next unclear answer keep the old title instead.
+        title_question["reasked"] = True
+    pending_action[TITLE_QUESTION_KEY] = title_question
+    question = (
+        TITLE_QUESTION_WITH_TITLE.format(title=proposed_title)
+        if proposed_title
+        else TITLE_QUESTION_NO_TITLE
+    )
+    pending_offer["pending_action"] = pending_action
+    pending_offer["question"] = question
+    rearmed = _store_draft(
+        pending_offer,
+        session_id=session_id,
+        user_id=user_id,
+        intent_service=intent_service,
+        event="drafted_issue_title_question_rearm_failed",
+    )
+    logger.info(
+        "drafted_issue_title_question_asked",
+        session_id=session_id,
+        case=1 if proposed_title else 2,
+        rearmed=rearmed,
+    )
+    if not rearmed:
+        return {
+            "message": _TITLE_QUESTION_UNHELD,
+            "intent_data": _retained_intent_data(pending_action),
+        }
+    intent_data = _retained_intent_data(pending_action)
+    intent_data["drafted_issue_title_question"] = True
+    return {"message": question, "intent_data": intent_data, "requires_clarification": True}
+
+
+def _keep_title(
+    pending_offer: Dict[str, Any],
+    pending_action: Dict[str, Any],
+    *,
+    session_id: str,
+    user_id: Optional[str],
+    intent_service: Any,
+) -> Dict[str, Any]:
+    """#2098 — a declining answer to the title question: the old title stays,
+    the question closes, the draft stays armed."""
+    tq = pending_action.pop(TITLE_QUESTION_KEY, None) or {}
+    draft = pending_action.get("draft") or {}
+    old_title = tq.get("old_title") or draft.get("title") or ""
+    line = TITLE_KEPT_LINE.format(title=old_title)
+    pending_offer["pending_action"] = pending_action
+    pending_offer["question"] = line
+    rearmed = _store_draft(
+        pending_offer,
+        session_id=session_id,
+        user_id=user_id,
+        intent_service=intent_service,
+        event="drafted_issue_title_kept_rearm_failed",
+    )
+    logger.info("drafted_issue_title_kept", session_id=session_id, rearmed=rearmed)
+    if not rearmed:
+        return {
+            "message": _TITLE_QUESTION_UNHELD,
+            "intent_data": _retained_intent_data(pending_action),
+        }
+    intent_data = _retained_intent_data(pending_action)
+    intent_data["drafted_issue_title_kept"] = True
+    return {"message": line, "intent_data": intent_data, "requires_clarification": True}
+
+
+async def _answer_title_question(
+    pending_offer: Dict[str, Any],
+    pending_action: Dict[str, Any],
+    message: str,
+    *,
+    session_id: str,
+    user_id: Optional[str],
+    intent_service: Any,
+) -> Optional[Dict[str, Any]]:
+    """#2098 — the turn after the title question (a file command never reaches
+    here: "file it as is" files whatever title stands).
+
+    The decision uses the idioms the carrier already has, never a phrase list
+    (ADR-080; CXO's amendment 4): THE acceptance predicate at the draft's own
+    bar with the stored ask (a yes applies case 1's title; a no keeps the old
+    one), the bare-exit predicate (keeps the old title too), the shared prose
+    shape (a long or multi-line turn is body content, not a title), and then
+    the same armed-turn router consult #2225's repo question and the name
+    carrier use (Arch's confirmation, 2026-11-02 19:3x): a ``none`` BIND is the
+    person's title, verbatim; an ``update_issue`` BIND with a title is that
+    title; a RELEASE is a competing command (generic path, the draft stays
+    armed with its old title); a CONFIRM ("the one I said") is not a title, so
+    the question is asked again once and nothing is stored."""
+    from services.intent_service.acceptance import (
+        AcceptanceVerdict,
+        declared_axes_for_workflow,
+        evaluate_acceptance,
+    )
+    from services.intent_service.armed_turn_consult import (
+        ArmedReplyOutcome,
+        classify_armed_reply,
+    )
+    from services.intent_service.destructive_confirm import detect_bare_exit
+    from services.intent_service.soft_invocation import is_prose_reply
+
+    tq = pending_action.get(TITLE_QUESTION_KEY) or {}
+    proposed = tq.get("proposed_title")
+    text = (message or "").strip()
+    kw: Dict[str, Any] = {
+        "session_id": session_id,
+        "user_id": user_id,
+        "intent_service": intent_service,
+    }
+
+    _axes = declared_axes_for_workflow(pending_action.get("action")) or (None, None)
+    verdict = evaluate_acceptance(
+        text,
+        effect=_axes[0],
+        outwardness=_axes[1],
+        armed_question=pending_offer.get("question"),
+    )
+    if verdict is AcceptanceVerdict.STATE_QUESTION:
+        # The generic confirm seam answers it and re-renders the stored ask
+        # (CXO's §5a/§5b); the question stays on the record.
+        return None
+    if verdict is AcceptanceVerdict.ACCEPT:
+        if proposed:
+            return _retitle_draft(pending_offer, pending_action, proposed, captured=True, **kw)
+        # A yes to "What should the draft's title be?" names no title.
+        return _ask_title_question(pending_offer, pending_action, None, **kw)
+    if verdict is AcceptanceVerdict.DECLINE or detect_bare_exit(text):
+        return _keep_title(pending_offer, pending_action, **kw)
+    if is_prose_reply(text):
+        # The person moved on to body content: the question closes unanswered
+        # (old title) and the prose binds to the body, as on any held turn.
+        pending_action.pop(TITLE_QUESTION_KEY, None)
+        return _bind_body_prose(pending_offer, pending_action, text, **kw)
+
+    consult = await classify_armed_reply(
+        text,
+        user_id,
+        session_id=session_id,
+        intent_service=intent_service,
+        answering_operations=_TITLE_CONSULT_OPERATIONS,
+        # The name carrier's setting (#2080): a bare value the router reads as
+        # an argument-less READ is uncertain, never a competing command.
+        confirm_bare_reads=True,
+    )
+    if consult.outcome is ArmedReplyOutcome.BIND:
+        if consult.operation is None:
+            return _retitle_draft(pending_offer, pending_action, text, captured=True, **kw)
+        named = consult.args.get("title")
+        if isinstance(named, str) and named.strip():
+            return _retitle_draft(pending_offer, pending_action, named.strip(), captured=True, **kw)
+        return _ask_title_question(pending_offer, pending_action, None, **kw)
+    if consult.outcome is ArmedReplyOutcome.RELEASE:
+        # Arch's confirmation (2026-11-02 19:3x): a competing command takes the
+        # generic path; the draft keeps its old title and stays armed (#1627).
+        # The question closes; the draft's open ask goes back to the keep-going
+        # ask. A command that arms its own offer replaces it in the store.
+        pending_action.pop(TITLE_QUESTION_KEY, None)
+        pending_offer["pending_action"] = pending_action
+        pending_offer["question"] = _POST_BIND_ASK
+        rearmed = _store_draft(
+            pending_offer,
+            session_id=session_id,
+            user_id=user_id,
+            intent_service=intent_service,
+            event="drafted_issue_title_question_release_rearm_failed",
+        )
+        logger.info(
+            "drafted_issue_title_question_released",
+            session_id=session_id,
+            operation=consult.operation,
+            rearmed=rearmed,
+        )
+        return None
+    # CONFIRM: not a title, nothing is stored as one. Arch: re-ask ONCE (case 1
+    # when the router showed a title, for display only; otherwise case 2). A
+    # second unclear answer closes the question and keeps the old title.
+    if tq.get("reasked"):
+        return _keep_title(pending_offer, pending_action, **kw)
+    shown = (consult.args or {}).get("title")
+    again = shown.strip() if isinstance(shown, str) and shown.strip() else None
+    return _ask_title_question(pending_offer, pending_action, again, reasked=True, **kw)
 
 
 def _retitle_draft(
@@ -766,11 +1045,16 @@ def _retitle_draft(
     session_id: str,
     user_id: Optional[str],
     intent_service: Any,
+    captured: bool = False,
 ) -> Dict[str, Any]:
     """#2098 — replace the pending draft's title, keep its body, re-arm the SAME
     offer, and show the draft with the new title (CXO's words: "Updated the
     title. Here's the draft: …"). The create rail reads ``intent.context["title"]``
-    first, so the new title is also written there: "file it as is" files it."""
+    first, so the new title is also written there: "file it as is" files it.
+
+    ``captured=True`` (the answer to the title question): the reply and the
+    stored ask are CXO's capture line, ``TITLE_CHANGED_LINE``."""
+    pending_action.pop(TITLE_QUESTION_KEY, None)
     draft = pending_action.setdefault("draft", {})
     old_title = draft.get("title") or ""
     draft["title"] = new_title
@@ -780,21 +1064,22 @@ def _retitle_draft(
     if intent is not None:
         intent.context = dict(intent.context or {})
         intent.context["title"] = new_title
+    capture_line = TITLE_CHANGED_LINE.format(title=new_title) if captured else None
     pending_offer["pending_action"] = pending_action
-    pending_offer["question"] = _POST_BIND_ASK
-    rearmed = True
-    try:
-        intent_service.workflow_offer_service.set_pending_offer(
-            session_id, pending_offer, user_id=user_id
-        )
-    except Exception as e:  # silent-ok: #2098 — a store failure must not crash the turn; logged ERROR, and the copy below never claims a bound draft
-        logger.error("drafted_issue_retitle_rearm_failed", error=str(e))
-        rearmed = False
+    pending_offer["question"] = capture_line or _POST_BIND_ASK
+    rearmed = _store_draft(
+        pending_offer,
+        session_id=session_id,
+        user_id=user_id,
+        intent_service=intent_service,
+        event="drafted_issue_retitle_rearm_failed",
+    )
     logger.info(
         "drafted_issue_retitled",
         session_id=session_id,
         old_title_chars=len(old_title),
         new_title_chars=len(new_title),
+        captured=captured,
         rearmed=rearmed,
     )
     if not rearmed:
@@ -807,6 +1092,8 @@ def _retitle_draft(
         }
     intent_data = _retained_intent_data(pending_action)
     intent_data["drafted_issue_retitled"] = True
+    if capture_line:
+        return {"message": capture_line, "intent_data": intent_data, "requires_clarification": True}
     return {
         "message": (
             "Updated the title. Nothing is filed yet. Here's the draft:\n\n"
@@ -842,6 +1129,20 @@ async def handle_drafted_issue_turn(
 
     pending_action = pending_offer.get("pending_action") or {}
     file_cmd = detect_file_command(message)
+    if pending_action.get(TITLE_QUESTION_KEY) is not None:
+        if file_cmd is None:
+            # #2098: the turn after the title question.
+            return await _answer_title_question(
+                pending_offer,
+                pending_action,
+                message,
+                session_id=session_id,
+                user_id=user_id,
+                intent_service=intent_service,
+            )
+        # "file it as is" with the question open files whatever title stands
+        # (the old one: nothing applied it). The question closes.
+        pending_action.pop(TITLE_QUESTION_KEY, None)
     if file_cmd is None:
         # #1739 (adopted 2026-09-10): the file-confirm DECISION routes
         # through THE acceptance predicate, threading the HELD action's
@@ -883,20 +1184,23 @@ async def handle_drafted_issue_turn(
                 # decline_message (same destination as the pre-adoption
                 # fall-through for declines).
                 return None
-            # #2098: one router consult on the held turn (ADR-080). Only a BIND
-            # that names update_issue WITH a title retitles the draft; anything
-            # else continues below exactly as before.
-            new_title = await _consult_title_change(
+            # #2098: one router consult on the held turn (ADR-080). A BIND that
+            # names update_issue WITH a title retitles the draft. A CONFIRM
+            # ASKS (Arch's remedy ruling 2026-11-02, CXO's words) after the
+            # body-prose bind, the near-accept and the near-miss below have
+            # had their turn, so it never reaches the classifier. A RELEASE
+            # and a router ``none`` continue below exactly as before.
+            title_change = await _consult_title_change(
                 message,
                 session_id=session_id,
                 user_id=user_id,
                 intent_service=intent_service,
             )
-            if new_title:
+            if title_change is not None and title_change[0] == _TITLE_BIND and title_change[1]:
                 return _retitle_draft(
                     pending_offer,
                     pending_action,
-                    new_title,
+                    title_change[1],
                     session_id=session_id,
                     user_id=user_id,
                     intent_service=intent_service,
@@ -978,7 +1282,22 @@ async def handle_drafted_issue_turn(
                     user_id=user_id,
                     intent_service=intent_service,
                 )
-            return None  # bare-exit / explicit command → generic flow
+            if title_change is not None and title_change[0] == _TITLE_ASK:
+                from services.intent_service.destructive_confirm import detect_bare_exit
+
+                if not detect_bare_exit(message):
+                    # #2098: a CONFIRM never falls through to the classifier
+                    # (where "change the title" landed update_document_query's
+                    # documents decline). Re-arm with the old title and ask.
+                    return _ask_title_question(
+                        pending_offer,
+                        pending_action,
+                        title_change[1],
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=intent_service,
+                    )
+            return None  # bare-exit / RELEASE / explicit command → generic flow
 
     intent = pending_action.get("intent")
     if intent is None:

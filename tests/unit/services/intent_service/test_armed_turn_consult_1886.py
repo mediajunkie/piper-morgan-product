@@ -415,3 +415,90 @@ class TestReminderTaskCarrierUsesTheSharedHelper:
         )
         assert result is None
         fake.todo_handlers.todo_service.create_todo.assert_not_awaited()
+
+
+# ---------------------------------------------------------------------------
+# 4. #2098 (Arch's remedy ruling, 2026-11-02): args ride a CONFIRM for DISPLAY
+#    ONLY. The helper carries the router's args on a CONFIRM; the carriers that
+#    have not adopted the display rule (name, reminder-task; the verb carrier is
+#    pinned in test_clear_todos_resolver.py) behave byte-identically with them.
+# ---------------------------------------------------------------------------
+
+
+def _stub_route_with_args(monkeypatch, *, outcome, operation=None, confidence=None, args=None):
+    from services.intent_service import inversion_router as ir
+    from services.intent_service.inversion_router import RoutingDecision
+
+    async def _route(message, session_state=None, **kwargs):
+        return RoutingDecision(
+            outcome=outcome,
+            operation=operation if outcome == "operation" else None,
+            confidence=confidence,
+            args=dict(args or {}),
+        )
+
+    monkeypatch.setattr(ir, "route", _route)
+
+
+class TestConfirmArgsAreDisplayOnly2098:
+    @pytest.mark.parametrize(
+        "outcome,operation,confidence",
+        [("clarify", None, None), ("operation", "update_issue", 0.6)],
+        ids=["router_clarify", "sub_threshold"],
+    )
+    async def test_confirm_carries_the_routers_args(
+        self, monkeypatch, outcome, operation, confidence
+    ):
+        _stub_route_with_args(
+            monkeypatch,
+            outcome=outcome,
+            operation=operation,
+            confidence=confidence,
+            args={"title": "New title"},
+        )
+        decision = await classify_armed_reply(
+            "change the title", _USER, session_id="s1", intent_service=_svc()
+        )
+        assert decision.outcome is ArmedReplyOutcome.CONFIRM
+        assert decision.args == {"title": "New title"}
+
+    async def test_release_and_none_bind_still_carry_no_args(self, monkeypatch):
+        _stub_route_with_args(
+            monkeypatch, outcome="operation", operation="some_op", confidence=0.9, args={"a": 1}
+        )
+        decision = await classify_armed_reply("x", _USER, session_id="s1", intent_service=_svc())
+        assert decision.outcome is ArmedReplyOutcome.RELEASE and decision.args == {}
+        _stub_route_with_args(monkeypatch, outcome="none", args={"a": 1})
+        decision = await classify_armed_reply("x", _USER, session_id="s1", intent_service=_svc())
+        assert decision.outcome is ArmedReplyOutcome.BIND and decision.args == {}
+
+    @pytest.mark.parametrize("args", [None, {"name": "Something else", "title": "Other"}])
+    async def test_name_carrier_ignores_confirm_args(self, monkeypatch, args):
+        _stub_route_with_args(
+            monkeypatch, outcome="operation", operation="some_op", confidence=0.6, args=args
+        )
+        fake = _fake_add_project_service()
+        rec = _Recorder()
+        sid = f"s-2098-name-{bool(args)}"
+        with _patches(rec):
+            result = await handle_add_project_name_turn(
+                _name_offer(), "Klatch", session_id=sid, user_id=_USER, intent_service=fake
+            )
+        assert result["message"] == 'Add a project called "Klatch"? (yes/no)'
+        assert rec.created == []
+        stored = fake.workflow_offer_service.peek_pending_offer(sid)
+        assert stored["pending_action"]["name"] == "Klatch"
+
+    async def test_reminder_task_carrier_ignores_confirm_args(self, monkeypatch):
+        replies = []
+        for args in (None, {"text": "something else", "title": "Other"}):
+            _stub_route_with_args(monkeypatch, outcome="clarify", args=args)
+            fake = _fake_reminder_service()
+            offer = build_reminder_task_offer("set a reminder: check the oven", _USER)
+            result = await handle_reminder_task_turn(
+                offer, "the thing", session_id="s-2098-rem", user_id=_USER, intent_service=fake
+            )
+            fake.todo_handlers.todo_service.create_todo.assert_not_awaited()
+            replies.append(result)
+        assert replies[0] is not None and "what it's for" in replies[0]["message"]
+        assert replies[0] == replies[1]

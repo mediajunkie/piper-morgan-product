@@ -33,6 +33,7 @@ import pytest
 
 from services.domain.models import Intent
 from services.intent.intent_service import IntentService
+from services.intent_service.armed_turn_consult import ArmedReplyDecision, ArmedReplyOutcome
 from services.intent_service.classifier import IntentClassifier
 from services.intent_service.drafted_issue import (
     DRAFTED_ISSUE_KIND,
@@ -344,6 +345,21 @@ class TestSubjectlessOpeningEndToEnd:
             patch(f"{ROUTER}.initialize", new=AsyncMock()),
             patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
             patch(f"{ROUTER}.create_issue", new=AsyncMock()) as w,
+            # #2098 (Arch's remedy ruling 2026-11-02): a CONFIRM from the held
+            # draft's title consult now ASKS instead of falling through, and the
+            # explosive LLM makes the real consult CONFIRM (consult_exception).
+            # A working router RELEASEs "close issue #108" (a competing command
+            # at the bar), and RELEASE is the path this pin is about.
+            patch(
+                "services.intent_service.armed_turn_consult.classify_armed_reply",
+                new=AsyncMock(
+                    return_value=ArmedReplyDecision(
+                        outcome=ArmedReplyOutcome.RELEASE,
+                        operation="close_issue",
+                        confidence=0.95,
+                    )
+                ),
+            ),
         ):
             r = await svc.process_intent(message="close issue #108", session_id=sid, user_id=_USER)
         w.assert_not_awaited()
