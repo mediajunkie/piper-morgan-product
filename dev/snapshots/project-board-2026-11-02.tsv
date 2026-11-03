@@ -1901,7 +1901,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2095	CLOSED	MVP		"What have I created this session?" says nothing was created right after a todo was added in that session: the session_activity ledger records issues and docs only, not todos	bug		COMPLETED
 2096	CLOSED	MVP	Beta Blockers - Hard Gates Only	No way to send feedback from inside the app: card A6 (P5 'find your way') found Todos and Projects in seconds and no feedback path at all	UX,promise:T5-feedback-is-read		COMPLETED
 2097	CLOSED	MVP		[HONESTY] create-issue write lands but the reply says it couldn't verify; the retry creates a duplicate (served e801b1a309, #1386 scenario B)			COMPLETED
-2098	CLOSED	MVP		Pending issue draft: "change the title to X" is appended to the body, title unchanged (served e801b1a309, #1386 scenario B turn 3)			COMPLETED
+2098	OPEN	Production		Pending issue draft: "change the title to X" is appended to the body, title unchanged (served e801b1a309, #1386 scenario B turn 3)			REOPENED
 2099	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	Invites page: minting a code does not refresh the list (revoke does) on alpha e801b1a309; xian's read after the 350c8c4dc9 fix	UX,journey:invited,surface:web		
 2100	CLOSED	MVP	Beta Blockers - Hard Gates Only	Capability reply says connecting Notion 'would solve' summarizing Notion docs; chat has no Notion reader	UX		COMPLETED
 2101	CLOSED	MVP		Alpha app stalls for minutes within minutes of one scripted chat session starting (14:53 and 15:20 on 2026-10-19); cause unread			COMPLETED

@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 19:18 PT | arch | arch-to-lead-cxo-cc-pa-ppm-cio-2098-remedy-confirm-asks-router-args-ride-confirm-for-display-no-description-screen-2026-11-02.md | #2098 remedy: CONFIRM asks (CXO's words). The consult carries the router's args… |
 | 2026-11-02 19:11 PT | cxo | cxo-to-lead-arch-cc-pa-ppm-2098-the-ask-words-for-a-confirm-on-a-held-draft-2026-11-02.md | #2098: the words for the ask when the consult can't bind a title change on a he… |
 | 2026-11-02 19:11 PT | lead | lead-to-arch-cxo-cc-pa-ppm-2098-ba3-regression-mechanism-the-consult-gets-clarify-x6-on-the-flat-router-rule-7-and-reopen-2026-11-02.md | #2098 Ba3 regression, the mechanism: the pending-draft consult now gets CLARIFY… |
 | 2026-11-02 19:10 PT | arch | arch-to-lead-cxo-cc-pa-ppm-2098-regressed-the-consult-no-longer-binds-and-a-confirm-falls-to-the-classifier-2026-11-02.md | #2098 regressed (PA 3 of 3): the title consult no longer binds on alpha, and a… |
