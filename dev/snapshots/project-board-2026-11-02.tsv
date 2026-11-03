@@ -2047,7 +2047,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2126	OPEN	Ongoing	PROD-TECHDEBT - General Cleanup	Order-dependent test: test_inversion_multi_intent_unit4_1595::TestDefaultEmpty::test_flag_on_but_no_sibling_routed_is_the_same_turn fails under the full unit run, passes alone			
 2248	OPEN	Production		Flaky once: test_inversion_live_1595 in-category e2e failed in one full unit run, passes alone, in its directory and in the next full run			
 2249	OPEN	Ongoing		Blog legacy-error audit: slugs vs titles, empty alt text, workDate equal to pubDate, missing captions			
-2250	OPEN	Production		Status turns wait ~1.5 s for the #2197 milestone resolver even when no milestone is named: run it concurrently with the floor's gather			
+2250	CLOSED	Production		Status turns wait ~1.5 s for the #2197 milestone resolver even when no milestone is named: run it concurrently with the floor's gather			COMPLETED
 2251	OPEN	Ongoing		piper-guards M-3 misses git mv of mailbox paths; staged mail then makes check-branch.sh block non-commit commands	process		
 2252	CLOSED	Ongoing		FLY-AUDIT: Monthly Housekeeping - 2026-11	documentation,fly-audit,maintenance,monthly-audit		COMPLETED
 2253	CLOSED	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-11-02	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
