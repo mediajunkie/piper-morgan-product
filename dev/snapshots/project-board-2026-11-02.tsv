@@ -2057,3 +2057,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2258	OPEN	Production		[UX] "What changed since yesterday?" can answer with an internal label: "Actions (2): consequential: 2"	UX		
 2259	OPEN	Production		Account Settings doesn't show the account's email, though the allowlist script and support flows ask people for it			
 2260	OPEN	Production		DUE REMINDERS block gives every reminder with the same text the last row's age (ages keyed by text, not per row): 'all 1 day overdue' for reminders 10 days old	bug		
+2261	OPEN	Production		GitHub connect requests the classic `repo` scope (full read/write on every repo the login reaches); narrow it per ADR-081 D3, or to the narrowest classic scope on the OAuth-App fallback	component: integration,github		
