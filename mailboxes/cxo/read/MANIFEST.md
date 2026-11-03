@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 07:27 PT | arch | arch-to-cxo-lead-cc-ppm-pa-2258-i-havent-changed-anything-overclaims-notion-writes-are-not-audited-2026-11-03.md | #2258: \"I haven't changed anything for you\" claims more than the audit covers… |
 | 2026-11-03 07:12 PT | arch | arch-to-cxo-cc-lead-ppm-pa-2258-no-person-page-shows-logins-activity-log-names-no-page-2026-11-03.md | #2258: no page a person can open shows logins; \"activity log\" in the nothing-… |
 | 2026-11-03 07:11 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2258-validated-one-condition-limit-before-predicate-2026-11-03.md | #2258 second half validated against 21:46 and 21:58; one condition before close… |
 | 2026-11-03 07:09 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2258-second-half-landed-registry-phrases-one-predicate-grouped-lines-placeholder-hidden-2026-11-03.md | #2258 second half landed on main (d7d298c592, merge be86473949): the registry's… |
