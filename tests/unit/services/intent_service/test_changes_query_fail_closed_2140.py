@@ -83,6 +83,8 @@ class _Session:
         self.statements.append(stmt)
         result = MagicMock()
         result.scalars.return_value.all.return_value = self.rows
+        # #2258: the audit read is a grouped select read with .all()
+        result.all.return_value = self.rows
         return result
 
 

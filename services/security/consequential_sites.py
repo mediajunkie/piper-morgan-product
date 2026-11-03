@@ -430,6 +430,14 @@ def person_visible_action(event_type: object, action: object, details: object) -
     return True
 
 
+def person_visible_site_keys() -> FrozenSet[str]:
+    """The site keys ``person_visible_action`` admits: what the changes query's SQL
+    filters ``action`` to (Arch 2026-11-03 07:10: the predicate's parts run in the
+    database so a row limit can never hide a visible action). Derived from the
+    registry, never a second list; pinned equal to the predicate."""
+    return frozenset(k for k, s in CONSEQUENTIAL_SITES.items() if s.user_visible)
+
+
 def action_line(site_key: str, resource_id: Optional[str], *, done: bool) -> str:
     """CXO's line for one row: ``done`` (past tense) or ``phrase`` (after "I tried to").
 
