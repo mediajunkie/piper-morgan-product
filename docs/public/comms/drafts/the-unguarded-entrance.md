@@ -4,91 +4,35 @@ alt: ''
 caption: ''
 ---
 
-# The Unguarded Entrance
+If you’ve followed this tale for any amount of time at all you kind of already know this one. Agent finds problem. Agent makes rule to check itself. Agent discovers the culprit is itself. The calls were coming from your house. The butler did it.
 
-*September 6, 2026*
+# It was a dark and stormy night
 
-<!--
-SCAFFOLD, not a draft (PM ruling 2026-10-07: "the next one you do should be a scaffold so that we try that method").
-Comms supplies the shape, the verified facts and the quotes. PM writes the prose. Everything below the line is
-notes for PM. Delete it as the prose replaces it. Working title is Comms's placeholder, rename freely.
-Slot: Tue 2026-11-03 (building). Strict narrative order: this is the next beat after "Where the Citation Came
-From" (Sep 4–5, Thu 10-29).
--->
+It was Sunday of Labor Day weekend. My hands were mostly off the keys (by request), the agents running their duty cycles. My document management agent (Docs) summarized it as the fifth quiet day in a row. Meanwhile, a small gap was opening up in the routine. 
 
----
+I've explained the duty cycle before. At the start of the day there's a wake-up routine. Then for most cycles in the day, you have a work session and the last cycle of the day is a stop routine. The start and the stop have unique requirements involving record-keeping and other scheduled work but what we learned that day was that there is a loophole in the way the process was designed.
 
-## The story in one sentence (A plot)
+The way it was written, every agent's duty cycle starts with a step 0 telling them to start the day's session log but those steps only run when the day starts with the scheduled wake-up. On this occasion I was a bit eager and began communicating with my chief of staff agent, Exec, directly at 6:53 am, before their scheduled wake. This led them to do substantial work (a belated sprint review) before they started the day session log, which risks losing track of work and leaving it invisible to future forensic investigations 
 
-On a quiet holiday Sunday, my chief of staff agent (Exec) found a hole in the routine that every agent runs, built so it
-could check itself, and that same evening found the worst case of the same kind of gap in their own seat.
+Further, Exec had already noticed the same gap two days earlier without flagging it for me. Searching for an apt metaphor, Exec described how what was usually the team’s strongest checkpoint could be bypassed by this “unguarded entrance" that was my ad hoc start to the day, something I used to do routinely *before* automating these loops.
 
-## Already told elsewhere: don't retell
-- **The era-clustering fix** (Web's wrong date field, Comms's backfill) is in "Piper Morgan Eras" (published 09-12).
-  One clause at most, or skip it.
-- **The bounded-search rule** (methodology-51, filed this day) is the subject of the insight "A Bounded Search
-  Reported as a Total" (Sat 10-24, before this post). It can appear as a callback ("a bounded search is not a
-  total") but not as the story.
+# Musical chairs
 
-## Beats, in order (facts verified, source in brackets)
+Exec exhorted the other agents to check their own “seats” as they like to say, meaning in this case their own track record of logging versus actual session activity and so on. Most of them discovered no gaps for the simplest reason: I’ve been neglecting them. 
 
-**1. The opening: a quiet day that wasn't.** Sunday of Labor Day weekend. Most agents ran quiet routine checks. Lead's
-morning note: a fifth quiet day. [omnibus 09-06 6:47 AM]
-- *PM choice:* the omnibus also says it was the fifth quiet day "since PM's illness". That's yours to mention
-  or not. I've left it out of everything else.
+OK, well that makes it sound personal. Let’s just say I no longer need to wake up to hop on my laptop before 7 am most days to conduct five, six, seven parallel multitasked conversations. The whole point of the duty cycle is that it’s rare for me to be around to “open the store” precisely because I don’t need to do so anymore.
 
-**2. The gap Exec found.** Every agent's routine (the duty cycle) starts with Step 0: open today's session log. But
-those steps only run when a scheduled wake-up starts the day. You opened Exec's day directly at 06:53 with a
-sprint review, so Exec did real work before their log existed. That was the second time; Exec had noticed the same
-gap on 09-04 and not passed it on. [exec log 09-06 lines 9, 16–21]
-- Exec's own image: the routine is the team's strongest checkpoint, "with an unguarded entrance". [exec log l.21]
+My chief innovation officer agent (CIO) built a detector before it was time for my lunch (explicitly to avoid leaving things diagnosed but not dixed). The team's new watchdog now flags any agent working without haven’t started from today's log. 
 
-**3. Everyone checks their own seat (the funny part, maybe).** Agents with spotless records checked whether they were
-actually protected, or just lucky.
-- My experience-design agent (CXO): "Had PM opened at 06:00, I'd have had Exec's Step-0 gap exactly." And: "I have the
-  same unguarded entrance; it simply hasn't been entered." [cxo log l.67–68]
-- CXO sharpened it: the steps are tied to the *shape of the prompt*, not to the day. Even you dropping into the middle
-  of a scheduled run skips them. [cxo log l.75]
-- My head-of-sapient-trust agent (HOST) checked too: six clean days out of six, every one of them because the day happened
-  to start on schedule. [omnibus 1:07 PM]
-- *Possible line:* a clean record that's really a lucky schedule.
+*We are a far cry from the days when my day started with manually downloading each session log from Claude Chat and then eyeballed each one to make sure it was really the final one of the day and had been closed out properly, not abandoned midway through the day, etc.*
 
-**4. The fix, the same day.** My chief innovation officer agent (CIO) built a detector before lunch: the team's watchdog
-now flags any agent working without today's log. CIO built it right away so "diagnosed it and didn't route the fix"
-wouldn't repeat on CIO's side. CXO then checked it two ways: no false alarms across all 11 roles, and the test
-cases catch the real thing. CXO said neither check alone was enough. [omnibus 10:37 AM, 1:17 PM. Commit `550fa5200`]
+# Sad trombone
 
-**5. The turn (the A plot's payoff).** Evening. You asked Exec whether Lead was unblocked. Exec had told Lead an hour
-earlier to refresh a two-day-stale handoff file. Then Exec ran the checker on their own seat:
-- "Mine was three days stale — and Exec was the only role of ELEVEN with no standing-items file at all." The checker
-  had reported "10 files, 5 readable", and Exec was in neither number. [exec log l.104–106]
-- Exec created the file that night (9 open items). The checker now reads all 11. [exec log l.111]
-- *The shape:* the agent who found the gap and directed the fix was the one most exposed to it, and invisible to the
-  tool built to catch exactly that.
+That evening I checked in with Exec to make sure the lead developer agent (Lead) wasn’t blocked by anything needed from me. They had recently had had to remind them to update their stale handoff file, only to doublecheck their own paperwork and call themselves out for another lapse. Exec was the only role of the eleven on the team not maintaining a standing-items file at all. They remedied the situation that night.
 
-**6. B plot (optional): the test nobody ran.** My assistant agent (Piper Alpha) found that a test you'd approved four days
-earlier had never been built or run. Built it that evening: "Clean pass, first try, both vendors." That was the
-cleanest result in a seven-round series. [pa log l.43–59] CXO and PA both said the four-day gap was two-sided:
-CXO never chased it either. [pa log l.79–80, omnibus 7:17 PM]
-- Same family as the A plot: approved isn't the same as done, and nobody noticed until someone looked.
+There’s a messy pattern recurring here. The process appears to shambling toward evermore careful and thorough routines and processes, and yet every new rule’s first implementation, almost without fail, tends to fail in some comically ironic way, on its first run. It’s hard to notice how often this happens in some form or another, but the bright side is seeing how quickly and openly these first-try gaps are found now and fixed, and how the bedeviling unguarded entrances are gradually but inevitably locked down.
 
-**7. Something strange (optional): the duplicate you caught.** That morning you were illustrating the day's insight and
-recognized it as a rerun of "This One's Taken". A June "rename" had copied the post instead of moving it, and the
-orphan got rescheduled. Your words: "my rename made it look like an unpublished draft and we have no journaling of
-such changes." [comms log 09-06 l.31]
-- Comms didn't catch it, you did. Use it if you want a light opening or aside.
+—
+*Next on “Building Piper Morgan” the team emerges from a Labor Day stupor to press on for one final determined effort to reach MVP and start the private beta by the new target milestone deadline, my birthday.*
 
-## Possible closing thought
-Same question as the last few posts, one level in: a record can look clean because it was protected or because it
-was lucky, and from outside those look identical. Only checking tells them apart.
-
-## Footer
-- **Next on Building Piper Morgan:** nothing is scheduled after 11-03 yet (next in order is Sep 7–10). Fill it in when
-  the next beat is set.
-- **Reader question idea:** *Is there a check in your own routine that only runs when the day starts the usual way?*
-
-## Left out on purpose
-- "The Jake email" (a person outside the team, named in Exec's log).
-- Arch's GitHub protocol work (#1723) and Lead's fixes the same night. They're real, but engineering detail
-  outside the story. Possible one-line mention if you want "the dev side kept shipping".
-- The count discrepancy (Exec counted 14, Arch 15). It's preserved in the omnibus and not adjudicated.
+*Do you ever disrupt your own routine by jump-starting it too early? If so, what works to get you back on track?*
