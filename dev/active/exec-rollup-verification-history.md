@@ -349,3 +349,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v766 10:31 PST 11-03: R3 coordination gate (5.7:1 vs 2.65, CIO audit) added to Your word; done promote and allowlist steps pruned from the hot card; title date fixed. Verified how: CIO's baseline-script TOTAL line as quoted in their 10:19 memo; I did not re-run it.
 - v767 12:58 PST 11-03: R3 settled (xian keeps it, week of measurement), moved from Your word to Where things stand. Verified how: Janus memo 12:5x quoting xian.
 - v768 12:59 PST 11-03: hot card now says reconnect done (Janus memo quoting xian); PA deploys next.
+- v769 13:06 PST 11-03: R3 line carries CIO's read date 11-11 (window 11-04..11-10). Verified how: CIO memo 13:02.
