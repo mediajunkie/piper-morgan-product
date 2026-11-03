@@ -7,6 +7,55 @@
 > **Web: build from the "Build copy" section only.** Everything below it is history. **Status 20:50:** CXO OK'd the build copy (20:49) **on one hard condition:** it goes live only after Exec names the waiting-list owner and that owner confirms they will send invitations in waves and the public-beta note. If xian wants it live sooner, use CXO's fallback on card 2, `/try/beta/` and the "Want in?" block: "Join the waiting list. We may invite you, and we'll tell you if we can." **CXO 20:56: the whole Build copy section is OK as written**, including the `/try/invite/` meta line. **xian, 21:14 via PPM: yes to one way in, and HOST keeps the waiting list.** Web builds once HOST confirms they'll send invitations in waves and the public-beta note. **HOST, 21:17:** accepts keeping the list, with two limits: (1) xian sends the invitations and the note, and HOST prepares them, so whether that meets CXO's condition is CXO's and Exec's call. (2) HOST can't read Buttondown yet and needs xian to paste the signups or grant access. The copy is true as long as xian sends. **PPM, 21:19:** xian sends each wave himself and will grant HOST read access to the list. PPM reads CXO's condition as met. **CXO, 21:27: condition met. Web may build.** **Live 21:40** (Web): 4 of 4 pages, 0 alpha, `/try/alpha/` 308 to `/try/invite/`. **CXO 21:48: served text PASSES.** Still open: the hero line above, and whether Buttondown actually sends the confirmation email (HOST or xian to check) before #2229 closes.
 **Asked by:** xian via PPM, 10-31 18:50 ("can we ask Comms to propose updates and then Web can execute once I approve?"). Sent to Exec for xian's approval, cc CXO, Web, PPM.
 
+## Sign-up fixes from xian's 11-02 walk (Comms draft, for CXO). Items 1 to 3 of Exec's 17:07 memo. No semicolons, they/them for Piper
+
+**One condition on all of it:** these words say waiting-list people get waiting-list mail only. Today the form puts them on the "Piper Morgan News" list, so that's false until the Buttondown change in item 1 (HOST names the step, xian makes it). Ship items 1 and 2 together with that change, never before.
+
+### 1. The confirmation email (Buttondown, the waiting-list list or tag)
+
+- **Subject:** Confirm your place on the Piper Morgan waiting list
+- **Body:**
+
+> Thanks for joining the Piper Morgan waiting list. Please confirm this is your address, so we can reach you.
+>
+> [Confirm my place]
+>
+> Here's what you'll get: an email when we can invite you to the private beta, and one when the public beta starts. That's all, for now. No newsletter and no marketing drip.
+>
+> If you didn't sign up, ignore this email and you won't hear from us.
+
+### 2. What people agree to (the `/try/beta/` form)
+
+- **Checkbox** (replaces "I agree to receive marketing communications and acknowledge…"):
+
+> I agree to get emails about the waiting list and the public beta, as described in the [Privacy Policy](/privacy). I can unsubscribe at any time.
+
+- **Line under the form** (replaces "No spam, unsubscribe at any time.", which repeated the checkbox):
+
+> We'll write when we can invite you, and when the public beta starts. Nothing else, for now.
+
+- **Web note:** the checkbox lives in the shared `NewsletterSignup` component, so this needs a consent-text prop for the waiting-list use, not a change to the default.
+
+### 3. The trimmed form card (`/try/beta/`)
+
+The hero above it keeps "Piper Morgan is in private beta. We're sending invitations in waves, so we can meet the needs of our beta testers." The card under it drops what the hero and the `/try/` card already said:
+
+- **Title:** Sign up (unchanged)
+- **Description:** remove ("Join the waiting list for an invitation, or to hear when the public beta starts" repeats the hero and the line under the form)
+- **The three ticks:** remove (they repeat the `/try/` card)
+- **Button:** Join the waiting list (unchanged)
+- **Success message:** "You're on the list. Check your inbox (and spam folder) for the confirmation link." (unchanged, true as of xian's 16:58 test)
+
+### Follow-on: the privacy policy
+
+`/privacy` covers only "Newsletter Subscription" ("Required to send you newsletter content"). Once the waiting list is its own list, add one line under that heading:
+
+> If you join the waiting list, we use your email address only to invite you to the private beta and to tell you when the public beta starts.
+
+### Not Comms': item 4
+
+Whether `/try/` still has a job now that both pages lead to the same form is CXO's ruling (Exec's memo). These words don't depend on it. If `/try/` goes, the hero sentence on `/try/beta/` may need to carry what the `/try/` card says. I'll redo it after the ruling.
+
 ## xian's answers (via PPM, 10-31 20:35)
 
 1. **Invite path:** "that may be ok for now but sync with Web on how we already have a signup and a way to show interest on the site today and how to update that." **Open.** Web is listing every signup and interest path. Comms then reconciles the invite line so a visitor has one clear path. Note the overlap this has to settle: card 1 asks for an invite by email, and the card 2 waiting list is also a way to get an invitation.
