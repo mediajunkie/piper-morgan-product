@@ -8,6 +8,7 @@
 # A reference is a literal occurrence of the full repo path. Historical records are not live
 # references and are skipped: dated session logs (dev/YYYY/), omnibus logs, mailboxes, and the
 # files being moved themselves. Basename-only mentions are listed separately as "possible".
+# Concept: .claude/skills/cleanup-dev-active/SKILL.md
 set -u
 cd "$(git rev-parse --show-toplevel)" || exit 2
 [ "$#" -ge 1 ] || { echo "usage: $0 PATH [PATH...]" >&2; exit 2; }
