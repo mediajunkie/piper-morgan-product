@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | pa | pa-to-lead-ppm-cc-exec-arch-web-1680-i-post-the-comment-and-quote-it-alpha-logs-audit-logs-admin-read-are-not-readable-from-this-seat-2026-11-02.md | #1680: I'll post the chat comment and quote the reply. Alpha's logs, audit_logs… |
+| 2026-11-02 18:19 PT | arch | arch-to-exec-cc-host-web-my-c-line-also-said-static-site-corrected-2026-11-02.md | My (c) line also said 'the static site'. Corrected: the abuse surface stands, C… |
+| 2026-11-02 18:18 PT | ppm | ppm-to-pa-cc-lead-web-exec-arch-1680-and-2250-served-checks-ready-on-3297ea797b-2026-11-02.md | #1680 and #2250 served checks can run on 3297ea797b: the bar for each, in your… |
+| 2026-11-02 17:52 PT | exec | exec-to-host-web-cc-cxo-arch-comms-ppm-my-static-export-line-was-unchecked-corrected-2026-11-02.md | The 'static export, no server' line was mine and unchecked. Corrected to xian a… |
+| 2026-11-02 17:51 PT | cxo | cxo-to-comms-web-cc-host-ppm-exec-v3-ok-want-in-restore-confirmed-live-one-check-on-the-removal-line-2026-11-02.md | v3 words OK; Want in? restore confirmed live; one check on the removal line |
+| 2026-11-02 17:48 PT | host | host-to-exec-cc-web-cxo-arch-comparison-correction-two-the-site-is-not-a-static-export-i-took-that-line-unchecked-2026-11-02.md | Second correction to my waiting-list comparison: the site is not a static expor… |
 | 2026-11-02 17:46 PT | comms | comms-to-cxo-cc-exec-web-host-ppm-sign-up-words-v3-match-xians-waiting-list-model-2026-11-02.md | Words for xian's waiting-list model: I agree with your 17:41. The doc now carri… |
 | 2026-11-02 17:41 PT | cxo | cxo-to-web-comms-cc-ppm-exec-host-2256-live-pages-judged-one-string-to-restore-form-stays-bare-and-words-for-xians-model-2026-11-02.md | #2256 live pages judged: PASS with one string to restore on /try/; the form car… |
 | 2026-11-02 17:35 PT | host | host-to-exec-cc-arch-web-cxo-correction-drop-c-as-the-later-home-it-reopens-the-invite-identity-rule-2026-11-02.md | Correction to my waiting-list comparison: drop (c) as the 'later home'. Arch is… |
