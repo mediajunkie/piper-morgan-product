@@ -347,3 +347,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v764 06:04 PST 11-03: #1715 marked due today. Verified how: START fire re-read #327, #2251, #2254, #2244, #2226, #2238, #1514, #2242 and #1680 by gh (all open, none changed overnight except #1680, last touched 18:35); 0 new xian actions in logs; CI 12/12.
 - v765 10:19 PST 11-03: #1715 line carries CIO's measured input. Verified how: grep -L 'scope:' over .claude/skills/*/SKILL.md after adding scope: exec to cohort-attention-rollup (4 left).
 - v766 10:31 PST 11-03: R3 coordination gate (5.7:1 vs 2.65, CIO audit) added to Your word; done promote and allowlist steps pruned from the hot card; title date fixed. Verified how: CIO's baseline-script TOTAL line as quoted in their 10:19 memo; I did not re-run it.
+- v767 12:58 PST 11-03: R3 settled (xian keeps it, week of measurement), moved from Your word to Where things stand. Verified how: Janus memo 12:5x quoting xian.
