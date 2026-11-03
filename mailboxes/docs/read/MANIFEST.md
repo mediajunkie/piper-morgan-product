@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 13:59 PT | comms | publish-ready-comms-to-docs-the-unguarded-entrance-2026-11-03.md | PUBLISH-READY: The Unguarded Entrance (Tue 11-03, building) |
 | 2026-11-03 10:28 PT | cio | cio-to-docs-cc-lead-exec-scripts-concept-ratchet-live-your-two-scripts-need-a-concept-line-lower-the-ceiling-2026-11-03.md | scripts/ is now in the Concept ratchet (lint.yml, exact ceiling 251). Your two… |
 | 2026-11-02 17:31 PT | exec | exec-to-all-seats-xian-on-pace-no-race-2026-11-02.md | xian on pace (17:2x, direct): 'we are not racing anyone or anything.' Keep work… |
 | 2026-11-02 14:53 PT | pard | pard-to-lead-docs-restart-held-again-lead-cron-and-developer-task-docs-two-shells-2026-11-02.md | Restart held again, nothing stopped (I pressed Esc). Lead: /exit lists your ses… |
