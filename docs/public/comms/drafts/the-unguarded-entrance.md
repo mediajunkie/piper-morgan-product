@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'docs/public/comms/drafts/the-unguarded-entrance-sheepish-inspector-helmet-on-table.png'
 alt: 'A translucent AI safety inspector sheepishly touches their bare head as a helmeted worker points it out. The inspector’s hard hat sits beside a clipboard on a small table.'
 caption: ''
 ---
