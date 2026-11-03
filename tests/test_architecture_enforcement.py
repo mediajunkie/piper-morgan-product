@@ -780,6 +780,123 @@ class TestConsequentialSiteCensusRatchet:
             declared == used
         ), f"registry outer sites {sorted(declared)} != outer_site() callers {sorted(used)}"
 
+    # ── #2258: the person-facing words ride the registry (Arch 2026-11-02 21:46, 21:58;
+    # CXO's 16 pairs 21:48, slots and count form 22:01). ──────────────────────────────
+
+    def test_every_site_has_cxos_phrase_and_done_forms(self):
+        """16 of 16, beside the instrumented assertion: a new site cannot land without
+        CXO's imperative ``phrase`` (after "I tried to") and past-tense ``done``. A
+        slotted form carries exactly ``{resource}`` (issue rows ``#{resource}``, create
+        rows ``in {resource}``) and a whole-sentence form for a row with no resource;
+        Slack rows carry no slot (a channel id never prints). No form holds a site key,
+        an event type, a status word or a parenthetical. ``user_visible=False`` is the
+        Slack thinking placeholder alone."""
+        from services.security.consequential_sites import (
+            CONSEQUENTIAL_SITES,
+            RESOURCE_SLOT,
+            SLACK,
+            action_line,
+        )
+
+        banned = ("consequential", "success", "failed", "unconfirmed", "error", "(", ")")
+        problems = []
+        for key, site in CONSEQUENTIAL_SITES.items():
+            forms = {
+                "phrase": site.phrase,
+                "done": site.done,
+                "phrase_no_resource": site.phrase_no_resource,
+                "done_no_resource": site.done_no_resource,
+            }
+            if not site.phrase or not site.done:
+                problems.append(f"{key}: phrase and done are both required")
+                continue
+            if not site.phrase[0].islower() or not site.done[0].isupper():
+                problems.append(f"{key}: phrase reads after 'I tried to'; done is a sentence")
+            slotted = RESOURCE_SLOT in site.phrase
+            if slotted != (RESOURCE_SLOT in site.done):
+                problems.append(f"{key}: phrase and done must agree on the resource slot")
+            if site.family == SLACK and slotted:
+                problems.append(f"{key}: a Slack row's resource is a channel id; no slot")
+            if site.family != SLACK and not slotted:
+                problems.append(f"{key}: a GitHub row names its issue or repository")
+            if slotted:
+                expected = (
+                    "#{resource}"
+                    if "issue" in key.split(".")[-1] and "create" not in key
+                    else "in {resource}"
+                )
+                for name in ("phrase", "done"):
+                    if expected not in forms[name]:
+                        problems.append(f"{key}: {name} should carry '{expected}'")
+                if not site.phrase_no_resource or not site.done_no_resource:
+                    problems.append(f"{key}: a slotted site needs its no-resource forms")
+            elif site.phrase_no_resource or site.done_no_resource:
+                problems.append(f"{key}: no slot, so no no-resource forms (dead words)")
+            for name, text in forms.items():
+                if "{" in text.replace(RESOURCE_SLOT, "") or (not slotted and "{" in text):
+                    problems.append(f"{key}: {name} has a stray brace: {text!r}")
+                low = text.lower()
+                for word in banned + tuple(CONSEQUENTIAL_SITES):
+                    if word in low:
+                        problems.append(f"{key}: {name} contains {word!r}")
+            for done in (True, False):
+                for resource in ("38", None):
+                    line = action_line(key, resource, done=done)
+                    if not line or "{" in line or line.endswith((" .", " in", " #")):
+                        problems.append(f"{key}: renders {line!r} (done={done}, {resource!r})")
+        assert not problems, "\n".join(problems)
+        hidden = {k for k, s_ in CONSEQUENTIAL_SITES.items() if not s_.user_visible}
+        assert hidden == {"slack.socket.placeholder"}
+        assert len(CONSEQUENTIAL_SITES) == 16
+
+    def test_writers_store_a_bare_issue_number_never_a_hash_prefixed_one(self):
+        """Arch 21:58: the issue rows' phrase carries the "#", so the writer stores the
+        bare number (``str(issue_number)``); nothing is stripped at the render. Every
+        registered site's ``log_consequential_action`` kwargs dict is found (16 of 16)
+        and its ``resource_id`` is a value passed through, never an f-string, a string
+        literal or a concatenation; a ``github_issue`` row's is ``str(<number>)``."""
+        from services.security.consequential_sites import CONSEQUENTIAL_SITES
+
+        found = {}
+        problems = []
+        for site in CONSEQUENTIAL_SITES.values():
+            tree = ast.parse(Path(site.module).read_text(encoding="utf-8"))
+            for node in ast.walk(tree):
+                if not isinstance(node, ast.Dict):
+                    continue
+                keys = {
+                    k.value: v
+                    for k, v in zip(node.keys, node.values)
+                    if isinstance(k, ast.Constant) and isinstance(k.value, str)
+                }
+                site_key = keys.get("site")
+                if not (isinstance(site_key, ast.Constant) and site_key.value == site.key):
+                    continue
+                found[site.key] = node.lineno
+                rid = keys.get("resource_id")
+                rtype = keys.get("resource_type")
+                where = f"{site.key} ({site.module}:{node.lineno})"
+                if rid is None or rtype is None:
+                    problems.append(f"{where}: resource_type and resource_id are required")
+                    continue
+                if isinstance(rid, (ast.JoinedStr, ast.BinOp)) or (
+                    isinstance(rid, ast.Constant) and isinstance(rid.value, str)
+                ):
+                    problems.append(f"{where}: resource_id is composed text, not the value")
+                if isinstance(rtype, ast.Constant) and rtype.value == "github_issue":
+                    bare = (
+                        isinstance(rid, ast.Call)
+                        and isinstance(rid.func, ast.Name)
+                        and rid.func.id == "str"
+                        and len(rid.args) == 1
+                        and isinstance(rid.args[0], (ast.Name, ast.Attribute))
+                    )
+                    if not bare:
+                        problems.append(f"{where}: a github_issue row stores str(issue_number)")
+        missing = sorted(set(CONSEQUENTIAL_SITES) - set(found))
+        assert not missing, f"no log_consequential_action kwargs dict found for: {missing}"
+        assert not problems, "\n".join(problems)
+
 
 class TestSessionScopeCommitContract:
     """#1193 guard (m-41): `session_scope()` MUST commit on clean exit.

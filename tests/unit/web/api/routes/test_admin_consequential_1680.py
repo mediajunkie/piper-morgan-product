@@ -169,6 +169,40 @@ class TestCountsFromTheDatabase:
                 )
                 await s.commit()
 
+    async def test_a_placeholder_row_is_hidden_from_the_person_but_counted_here(self):
+        """#2258 (Arch 2026-11-02 21:58): ``user_visible=False`` on
+        ``slack.socket.placeholder`` hides its rows from the person's "what changed"
+        reply only. The admin read's ``total``, ``by_status``, ``by_flag`` and
+        ``by_site`` still count it: it is an outward write."""
+        from services.database.session_factory import AsyncSessionFactory
+        from services.security.consequential_sites import CONSEQUENTIAL_SITES
+
+        assert CONSEQUENTIAL_SITES["slack.socket.placeholder"].user_visible is False
+        await _db_ready()
+        before = _client().get(PATH).json()["actions"]
+        log = await al.audit_logger.log_consequential_action(
+            site="slack.socket.placeholder",
+            status="success",
+            user_id=None,
+            message=f"#2258 admin read counts the placeholder {uuid.uuid4().hex[:8]}",
+            credits_spent=False,
+        )
+        assert log is not None
+        try:
+            after = _client().get(PATH).json()["actions"]
+            assert after["total"] - before["total"] == 1
+            assert after["by_status"]["success"] - before["by_status"]["success"] == 1
+            assert after["by_flag"]["proactive"] - before["by_flag"]["proactive"] == 1
+            assert (
+                after["by_site"]["slack.socket.placeholder"]
+                - before["by_site"].get("slack.socket.placeholder", 0)
+                == 1
+            )
+        finally:
+            async with AsyncSessionFactory.session_scope_fresh() as s:
+                await s.execute(text("DELETE FROM audit_logs WHERE id = :id"), {"id": log.id})
+                await s.commit()
+
 
 @pytest.mark.consequential_audit_db
 class TestNestedRowsCountOnce:

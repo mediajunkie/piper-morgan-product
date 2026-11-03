@@ -16,7 +16,7 @@ import re
 import string
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional, Tuple, TypedDict
+from typing import Any, Dict, Iterable, List, Optional, Tuple, TypedDict
 from uuid import UUID
 
 import structlog
@@ -71,6 +71,7 @@ from services.repositories.user_trust_profile_repository import UserTrustProfile
 from services.security.consequential_outcomes import (
     github_write_outcome as _github_write_audit_outcome,
 )
+from services.security.consequential_sites import action_line, person_visible_action
 from services.shared_types import IntentCategory, TrustStage
 from services.slot_filling.slot_filling_adapter import SlotFillingProcessAdapter
 from services.slot_filling.slot_template import MEETING_TEMPLATE
@@ -704,42 +705,73 @@ CHANGES_NOTHING_NEW_SOME_FAILED = (
     "Piper {failed_sources} just now, so I can't say what changed there. Try again in a "
     "moment; if it keeps failing, tell us."
 )
-# #2258 (CXO 2026-11-02 18:59): the Actions block names each action by what it was,
-# from the audit row's own message; it never prints an event_type or an action key
-# (alpha showed "consequential: 2"). No usable message on any row → one plain count.
+# #2258 (CXO 2026-11-02 18:59, 21:4x, 21:48, 22:01; Arch 21:46, 21:58): the Actions block
+# names each action Piper took in the person's terms, from the consequential-site
+# registry's phrase for the row's site, never from the row's message, an event_type or an
+# action key (alpha showed "consequential: 2"). One predicate picks the rows
+# (``person_visible_action``: the #1680 writer's rows, not nested, site user-visible);
+# successes list under the headline, then the attempts that did not go through, with no
+# status word, no cause and no parenthetical. Identical rendered lines group with a count
+# (CXO: no brackets); the headline counts rows.
 CHANGES_ACTIONS_MAX_NAMED = 5
-CHANGES_ACTIONS_COUNT_ONLY = "Piper made {count} change{s} for you."
+CHANGES_ACTIONS_HEADLINE = "Piper made {count} change{s} for you."
+CHANGES_ACTION_DONE_REPEATED = "{line}, {n} times"
+CHANGES_ACTION_FAILED = "I tried to {phrase}, but it didn't go through."
+CHANGES_ACTION_FAILED_REPEATED = "I tried to {phrase} {n} times, but it didn't go through."
+CHANGES_ACTION_UNCONFIRMED = (
+    "I tried to {phrase}, but I couldn't confirm it went through. Check before you rely on it."
+)
+CHANGES_ACTION_UNCONFIRMED_REPEATED = "I tried to {phrase} {n} times, but I couldn't confirm it went through. Check before you rely on it."
+_CHANGES_ATTEMPT_LINES = {
+    "failed": (CHANGES_ACTION_FAILED, CHANGES_ACTION_FAILED_REPEATED),
+    "unconfirmed": (CHANGES_ACTION_UNCONFIRMED, CHANGES_ACTION_UNCONFIRMED_REPEATED),
+}
+
+
+def _grouped(lines: Iterable[str]) -> Dict[str, int]:
+    """Identical rendered lines, first seen first, with how many rows each stands for."""
+    groups: Dict[str, int] = {}
+    for line in lines:
+        groups[line] = groups.get(line, 0) + 1
+    return groups
 
 
 def _render_changes_actions(audit_activity: List[Dict[str, Any]]) -> List[str]:
-    """The "what changed" Actions block (#2258). Rows arrive most recent first.
+    """The "what changed" Actions block (#2258). Rows arrive most recent first and
+    already passed ``person_visible_action`` (the handler keeps only those).
 
-    Up to ``CHANGES_ACTIONS_MAX_NAMED`` rows with a usable message are listed by that
-    message; every other row (no message, or past the cap) is counted in one
-    "and N more" line. When no row has a usable message the block is CXO's single
-    count sentence."""
-    # #2258 residue (Arch 2026-11-02 19:3x; #2151's rule): only rows whose write
-    # succeeded are changes Piper made. A ``failed`` or ``unconfirmed`` row is left out
-    # of the list AND the count; it never reads as done. Rows that predate the #1680
-    # flags carry "success"/"failed"/"error" too; anything that is not "success" is
-    # left out. CXO's "tried, didn't go through" line is a separate follow-up; until
-    # then these rows are simply not claimed.
-    done = [row for row in audit_activity if row.get("status") == "success"]
-    total = len(done)
-    if total == 0:
-        return []
-    named = [
-        msg.strip()
-        for msg in (row.get("message") for row in done)
-        if isinstance(msg, str) and msg.strip()
-    ]
-    if not named:
-        return [CHANGES_ACTIONS_COUNT_ONLY.format(count=total, s="" if total == 1 else "s")]
-    shown = named[:CHANGES_ACTIONS_MAX_NAMED]
-    lines = [f"**Actions** ({total}):"] + [f"  - {msg}" for msg in shown]
-    rest = total - len(shown)
-    if rest > 0:
-        lines.append(f"  - and {rest} more")
+    Successes: CXO's headline with the row count, then up to
+    ``CHANGES_ACTIONS_MAX_NAMED`` grouped lines ("Closed issue #38", "Replied in Slack,
+    2 times"), the rest counted in one "and N more" line. Then one line per group of
+    attempts that did not go through (#2151's rule: a failed or unconfirmed row never
+    reads as done and never counts), failed before unconfirmed. Every line is the
+    registry's phrase for the row's site with its resource filled in; the row's
+    message is never printed or parsed."""
+    done_rows = [row for row in audit_activity if row.get("status") == "success"]
+    lines: List[str] = []
+    total = len(done_rows)
+    if total:
+        groups = _grouped(
+            action_line(row["site"], row.get("resource_id"), done=True) for row in done_rows
+        )
+        shown = list(groups.items())[:CHANGES_ACTIONS_MAX_NAMED]
+        lines.append(CHANGES_ACTIONS_HEADLINE.format(count=total, s="" if total == 1 else "s"))
+        for line, n in shown:
+            text = line if n == 1 else CHANGES_ACTION_DONE_REPEATED.format(line=line, n=n)
+            lines.append(f"  - {text}")
+        rest = total - sum(n for _, n in shown)
+        if rest > 0:
+            lines.append(f"  - and {rest} more")
+    for status, (once, repeated) in _CHANGES_ATTEMPT_LINES.items():
+        tried = _grouped(
+            action_line(row["site"], row.get("resource_id"), done=False)
+            for row in audit_activity
+            if row.get("status") == status
+        )
+        for phrase, n in tried.items():
+            lines.append(
+                once.format(phrase=phrase) if n == 1 else repeated.format(phrase=phrase, n=n)
+            )
     return lines
 
 
@@ -11599,15 +11631,27 @@ class IntentService:
                     audit_logs = result.scalars().all()
 
                     for log in audit_logs:
+                        # #2258 (Arch 21:46): one predicate for "an action Piper took";
+                        # a login, an API-key event or an admin mint is not a change
+                        # Piper made, a nested row is the same action seen twice, and
+                        # a user_visible=False site is housekeeping. Those rows are
+                        # left out of the list and the count alike.
+                        details = log.details if isinstance(log.details, dict) else None
+                        if not person_visible_action(log.event_type, log.action, details):
+                            continue
                         audit_activity.append(
                             {
                                 "type": "audit",
                                 "action": log.action,
+                                "site": log.action,
                                 "event_type": log.event_type,
                                 "message": log.message,
                                 # #2258 (Arch 19:3x, #2151's rule): a failed or
                                 # unconfirmed row never renders as a change Piper made.
                                 "status": log.status,
+                                "resource_id": (
+                                    log.resource_id if isinstance(log.resource_id, str) else None
+                                ),
                                 "timestamp": log.created_at.isoformat(),
                             }
                         )
