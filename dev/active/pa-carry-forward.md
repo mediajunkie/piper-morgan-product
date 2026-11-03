@@ -15,17 +15,18 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Now (written 2026-11-01 21:47 STOP; replace, don't annotate)
+## Now (written 2026-11-02 21:47 STOP; replace, don't annotate)
 
-- **Served at 21:47 on 11-01:** alpha and beta on c44dd081cb (0.9.0.0, tagged), MCP on Fly v18 a8a01b96b4, staging on fcc325ee4c. Nothing was promoted on 11-01. Watch **b0ir1bpgz** polls alpha's sha every 2 minutes until about 07:31 on 11-02. If it has ended or the session is fresh, re-arm it.
-- **On the next alpha promotion, run within the hour, in this order (standing rows Q1 then Q4):**
-  1. **#2042 (Q1):** check `git merge-base --is-ancestor cd0c489354 <sha>`. If it's missing, don't run; tell Lead and Arch. Then run `dev/2026/11/01/replay-2042-row3.py` (all 19 replies) plus one row 2 (`dev/2026/10/19/canonical-retest-1386-alpha.py`, last night's CSV form), with the sha at start and end. Send to CXO. Baseline: 10-31 row 2, 34/42.
-  2. **#2250 (Q4):** run `dev/2026/11/01/status-latency-2250.py 16` with web-seed-1386 (needs `66512be739` in the build). The before-half on c44dd081cb, 16 turns per ask: status 11.25 s, IQR 10.74–13.38 s; going 11.24 s, IQR 10.87–12.74 s (issuecomment-6564196010). Pass (PPM): both after-medians inside the before-IQRs, with no shift of about 1.5 s in the same direction. Post on #2250 and mail PPM.
-- **#2242 MCP deploy (Q2):** waits on xian's `mcp_allow.py list` showing him. Then `scripts/deploy-mcp.sh --dry-run`, the real run, `/health`, the listed path (reconnect first if Claude shows it disconnected), and the consent-page quote for web-seed-1386 (served at or after `20028c2eb5`; 403, no code). Later, xian's remove and re-add.
-- **#2230/#2235 (Q3):** waits on xian's flag paste. In one session on web-seed-1386: the GitHub card read, then the set_default_repo probe, then one row 2.
-- **#2238 served line:** xian's own Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`. Staging holds no NOTION_API_KEY (CIO, names only). PA's pins box is ticked.
-- **ghmint:** push outages on 10-30, 10-31 and 11-01, each about 30 minutes. Pard's fix (mediajunkie ea2bdcd) waits on xian's sudo paste; CIO tracks it as row 9d. During an outage: wait for the next `ok` line and push once.
-- **Fresh-account checks:** wait on xian (rollup: "Fresh test accounts", Exec 11-02 11:09). Exec recommends xian sign up the fresh account himself, with PA quoting his screenshots (as on 10-29 and 10-30). **#2237 rendered cards:** a browser seat. **#2247:** Lead's build. **xian's MCP test plan** (`docs/internal/operations/mcp-test-plan-pm.md`): when his notes come back, file the failures.
+- **Served at 21:47 on 11-02:** alpha and beta on `3297ea797b` (promoted 18:15), MCP on Fly v18 `a8a01b96b4`. Main CI 12/12 green. No watch is armed: if a promotion is pending at the next fire, arm one that polls alpha's `/health` sha.
+- **On the next alpha promotion (check ancestry first: `7475d499af` and `e64d2155aa` for #2098; Lead's #2042 aside landing for the reminder fix):**
+  1. **#2098 (CXO's served check):** Lead's three-turn script on #2098, plus `dev/2026/11/02/ba3-2098-and-2197-status-branch.py`'s Ba3 pair ×3 and the original order, plus a yes-then-"file it as is" turn quoting the filed title (newest test-repo issue via `gh api`). Pass: title replaced or the question asked, never "I can't update documents", and the filed title matches the last answer. Quote in full to CXO, cc Lead, Arch, PPM.
+  2. **#2042 aside (CXO's four-part check):** `dev/2026/11/01/replay-2042-row3.py` (B/Ba ×3 plus the 18 prompts); a guidance turn then a work turn in one session (the reminder mention lands on the work turn, once); a per-item ages turn (no "all 1 day overdue"). The unit-test half is Lead's.
+  3. **#2197 S3:** re-quote only if CXO asks after the lead-in reword lands.
+- **#2242 MCP deploy (Q2):** waits on Janus/Exec reporting xian's connector reconnect. Then `scripts/deploy-mcp.sh --dry-run`, the real run, `/health`, his account allowed and the test account refused (this verifies the allowlist), and the consent-page quote for web-seed-1386 (403).
+- **#1680 row half:** xian's route-1 admin read (rollup v761), relayed by Exec. Lead confirmed the JSON carries no personal details.
+- **#2235 wizard half:** Web, once an OAuth-only account with a throwaway GitHub login exists (HOST confirmed the repo scope; on the rollup's "Fresh test accounts").
+- **#2238 served line:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
+- **Fresh-account checks:** xian's rollup answer. **#2237:** a browser seat. **#2247:** Lead's build. **xian's MCP test plan:** file failures when his notes come back.
 
 ## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 
