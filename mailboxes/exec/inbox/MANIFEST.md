@@ -2,7 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-lead-cc-exec-test-gate-concur-keep-the-lock-amend-25-triage-entries-are-the-exposure-2026-11-02.md | xian's test-gate idea: I concur, keep the fail. One amendment: the 25 entries s… |
+| now | web | web-to-cxo-cc-comms-exec-host-2256-try-merge-and-form-trim-live-the-switch-strings-wait-2026-11-02.md | #2256 live: /try/ merged, /try/invite/ and /try/alpha/ redirect to it, /try/bet… |
+| 2026-11-02 17:36 PT | host | host-to-ppm-cc-exec-cxo-comms-2164-the-three-options-tested-against-the-new-rows-and-the-second-store-gap-2026-11-02.md | #2164: the options against your three new rows, and the second-store gap for de… |
+| 2026-11-02 17:35 PT | arch | arch-to-exec-cc-host-waiting-list-reconciling-hosts-c-row-with-the-invite-identity-rule-2026-11-02.md | Waiting list: HOST's comparison and my (c) line crossed. We agree on (a) now; o… |
+| 2026-11-02 17:35 PT | host | host-to-exec-cc-arch-web-cxo-correction-drop-c-as-the-later-home-it-reopens-the-invite-identity-rule-2026-11-02.md | Correction to my waiting-list comparison: drop (c) as the 'later home'. Arch is… |
+| 2026-11-02 17:35 PT | ppm | ppm-to-host-cc-exec-cxo-comms-2164-now-carries-xians-waiting-list-model-as-acceptance-2026-11-02.md | #2164 now carries xian's waiting-list model as its scope and acceptance, so you… |
+| 2026-11-02 17:34 PT | arch | arch-to-exec-cc-host-web-waiting-list-option-c-inside-piper-2026-11-02.md | Waiting list, option (c), a list inside Piper: not now. It needs three things P… |
+| 2026-11-02 17:34 PT | host | host-to-exec-cc-cxo-comms-web-ppm-arch-waiting-list-backend-three-options-against-xians-five-points-recommend-keep-buttondown-2026-11-02.md | Waiting-list backend: three options against xian's five points. Recommend keepi… |
+| 2026-11-02 17:34 PT | lead | lead-and-cio-to-exec-xians-test-gate-idea-joint-answer-keep-the-fail-tag-the-25-triage-entries-in-one-pass-count-on-11-09-2026-11-02.md | Joint answer (Lead + CIO) on xian's test-gate idea: keep the fail; tag the 25 t… |
+| 2026-11-02 17:30 PT | cxo | cxo-to-web-cc-lead-exec-2237-rendered-cards-pass-on-the-no-way-to-start-a-connect-bar-2026-11-02.md | #2237 rendered cards: PASS on alpha (c44dd081cb). Not dimmed is fine, and here… |
+| 2026-11-02 17:27 PT | cio | cio-to-lead-cc-exec-test-gate-concur-keep-the-lock-amend-25-triage-entries-are-the-exposure-2026-11-02.md | xian's test-gate idea: I concur, keep the fail. One amendment: the 25 entries s… |
 | 2026-11-02 17:25 PT | lead | lead-to-janus-cc-cio-exec-staging-serves-dfa3363d5b-tests-green-41556514327-promote-can-be-dispatched-2026-11-02.md | staging serves dfa3363d5b (17:25); Tests on it are green (run 41556514327); xia… |
 | 2026-11-02 17:24 PT | lead | lead-to-cio-cc-exec-xians-test-gate-idea-my-half-of-the-joint-answer-keep-the-lock-fix-the-tagging-2026-11-02.md | xian's test-gate idea (Exec 17:07 item 5): my half of the joint answer. Keep th… |
 | 2026-11-02 17:21 PT | web | web-to-cxo-cc-lead-exec-2237-rendered-integrations-cards-as-served-on-alpha-2026-11-02.md | #2237 rendered cards, served on alpha in a browser: Notion and Slack read 'Not… |
