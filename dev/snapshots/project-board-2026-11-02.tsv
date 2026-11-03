@@ -2024,7 +2024,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2227	OPEN	Ongoing		Router on Haiku 5.5: re-baseline, not a drop-in (screen NO-GO 10-30)			
 2228	OPEN	Production	PROD-HONESTY - Failed Reads Say So	False relative time on the STATUS floor: #35, created 15:04 PT today, described as 'updated yesterday evening'; the GUIDANCE floor gets the server's naive clock as the user's time (child of 1828)			
 2229	CLOSED	Production	PUB - Public Beta	Public site still invites visitors to the alpha and a beta waitlist after the private beta started (/try, /try/alpha, /get-involved)	website		COMPLETED
-2230	OPEN	Production	PROD-CONVO - Conversation Reliability	'Set my default GitHub repository to owner/name' gets the no-match line in every session: set_default_repo is not live in the inversion consult (no flip_group, category QUERY)			
+2230	CLOSED	Production	PROD-CONVO - Conversation Reliability	'Set my default GitHub repository to owner/name' gets the no-match line in every session: set_default_repo is not live in the inversion consult (no flip_group, category QUERY)			COMPLETED
 2231	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Tracking: eleven close:pins-only closes whose failure path was never served on alpha (xian's beta test: 'fully tracking anything we know isn't working yet')			
 2232	OPEN	Production	PROD-TECHDEBT - General Cleanup	Local served fault run: a server built from main, real DB and HTTP API, upstream pointed at a failing stub, one driver for the pins-only rows that cannot be forced on alpha (#2152, #2125, #2154)			
 2233	OPEN	Production	PROD-CONVO - Conversation Reliability	[UX] A name question gets an unprompted reminder nudge ("What's your name?" gets the name, then "four reminders came due earlier today")	UX		
@@ -2054,3 +2054,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2254	OPEN	Ongoing		Dev-DB residue: unit-test fixtures delete their lists and leave base items dangling, so alembic upgrade head fails at s2014items on any shared dev Postgres	technical-debt,testing		
 2256	OPEN	Production		Beta sign-up screens repeat themselves, and /try/ now duplicates /try/beta/ (xian's walk, 11-02)			
 2257	OPEN	Production		attention_model: every attention-pattern save returns False since #1305 (pattern_data['name'] subscript on the EncryptedJSON column); path unwired in production; two backlog entries track it	bug		
+2258	OPEN	Production		[UX] "What changed since yesterday?" can answer with an internal label: "Actions (2): consequential: 2"	UX		
+2259	OPEN	Production		Account Settings doesn't show the account's email, though the allowlist script and support flows ask people for it			
