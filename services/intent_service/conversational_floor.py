@@ -1186,12 +1186,25 @@ class ConversationalFloor:
                 # due reminders are only those whose time has already passed.
                 # GatherOutcome §5b: a render cap may shorten what the user
                 # sees; it must never change what the system believes it has.
-                ages = domain_context.get("due_reminder_ages")
-                ages = ages if isinstance(ages, dict) else {}
-                for r in rems:
-                    age = ages.get(str(r))
+                # #2260: ages are per-row ``(text, age)`` pairs in the block's
+                # order (keyed by text, rows sharing a text all got the last
+                # row's age). Used only when they line up with the listed
+                # reminders one-for-one; otherwise the block renders without.
+                pairs = domain_context.get("due_reminder_ages")
+                ages: List[Optional[str]] = []
+                if (
+                    isinstance(pairs, (list, tuple))
+                    and len(pairs) == len(rems)
+                    and all(
+                        isinstance(p, (list, tuple)) and len(p) == 2 and str(p[0]) == str(r)
+                        for p, r in zip(pairs, rems)
+                    )
+                ):
+                    ages = [p[1] for p in pairs]
+                for i, r in enumerate(rems):
+                    age = ages[i] if ages else None
                     lines.append(f"    • {r} ({age})" if age else f"    • {r}")
-                if ages:
+                if any(ages):
                     # #1997: the age is on the user's calendar. Only "due
                     # earlier today" is today's; "N days overdue" is NOT.
                     lines.append(

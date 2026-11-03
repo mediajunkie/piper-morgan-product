@@ -1406,14 +1406,24 @@ class ContextAssembler:
             compute_fn=lambda: self._compute_reminder_context(user_id),
         )
 
-    async def _due_reminder_ages(self, handlers, user_id: str) -> Dict[str, str]:
-        """#1997: how old each due reminder is, on the user's calendar, keyed
-        by its text — ``"due earlier today"`` or ``"N day(s) overdue"``. The
-        reminder block used to carry text only, so the floor guessed ("three
-        reminders have come due today" for items 3–5 days old). Additive:
-        any failure returns ``{}`` and the block renders as before. The
-        day-count rule is #1996's (calendar days at local midnight, never
-        elapsed 24-hour periods)."""
+    async def _due_reminder_ages(
+        self, handlers, user_id: str, texts: List[str]
+    ) -> List[Tuple[str, Optional[str]]]:
+        """#1997: how old each due reminder is, on the user's calendar —
+        ``"due earlier today"`` or ``"N day(s) overdue"``. The reminder block
+        used to carry text only, so the floor guessed ("three reminders have
+        come due today" for items 3–5 days old). The day-count rule is
+        #1996's (calendar days at local midnight, never elapsed 24-hour
+        periods).
+
+        #2260 (Arch 2026-11-02 18:57): one ``(text, age)`` pair PER ROW, in
+        the order the block lists them (``texts``, from
+        ``get_due_reminders``), built in one pass over the rows. Ages used to
+        be keyed by text, so rows sharing a text overwrote each other and
+        every line got the last row's age ("8 reminders … all 1 day
+        overdue"). A row with no date gets ``None`` (no age). Additive and
+        fail-open: any failure, or rows that do not line up with ``texts``
+        one-for-one, returns ``[]`` and the block renders without ages."""
         try:
             from uuid import UUID
             from zoneinfo import ZoneInfo
@@ -1422,29 +1432,35 @@ class ContextAssembler:
 
             rows = await handlers._due_reminder_todos(UUID(user_id))
             if not rows:
-                return {}
+                return []
+            if [str(getattr(row, "text", "")) for row in rows] != [str(t) for t in texts]:
+                # The two reads disagree (a row changed between them): an age
+                # beside the wrong line is worse than none.
+                logger.info("context_assembler_reminder_ages_misaligned", rows=len(rows))
+                return []
             now = datetime.now(timezone.utc)
             try:
                 local_now = now.astimezone(ZoneInfo(await user_timezone_name(user_id)))
             except Exception:  # silent-ok: unknown zone → UTC calendar; ages stay additive
                 local_now = now
-            ages: Dict[str, str] = {}
+            pairs: List[Tuple[str, Optional[str]]] = []
             for row in rows:
+                text = str(getattr(row, "text", ""))
                 when = getattr(row, "reminder_date", None)
-                text = getattr(row, "text", None)
-                if not when or not text:
+                if not when:
+                    pairs.append((text, None))
                     continue
                 if when.tzinfo is None:
                     when = when.replace(tzinfo=timezone.utc)
                 days = (local_now.date() - when.astimezone(local_now.tzinfo).date()).days
                 if days <= 0:
-                    ages[str(text)] = "due earlier today"
+                    pairs.append((text, "due earlier today"))
                 else:
-                    ages[str(text)] = f"{days} day{'s' if days != 1 else ''} overdue"
-            return ages
+                    pairs.append((text, f"{days} day{'s' if days != 1 else ''} overdue"))
+            return pairs
         except Exception as e:  # silent-ok: ages are an additive annotation; the reminder block itself is unaffected
             logger.warning("context_assembler_reminder_ages_error", error=str(e))
-            return {}
+            return []
 
     async def _gate_due_reminder_mentions(
         self,
@@ -1495,7 +1511,14 @@ class ContextAssembler:
         if not fresh:
             gated.pop("due_reminders", None)
             gated.pop("reminder_count", None)
+            gated.pop("due_reminder_ages", None)
             return gated
+        # #2260: the per-row ages follow the rows they annotate (same filter,
+        # same order), so the floor can still pair them by position.
+        ages = gated.get("due_reminder_ages")
+        if isinstance(ages, list) and ages:
+            keep = set(fresh)
+            gated["due_reminder_ages"] = [p for p in ages if p[0] in keep]
         _mark_reminders_mentioned(session_id, fresh)
         gated["due_reminders"] = fresh
         gated["reminder_count"] = len(fresh)
@@ -1522,7 +1545,7 @@ class ContextAssembler:
                     "due_reminders": due_reminders,
                     "reminder_count": len(due_reminders),
                 }
-                ages = await self._due_reminder_ages(handlers, user_id)
+                ages = await self._due_reminder_ages(handlers, user_id, due_reminders)
                 if ages:
                     reminder_ctx["due_reminder_ages"] = ages
                 return reminder_ctx

@@ -207,6 +207,20 @@ class TestMentionOncePerSession1625:
         assert gated["due_reminders"] == ["b"]
         assert cached == {"due_reminders": ["a", "b"], "reminder_count": 2}
 
+    @pytest.mark.asyncio
+    async def test_2260_per_row_ages_follow_the_filtered_reminders(self):
+        """#2260: the per-row ``(text, age)`` pairs are filtered with the rows
+        they annotate, so the floor still pairs them by position."""
+        assembler = ContextAssembler()
+        ages = [("a", "1 day overdue"), ("b", "3 days overdue"), ("b", "1 day overdue")]
+        cached = {"due_reminders": ["a", "b", "b"], "reminder_count": 3, "due_reminder_ages": ages}
+        session = f"sess-{uuid4()}"
+        ca._SESSION_REMINDER_MENTIONS[session] = {"a"}
+        gated = await assembler._gate_due_reminder_mentions(cached, str(uuid4()), session)
+        assert gated["due_reminders"] == ["b", "b"]
+        assert gated["due_reminder_ages"] == [("b", "3 days overdue"), ("b", "1 day overdue")]
+        assert cached["due_reminder_ages"] == ages
+
 
 # ---------------------------------------------------------------------------
 # Never inside an active gathering/interview exchange
