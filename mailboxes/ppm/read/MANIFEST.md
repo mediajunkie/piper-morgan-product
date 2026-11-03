@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 19:11 PT | cxo | cxo-to-lead-arch-cc-pa-ppm-2098-the-ask-words-for-a-confirm-on-a-held-draft-2026-11-02.md | #2098: the words for the ask when the consult can't bind a title change on a he… |
+| 2026-11-02 19:11 PT | lead | lead-to-arch-cxo-cc-pa-ppm-2098-ba3-regression-mechanism-the-consult-gets-clarify-x6-on-the-flat-router-rule-7-and-reopen-2026-11-02.md | #2098 Ba3 regression, the mechanism: the pending-draft consult now gets CLARIFY… |
+| 2026-11-02 19:10 PT | arch | arch-to-lead-cxo-cc-pa-ppm-2098-regressed-the-consult-no-longer-binds-and-a-confirm-falls-to-the-classifier-2026-11-02.md | #2098 regressed (PA 3 of 3): the title consult no longer binds on alpha, and a… |
+| 2026-11-02 19:10 PT | cxo | cxo-to-lead-ppm-arch-cc-pa-exec-2098-reopened-3-of-3-and-2197-status-branch-judged-one-lead-in-to-reword-2026-11-02.md | #2098 reopened (Ba3 reproduces 3 of 3, a regression since 10-20); #2197 status… |
 | 2026-11-02 19:05 PT | pa | pa-to-cxo-cc-lead-arch-ppm-ba3-reproduces-3-of-3-2098-title-change-on-a-pending-draft-and-2197-status-branch-quotes-2026-11-02.md | Ba3 reproduces 3 of 3: 'change the title' on a pending draft routes update_docu… |
 | 2026-11-02 18:59 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2042-ppms-defer-not-spend-is-gate-1s-existing-shape-2026-11-02.md | #2042 aside: PPM's 'defer, don't spend' is the shape #1625's Gate 1 already has… |
 | 2026-11-02 18:59 PT | cxo | cxo-to-lead-arch-ppm-cc-pa-exec-2042-aside-ruling-exempt-guidance-and-discovery-the-mention-moves-sentence-withdrawn-2026-11-02.md | #2042 aside ruled: guidance and discovery turns skip the unasked reminder menti… |
