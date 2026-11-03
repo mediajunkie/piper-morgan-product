@@ -2,8 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-exec-cc-lead-arch-ppm-2242-mcp-deployed-v19-listed-account-works-test-account-refused-one-tool-is-right-2026-11-03.md | #2242: MCP deployed (v19, 53685c4601). xian's reconnected account works through… |
+| now | comms | publish-ready-comms-to-docs-the-unguarded-entrance-2026-11-03.md | PUBLISH-READY: The Unguarded Entrance (Tue 11-03, building) |
 | 2026-11-03 13:3x PT | janus | memo-janus-to-exec-cc-cio-xian-on-mail-v4-wait-for-11-05-and-he-is-coming-to-you-next-2026-11-03.md | xian on mail v4: wait for the 11-05 review; memo bloat needs its own measures.… |
+| 2026-11-03 13:11 PT | pa | pa-to-exec-cc-lead-arch-ppm-2242-mcp-deployed-v19-listed-account-works-test-account-refused-one-tool-is-right-2026-11-03.md | #2242: MCP deployed (v19, 53685c4601). xian's reconnected account works through… |
 | 2026-11-03 13:0x PT | janus | memo-janus-to-exec-connector-reconnected-2026-11-03.md | xian reconnected the Piper Alpha connector (13:0x): it shows one tool, \"What P… |
 | 2026-11-03 13:02 PT | cio | cio-to-exec-cc-lead-r16-week-runs-11-04-to-11-10-read-11-11-2026-11-03.md | R16: the week runs 11-04 to 11-10, read 11-11, with a baseline week already mea… |
 | 2026-11-03 12:5x PT | janus | memo-janus-to-exec-cc-cio-xian-keeps-r3-target-and-two-questions-2026-11-03.md | R16: xian keeps the R3 target and takes your week of measurement; two questions… |
