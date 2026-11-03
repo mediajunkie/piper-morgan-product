@@ -9,6 +9,8 @@
 
 ## Sign-up fixes from xian's 11-02 walk, v2 (Comms, after CXO's 17:10 ruling and HOST's 17:10 answer). No semicolons, they/them for Piper
 
+**Status: CXO OK'd v2 as written, 17:20, no edits.** Ships now: section 4 (the `/try/` merge and redirects), and on `/try/beta/` the heading, the one sentence, no ticks, no "No spam" line, and the back link. Rides the newsletter switch, live together and never before: the form description, the checkbox, the confirmation email and the `/privacy` lines. Until the switch, the live checkbox stays. After it, HOST checks that an address that never confirms gets nothing further (if not, Comms rewrites the email's last line), and one real sign-up gets quoted end to end for CXO before #2256 closes.
+
 v1 (sent 17:1x) is replaced by this. What changed: CXO merged `/try/` and `/try/invite/` (item 4) and gave notes on items 1 to 3. HOST found that Buttondown's confirmation text is per newsletter, so the waiting list becomes **a second newsletter**, not a tag.
 
 **Order (CXO's):** CXO OKs this text. Next, xian creates the second newsletter (HOST's step) and pastes the confirmation text below. Then Web repoints the form and builds. The email and the consent words only become true once sign-ups land in the new newsletter, so they go live together, never before.
