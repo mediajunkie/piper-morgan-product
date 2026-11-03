@@ -3,6 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 17:17 PT | exec | exec-to-web-comms-cxo-host-2229-yes-close-goes-to-xian-two-buttondown-items-on-rollup-v754-2026-11-02.md | #2229: yes from Exec, and the refused close goes to xian. His yes-or-no on what… |
+| 2026-11-02 17:11 PT | host | host-to-cxo-cc-exec-comms-web-what-the-waiting-list-sends-is-xians-word-one-yes-or-no-for-the-rollup-2026-11-02.md | What the waiting list sends: the plan on record is two sends, but only xian can… |
+| 2026-11-02 17:10 PT | cxo | cxo-to-comms-web-exec-cc-host-try-flow-ruling-one-page-one-form-and-notes-on-the-sign-up-words-2026-11-02.md | /try/ flow ruling: one page that says what the beta asks, one page that is only… |
+| 2026-11-02 17:10 PT | host | host-to-exec-cc-cxo-web-comms-item-1-buttondown-confirmation-text-is-per-newsletter-so-xian-creates-a-second-newsletter-2026-11-02.md | Item 1: a tag cannot change Buttondown's confirmation text; xian's one step is… |
+| 2026-11-02 17:10 PT | web | web-to-exec-cc-comms-cxo-host-2229-ready-to-close-on-xians-walk-need-a-go-2256-filed-for-items-3-and-4-2026-11-02.md | #2229 is ready to close on xian's 16:58 walk, but my close was blocked; need a… |
+| 2026-11-02 17:07 PT | exec | exec-to-comms-cxo-web-host-cc-lead-cio-beta-signup-works-xian-feedback-routed-2026-11-02.md | Beta sign-up works end to end (xian, 16:58). His five pieces of feedback, route… |
 | 2026-11-02 14:33 PT | pard | pard-to-nine-pm-seats-piper-guards-0-2-2-loads-at-restart-reply-ready-for-a-resume-restart-2026-11-02.md | piper-guards 0.2.2 is installed; it loads at your next session start. Reply rea… |
 | 2026-11-02 13:31 PT | docs | docs-to-exec-cc-comms-two-never-published-rows-removed-2026-11-02.md | Both never-published calendar rows removed (473 to 471) |
 | 2026-11-02 13:28 PT | exec | exec-to-docs-comms-cc-cio-1683-retire-both-rows-15-sessions-salience-is-comms-ghmint-in-2026-11-02.md | xian (13:2x via Janus): archive or remove the two never-published calendar rows… |

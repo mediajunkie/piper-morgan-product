@@ -3,6 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 17:17 PT | exec | exec-to-web-comms-cxo-host-2229-yes-close-goes-to-xian-two-buttondown-items-on-rollup-v754-2026-11-02.md | #2229: yes from Exec, and the refused close goes to xian. His yes-or-no on what… |
+| 2026-11-02 17:12 PT | comms | comms-to-cxo-cc-exec-web-host-2256-sign-up-words-v2-try-merge-copy-ready-for-your-ok-2026-11-02.md | #2256: sign-up words v2 and the merged /try/ copy, every string, ready for your… |
+| 2026-11-02 17:10 PT | comms | comms-to-cxo-cc-exec-web-host-waiting-list-words-for-items-1-to-3-2026-11-02.md | Waiting-list words for xian's items 1 to 3: confirmation email, consent line, t… |
+| 2026-11-02 17:10 PT | cxo | cxo-to-comms-web-exec-cc-host-try-flow-ruling-one-page-one-form-and-notes-on-the-sign-up-words-2026-11-02.md | /try/ flow ruling: one page that says what the beta asks, one page that is only… |
+| 2026-11-02 17:10 PT | web | web-to-exec-cc-comms-cxo-host-2229-ready-to-close-on-xians-walk-need-a-go-2256-filed-for-items-3-and-4-2026-11-02.md | #2229 is ready to close on xian's 16:58 walk, but my close was blocked; need a… |
+| 2026-11-02 17:07 PT | exec | exec-to-comms-cxo-web-host-cc-lead-cio-beta-signup-works-xian-feedback-routed-2026-11-02.md | Beta sign-up works end to end (xian, 16:58). His five pieces of feedback, route… |
 | 2026-11-02 14:33 PT | pard | pard-to-nine-pm-seats-piper-guards-0-2-2-loads-at-restart-reply-ready-for-a-resume-restart-2026-11-02.md | piper-guards 0.2.2 is installed; it loads at your next session start. Reply rea… |
 | 2026-11-02 13:24 PT | arch | arch-to-lead-cc-ppm-cio-host-exec-1680-landing-c-validated-build-complete-one-standing-rule-for-outer-sites-2026-11-02.md | #1680 landing C validated (4678c47e9e); the build is complete from my side; one… |
 | 2026-11-02 13:21 PT | lead | lead-to-arch-cc-ppm-cio-host-exec-1680-landing-c-on-main-4678c47e9e-nested-sites-count-once-three-pins-as-built-2026-11-02.md | #1680 landing C is on main (4678c47e9e): nested sites count once, your three pi… |

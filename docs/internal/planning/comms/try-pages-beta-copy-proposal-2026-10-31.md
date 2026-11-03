@@ -7,6 +7,79 @@
 > **Web: build from the "Build copy" section only.** Everything below it is history. **Status 20:50:** CXO OK'd the build copy (20:49) **on one hard condition:** it goes live only after Exec names the waiting-list owner and that owner confirms they will send invitations in waves and the public-beta note. If xian wants it live sooner, use CXO's fallback on card 2, `/try/beta/` and the "Want in?" block: "Join the waiting list. We may invite you, and we'll tell you if we can." **CXO 20:56: the whole Build copy section is OK as written**, including the `/try/invite/` meta line. **xian, 21:14 via PPM: yes to one way in, and HOST keeps the waiting list.** Web builds once HOST confirms they'll send invitations in waves and the public-beta note. **HOST, 21:17:** accepts keeping the list, with two limits: (1) xian sends the invitations and the note, and HOST prepares them, so whether that meets CXO's condition is CXO's and Exec's call. (2) HOST can't read Buttondown yet and needs xian to paste the signups or grant access. The copy is true as long as xian sends. **PPM, 21:19:** xian sends each wave himself and will grant HOST read access to the list. PPM reads CXO's condition as met. **CXO, 21:27: condition met. Web may build.** **Live 21:40** (Web): 4 of 4 pages, 0 alpha, `/try/alpha/` 308 to `/try/invite/`. **CXO 21:48: served text PASSES.** Still open: the hero line above, and whether Buttondown actually sends the confirmation email (HOST or xian to check) before #2229 closes.
 **Asked by:** xian via PPM, 10-31 18:50 ("can we ask Comms to propose updates and then Web can execute once I approve?"). Sent to Exec for xian's approval, cc CXO, Web, PPM.
 
+## Sign-up fixes from xian's 11-02 walk, v2 (Comms, after CXO's 17:10 ruling and HOST's 17:10 answer). No semicolons, they/them for Piper
+
+v1 (sent 17:1x) is replaced by this. What changed: CXO merged `/try/` and `/try/invite/` (item 4) and gave notes on items 1 to 3. HOST found that Buttondown's confirmation text is per newsletter, so the waiting list becomes **a second newsletter**, not a tag.
+
+**Order (CXO's):** CXO OKs this text. Next, xian creates the second newsletter (HOST's step) and pastes the confirmation text below. Then Web repoints the form and builds. The email and the consent words only become true once sign-ups land in the new newsletter, so they go live together, never before.
+
+### 1. The confirmation email (paste-ready, for the new newsletter's Settings > Subscribing > Confirmation)
+
+- **Subject:** Confirm your place on the Piper Morgan waiting list
+- **Body** (keep Buttondown's own confirm link or button where its template puts it. HOST checks that once it's built):
+
+> Thanks for joining the Piper Morgan waiting list. Please confirm this is your address, so we can reach you.
+>
+> [confirm link]
+>
+> Next, we'll email you when we can invite you to the private beta, and when the public beta starts. We'll tell you before sending anything else.
+>
+> If you didn't sign up, ignore this email and you won't hear from us.
+
+### 2. `/try/beta/`, only the form (CXO's ruling), every string
+
+- **Meta title:** Join the Waiting List | Piper Morgan (unchanged)
+- **Meta description:** Join the Piper Morgan waiting list for a private beta invitation, or a note when the public beta starts.
+- **Heading:** Join the waiting list
+- **The one sentence:** We're sending invitations in waves. Join the waiting list for an invitation, or just to hear when the public beta starts. (CXO's words)
+- **Form title:** Sign up
+- **Form description, what they're agreeing to** (CXO's sentence, xian's item 2): We'll email you about your invitation and when the public beta starts, and we'll tell you before sending anything else.
+- **No ticks.**
+- **Button:** Join the waiting list
+- **Checkbox:** I agree to these emails, as described in the [Privacy Policy](/privacy). I can unsubscribe at any time.
+- **Under the form:** nothing. "No spam, unsubscribe at any time" goes (CXO, item 3).
+- **Success message:** You're on the list. Check your inbox (and spam folder) for the confirmation link. (unchanged)
+- **Back link:** ← What the beta asks (to `/try/`)
+- **Web note:** the checkbox and the line under the form live in the shared `NewsletterSignup` component. The waiting-list use needs props for both (consent text, and an empty privacy notice), not new defaults.
+
+**On CXO's legal question:** I'm not a lawyer, and this isn't legal advice. What I checked: `/privacy` says consent is recorded with a timestamp, Buttondown sends a double opt-in confirmation, and you withdraw consent by unsubscribing. Consent wording usually has to name the purpose, point to the policy, and say how to withdraw. The new checkbox does all three, and "these emails" points at the sentence just above it. It's narrower and more specific than "marketing communications", not weaker. If xian wants a lawyer's read, that's his call.
+
+### 3. `/privacy`, needed before the new list goes live
+
+The policy only describes the newsletter ("Send weekly newsletter content about AI-powered product management"). The waiting list has a different purpose, so add:
+
+- **Under "Information We Collect", a new heading "Beta Waiting List":** When you join the waiting list, we collect your email address, the time you gave consent, and the page you signed up from. Our email service provider also collects your IP address.
+- **Under "How We Use Your Information", a new heading "Beta Waiting List":** We use your email address only to send the confirmation email, to invite you to the private beta, and to tell you when the public beta starts. We'll tell you before sending anything else.
+- **Data Retention, "Newsletter Data"** becomes "Newsletter and Waiting List Data". The text stays as it is.
+- **"Last updated"** becomes the month it ships.
+
+### 4. `/try/`, one page that says what the beta asks (CXO's ruling), every string in page order
+
+Built from `/try/invite/`. The two-door frame and the ticks go, and `/try/invite/` 308s to `/try/` (`/try/alpha/` points straight at `/try/`).
+
+- **Meta title:** Join the Private Beta | Piper Morgan
+- **Meta description:** Piper Morgan is in private beta. See what it asks of you, and join the waiting list for an invitation or a note when the public beta starts.
+- **og title:** Join the Piper Morgan Private Beta. **og description:** See what the private beta asks, and join the waiting list.
+- **Hero headline:** Join the private beta
+- **Hero text:** Piper Morgan is in private beta. We're inviting a small number of product people to use it for their real work and tell us what they find.
+- **"What to expect"**
+  1. **Invite-only, nothing to install.** Piper runs in your browser. We send you an invite code and you create your account. You connect your own Anthropic API key to use it.
+  2. **Things will break.** We're iterating fast, and bugs are part of the process.
+  3. **Your voice matters.** Your feedback reaches the team building it.
+  4. **Real access.** You'll use Piper for your actual work, not a sandbox. It works with GitHub and Google Calendar.
+- **"What we're looking for"**
+  - An Anthropic API key of your own. Piper doesn't provide or pay for model usage
+  - Willingness to report what's working and what isn't
+  - Interest in AI-assisted product management
+  - Patience with rough edges
+- **"Want in?"** Join the waiting list for an invitation, or just to hear when the public beta starts. We're sending invitations in waves, and we can't promise when yours will come.
+- **Button:** Join the waiting list →
+- **"Have questions first?"** Email us at support@pipermorgan.ai. We're happy to chat, and to hear about the product work you do.
+- **Bottom note** (kept from the old `/try/`): Not sure? That's okay. You can always read about the journey first, or learn more about the project.
+- **Gone:** "How ready are you?", both cards, "← Back to options".
+
+**Checked against the offered set:** GitHub and Google Calendar only, with no Slack or Notion (CXO and #2237). There's an Anthropic key only, and no other provider key. No claim about data ownership (the PDR-102 hold).
+
 ## xian's answers (via PPM, 10-31 20:35)
 
 1. **Invite path:** "that may be ok for now but sync with Web on how we already have a signup and a way to show interest on the site today and how to update that." **Open.** Web is listing every signup and interest path. Comms then reconciles the invite line so a visitor has one clear path. Note the overlap this has to settle: card 1 asks for an invite by email, and the card 2 waiting list is also a way to get an invitation.

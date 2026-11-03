@@ -37,14 +37,14 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Saturday 31 October</h1>
-<p class="meta">Exec · v752, rebuilt 15:05 PST Mon 11-02 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v754, rebuilt 17:20 PST Mon 11-02 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
 <div class="card hot">
-<p class="ct">Two steps left. <code>set_default_repo</code> is done (14:4x).</p>
+<p class="ct">One step left. Your beta sign-up worked (confirmation email 16:58), and your feedback is routed.</p>
 <ol>
-<li><b>Promote, then add yourself to the Claude connector allowlist (#2242, #2042).</b> Main now carries two things for alpha: the #2042 change to how Piper words its replies (Arch and CXO validated it), and #2242&rsquo;s allowlist, which refuses the Claude connector to every account not listed. Nobody is listed yet, so once this is served your own connector is refused until you add yourself. You have to add yourself after the promotion, because the script isn&rsquo;t in the build that&rsquo;s live now. Main&rsquo;s Tests run on <code>cd0c489354</code> is green (checked 08:50), so it&rsquo;s ready now. The promotion also brings #2238 (your own Notion key) and #2242&rsquo;s refusal page for PA to check.
+<li><b>Promote, then add yourself to the Claude connector allowlist (#2242, #2042).</b> Main now carries two things for alpha: the #2042 change to how Piper words its replies (Arch and CXO validated it), and #2242&rsquo;s allowlist, which refuses the Claude connector to every account not listed. Nobody is listed yet, so once this is served your own connector is refused until you add yourself. You have to add yourself after the promotion, because the script isn&rsquo;t in the build that&rsquo;s live now. <b>Your 16:50 promotion stopped at the test gate</b> (SHRINK-LOCK: a known-failing test passed on CI&rsquo;s fresh database). Lead marked it flaky on <code>dfa3363d5b</code>. Tests on that commit are running (run 41556514327, checked 17:08), and Lead will mail Janus when it&rsquo;s green. Then run the same line again. The promotion also brings #2238 (your own Notion key) and #2242&rsquo;s refusal page for PA to check.
 <pre>gh workflow run fly-deploy.yml -R mediajunkie/piper-morgan-product --ref main -f promote_to_alpha=true</pre>
 When alpha&rsquo;s <code>/health</code> shows <code>cd0c489354</code> or later, run these with the email you sign in to Piper with. The first only shows what it would do, the second writes, the third lists:
 <b><code>fly ssh console</code> crashes on this app (14:4x), so use <code>fly machine exec</code> instead</b> (CIO checked these lines, 15:0x). First get the machine ID, since the promotion may change it, and put it in place of MACHINE_ID:
@@ -54,7 +54,6 @@ fly machine exec MACHINE_ID "python /app/scripts/mcp_allow.py add --user-email Y
 fly machine exec MACHINE_ID "python /app/scripts/mcp_allow.py list" -a piper-morgan</pre>
 The first add is a dry run. If it says <code>No such file</code>, the promotion isn&rsquo;t live yet, so wait for <code>/health</code>. For any other error, stop and paste it to me.
 Then reconnect the Piper connector in Claude once (one consent click). If Claude tried to renew while you were off the list, its saved login was used up, and you need the reconnect anyway (Arch 07:43). Tell me when the list shows you and you&rsquo;ve reconnected. Then PA deploys the MCP side and runs its checks, plus the #2042 replay and row 2 within the hour. Only your account goes on the list for now. The test account stays off so PA can check that it&rsquo;s refused.</li>
-<li><b>Buttondown:</b> give HOST read access to <code>beta-waitlist</code>, and sign up once at pipermorgan.ai/try/beta/ with an address you own. Either step closes it, and HOST prefers the sign-up because it tests what a visitor sees (HOST 06:27). If no confirmation email arrives, the &ldquo;check your inbox&rdquo; line on that page is untrue, and Comms rewords it. #2229 closes on that check.</li>
 </ol>
 </div>
 
@@ -62,6 +61,7 @@ Then reconnect the Piper connector in Claude once (one consent click). If Claude
 
 <div class="card act">
 <ul>
+<li><b>What the beta waiting list sends (HOST, CXO, Comms).</b> &ldquo;The waiting list is used only for wave invitations and the one public-beta note, and anything else gets announced to its members first. OK to say so on the sign-up page?&rdquo; That&rsquo;s the plan on record. A yes makes the new confirmation email and the sign-up line true: &ldquo;We&rsquo;ll email you about your invitation and when the public beta starts, and we&rsquo;ll tell you before sending anything else.&rdquo; Comms also changed the checkbox to name exactly what people agree to, instead of &ldquo;marketing communications&rdquo;. Whether a lawyer reads it is up to you. <span class="rec">Yes.</span></li>
 <li><b>CIO&rsquo;s alpha promotion grant.</b> Keep it, with the review reworded to &ldquo;11-27, or after a promotion that leaves alpha on neither build.&rdquo; <span class="rec">Yes.</span></li>
 <li><b>Who signs up the fresh test accounts? (HOST, PA)</b> You OK&rsquo;d fresh test invites, but a raw code can&rsquo;t go in the repo, mail or logs. PA&rsquo;s rules also bar it from seeing a full code, so neither handing one to PA nor PA minting its own works. <span class="rec">Do what we did on 10-29 and 10-30: HOST mints with you there, you sign up the fresh account and run the few turns, and PA quotes your screenshots.</span> It&rsquo;s about 10 minutes, and it covers A1, A2, the first-reply notice line and #2225&rsquo;s re-ask. None of these holds the tag.</li>
 <li><b>Whenever: #327, separate GitHub accounts for agents.</b> Close as not planned? PPM and I recommend yes, since agent commits already carry Claude trailers.</li>
@@ -81,7 +81,8 @@ Then reconnect the Piper connector in Claude once (one consent click). If Claude
 <li><b>Optional: Lead&rsquo;s promotion permission</b> (the 14:00 paste), so Lead runs later promotions without you.</li>
 <li><b>Sign Web&rsquo;s tab in as <code>web-pat-test</code></b>, or approve Web&rsquo;s Read of that one credentials file. That unblocks #2237&rsquo;s cards check, and with the next item it unblocks #2238&rsquo;s Notion check.</li>
 <li><b>Paste your own Notion key on staging (#2238)</b>, now: staging offers Notion as of the deploy of <code>e24cf93b00</code> (Lead 09:10, deploy succeeded). Alpha and beta can&rsquo;t offer it. Web runs the chat and quotes the reply with the key masked. A pass lets PPM ask you &ldquo;offer Notion in the beta?&rdquo; Nothing testers use waits on it.</li>
-<li><b>Give HOST read access to the Buttondown <code>beta-waitlist</code> list</b>, as you told PPM you would. HOST keeps the list. You send each wave, and HOST prepares it.</li>
+<li><b>Buttondown: create a second newsletter for the waiting list</b>, after you say yes above and CXO approves Comms&rsquo; words. A tag can&rsquo;t change the confirmation email, because each newsletter has a single confirmation template (HOST, from Buttondown&rsquo;s docs). Open the newsletter dropdown (top left), choose <b>Add newsletter</b>, and name it something like &ldquo;Piper Morgan Beta Waiting List&rdquo;. Under <b>Settings &gt; Subscribing &gt; Confirmation</b>, paste Comms&rsquo; text. Then send Web the new form address, and Web repoints <code>/try/beta/</code> to it. HOST couldn&rsquo;t confirm from the docs whether your plan allows a second newsletter, and the Add newsletter screen will tell you. After that, check it with one sign-up of your own. HOST&rsquo;s read access now applies to the new newsletter, and HOST asked that the first waiting-list person be held until it exists.</li>
+<li><b>Close #2229, or allow Web&rsquo;s seat to close issues.</b> It&rsquo;s done: your sign-up showed the last check (CXO&rsquo;s confirmation email condition) is met, and Web&rsquo;s served check of the four pages found 0 &ldquo;alpha&rdquo;. The classifier refused Web&rsquo;s close. The page cleanup moved to #2256.</li>
 <li><b>Later, in parallel with the next sprint: submit the Slack app for review (#1514).</b> Slack controls how long the review takes, so it&rsquo;s the long pole for Slack in 1.0 (#2247). Lead can start on an internal app meanwhile.</li>
 </ol>
 </div>

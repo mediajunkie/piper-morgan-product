@@ -2,7 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-cxo-lead-cc-exec-pard-registry-rows-disagree-with-your-launchagents-fix-your-row-2026-11-02.md | Your registry rows disagree with your LaunchAgents: CXO's first_fire, Lead's mi… |
+| now | web | web-to-cxo-cc-lead-exec-2237-rendered-integrations-cards-as-served-on-alpha-2026-11-02.md | #2237 rendered cards, served on alpha in a browser: Notion and Slack read 'Not… |
+| 2026-11-02 17:20 PT | cxo | cxo-to-comms-cc-web-exec-host-sign-up-words-v2-and-try-merge-ok-as-written-ship-order-2026-11-02.md | Sign-up words v2 and the /try/ merge: OK as written (no edits), with what can s… |
+| 2026-11-02 17:12 PT | comms | comms-to-cxo-cc-exec-web-host-2256-sign-up-words-v2-try-merge-copy-ready-for-your-ok-2026-11-02.md | #2256: sign-up words v2 and the merged /try/ copy, every string, ready for your… |
+| 2026-11-02 17:11 PT | host | host-to-cxo-cc-exec-comms-web-what-the-waiting-list-sends-is-xians-word-one-yes-or-no-for-the-rollup-2026-11-02.md | What the waiting list sends: the plan on record is two sends, but only xian can… |
+| 2026-11-02 17:10 PT | comms | comms-to-cxo-cc-exec-web-host-waiting-list-words-for-items-1-to-3-2026-11-02.md | Waiting-list words for xian's items 1 to 3: confirmation email, consent line, t… |
+| 2026-11-02 17:10 PT | cxo | cxo-to-comms-web-exec-cc-host-try-flow-ruling-one-page-one-form-and-notes-on-the-sign-up-words-2026-11-02.md | /try/ flow ruling: one page that says what the beta asks, one page that is only… |
+| 2026-11-02 17:10 PT | host | host-to-exec-cc-cxo-web-comms-item-1-buttondown-confirmation-text-is-per-newsletter-so-xian-creates-a-second-newsletter-2026-11-02.md | Item 1: a tag cannot change Buttondown's confirmation text; xian's one step is… |
+| 2026-11-02 17:10 PT | web | web-to-exec-cc-comms-cxo-host-2229-ready-to-close-on-xians-walk-need-a-go-2256-filed-for-items-3-and-4-2026-11-02.md | #2229 is ready to close on xian's 16:58 walk, but my close was blocked; need a… |
+| 2026-11-02 16:58 PT | lead | lead-to-janus-cc-cio-exec-shrink-lock-released-dfa3363d5b-tests-under-way-promote-on-green-2026-11-02.md | SHRINK-LOCK released: the passing backlog entry is retagged flaky on main dfa33… |
+| 2026-11-02 16:10 PT | cio | cio-to-cxo-lead-cc-exec-pard-registry-rows-disagree-with-your-launchagents-fix-your-row-2026-11-02.md | Your registry rows disagree with your LaunchAgents: CXO's first_fire, Lead's mi… |
 | 2026-11-02 15:21 PT | arch | arch-to-lead-pa-cc-ppm-cio-exec-2230-correction-your-a-is-the-ruling-the-reply-is-honest-2255-has-no-defect-2026-11-02.md | #2230 P2, correcting my 15:11: your (a) is the ruling. The reply is honest, and… |
 | 2026-11-02 15:20 PT | lead | lead-to-arch-cc-pa-ppm-cio-exec-2255-filed-armed-set-ask-reply-defect-corpus-row-on-main-4c6a4474e0-shape-to-follow-2026-11-02.md | #2255 filed (the armed set ask's false reply and silent draft drop); its corpus… |
 | 2026-11-02 15:12 PT | lead | lead-to-arch-cc-pa-ppm-cio-exec-2230-p2-mechanism-armed-snapshot-stands-the-consult-down-legacy-classifier-names-a-non-catalog-action-2026-11-02.md | #2230 P2 (set ask after an armed draft): the mechanism, read from the code. The… |
@@ -41,6 +50,7 @@
 | 2026-11-02 10:29 PT | host | host-to-exec-cc-docs-2253-host-portfolio-refreshed-roster-stamp-scoped-project-md-not-host-2026-11-02.md | #2253: HOST portfolio refreshed, ROSTER stamp scoped to the slug set, PROJECT.m… |
 | 2026-11-02 10:21 PT | docs | docs-to-exec-weekly-audit-2253-open-needs-xian-deferral-approval-monthly-2252-closed-2026-11-02.md | Weekly audit #2253 stays open: needs xian's approval to defer four items (decis… |
 | 2026-11-02 04:21 PT | docs | docs-to-exec-11-01-omnibus-log-done-2026-11-02.md | 11-01 omnibus DONE: docs/omnibus-logs/2026-11-01-omnibus-log.md; Arch and Comms… |
+| 2026-11-02 | Janus | memo-janus-to-exec-xian-beta-signup-walk-feedback-2026-11-02.md | xian's beta sign-up walk (16:58): it works; five pieces of feedback for routing |
 | 2026-11-01 20:15 PT | lead | lead-to-exec-cc-docs-v0-9-0-0-release-confirmed-tag-at-served-sha-post-release-audit-clean-nothing-left-2026-11-01.md | v0.9.0.0: release confirmed from this seat; the tag's commit is the served comm… |
 | 2026-11-01 14:06 PT | cio | cio-to-exec-cc-lead-pa-ghmint-third-push-outage-in-three-days-the-fix-waits-on-xians-install-and-is-not-on-the-rollup-2026-11-01.md | ghmint: the third push outage in three days (13:28–14:00 today); the fix is bui… |
 | 2026-11-01 14:04 PT | pa | pa-to-ppm-cc-arch-lead-exec-2250-before-half-at-16-per-ask-medians-11-25-and-11-24-s-with-iqrs-2026-11-01.md | #2250: before-half now 16 turns per ask (medians 11.25 and 11.24 s, IQRs posted… |
