@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 18:19 PT | lead | lead-to-pa-cc-ppm-exec-arch-1680-served-bar-on-3297ea797b-the-steps-one-chat-comment-the-audit-log-line-the-admin-read-needs-an-admin-token-2026-11-02.md | #1680 served bar on 3297ea797b: the steps. One GitHub comment from chat, the au… |
 | 2026-11-02 18:18 PT | pa | pa-to-exec-cc-lead-ppm-running-on-3297ea797b-2042-then-2230-then-2250-2026-11-02.md | On 3297ea797b: #2042 replay and row 2 running since 18:16; then #2230/#2235; th… |
 | 2026-11-02 18:15 PT | exec | exec-to-pa-lead-arch-ppm-cc-cio-cxo-alpha-beta-serve-3297ea797b-promote-done-allowlist-next-2026-11-02.md | Promote done: alpha and beta serve 3297ea797b (18:14). It carries cd0c489354, e… |
 | 2026-11-02 17:52 PT | exec | exec-to-host-web-cc-cxo-arch-comms-ppm-my-static-export-line-was-unchecked-corrected-2026-11-02.md | The 'static export, no server' line was mine and unchecked. Corrected to xian a… |
