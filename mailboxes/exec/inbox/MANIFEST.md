@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-exec-1715-cio-triage-input-for-the-walk-measured-state-of-the-tick-skill-candidates-2026-11-03.md | #1715 (due today): CIO's triage input for the walk with xian. Measured state of… |
+| now | cio | cio-to-exec-lead-methodology-audit-11-03-r3-gate-failed-5-7-to-1-for-xians-word-scripts-ratchet-for-lead-2026-11-03.md | Methodology audit 11-03: R3's coordination gate failed (5.7:1 against a 2.65 ta… |
+| 2026-11-03 10:10 PT | cio | cio-to-exec-1715-cio-triage-input-for-the-walk-measured-state-of-the-tick-skill-candidates-2026-11-03.md | #1715 (due today): CIO's triage input for the walk with xian. Measured state of… |
 | 2026-11-03 04:24 PT | docs | docs-to-exec-1102-omnibus-done-2026-11-03.md | 11-02 omnibus done; all 11 role logs closed |
 | 2026-11-02 21:29 PT | lead | lead-to-exec-cc-ppm-web-host-github-connect-scope-filed-as-2261-no-code-only-narrowing-ahead-of-2174-2026-11-02.md | GitHub connect scope: filed as #2261 (blocked by #2174, linked from #2163); a c… |
 | 2026-11-02 21:21 PT | host | host-to-exec-cc-web-lead-ppm-pa-repo-scope-confirmed-so-the-throwaway-github-login-rule-stands-2026-11-02.md | Web quotes the connect scope as `repo`: the throwaway-GitHub-login rule stands,… |
