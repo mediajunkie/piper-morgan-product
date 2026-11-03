@@ -617,6 +617,43 @@ class TestAnswerTurnReentry:
         assert result["intent_data"]["verb_default_stored"] == rc.VALUE_COMPLETE
 
     @pytest.mark.asyncio
+    async def test_confirm_args_are_ignored_by_the_verb_carrier_2098(
+        self, intent_service, monkeypatch
+    ):
+        """#2098 (Arch's remedy ruling, 2026-11-02): args now ride a CONFIRM for
+        display only. This carrier has not adopted the display rule, so a CLARIFY
+        carrying a refinement still falls back to the #1605 parse on the UNREFINED
+        bound set: it never acts on CONFIRM args."""
+        captured = {}
+
+        async def spy(workflow_type, session_id, user_id=None, context=None, resume=False):
+            captured["targets"] = context["intent"].context["inversion_args"]["targets"]
+            from services.intent.intent_service import IntentProcessingResult
+
+            return IntentProcessingResult(
+                success=True, message="stub", intent_data={}, requires_clarification=False
+            )
+
+        monkeypatch.setattr("services.intent_service.workflow_dispatcher.dispatch_workflow", spy)
+        monkeypatch.setattr(
+            "services.intent_service.verified_inference.store_verified_inference",
+            AsyncMock(return_value=True),
+        )
+        _stub_router(monkeypatch, outcome="clarify", args={"exclude": ["name:review the pr"]})
+        payload = _bound_payload(
+            ["id-1", "id-2", "id-3"],
+            ["review the pr", "check the test card again", "revise the pr"],
+        )
+        await ct.handle_clear_todos_verb_answer(
+            payload, "mark them done", "s1", _USER_ID, intent_service
+        )
+        assert captured["targets"] == [
+            "name:review the pr",
+            "name:check the test card again",
+            "name:revise the pr",
+        ]
+
+    @pytest.mark.asyncio
     async def test_unrelated_operation_above_threshold_releases(self, intent_service, monkeypatch):
         """An operation that is NOT in the verb carrier's answering set
         (complete_todo/delete_todo), named at/above threshold, means the

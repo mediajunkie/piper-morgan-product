@@ -43,7 +43,9 @@ THE THREE OUTCOMES (Arch, binding):
    yes/no confirm (CXO's copy, when one exists for that carrier) or falls
    back to its own existing CLARIFY re-ask idiom when no confirm copy has
    been written for it — this module never invents copy, it only tells the
-   caller which of the three happened.
+   caller which of the three happened. Any args the router returned ride the
+   CONFIRM for DISPLAY ONLY (#2098, Arch 2026-11-02): shown back in the
+   carrier's question, acted on only after the person's yes.
 
 PER-CARRIER ANSWERING OPERATIONS (Arch, 2026-10-07, generalizing #1886(b)
 for the clear-family verb carrier — mail
@@ -136,11 +138,18 @@ class ArmedReplyDecision:
 
     ``args`` (2026-10-07, point 3's generalization): the router's OWN
     ``RoutingDecision.args`` for an answering-operation BIND — populated
-    ONLY when ``operation`` was matched against the caller's
+    when ``operation`` was matched against the caller's
     ``answering_operations`` (never on a plain ``none`` bind, never on a
-    RELEASE or CONFIRM). Exposed as data; this module never reads or
-    resolves it — a caller that refines a shown set from it must resolve
-    against the rows it actually showed (D2), never trust it verbatim."""
+    RELEASE). Exposed as data; this module never reads or resolves it — a
+    caller that refines a shown set from it must resolve against the rows
+    it actually showed (D2), never trust it verbatim.
+
+    #2098 (Arch's remedy ruling, 2026-11-02): ``args`` ALSO ride a CONFIRM
+    whenever the router returned any (``clarify``, sub-threshold). Args on a
+    CONFIRM are FOR DISPLAY ONLY: a carrier may show them back in its yes/no
+    question and acts only on the person's yes; no carrier acts on CONFIRM
+    args without that yes. A carrier that has not adopted the display rule
+    ignores them (the name, verb and reminder-task carriers do; pinned)."""
 
     outcome: ArmedReplyOutcome
     operation: Optional[str] = None
@@ -249,7 +258,10 @@ async def classify_armed_reply(
             router_outcome=decision.outcome,
         )
         return ArmedReplyDecision(
-            outcome=ArmedReplyOutcome.CONFIRM, reason=f"router_{decision.outcome}"
+            outcome=ArmedReplyOutcome.CONFIRM,
+            reason=f"router_{decision.outcome}",
+            # #2098: display-only (see ArmedReplyDecision.args).
+            args=dict(decision.args or {}),
         )
 
     threshold = live_min_confidence()
@@ -321,6 +333,8 @@ async def classify_armed_reply(
         confidence=decision.confidence,
         rationale=decision.rationale,
         reason="sub_threshold",
+        # #2098: display-only (see ArmedReplyDecision.args).
+        args=dict(decision.args or {}),
     )
 
 
