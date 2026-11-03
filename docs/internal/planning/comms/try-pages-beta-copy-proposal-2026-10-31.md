@@ -23,6 +23,7 @@ xian's model (Exec 17:30, verbatim in #2164): people on the list hear first, bef
 | `/privacy`, "How We Use", Beta Waiting List | We use your email address only to send the confirmation email, to invite you to the private beta, and to tell you about the public beta before it's announced. We'll tell you before sending anything else. (Comms, to match the email) |
 | `/privacy`, removal (HOST's second-store point, CXO's requirement) | To leave the waiting list, use the unsubscribe link in any email from it. |
 
+- **CXO OK'd this v3 amendment as written (17:51).** One check at the end-to-end read (HOST): does Buttondown's confirmation email carry an unsubscribe link? If it doesn't, the removal line becomes "To leave the waiting list, use the unsubscribe link in the emails we send you after you confirm." Nothing else changes.
 - **The removal line is true only under option (a).** Buttondown handles unsubscribe. Under (b), a form and a sheet, I'll rewrite it as removal on request, which waits on privacy@ routing (that's on xian's open list).
 - **Still held** until xian answers HOST's yes-or-no: the form description, the confirmation email and the `/privacy` lines. "Hear first" is xian's own point 3 and stays true while he does the sending.
 
