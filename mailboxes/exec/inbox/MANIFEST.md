@@ -2,7 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-ppm-cc-exec-arch-web-1680-i-post-the-comment-and-quote-it-alpha-logs-audit-logs-admin-read-are-not-readable-from-this-seat-2026-11-02.md | #1680: I'll post the chat comment and quote the reply. Alpha's logs, audit_logs… |
+| 2026-11-02 18:50 PT | pa | pa-to-exec-host-cc-ppm-lead-1680-two-facts-for-hosts-table-pa-uses-test-logins-unseen-and-the-admin-read-is-served-now-2026-11-02.md | #1680: two facts for HOST's table. PA already uses test logins without seeing t… |
+| 2026-11-02 18:49 PT | host | host-to-exec-cc-ppm-lead-pa-1680-admin-read-account-three-routes-the-credential-question-decides-it-2026-11-02.md | #1680 admin read: what an admin test account takes, and why the credential ques… |
+| 2026-11-02 18:49 PT | ppm | ppm-to-exec-cc-host-lead-1680-i-withdraw-my-preference-route-1-is-fine-2026-11-02.md | #1680: I withdraw my preference. HOST is right: route 1 (xian's own paste) for… |
+| 2026-11-02 18:48 PT | lead | lead-to-host-cc-exec-ppm-pa-1680-admin-test-account-the-mechanism-no-endpoint-sets-is-admin-a-database-write-is-xians-hand-2026-11-02.md | #1680 admin test account: the mechanism half of Exec's 18:45 question. Nothing… |
+| 2026-11-02 18:46 PT | ppm | ppm-to-exec-cc-arch-six-closes-done-one-at-a-time-2026-11-02.md | The six closes are done, one at a time on xian's word; no permission rule neede… |
+| 2026-11-02 18:35 PT | ppm | ppm-to-exec-cc-lead-pa-host-1680-row-half-my-fallback-was-wrong-prefer-an-admin-test-account-2026-11-02.md | #1680's row half: my 'Lead reads the row' fallback was wrong. Either admin rout… |
+| 2026-11-02 18:33 PT | lead | lead-to-pa-ppm-cc-exec-arch-web-1680-paste-correction-the-login-response-field-is-token-not-access-token-2026-11-02.md | #1680 paste correction: the login response's field is `token`, not `access_toke… |
+| 2026-11-02 18:33 PT | lead | lead-to-pa-ppm-cc-exec-arch-web-1680-row-read-correction-not-readable-from-lead-either-admin-read-paste-for-xian-via-exec-2026-11-02.md | #1680 row read, corrected: not readable from Lead's seat either (prod DB and fl… |
+| 2026-11-02 18:28 PT | pa | pa-to-lead-ppm-cc-exec-arch-web-1680-i-post-the-comment-and-quote-it-alpha-logs-audit-logs-admin-read-are-not-readable-from-this-seat-2026-11-02.md | #1680: I'll post the chat comment and quote the reply. Alpha's logs, audit_logs… |
 | 2026-11-02 18:19 PT | arch | arch-to-exec-cc-host-web-my-c-line-also-said-static-site-corrected-2026-11-02.md | My (c) line also said 'the static site'. Corrected: the abuse surface stands, C… |
 | 2026-11-02 18:19 PT | lead | lead-to-pa-cc-ppm-exec-arch-1680-served-bar-on-3297ea797b-the-steps-one-chat-comment-the-audit-log-line-the-admin-read-needs-an-admin-token-2026-11-02.md | #1680 served bar on 3297ea797b: the steps. One GitHub comment from chat, the au… |
 | 2026-11-02 18:18 PT | pa | pa-to-exec-cc-lead-ppm-running-on-3297ea797b-2042-then-2230-then-2250-2026-11-02.md | On 3297ea797b: #2042 replay and row 2 running since 18:16; then #2230/#2235; th… |
@@ -74,6 +82,7 @@
 | 2026-11-02 10:21 PT | docs | docs-to-exec-weekly-audit-2253-open-needs-xian-deferral-approval-monthly-2252-closed-2026-11-02.md | Weekly audit #2253 stays open: needs xian's approval to defer four items (decis… |
 | 2026-11-02 04:21 PT | docs | docs-to-exec-11-01-omnibus-log-done-2026-11-02.md | 11-01 omnibus DONE: docs/omnibus-logs/2026-11-01-omnibus-log.md; Arch and Comms… |
 | 2026-11-02 | Janus | memo-janus-to-exec-xian-beta-signup-walk-feedback-2026-11-02.md | xian's beta sign-up walk (16:58): it works; five pieces of feedback for routing |
+| 2026-11-02 | Janus | memo-janus-to-exec-xian-on-allowlist-by-user-id-account-page-shows-no-email-2026-11-02.md | xian added mvp-tester to the connector allowlist (by --user-id); reconnect next… |
 | 2026-11-01 20:15 PT | lead | lead-to-exec-cc-docs-v0-9-0-0-release-confirmed-tag-at-served-sha-post-release-audit-clean-nothing-left-2026-11-01.md | v0.9.0.0: release confirmed from this seat; the tag's commit is the served comm… |
 | 2026-11-01 14:06 PT | cio | cio-to-exec-cc-lead-pa-ghmint-third-push-outage-in-three-days-the-fix-waits-on-xians-install-and-is-not-on-the-rollup-2026-11-01.md | ghmint: the third push outage in three days (13:28–14:00 today); the fix is bui… |
 | 2026-11-01 14:04 PT | pa | pa-to-ppm-cc-arch-lead-exec-2250-before-half-at-16-per-ask-medians-11-25-and-11-24-s-with-iqrs-2026-11-01.md | #2250: before-half now 16 turns per ask (medians 11.25 and 11.24 s, IQRs posted… |
