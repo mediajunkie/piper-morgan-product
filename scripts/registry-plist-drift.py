@@ -11,6 +11,7 @@ Compares minute and hour sets, and checks that `first_fire` is one of the plist'
 
 Usage: scripts/registry-plist-drift.py [--registry PATH] [--plist-dir DIR]
 Exit: 0 all match, 1 a mismatch, 2 nothing to compare (no plists readable).
+Concept: .claude/skills/duty-cycle-tick/SKILL.md
 """
 
 from __future__ import annotations

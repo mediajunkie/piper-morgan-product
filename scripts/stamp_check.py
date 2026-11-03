@@ -22,6 +22,8 @@ one behind (a heading can fairly carry the time a wake began). It also reads tod
 attributions on added lines of BRIEFING-CURRENT-STATE.md (10-17: the briefing held 7 `HH:Mx` stamps, two
 of them CIO's, because it passed through neither mail-send nor a log heading), and today-dated lines added
 to decisions.log, both the leading stamp and any `HH:Mx` inside the line (10-19: "recorded by Exec 10:0x").
+Since 11-03 it also warns on an `HH:Mx` form in any added line of today's log, and of a
+`dev/active/<role>-standing-items.md` or `-carry-forward.md`.
 Stamp-now mode (xian 10-30 via Exec, "make it easier to do such things without having to remember"): a memo
 may say `date: now` (or `date: now PT`), and every such file in one call gets the same clock reading, so the
 sent mirror and every recipient copy match. A time nobody types can't be a guess.
@@ -45,6 +47,7 @@ DAY = re.compile(r"\b(\d{4}-\d{2}-\d{2})\b")
 BRIEFING = "docs/briefing/BRIEFING-CURRENT-STATE.md"
 BRIEF_STAMP = re.compile(r"\(\w[\w ]*, (\d{4}-\d{2}-\d{2}) (~?\d{1,2}:\d[\dxX])")
 DECISIONS = "docs/internal/architecture/decisions/decisions.log"
+TRACKERS = re.compile(r"dev/active/[a-z]+-(standing-items|carry-forward)\.md$")
 
 
 def git(*a):
@@ -161,11 +164,22 @@ def log_staged(now) -> int:
         if not m or m.group(1) != today:
             continue
         for line in git("diff", "--cached", "-U0", "--", f).stdout.splitlines():
-            if not line.startswith("+#"):
-                continue
-            v = judge(line[1:], now, today)
-            if v and "behind" not in v[1] and "dated" not in v[1]:
-                print(f"stamp-check WARN: {f}: heading '{line[1:].strip()[:70]}': {v[1]}")
+            if line.startswith("+#"):
+                v = judge(line[1:], now, today)
+                if v and "behind" not in v[1] and "dated" not in v[1]:
+                    print(f"stamp-check WARN: {f}: heading '{line[1:].strip()[:70]}': {v[1]}")
+            elif line.startswith("+") and not line.startswith("+++"):
+                for est in body_estimates(line[1:]):
+                    print(
+                        f"stamp-check WARN: {f}: '{est}' in a log line is an estimate; write the minute"
+                    )
+    for f in files:
+        if not TRACKERS.match(f):
+            continue
+        for line in git("diff", "--cached", "-U0", "--", f).stdout.splitlines():
+            if line.startswith("+") and not line.startswith("+++"):
+                for est in body_estimates(line[1:]):
+                    print(f"stamp-check WARN: {f}: '{est}' is an estimate; write the minute")
     if BRIEFING in files:
         for line in git("diff", "--cached", "-U0", "--", BRIEFING).stdout.splitlines():
             if not line.startswith("+") or line.startswith("+++"):
@@ -183,6 +197,12 @@ def log_staged(now) -> int:
                 if v and "behind" not in v[1] and "dated" not in v[1]:
                     print(f"stamp-check WARN: {DECISIONS}: '{stamp}': {v[1]}")
     return 0
+
+
+def body_estimates(line: str):
+    """`HH:Mx` forms on an added body line (11-03: CIO wrote "10:2x" in a standing-items row and "10:0x"
+    in a log line; log mode had read headings only). Quoted relays warn too: the remedy is the same."""
+    return [m.group(0) for m in MX.finditer(line)]
 
 
 def decision_stamps(line: str, today: str):

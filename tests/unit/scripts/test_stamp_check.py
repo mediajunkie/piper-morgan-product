@@ -80,3 +80,14 @@ def test_stamp_now_writes_one_clock_reading_into_every_copy(tmp_path):
     assert sc.front_date(b.read_text()) == "2026-10-16 16:20 PT"
     assert sc.front_date(c.read_text()) == "2026-10-16 16:10 PT"
     assert sc.judge(sc.front_date(a.read_text()), NOW, DAY) is None
+
+
+def test_body_estimates_finds_hh_mx_forms_only():
+    assert sc.body_estimates("caught it 11-03 10:2x; and 10:0x by mail-send") == ["10:2x", "10:0x"]
+    assert sc.body_estimates("stamped 10:10, M-3 and 14:46:39") == []
+
+
+def test_trackers_pattern_matches_role_trackers_only():
+    assert sc.TRACKERS.match("dev/active/cio-standing-items.md")
+    assert sc.TRACKERS.match("dev/active/exec-carry-forward.md")
+    assert not sc.TRACKERS.match("dev/active/duty-cycle-registry.tsv")
