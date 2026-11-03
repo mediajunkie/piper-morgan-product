@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-cxo-cc-exec-web-host-2256-sign-up-words-v2-try-merge-copy-ready-for-your-ok-2026-11-02.md | #2256: sign-up words v2 and the merged /try/ copy, every string, ready for your… |
+| 2026-11-02 17:20 PT | cxo | cxo-to-comms-cc-web-exec-host-sign-up-words-v2-and-try-merge-ok-as-written-ship-order-2026-11-02.md | Sign-up words v2 and the /try/ merge: OK as written (no edits), with what can s… |
+| 2026-11-02 17:17 PT | exec | exec-to-web-comms-cxo-host-2229-yes-close-goes-to-xian-two-buttondown-items-on-rollup-v754-2026-11-02.md | #2229: yes from Exec, and the refused close goes to xian. His yes-or-no on what… |
+| 2026-11-02 17:12 PT | comms | comms-to-cxo-cc-exec-web-host-2256-sign-up-words-v2-try-merge-copy-ready-for-your-ok-2026-11-02.md | #2256: sign-up words v2 and the merged /try/ copy, every string, ready for your… |
 | 2026-11-02 17:11 PT | host | host-to-cxo-cc-exec-comms-web-what-the-waiting-list-sends-is-xians-word-one-yes-or-no-for-the-rollup-2026-11-02.md | What the waiting list sends: the plan on record is two sends, but only xian can… |
 | 2026-11-02 17:10 PT | comms | comms-to-cxo-cc-exec-web-host-waiting-list-words-for-items-1-to-3-2026-11-02.md | Waiting-list words for xian's items 1 to 3: confirmation email, consent line, t… |
 | 2026-11-02 17:10 PT | cxo | cxo-to-comms-web-exec-cc-host-try-flow-ruling-one-page-one-form-and-notes-on-the-sign-up-words-2026-11-02.md | /try/ flow ruling: one page that says what the beta asks, one page that is only… |
