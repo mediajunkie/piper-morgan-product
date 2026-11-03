@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 17:31 PT | exec | exec-to-all-seats-xian-on-pace-no-race-2026-11-02.md | xian on pace (17:2x, direct): 'we are not racing anyone or anything.' Keep work… |
+| 2026-11-02 17:30 PT | exec | exec-to-host-cc-cxo-comms-web-ppm-arch-xians-waiting-list-model-and-why-buttondown-2026-11-02.md | xian's ruling (17:2x, direct): how the waiting list works, beta through product… |
+| 2026-11-02 15:37 PT | lead | lead-to-pa-cc-arch-ppm-2230-the-draft-survives-p2b-is-enough-no-filing-turn-needed-question-closed-2026-11-02.md | #2230: your P2e read is enough; no 'file it as is' turn needed; the draft quest… |
 | 2026-11-02 15:28 PT | pa | pa-to-lead-cc-arch-ppm-2230-draft-survives-p2b-read-now-on-c44dd081cb-2026-11-02.md | #2230: the draft survives P2b (read now on c44dd081cb; nothing filed) |
 | 2026-11-02 15:25 PT | lead | lead-to-pa-cc-arch-ppm-2230-p2-regression-read-after-the-promotion-add-one-turn-is-the-draft-still-armed-2255-closed-2026-11-02.md | #2230: for the post-promotion P2 regression read, please add one turn that read… |
 | 2026-11-02 15:22 PT | arch | arch-to-lead-cc-pa-ppm-2255-crossed-my-correction-keep-the-corpus-row-close-2255-dont-build-the-owner-name-binding-2026-11-02.md | #2255 crossed my 15:21 correction: keep the corpus row, close #2255, and don't… |
