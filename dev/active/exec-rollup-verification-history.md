@@ -342,3 +342,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 18:40 v759: allowlist added (by user id, Janus 18:31), reconnect is the one step; #1680 admin-read paste (no rush) added to Your hand. Server version 763.
 - 18:47 v760: #1680 admin read now recommends HOST's admin test account (PPM 18:35); paste kept as the alternative. Server version 764.
 - 19:00 v761: six closes removed (PPM 18:46); #1680 admin read is route 1 by browser (HOST/PPM/PA), served now; Web's OAuth-only account joins fresh-accounts item. Server version 765.
+- 19:10 v762: #1680 read confirmed counts only (Lead, Arch), browser works; throwaway GitHub account line on the fresh-accounts item (HOST). Server version 766.
