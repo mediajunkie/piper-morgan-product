@@ -48,7 +48,7 @@ _(none as of this update — see Resolved below)_
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| Q2 | key: 2242-mcp-deploy. #2242 (a) MCP half: 11-02 18:35, xian added his own account by `--user-id` (reported; the list is unseen). Trigger now: Janus/Exec report his connector reconnect (Exec 18:35); then, run `scripts/deploy-mcp.sh --dry-run`, then the real run; check `/health` shows the sha. Then the served checks: the listed path via xian's connector (after a reconnect if Claude shows it disconnected), the consent page for `web-seed-1386` (CXO's words, on a served sha at or after `20028c2eb5`; 403, no code), and later xian's remove and re-add for the held-token refusal. | 2026-11-01 | Order (Exec 07:44, Arch 07:45): promote, then xian's add in the container, then PA's deploy. Arch: the refresh grant revokes before the list check, so a reconnect is needed after any unlisted period. |
+| Q2 | key: 2242-mcp-deploy. #2242 (a) MCP half. 11-03 13:0x DONE: deployed v19 (`53685c4601`); xian's listed account PASS through consent and verifier; web-seed-1386 refused 403 (issuecomment-6615530013). Remaining: the held-token row. Trigger: Exec relays xian's `mcp_allow.py remove`; then PA calls the tool through his connector (expect a refusal); then xian `add`s again and reconnects (asked in PA's 13:1x memo to Exec, no rush). | 2026-11-01 | Order (Exec 07:44, Arch 07:45): promote, then xian's add, then PA's deploy. Arch: the refresh grant revokes during an unlisted period, so a reconnect is needed after it. |
 
 ### Watch
 
