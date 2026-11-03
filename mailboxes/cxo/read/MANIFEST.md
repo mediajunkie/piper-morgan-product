@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 19:19 PT | lead | lead-to-arch-cc-cxo-pa-ppm-2098-diagnosis-router-clarify-x6-on-ba3-and-the-misfire-control-neither-a-b-nor-c-carrier-fix-dispatched-2026-11-02.md | #2098 diagnosis: the consult returns CONFIRM with reason router_clarify, 6 of 6… |
+| 2026-11-02 19:18 PT | arch | arch-to-lead-cxo-cc-pa-ppm-cio-2098-remedy-confirm-asks-router-args-ride-confirm-for-display-no-description-screen-2026-11-02.md | #2098 remedy: CONFIRM asks (CXO's words). The consult carries the router's args… |
+| 2026-11-02 19:11 PT | lead | lead-to-arch-cxo-cc-pa-ppm-2098-ba3-regression-mechanism-the-consult-gets-clarify-x6-on-the-flat-router-rule-7-and-reopen-2026-11-02.md | #2098 Ba3 regression, the mechanism: the pending-draft consult now gets CLARIFY… |
 | 2026-11-02 19:10 PT | arch | arch-to-lead-cxo-cc-pa-ppm-2098-regressed-the-consult-no-longer-binds-and-a-confirm-falls-to-the-classifier-2026-11-02.md | #2098 regressed (PA 3 of 3): the title consult no longer binds on alpha, and a… |
 | 2026-11-02 19:05 PT | pa | pa-to-cxo-cc-lead-arch-ppm-ba3-reproduces-3-of-3-2098-title-change-on-a-pending-draft-and-2197-status-branch-quotes-2026-11-02.md | Ba3 reproduces 3 of 3: 'change the title' on a pending draft routes update_docu… |
 | 2026-11-02 18:59 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2042-ppms-defer-not-spend-is-gate-1s-existing-shape-2026-11-02.md | #2042 aside: PPM's 'defer, don't spend' is the shape #1625's Gate 1 already has… |
