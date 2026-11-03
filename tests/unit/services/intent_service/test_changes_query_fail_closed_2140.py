@@ -137,12 +137,18 @@ async def test_the_first_read_failing_does_not_empty_the_other_two(intent_servic
     )
     assert len(made) == 3
     assert result.success is True
+    # #2258 (CXO 08:0x): the actions read failed, so the opener claims no "what Piper
+    # did for you" and the failed line names that source in the person's terms.
     assert result.message.startswith(
         "Here's what changed in your Piper tasks and projects since yesterday. "
-        "I haven't checked GitHub for this."
+        "I haven't looked at anything done in GitHub outside Piper."
     )
     assert "Review the launch notes" in result.message
-    assert result.message.endswith(FAILED_BESIDE_ROWS.format(source="activity log"))
+    assert result.message.endswith(
+        "I couldn't read what Piper did for you just now, so the list above doesn't include "
+        "it. Try again in a moment; if it keeps failing, tell us."
+    )
+    assert "activity log" not in result.message
     assert result.intent_data["failed_sources"] == ["activity log"]
 
 
@@ -164,8 +170,10 @@ async def test_one_read_failing_while_another_has_rows_lists_rows_and_names_the_
     assert result.success is True
     assert "Atlas" in result.message
     assert result.message.startswith(
-        "Here's what changed in your Piper projects and activity log since yesterday."
+        "Here's what changed in your Piper projects since yesterday, and what Piper did for "
+        "you. I haven't looked at anything done in GitHub outside Piper."
     )
+    assert "activity log" not in result.message
     assert result.message.endswith(FAILED_BESIDE_ROWS.format(source="tasks"))
 
 
@@ -237,6 +245,7 @@ async def test_2143_an_hour_window_is_a_real_window(intent_service, message, hou
     assert abs((since - expected).total_seconds()) < 5, (since, expected)
     assert result.intent_data["time_window_hours"] == hours
     assert result.message.startswith(
-        f"Here's what changed in your Piper tasks, projects and activity log {window}."
+        f"Here's what changed in your Piper tasks and projects {window}, and what Piper did "
+        "for you. I haven't looked at anything done in GitHub outside Piper."
     )
     assert "Draft the agenda" in result.message

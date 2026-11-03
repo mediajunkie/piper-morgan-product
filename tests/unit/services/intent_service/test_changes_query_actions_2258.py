@@ -339,6 +339,59 @@ async def test_an_empty_window_names_no_activity_log_and_claims_only_the_audited
     assert not ("anything" in result.message and "changed" in result.message)
 
 
+def test_the_opener_and_failed_read_constants_are_cxos_words():
+    assert mod.CHANGES_FOUND_OPENER == (
+        "Here's what changed in your Piper {sources} {window}, and what Piper did for you. "
+        "I haven't looked at anything done in GitHub outside Piper."
+    )
+    assert mod.CHANGES_FOUND_OPENER_ACTIONS_READ_FAILED == (
+        "Here's what changed in your Piper {sources} {window}. I haven't looked at anything "
+        "done in GitHub outside Piper."
+    )
+    assert mod.CHANGES_FOUND_OPENER_ACTIONS_ONLY == (
+        "Here's what Piper did for you {window}. I haven't looked at anything done in GitHub "
+        "outside Piper."
+    )
+    assert mod.CHANGES_ACTIONS_READ_FAILED_BESIDE_ROWS == (
+        "I couldn't read what Piper did for you just now, so the list above doesn't include "
+        "it. Try again in a moment; if it keeps failing, tell us."
+    )
+    assert mod.CHANGES_ACTIONS_SOURCE_SHOWN == "what Piper did for you"
+
+
+@pytest.mark.asyncio
+async def test_rows_with_every_read_ok_open_with_cxos_opener(intent_service):
+    rows = [_audit("github.chat.close_issue", "success", "38")]
+    result, _ = await _run(intent_service, _intent(), rows, [], [])
+    assert result.message.startswith(
+        "Here's what changed in your Piper tasks and projects since yesterday, and what "
+        "Piper did for you. I haven't looked at anything done in GitHub outside Piper.\n"
+    )
+    assert "activity log" not in result.message and "checked GitHub" not in result.message
+
+
+@pytest.mark.asyncio
+async def test_only_the_actions_read_ok_opens_with_what_piper_did(intent_service):
+    rows = [_audit("github.chat.close_issue", "success", "38")]
+    boom = RuntimeError("down")
+    result, _ = await _run(intent_service, _intent(), rows, boom, boom)
+    assert _after_opener(result.message)[:2] == [
+        "Piper made 1 change for you.",
+        "  - Closed issue #38",
+    ]
+    assert result.message.startswith(
+        "Here's what Piper did for you since yesterday. I haven't looked at anything done in "
+        "GitHub outside Piper.\n"
+    )
+    assert result.message.endswith(
+        "I couldn't read your Piper tasks just now, so the list above doesn't include it. "
+        "Try again in a moment; if it keeps failing, tell us.\n"
+        "I couldn't read your Piper projects just now, so the list above doesn't include it. "
+        "Try again in a moment; if it keeps failing, tell us."
+    )
+    assert "activity log" not in result.message
+
+
 @pytest.mark.asyncio
 @pytest.mark.parametrize("rows", [49, 60, 250])
 async def test_the_headline_count_is_exact_never_at_least(intent_service, rows):

@@ -274,9 +274,10 @@ class TestChangesQueryResults:
 
             assert result.success is True
             assert result.message.startswith(
-                "Here's what changed in your Piper tasks, projects and activity log since "
-                "yesterday. I haven't checked GitHub for this."
-            )  # #2140 (CXO)
+                "Here's what changed in your Piper tasks and projects since yesterday, and "
+                "what Piper did for you. I haven't looked at anything done in GitHub outside "
+                "Piper."
+            )  # #2140 (CXO); #2258 words
             assert result.intent_data["time_range_days"] == 1
             assert result.intent_data["total_activities"] >= 0
 

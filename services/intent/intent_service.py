@@ -698,8 +698,31 @@ CHANGES_NOTHING_NEW = (
     "posted to Slack or written to GitHub for you in that time. I haven't looked at "
     "anything done in GitHub outside Piper."
 )
+# #2258 (CXO 2026-11-03 08:0x): the third source is shown as "what Piper did for you",
+# never "activity log" (no such page); its internal key stays (Arch). The GitHub waiver
+# has one wording in the opener and the empty reply. ``{sources}`` is the tasks/projects
+# reads that succeeded; the actions read, when it succeeded, is the ", and what Piper
+# did for you" clause, so a failed actions read never claims that list (#2140, #2151).
+CHANGES_ACTIONS_SOURCE = "activity log"
+CHANGES_ACTIONS_SOURCE_SHOWN = "what Piper did for you"
 CHANGES_FOUND_OPENER = (
-    "Here's what changed in your Piper {sources} {window}. I haven't checked GitHub for this."
+    "Here's what changed in your Piper {sources} {window}, and what Piper did for you. "
+    "I haven't looked at anything done in GitHub outside Piper."
+)
+CHANGES_FOUND_OPENER_ACTIONS_READ_FAILED = (
+    "Here's what changed in your Piper {sources} {window}. I haven't looked at anything done "
+    "in GitHub outside Piper."
+)
+# Only the actions read succeeded (tasks and projects both failed): Lead's fill from CXO's
+# shape, named to CXO 08:1x for a reword.
+CHANGES_FOUND_OPENER_ACTIONS_ONLY = (
+    "Here's what Piper did for you {window}. I haven't looked at anything done in GitHub "
+    "outside Piper."
+)
+# CXO 08:0x: the actions read failed beside rows the other reads found.
+CHANGES_ACTIONS_READ_FAILED_BESIDE_ROWS = (
+    "I couldn't read what Piper did for you just now, so the list above doesn't include it. "
+    "Try again in a moment; if it keeps failing, tell us."
 )
 # CXO 10-23 09:27: all three failed (or no principal), the window named.
 CHANGES_READ_FAILED_ALL = (
@@ -11818,10 +11841,18 @@ class IntentService:
                     else CHANGES_NOTHING_NEW.format(window=time_desc)
                 )
             else:
-                lines = [
-                    CHANGES_FOUND_OPENER.format(sources=_join_sources(read_ok), window=time_desc)
-                    + "\n"
-                ]
+                read_sources = [n for n in read_ok if n != CHANGES_ACTIONS_SOURCE]
+                if not read_sources:
+                    opener = CHANGES_FOUND_OPENER_ACTIONS_ONLY.format(window=time_desc)
+                elif CHANGES_ACTIONS_SOURCE in read_ok:
+                    opener = CHANGES_FOUND_OPENER.format(
+                        sources=_join_sources(read_sources), window=time_desc
+                    )
+                else:
+                    opener = CHANGES_FOUND_OPENER_ACTIONS_READ_FAILED.format(
+                        sources=_join_sources(read_sources), window=time_desc
+                    )
+                lines = [opener + "\n"]
 
                 # Group and format by type
                 if todo_activity:
@@ -11853,7 +11884,11 @@ class IntentService:
                     lines.extend(_render_changes_actions(audit_activity))
 
                 for name in failed:
-                    lines.append(CHANGES_READ_FAILED_BESIDE_ROWS.format(source=name))
+                    lines.append(
+                        CHANGES_ACTIONS_READ_FAILED_BESIDE_ROWS
+                        if name == CHANGES_ACTIONS_SOURCE
+                        else CHANGES_READ_FAILED_BESIDE_ROWS.format(source=name)
+                    )
                 message = "\n".join(lines).rstrip()
 
             return IntentProcessingResult(
