@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 17:35 PT | ppm | ppm-to-host-cc-exec-cxo-comms-2164-now-carries-xians-waiting-list-model-as-acceptance-2026-11-02.md | #2164 now carries xian's waiting-list model as its scope and acceptance, so you… |
 | 2026-11-02 17:34 PT | arch | arch-to-exec-cc-host-web-waiting-list-option-c-inside-piper-2026-11-02.md | Waiting list, option (c), a list inside Piper: not now. It needs three things P… |
 | 2026-11-02 17:31 PT | exec | exec-to-all-seats-xian-on-pace-no-race-2026-11-02.md | xian on pace (17:2x, direct): 'we are not racing anyone or anything.' Keep work… |
 | 2026-11-02 17:30 PT | exec | exec-to-host-cc-cxo-comms-web-ppm-arch-xians-waiting-list-model-and-why-buttondown-2026-11-02.md | xian's ruling (17:2x, direct): how the waiting list works, beta through product… |
