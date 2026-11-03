@@ -324,7 +324,10 @@ class TestCxoStrings:
             'The draft\'s title is now "{title}". Nothing is filed yet. '
             'Say "file it as is" when it\'s ready, or tell me a different title.'
         )
-        assert mod.TITLE_KEPT_LINE == 'Okay, I\'m keeping "{title}".'
+        assert mod.TITLE_KEPT_LINE == (
+            'Okay, I\'m keeping "{title}". Nothing is filed yet. '
+            'Say "file it as is" when it\'s ready.'
+        )
 
 
 class TestConfirmAsks:
@@ -400,7 +403,11 @@ class TestTheAnswerTurn:
         stub = AsyncMock(side_effect=AssertionError("a decline never consults"))
         with patch(CONSULT, new=stub):
             offer, result = await _next(svc, "s-2098", answer)
-        assert result["message"] == f'Okay, I\'m keeping "{OLD_TITLE}".'
+        assert result["message"] == mod.TITLE_KEPT_LINE.format(title=OLD_TITLE)
+        # Arch's condition (20:21): the stored ask is exactly the line shown, and
+        # it carries the file prompt, so a bare yes next answers a filing ask.
+        assert offer["question"] == result["message"]
+        assert 'Say "file it as is" when it\'s ready.' in offer["question"]
         assert offer["pending_action"]["draft"]["title"] == OLD_TITLE
         assert await _file(svc, "s-2098") == OLD_TITLE
 
@@ -441,7 +448,8 @@ class TestTheAnswerTurn:
         _, first = await _next(svc, "s-2098", "the one I said", _confirm("router_clarify"))
         assert first["message"] == mod.TITLE_QUESTION_NO_TITLE
         offer, second = await _next(svc, "s-2098", "you know", _confirm("router_clarify"))
-        assert second["message"] == f'Okay, I\'m keeping "{OLD_TITLE}".'
+        assert second["message"] == mod.TITLE_KEPT_LINE.format(title=OLD_TITLE)
+        assert offer["question"] == second["message"]
         assert offer["pending_action"]["draft"]["title"] == OLD_TITLE
         assert mod.TITLE_QUESTION_KEY not in offer["pending_action"]
         assert await _file(svc, "s-2098") == OLD_TITLE

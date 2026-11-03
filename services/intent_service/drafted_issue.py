@@ -727,7 +727,12 @@ TITLE_CHANGED_LINE = (
     'Say "file it as is" when it\'s ready, or tell me a different title.'
 )
 # After a declining answer: the old title stays, the draft stays armed.
-TITLE_KEPT_LINE = 'Okay, I\'m keeping "{title}".'
+# Arch's condition (2026-11-02 20:21): the keep line is stored as the draft's ask,
+# so it must end with the file prompt (CXO's capture-line clause); otherwise a
+# bare "yes" to a statement would file outward (#1665: a yes answers the ask shown).
+TITLE_KEPT_LINE = (
+    'Okay, I\'m keeping "{title}". Nothing is filed yet. Say "file it as is" when it\'s ready.'
+)
 
 # The armed title question rides the draft's OWN pending record (no new store):
 # ``pending_action[TITLE_QUESTION_KEY] = {"old_title": …, "proposed_title": …}``.
