@@ -245,7 +245,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 266	CLOSED	MVP	A7 (Testing & Bufferj)	CORE-UX-CONVERSATION-CONTEXT: Improve Conversation Context Tracking			COMPLETED
 267	CLOSED	MVP	A7 (Testing & Bufferj)	CORE-PREF-QUEST: Structured Preference Questionnaire			COMPLETED
 270	CLOSED	MVP	A9 (Alpha Tidy)	CORE-KEYS-ROTATION-WORKFLOW: Apply Rotation Reminders to Key Management Workflows			COMPLETED
-272	OPEN	Fast Follow		RESEARCH-TOKENS-THINKING: Investigate Thinking Token Optimization for Chain of Drafts			
+272	CLOSED	Fast Follow		RESEARCH-TOKENS-THINKING: Investigate Thinking Token Optimization for Chain of Drafts			NOT_PLANNED
 273	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	TEST-SMOKE: Smoke test epic on the Testing track			DUPLICATE
 279	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2025-10-27	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
 290	CLOSED	MVP	A8 (Alpha Rolloutj	CORE-ALPHA-DOC-PROCESSING - Implement Document Analysis Workflows			COMPLETED
@@ -262,11 +262,11 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 302	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	CONV-MCP-DOCS: Unified Document Processing via Skills	journey:get-work-done		
 303	CLOSED	MVP	M3 - Artifact Persistence	CONV-MCP-STANDUP: Standup Workflow Skill			COMPLETED
 304	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONV-INFR-NOTN: Activate Existing Notion Integration			COMPLETED
-309	OPEN	Fast Follow	M2 - Conscious Floor + Action Handlers	CONV-MCP-PROTO: DocumentAnalysisSkill Prototype			
+309	CLOSED	Fast Follow	M2 - Conscious Floor + Action Handlers	CONV-MCP-PROTO: DocumentAnalysisSkill Prototype			NOT_PLANNED
 310	OPEN	Fast Follow	M2 - Conscious Floor + Action Handlers	CONV-UX-QUICK: Settings & Startup Quick Wins			
 311	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONV-MCP-LIBRARY: Core Skills Library Implementation			COMPLETED
 312	CLOSED	MVP	M3 - Artifact Persistence	CONV-UX-DESIGN: Unified Design System & Token Migration			COMPLETED
-315	OPEN	Fast Follow	M3 - Artifact Persistence	CONV-MCP-LIBRARY: Core Skills Library Implementation			
+315	CLOSED	Fast Follow	M3 - Artifact Persistence	CONV-MCP-LIBRARY: Core Skills Library Implementation			NOT_PLANNED
 317	CLOSED	MVP	M1 - MVP Foundation	UX-TRANCHE3 - Production-Ready Polish & Accessibility Infrastructure			COMPLETED
 342	CLOSED	MVP	T1 (Test Repair)	TEST-PHANTOM-SPATIAL: Production calling 4 non-existent SlackSpatialMapper methods	bug,component: integration,priority: critical		COMPLETED
 343	CLOSED	MVP	T1 (Test Repair)	TEST-INFRA-ENUM: Add 5 missing enum values causing 25+ test failures	bug,priority: critical,size: small		COMPLETED
@@ -286,9 +286,9 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 332	CLOSED	MVP	M1 - MVP Foundation	DOCUMENTATION-STORED-PROCS: Document Application-Layer Stored Procedures Pattern (ADR)	documentation		COMPLETED
 333	CLOSED	MVP	S1 (Security and Critical Fixes)	data: Implement soft delete strategy across domain models			COMPLETED
 334	CLOSED	Ongoing	FLYWHEEL - Process improvement	infra: Create database migration rollback testing strategy			COMPLETED
-335	OPEN	Fast Follow		# STYLE-PK-PREFIXED: Adopt Prefixed Primary Key Naming Convention	component: database,documentation,enhancement		
+335	CLOSED	Fast Follow		# STYLE-PK-PREFIXED: Adopt Prefixed Primary Key Naming Convention	component: database,documentation,enhancement		NOT_PLANNED
 336	OPEN	Production	PROD-DATA - Data Boundaries, Privacy & Terms	 DATA-SOFT-DELETE: Implement Soft Delete Strategy Across Domain Models	component: database,data-safety,journey:manage-my-data		
-337	OPEN	Fast Follow		STYLE-TABLE-SINGULAR: Adopt Singular Table Naming Convention	component: database,documentation,enhancement		
+337	CLOSED	Fast Follow		STYLE-TABLE-SINGULAR: Adopt Singular Table Naming Convention	component: database,documentation,enhancement		NOT_PLANNED
 338	OPEN	Fast Follow		INFRA-MIGRATION-ROLLBACK - Comprehensive Database Migration Rollback Testing	component: database,infrastructure,testing		
 339	CLOSED	Ongoing	FLYWHEEL - Process improvement	style: Adopt prefixed primary key naming convention			COMPLETED
 340	CLOSED	Ongoing	FLYWHEEL - Process improvement	style: Adopt singular table naming convention			COMPLETED
@@ -860,7 +860,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1005	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Pre-existing test failure: boundary_enforcer.py treats adaptive_enhancement as list, expects dict	bug,component: ai,priority: medium		COMPLETED
 1009	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-04-27	documentation,fly-audit,maintenance,weekly-audit		NOT_PLANNED
 1010	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH-CLEANUP: Refactor knowledge_graph_service.py to domain layer; remove legacy boundary_enforcer.py	M2g,architecture,technical-debt		COMPLETED
-1011	OPEN	Production	PROD-CONVO - Conversation Reliability	ARCH-DESIGN: Slash-command dispatch precedence — post-MVP design decision needed	M2g,architecture		
+1011	CLOSED	Production	PROD-CONVO - Conversation Reliability	ARCH-DESIGN: Slash-command dispatch precedence — post-MVP design decision needed	M2g,architecture		COMPLETED
 1012	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH-CLEANUP: Small dead-code sweep — phantom import, unused tracker, stub provider, enum cosmetics	architecture,technical-debt		COMPLETED
 1013	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH-CLEANUP: /auth and /setup route prefixes violate /api/v1/ convention (CLAUDE.md)	architecture,technical-debt		COMPLETED
 1015	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH: Complete ADR-051 RequestContext migration — finish Phase 2/3 partial adoption	M2g,architecture,epic		COMPLETED
