@@ -2319,11 +2319,100 @@ class TestPendingTodosDedupedAgainstDueReminders1985:
         ):
             ctx = await assembler._compute_reminder_context("f13937fb-182b-44db-a9fd-0d722a3a223e")
         assert ctx["reminder_count"] == 3
-        assert ctx["due_reminder_ages"] == {
-            "web check alpha": "due earlier today",
-            "revise the pr": "5 days overdue",
-            "send the invoice": "1 day overdue",
-        }
+        assert ctx["due_reminder_ages"] == [
+            ("web check alpha", "due earlier today"),
+            ("revise the pr", "5 days overdue"),
+            ("send the invoice", "1 day overdue"),
+        ]
+
+    # #2260 (Arch 2026-11-02 18:57): ages are per ROW, not keyed by text.
+    @staticmethod
+    def _row(text, when):
+        row = MagicMock(text=text)
+        row.reminder_date = when
+        return row
+
+    async def _ages_for(self, rows):
+        from unittest.mock import MagicMock as _MM
+
+        assembler = ContextAssembler()
+        handlers = _MM()
+        handlers.get_due_reminders = AsyncMock(return_value=[r.text for r in rows])
+        handlers._due_reminder_todos = AsyncMock(return_value=rows)
+        with (
+            patch(
+                "services.intent_service.todo_handlers.TodoIntentHandlers",
+                return_value=handlers,
+            ),
+            patch(
+                "services.utils.datetime_utils.user_timezone_name",
+                new=AsyncMock(return_value="America/Los_Angeles"),
+            ),
+        ):
+            return await assembler._compute_reminder_context("f13937fb-182b-44db-a9fd-0d722a3a223e")
+
+    @staticmethod
+    def _local_days_ago(days):
+        from datetime import datetime, timedelta, timezone
+        from zoneinfo import ZoneInfo
+
+        local_now = datetime.now(timezone.utc).astimezone(ZoneInfo("America/Los_Angeles"))
+        return (
+            (local_now - timedelta(days=days)).replace(hour=12, minute=0).astimezone(timezone.utc)
+        )
+
+    @pytest.mark.asyncio
+    async def test_2260_same_text_different_dates_get_different_ages(self):
+        ctx = await self._ages_for(
+            [
+                self._row("review prs", self._local_days_ago(10)),
+                self._row("review prs", self._local_days_ago(1)),
+            ]
+        )
+        assert ctx["due_reminders"] == ["review prs", "review prs"]
+        assert ctx["due_reminder_ages"] == [
+            ("review prs", "10 days overdue"),
+            ("review prs", "1 day overdue"),
+        ]
+
+    @pytest.mark.asyncio
+    async def test_2260_three_rows_same_date_get_three_equal_ages(self):
+        when = self._local_days_ago(3)
+        ctx = await self._ages_for([self._row("review prs", when) for _ in range(3)])
+        assert ctx["due_reminder_ages"] == [("review prs", "3 days overdue")] * 3
+
+    @pytest.mark.asyncio
+    async def test_2260_row_without_date_gets_no_age_others_still_do(self):
+        ctx = await self._ages_for(
+            [
+                self._row("review prs", self._local_days_ago(2)),
+                self._row("send the invoice", None),
+                self._row("review prs", self._local_days_ago(5)),
+            ]
+        )
+        assert ctx["due_reminder_ages"] == [
+            ("review prs", "2 days overdue"),
+            ("send the invoice", None),
+            ("review prs", "5 days overdue"),
+        ]
+
+    @pytest.mark.asyncio
+    async def test_2260_misaligned_reads_render_no_ages(self):
+        """The ages read disagrees with the listed reminders: no ages at all
+        (fail-open), never an age beside the wrong line."""
+        assembler = ContextAssembler()
+        handlers = MagicMock()
+        handlers.get_due_reminders = AsyncMock(return_value=["a", "b"])
+        handlers._due_reminder_todos = AsyncMock(
+            return_value=[self._row("a", self._local_days_ago(1))]
+        )
+        with patch(
+            "services.intent_service.todo_handlers.TodoIntentHandlers",
+            return_value=handlers,
+        ):
+            ctx = await assembler._compute_reminder_context("f13937fb-182b-44db-a9fd-0d722a3a223e")
+        assert ctx["due_reminders"] == ["a", "b"]
+        assert "due_reminder_ages" not in ctx
 
     @pytest.mark.asyncio
     async def test_no_reminders_leaves_pending_todos_untouched(self):

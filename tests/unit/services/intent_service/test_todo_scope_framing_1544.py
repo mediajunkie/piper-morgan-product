@@ -134,15 +134,45 @@ class TestRendererVerifiedEmpty:
             {
                 "due_reminders": ["revise the pr", "web check alpha"],
                 "reminder_count": 2,
-                "due_reminder_ages": {
-                    "revise the pr": "5 days overdue",
-                    "web check alpha": "due earlier today",
-                },
+                "due_reminder_ages": [
+                    ("revise the pr", "5 days overdue"),
+                    ("web check alpha", "due earlier today"),
+                ],
             }
         )
         assert "• revise the pr (5 days overdue)" in out
         assert "• web check alpha (due earlier today)" in out
         assert "never describe it as due today" in out
+
+    def test_2260_same_text_rows_render_their_own_ages(self):
+        """#2260: two reminders with the same text and different dates render
+        two different ages (keyed by text, both got the last row's age)."""
+        out = self.floor._format_domain_context(
+            {
+                "due_reminders": ["review prs", "review prs", "send the invoice"],
+                "reminder_count": 3,
+                "due_reminder_ages": [
+                    ("review prs", "10 days overdue"),
+                    ("review prs", "1 day overdue"),
+                    ("send the invoice", None),
+                ],
+            }
+        )
+        assert "• review prs (10 days overdue)" in out
+        assert "• review prs (1 day overdue)" in out
+        assert "• send the invoice\n" in out + "\n"
+        assert "• send the invoice (" not in out
+
+    def test_2260_misaligned_ages_render_no_ages(self):
+        out = self.floor._format_domain_context(
+            {
+                "due_reminders": ["review prs", "send the invoice"],
+                "reminder_count": 2,
+                "due_reminder_ages": [("review prs", "1 day overdue")],
+            }
+        )
+        assert "• review prs\n" in out
+        assert "overdue" not in out
 
     def test_absent_key_renders_no_todo_lines(self):
         out = self.floor._format_domain_context({"current_time": "now-ish"})

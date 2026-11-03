@@ -704,6 +704,34 @@ CHANGES_NOTHING_NEW_SOME_FAILED = (
     "Piper {failed_sources} just now, so I can't say what changed there. Try again in a "
     "moment; if it keeps failing, tell us."
 )
+# #2258 (CXO 2026-11-02 18:59): the Actions block names each action by what it was,
+# from the audit row's own message; it never prints an event_type or an action key
+# (alpha showed "consequential: 2"). No usable message on any row → one plain count.
+CHANGES_ACTIONS_MAX_NAMED = 5
+CHANGES_ACTIONS_COUNT_ONLY = "Piper made {count} change{s} for you."
+
+
+def _render_changes_actions(audit_activity: List[Dict[str, Any]]) -> List[str]:
+    """The "what changed" Actions block (#2258). Rows arrive most recent first.
+
+    Up to ``CHANGES_ACTIONS_MAX_NAMED`` rows with a usable message are listed by that
+    message; every other row (no message, or past the cap) is counted in one
+    "and N more" line. When no row has a usable message the block is CXO's single
+    count sentence."""
+    total = len(audit_activity)
+    named = [
+        msg.strip()
+        for msg in (row.get("message") for row in audit_activity)
+        if isinstance(msg, str) and msg.strip()
+    ]
+    if not named:
+        return [CHANGES_ACTIONS_COUNT_ONLY.format(count=total, s="" if total == 1 else "s")]
+    shown = named[:CHANGES_ACTIONS_MAX_NAMED]
+    lines = [f"**Actions** ({total}):"] + [f"  - {msg}" for msg in shown]
+    rest = total - len(shown)
+    if rest > 0:
+        lines.append(f"  - and {rest} more")
+    return lines
 
 
 def _join_sources(names, conjunction: str = "and") -> str:
@@ -11725,17 +11753,7 @@ class IntentService:
                     lines.append("")
 
                 if audit_activity:
-                    lines.append(f"**Actions** ({len(audit_activity)}):")
-                    # Group by event type
-                    event_counts = {}
-                    for event in audit_activity:
-                        event_type = event.get("event_type", "unknown")
-                        event_counts[event_type] = event_counts.get(event_type, 0) + 1
-
-                    for event_type, count in sorted(
-                        event_counts.items(), key=lambda x: x[1], reverse=True
-                    )[:5]:
-                        lines.append(f"  - {event_type}: {count}")
+                    lines.extend(_render_changes_actions(audit_activity))
 
                 for name in failed:
                     lines.append(CHANGES_READ_FAILED_BESIDE_ROWS.format(source=name))
