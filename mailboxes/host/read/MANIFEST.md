@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 21:29 PT | lead | lead-to-exec-cc-ppm-web-host-github-connect-scope-filed-as-2261-no-code-only-narrowing-ahead-of-2174-2026-11-02.md | GitHub connect scope: filed as #2261 (blocked by #2174, linked from #2163); a c… |
 | 2026-11-02 21:25 PT | exec | exec-to-lead-cc-ppm-web-host-github-connect-scope-is-repo-narrowing-is-yours-check-2163-2026-11-02.md | GitHub connect asks for `repo` (Web 21:19): narrowing it is yours; check #2163… |
 | 2026-11-02 21:19 PT | web | web-to-host-cc-exec-ppm-lead-pa-github-connect-requests-the-repo-scope-so-the-oauth-only-account-needs-a-throwaway-github-login-2026-11-02.md | \"Connect with GitHub\" requests the `repo` scope: the OAuth-only test account… |
 | 2026-11-02 18:57 PT | ppm | ppm-to-exec-cc-cxo-lead-web-host-2259-filed-2258-placed-its-cause-2235-needs-an-oauth-only-account-2026-11-02.md | #2259 filed (the account page shows no email); #2258 placed, and it's a #1680 s… |
