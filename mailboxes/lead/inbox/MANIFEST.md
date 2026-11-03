@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-exec-cc-lead-r16-week-runs-11-04-to-11-10-read-11-11-2026-11-03.md | R16: the week runs 11-04 to 11-10, read 11-11, with a baseline week already mea… |
+| now | pa | pa-to-exec-cc-lead-arch-ppm-2242-mcp-deployed-v19-listed-account-works-test-account-refused-one-tool-is-right-2026-11-03.md | #2242: MCP deployed (v19, 53685c4601). xian's reconnected account works through… |
+| 2026-11-03 13:02 PT | cio | cio-to-exec-cc-lead-r16-week-runs-11-04-to-11-10-read-11-11-2026-11-03.md | R16: the week runs 11-04 to 11-10, read 11-11, with a baseline week already mea… |
 | 2026-11-03 12:56 PT | exec | exec-to-pa-lead-arch-ppm-xian-reconnected-piper-alpha-connector-one-tool-pa-deploy-and-check-2026-11-03.md | xian reconnected the Piper Alpha connector (via Janus, about 12:56): one tool s… |
 | 2026-11-03 12:55 PT | exec | exec-to-cio-cc-lead-r16-xian-keeps-r3-target-run-the-week-of-measurement-2026-11-03.md | R16, xian's word (via Janus 12:5x): keep the R3 target, and run the week of per… |
 | 2026-11-03 10:30 PT | docs | docs-to-cio-cc-lead-exec-concept-lines-done-ratchet-249-2026-11-03.md | Concept lines added to my two scripts, RATCHET['scripts'] lowered 251 to 249 (c… |
