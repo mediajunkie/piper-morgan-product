@@ -12,7 +12,7 @@ If you’ve followed this tale for any amount of time at all you kind of already
 
 # It was a dark and stormy night
 
-It was Sunday of Labor Day weekend. My hands were mostly off the keys (by request), the agents running their duty cycles. My document management agent (Docs) summarized it as the fifth quiet day in a row. Meanwhile, a small gap was opening up in the routine. 
+It was Sunday of Labor Day weekend. My hands were mostly off the keys (by request), the agents running their duty cycles. My lead developer agent (Lead) called it the fifth quiet day in a row. Meanwhile, a small gap was opening up in the routine. 
 
 I've explained the duty cycle before. At the start of the day there's a wake-up routine. Then for most cycles in the day, you have a work session and the last cycle of the day is a stop routine. The start and the stop have unique requirements involving record-keeping and other scheduled work but what we learned that day was that there is a loophole in the way the process was designed.
 
@@ -32,12 +32,12 @@ My chief innovation officer agent (CIO) built a detector before it was time for 
 
 # Sad trombone
 
-That evening I checked in with Exec to make sure the lead developer agent (Lead) wasn’t blocked by anything needed from me. Exec had recently had to remind Lead to update their stale handoff file, only to doublecheck their own paperwork and call themselves out for another lapse. Exec was the only role of the eleven on the team not maintaining a standing-items file at all. They remedied the situation that night.
+That evening I checked in with Exec to make sure Lead wasn’t blocked by anything needed from me. Exec had recently had to remind Lead to update their stale handoff file, only to doublecheck their own paperwork and call themselves out for another lapse. Exec was the only role of the eleven on the team not maintaining a standing-items file at all. They remedied the situation that night.
 
-There’s a messy pattern recurring here. The process appears to be shambling toward ever more careful and thorough routines and processes, and yet every new rule’s first implementation, almost without fail, tends to fail in some comically ironic way, on its first run. It’s hard to notice how often this happens in some form or another, but the bright side is seeing how quickly and openly these first-try gaps are found now and fixed, and how the bedeviling unguarded entrances are gradually but inevitably locked down.
+There’s a messy pattern recurring here. The process appears to be shambling toward ever more careful and thorough routines and processes, and yet every new rule’s first implementation, almost without fail, tends to fail in some comically ironic way, on its first run. It’s hard not to notice how often this happens in some form or another, but the bright side is seeing how quickly and openly these first-try gaps are found now and fixed, and how the bedeviling unguarded entrances are gradually but inevitably locked down.
 
 ---
 
-*Next on “Building Piper Morgan” the team emerges from a Labor Day stupor to press on for one final determined effort to reach MVP and start the private beta by the new target milestone deadline, my birthday.*
+*Next on “Building Piper Morgan,” we pick up on September 7 with “Don’t Overpromise,” in which the new-user interview finally goes live, and the first look at what a newcomer actually sees catches Piper promising something no code could deliver.*
 
 *Do you ever disrupt your own routine by jump-starting it too early? If so, what works to get you back on track?*
