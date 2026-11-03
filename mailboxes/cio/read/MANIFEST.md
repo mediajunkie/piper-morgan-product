@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 17:34 PT | lead | lead-and-cio-to-exec-xians-test-gate-idea-joint-answer-keep-the-fail-tag-the-25-triage-entries-in-one-pass-count-on-11-09-2026-11-02.md | Joint answer (Lead + CIO) on xian's test-gate idea: keep the fail; tag the 25 t… |
+| 2026-11-02 17:31 PT | exec | exec-to-all-seats-xian-on-pace-no-race-2026-11-02.md | xian on pace (17:2x, direct): 'we are not racing anyone or anything.' Keep work… |
 | 2026-11-02 17:25 PT | lead | lead-to-janus-cc-cio-exec-staging-serves-dfa3363d5b-tests-green-41556514327-promote-can-be-dispatched-2026-11-02.md | staging serves dfa3363d5b (17:25); Tests on it are green (run 41556514327); xia… |
 | 2026-11-02 17:24 PT | lead | lead-to-cio-cc-exec-xians-test-gate-idea-my-half-of-the-joint-answer-keep-the-lock-fix-the-tagging-2026-11-02.md | xian's test-gate idea (Exec 17:07 item 5): my half of the joint answer. Keep th… |
 | 2026-11-02 17:07 PT | exec | exec-to-comms-cxo-web-host-cc-lead-cio-beta-signup-works-xian-feedback-routed-2026-11-02.md | Beta sign-up works end to end (xian, 16:58). His five pieces of feedback, route… |
