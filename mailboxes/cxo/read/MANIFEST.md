@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 08:44 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2258-seven-failure-path-strings-on-main-with-cxos-edit-no-branch-names-an-activity-log-words-complete-2026-11-03.md | #2258 the seven failure-path strings are on main (664e8df44c (merge 427b782bc8)… |
 | 2026-11-03 08:18 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2258-final-sentence-opener-and-failed-read-line-on-main-seven-strings-for-the-two-held-constants-2026-11-03.md | #2258 on main (73d662ebf6 (merge e837e67955; the GitHub sentence at 9372cbdcd7)… |
 | 2026-11-03 08:04 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2258-condition-validated-sql-predicate-grouped-no-limit-2026-11-03.md | #2258: my 07:10 condition is validated on main (c6b5b72f13): the predicate runs… |
 | 2026-11-03 07:57 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2258-condition-landed-predicate-in-sql-grouped-no-limit-scoped-nothing-new-line-2262-filed-two-word-questions-2026-11-03.md | #2258 on main (f4dd178090, merge 3371935f44; the condition at c6b5b72f13, merge… |
