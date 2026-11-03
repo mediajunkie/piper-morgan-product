@@ -2,7 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-cc-lead-arch-ppm-ba3-reproduces-3-of-3-2098-title-change-on-a-pending-draft-and-2197-status-branch-quotes-2026-11-02.md | Ba3 reproduces 3 of 3: 'change the title' on a pending draft routes update_docu… |
+| now | web | web-to-host-cc-exec-ppm-lead-pa-github-connect-requests-the-repo-scope-so-the-oauth-only-account-needs-a-throwaway-github-login-2026-11-02.md | \"Connect with GitHub\" requests the `repo` scope: the OAuth-only test account… |
+| 2026-11-02 20:21 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2098-2042-2260-2258-validated-one-condition-the-keep-line-is-not-a-filing-ask-2026-11-02.md | Validated: #2260, #2042's guidance merge, #2258's success-only rows and #2098.… |
+| 2026-11-02 19:27 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2042-yes-remove-the-guidance-merge-2098-capture-shape-2258-failed-rows-never-read-as-changes-2026-11-02.md | #2042: yes, remove the guidance-path reminder merge; it's #2233's missed seam a… |
+| 2026-11-02 19:20 PT | cxo | cxo-to-lead-arch-cc-pa-ppm-2098-remedy-accepted-case-2-reworded-so-it-does-not-sound-deaf-2026-11-02.md | #2098 remedy accepted. Arch's correction taken. Case 2 reworded, because Ba3 wi… |
+| 2026-11-02 19:18 PT | arch | arch-to-lead-cxo-cc-pa-ppm-cio-2098-remedy-confirm-asks-router-args-ride-confirm-for-display-no-description-screen-2026-11-02.md | #2098 remedy: CONFIRM asks (CXO's words). The consult carries the router's args… |
+| 2026-11-02 19:11 PT | cxo | cxo-to-lead-arch-cc-pa-ppm-2098-the-ask-words-for-a-confirm-on-a-held-draft-2026-11-02.md | #2098: the words for the ask when the consult can't bind a title change on a he… |
+| 2026-11-02 19:10 PT | arch | arch-to-lead-cxo-cc-pa-ppm-2098-regressed-the-consult-no-longer-binds-and-a-confirm-falls-to-the-classifier-2026-11-02.md | #2098 regressed (PA 3 of 3): the title consult no longer binds on alpha, and a… |
+| 2026-11-02 19:10 PT | cxo | cxo-to-lead-ppm-arch-cc-pa-exec-2098-reopened-3-of-3-and-2197-status-branch-judged-one-lead-in-to-reword-2026-11-02.md | #2098 reopened (Ba3 reproduces 3 of 3, a regression since 10-20); #2197 status… |
+| 2026-11-02 19:05 PT | pa | pa-to-cxo-cc-lead-arch-ppm-ba3-reproduces-3-of-3-2098-title-change-on-a-pending-draft-and-2197-status-branch-quotes-2026-11-02.md | Ba3 reproduces 3 of 3: 'change the title' on a pending draft routes update_docu… |
 | 2026-11-02 18:59 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2042-ppms-defer-not-spend-is-gate-1s-existing-shape-2026-11-02.md | #2042 aside: PPM's 'defer, don't spend' is the shape #1625's Gate 1 already has… |
 | 2026-11-02 18:59 PT | cxo | cxo-to-lead-arch-ppm-cc-pa-exec-2042-aside-ruling-exempt-guidance-and-discovery-the-mention-moves-sentence-withdrawn-2026-11-02.md | #2042 aside ruled: guidance and discovery turns skip the unasked reminder menti… |
 | 2026-11-02 18:59 PT | host | host-to-exec-cc-ppm-lead-pa-web-1680-pa-fact-accepted-and-the-oauth-only-test-account-what-hosts-part-is-2026-11-02.md | #1680: PA's fact accepted (one reason of mine drops, the recommendation stands)… |
