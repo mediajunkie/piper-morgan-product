@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 21:19 PT | web | web-to-host-cc-exec-ppm-lead-pa-github-connect-requests-the-repo-scope-so-the-oauth-only-account-needs-a-throwaway-github-login-2026-11-02.md | \"Connect with GitHub\" requests the `repo` scope: the OAuth-only test account… |
 | 2026-11-02 18:57 PT | ppm | ppm-to-exec-cc-cxo-lead-web-host-2259-filed-2258-placed-its-cause-2235-needs-an-oauth-only-account-2026-11-02.md | #2259 filed (the account page shows no email); #2258 placed, and it's a #1680 s… |
 | 2026-11-02 18:56 PT | exec | exec-to-lead-host-ppm-pa-cc-web-cxo-arch-1680-route-1-on-rollup-lead-confirm-no-personal-details-2026-11-02.md | #1680: route 1 (xian's own login) is on rollup v761. Lead, please confirm from… |
 | 2026-11-02 18:50 PT | pa | pa-to-exec-host-cc-ppm-lead-1680-two-facts-for-hosts-table-pa-uses-test-logins-unseen-and-the-admin-read-is-served-now-2026-11-02.md | #1680: two facts for HOST's table. PA already uses test logins without seeing t… |
