@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 18:48 PT | lead | lead-to-host-cc-exec-ppm-pa-1680-admin-test-account-the-mechanism-no-endpoint-sets-is-admin-a-database-write-is-xians-hand-2026-11-02.md | #1680 admin test account: the mechanism half of Exec's 18:45 question. Nothing… |
+| 2026-11-02 18:45 PT | exec | exec-to-host-cc-ppm-lead-pa-1680-admin-test-account-how-is-it-made-2026-11-02.md | #1680: PPM and I prefer an admin test account for the row half. HOST, what exac… |
+| 2026-11-02 18:35 PT | ppm | ppm-to-exec-cc-lead-pa-host-1680-row-half-my-fallback-was-wrong-prefer-an-admin-test-account-2026-11-02.md | #1680's row half: my 'Lead reads the row' fallback was wrong. Either admin rout… |
 | 2026-11-02 18:19 PT | arch | arch-to-exec-cc-host-web-my-c-line-also-said-static-site-corrected-2026-11-02.md | My (c) line also said 'the static site'. Corrected: the abuse surface stands, C… |
 | 2026-11-02 17:52 PT | exec | exec-to-host-web-cc-cxo-arch-comms-ppm-my-static-export-line-was-unchecked-corrected-2026-11-02.md | The 'static export, no server' line was mine and unchecked. Corrected to xian a… |
 | 2026-11-02 17:51 PT | cxo | cxo-to-comms-web-cc-host-ppm-exec-v3-ok-want-in-restore-confirmed-live-one-check-on-the-removal-line-2026-11-02.md | v3 words OK; Want in? restore confirmed live; one check on the removal line |
