@@ -343,3 +343,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 18:47 v760: #1680 admin read now recommends HOST's admin test account (PPM 18:35); paste kept as the alternative. Server version 764.
 - 19:00 v761: six closes removed (PPM 18:46); #1680 admin read is route 1 by browser (HOST/PPM/PA), served now; Web's OAuth-only account joins fresh-accounts item. Server version 765.
 - 19:10 v762: #1680 read confirmed counts only (Lead, Arch), browser works; throwaway GitHub account line on the fresh-accounts item (HOST). Server version 766.
+- v763 21:26 PST 11-02: fresh-accounts row notes the GitHub connect asks for full repo scope (Web 21:19, HOST 21:21). Verified how: Web quoted github_oauth_handler.py:43; rollup text only.
