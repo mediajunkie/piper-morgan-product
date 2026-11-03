@@ -2,10 +2,10 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.62
+version: 1.63
 created: 2026-06-06
 concept: "Concept: docs/internal/operations/liveness-current-state.md (the wake, heartbeat and alert chain this procedure runs inside); history: docs/internal/operations/duty-cycle-tick-changelog.log"
-changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.62 (2026-11-02) — session-cron content retired: all 11 PM seats fire from LaunchAgents."
+changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.63 (2026-11-02) — schedule changes end with scripts/registry-plist-drift.py."
 ---
 
 # duty-cycle-tick
@@ -441,7 +441,7 @@ should not be the one you're being asked to trust you ran.
 
 ### Step 7 — Update carry-forward, then brief status
 - **Rewrite `{role}-carry-forward.md`** with current ephemeral state (this is what replaces the frozen prompt block).
-- **A schedule change** goes in your row of `dev/active/duty-cycle-registry.tsv` (the watchdog reads it), with the reason in your session log, and a memo to Pard to regenerate your LaunchAgent and prompt. Don't arm a session cron to change cadence.
+- **A schedule change** goes in your row of `dev/active/duty-cycle-registry.tsv` (the watchdog reads it), with the reason in your session log, and a memo to Pard to regenerate your LaunchAgent and prompt. Once Pard says it's done, run `scripts/registry-plist-drift.py`: your row should read `ok` (it compares minutes, hours and `first_fire` with your plist). Don't arm a session cron to change cadence.
 - Give the user a brief status line.
 
 ## Anti-Patterns to Avoid

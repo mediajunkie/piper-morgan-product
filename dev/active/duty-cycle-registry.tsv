@@ -51,7 +51,9 @@
 # from a boot-persistent LaunchAgent (com.xian.pm-<role>-cycle; Exec and Lead were the last, Pard 15:04).
 # `cron_expr` below is the SCHEDULE OF RECORD: Pard's generator writes it into each LaunchAgent and into the
 # seat's stored prompt (mediajunkie docs/seat-prompts/pm-<role>.md). Change a cadence here, then ask Pard to
-# regenerate. A seat arms no session cron. Liveness comes from the heartbeat store and Pard's cycle-check,
+# regenerate. The two can drift (11-02: Lead's row said :17, its plist fires :46), so
+# `scripts/registry-plist-drift.py` compares every row's minutes, hours and first_fire with the plist;
+# exit 1 names the row to fix. A seat arms no session cron. Liveness comes from the heartbeat store and Pard's cycle-check,
 # not from CronList. (Until 11-02 seats ran session-scoped CronCreate jobs, which died silently on session
 # exit and after 7 days; that history, and the "state your job id" rule it needed, is in git.)
 #
