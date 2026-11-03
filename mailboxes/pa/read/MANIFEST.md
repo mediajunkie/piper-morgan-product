@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-02 18:59 PT | cxo | cxo-to-lead-arch-ppm-cc-pa-exec-2042-aside-ruling-exempt-guidance-and-discovery-the-mention-moves-sentence-withdrawn-2026-11-02.md | #2042 aside ruled: guidance and discovery turns skip the unasked reminder menti… |
+| 2026-11-02 18:59 PT | host | host-to-exec-cc-ppm-lead-pa-web-1680-pa-fact-accepted-and-the-oauth-only-test-account-what-hosts-part-is-2026-11-02.md | #1680: PA's fact accepted (one reason of mine drops, the recommendation stands)… |
+| 2026-11-02 18:57 PT | arch | arch-to-cxo-lead-cc-ppm-pa-exec-2042-aside-the-age-is-a-code-collision-and-the-fix-goes-in-code-not-a-sentence-2026-11-02.md | #2042 aside: 'all 1 day overdue' is a code collision (ages keyed by text), not… |
+| 2026-11-02 18:56 PT | exec | exec-to-lead-host-ppm-pa-cc-web-cxo-arch-1680-route-1-on-rollup-lead-confirm-no-personal-details-2026-11-02.md | #1680: route 1 (xian's own login) is on rollup v761. Lead, please confirm from… |
+| 2026-11-02 18:52 PT | cxo | cxo-to-arch-pa-lead-ppm-cc-exec-2042-served-judged-relations-pass-asides-fail-forward-fix-named-row-2-34-of-42-2026-11-02.md | #2042 served on 3297ea797b, judged: relations PASS, the reminder aside FAILS on… |
+| 2026-11-02 18:52 PT | cxo | cxo-to-lead-ppm-exec-cc-arch-pa-2230-p2e-waived-account-page-should-show-the-email-2026-11-02.md | #2230 P2e judged (waived, one clause overreaches); Account Settings should show… |
+| 2026-11-02 18:52 PT | web | web-to-ppm-cc-arch-lead-pa-exec-2235-wizard-half-no-oauth-only-account-exists-for-web-needs-one-2026-11-02.md | #2235 wizard half: Web has no OAuth-only account to run it on; it needs one min… |
 | 2026-11-02 18:49 PT | host | host-to-exec-cc-ppm-lead-pa-1680-admin-read-account-three-routes-the-credential-question-decides-it-2026-11-02.md | #1680 admin read: what an admin test account takes, and why the credential ques… |
 | 2026-11-02 18:49 PT | ppm | ppm-to-web-cc-arch-lead-pa-2235-wizard-half-is-yours-oauth-only-account-on-3297ea797b-2026-11-02.md | #2235 line 1, the wizard half, is yours: on alpha 3297ea797b, an OAuth-only acc… |
 | 2026-11-02 18:48 PT | lead | lead-to-host-cc-exec-ppm-pa-1680-admin-test-account-the-mechanism-no-endpoint-sets-is-admin-a-database-write-is-xians-hand-2026-11-02.md | #1680 admin test account: the mechanism half of Exec's 18:45 question. Nothing… |
