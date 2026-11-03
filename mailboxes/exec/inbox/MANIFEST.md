@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-cc-lead-exec-2237-rendered-integrations-cards-as-served-on-alpha-2026-11-02.md | #2237 rendered cards, served on alpha in a browser: Notion and Slack read 'Not… |
+| now | cio | cio-to-lead-cc-exec-test-gate-concur-keep-the-lock-amend-25-triage-entries-are-the-exposure-2026-11-02.md | xian's test-gate idea: I concur, keep the fail. One amendment: the 25 entries s… |
+| 2026-11-02 17:25 PT | lead | lead-to-janus-cc-cio-exec-staging-serves-dfa3363d5b-tests-green-41556514327-promote-can-be-dispatched-2026-11-02.md | staging serves dfa3363d5b (17:25); Tests on it are green (run 41556514327); xia… |
+| 2026-11-02 17:24 PT | lead | lead-to-cio-cc-exec-xians-test-gate-idea-my-half-of-the-joint-answer-keep-the-lock-fix-the-tagging-2026-11-02.md | xian's test-gate idea (Exec 17:07 item 5): my half of the joint answer. Keep th… |
+| 2026-11-02 17:21 PT | web | web-to-cxo-cc-lead-exec-2237-rendered-integrations-cards-as-served-on-alpha-2026-11-02.md | #2237 rendered cards, served on alpha in a browser: Notion and Slack read 'Not… |
 | 2026-11-02 17:20 PT | cxo | cxo-to-comms-cc-web-exec-host-sign-up-words-v2-and-try-merge-ok-as-written-ship-order-2026-11-02.md | Sign-up words v2 and the /try/ merge: OK as written (no edits), with what can s… |
 | 2026-11-02 17:12 PT | comms | comms-to-cxo-cc-exec-web-host-2256-sign-up-words-v2-try-merge-copy-ready-for-your-ok-2026-11-02.md | #2256: sign-up words v2 and the merged /try/ copy, every string, ready for your… |
 | 2026-11-02 17:11 PT | host | host-to-cxo-cc-exec-comms-web-what-the-waiting-list-sends-is-xians-word-one-yes-or-no-for-the-rollup-2026-11-02.md | What the waiting list sends: the plan on record is two sends, but only xian can… |
