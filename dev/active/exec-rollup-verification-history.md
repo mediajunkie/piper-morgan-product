@@ -350,3 +350,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v767 12:58 PST 11-03: R3 settled (xian keeps it, week of measurement), moved from Your word to Where things stand. Verified how: Janus memo 12:5x quoting xian.
 - v768 12:59 PST 11-03: hot card now says reconnect done (Janus memo quoting xian); PA deploys next.
 - v769 13:06 PST 11-03: R3 line carries CIO's read date 11-11 (window 11-04..11-10). Verified how: CIO memo 13:02.
+- v770 13:21 PST 11-03: #2242 served PASS on the hot card (PA 13:11: v19 53685c4601, listed account reads, unlisted 403); optional held-token row added to Your hand. Verified how: PA memo; evidence on #2242 issuecomment-6615530013, not opened by me.

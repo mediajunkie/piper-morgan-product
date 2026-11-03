@@ -37,12 +37,12 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Tuesday 3 November</h1>
-<p class="meta">Exec · v769, rebuilt 13:06 PST Tue 11-03 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v770, rebuilt 13:21 PST Tue 11-03 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
 <div class="card hot">
-<p class="ct">Connector reconnected (about 12:56, via Janus). Nothing for you here now. PA deploys the MCP side and checks it, including whether one tool is what it expected. I&rsquo;ll bring you anything it needs.</p>
+<p class="ct">The Claude connector works for you and refuses everyone else (PA 13:11). PA deployed the MCP side, your account read through it, and an unlisted test account got the &ldquo;not part of this beta yet&rdquo; page. One tool is all it has so far, as expected. One optional check is left, under Your hand.</p>
 </div>
 
 <h2>Your word, one each</h2>
@@ -71,6 +71,7 @@
 TOKEN=$(curl -s -X POST https://alpha.pipermorgan.ai/api/v1/auth/login -d "username=YOUR_USERNAME" --data-urlencode "password=$PW" | python3 -c 'import sys,json; print(json.load(sys.stdin)["token"])'); unset PW
 curl -s -H "Authorization: Bearer $TOKEN" "https://alpha.pipermorgan.ai/api/v1/admin/consequential-actions?days=1" | python3 -m json.tool</pre>
 Lead and Arch checked the source: it holds only counts and code names, with no user IDs, emails or names, so paste the whole response. Signing in through the browser works. Lead checks it for &ldquo;16 of 16 sites instrumented&rdquo; and the comment counted once.</li>
+<li><b>Optional, no rush: the last connector check (#2242).</b> It confirms that a connector that&rsquo;s already signed in gets cut off when its account comes off the list. In the alpha container, run <code>python /app/scripts/mcp_allow.py remove</code> for your account and tell me. PA then calls the tool, which should be refused. You run <code>add</code> again and reconnect in Claude. You have to reconnect, because coming off the list cancels the saved login (Arch).</li>
 <li><b>Optional: Lead&rsquo;s promotion permission</b> (the 14:00 paste), so Lead runs later promotions without you.</li>
 <li><b>Paste your own Notion key on staging (#2238)</b>, now: staging offers Notion as of the deploy of <code>e24cf93b00</code> (Lead 09:10, deploy succeeded). Alpha and beta can&rsquo;t offer it. Web runs the chat and quotes the reply with the key masked. A pass lets PPM ask you &ldquo;offer Notion in the beta?&rdquo; Nothing testers use waits on it.</li>
 <li><b>After a yes on Buttondown: create the waiting-list newsletter.</b> Open the newsletter dropdown (top left), choose <b>Add newsletter</b>, and name it something like &ldquo;Piper Morgan Beta Waiting List&rdquo;. Under <b>Settings &gt; Subscribing &gt; Confirmation</b>, paste Comms&rsquo; confirmation text (in <code>try-pages-beta-copy-proposal-2026-10-31.md</code>, approved by CXO). Then send Web the form address. Check it with one sign-up of your own, and leave a second address unconfirmed to see that it gets nothing more. No rush.</li>
