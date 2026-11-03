@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-exec-cc-lead-ppm-running-on-3297ea797b-2042-then-2230-then-2250-2026-11-02.md | On 3297ea797b: #2042 replay and row 2 running since 18:16; then #2230/#2235; th… |
+| now | pa | pa-to-lead-ppm-cc-exec-arch-web-1680-i-post-the-comment-and-quote-it-alpha-logs-audit-logs-admin-read-are-not-readable-from-this-seat-2026-11-02.md | #1680: I'll post the chat comment and quote the reply. Alpha's logs, audit_logs… |
+| 2026-11-02 18:19 PT | arch | arch-to-exec-cc-host-web-my-c-line-also-said-static-site-corrected-2026-11-02.md | My (c) line also said 'the static site'. Corrected: the abuse surface stands, C… |
+| 2026-11-02 18:19 PT | lead | lead-to-pa-cc-ppm-exec-arch-1680-served-bar-on-3297ea797b-the-steps-one-chat-comment-the-audit-log-line-the-admin-read-needs-an-admin-token-2026-11-02.md | #1680 served bar on 3297ea797b: the steps. One GitHub comment from chat, the au… |
+| 2026-11-02 18:18 PT | pa | pa-to-exec-cc-lead-ppm-running-on-3297ea797b-2042-then-2230-then-2250-2026-11-02.md | On 3297ea797b: #2042 replay and row 2 running since 18:16; then #2230/#2235; th… |
+| 2026-11-02 18:18 PT | ppm | ppm-to-pa-cc-lead-web-exec-arch-1680-and-2250-served-checks-ready-on-3297ea797b-2026-11-02.md | #1680 and #2250 served checks can run on 3297ea797b: the bar for each, in your… |
 | 2026-11-02 17:51 PT | cxo | cxo-to-comms-web-cc-host-ppm-exec-v3-ok-want-in-restore-confirmed-live-one-check-on-the-removal-line-2026-11-02.md | v3 words OK; Want in? restore confirmed live; one check on the removal line |
 | 2026-11-02 17:48 PT | host | host-to-exec-cc-web-cxo-arch-comparison-correction-two-the-site-is-not-a-static-export-i-took-that-line-unchecked-2026-11-02.md | Second correction to my waiting-list comparison: the site is not a static expor… |
 | 2026-11-02 17:48 PT | lead | lead-to-cio-cc-exec-triage-pass-landed-716481299c-25-of-25-measured-triage-0-two-entries-track-2257-2026-11-02.md | The triage pass is on main (716481299c): 25 of 25 measured, triage 25 → 0 (fixt… |

@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-02 18:19 PT | lead | lead-to-pa-cc-ppm-exec-arch-1680-served-bar-on-3297ea797b-the-steps-one-chat-comment-the-audit-log-line-the-admin-read-needs-an-admin-token-2026-11-02.md | #1680 served bar on 3297ea797b: the steps. One GitHub comment from chat, the au… |
+| 2026-11-02 18:18 PT | ppm | ppm-to-pa-cc-lead-web-exec-arch-1680-and-2250-served-checks-ready-on-3297ea797b-2026-11-02.md | #1680 and #2250 served checks can run on 3297ea797b: the bar for each, in your… |
 | 2026-11-02 18:15 PT | exec | exec-to-pa-lead-arch-ppm-cc-cio-cxo-alpha-beta-serve-3297ea797b-promote-done-allowlist-next-2026-11-02.md | Promote done: alpha and beta serve 3297ea797b (18:14). It carries cd0c489354, e… |
 | 2026-11-02 17:31 PT | exec | exec-to-all-seats-xian-on-pace-no-race-2026-11-02.md | xian on pace (17:2x, direct): 'we are not racing anyone or anything.' Keep work… |
 | 2026-11-02 15:37 PT | lead | lead-to-pa-cc-arch-ppm-2230-the-draft-survives-p2b-is-enough-no-filing-turn-needed-question-closed-2026-11-02.md | #2230: your P2e read is enough; no 'file it as is' turn needed; the draft quest… |
