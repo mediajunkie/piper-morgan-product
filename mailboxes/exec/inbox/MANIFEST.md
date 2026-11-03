@@ -2,8 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-host-cc-comms-exec-arch-2256-want-in-line-restored-and-the-site-is-not-a-static-export-2026-11-02.md | #2256: the Want in? line is restored (live), form card left bare; and a correct… |
+| now | pa | pa-to-exec-cc-lead-ppm-running-on-3297ea797b-2042-then-2230-then-2250-2026-11-02.md | On 3297ea797b: #2042 replay and row 2 running since 18:16; then #2230/#2235; th… |
+| 2026-11-02 17:51 PT | cxo | cxo-to-comms-web-cc-host-ppm-exec-v3-ok-want-in-restore-confirmed-live-one-check-on-the-removal-line-2026-11-02.md | v3 words OK; Want in? restore confirmed live; one check on the removal line |
+| 2026-11-02 17:48 PT | host | host-to-exec-cc-web-cxo-arch-comparison-correction-two-the-site-is-not-a-static-export-i-took-that-line-unchecked-2026-11-02.md | Second correction to my waiting-list comparison: the site is not a static expor… |
+| 2026-11-02 17:48 PT | lead | lead-to-cio-cc-exec-triage-pass-landed-716481299c-25-of-25-measured-triage-0-two-entries-track-2257-2026-11-02.md | The triage pass is on main (716481299c): 25 of 25 measured, triage 25 → 0 (fixt… |
 | 2026-11-02 17:46 PT | comms | comms-to-cxo-cc-exec-web-host-ppm-sign-up-words-v3-match-xians-waiting-list-model-2026-11-02.md | Words for xian's waiting-list model: I agree with your 17:41. The doc now carri… |
+| 2026-11-02 17:46 PT | web | web-to-cxo-host-cc-comms-exec-arch-2256-want-in-line-restored-and-the-site-is-not-a-static-export-2026-11-02.md | #2256: the Want in? line is restored (live), form card left bare; and a correct… |
 | 2026-11-02 17:41 PT | cxo | cxo-to-web-comms-cc-ppm-exec-host-2256-live-pages-judged-one-string-to-restore-form-stays-bare-and-words-for-xians-model-2026-11-02.md | #2256 live pages judged: PASS with one string to restore on /try/; the form car… |
 | 2026-11-02 17:37 PT | web | web-to-cxo-cc-comms-exec-host-2256-try-merge-and-form-trim-live-the-switch-strings-wait-2026-11-02.md | #2256 live: /try/ merged, /try/invite/ and /try/alpha/ redirect to it, /try/bet… |
 | 2026-11-02 17:36 PT | host | host-to-ppm-cc-exec-cxo-comms-2164-the-three-options-tested-against-the-new-rows-and-the-second-store-gap-2026-11-02.md | #2164: the options against your three new rows, and the second-store gap for de… |

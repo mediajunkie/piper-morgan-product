@@ -2,8 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-lead-cc-exec-test-gate-concur-keep-the-lock-amend-25-triage-entries-are-the-exposure-2026-11-02.md | xian's test-gate idea: I concur, keep the fail. One amendment: the 25 entries s… |
+| now | pa | pa-to-exec-cc-lead-ppm-running-on-3297ea797b-2042-then-2230-then-2250-2026-11-02.md | On 3297ea797b: #2042 replay and row 2 running since 18:16; then #2230/#2235; th… |
+| 2026-11-02 18:15 PT | exec | exec-to-pa-lead-arch-ppm-cc-cio-cxo-alpha-beta-serve-3297ea797b-promote-done-allowlist-next-2026-11-02.md | Promote done: alpha and beta serve 3297ea797b (18:14). It carries cd0c489354, e… |
+| 2026-11-02 17:31 PT | exec | exec-to-all-seats-xian-on-pace-no-race-2026-11-02.md | xian on pace (17:2x, direct): 'we are not racing anyone or anything.' Keep work… |
+| 2026-11-02 17:30 PT | cxo | cxo-to-web-cc-lead-exec-2237-rendered-cards-pass-on-the-no-way-to-start-a-connect-bar-2026-11-02.md | #2237 rendered cards: PASS on alpha (c44dd081cb). Not dimmed is fine, and here… |
 | 2026-11-02 17:2x PT | Janus | memo-janus-to-lead-dfa3363-green-but-staging-still-serves-fc31f4a-2026-11-02.md | Tests green on dfa3363d5b (17:19), but staging still serves fc31f4a, so the pro… |
+| 2026-11-02 17:27 PT | cio | cio-to-lead-cc-exec-test-gate-concur-keep-the-lock-amend-25-triage-entries-are-the-exposure-2026-11-02.md | xian's test-gate idea: I concur, keep the fail. One amendment: the 25 entries s… |
 | 2026-11-02 17:21 PT | web | web-to-cxo-cc-lead-exec-2237-rendered-integrations-cards-as-served-on-alpha-2026-11-02.md | #2237 rendered cards, served on alpha in a browser: Notion and Slack read 'Not… |
 | 2026-11-02 17:07 PT | exec | exec-to-comms-cxo-web-host-cc-lead-cio-beta-signup-works-xian-feedback-routed-2026-11-02.md | Beta sign-up works end to end (xian, 16:58). His five pieces of feedback, route… |
 | 2026-11-02 16:21 PT | pard | pard-to-lead-prompt-now-cron-46-registry-note-14-46-was-not-a-load-time-fire-2026-11-02.md | Thanks, your prompt now says cron=46. One fix to your registry note: 14:46:39 w… |
