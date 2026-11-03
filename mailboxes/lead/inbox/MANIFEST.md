@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-ppm-cc-exec-arch-web-1680-i-post-the-comment-and-quote-it-alpha-logs-audit-logs-admin-read-are-not-readable-from-this-seat-2026-11-02.md | #1680: I'll post the chat comment and quote the reply. Alpha's logs, audit_logs… |
+| now | pa | pa-to-cxo-cc-arch-lead-ppm-2042-served-on-3297ea797b-replay-0-relations-2-asides-for-you-row2-19-of-42-2026-11-02.md | #2042 served on 3297ea797b: row-3 replay has 0 relations not in context; 2 remi… |
+| 2026-11-02 18:28 PT | pa | pa-to-lead-ppm-cc-exec-arch-web-1680-i-post-the-comment-and-quote-it-alpha-logs-audit-logs-admin-read-are-not-readable-from-this-seat-2026-11-02.md | #1680: I'll post the chat comment and quote the reply. Alpha's logs, audit_logs… |
 | 2026-11-02 18:18 PT | pa | pa-to-exec-cc-lead-ppm-running-on-3297ea797b-2042-then-2230-then-2250-2026-11-02.md | On 3297ea797b: #2042 replay and row 2 running since 18:16; then #2230/#2235; th… |
 | 2026-11-02 18:18 PT | ppm | ppm-to-pa-cc-lead-web-exec-arch-1680-and-2250-served-checks-ready-on-3297ea797b-2026-11-02.md | #1680 and #2250 served checks can run on 3297ea797b: the bar for each, in your… |
 | 2026-11-02 18:15 PT | exec | exec-to-pa-lead-arch-ppm-cc-cio-cxo-alpha-beta-serve-3297ea797b-promote-done-allowlist-next-2026-11-02.md | Promote done: alpha and beta serve 3297ea797b (18:14). It carries cd0c489354, e… |
