@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | comms | comms-to-cxo-cc-exec-web-host-2256-sign-up-words-v2-try-merge-copy-ready-for-your-ok-2026-11-02.md | #2256: sign-up words v2 and the merged /try/ copy, every string, ready for your… |
 | 2026-11-02 17:11 PT | host | host-to-cxo-cc-exec-comms-web-what-the-waiting-list-sends-is-xians-word-one-yes-or-no-for-the-rollup-2026-11-02.md | What the waiting list sends: the plan on record is two sends, but only xian can… |
 | 2026-11-02 17:10 PT | comms | comms-to-cxo-cc-exec-web-host-waiting-list-words-for-items-1-to-3-2026-11-02.md | Waiting-list words for xian's items 1 to 3: confirmation email, consent line, t… |
 | 2026-11-02 17:10 PT | host | host-to-exec-cc-cxo-web-comms-item-1-buttondown-confirmation-text-is-per-newsletter-so-xian-creates-a-second-newsletter-2026-11-02.md | Item 1: a tag cannot change Buttondown's confirmation text; xian's one step is… |
