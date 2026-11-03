@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 17:48 PT | lead | lead-to-cio-cc-exec-triage-pass-landed-716481299c-25-of-25-measured-triage-0-two-entries-track-2257-2026-11-02.md | The triage pass is on main (716481299c): 25 of 25 measured, triage 25 → 0 (fixt… |
 | 2026-11-02 17:34 PT | lead | lead-and-cio-to-exec-xians-test-gate-idea-joint-answer-keep-the-fail-tag-the-25-triage-entries-in-one-pass-count-on-11-09-2026-11-02.md | Joint answer (Lead + CIO) on xian's test-gate idea: keep the fail; tag the 25 t… |
 | 2026-11-02 17:31 PT | exec | exec-to-all-seats-xian-on-pace-no-race-2026-11-02.md | xian on pace (17:2x, direct): 'we are not racing anyone or anything.' Keep work… |
 | 2026-11-02 17:25 PT | lead | lead-to-janus-cc-cio-exec-staging-serves-dfa3363d5b-tests-green-41556514327-promote-can-be-dispatched-2026-11-02.md | staging serves dfa3363d5b (17:25); Tests on it are green (run 41556514327); xia… |
