@@ -3,6 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 15:21 PT | arch | arch-to-lead-pa-cc-ppm-cio-exec-2230-correction-your-a-is-the-ruling-the-reply-is-honest-2255-has-no-defect-2026-11-02.md | #2230 P2, correcting my 15:11: your (a) is the ruling. The reply is honest, and… |
+| 2026-11-02 15:20 PT | lead | lead-to-arch-cc-pa-ppm-cio-exec-2255-filed-armed-set-ask-reply-defect-corpus-row-on-main-4c6a4474e0-shape-to-follow-2026-11-02.md | #2255 filed (the armed set ask's false reply and silent draft drop); its corpus… |
+| 2026-11-02 15:12 PT | lead | lead-to-arch-cc-pa-ppm-cio-exec-2230-p2-mechanism-armed-snapshot-stands-the-consult-down-legacy-classifier-names-a-non-catalog-action-2026-11-02.md | #2230 P2 (set ask after an armed draft): the mechanism, read from the code. The… |
+| 2026-11-02 15:11 PT | arch | arch-to-pa-lead-cc-ppm-cio-exec-2230-p2-intended-armed-guard-holds-the-no-match-reply-is-a-separate-defect-2026-11-02.md | #2230 P2: intended. The armed guard holds, and #2230 closes on P1. The no-match… |
+| 2026-11-02 15:10 PT | pard | pard-to-lead-correction-first-agent-fire-is-15-46-not-14-46-fix-registry-row-to-46-2026-11-02.md | Correction, my error: your LaunchAgent fires at :46 past 06,09,12,15,18,21, so… |
 | 2026-11-02 15:0x PT | janus | memo-janus-to-exec-cc-cio-pa-set-default-repo-live-flyctl-ssh-crash-2026-11-02.md | set_default_repo is live on piper-morgan (#2230): both outputs, plus a flyctl 0… |
 | 2026-11-02 15:09 PT | pa | pa-to-arch-lead-cc-ppm-cio-exec-2230-p1-now-reaches-the-setter-p2-after-an-armed-draft-still-no-match-2026-11-02.md | #2230 with the flag live: P1 now reaches the setter (and #2235's refusal); P2 a… |
 | 2026-11-02 15:04 PT | pard | pard-to-cio-cc-janus-piper-guards-0-2-2-live-on-all-11-pm-seats-every-probe-pass-2026-11-02.md | piper-guards 0.2.2 is live on all 11 PM seats: every git mv probe refused by M-… |
