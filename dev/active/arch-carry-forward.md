@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-01 21:28 PST (STOP)
+last_updated: 2026-11-02 21:28 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,21 +28,23 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
-- **11-01 STOP (21:27 fire).** Main is green, 12 of 12 workflows. Code was quiet after 14:05. Every ruling and validation for today is in decisions.log (06:44 to 14:05) and on the issues.
-  - **Landings I validated on main today:** #2242 (a), #2238 (with the staging-only Notion offer), #2235, #2042 option 1, #2149's steps and its removal `b1a52ee2ae`, #2197 `75eb536442` plus its ledger row, and #2250 with its cancel condition `e312c4f249`.
-  - **Waiting on xian's alpha promotion** (the dispatch is his). After it, I review each result:
-    - PA's #2042 replay and row 2;
-    - CXO's #2197 served judgement;
-    - PA's #2250 after-half (the before-half at 16 per ask has medians of 11.25 s and 11.24 s);
-    - PA's #2235 line 1;
-    - Web's #2238 staging Notion run;
-    - #2242: xian's `mcp_allow.py add`, then PA's MCP deploy and checks. If a refresh is consumed, the user reconnects.
-  - **PDR-102 RATIFIED 2026-11-02** (xian, no changes, via Janus and Exec). My answers on C2, C4, C6 and C7 are in it. **Trigger:** I write the connector-source ADR when the first connector-ingest unit is placed.
-  - **#2226** (int8 MiniLM, conditions (a)–(m)) waits on placement, and #2244 goes first. **#2247:** six conditions on the issue, not in this sprint.
-  - **Waiting on xian from 10-31:**
-    - the `PIPER_INVERSION_LIVE_CATEGORIES` paste;
-    - the #2244 `ls` and #2226 (i)'s RSS. No agent seat can do Fly production reads.
-    - a fresh account for A1/A2.
+- **11-02 STOP (21:27 fire).** Main is green, 12 of 12 workflows. Alpha and beta serve `3297ea797b` (xian promoted at 18:14). Every ruling and validation for today is in decisions.log (10:52 to 20:4x).
+  - **Closed today:** #2230 (P1 validated from the setter source) and #2250 (the after-half passes). The six old closes are done by PPM (#272, #309, #315, #335, #337, #1011), one at a time on xian's word.
+  - **Validated on main, waiting on the next promotion (xian's dispatch), then CXO's served checks:**
+    - #2098 (`9924c1f9f3` plus the keep-line condition `e64d2155aa`): a CONFIRM on a held draft asks. CONFIRM args are display-only.
+    - #2042's aside: the guidance-path reminder merge is removed, pinned by `TestReminderGatherHasOneFloorCaller` (`76437b5e48`).
+    - #2260: reminder ages per row (`1a292b53c8`).
+    - #2258: success rows only. CXO's "tried, didn't go through" line is an open item on #2258 before close.
+  - **#2042:** my scanner half passed on `3297ea797b` (0 of 19). Row 2 was triaged by CXO at 34/42. The aside fix is above. The served check is CXO's.
+  - **#2098 router drift:** the flat router has given CLARIFY @0.40 on the title sentence since the 10-30 15:59 batch, with no catalog change. No bisect or description screen is owed (19:18). I suggested to CIO that rows from a served PASS become sentinels.
+  - **#1680:** the action half was served by PA. The row and flags half waits on xian opening the admin read in his browser; cookie auth works, and the response has no personal details.
+  - **#2242:** xian added himself to the allowlist (`--user-id`, nobody has seen the list output). The reconnect is next, then PA's MCP checks.
+  - **#2235:** the chat half of line 1 is served. The wizard half is Web's and needs an OAuth-only account (HOST or xian). Line 2 (the grep pin) is Lead's.
+  - **#2197:** the list and status branches passed (CXO). The lead-in was reworded (`c98c4a3a54`). A tie is accepted by unit test.
+  - **Waiting-list (c) line given:** keep the list outside Piper (no mailer, #1344 identity rule). HOST recommends Buttondown; xian decides.
+  - **PDR-102 RATIFIED 2026-11-02.** **Trigger:** I write the connector-source ADR when the first connector-ingest unit is placed.
+  - **#2226** waits on placement, with #2244 first. **#2247:** not in this sprint. **#2238:** Web's staging Notion run is not reported yet.
+  - **Lessons today:** open the copy file before calling a reply false (15:21); trace the served route before naming a gate (19:2x); when validating a multi-outcome shape, check every branch, not only the one the served pass used (19:09).
 - **Still open from 10-27..10-30** (the full text is in git history and those days' logs):
   - **#2186:** unit 2 (declared args keys) is owed by Lead, with Rule 7. `timeframe` still drops silently.
   - **#2184:** owed by Lead: don't arm when the repo resolves to None. The served two-step row is PPM's close bar.
