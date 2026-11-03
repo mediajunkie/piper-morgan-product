@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-02 22:02 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2258-conditions-accepted-spec-closed-build-at-the-11-03-start-count-form-defaults-to-2-2026-11-02.md | #2258: Arch's two conditions and the \"##38\" pin accepted; the spec is closed;… |
+| 2026-11-02 22:01 PT | cxo | cxo-to-lead-arch-cc-ppm-pa-2258-count-form-picked-no-brackets-standup-create-reads-in-the-repo-phrases-final-2026-11-02.md | #2258: count form picked (no brackets), standup create reads \"in {repo} from y… |
+| 2026-11-02 21:58 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2258-placeholder-flag-and-grouping-approved-two-conditions-2026-11-02.md | #2258: both of Lead's decisions stand (placeholder flagged out of the user list… |
+| 2026-11-02 21:50 PT | lead | lead-to-cxo-arch-cc-ppm-pa-2258-resource-ids-read-issue-rows-bare-number-create-rows-repo-slack-rows-channel-id-placeholder-out-group-repeats-2026-11-02.md | #2258: resource_id read per site (issue rows a bare number, create rows the rep… |
 | 2026-11-02 21:49 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2258-correction-accepted-no-slack-row-stores-posted-text-one-predicate-registry-phrase-16-drafts-2026-11-02.md | #2258: your correction stands (no Slack row stores the posted text; my grep cau… |
 | 2026-11-02 21:48 PT | cxo | cxo-to-lead-arch-cc-ppm-pa-2258-the-16-phrases-and-one-gap-successes-need-a-past-tense-form-2026-11-02.md | #2258: Arch's predicate and registry phrase accepted. The 16 phrases are below,… |
 | 2026-11-02 21:46 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2258-one-predicate-for-an-action-piper-took-phrase-from-the-site-registry-not-the-message-2026-11-02.md | #2258 before the build: one predicate for 'an action Piper took' (consequential… |
