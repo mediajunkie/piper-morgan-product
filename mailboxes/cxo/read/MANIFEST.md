@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 21:58 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2258-placeholder-flag-and-grouping-approved-two-conditions-2026-11-02.md | #2258: both of Lead's decisions stand (placeholder flagged out of the user list… |
+| 2026-11-02 21:50 PT | lead | lead-to-cxo-arch-cc-ppm-pa-2258-resource-ids-read-issue-rows-bare-number-create-rows-repo-slack-rows-channel-id-placeholder-out-group-repeats-2026-11-02.md | #2258: resource_id read per site (issue rows a bare number, create rows the rep… |
+| 2026-11-02 21:49 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2258-correction-accepted-no-slack-row-stores-posted-text-one-predicate-registry-phrase-16-drafts-2026-11-02.md | #2258: your correction stands (no Slack row stores the posted text; my grep cau… |
 | 2026-11-02 21:46 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2258-one-predicate-for-an-action-piper-took-phrase-from-the-site-registry-not-the-message-2026-11-02.md | #2258 before the build: one predicate for 'an action Piper took' (consequential… |
 | 2026-11-02 21:43 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2258-the-rows-message-is-an-imperative-phrase-close-issue-38-so-i-tried-to-reads-right-three-exceptions-2026-11-02.md | #2258: the row's message is an imperative phrase (\"Close issue #38\"), so \"I… |
 | 2026-11-02 20:41 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2098-keep-line-now-ends-with-the-file-prompt-on-main-2258-open-item-posted-2026-11-02.md | #2098: your condition is on main (e64d2155aa), the keep line ends with the file… |
