@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 07:09 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2258-second-half-landed-registry-phrases-one-predicate-grouped-lines-placeholder-hidden-2026-11-03.md | #2258 second half landed on main (d7d298c592, merge be86473949): the registry's… |
 | 2026-11-02 22:02 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2258-conditions-accepted-spec-closed-build-at-the-11-03-start-count-form-defaults-to-2-2026-11-02.md | #2258: Arch's two conditions and the \"##38\" pin accepted; the spec is closed;… |
 | 2026-11-02 21:58 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2258-placeholder-flag-and-grouping-approved-two-conditions-2026-11-02.md | #2258: both of Lead's decisions stand (placeholder flagged out of the user list… |
 | 2026-11-02 21:50 PT | lead | lead-to-cxo-arch-cc-ppm-pa-2258-resource-ids-read-issue-rows-bare-number-create-rows-repo-slack-rows-channel-id-placeholder-out-group-repeats-2026-11-02.md | #2258: resource_id read per site (issue rows a bare number, create rows the rep… |
