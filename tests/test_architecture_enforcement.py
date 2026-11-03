@@ -9227,3 +9227,44 @@ class TestMcpAllowlistSingleWriter2242:
             "scripts/mcp_allow.py no longer looks like a writer to this pin; "
             "update WRITE_SHAPES with the script, never loosen it to pass."
         )
+
+
+class TestReminderGatherHasOneFloorCaller:
+    """#2042 aside (CXO 2026-11-02 18:59; Arch 19:3x): the due-reminder gather reaches
+    the floor's context through ONE door, ``ContextAssembler.gather_context``, where the
+    #2233 ride gate and the #1625 mention gate run. The GUIDANCE assembler in
+    ``intent_service.py`` used to call ``_gather_reminder_context`` directly (#1566),
+    bypassing both gates, which is how an unasked reminder aside reached a guidance
+    turn on alpha. Scope: every tracked ``.py`` under ``services/`` and ``web/``;
+    denominator: all call sites of ``_gather_reminder_context(`` outside its own
+    definition. A new caller fails here with its file and line.
+    """
+
+    ALLOWED = {"services/intent_service/context_assembler.py"}
+
+    def test_reminder_gather_is_called_only_from_the_context_assembler(self):
+        files = subprocess.run(
+            ["git", "ls-files", "services/*.py", "web/*.py"],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.split()
+        assert files, "git ls-files returned nothing; the scan would be vacuous"
+        callers = []
+        for path in files:
+            src = Path(path).read_text(encoding="utf-8")
+            if "_gather_reminder_context(" not in src:
+                continue
+            for lineno, line in enumerate(src.splitlines(), 1):
+                if (
+                    "_gather_reminder_context(" in line
+                    and "def _gather_reminder_context" not in line
+                ):
+                    callers.append((path, lineno))
+        assert callers, "no caller found at all; the scan is not looking where it should"
+        outside = [f"{p}:{n}" for p, n in callers if p not in self.ALLOWED]
+        assert not outside, (
+            "the due-reminder gather is called outside ContextAssembler.gather_context, "
+            "bypassing the #2233 ride gate and the #1625 mention gate (the #2042 aside): "
+            + ", ".join(outside)
+        )

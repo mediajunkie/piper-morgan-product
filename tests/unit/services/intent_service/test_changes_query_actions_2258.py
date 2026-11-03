@@ -20,8 +20,15 @@ from tests.unit.services.intent_service.test_changes_query_fail_closed_2140 impo
 _NEVER = ("consequential", "event_type", "auth")
 
 
-def _audit(message, minutes_ago=5, event_type="consequential", action="github_create_issue"):
+def _audit(
+    message,
+    minutes_ago=5,
+    event_type="consequential",
+    action="github_create_issue",
+    status="success",
+):
     row = MagicMock()
+    row.status = status
     row.action = action
     row.event_type = event_type
     row.message = message
@@ -99,4 +106,50 @@ async def test_failed_read_beside_actions_still_named(intent_service):
         "I couldn't read your Piper tasks just now, so the list above doesn't include it. "
         "Try again in a moment; if it keeps failing, tell us."
     )
+    _assert_no_internal_labels(result.message)
+
+
+# ── #2258 residue (Arch 2026-11-02 19:3x; #2151's rule): failed and unconfirmed writes
+# are never read as changes Piper made, not in the list and not in the count. ──────────
+
+
+@pytest.mark.asyncio
+async def test_failed_and_unconfirmed_rows_are_neither_listed_nor_counted(intent_service):
+    rows = [
+        _audit("Comment on issue #38", 2, status="success"),
+        _audit("Create issue in owner/repo", 4, status="failed"),
+        _audit("Close issue #12", 6, status="unconfirmed"),
+    ]
+    result, _ = await _run(intent_service, _intent(), rows, [], [])
+    assert "**Actions** (1):" in result.message
+    assert "  - Comment on issue #38" in result.message
+    assert "Create issue in owner/repo" not in result.message
+    assert "Close issue #12" not in result.message
+    assert "more" not in result.message
+    _assert_no_internal_labels(result.message)
+
+
+@pytest.mark.asyncio
+async def test_only_failed_rows_render_no_actions_block_and_no_count_sentence(intent_service):
+    rows = [
+        _audit("Create issue in owner/repo", 4, status="failed"),
+        _audit(None, 6, status="unconfirmed"),
+    ]
+    result, _ = await _run(intent_service, _intent(), rows, [], [])
+    assert "**Actions**" not in result.message
+    assert "changes for you" not in result.message
+    assert "change for you" not in result.message
+    assert "Create issue in owner/repo" not in result.message
+    _assert_no_internal_labels(result.message)
+
+
+@pytest.mark.asyncio
+async def test_count_sentence_counts_successes_only(intent_service):
+    rows = [
+        _audit(None, 2, status="success"),
+        _audit(None, 3, status="success"),
+        _audit(None, 4, status="failed"),
+    ]
+    result, _ = await _run(intent_service, _intent(), rows, [], [])
+    assert result.message.endswith("Piper made 2 changes for you.")
     _assert_no_internal_labels(result.message)

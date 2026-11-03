@@ -718,10 +718,19 @@ def _render_changes_actions(audit_activity: List[Dict[str, Any]]) -> List[str]:
     message; every other row (no message, or past the cap) is counted in one
     "and N more" line. When no row has a usable message the block is CXO's single
     count sentence."""
-    total = len(audit_activity)
+    # #2258 residue (Arch 2026-11-02 19:3x; #2151's rule): only rows whose write
+    # succeeded are changes Piper made. A ``failed`` or ``unconfirmed`` row is left out
+    # of the list AND the count; it never reads as done. Rows that predate the #1680
+    # flags carry "success"/"failed"/"error" too; anything that is not "success" is
+    # left out. CXO's "tried, didn't go through" line is a separate follow-up; until
+    # then these rows are simply not claimed.
+    done = [row for row in audit_activity if row.get("status") == "success"]
+    total = len(done)
+    if total == 0:
+        return []
     named = [
         msg.strip()
-        for msg in (row.get("message") for row in audit_activity)
+        for msg in (row.get("message") for row in done)
         if isinstance(msg, str) and msg.strip()
     ]
     if not named:
@@ -11596,6 +11605,9 @@ class IntentService:
                                 "action": log.action,
                                 "event_type": log.event_type,
                                 "message": log.message,
+                                # #2258 (Arch 19:3x, #2151's rule): a failed or
+                                # unconfirmed row never renders as a change Piper made.
+                                "status": log.status,
                                 "timestamp": log.created_at.isoformat(),
                             }
                         )
@@ -20669,18 +20681,15 @@ Add any additional information here.
         except Exception:
             pass
 
-        # #1566: due reminders ride every floor-bound turn — including this
-        # GUIDANCE pathway, which bypasses ContextAssembler's category
-        # dispatch. Same cached gather (#984), same #1425 source_failed
-        # honesty; _format_domain_context renders the keys like any other.
-        try:
-            from services.intent_service.context_assembler import ContextAssembler
-
-            reminder_ctx = await ContextAssembler()._gather_reminder_context(user_id)
-            if reminder_ctx:
-                context.update(reminder_ctx)
-        except Exception as e:  # silent-ok: reminder enrichment on the GUIDANCE path is additive; a failed gather degrades to no-reminders but is LOGGED (was a bare pass — the zero-log shape #1423 calls strictly worse)
-            self.logger.warning("guidance_reminder_gather_failed", error=str(e))
+        # #2042 aside (CXO 2026-11-02 18:59; Arch 19:3x): GUIDANCE turns carry NO due-
+        # reminder block. This path used to merge ContextAssembler's reminder gather
+        # directly (#1566, "every floor-bound turn"), bypassing both the #2233 ride
+        # gate and the #1625 mention gate, so a person thinking something through got
+        # an unasked reminder aside on the one turn where it costs most. Keyed on the
+        # route the classifier chose, never on wording (ADR-080). Nothing is marked
+        # surfaced here, so the conversation's one mention moves to the next op in
+        # DUE_REMINDER_LINE_OPS (PPM's "defer, don't spend"). The enforcement pin
+        # TestReminderGatherHasOneFloorCaller holds this seam closed.
 
         return context
 
