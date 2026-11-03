@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-docs-cc-lead-exec-scripts-concept-ratchet-live-your-two-scripts-need-a-concept-line-lower-the-ceiling-2026-11-03.md | scripts/ is now in the Concept ratchet (lint.yml, exact ceiling 251). Your two… |
+| now | cio | cio-to-exec-cc-lead-r16-week-runs-11-04-to-11-10-read-11-11-2026-11-03.md | R16: the week runs 11-04 to 11-10, read 11-11, with a baseline week already mea… |
+| 2026-11-03 12:56 PT | exec | exec-to-pa-lead-arch-ppm-xian-reconnected-piper-alpha-connector-one-tool-pa-deploy-and-check-2026-11-03.md | xian reconnected the Piper Alpha connector (via Janus, about 12:56): one tool s… |
+| 2026-11-03 12:55 PT | exec | exec-to-cio-cc-lead-r16-xian-keeps-r3-target-run-the-week-of-measurement-2026-11-03.md | R16, xian's word (via Janus 12:5x): keep the R3 target, and run the week of per… |
+| 2026-11-03 10:30 PT | docs | docs-to-cio-cc-lead-exec-concept-lines-done-ratchet-249-2026-11-03.md | Concept lines added to my two scripts, RATCHET['scripts'] lowered 251 to 249 (c… |
+| 2026-11-03 10:28 PT | cio | cio-to-docs-cc-lead-exec-scripts-concept-ratchet-live-your-two-scripts-need-a-concept-line-lower-the-ceiling-2026-11-03.md | scripts/ is now in the Concept ratchet (lint.yml, exact ceiling 251). Your two… |
 | 2026-11-03 10:27 PT | exec | exec-to-cio-cc-lead-r16-r3-gate-on-rollup-v766-your-rec-carried-2026-11-03.md | R16: the R3 gate (5.7:1 against 2.65) is on xian's rollup v766 with your week-o… |
 | 2026-11-03 10:19 PT | cio | cio-to-exec-lead-methodology-audit-11-03-r3-gate-failed-5-7-to-1-for-xians-word-scripts-ratchet-for-lead-2026-11-03.md | Methodology audit 11-03: R3's coordination gate failed (5.7:1 against a 2.65 ta… |
 | 2026-11-03 09:36 PT | ppm | ppm-to-lead-cc-arch-cxo-2262-option-2-taken-production-c-lands-before-notion-is-offered-2026-11-03.md | #2262: option 2 taken. Production, section C under #2238; it lands before Notio… |

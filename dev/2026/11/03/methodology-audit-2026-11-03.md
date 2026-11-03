@@ -160,6 +160,7 @@ No rule was reverted.
 - The next audit is due **by 2026-12-29** (8 weeks), or within 2 weeks of the next gate closing.
 - The 12-09 review of m-51, m-55, m-56 and m-57 stands. m-55 needs a second author or a HISTORICAL banner then.
 - Re-run R3 for 11-03 to 12-02 at the next audit.
+- R16 ruled 11-03 (xian via Janus and Exec): keep the 2.65 target and measure for a week first. `scripts/memo-volume.py SINCE UNTIL` counts memos per day and median words per memo by sending seat, for v3 and v4. The baseline week 10-27 to 11-02 is 1,070 v3 memos and 14 v4. The measured week is 11-04 to 11-10, read 11-11 beside the 11-05 mail v4 decision.
 
 ## 7. Method notes (what the spot-checks changed)
 
