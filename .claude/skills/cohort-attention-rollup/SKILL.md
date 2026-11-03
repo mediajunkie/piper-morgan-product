@@ -9,6 +9,7 @@ description: >
   need a single-glance summary. Originally a PA prototype; maintained by the
   Chief of Staff (Exec) as part of the org-attention oversight lane.
 argument-hint: "[--date YYYY-MM-DD if compiling for a date other than today]"
+scope: exec
 concept: "Concept: docs/internal/operations/cohort-attention-rollup-runbook.md (added 2026-10-14, sunset-or-renew inventory; CIO)"
 ---
 

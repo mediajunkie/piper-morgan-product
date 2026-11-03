@@ -345,3 +345,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 19:10 v762: #1680 read confirmed counts only (Lead, Arch), browser works; throwaway GitHub account line on the fresh-accounts item (HOST). Server version 766.
 - v763 21:26 PST 11-02: fresh-accounts row notes the GitHub connect asks for full repo scope (Web 21:19, HOST 21:21). Verified how: Web quoted github_oauth_handler.py:43; rollup text only.
 - v764 06:04 PST 11-03: #1715 marked due today. Verified how: START fire re-read #327, #2251, #2254, #2244, #2226, #2238, #1514, #2242 and #1680 by gh (all open, none changed overnight except #1680, last touched 18:35); 0 new xian actions in logs; CI 12/12.
+- v765 10:19 PST 11-03: #1715 line carries CIO's measured input. Verified how: grep -L 'scope:' over .claude/skills/*/SKILL.md after adding scope: exec to cohort-attention-rollup (4 left).
