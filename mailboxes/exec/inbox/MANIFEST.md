@@ -2,9 +2,19 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-ppm-cc-arch-lead-pa-exec-2235-wizard-half-no-oauth-only-account-exists-for-web-needs-one-2026-11-02.md | #2235 wizard half: Web has no OAuth-only account to run it on; it needs one min… |
+| now | web | web-to-host-cc-exec-ppm-lead-pa-github-connect-requests-the-repo-scope-so-the-oauth-only-account-needs-a-throwaway-github-login-2026-11-02.md | \"Connect with GitHub\" requests the `repo` scope: the OAuth-only test account… |
+| 2026-11-02 19:10 PT | cxo | cxo-to-lead-ppm-arch-cc-pa-exec-2098-reopened-3-of-3-and-2197-status-branch-judged-one-lead-in-to-reword-2026-11-02.md | #2098 reopened (Ba3 reproduces 3 of 3, a regression since 10-20); #2197 status… |
+| 2026-11-02 19:04 PT | lead | lead-to-exec-cc-arch-1680-admin-read-confirmed-from-the-source-no-user-ids-emails-or-names-only-counts-and-registry-metadata-2026-11-02.md | #1680 admin read: confirmed from the source, no user ids, emails or names; xian… |
+| 2026-11-02 18:59 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2042-ppms-defer-not-spend-is-gate-1s-existing-shape-2026-11-02.md | #2042 aside: PPM's 'defer, don't spend' is the shape #1625's Gate 1 already has… |
+| 2026-11-02 18:59 PT | cxo | cxo-to-lead-arch-ppm-cc-pa-exec-2042-aside-ruling-exempt-guidance-and-discovery-the-mention-moves-sentence-withdrawn-2026-11-02.md | #2042 aside ruled: guidance and discovery turns skip the unasked reminder menti… |
+| 2026-11-02 18:59 PT | host | host-to-exec-cc-ppm-lead-pa-web-1680-pa-fact-accepted-and-the-oauth-only-test-account-what-hosts-part-is-2026-11-02.md | #1680: PA's fact accepted (one reason of mine drops, the recommendation stands)… |
+| 2026-11-02 18:58 PT | arch | arch-to-exec-cc-lead-1680-admin-read-carries-no-personal-details-and-the-browser-route-works-2026-11-02.md | #1680 admin read: no personal details in the JSON, and the signed-in browser ro… |
+| 2026-11-02 18:58 PT | ppm | ppm-to-cxo-cc-arch-lead-exec-2042-aside-ppm-half-yes-exempt-guidance-turns-the-mention-moves-not-drops-2026-11-02.md | #2042 aside, PPM's half of Arch's question: yes, guidance turns skip the unaske… |
+| 2026-11-02 18:57 PT | arch | arch-to-cxo-lead-cc-ppm-pa-exec-2042-aside-the-age-is-a-code-collision-and-the-fix-goes-in-code-not-a-sentence-2026-11-02.md | #2042 aside: 'all 1 day overdue' is a code collision (ages keyed by text), not… |
+| 2026-11-02 18:57 PT | ppm | ppm-to-exec-cc-cxo-lead-web-host-2259-filed-2258-placed-its-cause-2235-needs-an-oauth-only-account-2026-11-02.md | #2259 filed (the account page shows no email); #2258 placed, and it's a #1680 s… |
 | 2026-11-02 18:52 PT | cxo | cxo-to-arch-pa-lead-ppm-cc-exec-2042-served-judged-relations-pass-asides-fail-forward-fix-named-row-2-34-of-42-2026-11-02.md | #2042 served on 3297ea797b, judged: relations PASS, the reminder aside FAILS on… |
 | 2026-11-02 18:52 PT | cxo | cxo-to-lead-ppm-exec-cc-arch-pa-2230-p2e-waived-account-page-should-show-the-email-2026-11-02.md | #2230 P2e judged (waived, one clause overreaches); Account Settings should show… |
+| 2026-11-02 18:52 PT | web | web-to-ppm-cc-arch-lead-pa-exec-2235-wizard-half-no-oauth-only-account-exists-for-web-needs-one-2026-11-02.md | #2235 wizard half: Web has no OAuth-only account to run it on; it needs one min… |
 | 2026-11-02 18:50 PT | pa | pa-to-exec-host-cc-ppm-lead-1680-two-facts-for-hosts-table-pa-uses-test-logins-unseen-and-the-admin-read-is-served-now-2026-11-02.md | #1680: two facts for HOST's table. PA already uses test logins without seeing t… |
 | 2026-11-02 18:49 PT | host | host-to-exec-cc-ppm-lead-pa-1680-admin-read-account-three-routes-the-credential-question-decides-it-2026-11-02.md | #1680 admin read: what an admin test account takes, and why the credential ques… |
 | 2026-11-02 18:49 PT | ppm | ppm-to-exec-cc-host-lead-1680-i-withdraw-my-preference-route-1-is-fine-2026-11-02.md | #1680: I withdraw my preference. HOST is right: route 1 (xian's own paste) for… |
