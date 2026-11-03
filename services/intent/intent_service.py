@@ -724,21 +724,35 @@ CHANGES_ACTIONS_READ_FAILED_BESIDE_ROWS = (
     "I couldn't read what Piper did for you just now, so the list above doesn't include it. "
     "Try again in a moment; if it keeps failing, tell us."
 )
-# CXO 10-23 09:27: all three failed (or no principal), the window named.
+# CXO 10-23 09:27: all three failed (or no principal), the window named. #2258 (CXO
+# 2026-11-03 08:2x): the third source reads "what Piper did for you", never "activity log".
 CHANGES_READ_FAILED_ALL = (
-    "I couldn't read your Piper tasks, projects or activity log just now, so I can't say "
-    "what changed {window}. Try again in a moment; if it keeps failing, tell us."
+    "I couldn't read your Piper tasks or projects, or what Piper did for you, just now, so I "
+    "can't say what changed {window}. Try again in a moment; if it keeps failing, tell us."
 )
 # CXO 10-23 09:27: rows listed, one line per source that failed.
 CHANGES_READ_FAILED_BESIDE_ROWS = (
     "I couldn't read your Piper {source} just now, so the list above doesn't include it. "
     "Try again in a moment; if it keeps failing, tell us."
 )
-# CXO 10-23 09:27: the sources that read ok are empty and some failed; no opener.
-CHANGES_NOTHING_NEW_SOME_FAILED = (
-    "I don't see anything new in your Piper {ok_sources} {window}. I couldn't read your "
-    "Piper {failed_sources} just now, so I can't say what changed there. Try again in a "
-    "moment; if it keeps failing, tell us."
+# CXO 10-23 09:27: the sources that read ok are empty and some failed; no opener. #2258
+# (CXO 2026-11-03 08:2x, the seven strings read and landed with one edit): the first
+# sentence says what the good reads found, in the nothing-new line's words; the second
+# names what couldn't be read ("I can't say", never an empty result: #2140, #2151); the
+# Slack/GitHub claim is the nothing-new line's own words (one stem, pinned); no GitHub
+# waiver on a failure path. Built by ``_changes_some_failed_empty``.
+CHANGES_SLACK_GITHUB_CLAIM = "Piper hasn't posted to Slack or written to GitHub for you"
+CHANGES_TRY_AGAIN = "Try again in a moment; if it keeps failing, tell us."
+CHANGES_SOME_FAILED_EMPTY_OK = "I don't see anything new in your Piper {sources} {window}"
+CHANGES_SOME_FAILED_EMPTY_FAILED_SOURCES = (
+    "I couldn't read your Piper {sources} just now, so I can't say what changed there."
+)
+CHANGES_SOME_FAILED_EMPTY_FAILED_SOURCES_AND_ACTIONS = (
+    "I couldn't read your Piper {sources} or what Piper did for you just now, so I can't say "
+    "what changed there."
+)
+CHANGES_SOME_FAILED_EMPTY_FAILED_ACTIONS = (
+    "I couldn't read what Piper did for you just now, so I can't say what it did {window}."
 )
 # #2258 (CXO 2026-11-02 18:59, 21:4x, 21:48, 22:01; Arch 21:46, 21:58): the Actions block
 # names each action Piper took in the person's terms, from the consequential-site
@@ -861,6 +875,31 @@ def _render_changes_actions(audit_activity: List[Dict[str, Any]]) -> List[str]:
                 once.format(phrase=phrase) if n == 1 else repeated.format(phrase=phrase, n=n)
             )
     return lines
+
+
+def _changes_some_failed_empty(read_ok, failed, window: str) -> str:
+    """The empty reply when some reads failed (#2140; #2258 words, CXO 2026-11-03 08:2x)."""
+    ok_sources = [n for n in read_ok if n != CHANGES_ACTIONS_SOURCE]
+    failed_sources = [n for n in failed if n != CHANGES_ACTIONS_SOURCE]
+    actions_ok = CHANGES_ACTIONS_SOURCE in read_ok
+    if ok_sources:
+        first = CHANGES_SOME_FAILED_EMPTY_OK.format(
+            sources=_join_sources(ok_sources, "or"), window=window
+        )
+        first += f", and {CHANGES_SLACK_GITHUB_CLAIM} in that time." if actions_ok else "."
+    else:
+        first = f"{CHANGES_SLACK_GITHUB_CLAIM} {window}."
+    if CHANGES_ACTIONS_SOURCE in failed and not failed_sources:
+        second = CHANGES_SOME_FAILED_EMPTY_FAILED_ACTIONS.format(window=window)
+    elif CHANGES_ACTIONS_SOURCE in failed:
+        second = CHANGES_SOME_FAILED_EMPTY_FAILED_SOURCES_AND_ACTIONS.format(
+            sources=_join_sources(failed_sources, "or")
+        )
+    else:
+        second = CHANGES_SOME_FAILED_EMPTY_FAILED_SOURCES.format(
+            sources=_join_sources(failed_sources, "or")
+        )
+    return f"{first} {second} {CHANGES_TRY_AGAIN}"
 
 
 def _join_sources(names, conjunction: str = "and") -> str:
@@ -11832,11 +11871,7 @@ class IntentService:
 
             if total_activities == 0:
                 message = (
-                    CHANGES_NOTHING_NEW_SOME_FAILED.format(
-                        ok_sources=_join_sources(read_ok, "or"),
-                        window=time_desc,
-                        failed_sources=_join_sources(failed, "or"),
-                    )
+                    _changes_some_failed_empty(read_ok, failed, time_desc)
                     if failed
                     else CHANGES_NOTHING_NEW.format(window=time_desc)
                 )

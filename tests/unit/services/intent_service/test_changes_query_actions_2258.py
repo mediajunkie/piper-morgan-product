@@ -392,6 +392,74 @@ async def test_only_the_actions_read_ok_opens_with_what_piper_did(intent_service
     assert "activity log" not in result.message
 
 
+# ── CXO 2026-11-03 08:2x: the seven failure-path strings, read and landed with one edit ──
+
+_TRY = " Try again in a moment; if it keeps failing, tell us."
+_BOOM = RuntimeError("read failed")
+_SEVEN = {
+    # (audit, tasks, projects) read specs → the whole reply
+    ("ok", "fail", "ok"): (
+        "I don't see anything new in your Piper projects since yesterday, and Piper hasn't "
+        "posted to Slack or written to GitHub for you in that time. I couldn't read your Piper "
+        "tasks just now, so I can't say what changed there." + _TRY
+    ),
+    ("ok", "ok", "fail"): (
+        "I don't see anything new in your Piper tasks since yesterday, and Piper hasn't posted "
+        "to Slack or written to GitHub for you in that time. I couldn't read your Piper projects "
+        "just now, so I can't say what changed there." + _TRY
+    ),
+    ("fail", "ok", "ok"): (
+        "I don't see anything new in your Piper tasks or projects since yesterday. I couldn't "
+        "read what Piper did for you just now, so I can't say what it did since yesterday." + _TRY
+    ),
+    ("ok", "fail", "fail"): (
+        "Piper hasn't posted to Slack or written to GitHub for you since yesterday. I couldn't "
+        "read your Piper tasks or projects just now, so I can't say what changed there." + _TRY
+    ),
+    ("fail", "fail", "ok"): (
+        "I don't see anything new in your Piper projects since yesterday. I couldn't read your "
+        "Piper tasks or what Piper did for you just now, so I can't say what changed there." + _TRY
+    ),
+    ("fail", "ok", "fail"): (
+        "I don't see anything new in your Piper tasks since yesterday. I couldn't read your "
+        "Piper projects or what Piper did for you just now, so I can't say what changed there."
+        + _TRY
+    ),
+    ("fail", "fail", "fail"): (
+        "I couldn't read your Piper tasks or projects, or what Piper did for you, just now, so "
+        "I can't say what changed since yesterday." + _TRY
+    ),
+}
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("spec", sorted(_SEVEN))
+async def test_the_seven_failure_path_strings_are_cxos(intent_service, spec):
+    reads = [_BOOM if r == "fail" else [] for r in spec]
+    result, _ = await _run(intent_service, _intent(), *reads)
+    assert result.message == _SEVEN[spec]
+    assert result.success is (spec != ("fail", "fail", "fail"))
+    assert "activity log" not in result.message
+
+
+def test_the_slack_github_claim_is_one_stem_shared_with_the_nothing_new_line():
+    assert mod.CHANGES_SLACK_GITHUB_CLAIM == (
+        "Piper hasn't posted to Slack or written to GitHub for you"
+    )
+    assert f"{mod.CHANGES_SLACK_GITHUB_CLAIM} in that time." in mod.CHANGES_NOTHING_NEW
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("spec", sorted(_SEVEN) + [("ok", "ok", "ok")])
+@pytest.mark.parametrize("with_rows", [False, True])
+async def test_no_branch_names_an_activity_log(intent_service, spec, with_rows):
+    rows = [_audit("github.chat.close_issue", "success", "38")] if with_rows else []
+    reads = [_BOOM if r == "fail" else (rows if i == 0 else []) for i, r in enumerate(spec)]
+    result, _ = await _run(intent_service, _intent(), *reads)
+    assert "activity log" not in result.message
+    assert "checked GitHub" not in result.message
+
+
 @pytest.mark.asyncio
 @pytest.mark.parametrize("rows", [49, 60, 250])
 async def test_the_headline_count_is_exact_never_at_least(intent_service, rows):

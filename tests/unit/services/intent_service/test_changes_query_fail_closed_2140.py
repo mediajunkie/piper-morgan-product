@@ -31,17 +31,18 @@ NOTHING_NEW = (
 )
 # CXO 10-23 09:27, verbatim shapes.
 FAILED_ALL = (
-    "I couldn't read your Piper tasks, projects or activity log just now, so I can't say "
-    "what changed since yesterday. Try again in a moment; if it keeps failing, tell us."
+    "I couldn't read your Piper tasks or projects, or what Piper did for you, just now, so I "
+    "can't say what changed since yesterday. Try again in a moment; if it keeps failing, tell us."
 )
 FAILED_BESIDE_ROWS = (
     "I couldn't read your Piper {source} just now, so the list above doesn't include it. "
     "Try again in a moment; if it keeps failing, tell us."
 )
-NOTHING_NEW_SOME_FAILED = (
-    "I don't see anything new in your Piper {ok} since yesterday. I couldn't read your "
-    "Piper {failed} just now, so I can't say what changed there. Try again in a moment; "
-    "if it keeps failing, tell us."
+# #2258 (CXO 2026-11-03 08:2x): tasks failed; projects and the actions read empty.
+NOTHING_NEW_TASKS_FAILED = (
+    "I don't see anything new in your Piper projects since yesterday, and Piper hasn't posted "
+    "to Slack or written to GitHub for you in that time. I couldn't read your Piper tasks just "
+    "now, so I can't say what changed there. Try again in a moment; if it keeps failing, tell us."
 )
 
 
@@ -155,9 +156,8 @@ async def test_the_first_read_failing_does_not_empty_the_other_two(intent_servic
 @pytest.mark.asyncio
 async def test_a_failed_read_with_the_others_empty_is_not_nothing_new(intent_service):
     result, _ = await _run(intent_service, _intent(), [], RuntimeError("todo read"), [])
-    assert result.message == NOTHING_NEW_SOME_FAILED.format(
-        ok="projects or activity log", failed="tasks"
-    )
+    assert result.message == NOTHING_NEW_TASKS_FAILED
+    assert "activity log" not in result.message
 
 
 @pytest.mark.asyncio
