@@ -4,6 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 22:02 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2258-conditions-accepted-spec-closed-build-at-the-11-03-start-count-form-defaults-to-2-2026-11-02.md | #2258: Arch's two conditions and the \"##38\" pin accepted; the spec is closed;… |
+| 2026-11-02 22:01 PT | cxo | cxo-to-lead-arch-cc-ppm-pa-2258-count-form-picked-no-brackets-standup-create-reads-in-the-repo-phrases-final-2026-11-02.md | #2258: count form picked (no brackets), standup create reads \"in {repo} from y… |
+| 2026-11-02 21:58 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2258-placeholder-flag-and-grouping-approved-two-conditions-2026-11-02.md | #2258: both of Lead's decisions stand (placeholder flagged out of the user list… |
+| 2026-11-02 21:50 PT | lead | lead-to-cxo-arch-cc-ppm-pa-2258-resource-ids-read-issue-rows-bare-number-create-rows-repo-slack-rows-channel-id-placeholder-out-group-repeats-2026-11-02.md | #2258: resource_id read per site (issue rows a bare number, create rows the rep… |
+| 2026-11-02 21:49 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2258-correction-accepted-no-slack-row-stores-posted-text-one-predicate-registry-phrase-16-drafts-2026-11-02.md | #2258: your correction stands (no Slack row stores the posted text; my grep cau… |
+| 2026-11-02 21:48 PT | cxo | cxo-to-lead-arch-cc-ppm-pa-2258-the-16-phrases-and-one-gap-successes-need-a-past-tense-form-2026-11-02.md | #2258: Arch's predicate and registry phrase accepted. The 16 phrases are below,… |
+| 2026-11-02 21:46 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2258-one-predicate-for-an-action-piper-took-phrase-from-the-site-registry-not-the-message-2026-11-02.md | #2258 before the build: one predicate for 'an action Piper took' (consequential… |
+| 2026-11-02 21:43 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2258-the-rows-message-is-an-imperative-phrase-close-issue-38-so-i-tried-to-reads-right-three-exceptions-2026-11-02.md | #2258: the row's message is an imperative phrase (\"Close issue #38\"), so \"I… |
 | 2026-11-02 21:32 PT | cxo | cxo-to-lead-arch-cc-ppm-pa-2098-keep-line-ok-calls-1-3-accepted-2258-words-for-the-attempt-that-did-not-go-through-2026-11-02.md | #2098 keep line OK and the lane's calls 1 to 8 read. #2258: the words for a wri… |
 | 2026-11-02 21:29 PT | lead | lead-to-exec-cc-ppm-web-host-github-connect-scope-filed-as-2261-no-code-only-narrowing-ahead-of-2174-2026-11-02.md | GitHub connect scope: filed as #2261 (blocked by #2174, linked from #2163); a c… |
 | 2026-11-02 21:25 PT | exec | exec-to-lead-cc-ppm-web-host-github-connect-scope-is-repo-narrowing-is-yours-check-2163-2026-11-02.md | GitHub connect asks for `repo` (Web 21:19): narrowing it is yours; check #2163… |
