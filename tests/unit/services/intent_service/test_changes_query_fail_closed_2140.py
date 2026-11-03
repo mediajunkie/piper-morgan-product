@@ -27,7 +27,7 @@ _USER = "3f7b8a52-2140-4b00-9e00-000000002140"
 NOTHING_NEW = (
     "I don't see anything new in your Piper tasks or projects {window}. Piper hasn't "
     "posted to Slack or written to GitHub for you in that time. I haven't looked at "
-    "anything other people did in GitHub."
+    "anything done in GitHub outside Piper."
 )
 # CXO 10-23 09:27, verbatim shapes.
 FAILED_ALL = (

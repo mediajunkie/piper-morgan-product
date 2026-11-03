@@ -311,7 +311,7 @@ class TestChangesQueryResults:
             assert result.message == (
                 "I don't see anything new in your Piper tasks or projects since yesterday. "
                 "Piper hasn't posted to Slack or written to GitHub for you in that time. "
-                "I haven't looked at anything other people did in GitHub."
+                "I haven't looked at anything done in GitHub outside Piper."
             )  # #2140 (CXO): all three read ok and all three empty; #2258 words
             assert result.intent_data["total_activities"] == 0
 

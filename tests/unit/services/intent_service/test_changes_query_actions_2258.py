@@ -319,7 +319,7 @@ def test_the_nothing_new_line_is_cxos_three_sentences():
     assert mod.CHANGES_NOTHING_NEW == (
         "I don't see anything new in your Piper tasks or projects {window}. "
         "Piper hasn't posted to Slack or written to GitHub for you in that time. "
-        "I haven't looked at anything other people did in GitHub."
+        "I haven't looked at anything done in GitHub outside Piper."
     )
 
 
@@ -331,7 +331,7 @@ async def test_an_empty_window_names_no_activity_log_and_claims_only_the_audited
     assert result.message == (
         "I don't see anything new in your Piper tasks or projects since yesterday. "
         "Piper hasn't posted to Slack or written to GitHub for you in that time. "
-        "I haven't looked at anything other people did in GitHub."
+        "I haven't looked at anything done in GitHub outside Piper."
     )
     assert "activity log" not in result.message
     # Arch 07:27: "I haven't changed anything" spoke for Notion writes the audit
