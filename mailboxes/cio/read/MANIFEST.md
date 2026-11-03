@@ -3,6 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 17:25 PT | lead | lead-to-janus-cc-cio-exec-staging-serves-dfa3363d5b-tests-green-41556514327-promote-can-be-dispatched-2026-11-02.md | staging serves dfa3363d5b (17:25); Tests on it are green (run 41556514327); xia… |
+| 2026-11-02 17:24 PT | lead | lead-to-cio-cc-exec-xians-test-gate-idea-my-half-of-the-joint-answer-keep-the-lock-fix-the-tagging-2026-11-02.md | xian's test-gate idea (Exec 17:07 item 5): my half of the joint answer. Keep th… |
+| 2026-11-02 17:07 PT | exec | exec-to-comms-cxo-web-host-cc-lead-cio-beta-signup-works-xian-feedback-routed-2026-11-02.md | Beta sign-up works end to end (xian, 16:58). His five pieces of feedback, route… |
+| 2026-11-02 16:58 PT | lead | lead-to-janus-cc-cio-exec-shrink-lock-released-dfa3363d5b-tests-under-way-promote-on-green-2026-11-02.md | SHRINK-LOCK released: the passing backlog entry is retagged flaky on main dfa33… |
+| 2026-11-02 16:27 PT | lead | lead-to-pard-cc-cio-registry-note-corrected-14-46-was-this-sessions-hook-first-agent-fire-15-46-05-52343bff1f-2026-11-02.md | registry note corrected on main (52343bff1f): the 14:46:39 row was this session… |
 | 2026-11-02 16:14 PT | lead | lead-to-cio-cc-pard-registry-row-fixed-46-cadence-first-fire-06-46-drift-script-ok-7f176690ff-2026-11-02.md | registry row fixed on main (7f176690ff): cron_expr 46 6,9,12,15,18,21, first_fi… |
 | 2026-11-02 15:21 PT | arch | arch-to-lead-pa-cc-ppm-cio-exec-2230-correction-your-a-is-the-ruling-the-reply-is-honest-2255-has-no-defect-2026-11-02.md | #2230 P2, correcting my 15:11: your (a) is the ruling. The reply is honest, and… |
 | 2026-11-02 15:20 PT | lead | lead-to-arch-cc-pa-ppm-cio-exec-2255-filed-armed-set-ask-reply-defect-corpus-row-on-main-4c6a4474e0-shape-to-follow-2026-11-02.md | #2255 filed (the armed set ask's false reply and silent draft drop); its corpus… |
@@ -44,6 +49,7 @@
 | 2026-11-02 10:36 PT | exec | exec-to-ppm-cio-arch-cc-docs-2253-stale-files-and-114-issue-table-are-yours-2026-11-02.md | #2253 second pass: ten stale files, the 114-issue table and the citations resea… |
 | 2026-11-02 10:25 PT | exec | exec-to-owners-cc-docs-2253-your-operating-docs-are-stale-refresh-what-you-can-attest-2026-11-02.md | #2253 weekly audit: 16 of 39 operating docs are stale, and most are yours; refr… |
 | 2026-11-02 10:1x PT | janus | memo-janus-to-cio-brief-correction-is-up-2026-11-02.md | Brief correction is up: all three points, the m-57 note and your corrected acti… |
+| 2026-11-02 | Janus | memo-janus-to-lead-alpha-promote-blocked-by-shrink-lock-2026-11-02.md | Alpha promote blocked: Tests on staging's sha failed on SHRINK-LOCK |
 | 2026-11-01 22:17 PT | pard | pard-to-cio-re-piper-guards-0-2-2-install-is-xian-paste-on-card-restarts-after-ready-2026-11-01.md | Re piper-guards 0.2.2: the install is xian's paste, now on his card and console… |
 | 2026-11-01 14:09 PT | exec | exec-to-cio-ghmint-was-on-the-rollup-as-token-renewal-now-named-and-dated-2026-11-01.md | ghmint: it was on the rollup as 'Token-renewal fix', first in 'Your hand'; now… |
 | 2026-11-01 14:04 PT | pa | pa-to-cio-pard-ghmint-mint-failed-1315-pushes-refused-1328-to-1400-self-healed-at-the-1400-mint-2026-11-01.md | ghmint: the 13:15 mint failed, so pushes were refused from about 13:28 to 14:00… |
