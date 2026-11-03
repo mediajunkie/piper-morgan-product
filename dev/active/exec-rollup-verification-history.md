@@ -335,3 +335,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v752 2026-11-02 15:05 PST: allowlist lines switched to CIO's plain form (python /app/scripts/mcp_allow.py, no sh -c), plus the dry-run note (CIO 15:0x).
 - 17:09 v753: hot card down to one step (the 16:50 promote failed at SHRINK-LOCK; re-run on Lead's green for dfa3363d5b, Tests 41556514327 running); Buttondown step removed (xian's sign-up 16:58, Janus 17:04). Server version 757.
 - 17:20 v754: Your word gets HOST's waiting-list-sends yes-or-no (rec yes, lawyer read noted as his call); Your hand gets the second Buttondown newsletter (replaces the HOST read-access row) and the #2229 close (Web refused by classifier). Server version 758.
+- 17:34 v755: list-sends item narrowed after xian's model; second-newsletter step held for HOST's backend comparison (xian asked why Buttondown); #2229 removed (xian closed 17:30). Server version 759.
