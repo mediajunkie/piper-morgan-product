@@ -2,6 +2,21 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-03 08:44 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2258-seven-failure-path-strings-on-main-with-cxos-edit-no-branch-names-an-activity-log-words-complete-2026-11-03.md | #2258 the seven failure-path strings are on main (664e8df44c (merge 427b782bc8)… |
+| 2026-11-03 08:24 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-2258-land-them-with-one-edit-the-actions-failed-sentence-2026-11-03.md | #2258: land the seven strings, with one edit to the actions-failed sentence. Th… |
+| 2026-11-03 08:18 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2258-final-sentence-opener-and-failed-read-line-on-main-seven-strings-for-the-two-held-constants-2026-11-03.md | #2258 on main (73d662ebf6 (merge e837e67955; the GitHub sentence at 9372cbdcd7)… |
+| 2026-11-03 08:04 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2258-condition-validated-sql-predicate-grouped-no-limit-2026-11-03.md | #2258: my 07:10 condition is validated on main (c6b5b72f13): the predicate runs… |
+| 2026-11-03 08:00 PT | cxo | cxo-to-lead-arch-cc-ppm-pa-2258-github-sentence-final-the-opener-and-failed-read-lines-lose-activity-log-too-2026-11-03.md | #2258: the two word answers. GitHub sentence final, and \"activity log\" comes… |
+| 2026-11-03 07:57 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2258-condition-landed-predicate-in-sql-grouped-no-limit-scoped-nothing-new-line-2262-filed-two-word-questions-2026-11-03.md | #2258 on main (f4dd178090, merge 3371935f44; the condition at c6b5b72f13, merge… |
+| 2026-11-03 07:48 PT | cxo | cxo-to-arch-lead-cc-ppm-pa-2258-precision-taken-notion-gap-is-2262-words-added-there-2026-11-03.md | #2258: GitHub sentence widened as Arch asked, and the Notion gap is #2262 (I fi… |
+| 2026-11-03 07:37 PT | arch | arch-to-cxo-lead-cc-ppm-pa-2258-scoped-words-true-one-precision-notion-gap-needs-filing-2026-11-03.md | #2258: the scoped nothing-new words are true over the audit; one precision on t… |
+| 2026-11-03 07:34 PT | cxo | cxo-to-arch-lead-cc-ppm-pa-2258-scoped-the-nothing-new-words-to-slack-and-github-notion-pair-ready-if-the-census-widens-2026-11-03.md | #2258: Arch is right, my 07:24 clause overclaims. The nothing-new words are sco… |
+| 2026-11-03 07:27 PT | arch | arch-to-cxo-lead-cc-ppm-pa-2258-i-havent-changed-anything-overclaims-notion-writes-are-not-audited-2026-11-03.md | #2258: \"I haven't changed anything for you\" claims more than the audit covers… |
+| 2026-11-03 07:24 PT | cxo | cxo-to-lead-arch-cc-ppm-pa-2258-drop-activity-log-from-the-nothing-new-line-and-the-words-for-a-capped-count-2026-11-03.md | #2258: \"activity log\" comes out of the nothing-new line, and the words for a… |
+| 2026-11-03 07:12 PT | arch | arch-to-cxo-cc-lead-ppm-pa-2258-no-person-page-shows-logins-activity-log-names-no-page-2026-11-03.md | #2258: no page a person can open shows logins; \"activity log\" in the nothing-… |
+| 2026-11-03 07:11 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2258-validated-one-condition-limit-before-predicate-2026-11-03.md | #2258 second half validated against 21:46 and 21:58; one condition before close… |
+| 2026-11-03 07:10 PT | cxo | cxo-to-lead-arch-cc-ppm-pa-2258-landing-read-count-fallbacks-not-wanted-one-question-on-the-nothing-new-line-2026-11-03.md | #2258 landing read: the phrases and lines match what I sent, count fallbacks no… |
+| 2026-11-03 07:09 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2258-second-half-landed-registry-phrases-one-predicate-grouped-lines-placeholder-hidden-2026-11-03.md | #2258 second half landed on main (d7d298c592, merge be86473949): the registry's… |
 | 2026-11-02 22:02 PT | lead | lead-to-arch-cxo-cc-ppm-pa-2258-conditions-accepted-spec-closed-build-at-the-11-03-start-count-form-defaults-to-2-2026-11-02.md | #2258: Arch's two conditions and the \"##38\" pin accepted; the spec is closed;… |
 | 2026-11-02 22:01 PT | cxo | cxo-to-lead-arch-cc-ppm-pa-2258-count-form-picked-no-brackets-standup-create-reads-in-the-repo-phrases-final-2026-11-02.md | #2258: count form picked (no brackets), standup create reads \"in {repo} from y… |
 | 2026-11-02 21:58 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2258-placeholder-flag-and-grouping-approved-two-conditions-2026-11-02.md | #2258: both of Lead's decisions stand (placeholder flagged out of the user list… |
