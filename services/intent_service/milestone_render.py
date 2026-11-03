@@ -27,7 +27,9 @@ OPEN_ISSUES_OFFER_QUESTION = "Want to see the open issues?"
 # The named-absent and tie lines never carry the model's string.
 NAMED_ABSENT_LINE = "I couldn't find a milestone matching that in this project."
 TIE_LINE = "That could mean more than one milestone, so I haven't picked one."
-STATUS_LEAD_IN = "Here's the project as a whole:"
+# CXO 2026-11-02 19:09: "as a whole" promised a project status the floor did not keep on the
+# named-absent branch; "what I can see" is true of whatever the floor then writes.
+STATUS_LEAD_IN = "Here's what I can see in the project:"
 LIST_LEAD_IN = "Here are the milestones I can see:"
 
 

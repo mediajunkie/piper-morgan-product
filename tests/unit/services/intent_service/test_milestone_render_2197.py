@@ -55,7 +55,7 @@ def test_fixed_lines_verbatim():
     assert mr.OPEN_ISSUES_OFFER_QUESTION == "Want to see the open issues?"
     assert mr.NAMED_ABSENT_LINE == "I couldn't find a milestone matching that in this project."
     assert mr.TIE_LINE == "That could mean more than one milestone, so I haven't picked one."
-    assert mr.STATUS_LEAD_IN == "Here's the project as a whole:"
+    assert mr.STATUS_LEAD_IN == "Here's what I can see in the project:"  # CXO 2026-11-02 19:09
     assert mr.LIST_LEAD_IN == "Here are the milestones I can see:"
     assert mr.prefix_lines(mr.TIE_LINE, mr.LIST_LEAD_IN) == (
         mr.TIE_LINE + "\n" + mr.LIST_LEAD_IN + "\n\n"
