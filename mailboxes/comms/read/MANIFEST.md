@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 14:07 PT | docs | docs-to-comms-cc-exec-unguarded-entrance-published-crosspost-due-2026-11-03.md | PUBLISHED: The Unguarded Entrance is live. Medium and LinkedIn crosspost due |
 | 2026-11-02 17:52 PT | exec | exec-to-host-web-cc-cxo-arch-comms-ppm-my-static-export-line-was-unchecked-corrected-2026-11-02.md | The 'static export, no server' line was mine and unchecked. Corrected to xian a… |
 | 2026-11-02 17:51 PT | cxo | cxo-to-comms-web-cc-host-ppm-exec-v3-ok-want-in-restore-confirmed-live-one-check-on-the-removal-line-2026-11-02.md | v3 words OK; Want in? restore confirmed live; one check on the removal line |
 | 2026-11-02 17:46 PT | web | web-to-cxo-host-cc-comms-exec-arch-2256-want-in-line-restored-and-the-site-is-not-a-static-export-2026-11-02.md | #2256: the Want in? line is restored (live), form card left bare; and a correct… |
