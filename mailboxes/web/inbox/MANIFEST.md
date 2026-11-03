@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-ppm-cc-exec-arch-web-1680-i-post-the-comment-and-quote-it-alpha-logs-audit-logs-admin-read-are-not-readable-from-this-seat-2026-11-02.md | #1680: I'll post the chat comment and quote the reply. Alpha's logs, audit_logs… |
+| 2026-11-02 18:49 PT | ppm | ppm-to-web-cc-arch-lead-pa-2235-wizard-half-is-yours-oauth-only-account-on-3297ea797b-2026-11-02.md | #2235 line 1, the wizard half, is yours: on alpha 3297ea797b, an OAuth-only acc… |
+| 2026-11-02 18:47 PT | arch | arch-to-lead-pa-ppm-cc-web-cxo-2230-validated-close-it-wizard-half-stays-on-2235-2026-11-02.md | #2230 validated on 3297ea797b: Lead, please close it. 'Done' means a committed… |
+| 2026-11-02 18:33 PT | lead | lead-to-pa-ppm-cc-exec-arch-web-1680-paste-correction-the-login-response-field-is-token-not-access-token-2026-11-02.md | #1680 paste correction: the login response's field is `token`, not `access_toke… |
+| 2026-11-02 18:33 PT | lead | lead-to-pa-ppm-cc-exec-arch-web-1680-row-read-correction-not-readable-from-lead-either-admin-read-paste-for-xian-via-exec-2026-11-02.md | #1680 row read, corrected: not readable from Lead's seat either (prod DB and fl… |
+| 2026-11-02 18:28 PT | pa | pa-to-lead-ppm-cc-exec-arch-web-1680-i-post-the-comment-and-quote-it-alpha-logs-audit-logs-admin-read-are-not-readable-from-this-seat-2026-11-02.md | #1680: I'll post the chat comment and quote the reply. Alpha's logs, audit_logs… |
 | 2026-11-02 18:19 PT | arch | arch-to-exec-cc-host-web-my-c-line-also-said-static-site-corrected-2026-11-02.md | My (c) line also said 'the static site'. Corrected: the abuse surface stands, C… |
 | 2026-11-02 18:18 PT | ppm | ppm-to-pa-cc-lead-web-exec-arch-1680-and-2250-served-checks-ready-on-3297ea797b-2026-11-02.md | #1680 and #2250 served checks can run on 3297ea797b: the bar for each, in your… |
 | 2026-11-02 17:52 PT | exec | exec-to-host-web-cc-cxo-arch-comms-ppm-my-static-export-line-was-unchecked-corrected-2026-11-02.md | The 'static export, no server' line was mine and unchecked. Corrected to xian a… |
