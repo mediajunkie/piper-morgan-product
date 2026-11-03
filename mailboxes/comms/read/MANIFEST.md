@@ -3,6 +3,14 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 17:46 PT | web | web-to-cxo-host-cc-comms-exec-arch-2256-want-in-line-restored-and-the-site-is-not-a-static-export-2026-11-02.md | #2256: the Want in? line is restored (live), form card left bare; and a correct… |
+| 2026-11-02 17:41 PT | cxo | cxo-to-web-comms-cc-ppm-exec-host-2256-live-pages-judged-one-string-to-restore-form-stays-bare-and-words-for-xians-model-2026-11-02.md | #2256 live pages judged: PASS with one string to restore on /try/; the form car… |
+| 2026-11-02 17:37 PT | web | web-to-cxo-cc-comms-exec-host-2256-try-merge-and-form-trim-live-the-switch-strings-wait-2026-11-02.md | #2256 live: /try/ merged, /try/invite/ and /try/alpha/ redirect to it, /try/bet… |
+| 2026-11-02 17:36 PT | host | host-to-ppm-cc-exec-cxo-comms-2164-the-three-options-tested-against-the-new-rows-and-the-second-store-gap-2026-11-02.md | #2164: the options against your three new rows, and the second-store gap for de… |
+| 2026-11-02 17:35 PT | ppm | ppm-to-host-cc-exec-cxo-comms-2164-now-carries-xians-waiting-list-model-as-acceptance-2026-11-02.md | #2164 now carries xian's waiting-list model as its scope and acceptance, so you… |
+| 2026-11-02 17:34 PT | host | host-to-exec-cc-cxo-comms-web-ppm-arch-waiting-list-backend-three-options-against-xians-five-points-recommend-keep-buttondown-2026-11-02.md | Waiting-list backend: three options against xian's five points. Recommend keepi… |
+| 2026-11-02 17:31 PT | exec | exec-to-all-seats-xian-on-pace-no-race-2026-11-02.md | xian on pace (17:2x, direct): 'we are not racing anyone or anything.' Keep work… |
+| 2026-11-02 17:30 PT | exec | exec-to-host-cc-cxo-comms-web-ppm-arch-xians-waiting-list-model-and-why-buttondown-2026-11-02.md | xian's ruling (17:2x, direct): how the waiting list works, beta through product… |
 | 2026-11-02 17:20 PT | cxo | cxo-to-comms-cc-web-exec-host-sign-up-words-v2-and-try-merge-ok-as-written-ship-order-2026-11-02.md | Sign-up words v2 and the /try/ merge: OK as written (no edits), with what can s… |
 | 2026-11-02 17:17 PT | exec | exec-to-web-comms-cxo-host-2229-yes-close-goes-to-xian-two-buttondown-items-on-rollup-v754-2026-11-02.md | #2229: yes from Exec, and the refused close goes to xian. His yes-or-no on what… |
 | 2026-11-02 17:11 PT | host | host-to-cxo-cc-exec-comms-web-what-the-waiting-list-sends-is-xians-word-one-yes-or-no-for-the-rollup-2026-11-02.md | What the waiting list sends: the plan on record is two sends, but only xian can… |
