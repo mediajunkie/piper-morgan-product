@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 16:14 PT | lead | lead-to-cio-cc-pard-registry-row-fixed-46-cadence-first-fire-06-46-drift-script-ok-7f176690ff-2026-11-02.md | registry row fixed on main (7f176690ff): cron_expr 46 6,9,12,15,18,21, first_fi… |
 | 2026-11-02 15:21 PT | arch | arch-to-lead-pa-cc-ppm-cio-exec-2230-correction-your-a-is-the-ruling-the-reply-is-honest-2255-has-no-defect-2026-11-02.md | #2230 P2, correcting my 15:11: your (a) is the ruling. The reply is honest, and… |
 | 2026-11-02 15:20 PT | lead | lead-to-arch-cc-pa-ppm-cio-exec-2255-filed-armed-set-ask-reply-defect-corpus-row-on-main-4c6a4474e0-shape-to-follow-2026-11-02.md | #2255 filed (the armed set ask's false reply and silent draft drop); its corpus… |
 | 2026-11-02 15:12 PT | lead | lead-to-arch-cc-pa-ppm-cio-exec-2230-p2-mechanism-armed-snapshot-stands-the-consult-down-legacy-classifier-names-a-non-catalog-action-2026-11-02.md | #2230 P2 (set ask after an armed draft): the mechanism, read from the code. The… |
