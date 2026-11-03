@@ -59,7 +59,9 @@ def main() -> int:
     root = Path(__file__).resolve().parent.parent
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--registry", type=Path, default=root / "dev/active/duty-cycle-registry.tsv")
-    ap.add_argument("--plist-dir", type=Path, default=Path(os.path.expanduser("~/Library/LaunchAgents")))
+    ap.add_argument(
+        "--plist-dir", type=Path, default=Path(os.path.expanduser("~/Library/LaunchAgents"))
+    )
     args = ap.parse_args()
 
     reg = read_registry(args.registry)
