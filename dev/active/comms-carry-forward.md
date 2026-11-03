@@ -1,6 +1,18 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-01 21:19 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-11-02 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/02/2026-11-02-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-03.
+- **Pace (xian via Exec, 11-02 17:31):** "we should keep working of course but we are not racing anyone or anything." The duty-cycle drain rule still holds.
+- **Tue 11-03 "The Unguarded Entrance" publishes tomorrow and is still the 10-08 scaffold (d44309d33b).** No nudge. A day-of rewrite is normal. When xian's prose lands: review, template-audit, calendar row, publish-ready to Docs. Its footer must name Thu 11-05's FINAL title, so ask xian for it (walk item B) before the memo to Docs.
+- **Thu 11-05 beat 1** (`the-promise-nobody-wrote.md`): waiting on xian's prose and final title. Walk C to F after Tuesday.
+- **Waiting-list words (#2164, #2256):** v3 OK'd by CXO (17:51), held for the newsletter switch. Strings live in the "v3 amendment" section of `docs/internal/planning/comms/try-pages-beta-copy-proposal-2026-10-31.md`. Blockers: xian's yes-or-no on what the list sends, his backend choice (HOST recommends (a) Buttondown second newsletter, Arch ruled (c) out), then the second newsletter. At the switch HOST checks the confirmation email for an unsubscribe link (if none, use the "emails we send you after you confirm" form). Under option (b) Comms rewrites the removal line after privacy@ routing is settled. #2256 stays open until a real sign-up is quoted end to end for CXO.
+- **Closed 11-02:** #2229 (xian), #1683 (calendar cleanup, "15 Sessions" superseded), #2253 (Comms docs refresh).
+- **HOLD (PDR-102, ratified 11-02):** no ownership claim in copy until C7 is verified and C8 has a surface.
+- **Mail filing under piper-guards 0.2.2:** M-3 blocks `git mv`/`git rm` on mailbox paths. File with plain `mv`, pass old and new paths to mail-send.
+- **Waiting:** Ship #067 External fact-check (Exec's draft). Rosenverse (xian and Themis). Sunday crossposts (xian).
+- **Standing:** "what changed" note at the first user-visible Production ship. Mining pass Fri 11-06. Narrative front Sep 6.
+
+## OLDER STATE — 2026-11-01 21:19 PT
 - **Log:** `dev/2026/11/01/2026-11-01-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-02. Quiet afternoon: no mail, no draft commits after 11:02.
 - **HOLD (PPM 06:51 11-01, from CXO's PDR-102 review):** no ownership claim ("knowledge in data you own" or similar) in a letter, the site or partner copy until PDR-102 **C7** (derived data deleted with the document or account) is verified and **C8** (the user can see and remove what Piper kept) has a surface. Current copy is clean (checked 06:53, memo to PPM). Check C7/C8 status before any new copy that mentions data.
 - **Beta letters sent 10-31 13:51** (Exec). The promotion freeze is lifted, but promotion is still xian's go. HOST confirmed the three 10-26 codes exist and are unused, so letter version 1c holds. Find codes by their masked form, not by creation date (they were created 10-18).
