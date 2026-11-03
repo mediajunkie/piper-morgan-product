@@ -14,7 +14,9 @@
 > `https://piper-morgan-staging.fly.dev/health`); the manual `fly deploy` below is history. **Alpha** moves only by a
 > `workflow_dispatch` of the same workflow with `promote_to_alpha=true`, on PM's explicit word or, since 2026-10-16, under his standing grant (`alpha-promotion-standing-grant.md`), which copies the image
 > staging serves to the alpha app after its gate checks that the Tests workflow concluded success on the sha staging serves
-> (or, since 2026-10-13/14, on its nearest tested ancestor when only untested paths changed since). No approval step exists
+> (or, since 2026-10-13/14, on its nearest tested ancestor when only untested paths changed since). The copied image is
+> named by digest, never by tag: `scripts/read_staging_image_digest.py` reads it from `flyctl status --json` and the
+> promotion refuses when the started machines do not serve one digest (#2177, 2026-10-25). No approval step exists
 > since 2026-10-13. Procedure and gate history: decisions.log 2026-10-13 and 2026-10-14 (17:31 CIO; 20:51 Lead). This is the
 > concept the workflow's `Concept:` line points at: `main` is the staging branch, alpha is a promotion of a tested staging build.
 

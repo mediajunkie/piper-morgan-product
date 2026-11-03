@@ -30,6 +30,8 @@ Run (no LLM or network calls are made):
 
     env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN \\
         venv/bin/python scripts/read_claim_inventory.py [--json]
+
+Concept: docs/internal/architecture/current/intent-routing-stack.md
 """
 
 from __future__ import annotations

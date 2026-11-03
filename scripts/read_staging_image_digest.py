@@ -8,6 +8,8 @@ A tag only names an image, so the registry resolves it at pull time; a digest is
 image (Arch, 2026-10-25). Whether flyctl's machine JSON carries `image_ref.digest` was
 unverified when this was written, so a missing digest prints "" and the promotion refuses
 before alpha changes, never falling back to the tag.
+
+Concept: docs/internal/operations/deploy-environments-and-release-train.md
 """
 
 from __future__ import annotations
