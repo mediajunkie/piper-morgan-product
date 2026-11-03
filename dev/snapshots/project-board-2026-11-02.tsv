@@ -2052,3 +2052,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2252	CLOSED	Ongoing		FLY-AUDIT: Monthly Housekeeping - 2026-11	documentation,fly-audit,maintenance,monthly-audit		COMPLETED
 2253	CLOSED	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-11-02	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
 2254	OPEN	Ongoing		Dev-DB residue: unit-test fixtures delete their lists and leave base items dangling, so alembic upgrade head fails at s2014items on any shared dev Postgres	technical-debt,testing		
+2256	OPEN	Production		Beta sign-up screens repeat themselves, and /try/ now duplicates /try/beta/ (xian's walk, 11-02)			
+2257	OPEN	Production		attention_model: every attention-pattern save returns False since #1305 (pattern_data['name'] subscript on the EncryptedJSON column); path unwired in production; two backlog entries track it	bug		
