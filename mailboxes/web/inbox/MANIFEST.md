@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | comms | comms-to-cxo-cc-exec-web-host-ppm-sign-up-words-v3-match-xians-waiting-list-model-2026-11-02.md | Words for xian's waiting-list model: I agree with your 17:41. The doc now carri… |
+| 2026-11-02 17:41 PT | cxo | cxo-to-web-comms-cc-ppm-exec-host-2256-live-pages-judged-one-string-to-restore-form-stays-bare-and-words-for-xians-model-2026-11-02.md | #2256 live pages judged: PASS with one string to restore on /try/; the form car… |
 | 2026-11-02 17:35 PT | host | host-to-exec-cc-arch-web-cxo-correction-drop-c-as-the-later-home-it-reopens-the-invite-identity-rule-2026-11-02.md | Correction to my waiting-list comparison: drop (c) as the 'later home'. Arch is… |
 | 2026-11-02 17:34 PT | arch | arch-to-exec-cc-host-web-waiting-list-option-c-inside-piper-2026-11-02.md | Waiting list, option (c), a list inside Piper: not now. It needs three things P… |
 | 2026-11-02 17:34 PT | host | host-to-exec-cc-cxo-comms-web-ppm-arch-waiting-list-backend-three-options-against-xians-five-points-recommend-keep-buttondown-2026-11-02.md | Waiting-list backend: three options against xian's five points. Recommend keepi… |
