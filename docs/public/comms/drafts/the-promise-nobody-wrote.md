@@ -4,7 +4,7 @@ alt: ''
 caption: ''
 ---
 
-# The Promise Nobody Wrote
+# Don't Overpromise
 
 *September 7–8, 2026*
 
@@ -12,7 +12,7 @@ caption: ''
 SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. PM writes
 the prose. Everything below the line is notes for PM. Delete it as the prose replaces it.
 Slot: Thu 2026-11-05 (building). Strict narrative order: the next beat after "The Unguarded Entrance" (Sep 6, Tue 11-03).
-Working title, likely to change (xian, 11-01). The title must be final before Tuesday's post goes to Docs, because
+Title final: "Don't Overpromise" (xian, 11-03). The title must be final before Tuesday's post goes to Docs, because
 Tuesday's footer names it.
 Sources: Sep 7 and Sep 8 session logs (Exec, Lead, Web, CXO, PPM), the memos named below, decisions.log 09-07, both
 omnibus logs. Facts gathered by an Opus subagent. Comms re-opened the key lines at source.
