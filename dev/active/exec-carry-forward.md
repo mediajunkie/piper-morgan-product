@@ -7,7 +7,7 @@
 **Cron gate:** the duty-cycle-tick cron-management steps (CronList self-heal, STOP re-arm) don't apply on a LaunchAgent.
 
 ## Rollup
-v755, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
+v756, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire (I missed his 11:10 release page until Janus said so).
 
 ## Where things stand (end of 11-01)
 - **v0.9.0.0 complete.** xian published the release page at 11:10 PST; Lead confirmed at 20:15 that the tag is the served sha and the post-release audit is clean. Docs adds the URL to the briefing Version line (told at 20:2x).
@@ -19,7 +19,8 @@ v755, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 1. ghmint fix: INSTALLED 11-02 ~13:16 (Janus). CIO closes 9d after two mints 15 min apart; Pard told.
 2. `set_default_repo`: printenv, then `fly secrets set` with the value appended. Relay both outputs to CIO.
 3. Promote (dispatch line), then the #2242 allowlist add (three lines with his email), reconnect if needed. Relay `list` to PA, Lead, Arch, PPM.
-4. Buttondown: DONE 16:58 (xian's sign-up, Janus 17:04). Five pieces of feedback routed 17:07 (Comms, CXO, Web, HOST; gate idea to Lead+CIO, joint answer owed to Exec). 17:2x xian gave the waiting-list model and the pace stance, both relayed and in decisions.log. #2229 closed by him. Open: the yes-or-no on 'nothing else sent without notice'; HOST's three-option backend comparison (he asked why Buttondown), and the second-newsletter step is held for it. CXO OKs Comms' v2. #2256 is the page cleanup.
+4. Buttondown: DONE 16:58 (xian's sign-up, Janus 17:04). Five pieces of feedback routed 17:07 (Comms, CXO, Web, HOST; gate idea to Lead+CIO, joint answer owed to Exec). 17:2x xian gave the waiting-list model and the pace stance, both relayed and in decisions.log. #2229 closed by him. Open on the rollup: keep Buttondown? (rec yes; (c) out per Arch 17:34), then the nothing-else question (rec no), then the newsletter step. Relay his answers to HOST, CXO, Comms, Web, PPM. Test gate: Lead+CIO keep the lock; 11-09 count (CIO 9i).
+- Promote: green at 17:25 (dfa3363d5b); rollup says re-run. CXO OKs Comms' v2. #2256 is the page cleanup.
 - Promote: 16:50 dispatch failed at SHRINK-LOCK; Lead retagged flaky on dfa3363d5b; re-run on Lead's green (Tests 41556514327).
 - Also his hand: web-pat-test sign-in, Notion key on staging for #2238, Fly reads #2244 and #2226, #1514.
 
