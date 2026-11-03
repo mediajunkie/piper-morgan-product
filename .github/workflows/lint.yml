@@ -162,11 +162,12 @@ jobs:
           # Every declared `Concept:` path must exist and name the mechanism back
           # (scripts/check-concept-links.py). A BROKEN link (renamed/deleted concept
           # doc, or a doc edit that drops the mechanism's name) turns main red, and
-          # since 2026-11-01 (mechanism-sunset-or-renew; Lead's yes to CIO, 10:2x) so
-          # does a process class with more missing `Concept:` lines than its frozen
-          # ceiling (--ratchet: hooks 0, git-hooks 2, skills 0, workflows 0; the count
-          # only goes down). scripts/ stays counted, not ratcheted: it mixes product
-          # helpers with process scripts. CIO's proposal 2026-10-14; Lead's gate.
+          # since 2026-11-01 (mechanism-sunset-or-renew; Lead's yes to CIO) so does a
+          # class whose missing `Concept:` count differs from its ceiling (--ratchet,
+          # asserted exactly: hooks 0, git-hooks 2, skills 0, workflows 0, and since
+          # 2026-11-03 scripts 251, methodology audit R15). A new script needs a line; a
+          # product script may point at any existing .md that names it. The ceiling
+          # comes down in the commit that adds a line. CIO's proposal; Lead's gate.
           python scripts/check-concept-links.py --ratchet
 
       - name: Quality summary

@@ -18,14 +18,16 @@ points back.
 
 Exit 0 = every declared concept resolves and points back. Exit 1 = at least one BROKEN link (a path
 that doesn't exist, or a doc that doesn't name the mechanism). A missing Concept line was due by
-2026-11-01 (mechanism-sunset-or-renew.md) and is counted. With --ratchet it is also failed when a
-process class (hooks, git-hooks, skills, workflows) has more missing lines than RATCHET below, so a
-new mechanism can't arrive without one and the count only goes down. scripts/ is counted, not
-ratcheted: it mixes product helpers with process scripts.
+2026-11-01 (mechanism-sunset-or-renew.md) and is counted. With --ratchet it is also failed when any
+class's missing count differs from its ceiling in RATCHET below: above it, a new mechanism arrived
+without a line; below it, a line landed and the ceiling must come down in the same commit. The count
+only goes down. scripts/ joined on 2026-11-03 (methodology audit R15; Lead's yes with four conditions):
+a product script satisfies it with any existing .md that names it (an ADR, design record, ops recipe or
+the current-architecture doc for its area), so its owner writes one pointer sentence, not a new doc.
 
 Usage: scripts/check-concept-links.py [--all] [--ratchet]
   --all      also lists scripts/ files with no Concept line
-  --ratchet  exit 1 when a process class's missing count is above its ceiling
+  --ratchet  exit 1 when any class's missing count differs from its ceiling (asserted exactly)
 
 Layer: textual. It checks that the pointers exist and agree, not that the doc's claims match the
 code's behaviour. That part is a reader's job (the audit's spot-checks).
@@ -96,11 +98,12 @@ def resolve(path: str, mech: Path) -> Path | None:
     return None
 
 
-# Missing-Concept ceilings per process class, frozen 2026-11-01 (the inventory's due date) and
-# lowered by hand as lines land. git-hooks' 2 are pre-commit and pre-push: any edit makes the
-# installed copy differ from source until xian reinstalls, so their lines wait for a functional edit
-# (hooks-registry.md).
-RATCHET = {"hooks": 0, "git-hooks": 2, "skills": 0, "workflows": 0}
+# Missing-Concept ceilings, asserted exactly: frozen 2026-11-01 for the process classes and 2026-11-03
+# for scripts (the landing day's count, after that day's lines), and lowered in the commit that adds a
+# line or deletes a mechanism, never raised. git-hooks' 2 are pre-commit and pre-push: any edit makes
+# the installed copy differ from source until xian reinstalls, so their lines wait for a functional
+# edit (hooks-registry.md).
+RATCHET = {"hooks": 0, "git-hooks": 2, "skills": 0, "workflows": 0, "scripts": 251}
 
 
 def main() -> int:
@@ -165,8 +168,13 @@ def main() -> int:
     )
     over = [
         f"RATCHET  {cls}: {totals[cls][1]} missing, ceiling {ceiling}"
+        + (
+            " (a new mechanism has no Concept: line)"
+            if totals[cls][1] > ceiling
+            else f" (lower RATCHET[{cls!r}] to {totals[cls][1]} in this commit)"
+        )
         for cls, ceiling in RATCHET.items()
-        if cls in totals and totals[cls][1] > ceiling
+        if cls in totals and totals[cls][1] != ceiling
     ]
     if ratchet:
         for line in over:

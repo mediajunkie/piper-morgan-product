@@ -441,7 +441,7 @@ should not be the one you're being asked to trust you ran.
 
 ### Step 7 — Update carry-forward, then brief status
 - **Rewrite `{role}-carry-forward.md`** with current ephemeral state (this is what replaces the frozen prompt block).
-- **A schedule change** goes in your row of `dev/active/duty-cycle-registry.tsv` (the watchdog reads it), with the reason in your session log, and a memo to Pard to regenerate your LaunchAgent and prompt. Once Pard says it's done, run `scripts/registry-plist-drift.py`: your row should read `ok` (it compares minutes, hours and `first_fire` with your plist). Don't arm a session cron to change cadence.
+- **A schedule change** goes in your row of `dev/active/duty-cycle-registry.tsv` (the watchdog reads it; `scripts/registry-set.py ROLE COLUMN VALUE` edits one cell by column name, so a value can't land in the wrong column), with the reason in your session log, and a memo to Pard to regenerate your LaunchAgent and prompt. Once Pard says it's done, run `scripts/registry-plist-drift.py`: your row should read `ok` (it compares minutes, hours and `first_fire` with your plist). Don't arm a session cron to change cadence.
 - Give the user a brief status line.
 
 ## Anti-Patterns to Avoid

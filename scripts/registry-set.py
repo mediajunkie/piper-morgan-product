@@ -16,6 +16,7 @@ Edits follow the file's own rule (see its header): never round-trip through the 
 line is found by its `role<TAB>` prefix, only that line is replaced, and every other byte is written back
 unchanged. Exit 0 ok, 1 --check found a problem, 2 usage or lookup error.
 Owner: CIO. Review: 2026-12-08.
+Concept: .claude/skills/duty-cycle-tick/SKILL.md
 """
 
 import re

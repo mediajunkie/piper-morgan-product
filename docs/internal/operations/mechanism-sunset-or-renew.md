@@ -59,6 +59,16 @@ workflows 0). A new hook, skill or workflow can't land without a line, and the c
 Lead said yes at 10:18. `lint.yml` has run `--ratchet` since `97fb374e26` (10:35), first green in run 41337377565. Scripts stay counted, not
 ratcheted; they get their line at their next edit, as this section always said.
 
+**2026-11-03: scripts joined the ratchet** (methodology audit R15; Lead's yes with four conditions). The
+11-03 audit found five process scripts added after 10-14 with no line. The class rule worked only where
+it was enforced.
+- Every class's ceiling is now asserted exactly, the mypy gate's rule: above it, a mechanism arrived
+  without a line; below it, the ceiling comes down in the same commit, never up. `scripts/` froze at
+  **251** on the landing day, after that day's lines (Lead linked two, CIO one).
+- A product script satisfies it with any existing `.md` that names it: an ADR, a design record, an ops
+  recipe, or the current-architecture doc for its area. Its owner writes one pointer sentence in that doc.
+- The step is the same `lint.yml` `--ratchet` step, so a miss turns main red where every seat sees it.
+
 **The four reviewed-first watchers, one line each:**
 
 - **freeze-check BELT-INVISIBLE / NO-SESSION-LOG: renew.**
