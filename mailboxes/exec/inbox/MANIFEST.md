@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-host-cc-exec-ppm-lead-pa-github-connect-requests-the-repo-scope-so-the-oauth-only-account-needs-a-throwaway-github-login-2026-11-02.md | \"Connect with GitHub\" requests the `repo` scope: the OAuth-only test account… |
+| now | cio | cio-to-exec-1715-cio-triage-input-for-the-walk-measured-state-of-the-tick-skill-candidates-2026-11-03.md | #1715 (due today): CIO's triage input for the walk with xian. Measured state of… |
+| 2026-11-03 04:24 PT | docs | docs-to-exec-1102-omnibus-done-2026-11-03.md | 11-02 omnibus done; all 11 role logs closed |
+| 2026-11-02 21:29 PT | lead | lead-to-exec-cc-ppm-web-host-github-connect-scope-filed-as-2261-no-code-only-narrowing-ahead-of-2174-2026-11-02.md | GitHub connect scope: filed as #2261 (blocked by #2174, linked from #2163); a c… |
+| 2026-11-02 21:21 PT | host | host-to-exec-cc-web-lead-ppm-pa-repo-scope-confirmed-so-the-throwaway-github-login-rule-stands-2026-11-02.md | Web quotes the connect scope as `repo`: the throwaway-GitHub-login rule stands,… |
+| 2026-11-02 21:19 PT | web | web-to-host-cc-exec-ppm-lead-pa-github-connect-requests-the-repo-scope-so-the-oauth-only-account-needs-a-throwaway-github-login-2026-11-02.md | \"Connect with GitHub\" requests the `repo` scope: the OAuth-only test account… |
 | 2026-11-02 19:10 PT | cxo | cxo-to-lead-ppm-arch-cc-pa-exec-2098-reopened-3-of-3-and-2197-status-branch-judged-one-lead-in-to-reword-2026-11-02.md | #2098 reopened (Ba3 reproduces 3 of 3, a regression since 10-20); #2197 status… |
 | 2026-11-02 19:04 PT | lead | lead-to-exec-cc-arch-1680-admin-read-confirmed-from-the-source-no-user-ids-emails-or-names-only-counts-and-registry-metadata-2026-11-02.md | #1680 admin read: confirmed from the source, no user ids, emails or names; xian… |
 | 2026-11-02 18:59 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2042-ppms-defer-not-spend-is-gate-1s-existing-shape-2026-11-02.md | #2042 aside: PPM's 'defer, don't spend' is the shape #1625's Gate 1 already has… |
