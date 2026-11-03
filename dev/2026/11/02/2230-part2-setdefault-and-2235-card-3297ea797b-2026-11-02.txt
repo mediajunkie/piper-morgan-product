@@ -1,0 +1,62 @@
+=== on 3297ea797b 18:32:44
+
+## GitHub card, http 200
+{
+ "name": "github",
+ "display_name": "GitHub",
+ "status": "connected",
+ "status_message": "Connected with your GitHub account.",
+ "last_check": null,
+ "error": null,
+ "fix_suggestion": null,
+ "configure_url": "/settings/integrations/github",
+ "can_test": true,
+ "status_icon": null,
+ "status_detail": "Not checked yet. Press Test.",
+ "show_test": true,
+ "action": null
+}
+
+## P1 confirm offered, declined, then accepted; session 102dc2fd
+
+--- P1a [18:32:48, http 200] route query/set_default_repo
+USER: Set my default GitHub repository to dinp-machine/piper-test-activity
+PIPER: Done — your default repo is now **dinp-machine/piper-test-activity**. I'll use it whenever you don't name a repo explicitly.
+
+--- P1b [18:33:01, http 200] route CONVERSATION/clarification_needed
+USER: no
+PIPER: Okay.
+
+--- P1c [18:33:05, http 200] route query/set_default_repo
+USER: Set my default GitHub repository to dinp-machine/piper-test-activity
+PIPER: Done — your default repo is now **dinp-machine/piper-test-activity**. I'll use it whenever you don't name a repo explicitly.
+
+--- P1d [18:33:20, http 200] route CONVERSATION/acknowledgment
+USER: yes
+PIPER: Got it — confirming the default repo is set to **dinp-machine/piper-test-activity**. What do you need next?
+
+## P2 regression read after an armed draft, session b8a38afb
+
+--- P2a [18:33:29, http 200] route execution/create_ticket
+USER: Let's track this. Create a GitHub issue: 'Probe draft 1720'
+PIPER: Happy to shape this with you before anything gets filed. Here's a draft to start from:
+
+**Title**: Probe draft 1720
+
+What should the body say — the problem, steps to reproduce, impact? Tell me what to add or change. If this draft works as-is, say "file it as is" and I'll create it right now. (If you'd rather I just file things directly, say "just do things directly from now on" and I will.)
+
+--- P2b [18:33:37, http 200] route execution/set_default_github_repo
+USER: Set my default GitHub repository to dinp-machine/piper-test-activity
+PIPER: I didn't recognize that as something I can do from chat — I may have misread the ask rather than being unable to do it. What I heard was: "Set my default GitHub repository to dinp\-machine\/piper\-test\-activity." If I misread it, try saying it another way. If not, it may already be doable in Piper's own pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub).
+
+--- P2e [18:33:56, http 200] route query/get_draft_content
+USER: What's in my draft?
+PIPER: I don't have the draft body saved anywhere — the issue was never filed, so there's nothing stored on my end. The title we landed on was **Probe draft 1720**, but the body content was still pending when we left off.
+
+Want to pick up where we left off? Tell me what the issue should cover and I'll shape the body, then file it to `dinp-machine/piper-test-activity` once you're happy with it.
+
+--- P2d [18:34:04, http 200] route CONVERSATION/clarification_needed
+USER: no
+PIPER: Okay.
+
+=== end on 3297ea797b 18:34:06
