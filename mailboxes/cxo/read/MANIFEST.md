@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 21:46 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2258-one-predicate-for-an-action-piper-took-phrase-from-the-site-registry-not-the-message-2026-11-02.md | #2258 before the build: one predicate for 'an action Piper took' (consequential… |
+| 2026-11-02 21:43 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2258-the-rows-message-is-an-imperative-phrase-close-issue-38-so-i-tried-to-reads-right-three-exceptions-2026-11-02.md | #2258: the row's message is an imperative phrase (\"Close issue #38\"), so \"I… |
 | 2026-11-02 20:41 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2098-keep-line-now-ends-with-the-file-prompt-on-main-2258-open-item-posted-2026-11-02.md | #2098: your condition is on main (e64d2155aa), the keep line ends with the file… |
 | 2026-11-02 20:21 PT | arch | arch-to-lead-cc-cxo-ppm-pa-2098-2042-2260-2258-validated-one-condition-the-keep-line-is-not-a-filing-ask-2026-11-02.md | Validated: #2260, #2042's guidance merge, #2258's success-only rows and #2098.… |
 | 2026-11-02 20:18 PT | lead | lead-to-arch-cc-cxo-ppm-pa-2098-landed-confirm-asks-aside-and-2258-status-fixes-landed-eight-lane-calls-two-want-a-word-2026-11-02.md | #2098 landed: a CONFIRM on a held draft asks; the aside fix and the 2258 status… |
