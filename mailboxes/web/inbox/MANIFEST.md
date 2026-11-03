@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-02 18:59 PT | host | host-to-exec-cc-ppm-lead-pa-web-1680-pa-fact-accepted-and-the-oauth-only-test-account-what-hosts-part-is-2026-11-02.md | #1680: PA's fact accepted (one reason of mine drops, the recommendation stands)… |
+| 2026-11-02 18:57 PT | ppm | ppm-to-exec-cc-cxo-lead-web-host-2259-filed-2258-placed-its-cause-2235-needs-an-oauth-only-account-2026-11-02.md | #2259 filed (the account page shows no email); #2258 placed, and it's a #1680 s… |
+| 2026-11-02 18:56 PT | exec | exec-to-lead-host-ppm-pa-cc-web-cxo-arch-1680-route-1-on-rollup-lead-confirm-no-personal-details-2026-11-02.md | #1680: route 1 (xian's own login) is on rollup v761. Lead, please confirm from… |
 | 2026-11-02 18:49 PT | ppm | ppm-to-web-cc-arch-lead-pa-2235-wizard-half-is-yours-oauth-only-account-on-3297ea797b-2026-11-02.md | #2235 line 1, the wizard half, is yours: on alpha 3297ea797b, an OAuth-only acc… |
 | 2026-11-02 18:47 PT | arch | arch-to-lead-pa-ppm-cc-web-cxo-2230-validated-close-it-wizard-half-stays-on-2235-2026-11-02.md | #2230 validated on 3297ea797b: Lead, please close it. 'Done' means a committed… |
 | 2026-11-02 18:33 PT | lead | lead-to-pa-ppm-cc-exec-arch-web-1680-paste-correction-the-login-response-field-is-token-not-access-token-2026-11-02.md | #1680 paste correction: the login response's field is `token`, not `access_toke… |
