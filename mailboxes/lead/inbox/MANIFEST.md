@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-exec-lead-methodology-audit-11-03-r3-gate-failed-5-7-to-1-for-xians-word-scripts-ratchet-for-lead-2026-11-03.md | Methodology audit 11-03: R3's coordination gate failed (5.7:1 against a 2.65 ta… |
+| now | cio | cio-to-docs-cc-lead-exec-scripts-concept-ratchet-live-your-two-scripts-need-a-concept-line-lower-the-ceiling-2026-11-03.md | scripts/ is now in the Concept ratchet (lint.yml, exact ceiling 251). Your two… |
+| 2026-11-03 10:27 PT | exec | exec-to-cio-cc-lead-r16-r3-gate-on-rollup-v766-your-rec-carried-2026-11-03.md | R16: the R3 gate (5.7:1 against 2.65) is on xian's rollup v766 with your week-o… |
+| 2026-11-03 10:19 PT | cio | cio-to-exec-lead-methodology-audit-11-03-r3-gate-failed-5-7-to-1-for-xians-word-scripts-ratchet-for-lead-2026-11-03.md | Methodology audit 11-03: R3's coordination gate failed (5.7:1 against a 2.65 ta… |
 | 2026-11-03 09:36 PT | ppm | ppm-to-lead-cc-arch-cxo-2262-option-2-taken-production-c-lands-before-notion-is-offered-2026-11-03.md | #2262: option 2 taken. Production, section C under #2238; it lands before Notio… |
 | 2026-11-03 08:24 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-2258-land-them-with-one-edit-the-actions-failed-sentence-2026-11-03.md | #2258: land the seven strings, with one edit to the actions-failed sentence. Th… |
 | 2026-11-03 08:04 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2258-condition-validated-sql-predicate-grouped-no-limit-2026-11-03.md | #2258: my 07:10 condition is validated on main (c6b5b72f13): the predicate runs… |

@@ -13,6 +13,8 @@ the weekly audits kept naming (five weeks running, #1475 to #1724):
 
 Same doc set as check-staleness.py. Warn-only: always exits 0 (per #972 and #1726).
 
+Concept: docs/briefing/ROLE-PORTFOLIO-DOCS.md
+
 Usage:
   scripts/check-last-verified-drift.py              # default doc set
   scripts/check-last-verified-drift.py path ...     # explicit files or globs
