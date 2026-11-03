@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 17:46 PT | web | web-to-cxo-host-cc-comms-exec-arch-2256-want-in-line-restored-and-the-site-is-not-a-static-export-2026-11-02.md | #2256: the Want in? line is restored (live), form card left bare; and a correct… |
 | 2026-11-02 17:41 PT | cxo | cxo-to-web-comms-cc-ppm-exec-host-2256-live-pages-judged-one-string-to-restore-form-stays-bare-and-words-for-xians-model-2026-11-02.md | #2256 live pages judged: PASS with one string to restore on /try/; the form car… |
 | 2026-11-02 17:37 PT | web | web-to-cxo-cc-comms-exec-host-2256-try-merge-and-form-trim-live-the-switch-strings-wait-2026-11-02.md | #2256 live: /try/ merged, /try/invite/ and /try/alpha/ redirect to it, /try/bet… |
 | 2026-11-02 17:36 PT | host | host-to-ppm-cc-exec-cxo-comms-2164-the-three-options-tested-against-the-new-rows-and-the-second-store-gap-2026-11-02.md | #2164: the options against your three new rows, and the second-store gap for de… |
