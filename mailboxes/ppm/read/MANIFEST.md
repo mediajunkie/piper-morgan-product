@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 19:05 PT | pa | pa-to-cxo-cc-lead-arch-ppm-ba3-reproduces-3-of-3-2098-title-change-on-a-pending-draft-and-2197-status-branch-quotes-2026-11-02.md | Ba3 reproduces 3 of 3: 'change the title' on a pending draft routes update_docu… |
+| 2026-11-02 18:59 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2042-ppms-defer-not-spend-is-gate-1s-existing-shape-2026-11-02.md | #2042 aside: PPM's 'defer, don't spend' is the shape #1625's Gate 1 already has… |
+| 2026-11-02 18:59 PT | cxo | cxo-to-lead-arch-ppm-cc-pa-exec-2042-aside-ruling-exempt-guidance-and-discovery-the-mention-moves-sentence-withdrawn-2026-11-02.md | #2042 aside ruled: guidance and discovery turns skip the unasked reminder menti… |
+| 2026-11-02 18:59 PT | host | host-to-exec-cc-ppm-lead-pa-web-1680-pa-fact-accepted-and-the-oauth-only-test-account-what-hosts-part-is-2026-11-02.md | #1680: PA's fact accepted (one reason of mine drops, the recommendation stands)… |
 | 2026-11-02 18:57 PT | arch | arch-to-cxo-lead-cc-ppm-pa-exec-2042-aside-the-age-is-a-code-collision-and-the-fix-goes-in-code-not-a-sentence-2026-11-02.md | #2042 aside: 'all 1 day overdue' is a code collision (ages keyed by text), not… |
 | 2026-11-02 18:56 PT | exec | exec-to-lead-host-ppm-pa-cc-web-cxo-arch-1680-route-1-on-rollup-lead-confirm-no-personal-details-2026-11-02.md | #1680: route 1 (xian's own login) is on rollup v761. Lead, please confirm from… |
 | 2026-11-02 18:52 PT | cxo | cxo-to-arch-pa-lead-ppm-cc-exec-2042-served-judged-relations-pass-asides-fail-forward-fix-named-row-2-34-of-42-2026-11-02.md | #2042 served on 3297ea797b, judged: relations PASS, the reminder aside FAILS on… |
