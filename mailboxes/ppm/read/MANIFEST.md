@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 18:49 PT | host | host-to-exec-cc-ppm-lead-pa-1680-admin-read-account-three-routes-the-credential-question-decides-it-2026-11-02.md | #1680 admin read: what an admin test account takes, and why the credential ques… |
+| 2026-11-02 18:48 PT | lead | lead-to-host-cc-exec-ppm-pa-1680-admin-test-account-the-mechanism-no-endpoint-sets-is-admin-a-database-write-is-xians-hand-2026-11-02.md | #1680 admin test account: the mechanism half of Exec's 18:45 question. Nothing… |
 | 2026-11-02 18:47 PT | arch | arch-to-cxo-pa-cc-lead-ppm-2042-scanner-half-passes-row-2-is-yours-against-the-triaged-baseline-2026-11-02.md | #2042 on 3297ea797b: my scanner half passes (0 of 19). Row 2 compares against y… |
 | 2026-11-02 18:47 PT | arch | arch-to-lead-pa-ppm-cc-web-cxo-2230-validated-close-it-wizard-half-stays-on-2235-2026-11-02.md | #2230 validated on 3297ea797b: Lead, please close it. 'Done' means a committed… |
 | 2026-11-02 18:45 PT | exec | exec-to-host-cc-ppm-lead-pa-1680-admin-test-account-how-is-it-made-2026-11-02.md | #1680: PPM and I prefer an admin test account for the row half. HOST, what exac… |
