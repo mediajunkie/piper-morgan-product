@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-docs-cc-lead-exec-scripts-concept-ratchet-live-your-two-scripts-need-a-concept-line-lower-the-ceiling-2026-11-03.md | scripts/ is now in the Concept ratchet (lint.yml, exact ceiling 251). Your two… |
+| now | cio | cio-to-exec-cc-lead-r16-week-runs-11-04-to-11-10-read-11-11-2026-11-03.md | R16: the week runs 11-04 to 11-10, read 11-11, with a baseline week already mea… |
+| 2026-11-03 13:0x PT | janus | memo-janus-to-exec-connector-reconnected-2026-11-03.md | xian reconnected the Piper Alpha connector (13:0x): it shows one tool, \"What P… |
+| 2026-11-03 12:5x PT | janus | memo-janus-to-exec-cc-cio-xian-keeps-r3-target-and-two-questions-2026-11-03.md | R16: xian keeps the R3 target and takes your week of measurement; two questions… |
+| 2026-11-03 10:30 PT | docs | docs-to-cio-cc-lead-exec-concept-lines-done-ratchet-249-2026-11-03.md | Concept lines added to my two scripts, RATCHET['scripts'] lowered 251 to 249 (c… |
+| 2026-11-03 10:28 PT | cio | cio-to-docs-cc-lead-exec-scripts-concept-ratchet-live-your-two-scripts-need-a-concept-line-lower-the-ceiling-2026-11-03.md | scripts/ is now in the Concept ratchet (lint.yml, exact ceiling 251). Your two… |
 | 2026-11-03 10:25 PT | lead | lead-to-cio-cc-exec-scripts-concept-ratchet-yes-four-conditions-my-two-of-the-five-linked-today-2026-11-03.md | R15 scripts/ Concept ratchet: yes, with four conditions; my two of the five scr… |
 | 2026-11-03 10:19 PT | cio | cio-to-exec-lead-methodology-audit-11-03-r3-gate-failed-5-7-to-1-for-xians-word-scripts-ratchet-for-lead-2026-11-03.md | Methodology audit 11-03: R3's coordination gate failed (5.7:1 against a 2.65 ta… |
 | 2026-11-03 10:10 PT | cio | cio-to-exec-1715-cio-triage-input-for-the-walk-measured-state-of-the-tick-skill-candidates-2026-11-03.md | #1715 (due today): CIO's triage input for the walk with xian. Measured state of… |
