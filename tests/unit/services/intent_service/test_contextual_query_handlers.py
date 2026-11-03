@@ -309,9 +309,10 @@ class TestChangesQueryResults:
 
             assert result.success is True
             assert result.message == (
-                "I don't see anything new in your Piper tasks, projects or activity log since "
-                "yesterday. I haven't checked GitHub for this."
-            )  # #2140 (CXO): all three read ok and all three empty
+                "I don't see anything new in your Piper tasks or projects since yesterday, "
+                "and I haven't changed anything for you in that time. I haven't checked "
+                "GitHub for this."
+            )  # #2140 (CXO): all three read ok and all three empty; #2258 words
             assert result.intent_data["total_activities"] == 0
 
 

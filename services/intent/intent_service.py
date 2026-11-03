@@ -20,7 +20,7 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple, TypedDict
 from uuid import UUID
 
 import structlog
-from sqlalchemy import and_, or_, select
+from sqlalchemy import and_, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from services.consciousness.files_consciousness import (
@@ -71,7 +71,12 @@ from services.repositories.user_trust_profile_repository import UserTrustProfile
 from services.security.consequential_outcomes import (
     github_write_outcome as _github_write_audit_outcome,
 )
-from services.security.consequential_sites import action_line, person_visible_action
+from services.security.consequential_sites import (
+    CONSEQUENTIAL_EVENT_TYPE,
+    action_line,
+    person_visible_action,
+    person_visible_site_keys,
+)
 from services.shared_types import IntentCategory, TrustStage
 from services.slot_filling.slot_filling_adapter import SlotFillingProcessAdapter
 from services.slot_filling.slot_template import MEETING_TEMPLATE
@@ -682,9 +687,13 @@ PRODUCTIVITY_GITHUB_CHECK_FAILED = (
     "Try again in a moment; if it keeps failing, tell us."
 )
 CHANGES_SOURCES = ("tasks", "projects", "activity log")
+# #2258 (CXO 2026-11-03 07:2x): no page called "activity log" exists for a person (Arch
+# 07:1x: the nearest, Settings' "Audit log", shows ethics decisions), so the empty reply
+# names only what Piper read and what Piper did. The claim "I haven't changed anything"
+# rests on the actions read having no row limit (``_visible_actions_statement``).
 CHANGES_NOTHING_NEW = (
-    "I don't see anything new in your Piper tasks, projects or activity log {window}. "
-    "I haven't checked GitHub for this."
+    "I don't see anything new in your Piper tasks or projects {window}, and I haven't "
+    "changed anything for you in that time. I haven't checked GitHub for this."
 )
 CHANGES_FOUND_OPENER = (
     "Here's what changed in your Piper {sources} {window}. I haven't checked GitHub for this."
@@ -728,17 +737,69 @@ _CHANGES_ATTEMPT_LINES = {
 }
 
 
-def _grouped(lines: Iterable[str]) -> Dict[str, int]:
+def _visible_actions_statement(owner_id: Any, since_time: Any) -> Any:
+    """The changes query's read of the actions Piper took (#2258; Arch 2026-11-03 07:10).
+
+    ``person_visible_action``'s parts run in SQL (event type consequential, ``action``
+    in the registry's user-visible keys, no ``details.nested_in``) and the rows are
+    grouped and counted there by (site, resource, status), most recent group first.
+    No row limit: a limit applied before the filter let hidden rows (placeholders,
+    logins) push an older visible action out of the window and undercount the
+    headline (#2151's false empty at the extreme); grouping bounds the result by the
+    distinct resources touched, so none is needed. ``person_visible_action`` stays the
+    one definition; the key set is derived from it and pinned equal."""
+    from services.database.models import AuditLog
+
+    return (
+        select(
+            AuditLog.action,
+            AuditLog.resource_id,
+            AuditLog.status,
+            func.count().label("n"),
+            func.max(AuditLog.created_at).label("last_at"),
+        )
+        .where(
+            and_(
+                AuditLog.user_id == owner_id,
+                AuditLog.created_at >= since_time,
+                AuditLog.event_type == CONSEQUENTIAL_EVENT_TYPE,
+                AuditLog.action.in_(sorted(person_visible_site_keys())),
+                AuditLog.details["nested_in"].as_string().is_(None),
+            )
+        )
+        .group_by(AuditLog.action, AuditLog.resource_id, AuditLog.status)
+        .order_by(func.max(AuditLog.created_at).desc())
+    )
+
+
+def _audit_group_row(row: Any) -> Dict[str, Any]:
+    """One grouped row of ``_visible_actions_statement`` as the changes query's dict."""
+    resource = row.resource_id
+    last_at = row.last_at
+    return {
+        "type": "audit",
+        "action": row.action,
+        "site": row.action,
+        # #2258 (Arch 19:3x, #2151's rule): a failed or unconfirmed row never renders
+        # as a change Piper made; status rides the row.
+        "status": row.status,
+        "resource_id": resource if isinstance(resource, str) else None,
+        "count": int(row.n),
+        "timestamp": last_at.isoformat() if hasattr(last_at, "isoformat") else str(last_at),
+    }
+
+
+def _grouped(pairs: Iterable[Tuple[str, int]]) -> Dict[str, int]:
     """Identical rendered lines, first seen first, with how many rows each stands for."""
     groups: Dict[str, int] = {}
-    for line in lines:
-        groups[line] = groups.get(line, 0) + 1
+    for line, n in pairs:
+        groups[line] = groups.get(line, 0) + n
     return groups
 
 
 def _render_changes_actions(audit_activity: List[Dict[str, Any]]) -> List[str]:
-    """The "what changed" Actions block (#2258). Rows arrive most recent first and
-    already passed ``person_visible_action`` (the handler keeps only those).
+    """The "what changed" Actions block (#2258). Rows are the grouped, counted rows of
+    ``_visible_actions_statement`` (every one an action Piper took), most recent first.
 
     Successes: CXO's headline with the row count, then up to
     ``CHANGES_ACTIONS_MAX_NAMED`` grouped lines ("Closed issue #38", "Replied in Slack,
@@ -746,13 +807,14 @@ def _render_changes_actions(audit_activity: List[Dict[str, Any]]) -> List[str]:
     attempts that did not go through (#2151's rule: a failed or unconfirmed row never
     reads as done and never counts), failed before unconfirmed. Every line is the
     registry's phrase for the row's site with its resource filled in; the row's
-    message is never printed or parsed."""
+    message is never read."""
     done_rows = [row for row in audit_activity if row.get("status") == "success"]
     lines: List[str] = []
-    total = len(done_rows)
+    total = sum(row["count"] for row in done_rows)
     if total:
         groups = _grouped(
-            action_line(row["site"], row.get("resource_id"), done=True) for row in done_rows
+            (action_line(row["site"], row.get("resource_id"), done=True), row["count"])
+            for row in done_rows
         )
         shown = list(groups.items())[:CHANGES_ACTIONS_MAX_NAMED]
         lines.append(CHANGES_ACTIONS_HEADLINE.format(count=total, s="" if total == 1 else "s"))
@@ -764,7 +826,7 @@ def _render_changes_actions(audit_activity: List[Dict[str, Any]]) -> List[str]:
             lines.append(f"  - and {rest} more")
     for status, (once, repeated) in _CHANGES_ATTEMPT_LINES.items():
         tried = _grouped(
-            action_line(row["site"], row.get("resource_id"), done=False)
+            (action_line(row["site"], row.get("resource_id"), done=False), row["count"])
             for row in audit_activity
             if row.get("status") == status
         )
@@ -11618,43 +11680,15 @@ class IntentService:
             audit_activity = []
             try:
                 async with AsyncSessionFactory.session_scope() as session:
-                    from services.database.models import AuditLog
-
+                    # #2258 (Arch 21:46, 07:10): the one predicate for "an action
+                    # Piper took" runs in the SQL, grouped and counted there; a login,
+                    # an API-key event, a nested row or a user_visible=False site never
+                    # reaches this list or its count.
                     result = await session.execute(
-                        select(AuditLog)
-                        .where(
-                            and_(AuditLog.user_id == _owner_id, AuditLog.created_at >= since_time)
-                        )
-                        .order_by(AuditLog.created_at.desc())
-                        .limit(50)
+                        _visible_actions_statement(_owner_id, since_time)
                     )
-                    audit_logs = result.scalars().all()
-
-                    for log in audit_logs:
-                        # #2258 (Arch 21:46): one predicate for "an action Piper took";
-                        # a login, an API-key event or an admin mint is not a change
-                        # Piper made, a nested row is the same action seen twice, and
-                        # a user_visible=False site is housekeeping. Those rows are
-                        # left out of the list and the count alike.
-                        details = log.details if isinstance(log.details, dict) else None
-                        if not person_visible_action(log.event_type, log.action, details):
-                            continue
-                        audit_activity.append(
-                            {
-                                "type": "audit",
-                                "action": log.action,
-                                "site": log.action,
-                                "event_type": log.event_type,
-                                "message": log.message,
-                                # #2258 (Arch 19:3x, #2151's rule): a failed or
-                                # unconfirmed row never renders as a change Piper made.
-                                "status": log.status,
-                                "resource_id": (
-                                    log.resource_id if isinstance(log.resource_id, str) else None
-                                ),
-                                "timestamp": log.created_at.isoformat(),
-                            }
-                        )
+                    for row in result.all():
+                        audit_activity.append(_audit_group_row(row))
             except Exception as audit_error:
                 self.logger.warning(f"Failed to fetch audit logs: {audit_error}")
                 failed_sources.add("activity log")
@@ -11748,7 +11782,11 @@ class IntentService:
                 failed_sources.add("projects")
 
             # Format response (#2140: fail-closed per read)
-            total_activities = len(audit_activity) + len(todo_activity) + len(project_activity)
+            total_activities = (
+                sum(row["count"] for row in audit_activity)
+                + len(todo_activity)
+                + len(project_activity)
+            )
             failed = [name for name in CHANGES_SOURCES if name in failed_sources]
             read_ok = [name for name in CHANGES_SOURCES if name not in failed_sources]
 
