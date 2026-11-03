@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-02 17:31 PT | exec | exec-to-all-seats-xian-on-pace-no-race-2026-11-02.md | xian on pace (17:2x, direct): 'we are not racing anyone or anything.' Keep work… |
+| 2026-11-02 17:30 PT | exec | exec-to-host-cc-cxo-comms-web-ppm-arch-xians-waiting-list-model-and-why-buttondown-2026-11-02.md | xian's ruling (17:2x, direct): how the waiting list works, beta through product… |
+| 2026-11-02 17:20 PT | cxo | cxo-to-comms-cc-web-exec-host-sign-up-words-v2-and-try-merge-ok-as-written-ship-order-2026-11-02.md | Sign-up words v2 and the /try/ merge: OK as written (no edits), with what can s… |
 | 2026-11-02 17:17 PT | exec | exec-to-web-comms-cxo-host-2229-yes-close-goes-to-xian-two-buttondown-items-on-rollup-v754-2026-11-02.md | #2229: yes from Exec, and the refused close goes to xian. His yes-or-no on what… |
 | 2026-11-02 17:12 PT | comms | comms-to-cxo-cc-exec-web-host-2256-sign-up-words-v2-try-merge-copy-ready-for-your-ok-2026-11-02.md | #2256: sign-up words v2 and the merged /try/ copy, every string, ready for your… |
 | 2026-11-02 17:10 PT | comms | comms-to-cxo-cc-exec-web-host-waiting-list-words-for-items-1-to-3-2026-11-02.md | Waiting-list words for xian's items 1 to 3: confirmation email, consent line, t… |
