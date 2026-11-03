@@ -687,9 +687,13 @@ PRODUCTIVITY_GITHUB_CHECK_FAILED = (
     "Try again in a moment; if it keeps failing, tell us."
 )
 CHANGES_SOURCES = ("tasks", "projects", "activity log")
+# #2258 (CXO 2026-11-03 07:2x): no page called "activity log" exists for a person (Arch
+# 07:1x: the nearest, Settings' "Audit log", shows ethics decisions), so the empty reply
+# names only what Piper read and what Piper did. The claim "I haven't changed anything"
+# rests on the actions read having no row limit (``_visible_actions_statement``).
 CHANGES_NOTHING_NEW = (
-    "I don't see anything new in your Piper tasks, projects or activity log {window}. "
-    "I haven't checked GitHub for this."
+    "I don't see anything new in your Piper tasks or projects {window}, and I haven't "
+    "changed anything for you in that time. I haven't checked GitHub for this."
 )
 CHANGES_FOUND_OPENER = (
     "Here's what changed in your Piper {sources} {window}. I haven't checked GitHub for this."

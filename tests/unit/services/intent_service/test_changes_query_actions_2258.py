@@ -311,6 +311,39 @@ async def test_the_handler_reads_through_the_statement_once(intent_service):
     assert result.intent_data["total_activities"] == 1
 
 
+# ── CXO 2026-11-03 07:2x: the empty reply names no "activity log"; the count is exact ──
+
+
+def test_the_nothing_new_line_is_cxos_and_names_no_activity_log():
+    assert mod.CHANGES_NOTHING_NEW == (
+        "I don't see anything new in your Piper tasks or projects {window}, and I haven't "
+        "changed anything for you in that time. I haven't checked GitHub for this."
+    )
+
+
+@pytest.mark.asyncio
+async def test_an_empty_window_names_no_activity_log(intent_service):
+    result, _ = await _run(intent_service, _intent(), [], [], [])
+    assert result.message == (
+        "I don't see anything new in your Piper tasks or projects since yesterday, and I "
+        "haven't changed anything for you in that time. I haven't checked GitHub for this."
+    )
+    assert "activity log" not in result.message
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("rows", [49, 60, 250])
+async def test_the_headline_count_is_exact_never_at_least(intent_service, rows):
+    """CXO's "at least {N}" words are never needed: the read has no row limit and
+    counts in SQL, so the headline is the exact number of rows."""
+    groups = [_audit("github.chat.close_issue", "success", str(i), i, n=1) for i in range(rows)]
+    result, _ = await _run(intent_service, _intent(), groups, [], [])
+    assert f"Piper made {rows} changes for you." in result.message
+    assert "at least" not in result.message
+    assert f"  - and {rows - 5} more" in result.message
+    assert result.intent_data["total_activities"] == rows
+
+
 @pytest.mark.asyncio
 async def test_grouped_rows_count_their_rows_in_total_activities(intent_service):
     rows = [
