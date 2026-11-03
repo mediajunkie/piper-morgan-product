@@ -339,3 +339,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 17:44 v756: promote green (Lead 17:25); Buttondown keep? (rec yes; (c) out per Arch); nothing-else question (rec no); test-gate FYI; newsletter step after yes; web-pat-test removed (#2237 PASS). Server version 760.
 - 17:55 v757: corrected my unchecked 'no server' claim (Web 17:46); /try/ cleanup live; triage pass landed (Lead 716481299c, #2257). Server version 761.
 - 18:16 v758: promoted, alpha+beta 3297ea797b (18:14); allowlist next. Server version 762.
+- 18:40 v759: allowlist added (by user id, Janus 18:31), reconnect is the one step; #1680 admin-read paste (no rush) added to Your hand. Server version 763.
