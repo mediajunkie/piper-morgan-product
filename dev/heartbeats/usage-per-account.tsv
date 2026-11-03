@@ -704,3 +704,5 @@ ts_local	account	config_dir	five_hour_pct	five_hour_reset	seven_day_pct	seven_da
 2026-11-02 18:23 PST	designinproduct.com	~/.claude	NO-WINDOW				usage-read.sh	five_hour is null (no open window); seven_day=24.0% resets 2026-11-05T03:59			
 2026-11-02 21:23 PST	pipermorgan.ai	~/.claude-pm	NO-WINDOW				usage-read.sh	five_hour is null (no open window); seven_day=54.0% resets 2026-11-06T05:00			
 2026-11-02 21:23 PST	designinproduct.com	~/.claude	NO-WINDOW				usage-read.sh	five_hour is null (no open window); seven_day=25.0% resets 2026-11-05T04:00			
+2026-11-03 00:23 PST	pipermorgan.ai	~/.claude-pm	NO-WINDOW				usage-read.sh	five_hour is null (no open window); seven_day=54.0% resets 2026-11-06T04:59			
+2026-11-03 00:23 PST	designinproduct.com	~/.claude	NO-WINDOW				usage-read.sh	five_hour is null (no open window); seven_day=25.0% resets 2026-11-05T04:00			
