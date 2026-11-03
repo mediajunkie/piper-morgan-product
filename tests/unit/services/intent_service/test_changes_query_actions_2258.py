@@ -311,24 +311,32 @@ async def test_the_handler_reads_through_the_statement_once(intent_service):
     assert result.intent_data["total_activities"] == 1
 
 
-# ── CXO 2026-11-03 07:2x: the empty reply names no "activity log"; the count is exact ──
+# ── CXO 2026-11-03 07:3x (on Arch 07:27): the empty reply names no "activity log" and
+# claims only what the census audits (Slack, GitHub), never "anything"; the count is exact ──
 
 
-def test_the_nothing_new_line_is_cxos_and_names_no_activity_log():
+def test_the_nothing_new_line_is_cxos_three_sentences():
     assert mod.CHANGES_NOTHING_NEW == (
-        "I don't see anything new in your Piper tasks or projects {window}, and I haven't "
-        "changed anything for you in that time. I haven't checked GitHub for this."
+        "I don't see anything new in your Piper tasks or projects {window}. "
+        "Piper hasn't posted to Slack or written to GitHub for you in that time. "
+        "I haven't looked at anything other people did in GitHub."
     )
 
 
 @pytest.mark.asyncio
-async def test_an_empty_window_names_no_activity_log(intent_service):
+async def test_an_empty_window_names_no_activity_log_and_claims_only_the_audited(
+    intent_service,
+):
     result, _ = await _run(intent_service, _intent(), [], [], [])
     assert result.message == (
-        "I don't see anything new in your Piper tasks or projects since yesterday, and I "
-        "haven't changed anything for you in that time. I haven't checked GitHub for this."
+        "I don't see anything new in your Piper tasks or projects since yesterday. "
+        "Piper hasn't posted to Slack or written to GitHub for you in that time. "
+        "I haven't looked at anything other people did in GitHub."
     )
     assert "activity log" not in result.message
+    # Arch 07:27: "I haven't changed anything" spoke for Notion writes the audit
+    # never sees (#2151's false empty in the wording).
+    assert not ("anything" in result.message and "changed" in result.message)
 
 
 @pytest.mark.asyncio

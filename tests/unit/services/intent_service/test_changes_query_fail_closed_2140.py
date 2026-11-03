@@ -22,10 +22,12 @@ from services.shared_types import IntentCategory
 
 _SCOPE = "services.intent.intent_service.AsyncSessionFactory.session_scope"
 _USER = "3f7b8a52-2140-4b00-9e00-000000002140"
-# #2258 (CXO 2026-11-03 07:2x): the empty reply names no "activity log" (no such page).
+# #2258 (CXO 2026-11-03 07:3x): the empty reply names no "activity log" (no such page)
+# and claims only what the census audits (Slack, GitHub), never "anything".
 NOTHING_NEW = (
-    "I don't see anything new in your Piper tasks or projects {window}, and I haven't "
-    "changed anything for you in that time. I haven't checked GitHub for this."
+    "I don't see anything new in your Piper tasks or projects {window}. Piper hasn't "
+    "posted to Slack or written to GitHub for you in that time. I haven't looked at "
+    "anything other people did in GitHub."
 )
 # CXO 10-23 09:27, verbatim shapes.
 FAILED_ALL = (

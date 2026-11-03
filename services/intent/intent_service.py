@@ -687,13 +687,16 @@ PRODUCTIVITY_GITHUB_CHECK_FAILED = (
     "Try again in a moment; if it keeps failing, tell us."
 )
 CHANGES_SOURCES = ("tasks", "projects", "activity log")
-# #2258 (CXO 2026-11-03 07:2x): no page called "activity log" exists for a person (Arch
-# 07:1x: the nearest, Settings' "Audit log", shows ethics decisions), so the empty reply
-# names only what Piper read and what Piper did. The claim "I haven't changed anything"
-# rests on the actions read having no row limit (``_visible_actions_statement``).
+# #2258 (CXO 2026-11-03 07:24, scoped 07:3x on Arch's 07:27): no page called "activity
+# log" exists for a person, so the empty reply names what Piper read; the middle sentence
+# claims only what the #1680 census audits (Slack sends, GitHub writes), never "anything",
+# because Notion writes are not audited (Arch 07:27; filed as a #1680 gap); the last
+# sentence is the GitHub waiver. The Slack/GitHub claim rests on the actions read having
+# no row limit (``_visible_actions_statement``).
 CHANGES_NOTHING_NEW = (
-    "I don't see anything new in your Piper tasks or projects {window}, and I haven't "
-    "changed anything for you in that time. I haven't checked GitHub for this."
+    "I don't see anything new in your Piper tasks or projects {window}. Piper hasn't "
+    "posted to Slack or written to GitHub for you in that time. I haven't looked at "
+    "anything other people did in GitHub."
 )
 CHANGES_FOUND_OPENER = (
     "Here's what changed in your Piper {sources} {window}. I haven't checked GitHub for this."
