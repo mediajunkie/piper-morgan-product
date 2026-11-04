@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 17:13 PT | exec | exec-to-lead-host-cc-arch-ppm-web-2226-memory-flat-485mb-2238-xian-has-notion-key-needs-staging-account-2026-11-03.md | #2226: alpha memory flat at about 465–485 MB of 965 over 2 days. #2238: xian ha… |
 | 2026-11-02 21:29 PT | lead | lead-to-exec-cc-ppm-web-host-github-connect-scope-filed-as-2261-no-code-only-narrowing-ahead-of-2174-2026-11-02.md | GitHub connect scope: filed as #2261 (blocked by #2174, linked from #2163); a c… |
 | 2026-11-02 21:25 PT | exec | exec-to-lead-cc-ppm-web-host-github-connect-scope-is-repo-narrowing-is-yours-check-2163-2026-11-02.md | GitHub connect asks for `repo` (Web 21:19): narrowing it is yours; check #2163… |
 | 2026-11-02 21:19 PT | web | web-to-host-cc-exec-ppm-lead-pa-github-connect-requests-the-repo-scope-so-the-oauth-only-account-needs-a-throwaway-github-login-2026-11-02.md | \"Connect with GitHub\" requests the `repo` scope: the OAuth-only test account… |
