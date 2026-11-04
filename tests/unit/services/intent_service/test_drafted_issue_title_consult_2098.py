@@ -470,6 +470,19 @@ class TestTheAnswerTurn:
         assert offer["pending_action"]["draft"]["title"] == QUOTED_TITLE
         assert await _file(svc, "s-2098") == QUOTED_TITLE
 
+    @pytest.mark.parametrize("answer", ["", "   "])
+    @pytest.mark.asyncio
+    async def test_an_empty_answer_is_never_bound_as_the_title(self, svc, answer):
+        """CXO (2026-11-03 19:00): a bound title is never empty or whitespace-only.
+        The empty answer re-asks case 2; nothing is stored; the old title files."""
+        await _turn(svc, TITLE_TURN, _confirm("router_clarify"))
+        stub = AsyncMock(side_effect=AssertionError("an empty answer never consults"))
+        with patch(CONSULT, new=stub):
+            offer, result = await _next(svc, "s-2098", answer)
+        assert result["message"] == mod.TITLE_QUESTION_NO_TITLE
+        assert offer["pending_action"]["draft"]["title"] == OLD_TITLE
+        assert await _file(svc, "s-2098") == OLD_TITLE
+
     @pytest.mark.parametrize("answer", ["no", "never mind", "forget it"])
     @pytest.mark.asyncio
     async def test_decline_and_bare_exit_on_case_2_still_keep_the_old_title(self, svc, answer):

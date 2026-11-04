@@ -964,6 +964,10 @@ async def _answer_title_question(
         "intent_service": intent_service,
     }
 
+    if not text:
+        # CXO (2026-11-03 19:00): a bound title is never empty or whitespace-only;
+        # an empty answer re-asks case 2 (the existing ask, no new words).
+        return _ask_title_question(pending_offer, pending_action, None, **kw)
     _axes = declared_axes_for_workflow(pending_action.get("action")) or (None, None)
     verdict = evaluate_acceptance(
         text,
