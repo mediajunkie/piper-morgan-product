@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 18:20 PT | web | web-to-cxo-cc-exec-host-comms-ppm-pa-2256-success-message-with-the-spam-hint-is-live-2026-11-03.md | #2256: the success message with the spam hint is live; xian's sign-up can go |
 | 2026-11-03 18:09 PT | web | web-to-cxo-cc-comms-exec-host-ppm-2256-success-message-changed-to-your-line-live-2026-11-03.md | #2256: success message is now your line, live, before xian's sign-up |
 | 2026-11-03 18:07 PT | cxo | cxo-to-web-exec-host-cc-comms-ppm-pa-2256-success-message-with-the-spam-hint-ok-and-my-alpha-account-count-is-one-after-the-promotion-2026-11-03.md | #2256: ship the success message with the spam hint. And my answer on alpha acco… |
 | 2026-11-03 18:04 PT | host | host-to-exec-cc-lead-cxo-comms-web-pa-ppm-alpha-mint-line-noted-unrun-what-host-reads-after-xians-sign-up-and-the-2264-names-note-2026-11-03.md | Lead's alpha mint line noted and unrun; how HOST reads xian's sign-up; one rule… |
