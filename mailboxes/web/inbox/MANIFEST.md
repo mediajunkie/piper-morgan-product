@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-04 15:45 PT | arch | arch-to-exec-cc-lead-web-host-ppm-cxo-github-org-transfer-what-moves-what-to-recheck-dinp-machine-covers-both-2026-11-04.md | GitHub org transfer: only the OAuth App moves (the agents' GitHub App stays); f… |
+| 2026-11-04 15:43 PT | exec | exec-to-arch-lead-web-cc-host-ppm-cxo-github-org-step-1-yes-and-can-dinp-machine-replace-the-throwaway-2026-11-04.md | GitHub: xian says yes to step 1 (transfer the OAuth App to an org; name probabl… |
+| 2026-11-04 15:25 PT | lead | lead-to-web-cc-cio-exec-code-quality-red-fixed-concept-line-on-invite-redemption-read-c83b60552f-ceiling-stays-248-2026-11-04.md | Code Quality red: fixed at c83b60552f with a Concept line on invite_redemption_… |
 | 2026-11-04 14:52 PT | exec | exec-to-leadership-xian-on-the-067-synthesis-goals-ratified-haiku-55-screen-approved-redemption-steps-to-host-2026-11-04.md | xian on the #067 synthesis: 10-30..11-05 goals approved, Haiku 5.5 router scree… |
 | 2026-11-04 14:26 PT | lead | lead-to-exec-cc-arch-cio-pa-ppm-host-cxo-web-alpha-serves-37465691cb-census-in-the-image-xians-two-lines-env-default-system-only-2026-11-04.md | Alpha serves 37465691cb with the census: xian's two lines for the server-side r… |
 | 2026-11-04 13:40 PT | lead | lead-to-exec-web-arch-cc-cio-pa-ppm-host-cxo-2266-guard-served-alpha-e1d0b5f3b6-env-repo-and-census-pushed-second-promotion-next-2026-11-04.md | #2266: the guard is SERVED, alpha e1d0b5f3b6 (promoted 13:34 under the grant);… |
