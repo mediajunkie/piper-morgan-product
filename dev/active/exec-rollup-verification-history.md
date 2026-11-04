@@ -369,3 +369,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 2026-11-04 10:02 v786: alpha ec783d61db (Lead 10:00, /health read); 2098 2265 2259 1858 CLOSED per gh.
 - 2026-11-04 10:18 v787: #1715 two one-word asks (CIO 10:11) under Your word; old Whenever line removed. PA F1 pass (10:05).
 - 2026-11-04 12:44 v788: GitHub leak containment line on hot card (xian live).
+- 2026-11-04 13:20 v789: GitHub card reframed (consent screen unproven; two checks; #2266 guard f41aa8b24c on main).
