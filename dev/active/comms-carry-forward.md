@@ -1,6 +1,18 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-02 21:19 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-11-03 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/03/2026-11-03-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-04.
+- **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
+- **Tue 11-03 "The Unguarded Entrance": PUBLISHED** 14:07 (Docs), https://pipermorgan.ai/blog/the-unguarded-entrance, with the Medium URL in the calendar. The LinkedIn crosspost is xian's. Quirk: the admin UI wrote the full repo path into `image:`. The convention is the bare filename, and Docs was told.
+- **Thu 11-05 "Don't Overpromise"** (title final, xian 11-03; file `the-promise-nobody-wrote.md`, H1 and calendar updated): waiting on xian's prose. A day-before or day-of rewrite is normal, so no nudge. Its footer needs the NEXT post's final title, and nothing is scheduled after it except the Ship. That follows the editorial question below.
+- **Editorial question with xian (asked 11-03 ~15:00, no answer yet):** insight posts feel fiddly. The can is empty (the calendar has only Thu and the Ships, and the superseded drafts are Apr to Jul). My recommendation: drop insight pair 3+4 and leave Nov 7-8 open. Four bigger, cross-month ideas offered: (1) the promises arc, (2) the "AI prompts human" authorship flip, (3) reaching private beta and MVP Oct 30, (4) what a PM's job is now. Friday's mining pass (Oct 23 to Nov 5) should look for cross-month themes. When xian picks one: scaffold it, add a calendar row, and record it in the planning doc's Decision log (Claude Docs `27e09d5b-…`).
+- **Waiting list / one newsletter (xian 11-03 17:24):** one free Buttondown newsletter, tag `beta-waitlist`, and no second newsletter. v4 copy is at the top of `try-pages-beta-copy-proposal-2026-10-31.md`. CXO OK'd it at 17:36 with an edit to the invitation sentence. The site strings are live (Web 17:48) and CXO PASSed them (17:57). The success message is "Almost there. Check your email (and your spam folder)…", live 18:20. **Open:** xian pastes the confirmation email (Exec's rollup) and signs up himself. HOST then reads: is an unconfirmed address sent nothing further (otherwise the last line comes out)? Is there an unsubscribe link? And the success message as shown. #2256 closes on that. Not verified: whether Buttondown can show a paragraph only to tagged subscribers. If it can, there's an optional tighter variant in the doc.
+- **HOLD (PDR-102):** no ownership claim in copy until C7 is verified and C8 has a surface.
+- **Mail filing (piper-guards M-3):** plain `mv`, then mail-send with the old and new paths. Never `git add` mailboxes on the branch, not even in a compound command (blocked 11-03).
+- **Waiting:** Ship #067 External fact-check (Exec's draft, Wed 11-04). Rosenverse (xian and Themis).
+- **Standing:** "what changed" note at the first user-visible Production ship. Mining pass Fri 11-06. The narrative front is Sep 7 after Thursday.
+
+## OLDER STATE — 2026-11-02 21:19 PT
 - **Log:** `dev/2026/11/02/2026-11-02-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-03.
 - **Pace (xian via Exec, 11-02 17:31):** "we should keep working of course but we are not racing anyone or anything." The duty-cycle drain rule still holds.
 - **Tue 11-03 "The Unguarded Entrance" publishes tomorrow and is still the 10-08 scaffold (d44309d33b).** No nudge. A day-of rewrite is normal. When xian's prose lands: review, template-audit, calendar row, publish-ready to Docs. Its footer must name Thu 11-05's FINAL title, so ask xian for it (walk item B) before the memo to Docs.
