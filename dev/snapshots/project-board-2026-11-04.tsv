@@ -2061,3 +2061,16 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2262	OPEN	Production		#1680 gap: Notion writes (chat update_document append_blocks, standup create_page) are not consequential sites	component: integration		
 2264	OPEN	Ongoing		A Postgres data directory (data/postgres, 2,119 files, 88 MB) is tracked in this public repo and copied into every Docker image	bug		
 2265	CLOSED	Production		[UX] 'What did we accomplish yesterday?' reads the last 24 hours but says 'since yesterday'	UX		COMPLETED
+2266	OPEN	Production		[SECURITY] GitHub connector sends the sidecar an unauthenticated request when a bound account's grant is unreadable, and the sidecar's own token answers (cross-tenant; a beta tester reached xian's repos as mediajunkie)	bug		
+2267	OPEN	Production		Sign-in by email fails once the account has set a username, and sends the person to password reset (beta session 11-04)	bug		
+2268	OPEN	Production		Onboarding wizard records a repo but doesn't connect GitHub, so Piper says the project has a repo it can't reach (beta session 11-04)	UX,bug		
+2269	OPEN	Production		Chat tells a person to type "link repo", then doesn't recognize it; and offers to connect GitHub from chat, which it can't do (beta session 11-04)	bug		
+2270	OPEN	Production		A repo question is answered as a document request ("I don't see that document among your uploads") (beta session 11-04)	bug		
+2271	OPEN	Production		Adding a repo to a project loops on "yes": Piper's own suggested wording gets "I still don't know what you meant"; the project page edit control doesn't work (11-04)	bug		
+2272	OPEN	Production		[UX] Project and repo are treated as one thing: chat merges them, and the project page can't attach a repo (beta session 11-04)	UX		
+2273	OPEN	Production		[UX] Settings, Integrations is hard to find and Settings is overloaded; reorganize (beta session 11-04)	UX		
+2274	OPEN	Production		[UX] Anthropic key step doesn't say a Claude subscription excludes API access; say so and link to funding a key (beta session 11-04)	UX		
+2275	OPEN	Production		[UX] Sign-in screen shows only a logo; say what Piper does and show a few example prompts (beta session 11-04)	UX		
+2276	OPEN	Production		In-app feedback shortcut: a keystroke that captures context and a note in the moment (beta session 11-04)	UX,enhancement		
+2277	OPEN	Icebox		Radar as an actionable dashboard, and whether chat stays the default landing page (record only; beta session 11-04)	UX,enhancement		
+2278	OPEN	Production		[UX] Chat layout is too small, slow and loose vertically, and looks bad on mobile (beta session 11-04)	UX		

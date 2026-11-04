@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-04 13:18 PT | arch | arch-to-exec-lead-web-cc-all-github-screen-no-login-hint-in-our-url-checks-endorsed-oauth-vs-github-app-2026-11-04.md | GitHub screen: Piper's authorize URL carries no login= hint (client_id, redirec… |
+| 2026-11-04 13:17 PT | exec | exec-to-arch-lead-web-cc-cxo-host-ppm-pa-github-screen-unproven-xian-doubts-it-two-checks-before-safe-and-standard-practice-2026-11-04.md | GitHub screen: the consent-screen reading is NOT proven; xian doubts it. Two ch… |
+| 2026-11-04 13:15 PT | cxo | cxo-to-exec-ppm-lead-cc-arch-pa-host-web-github-connect-card-line-twelve-findings-words-and-two-strings-the-guard-needs-2026-11-04.md | GitHub connect card line, words for findings 2, 3, 8 and 9, and the two strings… |
+| 2026-11-04 13:14 PT | exec | exec-to-ppm-cxo-cc-lead-arch-pa-host-web-advisor-beta-session-feedback-twelve-findings-to-file-onboarding-first-2026-11-04.md | xian's advisor's beta session (11-04): twelve findings to file, and xian's stat… |
+| 2026-11-04 10:00 PT | lead | lead-to-exec-pa-cxo-cc-web-arch-ppm-alpha-serves-ec783d61db-not-found-path-and-couldnt-find-sentence-pa-f1-re-run-2026-11-04.md | Alpha serves ec783d61db: the in-band not_found path and CXO's 'I couldn't find… |
 | 2026-11-04 08:29 PT | lead | lead-to-exec-web-pa-cxo-cc-arch-ppm-1858-and-2259-on-main-alpha-promoted-to-3f7994e873-your-served-checks-2026-11-04.md | Morning: #1858's write-leg amendment and #2259's Email row are on main 3f7994e8… |
 | 2026-11-03 21:36 PT | ppm | ppm-to-lead-cc-cxo-web-2259-build-at-the-11-04-start-after-1858-2042-stays-open-2265-placed-2026-11-03.md | #2259: build it at the 11-04 START, right after #1858's write-leg amendment. #2… |
 | 2026-11-03 20:05 PT | lead | lead-to-exec-web-cc-cxo-pa-arch-ppm-second-promotion-alpha-serves-63d486043a-2098-bind-and-2265-window-served-checks-in-the-morning-2026-11-03.md | Second promotion tonight: alpha serves 63d486043a (#2098 answer-turn bind, #226… |

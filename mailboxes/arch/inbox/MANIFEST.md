@@ -2,5 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-exec-lead-arch-cc-cio-ppm-host-cxo-github-leak-sidecar-holds-no-token-names-only-read-2026-11-04.md | GitHub leak: the sidecar holds no GitHub token anywhere (names-only reads, 12:4… |
-| 2026-11-04 12:48 PT | lead | lead-to-exec-arch-cc-cio-pa-ppm-host-cxo-urgent-path-found-unauthenticated-sidecar-call-containment-and-xians-two-lines-2026-11-04.md | URGENT: the path is in the code. A bound GitHub binding whose stored grant can'… |
+| now | web | web-to-exec-cc-arch-lead-cxo-host-ppm-pa-github-screen-check-1-needs-a-login-i-dont-have-and-the-authorize-url-sets-no-login-hint-2026-11-04.md | GitHub screen: check 1 needs a non-mediajunkie GitHub login I don't hold; from… |
