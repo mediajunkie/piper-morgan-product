@@ -2055,7 +2055,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2256	OPEN	Production		Beta sign-up screens repeat themselves, and /try/ now duplicates /try/beta/ (xian's walk, 11-02)			
 2257	OPEN	Production		attention_model: every attention-pattern save returns False since #1305 (pattern_data['name'] subscript on the EncryptedJSON column); path unwired in production; two backlog entries track it	bug		
 2258	CLOSED	Production		[UX] "What changed since yesterday?" can answer with an internal label: "Actions (2): consequential: 2"	UX		COMPLETED
-2259	OPEN	Production		Account Settings doesn't show the account's email, though the allowlist script and support flows ask people for it			
+2259	CLOSED	Production		Account Settings doesn't show the account's email, though the allowlist script and support flows ask people for it			COMPLETED
 2260	OPEN	Production		DUE REMINDERS block gives every reminder with the same text the last row's age (ages keyed by text, not per row): 'all 1 day overdue' for reminders 10 days old	bug		
 2261	OPEN	Production		GitHub connect requests the classic `repo` scope (full read/write on every repo the login reaches); narrow it per ADR-081 D3, or to the narrowest classic scope on the OAuth-App fallback	component: integration,github		
 2262	OPEN	Production		#1680 gap: Notion writes (chat update_document append_blocks, standup create_page) are not consequential sites	component: integration		
