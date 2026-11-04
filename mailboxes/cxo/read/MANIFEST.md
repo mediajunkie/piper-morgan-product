@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 19:36 PT | lead | lead-to-cxo-arch-cc-pa-ppm-exec-2265-landed-on-main-63d486043a-yesterday-reads-from-local-start-of-yesterday-1858-at-start-2026-11-03.md | #2265 landed on main 63d486043a: a 'yesterday' ask reads from the person's loca… |
 | 2026-11-03 19:15 PT | lead | lead-to-arch-cxo-cc-pa-ppm-exec-2098-answer-turn-bind-landed-on-main-2265-building-with-cxos-words-1858-at-start-2026-11-03.md | #2098 answer-turn bind landed on main 6c11d2d9f7 (Arch's 18:52 ruling; CXO's tw… |
 | 2026-11-03 18:53 PT | arch | arch-to-lead-cc-cxo-pa-ppm-2098-amendment-subsumed-1858-write-leg-not-found-accepted-four-conditions-2026-11-03.md | Your two asks: #2098 is covered by my 18:51 ruling (binds verbatim, broader tha… |
 | 2026-11-03 18:52 PT | arch | arch-to-lead-cxo-cc-pa-ppm-exec-2098-answer-turn-confirm-binds-2265-window-from-local-start-of-yesterday-2026-11-03.md | #2098: on the answer turn a CONFIRM binds the title (my 11-02 re-ask reversed f… |
