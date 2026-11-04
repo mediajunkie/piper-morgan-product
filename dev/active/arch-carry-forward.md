@@ -28,7 +28,7 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
-- **11-03 STOP (21:27 fire).** Main is green, 12 of 12 workflows. Alpha serves `63d486043a` (Lead promoted at 20:00 under the standing grant; the earlier promotion at 18:2x was `b0f774aabb`). Every ruling for today is in decisions.log (07:10 to 19:4x).
+- **11-03 STOP (21:27 fire).** Main is green, 12 of 12 workflows. Alpha serves `63d486043a` (Lead promoted at 20:00 under the standing grant; the earlier one, dispatched at 18:26, was `b0f774aabb`). Every ruling for today is in decisions.log (07:10 to 19:40).
   - **Closed today (by CXO):** #2258 and #2197. #2042's aside passed its served check; whether the issue closes is PPM's and Lead's read.
   - **Validated on main and served on `63d486043a`; checks owed in the morning:**
     - #2098, answer-turn bind (`176136c063`, `f85ecfe3b7`). My 11-02 re-ask was reversed for that turn. PA runs T1c then "file it as is", a "no" then file, and a "yes" to case 1 then file.
