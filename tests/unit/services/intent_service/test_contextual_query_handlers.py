@@ -30,6 +30,29 @@ def mock_workflow():
     return workflow
 
 
+# #2265: the window words are rendered from the bounds, so the pins compute them the
+# same way, in the patched zone (a fixed non-UTC zone, so a UTC mix-up near midnight
+# would print the wrong day and fail here).
+_ZONE = "America/Los_Angeles"
+_TZ_PATCH = "services.intent.intent_service.user_timezone_name"
+
+
+def _since_yesterday_words():
+    from zoneinfo import ZoneInfo
+
+    start = datetime.now(ZoneInfo(_ZONE)) - timedelta(days=1)
+    return f"since the start of yesterday, {start:%A}, {start:%B} {start.day}"
+
+
+YD = _since_yesterday_words()
+
+
+@pytest.fixture(autouse=True)
+def _fixed_zone():
+    with patch(_TZ_PATCH, new=AsyncMock(return_value=_ZONE)):
+        yield
+
+
 @pytest.fixture
 def intent_service():
     """Create IntentService instance for testing"""
@@ -274,7 +297,7 @@ class TestChangesQueryResults:
 
             assert result.success is True
             assert result.message.startswith(
-                "Here's what changed in your Piper tasks and projects since yesterday, and "
+                f"Here's what changed in your Piper tasks and projects {YD}, and "
                 "what Piper did for you. I haven't looked at anything done in GitHub outside "
                 "Piper."
             )  # #2140 (CXO); #2258 words
@@ -310,7 +333,7 @@ class TestChangesQueryResults:
 
             assert result.success is True
             assert result.message == (
-                "I don't see anything new in your Piper tasks or projects since yesterday. "
+                f"I don't see anything new in your Piper tasks or projects {YD}. "
                 "Piper hasn't posted to Slack or written to GitHub for you in that time. "
                 "I haven't looked at anything done in GitHub outside Piper."
             )  # #2140 (CXO): all three read ok and all three empty; #2258 words
@@ -491,7 +514,7 @@ class TestContextualQueryErrorHandling:
             assert result.success is False
             assert result.message == (
                 "I couldn't read your Piper tasks or projects, or what Piper did for you, just "
-                "now, so I can't say what changed since yesterday. Try again in a moment; if it "
+                f"now, so I can't say what changed {YD}. Try again in a moment; if it "
                 "keeps failing, tell us."
             )  # #2258 words (CXO 2026-11-03)
             assert result.intent_data["failed_sources"] == ["tasks", "projects", "activity log"]

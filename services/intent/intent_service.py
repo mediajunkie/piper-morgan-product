@@ -83,6 +83,7 @@ from services.slot_filling.slot_template import MEETING_TEMPLATE
 from services.standup.greeting import standup_greeting_for
 from services.trust.trust_computation_service import TrustComputationService
 from services.ui_messages.user_friendly_errors import UserFriendlyErrorService
+from services.utils.datetime_utils import now_in_zone, user_timezone_name
 from services.utils.text_sanitation import display_title
 from services.utils.utterance_log import utterance_fields as _utterance_fields
 from services.utils.utterance_log import utterance_preview
@@ -762,6 +763,11 @@ CHANGES_SOME_FAILED_EMPTY_FAILED_ACTIONS = (
 # successes list under the headline, then the attempts that did not go through, with no
 # status word, no cause and no parenthetical. Identical rendered lines group with a count
 # (CXO: no brackets); the headline counts rows.
+# #2265 (Arch 2026-11-03 18:52; CXO's words 19:00): a "yesterday" ask reads from the
+# person's local start of yesterday to now, and the words name the day; a rolling ask
+# says its span. The words are rendered from the bounds, never from a separate label.
+CHANGES_WINDOW_SINCE_YESTERDAY = "since the start of yesterday, {weekday}, {month} {day}"
+CHANGES_WINDOW_PAST_24_HOURS = "in the past 24 hours"
 CHANGES_ACTIONS_MAX_NAMED = 5
 CHANGES_ACTIONS_HEADLINE = "Piper made {count} change{s} for you."
 CHANGES_ACTION_DONE_REPEATED = "{line}, {n} times"
@@ -11706,11 +11712,14 @@ class IntentService:
 
             # Parse time range. #2143: a sub-day window is a real window (the
             # day parser alone made "past hour" 0 days, so since_time was now).
+            # #2265: a "yesterday" ask starts at the person's local start of
+            # yesterday, and the words come from the bounds (one builder).
             time_range_days = self._parse_time_expression(original_message)
-            window, time_desc = self._parse_time_window(original_message)
-
             now = datetime.now(timezone.utc)
-            since_time = now - window
+            since_time, time_desc = await self._changes_window(
+                original_message, _principal_from_intent(intent), now
+            )
+            window = now - since_time
 
             intent_data_base = {
                 "category": intent.category.value,
@@ -12482,6 +12491,30 @@ class IntentService:
         match = re.search(r"(\d+)\s*hours?", message_lower)
         return int(match.group(1)) if match else 1
 
+    async def _changes_window(
+        self, message: str, owner_id: Optional[str], now: datetime
+    ) -> Tuple[datetime, str]:
+        """#2265: the instant a what-changed ask reads from, and the words for it,
+        from one place so they cannot disagree (Arch 2026-11-03 18:52).
+
+        A "yesterday" ask reads from the person's local start of yesterday
+        (``user_timezone_name``, the clock the reminder ages use) to now, and
+        the words name that day in CXO's form. Every other ask is a rolling
+        span (#2143 hours, or days) and says its span.
+        """
+        if "yesterday" in message.lower():
+            tz_name = await user_timezone_name(owner_id)
+            local_now = now.astimezone(now_in_zone(tz_name).tzinfo)
+            start = (local_now - timedelta(days=1)).replace(
+                hour=0, minute=0, second=0, microsecond=0
+            )
+            words = CHANGES_WINDOW_SINCE_YESTERDAY.format(
+                weekday=start.strftime("%A"), month=start.strftime("%B"), day=start.day
+            )
+            return start.astimezone(timezone.utc), words
+        window, words = self._parse_time_window(message)
+        return now - window, words
+
     def _parse_time_window(self, message: str) -> Tuple[timedelta, str]:
         """#2143: the window a what-changed ask reads, and the words for it.
 
@@ -12514,7 +12547,9 @@ class IntentService:
         if days == 0:
             return "in the past hour"
         elif days == 1:
-            return "since yesterday"
+            # #2265: a rolling one-day ask says its span; "yesterday" itself is a
+            # calendar window built in _changes_window, not this label.
+            return CHANGES_WINDOW_PAST_24_HOURS
         elif days == 7:
             return "in the past week"
         elif days == 30:

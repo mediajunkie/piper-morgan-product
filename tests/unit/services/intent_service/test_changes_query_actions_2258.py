@@ -27,7 +27,7 @@ Same no-LLM, no-database harness as #2140.
 
 import uuid
 from datetime import datetime, timedelta, timezone
-from unittest.mock import MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from sqlalchemy import text
@@ -57,6 +57,28 @@ _STATUS_WORDS = ("success", "failed", "unconfirmed", "error")
 _NEVER = ("consequential", "event_type", "auth", "(", ")", CHANNEL) + _STATUS_WORDS
 _SITE_KEYS = tuple(CONSEQUENTIAL_SITES)
 _VISIBLE = tuple(k for k, s in CONSEQUENTIAL_SITES.items() if s.user_visible)
+
+# #2265: the window words are rendered from the bounds, so the pins compute them the
+# same way, in the patched zone (a fixed non-UTC zone, so a UTC mix-up near midnight
+# would print the wrong day and fail here).
+_ZONE = "America/Los_Angeles"
+_TZ_PATCH = "services.intent.intent_service.user_timezone_name"
+
+
+def _since_yesterday_words():
+    from zoneinfo import ZoneInfo
+
+    start = datetime.now(ZoneInfo(_ZONE)) - timedelta(days=1)
+    return f"since the start of yesterday, {start:%A}, {start:%B} {start.day}"
+
+
+YD = _since_yesterday_words()
+
+
+@pytest.fixture(autouse=True)
+def _fixed_zone():
+    with patch(_TZ_PATCH, new=AsyncMock(return_value=_ZONE)):
+        yield
 
 
 def _audit(site, status="success", resource_id=None, minutes_ago=5, n=1):
@@ -329,7 +351,7 @@ async def test_an_empty_window_names_no_activity_log_and_claims_only_the_audited
 ):
     result, _ = await _run(intent_service, _intent(), [], [], [])
     assert result.message == (
-        "I don't see anything new in your Piper tasks or projects since yesterday. "
+        f"I don't see anything new in your Piper tasks or projects {YD}. "
         "Piper hasn't posted to Slack or written to GitHub for you in that time. "
         "I haven't looked at anything done in GitHub outside Piper."
     )
@@ -364,7 +386,7 @@ async def test_rows_with_every_read_ok_open_with_cxos_opener(intent_service):
     rows = [_audit("github.chat.close_issue", "success", "38")]
     result, _ = await _run(intent_service, _intent(), rows, [], [])
     assert result.message.startswith(
-        "Here's what changed in your Piper tasks and projects since yesterday, and what "
+        f"Here's what changed in your Piper tasks and projects {YD}, and what "
         "Piper did for you. I haven't looked at anything done in GitHub outside Piper.\n"
     )
     assert "activity log" not in result.message and "checked GitHub" not in result.message
@@ -380,7 +402,7 @@ async def test_only_the_actions_read_ok_opens_with_what_piper_did(intent_service
         "  - Closed issue #38",
     ]
     assert result.message.startswith(
-        "Here's what Piper did for you since yesterday. I haven't looked at anything done in "
+        f"Here's what Piper did for you {YD}. I haven't looked at anything done in "
         "GitHub outside Piper.\n"
     )
     assert result.message.endswith(
@@ -399,35 +421,35 @@ _BOOM = RuntimeError("read failed")
 _SEVEN = {
     # (audit, tasks, projects) read specs → the whole reply
     ("ok", "fail", "ok"): (
-        "I don't see anything new in your Piper projects since yesterday, and Piper hasn't "
+        f"I don't see anything new in your Piper projects {YD}, and Piper hasn't "
         "posted to Slack or written to GitHub for you in that time. I couldn't read your Piper "
         "tasks just now, so I can't say what changed there." + _TRY
     ),
     ("ok", "ok", "fail"): (
-        "I don't see anything new in your Piper tasks since yesterday, and Piper hasn't posted "
+        f"I don't see anything new in your Piper tasks {YD}, and Piper hasn't posted "
         "to Slack or written to GitHub for you in that time. I couldn't read your Piper projects "
         "just now, so I can't say what changed there." + _TRY
     ),
     ("fail", "ok", "ok"): (
-        "I don't see anything new in your Piper tasks or projects since yesterday. I couldn't "
-        "read what Piper did for you just now, so I can't say what it did since yesterday." + _TRY
+        f"I don't see anything new in your Piper tasks or projects {YD}. I couldn't "
+        f"read what Piper did for you just now, so I can't say what it did {YD}." + _TRY
     ),
     ("ok", "fail", "fail"): (
-        "Piper hasn't posted to Slack or written to GitHub for you since yesterday. I couldn't "
+        f"Piper hasn't posted to Slack or written to GitHub for you {YD}. I couldn't "
         "read your Piper tasks or projects just now, so I can't say what changed there." + _TRY
     ),
     ("fail", "fail", "ok"): (
-        "I don't see anything new in your Piper projects since yesterday. I couldn't read your "
+        f"I don't see anything new in your Piper projects {YD}. I couldn't read your "
         "Piper tasks or what Piper did for you just now, so I can't say what changed there." + _TRY
     ),
     ("fail", "ok", "fail"): (
-        "I don't see anything new in your Piper tasks since yesterday. I couldn't read your "
+        f"I don't see anything new in your Piper tasks {YD}. I couldn't read your "
         "Piper projects or what Piper did for you just now, so I can't say what changed there."
         + _TRY
     ),
     ("fail", "fail", "fail"): (
         "I couldn't read your Piper tasks or projects, or what Piper did for you, just now, so "
-        "I can't say what changed since yesterday." + _TRY
+        f"I can't say what changed {YD}." + _TRY
     ),
 }
 

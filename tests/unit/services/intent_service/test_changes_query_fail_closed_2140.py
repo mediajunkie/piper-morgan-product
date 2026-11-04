@@ -20,6 +20,29 @@ from services.domain.models import Intent
 from services.intent.intent_service import IntentService
 from services.shared_types import IntentCategory
 
+# #2265: the window words are rendered from the bounds, so the pins compute them the
+# same way, in the patched zone (a fixed non-UTC zone, so a UTC mix-up near midnight
+# would print the wrong day and fail here).
+_ZONE = "America/Los_Angeles"
+_TZ_PATCH = "services.intent.intent_service.user_timezone_name"
+
+
+def _since_yesterday_words():
+    from zoneinfo import ZoneInfo
+
+    start = datetime.now(ZoneInfo(_ZONE)) - timedelta(days=1)
+    return f"since the start of yesterday, {start:%A}, {start:%B} {start.day}"
+
+
+YD = _since_yesterday_words()
+
+
+@pytest.fixture(autouse=True)
+def _fixed_zone():
+    with patch(_TZ_PATCH, new=AsyncMock(return_value=_ZONE)):
+        yield
+
+
 _SCOPE = "services.intent.intent_service.AsyncSessionFactory.session_scope"
 _USER = "3f7b8a52-2140-4b00-9e00-000000002140"
 # #2258 (CXO 2026-11-03 07:3x): the empty reply names no "activity log" (no such page)
@@ -32,7 +55,7 @@ NOTHING_NEW = (
 # CXO 10-23 09:27, verbatim shapes.
 FAILED_ALL = (
     "I couldn't read your Piper tasks or projects, or what Piper did for you, just now, so I "
-    "can't say what changed since yesterday. Try again in a moment; if it keeps failing, tell us."
+    f"can't say what changed {YD}. Try again in a moment; if it keeps failing, tell us."
 )
 FAILED_BESIDE_ROWS = (
     "I couldn't read your Piper {source} just now, so the list above doesn't include it. "
@@ -40,7 +63,7 @@ FAILED_BESIDE_ROWS = (
 )
 # #2258 (CXO 2026-11-03 08:2x): tasks failed; projects and the actions read empty.
 NOTHING_NEW_TASKS_FAILED = (
-    "I don't see anything new in your Piper projects since yesterday, and Piper hasn't posted "
+    f"I don't see anything new in your Piper projects {YD}, and Piper hasn't posted "
     "to Slack or written to GitHub for you in that time. I couldn't read your Piper tasks just "
     "now, so I can't say what changed there. Try again in a moment; if it keeps failing, tell us."
 )
@@ -122,7 +145,7 @@ async def test_all_three_ok_and_empty_is_cxos_nothing_new_line(intent_service):
     result, made = await _run(intent_service, _intent(), [], [], [])
     assert len(made) == 3
     assert result.success is True
-    assert result.message == NOTHING_NEW.format(window="since yesterday")
+    assert result.message == NOTHING_NEW.format(window=YD)
 
 
 @pytest.mark.asyncio
@@ -141,7 +164,7 @@ async def test_the_first_read_failing_does_not_empty_the_other_two(intent_servic
     # #2258 (CXO 08:0x): the actions read failed, so the opener claims no "what Piper
     # did for you" and the failed line names that source in the person's terms.
     assert result.message.startswith(
-        "Here's what changed in your Piper tasks and projects since yesterday. "
+        f"Here's what changed in your Piper tasks and projects {YD}. "
         "I haven't looked at anything done in GitHub outside Piper."
     )
     assert "Review the launch notes" in result.message
@@ -170,7 +193,7 @@ async def test_one_read_failing_while_another_has_rows_lists_rows_and_names_the_
     assert result.success is True
     assert "Atlas" in result.message
     assert result.message.startswith(
-        "Here's what changed in your Piper projects since yesterday, and what Piper did for "
+        f"Here's what changed in your Piper projects {YD}, and what Piper did for "
         "you. I haven't looked at anything done in GitHub outside Piper."
     )
     assert "activity log" not in result.message
@@ -249,3 +272,57 @@ async def test_2143_an_hour_window_is_a_real_window(intent_service, message, hou
         "for you. I haven't looked at anything done in GitHub outside Piper."
     )
     assert "Draft the agenda" in result.message
+
+
+# #2265 (Arch 2026-11-03 18:52; CXO's words 19:00): a "yesterday" ask reads from the
+# person's LOCAL start of yesterday, and the words are rendered from that bound. The
+# clock is fixed in a no-DST zone nine hours ahead of UTC, so a UTC mix-up would name
+# the wrong day (Monday) and a rolling 24 hours would start at the wrong instant.
+class TestYesterdayIsTheLocalStartOfYesterday:
+    NOW = datetime(2026, 11, 3, 20, 30, tzinfo=timezone.utc)  # 2026-11-04 05:30 in Tokyo
+
+    @pytest.mark.asyncio
+    async def test_the_bound_is_local_midnight_and_the_words_name_that_day(self, intent_service):
+        with patch(_TZ_PATCH, new=AsyncMock(return_value="Asia/Tokyo")):
+            since, words = await intent_service._changes_window(
+                "what did we accomplish yesterday?", _USER, self.NOW
+            )
+        assert since == datetime(2026, 11, 2, 15, 0, tzinfo=timezone.utc)  # 11-03 00:00 JST
+        assert words == "since the start of yesterday, Tuesday, November 3"
+
+    @pytest.mark.asyncio
+    async def test_the_zone_is_the_accounts_not_utc(self, intent_service):
+        with patch(_TZ_PATCH, new=AsyncMock(return_value="UTC")) as tz:
+            since, words = await intent_service._changes_window("since yesterday", _USER, self.NOW)
+        tz.assert_awaited_once_with(_USER)
+        assert since == datetime(2026, 11, 2, 0, 0, tzinfo=timezone.utc)
+        assert words == "since the start of yesterday, Monday, November 2"
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "message, hours, words",
+        [
+            ("what changed in the past day?", 24, "in the past 24 hours"),
+            ("what changed in the last 3 hours?", 3, "in the past 3 hours"),
+            ("what changed in the past week?", 24 * 7, "in the past week"),
+        ],
+    )
+    async def test_a_rolling_ask_says_its_span_and_never_reads_the_zone(
+        self, intent_service, message, hours, words
+    ):
+        with patch(_TZ_PATCH, new=AsyncMock(return_value="Asia/Tokyo")) as tz:
+            since, got = await intent_service._changes_window(message, _USER, self.NOW)
+        tz.assert_not_awaited()
+        assert since == self.NOW - timedelta(hours=hours)
+        assert got == words
+
+    @pytest.mark.asyncio
+    async def test_the_served_reply_carries_the_same_words_as_the_bound(self, intent_service):
+        """End to end through the handler: the nothing-new line names the day the
+        read started from, in the patched zone, never a separate label."""
+        result, made = await _run(
+            intent_service, _intent("what did we accomplish yesterday?"), [], [], []
+        )
+        assert len(made) == 3
+        assert result.message == NOTHING_NEW.format(window=YD)
+        assert 24 <= result.intent_data["time_window_hours"] <= 48
