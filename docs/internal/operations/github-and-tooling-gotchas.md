@@ -281,3 +281,7 @@ On Amber, seats push as the GitHub App, with a token that `com.xian.ghmint` (Par
 
 No pre-flight was added to `scripts/run-sweep.sh` or the duty-cycle START: the migration's own count is the report, and with the helpers fixed the rows stop accumulating (pinned in `tests/test_user_cleanup_coverage.py`).
 
+## GitHub identity census for an incident: `scripts/github_identity_census.py` (Lead, 2026-11-04, #2266)
+
+When a report says one account saw another account's GitHub identity or repositories, the server-side half is a read-only census the operator runs inside the alpha container with `fly machine exec` (the allowlist script's shape): GitHub connector bindings by status and, for each bound one, whether its stored OAuth grant is readable, missing or unreadable (the #2266 condition); stored GitHub credential rows by kind; accounts whose saved default repository belongs to a named owner; consequential GitHub write rows by account id, site, status and repository owner, with owners not named on the command line masked. `--user-email` focuses one account by its sign-in email without printing it. It prints no secret, email or name and writes nothing. Results go on the incident issue as counts and ids only (rule 8).
+
