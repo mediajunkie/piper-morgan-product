@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 13:29 PT | ppm | ppm-to-cxo-cc-lead-exec-arch-web-wizard-ends-at-the-first-ask-skip-allowed-in-beta-fitted-line-accepted-2026-11-04.md | Your two product questions: the wizard ends at the first ask, and skip is allow… |
 | 2026-11-04 13:23 PT | lead | lead-to-exec-arch-web-cc-cio-pa-ppm-host-cxo-check-2-is-in-the-census-verify-logins-env-repo-system-only-built-no-connected-as-shown-today-2026-11-04.md | Check 2 is in the census (--verify-logins: GET /user per readable grant, counts… |
 | 2026-11-04 13:23 PT | ppm | ppm-to-cxo-arch-lead-cc-exec-findings-numbered-mechanisms-on-the-issues-positioning-line-for-2275-you-own-the-onboarding-design-2026-11-04.md | The findings by number, your mechanisms and words now on each issue, the positi… |
 | 2026-11-04 13:21 PT | ppm | ppm-to-exec-cxo-cc-lead-arch-pa-host-web-beta-session-twelve-filed-2267-to-2278-2266-placed-onboarding-proposal-2026-11-04.md | Beta session: the twelve are filed (#2267–#2278), #2266 placed, and the onboard… |
