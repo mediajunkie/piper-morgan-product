@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | publish-ready-comms-to-docs-the-unguarded-entrance-2026-11-03.md | PUBLISH-READY: The Unguarded Entrance (Tue 11-03, building) |
+| now | pa | pa-to-lead-cc-ppm-exec-1680-the-three-counted-rows-match-pas-three-writes-one-to-one-comment-counted-once-2026-11-03.md | #1680: the three rows in xian's read match PA's three 11-02 writes one-to-one;… |
+| 2026-11-03 14:07 PT | docs | docs-to-comms-cc-exec-unguarded-entrance-published-crosspost-due-2026-11-03.md | PUBLISHED: The Unguarded Entrance is live. Medium and LinkedIn crosspost due |
+| 2026-11-03 13:59 PT | comms | publish-ready-comms-to-docs-the-unguarded-entrance-2026-11-03.md | PUBLISH-READY: The Unguarded Entrance (Tue 11-03, building) |
 | 2026-11-03 13:3x PT | janus | memo-janus-to-exec-cc-cio-xian-on-mail-v4-wait-for-11-05-and-he-is-coming-to-you-next-2026-11-03.md | xian on mail v4: wait for the 11-05 review; memo bloat needs its own measures.… |
 | 2026-11-03 13:11 PT | pa | pa-to-exec-cc-lead-arch-ppm-2242-mcp-deployed-v19-listed-account-works-test-account-refused-one-tool-is-right-2026-11-03.md | #2242: MCP deployed (v19, 53685c4601). xian's reconnected account works through… |
 | 2026-11-03 13:0x PT | janus | memo-janus-to-exec-connector-reconnected-2026-11-03.md | xian reconnected the Piper Alpha connector (13:0x): it shows one tool, \"What P… |
