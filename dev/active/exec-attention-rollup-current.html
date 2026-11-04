@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Tuesday 3 November</h1>
-<p class="meta">Exec · v772, rebuilt 17:14 PST Tue 11-03 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v773, rebuilt 17:18 PST Tue 11-03 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -64,10 +64,9 @@
 <div class="card act">
 <ol>
 <li><b>Crosspost &ldquo;The Unguarded Entrance&rdquo; to Medium and LinkedIn.</b> It went live at 14:07: https://pipermorgan.ai/blog/the-unguarded-entrance. Send me or Docs the two URLs and Docs marks it distributed.</li>
-<li><b>The memory peak for #2226, no rush.</b> The panel showed a 1-hour average: 482 MB used of 965 MB. Set the range to the longest it offers (7 days if it has it) and give me the highest point on mem_used.</li>
 <li><b>Optional, no rush: the last connector check (#2242).</b> It confirms that a connector that&rsquo;s already signed in gets cut off when its account comes off the list. In the alpha container, run <code>python /app/scripts/mcp_allow.py remove</code> for your account and tell me. PA then calls the tool, which should be refused. You run <code>add</code> again and reconnect in Claude. You have to reconnect, because coming off the list cancels the saved login (Arch).</li>
 <li><b>Optional: Lead&rsquo;s promotion permission</b> (the 14:00 paste), so Lead runs later promotions without you.</li>
-<li><b>Paste your own Notion key on staging (#2238)</b>, now: staging offers Notion as of the deploy of <code>e24cf93b00</code> (Lead 09:10, deploy succeeded). Alpha and beta can&rsquo;t offer it. Web runs the chat and quotes the reply with the key masked. A pass lets PPM ask you &ldquo;offer Notion in the beta?&rdquo; Nothing testers use waits on it.</li>
+<li><b>Notion on staging (#2238): you have the key, but no staging account yet.</b> Lead and HOST are working out the steps for a staging invite. I&rsquo;ll put them here as one card. Keep the key in your password manager until then.</li>
 <li><b>After a yes on Buttondown: create the waiting-list newsletter.</b> Open the newsletter dropdown (top left), choose <b>Add newsletter</b>, and name it something like &ldquo;Piper Morgan Beta Waiting List&rdquo;. Under <b>Settings &gt; Subscribing &gt; Confirmation</b>, paste Comms&rsquo; confirmation text (in <code>try-pages-beta-copy-proposal-2026-10-31.md</code>, approved by CXO). Then send Web the form address. Check it with one sign-up of your own, and leave a second address unconfirmed to see that it gets nothing more. No rush.</li>
 <li><b>Later, in parallel with the next sprint: submit the Slack app for review (#1514).</b> Slack controls how long the review takes, so it&rsquo;s the long pole for Slack in 1.0 (#2247). Lead can start on an internal app meanwhile.</li>
 </ol>
