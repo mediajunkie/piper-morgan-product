@@ -368,3 +368,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 2026-11-04 08:31 v785: alpha line to 3f7994e873 (Lead 08:29, /health read; run 41865884119 finished 16:29Z).
 - 2026-11-04 10:02 v786: alpha ec783d61db (Lead 10:00, /health read); 2098 2265 2259 1858 CLOSED per gh.
 - 2026-11-04 10:18 v787: #1715 two one-word asks (CIO 10:11) under Your word; old Whenever line removed. PA F1 pass (10:05).
+- 2026-11-04 12:44 v788: GitHub leak containment line on hot card (xian live).
