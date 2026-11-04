@@ -15,15 +15,17 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Now (written 2026-11-02 21:47 STOP; replace, don't annotate)
+## Now (written 2026-11-03 21:54 STOP; replace, don't annotate)
 
-- **Served at 18:44 on 11-03:** alpha and beta on `b0f774aabb` (promoted 11-03, run 41760826169), MCP on Fly v19 `53685c4601` (since 11-03, by 13:09). Main CI 12/12 green. No watch is armed: if a promotion is pending at the next fire, arm one that polls alpha's `/health` sha.
-- **Alpha promoted to `b0f774aabb` (Lead, 11-03, dispatched after 18:26; run 41760826169).** PA ran CXO's rechecks 18:35–18:42 (43de02fb94; memo to CXO 18:44). #2042 passes on every row; #2258 reads as set; #2197 has the new lead-in; **#2098 fails step 3** (a title answer gets case 1's question again, then "file it as is" files the old title; issuecomment-6621110533). Waiting on CXO's verdicts and Lead's #2098 fix. After the next promotion that carries a #2098 fix: rerun the T block (`dev/2026/11/03/cxo-rechecks-b0f774aabb.py`), but delete or rename #39's title first, or run T2 before T1, so the duplicate guard doesn't mask the "no" branch.
-- **#2242 (Q2):** deployed 11-03 by 13:09, MCP v19 `53685c4601`. Listed account and test-account refusal both PASS (issuecomment-6615530013). Left: the held-token row, on xian's `mcp_allow.py remove` relayed by Exec; then PA calls the tool (expect refused), then xian re-adds and reconnects.
-- **#1680:** xian's admin read is in (11-03 17:05 via Exec, issuecomment-6619671185): 16 of 16 sites, 3 actions. PA matched the 3 rows one-to-one to its 11-02 writes on test #38 (issuecomment-6619737566). Lead judges the row; PA has nothing left unless asked.
-- **#2235 wizard half:** Web, once an OAuth-only account with a throwaway GitHub login exists (HOST confirmed the repo scope; on the rollup's "Fresh test accounts").
+- **Served at 21:47 on 11-03:** alpha and beta on `63d486043a` (Lead's second promotion, run 41770597383, 20:00), MCP on Fly v19 `53685c4601`. Main CI 12/12 green. No watch is armed.
+- **#2098:** served on `63d486043a` at 21:48–21:51 (ddcb254951; issuecomment-6623733274; memo to CXO and Lead at 21:52). The answer turn binds (capture line; #41 filed under the typed title) and "no" keeps the old title (#42). **Still unrun: "yes" to case 1**, because no held-turn phrasing reached case 1 (4 tried). I asked Lead for a phrasing that reaches it, or confirmation that it can't be reached. Also flagged to CXO: "change the title to 'X'" now applies directly (case 2 six of six on `b0f774aabb`, cause unchecked), and "Rename it to 'X'" gets "I couldn't tell what you wanted changed". CXO judges.
+- **#2265:** served PASS (issuecomment-6623733566): "since the start of yesterday, Monday, November 2" with 11-02's writes, and the rolling ask says "in the past 24 hours". CXO judges.
+- **#2258 F1 (#1858 write-leg amendment):** Lead builds it at the 11-04 START. After the promotion that carries it: re-run F1 (a comment on #9999 in the test repo) and quote the "didn't go through" line.
+- **#2242 (Q2):** Listed account and test-account refusal both PASS. Left: the held-token row, on xian's `mcp_allow.py remove` relayed by Exec; then PA calls the tool (expect refused), then xian re-adds and reconnects.
+- **#1680:** Lead judges the row; PA has nothing left unless asked.
+- **#2235 wizard half:** Web, once an OAuth-only account with a throwaway GitHub login exists (xian or his nominee makes the login).
 - **#2238 served line:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
-- **Fresh-account checks:** xian 11-03 17:27 "keep as is" (the 10-29 pattern, Exec 17:28). HOST mints with xian present, xian signs up and runs the turns, PA quotes his screenshots: A1, A2, the first-reply notice line, #2225's re-ask. Trigger: HOST's 10-minute slot on the rollup. Lead says which checks move to staging's direct accounts. **#2237:** a browser seat. **#2247:** Lead's build. **xian's MCP test plan:** file failures when his notes come back.
+- **Fresh-account checks:** xian 11-03 17:27 "keep as is". HOST mints with xian present, xian signs up and runs the turns, PA quotes his screenshots: A1, A2, the first-reply notice line, #2225's re-ask. One fresh alpha account. Trigger: HOST's slot with xian. **#2259:** unbuilt, Lead sizes (Web's render check).
 
 ## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 
