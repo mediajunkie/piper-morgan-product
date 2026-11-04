@@ -2341,7 +2341,7 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
 
     #1327 gap 3 cutover: prefer the per-user OAuth connector (binding + grant →
     ``search_repositories`` user:@me), mirroring the #1322 chat-read cutover. Fall back to the
-    native shared PAT ONLY when the user is not OAuth-connected (``CONNECT_REQUIRED``) — the
+    native path (the ACCOUNT'S OWN PAT, never a shared one; ADR-081 D1) ONLY when the user is not OAuth-connected (``CONNECT_REQUIRED``) — the
     layer-then-migrate transition (D6 retires the PAT path). If they ARE connected but the
     connector is degraded (server unreachable / re-auth), surface an honest error rather than
     masking the real connection state with a silent PAT fallback or a silent empty (#1231).
