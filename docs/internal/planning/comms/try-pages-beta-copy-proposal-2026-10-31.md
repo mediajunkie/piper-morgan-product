@@ -9,7 +9,7 @@
 
 ## v4: one free newsletter for news plus the waiting list (xian 11-03 17:24 via Exec). Replaces the second-newsletter plan in v2 and v3
 
-xian, verbatim: "For now, yes let's use one free newsletter. I will review the experience and revisit again in a bit." A second Buttondown newsletter costs +$29/month (Exec checked the pricing page), so the waiting list stays a tag (`beta-waitlist`) on the one newsletter. **Status: drafted 17:3x, needs CXO's OK.**
+xian, verbatim: "For now, yes let's use one free newsletter. I will review the experience and revisit again in a bit." A second Buttondown newsletter costs +$29/month (Exec checked the pricing page), so the waiting list stays a tag (`beta-waitlist`) on the one newsletter. **Status: CXO OK'd v4 at 17:36 with one edit, the invitation sentence (applied below). Web built the form and `/privacy` strings on a branch at 17:37 and is holding them for CXO's go.**
 
 **What the site does today (website origin/main, read 11-03 17:3x).** There is no beta checkbox. The only sign-up form on the site is `/try/beta/`. It posts to the one newsletter with the hidden tag `source="beta-waitlist"`, so everyone who signs up on the site is on the waiting list. Its only checkbox is the consent box: "I agree to receive marketing communications…". That means the confirmation can't say "which one you chose" from a box. Someone can only land on the newsletter without the tag by using Buttondown's own hosted sign-up page.
 
@@ -26,13 +26,13 @@ xian, verbatim: "For now, yes let's use one free newsletter. I will review the e
 >
 > Once you confirm, you'll get occasional news and updates from Piper Morgan as we build it.
 >
-> If you signed up on our beta page, you're also on the waiting list for the private beta. We send invitations in waves, and we'll write to you personally when we can invite you. We can't promise when that will be.
+> If you signed up on our beta page, you're also on the waiting list for the private beta. We send invitations in waves and write to people personally. We can't say when yours will come.
 >
 > To stop getting our emails, use the unsubscribe link in any of them.
 >
 > If you didn't sign up, ignore this email and you won't hear from us.
 
-**If Buttondown can show a paragraph only to tagged subscribers** (not verified: HOST or xian to check in the template editor), the fourth paragraph shows only to `beta-waitlist` and loses its "If you signed up on our beta page" opening: "You're also on the waiting list for the private beta. We send invitations in waves…". Everything else stays as it is.
+**If Buttondown can show a paragraph only to tagged subscribers** (not verified: HOST or xian to check in the template editor), the fourth paragraph shows only to `beta-waitlist` and loses its "If you signed up on our beta page" opening: "You're also on the waiting list for the private beta. We send invitations in waves and write to people personally…". Everything else stays as it is.
 
 ### 2. `/try/beta/` form (Web, #2256)
 
