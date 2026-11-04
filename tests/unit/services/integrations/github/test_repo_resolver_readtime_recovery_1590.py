@@ -269,8 +269,11 @@ class TestPrincipalSafety:
         status.is_configured.assert_not_awaited()
         search.search_user_repositories.assert_not_awaited()
 
-    async def test_env_var_fallback_still_wins_before_recovery(self, monkeypatch):
-        """Strictly additive: recovery fires only where today's code raises."""
+    async def test_env_var_never_serves_a_real_account_recovery_runs_instead(self, monkeypatch):
+        """#2266 (Arch 2026-11-04): the env default is the system's, never an account's.
+        Before this the env var won here, which on alpha sent a newly connected
+        tester's repo-less asks to the operator's repository. For an account, recovery
+        runs as if the env var were unset."""
         monkeypatch.setenv(ENV_DEFAULT_REPO, "envowner/envrepo")
         store: Dict[str, str] = {}
         patch_cfg, patch_scope = _patch_db(store)
@@ -280,5 +283,19 @@ class TestPrincipalSafety:
         with patch_cfg, patch_scope, patch_status, patch_search:
             resolved = await resolve_repo(user_id=uuid4())
 
-        assert resolved.source == "env_var"
+        assert resolved.source == "user_default"
+        assert (resolved.owner, resolved.name) == ("octocat", "hello-world")
+        search.search_user_repositories.assert_awaited_once()
+
+    async def test_env_var_with_nothing_to_recover_asks_never_the_env_repo(self, monkeypatch):
+        """A real account, env set, no preference, nothing to recover: UnresolvedRepoError,
+        never the deployment's repository (Arch's added pin)."""
+        monkeypatch.setenv(ENV_DEFAULT_REPO, "envowner/envrepo")
+        store: Dict[str, str] = {}
+        patch_cfg, patch_scope = _patch_db(store)
+        patch_status, _ = _patch_status(False)
+        patch_search, search = _patch_search([])
+
+        with patch_cfg, patch_scope, patch_status, patch_search, pytest.raises(UnresolvedRepoError):
+            await resolve_repo(user_id=uuid4())
         search.search_user_repositories.assert_not_awaited()

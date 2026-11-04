@@ -125,8 +125,8 @@ async def resolve_repo(
 
     1. ``explicit`` (str "owner/name") — caller passed it directly (source="explicit")
     2. ``user_id``'s ``default_repo`` preference (source="user_default")
-    3. ``$PIPER_DEFAULT_REPO`` env var (dev fallback; logs deprecation warning;
-       source="env_var")
+    3. ``$PIPER_DEFAULT_REPO`` env var, ONLY with no user principal (the system or
+       local-dev path; #2266: never for a real account; source="env_var")
     3.5. **Read-time recovery** (#1590) — when ``user_id`` is present, GitHub is
        connected (binding-first ``IntegrationStatusService``), and no preference
        exists: search the user's repos ONCE, apply #1314's default-default rule,
@@ -165,8 +165,14 @@ async def resolve_repo(
         if repo is not None:
             return repo
 
-    # Path 3: env-var dev fallback (logs deprecation warning)
-    env_value = os.environ.get(ENV_DEFAULT_REPO)
+    # Path 3: env-var fallback. #2266 (Arch 2026-11-04 13:16, the #1461 rule for the
+    # repo): a deployment env var is not an account's default. It applies ONLY when
+    # there is no user principal (the system or local-dev path); a real account with
+    # no saved default goes to the #1590 recovery below, or is asked. On a hosted
+    # deploy the env default is never applied to an account, whatever it holds: a
+    # newly connected tester asking for "my issues" was otherwise resolved to the
+    # operator's repository, read with their own token.
+    env_value = os.environ.get(ENV_DEFAULT_REPO) if user_id is None else None
     if env_value:
         try:
             owner, name = parse_full_name(env_value)

@@ -13,6 +13,13 @@ incident needs answered server-side:
 3. Accounts whose saved default repository belongs to an owner you name (``--owner``),
    by account id: the #1590 recovery or a deployment default could have pointed a
    newly connected account at someone else's repository.
+5. With ``--verify-logins`` (Exec's check 2, 2026-11-04 13:17): for every bound
+   binding whose grant is readable, ask GitHub ``GET /user`` with that grant and report,
+   counts only, how many grants resolve to the operator's login (``--operator-login``,
+   default mediajunkie) under an account other than the operator's
+   (``--operator-user-id``), and how many resolve to some other login. Any crossing
+   count above zero is a real credential crossing. No login other than the operator's is
+   printed; the grant is never printed.
 4. Consequential GitHub write rows since ``--since``: by account id, site, status and the
    repository owner the write targeted. Owners not named with ``--owner`` are masked as
    ``other-N`` (stable within one run), so no outside person's handle is printed.
@@ -156,7 +163,76 @@ async def _focus_account(session, email: str, mask: _Mask) -> None:
     print()
 
 
-async def run(since: date, mask: _Mask, focus_email: str | None = None) -> int:
+async def _login_for_grant(grant: str) -> str | None:
+    """GitHub's login for a bearer, or None when GitHub does not accept it. The bearer is
+    sent to api.github.com only; nothing is printed or stored."""
+    import aiohttp
+
+    try:
+        async with aiohttp.ClientSession() as http:
+            async with http.get(
+                "https://api.github.com/user",
+                headers={
+                    "Authorization": f"Bearer {grant}",
+                    "Accept": "application/vnd.github+json",
+                    "X-GitHub-Api-Version": "2022-11-28",
+                },
+            ) as response:
+                if response.status != 200:
+                    return None
+                return (await response.json()).get("login")
+    except Exception:
+        return None
+
+
+async def _verify_logins(session, operator_login: str, operator_user_id: str | None) -> None:
+    from services.security.user_api_key_service import UserAPIKeyService, UserKeyReadFailed
+
+    rows = (
+        await session.execute(
+            text(
+                "SELECT owner_id FROM connector_bindings WHERE connector = 'github' AND status = 'bound'"
+            )
+        )
+    ).all()
+    counts = Counter()
+    crossing_accounts: list[str] = []
+    for r in rows:
+        try:
+            grant = await UserAPIKeyService().retrieve_user_key_strict(
+                session, str(r.owner_id), OAUTH_PROVIDER
+            )
+        except UserKeyReadFailed:
+            counts["grant unreadable"] += 1
+            continue
+        if not grant:
+            counts["grant missing"] += 1
+            continue
+        login = await _login_for_grant(grant)
+        if login is None:
+            counts["GitHub rejected the grant"] += 1
+        elif login.lower() == operator_login.lower():
+            if operator_user_id and str(r.owner_id) == operator_user_id:
+                counts["operator's own account -> operator login"] += 1
+            else:
+                counts["OTHER account -> operator login (CROSSING)"] += 1
+                crossing_accounts.append(str(r.owner_id))
+        else:
+            counts["another login (not printed)"] += 1
+    print(f"5. grant logins verified with GitHub: {len(rows)} bound bindings · {dict(counts)}")
+    for a in crossing_accounts:
+        print(f"   CROSSING: account {a} holds a grant that GitHub says is {operator_login}")
+    print()
+
+
+async def run(
+    since: date,
+    mask: _Mask,
+    focus_email: str | None = None,
+    verify_logins: bool = False,
+    operator_login: str = "mediajunkie",
+    operator_user_id: str | None = None,
+) -> int:
     await db.initialize()
     async with await db.get_session() as session:
         if focus_email:
@@ -222,6 +298,9 @@ async def run(since: date, mask: _Mask, focus_email: str | None = None) -> int:
                 print(f"   account {c.owner_id} -> owner {owner}")
         print()
 
+        if verify_logins:
+            await _verify_logins(session, operator_login, operator_user_id)
+
         # 4. consequential GitHub writes since the date
         writes = (
             await session.execute(
@@ -261,6 +340,17 @@ def main(argv: list[str] | None = None) -> None:
         "grant state, credential rows and GitHub audit counts",
     )
     p.add_argument(
+        "--verify-logins",
+        action="store_true",
+        help="ask GitHub which login each readable grant belongs to (counts only; Exec's check 2)",
+    )
+    p.add_argument("--operator-login", default="mediajunkie", help="the operator's GitHub login")
+    p.add_argument(
+        "--operator-user-id",
+        default=None,
+        help="the operator's Piper account id (uuid), so its own grant is not a crossing",
+    )
+    p.add_argument(
         "--owner",
         action="append",
         default=None,
@@ -269,7 +359,18 @@ def main(argv: list[str] | None = None) -> None:
     args = p.parse_args(argv)
     since = date.fromisoformat(args.since)
     shown = set(args.owner or ["mediajunkie", "dinp-machine"])
-    sys.exit(asyncio.run(run(since, _Mask(shown), args.user_email)))
+    sys.exit(
+        asyncio.run(
+            run(
+                since,
+                _Mask(shown),
+                args.user_email,
+                verify_logins=args.verify_logins,
+                operator_login=args.operator_login,
+                operator_user_id=args.operator_user_id,
+            )
+        )
+    )
 
 
 if __name__ == "__main__":

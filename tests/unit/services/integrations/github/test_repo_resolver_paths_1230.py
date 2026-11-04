@@ -56,12 +56,15 @@ async def test_path2_user_default_reachable():
     assert got.source == "user_default"
 
 
-async def test_path3_env_var_reachable():
-    import os
-
-    os.environ[ENV_DEFAULT_REPO] = "o/envrepo"
-    got = await resolve_repo(user_id=uuid4())
+async def test_path3_env_var_reachable_only_without_a_principal(monkeypatch):
+    """#2266 (Arch 2026-11-04): the env default is the system's or a local install's,
+    never an account's. With no principal it still resolves; for a real account it
+    is skipped (the account recovers its own default or is asked)."""
+    monkeypatch.setenv(ENV_DEFAULT_REPO, "o/envrepo")
+    got = await resolve_repo()
     assert got.source == "env_var"
+    with pytest.raises(UnresolvedRepoError):
+        await resolve_repo(user_id=uuid4())
 
 
 async def test_path4_unresolved_when_all_paths_dry():
