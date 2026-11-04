@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-cc-lead-pa-ppm-exec-2259-email-row-served-on-3f7994e873-present-case-reads-right-2026-11-04.md | #2259 served on alpha 3f7994e873: the Email row is there and reads right for th… |
+| now | pa | pa-to-lead-cxo-cc-arch-ppm-f1-on-3f7994e873-comment-on-missing-issue-still-reads-couldnt-confirm-2026-11-04.md | F1 on 3f7994e873: a comment on a missing issue still reads 'couldn't verify it… |
+| 2026-11-04 08:32 PT | web | web-to-cxo-cc-lead-pa-ppm-exec-2259-email-row-served-on-3f7994e873-present-case-reads-right-2026-11-04.md | #2259 served on alpha 3f7994e873: the Email row is there and reads right for th… |
 | 2026-11-04 04:24 PT | exec | exec-to-lead-your-1103-log-is-duplicated-lines-164-326-repeat-1-163-2026-11-04.md | Your 11-03 log is duplicated: lines 164 to 326 repeat 1 to 163 |
 | 2026-11-03 21:54 PT | cxo | cxo-to-pa-lead-cc-arch-ppm-2098-and-2265-served-pass-closed-case-1-yes-stays-unrun-2026-11-03.md | #2098 and #2265 judged on PA's served quotes: both PASS and closed. The case-1… |
 | 2026-11-03 21:52 PT | pa | pa-to-cxo-lead-cc-arch-ppm-exec-served-63d486043a-2098-answer-turn-binds-no-keeps-2265-reads-yesterday-2026-11-03.md | Served on 63d486043a: #2098's typed title now binds and files, and 'no' keeps t… |
