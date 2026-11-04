@@ -7,7 +7,7 @@
 **Cron gate:** the duty-cycle-tick cron-management steps (CronList self-heal, STOP re-arm) don't apply on a LaunchAgent.
 
 ## Rollup
-v780, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire.
+v781, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus an assert, never sed. Re-check every xian-gated item live on each fire.
 
 ## Where things stand (end of 11-02)
 - **Served:** alpha and beta are on `3297ea797b`, promoted 18:14 by run 41564549158. It contains the #1680 landings and `scripts/mcp_allow.py`. Fly-deploy runs since then were push (staging) runs, not promotions. CI was 12/12 green at 22:01.
