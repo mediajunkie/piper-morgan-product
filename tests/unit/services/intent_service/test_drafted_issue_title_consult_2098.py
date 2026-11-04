@@ -431,27 +431,54 @@ class TestTheAnswerTurn:
         )
 
     @pytest.mark.asyncio
-    async def test_a_non_answer_is_not_stored_as_the_title(self, svc):
-        """CXO's amendment 4: "the one I said" is decided by the idiom's own
-        classification (the router CONFIRMs: not a value), never a phrase list."""
+    async def test_confirm_without_a_title_binds_the_text_verbatim(self, svc):
+        """Arch 2026-11-03 18:52 (reversing the 11-02 re-ask for this turn): on the
+        answer turn a CONFIRM binds. No shown title: the person's text, verbatim.
+        The cost of a wrong bind is one visible sentence; the re-ask cost PA's T1d
+        filing under the old title."""
         await _turn(svc, TITLE_TURN, _confirm("router_clarify"))
         offer, result = await _next(svc, "s-2098", "the one I said", _confirm("router_clarify"))
-        assert result["message"] == mod.TITLE_QUESTION_NO_TITLE
-        assert offer["pending_action"]["draft"]["title"] == OLD_TITLE
-        assert await _file(svc, "s-2098") == OLD_TITLE
+        assert result["message"] == mod.TITLE_CHANGED_LINE.format(title="the one I said")
+        assert offer["pending_action"]["draft"]["title"] == "the one I said"
+        assert mod.TITLE_QUESTION_KEY not in offer["pending_action"]
+        assert await _file(svc, "s-2098") == "the one I said"
 
     @pytest.mark.asyncio
-    async def test_confirm_re_asks_once_then_keeps_the_old_title(self, svc):
-        """Arch's confirmation (2026-11-02 19:3x): CONFIRM re-asks ONCE. A second
-        unclear answer keeps the old title and says so; the draft stays armed."""
+    async def test_confirm_with_a_substring_title_binds_the_substring(self, svc):
+        """The shown title is a substring of the turn: the interpretation layer only
+        shrinks (ADR-080), so the substring is the title."""
         await _turn(svc, TITLE_TURN, _confirm("router_clarify"))
-        _, first = await _next(svc, "s-2098", "the one I said", _confirm("router_clarify"))
-        assert first["message"] == mod.TITLE_QUESTION_NO_TITLE
-        offer, second = await _next(svc, "s-2098", "you know", _confirm("router_clarify"))
-        assert second["message"] == mod.TITLE_KEPT_LINE.format(title=OLD_TITLE)
-        assert offer["question"] == second["message"]
+        turn = f'call it "{NEW_TITLE}" please'
+        offer, result = await _next(svc, "s-2098", turn, _confirm("sub_threshold", title=NEW_TITLE))
+        assert result["message"] == mod.TITLE_CHANGED_LINE.format(title=NEW_TITLE)
+        assert offer["pending_action"]["draft"]["title"] == NEW_TITLE
+        assert await _file(svc, "s-2098") == NEW_TITLE
+
+    @pytest.mark.asyncio
+    async def test_confirm_with_a_title_that_is_not_a_substring_binds_the_text(self, svc):
+        """PA's T1c on alpha b0f774aabb: the router's CONFIRM carried the title itself.
+        A shown title that is not inside the turn is not the person's words, so the
+        turn is the title, verbatim."""
+        await _turn(svc, TITLE_TURN, _confirm("router_clarify"))
+        offer, result = await _next(
+            svc,
+            "s-2098",
+            QUOTED_TITLE,
+            _confirm("sub_threshold", title="Something the router made up"),
+        )
+        assert result["message"] == mod.TITLE_CHANGED_LINE.format(title=QUOTED_TITLE)
+        assert offer["pending_action"]["draft"]["title"] == QUOTED_TITLE
+        assert await _file(svc, "s-2098") == QUOTED_TITLE
+
+    @pytest.mark.parametrize("answer", ["no", "never mind", "forget it"])
+    @pytest.mark.asyncio
+    async def test_decline_and_bare_exit_on_case_2_still_keep_the_old_title(self, svc, answer):
+        await _turn(svc, TITLE_TURN, _confirm("router_clarify"))
+        stub = AsyncMock(side_effect=AssertionError("a decline never consults"))
+        with patch(CONSULT, new=stub):
+            offer, result = await _next(svc, "s-2098", answer)
+        assert result["message"] == mod.TITLE_KEPT_LINE.format(title=OLD_TITLE)
         assert offer["pending_action"]["draft"]["title"] == OLD_TITLE
-        assert mod.TITLE_QUESTION_KEY not in offer["pending_action"]
         assert await _file(svc, "s-2098") == OLD_TITLE
 
     @pytest.mark.asyncio

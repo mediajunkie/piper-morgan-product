@@ -844,7 +844,6 @@ def _ask_title_question(
     session_id: str,
     user_id: Optional[str],
     intent_service: Any,
-    reasked: bool = False,
 ) -> Dict[str, Any]:
     """#2098 — a CONFIRM on a held draft: re-arm the SAME offer (same pending
     action, title unchanged) with the title question on the draft's own record,
@@ -856,10 +855,6 @@ def _ask_title_question(
         "old_title": old_title,
         "proposed_title": proposed_title,
     }
-    if reasked:
-        # Arch (2026-11-02 19:3x): an unclear answer re-asks once; the marker
-        # lets the next unclear answer keep the old title instead.
-        title_question["reasked"] = True
     pending_action[TITLE_QUESTION_KEY] = title_question
     question = (
         TITLE_QUESTION_WITH_TITLE.format(title=proposed_title)
@@ -946,8 +941,8 @@ async def _answer_title_question(
     carrier use (Arch's confirmation, 2026-11-02 19:3x): a ``none`` BIND is the
     person's title, verbatim; an ``update_issue`` BIND with a title is that
     title; a RELEASE is a competing command (generic path, the draft stays
-    armed with its old title); a CONFIRM ("the one I said") is not a title, so
-    the question is asked again once and nothing is stored."""
+    armed with its old title); a CONFIRM binds too (Arch 2026-11-03: the shown
+    title when it is a substring of the turn, else the turn verbatim)."""
     from services.intent_service.acceptance import (
         AcceptanceVerdict,
         declared_axes_for_workflow,
@@ -1032,14 +1027,18 @@ async def _answer_title_question(
             rearmed=rearmed,
         )
         return None
-    # CONFIRM: not a title, nothing is stored as one. Arch: re-ask ONCE (case 1
-    # when the router showed a title, for display only; otherwise case 2). A
-    # second unclear answer closes the question and keeps the old title.
-    if tq.get("reasked"):
-        return _keep_title(pending_offer, pending_action, **kw)
+    # CONFIRM on the answer turn BINDS (Arch 2026-11-03 18:52, reversing the 11-02
+    # re-ask for this turn only; CXO's requirement 18:48). The turn answers a
+    # question Piper just asked, the change is held and visible, and filing still
+    # needs a separate "file it as is": a wrong bind costs one sentence, the
+    # re-ask cost a wrong filing (PA's T1c/T1d on alpha b0f774aabb). The title is
+    # the consult's display arg when it is non-empty and a substring of the
+    # person's text (the interpretation layer only shrinks, ADR-080); otherwise
+    # the person's text, verbatim. The held-turn consult above still asks.
     shown = (consult.args or {}).get("title")
-    again = shown.strip() if isinstance(shown, str) and shown.strip() else None
-    return _ask_title_question(pending_offer, pending_action, again, reasked=True, **kw)
+    shown = shown.strip() if isinstance(shown, str) else ""
+    title = shown if shown and shown in text else text
+    return _retitle_draft(pending_offer, pending_action, title, captured=True, **kw)
 
 
 def _retitle_draft(
