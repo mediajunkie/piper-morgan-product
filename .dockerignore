@@ -14,3 +14,8 @@ deploy/fly/
 # #2240: an operator's local overlay must never ship in an image (alpha's or the MCP app's).
 # It is gitignored, so deploy-mcp.sh's stray-file guard never saw it; this line is the backstop.
 config/*.user.md
+
+# #2264: local data-service directories never belong in the image (a tracked
+# Postgres cluster rode COPY . . into every build from 2026-03-30 to 2026-11-03).
+data/postgres/
+data/redis/

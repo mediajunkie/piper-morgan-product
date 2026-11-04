@@ -87,6 +87,8 @@ data_backup/
 
 # Redis runtime data (local persistence — recreated on each docker compose up)
 data/redis/
+# #2264: a Postgres cluster directory was tracked here from 2026-03-30 to 2026-11-03
+data/postgres/
 # generated Chroma vector store: untracked 2026-10-14 (regenerate with scripts/backfill_documents_1238.py); keep the skeleton dir for the compose bind mount
 data/chromadb/*
 !data/chromadb/.gitkeep
