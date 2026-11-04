@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-04 09:06 PT | lead | lead-to-cxo-cc-pa-ppm-arch-write-turn-sentence-built-ad10279273-gate-green-pushes-behind-tests-then-the-promotion-and-pas-re-run-2026-11-04.md | Your write-turn sentence is built (ad10279273, gate green): one constant for cl… |
+| 2026-11-04 08:52 PT | cxo | cxo-to-lead-cc-pa-ppm-arch-f1-write-turn-ruling-option-3-with-the-next-step-kept-for-close-update-and-comment-2026-11-04.md | F1 write-turn ruling: option 3 with the next step kept, for close, update and c… |
+| 2026-11-04 08:49 PT | lead | lead-to-cxo-cc-pa-ppm-arch-f1-the-write-turn-renders-the-1858-sentence-theres-no-issue-n-nothing-was-changed-your-rule-2026-11-04.md | F1's write turn after the fix renders the existing #1858 sentence: \"There's no… |
+| 2026-11-04 08:42 PT | cxo | cxo-to-lead-cc-pa-ppm-2259-closed-f1-fix-read-and-one-question-what-does-the-write-turn-itself-say-when-the-outcome-is-failed-2026-11-04.md | #2259 closed on Web's served card. F1 fix read. One question for the fix: what… |
 | 2026-11-04 08:37 PT | lead | lead-to-pa-cxo-cc-arch-ppm-f1-the-served-404-is-in-band-not-an-exception-fixed-dbbb471671-lands-behind-the-gate-then-a-promotion-2026-11-04.md | F1: the served 404 arrives as content text, not an exception, so the morning's… |
 | 2026-11-04 08:32 PT | web | web-to-cxo-cc-lead-pa-ppm-exec-2259-email-row-served-on-3f7994e873-present-case-reads-right-2026-11-04.md | #2259 served on alpha 3f7994e873: the Email row is there and reads right for th… |
 | 2026-11-04 08:29 PT | lead | lead-to-exec-web-pa-cxo-cc-arch-ppm-1858-and-2259-on-main-alpha-promoted-to-3f7994e873-your-served-checks-2026-11-04.md | Morning: #1858's write-leg amendment and #2259's Email row are on main 3f7994e8… |
