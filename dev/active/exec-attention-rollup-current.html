@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Tuesday 3 November</h1>
-<p class="meta">Exec · v776, rebuilt 17:38 PST Tue 11-03 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v779, rebuilt 17:44 PST Tue 11-03 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -49,9 +49,7 @@
 
 <div class="card act">
 <ul>
-<li><b>An old test database is in the public repo (Arch, 17:09).</b> A Postgres data folder (84 MB) was committed on 03-30 and ships in every server image. Arch scanned it by count only: no API keys, no password hashes, and the only email domain is Temporal&rsquo;s, so it looks like the old Temporal schema rather than Piper users. Nobody has read the tables. Lead takes it out of the repo and images going forward. Rewriting git history is your call. <span class="rec">Arch and I: no rewrite, unless a read of the tables finds real data.</span></li>
 <li><b>For your information, nothing to answer: your test-gate idea.</b> Lead and CIO&rsquo;s joint answer is to keep the failure, because the failure is what makes the known-failing list shrink. What cost you half an hour today was an entry that hadn&rsquo;t been sorted into a type. Lead sorted all 25 unsorted entries this evening (716481299c). 23 are broken tests, and 2 are a real bug, filed as #2257, which users can&rsquo;t reach. None are flaky. CIO counts on 11-09 how many runs failed only on this lock. If that number isn&rsquo;t about zero, a &ldquo;warn on the first pass, fail on the second&rdquo; version can be built. Tell me if you want that anyway.</li>
-<li><b>Whenever:</b> where do contribute@ (on /get-involved) and privacy@ (on /privacy) go? Web couldn&rsquo;t verify either.</li>
 </ul>
 </div>
 
@@ -59,10 +57,22 @@
 
 <div class="card act">
 <ol>
+<li><b>A throwaway GitHub login for Web&rsquo;s #2235 check</b>, before the alpha test-account session. It needs an email address you manage, and access to one test repository only. Tell me the repository name, not the password. Agents can&rsquo;t open GitHub accounts.</li>
+<li><b>Add contribute@ and privacy@pipermorgan.ai as aliases</b> (your word, 17:42), the same way as support@. In admin.google.com, open Users, then the user support@ belongs to, then Alternate email addresses. Tell me when they&rsquo;re added.</li>
 <li><b>Crosspost &ldquo;The Unguarded Entrance&rdquo; to Medium and LinkedIn.</b> It went live at 14:07: https://pipermorgan.ai/blog/the-unguarded-entrance. Send me or Docs the two URLs and Docs marks it distributed.</li>
 <li><b>Optional, no rush: the last connector check (#2242).</b> It confirms that a connector that&rsquo;s already signed in gets cut off when its account comes off the list. In the alpha container, run <code>python /app/scripts/mcp_allow.py remove</code> for your account and tell me. PA then calls the tool, which should be refused. You run <code>add</code> again and reconnect in Claude. You have to reconnect, because coming off the list cancels the saved login (Arch).</li>
 <li><b>Notion on staging (#2238): you have the key, but no staging account yet.</b> Lead and HOST are working out the steps for a staging invite. I&rsquo;ll put them here as one card. Keep the key in your password manager until then.</li>
-<li><b>Waiting list, one free newsletter (your word, 17:24).</b> (1) Add the one person you named to Subscribers, with the beta tag. (2) When Comms sends the new confirmation text, which covers both the news and the waiting list, paste it under Settings &gt; Subscribing &gt; Confirmation. I&rsquo;ll put it here. (3) Today&rsquo;s two sign-ups got the old confirmation, so a personal note may help. I can draft one.</li>
+<li><b>Waiting list, one free newsletter: paste the new confirmation (CXO OK&rsquo;d, 17:36).</b> In Buttondown, go to Settings &gt; Subscribing &gt; Confirmation. Keep Buttondown&rsquo;s own confirm link or button where the template puts it.<br>Subject: <code>Confirm your email for Piper Morgan</code><br>Body:<pre>Thanks for signing up. Please confirm this is your address.
+
+[confirm link]
+
+Once you confirm, you'll get occasional news and updates from Piper Morgan as we build it.
+
+If you signed up on our beta page, you're also on the waiting list for the private beta. We send invitations in waves and write to people personally. We can't say when yours will come.
+
+To stop getting our emails, use the unsubscribe link in any of them.
+
+If you didn't sign up, ignore this email and you won't hear from us.</pre>Then sign up once yourself, and leave a second address unconfirmed, so HOST can check that it gets nothing more. Also add the one person you named, with the beta tag. If you want to, send today&rsquo;s two sign-ups a personal note; I can draft it.</li>
 <li><b>Later, in parallel with the next sprint: submit the Slack app for review (#1514).</b> Slack controls how long the review takes, so it&rsquo;s the long pole for Slack in 1.0 (#2247). Lead can start on an internal app meanwhile.</li>
 </ol>
 </div>
@@ -133,6 +143,7 @@
 <li><b>Restarter (#2146):</b> passed its test Friday and brought the database back once with nobody touching it.</li>
 <li>Google approved our Calendar read access (#2087, 15:50). Two served proofs remain: a connect through the wizard and one calendar read on your outside account (Web can&rsquo;t sign in to Google). HOST has the ask.</li>
 <li>Mail v4 stays on three seats until the 11-05 review.</li>
+<li>The old Postgres folder in the repo: Lead is listing its databases and tables (names and counts only) before you decide on a rewrite. Until then, no rewrite.</li>
 <li>R3 coordination target: you kept it (12:5x). CIO measures memos per seat 11-04 to 11-10 and reads it with you Wed 11-11, beside the 11-05 mail v4 decision. Nothing is cut before then. Your two questions are answered through Janus: 2.65 is half of September, a chosen goal with no outside benchmark.</li>
 </ul></div>
 <h2>📊 Where things stand</h2>

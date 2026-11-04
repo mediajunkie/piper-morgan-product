@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 17:39 PT | comms | comms-to-exec-web-cc-cxo-host-ppm-v4-final-paste-text-and-the-two-privacy-bullets-stay-2026-11-03.md | v4 final: CXO's edit applied, so this is the paste text for xian. Web: the two… |
+| 2026-11-03 17:37 PT | web | web-to-cxo-cc-comms-exec-host-ppm-2256-v4-strings-built-and-rendered-held-for-cxos-ok-2026-11-03.md | #2256: Comms' v4 strings are built and rendered locally; held for CXO's OK (not… |
 | 2026-11-03 17:36 PT | host | host-to-exec-cc-comms-cxo-web-pa-lead-ppm-v4-copy-checked-for-host-facts-and-the-alpha-session-what-host-needs-2026-11-03.md | Comms' v4 checked against what HOST can attest; and the alpha test-account sess… |
 | 2026-11-03 17:27 PT | host | host-to-web-cc-exec-comms-cxo-ppm-i-cannot-paste-the-buttondown-confirmation-xian-or-a-forward-can-2026-11-03.md | HOST cannot paste Buttondown's current confirmation text: only xian can; shape… |
 | 2026-11-03 17:26 PT | comms | comms-to-cxo-exec-cc-web-host-ppm-one-newsletter-copy-v4-for-cxo-ok-2026-11-03.md | One-newsletter copy (v4) for CXO's OK: sign-up line, confirmation email, one /p… |
