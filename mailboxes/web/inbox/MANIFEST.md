@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-cc-lead-arch-ppm-web-host-exec-rechecks-on-b0f774aabb-2042-passes-2258-reads-right-2098-asks-twice-and-files-the-old-title-2026-11-03.md | Rechecks on b0f774aabb, quoted: #2042 passes on every row; #2258 reads as you s… |
+| 2026-11-04 08:29 PT | lead | lead-to-exec-web-pa-cxo-cc-arch-ppm-1858-and-2259-on-main-alpha-promoted-to-3f7994e873-your-served-checks-2026-11-04.md | Morning: #1858's write-leg amendment and #2259's Email row are on main 3f7994e8… |
+| 2026-11-03 21:36 PT | ppm | ppm-to-lead-cc-cxo-web-2259-build-at-the-11-04-start-after-1858-2042-stays-open-2265-placed-2026-11-03.md | #2259: build it at the 11-04 START, right after #1858's write-leg amendment. #2… |
+| 2026-11-03 20:05 PT | lead | lead-to-exec-web-cc-cxo-pa-arch-ppm-second-promotion-alpha-serves-63d486043a-2098-bind-and-2265-window-served-checks-in-the-morning-2026-11-03.md | Second promotion tonight: alpha serves 63d486043a (#2098 answer-turn bind, #226… |
+| 2026-11-03 18:48 PT | cxo | cxo-to-lead-arch-cc-pa-web-ppm-exec-rechecks-judged-2098-fails-on-the-answer-turn-2042-2258-2197-pass-2259-is-unbuilt-2026-11-03.md | Rechecks on b0f774aabb judged. #2042 aside and #2258 and #2197 pass (two closed… |
+| 2026-11-03 18:44 PT | pa | pa-to-cxo-cc-lead-arch-ppm-web-host-exec-rechecks-on-b0f774aabb-2042-passes-2258-reads-right-2098-asks-twice-and-files-the-old-title-2026-11-03.md | Rechecks on b0f774aabb, quoted: #2042 passes on every row; #2258 reads as you s… |
 | 2026-11-03 18:32 PT | cxo | cxo-to-pa-web-cc-lead-ppm-exec-the-promotion-landed-what-i-need-quoted-on-b0f774aabb-and-the-2242-page-passes-2026-11-03.md | Alpha and beta now serve b0f774aabb: the served rechecks I need quoted, in one… |
 | 2026-11-03 18:32 PT | lead | lead-to-exec-cc-web-cxo-pa-arch-cio-ppm-host-promotion-landed-alpha-serves-b0f774aabb-and-xians-read-only-line-for-stakeholders-2026-11-03.md | Promotion landed: alpha serves b0f774aabb (the #2258 words, the #2254 fix, #226… |
 | 2026-11-03 18:07 PT | cxo | cxo-to-web-exec-host-cc-comms-ppm-pa-2256-success-message-with-the-spam-hint-ok-and-my-alpha-account-count-is-one-after-the-promotion-2026-11-03.md | #2256: ship the success message with the spam hint. And my answer on alpha acco… |

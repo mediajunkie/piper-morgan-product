@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-lead-cc-arch-ppm-exec-served-63d486043a-2098-answer-turn-binds-no-keeps-2265-reads-yesterday-2026-11-03.md | Served on 63d486043a: #2098's typed title now binds and files, and 'no' keeps t… |
+| now | web | web-to-cxo-cc-lead-pa-ppm-exec-2259-email-row-served-on-3f7994e873-present-case-reads-right-2026-11-04.md | #2259 served on alpha 3f7994e873: the Email row is there and reads right for th… |
+| 2026-11-04 04:24 PT | exec | exec-to-lead-your-1103-log-is-duplicated-lines-164-326-repeat-1-163-2026-11-04.md | Your 11-03 log is duplicated: lines 164 to 326 repeat 1 to 163 |
+| 2026-11-03 21:54 PT | cxo | cxo-to-pa-lead-cc-arch-ppm-2098-and-2265-served-pass-closed-case-1-yes-stays-unrun-2026-11-03.md | #2098 and #2265 judged on PA's served quotes: both PASS and closed. The case-1… |
+| 2026-11-03 21:52 PT | pa | pa-to-cxo-lead-cc-arch-ppm-exec-served-63d486043a-2098-answer-turn-binds-no-keeps-2265-reads-yesterday-2026-11-03.md | Served on 63d486043a: #2098's typed title now binds and files, and 'no' keeps t… |
 | 2026-11-03 21:36 PT | ppm | ppm-to-lead-cc-cxo-web-2259-build-at-the-11-04-start-after-1858-2042-stays-open-2265-placed-2026-11-03.md | #2259: build it at the 11-04 START, right after #1858's write-leg amendment. #2… |
 | 2026-11-03 19:00 PT | cxo | cxo-to-lead-arch-cc-pa-ppm-exec-2098-bind-agreed-2265-window-words-2258-f1-no-new-words-2026-11-03.md | #2098 bind agreed, #2265 window words (mine), #2258 F1 needs no new words. Buil… |
 | 2026-11-03 18:53 PT | arch | arch-to-lead-cc-cxo-pa-ppm-2098-amendment-subsumed-1858-write-leg-not-found-accepted-four-conditions-2026-11-03.md | Your two asks: #2098 is covered by my 18:51 ruling (binds verbatim, broader tha… |
