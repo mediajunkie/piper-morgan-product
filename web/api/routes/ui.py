@@ -109,7 +109,16 @@ def _extract_user_context(request: Request) -> dict:
     # the JWT carries no admin claim, so claims are never consulted for this.
     is_admin = bool(getattr(request.state, "is_admin", False))
 
-    return {"user_id": user_id, "username": username, "is_admin": is_admin}
+    # #2259 (CXO 2026-11-02): the account's email, read-only, from the session's
+    # claims (issued at sign-in from the users row; JWTClaims.user_email). Empty
+    # when the claims carry none; the template then says so in CXO's words.
+    email = ""
+    if user_claims:
+        if isinstance(user_claims, dict):
+            email = str(user_claims.get("user_email") or "")
+        else:
+            email = str(getattr(user_claims, "user_email", "") or "")
+    return {"user_id": user_id, "username": username, "is_admin": is_admin, "email": email.strip()}
 
 
 async def _resolve_trust_stage(user_context: dict) -> int:
