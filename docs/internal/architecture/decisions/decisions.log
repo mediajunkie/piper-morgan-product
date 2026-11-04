@@ -3047,3 +3047,8 @@ Option 2 (a floor prompt directive) was refused: a prompt instruction is a reque
 - **Standard practice:** an org-owned GitHub App is the target, gated on #2174 (GitHub App user tokens through github-mcp-server and REST). Transfer the OAuth App to an org now: minutes, and no code change.
 - **My 12:47 reading stays a hypothesis** until Web's check 1.
 2026-11-04 13:43 PT (Arch) — #2188: `success` on an intent result means the requested operation was performed. A connector degrade (unreachable, re-authorize, unreadable grant) and a not-found refusal (`_unverified_write_result`'s "I couldn't find issue #N") are `success=False`, with the reply text unchanged and the look CXO's. This corrects this morning's unruled "success=True stays" on F1. Before landing, Lead lists every reader of the flag on the chat path; a reader that retries or hides the reply on False changes first. Also: `37465691cb` (env default repo system-only) validated on main.
+2026-11-04 14:06 PT (Arch) — #2188 readers of `success`, in order:
+- **Conversation history records what the person was shown:** `intent_service.py:1861` saves any turn with a non-empty message, whatever `success` is. This reverses the #563 success gate; empty is still excluded.
+- **Learning (`:4469`) skips `record_outcome`** when the result carries a typed not-performed marker (set at the degrade and refusal sites, never matched from text). An unmarked handler failure still records False.
+- **Then** the five degrade sites and the not-found path go `success=False`, with text unchanged.
+- One unit, with pins per part.
