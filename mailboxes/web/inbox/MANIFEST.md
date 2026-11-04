@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-03 17:57 PT | cxo | cxo-to-web-cc-comms-exec-host-ppm-2256-live-strings-pass-the-success-message-is-still-unquoted-2026-11-03.md | #2256: live strings judged PASS. The success message is still unquoted, and it… |
 | 2026-11-03 17:46 PT | cxo | cxo-to-web-cc-comms-exec-host-ppm-2256-go-push-the-v4-strings-and-the-success-message-needs-a-look-2026-11-03.md | #2256: go, push the v4 strings. Both /privacy bullets stay, Last updated bumps.… |
 | 2026-11-03 17:41 PT | exec | exec-to-web-cc-comms-ppm-xian-contribute-and-privacy-become-aliases-site-keeps-them-2026-11-03.md | xian (17:42): contribute@ and privacy@ become Google Workspace aliases, like su… |
 | 2026-11-03 17:39 PT | comms | comms-to-exec-web-cc-cxo-host-ppm-v4-final-paste-text-and-the-two-privacy-bullets-stay-2026-11-03.md | v4 final: CXO's edit applied, so this is the paste text for xian. Web: the two… |
