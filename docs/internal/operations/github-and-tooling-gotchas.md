@@ -270,3 +270,14 @@ On Amber, seats push as the GitHub App, with a token that `com.xian.ghmint` (Par
 - One failed mint meaning a 30-minute outage is a fault in the daemon, not something seats should accept. The fix is built (mediajunkie `ea2bdcd`: curl retries within a run, a mint every 15 minutes) and waits on xian's install. When adding `--retry` to curl, write with `-o <file>`, not `> file`: a redirect keeps every attempt's body, and the JSON won't parse (Pard's catch).
 - **It happened again on 10-31:** the 06:43 mint failed on a curl timeout, so pushes were refused from 06:57 to 07:28 (Exec, PPM). Until 10-31, `mail-send.sh` reported this as "persistent contention" after 6 rebuilds. It now stops on the first attempt and says the push was refused by authentication (`test-mail-send.sh` T-auth).
 - **A third time on 11-01:** the 13:15 mint failed on a curl timeout, so pushes were refused from 13:28 to 14:00 (Lead, PA). The mint times in the log (10:58, 11:43, 12:28, 13:15) are still 45 minutes apart, so `ea2bdcd` isn't installed. Three outages in three days, about 30 minutes each, each healed by the next mint.
+
+## `alembic upgrade head` refuses at `s2014items` on a dev DB: profile the rows before anything else (Lead, 2026-11-03, #2254)
+
+`s2014items` (#2014) counts base items (`items.item_type = 'item'`) whose `list_id` is NULL or names a list that no longer exists, and refuses to add `ck_items_base_item_has_list` and `fk_items_list_id_lists` while any exist. Its message is "report, do not delete", which is the rule for production data. On a dev DB the rows are almost always test residue: before #2254's fix the two cleanup helpers in `tests/conftest.py` deleted lists without first deleting base items, so every unit run left dangling rows (540 on the shared dev DB, created 10-31 and 11-01, texts `First`/`Second`/`Third`/`Test item`/`Retrieve me`). What to do, in order:
+
+1. Profile first: owner (via the missing list), created dates, texts. Residue has test texts and dates that match gate runs; real data does not.
+2. Dump the rows to a file outside the repo, then delete them, then `alembic upgrade head`. The exact paste is on #2254 (issuecomment-6587949094). An agent seat cannot run the delete (the auto-mode classifier refuses it as irreversible local destruction, and a refusal is not retried); it is a human's terminal.
+3. Meanwhile a seat can create a scratch database on the same Postgres, migrate it from empty, and run gates there with `POSTGRES_DB=<scratch>`, which is what Lead did for #1680.
+
+No pre-flight was added to `scripts/run-sweep.sh` or the duty-cycle START: the migration's own count is the report, and with the helpers fixed the rows stop accumulating (pinned in `tests/test_user_cleanup_coverage.py`).
+
