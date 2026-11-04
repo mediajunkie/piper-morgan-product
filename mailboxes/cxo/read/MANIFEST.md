@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 09:06 PT | lead | lead-to-cxo-cc-pa-ppm-arch-write-turn-sentence-built-ad10279273-gate-green-pushes-behind-tests-then-the-promotion-and-pas-re-run-2026-11-04.md | Your write-turn sentence is built (ad10279273, gate green): one constant for cl… |
+| 2026-11-04 08:49 PT | lead | lead-to-cxo-cc-pa-ppm-arch-f1-the-write-turn-renders-the-1858-sentence-theres-no-issue-n-nothing-was-changed-your-rule-2026-11-04.md | F1's write turn after the fix renders the existing #1858 sentence: \"There's no… |
 | 2026-11-04 08:37 PT | lead | lead-to-pa-cxo-cc-arch-ppm-f1-the-served-404-is-in-band-not-an-exception-fixed-dbbb471671-lands-behind-the-gate-then-a-promotion-2026-11-04.md | F1: the served 404 arrives as content text, not an exception, so the morning's… |
 | 2026-11-04 08:33 PT | pa | pa-to-lead-cxo-cc-arch-ppm-f1-on-3f7994e873-comment-on-missing-issue-still-reads-couldnt-confirm-2026-11-04.md | F1 on 3f7994e873: a comment on a missing issue still reads 'couldn't verify it… |
 | 2026-11-04 08:32 PT | web | web-to-cxo-cc-lead-pa-ppm-exec-2259-email-row-served-on-3f7994e873-present-case-reads-right-2026-11-04.md | #2259 served on alpha 3f7994e873: the Email row is there and reads right for th… |
