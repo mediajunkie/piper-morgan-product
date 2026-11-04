@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Tuesday 3 November</h1>
-<p class="meta">Exec · v793, rebuilt 15:48 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v794, rebuilt 15:59 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -50,6 +50,7 @@
 
 <div class="card act">
 <ul>
+<li><b>The guard that would have caught this whole class: pull it into beta?</b> CIO&rsquo;s answer to &ldquo;why didn&rsquo;t our multitenancy work catch it&rdquo;: the class-wide guard (#1551) was deferred on 08-09, and the check that exists looks at <i>who</i> is asking, not <i>whose credential</i> answers. Arch has designed it as one unit: a lint that flags any new shared-environment credential read, plus a two-account test for accounts with a broken connection. CIO and Arch both recommend pulling it in. <i>I recommend yes: it&rsquo;s one unit, and it closes the Notion and GitHub pattern for good.</i> Your answer: &ldquo;yes, #1551 into beta&rdquo; or &ldquo;later&rdquo;.</li>
 <li><b>Move Piper&rsquo;s GitHub app off your personal account.</b> Arch: GitHub&rsquo;s standard is an app owned by an organization. Step 1, today: transfer the existing app to an org you create (GitHub, Developer settings, OAuth Apps, Transfer ownership). It takes minutes, there&rsquo;s no code change, and GitHub&rsquo;s page then names the org instead of you. Step 2, later: switch to a GitHub App owned by the org, where people pick which repos Piper can see. That&rsquo;s code work, and it waits on #2174. <i>I recommend step 1 today and step 2 after onboarding.</i> Your answer: &ldquo;yes, step 1&rdquo;, and the org name you want.</li>
 <li><b>The planning talk now has a proposal:</b> PPM&rsquo;s onboarding-to-first-value plan, built from today&rsquo;s session, with three questions for you: a sprint or a lane; the two first-value moments; whether the app transfer comes before beta testing. The 12 findings are filed as #2267&ndash;#2278.</li>
 <li><b>Skills review (#1715), the two answers CIO needs.</b> If we can&rsquo;t do the walk today, these two unblock CIO. (1) <b>Scope lines:</b> &ldquo;finish it&rdquo; (CIO adds a <code>scope:</code> line to the last four product skills) or &ldquo;drop it&rdquo;. <i>I recommend finish it: four small edits, and it completes a job that&rsquo;s nearly done.</i> (2) <b>A same-hour line in <code>check-mailbox</code></b>, reminding a seat to pass your rulings on the hour it hears them: &ldquo;yes&rdquo; or &ldquo;no&rdquo;. <i>I recommend yes: it writes down what I already do.</i> The rest of the walk can wait for a calm half hour.</li>
@@ -61,6 +62,7 @@
 
 <div class="card act">
 <ul>
+<li><b>Quick, unblocks PA: put the GitHub fix on the MCP app (one line).</b> The Claude connector&rsquo;s server (<code>piper-morgan-mcp</code>) still runs a build from before Lead&rsquo;s fix, and PA&rsquo;s deploy was refused by its own permission check. The risk is low, since the GitHub helper holds no token, but it should match alpha. In PA&rsquo;s session, type: <code>! scripts/deploy-mcp.sh</code>. PA then checks it.</li>
 <li><b>GitHub census, after the Ship (about 3 minutes).</b> It&rsquo;s read-only and prints only counts and ids. Paste the output to me. The emails you type stay in your terminal.
 <pre>fly machine list -a piper-morgan
 fly machine exec MACHINE_ID "python /app/scripts/github_identity_census.py --since 2026-10-16 --user-email YOUR_SIGNIN_EMAIL" -a piper-morgan
@@ -72,7 +74,7 @@ Clean means: in section 0, the tester has no connection and no GitHub rows, and 
 <li><b>GitHub, in order, one step at a time (about 15 minutes, after the census):</b>
 (1) Run census line 3 first, so the verdict is read against the current app.
 (2) Create a GitHub organization, &ldquo;Piper Morgan&rdquo; (Arch and I both lean that way; the name doesn&rsquo;t matter technically).
-(3) Transfer Piper&rsquo;s OAuth App to it: GitHub, Settings, Developer settings, OAuth Apps, then Transfer ownership. Leave the <code>piper-morgan-agents</code> GitHub App where it is; it&rsquo;s the agents&rsquo; push credential.
+(3) Transfer <b>both</b> of Piper&rsquo;s OAuth Apps to it, alpha&rsquo;s and staging&rsquo;s (each deployment has its own): GitHub, Settings, Developer settings, OAuth Apps, then Transfer ownership. Leave the <code>piper-morgan-agents</code> GitHub App where it is; it&rsquo;s the agents&rsquo; push credential.
 (4) Four re-checks, which I&rsquo;ll walk you through: the client id matches Fly (first and last four only), the callback URL is unchanged, one GitHub read from your own account still works, and a fresh connect shows the org&rsquo;s name.
 (5) No throwaway account needed: <code>dinp-machine</code> covers both jobs. Revoke Piper under its GitHub settings (Applications, Authorized OAuth Apps), then sign it in to Web&rsquo;s browser so Web can check GitHub&rsquo;s page as someone who isn&rsquo;t you.</li>
 <li><b>Add contribute@ and privacy@pipermorgan.ai as aliases</b> (your word, 17:42), the same way as support@. In admin.google.com, open Users, then the user support@ belongs to, then Alternate email addresses. Tell me when they&rsquo;re added.</li>
