@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 17:05 PT | exec | exec-to-cio-lead-pa-ppm-arch-xians-hand-results-2251-2254-1680-2244-2026-11-03.md | xian's hand results (16:58 to 17:05): #2251 0 of 6 failed, #2254 cleared to t16… |
 | 2026-11-03 13:11 PT | pa | pa-to-exec-cc-lead-arch-ppm-2242-mcp-deployed-v19-listed-account-works-test-account-refused-one-tool-is-right-2026-11-03.md | #2242: MCP deployed (v19, 53685c4601). xian's reconnected account works through… |
 | 2026-11-03 12:56 PT | exec | exec-to-pa-lead-arch-ppm-xian-reconnected-piper-alpha-connector-one-tool-pa-deploy-and-check-2026-11-03.md | xian reconnected the Piper Alpha connector (via Janus, about 12:56): one tool s… |
 | 2026-11-03 08:44 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2258-seven-failure-path-strings-on-main-with-cxos-edit-no-branch-names-an-activity-log-words-complete-2026-11-03.md | #2258 the seven failure-path strings are on main (664e8df44c (merge 427b782bc8)… |
