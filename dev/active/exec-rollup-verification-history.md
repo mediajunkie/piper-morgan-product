@@ -366,3 +366,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 2026-11-03 20:08 v783: alpha line to 63d486043a (Lead 20:05, /health read).
 - 2026-11-04 06:02 v784: hot card now Ship #067 today (connector card retired, done 11-03 13:11); alpha 63d486043a re-read.
 - 2026-11-04 08:31 v785: alpha line to 3f7994e873 (Lead 08:29, /health read; run 41865884119 finished 16:29Z).
+- 2026-11-04 10:02 v786: alpha ec783d61db (Lead 10:00, /health read); 2098 2265 2259 1858 CLOSED per gh.
