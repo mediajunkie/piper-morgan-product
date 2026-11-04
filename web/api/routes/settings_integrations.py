@@ -1508,7 +1508,10 @@ async def handle_github_callback(
         except Exception:
             logger.warning("default_default_repo_apply_failed", user_id=user_id, exc_info=True)
 
-        login = quote(result.get("login", "github"))
+        # #2279: the success line names the account only when the handler read its
+        # login from the grant it just stored; otherwise the parameter is empty and the
+        # page says "GitHub is connected." with no login (never a placeholder handle).
+        login = quote(result.get("login") or "")
         logger.info("github_settings_oauth_success", user_id=user_id, login=result.get("login"))
         return RedirectResponse(
             url=f"/settings/integrations?github_success=true&github_login={login}",

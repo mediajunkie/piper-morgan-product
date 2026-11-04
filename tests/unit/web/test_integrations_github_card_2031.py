@@ -146,7 +146,7 @@ def test_health_json_per_state(client):
     oauth = _github_json(client, "oauth")
     assert (oauth["status"], oauth["status_message"]) == (
         "connected",  # #2075: a bound grant with no recorded check claims no health
-        "Connected with your GitHub account.",
+        "Connected as octocat. Not the right account? Disconnect, then connect again.",
     )
     pat = _github_json(client, "pat_stale")
     assert (pat["status_icon"], pat["status_message"], pat["status_detail"]) == (
@@ -177,7 +177,7 @@ def test_health_json_per_state(client):
 @needs_node
 def test_rendered_connected_card(client, body):
     html = _render(body, _github_json(client, "oauth"))
-    assert "Connected with your GitHub account." in html
+    assert "Connected as octocat. Not the right account? Disconnect, then connect again." in html
     assert 'id="test-btn-github"' in html and "disabled" not in html
     assert 'id="reconnect-btn-github"' not in html
     # #2187 (CXO 14:32 10-28): a connected card with no Test on record says so on its
@@ -199,7 +199,7 @@ def test_rendered_connected_card_with_a_recorded_check_keeps_the_leg_sentence(cl
     github["status"] = "healthy"
     github["last_check"] = datetime.now(timezone.utc).isoformat()
     html = _render(body, github)
-    assert "Connected with your GitHub account." in html
+    assert "Connected as octocat. Not the right account? Disconnect, then connect again." in html
     assert "Checked just now." in html
     assert "Healthy." not in html
     assert 'id="reconnect-btn-github"' not in html and "⚠️" not in html
@@ -244,3 +244,13 @@ def test_rendered_not_configured_card(client, body):
 def test_no_rendered_card_says_mcp_connector(client, body):
     for state in STATES:
         assert "mcp connector" not in _render(body, _github_json(client, state)).lower()
+
+
+@pytest.fixture(autouse=True)
+def _login_octocat_2279(monkeypatch):
+    """#2279: the OAuth card now reads the account's login through its own grant."""
+    from unittest.mock import AsyncMock as _AM
+
+    from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter as _A
+
+    monkeypatch.setattr(_A, "account_login", _AM(return_value="octocat"))

@@ -430,7 +430,13 @@ async def check_all_connections(current_user: JWTClaims = Depends(get_current_us
 # of the one credential resolver (ADR-070 B4), after the #2012 Test and #2029's
 # Settings → GitHub page; its state comes from ``resolve_credential``, never from
 # whether a binding row is BOUND.
-_GITHUB_CARD_CONNECTED = "Connected with your GitHub account."
+# #2279 (CXO 2026-11-04): the card names the GitHub account that was connected, read
+# through the account's own grant (GET /user); when that read fails it says only
+# "Connected.", never a guess, never the deployment's handle.
+_GITHUB_CARD_CONNECTED_AS = (
+    "Connected as {login}. Not the right account? Disconnect, then connect again."
+)
+_GITHUB_CARD_CONNECTED_NO_LOGIN = "Connected."
 _GITHUB_CARD_PAT_TITLE = "Connected via your personal token"
 _GITHUB_CARD_PAT_DETAIL = (
     "Your GitHub connection needs re-authorizing, so I'm not using it right now."
@@ -514,6 +520,18 @@ async def _github_card(
         # nobody has tested is "connected" (the #2044 unchecked status), so the
         # headline reads "Connected, not yet tested", never "All Systems Healthy".
         # The card line stays "Connected with your GitHub account." either way.
+        # #2279: the login comes from THIS account's grant (account_login reads
+        # GET /user with the credential the resolver just picked). Any failure to
+        # read it is "Connected." with no login; no env handle, no other account.
+        try:
+            login: Optional[str] = await adapter.account_login(user_id)
+        except Exception:  # silent-ok: the card still renders; the login is omitted
+            login = None
+        connected_line = (
+            _GITHUB_CARD_CONNECTED_AS.format(login=login)
+            if login
+            else _GITHUB_CARD_CONNECTED_NO_LOGIN
+        )
         oauth_result = _get_test_result_store().get_test_result(user_id, "github")
         if oauth_result is None:
             oauth_status, oauth_error = "connected", None
@@ -523,7 +541,7 @@ async def _github_card(
             oauth_status, oauth_error = "failed", oauth_result.error or "Connection failed"
         return card(
             status=oauth_status,
-            status_message=_GITHUB_CARD_CONNECTED,
+            status_message=connected_line,
             # #2187 (CXO 14:32 10-28): with no Test on record the card says what it
             # knows, Slack's form: "Connected with your GitHub account." plus the
             # health line "Not checked yet. Press Test." A binding alone never

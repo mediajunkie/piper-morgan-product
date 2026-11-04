@@ -3,7 +3,7 @@ integrations with a recorded check for THIS account. A bound OAuth grant nobody 
 tested is "connected" (the #2044 unchecked status), the headline reads "Connected, not
 yet tested" and the count line counts checks ("0 of 1 checked"). After a Test it reads
 "All Systems Healthy | 1 of 1 connected integrations working". The card line stays
-"Connected with your GitHub account." The PAT leg is unchanged.
+"Connected as octocat. Not the right account? Disconnect, then connect again." The PAT leg is unchanged.
 """
 
 from __future__ import annotations
@@ -48,7 +48,10 @@ async def test_bound_grant_with_no_recorded_check_is_connected_not_healthy():
     card = await _oauth_card(PrincipalTestResultStore())
     assert card is not None
     assert card.status == "connected"
-    assert card.status_message == "Connected with your GitHub account."
+    assert (
+        card.status_message
+        == "Connected as octocat. Not the right account? Disconnect, then connect again."
+    )
     assert card.last_check is None
 
 
@@ -59,7 +62,10 @@ async def test_bound_grant_with_a_passing_check_is_healthy():
     card = await _oauth_card(store)
     assert card is not None
     assert card.status == "healthy"
-    assert card.status_message == "Connected with your GitHub account."
+    assert (
+        card.status_message
+        == "Connected as octocat. Not the right account? Disconnect, then connect again."
+    )
     assert card.last_check is not None
 
 
@@ -87,7 +93,7 @@ def _card(status: str) -> IntegrationStatus:
         name="github",
         display_name="GitHub",
         status=status,
-        status_message="Connected with your GitHub account.",
+        status_message="Connected as octocat. Not the right account? Disconnect, then connect again.",
         can_test=True,
     )
 
@@ -148,3 +154,13 @@ def test_multiple_issues_branch_uses_the_same_count_shape():
     overall, headline, summary, *_ = summarize_integrations(cards)
     assert (overall, headline) == ("unhealthy", "Multiple Issues")
     assert summary == "0 of 2 checked integrations working, 1 not yet tested"
+
+
+@pytest.fixture(autouse=True)
+def _login_octocat_2279(monkeypatch):
+    """#2279: the OAuth card now reads the account's login through its own grant."""
+    from unittest.mock import AsyncMock as _AM
+
+    from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter as _A
+
+    monkeypatch.setattr(_A, "account_login", _AM(return_value="octocat"))

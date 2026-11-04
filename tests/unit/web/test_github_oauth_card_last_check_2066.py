@@ -52,7 +52,10 @@ async def test_oauth_card_carries_last_check_after_a_recorded_check():
         card = await integrations_routes._github_card(METADATA, "user-1")
     assert card is not None
     assert card.status == "healthy"
-    assert card.status_message == "Connected with your GitHub account."
+    assert (
+        card.status_message
+        == "Connected as octocat. Not the right account? Disconnect, then connect again."
+    )
     assert card.last_check is not None
     assert card.last_check.startswith("20")  # ISO 8601, UTC
     assert datetime.fromisoformat(card.last_check).timestamp() >= started - 1
@@ -80,3 +83,13 @@ def _adapter_cls():
     from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
     return GitHubMCPSpatialAdapter
+
+
+@pytest.fixture(autouse=True)
+def _login_octocat_2279(monkeypatch):
+    """#2279: the OAuth card now reads the account's login through its own grant."""
+    from unittest.mock import AsyncMock as _AM
+
+    from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter as _A
+
+    monkeypatch.setattr(_A, "account_login", _AM(return_value="octocat"))

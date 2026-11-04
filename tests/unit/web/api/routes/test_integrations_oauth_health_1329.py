@@ -33,7 +33,10 @@ async def test_github_health_healthy_when_oauth_leg_serves():
     assert (
         status.status == "connected"
     )  # #2075: a bound grant with no recorded check claims no health
-    assert status.status_message == "Connected with your GitHub account."
+    assert (
+        status.status_message
+        == "Connected as octocat. Not the right account? Disconnect, then connect again."
+    )
 
 
 @pytest.mark.asyncio
@@ -92,3 +95,13 @@ async def test_github_test_button_succeeds_when_oauth_bound():
     assert result["success"] is True
     assert "GitHub connection" in result.get("message", "")
     probe.assert_awaited_once()
+
+
+@pytest.fixture(autouse=True)
+def _login_octocat_2279(monkeypatch):
+    """#2279: the OAuth card now reads the account's login through its own grant."""
+    from unittest.mock import AsyncMock as _AM
+
+    from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter as _A
+
+    monkeypatch.setattr(_A, "account_login", _AM(return_value="octocat"))

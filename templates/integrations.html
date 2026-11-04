@@ -489,6 +489,16 @@
       window.history.replaceState({}, document.title, '/settings/integrations');
     }
 
+    // #2279 (CXO): the GitHub success line names the account that was connected, as the
+    // callback read it from the grant it just stored; with no login it names none.
+    if (params.get('github_success') === 'true') {
+      const login = params.get('github_login');
+      Toast.show('success', 'GitHub Connected', login
+        ? `GitHub is connected as ${decodeURIComponent(login)}.`
+        : 'GitHub is connected.');
+      window.history.replaceState({}, document.title, '/settings/integrations');
+    }
+
     // Check Calendar OAuth callback
     if (params.get('calendar_success') === 'true') {
       const email = params.get('calendar_email') || 'Calendar';

@@ -1,7 +1,7 @@
 """#2187 — the GitHub card's Test record has an honest lifecycle (CXO's ruling 14:32 10-28; Lead's size read).
 
 Two served states from xian's #2018 run on alpha 879d18bf72: (1) a grant with no Test on record read
-"Connected with your GitHub account." with no checked line; (2) a FRESH grant showed the previous grant's
+"Connected with your GitHub account." (now "Connected as {login}. …", #2279) with no checked line; (2) a FRESH grant showed the previous grant's
 failed check ("Last checked 3 minutes ago", red) until Test was pressed. Both are one record's lifecycle:
 ``PrincipalTestResultStore`` had no per-key forget, and neither a new grant nor a disconnect touched it.
 
@@ -64,7 +64,10 @@ async def test_no_record_card_says_not_checked_yet():
     ):
         card = await integrations_routes._github_card(METADATA, "user-1")
     assert card.status == "connected"
-    assert card.status_message == "Connected with your GitHub account."
+    assert (
+        card.status_message
+        == "Connected as octocat. Not the right account? Disconnect, then connect again."
+    )
     assert (
         card.status_detail == integrations_routes.UNCHECKED_DETAIL == "Not checked yet. Press Test."
     )
@@ -151,3 +154,13 @@ async def test_a_new_grant_forgets_the_previous_grants_check():
         response.headers.get("location", "")
     )
     assert store.get_test_result("user-1", "github") is None
+
+
+@pytest.fixture(autouse=True)
+def _login_octocat_2279(monkeypatch):
+    """#2279: the OAuth card now reads the account's login through its own grant."""
+    from unittest.mock import AsyncMock as _AM
+
+    from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter as _A
+
+    monkeypatch.setattr(_A, "account_login", _AM(return_value="octocat"))
