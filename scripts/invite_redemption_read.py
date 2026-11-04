@@ -13,6 +13,8 @@ Usage (as deployed, run by xian with ``fly machine exec``):
 Sibling of burn_invite_tokens.py (same mask rule, same prod_db URL resolution).
 Trust zone (#1344): this table knows tokens, never identities; the code-to-person
 map stays in HOST's private roster.
+
+Concept: docs/internal/operations/github-and-tooling-gotchas.md
 """
 
 from __future__ import annotations
