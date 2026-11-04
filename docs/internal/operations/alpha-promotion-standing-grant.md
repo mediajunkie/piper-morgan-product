@@ -44,7 +44,7 @@
 - **Open:** Web's staging row (does a deploy drop an open chat, and what the person sees) has not run. Its result goes to PPM and CXO, who decide whether condition 3's partner line can loosen. The invitation's restart line is CXO's and stays a draft until that row runs.
 - **Migrations:** alpha runs `alembic upgrade head` on every release (`fly.toml`, app `piper-morgan`), and a migration is the one change a forward fix can't undo.
 - **No rollback by sha:** the promote job copies the image staging runs now, and `workflow_dispatch` has no sha input (`.github/workflows/fly-deploy.yml`). That is why "if it goes wrong" says forward or revert.
-- **Permission (corrected 2026-10-29):** this held while Lead's seat ran in bypass mode (the 10-15 15:31 dispatch). The seat now runs in auto mode, and the reviewer refused the dispatch on 10-28. The fix is one exact allow line on Lead's seat, added by xian: `prod-command-permissions.md` §2026-10-29. The `alpha` GitHub environment has no required reviewers, only a branch policy.
+- **Permission (corrected 2026-10-29):** this held while Lead's seat ran in bypass mode (the 10-15 15:31 dispatch). The seat now runs in auto mode, and the reviewer refused the dispatch on 10-28. The fix is one exact allow line on Lead's seat, added by xian: `prod-command-permissions.md` §2026-10-29. **Applied 2026-11-03** (decisions.log 17:36): xian ran `seat-permissions.py --apply --seat lead` (+allow 1, +deny 0), and Exec confirmed the line in Lead's `settings.local.json`. It's still unverified whether the auto-mode reviewer honours it; Lead's first dispatch is the live test. The `alpha` GitHub environment has no required reviewers, only a branch policy.
 
 ## Procedure notes (do not change the grant's text)
 
@@ -53,7 +53,7 @@
 - **A hold is a file, and the promote step refuses while it exists (2026-10-23, CIO).** On 10-23 a promotion landed inside the #2085 test-2 hold, which existed only in mail. Since `1f795adff1` (Lead; Arch's conditions), the promote job's first gate refuses while `ops/alpha-hold.md` exists on `origin/main`, read from main whatever branch dispatched it, and refuses if main can't be resolved. It prints the file, so the refusal names the holder. There is no override input; clearing a hold means removing the file. How to call and clear one: `ops/README.md`. This is condition 1's "xian's word" made visible, so the grant's text doesn't change. Validated by the pin test (5 passed); Arch's three real dispatches (hold from main, hold from another branch, no hold) wait for test 2's end and xian's word.
 - **A late green leaves staging on an older red sha; the remedy is a re-run, not a code push (2026-11-02, Lead).** The staging deploy's health gate reads the newest completed Tests verdict on main at deploy time. On 11-02 a one-line backlog push (`dfa3363d5b`) deployed while the previous sha's Tests were still red, so staging kept serving `fc31f4a` and the promote gate refused on the served sha. `gh run rerun <the push's Fly deploy run id>` after that push's own Tests went green re-ran the staging job against the green verdict and staging served `dfa3363d5b` four minutes later (run 41556514319 attempt 2). No `fly`, no `workflow_dispatch`, nothing on the deploy path changes.
 
-**Review:** after 14 days (2026-10-30) or after the first failed promotion, whichever comes first.
+**Review:** 2026-11-27, or after a promotion that leaves alpha serving neither the promoted build nor the one before it, whichever comes first. A refusal by a condition is not a trigger. *(Replaced 2026-11-03 on xian's word, decisions.log 2026-11-03 17:30, from CIO's 10-30 review below. The first line, "after 14 days (2026-10-30) or after the first failed promotion", was met on 10-16 by a refusal and so couldn't tell the grant working from a deploy failure.)*
 
 ### 14-day review (CIO, 2026-10-30, STOP fire)
 
@@ -68,3 +68,5 @@
 3. **Deploy-step failures are the real risk, and they left alpha recoverable.** I didn't verify served state for each of the 8. "A successful promotion followed" is the evidence, not a `/health` read at the time.
 
 **Recommendation to xian, via Exec:** keep the grant as it stands. Replace the review line with: *"Review: 2026-11-27, or after a promotion that leaves alpha serving neither the promoted build nor the one before it, whichever comes first. A refusal by a condition is not a trigger."* Whether to renew is xian's call. Until then the grant runs as is, under Exec's promotion freeze until the letters go.
+
+**Outcome (2026-11-03 17:30, xian in session, via Exec):** the grant is kept, and the review line above is replaced as recommended (decisions.log 2026-11-03 17:30).

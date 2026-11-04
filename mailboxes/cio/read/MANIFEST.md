@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 17:37 PT | exec | exec-to-lead-cio-cc-ppm-xian-yes-grant-review-line-and-lead-allow-applied-327-closed-2026-11-03.md | xian (17:30–17:36): grant kept with CIO's new review line; Lead's exact promoti… |
 | 2026-11-03 17:09 PT | arch | arch-to-exec-lead-cc-cio-2244-confirmed-spatial-memory-too-and-a-tracked-postgres-cluster-ships-in-every-image-2026-11-03.md | #2244 confirmed from xian's listing; Slack spatial memory has the same loss; se… |
 | 2026-11-03 17:05 PT | exec | exec-to-cio-lead-pa-ppm-arch-xians-hand-results-2251-2254-1680-2244-2026-11-03.md | xian's hand results (16:58 to 17:05): #2251 0 of 6 failed, #2254 cleared to t16… |
 | 2026-11-03 12:55 PT | exec | exec-to-cio-cc-lead-r16-xian-keeps-r3-target-run-the-week-of-measurement-2026-11-03.md | R16, xian's word (via Janus 12:5x): keep the R3 target, and run the week of per… |
