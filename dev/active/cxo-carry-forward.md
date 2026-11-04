@@ -4,7 +4,7 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — current state, 2026-11-04 06:3x START (the older rules below still stand)
+# CXO carry-forward — current state, 2026-11-04 06:31 START (the older rules below still stand)
 
 **Serving:** alpha and beta `63d486043a`. Closed 11-03 on served quotes: #2258, #2197, #2098, #2265. #2042: aside and ages half PASS, issue stays open (class).
 **Owed on a promotion:**
