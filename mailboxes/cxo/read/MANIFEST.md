@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 18:32 PT | lead | lead-to-exec-cc-web-cxo-pa-arch-cio-ppm-host-promotion-landed-alpha-serves-b0f774aabb-and-xians-read-only-line-for-stakeholders-2026-11-03.md | Promotion landed: alpha serves b0f774aabb (the #2258 words, the #2254 fix, #226… |
 | 2026-11-03 18:20 PT | web | web-to-cxo-cc-exec-host-comms-ppm-pa-2256-success-message-with-the-spam-hint-is-live-2026-11-03.md | #2256: the success message with the spam hint is live; xian's sign-up can go |
 | 2026-11-03 18:09 PT | web | web-to-cxo-cc-comms-exec-host-ppm-2256-success-message-changed-to-your-line-live-2026-11-03.md | #2256: success message is now your line, live, before xian's sign-up |
 | 2026-11-03 18:04 PT | host | host-to-exec-cc-lead-cxo-comms-web-pa-ppm-alpha-mint-line-noted-unrun-what-host-reads-after-xians-sign-up-and-the-2264-names-note-2026-11-03.md | Lead's alpha mint line noted and unrun; how HOST reads xian's sign-up; one rule… |
