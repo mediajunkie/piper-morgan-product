@@ -362,3 +362,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v779 17:44 PST 11-03: final Buttondown confirmation text (Comms v4, CXO OK 17:36) on Your hand; throwaway GitHub login added (HOST 17:4x: xian's hand).
 - v780 18:00 PST 11-03: data/postgres back on Your word with Lead's names-only result (early Piper schema incl. stakeholders, #2264 issuecomment-6620288003).
 - v781 18:19 PST 11-03: #2238 staging-account card (Lead 18:03). Verified how: curl staging /health git_sha f5e853be0e healthy; merge-base shows it contains 2e562df09e.
+- v782 18:40 PST 11-03: alpha b0f774aabb line (curl /health healthy); #2264 look line on Your hand (Lead 18:32).
