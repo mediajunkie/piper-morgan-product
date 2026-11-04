@@ -49,6 +49,7 @@ from services.intent_service.conversation_context import (
     snapshot_session_slice,
 )
 from services.intent_service.list_remainder import compose_capped_list, page_floor
+from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed, was_not_performed
 from services.intent_service.orchestrator import IntentOrchestrator
 from services.intent_service.pre_classifier import MultiIntentResult
 from services.intent_service.soft_invocation import (
@@ -1858,8 +1859,11 @@ class IntentService:
             clear_no_match_marker(self, effective_session_id)
 
         # Issue #563: Save conversation turn after processing (best-effort)
-        # Only save successful responses with actual content
-        if result.success and result.message:
+        # #2188 (Arch 2026-11-04 14:06): history records what the person was shown,
+        # whatever the flag; #563's exclusion was of EMPTY results, which the message
+        # test keeps. A degrade or a not-found reply (success=False) is saved too, or
+        # the next turn's context would leave out what Piper said (#2151's class).
+        if result.message:
             # Issue #1030 R4 Step 11: extract provenance from in-memory
             # sidecar for the just-completed turn so it persists to DB for
             # cross-session lookup (PM Q1 GUARANTEED disposition).
@@ -2182,6 +2186,43 @@ class IntentService:
                 )
         except Exception as e:  # pragma: no cover - defensive
             self.logger.debug("action_verb_observe_failed", error=str(e))
+
+    async def _record_learning_outcome(
+        self, result: "IntentProcessingResult", pattern_id, learning_user_id
+    ) -> None:
+        """#300 outcome record for the turn's captured pattern, best-effort.
+
+        #2188 (Arch 2026-11-04 14:06): a result carrying the typed not-performed
+        marker (a GitHub degrade, a not-found refusal) records nothing, since the
+        operation never ran and its outcome says nothing about the route. A plain
+        ``success=False`` with no marker is a real handler failure and records False.
+        """
+        if not (pattern_id and learning_user_id):
+            return
+        if was_not_performed(result):
+            self.logger.info(
+                "Learning Handler: Outcome skipped (not performed)",
+                pattern_id=str(pattern_id),
+                not_performed=result.intent_data.get(NOT_PERFORMED_KEY),
+            )
+            return
+        try:
+            async with AsyncSessionFactory.session_scope() as db_session:
+                recorded = await self.learning_handler.record_outcome(
+                    user_id=learning_user_id,
+                    pattern_id=pattern_id,
+                    success=result.success,
+                    session=db_session,
+                )
+
+                self.logger.info(
+                    "Learning Handler: Outcome recorded",
+                    pattern_id=str(pattern_id),
+                    success=result.success,
+                    outcome_recorded=recorded,
+                )
+        except Exception as e:
+            self.logger.error(f"Learning Handler: Outcome recording failed: {e}")
 
     async def _process_intent_internal(
         self,
@@ -4461,24 +4502,8 @@ class IntentService:
 
             # Issue #300 Phase 1: Learning Handler - Record Outcome
             # Issue #490: Only record outcome if we have an authenticated user
-            if pattern_id and learning_user_id:
-                try:
-                    async with AsyncSessionFactory.session_scope() as db_session:
-                        success = await self.learning_handler.record_outcome(
-                            user_id=learning_user_id,
-                            pattern_id=pattern_id,
-                            success=result.success,
-                            session=db_session,
-                        )
-
-                        self.logger.info(
-                            "Learning Handler: Outcome recorded",
-                            pattern_id=str(pattern_id),
-                            success=result.success,
-                            outcome_recorded=success,
-                        )
-                except Exception as e:
-                    self.logger.error(f"Learning Handler: Outcome recording failed: {e}")
+            # #2188: skipped on a typed not-performed marker (degrade, not-found).
+            await self._record_learning_outcome(result, pattern_id, learning_user_id)
 
             # Issue #899: Prepend off-topic pause message if process was auto-paused
             if off_topic_prefix and result.message:
@@ -7526,9 +7551,10 @@ class IntentService:
             ):
                 # Connected but degraded → honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,  # #2188: the read did not run
                     message=github_degrade_reply(connector_result.degradation),
                     intent_data={
+                        NOT_PERFORMED_KEY: NotPerformed.DEGRADED,
                         "category": intent.category.value,
                         "action": intent.action,
                         "confidence": intent.confidence,
@@ -9282,9 +9308,10 @@ class IntentService:
             else:
                 # Connected but degraded → honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,  # #2188: the read did not run
                     message=github_degrade_reply(connector_result.degradation),
                     intent_data={
+                        NOT_PERFORMED_KEY: NotPerformed.DEGRADED,
                         "category": "query",
                         "action": "list_issues_query",
                         "context": {"degraded": connector_result.degradation.reason.value},
@@ -10129,9 +10156,10 @@ class IntentService:
             else:
                 # Connected but degraded → honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,  # #2188: the read did not run
                     message=github_degrade_reply(connector_result.degradation),
                     intent_data={
+                        NOT_PERFORMED_KEY: NotPerformed.DEGRADED,
                         "category": "query",
                         "action": "list_prs_query",
                         "context": {"degraded": connector_result.degradation.reason.value},
@@ -10521,9 +10549,10 @@ class IntentService:
                     return self._github_list_read_failed(rf, "list_releases_query", "releases")
             else:
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,  # #2188: the read did not run
                     message=github_degrade_reply(connector_result.degradation),
                     intent_data={
+                        NOT_PERFORMED_KEY: NotPerformed.DEGRADED,
                         "category": "query",
                         "action": "list_releases_query",
                         "context": {"degraded": connector_result.degradation.reason.value},
@@ -10767,9 +10796,10 @@ class IntentService:
                 # Connected but degraded (REPO_UNRESOLVED "which repo?" / UNREACHABLE / stale) →
                 # honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,  # #2188: the read did not run
                     message=github_degrade_reply(connector_result.degradation),
                     intent_data={
+                        NOT_PERFORMED_KEY: NotPerformed.DEGRADED,
                         "category": "query",
                         "action": "list_branches_query",
                         "context": {"degraded": connector_result.degradation.reason.value},
@@ -13324,7 +13354,7 @@ class IntentService:
             # what the credential can see, which exposes the second case too.
             where = f" in {e.owner}/{e.repo}" if e.owner and e.repo else ""
             return IntentProcessingResult(
-                success=True,
+                success=False,  # #2188: the write was not performed
                 message=(
                     f"I couldn't find issue #{e.issue_number}{where}, so nothing was changed. "
                     "Check the number and try again, or say 'show open issues' to find it."
@@ -13333,6 +13363,7 @@ class IntentService:
                     "category": intent.category.value,
                     "action": intent.action,
                     "confidence": intent.confidence,
+                    NOT_PERFORMED_KEY: NotPerformed.NOT_FOUND,
                 },
                 workflow_id=workflow_id,
                 requires_clarification=False,

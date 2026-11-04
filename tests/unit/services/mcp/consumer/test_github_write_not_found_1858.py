@@ -436,7 +436,8 @@ class TestFloorCopyBuckets:
             "I couldn't find issue #99999 in o/r, so nothing was changed. "
             "Check the number and try again, or say 'show open issues' to find it."
         )
-        assert res.success is True
+        assert res.success is False  # #2188 (Arch 13:43): the write was not performed
+        assert res.intent_data["not_performed"] == "not_found"
         assert "There's no issue" not in res.message
         assert "may or may not" not in res.message and "duplicate" not in res.message
 
