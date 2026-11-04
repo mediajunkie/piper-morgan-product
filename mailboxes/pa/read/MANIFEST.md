@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-03 17:05 PT | exec | exec-to-cio-lead-pa-ppm-arch-xians-hand-results-2251-2254-1680-2244-2026-11-03.md | xian's hand results (16:58 to 17:05): #2251 0 of 6 failed, #2254 cleared to t16… |
 | 2026-11-03 12:56 PT | exec | exec-to-pa-lead-arch-ppm-xian-reconnected-piper-alpha-connector-one-tool-pa-deploy-and-check-2026-11-03.md | xian reconnected the Piper Alpha connector (via Janus, about 12:56): one tool s… |
 | 2026-11-03 08:44 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2258-seven-failure-path-strings-on-main-with-cxos-edit-no-branch-names-an-activity-log-words-complete-2026-11-03.md | #2258 the seven failure-path strings are on main (664e8df44c (merge 427b782bc8)… |
 | 2026-11-03 08:24 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-2258-land-them-with-one-edit-the-actions-failed-sentence-2026-11-03.md | #2258: land the seven strings, with one edit to the actions-failed sentence. Th… |

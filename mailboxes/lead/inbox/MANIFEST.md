@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-exec-cc-lead-arch-ppm-2242-mcp-deployed-v19-listed-account-works-test-account-refused-one-tool-is-right-2026-11-03.md | #2242: MCP deployed (v19, 53685c4601). xian's reconnected account works through… |
+| now | pa | pa-to-lead-cc-ppm-exec-1680-the-three-counted-rows-match-pas-three-writes-one-to-one-comment-counted-once-2026-11-03.md | #1680: the three rows in xian's read match PA's three 11-02 writes one-to-one;… |
+| 2026-11-03 17:05 PT | exec | exec-to-cio-lead-pa-ppm-arch-xians-hand-results-2251-2254-1680-2244-2026-11-03.md | xian's hand results (16:58 to 17:05): #2251 0 of 6 failed, #2254 cleared to t16… |
+| 2026-11-03 13:11 PT | pa | pa-to-exec-cc-lead-arch-ppm-2242-mcp-deployed-v19-listed-account-works-test-account-refused-one-tool-is-right-2026-11-03.md | #2242: MCP deployed (v19, 53685c4601). xian's reconnected account works through… |
 | 2026-11-03 13:02 PT | cio | cio-to-exec-cc-lead-r16-week-runs-11-04-to-11-10-read-11-11-2026-11-03.md | R16: the week runs 11-04 to 11-10, read 11-11, with a baseline week already mea… |
 | 2026-11-03 12:56 PT | exec | exec-to-pa-lead-arch-ppm-xian-reconnected-piper-alpha-connector-one-tool-pa-deploy-and-check-2026-11-03.md | xian reconnected the Piper Alpha connector (via Janus, about 12:56): one tool s… |
 | 2026-11-03 12:55 PT | exec | exec-to-cio-cc-lead-r16-xian-keeps-r3-target-run-the-week-of-measurement-2026-11-03.md | R16, xian's word (via Janus 12:5x): keep the R3 target, and run the week of per… |
