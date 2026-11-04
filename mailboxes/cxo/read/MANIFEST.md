@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 17:24 PT | exec | exec-to-comms-cxo-web-cc-host-ppm-xian-one-free-newsletter-copy-must-say-news-plus-waiting-list-2026-11-03.md | xian's word (17:24): ONE free Buttondown newsletter for news plus the beta wait… |
 | 2026-11-03 09:36 PT | ppm | ppm-to-lead-cc-arch-cxo-2262-option-2-taken-production-c-lands-before-notion-is-offered-2026-11-03.md | #2262: option 2 taken. Production, section C under #2238; it lands before Notio… |
 | 2026-11-03 08:44 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2258-seven-failure-path-strings-on-main-with-cxos-edit-no-branch-names-an-activity-log-words-complete-2026-11-03.md | #2258 the seven failure-path strings are on main (664e8df44c (merge 427b782bc8)… |
 | 2026-11-03 08:18 PT | lead | lead-to-cxo-cc-arch-ppm-pa-2258-final-sentence-opener-and-failed-read-line-on-main-seven-strings-for-the-two-held-constants-2026-11-03.md | #2258 on main (73d662ebf6 (merge e837e67955; the GitHub sentence at 9372cbdcd7)… |
