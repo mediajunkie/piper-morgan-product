@@ -155,18 +155,22 @@ class TestWorkItemAssigneeFilter:
         assert filter_issues_by_assignee(None, "bob") == []
         assert filter_issues_by_assignee([{"number": 9}], "bob") == []  # no assignees key
 
-    async def test_handle_reader_env_fallback(self, monkeypatch):
-        """No DB config entry + env set → the env handle (single-user beta config).
+    async def test_handle_reader_env_fallback_is_system_only(self, monkeypatch):
+        """#2266 (2026-11-04): the env handle is the deployment operator's identity, never a
+        real account's. A real account with no configured handle gets None (no assignee
+        filter); only the system principal (``None``) reads the env. Before this, a tester
+        on alpha would have had Radar's "assigned to me" filtered by the operator's handle.
 
-        WS-1 P4: the handle reader is now async + DB-backed (connector_configs is the SOLE
-        store). Patch the DB read to an empty config so the env fallback is the only source.
+        WS-1 P4: the handle reader is async + DB-backed (connector_configs is the SOLE
+        store); the DB read is patched to an empty config so the env is the only candidate.
         """
         monkeypatch.setenv("PIPER_GITHUB_HANDLE", "octocat")
         with patch(
             "services.connectors.config_service.ConnectorConfigService.get_config",
             new=AsyncMock(return_value={}),
         ):
-            assert await read_user_github_handle("no-such-user-uuid") == "octocat"
+            assert await read_user_github_handle("no-such-user-uuid") is None
+        assert await read_user_github_handle(None) == "octocat"
 
     async def test_handle_reader_none_when_unset(self, monkeypatch):
         """No DB config entry + no env → None → callers apply no filter (show all)."""

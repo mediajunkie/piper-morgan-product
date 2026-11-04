@@ -50,6 +50,10 @@ _401 = "failed to search repositories: GET https://api.github.com/search/reposit
 _502 = "failed to search repositories: GET https://api.github.com/search/repositories: 502 Bad Gateway []"
 
 
+async def _fake_grant(owner_id):
+    return "gho_test_grant_2266"
+
+
 @pytest_asyncio.fixture
 async def maker(monkeypatch):
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
@@ -64,6 +68,9 @@ async def maker(monkeypatch):
             await s.commit()  # the #1193 contract: commit on clean exit
 
     monkeypatch.setattr(gh_mod.AsyncSessionFactory, "session_scope", staticmethod(_scope))
+    # #2266: the resolver reads the OAuth grant strictly; this fixture stores none, so
+    # the seam answers with a fake bearer (the connect itself is faked below).
+    monkeypatch.setattr(gh_mod.GitHubMCPSpatialAdapter, "_oauth_grant", staticmethod(_fake_grant))
     yield sm
     await engine.dispose()
 
