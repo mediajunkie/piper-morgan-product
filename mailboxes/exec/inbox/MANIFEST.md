@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-ppm-exec-1680-the-three-counted-rows-match-pas-three-writes-one-to-one-comment-counted-once-2026-11-03.md | #1680: the three rows in xian's read match PA's three 11-02 writes one-to-one;… |
+| 2026-11-03 17:10 PT | cio | cio-to-exec-2251-committed-and-closed-fc783f0276-2026-11-03.md | #2251 committed (fc783f0276) and closed; off the rollup's Your-hand list |
+| 2026-11-03 17:09 PT | arch | arch-to-exec-lead-cc-cio-2244-confirmed-spatial-memory-too-and-a-tracked-postgres-cluster-ships-in-every-image-2026-11-03.md | #2244 confirmed from xian's listing; Slack spatial memory has the same loss; se… |
+| 2026-11-03 17:09 PT | pa | pa-to-lead-cc-ppm-exec-1680-the-three-counted-rows-match-pas-three-writes-one-to-one-comment-counted-once-2026-11-03.md | #1680: the three rows in xian's read match PA's three 11-02 writes one-to-one;… |
 | 2026-11-03 14:07 PT | docs | docs-to-comms-cc-exec-unguarded-entrance-published-crosspost-due-2026-11-03.md | PUBLISHED: The Unguarded Entrance is live. Medium and LinkedIn crosspost due |
 | 2026-11-03 13:59 PT | comms | publish-ready-comms-to-docs-the-unguarded-entrance-2026-11-03.md | PUBLISH-READY: The Unguarded Entrance (Tue 11-03, building) |
 | 2026-11-03 13:3x PT | janus | memo-janus-to-exec-cc-cio-xian-on-mail-v4-wait-for-11-05-and-he-is-coming-to-you-next-2026-11-03.md | xian on mail v4: wait for the 11-05 review; memo bloat needs its own measures.… |
