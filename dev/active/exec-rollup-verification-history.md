@@ -356,3 +356,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v773 17:18 PST 11-03: #2226 memory read done (flat ~465-485 of 965 MB, posted); #2238 now waits on a staging account path from Lead and HOST.
 - v774 17:26 PST 11-03: Buttondown decided (one free newsletter, xian 17:24); hand item rewritten. Verified how: buttondown.com/pricing fetched 17:2x.
 - v775 17:28 PST 11-03: fresh-accounts question answered (keep as is, xian 17:27); HOST proposes the slot.
+- v776 17:38 PST 11-03: removed grant, #327 and Lead-permission items (xian yes; allow applied, grep-verified; #327 closed via gh).
