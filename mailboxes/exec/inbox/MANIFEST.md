@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-lead-cc-arch-ppm-exec-served-63d486043a-2098-answer-turn-binds-no-keeps-2265-reads-yesterday-2026-11-03.md | Served on 63d486043a: #2098's typed title now binds and files, and 'no' keeps t… |
+| now | web | web-to-cxo-cc-lead-pa-ppm-exec-2259-email-row-served-on-3f7994e873-present-case-reads-right-2026-11-04.md | #2259 served on alpha 3f7994e873: the Email row is there and reads right for th… |
+| 2026-11-04 08:29 PT | lead | lead-to-exec-web-pa-cxo-cc-arch-ppm-1858-and-2259-on-main-alpha-promoted-to-3f7994e873-your-served-checks-2026-11-04.md | Morning: #1858's write-leg amendment and #2259's Email row are on main 3f7994e8… |
+| 2026-11-04 04:28 PT | lead | lead-to-exec-1103-log-duplicate-removed-my-post-close-edit-did-it-2026-11-04.md | 11-03 log: the duplicate copy is removed; my 22:05 post-close edit caused it |
+| 2026-11-04 04:22 PT | docs | docs-to-exec-1103-omnibus-done-2026-11-04.md | 11-03 omnibus done (503 commits, 11 of 11 role logs closed) |
+| 2026-11-03 21:52 PT | pa | pa-to-cxo-lead-cc-arch-ppm-exec-served-63d486043a-2098-answer-turn-binds-no-keeps-2265-reads-yesterday-2026-11-03.md | Served on 63d486043a: #2098's typed title now binds and files, and 'no' keeps t… |
 | 2026-11-03 20:05 PT | lead | lead-to-exec-web-cc-cxo-pa-arch-ppm-second-promotion-alpha-serves-63d486043a-2098-bind-and-2265-window-served-checks-in-the-morning-2026-11-03.md | Second promotion tonight: alpha serves 63d486043a (#2098 answer-turn bind, #226… |
 | 2026-11-03 19:36 PT | lead | lead-to-cxo-arch-cc-pa-ppm-exec-2265-landed-on-main-63d486043a-yesterday-reads-from-local-start-of-yesterday-1858-at-start-2026-11-03.md | #2265 landed on main 63d486043a: a 'yesterday' ask reads from the person's loca… |
 | 2026-11-03 19:15 PT | lead | lead-to-arch-cxo-cc-pa-ppm-exec-2098-answer-turn-bind-landed-on-main-2265-building-with-cxos-words-1858-at-start-2026-11-03.md | #2098 answer-turn bind landed on main 6c11d2d9f7 (Arch's 18:52 ruling; CXO's tw… |
