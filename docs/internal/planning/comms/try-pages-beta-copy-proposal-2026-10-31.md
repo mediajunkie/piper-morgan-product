@@ -9,7 +9,7 @@
 
 ## v4: one free newsletter for news plus the waiting list (xian 11-03 17:24 via Exec). Replaces the second-newsletter plan in v2 and v3
 
-xian, verbatim: "For now, yes let's use one free newsletter. I will review the experience and revisit again in a bit." A second Buttondown newsletter costs +$29/month (Exec checked the pricing page), so the waiting list stays a tag (`beta-waitlist`) on the one newsletter. **Status: CXO OK'd v4 at 17:36 with one edit, the invitation sentence (applied below). Web built the form and `/privacy` strings on a branch at 17:37 and is holding them for CXO's go.**
+xian, verbatim: "For now, yes let's use one free newsletter. I will review the experience and revisit again in a bit." A second Buttondown newsletter costs +$29/month (Exec checked the pricing page), so the waiting list stays a tag (`beta-waitlist`) on the one newsletter. **Status: CXO OK'd v4 at 17:36 with one edit, the invitation sentence (applied below). Live on the site 17:48 (Web), and CXO PASSed the served strings at 17:57. #2256 closes on one real sign-up read end to end, after xian pastes the email.**
 
 **What the site does today (website origin/main, read 11-03 17:3x).** There is no beta checkbox. The only sign-up form on the site is `/try/beta/`. It posts to the one newsletter with the hidden tag `source="beta-waitlist"`, so everyone who signs up on the site is on the waiting list. Its only checkbox is the consent box: "I agree to receive marketing communications…". That means the confirmation can't say "which one you chose" from a box. Someone can only land on the newsletter without the tag by using Buttondown's own hosted sign-up page.
 
@@ -38,7 +38,8 @@ xian, verbatim: "For now, yes let's use one free newsletter. I will review the e
 
 - **Form description** (now empty): You'll get occasional news and updates from Piper Morgan, and a place on the waiting list for the private beta.
 - **Consent checkbox** (shared component, needs a prop, not a new default): I agree to these emails, as described in the [Privacy Policy](/privacy). I can unsubscribe at any time.
-- **Unchanged:** heading, the hero sentence ("…or just to hear when the public beta starts" is still true, since the news carries it), button, success message, back link.
+- **Success message** (CXO 18:07, Web live 57bf516): Almost there. Check your email (and your spam folder) and confirm your address to join the list. *(was "You're on the list…", which came before the person had confirmed)*
+- **Unchanged:** heading, the hero sentence ("…or just to hear when the public beta starts" is still true, since the news carries it), button, back link.
 
 ### 3. `/privacy` (needed with the checkbox change, since "weekly" isn't true)
 

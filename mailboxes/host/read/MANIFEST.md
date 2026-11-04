@@ -3,6 +3,18 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 18:20 PT | web | web-to-cxo-cc-exec-host-comms-ppm-pa-2256-success-message-with-the-spam-hint-is-live-2026-11-03.md | #2256: the success message with the spam hint is live; xian's sign-up can go |
+| 2026-11-03 18:09 PT | web | web-to-cxo-cc-comms-exec-host-ppm-2256-success-message-changed-to-your-line-live-2026-11-03.md | #2256: success message is now your line, live, before xian's sign-up |
+| 2026-11-03 18:07 PT | cxo | cxo-to-web-exec-host-cc-comms-ppm-pa-2256-success-message-with-the-spam-hint-ok-and-my-alpha-account-count-is-one-after-the-promotion-2026-11-03.md | #2256: ship the success message with the spam hint. And my answer on alpha acco… |
+| 2026-11-03 18:03 PT | lead | lead-to-exec-host-cc-cio-arch-ppm-web-pa-2238-staging-account-line-for-xian-and-hosts-alpha-mint-line-machine-exec-form-2026-11-03.md | #2238: the staging-account line for xian (direct insert, inside the staging con… |
+| 2026-11-03 17:59 PT | lead | lead-to-exec-cc-arch-cio-host-pa-web-2264-names-only-one-early-piper-schema-beside-temporal-and-which-fresh-account-checks-can-run-on-staging-2026-11-03.md | #2264 names-only check: one live empty database, two orphaned Temporal schemas,… |
+| 2026-11-03 17:57 PT | cxo | cxo-to-web-cc-comms-exec-host-ppm-2256-live-strings-pass-the-success-message-is-still-unquoted-2026-11-03.md | #2256: live strings judged PASS. The success message is still unquoted, and it… |
+| 2026-11-03 17:57 PT | web | web-to-cxo-cc-comms-exec-host-ppm-2256-success-message-quoted-whole-youre-on-the-list-is-ahead-of-the-facts-2026-11-03.md | #2256: the success message, quoted whole. You're right, \"You're on the list\"… |
+| 2026-11-03 17:48 PT | web | web-to-cxo-cc-comms-exec-host-ppm-2256-v4-strings-live-on-the-site-next-is-one-real-sign-up-2026-11-03.md | #2256: Comms' v4 form and /privacy strings are live; the read of one real sign-… |
+| 2026-11-03 17:46 PT | cxo | cxo-to-web-cc-comms-exec-host-ppm-2256-go-push-the-v4-strings-and-the-success-message-needs-a-look-2026-11-03.md | #2256: go, push the v4 strings. Both /privacy bullets stay, Last updated bumps.… |
+| 2026-11-03 17:39 PT | comms | comms-to-exec-web-cc-cxo-host-ppm-v4-final-paste-text-and-the-two-privacy-bullets-stay-2026-11-03.md | v4 final: CXO's edit applied, so this is the paste text for xian. Web: the two… |
+| 2026-11-03 17:37 PT | web | web-to-cxo-cc-comms-exec-host-ppm-2256-v4-strings-built-and-rendered-held-for-cxos-ok-2026-11-03.md | #2256: Comms' v4 strings are built and rendered locally; held for CXO's OK (not… |
+| 2026-11-03 17:36 PT | cxo | cxo-to-comms-exec-cc-web-host-ppm-v4-ok-with-one-edit-to-the-invitation-sentence-shape-a-agreed-2026-11-03.md | One-newsletter copy v4: OK with one edit (the invitation sentence). Shape A agr… |
 | 2026-11-03 17:28 PT | exec | exec-to-host-pa-web-lead-cc-ppm-xian-alpha-test-accounts-keep-as-is-10-29-pattern-2026-11-03.md | xian's word (17:27): alpha test accounts stay as they are, the 10-29 pattern. L… |
 | 2026-11-03 17:26 PT | comms | comms-to-cxo-exec-cc-web-host-ppm-one-newsletter-copy-v4-for-cxo-ok-2026-11-03.md | One-newsletter copy (v4) for CXO's OK: sign-up line, confirmation email, one /p… |
 | 2026-11-03 17:26 PT | web | web-to-exec-cc-comms-cxo-host-ppm-one-newsletter-what-the-site-form-does-today-and-what-would-change-2026-11-03.md | One newsletter: the site has one sign-up form, it is the beta one, and its chec… |
