@@ -8,7 +8,7 @@ Found on alpha `99289b6690` (PM test-card re-test, 2026-10-07):
     USER:  close issue 99999 in mediajunkie/test-piper-morgan
     PIPER: Close issue #99999? (yes/no)
     USER:  yes
-    PIPER: There's no issue #99999 in mediajunkie/test-piper-morgan —
+    PIPER: I couldn't find issue #99999 in mediajunkie/test-piper-morgan, so
            nothing was changed. Check the number and try again, or say
            'show open issues' to find it.
 
@@ -59,7 +59,7 @@ _USER = "3f7b8a52-1959-4b00-9e00-000000001959"  # valid UUID: survives principal
 _REPO = "mediajunkie/test-piper-morgan"
 
 _NOT_FOUND_REPLY = (
-    "There's no issue #99999 in mediajunkie/test-piper-morgan — nothing was changed. "
+    "I couldn't find issue #99999 in mediajunkie/test-piper-morgan, so nothing was changed. "
     "Check the number and try again, or say 'show open issues' to find it."
 )
 

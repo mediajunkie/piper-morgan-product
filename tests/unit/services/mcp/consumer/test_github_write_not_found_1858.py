@@ -417,13 +417,20 @@ class TestFloorCopyBuckets:
         intent = Intent(category=IntentCategory.EXECUTION, action="update_issue", confidence=1.0)
         return svc, intent
 
-    def test_not_found_gets_the_definitive_sentence(self):
+    def test_not_found_gets_the_couldnt_find_sentence(self):
+        """CXO 2026-11-04 08:52: one sentence for close, update and comment that is
+        true both for a missing issue and for a repository the credential cannot
+        see; the next step is kept; the old "There's no issue" asserted too much."""
         svc, intent = self._svc_and_intent()
         e = GitHubIssueNotFound(issue_number=99999, owner="o", repo="r")
         res = svc._unverified_write_result(e, intent, "wf")
         assert res is not None
-        assert "no issue #99999 in o/r" in res.message
-        assert "nothing was changed" in res.message
+        assert res.message == (
+            "I couldn't find issue #99999 in o/r, so nothing was changed. "
+            "Check the number and try again, or say 'show open issues' to find it."
+        )
+        assert res.success is True
+        assert "There's no issue" not in res.message
         assert "may or may not" not in res.message and "duplicate" not in res.message
 
     def test_unverified_keeps_the_honest_uncertain_sentence(self):

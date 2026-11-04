@@ -424,7 +424,9 @@ class TestRendererWords:
             _intent(action="close_issue"),
             "wf",
         )
-        assert missing.message.startswith(f"There's no issue #99 in {FULL}")
+        assert missing.message.startswith(
+            f"I couldn't find issue #99 in {FULL}, so nothing was changed."
+        )
 
 
 def _gate_open():

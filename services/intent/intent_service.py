@@ -13315,11 +13315,17 @@ class IntentService:
             # #1858: definitive not-found — a different bucket from
             # unverified. Say so plainly; no "check the repository" for a
             # write that provably never happened, no duplicate warning.
+            # CXO 2026-11-04 08:52 (one sentence for close, update and comment):
+            # "I couldn't find" and "nothing was changed" are true both when the
+            # issue is missing and when the credential cannot see the repository
+            # (both answer 404 on both legs); "There's no issue" asserted a fact
+            # two 404s do not prove. The next step stays: "show open issues" lists
+            # what the credential can see, which exposes the second case too.
             where = f" in {e.owner}/{e.repo}" if e.owner and e.repo else ""
             return IntentProcessingResult(
                 success=True,
                 message=(
-                    f"There's no issue #{e.issue_number}{where} — nothing was changed. "
+                    f"I couldn't find issue #{e.issue_number}{where}, so nothing was changed. "
                     "Check the number and try again, or say 'show open issues' to find it."
                 ),
                 intent_data={
