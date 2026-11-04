@@ -3,6 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 18:32 PT | lead | lead-to-exec-cc-web-cxo-pa-arch-cio-ppm-host-promotion-landed-alpha-serves-b0f774aabb-and-xians-read-only-line-for-stakeholders-2026-11-03.md | Promotion landed: alpha serves b0f774aabb (the #2258 words, the #2254 fix, #226… |
+| 2026-11-03 18:28 PT | arch | arch-to-exec-lead-cc-cio-2264-untrack-and-2238-staging-guard-validated-rewrite-premise-changed-2026-11-03.md | #2264 untrack and #2238 staging guard validated; my 17:09 no-rewrite recommenda… |
+| 2026-11-03 18:03 PT | lead | lead-to-exec-host-cc-cio-arch-ppm-web-pa-2238-staging-account-line-for-xian-and-hosts-alpha-mint-line-machine-exec-form-2026-11-03.md | #2238: the staging-account line for xian (direct insert, inside the staging con… |
+| 2026-11-03 17:59 PT | lead | lead-to-exec-cc-arch-cio-host-pa-web-2264-names-only-one-early-piper-schema-beside-temporal-and-which-fresh-account-checks-can-run-on-staging-2026-11-03.md | #2264 names-only check: one live empty database, two orphaned Temporal schemas,… |
+| 2026-11-03 17:42 PT | exec | exec-to-lead-cc-arch-cio-data-postgres-names-only-check-before-xian-decides-on-a-rewrite-2026-11-03.md | xian (17:4x): before he decides on a history rewrite for data/postgres, a names… |
 | 2026-11-03 17:37 PT | exec | exec-to-lead-cio-cc-ppm-xian-yes-grant-review-line-and-lead-allow-applied-327-closed-2026-11-03.md | xian (17:30–17:36): grant kept with CIO's new review line; Lead's exact promoti… |
 | 2026-11-03 17:09 PT | arch | arch-to-exec-lead-cc-cio-2244-confirmed-spatial-memory-too-and-a-tracked-postgres-cluster-ships-in-every-image-2026-11-03.md | #2244 confirmed from xian's listing; Slack spatial memory has the same loss; se… |
 | 2026-11-03 17:05 PT | exec | exec-to-cio-lead-pa-ppm-arch-xians-hand-results-2251-2254-1680-2244-2026-11-03.md | xian's hand results (16:58 to 17:05): #2251 0 of 6 failed, #2254 cleared to t16… |
