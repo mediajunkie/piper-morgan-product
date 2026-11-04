@@ -278,7 +278,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 350	CLOSED	MVP	T2 (Test Polish)	TEST-SMOKE-STATIC: Add smoke tests for static file serving	enhancement,priority: medium,size: small		COMPLETED
 361	CLOSED	MVP	T1 (Test Repair)	SLACK-SPATIAL: Fix Slack Integration for Alpha Testing	component: integration,priority: critical		COMPLETED
 326	OPEN	Fast Follow		ARCH-MULT-ORG: Design multi-organization (multi-tenant) support architecture	architecture,enhancement		
-327	OPEN	Fast Follow		PROCESS-AI-ACCOUNTS: Create separate GitHub accounts for AI agents (Ted suggestion)	enhancement		
+327	CLOSED	Fast Follow		PROCESS-AI-ACCOUNTS: Create separate GitHub accounts for AI agents (Ted suggestion)	enhancement		NOT_PLANNED
 328	OPEN	Fast Follow		OBSERV-CENTRAL: Implement centralized logging, metrics, and monitoring	enhancement,infrastructure		
 329	OPEN	Icebox		DATA-ANNOTAT: Implement database annotation system for change rationale tracking	architecture,enhancement,innovation		
 330	OPEN	Fast Follow		INTEG-EMAIL-MCP: Email integration via Gmail MCP adapter	component: integration,enhancement		
@@ -1991,7 +1991,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2194	CLOSED	MVP		Issue-list header appends 'across all your repositories' to every reply, even a milestone-scoped one; the scope words belong where the qualifier is applied	bug		COMPLETED
 2195	OPEN	Production	PUB - Public Beta	Inversion Phase 3 remainder: 61 surface-1 literals in 18 lists, deleted list by list under the gate (split from #1595 on xian's 10-29 ruling)	architecture		
 2198	CLOSED	Production	PUB - Public Beta	Milestone progress asks get the whole milestones list: the list ignores the milestone named and shows no closed count (follow-up to #2184's boundary re-rule)	UX		NOT_PLANNED
-2197	OPEN	Production	PUB - Public Beta	A progress ask about a named milestone is answered with the list of every milestone and ignores the one named	UX		
+2197	CLOSED	Production	PUB - Public Beta	A progress ask about a named milestone is answered with the list of every milestone and ignores the one named	UX		COMPLETED
 2196	OPEN	Production	PROD-INFRA - Infra & Security Hardening	fly-deploy.yml promote job: no retry on the two Fly steps, so one transient 503 costs a dispatch			
 2199	CLOSED	Production	PUB - Public Beta	Milestone pick: after the milestones list asks 'Which milestone…? Say its name.', replying 'MVP' gets 'I couldn't tell which repository you mean'	bug		COMPLETED
 2200	CLOSED	Production	PROD-DESIGN - Design, UX & Product Features	Milestone list prints "Ongoing — due no due date" for a milestone with no date	UX		COMPLETED
@@ -2048,14 +2048,16 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2248	OPEN	Production		Flaky once: test_inversion_live_1595 in-category e2e failed in one full unit run, passes alone, in its directory and in the next full run			
 2249	OPEN	Ongoing		Blog legacy-error audit: slugs vs titles, empty alt text, workDate equal to pubDate, missing captions			
 2250	CLOSED	Production		Status turns wait ~1.5 s for the #2197 milestone resolver even when no milestone is named: run it concurrently with the floor's gather			COMPLETED
-2251	OPEN	Ongoing		piper-guards M-3 misses git mv of mailbox paths; staged mail then makes check-branch.sh block non-commit commands	process		
+2251	CLOSED	Ongoing		piper-guards M-3 misses git mv of mailbox paths; staged mail then makes check-branch.sh block non-commit commands	process		COMPLETED
 2252	CLOSED	Ongoing		FLY-AUDIT: Monthly Housekeeping - 2026-11	documentation,fly-audit,maintenance,monthly-audit		COMPLETED
 2253	CLOSED	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-11-02	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
-2254	OPEN	Ongoing		Dev-DB residue: unit-test fixtures delete their lists and leave base items dangling, so alembic upgrade head fails at s2014items on any shared dev Postgres	technical-debt,testing		
+2254	CLOSED	Ongoing		Dev-DB residue: unit-test fixtures delete their lists and leave base items dangling, so alembic upgrade head fails at s2014items on any shared dev Postgres	technical-debt,testing		COMPLETED
 2256	OPEN	Production		Beta sign-up screens repeat themselves, and /try/ now duplicates /try/beta/ (xian's walk, 11-02)			
 2257	OPEN	Production		attention_model: every attention-pattern save returns False since #1305 (pattern_data['name'] subscript on the EncryptedJSON column); path unwired in production; two backlog entries track it	bug		
-2258	OPEN	Production		[UX] "What changed since yesterday?" can answer with an internal label: "Actions (2): consequential: 2"	UX		
+2258	CLOSED	Production		[UX] "What changed since yesterday?" can answer with an internal label: "Actions (2): consequential: 2"	UX		COMPLETED
 2259	OPEN	Production		Account Settings doesn't show the account's email, though the allowlist script and support flows ask people for it			
 2260	OPEN	Production		DUE REMINDERS block gives every reminder with the same text the last row's age (ages keyed by text, not per row): 'all 1 day overdue' for reminders 10 days old	bug		
 2261	OPEN	Production		GitHub connect requests the classic `repo` scope (full read/write on every repo the login reaches); narrow it per ADR-081 D3, or to the narrowest classic scope on the OAuth-App fallback	component: integration,github		
 2262	OPEN	Production		#1680 gap: Notion writes (chat update_document append_blocks, standup create_page) are not consequential sites	component: integration		
+2264	OPEN	Ongoing		A Postgres data directory (data/postgres, 2,119 files, 88 MB) is tracked in this public repo and copied into every Docker image	bug		
+2265	OPEN	Production		[UX] 'What did we accomplish yesterday?' reads the last 24 hours but says 'since yesterday'	UX		
