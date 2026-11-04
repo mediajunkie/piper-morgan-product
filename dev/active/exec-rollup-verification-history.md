@@ -360,3 +360,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v777 17:43 PST 11-03: contribute@/privacy@ decided (aliases); moved to Your hand.
 - v778 17:42 PST 11-03: data/postgres moved to Where things stand pending Lead's names-only check (xian 17:4x).
 - v779 17:44 PST 11-03: final Buttondown confirmation text (Comms v4, CXO OK 17:36) on Your hand; throwaway GitHub login added (HOST 17:4x: xian's hand).
+- v780 18:00 PST 11-03: data/postgres back on Your word with Lead's names-only result (early Piper schema incl. stakeholders, #2264 issuecomment-6620288003).
