@@ -69,6 +69,10 @@ _PAYLOAD = json.dumps(
 _EMPTY = json.dumps({"total_count": 0, "incomplete_results": False, "items": []})
 
 
+async def _fake_grant_2266(owner_id):
+    return "gho_test_grant_2266"
+
+
 @pytest_asyncio.fixture
 async def sm(monkeypatch):
     """In-memory ConnectorBinding store; the github adapter's session_scope points at it."""
@@ -91,6 +95,14 @@ async def sm(monkeypatch):
 
     monkeypatch.setattr(
         gh_mod.GitHubMCPSpatialAdapter, "_user_pat_at_rest", staticmethod(_no_pat_at_rest)
+    )
+
+    # #2266: the resolver reads the OAuth grant strictly and this sqlite has no key
+
+    # table; the seam answers with a fake bearer (the connect itself is faked).
+
+    monkeypatch.setattr(
+        gh_mod.GitHubMCPSpatialAdapter, "_oauth_grant", staticmethod(_fake_grant_2266)
     )
     yield maker
     await engine.dispose()

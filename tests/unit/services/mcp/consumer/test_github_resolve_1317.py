@@ -45,6 +45,10 @@ pytestmark = pytest.mark.asyncio
 _ALPHA = "11111111-1111-1111-1111-111111111111"
 
 
+async def _fake_grant_2266(owner_id):
+    return "gho_test_grant_2266"
+
+
 @pytest_asyncio.fixture
 async def sm(monkeypatch):
     """In-memory ConnectorBinding store; the adapter's session_scope points at it."""
@@ -67,6 +71,14 @@ async def sm(monkeypatch):
 
     monkeypatch.setattr(
         gh_mod.GitHubMCPSpatialAdapter, "_user_pat_at_rest", staticmethod(_no_pat_at_rest)
+    )
+
+    # #2266: the resolver reads the OAuth grant strictly and this sqlite has no key
+
+    # table; the seam answers with a fake bearer (the connect itself is faked).
+
+    monkeypatch.setattr(
+        gh_mod.GitHubMCPSpatialAdapter, "_oauth_grant", staticmethod(_fake_grant_2266)
     )
     yield maker
     await engine.dispose()
@@ -132,9 +144,13 @@ class TestResolveDegradeRail:
         assert isinstance(res, ResolveMiss)
         assert res.degradation.reason is DegradationReason.UNREACHABLE
 
-    async def test_bound_but_unprovisioned_server_is_unreachable_miss(self, sm):
+    async def test_bound_but_unprovisioned_server_is_unreachable_miss(self, sm, monkeypatch):
         """BOUND binding + no github-mcp-server provisioned (#1220) → honest UNREACHABLE,
-        never a fake success. This is the real current production behavior."""
+        never a fake success. #2266: the grant is now read strictly before the connect,
+        so the failure this pins is the CONNECT (a server that refuses), not a grant
+        read on a table this sqlite never had; an unset server URL is MISCONFIGURED
+        (#1398), pinned separately below."""
+        monkeypatch.setenv("GITHUB_MCP_SERVER_URL", "http://127.0.0.1:9/mcp")
         await _seed(sm, "bound")
         res = await GitHubMCPSpatialAdapter().resolve(_ALPHA, ResourceQuery(kind="default_repo"))
         assert isinstance(res, ResolveMiss)
@@ -206,10 +222,12 @@ class TestResolveHttpSeam:
 
         monkeypatch.setattr(gh.MCPClient, "connect_http", staticmethod(_fake_http))
 
-        async with sm() as s:
-            binding = await ConnectorBindingRepository(s).get(_ALPHA, "github")
-
-        async with gh.GitHubMCPSpatialAdapter()._mcp_client_ctx(binding):
+        # #2266: the credential carries its bearer; the context reads nothing at connect
+        # time and never connects without one.
+        credential = gh.GitHubCredential(
+            owner_id=_ALPHA, mcp_server_ref="github", token="gho_tok", leg="oauth"
+        )
+        async with gh.GitHubMCPSpatialAdapter()._mcp_client_ctx(credential):
             pass
 
         assert captured["url"] == "http://gh-mcp.internal:8082/mcp"

@@ -289,14 +289,23 @@ def _binding_store(binding):
 async def _resolve(binding, pat):
     a = _adapter(None)
     p1, p2 = _binding_store(binding)
-    with p1, p2, patch.object(GitHubMCPSpatialAdapter, "_user_pat", return_value=pat):
+    with (
+        p1,
+        p2,
+        patch.object(GitHubMCPSpatialAdapter, "_user_pat", return_value=pat),
+        patch.object(
+            GitHubMCPSpatialAdapter, "_oauth_grant", staticmethod(AsyncMock(return_value="gho_tok"))
+        ),
+    ):
         return await a.resolve_credential("u1")
 
 
 async def test_bound_binding_is_the_oauth_leg():
     v = await _resolve(_Binding("bound"), pat="ghp_user_own")
     assert isinstance(v, GitHubCredential) and v.leg == "oauth"
-    assert v.token is None  # the grant is read lazily at connect, as before
+    assert (
+        v.token == "gho_tok"
+    )  # #2266: the grant is read strictly by the resolver, never at connect
 
 
 async def test_pat_only_user_gets_the_pat_leg_not_connect_required():

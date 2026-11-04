@@ -20,6 +20,7 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from services.domain.models import Intent
+from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 from services.shared_types import IntentCategory
 
 ROUTER = "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
@@ -156,6 +157,13 @@ class TestRouterIsAvailable:
             patch(
                 "services.connectors.binding_repository.ConnectorBindingRepository.get",
                 new=AsyncMock(return_value=binding),
+            ),
+            # #2266: a bound binding is the OAuth leg only with a READABLE grant; the
+            # resolver reads it strictly, so the seam answers with one here.
+            patch.object(
+                GitHubMCPSpatialAdapter,
+                "_oauth_grant",
+                staticmethod(AsyncMock(return_value="gho_tok")),
             ),
             a,
             k,
