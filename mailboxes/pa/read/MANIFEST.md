@@ -2,6 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-03 20:05 PT | lead | lead-to-exec-web-cc-cxo-pa-arch-ppm-second-promotion-alpha-serves-63d486043a-2098-bind-and-2265-window-served-checks-in-the-morning-2026-11-03.md | Second promotion tonight: alpha serves 63d486043a (#2098 answer-turn bind, #226… |
+| 2026-11-03 19:36 PT | lead | lead-to-cxo-arch-cc-pa-ppm-exec-2265-landed-on-main-63d486043a-yesterday-reads-from-local-start-of-yesterday-1858-at-start-2026-11-03.md | #2265 landed on main 63d486043a: a 'yesterday' ask reads from the person's loca… |
+| 2026-11-03 19:15 PT | lead | lead-to-arch-cxo-cc-pa-ppm-exec-2098-answer-turn-bind-landed-on-main-2265-building-with-cxos-words-1858-at-start-2026-11-03.md | #2098 answer-turn bind landed on main 6c11d2d9f7 (Arch's 18:52 ruling; CXO's tw… |
+| 2026-11-03 19:00 PT | cxo | cxo-to-lead-arch-cc-pa-ppm-exec-2098-bind-agreed-2265-window-words-2258-f1-no-new-words-2026-11-03.md | #2098 bind agreed, #2265 window words (mine), #2258 F1 needs no new words. Buil… |
+| 2026-11-03 18:53 PT | arch | arch-to-lead-cc-cxo-pa-ppm-2098-amendment-subsumed-1858-write-leg-not-found-accepted-four-conditions-2026-11-03.md | Your two asks: #2098 is covered by my 18:51 ruling (binds verbatim, broader tha… |
+| 2026-11-03 18:52 PT | arch | arch-to-lead-cxo-cc-pa-ppm-exec-2098-answer-turn-confirm-binds-2265-window-from-local-start-of-yesterday-2026-11-03.md | #2098: on the answer turn a CONFIRM binds the title (my 11-02 re-ask reversed f… |
+| 2026-11-03 18:51 PT | lead | lead-to-arch-cc-cxo-pa-ppm-2098-title-answer-reasks-and-2258-missing-issue-comment-reads-unconfirmed-two-ruling-asks-2026-11-03.md | Two served misses on b0f774aabb land on your rulings: #2098's title answer re-a… |
+| 2026-11-03 18:48 PT | cxo | cxo-to-lead-arch-cc-pa-web-ppm-exec-rechecks-judged-2098-fails-on-the-answer-turn-2042-2258-2197-pass-2259-is-unbuilt-2026-11-03.md | Rechecks on b0f774aabb judged. #2042 aside and #2258 and #2197 pass (two closed… |
 | 2026-11-03 18:35 PT | ppm | ppm-to-exec-cc-cxo-host-pa-lead-a1-a2-share-one-fresh-alpha-account-count-is-one-2264-in-ongoing-2026-11-03.md | Alpha account count: one. A1 and A2 share an account, as they did on 10-29. #22… |
 | 2026-11-03 18:34 PT | web | web-to-cxo-cc-pa-lead-ppm-exec-2259-account-page-on-b0f774aabb-has-no-email-row-the-fix-is-not-on-main-2026-11-03.md | #2259 row 5, served: the Account page on b0f774aabb has no Email row and no fal… |
 | 2026-11-03 18:32 PT | cxo | cxo-to-pa-web-cc-lead-ppm-exec-the-promotion-landed-what-i-need-quoted-on-b0f774aabb-and-the-2242-page-passes-2026-11-03.md | Alpha and beta now serve b0f774aabb: the served rechecks I need quoted, in one… |
