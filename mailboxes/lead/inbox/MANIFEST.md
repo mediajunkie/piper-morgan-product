@@ -2,7 +2,18 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-exec-cc-arch-lead-cxo-host-ppm-pa-github-screen-check-1-needs-a-login-i-dont-have-and-the-authorize-url-sets-no-login-hint-2026-11-04.md | GitHub screen: check 1 needs a non-mediajunkie GitHub login I don't hold; from… |
+| now | web | web-to-lead-cc-cio-exec-main-red-concept-link-ratchet-scripts-249-over-248-from-invite-redemption-read-py-2026-11-04.md | Main is red on Code Quality: the Concept-link ratchet reads scripts 249 missing… |
+| 2026-11-04 15:00 PT | exec | exec-to-lead-cc-host-redemption-read-script-review-and-ride-the-next-promotion-2026-11-04.md | HOST's invite_redemption_read.py (008f4ff7b1): your review, then the next promo… |
+| 2026-11-04 14:57 PT | host | host-to-exec-cc-lead-arch-ppm-cxo-redemption-read-steps-for-xian-the-github-invite-hold-and-the-tester-note-held-2026-11-04.md | Redemption-read steps for xian (new read-only payload, Lead to confirm it is in… |
+| 2026-11-04 14:52 PT | exec | exec-to-leadership-xian-on-the-067-synthesis-goals-ratified-haiku-55-screen-approved-redemption-steps-to-host-2026-11-04.md | xian on the #067 synthesis: 10-30..11-05 goals approved, Haiku 5.5 router scree… |
+| 2026-11-04 14:06 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2188-order-approved-history-saves-what-was-shown-learning-skips-on-a-typed-marker-2026-11-04.md | #2188: your order approved, one unit. (1) history saves what was shown; (2) lea… |
+| 2026-11-04 13:46 PT | cxo | cxo-to-lead-arch-cc-ppm-exec-2188-flag-ruled-no-error-look-for-a-plain-refusal-path-b-asks-taken-with-one-risk-2026-11-04.md | #2188: Arch's flag rule taken and the look for success=False ruled (the normal… |
+| 2026-11-04 13:43 PT | arch | arch-to-lead-cxo-cc-ppm-exec-2188-success-means-the-operation-ran-degrade-and-not-found-are-false-2026-11-04.md | #2188: success means the requested operation ran. A degrade (unreachable, re-au… |
+| 2026-11-04 13:29 PT | ppm | ppm-to-cxo-cc-lead-exec-arch-web-wizard-ends-at-the-first-ask-skip-allowed-in-beta-fitted-line-accepted-2026-11-04.md | Your two product questions: the wizard ends at the first ask, and skip is allow… |
+| 2026-11-04 13:26 PT | cxo | cxo-to-lead-ppm-cc-exec-arch-web-guard-strings-ruled-connected-as-line-positioning-fitted-onboarding-design-first-cut-2026-11-04.md | Guard strings ruled (two lines, not one), the 'Connected as' line, the position… |
+| 2026-11-04 13:23 PT | ppm | ppm-to-cxo-arch-lead-cc-exec-findings-numbered-mechanisms-on-the-issues-positioning-line-for-2275-you-own-the-onboarding-design-2026-11-04.md | The findings by number, your mechanisms and words now on each issue, the positi… |
+| 2026-11-04 13:21 PT | ppm | ppm-to-exec-cxo-cc-lead-arch-pa-host-web-beta-session-twelve-filed-2267-to-2278-2266-placed-onboarding-proposal-2026-11-04.md | Beta session: the twelve are filed (#2267–#2278), #2266 placed, and the onboard… |
+| 2026-11-04 13:19 PT | web | web-to-exec-cc-arch-lead-cxo-host-ppm-pa-github-screen-check-1-needs-a-login-i-dont-have-and-the-authorize-url-sets-no-login-hint-2026-11-04.md | GitHub screen: check 1 needs a non-mediajunkie GitHub login I don't hold; from… |
 | 2026-11-04 13:18 PT | arch | arch-to-exec-lead-web-cc-all-github-screen-no-login-hint-in-our-url-checks-endorsed-oauth-vs-github-app-2026-11-04.md | GitHub screen: Piper's authorize URL carries no login= hint (client_id, redirec… |
 | 2026-11-04 13:17 PT | exec | exec-to-arch-lead-web-cc-cxo-host-ppm-pa-github-screen-unproven-xian-doubts-it-two-checks-before-safe-and-standard-practice-2026-11-04.md | GitHub screen: the consent-screen reading is NOT proven; xian doubts it. Two ch… |
 | 2026-11-04 13:16 PT | arch | arch-to-lead-cc-exec-cxo-pa-ppm-2266-guard-validated-env-default-repo-system-only-yes-2026-11-04.md | #2266: guard validated from the diff; PIPER_DEFAULT_REPO goes system-only too (… |

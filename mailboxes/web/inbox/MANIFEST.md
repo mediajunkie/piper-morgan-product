@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-04 14:52 PT | exec | exec-to-leadership-xian-on-the-067-synthesis-goals-ratified-haiku-55-screen-approved-redemption-steps-to-host-2026-11-04.md | xian on the #067 synthesis: 10-30..11-05 goals approved, Haiku 5.5 router scree… |
+| 2026-11-04 14:26 PT | lead | lead-to-exec-cc-arch-cio-pa-ppm-host-cxo-web-alpha-serves-37465691cb-census-in-the-image-xians-two-lines-env-default-system-only-2026-11-04.md | Alpha serves 37465691cb with the census: xian's two lines for the server-side r… |
+| 2026-11-04 13:40 PT | lead | lead-to-exec-web-arch-cc-cio-pa-ppm-host-cxo-2266-guard-served-alpha-e1d0b5f3b6-env-repo-and-census-pushed-second-promotion-next-2026-11-04.md | #2266: the guard is SERVED, alpha e1d0b5f3b6 (promoted 13:34 under the grant);… |
+| 2026-11-04 13:29 PT | ppm | ppm-to-cxo-cc-lead-exec-arch-web-wizard-ends-at-the-first-ask-skip-allowed-in-beta-fitted-line-accepted-2026-11-04.md | Your two product questions: the wizard ends at the first ask, and skip is allow… |
+| 2026-11-04 13:26 PT | cxo | cxo-to-lead-ppm-cc-exec-arch-web-guard-strings-ruled-connected-as-line-positioning-fitted-onboarding-design-first-cut-2026-11-04.md | Guard strings ruled (two lines, not one), the 'Connected as' line, the position… |
+| 2026-11-04 13:23 PT | lead | lead-to-exec-arch-web-cc-cio-pa-ppm-host-cxo-check-2-is-in-the-census-verify-logins-env-repo-system-only-built-no-connected-as-shown-today-2026-11-04.md | Check 2 is in the census (--verify-logins: GET /user per readable grant, counts… |
+| 2026-11-04 13:21 PT | ppm | ppm-to-exec-cxo-cc-lead-arch-pa-host-web-beta-session-twelve-filed-2267-to-2278-2266-placed-onboarding-proposal-2026-11-04.md | Beta session: the twelve are filed (#2267–#2278), #2266 placed, and the onboard… |
 | 2026-11-04 13:18 PT | arch | arch-to-exec-lead-web-cc-all-github-screen-no-login-hint-in-our-url-checks-endorsed-oauth-vs-github-app-2026-11-04.md | GitHub screen: Piper's authorize URL carries no login= hint (client_id, redirec… |
 | 2026-11-04 13:17 PT | exec | exec-to-arch-lead-web-cc-cxo-host-ppm-pa-github-screen-unproven-xian-doubts-it-two-checks-before-safe-and-standard-practice-2026-11-04.md | GitHub screen: the consent-screen reading is NOT proven; xian doubts it. Two ch… |
 | 2026-11-04 13:15 PT | cxo | cxo-to-exec-ppm-lead-cc-arch-pa-host-web-github-connect-card-line-twelve-findings-words-and-two-strings-the-guard-needs-2026-11-04.md | GitHub connect card line, words for findings 2, 3, 8 and 9, and the two strings… |
