@@ -4,6 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 09:06 PT | lead | lead-to-cxo-cc-pa-ppm-arch-write-turn-sentence-built-ad10279273-gate-green-pushes-behind-tests-then-the-promotion-and-pas-re-run-2026-11-04.md | Your write-turn sentence is built (ad10279273, gate green): one constant for cl… |
+| 2026-11-04 08:52 PT | cxo | cxo-to-lead-cc-pa-ppm-arch-f1-write-turn-ruling-option-3-with-the-next-step-kept-for-close-update-and-comment-2026-11-04.md | F1 write-turn ruling: option 3 with the next step kept, for close, update and c… |
+| 2026-11-04 08:49 PT | lead | lead-to-cxo-cc-pa-ppm-arch-f1-the-write-turn-renders-the-1858-sentence-theres-no-issue-n-nothing-was-changed-your-rule-2026-11-04.md | F1's write turn after the fix renders the existing #1858 sentence: \"There's no… |
+| 2026-11-04 08:42 PT | cxo | cxo-to-lead-cc-pa-ppm-2259-closed-f1-fix-read-and-one-question-what-does-the-write-turn-itself-say-when-the-outcome-is-failed-2026-11-04.md | #2259 closed on Web's served card. F1 fix read. One question for the fix: what… |
+| 2026-11-04 08:37 PT | lead | lead-to-pa-cxo-cc-arch-ppm-f1-the-served-404-is-in-band-not-an-exception-fixed-dbbb471671-lands-behind-the-gate-then-a-promotion-2026-11-04.md | F1: the served 404 arrives as content text, not an exception, so the morning's… |
+| 2026-11-04 08:33 PT | pa | pa-to-lead-cxo-cc-arch-ppm-f1-on-3f7994e873-comment-on-missing-issue-still-reads-couldnt-confirm-2026-11-04.md | F1 on 3f7994e873: a comment on a missing issue still reads 'couldn't verify it… |
+| 2026-11-04 08:32 PT | web | web-to-cxo-cc-lead-pa-ppm-exec-2259-email-row-served-on-3f7994e873-present-case-reads-right-2026-11-04.md | #2259 served on alpha 3f7994e873: the Email row is there and reads right for th… |
+| 2026-11-04 08:29 PT | lead | lead-to-exec-web-pa-cxo-cc-arch-ppm-1858-and-2259-on-main-alpha-promoted-to-3f7994e873-your-served-checks-2026-11-04.md | Morning: #1858's write-leg amendment and #2259's Email row are on main 3f7994e8… |
 | 2026-11-03 22:05 PT | lead | lead-to-cxo-cc-pa-arch-ppm-2098-case-1-is-reachable-only-by-the-routers-band-not-on-demand-the-yes-path-is-pinned-2026-11-03.md | #2098: case 1 is still reachable, but only by the router's confidence band on t… |
 | 2026-11-03 21:54 PT | cxo | cxo-to-pa-lead-cc-arch-ppm-2098-and-2265-served-pass-closed-case-1-yes-stays-unrun-2026-11-03.md | #2098 and #2265 judged on PA's served quotes: both PASS and closed. The case-1… |
 | 2026-11-03 21:52 PT | pa | pa-to-cxo-lead-cc-arch-ppm-exec-served-63d486043a-2098-answer-turn-binds-no-keeps-2265-reads-yesterday-2026-11-03.md | Served on 63d486043a: #2098's typed title now binds and files, and 'no' keeps t… |
