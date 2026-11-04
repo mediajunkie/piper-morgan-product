@@ -1,0 +1,51 @@
+# Proposal: an MVP onboarding to first value
+
+**Author:** PPM, 2026-11-04. **Status:** proposal for xian's sprint-cadence talk (opened 11-03). Nothing here is scheduled; dates and sprints are xian's.
+**Source:** xian's stated next focus from the 11-04 beta session by his advisor (Exec's memo, 11-04 13:14): before other plumbing, an onboarding that gets most new users to one valuable thing in their first session. Design it, build it, then test it with beta users.
+
+## What the session showed
+
+The first end-to-end beta attempt never reached a valuable thing. Each step that stopped it is now filed:
+
+| Step a new person takes | What stopped it | Issue |
+|---|---|---|
+| Sign in | Email sign-in fails after a username is set | #2267 |
+| Read the sign-in screen | A logo, nothing about what Piper does | #2275 |
+| Add an AI key | No word that a Claude subscription excludes API access | #2274 |
+| Run the wizard | Records a repo, doesn't connect GitHub | #2268 |
+| Find where to connect | Settings, Integrations hard to find | #2273 |
+| Connect GitHub | GitHub's page reads "Authorize mediajunkie" (the app owner) | #2266, plus xian's app-transfer decision and CXO's connect-card line |
+| Ask about the repo | Routed to documents; an invented "link repo" command; a "yes" loop | #2270, #2269, #2271 |
+| Understand project vs repo | Chat merges them; the page can't attach a repo | #2272 |
+
+So the onboarding isn't a new feature first. It's this path made to work, then designed toward one valuable moment.
+
+## The proposal
+
+1. **Define first value per user type, before any build** (CXO designs, PPM sets the success criterion).
+   - *The practicing PM who wants agentic help:* with GitHub connected, one useful read of their own work. A standup or "what changed" over their real repo, or a triage of its open issues.
+   - *The person who needs product support but has no PM:* from a product idea, a short plan they keep (an artifact under their documents, PDR-102 C1), with no connector needed.
+   - **Success criterion (proposed):** a new account reaches that moment in its first session, without help from us, and the person says it was useful. Measured on beta users, as a count of n of N sessions.
+2. **Make the path work first.** In order: #2266's guard served (GitHub invites hold until then), #2267, then #2268, #2273, #2274 and #2269, which are the steps between sign-in and a connected repo. #2270, #2271 and #2272 follow, because the first question after connecting hits them. #2275 comes with the design, since its prompts are the first-value prompts.
+3. **Then build the designed flow.** The wizard leads to the user type's first-value moment and ends there, not at Settings.
+4. **Then test it with beta users,** using scenarios with clear pass lines (the advisor's suggestions):
+   - contributing to an existing open-source repo (PM type);
+   - working backwards from a product idea to a plan (no-PM type);
+   - an A/B: the same opening prompt in Piper and in plain Claude, judged for what Piper adds that Claude doesn't. A tie is a finding, not a failure.
+   HOST runs the sessions; CXO judges the experience; PPM keeps the n of N.
+
+## What it displaces
+
+Proposed: this goes ahead of the remaining PUB plumbing that no new user would see in their first session. The Production plan's PUB, H and V rows on the path above stay. Others wait unless xian says they don't. Which rows move is a sprint question for xian; PPM will mark the candidates on the map once he picks the shape.
+
+## Questions for xian
+
+1. Is this the next sprint, or a lane beside the current Production order?
+2. Are the two first-value moments above the right ones, or should one user type go first?
+3. The OAuth app transfer to an organization account (Exec has it in front of you) decides the connect step's words. Does it happen before the onboarding test?
+
+## Not decided here
+
+The flow and words (CXO), how it's built (Arch, Lead), dates and slips (xian). #2276 (feedback shortcut) helps the test sessions but isn't on the path. #2277 (Radar as the landing page) and #2278 (chat layout) are recorded and not proposed here.
+
+Verified how: Exec's 11-04 13:14 memo read in full; the issue numbers are the ones PPM filed and placed by 13:18 (gh output); duplicate checks by `gh issue list --search` across 30 queries. Layer: mail and GitHub. Nothing served or measured.
