@@ -99,7 +99,7 @@ curl -sL -o /dev/null -w "%{url_effective} %{http_code}\n" https://piper-morgan-
 - `PIPER_SLACK_INBOUND_ENABLED`: leave unset on staging unless a Slack test needs it.
 - A `fly.staging.toml` committed to the repo would remove the two `-e`/`-a` overrides above; that
   is a code change and Lead's, tracked with the CI-deploy work (§4e).
-- Test users: staging's DB is empty. Register through the staging login, or have Lead seed an invite.
+- Test users: staging's DB is empty. Register through the staging login, or have Lead seed an invite. Since 2026-11-03 (#2238, xian's word) a staging test account is created directly in the staging database: `scripts/create_test_alpha_user.py --username <name> --staging`, run inside the staging container (`fly machine exec`), prints the password once; the script refuses outside the staging app.
 
 ## Traps learned on the alpha cutover that apply here
 
