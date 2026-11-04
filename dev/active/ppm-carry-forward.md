@@ -591,7 +591,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Carried:**
   - ✅ the 5 set-aside issues went to PROD-INFRA 11-02, and #1441 went to PUB 11-02 (xian 12:0x via Exec). Done.
   - ✅ **the six Arch closes** (#272, #309, #315, #335, #337, #1011): closed 11-02 evening, one at a time, on xian's direct word. The refusals were about batching: for a bulk close, ask for the one-at-a-time word first.
-  - **#1680:** the build is complete (landings A–C, `4678c47e9e`, Arch validated). Owed by PPM: the served check after the promotion (`github.chat.comment_issue | success | f t t t`, headline "16 of 16").
+  - **#1680:** ✅ PPM served bar PASS 11-03 17:09 (xian's admin read "16 of 16", 3 of 3 success; comment row f t t t deduced from the totals plus the registry credits rule; issuecomment-6619738080). Still open, not PPM's: Lead's row and counted-once judgement, Exec's rollup rendering (boxes 3–4).
   - CXO's spot-check;
   - the next weekly diff, Fri 11-06;
   - **PDR-102 RATIFIED 11-02** (xian, no changes); its status line is set. From now on, check new document-touching issues against C1–C8 when placing them. v0.4: no review checks open (Arch 06:59: artifacts already show as documents). Comms holds public "data you own" copy until C7 is verified and C8 has a surface.

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# cio-2251-test.sh — tests check-branch.sh's #2251 change in a throwaway repo (CIO, 2026-11-02).
-# Usage: bash dev/active/cio-2251-test.sh [path-to-hook]   (default: .claude/hooks/check-branch.sh)
-# CIO's seat refuses this test and the hook edit, so xian runs it. Expected results are on each line.
+# test-check-branch.sh — tests check-branch.sh's #2251 behaviour in a throwaway repo (CIO, 2026-11-02).
+# Usage: bash scripts/test-check-branch.sh [path-to-hook]   (default: .claude/hooks/check-branch.sh)
+# Expected results are on each line; prints "N failed of 6". xian's run 11-03: 2 failed before the fix, 0 after.
+# Concept: docs/internal/operations/hooks-registry.md
 set -u
 HOOK=$(cd "$(dirname "${1:-.claude/hooks/check-branch.sh}")" && pwd)/$(basename "${1:-.claude/hooks/check-branch.sh}")
 R=$(mktemp -d "${TMPDIR:-/tmp}/t2251.XXXXXX")
