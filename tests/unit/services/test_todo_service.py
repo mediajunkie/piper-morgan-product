@@ -58,7 +58,13 @@ class TestTodoService:
                 },
             )
             await session.commit()
-        return user_id
+        yield user_id
+        # #2254: leave nothing behind: the user's items, lists and row, in the
+        # helper's FK order (base items have no owner column; see tests/conftest.py).
+        from tests.conftest import delete_test_user_fully
+
+        async with AsyncSessionFactory.session_scope() as session:
+            await delete_test_user_fully(session, user_id)
 
     @pytest.mark.smoke
     async def test_create_todo(self, service, list_id, test_user_id):

@@ -680,6 +680,12 @@ async def fresh_database(db_session):
         "DELETE FROM list_items",
         "DELETE FROM list_memberships",
         "WITH del AS (DELETE FROM todo_items RETURNING id) DELETE FROM items WHERE id IN (SELECT id FROM del)",
+        # #2254: base items (item_type = 'item') have no owner column and were never
+        # deleted here, so the lists delete below left them dangling before s2014items
+        # (540 rows on the shared dev DB) and, at head, fails outright: the FK's
+        # SET NULL trips ck_items_base_item_has_list, the statement is rolled back
+        # below, and lists and users stay behind. Items go before lists.
+        "DELETE FROM items",
         "DELETE FROM lists",
         "DELETE FROM project_integrations",
         "DELETE FROM repositories",
@@ -906,6 +912,8 @@ async def delete_test_user_fully(session, user_id: str) -> None:
         "DELETE FROM list_memberships WHERE owner_id = CAST(:u AS uuid)",
         "WITH del AS (DELETE FROM todo_items WHERE owner_id = CAST(:u AS uuid) RETURNING id) "
         "DELETE FROM items WHERE id IN (SELECT id FROM del)",
+        # #2254: the user's base items go before the user's lists (see fresh_database).
+        "DELETE FROM items WHERE list_id IN (SELECT id FROM lists WHERE owner_id = CAST(:u AS uuid))",
         "DELETE FROM lists WHERE owner_id = CAST(:u AS uuid)",
         "DELETE FROM project_integrations WHERE owner_id = CAST(:u AS uuid)",
         "DELETE FROM repositories WHERE owner_id = CAST(:u AS uuid)",
