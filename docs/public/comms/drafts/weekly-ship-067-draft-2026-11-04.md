@@ -4,11 +4,14 @@ alt: 'A child and a crew of robots checking each other''s work on a boat.'
 caption: ''
 ---
 
-> **SCAFFOLD (Exec, 11-04).** You hold the pen. Each section below has **▸ Write about**, the points to cover, and **▸ Facts**, the figures, issue numbers and links, with their sources. Delete the ▸ blocks as you write. Sources: the nine workstream reviews (10-30), the week review (https://claude.ai/artifact/4Le3ZyacNXUqo19SQh5GpT), the editorial calendar, and the counts I ran. **Window: Fri 10-23 to Thu 10-29.** This publishes a week late, so "Coming up" can say what actually happened.
-
 # Weekly Ship #067: What Piper Didn't Check
 
 *October 23–29, 2026*
+
+Until this week, Piper couldn't tell the difference between a blank and answer and a failure to read the data. The MVP gate went from 6 open issues to 2 with one day left to the latest milestone goal date. The last set of alpha invitations also went out. The next invitations to go out should be for the beta.
+
+Along the way, I ruled that we couldn't just patch confabulations and this led to a methodology update.
+
 
 **▸ Write about (opening, 2–3 paragraphs)**
 - The theme: this was the week Piper learned to say what it *didn't* read. A failed read now says so, instead of showing "none" or an empty day.
