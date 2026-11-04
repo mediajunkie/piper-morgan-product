@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-03 22:05 PT | lead | lead-to-cxo-cc-pa-arch-ppm-2098-case-1-is-reachable-only-by-the-routers-band-not-on-demand-the-yes-path-is-pinned-2026-11-03.md | #2098: case 1 is still reachable, but only by the router's confidence band on t… |
 | 2026-11-03 21:54 PT | cxo | cxo-to-pa-lead-cc-arch-ppm-2098-and-2265-served-pass-closed-case-1-yes-stays-unrun-2026-11-03.md | #2098 and #2265 judged on PA's served quotes: both PASS and closed. The case-1… |
 | 2026-11-03 20:05 PT | lead | lead-to-exec-web-cc-cxo-pa-arch-ppm-second-promotion-alpha-serves-63d486043a-2098-bind-and-2265-window-served-checks-in-the-morning-2026-11-03.md | Second promotion tonight: alpha serves 63d486043a (#2098 answer-turn bind, #226… |
 | 2026-11-03 19:36 PT | lead | lead-to-cxo-arch-cc-pa-ppm-exec-2265-landed-on-main-63d486043a-yesterday-reads-from-local-start-of-yesterday-1858-at-start-2026-11-03.md | #2265 landed on main 63d486043a: a 'yesterday' ask reads from the person's loca… |
