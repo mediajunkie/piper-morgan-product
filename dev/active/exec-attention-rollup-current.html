@@ -37,12 +37,12 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Tuesday 3 November</h1>
-<p class="meta">Exec · v791, rebuilt 13:42 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v792, rebuilt 14:30 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
 <div class="card hot">
-<p class="ct"><b>GitHub connect: not proven safe yet, but Piper can&rsquo;t pick the account.</b> Its link to GitHub carries no account hint (Arch, Web and I each read the code), so GitHub used whichever account that browser was signed in to. Two checks before testers hear it&rsquo;s safe. (1) Web views GitHub&rsquo;s page while signed in to a non-you GitHub account. Web has none, so it needs your throwaway login (the same one as #2235, under Your hand), or the advisor&rsquo;s screenshot. (2) Your census line. Lead&rsquo;s guard (#2266) is now <b>live on alpha</b> (<code>e1d0b5f3b6</code>, 13:34), so Piper can no longer call GitHub without the user&rsquo;s own token. The census script goes out with the next promotion, and I&rsquo;ll bring you its line then.</p>
+<p class="ct"><b>GitHub connect: not proven safe yet, but Piper can&rsquo;t pick the account.</b> Its link to GitHub carries no account hint (Arch, Web and I each read the code), so GitHub used whichever account that browser was signed in to. Two checks before testers hear it&rsquo;s safe. (1) Web views GitHub&rsquo;s page while signed in to a non-you GitHub account. Web has none, so it needs your throwaway login (the same one as #2235, under Your hand), or the advisor&rsquo;s screenshot. (2) Your census lines, now on alpha (under Your hand). Lead&rsquo;s guard (#2266) is live, so Piper can no longer call GitHub without the user&rsquo;s own token.</p>
 <p class="ct"><b>Today: Ship #067 publishes.</b> The draft waits only on your answers to the five questions at the bottom of the <a href="https://claude.ai/artifact/4Le3ZyacNXUqo19SQh5GpT">week review</a>. Once I have them I draft, Comms fact-checks, and it goes out today. After that: the two #1715 answers under Your word, the sprint-length question, and the #2264 look (answer only &ldquo;test data&rdquo; or &ldquo;real people&rdquo;).</p>
 </div>
 
@@ -60,6 +60,13 @@
 <h2>Your hand, a minute each</h2>
 
 <div class="card act">
+<ul>
+<li><b>GitHub census, after the Ship (about 3 minutes).</b> It&rsquo;s read-only and prints only counts and ids. Paste the output to me. The emails you type stay in your terminal.
+<pre>fly machine list -a piper-morgan
+fly machine exec MACHINE_ID "python /app/scripts/github_identity_census.py --since 2026-10-16 --user-email YOUR_SIGNIN_EMAIL" -a piper-morgan
+fly machine exec MACHINE_ID "python /app/scripts/github_identity_census.py --since 2026-10-16 --verify-logins --operator-user-id ID_FROM_LINE_2 --user-email TESTERS_SIGNIN_EMAIL --owner mediajunkie --owner dinp-machine" -a piper-morgan</pre>
+Clean means: in section 0, the tester has no connection and no GitHub rows, and in section 5 no other account maps to your login. If that&rsquo;s what it shows, I clear the invite hold and HOST&rsquo;s note comes to you for your OK.</li>
+</ul>
 <ol>
 <li><b>Look at the early Piper database in the old Postgres folder (#2264), read-only.</b> It&rsquo;s eight small tables, including &ldquo;stakeholders&rdquo;, in the public repo&rsquo;s history since 03-30. Only you should read it, so no agent sees the contents. This prints its readable text into a pager; press q to leave:<pre>cd ~/Development/piper-morgan-product &amp;&amp; git ls-tree --name-only d3ee15de35 data/postgres/base/16384/ | grep -E '/177[0-9]{2}$' | while read f; do echo "== $f"; git show "d3ee15de35:$f" | strings -n 3; done | less</pre>Then tell me only one of two things: &ldquo;test data&rdquo;, and it closes with no rewrite (Arch, Lead and I recommend that outcome), or &ldquo;real people&rdquo;, and we plan a history rewrite. Don&rsquo;t paste any names.</li>
 <li><b>A throwaway GitHub login</b> (now also GitHub check 1, so do this first) <b>for Web&rsquo;s #2235 check</b>, before the alpha test-account session. It needs an email address you manage, and access to one test repository only. Tell me the repository name, not the password. Agents can&rsquo;t open GitHub accounts.</li>
@@ -148,7 +155,7 @@ If you didn't sign up, ignore this email and you won't hear from us.</pre>Then s
 <li><b>Restarter (#2146):</b> passed its test Friday and brought the database back once with nobody touching it.</li>
 <li>Google approved our Calendar read access (#2087, 15:50). Two served proofs remain: a connect through the wizard and one calendar read on your outside account (Web can&rsquo;t sign in to Google). HOST has the ask.</li>
 <li>Mail v4 stays on three seats until the 11-05 review.</li>
-<li>Alpha now serves <code>e1d0b5f3b6</code> (promoted 13:34 Wed, with the #2266 GitHub guard; read healthy 13:42). Closed since last night: #2098 (typed title is used), #2265 (&ldquo;yesterday&rdquo; means yesterday), #2259 (Email row) and #1858. PA re-runs the failed-comment check on this build.</li>
+<li>Alpha now serves <code>37465691cb</code> (promoted 14:23 Wed; it carries the #2266 GitHub guard from 13:34 plus the census script; read healthy 14:29). Closed since last night: #2098 (typed title is used), #2265 (&ldquo;yesterday&rdquo; means yesterday), #2259 (Email row) and #1858. PA re-runs the failed-comment check on this build.</li>
 
 <li>R3 coordination target: you kept it (12:5x). CIO measures memos per seat 11-04 to 11-10 and reads it with you Wed 11-11, beside the 11-05 mail v4 decision. Nothing is cut before then. Your two questions are answered through Janus: 2.65 is half of September, a chosen goal with no outside benchmark.</li>
 </ul></div>

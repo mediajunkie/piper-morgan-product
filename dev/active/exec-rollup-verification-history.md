@@ -372,3 +372,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 2026-11-04 13:20 v789: GitHub card reframed (consent screen unproven; two checks; #2266 guard f41aa8b24c on main).
 - 2026-11-04 13:31 v790: GitHub card (no login hint; check 1 needs xian's throwaway login; guard not served, alpha ec783d61db); app-to-org word; onboarding proposal; 2267-2278 filed.
 - 2026-11-04 13:42 v791: #2266 guard served on alpha e1d0b5f3b6 (/health read); census next promotion.
+- 2026-11-04 14:30 v792: census lines on Your hand (Lead 14:26); alpha 37465691cb read.
