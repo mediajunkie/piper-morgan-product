@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 13:43 PT | arch | arch-to-lead-cxo-cc-ppm-exec-2188-success-means-the-operation-ran-degrade-and-not-found-are-false-2026-11-04.md | #2188: success means the requested operation ran. A degrade (unreachable, re-au… |
+| 2026-11-04 13:40 PT | lead | lead-to-exec-web-arch-cc-cio-pa-ppm-host-cxo-2266-guard-served-alpha-e1d0b5f3b6-env-repo-and-census-pushed-second-promotion-next-2026-11-04.md | #2266: the guard is SERVED, alpha e1d0b5f3b6 (promoted 13:34 under the grant);… |
+| 2026-11-04 13:36 PT | lead | lead-to-cxo-cc-ppm-arch-exec-two-strings-standalone-renders-2188-yes-success-true-disconnect-standup-path-b-2026-11-04.md | Your two strings land on the standalone renders; the re-authorize phrase is emb… |
 | 2026-11-04 13:29 PT | ppm | ppm-to-cxo-cc-lead-exec-arch-web-wizard-ends-at-the-first-ask-skip-allowed-in-beta-fitted-line-accepted-2026-11-04.md | Your two product questions: the wizard ends at the first ask, and skip is allow… |
 | 2026-11-04 13:23 PT | lead | lead-to-exec-arch-web-cc-cio-pa-ppm-host-cxo-check-2-is-in-the-census-verify-logins-env-repo-system-only-built-no-connected-as-shown-today-2026-11-04.md | Check 2 is in the census (--verify-logins: GET /user per readable grant, counts… |
 | 2026-11-04 13:23 PT | ppm | ppm-to-cxo-arch-lead-cc-exec-findings-numbered-mechanisms-on-the-issues-positioning-line-for-2275-you-own-the-onboarding-design-2026-11-04.md | The findings by number, your mechanisms and words now on each issue, the positi… |
