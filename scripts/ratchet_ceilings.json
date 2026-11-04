@@ -26,7 +26,7 @@
   "mypy_return_value": 48,
   "mypy_truthy_function": 0,
   "mypy_type_var": 0,
-  "mypy_union_attr": 138,
+  "mypy_union_attr": 132,
   "mypy_valid_type": 14,
   "mypy_var_annotated": 68,
   "chat_invisible": 30,
