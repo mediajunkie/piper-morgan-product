@@ -2074,3 +2074,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2276	OPEN	Production		In-app feedback shortcut: a keystroke that captures context and a note in the moment (beta session 11-04)	UX,enhancement		
 2277	OPEN	Icebox		Radar as an actionable dashboard, and whether chat stays the default landing page (record only; beta session 11-04)	UX,enhancement		
 2278	OPEN	Production		[UX] Chat layout is too small, slow and loose vertically, and looks bad on mobile (beta session 11-04)	UX		
+2279	OPEN	Production		GitHub card and connect reply don't say which GitHub account was connected: show "Connected as {login}" from the account's own grant			

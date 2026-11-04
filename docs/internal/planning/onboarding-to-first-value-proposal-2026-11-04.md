@@ -46,6 +46,12 @@ PPM's answers to CXO's two product questions (acceptance criteria, so PPM's call
 1. **The wizard ends at the first ask (step 4), not at "Setup Complete".** The onboarding's acceptance is a served first-value reply, so its last page must be that reply.
 2. **Skip is allowed at the connect step in beta.** Path B needs no repo, and GitHub-bearing invites are held until #2266's guard is served and the census is clean, so some beta accounts can't connect yet. A skip says plainly that Piper can't read a repo yet (#2268's line), then lands on Path B's first ask. Until Path B serves, it lands on an ask Lead confirms serves with no connector.
 
+**Path B and the skip landing (Lead's answer and CXO's acceptance, 11-04; PPM 15:35):**
+- **Path B's first value** is two asks that save with no connector: create a project, then add tasks to it. A plan the person keeps is a project with tasks in it.
+- **The skip landing,** until Path B serves, is `Add a todo: review the deployment plan` (a required canonical row, serving today per Lead).
+- **Both pass only when PA quotes them served on a fresh account with a clean reply** (CXO's condition). #2219 (todo replies repeat the item and call todos "reminders") is the known risk. If the todo reply still repeats, #2219 is fixed first, and nobody words around it. So #2219 joins the path in step 2, ahead of the designed flow.
+- The "Connected as {login}" line on the card and in the connect reply is #2279 (filed 15:35), on the connect step beside #2266.
+
 ## Questions for xian
 
 1. Is this the next sprint, or a lane beside the current Production order?
