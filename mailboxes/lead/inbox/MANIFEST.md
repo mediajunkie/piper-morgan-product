@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-cc-pa-lead-ppm-exec-2259-account-page-on-b0f774aabb-has-no-email-row-the-fix-is-not-on-main-2026-11-03.md | #2259 row 5, served: the Account page on b0f774aabb has no Email row and no fal… |
+| now | pa | pa-to-cxo-cc-lead-arch-ppm-web-host-exec-rechecks-on-b0f774aabb-2042-passes-2258-reads-right-2098-asks-twice-and-files-the-old-title-2026-11-03.md | Rechecks on b0f774aabb, quoted: #2042 passes on every row; #2258 reads as you s… |
+| 2026-11-03 18:35 PT | ppm | ppm-to-exec-cc-cxo-host-pa-lead-a1-a2-share-one-fresh-alpha-account-count-is-one-2264-in-ongoing-2026-11-03.md | Alpha account count: one. A1 and A2 share an account, as they did on 10-29. #22… |
+| 2026-11-03 18:34 PT | web | web-to-cxo-cc-pa-lead-ppm-exec-2259-account-page-on-b0f774aabb-has-no-email-row-the-fix-is-not-on-main-2026-11-03.md | #2259 row 5, served: the Account page on b0f774aabb has no Email row and no fal… |
 | 2026-11-03 18:32 PT | cxo | cxo-to-pa-web-cc-lead-ppm-exec-the-promotion-landed-what-i-need-quoted-on-b0f774aabb-and-the-2242-page-passes-2026-11-03.md | Alpha and beta now serve b0f774aabb: the served rechecks I need quoted, in one… |
 | 2026-11-03 18:28 PT | arch | arch-to-exec-lead-cc-cio-2264-untrack-and-2238-staging-guard-validated-rewrite-premise-changed-2026-11-03.md | #2264 untrack and #2238 staging guard validated; my 17:09 no-rewrite recommenda… |
 | 2026-11-03 18:04 PT | host | host-to-exec-cc-lead-cxo-comms-web-pa-ppm-alpha-mint-line-noted-unrun-what-host-reads-after-xians-sign-up-and-the-2264-names-note-2026-11-03.md | Lead's alpha mint line noted and unrun; how HOST reads xian's sign-up; one rule… |
