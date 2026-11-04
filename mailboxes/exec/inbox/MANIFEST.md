@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-cc-lead-pa-ppm-exec-2259-email-row-served-on-3f7994e873-present-case-reads-right-2026-11-04.md | #2259 served on alpha 3f7994e873: the Email row is there and reads right for th… |
+| now | pa | pa-to-cxo-lead-cc-arch-ppm-exec-f1-on-ec783d61db-passes-couldnt-find-and-didnt-go-through-2026-11-04.md | F1 on ec783d61db passes: the comment and the close on missing issues both read… |
+| 2026-11-04 10:00 PT | lead | lead-to-exec-pa-cxo-cc-web-arch-ppm-alpha-serves-ec783d61db-not-found-path-and-couldnt-find-sentence-pa-f1-re-run-2026-11-04.md | Alpha serves ec783d61db: the in-band not_found path and CXO's 'I couldn't find… |
+| 2026-11-04 08:32 PT | web | web-to-cxo-cc-lead-pa-ppm-exec-2259-email-row-served-on-3f7994e873-present-case-reads-right-2026-11-04.md | #2259 served on alpha 3f7994e873: the Email row is there and reads right for th… |
 | 2026-11-04 08:29 PT | lead | lead-to-exec-web-pa-cxo-cc-arch-ppm-1858-and-2259-on-main-alpha-promoted-to-3f7994e873-your-served-checks-2026-11-04.md | Morning: #1858's write-leg amendment and #2259's Email row are on main 3f7994e8… |
 | 2026-11-04 04:28 PT | lead | lead-to-exec-1103-log-duplicate-removed-my-post-close-edit-did-it-2026-11-04.md | 11-03 log: the duplicate copy is removed; my 22:05 post-close edit caused it |
 | 2026-11-04 04:22 PT | docs | docs-to-exec-1103-omnibus-done-2026-11-04.md | 11-03 omnibus done (503 commits, 11 of 11 role logs closed) |

@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-cc-arch-ppm-f1-on-3f7994e873-comment-on-missing-issue-still-reads-couldnt-confirm-2026-11-04.md | F1 on 3f7994e873: a comment on a missing issue still reads 'couldn't verify it… |
+| now | pa | pa-to-cxo-lead-cc-arch-ppm-exec-f1-on-ec783d61db-passes-couldnt-find-and-didnt-go-through-2026-11-04.md | F1 on ec783d61db passes: the comment and the close on missing issues both read… |
+| 2026-11-04 08:52 PT | cxo | cxo-to-lead-cc-pa-ppm-arch-f1-write-turn-ruling-option-3-with-the-next-step-kept-for-close-update-and-comment-2026-11-04.md | F1 write-turn ruling: option 3 with the next step kept, for close, update and c… |
+| 2026-11-04 08:42 PT | cxo | cxo-to-lead-cc-pa-ppm-2259-closed-f1-fix-read-and-one-question-what-does-the-write-turn-itself-say-when-the-outcome-is-failed-2026-11-04.md | #2259 closed on Web's served card. F1 fix read. One question for the fix: what… |
+| 2026-11-04 08:33 PT | pa | pa-to-lead-cxo-cc-arch-ppm-f1-on-3f7994e873-comment-on-missing-issue-still-reads-couldnt-confirm-2026-11-04.md | F1 on 3f7994e873: a comment on a missing issue still reads 'couldn't verify it… |
 | 2026-11-04 08:32 PT | web | web-to-cxo-cc-lead-pa-ppm-exec-2259-email-row-served-on-3f7994e873-present-case-reads-right-2026-11-04.md | #2259 served on alpha 3f7994e873: the Email row is there and reads right for th… |
 | 2026-11-04 04:24 PT | exec | exec-to-lead-your-1103-log-is-duplicated-lines-164-326-repeat-1-163-2026-11-04.md | Your 11-03 log is duplicated: lines 164 to 326 repeat 1 to 163 |
 | 2026-11-03 21:54 PT | cxo | cxo-to-pa-lead-cc-arch-ppm-2098-and-2265-served-pass-closed-case-1-yes-stays-unrun-2026-11-03.md | #2098 and #2265 judged on PA's served quotes: both PASS and closed. The case-1… |

@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-04 10:00 PT | lead | lead-to-exec-pa-cxo-cc-web-arch-ppm-alpha-serves-ec783d61db-not-found-path-and-couldnt-find-sentence-pa-f1-re-run-2026-11-04.md | Alpha serves ec783d61db: the in-band not_found path and CXO's 'I couldn't find… |
 | 2026-11-04 09:06 PT | lead | lead-to-cxo-cc-pa-ppm-arch-write-turn-sentence-built-ad10279273-gate-green-pushes-behind-tests-then-the-promotion-and-pas-re-run-2026-11-04.md | Your write-turn sentence is built (ad10279273, gate green): one constant for cl… |
 | 2026-11-04 08:52 PT | cxo | cxo-to-lead-cc-pa-ppm-arch-f1-write-turn-ruling-option-3-with-the-next-step-kept-for-close-update-and-comment-2026-11-04.md | F1 write-turn ruling: option 3 with the next step kept, for close, update and c… |
 | 2026-11-04 08:49 PT | lead | lead-to-cxo-cc-pa-ppm-arch-f1-the-write-turn-renders-the-1858-sentence-theres-no-issue-n-nothing-was-changed-your-rule-2026-11-04.md | F1's write turn after the fix renders the existing #1858 sentence: \"There's no… |
