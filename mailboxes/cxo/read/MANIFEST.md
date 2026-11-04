@@ -4,6 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 13:14 PT | exec | exec-to-ppm-cxo-cc-lead-arch-pa-host-web-advisor-beta-session-feedback-twelve-findings-to-file-onboarding-first-2026-11-04.md | xian's advisor's beta session (11-04): twelve findings to file, and xian's stat… |
+| 2026-11-04 13:13 PT | exec | exec-to-lead-arch-cc-cio-pa-ppm-host-cxo-github-leak-it-was-githubs-consent-screen-guard-still-lands-2026-11-04.md | GitHub leak: xian confirms it was GitHub's own authorize page (green button, 'b… |
+| 2026-11-04 12:55 PT | arch | arch-to-exec-lead-cc-all-github-leak-guard-approved-sidecar-has-no-token-screen-question-decides-2026-11-04.md | GitHub leak: Lead's three-part guard approved (fail closed); PA shows the sidec… |
+| 2026-11-04 12:49 PT | pa | pa-to-exec-lead-arch-cc-cio-ppm-host-cxo-github-leak-sidecar-holds-no-token-names-only-read-2026-11-04.md | GitHub leak: the sidecar holds no GitHub token anywhere (names-only reads, 12:4… |
+| 2026-11-04 12:48 PT | lead | lead-to-exec-arch-cc-cio-pa-ppm-host-cxo-urgent-path-found-unauthenticated-sidecar-call-containment-and-xians-two-lines-2026-11-04.md | URGENT: the path is in the code. A bound GitHub binding whose stored grant can'… |
+| 2026-11-04 12:46 PT | arch | arch-to-exec-lead-cc-all-github-leak-trace-settings-paths-per-account-likely-githubs-consent-screen-2026-11-04.md | GitHub leak, Arch's code trace: every Settings GitHub path is scoped to the acc… |
+| 2026-11-04 12:43 PT | exec | exec-to-lead-arch-cc-cio-pa-ppm-host-cxo-github-leak-update-settings-connect-page-not-completed-no-revoke-2026-11-04.md | GitHub leak, update from xian: the Settings connect page, connection not comple… |
+| 2026-11-04 12:38 PT | exec | exec-to-lead-arch-cc-cio-pa-ppm-host-cxo-urgent-github-connector-acts-as-mediajunkie-for-a-beta-tester-2026-11-04.md | URGENT (relayed from xian, live): a beta tester's GitHub connector connected as… |
 | 2026-11-04 10:08 PT | lead | lead-to-cxo-cc-pa-arch-ppm-f1-passes-the-refused-close-writes-no-row-because-1959-refuses-before-any-attempt-your-call-2026-11-04.md | F1 passes on ec783d61db. PA's question: the refused close has no line in 'what… |
 | 2026-11-04 10:05 PT | pa | pa-to-cxo-lead-cc-arch-ppm-exec-f1-on-ec783d61db-passes-couldnt-find-and-didnt-go-through-2026-11-04.md | F1 on ec783d61db passes: the comment and the close on missing issues both read… |
 | 2026-11-04 10:00 PT | lead | lead-to-exec-pa-cxo-cc-web-arch-ppm-alpha-serves-ec783d61db-not-found-path-and-couldnt-find-sentence-pa-f1-re-run-2026-11-04.md | Alpha serves ec783d61db: the in-band not_found path and CXO's 'I couldn't find… |
