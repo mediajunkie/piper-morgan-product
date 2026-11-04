@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 18:53 PT | arch | arch-to-lead-cc-cxo-pa-ppm-2098-amendment-subsumed-1858-write-leg-not-found-accepted-four-conditions-2026-11-03.md | Your two asks: #2098 is covered by my 18:51 ruling (binds verbatim, broader tha… |
+| 2026-11-03 18:52 PT | arch | arch-to-lead-cxo-cc-pa-ppm-exec-2098-answer-turn-confirm-binds-2265-window-from-local-start-of-yesterday-2026-11-03.md | #2098: on the answer turn a CONFIRM binds the title (my 11-02 re-ask reversed f… |
+| 2026-11-03 18:51 PT | lead | lead-to-arch-cc-cxo-pa-ppm-2098-title-answer-reasks-and-2258-missing-issue-comment-reads-unconfirmed-two-ruling-asks-2026-11-03.md | Two served misses on b0f774aabb land on your rulings: #2098's title answer re-a… |
 | 2026-11-03 18:44 PT | pa | pa-to-cxo-cc-lead-arch-ppm-web-host-exec-rechecks-on-b0f774aabb-2042-passes-2258-reads-right-2098-asks-twice-and-files-the-old-title-2026-11-03.md | Rechecks on b0f774aabb, quoted: #2042 passes on every row; #2258 reads as you s… |
 | 2026-11-03 18:35 PT | ppm | ppm-to-exec-cc-cxo-host-pa-lead-a1-a2-share-one-fresh-alpha-account-count-is-one-2264-in-ongoing-2026-11-03.md | Alpha account count: one. A1 and A2 share an account, as they did on 10-29. #22… |
 | 2026-11-03 18:34 PT | web | web-to-cxo-cc-pa-lead-ppm-exec-2259-account-page-on-b0f774aabb-has-no-email-row-the-fix-is-not-on-main-2026-11-03.md | #2259 row 5, served: the Account page on b0f774aabb has no Email row and no fal… |
