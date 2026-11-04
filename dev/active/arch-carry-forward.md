@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-02 21:28 PST (STOP)
+last_updated: 2026-11-03 21:27 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,23 +28,23 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
-- **11-02 STOP (21:27 fire).** Main is green, 12 of 12 workflows. Alpha and beta serve `3297ea797b` (xian promoted at 18:14). Every ruling and validation for today is in decisions.log (10:52 to 20:4x).
-  - **Closed today:** #2230 (P1 validated from the setter source) and #2250 (the after-half passes). The six old closes are done by PPM (#272, #309, #315, #335, #337, #1011), one at a time on xian's word.
-  - **Validated on main, waiting on the next promotion (xian's dispatch), then CXO's served checks:**
-    - #2098 (`9924c1f9f3` plus the keep-line condition `e64d2155aa`): a CONFIRM on a held draft asks. CONFIRM args are display-only.
-    - #2042's aside: the guidance-path reminder merge is removed, pinned by `TestReminderGatherHasOneFloorCaller` (`76437b5e48`).
-    - #2260: reminder ages per row (`1a292b53c8`).
-    - #2258: success rows only. CXO's "tried, didn't go through" line is an open item on #2258 before close.
-  - **#2042:** my scanner half passed on `3297ea797b` (0 of 19). Row 2 was triaged by CXO at 34/42. The aside fix is above. The served check is CXO's.
-  - **#2098 router drift:** the flat router has given CLARIFY @0.40 on the title sentence since the 10-30 15:59 batch, with no catalog change. No bisect or description screen is owed (19:18). I suggested to CIO that rows from a served PASS become sentinels.
-  - **#1680:** the action half was served by PA. The row and flags half waits on xian opening the admin read in his browser; cookie auth works, and the response has no personal details.
-  - **#2242:** xian added himself to the allowlist (`--user-id`, nobody has seen the list output). The reconnect is next, then PA's MCP checks.
-  - **#2235:** the chat half of line 1 is served. The wizard half is Web's and needs an OAuth-only account (HOST or xian). Line 2 (the grep pin) is Lead's.
-  - **#2197:** the list and status branches passed (CXO). The lead-in was reworded (`c98c4a3a54`). A tie is accepted by unit test.
-  - **Waiting-list (c) line given:** keep the list outside Piper (no mailer, #1344 identity rule). HOST recommends Buttondown; xian decides.
-  - **PDR-102 RATIFIED 2026-11-02.** **Trigger:** I write the connector-source ADR when the first connector-ingest unit is placed.
-  - **#2226** waits on placement, with #2244 first. **#2247:** not in this sprint. **#2238:** Web's staging Notion run is not reported yet.
-  - **Lessons today:** open the copy file before calling a reply false (15:21); trace the served route before naming a gate (19:2x); when validating a multi-outcome shape, check every branch, not only the one the served pass used (19:09).
+- **11-03 STOP (21:27 fire).** Main is green, 12 of 12 workflows. Alpha serves `63d486043a` (Lead promoted at 20:00 under the standing grant; the earlier promotion at 18:2x was `b0f774aabb`). Every ruling for today is in decisions.log (07:10 to 19:4x).
+  - **Closed today (by CXO):** #2258 and #2197. #2042's aside passed its served check; whether the issue closes is PPM's and Lead's read.
+  - **Validated on main and served on `63d486043a`; checks owed in the morning:**
+    - #2098, answer-turn bind (`176136c063`, `f85ecfe3b7`). My 11-02 re-ask was reversed for that turn. PA runs T1c then "file it as is", a "no" then file, and a "yes" to case 1 then file.
+    - #2265: the window starts at the local start of yesterday (`e5a61be77d`). CXO's row. The strict calendar day rides #2186.
+  - **Ruled, not built:** #1858's write-leg not-found amendment (decisions 18:53, four conditions). Lead builds it at the 11-04 START. Validate the landing against all four conditions and the five pins. PA's F1 waits for the promotion after that.
+  - **#2264 (`data/postgres`):** untracked (`66e4e8fdce`, validated). The early Piper schema has a `stakeholders` table, so my no-rewrite advice lost its premise. Next: xian runs Lead's read-only line, then decides on the rewrite. Agents don't read it.
+  - **#2238:** the staging-account guard is validated (`2e562df09e`, an allowlist on `FLY_APP_NAME`). Waiting on xian to run the `fly machine exec` line.
+  - **#2244:** confirmed. Lead owes the fix: one durable data-root config for chromadb and `SpatialMemoryStore`. Validate it when it lands.
+  - **#2262** (Notion writes unaudited): validate against my ratchet notes when it's built (`notion_adapter.py` goes in `TRANSPORT_MODULES`; `publisher.py` gets deleted or registered).
+  - **#2242:** the last row is xian's (remove, PA's refused call, add, reconnect). **#2235:** the wizard half needs an account that signs in only through Google; per Lead it can run on staging. **#1680:** the row judgement is Lead's.
+  - **#2226:** about 475 MB of headroom on alpha (Exec 17:13). Still waits on placement. **#2259:** not built; PPM places it.
+  - **PDR-102 trigger:** I write the connector-source ADR when the first connector-ingest unit is placed. #2262 is not that trigger.
+  - **Lessons today:**
+    - Read every line of a served listing (the `postgres` entry was the finding).
+    - Where a turn sits sets how much an unsure router counts: on the answer to Piper's own question, a CONFIRM binds.
+    - Stamp at the clock, never ahead of it (18:55 was corrected to 18:51).
 - **Still open from 10-27..10-30** (the full text is in git history and those days' logs):
   - **#2186:** unit 2 (declared args keys) is owed by Lead, with Rule 7. `timeframe` still drops silently.
   - **#2184:** owed by Lead: don't arm when the repo resolves to None. The served two-step row is PPM's close bar.
