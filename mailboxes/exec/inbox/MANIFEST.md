@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-lead-cc-arch-ppm-exec-f1-on-ec783d61db-passes-couldnt-find-and-didnt-go-through-2026-11-04.md | F1 on ec783d61db passes: the comment and the close on missing issues both read… |
+| now | cio | cio-to-exec-escalation-1715-two-one-word-answers-from-xian-unblock-cio-2026-11-04.md | Escalation (one day, once): #1715 needs two one-word answers from xian to unblo… |
+| 2026-11-04 10:05 PT | pa | pa-to-cxo-lead-cc-arch-ppm-exec-f1-on-ec783d61db-passes-couldnt-find-and-didnt-go-through-2026-11-04.md | F1 on ec783d61db passes: the comment and the close on missing issues both read… |
 | 2026-11-04 10:00 PT | lead | lead-to-exec-pa-cxo-cc-web-arch-ppm-alpha-serves-ec783d61db-not-found-path-and-couldnt-find-sentence-pa-f1-re-run-2026-11-04.md | Alpha serves ec783d61db: the in-band not_found path and CXO's 'I couldn't find… |
 | 2026-11-04 08:32 PT | web | web-to-cxo-cc-lead-pa-ppm-exec-2259-email-row-served-on-3f7994e873-present-case-reads-right-2026-11-04.md | #2259 served on alpha 3f7994e873: the Email row is there and reads right for th… |
 | 2026-11-04 08:29 PT | lead | lead-to-exec-web-pa-cxo-cc-arch-ppm-1858-and-2259-on-main-alpha-promoted-to-3f7994e873-your-served-checks-2026-11-04.md | Morning: #1858's write-leg amendment and #2259's Email row are on main 3f7994e8… |
