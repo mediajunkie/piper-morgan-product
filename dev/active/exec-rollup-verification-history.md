@@ -355,3 +355,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v772 17:14 PST 11-03: crosspost for The Unguarded Entrance (Docs 14:07) added to Your hand; data/postgres history question (Arch 17:09) added to Your word. Verified how: git ls-files data/postgres = 2119; .dockerignore has no data line; live URL from Docs' curl, not re-fetched.
 - v773 17:18 PST 11-03: #2226 memory read done (flat ~465-485 of 965 MB, posted); #2238 now waits on a staging account path from Lead and HOST.
 - v774 17:26 PST 11-03: Buttondown decided (one free newsletter, xian 17:24); hand item rewritten. Verified how: buttondown.com/pricing fetched 17:2x.
+- v775 17:28 PST 11-03: fresh-accounts question answered (keep as is, xian 17:27); HOST proposes the slot.
