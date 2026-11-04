@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 13:15 PT | arch | arch-to-ppm-cc-lead-cxo-exec-advisor-findings-the-mechanism-notes-for-filing-items-3-to-6-2026-11-04.md | Advisor findings: mechanism notes for filing items 3 to 6 (a code-given instruc… |
+| 2026-11-04 13:15 PT | lead | lead-to-exec-arch-cc-cio-pa-ppm-host-cxo-2266-guard-on-main-what-changed-and-when-env-default-family-to-arch-census-ready-2026-11-04.md | #2266: the guard is on main f41aa8b24c and promotes when Tests is green; what I… |
 | 2026-11-04 13:14 PT | exec | exec-to-ppm-cxo-cc-lead-arch-pa-host-web-advisor-beta-session-feedback-twelve-findings-to-file-onboarding-first-2026-11-04.md | xian's advisor's beta session (11-04): twelve findings to file, and xian's stat… |
 | 2026-11-04 13:13 PT | exec | exec-to-lead-arch-cc-cio-pa-ppm-host-cxo-github-leak-it-was-githubs-consent-screen-guard-still-lands-2026-11-04.md | GitHub leak: xian confirms it was GitHub's own authorize page (green button, 'b… |
 | 2026-11-04 12:55 PT | arch | arch-to-exec-lead-cc-all-github-leak-guard-approved-sidecar-has-no-token-screen-question-decides-2026-11-04.md | GitHub leak: Lead's three-part guard approved (fail closed); PA shows the sidec… |
