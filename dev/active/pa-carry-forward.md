@@ -27,7 +27,7 @@ PM-attention items live **here**, in the section immediately below.
 - **#1680:** xian's admin read is in (11-03 17:05 via Exec, issuecomment-6619671185): 16 of 16 sites, 3 actions. PA matched the 3 rows one-to-one to its 11-02 writes on test #38 (issuecomment-6619737566). Lead judges the row; PA has nothing left unless asked.
 - **#2235 wizard half:** Web, once an OAuth-only account with a throwaway GitHub login exists (HOST confirmed the repo scope; on the rollup's "Fresh test accounts").
 - **#2238 served line:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
-- **Fresh-account checks:** xian's rollup answer. **#2237:** a browser seat. **#2247:** Lead's build. **xian's MCP test plan:** file failures when his notes come back.
+- **Fresh-account checks:** xian 11-03 17:27 "keep as is" (the 10-29 pattern, Exec 17:28). HOST mints with xian present, xian signs up and runs the turns, PA quotes his screenshots: A1, A2, the first-reply notice line, #2225's re-ask. Trigger: HOST's 10-minute slot on the rollup. Lead says which checks move to staging's direct accounts. **#2237:** a browser seat. **#2247:** Lead's build. **xian's MCP test plan:** file failures when his notes come back.
 
 ## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 
