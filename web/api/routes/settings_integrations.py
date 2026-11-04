@@ -2371,9 +2371,11 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
                 user_id=str(current_user.sub),
                 reason=connector_result.degradation.reason.value,
             )
+            from services.mcp.consumer.github_adapter import github_degrade_reply
+
             raise HTTPException(
                 status_code=status.HTTP_502_BAD_GATEWAY,
-                detail=connector_result.degradation.user_message,
+                detail=github_degrade_reply(connector_result.degradation),
             )
 
         # Load user's saved preferences (WS-1: DB store) + merge selection status.

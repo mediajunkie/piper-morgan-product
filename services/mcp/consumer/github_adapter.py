@@ -65,9 +65,29 @@ _RESOLVE_TOOL = "resolve_resource"
 _CONNECT_URL = "/api/v1/settings/integrations/github/connect"
 # #2151 (Arch 10-24 16:49): the resolver's degrade when a stored-token read failed. A store
 # that didn't answer is a failed read, never "not connected".
+# CXO 2026-11-04 13:26 (#2266, #2188): the two degrades a person may read alone each
+# name the way on. The store-failed line composes with nothing, so it changes in
+# place; the stale line is rendered alone through github_degrade_reply, because the
+# standup, Radar and default-repo sentences compose with the short phrase.
 CREDENTIAL_STORE_FAILED_MESSAGE = (
-    "I couldn't read your GitHub connection just now. Try again in a moment."
+    "I couldn't read your GitHub connection just now, so I haven't checked GitHub. "
+    "Try again in a moment. If it keeps failing, reconnect GitHub in Settings, under Integrations."
 )
+GITHUB_STALE_TOKEN_REPLY = (
+    "Your GitHub connection needs re-authorizing. Reconnect GitHub in Settings, under Integrations."
+)
+
+
+def github_degrade_reply(degradation) -> str:
+    """The line a person reads when a GitHub degrade is the whole reply (CXO 2026-11-04):
+    a stale grant gets the way on; every other reason keeps its ``user_message``. The
+    sentences that COMPOSE with the short stale phrase (the standup disclosure, Radar,
+    the default-repo check) keep reading ``user_message`` and are unchanged."""
+    reason = getattr(degradation, "reason", None)
+    if reason is DegradationReason.STALE_TOKEN:
+        return GITHUB_STALE_TOKEN_REPLY
+    return getattr(degradation, "user_message", "") or "The GitHub connector is degraded."
+
 
 # The github-mcp-server tool + canonical query for the user's open issues (#1322 cutover).
 # search_issues is user-wide (assignee:@me, across repos) → no repo resolution, sidestepping

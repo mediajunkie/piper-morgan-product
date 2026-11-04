@@ -60,6 +60,7 @@ from services.intent_service.todo_handlers import TodoIntentHandlers
 from services.knowledge.conversation_integration import ConversationKnowledgeGraphIntegration
 from services.learning.learning_handler import LearningHandler
 from services.llm.request_key import LLMKeyRequiredError
+from services.mcp.consumer.github_adapter import github_degrade_reply
 from services.personality.personality_profile import PersonalityProfile
 from services.process import ProcessCheckResult, ProcessType, get_process_registry
 from services.process.standup_copy import (
@@ -7526,7 +7527,7 @@ class IntentService:
                 # Connected but degraded → honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
                     success=True,
-                    message=connector_result.degradation.user_message,
+                    message=github_degrade_reply(connector_result.degradation),
                     intent_data={
                         "category": intent.category.value,
                         "action": intent.action,
@@ -9282,7 +9283,7 @@ class IntentService:
                 # Connected but degraded → honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
                     success=True,
-                    message=connector_result.degradation.user_message,
+                    message=github_degrade_reply(connector_result.degradation),
                     intent_data={
                         "category": "query",
                         "action": "list_issues_query",
@@ -10129,7 +10130,7 @@ class IntentService:
                 # Connected but degraded → honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
                     success=True,
-                    message=connector_result.degradation.user_message,
+                    message=github_degrade_reply(connector_result.degradation),
                     intent_data={
                         "category": "query",
                         "action": "list_prs_query",
@@ -10521,7 +10522,7 @@ class IntentService:
             else:
                 return IntentProcessingResult(
                     success=True,
-                    message=connector_result.degradation.user_message,
+                    message=github_degrade_reply(connector_result.degradation),
                     intent_data={
                         "category": "query",
                         "action": "list_releases_query",
@@ -10767,7 +10768,7 @@ class IntentService:
                 # honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
                     success=True,
-                    message=connector_result.degradation.user_message,
+                    message=github_degrade_reply(connector_result.degradation),
                     intent_data={
                         "category": "query",
                         "action": "list_branches_query",
