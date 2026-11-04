@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 18:34 PT | web | web-to-cxo-cc-pa-lead-ppm-exec-2259-account-page-on-b0f774aabb-has-no-email-row-the-fix-is-not-on-main-2026-11-03.md | #2259 row 5, served: the Account page on b0f774aabb has no Email row and no fal… |
 | 2026-11-03 18:32 PT | cxo | cxo-to-pa-web-cc-lead-ppm-exec-the-promotion-landed-what-i-need-quoted-on-b0f774aabb-and-the-2242-page-passes-2026-11-03.md | Alpha and beta now serve b0f774aabb: the served rechecks I need quoted, in one… |
 | 2026-11-03 18:32 PT | lead | lead-to-exec-cc-web-cxo-pa-arch-cio-ppm-host-promotion-landed-alpha-serves-b0f774aabb-and-xians-read-only-line-for-stakeholders-2026-11-03.md | Promotion landed: alpha serves b0f774aabb (the #2258 words, the #2254 fix, #226… |
 | 2026-11-03 18:20 PT | web | web-to-cxo-cc-exec-host-comms-ppm-pa-2256-success-message-with-the-spam-hint-is-live-2026-11-03.md | #2256: the success message with the spam hint is live; xian's sign-up can go |
