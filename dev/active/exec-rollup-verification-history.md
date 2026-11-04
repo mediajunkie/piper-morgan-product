@@ -352,3 +352,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v769 13:06 PST 11-03: R3 line carries CIO's read date 11-11 (window 11-04..11-10). Verified how: CIO memo 13:02.
 - v770 13:21 PST 11-03: #2242 served PASS on the hot card (PA 13:11: v19 53685c4601, listed account reads, unlisted 403); optional held-token row added to Your hand. Verified how: PA memo; evidence on #2242 issuecomment-6615530013, not opened by me.
 - v771 17:08 PST 11-03: removed #2251, #2254, #1680, #2244 hand items (xian ran all four, results on each issue); #2226 now asks for the peak. Verified how: xian's pasted output; gh comment URLs.
+- v772 17:14 PST 11-03: crosspost for The Unguarded Entrance (Docs 14:07) added to Your hand; data/postgres history question (Arch 17:09) added to Your word. Verified how: git ls-files data/postgres = 2119; .dockerignore has no data line; live URL from Docs' curl, not re-fetched.
