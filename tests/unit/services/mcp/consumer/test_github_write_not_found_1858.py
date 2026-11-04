@@ -53,6 +53,10 @@ _ALPHA = "11111111-1111-1111-1111-111111111111"
 _GH_404 = (
     "failed to update issue: PATCH https://api.github.com/repos/o/r/issues/99999: 404 Not Found []"
 )
+_GH_404_COMMENT = (
+    "failed to create comment: POST https://api.github.com/repos/o/r/issues/9999/comments: "
+    "404 Not Found []"
+)
 _GH_404_READ = (
     "failed to get issue: GET https://api.github.com/repos/o/r/issues/99999: 404 Not Found []"
 )
@@ -101,6 +105,8 @@ def _fixture(
     err_text=None,
     read_raises=False,
     write_raises=False,
+    write_err_text=None,
+    read_err_text=None,
 ):
     """Fake server: issue 7 exists; anything else 404s on write. Read-back 404s unless
     ``read_finds_it`` (the pathological write-404-but-read-ok case). ``err_text``
@@ -110,8 +116,8 @@ def _fixture(
     content text — the shape the live server used for the read-back on alpha
     v169 (PM's Test A, 2026-10-05)."""
     server = FastMCP("github-404-fixture")
-    write_err = err_text or _GH_404
-    read_err = err_text or _GH_404_READ
+    write_err = write_err_text or err_text or _GH_404
+    read_err = read_err_text or err_text or _GH_404_READ
     existing = {7: {"number": 7, "title": "t", "state": "open", "html_url": "u"}}
 
     @server.tool(name="issue_write")
@@ -136,6 +142,13 @@ def _fixture(
             return json.dumps(existing[issue_number])
         return write_err
 
+    @server.tool(name="add_issue_comment")
+    def add_issue_comment(owner: str, repo: str, issue_number: int, body: str) -> str:
+        # #1858 amended (2026-11-03): a comment on a missing issue 404s on the write leg.
+        if issue_number in existing:
+            return json.dumps({"id": 101, "body": body, "html_url": "u"})
+        return write_err
+
     @server.tool(name="issue_read")
     def issue_read(method: str, owner: str, repo: str, issue_number: int) -> str:
         if issue_number in existing:
@@ -156,7 +169,7 @@ def _fixture(
                     if number not in existing:
                         if name == "issue_read" and read_raises:
                             raise McpError(ErrorData(code=-32603, message=read_err))
-                        if name == "issue_write" and write_raises:
+                        if name in ("issue_write", "add_issue_comment") and write_raises:
                             raise McpError(ErrorData(code=-32603, message=write_err))
                     return await real_call(name, arguments)
 
@@ -205,16 +218,20 @@ class TestAdapterDefinitiveNotFound:
         assert wr.verified is False and wr.attempted is True
         assert wr.issue_number == 99999
 
-    async def test_write_leg_raising_stays_honest_uncertain(self, sm):
-        """If the WRITE call itself raises (even with 404 text), there is no
-        write-response evidence — the write may have fired. Not definitive."""
+    async def test_update_write_leg_raising_with_404_and_readback_404_is_definitive(self, sm):
+        """Arch's #1858 amendment (2026-11-03 18:53, from #2258 F1): a TARGET-ADDRESSED
+        write whose WRITE leg raised with a not-found leaf, confirmed by a fresh
+        read-back that also says 404, provably never landed. Until then this pin
+        said the opposite ("the write may have fired"); a 404 is GitHub's answer to
+        the request itself, so there is no double-write to fear."""
         adapter = GitHubMCPSpatialAdapter()
         _fixture(adapter, write_raises=True)
         wr = await adapter.update_issue_connector(
             _ALPHA, owner="o", repo="r", issue_number=99999, state="closed"
         )
-        assert wr.not_found is False, wr
+        assert wr.not_found is True, wr
         assert wr.verified is False and wr.attempted is True
+        assert wr.issue_number == 99999
 
     def test_error_body_is_not_an_issue_payload(self):
         f = GitHubMCPSpatialAdapter._parse_issue_payload
@@ -251,6 +268,83 @@ class TestAdapterDefinitiveNotFound:
         assert not f("failed to update issue: 403 Forbidden")
         assert not f("rate limit exceeded")
         assert not f(None) and not f("")
+
+
+class TestWriteLegNotFound1858Amended:
+    """Arch 2026-11-03 18:53: a target-addressed write (comment or update) whose write
+    leg raises with a not-found leaf is definitive ONLY with a positive read-back on
+    the same binding; a found or unknown read-back, a non-404 leaf, or a create stays
+    honest-uncertain. CXO: the person's line is "didn't go through", no cause."""
+
+    async def test_a_comment_on_a_missing_issue_is_definitive(self, sm):
+        adapter = GitHubMCPSpatialAdapter()
+        _fixture(adapter, write_raises=True, write_err_text=_GH_404_COMMENT)
+        wr = await adapter.add_comment_connector(
+            _ALPHA, owner="o", repo="r", issue_number=9999, comment="PA 2258 probe"
+        )
+        assert wr.not_found is True, wr
+        assert wr.verified is False and wr.attempted is True
+        assert wr.issue_number == 9999
+
+    async def test_a_404_leaf_but_a_readback_that_finds_the_issue_is_uncertain(self, sm):
+        adapter = GitHubMCPSpatialAdapter()
+        _fixture(adapter, write_raises=True, write_err_text=_GH_404_COMMENT, read_finds_it=True)
+        wr = await adapter.add_comment_connector(
+            _ALPHA, owner="o", repo="r", issue_number=9999, comment="x"
+        )
+        assert wr.not_found is False, wr
+        assert wr.verified is False and wr.attempted is True
+
+    async def test_a_non_404_write_leaf_is_uncertain(self, sm):
+        """A transport failure or timeout on the write leg says nothing about the
+        target: the write may have fired. No read-back is consulted."""
+        adapter = GitHubMCPSpatialAdapter()
+        _fixture(adapter, write_raises=True, write_err_text="server disconnected mid-request")
+        wr = await adapter.add_comment_connector(
+            _ALPHA, owner="o", repo="r", issue_number=9999, comment="x"
+        )
+        assert wr.not_found is False, wr
+        assert wr.attempted is True
+
+    async def test_a_readback_of_unknown_is_uncertain(self, sm):
+        """The read-back erroring with anything but GitHub's 404 shape is unknown,
+        never not-found (the #1959 rule); the write stays honest-uncertain."""
+        adapter = GitHubMCPSpatialAdapter()
+        _fixture(
+            adapter,
+            write_raises=True,
+            write_err_text=_GH_404_COMMENT,
+            read_raises=True,
+            read_err_text="internal error: upstream unavailable",
+        )
+        wr = await adapter.add_comment_connector(
+            _ALPHA, owner="o", repo="r", issue_number=9999, comment="x"
+        )
+        assert wr.not_found is False, wr
+
+    async def test_a_create_with_a_404_leaf_is_uncertain(self, sm):
+        """A create addresses no issue, so a 404 leaf proves nothing about it."""
+        adapter = GitHubMCPSpatialAdapter()
+        _fixture(adapter, write_raises=True)
+        wr = await adapter.create_issue_connector(_ALPHA, owner="o", repo="r", title="t", body="b")
+        assert wr.not_found is False, wr
+
+    async def test_a_comment_on_an_existing_issue_still_verifies(self, sm):
+        adapter = GitHubMCPSpatialAdapter()
+        _fixture(adapter)
+        wr = await adapter.add_comment_connector(
+            _ALPHA, owner="o", repo="r", issue_number=7, comment="hello"
+        )
+        assert wr.not_found is False and wr.verified is True, wr
+
+    def test_the_router_turns_the_result_into_not_found_and_the_outcome_into_failed(self):
+        from services.security.consequential_outcomes import github_write_outcome
+
+        status, details = github_write_outcome(
+            GitHubIssueNotFound(issue_number=9999, owner="o", repo="r")
+        )
+        assert status == "failed"
+        assert details["error_type"] == "GitHubIssueNotFound"
 
 
 class TestRouterTypedOutcome:

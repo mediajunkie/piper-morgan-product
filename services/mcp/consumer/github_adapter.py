@@ -1080,7 +1080,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 # close fell to the "may or may not have landed" hedge. Same
                 # evidence (write text says 404, read-back says 404), same
                 # definitive answer. A WRITE-leg exception never takes this
-                # branch: raw_text is still None, so it stays honest-uncertain.
+                # branch (raw_text is still None); since 2026-11-03 it takes the
+                # write_error branch below when the target was addressed and a
+                # fresh read-back agrees (Arch's #1858 amendment, #2258 F1).
                 _slog.warning(
                     "github_write_target_not_found",
                     tool=tool,
@@ -1098,6 +1100,46 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 # tool by name ("unknown tool"), so the write provably never
                 # fired. Definite, not "may or may not" (#1858's family).
                 return self._unknown_tool_refusal(tool)
+            if (
+                raw_text is None
+                and written is None
+                and args.get("issue_number")
+                and args.get("method") != "create"
+                and any(self._is_not_found_text(str(leaf)) for leaf in self._leaf_exceptions(exc))
+            ):
+                # Arch 2026-11-03 18:53 (#1858 amended; #2258 F1, PA's comment on a
+                # missing issue read "couldn't confirm"): a TARGET-ADDRESSED write (a
+                # comment or an update carrying an issue_number, never a create)
+                # whose write leg raised with a not-found leaf, confirmed by a
+                # positive read-back of that issue on the SAME binding through a new
+                # client (the failed call may have torn the context down; the
+                # credential's view is what matters). A 404 is GitHub's answer to the
+                # request itself: a comment on an issue the credential cannot see
+                # cannot have landed, so the #1220 double-write caution does not
+                # apply. The four conditions: (a) target-addressed, (b) a not-found
+                # leaf, (c) the positive read-back below, (d) nothing parsed. A
+                # read-back that finds the issue, or that is unknown, stays
+                # honest-uncertain. Known edge, accepted as #1858 accepted it: a
+                # repo the credential cannot see answers 404 on both legs.
+                state = await self._readback_tristate(
+                    binding_or_degrade,
+                    owner=args["owner"],
+                    repo=args["repo"],
+                    issue_number=int(args["issue_number"]),
+                )
+                if state == "not_found":
+                    _slog.warning(
+                        "github_write_target_not_found",
+                        tool=tool,
+                        number=args["issue_number"],
+                        leg="write_error",
+                    )
+                    return GitHubWriteResult(
+                        verified=False,
+                        attempted=True,
+                        not_found=True,
+                        issue_number=int(args["issue_number"]),
+                    )
             # Mid-flight failure: the write MAY have landed before the error —
             # attempted=True forbids a native retry (double-write hazard).
             logger.warning("github_write_failed_unreachable tool=%s", tool, exc_info=True)
@@ -1219,6 +1261,40 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         return await self._verified_write(
             user_id, tool=self._UPDATE_ISSUE_TOOL, args=args, expect=expect
         )
+
+    async def _readback_tristate(
+        self, binding, *, owner: str, repo: str, issue_number: int
+    ) -> Literal["found", "not_found", "unknown"]:
+        """#1858 amended (Arch 2026-11-03 18:53, condition c): a positive read of a
+        write's target after the WRITE leg raised, on a NEW client over the same
+        binding, classified as ``probe_issue_connector`` classifies: a parsed issue
+        carrying its number is ``found``; GitHub's own 404 shape (``_github_404``),
+        in content text or in an exception leaf, is ``not_found``; anything else is
+        ``unknown`` and the caller stays honest-uncertain."""
+        try:
+            async with self._mcp_client_ctx(binding) as client:
+                result = await client.call_tool(
+                    self._GET_ISSUE_TOOL,
+                    {
+                        "method": "get",
+                        "owner": owner,
+                        "repo": repo,
+                        "issue_number": int(issue_number),
+                    },
+                )
+                text = self._first_text(result.content)
+        except Exception as exc:
+            if _github_404(str(exc)) or any(
+                _github_404(str(leaf)) for leaf in self._leaf_exceptions(exc)
+            ):
+                return "not_found"
+            return "unknown"
+        item = self._parse_issue_payload(text)
+        if item is not None and item.get("number") is not None:
+            return "found"
+        if _github_404(text):
+            return "not_found"
+        return "unknown"
 
     async def add_comment_connector(
         self, user_id: str, *, owner: str, repo: str, issue_number: int, comment: str
