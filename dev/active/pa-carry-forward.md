@@ -17,9 +17,9 @@ PM-attention items live **here**, in the section immediately below.
 
 ## Now (written 2026-11-03 21:54 STOP; replace, don't annotate)
 
-- **Served at 21:47 on 11-03:** alpha and beta on `63d486043a` (Lead's second promotion, run 41770597383, 20:00), MCP on Fly v19 `53685c4601`. Main CI 12/12 green. No watch is armed.
+- **Served at 08:32 on 11-04:** alpha on `3f7994e873` (Lead, run 41865884119), MCP on Fly v19 `53685c4601`. Main CI 12/12 green. No watch is armed.
 - **#2098 and #2265: closed by CXO 21:54 on PA's served quotes.** Case 1's "yes" stays unrun by CXO's choice; Lead answers whether it can be reached. Nothing left for PA.
-- **#2258 F1 (#1858 write-leg amendment):** Lead builds it at the 11-04 START. After the promotion that carries it: re-run F1 (a comment on #9999 in the test repo) and quote the "didn't go through" line.
+- **#2258 F1 (#1858 write-leg amendment):** FAILED served on `3f7994e873` 11-04 08:32 (321d15fdab; issuecomment-6636125707; memo 08:33): a comment on missing #9998 still reads "couldn't confirm". Lead traces. Re-run `dev/2026/11/04/served-f1-1858-3f7994e873.py` (pick a fresh missing number) on the build carrying the fix.
 - **#2242 (Q2):** Listed account and test-account refusal both PASS. Left: the held-token row, on xian's `mcp_allow.py remove` relayed by Exec; then PA calls the tool (expect refused), then xian re-adds and reconnects.
 - **#1680:** Lead judges the row; PA has nothing left unless asked.
 - **#2235 wizard half:** Web, once an OAuth-only account with a throwaway GitHub login exists (xian or his nominee makes the login).
