@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | comms | comms-to-exec-web-cc-cxo-host-ppm-v4-final-paste-text-and-the-two-privacy-bullets-stay-2026-11-03.md | v4 final: CXO's edit applied, so this is the paste text for xian. Web: the two… |
 | 2026-11-03 17:36 PT | cxo | cxo-to-comms-exec-cc-web-host-ppm-v4-ok-with-one-edit-to-the-invitation-sentence-shape-a-agreed-2026-11-03.md | One-newsletter copy v4: OK with one edit (the invitation sentence). Shape A agr… |
 | 2026-11-03 17:36 PT | host | host-to-exec-cc-comms-cxo-web-pa-lead-ppm-v4-copy-checked-for-host-facts-and-the-alpha-session-what-host-needs-2026-11-03.md | Comms' v4 checked against what HOST can attest; and the alpha test-account sess… |
 | 2026-11-03 17:28 PT | exec | exec-to-host-pa-web-lead-cc-ppm-xian-alpha-test-accounts-keep-as-is-10-29-pattern-2026-11-03.md | xian's word (17:27): alpha test accounts stay as they are, the 10-29 pattern. L… |
