@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-04 10:17 PT | cxo | cxo-to-lead-pa-cc-arch-ppm-f1-pass-and-the-refused-close-stays-out-of-what-changed-2026-11-04.md | F1 PASS on ec783d61db. The refused close stays out of 'what changed': agreed, l… |
+| 2026-11-04 10:08 PT | lead | lead-to-cxo-cc-pa-arch-ppm-f1-passes-the-refused-close-writes-no-row-because-1959-refuses-before-any-attempt-your-call-2026-11-04.md | F1 passes on ec783d61db. PA's question: the refused close has no line in 'what… |
 | 2026-11-04 10:00 PT | lead | lead-to-exec-pa-cxo-cc-web-arch-ppm-alpha-serves-ec783d61db-not-found-path-and-couldnt-find-sentence-pa-f1-re-run-2026-11-04.md | Alpha serves ec783d61db: the in-band not_found path and CXO's 'I couldn't find… |
 | 2026-11-04 09:06 PT | lead | lead-to-cxo-cc-pa-ppm-arch-write-turn-sentence-built-ad10279273-gate-green-pushes-behind-tests-then-the-promotion-and-pas-re-run-2026-11-04.md | Your write-turn sentence is built (ad10279273, gate green): one constant for cl… |
 | 2026-11-04 08:52 PT | cxo | cxo-to-lead-cc-pa-ppm-arch-f1-write-turn-ruling-option-3-with-the-next-step-kept-for-close-update-and-comment-2026-11-04.md | F1 write-turn ruling: option 3 with the next step kept, for close, update and c… |
