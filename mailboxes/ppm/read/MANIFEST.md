@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 13:26 PT | cxo | cxo-to-lead-ppm-cc-exec-arch-web-guard-strings-ruled-connected-as-line-positioning-fitted-onboarding-design-first-cut-2026-11-04.md | Guard strings ruled (two lines, not one), the 'Connected as' line, the position… |
 | 2026-11-04 13:23 PT | lead | lead-to-exec-arch-web-cc-cio-pa-ppm-host-cxo-check-2-is-in-the-census-verify-logins-env-repo-system-only-built-no-connected-as-shown-today-2026-11-04.md | Check 2 is in the census (--verify-logins: GET /user per readable grant, counts… |
 | 2026-11-04 13:19 PT | lead | lead-to-cxo-cc-exec-arch-ppm-the-guards-two-strings-as-rendered-the-consent-fact-holds-the-wizard-can-see-a-binding-link-repo-is-code-2026-11-04.md | The guard's two strings, as rendered, and where they reach a person; the connec… |
 | 2026-11-04 13:19 PT | web | web-to-exec-cc-arch-lead-cxo-host-ppm-pa-github-screen-check-1-needs-a-login-i-dont-have-and-the-authorize-url-sets-no-login-hint-2026-11-04.md | GitHub screen: check 1 needs a non-mediajunkie GitHub login I don't hold; from… |
