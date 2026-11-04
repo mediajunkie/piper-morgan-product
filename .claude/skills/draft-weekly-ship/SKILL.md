@@ -2,7 +2,7 @@
 name: draft-weekly-ship
 description: Draft the Piper Morgan Weekly Ship newsletter from collected workstream memos. Use when PM says "draft the Ship", "draft Ship #NNN", "synthesize the workstream memos", or when all 6 workstream-NNN memos have landed in `mailboxes/exec/inbox/` and a theme has been picked. Loads the canonical artifacts before drafting so memory-of-past-Ships doesn't substitute for structure.
 scope: exec
-version: 1.13
+version: 1.14
 created: 2026-05-19
 concept: "Concept: docs/internal/operations/weekly-cycle-runbook.md (added 2026-10-14, sunset-or-renew inventory; CIO)"
 ---
@@ -294,6 +294,17 @@ Verify before declaring done:
 - **Route to PM FIRST — PM gates the handoff to Comms.** PM reads, fact-checks, voice-passes, and *decides when* the draft is ready to enter Comms review (PM, 2026-07-08, after Exec routed a draft to Comms prematurely: *"It's not ready to go to comms yet. I decide that."*). Exec never self-initiates the Comms handoff. Flag word count to PM if outside target.
 - **Comms pre-publish review happens on PM's go** (PM clarification, same day: Exec generally drafts the Ship, but Comms reviews it before publish — a standing step). Comms's `template-audit` skill is their review-of-record; Exec's own Step-6 checklist pass does not substitute for it. Sequence is fixed: draft → PM → Comms → publish.
 
+### Step 5-alt: Scaffold mode, when xian writes the Ship himself (added 2026-11-04, Ship #067)
+
+xian may hold the pen himself. The order is: he reads the workstream reviews and the synthesis, you discuss the synthesis (the discussed marker is still required), then Exec writes a **scaffold** in place of a draft. Then xian writes, Exec edits, Comms fact-checks and audits, and the Ship publishes.
+
+A scaffold is the template with the facts laid out, and no prose. In xian's words: "You don't need to write the prose but you do need to provide me with the facts that I am supposed to write about and any details or references... presented to me here as bullet items, talking points or prompts/reminders about what to address."
+- **In every section, two visible lists:** **▸ Write about** (the points to cover) and **▸ Facts** (figures, issue numbers, links, each with its source). Bring over the synthesis's full content: the user-facing changes, the patterns, each lane's results, the numbers, and the disagreements among sources where they matter.
+- **Never put the facts in `<!-- -->` comments.** A rendered preview hides them, and that is how #067's first scaffold reached him looking empty.
+- **Fixed elements go in ready to use:** the title once he picks it, the dateline, the External list from the calendar (Step 4b), the hero image (Step 4c, link checked live), the footer and the previous-Ship link.
+- **Before the scaffold goes to him, re-check every fact against decisions.log and the issues.** Pay most attention to lines carried from the synthesis that were written before the week ended. #067's scaffold carried a stale "screen waits for approval" line for a run that had already happened.
+- Same commit rules as Step 7: the calendar row's `draftPath` goes in the same commit, and so does the discussed marker.
+
 ---
 
 ## Anti-Patterns
@@ -355,6 +366,10 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 ---
 
 ## Version history
+
+### v1.14 (2026-11-04)
+
+**Scaffold mode (Step 5-alt).** For Ship #067, xian chose to write the Ship himself from an Exec scaffold. The first scaffold hid its facts in HTML comments, and xian asked for them as visible bullets and talking points. The step also adds a re-check against decisions.log, after a stale synthesis line reached him.
 
 ### v1.13 (2026-10-23)
 
