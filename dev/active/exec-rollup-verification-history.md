@@ -357,3 +357,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v774 17:26 PST 11-03: Buttondown decided (one free newsletter, xian 17:24); hand item rewritten. Verified how: buttondown.com/pricing fetched 17:2x.
 - v775 17:28 PST 11-03: fresh-accounts question answered (keep as is, xian 17:27); HOST proposes the slot.
 - v776 17:38 PST 11-03: removed grant, #327 and Lead-permission items (xian yes; allow applied, grep-verified; #327 closed via gh).
+- v777 17:43 PST 11-03: contribute@/privacy@ decided (aliases); moved to Your hand.
