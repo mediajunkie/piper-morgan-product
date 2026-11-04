@@ -329,6 +329,36 @@ class TestWriteLegNotFound1858Amended:
         wr = await adapter.create_issue_connector(_ALPHA, owner="o", repo="r", title="t", body="b")
         assert wr.not_found is False, wr
 
+    async def test_a_comment_on_a_missing_issue_answered_in_band_is_definitive(self, sm):
+        """PA's F1 on alpha 3f7994e873 (2026-11-04 08:32): the live server answers the
+        comment POST with the 404 as CONTENT TEXT, not an exception, and the comment
+        path used to return "no artifact id" before any not-found check. Same two
+        legs as the update case: the write text says 404, the read-back says 404."""
+        adapter = GitHubMCPSpatialAdapter()
+        _fixture(adapter, write_err_text=_GH_404_COMMENT)
+        wr = await adapter.add_comment_connector(
+            _ALPHA, owner="o", repo="r", issue_number=9998, comment="PA 1858 probe"
+        )
+        assert wr.not_found is True, wr
+        assert wr.verified is False and wr.attempted is True
+        assert wr.issue_number == 9998
+
+    async def test_an_in_band_404_but_a_readback_that_finds_it_is_uncertain(self, sm):
+        adapter = GitHubMCPSpatialAdapter()
+        _fixture(adapter, write_err_text=_GH_404_COMMENT, read_finds_it=True)
+        wr = await adapter.add_comment_connector(
+            _ALPHA, owner="o", repo="r", issue_number=9998, comment="x"
+        )
+        assert wr.not_found is False, wr
+
+    async def test_an_in_band_non_404_error_is_uncertain(self, sm):
+        adapter = GitHubMCPSpatialAdapter()
+        _fixture(adapter, write_err_text="failed to create comment: something else went wrong")
+        wr = await adapter.add_comment_connector(
+            _ALPHA, owner="o", repo="r", issue_number=9998, comment="x"
+        )
+        assert wr.not_found is False, wr
+
     async def test_a_comment_on_an_existing_issue_still_verifies(self, sm):
         adapter = GitHubMCPSpatialAdapter()
         _fixture(adapter)

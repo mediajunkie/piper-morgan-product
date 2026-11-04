@@ -1012,6 +1012,41 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                         tool=tool,
                         response_head=(raw_text or "")[:300],
                     )
+                if (
+                    written is None
+                    and args.get("issue_number")
+                    and args.get("method") != "create"
+                    and self._is_not_found_text(raw_text)
+                ):
+                    # #1858's two-leg check for a TARGET-ADDRESSED write whose write
+                    # leg answered 404 IN-BAND: the live server's shape for a comment
+                    # on a missing issue (PA's F1 on alpha 3f7994e873, 2026-11-04 08:32,
+                    # after the write-error branch below covered only the raising
+                    # shape, and the comment path returned "no artifact id" before any
+                    # not-found check could run). Same evidence as the update-only
+                    # check further down: the write text says 404 and a read-back of
+                    # the target on the same binding says 404. Arch's conditions
+                    # (2026-11-03 18:53): (a) target-addressed, (b) GitHub's not-found,
+                    # (c) a positive read-back, (d) nothing parsed.
+                    state = await self._readback_tristate(
+                        binding_or_degrade,
+                        owner=args["owner"],
+                        repo=args["repo"],
+                        issue_number=int(args["issue_number"]),
+                    )
+                    if state == "not_found":
+                        _slog.warning(
+                            "github_write_target_not_found",
+                            tool=tool,
+                            number=args["issue_number"],
+                            leg="write_content",
+                        )
+                        return GitHubWriteResult(
+                            verified=False,
+                            attempted=True,
+                            not_found=True,
+                            issue_number=int(args["issue_number"]),
+                        )
                 if require_written_id and not (written or {}).get("id"):
                     # For comment-writes the created artifact is the COMMENT —
                     # a GitHub-minted id in the creation response is the
