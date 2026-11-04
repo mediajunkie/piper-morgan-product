@@ -7,6 +7,49 @@
 > **Web: build from the "Build copy" section only.** Everything below it is history. **Status 20:50:** CXO OK'd the build copy (20:49) **on one hard condition:** it goes live only after Exec names the waiting-list owner and that owner confirms they will send invitations in waves and the public-beta note. If xian wants it live sooner, use CXO's fallback on card 2, `/try/beta/` and the "Want in?" block: "Join the waiting list. We may invite you, and we'll tell you if we can." **CXO 20:56: the whole Build copy section is OK as written**, including the `/try/invite/` meta line. **xian, 21:14 via PPM: yes to one way in, and HOST keeps the waiting list.** Web builds once HOST confirms they'll send invitations in waves and the public-beta note. **HOST, 21:17:** accepts keeping the list, with two limits: (1) xian sends the invitations and the note, and HOST prepares them, so whether that meets CXO's condition is CXO's and Exec's call. (2) HOST can't read Buttondown yet and needs xian to paste the signups or grant access. The copy is true as long as xian sends. **PPM, 21:19:** xian sends each wave himself and will grant HOST read access to the list. PPM reads CXO's condition as met. **CXO, 21:27: condition met. Web may build.** **Live 21:40** (Web): 4 of 4 pages, 0 alpha, `/try/alpha/` 308 to `/try/invite/`. **CXO 21:48: served text PASSES.** Still open: the hero line above, and whether Buttondown actually sends the confirmation email (HOST or xian to check) before #2229 closes.
 **Asked by:** xian via PPM, 10-31 18:50 ("can we ask Comms to propose updates and then Web can execute once I approve?"). Sent to Exec for xian's approval, cc CXO, Web, PPM.
 
+## v4: one free newsletter for news plus the waiting list (xian 11-03 17:24 via Exec). Replaces the second-newsletter plan in v2 and v3
+
+xian, verbatim: "For now, yes let's use one free newsletter. I will review the experience and revisit again in a bit." A second Buttondown newsletter costs +$29/month (Exec checked the pricing page), so the waiting list stays a tag (`beta-waitlist`) on the one newsletter. **Status: drafted 17:3x, needs CXO's OK.**
+
+**What the site does today (website origin/main, read 11-03 17:3x).** There is no beta checkbox. The only sign-up form on the site is `/try/beta/`. It posts to the one newsletter with the hidden tag `source="beta-waitlist"`, so everyone who signs up on the site is on the waiting list. Its only checkbox is the consent box: "I agree to receive marketing communications…". That means the confirmation can't say "which one you chose" from a box. Someone can only land on the newsletter without the tag by using Buttondown's own hosted sign-up page.
+
+**So the copy says both things, true for everyone:** everyone gets the news, and site sign-ups are also on the waiting list. No new checkbox, and no Web build beyond the strings.
+
+### 1. Confirmation email (paste-ready, Settings > Subscribing > Confirmation)
+
+- **Subject:** Confirm your email for Piper Morgan
+- **Body** (keep Buttondown's own confirm link or button where its template puts it):
+
+> Thanks for signing up. Please confirm this is your address.
+>
+> [confirm link]
+>
+> Once you confirm, you'll get occasional news and updates from Piper Morgan as we build it.
+>
+> If you signed up on our beta page, you're also on the waiting list for the private beta. We send invitations in waves, and we'll write to you personally when we can invite you. We can't promise when that will be.
+>
+> To stop getting our emails, use the unsubscribe link in any of them.
+>
+> If you didn't sign up, ignore this email and you won't hear from us.
+
+**If Buttondown can show a paragraph only to tagged subscribers** (not verified: HOST or xian to check in the template editor), the fourth paragraph shows only to `beta-waitlist` and loses its "If you signed up on our beta page" opening: "You're also on the waiting list for the private beta. We send invitations in waves…". Everything else stays as it is.
+
+### 2. `/try/beta/` form (Web, #2256)
+
+- **Form description** (now empty): You'll get occasional news and updates from Piper Morgan, and a place on the waiting list for the private beta.
+- **Consent checkbox** (shared component, needs a prop, not a new default): I agree to these emails, as described in the [Privacy Policy](/privacy). I can unsubscribe at any time.
+- **Unchanged:** heading, the hero sentence ("…or just to hear when the public beta starts" is still true, since the news carries it), button, success message, back link.
+
+### 3. `/privacy` (needed with the checkbox change, since "weekly" isn't true)
+
+- **"How We Use", Newsletter Communications:** "Send weekly newsletter content about AI-powered product management" becomes "Send occasional news and updates about Piper Morgan, and, if you joined the beta waiting list, your invitation to the private beta."
+- **"Last updated"** becomes the month it ships.
+- **The v3 "Beta Waiting List" headings and the separate removal line are dropped.** The existing newsletter unsubscribe lines already cover leaving the list.
+
+### What v4 drops from v2 and v3
+
+The "second newsletter" order of steps, the waiting-list-only subject line, and the "before the public beta is announced" promise in the email. xian's "hear first" model still holds. It isn't written into the email, so it stays a promise xian keeps, not one the copy makes.
+
 ## v3 amendment: the words for xian's waiting-list model (CXO 17:41, Comms agrees). Changed strings only. Everything else in v2 below stands
 
 xian's model (Exec 17:30, verbatim in #2164): people on the list hear first, before the public beta is announced, and the list keeps metering onboarding after that. **Nothing live changes now.** Today's "hear when the public beta starts" is true, just weaker. Comms' first v3 draft (055c2cbf90) changed four live strings and dropped the "or just to hear" reason. CXO's 17:41 crossed with it, and CXO's reading is the one that stands. That reason is the second door, kept on purpose. The list's lifetime (beyond the public beta, until production) isn't promised anywhere, since there's no page for it yet.
