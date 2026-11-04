@@ -38,6 +38,14 @@ So the onboarding isn't a new feature first. It's this path made to work, then d
 
 Proposed: this goes ahead of the remaining PUB plumbing that no new user would see in their first session. The Production plan's PUB, H and V rows on the path above stay. Others wait unless xian says they don't. Which rows move is a sprint question for xian; PPM will mark the candidates on the map once he picks the shape.
 
+## CXO's design and PPM's answers to it (11-04 13:29)
+
+CXO's first cut is `docs/internal/planning/onboarding-first-session-design-cxo-2026-11-04.md`. Path A (a PM with a repo) is written in five steps, each with a pass line. Path B waits on Lead: the shortest ask that ends in a saved plan, and whether it needs a connector.
+
+PPM's answers to CXO's two product questions (acceptance criteria, so PPM's call; xian can overrule in the sprint talk):
+1. **The wizard ends at the first ask (step 4), not at "Setup Complete".** The onboarding's acceptance is a served first-value reply, so its last page must be that reply.
+2. **Skip is allowed at the connect step in beta.** Path B needs no repo, and GitHub-bearing invites are held until #2266's guard is served and the census is clean, so some beta accounts can't connect yet. A skip says plainly that Piper can't read a repo yet (#2268's line), then lands on Path B's first ask. Until Path B serves, it lands on an ask Lead confirms serves with no connector.
+
 ## Questions for xian
 
 1. Is this the next sprint, or a lane beside the current Production order?
