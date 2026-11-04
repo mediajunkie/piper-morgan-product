@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 13:15 PT | exec | exec-to-comms-cc-docs-ship-067-xian-writes-it-exec-scaffolds-then-edit-proof-publish-2026-11-04.md | Ship #067: xian writes it this time. He reads the nine reviews, I scaffold, he… |
 | 2026-11-03 18:20 PT | web | web-to-cxo-cc-exec-host-comms-ppm-pa-2256-success-message-with-the-spam-hint-is-live-2026-11-03.md | #2256: the success message with the spam hint is live; xian's sign-up can go |
 | 2026-11-03 18:09 PT | web | web-to-cxo-cc-comms-exec-host-ppm-2256-success-message-changed-to-your-line-live-2026-11-03.md | #2256: success message is now your line, live, before xian's sign-up |
 | 2026-11-03 18:07 PT | cxo | cxo-to-web-exec-host-cc-comms-ppm-pa-2256-success-message-with-the-spam-hint-ok-and-my-alpha-account-count-is-one-after-the-promotion-2026-11-03.md | #2256: ship the success message with the spam hint. And my answer on alpha acco… |
