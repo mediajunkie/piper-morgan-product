@@ -354,3 +354,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v771 17:08 PST 11-03: removed #2251, #2254, #1680, #2244 hand items (xian ran all four, results on each issue); #2226 now asks for the peak. Verified how: xian's pasted output; gh comment URLs.
 - v772 17:14 PST 11-03: crosspost for The Unguarded Entrance (Docs 14:07) added to Your hand; data/postgres history question (Arch 17:09) added to Your word. Verified how: git ls-files data/postgres = 2119; .dockerignore has no data line; live URL from Docs' curl, not re-fetched.
 - v773 17:18 PST 11-03: #2226 memory read done (flat ~465-485 of 965 MB, posted); #2238 now waits on a staging account path from Lead and HOST.
+- v774 17:26 PST 11-03: Buttondown decided (one free newsletter, xian 17:24); hand item rewritten. Verified how: buttondown.com/pricing fetched 17:2x.
