@@ -20,6 +20,7 @@ PM-attention items live **here**, in the section immediately below.
 - **Served at 10:04 on 11-04:** alpha and beta on `ec783d61db` (Lead, run 41881918623), MCP on Fly v19 `53685c4601`. Main CI 12/12 green. No watch is armed.
 - **#2098 and #2265: closed by CXO 21:54 on PA's served quotes.** Case 1's "yes" stays unrun by CXO's choice; Lead answers whether it can be reached. Nothing left for PA.
 - **#2258 F1 (#1858):** PASS on `ec783d61db` 11-04 10:04 (3ed783e7e9; issuecomment-6638184613; memo 10:05): "I couldn't find issue #N…" on a comment and a close, and "didn't go through" in what-changed. CXO PASS 10:17; the refused close stays out of what-changed (CXO and Lead). Done.
+- **GitHub leak (11-04 12:38, xian live via Exec):** a beta tester's Settings connect page showed mediajunkie. PA's names-only reads (12:49 memo): the gh-mcp sidecar holds no token (no secrets, no env token, no files), so Lead's unauthenticated-sidecar path can't explain it; Arch's consent-screen reading stands. Lead lands a no-bearer guard plus a census for xian. PA: re-read the Settings card and MCP github resource served once the guard is promoted, if asked.
 - **#2242 (Q2):** Listed account and test-account refusal both PASS. Left: the held-token row, on xian's `mcp_allow.py remove` relayed by Exec; then PA calls the tool (expect refused), then xian re-adds and reconnects.
 - **#1680:** Lead judges the row; PA has nothing left unless asked.
 - **#2235 wizard half:** Web, once an OAuth-only account with a throwaway GitHub login exists (xian or his nominee makes the login).
