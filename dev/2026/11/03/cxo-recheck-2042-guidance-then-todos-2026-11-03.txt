@@ -1,0 +1,40 @@
+=== on b0f774aabb as web-seed-1386 18:42:23
+
+## guidance, then todos twice, session a70758a1
+
+--- H1 [18:42:32, 9.36s, http 200] route GUIDANCE/get_contextual_guidance
+USER: I'm thinking through the search feature. Help me break it down.
+PIPER: Let's dig in. To give you something useful rather than generic, a few quick questions:
+
+**What's the core problem you're solving?** Is this search for end users finding content, internal teams finding records, something else?
+
+**Where are you in the process?** Early scoping, mid-build, or trying to untangle something that's already partially shipped?
+
+**What's making it feel complex right now?** Usually with search it's one of a few things:
+- Scope creep (how smart does it need to be?)
+- Relevance/ranking decisions
+- Performance vs. accuracy tradeoffs
+- Indexing and data freshness
+- The "zero results" and edge case experience
+
+Give me a sense of where the friction is and I can help you structure the breakdown in a way that's actually useful for your situation.
+
+--- H2 [18:42:40, 5.87s, http 200] route query/list_todos_query
+USER: What's on my todo list?
+PIPER: I checked your todo list - looks like quite a bit going on with 21 items.
+
+The first one is 'review prs'. Then there's 'review prs'. Also 'review prs'. And 'review prs'. And 'review prs'. Plus 16 more items.
+
+That's a full list. Where would you like to start?
+
+Reminders that came due: "review prs" (Oct 23), "review prs" (Oct 23), "review prs" (Oct 23), and 6 more.
+
+--- H3 [18:42:43, 1.33s, http 200] route query/list_todos_query
+USER: What's on my todo list?
+PIPER: I checked your todo list - looks like quite a bit going on with 21 items.
+
+The first one is 'review prs'. Then there's 'review prs'. Also 'review prs'. And 'review prs'. And 'review prs'. Plus 16 more items.
+
+That's a full list. Where would you like to start?
+
+=== end on b0f774aabb 18:42:46
