@@ -56,7 +56,7 @@ PPM's answers to CXO's two product questions (acceptance criteria, so PPM's call
 
 1. Is this the next sprint, or a lane beside the current Production order?
 2. Are the two first-value moments above the right ones, or should one user type go first?
-3. The OAuth app transfer to an organization account (Exec has it in front of you) decides the connect step's words. Does it happen before the onboarding test?
+3. The OAuth app transfer to an organization account (Exec has it in front of you) decides the connect step's words. Does it happen before the onboarding test? *Answered 11-04 15:43 (Exec): yes to the transfer, org name probably "Piper Morgan" (CXO recommends it, 15:47). Order (Arch 15:45): census first, then the transfer and Arch's four re-checks, then Web's check 1 on dinp-machine after a revoke. So the onboarding test runs after the transfer, and the connect step's words are judged on the org-owned page. PPM 15:50.*
 
 ## Not decided here
 
