@@ -90,7 +90,7 @@ caption: ''
   - Arch found the cause: the base prompt asks for an aside on every reply.
   - Lead listed every read claim.
   - Every routing change is now screened on the full test set before it lands. The screen refused a change twice on 10-29, which is it working.
-  - You approved the next step today, the Haiku 5.5 screen.
+  - The Haiku 5.5 screen ran on 10-30 (about $1.65 across 2,100 requests). Arch ruled it NO-GO as a drop-in: it routed worse than 4.5 (473 vs 488 rows, 75% vs 87% above the consult floor). Piper stays on 4.5 and re-baselines under #2227.
 - **The premise relay (10-29):** five seats wrote that alpha's own key was capped and chat was down. It was the test workspace's cap, and Piper has no Anthropic key of its own. It repeats a 10-20 mistake, and all were withdrawn within the hour.
 - **CIO:** the staleness re-run measured 11 of 11 seats, and all fixed their lines the same day. `briefing-pointer-check.sh` took gaps from 58 to 42.
 - **Guessed clock times** turned up in most seats. Since Thursday, the send scripts stamp the time themselves.

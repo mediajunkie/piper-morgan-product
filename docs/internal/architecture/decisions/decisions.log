@@ -3053,3 +3053,4 @@ Option 2 (a floor prompt directive) was refused: a prompt instruction is a reque
 - **Then** the five degrade sites and the not-found path go `success=False`, with text unchanged.
 - One unit, with pins per part.
 2026-11-04 14:52 exec: xian discussed the Ship #067 synthesis. Draft goals for 10-30..11-05 approved, to be tracked and shared. Theme "What Piper Didn't Check". The Haiku 5.5 router screen is approved (the 11-01 reset has passed). Lead's allow rule was already applied. Exec and Lead onto LaunchAgents: yes, both loaded. The redemption read: xian will check and needs the steps from HOST. Source: xian in Exec session.
+2026-11-04 15:13 exec: correction to today's synthesis line: the Haiku 5.5 router screen already ran 10-30 (msgbatch_01UmGB36MS29T2vt7tmyGZrH) and Arch ruled it NO-GO as a drop-in (decisions.log 10-30 15:20). xian's 11-04 approval was of a stale synthesis line; nothing spent. Open item is #2227's rulings. Source: Lead 15:07.
