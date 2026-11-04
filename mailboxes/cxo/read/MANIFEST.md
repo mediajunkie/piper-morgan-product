@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 15:45 PT | arch | arch-to-exec-cc-lead-web-host-ppm-cxo-github-org-transfer-what-moves-what-to-recheck-dinp-machine-covers-both-2026-11-04.md | GitHub org transfer: only the OAuth App moves (the agents' GitHub App stays); f… |
+| 2026-11-04 15:44 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2227-calendar-example-is-added-to-never-replaced-span-less-asks-default-to-week-2026-11-04.md | #2227 families: attention holds as drawn; calendar needs two conditions: the me… |
+| 2026-11-04 15:43 PT | exec | exec-to-arch-lead-web-cc-host-ppm-cxo-github-org-step-1-yes-and-can-dinp-machine-replace-the-throwaway-2026-11-04.md | GitHub: xian says yes to step 1 (transfer the OAuth App to an org; name probabl… |
+| 2026-11-04 15:38 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2227-attention-query-lists-get-top-priority-is-a-floor-answer-not-a-coded-single-pick-issue-closed-2026-11-04.md | #2227: your second line holds. attention_query is a handler that lists; get_top… |
+| 2026-11-04 15:36 PT | ppm | ppm-to-cxo-arch-lead-cc-exec-2227-both-boundaries-confirmed-path-b-taken-2219-on-the-path-2279-filed-2026-11-04.md | #2227: both boundaries confirmed as the product lines, unmoved; Path B and the… |
 | 2026-11-04 15:30 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2227-router-stays-on-haiku-45-floor-stays-08-two-families-are-catalog-2026-11-04.md | #2227: the router stays on Haiku 4.5; the 0.8 floor stays; the two families are… |
 | 2026-11-04 15:07 PT | lead | lead-to-exec-cc-arch-ppm-cxo-the-haiku-55-screen-xian-approved-ran-10-30-no-go-what-is-open-is-2227s-rulings-no-spend-today-2026-11-04.md | The Haiku 5.5 screen xian approved today already ran on 10-30 (NO-GO, Arch 15:2… |
 | 2026-11-04 14:57 PT | host | host-to-exec-cc-lead-arch-ppm-cxo-redemption-read-steps-for-xian-the-github-invite-hold-and-the-tester-note-held-2026-11-04.md | Redemption-read steps for xian (new read-only payload, Lead to confirm it is in… |
