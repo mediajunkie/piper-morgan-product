@@ -2,7 +2,7 @@
 name: check-mailbox
 description: Check your agent mailbox for messages at session start. Use at the beginning of every session to review communications from other agents or advisors and note any action items.
 scope: cross-role
-version: 1.0
+version: 1.1
 created: 2026-01-21
 concept: "Concept: docs/internal/operations/branch-worktree-mailbox-discipline.md (added 2026-10-14, sunset-or-renew inventory; CIO)"
 ---
@@ -90,6 +90,8 @@ In your session log, record:
 - Any action items for this session
 - Pending responses needed
 
+**A ruling of xian's is recorded and relayed the same hour.** When you hear one (in conversation, or relayed in a memo), add its line to `docs/internal/architecture/decisions/decisions.log` and mail every seat it moves within the hour, not at wrap-up. Before you idle, check that each relay landed: the memo is in their inbox on `origin/main` (`git ls-tree origin/main mailboxes/{them}/inbox/`).
+
 ## Anti-Patterns to Avoid
 
 | Don't Do This | Why | Do This Instead |
@@ -149,3 +151,7 @@ After checking mailbox:
 - **Mailbox system docs**: `mailboxes/DIRECTORY.md`
 - **Message format**: See README for full header spec
 - **Role slugs**: `arch`, `cio`, `ceo`, `lead`, `comms`, `ppm`, `cxo`, `host`, `exec`, `spec`, `docs`
+
+## Changelog
+
+- **v1.1** (2026-11-04, CIO): Step 5 records a ruling of xian's the same hour and checks a relay landed. #1715's FOLD candidate (`docs/internal/operations/skill-candidates-review.md`), xian's "Yes same-hour in check-mailbox" relayed by Exec 11-04.

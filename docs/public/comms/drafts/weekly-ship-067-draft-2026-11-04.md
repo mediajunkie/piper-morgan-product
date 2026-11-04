@@ -4,53 +4,26 @@ alt: 'A child and a crew of robots checking each other''s work on a boat.'
 caption: ''
 ---
 
-> **SCAFFOLD (Exec, 11-04).** You hold the pen. Each section below has **▸ Write about**, the points to cover, and **▸ Facts**, the figures, issue numbers and links, with their sources. Delete the ▸ blocks as you write. Sources: the nine workstream reviews (10-30), the week review (https://claude.ai/artifact/4Le3ZyacNXUqo19SQh5GpT), the editorial calendar, and the counts I ran. **Window: Fri 10-23 to Thu 10-29.** This publishes a week late, so "Coming up" can say what actually happened.
-
 # Weekly Ship #067: What Piper Didn't Check
 
 *October 23–29, 2026*
 
-**▸ Write about (opening, 2–3 paragraphs)**
-- The theme: this was the week Piper learned to say what it *didn't* read. A failed read now says so, instead of showing "none" or an empty day.
-- Where the week started and ended: the MVP gate went from 6 open issues to 2, and the first alpha invitations went out.
-- Your 10-28 call that the confabulations "require more than patching", and how that changed the approach (see Methodology).
-- Optional link back to #066, "Tested on the Real Thing": last week the safeguards were proved by running them for real; this week Piper's answers were.
-- Optional, since you're writing a week on: today's beta session moved the focus to onboarding (see Coming up).
+Until this week, Piper couldn't tell the difference between a blank and answer and a failure to read the data. The MVP gate went from 6 open issues to 2 with one day left to the latest milestone goal date. The last set of alpha invitations also went out. The next invitations to go out should be for the beta. Along the way, I ruled that we couldn't just patch confabulations and this led to a methodology update.
 
-**▸ Facts**
-- Last week's four goals: three met.
-  - The three must-closes closed Fri 10-23.
-  - You sent the three alpha invitations Mon 10-26 at 21:00.
-  - The GitHub App was installed 10-23.
-  - The fourth goal, the 10-30 MVP target, was within reach by Thursday: the gate was down to #1386 alone.
-- Gate: 6 → 2 open (10 closed, 7 admitted, 1 moved to known issues; PPM's ledger).
-- 75 issues opened, 62 closed. Alpha updated 24 times.
+The team met three of the four goals for this week's sprint:
+- The three must-closes closed Friday, 10/23.
+- The alpha invitations went out Monday, 10/26.
+- The GitHub app (for integration) was installed 10/23.
+
+The fourth goal, to close the MVP milestone, would have to happen on Friday, the first day of the following sprint. Along the way the alpha build was updated 24 times.
 
 # 🚀 Shipped this week
 
 ## ⚙️ Engineering & architecture
 
-**▸ Write about**
-- Alpha now runs itself more safely: it restarts its own database, and deploys use the exact build that was tested.
-- The work behind the honesty thread: a list of every place a failed read could turn into "nothing", and a test that only lets that list shrink.
-- Arch's new rules: a write goes only where the user said, and a failed read is stated.
-- Optionally, main CI's red days, and how the fix (run what CI runs before pushing) holds up.
+The Alpha now runs itself more safely. It restarts its own database, and deploys from the correct tested build. We listed every place in the code that a failed read could be misreported as a "nothing" response and set up a test to keep that list shrinking.
 
-**▸ Facts**
-- **Alpha updated 24 times** (successful promotions, 10-23 to 10-29 PT). Another 10 failed or were refused, and alpha stayed unchanged each time.
-- **Alpha recovers its own database** (#2085, #2146). The restarter passed its tests twice:
-  - down 2 min 6 s with you at the keyboard;
-  - healthy again 9 min 15 s after a restart nobody touched.
-  - There were no unplanned database outages; the stops were deliberate tests.
-- **Deploys pull the exact image that was tested** (#2177, #2181).
-- **Failed-read surfaces:** 156 listed (69 green, 59 red, 28 exempt). The known-red list only falls: 32 → 14 in the week.
-- **Arch:** 72 rulings, each read from source. ESSENCE v1.1 applied. Four new rules:
-  - a write goes only to a target the user named;
-  - the user in the current turn, never a stored offer's user;
-  - a failed read is stated;
-  - catalog order comes from a ledger.
-- **Lead:** 34 issues closed (14 with served evidence). The read-claim inventory for the confabulation class (#2042).
-- **Main CI** was red on 5 of 7 days, fixed the same day each time. Lead's landing gate now runs every test directory CI runs.
+Arch wrote some new rules: Piper may only write where the user indicated and must report a failed read. Lead Developer closed 34 issues. Main CI went red on five of the seven days of the week, but was fixed the same day each time. Lead's gate now runs every test directory CI runs.
 
 ## 🎯 Product & experience
 

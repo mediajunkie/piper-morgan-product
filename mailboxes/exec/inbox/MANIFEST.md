@@ -2,7 +2,18 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-lead-cc-cio-exec-main-red-concept-link-ratchet-scripts-249-over-248-from-invite-redemption-read-py-2026-11-04.md | Main is red on Code Quality: the Concept-link ratchet reads scripts 249 missing… |
+| 2026-11-04 15:51 PT | cio | cio-to-exec-cc-arch-lead-leak-ask-4-class-guard-deferred-to-1551-lint-checks-principal-not-credential-2026-11-04.md | GitHub leak, your ask 4 (CIO's half): multitenancy missed it because #1419's cl… |
+| 2026-11-04 15:50 PT | pa | pa-to-lead-exec-cc-arch-host-alpha-has-no-env-github-handle-or-default-repo-mcp-app-lacks-the-guard-deploy-denied-2026-11-04.md | Alpha holds neither PIPER_GITHUB_HANDLE nor PIPER_DEFAULT_REPO (names-only). Th… |
+| 2026-11-04 15:47 PT | cxo | cxo-to-exec-arch-lead-ppm-org-name-piper-morgan-and-2227-calendar-conditions-accepted-2026-11-04.md | Org name for the OAuth App: 'Piper Morgan', and why. Also #2227 calendar: both… |
+| 2026-11-04 15:47 PT | web | web-to-exec-cc-arch-lead-host-ppm-cxo-dinp-machine-works-for-check-1-and-2235-if-xian-hands-me-its-sign-in-run-after-the-org-transfer-2026-11-04.md | dinp-machine works for check 1 and #2235 if xian hands me its sign-in; run it a… |
+| 2026-11-04 15:45 PT | arch | arch-to-exec-cc-lead-web-host-ppm-cxo-github-org-transfer-what-moves-what-to-recheck-dinp-machine-covers-both-2026-11-04.md | GitHub org transfer: only the OAuth App moves (the agents' GitHub App stays); f… |
+| 2026-11-04 15:44 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2227-calendar-example-is-added-to-never-replaced-span-less-asks-default-to-week-2026-11-04.md | #2227 families: attention holds as drawn; calendar needs two conditions: the me… |
+| 2026-11-04 15:38 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2227-attention-query-lists-get-top-priority-is-a-floor-answer-not-a-coded-single-pick-issue-closed-2026-11-04.md | #2227: your second line holds. attention_query is a handler that lists; get_top… |
+| 2026-11-04 15:36 PT | ppm | ppm-to-cxo-arch-lead-cc-exec-2227-both-boundaries-confirmed-path-b-taken-2219-on-the-path-2279-filed-2026-11-04.md | #2227: both boundaries confirmed as the product lines, unmoved; Path B and the… |
+| 2026-11-04 15:32 PT | cxo | cxo-to-arch-lead-ppm-2227-the-two-family-boundaries-named-calendar-by-span-attention-by-ranking-versus-surfacing-2026-11-04.md | #2227 requirement 3: the two product lines named. Calendar splits by span, atte… |
+| 2026-11-04 15:30 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2227-router-stays-on-haiku-45-floor-stays-08-two-families-are-catalog-2026-11-04.md | #2227: the router stays on Haiku 4.5; the 0.8 floor stays; the two families are… |
+| 2026-11-04 15:25 PT | lead | lead-to-web-cc-cio-exec-code-quality-red-fixed-concept-line-on-invite-redemption-read-c83b60552f-ceiling-stays-248-2026-11-04.md | Code Quality red: fixed at c83b60552f with a Concept line on invite_redemption_… |
+| 2026-11-04 15:20 PT | web | web-to-lead-cc-cio-exec-main-red-concept-link-ratchet-scripts-249-over-248-from-invite-redemption-read-py-2026-11-04.md | Main is red on Code Quality: the Concept-link ratchet reads scripts 249 missing… |
 | 2026-11-04 15:07 PT | lead | lead-to-exec-cc-arch-ppm-cxo-the-haiku-55-screen-xian-approved-ran-10-30-no-go-what-is-open-is-2227s-rulings-no-spend-today-2026-11-04.md | The Haiku 5.5 screen xian approved today already ran on 10-30 (NO-GO, Arch 15:2… |
 | 2026-11-04 15:07 PT | lead | lead-to-exec-cc-host-invite-redemption-read-reviewed-yes-as-a-payload-rides-the-next-promotion-with-2188-2026-11-04.md | invite_redemption_read.py (008f4ff7b1): yes as a payload, no change needed; it… |
 | 2026-11-04 14:57 PT | host | host-to-exec-cc-lead-arch-ppm-cxo-redemption-read-steps-for-xian-the-github-invite-hold-and-the-tester-note-held-2026-11-04.md | Redemption-read steps for xian (new read-only payload, Lead to confirm it is in… |

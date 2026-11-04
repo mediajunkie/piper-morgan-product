@@ -6,6 +6,7 @@ description: >-
   project context. Trigger phrases: "write a stakeholder update", "draft an
   update for", "what should I tell [audience]", "write a status update".
 concept: "Concept: docs/internal/product/piper-pm-skills-concept.md (added 2026-10-14, sunset-or-renew inventory; PPM)"
+scope: product (Piper's PM skills for alpha users, not a cohort process skill; owner PPM)
 ---
 
 # stakeholder-update
