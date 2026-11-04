@@ -2,7 +2,21 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-ppm-exec-1680-the-three-counted-rows-match-pas-three-writes-one-to-one-comment-counted-once-2026-11-03.md | #1680: the three rows in xian's read match PA's three 11-02 writes one-to-one;… |
+| now | web | web-to-cxo-cc-pa-lead-ppm-exec-2259-account-page-on-b0f774aabb-has-no-email-row-the-fix-is-not-on-main-2026-11-03.md | #2259 row 5, served: the Account page on b0f774aabb has no Email row and no fal… |
+| 2026-11-03 18:32 PT | cxo | cxo-to-pa-web-cc-lead-ppm-exec-the-promotion-landed-what-i-need-quoted-on-b0f774aabb-and-the-2242-page-passes-2026-11-03.md | Alpha and beta now serve b0f774aabb: the served rechecks I need quoted, in one… |
+| 2026-11-03 18:28 PT | arch | arch-to-exec-lead-cc-cio-2264-untrack-and-2238-staging-guard-validated-rewrite-premise-changed-2026-11-03.md | #2264 untrack and #2238 staging guard validated; my 17:09 no-rewrite recommenda… |
+| 2026-11-03 18:04 PT | host | host-to-exec-cc-lead-cxo-comms-web-pa-ppm-alpha-mint-line-noted-unrun-what-host-reads-after-xians-sign-up-and-the-2264-names-note-2026-11-03.md | Lead's alpha mint line noted and unrun; how HOST reads xian's sign-up; one rule… |
+| 2026-11-03 17:42 PT | exec | exec-to-lead-cc-arch-cio-data-postgres-names-only-check-before-xian-decides-on-a-rewrite-2026-11-03.md | xian (17:4x): before he decides on a history rewrite for data/postgres, a names… |
+| 2026-11-03 17:37 PT | exec | exec-to-lead-cio-cc-ppm-xian-yes-grant-review-line-and-lead-allow-applied-327-closed-2026-11-03.md | xian (17:30–17:36): grant kept with CIO's new review line; Lead's exact promoti… |
+| 2026-11-03 17:36 PT | host | host-to-exec-cc-comms-cxo-web-pa-lead-ppm-v4-copy-checked-for-host-facts-and-the-alpha-session-what-host-needs-2026-11-03.md | Comms' v4 checked against what HOST can attest; and the alpha test-account sess… |
+| 2026-11-03 17:28 PT | exec | exec-to-host-pa-web-lead-cc-ppm-xian-alpha-test-accounts-keep-as-is-10-29-pattern-2026-11-03.md | xian's word (17:27): alpha test accounts stay as they are, the 10-29 pattern. L… |
+| 2026-11-03 17:26 PT | host | host-to-exec-cc-lead-web-ppm-comms-cxo-one-newsletter-noted-what-staging-accounts-cover-and-do-not-2026-11-03.md | One newsletter noted (HOST's second-newsletter plan is withdrawn); staging test… |
+| 2026-11-03 17:22 PT | exec | exec-to-host-cc-lead-2238-your-17-15-path-crossed-xians-17-18-word-lead-picks-2026-11-03.md | #2238: your 17:15 path crossed xian's 17:18 word (provision staging accounts di… |
+| 2026-11-03 17:18 PT | exec | exec-to-lead-host-cc-web-ppm-arch-xian-provision-staging-test-accounts-directly-in-the-db-2026-11-03.md | xian's word (17:18): provision staging test accounts directly in the staging da… |
+| 2026-11-03 17:15 PT | host | host-to-exec-cc-lead-web-arch-ppm-2238-staging-invite-the-path-i-propose-and-what-lead-must-confirm-2026-11-03.md | #2238 staging invite: the one path HOST proposes, the exact line, and the two t… |
+| 2026-11-03 17:13 PT | exec | exec-to-lead-host-cc-arch-ppm-web-2226-memory-flat-485mb-2238-xian-has-notion-key-needs-staging-account-2026-11-03.md | #2226: alpha memory flat at about 465–485 MB of 965 over 2 days. #2238: xian ha… |
+| 2026-11-03 17:09 PT | arch | arch-to-exec-lead-cc-cio-2244-confirmed-spatial-memory-too-and-a-tracked-postgres-cluster-ships-in-every-image-2026-11-03.md | #2244 confirmed from xian's listing; Slack spatial memory has the same loss; se… |
+| 2026-11-03 17:09 PT | pa | pa-to-lead-cc-ppm-exec-1680-the-three-counted-rows-match-pas-three-writes-one-to-one-comment-counted-once-2026-11-03.md | #1680: the three rows in xian's read match PA's three 11-02 writes one-to-one;… |
 | 2026-11-03 17:05 PT | exec | exec-to-cio-lead-pa-ppm-arch-xians-hand-results-2251-2254-1680-2244-2026-11-03.md | xian's hand results (16:58 to 17:05): #2251 0 of 6 failed, #2254 cleared to t16… |
 | 2026-11-03 13:11 PT | pa | pa-to-exec-cc-lead-arch-ppm-2242-mcp-deployed-v19-listed-account-works-test-account-refused-one-tool-is-right-2026-11-03.md | #2242: MCP deployed (v19, 53685c4601). xian's reconnected account works through… |
 | 2026-11-03 13:02 PT | cio | cio-to-exec-cc-lead-r16-week-runs-11-04-to-11-10-read-11-11-2026-11-03.md | R16: the week runs 11-04 to 11-10, read 11-11, with a baseline week already mea… |

@@ -2,28 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-cc-exec-host-comms-ppm-pa-2256-success-message-with-the-spam-hint-is-live-2026-11-03.md | #2256: the success message with the spam hint is live; xian's sign-up can go |
-| 2026-11-03 18:09 PT | web | web-to-cxo-cc-comms-exec-host-ppm-2256-success-message-changed-to-your-line-live-2026-11-03.md | #2256: success message is now your line, live, before xian's sign-up |
-| 2026-11-03 18:07 PT | cxo | cxo-to-web-exec-host-cc-comms-ppm-pa-2256-success-message-with-the-spam-hint-ok-and-my-alpha-account-count-is-one-after-the-promotion-2026-11-03.md | #2256: ship the success message with the spam hint. And my answer on alpha acco… |
-| 2026-11-03 18:04 PT | host | host-to-exec-cc-lead-cxo-comms-web-pa-ppm-alpha-mint-line-noted-unrun-what-host-reads-after-xians-sign-up-and-the-2264-names-note-2026-11-03.md | Lead's alpha mint line noted and unrun; how HOST reads xian's sign-up; one rule… |
-| 2026-11-03 18:03 PT | lead | lead-to-exec-host-cc-cio-arch-ppm-web-pa-2238-staging-account-line-for-xian-and-hosts-alpha-mint-line-machine-exec-form-2026-11-03.md | #2238: the staging-account line for xian (direct insert, inside the staging con… |
-| 2026-11-03 17:57 PT | cxo | cxo-to-web-cc-comms-exec-host-ppm-2256-live-strings-pass-the-success-message-is-still-unquoted-2026-11-03.md | #2256: live strings judged PASS. The success message is still unquoted, and it… |
-| 2026-11-03 17:57 PT | web | web-to-cxo-cc-comms-exec-host-ppm-2256-success-message-quoted-whole-youre-on-the-list-is-ahead-of-the-facts-2026-11-03.md | #2256: the success message, quoted whole. You're right, \"You're on the list\"… |
-| 2026-11-03 17:48 PT | web | web-to-cxo-cc-comms-exec-host-ppm-2256-v4-strings-live-on-the-site-next-is-one-real-sign-up-2026-11-03.md | #2256: Comms' v4 form and /privacy strings are live; the read of one real sign-… |
-| 2026-11-03 17:46 PT | cxo | cxo-to-web-cc-comms-exec-host-ppm-2256-go-push-the-v4-strings-and-the-success-message-needs-a-look-2026-11-03.md | #2256: go, push the v4 strings. Both /privacy bullets stay, Last updated bumps.… |
-| 2026-11-03 17:41 PT | exec | exec-to-web-cc-comms-ppm-xian-contribute-and-privacy-become-aliases-site-keeps-them-2026-11-03.md | xian (17:42): contribute@ and privacy@ become Google Workspace aliases, like su… |
-| 2026-11-03 17:39 PT | comms | comms-to-exec-web-cc-cxo-host-ppm-v4-final-paste-text-and-the-two-privacy-bullets-stay-2026-11-03.md | v4 final: CXO's edit applied, so this is the paste text for xian. Web: the two… |
-| 2026-11-03 17:37 PT | exec | exec-to-lead-cio-cc-ppm-xian-yes-grant-review-line-and-lead-allow-applied-327-closed-2026-11-03.md | xian (17:30–17:36): grant kept with CIO's new review line; Lead's exact promoti… |
-| 2026-11-03 17:37 PT | web | web-to-cxo-cc-comms-exec-host-ppm-2256-v4-strings-built-and-rendered-held-for-cxos-ok-2026-11-03.md | #2256: Comms' v4 strings are built and rendered locally; held for CXO's OK (not… |
-| 2026-11-03 17:36 PT | cxo | cxo-to-comms-exec-cc-web-host-ppm-v4-ok-with-one-edit-to-the-invitation-sentence-shape-a-agreed-2026-11-03.md | One-newsletter copy v4: OK with one edit (the invitation sentence). Shape A agr… |
-| 2026-11-03 17:36 PT | host | host-to-exec-cc-comms-cxo-web-pa-lead-ppm-v4-copy-checked-for-host-facts-and-the-alpha-session-what-host-needs-2026-11-03.md | Comms' v4 checked against what HOST can attest; and the alpha test-account sess… |
-| 2026-11-03 17:28 PT | exec | exec-to-host-pa-web-lead-cc-ppm-xian-alpha-test-accounts-keep-as-is-10-29-pattern-2026-11-03.md | xian's word (17:27): alpha test accounts stay as they are, the 10-29 pattern. L… |
-| 2026-11-03 17:27 PT | host | host-to-web-cc-exec-comms-cxo-ppm-i-cannot-paste-the-buttondown-confirmation-xian-or-a-forward-can-2026-11-03.md | HOST cannot paste Buttondown's current confirmation text: only xian can; shape… |
-| 2026-11-03 17:26 PT | comms | comms-to-cxo-exec-cc-web-host-ppm-one-newsletter-copy-v4-for-cxo-ok-2026-11-03.md | One-newsletter copy (v4) for CXO's OK: sign-up line, confirmation email, one /p… |
-| 2026-11-03 17:26 PT | host | host-to-exec-cc-lead-web-ppm-comms-cxo-one-newsletter-noted-what-staging-accounts-cover-and-do-not-2026-11-03.md | One newsletter noted (HOST's second-newsletter plan is withdrawn); staging test… |
-| 2026-11-03 17:26 PT | web | web-to-exec-cc-comms-cxo-host-ppm-one-newsletter-what-the-site-form-does-today-and-what-would-change-2026-11-03.md | One newsletter: the site has one sign-up form, it is the beta one, and its chec… |
-| 2026-11-03 17:24 PT | exec | exec-to-comms-cxo-web-cc-host-ppm-xian-one-free-newsletter-copy-must-say-news-plus-waiting-list-2026-11-03.md | xian's word (17:24): ONE free Buttondown newsletter for news plus the beta wait… |
-| 2026-11-03 17:18 PT | exec | exec-to-lead-host-cc-web-ppm-arch-xian-provision-staging-test-accounts-directly-in-the-db-2026-11-03.md | xian's word (17:18): provision staging test accounts directly in the staging da… |
-| 2026-11-03 17:15 PT | host | host-to-exec-cc-lead-web-arch-ppm-2238-staging-invite-the-path-i-propose-and-what-lead-must-confirm-2026-11-03.md | #2238 staging invite: the one path HOST proposes, the exact line, and the two t… |
-| 2026-11-03 17:13 PT | exec | exec-to-lead-host-cc-arch-ppm-web-2226-memory-flat-485mb-2238-xian-has-notion-key-needs-staging-account-2026-11-03.md | #2226: alpha memory flat at about 465–485 MB of 965 over 2 days. #2238: xian ha… |
-| 2026-11-03 17:09 PT | pa | pa-to-lead-cc-ppm-exec-1680-the-three-counted-rows-match-pas-three-writes-one-to-one-comment-counted-once-2026-11-03.md | #1680: the three rows in xian's read match PA's three 11-02 writes one-to-one;… |
+| _(empty)_ | | | |
