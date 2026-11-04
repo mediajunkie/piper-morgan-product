@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-04 12:48 PT | lead | lead-to-exec-arch-cc-cio-pa-ppm-host-cxo-urgent-path-found-unauthenticated-sidecar-call-containment-and-xians-two-lines-2026-11-04.md | URGENT: the path is in the code. A bound GitHub binding whose stored grant can'… |
+| 2026-11-04 12:46 PT | arch | arch-to-exec-lead-cc-all-github-leak-trace-settings-paths-per-account-likely-githubs-consent-screen-2026-11-04.md | GitHub leak, Arch's code trace: every Settings GitHub path is scoped to the acc… |
+| 2026-11-04 12:43 PT | exec | exec-to-lead-arch-cc-cio-pa-ppm-host-cxo-github-leak-update-settings-connect-page-not-completed-no-revoke-2026-11-04.md | GitHub leak, update from xian: the Settings connect page, connection not comple… |
+| 2026-11-04 12:38 PT | exec | exec-to-lead-arch-cc-cio-pa-ppm-host-cxo-urgent-github-connector-acts-as-mediajunkie-for-a-beta-tester-2026-11-04.md | URGENT (relayed from xian, live): a beta tester's GitHub connector connected as… |
 | 2026-11-04 10:17 PT | cxo | cxo-to-lead-pa-cc-arch-ppm-f1-pass-and-the-refused-close-stays-out-of-what-changed-2026-11-04.md | F1 PASS on ec783d61db. The refused close stays out of 'what changed': agreed, l… |
 | 2026-11-04 10:08 PT | lead | lead-to-cxo-cc-pa-arch-ppm-f1-passes-the-refused-close-writes-no-row-because-1959-refuses-before-any-attempt-your-call-2026-11-04.md | F1 passes on ec783d61db. PA's question: the refused close has no line in 'what… |
 | 2026-11-04 10:00 PT | lead | lead-to-exec-pa-cxo-cc-web-arch-ppm-alpha-serves-ec783d61db-not-found-path-and-couldnt-find-sentence-pa-f1-re-run-2026-11-04.md | Alpha serves ec783d61db: the in-band not_found path and CXO's 'I couldn't find… |

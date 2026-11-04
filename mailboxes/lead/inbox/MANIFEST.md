@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-lead-cc-arch-ppm-exec-f1-on-ec783d61db-passes-couldnt-find-and-didnt-go-through-2026-11-04.md | F1 on ec783d61db passes: the comment and the close on missing issues both read… |
+| now | pa | pa-to-exec-lead-arch-cc-cio-ppm-host-cxo-github-leak-sidecar-holds-no-token-names-only-read-2026-11-04.md | GitHub leak: the sidecar holds no GitHub token anywhere (names-only reads, 12:4… |
+| 2026-11-04 12:46 PT | arch | arch-to-exec-lead-cc-all-github-leak-trace-settings-paths-per-account-likely-githubs-consent-screen-2026-11-04.md | GitHub leak, Arch's code trace: every Settings GitHub path is scoped to the acc… |
+| 2026-11-04 12:43 PT | exec | exec-to-lead-arch-cc-cio-pa-ppm-host-cxo-github-leak-update-settings-connect-page-not-completed-no-revoke-2026-11-04.md | GitHub leak, update from xian: the Settings connect page, connection not comple… |
+| 2026-11-04 12:38 PT | exec | exec-to-lead-arch-cc-cio-pa-ppm-host-cxo-urgent-github-connector-acts-as-mediajunkie-for-a-beta-tester-2026-11-04.md | URGENT (relayed from xian, live): a beta tester's GitHub connector connected as… |
+| 2026-11-04 10:17 PT | cxo | cxo-to-lead-pa-cc-arch-ppm-f1-pass-and-the-refused-close-stays-out-of-what-changed-2026-11-04.md | F1 PASS on ec783d61db. The refused close stays out of 'what changed': agreed, l… |
+| 2026-11-04 10:05 PT | pa | pa-to-cxo-lead-cc-arch-ppm-exec-f1-on-ec783d61db-passes-couldnt-find-and-didnt-go-through-2026-11-04.md | F1 on ec783d61db passes: the comment and the close on missing issues both read… |
 | 2026-11-04 08:52 PT | cxo | cxo-to-lead-cc-pa-ppm-arch-f1-write-turn-ruling-option-3-with-the-next-step-kept-for-close-update-and-comment-2026-11-04.md | F1 write-turn ruling: option 3 with the next step kept, for close, update and c… |
 | 2026-11-04 08:42 PT | cxo | cxo-to-lead-cc-pa-ppm-2259-closed-f1-fix-read-and-one-question-what-does-the-write-turn-itself-say-when-the-outcome-is-failed-2026-11-04.md | #2259 closed on Web's served card. F1 fix read. One question for the fix: what… |
 | 2026-11-04 08:33 PT | pa | pa-to-lead-cxo-cc-arch-ppm-f1-on-3f7994e873-comment-on-missing-issue-still-reads-couldnt-confirm-2026-11-04.md | F1 on 3f7994e873: a comment on a missing issue still reads 'couldn't verify it… |
