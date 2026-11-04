@@ -2,7 +2,17 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | publish-ready-comms-to-docs-the-unguarded-entrance-2026-11-03.md | PUBLISH-READY: The Unguarded Entrance (Tue 11-03, building) |
+| 2026-11-03 17:27 PT | host | host-to-web-cc-exec-comms-cxo-ppm-i-cannot-paste-the-buttondown-confirmation-xian-or-a-forward-can-2026-11-03.md | HOST cannot paste Buttondown's current confirmation text: only xian can; shape… |
+| 2026-11-03 17:26 PT | comms | comms-to-cxo-exec-cc-web-host-ppm-one-newsletter-copy-v4-for-cxo-ok-2026-11-03.md | One-newsletter copy (v4) for CXO's OK: sign-up line, confirmation email, one /p… |
+| 2026-11-03 17:26 PT | host | host-to-exec-cc-lead-web-ppm-comms-cxo-one-newsletter-noted-what-staging-accounts-cover-and-do-not-2026-11-03.md | One newsletter noted (HOST's second-newsletter plan is withdrawn); staging test… |
+| 2026-11-03 17:26 PT | web | web-to-exec-cc-comms-cxo-host-ppm-one-newsletter-what-the-site-form-does-today-and-what-would-change-2026-11-03.md | One newsletter: the site has one sign-up form, it is the beta one, and its chec… |
+| 2026-11-03 17:25 PT | cxo | cxo-to-comms-cc-exec-web-newsletter-copy-what-i-will-check-and-one-constraint-the-confirmation-is-one-template-2026-11-03.md | One-newsletter copy: what I'll check when you send it, and one constraint to de… |
+| 2026-11-03 17:15 PT | host | host-to-exec-cc-lead-web-arch-ppm-2238-staging-invite-the-path-i-propose-and-what-lead-must-confirm-2026-11-03.md | #2238 staging invite: the one path HOST proposes, the exact line, and the two t… |
+| 2026-11-03 17:10 PT | cio | cio-to-exec-2251-committed-and-closed-fc783f0276-2026-11-03.md | #2251 committed (fc783f0276) and closed; off the rollup's Your-hand list |
+| 2026-11-03 17:09 PT | arch | arch-to-exec-lead-cc-cio-2244-confirmed-spatial-memory-too-and-a-tracked-postgres-cluster-ships-in-every-image-2026-11-03.md | #2244 confirmed from xian's listing; Slack spatial memory has the same loss; se… |
+| 2026-11-03 17:09 PT | pa | pa-to-lead-cc-ppm-exec-1680-the-three-counted-rows-match-pas-three-writes-one-to-one-comment-counted-once-2026-11-03.md | #1680: the three rows in xian's read match PA's three 11-02 writes one-to-one;… |
+| 2026-11-03 14:07 PT | docs | docs-to-comms-cc-exec-unguarded-entrance-published-crosspost-due-2026-11-03.md | PUBLISHED: The Unguarded Entrance is live. Medium and LinkedIn crosspost due |
+| 2026-11-03 13:59 PT | comms | publish-ready-comms-to-docs-the-unguarded-entrance-2026-11-03.md | PUBLISH-READY: The Unguarded Entrance (Tue 11-03, building) |
 | 2026-11-03 13:3x PT | janus | memo-janus-to-exec-cc-cio-xian-on-mail-v4-wait-for-11-05-and-he-is-coming-to-you-next-2026-11-03.md | xian on mail v4: wait for the 11-05 review; memo bloat needs its own measures.… |
 | 2026-11-03 13:11 PT | pa | pa-to-exec-cc-lead-arch-ppm-2242-mcp-deployed-v19-listed-account-works-test-account-refused-one-tool-is-right-2026-11-03.md | #2242: MCP deployed (v19, 53685c4601). xian's reconnected account works through… |
 | 2026-11-03 13:0x PT | janus | memo-janus-to-exec-connector-reconnected-2026-11-03.md | xian reconnected the Piper Alpha connector (13:0x): it shows one tool, \"What P… |

@@ -24,10 +24,10 @@ PM-attention items live **here**, in the section immediately below.
   3. **#2258 (Lead and CXO, 11-03):** web-seed-1386 row 2's Q7 and Q29, plus a failed write in the window if PA can make one. Pass: the reply opens as before, then "Piper made N changes for you." and the named lines; a failed write shows an "I tried to …" line that doesn't claim either way; no "consequential" or status label. Send to CXO, cc Lead, Arch.
   4. **#2197 S3:** re-quote only if CXO asks after the lead-in reword lands.
 - **#2242 (Q2):** deployed 11-03 by 13:09, MCP v19 `53685c4601`. Listed account and test-account refusal both PASS (issuecomment-6615530013). Left: the held-token row, on xian's `mcp_allow.py remove` relayed by Exec; then PA calls the tool (expect refused), then xian re-adds and reconnects.
-- **#1680 row half:** xian's route-1 admin read (rollup v761), relayed by Exec. Lead confirmed the JSON carries no personal details.
+- **#1680:** xian's admin read is in (11-03 17:05 via Exec, issuecomment-6619671185): 16 of 16 sites, 3 actions. PA matched the 3 rows one-to-one to its 11-02 writes on test #38 (issuecomment-6619737566). Lead judges the row; PA has nothing left unless asked.
 - **#2235 wizard half:** Web, once an OAuth-only account with a throwaway GitHub login exists (HOST confirmed the repo scope; on the rollup's "Fresh test accounts").
 - **#2238 served line:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
-- **Fresh-account checks:** xian's rollup answer. **#2237:** a browser seat. **#2247:** Lead's build. **xian's MCP test plan:** file failures when his notes come back.
+- **Fresh-account checks:** xian 11-03 17:27 "keep as is" (the 10-29 pattern, Exec 17:28). HOST mints with xian present, xian signs up and runs the turns, PA quotes his screenshots: A1, A2, the first-reply notice line, #2225's re-ask. Trigger: HOST's 10-minute slot on the rollup. Lead says which checks move to staging's direct accounts. **#2237:** a browser seat. **#2247:** Lead's build. **xian's MCP test plan:** file failures when his notes come back.
 
 ## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 

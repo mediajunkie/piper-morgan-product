@@ -21,6 +21,17 @@ if [ -z "$CURRENT_BRANCH" ]; then
     exit 0
 fi
 
+# Only a commit is checked (#2251). The settings filter `"if": "Bash(git commit*)"` runs this hook for any
+# compound Bash line, so read the command from the PreToolUse JSON and let a line with no `commit` in it
+# through. No JSON (the git pre-commit layer, a hand run) means a real commit: check it.
+if [ ! -t 0 ]; then
+    HOOK_INPUT=$(cat)
+    HOOK_CMD=$(printf '%s' "$HOOK_INPUT" | python3 -c 'import json,sys; print(json.load(sys.stdin)["tool_input"]["command"])' 2>/dev/null)
+    if [ -n "$HOOK_CMD" ] && ! printf '%s' "$HOOK_CMD" | grep -qw commit; then
+        exit 0
+    fi
+fi
+
 # Stamp check on today's session-log headings (xian 2026-10-16 via Exec; warn only, never blocks):
 # flags an HH:Mx form or a heading time ahead of the clock. scripts/stamp_check.py has the rules.
 TOP=$(git rev-parse --show-toplevel 2>/dev/null)
@@ -50,6 +61,14 @@ fi
 
 # On a non-main branch. Check if any staged file is in mailboxes/.
 STAGED_MAIL=$(git diff --cached --name-only 2>/dev/null | grep -E '^mailboxes/' | head -5)
+
+# A merge that only carries origin/main's own mail adds nothing main lacks (#2251): when the staged
+# mailboxes/ tree equals origin/main's, let it through.
+if [ -n "$STAGED_MAIL" ] && git rev-parse -q --verify origin/main >/dev/null \
+    && git diff --cached --quiet origin/main -- mailboxes/ 2>/dev/null; then
+    echo "Note: the staged mail matches origin/main's (a merge carrying main's mail); allowed."
+    STAGED_MAIL=""
+fi
 
 if [ -n "$STAGED_MAIL" ]; then
     exec 1>&2   # the refusal goes to stderr, or the harness shows only "No stderr output" (#2251)
