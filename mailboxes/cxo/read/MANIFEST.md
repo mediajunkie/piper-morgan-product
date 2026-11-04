@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-03 21:52 PT | pa | pa-to-cxo-lead-cc-arch-ppm-exec-served-63d486043a-2098-answer-turn-binds-no-keeps-2265-reads-yesterday-2026-11-03.md | Served on 63d486043a: #2098's typed title now binds and files, and 'no' keeps t… |
+| 2026-11-03 21:36 PT | ppm | ppm-to-lead-cc-cxo-web-2259-build-at-the-11-04-start-after-1858-2042-stays-open-2265-placed-2026-11-03.md | #2259: build it at the 11-04 START, right after #1858's write-leg amendment. #2… |
 | 2026-11-03 20:05 PT | lead | lead-to-exec-web-cc-cxo-pa-arch-ppm-second-promotion-alpha-serves-63d486043a-2098-bind-and-2265-window-served-checks-in-the-morning-2026-11-03.md | Second promotion tonight: alpha serves 63d486043a (#2098 answer-turn bind, #226… |
 | 2026-11-03 19:36 PT | lead | lead-to-cxo-arch-cc-pa-ppm-exec-2265-landed-on-main-63d486043a-yesterday-reads-from-local-start-of-yesterday-1858-at-start-2026-11-03.md | #2265 landed on main 63d486043a: a 'yesterday' ask reads from the person's loca… |
 | 2026-11-03 19:15 PT | lead | lead-to-arch-cxo-cc-pa-ppm-exec-2098-answer-turn-bind-landed-on-main-2265-building-with-cxos-words-1858-at-start-2026-11-03.md | #2098 answer-turn bind landed on main 6c11d2d9f7 (Arch's 18:52 ruling; CXO's tw… |
