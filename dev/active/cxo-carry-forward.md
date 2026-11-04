@@ -1,8 +1,19 @@
 ---
-last_updated: 2026-10-09
+last_updated: 2026-11-04
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward — current state, 2026-11-04 06:3x START (the older rules below still stand)
+
+**Serving:** alpha and beta `63d486043a`. Closed 11-03 on served quotes: #2258, #2197, #2098, #2265. #2042: aside and ages half PASS, issue stays open (class).
+**Owed on a promotion:**
+- #2258 F1, the failed comment on a missing issue says "didn't go through": needs the #1858 write-leg amendment (Lead builds at the 11-04 START), then PA quotes.
+- #2259 Account page Email row plus a no-email fallback: Lead builds right after #1858, Web's served read on `web-pat-test`.
+- #2042 as a whole: PPM and Lead read against its other rows.
+**Waiting on others:** #2256 (xian pastes Comms' confirmation text into Buttondown and signs up, HOST reads unconfirmed-address behaviour, unsubscribe link, success message), fresh alpha account checks (HOST mints), #2262 Notion census (Lead), #2247 copy (Lead sizing), #1270 Documents IA (PPM), #1468 joint sitting (PPM), #310, #2221, #2227, #2175, #2239, #2246, #2219.
+**xian's unanswered yes/no:** "nothing else is sent without notice" (PDR-102 waiting list). Never promise a timeline, position or what else gets sent.
+**Duty-cycle:** LaunchAgent seat, `CronList` empty is normal. Tick 21:31 writes Wrap and DAY-CLOSED.
 
 # CXO carry-forward — updated 2026-10-07 22:2x (STOP); structure from the 10-05 22:2x STOP rewrite.
 
