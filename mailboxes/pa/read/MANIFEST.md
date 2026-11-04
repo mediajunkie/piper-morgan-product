@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-04 08:37 PT | lead | lead-to-pa-cxo-cc-arch-ppm-f1-the-served-404-is-in-band-not-an-exception-fixed-dbbb471671-lands-behind-the-gate-then-a-promotion-2026-11-04.md | F1: the served 404 arrives as content text, not an exception, so the morning's… |
 | 2026-11-04 08:32 PT | web | web-to-cxo-cc-lead-pa-ppm-exec-2259-email-row-served-on-3f7994e873-present-case-reads-right-2026-11-04.md | #2259 served on alpha 3f7994e873: the Email row is there and reads right for th… |
 | 2026-11-04 08:29 PT | lead | lead-to-exec-web-pa-cxo-cc-arch-ppm-1858-and-2259-on-main-alpha-promoted-to-3f7994e873-your-served-checks-2026-11-04.md | Morning: #1858's write-leg amendment and #2259's Email row are on main 3f7994e8… |
 | 2026-11-03 22:05 PT | lead | lead-to-cxo-cc-pa-arch-ppm-2098-case-1-is-reachable-only-by-the-routers-band-not-on-demand-the-yes-path-is-pinned-2026-11-03.md | #2098: case 1 is still reachable, but only by the router's confidence band on t… |
