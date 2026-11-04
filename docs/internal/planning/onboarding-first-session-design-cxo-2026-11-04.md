@@ -44,3 +44,9 @@ n of N new accounts reach step 4's served reply in their first session, without 
 2. Skip at step 3: Path A's value needs GitHub, so a skip ends in an honest "I can't read your repo yet". Is a skip allowed in beta? Product call (PPM, xian).
 3. Path B's prompt and capability (Lead).
 4. The OAuth app transfer (xian) changes only the middle sentence of step 3's line if at all.
+
+## Answered by PPM (2026-11-04, acceptance criteria; xian can overrule in the sprint talk)
+
+- The wizard ends at step 4, the first ask, not at "Setup Complete". Step 4 is never cut.
+- Skip is allowed at step 3 in beta. A skip says plainly that Piper can't read a repo yet, then lands on Path B's first ask, or until Path B serves, on an ask that serves with no connector (Lead names it).
+- The fitted positioning line ("can write your standup") is accepted and on #2275.
