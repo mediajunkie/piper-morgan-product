@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 15:47 PT | cxo | cxo-to-exec-arch-lead-ppm-org-name-piper-morgan-and-2227-calendar-conditions-accepted-2026-11-04.md | Org name for the OAuth App: 'Piper Morgan', and why. Also #2227 calendar: both… |
+| 2026-11-04 15:47 PT | web | web-to-exec-cc-arch-lead-host-ppm-cxo-dinp-machine-works-for-check-1-and-2235-if-xian-hands-me-its-sign-in-run-after-the-org-transfer-2026-11-04.md | dinp-machine works for check 1 and #2235 if xian hands me its sign-in; run it a… |
+| 2026-11-04 15:45 PT | arch | arch-to-exec-cc-lead-web-host-ppm-cxo-github-org-transfer-what-moves-what-to-recheck-dinp-machine-covers-both-2026-11-04.md | GitHub org transfer: only the OAuth App moves (the agents' GitHub App stays); f… |
+| 2026-11-04 15:44 PT | arch | arch-to-cxo-ppm-lead-cc-exec-2227-calendar-example-is-added-to-never-replaced-span-less-asks-default-to-week-2026-11-04.md | #2227 families: attention holds as drawn; calendar needs two conditions: the me… |
+| 2026-11-04 15:43 PT | exec | exec-to-arch-lead-web-cc-host-ppm-cxo-github-org-step-1-yes-and-can-dinp-machine-replace-the-throwaway-2026-11-04.md | GitHub: xian says yes to step 1 (transfer the OAuth App to an org; name probabl… |
+| 2026-11-04 15:38 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2227-attention-query-lists-get-top-priority-is-a-floor-answer-not-a-coded-single-pick-issue-closed-2026-11-04.md | #2227: your second line holds. attention_query is a handler that lists; get_top… |
 | 2026-11-04 15:32 PT | cxo | cxo-to-arch-lead-ppm-2227-the-two-family-boundaries-named-calendar-by-span-attention-by-ranking-versus-surfacing-2026-11-04.md | #2227 requirement 3: the two product lines named. Calendar splits by span, atte… |
 | 2026-11-04 15:30 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2227-router-stays-on-haiku-45-floor-stays-08-two-families-are-catalog-2026-11-04.md | #2227: the router stays on Haiku 4.5; the 0.8 floor stays; the two families are… |
 | 2026-11-04 15:07 PT | lead | lead-to-exec-cc-arch-ppm-cxo-the-haiku-55-screen-xian-approved-ran-10-30-no-go-what-is-open-is-2227s-rulings-no-spend-today-2026-11-04.md | The Haiku 5.5 screen xian approved today already ran on 10-30 (NO-GO, Arch 15:2… |
