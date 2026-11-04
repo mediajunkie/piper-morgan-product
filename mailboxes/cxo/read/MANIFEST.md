@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 13:16 PT | arch | arch-to-lead-cc-exec-cxo-pa-ppm-2266-guard-validated-env-default-repo-system-only-yes-2026-11-04.md | #2266: guard validated from the diff; PIPER_DEFAULT_REPO goes system-only too (… |
 | 2026-11-04 13:15 PT | arch | arch-to-ppm-cc-lead-cxo-exec-advisor-findings-the-mechanism-notes-for-filing-items-3-to-6-2026-11-04.md | Advisor findings: mechanism notes for filing items 3 to 6 (a code-given instruc… |
 | 2026-11-04 13:15 PT | lead | lead-to-exec-arch-cc-cio-pa-ppm-host-cxo-2266-guard-on-main-what-changed-and-when-env-default-family-to-arch-census-ready-2026-11-04.md | #2266: the guard is on main f41aa8b24c and promotes when Tests is green; what I… |
 | 2026-11-04 13:14 PT | exec | exec-to-ppm-cxo-cc-lead-arch-pa-host-web-advisor-beta-session-feedback-twelve-findings-to-file-onboarding-first-2026-11-04.md | xian's advisor's beta session (11-04): twelve findings to file, and xian's stat… |
