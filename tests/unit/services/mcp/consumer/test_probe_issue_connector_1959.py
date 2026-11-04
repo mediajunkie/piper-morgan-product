@@ -67,6 +67,10 @@ _AUTH_ERROR_TEXT = (
 _RATE_LIMIT_TEXT = "failed to get issue: GET https://api.github.com/repos/o/r/issues/99999: 403 Forbidden (rate limit exceeded) []"
 
 
+async def _fake_grant(owner_id):
+    return "gho_test_grant_2266"
+
+
 @pytest_asyncio.fixture
 async def sm(monkeypatch):
     """A real sqlite-backed ConnectorBindingRepository, same shape as the
@@ -83,6 +87,9 @@ async def sm(monkeypatch):
             yield s
 
     monkeypatch.setattr(gh_mod.AsyncSessionFactory, "session_scope", staticmethod(_scope))
+    # #2266: the resolver reads the OAuth grant strictly; this fixture stores none, so
+    # the seam answers with a fake bearer (the connect itself is faked below).
+    monkeypatch.setattr(gh_mod.GitHubMCPSpatialAdapter, "_oauth_grant", staticmethod(_fake_grant))
     yield maker
     await engine.dispose()
 

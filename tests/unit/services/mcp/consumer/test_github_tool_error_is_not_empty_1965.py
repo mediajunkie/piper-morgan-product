@@ -48,6 +48,10 @@ _404 = "failed to get issue: GET https://api.github.com/repos/o/r/issues/9: 404 
 _500 = "failed to search issues: GET https://api.github.com/search/issues: 502 Bad Gateway []"
 
 
+async def _fake_grant(owner_id):
+    return "gho_test_grant_2266"
+
+
 @pytest_asyncio.fixture
 async def sm(monkeypatch):
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
@@ -61,6 +65,9 @@ async def sm(monkeypatch):
             yield s
 
     monkeypatch.setattr(gh_mod.AsyncSessionFactory, "session_scope", staticmethod(_scope))
+    # #2266: the resolver reads the OAuth grant strictly; this fixture stores none, so
+    # the seam answers with a fake bearer (the connect itself is faked below).
+    monkeypatch.setattr(gh_mod.GitHubMCPSpatialAdapter, "_oauth_grant", staticmethod(_fake_grant))
     yield maker
     await engine.dispose()
 

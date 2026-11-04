@@ -62,6 +62,10 @@ _GH_404_READ = (
 )
 
 
+async def _fake_grant(owner_id):
+    return "gho_test_grant_2266"
+
+
 @pytest_asyncio.fixture
 async def sm(monkeypatch):
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
@@ -75,6 +79,9 @@ async def sm(monkeypatch):
             yield s
 
     monkeypatch.setattr(gh_mod.AsyncSessionFactory, "session_scope", staticmethod(_scope))
+    # #2266: the resolver reads the OAuth grant strictly; this fixture stores none, so
+    # the seam answers with a fake bearer (the connect itself is faked below).
+    monkeypatch.setattr(gh_mod.GitHubMCPSpatialAdapter, "_oauth_grant", staticmethod(_fake_grant))
     async with maker() as s:
         await ConnectorBindingRepository(s).upsert(
             _ALPHA, "github", status="bound", mcp_server_ref="http://srv/mcp"

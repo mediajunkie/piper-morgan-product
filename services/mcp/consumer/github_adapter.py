@@ -155,6 +155,14 @@ _slog = structlog.get_logger(__name__)
 # (one class, one taxonomy; Arch 2026-10-22). Imported above, so this module still exports it.
 
 
+class GitHubGrantMissing(Exception):
+    """#2266 (2026-11-04): a connector call was about to go to the sidecar WITHOUT a
+    per-user bearer. Never allowed: the official github-mcp-server answers an
+    unauthenticated request with its own token, and one beta tester reached xian's
+    repositories that way. Raised by ``_mcp_client_ctx`` before any connect; the call
+    sites' ``except Exception`` rail degrades it as STALE_TOKEN (re-authorize)."""
+
+
 class GitHubToolError(Exception):
     """#1965 (OAuth leg): github-mcp-server answered a tool call with ``isError: true``.
 
@@ -482,6 +490,8 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         for leaf in GitHubMCPSpatialAdapter._leaf_exceptions(exc):
             if isinstance(leaf, ServerRefResolutionError):
                 return DegradationReason.MISCONFIGURED
+            if isinstance(leaf, GitHubGrantMissing):
+                return DegradationReason.STALE_TOKEN  # #2266: re-authorize, never an outage
             if isinstance(leaf, GitHubToolError):
                 return leaf.reason  # #1965 OAuth leg: GitHub's 401 is STALE_TOKEN, not an outage
             if isinstance(leaf, McpError):
@@ -1666,6 +1676,14 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         return await self.resolve_credential(user_id)
 
     @staticmethod
+    async def _oauth_grant(owner_id) -> Optional[str]:
+        """#2266: the account's stored OAuth grant, strictly: None ONLY when no grant row
+        exists; raises when a row exists but cannot be read. The resolver's one read of
+        the grant; tests patch this seam."""
+        async with AsyncSessionFactory.session_scope() as session:
+            return await ConnectorGrantStore().get_strict(session, str(owner_id), _GITHUB)
+
+    @staticmethod
     async def _user_pat_at_rest(user_id) -> Optional[str]:
         """#1982: the user's own PAT from the encrypted-at-rest ``user_api_keys`` row
         (provider ``github``, context ``user_api_keys.secret.github``), read BEFORE the
@@ -1782,19 +1800,42 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         """
         async with AsyncSessionFactory.session_scope() as session:
             binding = await ConnectorBindingRepository(session).get(user_id, _GITHUB)
-        if binding is not None and binding.status == ConnectorStatusState.BOUND.value:
-            # OAuth leg. The grant is read lazily at connect time (``_mcp_client_ctx``),
-            # exactly as before #1965 — a BOUND binding means "OAuth connected".
-            # (Known edge, not handled: BOUND with a missing grant does not fall
-            # back to a PAT; it degrades at the call as it always did.)
-            return GitHubCredential(
-                owner_id=binding.owner_id,
-                mcp_server_ref=binding.mcp_server_ref,
-                token=None,
-                leg="oauth",
-            )
         stale = None
-        if binding is not None:
+        grant_failed = False
+        if binding is not None and binding.status == ConnectorStatusState.BOUND.value:
+            # OAuth leg. #2266 (2026-11-04): the grant is read HERE, with the strict
+            # read, never lazily at connect time. Before this, a BOUND binding whose
+            # grant was absent or unreadable reached ``_mcp_client_ctx`` with no token,
+            # the client connected with no Authorization header, and the sidecar's
+            # own token answered for the account: a beta tester reached xian's
+            # repositories as mediajunkie. A grant that is there is the credential; a
+            # grant that is absent marks the binding STALE and falls to the person's
+            # own PAT or a re-authorize degrade; a grant that cannot be read degrades
+            # UNREACHABLE (a failed read is never absence, #2151).
+            grant = None
+            try:
+                grant = await self._oauth_grant(binding.owner_id)
+            except Exception:
+                logger.warning("GitHub OAuth grant read failed", exc_info=True)
+                grant_failed = True
+            if grant:
+                return GitHubCredential(
+                    owner_id=binding.owner_id,
+                    mcp_server_ref=binding.mcp_server_ref,
+                    token=grant,
+                    leg="oauth",
+                )
+            if not grant_failed:
+                await self._mark_oauth_binding_stale(
+                    GitHubCredential(
+                        owner_id=binding.owner_id,
+                        mcp_server_ref=binding.mcp_server_ref,
+                        token=None,
+                        leg="oauth",
+                    )
+                )
+            stale = DegradationReason.STALE_TOKEN
+        elif binding is not None:
             stale = _NONBOUND_REASON.get(binding.status, DegradationReason.CONNECT_REQUIRED)
         # #2151 (Arch 10-24 16:49): a leg that failed is not absence. Either leg's token
         # still serves; with none, a failed leg degrades UNREACHABLE, never CONNECT_REQUIRED.
@@ -1811,6 +1852,11 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 token=pat,
                 leg="pat",
                 stale_oauth_reason=stale,
+            )
+        if grant_failed and not pat:
+            return DegradationResponse(
+                reason=DegradationReason.UNREACHABLE,
+                user_message=CREDENTIAL_STORE_FAILED_MESSAGE,
             )
         if stale is not None and stale is not DegradationReason.CONNECT_REQUIRED:
             return await self.degrade(stale)
@@ -1999,14 +2045,17 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         Tests patch this method to yield a fixture-backed client (bypassing the live
         connect). A connect failure / missing grant surfaces as ``resolve()`` UNREACHABLE.
         """
-        if isinstance(binding, GitHubCredential) and binding.leg == "pat":
-            # #1965 (b): the resolver chose the user's own PAT; it rides the same
-            # Authorization header (the server passes the bearer through).
-            grant = binding.token
-        else:
-            async with AsyncSessionFactory.session_scope() as session:
-                grant = await ConnectorGrantStore().get(session, str(binding.owner_id), _GITHUB)
-        headers = {"Authorization": f"Bearer {grant}"} if grant else None
+        # #2266 (2026-11-04): the credential carries its own bearer on both legs (the
+        # resolver reads the OAuth grant strictly); this method NEVER connects without
+        # one. An unauthenticated request let the sidecar's own token answer for a beta
+        # tester. Nothing is read here, so nothing can silently come back empty.
+        grant = getattr(binding, "token", None) if isinstance(binding, GitHubCredential) else None
+        if not grant:
+            raise GitHubGrantMissing(
+                "GitHub connector call without a per-user bearer; refusing to connect "
+                f"(leg={getattr(binding, 'leg', None)!r})"
+            )
+        headers = {"Authorization": f"Bearer {grant}"}
         # ADR-070-A (A2): the ONE resolution authority — logical keys resolve
         # from deployment config; scheme-prefixed BYOC literals pass verbatim.
         # A ServerRefResolutionError names the missing config (A4) instead of

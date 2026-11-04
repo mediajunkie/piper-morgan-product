@@ -42,6 +42,14 @@ class ConnectorGrantStore:
         """Return the user's stored OAuth grant for ``connector``, or ``None``."""
         return await self._service.retrieve_user_key(session, user_id, _provider(connector))
 
+    async def get_strict(
+        self, session: AsyncSession, user_id: str, connector: str
+    ) -> Optional[str]:
+        """#2266: the grant, or None ONLY when no grant row exists. A row whose secret
+        cannot be read raises ``UserKeyReadFailed`` (#2151's contract), so a caller can
+        tell absence from failure and never treats either as "connect without a token"."""
+        return await self._service.retrieve_user_key_strict(session, user_id, _provider(connector))
+
     async def delete(self, session: AsyncSession, user_id: str, connector: str) -> bool:
         """Revoke (delete) the user's stored OAuth grant for ``connector`` — the disconnect
         inverse of ``store`` (#1330). Idempotent: returns ``False`` if no grant was stored."""

@@ -40,6 +40,10 @@ pytestmark = pytest.mark.asyncio
 _ALPHA = "11111111-1111-1111-1111-111111111111"
 
 
+async def _fake_grant(owner_id):
+    return "gho_test_grant_2266"
+
+
 @pytest_asyncio.fixture
 async def sm(monkeypatch):
     """In-memory ConnectorBinding store (the #1322 fixture pattern)."""
@@ -54,6 +58,9 @@ async def sm(monkeypatch):
             yield s
 
     monkeypatch.setattr(gh_mod.AsyncSessionFactory, "session_scope", staticmethod(_scope))
+    # #2266: the resolver reads the OAuth grant strictly; this fixture stores none, so
+    # the seam answers with a fake bearer (the connect itself is faked below).
+    monkeypatch.setattr(gh_mod.GitHubMCPSpatialAdapter, "_oauth_grant", staticmethod(_fake_grant))
 
     # #2151: this store has no user_api_keys table (SQLite can't render its UUID column), and
     # a failed at-rest read is no longer absence, so the leg answers "no stored PAT" here.

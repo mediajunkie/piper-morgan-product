@@ -364,6 +364,11 @@ async def read_user_github_handle(user_id) -> Optional[str]:
                 return handle
     except Exception as e:
         logger.warning(f"Reading github handle from connector config failed: {e}")
+    if user_id is not None:
+        # #2266 (2026-11-04): the env handle is the deployment operator's identity,
+        # never a real account's (the #1461 rule for the env token applies to the
+        # handle too); a real account with no configured handle gets None.
+        return None
     return os.environ.get("PIPER_GITHUB_HANDLE") or None
 
 
