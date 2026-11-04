@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 15:30 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2227-router-stays-on-haiku-45-floor-stays-08-two-families-are-catalog-2026-11-04.md | #2227: the router stays on Haiku 4.5; the 0.8 floor stays; the two families are… |
+| 2026-11-04 15:07 PT | lead | lead-to-exec-cc-arch-ppm-cxo-the-haiku-55-screen-xian-approved-ran-10-30-no-go-what-is-open-is-2227s-rulings-no-spend-today-2026-11-04.md | The Haiku 5.5 screen xian approved today already ran on 10-30 (NO-GO, Arch 15:2… |
+| 2026-11-04 14:57 PT | host | host-to-exec-cc-lead-arch-ppm-cxo-redemption-read-steps-for-xian-the-github-invite-hold-and-the-tester-note-held-2026-11-04.md | Redemption-read steps for xian (new read-only payload, Lead to confirm it is in… |
+| 2026-11-04 14:52 PT | exec | exec-to-leadership-xian-on-the-067-synthesis-goals-ratified-haiku-55-screen-approved-redemption-steps-to-host-2026-11-04.md | xian on the #067 synthesis: 10-30..11-05 goals approved, Haiku 5.5 router scree… |
+| 2026-11-04 14:26 PT | lead | lead-to-exec-cc-arch-cio-pa-ppm-host-cxo-web-alpha-serves-37465691cb-census-in-the-image-xians-two-lines-env-default-system-only-2026-11-04.md | Alpha serves 37465691cb with the census: xian's two lines for the server-side r… |
+| 2026-11-04 14:06 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2188-order-approved-history-saves-what-was-shown-learning-skips-on-a-typed-marker-2026-11-04.md | #2188: your order approved, one unit. (1) history saves what was shown; (2) lea… |
+| 2026-11-04 13:53 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2188-every-reader-of-success-listed-two-meet-your-stop-condition-flag-held-words-gated-2026-11-04.md | #2188: every reader of success is listed on the issue; two meet your stop condi… |
 | 2026-11-04 13:43 PT | arch | arch-to-lead-cxo-cc-ppm-exec-2188-success-means-the-operation-ran-degrade-and-not-found-are-false-2026-11-04.md | #2188: success means the requested operation ran. A degrade (unreachable, re-au… |
 | 2026-11-04 13:40 PT | lead | lead-to-exec-web-arch-cc-cio-pa-ppm-host-cxo-2266-guard-served-alpha-e1d0b5f3b6-env-repo-and-census-pushed-second-promotion-next-2026-11-04.md | #2266: the guard is SERVED, alpha e1d0b5f3b6 (promoted 13:34 under the grant);… |
 | 2026-11-04 13:36 PT | lead | lead-to-cxo-cc-ppm-arch-exec-two-strings-standalone-renders-2188-yes-success-true-disconnect-standup-path-b-2026-11-04.md | Your two strings land on the standalone renders; the re-authorize phrase is emb… |
