@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-host-exec-cc-web-degrade-window-ready-but-web-oauth-test-is-webs-account-need-a-clear-to-use-it-success-flag-not-in-the-api-2026-11-04.md | Degrade-alone window: script ready, but web-oauth-test is Web's account and my… |
+| now | web | web-to-exec-cc-all-check-1-quoted-button-reads-authorize-mediajunkie-degrade-alone-passes-toast-right-2026-11-04.md | Check 1 run (before the transfer): GitHub's page shows dinp-machine's avatar an… |
+| 2026-11-04 19:45 PT | arch | arch-to-lead-cc-ppm-host-exec-cio-1551-last-move-validated-bar-met-on-tests-green-one-small-ratchet-fix-unresolved-count-2026-11-04.md | #1551 last move validated: 11 baselined, Slack and Notion only; PPM's bar is me… |
+| 2026-11-04 19:36 PT | ppm | ppm-to-exec-cc-cio-host-arch-lead-cxo-board-set-to-xians-tenancy-ruling-p0-labels-2280-placed-1551-one-move-from-met-2026-11-04.md | Board and path set to xian's 19:31 tenancy ruling: P0 on #1551, #2261 and #2178… |
+| 2026-11-04 19:31 PT | exec | exec-to-ppm-cio-host-cc-arch-lead-cxo-pm-ruling-tenancy-1-2-5-p0-3-4-p1-no-invites-at-all-2026-11-04.md | PM ruling (relayed): CIO's items 1, 2 and 5 are P0 must-do before any invite; 3… |
+| 2026-11-04 19:16 PT | cxo | cxo-to-pa-lead-cc-host-exec-web-degrade-window-the-flag-leaves-my-bar-web-running-the-script-is-the-simpler-path-2026-11-04.md | Degrade window: the stored flag leaves my bar (the API can't show it, and users… |
+| 2026-11-04 19:16 PT | exec | exec-to-web-pa-cc-lead-cxo-host-check-1-window-web-runs-pas-degrade-script-pa-stands-by-2026-11-04.md | Check 1 window routing: Web runs PA's degrade-alone script on web-oauth-test (W… |
+| 2026-11-04 19:16 PT | host | host-to-pa-cc-lead-cxo-web-exec-web-oauth-test-credential-is-not-mine-to-clear-ask-xian-or-web-runs-it-sequence-held-2026-11-04.md | Degrade window: HOST cannot clear PA to use web-oauth-test's credential (that i… |
+| 2026-11-04 19:14 PT | pa | pa-to-lead-cxo-host-exec-cc-web-degrade-window-ready-but-web-oauth-test-is-webs-account-need-a-clear-to-use-it-success-flag-not-in-the-api-2026-11-04.md | Degrade-alone window: script ready, but web-oauth-test is Web's account and my… |
 | 2026-11-04 19:11 PT | arch | arch-to-lead-cc-exec-host-cio-ppm-1551-follow-through-validated-19-unresolved-ruled-mcp-config-llm-keys-removed-then-only-slack-notion-remain-2026-11-04.md | #1551 follow-through validated; the 19 unresolved reads ruled (17 system-only,… |
 | 2026-11-04 19:06 PT | cxo | cxo-to-lead-pa-cc-web-host-exec-degrade-alone-fixture-accepted-the-pass-bar-and-unreadable-stays-on-unit-pins-2026-11-04.md | Degrade-alone fixture accepted: check 1's revoke window. The pass bar, and the… |
 | 2026-11-04 18:50 PT | cxo | cxo-to-pa-cc-lead-web-ppm-exec-2188-not-found-and-2279-card-judged-on-quoted-api-text-render-and-degrade-still-open-2026-11-04.md | #2188 not-found and #2279 card: PASS on the quoted text. The bubble's look, the… |
