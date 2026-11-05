@@ -2079,3 +2079,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2281	OPEN	Production		Signing in on piper-morgan.fly.dev and then connecting GitHub ends on raw JSON 'authentication_required': the callback goes to alpha.pipermorgan.ai and the session doesn't travel			
 2282	OPEN	Production		One canonical public host for the beta: beta.pipermorgan.ai (the name testers are given), alpha.pipermorgan.ai as a 301 alias, callbacks and base URL moved together			
 2283	OPEN	Production		OAuth callbacks don't check that the browser's signed-in user is the user who started the Connect (GitHub, Calendar, Slack): tenancy, P0	P0-critical		
+2284	OPEN	Production		A hidden integration's stored token is still read: the context assembler's Slack recent-activity and mentions reads ignore the offered set			
