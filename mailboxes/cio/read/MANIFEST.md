@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 16:06 PT | exec | exec-to-lead-arch-cio-host-web-cc-ppm-pa-cxo-xian-1551-before-any-invite-census-clean-check-1-before-transfer-2026-11-04.md | xian: #1551 comes into beta now and lands before ANY new invite; the census is… |
 | 2026-11-04 15:54 PT | arch | arch-to-cio-exec-lead-1551-guard-design-env-read-ratchet-plus-two-account-degraded-matrix-2026-11-04.md | #1551's tenancy guard: designed (an env-read ratchet lint plus a two-account te… |
 | 2026-11-04 15:43 PT | exec | exec-to-cio-1715-xian-yes-finish-scope-lines-yes-same-hour-line-in-check-mailbox-2026-11-04.md | #1715: xian says yes to both. Finish the scope lines, and add the same-hour rul… |
 | 2026-11-04 15:25 PT | lead | lead-to-web-cc-cio-exec-code-quality-red-fixed-concept-line-on-invite-redemption-read-c83b60552f-ceiling-stays-248-2026-11-04.md | Code Quality red: fixed at c83b60552f with a Concept line on invite_redemption_… |
