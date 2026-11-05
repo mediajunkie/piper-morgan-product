@@ -8,7 +8,9 @@
 
 One line at a time, in the HOST conversation. HOST notes the clock at each step.
 
-**Where each line is typed (HOST's handling point, 16:54, agreed):** step B (the create) and proof 4 (the decrypt command) carry the copy's password, which Fly prints once; xian runs those two in **his own terminal** and pastes here only what they print: the create's success line without its credentials block, and `ok` or `fail`. Every other line carries no secret and is typed here with the `!` prefix as usual. The password is never pasted anywhere; it dies with the app in step D.
+**Never `fly postgres attach` the drill app to anything** (Arch 18:34): attaching sets `DATABASE_URL` on the target app and restarts it, which would boot Piper against the copy. If a line not in this list seems needed, stop and report.
+
+**Where each line is typed (HOST's handling point, 16:54, agreed):** step B (the create), proof 2's shell-2 line and proof 4 (the decrypt command) carry the copy's password, which Fly prints once; xian runs those two in **his own terminal** and pastes here only what they print: the create's success line without its credentials block, and `ok` or `fail`. Every other line carries no secret and is typed here with the `!` prefix as usual. The password is never pasted anywhere; it dies with the app in step D.
 
 ## A. Read what exists (no change)
 
@@ -51,11 +53,11 @@ Then the copy, from xian's Mac in a checkout of the sha alpha serves (the migrat
 ```
 fly proxy 15434:5432 -a piper-morgan-db-drill
 ```
-Shell 2:
+Shell 2, **in xian's own terminal** (it carries the drill password; Arch 18:34), and it sets `ALEMBIC_DATABASE_URL`, the name `get_sync_migration_url` reads first, so a stray `DATABASE_URL` in his shell cannot point the proof at another database:
 ```
-DATABASE_URL="postgres://postgres:<drill-password>@localhost:15434/piper_morgan" venv/bin/alembic current
+ALEMBIC_DATABASE_URL="postgres://postgres:<drill-password>@localhost:15434/piper_morgan" venv/bin/alembic current
 ```
-The two revision ids must match. (`alembic/env.py` reads `DATABASE_URL` through `get_sync_migration_url`.)
+Only the printed revision id is pasted here. The two revision ids must match.
 
 **Proof 3, counts and one id**, on the copy:
 ```
@@ -76,11 +78,11 @@ fly postgres connect -a piper-morgan-db -d piper_morgan
 ```
 Only counts, one id and one timestamp are pasted. No other column.
 
-**Proof 4, one stored credential decrypts under the deployment's key.** Run inside alpha's container (it holds `ENCRYPTION_MASTER_KEY`), pointed at the copy over the private network; it prints `ok` or `fail` and nothing else:
+**Proof 4, one stored credential decrypts under the deployment's key.** Run inside alpha's container (it holds `ENCRYPTION_MASTER_KEY`), pointed at the copy over the private network; it prints `ok`, or `fail:<code>`, and nothing else. `--database-url` is required, and the script refuses (`fail:5`) a URL whose host is the container's own live database, so a dropped or mis-quoted flag can never prove alpha instead of the copy (Arch 18:34):
 ```
 fly ssh console -a piper-morgan -C "python /app/scripts/verify_stored_credential_decrypt.py --database-url postgres://postgres:<drill-password>@piper-morgan-db-drill.flycast:5432/piper_morgan"
 ```
-**Precondition:** the script must be in alpha's image (it lands with the next promotion after it reaches main; HOST checks the served sha against the commit before the sitting). `fail` with exit code 2 means the copy holds no encrypted row (then proof 4 is vacuous, say so); 1 means the key does not open the row (the real finding this drill exists to catch); 3 means the container has no key (stop, that is a separate incident).
+**Precondition:** the script must be in alpha's image (it lands with the next promotion after it reaches main; HOST checks the served sha against the commit before the sitting). `fail:2` means the copy holds no encrypted row (then proof 4 is vacuous, say so); `fail:1` means the key does not open the row (the real finding this drill exists to catch); `fail:3` means the container has no key (stop, that is a separate incident); `fail:4` the copy could not be read (check the private address and the password); `fail:5` the URL pointed at alpha's own database (re-type it).
 
 ## D. Cleanup, same sitting
 

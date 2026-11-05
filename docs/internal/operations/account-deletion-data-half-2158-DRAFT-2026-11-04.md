@@ -20,11 +20,11 @@ Two tables carry a soft-delete flag: `conversations` (`archived_at`, `deleted_at
 
 ## What the script does not reach, and what to say about each
 
-- **Fly volume snapshots of `piper-morgan-db`:** daily, **5-day retention** (Fly's default; `alpha-fly-cutover-runbook-2026-09-22.md` records it on this volume; configurable 1 to 60 days, a change applying to new snapshots only). A deleted account survives in snapshots taken before the erase for up to 5 days after it. **N = 5** for HOST's reply ("Backups can hold a copy for up to 5 days, after which it is gone"). A manual snapshot taken for a drill or a cutover keeps for its own retention, so the operator checks `fly volumes snapshots list <vol_id> -a piper-morgan-db` for any snapshot older than the default window before promising the date.
+- **Fly volume snapshots of `piper-morgan-db`:** daily; **5-day retention** is Fly's default and what the 09-22 runbook recorded, but **the figure is read live at the sitting** (Arch 18:34): `fly volumes snapshots list <vol_id> -a piper-morgan-db` shows each snapshot's date, and the oldest one present is the horizon. A deleted account survives in snapshots taken before the erase until they age out. The person is told that number of days, in CXO's words; the draft reply's N comes from that read, not from this page.
 - **GitHub itself:** issues, comments and the OAuth grant Piper made as the person live in GitHub, not in Piper; not ours to delete, said to the person.
 - **Email with the person** (the request thread) and **HOST's private roster**: HOST's half.
 - **Application logs:** structured logs carry account ids and fingerprints, never emails or content; Fly's log retention is short and not something this seat has measured (unverified).
-- **The MCP app's own state:** the MCP app reads the same database through its own process; whether it holds any per-account rows of its own is **unverified** from this seat and is a question for Arch's review.
+- **The MCP app's own state (Arch 18:34):** the MCP app has no volume. Its OAuth rows live in alpha's Postgres, and the plan erases `mcp_oauth_codes`, `mcp_oauth_refresh_tokens` and `mcp_access_tokens` by user id; `mcp_oauth_clients` has no owner column (a client registration, not a person's row); the server's in-memory rate counters die with the process. The census pin in `tests/test_architecture_enforcement.py` (every user-owned table in the plan or the allow list, ceiling 0) keeps that true.
 - **This repository:** rule 8 keeps names out of logs and mail; nothing to purge here by design, and a slip is Exec's to handle, not a deletion step.
 
 ## The procedure, data half (xian's hand, the prod-exec shape; HOST hands over the account id only)
@@ -32,9 +32,11 @@ Two tables carry a soft-delete flag: `conversations` (`archived_at`, `deleted_at
 1. **Count:** `fly ssh console -a piper-morgan -C "python /app/scripts/erase_user.py <account-id>"`. Read the verdict line: "would erase cleanly" proceeds; "would refuse at <table>" stops, and the table named is a unit for Lead before anything is erased.
 2. **Erase:** `fly ssh console -a piper-morgan -C "python /app/scripts/erase_user.py <account-id> --erase --confirm <account-id>"`. The same counts print after; every store reads zero.
 3. **Re-count by id:** step 1 again; zeros everywhere, or the leftover is named and a rerun finishes it (the script is idempotent).
-4. **Record** (HOST's log, counts only): the date of the erase, the stores' before-and-after counts, and **the snapshot horizon = erase date + 5 days** (or the oldest manual snapshot's retention end, if later).
+4. **Record** (HOST's log, counts only): the date of the erase, the stores' before-and-after counts, and **the snapshot horizon**, read live: the date of the oldest snapshot in `fly volumes snapshots list <vol_id> -a piper-morgan-db` plus that volume's retention (5 days unless changed).
 5. **GitHub grant:** until #2178 lands, the reply tells the person to revoke Piper under their GitHub settings.
 6. **After the horizon,** optionally: `fly volumes snapshots list <vol_id> -a piper-morgan-db` shows no snapshot older than the horizon; HOST may then tell the person the copy is gone.
 
-## For Arch's review
-Whether the MCP app holds per-account rows outside this plan; whether `audit_logs` rows should be kept in anonymised form for the security record rather than deleted (today the plan deletes them by `user_id`); and whether N should name 5 days or "about a week" to the person.
+## Reviewed by Arch (2026-11-04 18:34)
+- The MCP app: answered above (no rows outside the plan; the census pin holds it).
+- `audit_logs`: **deletion stays.** An anonymised keep would need a column-by-column personal-data read of the details and request fields, and a partial anonymisation is worse than either choice; if a security record must outlive an account, that is a retention policy for xian, through Exec.
+- N: read live at the sitting; the person is told the number of days; the words are CXO's.

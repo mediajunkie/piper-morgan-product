@@ -1,10 +1,13 @@
-"""#2157 proof 4: the decrypt check prints one word and leaks nothing."""
+"""#2157 proof 4: the decrypt check prints one word (``ok`` or ``fail:<code>``) and leaks
+nothing; the URL is required and never the process's own live database (Arch 18:34)."""
 
 from __future__ import annotations
 
 import sys
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
+
+import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "scripts"))
 import verify_stored_credential_decrypt as v  # noqa: E402
@@ -36,7 +39,8 @@ def test_fail_when_this_process_holds_no_key():
     assert v.verdict(("github", "enc"), None) == ("fail", v.EXIT_NO_KEY)
 
 
-def test_main_prints_exactly_one_word(capsys):
+def test_main_prints_exactly_one_word(capsys, monkeypatch):
+    monkeypatch.setenv("DATABASE_URL", "postgres://u:p@alpha-db.flycast/db")
     with (
         patch.object(v, "one_encrypted_row", return_value=("github", "enc")),
         patch(
@@ -44,21 +48,45 @@ def test_main_prints_exactly_one_word(capsys):
             return_value=_Enc("s"),
         ),
     ):
-        code = v.main(["--database-url", "postgres://u:p@h/db"])
+        code = v.main(["--database-url", "postgres://u:p@drill-db.flycast/db"])
     out = capsys.readouterr()
     assert out.out == "ok\n" and out.err == "" and code == 0
 
 
-def test_main_prints_fail_and_nothing_else_when_the_db_is_unreadable(capsys):
+def test_fail_carries_its_code_and_nothing_else_when_the_db_is_unreadable(capsys, monkeypatch):
+    monkeypatch.delenv("DATABASE_URL", raising=False)
     with patch.object(v, "one_encrypted_row", side_effect=RuntimeError("secret://host")):
         code = v.main(["--database-url", "postgres://u:p@h/db"])
     out = capsys.readouterr()
-    assert out.out == "fail\n" and "secret" not in out.err and code == v.EXIT_DB_UNREADABLE
+    assert out.out == "fail:4\n" and "secret" not in out.err and code == v.EXIT_DB_UNREADABLE
 
 
-def test_no_url_is_fail():
-    with patch.dict("os.environ", {}, clear=False):
-        import os
+def test_the_url_is_required():
+    with pytest.raises(SystemExit):
+        v.main([])
 
-        os.environ.pop("DATABASE_URL", None)
-        assert v.main([]) == v.EXIT_DB_UNREADABLE
+
+def test_the_processs_own_live_database_is_refused(capsys, monkeypatch):
+    """Arch 18:34: inside alpha's container DATABASE_URL is alpha; the proof must never
+    point there, whatever the credentials in the URL."""
+    monkeypatch.setenv(
+        "DATABASE_URL", "postgresql+asyncpg://piper:x@piper-morgan-db.flycast:5432/piper_morgan"
+    )
+    with patch.object(v, "one_encrypted_row", side_effect=AssertionError("must not be read")):
+        code = v.main(
+            ["--database-url", "postgres://postgres:y@PIPER-MORGAN-DB.flycast:5432/piper_morgan"]
+        )
+    out = capsys.readouterr()
+    assert out.out == "fail:5\n" and code == v.EXIT_SAME_HOST_AS_LIVE
+
+
+def test_a_different_host_is_not_refused():
+    assert (
+        v.refuses_live_database("postgres://u:p@drill.flycast/db", "postgres://u:p@live.flycast/db")
+        is False
+    )
+    assert v.refuses_live_database("postgres://u:p@drill.flycast/db", None) is False
+
+
+def test_words():
+    assert v.word(0) == "ok" and v.word(2) == "fail:2"
