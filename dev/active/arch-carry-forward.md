@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-03 21:27 PST (STOP)
+last_updated: 2026-11-04 21:27 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,23 +28,22 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
-- **11-03 STOP (21:27 fire).** Main is green, 12 of 12 workflows. Alpha serves `63d486043a` (Lead promoted at 20:00 under the standing grant; the earlier one, dispatched at 18:26, was `b0f774aabb`). Every ruling for today is in decisions.log (07:10 to 19:40).
-  - **Closed today (by CXO):** #2258 and #2197. #2042's aside passed its served check; whether the issue closes is PPM's and Lead's read.
-  - **Validated on main and served on `63d486043a`; checks owed in the morning:**
-    - #2098, answer-turn bind (`176136c063`, `f85ecfe3b7`). My 11-02 re-ask was reversed for that turn. PA runs T1c then "file it as is", a "no" then file, and a "yes" to case 1 then file.
-    - #2265: the window starts at the local start of yesterday (`e5a61be77d`). CXO's row. The strict calendar day rides #2186.
-  - **Ruled, not built:** #1858's write-leg not-found amendment (decisions 18:53, four conditions). Lead builds it at the 11-04 START. Validate the landing against all four conditions and the five pins. PA's F1 waits for the promotion after that.
-  - **#2264 (`data/postgres`):** untracked (`66e4e8fdce`, validated). The early Piper schema has a `stakeholders` table, so my no-rewrite advice lost its premise. Next: xian runs Lead's read-only line, then decides on the rewrite. Agents don't read it.
-  - **#2238:** the staging-account guard is validated (`2e562df09e`, an allowlist on `FLY_APP_NAME`). Waiting on xian to run the `fly machine exec` line.
-  - **#2244:** confirmed. Lead owes the fix: one durable data-root config for chromadb and `SpatialMemoryStore`. Validate it when it lands.
-  - **#2262** (Notion writes unaudited): validate against my ratchet notes when it's built (`notion_adapter.py` goes in `TRANSPORT_MODULES`; `publisher.py` gets deleted or registered).
-  - **#2242:** the last row is xian's (remove, PA's refused call, add, reconnect). **#2235:** the wizard half needs an account that signs in only through Google; per Lead it can run on staging. **#1680:** the row judgement is Lead's.
-  - **#2226:** about 475 MB of headroom on alpha (Exec 17:13). Still waits on placement. **#2259:** not built; PPM places it.
-  - **PDR-102 trigger:** I write the connector-source ADR when the first connector-ingest unit is placed. #2262 is not that trigger.
+- **11-04 STOP (21:27 fire).** Main green 12/12. Alpha serves `72bd53546a` (Lead 19:34). Every ruling today is in decisions.log, 07:10 to 21:11. xian's 19:31 tenancy ruling: P0 is #1551, #2261, #2178; #2157/#2158 are P1; no invitations of any kind.
+  - **#1551: MET by PPM's bar** (Tests green on `56b284defb`; validated 18:34, 19:10, 19:45, 20:21). The lint baseline holds 11 sites, Slack (#1481) and Notion (#2238) only, behind the offer pin and the allowed-set pins. Unresolved reads are count-bound (UNRESOLVED_COUNTS). Watch: any new SYSTEM_ONLY entry is a ruling of mine.
+  - **NEW, P0-class, ruled 21:11, Lead builds at the 11-05 START:** the OAuth callbacks (GitHub, Calendar, Slack) bind the grant to the state's user, never to the browser's own user, so one account's Connect link can store another's grant. The unit: the session user must equal the state's user, else store nothing and show an HTML error; the calendar and slack paths come off EXEMPT_OAUTH_CALLBACK_PATHS; the start-host redirect (#2281(b)) is required; two-account pins per connector. Validate it against all four. Exec puts the P0 label to xian in the morning; PPM files it or folds it into #2281. Keep the public text to the class description.
+  - **#2178:** validated (b5df29d4e6, a 404 confirmed by GET /user). It rides the next promotion; confirm the served sha carries it.
+  - **#2174 / #2261:** the check script is validated (writes locked, narrowing row). xian runs it in the morning, then the refresh run 8h later, before D3 is chosen. If both pass, D3; if not, public_repo with CXO's two conditions. Lead records the result in ADR-081 D3.
+  - **#2282:** the canonical host (PPM: beta.pipermorgan.ai). Whether to move is xian's and CXO's call; if yes, it is one unit in my 20:51 shape, before invites.
+  - **OAuth Apps:** both are under the `pipermorgan` org with wildcard off (xian 20:55). Unconfirmed: whether staging's beta.* callback is gone (xian's morning look). Web's repeat of check 1 needs xian's yes for a second revoke.
+  - **#2188:** done. #2280 (NOT_CONNECTED, 16 sites) is placed in H, not before invites.
+  - **#2157 / #2158 (P1):** lines and data half are ready, with my three fixes and three answers in; nothing runs until PPM reaches them.
+  - **#2227:** closed. Haiku 4.5 stays; the catalog unit is Lead's, on the screened path.
+  - **Carried, unchanged from 11-03:** #1858's write-leg amendment (validate on landing); #2264 (xian's read); #2238 (xian's machine-exec line); #2244 (durable data root, Lead); #2262 (Notion audit); #2242/#2235/#1680; #2226/#2259 (placement).
   - **Lessons today:**
-    - Read every line of a served listing (the `postgres` entry was the finding).
-    - Where a turn sits sets how much an unsure router counts: on the answer to Piper's own question, a CONFIRM binds.
-    - Stamp at the clock, never ahead of it (18:55 was corrected to 18:51).
+    - A lint that resolves names must fail closed on the names it can't resolve; I measured 20 such reads.
+    - A 404 isn't proof of absence; confirm it by a different method.
+    - Read the callback for whose session it trusts, not only whose state.
+    - Stamp at the clock: 19:15 was corrected to 19:10, and four stamps earlier in the day.
 - **Still open from 10-27..10-30** (the full text is in git history and those days' logs):
   - **#2186:** unit 2 (declared args keys) is owed by Lead, with Rule 7. `timeframe` still drops silently.
   - **#2184:** owed by Lead: don't arm when the repo resolves to None. The served two-step row is PPM's close bar.
