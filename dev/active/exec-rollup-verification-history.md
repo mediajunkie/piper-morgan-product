@@ -385,3 +385,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v802 18:56 Wed 11-04: removed done census item; MCP deploy refused (PA 18:49), re-run after PA syncs.
 - v803 19:20 Wed 11-04: 1551 nearly done (Arch 19:11); check 1 window also the degrade-alone test.
 - v804 19:31 Wed 11-04: Ship #067 with Comms; removed the done week-review card.
+- v805 19:33 Wed 11-04: CIO's five replaced by xian's 19:31 ruling.
