@@ -75,79 +75,50 @@ I maintained the established publishing cadence and sent out the last set of alp
 
 ## 📊 Governance & operations
 
-**▸ Write about**
-- The numbers, as a bullet list (never a table).
-- Spend: almost all of it came from two days of screening runs.
-- Releasing without bottlenecks: you were dispatching every promotion by hand, and now Lead can, under your grant.
+**The numbers
 
-**▸ Facts**
-- **Issues:** 75 opened, 62 closed (gh-week-counts.py, Pacific week).
-- **MVP gate:** 6 → 2 open.
-- **Alpha updates:** 24.
-- **Spend:** 55.1M tokens in, 1.1M out (your Console screenshots; the Console shows tokens, not dollars).
-  - 10-23: 42.4M, router screens.
-  - 10-29: 10.9M, rule-7 screens.
-  - 10-24 to 10-28 together: 0.69M.
-- **Promotions:** from 10-28, auto mode refused Lead's promotion command, so you dispatched five yourself. Since your 11-03 allow line, Lead has promoted six times without you (after this window).
-- **Database outages:** 0 unplanned.
+* Open MVP issues: 6 → 2
+* Updates to alpha: 24
+* Database outages: 0
+* Main CI: Red on 5 of 7 days
+* Spend: 55.1M tokens in, 1.1M out
+
+Almost all of the spend came from two days of screening runs.
 
 # 🎯 Coming up next week
 
-**▸ Write about** (the week of 10-30 to 11-05, already mostly lived)
-- MVP closed, and alpha became private beta.
-- The first beta session, and what it taught: onboarding to a first valuable moment comes before more plumbing.
-- The planning question you're weighing: two-week sprints, or plan two weeks out and revisit weekly.
+The MVP will close, the alpha will end, and the private beta will commence. I am considering moving to more conventional two-week sprints for the Production milestone, to make planning easier.
 
-**▸ Facts**
-- **v0.9.0.0 tagged.** The public site no longer invites people to alpha; the waiting list (/try/beta/) is the one way in.
-- **The first Production sprint is set:** 22 issues, with about 30% held back for partner reports.
-- **The first beta session (11-04, with your advisor):**
-  - 12 findings filed (#2267–#2278).
-  - The theme: getting a new person to one valuable thing in their first session.
-  - PPM has an onboarding-to-first-value proposal for the planning talk.
-- **The GitHub approval screen** looked like Piper was connecting the tester as you. Investigating and fixing it the same day is a good example of the week's theme. Status:
-  - Lead's guard is live (#2266).
-  - Piper's link to GitHub names no account.
-  - The census so far shows no crossing.
-  - The app moves to an organization so the screen names the org.
-  - Include this only if you want it public. It's still being confirmed.
+
+The first Production sprint is set: 22 issues, with about 30% held back for partner reports.
+
 
 # 🚧 Blockers & asks
 
-**▸ Write about**
-- Probably none that are public-facing. Or an ask: people interested in the private beta can join the waiting list at https://pipermorgan.ai/try/beta/.
+No blockers right now. The public site no longer invites people to alpha but there is a path now to [sign up for the beta waiting list](https://pipermorgan.ai/try/beta/).
 
 # 🔎 This week's learning pattern
 
-## [Pattern name, a noun phrase]
+## "Say what you didn't read."
 
-**▸ Candidates**
-- **"Check the premise before you relay it."** The 10-29 key-cap relay repeated 10-20, and it echoes Thursday's "Citation via Hearsay".
-- **"Say what you didn't read."** The honesty thread; it fits the title most closely.
+Don't report a failed read as a deliberate "None"-type reply. [Exec: suggest what else to add here please.]
 
-**▸ Facts for the example**
-- 10-29: five seats relayed that alpha's key was capped. It was the test workspace's cap, and all were withdrawn within the hour.
-- Or: a failed GitHub read used to come back as "no issues"; now it says "I couldn't check" (#2140).
+For example, until last week, if Piper failed while trying to look up your GitHub issue, they would tell you that you had "no issue" with no awareness that this is false. Now Piper knows to tell you "I couldn't check." 
 
-**Discovery**: [one sentence]
+This matters because nobody is going to trust an assistant who reports something as missing or absent just because they failed to look for it properly.
 
-**Example from this week**: [a specific instance]
 
-**Why it matters**: [its impact, and what it addresses]
-
-**Application beyond this week**: [how to apply it elsewhere]
-
-**Related patterns**: Last week's "A safeguard you've only read is a guess"; [others]
+**Related patterns**: Last week's "A safeguard you've only read is a guess." [Exec may suggest others]
 
 **Thanks,**
 xian + Piper Morgan Development Team
 
 This is Weekly Ship #067. Previous: [#066 "Tested on the Real Thing"](https://pipermorgan.ai/shipping-news/weekly-ship-066-tested-on-the-real-thing/).
 
-*P.S. [A key takeaway or a personal note]*
+*P.S. There are times I never thought I'd get this close to a real beta release. I am infinitely grateful to the people who have followed along and encouraged on the way throughout this wild rollercoaster ride.*
 
 *P.P.S. Full session logs and technical details available in the [GitHub repository](https://github.com/mediajunkie/piper-morgan-product) and [documentation site](https://pmorgan.tech). Yes, you can copy it. That just makes our protocol stronger.*
 
 ---
 
-**Week of October 23–29, 2026 | Phase: [e.g. MVP closure into private beta]**
+**Week of October 23–29, 2026 | Phase: MVP closure on the cusp of private beta.**
