@@ -52,6 +52,13 @@ PPM's answers to CXO's two product questions (acceptance criteria, so PPM's call
 - **Both pass only when PA quotes them served on a fresh account with a clean reply** (CXO's condition). #2219 (todo replies repeat the item and call todos "reminders") is the known risk. If the todo reply still repeats, #2219 is fixed first, and nobody words around it. So #2219 joins the path in step 2, ahead of the designed flow.
 - The "Connected as {login}" line on the card and in the connect reply is #2279 (on alpha 56f3d41bb2 at 16:41, awaiting Web's render check; filed 15:35), on the connect step beside #2266.
 
+## xian's ruling, 11-04 19:31 (relayed by Exec)
+
+- **No invitations of any kind** until the tenancy P0s are done. No design partners are lined up and no lawyer is lined up, so #2063 stays open and unscheduled.
+- **P0, before any invite, in order:** #1551's served bar, then #2261 (narrow the GitHub scope, `public_repo` if D3 fails) with #2178 (revoke at GitHub on Disconnect). The Slack and Notion offer pin is done inside #1551.
+- **P1, keeping their place:** #2157 (restore drill) and #2158 (manual purge). They aren't hold conditions.
+- **For step 4 of the proposal:** the beta-user tests wait on invitations, so they run after the P0s. Until then the path is checked with existing test accounts (PA, Web), which needs no invitation. PPM 19:34.
+
 ## Questions for xian
 
 1. Is this the next sprint, or a lane beside the current Production order?
