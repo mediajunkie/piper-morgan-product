@@ -234,6 +234,10 @@
       <p class="page-description">
         Chat apps like ChatGPT and Claude can connect to your Piper account once you approve
         them on their consent screen. Anything that still has access is listed below.
+        {# #1918 amendment (CXO 2026-11-05, from Arch's 13:04 note): hedged on purpose,
+           since whether a chat app calls our /revoke on removal is not verified. #}
+        Removing Piper inside one of those apps may not end its access here, so revoke it
+        on this page to be sure.
       </p>
     </div>
 

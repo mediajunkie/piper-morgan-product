@@ -101,6 +101,20 @@ class TestPageRendersTheStatesAndCopy:
         normalized = " ".join(body.split())
         assert "once you approve them on their consent screen" in normalized
 
+    def test_intro_says_to_revoke_here_to_be_sure(self, client):
+        """#1918 amendment (CXO 2026-11-05): the hedged sentence, rendered."""
+        client.cookies.set("auth_token", _auth_cookie())
+        try:
+            body = client.get(PAGE_PATH).text
+        finally:
+            client.cookies.delete("auth_token")
+        normalized = " ".join(body.split())
+        assert (
+            "Removing Piper inside one of those apps may not end its access here, so revoke "
+            "it on this page to be sure."
+        ) in normalized
+        assert "#1918 amendment" not in body  # the Jinja comment is not rendered
+
 
 class TestSettingsIndexLinksToIt:
     def test_index_page_has_a_connected_apps_card(self, client):
