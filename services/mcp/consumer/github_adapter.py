@@ -1803,8 +1803,14 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             # stale state, whichever path sees it first. On the OAuth leg it goes through
             # the one function that marks the binding STALE (#2029/#2072), and the caller
             # gets STALE_TOKEN. A rejected personal token says nothing about the grant.
+            # Arch 15:28: only when the re-resolved grant IS the token GitHub rejected, so a
+            # binding that changed between the read and now is never marked by another's 401.
             credential = await self.resolve_credential(user_id)
-            if isinstance(credential, GitHubCredential) and credential.leg == "oauth":
+            if (
+                isinstance(credential, GitHubCredential)
+                and credential.leg == "oauth"
+                and credential.token == token
+            ):
                 await self._mark_oauth_binding_stale(credential)
                 raise GitHubReadFailed(
                     "GitHub rejected the account's grant",

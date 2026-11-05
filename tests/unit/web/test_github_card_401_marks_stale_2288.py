@@ -21,7 +21,7 @@ from web.api.routes import integrations as integrations_routes
 _ADAPTER = "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter"
 _VALIDATOR = "services.integrations.github.token_validator.verify_github_token"
 METADATA = integrations_routes.INTEGRATION_REGISTRY["github"]
-OAUTH = GitHubCredential(owner_id="user-1", mcp_server_ref="github", token="g", leg="oauth")
+OAUTH = GitHubCredential(owner_id="user-1", mcp_server_ref="github", token="t", leg="oauth")
 PAT = GitHubCredential(owner_id="user-1", mcp_server_ref="github", token="p", leg="pat")
 REJECTED = {"authenticated": False, "username": None, "error": "401", "status_code": 401}
 
@@ -83,6 +83,16 @@ class TestTheLoginRead:
         assert isinstance(err, GitHubReadFailed)
         assert err.reason is DegradationReason.STALE_TOKEN and err.detail == "token_rejected"
         mark.assert_awaited_once_with(OAUTH)
+
+    @pytest.mark.asyncio
+    async def test_a_grant_that_changed_since_the_read_is_not_marked(self):
+        """Arch 15:28: the 401 was for token "t"; the binding now holds another grant."""
+        rotated = GitHubCredential(
+            owner_id="user-1", mcp_server_ref="github", token="new-grant", leg="oauth"
+        )
+        err, mark = await _login(rotated, REJECTED)
+        assert isinstance(err, GitHubReadFailed) and err.reason is None
+        mark.assert_not_awaited()
 
     @pytest.mark.asyncio
     async def test_a_401_on_the_pat_leg_never_marks_the_grant(self):
