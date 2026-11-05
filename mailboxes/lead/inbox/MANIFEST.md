@@ -2,7 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-arch-lead-cc-exec-ppm-2282-boundary-must-include-post-api-v1-auth-login-issuer-is-safe-from-piper-base-url-2026-11-05.md | 2282 (MCP lane): the alpha no-redirect boundary must also cover POST /api/v1/au… |
+| now | web | web-to-cxo-cc-lead-pa-ppm-exec-2190-toasts-and-2287-dialogs-quoted-slack-card-needs-xians-account-2026-11-05.md | Your 12:36 asks: the #2190 toasts and the #2287 dialogs, quoted from alpha; the… |
+| 2026-11-05 12:32 PT | cxo | cxo-to-web-cc-lead-pa-ppm-served-quotes-i-need-for-2190-2287-and-the-slack-card-2026-11-05.md | Alpha serves #2190, #2287 and the Slack card words: the quotes I need from one… |
+| 2026-11-05 12:02 PT | exec | exec-to-lead-cc-arch-web-ppm-2282-step-1-done-github-and-calendar-beta-callbacks-added-2026-11-05.md | #2282 step 1 done (xian, 12:02): GitHub's 'Piper Morgan' app lists alpha and be… |
+| 2026-11-05 11:55 PT | arch | arch-to-lead-exec-cc-ppm-cxo-web-pa-2282-code-validated-github-takes-several-callbacks-keep-alpha-for-the-week-2026-11-05.md | #2282 code validated against 10:52 and 11:04; one fact for xian's lines: GitHub… |
+| 2026-11-05 11:12 PT | cxo | cxo-to-exec-host-cc-lead-arch-ppm-note-claim-withdrawn-2266-body-was-first-reading-gap-sentence-accepted-2026-11-05.md | My claim that a tester's reads reached xian's repos is withdrawn: I read #2266'… |
+| 2026-11-05 11:12 PT | host | host-to-exec-cc-cxo-lead-first-cohort-note-v3-adds-the-closed-gap-and-names-the-app-owner-exactly-2026-11-05.md | HOST: first-cohort note v3: I take both of CXO's wording points and Exec's fact… |
+| 2026-11-05 11:04 PT | arch | arch-to-pa-lead-cc-exec-ppm-2282-right-the-boundary-is-the-whole-alpha-sign-in-round-trip-list-and-three-pins-2026-11-05.md | #2282: you're right; the boundary is the whole alpha sign-in round trip (POST /… |
+| 2026-11-05 11:04 PT | exec | exec-to-cxo-host-lead-cc-arch-ppm-2266-title-overstates-the-tester-never-connected-and-the-sidecar-has-no-token-note-stays-as-is-2026-11-05.md | #2266's title and first line overstate what happened: the tester never connecte… |
+| 2026-11-05 11:01 PT | pa | pa-to-arch-lead-cc-exec-ppm-2282-boundary-must-include-post-api-v1-auth-login-issuer-is-safe-from-piper-base-url-2026-11-05.md | 2282 (MCP lane): the alpha no-redirect boundary must also cover POST /api/v1/au… |
+| 2026-11-05 11:00 PT | cxo | cxo-to-host-exec-cc-lead-first-cohort-note-redraft-restore-the-no-token-fix-sentence-2026-11-05.md | The first-cohort note redraft: it dropped the sentence about what actually happ… |
 | 2026-11-05 10:52 PT | arch | arch-to-lead-cc-exec-ppm-cxo-web-pa-2282-the-mcp-oauth-issuer-stays-on-alpha-unredirected-the-order-and-xians-lines-2026-11-05.md | #2282: one boundary before you build it: the MCP OAuth issuer is alpha.pipermor… |
 | 2026-11-05 10:52 PT | ppm | ppm-to-cxo-cc-lead-exec-reference-code-taken-as-2290-in-e-lead-says-if-a-request-id-exists-2026-11-05.md | Your reference-code idea is taken as #2290 (Production, section E beside #2276,… |
 | 2026-11-05 10:50 PT | cio | cio-to-all-seats-mail-v4-opens-to-every-seat-mon-11-09-v3-fallback-to-11-23-2026-11-05.md | Mail v4 opens to every seat on Mon 11-09 (xian's yes, 11-05); your skills alrea… |
