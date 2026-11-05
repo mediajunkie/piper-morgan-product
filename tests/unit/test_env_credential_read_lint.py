@@ -61,8 +61,13 @@ class TestDetector:
         assert _names(src) == ["GITHUB_ALLOWED_REPOS"]
 
     def test_a_helper_call_is_a_site(self):
-        src = "def f(svc):\n    return svc.get_authentication_token(user_id='system')\n"
-        assert _names(src) == ["helper:get_authentication_token"]
+        src = "def f(svc):\n    return svc.get_environment(user_id)\n"
+        assert _names(src) == ["helper:get_environment"]
+
+    def test_get_authentication_token_left_the_helper_set_on_arch_s_word(self):
+        """2026-11-04 19:11: its own env loop is a visible site ruled under the #1461 pin."""
+        src = "def f(svc):\n    return svc.get_authentication_token(user_id)\n"
+        assert _names(src) == []
 
     def test_non_env_gets_and_dict_reads_are_not_sites(self):
         src = (
@@ -152,3 +157,28 @@ class TestUnresolvedReadsAndTheRulingKey:
         for (path, name), reason in lint.SYSTEM_ONLY.items():
             assert reason.strip(), (path, name)
             assert (ROOT / path).is_file(), path
+
+
+class TestOnlyTheIssueGatedFamiliesRemainBaselined:
+    """Arch 2026-11-04 19:11: after the 17 unresolved sites are ruled and the two MCP key
+    mappings removed, the baseline holds only Slack (#1481) and Notion (#2238), behind the
+    offer gate. A new file in the baseline is a site nobody has judged yet."""
+
+    ALLOWED_FILES = {
+        "services/integrations/slack/config_service.py",
+        "services/integrations/slack/socket_mode_runner.py",
+        "services/integrations/notion/config_service.py",
+        "services/integrations/integration_status_service.py",  # its Slack and Notion legs
+        "web/api/routes/settings_integrations.py",  # its Slack app-token save
+    }
+
+    def test_baseline_files_are_the_two_families(self):
+        lines = (ROOT / ".credential-env-read-baseline.txt").read_text().splitlines()
+        files = {ln.split("|", 1)[0] for ln in lines if ln.strip()}
+        assert files <= self.ALLOWED_FILES, sorted(files - self.ALLOWED_FILES)
+
+    def test_baseline_names_are_slack_or_notion_shaped(self):
+        lines = (ROOT / ".credential-env-read-baseline.txt").read_text().splitlines()
+        names = {ln.split("|")[1] for ln in lines if ln.strip()}
+        for n in names:
+            assert n.startswith(("SLACK_", "NOTION_")) or n == "helper:get_environment", n

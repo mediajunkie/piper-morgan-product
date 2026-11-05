@@ -72,8 +72,11 @@ def _is_credential_name(name: str) -> bool:
 # config helpers"). Names, not paths: the helper's own module carries its read as well.
 HELPERS = frozenset(
     {
-        "get_authentication_token",  # GitHubConfigService: env token when no user key
         "get_environment",  # the connector config services' env snapshot
+        # get_authentication_token left this set on Arch's word (2026-11-04 19:11): its own
+        # env loop (github config_service) is a visible site ruled system-only under the
+        # #1461 pin, tests/security/test_config_service_isolation.py (a real user never
+        # gets the env token).
     }
 )
 
@@ -150,10 +153,6 @@ SYSTEM_ONLY: Dict[Tuple[str, str], str] = {
         "services/infrastructure/config/config_validator.py",
         "SLACK_SIGNING_SECRET",
     ): "startup validation and the admin route",
-    (
-        "services/infrastructure/config/config_validator.py",
-        "helper:get_authentication_token",
-    ): "the system principal by argument; the helper is None on a hosted deploy",
     # Calendar: the registration file, and a filename the code forces per account with the user id.
     (
         "services/integrations/calendar/config_service.py",
@@ -167,19 +166,6 @@ SYSTEM_ONLY: Dict[Tuple[str, str], str] = {
         "services/integrations/demo/config_service.py",
         "DEMO_API_KEY",
     ): "off by default and not in the offered set",
-    # get_authentication_token('system'): the system principal by argument (ADR-081 D2).
-    (
-        "services/config/github_config.py",
-        "helper:get_authentication_token",
-    ): "the system principal by argument",
-    (
-        "services/infrastructure/github_repo_validator.py",
-        "helper:get_authentication_token",
-    ): "the system principal by argument",
-    (
-        "web/api/routes/settings_integrations.py",
-        "helper:get_authentication_token",
-    ): "the system principal by argument (the local-install branch)",
     # The 13:16 family rule: principal-less only; the matrix's last cell pins it.
     (
         "services/integrations/github/repo_resolver.py",
@@ -189,6 +175,42 @@ SYSTEM_ONLY: Dict[Tuple[str, str], str] = {
         "services/integrations/github/repo_resolver.py",
         "PIPER_GITHUB_HANDLE",
     ): "read only when user_id is None (13:16; matrix cell)",
+    # Reads whose name sits in a variable, ruled system-only one by one (Arch 2026-11-04 19:11).
+    (
+        "services/security/field_encryption.py",
+        "unresolved",
+    ): "the deployment's master key and its scoped form",
+    ("services/utils/env_hygiene.py", "unresolved"): "deletes empty variables; reads no value",
+    ("services/mux/push_mode.py", "unresolved"): "typed number readers, not credentials",
+    (
+        "services/infrastructure/config/feature_flags.py",
+        "unresolved",
+    ): "typed flag readers, not credentials",
+    (
+        "services/infrastructure/config/file_configuration.py",
+        "unresolved",
+    ): "typed flag readers, not credentials",
+    (
+        "services/integrations/github/github_integration_router.py",
+        "unresolved",
+    ): "a typed flag reader, not a credential",
+    ("services/connectors/server_ref_resolver.py", "unresolved"): "sidecar URLs, not credentials",
+    (
+        "services/infrastructure/config/mcp_configuration.py",
+        "unresolved",
+    ): "typed flag and number readers once the two LLM key mappings were removed (19:11)",
+    (
+        "services/infrastructure/keychain_service.py",
+        "unresolved",
+    ): "an existence bool for the operator's migration report",
+    (
+        "services/config/llm_config_service.py",
+        "unresolved",
+    ): "386 under the 1812 keyless-refusal pin; 442 the operator's migrate command",
+    (
+        "services/integrations/github/config_service.py",
+        "unresolved",
+    ): "only when not is_real_user; the #1461 pin (tests/security/test_config_service_isolation.py)",
     # Conditional, met: a user-principal turn with no key of its own is refused before any env
     (
         "services/integrations/integration_status_service.py",

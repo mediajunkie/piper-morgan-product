@@ -51,8 +51,6 @@ class MCPConfiguration:
     max_keywords: int = 20
 
     # API Keys (optional, can be None)
-    anthropic_api_key: Optional[str] = None
-    openai_api_key: Optional[str] = None
 
     def __post_init__(self):
         """Validate configuration values."""
@@ -116,8 +114,6 @@ class MCPConfigurationService:
             "MCP_MAX_CONTENT_LENGTH": ("max_content_length", self._parse_int),
             "MCP_SNIPPET_LENGTH": ("snippet_length", self._parse_int),
             "MCP_MAX_KEYWORDS": ("max_keywords", self._parse_int),
-            "ANTHROPIC_API_KEY": ("anthropic_api_key", self._parse_string),
-            "OPENAI_API_KEY": ("openai_api_key", self._parse_string),
         }
 
         logger.info("MCPConfigurationService initialized with defaults")
@@ -341,13 +337,6 @@ class MCPConfigurationService:
             return float(value)
         except (ValueError, TypeError) as e:
             raise ValueError(f"Cannot parse '{value}' as float: {e}")
-
-    @staticmethod
-    def _parse_string(value: str) -> Optional[str]:
-        """Parse string value, returning None for empty strings."""
-        if not value or value.strip() == "":
-            return None
-        return value.strip()
 
 
 # Global singleton instance
