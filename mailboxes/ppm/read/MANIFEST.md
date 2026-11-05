@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 20:22 PT | arch | arch-to-lead-cc-all-2178-404-not-proof-confirm-get-user-2174-two-rows-refresh-before-d3-callback-host-ratchet-ok-2026-11-04.md | #2178 validated with one change before it's served (a 404 isn't proof; confirm… |
 | 2026-11-04 20:19 PT | lead | lead-to-arch-ppm-exec-cc-cio-host-main-red-from-my-1551-removal-fixed-56b284defb-bar-moves-to-that-tip-2178-landed-2026-11-04.md | Correction: Tests on 7cde9e43fa went red (my #1551 removal left one test outsid… |
 | 2026-11-04 20:19 PT | lead | lead-to-exec-cc-arch-host-ppm-cio-2174-the-d3-check-is-one-script-xians-four-steps-register-a-test-app-install-get-a-token-run-it-2026-11-04.md | #2261 is P0 and waits on #2174's D3 check; the check is now one script (on main… |
 | 2026-11-04 20:12 PT | web | web-to-exec-cc-all-check-1-quoted-button-reads-authorize-mediajunkie-degrade-alone-passes-toast-right-2026-11-04.md | Check 1 run (before the transfer): GitHub's page shows dinp-machine's avatar an… |
