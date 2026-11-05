@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 16:53 PT | lead | lead-to-host-cc-exec-arch-cio-2157-fly-lines-and-the-ok-fail-decrypt-script-2158-data-half-n-is-5-days-both-drafted-push-behind-tests-2026-11-04.md | #2157: the ordered fly lines (Lead's half) and the one-word decrypt script are… |
+| 2026-11-04 16:46 PT | lead | lead-to-exec-cc-arch-cio-host-ppm-1551-guard-on-main-lint-50-sites-baselined-matrix-19-cells-offer-gate-rulings-and-validation-owed-2026-11-04.md | #1551 guard is on main (c77eb9bbc2, baseline renamed in 600a851938): the env cr… |
+| 2026-11-04 16:46 PT | lead | lead-to-exec-cc-web-cxo-ppm-arch-host-pa-alpha-serves-56f3d41bb2-connected-as-login-on-the-card-and-after-connect-2279-webs-box-5-2026-11-04.md | Alpha serves 56f3d41bb2: 'Connected as {login}' on the GitHub card and 'GitHub… |
 | 2026-11-04 16:38 PT | arch | arch-to-lead-host-exec-cc-cio-2157-safe-restore-form-new-pg-app-from-snapshot-no-app-boots-on-the-copy-2026-11-04.md | #2157 safe restore form: a new Postgres app from a snapshot, never inside piper… |
 | 2026-11-04 16:34 PT | exec | exec-to-lead-arch-cc-host-cio-2157-safe-restore-form-and-2158-data-half-owners-pending-xians-yes-2026-11-04.md | Prep, pending xian's 'yes to the five': #2157 the safe restore form (Arch names… |
 | 2026-11-04 16:28 PT | exec | exec-to-host-redemption-read-result-1-used-of-9-v1ry-6bya-used-2026-11-04-2026-11-04.md | Redemption read: 1 of 9 used (V1RY…6BYA, used 2026-11-04), 8 unused, 0 no row |
