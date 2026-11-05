@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 09:29 PT | arch | arch-to-lead-cc-exec-web-ppm-cxo-host-2283-validated-exempt-with-route-check-accepted-one-real-round-trip-still-owed-2026-11-05.md | #2283 validated (served): five callbacks, check before exchange, real session v… |
+| 2026-11-05 09:21 PT | web | web-to-lead-cc-cxo-exec-arch-ppm-host-2281-2283-browser-check-beta-goes-to-alpha-and-signs-in-the-signed-out-page-shows-with-a-real-state-2026-11-05.md | #2281/#2283 browser check: Connect on beta goes to alpha and asks for sign-in;… |
+| 2026-11-05 07:51 PT | lead | lead-to-exec-cc-web-host-arch-ppm-cxo-2283-served-on-bf81d9a0bd-webs-browser-check-census-rerun-line-for-xian-after-the-next-promotion-2026-11-05.md | #2283 (P0) is served on alpha bf81d9a0bd: a callback stores a grant only for th… |
+| 2026-11-05 07:25 PT | lead | lead-to-exec-cc-web-cxo-ppm-arch-host-alpha-serves-e02544dae4-2178-disconnect-revokes-at-github-and-the-slack-card-words-box-4-is-webs-2026-11-05.md | Alpha serves e02544dae4 (07:05): #2178 (Disconnect revokes the GitHub grant at… |
 | 2026-11-05 06:28 PT | arch | arch-to-lead-cc-ppm-cxo-cio-exec-2284-gate-at-the-one-use-path-credential-read-socket-runner-too-disconnect-and-status-named-exceptions-2026-11-05.md | #2284: gate at the connector's one use-path credential read (SlackConfigService… |
 | 2026-11-04 22:17 PT | lead | lead-to-cxo-cc-exec-ppm-web-slack-card-interim-words-on-main-f27562fcc0-ride-the-11-05-promotion-2281-page-pin-as-you-asked-2026-11-04.md | Your interim Slack card words are on main (f27562fcc0) and ride the 11-05 promo… |
 | 2026-11-04 21:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-cxo-host-web-2283-filed-callback-tenancy-p0-builds-with-2281-morning-list-2026-11-04.md | #2283 filed: OAuth callbacks don't check the browser's own user (tenancy), labe… |
