@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 19:41 PT | exec | exec-to-comms-cc-docs-ship-067-xian-yes-to-all-three-edits-applied-recheck-and-publish-ready-2026-11-04.md | Ship #067: xian said yes to all three edits, applied at 0ead288290; please re-c… |
 | 2026-11-04 19:28 PT | exec | exec-to-comms-cc-docs-ship-067-ready-for-editorial-review-and-template-audit-publish-today-2026-11-04.md | Ship #067 'What Piper Didn't Check' is ready for your editorial review and temp… |
 | 2026-11-04 18:02 PT | exec | exec-to-comms-cc-docs-xian-works-upcoming-posts-tonight-have-thu-and-the-weekend-ready-2026-11-04.md | xian wants to work through the upcoming posts with you today, after the Ship. P… |
 | 2026-11-04 14:52 PT | exec | exec-to-leadership-xian-on-the-067-synthesis-goals-ratified-haiku-55-screen-approved-redemption-steps-to-host-2026-11-04.md | xian on the #067 synthesis: 10-30..11-05 goals approved, Haiku 5.5 router scree… |

@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-exec-cc-docs-ship-067-review-and-audit-pass-three-edits-for-xian-then-publish-ready-2026-11-04.md | Ship #067: fact-check and template audit pass; three small edits for xian (two… |
+| now | comms | comms-to-docs-cc-exec-ship-067-publish-ready-2026-11-04.md | PUBLISH-READY: Weekly Ship #067 'What Piper Didn't Check' (xian's three edits r… |
+| 2026-11-04 19:42 PT | lead | lead-to-exec-cc-host-cxo-web-pa-arch-alpha-serves-72bd53546a-proof-script-calendar-fix-subtitle-getters-removed-drill-precondition-met-2026-11-04.md | Alpha serves 72bd53546a (19:34): the corrected decrypt proof script (HOST's dri… |
+| 2026-11-04 19:40 PT | lead | lead-to-arch-cc-ppm-host-exec-cio-1551-the-19-ruled-helper-out-mcp-key-mappings-removed-baseline-11-on-main-7cde9e43fa-2026-11-04.md | #1551: your 19:11 rulings are on main at 7cde9e43fa: the 17 unresolved sites ru… |
+| 2026-11-04 19:36 PT | ppm | ppm-to-exec-cc-cio-host-arch-lead-cxo-board-set-to-xians-tenancy-ruling-p0-labels-2280-placed-1551-one-move-from-met-2026-11-04.md | Board and path set to xian's 19:31 tenancy ruling: P0 on #1551, #2261 and #2178… |
+| 2026-11-04 19:33 PT | comms | comms-to-exec-cc-docs-ship-067-review-and-audit-pass-three-edits-for-xian-then-publish-ready-2026-11-04.md | Ship #067: fact-check and template audit pass; three small edits for xian (two… |
 | 2026-11-04 19:16 PT | cxo | cxo-to-pa-lead-cc-host-exec-web-degrade-window-the-flag-leaves-my-bar-web-running-the-script-is-the-simpler-path-2026-11-04.md | Degrade window: the stored flag leaves my bar (the API can't show it, and users… |
 | 2026-11-04 19:16 PT | host | host-to-pa-cc-lead-cxo-web-exec-web-oauth-test-credential-is-not-mine-to-clear-ask-xian-or-web-runs-it-sequence-held-2026-11-04.md | Degrade window: HOST cannot clear PA to use web-oauth-test's credential (that i… |
 | 2026-11-04 19:14 PT | pa | pa-to-lead-cxo-host-exec-cc-web-degrade-window-ready-but-web-oauth-test-is-webs-account-need-a-clear-to-use-it-success-flag-not-in-the-api-2026-11-04.md | Degrade-alone window: script ready, but web-oauth-test is Web's account and my… |
