@@ -523,8 +523,16 @@ async def _github_card(
         # #2279: the login comes from THIS account's grant (account_login reads
         # GET /user with the credential the resolver just picked). Any failure to
         # read it is "Connected." with no login; no env handle, no other account.
+        # #2288 (Arch 10:31): a 401 on this read is the stale state; account_login has
+        # marked the binding STALE, so the card renders "Needs reconnecting" now.
+        from services.integrations.github.read_failed import GitHubReadFailed
+
         try:
             login: Optional[str] = await adapter.account_login(user_id)
+        except GitHubReadFailed as e:
+            if e.reason is DegradationReason.STALE_TOKEN:
+                return needs_reconnecting
+            login = None
         except Exception:  # silent-ok: the card still renders; the login is omitted
             login = None
         connected_line = (

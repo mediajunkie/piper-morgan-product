@@ -1798,6 +1798,19 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         headers = await self._grant_headers_or_raise(user_id)
         token = headers["Authorization"].split(" ", 1)[1]
         result = await verify_github_token(token)
+        if result.get("status_code") == 401:
+            # #2288 (Arch 2026-11-05 10:31): GitHub's 401 on the account's grant is the
+            # stale state, whichever path sees it first. On the OAuth leg it goes through
+            # the one function that marks the binding STALE (#2029/#2072), and the caller
+            # gets STALE_TOKEN. A rejected personal token says nothing about the grant.
+            credential = await self.resolve_credential(user_id)
+            if isinstance(credential, GitHubCredential) and credential.leg == "oauth":
+                await self._mark_oauth_binding_stale(credential)
+                raise GitHubReadFailed(
+                    "GitHub rejected the account's grant",
+                    DegradationReason.STALE_TOKEN,
+                    detail="token_rejected",
+                )
         login = result.get("username") if result.get("authenticated") else None
         if not login:
             raise GitHubReadFailed(

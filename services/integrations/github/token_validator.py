@@ -59,6 +59,7 @@ async def verify_github_token(token: Optional[str], *, timeout: float = 10.0) ->
             "authenticated": False,
             "username": None,
             "error": "Invalid or expired token (GitHub returned 401)",
+            "status_code": 401,  # #2288: GitHub rejected the token, the stale state
         }
     if resp.status_code == 403:
         return {
