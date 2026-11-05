@@ -1,4 +1,15 @@
-# Lead carry-forward — Fable 5.1 seat; Model A worktree ~/Development/piper-morgan-worktrees/lead
+# Lead carry-forward — Fable 5.1 seat (Opus 5.5 from 11-04 19:38 until the Fable limit resets after 22:00 on 11-05); Model A worktree ~/Development/piper-morgan-worktrees/lead
+
+## DAY CLOSED 2026-11-04 21:47 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-04 -->` in the 11-04 log `dev/2026/11/04/2026-11-04-0646-lead-code-log.md`)
+- **Served:** alpha `72bd53546a` (eighth promotion of the day under the grant, 19:34; one refusal at 14:04 on the uptime floor). On main and green, not yet served: **#2178** (Disconnect revokes at GitHub, with Arch's GET /user confirmation on a 404; `b5df29d4e6`, main `466b51ffdd`, Tests success run 41970572285). Main 12/12 green at close.
+- **Model:** this seat runs on Opus 5.5 (`claude-opus-5-5`) since 19:38 (xian: the Fable limit); restore to Fable after 22:00 on 11-05. Commits carry the Opus attribution meanwhile.
+- **11-05 START order:**
+  1. Usual START: create the 11-05 log, mail, current-state Now, xpoll, `owed-scan.py --role lead`.
+  2. **Promote #2178** after 07:00 (re-read every condition: Tests green on the staging sha, quiet, uptime ≥ 1800 s, one green health watch since the last landing, no hold, no migrations, inbox re-read). Tell Exec and Web; box 4 of #2178 (the app gone from GitHub's list) rides Web's next window.
+  3. **#2283 + #2281, one unit (P0 tenancy, Arch 21:11):** a callback runs only when the browser's session user equals the state's user, for GitHub, Calendar and Slack (check BEFORE the code exchange, so CXO's "Nothing was connected yet" is true by construction); Calendar and Slack callbacks and `calendar/connect` come off `EXEMPT_OAUTH_CALLBACK_PATHS`; the connect-start host switch (#2281 b); CXO's page words; two-account pins per connector, plus a pin that no grant row or keychain copy exists after an unauthenticated callback. Gate + **CI's full-suite sweep** before the push (the 11-04 lesson). Then the **census rerun plus its new Calendar counterpart** (Arch 21:29) for HOST's held note.
+  4. On xian's morning answers via Exec: #2174's table (record in ADR-081, file D3 or the fallback, build #2261 on that leg); #2282 if yes (one unit in Arch's 20:51 shape); #2284 when PPM places it.
+- **Rules that bit 11-04:** read a watcher's verdict LINE, never its exit, before pushing behind it (I pushed behind a red run). A deletion push runs CI's full-suite command and `check_fullsuite_backlog.py` first and sweeps `git grep` across the whole tree (my sweep missed `tests/infrastructure`). `.env*` is gitignored: never name a tracked file `.env…`. A signed-out OAuth authorize probe proves nothing (GitHub validates the redirect after login).
+- **Waiting on others:** Arch's rulings arrive by mail; xian's morning list via Exec (#2283 P0 confirm, #2281 P0?, #2282, #2174 runs, the second revoke for Web's after-transfer check 1); HOST's cohort note waits on the census rerun; R16 read 11-11.
 
 ## DAY CLOSED 2026-11-03 21:47 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-03 -->` in the 11-03 log `dev/2026/11/03/2026-11-03-0646-lead-code-log.md`)
 - **Served:** alpha `63d486043a` (two promotions by this seat under the grant, 18:27 and 20:00; the 9a allow line works). It carries #2258's complete words (CXO PASS, CLOSED), #2098's answer-turn bind, #2265's window, #2254's fixture fix, #2264's untracking, #2238's staging guard. Main 12/12 green at close; every code push of the day green.
@@ -664,7 +675,7 @@ STATE @ 2026-10-15 21:48 PT (DAY CLOSED) — next promotion READY on e4f21e9ca8 
   (four shapes, AST, ceiling 0, denominator asserted). **Addendum 264d3e9549 (Arch's one gap: bare `{}` exempt only under its own
   is-None guard; count stays 0).** **CI GREEN on 264d3e9549: Full Test Suite 38303060151 + Architecture Enforcement 38303060147 (and 38302535677 on a488e4fa65).** Lane worktrees
   removed; branch `claude/lead-1459-setter-ratchet` stays on origin (remote delete is permission-denied, don't retry).
-- **#1977 CLOSED 10-12 12:53** (banner + evidence comment + close; the work had been complete since 10-11 19:3x).
+- **#1977 CLOSED 10-12 12:53** (banner + evidence comment + close; the work had been complete since 10-11 19:38).
 - **read_floor_3 wave** (get_project_status + get_top_priority adapters; Arch's four 10-11 20:5x conditions): trigger = the deletion lane's
   next STATUS/PRIORITY pass. Not #1984's lever.
 - **ALPHA PROMOTION run 38312410442 LANDED 15:47 10-12 (xian approved in conversation); alpha = 651756d520, code = 264d3e9549. Web has the 12-turn re-run set (memo 15:5x, cc CXO; Exec fyi via mail4); test card v17 adds row G (PAT-only account) — xian testing this afternoon.** Was: staging 3bbbfc7c40 (= 264d3e9549 in code; all seven
