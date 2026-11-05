@@ -187,3 +187,27 @@ def test_wizard_route_passes_the_constant(client):
     r = client.get("/setup")
     assert r.status_code == 200
     assert 'id="notion-key"' not in r.text
+
+
+@needs_node
+def test_a_hidden_integration_with_a_stored_connection_says_so_and_never_connected(client):
+    """CXO 2026-11-04 21:48: "Not in this beta", the stored-connection line, Disconnect;
+    no "Connected" status and no Test button."""
+    health = [
+        dict(h, status="healthy", status_message="Connected") if h["name"] == "slack" else h
+        for h in HEALTH
+    ]
+    slack = _cards(_page(client), health)["slack"]
+    assert LABEL in slack and "disconnect-btn-slack" in slack
+    assert (
+        "You connected Slack earlier. Piper still holds that connection. Disconnect to remove it."
+        in slack
+    )
+    assert "integration-status" not in slack and "test-btn" not in slack
+    assert ">Connected<" not in slack and "status-slack" not in slack
+
+
+@needs_node
+def test_a_hidden_integration_never_connected_keeps_the_plain_line(client):
+    slack = _cards(_page(client), HEALTH)["slack"]
+    assert "isn't available in this beta yet." in slack and "earlier" not in slack

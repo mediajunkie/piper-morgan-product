@@ -446,6 +446,10 @@
   const OFFERED_CONNECTORS = window.__OFFERED_CONNECTORS__ || [];
   const NOT_IN_BETA_LABEL = 'Not in this beta';  // CXO 2026-10-30
   const notInBetaLine = (name) => `${name} isn't available in this beta yet.`;
+  // CXO 2026-11-04 21:48: a hidden integration that still holds an earlier connection
+  // says so, and never "Connected" (Piper may still read it until #2284 lands).
+  const notInBetaStoredLine = (name) =>
+    `You connected ${name} earlier. Piper still holds that connection. Disconnect to remove it.`;
 
   // OAuth-based integrations that support Connect/Disconnect
   const OAUTH_INTEGRATIONS = ['slack', 'calendar'];
@@ -676,8 +680,8 @@
             <div class="integration-details">
               <h3>${integration.display_name}</h3>
               ${isOffered ? '' : `<div class="not-in-beta-label" id="not-in-beta-${integration.name}">${NOT_IN_BETA_LABEL}</div>
-              <div class="not-in-beta-line" id="not-in-beta-line-${integration.name}">${notInBetaLine(integration.display_name)}</div>`}
-              ${(!isOffered && !isConnected) ? '' : `<div class="integration-status">
+              <div class="not-in-beta-line" id="not-in-beta-line-${integration.name}">${isConnected ? notInBetaStoredLine(integration.display_name) : notInBetaLine(integration.display_name)}</div>`}
+              ${!isOffered ? '' : `<div class="integration-status">
                 <span class="status-dot ${integration.status}"></span>
                 ${integration.status_icon ? `<span class="status-icon-inline" id="status-icon-${integration.name}">${integration.status_icon}</span>` : ''}
                 <span class="status-message ${integration.error ? 'error' : ''}" id="status-${integration.name}">
