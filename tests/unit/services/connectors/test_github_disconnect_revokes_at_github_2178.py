@@ -127,8 +127,10 @@ class _Resp:
 
 
 class _Session:
-    def __init__(self, status, seen):
-        self._status, self._seen = status, seen
+    """DELETE answers ``delete_status``; GET /user answers ``user_status``."""
+
+    def __init__(self, delete_status, user_status, seen):
+        self._d, self._u, self._seen = delete_status, user_status, seen
 
     async def __aenter__(self):
         return self
@@ -138,20 +140,48 @@ class _Session:
 
     def delete(self, url, auth=None, headers=None, json=None):
         self._seen.update(url=url, auth=auth, json=json)
-        return _Resp(self._status)
+        return _Resp(self._d)
+
+    def get(self, url, headers=None):
+        self._seen.setdefault("gets", []).append(url)
+        return _Resp(self._u)
 
 
-@pytest.mark.parametrize("status,ok", [(204, True), (404, True), (401, False), (500, False)])
-@pytest.mark.asyncio
-async def test_revoke_grant_calls_githubs_delete_grant_with_the_apps_basic_auth(status, ok):
-    seen: dict = {}
+def _handler():
     h = GitHubOAuthHandler.__new__(GitHubOAuthHandler)
     h.client_id, h.client_secret = "Iv1.client", "app-secret"
-    with patch("aiohttp.ClientSession", lambda: _Session(status, seen)):
-        assert await h.revoke_grant("gho_token") is ok
+    return h
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("status,ok", [(204, True), (401, False), (500, False)])
+async def test_revoke_grant_calls_githubs_delete_grant_with_the_apps_basic_auth(status, ok):
+    seen: dict = {}
+    with patch("aiohttp.ClientSession", lambda: _Session(status, 200, seen)):
+        assert await _handler().revoke_grant("gho_token") is ok
     assert seen["url"] == "https://api.github.com/applications/Iv1.client/grant"
     assert seen["auth"].login == "Iv1.client" and seen["auth"].password == "app-secret"
     assert seen["json"] == {"access_token": "gho_token"}
+    assert "gets" not in seen  # only a 404 is confirmed
+
+
+@pytest.mark.asyncio
+async def test_a_404_confirmed_by_get_user_401_is_revoked():
+    """Arch 20:21: GitHub no longer accepts the token, so it is gone."""
+    seen: dict = {}
+    with patch("aiohttp.ClientSession", lambda: _Session(404, 401, seen)):
+        assert await _handler().revoke_grant("gho_token") is True
+    assert seen["gets"] == [GitHubOAuthHandler.USER_URL]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("user_status", [200, 403, 500])
+async def test_a_404_with_a_token_that_still_works_is_a_failed_revoke(user_status):
+    """Arch 20:21: a 404 from mismatched app credentials would otherwise report revoked
+    while the access stays valid at GitHub (the #2151 shape)."""
+    seen: dict = {}
+    with patch("aiohttp.ClientSession", lambda: _Session(404, user_status, seen)):
+        assert await _handler().revoke_grant("gho_token") is False
 
 
 @pytest.mark.asyncio

@@ -194,10 +194,14 @@ class GitHubOAuthHandler:
         their GitHub Settings, Applications. ``DELETE /applications/{client_id}/grant`` with
         the app's own client id and secret as basic auth and the token in the body.
 
-        True on 204, and on 404 (GitHub no longer knows the grant: already revoked there,
-        so nothing stays valid). False on anything else, on a network failure, or when this
-        process holds no app credentials; the caller says the access may stay valid at
-        GitHub. Never raises; never logs the token."""
+        True on 204. A 404 is NOT proof (Arch 2026-11-04 20:21): GitHub answers it both for
+        a grant it no longer knows and for app credentials that don't match the app the
+        grant was made under (two OAuth Apps exist; a re-registered app would make that
+        real). So a 404 is confirmed by a different method, ``GET /user`` with the token:
+        401 means the token is gone (True); anything else means it still works or can't be
+        told (False). False on any other status, on a network failure, or when this process
+        holds no app credentials; the caller says the access may stay valid at GitHub.
+        Never raises; never logs the token."""
         if not access_token or not self.client_id or not self.client_secret:
             return False
         url = self.REVOKE_URL_TEMPLATE.format(client_id=self.client_id)
@@ -212,12 +216,36 @@ class GitHubOAuthHandler:
                     },
                     json={"access_token": access_token},
                 ) as response:
-                    if response.status in (204, 404):
-                        return True
-                    logger.warning("github_grant_revoke_refused", status=response.status)
-                    return False
+                    status = response.status
+            if status == 204:
+                return True
+            if status == 404:
+                return await self._token_is_dead(access_token)
+            logger.warning("github_grant_revoke_refused", status=status)
+            return False
         except Exception as e:
             logger.warning("github_grant_revoke_failed", error=type(e).__name__)
+            return False
+
+    async def _token_is_dead(self, access_token: str) -> bool:
+        """#2178's 404 confirmation: ``GET /user`` with the token answers 401 only when
+        GitHub no longer accepts it. Anything else (200, 403, 5xx, a network error) is not
+        proof it is gone."""
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(
+                    self.USER_URL,
+                    headers={
+                        "Authorization": f"Bearer {access_token}",
+                        "Accept": "application/vnd.github+json",
+                    },
+                ) as response:
+                    dead = response.status == 401
+            if not dead:
+                logger.warning("github_grant_revoke_404_but_token_alive")
+            return dead
+        except Exception as e:
+            logger.warning("github_grant_revoke_confirm_failed", error=type(e).__name__)
             return False
 
     async def _get_login(self, access_token: str) -> str:
