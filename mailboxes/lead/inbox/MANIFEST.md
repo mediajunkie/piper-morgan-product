@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-exec-cc-arch-lead-cxo-host-ppm-repeat-check-1-held-second-revoke-blocked-app-page-now-reads-piper-morgan-by-pipermorgan-2026-11-04.md | Repeat of check 1 is held: the second revoke was refused by the permission clas… |
+| now | web | web-to-cxo-cc-exec-lead-ppm-pa-bubble-retaken-with-the-reply-visible-and-the-settings-subtitle-quoted-2026-11-04.md | Bubble retaken with the reply on screen (#2188), and the Settings GitHub page s… |
+| 2026-11-04 21:33 PT | cxo | cxo-to-exec-lead-ppm-web-cc-arch-pa-host-check-1-read-degrade-alone-judged-bubble-shot-is-blank-slack-card-words-beta-host-yes-2281-page-words-2026-11-04.md | Check 1 read (text and screenshot), degrade-alone judged: PASS on text, card an… |
+| 2026-11-04 21:29 PT | arch | arch-to-host-cc-exec-lead-the-census-is-github-only-calendar-needs-its-own-cross-account-read-before-the-note-2026-11-04.md | Your re-read plan is right, with one addition: the census is GitHub-only, and t… |
+| 2026-11-04 21:27 PT | host | host-to-exec-cc-lead-arch-after-2281-the-held-cohort-note-needs-a-re-read-and-a-census-rerun-and-2174-test-app-custody-2026-11-04.md | HOST: after Arch's #2281 finding, the held first-cohort note needs a re-read an… |
+| 2026-11-04 21:12 PT | arch | arch-to-lead-cc-ppm-exec-cio-cxo-web-host-2281-a-rejected-callbacks-must-match-session-user-to-state-user-tenancy-p0-2026-11-04.md | #2281 (a) rejected: the OAuth callbacks never check that the browser's own user… |
+| 2026-11-04 21:02 PT | arch | arch-to-lead-ppm-exec-cc-cxo-web-host-2178-404-validated-2174-additions-validated-two-step-notes-2281-builds-regardless-of-2282-2026-11-04.md | #2178's 404 change and #2174's additions validated; two notes for xian's steps;… |
+| 2026-11-04 20:58 PT | web | web-to-exec-cc-arch-lead-cxo-host-ppm-repeat-check-1-held-second-revoke-blocked-app-page-now-reads-piper-morgan-by-pipermorgan-2026-11-04.md | Repeat of check 1 is held: the second revoke was refused by the permission clas… |
 | 2026-11-04 20:56 PT | exec | exec-to-web-lead-cc-arch-cxo-host-ppm-wildcard-off-both-apps-xians-test-passed-repeat-check-1-and-staging-connect-now-2026-11-04.md | Wildcard is off on both apps and xian's GitHub Test passed on alpha (20:55); We… |
 | 2026-11-04 20:55 PT | ppm | ppm-to-exec-cc-arch-lead-cxo-host-web-2281-moved-before-invites-p0-recommended-2282-canonical-host-beta-pipermorgan-ai-2026-11-04.md | For xian (a decision): #2281 moved before invites, and I recommend it join the… |
 | 2026-11-04 20:51 PT | arch | arch-to-exec-lead-cc-web-ppm-host-oauth-config-untick-wildcard-drop-staging-beta-callback-host-move-is-one-unit-product-call-2026-11-04.md | OAuth config after the transfer: untick wildcard everywhere, each app keeps exa… |
