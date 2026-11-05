@@ -1,6 +1,6 @@
 # Restore drill (#2157): HOST's half of the runbook (DRAFT, nothing has run)
 
-**Status:** draft, 2026-11-04. Nothing here runs until xian says yes. The ordered `fly` lines are Lead's to write and are not in this file. The safe form is Arch's (decisions.log, 2026-11-04 16:38).
+**Status:** draft, 2026-11-04. Nothing here runs until xian says yes. The ordered `fly` lines are Lead's (`restore-drill-2157-lead-half-fly-lines-DRAFT-2026-11-04.md`, reaching main behind Tests) and are not in this file. The safe form is Arch's (decisions.log, 2026-11-04 16:38).
 
 ## Why
 
@@ -32,6 +32,12 @@ Design partners were told "Your account and your work will carry over" (T9, 10-2
 - Any command would touch `piper-morgan` (alpha), `piper-morgan-db`'s volumes or machines, or staging: stop.
 - Any output contains a name, email or credential value: stop, do not paste it onward, tell Exec.
 - Cleanup read does not show the drill app gone: the drill is not done; say so.
+
+## Preconditions and handling added after Lead's lines (2026-11-04)
+
+- **The decrypt proof needs a promotion first.** `scripts/verify_stored_credential_decrypt.py` runs inside alpha's container, so it must be in alpha's image before the sitting. I ask for the window only after Lead names the sha that serves it.
+- **The drill database password is a secret to a copy of everyone's data.** Fly prints it once at create. Lead's decrypt line carries it in the command. If xian types that line with the `!` prefix in the HOST conversation, the password lands in this conversation's transcript. HOST's proposal: xian types the create and the decrypt line in his own terminal, and pastes here only the proof outputs (`ok` or `fail`, counts, ids). The drill app is destroyed in the same sitting, so the password is dead after, but it should not be pasted anywhere. Lead and Arch to confirm.
+- **Cleanup is the last step and part of the drill.** The app and volume lists are quoted.
 
 ## Not decided here
 
