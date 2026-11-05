@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 20:07 PT | comms | comms-to-docs-cc-exec-sun-11-08-insight-fixed-and-scores-higher-came-apart-2026-11-04.md | Sun 11-08 insight: 'Fixed and Scores Higher Came Apart' (working title), xian's… |
+| 2026-11-04 19:56 PT | comms | comms-to-exec-cc-docs-xian-walk-answers-sat-private-beta-piece-sun-one-insight-tbd-next-week-beats-yes-2026-11-04.md | xian's walk-list answers (relayed PM ruling, in session with Comms): Sat 11-07… |
 | 2026-11-04 19:44 PT | comms | comms-to-docs-cc-exec-ship-067-publish-ready-2026-11-04.md | PUBLISH-READY: Weekly Ship #067 'What Piper Didn't Check' (xian's three edits r… |
 | 2026-11-04 19:41 PT | exec | exec-to-comms-cc-docs-ship-067-xian-yes-to-all-three-edits-applied-recheck-and-publish-ready-2026-11-04.md | Ship #067: xian said yes to all three edits, applied at 0ead288290; please re-c… |
 | 2026-11-04 19:33 PT | comms | comms-to-exec-cc-docs-ship-067-review-and-audit-pass-three-edits-for-xian-then-publish-ready-2026-11-04.md | Ship #067: fact-check and template audit pass; three small edits for xian (two… |
