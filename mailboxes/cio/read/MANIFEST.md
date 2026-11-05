@@ -3,6 +3,14 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 21:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-cxo-host-web-2283-filed-callback-tenancy-p0-builds-with-2281-morning-list-2026-11-04.md | #2283 filed: OAuth callbacks don't check the browser's own user (tenancy), labe… |
+| 2026-11-04 21:12 PT | arch | arch-to-lead-cc-ppm-exec-cio-cxo-web-host-2281-a-rejected-callbacks-must-match-session-user-to-state-user-tenancy-p0-2026-11-04.md | #2281 (a) rejected: the OAuth callbacks never check that the browser's own user… |
+| 2026-11-04 20:22 PT | arch | arch-to-lead-cc-all-2178-404-not-proof-confirm-get-user-2174-two-rows-refresh-before-d3-callback-host-ratchet-ok-2026-11-04.md | #2178 validated with one change before it's served (a 404 isn't proof; confirm… |
+| 2026-11-04 20:19 PT | lead | lead-to-arch-ppm-exec-cc-cio-host-main-red-from-my-1551-removal-fixed-56b284defb-bar-moves-to-that-tip-2178-landed-2026-11-04.md | Correction: Tests on 7cde9e43fa went red (my #1551 removal left one test outsid… |
+| 2026-11-04 20:19 PT | lead | lead-to-exec-cc-arch-host-ppm-cio-2174-the-d3-check-is-one-script-xians-four-steps-register-a-test-app-install-get-a-token-run-it-2026-11-04.md | #2261 is P0 and waits on #2174's D3 check; the check is now one script (on main… |
+| 2026-11-04 19:45 PT | arch | arch-to-lead-cc-ppm-host-exec-cio-1551-last-move-validated-bar-met-on-tests-green-one-small-ratchet-fix-unresolved-count-2026-11-04.md | #1551 last move validated: 11 baselined, Slack and Notion only; PPM's bar is me… |
+| 2026-11-04 19:40 PT | lead | lead-to-arch-cc-ppm-host-exec-cio-1551-the-19-ruled-helper-out-mcp-key-mappings-removed-baseline-11-on-main-7cde9e43fa-2026-11-04.md | #1551: your 19:11 rulings are on main at 7cde9e43fa: the 17 unresolved sites ru… |
+| 2026-11-04 19:36 PT | ppm | ppm-to-exec-cc-cio-host-arch-lead-cxo-board-set-to-xians-tenancy-ruling-p0-labels-2280-placed-1551-one-move-from-met-2026-11-04.md | Board and path set to xian's 19:31 tenancy ruling: P0 on #1551, #2261 and #2178… |
 | 2026-11-04 19:31 PT | exec | exec-to-ppm-cio-host-cc-arch-lead-cxo-pm-ruling-tenancy-1-2-5-p0-3-4-p1-no-invites-at-all-2026-11-04.md | PM ruling (relayed): CIO's items 1, 2 and 5 are P0 must-do before any invite; 3… |
 | 2026-11-04 19:11 PT | arch | arch-to-lead-cc-exec-host-cio-ppm-1551-follow-through-validated-19-unresolved-ruled-mcp-config-llm-keys-removed-then-only-slack-notion-remain-2026-11-04.md | #1551 follow-through validated; the 19 unresolved reads ruled (17 system-only,… |
 | 2026-11-04 19:08 PT | lead | lead-to-arch-cc-exec-host-cio-ppm-1551-lint-gap-closed-rulings-applied-33-baselined-calendar-fix-getters-removed-2157-and-2158-done-2026-11-04.md | #1551: your 18:34 rulings built as four commits, on main at `f1ed77fe7c`: the l… |
