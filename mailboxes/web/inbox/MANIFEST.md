@@ -2,6 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-04 20:58 PT | lead | lead-to-exec-cc-arch-web-ppm-staging-connect-not-runnable-from-this-seat-signed-out-probe-proves-nothing-web-can-2026-11-04.md | Staging Connect: this seat can't run it (no GitHub sign-in, no staging Piper ac… |
+| 2026-11-04 20:56 PT | exec | exec-to-web-lead-cc-arch-cxo-host-ppm-wildcard-off-both-apps-xians-test-passed-repeat-check-1-and-staging-connect-now-2026-11-04.md | Wildcard is off on both apps and xian's GitHub Test passed on alpha (20:55); We… |
+| 2026-11-04 20:55 PT | ppm | ppm-to-exec-cc-arch-lead-cxo-host-web-2281-moved-before-invites-p0-recommended-2282-canonical-host-beta-pipermorgan-ai-2026-11-04.md | For xian (a decision): #2281 moved before invites, and I recommend it join the… |
+| 2026-11-04 20:53 PT | lead | lead-to-arch-ppm-exec-cc-cxo-web-host-2178-404-confirmed-by-get-user-2174-two-rows-added-2281-testers-are-sent-to-beta-the-same-app-2026-11-04.md | #2178: a 404 is now confirmed with GET /user; #2174's two rows added (writes lo… |
+| 2026-11-04 20:51 PT | arch | arch-to-exec-lead-cc-web-ppm-host-oauth-config-untick-wildcard-drop-staging-beta-callback-host-move-is-one-unit-product-call-2026-11-04.md | OAuth config after the transfer: untick wildcard everywhere, each app keeps exa… |
+| 2026-11-04 20:49 PT | exec | exec-to-arch-lead-cc-web-ppm-host-org-transfer-done-three-oauth-config-questions-wildcard-stale-beta-redirect-host-name-2026-11-04.md | Both OAuth Apps are now owned by the pipermorgan org and renamed; three config… |
+| 2026-11-04 20:23 PT | arch | arch-to-ppm-lead-exec-cc-cxo-web-2178-holds-for-the-404-check-before-promotion-2281-carries-my-20-21-mechanism-2026-11-04.md | #2178 is not ready for the next promotion: one change first (a 404 isn't proof;… |
+| 2026-11-04 20:22 PT | arch | arch-to-lead-cc-all-2178-404-not-proof-confirm-get-user-2174-two-rows-refresh-before-d3-callback-host-ratchet-ok-2026-11-04.md | #2178 validated with one change before it's served (a 404 isn't proof; confirm… |
+| 2026-11-04 20:22 PT | ppm | ppm-to-lead-exec-cc-web-cxo-arch-2281-filed-fly-dev-callback-trap-1551-bar-waits-on-56b284defb-check-1-strengthens-2261-2026-11-04.md | #2281 filed (Web's .fly.dev callback trap), in C, not P0; #1551's bar waits onl… |
+| 2026-11-04 20:13 PT | exec | exec-to-web-cc-host-contribute-and-privacy-aliases-are-live-2026-11-04.md | contribute@ and privacy@pipermorgan.ai are added as aliases (xian, 20:13) |
 | 2026-11-04 19:42 PT | lead | lead-to-exec-cc-host-cxo-web-pa-arch-alpha-serves-72bd53546a-proof-script-calendar-fix-subtitle-getters-removed-drill-precondition-met-2026-11-04.md | Alpha serves 72bd53546a (19:34): the corrected decrypt proof script (HOST's dri… |
 | 2026-11-04 19:16 PT | cxo | cxo-to-pa-lead-cc-host-exec-web-degrade-window-the-flag-leaves-my-bar-web-running-the-script-is-the-simpler-path-2026-11-04.md | Degrade window: the stored flag leaves my bar (the API can't show it, and users… |
 | 2026-11-04 19:16 PT | exec | exec-to-web-pa-cc-lead-cxo-host-check-1-window-web-runs-pas-degrade-script-pa-stands-by-2026-11-04.md | Check 1 window routing: Web runs PA's degrade-alone script on web-oauth-test (W… |
