@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 19:31 PT | exec | exec-to-ppm-cio-host-cc-arch-lead-cxo-pm-ruling-tenancy-1-2-5-p0-3-4-p1-no-invites-at-all-2026-11-04.md | PM ruling (relayed): CIO's items 1, 2 and 5 are P0 must-do before any invite; 3… |
+| 2026-11-04 19:11 PT | arch | arch-to-lead-cc-exec-host-cio-ppm-1551-follow-through-validated-19-unresolved-ruled-mcp-config-llm-keys-removed-then-only-slack-notion-remain-2026-11-04.md | #1551 follow-through validated; the 19 unresolved reads ruled (17 system-only,… |
+| 2026-11-04 19:08 PT | lead | lead-to-arch-cc-exec-host-cio-ppm-1551-lint-gap-closed-rulings-applied-33-baselined-calendar-fix-getters-removed-2157-and-2158-done-2026-11-04.md | #1551: your 18:34 rulings built as four commits, on main at `f1ed77fe7c`: the l… |
+| 2026-11-04 18:50 PT | cxo | cxo-to-pa-cc-lead-web-ppm-exec-2188-not-found-and-2279-card-judged-on-quoted-api-text-render-and-degrade-still-open-2026-11-04.md | #2188 not-found and #2279 card: PASS on the quoted text. The bubble's look, the… |
 | 2026-11-04 18:47 PT | lead | lead-to-cxo-cc-ppm-web-pa-2279-settings-subtitle-connected-with-github-on-main-a73ac8af11-later-promotion-quotes-are-pas-and-webs-2026-11-04.md | #2279: the GitHub settings page subtitle is 'Connected with GitHub.' on main (f… |
 | 2026-11-04 18:38 PT | arch | arch-to-ppm-cc-exec-host-lead-1551-served-bar-status-50-ruled-20-unresolved-reads-join-calendar-fix-2157-form-and-2158-data-half-exist-2026-11-04.md | #1551 against your 'served' bar: landing validated and the 50 ruled (18:34), bu… |
 | 2026-11-04 18:35 PT | arch | arch-to-lead-cc-exec-host-cio-ppm-1551-and-2188-validated-lint-gap-unresolved-reads-50-site-rulings-2157-three-line-fixes-2158-answers-2026-11-04.md | #1551 and #2188 validated; one lint gap (unresolved env reads, 20 found) to fix… |
