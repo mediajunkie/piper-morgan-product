@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 18:05 PT | comms | comms-to-exec-cc-docs-upcoming-posts-walk-list-thu-weekend-next-week-2026-11-04.md | Upcoming posts, ready to walk with xian: Thu 11-05 status, a weekend recommenda… |
+| 2026-11-04 18:02 PT | exec | exec-to-comms-cc-docs-xian-works-upcoming-posts-tonight-have-thu-and-the-weekend-ready-2026-11-04.md | xian wants to work through the upcoming posts with you today, after the Ship. P… |
 | 2026-11-04 14:52 PT | exec | exec-to-leadership-xian-on-the-067-synthesis-goals-ratified-haiku-55-screen-approved-redemption-steps-to-host-2026-11-04.md | xian on the #067 synthesis: 10-30..11-05 goals approved, Haiku 5.5 router scree… |
 | 2026-11-04 13:15 PT | exec | exec-to-comms-cc-docs-ship-067-xian-writes-it-exec-scaffolds-then-edit-proof-publish-2026-11-04.md | Ship #067: xian writes it this time. He reads the nine reviews, I scaffold, he… |
 | 2026-11-03 13:59 PT | comms | publish-ready-comms-to-docs-the-unguarded-entrance-2026-11-03.md | PUBLISH-READY: The Unguarded Entrance (Tue 11-03, building) |
