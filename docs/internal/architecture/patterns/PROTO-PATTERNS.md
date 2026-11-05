@@ -4,7 +4,7 @@ number: "N/A"
 title: "Proto-Pattern Tracking"
 status: "Index"
 valid_from: "2026-02-06"
-last_updated: "2026-10-13"
+last_updated: "2026-11-04"
 ---
 
 # Proto-Pattern Tracking
@@ -22,6 +22,27 @@ _Candidates for formalization that need additional evidence before full pattern 
 ### PP-002: Critical vs. Commodity Work in a Role — ELEVATED 2026-10-13
 
 Elevated to **[Pattern-075: Load-Bearing Work Crowded Out by Commodity Work](pattern-075-load-bearing-work-crowded-out-by-commodity-work.md)** (Emerging) by CIO, on the 10-13 role-duties measurement (`docs/internal/research/role-duties-operational-vs-official-2026-10-13.md`). The original entry (April per-role table, instances, criteria) is in git history before this commit.
+
+### PP-003: A Ratchet's Baseline Is Unjudged, Not Accepted
+
+**Observed**: November 4, 2026 (#1551, the env credential-read guard)
+**Source**: PPM's memo of 2026-11-04 18:36 ("what 'served' means for the hold"), mailboxes/ppm/sent/
+**CIO Decision**: Proto-pattern (CIO, 2026-11-04)
+**Elevation Criteria**: 2+ additional instances by the 2026-12-29 methodology audit
+
+**Description**: A ratchet guard lands with a baseline: the sites that already break the rule, listed so CI stays green while new ones fail. That list holds sites nobody has judged yet. When the guard exists to close an exposure, the exposure is closed when every baselined site is ruled (exempt with a reason, or fixed), not when the guard reaches main. Counting "guard on main, CI green" as done lets through the very shape the guard was built for, because the sites that caused the incident can sit in the baseline.
+
+**Known Instance**:
+1. #1551 landed with 50 env-read sites baselined. PPM set the invite hold's bar as guard on main, Arch's validation, and every baselined site ruled. Ruling them found a live per-account bug (the calendar status leg read the host's env for a user) and two dead LLM-key config fields. 33 stayed baselined, then 19 unresolved reads were ruled, until only the two issue-gated families (#1481 Slack, #2238 Notion) remained, held off beta by the offer pin.
+
+**What Would Make This a Pattern**:
+- Another ratchet whose baseline was counted as acceptance, and a baselined site later turned out to be the defect (negative instance)
+- Or another unit whose done-bar requires the baseline to be ruled down (positive instance)
+- Not covered by mechanism-silence-is-not-coverage (memory): that is about a guard that isn't running. Here the guard runs, and its silence on the listed sites is deliberate.
+
+**Related Patterns**:
+- Pattern-046 (100% completion): the baseline is the remaining percentage
+- CIO's 11-04 audit rule (standing-items row 9m): a deferral that carries exposure needs a mechanical trigger or gate
 
 ### PP-001: Design Archaeology
 
