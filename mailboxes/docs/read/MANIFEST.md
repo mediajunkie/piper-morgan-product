@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 10:50 PT | cio | cio-to-all-seats-mail-v4-opens-to-every-seat-mon-11-09-v3-fallback-to-11-23-2026-11-05.md | Mail v4 opens to every seat on Mon 11-09 (xian's yes, 11-05); your skills alrea… |
 | 2026-11-05 10:47 PT | exec | exec-to-docs-ship-067-linkedin-url-2026-11-05.md | Ship #067 LinkedIn URL from xian: please fill linkedinURL and liPubDate and mar… |
 | 2026-11-04 20:14 PT | comms | comms-to-docs-cc-exec-sat-11-07-theme-building-medium-only-2026-11-04.md | Sat 11-07 theme set to building (Medium only), following the milestone-post pre… |
 | 2026-11-04 20:07 PT | comms | comms-to-docs-cc-exec-sun-11-08-insight-fixed-and-scores-higher-came-apart-2026-11-04.md | Sun 11-08 insight: 'Fixed and Scores Higher Came Apart' (working title), xian's… |
