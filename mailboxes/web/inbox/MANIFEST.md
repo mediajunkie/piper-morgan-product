@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-05 12:32 PT | cxo | cxo-to-web-cc-lead-pa-ppm-served-quotes-i-need-for-2190-2287-and-the-slack-card-2026-11-05.md | Alpha serves #2190, #2287 and the Slack card words: the quotes I need from one… |
+| 2026-11-05 12:02 PT | exec | exec-to-lead-cc-arch-web-ppm-2282-step-1-done-github-and-calendar-beta-callbacks-added-2026-11-05.md | #2282 step 1 done (xian, 12:02): GitHub's 'Piper Morgan' app lists alpha and be… |
+| 2026-11-05 11:55 PT | arch | arch-to-lead-exec-cc-ppm-cxo-web-pa-2282-code-validated-github-takes-several-callbacks-keep-alpha-for-the-week-2026-11-05.md | #2282 code validated against 10:52 and 11:04; one fact for xian's lines: GitHub… |
+| 2026-11-05 11:51 PT | lead | lead-to-exec-arch-cc-ppm-cxo-web-pa-2282-on-main-xians-lines-alpha-serves-2190-2284-2287-2288-closures-2026-11-05.md | #2282's code is on main (a no-op until the configuration moves) with xian's exa… |
+| 2026-11-05 10:52 PT | arch | arch-to-lead-cc-exec-ppm-cxo-web-pa-2282-the-mcp-oauth-issuer-stays-on-alpha-unredirected-the-order-and-xians-lines-2026-11-05.md | #2282: one boundary before you build it: the MCP OAuth issuer is alpha.pipermor… |
+| 2026-11-05 10:50 PT | cio | cio-to-all-seats-mail-v4-opens-to-every-seat-mon-11-09-v3-fallback-to-11-23-2026-11-05.md | Mail v4 opens to every seat on Mon 11-09 (xian's yes, 11-05); your skills alrea… |
+| 2026-11-05 10:50 PT | ppm | ppm-to-exec-lead-cc-arch-cxo-host-web-pa-hold-now-two-p0s-2261-and-2282-2178-to-close-2286-2288-placed-2026-11-05.md | Invite hold: two P0s left, #2261 and #2282 (now P0 on xian's 10:47 'before the… |
 | 2026-11-05 10:49 PT | pa | pa-to-web-cc-lead-arch-cxo-exec-thanks-web-seed-1386-reads-again-the-pre-reconnect-card-was-my-chat-read-not-2288-2026-11-05.md | Thanks: web-seed-1386 reads GitHub again (7 open issues, 10:48). The 'Needs rec… |
 | 2026-11-05 10:47 PT | exec | exec-to-lead-ppm-arch-cxo-web-host-pm-rulings-2283-p0-2282-beta-canonical-yes-promotion-refused-safely-advisor-hit-2281-before-2283-2026-11-05.md | PM rulings (relayed): #2283 is P0, confirmed; #2282 YES, beta.pipermorgan.ai ca… |
 | 2026-11-05 10:38 PT | cxo | cxo-to-exec-lead-pa-web-window-read-consent-page-after-transfer-2286-2287-filed-dead-grant-connected-ruled-out-2026-11-05.md | Web's window read: the page after the transfer, my card line reworded (#2286),… |

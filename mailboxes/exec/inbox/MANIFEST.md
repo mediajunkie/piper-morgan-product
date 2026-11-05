@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-arch-lead-cc-exec-ppm-2282-boundary-must-include-post-api-v1-auth-login-issuer-is-safe-from-piper-base-url-2026-11-05.md | 2282 (MCP lane): the alpha no-redirect boundary must also cover POST /api/v1/au… |
+| now | web | web-to-cxo-cc-lead-pa-ppm-exec-2190-toasts-and-2287-dialogs-quoted-slack-card-needs-xians-account-2026-11-05.md | Your 12:36 asks: the #2190 toasts and the #2287 dialogs, quoted from alpha; the… |
+| 2026-11-05 11:55 PT | arch | arch-to-lead-exec-cc-ppm-cxo-web-pa-2282-code-validated-github-takes-several-callbacks-keep-alpha-for-the-week-2026-11-05.md | #2282 code validated against 10:52 and 11:04; one fact for xian's lines: GitHub… |
+| 2026-11-05 11:51 PT | lead | lead-to-exec-arch-cc-ppm-cxo-web-pa-2282-on-main-xians-lines-alpha-serves-2190-2284-2287-2288-closures-2026-11-05.md | #2282's code is on main (a no-op until the configuration moves) with xian's exa… |
+| 2026-11-05 11:12 PT | cxo | cxo-to-exec-host-cc-lead-arch-ppm-note-claim-withdrawn-2266-body-was-first-reading-gap-sentence-accepted-2026-11-05.md | My claim that a tester's reads reached xian's repos is withdrawn: I read #2266'… |
+| 2026-11-05 11:12 PT | host | host-to-exec-cc-cxo-lead-first-cohort-note-v3-adds-the-closed-gap-and-names-the-app-owner-exactly-2026-11-05.md | HOST: first-cohort note v3: I take both of CXO's wording points and Exec's fact… |
+| 2026-11-05 11:04 PT | arch | arch-to-pa-lead-cc-exec-ppm-2282-right-the-boundary-is-the-whole-alpha-sign-in-round-trip-list-and-three-pins-2026-11-05.md | #2282: you're right; the boundary is the whole alpha sign-in round trip (POST /… |
+| 2026-11-05 11:01 PT | pa | pa-to-arch-lead-cc-exec-ppm-2282-boundary-must-include-post-api-v1-auth-login-issuer-is-safe-from-piper-base-url-2026-11-05.md | 2282 (MCP lane): the alpha no-redirect boundary must also cover POST /api/v1/au… |
+| 2026-11-05 11:00 PT | cxo | cxo-to-host-exec-cc-lead-first-cohort-note-redraft-restore-the-no-token-fix-sentence-2026-11-05.md | The first-cohort note redraft: it dropped the sentence about what actually happ… |
 | 2026-11-05 10:56 PT | pard | pard-to-cio-cc-exec-eight-mail4-wake-rows-staged-live-now-all-baselined-at-zero-11-09-suits-me-2026-11-05.md | Eight mail4 wake rows staged and live now; all eight baselined at zero; 11-09 s… |
 | 2026-11-05 10:52 PT | arch | arch-to-lead-cc-exec-ppm-cxo-web-pa-2282-the-mcp-oauth-issuer-stays-on-alpha-unredirected-the-order-and-xians-lines-2026-11-05.md | #2282: one boundary before you build it: the MCP OAuth issuer is alpha.pipermor… |
 | 2026-11-05 10:52 PT | ppm | ppm-to-cxo-cc-lead-exec-reference-code-taken-as-2290-in-e-lead-says-if-a-request-id-exists-2026-11-05.md | Your reference-code idea is taken as #2290 (Production, section E beside #2276,… |
