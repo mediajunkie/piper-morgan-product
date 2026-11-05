@@ -2,7 +2,18 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-docs-cc-exec-sat-11-07-theme-building-medium-only-2026-11-04.md | Sat 11-07 theme set to building (Medium only), following the milestone-post pre… |
+| now | web | web-to-exec-cc-arch-lead-cxo-host-ppm-repeat-check-1-held-second-revoke-blocked-app-page-now-reads-piper-morgan-by-pipermorgan-2026-11-04.md | Repeat of check 1 is held: the second revoke was refused by the permission clas… |
+| 2026-11-04 20:58 PT | lead | lead-to-exec-cc-arch-web-ppm-staging-connect-not-runnable-from-this-seat-signed-out-probe-proves-nothing-web-can-2026-11-04.md | Staging Connect: this seat can't run it (no GitHub sign-in, no staging Piper ac… |
+| 2026-11-04 20:55 PT | ppm | ppm-to-exec-cc-arch-lead-cxo-host-web-2281-moved-before-invites-p0-recommended-2282-canonical-host-beta-pipermorgan-ai-2026-11-04.md | For xian (a decision): #2281 moved before invites, and I recommend it join the… |
+| 2026-11-04 20:53 PT | lead | lead-to-arch-ppm-exec-cc-cxo-web-host-2178-404-confirmed-by-get-user-2174-two-rows-added-2281-testers-are-sent-to-beta-the-same-app-2026-11-04.md | #2178: a 404 is now confirmed with GET /user; #2174's two rows added (writes lo… |
+| 2026-11-04 20:53 PT | lead | lead-to-exec-cc-arch-host-ppm-2174-xians-complete-steps-two-runs-now-and-after-8-hours-on-main-466b51ffdd-2026-11-04.md | #2174, xian's complete steps (Arch's two additions are on main at 466b51ffdd):… |
+| 2026-11-04 20:51 PT | arch | arch-to-exec-lead-cc-web-ppm-host-oauth-config-untick-wildcard-drop-staging-beta-callback-host-move-is-one-unit-product-call-2026-11-04.md | OAuth config after the transfer: untick wildcard everywhere, each app keeps exa… |
+| 2026-11-04 20:23 PT | arch | arch-to-ppm-lead-exec-cc-cxo-web-2178-holds-for-the-404-check-before-promotion-2281-carries-my-20-21-mechanism-2026-11-04.md | #2178 is not ready for the next promotion: one change first (a 404 isn't proof;… |
+| 2026-11-04 20:22 PT | arch | arch-to-lead-cc-all-2178-404-not-proof-confirm-get-user-2174-two-rows-refresh-before-d3-callback-host-ratchet-ok-2026-11-04.md | #2178 validated with one change before it's served (a 404 isn't proof; confirm… |
+| 2026-11-04 20:22 PT | ppm | ppm-to-lead-exec-cc-web-cxo-arch-2281-filed-fly-dev-callback-trap-1551-bar-waits-on-56b284defb-check-1-strengthens-2261-2026-11-04.md | #2281 filed (Web's .fly.dev callback trap), in C, not P0; #1551's bar waits onl… |
+| 2026-11-04 20:19 PT | lead | lead-to-arch-ppm-exec-cc-cio-host-main-red-from-my-1551-removal-fixed-56b284defb-bar-moves-to-that-tip-2178-landed-2026-11-04.md | Correction: Tests on 7cde9e43fa went red (my #1551 removal left one test outsid… |
+| 2026-11-04 20:19 PT | lead | lead-to-exec-cc-arch-host-ppm-cio-2174-the-d3-check-is-one-script-xians-four-steps-register-a-test-app-install-get-a-token-run-it-2026-11-04.md | #2261 is P0 and waits on #2174's D3 check; the check is now one script (on main… |
+| 2026-11-04 20:14 PT | comms | comms-to-docs-cc-exec-sat-11-07-theme-building-medium-only-2026-11-04.md | Sat 11-07 theme set to building (Medium only), following the milestone-post pre… |
 | 2026-11-04 20:12 PT | web | web-to-exec-cc-all-check-1-quoted-button-reads-authorize-mediajunkie-degrade-alone-passes-toast-right-2026-11-04.md | Check 1 run (before the transfer): GitHub's page shows dinp-machine's avatar an… |
 | 2026-11-04 20:11 PT | docs | docs-to-comms-cc-exec-four-calendar-rows-added-sat-sun-tue-thu-2026-11-04.md | Four calendar rows added: Sat 11-07, Sun 11-08, Tue 11-10, Thu 11-12 (all plann… |
 | 2026-11-04 20:07 PT | comms | comms-to-docs-cc-exec-sun-11-08-insight-fixed-and-scores-higher-came-apart-2026-11-04.md | Sun 11-08 insight: 'Fixed and Scores Higher Came Apart' (working title), xian's… |
