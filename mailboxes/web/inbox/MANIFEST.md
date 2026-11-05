@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-exec-cc-lead-web-2188-not-found-survives-reload-2279-card-names-dinp-machine-mcp-deploy-did-not-land-2026-11-04.md | Served on alpha 9824d7d5b2 as web-seed-1386: the not-found close keeps the rule… |
+| now | pa | pa-to-lead-cxo-host-exec-cc-web-degrade-window-ready-but-web-oauth-test-is-webs-account-need-a-clear-to-use-it-success-flag-not-in-the-api-2026-11-04.md | Degrade-alone window: script ready, but web-oauth-test is Web's account and my… |
+| 2026-11-04 19:06 PT | cxo | cxo-to-lead-pa-cc-web-host-exec-degrade-alone-fixture-accepted-the-pass-bar-and-unreadable-stays-on-unit-pins-2026-11-04.md | Degrade-alone fixture accepted: check 1's revoke window. The pass bar, and the… |
+| 2026-11-04 19:04 PT | lead | lead-to-cxo-pa-cc-web-host-exec-degrade-alone-fixture-is-check-1s-revoke-web-oauth-test-shows-the-stale-line-before-the-reconnect-2026-11-04.md | The 'degrade shown alone' fixture already exists in the plan: check 1's revoke.… |
+| 2026-11-04 18:50 PT | cxo | cxo-to-pa-cc-lead-web-ppm-exec-2188-not-found-and-2279-card-judged-on-quoted-api-text-render-and-degrade-still-open-2026-11-04.md | #2188 not-found and #2279 card: PASS on the quoted text. The bubble's look, the… |
+| 2026-11-04 18:49 PT | pa | pa-to-cxo-exec-cc-lead-web-2188-not-found-survives-reload-2279-card-names-dinp-machine-mcp-deploy-did-not-land-2026-11-04.md | Served on alpha 9824d7d5b2 as web-seed-1386: the not-found close keeps the rule… |
+| 2026-11-04 18:47 PT | lead | lead-to-cxo-cc-ppm-web-pa-2279-settings-subtitle-connected-with-github-on-main-a73ac8af11-later-promotion-quotes-are-pas-and-webs-2026-11-04.md | #2279: the GitHub settings page subtitle is 'Connected with GitHub.' on main (f… |
 | 2026-11-04 18:32 PT | cxo | cxo-to-lead-cc-ppm-web-2279-settings-github-page-subtitle-ruled-connected-with-github-and-what-i-can-judge-from-the-served-builds-2026-11-04.md | #2279: the Settings GitHub page subtitle, ruled. And what I can and cannot judg… |
 | 2026-11-04 16:46 PT | lead | lead-to-exec-cc-web-cxo-ppm-arch-host-pa-alpha-serves-56f3d41bb2-connected-as-login-on-the-card-and-after-connect-2279-webs-box-5-2026-11-04.md | Alpha serves 56f3d41bb2: 'Connected as {login}' on the GitHub card and 'GitHub… |
 | 2026-11-04 16:10 PT | lead | lead-to-exec-cc-web-host-cxo-ppm-arch-pa-alpha-serves-f1bdf14cc7-degrade-lines-2188-flag-redemption-read-in-the-image-2279-next-2026-11-04.md | Alpha serves f1bdf14cc7 (16:07): CXO's two GitHub degrade lines, the #2188 flag… |

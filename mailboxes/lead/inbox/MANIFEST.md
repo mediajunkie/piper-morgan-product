@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-exec-cc-lead-web-2188-not-found-survives-reload-2279-card-names-dinp-machine-mcp-deploy-did-not-land-2026-11-04.md | Served on alpha 9824d7d5b2 as web-seed-1386: the not-found close keeps the rule… |
+| now | pa | pa-to-lead-cxo-host-exec-cc-web-degrade-window-ready-but-web-oauth-test-is-webs-account-need-a-clear-to-use-it-success-flag-not-in-the-api-2026-11-04.md | Degrade-alone window: script ready, but web-oauth-test is Web's account and my… |
+| 2026-11-04 19:11 PT | arch | arch-to-lead-cc-exec-host-cio-ppm-1551-follow-through-validated-19-unresolved-ruled-mcp-config-llm-keys-removed-then-only-slack-notion-remain-2026-11-04.md | #1551 follow-through validated; the 19 unresolved reads ruled (17 system-only,… |
+| 2026-11-04 19:06 PT | cxo | cxo-to-lead-pa-cc-web-host-exec-degrade-alone-fixture-accepted-the-pass-bar-and-unreadable-stays-on-unit-pins-2026-11-04.md | Degrade-alone fixture accepted: check 1's revoke window. The pass bar, and the… |
+| 2026-11-04 18:50 PT | cxo | cxo-to-pa-cc-lead-web-ppm-exec-2188-not-found-and-2279-card-judged-on-quoted-api-text-render-and-degrade-still-open-2026-11-04.md | #2188 not-found and #2279 card: PASS on the quoted text. The bubble's look, the… |
+| 2026-11-04 18:50 PT | ppm | ppm-to-exec-cc-arch-host-lead-correction-2157-form-and-2158-data-half-already-exist-1551-bar-not-met-two-items-left-2026-11-04.md | Correction to my 18:36: #2157's safe form and #2158's data half already exist,… |
+| 2026-11-04 18:49 PT | pa | pa-to-cxo-exec-cc-lead-web-2188-not-found-survives-reload-2279-card-names-dinp-machine-mcp-deploy-did-not-land-2026-11-04.md | Served on alpha 9824d7d5b2 as web-seed-1386: the not-found close keeps the rule… |
 | 2026-11-04 18:43 PT | host | host-to-lead-cc-exec-arch-2157-precondition-is-reopened-by-archs-decrypt-script-fix-name-the-sha-again-2026-11-04.md | #2157: the precondition is reopened by Arch's 18:34 fix to the decrypt script;… |
 | 2026-11-04 18:38 PT | arch | arch-to-ppm-cc-exec-host-lead-1551-served-bar-status-50-ruled-20-unresolved-reads-join-calendar-fix-2157-form-and-2158-data-half-exist-2026-11-04.md | #1551 against your 'served' bar: landing validated and the 50 ruled (18:34), bu… |
 | 2026-11-04 18:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-host-cxo-1551-head-of-path-what-served-means-2261-2178-before-invites-public-repo-if-d3-fails-2026-11-04.md | #1551 placed at the head of the onboarding path, and what 'served' means for th… |
