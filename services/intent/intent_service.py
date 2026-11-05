@@ -10325,12 +10325,13 @@ class IntentService:
                 "category": "query",
                 "action": action,
                 "context": {"read_failed": rf.reason_code, "detail": rf.detail},
-                # #2280: never connected is NOT_CONNECTED. The other branches keep their
-                # #2188 shape (success=False, unmarked); widening them is not this unit.
-                **(
-                    {NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED}
+                # #2280: never connected is NOT_CONNECTED. Every other branch (repo
+                # unresolved, a read that failed) is a connector degrade, so DEGRADED
+                # (Arch 2026-11-05 13:15). An unmarked False is a real handler failure.
+                NOT_PERFORMED_KEY: (
+                    NotPerformed.NOT_CONNECTED
                     if rf.reason is None and rf.detail == "no_credential"
-                    else {}
+                    else NotPerformed.DEGRADED
                 ),
             },
         )

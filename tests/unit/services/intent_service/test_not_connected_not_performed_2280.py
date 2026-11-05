@@ -108,11 +108,16 @@ def test_the_list_helper_marks_never_connected():
     )
 
 
-def test_the_list_helpers_other_branches_keep_their_shape():
+@pytest.mark.parametrize(
+    "reason_name, detail",
+    [("UNREACHABLE", "x"), ("STALE_TOKEN", "stale_token"), ("REPO_UNRESOLVED", "no_repository")],
+)
+def test_the_list_helpers_other_branches_are_degrades(reason_name, detail):
+    """Arch 2026-11-05 13:15: the helper's other branches are connector degrades."""
     from services.integrations.github.read_failed import GitHubReadFailed
     from services.mcp.consumer.connector import DegradationReason
 
-    rf = GitHubReadFailed("down", DegradationReason.UNREACHABLE, repo="o/r", detail="x")
+    rf = GitHubReadFailed("x", getattr(DegradationReason, reason_name), repo="o/r", detail=detail)
     result = _helper()(rf, "list_issues_query", "issues")
     assert result.success is False
-    assert NOT_PERFORMED_KEY not in result.intent_data
+    assert result.intent_data[NOT_PERFORMED_KEY] == NotPerformed.DEGRADED
