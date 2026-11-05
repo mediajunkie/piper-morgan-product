@@ -87,3 +87,32 @@ class TestRatchet:
     def test_removed_sites_do_not_fail(self):
         base = Counter({"a|X|r": 2})
         assert new_against_baseline(Counter({"a|X|r": 1}), base) == Counter()
+
+
+class TestImportedConstants:
+    def test_a_constant_imported_from_another_module_resolves(self, tmp_path, monkeypatch):
+        """Arch 2026-11-04 16:38: ``from pkg.names import ENV_TOKEN`` then a read by name."""
+        pkg = tmp_path / "pkg"
+        pkg.mkdir()
+        (pkg / "__init__.py").write_text("")
+        (pkg / "names.py").write_text('ENV_TOKEN = "PIPER_GITHUB_TOKEN"\nOTHER = 3\n')
+        reader = (
+            "import os\nfrom pkg.names import ENV_TOKEN, OTHER\n"
+            "def f():\n    return os.environ.get(ENV_TOKEN)\n"
+        )
+        monkeypatch.chdir(tmp_path)
+        assert _names(reader) == ["PIPER_GITHUB_TOKEN"]
+
+    def test_an_aliased_import_resolves_under_its_alias(self, tmp_path, monkeypatch):
+        pkg = tmp_path / "pkg"
+        pkg.mkdir()
+        (pkg / "__init__.py").write_text("")
+        (pkg / "names.py").write_text('HANDLE_VAR = "PIPER_GITHUB_HANDLE"\n')
+        reader = "import os\nfrom pkg.names import HANDLE_VAR as H\nx = os.getenv(H)\n"
+        monkeypatch.chdir(tmp_path)
+        assert _names(reader) == ["PIPER_GITHUB_HANDLE"]
+
+    def test_an_unresolvable_import_is_not_a_site(self, tmp_path, monkeypatch):
+        reader = "import os\nfrom nowhere.names import X\nx = os.getenv(X)\n"
+        monkeypatch.chdir(tmp_path)
+        assert _names(reader) == []

@@ -14,7 +14,8 @@ What is a site: a read through ``os.environ[...]``, ``os.environ.get(...)``,
 ``os.getenv(...)``, ``environ.get(...)`` or ``getenv(...)`` whose first argument is a
 string, either written there or resolved from a module-level constant in the same file
 (``ENV_DEFAULT_REPO = "PIPER_DEFAULT_REPO"`` then ``os.environ.get(ENV_DEFAULT_REPO)``,
-the shape a literal regex misses), and whose name contains one of the CREDENTIAL_WORDS.
+the shape a literal regex misses) or imported by name from another module under the repo
+(Arch 16:38), and whose name contains one of the CREDENTIAL_WORDS.
 Also a call to one of the known config HELPERS that themselves read such names.
 
 Ratchet pattern (mirrors scripts/principal_threading_lint.py): today's sites are
@@ -96,10 +97,45 @@ class Violation:
     snippet: str
 
 
-def _module_constants(tree: ast.AST) -> Dict[str, str]:
-    """Module-level ``NAME = "STRING"`` assignments, so a read through a constant
-    resolves to the environment variable it names."""
+def _module_path(module: str, roots: Optional[List[Path]] = None) -> Optional[Path]:
+    """The file for a dotted module name under the repo root, else None."""
+    rel = Path(*module.split("."))
+    for cand in (rel.with_suffix(".py"), rel / "__init__.py"):
+        if cand.is_file():
+            return cand
+    return None
+
+
+def _imported_constants(tree: ast.AST, depth: int = 0) -> Dict[str, str]:
+    """``from pkg.mod import NAME`` where NAME is a string constant in that module (Arch
+    2026-11-04 16:38: the constant may live in another module, not only locally). One
+    level of indirection is followed; deeper chains stay unresolved and are a lint gap
+    to name, not a false negative to accept silently."""
     out: Dict[str, str] = {}
+    if depth > 1:
+        return out
+    for node in getattr(tree, "body", []):
+        if not isinstance(node, ast.ImportFrom) or not node.module or node.level:
+            continue
+        path = _module_path(node.module)
+        if path is None:
+            continue
+        try:
+            other = ast.parse(path.read_text(encoding="utf-8", errors="replace"))
+        except (OSError, SyntaxError):
+            continue
+        consts = _module_constants(other, follow_imports=False)
+        for alias in node.names:
+            if alias.name in consts:
+                out[alias.asname or alias.name] = consts[alias.name]
+    return out
+
+
+def _module_constants(tree: ast.AST, follow_imports: bool = True) -> Dict[str, str]:
+    """Module-level ``NAME = "STRING"`` assignments, so a read through a constant
+    resolves to the environment variable it names; plus such constants imported
+    by name from another module under the repo."""
+    out: Dict[str, str] = _imported_constants(tree) if follow_imports else {}
     for node in getattr(tree, "body", []):
         if isinstance(node, ast.Assign) and isinstance(node.value, ast.Constant):
             if isinstance(node.value.value, str):
