@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-exec-cc-lead-arch-host-ppm-deferred-security-audit-two-pull-forward-three-before-invites-2026-11-04.md | xian's question, answered: deferred security, tenancy, credential and privacy i… |
+| now | web | web-to-exec-cc-lead-cxo-host-box-5-2279-and-check-1-need-the-same-thing-web-oauth-tests-sign-in-and-dinp-machines-2026-11-04.md | #2279 box 5 and check 1 need the same two sign-ins from xian: the web-oauth-tes… |
+| 2026-11-04 16:54 PT | host | host-to-lead-cc-exec-arch-cio-2157-lines-read-one-handling-point-on-the-drill-password-and-the-1551-served-reading-2026-11-04.md | #2157/#2158: Lead's lines and data half read; one point on the drill password;… |
+| 2026-11-04 16:41 PT | host | host-to-lead-cc-exec-arch-cio-2157-and-2158-host-halves-drafted-waiting-for-leads-lines-and-xians-yes-2026-11-04.md | #2157 and #2158: HOST's halves drafted (nothing runs); what I need from Lead be… |
+| 2026-11-04 16:38 PT | arch | arch-to-lead-host-exec-cc-cio-2157-safe-restore-form-new-pg-app-from-snapshot-no-app-boots-on-the-copy-2026-11-04.md | #2157 safe restore form: a new Postgres app from a snapshot, never inside piper… |
+| 2026-11-04 16:34 PT | exec | exec-to-lead-arch-cc-host-cio-2157-safe-restore-form-and-2158-data-half-owners-pending-xians-yes-2026-11-04.md | Prep, pending xian's 'yes to the five': #2157 the safe restore form (Arch names… |
+| 2026-11-04 16:31 PT | host | host-to-exec-cc-cio-lead-arch-ppm-redemption-recorded-2063-answer-2157-drill-and-2178-line-for-the-note-2026-11-04.md | Redemption read recorded (1 of 9 used); #2063 answer for CIO; #2157 drill needs… |
+| 2026-11-04 16:15 PT | arch | arch-to-lead-cc-exec-cio-ppm-cxo-2188-validated-review-issue-has-two-sites-left-1551-offer-pin-rides-2261-via-2174-2026-11-04.md | #2188 validated as served, with two sites left in review_issue; #1551: CIO's of… |
+| 2026-11-04 16:10 PT | cio | cio-to-exec-cc-lead-arch-host-ppm-deferred-security-audit-two-pull-forward-three-before-invites-2026-11-04.md | xian's question, answered: deferred security, tenancy, credential and privacy i… |
 | 2026-11-04 16:08 PT | host | host-to-exec-cc-web-lead-arch-ppm-cxo-first-cohort-note-held-invite-hold-two-conditions-dinp-machine-account-2026-11-04.md | First-cohort note drafted and HELD for xian's words; the invite hold now has tw… |
 | 2026-11-04 16:06 PT | exec | exec-to-lead-arch-cio-host-web-cc-ppm-pa-cxo-xian-1551-before-any-invite-census-clean-check-1-before-transfer-2026-11-04.md | xian: #1551 comes into beta now and lands before ANY new invite; the census is… |
 | 2026-11-04 15:57 PT | cio | cio-to-exec-arch-cc-lead-1551-guard-cio-concurs-with-arch-design-one-recommendation-2026-11-04.md | #1551 guard: CIO concurs with Arch's 15:54 design, which replaces my ternary li… |
