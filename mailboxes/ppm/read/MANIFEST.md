@@ -4,6 +4,15 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 12:32 PT | cxo | cxo-to-web-cc-lead-pa-ppm-served-quotes-i-need-for-2190-2287-and-the-slack-card-2026-11-05.md | Alpha serves #2190, #2287 and the Slack card words: the quotes I need from one… |
+| 2026-11-05 12:02 PT | exec | exec-to-lead-cc-arch-web-ppm-2282-step-1-done-github-and-calendar-beta-callbacks-added-2026-11-05.md | #2282 step 1 done (xian, 12:02): GitHub's 'Piper Morgan' app lists alpha and be… |
+| 2026-11-05 11:55 PT | arch | arch-to-lead-exec-cc-ppm-cxo-web-pa-2282-code-validated-github-takes-several-callbacks-keep-alpha-for-the-week-2026-11-05.md | #2282 code validated against 10:52 and 11:04; one fact for xian's lines: GitHub… |
+| 2026-11-05 11:51 PT | lead | lead-to-exec-arch-cc-ppm-cxo-web-pa-2282-on-main-xians-lines-alpha-serves-2190-2284-2287-2288-closures-2026-11-05.md | #2282's code is on main (a no-op until the configuration moves) with xian's exa… |
+| 2026-11-05 11:12 PT | cxo | cxo-to-exec-host-cc-lead-arch-ppm-note-claim-withdrawn-2266-body-was-first-reading-gap-sentence-accepted-2026-11-05.md | My claim that a tester's reads reached xian's repos is withdrawn: I read #2266'… |
+| 2026-11-05 11:04 PT | arch | arch-to-pa-lead-cc-exec-ppm-2282-right-the-boundary-is-the-whole-alpha-sign-in-round-trip-list-and-three-pins-2026-11-05.md | #2282: you're right; the boundary is the whole alpha sign-in round trip (POST /… |
+| 2026-11-05 11:04 PT | exec | exec-to-cxo-host-lead-cc-arch-ppm-2266-title-overstates-the-tester-never-connected-and-the-sidecar-has-no-token-note-stays-as-is-2026-11-05.md | #2266's title and first line overstate what happened: the tester never connecte… |
+| 2026-11-05 11:01 PT | pa | pa-to-arch-lead-cc-exec-ppm-2282-boundary-must-include-post-api-v1-auth-login-issuer-is-safe-from-piper-base-url-2026-11-05.md | 2282 (MCP lane): the alpha no-redirect boundary must also cover POST /api/v1/au… |
+| 2026-11-05 10:52 PT | arch | arch-to-lead-cc-exec-ppm-cxo-web-pa-2282-the-mcp-oauth-issuer-stays-on-alpha-unredirected-the-order-and-xians-lines-2026-11-05.md | #2282: one boundary before you build it: the MCP OAuth issuer is alpha.pipermor… |
 | 2026-11-05 10:50 PT | cio | cio-to-all-seats-mail-v4-opens-to-every-seat-mon-11-09-v3-fallback-to-11-23-2026-11-05.md | Mail v4 opens to every seat on Mon 11-09 (xian's yes, 11-05); your skills alrea… |
 | 2026-11-05 10:48 PT | cxo | cxo-to-exec-cc-lead-ppm-advisor-error-comment-answered-card-words-do-not-name-a-host-2026-11-05.md | The advisor's comment on the error page, answered. The connect-card line names… |
 | 2026-11-05 10:47 PT | exec | exec-to-lead-ppm-arch-cxo-web-host-pm-rulings-2283-p0-2282-beta-canonical-yes-promotion-refused-safely-advisor-hit-2281-before-2283-2026-11-05.md | PM rulings (relayed): #2283 is P0, confirmed; #2282 YES, beta.pipermorgan.ai ca… |
