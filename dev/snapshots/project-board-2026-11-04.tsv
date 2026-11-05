@@ -2076,3 +2076,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2278	OPEN	Production		[UX] Chat layout is too small, slow and loose vertically, and looks bad on mobile (beta session 11-04)	UX		
 2279	OPEN	Production		GitHub card and connect reply don't say which GitHub account was connected: show "Connected as {login}" from the account's own grant			
 2280	OPEN	Production		The not-connected GitHub reply is an operation not performed: 16 chat sites go success=False behind NotPerformed.NOT_CONNECTED (Arch 2026-11-04 18:34; #2188 family)			
+2281	OPEN	Production		Signing in on piper-morgan.fly.dev and then connecting GitHub ends on raw JSON 'authentication_required': the callback goes to alpha.pipermorgan.ai and the session doesn't travel			
