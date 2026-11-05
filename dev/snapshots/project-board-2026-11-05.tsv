@@ -1974,7 +1974,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2175	OPEN	Production	PUB - Public Beta	UX: a person arriving through the plugin or MCP endpoint has no clear path to an invite and an account (journey grid: invited x MCP, red)	UX,journey:invited,surface:mcp		
 2176	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	UX (class 3): setup wizard step 2 shows Slack and Google Calendar app-credential forms to a new tester (a failed status read falls back to 'not configured')	UX,close:pins-only,journey:set-up,promise:E4-never-lies,surface:web		COMPLETED
 2177	CLOSED	Production	Q - Recurring Audits	Alpha promotion fails: staging's image tag returns 'manifest unknown' on pull (runs 40253965692, 40254107119)	bug		COMPLETED
-2178	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	GitHub Disconnect doesn't revoke the OAuth grant at GitHub (Slack and Google do); revoke it, and never revoke a PAT	P0-critical,architecture		
+2178	CLOSED	Production	PROD-RECONNECT - Complete Connector Migration	GitHub Disconnect doesn't revoke the OAuth grant at GitHub (Slack and Google do); revoke it, and never revoke a PAT	P0-critical,architecture		COMPLETED
 2181	CLOSED	Ongoing		Promote deploys alpha by the pushed digest, not the promote-<sha12> tag (2177 follow-up)	architecture		COMPLETED
 2182	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Standup shows a failed calendar or source read as a free day or 'no activity' (#2151's show_standup row, split out for #1703)	close:pins-only,journey:something-goes-wrong,promise:E4-never-lies,seam:resolver,surface:mcp,surface:web		COMPLETED
 2183	OPEN	Production	PUB - Public Beta	Chat ignores a count in "show my last two new issues" and lists every open issue	journey:get-work-done,surface:mcp,surface:web		
@@ -2061,7 +2061,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2262	OPEN	Production		#1680 gap: Notion writes (chat update_document append_blocks, standup create_page) are not consequential sites	component: integration		
 2264	OPEN	Ongoing		A Postgres data directory (data/postgres, 2,119 files, 88 MB) is tracked in this public repo and copied into every Docker image	bug		
 2265	CLOSED	Production		[UX] 'What did we accomplish yesterday?' reads the last 24 hours but says 'since yesterday'	UX		COMPLETED
-2266	OPEN	Production		[SECURITY] GitHub connector sends the sidecar an unauthenticated request when a bound account's grant is unreadable, and the sidecar's own token answers (cross-tenant; a beta tester reached xian's repos as mediajunkie)	bug		
+2266	OPEN	Production		[SECURITY] GitHub connector sends the sidecar an unauthenticated request when a bound grant is unreadable	bug		
 2267	OPEN	Production		Sign-in by email fails once the account has set a username, and sends the person to password reset (beta session 11-04)	bug		
 2268	OPEN	Production		Onboarding wizard records a repo but doesn't connect GitHub, so Piper says the project has a repo it can't reach (beta session 11-04)	UX,bug		
 2269	OPEN	Production		Chat tells a person to type "link repo", then doesn't recognize it; and offers to connect GitHub from chat, which it can't do (beta session 11-04)	bug		
