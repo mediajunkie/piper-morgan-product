@@ -483,6 +483,15 @@
   const WRONG_ACCOUNT_LINE = "This connection was started from a different Piper account, so nothing was connected. Sign in as the account you want to connect, then press Connect again.";
   const CONNECTOR_LABELS = { github: 'GitHub', calendar: 'Calendar', slack: 'Slack' };
 
+  // #2190 (CXO 2026-11-05, carried from #2285): a failed connect says a sentence, never the
+  // query value. access_denied is the OAuth 2.0 decline code (RFC 6749 4.1.2.1) GitHub,
+  // Google and Slack all send when the person doesn't approve.
+  function connectFailedLine(name, code) {
+    return code === 'access_denied'
+      ? `${name} isn't connected, because you didn't approve access. Press Connect to try again.`
+      : `${name} didn't connect. Press Connect to try again.`;
+  }
+
   function checkOAuthCallbackParams() {
     const params = new URLSearchParams(window.location.search);
 
@@ -501,8 +510,7 @@
       // Clean up URL
       window.history.replaceState({}, document.title, '/settings/integrations');
     } else if (params.get('slack_error')) {
-      const error = params.get('slack_error');
-      Toast.show('error', 'Slack Connection Failed', `Failed to connect: ${error}`);
+      Toast.show('error', 'Slack Connection Failed', connectFailedLine('Slack', params.get('slack_error')));
       window.history.replaceState({}, document.title, '/settings/integrations');
     }
 
@@ -516,7 +524,7 @@
       window.history.replaceState({}, document.title, '/settings/integrations');
     } else if (params.get('github_error')) {
       // #2283: a GitHub callback error was silently dropped before; say it failed.
-      Toast.show('error', 'GitHub Connection Failed', "GitHub didn't connect. Press Connect to try again.");
+      Toast.show('error', 'GitHub Connection Failed', connectFailedLine('GitHub', params.get('github_error')));
       window.history.replaceState({}, document.title, '/settings/integrations');
     }
 
@@ -534,8 +542,7 @@
       Toast.show('warning', 'Calendar', "I couldn't confirm what Google allowed. Open Settings and run the test.");
       window.history.replaceState({}, document.title, '/settings/integrations');
     } else if (params.get('calendar_error')) {
-      const error = params.get('calendar_error');
-      Toast.show('error', 'Calendar Connection Failed', `Failed to connect: ${error}`);
+      Toast.show('error', 'Calendar Connection Failed', connectFailedLine('Calendar', params.get('calendar_error')));
       window.history.replaceState({}, document.title, '/settings/integrations');
     }
   }
