@@ -11,6 +11,7 @@ caption: ''
 Until this week, Piper couldn't tell the difference between a blank and answer and a failure to read the data. The MVP gate went from 6 open issues to 2 with one day left to the latest milestone goal date. The last set of alpha invitations also went out. The next invitations to go out should be for the beta. Along the way, I ruled that we couldn't just patch confabulations and this led to a methodology update.
 
 The team met three of the four goals for this week's sprint:
+
 - The three must-closes closed Friday, 10/23.
 - The alpha invitations went out Monday, 10/26.
 - The GitHub app (for integration) was installed 10/23.
@@ -27,36 +28,33 @@ Arch wrote some new rules: Piper may only write where the user indicated and mus
 
 ## 🎯 Product & experience
 
-**▸ Write about**
-- Frame it as what a tester can do now that they couldn't on 10-22. The list is below; pick the ones that matter most to a reader.
-- The honest-failure lines: Piper says "I couldn't check that" instead of a confident wrong answer.
-- The one that isn't fixed: the two-step milestone ask (#2184), named openly as a known issue in the beta letter.
-- Optionally, what CXO's rule meant this week: an issue closes only when the person can see the fix, not on a unit test alone.
+What a user can do on alpha now that they couldn't a week ago:
 
-**▸ Facts** (all served on alpha unless marked)
-- **"I couldn't check that"** instead of a confident wrong answer. This covers GitHub, calendar, preferences and documents. "What changed since yesterday?" now says what it checked (#2140). A failed preferences read no longer shows defaults, and Save no longer writes them over real settings (#2154).
-- **Trust what Piper says is connected:**
-  - Calendar shows as connected only when its box was ticked (#2148).
-  - GitHub Disconnect sticks (#2172).
-  - A dead GitHub connection can be repaired from Settings (#2018).
-- **Document questions get document answers:** analyze one, compare two named uploads, summarize past the 20-upload window (#2132, #2138, #2139).
-- **GitHub lists say what they cover:**
-  - true counts (#2171);
-  - a milestone list no longer says "across all your repositories" (#2194);
-  - undated milestones are flagged and asked about (#2199, #2200);
-  - a renamed issue shows its new title in the recap (#2201).
-- **Deleting is safe:** "Yes" removes the to-do the prompt named, not the previous one (#2169).
-- **Standup shows your own work,** not everyone's in a shared repo (#2173), and it names a source that failed instead of showing a free day (#2182).
-- **Not yet:** the two-step milestone ask passed on 10-28 and failed on 10-29 (#2184). It's a known issue, and the partner note and the beta letter both name it.
-- **CXO** ruled and closed 15 issues, none on a unit test alone, and wrote the words for every honest-failure line.
+- **Hear "I couldn't check that" instead of a confident wrong answer.** When a GitHub, calendar, preferences or document read fails, Piper now says so, where it used to report "no issues," "no activity" or an empty day. "What changed since yesterday?" now says what it actually checked. A failed preferences read no longer shows the defaults, and pressing Save no longer writes those defaults over your real settings.
+- **Trust what Piper says is connected.** Calendar shows as connected only when you ticked its box. GitHub's Disconnect sticks. A dead GitHub connection can be repaired from Settings without our help.
+- **Ask about documents and get answers about documents.** Analyze an upload, compare two uploads by name, or summarize past the 20 most recent.
+- **Read GitHub lists that say what they cover.** Counts are true. A milestone's list no longer claims to cover all your repositories. Milestones without a date are flagged, Piper asks which one you mean, and the next turn reads the one you named. A renamed issue shows its new title in the session recap.
+- **See your own work in your standup,** not everyone's in a shared repo. If a source fails, the standup names it instead of showing a free day.
+- **Delete safely.** Saying "yes" to a delete removes the to-do the prompt named, not the one before it.
+
+Not yet: asking for a milestone's issues in two steps passed on Wednesday and failed on Thursday. It's a known issue, and the beta letter names it. And the first time you ask to create an issue, Piper now asks which repository. That was live by Thursday evening but passed its check on Friday, so it belongs to next week.
+
+Also, CXO made a rule that we only close an issue when a person can see the fix, not based on a unit test alone.
+
+
 
 ## 🔬 Methodology & process innovation
 
-**▸ Write about**
-- How "more than patching" works in practice: find the cause, list every claim Piper makes, and screen each change against the whole test set before it lands.
-- The week's process lesson: a premise passed along without checking it. Five seats repeated "alpha's key is capped", and it was the test workspace's cap. This ties to Thursday's post, "Citation via Hearsay".
-- Small fixes that remove a class of error: the send scripts now write their own clock times.
-- Optional, candidly: my own miss. My scheduled run died in a restart, I rebuilt it from memory, and dropped the Ship kickoff.
+When I challenged the team to stop trying to solve confabulation problems by patching, we adopted this approach:
+
+- Find the cause. In this case it was the way the base prompt asked for an aside with each reply, and those asides were adding unchecked noise
+- List every claim Piper makes, and screen each change against the whole test set before accepting it.
+
+The team learned another tough lesson in verifying assumptions before passing the along. This type of issue and the commitment to transcend it continues to recur at various level of abstraction throughout the project. 
+
+Ones small fix that removes an entire class of errors: the send scripts now write their own clock times.
+
+We also recognized a weakness in the process that drives Exec's weekly review process with the whole team that feeds into our planning and these Shipping News updates, and fixed it, so that Exec no longer needs to "remember" to send out the reminder memos to the team.
 
 **▸ Facts**
 - **Confabulation method** (after your 10-28 word):

@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Tuesday 3 November</h1>
-<p class="meta">Exec · v794, rebuilt 15:59 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v795, rebuilt 16:12 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -50,7 +50,15 @@
 
 <div class="card act">
 <ul>
-<li><b>The guard that would have caught this whole class: pull it into beta?</b> CIO&rsquo;s answer to &ldquo;why didn&rsquo;t our multitenancy work catch it&rdquo;: the class-wide guard (#1551) was deferred on 08-09, and the check that exists looks at <i>who</i> is asking, not <i>whose credential</i> answers. Arch has designed it as one unit: a lint that flags any new shared-environment credential read, plus a two-account test for accounts with a broken connection. CIO and Arch both recommend pulling it in. <i>I recommend yes: it&rsquo;s one unit, and it closes the Notion and GitHub pattern for good.</i> Your answer: &ldquo;yes, #1551 into beta&rdquo; or &ldquo;later&rdquo;.</li>
+<li><b>Before new invites, CIO&rsquo;s audit of risky deferrals (you asked).</b> #1551 is decided: it lands before anyone new is invited. CIO checked 27 security, tenancy and privacy items. Every risky one was deferred because something else blocked it, never because it was judged safe. Five to settle before new invites:
+(1) <b>#2261, GitHub permission scope.</b> Connecting grants Piper read and write on every repo the person can reach, private ones included. Narrow it, together with the org move. <i>This needs your call:</i> <code>public_repo</code> (Piper can&rsquo;t see private repos) or a fine-grained GitHub App (more work, #2174).
+(2) <b>#1481 and #2238</b> (Slack and Notion cross-user reads). Neither is offered on beta. Add a test that fails if either is offered while its bug is open.
+(3) <b>#2157:</b> run one backup restore drill. We told partners their work carries over, and no restore has ever been tested.
+(4) <b>#2158:</b> write the manual purge steps, so an emailed deletion request really deletes within 14 days.
+(5) <b>#2178:</b> GitHub Disconnect doesn&rsquo;t revoke the permission at GitHub. Fix it together with #2261, or add a line to the cohort note telling people to revoke at GitHub.
+Plus one question: <b>#2063</b>, are the next invites design partners only? If not, the Terms legal review gates them.
+<i>I recommend yes to all five.</i> Your answer: &ldquo;yes to the five&rdquo;, your scope choice for (1), and the #2063 answer.</li>
+<li><b>First-cohort note (HOST), held for your words.</b> It says a tester saw your account named on GitHub&rsquo;s page and stopped; no connection was mixed up; a fix is live; a broader guard lands before new invites; the app moves to an org. It asks testers to check that GitHub shows their own account before pressing Authorize. It says nothing about the button until Web&rsquo;s check is in. I&rsquo;ll bring you the text when you&rsquo;re ready.</li>
 <li><b>Move Piper&rsquo;s GitHub app off your personal account.</b> Arch: GitHub&rsquo;s standard is an app owned by an organization. Step 1, today: transfer the existing app to an org you create (GitHub, Developer settings, OAuth Apps, Transfer ownership). It takes minutes, there&rsquo;s no code change, and GitHub&rsquo;s page then names the org instead of you. Step 2, later: switch to a GitHub App owned by the org, where people pick which repos Piper can see. That&rsquo;s code work, and it waits on #2174. <i>I recommend step 1 today and step 2 after onboarding.</i> Your answer: &ldquo;yes, step 1&rdquo;, and the org name you want.</li>
 <li><b>The planning talk now has a proposal:</b> PPM&rsquo;s onboarding-to-first-value plan, built from today&rsquo;s session, with three questions for you: a sprint or a lane; the two first-value moments; whether the app transfer comes before beta testing. The 12 findings are filed as #2267&ndash;#2278.</li>
 <li><b>Skills review (#1715), the two answers CIO needs.</b> If we can&rsquo;t do the walk today, these two unblock CIO. (1) <b>Scope lines:</b> &ldquo;finish it&rdquo; (CIO adds a <code>scope:</code> line to the last four product skills) or &ldquo;drop it&rdquo;. <i>I recommend finish it: four small edits, and it completes a job that&rsquo;s nearly done.</i> (2) <b>A same-hour line in <code>check-mailbox</code></b>, reminding a seat to pass your rulings on the hour it hears them: &ldquo;yes&rdquo; or &ldquo;no&rdquo;. <i>I recommend yes: it writes down what I already do.</i> The rest of the walk can wait for a calm half hour.</li>
