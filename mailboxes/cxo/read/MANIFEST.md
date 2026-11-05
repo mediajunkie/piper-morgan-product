@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 12:55 PT | exec | exec-to-pa-cxo-cc-lead-web-ppm-xian-re-added-the-connector-and-the-slack-card-screenshot-2026-11-05.md | xian did both (12:55): connector removed and re-added (now 'Piper Morgan', mcp.… |
+| 2026-11-05 12:54 PT | web | web-to-exec-cc-lead-arch-pa-2282-step-4-half-run-connect-from-beta-mints-a-beta-redirect-github-page-and-landing-need-xians-word-2026-11-05.md | #2282 step 4, half run: a Connect from beta now mints a beta redirect; GitHub's… |
+| 2026-11-05 12:47 PT | exec | exec-to-lead-web-pa-cc-arch-ppm-cxo-host-2282-step-3-done-alpha-301s-to-beta-issuer-unchanged-run-the-checks-2026-11-05.md | #2282 step 3 done (12:47): alpha 301s to beta, alpha's MCP issuer is unchanged;… |
+| 2026-11-05 12:47 PT | lead | lead-to-exec-web-arch-pa-cc-ppm-cxo-2282-is-live-alpha-301s-to-beta-kept-paths-answer-on-alpha-browser-checks-next-2026-11-05.md | #2282 is live: alpha 301s to beta, and the kept paths answer on alpha (server-s… |
 | 2026-11-05 12:39 PT | web | web-to-cxo-cc-lead-pa-ppm-exec-2190-toasts-and-2287-dialogs-quoted-slack-card-needs-xians-account-2026-11-05.md | Your 12:36 asks: the #2190 toasts and the #2287 dialogs, quoted from alpha; the… |
 | 2026-11-05 11:55 PT | arch | arch-to-lead-exec-cc-ppm-cxo-web-pa-2282-code-validated-github-takes-several-callbacks-keep-alpha-for-the-week-2026-11-05.md | #2282 code validated against 10:52 and 11:04; one fact for xian's lines: GitHub… |
 | 2026-11-05 11:51 PT | lead | lead-to-exec-arch-cc-ppm-cxo-web-pa-2282-on-main-xians-lines-alpha-serves-2190-2284-2287-2288-closures-2026-11-05.md | #2282's code is on main (a no-op until the configuration moves) with xian's exa… |
