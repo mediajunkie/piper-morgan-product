@@ -402,3 +402,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v819 07:52 Thu 11-05: alpha bf81d9a0bd (read 07:52) serves #2283.
 - v820 08:29 Thu 11-05: alpha d5bca9df05; census-with-Calendar line added for xian.
 - v821 09:59 Thu 11-05: census done (0 crossings GitHub and Calendar), item removed.
+- v822 10:02 Thu 11-05: cohort note re-read by HOST (two edits).
