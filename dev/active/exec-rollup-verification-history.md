@@ -408,3 +408,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v825 11:20 Thu 11-05: promotion waits on Tests 69ac21b99f; #2282 step 1 lines.
 - v826 Thu 11-05: promotion GO (Tests green 69ac21b99f; staging c6a4e818cd differs only outside code paths).
 - v827 11:54 Thu 11-05: alpha c6a4e818cd (read 11:54); promotion item removed; #2282 steps 2-5 outlined.
+- v828 12:13 Thu 11-05: #2282 step 2 from 12:20, step 3 outlined.

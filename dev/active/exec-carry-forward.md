@@ -7,7 +7,7 @@
 **Cron gate:** the duty-cycle-tick cron steps (the CronList self-heal and the STOP re-arm) don't apply on a LaunchAgent.
 
 ## Rollup
-v827, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert. Re-check every item that waits on xian live, on every fire. The source is in a public repo, so describe security findings by class only, with no steps.
+v828, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert. Re-check every item that waits on xian live, on every fire. The source is in a public repo, so describe security findings by class only, with no steps.
 
 ## Where things stand (end of 11-04)
 - **Served:** alpha `72bd53546a` (read 22:01, healthy). Main CI is 12/12 green. The next promotion carries #2178 (`b5df29d4e6`, validated by Arch at 21:02).
