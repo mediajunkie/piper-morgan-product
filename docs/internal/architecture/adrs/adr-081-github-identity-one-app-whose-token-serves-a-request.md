@@ -78,6 +78,8 @@ This is unverified today. Whoever builds it (Lead) checks it first, against a te
 
 Onboarding copy and the install step's experience are CXO's. The app's registration under xian's GitHub account, and the custody of its private key, are HOST's to record.
 
+**D3's check, tooling (Lead, 2026-11-04; #2174):** `scripts/github_app_token_check.py` runs the check once a test GitHub App is installed and a user access token exists. It takes the token from `GITHUB_CHECK_TOKEN` only, calls every github-mcp-server tool Piper uses and the REST reads named above, and prints PASS or FAIL per call and totals, never the token or any body; `--writes` also creates, comments on and closes one issue in a test repository. The result, tool by tool with the versions tested, is recorded here when it runs.
+
 ### D4: The user's own PAT stays a supported leg
 
 Amendment B2's PAT leg stays, with #1966 option (i). It is the user's own credential, pasted in by them, encrypted at rest and never shared. It serves self-hosting and users who won't install an app.
