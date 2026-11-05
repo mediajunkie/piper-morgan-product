@@ -1,0 +1,35 @@
+=== on 9824d7d5b2 18:48:43
+
+## Integrations card, http 200
+{
+ "name": "github",
+ "display_name": "GitHub",
+ "status": "connected",
+ "status_message": "Connected as dinp-machine. Not the right account? Disconnect, then connect again.",
+ "last_check": null,
+ "error": null,
+ "fix_suggestion": null,
+ "configure_url": "/settings/integrations/github",
+ "can_test": true,
+ "status_icon": null,
+ "status_detail": "Not checked yet. Press Test.",
+ "show_test": true,
+ "action": null
+}
+
+## Not-found write, session bd1c2589, http 200
+route execution / close_issue_query
+USER: Close issue #9995 in dinp-machine/piper-test-activity
+PIPER: I couldn't find issue #9995 in dinp-machine/piper-test-activity, so nothing was changed. Check the number and try again, or say 'show open issues' to find it.
+response keys: ['auth_expired', 'clarification_type', 'conversation_created', 'intent', 'message', 'preferences', 'requires_clarification', 'session_id', 'suggestions', 'workflow_id']
+
+## Stored turns (what a reload reads), conversation bd1c2589, http 200
+{
+ "id": "0781e1ff-33cf-4d40-a167-5dc03a7ce2ea",
+ "turn_number": 1,
+ "user_message": "Close issue #9995 in dinp-machine/piper-test-activity",
+ "assistant_response": "I couldn't find issue #9995 in dinp-machine/piper-test-activity, so nothing was changed. Check the number and try again, or say 'show open issues' to find it.",
+ "created_at": "2026-11-05T02:48:53.360867Z"
+}
+
+=== end on 9824d7d5b2 18:48:56
