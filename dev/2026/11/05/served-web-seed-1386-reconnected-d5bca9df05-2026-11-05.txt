@@ -1,0 +1,71 @@
+=== on d5bca9df05 10:48:39
+
+## Card before the chat read
+card, http 200: {
+ "name": "github",
+ "display_name": "GitHub",
+ "status": "connected",
+ "status_message": "Connected as dinp-machine. Not the right account? Disconnect, then connect again.",
+ "last_check": null,
+ "error": null,
+ "fix_suggestion": null,
+ "configure_url": "/settings/integrations/github",
+ "can_test": true,
+ "status_icon": null,
+ "status_detail": "Not checked yet. Press Test.",
+ "show_test": true,
+ "action": null
+}
+
+## Chat read, session 173c49d0, http 200
+intent: {
+ "category": "query",
+ "action": "list_issues_query",
+ "context": {
+  "issue_count": 7,
+  "scope": "assigned_to_you"
+ }
+}
+USER: show my open issues
+PIPER: You have **7 open issues** assigned to you across all your repositories.
+
+Here are the most recent:
+- **#7**: test issue 7
+- **#5**: Onboarding email links to the wrong page
+- **#6**: Dashboard counts are off by one
+- **#3**: Export report as CSV
+- **#4**: Dark mode flickers on first load
+- **#2**: Add search to the settings page
+- **#1**: Login page times out on slow networks (blocked)
+exactly the stale line: False
+response keys: ['auth_expired', 'clarification_type', 'conversation_created', 'intent', 'message', 'preferences', 'requires_clarification', 'session_id', 'suggestions', 'workflow_id']
+
+## Stored turns (what a reload reads), http 200
+[
+ {
+  "id": "602a2572-e7de-4372-b0d6-90f3274ae8fe",
+  "turn_number": 1,
+  "user_message": "show my open issues",
+  "assistant_response": "You have **7 open issues** assigned to you across all your repositories.\n\nHere are the most recent:\n- **#7**: test issue 7\n- **#5**: Onboarding email links to the wrong page\n- **#6**: Dashboard counts are off by one\n- **#3**: Export report as CSV\n- **#4**: Dark mode flickers on first load\n- **#2**: Add search to the settings page\n- **#1**: Login page times out on slow networks (blocked)",
+  "created_at": "2026-11-05T18:48:42.455382Z"
+ }
+]
+
+## Card after the chat read
+card, http 200: {
+ "name": "github",
+ "display_name": "GitHub",
+ "status": "connected",
+ "status_message": "Connected as dinp-machine. Not the right account? Disconnect, then connect again.",
+ "last_check": null,
+ "error": null,
+ "fix_suggestion": null,
+ "configure_url": "/settings/integrations/github",
+ "can_test": true,
+ "status_icon": null,
+ "status_detail": "Not checked yet. Press Test.",
+ "show_test": true,
+ "action": null
+}
+
+=== end on d5bca9df05 10:48:46
