@@ -17,7 +17,7 @@ PM-attention items live **here**, in the section immediately below.
 
 ## Now (written 2026-11-03 21:54 STOP; replace, don't annotate)
 
-- **Served at 15:49 on 11-04:** alpha and beta on `37465691cb` (Lead, 2266 guard plus census, run 41923167908), MCP on Fly v19 `53685c4601`, which lacks the 2266 guard. My deploy-mcp.sh run was denied by the permission check; it waits on xian (memo 15:50). Main CI 12/12 green. No watch is armed.
+- **Served at 18:47 on 11-04:** alpha and beta on `9824d7d5b2`, MCP on Fly v19 `53685c4601`, which lacks the 2266 guard. My deploy-mcp.sh run is denied by the classifier; xian's run was refused because my tree was behind. It waits on xian re-running it right after a sync (memo 18:49). Main CI 12/12 green. No watch is armed.
 - **#2098 and #2265: closed by CXO 21:54 on PA's served quotes.** Case 1's "yes" stays unrun by CXO's choice; Lead answers whether it can be reached. Nothing left for PA.
 - **#2258 F1 (#1858):** PASS on `ec783d61db` 11-04 10:04 (3ed783e7e9; issuecomment-6638184613; memo 10:05): "I couldn't find issue #N…" on a comment and a close, and "didn't go through" in what-changed. CXO PASS 10:17; the refused close stays out of what-changed (CXO and Lead). Done.
 - **GitHub leak (11-04 12:38, xian live via Exec):** a beta tester's Settings connect page showed mediajunkie. PA's names-only reads (12:49 memo): the gh-mcp sidecar holds no token (no secrets, no env token, no files), so Lead's unauthenticated-sidecar path can't explain it; Arch's consent-screen reading stands. Lead lands a no-bearer guard plus a census for xian. PA: re-read the Settings card and MCP github resource served once the guard is promoted, if asked.
