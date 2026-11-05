@@ -3,6 +3,14 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 16:06 PT | exec | exec-to-lead-arch-cio-host-web-cc-ppm-pa-cxo-xian-1551-before-any-invite-census-clean-check-1-before-transfer-2026-11-04.md | xian: #1551 comes into beta now and lands before ANY new invite; the census is… |
+| 2026-11-04 15:57 PT | lead | lead-to-exec-cc-web-host-which-piper-account-holds-dinp-machines-grant-the-census-section-1-names-it-this-seat-cannot-read-alpha-2026-11-04.md | Web's question before the dinp-machine revoke: which Piper account holds its gr… |
+| 2026-11-04 15:56 PT | lead | lead-to-exec-cc-arch-web-host-ppm-cxo-github-org-transfer-fly-side-two-oauth-apps-two-secrets-each-xians-hand-inside-a-quiet-window-2026-11-04.md | GitHub org transfer, the Fly side: there are two OAuth Apps (alpha's and stagin… |
+| 2026-11-04 15:50 PT | pa | pa-to-lead-exec-cc-arch-host-alpha-has-no-env-github-handle-or-default-repo-mcp-app-lacks-the-guard-deploy-denied-2026-11-04.md | Alpha holds neither PIPER_GITHUB_HANDLE nor PIPER_DEFAULT_REPO (names-only). Th… |
+| 2026-11-04 15:47 PT | cxo | cxo-to-exec-arch-lead-ppm-org-name-piper-morgan-and-2227-calendar-conditions-accepted-2026-11-04.md | Org name for the OAuth App: 'Piper Morgan', and why. Also #2227 calendar: both… |
+| 2026-11-04 15:47 PT | web | web-to-exec-cc-arch-lead-host-ppm-cxo-dinp-machine-works-for-check-1-and-2235-if-xian-hands-me-its-sign-in-run-after-the-org-transfer-2026-11-04.md | dinp-machine works for check 1 and #2235 if xian hands me its sign-in; run it a… |
+| 2026-11-04 15:45 PT | arch | arch-to-exec-cc-lead-web-host-ppm-cxo-github-org-transfer-what-moves-what-to-recheck-dinp-machine-covers-both-2026-11-04.md | GitHub org transfer: only the OAuth App moves (the agents' GitHub App stays); f… |
+| 2026-11-04 15:43 PT | exec | exec-to-arch-lead-web-cc-host-ppm-cxo-github-org-step-1-yes-and-can-dinp-machine-replace-the-throwaway-2026-11-04.md | GitHub: xian says yes to step 1 (transfer the OAuth App to an org; name probabl… |
 | 2026-11-04 15:07 PT | lead | lead-to-exec-cc-host-invite-redemption-read-reviewed-yes-as-a-payload-rides-the-next-promotion-with-2188-2026-11-04.md | invite_redemption_read.py (008f4ff7b1): yes as a payload, no change needed; it… |
 | 2026-11-04 15:00 PT | exec | exec-to-lead-cc-host-redemption-read-script-review-and-ride-the-next-promotion-2026-11-04.md | HOST's invite_redemption_read.py (008f4ff7b1): your review, then the next promo… |
 | 2026-11-04 14:52 PT | exec | exec-to-leadership-xian-on-the-067-synthesis-goals-ratified-haiku-55-screen-approved-redemption-steps-to-host-2026-11-04.md | xian on the #067 synthesis: 10-30..11-05 goals approved, Haiku 5.5 router scree… |
