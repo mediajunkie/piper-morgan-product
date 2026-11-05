@@ -415,3 +415,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v832 12:55 Thu 11-05: connector re-add and Slack screenshot done.
 - v833 13:03 Thu 11-05: Web step 4 half-run; xian paste line for dinp-machine sign-in; CXO Slack PASS.
 - v834 13:14 Thu 11-05: connector answer; Connected apps tidy-up for xian.
+- v835 15:21 Thu 11-05: website down (Vercel 402 DEPLOYMENT_DISABLED) at the top.
