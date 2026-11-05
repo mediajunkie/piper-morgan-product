@@ -26,7 +26,7 @@ So the onboarding isn't a new feature first. It's this path made to work, then d
    - *The practicing PM who wants agentic help:* with GitHub connected, one useful read of their own work. A standup or "what changed" over their real repo, or a triage of its open issues.
    - *The person who needs product support but has no PM:* from a product idea, a short plan they keep (an artifact under their documents, PDR-102 C1), with no connector needed.
    - **Success criterion (proposed):** a new account reaches that moment in its first session, without help from us, and the person says it was useful. Measured on beta users, as a count of n of N sessions.
-2. **Make the path work first.** In order: #2266's guard served (GitHub invites hold until then), #2267, then #2268, #2273, #2274 and #2269, which are the steps between sign-in and a connected repo. #2270, #2271 and #2272 follow, because the first question after connecting hits them. #2275 comes with the design, since its prompts are the first-value prompts.
+2. **Make the path work first.** In order: **#1551 at the head** (xian 11-04 16:06: the per-user isolation guard lands before any new invitation; its guard is on main c77eb9bbc2, with Arch's validation and per-site rulings owed); then #2261 (narrow the `repo` scope, through #2174's check) with #2178 (revoke at GitHub on Disconnect), both before invites (PPM 18:35); #2266's guard served (done 11-04 13:38), #2267, then #2268, #2273, #2274 and #2269, which are the steps between sign-in and a connected repo. #2270, #2271 and #2272 follow, because the first question after connecting hits them. #2275 comes with the design, since its prompts are the first-value prompts.
 3. **Then build the designed flow.** The wizard leads to the user type's first-value moment and ends there, not at Settings.
 4. **Then test it with beta users,** using scenarios with clear pass lines (the advisor's suggestions):
    - contributing to an existing open-source repo (PM type);
@@ -50,7 +50,7 @@ PPM's answers to CXO's two product questions (acceptance criteria, so PPM's call
 - **Path B's first value** is two asks that save with no connector: create a project, then add tasks to it. A plan the person keeps is a project with tasks in it.
 - **The skip landing,** until Path B serves, is `Add a todo: review the deployment plan` (a required canonical row, serving today per Lead).
 - **Both pass only when PA quotes them served on a fresh account with a clean reply** (CXO's condition). #2219 (todo replies repeat the item and call todos "reminders") is the known risk. If the todo reply still repeats, #2219 is fixed first, and nobody words around it. So #2219 joins the path in step 2, ahead of the designed flow.
-- The "Connected as {login}" line on the card and in the connect reply is #2279 (filed 15:35), on the connect step beside #2266.
+- The "Connected as {login}" line on the card and in the connect reply is #2279 (on alpha 56f3d41bb2 at 16:41, awaiting Web's render check; filed 15:35), on the connect step beside #2266.
 
 ## Questions for xian
 
