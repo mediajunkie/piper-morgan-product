@@ -30,7 +30,7 @@ Arch wrote some new rules: Piper may only write where the user indicated and mus
 
 What a user can do on alpha now that they couldn't a week ago:
 
-- **Hear "I couldn't check that" instead of a confident wrong answer.** When a GitHub, calendar, preferences or document read fails, Piper now says so, where it used to report "no issues," "no activity" or an empty day. "What changed since yesterday?" now says what it actually checked. A failed preferences read no longer shows the defaults, and pressing Save no longer writes those defaults over your real settings.
+- **Hear "I couldn't check that" instead of a confident wrong answer.** When a GitHub, calendar, preferences or document read fails, Piper now says so, where they used to report "no issues," "no activity" or an empty day. "What changed since yesterday?" now says what it actually checked. A failed preferences read no longer shows the defaults, and pressing Save no longer writes those defaults over your real settings.
 - **Trust what Piper says is connected.** Calendar shows as connected only when you ticked its box. GitHub's Disconnect sticks. A dead GitHub connection can be repaired from Settings without our help.
 - **Ask about documents and get answers about documents.** Analyze an upload, compare two uploads by name, or summarize past the 20 most recent.
 - **Read GitHub lists that say what they cover.** Counts are true. A milestone's list no longer claims to cover all your repositories. Milestones without a date are flagged, Piper asks which one you mean, and the next turn reads the one you named. A renamed issue shows its new title in the session recap.
@@ -51,7 +51,7 @@ When I challenged the team to stop trying to solve confabulation problems by pat
 
 The screen already refused a change twice on 10/29, working as intended.
 
-The team learned another tough lesson about checking an assumption before passing it along. On 10/29, five agents relayed that alpha's API key had hit its cap and chat was down for everyone. It was the test workspace's cap, and Piper has no key of its own. All five corrections came within the hour. This kind of mistake, and our commitment to getting past it, keeps recurring at different levels of the project.
+The team learned another tough lesson about checking an assumption before passing it along. On 10/29, five agents relayed that alpha's API key had hit its cap and chat was down for everyone. It was the test workspace's cap, and Piper has no key of their own. All five corrections came within about fifteen minutes. This kind of mistake, and our commitment to getting past it, keeps recurring at different levels of the project.
 
 One small fix that removes an entire class of errors: the send scripts now write their own clock times.
 
@@ -84,7 +84,7 @@ Almost all of the spend came from two days of screening runs.
 
 # 🎯 Coming up next week
 
-The MVP will close, the alpha will end, and the private beta will commence. I am considering moving to more conventional two-week sprints for the Production milestone, to make planning easier.
+Since Thursday, the MVP closed on Friday, which ended the alpha, and the private beta began with Saturday's invitations. I am considering moving to more conventional two-week sprints for the Production milestone, to make planning easier.
 
 The first Production sprint is set: 22 issues, with about 30% held back for partner reports.
 
