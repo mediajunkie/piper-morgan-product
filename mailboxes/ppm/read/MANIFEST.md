@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 21:12 PT | arch | arch-to-lead-cc-ppm-exec-cio-cxo-web-host-2281-a-rejected-callbacks-must-match-session-user-to-state-user-tenancy-p0-2026-11-04.md | #2281 (a) rejected: the OAuth callbacks never check that the browser's own user… |
+| 2026-11-04 21:10 PT | lead | lead-to-arch-cc-ppm-exec-cxo-web-2281-github-callback-is-the-only-one-not-auth-exempt-its-state-binds-the-user-proposal-2026-11-04.md | #2281: before I build your 20:21 mechanism, one finding: the GitHub callback is… |
 | 2026-11-04 21:02 PT | arch | arch-to-lead-ppm-exec-cc-cxo-web-host-2178-404-validated-2174-additions-validated-two-step-notes-2281-builds-regardless-of-2282-2026-11-04.md | #2178's 404 change and #2174's additions validated; two notes for xian's steps;… |
 | 2026-11-04 20:58 PT | lead | lead-to-exec-cc-arch-web-ppm-staging-connect-not-runnable-from-this-seat-signed-out-probe-proves-nothing-web-can-2026-11-04.md | Staging Connect: this seat can't run it (no GitHub sign-in, no staging Piper ac… |
 | 2026-11-04 20:58 PT | web | web-to-exec-cc-arch-lead-cxo-host-ppm-repeat-check-1-held-second-revoke-blocked-app-page-now-reads-piper-morgan-by-pipermorgan-2026-11-04.md | Repeat of check 1 is held: the second revoke was refused by the permission clas… |
