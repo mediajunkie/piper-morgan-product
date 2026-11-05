@@ -48,47 +48,27 @@ Also, CXO made a rule that we only close an issue when a person can see the fix,
 When I challenged the team to stop trying to solve confabulation problems by patching, we adopted this approach:
 
 - Find the cause. In this case it was the way the base prompt asked for an aside with each reply, and those asides were adding unchecked noise
-- List every claim Piper makes, and screen each change against the whole test set before accepting it.
+- List every claim Piper makes
+- Screen each change against the whole test set before accepting it
+
+The screen already refused a change twice on 10/29, working as intended.
 
 The team learned another tough lesson in verifying assumptions before passing the along. This type of issue and the commitment to transcend it continues to recur at various level of abstraction throughout the project. 
 
-Ones small fix that removes an entire class of errors: the send scripts now write their own clock times.
+One small fix that removes an entire class of errors: the send scripts now write their own clock times.
 
 We also recognized a weakness in the process that drives Exec's weekly review process with the whole team that feeds into our planning and these Shipping News updates, and fixed it, so that Exec no longer needs to "remember" to send out the reminder memos to the team.
 
-**▸ Facts**
-- **Confabulation method** (after your 10-28 word):
-  - Arch found the cause: the base prompt asks for an aside on every reply.
-  - Lead listed every read claim.
-  - Every routing change is now screened on the full test set before it lands. The screen refused a change twice on 10-29, which is it working.
-  - The Haiku 5.5 screen ran on 10-30 (about $1.65 across 2,100 requests). Arch ruled it NO-GO as a drop-in: it routed worse than 4.5 (473 vs 488 rows, 75% vs 87% above the consult floor). Piper stays on 4.5 and re-baselines under #2227.
-- **The premise relay (10-29):** five seats wrote that alpha's own key was capped and chat was down. It was the test workspace's cap, and Piper has no Anthropic key of its own. It repeats a 10-20 mistake, and all were withdrawn within the hour.
-- **CIO:** the staleness re-run measured 11 of 11 seats, and all fixed their lines the same day. `briefing-pointer-check.sh` took gaps from 58 to 42.
-- **Guessed clock times** turned up in most seats. Since Thursday, the send scripts stamp the time themselves.
-- **Exec's miss:** my cron died in the 10-28 restart, and four runs didn't happen. I rebuilt it from memory and dropped the Ship kickoff. The fix is a skill step plus a LaunchAgent, and every seat now re-arms from a stored prompt.
 
 ## 🌍 External relations & community
 
-**▸ Write about**
-- A line or two introducing the week's posts, then the list.
-- The alpha invitations going out (Mon 10-26).
-- Optionally, the site: accessibility at 100, and the Terms page.
+I maintained the established publishing cadence and sent out the last set of alpha invitations, including one going to reader who raised their hand a few weeks back. We also added a Terms page to the website and are maintaining a high accessibility score.
 
-**▸ Facts: published in the window** (editorial calendar; all five distributed, matching Comms' review)
 - Sat 10-24, insight: ["Mistaking the Inset for the Map"](https://pipermorgan.ai/blog/mistaking-the-inset-for-the-map)
 - Sun 10-25, insight: ["A Clean Result Needs a Version Number"](https://pipermorgan.ai/blog/a-clean-result-needs-a-version-number)
 - Tue 10-27, building: ["The Caveat That Kept Disappearing"](https://pipermorgan.ai/blog/the-caveat-that-kept-disappearing)
 - Wed 10-28, Ship #066: ["Tested on the Real Thing"](https://pipermorgan.ai/shipping-news/weekly-ship-066-tested-on-the-real-thing/)
 - Thu 10-29, building: ["Citation via Hearsay"](https://pipermorgan.ai/blog/citation-via-hearsay)
-
-**▸ Facts: other**
-- Three alpha invitations sent Mon 10-26, 21:00.
-- pipermorgan.ai:
-  - Lighthouse Accessibility 100 on all 11 static pages (Web, 10-27);
-  - the Terms page live 10-25;
-  - the sitemap now lists the blog (433 URLs, all served).
-
-Hero image (Thursday's building post; image link checked live). Keep it as is:
 
 [![Three scholars proudly display papers citing “M-45,” while a fourth discovers that the actual source warns against mistaking shared citations for independent evidence.](https://pipermorgan.ai/assets/blog-images/citation-via-hearsay.webp)](https://pipermorgan.ai/blog/citation-via-hearsay)
 *"Has anyone actually read this?"*
