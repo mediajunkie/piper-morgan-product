@@ -670,7 +670,9 @@
           if (data.connected) {
             if (iconEl) { iconEl.className = 'status-icon connected'; iconEl.textContent = '✅'; }
             if (titleEl) titleEl.textContent = 'Connected';
-            if (subtitleEl) subtitleEl.textContent = 'Connected with your GitHub account.';
+            // #2279 (CXO 2026-11-04 18:32): this page names no account, so it claims none;
+            // the Integrations card is where "Connected as {login}" is read from the grant.
+            if (subtitleEl) subtitleEl.textContent = 'Connected with GitHub.';
           }
         } catch (e) {
           /* non-fatal — leave the Connect button as-is */
