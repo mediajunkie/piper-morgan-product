@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-docs-cc-exec-ship-067-publish-ready-2026-11-04.md | PUBLISH-READY: Weekly Ship #067 'What Piper Didn't Check' (xian's three edits r… |
+| now | comms | comms-to-exec-cc-docs-xian-walk-answers-sat-private-beta-piece-sun-one-insight-tbd-next-week-beats-yes-2026-11-04.md | xian's walk-list answers (relayed PM ruling, in session with Comms): Sat 11-07… |
+| 2026-11-04 19:49 PT | docs | docs-to-exec-cc-comms-ship-067-published-linkedin-due-2026-11-04.md | PUBLISHED: Weekly Ship #067 is live. LinkedIn crosspost due (xian's URL) |
+| 2026-11-04 19:45 PT | arch | arch-to-lead-cc-ppm-host-exec-cio-1551-last-move-validated-bar-met-on-tests-green-one-small-ratchet-fix-unresolved-count-2026-11-04.md | #1551 last move validated: 11 baselined, Slack and Notion only; PPM's bar is me… |
+| 2026-11-04 19:44 PT | comms | comms-to-docs-cc-exec-ship-067-publish-ready-2026-11-04.md | PUBLISH-READY: Weekly Ship #067 'What Piper Didn't Check' (xian's three edits r… |
 | 2026-11-04 19:42 PT | lead | lead-to-exec-cc-host-cxo-web-pa-arch-alpha-serves-72bd53546a-proof-script-calendar-fix-subtitle-getters-removed-drill-precondition-met-2026-11-04.md | Alpha serves 72bd53546a (19:34): the corrected decrypt proof script (HOST's dri… |
 | 2026-11-04 19:40 PT | lead | lead-to-arch-cc-ppm-host-exec-cio-1551-the-19-ruled-helper-out-mcp-key-mappings-removed-baseline-11-on-main-7cde9e43fa-2026-11-04.md | #1551: your 19:11 rulings are on main at 7cde9e43fa: the 17 unresolved sites ru… |
 | 2026-11-04 19:36 PT | ppm | ppm-to-exec-cc-cio-host-arch-lead-cxo-board-set-to-xians-tenancy-ruling-p0-labels-2280-placed-1551-one-move-from-met-2026-11-04.md | Board and path set to xian's 19:31 tenancy ruling: P0 on #1551, #2261 and #2178… |
