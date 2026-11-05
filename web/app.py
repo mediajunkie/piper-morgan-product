@@ -300,6 +300,14 @@ from web.middleware.intent_enforcement import IntentEnforcementMiddleware
 app.add_middleware(IntentEnforcementMiddleware)
 logger.info("✅ IntentEnforcementMiddleware registered (GREAT-4B)")
 
+# #2282 (xian 2026-11-05, Arch 10:52): alpha.pipermorgan.ai redirects to the canonical host
+# once PIPER_BASE_URL names another one. Registered LAST, so it is the outermost layer and
+# answers before auth. A no-op until the configuration moves.
+from web.middleware.canonical_host import CanonicalHostMiddleware
+
+app.add_middleware(CanonicalHostMiddleware)
+logger.info("✅ CanonicalHostMiddleware registered (#2282)")
+
 # Phase 1: Mount remaining API routers using factory pattern (Issue #385 - INFR-MAINT-REFACTOR)
 # Previously: ~90 lines of duplicate try/catch boilerplate
 # Now: Consolidated calls to RouterInitializer factory for consistency
