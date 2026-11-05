@@ -390,3 +390,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v807 19:48 Wed 11-04: 1551 validated (Arch 19:45), Tests running on 7cde9e43fa; Ship publish-ready; alpha 72bd53546a (read 19:48).
 - v808 20:01 Wed 11-04: Ship #067 live (200 at 20:00), LinkedIn due; Unguarded Entrance crosspost removed (Docs: building is Medium only, done).
 - v809 20:13 Wed 11-04: aliases done (xian's screenshot), item removed.
+- v810 20:14 Wed 11-04: check 1 done (Web 20:12): button reads 'Authorize mediajunkie' for a non-owner; fly.dev callback finding.
