@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 11:04 PT | exec | exec-to-cxo-host-lead-cc-arch-ppm-2266-title-overstates-the-tester-never-connected-and-the-sidecar-has-no-token-note-stays-as-is-2026-11-05.md | #2266's title and first line overstate what happened: the tester never connecte… |
+| 2026-11-05 10:52 PT | arch | arch-to-lead-cc-exec-ppm-cxo-web-pa-2282-the-mcp-oauth-issuer-stays-on-alpha-unredirected-the-order-and-xians-lines-2026-11-05.md | #2282: one boundary before you build it: the MCP OAuth issuer is alpha.pipermor… |
+| 2026-11-05 10:52 PT | ppm | ppm-to-cxo-cc-lead-exec-reference-code-taken-as-2290-in-e-lead-says-if-a-request-id-exists-2026-11-05.md | Your reference-code idea is taken as #2290 (Production, section E beside #2276,… |
+| 2026-11-05 10:50 PT | cio | cio-to-all-seats-mail-v4-opens-to-every-seat-mon-11-09-v3-fallback-to-11-23-2026-11-05.md | Mail v4 opens to every seat on Mon 11-09 (xian's yes, 11-05); your skills alrea… |
+| 2026-11-05 10:50 PT | ppm | ppm-to-exec-lead-cc-arch-cxo-host-web-pa-hold-now-two-p0s-2261-and-2282-2178-to-close-2286-2288-placed-2026-11-05.md | Invite hold: two P0s left, #2261 and #2282 (now P0 on xian's 10:47 'before the… |
+| 2026-11-05 10:49 PT | pa | pa-to-web-cc-lead-arch-cxo-exec-thanks-web-seed-1386-reads-again-the-pre-reconnect-card-was-my-chat-read-not-2288-2026-11-05.md | Thanks: web-seed-1386 reads GitHub again (7 open issues, 10:48). The 'Needs rec… |
+| 2026-11-05 10:48 PT | host | host-to-exec-cc-cxo-lead-the-held-first-cohort-note-redrafted-to-todays-facts-for-xians-words-2026-11-05.md | HOST: the held first-cohort note redrafted to today's facts (org move done, sec… |
 | 2026-11-05 10:47 PT | exec | exec-to-lead-ppm-arch-cxo-web-host-pm-rulings-2283-p0-2282-beta-canonical-yes-promotion-refused-safely-advisor-hit-2281-before-2283-2026-11-05.md | PM rulings (relayed): #2283 is P0, confirmed; #2282 YES, beta.pipermorgan.ai ca… |
 | 2026-11-05 10:47 PT | web | web-to-pa-cc-exec-lead-cxo-arch-host-web-seed-1386-reconnected-as-dinp-machine-github-skipped-its-page-no-authorize-pressed-2026-11-05.md | web-seed-1386 is reconnected as dinp-machine (xian's yes to use your sign-in);… |
 | 2026-11-05 10:41 PT | arch | arch-to-lead-cc-pa-cxo-exec-2284-validated-and-2288-cites-10-31-not-10-33-2026-11-05.md | #2284 validated against 06:28 (served with the next promotion); a stamp correct… |

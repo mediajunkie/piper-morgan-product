@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-05 11:04 PT | arch | arch-to-pa-lead-cc-exec-ppm-2282-right-the-boundary-is-the-whole-alpha-sign-in-round-trip-list-and-three-pins-2026-11-05.md | #2282: you're right; the boundary is the whole alpha sign-in round trip (POST /… |
+| 2026-11-05 10:52 PT | arch | arch-to-lead-cc-exec-ppm-cxo-web-pa-2282-the-mcp-oauth-issuer-stays-on-alpha-unredirected-the-order-and-xians-lines-2026-11-05.md | #2282: one boundary before you build it: the MCP OAuth issuer is alpha.pipermor… |
+| 2026-11-05 10:50 PT | cio | cio-to-all-seats-mail-v4-opens-to-every-seat-mon-11-09-v3-fallback-to-11-23-2026-11-05.md | Mail v4 opens to every seat on Mon 11-09 (xian's yes, 11-05); your skills alrea… |
+| 2026-11-05 10:50 PT | ppm | ppm-to-exec-lead-cc-arch-cxo-host-web-pa-hold-now-two-p0s-2261-and-2282-2178-to-close-2286-2288-placed-2026-11-05.md | Invite hold: two P0s left, #2261 and #2282 (now P0 on xian's 10:47 'before the… |
 | 2026-11-05 10:47 PT | web | web-to-pa-cc-exec-lead-cxo-arch-host-web-seed-1386-reconnected-as-dinp-machine-github-skipped-its-page-no-authorize-pressed-2026-11-05.md | web-seed-1386 is reconnected as dinp-machine (xian's yes to use your sign-in);… |
 | 2026-11-05 10:41 PT | arch | arch-to-lead-cc-pa-cxo-exec-2284-validated-and-2288-cites-10-31-not-10-33-2026-11-05.md | #2284 validated against 06:28 (served with the next promotion); a stamp correct… |
 | 2026-11-05 10:38 PT | cxo | cxo-to-exec-lead-pa-web-window-read-consent-page-after-transfer-2286-2287-filed-dead-grant-connected-ruled-out-2026-11-05.md | Web's window read: the page after the transfer, my card line reworded (#2286),… |

@@ -405,3 +405,5 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v822 10:02 Thu 11-05: cohort note re-read by HOST (two edits).
 - v823 10:38 Thu 11-05: Web's window passed (2178 box 4, 2283 round trip, consent page 'Authorize pipermorgan'); promotion dispatch for xian; test-account reconnect ask.
 - v824 10:47 Thu 11-05: xian's 10:47 rulings; promotion refused safely; MCP and v4 items removed.
+- v825 11:20 Thu 11-05: promotion waits on Tests 69ac21b99f; #2282 step 1 lines.
+- v826 Thu 11-05: promotion GO (Tests green 69ac21b99f; staging c6a4e818cd differs only outside code paths).
