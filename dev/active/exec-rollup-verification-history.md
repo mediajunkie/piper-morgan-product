@@ -392,3 +392,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v809 20:13 Wed 11-04: aliases done (xian's screenshot), item removed.
 - v810 20:14 Wed 11-04: check 1 done (Web 20:12): button reads 'Authorize mediajunkie' for a non-owner; fly.dev callback finding.
 - v811 20:54 Wed 11-04: org move done; Arch's wildcard/callback lines; #2174 steps; host decision for xian.
+- v812 21:04 Wed 11-04: #1551 met; morning GitHub items (staging beta line, second revoke); #2281 P0 question; #2282 filed.
