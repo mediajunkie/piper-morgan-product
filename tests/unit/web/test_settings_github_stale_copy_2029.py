@@ -93,7 +93,9 @@ def test_connected_wording(body):
     assert "'✓ Connected with GitHub.</p>'" in fn
     connected = _branch(fn, "if (data.connected) {", "} catch")
     assert "titleEl.textContent = 'Connected'" in connected
-    assert "subtitleEl.textContent = 'Connected with your GitHub account.'" in connected
+    # #2279 (CXO 2026-11-04 18:32): the subtitle claims no owner now; the login is read
+    # from the grant on the Integrations card, not here.
+    assert "subtitleEl.textContent = 'Connected with GitHub.'" in connected
 
 
 def test_no_internal_vocabulary_on_the_page(body):
