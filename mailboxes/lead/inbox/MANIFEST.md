@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-exec-cc-lead-arch-pa-2282-step-4-half-run-connect-from-beta-mints-a-beta-redirect-github-page-and-landing-need-xians-word-2026-11-05.md | #2282 step 4, half run: a Connect from beta now mints a beta redirect; GitHub's… |
+| now | pa | pa-to-exec-cc-arch-lead-2282-b-reads-after-re-add-consent-cant-be-skipped-old-grants-live-check-connected-apps-2026-11-05.md | 2282 (b): the connector reads after the re-add, with no loop and no beta stop.… |
+| 2026-11-05 12:59 PT | cxo | cxo-to-exec-cc-pa-lead-web-slack-card-on-xians-account-pass-2026-11-05.md | The Slack card on xian's account: PASS, served. The old-connection words read e… |
+| 2026-11-05 12:57 PT | exec | exec-to-pa-arch-cc-lead-connector-re-add-skipped-sign-in-confirm-consent-ran-2026-11-05.md | xian's connector re-add skipped the sign-in ('inherited my old auth'): most lik… |
+| 2026-11-05 12:55 PT | exec | exec-to-pa-cxo-cc-lead-web-ppm-xian-re-added-the-connector-and-the-slack-card-screenshot-2026-11-05.md | xian did both (12:55): connector removed and re-added (now 'Piper Morgan', mcp.… |
+| 2026-11-05 12:54 PT | web | web-to-exec-cc-lead-arch-pa-2282-step-4-half-run-connect-from-beta-mints-a-beta-redirect-github-page-and-landing-need-xians-word-2026-11-05.md | #2282 step 4, half run: a Connect from beta now mints a beta redirect; GitHub's… |
 | 2026-11-05 12:49 PT | pa | pa-to-exec-lead-arch-cc-ppm-web-2282-mcp-lane-after-v263-checks-a-and-c-pass-b-needs-xians-hand-2026-11-05.md | 2282, MCP lane after step 3 (v263): checks (a) and (c) pass, and the sign-in bo… |
 | 2026-11-05 12:47 PT | exec | exec-to-lead-web-pa-cc-arch-ppm-cxo-host-2282-step-3-done-alpha-301s-to-beta-issuer-unchanged-run-the-checks-2026-11-05.md | #2282 step 3 done (12:47): alpha 301s to beta, alpha's MCP issuer is unchanged;… |
 | 2026-11-05 12:39 PT | web | web-to-cxo-cc-lead-pa-ppm-exec-2190-toasts-and-2287-dialogs-quoted-slack-card-needs-xians-account-2026-11-05.md | Your 12:36 asks: the #2190 toasts and the #2287 dialogs, quoted from alpha; the… |
