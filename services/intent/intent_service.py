@@ -7389,13 +7389,14 @@ class IntentService:
                 )
             if not _github_available:
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,  # #2280: not connected, so not performed
                     message=(
                         # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
                         "GitHub isn't connected yet. Connect it in Settings → Integrations, "
                         "and I can show you what shipped."
                     ),
                     intent_data={
+                        NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                         "category": intent.category.value,
                         "action": intent.action,
                         "confidence": intent.confidence,
@@ -7431,6 +7432,7 @@ class IntentService:
                         "account's GitHub connection, so there's nothing to report yet."
                     ),
                     intent_data={
+                        NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                         "category": intent.category.value,
                         "action": intent.action,
                         "confidence": intent.confidence,
@@ -7580,13 +7582,14 @@ class IntentService:
                     )
                 if not _github_available:
                     return IntentProcessingResult(
-                        success=True,
+                        success=False,  # #2280: not connected, so not performed
                         message=(
                             # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
                             "GitHub isn't connected yet. Connect it in Settings → Integrations, "
                             "and I can list your stale PRs."
                         ),
                         intent_data={
+                            NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                             "category": intent.category.value,
                             "action": intent.action,
                             "confidence": intent.confidence,
@@ -7826,13 +7829,14 @@ class IntentService:
                     )
                 if not _github_available:
                     return IntentProcessingResult(
-                        success=True,
+                        success=False,  # #2280: not connected, so not performed
                         message=(
                             # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
                             "GitHub isn't connected yet. Connect it in Settings → Integrations, "
                             "and I can show you that issue's details."
                         ),
                         intent_data={
+                            NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                             "category": intent.category.value,
                             "action": intent.action,
                             "confidence": intent.confidence,
@@ -8123,13 +8127,14 @@ class IntentService:
                 return self._github_gate_failed(_gate_failed, "close_issue", "close that issue")
             if not _github_available:
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,  # #2280: not connected, so not performed
                     message=(
                         # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
                         "GitHub isn't connected yet. Connect it in Settings → Integrations, "
                         "and I can close its issues for you."
                     ),
                     intent_data={
+                        NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                         "category": intent.category.value,
                         "action": intent.action,
                         "confidence": intent.confidence,
@@ -8506,13 +8511,14 @@ class IntentService:
                 return self._github_gate_failed(_gate_failed, "reopen_issue", "reopen that issue")
             if not _github_available:
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,  # #2280: not connected, so not performed
                     message=(
                         # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
                         "GitHub isn't connected yet. Connect it in Settings → Integrations, "
                         "and I can reopen its issues for you."
                     ),
                     intent_data={
+                        NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                         "category": intent.category.value,
                         "action": intent.action,
                         "confidence": intent.confidence,
@@ -8887,13 +8893,14 @@ class IntentService:
                 )
             if not _github_available:
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,  # #2280: not connected, so not performed
                     message=(
                         # CXO 10-24 16:11: the house not-connected form, never "I'd love to".
                         "GitHub isn't connected yet. Connect it in Settings → Integrations, "
                         "and I can comment on its issues for you."
                     ),
                     intent_data={
+                        NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                         "category": intent.category.value,
                         "action": intent.action,
                         "confidence": intent.confidence,
@@ -10134,13 +10141,14 @@ class IntentService:
                     )
                 if not _github_available:
                     return IntentProcessingResult(
-                        success=True,
+                        success=False,  # #2280: not connected, so not performed
                         message=(
                             # CXO 10-24 15:58: the house not-connected form.
                             "GitHub isn't connected yet. Connect it in Settings → Integrations, "
                             "and I can list its pull requests."
                         ),
                         intent_data={
+                            NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                             "category": "query",
                             "action": "list_prs_query",
                             "context": {"configured": False},
@@ -10317,6 +10325,13 @@ class IntentService:
                 "category": "query",
                 "action": action,
                 "context": {"read_failed": rf.reason_code, "detail": rf.detail},
+                # #2280: never connected is NOT_CONNECTED. The other branches keep their
+                # #2188 shape (success=False, unmarked); widening them is not this unit.
+                **(
+                    {NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED}
+                    if rf.reason is None and rf.detail == "no_credential"
+                    else {}
+                ),
             },
         )
 
@@ -10907,12 +10922,13 @@ class IntentService:
             # connected GitHub (not performed), so it gets the not-connected line with
             # the connect offer, never "couldn't check".
             return IntentProcessingResult(
-                success=True,
+                success=False,  # #2280: not connected, so not performed
                 message=(
                     "GitHub isn't connected yet. Connect it in Settings → Integrations, "
                     "and I can look at your repository activity."
                 ),
                 intent_data={
+                    NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                     "category": intent.category.value if intent.category else "analysis",
                     "action": intent.action,
                     "context": {"github_connected": False},
@@ -11067,7 +11083,7 @@ class IntentService:
 
             if not is_configured:
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,  # #2280: not connected, so not performed
                     message=(
                         # #2155 (CXO 10-24 14:24): no tail promising meeting-time analysis;
                         # the connect offer is the line's own.
@@ -11075,6 +11091,7 @@ class IntentService:
                         'Ask me "how do I connect Google Calendar?" and I\'ll walk you through it.'
                     ),
                     intent_data={
+                        NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                         "category": intent.category.value,
                         "action": intent.action,
                         "confidence": intent.confidence,
@@ -11229,13 +11246,14 @@ class IntentService:
 
             if not is_configured:
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,  # #2280: not connected, so not performed
                     message=(
                         "Google Calendar isn't connected yet, so I can't see your recurring meetings. "
                         'Ask me "how do I connect Google Calendar?" and I\'ll walk you through it — '
                         "once it's connected I can review what's recurring and how often."
                     ),
                     intent_data={
+                        NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                         "category": intent.category.value,
                         "action": intent.action,
                         "confidence": intent.confidence,
@@ -11340,13 +11358,14 @@ class IntentService:
 
             if not is_configured:
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,  # #2280: not connected, so not performed
                     message=(
                         "Google Calendar isn't connected yet, so I can't show your week. "
                         'Ask me "how do I connect Google Calendar?" and I\'ll walk you through it — '
                         "once it's connected I can lay out what's on your schedule."
                     ),
                     intent_data={
+                        NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                         "category": intent.category.value,
                         "action": intent.action,
                         "confidence": intent.confidence,
@@ -13626,13 +13645,14 @@ class IntentService:
             return self._github_gate_failed(_gate_failed, "create_issue", "create that issue")
         if not _github_available:
             return IntentProcessingResult(
-                success=True,
+                success=False,  # #2280: not connected, so not performed
                 message=(
                     "GitHub isn't connected yet. Connect it in Settings → "
                     "Integrations (or set GITHUB_TOKEN for local use), and "
                     "I can create and manage GitHub issues for you!"
                 ),
                 intent_data={
+                    NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                     "category": intent.category.value,
                     "action": intent.action,
                     "confidence": intent.confidence,
@@ -14454,13 +14474,14 @@ class IntentService:
             return self._github_gate_failed(_gate_failed, "update_issue", "update that issue")
         if not _github_available:
             return IntentProcessingResult(
-                success=True,
+                success=False,  # #2280: not connected, so not performed
                 message=(
                     "GitHub isn't connected yet. Connect it in Settings → "
                     "Integrations (or set GITHUB_TOKEN for local use), and "
                     "I can manage GitHub issues for you!"
                 ),
                 intent_data={
+                    NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
                     "category": intent.category.value,
                     "action": intent.action,
                     "confidence": intent.confidence,

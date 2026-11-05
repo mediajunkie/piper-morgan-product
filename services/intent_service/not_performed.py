@@ -32,10 +32,16 @@ class NotPerformed:
     DEGRADED = "degraded"  # the read or write did not run: GitHub degrade (#1231 family)
     REFUSED_BEFORE_WRITE = "refused_before_write"  # the handler refused before any write
     NOT_FOUND = "not_found"  # the target was not there (#1858): nothing was changed
+    NOT_CONNECTED = "not_connected"  # #2280: the connector was never connected, so nothing ran
 
 
 NOT_PERFORMED_KINDS = frozenset(
-    {NotPerformed.DEGRADED, NotPerformed.REFUSED_BEFORE_WRITE, NotPerformed.NOT_FOUND}
+    {
+        NotPerformed.DEGRADED,
+        NotPerformed.REFUSED_BEFORE_WRITE,
+        NotPerformed.NOT_FOUND,
+        NotPerformed.NOT_CONNECTED,
+    }
 )
 
 

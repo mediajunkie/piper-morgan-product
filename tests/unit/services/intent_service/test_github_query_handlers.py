@@ -294,7 +294,9 @@ class TestGitHubNotConfiguredGracefulDegradation:
 
             result = await intent_service._handle_shipped_this_week(intent, "workflow-id")
 
-            assert result.success is True
+            # #2280: not connected is an operation not performed.
+            assert result.success is False
+            assert result.intent_data["not_performed"] == "not_connected"
             assert (
                 "GitHub isn't connected yet. Connect it in Settings → Integrations"
                 in result.message
@@ -325,7 +327,9 @@ class TestGitHubNotConfiguredGracefulDegradation:
 
             result = await intent_service._handle_stale_prs(intent, "workflow-id")
 
-            assert result.success is True
+            # #2280: not connected is an operation not performed.
+            assert result.success is False
+            assert result.intent_data["not_performed"] == "not_connected"
             assert "isn't connected yet" in result.message
             assert "Settings" in result.message  # #1322: OAuth connect, not env token
             assert result.implemented is False
@@ -894,7 +898,9 @@ class TestReviewIssueResults:
 
                 result = await intent_service._handle_review_issue_query(intent, "workflow-id")
 
-            assert result.success is True
+            # #2280: not connected is an operation not performed.
+            assert result.success is False
+            assert result.intent_data["not_performed"] == "not_connected"
             assert (
                 "GitHub isn't connected yet. Connect it in Settings → Integrations"
                 in result.message
@@ -995,7 +1001,9 @@ class TestCloseIssueResults:
 
             result = await intent_service._handle_close_issue_query(intent, "workflow-id")
 
-            assert result.success is True
+            # #2280: not connected is an operation not performed.
+            assert result.success is False
+            assert result.intent_data["not_performed"] == "not_connected"
             assert (
                 "GitHub isn't connected yet. Connect it in Settings → Integrations"
                 in result.message
@@ -1168,7 +1176,9 @@ class TestCommentIssueResults:
 
             result = await intent_service._handle_comment_issue_query(intent, "workflow-id")
 
-            assert result.success is True
+            # #2280: not connected is an operation not performed.
+            assert result.success is False
+            assert result.intent_data["not_performed"] == "not_connected"
             assert (
                 "GitHub isn't connected yet. Connect it in Settings → Integrations"
                 in result.message
@@ -1647,7 +1657,9 @@ class TestListPRsResults:
 
             result = await intent_service._handle_list_prs_query(intent, "test-workflow-id")
 
-            assert result.success is True
+            # #2280: not connected is an operation not performed.
+            assert result.success is False
+            assert result.intent_data["not_performed"] == "not_connected"
             assert "isn't connected" in result.message
             assert "Settings" in result.message
 

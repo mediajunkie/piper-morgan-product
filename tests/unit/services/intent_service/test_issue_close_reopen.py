@@ -297,7 +297,9 @@ class TestReopenIssueHandler:
 
             result = await intent_service._handle_reopen_issue_query(intent, "workflow-id")
 
-            assert result.success is True
+            # #2280: not connected is an operation not performed.
+            assert result.success is False
+            assert result.intent_data["not_performed"] == "not_connected"
             assert (
                 "GitHub isn't connected yet. Connect it in Settings → Integrations"
                 in result.message

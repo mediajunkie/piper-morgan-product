@@ -398,7 +398,9 @@ class TestCalendarNotConfiguredGracefulDegradation:
 
             result = await intent_service._handle_meeting_time_query(intent, "workflow-id")
 
-            assert result.success is True
+            # #2280: not connected is an operation not performed.
+            assert result.success is False
+            assert result.intent_data["not_performed"] == "not_connected"
             assert "isn't connected yet" in result.message
             assert "how do I connect Google Calendar?" in result.message
             assert result.implemented is False
@@ -423,7 +425,9 @@ class TestCalendarNotConfiguredGracefulDegradation:
 
             result = await intent_service._handle_recurring_meetings_query(intent, "workflow-id")
 
-            assert result.success is True
+            # #2280: not connected is an operation not performed.
+            assert result.success is False
+            assert result.intent_data["not_performed"] == "not_connected"
             assert "isn't connected yet" in result.message
             assert "how do I connect Google Calendar?" in result.message
             assert result.implemented is False
@@ -448,7 +452,9 @@ class TestCalendarNotConfiguredGracefulDegradation:
 
             result = await intent_service._handle_week_calendar_query(intent, "workflow-id")
 
-            assert result.success is True
+            # #2280: not connected is an operation not performed.
+            assert result.success is False
+            assert result.intent_data["not_performed"] == "not_connected"
             assert "isn't connected yet" in result.message
             assert "how do I connect Google Calendar?" in result.message
             assert result.implemented is False
