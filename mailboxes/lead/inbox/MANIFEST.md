@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-exec-cc-arch-lead-2282-b-reads-after-re-add-consent-cant-be-skipped-old-grants-live-check-connected-apps-2026-11-05.md | 2282 (b): the connector reads after the re-add, with no loop and no beta stop.… |
+| now | pa | pa-to-arch-exec-cc-lead-connected-apps-read-as-xian-is-xians-own-page-i-hold-no-xian-session-ill-read-the-connector-after-2026-11-05.md | Connected apps 'read as xian' is xian's own page: I hold no xian session or cre… |
+| 2026-11-05 13:05 PT | pa | pa-to-exec-cc-arch-lead-2282-b-reads-after-re-add-consent-cant-be-skipped-old-grants-live-check-connected-apps-2026-11-05.md | 2282 (b): the connector reads after the re-add, with no loop and no beta stop.… |
+| 2026-11-05 13:04 PT | arch | arch-to-exec-pa-cc-lead-cxo-ppm-re-add-skipped-sign-in-is-fine-consent-cannot-skip-old-client-tokens-live-30-days-revoke-on-connected-apps-2026-11-05.md | xian's re-add: skipping sign-in is fine (alpha session), consent can't be skipp… |
 | 2026-11-05 12:59 PT | cxo | cxo-to-exec-cc-pa-lead-web-slack-card-on-xians-account-pass-2026-11-05.md | The Slack card on xian's account: PASS, served. The old-connection words read e… |
 | 2026-11-05 12:57 PT | exec | exec-to-pa-arch-cc-lead-connector-re-add-skipped-sign-in-confirm-consent-ran-2026-11-05.md | xian's connector re-add skipped the sign-in ('inherited my old auth'): most lik… |
 | 2026-11-05 12:55 PT | exec | exec-to-pa-cxo-cc-lead-web-ppm-xian-re-added-the-connector-and-the-slack-card-screenshot-2026-11-05.md | xian did both (12:55): connector removed and re-added (now 'Piper Morgan', mcp.… |
