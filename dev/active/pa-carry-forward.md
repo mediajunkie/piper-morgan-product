@@ -15,17 +15,15 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Now (written 2026-11-03 21:54 STOP; replace, don't annotate)
+## Now (written 2026-11-04 21:48 STOP; replace, don't annotate)
 
-- **Served at 18:47 on 11-04:** alpha and beta on `9824d7d5b2`, MCP on Fly v19 `53685c4601`, which lacks the 2266 guard. My deploy-mcp.sh run is denied by the classifier; xian's run was refused because my tree was behind. It waits on xian re-running it right after a sync (memo 18:49). Main CI 12/12 green. No watch is armed.
-- **#2098 and #2265: closed by CXO 21:54 on PA's served quotes.** Case 1's "yes" stays unrun by CXO's choice; Lead answers whether it can be reached. Nothing left for PA.
-- **#2258 F1 (#1858):** PASS on `ec783d61db` 11-04 10:04 (3ed783e7e9; issuecomment-6638184613; memo 10:05): "I couldn't find issue #N…" on a comment and a close, and "didn't go through" in what-changed. CXO PASS 10:17; the refused close stays out of what-changed (CXO and Lead). Done.
-- **GitHub leak (11-04 12:38, xian live via Exec):** a beta tester's Settings connect page showed mediajunkie. PA's names-only reads (12:49 memo): the gh-mcp sidecar holds no token (no secrets, no env token, no files), so Lead's unauthenticated-sidecar path can't explain it; Arch's consent-screen reading stands. Lead lands a no-bearer guard plus a census for xian. PA: re-read the Settings card and MCP github resource served once the guard is promoted, if asked.
-- **#2242 (Q2):** Listed account and test-account refusal both PASS. Left: the held-token row, on xian's `mcp_allow.py remove` relayed by Exec; then PA calls the tool (expect refused), then xian re-adds and reconnects.
-- **#1680:** Lead judges the row; PA has nothing left unless asked.
-- **#2235 wizard half:** Web, once an OAuth-only account with a throwaway GitHub login exists (xian or his nominee makes the login).
+- **Served at 21:47 on 11-04:** alpha and beta on `72bd53546a`; MCP on Fly v19 `53685c4601`, which **lacks the 2266 no-bearer guard** (the MCP github resource goes through the same `GitHubMCPSpatialAdapter`). My own `scripts/deploy-mcp.sh` run is denied by the auto-mode classifier; don't route around it. xian's two runs in my session were refused because the tree was behind other seats' pushes. The line to give him: `! git fetch -q origin main && git merge -q --ff-only origin/main && scripts/deploy-mcp.sh`. After it lands: MCP `/health` sha, then re-read `piper://me/github/issues` as web-seed-1386. Main CI 12/12 green.
+- **GitHub leak (11-04):** settled as GitHub's consent page. Web's check 1 on a non-owner session shows "Authorize mediajunkie" on the button and "your dinp-machine account" in the body. Census clean (0 crossings). Guard served on alpha. Invites held until #1551 and #2266 are served and xian says so. The org transfer is pending, and Web repeats check 1 after it. Alpha has no env `PIPER_GITHUB_HANDLE` or `PIPER_DEFAULT_REPO` (PA names-only, 15:49). Nothing owed by PA.
+- **#2188 / #2279:** PA's served quotes PASS on text (not-found close stored for reload; card "Connected as dinp-machine."). Degrade-alone ran by Web with PA's `served-degrade-alone-window.py`; CXO PASS on text. Left with Web: the bubble retake and the Settings subtitle. Nothing owed by PA unless asked for a second read.
+- **#2242 (Q2):** the held-token row, on xian's `mcp_allow.py remove` relayed by Exec; then PA calls the tool (expect refused), then xian re-adds and reconnects.
+- **#2235 wizard half:** Web, needs a Piper account with no PAT stored (Web's staging account).
 - **#2238 served line:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
-- **Fresh-account checks:** xian 11-03 17:27 "keep as is". HOST mints with xian present, xian signs up and runs the turns, PA quotes his screenshots: A1, A2, the first-reply notice line, #2225's re-ask. One fresh alpha account. Trigger: HOST's slot with xian. **#2259:** unbuilt, Lead sizes (Web's render check).
+- **Fresh-account checks:** HOST mints with xian present, xian signs up and runs the turns, PA quotes his screenshots: A1, A2, the first-reply notice line, #2225's re-ask. Trigger: HOST's slot with xian, after the invite hold lifts.
 
 ## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 
