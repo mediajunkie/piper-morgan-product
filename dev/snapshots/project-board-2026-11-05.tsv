@@ -1984,7 +1984,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2187	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Integrations GitHub card: an unchecked or freshly reconnected grant shows stale or unearned state (reads "Connected" with no checked line; red dot + old "Last checked" after Reconnect)	UX		
 2188	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Chat's dead-grant reply ("Your GitHub connection needs re-authorizing.") gives no next step and renders in the success bubble	UX		COMPLETED
 2189	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Integrations 'Last checked' lives only in process memory, so every deploy resets it; plus a sweep for other user-facing state that does the same	architecture		
-2190	OPEN	Production	PROD-HONESTY - Failed Reads Say So	A failed OAuth connect is silent for GitHub and shows a raw key for Slack and Calendar ("Failed to connect: callback_failed")	UX		
+2190	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	A failed OAuth connect is silent for GitHub and shows a raw key for Slack and Calendar ("Failed to connect: callback_failed")	UX		COMPLETED
 2191	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Half-filled meeting setup (slot-filling session) is lost on a restart (#2189 row 8)	architecture		
 2192	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Pending preference hint is lost on a restart, and its confirm route never hydrates the conversation (#2189 row 10)	architecture		
 2193	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Slack's IntentService has no ConversationManager, so Slack offers neither hydrate nor persist across a restart (#2189 row 19)	architecture		
