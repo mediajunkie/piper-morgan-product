@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Tuesday 3 November</h1>
-<p class="meta">Exec · v797, rebuilt 16:36 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v798, rebuilt 16:58 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -50,7 +50,7 @@
 
 <div class="card act">
 <ul>
-<li><b>Before new invites, CIO&rsquo;s audit of risky deferrals (you asked).</b> #1551 is decided: it lands before anyone new is invited. CIO checked 27 security, tenancy and privacy items. Every risky one was deferred because something else blocked it, never because it was judged safe. Five to settle before new invites:
+<li><b>Before new invites, CIO&rsquo;s audit of risky deferrals (you asked).</b> #1551 has landed on main (16:46): a lint that blocks any new shared-credential read, a 19-case two-account test for GitHub, and a gate that keeps Slack and Notion off beta. Still owed: Arch&rsquo;s validation and a ruling on each of the 50 existing credential reads. CIO checked 27 security, tenancy and privacy items. Every risky one was deferred because something else blocked it, never because it was judged safe. Five to settle before new invites:
 (1) <b>#2261, GitHub permission scope.</b> Connecting grants Piper read and write on every repo the person can reach, private ones included. Narrow it, together with the org move. <i>This needs your call:</i> <code>public_repo</code> (Piper can&rsquo;t see private repos) or a fine-grained GitHub App (more work, #2174).
 (2) <b>#1481 and #2238</b> (Slack and Notion cross-user reads). Neither is offered on beta. Add a test that fails if either is offered while its bug is open.
 (3) <b>#2157:</b> run one backup restore drill. We told partners their work carries over, and no restore has ever been tested.
@@ -173,7 +173,7 @@ If you didn't sign up, ignore this email and you won't hear from us.</pre>Then s
 <li><b>Restarter (#2146):</b> passed its test Friday and brought the database back once with nobody touching it.</li>
 <li>Google approved our Calendar read access (#2087, 15:50). Two served proofs remain: a connect through the wizard and one calendar read on your outside account (Web can&rsquo;t sign in to Google). HOST has the ask.</li>
 <li>Mail v4 stays on three seats until the 11-05 review.</li>
-<li>Alpha now serves <code>f1bdf14cc7</code> (promoted 16:07 Wed; it adds CXO&rsquo;s GitHub reconnect lines, the #2188 fix and the sign-up read script; read 16:24). Closed since last night: #2098 (typed title is used), #2265 (&ldquo;yesterday&rdquo; means yesterday), #2259 (Email row) and #1858. PA re-runs the failed-comment check on this build.</li>
+<li>Alpha now serves <code>56f3d41bb2</code> (promoted by 16:46 Wed; read 16:57). The GitHub card now shows &ldquo;Connected as {login}&rdquo;, and so does the reply after connecting (#2279), so a wrong-account approval is visible at once. Closed since last night: #2098 (typed title is used), #2265 (&ldquo;yesterday&rdquo; means yesterday), #2259 (Email row) and #1858. PA re-runs the failed-comment check on this build.</li>
 
 <li>R3 coordination target: you kept it (12:5x). CIO measures memos per seat 11-04 to 11-10 and reads it with you Wed 11-11, beside the 11-05 mail v4 decision. Nothing is cut before then. Your two questions are answered through Janus: 2.65 is half of September, a chosen goal with no outside benchmark.</li>
 </ul></div>
