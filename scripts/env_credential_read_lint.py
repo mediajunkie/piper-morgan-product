@@ -375,6 +375,25 @@ def _snip(node: ast.AST) -> str:
         return f"<read at line {getattr(node, 'lineno', '?')}>"
 
 
+# How many unresolved reads each ruled file holds (Arch 2026-11-04 19:45). A
+# ``(path, "unresolved")`` entry would otherwise exempt every unresolved read in that file,
+# so a new one (an ``X_API_KEY`` row in a mapping loop) would pass silently. One more
+# unresolved read than the count fails as a site; one fewer is a ratchet to lower here.
+UNRESOLVED_COUNTS: Dict[str, int] = {
+    "services/config/llm_config_service.py": 2,
+    "services/connectors/server_ref_resolver.py": 1,
+    "services/infrastructure/config/feature_flags.py": 3,
+    "services/infrastructure/config/file_configuration.py": 3,
+    "services/infrastructure/config/mcp_configuration.py": 1,
+    "services/infrastructure/keychain_service.py": 1,
+    "services/integrations/github/config_service.py": 1,
+    "services/integrations/github/github_integration_router.py": 1,
+    "services/mux/push_mode.py": 2,
+    "services/security/field_encryption.py": 2,
+    "services/utils/env_hygiene.py": 2,
+}
+
+
 def lint_paths(paths: List[Path]) -> List[tuple]:
     results = []
     for p in paths:
@@ -382,8 +401,16 @@ def lint_paths(paths: List[Path]) -> List[tuple]:
             text = p.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
+        unresolved_seen = 0
         for v in find_credential_env_reads(text, str(p)):
-            if (p.as_posix(), v.env_name) in SYSTEM_ONLY:
+            key = (p.as_posix(), v.env_name)
+            if v.env_name == "unresolved" and key in SYSTEM_ONLY:
+                unresolved_seen += 1
+                if unresolved_seen <= UNRESOLVED_COUNTS.get(p.as_posix(), 0):
+                    continue  # within the ruled count for this file
+                results.append((p, v))  # one more than was ruled: a site
+                continue
+            if key in SYSTEM_ONLY:
                 continue  # ruled system-only for THIS name; another name here still fails
             results.append((p, v))
     return results

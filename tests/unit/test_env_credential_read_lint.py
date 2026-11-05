@@ -182,3 +182,43 @@ class TestOnlyTheIssueGatedFamiliesRemainBaselined:
         names = {ln.split("|")[1] for ln in lines if ln.strip()}
         for n in names:
             assert n.startswith(("SLACK_", "NOTION_")) or n == "helper:get_environment", n
+
+
+class TestTheUnresolvedExemptionIsCountBound:
+    """Arch 2026-11-04 19:45: a ``(path, "unresolved")`` ruling covers the reads it counted,
+    not every future one in that file."""
+
+    def test_one_more_unresolved_read_than_ruled_is_a_site(self, tmp_path, monkeypatch):
+        from scripts import env_credential_read_lint as lint
+
+        f = tmp_path / "svc.py"
+        f.write_text("import os\ndef f(a, b):\n    return os.getenv(a), os.getenv(b)\n")
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.setattr(lint, "SYSTEM_ONLY", {("svc.py", "unresolved"): "typed readers"})
+        monkeypatch.setattr(lint, "UNRESOLVED_COUNTS", {"svc.py": 1})
+        found = [v.env_name for _, v in lint.lint_paths([Path("svc.py")])]
+        assert found == ["unresolved"]
+
+    def test_every_unresolved_ruling_has_a_count_and_the_counts_match_today(self):
+        from scripts import env_credential_read_lint as lint
+
+        ruled = {p for (p, n) in lint.SYSTEM_ONLY if n == "unresolved"}
+        assert ruled == set(lint.UNRESOLVED_COUNTS)
+        for path, n in lint.UNRESOLVED_COUNTS.items():
+            text = (ROOT / path).read_text()
+            seen = sum(
+                1 for v in lint.find_credential_env_reads(text) if v.env_name == "unresolved"
+            )
+            assert (
+                seen == n
+            ), f"{path}: {seen} unresolved reads, ruled for {n}; lower the count or get a ruling"
+
+
+def test_no_mcp_configuration_env_mapping_is_credential_shaped():
+    """Arch 19:45: the loop over ``_env_mappings`` is ruled as typed flag and number readers;
+    a credential-shaped key added there would ride that ruling unseen."""
+    from scripts.env_credential_read_lint import _is_credential_name
+    from services.infrastructure.config.mcp_configuration import MCPConfigurationService
+
+    keys = list(MCPConfigurationService()._env_mappings)
+    assert keys and not [k for k in keys if _is_credential_name(k)]
