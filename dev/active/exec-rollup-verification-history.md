@@ -399,3 +399,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v816 04:22 Thu 11-05: MCP deploy item corrected (not landed, PA's one-liner); #1858 removed from 'closed since last night' (closed 09-23, per Docs' omnibus flag).
 - v817 06:16 Thu 11-05: mail v4 widen decision added (CIO review 06:10).
 - v818 07:28 Thu 11-05: alpha e02544dae4 (read 07:28), #2178 served.
+- v819 07:52 Thu 11-05: alpha bf81d9a0bd (read 07:52) serves #2283.
