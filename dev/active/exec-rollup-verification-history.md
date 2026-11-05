@@ -395,3 +395,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v812 21:04 Wed 11-04: #1551 met; morning GitHub items (staging beta line, second revoke); #2281 P0 question; #2282 filed.
 - v813 21:14 Wed 11-04: #2281 now tenancy (Arch 21:11), P0 by the 19:31 rule unless xian says otherwise.
 - v814 21:31 Wed 11-04: cohort note held for census reruns after the #2281 fix (HOST, Arch).
+- v815 21:44 Wed 11-04: #2283 P0 filed; CXO yes to beta host; #2284 noted.
