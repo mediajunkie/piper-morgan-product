@@ -11,7 +11,10 @@ so it stays out of shell history and process lists). Run it from a checkout:
         --repo dinp-machine/piper-test-activity --mcp-url https://<the deployed server>/mcp
 
 Reads only, by default. ``--writes`` also exercises the three write tools Piper calls
-(create an issue, comment on it, close it) in ``--repo``, which must be a test repository.
+(create an issue, comment on it, close it), and refuses any repository but
+``dinp-machine/piper-test-activity``. ``--uninstalled-private-repo`` names a private repository the
+App is not installed on; its row passes only when GitHub refuses the read (the narrowing #2261
+exists for).
 
 The calls are the ones Piper makes today (``services/mcp/consumer/github_adapter.py``):
 search_issues, search_pull_requests, search_repositories, list_issues, issue_read,
@@ -34,6 +37,8 @@ from typing import Any, Dict, List, Tuple
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 TOKEN_ENV = "GITHUB_CHECK_TOKEN"  # noqa: S105 - an env var name, not a value
+# Arch 2026-11-04 20:21: --writes refuses any repository but the test one.
+WRITES_ALLOWED_REPO = "dinp-machine/piper-test-activity"
 REST = "https://api.github.com"
 
 
@@ -55,6 +60,27 @@ def read_tools(owner: str, repo: str) -> List[Tuple[str, Dict[str, Any]]]:
         ("list_branches", {"owner": owner, "repo": repo, "perPage": 1}),
         ("list_releases", {"owner": owner, "repo": repo, "perPage": 1}),
     ]
+
+
+async def run_narrowing(token: str, private_repo: str) -> List[Tuple[str, str]]:
+    """Arch 20:21, the row #2261 exists for: a private repository the App is NOT installed
+    on must be unreadable with this token. PASS here means GitHub refused it (404 or 403)."""
+    import aiohttp
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    label = "narrowing: private repo not installed is refused"
+    try:
+        async with aiohttp.ClientSession(headers=headers) as s:
+            async with s.get(f"{REST}/repos/{private_repo}") as r:
+                if r.status in (403, 404):
+                    return [(label, "PASS")]
+                return [(label, f"FAIL readable ({r.status})")]
+    except Exception as e:
+        return [(label, f"FAIL {type(e).__name__}")]
 
 
 async def run_rest(token: str, owner: str, repo: str) -> List[Tuple[str, str]]:
@@ -169,7 +195,15 @@ def main(argv: List[str] | None = None) -> int:
     p.add_argument(
         "--writes", action="store_true", help="also create, comment on and close one issue"
     )
+    p.add_argument(
+        "--uninstalled-private-repo",
+        required=True,
+        help="owner/name of a PRIVATE repository the App is NOT installed on (must be refused)",
+    )
     ns = p.parse_args(argv)
+    if ns.writes and ns.repo != WRITES_ALLOWED_REPO:
+        print(f"refusing: --writes only runs against {WRITES_ALLOWED_REPO}")
+        return 2
     token = os.environ.get(TOKEN_ENV, "")
     if not token:
         print(f"refusing: set {TOKEN_ENV} (never pass a token on the command line)")
@@ -179,6 +213,7 @@ def main(argv: List[str] | None = None) -> int:
         print("refusing: --repo must be owner/name")
         return 2
     rows = asyncio.run(run_rest(token, owner, repo))
+    rows += asyncio.run(run_narrowing(token, ns.uninstalled_private_repo))
     rows += asyncio.run(run_mcp(token, ns.mcp_url, owner, repo, ns.writes))
     width = max(len(r[0]) for r in rows)
     for name, verdict in rows:
