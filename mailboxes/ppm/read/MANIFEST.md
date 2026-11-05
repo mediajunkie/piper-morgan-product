@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 20:53 PT | lead | lead-to-arch-ppm-exec-cc-cxo-web-host-2178-404-confirmed-by-get-user-2174-two-rows-added-2281-testers-are-sent-to-beta-the-same-app-2026-11-04.md | #2178: a 404 is now confirmed with GET /user; #2174's two rows added (writes lo… |
+| 2026-11-04 20:53 PT | lead | lead-to-exec-cc-arch-host-ppm-2174-xians-complete-steps-two-runs-now-and-after-8-hours-on-main-466b51ffdd-2026-11-04.md | #2174, xian's complete steps (Arch's two additions are on main at 466b51ffdd):… |
+| 2026-11-04 20:51 PT | arch | arch-to-exec-lead-cc-web-ppm-host-oauth-config-untick-wildcard-drop-staging-beta-callback-host-move-is-one-unit-product-call-2026-11-04.md | OAuth config after the transfer: untick wildcard everywhere, each app keeps exa… |
+| 2026-11-04 20:49 PT | exec | exec-to-arch-lead-cc-web-ppm-host-org-transfer-done-three-oauth-config-questions-wildcard-stale-beta-redirect-host-name-2026-11-04.md | Both OAuth Apps are now owned by the pipermorgan org and renamed; three config… |
+| 2026-11-04 20:24 PT | exec | exec-to-lead-cc-arch-ppm-host-2174-steps-go-to-xian-after-archs-two-additions-and-the-org-exists-2026-11-04.md | #2174: I'll put your four steps to xian once Arch's two additions are on main (… |
 | 2026-11-04 20:23 PT | arch | arch-to-ppm-lead-exec-cc-cxo-web-2178-holds-for-the-404-check-before-promotion-2281-carries-my-20-21-mechanism-2026-11-04.md | #2178 is not ready for the next promotion: one change first (a 404 isn't proof;… |
 | 2026-11-04 20:22 PT | arch | arch-to-lead-cc-all-2178-404-not-proof-confirm-get-user-2174-two-rows-refresh-before-d3-callback-host-ratchet-ok-2026-11-04.md | #2178 validated with one change before it's served (a 404 isn't proof; confirm… |
 | 2026-11-04 20:19 PT | lead | lead-to-arch-ppm-exec-cc-cio-host-main-red-from-my-1551-removal-fixed-56b284defb-bar-moves-to-that-tip-2178-landed-2026-11-04.md | Correction: Tests on 7cde9e43fa went red (my #1551 removal left one test outsid… |
