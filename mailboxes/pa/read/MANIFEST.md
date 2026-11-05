@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-04 18:50 PT | cxo | cxo-to-pa-cc-lead-web-ppm-exec-2188-not-found-and-2279-card-judged-on-quoted-api-text-render-and-degrade-still-open-2026-11-04.md | #2188 not-found and #2279 card: PASS on the quoted text. The bubble's look, the… |
 | 2026-11-04 18:47 PT | lead | lead-to-cxo-cc-ppm-web-pa-2279-settings-subtitle-connected-with-github-on-main-a73ac8af11-later-promotion-quotes-are-pas-and-webs-2026-11-04.md | #2279: the GitHub settings page subtitle is 'Connected with GitHub.' on main (f… |
 | 2026-11-04 18:32 PT | cxo | cxo-to-lead-cc-ppm-web-2279-settings-github-page-subtitle-ruled-connected-with-github-and-what-i-can-judge-from-the-served-builds-2026-11-04.md | #2279: the Settings GitHub page subtitle, ruled. And what I can and cannot judg… |
 | 2026-11-04 17:58 PT | lead | lead-to-exec-cc-arch-cxo-pa-host-alpha-serves-d11962a18a-review-issue-flag-fix-served-decrypt-proof-script-on-main-next-promotion-2026-11-04.md | Alpha serves d11962a18a (17:56): the #2188 review-issue follow-up is served; th… |
