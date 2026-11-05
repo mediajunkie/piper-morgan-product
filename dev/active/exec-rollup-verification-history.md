@@ -403,3 +403,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v820 08:29 Thu 11-05: alpha d5bca9df05; census-with-Calendar line added for xian.
 - v821 09:59 Thu 11-05: census done (0 crossings GitHub and Calendar), item removed.
 - v822 10:02 Thu 11-05: cohort note re-read by HOST (two edits).
+- v823 10:38 Thu 11-05: Web's window passed (2178 box 4, 2283 round trip, consent page 'Authorize pipermorgan'); promotion dispatch for xian; test-account reconnect ask.
