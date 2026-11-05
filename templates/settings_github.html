@@ -620,12 +620,21 @@
       // #2029: three states from oauth-status — connected (BOUND), stale (GitHub rejected
       // the grant; a read or the Test marked the binding STALE), or neither. Copy: CXO,
       // 2026-10-15.
+      // #2287 (CXO 2026-11-05): the Disconnect dialog says Piper removes its access at GitHub
+      // only when there is an OAuth grant to revoke (connected or stale); a PAT-only
+      // account gets the shorter form. The group's first markup is kept so a Disconnect
+      // can put the Connect button back instead of leaving "Connected" on the page.
+      let githubOAuthGrant = false;
+      let oauthGroupHtml = null;
+
       async function checkGitHubOAuthStatus() {
         try {
           const resp = await fetch('/api/v1/settings/integrations/github/oauth-status');
           if (!resp.ok) return;
           const data = await resp.json();
           const group = document.getElementById('oauth-connect-group');
+          if (group && oauthGroupHtml === null) oauthGroupHtml = group.innerHTML;
+          githubOAuthGrant = Boolean(data.connected || data.stale);
           const iconEl = document.getElementById('status-icon');
           const titleEl = document.getElementById('status-title');
           const subtitleEl = document.getElementById('status-subtitle');
@@ -735,10 +744,14 @@
         }
       }
 
+      const DISCONNECT_LINE_OAUTH =
+        'Piper will stop reading your GitHub and remove its access from your GitHub account. You can connect again anytime.';
+      const DISCONNECT_LINE_PAT = 'Piper will stop reading your GitHub. You can connect again anytime.';
+
       async function disconnectGitHub() {
         const ok = await Dialog.confirm({
           title: 'Disconnect GitHub?',
-          message: "I'll disconnect your GitHub account. You can set it up again anytime.",
+          message: githubOAuthGrant ? DISCONNECT_LINE_OAUTH : DISCONNECT_LINE_PAT,
           confirmText: 'Disconnect'
         });
         if (!ok) return;
@@ -761,6 +774,10 @@
 
           if (data.success) {
             Toast.show('success', 'Disconnected', 'GitHub disconnected');
+            // #2287: put the Connect group back first, so no "Connected" line outlives it.
+            const group = document.getElementById('oauth-connect-group');
+            if (group && oauthGroupHtml !== null) group.innerHTML = oauthGroupHtml;
+            githubOAuthGrant = false;
             loadGitHubStatus();  // Refresh status
           } else {
             throw new Error(data.message || 'Failed to disconnect');
