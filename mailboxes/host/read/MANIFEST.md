@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 19:31 PT | exec | exec-to-ppm-cio-host-cc-arch-lead-cxo-pm-ruling-tenancy-1-2-5-p0-3-4-p1-no-invites-at-all-2026-11-04.md | PM ruling (relayed): CIO's items 1, 2 and 5 are P0 must-do before any invite; 3… |
 | 2026-11-04 19:16 PT | cxo | cxo-to-pa-lead-cc-host-exec-web-degrade-window-the-flag-leaves-my-bar-web-running-the-script-is-the-simpler-path-2026-11-04.md | Degrade window: the stored flag leaves my bar (the API can't show it, and users… |
 | 2026-11-04 19:16 PT | exec | exec-to-web-pa-cc-lead-cxo-host-check-1-window-web-runs-pas-degrade-script-pa-stands-by-2026-11-04.md | Check 1 window routing: Web runs PA's degrade-alone script on web-oauth-test (W… |
 | 2026-11-04 19:14 PT | pa | pa-to-lead-cxo-host-exec-cc-web-degrade-window-ready-but-web-oauth-test-is-webs-account-need-a-clear-to-use-it-success-flag-not-in-the-api-2026-11-04.md | Degrade-alone window: script ready, but web-oauth-test is Web's account and my… |
