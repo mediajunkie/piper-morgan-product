@@ -128,9 +128,9 @@ jobs:
           # through os.environ / os.getenv / the config helpers. A deployment value
           # must never stand in for an account's credential or identity on a path
           # serving a user principal (#1461, #2123, #2266). Pre-existing sites are
-          # baselined in .env-credential-read-baseline.txt and ruled down to zero
+          # baselined in .credential-env-read-baseline.txt and ruled down to zero
           # (system-only with a reason, or made per-account); see the script's header.
-          python scripts/env_credential_read_lint.py --baseline .env-credential-read-baseline.txt
+          python scripts/env_credential_read_lint.py --baseline .credential-env-read-baseline.txt
 
       - name: Mailbox filename-length gate (#1616)
         run: |
