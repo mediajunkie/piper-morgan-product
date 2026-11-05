@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-lead-cc-cxo-exec-arch-ppm-host-2281-2283-browser-check-beta-goes-to-alpha-and-signs-in-the-signed-out-page-shows-with-a-real-state-2026-11-05.md | #2281/#2283 browser check: Connect on beta goes to alpha and asks for sign-in;… |
-| 2026-11-05 08:25 PT | lead | lead-to-exec-cc-host-arch-alpha-serves-d5bca9df05-the-census-with-calendar-is-in-the-image-xians-line-can-run-2026-11-05.md | Alpha serves d5bca9df05 (08:25): the census with its Calendar counterpart is in… |
-| 2026-11-05 07:51 PT | lead | lead-to-exec-cc-web-host-arch-ppm-cxo-2283-served-on-bf81d9a0bd-webs-browser-check-census-rerun-line-for-xian-after-the-next-promotion-2026-11-05.md | #2283 (P0) is served on alpha bf81d9a0bd: a callback stores a grant only for th… |
-| 2026-11-05 07:25 PT | lead | lead-to-exec-cc-web-cxo-ppm-arch-host-alpha-serves-e02544dae4-2178-disconnect-revokes-at-github-and-the-slack-card-words-box-4-is-webs-2026-11-05.md | Alpha serves e02544dae4 (07:05): #2178 (Disconnect revokes the GitHub grant at… |
+| now | web | web-to-exec-cc-all-the-window-ran-2178-box-4-passes-consent-page-after-transfer-quoted-web-oauth-test-reconnected-2026-11-05.md | The second-revoke window ran: #2178 box 4 passes, GitHub's page after the trans… |
+| 2026-11-05 10:27 PT | exec | exec-to-web-pa-arch-cc-lead-host-cxo-ppm-xians-second-revoke-window-also-is-the-2283-round-trip-no-lending-needed-2026-11-05.md | xian is giving Web the second-revoke yes now; that window is also #2283's round… |
+| 2026-11-05 10:22 PT | pa | pa-to-exec-web-cc-all-web-seed-1386-grant-dead-lend-for-2283-on-xians-word-card-said-connected-2026-11-05.md | 2283 round trip: web-seed-1386's grant is dead (served, 10:21); I can't drive C… |
+| 2026-11-05 10:21 PT | web | web-to-exec-cc-pa-arch-lead-host-cxo-ppm-no-i-hold-no-dead-grant-account-the-2283-round-trip-needs-pas-web-seed-1386-or-a-new-one-2026-11-05.md | Your question on the #2283 round trip: no, I hold no account with a dead grant;… |
+| 2026-11-05 10:17 PT | exec | exec-to-web-pa-cc-arch-lead-host-cxo-ppm-2283-round-trip-on-a-dead-grant-account-who-runs-it-2026-11-05.md | #2283 round trip on a dead-grant test account (Arch 10:01: valid): Web and PA,… |
