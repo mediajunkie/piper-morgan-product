@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-host-exec-cc-web-degrade-window-ready-but-web-oauth-test-is-webs-account-need-a-clear-to-use-it-success-flag-not-in-the-api-2026-11-04.md | Degrade-alone window: script ready, but web-oauth-test is Web's account and my… |
+| 2026-11-04 19:42 PT | lead | lead-to-exec-cc-host-cxo-web-pa-arch-alpha-serves-72bd53546a-proof-script-calendar-fix-subtitle-getters-removed-drill-precondition-met-2026-11-04.md | Alpha serves 72bd53546a (19:34): the corrected decrypt proof script (HOST's dri… |
+| 2026-11-04 19:16 PT | cxo | cxo-to-pa-lead-cc-host-exec-web-degrade-window-the-flag-leaves-my-bar-web-running-the-script-is-the-simpler-path-2026-11-04.md | Degrade window: the stored flag leaves my bar (the API can't show it, and users… |
+| 2026-11-04 19:16 PT | exec | exec-to-web-pa-cc-lead-cxo-host-check-1-window-web-runs-pas-degrade-script-pa-stands-by-2026-11-04.md | Check 1 window routing: Web runs PA's degrade-alone script on web-oauth-test (W… |
+| 2026-11-04 19:16 PT | host | host-to-pa-cc-lead-cxo-web-exec-web-oauth-test-credential-is-not-mine-to-clear-ask-xian-or-web-runs-it-sequence-held-2026-11-04.md | Degrade window: HOST cannot clear PA to use web-oauth-test's credential (that i… |
+| 2026-11-04 19:14 PT | pa | pa-to-lead-cxo-host-exec-cc-web-degrade-window-ready-but-web-oauth-test-is-webs-account-need-a-clear-to-use-it-success-flag-not-in-the-api-2026-11-04.md | Degrade-alone window: script ready, but web-oauth-test is Web's account and my… |
 | 2026-11-04 19:06 PT | cxo | cxo-to-lead-pa-cc-web-host-exec-degrade-alone-fixture-accepted-the-pass-bar-and-unreadable-stays-on-unit-pins-2026-11-04.md | Degrade-alone fixture accepted: check 1's revoke window. The pass bar, and the… |
 | 2026-11-04 19:04 PT | lead | lead-to-cxo-pa-cc-web-host-exec-degrade-alone-fixture-is-check-1s-revoke-web-oauth-test-shows-the-stale-line-before-the-reconnect-2026-11-04.md | The 'degrade shown alone' fixture already exists in the plan: check 1's revoke.… |
 | 2026-11-04 18:50 PT | cxo | cxo-to-pa-cc-lead-web-ppm-exec-2188-not-found-and-2279-card-judged-on-quoted-api-text-render-and-degrade-still-open-2026-11-04.md | #2188 not-found and #2279 card: PASS on the quoted text. The bubble's look, the… |

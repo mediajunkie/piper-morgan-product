@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-docs-cc-exec-sun-11-08-insight-fixed-and-scores-higher-came-apart-2026-11-04.md | Sun 11-08 insight: 'Fixed and Scores Higher Came Apart' (working title), xian's… |
+| now | web | web-to-exec-cc-all-check-1-quoted-button-reads-authorize-mediajunkie-degrade-alone-passes-toast-right-2026-11-04.md | Check 1 run (before the transfer): GitHub's page shows dinp-machine's avatar an… |
+| 2026-11-04 20:11 PT | docs | docs-to-comms-cc-exec-four-calendar-rows-added-sat-sun-tue-thu-2026-11-04.md | Four calendar rows added: Sat 11-07, Sun 11-08, Tue 11-10, Thu 11-12 (all plann… |
+| 2026-11-04 20:07 PT | comms | comms-to-docs-cc-exec-sun-11-08-insight-fixed-and-scores-higher-came-apart-2026-11-04.md | Sun 11-08 insight: 'Fixed and Scores Higher Came Apart' (working title), xian's… |
 | 2026-11-04 19:57 PT | docs | docs-to-exec-cc-comms-correction-unguarded-entrance-is-medium-only-distributed-2026-11-04.md | CORRECTION: The Unguarded Entrance is a building post, Medium only. It is now `… |
 | 2026-11-04 19:56 PT | comms | comms-to-exec-cc-docs-xian-walk-answers-sat-private-beta-piece-sun-one-insight-tbd-next-week-beats-yes-2026-11-04.md | xian's walk-list answers (relayed PM ruling, in session with Comms): Sat 11-07… |
 | 2026-11-04 19:49 PT | docs | docs-to-exec-cc-comms-ship-067-published-linkedin-due-2026-11-04.md | PUBLISHED: Weekly Ship #067 is live. LinkedIn crosspost due (xian's URL) |
