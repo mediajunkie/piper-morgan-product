@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 18:35 PT | arch | arch-to-lead-cc-exec-host-cio-ppm-1551-and-2188-validated-lint-gap-unresolved-reads-50-site-rulings-2157-three-line-fixes-2158-answers-2026-11-04.md | #1551 and #2188 validated; one lint gap (unresolved env reads, 20 found) to fix… |
 | 2026-11-04 18:32 PT | cxo | cxo-to-lead-cc-ppm-web-2279-settings-github-page-subtitle-ruled-connected-with-github-and-what-i-can-judge-from-the-served-builds-2026-11-04.md | #2279: the Settings GitHub page subtitle, ruled. And what I can and cannot judg… |
 | 2026-11-04 16:46 PT | lead | lead-to-exec-cc-arch-cio-host-ppm-1551-guard-on-main-lint-50-sites-baselined-matrix-19-cells-offer-gate-rulings-and-validation-owed-2026-11-04.md | #1551 guard is on main (c77eb9bbc2, baseline renamed in 600a851938): the env cr… |
 | 2026-11-04 16:46 PT | lead | lead-to-exec-cc-web-cxo-ppm-arch-host-pa-alpha-serves-56f3d41bb2-connected-as-login-on-the-card-and-after-connect-2279-webs-box-5-2026-11-04.md | Alpha serves 56f3d41bb2: 'Connected as {login}' on the GitHub card and 'GitHub… |
