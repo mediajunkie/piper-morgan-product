@@ -514,7 +514,7 @@ async def _save_github_prefs_db(owner_sub: str, prefs: dict) -> None:
 @router.get("/slack/connect")
 async def connect_slack(
     current_user: JWTClaims = Depends(get_current_user),
-    request: Request = None,  # injected by FastAPI; None on a direct call (#2281 b)
+    request: Request = None,  # type: ignore[assignment]  # FastAPI injects it; None on a direct call (#2281 b)
 ):
     """
     Start Slack OAuth flow from Settings page.
@@ -575,7 +575,7 @@ async def handle_slack_callback(
     code: Optional[str] = None,
     state: Optional[str] = None,
     error: Optional[str] = None,
-    session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
+    browser_session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
 ):
     """
     Handle Slack OAuth callback for Settings page.
@@ -605,7 +605,7 @@ async def handle_slack_callback(
 
         handler = SlackOAuthHandler()
         result = await handler.handle_oauth_callback(
-            code, state, session_user_id=getattr(session, "sub", None)
+            code, state, session_user_id=getattr(browser_session, "sub", None)
         )
 
         # Issue #734: user_id is already extracted and used for storage in handler
@@ -1284,7 +1284,7 @@ async def get_calendar_settings(
 @router.get("/calendar/connect")
 async def connect_calendar(
     current_user: JWTClaims = Depends(get_current_user),
-    request: Request = None,  # injected by FastAPI; None on a direct call (#2281 b)
+    request: Request = None,  # type: ignore[assignment]  # FastAPI injects it; None on a direct call (#2281 b)
 ):
     """
     Start Google Calendar OAuth flow from Settings page.
@@ -1347,7 +1347,7 @@ async def handle_calendar_callback(
     code: Optional[str] = None,
     state: Optional[str] = None,
     error: Optional[str] = None,
-    session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
+    browser_session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
 ):
     """
     Handle Google Calendar OAuth callback for Settings page.
@@ -1385,7 +1385,7 @@ async def handle_calendar_callback(
         )
 
         result = await handler.handle_oauth_callback(
-            code, state, session_user_id=getattr(session, "sub", None)
+            code, state, session_user_id=getattr(browser_session, "sub", None)
         )
 
         # Issue #734: Extract user_id from callback result
@@ -1457,7 +1457,7 @@ async def handle_calendar_callback(
 @router.get("/github/connect")
 async def connect_github(
     current_user: JWTClaims = Depends(get_current_user),
-    request: Request = None,  # injected by FastAPI; None on a direct call (#2281 b)
+    request: Request = None,  # type: ignore[assignment]  # FastAPI injects it; None on a direct call (#2281 b)
 ):
     """Start the GitHub OAuth flow from Settings. Returns the authorization URL + state."""
     try:
@@ -1493,7 +1493,7 @@ async def handle_github_callback(
     code: Optional[str] = None,
     state: Optional[str] = None,
     error: Optional[str] = None,
-    session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
+    browser_session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
 ):
     """Handle the GitHub OAuth callback: verify state → exchange code → store the grant +
     mark the binding BOUND (#1317 inc.2). Redirects back to /settings/integrations."""
@@ -1515,7 +1515,7 @@ async def handle_github_callback(
         )
 
         result = await GitHubOAuthHandler().handle_oauth_callback(
-            code, state, session_user_id=getattr(session, "sub", None)
+            code, state, session_user_id=getattr(browser_session, "sub", None)
         )
         user_id = result.get("user_id")
         access_token = result["tokens"].access_token
@@ -2681,7 +2681,7 @@ async def get_slack_settings(current_user: JWTClaims = Depends(get_current_user)
 @router.get("/slack/authorize")
 async def get_slack_oauth_url(
     current_user: JWTClaims = Depends(get_current_user),
-    request: Request = None,  # injected by FastAPI; None on a direct call (#2281 b)
+    request: Request = None,  # type: ignore[assignment]  # FastAPI injects it; None on a direct call (#2281 b)
 ):
     """
     Get Slack OAuth authorization URL — a RESPONSE-SHAPE ADAPTER over `/slack/connect`.

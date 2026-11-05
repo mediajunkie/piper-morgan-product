@@ -171,12 +171,16 @@ class TestEveryCallbackPassesTheSession:
         for path in ("web/api/routes/settings_integrations.py", "web/api/routes/setup.py"):
             src = (ROOT / path).read_text()
             calls = src.count(".handle_oauth_callback(")
-            with_session = src.count('session_user_id=getattr(session, "sub", None)')
+            with_session = src.count('session_user_id=getattr(browser_session, "sub", None)')
             assert calls and calls == with_session, (path, calls, with_session)
 
     def test_the_count_is_five(self):
         n = sum(
-            (ROOT / p).read_text().count("Depends(get_current_user_or_none),  # #2283")
+            (ROOT / p)
+            .read_text()
+            .count(
+                "browser_session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283"
+            )
             for p in ("web/api/routes/settings_integrations.py", "web/api/routes/setup.py")
         )
         assert n == 5
@@ -218,7 +222,9 @@ class TestTheRoutesAnswerHTML:
             ),
             patch("services.mcp.consumer.github_oauth_handler.persist_github_connection", persist),
         ):
-            resp = await si.handle_github_callback(code="c", state="s", error=None, session=None)
+            resp = await si.handle_github_callback(
+                code="c", state="s", error=None, browser_session=None
+            )
         assert resp.status_code == 302 and resp.headers["location"] == expected
 
     def test_the_login_page_says_cxos_sentence_for_a_connect_return(self):
@@ -294,3 +300,23 @@ class TestTheHostSwitch:
     def test_the_three_pages_follow_the_switch(self):
         for page in ("settings_github.html", "settings_calendar.html", "settings_slack.html"):
             assert "switch_host_url" in (ROOT / "templates" / page).read_text(), page
+
+
+@pytest.mark.asyncio
+async def test_the_slack_authorize_wrapper_passes_the_switch_through(monkeypatch):
+    from web.api.routes import settings_integrations as si
+
+    monkeypatch.setenv(
+        "SLACK_SETTINGS_REDIRECT_URI",
+        "https://alpha.pipermorgan.ai/api/v1/settings/integrations/slack/callback",
+    )
+    monkeypatch.setattr(si, "refuse_unless_offered", lambda name: None)
+    with patch("services.integrations.slack.oauth_handler.SlackOAuthHandler"):
+        res = await si.get_slack_oauth_url(
+            current_user=SimpleNamespace(sub=A),
+            request=SimpleNamespace(url=SimpleNamespace(hostname="beta.pipermorgan.ai")),
+        )
+    assert res == {
+        "success": True,
+        "switch_host_url": "https://alpha.pipermorgan.ai/settings/integrations/slack",
+    }

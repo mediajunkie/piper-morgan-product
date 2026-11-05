@@ -381,7 +381,10 @@ async def login_page(request: Request):
 
     return templates.TemplateResponse(
         "login.html",
-        {"request": request, "connect_notice": sign_in_to_finish_line(request.query_params.get("connect"))},
+        {
+            "request": request,
+            "connect_notice": sign_in_to_finish_line(request.query_params.get("connect")),
+        },
     )
 
 

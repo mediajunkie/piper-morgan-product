@@ -1589,7 +1589,7 @@ async def handle_slack_oauth_callback(
     code: Optional[str] = None,
     state: Optional[str] = None,
     error: Optional[str] = None,
-    session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
+    browser_session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
 ):
     """
     Handle Slack OAuth callback for setup wizard.
@@ -1629,7 +1629,7 @@ async def handle_slack_oauth_callback(
 
         handler = SlackOAuthHandler()
         result = await handler.handle_oauth_callback(
-            code, state, session_user_id=getattr(session, "sub", None)
+            code, state, session_user_id=getattr(browser_session, "sub", None)
         )
 
         # Issue #734: user_id is already extracted and used for storage in handler
@@ -1763,7 +1763,7 @@ async def handle_calendar_oauth_callback(
     code: Optional[str] = None,
     state: Optional[str] = None,
     error: Optional[str] = None,
-    session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
+    browser_session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
 ):
     """
     Handle Google Calendar OAuth callback.
@@ -1802,7 +1802,7 @@ async def handle_calendar_oauth_callback(
 
         handler = GoogleCalendarOAuthHandler()
         result = await handler.handle_oauth_callback(
-            code, state, session_user_id=getattr(session, "sub", None)
+            code, state, session_user_id=getattr(browser_session, "sub", None)
         )
 
         # Issue #734: Extract user_id from callback result

@@ -86,14 +86,23 @@ class TestStaleOAuthCallbackExemptionsAreGone:
 
     def test_the_live_settings_callbacks_are_still_exempt(self):
         """The denominator matters: this prunes TWO entries, not the category.
-        The real, mounted OAuth callbacks must keep working."""
+        The real, mounted OAuth callbacks must keep working.
+
+        #2283 (Arch 2026-11-04 21:11): the connect-START routes left the list (they need
+        the session to bind the state, and their own dependency requires it), and the GitHub
+        callback joined it; every listed callback refuses in its route unless the browser's
+        session user is the state's user."""
         for path in (
-            "/api/v1/settings/integrations/slack/connect",
             "/api/v1/settings/integrations/slack/callback",
-            "/api/v1/settings/integrations/calendar/connect",
             "/api/v1/settings/integrations/calendar/callback",
+            "/api/v1/settings/integrations/github/callback",
         ):
             assert path in EXEMPT_OAUTH_CALLBACK_PATHS
+        for path in (
+            "/api/v1/settings/integrations/slack/connect",
+            "/api/v1/settings/integrations/calendar/connect",
+        ):
+            assert path not in EXEMPT_OAUTH_CALLBACK_PATHS
 
     def test_the_setup_wizards_real_slack_callback_is_still_exempt(self):
         """The near-miss this prune had to clear, pinned so it can't be re-broken.

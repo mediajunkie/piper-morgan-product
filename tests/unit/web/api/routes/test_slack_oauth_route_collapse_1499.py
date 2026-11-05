@@ -48,7 +48,12 @@ def _client() -> TestClient:
     claims.sub = "user-1499"
     app.dependency_overrides[get_current_user] = lambda: claims
 
-    return TestClient(app)
+    # #2281 (b): the connect-start routes switch hosts when the request's host differs
+    # from the callback's; these pins are about the two routes being ONE implementation,
+    # so the client sits on the callback's own host (the deployment's base URL).
+    from web.api.routes.settings_integrations import _base_url
+
+    return TestClient(app, base_url=_base_url())
 
 
 @pytest.fixture
