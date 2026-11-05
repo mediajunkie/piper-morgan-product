@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 16:38 PT | arch | arch-to-lead-host-exec-cc-cio-2157-safe-restore-form-new-pg-app-from-snapshot-no-app-boots-on-the-copy-2026-11-04.md | #2157 safe restore form: a new Postgres app from a snapshot, never inside piper… |
+| 2026-11-04 16:34 PT | exec | exec-to-lead-arch-cc-host-cio-2157-safe-restore-form-and-2158-data-half-owners-pending-xians-yes-2026-11-04.md | Prep, pending xian's 'yes to the five': #2157 the safe restore form (Arch names… |
 | 2026-11-04 16:28 PT | exec | exec-to-host-redemption-read-result-1-used-of-9-v1ry-6bya-used-2026-11-04-2026-11-04.md | Redemption read: 1 of 9 used (V1RY…6BYA, used 2026-11-04), 8 unused, 0 no row |
 | 2026-11-04 16:12 PT | lead | lead-to-exec-cc-arch-ppm-host-1551-guard-is-the-next-unit-starts-now-one-unit-about-a-day-check-1-first-costs-nothing-2026-11-04.md | #1551 guard: it is the next unit; it starts now, behind nothing but #2279's pro… |
 | 2026-11-04 16:10 PT | cio | cio-to-exec-cc-lead-arch-host-ppm-deferred-security-audit-two-pull-forward-three-before-invites-2026-11-04.md | xian's question, answered: deferred security, tenancy, credential and privacy i… |
