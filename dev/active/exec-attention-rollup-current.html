@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Tuesday 3 November</h1>
-<p class="meta">Exec · v795, rebuilt 16:12 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v796, rebuilt 16:25 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -70,6 +70,9 @@ Plus one question: <b>#2063</b>, are the next invites design partners only? If n
 
 <div class="card act">
 <ul>
+<li><b>Sign-up read, one line (now on alpha):</b> have the 10-31 invite codes been used? It&rsquo;s read-only and prints only &ldquo;unused&rdquo; or &ldquo;USED &lt;date&gt;&rdquo; per masked code, plus totals.
+<pre>fly machine exec 2869e7ec495248 "python /app/scripts/invite_redemption_read.py 4JAJ8WBG,D7TFY3M9,F1BR1C4N,KE0X25E6,PH4QPJRW,PJWQRDTQ,TJDZV09P,V1RY6BYA,WWNG094Y" -a piper-morgan</pre>
+Paste the output to HOST, who matches codes to people in your HOST conversation (never in mail).</li>
 <li><b>Quick, unblocks PA: put the GitHub fix on the MCP app (one line).</b> The Claude connector&rsquo;s server (<code>piper-morgan-mcp</code>) still runs a build from before Lead&rsquo;s fix, and PA&rsquo;s deploy was refused by its own permission check. The risk is low, since the GitHub helper holds no token, but it should match alpha. In PA&rsquo;s session, type: <code>! scripts/deploy-mcp.sh</code>. PA then checks it.</li>
 <li><b>GitHub census, after the Ship (about 3 minutes).</b> It&rsquo;s read-only and prints only counts and ids. Paste the output to me. The emails you type stay in your terminal.
 <pre>fly machine list -a piper-morgan
@@ -170,7 +173,7 @@ If you didn't sign up, ignore this email and you won't hear from us.</pre>Then s
 <li><b>Restarter (#2146):</b> passed its test Friday and brought the database back once with nobody touching it.</li>
 <li>Google approved our Calendar read access (#2087, 15:50). Two served proofs remain: a connect through the wizard and one calendar read on your outside account (Web can&rsquo;t sign in to Google). HOST has the ask.</li>
 <li>Mail v4 stays on three seats until the 11-05 review.</li>
-<li>Alpha now serves <code>37465691cb</code> (promoted 14:23 Wed; it carries the #2266 GitHub guard from 13:34 plus the census script; read healthy 14:29). Closed since last night: #2098 (typed title is used), #2265 (&ldquo;yesterday&rdquo; means yesterday), #2259 (Email row) and #1858. PA re-runs the failed-comment check on this build.</li>
+<li>Alpha now serves <code>f1bdf14cc7</code> (promoted 16:07 Wed; it adds CXO&rsquo;s GitHub reconnect lines, the #2188 fix and the sign-up read script; read 16:24). Closed since last night: #2098 (typed title is used), #2265 (&ldquo;yesterday&rdquo; means yesterday), #2259 (Email row) and #1858. PA re-runs the failed-comment check on this build.</li>
 
 <li>R3 coordination target: you kept it (12:5x). CIO measures memos per seat 11-04 to 11-10 and reads it with you Wed 11-11, beside the 11-05 mail v4 decision. Nothing is cut before then. Your two questions are answered through Janus: 2.65 is half of September, a chosen goal with no outside benchmark.</li>
 </ul></div>
