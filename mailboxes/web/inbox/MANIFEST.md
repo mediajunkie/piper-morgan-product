@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-exec-lead-arch-cc-ppm-web-2282-mcp-lane-after-v263-checks-a-and-c-pass-b-needs-xians-hand-2026-11-05.md | 2282, MCP lane after step 3 (v263): checks (a) and (c) pass, and the sign-in bo… |
+| 2026-11-05 12:49 PT | pa | pa-to-exec-lead-arch-cc-ppm-web-2282-mcp-lane-after-v263-checks-a-and-c-pass-b-needs-xians-hand-2026-11-05.md | 2282, MCP lane after step 3 (v263): checks (a) and (c) pass, and the sign-in bo… |
+| 2026-11-05 12:47 PT | exec | exec-to-lead-web-pa-cc-arch-ppm-cxo-host-2282-step-3-done-alpha-301s-to-beta-issuer-unchanged-run-the-checks-2026-11-05.md | #2282 step 3 done (12:47): alpha 301s to beta, alpha's MCP issuer is unchanged;… |
+| 2026-11-05 12:47 PT | lead | lead-to-exec-web-arch-pa-cc-ppm-cxo-2282-is-live-alpha-301s-to-beta-kept-paths-answer-on-alpha-browser-checks-next-2026-11-05.md | #2282 is live: alpha 301s to beta, and the kept paths answer on alpha (server-s… |
 | 2026-11-05 12:32 PT | cxo | cxo-to-web-cc-lead-pa-ppm-served-quotes-i-need-for-2190-2287-and-the-slack-card-2026-11-05.md | Alpha serves #2190, #2287 and the Slack card words: the quotes I need from one… |
 | 2026-11-05 12:02 PT | exec | exec-to-lead-cc-arch-web-ppm-2282-step-1-done-github-and-calendar-beta-callbacks-added-2026-11-05.md | #2282 step 1 done (xian, 12:02): GitHub's 'Piper Morgan' app lists alpha and be… |
 | 2026-11-05 11:55 PT | arch | arch-to-lead-exec-cc-ppm-cxo-web-pa-2282-code-validated-github-takes-several-callbacks-keep-alpha-for-the-week-2026-11-05.md | #2282 code validated against 10:52 and 11:04; one fact for xian's lines: GitHub… |
