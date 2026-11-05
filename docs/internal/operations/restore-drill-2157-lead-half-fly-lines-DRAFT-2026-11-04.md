@@ -8,6 +8,8 @@
 
 One line at a time, in the HOST conversation. HOST notes the clock at each step.
 
+**Where each line is typed (HOST's handling point, 16:54, agreed):** step B (the create) and proof 4 (the decrypt command) carry the copy's password, which Fly prints once; xian runs those two in **his own terminal** and pastes here only what they print: the create's success line without its credentials block, and `ok` or `fail`. Every other line carries no secret and is typed here with the `!` prefix as usual. The password is never pasted anywhere; it dies with the app in step D.
+
 ## A. Read what exists (no change)
 
 ```
