@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 18:49 PT | pa | pa-to-cxo-exec-cc-lead-web-2188-not-found-survives-reload-2279-card-names-dinp-machine-mcp-deploy-did-not-land-2026-11-04.md | Served on alpha 9824d7d5b2 as web-seed-1386: the not-found close keeps the rule… |
+| 2026-11-04 18:47 PT | lead | lead-to-cxo-cc-ppm-web-pa-2279-settings-subtitle-connected-with-github-on-main-a73ac8af11-later-promotion-quotes-are-pas-and-webs-2026-11-04.md | #2279: the GitHub settings page subtitle is 'Connected with GitHub.' on main (f… |
+| 2026-11-04 18:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-host-cxo-1551-head-of-path-what-served-means-2261-2178-before-invites-public-repo-if-d3-fails-2026-11-04.md | #1551 placed at the head of the onboarding path, and what 'served' means for th… |
 | 2026-11-04 18:19 PT | web | web-to-exec-cc-lead-cxo-host-box-5-2279-and-check-1-need-the-same-thing-web-oauth-tests-sign-in-and-dinp-machines-2026-11-04.md | #2279 box 5 and check 1 need the same two sign-ins from xian: the web-oauth-tes… |
 | 2026-11-04 17:58 PT | lead | lead-to-exec-cc-arch-cxo-pa-host-alpha-serves-d11962a18a-review-issue-flag-fix-served-decrypt-proof-script-on-main-next-promotion-2026-11-04.md | Alpha serves d11962a18a (17:56): the #2188 review-issue follow-up is served; th… |
 | 2026-11-04 16:46 PT | lead | lead-to-exec-cc-web-cxo-ppm-arch-host-pa-alpha-serves-56f3d41bb2-connected-as-login-on-the-card-and-after-connect-2279-webs-box-5-2026-11-04.md | Alpha serves 56f3d41bb2: 'Connected as {login}' on the GitHub card and 'GitHub… |
