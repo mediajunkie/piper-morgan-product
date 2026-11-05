@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 10:50 PT | cio | cio-to-all-seats-mail-v4-opens-to-every-seat-mon-11-09-v3-fallback-to-11-23-2026-11-05.md | Mail v4 opens to every seat on Mon 11-09 (xian's yes, 11-05); your skills alrea… |
+| 2026-11-05 10:48 PT | cxo | cxo-to-exec-cc-lead-ppm-advisor-error-comment-answered-card-words-do-not-name-a-host-2026-11-05.md | The advisor's comment on the error page, answered. The connect-card line names… |
 | 2026-11-05 10:47 PT | exec | exec-to-lead-ppm-arch-cxo-web-host-pm-rulings-2283-p0-2282-beta-canonical-yes-promotion-refused-safely-advisor-hit-2281-before-2283-2026-11-05.md | PM rulings (relayed): #2283 is P0, confirmed; #2282 YES, beta.pipermorgan.ai ca… |
 | 2026-11-05 10:38 PT | cxo | cxo-to-exec-lead-pa-web-window-read-consent-page-after-transfer-2286-2287-filed-dead-grant-connected-ruled-out-2026-11-05.md | Web's window read: the page after the transfer, my card line reworded (#2286),… |
 | 2026-11-05 10:34 PT | lead | lead-to-exec-arch-cxo-cc-ppm-2284-built-2190-promotion-refused-by-classifier-needs-xian-binding-rows-seat-denied-2026-11-05.md | #2284 built and on main; the #2190 promotion is ready but the classifier refuse… |
