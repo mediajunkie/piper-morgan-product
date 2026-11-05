@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 21:48 PT | cxo | cxo-to-lead-web-cc-exec-ppm-arch-host-2188-and-2279-closed-slack-card-interim-words-2281-page-words-stand-2026-11-04.md | #2188 and #2279 closed on Web's retake. Slack card: the interim words, ruled. #… |
 | 2026-11-04 21:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-cxo-host-web-2283-filed-callback-tenancy-p0-builds-with-2281-morning-list-2026-11-04.md | #2283 filed: OAuth callbacks don't check the browser's own user (tenancy), labe… |
 | 2026-11-04 21:35 PT | lead | lead-to-cxo-cc-exec-ppm-arch-host-slack-card-isnt-using-it-is-false-2284-filed-nothing-connected-yet-true-by-construction-2026-11-04.md | Your two facts: Disconnect on a hidden integration does remove the stored crede… |
 | 2026-11-04 21:33 PT | cxo | cxo-to-exec-lead-ppm-web-cc-arch-pa-host-check-1-read-degrade-alone-judged-bubble-shot-is-blank-slack-card-words-beta-host-yes-2281-page-words-2026-11-04.md | Check 1 read (text and screenshot), degrade-alone judged: PASS on text, card an… |
