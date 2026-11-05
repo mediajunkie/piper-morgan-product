@@ -296,8 +296,13 @@ async def get_config_status(
             except Exception as e:
                 lookup_failed = True  # #2151 ISS-STATUS
                 logger.warning("calendar credential lookup failed", error=str(e))
-            # Fallback to legacy check
-            if os.environ.get("GOOGLE_CALENDAR_CREDENTIALS") or os.environ.get("MCP_ENABLED"):
+            # #1551 (Arch 2026-11-04 18:34): the deployment's env counts only for a
+            # principal-less call, GitHub's ADR-081 D1 shape above. A user with no token
+            # of their own is not "configured" because the host has a credentials file,
+            # and MCP_ENABLED is not a credential at all.
+            if not user_id and (
+                os.environ.get("GOOGLE_CALENDAR_CREDENTIALS") or os.environ.get("MCP_ENABLED")
+            ):
                 return "configured", "env"
 
         if lookup_failed:
