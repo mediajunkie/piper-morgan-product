@@ -478,8 +478,21 @@
     loadIntegrationsHealth();
   });
 
+  // #2283: a callback completed in a browser signed in as a different Piper account
+  // stores nothing and lands here; the words are the guard's (oauth_callback_guard.py).
+  const WRONG_ACCOUNT_LINE = "This connection was started from a different Piper account, so nothing was connected. Sign in as the account you want to connect, then press Connect again.";
+  const CONNECTOR_LABELS = { github: 'GitHub', calendar: 'Calendar', slack: 'Slack' };
+
   function checkOAuthCallbackParams() {
     const params = new URLSearchParams(window.location.search);
+
+    for (const c of ['github', 'calendar', 'slack']) {
+      if (params.get(`${c}_error`) === 'wrong_account') {
+        Toast.show('error', `${CONNECTOR_LABELS[c]} not connected`, WRONG_ACCOUNT_LINE);
+        window.history.replaceState({}, document.title, '/settings/integrations');
+        return;
+      }
+    }
 
     // Check Slack OAuth callback
     if (params.get('slack_success') === 'true') {
@@ -500,6 +513,10 @@
       Toast.show('success', 'GitHub Connected', login
         ? `GitHub is connected as ${decodeURIComponent(login)}.`
         : 'GitHub is connected.');
+      window.history.replaceState({}, document.title, '/settings/integrations');
+    } else if (params.get('github_error')) {
+      // #2283: a GitHub callback error was silently dropped before; say it failed.
+      Toast.show('error', 'GitHub Connection Failed', "GitHub didn't connect. Press Connect to try again.");
       window.history.replaceState({}, document.title, '/settings/integrations');
     }
 

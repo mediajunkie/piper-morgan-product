@@ -977,7 +977,10 @@
 
           const data = await response.json();
 
-          if (data.success && data.authorization_url) {
+          if (data.success && data.switch_host_url) {
+            // #2281 (b): Slack returns to the callback's host; start Connect there.
+            window.location.href = data.switch_host_url;
+          } else if (data.success && data.authorization_url) {
             // Redirect to Slack OAuth
             window.location.href = data.authorization_url;
           } else {

@@ -1153,6 +1153,8 @@
             'callback_failed': 'Failed to complete authorization.',
             // #2148 (CXO): a grant without calendar access is not a connection.
             'scope_missing': "Google is connected, but you didn't allow calendar access, so I can't read your calendar yet. Connect again and tick the calendar box on Google's consent page.",
+            // #2283: completed in a browser signed in as a different account; nothing stored.
+            'wrong_account': "This connection was started from a different Piper account, so nothing was connected. Sign in as the account you want to connect, then press Connect again.",
         };
         return messages[error] || 'An error occurred. Please try again.';
     }

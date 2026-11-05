@@ -375,7 +375,14 @@ async def login_page(request: Request):
         logger.warning(f"Error checking user count on login page: {e}, redirecting to setup")
         return RedirectResponse(url="/setup", status_code=302)
 
-    return templates.TemplateResponse("login.html", {"request": request})
+    # #2283/#2281 (CXO's words): a signed-out browser coming back from a provider lands
+    # here with ?connect=<connector>; the page says nothing was connected and what to do.
+    from services.auth.oauth_callback_guard import sign_in_to_finish_line
+
+    return templates.TemplateResponse(
+        "login.html",
+        {"request": request, "connect_notice": sign_in_to_finish_line(request.query_params.get("connect"))},
+    )
 
 
 @router.get("/reset-password", response_class=HTMLResponse)

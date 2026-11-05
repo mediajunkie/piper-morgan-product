@@ -20,9 +20,13 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import select, text
 
-from services.auth.auth_middleware import get_current_user
+from services.auth.auth_middleware import get_current_user, get_current_user_or_none
 from services.auth.invite_token_service import check_invite_token, consume_invite_token
 from services.auth.jwt_service import JWTClaims
+from services.auth.oauth_callback_guard import (
+    OAuthCallbackSessionMismatch,
+    refusal_redirect_url,
+)
 from services.auth.password_service import PasswordService
 from services.auth.session_cookies import set_session_cookies
 from services.config.llm_config_service import KEY_CHECK_UNAVAILABLE_MESSAGE, KeyCheckUnavailable
@@ -1585,6 +1589,7 @@ async def handle_slack_oauth_callback(
     code: Optional[str] = None,
     state: Optional[str] = None,
     error: Optional[str] = None,
+    session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
 ):
     """
     Handle Slack OAuth callback for setup wizard.
@@ -1623,7 +1628,9 @@ async def handle_slack_oauth_callback(
         from services.integrations.slack.oauth_handler import SlackOAuthHandler
 
         handler = SlackOAuthHandler()
-        result = await handler.handle_oauth_callback(code, state)
+        result = await handler.handle_oauth_callback(
+            code, state, session_user_id=getattr(session, "sub", None)
+        )
 
         # Issue #734: user_id is already extracted and used for storage in handler
         user_id = result.get("user_id")
@@ -1640,6 +1647,10 @@ async def handle_slack_oauth_callback(
             status_code=302,
         )
 
+    except OAuthCallbackSessionMismatch as e:
+        # #2283: nothing stored; the state is consumed. An HTML page, never JSON.
+        logger.warning("slack_setup_oauth_session_mismatch", signed_in=e.signed_in)
+        return RedirectResponse(url=refusal_redirect_url("slack", e, wizard=True), status_code=302)
     except ValueError as e:
         # Invalid state or other validation error
         logger.warning("slack_oauth_validation_error", error=str(e))
@@ -1752,6 +1763,7 @@ async def handle_calendar_oauth_callback(
     code: Optional[str] = None,
     state: Optional[str] = None,
     error: Optional[str] = None,
+    session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
 ):
     """
     Handle Google Calendar OAuth callback.
@@ -1789,7 +1801,9 @@ async def handle_calendar_oauth_callback(
         from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
 
         handler = GoogleCalendarOAuthHandler()
-        result = await handler.handle_oauth_callback(code, state)
+        result = await handler.handle_oauth_callback(
+            code, state, session_user_id=getattr(session, "sub", None)
+        )
 
         # Issue #734: Extract user_id from callback result
         user_id = result.get("user_id")
@@ -1847,6 +1861,12 @@ async def handle_calendar_oauth_callback(
             status_code=302,
         )
 
+    except OAuthCallbackSessionMismatch as e:
+        # #2283: nothing stored; the state is consumed. An HTML page, never JSON.
+        logger.warning("calendar_setup_oauth_session_mismatch", signed_in=e.signed_in)
+        return RedirectResponse(
+            url=refusal_redirect_url("calendar", e, wizard=True), status_code=302
+        )
     except ValueError as e:
         # Invalid state or other validation error
         logger.warning("calendar_oauth_validation_error", error=str(e))

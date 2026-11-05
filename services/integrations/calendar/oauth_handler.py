@@ -240,7 +240,9 @@ class GoogleCalendarOAuthHandler:
         """
         return self._verify_state(state)
 
-    async def handle_oauth_callback(self, code: str, state: str) -> Dict:
+    async def handle_oauth_callback(
+        self, code: str, state: str, *, session_user_id: Optional[str]
+    ) -> Dict:
         """
         Handle OAuth callback: verify state, exchange code, get user info.
 
@@ -259,6 +261,10 @@ class GoogleCalendarOAuthHandler:
         is_valid, user_id = self._verify_state(state)
         if not is_valid:
             raise ValueError("Invalid or expired state token")
+        # #2283: the browser's own session user must be the state's user, before any exchange.
+        from services.auth.oauth_callback_guard import require_session_matches_state
+
+        require_session_matches_state(user_id, session_user_id)
 
         # Exchange code for tokens
         tokens = await self._exchange_code_for_tokens(code)

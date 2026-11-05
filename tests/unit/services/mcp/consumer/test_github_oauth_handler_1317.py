@@ -113,4 +113,6 @@ class TestCodeExchange:
 
     async def test_callback_rejects_bad_state(self):
         with pytest.raises(ValueError):
-            await GitHubOAuthHandler().handle_oauth_callback("code", "bogus-state")
+            await GitHubOAuthHandler().handle_oauth_callback(
+                "code", "bogus-state", session_user_id="u1"
+            )

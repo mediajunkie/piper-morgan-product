@@ -220,7 +220,9 @@ async def test_connect_to_callback_flow_validates_and_pops(handler, patched_redi
         patch.object(handler, "_exchange_code_for_tokens", return_value=token_data),
         patch.object(handler, "_store_workspace_tokens", return_value=None),
     ):
-        result = await handler.handle_oauth_callback(code="c", state=state)
+        result = await handler.handle_oauth_callback(
+            code="c", state=state, session_user_id="flow-user"
+        )
 
     assert result["success"] is True
     assert result["user_id"] == "flow-user"
@@ -230,7 +232,7 @@ async def test_connect_to_callback_flow_validates_and_pops(handler, patched_redi
     # Replaying the same state now fails (nonce gone).
     with patch.object(handler, "_exchange_code_for_tokens", return_value=token_data):
         with pytest.raises(Exception):
-            await handler.handle_oauth_callback(code="c", state=state)
+            await handler.handle_oauth_callback(code="c", state=state, session_user_id="flow-user")
 
 
 @pytest.mark.asyncio
@@ -241,7 +243,7 @@ async def test_callback_error_path_pops_nonce(handler, patched_redis):
 
     with patch.object(handler, "_exchange_code_for_tokens", side_effect=RuntimeError("boom")):
         with pytest.raises(Exception):
-            await handler.handle_oauth_callback(code="c", state=state)
+            await handler.handle_oauth_callback(code="c", state=state, session_user_id="err-user")
 
     # nonce cleaned up on the error path
     assert len(patched_redis.store) == 0

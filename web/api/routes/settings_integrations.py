@@ -20,17 +20,26 @@ from fastapi import APIRouter, Depends, Form, HTTPException, Request, status
 from pydantic import BaseModel
 from starlette.responses import RedirectResponse
 
-from services.auth.auth_middleware import get_current_user, require_admin
+from services.auth.auth_middleware import (
+    get_current_user,
+    get_current_user_or_none,
+    require_admin,
+)
 from services.auth.jwt_service import JWTClaims
+
+# #1327 gap 3: the Settings repo-config dropdown reads repos over the per-user OAuth connector
+# (mirroring the #1322 chat-read cutover). Imported at module level so the connector-first rail
+# in get_github_repositories is patchable in tests.
+from services.auth.oauth_callback_guard import (
+    OAuthCallbackSessionMismatch,
+    host_switch_url,
+    refusal_redirect_url,
+)
 from services.connectors.config_service import (
     DEFAULT_REPO_KEY,
     DEFAULT_REPO_SOURCE_KEY,
     SOURCE_USER,
 )
-
-# #1327 gap 3: the Settings repo-config dropdown reads repos over the per-user OAuth connector
-# (mirroring the #1322 chat-read cutover). Imported at module level so the connector-first rail
-# in get_github_repositories is patchable in tests.
 from services.integrations.integration_status_service import refuse_unless_offered
 from services.mcp.consumer.connector import DegradationReason
 from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
@@ -505,6 +514,7 @@ async def _save_github_prefs_db(owner_sub: str, prefs: dict) -> None:
 @router.get("/slack/connect")
 async def connect_slack(
     current_user: JWTClaims = Depends(get_current_user),
+    request: Request = None,  # injected by FastAPI; None on a direct call (#2281 b)
 ):
     """
     Start Slack OAuth flow from Settings page.
@@ -536,6 +546,9 @@ async def connect_slack(
 
         # Issue #734: Pass user_id for multi-tenant state
         # Issue #1109: generate_authorization_url is async (Redis-backed state)
+        switch = host_switch_url(request, redirect_uri, "/settings/integrations/slack")
+        if switch:
+            return {"switch_host_url": switch}  # #2281 (b)
         auth_url, state = await handler.generate_authorization_url(
             user_id=current_user.sub, redirect_uri=redirect_uri if redirect_uri else None
         )
@@ -562,6 +575,7 @@ async def handle_slack_callback(
     code: Optional[str] = None,
     state: Optional[str] = None,
     error: Optional[str] = None,
+    session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
 ):
     """
     Handle Slack OAuth callback for Settings page.
@@ -590,7 +604,9 @@ async def handle_slack_callback(
         from services.integrations.slack.oauth_handler import SlackOAuthHandler
 
         handler = SlackOAuthHandler()
-        result = await handler.handle_oauth_callback(code, state)
+        result = await handler.handle_oauth_callback(
+            code, state, session_user_id=getattr(session, "sub", None)
+        )
 
         # Issue #734: user_id is already extracted and used for storage in handler
         user_id = result.get("user_id")
@@ -605,6 +621,10 @@ async def handle_slack_callback(
             status_code=302,
         )
 
+    except OAuthCallbackSessionMismatch as e:
+        # #2283: nothing stored; the state is consumed. An HTML page, never JSON.
+        logger.warning("slack_settings_oauth_session_mismatch", signed_in=e.signed_in)
+        return RedirectResponse(url=refusal_redirect_url("slack", e), status_code=302)
     except ValueError as e:
         logger.warning("slack_settings_oauth_validation_error", error=str(e))
         return RedirectResponse(
@@ -1264,6 +1284,7 @@ async def get_calendar_settings(
 @router.get("/calendar/connect")
 async def connect_calendar(
     current_user: JWTClaims = Depends(get_current_user),
+    request: Request = None,  # injected by FastAPI; None on a direct call (#2281 b)
 ):
     """
     Start Google Calendar OAuth flow from Settings page.
@@ -1293,6 +1314,10 @@ async def connect_calendar(
         )
 
         # Issue #734: Pass user_id for multi-tenant state
+        switch = host_switch_url(request, handler.redirect_uri, "/settings/integrations/calendar")
+        if switch:
+            handler.redirect_uri = original_redirect
+            return {"switch_host_url": switch}  # #2281 (b)
         auth_url, state = handler.generate_authorization_url(user_id=current_user.sub)
 
         # Restore original
@@ -1322,6 +1347,7 @@ async def handle_calendar_callback(
     code: Optional[str] = None,
     state: Optional[str] = None,
     error: Optional[str] = None,
+    session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
 ):
     """
     Handle Google Calendar OAuth callback for Settings page.
@@ -1358,7 +1384,9 @@ async def handle_calendar_callback(
             f"{_base_url()}/api/v1/settings/integrations/calendar/callback",  # #1324
         )
 
-        result = await handler.handle_oauth_callback(code, state)
+        result = await handler.handle_oauth_callback(
+            code, state, session_user_id=getattr(session, "sub", None)
+        )
 
         # Issue #734: Extract user_id from callback result
         user_id = result.get("user_id")
@@ -1406,6 +1434,10 @@ async def handle_calendar_callback(
             status_code=302,
         )
 
+    except OAuthCallbackSessionMismatch as e:
+        # #2283: nothing stored; the state is consumed. An HTML page, never JSON.
+        logger.warning("calendar_settings_oauth_session_mismatch", signed_in=e.signed_in)
+        return RedirectResponse(url=refusal_redirect_url("calendar", e), status_code=302)
     except ValueError as e:
         logger.warning("calendar_settings_oauth_validation_error", error=str(e))
         return RedirectResponse(
@@ -1425,6 +1457,7 @@ async def handle_calendar_callback(
 @router.get("/github/connect")
 async def connect_github(
     current_user: JWTClaims = Depends(get_current_user),
+    request: Request = None,  # injected by FastAPI; None on a direct call (#2281 b)
 ):
     """Start the GitHub OAuth flow from Settings. Returns the authorization URL + state."""
     try:
@@ -1436,6 +1469,10 @@ async def connect_github(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail="GitHub OAuth not configured (missing OAuth App client_id/secret).",
             )
+        switch = host_switch_url(request, handler.redirect_uri, "/settings/integrations/github")
+        if switch:
+            # #2281 (b): GitHub returns to the callback's host; start there, signed in there.
+            return {"switch_host_url": switch}
         auth_url, state = handler.generate_authorization_url(user_id=current_user.sub)
         logger.info(
             "github_settings_oauth_started", user_id=current_user.sub, state=state[:8] + "..."
@@ -1456,6 +1493,7 @@ async def handle_github_callback(
     code: Optional[str] = None,
     state: Optional[str] = None,
     error: Optional[str] = None,
+    session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
 ):
     """Handle the GitHub OAuth callback: verify state → exchange code → store the grant +
     mark the binding BOUND (#1317 inc.2). Redirects back to /settings/integrations."""
@@ -1476,7 +1514,9 @@ async def handle_github_callback(
             persist_github_connection,
         )
 
-        result = await GitHubOAuthHandler().handle_oauth_callback(code, state)
+        result = await GitHubOAuthHandler().handle_oauth_callback(
+            code, state, session_user_id=getattr(session, "sub", None)
+        )
         user_id = result.get("user_id")
         access_token = result["tokens"].access_token
 
@@ -1517,6 +1557,10 @@ async def handle_github_callback(
             url=f"/settings/integrations?github_success=true&github_login={login}",
             status_code=302,
         )
+    except OAuthCallbackSessionMismatch as e:
+        # #2283: nothing stored; the state is consumed. An HTML page, never JSON.
+        logger.warning("github_settings_oauth_session_mismatch", signed_in=e.signed_in)
+        return RedirectResponse(url=refusal_redirect_url("github", e), status_code=302)
     except ValueError as e:
         logger.warning("github_settings_oauth_validation_error", error=str(e))
         return RedirectResponse(
@@ -2637,6 +2681,7 @@ async def get_slack_settings(current_user: JWTClaims = Depends(get_current_user)
 @router.get("/slack/authorize")
 async def get_slack_oauth_url(
     current_user: JWTClaims = Depends(get_current_user),
+    request: Request = None,  # injected by FastAPI; None on a direct call (#2281 b)
 ):
     """
     Get Slack OAuth authorization URL — a RESPONSE-SHAPE ADAPTER over `/slack/connect`.
@@ -2664,7 +2709,9 @@ async def get_slack_oauth_url(
     separate, user-visible change with no reason to ride along here.
     """
     refuse_unless_offered("slack")  # #2237
-    result = await connect_slack(current_user=current_user)
+    result = await connect_slack(current_user=current_user, request=request)
+    if result.get("switch_host_url"):
+        return {"success": True, "switch_host_url": result["switch_host_url"]}  # #2281 (b)
 
     return {
         "success": True,

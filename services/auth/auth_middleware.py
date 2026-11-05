@@ -133,11 +133,17 @@ EXEMPT_OAUTH_CALLBACK_PATHS: List[str] = [
     # not exist yet — and if #1496 ever mounts that router, it would arrive already
     # unauthenticated. The second was defined by no router at all, mounted or not.
     # Re-add either DELIBERATELY, in the change that mounts the route it belongs to.
-    # Issue #528: Settings → Integrations OAuth flow
-    "/api/v1/settings/integrations/slack/connect",
+    # Issue #528: Settings → Integrations OAuth flow. #2283 (Arch 2026-11-04 21:11): a
+    # callback is exempt from the MIDDLEWARE only so that its route answers a signed-out
+    # browser with an HTML sign-in page instead of a 401 JSON body; the route itself
+    # refuses unless the browser's session user equals the state's user, before any code
+    # exchange (services/auth/oauth_callback_guard.py; pinned in
+    # tests/unit/services/auth/test_oauth_callback_session_match_2283.py). The connect-start
+    # routes left this list: they need the session to bind the state, and their own
+    # get_current_user dependency already requires it.
     "/api/v1/settings/integrations/slack/callback",
-    "/api/v1/settings/integrations/calendar/connect",
     "/api/v1/settings/integrations/calendar/callback",
+    "/api/v1/settings/integrations/github/callback",
 ]
 
 # Static assets. CSS/JS/images don't have user-bound responses.
@@ -677,6 +683,19 @@ async def get_current_user(
 # itself the doc-drift shape Pattern-073 names ("documentation/code asserting a contract
 # the system doesn't honor"). If the Pattern-072 second-coordination-surface trigger
 # fires later, re-introducing the dependency is a ~10-line edit.
+
+
+async def get_current_user_or_none(
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+) -> Optional[JWTClaims]:
+    """#2283: the browser's signed-in user, or None when there is no valid session. For the
+    OAuth callbacks, which must compare it with the state's user and answer a signed-out
+    browser with an HTML page rather than a 401."""
+    try:
+        return await get_current_user(request, credentials)
+    except Exception:  # silent-ok: no valid session is the None this returns
+        return None
 
 
 async def _admin_state_for(user_id) -> bool:

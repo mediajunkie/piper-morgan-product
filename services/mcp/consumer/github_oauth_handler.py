@@ -139,11 +139,19 @@ class GitHubOAuthHandler:
         del _PENDING_STATES[nonce]  # single-use
         return True, user_id
 
-    async def handle_oauth_callback(self, code: str, state: str) -> Dict:
-        """Verify state → exchange code → return {tokens, user_id, login}. Raises on bad state."""
+    async def handle_oauth_callback(
+        self, code: str, state: str, *, session_user_id: Optional[str]
+    ) -> Dict:
+        """Verify state → (#2283) the browser's session user is the state's user → exchange
+        code → return {tokens, user_id, login}. Raises on a bad state, and raises
+        ``OAuthCallbackSessionMismatch`` before any exchange when the session doesn't match
+        (the state is consumed either way)."""
+        from services.auth.oauth_callback_guard import require_session_matches_state
+
         is_valid, user_id = self.verify_state(state)
         if not is_valid:
             raise ValueError("Invalid or expired state token")
+        require_session_matches_state(user_id, session_user_id)
         tokens = await self._exchange_code_for_tokens(code)
         login = await self._get_login(tokens.access_token)
         logger.info(

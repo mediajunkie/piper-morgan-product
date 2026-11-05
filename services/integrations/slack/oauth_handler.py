@@ -204,7 +204,12 @@ class SlackOAuthHandler:
             raise SlackAuthFailedError(f"Authorization URL generation failed: {e}") from e
 
     async def handle_oauth_callback(
-        self, code: str, state: str, received_redirect_uri: Optional[str] = None
+        self,
+        code: str,
+        state: str,
+        received_redirect_uri: Optional[str] = None,
+        *,
+        session_user_id: Optional[str],
     ) -> Dict[str, Any]:
         """
         Handle OAuth callback and complete token exchange.
@@ -241,6 +246,11 @@ class SlackOAuthHandler:
             # (#1109). GETDEL guarantees the nonce can't be replayed by a
             # concurrent callback even across processes.
             nonce_data = await self._pop_oauth_state(nonce)
+            # #2283: the state is consumed above; the browser's own session user must be the
+            # state's user before the code is exchanged, so a refusal stores nothing.
+            from services.auth.oauth_callback_guard import require_session_matches_state
+
+            require_session_matches_state(user_id, session_user_id)
             expected_redirect_uri = nonce_data.get("redirect_uri")
 
             # Verify redirect URI if provided
@@ -287,6 +297,10 @@ class SlackOAuthHandler:
                     await self._pop_oauth_state(nonce)
             except Exception:
                 pass
+            from services.auth.oauth_callback_guard import OAuthCallbackSessionMismatch
+
+            if isinstance(e, OAuthCallbackSessionMismatch):
+                raise  # #2283: the route turns this into the sign-in or wrong-account page
             raise SlackAuthFailedError(f"OAuth callback failed: {e}") from e
 
     @staticmethod

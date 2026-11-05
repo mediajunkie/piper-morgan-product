@@ -763,6 +763,8 @@
                 : 'Connection failed'));
           }
           const data = await response.json();
+          // #2281 (b): Google returns to the callback's host; start Connect there.
+          if (data.switch_host_url) { window.location.href = data.switch_host_url; return; }
           if (!data.auth_url) throw new Error('No authorization URL returned');
           window.location.href = data.auth_url;  // → Google consent screen
         } catch (error) {

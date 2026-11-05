@@ -158,7 +158,9 @@ class TestCompleteOAuthToSpatialWorkflow:
         mock_post.return_value = mock_response
 
         # STEP 2: Execute OAuth callback with registered state - this should create spatial territory
-        oauth_result = await oauth_handler.handle_oauth_callback(code="test_code", state=state)
+        oauth_result = await oauth_handler.handle_oauth_callback(
+            code="test_code", state=state, session_user_id="test-user-123"
+        )
 
         # ASSERTION 1: OAuth succeeds
         assert oauth_result["success"] is True

@@ -28,6 +28,10 @@
             <p>Good to see you again.</p>
         </div>
 
+        {% if connect_notice %}
+        <div class="connect-notice" id="connect-notice" role="status">{{ connect_notice }}</div>
+        {% endif %}
+
         <form id="login-form" class="auth-form">
             <div class="form-group">
                 <!-- #1261: either identifier works now; the field NAME stays
