@@ -8,6 +8,9 @@ This guide provides comprehensive setup instructions for deploying Piper Morgan'
 
 ---
 
+
+> **Retired 2026-11-04 (#1551, Arch's ruling):** `GITHUB_ALLOWED_REPOS` and the `GITHUB_REPO_*` default-repository variables are no longer read. A repository is per account (saved in Settings or named in the request, #2266's family rule); the deployment-wide default and allowlist were removed from `GitHubConfigService`. The lines below that set them are history.
+
 ## Table of Contents
 
 1. [Quick Start](#quick-start)

@@ -88,7 +88,6 @@ class GitHubConfigService:
     GitHub-specific extensions:
     - get_client_configuration(user_id): Returns GitHubClientConfig object
     - get_authentication_token(user_id): Returns GitHub auth token
-    - get_default_repository(): Returns default repository
     - get_configuration_summary(user_id): Returns masked config for debugging
 
     Issue #734: Updated for multi-tenancy isolation.
@@ -236,27 +235,6 @@ class GitHubConfigService:
         self._user_config_cache[user_id]["auth_token"] = token
         return token
 
-    def get_default_repository(self) -> Optional[str]:
-        """Get default GitHub repository for issue creation (shared, not user-scoped)"""
-        if "default_repo" in self._shared_config_cache:
-            return self._shared_config_cache["default_repo"]
-
-        # Environment-specific repository configuration
-        repo_env_vars = [
-            "GITHUB_DEFAULT_REPO",
-            f"GITHUB_REPO_{self._environment.value.upper()}",
-            "PIPER_GITHUB_REPO",
-        ]
-
-        repo = None
-        for env_var in repo_env_vars:
-            repo = os.getenv(env_var)
-            if repo:
-                break
-
-        self._shared_config_cache["default_repo"] = repo
-        return repo
-
     def get_client_configuration(self, user_id: str) -> GitHubClientConfig:
         """
         Get comprehensive GitHub client configuration.
@@ -391,36 +369,6 @@ class GitHubConfigService:
         """Check if issue template validation is enabled"""
         return self._environment in (GitHubEnvironment.PRODUCTION, GitHubEnvironment.STAGING)
 
-    def get_allowed_repositories(self) -> List[str]:
-        """
-        Get list of repositories allowed for operations (shared, not user-scoped).
-
-        Returns environment-specific repository allowlist for security.
-        """
-        if "allowed_repos" in self._shared_config_cache:
-            return self._shared_config_cache["allowed_repos"]
-
-        repos_env = os.getenv("GITHUB_ALLOWED_REPOS", "")
-        if repos_env:
-            repos = [repo.strip() for repo in repos_env.split(",") if repo.strip()]
-        else:
-            # Default based on environment
-            default_repo = self.get_default_repository()
-            repos = [default_repo] if default_repo else []
-
-        self._shared_config_cache["allowed_repos"] = repos
-        return repos
-
-    def is_repository_allowed(self, repo_name: str) -> bool:
-        """Check if operations are allowed on the specified repository"""
-        allowed_repos = self.get_allowed_repositories()
-
-        # If no allowlist is configured, allow all repositories
-        if not allowed_repos:
-            return True
-
-        return repo_name in allowed_repos
-
     def get_environment(self) -> GitHubEnvironment:
         """Get current environment (shared, not user-scoped)"""
         return self._environment
@@ -450,8 +398,6 @@ class GitHubConfigService:
         return {
             "environment": self._environment.value,
             "has_authentication_token": self.get_authentication_token(user_id) is not None,
-            "default_repository": self.get_default_repository(),
-            "allowed_repositories_count": len(self.get_allowed_repositories()),
             "client_configuration": client_config.to_dict(),
             "feature_flags": {
                 "production_client": self.is_feature_enabled("production_client"),
