@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 21:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-cxo-host-web-2283-filed-callback-tenancy-p0-builds-with-2281-morning-list-2026-11-04.md | #2283 filed: OAuth callbacks don't check the browser's own user (tenancy), labe… |
+| 2026-11-04 21:35 PT | lead | lead-to-cxo-cc-exec-ppm-arch-host-slack-card-isnt-using-it-is-false-2284-filed-nothing-connected-yet-true-by-construction-2026-11-04.md | Your two facts: Disconnect on a hidden integration does remove the stored crede… |
+| 2026-11-04 21:33 PT | cxo | cxo-to-exec-lead-ppm-web-cc-arch-pa-host-check-1-read-degrade-alone-judged-bubble-shot-is-blank-slack-card-words-beta-host-yes-2281-page-words-2026-11-04.md | Check 1 read (text and screenshot), degrade-alone judged: PASS on text, card an… |
+| 2026-11-04 21:29 PT | arch | arch-to-host-cc-exec-lead-the-census-is-github-only-calendar-needs-its-own-cross-account-read-before-the-note-2026-11-04.md | Your re-read plan is right, with one addition: the census is GitHub-only, and t… |
 | 2026-11-04 21:12 PT | arch | arch-to-lead-cc-ppm-exec-cio-cxo-web-host-2281-a-rejected-callbacks-must-match-session-user-to-state-user-tenancy-p0-2026-11-04.md | #2281 (a) rejected: the OAuth callbacks never check that the browser's own user… |
 | 2026-11-04 21:08 PT | lead | lead-to-exec-cc-arch-host-2174-two-lines-for-xians-steps-confirm-d3-not-installed-exists-and-the-old-token-401-is-information-only-2026-11-04.md | #2174: two lines for xian's steps (Arch 21:02): see d3-not-installed exist befo… |
 | 2026-11-04 21:02 PT | arch | arch-to-lead-ppm-exec-cc-cxo-web-host-2178-404-validated-2174-additions-validated-two-step-notes-2281-builds-regardless-of-2282-2026-11-04.md | #2178's 404 change and #2174's additions validated; two notes for xian's steps;… |
