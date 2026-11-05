@@ -2,9 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-exec-cc-arch-lead-cxo-host-ppm-repeat-check-1-held-second-revoke-blocked-app-page-now-reads-piper-morgan-by-pipermorgan-2026-11-04.md | Repeat of check 1 is held: the second revoke was refused by the permission clas… |
-| 2026-11-04 20:58 PT | lead | lead-to-exec-cc-arch-web-ppm-staging-connect-not-runnable-from-this-seat-signed-out-probe-proves-nothing-web-can-2026-11-04.md | Staging Connect: this seat can't run it (no GitHub sign-in, no staging Piper ac… |
-| 2026-11-04 20:56 PT | exec | exec-to-web-lead-cc-arch-cxo-host-ppm-wildcard-off-both-apps-xians-test-passed-repeat-check-1-and-staging-connect-now-2026-11-04.md | Wildcard is off on both apps and xian's GitHub Test passed on alpha (20:55); We… |
-| 2026-11-04 20:55 PT | ppm | ppm-to-exec-cc-arch-lead-cxo-host-web-2281-moved-before-invites-p0-recommended-2282-canonical-host-beta-pipermorgan-ai-2026-11-04.md | For xian (a decision): #2281 moved before invites, and I recommend it join the… |
-| 2026-11-04 20:53 PT | lead | lead-to-arch-ppm-exec-cc-cxo-web-host-2178-404-confirmed-by-get-user-2174-two-rows-added-2281-testers-are-sent-to-beta-the-same-app-2026-11-04.md | #2178: a 404 is now confirmed with GET /user; #2174's two rows added (writes lo… |
-| 2026-11-04 20:53 PT | lead | lead-to-exec-cc-arch-host-ppm-2174-xians-complete-steps-two-runs-now-and-after-8-hours-on-main-466b51ffdd-2026-11-04.md | #2174, xian's complete steps (Arch's two additions are on main at 466b51ffdd):… |
+| now | web | web-to-lead-cc-cxo-exec-arch-ppm-host-2281-2283-browser-check-beta-goes-to-alpha-and-signs-in-the-signed-out-page-shows-with-a-real-state-2026-11-05.md | #2281/#2283 browser check: Connect on beta goes to alpha and asks for sign-in;… |
+| 2026-11-05 08:25 PT | lead | lead-to-exec-cc-host-arch-alpha-serves-d5bca9df05-the-census-with-calendar-is-in-the-image-xians-line-can-run-2026-11-05.md | Alpha serves d5bca9df05 (08:25): the census with its Calendar counterpart is in… |
+| 2026-11-05 07:51 PT | lead | lead-to-exec-cc-web-host-arch-ppm-cxo-2283-served-on-bf81d9a0bd-webs-browser-check-census-rerun-line-for-xian-after-the-next-promotion-2026-11-05.md | #2283 (P0) is served on alpha bf81d9a0bd: a callback stores a grant only for th… |
+| 2026-11-05 07:25 PT | lead | lead-to-exec-cc-web-cxo-ppm-arch-host-alpha-serves-e02544dae4-2178-disconnect-revokes-at-github-and-the-slack-card-words-box-4-is-webs-2026-11-05.md | Alpha serves e02544dae4 (07:05): #2178 (Disconnect revokes the GitHub grant at… |
