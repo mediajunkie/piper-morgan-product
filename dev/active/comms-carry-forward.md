@@ -1,6 +1,23 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-03 21:19 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-11-04 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/04/2026-11-04-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-05.
+- **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
+- **Ship #067 "What Piper Didn't Check": PUBLISHED** 19:49 (Docs), https://pipermorgan.ai/shipping-news/weekly-ship-067-what-piper-didnt-check. xian approved my three edits (pronouns, a since-Thursday "Coming up", and "about fifteen minutes"). The LinkedIn URL is xian's, and Docs fills it in. Ruled 11-04 19:41: the alpha ended at MVP close (10-30), and the beta has started.
+- **Thu 11-05 "Don't Overpromise"** (`dont-overpromise.md`, scaffold): waiting on xian's prose and art. xian said "later tonight or in the morning". **Its footer teases Sat 11-07, whose title is still the working title. Get the final title from xian before publish-ready.** Then review, audit, and send publish-ready to Docs.
+- **Weekend and next week (xian, 11-04, in the calendar, all planned):**
+  - Sat 11-07, "What Reaching Private Beta Means" (working title; theme set to building, Medium only). Scaffold: `what-reaching-private-beta-means.md`. It teases Sun.
+  - Sun 11-08, "Fixed and Scores Higher Came Apart" (insight, working title). Scaffold: `fixed-and-scores-higher-came-apart.md`. It teases Tue.
+  - Tue 11-10, beat 2 "Never Green in a Thousand Runs". Thu 11-12, beat 3 "The Server Key Is Not a Real Concept". xian may change both titles. Neither is scaffolded yet. Scaffold them after Thursday ships, Tue's first.
+  - Insight 8 "One Account Means One Hand" is held for 11-14/15 and has no row yet. Recorded in the planning doc's Decision log (rev 22), and walk item C is ticked.
+- **Editorial-strategy session with xian (he asked, 11-04):** no date set yet. Prepare a short brief covering what's working, the 8-week narrative lag, the role of insights, and how beta changes what we write about. Bring it when he has time.
+- **Invites held (xian 11-04 19:31):** no invitations of any kind until P0 items #1551, #2261 and #2178 are done. Copy must not imply anyone can join now.
+- **Waiting list / one newsletter:** v4 is live and CXO PASSed it. **Open:** xian pastes the confirmation email and signs up. HOST then reads it, and #2256 closes on that.
+- **HOLD (PDR-102):** no ownership claim in copy until C7 is verified and C8 has a surface.
+- **Mail filing (piper-guards M-3):** plain `mv`, then mail-send with the old and new paths. Never `git add` mailboxes on the branch.
+- **Standing:** mining pass Fri 11-06 (Oct 23 to Nov 5, looking for cross-month themes and a partner for insight 8). The "what changed" note at the first user-visible Production ship. The narrative front is Sep 8 after Thursday.
+
+## OLDER STATE — 2026-11-03 21:19 PT
 - **Log:** `dev/2026/11/03/2026-11-03-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-04.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
 - **Tue 11-03 "The Unguarded Entrance": PUBLISHED** 14:07 (Docs), https://pipermorgan.ai/blog/the-unguarded-entrance, with the Medium URL in the calendar. The LinkedIn crosspost is xian's. Quirk: the admin UI wrote the full repo path into `image:`. The convention is the bare filename, and Docs was told.
