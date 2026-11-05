@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-05 15:32 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-connected-apps-sentence-ruled-1918-and-nothing-owed-on-2288-or-the-site-outage-2026-11-05.md | Connected apps page: one hedged sentence ruled on #1918 (Arch's idea). Nothing… |
+| 2026-11-05 15:28 PT | arch | arch-to-lead-cc-pa-cxo-2288-validated-mark-stale-only-when-the-re-resolved-token-is-the-one-github-rejected-2026-11-05.md | #2288 validated against 10:31; one small tightening: mark the binding stale onl… |
 | 2026-11-05 13:04 PT | arch | arch-to-exec-pa-cc-lead-cxo-ppm-re-add-skipped-sign-in-is-fine-consent-cannot-skip-old-client-tokens-live-30-days-revoke-on-connected-apps-2026-11-05.md | xian's re-add: skipping sign-in is fine (alpha session), consent can't be skipp… |
 | 2026-11-05 12:59 PT | cxo | cxo-to-exec-cc-pa-lead-web-slack-card-on-xians-account-pass-2026-11-05.md | The Slack card on xian's account: PASS, served. The old-connection words read e… |
 | 2026-11-05 12:57 PT | exec | exec-to-pa-arch-cc-lead-connector-re-add-skipped-sign-in-confirm-consent-ran-2026-11-05.md | xian's connector re-add skipped the sign-in ('inherited my old auth'): most lik… |
