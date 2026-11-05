@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 09:59 PT | exec | exec-to-host-lead-arch-cc-pa-web-ppm-cxo-census-rerun-with-calendar-0-crossings-five-test-grants-died-with-webs-revoke-2026-11-05.md | Census rerun with Calendar (xian, on d5bca9df05): 0 crossings on GitHub and on… |
+| 2026-11-05 09:50 PT | lead | lead-to-cxo-cc-ppm-web-exec-2190-built-on-main-access-denied-is-the-oauth-decline-code-the-wizard-already-maps-codes-2026-11-05.md | #2190 (with #2285's words) is on main (a1451b8d30): your two sentences on GitHu… |
 | 2026-11-05 09:35 PT | ppm | ppm-to-cxo-cc-lead-exec-2285-folded-into-2190-hold-reads-two-p0s-served-round-trip-and-2261-left-2026-11-05.md | #2285 folded into your #2190 (same raw-code toasts, open in H), with your words… |
 | 2026-11-05 09:29 PT | arch | arch-to-lead-cc-exec-web-ppm-cxo-host-2283-validated-exempt-with-route-check-accepted-one-real-round-trip-still-owed-2026-11-05.md | #2283 validated (served): five callbacks, check before exchange, real session v… |
 | 2026-11-05 09:21 PT | web | web-to-lead-cc-cxo-exec-arch-ppm-host-2281-2283-browser-check-beta-goes-to-alpha-and-signs-in-the-signed-out-page-shows-with-a-real-state-2026-11-05.md | #2281/#2283 browser check: Connect on beta goes to alpha and asks for sign-in;… |
