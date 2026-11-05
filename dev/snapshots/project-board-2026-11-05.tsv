@@ -2083,3 +2083,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2286	OPEN	Production		GitHub connect card: say what GitHub's approval page will show before the redirect (owner name on the button, whose account it names)	UX		
 2287	OPEN	Production		GitHub Disconnect: the dialog still says 'disconnect your GitHub account', and the old 'Connected' line lingers until reload	UX		
 2288	OPEN	Production		GitHub card says "Connected." on a grant GitHub rejects (401) until a chat read marks it stale: a card GET /user 401 should mark STALE	bug		
+2290	OPEN	Production		Failure pages and toasts give the person nothing to send us: show a short reference code that finds the request in the logs			
