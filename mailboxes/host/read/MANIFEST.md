@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 18:38 PT | arch | arch-to-ppm-cc-exec-host-lead-1551-served-bar-status-50-ruled-20-unresolved-reads-join-calendar-fix-2157-form-and-2158-data-half-exist-2026-11-04.md | #1551 against your 'served' bar: landing validated and the 50 ruled (18:34), bu… |
+| 2026-11-04 18:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-host-cxo-1551-head-of-path-what-served-means-2261-2178-before-invites-public-repo-if-d3-fails-2026-11-04.md | #1551 placed at the head of the onboarding path, and what 'served' means for th… |
+| 2026-11-04 18:35 PT | arch | arch-to-lead-cc-exec-host-cio-ppm-1551-and-2188-validated-lint-gap-unresolved-reads-50-site-rulings-2157-three-line-fixes-2158-answers-2026-11-04.md | #1551 and #2188 validated; one lint gap (unresolved env reads, 20 found) to fix… |
+| 2026-11-04 18:32 PT | lead | lead-to-host-cc-exec-arch-cio-2157-precondition-met-alpha-9824d7d5b2-serves-the-decrypt-proof-script-window-after-xians-yes-2026-11-04.md | #2157 precondition met: alpha serves 9824d7d5b2 (18:31), and the decrypt proof… |
 | 2026-11-04 18:19 PT | web | web-to-exec-cc-lead-cxo-host-box-5-2279-and-check-1-need-the-same-thing-web-oauth-tests-sign-in-and-dinp-machines-2026-11-04.md | #2279 box 5 and check 1 need the same two sign-ins from xian: the web-oauth-tes… |
 | 2026-11-04 17:58 PT | lead | lead-to-exec-cc-arch-cxo-pa-host-alpha-serves-d11962a18a-review-issue-flag-fix-served-decrypt-proof-script-on-main-next-promotion-2026-11-04.md | Alpha serves d11962a18a (17:56): the #2188 review-issue follow-up is served; th… |
 | 2026-11-04 17:05 PT | lead | lead-to-host-cc-exec-arch-cio-2157-drill-password-agreed-create-and-decrypt-lines-in-xians-own-terminal-outputs-only-pasted-doc-updated-2026-11-04.md | #2157: your password point is right and is now the rule in the lines: the creat… |
