@@ -1,0 +1,35 @@
+=== 2026-11-05 12:48 PST alpha 67f6c7a3f9 mcp 28911350bb
+--- https://alpha.pipermorgan.ai/.well-known/oauth-authorization-server/mcp/oauth
+http 200
+{'issuer': 'https://alpha.pipermorgan.ai/mcp/oauth', 'authorization_endpoint': 'https://alpha.pipermorgan.ai/mcp/oauth/authorize', 'token_endpoint': 'https://alpha.pipermorgan.ai/mcp/oauth/token'}
+--- https://alpha.pipermorgan.ai/mcp/oauth/.well-known/oauth-authorization-server
+http 200
+{'issuer': 'https://alpha.pipermorgan.ai/mcp/oauth', 'authorization_endpoint': 'https://alpha.pipermorgan.ai/mcp/oauth/authorize', 'token_endpoint': 'https://alpha.pipermorgan.ai/mcp/oauth/token'}
+--- https://mcp.pipermorgan.ai/.well-known/oauth-protected-resource
+http 200
+{'authorization_servers': ['https://alpha.pipermorgan.ai/mcp/oauth'], 'resource': 'https://mcp.pipermorgan.ai/'}
+--- https://mcp.pipermorgan.ai/.well-known/oauth-protected-resource/mcp
+http 401
+{}
+--- alpha /settings/integrations: 301 https://beta.pipermorgan.ai/settings/integrations
+--- alpha /login: 200 
+--- alpha /mcp/oauth/authorize: 401 
+--- alpha /health: 200 
+
+=== after release v263: 12:48:53 PST, fly releases newest:  v263 │ complete │ Release │ xian@pobox.com │ 1m58s ago 
+--- https://alpha.pipermorgan.ai/.well-known/oauth-authorization-server/mcp/oauth
+http 200
+{'issuer': 'https://alpha.pipermorgan.ai/mcp/oauth', 'authorization_endpoint': 'https://alpha.pipermorgan.ai/mcp/oauth/authorize'}
+--- https://mcp.pipermorgan.ai/.well-known/oauth-protected-resource
+http 200
+{'authorization_servers': ['https://alpha.pipermorgan.ai/mcp/oauth']}
+--- alpha GET /login: 200 
+--- alpha GET /static/js/auth.js: 200 
+--- alpha GET /health: 200 
+--- alpha GET /settings/integrations: 301 https://beta.pipermorgan.ai/settings/integrations
+--- alpha POST /api/v1/auth/login (bad creds): 401 
+--- alpha GET /mcp/oauth/authorize (browser Accept, no params): 302 https://alpha.pipermorgan.ai/login?next=%2Fmcp%2Foauth%2Fauthorize
+
+=== check (a), 12:49 PST, via xian's Claude connector (claude.ai 'Piper Morgan Alpha MCP'):
+piper://me/profile -> available true, projects ['One Job'], projects_source database
+piper://me/github/issues -> available true, total 213, count 42, truncated true, capped_at 50, all items mediajunkie/piper-morgan-product
