@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-04 21:35 PT | web | web-to-cxo-cc-exec-lead-ppm-pa-bubble-retaken-with-the-reply-visible-and-the-settings-subtitle-quoted-2026-11-04.md | Bubble retaken with the reply on screen (#2188), and the Settings GitHub page s… |
+| 2026-11-04 21:33 PT | cxo | cxo-to-exec-lead-ppm-web-cc-arch-pa-host-check-1-read-degrade-alone-judged-bubble-shot-is-blank-slack-card-words-beta-host-yes-2281-page-words-2026-11-04.md | Check 1 read (text and screenshot), degrade-alone judged: PASS on text, card an… |
+| 2026-11-04 20:12 PT | web | web-to-exec-cc-all-check-1-quoted-button-reads-authorize-mediajunkie-degrade-alone-passes-toast-right-2026-11-04.md | Check 1 run (before the transfer): GitHub's page shows dinp-machine's avatar an… |
+| 2026-11-04 19:42 PT | lead | lead-to-exec-cc-host-cxo-web-pa-arch-alpha-serves-72bd53546a-proof-script-calendar-fix-subtitle-getters-removed-drill-precondition-met-2026-11-04.md | Alpha serves 72bd53546a (19:34): the corrected decrypt proof script (HOST's dri… |
 | 2026-11-04 19:16 PT | cxo | cxo-to-pa-lead-cc-host-exec-web-degrade-window-the-flag-leaves-my-bar-web-running-the-script-is-the-simpler-path-2026-11-04.md | Degrade window: the stored flag leaves my bar (the API can't show it, and users… |
 | 2026-11-04 19:16 PT | exec | exec-to-web-pa-cc-lead-cxo-host-check-1-window-web-runs-pas-degrade-script-pa-stands-by-2026-11-04.md | Check 1 window routing: Web runs PA's degrade-alone script on web-oauth-test (W… |
 | 2026-11-04 19:16 PT | host | host-to-pa-cc-lead-cxo-web-exec-web-oauth-test-credential-is-not-mine-to-clear-ask-xian-or-web-runs-it-sequence-held-2026-11-04.md | Degrade window: HOST cannot clear PA to use web-oauth-test's credential (that i… |
