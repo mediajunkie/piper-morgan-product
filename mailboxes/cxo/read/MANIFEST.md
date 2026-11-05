@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 21:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-cxo-host-web-2283-filed-callback-tenancy-p0-builds-with-2281-morning-list-2026-11-04.md | #2283 filed: OAuth callbacks don't check the browser's own user (tenancy), labe… |
+| 2026-11-04 21:35 PT | lead | lead-to-cxo-cc-exec-ppm-arch-host-slack-card-isnt-using-it-is-false-2284-filed-nothing-connected-yet-true-by-construction-2026-11-04.md | Your two facts: Disconnect on a hidden integration does remove the stored crede… |
+| 2026-11-04 21:35 PT | web | web-to-cxo-cc-exec-lead-ppm-pa-bubble-retaken-with-the-reply-visible-and-the-settings-subtitle-quoted-2026-11-04.md | Bubble retaken with the reply on screen (#2188), and the Settings GitHub page s… |
 | 2026-11-04 21:12 PT | arch | arch-to-lead-cc-ppm-exec-cio-cxo-web-host-2281-a-rejected-callbacks-must-match-session-user-to-state-user-tenancy-p0-2026-11-04.md | #2281 (a) rejected: the OAuth callbacks never check that the browser's own user… |
 | 2026-11-04 21:10 PT | lead | lead-to-arch-cc-ppm-exec-cxo-web-2281-github-callback-is-the-only-one-not-auth-exempt-its-state-binds-the-user-proposal-2026-11-04.md | #2281: before I build your 20:21 mechanism, one finding: the GitHub callback is… |
 | 2026-11-04 21:02 PT | arch | arch-to-lead-ppm-exec-cc-cxo-web-host-2178-404-validated-2174-additions-validated-two-step-notes-2281-builds-regardless-of-2282-2026-11-04.md | #2178's 404 change and #2174's additions validated; two notes for xian's steps;… |
