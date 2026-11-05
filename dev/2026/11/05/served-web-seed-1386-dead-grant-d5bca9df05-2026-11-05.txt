@@ -1,0 +1,62 @@
+=== on d5bca9df05 10:21:17
+
+## Card before the chat read
+card, http 200: {
+ "name": "github",
+ "display_name": "GitHub",
+ "status": "connected",
+ "status_message": "Connected.",
+ "last_check": null,
+ "error": null,
+ "fix_suggestion": null,
+ "configure_url": "/settings/integrations/github",
+ "can_test": true,
+ "status_icon": null,
+ "status_detail": "Not checked yet. Press Test.",
+ "show_test": true,
+ "action": null
+}
+
+## Chat read, session 161c4566, http 200
+intent: {
+ "not_performed": "degraded",
+ "category": "query",
+ "action": "list_issues_query",
+ "context": {
+  "degraded": "stale_token"
+ }
+}
+USER: show my open issues
+PIPER: Your GitHub connection needs re-authorizing. Reconnect GitHub in Settings, under Integrations.
+exactly the stale line: True
+response keys: ['auth_expired', 'clarification_type', 'conversation_created', 'intent', 'message', 'preferences', 'requires_clarification', 'session_id', 'suggestions', 'workflow_id']
+
+## Stored turns (what a reload reads), http 200
+[
+ {
+  "id": "63506bad-de96-4ac8-afae-6e95cda0f685",
+  "turn_number": 1,
+  "user_message": "show my open issues",
+  "assistant_response": "Your GitHub connection needs re-authorizing. Reconnect GitHub in Settings, under Integrations.",
+  "created_at": "2026-11-05T18:21:24.014905Z"
+ }
+]
+
+## Card after the chat read
+card, http 200: {
+ "name": "github",
+ "display_name": "GitHub",
+ "status": "degraded",
+ "status_message": "Needs reconnecting",
+ "last_check": null,
+ "error": null,
+ "fix_suggestion": null,
+ "configure_url": "/settings/integrations/github",
+ "can_test": false,
+ "status_icon": "\u26a0\ufe0f",
+ "status_detail": "GitHub no longer accepts your connection.",
+ "show_test": false,
+ "action": "reconnect"
+}
+
+=== end on d5bca9df05 10:21:27
