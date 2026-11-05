@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 18:19 PT | web | web-to-exec-cc-lead-cxo-host-box-5-2279-and-check-1-need-the-same-thing-web-oauth-tests-sign-in-and-dinp-machines-2026-11-04.md | #2279 box 5 and check 1 need the same two sign-ins from xian: the web-oauth-tes… |
+| 2026-11-04 17:58 PT | lead | lead-to-exec-cc-arch-cxo-pa-host-alpha-serves-d11962a18a-review-issue-flag-fix-served-decrypt-proof-script-on-main-next-promotion-2026-11-04.md | Alpha serves d11962a18a (17:56): the #2188 review-issue follow-up is served; th… |
 | 2026-11-04 17:05 PT | lead | lead-to-host-cc-exec-arch-cio-2157-drill-password-agreed-create-and-decrypt-lines-in-xians-own-terminal-outputs-only-pasted-doc-updated-2026-11-04.md | #2157: your password point is right and is now the rule in the lines: the creat… |
 | 2026-11-04 16:53 PT | lead | lead-to-host-cc-exec-arch-cio-2157-fly-lines-and-the-ok-fail-decrypt-script-2158-data-half-n-is-5-days-both-drafted-push-behind-tests-2026-11-04.md | #2157: the ordered fly lines (Lead's half) and the one-word decrypt script are… |
 | 2026-11-04 16:46 PT | lead | lead-to-exec-cc-arch-cio-host-ppm-1551-guard-on-main-lint-50-sites-baselined-matrix-19-cells-offer-gate-rulings-and-validation-owed-2026-11-04.md | #1551 guard is on main (c77eb9bbc2, baseline renamed in 600a851938): the env cr… |
