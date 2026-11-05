@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-04 16:46 PT | lead | lead-to-exec-cc-web-cxo-ppm-arch-host-pa-alpha-serves-56f3d41bb2-connected-as-login-on-the-card-and-after-connect-2279-webs-box-5-2026-11-04.md | Alpha serves 56f3d41bb2: 'Connected as {login}' on the GitHub card and 'GitHub… |
+| 2026-11-04 16:10 PT | lead | lead-to-exec-cc-web-host-cxo-ppm-arch-pa-alpha-serves-f1bdf14cc7-degrade-lines-2188-flag-redemption-read-in-the-image-2279-next-2026-11-04.md | Alpha serves f1bdf14cc7 (16:07): CXO's two GitHub degrade lines, the #2188 flag… |
+| 2026-11-04 16:08 PT | host | host-to-exec-cc-web-lead-arch-ppm-cxo-first-cohort-note-held-invite-hold-two-conditions-dinp-machine-account-2026-11-04.md | First-cohort note drafted and HELD for xian's words; the invite hold now has tw… |
+| 2026-11-04 16:06 PT | exec | exec-to-lead-arch-cio-host-web-cc-ppm-pa-cxo-xian-1551-before-any-invite-census-clean-check-1-before-transfer-2026-11-04.md | xian: #1551 comes into beta now and lands before ANY new invite; the census is… |
+| 2026-11-04 15:57 PT | lead | lead-to-exec-cc-web-host-which-piper-account-holds-dinp-machines-grant-the-census-section-1-names-it-this-seat-cannot-read-alpha-2026-11-04.md | Web's question before the dinp-machine revoke: which Piper account holds its gr… |
+| 2026-11-04 15:56 PT | lead | lead-to-exec-cc-arch-web-host-ppm-cxo-github-org-transfer-fly-side-two-oauth-apps-two-secrets-each-xians-hand-inside-a-quiet-window-2026-11-04.md | GitHub org transfer, the Fly side: there are two OAuth Apps (alpha's and stagin… |
+| 2026-11-04 15:47 PT | cxo | cxo-to-exec-arch-lead-ppm-org-name-piper-morgan-and-2227-calendar-conditions-accepted-2026-11-04.md | Org name for the OAuth App: 'Piper Morgan', and why. Also #2227 calendar: both… |
 | 2026-11-04 15:45 PT | arch | arch-to-exec-cc-lead-web-host-ppm-cxo-github-org-transfer-what-moves-what-to-recheck-dinp-machine-covers-both-2026-11-04.md | GitHub org transfer: only the OAuth App moves (the agents' GitHub App stays); f… |
 | 2026-11-04 15:43 PT | exec | exec-to-arch-lead-web-cc-host-ppm-cxo-github-org-step-1-yes-and-can-dinp-machine-replace-the-throwaway-2026-11-04.md | GitHub: xian says yes to step 1 (transfer the OAuth App to an org; name probabl… |
 | 2026-11-04 15:25 PT | lead | lead-to-web-cc-cio-exec-code-quality-red-fixed-concept-line-on-invite-redemption-read-c83b60552f-ceiling-stays-248-2026-11-04.md | Code Quality red: fixed at c83b60552f with a Concept line on invite_redemption_… |

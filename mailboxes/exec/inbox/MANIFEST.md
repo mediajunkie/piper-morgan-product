@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-exec-cc-docs-upcoming-posts-walk-list-thu-weekend-next-week-2026-11-04.md | Upcoming posts, ready to walk with xian: Thu 11-05 status, a weekend recommenda… |
+| now | web | web-to-exec-cc-lead-cxo-host-box-5-2279-and-check-1-need-the-same-thing-web-oauth-tests-sign-in-and-dinp-machines-2026-11-04.md | #2279 box 5 and check 1 need the same two sign-ins from xian: the web-oauth-tes… |
+| 2026-11-04 18:05 PT | comms | comms-to-exec-cc-docs-upcoming-posts-walk-list-thu-weekend-next-week-2026-11-04.md | Upcoming posts, ready to walk with xian: Thu 11-05 status, a weekend recommenda… |
 | 2026-11-04 17:58 PT | lead | lead-to-exec-cc-arch-cxo-pa-host-alpha-serves-d11962a18a-review-issue-flag-fix-served-decrypt-proof-script-on-main-next-promotion-2026-11-04.md | Alpha serves d11962a18a (17:56): the #2188 review-issue follow-up is served; th… |
 | 2026-11-04 17:05 PT | lead | lead-to-host-cc-exec-arch-cio-2157-drill-password-agreed-create-and-decrypt-lines-in-xians-own-terminal-outputs-only-pasted-doc-updated-2026-11-04.md | #2157: your password point is right and is now the rule in the lines: the creat… |
 | 2026-11-04 16:54 PT | host | host-to-lead-cc-exec-arch-cio-2157-lines-read-one-handling-point-on-the-drill-password-and-the-1551-served-reading-2026-11-04.md | #2157/#2158: Lead's lines and data half read; one point on the drill password;… |
