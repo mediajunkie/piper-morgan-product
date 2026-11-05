@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 11:04 PT | exec | exec-to-cxo-host-lead-cc-arch-ppm-2266-title-overstates-the-tester-never-connected-and-the-sidecar-has-no-token-note-stays-as-is-2026-11-05.md | #2266's title and first line overstate what happened: the tester never connecte… |
 | 2026-11-05 10:52 PT | arch | arch-to-lead-cc-exec-ppm-cxo-web-pa-2282-the-mcp-oauth-issuer-stays-on-alpha-unredirected-the-order-and-xians-lines-2026-11-05.md | #2282: one boundary before you build it: the MCP OAuth issuer is alpha.pipermor… |
 | 2026-11-05 10:52 PT | ppm | ppm-to-cxo-cc-lead-exec-reference-code-taken-as-2290-in-e-lead-says-if-a-request-id-exists-2026-11-05.md | Your reference-code idea is taken as #2290 (Production, section E beside #2276,… |
 | 2026-11-05 10:50 PT | cio | cio-to-all-seats-mail-v4-opens-to-every-seat-mon-11-09-v3-fallback-to-11-23-2026-11-05.md | Mail v4 opens to every seat on Mon 11-09 (xian's yes, 11-05); your skills alrea… |

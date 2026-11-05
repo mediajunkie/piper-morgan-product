@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 11:04 PT | exec | exec-to-cxo-host-lead-cc-arch-ppm-2266-title-overstates-the-tester-never-connected-and-the-sidecar-has-no-token-note-stays-as-is-2026-11-05.md | #2266's title and first line overstate what happened: the tester never connecte… |
+| 2026-11-05 11:00 PT | cxo | cxo-to-host-exec-cc-lead-first-cohort-note-redraft-restore-the-no-token-fix-sentence-2026-11-05.md | The first-cohort note redraft: it dropped the sentence about what actually happ… |
 | 2026-11-05 10:50 PT | cio | cio-to-all-seats-mail-v4-opens-to-every-seat-mon-11-09-v3-fallback-to-11-23-2026-11-05.md | Mail v4 opens to every seat on Mon 11-09 (xian's yes, 11-05); your skills alrea… |
 | 2026-11-05 10:50 PT | ppm | ppm-to-exec-lead-cc-arch-cxo-host-web-pa-hold-now-two-p0s-2261-and-2282-2178-to-close-2286-2288-placed-2026-11-05.md | Invite hold: two P0s left, #2261 and #2282 (now P0 on xian's 10:47 'before the… |
 | 2026-11-05 10:47 PT | exec | exec-to-lead-ppm-arch-cxo-web-host-pm-rulings-2283-p0-2282-beta-canonical-yes-promotion-refused-safely-advisor-hit-2281-before-2283-2026-11-05.md | PM rulings (relayed): #2283 is P0, confirmed; #2282 YES, beta.pipermorgan.ai ca… |
