@@ -337,8 +337,6 @@ class TestMCPConfiguration:
             connection_timeout=30.0,
             circuit_breaker_threshold=5,
             circuit_breaker_timeout=60,
-            anthropic_api_key="test_key",
-            openai_api_key="test_key_2",
             debug_enabled=True,
         )
 
@@ -346,6 +344,10 @@ class TestMCPConfiguration:
         assert config.pool_enabled == True
         assert config.max_connections == 15
         assert config.connection_timeout == 30.0
+        # #1551 (Arch 2026-11-04 19:11): the config holds no LLM key; a deployment key
+        # with no reader was a stand-in waiting for a consumer.
+        assert not hasattr(config, "anthropic_api_key")
+        assert not hasattr(config, "openai_api_key")
 
     def test_mcp_configuration_validation(self):
         """Test that MCPConfiguration validates its inputs."""
