@@ -8,13 +8,13 @@ caption: ''
 
 *October 23–29, 2026*
 
-Until this week, Piper couldn't tell the difference between a blank and answer and a failure to read the data. The MVP gate went from 6 open issues to 2 with one day left to the latest milestone goal date. The last set of alpha invitations also went out. The next invitations to go out should be for the beta. Along the way, I ruled that we couldn't just patch confabulations and this led to a methodology update.
+Until this week, Piper couldn't tell the difference between a blank answer and a failure to read the data. The MVP gate went from 6 open issues to 2 with one day left to the latest milestone goal date. The last set of alpha invitations also went out. The next invitations to go out should be for the beta. Along the way, I ruled that we couldn't just patch confabulations and this led to a methodology update.
 
 The team met three of the four goals for this week's sprint:
 
 - The three must-closes closed Friday, 10/23.
 - The alpha invitations went out Monday, 10/26.
-- The GitHub app (for integration) was installed 10/23.
+- The GitHub app that lets the agents work in the repository was installed 10/23.
 
 The fourth goal, to close the MVP milestone, would have to happen on Friday, the first day of the following sprint. Along the way the alpha build was updated 24 times.
 
@@ -41,28 +41,25 @@ Not yet: asking for a milestone's issues in two steps passed on Wednesday and fa
 
 Also, CXO made a rule that we only close an issue when a person can see the fix, not based on a unit test alone.
 
-
-
 ## 🔬 Methodology & process innovation
 
 When I challenged the team to stop trying to solve confabulation problems by patching, we adopted this approach:
 
-- Find the cause. In this case it was the way the base prompt asked for an aside with each reply, and those asides were adding unchecked noise
-- List every claim Piper makes
-- Screen each change against the whole test set before accepting it
+- Find the cause. In this case it was the way the base prompt asked for an aside with each reply, and those asides were adding unchecked noise.
+- List every claim Piper makes.
+- Screen each change against the whole test set before accepting it.
 
 The screen already refused a change twice on 10/29, working as intended.
 
-The team learned another tough lesson in verifying assumptions before passing the along. This type of issue and the commitment to transcend it continues to recur at various level of abstraction throughout the project. 
+The team learned another tough lesson about checking an assumption before passing it along. On 10/29, five agents relayed that alpha's API key had hit its cap and chat was down for everyone. It was the test workspace's cap, and Piper has no key of its own. All five corrections came within the hour. This kind of mistake, and our commitment to getting past it, keeps recurring at different levels of the project.
 
 One small fix that removes an entire class of errors: the send scripts now write their own clock times.
 
-We also recognized a weakness in the process that drives Exec's weekly review process with the whole team that feeds into our planning and these Shipping News updates, and fixed it, so that Exec no longer needs to "remember" to send out the reminder memos to the team.
-
+We also recognized a weakness in the process that drives Exec's weekly review with the whole team, which feeds into our planning and these Shipping News updates, and fixed it, so that Exec no longer needs to "remember" to send out the reminder memos to the team.
 
 ## 🌍 External relations & community
 
-I maintained the established publishing cadence and sent out the last set of alpha invitations, including one going to reader who raised their hand a few weeks back. We also added a Terms page to the website and are maintaining a high accessibility score.
+I maintained the established publishing cadence and sent out the last set of alpha invitations, including one going to a reader who raised their hand a few weeks back. We also added a Terms page to the website and are maintaining a high accessibility score.
 
 - Sat 10-24, insight: ["Mistaking the Inset for the Map"](https://pipermorgan.ai/blog/mistaking-the-inset-for-the-map)
 - Sun 10-25, insight: ["A Clean Result Needs a Version Number"](https://pipermorgan.ai/blog/a-clean-result-needs-a-version-number)
@@ -75,13 +72,13 @@ I maintained the established publishing cadence and sent out the last set of alp
 
 ## 📊 Governance & operations
 
-**The numbers
+**The numbers**
 
-* Open MVP issues: 6 → 2
-* Updates to alpha: 24
-* Database outages: 0
-* Main CI: Red on 5 of 7 days
-* Spend: 55.1M tokens in, 1.1M out
+- Open MVP issues: 6 → 2
+- Updates to alpha: 24
+- Unplanned database outages: 0
+- Main CI: Red on 5 of 7 days
+- Spend: 55.1M tokens in, 1.1M out
 
 Almost all of the spend came from two days of screening runs.
 
@@ -89,26 +86,23 @@ Almost all of the spend came from two days of screening runs.
 
 The MVP will close, the alpha will end, and the private beta will commence. I am considering moving to more conventional two-week sprints for the Production milestone, to make planning easier.
 
-
 The first Production sprint is set: 22 issues, with about 30% held back for partner reports.
-
 
 # 🚧 Blockers & asks
 
-No blockers right now. The public site no longer invites people to alpha but there is a path now to [sign up for the beta waiting list](https://pipermorgan.ai/try/beta/).
+No blockers right now. The public site no longer invites people to alpha, but there is a path now to [sign up for the beta waiting list](https://pipermorgan.ai/try/beta/).
 
 # 🔎 This week's learning pattern
 
-## "Say what you didn't read."
+## Say what you didn't read
 
-Don't report a failed read as a deliberate "None"-type reply. [Exec: suggest what else to add here please.]
+**Discovery**: Don't report a failed read as a deliberate "None"-type reply. Nobody is going to trust an assistant who reports something as missing or absent just because they failed to look for it properly.
 
-For example, until last week, if Piper failed while trying to look up your GitHub issue, they would tell you that you had "no issue" with no awareness that this is false. Now Piper knows to tell you "I couldn't check." 
+**Example from this week**: Until this week, if Piper failed while trying to look up your GitHub issues, they would tell you that you had "no issues" with no awareness that this was false. Now Piper knows to tell you "I couldn't check."
 
-This matters because nobody is going to trust an assistant who reports something as missing or absent just because they failed to look for it properly.
+**Application beyond this week**: Any check that can fail needs a failure answer of its own, separate from the empty one. The same goes for people. "I didn't look" and "there's nothing there" are different reports, and a team that blurs them builds on gaps it can't see.
 
-
-**Related patterns**: Last week's "A safeguard you've only read is a guess." [Exec may suggest others]
+**Related patterns**: Last week's "A safeguard you've only read is a guess," and this week's posts "Mistaking the Inset for the Map" and "Citation via Hearsay."
 
 **Thanks,**
 xian + Piper Morgan Development Team
