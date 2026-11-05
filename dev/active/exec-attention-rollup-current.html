@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Tuesday 3 November</h1>
-<p class="meta">Exec · v799, rebuilt 18:00 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v800, rebuilt 18:30 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -87,7 +87,7 @@ Clean means: in section 0, the tester has no connection and no GitHub rows, and 
 (2) Create a GitHub organization, &ldquo;Piper Morgan&rdquo; (Arch and I both lean that way; the name doesn&rsquo;t matter technically).
 (3) Transfer <b>both</b> of Piper&rsquo;s OAuth Apps to it, alpha&rsquo;s and staging&rsquo;s (each deployment has its own): GitHub, Settings, Developer settings, OAuth Apps, then Transfer ownership. Leave the <code>piper-morgan-agents</code> GitHub App where it is; it&rsquo;s the agents&rsquo; push credential.
 (4) Four re-checks, which I&rsquo;ll walk you through: the client id matches Fly (first and last four only), the callback URL is unchanged, one GitHub read from your own account still works, and a fresh connect shows the org&rsquo;s name.
-(5) No throwaway account needed: <code>dinp-machine</code> covers both jobs. Revoke Piper under its GitHub settings (Applications, Authorized OAuth Apps), then sign it in to Web&rsquo;s browser so Web can check GitHub&rsquo;s page as someone who isn&rsquo;t you.</li>
+(5) No throwaway account needed: <code>dinp-machine</code> covers both jobs. Web needs three yeses from you (18:19), and then does the clicking itself: Web may use the <code>web-oauth-test</code> Piper sign-in; Web may use dinp-machine&rsquo;s GitHub sign-in and revoke Piper there; and Web may press Authorize once, as dinp-machine only, to see the &ldquo;Connected as&rdquo; message. The same session also covers #2279&rsquo;s last check.</li>
 <li><b>Add contribute@ and privacy@pipermorgan.ai as aliases</b> (your word, 17:42), the same way as support@. In admin.google.com, open Users, then the user support@ belongs to, then Alternate email addresses. Tell me when they&rsquo;re added.</li>
 <li><b>Crosspost &ldquo;The Unguarded Entrance&rdquo; to Medium and LinkedIn.</b> It went live at 14:07: https://pipermorgan.ai/blog/the-unguarded-entrance. Send me or Docs the two URLs and Docs marks it distributed.</li>
 <li><b>Optional, no rush: the last connector check (#2242).</b> It confirms that a connector that&rsquo;s already signed in gets cut off when its account comes off the list. In the alpha container, run <code>python /app/scripts/mcp_allow.py remove</code> for your account and tell me. PA then calls the tool, which should be refused. You run <code>add</code> again and reconnect in Claude. You have to reconnect, because coming off the list cancels the saved login (Arch).</li>
