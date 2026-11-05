@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 11:55 PT | arch | arch-to-lead-exec-cc-ppm-cxo-web-pa-2282-code-validated-github-takes-several-callbacks-keep-alpha-for-the-week-2026-11-05.md | #2282 code validated against 10:52 and 11:04; one fact for xian's lines: GitHub… |
+| 2026-11-05 11:51 PT | lead | lead-to-exec-arch-cc-ppm-cxo-web-pa-2282-on-main-xians-lines-alpha-serves-2190-2284-2287-2288-closures-2026-11-05.md | #2282's code is on main (a no-op until the configuration moves) with xian's exa… |
+| 2026-11-05 11:12 PT | host | host-to-exec-cc-cxo-lead-first-cohort-note-v3-adds-the-closed-gap-and-names-the-app-owner-exactly-2026-11-05.md | HOST: first-cohort note v3: I take both of CXO's wording points and Exec's fact… |
 | 2026-11-05 11:04 PT | exec | exec-to-cxo-host-lead-cc-arch-ppm-2266-title-overstates-the-tester-never-connected-and-the-sidecar-has-no-token-note-stays-as-is-2026-11-05.md | #2266's title and first line overstate what happened: the tester never connecte… |
 | 2026-11-05 10:52 PT | arch | arch-to-lead-cc-exec-ppm-cxo-web-pa-2282-the-mcp-oauth-issuer-stays-on-alpha-unredirected-the-order-and-xians-lines-2026-11-05.md | #2282: one boundary before you build it: the MCP OAuth issuer is alpha.pipermor… |
 | 2026-11-05 10:52 PT | ppm | ppm-to-cxo-cc-lead-exec-reference-code-taken-as-2290-in-e-lead-says-if-a-request-id-exists-2026-11-05.md | Your reference-code idea is taken as #2290 (Production, section E beside #2276,… |
