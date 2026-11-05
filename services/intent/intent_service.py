@@ -7856,14 +7856,22 @@ class IntentService:
                     and _looked_in
                 ):
                     _degraded_message = f"I couldn't find issue #{issue_number} in {_looked_in}."
+                # #2188 (Arch 16:15): the read did not run, so success is False; the
+                # marker says which kind, and the text is unchanged.
+                _not_performed = (
+                    NotPerformed.NOT_FOUND
+                    if _deg is not None and _deg.reason is DegradationReason.RESOURCE_NOT_FOUND
+                    else NotPerformed.DEGRADED
+                )
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,
                     message=_degraded_message,
                     intent_data={
                         "category": intent.category.value,
                         "action": intent.action,
                         "confidence": intent.confidence,
                         "degraded": connector_result.degradation.reason.value,
+                        NOT_PERFORMED_KEY: _not_performed,
                     },
                     workflow_id=workflow_id,
                     requires_clarification=(
@@ -7873,8 +7881,10 @@ class IntentService:
 
             # #969: Guard against None (API returns None if issue not found or not configured)
             if issue is None:
+                # #2188 (Arch 16:15): nothing was read, so success is False with the
+                # not-found marker; the text is unchanged.
                 return IntentProcessingResult(
-                    success=True,
+                    success=False,
                     message=(
                         f"I couldn't find issue #{issue_number} — it may not exist in this "
                         f"repository, or GitHub may not be fully connected. You can check "
@@ -7884,6 +7894,7 @@ class IntentService:
                         "category": intent.category.value,
                         "action": intent.action,
                         "confidence": intent.confidence,
+                        NOT_PERFORMED_KEY: NotPerformed.NOT_FOUND,
                     },
                     workflow_id=workflow_id,
                     requires_clarification=False,

@@ -307,3 +307,92 @@ class TestTheBubbleHasNoBranchOnTheFlag:
         src = (REPO / "web/static/js/chat.js").read_text()
         reads = [m for m in re.findall(r"(\w+)\.success\b", src) if m != "ToastMessages"]
         assert reads == ["permissionResult"]
+
+
+class TestTheReviewIssueSitesAnswerFalse:
+    """Arch 2026-11-04 16:15 (the gap his validation found): ``_handle_review_issue_query``
+    builds its own degrade text and never calls ``github_degrade_reply``, so it missed the
+    first pass. Its degrade branch and its issue-is-None branch are False with the marker,
+    text unchanged."""
+
+    _USER = "3f7b8a52-2188-4b00-9e00-000000002188"
+
+    def _intent(self, message="show me issue 999999"):
+        return Intent(
+            category=IntentCategory.QUERY,
+            action="review_issue_query",
+            confidence=0.9,
+            context={"original_message": message, "user_id": self._USER},
+        )
+
+    @pytest.mark.asyncio
+    async def test_a_positive_not_found_is_false_with_not_found(self, svc):
+        from services.mcp.consumer.github_adapter import GitHubIssueResult
+
+        adapter = MagicMock()
+        adapter.get_issue_connector = AsyncMock(
+            return_value=GitHubIssueResult(
+                degradation=DegradationResponse(
+                    reason=DegradationReason.RESOURCE_NOT_FOUND,
+                    user_message="That GitHub resource wasn't found.",
+                ),
+                resolved_repo="o/r",
+            )
+        )
+        with patch(_ADAPTER, return_value=adapter):
+            res = await svc._handle_review_issue_query(self._intent(), "wf", session_id="s")
+        assert res.success is False
+        assert res.message == "I couldn't find issue #999999 in o/r."  # #2111's words, unchanged
+        assert res.intent_data[NOT_PERFORMED_KEY] == NotPerformed.NOT_FOUND
+        assert res.intent_data["degraded"] == "resource_not_found"
+
+    @pytest.mark.asyncio
+    async def test_another_degrade_is_false_with_degraded(self, svc):
+        from services.mcp.consumer.github_adapter import GitHubIssueResult
+
+        adapter = MagicMock()
+        adapter.get_issue_connector = AsyncMock(
+            return_value=GitHubIssueResult(
+                degradation=DegradationResponse(
+                    reason=DegradationReason.UNREACHABLE,
+                    user_message="GitHub's MCP server is unreachable right now.",
+                ),
+                resolved_repo="o/r",
+            )
+        )
+        with patch(_ADAPTER, return_value=adapter):
+            res = await svc._handle_review_issue_query(
+                self._intent("show me issue 7"), "wf", session_id="s"
+            )
+        assert res.success is False
+        assert res.message == "GitHub's MCP server is unreachable right now."
+        assert res.intent_data[NOT_PERFORMED_KEY] == NotPerformed.DEGRADED
+
+    @pytest.mark.asyncio
+    async def test_a_native_read_that_finds_nothing_is_false_with_not_found(self, svc):
+        from services.mcp.consumer.github_adapter import GitHubIssueResult
+
+        adapter = MagicMock()
+        adapter.get_issue_connector = AsyncMock(
+            return_value=GitHubIssueResult(
+                degradation=DegradationResponse(
+                    reason=DegradationReason.CONNECT_REQUIRED, user_message="Connect GitHub."
+                )
+            )
+        )
+        router = MagicMock()
+        router.initialize = AsyncMock()
+        router.is_available = AsyncMock(return_value=True)
+        router.get_issue = AsyncMock(return_value=None)
+        with (
+            patch(_ADAPTER, return_value=adapter),
+            patch(_NATIVE, return_value=router),
+        ):
+            res = await svc._handle_review_issue_query(
+                self._intent("show me issue 42"), "wf", session_id="s"
+            )
+        assert res.success is False
+        assert res.message.startswith(
+            "I couldn't find issue #42 — it may not exist in this repository"
+        )
+        assert res.intent_data[NOT_PERFORMED_KEY] == NotPerformed.NOT_FOUND
