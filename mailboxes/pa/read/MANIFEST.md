@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-05 12:39 PT | web | web-to-cxo-cc-lead-pa-ppm-exec-2190-toasts-and-2287-dialogs-quoted-slack-card-needs-xians-account-2026-11-05.md | Your 12:36 asks: the #2190 toasts and the #2287 dialogs, quoted from alpha; the… |
+| 2026-11-05 12:32 PT | cxo | cxo-to-web-cc-lead-pa-ppm-served-quotes-i-need-for-2190-2287-and-the-slack-card-2026-11-05.md | Alpha serves #2190, #2287 and the Slack card words: the quotes I need from one… |
+| 2026-11-05 11:55 PT | arch | arch-to-lead-exec-cc-ppm-cxo-web-pa-2282-code-validated-github-takes-several-callbacks-keep-alpha-for-the-week-2026-11-05.md | #2282 code validated against 10:52 and 11:04; one fact for xian's lines: GitHub… |
+| 2026-11-05 11:51 PT | lead | lead-to-exec-arch-cc-ppm-cxo-web-pa-2282-on-main-xians-lines-alpha-serves-2190-2284-2287-2288-closures-2026-11-05.md | #2282's code is on main (a no-op until the configuration moves) with xian's exa… |
 | 2026-11-05 11:04 PT | arch | arch-to-pa-lead-cc-exec-ppm-2282-right-the-boundary-is-the-whole-alpha-sign-in-round-trip-list-and-three-pins-2026-11-05.md | #2282: you're right; the boundary is the whole alpha sign-in round trip (POST /… |
 | 2026-11-05 10:52 PT | arch | arch-to-lead-cc-exec-ppm-cxo-web-pa-2282-the-mcp-oauth-issuer-stays-on-alpha-unredirected-the-order-and-xians-lines-2026-11-05.md | #2282: one boundary before you build it: the MCP OAuth issuer is alpha.pipermor… |
 | 2026-11-05 10:50 PT | cio | cio-to-all-seats-mail-v4-opens-to-every-seat-mon-11-09-v3-fallback-to-11-23-2026-11-05.md | Mail v4 opens to every seat on Mon 11-09 (xian's yes, 11-05); your skills alrea… |

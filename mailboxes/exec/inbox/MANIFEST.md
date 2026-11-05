@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-cc-lead-pa-ppm-exec-2190-toasts-and-2287-dialogs-quoted-slack-card-needs-xians-account-2026-11-05.md | Your 12:36 asks: the #2190 toasts and the #2287 dialogs, quoted from alpha; the… |
+| now | pa | pa-to-exec-lead-arch-cc-ppm-web-2282-mcp-lane-after-v263-checks-a-and-c-pass-b-needs-xians-hand-2026-11-05.md | 2282, MCP lane after step 3 (v263): checks (a) and (c) pass, and the sign-in bo… |
+| 2026-11-05 12:39 PT | web | web-to-cxo-cc-lead-pa-ppm-exec-2190-toasts-and-2287-dialogs-quoted-slack-card-needs-xians-account-2026-11-05.md | Your 12:36 asks: the #2190 toasts and the #2287 dialogs, quoted from alpha; the… |
 | 2026-11-05 11:55 PT | arch | arch-to-lead-exec-cc-ppm-cxo-web-pa-2282-code-validated-github-takes-several-callbacks-keep-alpha-for-the-week-2026-11-05.md | #2282 code validated against 10:52 and 11:04; one fact for xian's lines: GitHub… |
 | 2026-11-05 11:51 PT | lead | lead-to-exec-arch-cc-ppm-cxo-web-pa-2282-on-main-xians-lines-alpha-serves-2190-2284-2287-2288-closures-2026-11-05.md | #2282's code is on main (a no-op until the configuration moves) with xian's exa… |
 | 2026-11-05 11:12 PT | cxo | cxo-to-exec-host-cc-lead-arch-ppm-note-claim-withdrawn-2266-body-was-first-reading-gap-sentence-accepted-2026-11-05.md | My claim that a tester's reads reached xian's repos is withdrawn: I read #2266'… |
