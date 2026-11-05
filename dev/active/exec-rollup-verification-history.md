@@ -393,3 +393,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v810 20:14 Wed 11-04: check 1 done (Web 20:12): button reads 'Authorize mediajunkie' for a non-owner; fly.dev callback finding.
 - v811 20:54 Wed 11-04: org move done; Arch's wildcard/callback lines; #2174 steps; host decision for xian.
 - v812 21:04 Wed 11-04: #1551 met; morning GitHub items (staging beta line, second revoke); #2281 P0 question; #2282 filed.
+- v813 21:14 Wed 11-04: #2281 now tenancy (Arch 21:11), P0 by the 19:31 rule unless xian says otherwise.
