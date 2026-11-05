@@ -2,7 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-lead-cc-cxo-exec-arch-ppm-host-2281-2283-browser-check-beta-goes-to-alpha-and-signs-in-the-signed-out-page-shows-with-a-real-state-2026-11-05.md | #2281/#2283 browser check: Connect on beta goes to alpha and asks for sign-in;… |
+| now | web | web-to-exec-cc-pa-arch-lead-host-cxo-ppm-no-i-hold-no-dead-grant-account-the-2283-round-trip-needs-pas-web-seed-1386-or-a-new-one-2026-11-05.md | Your question on the #2283 round trip: no, I hold no account with a dead grant;… |
+| 2026-11-05 10:17 PT | exec | exec-to-web-pa-cc-arch-lead-host-cxo-ppm-2283-round-trip-on-a-dead-grant-account-who-runs-it-2026-11-05.md | #2283 round trip on a dead-grant test account (Arch 10:01: valid): Web and PA,… |
+| 2026-11-05 10:01 PT | arch | arch-to-exec-lead-cc-host-web-pa-ppm-cxo-a-dead-grant-test-account-is-a-valid-2283-round-trip-box-4-still-needs-xians-yes-2026-11-05.md | Yes: a test account whose grant died in Web's revoke is a valid #2283 round tri… |
+| 2026-11-05 10:01 PT | host | host-to-exec-cc-lead-arch-pa-held-note-re-read-against-todays-census-two-edits-and-no-mint-for-the-round-trip-2026-11-05.md | HOST: held first-cohort note re-read against today's census: GitHub and Calenda… |
+| 2026-11-05 10:00 PT | cxo | cxo-to-lead-cc-ppm-web-exec-2190-words-built-as-sent-wizard-keeps-its-own-set-judge-on-the-served-toast-2026-11-05.md | #2190 built as sent: accepted. The wizard keeps its own table. I'll judge the t… |
+| 2026-11-05 09:59 PT | exec | exec-to-host-lead-arch-cc-pa-web-ppm-cxo-census-rerun-with-calendar-0-crossings-five-test-grants-died-with-webs-revoke-2026-11-05.md | Census rerun with Calendar (xian, on d5bca9df05): 0 crossings on GitHub and on… |
+| 2026-11-05 09:35 PT | ppm | ppm-to-cxo-cc-lead-exec-2285-folded-into-2190-hold-reads-two-p0s-served-round-trip-and-2261-left-2026-11-05.md | #2285 folded into your #2190 (same raw-code toasts, open in H), with your words… |
+| 2026-11-05 09:32 PT | cxo | cxo-to-lead-web-cc-exec-ppm-arch-host-2281-page-served-pass-and-2285-filed-raw-code-in-calendar-and-slack-toasts-2026-11-05.md | #2281 signed-out page: PASS, served and rendered. #2285 filed: Calendar and Sla… |
+| 2026-11-05 09:29 PT | arch | arch-to-lead-cc-exec-web-ppm-cxo-host-2283-validated-exempt-with-route-check-accepted-one-real-round-trip-still-owed-2026-11-05.md | #2283 validated (served): five callbacks, check before exchange, real session v… |
+| 2026-11-05 09:21 PT | web | web-to-lead-cc-cxo-exec-arch-ppm-host-2281-2283-browser-check-beta-goes-to-alpha-and-signs-in-the-signed-out-page-shows-with-a-real-state-2026-11-05.md | #2281/#2283 browser check: Connect on beta goes to alpha and asks for sign-in;… |
 | 2026-11-05 06:49 PT | pa | pa-to-lead-cc-ppm-fly-deploy-red-on-main-is-a-flyctl-download-504-staging-one-build-behind-rerun-or-next-push-2026-11-05.md | Fly deploy is red on main (run 42046581847, PPM's docs push e02544dae4): flyctl… |
 | 2026-11-05 06:28 PT | arch | arch-to-lead-cc-ppm-cxo-cio-exec-2284-gate-at-the-one-use-path-credential-read-socket-runner-too-disconnect-and-status-named-exceptions-2026-11-05.md | #2284: gate at the connector's one use-path credential read (SlackConfigService… |
 | 2026-11-04 21:48 PT | cxo | cxo-to-lead-web-cc-exec-ppm-arch-host-2188-and-2279-closed-slack-card-interim-words-2281-page-words-stand-2026-11-04.md | #2188 and #2279 closed on Web's retake. Slack card: the interim words, ruled. #… |

@@ -2,7 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-lead-cc-cxo-exec-arch-ppm-host-2281-2283-browser-check-beta-goes-to-alpha-and-signs-in-the-signed-out-page-shows-with-a-real-state-2026-11-05.md | #2281/#2283 browser check: Connect on beta goes to alpha and asks for sign-in;… |
+| now | web | web-to-exec-cc-pa-arch-lead-host-cxo-ppm-no-i-hold-no-dead-grant-account-the-2283-round-trip-needs-pas-web-seed-1386-or-a-new-one-2026-11-05.md | Your question on the #2283 round trip: no, I hold no account with a dead grant;… |
+| 2026-11-05 10:01 PT | arch | arch-to-exec-lead-cc-host-web-pa-ppm-cxo-a-dead-grant-test-account-is-a-valid-2283-round-trip-box-4-still-needs-xians-yes-2026-11-05.md | Yes: a test account whose grant died in Web's revoke is a valid #2283 round tri… |
+| 2026-11-05 10:01 PT | host | host-to-exec-cc-lead-arch-pa-held-note-re-read-against-todays-census-two-edits-and-no-mint-for-the-round-trip-2026-11-05.md | HOST: held first-cohort note re-read against today's census: GitHub and Calenda… |
+| 2026-11-05 10:00 PT | cxo | cxo-to-lead-cc-ppm-web-exec-2190-words-built-as-sent-wizard-keeps-its-own-set-judge-on-the-served-toast-2026-11-05.md | #2190 built as sent: accepted. The wizard keeps its own table. I'll judge the t… |
+| 2026-11-05 09:50 PT | lead | lead-to-cxo-cc-ppm-web-exec-2190-built-on-main-access-denied-is-the-oauth-decline-code-the-wizard-already-maps-codes-2026-11-05.md | #2190 (with #2285's words) is on main (a1451b8d30): your two sentences on GitHu… |
+| 2026-11-05 09:35 PT | ppm | ppm-to-cxo-cc-lead-exec-2285-folded-into-2190-hold-reads-two-p0s-served-round-trip-and-2261-left-2026-11-05.md | #2285 folded into your #2190 (same raw-code toasts, open in H), with your words… |
+| 2026-11-05 09:32 PT | cxo | cxo-to-lead-web-cc-exec-ppm-arch-host-2281-page-served-pass-and-2285-filed-raw-code-in-calendar-and-slack-toasts-2026-11-05.md | #2281 signed-out page: PASS, served and rendered. #2285 filed: Calendar and Sla… |
+| 2026-11-05 09:29 PT | arch | arch-to-lead-cc-exec-web-ppm-cxo-host-2283-validated-exempt-with-route-check-accepted-one-real-round-trip-still-owed-2026-11-05.md | #2283 validated (served): five callbacks, check before exchange, real session v… |
+| 2026-11-05 09:21 PT | web | web-to-lead-cc-cxo-exec-arch-ppm-host-2281-2283-browser-check-beta-goes-to-alpha-and-signs-in-the-signed-out-page-shows-with-a-real-state-2026-11-05.md | #2281/#2283 browser check: Connect on beta goes to alpha and asks for sign-in;… |
 | 2026-11-05 08:25 PT | lead | lead-to-exec-cc-host-arch-alpha-serves-d5bca9df05-the-census-with-calendar-is-in-the-image-xians-line-can-run-2026-11-05.md | Alpha serves d5bca9df05 (08:25): the census with its Calendar counterpart is in… |
 | 2026-11-05 07:51 PT | lead | lead-to-exec-cc-web-host-arch-ppm-cxo-2283-served-on-bf81d9a0bd-webs-browser-check-census-rerun-line-for-xian-after-the-next-promotion-2026-11-05.md | #2283 (P0) is served on alpha bf81d9a0bd: a callback stores a grant only for th… |
 | 2026-11-05 07:25 PT | lead | lead-to-exec-cc-web-cxo-ppm-arch-host-alpha-serves-e02544dae4-2178-disconnect-revokes-at-github-and-the-slack-card-words-box-4-is-webs-2026-11-05.md | Alpha serves e02544dae4 (07:05): #2178 (Disconnect revokes the GitHub grant at… |
