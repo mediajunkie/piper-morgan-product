@@ -7,7 +7,7 @@
 **Cron gate:** the duty-cycle-tick cron steps (the CronList self-heal and the STOP re-arm) don't apply on a LaunchAgent.
 
 ## Rollup
-v815, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert. Re-check every item that waits on xian live, on every fire. The source is in a public repo, so describe security findings by class only, with no steps.
+v816, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert. Re-check every item that waits on xian live, on every fire. The source is in a public repo, so describe security findings by class only, with no steps.
 
 ## Where things stand (end of 11-04)
 - **Served:** alpha `72bd53546a` (read 22:01, healthy). Main CI is 12/12 green. The next promotion carries #2178 (`b5df29d4e6`, validated by Arch at 21:02).
@@ -41,6 +41,7 @@ v815, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
    - The second run comes 8 hours after the first.
    - Custody, per HOST: the secret and tokens stay only in xian's password manager.
 5. The Ship #067 LinkedIn URL.
+5a. **MCP deploy, not landed** (PA 21:47; still v19). Both of xian's runs were refused because pushes landed between the sync and the run. The fix is one line in PA's session: `! git fetch -q origin main && git merge -q --ff-only origin/main && scripts/deploy-mcp.sh`. I wrongly told him at 19:49 that it had gone through.
 6. Sprint planning (PPM's onboarding proposal, sprint length) and the #1715 skills walk.
 7. Smaller items:
    - the Buttondown confirmation paste and sign-up test;

@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Tuesday 3 November</h1>
-<p class="meta">Exec · v815, rebuilt 21:44 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v816, rebuilt 04:22 PST Thu 11-05 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -62,7 +62,7 @@
 
 <div class="card act">
 <ul>
-<li><b>Quick, unblocks PA: put the GitHub fix on the MCP app (one line).</b> The Claude connector&rsquo;s server (<code>piper-morgan-mcp</code>) still runs a build from before Lead&rsquo;s fix, and your run in PA&rsquo;s session after 15:47 was refused before anything deployed, because PA&rsquo;s copy was behind main (still v19, PA 18:49). The risk is low, since the GitHub helper holds no token, but it should match alpha. Ask PA to sync, then right away type in PA&rsquo;s session: <code>! scripts/deploy-mcp.sh</code>. PA then checks it.</li>
+<li><b>Quick, unblocks PA: the MCP deploy still hasn&rsquo;t landed (one line).</b> Both of your runs in PA&rsquo;s session were refused, because other agents pushed between PA&rsquo;s sync and your run. The connector&rsquo;s server is still v19 (PA, 21:47). I told you last night it went through; it didn&rsquo;t. PA&rsquo;s line syncs and deploys in one go, so nothing can land in between. In PA&rsquo;s session, type: <code>! git fetch -q origin main &amp;&amp; git merge -q --ff-only origin/main &amp;&amp; scripts/deploy-mcp.sh</code>. PA then checks it.</li>
 </ul>
 <ol>
 <li><b>Look at the early Piper database in the old Postgres folder (#2264), read-only.</b> It&rsquo;s eight small tables, including &ldquo;stakeholders&rdquo;, in the public repo&rsquo;s history since 03-30. Only you should read it, so no agent sees the contents. This prints its readable text into a pager; press q to leave:<pre>cd ~/Development/piper-morgan-product &amp;&amp; git ls-tree --name-only d3ee15de35 data/postgres/base/16384/ | grep -E '/177[0-9]{2}$' | while read f; do echo "== $f"; git show "d3ee15de35:$f" | strings -n 3; done | less</pre>Then tell me only one of two things: &ldquo;test data&rdquo;, and it closes with no rewrite (Arch, Lead and I recommend that outcome), or &ldquo;real people&rdquo;, and we plan a history rewrite. Don&rsquo;t paste any names.</li>
@@ -147,7 +147,7 @@ If you didn't sign up, ignore this email and you won't hear from us.</pre>Then s
 <li><b>Restarter (#2146):</b> passed its test Friday and brought the database back once with nobody touching it.</li>
 <li>Google approved our Calendar read access (#2087, 15:50). Two served proofs remain: a connect through the wizard and one calendar read on your outside account (Web can&rsquo;t sign in to Google). HOST has the ask.</li>
 <li>Mail v4 stays on three seats until the 11-05 review.</li>
-<li>Alpha now serves <code>72bd53546a</code> (promoted 19:34 Wed; I read <code>/health</code> 19:48). It carries the calendar status fix and the corrected decrypt script, and the GitHub settings line now reads &ldquo;Connected with GitHub.&rdquo; The GitHub card now shows &ldquo;Connected as {login}&rdquo;, and so does the reply after connecting (#2279), so a wrong-account approval is visible at once. Closed since last night: #2098 (typed title is used), #2265 (&ldquo;yesterday&rdquo; means yesterday), #2259 (Email row) and #1858. PA re-runs the failed-comment check on this build.</li>
+<li>Alpha now serves <code>72bd53546a</code> (promoted 19:34 Wed; I read <code>/health</code> 19:48). It carries the calendar status fix and the corrected decrypt script, and the GitHub settings line now reads &ldquo;Connected with GitHub.&rdquo; The GitHub card now shows &ldquo;Connected as {login}&rdquo;, and so does the reply after connecting (#2279), so a wrong-account approval is visible at once. Closed since last night: #2098 (typed title is used), #2265 (&ldquo;yesterday&rdquo; means yesterday) and #2259 (Email row). PA re-runs the failed-comment check on this build.</li>
 
 <li>R3 coordination target: you kept it (12:5x). CIO measures memos per seat 11-04 to 11-10 and reads it with you Wed 11-11, beside the 11-05 mail v4 decision. Nothing is cut before then. Your two questions are answered through Janus: 2.65 is half of September, a chosen goal with no outside benchmark.</li>
 </ul></div>
