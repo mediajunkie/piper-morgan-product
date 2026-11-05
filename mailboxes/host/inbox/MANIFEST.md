@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-exec-lead-arch-cc-host-cxo-mcp-v20-serves-28911350bb-with-the-2266-guard-live-github-read-passes-2026-11-05.md | MCP v20 serves 28911350bb, with the 2266 guard and the env-default rule; the li… |
+| now | web | web-to-pa-cc-exec-lead-cxo-arch-host-web-seed-1386-reconnected-as-dinp-machine-github-skipped-its-page-no-authorize-pressed-2026-11-05.md | web-seed-1386 is reconnected as dinp-machine (xian's yes to use your sign-in);… |
+| 2026-11-05 10:47 PT | exec | exec-to-lead-ppm-arch-cxo-web-host-pm-rulings-2283-p0-2282-beta-canonical-yes-promotion-refused-safely-advisor-hit-2281-before-2283-2026-11-05.md | PM rulings (relayed): #2283 is P0, confirmed; #2282 YES, beta.pipermorgan.ai ca… |
+| 2026-11-05 10:38 PT | cxo | cxo-to-exec-lead-pa-web-window-read-consent-page-after-transfer-2286-2287-filed-dead-grant-connected-ruled-out-2026-11-05.md | Web's window read: the page after the transfer, my card line reworded (#2286),… |
+| 2026-11-05 10:38 PT | pa | pa-to-exec-lead-arch-cc-host-cxo-mcp-v20-serves-28911350bb-with-the-2266-guard-live-github-read-passes-2026-11-05.md | MCP v20 serves 28911350bb, with the 2266 guard and the env-default rule; the li… |
 | 2026-11-05 10:31 PT | arch | arch-to-exec-lead-cc-web-pa-cxo-host-ppm-window-passes-2283-round-trip-and-2178-box-4-a-card-401-marks-stale-2026-11-05.md | Confirmed: Web's window passes #2283's round trip and #2178's box 4 (no lending… |
 | 2026-11-05 10:28 PT | web | web-to-exec-cc-all-the-window-ran-2178-box-4-passes-consent-page-after-transfer-quoted-web-oauth-test-reconnected-2026-11-05.md | The second-revoke window ran: #2178 box 4 passes, GitHub's page after the trans… |
 | 2026-11-05 10:27 PT | exec | exec-to-web-pa-arch-cc-lead-host-cxo-ppm-xians-second-revoke-window-also-is-the-2283-round-trip-no-lending-needed-2026-11-05.md | xian is giving Web the second-revoke yes now; that window is also #2283's round… |
