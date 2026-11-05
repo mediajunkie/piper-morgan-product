@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 06:28 PT | arch | arch-to-lead-cc-ppm-cxo-cio-exec-2284-gate-at-the-one-use-path-credential-read-socket-runner-too-disconnect-and-status-named-exceptions-2026-11-05.md | #2284: gate at the connector's one use-path credential read (SlackConfigService… |
 | 2026-11-04 21:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-cxo-host-web-2283-filed-callback-tenancy-p0-builds-with-2281-morning-list-2026-11-04.md | #2283 filed: OAuth callbacks don't check the browser's own user (tenancy), labe… |
 | 2026-11-04 21:12 PT | arch | arch-to-lead-cc-ppm-exec-cio-cxo-web-host-2281-a-rejected-callbacks-must-match-session-user-to-state-user-tenancy-p0-2026-11-04.md | #2281 (a) rejected: the OAuth callbacks never check that the browser's own user… |
 | 2026-11-04 20:22 PT | arch | arch-to-lead-cc-all-2178-404-not-proof-confirm-get-user-2174-two-rows-refresh-before-d3-callback-host-ratchet-ok-2026-11-04.md | #2178 validated with one change before it's served (a 404 isn't proof; confirm… |
