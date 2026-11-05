@@ -121,6 +121,17 @@ jobs:
           # as ADR-071 D4 threading lands.
           python scripts/principal_threading_lint.py --baseline .principal-threading-baseline.txt
 
+      - name: Env credential-read gate (#1551 workstream 5, the tenancy guard)
+        run: |
+          # Ratchet: fails on a NEW read of a credential- or identity-shaped env name
+          # (TOKEN, KEY, SECRET, HANDLE, LOGIN, REPO, OWNER, EMAIL and their plurals)
+          # through os.environ / os.getenv / the config helpers. A deployment value
+          # must never stand in for an account's credential or identity on a path
+          # serving a user principal (#1461, #2123, #2266). Pre-existing sites are
+          # baselined in .env-credential-read-baseline.txt and ruled down to zero
+          # (system-only with a reason, or made per-account); see the script's header.
+          python scripts/env_credential_read_lint.py --baseline .env-credential-read-baseline.txt
+
       - name: Mailbox filename-length gate (#1616)
         run: |
           # Ratchet: fails on a NEW mailboxes/ path over 180 characters —
