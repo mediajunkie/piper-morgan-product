@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Tuesday 3 November</h1>
-<p class="meta">Exec · v801, rebuilt 18:45 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v802, rebuilt 18:56 PST Wed 11-04 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -73,17 +73,12 @@ Plus one question: <b>#2063</b>, are the next invites design partners only? HOST
 <li><b>Sign-up read, one line (now on alpha):</b> have the 10-31 invite codes been used? It&rsquo;s read-only and prints only &ldquo;unused&rdquo; or &ldquo;USED &lt;date&gt;&rdquo; per masked code, plus totals.
 <pre>fly machine exec 2869e7ec495248 "python /app/scripts/invite_redemption_read.py 4JAJ8WBG,D7TFY3M9,F1BR1C4N,KE0X25E6,PH4QPJRW,PJWQRDTQ,TJDZV09P,V1RY6BYA,WWNG094Y" -a piper-morgan</pre>
 Paste the output to HOST, who matches codes to people in your HOST conversation (never in mail).</li>
-<li><b>Quick, unblocks PA: put the GitHub fix on the MCP app (one line).</b> The Claude connector&rsquo;s server (<code>piper-morgan-mcp</code>) still runs a build from before Lead&rsquo;s fix, and PA&rsquo;s deploy was refused by its own permission check. The risk is low, since the GitHub helper holds no token, but it should match alpha. In PA&rsquo;s session, type: <code>! scripts/deploy-mcp.sh</code>. PA then checks it.</li>
-<li><b>GitHub census, after the Ship (about 3 minutes).</b> It&rsquo;s read-only and prints only counts and ids. Paste the output to me. The emails you type stay in your terminal.
-<pre>fly machine list -a piper-morgan
-fly machine exec MACHINE_ID "python /app/scripts/github_identity_census.py --since 2026-10-16 --user-email YOUR_SIGNIN_EMAIL" -a piper-morgan
-fly machine exec MACHINE_ID "python /app/scripts/github_identity_census.py --since 2026-10-16 --verify-logins --operator-user-id ID_FROM_LINE_2 --user-email TESTERS_SIGNIN_EMAIL --owner mediajunkie --owner dinp-machine" -a piper-morgan</pre>
-Clean means: in section 0, the tester has no connection and no GitHub rows, and in section 5 no other account maps to your login. If that&rsquo;s what it shows, I clear the invite hold and HOST&rsquo;s note comes to you for your OK.</li>
+<li><b>Quick, unblocks PA: put the GitHub fix on the MCP app (one line).</b> The Claude connector&rsquo;s server (<code>piper-morgan-mcp</code>) still runs a build from before Lead&rsquo;s fix, and your run in PA&rsquo;s session after 15:47 was refused before anything deployed, because PA&rsquo;s copy was behind main (still v19, PA 18:49). The risk is low, since the GitHub helper holds no token, but it should match alpha. Ask PA to sync, then right away type in PA&rsquo;s session: <code>! scripts/deploy-mcp.sh</code>. PA then checks it.</li>
 </ul>
 <ol>
 <li><b>Look at the early Piper database in the old Postgres folder (#2264), read-only.</b> It&rsquo;s eight small tables, including &ldquo;stakeholders&rdquo;, in the public repo&rsquo;s history since 03-30. Only you should read it, so no agent sees the contents. This prints its readable text into a pager; press q to leave:<pre>cd ~/Development/piper-morgan-product &amp;&amp; git ls-tree --name-only d3ee15de35 data/postgres/base/16384/ | grep -E '/177[0-9]{2}$' | while read f; do echo "== $f"; git show "d3ee15de35:$f" | strings -n 3; done | less</pre>Then tell me only one of two things: &ldquo;test data&rdquo;, and it closes with no rewrite (Arch, Lead and I recommend that outcome), or &ldquo;real people&rdquo;, and we plan a history rewrite. Don&rsquo;t paste any names.</li>
-<li><b>GitHub, in order, one step at a time (about 15 minutes, after the census):</b>
-(1) Run census line 3 first, so the verdict is read against the current app.
+<li><b>GitHub, in order, one step at a time (about 15 minutes):</b>
+(1) Census: done, clean (no account crossed to another&rsquo;s GitHub).
 (2) Create a GitHub organization, &ldquo;Piper Morgan&rdquo; (Arch and I both lean that way; the name doesn&rsquo;t matter technically).
 (3) Transfer <b>both</b> of Piper&rsquo;s OAuth Apps to it, alpha&rsquo;s and staging&rsquo;s (each deployment has its own): GitHub, Settings, Developer settings, OAuth Apps, then Transfer ownership. Leave the <code>piper-morgan-agents</code> GitHub App where it is; it&rsquo;s the agents&rsquo; push credential.
 (4) Four re-checks, which I&rsquo;ll walk you through: the client id matches Fly (first and last four only), the callback URL is unchanged, one GitHub read from your own account still works, and a fresh connect shows the org&rsquo;s name.

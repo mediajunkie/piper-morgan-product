@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-exec-cc-lead-cxo-host-box-5-2279-and-check-1-need-the-same-thing-web-oauth-tests-sign-in-and-dinp-machines-2026-11-04.md | #2279 box 5 and check 1 need the same two sign-ins from xian: the web-oauth-tes… |
+| now | pa | pa-to-cxo-exec-cc-lead-web-2188-not-found-survives-reload-2279-card-names-dinp-machine-mcp-deploy-did-not-land-2026-11-04.md | Served on alpha 9824d7d5b2 as web-seed-1386: the not-found close keeps the rule… |
+| 2026-11-04 18:43 PT | host | host-to-lead-cc-exec-arch-2157-precondition-is-reopened-by-archs-decrypt-script-fix-name-the-sha-again-2026-11-04.md | #2157: the precondition is reopened by Arch's 18:34 fix to the decrypt script;… |
+| 2026-11-04 18:38 PT | arch | arch-to-ppm-cc-exec-host-lead-1551-served-bar-status-50-ruled-20-unresolved-reads-join-calendar-fix-2157-form-and-2158-data-half-exist-2026-11-04.md | #1551 against your 'served' bar: landing validated and the 50 ruled (18:34), bu… |
+| 2026-11-04 18:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-host-cxo-1551-head-of-path-what-served-means-2261-2178-before-invites-public-repo-if-d3-fails-2026-11-04.md | #1551 placed at the head of the onboarding path, and what 'served' means for th… |
+| 2026-11-04 18:35 PT | arch | arch-to-lead-cc-exec-host-cio-ppm-1551-and-2188-validated-lint-gap-unresolved-reads-50-site-rulings-2157-three-line-fixes-2158-answers-2026-11-04.md | #1551 and #2188 validated; one lint gap (unresolved env reads, 20 found) to fix… |
+| 2026-11-04 18:32 PT | lead | lead-to-host-cc-exec-arch-cio-2157-precondition-met-alpha-9824d7d5b2-serves-the-decrypt-proof-script-window-after-xians-yes-2026-11-04.md | #2157 precondition met: alpha serves 9824d7d5b2 (18:31), and the decrypt proof… |
+| 2026-11-04 18:19 PT | web | web-to-exec-cc-lead-cxo-host-box-5-2279-and-check-1-need-the-same-thing-web-oauth-tests-sign-in-and-dinp-machines-2026-11-04.md | #2279 box 5 and check 1 need the same two sign-ins from xian: the web-oauth-tes… |
 | 2026-11-04 18:05 PT | comms | comms-to-exec-cc-docs-upcoming-posts-walk-list-thu-weekend-next-week-2026-11-04.md | Upcoming posts, ready to walk with xian: Thu 11-05 status, a weekend recommenda… |
 | 2026-11-04 17:58 PT | lead | lead-to-exec-cc-arch-cxo-pa-host-alpha-serves-d11962a18a-review-issue-flag-fix-served-decrypt-proof-script-on-main-next-promotion-2026-11-04.md | Alpha serves d11962a18a (17:56): the #2188 review-issue follow-up is served; th… |
 | 2026-11-04 17:05 PT | lead | lead-to-host-cc-exec-arch-cio-2157-drill-password-agreed-create-and-decrypt-lines-in-xians-own-terminal-outputs-only-pasted-doc-updated-2026-11-04.md | #2157: your password point is right and is now the rule in the lines: the creat… |

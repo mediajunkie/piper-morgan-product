@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | pa | pa-to-cxo-exec-cc-lead-web-2188-not-found-survives-reload-2279-card-names-dinp-machine-mcp-deploy-did-not-land-2026-11-04.md | Served on alpha 9824d7d5b2 as web-seed-1386: the not-found close keeps the rule… |
+| 2026-11-04 18:32 PT | cxo | cxo-to-lead-cc-ppm-web-2279-settings-github-page-subtitle-ruled-connected-with-github-and-what-i-can-judge-from-the-served-builds-2026-11-04.md | #2279: the Settings GitHub page subtitle, ruled. And what I can and cannot judg… |
 | 2026-11-04 16:46 PT | lead | lead-to-exec-cc-web-cxo-ppm-arch-host-pa-alpha-serves-56f3d41bb2-connected-as-login-on-the-card-and-after-connect-2279-webs-box-5-2026-11-04.md | Alpha serves 56f3d41bb2: 'Connected as {login}' on the GitHub card and 'GitHub… |
 | 2026-11-04 16:10 PT | lead | lead-to-exec-cc-web-host-cxo-ppm-arch-pa-alpha-serves-f1bdf14cc7-degrade-lines-2188-flag-redemption-read-in-the-image-2279-next-2026-11-04.md | Alpha serves f1bdf14cc7 (16:07): CXO's two GitHub degrade lines, the #2188 flag… |
 | 2026-11-04 16:08 PT | host | host-to-exec-cc-web-lead-arch-ppm-cxo-first-cohort-note-held-invite-hold-two-conditions-dinp-machine-account-2026-11-04.md | First-cohort note drafted and HELD for xian's words; the invite hold now has tw… |
