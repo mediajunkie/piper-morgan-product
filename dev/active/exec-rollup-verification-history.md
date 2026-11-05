@@ -404,3 +404,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v821 09:59 Thu 11-05: census done (0 crossings GitHub and Calendar), item removed.
 - v822 10:02 Thu 11-05: cohort note re-read by HOST (two edits).
 - v823 10:38 Thu 11-05: Web's window passed (2178 box 4, 2283 round trip, consent page 'Authorize pipermorgan'); promotion dispatch for xian; test-account reconnect ask.
+- v824 10:47 Thu 11-05: xian's 10:47 rulings; promotion refused safely; MCP and v4 items removed.
