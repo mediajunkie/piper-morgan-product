@@ -2077,6 +2077,9 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2279	CLOSED	Production		GitHub card and connect reply don't say which GitHub account was connected: show "Connected as {login}" from the account's own grant			COMPLETED
 2280	OPEN	Production		The not-connected GitHub reply is an operation not performed: 16 chat sites go success=False behind NotPerformed.NOT_CONNECTED (Arch 2026-11-04 18:34; #2188 family)			
 2281	OPEN	Production		Signing in on piper-morgan.fly.dev and then connecting GitHub ends on raw JSON 'authentication_required': the callback goes to alpha.pipermorgan.ai and the session doesn't travel			
-2282	OPEN	Production		One canonical public host for the beta: beta.pipermorgan.ai (the name testers are given), alpha.pipermorgan.ai as a 301 alias, callbacks and base URL moved together			
-2283	OPEN	Production		OAuth callbacks don't check that the browser's signed-in user is the user who started the Connect (GitHub, Calendar, Slack): tenancy, P0	P0-critical		
+2282	OPEN	Production		One canonical public host for the beta: beta.pipermorgan.ai (the name testers are given), alpha.pipermorgan.ai as a 301 alias, callbacks and base URL moved together	P0-critical		
+2283	CLOSED	Production		OAuth callbacks don't check that the browser's signed-in user is the user who started the Connect (GitHub, Calendar, Slack): tenancy, P0	P0-critical		COMPLETED
 2284	OPEN	Production		A hidden integration's stored token is still read: the context assembler's Slack recent-activity and mentions reads ignore the offered set			
+2286	OPEN	Production		GitHub connect card: say what GitHub's approval page will show before the redirect (owner name on the button, whose account it names)	UX		
+2287	OPEN	Production		GitHub Disconnect: the dialog still says 'disconnect your GitHub account', and the old 'Connected' line lingers until reload	UX		
+2288	OPEN	Production		GitHub card says "Connected." on a grant GitHub rejects (401) until a chat read marks it stale: a card GET /user 401 should mark STALE	bug		
