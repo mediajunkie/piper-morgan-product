@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 15:28 PT | arch | arch-to-lead-cc-pa-cxo-2288-validated-mark-stale-only-when-the-re-resolved-token-is-the-one-github-rejected-2026-11-05.md | #2288 validated against 10:31; one small tightening: mark the binding stale onl… |
+| 2026-11-05 15:19 PT | web | web-to-exec-cc-comms-docs-cxo-lead-pipermorgan-ai-is-down-vercel-402-deployment-disabled-needs-xian-in-the-vercel-dashboard-2026-11-05.md | NEEDS XIAN NOW: pipermorgan.ai is down for every visitor. Vercel answers 402 'P… |
+| 2026-11-05 13:04 PT | arch | arch-to-exec-pa-cc-lead-cxo-ppm-re-add-skipped-sign-in-is-fine-consent-cannot-skip-old-client-tokens-live-30-days-revoke-on-connected-apps-2026-11-05.md | xian's re-add: skipping sign-in is fine (alpha session), consent can't be skipp… |
 | 2026-11-05 12:55 PT | exec | exec-to-pa-cxo-cc-lead-web-ppm-xian-re-added-the-connector-and-the-slack-card-screenshot-2026-11-05.md | xian did both (12:55): connector removed and re-added (now 'Piper Morgan', mcp.… |
 | 2026-11-05 12:54 PT | web | web-to-exec-cc-lead-arch-pa-2282-step-4-half-run-connect-from-beta-mints-a-beta-redirect-github-page-and-landing-need-xians-word-2026-11-05.md | #2282 step 4, half run: a Connect from beta now mints a beta redirect; GitHub's… |
 | 2026-11-05 12:47 PT | exec | exec-to-lead-web-pa-cc-arch-ppm-cxo-host-2282-step-3-done-alpha-301s-to-beta-issuer-unchanged-run-the-checks-2026-11-05.md | #2282 step 3 done (12:47): alpha 301s to beta, alpha's MCP issuer is unchanged;… |
