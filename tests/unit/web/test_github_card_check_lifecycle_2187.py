@@ -93,7 +93,7 @@ async def test_clean_disconnect_forgets_the_record_and_incomplete_does_not():
     store = PrincipalTestResultStore()
     store.record_test_result("u1", "github", ok=False, error="401")
     with (
-        patch.object(disconnect_mod, "_disconnect_github", AsyncMock(return_value=[])),
+        patch.object(disconnect_mod, "_disconnect_github", AsyncMock(return_value=([], False))),
         patch(
             "services.integrations.principal_test_results.get_test_result_store", return_value=store
         ),
@@ -104,7 +104,7 @@ async def test_clean_disconnect_forgets_the_record_and_incomplete_does_not():
     store.record_test_result("u1", "github", ok=False, error="401")
     with (
         patch.object(
-            disconnect_mod, "_disconnect_github", AsyncMock(return_value=["keychain_pat"])
+            disconnect_mod, "_disconnect_github", AsyncMock(return_value=(["keychain_pat"], False))
         ),
         patch(
             "services.integrations.principal_test_results.get_test_result_store", return_value=store

@@ -322,7 +322,7 @@ DISCONNECT_INCOMPLETE_LINE = (
     "stored, so Piper may still be able to use it. Try Disconnect again; if it keeps "
     "failing, tell us."
 )
-# Piper's copies are gone but the provider-side revoke failed (Slack, Google): added to
+# Piper's copies are gone but the provider-side revoke failed (Slack, Google, GitHub #2178): added to
 # the success message, never the failure toast. Words: CXO 10-25 16:00.
 DISCONNECT_REVOKE_FAILED_LINE = (
     "Piper no longer holds your access. I couldn't revoke it at {service}, so it stays "
@@ -2319,7 +2319,8 @@ async def disconnect_github(current_user: JWTClaims = Depends(get_current_user))
 
         return {
             "success": True,
-            "message": "GitHub disconnected",
+            # #2178: plus CXO's line when GitHub's revoke failed (never on a PAT-only account).
+            "message": _disconnected_message("GitHub", result),
         }
 
     except Exception as e:

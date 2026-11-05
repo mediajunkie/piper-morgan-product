@@ -34,7 +34,7 @@ verified it. Every clear is attempted (one failure never stops the rest), then e
 copy is read back with provenance: a copy still there, or a read that failed, is
 "remaining". ``disconnect_connector`` returns a ``DisconnectResult``; the routes say
 "disconnected" only when ``remaining`` is empty. "Already absent" counts as gone. A
-provider-side revoke (Slack, Google) that fails is not remaining: Piper holds no copy
+provider-side revoke (Slack, Google, GitHub's OAuth grant since #2178) that fails is not remaining: Piper holds no copy
 once the local clears verify. It sets ``provider_revoke_failed`` and the success
 message says the access stays valid at the provider (CXO 10-25).
 """
@@ -77,7 +77,7 @@ async def disconnect_connector(user_id: str, connector: str) -> DisconnectResult
     """
     revoke_failed = False
     if connector == "github":
-        remaining = await _disconnect_github(user_id)
+        remaining, revoke_failed = await _disconnect_github(user_id)
     elif connector == "slack":
         remaining, revoke_failed = await _disconnect_slack(user_id)
     elif connector == "calendar":
@@ -123,11 +123,36 @@ async def _keychain_copy_gone(keychain, provider: str, username: str | None) -> 
     return read.provenance is SecretProvenance.VERIFIED_ABSENT
 
 
-async def _disconnect_github(user_id: str) -> list[str]:
+async def _revoke_github_grant_at_github(user_id: str) -> bool:
+    """#2178: revoke the OAuth grant at GitHub BEFORE the local clears, reading the token
+    first (the Slack ordering). Returns True when the revoke FAILED (the access may stay
+    valid at GitHub). A PAT is never revoked: it is the person's own credential and may be
+    used elsewhere (ADR-081 D4); a PAT-only account has no grant, so nothing is called."""
+    try:
+        from services.database.session_factory import AsyncSessionFactory
+        from services.mcp.consumer.connector_grant_store import ConnectorGrantStore
+
+        async with AsyncSessionFactory.session_scope() as session:
+            grant = await ConnectorGrantStore().get_strict(session, user_id, "github")
+    except Exception as e:
+        # The grant exists but can't be read (or the read failed): it can't be revoked,
+        # so say it may stay valid at GitHub.
+        logger.warning("github_grant_read_for_revoke_failed", error=type(e).__name__)
+        return True
+    if not grant:
+        return False  # nothing granted to this app: no call, nothing to report
+    from services.mcp.consumer.github_oauth_handler import GitHubOAuthHandler
+
+    return not await GitHubOAuthHandler().revoke_grant(grant)
+
+
+async def _disconnect_github(user_id: str) -> tuple[list[str], bool]:
     from services.infrastructure.keychain_service import KeychainService
 
     remaining: list[str] = []
     keychain = KeychainService()
+    # #2178: at GitHub first, while the token is still readable (cleared below).
+    revoke_failed = await _revoke_github_grant_at_github(user_id)
     if not await _keychain_copy_gone(keychain, "github_token", user_id):  # #849 user-scoped
         remaining.append("keychain_pat")
     # #1558: NO os.environ.pop here — env tokens are system/deployment
@@ -191,7 +216,7 @@ async def _disconnect_github(user_id: str) -> list[str]:
     except Exception as e:
         logger.warning("github_disconnect_readback_failed", error=str(e))
         remaining.append("credential_unverified")
-    return remaining
+    return remaining, revoke_failed
 
 
 async def _disconnect_slack(user_id: str) -> tuple[list[str], bool]:

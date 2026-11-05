@@ -294,6 +294,7 @@ def _github_stores_ok():
     repo.set_status = AsyncMock()
     grant = MagicMock()
     grant.delete = AsyncMock(return_value=True)
+    grant.get_strict = AsyncMock(return_value=None)  # #2178: no OAuth grant, so no revoke call
     stack = ExitStack()
     stack.enter_context(patch("services.database.session_factory.AsyncSessionFactory", factory))
     stack.enter_context(

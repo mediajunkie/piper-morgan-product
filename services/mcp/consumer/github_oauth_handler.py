@@ -186,6 +186,40 @@ class GitHubOAuthHandler:
                     scope=data.get("scope", ""),
                 )
 
+    REVOKE_URL_TEMPLATE = "https://api.github.com/applications/{client_id}/grant"
+
+    async def revoke_grant(self, access_token: str) -> bool:
+        """#2178 (Arch 2026-10-25; P0 before any invite, xian 2026-11-04 19:31): revoke the
+        person's authorization of this OAuth App at GitHub, so Piper no longer appears under
+        their GitHub Settings, Applications. ``DELETE /applications/{client_id}/grant`` with
+        the app's own client id and secret as basic auth and the token in the body.
+
+        True on 204, and on 404 (GitHub no longer knows the grant: already revoked there,
+        so nothing stays valid). False on anything else, on a network failure, or when this
+        process holds no app credentials; the caller says the access may stay valid at
+        GitHub. Never raises; never logs the token."""
+        if not access_token or not self.client_id or not self.client_secret:
+            return False
+        url = self.REVOKE_URL_TEMPLATE.format(client_id=self.client_id)
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.delete(
+                    url,
+                    auth=aiohttp.BasicAuth(self.client_id, self.client_secret),
+                    headers={
+                        "Accept": "application/vnd.github+json",
+                        "X-GitHub-Api-Version": "2022-11-28",
+                    },
+                    json={"access_token": access_token},
+                ) as response:
+                    if response.status in (204, 404):
+                        return True
+                    logger.warning("github_grant_revoke_refused", status=response.status)
+                    return False
+        except Exception as e:
+            logger.warning("github_grant_revoke_failed", error=type(e).__name__)
+            return False
+
     async def _get_login(self, access_token: str) -> str:
         """The authenticated user's GitHub login (identity for logging; best-effort)."""
         try:
