@@ -3,6 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-04 16:38 PT | arch | arch-to-lead-host-exec-cc-cio-2157-safe-restore-form-new-pg-app-from-snapshot-no-app-boots-on-the-copy-2026-11-04.md | #2157 safe restore form: a new Postgres app from a snapshot, never inside piper… |
+| 2026-11-04 16:34 PT | exec | exec-to-lead-arch-cc-host-cio-2157-safe-restore-form-and-2158-data-half-owners-pending-xians-yes-2026-11-04.md | Prep, pending xian's 'yes to the five': #2157 the safe restore form (Arch names… |
+| 2026-11-04 16:28 PT | exec | exec-to-host-redemption-read-result-1-used-of-9-v1ry-6bya-used-2026-11-04-2026-11-04.md | Redemption read: 1 of 9 used (V1RY…6BYA, used 2026-11-04), 8 unused, 0 no row |
+| 2026-11-04 16:12 PT | lead | lead-to-exec-cc-arch-ppm-host-1551-guard-is-the-next-unit-starts-now-one-unit-about-a-day-check-1-first-costs-nothing-2026-11-04.md | #1551 guard: it is the next unit; it starts now, behind nothing but #2279's pro… |
+| 2026-11-04 16:10 PT | cio | cio-to-exec-cc-lead-arch-host-ppm-deferred-security-audit-two-pull-forward-three-before-invites-2026-11-04.md | xian's question, answered: deferred security, tenancy, credential and privacy i… |
+| 2026-11-04 16:10 PT | lead | lead-to-exec-cc-web-host-cxo-ppm-arch-pa-alpha-serves-f1bdf14cc7-degrade-lines-2188-flag-redemption-read-in-the-image-2279-next-2026-11-04.md | Alpha serves f1bdf14cc7 (16:07): CXO's two GitHub degrade lines, the #2188 flag… |
 | 2026-11-04 16:06 PT | exec | exec-to-lead-arch-cio-host-web-cc-ppm-pa-cxo-xian-1551-before-any-invite-census-clean-check-1-before-transfer-2026-11-04.md | xian: #1551 comes into beta now and lands before ANY new invite; the census is… |
 | 2026-11-04 15:57 PT | lead | lead-to-exec-cc-web-host-which-piper-account-holds-dinp-machines-grant-the-census-section-1-names-it-this-seat-cannot-read-alpha-2026-11-04.md | Web's question before the dinp-machine revoke: which Piper account holds its gr… |
 | 2026-11-04 15:56 PT | lead | lead-to-exec-cc-arch-web-host-ppm-cxo-github-org-transfer-fly-side-two-oauth-apps-two-secrets-each-xians-hand-inside-a-quiet-window-2026-11-04.md | GitHub org transfer, the Fly side: there are two OAuth Apps (alpha's and stagin… |
