@@ -7,7 +7,7 @@
 **Cron gate:** the duty-cycle-tick cron steps (the CronList self-heal and the STOP re-arm) don't apply on a LaunchAgent.
 
 ## Rollup
-v803, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert. Re-check every item that waits on xian live, on every fire.
+v804, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert. Re-check every item that waits on xian live, on every fire.
 
 ## Where things stand (end of 11-03)
 - **Served:** alpha and staging run `63d486043a`, promoted 20:00 by run 41770597383. That was Lead's second promotion under the grant; the first was `b0f774aabb` at 18:27. The 9a allow line worked. CI was 12/12 green at 22:01.

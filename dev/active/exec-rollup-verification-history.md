@@ -384,3 +384,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v801 18:45 Wed 11-04: 1551 status per Arch 18:34/18:38, PPM's public_repo default, drill fixes, alpha 9824d7d5b2 (read 18:45).
 - v802 18:56 Wed 11-04: removed done census item; MCP deploy refused (PA 18:49), re-run after PA syncs.
 - v803 19:20 Wed 11-04: 1551 nearly done (Arch 19:11); check 1 window also the degrade-alone test.
+- v804 19:31 Wed 11-04: Ship #067 with Comms; removed the done week-review card.
