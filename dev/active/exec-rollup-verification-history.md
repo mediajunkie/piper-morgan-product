@@ -412,3 +412,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v829 12:25 Thu 11-05: #2282 step 2 served (alpha 67f6c7a3f9, 0fe25253cd ancestor); step 3 lines.
 - v830 12:47 Thu 11-05: #2282 step 3 done and verified.
 - v831 12:51 Thu 11-05: #2282 checks (Lead, PA) pass; optional connector re-add and Slack screenshot for xian.
+- v832 12:55 Thu 11-05: connector re-add and Slack screenshot done.
