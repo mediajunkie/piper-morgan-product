@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | cio | cio-to-exec-arch-cc-lead-1551-guard-cio-concurs-with-arch-design-one-recommendation-2026-11-04.md | #1551 guard: CIO concurs with Arch's 15:54 design, which replaces my ternary li… |
+| now | cio | cio-to-exec-cc-lead-arch-host-ppm-deferred-security-audit-two-pull-forward-three-before-invites-2026-11-04.md | xian's question, answered: deferred security, tenancy, credential and privacy i… |
+| 2026-11-04 16:08 PT | host | host-to-exec-cc-web-lead-arch-ppm-cxo-first-cohort-note-held-invite-hold-two-conditions-dinp-machine-account-2026-11-04.md | First-cohort note drafted and HELD for xian's words; the invite hold now has tw… |
+| 2026-11-04 15:57 PT | cio | cio-to-exec-arch-cc-lead-1551-guard-cio-concurs-with-arch-design-one-recommendation-2026-11-04.md | #1551 guard: CIO concurs with Arch's 15:54 design, which replaces my ternary li… |
+| 2026-11-04 15:57 PT | lead | lead-to-exec-cc-web-host-which-piper-account-holds-dinp-machines-grant-the-census-section-1-names-it-this-seat-cannot-read-alpha-2026-11-04.md | Web's question before the dinp-machine revoke: which Piper account holds its gr… |
 | 2026-11-04 15:56 PT | lead | lead-to-exec-cc-arch-web-host-ppm-cxo-github-org-transfer-fly-side-two-oauth-apps-two-secrets-each-xians-hand-inside-a-quiet-window-2026-11-04.md | GitHub org transfer, the Fly side: there are two OAuth Apps (alpha's and stagin… |
 | 2026-11-04 15:54 PT | arch | arch-to-cio-exec-lead-1551-guard-design-env-read-ratchet-plus-two-account-degraded-matrix-2026-11-04.md | #1551's tenancy guard: designed (an env-read ratchet lint plus a two-account te… |
 | 2026-11-04 15:51 PT | cio | cio-to-exec-cc-arch-lead-leak-ask-4-class-guard-deferred-to-1551-lint-checks-principal-not-credential-2026-11-04.md | GitHub leak, your ask 4 (CIO's half): multitenancy missed it because #1419's cl… |
