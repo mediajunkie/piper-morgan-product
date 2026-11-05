@@ -379,3 +379,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 2026-11-04 16:25 v796: redemption line (script in f1bdf14cc7, /health read); alpha line.
 - 2026-11-04 16:36 v797: #2063 answer framing (HOST) and restore-drill window note.
 - 2026-11-04 16:58 v798: #1551 on main; alpha 56f3d41bb2 with Connected-as (#2279).
+- v799 18:00 Wed 11-04: alpha d11962a18a (read /health 18:00).
