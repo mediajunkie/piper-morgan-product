@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""#2266 — read-only census of GitHub identity state, for the operator, in the container.
+"""#2266 — read-only census of GitHub identity state (and, with --verify-calendar, Calendar's,
+#2283), for the operator, in the container.
 
 Written for the 2026-11-04 report that a beta tester's GitHub connector reached xian's
 repositories as mediajunkie. It answers, with counts and ids only, the questions the
@@ -225,11 +226,70 @@ async def _verify_logins(session, operator_login: str, operator_user_id: str | N
     print()
 
 
+async def _google_email_for_refresh_token(refresh_token: str) -> str | None:
+    """The Google account a stored Calendar refresh token opens, or None when Google does
+    not accept it. Refreshes once (Google keeps the refresh token) and reads the userinfo
+    email; nothing is printed or stored."""
+    from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
+
+    try:
+        handler = GoogleCalendarOAuthHandler()
+        tokens = await handler.refresh_access_token(refresh_token)
+        if not tokens or not tokens.access_token:
+            return None
+        info = await handler._get_user_info(tokens.access_token)
+        email = (info or {}).get("email")
+        return str(email).strip().lower() if email else None
+    except Exception:
+        return None
+
+
+async def _verify_calendar(session) -> None:
+    """#2283 (Arch 2026-11-04 21:29): the Calendar counterpart of section 5. For every Piper
+    account with a stored Calendar token, the Google account it opens, compared with that
+    account's own sign-in email and with every OTHER Piper account's email. A Google account
+    of the person's own that differs from their Piper email is not a crossing; a Google
+    account whose email is another Piper account's is. Counts and crossing account ids only,
+    never an address."""
+    from services.infrastructure.keychain_service import KeychainService
+
+    users = (await session.execute(text("SELECT id, email FROM users"))).all()
+    email_owner = {str(u.email).strip().lower(): str(u.id) for u in users if u.email}
+    keychain = KeychainService()
+    counts = Counter()
+    crossing: list[tuple[str, str]] = []
+    for u in users:
+        try:
+            refresh = await keychain.aget_api_key(f"google_calendar_{u.id}")
+        except Exception:
+            counts["token unreadable"] += 1
+            continue
+        if not refresh:
+            continue
+        counts["accounts with a stored Calendar token"] += 1
+        google = await _google_email_for_refresh_token(refresh)
+        own = str(u.email).strip().lower() if u.email else None
+        if google is None:
+            counts["Google rejected the token"] += 1
+        elif own and google == own:
+            counts["opens its own sign-in email"] += 1
+        elif google in email_owner and email_owner[google] != str(u.id):
+            counts["opens ANOTHER Piper account email (CROSSING)"] += 1
+            crossing.append((str(u.id), email_owner[google]))
+        else:
+            counts["opens another Google account of no Piper account (not printed)"] += 1
+    print(f"6. Calendar tokens verified with Google: {len(users)} accounts read · {dict(counts)}")
+    for holder, other in crossing:
+        print(f"   CROSSING: account {holder} holds a Calendar token for account {other}'s email")
+    print()
+
+
 async def run(
     since: date,
     mask: _Mask,
     focus_email: str | None = None,
     verify_logins: bool = False,
+    verify_calendar: bool = False,
     operator_login: str = "mediajunkie",
     operator_user_id: str | None = None,
 ) -> int:
@@ -300,6 +360,8 @@ async def run(
 
         if verify_logins:
             await _verify_logins(session, operator_login, operator_user_id)
+        if verify_calendar:
+            await _verify_calendar(session)
 
         # 4. consequential GitHub writes since the date
         writes = (
@@ -344,6 +406,11 @@ def main(argv: list[str] | None = None) -> None:
         action="store_true",
         help="ask GitHub which login each readable grant belongs to (counts only; Exec's check 2)",
     )
+    p.add_argument(
+        "--verify-calendar",
+        action="store_true",
+        help="ask Google which account each stored Calendar token opens (counts and crossings only)",
+    )
     p.add_argument("--operator-login", default="mediajunkie", help="the operator's GitHub login")
     p.add_argument(
         "--operator-user-id",
@@ -366,6 +433,7 @@ def main(argv: list[str] | None = None) -> None:
                 _Mask(shown),
                 args.user_email,
                 verify_logins=args.verify_logins,
+                verify_calendar=args.verify_calendar,
                 operator_login=args.operator_login,
                 operator_user_id=args.operator_user_id,
             )
