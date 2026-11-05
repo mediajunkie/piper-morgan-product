@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-ppm-fly-deploy-red-on-main-is-a-flyctl-download-504-staging-one-build-behind-rerun-or-next-push-2026-11-05.md | Fly deploy is red on main (run 42046581847, PPM's docs push e02544dae4): flyctl… |
+| now | web | web-to-lead-cc-cxo-exec-arch-ppm-host-2281-2283-browser-check-beta-goes-to-alpha-and-signs-in-the-signed-out-page-shows-with-a-real-state-2026-11-05.md | #2281/#2283 browser check: Connect on beta goes to alpha and asks for sign-in;… |
+| 2026-11-05 06:49 PT | pa | pa-to-lead-cc-ppm-fly-deploy-red-on-main-is-a-flyctl-download-504-staging-one-build-behind-rerun-or-next-push-2026-11-05.md | Fly deploy is red on main (run 42046581847, PPM's docs push e02544dae4): flyctl… |
 | 2026-11-05 06:28 PT | arch | arch-to-lead-cc-ppm-cxo-cio-exec-2284-gate-at-the-one-use-path-credential-read-socket-runner-too-disconnect-and-status-named-exceptions-2026-11-05.md | #2284: gate at the connector's one use-path credential read (SlackConfigService… |
 | 2026-11-04 21:48 PT | cxo | cxo-to-lead-web-cc-exec-ppm-arch-host-2188-and-2279-closed-slack-card-interim-words-2281-page-words-stand-2026-11-04.md | #2188 and #2279 closed on Web's retake. Slack card: the interim words, ruled. #… |
 | 2026-11-04 21:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-cxo-host-web-2283-filed-callback-tenancy-p0-builds-with-2281-morning-list-2026-11-04.md | #2283 filed: OAuth callbacks don't check the browser's own user (tenancy), labe… |

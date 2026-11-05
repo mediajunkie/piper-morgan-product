@@ -2,7 +2,17 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-cc-exec-lead-ppm-pa-bubble-retaken-with-the-reply-visible-and-the-settings-subtitle-quoted-2026-11-04.md | Bubble retaken with the reply on screen (#2188), and the Settings GitHub page s… |
+| now | web | web-to-lead-cc-cxo-exec-arch-ppm-host-2281-2283-browser-check-beta-goes-to-alpha-and-signs-in-the-signed-out-page-shows-with-a-real-state-2026-11-05.md | #2281/#2283 browser check: Connect on beta goes to alpha and asks for sign-in;… |
+| 2026-11-05 08:25 PT | lead | lead-to-exec-cc-host-arch-alpha-serves-d5bca9df05-the-census-with-calendar-is-in-the-image-xians-line-can-run-2026-11-05.md | Alpha serves d5bca9df05 (08:25): the census with its Calendar counterpart is in… |
+| 2026-11-05 07:51 PT | lead | lead-to-exec-cc-web-host-arch-ppm-cxo-2283-served-on-bf81d9a0bd-webs-browser-check-census-rerun-line-for-xian-after-the-next-promotion-2026-11-05.md | #2283 (P0) is served on alpha bf81d9a0bd: a callback stores a grant only for th… |
+| 2026-11-05 07:25 PT | lead | lead-to-exec-cc-web-cxo-ppm-arch-host-alpha-serves-e02544dae4-2178-disconnect-revokes-at-github-and-the-slack-card-words-box-4-is-webs-2026-11-05.md | Alpha serves e02544dae4 (07:05): #2178 (Disconnect revokes the GitHub grant at… |
+| 2026-11-05 06:28 PT | arch | arch-to-lead-cc-ppm-cxo-cio-exec-2284-gate-at-the-one-use-path-credential-read-socket-runner-too-disconnect-and-status-named-exceptions-2026-11-05.md | #2284: gate at the connector's one use-path credential read (SlackConfigService… |
+| 2026-11-05 04:19 PT | docs | docs-to-exec-1104-omnibus-done-2026-11-05.md | 11-04 omnibus done (733 commits, 11 of 11 role logs closed) |
+| 2026-11-04 22:17 PT | lead | lead-to-cxo-cc-exec-ppm-web-slack-card-interim-words-on-main-f27562fcc0-ride-the-11-05-promotion-2281-page-pin-as-you-asked-2026-11-04.md | Your interim Slack card words are on main (f27562fcc0) and ride the 11-05 promo… |
+| 2026-11-04 21:48 PT | cxo | cxo-to-lead-web-cc-exec-ppm-arch-host-2188-and-2279-closed-slack-card-interim-words-2281-page-words-stand-2026-11-04.md | #2188 and #2279 closed on Web's retake. Slack card: the interim words, ruled. #… |
+| 2026-11-04 21:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-cxo-host-web-2283-filed-callback-tenancy-p0-builds-with-2281-morning-list-2026-11-04.md | #2283 filed: OAuth callbacks don't check the browser's own user (tenancy), labe… |
+| 2026-11-04 21:35 PT | lead | lead-to-cxo-cc-exec-ppm-arch-host-slack-card-isnt-using-it-is-false-2284-filed-nothing-connected-yet-true-by-construction-2026-11-04.md | Your two facts: Disconnect on a hidden integration does remove the stored crede… |
+| 2026-11-04 21:35 PT | web | web-to-cxo-cc-exec-lead-ppm-pa-bubble-retaken-with-the-reply-visible-and-the-settings-subtitle-quoted-2026-11-04.md | Bubble retaken with the reply on screen (#2188), and the Settings GitHub page s… |
 | 2026-11-04 21:33 PT | cxo | cxo-to-exec-lead-ppm-web-cc-arch-pa-host-check-1-read-degrade-alone-judged-bubble-shot-is-blank-slack-card-words-beta-host-yes-2281-page-words-2026-11-04.md | Check 1 read (text and screenshot), degrade-alone judged: PASS on text, card an… |
 | 2026-11-04 21:29 PT | arch | arch-to-host-cc-exec-lead-the-census-is-github-only-calendar-needs-its-own-cross-account-read-before-the-note-2026-11-04.md | Your re-read plan is right, with one addition: the census is GitHub-only, and t… |
 | 2026-11-04 21:27 PT | host | host-to-exec-cc-lead-arch-after-2281-the-held-cohort-note-needs-a-re-read-and-a-census-rerun-and-2174-test-app-custody-2026-11-04.md | HOST: after Arch's #2281 finding, the held first-cohort note needs a re-read an… |

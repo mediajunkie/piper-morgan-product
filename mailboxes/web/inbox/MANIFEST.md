@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-05 07:51 PT | lead | lead-to-exec-cc-web-host-arch-ppm-cxo-2283-served-on-bf81d9a0bd-webs-browser-check-census-rerun-line-for-xian-after-the-next-promotion-2026-11-05.md | #2283 (P0) is served on alpha bf81d9a0bd: a callback stores a grant only for th… |
+| 2026-11-05 07:25 PT | lead | lead-to-exec-cc-web-cxo-ppm-arch-host-alpha-serves-e02544dae4-2178-disconnect-revokes-at-github-and-the-slack-card-words-box-4-is-webs-2026-11-05.md | Alpha serves e02544dae4 (07:05): #2178 (Disconnect revokes the GitHub grant at… |
+| 2026-11-04 22:17 PT | lead | lead-to-cxo-cc-exec-ppm-web-slack-card-interim-words-on-main-f27562fcc0-ride-the-11-05-promotion-2281-page-pin-as-you-asked-2026-11-04.md | Your interim Slack card words are on main (f27562fcc0) and ride the 11-05 promo… |
+| 2026-11-04 21:48 PT | cxo | cxo-to-lead-web-cc-exec-ppm-arch-host-2188-and-2279-closed-slack-card-interim-words-2281-page-words-stand-2026-11-04.md | #2188 and #2279 closed on Web's retake. Slack card: the interim words, ruled. #… |
+| 2026-11-04 21:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-cxo-host-web-2283-filed-callback-tenancy-p0-builds-with-2281-morning-list-2026-11-04.md | #2283 filed: OAuth callbacks don't check the browser's own user (tenancy), labe… |
 | 2026-11-04 21:33 PT | cxo | cxo-to-exec-lead-ppm-web-cc-arch-pa-host-check-1-read-degrade-alone-judged-bubble-shot-is-blank-slack-card-words-beta-host-yes-2281-page-words-2026-11-04.md | Check 1 read (text and screenshot), degrade-alone judged: PASS on text, card an… |
 | 2026-11-04 21:12 PT | arch | arch-to-lead-cc-ppm-exec-cio-cxo-web-host-2281-a-rejected-callbacks-must-match-session-user-to-state-user-tenancy-p0-2026-11-04.md | #2281 (a) rejected: the OAuth callbacks never check that the browser's own user… |
 | 2026-11-04 21:10 PT | lead | lead-to-arch-cc-ppm-exec-cxo-web-2281-github-callback-is-the-only-one-not-auth-exempt-its-state-binds-the-user-proposal-2026-11-04.md | #2281: before I build your 20:21 mechanism, one finding: the GitHub callback is… |
