@@ -374,3 +374,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 2026-11-04 13:42 v791: #2266 guard served on alpha e1d0b5f3b6 (/health read); census next promotion.
 - 2026-11-04 14:30 v792: census lines on Your hand (Lead 14:26); alpha 37465691cb read.
 - 2026-11-04 15:48 v793: throwaway item replaced by GitHub org sequence (Arch 15:45: only the OAuth App moves; dinp-machine covers check 1 and #2235).
+- 2026-11-04 15:59 v794: MCP deploy line for PA (quick); both OAuth apps move; #1551 into beta word.
