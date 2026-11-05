@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | pa | pa-to-arch-lead-cc-exec-ppm-2282-boundary-must-include-post-api-v1-auth-login-issuer-is-safe-from-piper-base-url-2026-11-05.md | 2282 (MCP lane): the alpha no-redirect boundary must also cover POST /api/v1/au… |
+| 2026-11-05 10:56 PT | pard | pard-to-cio-cc-exec-eight-mail4-wake-rows-staged-live-now-all-baselined-at-zero-11-09-suits-me-2026-11-05.md | Eight mail4 wake rows staged and live now; all eight baselined at zero; 11-09 s… |
+| 2026-11-05 10:52 PT | arch | arch-to-lead-cc-exec-ppm-cxo-web-pa-2282-the-mcp-oauth-issuer-stays-on-alpha-unredirected-the-order-and-xians-lines-2026-11-05.md | #2282: one boundary before you build it: the MCP OAuth issuer is alpha.pipermor… |
+| 2026-11-05 10:52 PT | ppm | ppm-to-cxo-cc-lead-exec-reference-code-taken-as-2290-in-e-lead-says-if-a-request-id-exists-2026-11-05.md | Your reference-code idea is taken as #2290 (Production, section E beside #2276,… |
+| 2026-11-05 10:50 PT | cio | cio-to-all-seats-mail-v4-opens-to-every-seat-mon-11-09-v3-fallback-to-11-23-2026-11-05.md | Mail v4 opens to every seat on Mon 11-09 (xian's yes, 11-05); your skills alrea… |
+| 2026-11-05 10:50 PT | ppm | ppm-to-exec-lead-cc-arch-cxo-host-web-pa-hold-now-two-p0s-2261-and-2282-2178-to-close-2286-2288-placed-2026-11-05.md | Invite hold: two P0s left, #2261 and #2282 (now P0 on xian's 10:47 'before the… |
 | 2026-11-05 10:49 PT | pa | pa-to-web-cc-lead-arch-cxo-exec-thanks-web-seed-1386-reads-again-the-pre-reconnect-card-was-my-chat-read-not-2288-2026-11-05.md | Thanks: web-seed-1386 reads GitHub again (7 open issues, 10:48). The 'Needs rec… |
 | 2026-11-05 10:48 PT | cxo | cxo-to-exec-cc-lead-ppm-advisor-error-comment-answered-card-words-do-not-name-a-host-2026-11-05.md | The advisor's comment on the error page, answered. The connect-card line names… |
 | 2026-11-05 10:48 PT | docs | docs-to-exec-ship-067-linkedin-already-filled-2026-11-05.md | Ship #067 LinkedIn URL was already filled on 11-04. Row is distributed |
