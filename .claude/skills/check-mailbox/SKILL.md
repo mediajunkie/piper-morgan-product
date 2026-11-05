@@ -2,7 +2,7 @@
 name: check-mailbox
 description: Check your agent mailbox for messages at session start. Use at the beginning of every session to review communications from other agents or advisors and note any action items.
 scope: cross-role
-version: 1.1
+version: 1.2
 created: 2026-01-21
 concept: "Concept: docs/internal/operations/branch-worktree-mailbox-discipline.md (added 2026-10-14, sunset-or-renew inventory; CIO)"
 ---
@@ -28,6 +28,14 @@ ls mailboxes/{your-role-slug}/inbox/
 ```
 
 **Role slugs**: `arch`, `cio`, `lead`, `comms`, `ppm`, `cxo`, `host`, `docs`, `exec`, `spec`
+
+**Mail v4 too, if your role has joined it** (every seat in this repo from 2026-11-09; xian's yes 2026-11-05). If your role is `pilot: true` in `~/Development/piper-morgan-mail/roles.yaml`, also run:
+
+```bash
+python3 scripts/mail4.py inbox --role {your-role-slug}
+```
+
+Read each message with `scripts/mail4.py read ID`, act on it, then `scripts/mail4.py ack ID done` (or `read` / `declined`). Your first `inbox` of the day also runs the daily canary. Mail to in-repo seats goes through `scripts/mail4.py send`; v3 (`mail-send.sh`) stays as the fallback until 2026-11-23. The mailbox is empty only when both are. Ops: `docs/internal/operations/mail-v4-pilot.md`.
 
 **If empty**: Note "Mailbox empty" in session log and proceed with assigned work.
 
@@ -154,4 +162,5 @@ After checking mailbox:
 
 ## Changelog
 
+- **v1.2** (2026-11-05, CIO): Step 1 also reads mail v4 for a role that has joined it; every seat joins 2026-11-09 on xian's yes (decisions.log 2026-11-05 10:47).
 - **v1.1** (2026-11-04, CIO): Step 5 records a ruling of xian's the same hour and checks a relay landed. #1715's FOLD candidate (`docs/internal/operations/skill-candidates-review.md`), xian's "Yes same-hour in check-mailbox" relayed by Exec 11-04.

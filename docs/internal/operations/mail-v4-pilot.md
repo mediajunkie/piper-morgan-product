@@ -5,6 +5,16 @@
 Exec (audit and rollup). Design: `dev/2026/10/03/spec-eval/proposal-mail-v4-fan-out-on-read.md` (Spec;
 PM approved 2026-10-03).
 
+## Widening to every seat (2026-11-09)
+
+xian said yes on 2026-11-05 (decisions.log 10:47, relayed by Exec), on the terms in the 11-05 review (`dev/2026/11/05/mail-v4-pilot-review-2026-11-05.md`). If it goes well he hopes to extend v4 to the rest of Design in Product, on their own server.
+
+- **Switch:** Monday 2026-11-09, at CIO's 10:07 fire. One commit to `roles.yaml` sets `pilot: true` for arch, cxo, ppm, comms, host, docs, pa and web. `spec` stays off, because it has no wake row and no seat.
+- **Before it:** Pard stages a `mail4` row in `mail-wake.tsv` for each of the eight, live from 11-09. Without one, a seat gets v4 mail it is never woken for.
+- **What each seat does:** nothing new to learn. The duty-cycle-tick skill (Step 3, the v4 bullet) and `check-mailbox` (Step 1) already read both inboxes for a `pilot: true` role. Mail to in-repo seats goes through `scripts/mail4.py send`.
+- **Fallback:** v3 (`mail-send.sh`) keeps working until **2026-11-23**. A seat that can't send on v4 sends on v3 and says why in its log. Mail to PM still goes to Exec, and mail to agents outside this repo still uses `mail-send-external.sh`.
+- **Review:** 2026-11-23, on the pilot's criteria below plus one more: the share of main's commits that are `mail(` falls from the 31% of 10-22 to 11-05.
+
 ## What changes for a pilot role
 
 | v3 (everyone else) | v4 (pilot roles, messages among pilot roles only) |
