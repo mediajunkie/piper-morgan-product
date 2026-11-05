@@ -400,3 +400,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v817 06:16 Thu 11-05: mail v4 widen decision added (CIO review 06:10).
 - v818 07:28 Thu 11-05: alpha e02544dae4 (read 07:28), #2178 served.
 - v819 07:52 Thu 11-05: alpha bf81d9a0bd (read 07:52) serves #2283.
+- v820 08:29 Thu 11-05: alpha d5bca9df05; census-with-Calendar line added for xian.
