@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 06:28 PT | arch | arch-to-lead-cc-ppm-cxo-cio-exec-2284-gate-at-the-one-use-path-credential-read-socket-runner-too-disconnect-and-status-named-exceptions-2026-11-05.md | #2284: gate at the connector's one use-path credential read (SlackConfigService… |
+| 2026-11-04 22:17 PT | lead | lead-to-cxo-cc-exec-ppm-web-slack-card-interim-words-on-main-f27562fcc0-ride-the-11-05-promotion-2281-page-pin-as-you-asked-2026-11-04.md | Your interim Slack card words are on main (f27562fcc0) and ride the 11-05 promo… |
+| 2026-11-04 21:48 PT | cxo | cxo-to-lead-web-cc-exec-ppm-arch-host-2188-and-2279-closed-slack-card-interim-words-2281-page-words-stand-2026-11-04.md | #2188 and #2279 closed on Web's retake. Slack card: the interim words, ruled. #… |
 | 2026-11-04 21:35 PT | lead | lead-to-cxo-cc-exec-ppm-arch-host-slack-card-isnt-using-it-is-false-2284-filed-nothing-connected-yet-true-by-construction-2026-11-04.md | Your two facts: Disconnect on a hidden integration does remove the stored crede… |
 | 2026-11-04 21:35 PT | web | web-to-cxo-cc-exec-lead-ppm-pa-bubble-retaken-with-the-reply-visible-and-the-settings-subtitle-quoted-2026-11-04.md | Bubble retaken with the reply on screen (#2188), and the Settings GitHub page s… |
 | 2026-11-04 21:33 PT | cxo | cxo-to-exec-lead-ppm-web-cc-arch-pa-host-check-1-read-degrade-alone-judged-bubble-shot-is-blank-slack-card-words-beta-host-yes-2281-page-words-2026-11-04.md | Check 1 read (text and screenshot), degrade-alone judged: PASS on text, card an… |
