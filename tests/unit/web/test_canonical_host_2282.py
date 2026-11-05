@@ -45,8 +45,9 @@ class TestTheRedirect:
             == f"{BETA}{path}?code=c&state=s"
         )
 
-    def test_a_login_for_the_app_goes_to_beta(self, beta_canonical):
-        assert ch.redirect_target(ALPHA, "/login", "next=%2Fhome").startswith(BETA)
+    @pytest.mark.parametrize("path", ["/reset-password", "/setup", "/home", "/api/v1/auth/me"])
+    def test_the_login_pages_other_links_go_to_beta(self, beta_canonical, path):
+        assert ch.redirect_target(ALPHA, path, "").startswith(BETA)
 
     @pytest.mark.parametrize("host", ["beta.pipermorgan.ai", "piper-morgan.fly.dev", "localhost"])
     def test_other_hosts_are_served_as_they_are(self, beta_canonical, host):
@@ -62,8 +63,10 @@ class TestWhatStaysOnAlpha:
             ("/.well-known/oauth-authorization-server/mcp/oauth", ""),
             ("/.well-known/oauth-protected-resource", ""),
             ("/login", "next=%2Fmcp%2Foauth%2Fauthorize%3Fclient_id%3Dx"),
+            ("/login", ""),
             ("/api/v1/auth/login", ""),
             ("/static/css/auth.css", ""),
+            ("/assets/logo.svg", ""),
             ("/health", ""),
         ],
     )
@@ -71,10 +74,41 @@ class TestWhatStaysOnAlpha:
         assert ch.redirect_target(ALPHA, path, query) is None
 
     def test_the_issuer_does_not_follow_the_base_url(self, beta_canonical, monkeypatch):
+        """Arch pin 1: with PIPER_BASE_URL on beta, the AS issuer and the MCP app's
+        protected-resource authorization server both still read alpha's issuer."""
+        from services.mcp.server import app as mcp_app
         from web.routers import mcp_oauth
 
         monkeypatch.delenv("MCP_OAUTH_ISSUER_URL", raising=False)
         assert mcp_oauth.issuer_url() == "https://alpha.pipermorgan.ai/mcp/oauth"
+        assert str(mcp_app._auth_settings().issuer_url).rstrip("/") == (
+            "https://alpha.pipermorgan.ai/mcp/oauth"
+        )
+
+    def test_the_served_metadata_names_alphas_issuer(self, beta_canonical, monkeypatch):
+        from web.app import app
+
+        monkeypatch.delenv("MCP_OAUTH_ISSUER_URL", raising=False)
+        client = TestClient(app, base_url=f"https://{ALPHA}", follow_redirects=False)
+        r = client.get("/.well-known/oauth-authorization-server/mcp/oauth")
+        assert r.status_code == 200
+        assert r.json()["issuer"].rstrip("/") == "https://alpha.pipermorgan.ai/mcp/oauth"
+
+    def test_a_signed_out_connector_sign_in_never_leaves_alpha(self, beta_canonical):
+        """Arch pin 2, at the redirect layer: authorize sends a signed-out browser to
+        alpha's own /login, the page and its POST answer on alpha, never 301/308. The
+        consent page after a real sign-in needs a database user, so the last hop is
+        PA's served check (b)."""
+        from web.app import app
+
+        client = TestClient(app, base_url=f"https://{ALPHA}", follow_redirects=False)
+        r = client.get("/mcp/oauth/authorize?client_id=x&response_type=code")
+        assert r.status_code not in (301, 308)
+        loc = r.headers.get("location", "")
+        assert not loc.startswith(BETA)
+        assert client.get("/login?next=%2Fmcp%2Foauth%2Fauthorize").status_code not in (301, 308)
+        login = client.post("/api/v1/auth/login", json={"username": "x", "password": "y"})
+        assert login.status_code not in (301, 308)
 
 
 class TestTheServedApp:

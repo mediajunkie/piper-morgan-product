@@ -10,23 +10,33 @@ beta, and the switch, the OAuth redirect URIs and #2283's host switch all move t
 Kept on the alias, never redirected (Arch's boundary): the MCP OAuth authorization
 server, whose issuer is ``https://alpha.pipermorgan.ai/mcp/oauth`` and must match
 exactly (RFC 8414), so every connector already registered keeps working; its well-known
-metadata; the sign-in those pages send a signed-out browser to (``/login`` with an
-``/mcp/`` ``next``, the auth API it posts to and the static files it loads); and
-``/health``, which answers on every host. Moving the issuer is xian's separate decision.
+metadata; the whole sign-in round trip those pages send a signed-out browser through
+(``/login``, the ``POST /api/v1/auth/login`` it makes, and its ``/static`` and
+``/assets`` files); and ``/health``, which answers on every host. Moving the issuer is xian's separate decision.
 """
 
 from __future__ import annotations
 
 import os
 from typing import Optional
-from urllib.parse import parse_qs, urlsplit
+from urllib.parse import urlsplit
 
 #: Hosts that answer only with a redirect to the canonical host once it differs.
 ALIAS_HOSTS = frozenset({"alpha.pipermorgan.ai"})
 
-#: Paths that stay on the alias (Arch 10:52).
-KEPT_PREFIXES = ("/mcp/", "/.well-known/", "/static/", "/api/v1/auth/")
-KEPT_EXACT = frozenset({"/health"})
+#: Paths that stay on the alias: Arch's exact list (10:52, made whole at 11:04 on PA's
+#: trace). The MCP OAuth server and its metadata, and the whole signed-out sign-in round
+#: trip those pages start: GET /login, the auth.js POST to /api/v1/auth/login (its
+#: cookie must land on alpha), and the page's /static and /assets. /health answers on
+#: every host. The login page's other links (/reset-password, /setup) may go to beta.
+KEPT_PREFIXES = (
+    "/mcp/oauth/",
+    "/.well-known/oauth-authorization-server",
+    "/.well-known/oauth-protected-resource",
+    "/static/",
+    "/assets/",
+)
+KEPT_EXACT = frozenset({"/health", "/login", "/api/v1/auth/login"})
 
 
 def canonical_host() -> Optional[str]:
@@ -36,13 +46,8 @@ def canonical_host() -> Optional[str]:
     return host or None
 
 
-def stays_on_alias(path: str, query: str) -> bool:
-    if path in KEPT_EXACT or path.startswith(KEPT_PREFIXES):
-        return True
-    if path == "/login":
-        nxt = (parse_qs(query).get("next") or [""])[0]
-        return nxt.startswith("/mcp/")
-    return False
+def stays_on_alias(path: str, query: str = "") -> bool:
+    return path in KEPT_EXACT or path.startswith(KEPT_PREFIXES)
 
 
 def redirect_target(host: str, path: str, query: str) -> Optional[str]:
