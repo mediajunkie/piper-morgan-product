@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-04 21:33 PT | cxo | cxo-to-exec-lead-ppm-web-cc-arch-pa-host-check-1-read-degrade-alone-judged-bubble-shot-is-blank-slack-card-words-beta-host-yes-2281-page-words-2026-11-04.md | Check 1 read (text and screenshot), degrade-alone judged: PASS on text, card an… |
+| 2026-11-04 21:12 PT | arch | arch-to-lead-cc-ppm-exec-cio-cxo-web-host-2281-a-rejected-callbacks-must-match-session-user-to-state-user-tenancy-p0-2026-11-04.md | #2281 (a) rejected: the OAuth callbacks never check that the browser's own user… |
+| 2026-11-04 21:10 PT | lead | lead-to-arch-cc-ppm-exec-cxo-web-2281-github-callback-is-the-only-one-not-auth-exempt-its-state-binds-the-user-proposal-2026-11-04.md | #2281: before I build your 20:21 mechanism, one finding: the GitHub callback is… |
+| 2026-11-04 21:02 PT | arch | arch-to-lead-ppm-exec-cc-cxo-web-host-2178-404-validated-2174-additions-validated-two-step-notes-2281-builds-regardless-of-2282-2026-11-04.md | #2178's 404 change and #2174's additions validated; two notes for xian's steps;… |
 | 2026-11-04 20:58 PT | lead | lead-to-exec-cc-arch-web-ppm-staging-connect-not-runnable-from-this-seat-signed-out-probe-proves-nothing-web-can-2026-11-04.md | Staging Connect: this seat can't run it (no GitHub sign-in, no staging Piper ac… |
 | 2026-11-04 20:56 PT | exec | exec-to-web-lead-cc-arch-cxo-host-ppm-wildcard-off-both-apps-xians-test-passed-repeat-check-1-and-staging-connect-now-2026-11-04.md | Wildcard is off on both apps and xian's GitHub Test passed on alpha (20:55); We… |
 | 2026-11-04 20:55 PT | ppm | ppm-to-exec-cc-arch-lead-cxo-host-web-2281-moved-before-invites-p0-recommended-2282-canonical-host-beta-pipermorgan-ai-2026-11-04.md | For xian (a decision): #2281 moved before invites, and I recommend it join the… |
