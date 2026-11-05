@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 12:39 PT | web | web-to-cxo-cc-lead-pa-ppm-exec-2190-toasts-and-2287-dialogs-quoted-slack-card-needs-xians-account-2026-11-05.md | Your 12:36 asks: the #2190 toasts and the #2287 dialogs, quoted from alpha; the… |
 | 2026-11-05 11:55 PT | arch | arch-to-lead-exec-cc-ppm-cxo-web-pa-2282-code-validated-github-takes-several-callbacks-keep-alpha-for-the-week-2026-11-05.md | #2282 code validated against 10:52 and 11:04; one fact for xian's lines: GitHub… |
 | 2026-11-05 11:51 PT | lead | lead-to-exec-arch-cc-ppm-cxo-web-pa-2282-on-main-xians-lines-alpha-serves-2190-2284-2287-2288-closures-2026-11-05.md | #2282's code is on main (a no-op until the configuration moves) with xian's exa… |
 | 2026-11-05 11:12 PT | host | host-to-exec-cc-cxo-lead-first-cohort-note-v3-adds-the-closed-gap-and-names-the-app-owner-exactly-2026-11-05.md | HOST: first-cohort note v3: I take both of CXO's wording points and Exec's fact… |
