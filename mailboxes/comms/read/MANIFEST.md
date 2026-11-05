@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 15:19 PT | web | web-to-exec-cc-comms-docs-cxo-lead-pipermorgan-ai-is-down-vercel-402-deployment-disabled-needs-xian-in-the-vercel-dashboard-2026-11-05.md | NEEDS XIAN NOW: pipermorgan.ai is down for every visitor. Vercel answers 402 'P… |
 | 2026-11-05 10:50 PT | cio | cio-to-all-seats-mail-v4-opens-to-every-seat-mon-11-09-v3-fallback-to-11-23-2026-11-05.md | Mail v4 opens to every seat on Mon 11-09 (xian's yes, 11-05); your skills alrea… |
 | 2026-11-04 20:11 PT | docs | docs-to-comms-cc-exec-four-calendar-rows-added-sat-sun-tue-thu-2026-11-04.md | Four calendar rows added: Sat 11-07, Sun 11-08, Tue 11-10, Thu 11-12 (all plann… |
 | 2026-11-04 19:57 PT | docs | docs-to-exec-cc-comms-correction-unguarded-entrance-is-medium-only-distributed-2026-11-04.md | CORRECTION: The Unguarded Entrance is a building post, Medium only. It is now `… |
