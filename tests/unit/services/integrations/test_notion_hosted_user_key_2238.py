@@ -41,6 +41,16 @@ from services.integrations.notion.notion_integration_router import NotionIntegra
 from services.security.field_encryption import FieldEncryptionService
 from services.security.user_api_key_service import UserAPIKeyService
 
+
+@pytest.fixture(autouse=True)
+def _notion_offered_on_this_host(monkeypatch):
+    """#2284: credential reads are gated on the offered set. These tests are about how a
+    stored Notion credential loads, so they run as a host that offers Notion."""
+    from services.integrations import integration_status_service as iss
+
+    monkeypatch.setitem(iss.BETA_OFFERED_CONNECTORS, "notion", "Notion")
+
+
 pytestmark = pytest.mark.asyncio
 
 HOSTED = "services.infrastructure.deployment.is_hosted_deployment"

@@ -10,6 +10,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+from services.integrations.slack.config_service import SlackConfig
 from web.api.routes.integrations import (
     INTEGRATION_REGISTRY,
     ConnectionTestResponse,
@@ -495,6 +496,7 @@ class TestGitHubIntegration:
 
 
 class TestSlackIntegration:
+    # #2284: the token comes from the gated SlackConfigService.get_config.
     """Tests for Slack-specific test logic (Issue #562: Uses stored OAuth token)"""
 
     @pytest.mark.asyncio
@@ -520,12 +522,12 @@ class TestSlackIntegration:
 
         with (
             patch(
-                "services.infrastructure.keychain_service.KeychainService",
-                return_value=mock_keychain,
+                "services.integrations.slack.config_service.SlackConfigService.get_config",
+                return_value=SlackConfig(bot_token="xoxb-test-token"),
             ),
             patch("aiohttp.ClientSession", return_value=mock_session),
         ):
-            result = await _test_slack()
+            result = await _test_slack(user_id="u1")
 
             assert result["success"] is True
 
@@ -552,12 +554,12 @@ class TestSlackIntegration:
 
         with (
             patch(
-                "services.infrastructure.keychain_service.KeychainService",
-                return_value=mock_keychain,
+                "services.integrations.slack.config_service.SlackConfigService.get_config",
+                return_value=SlackConfig(bot_token="invalid_token"),
             ),
             patch("aiohttp.ClientSession", return_value=mock_session),
         ):
-            result = await _test_slack()
+            result = await _test_slack(user_id="u1")
 
             assert result["success"] is False
             assert result["error"] == "invalid_auth"

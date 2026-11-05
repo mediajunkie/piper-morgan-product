@@ -340,6 +340,13 @@ async def build_runner(intent_service: Any) -> Optional[SlackSocketModeRunner]:
 
     from services.infrastructure.keychain_service import KeychainService
 
+    # #2284 (Arch 2026-11-05 06:28): the socket runner reads the bot slot directly, so its
+    # start checks the offered set too; Slack not offered on this host means no runner.
+    from services.integrations.integration_status_service import connector_offered
+
+    if not connector_offered("slack"):
+        logger.info("slack_socket_mode_skipped", reason="slack not offered on this host")
+        return None
     app_token = os.getenv("SLACK_APP_TOKEN") or KeychainService().get_api_key("slack_app_token")
     if not app_token:
         logger.info("slack_socket_mode_skipped", reason="no app-level token")

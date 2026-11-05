@@ -128,7 +128,19 @@ class SlackConfigService:
 
         if user_id not in self._config_cache:
             self._config_cache[user_id] = self._load_config(user_id)
-        return self._config_cache[user_id]
+        config = self._config_cache[user_id]
+        # #2284 (Arch 2026-11-05 06:28): the ONE use-path credential read. When this host
+        # doesn't offer Slack, no reader gets a stored token, so every chat and context
+        # reader sees "not connected" through the #2151 path it already handles. Read at
+        # call time (the offered set is per host). Named exceptions that read the slots
+        # directly: disconnect (revoke and clear) and integration status (existence only).
+        from services.integrations.integration_status_service import connector_offered
+
+        if not connector_offered("slack"):
+            from dataclasses import replace
+
+            return replace(config, bot_token="", user_token="")
+        return config
 
     def _load_from_user_config(self) -> Dict[str, Any]:
         """

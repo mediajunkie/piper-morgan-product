@@ -286,8 +286,9 @@ class TestConnectionTestKeyCorrectness849:
     """Issue #849 Category C: Connection test helpers must use correct key names + user_id."""
 
     @pytest.mark.asyncio
-    async def test_slack_connection_test_uses_slack_bot_key(self):
-        """_test_slack must use slack_bot key, not slack."""
+    async def test_slack_connection_test_without_a_user_reads_nothing(self):
+        """#849 under #2284's shape: with no user there is no keychain read at all (the
+        global ``slack_bot`` fallback is gone, as GitHub's went in #2012)."""
         from web.api.routes.integrations import _test_slack
 
         mock_keychain = MagicMock()
@@ -298,22 +299,22 @@ class TestConnectionTestKeyCorrectness849:
             return_value=mock_keychain,
         ):
             result = await _test_slack()
-            mock_keychain.get_api_key.assert_called_once_with("slack_bot")
+        mock_keychain.get_api_key.assert_not_called()
+        assert result["error_type"] == "not_configured"
 
     @pytest.mark.asyncio
-    async def test_slack_connection_test_passes_user_id(self):
-        """_test_slack must pass user_id as username parameter when provided."""
+    async def test_slack_connection_test_reads_the_users_config(self):
+        """#2284: the Test button reads the user's token through the gated
+        ``SlackConfigService.get_config(user_id=...)``, never the slot directly."""
+        from services.integrations.slack.config_service import SlackConfig, SlackConfigService
         from web.api.routes.integrations import _test_slack
 
-        mock_keychain = MagicMock()
-        mock_keychain.get_api_key.return_value = None
-
-        with patch(
-            "services.infrastructure.keychain_service.KeychainService",
-            return_value=mock_keychain,
-        ):
+        with patch.object(
+            SlackConfigService, "get_config", return_value=SlackConfig(bot_token="")
+        ) as get_config:
             result = await _test_slack(user_id="user-789")
-            mock_keychain.get_api_key.assert_called_once_with("slack_bot", username="user-789")
+        get_config.assert_called_once_with(user_id="user-789")
+        assert result["error_type"] == "not_configured"
 
     @pytest.mark.asyncio
     async def test_github_connection_test_never_falls_back_to_a_global_key(self):

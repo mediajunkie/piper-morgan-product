@@ -12,6 +12,15 @@ from unittest.mock import Mock, patch
 import pytest
 
 
+@pytest.fixture(autouse=True)
+def _slack_offered_on_this_host(monkeypatch):
+    """#2284: credential reads are gated on the offered set. These tests are about how a
+    stored Slack credential loads, so they run as a host that offers Slack."""
+    from services.integrations import integration_status_service as iss
+
+    monkeypatch.setitem(iss.BETA_OFFERED_CONNECTORS, "slack", "Slack")
+
+
 def _mirror_read_secret(kc):
     """#2151: SlackConfigService reads user tokens with provenance (read_secret); mirror
     the mocked get_api_key: present when set, verified absent otherwise."""

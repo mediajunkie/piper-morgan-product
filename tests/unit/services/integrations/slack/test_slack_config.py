@@ -17,6 +17,15 @@ from services.integrations.slack.config_service import (
 )
 
 
+@pytest.fixture(autouse=True)
+def _slack_offered_on_this_host(monkeypatch):
+    """#2284: credential reads are gated on the offered set. These tests are about how a
+    stored Slack credential loads, so they run as a host that offers Slack."""
+    from services.integrations import integration_status_service as iss
+
+    monkeypatch.setitem(iss.BETA_OFFERED_CONNECTORS, "slack", "Slack")
+
+
 # Test user ID for all tests
 def _mirror_read_secret(kc):
     """#2151: SlackConfigService reads user tokens with provenance (read_secret);

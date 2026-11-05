@@ -741,14 +741,11 @@ async def _test_slack(user_id: Optional[str] = None) -> Dict[str, Any]:
     try:
         import aiohttp
 
-        from services.infrastructure.keychain_service import KeychainService
+        # #2284: read through SlackConfigService.get_config, the one gated use-path read,
+        # never the keychain slot directly (pinned by the slot ratchet).
+        from services.integrations.slack.config_service import SlackConfigService
 
-        keychain = KeychainService()
-        token = (
-            keychain.get_api_key("slack_bot", username=user_id)
-            if user_id
-            else keychain.get_api_key("slack_bot")
-        )  # Issue #849: Correct key name + user-scoped
+        token = SlackConfigService().get_config(user_id=user_id).bot_token if user_id else ""
 
         if not token:
             return {

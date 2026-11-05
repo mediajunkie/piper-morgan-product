@@ -215,7 +215,11 @@ class NotionConfigService:
         api_key = "" if hosted else os.getenv("NOTION_API_KEY", auth_config.get("api_key", ""))
 
         # Issue #579/#734: Fallback to user-scoped keychain if not found in env or user config
-        if not api_key:
+        # #2284: the user-scoped keychain is a stored user secret, so it is read only when
+        # this host offers Notion (the same gate as aget_user_api_key).
+        from services.integrations.integration_status_service import connector_offered
+
+        if not api_key and connector_offered("notion"):
             try:
                 from services.infrastructure.keychain_service import KeychainService
 
@@ -284,6 +288,13 @@ class NotionConfigService:
                 from services.database.session_factory import AsyncSessionFactory
 
                 scope = AsyncSessionFactory.session_scope_fresh
+            # #2284 (Arch 2026-11-05 06:28): Notion's use-path read, the same shape as Slack's:
+            # a host that doesn't offer Notion reads no stored key (disconnect and status are
+            # the named exceptions).
+            from services.integrations.integration_status_service import connector_offered
+
+            if not connector_offered("notion"):
+                return None
             async with scope() as session:
                 key = await service.retrieve_user_key(session, str(user_id), "notion")
             if not key:
