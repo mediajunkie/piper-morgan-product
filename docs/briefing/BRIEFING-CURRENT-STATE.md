@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-CURRENT-STATE.md - Where We Are Right Now
 valid_from: "2025-09-30"
-last_updated: 2026-11-04
+last_updated: 2026-11-05
 last_verified: 2026-10-27
 size_cap_bytes: 12000
 ---
@@ -36,10 +36,8 @@ log, never here. Bump `last_updated` to the newest line's date, or CI fails. Ski
   `docs/internal/operations/alpha-promotion-standing-grant.md`): Lead promotes when Step 0 is READY, no new migration, 07:00-21:00 PT, with no daily count since 10-20 (xian): the next promotion waits for one green Alpha Health Watch run. From 10-23 (partners invited), a promotion waits for alpha's /health `services.chat_turns_last_30m.quiet` = true and `services.uptime_seconds` ≥ 1800; the promote step refuses otherwise (grant condition 3; count served 10-21 on 8e61423f1a, uptime check in the step from 8cdd2afbeb). `origin/main` builds; the droplet
   and `origin/production` are gone (09-29).
 - **Version** *(Docs, 2026-11-01 11:10 PT, `git ls-remote --tags origin`, `gh release list` and Lead's served reads)*: latest tag **v0.9.0.0** at `c44dd081cb74`, the private beta, served on alpha and beta. Prior tag v0.8.14.0 ("On Your Clock", 09-23). Release page: https://github.com/mediajunkie/piper-morgan-product/releases/tag/v0.9.0.0 (xian ran `gh release create`, 2026-11-01 11:10 PST, Latest); notes are `docs/releases/RELEASE-NOTES-v0.9.0.0.md`. 1.0.0.0 is the production release, cut when the Production milestone closes.
-- **MVP gate** *(PPM, 2026-10-30 17:11 PDT, `gh api …/milestones/5`; alpha `/health` git_sha `ac5b69f865`)*: **PASSED. #1386 and the MVP milestone closed on xian's Go (17:03 via Exec); hard stop Fri 10-30 held.** Alpha and beta serve `ac5b69f865`; no promotion before the first invitations (a new build re-runs rows 2-3). Open: PPM's send-time line check on xian's final letter; xian's tracking test (PPM's audit, pass 1: 14 known items, 13 open + #2225 `fix:not-served`).
-  *3 not done (2 In Progress, 1 Product Backlog), 1,284 done. `gh issue list --milestone MVP --state open` also returns 3. On 10-19 it was 7 not done, 1,260 done.)* The MVP milestone **is**
-  the beta gate. **Dates: design partners Fri 10-23, hard stop Fri 10-30** (baseline 10-05; slips are logged in
-  `docs/internal/planning/beta-gate-standard.md` and only PM moves either date). Read the ledger, not this line, for slips.
+- **MVP gate** *(PPM, 2026-10-30 17:11 PDT, `gh api …/milestones/5`)*: **PASSED; the MVP milestone closed on xian's Go.** The gate's ledger is `docs/internal/planning/beta-gate-standard.md`. History moved to `briefing-current-state-history.log` 11-05.
+- **Invite hold** *(PPM, 2026-11-05 06:34 PST, from decisions.log 11-04 19:31 and `gh issue list --label P0-critical`)*: **no invitations of any kind** (xian, 11-04 19:31: no design partners and no lawyer lined up yet). P0 before any invite: #1551 (met 11-04, Tests green on `56b284defb`), #2261 (narrow the GitHub scope; waits on xian's #2174 runs), #2178 (Disconnect revokes at GitHub; validated, rides the 11-05 promotion) and #2283 (OAuth callbacks check the browser's own user; Lead builds 11-05). #2281 is P0 only if xian adds it. P1, not hold conditions: #2157, #2158. The canonical host `beta.pipermorgan.ai` (#2282) waits on xian.
 - **Engineering focus** *(Lead, 2026-10-20 14:17 PDT, from the 10-20 Lead log)*: the partners' invitation surface on alpha — every served miss from the canonical run and scenario A gets a corpus row or a ruled fix the same day (today: eight landings and five promotions; corpus census 606); the event-loop watchdog stays on permanently; the MVP gate (PPM 13:02) is 8 open, 5 must-close, with #2111 #2112 #2114 #2117 on xian's admission ask via Exec.
   re-run at merge: the seven-branch held batch (#2011, ANALYSIS margin, #1965+#2012, #2009/#2013/#2014 with three migrations, #2010), #2020, #2017,
   #2019's delete cap, #1771 in seven units with the #888 escape-word map, #2026, #2027's dead suggestion lists, #2024, #2029 (+ amber icon), #2008

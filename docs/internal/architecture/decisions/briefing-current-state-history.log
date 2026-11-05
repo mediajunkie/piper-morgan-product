@@ -1096,3 +1096,9 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 *Prior-prior: June 26, 2026 ~10:51 AM PDT (CXO — targeted refresh: Jun 25 omnibus complete, #1312 timing greenlit, CXO setup UX copy review confirmed COMPLETE, Jun 26 duty cycle live).*
 
 ----- END verbatim BRIEFING-CURRENT-STATE.md -----
+
+2026-11-05 06:35 PT (PPM) — moved from BRIEFING-CURRENT-STATE "Now" (MVP gate bullet, superseded by the invite-hold line):
+- **MVP gate** *(PPM, 2026-10-30 17:11 PDT, `gh api …/milestones/5`; alpha `/health` git_sha `ac5b69f865`)*: **PASSED. #1386 and the MVP milestone closed on xian's Go (17:03 via Exec); hard stop Fri 10-30 held.** Alpha and beta serve `ac5b69f865`; no promotion before the first invitations (a new build re-runs rows 2-3). Open: PPM's send-time line check on xian's final letter; xian's tracking test (PPM's audit, pass 1: 14 known items, 13 open + #2225 `fix:not-served`).
+  *3 not done (2 In Progress, 1 Product Backlog), 1,284 done. `gh issue list --milestone MVP --state open` also returns 3. On 10-19 it was 7 not done, 1,260 done.)* The MVP milestone **is**
+  the beta gate. **Dates: design partners Fri 10-23, hard stop Fri 10-30** (baseline 10-05; slips are logged in
+  `docs/internal/planning/beta-gate-standard.md` and only PM moves either date). Read the ledger, not this line, for slips.
