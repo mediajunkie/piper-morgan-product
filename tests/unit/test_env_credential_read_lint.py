@@ -10,12 +10,15 @@ whole-segment name matching (``KEYCHAIN`` is not ``KEY``), the helper call, and 
 from __future__ import annotations
 
 from collections import Counter
+from pathlib import Path
 
 from scripts.env_credential_read_lint import (
     CREDENTIAL_WORDS,
     find_credential_env_reads,
     new_against_baseline,
 )
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def _names(src: str) -> list[str]:
@@ -112,7 +115,40 @@ class TestImportedConstants:
         monkeypatch.chdir(tmp_path)
         assert _names(reader) == ["PIPER_GITHUB_HANDLE"]
 
-    def test_an_unresolvable_import_is_not_a_site(self, tmp_path, monkeypatch):
+    def test_an_unresolvable_import_is_a_site_named_unresolved(self, tmp_path, monkeypatch):
+        """Arch 18:34: fail closed; a name the lint cannot resolve is still a site."""
         reader = "import os\nfrom nowhere.names import X\nx = os.getenv(X)\n"
         monkeypatch.chdir(tmp_path)
-        assert _names(reader) == []
+        assert _names(reader) == ["unresolved"]
+
+
+class TestUnresolvedReadsAndTheRulingKey:
+    def test_a_read_through_a_variable_is_a_site_named_unresolved(self):
+        """Arch 2026-11-04 18:34: the GITHUB_TOKEN loop shape."""
+        src = (
+            "import os\n"
+            "def f(env):\n"
+            "    for env_var in ('GITHUB_TOKEN', f'GITHUB_TOKEN_{env}'):\n"
+            "        t = os.getenv(env_var)\n"
+            "    return os.environ.get(provider_key())\n"
+        )
+        assert _names(src) == ["unresolved", "unresolved"]
+
+    def test_system_only_is_keyed_on_path_and_name(self, tmp_path, monkeypatch):
+        from scripts import env_credential_read_lint as lint
+
+        f = tmp_path / "svc.py"
+        f.write_text("import os\na = os.getenv('JWT_SECRET_KEY')\nb = os.getenv('GITHUB_TOKEN')\n")
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.setattr(
+            lint, "SYSTEM_ONLY", {("svc.py", "JWT_SECRET_KEY"): "the deployment's key"}
+        )
+        found = [v.env_name for _, v in lint.lint_paths([Path("svc.py")])]
+        assert found == ["GITHUB_TOKEN"]  # the ruled name is exempt; the other still fails
+
+    def test_every_system_only_entry_carries_a_reason_and_names_a_real_file(self):
+        from scripts import env_credential_read_lint as lint
+
+        for (path, name), reason in lint.SYSTEM_ONLY.items():
+            assert reason.strip(), (path, name)
+            assert (ROOT / path).is_file(), path

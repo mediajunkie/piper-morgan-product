@@ -8,7 +8,8 @@ The class it stops (#1461, #2123, #2266, and on 11-04 ``PIPER_GITHUB_HANDLE`` an
 for an account's credential or identity on a path that serves a user principal. The
 13:16 family rule: no ``PIPER_*`` or provider env value stands in for a per-account
 setting or identity on a path serving a user principal. A read is allowed only where
-the module is ruled SYSTEM_ONLY (below, each with its reason) or baselined for a ruling.
+the (module, name) pair is ruled SYSTEM_ONLY (below, each with its reason) or baselined for
+a ruling. A read whose name cannot be resolved is a site named ``unresolved``.
 
 What is a site: a read through ``os.environ[...]``, ``os.environ.get(...)``,
 ``os.getenv(...)``, ``environ.get(...)`` or ``getenv(...)`` whose first argument is a
@@ -37,7 +38,7 @@ import ast
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 CREDENTIAL_WORDS = (
     "TOKEN",
@@ -80,8 +81,137 @@ HELPERS = frozenset(
 # deployment's own (its database, its signing key, its OAuth App registration), never
 # a stand-in for an account's credential or identity. Each entry carries its reason.
 # Adding a module here is a ruling (Arch), not a convenience.
-SYSTEM_ONLY: Dict[str, str] = {
-    # (filled by rulings; empty at the baseline commit so every site is visible)
+SYSTEM_ONLY: Dict[Tuple[str, str], str] = {
+    # The deployment's own identity and infrastructure, never a stand-in for an account's.
+    ("services/auth/jwt_service.py", "JWT_SECRET_KEY"): "the deployment's session signing key",
+    ("services/database/connection.py", "POSTGRES_PASSWORD"): "the deployment's database",
+    ("services/database/connection.py", "POSTGRES_SSL_KEY"): "the deployment's database",
+    ("services/database/session_factory.py", "POSTGRES_PASSWORD"): "the deployment's database",
+    ("services/utils/env_hygiene.py", "POSTGRES_PASSWORD"): "the deployment's database (masking)",
+    (
+        "services/infrastructure/keychain_service.py",
+        "PIPER_CREDENTIAL_STORE",
+    ): "a store selector, not a credential",
+    # OAuth App registration: the client secret identifies Piper to the provider, not a person.
+    (
+        "services/mcp/consumer/github_oauth_handler.py",
+        "GITHUB_OAUTH_CLIENT_SECRET",
+    ): "the GitHub OAuth App registration",
+    (
+        "services/integrations/calendar/oauth_handler.py",
+        "GOOGLE_CLIENT_SECRET",
+    ): "the Google OAuth App registration",
+    (
+        "services/mcp/consumer/google_calendar_adapter.py",
+        "GOOGLE_CLIENT_SECRET",
+    ): "the Google OAuth App registration",
+    (
+        "web/api/routes/settings_integrations.py",
+        "GOOGLE_CLIENT_SECRET",
+    ): "the Google OAuth App registration",
+    (
+        "services/integrations/slack/config_service.py",
+        "SLACK_CLIENT_SECRET",
+    ): "the Slack app registration",
+    (
+        "services/integrations/slack/config_service.py",
+        "SLACK_SIGNING_SECRET",
+    ): "the Slack app registration (request signing)",
+    (
+        "web/routers/mcp_oauth.py",
+        "MCP_OAUTH_CONSENT_SECRET",
+    ): "Piper's own consent-page signing secret",
+    (
+        "services/llm/request_key.py",
+        "PIPER_SHADOW_LLM_KEY",
+    ): "the shadow key, written never to spend a user's key",
+    # Startup validation and the admin route only; no user principal on that path.
+    (
+        "services/infrastructure/config/config_validator.py",
+        "GOOGLE_CLIENT_SECRETS_FILE",
+    ): "startup validation and the admin route",
+    (
+        "services/infrastructure/config/config_validator.py",
+        "GOOGLE_TOKEN_FILE",
+    ): "startup validation and the admin route",
+    (
+        "services/infrastructure/config/config_validator.py",
+        "NOTION_API_KEY",
+    ): "startup validation and the admin route",
+    (
+        "services/infrastructure/config/config_validator.py",
+        "SLACK_APP_TOKEN",
+    ): "startup validation and the admin route",
+    (
+        "services/infrastructure/config/config_validator.py",
+        "SLACK_BOT_TOKEN",
+    ): "startup validation and the admin route",
+    (
+        "services/infrastructure/config/config_validator.py",
+        "SLACK_SIGNING_SECRET",
+    ): "startup validation and the admin route",
+    (
+        "services/infrastructure/config/config_validator.py",
+        "helper:get_authentication_token",
+    ): "the system principal by argument; the helper is None on a hosted deploy",
+    # Calendar: the registration file, and a filename the code forces per account with the user id.
+    (
+        "services/integrations/calendar/config_service.py",
+        "GOOGLE_CLIENT_SECRETS_FILE",
+    ): "the Google OAuth App registration file",
+    (
+        "services/integrations/calendar/config_service.py",
+        "GOOGLE_TOKEN_FILE",
+    ): "a filename made per account with the user id",
+    (
+        "services/integrations/demo/config_service.py",
+        "DEMO_API_KEY",
+    ): "off by default and not in the offered set",
+    # get_authentication_token('system'): the system principal by argument (ADR-081 D2).
+    (
+        "services/config/github_config.py",
+        "helper:get_authentication_token",
+    ): "the system principal by argument",
+    (
+        "services/infrastructure/github_repo_validator.py",
+        "helper:get_authentication_token",
+    ): "the system principal by argument",
+    (
+        "web/api/routes/settings_integrations.py",
+        "helper:get_authentication_token",
+    ): "the system principal by argument (the local-install branch)",
+    # The 13:16 family rule: principal-less only; the matrix's last cell pins it.
+    (
+        "services/integrations/github/repo_resolver.py",
+        "PIPER_DEFAULT_REPO",
+    ): "read only when user_id is None (13:16; matrix cell)",
+    (
+        "services/integrations/github/repo_resolver.py",
+        "PIPER_GITHUB_HANDLE",
+    ): "read only when user_id is None (13:16; matrix cell)",
+    # Conditional, met: a user-principal turn with no key of its own is refused before any env
+    (
+        "services/integrations/integration_status_service.py",
+        "GOOGLE_CALENDAR_CREDENTIALS",
+    ): "read only when user_id is None after the 18:34 fix (ADR-081 D1 shape)",
+    # key is reached (tests/unit/services/llm/test_operator_seam_retired_1812.py::
+    # test_authenticated_keyless_refuses_unconditionally, #1807/#1320).
+    (
+        "services/config/llm_config_service.py",
+        "ANTHROPIC_API_KEY",
+    ): "platform key; a keyless user turn refuses first (1812 pin)",
+    (
+        "services/config/llm_config_service.py",
+        "OPENAI_API_KEY",
+    ): "platform key; a keyless user turn refuses first (1812 pin)",
+    (
+        "services/config/llm_config_service.py",
+        "GEMINI_API_KEY",
+    ): "platform key; a keyless user turn refuses first (1812 pin)",
+    (
+        "services/config/llm_config_service.py",
+        "PERPLEXITY_API_KEY",
+    ): "platform key; a keyless user turn refuses first (1812 pin)",
 }
 
 
@@ -203,7 +333,11 @@ def find_credential_env_reads(text: str, filename: Optional[str] = None) -> List
         arg = _is_env_read(node)
         if arg is not None:
             name = _env_name(arg, constants)
-            if name and _is_credential_name(name):
+            if name is None:
+                # Arch 2026-11-04 18:34: a read whose name sits in a variable (a loop, a
+                # local, a method's return) is a site too; fail closed, don't chase patterns.
+                out.append(Violation(node.lineno, "unresolved", _snip(node)))
+            elif _is_credential_name(name):
                 out.append(Violation(node.lineno, name, _snip(node)))
             continue
         helper = _helper_call(node)
@@ -222,13 +356,13 @@ def _snip(node: ast.AST) -> str:
 def lint_paths(paths: List[Path]) -> List[tuple]:
     results = []
     for p in paths:
-        if p.as_posix() in SYSTEM_ONLY:
-            continue
         try:
             text = p.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
         for v in find_credential_env_reads(text, str(p)):
+            if (p.as_posix(), v.env_name) in SYSTEM_ONLY:
+                continue  # ruled system-only for THIS name; another name here still fails
             results.append((p, v))
     return results
 
