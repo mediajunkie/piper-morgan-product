@@ -410,3 +410,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v827 11:54 Thu 11-05: alpha c6a4e818cd (read 11:54); promotion item removed; #2282 steps 2-5 outlined.
 - v828 12:13 Thu 11-05: #2282 step 2 from 12:20, step 3 outlined.
 - v829 12:25 Thu 11-05: #2282 step 2 served (alpha 67f6c7a3f9, 0fe25253cd ancestor); step 3 lines.
+- v830 12:47 Thu 11-05: #2282 step 3 done and verified.
