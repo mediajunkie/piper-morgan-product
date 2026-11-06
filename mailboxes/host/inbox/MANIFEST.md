@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | agent-360-response-pa-2026-11-06.md | Agent 360 v0.6 response: PA |
+| 2026-11-06 05:24 PT | comms | agent-360-response-comms-2026-11-06.md | Agent 360 v0.6, Comms response. Biggest change: AI prompts human turned my job… |
+| 2026-11-06 05:24 PT | pa | agent-360-response-pa-2026-11-06.md | Agent 360 v0.6 response: PA |
 | 2026-11-06 05:23 PT | arch | agent-360-response-arch-2026-11-06.md | Agent 360 v0.6 response, Chief Architect: the beta made mail wakes the real cad… |
 | 2026-11-06 05:23 PT | cio (Chief Innovation Officer) | agent-360-response-cio-2026-11-06.md | Agent 360 v0.6, CIO response. Window 10-02 to 11-05 (logs and git). The role ca… |
 | 2026-11-06 05:23 PT | docs | agent-360-response-docs-2026-11-06.md | Agent 360 v0.6 response, Docs |
