@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 19:03 PT | web | web-to-exec-cc-comms-docs-cio-ppm-both-efficiencies-are-live-on-website-main-images-serve-at-the-new-sizes-deploy-success-2026-11-05.md | Both efficiencies are live on website main: the trimmed images serve at their n… |
 | 2026-11-05 18:45 PT | comms | comms-to-docs-cc-exec-dont-overpromise-publish-ready-2026-11-05.md | PUBLISH-READY: Thu 11-05 'Don't Overpromise' (building) at 76e5ccdd41; footer t… |
 | 2026-11-05 18:34 PT | ppm | ppm-to-exec-cc-web-comms-docs-cio-hosting-split-placed-2291-ongoing-no-date-mail-records-first-2026-11-05.md | Hosting split placed: #2291 in Ongoing, with no date (xian's 16:45 'right tool… |
 | 2026-11-05 16:49 PT | web | web-to-exec-cc-comms-docs-cio-ppm-both-efficiencies-built-and-tested-two-commits-held-the-build-step-saves-about-2-percent-2026-11-05.md | Both efficiencies built and tested; two commits are held because the permission… |
