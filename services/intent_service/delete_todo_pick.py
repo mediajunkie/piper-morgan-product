@@ -67,6 +67,10 @@ PICK_PENDING_FLAG = "delete_todo_pick_pending"
 # (reversible) binds to the completion itself, an explicit answer (Gap B).
 VERB_DELETE = "delete"
 VERB_COMPLETE = "complete"
+# CXO 11-06 11:2x: a complete pick answered with several numbers.
+COMPLETE_ONE_AT_A_TIME_QUESTION = (
+    "I can take one number at a time here. Which one should I complete?"
+)
 # "Few" — CXO's word. Above this the question still lists this many (bound)
 # and says how many more there are.
 MAX_LISTED = 5
@@ -517,6 +521,41 @@ async def handle_delete_todo_pick_turn(
     # ("Tell me which one" is an instruction, not an offer).
     # The cap is delete's; a complete pick binds one line (several re-ask below).
     multi = [i for i in _multi_pick_indices(text, texts, due_iso) if i < len(ids)]
+    if verb == VERB_COMPLETE and len(multi) > 1:
+        # CXO 11-06 11:2x: a complete pick binds one line. Several numbers never
+        # complete the first and drop the rest: re-ask once on the same record; a
+        # second unresolved answer releases (the pick's convention below).
+        if payload.get("pick_reasked"):
+            logger.info("complete_todo_pick_multi_release_after_reask", session_id=session_id)
+            return None
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id,
+            _pick_offer(
+                payload.get("user_id"),
+                noun,
+                ids,
+                texts,
+                due_iso,
+                original_message,
+                COMPLETE_ONE_AT_A_TIME_QUESTION,
+                reasked=True,
+                copies=payload.get("pick_copies"),
+                display=payload.get("pick_display"),
+                verb=verb,
+                line_ids=payload.get("pick_line_ids"),
+            ),
+            user_id=user_id,
+        )
+        logger.info("complete_todo_pick_multi_reasked", session_id=session_id, count=len(multi))
+        return {
+            "message": COMPLETE_ONE_AT_A_TIME_QUESTION,
+            "intent_data": {
+                "category": "execution",
+                "action": CLARIFY_DELETE_PICK_WORKFLOW,
+                PICK_PENDING_FLAG: True,
+            },
+            "requires_clarification": True,
+        }
     if verb == VERB_DELETE and len(multi) > 1:
         from services.intent_service.delete_cap import (
             DELETE_CAPPED_FLAG,

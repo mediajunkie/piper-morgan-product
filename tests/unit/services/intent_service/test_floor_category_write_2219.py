@@ -227,7 +227,9 @@ async def test_no_writes_nothing(boundary):
     await service.process_intent(message="mark high task as done", session_id=sid, user_id=_USER)
     declined = await service.process_intent(message="no", session_id=sid, user_id=_USER)
     assert _wrote(boundary) == []
-    assert declined.message == 'Okay — I won\'t mark "high task" done. Nothing has been changed.'
+    assert declined.message == (
+        'Okay — I won\'t mark "high task" as done. Nothing has been changed.'
+    )
 
 
 @pytest.mark.asyncio
@@ -398,3 +400,45 @@ async def test_a_marked_clear_family_turn_asks_where_it_would_have_written(
     assert result.requires_clarification
     if stored:
         assert result.message == variant_two_always_ask_question()
+
+
+# ── CXO 11-06 11:2x: a named miss with no list, and several numbers on the pick ──
+
+
+@pytest.mark.asyncio
+async def test_a_named_complete_that_matches_nothing_says_so_and_arms_nothing(boundary):
+    service = _service()
+    sid = _SID + "-miss"
+    result = await service.process_intent(
+        message="mark water the plants as done", session_id=sid, user_id=_USER
+    )
+    assert result.message == (
+        'I couldn\'t find a todo called "water the plants", so nothing was changed. '
+        'Say "show my todos" to see them.'
+    )
+    assert _wrote(boundary) == []
+    assert service.workflow_offer_service.peek_pending_offer(sid, _USER) is None
+
+
+@pytest.mark.asyncio
+async def test_several_numbers_on_the_pick_reask_one_at_a_time_and_never_complete(boundary):
+    _shown(boundary)
+    service = _service()
+    await service.process_intent(message="complete the second one", session_id=_SID, user_id=_USER)
+    ask = await service.process_intent(message="1 and 3", session_id=_SID, user_id=_USER)
+    assert ask.message == "I can take one number at a time here. Which one should I complete?"
+    assert _wrote(boundary) == []
+    done = await service.process_intent(message="2", session_id=_SID, user_id=_USER)
+    assert boundary["completed"] == [boundary["todos"][1].id]
+    assert "high task" in done.message
+
+
+@pytest.mark.asyncio
+async def test_several_numbers_twice_releases_the_pick_and_writes_nothing(boundary):
+    _shown(boundary)
+    service = _service()
+    await service.process_intent(message="complete the second one", session_id=_SID, user_id=_USER)
+    await service.process_intent(message="1 and 3", session_id=_SID, user_id=_USER)
+    second = await service.process_intent(message="1 and 3", session_id=_SID, user_id=_USER)
+    assert second.message != "I can take one number at a time here. Which one should I complete?"
+    assert _wrote(boundary) == []

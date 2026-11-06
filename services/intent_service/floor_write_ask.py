@@ -69,6 +69,14 @@ def unmark_floor_category_write(intent: Any) -> None:
         intent.context.pop(FLOOR_WRITE_MARK_KEY, None)
 
 
+def complete_not_found_statement(name: str) -> str:
+    """CXO's words (11-06 11:2x), verbatim: a named complete that matches nothing."""
+    return (
+        f'I couldn\'t find a todo called "{name}", so nothing was changed. '
+        'Say "show my todos" to see them.'
+    )
+
+
 def complete_confirm_question(text: str) -> str:
     """CXO's words (11-06), verbatim."""
     return f'Mark "{text}" as done? (yes/no)'
@@ -149,6 +157,7 @@ async def build_floor_write_complete_ask(
 
     primary, _ = _split_completion_clause(original)
     row = None
+    missed_name = None  # a name the person said that matches no open todo
     number = todo_handlers._extract_todo_id(primary)
     if number is not None:
         try:
@@ -163,6 +172,8 @@ async def build_floor_write_complete_ask(
             matches = resolve_named_todo_target(named, todos)
             if len(matches) == 1:
                 row = matches[0]
+            elif not matches:
+                missed_name = named
 
     if row is not None:
         # The yes completes exactly this row, by id (the #1943 confirmed re-entry
@@ -173,7 +184,7 @@ async def build_floor_write_complete_ask(
         intent.context[BATCH_COMPLETE_TEXTS_KEY] = [row.text]
         intent.context[BATCH_COMPLETE_LEFT_KEY] = []
         question = complete_confirm_question(row.text)
-        summary = f'mark "{row.text}" done'
+        summary = f'mark "{row.text}" as done'
         logger.info("floor_write_complete_confirm_armed", todo_id=str(row.id))
         return FloorWriteCompleteAsk(
             offer=ConfirmationOffer(
@@ -199,4 +210,8 @@ async def build_floor_write_complete_ask(
         return FloorWriteCompleteAsk(
             reply=question, armed=True, intent_data={PICK_PENDING_FLAG: True}
         )
+    if missed_name:
+        # CXO 11-06 11:2x: the name the person said (the handler's own extractor)
+        # matched nothing and no list was shown. A statement; nothing armed.
+        return FloorWriteCompleteAsk(reply=complete_not_found_statement(missed_name))
     return FloorWriteCompleteAsk(reply=COMPLETE_NO_TARGET_STATEMENT)

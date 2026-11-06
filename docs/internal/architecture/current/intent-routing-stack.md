@@ -6426,7 +6426,7 @@ confirm chain only when marked; its builder (`floor_write_ask.build_floor_write_
 handler's own extractors and matcher) arms CXO's `Mark "high task" as done? (yes/no)` with the row bound by id
 (the yes takes the #1943 confirmed re-entry), or, when it can't name one row, picks over the numbered list just
 shown (`delete_todo_pick.arm_complete_pick`, the delete pick's record with verb "complete": the bound answer
-completes, or asks one, or all, for a grouped line), or says `I'm not sure which one you mean. Say its name.`
+completes, or asks one, or all, for a grouped line; several numbers re-ask `I can take one number at a time here. Which one should I complete?` once, then release), or, when the name it extracted matches nothing, says `I couldn't find a todo called "x", so nothing was changed. Say "show my todos" to see them.`, or else `I'm not sure which one you mean. Say its name.` (CXO 11-06 11:2x)
 The one passthrough that could write on its first turn, the #1605 clear-family flow, asks on a marked turn
 (`reminder_clear._act_on_resolved_targets(ask_only=True)`: a stored "complete" default takes the always-ask
 form, the trust-inferences auto-apply reads back). The legacy multi-intent orchestrator has no rail, so
