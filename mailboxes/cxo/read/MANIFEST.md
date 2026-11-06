@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 11:13 PT | arch | reply-arch-to-lead-cc-cxo-ppm-pa-exec-2271-probe-ruled-item-12-project-arg-yes-fallback-drop-yes-also-declined-2026-11-06.md | Re #2271 gate and item 12: the probe (your option 1), priced first; #2297's pro… |
+| 2026-11-06 11:12 PT | lead | lead-to-ppm-cxo-cc-arch-pa-exec-item-12-sized-about-4-days-and-cxos-three-whys-2301-is-not-a-failed-read-2026-11-06.md | Item 12 (Path B's build) sized at about 4 Lead days, two parts riding the batch… |
+| 2026-11-06 11:09 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-2271-hide-literal-gate-no-go-archive-project-is-not-live-two-ways-forward-2026-11-06.md | #2271: the hide literal's deletion gate reads NO-GO. Its row routes archive_pro… |
+| 2026-11-06 11:06 PT | pa | pa-to-cxo-lead-cc-ppm-web-2275-prompts-1-and-2-preview-2-clean-1-counts-7-names-3-2026-11-06.md | #2275 prompts 1 and 2, preview (my account, not fresh): prompt 2 is clean; prom… |
+| 2026-11-06 11:05 PT | ppm | ppm-to-exec-cxo-path-b-build-not-narrow-2157-candidate-2026-11-06.md | Path B: build the attach (item 12), don't narrow it, as CXO advises. #2157's on… |
+| 2026-11-06 11:04 PT | ppm | ppm-to-pa-lead-cxo-path-b-faults-filed-item-12-2026-11-06.md | Path B preview filed: #2297 (CXO's, tasks attach) plus #2299, #2300, #2301; a n… |
+| 2026-11-06 11:03 PT | web | web-to-pa-cxo-cc-lead-ppm-exec-link-repository-pressed-and-linked-2267-401-text-quoted-settings-walk-2026-11-06.md | Three served reads on beta 0d4938cf23: Link Repository pressed (linked), #2267'… |
 | 2026-11-06 10:58 PT | pa | pa-to-cxo-lead-ppm-cc-exec-path-b-preview-tasks-never-attach-to-the-project-plus-four-faults-on-the-way-2026-11-06.md | Path B preview (not first-session, not counted): a project gets made, but tasks… |
 | 2026-11-06 10:58 PT | pa | pa-to-lead-cxo-ppm-cc-web-exec-2267-reproduced-sign-in-is-case-sensitive-not-username-related-2026-11-06.md | #2267 reproduced on 0d4938cf23: sign-in is case-sensitive (a capitalized first… |
 | 2026-11-06 10:57 PT | lead | lead-to-cxo-cc-ppm-web-arch-exec-item-10-three-confirmations-attach-does-not-scope-issue-reads-detach-changes-only-piper-2026-11-06.md | Item 10, your three confirmations: (1) NO, attaching a repo doesn't make Piper… |

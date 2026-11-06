@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-11-06 11:06 PT | pa | pa-to-cxo-lead-cc-ppm-web-2275-prompts-1-and-2-preview-2-clean-1-counts-7-names-3-2026-11-06.md | #2275 prompts 1 and 2, preview (my account, not fresh): prompt 2 is clean; prom… |
-| 2026-11-06 11:05 PT | ppm | ppm-to-exec-cxo-path-b-build-not-narrow-2157-candidate-2026-11-06.md | Path B: build the attach (item 12), don't narrow it, as CXO advises. #2157's on… |
-| 2026-11-06 11:04 PT | ppm | ppm-to-pa-lead-cxo-path-b-faults-filed-item-12-2026-11-06.md | Path B preview filed: #2297 (CXO's, tasks attach) plus #2299, #2300, #2301; a n… |
-| 2026-11-06 11:03 PT | web | web-to-pa-cxo-cc-lead-ppm-exec-link-repository-pressed-and-linked-2267-401-text-quoted-settings-walk-2026-11-06.md | Three served reads on beta 0d4938cf23: Link Repository pressed (linked), #2267'… |
+| now | web | web-to-cxo-lead-ppm-cc-pa-arch-exec-correction-the-2273-2272-2271-commit-is-21a8977ea9-not-8872775c7d-2026-11-06.md | Correction: the Settings groups, project-page words and Edit removal are commit… |
+| 2026-11-06 11:20 PT | web | web-to-cxo-lead-ppm-cc-pa-arch-exec-2273-2272-page-half-2271-edit-button-built-on-main-served-read-waits-on-promotion-2026-11-06.md | #2273, #2272's page half and #2271's Edit button: built and on main (11:20 PT);… |
+| 2026-11-06 11:18 PT | pa | pa-to-cxo-cc-lead-ppm-2275-revised-pair-add-a-todo-then-show-my-todos-previews-clean-2026-11-06.md | #2275 revised pair previews clean: 'Add a todo: …' then 'Show my todos' in one… |
+| 2026-11-06 11:17 PT | ppm | ppm-to-arch-lead-units-placed-2303-2300-rescoped-2026-11-06.md | Your two units placed: #2303 (archive_project live, on xian's secret) filed in… |
+| 2026-11-06 11:15 PT | ppm | ppm-to-lead-cxo-sprint-trims-applied-2302-filed-2026-11-06.md | Sprint fit after item 12: trims applied now (#2270, #2272's chat half, #2299, #… |

@@ -38,6 +38,17 @@
     margin: 0;
   }
 
+  .settings-group {
+    margin-bottom: 32px;
+  }
+
+  .settings-group-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 12px 0;
+  }
+
   .settings-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -166,160 +177,167 @@
     </p>
   </div>
 
-  <div class="settings-grid">
-    <!-- Personality Settings Card -->
-    <a href="/personality-preferences" class="settings-card">
-      <div class="card-icon">🎭</div>
-      <h3 class="card-title">Personality</h3>
-      <p class="card-description">
-        Customize how Piper communicates and responds to you
-      </p>
-      <div class="card-meta">
-        <span class="meta-item">Communication style</span>
-        <span class="meta-item">Response preferences</span>
-      </div>
-    </a>
+  <section class="settings-group" aria-labelledby="group-connect">
+    <h2 class="settings-group-title" id="group-connect">Connect Piper to your tools</h2>
+    <div class="settings-grid">
+      <a href="/settings/integrations" class="settings-card">
+        <div class="card-icon">🔌</div>
+        <h3 class="card-title">Integrations</h3>
+        <p class="card-description">
+          Connect your tools, such as GitHub, and check that each one is working.
+        </p>
+        <div class="card-meta">
+          <span class="meta-item">Health status</span>
+          <span class="meta-item">Connection testing</span>
+        </div>
+      </a>
 
-    <!-- Learning Settings Card -->
-    <a href="/learning" class="settings-card">
-      <div class="card-icon">🧠</div>
-      <h3 class="card-title">Learning & Patterns</h3>
-      <p class="card-description">
-        Control how Piper learns from your behavior and suggests patterns
-      </p>
-      <div class="card-meta">
-        <span class="meta-item">Pattern suggestions</span>
-        <span class="meta-item">Learning preferences</span>
-      </div>
-    </a>
+      <a href="/settings/projects" class="settings-card">
+        <div class="card-icon">📁</div>
+        <h3 class="card-title">Projects</h3>
+        <p class="card-description">
+          Manage linked repositories and tool integrations for your projects
+        </p>
+        <div class="card-meta">
+          <span class="meta-item">Repository linking</span>
+          <span class="meta-item">Integration config</span>
+        </div>
+      </a>
 
-    <!-- Privacy Settings Card -->
-    <a href="/settings/privacy" class="settings-card">
-      <div class="card-icon">🔒</div>
-      <h3 class="card-title">Privacy & data</h3>
-      <p class="card-description">
-        What Piper stores, what you can export, and how to delete your account
-      </p>
-      <div class="card-meta">
-        <span class="meta-item">What Piper stores</span>
-        <span class="meta-item">Export and deletion</span>
-      </div>
-    </a>
+      <a href="/settings/llm-keys" class="settings-card">
+        <div class="card-icon">🔑</div>
+        <h3 class="card-title">LLM API Keys</h3>
+        <p class="card-description">
+          Add, replace, or remove your model-provider keys (Anthropic, OpenAI, Gemini)
+        </p>
+      </a>
 
-    <!-- Preferences Settings Card (Issue #1876) -->
-    <a href="/settings/preferences" class="settings-card">
-      <div class="card-icon">🕒</div>
-      <h3 class="card-title">Preferences</h3>
-      <p class="card-description">
-        Set your timezone so reminders and clock faces read correctly for you
-      </p>
-      <div class="card-meta">
-        <span class="meta-item">Timezone</span>
-      </div>
-    </a>
+      <a href="/settings/connected-apps" class="settings-card">
+        <div class="card-icon">🤖</div>
+        <h3 class="card-title">Connected apps</h3>
+        <p class="card-description">
+          See which chat apps — ChatGPT, Claude, and others — have access to your Piper account, and
+          revoke it anytime
+        </p>
+        <div class="card-meta">
+          <span class="meta-item">MCP access</span>
+          <span class="meta-item">Revoke anytime</span>
+        </div>
+      </a>
+    </div>
+  </section>
 
-    <!-- Account Settings Card -->
-    <a href="/account" class="settings-card">
-      <div class="card-icon">👤</div>
-      <h3 class="card-title">Account</h3>
-      <p class="card-description">
-        Update your profile, password, and account preferences
-      </p>
-      <div class="card-meta">
-        <span class="meta-item">Profile information</span>
-        <span class="meta-item">Security settings</span>
-      </div>
-    </a>
+  <section class="settings-group" aria-labelledby="group-about">
+    <h2 class="settings-group-title" id="group-about">About you</h2>
+    <div class="settings-grid">
+      <a href="/account" class="settings-card">
+        <div class="card-icon">👤</div>
+        <h3 class="card-title">Account</h3>
+        <p class="card-description">
+          Update your profile, password, and account preferences
+        </p>
+        <div class="card-meta">
+          <span class="meta-item">Profile information</span>
+          <span class="meta-item">Security settings</span>
+        </div>
+      </a>
 
-    <!-- Connected Apps Card (Issue #1918) -->
-    <a href="/settings/connected-apps" class="settings-card">
-      <div class="card-icon">🤖</div>
-      <h3 class="card-title">Connected apps</h3>
-      <p class="card-description">
-        See which chat apps — ChatGPT, Claude, and others — have access to your Piper account, and
-        revoke it anytime
-      </p>
-      <div class="card-meta">
-        <span class="meta-item">MCP access</span>
-        <span class="meta-item">Revoke anytime</span>
-      </div>
-    </a>
+      <a href="/settings/preferences" class="settings-card">
+        <div class="card-icon">🕒</div>
+        <h3 class="card-title">Preferences</h3>
+        <p class="card-description">
+          Set your timezone so reminders and clock faces read correctly for you
+        </p>
+        <div class="card-meta">
+          <span class="meta-item">Timezone</span>
+        </div>
+      </a>
 
-    <!-- Transparency & Audit Log Card (#1099 MUX/UI Round 2 Surface 7) -->
-    <a href="/transparency" class="settings-card">
-      <div class="card-icon">📋</div>
-      <h3 class="card-title">Transparency</h3>
-      <p class="card-description">
-        Inspect the ethics and boundary decisions recorded for your active conversation
-      </p>
-      <div class="card-meta">
-        <span class="meta-item">Audit log</span>
-        <span class="meta-item">Per-session scope</span>
-      </div>
-    </a>
+      <a href="/personality-preferences" class="settings-card">
+        <div class="card-icon">🎭</div>
+        <h3 class="card-title">Personality</h3>
+        <p class="card-description">
+          Customize how Piper communicates and responds to you
+        </p>
+        <div class="card-meta">
+          <span class="meta-item">Communication style</span>
+          <span class="meta-item">Response preferences</span>
+        </div>
+      </a>
 
-    <!-- Integrations Card -->
-    <a href="/settings/llm-keys" class="settings-card">
-      <div class="card-icon">🔑</div>
-      <h3 class="card-title">LLM API Keys</h3>
-      <p class="card-description">
-        Add, replace, or remove your model-provider keys (Anthropic, OpenAI, Gemini)
-      </p>
-    </a>
+      <a href="/learning" class="settings-card">
+        <div class="card-icon">🧠</div>
+        <h3 class="card-title">Learning & Patterns</h3>
+        <p class="card-description">
+          Control how Piper learns from your behavior and suggests patterns
+        </p>
+        <div class="card-meta">
+          <span class="meta-item">Pattern suggestions</span>
+          <span class="meta-item">Learning preferences</span>
+        </div>
+      </a>
+    </div>
+  </section>
 
-    <a href="/settings/integrations" class="settings-card">
-      <div class="card-icon">🔌</div>
-      <h3 class="card-title">Integrations</h3>
-      <p class="card-description">
-        Monitor health and test connections for GitHub, Notion, Slack, and Calendar
-      </p>
-      <div class="card-meta">
-        <span class="meta-item">Health status</span>
-        <span class="meta-item">Connection testing</span>
-      </div>
-    </a>
+  <section class="settings-group" aria-labelledby="group-privacy">
+    <h2 class="settings-group-title" id="group-privacy">Privacy and trust</h2>
+    <div class="settings-grid">
+      <a href="/settings/privacy" class="settings-card">
+        <div class="card-icon">🔒</div>
+        <h3 class="card-title">Privacy & data</h3>
+        <p class="card-description">
+          What Piper stores, what you can export, and how to delete your account
+        </p>
+        <div class="card-meta">
+          <span class="meta-item">What Piper stores</span>
+          <span class="meta-item">Export and deletion</span>
+        </div>
+      </a>
 
-    <!-- Projects Card (Issue #861) -->
-    <a href="/settings/projects" class="settings-card">
-      <div class="card-icon">📁</div>
-      <h3 class="card-title">Projects</h3>
-      <p class="card-description">
-        Manage linked repositories and tool integrations for your projects
-      </p>
-      <div class="card-meta">
-        <span class="meta-item">Repository linking</span>
-        <span class="meta-item">Integration config</span>
-      </div>
-    </a>
+      <a href="/transparency" class="settings-card">
+        <div class="card-icon">📋</div>
+        <h3 class="card-title">Transparency</h3>
+        <p class="card-description">
+          Inspect the ethics and boundary decisions recorded for your active conversation
+        </p>
+        <div class="card-meta">
+          <span class="meta-item">Audit log</span>
+          <span class="meta-item">Per-session scope</span>
+        </div>
+      </a>
+    </div>
+  </section>
 
-    {% if user and user.is_admin %}
-    <!-- #2081 Invites (admin only: users.is_admin, resolved live per request) -->
-    <a href="/settings/invites" class="settings-card">
-      <div class="card-icon">🎟️</div>
-      <h3 class="card-title">Invites</h3>
-      <p class="card-description">
-        Mint alpha invite codes, see which were used, revoke the rest
-      </p>
-      <div class="card-meta">
-        <span class="meta-item">Admin only</span>
-        <span class="meta-item">Codes shown once</span>
-      </div>
-    </a>
-    {% endif %}
+  <section class="settings-group" aria-labelledby="group-admin">
+    <h2 class="settings-group-title" id="group-admin">For admins and developers</h2>
+    <div class="settings-grid">
+      {% if user and user.is_admin %}
+      <a href="/settings/invites" class="settings-card">
+        <div class="card-icon">🎟️</div>
+        <h3 class="card-title">Invites</h3>
+        <p class="card-description">
+          Create invite codes, see which were used, and revoke the rest.
+        </p>
+        <div class="card-meta">
+          <span class="meta-item">Admin only</span>
+          <span class="meta-item">Codes shown once</span>
+        </div>
+      </a>
+      {% endif %}
 
-    <!-- Advanced Settings Card -->
-    <a href="/settings/advanced" class="settings-card">
-      <div class="card-icon">⚙️</div>
-      <h3 class="card-title">Advanced</h3>
-      <p class="card-description">
-        Developer options, experimental features, and system configuration
-      </p>
-      <div class="card-meta">
-        <span class="meta-item">API access</span>
-        <span class="meta-item">Debug mode</span>
-      </div>
-    </a>
-  </div>
+      <a href="/settings/advanced" class="settings-card">
+        <div class="card-icon">⚙️</div>
+        <h3 class="card-title">Advanced</h3>
+        <p class="card-description">
+          Developer options, experimental features, and system configuration
+        </p>
+        <div class="card-meta">
+          <span class="meta-item">API access</span>
+          <span class="meta-item">Debug mode</span>
+        </div>
+      </a>
+    </div>
+  </section>
 
   <!-- Version Footer -->
   <div class="settings-footer">

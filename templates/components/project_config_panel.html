@@ -22,7 +22,7 @@
       <button class="btn btn-primary btn-sm"
               onclick="PiperProjectConfigPanel.showLinkRepoDialog()"
               aria-label="Link a repository to this project">
-        Link Repository
+        Link a repository
       </button>
     </div>
     <div id="pcp-repositories-list">
@@ -136,6 +136,12 @@
     }
   }
 
+  // #2272: the page's own words name the project (the page heading), not "this project".
+  function projectName() {
+    const h = document.querySelector('h1');
+    return (h && h.textContent.trim()) || 'this project';
+  }
+
   function renderRepositories(repos) {
     _repos = repos;
     // The mirror filter depends on this list; re-render integrations if they
@@ -143,7 +149,7 @@
     if (_integrations.length) renderIntegrations(_integrations);
     const container = document.getElementById('pcp-repositories-list');
     if (repos.length === 0) {
-      container.innerHTML = '<div class="empty-state"><p>No repositories linked to this project yet.</p></div>';
+      container.innerHTML = `<div class="empty-state"><p>No repository is linked to ${escapeHtml(projectName())} yet.</p></div>`;
       return;
     }
     container.innerHTML = repos.map(repo => `
@@ -186,11 +192,11 @@
 
     Dialog.show({
       mode: 'form',
-      title: 'Link Repository',
+      title: 'Link a repository',
       confirmText: 'Link',
       content: `
         <div class="form-group">
-          <label for="link-repo-select">Select Repository</label>
+          <label for="link-repo-select">Repository (owner/name)</label>
           <select id="link-repo-select" style="width:100%;padding:10px;border:1px solid #dce4ec;border-radius:8px;font-size:14px;">
             <option value="">Choose a repository...</option>
             ${repoOptions}
@@ -314,8 +320,8 @@
 
   function unlinkRepo(repoId, repoName) {
     Dialog.confirm({
-      title: `Unlink ${repoName}?`,
-      message: "This won't delete the repository, just remove it from this project.",
+      title: `Unlink ${repoName} from ${projectName()}?`,
+      message: 'This only removes the link in Piper. The repository itself is not changed.',
       confirmText: 'Unlink',
       onConfirm: async () => {
         try {
