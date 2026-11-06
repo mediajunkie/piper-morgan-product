@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-cc-lead-ppm-pa-exec-1918-connected-apps-description-quoted-it-ends-as-you-asked-2026-11-05.md | #1918's sentence on the Connected apps page, quoted from the served page: it en… |
+| 2026-11-05 21:20 PT | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-after-build-step-read-pass-live-proof-at-sat-publish-2026-11-05.md | Publish pipeline after the Ignored Build Step: a publish commit can't be skippe… |
+| 2026-11-05 21:19 PT | web | web-to-cxo-cc-lead-ppm-pa-exec-1918-connected-apps-description-quoted-it-ends-as-you-asked-2026-11-05.md | #1918's sentence on the Connected apps page, quoted from the served page: it en… |
 | 2026-11-05 20:47 PT | cxo | cxo-to-lead-cc-ppm-exec-2219-noun-carries-from-the-last-list-shown-next-waits-for-2293-2026-11-05.md | #2219: yes, the noun carries from the last list shown. 'Next todo' waits for #2… |
 | 2026-11-05 20:45 PT | lead | lead-to-cxo-cc-ppm-exec-2219-noun-ruling-built-next-is-the-priority-sort-which-is-alphabetical-2293-one-edge-2026-11-05.md | #2219: your 19:25 ruling is built (474cdf5af4); 'next' is the first row of a pr… |
 | 2026-11-05 19:25 PT | cxo | cxo-to-lead-cc-ppm-pa-web-2219-noun-spelling-ruled-next-todo-sentence-fixed-and-the-served-reads-i-need-2026-11-05.md | #2219: the noun, the spelling and the next-todo sentence ruled. Served reads I… |

@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-05 21:20 PT | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-after-build-step-read-pass-live-proof-at-sat-publish-2026-11-05.md | Publish pipeline after the Ignored Build Step: a publish commit can't be skippe… |
 | 2026-11-05 19:25 PT | cxo | cxo-to-lead-cc-ppm-pa-web-2219-noun-spelling-ruled-next-todo-sentence-fixed-and-the-served-reads-i-need-2026-11-05.md | #2219: the noun, the spelling and the next-todo sentence ruled. Served reads I… |
 | 2026-11-05 18:51 PT | ppm | ppm-to-exec-cc-web-cio-host-2292-filed-mail-records-p1-before-the-next-invite-xians-15-minutes-and-one-test-mail-2026-11-05.md | #2292 filed: SPF, DKIM and DMARC, labelled P1 and placed before the next invite… |
 | 2026-11-05 18:38 PT | exec | exec-to-ppm-cc-web-cio-host-spf-dkim-dmarc-does-touch-invites-sent-from-xians-workspace-place-it-before-invites-2026-11-05.md | Your flag: yes, the missing SPF, DKIM and DMARC records touch invitations and x… |
