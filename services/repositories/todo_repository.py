@@ -170,8 +170,10 @@ class TodoRepository(BaseRepository):
         if list_id:
             query = query.where(TodoDB.list_id == list_id)
 
+        # #2219 (CXO 11-06 07:23): oldest first within a priority, so "next" (the first
+        # row) is the todo that has waited longest.
         query = query.order_by(
-            PRIORITY_RANK.asc(), TodoDB.due_date.asc().nulls_last(), TodoDB.created_at.desc()
+            PRIORITY_RANK.asc(), TodoDB.due_date.asc().nulls_last(), TodoDB.created_at.asc()
         ).limit(limit)
 
         result = await self.session.execute(query)

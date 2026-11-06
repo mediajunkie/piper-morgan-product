@@ -32,10 +32,10 @@ def test_pas_thirteen_todos_are_shown_with_the_repeat_grouped():
 
 def test_one_todo_is_singular_and_notes_ride_their_line():
     assert format_todo_list_conscious([_todo("ship it", "urgent")]) == (
-        "You have 1 open todo. Here they are:\n• ship it (urgent)"
+        "You have 1 open todo. Here it is:\n• ship it (urgent)"
     )
     reply = format_todo_list_conscious([_todo("a", "high"), _todo("a", "high")])
-    assert reply.endswith("• a (×2) (important)")
+    assert reply.endswith("• a (×2) (high)")
 
 
 def test_a_done_item_is_its_own_group_and_says_so():
@@ -87,3 +87,31 @@ def test_the_noun_carries_from_the_last_list_shown():
     assert conversation_noun(bare, None) == "todo"  # a new conversation
     assert conversation_noun("complete the first todo", "reminders") == "todo"  # rule 1
     assert conversation_noun("delete the first reminder", "active todos") == "reminder"
+
+
+def test_one_line_shown_says_here_it_is_and_two_lines_say_here_they_are():
+    """CXO 2026-11-06 07:23: "Here it is:" when exactly one line is shown."""
+    assert format_todo_list_conscious([_todo("a"), _todo("a")]).startswith(
+        "You have 2 open todos. Here it is:"
+    )
+    assert format_todo_list_conscious(
+        [_todo("a"), _todo("a", completed=True)], include_completed=True
+    ).startswith("You have 1 open todo and 1 done. Here they are:")
+
+
+def test_high_priority_says_high_as_the_todos_page_does():
+    """CXO 2026-11-06 07:23: the page's select names the level "High"."""
+    reply = format_todo_list_conscious([_todo("x", "high"), _todo("y", "urgent")])
+    assert "• x (high)" in reply and "• y (urgent)" in reply
+    assert "important" not in reply
+
+
+def test_the_list_query_sorts_oldest_first_within_a_priority():
+    """CXO 2026-11-06 07:23: "next" is the todo that has waited longest."""
+    import inspect
+
+    from services.repositories.todo_repository import TodoRepository
+
+    src = inspect.getsource(TodoRepository.get_todos_by_owner_with_total)
+    assert "TodoDB.created_at.asc()" in src
+    assert "TodoDB.created_at.desc()" not in src

@@ -37,8 +37,9 @@ def _todo_is_done(todo: Todo) -> bool:
 
 def format_todo_list_grouped(todos: List[Todo], include_completed: bool = False) -> str:
     """#2219 (CXO 10-30): the list itself. ``You have 13 open todos. Here they are:``,
-    then one line per distinct item in first-seen order, repeats grouped as
-    ``review prs (×3)``. An item keeps its priority note; a done one says so."""
+    then one line per distinct item in the list's order (priority, then oldest first),
+    repeats grouped as ``review prs (×3)``. An item keeps its priority note; a done one
+    says so. One line shown reads ``Here it is:`` (CXO 11-06 07:23)."""
     groups: List[List[Todo]] = []
     index: dict = {}
     for todo in todos:
@@ -50,11 +51,12 @@ def format_todo_list_grouped(todos: List[Todo], include_completed: bool = False)
     open_count = sum(1 for t in todos if not _todo_is_done(t))
     done_count = len(todos) - open_count
     noun = "todo" if open_count == 1 else "todos"
+    here = "Here it is:" if len(groups) == 1 else "Here they are:"
     if include_completed and done_count:
-        # Lead's placeholder in CXO's form, for CXO to confirm (#2219).
-        header = f"You have {open_count} open {noun} and {done_count} done. Here they are:"
+        # CXO's form (#2219, ruled 11-05 19:25).
+        header = f"You have {open_count} open {noun} and {done_count} done. {here}"
     else:
-        header = f"You have {open_count} open {noun}. Here they are:"
+        header = f"You have {open_count} open {noun}. {here}"
     lines = [header]
     for group in groups:
         first = group[0]
@@ -64,7 +66,8 @@ def format_todo_list_grouped(todos: List[Todo], include_completed: bool = False)
         if first.priority == "urgent":
             line += " (urgent)"
         elif first.priority == "high":
-            line += " (important)"
+            # CXO 11-06: the Todos page names this level "High".
+            line += " (high)"
         if _todo_is_done(first):
             line += " ✓ done"
         lines.append(line)
