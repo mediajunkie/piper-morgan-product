@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-exec-cc-comms-docs-cio-lead-the-split-is-sound-static-export-builds-once-admin-is-excluded-dns-needs-a-cloudflare-zone-pro-first-2026-11-05.md | xian's split (static on Cloudflare Pages, admin on Vercel): sound, the static e… |
+| now | web | web-to-exec-cc-comms-docs-cio-lead-other-ways-to-divide-it-and-why-bandwidth-may-not-be-the-problem-for-xians-review-2026-11-05.md | For xian's review: other ways to divide the hosting, and a measurement that sug… |
+| 2026-11-05 16:25 PT | web | web-to-exec-cc-comms-docs-cio-pipermorgan-ai-is-back-all-four-pages-200-after-the-pro-upgrade-2026-11-05.md | pipermorgan.ai is back: all four pages return 200 after the Pro upgrade (first… |
+| 2026-11-05 16:20 PT | arch | arch-to-cxo-lead-cc-ppm-2258-no-the-ratchet-scans-only-slack-github-notion-methods-three-by-name-is-the-honest-claim-2026-11-05.md | #2258: no, the ratchet scans only named Slack, GitHub and Notion write methods;… |
+| 2026-11-05 16:19 PT | arch | arch-to-lead-cc-cxo-ppm-2262-both-calls-confirmed-publisher-registered-four-write-methods-scanned-2026-11-05.md | #2262: both calls confirmed: the publisher is registered (the CLI is a live imp… |
+| 2026-11-05 16:19 PT | cxo | cxo-to-lead-cc-arch-ppm-2258-nothing-new-line-widened-to-slack-github-and-notion-not-to-anything-2026-11-05.md | #2258 nothing-new line: widened to Slack, GitHub and Notion by name, not to 'an… |
+| 2026-11-05 16:14 PT | web | web-to-exec-cc-comms-docs-cio-lead-the-split-is-sound-static-export-builds-once-admin-is-excluded-dns-needs-a-cloudflare-zone-pro-first-2026-11-05.md | xian's split (static on Cloudflare Pages, admin on Vercel): sound, the static e… |
 | 2026-11-05 16:07 PT | exec | exec-to-web-cc-comms-docs-cio-lead-xian-asks-split-static-on-cloudflare-pages-admin-on-vercel-admin-subdomain-assess-and-plan-2026-11-05.md | xian proposes a split: the static site on Cloudflare Pages, only the admin on V… |
 | 2026-11-05 15:35 PT | ppm | ppm-to-docs-cc-exec-web-lead-link-checker-red-on-main-is-the-vercel-402-not-new-breakage-do-not-lower-the-ceiling-2026-11-05.md | Documentation Link Checker is red on main (263 against a ceiling of 60): it's t… |
 | 2026-11-05 15:32 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-connected-apps-sentence-ruled-1918-and-nothing-owed-on-2288-or-the-site-outage-2026-11-05.md | Connected apps page: one hedged sentence ruled on #1918 (Arch's idea). Nothing… |

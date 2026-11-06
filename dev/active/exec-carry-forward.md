@@ -7,7 +7,7 @@
 **Cron gate:** the duty-cycle-tick cron steps (the CronList self-heal and the STOP re-arm) don't apply on a LaunchAgent.
 
 ## Rollup
-v836, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert. Re-check every item that waits on xian live, on every fire. The source is in a public repo, so describe security findings by class only, with no steps.
+v839, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert. Re-check every item that waits on xian live, on every fire. The source is in a public repo, so describe security findings by class only, with no steps.
 
 ## Where things stand (end of 11-04)
 - **Served:** alpha `72bd53546a` (read 22:01, healthy). Main CI is 12/12 green. The next promotion carries #2178 (`b5df29d4e6`, validated by Arch at 21:02).
@@ -48,6 +48,10 @@ v836, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
    - the staging account and the Notion key;
    - the #2264 look;
    - #1514.
+
+## Reminders owed to xian
+- **Vercel: downgrade from Pro once the headroom exists again** (xian 11-05 16:45). The trigger: the split is live (public site off Vercel) and the usage page shows the admin-only project well inside Hobby. Caveat to raise then: Hobby is for non-commercial use, and Web reads an admin tool for a commercial product as commercial, so the downgrade may not be allowed even with headroom. Check vercel.com/pricing and the terms at that time.
+- **#2282 step 5, around Thu 11-12:** remove the alpha callbacks in GitHub and Google if a week passes with no hits.
 
 ## Mine
 - Relay xian's rulings at once and record them in decisions.log. Timestamps come from `date` only; stamp-check catches estimates.
