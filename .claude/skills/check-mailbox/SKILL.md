@@ -2,7 +2,7 @@
 name: check-mailbox
 description: Check your agent mailbox for messages at session start. Use at the beginning of every session to review communications from other agents or advisors and note any action items.
 scope: cross-role
-version: 1.2
+version: 1.3
 created: 2026-01-21
 concept: "Concept: docs/internal/operations/branch-worktree-mailbox-discipline.md (added 2026-10-14, sunset-or-renew inventory; CIO)"
 ---
@@ -60,6 +60,8 @@ mv mailboxes/{your-slug}/inbox/{filename} mailboxes/{your-slug}/read/
 ```
 
 **Why move?** Messages in `inbox/` = unread. Moving to `read/` prevents re-reading next session.
+
+**Move only what you read, by name.** Copy each filename from your own read or skim output into the `mv`. Never derive the list from the inbox: a glob, `for f in $(ls inbox)` and `ls | xargs mv` all file whatever synced since you looked, unread.
 
 **The `mv` alone is not durable.** It changes only your worktree. To land the move on `origin/main`, send it through `scripts/mail-send.sh` in one call, passing BOTH sides of the move (the `inbox/` path and the `read/` path) plus any outbound memo paths: `scripts/mail-send.sh "mail({role}): triage N" mailboxes/{you}/inbox/{f} mailboxes/{you}/read/{f}`. Never `git add`/`git commit` a mailbox path. Do not cc PM or address mail to PM (route PM-needed items to `exec`). Full workflow: CLAUDE.md, "The mailbox workflow" (refreshed 2026-10-05 by Docs, #1909 skills review).
 
@@ -162,5 +164,6 @@ After checking mailbox:
 
 ## Changelog
 
+- **v1.3** (2026-11-06, CIO): Step 3 moves only the files you read, by name, never a list taken from the inbox. CIO did the latter on 11-04 and 11-05 (no unread mail lost either time); Agent 360 v0.6 answer 5.4.
 - **v1.2** (2026-11-05, CIO): Step 1 also reads mail v4 for a role that has joined it; every seat joins 2026-11-09 on xian's yes (decisions.log 2026-11-05 10:47).
 - **v1.1** (2026-11-04, CIO): Step 5 records a ruling of xian's the same hour and checks a relay landed. #1715's FOLD candidate (`docs/internal/operations/skill-candidates-review.md`), xian's "Yes same-hour in check-mailbox" relayed by Exec 11-04.
