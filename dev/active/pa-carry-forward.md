@@ -18,8 +18,8 @@
 - **#2242 (Q2):** held-token row, on xian's `mcp_allow.py remove` relayed by Exec.
 - **#2238:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
 - **Fresh-account checks** (A1, A2, first-reply notice, #2225 re-ask): on the invite hold lifting (#2261, #2282) and HOST's slot with xian.
-- **R7 / plugin:** rescoped by xian 10-31 into 1.0 (decisions.log 09:48); #1300 closed 11-01. Asked Exec (cc PPM) 11-06 when the plugin planning is. Standing item 2.
-- **Card line for served-run checks:** proposed to CIO, HOST, Exec 11-06 (as priority 3). Exec's call with PA.
+- **R7 / plugin (#1282):** second Production track after the first sprint (xian 10-31 21:17); date from xian's sprint-cadence talk (Exec raises it). PPM places PA's input on #1282. Standing item 2.
+- **Card:** served-run checks are priority 3 since 11-06 (Exec yes).
 - **Mail v4** opens to every seat Mon 11-09; then also `python3 scripts/mail4.py inbox --role pa`. v3 fallback until 11-23.
 - **START habit:** run `python3 scripts/owed-scan.py --role pa` (missed every START 10-23 to 11-05).
 
