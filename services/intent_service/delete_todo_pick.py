@@ -267,7 +267,7 @@ async def arm_delete_pick(
         return None
     from services.intent_service.reminder_clear import _due_iso
 
-    # #2219 interim (c) (Arch 11-06 09:58; CXO's words 10:1x): a delete with no
+    # #2219 interim (c) (Arch 11-06 09:58; CXO's words 10:11): a delete with no
     # router target, right after the numbered todo list, picks over THAT list's
     # lines, in its order and grouping, so "2" means the line the person saw. Code
     # reads recorded state here, never the message's words.

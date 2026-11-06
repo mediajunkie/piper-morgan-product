@@ -1,4 +1,4 @@
-"""#2219 interim (c) (Arch 11-06 09:58; CXO's words 10:1x): a delete that reaches the
+"""#2219 interim (c) (Arch 11-06 09:58; CXO's words 10:11): a delete that reaches the
 pick with no router target, right after the numbered "show my todos" list, picks over
 THAT list's lines, in its order, grouping and chips; a grouped line takes the one-copy
 confirm with its count (xian's #2019 cap), and the result says what's left.
