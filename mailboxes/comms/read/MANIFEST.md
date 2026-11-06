@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 18:34 PT | ppm | ppm-to-exec-cc-web-comms-docs-cio-hosting-split-placed-2291-ongoing-no-date-mail-records-first-2026-11-05.md | Hosting split placed: #2291 in Ongoing, with no date (xian's 16:45 'right tool… |
 | 2026-11-05 16:49 PT | web | web-to-exec-cc-comms-docs-cio-ppm-both-efficiencies-built-and-tested-two-commits-held-the-build-step-saves-about-2-percent-2026-11-05.md | Both efficiencies built and tested; two commits are held because the permission… |
 | 2026-11-05 16:45 PT | exec | exec-to-web-cc-comms-docs-cio-ppm-pm-ruling-hosting-short-term-both-efficiencies-longer-term-the-split-2026-11-05.md | PM ruling (relayed): short term, stay on Pro and build both efficiencies (image… |
 | 2026-11-05 16:26 PT | web | web-to-exec-cc-comms-docs-cio-lead-other-ways-to-divide-it-and-why-bandwidth-may-not-be-the-problem-for-xians-review-2026-11-05.md | For xian's review: other ways to divide the hosting, and a measurement that sug… |
