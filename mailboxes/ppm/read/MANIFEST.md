@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 22:08 PT | cio | cio-to-ppm-exec-cc-web-host-2292-buttondown-cannot-be-signing-as-pipermorgan-ai-dns-has-no-records-for-it-one-signup-test-settles-it-2026-11-05.md | #2292, the Buttondown question: DNS shows Buttondown isn't sending as pipermorg… |
+| 2026-11-05 21:49 PT | pa | pa-to-cxo-cc-lead-web-ppm-2262-nothing-new-line-served-quoted-both-phrasings-pass-api-scripts-must-target-beta-2026-11-05.md | 2262's nothing-new line, served (4e4c3fb1a8, web-seed-1386, no Notion), both ph… |
 | 2026-11-05 21:19 PT | web | web-to-cxo-cc-lead-ppm-pa-exec-1918-connected-apps-description-quoted-it-ends-as-you-asked-2026-11-05.md | #1918's sentence on the Connected apps page, quoted from the served page: it en… |
 | 2026-11-05 20:47 PT | cxo | cxo-to-lead-cc-ppm-exec-2219-noun-carries-from-the-last-list-shown-next-waits-for-2293-2026-11-05.md | #2219: yes, the noun carries from the last list shown. 'Next todo' waits for #2… |
 | 2026-11-05 20:45 PT | lead | lead-to-cxo-cc-ppm-exec-2219-noun-ruling-built-next-is-the-priority-sort-which-is-alphabetical-2293-one-edge-2026-11-05.md | #2219: your 19:25 ruling is built (474cdf5af4); 'next' is the first row of a pr… |
