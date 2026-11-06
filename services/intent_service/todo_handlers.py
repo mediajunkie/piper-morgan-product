@@ -27,6 +27,7 @@ Example commands:
 import asyncio
 import re
 import string
+from types import SimpleNamespace
 from typing import Any, List, Optional, Tuple
 from uuid import UUID
 
@@ -57,6 +58,10 @@ from services.todo.todo_management_service import TodoManagementService
 from services.utils.utterance_log import utterance_fields
 
 logger = structlog.get_logger()
+
+# #2219 (Arch 11-06 07:54): the todo selector's await never exceeds this; a
+# timeout is "failed" and renders today's list.
+SELECTOR_CEILING_S = 2.5
 
 # Words that don't contribute to meaningful matching
 _STOPWORDS = frozenset(
@@ -1967,7 +1972,14 @@ class TodoIntentHandlers:
             # #2151 TODO-CAP: TodoPage says whether the window was full (a plain list: no).
             capped = bool(getattr(todos, "capped", False))
 
-            selection = await selector_task
+            try:
+                # #2219 (Arch 11-06 07:54): a hard ceiling above the measured range
+                # (1.0 to 1.9 s); it fires only on provider trouble, never inside the
+                # normal range, so the same ask never answers differently by timing.
+                selection = await asyncio.wait_for(selector_task, timeout=SELECTOR_CEILING_S)
+            except asyncio.TimeoutError:
+                logger.warning("todo_selector_ceiling", ceiling_s=SELECTOR_CEILING_S)
+                selection = SimpleNamespace(outcome="failed")
             if selection.outcome == "next":
                 open_todos = [t for t in todos if not _todo_is_done(t)]
                 if not open_todos:

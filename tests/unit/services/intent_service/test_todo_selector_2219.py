@@ -219,3 +219,34 @@ async def test_a_cancelled_turn_cancels_the_selector():
     with pytest.raises(asyncio.CancelledError):
         await turn
     await asyncio.wait_for(selector_cancelled.wait(), timeout=1)
+
+
+@pytest.mark.asyncio
+async def test_a_selector_past_the_ceiling_gives_todays_list(monkeypatch):
+    """Arch 11-06 07:54: a hard ceiling on the await; a timeout is failed, so the list."""
+    import services.intent_service.todo_handlers as th
+
+    monkeypatch.setattr(th, "SELECTOR_CEILING_S", 0.01)
+    h = TodoIntentHandlers()
+    cancelled = asyncio.Event()
+
+    async def select(message, user_id):
+        try:
+            await asyncio.sleep(10)
+        except asyncio.CancelledError:
+            cancelled.set()
+            raise
+        return TodoSelection(outcome=OUTCOME_NEXT)
+
+    h._resolve_list_selection = select
+    h.todo_service = MagicMock()
+    h.todo_service.list_todos = AsyncMock(return_value=[_todo("a"), _todo("b")])
+    reply = await h.handle_list_todos(_intent(), "s", USER)
+    assert reply.startswith("You have 2 open todos. Here they are:")
+    assert cancelled.is_set()
+
+
+def test_the_ceiling_sits_above_the_measured_range():
+    from services.intent_service.todo_handlers import SELECTOR_CEILING_S
+
+    assert SELECTOR_CEILING_S == 2.5
