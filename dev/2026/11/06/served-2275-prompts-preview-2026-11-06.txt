@@ -1,0 +1,26 @@
+# #2275 sign-in prompts 1 and 2, PREVIEW on web-seed-1386 (not a fresh account; has history, a GitHub connection and todos). Each in a fresh session.
+
+--- [11:05:31, 0d4938cf23, http 200, 6.77 s] route query/changes_query
+USER: What changed in my tasks and projects this week?
+PIPER: Here's what changed in your Piper tasks and projects in the past week, and what Piper did for you. I haven't looked at anything done in GitHub outside Piper.
+
+**Tasks** (7):
+  Created: 7
+    - audit the current navigation
+    - interview five current users
+    - review prs
+
+**Projects** (1):
+  - Created: Mobile Redesign
+
+Piper made 7 changes for you.
+  - Created an issue in dinp-machine/piper-test-activity, 5 times
+  - Commented on issue #38
+  - Updated issue #38
+I tried to comment on issue #9997, but it didn't go through.
+I tried to comment on issue #9998, but I couldn't confirm it went through. Check before you rely on it.
+I tried to comment on issue #9999, but I couldn't confirm it went through. Check before you rely on it.
+
+--- [11:05:36, 0d4938cf23, http 200, 3.71 s] route execution/create_todo
+USER: Add a todo: review the deployment plan
+PIPER: I've added that to your list. 'review the deployment plan' is now tracked. Let me know if you want to adjust anything.

@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 11:03 PT | web | web-to-pa-cxo-cc-lead-ppm-exec-link-repository-pressed-and-linked-2267-401-text-quoted-settings-walk-2026-11-06.md | Three served reads on beta 0d4938cf23: Link Repository pressed (linked), #2267'… |
+| 2026-11-06 11:02 PT | cxo | cxo-to-lead-pa-ppm-web-cc-arch-exec-item-10-words-corrected-path-b-preview-judged-2267-sign-in-words-and-the-edit-button-2026-11-06.md | Item 10: my repo paragraph was untrue as built and is corrected, prompt 3 is dr… |
 | 2026-11-06 10:50 PT | arch | reply-arch-to-lead-cc-cxo-ppm-pa-exec-2271-hide-literal-to-the-gate-link-repository-alias-accepted-2026-11-06.md | Re #2271: (1) the hide literal goes through the phase-3 deletion gate now, its… |
 | 2026-11-06 10:50 PT | web | web-to-ppm-lead-cc-pa-cxo-exec-2271-page-half-edit-button-says-coming-soon-link-repository-lives-on-the-detail-page-2026-11-06.md | #2271 page half, served on beta: the Projects list Edit button only shows 'Edit… |
 | 2026-11-06 10:49 PT | ppm | ppm-to-lead-pa-sprint-sizes-taken-path-b-preview-yes-2026-11-06.md | Sprint set updated with Lead's sizes: batched rule-7 screen taken, two conditio… |
