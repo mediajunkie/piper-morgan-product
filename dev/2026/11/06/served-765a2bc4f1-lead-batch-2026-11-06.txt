@@ -1,0 +1,165 @@
+# Lead's 13:09 batch on 765a2bc4f1, web-seed-1386, PA run 13:10
+
+--- [13:10:42, 765a2bc4f1, http 200, 5.64 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 9 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×3)
+4. interview five current users
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
+
+--- [13:10:53, 765a2bc4f1, http 200, 10.32 s] route conversation/complete_todo
+USER: complete the second one
+PIPER: Which todo should I complete?
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×3)
+4. interview five current users
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
+
+Say the number or the name, or 'never mind' to leave them alone.
+# (item 3 run before answering row 3's pick, so 'high task' still exists)
+
+--- [13:11:10, 765a2bc4f1, http 200, 5.89 s] route execution/complete_todo
+USER: mark high task as done
+PIPER: Nice - I've marked 'high task' as done. Good progress!
+# back to row 3's session; line 2 'high task' was completed by item 3 meanwhile
+
+--- [13:11:19, 765a2bc4f1, http 200, 0.26 s] route execution/complete_todo
+USER: 2
+PIPER: I can't find "high task" on your list anymore. Say 'show my todos' to see the list — nothing has been changed.
+
+--- [13:11:22, 765a2bc4f1, http 200, 1.90 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×3)
+3. interview five current users
+4. audit the current navigation
+5. review the deployment plan
+6. draft the launch checklist
+# row 5, fresh session
+
+--- [13:11:32, 765a2bc4f1, http 200, 1.93 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×3)
+3. interview five current users
+4. audit the current navigation
+5. review the deployment plan
+6. draft the launch checklist
+
+--- [13:11:44, 765a2bc4f1, http 200, 11.10 s] route execution/delete_item
+USER: delete the second one
+PIPER: Which todo should I delete?
+1. urgent task (urgent)
+2. review prs (×3)
+3. interview five current users
+4. audit the current navigation
+5. review the deployment plan
+6. draft the launch checklist
+
+Say the number or the name, or 'never mind' to leave them alone.
+
+--- [13:11:51, 765a2bc4f1, http 200, 0.26 s] route execution/delete_todo
+USER: 2
+PIPER: Delete one of your 3 "review prs" todos? (yes/no)
+
+--- [13:11:52, 765a2bc4f1, http 200, 0.27 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete the todo "review prs". Nothing has been changed.
+
+--- [13:11:54, 765a2bc4f1, http 200, 1.99 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×3)
+3. interview five current users
+4. audit the current navigation
+5. review the deployment plan
+6. draft the launch checklist
+# row 3 again, fresh session, so the pick lands on a live line
+
+--- [13:12:06, 765a2bc4f1, http 200, 1.83 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×3)
+3. interview five current users
+4. audit the current navigation
+5. review the deployment plan
+6. draft the launch checklist
+
+--- [13:12:08, 765a2bc4f1, http 200, 1.43 s] route conversation/complete_todo
+USER: complete the second one
+PIPER: Which todo should I complete?
+1. urgent task (urgent)
+2. review prs (×3)
+3. interview five current users
+4. audit the current navigation
+5. review the deployment plan
+6. draft the launch checklist
+
+Say the number or the name, or 'never mind' to leave them alone.
+
+--- [13:12:09, 765a2bc4f1, http 200, 0.25 s] route execution/complete_todo
+USER: 2
+PIPER: "review prs" is on your list 3 times. Complete one, or all 3?
+
+--- [13:12:16, 765a2bc4f1, http 200, 0.30 s] route execution/complete_todo
+USER: one
+PIPER: Marked one "review prs" as done. 2 are still open.
+
+--- [13:12:19, 765a2bc4f1, http 200, 1.83 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 7 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×2)
+3. interview five current users
+4. audit the current navigation
+5. review the deployment plan
+6. draft the launch checklist
+# items 4-6, fresh sessions
+
+--- [13:12:26, 765a2bc4f1, http 200, 6.29 s] route query/changes_query
+USER: What changed in my tasks and projects this week?
+PIPER: Here's what changed in your Piper tasks and projects in the past week, and what Piper did for you. I haven't looked at anything done in GitHub outside Piper.
+
+**Tasks** (9):
+  Created: 7
+    - draft the launch checklist
+    - review the deployment plan
+    - audit the current navigation
+    - interview five current users
+    - review prs (×2)
+    - urgent task
+  Completed: 2
+    - review prs
+    - high task
+
+**Projects** (1):
+  - Created: Mobile Redesign
+
+Piper made 7 changes for you.
+  - Created an issue in dinp-machine/piper-test-activity, 5 times
+  - Commented on issue #38
+  - Updated issue #38
+I tried to comment on issue #9997, but it didn't go through.
+I tried to comment on issue #9998, but I couldn't confirm it went through. Check before you rely on it.
+I tried to comment on issue #9999, but I couldn't confirm it went through. Check before you rely on it.
+
+--- [13:12:39, 765a2bc4f1, http 200, 13.16 s] route STATUS/get_project_status
+USER: what's in my Mobile Redesign project?
+PIPER: I can see your projects' names, but not the tasks in them yet.
+
+If you want, you could paste in what's there and I can help you make sense of it — or if you're looking for a status snapshot, I can pull that for the Mobile Redesign project directly. If you'd like me to try that, just tell me directly.
+
+--- [13:12:52, 765a2bc4f1, http 200, 11.68 s] route execution/delete_item
+USER: delete the first one
+PIPER: I'm not sure which one you mean, because I haven't shown you a list to count from. Nothing was deleted. Tell me the name of the todo or reminder you want to delete.
