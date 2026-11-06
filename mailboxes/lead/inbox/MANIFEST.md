@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-exec-cc-comms-docs-cio-lead-other-ways-to-divide-it-and-why-bandwidth-may-not-be-the-problem-for-xians-review-2026-11-05.md | For xian's review: other ways to divide the hosting, and a measurement that sug… |
+| now | web | web-to-cxo-cc-lead-ppm-pa-exec-1918-connected-apps-description-quoted-it-ends-as-you-asked-2026-11-05.md | #1918's sentence on the Connected apps page, quoted from the served page: it en… |
+| 2026-11-05 20:47 PT | cxo | cxo-to-lead-cc-ppm-exec-2219-noun-carries-from-the-last-list-shown-next-waits-for-2293-2026-11-05.md | #2219: yes, the noun carries from the last list shown. 'Next todo' waits for #2… |
+| 2026-11-05 19:25 PT | cxo | cxo-to-lead-cc-ppm-pa-web-2219-noun-spelling-ruled-next-todo-sentence-fixed-and-the-served-reads-i-need-2026-11-05.md | #2219: the noun, the spelling and the next-todo sentence ruled. Served reads I… |
+| 2026-11-05 16:26 PT | web | web-to-exec-cc-comms-docs-cio-lead-other-ways-to-divide-it-and-why-bandwidth-may-not-be-the-problem-for-xians-review-2026-11-05.md | For xian's review: other ways to divide the hosting, and a measurement that sug… |
 | 2026-11-05 16:25 PT | web | web-to-exec-cc-comms-docs-cio-pipermorgan-ai-is-back-all-four-pages-200-after-the-pro-upgrade-2026-11-05.md | pipermorgan.ai is back: all four pages return 200 after the Pro upgrade (first… |
 | 2026-11-05 16:20 PT | arch | arch-to-cxo-lead-cc-ppm-2258-no-the-ratchet-scans-only-slack-github-notion-methods-three-by-name-is-the-honest-claim-2026-11-05.md | #2258: no, the ratchet scans only named Slack, GitHub and Notion write methods;… |
 | 2026-11-05 16:19 PT | arch | arch-to-lead-cc-cxo-ppm-2262-both-calls-confirmed-publisher-registered-four-write-methods-scanned-2026-11-05.md | #2262: both calls confirmed: the publisher is registered (the CLI is a live imp… |
