@@ -21,6 +21,7 @@ import pytest
 from services.domain.models import Todo
 from services.intent.intent_service import IntentService
 from services.intent_service.classifier import IntentClassifier
+from services.intent_service.delete_todo_pick import DELETE_ITEM_NO_LIST_ASK
 from services.intent_service.destructive_confirm import is_delete_todo_action
 from services.intent_service.todo_handlers import TodoIntentHandlers
 from services.intent_service.unwired_writes import GENERIC_UNWIRED_WRITE_DECLINE
@@ -111,8 +112,10 @@ async def test_after_a_list_it_reaches_the_armed_delete_pick_not_the_decline(tod
     )
     assert result.message != GENERIC_UNWIRED_WRITE_DECLINE
     assert "didn't recognize" not in result.message
-    assert result.message.startswith("Which ")
+    # The last list was reminders, so the pick says "reminder" and lists reminders only.
+    assert result.message.startswith("Which reminder should I delete?")
     assert "1. call mom" in result.message
+    assert "call the dentist" not in result.message
 
 
 @pytest.mark.asyncio
@@ -122,3 +125,19 @@ async def test_with_no_list_shown_it_reshows_instead_of_the_generic_decline(todo
     )
     assert "didn't recognize" not in result.message
     assert result.message != GENERIC_UNWIRED_WRITE_DECLINE
+    assert result.message == DELETE_ITEM_NO_LIST_ASK
+    assert "Which todo" not in result.message
+
+
+@pytest.mark.asyncio
+async def test_a_typed_delete_todo_still_asks_which_todo_with_no_list(todo_boundary):
+    """The gate is the invented noun's only: a real delete_todo emission keeps today's pick."""
+    register_default_workflows()
+    emission = dict(_EMISSION, action="delete_todo")
+    service = IntentService(
+        intent_classifier=IntentClassifier(llm_service=_PinnedEmissionLLM(emission))
+    )
+    result = await service.process_intent(
+        message="delete a todo", session_id="e2e-2294-typed", user_id=_USER
+    )
+    assert result.message.startswith("Which todo should I delete?")
