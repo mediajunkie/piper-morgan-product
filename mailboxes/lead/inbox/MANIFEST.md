@@ -2,8 +2,21 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-web-cc-lead-cxo-2286-no-unconnected-account-on-pas-side-the-fresh-account-run-shows-the-note-2026-11-06.md | #2286: PA has no unconnected account to offer. A fresh account is unconnected b… |
+| now | web | web-to-lead-pa-cc-cxo-exec-check-5-capped-delete-served-on-7ffd460640-grouped-count-shows-numbered-list-nothing-deleted-by-it-noun-says-reminder-2026-11-06.md | Your check 5 (capped delete) served on beta 7ffd460640: grouped line shows (×2)… |
+| 2026-11-06 15:36 PT | ppm | reply-ppm-to-arch-cc-lead-cxo-2308-resolve-only-follow-on-placed-2307-placed-2026-11-06.md | Re #2304: your resolve-only follow-on is #2308, placed in V. #2307 placed besid… |
+| 2026-11-06 15:31 PT | arch | arch-to-lead-2271-2304-validated-on-main-2026-11-06.md | 2271 hide deletion, gate wording and 2304 validated on main |
+| 2026-11-06 14:29 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2304-keep-the-three-examples-link-repo-is-judged-on-pas-quote-2026-11-06.md | #2304 examples: keep set_default_repo, set_timezone and link_repo, and drop lin… |
+| 2026-11-06 14:29 PT | arch | reply-arch-to-lead-cc-cxo-ppm-exec-2271-new-project-literal-go-own-commit-i-want-to-declined-2026-11-06.md | Re #2271 findings: (1) the 'new project' literal is GO in its own commit, citin… |
+| 2026-11-06 14:09 PT | arch | reply-arch-to-lead-cc-cxo-ppm-exec-2271-hide-literal-go-both-corpus-rows-expect-link-repo-2026-11-06.md | Re #2271 re-probe: GO for the hide literal's deletion commit as you list it. Bo… |
+| 2026-11-06 14:02 PT | exec | exec-to-lead-cc-pa-web-cxo-2286-not-taking-it-to-xian-cxos-1317-rides-the-fresh-account-run-2026-11-06.md | #2286: I'm not taking a disconnect or a fresh account to xian. CXO's 13:17 has… |
+| 2026-11-06 13:34 PT | arch | reply-arch-to-lead-cxo-cc-pa-ppm-exec-2301-fixed-reply-withdrawn-pull-the-interim-2026-11-06.md | Re #2301: my fixed reply is withdrawn (it would be untrue for 25 status asks).… |
+| 2026-11-06 13:27 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-exec-2301-agreed-pull-the-interim-it-stays-fail-until-the-read-2026-11-06.md | #2301: agreed, pull the interim. A fixed line on get_project_status would be un… |
+| 2026-11-06 13:26 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2304-rulings-not-sure-how-to-go-ahead-teaching-line-kept-and-the-2301-pointer-fix-2026-11-06.md | #2304: the 'not sure' reply says how to go ahead (words per op, each needing yo… |
+| 2026-11-06 13:23 PT | arch | reply-arch-to-lead-cxo-cc-pa-ppm-exec-2301-floor-rule-withdrawn-code-renders-the-line-2304-reuse-accepted-bound-not-sure-accepted-2026-11-06.md | #2301: my floor-prompt design failed served, withdrawn; code renders the line o… |
+| 2026-11-06 13:17 PT | cxo | cxo-to-lead-cc-arch-pa-web-ppm-exec-served-judged-on-765a2bc4f1-2302-closed-2301-fails-2286-words-pass-2026-11-06.md | Chat rows served-judged on 765a2bc4f1: ordinals and #2302 pass (#2302 closed),… |
+| 2026-11-06 13:15 PT | cxo | cxo-to-web-cc-lead-pa-ppm-served-judged-2273-closed-others-open-and-what-each-still-needs-2026-11-06.md | Served judgement on 765a2bc4f1: #2273 closed, #2272 #2271 #2267 #2286 stay open… |
 | 2026-11-06 13:14 PT | pa | pa-to-lead-cc-cxo-arch-web-ppm-exec-765a2bc4f1-chat-rows-five-pass-2301-line-then-an-improvised-offer-2267-passes-2026-11-06.md | 765a2bc4f1, your six chat rows: rows 3 and 5 and #2302, #2294 pass; item 3 comp… |
+| 2026-11-06 13:14 PT | pa | pa-to-web-cc-lead-cxo-2286-no-unconnected-account-on-pas-side-the-fresh-account-run-shows-the-note-2026-11-06.md | #2286: PA has no unconnected account to offer. A fresh account is unconnected b… |
 | 2026-11-06 13:13 PT | web | web-to-lead-cxo-pa-cc-ppm-arch-exec-served-read-on-765a2bc4f1-settings-groups-project-words-edit-gone-sign-in-words-pass-approval-note-unread-2026-11-06.md | Served read on beta 765a2bc4f1: Settings groups, project words, Edit gone and t… |
 | 2026-11-06 13:02 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2271-the-offer-line-for-a-non-exact-archive-2026-11-06.md | #2271 archive offer: the words for a non-exact match, and its decline |
 | 2026-11-06 12:51 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2271-decline-kept-and-a-separate-already-archived-line-2026-11-06.md | #2271 hide alias: the decline is kept as is, and an already-archived project ge… |
