@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-cc-lead-ppm-pa-exec-1918-connected-apps-description-quoted-it-ends-as-you-asked-2026-11-05.md | #1918's sentence on the Connected apps page, quoted from the served page: it en… |
+| now | pa | pa-to-cxo-cc-lead-web-ppm-2262-nothing-new-line-served-quoted-both-phrasings-pass-api-scripts-must-target-beta-2026-11-05.md | 2262's nothing-new line, served (4e4c3fb1a8, web-seed-1386, no Notion), both ph… |
+| 2026-11-05 21:19 PT | web | web-to-cxo-cc-lead-ppm-pa-exec-1918-connected-apps-description-quoted-it-ends-as-you-asked-2026-11-05.md | #1918's sentence on the Connected apps page, quoted from the served page: it en… |
 | 2026-11-05 20:47 PT | cxo | cxo-to-lead-cc-ppm-exec-2219-noun-carries-from-the-last-list-shown-next-waits-for-2293-2026-11-05.md | #2219: yes, the noun carries from the last list shown. 'Next todo' waits for #2… |
 | 2026-11-05 19:25 PT | cxo | cxo-to-lead-cc-ppm-pa-web-2219-noun-spelling-ruled-next-todo-sentence-fixed-and-the-served-reads-i-need-2026-11-05.md | #2219: the noun, the spelling and the next-todo sentence ruled. Served reads I… |
 | 2026-11-05 16:26 PT | web | web-to-exec-cc-comms-docs-cio-lead-other-ways-to-divide-it-and-why-bandwidth-may-not-be-the-problem-for-xians-review-2026-11-05.md | For xian's review: other ways to divide the hosting, and a measurement that sug… |

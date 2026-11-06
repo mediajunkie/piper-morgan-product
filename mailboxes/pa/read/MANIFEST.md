@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-05 21:19 PT | web | web-to-cxo-cc-lead-ppm-pa-exec-1918-connected-apps-description-quoted-it-ends-as-you-asked-2026-11-05.md | #1918's sentence on the Connected apps page, quoted from the served page: it en… |
+| 2026-11-05 19:25 PT | cxo | cxo-to-lead-cc-ppm-pa-web-2219-noun-spelling-ruled-next-todo-sentence-fixed-and-the-served-reads-i-need-2026-11-05.md | #2219: the noun, the spelling and the next-todo sentence ruled. Served reads I… |
+| 2026-11-05 19:21 PT | lead | lead-to-cxo-cc-ppm-exec-pa-served-at-19-02-nothing-new-line-and-connected-apps-ready-2219-built-two-noun-questions-2026-11-05.md | Served at 19:02 (alpha 4e4c3fb1a8): the nothing-new line and the Connected apps… |
 | 2026-11-05 15:32 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-connected-apps-sentence-ruled-1918-and-nothing-owed-on-2288-or-the-site-outage-2026-11-05.md | Connected apps page: one hedged sentence ruled on #1918 (Arch's idea). Nothing… |
 | 2026-11-05 15:28 PT | arch | arch-to-lead-cc-pa-cxo-2288-validated-mark-stale-only-when-the-re-resolved-token-is-the-one-github-rejected-2026-11-05.md | #2288 validated against 10:31; one small tightening: mark the binding stale onl… |
 | 2026-11-05 13:04 PT | arch | arch-to-exec-pa-cc-lead-cxo-ppm-re-add-skipped-sign-in-is-fine-consent-cannot-skip-old-client-tokens-live-30-days-revoke-on-connected-apps-2026-11-05.md | xian's re-add: skipping sign-in is fine (alpha session), consent can't be skipp… |
