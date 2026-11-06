@@ -241,7 +241,7 @@ class TestBuilderNamedTargetLeg:
             _delete_intent("delete todo 1"), handlers, _USER
         )
         assert gate.offer is not None
-        assert gate.offer.question == 'Delete the to-do "hydrate"? (yes/no)'
+        assert gate.offer.question == 'Delete the todo "hydrate"? (yes/no)'
 
     async def test_lookup_failure_on_named_path_is_honest_noop(self):
         """The named leg inherits the #1666 safe default: can't see the list
@@ -421,7 +421,7 @@ class TestEndToEndNamedDelete:
         phrase = "delete the reminder to check the flayrod"
         _stub_classification(monkeypatch, live_service, phrase, "delete_todo")
         result = await live_service.process_intent(message=phrase, session_id=sid, user_id=_USER)
-        assert "couldn't find a to-do that matches that" in result.message
+        assert "couldn't find a todo that matches that" in result.message
         assert "project" not in result.message.lower()
         assert _pending_offers(live_service).get(sid) is None
         assert todo_boundary["deleted"] == []
@@ -434,7 +434,7 @@ class TestEndToEndNamedDelete:
         result = await live_service.process_intent(
             message="delete todo 1", session_id=sid, user_id=_USER
         )
-        assert result.message == 'Delete the to-do "hydrate"? (yes/no)'
+        assert result.message == 'Delete the todo "hydrate"? (yes/no)'
         assert todo_boundary["deleted"] == []
 
 

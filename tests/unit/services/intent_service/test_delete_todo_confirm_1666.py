@@ -12,7 +12,7 @@ The fix under test: delete_todo + its ActionMapper alias family
 the legacy elif REMOVED in the same commit; the #1190 gate arms via the
 ASYNC delete-todo builder (positional target → the honest ask needs the
 owner-scoped list read), binding the REAL todo text into the question
-('Delete the to-do "text"? (yes/no)' since issue 2046, in the user's noun —
+('Delete the todo "text"? (yes/no)' since issue 2046, in the user's noun —
 the user confirms WHAT, not just
 WHICH) and the resolved row into the intent (the confirmed yes deletes
 exactly the row named in the ask, never a positional re-resolve).
@@ -266,7 +266,7 @@ class TestConfirmBuilder:
         intent = _delete_intent("delete todo 1")
         gate = await build_todo_delete_confirmation(intent, handlers, _USER)
         assert gate.offer is not None and not gate.passthrough
-        assert gate.offer.question == 'Delete the to-do "Review the PR"? (yes/no)'
+        assert gate.offer.question == 'Delete the todo "Review the PR"? (yes/no)'
         record = gate.offer.offer
         assert record["workflow_type"] == CONFIRM_PENDING_ACTION_WORKFLOW
         # #1665 invariant: the stored ask IS the said ask, byte-for-byte.
@@ -275,8 +275,8 @@ class TestConfirmBuilder:
         assert pa["kind"] == DESTRUCTIVE_CONFIRM_KIND
         assert pa["action"] == "delete_todo"
         assert pa["intent"] is intent
-        assert pa["summary"] == 'delete the to-do "Review the PR"'
-        assert "won't delete the to-do" in record["decline_message"]
+        assert pa["summary"] == 'delete the todo "Review the PR"'
+        assert "won't delete the todo" in record["decline_message"]
         assert "Nothing has been changed" in record["decline_message"]
         # WHAT-binding: the resolved row rides the intent for the yes turn.
         resolved = intent.context[RESOLVED_TODO_CONTEXT_KEY]
@@ -322,7 +322,7 @@ class TestConfirmBuilder:
         assert gate.clarification is not None
         assert gate.offer is None and not gate.passthrough
         # #2169 (CXO 10-24): the miss no longer quotes the stripped message back.
-        assert "couldn't find a to-do that matches that" in gate.clarification
+        assert "couldn't find a todo that matches that" in gate.clarification
         assert "project" not in gate.clarification.lower()
 
     async def test_out_of_range_passes_through(self):
@@ -371,7 +371,7 @@ class TestEndToEndConfirmFlow:
         result = await live_service.process_intent(
             message="delete todo 1", session_id=sid, user_id=_USER
         )
-        assert result.message == 'Delete the to-do "Review the PR"? (yes/no)'
+        assert result.message == 'Delete the todo "Review the PR"? (yes/no)'
         assert result.intent_data.get("destructive_confirmation_pending") is True
         assert result.requires_clarification is True
         stored = _pending_offers(live_service).get(sid)
@@ -428,7 +428,7 @@ class TestEndToEndConfirmFlow:
         _stub_classification(monkeypatch, live_service, "delete todo 1", "delete_todo")
         await live_service.process_intent(message="delete todo 1", session_id=sid, user_id=_USER)
         result = await live_service.process_intent(message=negative, session_id=sid, user_id=_USER)
-        assert 'won\'t delete the to-do "Review the PR"' in result.message
+        assert 'won\'t delete the todo "Review the PR"' in result.message
         assert "Nothing has been changed" in result.message
         assert todo_boundary["deleted"] == []
         assert _pending_offers(live_service).get(sid) is None
@@ -457,7 +457,7 @@ class TestEndToEndConfirmFlow:
             )
             # However the turn resolves downstream, never the decline copy —
             # declining is not what PM said either.
-            assert "won't delete the to-do" not in result.message
+            assert "won't delete the todo" not in result.message
         except IntentProcessingError as exc:
             assert "LLM boundary touched" in str(exc) or "INTENT_CLASSIFICATION_FAILED" in str(
                 exc
@@ -474,7 +474,7 @@ class TestEndToEndConfirmFlow:
         result = await live_service.process_intent(
             message="remove todo 2", session_id=sid, user_id=_USER
         )
-        assert result.message == 'Delete the to-do "Call the vendor"? (yes/no)'
+        assert result.message == 'Delete the todo "Call the vendor"? (yes/no)'
         assert todo_boundary["deleted"] == []
         todo_boundary["allow_delete"] = True
         await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
@@ -495,7 +495,7 @@ class TestEndToEndConfirmFlow:
         result = await live_service.process_intent(
             message="delete todo 1", session_id=sid, user_id=_USER
         )
-        assert result.message == 'Delete the to-do "Review the PR"? (yes/no)'
+        assert result.message == 'Delete the todo "Review the PR"? (yes/no)'
         assert todo_boundary["deleted"] == []
 
 
@@ -587,4 +587,4 @@ class TestClearFamilyBoundaryBothWays:
             message="delete todo 1", session_id=sid, user_id=_USER
         )
         assert variant_one_question() not in result.message
-        assert result.message.startswith('Delete the to-do "Review the PR"')
+        assert result.message.startswith('Delete the todo "Review the PR"')

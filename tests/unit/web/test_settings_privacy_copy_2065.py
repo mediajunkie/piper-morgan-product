@@ -54,7 +54,7 @@ def test_settings_link_label(client):
 def test_privacy_page_copy(client):
     body = _get(client, "/settings/privacy")
     assert DELETION in body
-    assert "Conversations and to-dos can't be exported yet" in body
+    assert "Conversations and todos can't be exported yet" in body
     assert 'href="/privacy"' in body
     assert 'href="/files"' in body and 'href="/learning"' in body
     for gone in (

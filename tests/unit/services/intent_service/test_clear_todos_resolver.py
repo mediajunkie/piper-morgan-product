@@ -293,7 +293,7 @@ class TestStoredDone:
         assert msg.endswith(
             "That's what 'clear' has meant for you. Say so if you meant delete this time."
         )
-        assert msg.startswith("Marked 3 reminders done:")
+        assert msg.startswith("Marked 3 todos done:")
 
 
 class TestStoredDelete:

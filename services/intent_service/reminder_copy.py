@@ -23,15 +23,17 @@ CXO's two rulings (the issue's copy comment and her 10-16 08:16 memo):
    against exactly these numbers. "Tell me which one." is an instruction,
    not a yes/no question: nothing is armed.
 
-2. **One noun.** The list, the confirm and the result all say "reminder"
-   (matching "You have 3 reminders saved"); "to-do" only where the user
-   said "to-do". Every one-item delete confirm, numbered or by title, reads
-   ``Delete the reminder "buy milk"? (yes/no)``.
+2. **One noun.** #2219 (CXO 2026-11-05 19:25) superseded #2046's default: the
+   list, the confirm and the result say "todo" (the page is titled "Todos"),
+   unless the person said "reminder" or "remind", and their own word always
+   wins. One spelling, "todo", no hyphen. A one-item delete confirm reads
+   ``Delete the todo "buy milk"? (yes/no)``, or ``Delete the reminder …`` when
+   the person said reminder.
 
 The noun VALUE follows the codebase's existing convention (#1569,
 ``reminder_clear.ClearAsk.noun`` / ``delete_todo_pick``): ``"reminder"`` or
 ``"todo"``. :func:`noun_word` is the display spelling CXO's copy uses
-("to-do"). Detection is a word-SET check over the user's message, never a
+("todo"). Detection is a word-SET check over the user's message, never a
 message-parsing regex (``TestExtractionPatternRatchet``).
 """
 
@@ -52,7 +54,8 @@ DELETE_CONFIRM_QUESTION = 'Delete the {noun} "{title}"?'
 # listing it replaces; only the shown rows are bound).
 NO_LIST_MAX_SHOWN = 10
 
-_REMINDER_WORDS = frozenset({"reminder", "reminders"})
+# #2219 (CXO 2026-11-05 19:25): "remind me" is the person saying reminder too.
+_REMINDER_WORDS = frozenset({"reminder", "reminders", "remind"})
 _TODO_WORDS = frozenset({"todo", "todos", "to-do", "to-dos"})
 
 
@@ -71,21 +74,22 @@ def said_noun(message: Optional[str]) -> Optional[str]:
     return None
 
 
-def copy_noun(message: Optional[str], default: str = "reminder") -> str:
-    """CXO's rule: "reminder", unless the user said "to-do"."""
+def copy_noun(message: Optional[str], default: str = "todo") -> str:
+    """CXO's rule (#2219, 2026-11-05 19:25, superseding #2046's default): "todo",
+    unless the person said "reminder" or "remind"; their own word always wins."""
     return said_noun(message) or default
 
 
 def noun_word(noun: str) -> str:
-    """Display spelling: "reminder" | "to-do"."""
-    return "to-do" if noun == "todo" else "reminder"
+    """Display spelling: "reminder" | "todo" (#2219: no hyphen, everywhere)."""
+    return "todo" if noun == "todo" else "reminder"
 
 
 def noun_plural(noun: str) -> str:
     return f"{noun_word(noun)}s"
 
 
-def delete_confirm_question(title: str, noun: str = "reminder", leaving: str = "") -> str:
+def delete_confirm_question(title: str, noun: str = "todo", leaving: str = "") -> str:
     """``Delete the reminder "buy milk"? (yes/no)`` — the one-item confirm on
     every delete leg (numbered, by title, just-created referent, pick)."""
     q = DELETE_CONFIRM_QUESTION.format(noun=noun_word(noun), title=title)
@@ -94,7 +98,7 @@ def delete_confirm_question(title: str, noun: str = "reminder", leaving: str = "
     return q + " (yes/no)"
 
 
-def delete_summary_phrase(title: str, noun: str = "reminder") -> str:
+def delete_summary_phrase(title: str, noun: str = "todo") -> str:
     """The confirm's ``summary`` (and so its decline, "Okay — I won't …")."""
     return f'delete the {noun_word(noun)} "{title}"'
 

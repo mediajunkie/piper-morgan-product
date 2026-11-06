@@ -111,20 +111,19 @@ class TestCopyHelpers:
             ["revise the pr"],
         )
         assert q == (
-            'Complete 3 reminders: "check the test card again" (2 items) and "review the pr"? '
+            'Complete 3 todos: "check the test card again" (2 items) and "review the pr"? '
             'Leaving "revise the pr" as is. (yes/no)'
         )
 
     def test_confirm_two_distinct_and_no_leaving(self):
         assert (
-            th._batch_confirm_question(["A", "B"], [])
-            == 'Complete 2 reminders: "A" and "B"? (yes/no)'
+            th._batch_confirm_question(["A", "B"], []) == 'Complete 2 todos: "A" and "B"? (yes/no)'
         )
 
     def test_confirm_more_than_five_uses_bullets_and_counts_the_left(self):
         q = th._batch_confirm_question([f"t{i}" for i in range(7)], [f"l{i}" for i in range(4)])
         lines = q.splitlines()
-        assert lines[0] == "Complete 7 reminders?"
+        assert lines[0] == "Complete 7 todos?"
         assert lines[1:8] == [f"• t{i}" for i in range(7)]
         assert lines[8] == "Leaving the other 4 as is."
         assert lines[-1] == "(yes/no)"
@@ -132,13 +131,13 @@ class TestCopyHelpers:
     def test_summary_reports_only_what_completed(self):
         s = th._batch_summary(["a", "a", "b"], [("c", "no longer there")], ["d"])
         assert s.splitlines() == [
-            "Marked 3 reminders done:",
+            "Marked 3 todos done:",
             "• a (2 items)",
             "• b",
             "Couldn't mark \"c\" done — it's no longer there.",
             'Left "d" as is.',
         ]
-        assert th._batch_summary(["only"], [], []).startswith("Marked 1 reminder done:")
+        assert th._batch_summary(["only"], [], []).startswith("Marked 1 todo done:")
 
 
 def _intent(message: str, targets, exclude=None, extra=None) -> Intent:
@@ -216,7 +215,7 @@ class TestHandleCompleteTodoTargets:
         msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is True
         assert msg == (
-            'Complete 3 reminders: "check the test card again" (2 items) and "review the pr"? '
+            'Complete 3 todos: "check the test card again" (2 items) and "review the pr"? '
             'Leaving "revise the pr" as is. (yes/no)'
         )
         handlers.todo_service.complete_todo.assert_not_awaited()
@@ -243,7 +242,7 @@ class TestHandleCompleteTodoTargets:
         msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is False
         assert msg == (
-            "I haven't shown you a numbered list yet. Here are your reminders:\n\n"
+            "I haven't shown you a numbered list yet. Here are your todos:\n\n"
             + "\n".join(f'{i + 1}. "{t.text}"' for i, t in enumerate(four))
             + "\n\nTell me which one, and I'll mark it done."
         )
@@ -278,7 +277,7 @@ class TestHandleCompleteTodoTargets:
         ]
         assert called == [t.id for t in four[:3]]
         assert msg.splitlines() == [
-            "Marked 3 reminders done:",
+            "Marked 3 todos done:",
             "• check the test card again (2 items)",
             "• review the pr",
             'Left "revise the pr" as is.',
@@ -306,7 +305,7 @@ class TestHandleCompleteTodoTargets:
             },
         )
         msg, _ = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
-        assert msg.splitlines()[0] == "Marked 2 reminders done:"
+        assert msg.splitlines()[0] == "Marked 2 todos done:"
         assert "Couldn't mark \"check the test card again\" done — it's no longer there." in msg
 
     @pytest.mark.asyncio
@@ -318,7 +317,7 @@ class TestHandleCompleteTodoTargets:
         msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is True
         assert msg.startswith(
-            'Complete 3 reminders: "check the test card again" (2 items) and "review the pr"?'
+            'Complete 3 todos: "check the test card again" (2 items) and "review the pr"?'
         )
         assert 'Leaving "revise the pr" as is.' in msg
 

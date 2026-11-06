@@ -73,6 +73,8 @@ SERVED_REPLY = (
 )
 SINGLE_REPLY = f'{OPENING}\n\n1. "buy milk"\n2. "call mom"\n\nTell me which one.'
 MILK_CONFIRM = 'Delete the reminder "buy milk"? (yes/no)'
+# #2219 (CXO 2026-11-05 19:25): "todo" when the person named neither noun.
+MILK_CONFIRM_TODO = 'Delete the todo "buy milk"? (yes/no)'
 
 
 def _todo(text, reminder_hours=None):
@@ -213,21 +215,19 @@ class TestCopy:
         ("message", "noun"),
         [
             ("delete the first two reminders", "reminder"),
-            ("delete buy milk", "reminder"),
-            ("delete 1", "reminder"),
+            ("delete buy milk", "todo"),  # #2219: todo by default
+            ("delete 1", "todo"),
             ("delete todo 1", "todo"),
             ("delete the first two to-dos", "todo"),
             ("delete my milk todo reminder", "reminder"),  # reminder wins a mixed mention
         ],
     )
-    def test_noun_is_reminder_unless_the_user_said_to_do(self, message, noun):
+    def test_noun_is_todo_unless_the_user_said_reminder(self, message, noun):
         assert copy_noun(message) == noun
 
     def test_one_confirm_form(self):
-        assert delete_confirm_question("buy milk") == MILK_CONFIRM
-        assert delete_confirm_question("buy milk", "todo") == (
-            'Delete the to-do "buy milk"? (yes/no)'
-        )
+        assert delete_confirm_question("buy milk") == MILK_CONFIRM_TODO
+        assert delete_confirm_question("buy milk", "reminder") == MILK_CONFIRM
 
 
 # ---------------------------------------------------------------------------
@@ -275,7 +275,7 @@ class TestTargetsPathNoListShown:
     async def test_the_user_said_to_do(self, intent_service, rows):
         result = await _delete(intent_service, "delete the first two to-dos", ["1-2"])
         assert result.message.startswith(
-            "I haven't shown you a numbered list yet. Here are your to-dos:\n\n"
+            "I haven't shown you a numbered list yet. Here are your todos:\n\n"
             '1. "water the plants"\n2. "buy milk"\n3. "call mom"\n\n'
         )
         assert result.message.endswith("I can delete one at a time for now. Tell me which one.")
@@ -351,8 +351,8 @@ class TestOneConfirmForm:
         gate = await build_todo_delete_confirmation(
             _intent("delete buy milk"), intent_service.todo_handlers, UUID(_USER)
         )
-        assert gate.offer.question == MILK_CONFIRM
-        assert 'won\'t delete the reminder "buy milk"' in gate.offer.offer["decline_message"]
+        assert gate.offer.question == MILK_CONFIRM_TODO
+        assert 'won\'t delete the todo "buy milk"' in gate.offer.offer["decline_message"]
 
     async def test_by_title_yes_says_reminder(self, intent_service, todo_service, rows):
         intent = _intent("delete buy milk")
@@ -361,7 +361,7 @@ class TestOneConfirmForm:
         msg = await intent_service.todo_handlers.handle_delete_todo(
             intent, _SESSION, user_id=UUID(_USER)
         )
-        assert msg == "Deleted 1 reminder:\n• buy milk"
+        assert msg == "Deleted 1 todo:\n• buy milk"
         todo_service.delete_todo.assert_awaited_once_with(
             todo_id=UUID(rows[1].id), user_id=UUID(_USER)
         )
@@ -381,7 +381,7 @@ class TestOneConfirmForm:
         gate = await build_todo_delete_confirmation(
             intent, intent_service.todo_handlers, UUID(_USER)
         )
-        assert gate.offer.question == 'Delete the to-do "buy milk"? (yes/no)'
+        assert gate.offer.question == 'Delete the todo "buy milk"? (yes/no)'
         assert intent.context[RESOLVED_TODO_CONTEXT_KEY]["noun"] == "todo"
 
     async def test_bare_number_leg_says_the_one_form(self, intent_service):
@@ -389,7 +389,7 @@ class TestOneConfirmForm:
             _intent("delete 2"), intent_service.todo_handlers, UUID(_USER)
         )
         # This leg indexes the owner's raw list (row 2 is buy milk here).
-        assert gate.offer.question == MILK_CONFIRM
+        assert gate.offer.question == MILK_CONFIRM_TODO
 
     async def test_pick_leg_says_the_one_form_and_yes_says_reminder(
         self, intent_service, store, todo_service, rows

@@ -63,7 +63,7 @@ class TestCopyHelpers:
     def test_d1_one_item_confirm(self):
         assert (
             th._delete_confirm_question(["review the pr"], [])
-            == 'Delete the reminder "review the pr"? (yes/no)'
+            == 'Delete the todo "review the pr"? (yes/no)'
         )
 
     def test_d2_two_to_five_collapses_duplicates_and_shows_leaving(self):
@@ -72,14 +72,14 @@ class TestCopyHelpers:
             ["revise the pr"],
         )
         assert q == (
-            'Delete 3 reminders: "check the test card again" (2 items) and "review the pr"? '
+            'Delete 3 todos: "check the test card again" (2 items) and "review the pr"? '
             'Leaving "revise the pr" as is. (yes/no)'
         )
 
     def test_d3_more_than_five_uses_bullets(self):
         q = th._delete_confirm_question([f"t{i}" for i in range(7)], [f"l{i}" for i in range(4)])
         lines = q.splitlines()
-        assert lines[0] == "Delete 7 reminders?"
+        assert lines[0] == "Delete 7 todos?"
         assert lines[1:8] == [f"• t{i}" for i in range(7)]
         assert lines[8] == "Leaving the other 4 as is."
         assert lines[-1] == "(yes/no)"
@@ -87,7 +87,7 @@ class TestCopyHelpers:
     def test_d4_summary_reports_only_what_deleted_and_partial_failure(self):
         s = th._delete_summary(["a", "a", "b"], [("c", "already gone")], ["d"])
         assert s.splitlines() == [
-            "Deleted 3 reminders:",
+            "Deleted 3 todos:",
             "• a (2 items)",
             "• b",
             "Couldn't delete \"c\" — it's already gone.",
@@ -126,18 +126,17 @@ class TestCopyHelpers:
     def test_complete_todo_strings_unchanged_by_the_refactor(self):
         """The shared helper must not move complete_todo's pinned strings."""
         assert (
-            th._batch_confirm_question(["A", "B"], [])
-            == 'Complete 2 reminders: "A" and "B"? (yes/no)'
+            th._batch_confirm_question(["A", "B"], []) == 'Complete 2 todos: "A" and "B"? (yes/no)'
         )
         s = th._batch_summary(["a", "a", "b"], [("c", "no longer there")], ["d"])
         assert s.splitlines() == [
-            "Marked 3 reminders done:",
+            "Marked 3 todos done:",
             "• a (2 items)",
             "• b",
             "Couldn't mark \"c\" done — it's no longer there.",
             'Left "d" as is.',
         ]
-        assert th._batch_summary(["only"], [], []).startswith("Marked 1 reminder done:")
+        assert th._batch_summary(["only"], [], []).startswith("Marked 1 todo done:")
 
 
 def _intent(message: str, targets, exclude=None, extra=None) -> Intent:
@@ -270,7 +269,7 @@ class TestHandleDeleteTodoTargets:
         intent = _intent("delete 'review the pr'", ["name:review the pr"])
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is True
-        assert msg == 'Delete the reminder "review the pr"? (yes/no)'
+        assert msg == 'Delete the todo "review the pr"? (yes/no)'
         handlers.todo_service.delete_todo.assert_not_awaited()
         offers.set_pending_offer.assert_called_once()
         _sid, offer = offers.set_pending_offer.call_args.args[:2]
@@ -296,7 +295,7 @@ class TestHandleDeleteTodoTargets:
         intent = _intent("delete the last one", ["last"])
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is True
-        assert msg == 'Delete the reminder "revise the pr"? (yes/no)'
+        assert msg == 'Delete the todo "revise the pr"? (yes/no)'
         offer = offers.set_pending_offer.call_args[0][1]
         assert offer["pending_action"]["intent"].context[BATCH_DELETE_LEFT_KEY] == []
         handlers.todo_service.delete_todo.assert_not_awaited()
@@ -310,7 +309,7 @@ class TestHandleDeleteTodoTargets:
         intent = _intent("delete the last two except the first of them", ["3-4"], exclude=["3"])
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is True
-        assert msg.startswith('Delete the reminder "revise the pr"? Leaving ')
+        assert msg.startswith('Delete the todo "revise the pr"? Leaving ')
         assert msg.endswith(" as is. (yes/no)")
 
     @pytest.mark.asyncio
@@ -360,7 +359,7 @@ class TestHandleDeleteTodoTargets:
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is False
         assert msg == (
-            "I haven't shown you a numbered list yet. Here are your reminders:\n\n"
+            "I haven't shown you a numbered list yet. Here are your todos:\n\n"
             + "\n".join(f'{i + 1}. "{t.text}"' for i, t in enumerate(four))
             + "\n\nTell me which one."
         )
@@ -451,7 +450,7 @@ class TestHandleDeleteTodoTargets:
             str(c.kwargs["todo_id"]) for c in handlers.todo_service.delete_todo.call_args_list
         ]
         assert called == [four[2].id]
-        assert msg.splitlines() == ["Deleted 1 reminder:", "• review the pr"]
+        assert msg.splitlines() == ["Deleted 1 todo:", "• review the pr"]
         offers.set_pending_offer.assert_not_called()
 
     @pytest.mark.asyncio

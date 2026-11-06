@@ -487,8 +487,8 @@ _CONTAINER_LOOKAHEAD = 4
 
 # CXO 10-24: the named-leg miss. No quote of the stripped message (it isn't their words).
 NAMED_DELETE_NOT_FOUND = (
-    "I couldn't find a to-do that matches that. Nothing was deleted. Ask me to show your "
-    'to-dos and I\'ll number them, then say "delete todo N".'
+    "I couldn't find a todo that matches that. Nothing was deleted. Ask me to show your "
+    'todos and I\'ll number them, then say "delete todo N".'
 )
 
 # CXO 10-24 (18:32, then the to-do tail): each names where the thing can be done today; the list
@@ -496,7 +496,7 @@ NAMED_DELETE_NOT_FOUND = (
 FOREIGN_CONTAINER_DECLINE = {
     "list": (
         "I can't remove items from a list from chat yet. Open the list on your Lists page "
-        'and use Remove next to it. If you meant a to-do, say "delete todo N".'
+        'and use Remove next to it. If you meant a todo, say "delete todo N".'
     ),
     "project": (
         "I can't remove things inside a project from chat yet. Open the project on your "

@@ -732,7 +732,7 @@ class TestExplicitVerbsUnaffected:
             message="delete todo 1", session_id=sid, user_id=_USER
         )
         assert variant_one_question() not in result.message
-        assert result.message == 'Delete the to-do "Review the PR"? (yes/no)'
+        assert result.message == 'Delete the todo "Review the PR"? (yes/no)'
         assert todo_boundary["deleted"] == []  # gated, not immediate (#1666)
         todo_boundary["allow_delete"] = True
         confirmed = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)

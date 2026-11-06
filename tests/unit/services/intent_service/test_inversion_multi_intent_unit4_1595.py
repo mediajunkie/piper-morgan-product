@@ -660,12 +660,11 @@ class TestReadPlusDestructive:
         assert todo_boundary["deleted"] == []
         assert result.intent_data.get("destructive_confirmation_pending") is True
         assert (
-            'Delete the reminder "what we discussed yesterday was helpful"? (yes/no)'
-            in result.message
+            'Delete the todo "what we discussed yesterday was helpful"? (yes/no)' in result.message
         )
         # The read half is still in the reply, and it LEADS.
         assert result.message.index("are we behind upstream") < result.message.index(
-            "Delete the reminder"
+            "Delete the todo"
         )
         assert "haven't touched" not in result.message  # nothing was deferred
 
@@ -695,7 +694,7 @@ class TestReadPlusDestructive:
         )
         assert dispatched == ["list_todos_query", "delete_todo"]
         assert todo_boundary["deleted"] == []
-        assert 'Delete the reminder "are we behind upstream"? (yes/no)' in result.message
+        assert 'Delete the todo "are we behind upstream"? (yes/no)' in result.message
         assert "haven't touched" not in result.message
 
     async def test_the_confirmed_yes_deletes_exactly_the_named_row(
@@ -729,7 +728,7 @@ class TestPauseStopsTheTurn:
         "I haven't touched "
         '"what we discussed yesterday was helpful" yet; ask me again after this.\n'
         "\n"
-        'Delete the reminder "are we behind upstream"? (yes/no)'
+        'Delete the todo "are we behind upstream"? (yes/no)'
     )
 
     async def _run(self, monkeypatch, sid):

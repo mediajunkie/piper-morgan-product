@@ -54,10 +54,23 @@ def test_the_empty_list_line_is_unchanged():
 
 def test_a_complete_confirm_says_the_noun_the_person_used():
     targets = ["review prs"] * 3
-    assert _batch_confirm_question(targets, [], "todo").startswith("Complete 3 to-dos:")
+    assert _batch_confirm_question(targets, [], "todo").startswith("Complete 3 todos:")
     assert _batch_confirm_question(targets, [], "reminder").startswith("Complete 3 reminders:")
 
 
-def test_the_default_noun_is_unchanged_until_cxo_rules():
-    """The default when the person names neither stays the #2046 rule ("reminder")."""
-    assert _confirm_question("Complete", ["a", "b"], []).startswith("Complete 2 reminders:")
+def test_todo_is_the_default_and_the_persons_word_wins():
+    """CXO 2026-11-05 19:25: "todo" by default, no hyphen; "reminder" or "remind" wins."""
+    from services.intent_service.reminder_copy import copy_noun
+
+    assert _confirm_question("Complete", ["a", "b"], []).startswith("Complete 2 todos:")
+    assert copy_noun("Complete the PR review todo") == "todo"
+    assert copy_noun("delete the first reminder") == "reminder"
+    assert copy_noun("remind me to call mom") == "reminder"
+    assert copy_noun("finish that task") == "todo"
+
+
+def test_the_done_header_counts_in_the_noun():
+    two_open = [_todo("a"), _todo("b"), _todo("c", completed=True)]
+    assert format_todo_list_conscious(two_open, include_completed=True).startswith(
+        "You have 2 open todos and 1 done. Here they are:"
+    )

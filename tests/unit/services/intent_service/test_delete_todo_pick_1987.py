@@ -342,8 +342,8 @@ class TestPickTurn:
     async def test_todo_noun_uses_the_1527_copy(self, rows, intent_service, store):
         await _armed_pick("delete a todo", intent_service.todo_handlers.todo_service, store)
         out = await _answer("3", intent_service, store)
-        assert out["message"] == 'Delete the to-do "review the pr"? (yes/no)'
-        assert store.slot["pending_action"]["summary"] == 'delete the to-do "review the pr"'
+        assert out["message"] == 'Delete the todo "review the pr"? (yes/no)'
+        assert store.slot["pending_action"]["summary"] == 'delete the todo "review the pr"'
 
     async def test_confirmed_yes_deletes_exactly_the_bound_row(self, rows, intent_service, store):
         """The #1666 path the armed intent re-enters: resolved + confirmed →

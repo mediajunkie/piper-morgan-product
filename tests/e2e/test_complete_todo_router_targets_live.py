@@ -8,8 +8,8 @@ proved nothing about the answer); it is the reply the user reads:
   turn 0 → "what reminders do I have?" shows the list NUMBERED (CXO's
            scope rule: an ordinal resolves only against a numbered list)
   turn 1 → the enumerating confirm, nothing changed (CXO's string 1):
-           'Complete 3 reminders: "A" (2 items) and "C"? Leaving "D" as is. (yes/no)'
-  turn 2 ("yes") → 'Marked 3 reminders done: …' + 'Left "D" as is.'
+           'Complete 3 todos: "A" (2 items) and "C"? Leaving "D" as is. (yes/no)'
+  turn 2 ("yes") → 'Marked 3 todos done: …' + 'Left "D" as is.'
 
 Marked ``llm``: real app + DB + the served router (local flag includes
 ``complete_todo``, which alpha's flag does not yet — the flip is PM's hand).
@@ -104,7 +104,7 @@ async def test_pm_first_three_served_answer_enumerates_then_completes_exactly_th
         ), "turn 1 did not route to complete_todo"
         # the SERVED answer, not the route:
         assert reply.startswith(
-            'Complete 3 reminders: "check the test card again" (2 items) and "review the pr"?'
+            'Complete 3 todos: "check the test card again" (2 items) and "review the pr"?'
         ), reply
         assert 'Leaving "revise the pr" as is.' in reply, reply
         # the app appends its first-turn personalization notice after the
@@ -126,7 +126,7 @@ async def test_pm_first_three_served_answer_enumerates_then_completes_exactly_th
         assert r2.status_code == 200, r2.text[:300]
         reply2 = r2.json().get("message") or ""
         print(f"[turn 2] reply: {reply2.replace(chr(10), ' ⏎ ')[:400]}")
-        assert reply2.startswith("Marked 3 reminders done:"), reply2
+        assert reply2.startswith("Marked 3 todos done:"), reply2
         assert (
             "• check the test card again (2 items)" in reply2 and "• review the pr" in reply2
         ), reply2

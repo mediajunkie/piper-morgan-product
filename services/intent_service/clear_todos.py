@@ -280,7 +280,7 @@ async def _candidate_pools(todo_handlers, todo_user_id, session_id, principal):
         name_pool = await todo_handlers.todo_service.list_todos(
             user_id=todo_user_id, include_completed=False
         )
-        pool_kind = "active to-dos"
+        pool_kind = "active todos"
     numbered = todo_handlers._recall_numbered_list(session_id, principal or todo_user_id)
     ordinal_pool: List[Any] = []
     ordinal_kind = pool_kind

@@ -326,7 +326,7 @@ class TestEndToEndRoutedDestination:
         result = await live_service.process_intent(
             message="delete todo 1", session_id=sid, user_id=_USER
         )
-        assert result.message == 'Delete the to-do "hydrate"? (yes/no)'
+        assert result.message == 'Delete the todo "hydrate"? (yes/no)'
         assert result.intent_data.get("destructive_confirmation_pending") is True
         stored = live_service.workflow_offer_service._pending_offers.get(sid)
         assert stored is not None

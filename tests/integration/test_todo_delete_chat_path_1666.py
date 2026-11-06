@@ -117,7 +117,7 @@ async def test_confirmed_yes_deletes_the_real_row(repro_user, live_service, monk
     )
     # startswith: a first-response personalization notice (ADR-075 OQ-3) may
     # be appended once for a brand-new user — orthogonal to the confirm ask.
-    assert asked.message.startswith('Delete the to-do "repro-1666 delete me"? (yes/no)')
+    assert asked.message.startswith('Delete the todo "repro-1666 delete me"? (yes/no)')
     assert asked.intent_data.get("destructive_confirmation_pending") is True
     # The ask turn deleted nothing — the row is still in Postgres:
     assert await _active_texts(live_service, repro_user) == ["repro-1666 delete me"]
@@ -150,7 +150,7 @@ async def test_decline_keeps_the_real_row(repro_user, live_service, monkeypatch)
     asked = await live_service.process_intent(
         message="delete todo 1", session_id=sid, user_id=str(repro_user)
     )
-    assert asked.message.startswith('Delete the to-do "repro-1666 keep me"? (yes/no)')
+    assert asked.message.startswith('Delete the todo "repro-1666 keep me"? (yes/no)')
 
     declined = await live_service.process_intent(
         message="no", session_id=sid, user_id=str(repro_user)

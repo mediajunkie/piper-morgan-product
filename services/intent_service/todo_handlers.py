@@ -384,7 +384,7 @@ def _confirm_question(
     left: List[str],
     *,
     one_item_template: Optional[str] = None,
-    noun_kind: str = "reminder",
+    noun_kind: str = "todo",
 ) -> str:
     """Shared body of the enumerating #1190 confirm: count first, titles
     verbatim in the user's order, duplicates collapsed; bullets instead of a
@@ -419,13 +419,13 @@ def _confirm_question(
     return q + " (yes/no)"
 
 
-def _batch_confirm_question(targets: List[str], left: List[str], noun: str = "reminder") -> str:
+def _batch_confirm_question(targets: List[str], left: List[str], noun: str = "todo") -> str:
     """CXO string 1: count first, titles verbatim in the user's order,
     duplicates collapsed; bullets instead of a sentence above 5 targets."""
     return _confirm_question("Complete", targets, left, noun_kind=noun)
 
 
-def _delete_confirm_question(targets: List[str], left: List[str], noun: str = "reminder") -> str:
+def _delete_confirm_question(targets: List[str], left: List[str], noun: str = "todo") -> str:
     """CXO string D1/D2/D3 (clear-family build plan piece 1, 2026-10-07):
     delete_todo's DESTRUCTIVE counterpart of ``_batch_confirm_question`` —
     delete ALWAYS confirms, even a single resolved target, so the n==1 case
@@ -447,7 +447,7 @@ def _mutation_summary(
     done: List[str],
     failed: List[Tuple[str, str]],
     left: List[str],
-    noun: str = "reminder",
+    noun: str = "todo",
 ) -> str:
     """Shared body of the post-"yes" summary (CXO string 3 and its delete
     counterpart, D4): the count and bullets report only what actually
@@ -476,7 +476,7 @@ def _batch_summary(done: List[str], failed: List[Tuple[str, str]], left: List[st
 
 
 def _delete_summary(
-    done: List[str], failed: List[Tuple[str, str]], left: List[str], noun: str = "reminder"
+    done: List[str], failed: List[Tuple[str, str]], left: List[str], noun: str = "todo"
 ) -> str:
     """CXO string D4 (clear-family build plan piece 1): delete_todo's
     counterpart of ``_batch_summary`` — "Deleted" rather than "Marked …
@@ -878,7 +878,7 @@ class TodoIntentHandlers:
             name_pool, pool_kind = due, "due reminders"
         else:
             name_pool = await self.todo_service.list_todos(user_id=user_id, include_completed=False)
-            pool_kind = "active to-dos"
+            pool_kind = "active todos"
         if not name_pool:
             return (f"You have no {pool_kind} to mark done.", False)
         numbered = self._recall_numbered_list(session_id, principal or user_id)
@@ -1127,7 +1127,7 @@ class TodoIntentHandlers:
             name_pool, pool_kind = due, "due reminders"
         else:
             name_pool = await self.todo_service.list_todos(user_id=user_id, include_completed=False)
-            pool_kind = "active to-dos"
+            pool_kind = "active todos"
         if not name_pool:
             return (f"You have no {pool_kind} to delete.", False)
         numbered = self._recall_numbered_list(session_id, principal or user_id)
