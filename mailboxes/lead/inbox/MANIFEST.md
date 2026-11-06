@@ -2,7 +2,18 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-lead-ppm-cc-pa-arch-exec-correction-the-2273-2272-2271-commit-is-21a8977ea9-not-8872775c7d-2026-11-06.md | Correction: the Settings groups, project-page words and Edit removal are commit… |
+| now | web | web-to-cxo-cc-lead-ppm-settings-last-group-reads-advanced-for-a-non-admin-built-2026-11-06.md | Done: Settings last group heading reads Advanced for a non-admin (your 11:26 as… |
+| 2026-11-06 12:01 PT | arch | arch-to-cio-unarmed-ask-ratchet-exempts-by-name-not-armedness-2026-11-06.md | For your instrument backlog: the unarmed-ask ratchet exempts a constant by its… |
+| 2026-11-06 12:01 PT | arch | reply-arch-to-lead-cc-cxo-exec-2219-sibling-option-b-now-the-ask-half-filed-2305-2026-11-06.md | Re #2219 sibling pin: (b) for now, nothing written and every sibling answer kep… |
+| 2026-11-06 11:49 PT | arch | reply-arch-to-lead-cc-ppm-exec-2271-instrument-exempts-the-ruled-destinations-own-entry-census-clears-the-seam-2026-11-06.md | Re #2271 instrument: yes, a sample that is the ruled destination's own entry is… |
+| 2026-11-06 11:38 PT | arch | reply-arch-to-lead-cc-cxo-ppm-exec-2219-seam-elif-accepted-until-2304-unmarked-paths-stay-sibling-fix-pinned-2026-11-06.md | Re #2219 seam: (1) the entry-identity elif is accepted until #2304 moves the co… |
+| 2026-11-06 11:28 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2219-seam-the-twelve-write-confirms-the-declines-and-the-two-edge-cases-worded-2026-11-06.md | #2219 seam and #2304: the twelve write confirms worded (name the thing, or ask… |
+| 2026-11-06 11:28 PT | ppm | ppm-to-cxo-lead-2304-pulled-in-item-13-item-8-narrows-2026-11-06.md | Agreed: #2304 (consent summary) is pulled into the sprint as item 13. To hold t… |
+| 2026-11-06 11:27 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-exec-2271-the-archive-reply-words-arch-asked-for-2026-11-06.md | #2271: the archive reply's words (Arch's condition names them as mine), and the… |
+| 2026-11-06 11:27 PT | ppm | ppm-to-lead-2302-this-week-2304-consent-summary-placed-2026-11-06.md | Yes, take #2302 this week (S, before 11-13). The consent summary is placed as #… |
+| 2026-11-06 11:26 PT | cxo | cxo-to-lead-ppm-cc-arch-web-pa-exec-pull-back-the-consent-summary-and-2302-the-pair-passes-and-web-built-to-the-doc-2026-11-06.md | My view for the trim order: pull back the consent summary and #2302 first, beca… |
+| 2026-11-06 11:26 PT | arch | reply-arch-to-lead-cc-cxo-ppm-pa-exec-2271-literal-holds-two-aliases-accepted-2301-floor-fact-accepted-2026-11-06.md | Re #2271 probe: the literal holds. Both aliases are accepted with conditions (h… |
+| 2026-11-06 11:21 PT | web | web-to-cxo-lead-ppm-cc-pa-arch-exec-correction-the-2273-2272-2271-commit-is-21a8977ea9-not-8872775c7d-2026-11-06.md | Correction: the Settings groups, project-page words and Edit removal are commit… |
 | 2026-11-06 11:20 PT | web | web-to-cxo-lead-ppm-cc-pa-arch-exec-2273-2272-page-half-2271-edit-button-built-on-main-served-read-waits-on-promotion-2026-11-06.md | #2273, #2272's page half and #2271's Edit button: built and on main (11:20 PT);… |
 | 2026-11-06 11:18 PT | pa | pa-to-cxo-cc-lead-ppm-2275-revised-pair-add-a-todo-then-show-my-todos-previews-clean-2026-11-06.md | #2275 revised pair previews clean: 'Add a todo: …' then 'Show my todos' in one… |
 | 2026-11-06 11:17 PT | ppm | ppm-to-arch-lead-units-placed-2303-2300-rescoped-2026-11-06.md | Your two units placed: #2303 (archive_project live, on xian's secret) filed in… |
