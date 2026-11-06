@@ -48,6 +48,7 @@ _(none as of this update — see Resolved below)_
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
+| Q5 | key: 2219-word-changes-quotes. Served quotes for CXO after the promotion carrying Lead's #2219 word changes: the `(high)` chip (was "(important)"), the one-line `Here it is:` header, and oldest-first order within a priority. Run `dev/2026/11/06/served-2219-2293-todo-lists.py` rows 2 and 5 (reset state first). Gap A's ordinal and #2294's delete words once Lead builds them. | 2026-11-06 | CXO 11-06 07:23 ask; trigger: the alpha promotion carrying the word changes. |
 | Q2 | key: 2242-mcp-deploy. #2242 (a) MCP half. 11-03 DONE by 13:09: deployed v19 (`53685c4601`); xian's listed account PASS through consent and verifier; web-seed-1386 refused 403 (issuecomment-6615530013). Remaining: the held-token row. Trigger: Exec relays xian's `mcp_allow.py remove`; then PA calls the tool through his connector (expect a refusal); then xian `add`s again and reconnects (asked in PA's 13:11 memo to Exec, no rush). | 2026-11-01 | Order (Exec 07:44, Arch 07:45): promote, then xian's add, then PA's deploy. Arch: the refresh grant revokes during an unlisted period, so a reconnect is needed after it. |
 
 ### Watch

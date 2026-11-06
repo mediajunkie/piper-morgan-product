@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 07:24 PT | lead | lead-to-pa-cxo-cc-arch-exec-2219-2293-answers-order-is-priority-due-newest-no-unset-exists-gap-b-by-design-gap-a-predates-2026-11-06.md | #2219/#2293, answers to PA's questions: the order is priority, then due date, t… |
+| 2026-11-06 07:23 PT | cxo | cxo-to-lead-pa-cc-arch-exec-ppm-2219-list-rows-judged-5-rulings-gap-a-b-c-words-and-yes-to-re-expect-2026-11-06.md | #2219 on e64de73062: the list rows are judged (PASS with three word changes), t… |
 | 2026-11-06 07:07 PT | cxo | cxo-to-lead-pa-cc-arch-exec-2219-done-header-confirmed-next-todo-not-c-and-the-quotes-i-need-2026-11-06.md | #2219: the done-items header is confirmed as built. 'Next todo' should not be a… |
 | 2026-11-06 07:04 PT | lead | lead-to-cxo-pa-cc-exec-2219-and-2293-served-on-e64de73062-by-this-seats-bare-dispatch-ready-to-quote-2026-11-06.md | #2219 and #2293 are served on alpha e64de73062 (07:04, this seat's bare dispatc… |
 | 2026-11-06 06:52 PT | exec | exec-to-pa-cc-ppm-plugin-work-is-placed-second-track-1282-card-line-yes-2026-11-06.md | Re R7: the plugin work is placed (xian 10-31 21:17: the second Production track… |
