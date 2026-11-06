@@ -44,6 +44,7 @@ from services.intent_service.reminder_copy import (
     copy_noun,
     delete_confirm_question,
     delete_no_list_tail,
+    noun_plural,
     noun_word,
 )
 from services.intent_service.temporal_utils import DURATION_NUMBER_SRC
@@ -383,6 +384,7 @@ def _confirm_question(
     left: List[str],
     *,
     one_item_template: Optional[str] = None,
+    noun_kind: str = "reminder",
 ) -> str:
     """Shared body of the enumerating #1190 confirm: count first, titles
     verbatim in the user's order, duplicates collapsed; bullets instead of a
@@ -394,7 +396,9 @@ def _confirm_question(
     item completes directly, no confirm), so this branch is additive and
     does not change complete_todo's pinned strings."""
     n = len(targets)
-    noun = "reminder" if n == 1 else "reminders"
+    # #2219 (CXO): the noun the person used ("Complete the PR review todo" says to-do),
+    # through the one rule every confirm uses (reminder_copy.copy_noun).
+    noun = noun_word(noun_kind) if n == 1 else noun_plural(noun_kind)
     leaving = _leaving_line(left)
     if n == 1 and one_item_template is not None:
         q = one_item_template.format(title=targets[0])
@@ -415,10 +419,10 @@ def _confirm_question(
     return q + " (yes/no)"
 
 
-def _batch_confirm_question(targets: List[str], left: List[str]) -> str:
+def _batch_confirm_question(targets: List[str], left: List[str], noun: str = "reminder") -> str:
     """CXO string 1: count first, titles verbatim in the user's order,
     duplicates collapsed; bullets instead of a sentence above 5 targets."""
-    return _confirm_question("Complete", targets, left)
+    return _confirm_question("Complete", targets, left, noun_kind=noun)
 
 
 def _delete_confirm_question(targets: List[str], left: List[str], noun: str = "reminder") -> str:
@@ -431,7 +435,7 @@ def _delete_confirm_question(targets: List[str], left: List[str], noun: str = "r
     ("reminder" unless they said "to-do")."""
     if len(targets) == 1:
         return delete_confirm_question(targets[0], noun, _leaving_line(left))
-    return _confirm_question("Delete", targets, left)
+    return _confirm_question("Delete", targets, left, noun_kind=noun)
 
 
 def _mutation_summary(
@@ -970,7 +974,11 @@ class TodoIntentHandlers:
             return ("I couldn't complete that todo. It might have been deleted.", False)
 
         # ── two or more, or a carve-out: the mutation boundary asks, enumerating ──
-        question = _batch_confirm_question([t.text for t in picked], left)
+        question = _batch_confirm_question(
+            [t.text for t in picked],
+            left,
+            copy_noun(intent.original_message or ctx.get("original_message")),
+        )
         bound_ctx = {
             **ctx,
             BATCH_COMPLETE_IDS_KEY: [t.id for t in picked],

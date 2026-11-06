@@ -18,58 +18,57 @@ from services.domain.models import Todo
 
 
 def format_todo_list_conscious(todos: List[Todo], include_completed: bool = False) -> str:
-    """
-    Format todo list with consciousness.
+    """The "show my todos" reply: the empty-list line, or the grouped list (#2219).
 
-    Transforms from:
-        "Your active todos:
-         1. ○ Review PR 🟡
-         2. ○ Fix bug
-         Total: 2 active todos"
-
-    To:
-        "I checked your todo list - looks like you have 2 things on your plate.
-
-         The Review PR item seems important based on the priority you set.
-         There's also the Fix bug task waiting.
-
-         How would you like to tackle these?"
-
-    Args:
-        todos: List of Todo objects
-        include_completed: Whether to show completed todos
-
-    Returns:
-        Conscious narrative string
+    #2219 (CXO 10-30) replaced the narrative ("I checked your todo list - looks like
+    quite a bit going on … The first one is 'review prs'. Then there's 'review prs'.")
+    that read repeats out one by one and never showed the list.
     """
     if not todos:
         return _format_empty_list_conscious()
+    # #2219 (CXO): "show my todos" shows the list, with identical items grouped, never
+    # one sentence per repeat.
+    return format_todo_list_grouped(todos, include_completed=include_completed)
 
-    # Analyze the todos for context
-    urgent_count = sum(1 for t in todos if t.priority == "urgent")
-    high_count = sum(1 for t in todos if t.priority == "high")
-    total_count = len(todos)
 
-    # Build the narrative
-    sections = []
+def _todo_is_done(todo: Todo) -> bool:
+    return bool(getattr(todo, "completed", False) or getattr(todo, "status", "") == "completed")
 
-    # Opening with source transparency
-    sections.append(_build_opening(total_count, urgent_count, high_count))
 
-    # Discovery - the todos themselves
-    sections.append(_build_todo_discovery(todos))
-
-    # Closing with dialogue invitation
-    sections.append(_build_closing(total_count, urgent_count))
-
-    narrative = "\n\n".join(sections)
-
-    # Validate MVC and fix if needed
-    mvc_result = validate_mvc(narrative)
-    if not mvc_result.passes:
-        narrative = _fix_mvc_gaps(narrative, mvc_result)
-
-    return narrative
+def format_todo_list_grouped(todos: List[Todo], include_completed: bool = False) -> str:
+    """#2219 (CXO 10-30): the list itself. ``You have 13 open todos. Here they are:``,
+    then one line per distinct item in first-seen order, repeats grouped as
+    ``review prs (×3)``. An item keeps its priority note; a done one says so."""
+    groups: List[List[Todo]] = []
+    index: dict = {}
+    for todo in todos:
+        key = (todo.text, _todo_is_done(todo))
+        if key not in index:
+            index[key] = len(groups)
+            groups.append([])
+        groups[index[key]].append(todo)
+    open_count = sum(1 for t in todos if not _todo_is_done(t))
+    done_count = len(todos) - open_count
+    noun = "todo" if open_count == 1 else "todos"
+    if include_completed and done_count:
+        # Lead's placeholder in CXO's form, for CXO to confirm (#2219).
+        header = f"You have {open_count} open {noun} and {done_count} done. Here they are:"
+    else:
+        header = f"You have {open_count} open {noun}. Here they are:"
+    lines = [header]
+    for group in groups:
+        first = group[0]
+        line = f"• {first.text}"
+        if len(group) > 1:
+            line += f" (×{len(group)})"
+        if first.priority == "urgent":
+            line += " (urgent)"
+        elif first.priority == "high":
+            line += " (important)"
+        if _todo_is_done(first):
+            line += " ✓ done"
+        lines.append(line)
+    return "\n".join(lines)
 
 
 def format_todo_created_conscious(todo: Todo) -> str:
@@ -191,81 +190,6 @@ def _format_empty_list_conscious() -> str:
         "If you want to capture something, just say 'add todo: [your task]'. "
         "Or I can help you think about what might need attention."
     )
-
-
-def _build_opening(total: int, urgent: int, high: int) -> str:
-    """Build opening with source transparency and epistemic humility."""
-    # Source attribution
-    opening = "I checked your todo list"
-
-    # Epistemic assessment
-    if urgent > 0:
-        opening += (
-            f" - looks like you have {total} things on your plate, with {urgent} marked urgent"
-        )
-    elif high > 0:
-        opening += (
-            f" - looks like you have {total} things on your plate, with {high} flagged as important"
-        )
-    elif total > 5:
-        opening += f" - looks like quite a bit going on with {total} items"
-    else:
-        opening += f" - looks like you have {total} {'thing' if total == 1 else 'things'} to track"
-
-    opening += "."
-    return opening
-
-
-def _build_todo_discovery(todos: List[Todo]) -> str:
-    """Build the discovery section with todos."""
-    lines = []
-
-    # Show first few todos with context
-    for i, todo in enumerate(todos[:5]):
-        if i == 0:
-            prefix = "The first one is"
-        elif i == 1:
-            prefix = "Then there's"
-        elif i == 2:
-            prefix = "Also"
-        else:
-            prefix = "And"
-
-        # Priority context
-        priority_note = ""
-        if todo.priority == "urgent":
-            priority_note = " (urgent)"
-        elif todo.priority == "high":
-            priority_note = " (important)"
-
-        # Completion state (Issue #904)
-        completion_note = ""
-        if getattr(todo, "completed", False) or getattr(todo, "status", "") == "completed":
-            completion_note = " ✓ done"
-
-        # Truncate long text
-        text = todo.text[:50] + "..." if len(todo.text) > 50 else todo.text
-        lines.append(f"{prefix} '{text}'{priority_note}{completion_note}.")
-
-    # If more than 5, summarize the rest
-    if len(todos) > 5:
-        remaining = len(todos) - 5
-        item_word = "item" if remaining == 1 else "items"
-        lines.append(f"Plus {remaining} more {item_word}.")
-
-    return " ".join(lines)
-
-
-def _build_closing(total: int, urgent: int) -> str:
-    """Build closing with synthesis and dialogue invitation."""
-    if urgent > 0:
-        return "Those urgent items might be worth tackling first. How would you like to approach today?"
-    elif total > 5:
-        return "That's a full list. Where would you like to start?"
-    else:
-        # #2011: "Let me know if you want to reprioritize anything." dropped —
-        # no op changes a todo's priority ("prioritize" is a READ ranking).
-        return "How would you like to tackle these?"
 
 
 def _fix_mvc_gaps(narrative: str, mvc_result) -> str:
