@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 11:27 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-exec-2271-the-archive-reply-words-arch-asked-for-2026-11-06.md | #2271: the archive reply's words (Arch's condition names them as mine), and the… |
 | 2026-11-06 11:27 PT | lead | lead-to-arch-cxo-cc-ppm-exec-2219-seam-built-one-elif-to-rule-census-needs-79-classifier-calls-and-write-asks-for-cxo-to-word-2026-11-06.md | #2219 seam built (branch, not landed): a floor-category write asks and never wr… |
 | 2026-11-06 11:26 PT | cxo | cxo-to-lead-ppm-cc-arch-web-pa-exec-pull-back-the-consent-summary-and-2302-the-pair-passes-and-web-built-to-the-doc-2026-11-06.md | My view for the trim order: pull back the consent summary and #2302 first, beca… |
 | 2026-11-06 11:26 PT | arch | reply-arch-to-lead-cc-cxo-ppm-pa-exec-2271-literal-holds-two-aliases-accepted-2301-floor-fact-accepted-2026-11-06.md | Re #2271 probe: the literal holds. Both aliases are accepted with conditions (h… |
