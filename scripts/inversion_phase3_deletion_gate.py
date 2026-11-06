@@ -514,7 +514,9 @@ def _surface2_reaches_floor(phrase: str, expected: str) -> Tuple[bool, str]:
     return False, f"surface 2 lands in {want} only {hits}/{len(rows)} probe samples"
 
 
-def _surface2_misserve_safe(phrase: Optional[str]) -> Tuple[bool, str]:
+def _surface2_misserve_safe(
+    phrase: Optional[str], ruled_destination: Optional[str] = None
+) -> Tuple[bool, str]:
     """#1933: is the mis-serve credit's premise — "the pattern claims a
     different op, so deleting it cannot make the fallback worse" — actually
     true for ``phrase``? It is NOT true when the fallback the phrase falls
@@ -540,6 +542,15 @@ def _surface2_misserve_safe(phrase: Optional[str]) -> Tuple[bool, str]:
          name) is NOT WRITE/DESTRUCTIVE by this check: only a REGISTERED
          non-READ rail op disqualifies (m-43 — this checks what the op
          actually DOES, not whether its name sounds mutating).
+
+    One exemption (Arch, decisions.log 2026-11-06 11:49): a sample whose rail
+    entry is the SAME entry object as the row's ``ruled_destination`` is the
+    op the row was ruled to reach, behind its own gates, so it is not "worse".
+    ``ruled_destination`` comes from the ledger row or the corpus row's
+    ``action:`` expectation, never inferred from the phrase or the samples; a
+    missing or unregistered destination exempts nothing, and every OTHER
+    registered WRITE/DESTRUCTIVE sample still disqualifies (#2271: aliases of
+    ``link_repo`` such as ``link_repository`` reach the ruled op).
     """
     if not phrase:
         return False, "mis-serve, no phrase threaded"
@@ -551,11 +562,15 @@ def _surface2_misserve_safe(phrase: Optional[str]) -> Tuple[bool, str]:
 
     register_default_workflows()  # idempotent
     workflows = get_action_workflows()
+    ruled_op = (ruled_destination or "").split(":", 1)[-1] if ruled_destination else ""
+    ruled_entry = workflows.get(ruled_op) if ruled_op else None
     bad = []
     for r in rows:
         sampled_action = r.get("action") or ""
         entry = workflows.get(sampled_action)
         if entry is not None and entry.needs_consent:  # effect >= WRITE
+            if ruled_entry is not None and entry is ruled_entry:
+                continue  # the ruled destination's own entry (Arch 11-06 11:49)
             bad.append(sampled_action)
     if bad:
         return False, (
@@ -1066,7 +1081,7 @@ def row_disposition(
                 # fallback worse" only holds when surface 2 (what the phrase
                 # falls to once the pattern is gone) doesn't land on a
                 # WRITE/DESTRUCTIVE mis-route (#1933). Gated, never assumed.
-                ms_ok, ms_reason = _surface2_misserve_safe(phrase)
+                ms_ok, ms_reason = _surface2_misserve_safe(phrase, expected)
                 if ms_ok:
                     row_ok = True
                     reason = (
@@ -1188,7 +1203,9 @@ def row_disposition(
             # not a free pass. The row stays open for the ROUTER regardless
             # (it still declined), which is a grammar question, not a reason
             # to keep a mis-serving regex.
-            ms_ok, ms_reason = _surface2_misserve_safe(phrase)
+            ms_ok, ms_reason = _surface2_misserve_safe(
+                phrase, expected if expected.startswith("action:") else None
+            )
             if ms_ok:
                 row_ok = True
                 reason = (
@@ -2154,7 +2171,7 @@ def check_deleted_entry_non_regression(
             # failure: a FAIL here is a real finding (a deletion already on
             # main may mis-route this phrase) for Lead to decide, not this
             # function's to paper over.
-            ms_ok, ms_reason = _surface2_misserve_safe(phrase)
+            ms_ok, ms_reason = _surface2_misserve_safe(phrase, misserved.get("ruled_destination"))
             if ms_ok:
                 continue
             problems.append(
