@@ -118,11 +118,12 @@ def _mentions_reminder(message: str) -> bool:
 
 # #2294 (Arch 11-06 08:06): a legacy ``delete_item`` emission reaches the delete path
 # only when Piper just showed a numbered list; with none, this ask, and nothing is
-# deleted. Lead's draft of the words, for CXO; a statement, not a question, since
-# nothing is armed to bind an answer (the #1730 unarmed-ask ratchet).
+# deleted. CXO's words (11-06 08:18); a statement, not a question, since nothing is
+# armed to bind an answer (the #1730 unarmed-ask ratchet).
 DELETE_ITEM_NO_LIST_ASK = (
-    'I\'m not sure which list you mean. Say "show my todos" or "show my reminders", '
-    "then tell me the number to delete."
+    "I'm not sure which one you mean, because I haven't shown you a list to count "
+    "from. Nothing was deleted. Tell me the name of the todo or reminder you want "
+    "to delete."
 )
 
 
