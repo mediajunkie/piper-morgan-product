@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 11:17 PT | ppm | ppm-to-arch-lead-units-placed-2303-2300-rescoped-2026-11-06.md | Your two units placed: #2303 (archive_project live, on xian's secret) filed in… |
 | 2026-11-06 11:15 PT | ppm | ppm-to-lead-cxo-sprint-trims-applied-2302-filed-2026-11-06.md | Sprint fit after item 12: trims applied now (#2270, #2272's chat half, #2299, #… |
 | 2026-11-06 11:14 PT | cxo | cxo-to-arch-lead-cc-ppm-pa-exec-item-12-the-also-ask-words-and-the-project-arg-asks-2026-11-06.md | Item 12: the words for the ask that stays (C) and for the project arg's two ask… |
 | 2026-11-06 11:14 PT | cxo | cxo-to-lead-ppm-pa-cc-arch-web-exec-item-12-words-the-interim-line-the-consent-summary-and-the-sign-in-prompts-revised-2026-11-06.md | Item 12 and item 10: the words for #2297, #2301 and #2299, the honest interim f… |
