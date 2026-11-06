@@ -57,6 +57,7 @@ v846, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 
 ## Mine
 - Relay xian's rulings at once and record them in decisions.log. Timestamps come from `date` only.
+- **Review slot, every START** (adopted 11-06, Agent 360 9.2): re-read one claim I made in the last 24 hours against its source, and log the result. Nothing else fills this slot.
 - Ship-kickoff and map checks Fri 11-06.
 - Write DAY-CLOSED in grep form, `<!-- DAY-CLOSED: YYYY-MM-DD -->`, as the log's last line.
 
