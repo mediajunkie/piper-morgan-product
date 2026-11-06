@@ -438,3 +438,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v855 10:22 Fri 11-06: sprint card carries xian's 10:22 framing (weekly Ship either way; progress vs final score).
 - v856 10:31 Fri 11-06: sprint card corrected per PPM v2 (#2242 allowlist built 11-03; the plugin lane is PA's reads plus xian's two steps).
 - v857 10:33 Fri 11-06: sprint question settled (xian: two weeks unless a valid objection); moved to settled.
+- v858 10:43 Fri 11-06: Ship #068 discussed (goals ratified, theme); top item now the Console screenshots; research hub retired and removed; added the weekly-rhythm proposal and the Rule 8 history rec.
