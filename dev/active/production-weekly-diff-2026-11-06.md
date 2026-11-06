@@ -1,10 +1,10 @@
 # Production since-last diff, Fri 10-30 to Fri 11-06
 
-PPM, 2026-11-06. The second weekly diff. It's computed from the board snapshots `dev/snapshots/project-board-2026-10-30.tsv` (last written 10-30 21:58, after Go and the tracking audit) and `-11-06.tsv` (taken 11-06 05:1x), and checked against `gh issue list --milestone Production --state open` (252).
+PPM, 2026-11-06. The second weekly diff. It's computed from the board snapshots `dev/snapshots/project-board-2026-10-30.tsv` (last written 10-30 21:58, after Go and the tracking audit) and `-11-06.tsv` (taken 11-06 05:11), and checked against `gh issue list --milestone Production --state open` (252).
 
 ## The numbers
 
-| | 10-30 21:58 | 11-06 05:1x |
+| | 10-30 21:58 | 11-06 05:11 |
 |---|---|---|
 | Open Production | 242 | 252 |
 | Open MVP | 0 (closed at Go, 10-30 17:03) | 0 |
