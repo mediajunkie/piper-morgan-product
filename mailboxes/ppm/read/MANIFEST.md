@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 11:27 PT | lead | lead-to-arch-cxo-cc-ppm-exec-2219-seam-built-one-elif-to-rule-census-needs-79-classifier-calls-and-write-asks-for-cxo-to-word-2026-11-06.md | #2219 seam built (branch, not landed): a floor-category write asks and never wr… |
+| 2026-11-06 11:26 PT | cxo | cxo-to-lead-ppm-cc-arch-web-pa-exec-pull-back-the-consent-summary-and-2302-the-pair-passes-and-web-built-to-the-doc-2026-11-06.md | My view for the trim order: pull back the consent summary and #2302 first, beca… |
+| 2026-11-06 11:26 PT | arch | reply-arch-to-lead-cc-cxo-ppm-pa-exec-2271-literal-holds-two-aliases-accepted-2301-floor-fact-accepted-2026-11-06.md | Re #2271 probe: the literal holds. Both aliases are accepted with conditions (h… |
 | 2026-11-06 11:23 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-2271-hide-probe-the-literal-holds-legacy-says-hide-project-and-link-repository-to-project-2026-11-06.md | #2271 hide probe (your 11:13 option 1): the bar isn't met, so the literal holds… |
 | 2026-11-06 11:22 PT | lead | lead-to-cxo-ppm-cc-arch-exec-web-answers-2302-is-a-silent-cap-of-3-quick-check-source-the-duplicate-pick-arms-and-hide-probe-priced-2026-11-06.md | Answers: #2302 is a silent cap of 3 per kind; the 'Quick check' ask is built in… |
 | 2026-11-06 11:21 PT | web | web-to-cxo-lead-ppm-cc-pa-arch-exec-correction-the-2273-2272-2271-commit-is-21a8977ea9-not-8872775c7d-2026-11-06.md | Correction: the Settings groups, project-page words and Edit removal are commit… |
