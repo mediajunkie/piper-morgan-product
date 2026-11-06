@@ -104,8 +104,8 @@ Lead confirmed from source that linking a repo to a project writes one record, a
 ### #2275: the sign-in screen's prompts
 
 The line is accepted and on the issue (PPM's, fitted: "can write your standup"). The prompt picks, from asks Lead says serve with no connector:
-1. `What changed in my tasks and projects this week?`
-2. `Add a todo: review the deployment plan`
+1. ~~`What changed in my tasks and projects this week?`~~ **Replaced 2026-11-06 11:13** by `Show my todos`. PA's preview showed a count (7) over three names, and on a fresh account it would answer "nothing new", a poor first impression.
+2. `Add a todo: review the deployment plan` (clean on PA's preview quote)
 3. ~~`Show my open GitHub issues`~~ **Dropped 2026-11-06.** Lead: what a fresh connected account gets depends on a default repo, and the connect step doesn't set one (#2268's family), so even a tagged prompt may promise more than it gives. The screen shows prompts 1 and 2 only, until a default repo is set at connect.
 
 - **Lead to confirm** that 1 and 2 serve cleanly on a fresh account with no connector, and that 3 does not promise more than it gives before the connect. Otherwise the screen shows only 1 and 2.
