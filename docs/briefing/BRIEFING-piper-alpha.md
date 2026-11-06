@@ -184,12 +184,12 @@ Piper Morgan is an AI-powered product management assistant being built in public
   layer but is not part of Piper Morgan's own role tiering. Full tiering:
   `docs/briefing/ROSTER.md`; account structure: `docs/briefing/PROJECT.md`'s "Team & Accounts".
 - **Architecture, current**: PDR-006 (ratified 2026-07-31): a hosted MCP endpoint
-  (`mcp.pipermorgan.ai`) + plugin distribution to Claude/ChatGPT. **Live, MCP v14** (`c6c26a596f`,
-  deployed by PA 2026-10-13 17:49 PT; v11 was `10282b068f`, 10-08): fail-closed identity, OAuth AS at `alpha.pipermorgan.ai/mcp/oauth`, three read-only
+  (`mcp.pipermorgan.ai`) + plugin distribution to Claude/ChatGPT. **Live** (the serving release and sha are in `fly releases -a piper-morgan-mcp` and
+  `mcp.pipermorgan.ai/health`, not here; deploys only via `scripts/deploy-mcp.sh`): fail-closed identity, an allowlist of who may connect (#2242), OAuth AS at `alpha.pipermorgan.ai/mcp/oauth` (alpha keeps the OAuth paths after #2282; the rest of alpha redirects to `beta.pipermorgan.ai`), three read-only
   resources + one read-only composite tool `what_piper_knows_about_me` (ChatGPT can only use tools;
   Arch's four conditions), per-identity rate limit (in-memory per machine; Upstash is the trigger for
   leaving probe scale), public Smithery server card. **#1458 (cross-caller isolation) CLOSED 10-05.**
-  Users revoke access in alpha Settings → Connected apps (#1918; live, PM-pressed).
+  Users revoke access in Settings → Connected apps, now at `beta.pipermorgan.ai/settings/connected-apps` (#1918).
   **PA owns the MCP program and the demand-probe packaging** (PM 09-26; R7 10-05), off Lead's path;
   **PM tests before anything is listed.** The **plugin** lives in its own public repo
   `mediajunkie/piper-morgan-plugin` (v0.1.0: three read-only skills with the persona inside them,
@@ -198,8 +198,7 @@ Piper Morgan is an AI-powered product management assistant being built in public
   copy: `plugin-listing-copy-draft-2026-10-06.md`. Runbook: `docs/internal/architecture/current/mcp/server-README.md`.
   ESSENCE.md (2026-08-30): the MCP path is the **public-beta gate** in Production; MVP closure starts the
   invitation-only private beta.
-- **Milestone counts, verified live via GitHub's own milestone API** (`gh api .../milestones`,
-  2026-10-27): Ongoing 59 open / 156 closed; MVP 3 open / 1284 closed; Production 202 open / 145 closed; Fast Follow 50 open / 1 closed.
+- **Milestone counts** live in GitHub, not here: `gh api repos/mediajunkie/piper-morgan-product/milestones?state=all`. MVP closed 2026-10-30 (xian's go on #1386) and 0.9.0.0 shipped 11-01.
 - **Where the 1.0 picture lives** (the pointers every briefing carries, #2179): the promises are in `docs/internal/product/promises.yaml` (PPM keeps it; xian ratified it 10-25), sourced from ESSENCE v1.1 (`docs/internal/architecture/ESSENCE.md`, ratified 10-25) plus the Terms. The production map is `docs/internal/planning/production-map.html` (PPM's generator). The Readiness lane is Exec's and holds the public-beta items backed by the Terms, led by #2157 (backups, a timed restore drill, master-key custody). The MCP path itself is the public-beta gate (above).
 - **Key standing decision**: the effect-declaration pattern — every workflow/tool action declares
   READ/WRITE/DESTRUCTIVE as a required, defaultless field (`EffectClass(IntEnum)`,
@@ -262,7 +261,7 @@ You operate in **Claude Code** with full access to the Piper Morgan project repo
 
 - **Read the entire project**: filesystem, codebase, docs, omnibus logs, session logs, GitHub issues
 - **Write operational documents**: memos, session logs, triage notes, summaries — to designated safe paths
-- **Use git**: read branches, view history, commit to `pa/` branch
+- **Use git**: read branches, view history, commit on `claude/pa-cycle` and push to `main` (`git push origin HEAD:main`)
 - **Use GitHub CLI**: `/opt/homebrew/bin/gh` — issue list, issue view, PR list (operational awareness)
 - **Search the web**: for research, landscape awareness, fact-checking
 - **Run commands**: bash, file operations, text processing
