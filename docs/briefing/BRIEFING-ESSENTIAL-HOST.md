@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-HOST
 valid_from: "2026-04-22"
-last_updated: "2026-10-27"
-last_verified: "2026-10-27"
+last_updated: "2026-11-06"
+last_verified: "2026-11-06"
 max_age_days: 90
 ---
 
@@ -129,7 +129,7 @@ The discipline: protect time for noticing + naming + cross-check. The instinct t
 - Asynchronous communication between agents and advisors
 - File-based inbox/read/outbox structure
 - `mailboxes/[role-slug]/` for each participant
-- External advisors (Ted, Sam) have outbox for responses
+- External advisors have outbox for responses
 - Internal roles check inbox at session start
 
 **The Handoff Problem**:
@@ -154,39 +154,29 @@ The discipline: protect time for noticing + naming + cross-check. The instinct t
 
 ## Current Focus
 
-**As of 2026-10-26, rewritten from HOST's own 10-19 to 10-26 work (the 09-22 version had gone
-stale: invite saga closed, Role Health Check done, trust-zone split now routine).**
+**As of 2026-11-06, rewritten from HOST's 10-30 to 11-05 work. Numbers live in the places named, not here.**
 
 **Active Priorities**:
-1. **Send-day checks (the Readiness lane's standing check, Exec owns the lane).** Before the
-   alpha invites go (xian's hand only): `/health` and served git sha, main's CI
-   (`scripts/main-ci-status.sh`, 12 workflows), PPM's known-issues recheck, Web's served rows,
-   invite codes valid and unused. Mark the roster as each send happens.
-2. **Credential custody on the hosted app.** The keychain findings (two unscoped credential-store
-   rows, likely outside testers' own keys; Create Account writes now scoped) and their
-   disposition are xian's call (reviewed, attended delete). Prod reads happen only by xian's hand
-   through `fly ssh console`, masked, names and counts only. ADR-081 D3 custody is open.
-3. **Restore drill (#2157).** HOST owns the spec: five proofs (timed restore with loss window,
-   key decrypts, deletions survive, who restored, copy destroyed and checked). Runs with xian
-   present; proof 3 needs #2158. "Your account carries over" depends on it and on master-key custody.
-4. **Seat identity (#2136)** and **Google OAuth (#2087):** one open item each, both gated outside HOST.
-5. **Governance rulings and mechanized backstops** (#1834, #1967, #1968): a ruling that is not
-   written down with a check is not done.
+1. **The invite hold.** xian's 11-04 ruling: no invitation of any kind until the hold clears. The open items and their order are in `dev/active/host-standing-items.md` (row `host-invite-hold`) and on GitHub (`label:P0`, #2261, #2282, #2292). HOST tracks it and never sends or mints; every send is xian's hand.
+2. **The first-cohort note** (held for xian's words and send; wording in the standing items). No name, handle or repo in it.
+3. **Credential custody.** Tokens, invite codes and the test-App secret never enter a conversation, file or mail (hard rule 3). Prod reads happen only by xian's hand. See `host-2174-test-app-custody`.
+4. **Restore drill (#2157)** and **deletion procedure (#2158):** P1. HOST asks xian for a window only when PPM reaches them; xian types the `fly` lines.
+5. **Agent 360 v0.6:** fielded 11-06, window to 11-20, synthesis target about 12-04 (`360-v0.6-responses` row).
+6. **Governance rulings and mechanized backstops** (#1834, #1967, #1968) and **seat identity** (#2136): carried; each gated outside HOST.
 
 **Standing cadence work**:
-- **Role Health Check**: 4-weekly, GH Actions issue, `label:sapient-trust`. Last: #2179 (10-26).
-  Next due ~11-23.
+- **Role Health Check**: 4-weekly, GH Actions issue, `label:sapient-trust`. Next due about 11-23.
 - **Alpha-tester roster** (`dev/alpha/alpha-tester-roster.md`, main checkout, gitignored): the
   identity-mapping record. Never copy names into this public repo; use role labels.
-- **Agent 360 v0.6 fielding** about 11-06; restarter token expiry reminder by 2027-10-08.
+- **Post-switch Buttondown reads** (four, wait on xian's own sign-up and pasted email) and the restarter token expiry reminder by 2027-10-08.
 
 **Working context since 10-24/25** (Exec's 10-26 disposition on #2179): the production map
 (`docs/internal/planning/production-map.html`), the Readiness lane with HOST's send-morning
 checks as its standing check, backups and key custody (#2157), `docs/internal/product/promises.yaml`
 (ratified 10-25), and ESSENCE v1.1 (`docs/internal/architecture/essence-v1.1-draft-commitment-6-and-prd-note-2026-10-24.md`; ratified as v1.1 on 10-25).
 
-**Known coordination challenges**: briefings across the cohort were content-stale on 10-26
-(#2179); Exec holds the disposition.
+**Known coordination challenges**: briefings drift within about a week when they hold hand-typed
+versions or counts (CIO's staleness runs, `docs/internal/research/`); cite where a number lives.
 
 ## Progressive Loading
 
