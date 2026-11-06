@@ -328,5 +328,5 @@ class TestGatePromptIsALegibilitySurface:
             summary="change the title of issue #108 in acme/roadmap",
         )
         offer = build_consent_check_offer(intent, words)
-        assert offer.question.startswith(words.question)
+        assert offer.question.endswith("\n\n" + words.question)  # CXO: the question last
         assert legibility.describe_effect(EffectClass.WRITE) not in offer.question

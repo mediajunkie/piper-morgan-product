@@ -37,6 +37,25 @@ NOT_SURE_STATEMENT = (
     "I'm not sure what you want changed, so I haven't done anything. Tell me what to change."
 )
 
+# CXO 11-06 (2304 rulings memo, verbatim): the ops whose args can never name the
+# thing before "yes" say how to go ahead. A statement; nothing is armed. Each example
+# is a phrasing shown to serve as a direct request (#2304 report: corpus row + router
+# route, surface-1 claim, or handler test); comment_issue's example was dropped for
+# want of that evidence, so it keeps NOT_SURE_STATEMENT.
+NOT_SURE_SAY_IT_DIRECTLY = (
+    "I'm not sure exactly what you want changed, so I haven't done anything. "
+    "Say it as a direct request, like {example}."
+)
+NOT_SURE_UPDATE_DOCUMENT = (
+    "I'm not sure exactly what you want changed, so I haven't done anything. "
+    "Say it as a direct request that names the document and the change."
+)
+DIRECT_REQUEST_EXAMPLES = {
+    "set_default_repo": '"set my default repo to owner/name"',
+    "set_timezone": '"set my timezone to America/Los_Angeles"',
+    "link_repo": '"link owner/name to project Mobile Redesign"',
+}
+
 # CXO 11-06 11:28 (verbatim): add_project with no name. Armed through the #2080
 # add-project name carrier (consent_owed), so the answer is bound as the name and
 # the named turn arms the one "Add a project called …?" confirm. No write is armed.
@@ -354,3 +373,28 @@ async def update_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
             summary=f"change {changed} of issue #{number} in {repository}",
         )
     )
+
+
+def _statement_write_ask(op: str, line: str) -> WriteAskBuilder:
+    """An op whose handler finds its target with an LLM call or an inline parse:
+    nothing can be named before "yes", so it says ``line`` and arms nothing."""
+
+    async def _ask(request: WriteAskRequest) -> WriteAsk:
+        return WriteAsk(reply=line)
+
+    _ask.__name__ = f"{op}_write_ask"
+    return _ask
+
+
+update_document_write_ask = _statement_write_ask("update_document", NOT_SURE_UPDATE_DOCUMENT)
+set_default_repo_write_ask = _statement_write_ask(
+    "set_default_repo",
+    NOT_SURE_SAY_IT_DIRECTLY.format(example=DIRECT_REQUEST_EXAMPLES["set_default_repo"]),
+)
+set_timezone_write_ask = _statement_write_ask(
+    "set_timezone",
+    NOT_SURE_SAY_IT_DIRECTLY.format(example=DIRECT_REQUEST_EXAMPLES["set_timezone"]),
+)
+link_repo_write_ask = _statement_write_ask(
+    "link_repo", NOT_SURE_SAY_IT_DIRECTLY.format(example=DIRECT_REQUEST_EXAMPLES["link_repo"])
+)

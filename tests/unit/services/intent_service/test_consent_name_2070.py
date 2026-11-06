@@ -51,7 +51,7 @@ async def _ask(action, message):
 async def test_consent_line_names_the_project(action, message, expected):
     ask = await _ask(action, message)
     offer = cg.build_consent_check_offer(_intent(action, message), ask.words)
-    assert offer.question.startswith(f"{expected} (yes/no)")
+    assert offer.question.endswith(f"{expected} (yes/no)")
     assert '"Bar"' in offer.offer["decline_message"]
 
 

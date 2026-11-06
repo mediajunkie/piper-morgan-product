@@ -524,10 +524,11 @@ def build_consent_check_offer(intent, words) -> ConsentCheckOffer:
     )
 
     summary = words.summary
+    # CXO 11-06: the teaching line first, the yes/no question last.
     question = (
-        f"{words.question}\n\n"
         "(If you'd rather I just act on requests like this without checking, "
-        'say "just do things directly from now on.")'
+        'say "just do things directly from now on.")\n\n'
+        f"{words.question}"
     )
     return ConsentCheckOffer(
         question=question,

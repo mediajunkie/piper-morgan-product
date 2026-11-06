@@ -2805,6 +2805,7 @@ link_repo_entry = WorkflowEntry(
     ),
     requires_context=["intent", "intent_service"],
     action_triggered=True,
+    write_ask=_words.link_repo_write_ask,  # #2304
     flip_write_allowlist_key="link_repo",
 )
 
@@ -2973,6 +2974,7 @@ def register_default_workflows() -> None:
         description="Document update via slot-filling (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.update_document_write_ask,  # #2304
     )
 
     # #1124 cohort 1 migration #3: changes-query — dispatch migration. The four
@@ -3221,6 +3223,7 @@ def register_default_workflows() -> None:
         description="Set-default-repo via action dispatch (#1327)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.set_default_repo_write_ask,  # #2304
         flip_write_allowlist_key="set_default_repo",
     )
 
@@ -3718,6 +3721,7 @@ def register_default_workflows() -> None:
         description="Set-timezone via action dispatch (#1876)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.set_timezone_write_ask,  # #2304
     )
 
     # #1333 (Arch-ruled 2026-06-30): the former per-action unwired-write registration

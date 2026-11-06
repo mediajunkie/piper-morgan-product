@@ -168,6 +168,31 @@ async def test_each_op_asks_its_own_question_with_the_thing_named(
 # ── the rows the args can't fill: CXO's statement, nothing armed ──
 
 
+# CXO 11-06 (2304 rulings): the ops that can never name the thing say how to go ahead.
+_SAY_IT = "I'm not sure exactly what you want changed, so I haven't done anything. "
+_DIRECT_LINES = {
+    "update_document": _SAY_IT
+    + "Say it as a direct request that names the document and the change.",
+    "set_default_repo": _SAY_IT
+    + 'Say it as a direct request, like "set my default repo to owner/name".',
+    "set_timezone": _SAY_IT
+    + 'Say it as a direct request, like "set my timezone to America/Los_Angeles".',
+    "link_repo": _SAY_IT
+    + 'Say it as a direct request, like "link owner/name to project Mobile Redesign".',
+    # comment_issue: CXO's example dropped (no routed row of that shape); the plain line.
+    "comment_issue": NOT_SURE_STATEMENT,
+}
+
+
+def _expected_statement(action):
+    register_default_workflows()
+    entry = get_action_workflows()[action]
+    for op, line in _DIRECT_LINES.items():
+        if entry is get_action_workflows()[op]:
+            return line
+    return NOT_SURE_STATEMENT
+
+
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "action,message,context",
@@ -199,7 +224,7 @@ async def test_unnameable_rows_say_not_sure_and_arm_nothing(action, message, con
     offers = _Offers()
     ask = await _ask(action, message, session_id="s-2304", service=_service_stub(offers), **context)
     assert ask.words is None
-    assert ask.reply == NOT_SURE_STATEMENT
+    assert ask.reply == _expected_statement(action)
     assert ask.armed is False
     assert offers.armed == []
 
@@ -274,7 +299,7 @@ async def test_empty_args_never_show_the_op_name(action):
     if get_action_workflows()[action] is get_action_workflows()["complete_todo"]:
         assert ask.reply == COMPLETE_NO_TARGET_STATEMENT  # complete's own words for it
     else:
-        assert ask.reply == NOT_SURE_STATEMENT
+        assert ask.reply == _expected_statement(action)
     assert ask.armed is False
 
 
@@ -302,7 +327,7 @@ async def test_e2e_a_marked_named_create_asks_cxos_question_and_yes_adds_it_once
     result = await service.process_intent(
         message="I keep meaning to add todo: buy milk", session_id=sid, user_id=_USER
     )
-    assert result.message.startswith('Add "buy milk" to your todos? (yes/no)')
+    assert result.message.endswith('Add "buy milk" to your todos? (yes/no)')
     assert "create todo" not in result.message.lower()
     assert _wrote(boundary) == []
     await service.process_intent(message="yes", session_id=sid, user_id=_USER)
@@ -349,7 +374,7 @@ async def test_e2e_a_marked_write_the_args_cant_name_says_not_sure_and_yes_does_
         session_id=sid,
         user_id=_USER,
     )
-    assert result.message == NOT_SURE_STATEMENT
+    assert result.message == _DIRECT_LINES["set_timezone"]
     assert service.workflow_offer_service.peek_pending_offer(sid, _USER) is None
 
 

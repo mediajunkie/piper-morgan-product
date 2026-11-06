@@ -749,7 +749,7 @@ class TestConsentCheckOffer:
         never shows the op name. (Was: "Quick check ... asking me to update issue
         #108, which {effect}" — the op name and the effect phrase.)"""
         offer = cg.build_consent_check_offer(_update_intent(), _update_words())
-        assert offer.question.startswith(UPDATE_QUESTION + "\n\n")
+        assert offer.question.endswith("\n\n" + UPDATE_QUESTION)  # CXO: the question last
         assert "update issue" not in offer.question
         assert "update_issue" not in offer.question
 
@@ -920,7 +920,7 @@ class TestEndToEndConsentCheck:
         assert result.intent_data.get("consent_check_pending") is True
         assert result.intent_data.get("consent_effect") == "write"
         assert result.requires_clarification is True
-        assert result.message.startswith(UPDATE_QUESTION)  # #2304: the thing named
+        assert result.message.endswith(UPDATE_QUESTION)  # #2304: the thing named
         stored = _pending_offers(live_service).get(sid)
         assert stored is not None
         assert stored["workflow_type"] == CONFIRM_PENDING_ACTION_WORKFLOW

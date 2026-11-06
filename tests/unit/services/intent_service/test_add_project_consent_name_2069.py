@@ -127,7 +127,7 @@ class TestConsentLineNamesTheStoredName:
         intent = _intent(BAZ, BAZ_ARGS)
         ask = await add_project_write_ask(WriteAskRequest(intent=intent, message=BAZ))
         offer = consent_gate.build_consent_check_offer(intent, ask.words)
-        assert offer.question.startswith('Add a project called "Baz"? (yes/no)')
+        assert offer.question.endswith('Add a project called "Baz"? (yes/no)')
         assert "with description" not in offer.question
         assert offer.offer["pending_action"]["summary"] == 'add a project called "Baz"'
         assert offer.offer["decline_message"].startswith(

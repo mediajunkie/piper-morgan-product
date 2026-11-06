@@ -6449,8 +6449,12 @@ what to change.` and nothing is armed. add_project with no name asks `What shoul
 for example "add project Mobile Redesign".` on the #2080 name carrier with `consent_owed` (the rail's #2082
 entry-identity branch moved into that builder). Rows filled today: create_todo (one title), create_reminder (task and
 a said time), archive/restore/add_project, create_issue (title and a named repo), update_issue (number, repo, field),
-complete_todo. Rows that always say the statement: update_document and comment_issue (the handler finds its target
-with an LLM call), link_repo, set_default_repo, set_timezone (the handler parses inline). The #2219 seam's
+complete_todo. Rows that never name the thing: update_document and comment_issue (the handler finds its target
+with an LLM call), link_repo, set_default_repo, set_timezone (the handler parses inline). CXO 11-06: these say how to
+go ahead, `I'm not sure exactly what you want changed, so I haven't done anything. Say it as a direct request, like
+{example}.` (set_default_repo, set_timezone, link_repo; each example evidenced in #2304), the no-example form for
+update_document, and comment_issue keeps the plain line (its example had no routed row of that shape). The consent
+check puts the #1510 teaching line first and the yes/no question last. The #2219 seam's
 `elif _floor_write and _rail_entry is ...complete_todo` is deleted. The DESTRUCTIVE builders (delete_todo,
 unlink_repo, close/reopen) are unchanged. The TRUST-mode outward disclosure (`build_outward_disclosure`) still says
 `_summary_for`'s op words (filed: 2307). Binding (Arch 11-06 13:23): a builder that reuses its handler's resolver binds what it named into the armed
