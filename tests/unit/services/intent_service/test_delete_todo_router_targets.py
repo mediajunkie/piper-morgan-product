@@ -295,7 +295,7 @@ class TestHandleDeleteTodoTargets:
         intent = _intent("delete the last one", ["last"])
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is True
-        assert msg == 'Delete the todo "revise the pr"? (yes/no)'
+        assert msg == 'Delete the reminder "revise the pr"? (yes/no)'
         offer = offers.set_pending_offer.call_args[0][1]
         assert offer["pending_action"]["intent"].context[BATCH_DELETE_LEFT_KEY] == []
         handlers.todo_service.delete_todo.assert_not_awaited()
@@ -309,7 +309,7 @@ class TestHandleDeleteTodoTargets:
         intent = _intent("delete the last two except the first of them", ["3-4"], exclude=["3"])
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is True
-        assert msg.startswith('Delete the todo "revise the pr"? Leaving ')
+        assert msg.startswith('Delete the reminder "revise the pr"? Leaving ')
         assert msg.endswith(" as is. (yes/no)")
 
     @pytest.mark.asyncio

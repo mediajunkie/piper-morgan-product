@@ -240,7 +240,9 @@ class TestTargetsPathThroughTheRailEntryPoint:
             kind="reminders", ids=[t.id for t in rows], texts=[t.text for t in rows]
         )
         result = await self._run(intent_service, "delete the second one", ["2"])
-        assert result.message == 'Delete the todo "send the budget review to the board"? (yes/no)'
+        assert (
+            result.message == 'Delete the reminder "send the budget review to the board"? (yes/no)'
+        )
         assert result.requires_clarification is True
         assert store.slot["pending_action"]["kind"] == "todo_batch_delete"
         todo_service.delete_todo.assert_not_awaited()

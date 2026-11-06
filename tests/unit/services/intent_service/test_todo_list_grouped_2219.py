@@ -74,3 +74,16 @@ def test_the_done_header_counts_in_the_noun():
     assert format_todo_list_conscious(two_open, include_completed=True).startswith(
         "You have 2 open todos and 1 done. Here they are:"
     )
+
+
+def test_the_noun_carries_from_the_last_list_shown():
+    """CXO 2026-11-05 20:47: the current message, else the last list's kind, else todo."""
+    from services.intent_service.reminder_copy import conversation_noun
+
+    bare = "Mark the first three complete and leave the fourth one pending."
+    assert conversation_noun(bare, "reminders") == "reminder"  # PA's live case
+    assert conversation_noun(bare, "due reminders") == "reminder"
+    assert conversation_noun(bare, "active todos") == "todo"  # the opposite
+    assert conversation_noun(bare, None) == "todo"  # a new conversation
+    assert conversation_noun("complete the first todo", "reminders") == "todo"  # rule 1
+    assert conversation_noun("delete the first reminder", "active todos") == "reminder"

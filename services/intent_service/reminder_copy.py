@@ -80,6 +80,23 @@ def copy_noun(message: Optional[str], default: str = "todo") -> str:
     return said_noun(message) or default
 
 
+def conversation_noun(message: Optional[str], last_list_kind: Optional[str]) -> str:
+    """#2219 (CXO 2026-11-05 20:47): the noun carries through the conversation.
+
+    1. The word in the current message wins ("reminder" or "remind", "todo", "task").
+    2. Otherwise the kind of the last numbered list shown in this conversation
+       ("reminders", "due reminders", "active todos").
+    3. Otherwise "todo".
+    """
+    said = said_noun(message)
+    if said:
+        return said
+    kind = (last_list_kind or "").lower()
+    if "reminder" in kind:
+        return "reminder"
+    return "todo"
+
+
 def noun_word(noun: str) -> str:
     """Display spelling: "reminder" | "todo" (#2219: no hyphen, everywhere)."""
     return "todo" if noun == "todo" else "reminder"

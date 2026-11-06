@@ -41,6 +41,7 @@ from services.consciousness.todo_consciousness import (
 )
 from services.domain.models import Intent, Todo
 from services.intent_service.reminder_copy import (
+    conversation_noun,
     copy_noun,
     delete_confirm_question,
     delete_no_list_tail,
@@ -904,7 +905,10 @@ class TodoIntentHandlers:
             return (
                 self._no_list_ordinal_reply(
                     name_pool,
-                    copy_noun(intent.original_message or ctx.get("original_message")),
+                    conversation_noun(
+                        intent.original_message or ctx.get("original_message"),
+                        numbered.kind if numbered is not None else None,
+                    ),
                     "Tell me which one, and I'll mark it done.",
                     session_id,
                     principal or user_id,
@@ -977,7 +981,10 @@ class TodoIntentHandlers:
         question = _batch_confirm_question(
             [t.text for t in picked],
             left,
-            copy_noun(intent.original_message or ctx.get("original_message")),
+            conversation_noun(
+                intent.original_message or ctx.get("original_message"),
+                numbered.kind if numbered is not None else None,
+            ),
         )
         bound_ctx = {
             **ctx,
@@ -1137,6 +1144,11 @@ class TodoIntentHandlers:
             by_id = {t.id: t for t in name_pool}
             ordinal_pool = [by_id[i] for i in numbered.ids if i in by_id]
             ordinal_kind = numbered.kind
+        # #2219 (CXO 20:47): the noun carries from the last numbered list shown.
+        noun = conversation_noun(
+            intent.original_message or ctx.get("original_message"),
+            numbered.kind if numbered is not None else None,
+        )
 
         picked, unresolved = resolve_router_targets(
             targets, name_pool, ordinal_candidates=ordinal_pool

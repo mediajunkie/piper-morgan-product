@@ -215,7 +215,7 @@ class TestHandleCompleteTodoTargets:
         msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is True
         assert msg == (
-            'Complete 3 todos: "check the test card again" (2 items) and "review the pr"? '
+            'Complete 3 reminders: "check the test card again" (2 items) and "review the pr"? '
             'Leaving "revise the pr" as is. (yes/no)'
         )
         handlers.todo_service.complete_todo.assert_not_awaited()
