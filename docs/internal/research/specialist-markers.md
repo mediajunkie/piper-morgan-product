@@ -12,10 +12,10 @@
 | Exec | `week review`, `synthesis`, `Verified how`, `corrected`, `against source`, `rollup v`, `relay` (xian's ruling relayed), `decisions.log`, `Ship #`, `walk` | (none given) | 11-06 06:04, in its Agent 360 v0.6 answer |
 | Arch | | | |
 | CXO | | | |
-| Comms | | | |
+| Comms | `review` with a post title or `prose`; `fact-check`; `template-audit`; `publish-ready`; `scaffold`; `mining pass` / `NARRATIVE-SURVEY-LEDGER`; `External` with `Ship #`; `calendar` with a slot (`row`, `tease`, `draftPath`); `copy` with a surface (`letter`, `/try/`, `/privacy`, `known-issues`). Case-insensitive; in a heading or an entry's first line | Entries headed only `WATCH`, `mail wake` with only filing, or `STOP` bookkeeping | 11-06 06:20 |
 | Docs | | | |
 | PA | | | |
-| Web | | | |
+| Web | `Lighthouse`; `WCAG` and `contrast`; `deploy` with `Vercel`; `served` with `quoted`; `publish-post` and `compose`; `website main`; headings starting `### … (served check)` or `Served checks`; `Verified how:` naming `curl` plus `grep` on pipermorgan.ai pages | (none given) | 11-06 06:19 |
 | CIO | `methodology-`, `PP-0`, `Pattern-0`, `audit`, `proto-pattern`, `worked example`, `corollary`, `Emerging`, `staleness run`, `review` (of a mechanism against its criteria) | Fire checks, mail filing, `Drain:` | 11-06, CIO's own |
 
 **A design note for the build:** `Verified how` appears in both Lead's and Exec's lists, and HOST names it as a body key. It's in nearly every closing entry cohort-wide, so on its own it would read most entries as specialist. The classifier should treat it as specialist only when it appears with another of the role's markers, and say so in its output.
