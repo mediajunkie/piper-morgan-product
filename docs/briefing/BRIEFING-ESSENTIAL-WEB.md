@@ -79,6 +79,8 @@ Run `basename "$(pwd)"` + `git branch --show-current` before any commit — the 
 - The rolling observation-pass queue (design/UX backlog, `dev/2026/05/24/site-observation-pass-2026-05-24.md`): read its state at the first fire with an empty drain and log how many items are open; CXO ratifies visual direction, Web implements. A browser is available, so the queue can now be checked, not only waited on.
 - Continuity — session log + carry-forward maintenance; every duty-cycle fire closes clean (see `.claude/skills/duty-cycle-tick/SKILL.md`, which this role runs on every cron fire).
 
+- **GitHub criteria line (third queue source, each fire):** `gh issue list --repo mediajunkie/piper-morgan-website --state open --limit 50` (Web owns the repo, so no label filter) and `gh issue list --repo mediajunkie/piper-morgan-product --state open --search "label:web" --limit 20`. An issue not seen at the last fire, or one with a new comment, is work. Open each with `gh issue view N` before writing a row. An empty result on both means this queue is drained.
+
 ## Co-ownership seams
 
 Full detail with consent-gradient (freely / sign-off / unilateral) per seam: `ROLE-PORTFOLIO-WEB.md` §4. In one line each:
