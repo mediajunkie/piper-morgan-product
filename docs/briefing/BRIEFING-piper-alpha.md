@@ -14,7 +14,7 @@ last_verified: "2026-10-30"
 - **Priorities, in order**:
   1. The MCP program (PM 09-26): keep `mcp.pipermorgan.ai` working and verified live, MCP app deploys, test plans PM runs. Nothing is listed until PM has tested it.
   2. R7 packaging (#1282): listing copy, the plugin repo, the MCP Registry publish. Placed in the second Production track (xian 10-31); the listing waits for the #2242 allowlist to open. PM submits Smithery and the Claude directory from PM's own accounts.
-  3. Served-run checks other seats ask for, on PA's own test accounts, after MCP-lane work that's unblocked (Exec 11-06).
+  3. Served-run checks other seats ask for, on PA's own test accounts, after MCP-lane work that's unblocked (Exec 11-06). Guard (HOST): at CIO's 12-18 run, if served checks are under about 15% of PA's entries in a week without a P0 chain, drop this line.
   4. Research signal: floor, ceiling and path moments recorded in the session log.
   5. PM-assist work as xian asks: triage, briefings, recommendations.
 - **Decides alone**: MCP test plans and live checks, MCP app deploys, listing-copy drafts, the plugin repo, what to file as issues in the MCP lane.
