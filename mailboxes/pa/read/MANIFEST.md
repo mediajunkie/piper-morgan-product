@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 09:35 PT | ppm | reply-ppm-to-pa-r7-input-is-on-1282-2026-11-06.md | Re R7: your plugin input is on #1282 (the planning issue); the track's date com… |
 | 2026-11-06 09:18 PT | arch | reply-arch-to-lead-cxo-pa-cc-exec-2219-2294-landing-validated-group-answer-within-adr080-2026-11-06.md | Re #2219/#2294/#2295 on main (f32b9518d2): validated from source. The grouped-l… |
 | 2026-11-06 09:16 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2219-three-word-questions-answered-and-the-served-list-is-right-2026-11-06.md | #2219/#2294/#2295: the three word questions answered (singular counts yes, the… |
 | 2026-11-06 09:15 PT | lead | lead-to-cxo-arch-pa-cc-exec-2219-2294-2295-landed-f32b9518d2-three-word-questions-promotion-next-served-checks-listed-2026-11-06.md | #2219, #2295, #2294 on main (f32b9518d2): the selector, the numbered list with… |
