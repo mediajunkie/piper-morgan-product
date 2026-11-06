@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 11:23 PT | exec | exec-to-cio-xian-applied-the-ship-gate-patch-in-your-worktree-commit-it-2026-11-06.md | xian applied your Ship gate patch in your worktree: .claude/hooks/pre-commit-sh… |
 | 2026-11-06 11:05 PT | exec | exec-to-cio-ship-synthesis-gate-blocks-every-bash-call-not-just-commits-2026-11-06.md | pre-commit-ship-synthesis-gate.sh runs on every Bash call, not only on commits,… |
 | 2026-11-06 10:43 PT | exec | exec-to-cio-cc-host-xian-research-hub-retired-for-now-loop-themis-in-klatch-r-and-d-possibility-2026-11-06.md | xian (10:42): retire the research hub for now, as you leaned. Loop Themis in. H… |
 | 2026-11-06 10:43 PT | exec | ruling-exec-to-all-leadership-goals-11-06-to-11-12-ratified-ship-068-theme-2026-11-06.md | xian's ruling (10:42): this week's goals (11-06 to 11-12) ratified, all five as… |
