@@ -35,11 +35,11 @@ def _todo_is_done(todo: Todo) -> bool:
     return bool(getattr(todo, "completed", False) or getattr(todo, "status", "") == "completed")
 
 
-def format_todo_list_grouped(todos: List[Todo], include_completed: bool = False) -> str:
-    """#2219 (CXO 10-30): the list itself. ``You have 13 open todos. Here they are:``,
-    then one line per distinct item in the list's order (priority, then oldest first),
-    repeats grouped as ``review prs (×3)``. An item keeps its priority note; a done one
-    says so. One line shown reads ``Here it is:`` (CXO 11-06 07:23)."""
+def group_todo_lines(todos: List[Todo]) -> List[List[Todo]]:
+    """#2219: the list's LINES, one per distinct (text, done) in the list's order,
+    each holding every copy in list order. The reply numbers these lines and
+    ``handle_list_todos`` records them (CXO 11-06 07:35: numbers count lines, not
+    copies), so the render and the ordinals read one grouping."""
     groups: List[List[Todo]] = []
     index: dict = {}
     for todo in todos:
@@ -48,6 +48,16 @@ def format_todo_list_grouped(todos: List[Todo], include_completed: bool = False)
             index[key] = len(groups)
             groups.append([])
         groups[index[key]].append(todo)
+    return groups
+
+
+def format_todo_list_grouped(todos: List[Todo], include_completed: bool = False) -> str:
+    """#2219 (CXO 10-30): the list itself. ``You have 13 open todos. Here they are:``,
+    then one line per distinct item in the list's order (priority, then oldest first),
+    repeats grouped as ``review prs (×3)``. An item keeps its priority note; a done one
+    says so. One line shown reads ``Here it is:`` (CXO 11-06 07:23). The lines are
+    numbered, done lines too (CXO 11-06 07:35), so "the first one" can name a line."""
+    groups = group_todo_lines(todos)
     open_count = sum(1 for t in todos if not _todo_is_done(t))
     done_count = len(todos) - open_count
     noun = "todo" if open_count == 1 else "todos"
@@ -58,9 +68,9 @@ def format_todo_list_grouped(todos: List[Todo], include_completed: bool = False)
     else:
         header = f"You have {open_count} open {noun}. {here}"
     lines = [header]
-    for group in groups:
+    for number, group in enumerate(groups, 1):
         first = group[0]
-        line = f"• {first.text}"
+        line = f"{number}. {first.text}"
         if len(group) > 1:
             line += f" (×{len(group)})"
         if first.priority == "urgent":

@@ -24,18 +24,18 @@ def test_pas_thirteen_todos_are_shown_with_the_repeat_grouped():
     reply = format_todo_list_conscious(_pas_list())
     lines = reply.split("\n")
     assert lines[0] == "You have 13 open todos. Here they are:"
-    assert lines[1] == "• review prs (×3)"
-    assert lines[2:] == [f"• task {i}" for i in range(10)]
+    assert lines[1] == "1. review prs (×3)"  # numbered by line (Gap A, CXO 11-06 07:35)
+    assert lines[2:] == [f"{i + 2}. task {i}" for i in range(10)]
     assert reply.count("review prs") == 1
     assert "Plus" not in reply and "The first one is" not in reply
 
 
 def test_one_todo_is_singular_and_notes_ride_their_line():
     assert format_todo_list_conscious([_todo("ship it", "urgent")]) == (
-        "You have 1 open todo. Here it is:\n• ship it (urgent)"
+        "You have 1 open todo. Here it is:\n1. ship it (urgent)"
     )
     reply = format_todo_list_conscious([_todo("a", "high"), _todo("a", "high")])
-    assert reply.endswith("• a (×2) (high)")
+    assert reply.endswith("1. a (×2) (high)")
 
 
 def test_a_done_item_is_its_own_group_and_says_so():
@@ -43,8 +43,8 @@ def test_a_done_item_is_its_own_group_and_says_so():
     reply = format_todo_list_conscious(todos, include_completed=True)
     assert reply.split("\n") == [
         "You have 1 open todo and 1 done. Here they are:",
-        "• a",
-        "• a ✓ done",
+        "1. a",
+        "2. a ✓ done",
     ]
 
 
@@ -102,7 +102,7 @@ def test_one_line_shown_says_here_it_is_and_two_lines_say_here_they_are():
 def test_high_priority_says_high_as_the_todos_page_does():
     """CXO 2026-11-06 07:23: the page's select names the level "High"."""
     reply = format_todo_list_conscious([_todo("x", "high"), _todo("y", "urgent")])
-    assert "• x (high)" in reply and "• y (urgent)" in reply
+    assert "1. x (high)" in reply and "2. y (urgent)" in reply
     assert "important" not in reply
 
 

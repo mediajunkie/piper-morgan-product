@@ -131,6 +131,11 @@ class NumberedList:
     ids: list[str]
     texts: list[str]
     shown_at: datetime = field(default_factory=datetime.now)
+    # #2219 Gap A (CXO 11-06 07:35): a grouped line ("review prs (×3)") is ONE
+    # number but several rows. ``groups[i]`` holds every copy's id on line i+1, in
+    # list order (``ids[i]`` is its first). Empty for every list that shows one
+    # row per line, so those writers and readers are unchanged.
+    groups: list[list[str]] = field(default_factory=list)
 
 
 @dataclass

@@ -40,6 +40,7 @@ from services.intent_service.todo_handlers import (
     run_clarify_reminder_task_workflow,
     run_clarify_reminder_time_workflow,
 )
+from services.intent_service.todo_line_pick import run_clarify_todo_group_line_workflow
 from services.intent_service.unarmed_offer import FLOOR_BOUND_OFFER_KIND
 from services.intent_service.workflow_dispatcher import (
     WorkflowEntry,
@@ -3858,6 +3859,17 @@ def register_default_workflows() -> None:
             entry_point=run_clarify_delete_todo_pick_workflow,
             effect=EffectClass.READ,
             description="Re-ask the #1987 which-todo pick on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #2219 Gap A: offer-seam-only landing for the one-or-all question on a
+        # grouped todo line. effect: READ — a bare "yes" answers neither, so it
+        # re-asks and re-arms; "one" / "all" act at the pop seam
+        # (todo_line_pick.handle_todo_group_line_turn). action_triggered=False
+        # (the #1987 precedent).
+        "clarify_todo_group_line": WorkflowEntry(
+            entry_point=run_clarify_todo_group_line_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #2219 one-or-all question on a bare affirmative",
             requires_context=["pending_action", "intent_service"],
         ),
         # #2184: generic-accept landing for the milestone pick (the carrier
