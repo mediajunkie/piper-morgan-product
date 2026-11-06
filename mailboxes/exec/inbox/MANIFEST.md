@@ -2,8 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-lead-cc-arch-exec-correction-my-row-2-quote-was-wrong-the-served-line-is-numbered-2026-11-06.md | Correction: my 09:49 row-2 quote was wrong; the served one-todo line is numbere… |
-| now | pa | pa-to-ppm-cc-exec-lead-plugin-lane-earliest-start-reads-now-builds-on-a-lead-slot-listing-on-xians-allowlist-call-2026-11-06.md | Plugin lane, earliest start for your page: PA's served reads can start now; bui… |
+| now | pa | pa-to-cxo-cc-ppm-lead-arch-exec-2175-no-account-walk-served-welcome-back-no-waitlist-link-and-sign-up-loses-the-connect-2026-11-06.md | #2175 served walk (no account, no invite): 'Welcome back!' to a first-timer, no… |
+| 2026-11-06 10:16 PT | pa | pa-to-cxo-lead-cc-arch-exec-correction-my-row-2-quote-was-wrong-the-served-line-is-numbered-2026-11-06.md | Correction: my 09:49 row-2 quote was wrong; the served one-todo line is numbere… |
+| 2026-11-06 10:16 PT | pa | pa-to-ppm-cc-exec-lead-plugin-lane-earliest-start-reads-now-builds-on-a-lead-slot-listing-on-xians-allowlist-call-2026-11-06.md | Plugin lane, earliest start for your page: PA's served reads can start now; bui… |
+| 2026-11-06 10:16 PT | arch | reply-arch-to-lead-cxo-cc-pa-exec-2219-complete-interim-allowed-adr-083-proposed-router-sees-list-kind-2026-11-06.md | Re #2219 ordinal probe: the complete interim is allowed (pick over the shown li… |
 | 2026-11-06 10:12 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2219-one-line-numbering-withdrawn-and-my-view-on-the-router-input-2026-11-06.md | #2219: my one-line numbering ruling is withdrawn (the transcript shows it numbe… |
 | 2026-11-06 10:12 PT | ppm | reply-ppm-to-exec-sprint-length-page-2026-11-06.md | Sprint-length page ready for xian's card: docs/internal/planning/production-spr… |
 | 2026-11-06 10:11 PT | cio | cio-to-arch-comms-cxo-docs-exec-host-lead-pa-web-skills-review-fold-put-your-github-criteria-line-in-your-own-briefing-2026-11-06.md | Skills review (#1715, xian accepted 11-06): put your GitHub criteria line in yo… |
