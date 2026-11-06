@@ -40,7 +40,7 @@ Major feature decisions that build on foundational PDRs. These define significan
 | PDR | Title | Status | Date |
 |-----|-------|--------|------|
 | [PDR-101](PDR-101-multi-entity-conversation.md) | Multi-Entity Conversation Support | Draft v2, dormant (Slack on Fast Follow) | Jan 4, 2026 |
-| [PDR-102](PDR-102-document-model-vision.md) | Piper's Document Model, and Knowledge in Data You Own | Draft v0.4, Arch and CXO reviewed; to xian via Exec (xian's 10-31 vision) | Nov 1, 2026 |
+| [PDR-102](PDR-102-document-model-vision.md) | Piper's Document Model, and Knowledge in Data You Own | Ratified 2026-11-02 by xian (v0.4, no changes); public-copy hold stands | Nov 1, 2026 |
 
 ### Tier 2xx: Integration Patterns
 *(Reserved for future use)*
