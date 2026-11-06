@@ -4956,6 +4956,8 @@ class TestUnarmedAskSiteRatchet:
             # 17 -> 16 (2026-10-14, CXO 16:10): format_conversational_error_
             # conscious drops its ERROR/CRITICAL invitation (the recovery
             # already says what to do) — its row leaves.
+            # 2026-11-05 (#2219, CXO): the todo list is the grouped list; the
+            # narrative and its _build_closing (3 asks) are deleted — its row leaves.
             # -- services/consciousness/ (5; format_projects_conscious left, #2010)
             (
                 "services/consciousness/files_consciousness.py",
@@ -4968,12 +4970,6 @@ class TestUnarmedAskSiteRatchet:
                 "format_patterns_learned_conscious",
                 1,
                 "I looked through {} items but didn't spot any clear patterns",
-            ),
-            (
-                "services/consciousness/todo_consciousness.py",
-                "_build_closing",
-                3,
-                "How would you like to tackle these?",
             ),
             (
                 "services/consciousness/todo_consciousness.py",

@@ -62,8 +62,8 @@ class TestTodoQueryHandlers:
         # Verify result contains todo text
         assert "Review PR #285" in result
         assert "Write documentation" in result
-        # Grammar-conscious formatting uses natural language (Issue #621, #633-638)
-        assert "2 things" in result or "2 items" in result or "two" in result.lower()
+        # #2219 (CXO): the list itself, with its count.
+        assert result.startswith("You have 2 open todos. Here they are:")
 
     @pytest.mark.asyncio
     async def test_list_todos_handles_no_todos(self, handlers, mock_todo_service):
