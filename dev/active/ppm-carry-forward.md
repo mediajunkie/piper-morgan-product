@@ -612,7 +612,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: invite-hold-pdr** (Filed 2026-11-06; to: exec; by: trigger: xian answers the onboarding proposal's questions 1 and 2, or a fresh session). Draft a PDR for what must be true before any invitation.
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; by: trigger: PA's served-clean quote of Path B and the todo skip landing). Set Path B passed or failed against the proposal's line.
   - **key: 2292-records** (Filed 2026-11-06; to: cio; by: trigger: xian's records and the Buttondown signup test). Check that DMARC starts at `p=none` and that the confirmation's From domain passes.
-  - **key: sprint-shape** (Filed 2026-11-06; to: exec; by: trigger: xian's sprint-cadence talk). Mark the onboarding sprint's candidate rows on the map.
+  - ~~**key: sprint-shape**~~ (Filed 2026-11-06; closed 11-06 10:37): xian ruled two-week sprints at 10:33. The proposed set is `docs/internal/planning/production-sprint-2-onboarding-proposal-2026-11-06.md`, shown on map v88's sprint panel. **Next:** the set is ratified at the 11-13 review. Lead sizes the build items first. Objections are due to Exec by Mon 11-09 12:00.
   - **key: notion-offer-ask** (row above, Filed 2026-11-01; on a yes, Lead makes the change per ADR-082 D4).
 - **Waiting on others:** #2290 (Lead's request-id middleware, not before invites); #2291 (Ongoing, mail records first); mail v4 opens to every seat Mon 11-09 (CIO).
 - **Still carried:** #2242's last row (xian's remove and re-add); #2235 (the Web staging account); #1680 (Lead and Exec); PDR-102 C1–C8 checks on document-touching placements; Agent 360 commitments (one OWED marker per waiting item; mine to keep).

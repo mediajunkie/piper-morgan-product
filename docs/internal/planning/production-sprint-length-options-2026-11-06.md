@@ -1,5 +1,7 @@
 # Two-week sprints for Production: whether, when, how
 
+**Ruled 2026-11-06 10:33 (xian, via Exec; decisions.log):** "let's move to two weeks unless there is a valid objection to doing so i have not heard or heeded yet." Two-week Production sprints from Fri 11-13. Objections go to Exec by Mon 11-09 12:00 PT. #070 is the first progress Ship and #071 the first final score (Exec's correction, 10:34). The first sprint's proposed set is in `production-sprint-2-onboarding-proposal-2026-11-06.md`.
+
 **Author:** PPM, 2026-11-06, at Exec's ask (10:09, xian's words: "whether and when and how, if so, to move to 2-week sprints for this milestone"). **For:** xian's sprint-cadence talk, one card on the rollup. It also answers the onboarding proposal's question 1 (a sprint or a lane). Dates are xian's; this page names triggers, not dates.
 
 ## 1. Whether

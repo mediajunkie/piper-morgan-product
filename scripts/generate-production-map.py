@@ -19,6 +19,7 @@ import yaml
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PLAN = "docs/internal/planning/production-sprint-proposal-2026-10-23.md"
 PROMISES = "docs/internal/product/promises.yaml"
+SPRINT = "docs/internal/planning/production-sprint-2-onboarding-proposal-2026-11-06.md"
 REPO = "https://github.com/mediajunkie/piper-morgan-product/issues/"
 ROWS = ["H", "D", "PUB", "C", "V", "E", "T", "Doc", "Dist", "Readiness", "Q"]
 PLAN_LETTERS = {"PUB", "H", "D", "C", "V", "E", "T", "Doc", "Dist", "Q"}
@@ -93,6 +94,25 @@ def load_plan(path):
         if m and cur:
             member.setdefault(int(m.group(1)), cur)
     return member
+
+
+def load_sprint(path):
+    """The current sprint doc's H1, status line and named-set rows (item, issues, blocker), or None."""
+    if not os.path.exists(path):
+        return None
+    title, status, rows, in_set = "", "", [], False
+    for line in open(path, encoding="utf-8"):
+        if line.startswith("# ") and not title:
+            title = line[2:].strip()
+        elif line.startswith("**Author:**") and "**Status:**" in line:
+            status = line.split("**Status:**", 1)[1].split(".")[0].strip()
+        elif line.startswith("## "):
+            in_set = line.startswith("## The named set")
+        elif in_set:
+            cols = [c.strip() for c in line.strip().strip("|").split("|")]
+            if len(cols) == 4 and cols[0].isdigit():
+                rows.append((cols[0], cols[1], cols[3]))
+    return title, status, rows
 
 
 def row_of(n, rec, plan):
@@ -293,6 +313,26 @@ def main():
         else (["<p>No previous snapshot found.</p>"], "no previous snapshot")
     )
     w("<h2>Since last</h2>" + "".join(sl))
+
+    sprint = load_sprint(os.path.join(ROOT, SPRINT))
+    if sprint:
+        title, status, srows = sprint
+        w(
+            f"<h2>{esc(title)}</h2><p>{esc(status[:1].upper() + status[1:])}. Read from {esc(SPRINT)}.</p>"
+        )
+        w(
+            '<div class="scroll"><table><tr><th>#</th><th>Item</th><th>Issues</th><th>Blocker at the start</th></tr>'
+        )
+        for num, item, blocker in srows:
+            ns = [int(x) for x in re.findall(r"#(\d+)", item)]
+            chips = " ".join(
+                issue_chip(n, cur) if n in cur else f'<a href="{REPO}{n}">#{n}</a>' for n in ns
+            )
+            plain = re.sub(r"[*`]", "", item)
+            w(
+                f"<tr><td>{esc(num)}</td><td>{esc(plain)}</td><td class=\"iss\">{chips or '-'}</td><td>{esc(blocker)}</td></tr>"
+            )
+        w("</table></div>")
 
     # front view
     w(
