@@ -1357,7 +1357,8 @@ class IntentService:
             "todo_group_line_pending",
             # #2184: the armed milestone pick (the milestones list's own titles).
             "milestone_pick_pending",
-            # #2271: the armed which-project-to-archive pick (exact-name matches).
+            # #2271: the armed which-project-to-archive pick (exact-name matches)
+            # and the armed near-match archive yes/no (one flag for both).
             "project_archive_pick_pending",
             # #1651: the standup's bound overdue-todo offer must survive
             # this turn (armed on the rail-dispatched get_standup path).
@@ -3224,6 +3225,7 @@ class IntentService:
                         "milestone_pick_question": "milestone_pick_question_released",
                         # #2271: a released archive pick; nothing archived.
                         "project_archive_pick_question": "project_archive_pick_question_released",
+                        "project_archive_confirm_question": "project_archive_confirm_question_released",
                         # #2035: an ignored yes/no add-project offer is
                         # dropped by the pop; nothing was created.
                         "add_project_offer_question": "add_project_offer_abandoned",

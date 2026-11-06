@@ -30,6 +30,7 @@ from services.intent_service.milestone_pick import (
 from services.intent_service.project_archive_pick import (
     arm_pick_from_result,
     run_clarify_project_archive_pick_workflow,
+    run_confirm_project_archive_workflow,
 )
 from services.intent_service.reminder_clear import (
     run_clarify_reminder_clear_verb_workflow,
@@ -2579,7 +2580,7 @@ async def run_archive_project_workflow(
         return None
     canonical_handlers = intent_service.canonical_handlers
     result = await canonical_handlers._handle_archive_project(intent, session_id, user_id)
-    # #2271: a hide_project several-match result carries its pick record; arm it.
+    # #2271: a several-match pick or near-match confirm record rides the result; arm it.
     arm_pick_from_result(intent_service, result, session_id, user_id)
     return await _finalize_canonical_rail_result(
         intent_service, intent, result, session_id, user_id
@@ -3894,7 +3895,7 @@ def register_default_workflows() -> None:
             description="Re-ask the #2184 which-milestone pick on a bare affirmative",
             requires_context=["pending_action", "intent_service"],
         ),
-        # #2271: generic-accept landing for the hide_project several-match pick
+        # #2271: generic-accept landing for the archive several-match pick
         # (project_archive_pick). effect: READ — a bare "yes" re-asks and re-arms
         # the same bound projects; the bound number archives at the pop seam.
         # action_triggered=False (the #1987 precedent).
@@ -3902,6 +3903,18 @@ def register_default_workflows() -> None:
             entry_point=run_clarify_project_archive_pick_workflow,
             effect=EffectClass.READ,
             description="Re-ask the #2271 which-project-to-archive pick on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #2271 (Arch 11-06 12:51 ruling (b)): the "yes" to a near-match archive
+        # offer. Offer-acceptance ONLY (action_triggered=False — the classifier and
+        # rail can never emit it). effect: WRITE (PortfolioService.archive_project
+        # sets is_archived=True on the project bound BY ID at offer time; restore is
+        # its inverse — the standup_complete_todo precedent). outwardness: PRIVATE.
+        "confirm_project_archive": WorkflowEntry(
+            entry_point=run_confirm_project_archive_workflow,
+            effect=EffectClass.WRITE,
+            outwardness=Outwardness.PRIVATE,
+            description="Archive the bound project from an accepted near-match offer (#2271)",
             requires_context=["pending_action", "intent_service"],
         ),
         "reminder_clear_pick_target": WorkflowEntry(
@@ -4022,9 +4035,8 @@ def register_default_workflows() -> None:
         "archive_project": archive_project_entry,
         # #2271 (Arch 11-06 11:26): the legacy classifier's emission for "hide the
         # project X" with the hide literal absent (10/10). Same entry, every gate
-        # inherited (the #1527 alias discipline); on this action the handler
-        # archives only an EXACT-name match and asks, armed, on several
-        # (project_archive_pick).
+        # inherited (the #1527 alias discipline); the handler resolves it exactly
+        # as it does archive_project (project_archive_pick, Arch 12:51 ruling (b)).
         "hide_project": archive_project_entry,
         "restore_project": restore_project_entry,
         "add_project": add_project_entry,

@@ -5133,6 +5133,11 @@ What would you like to set up first?"""
         pre-computed ``operation``/``project_name`` the way the canonical
         dispatcher's local variables did).
 
+        #2271 (Arch 11-06 12:51, ruling (b)): name resolution and copy now live
+        in ``project_archive_pick.archive_by_name`` — exact name archives, a near
+        match is offered (armed yes/no), several ask an armed pick, an archived
+        exact name points at restore. The tolerant lookup no longer acts alone.
+
         Effect: WRITE, never DESTRUCTIVE — ``PortfolioService.
         archive_project`` (portfolio_service.py:269-273) sets
         ``is_archived=True`` on the existing row; ``restore_project``
@@ -5209,66 +5214,25 @@ What would you like to set up first?"""
             project_repo = ProjectRepository(session)
             portfolio_service = PortfolioService(project_repo)
 
-            if getattr(intent, "action", None) == "hide_project":
-                # #2271 (Arch 11-06 11:26): the legacy emission archives by EXACT
-                # name only, with CXO's copy; every other archive caller keeps the
-                # tolerant lookup and copy below. The capture is the same match,
-                # sliced from the original message so the name keeps the user's
-                # case for the reply (when lower-casing kept the length).
-                from services.intent_service.project_archive_pick import archive_exact
+            # #2271 (Arch 11-06 12:51, ruling (b); CXO's words): every archive turn,
+            # whatever rail name reached the entry, archives only an EXACT-name
+            # match; a near match from the find_by_name ladder is OFFERED (armed
+            # yes/no, bound by id), never acted on. See project_archive_pick. The
+            # capture is the same match, sliced from the original message so the
+            # name keeps the user's case (when lower-casing kept the length).
+            from services.intent_service.project_archive_pick import archive_by_name
 
-                stripped = original_message.strip()
-                capture = project_name
-                if capture_span and len(stripped) == len(message_lower):
-                    capture = stripped[capture_span[0] : capture_span[1]].strip()
-                return await archive_exact(
-                    capture=capture,
-                    user_id=user_id,
-                    original_message=original_message,
-                    portfolio_service=portfolio_service,
-                )
-
-            project = await portfolio_service.find_project_by_name(
-                name=project_name, user_id=user_id
+            stripped = original_message.strip()
+            capture = project_name
+            if capture_span and len(stripped) == len(message_lower):
+                capture = stripped[capture_span[0] : capture_span[1]].strip()
+            return await archive_by_name(
+                capture=capture,
+                lookup_name=project_name,
+                user_id=user_id,
+                original_message=original_message,
+                portfolio_service=portfolio_service,
             )
-            if project:
-                result = await portfolio_service.archive_project(
-                    project_id=str(project.id), user_id=user_id
-                )
-                return {
-                    "message": result.message,
-                    "intent": {
-                        "category": IntentCategoryEnum.PORTFOLIO.value,
-                        "action": "archive_project",
-                        "confidence": 1.0,
-                        "context": {
-                            "project_name": project_name,
-                            "status": result.status.value,
-                        },
-                    },
-                    "requires_clarification": False,
-                }
-            else:
-                # #1766: same reasoning as the no-name branch above — "Would
-                # you like me to list your projects?" duplicated here (plus
-                # again inside offer_hint's offer_text, a SEPARATE literal)
-                # would register as new unarmed-ask sites. Imperative
-                # phrasing instead; no test pins the old text for this path.
-                # #2024 (Arch 2026-10-15): a directive is not an offer, so
-                # this branch builds no offer_hint (nothing for "yes" to bind).
-                return {
-                    "message": (
-                        f"I couldn't find a project called '{project_name}'. "
-                        "Say 'list my projects' to see what you have."
-                    ),
-                    "intent": {
-                        "category": IntentCategoryEnum.PORTFOLIO.value,
-                        "action": "project_not_found",
-                        "confidence": 0.8,
-                        "context": {"searched_name": project_name},
-                    },
-                    "requires_clarification": True,
-                }
 
     async def _handle_restore_project(
         self, intent: Intent, session_id: str, user_id: Optional[str] = None

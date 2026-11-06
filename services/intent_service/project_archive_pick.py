@@ -1,25 +1,33 @@
-"""#2271 (Arch 11-06 11:26; CXO's words): ``hide_project`` archives by EXACT name.
+"""#2271: archive a project by EXACT name; offer a near match, never act on it.
 
-With the surface-1 hide literal absent, the legacy classifier emits
-``execution/hide_project`` for "hide the project Beta". ``hide_project`` is a rail
-alias of the ``archive_project`` entry (the #1527 discipline), and on THAT emission
-``CanonicalHandlers._handle_archive_project`` resolves here instead of through the
-tolerant ``find_project_by_name`` (#1857 normalised + single-candidate substring):
+Arch's ruling (b) (decisions.log 2026-11-06 12:51) and CXO's words (12:5x). Every
+``archive_project`` turn, whatever rail name reached the entry (``archive_project``,
+its alias ``hide_project``, the #2057 legacy hand-off), resolves here from
+``CanonicalHandlers._handle_archive_project``:
 
-- the project is matched by its WHOLE name, case-insensitively, among the person's
-  own ACTIVE projects. The name the user said is read with the handler's existing
-  ``ARCHIVE_PATTERNS`` capture (no new pattern); the capture's leading filler words
-  ("the", "my", "project", "called", "named") are dropped one at a time and each
-  remainder, before and after ``clean_project_name``, is a candidate the whole
-  stored name must equal. Word lists and string comparison only, no regex.
-- one match archives it and says how to restore it;
-- none archives nothing and says so;
-- more than one archives nothing and ASKS which, armed (the #1987 shape): the
-  record carries the matched project ids in the order shown, bound at ask time, and
-  the answer turn binds a number at the pop seam (``handle_project_archive_pick_turn``).
+1. EXACT: the project's whole name equals what the user said, case-insensitively,
+   among the person's own ACTIVE projects. The name is the handler's existing
+   ``ARCHIVE_PATTERNS`` capture (no new pattern); its leading filler words ("the",
+   "my", "project", "called", "named") are dropped one at a time and each remainder,
+   before and after ``clean_project_name``, is a candidate the whole stored name must
+   equal. Word lists and string comparison only, no regex.
+   - one: archived, CXO's archived line;
+   - several: nothing archived; an ARMED numbered pick (the #1987 shape), the ids
+     bound at ask time, a number answer bound at the pop seam
+     (``handle_project_archive_pick_turn``).
+   The order is CXO's: exact active, then exact archived, then one near match,
+   then none.
+2. ALREADY ARCHIVED: no active exact match but an archived one (CXO 12:5x): a
+   statement naming the restore phrase; nothing armed, nothing written.
+3. NEAR: no exact match, but today's ``find_project_by_name`` ladder (#1857
+   normalised, then one substring/prefix candidate) finds one active project: it is
+   OFFERED, never acted on. One armed yes/no in CXO's words (offer memo 11-06:
+   the typed name, then the candidate), the candidate bound by id; "yes" archives exactly that id (``run_confirm_project_archive_workflow``),
+   "no" archives nothing.
+4. NONE: the not-found line; nothing archived.
 
-Every other archive caller (``archive_project`` emissions, the legacy sniff's
-``manage_portfolio`` hand-off) keeps today's resolution and copy unchanged.
+The several-match and near-match records ride the handler result under
+``OFFER_RECORD_KEY`` to the rail adapter, which arms them (``arm_pick_from_result``).
 """
 
 from __future__ import annotations
@@ -30,15 +38,18 @@ import structlog
 
 logger = structlog.get_logger(__name__)
 
-HIDE_PROJECT_ACTION = "hide_project"
 PROJECT_ARCHIVE_PICK_KIND = "project_archive_pick_question"
 # The registered offer-only landing (action_triggered=False): the generic seam's
 # ACCEPT path lands a bare "yes" here, which re-asks and re-arms.
 PROJECT_ARCHIVE_PICK_WORKFLOW = "clarify_project_archive_pick"
 PICK_PENDING_FLAG = "project_archive_pick_pending"
-# The result key the several-match record rides from the handler to the rail
-# adapter (run_archive_project_workflow), which arms it.
-PICK_RECORD_KEY = "project_archive_pick_offer"
+# The near-match yes/no: its #846 kind and its registered WRITE landing (offer
+# acceptance only, action_triggered=False), which archives the bound id.
+PROJECT_ARCHIVE_CONFIRM_KIND = "project_archive_confirm_question"
+PROJECT_ARCHIVE_CONFIRM_WORKFLOW = "confirm_project_archive"
+# The result key an armed record (pick or confirm) rides from the handler to the
+# rail adapter (run_archive_project_workflow), which arms it.
+OFFER_RECORD_KEY = "project_archive_offer"
 
 # CXO's words (verbatim; the name as resolved, quoted, and the restore phrase).
 ARCHIVED_LINE = (
@@ -55,7 +66,16 @@ SEVERAL_QUESTION = (
     "I found more than one project with that name: {listed}. "
     "Which one should I archive? Say the number."
 )
-# The existing adopted-write decline copy (CXO 2026-10-16), for a "no" to the pick.
+# CXO 11-06 (offer memo): the NEAR-match offer, typed name first, then the one
+# candidate. Named *_QUESTION: rendered only by build_confirm_offer, which stores it
+# as the record's ``question`` and hands the record back to be armed (#1766 rule).
+NEAR_MATCH_QUESTION = 'I don\'t have a project called "{typed}". Archive "{name}" instead? (yes/no)'
+# CXO 12:5x: an exact name that matches only an ARCHIVED project.
+ALREADY_ARCHIVED_LINE = (
+    '"{name}" is already archived. Say "restore project {name}" to bring it back.'
+)
+# The existing adopted-write decline copy (CXO 2026-10-16), for a "no" to the
+# pick or the near-match confirm (CXO kept it 12:5x).
 PICK_DECLINE_LINE = 'Okay, I won\'t archive "{name}". Nothing has been changed.'
 PRINCIPAL_MISMATCH_LINE = "Let's hold off on that — nothing has been changed."
 
@@ -111,7 +131,7 @@ def render_several(names: List[str]) -> str:
 
 def build_pick_offer(principal: Optional[str], projects: List[Any], original_message: str) -> Dict:
     """The #846 record: the matched projects bound at ask time (ids and names in
-    the order the question numbers them), handed back under ``PICK_RECORD_KEY``
+    the order the question numbers them), handed back under ``OFFER_RECORD_KEY``
     so the archive rail adapter arms it (a CanonicalHandlers method has no
     store; see ``arm_pick_from_result``)."""
     ids = [str(p.id) for p in projects]
@@ -133,28 +153,43 @@ def build_pick_offer(principal: Optional[str], projects: List[Any], original_mes
     }
 
 
-async def archive_exact(
-    *, capture: str, user_id: str, original_message: str, portfolio_service: Any
+def build_confirm_offer(
+    principal: Optional[str], project: Any, typed: str, original_message: str
+) -> Dict:
+    """The #846 record for a NEAR match: one armed yes/no in CXO's words (the typed
+    name, then the candidate), the candidate bound by id."""
+    name = str(project.name)
+    return {
+        "workflow_type": PROJECT_ARCHIVE_CONFIRM_WORKFLOW,
+        "question": NEAR_MATCH_QUESTION.format(typed=typed, name=name),
+        "pending_action": {
+            "kind": PROJECT_ARCHIVE_CONFIRM_KIND,
+            "action": PROJECT_ARCHIVE_CONFIRM_WORKFLOW,
+            "user_id": principal,
+            "project_id": str(project.id),
+            "project_name": name,
+            "original_message": original_message,
+            "summary": f'archive the project "{name}"',
+        },
+        "decline_message": PICK_DECLINE_LINE.format(name=name),
+    }
+
+
+async def archive_by_name(
+    *,
+    capture: str,
+    lookup_name: str,
+    user_id: str,
+    original_message: str,
+    portfolio_service: Any,
 ) -> Dict[str, Any]:
-    """The hide_project branch of ``_handle_archive_project``: resolve, then
-    archive one, say none, or ask which (armed)."""
+    """``_handle_archive_project``'s resolution (see the module docstring)."""
     from services.shared_types import IntentCategory
 
-    projects = await portfolio_service.list_active_projects(user_id=user_id)
-    matches = exact_matches(projects, capture)
     category = IntentCategory.PORTFOLIO.value
-    if not matches:
-        searched = display_name(capture)
-        return {
-            "message": NOT_FOUND_LINE.format(name=searched),
-            "intent": {
-                "category": category,
-                "action": "project_not_found",
-                "confidence": 0.8,
-                "context": {"searched_name": searched, "exact_name": True},
-            },
-            "requires_clarification": False,
-        }
+    matches = exact_matches(await portfolio_service.list_active_projects(user_id=user_id), capture)
+    if len(matches) == 1:
+        return await _archive_one(portfolio_service, matches[0], user_id)
     if len(matches) > 1:
         offer = build_pick_offer(user_id, matches, original_message)
         logger.info("project_archive_pick_built", candidates=len(matches))
@@ -167,10 +202,54 @@ async def archive_exact(
                 "context": {"candidates": len(matches)},
                 PICK_PENDING_FLAG: True,
             },
-            PICK_RECORD_KEY: offer,
+            OFFER_RECORD_KEY: offer,
             "requires_clarification": True,
         }
-    return await _archive_one(portfolio_service, matches[0], user_id)
+    archived = exact_matches(
+        await portfolio_service.list_archived_projects(user_id=user_id), capture
+    )
+    if archived:
+        name = str(archived[0].name)
+        return {
+            "message": ALREADY_ARCHIVED_LINE.format(name=name),
+            "intent": {
+                "category": category,
+                "action": "archive_project",
+                "confidence": 1.0,
+                "context": {"project_name": name, "status": "already_archived"},
+            },
+            "requires_clarification": False,
+        }
+    # Today's ladder, on the name the user said (the capture without its leading
+    # filler words, as the exact candidates above), else the handler's own name.
+    typed = display_name(capture) or lookup_name
+    near = await portfolio_service.find_project_by_name(name=typed, user_id=user_id)
+    if near is not None:
+        offer = build_confirm_offer(user_id, near, typed, original_message)
+        logger.info("project_archive_near_match_offered")
+        return {
+            "message": offer["question"],
+            "intent": {
+                "category": category,
+                "action": PROJECT_ARCHIVE_CONFIRM_WORKFLOW,
+                "confidence": 0.8,
+                "context": {"project_name": str(near.name), "near_match": True},
+                PICK_PENDING_FLAG: True,
+            },
+            OFFER_RECORD_KEY: offer,
+            "requires_clarification": True,
+        }
+    searched = display_name(capture)
+    return {
+        "message": NOT_FOUND_LINE.format(name=searched),
+        "intent": {
+            "category": category,
+            "action": "project_not_found",
+            "confidence": 0.8,
+            "context": {"searched_name": searched},
+        },
+        "requires_clarification": False,
+    }
 
 
 async def _archive_one(portfolio_service: Any, project: Any, user_id: str) -> Dict[str, Any]:
@@ -212,10 +291,10 @@ def arm_pick_from_result(
     intent_service: Any, result: Dict[str, Any], session_id: str, user_id: Optional[str]
 ) -> None:
     """The ARM half: ``run_archive_project_workflow`` passes every handler result
-    here; a several-match result's record is armed in the #846 one-slot store
+    here; a several-match pick or near-match confirm record is armed in the #846 one-slot store
     before the question is shown. Without a session or store the record is
     dropped and the flag cleared, so the reply is never marked as armed."""
-    record = result.pop(PICK_RECORD_KEY, None) if isinstance(result, dict) else None
+    record = result.pop(OFFER_RECORD_KEY, None) if isinstance(result, dict) else None
     if not record:
         return
     offer_service = getattr(intent_service, "workflow_offer_service", None)
@@ -227,7 +306,7 @@ def arm_pick_from_result(
     logger.info(
         "project_archive_pick_armed",
         session_id=session_id,
-        candidates=len(record["pending_action"]["pick_ids"]),
+        kind=(record.get("pending_action") or {}).get("kind"),
     )
 
 
@@ -315,4 +394,42 @@ async def run_clarify_project_archive_pick_workflow(
             PICK_PENDING_FLAG: True,
         },
         "requires_clarification": True,
+    }
+
+
+async def run_confirm_project_archive_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """Generic-accept landing (registered ``confirm_project_archive``,
+    action_triggered=False): the "yes" to a near-match offer archives exactly the
+    project bound by id at offer time, under the turn's own principal. effect: WRITE."""
+    ctx = context or {}
+    payload = ctx.get("pending_action") or {}
+    if payload.get("kind") != PROJECT_ARCHIVE_CONFIRM_KIND or not payload.get("project_id"):
+        logger.error("project_archive_confirm_missing_or_foreign_payload", kind=payload.get("kind"))
+        return None
+    from services.intent_service.reminder_clear import _principal_mismatch
+
+    if not user_id or _principal_mismatch(payload, user_id):
+        logger.warning(
+            "project_archive_confirm_principal_mismatch",
+            offer_user=payload.get("user_id"),
+            turn_user=user_id,
+        )
+        return {
+            "message": PRINCIPAL_MISMATCH_LINE,
+            "intent_data": {
+                "category": "portfolio",
+                "action": PROJECT_ARCHIVE_CONFIRM_WORKFLOW,
+                "principal_mismatch": True,
+            },
+            "requires_clarification": False,
+        }
+    result = await _archive_bound_id(str(payload["project_id"]), str(user_id))
+    return {
+        "message": result["message"],
+        "intent_data": result["intent"],
+        "requires_clarification": False,
     }
