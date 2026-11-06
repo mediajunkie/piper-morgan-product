@@ -298,3 +298,14 @@ The 2026-10 skills review (#1715) found these in the logs of six or more roles, 
 - **macOS `sed` is BSD sed.** `sed -i 's/a/b/' f` fails ("undefined label"); in-place needs an empty suffix, `sed -i '' 's/a/b/' f`. `-E` does not know `\s`: `echo 'a b' | sed -E 's/\s/_/'` leaves the space. Use `[[:space:]]`, or Python for anything multi-line.
 - **The mypy gate's counts depend on the venv.** See "Four instrument-integrity gotchas" above: the ratchet's numbers mean something only under CI's pinned venv.
 - **Ruff from the pinned binary, both commands.** CI runs `ruff format --check` and `ruff check`; a script that passes one can fail the other (PPM's `place-issue.py`, 11-06). Run both with the pinned binary before pushing a `.py` file.
+
+## A gate's verdict is its exit code and its whole output, never `| tail` (Lead, 2026-11-06, skills-review fold)
+
+`pytest … | tail -3` exits 0 whatever pytest did, and it hides the `FAILED` names that sit above the summary line. Lead pushed red pins to main twice on 10-30 this way (18:08 and 21:10), missed a mypy section above the tail on 09-25, and on 11-04 at 20:17 pushed again before reading the previous push's Tests verdict line. What works:
+
+1. Capture the run to a file (`… > out.txt 2>&1`), then `grep -E '^FAILED|passed|failed' out.txt`. In zsh, check `${pipestatus[1]}` if you must pipe.
+2. A run that collects zero tests is a failure, not a pass.
+3. Read CI's own verdict line (the Tests run's conclusion on the exact sha) before the next code push or a promotion, not the run list's order (see the stale-latest-page entry above).
+4. For CI's full suite, `scripts/check_fullsuite_backlog.py <out>` is the verdict; NEW and SHRINK-LOCK lines are read, not skimmed.
+
+The deletion form of the same discipline is in `.claude/skills/delete-module-safely/SKILL.md` ("Read every verdict whole").

@@ -119,6 +119,25 @@ file.
   cli/commands/*.py import will fail this test; fix-to-live-path or dispose
   the command in the SAME push, per Rule 0.
 
+## Read every verdict whole (v1.3, 2026-11-06, CIO's skills-review fold)
+Three habits the 09-24 → 10-10 logs (Lead, Arch, prog) kept relearning. A deletion
+moves counts in places nobody looked, so these are part of the cut, not extras:
+- **A sweep or gate's verdict is its exit code plus its whole output.** Never
+  `| tail` a pytest or gate run and read the last line: `tail` exits 0 whatever
+  pytest did, and the failed names sit above the summary (Lead pushed red pins
+  twice on 10-30 that way; a mypy section above the tail was missed on 09-25).
+  Capture to a file, grep `^FAILED`, and check `${pipestatus[1]}`.
+- **A router or catalog change from a deletion is scored on both tables:** the
+  ×6 sentinel table (the rows the change is for, plus the named neighbours) AND
+  the full-corpus ×1 table, against a bar set before the run (rule 7). A deletion
+  that wins its target rows and scatters unrelated ones is NO-GO; the full table
+  is where the scatter shows.
+- **A literal or pattern-list deletion push runs enforcement whole:**
+  `tests/test_architecture_enforcement.py` and `tests/test_completion_ratchets.py`
+  in full, not the one ratchet you expect to move. Deleted literals shift
+  shrink-locks and ceilings in sibling ratchets, and those must move in the same
+  commit.
+
 ## The record
 - decisions.log entry: WHAT IT EXISTED FOR (one line of history), the ruling
   reference, the evidence (importer sweep result, collection count), and any
@@ -139,6 +158,10 @@ file.
 | Batch the decisions.log entry "for later" | The record rides the commit or it doesn't exist |
 
 ## Changelog
+- **v1.3** (2026-11-06, Lead, CIO's skills-review fold, xian's 10:05 acceptance):
+  added "Read every verdict whole": whole-output and exit-code reading, both
+  tables for a router change, enforcement whole before a literal push. The first
+  was half here already (item 6's "don't `| head`-truncate"); now it covers gates.
 - **v1.2** (2026-09-24, Coding Agent for Lead, #1700): Documented the cli/
   import-smoke gate (`tests/unit/cli/test_cli_commands_import_1700.py`) that
   now makes item 6's cli/ sweep-root rule mechanically enforced, not just

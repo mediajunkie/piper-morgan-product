@@ -86,26 +86,27 @@ Today the 12 cards sit in one grid in this order: Personality, Learning & Patter
 - **Path from chat:** every reply that sends a person to Settings says `Settings, under Integrations`, as the dead-grant reply does. That matches the group, so no change.
 - **Pass line:** Web walks from a fresh sign-in to the Integrations page and quotes the page. Integrations is the first card, and the first step of that walk (reaching Settings from the app shell) takes at most two clicks. Web counts the clicks, because I have not read the shell.
 
-### #2272: the project and repo model a person sees
+### #2272: the project and repo model a person sees (revised 2026-11-06 11:05 after Lead's source read)
 
-**The paragraph (for the issue's first box):** A project is a piece of work you track in Piper. A repository is a GitHub repo. A project can have no repository, one, or several. Attaching a repository to a project is how Piper reads that repo's issues for that project.
+Lead confirmed from source that linking a repo to a project writes one record, and the only reader of it is the chat answer to "which repos are on project X". Issue reads do not use it (the project-scoped resolver was retired, #1315). GitHub reads use the repo the person names, else their default repo. My first paragraph claimed the link makes Piper read the repo's issues for that project. That was untrue as built, and it is withdrawn.
 
-- The last sentence is a claim about what attaching does. **Lead to confirm** before I rule on any copy that repeats it.
+**The paragraph (for the issue's first box):** A project is a piece of work you track in Piper. A repository is a GitHub repo. A project can have no repository, one, or several. Linking a repository to a project records that it belongs there, and Piper shows it when you ask which repositories a project has. It does not change which repository Piper reads: Piper uses the one you name, or your default.
 
-**Page words (proposal, nothing built):**
-- Button on a project with no repo: `Attach a repository`. Field: `owner/name`.
-- Empty state on that project: `No repository is attached to {project} yet. Attach one so Piper can read its issues.` It claims the same thing as above, so it waits on the same confirmation.
-- Detach: `Detach` next to each repo. Confirm: `Detach {owner/name} from {project}? The repository itself is not changed.`
-- A detach never deletes anything on GitHub. Say so only if that is true of the handler (Lead to confirm).
+**Page words (use the page's own verb, "link"; nothing built):**
+- Button: `Link a repository`. Field: `owner/name`.
+- Empty state on a project with none: `No repository is linked to {project} yet.` It says nothing about what a link does for reads.
+- Unlink beside each repo: `Unlink`. Confirm: `Unlink {owner/name} from {project}? This only removes the link in Piper. The repository itself is not changed.` (Lead: true as built, no GitHub call.)
 
-**Chat words:** when a project has no repo, the reply says so and does not name a repo it has not got: `{project} has no repository attached yet. You can attach one on its project page.` It does not offer a chat phrase, because #2271 shows the link-repo phrase loops (PA, 10:43). Once #2271 is fixed I can add the chat phrase.
+**Chat words:** when a project has no repo: `{project} has no repository linked yet. You can link one on its project page.` No chat phrase is offered while #2271's loop exists.
+
+**If the product wants linking to mean "read this project's issues from this repo,"** that is a build and an Arch question (#1315 retired it on purpose). Until then no copy says it.
 
 ### #2275: the sign-in screen's prompts
 
 The line is accepted and on the issue (PPM's, fitted: "can write your standup"). The prompt picks, from asks Lead says serve with no connector:
-1. `What changed in my tasks and projects this week?`
-2. `Add a todo: review the deployment plan`
-3. `Show my open GitHub issues`, which needs GitHub. If the screen shows it, it carries a short tag: `(after you connect GitHub)`.
+1. ~~`What changed in my tasks and projects this week?`~~ **Replaced 2026-11-06 11:13** by `Show my todos`. PA's preview showed a count (7) over three names, and on a fresh account it would answer "nothing new", a poor first impression.
+2. `Add a todo: review the deployment plan` (clean on PA's preview quote)
+3. ~~`Show my open GitHub issues`~~ **Dropped 2026-11-06.** Lead: what a fresh connected account gets depends on a default repo, and the connect step doesn't set one (#2268's family), so even a tagged prompt may promise more than it gives. The screen shows prompts 1 and 2 only, until a default repo is set at connect.
 
 - **Lead to confirm** that 1 and 2 serve cleanly on a fresh account with no connector, and that 3 does not promise more than it gives before the connect. Otherwise the screen shows only 1 and 2.
 - The #2219 rows being judged on the todo reply are the reason 2 is on the list.

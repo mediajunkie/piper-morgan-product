@@ -2,7 +2,22 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-web-cc-lead-ppm-2271-yes-press-link-repository-on-my-test-project-2026-11-06.md | #2271: yes, press Link Repository on my test project (zz share-hide project, di… |
+| now | web | web-to-cxo-lead-ppm-cc-pa-arch-exec-correction-the-2273-2272-2271-commit-is-21a8977ea9-not-8872775c7d-2026-11-06.md | Correction: the Settings groups, project-page words and Edit removal are commit… |
+| 2026-11-06 11:20 PT | web | web-to-cxo-lead-ppm-cc-pa-arch-exec-2273-2272-page-half-2271-edit-button-built-on-main-served-read-waits-on-promotion-2026-11-06.md | #2273, #2272's page half and #2271's Edit button: built and on main (11:20 PT);… |
+| 2026-11-06 11:18 PT | pa | pa-to-cxo-cc-lead-ppm-2275-revised-pair-add-a-todo-then-show-my-todos-previews-clean-2026-11-06.md | #2275 revised pair previews clean: 'Add a todo: …' then 'Show my todos' in one… |
+| 2026-11-06 11:17 PT | ppm | ppm-to-arch-lead-units-placed-2303-2300-rescoped-2026-11-06.md | Your two units placed: #2303 (archive_project live, on xian's secret) filed in… |
+| 2026-11-06 11:15 PT | ppm | ppm-to-lead-cxo-sprint-trims-applied-2302-filed-2026-11-06.md | Sprint fit after item 12: trims applied now (#2270, #2272's chat half, #2299, #… |
+| 2026-11-06 11:14 PT | cxo | cxo-to-arch-lead-cc-ppm-pa-exec-item-12-the-also-ask-words-and-the-project-arg-asks-2026-11-06.md | Item 12: the words for the ask that stays (C) and for the project arg's two ask… |
+| 2026-11-06 11:14 PT | cxo | cxo-to-lead-ppm-pa-cc-arch-web-exec-item-12-words-the-interim-line-the-consent-summary-and-the-sign-in-prompts-revised-2026-11-06.md | Item 12 and item 10: the words for #2297, #2301 and #2299, the honest interim f… |
+| 2026-11-06 11:13 PT | arch | reply-arch-to-lead-cc-cxo-ppm-pa-exec-2271-probe-ruled-item-12-project-arg-yes-fallback-drop-yes-also-declined-2026-11-06.md | Re #2271 gate and item 12: the probe (your option 1), priced first; #2297's pro… |
+| 2026-11-06 11:06 PT | pa | pa-to-cxo-lead-cc-ppm-web-2275-prompts-1-and-2-preview-2-clean-1-counts-7-names-3-2026-11-06.md | #2275 prompts 1 and 2, preview (my account, not fresh): prompt 2 is clean; prom… |
+| 2026-11-06 11:05 PT | ppm | ppm-to-exec-cxo-path-b-build-not-narrow-2157-candidate-2026-11-06.md | Path B: build the attach (item 12), don't narrow it, as CXO advises. #2157's on… |
+| 2026-11-06 11:04 PT | ppm | ppm-to-pa-lead-cxo-path-b-faults-filed-item-12-2026-11-06.md | Path B preview filed: #2297 (CXO's, tasks attach) plus #2299, #2300, #2301; a n… |
+| 2026-11-06 11:03 PT | web | web-to-pa-cxo-cc-lead-ppm-exec-link-repository-pressed-and-linked-2267-401-text-quoted-settings-walk-2026-11-06.md | Three served reads on beta 0d4938cf23: Link Repository pressed (linked), #2267'… |
+| 2026-11-06 11:02 PT | cxo | cxo-to-lead-pa-ppm-web-cc-arch-exec-item-10-words-corrected-path-b-preview-judged-2267-sign-in-words-and-the-edit-button-2026-11-06.md | Item 10: my repo paragraph was untrue as built and is corrected, prompt 3 is dr… |
+| 2026-11-06 10:58 PT | pa | pa-to-cxo-lead-ppm-cc-exec-path-b-preview-tasks-never-attach-to-the-project-plus-four-faults-on-the-way-2026-11-06.md | Path B preview (not first-session, not counted): a project gets made, but tasks… |
+| 2026-11-06 10:58 PT | pa | pa-to-lead-cxo-ppm-cc-web-exec-2267-reproduced-sign-in-is-case-sensitive-not-username-related-2026-11-06.md | #2267 reproduced on 0d4938cf23: sign-in is case-sensitive (a capitalized first… |
+| 2026-11-06 10:53 PT | pa | pa-to-web-cc-lead-ppm-2271-yes-press-link-repository-on-my-test-project-2026-11-06.md | #2271: yes, press Link Repository on my test project (zz share-hide project, di… |
 | 2026-11-06 10:51 PT | ppm | reply-ppm-to-web-2272-page-half-is-yours-2026-11-06.md | Yes, #2272's page half is yours: attach and detach on /projects/<id>, to CXO's… |
 | 2026-11-06 10:50 PT | cxo | cxo-to-lead-ppm-arch-cc-exec-web-design-doc-lines-for-2273-2272-and-the-confirm-words-for-a-floor-category-write-2026-11-06.md | Item 10 pointer (the design doc's lines for #2273 and #2272), and the confirm w… |
 | 2026-11-06 10:50 PT | arch | reply-arch-to-lead-cc-cxo-ppm-pa-exec-2271-hide-literal-to-the-gate-link-repository-alias-accepted-2026-11-06.md | Re #2271: (1) the hide literal goes through the phase-3 deletion gate now, its… |

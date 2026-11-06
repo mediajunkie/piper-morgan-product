@@ -1,0 +1,43 @@
+# #2275 sign-in prompts 1 and 2, PREVIEW on web-seed-1386 (not a fresh account; has history, a GitHub connection and todos). Each in a fresh session.
+
+--- [11:05:31, 0d4938cf23, http 200, 6.77 s] route query/changes_query
+USER: What changed in my tasks and projects this week?
+PIPER: Here's what changed in your Piper tasks and projects in the past week, and what Piper did for you. I haven't looked at anything done in GitHub outside Piper.
+
+**Tasks** (7):
+  Created: 7
+    - audit the current navigation
+    - interview five current users
+    - review prs
+
+**Projects** (1):
+  - Created: Mobile Redesign
+
+Piper made 7 changes for you.
+  - Created an issue in dinp-machine/piper-test-activity, 5 times
+  - Commented on issue #38
+  - Updated issue #38
+I tried to comment on issue #9997, but it didn't go through.
+I tried to comment on issue #9998, but I couldn't confirm it went through. Check before you rely on it.
+I tried to comment on issue #9999, but I couldn't confirm it went through. Check before you rely on it.
+
+--- [11:05:36, 0d4938cf23, http 200, 3.71 s] route execution/create_todo
+USER: Add a todo: review the deployment plan
+PIPER: I've added that to your list. 'review the deployment plan' is now tracked. Let me know if you want to adjust anything.
+
+# CXO 11:14 ask: the revised pair, 'Add a todo: …' then 'Show my todos', one fresh session (same non-fresh account, not counted)
+
+--- [11:17:40, 0d4938cf23, http 200, 4.00 s] route execution/create_todo
+USER: Add a todo: draft the launch checklist
+PIPER: I've added that to your list. 'draft the launch checklist' is now tracked. Let me know if you want to adjust anything.
+
+--- [11:17:45, 0d4938cf23, http 200, 3.97 s] route query/list_todos_query
+USER: Show my todos
+PIPER: You have 9 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×3)
+4. interview five current users
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist

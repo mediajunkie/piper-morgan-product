@@ -1,0 +1,78 @@
+# Path B PREVIEW (not a first session, never counted; Exec and PPM yes 10:48/10:49): no repo, aim = a project with tasks in it. beta, web-seed-1386 (PA's own, has history), fresh chat session 7b2e...
+
+--- [10:53:58, 0d4938cf23, http 200, 16.77 s] route GUIDANCE/get_contextual_guidance
+USER: Hi! I'm a PM starting on a mobile app redesign. I don't use GitHub. Can you help me get it organized?
+PIPER: Happy to help you get this organized. A mobile app redesign has a lot of moving pieces, so it's worth being deliberate about structure early.
+
+A few things that would help me give you more useful direction:
+
+**Where are you in the process?** Early discovery, already have designs, mid-build? That changes what "organized" needs to look like right now.
+
+**What's the scope?** Full redesign of the whole app, or a focused area like onboarding or navigation?
+
+**Who's on the team?** Knowing whether you have designers, engineers, and stakeholders in the mix (and how many) shapes how much coordination overhead you're working with.
+
+In the meantime, here's how I'd think about the core organizing structure for a redesign:
+
+1. **Phases** — Discovery → Design → Build → Launch. Even if they overlap, naming them helps stakeholders know where you are.
+2. **Workstreams** — UX research, visual design, engineering, QA, and comms/marketing often run in parallel and need their own tracking.
+3. **Decision log** — Redesigns generate a lot of "why did we do it this way" questions later. Capturing key decisions early saves pain.
+4. **Success metrics** — What does "good" look like post-launch? Retention, task completion rate, NPS? Defining this now keeps the team aligned.
+
+I can help you build out a project plan, draft a stakeholder update, work through prioritization, or think through how to structure your roadmap — just tell me where to dig in first.
+
+--- [10:54:16, 0d4938cf23, http 200, 3.52 s] route portfolio/add_project
+USER: Early discovery, just me and one designer. Can you set up a project for it here?
+PIPER: To add a project called for it here, say 'add project for it here'.
+
+--- [10:54:35, 0d4938cf23, http 200, 10.73 s] route execution/update_document_query
+USER: Call it Mobile Redesign
+PIPER: Quick check before I act: I'm reading that as asking me to update document query, which saves a change outside our conversation (you can change it back). Should I go ahead? (yes/no)
+
+(If you'd rather I just act on requests like this without checking, say "just do things directly from now on.")
+
+--- [10:54:45, 0d4938cf23, http 200, 0.27 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't update document query. Nothing has been changed.
+
+--- [10:54:49, 0d4938cf23, http 200, 3.41 s] route portfolio/add_project
+USER: add project Mobile Redesign
+PIPER: Added Mobile Redesign to your portfolio. If you want a GitHub repo on it, say: link [owner/repo] to Mobile Redesign.
+
+--- [10:55:03, 0d4938cf23, http 200, 6.11 s] route execution/create_todo
+USER: add a task to Mobile Redesign: interview five current users
+PIPER: I've added that to your list. 'interview five current users' is now tracked. Let me know if you want to adjust anything.
+
+--- [10:55:10, 0d4938cf23, http 200, 6.26 s] route execution/create_todo
+USER: also add: audit the current navigation
+PIPER: Quick check before I act: I'm reading that as asking me to create todo, which saves a change outside our conversation (you can change it back). Should I go ahead? (yes/no)
+
+(If you'd rather I just act on requests like this without checking, say "just do things directly from now on.")
+
+--- [10:55:21, 0d4938cf23, http 200, 0.30 s] route execution/create_todo
+USER: yes
+PIPER: I've added that to your list. 'audit the current navigation' is now tracked. Let me know if you want to adjust anything.
+
+--- [10:55:35, 0d4938cf23, http 200, 13.82 s] route STATUS/get_project_status
+USER: what's in my Mobile Redesign project?
+PIPER: I can see Mobile Redesign is tracked as one of your active projects, but I'm not pulling up the full contents right now — the details didn't come through in what I have in front of me.
+
+If you'd like me to pull the project status directly, just tell me directly. Just say "show me the Mobile Redesign project status" and I'll grab what's in there.
+
+--- [10:55:51, 0d4938cf23, http 200, 7.55 s] route STATUS/get_project_status
+USER: show me the Mobile Redesign project status
+PIPER: I couldn't find a milestone matching that in this project.
+Here's what I can see in the project:
+
+I'm not seeing the full project details come through for Mobile Redesign right now — the contents didn't load with what I have in front of me this turn.
+
+If you'd like me to try pulling it again, just tell me directly. Just say "get Mobile Redesign project status" and I'll take another shot at it.
+
+--- [10:55:54, 0d4938cf23, http 200, 1.96 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 7 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×3)
+4. interview five current users
+5. audit the current navigation

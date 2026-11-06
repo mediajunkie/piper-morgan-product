@@ -1539,7 +1539,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1712	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-08-31	documentation,fly-audit,maintenance,weekly-audit		COMPLETED
 1713	CLOSED	Ongoing	Q - Recurring Audits	Both Monday-scheduled GH Actions (weekly-docs-audit, monthly-housekeeping-audit) silently did not fire on 2026-08-31			COMPLETED
 1714	CLOSED	Ongoing	Q - Recurring Audits	ROLE-HEALTH-CHECK: 2026-08-31	process,role-health-check,sapient-trust		COMPLETED
-1715	OPEN	Ongoing	Q - Recurring Audits	SKILL-CANDIDATES-REVIEW: 2026-09	process,skill-candidates-review		
+1715	CLOSED	Ongoing	Q - Recurring Audits	SKILL-CANDIDATES-REVIEW: 2026-09	process,skill-candidates-review		COMPLETED
 1716	CLOSED	Ongoing	FLYWHEEL - Process improvement	mail-send.sh never checks the cc: header it delivers against — 2 agents, 3 days, silent undelivered cc's			COMPLETED
 1722	CLOSED	Ongoing	Q - Recurring Audits	91 orphaned subagent worktrees accumulated under piper-morgan-product/.claude/worktrees/ — disk + git-object bloat, none appear owned			COMPLETED
 1723	CLOSED	MVP	Beta Blockers - Hard Gates Only	GitHubOperations Protocol: type the router's contract, delete dead dispatches, implement the 4 live-unbacked operations	architecture		COMPLETED
@@ -2088,3 +2088,10 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2293	OPEN	Production		Todo priority sorts alphabetically: 'high' comes after 'medium' and 'low', so the list order and 'next todo' are wrong for high-priority items	bug		
 2294	OPEN	Production		'delete the first one' after a todo or reminder list routes to delete_item and gets the generic can't-do reply	bug		
 2295	OPEN	Production		[UX] 'Show my completed todos' lists every todo, not the completed ones	UX		
+2298	CLOSED	Production		Chat never attaches a task to a project, so Path B's 'a project with tasks in it' can't be reached	enhancement		NOT_PLANNED
+2299	OPEN	Production		Making a project in chat: the name is captured as 'for it here', and 'Call it X' misroutes to a document update offer	bug		
+2300	OPEN	Production		Adding a todo acts at once on one turn and asks to confirm on the next, for the same kind of ask	bug		
+2301	OPEN	Production		'What's in my <project>?' fails twice, reads the project name as a milestone, and re-offers wording that fails again	bug		
+2297	OPEN	Production		[UX] 'Add a task to <project>' makes a plain todo, and the project never shows it (Path B preview, 11-06)	UX		
+2302	OPEN	Production		'What changed this week?' says 7 tasks created and names 3, with no word that the list is shortened	bug		
+2303	OPEN	Production		Make archive_project live in chat (a write flip on xian's secret), so the hide literal can be deleted against a live op	enhancement		
