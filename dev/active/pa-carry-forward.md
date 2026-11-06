@@ -15,15 +15,16 @@ PM-attention items live **here**, in the section immediately below.
 
 ---
 
-## Now (written 2026-11-04 21:48 STOP; replace, don't annotate)
+## Now (written 2026-11-05 21:50 STOP; replace, don't annotate)
 
-- **Served 11-05:** alpha and beta `d5bca9df05`; **MCP Fly v20 `28911350bb`** (xian's hand, 11-05), which carries the 2266 guard. Live `piper://me/github/issues` read through xian's connector PASS. web-seed-1386 reconnected by Web on xian's word (11-05 10:47); its GitHub reads work (10:48). Deploy line for xian: `! git fetch -q origin main && git merge -q --ff-only origin/main && scripts/deploy-mcp.sh`.
-- **GitHub leak (11-04):** settled as GitHub's consent page. Web's check 1 on a non-owner session shows "Authorize mediajunkie" on the button and "your dinp-machine account" in the body. Census clean (0 crossings). Guard served on alpha. Invites held until #1551 and #2266 are served and xian says so. The org transfer is pending, and Web repeats check 1 after it. Alpha has no env `PIPER_GITHUB_HANDLE` or `PIPER_DEFAULT_REPO` (PA names-only, 15:49). Nothing owed by PA.
-- **#2188 / #2279:** PA's served quotes PASS on text (not-found close stored for reload; card "Connected as dinp-machine."). Degrade-alone ran by Web with PA's `served-degrade-alone-window.py`; CXO PASS on text. Left with Web: the bubble retake and the Settings subtitle. Nothing owed by PA unless asked for a second read.
+- **Served 11-05 21:47:** alpha and beta `4e4c3fb1a8`; **MCP Fly v20 `28911350bb`** (xian deployed it 11-05; it carries the 2266 guard). **Since #2282 (11-05 ~12:46), alpha redirects to beta**, except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets` and `/health`. **Served-check scripts must target `https://beta.pipermorgan.ai`**: a bearer call on alpha loses its auth across the redirect. Old `dev/` scripts hard-code alpha. Deploy line for xian: `! git fetch -q origin main && git merge -q --ff-only origin/main && scripts/deploy-mcp.sh`.
+- **#2282 MCP lane:** (a) the connector reads and (c) the well-knowns name the alpha issuer: PASS 12:48. (b) xian re-added the connector at 12:55 with no loop. Open: whether consent ran or Claude reused its old grant, and revoking an older active Claude row. Both are **xian's read of `beta.pipermorgan.ai/settings/connected-apps`** (it's scoped to his account; I hold no xian session). After he revokes, PA re-reads through the connector.
+- **#2288** (card GET /user 401 marks stale): built, served, validated by Arch. **Served row:** a dead-grant account whose card nothing has read yet. Five untouched dinp-machine test accounts are dead; their owner seats, or Web with xian's word. web-seed-1386 was reconnected 11-05 10:47, so it can't serve.
+- **#2262 nothing-new line:** PA quoted it served at 21:49, both phrasings; with CXO to judge.
 - **#2242 (Q2):** the held-token row, on xian's `mcp_allow.py remove` relayed by Exec; then PA calls the tool (expect refused), then xian re-adds and reconnects.
-- **#2235 wizard half:** Web, needs a Piper account with no PAT stored (Web's staging account).
 - **#2238 served line:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
-- **Fresh-account checks:** HOST mints with xian present, xian signs up and runs the turns, PA quotes his screenshots: A1, A2, the first-reply notice line, #2225's re-ask. Trigger: HOST's slot with xian, after the invite hold lifts.
+- **Fresh-account checks:** HOST mints with xian present, xian signs up and runs the turns, PA quotes his screenshots: A1, A2, the first-reply notice line, #2225's re-ask. Trigger: the invite hold lifting (#2261 and #2282 are the P0s) and HOST's slot with xian.
+- **Mail v4** opens to every seat Mon 11-09 (CIO). Then read `python3 scripts/mail4.py inbox --role pa` as well; v3 is the fallback until 11-23.
 
 ## Cadence — LaunchAgent ONLY since 2026-09-30 18:4x (no session cron)
 
