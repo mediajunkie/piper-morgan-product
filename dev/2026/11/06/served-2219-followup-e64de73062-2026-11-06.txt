@@ -1,0 +1,107 @@
+=== on e64de73062 07:17:54
+STATE: 5 todos: [('completed', 'low', 'low task'), ('pending', 'high', 'high task'), ('pending', 'medium', 'medium task'), ('pending', 'medium', 'unset task'), ('pending', 'urgent', 'urgent task')]
+
+
+========== A: the done-items header (one of 5 done)
+
+--- [07:17:56, http 200] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+• urgent task (urgent)
+• high task (important)
+• medium task
+• unset task
+
+--- [07:18:04, http 200] route query/list_todos_query
+USER: show all my todos including done ones
+PIPER: You have 4 open todos and 1 done. Here they are:
+• urgent task (urgent)
+• high task (important)
+• medium task
+• unset task
+• low task ✓ done
+
+--- [07:18:13, http 200] route query/list_todos_query
+USER: show my completed todos
+PIPER: You have 4 open todos and 1 done. Here they are:
+• urgent task (urgent)
+• high task (important)
+• medium task
+• unset task
+• low task ✓ done
+
+
+========== B: confirm after a numbered list (declined)
+
+--- [07:18:16, http 200] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+• urgent task (urgent)
+• high task (important)
+• medium task
+• unset task
+
+--- [07:18:19, http 200] route execution/complete_todo
+USER: complete the first one
+PIPER: I haven't shown you a numbered list yet. Here are your todos:
+
+1. "urgent task"
+2. "high task"
+3. "medium task"
+4. "unset task"
+
+Tell me which one, and I'll mark it done.
+
+--- [07:18:23, http 200] route execution/complete_todo
+USER: complete the first one
+PIPER: Nice - I've marked 'urgent task' as done. Good progress!
+
+--- [07:18:30, http 200] route CONVERSATION/clarification_needed
+USER: no
+PIPER: Okay.
+
+
+========== C: the noun with a real reminder (declined)
+
+--- [07:18:37, http 200] route execution/create_reminder
+USER: remind me to call mom tomorrow at 9am
+PIPER: Reminder saved: **call mom** (scheduled for tomorrow at 9am).
+
+📅 Saturday, November 7 at 9:00 AM PST
+
+It lives with your todos (you'll see it on the Todos page) and I'll surface it in conversation once it's due.
+
+--- [07:18:40, http 200] route query/list_reminders_query
+USER: show my reminders
+PIPER: You have 1 reminder saved:
+
+📅 Upcoming:
+
+1. **call mom** — Saturday, November 7 at 9:00 AM PST
+
+--- [07:18:44, http 200] route execution/delete_item
+USER: delete the first one
+PIPER: I didn't recognize that as something I can do from chat — I may have misread the ask rather than being unable to do it. What I heard was: "delete the first one." If I misread it, try saying it another way. If not, it may already be doable in Piper's own pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub).
+
+--- [07:18:52, http 200] route CONVERSATION/clarification_needed
+USER: no
+PIPER: Okay.
+
+--- [07:18:55, http 200] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+• high task (important)
+• call mom
+• medium task
+• unset task
+
+--- [07:18:58, http 200] route execution/delete_item
+USER: delete the first one
+PIPER: I didn't recognize that as something I can do from chat — I may have misread the ask rather than being unable to do it. What I heard was: "delete the first one." If I misread it, try saying it another way. If not, it may already be doable in Piper's own pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub).
+
+--- [07:19:06, http 200] route CONVERSATION/clarification_needed
+USER: no
+PIPER: Okay.
+STATE: 6 todos: [('completed', 'low', 'low task'), ('completed', 'urgent', 'urgent task'), ('pending', 'high', 'high task'), ('pending', 'medium', 'call mom'), ('pending', 'medium', 'medium task'), ('pending', 'medium', 'unset task')]
+
+=== end on e64de73062 07:19:09
