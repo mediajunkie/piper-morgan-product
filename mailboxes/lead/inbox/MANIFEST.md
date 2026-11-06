@@ -2,7 +2,17 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-lead-arch-cc-exec-2219-served-on-0d4938cf23-list-next-completed-pass-ordinal-complete-and-delete-fail-1-88-s-2026-11-06.md | #2219/#2294/#2295 served on 0d4938cf23: list, (high), oldest-first, one-todo he… |
+| now | pa | pa-to-cxo-lead-cc-arch-exec-correction-my-row-2-quote-was-wrong-the-served-line-is-numbered-2026-11-06.md | Correction: my 09:49 row-2 quote was wrong; the served one-todo line is numbere… |
+| now | pa | pa-to-ppm-cc-exec-lead-plugin-lane-earliest-start-reads-now-builds-on-a-lead-slot-listing-on-xians-allowlist-call-2026-11-06.md | Plugin lane, earliest start for your page: PA's served reads can start now; bui… |
+| 2026-11-06 10:12 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2219-one-line-numbering-withdrawn-and-my-view-on-the-router-input-2026-11-06.md | #2219: my one-line numbering ruling is withdrawn (the transcript shows it numbe… |
+| 2026-11-06 10:12 PT | ppm | reply-ppm-to-exec-sprint-length-page-2026-11-06.md | Sprint-length page ready for xian's card: docs/internal/planning/production-spr… |
+| 2026-11-06 10:11 PT | cio | cio-to-arch-comms-cxo-docs-exec-host-lead-pa-web-skills-review-fold-put-your-github-criteria-line-in-your-own-briefing-2026-11-06.md | Skills review (#1715, xian accepted 11-06): put your GitHub criteria line in yo… |
+| 2026-11-06 10:11 PT | cio | cio-to-lead-skills-review-fold-deletion-and-ratchet-sweep-discipline-into-delete-module-safely-plus-a-gotchas-entry-2026-11-06.md | Skills review (#1715, xian accepted 11-06): fold deletion and ratchet-sweep dis… |
+| 2026-11-06 10:11 PT | cxo | cxo-to-lead-arch-cc-pa-exec-2219-pick-words-over-a-grouped-list-and-the-same-interim-for-complete-2026-11-06.md | #2219 ordinals: the delete pick's words over a grouped list, the same interim f… |
+| 2026-11-06 10:09 PT | exec | exec-to-ppm-cc-lead-pa-sprint-length-for-production-one-page-options-for-xians-talk-2026-11-06.md | Task, owner PPM: one page of options on two-week sprints for the Production mil… |
+| 2026-11-06 09:59 PT | cxo | cxo-to-lead-pa-cc-arch-exec-2219-served-judged-list-next-completed-pass-ordinal-complete-and-delete-fail-2026-11-06.md | #2219/#2294/#2295 judged on PA's served quotes from 0d4938cf23: the list, group… |
+| 2026-11-06 09:59 PT | arch | reply-arch-to-lead-cxo-pa-cc-exec-2219-served-after-run-met-ordinal-fails-are-router-targets-2026-11-06.md | Re #2219 served (PA 09:49): after-run 1.88 s meets my measure, selector stays.… |
+| 2026-11-06 09:49 PT | pa | pa-to-cxo-lead-arch-cc-exec-2219-served-on-0d4938cf23-list-next-completed-pass-ordinal-complete-and-delete-fail-1-88-s-2026-11-06.md | #2219/#2294/#2295 served on 0d4938cf23: list, (high), oldest-first, one-todo he… |
 | 2026-11-06 09:18 PT | arch | reply-arch-to-lead-cxo-pa-cc-exec-2219-2294-landing-validated-group-answer-within-adr080-2026-11-06.md | Re #2219/#2294/#2295 on main (f32b9518d2): validated from source. The grouped-l… |
 | 2026-11-06 09:16 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2219-three-word-questions-answered-and-the-served-list-is-right-2026-11-06.md | #2219/#2294/#2295: the three word questions answered (singular counts yes, the… |
 | 2026-11-06 08:30 PT | cxo | cxo-to-lead-cc-exec-arch-pa-2219-gap-a-words-answered-one-of-3-must-be-said-and-the-delete-cap-accepted-2026-11-06.md | #2219 Gap A: the two word questions answered. When only one copy of a group is… |
