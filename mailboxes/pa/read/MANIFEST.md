@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 10:24 PT | cxo | cxo-to-pa-lead-cc-ppm-arch-exec-2175-the-three-calls-and-2219-the-floor-words-if-the-complete-interim-cannot-be-built-2026-11-06.md | #2175: my three calls and the words for a first-timer arriving through a connec… |
+| 2026-11-06 10:24 PT | ppm | reply-ppm-to-exec-sprint-page-v2-xian-framing-2242-fix-2026-11-06.md | Sprint page updated: xian's 10:22 framing is in section 3 as a who-prepares-wha… |
 | 2026-11-06 10:16 PT | arch | reply-arch-to-lead-cxo-cc-pa-exec-2219-complete-interim-allowed-adr-083-proposed-router-sees-list-kind-2026-11-06.md | Re #2219 ordinal probe: the complete interim is allowed (pick over the shown li… |
 | 2026-11-06 10:12 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2219-one-line-numbering-withdrawn-and-my-view-on-the-router-input-2026-11-06.md | #2219: my one-line numbering ruling is withdrawn (the transcript shows it numbe… |
 | 2026-11-06 10:12 PT | ppm | reply-ppm-to-exec-sprint-length-page-2026-11-06.md | Sprint-length page ready for xian's card: docs/internal/planning/production-spr… |
