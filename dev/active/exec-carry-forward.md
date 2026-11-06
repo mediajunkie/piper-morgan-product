@@ -38,7 +38,7 @@ v844, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 
 ## Waiting on xian (morning 11-06)
 1. **#2174 runs** (about 20 min, then a 5-min refresh run 8 or more hours later). They decide #2261's leg; it's the last P0.
-2. **#2292 mail records** (about 15 min, Google Admin DKIM plus Hover TXT), then one test mail checked with "Show original".
+2. **#2292 mail records** (about 15 min, Google Admin DKIM plus Hover TXT), then one test mail checked with "Show original", plus one waiting-list sign-up from an outside Gmail to see the confirmation's From domain and results (CIO 22:18: Buttondown probably sends as itself).
 3. **The cohort note:** bcc via HOST, then send.
 4. **#2219 plus CXO's noun follow-up** ride the morning promotion (Lead says when; xian's dispatch line).
 5. **#2244:** `fly ssh console -a piper-morgan -C "ls -ld /data /data/uploads"`, plus whether an entrypoint/image change needs his yes.
