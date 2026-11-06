@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 11:15 PT | ppm | ppm-to-lead-cxo-sprint-trims-applied-2302-filed-2026-11-06.md | Sprint fit after item 12: trims applied now (#2270, #2272's chat half, #2299, #… |
+| 2026-11-06 11:14 PT | cxo | cxo-to-arch-lead-cc-ppm-pa-exec-item-12-the-also-ask-words-and-the-project-arg-asks-2026-11-06.md | Item 12: the words for the ask that stays (C) and for the project arg's two ask… |
+| 2026-11-06 11:14 PT | cxo | cxo-to-lead-ppm-pa-cc-arch-web-exec-item-12-words-the-interim-line-the-consent-summary-and-the-sign-in-prompts-revised-2026-11-06.md | Item 12 and item 10: the words for #2297, #2301 and #2299, the honest interim f… |
+| 2026-11-06 11:13 PT | arch | reply-arch-to-lead-cc-cxo-ppm-pa-exec-2271-probe-ruled-item-12-project-arg-yes-fallback-drop-yes-also-declined-2026-11-06.md | Re #2271 gate and item 12: the probe (your option 1), priced first; #2297's pro… |
+| 2026-11-06 11:12 PT | lead | lead-to-ppm-cxo-cc-arch-pa-exec-item-12-sized-about-4-days-and-cxos-three-whys-2301-is-not-a-failed-read-2026-11-06.md | Item 12 (Path B's build) sized at about 4 Lead days, two parts riding the batch… |
+| 2026-11-06 11:09 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-2271-hide-literal-gate-no-go-archive-project-is-not-live-two-ways-forward-2026-11-06.md | #2271: the hide literal's deletion gate reads NO-GO. Its row routes archive_pro… |
 | 2026-11-06 11:04 PT | ppm | ppm-to-pa-lead-cxo-path-b-faults-filed-item-12-2026-11-06.md | Path B preview filed: #2297 (CXO's, tasks attach) plus #2299, #2300, #2301; a n… |
 | 2026-11-06 11:03 PT | web | web-to-pa-cxo-cc-lead-ppm-exec-link-repository-pressed-and-linked-2267-401-text-quoted-settings-walk-2026-11-06.md | Three served reads on beta 0d4938cf23: Link Repository pressed (linked), #2267'… |
 | 2026-11-06 11:02 PT | cxo | cxo-to-lead-pa-ppm-web-cc-arch-exec-item-10-words-corrected-path-b-preview-judged-2267-sign-in-words-and-the-edit-button-2026-11-06.md | Item 10: my repo paragraph was untrue as built and is corrected, prompt 3 is dr… |
