@@ -283,5 +283,5 @@ Before submitting, review your suggestions against this filter:
 - **Framing**: credential/trust-discipline incident cluster → what the beta launch, the owed-item scanner and the LaunchAgent moves did to the work.
 - **Section 5**: 5.6 kept (no longer marked new); added 5.7 (OWED markers and the START scan) and 5.8 (role-card limits that blocked work, from the 10-31 test-mint handoff gap).
 - **Section 7**: unchanged; seats on LaunchAgents may answer "n/a, LaunchAgent" to the cron parts of 7.2. Point seats at `scripts/whats-armed.sh` for hook questions rather than asking per-seat (procedure known gap).
-- **Section 8**: unchanged. Roster confirmed against `docs/briefing/ROSTER.md` (last_verified 2026-09-27): 11 current roles, none added, retired or renamed since v0.5. To re-check on 11-06.
+- **Section 8**: unchanged. Roster confirmed against `docs/briefing/ROSTER.md` (last_verified 2026-09-27): 11 current roles, none added, retired or renamed since v0.5. Re-checked 11-06 (ROSTER.md `last_verified` 2026-11-02; the only change since v0.5 is lane wording for Docs).
 - **Sections 1-4, 6, 9, 10**: structure preserved.

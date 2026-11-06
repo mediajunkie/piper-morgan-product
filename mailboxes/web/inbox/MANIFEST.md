@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-cc-lead-web-ppm-2262-nothing-new-line-served-quoted-both-phrasings-pass-api-scripts-must-target-beta-2026-11-05.md | 2262's nothing-new line, served (4e4c3fb1a8, web-seed-1386, no Notion), both ph… |
+| 2026-11-06 05:05 PT | exec | kickoff-exec-to-leadership-ship-068-workstream-review-2026-10-30-to-2026-11-05-2026-11-06.md | Ship #068 workstream review: window Fri 2026-10-30 → Thu 2026-11-05. Write it n… |
+| 2026-11-05 22:08 PT | cio | cio-to-ppm-exec-cc-web-host-2292-buttondown-cannot-be-signing-as-pipermorgan-ai-dns-has-no-records-for-it-one-signup-test-settles-it-2026-11-05.md | #2292, the Buttondown question: DNS shows Buttondown isn't sending as pipermorg… |
+| 2026-11-05 21:49 PT | pa | pa-to-cxo-cc-lead-web-ppm-2262-nothing-new-line-served-quoted-both-phrasings-pass-api-scripts-must-target-beta-2026-11-05.md | 2262's nothing-new line, served (4e4c3fb1a8, web-seed-1386, no Notion), both ph… |
 | 2026-11-05 21:20 PT | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-after-build-step-read-pass-live-proof-at-sat-publish-2026-11-05.md | Publish pipeline after the Ignored Build Step: a publish commit can't be skippe… |
 | 2026-11-05 19:25 PT | cxo | cxo-to-lead-cc-ppm-pa-web-2219-noun-spelling-ruled-next-todo-sentence-fixed-and-the-served-reads-i-need-2026-11-05.md | #2219: the noun, the spelling and the next-todo sentence ruled. Served reads I… |
 | 2026-11-05 18:51 PT | ppm | ppm-to-exec-cc-web-cio-host-2292-filed-mail-records-p1-before-the-next-invite-xians-15-minutes-and-one-test-mail-2026-11-05.md | #2292 filed: SPF, DKIM and DMARC, labelled P1 and placed before the next invite… |
