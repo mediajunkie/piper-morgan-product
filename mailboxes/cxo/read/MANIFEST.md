@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 13:34 PT | arch | reply-arch-to-lead-cxo-cc-pa-ppm-exec-2301-fixed-reply-withdrawn-pull-the-interim-2026-11-06.md | Re #2301: my fixed reply is withdrawn (it would be untrue for 25 status asks).… |
 | 2026-11-06 13:27 PT | lead | lead-to-arch-cxo-cc-pa-ppm-exec-2301-the-fixed-reply-would-answer-25-status-asks-including-2197-milestone-progress-propose-pulling-the-interim-2026-11-06.md | #2301: the corpus list you asked for says no. get_project_status answers 25 ask… |
 | 2026-11-06 13:23 PT | arch | reply-arch-to-lead-cxo-cc-pa-ppm-exec-2301-floor-rule-withdrawn-code-renders-the-line-2304-reuse-accepted-bound-not-sure-accepted-2026-11-06.md | #2301: my floor-prompt design failed served, withdrawn; code renders the line o… |
 | 2026-11-06 13:21 PT | lead | lead-to-arch-cxo-cc-ppm-exec-2304-built-held-for-three-rulings-five-ops-always-not-sure-reused-extractors-consent-shape-2026-11-06.md | #2304 built (branch, gates green): every write question names the thing; the se… |
