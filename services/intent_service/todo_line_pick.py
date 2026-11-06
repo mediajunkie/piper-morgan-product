@@ -5,13 +5,18 @@ A number names a LINE, not a copy (CXO 11-06 07:35), so "complete the third
 one" on a grouped line cannot know whether the person means one copy or all
 of them. It asks, in CXO's words:
 
-- complete: ``"review prs" is on your list 3 times. Complete one, or all 3?``
-- delete: ``Delete one "review prs", or all 3? This can't be undone.``
+``"review prs" is on your list 3 times. Complete one, or all 3?``
 
-The answer "one" acts on the FIRST copy in list order; "all" / "all 3" /
-"both" acts on every copy. For delete the answer IS the confirmation: no
-second yes/no follows (CXO). A one-copy line never reaches here (complete
-acts at once, delete keeps its always-confirm).
+The answer "one" completes the FIRST copy in list order; "all" / "all 3" /
+"both" completes every copy. A one-copy line never reaches here (it completes
+at once, Gap B).
+
+Complete only. CXO's delete form ("Delete one …, or all 3?") would delete
+several rows on one answer, which xian's #2019 cap (``delete_cap.DELETE_CAP``
+= 1) forbids until soft delete and undo (issue 2021); a grouped delete binds
+one copy and gets the one-item confirm in ``todo_handlers`` instead. Arch
+11-06 09:17: no delete path may live here while the cap holds, so
+``arm_group_line_question`` refuses any other verb.
 
 The question ARMS via the #846 pending-offer store and is answered at the pop
 seam kind-specifically, before generic accept/decline: the #1987
@@ -43,7 +48,6 @@ CLARIFY_GROUP_LINE_WORKFLOW = "clarify_todo_group_line"
 GROUP_LINE_PENDING_FLAG = "todo_group_line_pending"
 
 VERB_COMPLETE = "complete"
-VERB_DELETE = "delete"
 
 # Word sets for the answer (CXO: "one" / "all" / "all 3" / "both"). The line's
 # own count joins the all-set per question ("3" against "or all 3?").
@@ -57,15 +61,11 @@ _PLEASANTRY_ACK = {"thanks": "You're welcome.", "greeting": "Hi!"}
 
 def render_group_line_question(verb: str, text: str, count: int) -> str:
     """CXO's words (11-06 07:35), verbatim."""
-    if verb == VERB_DELETE:
-        return f'Delete one "{text}", or all {count}? This can\'t be undone.'
     return f'"{text}" is on your list {count} times. Complete one, or all {count}?'
 
 
 def _decline_message(verb: str, text: str) -> str:
-    """The existing Okay-family declines (#1943 complete, D5 delete)."""
-    if verb == VERB_DELETE:
-        return f'Okay — I won\'t delete "{text}". Nothing has been changed.'
+    """The existing Okay-family decline (#1943 complete)."""
     return "Okay — I won't mark those done. Nothing has been changed."
 
 
@@ -133,6 +133,9 @@ def arm_group_line_question(
     """The ARM half, called by the todo target handlers when a lone ordinal
     names a line with more than one copy. Returns the question, or ``None``
     when nothing could pop an answer (no session or no store)."""
+    if verb != VERB_COMPLETE:
+        # Arch 11-06 09:17: no path around xian's #2019 delete cap lives here.
+        raise ValueError(f"todo_line_pick arms complete only, not {verb!r}")
     if not session_id or offer_service is None or len(rows) < 2:
         return None
     text = rows[0].text
@@ -281,18 +284,13 @@ async def _act(
     user_id: Optional[str],
     intent_service: Any,
 ) -> Dict[str, Any]:
-    """Complete or delete the bound copies: the first one in list order, or
-    all of them. Each row is re-read first; a copy gone since the ask is
-    reported, never replaced by another row."""
-    from services.intent_service.todo_handlers import (
-        _batch_summary,
-        _delete_summary,
-        one_copy_result,
-    )
+    """Complete the bound copies: the first one in list order, or all of them.
+    Each row is re-read first; a copy gone since the ask is reported, never
+    replaced by another row."""
+    from services.intent_service.todo_handlers import _batch_summary, one_copy_result
 
-    verb = payload.get("verb") or VERB_COMPLETE
+    verb = VERB_COMPLETE
     text = payload.get("line_text") or ""
-    noun = payload.get("noun") or "todo"
     data = {"category": "execution", "action": f"{verb}_todo", "todo_group_line": scope}
     principal = str(user_id) if user_id else payload.get("user_id")
     try:
@@ -317,9 +315,7 @@ async def _act(
             "intent_data": data,
         }
     live = {str(t.id): t for t in rows or []}
-    present = [i for i in ids if i in live]
-    if verb == VERB_COMPLETE:
-        present = [i for i in present if not live[i].completed]
+    present = [i for i in ids if i in live and not live[i].completed]
     chosen = present[:1] if scope == "one" else present
     if not chosen:
         return {
@@ -334,21 +330,16 @@ async def _act(
     failed = []
     for tid in chosen:
         try:
-            if verb == VERB_DELETE:
-                ok = await service.delete_todo(todo_id=UUID(tid), user_id=todo_user_id)
-            else:
-                ok = await service.complete_todo(todo_id=UUID(tid), user_id=todo_user_id)
+            ok = await service.complete_todo(todo_id=UUID(tid), user_id=todo_user_id)
         except Exception as e:  # silent-ok: counted and reported per copy, as the batch paths do
             logger.warning("todo_group_line_item_failed", todo_id=tid, error=str(e))
             ok = None
         if ok:
             done.append(text)
         else:
-            failed.append((text, "already gone" if verb == VERB_DELETE else "no longer there"))
+            failed.append((text, "no longer there"))
     logger.info("todo_group_line_acted", verb=verb, scope=scope, done=len(done))
-    if verb == VERB_DELETE:
-        message = _delete_summary(done, failed, [], noun)
-    elif scope == "one" and len(done) == 1:
+    if scope == "one" and len(done) == 1:
         # CXO 11-06 08:3x: one copy of a grouped line says how many are still
         # open, counted from the copies the question was armed with.
         message = one_copy_result(VERB_COMPLETE, text, len(ids) - 1)

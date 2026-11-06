@@ -474,3 +474,37 @@ def test_the_bulleted_batch_confirm_says_one_of_three_too():
         _batch_confirm_question(["x", "x"], [], "todo")
         == 'Complete 2 todos: "x" (2 items)? (yes/no)'
     )
+
+
+def test_the_line_pick_refuses_to_arm_a_delete():
+    """Arch 11-06 09:17: no path around xian's #2019 delete cap lives in the line pick."""
+    from services.intent_service.todo_line_pick import arm_group_line_question
+
+    with pytest.raises(ValueError):
+        arm_group_line_question("delete", [object(), object()], "todo", "", "s", object(), "u")
+
+
+@pytest.mark.asyncio
+async def test_a_capped_multi_delete_shows_a_grouped_line_as_the_list_did(handlers, store, service):
+    """CXO 11-06 09:16: the capped list names a grouped line as shown, "review prs" (×3)."""
+    await _show(handlers)
+    msg, armed = await handlers.handle_delete_todo_targets(
+        _intent("delete_todo", "delete the first and third", ["1", "3"]),
+        _SESSION,
+        UUID(_USER),
+        store,
+        _USER,
+    )
+    assert armed is False
+    assert '1. "urgent task"\n' in msg
+    assert '2. "review prs" (×3)' in msg
+    assert service.deleted_ids == []
+
+
+def test_the_capped_reply_without_counts_is_unchanged():
+    from services.intent_service.delete_cap import capped_delete_reply
+
+    assert capped_delete_reply(["a", "b"], "todo") == (
+        'I can delete one todo at a time for now. You asked about these:\n1. "a"\n2. "b"'
+        "\n\nTell me which one to delete first. Nothing has been changed."
+    )

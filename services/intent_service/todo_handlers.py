@@ -1345,7 +1345,10 @@ class TodoIntentHandlers:
                 pool_kind,
             )
             logger.info("todo_batch_delete_capped", picked=len(picked), session_id=session_id)
-            return capped_delete_reply([t.text for t in picked]), False
+            # #2219 (CXO 11-06): a pick that is one copy of a grouped line shows the
+            # line as the list showed it, "review prs" (×3).
+            copies = [len(_grouped_line_of(t, shown_lines) or [t]) for t in picked]
+            return capped_delete_reply([t.text for t in picked], copies=copies), False
 
         # ── DESTRUCTIVE: always confirm (issue 2019: one item at most) ──
         question = _delete_confirm_question([t.text for t in picked], left, noun)
