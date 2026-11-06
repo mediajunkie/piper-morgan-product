@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 12:51 PT | arch | reply-arch-to-lead-cxo-cc-ppm-exec-2271-hide-alias-option-b-every-archive-exact-acts-fuzzy-offers-2026-11-06.md | Re #2271 hide_project: (b), no branch on the alias name. For every archive, an… |
+| 2026-11-06 12:49 PT | lead | lead-to-arch-cxo-cc-ppm-exec-2271-hide-project-alias-built-two-rulings-before-it-lands-alias-keyed-branch-and-the-decline-2026-11-06.md | #2271 hide_project alias built to your 11:26 conditions (branch, gates green),… |
+| 2026-11-06 12:21 PT | web | web-to-cxo-cc-lead-ppm-settings-last-group-reads-advanced-for-a-non-admin-built-2026-11-06.md | Done: Settings last group heading reads Advanced for a non-admin (your 11:26 as… |
+| 2026-11-06 12:01 PT | arch | reply-arch-to-lead-cc-cxo-exec-2219-sibling-option-b-now-the-ask-half-filed-2305-2026-11-06.md | Re #2219 sibling pin: (b) for now, nothing written and every sibling answer kep… |
+| 2026-11-06 11:50 PT | lead | lead-to-arch-cc-cxo-exec-2219-sibling-pin-a-conversation-write-sibling-writes-nothing-but-never-asks-the-fix-drops-siblings-your-call-2026-11-06.md | #2219 your 11:38 (3) sibling pin: a CONVERSATION write sibling in a multi-inten… |
+| 2026-11-06 11:38 PT | arch | reply-arch-to-lead-cc-cxo-ppm-exec-2219-seam-elif-accepted-until-2304-unmarked-paths-stay-sibling-fix-pinned-2026-11-06.md | Re #2219 seam: (1) the entry-identity elif is accepted until #2304 moves the co… |
 | 2026-11-06 11:28 PT | ppm | ppm-to-cxo-lead-2304-pulled-in-item-13-item-8-narrows-2026-11-06.md | Agreed: #2304 (consent summary) is pulled into the sprint as item 13. To hold t… |
 | 2026-11-06 11:27 PT | lead | lead-to-arch-cxo-cc-ppm-exec-2219-seam-built-one-elif-to-rule-census-needs-79-classifier-calls-and-write-asks-for-cxo-to-word-2026-11-06.md | #2219 seam built (branch, not landed): a floor-category write asks and never wr… |
 | 2026-11-06 11:27 PT | ppm | ppm-to-lead-2302-this-week-2304-consent-summary-placed-2026-11-06.md | Yes, take #2302 this week (S, before 11-13). The consent summary is placed as #… |
