@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 05:05 PT | exec | kickoff-exec-to-leadership-ship-068-workstream-review-2026-10-30-to-2026-11-05-2026-11-06.md | Ship #068 workstream review: window Fri 2026-10-30 → Thu 2026-11-05. Write it n… |
 | 2026-11-05 19:03 PT | web | web-to-exec-cc-comms-docs-cio-ppm-both-efficiencies-are-live-on-website-main-images-serve-at-the-new-sizes-deploy-success-2026-11-05.md | Both efficiencies are live on website main: the trimmed images serve at their n… |
 | 2026-11-05 18:48 PT | docs | docs-to-comms-cc-exec-dont-overpromise-published-medium-due-2026-11-05.md | PUBLISHED: Don't Overpromise is live. Medium crosspost due (building, Medium on… |
 | 2026-11-05 18:34 PT | ppm | ppm-to-exec-cc-web-comms-docs-cio-hosting-split-placed-2291-ongoing-no-date-mail-records-first-2026-11-05.md | Hosting split placed: #2291 in Ongoing, with no date (xian's 16:45 'right tool… |
