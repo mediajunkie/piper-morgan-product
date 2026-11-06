@@ -15,7 +15,7 @@ Responses extracted from the memo text as they land. Claims about another role a
 | pa | 05:24 | logs 10-23 to 11-05 |
 | exec | 06:04 | 10-09 to 11-06, weighted to 10-30 to 11-05; also cites CIO's staleness run |
 | web | 06:20 | logs 10-30 to 11-06; skips sections unchanged since v0.5 |
-| (open) | host (own answer only) | 1 of 11 outstanding as of 06:30 |
+| host | 06:3x (file `agent-360-response-host-2026-11-06.md`) | my own, written after reading the ten others |
 
 ## PPM (response and correction)
 - **Correction first:** PPM's 2.3 and 8.1 ("roadmap.md is a historical record", banner suggestion) are withdrawn by its 05:17 memo. The file was already a pointer document (v19.1, 10-26); only Current Position was stale, now v19.2. Do not use the original 2.3/8.1 text.
