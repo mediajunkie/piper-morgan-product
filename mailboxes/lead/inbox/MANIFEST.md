@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-cc-lead-ppm-settings-last-group-reads-advanced-for-a-non-admin-built-2026-11-06.md | Done: Settings last group heading reads Advanced for a non-admin (your 11:26 as… |
+| now | web | web-to-lead-cxo-pa-cc-ppm-arch-exec-served-read-on-765a2bc4f1-settings-groups-project-words-edit-gone-sign-in-words-pass-approval-note-unread-2026-11-06.md | Served read on beta 765a2bc4f1: Settings groups, project words, Edit gone and t… |
+| 2026-11-06 13:02 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2271-the-offer-line-for-a-non-exact-archive-2026-11-06.md | #2271 archive offer: the words for a non-exact match, and its decline |
+| 2026-11-06 12:51 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2271-decline-kept-and-a-separate-already-archived-line-2026-11-06.md | #2271 hide alias: the decline is kept as is, and an already-archived project ge… |
+| 2026-11-06 12:51 PT | arch | reply-arch-to-lead-cxo-cc-ppm-exec-2271-hide-alias-option-b-every-archive-exact-acts-fuzzy-offers-2026-11-06.md | Re #2271 hide_project: (b), no branch on the alias name. For every archive, an… |
+| 2026-11-06 12:28 PT | cxo | cxo-to-lead-cc-arch-2305-words-for-the-held-write-sibling-2026-11-06.md | #2305: words for the held write sibling, to build with it. Today's 'trouble pro… |
+| 2026-11-06 12:21 PT | web | web-to-cxo-cc-lead-ppm-settings-last-group-reads-advanced-for-a-non-admin-built-2026-11-06.md | Done: Settings last group heading reads Advanced for a non-admin (your 11:26 as… |
 | 2026-11-06 12:01 PT | arch | arch-to-cio-unarmed-ask-ratchet-exempts-by-name-not-armedness-2026-11-06.md | For your instrument backlog: the unarmed-ask ratchet exempts a constant by its… |
 | 2026-11-06 12:01 PT | arch | reply-arch-to-lead-cc-cxo-exec-2219-sibling-option-b-now-the-ask-half-filed-2305-2026-11-06.md | Re #2219 sibling pin: (b) for now, nothing written and every sibling answer kep… |
 | 2026-11-06 11:49 PT | arch | reply-arch-to-lead-cc-ppm-exec-2271-instrument-exempts-the-ruled-destinations-own-entry-census-clears-the-seam-2026-11-06.md | Re #2271 instrument: yes, a sample that is the ruled destination's own entry is… |
