@@ -51,8 +51,8 @@ verified_by: CXO 2026-11-02 — spot-check, not a bulk stamp (#2253). WHAT I CHE
 - Interaction pattern definition and specification
 - UX research synthesis and application
 - Colleague Test stewardship — rubric at `docs/internal/testing/colleague-test-rubric.md`, conceptual companion at `docs/internal/development/colleague-test.md`. ⚠️ **No version number here on purpose** (see the Colleague Test section below). **Three invariants are PM-ratified 2026-08-31** — the question, the verdict shape (3 × 0–3, ≥7/9, any 0 auto-fails), the fabrication auto-fail; **changing those needs PM.** Criteria, examples and branches stay CXO-editable.
-- Floor-first voice guidance (ADR-060) and ethics-decline voice oversight (#992)
-- Floor quality monitoring (#950 canonical retest scores)
+- Floor-first voice guidance (ADR-060) and ethics-decline voice oversight (#992, closed 2026-04-30)
+- Floor quality monitoring (#950, closed 2026-04-16; canonical retest scores)
 - Mobile experience exploration (skunkworks oversight, currently paused)
 - Design quality standards and critique
 
@@ -261,10 +261,11 @@ These are standing CXO disciplines, not one-off tasks. They run in parallel with
 **Active, verified 2026-11-02**:
 6. **Beta gate #1386 (experience criteria)** — CLOSED (MVP milestone). 0.9.0.0 is tagged at `c44dd081cb` and
    served on alpha and beta. Served judgement is now the standing work: copy rulings land, then I judge
-   PA's and Web's quoted replies after each promotion. Open as of today: #2042 (floor Observations/Time
-   bullet and Grammar clause), #2242 (MCP refusal page), #2197 and #2250 (milestone progress answers),
-   #2229 (/try pages, confirmation-email check), #2247 (Slack source copy, waits on Lead's sizing),
-   #2246 (help reaches no person), and Notion card words after PA's staging check and xian's yes.
+   PA's and Web's quoted replies after each promotion. Open lines (run `gh issue list -l UX --state open`
+   for the live set, not this list): #2042 (floor Observations/Time bullet and Grammar clause), #2242
+   (MCP refusal page), #2247 (Slack source copy, waits on Lead's sizing), #2246 (help reaches no person),
+   #2219, #2286, #2287 and #2290 (GitHub and todo copy), and Notion card words after PA's staging check
+   and xian's yes. #2197, #2250 and #2229 are closed.
    The 09-22 wording about "re-run at MVP milestone close" is superseded.
 7. **#1174 proactive-presence discovery** — CXO half filed 2026-09-11 (comment `5641648022`); two of
    four questions answered from ratified law (commitment 3 rules out MCP initiation; the spectrum is
@@ -349,7 +350,7 @@ Request additional detail for:
 - **UX foundations**: `piper-morgan-ux-foundations-and-open-questions.md`
 - **Roadmap**: `docs/internal/planning/roadmap/roadmap.md`
 - **PDRs**: `PDR-001-ftux-as-first-recognition.md`, `PDR-002-conversational-glue.md`, `PDR-004-experience-philosophy.md`, `PDR-101-multi-entity-conversation.md`
-- **CXO Session Logs**: `dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-cxo-opus-log.md`
+- **CXO Session Logs**: `dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-cxo-code-log.md`
 - **CXO Handoff Memo (Mar 30)**: `dev/2026/03/30/cxo-handoff-memo-2026-03-30.md` — comprehensive context for 8 sessions of decisions
 
 ---
