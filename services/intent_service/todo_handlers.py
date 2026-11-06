@@ -2440,6 +2440,10 @@ class TodoIntentHandlers:
             _noun = _resolved.get("noun") or "reminder"
             if deleted:
                 logger.info("Todo deleted", todo_id=str(_resolved["todo_id"]), user_id=user_id)
+                _copies = int(_resolved.get("copies") or 1)
+                if _copies > 1:
+                    # #2219 (CXO 11-06 08:30): one copy of a grouped line; say what's left.
+                    return one_copy_result("delete", _resolved["text"], _copies - 1)
                 return _delete_summary([_resolved["text"]], [], [], _noun)
             return _delete_summary([], [(_resolved["text"], "already gone")], [], _noun)
 

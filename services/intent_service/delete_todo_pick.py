@@ -146,6 +146,29 @@ def last_numbered_list(session_id: Optional[str], user_id: Any) -> Any:
         return None
 
 
+def _shown_lines(shown: Any, todos: List[Any]) -> List[List[Any]]:
+    """The open copies of each line of the last numbered todo LIST shown (#2219
+    Gap A records ``groups`` only for "show my todos"), in shown order; a line
+    with no open copy left is dropped. ``[]`` when no such list was shown."""
+    groups = getattr(shown, "groups", None) or []
+    if not groups:
+        return []
+    by_id = {str(t.id): t for t in todos or []}
+    lines = [[by_id[str(i)] for i in group if str(i) in by_id] for group in groups]
+    return [line for line in lines if line]
+
+
+def _line_display(line: List[Any]) -> str:
+    """A pick line as the list showed it (CXO 11-06): the count and the chip."""
+    first = line[0]
+    text = first.text + (f" (×{len(line)})" if len(line) > 1 else "")
+    if getattr(first, "priority", None) == "urgent":
+        text += " (urgent)"
+    elif getattr(first, "priority", None) == "high":
+        text += " (high)"
+    return text
+
+
 def _candidates(todos: List[Any], noun: str) -> List[Any]:
     """Reminders (rows with a reminder_date), due-soonest first, when the
     ask said "reminder"; otherwise every active row in list order."""
@@ -186,6 +209,8 @@ def _pick_offer(
     original_message: str,
     question: str,
     reasked: bool = False,
+    copies: Optional[List[int]] = None,
+    display: Optional[List[str]] = None,
 ) -> Dict[str, Any]:
     """The #846 record: the rendered candidates bound at ARM time (ids +
     texts in the order shown, #1665) plus each one's due timestamp so "the
@@ -204,6 +229,9 @@ def _pick_offer(
             "original_message": original_message,
             "pick_reasked": reasked,
             "summary": f"pick which {noun} to delete",
+            # #2219 interim (c): the shown list's copy counts and its lines as shown.
+            "pick_copies": list(copies) if copies else None,
+            "pick_display": list(display) if display else None,
         },
         "decline_message": (f"Okay — I haven't touched your {noun}s. Nothing has been deleted."),
     }
@@ -237,13 +265,36 @@ async def arm_delete_pick(
     except Exception as e:  # silent-ok: warning-logged; the caller falls back to its instruction copy, nothing armed, nothing deleted
         logger.warning("delete_todo_pick_list_failed", error=str(e), user_id=str(todo_user_id))
         return None
+    from services.intent_service.reminder_clear import _due_iso
+
+    # #2219 interim (c) (Arch 11-06 09:58; CXO's words 10:1x): a delete with no
+    # router target, right after the numbered todo list, picks over THAT list's
+    # lines, in its order and grouping, so "2" means the line the person saw. Code
+    # reads recorded state here, never the message's words.
+    lines = _shown_lines(last_numbered_list(session_id, principal or todo_user_id), todos)
+    if lines:
+        ids = [str(line[0].id) for line in lines]
+        texts = [line[0].text for line in lines]
+        due = [_due_iso(line[0], noun) for line in lines]
+        copies = [len(line) for line in lines]
+        display = [_line_display(line) for line in lines]
+        question = render_pick_question(noun, display)
+        offer_service.set_pending_offer(
+            session_id,
+            _pick_offer(
+                principal, noun, ids, texts, due, message, question, copies=copies, display=display
+            ),
+            user_id=principal,
+        )
+        logger.info(
+            "delete_todo_pick_armed_on_shown_lines", session_id=session_id, lines=len(lines)
+        )
+        return question
     candidates = _candidates(todos or [], noun)
     if not candidates:
         return f"You don't have any {noun}s right now — nothing to delete."
     shown = candidates[:MAX_LISTED]
     more = len(candidates) - len(shown)
-
-    from services.intent_service.reminder_clear import _due_iso
 
     ids = [str(t.id) for t in shown]
     texts = [t.text for t in shown]
@@ -336,6 +387,7 @@ async def handle_delete_todo_pick_turn(
 
     ids = payload.get("pick_ids") or []
     texts = payload.get("pick_texts") or []
+    shown_texts = payload.get("pick_display") or texts
     due_iso = payload.get("pick_due") or []
     noun = payload.get("noun") or "todo"
     original_message = payload.get("original_message") or ""
@@ -358,7 +410,7 @@ async def handle_delete_todo_pick_turn(
 
     claimed = PreClassifier.pre_classify(text)
     if claimed is not None and claimed.action in _PLEASANTRY_ACTIONS:
-        question = pending_offer.get("question") or render_pick_question(noun, texts, 0)
+        question = pending_offer.get("question") or render_pick_question(noun, shown_texts, 0)
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
             {
@@ -413,6 +465,7 @@ async def handle_delete_todo_pick_turn(
 
     status, idx = _resolve_pick_target(text, texts, due_iso)
     if status == "bound" and idx is not None and 0 <= idx < len(ids):
+        copies = payload.get("pick_copies") or []
         return await _arm_bound_delete(
             ids[idx],
             texts[idx],
@@ -422,6 +475,7 @@ async def handle_delete_todo_pick_turn(
             user_id,
             payload,
             intent_service,
+            copies=copies[idx] if idx < len(copies) else 1,
         )
 
     # #2003 (served on alpha b713b91cb5, 2026-10-13): a QUOTED name that
@@ -432,7 +486,7 @@ async def handle_delete_todo_pick_turn(
     # two" — is 'none' too; that one takes the ordinary re-ask below.)
     quoted = _quoted_name(text)
     if status == "none" and quoted:
-        question = render_pick_question(noun, texts, 0)
+        question = render_pick_question(noun, shown_texts, 0)
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
             _pick_offer(
@@ -444,6 +498,8 @@ async def handle_delete_todo_pick_turn(
                 original_message,
                 question,
                 reasked=bool(payload.get("pick_reasked")),
+                copies=payload.get("pick_copies"),
+                display=payload.get("pick_display"),
             ),
             user_id=user_id,
         )
@@ -496,7 +552,7 @@ async def handle_delete_todo_pick_turn(
         logger.info("delete_todo_pick_release_after_reask", session_id=session_id)
         return None  # second unresolved turn in a row — release, no loop
 
-    question = render_pick_question(noun, texts, 0, reasked=True)
+    question = render_pick_question(noun, shown_texts, 0, reasked=True)
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         _pick_offer(
@@ -508,6 +564,8 @@ async def handle_delete_todo_pick_turn(
             original_message,
             question,
             reasked=True,
+            copies=payload.get("pick_copies"),
+            display=payload.get("pick_display"),
         ),
         user_id=user_id,
     )
@@ -532,6 +590,7 @@ async def _arm_bound_delete(
     user_id: Optional[str],
     payload: Dict[str, Any],
     intent_service: Any,
+    copies: int = 1,
 ) -> Dict[str, Any]:
     """A bound pick → the #1666 title-bound confirm, row bound BY ID. The
     row is re-read first: a pick that names a row gone since the ask gets
@@ -590,9 +649,20 @@ async def _arm_bound_delete(
     from services.intent_service.reminder_copy import copy_noun, delete_summary_phrase
 
     copy = "reminder" if noun == "reminder" else copy_noun(original_message)
-    question = _delete_confirm_question([row.text], [], copy)
+    if copies > 1:
+        # #2219 (CXO 11-06 08:30): one copy of a grouped line says the count; the
+        # #2019 cap holds, so the confirm deletes exactly this one row.
+        from services.intent_service.todo_handlers import grouped_delete_confirm_question
+
+        question = grouped_delete_confirm_question(row.text, copies, copy)
+    else:
+        question = _delete_confirm_question([row.text], [], copy)
     summary = delete_summary_phrase(row.text, copy)
     gate = _armed_todo_delete(intent, row, position, question=question, summary=summary, noun=copy)
+    if copies > 1:
+        from services.intent_service.destructive_confirm import RESOLVED_TODO_CONTEXT_KEY
+
+        intent.context[RESOLVED_TODO_CONTEXT_KEY]["copies"] = copies
     confirmation = gate.offer
     assert confirmation is not None  # _armed_todo_delete always arms (the offer leg)
     intent_service.workflow_offer_service.set_pending_offer(
@@ -631,7 +701,7 @@ async def run_clarify_delete_todo_pick_workflow(
         )
         return None
     noun = payload.get("noun") or "todo"
-    texts = payload.get("pick_texts") or []
+    texts = payload.get("pick_display") or payload.get("pick_texts") or []
     question = "Just so I get it right:\n" + render_pick_question(noun, texts, 0)
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
