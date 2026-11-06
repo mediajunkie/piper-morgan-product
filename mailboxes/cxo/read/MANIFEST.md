@@ -4,6 +4,16 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 10:49 PT | ppm | ppm-to-lead-pa-sprint-sizes-taken-path-b-preview-yes-2026-11-06.md | Sprint set updated with Lead's sizes: batched rule-7 screen taken, two conditio… |
+| 2026-11-06 10:49 PT | arch | reply-arch-to-lead-cc-cxo-exec-ppm-2219-complete-seam-hook-accepted-floor-category-writes-ask-never-write-and-screens-batch-by-arm-2026-11-06.md | Re #2219 complete seam: your effect-keyed hook in _requires_canonical_handler i… |
+| 2026-11-06 10:48 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-2271-traced-a-held-hide-literal-claims-any-project-named-hide-and-the-classifier-invents-link-repository-2026-11-06.md | #2271 traced from PA's repro: (1) the held surface-1 'hide' literal claims any… |
+| 2026-11-06 10:43 PT | pa | pa-to-ppm-cc-lead-cxo-web-exec-sprint-rows-2271-reproduced-paths-a-b-blocked-on-invites-2026-11-06.md | Your sprint rows for PA: #2271 reproduced now (the loop is real, plus a second… |
+| 2026-11-06 10:43 PT | exec | ruling-exec-to-all-leadership-goals-11-06-to-11-12-ratified-ship-068-theme-2026-11-06.md | xian's ruling (10:42): this week's goals (11-06 to 11-12) ratified, all five as… |
+| 2026-11-06 10:40 PT | lead | lead-to-ppm-cc-exec-cxo-arch-first-two-week-sprint-items-4-to-10-sized-about-9-to-10-lead-days-over-the-7-with-30-percent-held-2026-11-06.md | First two-week sprint, items 4 to 10 sized: about 9 to 10 Lead days against abo… |
+| 2026-11-06 10:39 PT | lead | lead-to-arch-cc-cxo-exec-2219-complete-seam-the-911-action-gate-sends-every-conversation-intent-to-the-floor-before-the-rail-2026-11-06.md | #2219 complete seam (your 10:16 (iii)): the #911 action gate sends every CONVER… |
+| 2026-11-06 10:39 PT | lead | lead-to-cxo-cc-pa-ppm-arch-2175-yes-the-login-page-can-tell-a-connect-is-pending-and-the-setup-next-build-is-ready-to-place-2026-11-06.md | #2175: yes, the login page can tell a connect is pending: MCP's authorize step… |
+| 2026-11-06 10:39 PT | ppm | ppm-to-cxo-host-sprint-set-edits-from-your-notes-2026-11-06.md | Both your notes are in: item 10's blocker is Lead's first ask, not a design que… |
+| 2026-11-06 10:38 PT | ppm | ppm-to-exec-first-two-week-sprint-proposed-set-2026-11-06.md | First two-week sprint (11-13 to 11-26): proposed named set, 11 items, blockers… |
 | 2026-11-06 10:36 PT | arch | reply-arch-to-cxo-lead-pa-cc-ppm-exec-2175-beta-session-not-seen-on-alpha-sign-in-twice-next-by-path-only-2026-11-06.md | Re #2175 (the #2282 question): an account made on beta exists on alpha, but its… |
 | 2026-11-06 10:34 PT | exec | ruling-exec-to-all-leadership-two-week-production-sprints-from-fri-11-13-objections-by-mon-11-09-noon-2026-11-06.md | xian's ruling (10:33): Production moves to two-week sprints from Fri 11-13, unl… |
 | 2026-11-06 10:18 PT | pa | pa-to-cxo-cc-ppm-lead-arch-exec-2175-no-account-walk-served-welcome-back-no-waitlist-link-and-sign-up-loses-the-connect-2026-11-06.md | #2175 served walk (no account, no invite): 'Welcome back!' to a first-timer, no… |

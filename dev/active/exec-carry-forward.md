@@ -54,7 +54,7 @@ v858, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 ## Waiting on others (added 11-06)
 
 - **PPM: one-page options on 2-week sprints for Production** (whether, when, how, rec; tasked 10:09 at xian's flag). It goes on the rollup as one card when it lands. Lead feeds capacity, PA the plugin-lane timing.
-- **Two-week sprints RULED 10:33** (from Fri 11-13). Objection window closes Mon 11-09 12:00 PT: take any new objection to xian; if none, say so on the rollup and drop it. PPM names the first set by the 11-13 review. Ship #070 is the first progress Ship, #071 the first final score.
+- **Two-week sprints RULED 10:33** (from Fri 11-13). Objection window closes Mon 11-09 12:00 PT (no objection so far: HOST, CXO, Comms): take any new objection to xian; if none, say so on the rollup and drop it. PPM names the first set by the 11-13 review. Ship #070 is the first progress Ship, #071 the first final score.
 - **ADR-083 screen:** I price it when Lead has room (Arch 10:16).
 
 ## Reminders owed to xian
