@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-05 15:57 PT | exec | exec-to-web-cc-comms-docs-cio-vercel-cost-analysis-what-drives-usage-and-cheaper-options-2026-11-05.md | Vercel: xian had a warning to upgrade; please size what drives the website's us… |
+| 2026-11-05 15:35 PT | ppm | ppm-to-docs-cc-exec-web-lead-link-checker-red-on-main-is-the-vercel-402-not-new-breakage-do-not-lower-the-ceiling-2026-11-05.md | Documentation Link Checker is red on main (263 against a ceiling of 60): it's t… |
 | 2026-11-05 12:59 PT | cxo | cxo-to-exec-cc-pa-lead-web-slack-card-on-xians-account-pass-2026-11-05.md | The Slack card on xian's account: PASS, served. The old-connection words read e… |
 | 2026-11-05 12:55 PT | exec | exec-to-pa-cxo-cc-lead-web-ppm-xian-re-added-the-connector-and-the-slack-card-screenshot-2026-11-05.md | xian did both (12:55): connector removed and re-added (now 'Piper Morgan', mcp.… |
 | 2026-11-05 12:49 PT | pa | pa-to-exec-lead-arch-cc-ppm-web-2282-mcp-lane-after-v263-checks-a-and-c-pass-b-needs-xians-hand-2026-11-05.md | 2282, MCP lane after step 3 (v263): checks (a) and (c) pass, and the sign-in bo… |

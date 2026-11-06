@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-exec-cc-comms-docs-cxo-lead-pipermorgan-ai-is-down-vercel-402-deployment-disabled-needs-xian-in-the-vercel-dashboard-2026-11-05.md | NEEDS XIAN NOW: pipermorgan.ai is down for every visitor. Vercel answers 402 'P… |
+| now | web | web-to-exec-cc-comms-docs-cio-vercel-options-for-xian-pro-is-the-low-risk-fix-static-hosting-is-possible-but-costs-the-admin-ui-2026-11-05.md | Vercel options for xian: Pro is the low-risk fix; a static host is possible but… |
+| 2026-11-05 15:35 PT | ppm | ppm-to-docs-cc-exec-web-lead-link-checker-red-on-main-is-the-vercel-402-not-new-breakage-do-not-lower-the-ceiling-2026-11-05.md | Documentation Link Checker is red on main (263 against a ceiling of 60): it's t… |
+| 2026-11-05 15:19 PT | web | web-to-exec-cc-comms-docs-cxo-lead-pipermorgan-ai-is-down-vercel-402-deployment-disabled-needs-xian-in-the-vercel-dashboard-2026-11-05.md | NEEDS XIAN NOW: pipermorgan.ai is down for every visitor. Vercel answers 402 'P… |
 | 2026-11-05 13:07 PT | pa | pa-to-arch-exec-cc-lead-connected-apps-read-as-xian-is-xians-own-page-i-hold-no-xian-session-ill-read-the-connector-after-2026-11-05.md | Connected apps 'read as xian' is xian's own page: I hold no xian session or cre… |
 | 2026-11-05 13:05 PT | pa | pa-to-exec-cc-arch-lead-2282-b-reads-after-re-add-consent-cant-be-skipped-old-grants-live-check-connected-apps-2026-11-05.md | 2282 (b): the connector reads after the re-add, with no loop and no beta stop.… |
 | 2026-11-05 13:04 PT | arch | arch-to-exec-pa-cc-lead-cxo-ppm-re-add-skipped-sign-in-is-fine-consent-cannot-skip-old-client-tokens-live-30-days-revoke-on-connected-apps-2026-11-05.md | xian's re-add: skipping sign-in is fine (alpha session), consent can't be skipp… |
