@@ -1018,6 +1018,15 @@ def _is_pr_item(item: Dict[str, Any]) -> bool:
     return bool(item.get("is_pull_request") or item.get("pull_request"))
 
 
+def _grouped_activity_lines(items: List[Dict[str, Any]]) -> List[str]:
+    """#2302: one line per distinct item text, in first-seen order, repeats counted
+    as the #2219 todo list counts them ("    - review prs (×3)")."""
+    counts: Dict[str, int] = {}
+    for item in items:
+        counts[item["text"]] = counts.get(item["text"], 0) + 1
+    return [f"    - {text}" + (f" (×{n})" if n > 1 else "") for text, n in counts.items()]
+
+
 class IntentService:
     """
     Service for processing user intents.
@@ -1041,6 +1050,24 @@ class IntentService:
         "I don't have that capability yet, but I'm learning! "
         "Try asking 'What can you do?' to see what I can help with, "
         "or let me know if there's something else I can assist with."
+    )
+
+    # Issue #911: categories fully migrated to Action Gate floor routing. A class
+    # constant since #2219 row 3, so the floor gate and the floor-category-write
+    # mark read one set.
+    FLOOR_ROUTED_CATEGORIES = frozenset(
+        {
+            "GUIDANCE",  # Phase 1: already floor-routed
+            "IDENTITY",  # Phase 2: all identity → floor (Apr 8)
+            "DISCOVERY",  # Phase 2: capabilities context → floor
+            "TRUST",  # Phase 2: trust data context → floor
+            "MEMORY",  # Phase 2: history context → floor
+            "CONVERSATION",  # Phase 2: chitchat/farewell/thanks → floor
+            "TEMPORAL",  # Phase 3: non-date temporal → floor (#965)
+            "STATUS",  # Phase 3: project status → floor (#925)
+            "PRIORITY",  # Phase 3: priority queries → floor (#925)
+            "UNKNOWN",  # Already floor-routed since #907
+        }
     )
 
     def __init__(
@@ -4121,6 +4148,19 @@ class IntentService:
                     restate_suffix=_pending_ask_restate,
                     unanswered_half_suffix=_unanswered_half,
                     unanswered_half_clause=_unanswered_clause,
+                )
+
+            # #2219 row 3 (Arch 11-06 10:48): a write op filed under a floor category
+            # passed the gate only on its declared effect. Its meaning is uncertain, so
+            # the turn is marked: the rail asks (a pick or a yes/no) and never writes.
+            if self._is_floor_category_write(intent):
+                from services.intent_service.floor_write_ask import mark_floor_category_write
+
+                mark_floor_category_write(intent)
+                self.logger.info(
+                    "floor_category_write_marked",
+                    category=intent.category.value,
+                    action=intent.action,
                 )
 
             # Issue #286: Handle canonical intents (PORTFOLIO, EXECUTION, STATUS, etc.)
@@ -12023,21 +12063,22 @@ class IntentService:
                     updated = [t for t in todo_activity if t["activity"] == "updated"]
                     completed = [t for t in todo_activity if t["activity"] == "completed"]
 
+                    # #2302 (CXO 11-06): every item the count covers, repeats grouped
+                    # as the #2219 list groups them ("review prs (×3)"). The old
+                    # silent first-3 cap read "Tasks (7)" over three names.
                     if created:
                         lines.append(f"  Created: {len(created)}")
-                        for item in created[:3]:  # Show first 3
-                            lines.append(f"    - {item['text']}")
+                        lines.extend(_grouped_activity_lines(created))
                     if updated:
                         lines.append(f"  Updated: {len(updated)}")
                     if completed:
                         lines.append(f"  Completed: {len(completed)}")
-                        for item in completed[:3]:
-                            lines.append(f"    - {item['text']}")
+                        lines.extend(_grouped_activity_lines(completed))
                     lines.append("")
 
                 if project_activity:
                     lines.append(f"**Projects** ({len(project_activity)}):")
-                    for proj in project_activity[:5]:
+                    for proj in project_activity:  # #2302: no silent cap under the count
                         lines.append(f"  - {proj['activity'].capitalize()}: {proj['name']}")
                     lines.append("")
 
@@ -19087,7 +19128,51 @@ Add any additional information here.
 
         Returns True ONLY for intents that need side effects, database writes,
         or deterministic fast-path responses.
+
+        #2219 row 3 (Arch 11-06 10:48): an action whose registered rail entry
+        declares a non-READ effect is a database write by declaration, so it
+        needs its handler whatever category the classifier filed it under. The
+        floor can't write, and narrated one it couldn't do ("If you'd like me
+        to mark "high task" as complete, just tell me directly."). Keyed on the
+        declared effect, never on the category. When the category alone would
+        have sent it to the floor, the emission contradicts itself, and the
+        main path MARKS the turn (``_is_floor_category_write``) so the rail
+        asks and never writes on it.
         """
+        if self._names_write_rail_op(intent):
+            return True
+        return self._category_requires_canonical(intent)
+
+    @staticmethod
+    def _names_write_rail_op(intent: Intent) -> bool:
+        """#2219 row 3: does ``intent.action`` name a registered rail op whose
+        declared effect is not READ? Read from the registry, never a list."""
+        from services.intent_service.workflow_dispatcher import (
+            get_action_workflows,
+            normalize_action,
+        )
+        from services.shared_types import EffectClass
+
+        entry = get_action_workflows().get(normalize_action(intent.action or ""))
+        return entry is not None and entry.effect is not EffectClass.READ
+
+    def _is_floor_category_write(self, intent: Intent) -> bool:
+        """#2219 row 3 (Arch 11-06 10:48, the binding condition): a write op the
+        classifier filed under a floor category, on a turn the category alone
+        would have sent to the floor. The emission contradicts itself, so its
+        meaning is uncertain: the turn is marked and may ask, never write. A
+        router emission (it carries ``inversion_args``) is never marked, and
+        neither is a turn the category already sent to its handler."""
+        if intent.category is None:
+            return False
+        if intent.category.value.upper() not in self.FLOOR_ROUTED_CATEGORIES:
+            return False
+        if "inversion_args" in (intent.context or {}):
+            return False
+        return self._names_write_rail_op(intent) and not self._category_requires_canonical(intent)
+
+    def _category_requires_canonical(self, intent: Intent) -> bool:
+        """The #911 Action Gate's category rules (the predicate before #2219 row 3)."""
         category = intent.category.value.upper()
 
         # PORTFOLIO: all operations (add/delete/archive/restore) — always canonical
@@ -19433,21 +19518,7 @@ Add any additional information here.
             )
             return True
 
-        # Categories fully migrated to Action Gate floor routing:
-        _FLOOR_ROUTED_CATEGORIES = {
-            "GUIDANCE",  # Phase 1: already floor-routed
-            "IDENTITY",  # Phase 2: all identity → floor (Apr 8)
-            "DISCOVERY",  # Phase 2: capabilities context → floor
-            "TRUST",  # Phase 2: trust data context → floor
-            "MEMORY",  # Phase 2: history context → floor
-            "CONVERSATION",  # Phase 2: chitchat/farewell/thanks → floor
-            "TEMPORAL",  # Phase 3: non-date temporal → floor (#965)
-            "STATUS",  # Phase 3: project status → floor (#925)
-            "PRIORITY",  # Phase 3: priority queries → floor (#925)
-            "UNKNOWN",  # Already floor-routed since #907
-        }
-
-        if category not in _FLOOR_ROUTED_CATEGORIES:
+        if category not in self.FLOOR_ROUTED_CATEGORIES:
             return False
 
         # If the Action Gate says canonical is required, don't route to floor
@@ -19998,7 +20069,23 @@ Add any additional information here.
                             preferences=preferences,
                         ),
                     )
-        if _rail_entry.needs_consent:
+        # #2219 row 3 (Arch 11-06 10:48): a floor-category write is marked, and on
+        # that turn no non-READ op writes. The one consent decision is CONFIRM for
+        # it, whatever the framing or working mode, so every write op takes the
+        # #1190 confirm path below: it arms a yes/no (or a pick) showing what it
+        # would do, and "yes" re-dispatches the intent unmarked.
+        from services.intent_service.floor_write_ask import is_floor_category_write
+
+        _floor_write = _rail_entry.needs_consent and is_floor_category_write(intent)
+        if _floor_write:
+            from services.intent_service import consent_gate as _consent
+
+            _consent_user = user_id or _principal_from_intent(intent)
+            _consent_verdict = _consent.ConsentDecision.CONFIRM
+            self.logger.info(
+                "floor_category_write_asks", action=intent.action, effect=_rail_entry.effect.name
+            )
+        elif _rail_entry.needs_consent:
             from services.intent_service import consent_gate as _consent
             from services.intent_service.inversion_live import (
                 resolve_framing_hint as _resolve_framing_hint,
@@ -20146,6 +20233,45 @@ Add any additional information here.
                         ),
                     )
                 _confirmation = _cr_gate.offer
+            elif _floor_write and _rail_entry is _action_workflows.get("complete_todo"):
+                # #2219 row 3: complete is WRITE, so it reaches this branch only on a
+                # marked turn. It names the one row it would complete (CXO's
+                # 'Mark "x" as done? (yes/no)'), or picks over the shown list, or says
+                # it can't tell. Rail-entry identity, as the consent branch's
+                # complete_todo check below.
+                from services.intent_service.floor_write_ask import (
+                    build_floor_write_complete_ask,
+                )
+
+                _complete_ask = await build_floor_write_complete_ask(
+                    intent,
+                    message,
+                    self.todo_handlers,
+                    _coerce_todo_principal(_consent_user),
+                    _consent_user,
+                    session_id,
+                    self.workflow_offer_service,
+                )
+                if _complete_ask.reply is not None:
+                    return _RailOutcome(
+                        on_rail=True,
+                        armed=_complete_ask.armed,
+                        result=IntentProcessingResult(
+                            success=True,
+                            message=_complete_ask.reply,
+                            intent_data={
+                                "category": intent.category.value,
+                                "action": intent.action,
+                                "confidence": intent.confidence,
+                                "floor_category_write": True,
+                                **(_complete_ask.intent_data or {}),
+                            },
+                            requires_clarification=_complete_ask.armed,
+                            suggestions=all_suggestions,
+                            preferences=preferences,
+                        ),
+                    )
+                _confirmation = _complete_ask.offer
             else:
                 _confirmation = build_confirmation_offer(intent)
             if _confirmation is not None:
@@ -20447,6 +20573,10 @@ Add any additional information here.
         """
         try:
             if self._should_route_to_floor(intent):
+                return False
+            if self._is_floor_category_write(intent):
+                # #2219 row 3: the orchestrator has no rail, so it can't hold the
+                # marked turn's ask; the sibling stays floor-routed, as before.
                 return False
             return bool(self.canonical_handlers.claims_category(intent))
         except Exception as e:  # silent-ok: LOGGED here; a routing predicate must never break the turn (#1423 discipline)

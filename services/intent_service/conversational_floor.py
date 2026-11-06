@@ -171,6 +171,17 @@ class SourceFailedDirective(NamedTuple):
     # line, so this NamedTuple carries no `directive` field).
 
 
+# #2301 interim (CXO 11-06 11:14, Arch 11-06 11:26): the floor sees project names and
+# counts, never the tasks inside a project, until #2301's read lands.
+PROJECT_CONTENTS_LINE = "I can see your projects' names, but not the tasks in them yet."
+PROJECT_CONTENTS_UNAVAILABLE_RULE = (
+    "- You can see the user's project names and counts, not the tasks inside any "
+    "project. If the user asks what is in a project, say exactly: "
+    f'"{PROJECT_CONTENTS_LINE}" Never describe a project\'s contents, and never '
+    "ask the user to say it another way."
+)
+
+
 SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
     SourceFailedDirective(
         # #1425 honesty: the reminder lookup failed — a promised reminder may
@@ -1695,6 +1706,11 @@ class ConversationalFloor:
                 "checked this turn, say nothing about it — never imply a "
                 "source failed when it was simply not consulted."
             )
+
+        # #2301 interim (Arch 11-06 11:26): a capability fact, not a failed read. The
+        # line is CXO's, verbatim; the floor says it rather than improvising.
+        if domain_context.get("project_contents_unavailable"):
+            lines.append(PROJECT_CONTENTS_UNAVAILABLE_RULE)
 
         # #983: Surface blocked items (open GitHub issues labeled
         # `status: blocked`) for "what's blocked?" / "what's waiting on
