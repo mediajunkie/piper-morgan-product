@@ -168,7 +168,12 @@ async def test_add_project_entry_point_calls_the_existing_handler_directly():
     calls = {}
 
     async def _add(
-        original_message, session_id, user_id=None, intent_service=None, router_args=None
+        original_message,
+        session_id,
+        user_id=None,
+        intent_service=None,
+        router_args=None,
+        bound_name=None,  # #2304: the name a confirmed yes showed (None on a plain turn)
     ):
         # #2069: router_args (the router's inversion_args) is threaded too;
         # its consumption is pinned in test_add_project_router_args_2069.py.

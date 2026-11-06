@@ -6453,7 +6453,11 @@ complete_todo. Rows that always say the statement: update_document and comment_i
 with an LLM call), link_repo, set_default_repo, set_timezone (the handler parses inline). The #2219 seam's
 `elif _floor_write and _rail_entry is ...complete_todo` is deleted. The DESTRUCTIVE builders (delete_todo,
 unlink_repo, close/reopen) are unchanged. The TRUST-mode outward disclosure (`build_outward_disclosure`) still says
-`_summary_for`'s op words (filed: 2307). Pins: `tests/unit/services/intent_service/test_write_confirm_words_2304.py`.
+`_summary_for`'s op words (filed: 2307). Binding (Arch 11-06 13:23): a builder that reuses its handler's resolver binds what it named into the armed
+Intent (`write_confirm_words.WRITE_ASK_BOUND_KEY`, tagged with the op), and the handler writes those values on the
+confirmed turn, never a re-extraction (create_todo text; create_reminder text, label and instant; archive/restore/add
+name; create_issue title and repo, unstripped again; update_issue number, repo and field values). Pins:
+`test_write_ask_binding_2304.py`. Pins: `tests/unit/services/intent_service/test_write_confirm_words_2304.py`.
 
 ## Pointers
 

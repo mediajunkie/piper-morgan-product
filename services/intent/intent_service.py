@@ -13791,6 +13791,13 @@ class IntentService:
                 slots=slots,
             )
             title = title or slots.get("title")
+            from services.intent_service.write_confirm_words import bound_write_values
+
+            # #2304 (Arch 11-06 13:23): a confirmed "yes" creates the title in the repo
+            # its question showed, bound at ask time; no second extraction or strip.
+            _bound_issue = bound_write_values(intent, "create_issue")
+            if _bound_issue:
+                title = _bound_issue["title"]
             # #1543 REWORK (PM live 2026-08-29, v64): the raw-capture MOVED
             # — with the garbage fallback TITLE gone, the old
             # `or intent.original_message` fallback here shipped the raw
@@ -13805,6 +13812,8 @@ class IntentService:
                 or intent.context.get("repo")
                 or slots.get("repository")
             )
+            if _bound_issue:
+                repository = _bound_issue["repository"]
 
             # #1641: natural "in the X repository" phrasing — the SAME
             # extraction the #1567 answers use — now resolves on the create
@@ -13913,7 +13922,7 @@ class IntentService:
             # routing, not subject — strip it. A phrase naming anything
             # else ("…timeout in production") stays untouched: we don't
             # guess which bare nouns are repos.
-            if title:
+            if title and not _bound_issue:
                 from services.intent_service.repo_clarification import (
                     strip_repo_phrase_for,
                 )
@@ -14607,6 +14616,19 @@ class IntentService:
             state = intent.context.get("state")
             labels = intent.context.get("labels")
             assignees = intent.context.get("assignees")
+            from services.intent_service.write_confirm_words import bound_write_values
+
+            # #2304 (Arch 11-06 13:23): a confirmed "yes" changes exactly the issue,
+            # repo and fields its question showed, bound at ask time.
+            _bound_update = bound_write_values(intent, "update_issue")
+            if _bound_update:
+                issue_number = _bound_update["issue_number"]
+                repository = _bound_update["repository"]
+                title = _bound_update.get("title")
+                body = _bound_update.get("body")
+                state = _bound_update.get("state")
+                labels = _bound_update.get("labels")
+                assignees = _bound_update.get("assignees")
 
             # Issue #1066: Fall back to parsing #N from original_message if LLM
             # extraction didn't populate issue_number. Matches the pattern

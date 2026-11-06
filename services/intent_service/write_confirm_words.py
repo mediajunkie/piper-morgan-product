@@ -111,6 +111,31 @@ def _text(value: Any) -> Optional[str]:
 
 
 # ---------------------------------------------------------------------------
+# Binding (Arch 11-06 13:23): what the question shows is what "yes" writes
+# ---------------------------------------------------------------------------
+
+# The armed record carries the original Intent (#1190); the values a builder named
+# ride its context under this key, tagged with the op, and that op's handler writes
+# them on the confirmed turn instead of extracting again (#1665: what was asked is
+# what is stored, and what is stored is what is written).
+WRITE_ASK_BOUND_KEY = "write_ask_bound"
+
+
+def bind_write_values(intent: Any, op: str, **values: Any) -> None:
+    """Bind the named values into the intent the offer will carry (copy-on-write)."""
+    intent.context = dict(intent.context or {})
+    intent.context[WRITE_ASK_BOUND_KEY] = {"op": op, **values}
+
+
+def bound_write_values(intent: Any, op: str) -> Dict[str, Any]:
+    """The values bound for ``op`` at ask time, or {} (never another op's)."""
+    bound = (getattr(intent, "context", None) or {}).get(WRITE_ASK_BOUND_KEY)
+    if isinstance(bound, dict) and bound.get("op") == op:
+        return bound
+    return {}
+
+
+# ---------------------------------------------------------------------------
 # The per-op builders (registered on the entries in workflow_entries.py)
 # ---------------------------------------------------------------------------
 
@@ -134,6 +159,7 @@ async def create_todo_write_ask(request: WriteAskRequest) -> WriteAsk:
     named = _text(text)
     if not named:
         return WriteAsk()
+    bind_write_values(intent, "create_todo", text=named)
     return WriteAsk(
         words=ConfirmWords(
             question=f'Add "{named}" to your todos? (yes/no)',
@@ -171,6 +197,9 @@ async def create_reminder_write_ask(request: WriteAskRequest) -> WriteAsk:
     when_dt, when = parse_reminder_time(message, user_timezone=user_tz)
     if when_dt is None or not when:
         return WriteAsk()
+    bind_write_values(
+        request.intent, "create_reminder", text=text, when=when, when_at=when_dt.isoformat()
+    )
     return WriteAsk(
         words=ConfirmWords(
             question=f'Set a reminder "{text}" for {when}? (yes/no)',
@@ -191,6 +220,7 @@ def _project_write_ask(operation: str, question: str, summary: str) -> WriteAskB
         )
         if not name:
             return WriteAsk()
+        bind_write_values(request.intent, f"{operation}_project", name=name)
         return WriteAsk(
             words=ConfirmWords(
                 question=question.format(name=name), summary=summary.format(name=name)
@@ -220,6 +250,7 @@ async def add_project_write_ask(request: WriteAskRequest) -> WriteAsk:
     message = _original(intent) or request.message
     name = display_name_for("add", message, _context(intent).get("inversion_args"))
     if name:
+        bind_write_values(intent, "add_project", name=name)
         return WriteAsk(
             words=ConfirmWords(
                 question=f'Add a project called "{name}"? (yes/no)',
@@ -263,6 +294,14 @@ async def create_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
     repository = _text(ctx.get("repository")) or _text(slots.get("repository"))
     if not title or not repository:
         return WriteAsk()
+    from services.intent_service.repo_clarification import strip_repo_phrase_for
+
+    # The handler's own last step on the title (#1543): a trailing phrase naming
+    # the target repo is routing, not subject. Shown and bound after it.
+    title = _text(strip_repo_phrase_for(title, repository))
+    if not title:
+        return WriteAsk()
+    bind_write_values(intent, "create_issue", title=title, repository=repository)
     return WriteAsk(
         words=ConfirmWords(
             question=f'Create an issue titled "{title}" in {repository}? (yes/no)',
@@ -271,20 +310,22 @@ async def create_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
     )
 
 
-# update_issue's fields, in the handler's own context keys, and how each is said.
+# update_issue's fields: the handler's own reads (context, then slot-fill), and how
+# each is said.
 _UPDATE_ISSUE_FIELDS = (
-    (("title",), "the title"),
-    (("body", "description"), "the description"),
-    (("state",), "the state"),
-    (("labels",), "the labels"),
-    (("assignees",), "the assignees"),
+    ("title", "the title"),
+    ("body", "the description"),
+    ("state", "the state"),
+    ("labels", "the labels"),
+    ("assignees", "the assignees"),
 )
 
 
 async def update_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
     """``Change {the field} of issue #N in owner/repo?`` from _handle_update_issue's
     own reads: the intent's slots, ``_slotfill_issue_request``, and the #1190 issue
-    number parse the handlers share. No field said: nothing named."""
+    number parse the handlers share. No field said: nothing named. The number, the
+    repo and every field's value are bound; the handler writes exactly those."""
     from services.intent.intent_service import IntentService
     from services.intent_service.destructive_confirm import _issue_number_from
 
@@ -295,13 +336,17 @@ async def update_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
     repository = (
         _text(ctx.get("repository")) or _text(ctx.get("repo")) or _text(slots.get("repository"))
     )
-    fields = [
-        said
-        for keys, said in _UPDATE_ISSUE_FIELDS
-        if any(ctx.get(k) for k in keys) or any(slots.get(k) for k in keys)
-    ]
+    values = {
+        "title": ctx.get("title") or slots.get("title"),
+        "body": ctx.get("body") or ctx.get("description") or slots.get("body"),
+        "state": ctx.get("state"),
+        "labels": ctx.get("labels"),
+        "assignees": ctx.get("assignees"),
+    }
+    fields = [said for key, said in _UPDATE_ISSUE_FIELDS if values[key]]
     if not number or not repository or not fields:
         return WriteAsk()
+    bind_write_values(intent, "update_issue", issue_number=number, repository=repository, **values)
     changed = " and ".join(fields)
     return WriteAsk(
         words=ConfirmWords(

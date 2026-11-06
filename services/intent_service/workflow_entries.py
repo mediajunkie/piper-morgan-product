@@ -2682,6 +2682,8 @@ async def run_add_project_workflow(
         user_id=user_id,
         intent_service=intent_service,
         router_args=router_args if isinstance(router_args, dict) else None,
+        # #2304: the name a confirmed "yes" showed, bound at ask time.
+        bound_name=_words.bound_write_values(intent, "add_project").get("name"),
     )
     return await _finalize_canonical_rail_result(
         intent_service, intent, result, session_id, user_id
