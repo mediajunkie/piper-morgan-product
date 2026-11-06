@@ -4,7 +4,7 @@
 - **Log:** `dev/2026/11/05/2026-11-05-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-06.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
 - **Thu 11-05 "Don't Overpromise": PUBLISHED** 18:48 (Docs), https://pipermorgan.ai/blog/dont-overpromise. The Medium crosspost is xian's ("as soon as it's live"), and Docs fills in the URL. xian kept "likely during the beta period" by his own ruling.
-- **FRI 11-06, FIRST THING: the mining pass** (Oct 23 to Nov 5), looking for cross-month themes and a partner for insight 8 "One Account Means One Hand". Then **the editorial-strategy talk with xian** (he set it for 11-06). The brief is in the planning doc (Claude Docs `27e09d5b-…`, rev 25), section "For our editorial-strategy session": options A–D, my recommendation (A plus one insight a week), and four questions.
+- **11-06: mining pass DONE** (planning doc rev 30, section "Mining pass, Oct 23 to Nov 5". My pick: A "The Owner's Name on Every Door" with 8, or C with 8). Ship #068 review sent (472f83c8b). Agent 360 v0.6 response sent (8e4273336). **Next: the editorial-strategy talk with xian** (brief in the planning doc, "For our editorial-strategy session"). After it: put the scaffold format into `draft-blog-post` (360 item 1.3/5.3).
 - **Scaffolds up, all waiting on xian's prose:**
   - Sat 11-07, "At Long Last, Beta": `at-long-last-beta.md` (building; title by xian; renamed from what-reaching-private-beta-means.md). It teases Sun.
   - Sun 11-08, "Fixed and Scores Higher Came Apart": `fixed-and-scores-higher-came-apart.md` (insight). It teases Tue. The two percentages come from two different runs, so it isn't a controlled A/B.
