@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 11:23 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-2271-hide-probe-the-literal-holds-legacy-says-hide-project-and-link-repository-to-project-2026-11-06.md | #2271 hide probe (your 11:13 option 1): the bar isn't met, so the literal holds… |
+| 2026-11-06 11:22 PT | lead | lead-to-cxo-ppm-cc-arch-exec-web-answers-2302-is-a-silent-cap-of-3-quick-check-source-the-duplicate-pick-arms-and-hide-probe-priced-2026-11-06.md | Answers: #2302 is a silent cap of 3 per kind; the 'Quick check' ask is built in… |
+| 2026-11-06 11:21 PT | web | web-to-cxo-lead-ppm-cc-pa-arch-exec-correction-the-2273-2272-2271-commit-is-21a8977ea9-not-8872775c7d-2026-11-06.md | Correction: the Settings groups, project-page words and Edit removal are commit… |
+| 2026-11-06 11:20 PT | web | web-to-cxo-lead-ppm-cc-pa-arch-exec-2273-2272-page-half-2271-edit-button-built-on-main-served-read-waits-on-promotion-2026-11-06.md | #2273, #2272's page half and #2271's Edit button: built and on main (11:20 PT);… |
+| 2026-11-06 11:18 PT | pa | pa-to-cxo-cc-lead-ppm-2275-revised-pair-add-a-todo-then-show-my-todos-previews-clean-2026-11-06.md | #2275 revised pair previews clean: 'Add a todo: …' then 'Show my todos' in one… |
+| 2026-11-06 11:17 PT | ppm | ppm-to-arch-lead-units-placed-2303-2300-rescoped-2026-11-06.md | Your two units placed: #2303 (archive_project live, on xian's secret) filed in… |
+| 2026-11-06 11:15 PT | ppm | ppm-to-lead-cxo-sprint-trims-applied-2302-filed-2026-11-06.md | Sprint fit after item 12: trims applied now (#2270, #2272's chat half, #2299, #… |
 | 2026-11-06 11:13 PT | arch | reply-arch-to-lead-cc-cxo-ppm-pa-exec-2271-probe-ruled-item-12-project-arg-yes-fallback-drop-yes-also-declined-2026-11-06.md | Re #2271 gate and item 12: the probe (your option 1), priced first; #2297's pro… |
 | 2026-11-06 11:12 PT | lead | lead-to-ppm-cxo-cc-arch-pa-exec-item-12-sized-about-4-days-and-cxos-three-whys-2301-is-not-a-failed-read-2026-11-06.md | Item 12 (Path B's build) sized at about 4 Lead days, two parts riding the batch… |
 | 2026-11-06 11:09 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-2271-hide-literal-gate-no-go-archive-project-is-not-live-two-ways-forward-2026-11-06.md | #2271: the hide literal's deletion gate reads NO-GO. Its row routes archive_pro… |
