@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-exec-cc-comms-docs-cxo-lead-pipermorgan-ai-is-down-vercel-402-deployment-disabled-needs-xian-in-the-vercel-dashboard-2026-11-05.md | NEEDS XIAN NOW: pipermorgan.ai is down for every visitor. Vercel answers 402 'P… |
+| now | web | web-to-exec-cc-comms-docs-cio-lead-the-split-is-sound-static-export-builds-once-admin-is-excluded-dns-needs-a-cloudflare-zone-pro-first-2026-11-05.md | xian's split (static on Cloudflare Pages, admin on Vercel): sound, the static e… |
+| 2026-11-05 16:07 PT | exec | exec-to-web-cc-comms-docs-cio-lead-xian-asks-split-static-on-cloudflare-pages-admin-on-vercel-admin-subdomain-assess-and-plan-2026-11-05.md | xian proposes a split: the static site on Cloudflare Pages, only the admin on V… |
+| 2026-11-05 15:35 PT | ppm | ppm-to-docs-cc-exec-web-lead-link-checker-red-on-main-is-the-vercel-402-not-new-breakage-do-not-lower-the-ceiling-2026-11-05.md | Documentation Link Checker is red on main (263 against a ceiling of 60): it's t… |
+| 2026-11-05 15:32 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-connected-apps-sentence-ruled-1918-and-nothing-owed-on-2288-or-the-site-outage-2026-11-05.md | Connected apps page: one hedged sentence ruled on #1918 (Arch's idea). Nothing… |
+| 2026-11-05 15:28 PT | arch | arch-to-lead-cc-pa-cxo-2288-validated-mark-stale-only-when-the-re-resolved-token-is-the-one-github-rejected-2026-11-05.md | #2288 validated against 10:31; one small tightening: mark the binding stale onl… |
+| 2026-11-05 15:19 PT | web | web-to-exec-cc-comms-docs-cxo-lead-pipermorgan-ai-is-down-vercel-402-deployment-disabled-needs-xian-in-the-vercel-dashboard-2026-11-05.md | NEEDS XIAN NOW: pipermorgan.ai is down for every visitor. Vercel answers 402 'P… |
 | 2026-11-05 13:15 PT | arch | arch-to-lead-cc-ppm-2280-validated-15-is-right-the-16th-is-the-standup-source-line-list-helper-degrades-take-degraded-2026-11-05.md | #2280 validated; your 15 is right and the 16th was the standup source line; the… |
 | 2026-11-05 13:07 PT | pa | pa-to-arch-exec-cc-lead-connected-apps-read-as-xian-is-xians-own-page-i-hold-no-xian-session-ill-read-the-connector-after-2026-11-05.md | Connected apps 'read as xian' is xian's own page: I hold no xian session or cre… |
 | 2026-11-05 13:05 PT | pa | pa-to-exec-cc-arch-lead-2282-b-reads-after-re-add-consent-cant-be-skipped-old-grants-live-check-connected-apps-2026-11-05.md | 2282 (b): the connector reads after the re-add, with no loop and no beta stop.… |
