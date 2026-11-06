@@ -269,7 +269,8 @@ async def test_answer_one_completes_the_first_copy_in_list_order(
     await _show(handlers)
     await _complete(handlers, store, 3)
     out = await _answer("one", intent_service, store)
-    assert out["message"] == "Nice - I've marked 'review prs' as done. Good progress!"
+    # CXO 11-06 08:3x: one copy of a grouped line says how many are still open.
+    assert out["message"] == 'Marked one "review prs" as done. 2 are still open.'
     assert service.completed_ids == [rows[2].id]
     assert store.slot is None
 
@@ -311,7 +312,8 @@ async def test_delete_on_a_grouped_line_confirms_its_first_copy_only(
 ):
     await _show(handlers)
     msg, armed = await _delete(handlers, store, 3, "delete the third one")
-    assert msg == 'Delete the todo "review prs"? (yes/no)'
+    # CXO 11-06 08:3x: the confirm says the count, so "(×3)" isn't read as all three.
+    assert msg == 'Delete one of your 3 "review prs" todos? (yes/no)'
     assert "all" not in msg
     assert armed is True
     assert store.slot["pending_action"]["kind"] == "todo_batch_delete"
@@ -391,3 +393,84 @@ async def test_a_bare_yes_lands_on_the_offer_only_workflow_which_reasks(
     )
     assert out["message"] == f"Just so I get it right: {_COMPLETE_Q}"
     assert store.slot["pending_action"]["kind"] == tlp.GROUP_LINE_KIND
+
+
+# ---------------------------------------------------------------------------
+# 6. CXO 11-06 08:3x: touching ONE copy of a grouped line always says the count
+# ---------------------------------------------------------------------------
+
+
+async def _say_yes_to_delete(handlers, store):
+    """The #1190 confirmed re-entry: the bound intent the confirm armed, marked yes."""
+    from services.intent_service.destructive_confirm import CONFIRMED_CONTEXT_KEY
+
+    bound = store.get_and_clear_pending_offer(_SESSION)["pending_action"]["intent"]
+    bound.context = {**bound.context, CONFIRMED_CONTEXT_KEY: True}
+    return await handlers.handle_delete_todo_targets(bound, _SESSION, UUID(_USER), store, _USER)
+
+
+@pytest.mark.asyncio
+async def test_the_grouped_delete_confirm_says_reminders_when_the_person_does(handlers, store):
+    await _show(handlers)
+    msg, _ = await _delete(handlers, store, 3, "delete the third reminder")
+    assert msg == 'Delete one of your 3 "review prs" reminders? (yes/no)'
+
+
+@pytest.mark.asyncio
+async def test_yes_on_the_grouped_delete_says_how_many_are_left(handlers, store, service, rows):
+    await _show(handlers)
+    await _delete(handlers, store, 3)
+    msg, armed = await _say_yes_to_delete(handlers, store)
+    assert msg == 'Deleted one "review prs". 2 are left on your list.'
+    assert armed is False
+    assert service.deleted_ids == [rows[2].id]
+
+
+@pytest.mark.asyncio
+async def test_the_left_count_comes_from_the_armed_record_not_the_words(
+    handlers, store, service, rows
+):
+    """Two copies shown → "1 is left", carried on the confirm, not re-read."""
+    service.rows.remove(rows[4])
+    await _show(handlers)
+    msg, _ = await _delete(handlers, store, 3)
+    assert msg == 'Delete one of your 2 "review prs" todos? (yes/no)'
+    assert store.slot["pending_action"]["intent"].context["batch_delete_line_copies"] == 2
+    msg, _ = await _say_yes_to_delete(handlers, store)
+    assert msg == 'Deleted one "review prs". 1 is left on your list.'
+
+
+@pytest.mark.asyncio
+async def test_yes_on_a_one_copy_delete_keeps_todays_summary(handlers, store, service, rows):
+    await _show(handlers)
+    await _delete(handlers, store, 1)
+    msg, _ = await _say_yes_to_delete(handlers, store)
+    assert msg == "Deleted 1 todo:\n• urgent task"
+
+
+@pytest.mark.asyncio
+async def test_a_batch_naming_a_grouped_line_says_one_of_three(handlers, store, service):
+    await _show(handlers)
+    msg, armed = await handlers.handle_complete_todo_targets(
+        _intent("complete_todo", "complete the first and third", ["1", "3"]),
+        _SESSION,
+        UUID(_USER),
+        store,
+        _USER,
+    )
+    assert armed is True
+    assert msg.startswith('Complete 2 todos: "urgent task" and "review prs" (1 of 3)?')
+    assert service.completed_ids == []
+
+
+def test_the_bulleted_batch_confirm_says_one_of_three_too():
+    from services.intent_service.todo_handlers import _batch_confirm_question
+
+    targets = ["a", "b", "c", "d", "e", "review prs"]
+    q = _batch_confirm_question(targets, [], "todo", notes={"review prs": "1 of 3"})
+    assert "• review prs (1 of 3)" in q.split("\n")
+    # Without notes the old forms hold.
+    assert (
+        _batch_confirm_question(["x", "x"], [], "todo")
+        == 'Complete 2 todos: "x" (2 items)? (yes/no)'
+    )

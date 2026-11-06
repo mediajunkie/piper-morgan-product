@@ -284,8 +284,11 @@ async def _act(
     """Complete or delete the bound copies: the first one in list order, or
     all of them. Each row is re-read first; a copy gone since the ask is
     reported, never replaced by another row."""
-    from services.consciousness.todo_consciousness import format_todo_completed_conscious
-    from services.intent_service.todo_handlers import _batch_summary, _delete_summary
+    from services.intent_service.todo_handlers import (
+        _batch_summary,
+        _delete_summary,
+        one_copy_result,
+    )
 
     verb = payload.get("verb") or VERB_COMPLETE
     text = payload.get("line_text") or ""
@@ -329,7 +332,6 @@ async def _act(
 
     done: List[str] = []
     failed = []
-    last = None
     for tid in chosen:
         try:
             if verb == VERB_DELETE:
@@ -341,14 +343,15 @@ async def _act(
             ok = None
         if ok:
             done.append(text)
-            last = ok
         else:
             failed.append((text, "already gone" if verb == VERB_DELETE else "no longer there"))
     logger.info("todo_group_line_acted", verb=verb, scope=scope, done=len(done))
     if verb == VERB_DELETE:
         message = _delete_summary(done, failed, [], noun)
-    elif scope == "one" and done and last is not None and hasattr(last, "text"):
-        message = format_todo_completed_conscious(last)
+    elif scope == "one" and len(done) == 1:
+        # CXO 11-06 08:3x: one copy of a grouped line says how many are still
+        # open, counted from the copies the question was armed with.
+        message = one_copy_result(VERB_COMPLETE, text, len(ids) - 1)
     else:
         message = _batch_summary(done, failed, [])
     return {"message": message, "intent_data": data}
