@@ -1174,21 +1174,10 @@ class TodoIntentHandlers:
         ordinal_pool, ordinal_kind, shown_lines = await self._ordinal_pool(
             numbered, name_pool, pool_kind, user_id, open_only=False
         )
-        # #2219 Gap A (CXO 11-06 07:35): an ordinal on a grouped line asks one, or all.
-        grouped = _grouped_line_target(targets, exclude, shown_lines)
-        if grouped is not None:
-            return self._ask_group_line(
-                "delete",
-                grouped,
-                conversation_noun(
-                    intent.original_message or ctx.get("original_message"),
-                    numbered.kind if numbered is not None else None,
-                ),
-                intent.original_message or ctx.get("original_message") or "",
-                session_id,
-                offer_service,
-                principal,
-            )
+        # #2219 Gap A: CXO's "Delete one, or all 3?" waits on xian's #2019 cap
+        # (delete_cap.DELETE_CAP = 1: one item per delete until soft delete and undo,
+        # issue 2021). Until it lifts, an ordinal on a grouped line binds its first
+        # copy below and gets the one-item confirm; the question never offers "all".
         # #2219 (CXO 20:47): the noun carries from the last numbered list shown.
         noun = conversation_noun(
             intent.original_message or ctx.get("original_message"),

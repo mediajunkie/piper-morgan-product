@@ -34,7 +34,6 @@ _USER = "5a1e2219-0000-4000-8000-000000002219"
 _SESSION = "sess-2219-ordinals"
 
 _COMPLETE_Q = '"review prs" is on your list 3 times. Complete one, or all 3?'
-_DELETE_Q = 'Delete one "review prs", or all 3? This can\'t be undone.'
 
 
 def _todo(text, priority="medium", completed=False):
@@ -301,41 +300,22 @@ async def test_after_one_copy_is_done_the_line_asks_about_the_two_left(
 
 
 # ---------------------------------------------------------------------------
-# 4. Delete: a grouped line asks one or all, and the answer is the confirmation
+# 4. Delete under xian's #2019 cap (DELETE_CAP = 1): a grouped line confirms ONE copy
+#    and never offers "all" (CXO's one-or-all delete question waits on the cap's lift)
 # ---------------------------------------------------------------------------
 
 
 @pytest.mark.asyncio
-async def test_delete_on_a_grouped_line_asks_one_or_all(handlers, store, service):
-    await _show(handlers)
-    msg, armed = await _delete(handlers, store, 3, "delete the third one")
-    assert msg == _DELETE_Q
-    assert armed is True
-    assert store.slot["pending_action"]["verb"] == "delete"
-    assert service.deleted_ids == []
-
-
-@pytest.mark.asyncio
-async def test_delete_answer_one_deletes_the_first_copy(
-    handlers, store, service, rows, intent_service
+async def test_delete_on_a_grouped_line_confirms_its_first_copy_only(
+    handlers, store, service, rows
 ):
     await _show(handlers)
-    await _delete(handlers, store, 3)
-    out = await _answer("one", intent_service, store)
-    assert service.deleted_ids == [rows[2].id]
-    assert out["message"] == "Deleted 1 todo:\n• review prs"
-    assert store.slot is None  # no second yes/no
-
-
-@pytest.mark.asyncio
-async def test_delete_answer_all_deletes_every_copy(handlers, store, service, rows, intent_service):
-    ids = [r.id for r in rows[2:]]
-    await _show(handlers)
-    await _delete(handlers, store, 3)
-    out = await _answer("all 3", intent_service, store)
-    assert service.deleted_ids == ids
-    assert out["message"] == "Deleted 3 todos:\n• review prs (3 items)"
-    assert store.slot is None  # the answer IS the confirmation
+    msg, armed = await _delete(handlers, store, 3, "delete the third one")
+    assert msg == 'Delete the todo "review prs"? (yes/no)'
+    assert "all" not in msg
+    assert armed is True
+    assert store.slot["pending_action"]["kind"] == "todo_batch_delete"
+    assert service.deleted_ids == []
 
 
 @pytest.mark.asyncio
