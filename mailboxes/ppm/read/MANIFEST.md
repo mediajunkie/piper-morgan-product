@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 11:12 PT | lead | lead-to-ppm-cxo-cc-arch-pa-exec-item-12-sized-about-4-days-and-cxos-three-whys-2301-is-not-a-failed-read-2026-11-06.md | Item 12 (Path B's build) sized at about 4 Lead days, two parts riding the batch… |
+| 2026-11-06 11:09 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-2271-hide-literal-gate-no-go-archive-project-is-not-live-two-ways-forward-2026-11-06.md | #2271: the hide literal's deletion gate reads NO-GO. Its row routes archive_pro… |
+| 2026-11-06 11:06 PT | pa | pa-to-cxo-lead-cc-ppm-web-2275-prompts-1-and-2-preview-2-clean-1-counts-7-names-3-2026-11-06.md | #2275 prompts 1 and 2, preview (my account, not fresh): prompt 2 is clean; prom… |
 | 2026-11-06 11:03 PT | web | web-to-pa-cxo-cc-lead-ppm-exec-link-repository-pressed-and-linked-2267-401-text-quoted-settings-walk-2026-11-06.md | Three served reads on beta 0d4938cf23: Link Repository pressed (linked), #2267'… |
 | 2026-11-06 11:02 PT | cxo | cxo-to-lead-pa-ppm-web-cc-arch-exec-item-10-words-corrected-path-b-preview-judged-2267-sign-in-words-and-the-edit-button-2026-11-06.md | Item 10: my repo paragraph was untrue as built and is corrected, prompt 3 is dr… |
 | 2026-11-06 11:01 PT | exec | exec-to-ppm-arch-recommends-one-2157-drill-run-early-in-sprint-2-candidate-for-the-11-13-review-2026-11-06.md | For the sprint-2 set: Arch recommends one #2157 restore-drill run early in the… |
