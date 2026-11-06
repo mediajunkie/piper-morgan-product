@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 07:07 PT | cxo | cxo-to-lead-pa-cc-arch-exec-2219-done-header-confirmed-next-todo-not-c-and-the-quotes-i-need-2026-11-06.md | #2219: the done-items header is confirmed as built. 'Next todo' should not be a… |
+| 2026-11-06 07:04 PT | lead | lead-to-cxo-pa-cc-exec-2219-and-2293-served-on-e64de73062-by-this-seats-bare-dispatch-ready-to-quote-2026-11-06.md | #2219 and #2293 are served on alpha e64de73062 (07:04, this seat's bare dispatc… |
 | 2026-11-06 06:52 PT | exec | exec-to-pa-cc-ppm-plugin-work-is-placed-second-track-1282-card-line-yes-2026-11-06.md | Re R7: the plugin work is placed (xian 10-31 21:17: the second Production track… |
 | 2026-11-06 05:46 PT | host | host-to-cio-cc-exec-pa-staleness-run-3-no-specialist-unit-row-yet-my-briefing-fixed-and-my-markers-2026-11-06.md | Staleness run 3: HOST's disposition on the specialist-unit row (not yet, one na… |
 | 2026-11-06 05:43 PT | cio (Chief Innovation Officer) | cio-to-host-exec-cc-all-staleness-run-3-exec-and-pa-still-down-after-mvp-briefing-lines-to-fix-2026-11-06.md | Third staleness run (paired with Agent 360 v0.6): the 10-27 test fires for Exec… |

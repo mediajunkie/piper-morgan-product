@@ -1,0 +1,95 @@
+=== on e64de73062 07:16:04
+
+
+========== Row 6: zero todos
+STATE: 0 todos: []
+
+--- [07:16:13, http 200] route query/list_todos_query
+USER: show my todos
+PIPER: I checked your todo list and it's empty. If you want to capture something, just say 'add todo: [your task]'. Or I can help you think about what might need attention.
+
+
+========== Row 2: exactly 1 open todo
+STATE: 1 todos: [('pending', 'medium', 'call the dentist')]
+
+--- [07:16:17, http 200] route query/list_todos_query
+USER: show my todos
+PIPER: You have 1 open todo. Here they are:
+• call the dentist
+
+
+========== Row 1: 3 distinct open todos, one added 3 times
+STATE: 5 todos: [('pending', 'medium', 'call the dentist'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'write the release notes')]
+
+--- [07:16:21, http 200] route query/list_todos_query
+USER: show my todos
+PIPER: You have 5 open todos. Here they are:
+• write the release notes
+• review prs (×3)
+• call the dentist
+
+
+========== Row 3: one item done
+STATE: 5 todos: [('completed', 'medium', 'call the dentist'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'write the release notes')]
+
+--- [07:16:24, http 200] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+• write the release notes
+• review prs (×3)
+
+
+========== Row 4: the noun both ways, and the confirms (each declined)
+
+--- [07:16:33, http 200] route query/list_reminders_query
+USER: show my reminders
+PIPER: I checked your saved reminders and there are none right now. You can set one with 'remind me to [task] tomorrow at 9am'.
+
+--- [07:16:36, http 200] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+• write the release notes
+• review prs (×3)
+
+--- [07:16:43, http 200] route execution/complete_todo
+USER: complete the first one
+PIPER: I haven't shown you a numbered list yet. Here are your todos:
+
+1. "write the release notes"
+2. "review prs"
+3. "review prs"
+4. "review prs"
+
+Tell me which one, and I'll mark it done.
+
+--- [07:16:56, http 200] route CONVERSATION/clarification_needed
+USER: no
+PIPER: Okay.
+
+--- [07:16:59, http 200] route query/list_reminders_query
+USER: show my reminders
+PIPER: I checked your saved reminders and there are none right now. You can set one with 'remind me to [task] tomorrow at 9am'.
+
+--- [07:17:13, http 200] route execution/delete_item
+USER: delete the first one
+PIPER: I didn't recognize that as something I can do from chat — I may have misread the ask rather than being unable to do it. What I heard was: "delete the first one." If I misread it, try saying it another way. If not, it may already be doable in Piper's own pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub).
+
+--- [07:17:21, http 200] route CONVERSATION/clarification_needed
+USER: no
+PIPER: Okay.
+STATE: 5 todos: [('completed', 'medium', 'call the dentist'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'write the release notes')]
+
+
+========== Row 5 (#2293): one todo per priority, created low, unset, urgent, medium, high
+STATE: 5 todos: [('pending', 'high', 'high task'), ('pending', 'low', 'low task'), ('pending', 'medium', 'medium task'), ('pending', 'medium', 'unset task'), ('pending', 'urgent', 'urgent task')]
+
+--- [07:17:26, http 200] route query/list_todos_query
+USER: show my todos
+PIPER: You have 5 open todos. Here they are:
+• urgent task (urgent)
+• high task (important)
+• medium task
+• unset task
+• low task
+
+=== end on e64de73062 07:17:29
