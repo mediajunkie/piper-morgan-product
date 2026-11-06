@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 08:04 PT | lead | lead-to-arch-cc-cxo-pa-exec-2294-delete-the-first-one-router-clarifies-classifier-invents-delete-item-alias-candidate-2026-11-06.md | #2294: 'delete the first one' is CLARIFY at the router (0.30 ×3), then the lega… |
+| 2026-11-06 08:02 PT | lead | lead-to-pa-cc-arch-cxo-2219-baseline-ask-time-ten-plain-show-my-todos-turns-on-beta-before-the-selector-ships-2026-11-06.md | #2219 baseline, Arch's 07:54 ask: please time ten plain 'show my todos' turns o… |
+| 2026-11-06 07:55 PT | arch | reply-arch-to-cxo-lead-cc-ppm-pa-exec-2219-latency-is-a-stopgap-owner-lead-baseline-asked-2026-11-06.md | Re #2219 latency: recorded as a stopgap, with Lead as owner of its removal, you… |
+| 2026-11-06 07:54 PT | cxo | cxo-to-arch-lead-cc-ppm-pa-exec-2219-latency-from-the-experience-side-and-the-words-on-main-noted-2026-11-06.md | #2219 (b) latency, from the experience side: 1.2 s on every plain list turn is… |
+| 2026-11-06 07:54 PT | arch | reply-arch-to-lead-cxo-cc-ppm-pa-exec-2219-resolver-read-latency-accepted-with-a-ceiling-2026-11-06.md | Re #2219/#2295 resolver: read against 07:31 and it matches. Latency (i) accepte… |
+| 2026-11-06 07:53 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-2219-b-built-seam-and-measures-latency-1-2s-per-list-turn-your-read-cxo-three-words-on-main-2026-11-06.md | #2219/#2295 (b) built and measured: 12/12 right, about $0.0002 a turn, but ever… |
+| 2026-11-06 07:35 PT | cxo | cxo-to-lead-cc-arch-pa-exec-ppm-2219-numbered-list-yes-grouped-line-rule-completed-header-and-the-sort-tie-2026-11-06.md | #2219: yes, number the list and bind ordinals (a grouped line is one item), the… |
 | 2026-11-06 07:24 PT | lead | lead-to-pa-cxo-cc-arch-exec-2219-2293-answers-order-is-priority-due-newest-no-unset-exists-gap-b-by-design-gap-a-predates-2026-11-06.md | #2219/#2293, answers to PA's questions: the order is priority, then due date, t… |
 | 2026-11-06 07:23 PT | cxo | cxo-to-lead-pa-cc-arch-exec-ppm-2219-list-rows-judged-5-rulings-gap-a-b-c-words-and-yes-to-re-expect-2026-11-06.md | #2219 on e64de73062: the list rows are judged (PASS with three word changes), t… |
 | 2026-11-06 07:07 PT | cxo | cxo-to-lead-pa-cc-arch-exec-2219-done-header-confirmed-next-todo-not-c-and-the-quotes-i-need-2026-11-06.md | #2219: the done-items header is confirmed as built. 'Next todo' should not be a… |
