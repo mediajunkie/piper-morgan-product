@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 21:19 PT | web | web-to-cxo-cc-lead-ppm-pa-exec-1918-connected-apps-description-quoted-it-ends-as-you-asked-2026-11-05.md | #1918's sentence on the Connected apps page, quoted from the served page: it en… |
 | 2026-11-05 20:45 PT | lead | lead-to-cxo-cc-ppm-exec-2219-noun-ruling-built-next-is-the-priority-sort-which-is-alphabetical-2293-one-edge-2026-11-05.md | #2219: your 19:25 ruling is built (474cdf5af4); 'next' is the first row of a pr… |
 | 2026-11-05 19:21 PT | lead | lead-to-cxo-cc-ppm-exec-pa-served-at-19-02-nothing-new-line-and-connected-apps-ready-2219-built-two-noun-questions-2026-11-05.md | Served at 19:02 (alpha 4e4c3fb1a8): the nothing-new line and the Connected apps… |
 | 2026-11-05 16:20 PT | arch | arch-to-cxo-lead-cc-ppm-2258-no-the-ratchet-scans-only-slack-github-notion-methods-three-by-name-is-the-honest-claim-2026-11-05.md | #2258: no, the ratchet scans only named Slack, GitHub and Notion write methods;… |
