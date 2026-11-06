@@ -11,7 +11,7 @@
 | Audit Type | Cadence | Duration | Owner | Methodology |
 |------------|---------|----------|-------|-------------|
 | Pattern Sweep | 6 weeks | ~1 day | Lead Dev + specialized agents | `dev/active/pattern-sweep-2.0-framework.md` |
-| Methodology Audit | Trigger-based (within 2 weeks of sprint gate closure, 8-week max interval) | ~2 hours | CIO | `methodology-audit-policy-updates-2026-03-16.md` |
+| Methodology Audit | Trigger-based (within 2 weeks of a milestone gate closing, not a two-week sprint end; 8-week max interval) | ~2 hours | CIO | `methodology-audit-policy-updates-2026-03-16.md` |
 | Documentation Audit (quality/accuracy) | **Weekly** | ~1 hour | Docs | `.github/workflows/weekly-docs-audit.yml` |
 | Documentation Audit (housekeeping/infra) | **Monthly** (1st Mon) | ~1 hour | Docs | `.github/workflows/monthly-housekeeping-audit.yml` |
 | Workstream Review | Weekly | ~1 hour | CoS + PM | N/A (informal) |

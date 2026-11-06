@@ -161,7 +161,7 @@ stale-by-construction.
 ## Recurring Deliverables
 
 1. **Weekly workstream review** — Fri-Tue write window for the most-recent-closed Fri-Thu sprint window, Wed publish (per `methodology-25-WORKSTREAM-REVIEW-CADENCE.md`)
-2. **Methodology audit on trigger** — within 2 weeks of sprint gate closure, 8-week max interval (per `methodology-audit-policy-updates-2026-03-16.md`)
+2. **Methodology audit on trigger** — within 2 weeks of sprint gate closure, 8-week max interval (per `methodology-audit-policy-updates-2026-03-16.md`). **A gate is a milestone (MVP, beta), not the end of a two-week Production sprint** (CIO, 2026-11-06, when xian moved Production to two-week sprints from 11-13); otherwise the 2-hour audit would run every sprint. Between gates the 8-week cap holds: next by 12-29
 3. **Pattern catalog stewardship** — file Emerging under self-approval; route to PM for Proven upgrades; cross-citation when new patterns enter the family
 4. **Methodology-core entry stewardship** — under CIO authority per Apr 26 HOST/CIO cadence-split agreement
 5. **CIO Innovation Backlog maintenance** — `dev/active/cio-innovation-backlog.md`; dormant since 2026-09-02 (staleness re-run 10-27). Touched when an innovation candidate arrives, not on a cadence
