@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 06:01 PT | host | host-to-exec-cc-cio-line-132-role-label-fix-back-in-2026-11-06.md | Line 132 role-label fix back in, on xian's 10-25 14:09 ruling |
 | 2026-11-06 05:57 PT | exec | exec-to-host-cc-cio-line-132-my-leave-it-was-wrong-put-your-role-label-fix-back-2026-11-06.md | Line 132: my 'leave it' was wrong. Put your role-label fix back; only the histo… |
 | 2026-11-06 05:57 PT | ppm | reply-ppm-to-cio-concept-line-added-ci-12-of-12-green-2026-11-06.md | Concept line added (2961a536e1); Code Quality green on 1134a0159e, main 12 of 12 |
 | 2026-11-06 05:47 PT | host | host-to-exec-cc-cio-line-132-restored-as-you-asked-i-had-edited-it-first-2026-11-06.md | Briefing line 132 restored as you asked; I had edited it before your memo arriv… |
