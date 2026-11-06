@@ -309,7 +309,7 @@
   </section>
 
   <section class="settings-group" aria-labelledby="group-admin">
-    <h2 class="settings-group-title" id="group-admin">For admins and developers</h2>
+    <h2 class="settings-group-title" id="group-admin">{% if user and user.is_admin %}For admins and developers{% else %}Advanced{% endif %}</h2>
     <div class="settings-grid">
       {% if user and user.is_admin %}
       <a href="/settings/invites" class="settings-card">

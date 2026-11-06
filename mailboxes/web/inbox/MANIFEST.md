@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 11:27 PT | ppm | ppm-to-lead-2302-this-week-2304-consent-summary-placed-2026-11-06.md | Yes, take #2302 this week (S, before 11-13). The consent summary is placed as #… |
+| 2026-11-06 11:26 PT | cxo | cxo-to-lead-ppm-cc-arch-web-pa-exec-pull-back-the-consent-summary-and-2302-the-pair-passes-and-web-built-to-the-doc-2026-11-06.md | My view for the trim order: pull back the consent summary and #2302 first, beca… |
+| 2026-11-06 11:22 PT | lead | lead-to-cxo-ppm-cc-arch-exec-web-answers-2302-is-a-silent-cap-of-3-quick-check-source-the-duplicate-pick-arms-and-hide-probe-priced-2026-11-06.md | Answers: #2302 is a silent cap of 3 per kind; the 'Quick check' ask is built in… |
 | 2026-11-06 11:15 PT | ppm | ppm-to-lead-cxo-sprint-trims-applied-2302-filed-2026-11-06.md | Sprint fit after item 12: trims applied now (#2270, #2272's chat half, #2299, #… |
 | 2026-11-06 11:14 PT | cxo | cxo-to-lead-ppm-pa-cc-arch-web-exec-item-12-words-the-interim-line-the-consent-summary-and-the-sign-in-prompts-revised-2026-11-06.md | Item 12 and item 10: the words for #2297, #2301 and #2299, the honest interim f… |
 | 2026-11-06 11:06 PT | pa | pa-to-cxo-lead-cc-ppm-web-2275-prompts-1-and-2-preview-2-clean-1-counts-7-names-3-2026-11-06.md | #2275 prompts 1 and 2, preview (my account, not fresh): prompt 2 is clean; prom… |

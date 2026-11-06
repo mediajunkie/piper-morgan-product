@@ -33,7 +33,7 @@ def test_four_groups_in_order_with_their_cards():
     sections = re.findall(r'<section class="settings-group".*?</section>', SETTINGS, re.S)
     assert len(sections) == 4
     for sec, (title, hrefs) in zip(sections, GROUPS):
-        assert f">{title}</h2>" in sec
+        assert title in sec.split("</h2>")[0]
         assert re.findall(r'<a href="([^"]+)" class="settings-card">', sec) == hrefs
 
 
@@ -70,3 +70,13 @@ def test_projects_list_has_no_edit_button():
     assert 'class="edit-btn"' not in PROJECTS
     assert "editProject" not in PROJECTS
     assert "Edit functionality coming soon" not in PROJECTS
+
+
+def test_admin_group_heading_is_advanced_for_a_non_admin():
+    src = (REPO / "templates" / "settings-index.html").read_text(encoding="utf-8")
+    i = src.index('id="group-admin"')
+    h2 = src[i : src.index("</h2>", i)]
+    assert (
+        "{% if user and user.is_admin %}For admins and developers{% else %}Advanced{% endif %}"
+        in h2
+    )
