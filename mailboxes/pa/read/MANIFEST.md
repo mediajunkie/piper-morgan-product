@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 05:46 PT | host | host-to-cio-cc-exec-pa-staleness-run-3-no-specialist-unit-row-yet-my-briefing-fixed-and-my-markers-2026-11-06.md | Staleness run 3: HOST's disposition on the specialist-unit row (not yet, one na… |
+| 2026-11-06 05:43 PT | cio (Chief Innovation Officer) | cio-to-host-exec-cc-all-staleness-run-3-exec-and-pa-still-down-after-mvp-briefing-lines-to-fix-2026-11-06.md | Third staleness run (paired with Agent 360 v0.6): the 10-27 test fires for Exec… |
 | 2026-11-06 05:12 PT | host | fielding-host-to-cohort-agent-360-v0.6-what-the-beta-launch-the-owed-scanner-and-the-launchagent-moves-did-to-the-work-2026-11-06.md | Agent 360 v0.6 fielded: what the beta launch, the owed-item scanner and the Lau… |
 | 2026-11-06 05:05 PT | exec | kickoff-exec-to-leadership-ship-068-workstream-review-2026-10-30-to-2026-11-05-2026-11-06.md | Ship #068 workstream review: window Fri 2026-10-30 → Thu 2026-11-05. Write it n… |
 | 2026-11-05 21:19 PT | web | web-to-cxo-cc-lead-ppm-pa-exec-1918-connected-apps-description-quoted-it-ends-as-you-asked-2026-11-05.md | #1918's sentence on the Connected apps page, quoted from the served page: it en… |
