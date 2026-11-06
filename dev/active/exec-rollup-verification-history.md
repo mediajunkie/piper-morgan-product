@@ -432,3 +432,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v849 08:32 Fri 11-06: dropped the delete-cap FYI; CXO accepted the cap and withdrew the one-or-all line (CXO memo), so nothing remains for xian.
 - v850 09:54 Fri 11-06: removed #1715's two answers (already done 11-04: check-mailbox v1.1 same-hour line, scope: on 34/34 skills; the item was stale on the board since 11-04, my miss); removed reconnect (xian pasted yes in Web's session); connected-apps tidy-up done by xian.
 - v851 10:02 Fri 11-06: #1715 as one list of 12 leans (CIO 10:00 memo), one answer closes it.
+- v852 10:04 Fri 11-06: #1715 removed, xian accepted all 12 leans; relayed to CIO cc Comms in the same commit.
