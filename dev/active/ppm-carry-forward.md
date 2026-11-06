@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-11-05 21:35 PT (21:33 STOP; the 11-06 START block is at the bottom, "For the 11-06 START").
+**Last rewritten**: 2026-11-06 06:34 PT (06:33 START; the current block is at the bottom, "Now").
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -423,7 +423,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **#2151 (honesty sweep):** Lead extends FLOOR-ABSENT to six gathers, then GH-NONSTRICT. These are Production work, not gate items.
 - **Main CI:** 12 of 12 green at 21:33. Alpha healthy.
 - **Round 2 (21:36):** C5 and F29 moves applied in the plan (H 25, V 29, E 27; 221 open). F28 waits on PA via Exec.
-- **10-24 06:3x, for the C1 filing:**
+- **10-24 06:34, for the C1 filing:**
   - The deletion issue carries Arch's constraint: a deletion record outside the snapshot (owner id plus time, no content), re-applied after any restore.
   - Its text quotes retention as a number tied to F1, following HOST's rule: whoever changes retention changes the promise in the same change.
   - C6: Exec, HOST and Arch are on the Readiness lane (only Terms-backed items gate); CXO leans Ongoing.
@@ -598,17 +598,21 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: notion-offer-ask** (Filed 2026-11-01; to: exec; by: trigger: Web's #2238 served check passes). Send Exec the one-line "offer Notion in the beta: yes or no" for xian. CXO's card words come first.
   - **Rule from PDR-102:** when PPM places a connector-ingest unit, mail Arch the same day (his ADR trigger for C2).
 
-## For the 11-06 START (written at the 11-05 STOP, 21:35)
+## Now (rewritten at the 11-06 06:33 START)
 
-- **Invite hold (xian 11-04 19:31: no invitations of any kind until the P0s are done, then his word):**
-  - Met and closed: #2283 and #2178. Met but the epic stays open: #1551 (its P0-critical label stays on the open epic).
-  - Open P0: #2261 (GitHub scope; xian's #2174 runs, tonight's steps plus the run after 8 hours) and #2282 (beta canonical; live since 12:47; Web's step-4 browser check waits on xian's word for the dinp-machine sign-in).
-  - Also before the next invite and the cohort note: #2292 (SPF, DKIM, DMARC; P1; xian's 15 minutes plus one test mail). P1, not hold conditions: #2157, #2158.
-- **Friday 11-06: the weekly diff is due** (carried since 10-31).
-- **Onboarding path** (`onboarding-to-first-value-proposal-2026-11-04.md`): #2219 and now #2293 come before the todo skip landing passes. Path B and the skip landing pass only on PA's served-clean quote. The sprint shape waits on xian's sprint-cadence talk.
-- **Waiting on others:**
-  - #2290's request-id middleware: Lead, not before invites.
-  - Buttondown's sending-domain read for #2292: Web or CIO.
-  - #2291 hosting split: Ongoing, no date, mail records first.
-  - Mail v4 opens to every seat Mon 11-09 (CIO). Nothing to do before then.
-- **Still carried:** #2242 last row (xian's remove and re-add), #2235 (the Web staging account), notion-offer-ask (#2238's served check), #1680 (Lead and Exec), and PDR-102 C1–C8 checks on document-touching placements.
+- **Invite hold (xian 11-04 19:31: no invitations of any kind until the P0s are done, then his word).** Re-verified 06:34 with `gh issue view`:
+  - Met: #1551 (the epic stays open), #2283 and #2178 (closed).
+  - Open P0: #2261 (no activity since 11-05 03:34; waits on xian's #2174 runs) and #2282 (live; step 4, Web's browser check, waits on xian's word for the dinp-machine sign-in).
+  - Also before the next invite: #2292 (P1; xian's 15 minutes in Google Admin and Hover). PPM's `p=none` caution is on the issue (06:10).
+  - P1, not hold conditions: #2157, #2158.
+- **Onboarding path:** #2219's words (474cdf5af4, fdb055ba7b) and #2293's priority rank (fdb055ba7b) are on main, not served. PA's served-clean quote of the skip landing comes after the next promotion.
+- **Done this morning (05:09–05:55):** the Ship #068 review and its 228 correction; the weekly diff (`production-weekly-diff-2026-11-06.md`); Agent 360 v0.6 answered, with a roadmap correction; roadmap v19.2; `scripts/place-issue.py` (dry runs only so far; the first live placement is its test); briefing lines fixed per CIO's run 3; the criteria-line empty-field bug fixed. Main CI 12 of 12 green.
+- **Production 252** (`gh`, 06:34), map v86, 0 unplanned.
+- **OWED rows** (each with its log marker in `dev/2026/11/06/2026-11-06-0509-ppm-code-log.md`):
+  - **key: invite-hold-pdr** (Filed 2026-11-06; to: exec; by: trigger: xian answers the onboarding proposal's questions 1 and 2, or a fresh session). Draft a PDR for what must be true before any invitation.
+  - **key: path-b-quote** (Filed 2026-11-06; to: cxo; by: trigger: PA's served-clean quote of Path B and the todo skip landing). Set Path B passed or failed against the proposal's line.
+  - **key: 2292-records** (Filed 2026-11-06; to: cio; by: trigger: xian's records and the Buttondown signup test). Check that DMARC starts at `p=none` and that the confirmation's From domain passes.
+  - **key: sprint-shape** (Filed 2026-11-06; to: exec; by: trigger: xian's sprint-cadence talk). Mark the onboarding sprint's candidate rows on the map.
+  - **key: notion-offer-ask** (row above, Filed 2026-11-01; on a yes, Lead makes the change per ADR-082 D4).
+- **Waiting on others:** #2290 (Lead's request-id middleware, not before invites); #2291 (Ongoing, mail records first); mail v4 opens to every seat Mon 11-09 (CIO).
+- **Still carried:** #2242's last row (xian's remove and re-add); #2235 (the Web staging account); #1680 (Lead and Exec); PDR-102 C1–C8 checks on document-touching placements; Agent 360 commitments (one OWED marker per waiting item; mine to keep).
