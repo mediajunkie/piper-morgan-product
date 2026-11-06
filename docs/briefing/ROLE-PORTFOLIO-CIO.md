@@ -37,7 +37,7 @@ replaces is in git history (`git log -p -- docs/briefing/ROLE-PORTFOLIO-CIO.md`)
 | **1. Name patterns from incidents** | m-50 to m-57 filed since August. Most recent: m-56 (concept and mechanism point at each other), m-57 "An Alarm Needs a Reader" (10-31), and m-51's fourth seat (CIO's own two misses, 11-01 and 11-02). | Instances arrive from other seats, and one gets caught *before* it costs anything (the promotion bar most entries carry). |
 | **2. Methodology audit** | Next: **12-09**. It reviews m-51, m-56 and m-57 promotion, and the watchers' false-alarm and benefit counts from the 11-01 sunset-or-renew inventory. | The audit runs on its date and graduates or retires entries on evidence. |
 | **3. Control plane** | `duty-cycle-tick` v1.61. CIO runs on a LaunchAgent (`7 10,16,22`); Exec's and Lead's wait on xian's load. The concept-link ratchet is in `lint.yml` (11-01, 89 of 344 mechanisms linked, 0 broken). piper-guards 0.2.2 is on main and waits on xian's paste (#2251). The mail v4 pilot (cio, exec, lead) is next reviewed 11-05. | Verified by behaviour: a guard refusing, a ratchet turning main red, `whats-armed.sh` (29 of 30 armed on 11-02), not by config. |
-| **4. Network research hub (trial)** | No cross-project research question is open in CIO's lane. | Questions arrive and get answered. If none arrive, the trial gets a review and an end. |
+| ~~4. Network research hub (trial)~~ | **Retired for now, 2026-11-06** (xian via Exec): one question answered (09-28), none after. Research questions are answered on request. | The trial had its review and its end. |
 
 **Dated reviews in this lane:** 11-03 skill candidates (#1715, Exec owns), 11-05 mail v4, 11-06 Agent 360,
 11-16 flyctl, 11-27 the grant, 12-09 the methodology audit.
