@@ -2,7 +2,7 @@
 name: draft-weekly-ship
 description: Draft the Piper Morgan Weekly Ship newsletter from collected workstream memos. Use when PM says "draft the Ship", "draft Ship #NNN", "synthesize the workstream memos", or when all 6 workstream-NNN memos have landed in `mailboxes/exec/inbox/` and a theme has been picked. Loads the canonical artifacts before drafting so memory-of-past-Ships doesn't substitute for structure.
 scope: exec
-version: 1.14
+version: 1.15
 created: 2026-05-19
 concept: "Concept: docs/internal/operations/weekly-cycle-runbook.md (added 2026-10-14, sunset-or-renew inventory; CIO)"
 ---
@@ -242,6 +242,22 @@ Required sections in this order (per template v4.1):
 
 If a workstream has no activity, INCLUDE it with a brief "No significant changes this week" note rather than omitting it.
 
+### Step 5-sprint: Progress Ship or final-score Ship (two-week sprints, from Ship #070)
+
+xian's ruling (11-06 10:33, via Exec): Production runs two-week sprints from Fri 11-13, and the Ship stays weekly. The **mid-sprint Ship reports progress**, and the **closing Ship reports the final score**. Ship #069 (11-06 to 11-12) is an ordinary weekly Ship. **#070** (11-13 to 11-19) is the first progress Ship, and **#071** (11-20 to 11-26) is the first final score. After that, odd numbers are final scores and even numbers are progress. Re-check this against the sprint plan if a sprint is ever cut short or stretched. The week-by-week inputs are in section 3 of `docs/internal/planning/production-sprint-length-options-2026-11-06.md`.
+
+Both forms keep everything in Step 5: one week's window and dateline, the five workstreams, the learning pattern and the footer. Only these parts change:
+
+| | Progress Ship (week 1 of 2) | Final-score Ship (week 2 of 2) |
+|---|---|---|
+| Opening | Name the sprint's goal and its named set. Say where the set stands halfway: served, in progress, blocked (with the blocker). | Give the score against the named set first: N of M served. Name each item that missed and why, in one line each. |
+| Shipped this week | This week's work, as now. | This week's work, as now. Two-week totals go only in the metrics list, labelled as two weeks. |
+| Learning pattern | As now. | Draw it from the lanes' retro lines when one fits. Don't print the retro as a list. |
+| Coming up next week | The rest of this sprint's set. | The next sprint's named set if xian ratified it in the review; otherwise say it's being planned. |
+| Footer bottom line | `Phase: Production, sprint {N}, week 1 of 2` | `Phase: Production, sprint {N}, week 2 of 2` |
+
+The score counts what users can now use (served), not what merged. That follows `feedback_product_delta_frame_for_reports_and_ship`. Take the named set and each item's result from PPM's map and the lanes' closing-week reviews, never from memory.
+
 ### Step 6: Run the template's audit checklist against the draft
 
 Verify before declaring done:
@@ -366,6 +382,10 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 ---
 
 ## Version history
+
+### v1.15 (2026-11-06)
+
+**Two Ship forms for two-week sprints (Step 5-sprint).** xian moved Production to two-week sprints from 11-13 and kept the Ship weekly: a progress Ship mid-sprint, a final-score Ship at the close. Exec assigned the forms to Comms. Written by Comms.
 
 ### v1.14 (2026-11-04)
 
