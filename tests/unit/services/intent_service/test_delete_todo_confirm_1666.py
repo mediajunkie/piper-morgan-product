@@ -66,6 +66,8 @@ DELETE_TODO_ALIASES = (
     "delete_reminder",
     "remove_reminder",
     "cancel_reminder",
+    # #2294: the classifier's raw emission for a bare "delete the first one".
+    "delete_item",
 )
 
 # PM's exact #1650 aside, verbatim — the one-label-two-objects shape that

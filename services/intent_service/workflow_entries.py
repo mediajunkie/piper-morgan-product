@@ -4058,6 +4058,13 @@ def register_default_workflows() -> None:
         "delete_reminder": delete_todo_entry,
         "remove_reminder": delete_todo_entry,
         "cancel_reminder": delete_todo_entry,
+        # #2294 (PA's served run on e64de73062, 3/3): after a list, a bare "delete
+        # the first one" is CLARIFY at the router (0.30 ×3: no object, no history),
+        # and the legacy classifier then emits EXECUTION/delete_item, unregistered,
+        # so it reached the generic "I didn't recognize that" decline. Same alias
+        # discipline as 1527 above; destructive_confirm._DELETE_TODO_FAMILY carries
+        # it so the delete always confirms. Not rendered in the router catalog.
+        "delete_item": delete_todo_entry,
         # #1595 Phase 3: complete_todo + its ActionMapper raw-emission aliases
         # (finish_todo / mark_complete / mark_done → complete_todo,
         # action_mapper.py:93-96). Canonical key first: wired_chat_actions()

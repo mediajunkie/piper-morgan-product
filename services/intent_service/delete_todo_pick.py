@@ -116,6 +116,36 @@ def _mentions_reminder(message: str) -> bool:
     return bool(words & _REMINDER_WORDS)
 
 
+# #2294 (Arch 11-06 08:06): a legacy ``delete_item`` emission reaches the delete path
+# only when Piper just showed a numbered list; with none, this ask, and nothing is
+# deleted. CXO's words (11-06 08:18); a statement, not a question, since nothing is
+# armed to bind an answer (the #1730 unarmed-ask ratchet).
+DELETE_ITEM_NO_LIST_ASK = (
+    "I'm not sure which one you mean, because I haven't shown you a list to count "
+    "from. Nothing was deleted. Tell me the name of the todo or reminder you want "
+    "to delete."
+)
+
+
+def _last_list_kind(session_id: Optional[str], user_id: Any) -> Optional[str]:
+    """The kind of the last numbered list this session showed, or None."""
+    shown = last_numbered_list(session_id, user_id)
+    return shown.kind if shown is not None else None
+
+
+def last_numbered_list(session_id: Optional[str], user_id: Any) -> Any:
+    """``ConversationContext.last_numbered_list`` for the session; None on any miss."""
+    if not session_id:
+        return None
+    try:
+        from services.intent_service.conversation_context import get_or_create_context
+
+        return get_or_create_context(session_id, user_id=user_id).last_numbered_list
+    except Exception as e:  # silent-ok: logged; read as "no list shown" (the honest ask)
+        logger.warning("delete_pick_list_recall_failed", error=str(e), session_id=session_id)
+        return None
+
+
 def _candidates(todos: List[Any], noun: str) -> List[Any]:
     """Reminders (rows with a reminder_date), due-soonest first, when the
     ask said "reminder"; otherwise every active row in list order."""
@@ -197,7 +227,11 @@ async def arm_delete_pick(
     """
     if not session_id or offer_service is None or todo_service is None:
         return None
-    noun = "reminder" if _mentions_reminder(message) else "todo"
+    # #2294 (Arch 11-06 08:06, CXO 08:06): the #2219 noun rule, so after a reminders
+    # list the pick asks "Which reminder…?" and its candidates are the reminders.
+    from services.intent_service.reminder_copy import conversation_noun
+
+    noun = conversation_noun(message, _last_list_kind(session_id, principal or todo_user_id))
     try:
         todos = await todo_service.list_todos(user_id=todo_user_id, include_completed=False)
     except Exception as e:  # silent-ok: warning-logged; the caller falls back to its instruction copy, nothing armed, nothing deleted

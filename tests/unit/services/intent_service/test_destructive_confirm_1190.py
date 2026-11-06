@@ -50,6 +50,9 @@ DELETE_TODO_ALIASES = (
     "delete_reminder",
     "remove_reminder",
     "cancel_reminder",
+    # #2294: the classifier's raw emission for a bare "delete the first one" after a
+    # list, the same entry object under the same #1666 ruling (1527's discipline).
+    "delete_item",
 )
 # #1926 / #1595 Phase 3 (2026-10-04): unlink_repo joined the destructive
 # tier — CXO's ruling on #1926 (manage_repos splits into list [READ] / link
