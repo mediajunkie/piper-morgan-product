@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-CIO
 valid_from: "2026-01-09"
-last_updated: "2026-11-02"
-last_verified: "2026-10-26"
+last_updated: "2026-11-06"
+last_verified: "2026-11-06"
 ---
 
 # BRIEFING-ESSENTIAL-CIO
@@ -114,7 +114,7 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
 > it goes stale (it did, May → Oct 2026).
 
 **Standing lanes (as of 2026-10-26)**:
-- **Methodology corpus**: `docs/internal/development/methodology-core/` (m-00 … m-56, index
+- **Methodology corpus**: `docs/internal/development/methodology-core/` (m-00 … m-57, index
   `INDEX.md`). Entries come from incidents, not sweeps. The most-used in practice: m-43 (name the
   layer), m-44 (clear is not a measurement), m-36 (mechanism over vigilance). Open zero-citation
   question (~60%): standing item 7a, raised to PM 08-31.
@@ -124,7 +124,7 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
   (broad-staging + ruff warnings, warn-only), `scripts/ensure-ruff.sh`,
   `scripts/archive-mailbox-read.py`, `scripts/whats-armed.sh` (START and STOP), `scripts/aging-standing-items.sh`,
   `scripts/gen-fly-permissions.py` (HOST's Fly rules; regenerate when flyctl moves), and mail v4
-  (`scripts/mail4.py`, pilot with Exec and Lead, review 11-05). **Pard installs into `.git/hooks` and owns launchd; CIO owns
+  (`scripts/mail4.py`; every seat from 2026-11-09 on xian's 11-05 yes, v3 fallback to the 11-23 review). **Pard installs into `.git/hooks` and owns launchd; CIO owns
   the scripts.** That split is where things go unnoticed (a disarmed post-commit sat 10 days), so
   verify behaviorally, never by config presence.
 - **Network research hub, a trial** (xian via Themis, 2026-09-28): CIO is the hub for research
@@ -184,7 +184,7 @@ Live practices not yet codified elsewhere (per CIO predecessor handoff §3 + Apr
 
 **Wake mechanism (since 2026-09-25)**: Pard's boot-persistent LaunchAgent `com.xian.pm-cio-cycle`,
 `7 10,16,22 * * *`, injects the one-line DUTY CYCLE TICK prompt into the tmux session. **There is no
-session cron.** Since 11-02 every PM seat runs this way, and `duty-cycle-tick` v1.62 carries no
+session cron.** Since 11-02 every PM seat runs this way, and `duty-cycle-tick` (since v1.62) carries no
 session-cron steps. Every fire runs the `duty-cycle-tick` skill. Worktree: stable Model-A
 `~/Development/piper-morgan-worktrees/cio` on `claude/cio-cycle`.
 
@@ -216,10 +216,10 @@ Ephemeral state lives in `dev/active/cio-carry-forward.md`, durable owed work in
 - **Omnibus logs**: `docs/omnibus-logs/` (coverage check per Apr 27 reframing)
 - **Cross-pollination briefs**: `docs/briefs/cross-pollination/current.md` + dated archive
 - **Innovation backlog**: `dev/active/cio-innovation-backlog.md` (CIO working state)
-- **Most recent audit**: `dev/2026/10/14/methodology-audit-2026-10-14.md` (the one before was 04-17)
+- **Most recent audit**: `dev/2026/11/03/methodology-audit-2026-11-03.md` (before it 10-14, then 04-17); next due by 12-29
 - **Pattern catalog**: `docs/internal/architecture/patterns/` (CIO authority for Emerging filings)
 - **Methodology-core**: `docs/internal/development/methodology-core/` (CIO authority for entries per Apr 26 split)
-- **Exec tracker**: `dev/active/exec-open-items-tracker.md` (read for project state, not write)
+- **Project state**: the "Now" section of `docs/briefing/BRIEFING-CURRENT-STATE.md` (the old Exec tracker, last changed in git 07-23, is superseded)
 - **Session logs**: `dev/YYYY/MM/DD/` (read other roles' as needed)
 
 ## Live Standards CIO Applies
@@ -235,7 +235,7 @@ Ephemeral state lives in `dev/active/cio-carry-forward.md`, durable owed work in
 
 Request additional detail for:
 - **Pattern Catalog**: `docs/internal/architecture/patterns/` (see CURRENT-STATE for count)
-- **Methodology Docs**: `docs/internal/development/methodology-core/` (71 .md files, m-00 to m-56, with `INDEX.md`; canonical home. Counted 2026-10-27)
+- **Methodology Docs**: `docs/internal/development/methodology-core/` (72 .md files, m-00 to m-57, with `INDEX.md`; canonical home. Counted 2026-11-06)
 - **Excellence Flywheel** (canonical, v2.0): `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md`
 - **Session Logs**: `dev/YYYY/MM/DD/` (raw material for patterns)
 - **Omnibus Logs**: `docs/omnibus-logs/` (synthesized daily work)
@@ -298,7 +298,7 @@ Request additional detail for:
 
 ---
 
-*Last Updated: October 1, 2026 (refreshed after the Opus 5.5 cold start; flagged stale in the Agent 360 v0.5 response)*
+*Last Updated: November 6, 2026 (six lines fixed from the third staleness run; see the frontmatter)*
 *Owner: CIO (role active in Code; CEO/PM (xian) retains escalation/concurrence authority)*
 *Workstream: Methodology & Process Innovation*
 *Note: This describes stable role context. For current project state, see BRIEFING-CURRENT-STATE.md*
