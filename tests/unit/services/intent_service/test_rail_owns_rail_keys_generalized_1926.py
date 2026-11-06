@@ -196,6 +196,15 @@ class TestPinBArchiveProjectReachesTheConsentBlock:
                 "services.onboarding.portfolio_service.PortfolioService.find_project_by_name",
                 new=AsyncMock(return_value=None),
             ),
+            # #2271: archive resolves by exact name on the active/archived lists first.
+            patch(
+                "services.onboarding.portfolio_service.PortfolioService.list_active_projects",
+                new=AsyncMock(return_value=[]),
+            ),
+            patch(
+                "services.onboarding.portfolio_service.PortfolioService.list_archived_projects",
+                new=AsyncMock(return_value=[]),
+            ),
             patch.object(real_consent_gate, "evaluate_consent", new=_spy_evaluate_consent),
             patch(
                 "services.intent_service.inversion_live.consult_inversion_live",

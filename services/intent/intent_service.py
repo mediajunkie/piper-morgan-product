@@ -1357,6 +1357,9 @@ class IntentService:
             "todo_group_line_pending",
             # #2184: the armed milestone pick (the milestones list's own titles).
             "milestone_pick_pending",
+            # #2271: the armed which-project-to-archive pick (exact-name matches)
+            # and the armed near-match archive yes/no (one flag for both).
+            "project_archive_pick_pending",
             # #1651: the standup's bound overdue-todo offer must survive
             # this turn (armed on the rail-dispatched get_standup path).
             "standup_todo_offer_pending",
@@ -2561,6 +2564,28 @@ class IntentService:
                             intent_data=_mp_turn["intent_data"],
                             requires_clarification=False,
                         )
+                # #2271 (Arch 11-06 11:26): a pending WHICH-PROJECT-TO-ARCHIVE pick
+                # (armed by the hide_project path when several projects share the
+                # name) binds a short numbered answer to the project id bound at
+                # ask time and archives it. Returning None falls through exactly as
+                # the delete pick does.
+                elif _vi_payload.get("kind") == "project_archive_pick_question":
+                    from services.intent_service import project_archive_pick as _pap
+
+                    _pap_turn = await _pap.handle_project_archive_pick_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _pap_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_pap_turn["message"],
+                            intent_data=_pap_turn["intent_data"],
+                            requires_clarification=False,
+                        )
                 elif _vi_payload.get("kind") == "reminder_time_question":
                     from services.intent_service import todo_handlers as _th
 
@@ -3198,6 +3223,9 @@ class IntentService:
                         # #2184: a released milestone pick (any non-title turn)
                         # drops via the pop; nothing was read.
                         "milestone_pick_question": "milestone_pick_question_released",
+                        # #2271: a released archive pick; nothing archived.
+                        "project_archive_pick_question": "project_archive_pick_question_released",
+                        "project_archive_confirm_question": "project_archive_confirm_question_released",
                         # #2035: an ignored yes/no add-project offer is
                         # dropped by the pop; nothing was created.
                         "add_project_offer_question": "add_project_offer_abandoned",

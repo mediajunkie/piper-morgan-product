@@ -435,6 +435,7 @@ class TestConstructorGuard:
             "mark_complete",
             "mark_done",
             "archive_project",
+            "hide_project",  # #2271 (Arch 11-06 11:26): archive_project's entry
             "restore_project",
             "add_project",
             "link_repo",
@@ -453,6 +454,7 @@ class TestConstructorGuard:
             wf["link_repository"] is wf["link_repo"]
         ), "#2271: link_repository is link_repo's entry"
         assert wf["link_repository_to_project"] is wf["link_repo"], "#2271: same entry"
+        assert wf["hide_project"] is wf["archive_project"], "#2271: same entry"
         create_todo_ids = {id(wf[k]) for k in ("create_todo", "add_todo", "new_todo")}
         create_reminder_ids = {
             id(wf[k]) for k in ("create_reminder", "set_reminder", "add_reminder")

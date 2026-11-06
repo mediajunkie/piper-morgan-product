@@ -135,6 +135,12 @@ def writes(monkeypatch):
         return SimpleNamespace(message="Restored 'Foo'.", status=SimpleNamespace(value="ok"))
 
     async def _list(self, user_id=None, **kwargs):
+        # #2271 (Arch 11-06 12:51, ruling (b)): archive acts only on an EXACT name
+        # among the ACTIVE list, so Foo must be on it (it was found only by the
+        # tolerant lookup before, which now offers instead of acting).
+        return [foo]
+
+    async def _archived(self, user_id=None, **kwargs):
         return []
 
     async def _create(self_, name, repo_name, session_id, user_id, **kwargs):
@@ -157,6 +163,7 @@ def writes(monkeypatch):
     monkeypatch.setattr(PortfolioService, "archive_project", _archive)
     monkeypatch.setattr(PortfolioService, "restore_project", _restore)
     monkeypatch.setattr(PortfolioService, "list_active_projects", _list)
+    monkeypatch.setattr(PortfolioService, "list_archived_projects", _archived)
     monkeypatch.setattr(CanonicalHandlers, "_create_or_report_project", _create)
     monkeypatch.setattr(CanonicalHandlers, "_handle_link_repo", _link)
     monkeypatch.setattr(CanonicalHandlers, "_handle_unlink_repo", _unlink)
@@ -375,6 +382,14 @@ class TestReadsAndScope:
     async def test_pin3_list_my_projects_still_answers_the_empty_state(
         self, monkeypatch, sm, writes, category
     ):
+        from services.onboarding.portfolio_service import PortfolioService
+
+        async def _empty(self, user_id=None, **kwargs):
+            return []
+
+        # #2271: the shared fixture now lists Foo as active (archive resolves by
+        # exact name on that list); this pin is about the EMPTY state, so it says so.
+        monkeypatch.setattr(PortfolioService, "list_active_projects", _empty)
         service = _service(monkeypatch, category=category)
         sid = f"sess-2048b-list-{category.value}"
         result = await service.process_intent("list my projects", session_id=sid, user_id=_USER)

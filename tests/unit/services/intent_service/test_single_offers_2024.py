@@ -121,12 +121,16 @@ async def test_archive_not_found_keeps_directive_and_builds_no_offer():
     with (
         patch.object(AsyncSessionFactory, "session_scope", staticmethod(lambda: _FakeScope())),
         patch.object(PortfolioService, "find_project_by_name", AsyncMock(return_value=None)),
+        # #2271: archive resolves by exact name on the active, then archived, list.
+        patch.object(PortfolioService, "list_active_projects", AsyncMock(return_value=[])),
+        patch.object(PortfolioService, "list_archived_projects", AsyncMock(return_value=[])),
     ):
         out = await CanonicalHandlers()._handle_archive_project(
             _intent("archive project Zephyr"), "s1", "u1"
         )
     assert out["intent"]["action"] == "project_not_found"
-    assert "Say 'list my projects' to see what you have." in out["message"]
+    # #2271 (CXO 11-06): the not-found line is now CXO's, still a directive.
+    assert 'Check the name, or say "show my projects".' in out["message"]
     assert "offer_hint" not in out
 
 
