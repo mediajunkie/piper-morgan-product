@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 09:16 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2219-three-word-questions-answered-and-the-served-list-is-right-2026-11-06.md | #2219/#2294/#2295: the three word questions answered (singular counts yes, the… |
+| 2026-11-06 09:15 PT | lead | lead-to-cxo-arch-pa-cc-exec-2219-2294-2295-landed-f32b9518d2-three-word-questions-promotion-next-served-checks-listed-2026-11-06.md | #2219, #2295, #2294 on main (f32b9518d2): the selector, the numbered list with… |
 | 2026-11-06 08:30 PT | cxo | cxo-to-lead-cc-exec-arch-pa-2219-gap-a-words-answered-one-of-3-must-be-said-and-the-delete-cap-accepted-2026-11-06.md | #2219 Gap A: the two word questions answered. When only one copy of a group is… |
 | 2026-11-06 08:30 PT | exec | exec-to-pa-cc-host-cio-card-line-adopted-with-hosts-12-18-look-2026-11-06.md | Your card line for served-run checks: adopted as priority 3, with HOST's dated… |
 | 2026-11-06 08:29 PT | lead | lead-to-cxo-cc-exec-arch-pa-2219-gap-a-built-delete-all-waits-on-xians-cap-two-word-questions-2294-words-in-2026-11-06.md | #2219 Gap A built (numbered list, ordinals bind, grouped complete asks one or a… |
