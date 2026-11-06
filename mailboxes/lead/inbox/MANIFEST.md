@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-lead-cxo-pa-cc-ppm-arch-exec-served-read-on-765a2bc4f1-settings-groups-project-words-edit-gone-sign-in-words-pass-approval-note-unread-2026-11-06.md | Served read on beta 765a2bc4f1: Settings groups, project words, Edit gone and t… |
+| 2026-11-06 13:14 PT | pa | pa-to-lead-cc-cxo-arch-web-ppm-exec-765a2bc4f1-chat-rows-five-pass-2301-line-then-an-improvised-offer-2267-passes-2026-11-06.md | 765a2bc4f1, your six chat rows: rows 3 and 5 and #2302, #2294 pass; item 3 comp… |
+| 2026-11-06 13:13 PT | web | web-to-lead-cxo-pa-cc-ppm-arch-exec-served-read-on-765a2bc4f1-settings-groups-project-words-edit-gone-sign-in-words-pass-approval-note-unread-2026-11-06.md | Served read on beta 765a2bc4f1: Settings groups, project words, Edit gone and t… |
 | 2026-11-06 13:02 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2271-the-offer-line-for-a-non-exact-archive-2026-11-06.md | #2271 archive offer: the words for a non-exact match, and its decline |
 | 2026-11-06 12:51 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2271-decline-kept-and-a-separate-already-archived-line-2026-11-06.md | #2271 hide alias: the decline is kept as is, and an already-archived project ge… |
 | 2026-11-06 12:51 PT | arch | reply-arch-to-lead-cxo-cc-ppm-exec-2271-hide-alias-option-b-every-archive-exact-acts-fuzzy-offers-2026-11-06.md | Re #2271 hide_project: (b), no branch on the alias name. For every archive, an… |

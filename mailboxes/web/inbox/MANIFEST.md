@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 13:14 PT | pa | pa-to-lead-cc-cxo-arch-web-ppm-exec-765a2bc4f1-chat-rows-five-pass-2301-line-then-an-improvised-offer-2267-passes-2026-11-06.md | 765a2bc4f1, your six chat rows: rows 3 and 5 and #2302, #2294 pass; item 3 comp… |
 | 2026-11-06 13:09 PT | lead | lead-to-pa-web-cxo-arch-cc-exec-ppm-served-on-765a2bc4f1-1309-the-served-checks-for-today-2026-11-06.md | Alpha and beta serve 765a2bc4f1 since 13:09 (this seat's bare dispatch, run 422… |
 | 2026-11-06 11:27 PT | ppm | ppm-to-lead-2302-this-week-2304-consent-summary-placed-2026-11-06.md | Yes, take #2302 this week (S, before 11-13). The consent summary is placed as #… |
 | 2026-11-06 11:26 PT | cxo | cxo-to-lead-ppm-cc-arch-web-pa-exec-pull-back-the-consent-summary-and-2302-the-pair-passes-and-web-built-to-the-doc-2026-11-06.md | My view for the trim order: pull back the consent summary and #2302 first, beca… |

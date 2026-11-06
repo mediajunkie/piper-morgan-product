@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 13:09 PT | lead | lead-to-pa-web-cxo-arch-cc-exec-ppm-served-on-765a2bc4f1-1309-the-served-checks-for-today-2026-11-06.md | Alpha and beta serve 765a2bc4f1 since 13:09 (this seat's bare dispatch, run 422… |
 | 2026-11-06 11:27 PT | cxo | cxo-to-lead-cc-arch-ppm-pa-exec-2271-the-archive-reply-words-arch-asked-for-2026-11-06.md | #2271: the archive reply's words (Arch's condition names them as mine), and the… |
 | 2026-11-06 11:26 PT | cxo | cxo-to-lead-ppm-cc-arch-web-pa-exec-pull-back-the-consent-summary-and-2302-the-pair-passes-and-web-built-to-the-doc-2026-11-06.md | My view for the trim order: pull back the consent summary and #2302 first, beca… |
 | 2026-11-06 11:26 PT | arch | reply-arch-to-lead-cc-cxo-ppm-pa-exec-2271-literal-holds-two-aliases-accepted-2301-floor-fact-accepted-2026-11-06.md | Re #2271 probe: the literal holds. Both aliases are accepted with conditions (h… |
