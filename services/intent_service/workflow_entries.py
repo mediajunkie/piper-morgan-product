@@ -369,6 +369,11 @@ async def run_confirm_pending_action_workflow(
     # a context dict the caller may share.
     intent.context = dict(intent.context or {})
     intent.context[CONFIRMED_CONTEXT_KEY] = True
+    # #2219 row 3: the "yes" is the person's own answer, so a turn that was marked
+    # as a floor-category write runs unmarked now.
+    from services.intent_service.floor_write_ask import unmark_floor_category_write
+
+    unmark_floor_category_write(intent)
 
     from services.intent_service.workflow_dispatcher import dispatch_workflow
 

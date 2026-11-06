@@ -6406,6 +6406,34 @@ later hit of that text, from any user. Rule (Arch, decisions.log 2026-10-16 08:3
 (`if user_id:` in `_process_intent_internal`) and never comes from the cache. B3 referent resolution sits above
 the cache and is unaffected. Pins: `tests/unit/services/intent_service/test_intent_cache_fresh_objects_2054.py`.
 
+## A write filed under a floor category reaches its handler, marked, and asks (2026-11-06, #2219 row 3)
+
+Served on alpha `0d4938cf23`: after "show my todos", "complete the second one" was classified
+CONVERSATION/`complete_todo`. The Action Gate was category-keyed, so the turn went to the floor, which said
+"If you'd like me to mark "high task" as complete, just tell me directly." and wrote nothing. Rule (Arch,
+decisions.log 2026-11-06 10:16 and 10:48): `_requires_canonical_handler` returns True when
+`normalize_action(intent.action)` is a registered rail key whose declared effect is not READ
+(`_names_write_rail_op`), whatever the category; the old category rules are `_category_requires_canonical`,
+unchanged. `FLOOR_ROUTED_CATEGORIES` is a class constant. Binding condition: such an emission contradicts
+itself, so `_process_intent_internal` MARKS it (`floor_write_ask.FLOOR_WRITE_MARK_KEY`) when the category is a
+floor category, the context has no `inversion_args` (a router emission is never marked), and the category rules
+alone would have floored it (`_is_floor_category_write`). A TEMPORAL write without a floor keyword, or a
+GUIDANCE setup turn, reached its handler before and is unchanged. On a marked turn `_dispatch_action_rail` sets
+the consent verdict to CONFIRM for every non-READ op, so each arms its #1190 yes/no (the delete, unlink and
+close/reopen builders as before; any other write the generic `build_confirmation_offer`), and "yes" re-dispatches
+unmarked (`run_confirm_pending_action_workflow` drops the mark). `complete_todo` is WRITE, so it reaches the
+confirm chain only when marked; its builder (`floor_write_ask.build_floor_write_complete_ask`, the complete
+handler's own extractors and matcher) arms CXO's `Mark "high task" as done? (yes/no)` with the row bound by id
+(the yes takes the #1943 confirmed re-entry), or, when it can't name one row, picks over the numbered list just
+shown (`delete_todo_pick.arm_complete_pick`, the delete pick's record with verb "complete": the bound answer
+completes, or asks one, or all, for a grouped line), or says `I'm not sure which one you mean. Say its name.`
+The one passthrough that could write on its first turn, the #1605 clear-family flow, asks on a marked turn
+(`reminder_clear._act_on_resolved_targets(ask_only=True)`: a stored "complete" default takes the always-ask
+form, the trust-inferences auto-apply reads back). The legacy multi-intent orchestrator has no rail, so
+`_is_orchestratable_sibling` keeps a marked shape floor-routed, as before. Not a dispatch site
+(`MAX_DISPATCH_SITES` unchanged); no router, catalog or prompt bytes. Pins:
+`tests/unit/services/intent_service/test_floor_category_write_2219.py`.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`
