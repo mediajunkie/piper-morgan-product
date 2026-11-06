@@ -1,6 +1,25 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-04 21:19 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-11-05 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/05/2026-11-05-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-06.
+- **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
+- **Thu 11-05 "Don't Overpromise": PUBLISHED** 18:48 (Docs), https://pipermorgan.ai/blog/dont-overpromise. The Medium crosspost is xian's ("as soon as it's live"), and Docs fills in the URL. xian kept "likely during the beta period" by his own ruling.
+- **FRI 11-06, FIRST THING: the mining pass** (Oct 23 to Nov 5), looking for cross-month themes and a partner for insight 8 "One Account Means One Hand". Then **the editorial-strategy talk with xian** (he set it for 11-06). The brief is in the planning doc (Claude Docs `27e09d5b-…`, rev 25), section "For our editorial-strategy session": options A–D, my recommendation (A plus one insight a week), and four questions.
+- **Scaffolds up, all waiting on xian's prose:**
+  - Sat 11-07, "At Long Last, Beta": `at-long-last-beta.md` (building; title by xian; renamed from what-reaching-private-beta-means.md). It teases Sun.
+  - Sun 11-08, "Fixed and Scores Higher Came Apart": `fixed-and-scores-higher-came-apart.md` (insight). It teases Tue. The two percentages come from two different runs, so it isn't a controlled A/B.
+  - Tue 11-10, "Never Green in a Thousand Runs": `never-green-in-a-thousand-runs.md`. Only E2E never passed. It teases Thu.
+  - Thu 11-12, "The Server Key Is Not a Real Concept": `the-server-key-is-not-a-real-concept.md`. The "truth over feeling of progress" quote is about the epic, not the key. Recommend not merging beat 4. **Its tease target isn't on the calendar yet. Settle it in the strategy talk.**
+- **Publish pipeline after the Ignored Build Step:** the read check passes, because a publish writes `src/data` and `public/assets` and so always builds. Memo to Exec, cc Web and Docs (25f11f786). **Close it on Docs' Sat 11-07 publish memo showing the sha's deploy as `success`.**
+- **Hosting:** xian is on Vercel Pro. The split (Cloudflare static plus a Vercel admin) is #2291, Ongoing, with no date. When it happens, Comms checks the publish pipeline.
+- **Mail v4 from Mon 11-09:** read `python3 scripts/mail4.py inbox --role comms` as well as v3, and send in-repo mail with `mail4.py send`. v3 is the fallback until 11-23. CIO sends a test message on 11-09.
+- **Invites held (xian 11-04 19:31):** no invitations until the P0 items #1551, #2261 and #2178 are done. Copy must not imply anyone can join now.
+- **Waiting list / newsletter:** v4 is live and CXO PASSed it. **Open:** xian pastes the confirmation email and signs up. HOST then reads it, and #2256 closes on that.
+- **HOLD (PDR-102):** no ownership claim in copy until C7 is verified and C8 has a surface.
+- **Mail filing (piper-guards M-3):** plain `mv`, then mail-send with both paths. If mail-send refuses on a newer MANIFEST: `git checkout HEAD --` the manifests, merge, regenerate, resend.
+- **Standing:** the "what changed" note at the first user-visible Production ship. The narrative front is Sep 9 (beat 2).
+
+## OLDER STATE — 2026-11-04 21:19 PT
 - **Log:** `dev/2026/11/04/2026-11-04-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-05.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
 - **Ship #067 "What Piper Didn't Check": PUBLISHED** 19:49 (Docs), https://pipermorgan.ai/shipping-news/weekly-ship-067-what-piper-didnt-check. xian approved my three edits (pronouns, a since-Thursday "Coming up", and "about fifteen minutes"). The LinkedIn URL is xian's, and Docs fills it in. Ruled 11-04 19:41: the alpha ended at MVP close (10-30), and the beta has started.
