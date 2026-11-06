@@ -4,7 +4,7 @@ alt: ''
 caption: ''
 ---
 
-# What Reaching Private Beta Means
+# At Long Last, Beta
 
 *October 30–31, 2026*
 
