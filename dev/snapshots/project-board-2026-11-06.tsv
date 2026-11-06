@@ -2086,3 +2086,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2290	OPEN	Production		Failure pages and toasts give the person nothing to send us: show a short reference code that finds the request in the logs			
 2292	OPEN	Production		pipermorgan.ai has no SPF, DKIM or DMARC: invitations and the cohort note from xian's Workspace address may be rejected or spam-foldered; add the three records before the next invite	P1		
 2293	OPEN	Production		Todo priority sorts alphabetically: 'high' comes after 'medium' and 'low', so the list order and 'next todo' are wrong for high-priority items	bug		
+2294	OPEN	Production		'delete the first one' after a todo or reminder list routes to delete_item and gets the generic can't-do reply	bug		
+2295	OPEN	Production		[UX] 'Show my completed todos' lists every todo, not the completed ones	UX		
