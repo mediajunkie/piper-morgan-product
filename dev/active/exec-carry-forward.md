@@ -51,6 +51,11 @@ v852, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
    - the #1715 skills walk;
    - the editorial strategy session with Comms.
 
+## Waiting on others (added 11-06)
+
+- **PPM: one-page options on 2-week sprints for Production** (whether, when, how, rec; tasked 10:09 at xian's flag). It goes on the rollup as one card when it lands. Lead feeds capacity, PA the plugin-lane timing.
+- **CIO: #1715 close + outcome memo** (xian accepted all 12 leans 10:04). Forward the outcome to xian and Comms (his blog-post thought).
+
 ## Reminders owed to xian
 - **Vercel: downgrade from Pro once the headroom exists again** (xian 11-05 16:45; standing item #182). The trigger: the split is live and admin-only usage is well inside Hobby. Raise then that Hobby is non-commercial, so the downgrade may not be allowed.
 - **#2282 step 5, around Thu 11-12** (standing item #183): remove the alpha callbacks in GitHub and Google if a week passes with no hits.
