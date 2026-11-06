@@ -229,6 +229,10 @@ BATCH_COMPLETE_LEFT_KEY = "batch_complete_left_texts"
 BATCH_DELETE_IDS_KEY = "batch_delete_ids"
 BATCH_DELETE_TEXTS_KEY = "batch_delete_texts"
 BATCH_DELETE_LEFT_KEY = "batch_delete_left_texts"
+# #2219 Gap A (CXO 11-06 08:3x): a delete confirm that touches ONE copy of a grouped
+# line carries the line's copy count, so the yes can say how many are left without
+# re-deriving it from the words.
+BATCH_DELETE_LINE_COPIES_KEY = "batch_delete_line_copies"
 
 _ORDINAL_TOKEN_RE = re.compile(r"^#?(\d{1,3})$")
 _RANGE_TOKEN_RE = re.compile(r"^#?(\d{1,3})\s*[-–—]\s*#?(\d{1,3})$")
@@ -384,8 +388,14 @@ def _collapse_titles(texts: List[str]) -> List[Tuple[str, int]]:
     return out
 
 
-def _title_phrase(texts: List[str]) -> str:
-    parts = [f'"{t}"' + (f" ({c} items)" if c > 1 else "") for t, c in _collapse_titles(texts)]
+def _title_phrase(texts: List[str], notes: Optional[dict] = None) -> str:
+    """``notes`` (#2219 Gap A): a title's own note, e.g. "1 of 3" for one copy of a
+    grouped line, said in place of the collapsed count."""
+    notes = notes or {}
+    parts = [
+        f'"{t}"' + (f" ({notes[t]})" if t in notes else f" ({c} items)" if c > 1 else "")
+        for t, c in _collapse_titles(texts)
+    ]
     if len(parts) <= 1:
         return parts[0] if parts else ""
     return ", ".join(parts[:-1]) + " and " + parts[-1]
@@ -407,6 +417,7 @@ def _confirm_question(
     *,
     one_item_template: Optional[str] = None,
     noun_kind: str = "todo",
+    notes: Optional[dict] = None,
 ) -> str:
     """Shared body of the enumerating #1190 confirm: count first, titles
     verbatim in the user's order, duplicates collapsed; bullets instead of a
@@ -428,23 +439,67 @@ def _confirm_question(
             q += f" {leaving}"
         return q + " (yes/no)"
     if n > 5:
+        notes = notes or {}
         lines = [f"{verb} {n} {noun}?"] + [
-            f"• {t}" + (f" ({c} items)" if c > 1 else "") for t, c in _collapse_titles(targets)
+            f"• {t}" + (f" ({notes[t]})" if t in notes else f" ({c} items)" if c > 1 else "")
+            for t, c in _collapse_titles(targets)
         ]
         if leaving:
             lines.append(leaving)
         lines.append("(yes/no)")
         return "\n".join(lines)
-    q = f"{verb} {n} {noun}: {_title_phrase(targets)}?"
+    q = f"{verb} {n} {noun}: {_title_phrase(targets, notes)}?"
     if leaving:
         q += f" {leaving}"
     return q + " (yes/no)"
 
 
-def _batch_confirm_question(targets: List[str], left: List[str], noun: str = "todo") -> str:
+def _batch_confirm_question(
+    targets: List[str], left: List[str], noun: str = "todo", notes: Optional[dict] = None
+) -> str:
     """CXO string 1: count first, titles verbatim in the user's order,
-    duplicates collapsed; bullets instead of a sentence above 5 targets."""
-    return _confirm_question("Complete", targets, left, noun_kind=noun)
+    duplicates collapsed; bullets instead of a sentence above 5 targets.
+    ``notes``: #2219 Gap A's "1 of 3" for one copy of a grouped line."""
+    return _confirm_question("Complete", targets, left, noun_kind=noun, notes=notes)
+
+
+def _grouped_copy_notes(picked: List[Todo], lines: List[List[Todo]]) -> dict:
+    """#2219 Gap A (CXO 11-06 08:3x): a batch that binds ONE copy of a grouped line
+    names it ``review prs (1 of 3)``, so the person who saw ``(×3)`` doesn't read it
+    as all three. Title → note, for each picked row whose shown line has copies."""
+    notes: dict = {}
+    for line in lines:
+        if len(line) < 2:
+            continue
+        ids = {t.id for t in line}
+        hit = sum(1 for t in picked if t.id in ids)
+        if hit:
+            notes[line[0].text] = f"{hit} of {len(line)}"
+    return notes
+
+
+def _grouped_line_of(row: Todo, lines: List[List[Todo]]) -> Optional[List[Todo]]:
+    """The shown line holding ``row`` when that line has more than one copy."""
+    for line in lines:
+        if len(line) > 1 and any(t.id == row.id for t in line):
+            return line
+    return None
+
+
+def grouped_delete_confirm_question(title: str, copies: int, noun: str = "todo") -> str:
+    """CXO 11-06 08:3x, verbatim: ``Delete one of your 3 "review prs" todos? (yes/no)``.
+    The one-copy delete of a grouped line under xian's #2019 cap."""
+    return f'Delete one of your {copies} "{title}" {noun_plural(noun)}? (yes/no)'
+
+
+def one_copy_result(verb: str, title: str, left: int) -> str:
+    """CXO 11-06 08:3x, verbatim: ``Deleted one "review prs". 2 are left on your
+    list.`` / ``Marked one "review prs" as done. 2 are still open.`` ``left`` is the
+    copies remaining, carried by the armed record. One left reads "1 is"."""
+    be = "is" if left == 1 else "are"
+    if verb == "delete":
+        return f'Deleted one "{title}". {left} {be} left on your list.'
+    return f'Marked one "{title}" as done. {left} {be} still open.'
 
 
 def _delete_confirm_question(targets: List[str], left: List[str], noun: str = "todo") -> str:
@@ -1018,6 +1073,7 @@ class TodoIntentHandlers:
                 intent.original_message or ctx.get("original_message"),
                 numbered.kind if numbered is not None else None,
             ),
+            notes=_grouped_copy_notes(picked, shown_lines),
         )
         bound_ctx = {
             **ctx,
@@ -1152,6 +1208,11 @@ class TodoIntentHandlers:
                     done_texts.append(text)
                 else:
                     failed.append((text, "already gone"))
+            copies = ctx.get(BATCH_DELETE_LINE_COPIES_KEY)
+            if copies and len(done_texts) == 1 and not failed:
+                # #2219 Gap A (CXO 11-06 08:3x): one copy of a grouped line went; say
+                # how many are left, from the count the confirm carried.
+                return one_copy_result("delete", done_texts[0], int(copies) - 1), False
             logger.info(
                 "Todo batch deleted via router targets",
                 deleted=len(done_texts),
@@ -1285,6 +1346,11 @@ class TodoIntentHandlers:
             BATCH_DELETE_TEXTS_KEY: [t.text for t in picked],
             BATCH_DELETE_LEFT_KEY: left,
         }
+        line = _grouped_line_of(picked[0], shown_lines) if len(picked) == 1 else None
+        if line is not None and not exclude:
+            # #2219 Gap A (CXO 11-06 08:3x): one copy of a grouped line says the count.
+            question = grouped_delete_confirm_question(picked[0].text, len(line), noun)
+            bound_ctx[BATCH_DELETE_LINE_COPIES_KEY] = len(line)
         bound = Intent(
             category=intent.category,
             action=intent.action,
