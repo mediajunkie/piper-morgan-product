@@ -83,17 +83,29 @@ _ACTION_CATEGORY = {
 # Inversion's question to answer, not an assertion.
 # ---------------------------------------------------------------------------
 HAND_ROWS = [
-    # #2271 (PA's served phrasing on alpha, 2026-11-06; Arch 14:09, decisions.log): linking a
-    # repo to that project. A failing phrasing gets a corpus row, not a regex. PA's second
-    # phrasing ("I want to add a repo to my … project", also link_repo per Arch) waits: it
-    # frames 'ambiguous' in collaboration_gate's _EXECUTE_RE, which TestExecuteVocabCoverage
-    # refuses for a WRITE row; whether "I want to <verb>" joins that vocabulary is Arch's call.
+    # #2271 (PA's served phrasings on alpha, 2026-11-06; Arch 14:09, decisions.log): linking a
+    # repo to that project. A failing phrasing gets a corpus row, not a regex. The second is a
+    # first-person wish: Arch 14:29 declined "I want to" for _EXECUTE_RE and ruled the row
+    # lands as it serves today, asking first (framing declarative, his 10-09 rule).
     {
         "phrase": "link repo dinp-machine/piper-test-activity to zz share-hide project",
         "category": "PORTFOLIO",
         "expected": "action:link_repo",
         "source": "#2271 (PA's alpha phrasing 2026-11-06; Arch 14:09)",
         "notes": "Legacy classifier invented link_repository_to_project; served via the rail alias.",
+    },
+    {
+        "phrase": "I want to add a repo to my zz share-hide project",
+        "category": "PORTFOLIO",
+        "expected": "action:link_repo",
+        "framing": "declarative",
+        "source": "#2271 (PA's alpha phrasing 2026-11-06; Arch 14:09 and 14:29)",
+        "notes": (
+            "No repo named: link_repo's handler asks which one (the served expectation). "
+            "framing declarative per Arch 14:29 (a first-person wish asks first; 'I want to' "
+            "declined for _EXECUTE_RE). Surface 1's REPO_MANAGEMENT literal claims it as "
+            "manage_repos, the legacy umbrella."
+        ),
     },
     # #2255 (PA's P2 probe 2026-11-02 15:07; Arch's ruling 15:11, decisions.log): the armed set
     # ask. On the turn right after an armed issue draft the live consult stands down by design

@@ -450,6 +450,12 @@ corpus:
     expected: action:link_repo
     source: "#2271 (PA's alpha phrasing 2026-11-06; Arch 14:09)"
     notes: "Legacy classifier invented link_repository_to_project; served via the rail alias."
+  - phrase: "I want to add a repo to my zz share-hide project"
+    category: PORTFOLIO
+    expected: action:link_repo
+    source: "#2271 (PA's alpha phrasing 2026-11-06; Arch 14:09 and 14:29)"
+    framing: declarative
+    notes: "No repo named: link_repo's handler asks which one (the served expectation). framing declarative per Arch 14:29 (a first-person wish asks first; 'I want to' declined for _EXECUTE_RE). Surface 1's REPO_MANAGEMENT literal claims it as manage_repos, the legacy umbrella."
   - phrase: "Set my default GitHub repository to owner/name"
     category: EXECUTION
     expected: action:set_default_repo
