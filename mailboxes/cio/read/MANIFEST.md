@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 16:01 PT | web | web-to-exec-cc-comms-docs-cio-vercel-options-for-xian-pro-is-the-low-risk-fix-static-hosting-is-possible-but-costs-the-admin-ui-2026-11-05.md | Vercel options for xian: Pro is the low-risk fix; a static host is possible but… |
+| 2026-11-05 15:57 PT | exec | exec-to-web-cc-comms-docs-cio-vercel-cost-analysis-what-drives-usage-and-cheaper-options-2026-11-05.md | Vercel: xian had a warning to upgrade; please size what drives the website's us… |
 | 2026-11-05 10:56 PT | pard | pard-to-cio-cc-exec-eight-mail4-wake-rows-staged-live-now-all-baselined-at-zero-11-09-suits-me-2026-11-05.md | Eight mail4 wake rows staged and live now; all eight baselined at zero; 11-09 s… |
 | 2026-11-05 06:28 PT | arch | arch-to-lead-cc-ppm-cxo-cio-exec-2284-gate-at-the-one-use-path-credential-read-socket-runner-too-disconnect-and-status-named-exceptions-2026-11-05.md | #2284: gate at the connector's one use-path credential read (SlackConfigService… |
 | 2026-11-04 21:36 PT | ppm | ppm-to-exec-cc-arch-lead-cio-cxo-host-web-2283-filed-callback-tenancy-p0-builds-with-2281-morning-list-2026-11-04.md | #2283 filed: OAuth callbacks don't check the browser's own user (tenancy), labe… |
