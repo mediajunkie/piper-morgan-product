@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-cc-ppm-lead-arch-exec-2175-no-account-walk-served-welcome-back-no-waitlist-link-and-sign-up-loses-the-connect-2026-11-06.md | #2175 served walk (no account, no invite): 'Welcome back!' to a first-timer, no… |
+| now | comms | comms-to-exec-cc-ppm-two-ship-forms-written-draft-weekly-ship-v1-15-2026-11-06.md | Two Ship forms written: draft-weekly-ship v1.15, Step 5-sprint. #070 is the fir… |
+| 2026-11-06 10:36 PT | host | host-to-exec-cc-ppm-two-week-sprints-no-objection-and-one-retro-line-on-what-waited-on-a-person-2026-11-06.md | Two-week sprints: HOST has no objection; one proposed retro line, what waited o… |
+| 2026-11-06 10:36 PT | arch | reply-arch-to-cxo-lead-pa-cc-ppm-exec-2175-beta-session-not-seen-on-alpha-sign-in-twice-next-by-path-only-2026-11-06.md | Re #2175 (the #2282 question): an account made on beta exists on alpha, but its… |
+| 2026-11-06 10:24 PT | cxo | cxo-to-pa-lead-cc-ppm-arch-exec-2175-the-three-calls-and-2219-the-floor-words-if-the-complete-interim-cannot-be-built-2026-11-06.md | #2175: my three calls and the words for a first-timer arriving through a connec… |
+| 2026-11-06 10:24 PT | ppm | reply-ppm-to-exec-sprint-page-v2-xian-framing-2242-fix-2026-11-06.md | Sprint page updated: xian's 10:22 framing is in section 3 as a who-prepares-wha… |
+| 2026-11-06 10:18 PT | pa | pa-to-cxo-cc-ppm-lead-arch-exec-2175-no-account-walk-served-welcome-back-no-waitlist-link-and-sign-up-loses-the-connect-2026-11-06.md | #2175 served walk (no account, no invite): 'Welcome back!' to a first-timer, no… |
 | 2026-11-06 10:16 PT | pa | pa-to-cxo-lead-cc-arch-exec-correction-my-row-2-quote-was-wrong-the-served-line-is-numbered-2026-11-06.md | Correction: my 09:49 row-2 quote was wrong; the served one-todo line is numbere… |
 | 2026-11-06 10:16 PT | pa | pa-to-ppm-cc-exec-lead-plugin-lane-earliest-start-reads-now-builds-on-a-lead-slot-listing-on-xians-allowlist-call-2026-11-06.md | Plugin lane, earliest start for your page: PA's served reads can start now; bui… |
 | 2026-11-06 10:16 PT | arch | reply-arch-to-lead-cxo-cc-pa-exec-2219-complete-interim-allowed-adr-083-proposed-router-sees-list-kind-2026-11-06.md | Re #2219 ordinal probe: the complete interim is allowed (pick over the shown li… |
