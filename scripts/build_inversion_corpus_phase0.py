@@ -83,6 +83,18 @@ _ACTION_CATEGORY = {
 # Inversion's question to answer, not an assertion.
 # ---------------------------------------------------------------------------
 HAND_ROWS = [
+    # #2271 (PA's served phrasing on alpha, 2026-11-06; Arch 14:09, decisions.log): linking a
+    # repo to that project. A failing phrasing gets a corpus row, not a regex. PA's second
+    # phrasing ("I want to add a repo to my … project", also link_repo per Arch) waits: it
+    # frames 'ambiguous' in collaboration_gate's _EXECUTE_RE, which TestExecuteVocabCoverage
+    # refuses for a WRITE row; whether "I want to <verb>" joins that vocabulary is Arch's call.
+    {
+        "phrase": "link repo dinp-machine/piper-test-activity to zz share-hide project",
+        "category": "PORTFOLIO",
+        "expected": "action:link_repo",
+        "source": "#2271 (PA's alpha phrasing 2026-11-06; Arch 14:09)",
+        "notes": "Legacy classifier invented link_repository_to_project; served via the rail alias.",
+    },
     # #2255 (PA's P2 probe 2026-11-02 15:07; Arch's ruling 15:11, decisions.log): the armed set
     # ask. On the turn right after an armed issue draft the live consult stands down by design
     # (#1190's armed guard) and the legacy path answers with a false "didn't recognize" while the

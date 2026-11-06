@@ -262,8 +262,11 @@ class TestCensusDenominators:
         claimed = sum(1 for r in records if r.claim.pattern_list is not None)
         unclaimed = sum(1 for r in records if r.claim.pattern_list is None)
         assert claimed + unclaimed == len(records)
-        assert claimed + unclaimed == 620, (
-            "the corpus is 620 rows as of the 2026-11-02 #2255 row (+1, the armed set ask; Arch 15:11) "
+        assert claimed + unclaimed == 621, (
+            "the corpus is 621 rows as of the 2026-11-06 #2271 row (+1, PA's alpha phrasing, "
+            "action:link_repo per Arch 14:09: 'link repo dinp-machine/piper-test-activity to zz "
+            "share-hide project'); 620 as of "
+            "the 2026-11-02 #2255 row (+1, the armed set ask; Arch 15:11) "
             "after the 2026-11-01 #2197 rows (+3, CXO's list 11:17, PPM's placement 11:18/11:19: 'what's the progress on the MVP milestone?', 'how is the Production milestone going', 'status of the Fast Follow milestone', each action:get_project_status; the third a known router miss); before that 616 as of the 2026-10-28 #2184 two-step REVIEW rows (+2, context-dependent, informational: 'can you show me issues from just one milestone?' and 'MVP', router CLARIFY 0.40/0.30 x3; the milestones list now arms an exact-title pick); before that 614 as of the 2026-10-28 #2186 args rows (+4, measured ×3 on main's wording: 'show my last two new issues' count=2, 'show my open issues in the MVP milestone' milestone=MVP, 'open bugs labeled needs-triage' label=needs-triage, 'what closed issues do I have' state=closed); before that 610 as of the 2026-10-23 #2132 rows (+4: 'Analyze this document' (Q17), 'What does this document say?', 'Summarize this file', 'Analyze the document called PRD Writing Guidelines'); before that 606 as of the 2026-10-20 #2112 twin row (+1: 'Find time for a 1:1 with the team lead' expecting floor, Q33 served); before that 605 as of the 2026-10-20 #2113 row (+1: 'Update issue #123' expecting update_issue; the verb shim gained a (UPDATE, github_issue) cell); before that 604 as of the 2026-10-20 #2114 row (+1: 'Show me that issue.' expecting review_issue_query, the scenario-A4 turn whose referent the handler now reads from the session ledger); before that 603 as of the 2026-10-20 #2110 rows (+2: the colon-and-quotes create with and without a repo clause); before that 601 as of the 2026-10-20 #2098 consult rows (+2: the scenario-B3 title change with its value, and Arch's misfire control 'Also we should call it out in the release notes' expecting floor); before that 599 as of the 2026-10-19 #2094 'Create three todos: review the roadmap, email the team, and book the launch venue' args row (+1, measured: expected_args.items, three elements; the one NEW failure of Tests run 39334911042 on 2ba2cefc4f, this pin lagging the row); "
             "598 rows as of the 2026-10-17 #2051 'what issues are assigned to me?' row (+1, list_assigned_issues alias; measured in the rule-7 batch run); "
             "597 rows as of the 2026-10-16 #2069 'Add a project called Baz with description testing the description' args row (+1, unmeasured at deposit: expected_args.name/description); "
@@ -660,9 +663,9 @@ class TestDeletedPatternListsLedger:
         portfolio_entry = next(e for e in entries if e["list"] == "PORTFOLIO_PATTERNS")
         assert portfolio_entry.get("partial") is True
         assert (
-            portfolio_entry.get("literals") == 2
-        ), "literals is the DELETED count (search 2026-10-09, show/list/view 2026-10-11), not the original 16"
-        assert len(portfolio_entry.get("surviving_literals", {})) == 14
+            portfolio_entry.get("literals") == 3
+        ), "literals is the DELETED count (search 2026-10-09, show/list/view 2026-10-11, hide 2026-11-06), not the original 16"
+        assert len(portfolio_entry.get("surviving_literals", {})) == 13
 
     def test_real_ledger_entries_pass_non_regression(self):
         """Every entry in the real (now non-empty) ledger passes

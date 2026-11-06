@@ -1394,7 +1394,10 @@ class PreClassifier:
         # Archive operations - "Archive my project X" (non-project targets
         # decline via the positive project-noun requirement, #1757)
         rf"\barchive\s+{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
-        rf"\bhide\s+{PROJECT_NOUN_REQUIRED}(?:my\s+)?(?:the\s+)?(?:project\s+)?(.+)",
+        # #2271 (Arch 2026-11-06 14:09, decisions.log): the hide literal is DELETED.
+        # Its row "hide the project Beta" falls to surface 2, which names
+        # hide_project 10/10 (an alias of archive_project's entry since 510fc2aa66,
+        # the row's ruled destination). Ceiling 89 -> 88.
         rf"\bput\s+{PROJECT_NOUN_REQUIRED}(.+)\s+(?:away|aside)",
         # Delete operations - "Delete my project X" (reminder/todo-noun
         # deletes decline via the negative guard; non-project deletes decline

@@ -77,7 +77,8 @@ class TestPortfolioWriteFamilySubsumesStatusPhantom:
         "message",
         [
             "archive project X in my portfolio",
-            "hide project X in my portfolio",
+            # "hide project X in my portfolio": the hide literal is deleted
+            # (#2271, 2026-11-06), so surface 1 claims nothing to subsume.
         ],
     )
     def test_archive_family_single_intent(self, message):
@@ -87,6 +88,13 @@ class TestPortfolioWriteFamilySubsumesStatusPhantom:
             f"(#1884 — the archive-verb form of the #1738 defect)"
         )
         assert actions == [(IntentCategory.PORTFOLIO, "manage_portfolio")]
+
+    def test_hide_form_claims_nothing_and_no_status_phantom(self):
+        """#2271: with the hide literal deleted, surface 1 claims nothing for the
+        hide form, and no STATUS phantom appears on its own."""
+        result, actions = _intents("hide project X in my portfolio")
+        assert actions == []
+        assert not result.is_multi_intent
 
     def test_add_family_single_intent(self):
         message = "add a new project to my portfolio"

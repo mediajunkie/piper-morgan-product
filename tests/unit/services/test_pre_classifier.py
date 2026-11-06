@@ -555,7 +555,8 @@ class TestPreClassifier:
         portfolio_patterns = [
             # Archive operations
             "archive my project Alpha",
-            "hide the project Beta",
+            # "hide the project Beta": the hide literal is deleted (#2271,
+            # 2026-11-06); surface 2 names hide_project, an archive_project alias.
             "put the old project away",
             # Delete operations
             "delete my project Gamma",

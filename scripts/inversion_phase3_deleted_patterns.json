@@ -2690,7 +2690,7 @@
     {
       "list": "PORTFOLIO_PATTERNS",
       "deleted_on": "2026-10-09",
-      "literals": 2,
+      "literals": 3,
       "partial": true,
       "surviving_literals": {
         "\\barchive\\s+(?=.*\\bprojects?\\b)(?:my\\s+)?(?:the\\s+)?(?:project\\s+)?(.+)": [
@@ -2699,9 +2699,6 @@
           "Archive the project called Test",
           "Archive my Test project, please.",
           "Archive my project called \"Test\" please"
-        ],
-        "\\bhide\\s+(?=.*\\bprojects?\\b)(?:my\\s+)?(?:the\\s+)?(?:project\\s+)?(.+)": [
-          "hide the project Beta"
         ],
         "\\bput\\s+(?=.*\\bprojects?\\b)(.+)\\s+(?:away|aside)": [
           "put the old project away"
@@ -2752,14 +2749,17 @@
         "list my archived projects (show all names)",
         "list all projects",
         "view my projects",
-        "list my archived projects and summarize my current work"
+        "list my archived projects and summarize my current work",
+        "hide the project Beta"
       ],
       "verdict_report": [
         "inversion-phase3-rule10-rows-score-2026-10-09-anthropic.md",
         "inversion-week-calendar-description-full-score-2026-10-10-anthropic.md",
-        "inversion-phase3-rule10-portfolio-rows-score-2026-10-11b-anthropic.md"
+        "inversion-phase3-rule10-portfolio-rows-score-2026-10-11b-anthropic.md",
+        "inversion-phase3-surface2-floor-probe-2026-11-06-n10-anthropic-2271-hide.md"
       ],
       "expected_ops": [
+        "archive_project",
         "list_archived_projects",
         "list_projects",
         "search_projects"
@@ -2775,13 +2775,33 @@
         "show my projects": "list_projects",
         "list my archived projects (show all names)": "list_archived_projects",
         "list all projects": "list_projects",
-        "view my projects": "list_projects"
+        "view my projects": "list_projects",
+        "hide the project Beta": "archive_project"
       },
-      "misserved_at_deletion": {},
-      "surface2_verified_at_deletion": {},
+      "misserved_at_deletion": {
+        "hide the project Beta": {
+          "claimed_action": "manage_portfolio",
+          "ruled_destination": "archive_project",
+          "router_route": "archive_project@0.95",
+          "note": "PORTFOLIO_PATTERNS' hide literal claimed this phrase as manage_portfolio, disagreeing with the ruled destination ('archive_project'), which is not a live op under the flag (the router's archive_project is not dispatched live). The pattern was serving this row WRONG, not merely redundantly. Surface 2 names hide_project 10/10, an alias of archive_project's rail entry since 510fc2aa66 (#2271 (b), Arch 2026-11-06 11:26), so the samples land only on the ruled destination's own entry (Arch's 11:49 exemption). See row_disposition's 'mis-serves this row' branch in scripts/inversion_phase3_deletion_gate.py."
+        }
+      },
+      "surface2_verified_at_deletion": {
+        "hide the project Beta": {
+          "probe_reports": [
+            "inversion-phase3-surface2-floor-probe-2026-11-06-n10-anthropic-2271-hide.md"
+          ],
+          "samples": "10/10 (anthropic leg)",
+          "served": [
+            "anthropic:claude-sonnet-4-6"
+          ],
+          "credited_under": "#2271, Arch 2026-11-06 11:13 bar (N=10, every sample the ruled destination's entry) through the 11:49 instrument exemption; GO for the deletion 14:09 (decisions.log)",
+          "landed": "EXECUTION/hide_project 10/10 (alias of archive_project's entry)"
+        }
+      },
       "shadowed_literals": {},
       "known_reabsorptions": {},
-      "note": "gate --list PORTFOLIO_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (partial) -- 15 load-bearing literal(s) SURVIVE, 0 HELD, deleting 1: ceiling 130 -> 129. Per PM/PPM ruling, the delete/remove/get-rid-of literals are named survivors until #1935 regardless of their own gate verdict; hide/put-away/add/new-project are held or survivors per the gate's own read ('new project' gained a claiming row via today's rule-10 deposit and is now a genuine FAIL/survivor, not HELD, as it was in the pre-deposit measurement). The ONLY deletable literal is the 'search projects for Y' form -- its own corpus row 'search projects for budget' (today's rule-10 deposit) is a plain live MATCH (search_projects, live via the read_portfolio group). 0 unexercised literals (rule 10 satisfied). Zero reabsorptions post-deletion (checked via claim_for_phrase, both entry surfaces). No rule-10(B) restores needed -- the two affected tests (test_pre_classifier.py::test_portfolio_patterns split off its own corpus-row phrase; test_subsumption_portfolio_write_family_1884.py's control-case probe swapped to a surviving literal) converted cleanly under rule 10(A), every decline confirmed empirically (no reabsorption, no production misroute). 2026-10-11 second partial deletion (Lead-dispatched; gate --list PORTFOLIO_PATTERNS, 13-token live set: GO (partial), 13 load-bearing/ruled literals SURVIVE (13 survivors after), deleting 1, ceiling 121 -> 120): the show/list/view-projects literal (the PORTFOLIO_LIST_PATTERN constant, #1738, removed with it; only comments referenced it) is deleted on its 10 rule-10 rows, each a plain live MATCH via group (list_projects: 'list my projects', 'show my projects', 'list all projects', 'view my projects'; list_archived_projects: 'list my archived projects', 'Please list my archived projects', 'show my archived projects', 'show archived projects', 'view my archived projects', 'list my archived projects (show all names)'), PLUS the #1884 two-topic row 'list my archived projects and summarize my current work' under planned_at_deletion (rule 11, ruled plan: PLAN[list_archived_projects->get_project_status]; surface 1 declines it, the legacy branch acknowledges the unanswered half). 'list my archive projects' is the surviving ARCHIVE literal's territory and is deliberately not in rows_claimed_at_deletion. The update/edit literals stay as RULED_SURVIVORS (#1933).",
+      "note": "gate --list PORTFOLIO_PATTERNS --live read_status,read_referent,read_synthesis,create_todo,create_reminder,read_strategic,read_temporal,delete_todo,read_floor,read_floor_2,read_canonical,read_portfolio,complete_todo: GO (partial) -- 15 load-bearing literal(s) SURVIVE, 0 HELD, deleting 1: ceiling 130 -> 129. Per PM/PPM ruling, the delete/remove/get-rid-of literals are named survivors until #1935 regardless of their own gate verdict; hide/put-away/add/new-project are held or survivors per the gate's own read ('new project' gained a claiming row via today's rule-10 deposit and is now a genuine FAIL/survivor, not HELD, as it was in the pre-deposit measurement). The ONLY deletable literal is the 'search projects for Y' form -- its own corpus row 'search projects for budget' (today's rule-10 deposit) is a plain live MATCH (search_projects, live via the read_portfolio group). 0 unexercised literals (rule 10 satisfied). Zero reabsorptions post-deletion (checked via claim_for_phrase, both entry surfaces). No rule-10(B) restores needed -- the two affected tests (test_pre_classifier.py::test_portfolio_patterns split off its own corpus-row phrase; test_subsumption_portfolio_write_family_1884.py's control-case probe swapped to a surviving literal) converted cleanly under rule 10(A), every decline confirmed empirically (no reabsorption, no production misroute). 2026-10-11 second partial deletion (Lead-dispatched; gate --list PORTFOLIO_PATTERNS, 13-token live set: GO (partial), 13 load-bearing/ruled literals SURVIVE (13 survivors after), deleting 1, ceiling 121 -> 120): the show/list/view-projects literal (the PORTFOLIO_LIST_PATTERN constant, #1738, removed with it; only comments referenced it) is deleted on its 10 rule-10 rows, each a plain live MATCH via group (list_projects: 'list my projects', 'show my projects', 'list all projects', 'view my projects'; list_archived_projects: 'list my archived projects', 'Please list my archived projects', 'show my archived projects', 'show archived projects', 'view my archived projects', 'list my archived projects (show all names)'), PLUS the #1884 two-topic row 'list my archived projects and summarize my current work' under planned_at_deletion (rule 11, ruled plan: PLAN[list_archived_projects->get_project_status]; surface 1 declines it, the legacy branch acknowledges the unanswered half). 'list my archive projects' is the surviving ARCHIVE literal's territory and is deliberately not in rows_claimed_at_deletion. The update/edit literals stay as RULED_SURVIVORS (#1933). 2026-11-06 third partial deletion (#2271; Arch's GO 14:09, decisions.log): the hide literal is deleted on its row 'hide the project Beta' under misserved_at_deletion + surface2_verified_at_deletion (surface 2 names hide_project 10/10, an alias of the ruled archive_project's entry). Gate --list PORTFOLIO_PATTERNS with the 13-token set read GO (partial), deleting 1, ceiling 89 -> 88. With the gate's current 15-token mirror (+ADD_PROJECT, +SET_DEFAULT_REPO) it also licenses the 'new project' literal; that one is not deleted here (outside Arch's GO, sent to him).",
       "planned_at_deletion": {
         "list my archived projects and summarize my current work": {
           "ops": [
