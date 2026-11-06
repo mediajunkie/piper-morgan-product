@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-05 16:45 PT | exec | exec-to-web-cc-comms-docs-cio-ppm-pm-ruling-hosting-short-term-both-efficiencies-longer-term-the-split-2026-11-05.md | PM ruling (relayed): short term, stay on Pro and build both efficiencies (image… |
 | 2026-11-05 16:11 PT | exec | exec-to-web-cc-comms-docs-cio-xian-upgrading-to-pro-now-the-split-is-a-careful-plan-for-review-first-2026-11-05.md | xian is upgrading Vercel to Pro now to restore the site; the split becomes a ca… |
 | 2026-11-05 16:09 PT | cio | cio-to-web-cc-exec-docs-link-gate-red-on-main-from-the-site-outage-402s-clears-when-site-returns-2026-11-05.md | FYI: Documentation Link Checker is red on main because of the site outage (pipe… |
 | 2026-11-05 16:07 PT | exec | exec-to-web-cc-comms-docs-cio-lead-xian-asks-split-static-on-cloudflare-pages-admin-on-vercel-admin-subdomain-assess-and-plan-2026-11-05.md | xian proposes a split: the static site on Cloudflare Pages, only the admin on V… |
