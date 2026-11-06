@@ -290,9 +290,16 @@ def _issue_title_from(intent: Intent) -> Optional[str]:
     return intent.context.get("issue_title") or intent.context.get("matched_issue_title")
 
 
-def build_confirmation_offer(intent: Intent) -> Optional[ConfirmationOffer]:
+def build_confirmation_offer(intent: Intent, words: Any = None) -> Optional[ConfirmationOffer]:
     """Build the confirmation question + pending-action record for a
     DESTRUCTIVE rail intent, or ``None`` to pass through to the handler.
+
+    ``words`` (#2304): the op's own ``write_confirm_words.ConfirmWords`` from its
+    rail entry. Every confirm other than close/reopen arms with them; the rail
+    reads them through ``resolve_write_ask`` and says CXO's "not sure" statement
+    (nothing armed) when the args name nothing, so this builder is never asked
+    to word an op it can't name. Asked anyway, it refuses (raises) rather than
+    arm a question that shows an op name or pass an unconfirmed write through.
 
     ``None`` is returned ONLY for the two verified read-only-clarification
     shapes (close/reopen with no parseable issue number — see the
@@ -317,18 +324,15 @@ def build_confirmation_offer(intent: Intent) -> Optional[ConfirmationOffer]:
         if repository:
             summary += f" in {repository}"
         question = f"{summary[0].upper()}{summary[1:]}? (yes/no)"
+    elif words is not None:
+        # #2304: the entry's own words (CXO's per-op line, the thing named).
+        summary = words.summary
+        question = words.question
     else:
-        # Generic carrier: a future destructive rail action lands here with a
-        # generic (but honest) question. Refine per-action summaries as
-        # consumers arrive.
-        # #1571 SHIPPED (2026-08-15): the drafted-issue binding is the
-        # carrier's second consumer — it builds its own record in
-        # services/intent_service/drafted_issue.py (kind "drafted_issue",
-        # armed at the #1510 collaborate turn, accepted via the same
-        # run_confirm_pending_action_workflow mirror), not through this
-        # builder, which stays destructive-classification-only.
-        summary = action.replace("_", " ")
-        question = f"Are you sure you want me to {summary}? (yes/no)"
+        raise ValueError(
+            f"#2304: no confirm words for {action!r}; the rail resolves the entry's "
+            "write_ask (or says the 'not sure' statement) before building a confirm"
+        )
 
     return ConfirmationOffer(
         question=question,

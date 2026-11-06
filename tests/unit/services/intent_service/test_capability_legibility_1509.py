@@ -307,12 +307,13 @@ class TestDiscoveryAnswerRenderPin:
 
 
 class TestGatePromptIsALegibilitySurface:
-    def test_check_copy_carries_the_derived_effect_phrase(self):
-        """The chain's last link: the consent check's copy embeds
-        describe_effect output — the gate's own prompt is capability
-        legibility (the synthesis's 'while intent forms' surface)."""
+    def test_check_copy_names_the_thing_not_the_effect_phrase(self):
+        """#2304 (CXO 11-06) replaced the effect phrase in the consent check's
+        copy: the check asks the op's own question naming what "yes" changes, in
+        the ordinary confirms' shape. Was: the copy embedded describe_effect()."""
         from services.domain.models import Intent
         from services.intent_service.consent_gate import build_consent_check_offer
+        from services.intent_service.write_confirm_words import ConfirmWords
         from services.shared_types import IntentCategory
 
         intent = Intent(
@@ -322,5 +323,10 @@ class TestGatePromptIsALegibilitySurface:
             original_message="the title of issue #108 ought to say Q3 roadmap",
             context={},
         )
-        offer = build_consent_check_offer(intent, EffectClass.WRITE)
-        assert legibility.describe_effect(EffectClass.WRITE) in offer.question
+        words = ConfirmWords(
+            question="Change the title of issue #108 in acme/roadmap? (yes/no)",
+            summary="change the title of issue #108 in acme/roadmap",
+        )
+        offer = build_consent_check_offer(intent, words)
+        assert offer.question.endswith("\n\n" + words.question)  # CXO: the question last
+        assert legibility.describe_effect(EffectClass.WRITE) not in offer.question

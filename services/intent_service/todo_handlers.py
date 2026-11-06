@@ -1723,16 +1723,25 @@ class TodoIntentHandlers:
         # depending on how the Intent was created (Issue #744)
         original_message = intent.original_message or intent.context.get("original_message", "")
 
+        from services.intent_service.write_confirm_words import bound_write_values
+
+        # #2304 (Arch 11-06 13:23): a confirmed "yes" writes the title its question
+        # showed, bound at ask time; no second extraction.
+        bound_text = bound_write_values(intent, "create_todo").get("text")
+        items = [] if bound_text else self._router_todo_items(intent, original_message)
         # #2094: a LIST of titles from the router ("Add three todos …: a, b, c")
         # makes one todo per element; code never splits a string.
-        items = self._router_todo_items(intent, original_message)
         if len(items) >= 2:
             return await self._create_todos_from_items(items, session_id, user_id, original_message)
 
         # #1976: the router's extracted text first ('add a todo to X' → X), the
         # regex extractor as the fallback for every other path. #2094/#2095: a
         # single router title wins over the regex; a leading "to " is dropped.
-        text = (items[0] if items else "") or self._router_todo_text(intent, original_message)
+        text = (
+            bound_text
+            or (items[0] if items else "")
+            or self._router_todo_text(intent, original_message)
+        )
         if not text:
             # The regex fallback only: a router title is never stripped (Arch, #2094).
             text = self._strip_leading_to(self._extract_todo_text(original_message))
@@ -1860,8 +1869,14 @@ class TodoIntentHandlers:
 
         original_message = intent.original_message or intent.context.get("original_message", "")
 
+        from services.intent_service.write_confirm_words import bound_write_values
+
+        # #2304 (Arch 11-06 13:23): a confirmed "yes" writes the task and the time its
+        # question showed, bound at ask time; no second extraction or parse.
+        bound = bound_write_values(intent, "create_reminder")
+
         # Extract reminder text (strip "remind me to/about", "set a reminder to", etc.)
-        text = self._extract_reminder_text(original_message)
+        text = bound.get("text") or self._extract_reminder_text(original_message)
         if not text:
             # #1654: the no-task clarify is #1648's class one question
             # earlier — it must ARM the task-question carrier so the answer
@@ -1890,7 +1905,13 @@ class TodoIntentHandlers:
         from services.utils.user_timezone import get_user_timezone
 
         user_tz = await get_user_timezone(user_id)
-        reminder_dt, time_label = parse_reminder_time(original_message, user_timezone=user_tz)
+        if bound.get("when_at") and bound.get("when"):
+            from datetime import datetime
+
+            reminder_dt: Optional[Any] = datetime.fromisoformat(bound["when_at"])
+            time_label = bound["when"]
+        else:
+            reminder_dt, time_label = parse_reminder_time(original_message, user_timezone=user_tz)
 
         # Issue #1490 invariant: parse_reminder_time returns None ONLY when
         # the message carried an explicit clock time it couldn't bind (e.g.

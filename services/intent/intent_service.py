@@ -13819,6 +13819,13 @@ class IntentService:
                 slots=slots,
             )
             title = title or slots.get("title")
+            from services.intent_service.write_confirm_words import bound_write_values
+
+            # #2304 (Arch 11-06 13:23): a confirmed "yes" creates the title in the repo
+            # its question showed, bound at ask time; no second extraction or strip.
+            _bound_issue = bound_write_values(intent, "create_issue")
+            if _bound_issue:
+                title = _bound_issue["title"]
             # #1543 REWORK (PM live 2026-08-29, v64): the raw-capture MOVED
             # — with the garbage fallback TITLE gone, the old
             # `or intent.original_message` fallback here shipped the raw
@@ -13833,6 +13840,8 @@ class IntentService:
                 or intent.context.get("repo")
                 or slots.get("repository")
             )
+            if _bound_issue:
+                repository = _bound_issue["repository"]
 
             # #1641: natural "in the X repository" phrasing — the SAME
             # extraction the #1567 answers use — now resolves on the create
@@ -13941,7 +13950,7 @@ class IntentService:
             # routing, not subject — strip it. A phrase naming anything
             # else ("…timeout in production") stays untouched: we don't
             # guess which bare nouns are repos.
-            if title:
+            if title and not _bound_issue:
                 from services.intent_service.repo_clarification import (
                     strip_repo_phrase_for,
                 )
@@ -14635,6 +14644,19 @@ class IntentService:
             state = intent.context.get("state")
             labels = intent.context.get("labels")
             assignees = intent.context.get("assignees")
+            from services.intent_service.write_confirm_words import bound_write_values
+
+            # #2304 (Arch 11-06 13:23): a confirmed "yes" changes exactly the issue,
+            # repo and fields its question showed, bound at ask time.
+            _bound_update = bound_write_values(intent, "update_issue")
+            if _bound_update:
+                issue_number = _bound_update["issue_number"]
+                repository = _bound_update["repository"]
+                title = _bound_update.get("title")
+                body = _bound_update.get("body")
+                state = _bound_update.get("state")
+                labels = _bound_update.get("labels")
+                assignees = _bound_update.get("assignees")
 
             # Issue #1066: Fall back to parsing #N from original_message if LLM
             # extraction didn't populate issue_number. Matches the pattern
@@ -20261,47 +20283,23 @@ Add any additional information here.
                         ),
                     )
                 _confirmation = _cr_gate.offer
-            elif _floor_write and _rail_entry is _action_workflows.get("complete_todo"):
-                # #2219 row 3: complete is WRITE, so it reaches this branch only on a
-                # marked turn. It names the one row it would complete (CXO's
-                # 'Mark "x" as done? (yes/no)'), or picks over the shown list, or says
-                # it can't tell. Rail-entry identity, as the consent branch's
-                # complete_todo check below.
-                from services.intent_service.floor_write_ask import (
-                    build_floor_write_complete_ask,
-                )
-
-                _complete_ask = await build_floor_write_complete_ask(
-                    intent,
-                    message,
-                    self.todo_handlers,
-                    _coerce_todo_principal(_consent_user),
-                    _consent_user,
-                    session_id,
-                    self.workflow_offer_service,
-                )
-                if _complete_ask.reply is not None:
-                    return _RailOutcome(
-                        on_rail=True,
-                        armed=_complete_ask.armed,
-                        result=IntentProcessingResult(
-                            success=True,
-                            message=_complete_ask.reply,
-                            intent_data={
-                                "category": intent.category.value,
-                                "action": intent.action,
-                                "confidence": intent.confidence,
-                                "floor_category_write": True,
-                                **(_complete_ask.intent_data or {}),
-                            },
-                            requires_clarification=_complete_ask.armed,
-                            suggestions=all_suggestions,
-                            preferences=preferences,
-                        ),
-                    )
-                _confirmation = _complete_ask.offer
             else:
-                _confirmation = build_confirmation_offer(intent)
+                # #2304 (Arch 11-06 11:38): every other write asks in its rail
+                # entry's own words (WorkflowEntry.write_ask), the thing named, or
+                # says CXO's "not sure" statement with nothing armed. complete's
+                # #2219 builder is its entry's write_ask; no per-op branch here.
+                _write_ask = await self._resolve_rail_write_ask(
+                    _rail_entry, intent, message, _consent_user, session_id, user_id
+                )
+                if _write_ask.reply is not None:
+                    return self._rail_write_ask_reply(
+                        intent, _write_ask, _floor_write, all_suggestions, preferences
+                    )
+                _confirmation = (
+                    build_confirmation_offer(intent, _write_ask.words)
+                    if _write_ask.words is not None
+                    else None  # passthrough: the op asks or declines on its own
+                )
             if _confirmation is not None:
                 self.workflow_offer_service.set_pending_offer(
                     session_id, _confirmation.offer, user_id=user_id
@@ -20370,75 +20368,25 @@ Add any additional information here.
             # since every complete_todo alias (finish_todo/mark_complete/
             # mark_done) shares the one registered entry object.
             _is_complete_todo_turn = _rail_entry is _action_workflows.get("complete_todo")
-            # #2082 (Arch's ruling 2026-10-18, agreeing with CXO 08:27): a
-            # consent check asks the person to approve a SPECIFIC write. A
-            # held add_project turn with no name ("I'd like to start a new
-            # project") has no write to approve — the served "yes" consented
-            # to nothing and the turn after it was a dead end. So, like the
-            # delete-todo and unlink builders (resolve before arming), the
-            # rail asks for the NAME first, in the #2080 carrier's words, and
-            # writes ``consent_owed`` into the carrier's payload from this
-            # verdict; the named turn then arms the one confirm (the consent)
-            # instead of writing. PROCEED (an imperative, or direct mode)
-            # and name-bearing turns are unchanged. Entry identity, never a
-            # bare action-string allowlist (the complete_todo precedent).
-            _is_add_project_turn = _rail_entry is _action_workflows.get("add_project")
-            _add_project_unnamed = False
-            if _is_add_project_turn:
-                from services.onboarding.portfolio_service import (
-                    resolve_add_project_slots as _resolve_add_slots,
-                )
-
-                _add_slots = _resolve_add_slots(
-                    (intent.context or {}).get("original_message") or message,
-                    (intent.context or {}).get("inversion_args"),
-                )
-                _add_project_unnamed = not _add_slots.get("name")
+            _held_ask: Any = None
             if _is_complete_todo_turn and is_clear_family_passthrough(message):
                 pass  # fall through to dispatch_workflow; run_complete_todo_workflow's
                 # own maybe_handle_clear_family seam (candidate effect WRITE) claims it.
-            elif _add_project_unnamed:
-                from services.intent_service.add_project_clarify import (
-                    ADD_PROJECT_ACCEPT_NAME_QUESTION as _add_name_q,
-                )
-                from services.intent_service.add_project_clarify import (
-                    build_add_project_name_offer as _build_add_name_offer,
-                )
-
-                _name_offer = _build_add_name_offer(
-                    (intent.context or {}).get("original_message") or message,
-                    user_id,
-                    question=_add_name_q,
-                    consent_owed=True,
-                )
-                self.workflow_offer_service.set_pending_offer(
-                    session_id, _name_offer, user_id=user_id
-                )
-                self.logger.info(
-                    "add_project_name_asked_before_consent",
-                    action=intent.action,
-                    session_id=session_id,
-                )
-                return _RailOutcome(
-                    on_rail=True,
-                    armed=True,
-                    result=IntentProcessingResult(
-                        success=True,
-                        message=_add_name_q,
-                        intent_data={
-                            "category": intent.category.value,
-                            "action": "add_project_needs_name",
-                            "confidence": intent.confidence,
-                            "add_project_name_question_pending": True,
-                            "consent_owed": True,
-                        },
-                        requires_clarification=True,
-                        suggestions=all_suggestions,
-                        preferences=preferences,
-                    ),
-                )
             elif not _collab_gate.is_draft_collaboration_action(intent.action):
-                _check = _consent.build_consent_check_offer(intent, _rail_entry.effect)
+                # #2304: the check asks in the entry's own words (the thing
+                # named), or says CXO's "not sure" statement with nothing armed.
+                # #2082 lives in add_project's write_ask: a held add with no name
+                # asks for the name on the #2080 carrier (consent_owed) and never
+                # arms a yes for an add with no name.
+                _held_ask = await self._resolve_rail_write_ask(
+                    _rail_entry, intent, message, _consent_user, session_id, user_id
+                )
+                if _held_ask.reply is not None:
+                    return self._rail_write_ask_reply(
+                        intent, _held_ask, False, all_suggestions, preferences
+                    )
+            if _held_ask is not None and _held_ask.words is not None:
+                _check = _consent.build_consent_check_offer(intent, _held_ask.words)
                 self.workflow_offer_service.set_pending_offer(
                     session_id, _check.offer, user_id=user_id
                 )
@@ -20522,6 +20470,65 @@ Add any additional information here.
         dispatched.preferences = preferences
         # Issue #844: Apply soft invocation to all handler paths
         return _RailOutcome(on_rail=True, result=dispatched, apply_soft_offer=True)
+
+    async def _resolve_rail_write_ask(
+        self,
+        entry: Any,
+        intent: Intent,
+        message: str,
+        principal: Optional[str],
+        session_id: Optional[str],
+        user_id: Optional[str],
+    ) -> Any:
+        """#2304: the rail entry's own write ask (write_confirm_words)."""
+        from services.intent_service.write_confirm_words import (
+            WriteAskRequest,
+            resolve_write_ask,
+        )
+
+        return await resolve_write_ask(
+            entry,
+            WriteAskRequest(
+                intent=intent,
+                message=message,
+                intent_service=self,
+                principal=principal,
+                session_id=session_id,
+                user_id=user_id,
+            ),
+        )
+
+    @staticmethod
+    def _rail_write_ask_reply(
+        intent: Intent,
+        ask: Any,
+        floor_write: bool,
+        all_suggestions: Any,
+        preferences: Any,
+    ) -> "_RailOutcome":
+        """#2304: a write ask that says something instead of arming a yes/no: CXO's
+        "not sure" statement (nothing armed), or a question the builder armed on its
+        own carrier (complete's pick, add_project's name question)."""
+        intent_data: Dict[str, Any] = {
+            "category": intent.category.value,
+            "action": intent.action,
+            "confidence": intent.confidence,
+        }
+        if floor_write:
+            intent_data["floor_category_write"] = True
+        intent_data.update(ask.intent_data or {})
+        return _RailOutcome(
+            on_rail=True,
+            armed=ask.armed,
+            result=IntentProcessingResult(
+                success=True,
+                message=ask.reply,
+                intent_data=intent_data,
+                requires_clarification=ask.armed,
+                suggestions=all_suggestions,
+                preferences=preferences,
+            ),
+        )
 
     @staticmethod
     def _rail_read_failed_result(intent: Intent, entry: Any) -> Optional["IntentProcessingResult"]:

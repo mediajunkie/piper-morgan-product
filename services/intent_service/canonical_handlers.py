@@ -5171,9 +5171,13 @@ What would you like to set up first?"""
         original_message = intent.context.get("original_message", "")
         message_lower = original_message.lower().strip()
 
-        project_name = None
+        from services.intent_service.write_confirm_words import bound_write_values
+
+        # #2304 (Arch 11-06 13:23): a confirmed "yes" writes the name its question
+        # showed, bound at ask time; no second extraction.
+        project_name = bound_write_values(intent, "archive_project").get("name")
         capture_span = None
-        for pattern in ARCHIVE_PATTERNS:
+        for pattern in ARCHIVE_PATTERNS if project_name is None else ():
             match = re.search(pattern, message_lower, re.IGNORECASE)
             if match:
                 project_name = (
@@ -5276,8 +5280,12 @@ What would you like to set up first?"""
         original_message = intent.context.get("original_message", "")
         message_lower = original_message.lower().strip()
 
-        project_name = None
-        for pattern in RESTORE_PATTERNS:
+        from services.intent_service.write_confirm_words import bound_write_values
+
+        # #2304 (Arch 11-06 13:23): a confirmed "yes" writes the name its question
+        # showed, bound at ask time; no second extraction.
+        project_name = bound_write_values(intent, "restore_project").get("name")
+        for pattern in RESTORE_PATTERNS if project_name is None else ():
             match = re.search(pattern, message_lower, re.IGNORECASE)
             if match:
                 project_name = (
@@ -5486,6 +5494,7 @@ What would you like to set up first?"""
         user_id: Optional[str] = None,
         intent_service=None,
         router_args: Optional[Dict[str, Any]] = None,
+        bound_name: Optional[str] = None,
     ) -> Dict:
         """Add a project, consuming whatever the initiating utterance carried.
 
@@ -5563,7 +5572,9 @@ What would you like to set up first?"""
         # shared with the consent line (consent_gate._summary_for via
         # display_name_for), so the check names what this writes.
         slots = resolve_add_project_slots(original_message, router_args)
-        name = slots["name"]
+        # #2304 (Arch 11-06 13:23): a confirmed "yes" adds the name its question
+        # showed, bound at ask time (``bound_name``); never a second extraction.
+        name = bound_name or slots["name"]
         repo_name = slots["repo"]
         description: Optional[str] = slots["description"]
         description_asked = bool(slots["description_asked"])

@@ -14,6 +14,7 @@ from typing import Any, Dict, Optional
 import structlog
 
 from services.intent_service import workflow_dispatcher as _workflow_dispatcher
+from services.intent_service import write_confirm_words as _words
 from services.intent_service.add_project_clarify import (
     run_clarify_add_project_confirm_workflow,
     run_clarify_add_project_name_workflow,
@@ -24,6 +25,7 @@ from services.intent_service.delete_todo_pick import (
     PICK_PENDING_FLAG,
     run_clarify_delete_todo_pick_workflow,
 )
+from services.intent_service.floor_write_ask import complete_todo_write_ask
 from services.intent_service.milestone_pick import (
     run_clarify_milestone_pick_workflow,
 )
@@ -2597,6 +2599,7 @@ archive_project_entry = WorkflowEntry(
     ),
     requires_context=["intent", "intent_service"],
     action_triggered=True,
+    write_ask=_words.archive_project_write_ask,  # #2304
     flip_write_allowlist_key="archive_project",
 )
 
@@ -2639,6 +2642,7 @@ restore_project_entry = WorkflowEntry(
     ),
     requires_context=["intent", "intent_service"],
     action_triggered=True,
+    write_ask=_words.restore_project_write_ask,  # #2304
     flip_write_allowlist_key="restore_project",
 )
 
@@ -2685,6 +2689,8 @@ async def run_add_project_workflow(
         user_id=user_id,
         intent_service=intent_service,
         router_args=router_args if isinstance(router_args, dict) else None,
+        # #2304: the name a confirmed "yes" showed, bound at ask time.
+        bound_name=_words.bound_write_values(intent, "add_project").get("name"),
     )
     return await _finalize_canonical_rail_result(
         intent_service, intent, result, session_id, user_id
@@ -2702,6 +2708,7 @@ add_project_entry = WorkflowEntry(
     ),
     requires_context=["intent", "intent_service"],
     action_triggered=True,
+    write_ask=_words.add_project_write_ask,  # #2304
     flip_write_allowlist_key="add_project",
 )
 
@@ -2805,6 +2812,7 @@ link_repo_entry = WorkflowEntry(
     ),
     requires_context=["intent", "intent_service"],
     action_triggered=True,
+    write_ask=_words.link_repo_write_ask,  # #2304
     flip_write_allowlist_key="link_repo",
 )
 
@@ -2973,6 +2981,7 @@ def register_default_workflows() -> None:
         description="Document update via slot-filling (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.update_document_write_ask,  # #2304
     )
 
     # #1124 cohort 1 migration #3: changes-query — dispatch migration. The four
@@ -3050,6 +3059,7 @@ def register_default_workflows() -> None:
         description="Update-issue via action dispatch (#1411)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.update_issue_write_ask,  # #2304
     )
     # #1412: create_issue onto the rail (same mode-4 gap as #1411; the live primary
     # write path). _handle_create_issue takes (intent, workflow_id, session_id, user_id),
@@ -3069,6 +3079,7 @@ def register_default_workflows() -> None:
         description="Create-issue via action dispatch (#1412)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.create_issue_write_ask,  # #2304
     )
     # effect: DESTRUCTIVE (#1190, PM ruling decisions.log 2026-08-10 ~10:55) —
     # _handle_reopen_issue_query calls
@@ -3219,6 +3230,7 @@ def register_default_workflows() -> None:
         description="Set-default-repo via action dispatch (#1327)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.set_default_repo_write_ask,  # #2304
         flip_write_allowlist_key="set_default_repo",
     )
 
@@ -3284,6 +3296,7 @@ def register_default_workflows() -> None:
         description="Create-reminder via action dispatch (#1560)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.create_reminder_write_ask,  # #2304
         flip_write_allowlist_key="create_reminder",
     )
 
@@ -3348,6 +3361,7 @@ def register_default_workflows() -> None:
         description="Create-todo via action dispatch (#1685)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.create_todo_write_ask,  # #2304
         flip_write_allowlist_key="create_todo",
     )
 
@@ -3536,6 +3550,7 @@ def register_default_workflows() -> None:
         ),
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=complete_todo_write_ask,  # #2304
         flip_write_allowlist_key="complete_todo",
     )
 
@@ -3713,6 +3728,7 @@ def register_default_workflows() -> None:
         description="Set-timezone via action dispatch (#1876)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.set_timezone_write_ask,  # #2304
     )
 
     # #1333 (Arch-ruled 2026-06-30): the former per-action unwired-write registration

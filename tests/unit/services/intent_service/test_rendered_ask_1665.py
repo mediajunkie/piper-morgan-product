@@ -80,7 +80,14 @@ from services.intent_service.verified_inference import (
     VERIFY_INFERENCE_KIND,
     build_read_back_offer,
 )
+from services.intent_service.write_confirm_words import ConfirmWords
 from services.shared_types import EffectClass, IntentCategory
+
+# #2304: a consent check is built from the op's own words (write_confirm_words).
+_UPDATE_WORDS = ConfirmWords(
+    question="Change the title of issue #108 in acme/roadmap? (yes/no)",
+    summary="change the title of issue #108 in acme/roadmap",
+)
 
 _USER = "3f7b8a52-1665-4b00-9e00-000000001665"
 _SESSION = "sess-1665-rendered-ask"
@@ -157,7 +164,7 @@ class TestBuilderCarriedAsks:
 
     def test_consent_check_stores_its_question(self):
         offer = build_consent_check_offer(
-            _intent("update issue #108", "update_issue"), EffectClass.WRITE
+            _intent("update issue #108", "update_issue"), _UPDATE_WORDS
         )
         assert offer.offer["question"] == offer.question
         assert "(yes/no)" in offer.question
@@ -632,7 +639,7 @@ class TestIsConfirmKindTable:
 
     def test_consent_check_true(self):
         offer = build_consent_check_offer(
-            _intent("update issue #108", "update_issue"), EffectClass.WRITE
+            _intent("update issue #108", "update_issue"), _UPDATE_WORDS
         ).offer
         assert offer_is_confirm(offer) is True
 

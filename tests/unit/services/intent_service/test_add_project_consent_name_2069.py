@@ -115,12 +115,24 @@ class TestConsentLineNamesTheStoredName:
         stored = await _stored_name(intent)
         assert named == stored == "Baz"
 
-    def test_the_check_question_asks_about_baz_not_the_whole_tail(self):
-        offer = consent_gate.build_consent_check_offer(_intent(BAZ, BAZ_ARGS), EffectClass.WRITE)
-        assert "asking me to add project Baz," in offer.question
+    @pytest.mark.asyncio
+    async def test_the_check_question_asks_about_baz_not_the_whole_tail(self):
+        # #2304: the check asks in add_project's own words (CXO's existing confirm),
+        # named by the same resolver. Was "...asking me to add project Baz, ...".
+        from services.intent_service.write_confirm_words import (
+            WriteAskRequest,
+            add_project_write_ask,
+        )
+
+        intent = _intent(BAZ, BAZ_ARGS)
+        ask = await add_project_write_ask(WriteAskRequest(intent=intent, message=BAZ))
+        offer = consent_gate.build_consent_check_offer(intent, ask.words)
+        assert offer.question.endswith('Add a project called "Baz"? (yes/no)')
         assert "with description" not in offer.question
-        assert offer.offer["pending_action"]["summary"] == "add project Baz"
-        assert offer.offer["decline_message"].startswith("Okay — I won't add project Baz.")
+        assert offer.offer["pending_action"]["summary"] == 'add a project called "Baz"'
+        assert offer.offer["decline_message"].startswith(
+            'Okay — I won\'t add a project called "Baz".'
+        )
 
     @pytest.mark.asyncio
     async def test_router_name_with_repo_clause_matches(self):

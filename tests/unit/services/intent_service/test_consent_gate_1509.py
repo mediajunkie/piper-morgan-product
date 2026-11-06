@@ -702,13 +702,33 @@ class TestFramingGeneralization:
 
 
 def _update_intent(message=AMBIGUOUS_UPDATE):
+    # #2304: the check names what "yes" changes from the intent's own slots, so the
+    # held update carries its repository and field (CXO: no slots, no question).
     return Intent(
         category=IntentCategory.QUERY,
         action="update_issue",
         confidence=0.85,
         original_message=message,
-        context={"original_message": message},
+        context={"original_message": message, "repository": "acme/roadmap", "title": "Q3 roadmap"},
     )
+
+
+UPDATE_QUESTION = "Change the title of issue #108 in acme/roadmap? (yes/no)"
+
+
+def _update_words():
+    import asyncio
+
+    from services.intent_service.write_confirm_words import (
+        WriteAskRequest,
+        update_issue_write_ask,
+    )
+
+    intent = _update_intent()
+    ask = asyncio.run(
+        update_issue_write_ask(WriteAskRequest(intent=intent, message=AMBIGUOUS_UPDATE))
+    )
+    return ask.words
 
 
 class TestConsentCheckOffer:
@@ -716,7 +736,7 @@ class TestConsentCheckOffer:
         """No parallel store, no parallel acceptance: the check IS a
         confirm_pending_action offer — 'yes' re-dispatches the ORIGINAL
         intent through the existing entry point."""
-        offer = cg.build_consent_check_offer(_update_intent(), EffectClass.WRITE)
+        offer = cg.build_consent_check_offer(_update_intent(), _update_words())
         assert offer.offer["workflow_type"] == CONFIRM_PENDING_ACTION_WORKFLOW
         pa = offer.offer["pending_action"]
         assert pa["action"] == "update_issue"
@@ -724,19 +744,21 @@ class TestConsentCheckOffer:
         assert pa["kind"] == cg.CONSENT_CHECK_KIND
 
     def test_check_is_legible_names_action_effect_and_asks(self):
-        """#1509 AC-5: the transcript shows a check happened — the copy names
-        the action in plain words, states its effect tier (derived), and asks
-        one clear question."""
-        from services.intent_service.capability_legibility import describe_effect
-
-        offer = cg.build_consent_check_offer(_update_intent(), EffectClass.WRITE)
-        assert "update issue #108" in offer.question
-        assert describe_effect(EffectClass.WRITE) in offer.question
-        assert "(yes/no)" in offer.question
+        """#1509 AC-5, reworded by #2304 (CXO 11-06): the check asks one clear
+        question naming what "yes" changes, in the ordinary confirms' shape; it
+        never shows the op name. (Was: "Quick check ... asking me to update issue
+        #108, which {effect}" — the op name and the effect phrase.)"""
+        offer = cg.build_consent_check_offer(_update_intent(), _update_words())
+        assert offer.question.endswith("\n\n" + UPDATE_QUESTION)  # CXO: the question last
+        assert "update issue" not in offer.question
+        assert "update_issue" not in offer.question
 
     def test_decline_copy_is_honest_cancel(self):
-        offer = cg.build_consent_check_offer(_update_intent(), EffectClass.WRITE)
-        assert "won't update issue #108" in offer.offer["decline_message"]
+        offer = cg.build_consent_check_offer(_update_intent(), _update_words())
+        assert offer.offer["decline_message"] == (
+            "Okay — I won't change the title of issue #108 in acme/roadmap. "
+            "Nothing has been changed."
+        )
         assert "Nothing has been changed" in offer.offer["decline_message"]
 
     def test_taught_graduation_phrase_actually_routes(self):
@@ -744,7 +766,7 @@ class TestConsentCheckOffer:
         teaches exactly one phrase, and the #1510 declaration surface catches
         it deterministically (layer: the deterministic declaration detector,
         which runs before any routing — the surface the phrase targets)."""
-        offer = cg.build_consent_check_offer(_update_intent(), EffectClass.WRITE)
+        offer = cg.build_consent_check_offer(_update_intent(), _update_words())
         taught = "just do things directly from now on"
         assert taught in offer.question
         assert detect_mode_declaration(taught) is WorkingMode.EXECUTE
@@ -898,7 +920,7 @@ class TestEndToEndConsentCheck:
         assert result.intent_data.get("consent_check_pending") is True
         assert result.intent_data.get("consent_effect") == "write"
         assert result.requires_clarification is True
-        assert "(yes/no)" in result.message
+        assert result.message.endswith(UPDATE_QUESTION)  # #2304: the thing named
         stored = _pending_offers(live_service).get(sid)
         assert stored is not None
         assert stored["workflow_type"] == CONFIRM_PENDING_ACTION_WORKFLOW
@@ -940,7 +962,7 @@ class TestEndToEndConsentCheck:
         live_service._handle_update_issue = _explosive_handler
         await live_service.process_intent(message=AMBIGUOUS_UPDATE, session_id=sid, user_id=_USER)
         result = await live_service.process_intent(message="no", session_id=sid, user_id=_USER)
-        assert "won't update issue #108" in result.message
+        assert "won't change the title of issue #108 in acme/roadmap" in result.message
         assert "Nothing has been changed" in result.message
         assert _pending_offers(live_service).get(sid) is None
 
@@ -1141,13 +1163,16 @@ class TestEndToEndOutwardness:
         assert result.intent_data.get("consent_disclosure") is True
         assert result.intent_data.get("consent_outwardness") == "outward"
 
-    async def test_outward_ambiguous_under_default_mode_same_ask_as_today(
+    async def test_outward_ambiguous_under_default_mode_holds_and_names_nothing(
         self, live_service, mem_prefs
     ):
-        """OUTWARD x WRITE x ambiguous x collaborate mode: exactly today's
-        consent check — held turn, yes/no question, pending offer in the
-        #846 store, handler untouched. The axis added a disclosure to trust
-        mode; it changed NOTHING about the default mode's ask."""
+        """OUTWARD x WRITE x ambiguous x collaborate mode: the turn is held, the
+        handler untouched, no disclosure. #2304 (CXO 11-06): comment_issue finds
+        its text with an LLM call inside the handler, so its args can't name the
+        comment before "yes"; the hold says CXO's "not sure" statement and arms
+        nothing. (Was: the generic "Quick check ... comment issue #5" yes/no.)"""
+        from services.intent_service.write_confirm_words import NOT_SURE_STATEMENT
+
         sid = "e2e-1509-outward-default"
         _stub_classifier(live_service, _comment_intent())
 
@@ -1159,13 +1184,9 @@ class TestEndToEndOutwardness:
         result = await live_service.process_intent(
             message=AMBIGUOUS_COMMENT, session_id=sid, user_id=_USER
         )
-        assert result.intent_data.get("consent_check_pending") is True
-        assert "(yes/no)" in result.message
+        assert result.message == NOT_SURE_STATEMENT
         assert DISCLOSURE_MARKER not in result.message
-        stored = _pending_offers(live_service).get(sid)
-        assert stored is not None
-        assert stored["workflow_type"] == CONFIRM_PENDING_ACTION_WORKFLOW
-        assert stored["pending_action"]["action"] == "comment_issue"
+        assert _pending_offers(live_service).get(sid) is None
 
     async def test_outward_imperative_under_trust_mode_discloses(self, live_service, mem_prefs):
         """OUTWARD x WRITE x execute framing x declared trust mode: proceeds
@@ -1248,17 +1269,18 @@ class TestEndToEndOutwardness:
         consent check never suppresses the NEXT check — the identical
         outward-ambiguous request is checked again in full (consent is
         per-action-instance; decline memory suppresses preference re-asks,
-        never safety gates)."""
+        never safety gates). #2304: driven with a held update the args can name
+        (a held comment's text can't be named before "yes", so it never arms)."""
         sid = "e2e-1509-decline-rearm"
-        _stub_classifier(live_service, _comment_intent())
+        _stub_classifier(live_service, _update_intent())
 
         async def _explosive_handler(*a, **k):
             raise AssertionError("declined-then-repeated request must never execute unchecked")
 
-        live_service._handle_comment_issue_query = _explosive_handler
+        live_service._handle_update_issue = _explosive_handler
 
         first = await live_service.process_intent(
-            message=AMBIGUOUS_COMMENT, session_id=sid, user_id=_USER
+            message=AMBIGUOUS_UPDATE, session_id=sid, user_id=_USER
         )
         assert first.intent_data.get("consent_check_pending") is True
         declined = await live_service.process_intent(message="no", session_id=sid, user_id=_USER)
@@ -1266,9 +1288,9 @@ class TestEndToEndOutwardness:
         assert _pending_offers(live_service).get(sid) is None
         # The identical request again: checked again, not remembered-declined
         # into silence, and NOT executed.
-        _stub_classifier(live_service, _comment_intent())
+        _stub_classifier(live_service, _update_intent())
         second = await live_service.process_intent(
-            message=AMBIGUOUS_COMMENT, session_id=sid, user_id=_USER
+            message=AMBIGUOUS_UPDATE, session_id=sid, user_id=_USER
         )
         assert second.intent_data.get("consent_check_pending") is True
         assert _pending_offers(live_service).get(sid) is not None

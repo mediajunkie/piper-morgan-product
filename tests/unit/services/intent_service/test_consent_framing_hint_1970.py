@@ -227,8 +227,10 @@ class ScriptedLLM:
 def _update_intent(message=AMBIGUOUS_UPDATE, framing_hint=None):
     """A PRIVATE-WRITE rail Intent (update_issue), optionally carrying the
     #1970 context hint — same shape _update_intent() uses in
-    test_consent_gate_1509.py, extended with the hint."""
-    context = {"original_message": message}
+    test_consent_gate_1509.py, extended with the hint. #2304: it carries the
+    repository and field slots so the held check can name what "yes" changes
+    (with no slots the hold says the "not sure" statement and arms nothing)."""
+    context = {"original_message": message, "repository": "acme/roadmap", "title": "Q3 roadmap"}
     if framing_hint is not None:
         context["inversion_framing"] = framing_hint
     return Intent(

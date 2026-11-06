@@ -14,7 +14,7 @@ to the offer map but never wired to real handlers.
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Callable, Coroutine, Dict, Optional
+from typing import Any, Awaitable, Callable, Coroutine, Dict, Optional
 
 import structlog
 
@@ -602,6 +602,12 @@ class WorkflowEntry:
     # alias principle (input-side only) applied to a whole entry. A hidden entry
     # cannot hold a flip group: a flip group means the ROUTER may dispatch it.
     router_visible: bool = True
+    # #2304 (Arch 11-06 11:38): the words a write's yes/no says, built from this
+    # op's own args (write_confirm_words.WriteAskBuilder). Read by the #1509 consent
+    # check and the #1190 generic confirm through write_confirm_words.
+    # resolve_write_ask. None, or a builder whose args name nothing, gets CXO's
+    # "not sure" statement with nothing armed: an op name is never shown.
+    write_ask: Optional[Callable[..., Awaitable[Any]]] = None
 
     def __post_init__(self) -> None:
         """Reject an unrepresentable flip declaration LOUDLY, at construction.
