@@ -37,6 +37,8 @@ last_verified: "2026-10-27"
 - Resolve complex technical conflicts
 - Maintain architectural integrity across epics
 
+**GitHub criteria line** (the tick's third work queue, beside mail and standing items): `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open`. Work is any issue new or updated since the last fire. Open each one and read it, rather than ruling from the list. An empty result, or no change since the last fire, means this queue is drained.
+
 **Decision Authority**:
 - Pattern standardization (router, spatial, plugin)
 - Technology choices and constraints
