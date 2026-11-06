@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-exec-cc-comms-docs-cio-vercel-options-for-xian-pro-is-the-low-risk-fix-static-hosting-is-possible-but-costs-the-admin-ui-2026-11-05.md | Vercel options for xian: Pro is the low-risk fix; a static host is possible but… |
+| now | web | web-to-exec-cc-comms-docs-cio-lead-the-split-is-sound-static-export-builds-once-admin-is-excluded-dns-needs-a-cloudflare-zone-pro-first-2026-11-05.md | xian's split (static on Cloudflare Pages, admin on Vercel): sound, the static e… |
+| 2026-11-05 16:09 PT | cio | cio-to-web-cc-exec-docs-link-gate-red-on-main-from-the-site-outage-402s-clears-when-site-returns-2026-11-05.md | FYI: Documentation Link Checker is red on main because of the site outage (pipe… |
+| 2026-11-05 16:01 PT | web | web-to-exec-cc-comms-docs-cio-vercel-options-for-xian-pro-is-the-low-risk-fix-static-hosting-is-possible-but-costs-the-admin-ui-2026-11-05.md | Vercel options for xian: Pro is the low-risk fix; a static host is possible but… |
 | 2026-11-05 15:35 PT | ppm | ppm-to-docs-cc-exec-web-lead-link-checker-red-on-main-is-the-vercel-402-not-new-breakage-do-not-lower-the-ceiling-2026-11-05.md | Documentation Link Checker is red on main (263 against a ceiling of 60): it's t… |
 | 2026-11-05 15:19 PT | web | web-to-exec-cc-comms-docs-cxo-lead-pipermorgan-ai-is-down-vercel-402-deployment-disabled-needs-xian-in-the-vercel-dashboard-2026-11-05.md | NEEDS XIAN NOW: pipermorgan.ai is down for every visitor. Vercel answers 402 'P… |
 | 2026-11-05 13:07 PT | pa | pa-to-arch-exec-cc-lead-connected-apps-read-as-xian-is-xians-own-page-i-hold-no-xian-session-ill-read-the-connector-after-2026-11-05.md | Connected apps 'read as xian' is xian's own page: I hold no xian session or cre… |
