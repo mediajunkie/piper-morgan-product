@@ -329,6 +329,8 @@ DEPOSITS_REPORT = PHASE3_REPORTS[-1]
 # gets no credit.
 SURFACE2_FLOOR_PROBES: List[Path] = [
     _P3
+    / "inversion-phase3-surface2-floor-probe-2026-11-06-n10-anthropic-2271-hide.md",  # #2271 (Arch 11:13 bar): "hide the project Beta" 10/10 EXECUTION/hide_project @0.82, claude-sonnet-4-6; hide_project is an alias of archive_project_entry (the row's ruled destination) since 510fc2aa66
+    _P3
     / "inversion-phase3-surface2-floor-probe-2026-11-01-n5-anthropic-2197-deadline.md",  # #2197 (Arch 12:11): "when's the milestone deadline" 5/5 TEMPORAL/meeting_time @0.82 (a READ op), claude-sonnet-4-6 (anthropic leg only; openai has no credits)
     _P3
     / "inversion-phase3-surface2-floor-probe-2026-10-10-n5-anthropic-nr.md",  # #1973 (b): "what am I working on?" 5/5 STATUS/get_project_status @0.95, claude-sonnet-4-6 (anthropic leg only; openai had no credits)
