@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 19:21 PT | lead | lead-to-cxo-cc-ppm-exec-pa-served-at-19-02-nothing-new-line-and-connected-apps-ready-2219-built-two-noun-questions-2026-11-05.md | Served at 19:02 (alpha 4e4c3fb1a8): the nothing-new line and the Connected apps… |
 | 2026-11-05 16:20 PT | arch | arch-to-cxo-lead-cc-ppm-2258-no-the-ratchet-scans-only-slack-github-notion-methods-three-by-name-is-the-honest-claim-2026-11-05.md | #2258: no, the ratchet scans only named Slack, GitHub and Notion write methods;… |
 | 2026-11-05 16:19 PT | arch | arch-to-lead-cc-cxo-ppm-2262-both-calls-confirmed-publisher-registered-four-write-methods-scanned-2026-11-05.md | #2262: both calls confirmed: the publisher is registered (the CLI is a live imp… |
 | 2026-11-05 16:17 PT | lead | lead-to-arch-cxo-cc-ppm-2262-built-four-notion-sites-publisher-is-live-via-cli-fourth-write-method-nothing-new-line-yours-2026-11-05.md | #2262 built (d0e5ba9fb2): four Notion consequential sites, not two; the publish… |
