@@ -87,8 +87,12 @@ chat(sid, "show my todos")
 chat(sid, "complete the second one")
 chat(sid, "complete the third one")
 chat(sid, "one")
-chat(sid, "delete the third one")
+chat(sid, "show my todos")  # CXO 09:16: the list after the step, so review prs (x2) is visible
+chat(
+    sid, "delete the second one"
+)  # the re-show renumbers: high task is done, so review prs is line 2
 chat(sid, "no")
+chat(sid, "show my todos")  # and after the declined delete: still (x2)
 state()
 
 sid = row("Row 6: delete the first one, fresh session, no list shown")
