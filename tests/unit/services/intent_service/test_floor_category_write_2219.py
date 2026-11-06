@@ -442,3 +442,54 @@ async def test_several_numbers_twice_releases_the_pick_and_writes_nothing(bounda
     second = await service.process_intent(message="1 and 3", session_id=_SID, user_id=_USER)
     assert second.message != "I can take one number at a time here. Which one should I complete?"
     assert _wrote(boundary) == []
+
+
+# ── multi-intent: a CONVERSATION write sibling (Arch 11-06 11:38) ──
+
+
+@pytest.mark.asyncio
+async def test_conversation_write_sibling_writes_nothing_ask_pending_arch(boundary, monkeypatch):
+    """Pins only what holds today: nothing is written and nothing claims it was done.
+
+    The "the confirm/ask arms" half of Arch's pin is PENDING ARCH. Gap (pre-existing):
+    the multi-intent partition in ``_process_intent_internal`` checks only
+    ``_substantive_intents``, which exclude CONVERSATION, so the
+    ``_is_orchestratable_sibling`` guard never sees a CONVERSATION write; the plan runs
+    every intent and the orchestrator hands it to ``CanonicalHandlers.handle`` (the
+    conversation handler), which writes nothing and arms nothing. Proposed one-line fix
+    (not built): in the partition, also put any non-substantive intent for which
+    ``self._is_floor_category_write(i)`` holds into ``_floor_routed_siblings``, so the
+    #1763 branch runs the single path with it, marked, and the rail asks.
+    """
+    from services.intent_service.pre_classifier import MultiIntentResult
+
+    def _sibling(category, action, text):
+        return Intent(
+            category=category,
+            action=action,
+            confidence=0.9,
+            original_message=text,
+            context={"original_message": text},
+        )
+
+    async def _classify_multiple(self, message, *args, **kwargs):
+        return MultiIntentResult(
+            intents=[
+                _sibling(IntentCategory.TEMPORAL, "get_current_time", "what time is it"),
+                _sibling(IntentCategory.TEMPORAL, "get_current_date", "what's the date"),
+                _sibling(IntentCategory.CONVERSATION, "complete_todo", "mark high task as done"),
+            ],
+            original_message=message,
+            is_multi_intent=True,
+        )
+
+    monkeypatch.setattr(IntentClassifier, "classify_multiple", _classify_multiple)
+    result = await _service().process_intent(
+        message="what time is it, what's the date, and mark high task as done",
+        session_id=_SID + "-multi",
+        user_id=_USER,
+    )
+    assert _wrote(boundary) == []
+    assert not any(t.completed for t in boundary["todos"])
+    lowered = (result.message or "").lower()
+    assert "marked" not in lowered and "as done" not in lowered and "high task" not in lowered
