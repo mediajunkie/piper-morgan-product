@@ -68,6 +68,11 @@ it was enforced.
 - A product script satisfies it with any existing `.md` that names it: an ADR, a design record, an ops
   recipe, or the current-architecture doc for its area. Its owner writes one pointer sentence in that doc.
 - The step is the same `lint.yml` `--ratchet` step, so a miss turns main red where every seat sees it.
+- **2026-11-06: an over-ceiling run names the new file.** The first real miss, PPM's `place-issue.py`,
+  printed only "249 missing, ceiling 248", because `scripts/` isn't listed without `--all` and CI's
+  shallow checkout has no history to date files by. `check-concept-links-baseline.txt` now holds the
+  248 names the ceiling counts, and `--ratchet` prints `NEW-NO-CONCEPT <file>` for any missing script
+  not in it. The ceiling is still the gate, and the list only names.
 
 **The four reviewed-first watchers, one line each:**
 

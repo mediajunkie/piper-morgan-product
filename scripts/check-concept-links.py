@@ -27,7 +27,8 @@ the current-architecture doc for its area), so its owner writes one pointer sent
 
 Usage: scripts/check-concept-links.py [--all] [--ratchet]
   --all      also lists scripts/ files with no Concept line
-  --ratchet  exit 1 when any class's missing count differs from its ceiling (asserted exactly)
+  --ratchet  exit 1 when any class's missing count differs from its ceiling (asserted exactly); over
+             the scripts/ ceiling, it names each file not in check-concept-links-baseline.txt (11-06)
 
 Layer: textual. It checks that the pointers exist and agree, not that the doc's claims match the
 code's behaviour. That part is a reader's job (the audit's spot-checks).
@@ -105,6 +106,20 @@ def resolve(path: str, mech: Path) -> Path | None:
 # edit (hooks-registry.md).
 RATCHET = {"hooks": 0, "git-hooks": 2, "skills": 0, "workflows": 0, "scripts": 248}
 
+# The scripts/ files counted in that 248, by name, so an over-ceiling run can say which file is new
+# (scripts/ isn't listed without --all, and CI's shallow checkout has no history to date files by).
+BASELINE = ROOT / "scripts" / "check-concept-links-baseline.txt"
+
+
+def baseline_names() -> set[str]:
+    if not BASELINE.exists():
+        return set()
+    return {
+        line.strip()
+        for line in BASELINE.read_text().splitlines()
+        if line.strip() and not line.startswith("#")
+    }
+
 
 def main() -> int:
     show_all = "--all" in sys.argv[1:]
@@ -179,6 +194,13 @@ def main() -> int:
     if ratchet:
         for line in over:
             print(line)
+        if totals.get("scripts", [0, 0])[1] > RATCHET["scripts"]:
+            known = baseline_names()
+            for rel in missing.get("scripts", []):
+                if rel not in known:
+                    print(
+                        f"NEW-NO-CONCEPT  {rel} (add a Concept: line naming a .md that names it back)"
+                    )
     return 1 if broken or (ratchet and over) else 0
 
 
