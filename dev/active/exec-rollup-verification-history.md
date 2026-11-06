@@ -418,3 +418,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v835 15:21 Thu 11-05: website down (Vercel 402 DEPLOYMENT_DISABLED) at the top.
 - v836 16:15 Thu 11-05: site still down; split plan summary; SPF/DKIM/DMARC absent.
 - v837 16:26 Thu 11-05: site back on Pro.
+- v838 16:27 Thu 11-05: hosting decision framed (cost vs resilience).
