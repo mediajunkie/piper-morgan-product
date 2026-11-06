@@ -301,10 +301,6 @@ class _PartialSourceRead(Exception):
         self.flags = flags
 
 
-# #2301 interim: the STATUS gather's capability fact (see _gather_status_priority_context).
-PROJECT_CONTENTS_UNAVAILABLE = "project_contents_unavailable"
-
-
 class ContextAssembler:
     """Gathers structured context for the conversational floor."""
 
@@ -1140,11 +1136,6 @@ class ContextAssembler:
         assembled as structured context for the floor LLM to compose from.
         """
         context: Dict[str, Any] = {}
-        # #2301 interim (Arch 11-06 11:26, CXO's words): a static capability fact,
-        # owned by code and true until the project-scoped todo read lands. The floor
-        # sees project names and counts only, so it must say so rather than improvise
-        # around the gap. REMOVE in the commit that lands #2301's read.
-        context[PROJECT_CONTENTS_UNAVAILABLE] = True
 
         # #951: Calendar context (next meeting, free blocks) — relevant for
         # "what should I work on next?" style queries that need time awareness
