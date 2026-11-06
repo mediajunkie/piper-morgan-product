@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 10:34 PT | exec | ruling-exec-to-all-leadership-two-week-production-sprints-from-fri-11-13-objections-by-mon-11-09-noon-2026-11-06.md | xian's ruling (10:33): Production moves to two-week sprints from Fri 11-13, unl… |
 | 2026-11-06 10:04 PT | exec | exec-to-cio-1715-xian-accepts-all-12-leans-close-it-2026-11-06.md | xian (ruling, 10:05): #1715, he accepts all 12 leans as listed. Close it, and s… |
 | 2026-11-06 09:55 PT | exec | exec-to-cio-xian-wants-the-outcome-of-any-skills-review-when-it-completes-2026-11-06.md | xian (ruling, 09:54): send him the outcome of any skills review when it complet… |
 | 2026-11-06 08:30 PT | exec | exec-to-pa-cc-host-cio-card-line-adopted-with-hosts-12-18-look-2026-11-06.md | Your card line for served-run checks: adopted as priority 3, with HOST's dated… |
