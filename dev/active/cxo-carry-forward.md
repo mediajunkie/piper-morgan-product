@@ -4,22 +4,20 @@ currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — current state, 2026-11-04 21:31 STOP (the older rules below still stand)
+# CXO carry-forward — current state, 2026-11-05 21:31 STOP (the older rules below still stand)
 
-**Serving:** alpha `72bd53546a` (19:34). Closed 11-03 and 11-04 on served quotes: #2258, #2197, #2098, #2265, #2259, #2227.
-**Open on my side, one retake from Web closes each:**
-- #2188 (dead-grant reply): degrade-alone PASS on text, stored turn, card and Radar (Web's 20:09 window). Bubble's look NOT judged: Web's `bubble-after-revoke` screenshot is blank (empty chat, "No conversations yet"). Also asks whether reload restores the conversation. Stored flag stays on Lead's unit pins (Arch validated).
-- #2279 ("Connected as"): box 5 PASS on web-oauth-test (card and toast). Needs Web's quote of the Settings GitHub subtitle `Connected with GitHub.`
-- Not-found write turn: PASS on text and stored reload (PA, `9824d7d5b2`). Bubble look rides the same retake.
-**Rulings out, waiting on Lead's confirmation (I won't send strings for unconfirmed claims):**
-- Slack hidden-but-connected card row: "Not in this beta" / "You connected Slack earlier. That connection is still stored, but Piper isn't using it." / Disconnect. Needs: does Disconnect remove the credential, is "isn't using it" true (#1481).
-- #2281 unauthenticated callback page: "Sign in to finish connecting GitHub. Nothing was connected yet. After you sign in, open Settings, under Integrations, and press Connect again." Needs: confirm nothing is written before the session check.
-- #2282: I said yes to beta.pipermorgan.ai as the one host (xian rules in the morning).
-**Connect card line** holds as written. Check 1 (pre-transfer) shows "Authorize mediajunkie" and "wants to access your dinp-machine account", "Public and private". Re-judge after Web's post-transfer read (needs xian's second revoke yes). If it shows "Authorize pipermorgan", shorten the middle sentence.
-**public_repo fallback (#2261):** my two conditions (never an empty result for private repos; one line each on card and wizard) are in the issue. Words owed only after #2174's check decides.
-**Not yet served, owed on a promotion:** #2178's failed-revoke sentence (holds for the 404 check), the #2227 catalog change, sign-in positioning line (#2275), onboarding Path A (fresh account from HOST), Path B (#2219), #2268/#2269 lines.
-**Waiting on xian:** the org-transfer follow-ups, #2282 host ruling, newsletter paste and #2256, the "nothing else is sent without notice" yes/no, second revoke for Web's repeat. HOST holds invites on #2266, #1551 (met per PPM), #2261, #2178, xian's word.
-**Waiting on owners:** #2262, #2247, #1270.
+**Serving:** alpha and beta `4e4c3fb1a8` (19:02). Closed on served quotes 11-05: #2188, #2279, #2190. #2282 (beta the one host) is live, alpha 301s to beta.
+**Judged PASS on served text:** #2281 signed-out page, Slack card on xian's account, #1918 description sentence, #2190 toasts, #2287 dialogs (both cases), "Connected as", degrade-alone, GitHub's page after the transfer (button "Authorize pipermorgan").
+**Open on my side:**
+- #2287 row 2: after a Disconnect the page shows no lingering "Connected" line. Needs a real Disconnect (revokes at GitHub), so a Web window with xian's yes.
+- #2262/#2258: widened nothing-new line ("Piper hasn't posted to Slack or written to GitHub or Notion for you"), served at 19:02, no quote yet. PA reads it as a non-Notion account.
+- #2219 (todos): built, rides the morning promotion. My rulings: "todo" default, person's word wins, else the last list's kind, else "todo"; "todo/todos" no hyphen; done-items header with counts. Judge a quoted reply, noun both ways. Next-todo sentence waits for #2293 (priority sort is alphabetical) and the router miss (corpus row, Arch's rule 7): `Your next todo is "review prs" (×3). Say "show my todos" for the rest.`
+- #2286 (connect-card line, final words on the issue, no host or owner named) and #2290 (reference code on failures; I word it once Lead says a request id exists, no timestamp or sender): Lead builds, PPM places.
+- #1918 stays open (rest of the page unjudged).
+**Rulings given, not yet built or served:** Connected apps sentence is built; #2178 failed-revoke sentence (can't be caused on purpose, judge on text and pins); #2227 catalog fixes; positioning line (#2275); onboarding Path A (HOST's fresh account), Path B (#2219 on the path).
+**Waiting on xian:** #2256 (Buttondown paste, own sign-up), the "nothing else is sent without notice" yes/no, the Disconnect window yes. First-cohort note v3 (HOST) is xian's words. Invites held on #2261 (xian's #2174 runs), xian's word.
+**Waiting on owners:** #1270 and #2247.
+**Lessons today:** an incident issue's body can be the first reading (check later comments and decisions.log: memory saved); search my own open UX issues before filing (#2285 was a duplicate of #2190).
 
 # CXO carry-forward — updated 2026-10-07 22:2x (STOP); structure from the 10-05 22:2x STOP rewrite.
 
