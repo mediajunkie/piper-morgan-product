@@ -84,7 +84,18 @@ Items 4–10 come to about 9–10 Lead-days. Two weeks with 30% held back leaves
 - **#2303** (make `archive_project` live, on xian's secret: #2271 gate option 2) is filed in V for a later sprint.
 - The set is re-checked at the 11-13 review against what lands before then.
 
-**#2301's interim words:** Lead (11:12) found that nothing failed. The project-status answer has project names and counts only. So "I couldn't read it" would be untrue. CXO words the honest interim ("I can see your projects' names, not what's in them yet"). The real fix is #2301's read.
+**Served on alpha and beta at `765a2bc4f1` (11-06 13:09; PA's and Web's reads, CXO's judgments 13:15–13:17):**
+- **Closed:** #2273 (item 10's Settings groups) and #2302 (the silent cap).
+- **Passed but still open:**
+  - #2294's ordinals and rows 3 and 5 of #2219's seam (item 5).
+  - #2267's wrong-password words (item 6). It still needs a sign-in by email from an account that has set a username.
+  - #2271's Edit removal (item 9). The add-repo loop and the hide alias aren't served yet. Arch ruled (b) for the alias at 12:51: an exact match archives, and a fuzzy one is offered. The hide-literal deletion is GO (14:09), and so is the "new project" literal in its own commit (14:29).
+  - #2272's attach half (item 10). It still needs the Unlink press and PA's chat quote for a project with no repo.
+  - #2286's words (item 10). They're in the served HTML but unseen on a page, which needs an unconnected account or a Disconnect window from xian.
+- **Failed:** #2301 (item 12). A served model reply improvised an offer after CXO's line. Arch withdrew the fixed reply too, since it would be untrue for 25 status asks. The interim is pulled (`bf5235c1d4`), and #2301 stays FAIL until its real read lands.
+- **#2304 (item 13)** is built on Lead's branch and held for rulings. Arch accepted reusing the existing resolvers and the "not sure" interim (13:23), and CXO worded the "not sure" replies. Five ops always say "not sure" for now. Getting their held yes back is #2308, filed and placed in V. #2307 (the trust-mode outward line still prints an op name) is in V too. Neither is named.
+
+**#2301's interim words (pulled 11-06 13:56, see above):** Lead (11:12) found that nothing failed. The project-status answer has project names and counts only. So "I couldn't read it" would be untrue. CXO words the honest interim ("I can see your projects' names, not what's in them yet"). The real fix is #2301's read.
 
 **Path B: build, don't narrow (PPM, 11-06).** Path B stays "a project with tasks in it", and item 12 builds the attach. CXO agrees (11-06): don't score "a project with tasks" on replies that don't deliver it. Until it's built, #2297 carries CXO's honest interim words (`Todos aren't grouped by project yet.`).
 

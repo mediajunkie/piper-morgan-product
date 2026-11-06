@@ -2068,7 +2068,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2270	OPEN	Production		A repo question is answered as a document request ("I don't see that document among your uploads") (beta session 11-04)	bug		
 2271	OPEN	Production		Adding a repo to a project loops on "yes": Piper's own suggested wording gets "I still don't know what you meant"; the project page edit control doesn't work (11-04)	bug		
 2272	OPEN	Production		[UX] Project and repo are treated as one thing: chat merges them, and the project page can't attach a repo (beta session 11-04)	UX		
-2273	OPEN	Production		[UX] Settings, Integrations is hard to find and Settings is overloaded; reorganize (beta session 11-04)	UX		
+2273	CLOSED	Production		[UX] Settings, Integrations is hard to find and Settings is overloaded; reorganize (beta session 11-04)	UX		COMPLETED
 2274	OPEN	Production		[UX] Anthropic key step doesn't say a Claude subscription excludes API access; say so and link to funding a key (beta session 11-04)	UX		
 2275	OPEN	Production		[UX] Sign-in screen shows only a logo; say what Piper does and show a few example prompts (beta session 11-04)	UX		
 2276	OPEN	Production		In-app feedback shortcut: a keystroke that captures context and a note in the moment (beta session 11-04)	UX,enhancement		
@@ -2093,8 +2093,10 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2300	OPEN	Production		Adding a todo acts at once on one turn and asks to confirm on the next, for the same kind of ask	bug		
 2301	OPEN	Production		'What's in my <project>?' fails twice, reads the project name as a milestone, and re-offers wording that fails again	bug		
 2297	OPEN	Production		[UX] 'Add a task to <project>' makes a plain todo, and the project never shows it (Path B preview, 11-06)	UX		
-2302	OPEN	Production		'What changed this week?' says 7 tasks created and names 3, with no word that the list is shortened	bug		
+2302	CLOSED	Production		'What changed this week?' says 7 tasks created and names 3, with no word that the list is shortened	bug		COMPLETED
 2303	OPEN	Production		Make archive_project live in chat (a write flip on xian's secret), so the hide literal can be deleted against a live op	enhancement		
 2304	OPEN	Production		Consent 'Quick check' asks print the internal op name ('update document query'); build the summary from the declared args	bug		
 2305	OPEN	Production		Multi-intent turn: a CONVERSATION-filed write sibling neither writes nor asks; it renders 'trouble processing'	bug		
 2306	OPEN	Production		TEST: unarmed-ask ratchet exempts *question* holders by name, not by armedness	innovation,testing		
+2307	OPEN	Production		Trust-mode outward disclosure still shows the op name ("I'm about to comment issue #5")			
+2308	OPEN	Production		Five write ops always say 'not sure': add a resolve-only step at ask time so a held yes names the thing (#2304 follow-on)			
