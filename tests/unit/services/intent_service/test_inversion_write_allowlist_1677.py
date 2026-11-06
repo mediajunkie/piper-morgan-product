@@ -439,6 +439,7 @@ class TestConstructorGuard:
             "add_project",
             "link_repo",
             "link_repository",  # #2271: the classifier's raw emission, link_repo's entry
+            "link_repository_to_project",  # #2271 (Arch 11-06 11:26): same entry
             "unlink_repo",
         }, (
             "the create_todo, create_reminder, delete_todo, complete_todo and "
@@ -451,6 +452,7 @@ class TestConstructorGuard:
         assert (
             wf["link_repository"] is wf["link_repo"]
         ), "#2271: link_repository is link_repo's entry"
+        assert wf["link_repository_to_project"] is wf["link_repo"], "#2271: same entry"
         create_todo_ids = {id(wf[k]) for k in ("create_todo", "add_todo", "new_todo")}
         create_reminder_ids = {
             id(wf[k]) for k in ("create_reminder", "set_reminder", "add_reminder")

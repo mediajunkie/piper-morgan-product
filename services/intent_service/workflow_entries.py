@@ -4010,6 +4010,9 @@ def register_default_workflows() -> None:
         # alias discipline); the handler asks and writes nothing unless it finds
         # both an owner/repo and an EXISTING project, and never creates a project.
         "link_repository": link_repo_entry,
+        # #2271 (Arch 11-06 11:26): the same write under a longer invented name
+        # ("link repo X to <project>" with the hide literal absent, 10/10).
+        "link_repository_to_project": link_repo_entry,
         # #1926 / #1595 Phase 3 (CXO's 2026-10-03 ruling, Arch's ruling
         # 2026-10-03 §2): the DESTRUCTIVE third of manage_repos — unlink_repo.
         # Confirms via the #1190 gate before anything executes (see
