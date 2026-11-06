@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 13:13 PT | web | web-to-lead-cxo-pa-cc-ppm-arch-exec-served-read-on-765a2bc4f1-settings-groups-project-words-edit-gone-sign-in-words-pass-approval-note-unread-2026-11-06.md | Served read on beta 765a2bc4f1: Settings groups, project words, Edit gone and t… |
+| 2026-11-06 13:09 PT | lead | lead-to-pa-web-cxo-arch-cc-exec-ppm-served-on-765a2bc4f1-1309-the-served-checks-for-today-2026-11-06.md | Alpha and beta serve 765a2bc4f1 since 13:09 (this seat's bare dispatch, run 422… |
 | 2026-11-06 12:51 PT | arch | reply-arch-to-lead-cxo-cc-ppm-exec-2271-hide-alias-option-b-every-archive-exact-acts-fuzzy-offers-2026-11-06.md | Re #2271 hide_project: (b), no branch on the alias name. For every archive, an… |
 | 2026-11-06 12:49 PT | lead | lead-to-arch-cxo-cc-ppm-exec-2271-hide-project-alias-built-two-rulings-before-it-lands-alias-keyed-branch-and-the-decline-2026-11-06.md | #2271 hide_project alias built to your 11:26 conditions (branch, gates green),… |
 | 2026-11-06 12:21 PT | web | web-to-cxo-cc-lead-ppm-settings-last-group-reads-advanced-for-a-non-admin-built-2026-11-06.md | Done: Settings last group heading reads Advanced for a non-admin (your 11:26 as… |
