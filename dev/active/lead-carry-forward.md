@@ -1,5 +1,21 @@
 # Lead carry-forward — Fable 5.1 seat (Opus 5.5 from 11-04 19:38 until the Fable limit resets after 22:00 on 11-05); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY CLOSED 2026-11-05 21:47 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-05 -->` in the 11-05 log `dev/2026/11/05/2026-11-05-0629-lead-code-log.md`)
+- **Served:** alpha `4e4c3fb1a8` (19:02, xian's dispatch; six landings today). **#2282 is live**: alpha 301s to beta since 12:47; the MCP issuer, its sign-in round trip and /health stay on alpha. On main and green, not yet served: **#2219** (the grouped list; "todo" by default, one spelling; the noun carried from the last list shown) and **#2293** (priority sorts by rank). Main 12/12 green at close.
+- **Model:** Opus 5.5 since 11-04 19:38; xian restores Fable after 22:00 on 11-05. Use the attribution the session reminder gives.
+- **Promotions:** this seat's dispatch is classifier-refused (11-05 10:13); xian dispatches, and Exec relays on my "ready" (v4). The grant's readiness rules are unchanged.
+- **11-06 START order:**
+  1. Usual START: create the 11-06 log; both inboxes; current-state Now; xpoll; `owed-scan.py --role lead`.
+  2. After 07:00, read every promotion condition for `fdb055ba7b` or later (Tests green on the staging sha, main 12/12, no deploy running, no hold, no migration since `4e4c3fb1a8`, a green health watch, uptime over 30 minutes). Then ask Exec (v4) for xian's dispatch. After it lands: tell CXO that #2219's list and confirms are ready to quote, with the noun both ways; tell PA that #2293's order is readable.
+  3. **The next-todo router miss** (#2219, PA's Q57): "What's my next todo?" routes to the list. Fix it with a corpus row under Arch's rule 7, the screen first and the cost priced. Ask Arch for the path in the morning memo. CXO words "next" only after both this and #2293 are served.
+  4. **#2244** when Exec relays the `/data` permission read and the route word.
+- **Waiting on others:** #2282 step 4 (Web's GitHub-page and landing read needs xian's word) and PA's (b); the alpha callbacks come off about 11-12; #2288's served row (a fresh dead-grant account); #2266's served matrix (a Web window as a second account); #2261 (xian's #2174 runs); CXO's served reads of #2262's line and #1918 (PA and Web have them).
+- **Rules that bit 11-05:**
+  - A rename or deletion push runs CI's full suite and the backlog gate. It caught the #1666 integration pins twice.
+  - A file-wide string rewrite in tests is wrong when some tests say the other noun: rewrite inside the failing test function only.
+  - A credits note says what the body does. Check it: `extract_slots` is an LLM call, and the publisher's metadata is line splitting, not regexes.
+  - Read the deletion sweep's cli/ root before calling a module dead: the publisher had a live importer.
+
 ## DAY CLOSED 2026-11-04 21:47 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-04 -->` in the 11-04 log `dev/2026/11/04/2026-11-04-0646-lead-code-log.md`)
 - **Served:** alpha `72bd53546a` (eighth promotion of the day under the grant, 19:34; one refusal at 14:04 on the uptime floor). On main and green, not yet served: **#2178** (Disconnect revokes at GitHub, with Arch's GET /user confirmation on a 404; `b5df29d4e6`, main `466b51ffdd`, Tests success run 41970572285). Main 12/12 green at close.
 - **Model:** this seat runs on Opus 5.5 (`claude-opus-5-5`) since 19:38 (xian: the Fable limit); restore to Fable after 22:00 on 11-05. Commits carry the Opus attribution meanwhile.
