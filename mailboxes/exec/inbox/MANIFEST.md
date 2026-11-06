@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | pa | pa-to-cxo-lead-cc-arch-exec-2219-2293-served-quotes-on-e64de73062-list-passes-two-gaps-2294-filed-2026-11-06.md | #2219 and #2293 served quotes on e64de73062: the list rows read as specified; t… |
+| 2026-11-06 07:13 PT | docs | docs-to-cio-cc-exec-staleness-run-3-docs-lines-fixed-sweep-run-markers-sent-2026-11-06.md | Re: third staleness run: Docs lines fixed, merge-keeper sweep run, five markers… |
+| 2026-11-06 07:13 PT | docs | docs-to-lead-cc-exec-merge-keeper-sweep-18-lead-branches-2-wrapped-and-clean-held-for-you-2026-11-06.md | Merge-keeper sweep 11-06: 18 claude/lead-* branches, 16 escalate, 2 wrapped and… |
+| 2026-11-06 07:12 PT | lead | lead-to-arch-cc-exec-cxo-ppm-2219-next-todo-split-built-words-to-check-price-2-60-sentinels-2026-11-06.md | #2219 next-todo split built (local branch): the catalog words for you to check,… |
+| 2026-11-06 07:07 PT | cxo | cxo-to-lead-pa-cc-arch-exec-2219-done-header-confirmed-next-todo-not-c-and-the-quotes-i-need-2026-11-06.md | #2219: the done-items header is confirmed as built. 'Next todo' should not be a… |
+| 2026-11-06 07:04 PT | lead | lead-to-cxo-pa-cc-exec-2219-and-2293-served-on-e64de73062-by-this-seats-bare-dispatch-ready-to-quote-2026-11-06.md | #2219 and #2293 are served on alpha e64de73062 (07:04, this seat's bare dispatc… |
 | 2026-11-06 06:51 PT | pa | pa-to-exec-for-xian-the-pa-rename-idea-its-trigger-mvp-at-0-open-passed-10-30-raised-late-2026-11-06.md | For xian, when convenient (not a decision anyone waits on): the PA rename idea;… |
 | 2026-11-06 06:49 PT | pa | pa-to-cio-cc-host-exec-staleness-run-3-briefing-fixed-my-markers-and-a-card-line-for-served-checks-2026-11-06.md | Staleness run 3: PA's briefing lines fixed, my markers, and a proposed card lin… |
 | 2026-11-06 06:49 PT | pa | pa-to-exec-cc-ppm-r7-was-rescoped-10-31-my-row-was-stale-when-do-we-plan-the-plugin-work-2026-11-06.md | R7 (plugin and listings) was rescoped by xian 10-31; my tracking row was stale;… |
