@@ -1,0 +1,146 @@
+<title>Ship 068 Week Review</title>
+<style>
+/* Layout: one reading column, bottom line first, a glance table, then short scannable sections; tables scroll in their own box. Same system as the Ship 067 review. */
+:root{
+  --bg:#f6f7f9; --fg:#1d232b; --muted:#5b6673; --rule:#d9dee5; --accent:#2b5d8a; --warn:#9a5a00; --ok:#2f6b3f; --card:#ffffff;
+  --display:"Source Serif 4",Georgia,serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181d;--fg:#e4e8ee;--muted:#9aa5b2;--rule:#2c333c;--accent:#7fb1dc;--warn:#e0a54a;--ok:#7cc48e;--card:#1b2027;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14181d;--fg:#e4e8ee;--muted:#9aa5b2;--rule:#2c333c;--accent:#7fb1dc;--warn:#e0a54a;--ok:#7cc48e;--card:#1b2027;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--body)}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:28px 48px}
+h1{font:600 1.9rem/1.2 var(--display);margin:0 0 4px;text-wrap:balance}
+h2{font:600 1.25rem/1.3 var(--display);margin:32px 0 8px;padding-top:12px;border-top:1px solid var(--rule);text-wrap:balance}
+h3{font:600 1rem/1.3 var(--body);margin:18px 0 4px}
+.meta{color:var(--muted);font-size:.85rem;margin:0 0 20px}
+.bluf{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--accent);padding:14px 16px;border-radius:4px}
+.bluf p{margin:.3em 0}
+ul{padding-left:1.2em;margin:.4em 0}
+li{margin:.3em 0}
+code{font:0.88em var(--mono)}
+.tag{font:600 .72rem var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:3px;border:1px solid currentColor;margin-right:4px;white-space:nowrap}
+.ok{color:var(--ok)} .warn{color:var(--warn)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+footer{margin-top:36px;color:var(--muted);font-size:.82rem;border-top:1px solid var(--rule);padding-top:10px}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:wght@600&display=swap">
+<div class="wrap">
+<h1>Ship #068: the week of Oct 30&ndash;Nov 5</h1>
+<p class="meta">Exec synthesis for our discussion, before any Ship draft. From the seven daily omnibus logs (10-30 to 11-05) and all nine workstream reviews (Docs files none, by standing ruling). Draft 1, Fri 11-06. Things that happened after Thursday are marked &ldquo;since Thursday&rdquo;.</p>
+
+<div class="bluf">
+<p><b>Bottom line.</b> Last week had four goals. Three were met and one partly. You said Go on Friday 10-30 at 17:03 and the MVP milestone closed. The beta letters went out Saturday 10-31, with 0.9.0.0 served and tagged that night. Five posts and Ship #067 went out. The first Production sprint moved only one of its six named issues to closed (#2197).</p>
+<p>Then your advisor&rsquo;s beta session on 11-04 never reached a valuable thing, and the GitHub consent page named a person. You held all invitations that evening. By Thursday three of the four P0s were met (#1551, #2283, #2178), plus #2282 (beta is the one host). <b>#2261 is the last P0, and it waits on your #2174 runs.</b> #2292 (the mail records) is a P1 that also comes before the next invite.</p>
+<p>The week&rsquo;s product thread is whose connection it is. A connection is saved only for the person who started it, Disconnect revokes at GitHub, the card names the connected account, and &ldquo;what changed&rdquo; reports only what Piper&rsquo;s own record covers.</p>
+</div>
+
+<h2>At a glance</h2>
+<div class="tbl"><table>
+<tr><th>Measure</th><th>This week</th><th>Note</th></tr>
+<tr><td>MVP</td><td>Closed 10-30</td><td>The gate went from 2 open to 0 on Friday. GitHub shows the milestone closed 17:07 PT. v0.9.0.0 was tagged 10-31 at 22:01, and you published the release page 11-01.</td></tr>
+<tr><td>Invite hold P0s</td><td>4 &rarr; 1</td><td>Set by your 11-04 19:31 ruling. Met: #1551, #2283, #2178. #2282 is live too. Left: #2261. Also before invites: #2292 (P1).</td></tr>
+<tr><td>Updates to alpha</td><td>18</td><td>Successful promotion dispatches out of 21 (<code>gh run list</code>). Lead dispatched under the allow rule from 11-03 until the classifier refused the seat on 11-05 at 10:13. You dispatched the rest.</td></tr>
+<tr><td>MCP server deploys</td><td>6</td><td>v15 to v20. v20 (11-05, yours) carries the GitHub guard.</td></tr>
+<tr><td>Issues filed / closed</td><td>75 / 83</td><td><code>gh-week-counts.py</code>, Pacific week. Production went 228 &rarr; 252 open (PPM&rsquo;s corrected start), because the 10-30 audit and the beta session filed so much.</td></tr>
+<tr><td>Website</td><td>Down about 3 hours</td><td>11-05: Vercel paused the Hobby account (402). Web found it at 15:19 (a 200 at 12:19), and it was back at 16:25 after you moved to Pro. Images are now 71% smaller and docs-only commits skip the build.</td></tr>
+<tr><td>Main CI</td><td>Red on at least 5 of 7 days</td><td>10-30 (Tests, twice Fly), 10-31 (a full runner disk, the link checker), 11-02, 11-04 (Lead&rsquo;s push) and 11-05 (the link checker during the outage). Each was fixed the same day.</td></tr>
+<tr><td>Router screens</td><td>All NO-GO</td><td>Four rule-7 screens and the Haiku 5.5 drop-in on 10-30 (about $11), and #2149&rsquo;s two-stage router on 11-01 ($5.67), measured twice, rejected and removed. The router stays on Haiku 4.5.</td></tr>
+<tr><td>Spend</td><td><span class="tag warn">owed</span></td><td>Needs your Console screenshots for 10-30 to 11-05, as last week.</td></tr>
+<tr><td>Published</td><td>5 posts</td><td>All distributed, including Ship #067.</td></tr>
+</table></div>
+
+<h2>Last week&rsquo;s goals</h2>
+<ol>
+<li><span class="tag ok">met</span><b>Close MVP, then the first beta invitations.</b> Go 10-30 at 17:03. The letters went out 10-31 (four versions to 14 people, nine codes minted with you present).</li>
+<li><span class="tag ok">met</span><b>Promote the validated build, with rows 2 and 4 re-run.</b> 0.9.0.0 was served twice. PPM held the tag for one regression (#2245), and Lead tagged the fixed build, <code>c44dd081cb</code>.</li>
+<li><span class="tag warn">partly</span><b>The first Production sprint: #2195, #2042, #2197, #2209, #2184, #2164.</b> #2197 closed. #2042&rsquo;s relations pass served, but its aside is still open. #2195 went NO-GO twice, and #2209 and #2184 are held for router rules. The waiting-list form is live (#2229, #2256), but #2164 is open. The incident took the second half of the week.</li>
+<li><span class="tag ok">met</span><b>Publish the weekend pair, Tue 11-03 and Ship #067, and fill the calendar from 11-05.</b> All five went out, and the calendar is planned through Thu 11-12.</li>
+</ol>
+
+<h2>What a user can do now that they couldn&rsquo;t on 10-29</h2>
+<ul>
+<li><span class="tag ok">served</span><b>Use the beta,</b> at beta.pipermorgan.ai. Since 11-05, alpha redirects there (#2282).</li>
+<li><span class="tag ok">served</span><b>Connect knowing it lands on their own account.</b> A callback is saved only when the signed-in browser is the person who started it, on all five callbacks (#2283). A &ldquo;yes&rdquo; runs a stored offer only for the person it was made to (#2223). GitHub&rsquo;s page now reads &ldquo;Authorize pipermorgan&rdquo;, not a person&rsquo;s name.</li>
+<li><span class="tag ok">served</span><b>Disconnect GitHub and have it count.</b> The grant is revoked at GitHub (#2178).</li>
+<li><span class="tag ok">served</span><b>Know which account is connected and what to do when it breaks.</b> The card and toast say &ldquo;Connected as {login}&rdquo; (#2279). A dead grant says to reconnect in Settings (#2188), and a failed connect says why (#2190).</li>
+<li><span class="tag ok">served</span><b>Ask &ldquo;what changed?&rdquo; and get a true answer.</b> There&rsquo;s no internal label (#2258), &ldquo;yesterday&rdquo; means their own yesterday (#2265), and the nothing-new line claims only what Piper&rsquo;s record covers (served 11-05).</li>
+<li><span class="tag ok">served</span><b>Fix a draft and ask about a milestone.</b> &ldquo;Change the title to X&rdquo; does (#2098), and a named milestone gets that milestone (#2197). A first &ldquo;create an issue&rdquo; asks which repo (#2205). &ldquo;Set my default repository&rdquo; works (#2230). Settings shows the email (#2259).</li>
+<li><span class="tag ok">served</span><b>Use the Claude connector with a usable answer, if listed.</b> The profile is small enough to show, and it says what it searched (#2241, #2022). It doesn&rsquo;t serve fallback projects after a failed read (#2218). Only listed accounts can connect (#2242).</li>
+<li><span class="tag ok">served</span><b>Find the beta on pipermorgan.ai.</b> /try/ says beta, with one way in: the waiting-list form (#2229, #2256).</li>
+<li><span class="tag warn">not yet</span><b>Reach a first valuable thing in a first session.</b> Your advisor&rsquo;s session stopped at sign-in, the wizard, the connect page and the first repo question (#2266&ndash;#2278). The onboarding proposal is written, not built. #2219 (the todo list) and #2293 (priority order) are on main, waiting for this morning&rsquo;s promotion.</li>
+<li><span class="tag warn">not yet</span><b>Be invited.</b> Invitations are held for #2261 and #2292.</li>
+</ul>
+
+<h2>What went wrong, and the patterns in it</h2>
+<h3>Four patterns</h3>
+<ul>
+<li><b>Tenancy found by a person, not a test.</b> The cross-account class (#2283) and the consent page naming the owner were found by a tester and Web, not by any check. CIO&rsquo;s answer to why: #1419&rsquo;s class guard was split off in August, each case was then fixed on its own surface, and no two-account test exists. #1551&rsquo;s lint is the first class-level guard. Its baseline went from 50 sites to 11, and it found a live calendar bug on the way.</li>
+<li><b>A first reading travelled as the record.</b> #2266&rsquo;s title was your first reading on 11-04, and by 11-05 it had reached CXO&rsquo;s note edit as fact. The record says the tester never connected and the census found 0 crossings. Lead retitled the issue and CXO withdrew the edit.</li>
+<li><b>An unchecked line repeated by others.</b> On 11-02 I said the website was a static export, and HOST and Arch repeated it. On 11-04 HOST&rsquo;s note said &ldquo;every connection&rdquo; was checked when 6 of 8 grants were rejected. And on 11-04 I relayed an MCP deploy as landed when both runs had been refused.</li>
+<li><b>The classifier as a stop.</b> Lead&rsquo;s promotion, PA&rsquo;s MCP deploy, a second revoke, Web&rsquo;s sign-in and the website push were each refused, and none was worked around. The cost is that each lands on your hand.</li>
+</ul>
+<h3>Specific misses</h3>
+<ul>
+<li>Guessed clock times in almost every seat, which the new stamp check now warns on.</li>
+<li>Lead turned main red three times, and once dispatched under the uptime floor. The gate now runs CI&rsquo;s full suite on deletions and waits for the previous push&rsquo;s Tests verdict.</li>
+<li>CXO filed #2285 as a duplicate of their own #2190.</li>
+<li>HOST&rsquo;s 10-30 log named two outside people by first name. It&rsquo;s reported, not edited, and waits on your rule-8 call.</li>
+<li><b>Mine.</b> The deploy relayed as landed (above), #1858 listed as closed this week when it closed 09-23, two paragraphs dropped from the rollup by an edit (restored within a minute), and the claim that Thursday&rsquo;s post proved the build step. It deployed before the step existed, so Saturday&rsquo;s publish is the proof.</li>
+</ul>
+
+<h2>By workstream</h2>
+<div class="tbl"><table>
+<tr><th>Role</th><th>Progress this week</th><th>Next week / blocked</th></tr>
+<tr><td>Lead</td><td>32 closes by the logs, and 21 promotion dispatches with you. The tenancy builds (#2283, #2178, #2279, #2288), #1551&rsquo;s lint and baseline, #2282&rsquo;s host middleware, and the owner columns NOT NULL.</td><td>Promote #2219 and #2293 (your dispatch). The next-todo routing miss. Blocked on you: the #2174 runs and a fresh dead-grant account for #2288.</td></tr>
+<tr><td>PA</td><td>Six MCP deploys, each read after. Served rows for the gate and for 0.9.0.0. The #2282 boundary trace caught a sign-in loop before you switched.</td><td>#2288&rsquo;s served row. Blocked on you: the Connected apps revoke, the <code>mcp_allow</code> removal and the Notion key on staging.</td></tr>
+<tr><td>PPM</td><td>Closed #1386 and MVP. PDR-102 ratified 11-02. The onboarding proposal. Kept the hold&rsquo;s order and bar, and filed #2281&ndash;#2283, #2291 and #2292.</td><td>The hold&rsquo;s last P0, the onboarding path&rsquo;s first rows. Blocked on the sprint-cadence talk with you.</td></tr>
+<tr><td>Arch</td><td>152 rulings. New rules: an action runs only under the person who started it, one predicate decides what&rsquo;s offered, and a report claims only what its record covers. #2149 rejected on measurement.</td><td>Validate #2282, #2261 and #2288, and the served rows that close #2237, #2238, #2245 and #2284.</td></tr>
+<tr><td>CXO</td><td>Words for every connection state (dead, connected-as, failed, disconnected, signed-out). 12 UX closes plus 6 more ruled, every one on a served quote.</td><td>Judge #2219 on the promotion. #2286 is unbuilt. Your Disconnect window for #2287 row 2.</td></tr>
+<tr><td>Web</td><td>The /try/ pages, Terms and the waiting list. The incident&rsquo;s browser checks (both sides of the org move, the revoke and the round trip). Found the outage, then built both efficiencies.</td><td>Confirm Saturday&rsquo;s publish under the build step. Blocked on you: the dinp-machine sign-in word, the staging account and the split review.</td></tr>
+<tr><td>HOST</td><td>Kept the cohort note honest through three drafts, the #2157 drill precondition and test-App custody. Agent 360 v0.6 went out today.</td><td>Hold the note for your words, after #2292. The rule-8 call.</td></tr>
+<tr><td>CIO</td><td>The deferred-security audit (four items before invites), why the tenancy class was missed, the methodology audit (R3 at 5.7 against 2.65), mail v4 widened from Mon 11-09, and all 11 seats on LaunchAgents.</td><td>The v4 switch and wake tests 11-09, and the memo-volume week 11-11.</td></tr>
+<tr><td>Comms</td><td>The beta letter and the /try/ copy. Four posts in your prose under the new process (your words: Four posts in xian-prose under the new process (&ldquo;this first test &hellip; went well&rdquo;)ldquo;this first test Four posts in xian-prose under the new process (&ldquo;this first test &hellip; went well&rdquo;)hellip; went wellFour posts in xian-prose under the new process (&ldquo;this first test &hellip; went well&rdquo;)rdquo;), plus Ship #067. The editorial-strategy brief.</td><td>Today&rsquo;s strategy session. Sat, Sun, Tue and Thu as you write them.</td></tr>
+<tr><td>Docs</td><td>Seven omnibuses on time, the 0.9.0.0 notes and docs, the Ongoing sort and Icebox, and nine issues closed on 10-31.</td><td>Publishes as they come.</td></tr>
+</table></div>
+
+<h2>Where the sources disagreed</h2>
+<ul>
+<li><b>Production at the start.</b> PPM&rsquo;s review said 233. PPM corrected it to 228 this morning, so the week was +24.</li>
+<li><b>When MVP closed.</b> Lead says 10-31. GitHub says 10-30 at 17:07 PT. Lead read UTC.</li>
+<li><b>Promotions.</b> Lead counts 21, which were dispatches. 18 succeeded.</li>
+<li><b>What still holds invites.</b> Arch lists #2157 and #2158 with the P0s. Your 11-04 ruling made them P1s that &ldquo;don&rsquo;t jump the line&rdquo;, and PPM and HOST list only #2261 and #2292. I&rsquo;m asking you below.</li>
+<li><b>&ldquo;Invited to the alpha.&rdquo;</b> HOST&rsquo;s review calls the 10-31 letters alpha invitations. They were the beta letters: the alpha ended when MVP closed (your 11-04 word).</li>
+<li><b>Outage start.</b> Web&rsquo;s review says about 12:18. Web&rsquo;s own reads were 200 at 12:19 and 402 at 15:19, so it began somewhere in between. A Docs entry gives 18:19 for the restore, which is wrong: it was 16:24&ndash;16:25.</li>
+</ul>
+
+<h2>Since Thursday (outside the window, for context)</h2>
+<ul>
+<li>All nine reviews were in by 05:14. HOST fielded Agent 360 v0.6 (answers by 11-20).</li>
+<li>PPM&rsquo;s weekly diff: Production 242 &rarr; 252, with 36 entered and 26 left. Growth slowed from about 3 a day to under 2.</li>
+<li>Your morning list: the #2174 runs, the #2292 records plus a test mail and a waiting-list sign-up, the cohort note, #2219&rsquo;s promotion and #2244&rsquo;s <code>/data</code> read.</li>
+</ul>
+
+<h2>Draft goals for 11-06 to 11-12</h2>
+<p>From the reviews&rsquo; &ldquo;Next week&rdquo; sections, for you to edit and ratify.</p>
+<ol>
+<li>Lift the invite hold: #2261 (via your #2174 runs and the refresh run), #2282 step 4, and #2292&rsquo;s records with a test mail. Then the cohort note and the next invitations, on your word.</li>
+<li>Onboarding to first value: serve #2219 and #2293, run Path B on PA&rsquo;s quote and Path A on a fresh account, and set the sprint shape after the cadence talk.</li>
+<li>Serve what&rsquo;s built: #2237, #2238, #2245, #2284, #2288 and #2262 to served rows and closes. Build #2286.</li>
+<li>Editorial: today&rsquo;s strategy session. Publish Sat, Sun, Tue, Thu and Ship #068.</li>
+<li>Mail v4 to every seat Mon 11-09.</li>
+</ol>
+
+<h2>For our discussion</h2>
+<ol>
+<li><b>The Ship&rsquo;s theme.</b> My candidates: &ldquo;Whose Connection Is It&rdquo; (the tenancy thread), or &ldquo;Open, Then Hold&rdquo; (the beta opened and the invitations stopped until it was right).</li>
+<li><b>What lifts the hold.</b> Is it #2261 plus #2292 and your word, or also #2157 and #2158, as Arch lists them? Lean: your ruling stands, so they are P1s and don&rsquo;t block.</li>
+<li><b>Spend.</b> Can you send the Console screenshots for 10-30 to 11-05?</li>
+<li><b>Sprint cadence.</b> Onboarding is the next sprint&rsquo;s main focus (your 11-04 word). PPM needs the cadence talk to shape it.</li>
+<li><b>Rule 8.</b> The old first-name mentions in HOST&rsquo;s 10-30 log wait on your one call: leave them or rewrite history.</li>
+</ol>
+
+<footer>Verified how: all nine reviews read in full by me; the 10-30 and 10-31 omnibus logs read in full, and the Core Themes sections of 11-01 to 11-05 (each role&rsquo;s day for 11-03 to 11-05), not their full Technical Details; PPM&rsquo;s 05:13 correction. Counts I ran this morning: <code>gh-week-counts.py 2026-10-30 2026-11-05</code> (75 opened, 83 closed), <code>gh run list -w fly-deploy.yml</code> dispatches 10-30 to 11-05 (18 success, 3 failure), the MVP milestone&rsquo;s <code>closed_at</code> (2026-10-31T00:07:54Z), and <code>gh issue view</code> on the six PUB issues (#2197 closed, five open). Layer: GitHub and the logs; nothing re-served. The main CI days come from the omnibus logs, not from run lists; 11-01 and 11-03 are not checked.</footer>
+</div>
