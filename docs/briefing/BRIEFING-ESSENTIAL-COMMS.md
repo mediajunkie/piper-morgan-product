@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-COMMS
 valid_from: "2025-10-19"
-last_updated: "2026-11-02"
+last_updated: "2026-11-06"
 last_verified: "2026-11-02"
 ---
 
@@ -40,7 +40,7 @@ last_verified: "2026-11-02"
 - Support PM's writing: PM writes every post ("AI prompts human", PM 2026-10-05). Comms supplies a sourced draft or scaffold on request, reviews PM's rewrite lightly, proposes edits, and applies them only with PM's OK. Carried by: `draft-blog-post` (scaffolds), `template-audit` (pre-publish checks), then a publish-ready memo to Docs.
 - Fact-check every claim in public prose against logs, code or a cited fact.
 - Keep the narrative arc: the beat front, the calendar, the tease chain, mining passes. Carried by: `continue-narrative`, `update-calendar`, `editorial-calendar.csv`.
-- Fact-check Exec's Weekly Ship draft (the External section, publishing lines, product-copy lines). Exec drafts the Ship and PM edits it. Comms doesn't create it.
+- Fact-check Exec's Weekly Ship draft (the External section, publishing lines, product-copy lines). Exec drafts or scaffolds the Ship, and PM edits it or writes it from Exec's skeleton (#067 was PM's prose). Comms doesn't create it.
 - Word public product copy (privacy, support, directory listings) to say what the product does now, plus the goal and the gap (PM 2026-10-12).
 
 **Content Focus**:
@@ -98,7 +98,7 @@ Request "Loading [topic] details" for:
 - Evidence-based progress: Real proof, not claims
 
 **Strategic Progress**:
-- MVP milestone progression (see CURRENT-STATE for latest position)
+- Milestone position: MVP closed 2026-10-30 and the private beta opened 10-31. Production is next (see CURRENT-STATE for where it stands)
 - Architecture maturity: Proven patterns scaling successfully
 - Team effectiveness: Systematic execution with quality maintenance
 - Building in public: Active blog, Medium, and LinkedIn presence
@@ -109,7 +109,7 @@ Request "Loading [topic] details" for:
 
 > **📝 See `docs/omnibus-logs/` for daily synthesis and `docs/internal/planning/comms/editorial-calendar.csv` for publication tracking**
 
-**Standing metrics, the concept**: every Ship reports a few measured numbers for the week, in Governance & operations, as a bullet list (never a table) with a "goal is reduction" note where lower is better. Pick the ones that moved, with a denominator, and don't pad. **Carried by**: `.claude/skills/draft-weekly-ship/SKILL.md` (Step 5 and the Step 6 audit, run by Exec). Comms' part is checking those numbers against the source in the Ship fact-check. Typical candidates: issues closed and filed, beta-gate open count, the routing pattern ceiling, posts published, and sprint progress via `scripts/sprint-truth.py`. Test and ADR counts only when they moved.
+**Standing metrics, the concept**: every Ship reports a few measured numbers for the week, in Governance & operations, as a bullet list (never a table) with a "goal is reduction" note where lower is better. Pick the ones that moved, with a denominator, and don't pad. **Carried by**: `.claude/skills/draft-weekly-ship/SKILL.md` (Step 5 and the Step 6 audit, run by Exec). Comms' part is checking those numbers against the source in the Ship fact-check. Typical candidates: issues closed and filed, open count on the current milestone (Production since 10-30), the routing pattern ceiling, posts published, and sprint progress via `scripts/sprint-truth.py`. Test and ADR counts only when they moved.
 
 ## Narrative Frameworks
 **Achievement Stories**:
@@ -148,7 +148,7 @@ Request "Loading [topic] details" for:
   - `.claude/skills/publish-to-blog/SKILL.md`
 - **Publish skill**: `.claude/skills/publish-to-blog/SKILL.md`
 - **Blog post template**: `docs/internal/planning/comms/blog-post-template.md` — copy-paste structure with YAML frontmatter (image/alt/caption left empty for PM to fill in)
-- **Voice & tone guide**: `docs/internal/planning/comms/xian-voice-tone-guide.md` — PM's distinctive writing style. **Required reading before drafting any blog post.** Covers core voice characteristics (conversational authority, plain-language conciseness), vocabulary, structural patterns, mode-specific guidance (technical explanation, industry insider voice, meta-commentary), and a sample opening for comparison. Historical Aug 27, 2025 snapshot in `docs/internal/planning/historical/`.
+- **Voice & tone guide**: `docs/internal/planning/comms/xian-voice-tone-guide.md` — PM's distinctive writing style. **Required reading before reviewing PM's prose or writing a scaffold** (template-audit's pre-flight step 2 opens it, so the read is triggered there, not by habit). Covers core voice characteristics (conversational authority, plain-language conciseness), vocabulary, structural patterns, mode-specific guidance (technical explanation, industry insider voice, meta-commentary), and a sample opening for comparison. Historical Aug 27, 2025 snapshot in `docs/internal/planning/historical/`.
 - **Blog-first publish checklist**: `docs/internal/planning/comms/blog-first-publish-checklist.md`
 - **Publishing cadence**: `docs/internal/planning/comms/publishing-cadence.md` — **Required reading before any scheduling or footer-tease work.** Weekly slot map: Sunday/Saturday = insight (Blog+Medium+LinkedIn); Tuesday/Thursday = narrative (Medium only, NOT LinkedIn); Wednesday = Ship (LinkedIn only). Always consult before writing a footer tease or confirming a pub date.
 - **Building-narrative method**: `docs/internal/planning/comms/building-narrative-method.md` — **Required reading before drafting or teasing narrative posts.** Documents the two-track model: narratives are chronological (advance the front, never backfill); insights are time-decoupled. Includes the slate concept, how to use the editorial calendar for pacing, and the `continue-narrative` skill pointer.
