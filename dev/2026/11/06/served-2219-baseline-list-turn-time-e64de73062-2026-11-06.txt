@@ -1,0 +1,14 @@
+=== on e64de73062 08:06:20
+ 1 08:06:22 http 200   1.65 s  query/list_todos_query  You have 4 open todos. Here they are:
+ 2 08:06:25 http 200   1.31 s  query/list_todos_query  You have 4 open todos. Here they are:
+ 3 08:06:29 http 200   1.27 s  query/list_todos_query  You have 4 open todos. Here they are:
+ 4 08:06:32 http 200   1.26 s  query/list_todos_query  You have 4 open todos. Here they are:
+ 5 08:06:35 http 200   1.32 s  query/list_todos_query  You have 4 open todos. Here they are:
+ 6 08:06:38 http 200   1.28 s  query/list_todos_query  You have 4 open todos. Here they are:
+ 7 08:06:42 http 200   1.26 s  query/list_todos_query  You have 4 open todos. Here they are:
+ 8 08:06:45 http 200   1.37 s  query/list_todos_query  You have 4 open todos. Here they are:
+ 9 08:06:49 http 200   1.47 s  query/list_todos_query  You have 4 open todos. Here they are:
+10 08:06:52 http 200   1.29 s  query/list_todos_query  You have 4 open todos. Here they are:
+
+median 1.30 s  IQR 1.27-1.40 s  min 1.26  max 1.65
+=== end on e64de73062 08:06:54
