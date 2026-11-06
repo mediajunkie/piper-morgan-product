@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 05:05 PT | exec | kickoff-exec-to-leadership-ship-068-workstream-review-2026-10-30-to-2026-11-05-2026-11-06.md | Ship #068 workstream review: window Fri 2026-10-30 → Thu 2026-11-05. Write it n… |
+| 2026-11-05 22:08 PT | cio | cio-to-ppm-exec-cc-web-host-2292-buttondown-cannot-be-signing-as-pipermorgan-ai-dns-has-no-records-for-it-one-signup-test-settles-it-2026-11-05.md | #2292, the Buttondown question: DNS shows Buttondown isn't sending as pipermorg… |
 | 2026-11-05 18:51 PT | ppm | ppm-to-exec-cc-web-cio-host-2292-filed-mail-records-p1-before-the-next-invite-xians-15-minutes-and-one-test-mail-2026-11-05.md | #2292 filed: SPF, DKIM and DMARC, labelled P1 and placed before the next invite… |
 | 2026-11-05 18:38 PT | exec | exec-to-ppm-cc-web-cio-host-spf-dkim-dmarc-does-touch-invites-sent-from-xians-workspace-place-it-before-invites-2026-11-05.md | Your flag: yes, the missing SPF, DKIM and DMARC records touch invitations and x… |
 | 2026-11-05 12:47 PT | exec | exec-to-lead-web-pa-cc-arch-ppm-cxo-host-2282-step-3-done-alpha-301s-to-beta-issuer-unchanged-run-the-checks-2026-11-05.md | #2282 step 3 done (12:47): alpha 301s to beta, alpha's MCP issuer is unchanged;… |
