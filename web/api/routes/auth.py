@@ -13,7 +13,7 @@ from typing import Any, Dict, Optional
 import structlog
 from fastapi import APIRouter, Depends, Form, HTTPException, Request, Response, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import BlacklistUnavailable, JWTClaims, JWTService
@@ -75,6 +75,14 @@ async def get_jwt_service(request: Request) -> JWTService:
     return AuthContainer.get_jwt_service()
 
 
+# #2267 (CXO 11-06 11:02): the wrong-credentials line. web/app.py's 401 handler
+# keeps it rather than replacing it with the expired-session sentence, which is
+# for an actual expired session.
+BAD_CREDENTIALS_DETAIL = (
+    "That email and password didn't work. Check both and try again, or use Forgot password."
+)
+
+
 @router.post("/login", response_model=LoginResponse)
 async def login(
     request: Request,
@@ -122,7 +130,7 @@ async def login(
         if not username or not password:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid username or password",
+                detail=BAD_CREDENTIALS_DETAIL,
             )
 
         # Initialize database if needed
@@ -142,8 +150,17 @@ async def login(
             result = await session.execute(select(User).where(User.username == username))
             user = result.scalar_one_or_none()
             if user is None and "@" in username:
-                result = await session.execute(select(User).where(User.email == username))
-                user = result.scalar_one_or_none()
+                # #2267 (PA's served repro, 11-06): email matching ignores case, so
+                # "Name@example.com" signs in the account stored as "name@example.com".
+                # Two accounts whose emails differ only in case match neither: never
+                # a guess between them.
+                result = await session.execute(
+                    select(User).where(func.lower(User.email) == username.lower()).limit(2)
+                )
+                matches = result.scalars().all()
+                user = matches[0] if len(matches) == 1 else None
+                if len(matches) > 1:
+                    logger.warning("login_email_case_ambiguous", matches=len(matches))
 
             # User not found - generic error message for security
             if not user:
@@ -154,7 +171,7 @@ async def login(
                 )
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Invalid username or password",
+                    detail=BAD_CREDENTIALS_DETAIL,
                 )
 
             # Check if user is active
@@ -194,7 +211,7 @@ async def login(
                 )
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Invalid username or password",
+                    detail=BAD_CREDENTIALS_DETAIL,
                 )
 
             # Update last_login_at (in same session)

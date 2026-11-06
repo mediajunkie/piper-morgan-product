@@ -2095,3 +2095,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2297	OPEN	Production		[UX] 'Add a task to <project>' makes a plain todo, and the project never shows it (Path B preview, 11-06)	UX		
 2302	OPEN	Production		'What changed this week?' says 7 tasks created and names 3, with no word that the list is shortened	bug		
 2303	OPEN	Production		Make archive_project live in chat (a write flip on xian's secret), so the hide literal can be deleted against a live op	enhancement		
+2304	OPEN	Production		Consent 'Quick check' asks print the internal op name ('update document query'); build the summary from the declared args	bug		

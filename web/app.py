@@ -124,8 +124,14 @@ try:
         friendly_message = None
 
         if exc.status_code == 401:
-            # Authentication errors
-            friendly_message = "Let's try logging in again. Your session may have expired."
+            # Authentication errors. #2267 (CXO 11-06): the login route's wrong-
+            # credentials line is kept; every other 401 is an expired session.
+            from web.api.routes.auth import BAD_CREDENTIALS_DETAIL
+
+            if str(exc.detail or "") == BAD_CREDENTIALS_DETAIL:
+                friendly_message = BAD_CREDENTIALS_DETAIL
+            else:
+                friendly_message = "Let's try logging in again. Your session may have expired."
         elif exc.status_code == 403:
             # A route that wrote a SPECIFIC 403 reason keeps it (#1875: the setup
             # gate's "already complete — sign in instead" was being replaced by
