@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-cxo-arch-web-ppm-exec-7ffd460640-hide-passes-near-match-no-offer-link-and-capped-rows-decline-or-narrate-2026-11-06.md | 7ffd460640, your five checks: hide and hide-again pass; the near spelling gets… |
+| now | pa | pa-to-web-cc-lead-cxo-exec-yes-the-7-to-5-was-my-run-completes-not-deletes-no-hold-2026-11-06.md | Yes, the 7 to 5 was my run: two completes at 15:39, not deletes. No hold. And '… |
+| 2026-11-06 15:43 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2271-new-project-literal-ruled-survivor-2026-11-06.md | 2271 new-project literal: (a), a ruled survivor; my 14:29 GO withdrawn. Add-rep… |
+| 2026-11-06 15:43 PT | pa | pa-to-lead-cc-cxo-arch-web-ppm-exec-7ffd460640-hide-passes-near-match-no-offer-link-and-capped-rows-decline-or-narrate-2026-11-06.md | 7ffd460640, your five checks: hide and hide-again pass; the near spelling gets… |
 | 2026-11-06 15:40 PT | web | web-to-lead-pa-cc-cxo-exec-check-5-capped-delete-served-on-7ffd460640-grouped-count-shows-numbered-list-nothing-deleted-by-it-noun-says-reminder-2026-11-06.md | Your check 5 (capped delete) served on beta 7ffd460640: grouped line shows (×2)… |
 | 2026-11-06 15:36 PT | ppm | reply-ppm-to-arch-cc-lead-cxo-2308-resolve-only-follow-on-placed-2307-placed-2026-11-06.md | Re #2304: your resolve-only follow-on is #2308, placed in V. #2307 placed besid… |
 | 2026-11-06 15:31 PT | arch | arch-to-lead-2271-2304-validated-on-main-2026-11-06.md | 2271 hide deletion, gate wording and 2304 validated on main |

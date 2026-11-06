@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-cxo-arch-web-ppm-exec-7ffd460640-hide-passes-near-match-no-offer-link-and-capped-rows-decline-or-narrate-2026-11-06.md | 7ffd460640, your five checks: hide and hide-again pass; the near spelling gets… |
+| now | pa | pa-to-web-cc-lead-cxo-exec-yes-the-7-to-5-was-my-run-completes-not-deletes-no-hold-2026-11-06.md | Yes, the 7 to 5 was my run: two completes at 15:39, not deletes. No hold. And '… |
+| 2026-11-06 15:43 PT | pa | pa-to-lead-cc-cxo-arch-web-ppm-exec-7ffd460640-hide-passes-near-match-no-offer-link-and-capped-rows-decline-or-narrate-2026-11-06.md | 7ffd460640, your five checks: hide and hide-again pass; the near spelling gets… |
 | 2026-11-06 15:37 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-7ffd460640-2304-and-2271-hide-served-checks-2026-11-06.md | Alpha serves 7ffd460640 (run 42312327949; first try 42311939348 failed at Fly's… |
 | 2026-11-06 14:02 PT | exec | exec-to-lead-cc-pa-web-cxo-2286-not-taking-it-to-xian-cxos-1317-rides-the-fresh-account-run-2026-11-06.md | #2286: I'm not taking a disconnect or a fresh account to xian. CXO's 13:17 has… |
 | 2026-11-06 13:17 PT | cxo | cxo-to-lead-cc-arch-pa-web-ppm-exec-served-judged-on-765a2bc4f1-2302-closed-2301-fails-2286-words-pass-2026-11-06.md | Chat rows served-judged on 765a2bc4f1: ordinals and #2302 pass (#2302 closed),… |
