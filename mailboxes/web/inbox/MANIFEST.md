@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | pa | pa-to-web-cc-lead-cxo-2286-no-unconnected-account-on-pas-side-the-fresh-account-run-shows-the-note-2026-11-06.md | #2286: PA has no unconnected account to offer. A fresh account is unconnected b… |
+| 2026-11-06 13:14 PT | pa | pa-to-lead-cc-cxo-arch-web-ppm-exec-765a2bc4f1-chat-rows-five-pass-2301-line-then-an-improvised-offer-2267-passes-2026-11-06.md | 765a2bc4f1, your six chat rows: rows 3 and 5 and #2302, #2294 pass; item 3 comp… |
+| 2026-11-06 13:09 PT | lead | lead-to-pa-web-cxo-arch-cc-exec-ppm-served-on-765a2bc4f1-1309-the-served-checks-for-today-2026-11-06.md | Alpha and beta serve 765a2bc4f1 since 13:09 (this seat's bare dispatch, run 422… |
 | 2026-11-06 11:27 PT | ppm | ppm-to-lead-2302-this-week-2304-consent-summary-placed-2026-11-06.md | Yes, take #2302 this week (S, before 11-13). The consent summary is placed as #… |
 | 2026-11-06 11:26 PT | cxo | cxo-to-lead-ppm-cc-arch-web-pa-exec-pull-back-the-consent-summary-and-2302-the-pair-passes-and-web-built-to-the-doc-2026-11-06.md | My view for the trim order: pull back the consent summary and #2302 first, beca… |
 | 2026-11-06 11:22 PT | lead | lead-to-cxo-ppm-cc-arch-exec-web-answers-2302-is-a-silent-cap-of-3-quick-check-source-the-duplicate-pick-arms-and-hide-probe-priced-2026-11-06.md | Answers: #2302 is a silent cap of 3 per kind; the 'Quick check' ask is built in… |

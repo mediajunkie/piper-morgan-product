@@ -1,0 +1,15 @@
+=== beta 765a2bc4f1 13:13:19
+
+## 1. sign in by username on alpha: http 200  {'token': '<token>', 'user_id': '3950b247-f882-415e-942d-8f424a754fae', 'username': 'web-seed-1386'}
+## 2. /auth/me: username set = True, email = we…@test.invalid
+
+## 3. sign in by email on alpha.pipermorgan.ai: http 200  {'token': '<token>', 'user_id': '3950b247-f882-415e-942d-8f424a754fae', 'username': 'web-seed-1386'}
+
+## 3. sign in by email on beta.pipermorgan.ai: http 200  {'token': '<token>', 'user_id': '3950b247-f882-415e-942d-8f424a754fae', 'username': 'web-seed-1386'}
+## 4. by email, upper-cased, on alpha.pipermorgan.ai: http 200  {'token': '<token>', 'user_id': '3950b247-f882-415e-942d-8f424a754fae', 'username': 'web-seed-1386'}
+## 4. by email, upper-cased, on beta.pipermorgan.ai: http 200  {'token': '<token>', 'user_id': '3950b247-f882-415e-942d-8f424a754fae', 'username': 'web-seed-1386'}
+## 5. first letter capitalized (a phone keyboard), alpha: http 200  {'token': '<token>', 'user_id': '3950b247-f882-415e-942d-8f424a754fae', 'username': 'web-seed-1386'}
+## 5. trailing space, alpha: http 200  {'token': '<token>', 'user_id': '3950b247-f882-415e-942d-8f424a754fae', 'username': 'web-seed-1386'}
+## 5. username upper-cased, alpha: http 401  {'message': "That email and password didn't work. Check both and try again, or use Forgot password.", 'detail': "That email and password didn't work. Check both and try again, or use Forgot password."}
+
+=== end 13:13:22
