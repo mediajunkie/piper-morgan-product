@@ -18,7 +18,7 @@ Every step either gets the person closer to one thing they can use, or says plai
 | 0. Sign-in screen (#2275) | The logo, one line about Piper, three prompts that serve today | PPM's line, fitted: "Piper Morgan is a product-management colleague. It works with your GitHub issues and projects, can write your standup, and helps you decide what to do next." | Web quotes the served page. Each example prompt is run served first. |
 | 1. AI key (#2274) | Provider, key, and a sentence before the field | "A Claude subscription (Pro or Max) doesn't include API access. Piper needs an API key from the Anthropic Console, which is billed separately from your subscription." | Web quotes the step with the link. |
 | 2. Project and repo (#2268) | Name and repo, then a line that depends on the GitHub binding | Not connected: "I've noted {repo} for this project. GitHub isn't connected yet, so I can't read it." Connected: "{repo} is linked to this project." | Web quotes both states. |
-| 3. Connect GitHub (new last step, before "Open Piper") | A card with Connect, the line about GitHub's page, and a Skip | "GitHub will ask you to approve Piper Morgan Alpha. Its page may show the name of the account that owns the app, which is Piper's and not yours. Piper only gets access to the GitHub account you approve there." After: "GitHub is connected as {login}." Skip: "You can connect GitHub later in Settings, under Integrations. Until then I can't read your repo." | Web quotes the card and the post-connect line on a non-owner login. |
+| 3. Connect GitHub (new last step, before "Open Piper") | A card with Connect, the line about GitHub's page, and a Skip | "GitHub will ask you to approve Piper Morgan. Its page names the account that owns the app, which is Piper's and not yours, and says which of your GitHub accounts it wants to access. Check that account is the one you mean. Piper only gets access to the account you approve there." (Final text per #2286, 11-06. It supersedes the "Alpha" wording written before the OAuth app transfer. No owner name or host is hard-coded.) After: "GitHub is connected as {login}." Skip: "You can connect GitHub later in Settings, under Integrations. Until then I can't read your repo." | Web quotes the card and the post-connect line on a non-owner login. |
 | 4. First value (the landing) | Chat opens with one suggested ask, as a button | The ask is "Show my open issues" or "What changed in my tasks and projects this week?" Whichever Lead confirms serves cleanly on a fresh account with a connected repo. | PA quotes the served reply on a fresh account. |
 
 **Cut order if time is short:** 0 and 1 are words only. 4 is the first value and must not be cut. 3 is the only large build.
@@ -50,3 +50,14 @@ n of N new accounts reach step 4's served reply in their first session, without 
 - The wizard ends at step 4, the first ask, not at "Setup Complete". Step 4 is never cut.
 - Skip is allowed at step 3 in beta. A skip says plainly that Piper can't read a repo yet, then lands on Path B's first ask, or until Path B serves, on an ask that serves with no connector (Lead names it).
 - The fitted positioning line ("can write your standup") is accepted and on #2275.
+
+## Path B (no PM, no repo): rows added 2026-11-06
+
+Answered by Lead (11-04) and taken by PPM (11-04). I add the pass lines.
+
+| Step | What the person sees | Pass line |
+|---|---|---|
+| B1. First ask | Chat offers `Create a project called ...`, then `Add a task to it: ...` | PA quotes both served on a fresh account: the project is created and named in the reply, the task is added, neither reply repeats an item or calls a todo a reminder (#2219). |
+| B2. Skip landing (Path A skipped at step 3) | After Skip, Piper says it cannot read a repo yet (the Skip line above) and offers `Add a todo: review the deployment plan` | PA quotes the todo reply served: one item, no repeat, `todo` not `reminder`. |
+
+Both pass on a quoted served reply from PA or Web, not on a unit pin. #2219's list and ordinal rows are part of B1 and B2 and are being judged separately (see the 11-06 log).
