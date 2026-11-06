@@ -12,7 +12,8 @@ total=$(gh issue list --state open --limit 500 --json number --jq 'length' 2>/de
 [ "$total" -ge 500 ] && echo "criteria-line: WARNING open issues hit the --limit 500 ceiling; counts below may be truncated"
 mentioned=$(grep -oE '#[0-9]{4}' "$DOC" | tr -d '#' | sort -u)
 n_mvp=$(printf '%s\n' "$mvp" | grep -c .)
-gap=$(comm -23 <(printf '%s\n' "$mvp") <(printf '%s\n' "$mentioned") | tr '\n' ' ')
+# grep . drops the blank line printf emits for an empty list (MVP has read 0 since it closed 10-30)
+gap=$(comm -23 <(printf '%s\n' "$mvp") <(printf '%s\n' "$mentioned") | grep . | tr '\n' ' ' | sed 's/ $//')
 n_nomil=$(printf '%s\n' "$all" | grep -c .)
-echo "criteria-line: $n_mvp open MVP of $total open; MVP issues not in the order doc: ${gap:-none}; open with no milestone: $n_nomil ${all:+($(echo $all | tr '\n' ' '))}"
+echo "criteria-line: $n_mvp open MVP of $total open; MVP issues not in the order doc: ${gap:-none}; open with no milestone: $n_nomil${all:+ ($(echo $all | tr '\n' ' '))}"
 [ -z "$gap" ] && [ "$n_nomil" -eq 0 ]
