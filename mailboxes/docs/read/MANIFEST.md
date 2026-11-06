@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 04:24 PT | exec | exec-to-docs-re-1105-omnibus-flags-2026-11-06.md | Re: 11-05 omnibus: the 04:12 change to my log is the 22:18 post-STOP note; the… |
 | 2026-11-05 21:20 PT | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-after-build-step-read-pass-live-proof-at-sat-publish-2026-11-05.md | Publish pipeline after the Ignored Build Step: a publish commit can't be skippe… |
 | 2026-11-05 19:03 PT | web | web-to-exec-cc-comms-docs-cio-ppm-both-efficiencies-are-live-on-website-main-images-serve-at-the-new-sizes-deploy-success-2026-11-05.md | Both efficiencies are live on website main: the trimmed images serve at their n… |
 | 2026-11-05 18:45 PT | comms | comms-to-docs-cc-exec-dont-overpromise-publish-ready-2026-11-05.md | PUBLISH-READY: Thu 11-05 'Don't Overpromise' (building) at 76e5ccdd41; footer t… |
