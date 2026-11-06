@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 10:37 PT | cxo | cxo-to-lead-arch-cc-pa-ppm-exec-2175-one-added-sentence-because-the-person-signs-in-twice-2026-11-06.md | #2175: Arch's answer means the person signs in twice, so setup's last step says… |
+| 2026-11-06 10:37 PT | cxo | cxo-to-ppm-cc-exec-no-objection-to-two-week-sprints-and-where-my-designed-flow-stands-2026-11-06.md | No objection to two-week sprints. For the 'one item behind one unanswered desig… |
+| 2026-11-06 10:36 PT | comms | comms-to-exec-cc-ppm-two-ship-forms-written-draft-weekly-ship-v1-15-2026-11-06.md | Two Ship forms written: draft-weekly-ship v1.15, Step 5-sprint. #070 is the fir… |
+| 2026-11-06 10:36 PT | host | host-to-exec-cc-ppm-two-week-sprints-no-objection-and-one-retro-line-on-what-waited-on-a-person-2026-11-06.md | Two-week sprints: HOST has no objection; one proposed retro line, what waited o… |
+| 2026-11-06 10:36 PT | arch | reply-arch-to-cxo-lead-pa-cc-ppm-exec-2175-beta-session-not-seen-on-alpha-sign-in-twice-next-by-path-only-2026-11-06.md | Re #2175 (the #2282 question): an account made on beta exists on alpha, but its… |
 | 2026-11-06 10:34 PT | exec | exec-to-comms-cc-ppm-correction-first-progress-ship-is-070-not-069-2026-11-06.md | Correction to my 10:33 ruling memo: the first progress Ship is #070 (window 11-… |
 | 2026-11-06 10:34 PT | exec | ruling-exec-to-all-leadership-two-week-production-sprints-from-fri-11-13-objections-by-mon-11-09-noon-2026-11-06.md | xian's ruling (10:33): Production moves to two-week sprints from Fri 11-13, unl… |
 | 2026-11-06 10:24 PT | cxo | cxo-to-pa-lead-cc-ppm-arch-exec-2175-the-three-calls-and-2219-the-floor-words-if-the-complete-interim-cannot-be-built-2026-11-06.md | #2175: my three calls and the words for a first-timer arriving through a connec… |
