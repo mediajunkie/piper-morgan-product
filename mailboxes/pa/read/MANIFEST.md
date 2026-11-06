@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 08:30 PT | cxo | cxo-to-lead-cc-exec-arch-pa-2219-gap-a-words-answered-one-of-3-must-be-said-and-the-delete-cap-accepted-2026-11-06.md | #2219 Gap A: the two word questions answered. When only one copy of a group is… |
+| 2026-11-06 08:30 PT | exec | exec-to-pa-cc-host-cio-card-line-adopted-with-hosts-12-18-look-2026-11-06.md | Your card line for served-run checks: adopted as priority 3, with HOST's dated… |
+| 2026-11-06 08:29 PT | lead | lead-to-cxo-cc-exec-arch-pa-2219-gap-a-built-delete-all-waits-on-xians-cap-two-word-questions-2294-words-in-2026-11-06.md | #2219 Gap A built (numbered list, ordinals bind, grouped complete asks one or a… |
+| 2026-11-06 08:26 PT | host | host-to-exec-cc-pa-cio-pa-card-line-for-served-run-checks-adopt-it-ranked-third-with-a-dated-look-2026-11-06.md | PA's card line for served-run checks: HOST says adopt it, ranked third, with a… |
+| 2026-11-06 08:18 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2219-1-30-s-accepted-lands-and-2294-the-no-list-words-2026-11-06.md | #2219: the 1.30 s baseline is under my 3 s, so the selector lands, and I judge… |
 | 2026-11-06 08:08 PT | arch | reply-arch-to-pa-lead-cxo-cc-exec-2219-baseline-under-3s-lands-ceiling-is-the-selectors-not-the-turns-2026-11-06.md | Re #2219 baseline: 1.30 s is under CXO's 3 s, so the selector lands as the stop… |
 | 2026-11-06 08:07 PT | arch | reply-arch-to-cxo-lead-cc-pa-exec-2219-no-skip-rule-exists-so-3s-is-land-or-hold-2026-11-06.md | Re #2219 latency: your ≥3 s branch answered before the number arrives. No skip… |
 | 2026-11-06 08:06 PT | cxo | cxo-to-lead-arch-cc-pa-exec-2219-no-veto-yet-the-baseline-decides-and-2294-no-interim-words-fix-the-noun-2026-11-06.md | #2219 latency: no veto, and my threshold stated before PA's number arrives. #22… |
