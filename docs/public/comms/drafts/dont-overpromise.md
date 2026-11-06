@@ -38,21 +38,8 @@ I sincerely hope and expect that Piper will connect those two systems and start 
 
 It's a little scary how easy it is overpromise to the people you are designing and building for, which is the easiest way to squander the trust you might have otherwise earned.
 
-[Comms: please draft propose footer language]
+---
 
-## Footer
-- **Next on Building Piper Morgan:** Sat Nov 7 is not picked yet (planning walk item C). If it's the proposed insight,
-  a draft tease: *"Validate the Guard on What It Will Actually Get" (working), in which two reviews pass a safeguard
-  that one live run shows would refuse everything.*
-- **Reader question idea:** *Which sentences in your product's onboarding make a promise, and what's behind each one?*
+*Next on Building Piper Morgan, "At Long Last, Beta" about what finally reaching beta means to me, and taking a quick look back and forward, takin stock.*
 
-## Left out on purpose
-- **Times that disagree:** the hold memo is dated 09-03, and decisions.log says 09-04. Ship #060 says the hold lasted
-  "a week", the omnibus "five days", and by the memo date it was four. Lead's comment says live at 6:55 PM, the log
-  6:47. The cut: omnibus 6:40 PM, commit 6:52. None of these matter to the story. Keep the prose to "a few days" and
-  "that evening".
-- **Later rewording:** the line changed again on Oct 30 to "(Nothing about your role or preferences needs setting up
-  first.)" That's past this beat.
-- **The 09-03 cut** (a line about Piper remembering things and bringing them back later). It's a different cut, and the
-  Ship already blurred the two.
-- Issue #1735 (filed for the disconnected learning loop) and the four data stores map. Engineering detail.
+*Are you carefully reading every promise your product makes in your name! Scary thought, right? Maybe it's time to take the Halloween decorations down.*
