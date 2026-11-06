@@ -2084,3 +2084,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2287	OPEN	Production		GitHub Disconnect: the dialog still says 'disconnect your GitHub account', and the old 'Connected' line lingers until reload	UX		
 2288	OPEN	Production		GitHub card says "Connected." on a grant GitHub rejects (401) until a chat read marks it stale: a card GET /user 401 should mark STALE	bug		
 2290	OPEN	Production		Failure pages and toasts give the person nothing to send us: show a short reference code that finds the request in the logs			
+2292	OPEN	Production		pipermorgan.ai has no SPF, DKIM or DMARC: invitations and the cohort note from xian's Workspace address may be rejected or spam-foldered; add the three records before the next invite	P1		
