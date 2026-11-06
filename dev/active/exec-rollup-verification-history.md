@@ -425,3 +425,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v842 19:03 Thu 11-05: alpha 4e4c3fb1a8 (read 19:03).
 - v843 19:05 Thu 11-05: website efficiencies live.
 - v844 21:22 Thu 11-05: corrected 'a post publish still deploys' (Comms: Thursday's post predates the step; live proof is Saturday).
+- v845 (11-06 05:17): Ship #067 card replaced with the #068 week-review card (artifact WgEURUof7TDHby3ma3VjJW); links and counts from this morning's gh reads.

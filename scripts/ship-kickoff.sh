@@ -51,13 +51,14 @@ ROLES="arch cio cxo comms docs host lead pa ppm web"
 # after Exec skipped the skill's synthesis step for #066 and went straight to a draft). It reads the
 # files that define each step, so it cannot drift from what has actually happened, and it names the
 # next step and the skill that runs it. Steps (draft-weekly-ship skill, process guide's ten steps):
-#   reviews 10/10 → synthesis (Step 2c) → discussed with xian (step 7) → draft (step 8) → published.
+#   reviews 9/9 → synthesis (Step 2c) → discussed with xian (step 7) → draft (step 8) → published.
 # The synthesis lives at docs/internal/planning/comms/ship-reviews/ship-NNN-week-review.html and
 # carries `<!-- discussed: YYYY-MM-DD -->` once xian has discussed it.
 ship_status() {
   python3 - "$SHIP" "$ROLES" <<'EOF'
 import sys, subprocess, csv, glob, os, re
 ship, roles = sys.argv[1], sys.argv[2].split()
+roles = [r for r in roles if r != "docs"]   # Docs gets the kickoff but files no review (PM 2026-05-03)
 def tree(path):
     out = subprocess.run(["git", "ls-tree", "-r", "--name-only", "origin/main", path],
                          capture_output=True, text=True).stdout.split()
