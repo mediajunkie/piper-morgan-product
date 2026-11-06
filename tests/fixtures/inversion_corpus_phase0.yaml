@@ -445,6 +445,11 @@ corpus:
     source: "probe-row-52"
     surface1_claim: "priority/get_top_priority"
     probe_verdict: "DISAGREE"
+  - phrase: "link repo dinp-machine/piper-test-activity to zz share-hide project"
+    category: PORTFOLIO
+    expected: action:link_repo
+    source: "#2271 (PA's alpha phrasing 2026-11-06; Arch 14:09)"
+    notes: "Legacy classifier invented link_repository_to_project; served via the rail alias."
   - phrase: "Set my default GitHub repository to owner/name"
     category: EXECUTION
     expected: action:set_default_repo

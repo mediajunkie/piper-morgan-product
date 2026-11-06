@@ -329,6 +329,8 @@ DEPOSITS_REPORT = PHASE3_REPORTS[-1]
 # gets no credit.
 SURFACE2_FLOOR_PROBES: List[Path] = [
     _P3
+    / "inversion-phase3-surface2-floor-probe-2026-11-06-n10-anthropic-2271-hide.md",  # #2271 (Arch 11:13 bar): "hide the project Beta" 10/10 EXECUTION/hide_project @0.82, claude-sonnet-4-6; hide_project is an alias of archive_project_entry (the row's ruled destination) since 510fc2aa66
+    _P3
     / "inversion-phase3-surface2-floor-probe-2026-11-01-n5-anthropic-2197-deadline.md",  # #2197 (Arch 12:11): "when's the milestone deadline" 5/5 TEMPORAL/meeting_time @0.82 (a READ op), claude-sonnet-4-6 (anthropic leg only; openai has no credits)
     _P3
     / "inversion-phase3-surface2-floor-probe-2026-10-10-n5-anthropic-nr.md",  # #1973 (b): "what am I working on?" 5/5 STATUS/get_project_status @0.95, claude-sonnet-4-6 (anthropic leg only; openai had no credits)
@@ -565,11 +567,13 @@ def _surface2_misserve_safe(
     ruled_op = (ruled_destination or "").split(":", 1)[-1] if ruled_destination else ""
     ruled_entry = workflows.get(ruled_op) if ruled_op else None
     bad = []
+    exempted = 0
     for r in rows:
         sampled_action = r.get("action") or ""
         entry = workflows.get(sampled_action)
         if entry is not None and entry.needs_consent:  # effect >= WRITE
             if ruled_entry is not None and entry is ruled_entry:
+                exempted += 1
                 continue  # the ruled destination's own entry (Arch 11-06 11:49)
             bad.append(sampled_action)
     if bad:
@@ -577,10 +581,15 @@ def _surface2_misserve_safe(
             f"surface 2 lands a WRITE/DESTRUCTIVE op ({bad[0]}) in {len(bad)}/{len(rows)} "
             "probe samples — the fallback would be WORSE, not cannot-be-worse"
         )
-    return (
-        True,
-        f"surface 2 lands on no WRITE/DESTRUCTIVE op in {len(rows)}/{len(rows)} probe samples",
-    )
+    # Arch 11-06 14:09: when the exemption applied, say so; "no WRITE op" is untrue
+    # when the samples land on the ruled destination's own write.
+    if exempted == len(rows):
+        landed = "lands only on the ruled destination's own entry"
+    elif exempted:
+        landed = "lands on no WRITE/DESTRUCTIVE op but the ruled destination's own entry"
+    else:
+        landed = "lands on no WRITE/DESTRUCTIVE op"
+    return True, f"surface 2 {landed} in {len(rows)}/{len(rows)} probe samples"
 
 
 DELETED_PATTERNS_JSON = ROOT / "scripts" / "inversion_phase3_deleted_patterns.json"

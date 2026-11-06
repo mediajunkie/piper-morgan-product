@@ -3621,7 +3621,11 @@ class TestExtractionPatternRatchet:
         # 90 -> 89 (2026-10-29, #1595 Phase 3 thirty-first deletion, issue 2195):
         # INTEGRATION_CONNECT_PATTERNS (1 literal) tombstoned FULL; 8/8 claimed
         # rows route get_contextual_guidance on the router (live via group).
-        "pre-classifier": 89,
+        #
+        # 89 -> 88 (2026-11-06, #2271, Arch decisions.log 14:09): PORTFOLIO partial,
+        # the hide literal, under misserved_at_deletion + surface2_verified_at_deletion
+        # (surface 2 names hide_project 10/10, an alias of the ruled archive_project).
+        "pre-classifier": 88,
     }
 
     # The named interpretation-by-pattern spans, per surface: (file, symbols).

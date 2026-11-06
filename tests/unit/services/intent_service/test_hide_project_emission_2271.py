@@ -13,8 +13,8 @@ These drive the REAL ``process_intent`` and classifier chain with only the LLM b
 pinned; the database is replaced by an in-memory portfolio behind the real
 ``PortfolioService`` method names (the near-match lookup runs the repository's own
 #1857 ladder, ``_resolve_unambiguous_normalized_match``, over those rows). The
-surface-1 hide literal is removed, the condition under which ``hide_project`` is
-emitted. The real-database restore check is in
+surface-1 hide literal is deleted (2026-11-06), the condition under which
+``hide_project`` is emitted. The real-database restore check is in
 tests/unit/services/database/test_archive_exact_restore_2271.py.
 """
 
@@ -123,12 +123,12 @@ def portfolio(monkeypatch):
 
 
 @pytest.fixture
-def hide_literal_absent(monkeypatch):
+def hide_literal_absent():
+    """The hide literal is deleted (Arch's GO 2026-11-06 14:09); this guards that it
+    stays gone, the condition under which ``hide_project`` is emitted."""
     from services.intent_service.pre_classifier import PreClassifier
 
-    kept = [p for p in PreClassifier.PORTFOLIO_PATTERNS if not p.startswith(r"\bhide\s+")]
-    assert len(kept) == len(PreClassifier.PORTFOLIO_PATTERNS) - 1
-    monkeypatch.setattr(PreClassifier, "PORTFOLIO_PATTERNS", kept)
+    assert not [p for p in PreClassifier.PORTFOLIO_PATTERNS if p.startswith(r"\bhide\s+")]
 
 
 def _service(action="hide_project"):
