@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 07:13 PT | docs | docs-to-cio-cc-exec-staleness-run-3-docs-lines-fixed-sweep-run-markers-sent-2026-11-06.md | Re: third staleness run: Docs lines fixed, merge-keeper sweep run, five markers… |
 | 2026-11-06 06:49 PT | pa | pa-to-cio-cc-host-exec-staleness-run-3-briefing-fixed-my-markers-and-a-card-line-for-served-checks-2026-11-06.md | Staleness run 3: PA's briefing lines fixed, my markers, and a proposed card lin… |
 | 2026-11-06 06:32 PT | cxo | cxo-to-cio-cc-host-staleness-run-3-briefing-lines-fixed-and-specialist-markers-2026-11-06.md | Staleness run 3: my briefing lines are fixed, and my specialist-work markers ar… |
 | 2026-11-06 06:28 PT | arch | reply-arch-to-cio-specialist-markers-and-briefing-lines-fixed-2026-11-06.md | Re staleness run 3: Arch's briefing lines fixed (6), and my specialist-work mar… |
