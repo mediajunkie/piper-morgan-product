@@ -13,7 +13,8 @@ Responses extracted from the memo text as they land. Claims about another role a
 | lead | 05:23 | 7 logs via a helper, plus carry-forward |
 | comms | 05:24 | logs 09-27 to 11-06 |
 | pa | 05:24 | logs 10-23 to 11-05 |
-| (open) | host (own answer), web, exec | 3 of 11 outstanding as of 05:34 |
+| exec | 06:04 | 10-09 to 11-06, weighted to 10-30 to 11-05; also cites CIO's staleness run |
+| (open) | host (own answer), web | 2 of 11 outstanding as of 06:15 |
 
 ## PPM (response and correction)
 - **Correction first:** PPM's 2.3 and 8.1 ("roadmap.md is a historical record", banner suggestion) are withdrawn by its 05:17 memo. The file was already a pointer document (v19.1, 10-26); only Current Position was stale, now v19.2. Do not use the original 2.3/8.1 text.
@@ -26,6 +27,15 @@ Responses extracted from the memo text as they land. Claims about another role a
 - **6.3:** `place-issue.sh` (about six calls per placement, over 25 placements on 11-04 and 11-05). Owner: PPM.
 - **8.3 / 9.2:** the invite hold has no single standing document (PPM will draft a PDR; xian ratifies); a fresh-account, no-help session as a gate row before any Go. Both PPM's.
 - **Open to check:** PPM's "3.4 wake push reached me at 05:09" matches my own 05:09 wake (same kickoff).
+
+## Exec (added 06:15, 9 of 11 in)
+- **5.7:** the scan works for Exec and caught its v0.5 headline (21 markers unparsed 14 days); five old-format markers in its 10-30 log still do not parse. Missing: a "parked on xian" state so a flag only xian can clear does not read as Exec's own lapse. New candidate; owner CIO (#1967).
+- **5.8, 6.1:** same as the other seats: xian's hand for every `fly` and refused promotion; wants a read-only production status view (served sha, uptime, last deploys). Agrees with Arch and CIO.
+- **2.4, 4.4 (with Lead's 2.4/6.1):** a script printing the promotion-gate conditions. Now named by Lead and Exec; owner Lead or CIO.
+- **5.4:** a plausible wrong minute is not caught by the stamp check (it catches "HH:Mx" only). Exec's proposed rule: run `date` in its own call, never type a time in the command that reads it.
+- **9.2, 10.2:** Exec's own named review slot in every START (re-read one claim of the last 24 hours against its source), because relay work crowded out review in the incident week. This is the form Exec offered for the specialist-unit row; Exec adopts it itself.
+- **Single items:** 5.2 draft-weekly-ship Step 3 asks for a full read of every omnibus, which does not fit one wake (owner Comms/Exec); #1715 skills walk overdue since 11-03, waiting on a slot with xian; 9.4 two cues for reading xian, to go in Exec's briefing.
+- **Check before synthesis:** Exec 5.8 says the cohort note's bcc roster stays "in HOST's private repo". It is a gitignored roster in the shared checkout, not a private repo. Correct that when I cite it.
 
 ## Convergence so far (8 of 11 seats in; extracted from the memo text, 11-06 05:40)
 - **5.7, the owed scan reads session-log markers only (8 of 8 say it, PA included).** Every seat keeps owed work in a carry-forward, a `Drain:` line or a tracker row, so the scan shows 0 or undercounts (PPM: about eight missed; Arch, Comms, CXO, Docs, Lead, CIO all the same). Two fixes proposed: seats write a marker per waiting item with a trigger (PPM, Arch), or the scan learns to read carry-forwards / `Drain:` lines (Comms, CXO, Docs, Lead). CIO notes v4's `--due` field covers memos from 11-09. PA adds two: put the OWED key on the standing row so one close covers both (3 of PA's 4 markers flagged NO-ROW), and print an OWED count in the SessionStart hook so a skipped scan is visible (only 1 of PA's 15 logs mention the scan). Owner for the scan: CIO (#1967).
