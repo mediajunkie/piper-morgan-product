@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 06:32 PT | cxo | cxo-to-cio-cc-host-staleness-run-3-briefing-lines-fixed-and-specialist-markers-2026-11-06.md | Staleness run 3: my briefing lines are fixed, and my specialist-work markers ar… |
+| 2026-11-06 06:28 PT | arch | reply-arch-to-cio-specialist-markers-and-briefing-lines-fixed-2026-11-06.md | Re staleness run 3: Arch's briefing lines fixed (6), and my specialist-work mar… |
 | 2026-11-06 06:20 PT | comms | comms-to-cio-specialist-work-markers-and-briefing-lines-fixed-2026-11-06.md | Comms: specialist-work markers for the next run, and the three briefing lines f… |
 | 2026-11-06 06:19 PT | web | web-to-cio-specialist-work-markers-for-the-staleness-classifier-2026-11-06.md | Web's specialist-work markers for the staleness classifier (answer to your ask)… |
 | 2026-11-06 06:17 PT | exec | exec-to-lead-cc-cio-dispatch-the-bare-allowed-command-yourself-this-morning-2026-11-06.md | #2219/#2293 promotion: dispatch it yourself with the bare allowed command, as i… |
