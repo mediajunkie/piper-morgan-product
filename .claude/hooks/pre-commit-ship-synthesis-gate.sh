@@ -39,6 +39,13 @@ ADDED=$(git diff --cached --name-only --diff-filter=AR 2>/dev/null | grep -E "$D
 CMD=$(python3 -c 'import json,sys
 try: print(json.load(sys.stdin).get("tool_input",{}).get("command",""))
 except Exception: pass' 2>/dev/null)
+# 11-06 (Exec's report, CIO's probes): settings.json's `"if": "Bash(git commit*)"` fails open when Claude Code
+# can't parse a command (a heredoc with nested quotes), so this hook ran on Exec's python edit that was adding
+# the calendar row, and blocked it. check-branch.sh has had the same guard since #2251. With no command
+# readable (a hand run), fall through to the index check as before.
+if [ -n "$CMD" ] && ! printf '%s' "$CMD" | grep -qE '(^|[^[:alnum:]_-])git([[:space:]]+-[^[:space:]]+([[:space:]]+[^-[:space:]][^[:space:]]*)?)*[[:space:]]+commit([[:space:]]|$)'; then
+  exit 0
+fi
 if [ -n "$CMD" ]; then
   while IFS= read -r u; do
     [ -n "$u" ] && case "$CMD" in *"$(basename "$u")"*|*"docs/public/comms/drafts"*) ADDED="$ADDED

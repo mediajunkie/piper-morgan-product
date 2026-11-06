@@ -112,13 +112,7 @@
       // Build action buttons based on permissions
       let actionButtons = '';
 
-      if (canEdit(project)) {
-        actionButtons += `
-          <button class="edit-btn" onclick="editProject('${project.id}')">
-            Edit
-          </button>
-        `;
-      }
+      // #2271: no Edit button until editing a project works (it only said "coming soon").
 
       if (canDelete(project)) {
         actionButtons += `
@@ -244,12 +238,6 @@
         }
       }
     });
-  }
-
-  // Edit project
-  function editProject(projectId) {
-    // TODO: Implement edit functionality
-    ToastMessages.info('coming_soon', { body: 'Edit functionality coming soon' });
   }
 
   // Delete project

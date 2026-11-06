@@ -177,7 +177,7 @@ class TestSettingsProjectsTemplate:
     def test_template_has_empty_states(self):
         """Verify template handles empty states for repos and integrations."""
         content = _settings_projects_with_partial()
-        assert "No repositories linked" in content or "No repositories" in content.lower()
+        assert "No repository is linked to" in content
         assert "No integrations configured" in content or "No integrations" in content.lower()
 
     def test_template_has_integration_type_metadata(self):
