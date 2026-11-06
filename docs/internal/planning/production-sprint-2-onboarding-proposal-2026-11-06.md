@@ -32,7 +32,7 @@ Rule, from the ruling: no more than one named item behind any single unanswered 
 | 7 | #2268 and #2274: the wizard's connect handoff and the API-key line. CXO's words exist for both. | Lead, Web (1.25 days) | none |
 | 8 | #2269 and #2270: "link repo" and the repo-as-document miss | Lead (2.5 days) | #2270 waits on the session's exact phrasing (PA's repro or xian's notes) |
 | 9 | #2271: the "yes" loop on adding a repo | Lead (1.5 days), with Web on the project page's edit control | none. PA reproduced it 11-06 10:43: the loop is 2 of 2, and a second fault is an invented `link_repository` op. Web's page half (10:50): the list's Edit button is a "coming soon" placeholder. CXO ruled 11-06 11:02: remove it until it works. |
-| 10 | **CXO's designed flow:** the wizard ends at the first ask. It covers #2273 (finding Integrations), #2275 (the sign-in screen's line and its first-value prompts), #2272's page half (attach a repo to a project) and #2286 (step 3's connect card line, which is final and unbuilt). | Lead (2 days); Web builds the pages (#2273's Settings groups, and attach and detach on `/projects/<id>` for #2272); then CXO judges | CXO's words after Lead's 11-06 10:57 answers. Attaching a repo is a record only: issue reads don't use it, since #1315 retired project-scoped reads. Detaching changes only Piper's records. Also Lead naming the first ask (step 4). Prompt 3 ("Show my open GitHub issues") waits on a fresh connected account. |
+| 10 | **CXO's designed flow:** the wizard ends at the first ask. It covers #2273 (finding Integrations), #2275 (the sign-in screen's line and its first-value prompts), #2272's page half (attach a repo to a project) #2286 (step 3's connect card line, built 11-06 at `6c98bb765b`), and #2302 (prompt 1 counts 7 tasks but names 3, from PA's 11:06 preview). | Lead (2 days); Web builds the pages (#2273's Settings groups, and attach and detach on `/projects/<id>` for #2272); then CXO judges | CXO's words after Lead's 11-06 10:57 answers. Attaching a repo is a record only: issue reads don't use it, since #1315 retired project-scoped reads. Detaching changes only Piper's records. Also Lead naming the first ask (step 4). Prompt 3 ("Show my open GitHub issues") waits on a fresh connected account. |
 | 12 | **Path B's build:** #2297 (a task added to a named project attaches to it), #2301 ("what's in my project?" reads it instead of looping), #2299 (making a project: the name and the "Call it X" misroute) and #2300 (a todo add asks on one turn and acts on the next). From PA's Path B preview, 11-06 10:58. | Lead | Lead's size. Arch decides whether attachment is an argument the router declares. Path B can't score without this item. |
 | 11 | **Paths A and B served:** PA's quotes on fresh test accounts, and CXO's judgment | PA, CXO | the invite hold lifting (items 1–3), then HOST mints fresh accounts with xian present. Path B can be previewed sooner on PA's existing account, labelled not first-session, and never counted. |
 
@@ -66,6 +66,19 @@ Items 4–10 come to about 9–10 Lead-days. Two weeks with 30% held back leaves
 3. **#2175's `next` through `/setup` (about 1 day): next sprint**, as the plugin lane's first Lead build with #1911. Today the allowlist (#2242) keeps people with no account from connecting at all, so the build waits for xian's who-may-connect decision.
 
 **Item 12 changes the fit.** PA's 10:58 preview showed Path B can't be reached on today's build: tasks never attach to a project. Item 12 is unsized until Lead sizes it. Path B is half the score, so if the set no longer fits, other items leave and item 12 stays. First out are #2270, then #2272's chat half (already conditional), then anything in item 12 that isn't #2297 or #2301. #2271's Edit button is removed, not built (CXO's ruling), which is small.
+
+**Fit after item 12 (Lead, 11-06 11:12; PPM's trims applied at 11:13).** Item 12 is about 4 Lead-days: #2297 1–1.5, #2301 1, #2299 1, #2300 0.5. The arithmetic, all estimates:
+- Items 4–10 come to 9–10. Built this week, before the sprint starts: #2267 (`ee1f6f8c70`), #2286 (`6c98bb765b`) and #2271's alias (`0fe02547cb`), about 1.5 off. The batched screen saves about 1. That leaves about 7.
+- Adding item 12 makes about 11 against about 7.
+- **Trims applied now, not left conditional:**
+  - #2270 leaves (part of item 8);
+  - #2272's chat half leaves (part of item 10; Web's page half stays);
+  - #2299 and #2300 leave item 12.
+- That's about 3 days out, leaving about 8, which draws one day on the reserve.
+- **They come back in this order** if a slot frees up: #2300 first (0.5 day, Arch's word list), then #2299, then #2270.
+- The set is re-checked at the 11-13 review against what lands before then.
+
+**#2301's interim words:** Lead (11:12) found that nothing failed. The project-status answer has project names and counts only. So "I couldn't read it" would be untrue. CXO words the honest interim ("I can see your projects' names, not what's in them yet"). The real fix is #2301's read.
 
 **Path B: build, don't narrow (PPM, 11-06).** Path B stays "a project with tasks in it", and item 12 builds the attach. CXO agrees (11-06): don't score "a project with tasks" on replies that don't deliver it. Until it's built, #2297 carries CXO's honest interim words (`Todos aren't grouped by project yet.`).
 
