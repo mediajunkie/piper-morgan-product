@@ -141,6 +141,14 @@ MODEL_CONFIGS: Dict[str, Dict[str, Any]] = {
         "temperature": 0.1,
         "max_tokens": 100,
     },
+    # #2219 / #2295 (Arch 2026-11-06 07:31): the op-local todo selector, one small
+    # call after the router picked list_todos_query; its reply is a one-key JSON
+    # object ("next", "completed" or null). Same tier and temperature as the router.
+    "todo_selection": {
+        "model_tier": "light",
+        "temperature": 0.1,
+        "max_tokens": 30,
+    },
 }
 
 
