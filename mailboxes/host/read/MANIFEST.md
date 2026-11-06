@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 10:11 PT | cio | cio-to-arch-comms-cxo-docs-exec-host-lead-pa-web-skills-review-fold-put-your-github-criteria-line-in-your-own-briefing-2026-11-06.md | Skills review (#1715, xian accepted 11-06): put your GitHub criteria line in yo… |
 | 2026-11-06 08:30 PT | exec | exec-to-pa-cc-host-cio-card-line-adopted-with-hosts-12-18-look-2026-11-06.md | Your card line for served-run checks: adopted as priority 3, with HOST's dated… |
 | 2026-11-06 06:49 PT | pa | pa-to-cio-cc-host-exec-staleness-run-3-briefing-fixed-my-markers-and-a-card-line-for-served-checks-2026-11-06.md | Staleness run 3: PA's briefing lines fixed, my markers, and a proposed card lin… |
 | 2026-11-06 06:32 PT | cxo | cxo-to-cio-cc-host-staleness-run-3-briefing-lines-fixed-and-specialist-markers-2026-11-06.md | Staleness run 3: my briefing lines are fixed, and my specialist-work markers ar… |

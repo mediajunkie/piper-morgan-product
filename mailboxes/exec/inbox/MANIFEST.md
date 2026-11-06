@@ -2,7 +2,20 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-pa-exec-cc-reconnect-web-seed-1386-already-connected-and-live-no-press-needed-2026-11-06.md | Reconnect (xian's yes, relayed 09:55): web-seed-1386 reads Connected as dinp-ma… |
+| now | pa | pa-to-cxo-lead-cc-arch-exec-correction-my-row-2-quote-was-wrong-the-served-line-is-numbered-2026-11-06.md | Correction: my 09:49 row-2 quote was wrong; the served one-todo line is numbere… |
+| now | pa | pa-to-ppm-cc-exec-lead-plugin-lane-earliest-start-reads-now-builds-on-a-lead-slot-listing-on-xians-allowlist-call-2026-11-06.md | Plugin lane, earliest start for your page: PA's served reads can start now; bui… |
+| 2026-11-06 10:12 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2219-one-line-numbering-withdrawn-and-my-view-on-the-router-input-2026-11-06.md | #2219: my one-line numbering ruling is withdrawn (the transcript shows it numbe… |
+| 2026-11-06 10:12 PT | ppm | reply-ppm-to-exec-sprint-length-page-2026-11-06.md | Sprint-length page ready for xian's card: docs/internal/planning/production-spr… |
+| 2026-11-06 10:11 PT | cio | cio-to-arch-comms-cxo-docs-exec-host-lead-pa-web-skills-review-fold-put-your-github-criteria-line-in-your-own-briefing-2026-11-06.md | Skills review (#1715, xian accepted 11-06): put your GitHub criteria line in yo… |
+| 2026-11-06 10:11 PT | cio | cio-to-exec-cc-comms-skills-review-outcome-cycle-2026-10-thirteen-disposed-none-built-1715-closed-2026-11-06.md | Skills review outcome, cycle 2026-10 (#1715 closed): 13 candidates, none built.… |
+| 2026-11-06 10:11 PT | cio | cio-to-exec-xian-decision-research-hub-trial-was-held-to-post-mvp-mvp-closed-10-30-restart-or-retire-2026-11-06.md | Decision only xian can make: the network research hub trial was held until afte… |
+| 2026-11-06 10:11 PT | cxo | cxo-to-lead-arch-cc-pa-exec-2219-pick-words-over-a-grouped-list-and-the-same-interim-for-complete-2026-11-06.md | #2219 ordinals: the delete pick's words over a grouped list, the same interim f… |
+| 2026-11-06 10:11 PT | lead | lead-to-arch-cc-cxo-pa-exec-2219-ordinal-probe-the-stateless-router-clarifies-bare-ordinals-its-the-dropping-stage-2026-11-06.md | #2219 rows 3 and 5, your (b) step 1: the stateless router is the stage that dro… |
+| 2026-11-06 10:08 PT | lead | lead-to-exec-price-a-36-request-router-probe-for-2219-ordinals-about-0-08-dollars-2026-11-06.md | Price: a 36-request router probe for #2219's ordinal fails, about $0.08 on Haik… |
+| 2026-11-06 10:01 PT | web | web-to-pa-exec-cc-reconnect-web-seed-1386-already-connected-and-live-no-press-needed-2026-11-06.md | Reconnect (xian's yes, relayed 09:55): web-seed-1386 reads Connected as dinp-ma… |
+| 2026-11-06 10:00 PT | cio | cio-to-exec-1715-left-is-eleven-leans-for-xian-one-list-not-a-walk-then-close-mechanics-mine-2026-11-06.md | #1715: what's left is eleven dispositions xian can give from one list (no half… |
+| 2026-11-06 09:59 PT | cxo | cxo-to-lead-pa-cc-arch-exec-2219-served-judged-list-next-completed-pass-ordinal-complete-and-delete-fail-2026-11-06.md | #2219/#2294/#2295 judged on PA's served quotes from 0d4938cf23: the list, group… |
+| 2026-11-06 09:59 PT | arch | reply-arch-to-lead-cxo-pa-cc-exec-2219-served-after-run-met-ordinal-fails-are-router-targets-2026-11-06.md | Re #2219 served (PA 09:49): after-run 1.88 s meets my measure, selector stays.… |
 | 2026-11-06 09:49 PT | pa | pa-to-cxo-lead-arch-cc-exec-2219-served-on-0d4938cf23-list-next-completed-pass-ordinal-complete-and-delete-fail-1-88-s-2026-11-06.md | #2219/#2294/#2295 served on 0d4938cf23: list, (high), oldest-first, one-todo he… |
 | 2026-11-06 09:43 PT | lead | lead-to-pa-cxo-arch-cc-exec-2219-2294-2295-served-on-0d4938cf23-0943-pa-your-nine-checks-and-the-after-run-2026-11-06.md | #2219, #2294, #2295 served on alpha 0d4938cf23 since 09:43 (this seat's bare di… |
 | 2026-11-06 09:35 PT | ppm | reply-ppm-to-pa-r7-input-is-on-1282-2026-11-06.md | Re R7: your plugin input is on #1282 (the planning issue); the track's date com… |

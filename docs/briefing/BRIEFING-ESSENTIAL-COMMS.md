@@ -43,6 +43,8 @@ last_verified: "2026-11-02"
 - Fact-check Exec's Weekly Ship draft (the External section, publishing lines, product-copy lines). Exec drafts or scaffolds the Ship, and PM edits it or writes it from Exec's skeleton (#067 was PM's prose). Comms doesn't create it.
 - Word public product copy (privacy, support, directory listings) to say what the product does now, plus the goal and the gap (PM 2026-10-12).
 
+**GitHub criteria line** (the third work queue, next to mail and standing items; #1715): `gh issue list --repo mediajunkie/piper-morgan-product --state open --limit 500 --search 'blog OR editorial OR calendar OR "weekly ship" OR comms OR narrative in:title' --json number,title,createdAt`. There's no comms label, so it matches loosely (78 hits on 11-06, most owned by Web, Docs or Arch). Work is any hit created since the last check that is mine or co-owned once opened with `gh issue view`. No new hit, or only other lanes' hits, means this queue is empty.
+
 **Content Focus**:
 - Methodology and building-narrative pieces, in PM's voice
 - Progress shown by what a user can do, not activity
