@@ -64,6 +64,8 @@ created: YYYY-MM-DD
 ---
 ```
 
+**Set `scope:` by asking "who runs this cold if the owner is unavailable?"** If any agent could, it's `cross-role`, and the body must not assume the owner's context. If only one role can, say which. (xian accepted this as #1715 row 3, 2026-11-06; the bus-factor taxonomy is in `docs/internal/operations/skill-candidates-review.md`.)
+
 **Description best practices**:
 - Include WHAT the skill does
 - Include WHEN to use it (trigger contexts)
