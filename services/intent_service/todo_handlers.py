@@ -24,6 +24,7 @@ Example commands:
 - "delete todo about meeting"
 """
 
+import asyncio
 import re
 import string
 from typing import Any, List, Optional, Tuple
@@ -33,7 +34,10 @@ import structlog
 from sqlalchemy.exc import SQLAlchemyError
 
 from services.consciousness.todo_consciousness import (
+    _todo_is_done,
+    format_completed_todos,
     format_next_todo_conscious,
+    format_next_todo_line,
     format_todo_completed_conscious,
     format_todo_created_conscious,
     format_todo_deleted_conscious,
@@ -1945,8 +1949,15 @@ class TodoIntentHandlers:
 
         Issue #904: Now supports "show all my todos" to include completed items.
         """
+        original_message = intent.original_message or intent.context.get("original_message", "")
+        # #2219 / #2295 (Arch 11-06 07:31, option (b)): the router picked the list op;
+        # whether the person wants the list, only the next todo or only the completed
+        # ones is resolved op-locally, CONCURRENTLY with the read (#2250's shape: the
+        # turn pays the slower of the two). Started on the router's pick, never on words.
+        selector_task = asyncio.ensure_future(
+            self._resolve_list_selection(original_message, user_id)
+        )
         try:
-            original_message = intent.original_message or intent.context.get("original_message", "")
             include_completed = self._wants_completed_todos(original_message)
 
             # Get todos from database
@@ -1955,6 +1966,23 @@ class TodoIntentHandlers:
             )
             # #2151 TODO-CAP: TodoPage says whether the window was full (a plain list: no).
             capped = bool(getattr(todos, "capped", False))
+
+            selection = await selector_task
+            if selection.outcome == "next":
+                open_todos = [t for t in todos if not _todo_is_done(t)]
+                if not open_todos:
+                    return (
+                        "I checked your active todos and there are none. "
+                        "If something comes to mind, just say 'add todo: [task]'."
+                    )
+                return format_next_todo_line(open_todos)
+            if selection.outcome == "completed":
+                rows = (
+                    todos
+                    if include_completed
+                    else await self.todo_service.list_todos(user_id=user_id, include_completed=True)
+                )
+                return format_completed_todos([t for t in rows if _todo_is_done(t)])
 
             logger.info(
                 "Todo list retrieved",
@@ -1976,8 +2004,36 @@ class TodoIntentHandlers:
         # conscious formatter) now propagate to the route's degradation boundary
         # instead of vanishing into "try again in a moment".
         except (SQLAlchemyError, OSError) as e:
+            # #2250's rule: the selector task must not dangle past a failed read.
+            selector_task.cancel()
             logger.error("Todo list retrieval failed", error=str(e), user_id=user_id, exc_info=True)
             return "I had trouble loading your todos right now. You can try 'show my todos' again in a moment, or add a new one with 'add todo: [task]'."
+        except BaseException:
+            # #2250 (Arch 13:13): a cancelled turn stays cancelled; never wait on the selector.
+            if not selector_task.done():
+                selector_task.cancel()
+            raise
+
+    async def _resolve_list_selection(self, message: str, user_id: Any):
+        """#2219 / #2295: the op-local selector call (``todo_select_resolve``). Its own
+        failures are outcome ``failed`` (today's list); this guards the client's build."""
+        from services.intent_service.todo_select_resolve import (
+            OUTCOME_FAILED,
+            TodoSelection,
+            resolve_todo_selection,
+        )
+
+        try:
+            if getattr(self, "_llm_client", None) is None:
+                from services.llm.clients import LLMClient
+
+                self._llm_client = LLMClient()
+            return await resolve_todo_selection(
+                message, llm_service=self._llm_client, user_id=str(user_id) if user_id else None
+            )
+        except Exception as e:  # silent-ok: logged; the person gets today's list
+            logger.warning("todo_selector_unavailable", error_class=type(e).__name__)
+            return TodoSelection(outcome=OUTCOME_FAILED)
 
     async def handle_next_todo(self, intent: Intent, session_id: str, user_id: UUID) -> str:
         """Handle: "what's my next todo?" or "next task" - shows highest priority todo."""

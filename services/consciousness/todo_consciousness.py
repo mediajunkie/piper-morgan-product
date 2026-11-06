@@ -74,6 +74,40 @@ def format_todo_list_grouped(todos: List[Todo], include_completed: bool = False)
     return "\n".join(lines)
 
 
+def format_next_todo_line(open_todos: List[Todo]) -> str:
+    """#2219 (CXO 11-05 20:47, kept 11-06): the one next todo, the first open row in
+    the list's own order, with its repeats counted.
+
+    ``Your next todo is "review prs" (×3). Say "show my todos" for the rest.``"""
+    first = open_todos[0]
+    copies = sum(1 for t in open_todos if t.text == first.text)
+    repeat = f" (×{copies})" if copies > 1 else ""
+    return f'Your next todo is "{first.text}"{repeat}. Say "show my todos" for the rest.'
+
+
+def format_completed_todos(done_todos: List[Todo]) -> str:
+    """#2295 (CXO 11-06 07:35): only the completed todos, never "open"."""
+    if not done_todos:
+        return "You haven't completed any todos yet."
+    groups: List[List[Todo]] = []
+    index: dict = {}
+    for todo in done_todos:
+        if todo.text not in index:
+            index[todo.text] = len(groups)
+            groups.append([])
+        groups[index[todo.text]].append(todo)
+    count = len(done_todos)
+    noun = "todo" if count == 1 else "todos"
+    here = "Here it is:" if len(groups) == 1 else "Here they are:"
+    lines = [f"You have {count} completed {noun}. {here}"]
+    for group in groups:
+        line = f"• {group[0].text}"
+        if len(group) > 1:
+            line += f" (×{len(group)})"
+        lines.append(line + " ✓")
+    return "\n".join(lines)
+
+
 def format_todo_created_conscious(todo: Todo) -> str:
     """
     Format todo creation confirmation with consciousness.
