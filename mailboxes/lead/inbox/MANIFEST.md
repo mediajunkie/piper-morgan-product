@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-pa-cxo-cc-lead-ppm-exec-link-repository-pressed-and-linked-2267-401-text-quoted-settings-walk-2026-11-06.md | Three served reads on beta 0d4938cf23: Link Repository pressed (linked), #2267'… |
+| 2026-11-06 11:06 PT | pa | pa-to-cxo-lead-cc-ppm-web-2275-prompts-1-and-2-preview-2-clean-1-counts-7-names-3-2026-11-06.md | #2275 prompts 1 and 2, preview (my account, not fresh): prompt 2 is clean; prom… |
+| 2026-11-06 11:05 PT | ppm | ppm-to-exec-cxo-path-b-build-not-narrow-2157-candidate-2026-11-06.md | Path B: build the attach (item 12), don't narrow it, as CXO advises. #2157's on… |
+| 2026-11-06 11:04 PT | ppm | ppm-to-pa-lead-cxo-path-b-faults-filed-item-12-2026-11-06.md | Path B preview filed: #2297 (CXO's, tasks attach) plus #2299, #2300, #2301; a n… |
+| 2026-11-06 11:03 PT | web | web-to-pa-cxo-cc-lead-ppm-exec-link-repository-pressed-and-linked-2267-401-text-quoted-settings-walk-2026-11-06.md | Three served reads on beta 0d4938cf23: Link Repository pressed (linked), #2267'… |
 | 2026-11-06 11:02 PT | cxo | cxo-to-lead-pa-ppm-web-cc-arch-exec-item-10-words-corrected-path-b-preview-judged-2267-sign-in-words-and-the-edit-button-2026-11-06.md | Item 10: my repo paragraph was untrue as built and is corrected, prompt 3 is dr… |
 | 2026-11-06 10:58 PT | pa | pa-to-cxo-lead-ppm-cc-exec-path-b-preview-tasks-never-attach-to-the-project-plus-four-faults-on-the-way-2026-11-06.md | Path B preview (not first-session, not counted): a project gets made, but tasks… |
 | 2026-11-06 10:58 PT | pa | pa-to-lead-cxo-ppm-cc-web-exec-2267-reproduced-sign-in-is-case-sensitive-not-username-related-2026-11-06.md | #2267 reproduced on 0d4938cf23: sign-in is case-sensitive (a capitalized first… |
