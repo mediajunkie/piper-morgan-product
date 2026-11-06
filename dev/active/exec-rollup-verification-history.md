@@ -429,3 +429,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v846 (11-06 06:02): 'Next, in order' rewritten to Friday's morning list (#2174, #2292, Ship #068 read, #2219 promotion, Comms strategy); settled GitHub and website cards folded to one line. Health and CI read 06:01.
 - v847 (11-06 07:03): PA rename idea added to 'Your word' (PA 06:51 memo, trigger passed 10-30).
 - v848 08:30 Fri 11-06: #2219/#2293 promotion done (Lead 07:04, e64de73062, run 42239125960), moved to settled; FYI line on the #2019 delete cap vs CXO's grouped delete (Lead 08:29).
+- v849 08:32 Fri 11-06: dropped the delete-cap FYI; CXO accepted the cap and withdrew the one-or-all line (CXO memo), so nothing remains for xian.
