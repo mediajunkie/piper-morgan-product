@@ -10,7 +10,7 @@ caption: '"How is that adjustable?"'
 
 I keep going back and forth on how much structure to provide for new users working with Piper Morgan for the first time. Without cues, how is someone supposed to know what to ask for, what to expect? But wizards and onboarding questionnaires feel so rigid and overdetermined before we fully understand where the person is coming from.
 
-Still, I keep trying, and in September I tried out a new-user interview. When I checked it the next day I found Piper overpromising, claiming to do things that may be in the roadmap but that are definitely not true now. In this case that Piper would "tune to your role." I got that line cut.
+Still, I keep trying, and in September I tried out a new-user interview. When I checked it the next day I found Piper overpromising, claiming to do things that may be in the roadmap but that are definitely not true now. In this case that Piper would "tune to your role." We cut that line.
 
 # A cold open
 
