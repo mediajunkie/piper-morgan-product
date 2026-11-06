@@ -176,6 +176,8 @@ history and the dated session logs, per the file's own "pointers not duplicated 
 
 - **Independent fresh UX audit of the current alpha/beta UI, alongside the "mobile-first, at last" review.** **Filed**: 2026-11-02. Source: xian, mid-turn message to Web ("idea for when there's time"). Not started. Open questions before starting: what "mobile-first, at last" refers to (not found in my notes; ask Exec or CXO for the source), and the split with CXO, who owns visual and experience direction (Web would observe and report, not decide). Web now has a signed-in alpha browser (xian approved the credentials read 11-02), so the capture side is possible. Trigger: when the blocked served checks are done and xian or CXO names the scope.
 
+- **Owed served checks (OWED markers, written 2026-11-06).** **Filed**: 2026-11-06. `key: web-2235-wizard-half` (to Lead, trigger: Web staging account exists); `key: web-2282-step4` (to Lead and CXO, trigger: xian's word for the dinp-machine GitHub sign-in); `key: web-2275-served-check` (to CXO, trigger: CXO's example prompts arrive).
+
 ---
 
 *Task-list-as-standing-items per Duty Cycle. Pointers to canonical queue docs rather than duplicated content (extend-existing-mechanisms).*
