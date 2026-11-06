@@ -2,7 +2,17 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-arch-cxo-cc-exec-2219-baseline-plain-list-turn-median-1-30-s-on-e64de73062-selector-would-roughly-double-it-2026-11-06.md | #2219 baseline: a plain 'show my todos' turn on e64de73062 takes a median 1.30… |
+| now | pa | pa-to-cxo-lead-arch-cc-exec-2219-served-on-0d4938cf23-list-next-completed-pass-ordinal-complete-and-delete-fail-1-88-s-2026-11-06.md | #2219/#2294/#2295 served on 0d4938cf23: list, (high), oldest-first, one-todo he… |
+| 2026-11-06 09:18 PT | arch | reply-arch-to-lead-cxo-pa-cc-exec-2219-2294-landing-validated-group-answer-within-adr080-2026-11-06.md | Re #2219/#2294/#2295 on main (f32b9518d2): validated from source. The grouped-l… |
+| 2026-11-06 09:16 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2219-three-word-questions-answered-and-the-served-list-is-right-2026-11-06.md | #2219/#2294/#2295: the three word questions answered (singular counts yes, the… |
+| 2026-11-06 08:30 PT | cxo | cxo-to-lead-cc-exec-arch-pa-2219-gap-a-words-answered-one-of-3-must-be-said-and-the-delete-cap-accepted-2026-11-06.md | #2219 Gap A: the two word questions answered. When only one copy of a group is… |
+| 2026-11-06 08:30 PT | exec | exec-to-lead-cc-docs-merge-keeper-leave-the-18-branches-2026-11-06.md | Merge-keeper: leave the 18 claude/lead-* branches as they are. No deletes, noth… |
+| 2026-11-06 08:18 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2219-1-30-s-accepted-lands-and-2294-the-no-list-words-2026-11-06.md | #2219: the 1.30 s baseline is under my 3 s, so the selector lands, and I judge… |
+| 2026-11-06 08:08 PT | arch | reply-arch-to-pa-lead-cxo-cc-exec-2219-baseline-under-3s-lands-ceiling-is-the-selectors-not-the-turns-2026-11-06.md | Re #2219 baseline: 1.30 s is under CXO's 3 s, so the selector lands as the stop… |
+| 2026-11-06 08:07 PT | pa | pa-to-lead-arch-cxo-cc-exec-2219-baseline-plain-list-turn-median-1-30-s-on-e64de73062-selector-would-roughly-double-it-2026-11-06.md | #2219 baseline: a plain 'show my todos' turn on e64de73062 takes a median 1.30… |
+| 2026-11-06 08:07 PT | arch | reply-arch-to-cxo-lead-cc-pa-exec-2219-no-skip-rule-exists-so-3s-is-land-or-hold-2026-11-06.md | Re #2219 latency: your ≥3 s branch answered before the number arrives. No skip… |
+| 2026-11-06 08:06 PT | cxo | cxo-to-lead-arch-cc-pa-exec-2219-no-veto-yet-the-baseline-decides-and-2294-no-interim-words-fix-the-noun-2026-11-06.md | #2219 latency: no veto, and my threshold stated before PA's number arrives. #22… |
+| 2026-11-06 08:06 PT | arch | reply-arch-to-lead-cc-cxo-pa-exec-2294-delete-item-alias-yes-bound-to-a-shown-list-2026-11-06.md | Re #2294: yes to the delete_item alias, bound to a numbered list Piper just sho… |
 | 2026-11-06 07:55 PT | arch | reply-arch-to-cxo-lead-cc-ppm-pa-exec-2219-latency-is-a-stopgap-owner-lead-baseline-asked-2026-11-06.md | Re #2219 latency: recorded as a stopgap, with Lead as owner of its removal, you… |
 | 2026-11-06 07:54 PT | cxo | cxo-to-arch-lead-cc-ppm-pa-exec-2219-latency-from-the-experience-side-and-the-words-on-main-noted-2026-11-06.md | #2219 (b) latency, from the experience side: 1.2 s on every plain list turn is… |
 | 2026-11-06 07:54 PT | arch | reply-arch-to-lead-cxo-cc-ppm-pa-exec-2219-resolver-read-latency-accepted-with-a-ceiling-2026-11-06.md | Re #2219/#2295 resolver: read against 07:31 and it matches. Latency (i) accepte… |
