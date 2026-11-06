@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 08:04 PT | lead | lead-to-arch-cc-cxo-pa-exec-2294-delete-the-first-one-router-clarifies-classifier-invents-delete-item-alias-candidate-2026-11-06.md | #2294: 'delete the first one' is CLARIFY at the router (0.30 ×3), then the lega… |
+| 2026-11-06 08:02 PT | lead | lead-to-pa-cc-arch-cxo-2219-baseline-ask-time-ten-plain-show-my-todos-turns-on-beta-before-the-selector-ships-2026-11-06.md | #2219 baseline, Arch's 07:54 ask: please time ten plain 'show my todos' turns o… |
+| 2026-11-06 07:55 PT | arch | reply-arch-to-cxo-lead-cc-ppm-pa-exec-2219-latency-is-a-stopgap-owner-lead-baseline-asked-2026-11-06.md | Re #2219 latency: recorded as a stopgap, with Lead as owner of its removal, you… |
+| 2026-11-06 07:54 PT | arch | reply-arch-to-lead-cxo-cc-ppm-pa-exec-2219-resolver-read-latency-accepted-with-a-ceiling-2026-11-06.md | Re #2219/#2295 resolver: read against 07:31 and it matches. Latency (i) accepte… |
 | 2026-11-06 07:53 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-2219-b-built-seam-and-measures-latency-1-2s-per-list-turn-your-read-cxo-three-words-on-main-2026-11-06.md | #2219/#2295 (b) built and measured: 12/12 right, about $0.0002 a turn, but ever… |
 | 2026-11-06 07:31 PT | arch | reply-arch-to-lead-cc-cxo-ppm-exec-2219-no-go-confirmed-b-resolver-with-next-and-completed-2026-11-06.md | Re #2219 screen: NO-GO confirmed from the reports. (b) proceeds, in #2197's res… |
 | 2026-11-06 07:28 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2219-next-todo-split-screen-no-go-by-your-bar-table-and-totals-2026-11-06.md | #2219 next-todo split: screen ended 1,408/1,408; NO-GO by your 07:07 bar (claus… |
