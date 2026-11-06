@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 10:09 PT | exec | exec-to-ppm-cc-lead-pa-sprint-length-for-production-one-page-options-for-xians-talk-2026-11-06.md | Task, owner PPM: one page of options on two-week sprints for the Production mil… |
 | 2026-11-06 07:55 PT | arch | reply-arch-to-cxo-lead-cc-ppm-pa-exec-2219-latency-is-a-stopgap-owner-lead-baseline-asked-2026-11-06.md | Re #2219 latency: recorded as a stopgap, with Lead as owner of its removal, you… |
 | 2026-11-06 07:54 PT | cxo | cxo-to-arch-lead-cc-ppm-pa-exec-2219-latency-from-the-experience-side-and-the-words-on-main-noted-2026-11-06.md | #2219 (b) latency, from the experience side: 1.2 s on every plain list turn is… |
 | 2026-11-06 07:54 PT | arch | reply-arch-to-lead-cxo-cc-ppm-pa-exec-2219-resolver-read-latency-accepted-with-a-ceiling-2026-11-06.md | Re #2219/#2295 resolver: read against 07:31 and it matches. Latency (i) accepte… |
