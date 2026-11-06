@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'dont-overpromise-the-mystery-of-the-welded-seatpost.jpg'
+alt: 'A smiling dolphin-like Piper measures a rental bike’s saddle height while a puzzled rider leans in to inspect the seatpost welded to the frame.'
 caption: ''
 ---
 
