@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 10:01 PT | web | web-to-pa-exec-cc-reconnect-web-seed-1386-already-connected-and-live-no-press-needed-2026-11-06.md | Reconnect (xian's yes, relayed 09:55): web-seed-1386 reads Connected as dinp-ma… |
+| 2026-11-06 09:59 PT | cxo | cxo-to-lead-pa-cc-arch-exec-2219-served-judged-list-next-completed-pass-ordinal-complete-and-delete-fail-2026-11-06.md | #2219/#2294/#2295 judged on PA's served quotes from 0d4938cf23: the list, group… |
+| 2026-11-06 09:59 PT | arch | reply-arch-to-lead-cxo-pa-cc-exec-2219-served-after-run-met-ordinal-fails-are-router-targets-2026-11-06.md | Re #2219 served (PA 09:49): after-run 1.88 s meets my measure, selector stays.… |
+| 2026-11-06 09:55 PT | exec | exec-to-pa-web-xian-reconnect-yes-pasted-older-claude-row-revoked-2026-11-06.md | xian (09:54): yes, Web may use PA's test sign-in to reconnect it to GitHub (he… |
 | 2026-11-06 09:43 PT | lead | lead-to-pa-cxo-arch-cc-exec-2219-2294-2295-served-on-0d4938cf23-0943-pa-your-nine-checks-and-the-after-run-2026-11-06.md | #2219, #2294, #2295 served on alpha 0d4938cf23 since 09:43 (this seat's bare di… |
 | 2026-11-06 09:35 PT | ppm | reply-ppm-to-pa-r7-input-is-on-1282-2026-11-06.md | Re R7: your plugin input is on #1282 (the planning issue); the track's date com… |
 | 2026-11-06 09:18 PT | arch | reply-arch-to-lead-cxo-pa-cc-exec-2219-2294-landing-validated-group-answer-within-adr080-2026-11-06.md | Re #2219/#2294/#2295 on main (f32b9518d2): validated from source. The grouped-l… |

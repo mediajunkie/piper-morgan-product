@@ -12,7 +12,7 @@
 
 - **Served:** alpha and beta `4e4c3fb1a8` as of 11-05 21:47. **MCP Fly v20 `28911350bb`** (xian deployed 11-05; carries the GitHub guard). Read the live sha from `/health` and `fly releases -a piper-morgan-mcp`, not from here.
 - **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta** (memory `reference_api_scripts_target_beta_alpha_redirects_drop_auth`).
-- **#2282 MCP lane:** (a) and (c) PASS 11-05 12:48; (b) re-add with no loop. Open: xian's read of `beta.pipermorgan.ai/settings/connected-apps` (one or two Claude rows) and revoke of an older one; then PA re-reads through the connector.
+- **#2282 MCP lane:** (a), (b), (c) all done. xian revoked the older Claude row 11-06 (Exec 09:55); the connector re-read just after 10:03 PASSED (comment on #2282).
 - **#2288** (card says "Connected." on a 401 grant): built, served, Arch-validated. Served row needs a dead-grant account nothing has read; five untouched dinp-machine accounts qualify (owner seats, or Web with xian's word).
 - **#2262:** nothing-new line served PASS 11-05 21:49; CXO judges.
 - **#2242 (Q2):** held-token row, on xian's `mcp_allow.py remove` relayed by Exec.
@@ -27,7 +27,6 @@
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only; each with the date it became PM-gated and the smallest unblocking answer.)*
 
-- 🔒 **Connected apps read and revoke (#2282 b)**, since 11-05: xian opens `beta.pipermorgan.ai/settings/connected-apps`, says how many Claude rows, revokes the older one.
 - 🔒 **#2242 held-token row**, since 11-03: xian runs `mcp_allow.py remove` on his account (then re-adds).
 - 🔒 **#2238 Notion**, since 11-01: xian puts a throwaway Notion key on staging.
 - 🔒 **#2288 served row**, since 11-05: xian's word that Web may use an untouched dead-grant test account.
