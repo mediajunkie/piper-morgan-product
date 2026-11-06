@@ -129,7 +129,7 @@ The discipline: protect time for noticing + naming + cross-check. The instinct t
 - Asynchronous communication between agents and advisors
 - File-based inbox/read/outbox structure
 - `mailboxes/[role-slug]/` for each participant
-- External advisors (Ted, Sam) have outbox for responses
+- External advisors have outbox for responses
 - Internal roles check inbox at session start
 
 **The Handoff Problem**:
