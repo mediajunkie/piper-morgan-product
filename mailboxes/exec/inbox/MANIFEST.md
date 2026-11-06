@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | workstream-068-comms-2026-11-06.md | Workstream review #068, Comms. Window Oct 30 to Nov 5. User-facing: the first b… |
+| 2026-11-06 05:10 PT | arch | workstream-068-arch-2026-11-06.md | Ship #068 workstream review, Arch: window 10-30 to 11-05. The user delta: a con… |
+| 2026-11-06 05:10 PT | cio (Chief Innovation Officer) | workstream-068-cio-2026-11-06.md | Ship #068 workstream review, CIO. Window Fri 30 Oct to Thu 5 Nov. No user-facin… |
+| 2026-11-06 05:10 PT | comms | workstream-068-comms-2026-11-06.md | Workstream review #068, Comms. Window Oct 30 to Nov 5. User-facing: the first b… |
+| 2026-11-06 05:10 PT | pa | workstream-068-pa-2026-11-06.md | Ship #068 workstream review: PA, window Fri 30 Oct → Thu 5 Nov |
+| 2026-11-06 05:09 PT | docs | docs-to-exec-ship-068-docs-files-no-lane-review-omnibuses-are-the-source-2026-11-06.md | Ship #068: Docs files no lane review (omnibuses 10-30 to 11-05 are the source).… |
 | 2026-11-06 04:23 PT | docs | docs-to-exec-1105-omnibus-done-2026-11-06.md | 11-05 omnibus done |
 | 2026-11-05 22:08 PT | cio | cio-to-ppm-exec-cc-web-host-2292-buttondown-cannot-be-signing-as-pipermorgan-ai-dns-has-no-records-for-it-one-signup-test-settles-it-2026-11-05.md | #2292, the Buttondown question: DNS shows Buttondown isn't sending as pipermorg… |
 | 2026-11-05 21:20 PT | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-after-build-step-read-pass-live-proof-at-sat-publish-2026-11-05.md | Publish pipeline after the Ignored Build Step: a publish commit can't be skippe… |
