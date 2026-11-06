@@ -261,17 +261,21 @@ async def test_a_floor_category_destructive_write_writes_nothing(boundary):
 
 
 @pytest.mark.asyncio
-async def test_another_floor_category_write_asks_the_generic_confirm(boundary):
-    """Any write but complete and delete gets the #1190 carrier's existing words today
-    (CXO to word them); it writes nothing until yes."""
+async def test_another_floor_category_write_that_names_nothing_says_not_sure(boundary):
+    """#2304 (CXO 11-06): a write whose args can't name the thing asks no write
+    question and arms nothing. Was the #1190 carrier's "Are you sure you want me to
+    create todo?" before the per-op words; named creates: test_write_confirm_words_2304."""
+    from services.intent_service.write_confirm_words import NOT_SURE_STATEMENT
+
     service = _service(action="create_todo")
     sid = _SID + "-create"
     result = await service.process_intent(
         message="I keep meaning to add buy milk", session_id=sid, user_id=_USER
     )
-    assert result.message == "Are you sure you want me to create todo? (yes/no)"
+    assert result.message == NOT_SURE_STATEMENT
     assert _wrote(boundary) == []
-    await service.process_intent(message="no", session_id=sid, user_id=_USER)
+    assert service.workflow_offer_service.peek_pending_offer(sid, _USER) is None
+    await service.process_intent(message="yes", session_id=sid, user_id=_USER)
     assert _wrote(boundary) == []
 
 

@@ -18,10 +18,11 @@ to the floor, and never on a router emission). On a marked turn no op writes:
   arms its #1190 yes/no (the delete, unlink and close/reopen builders as today;
   any other write the generic carrier), and "yes" re-dispatches the original
   intent unmarked (``run_confirm_pending_action_workflow`` drops the mark);
-- complete (WRITE, so it reaches the confirm branch only when marked) names the
-  one row it would complete, in CXO's words ('Mark "high task" as done?
-  (yes/no)'); when it can't name one, it picks over the numbered list just
-  shown (``delete_todo_pick.arm_complete_pick``), or says it can't tell;
+- complete names the one row it would complete, in CXO's words ('Mark "high
+  task" as done? (yes/no)'); when it can't name one, it picks over the numbered
+  list just shown (``delete_todo_pick.arm_complete_pick``), or says it can't
+  tell. #2304: this is complete_todo's ``WorkflowEntry.write_ask``
+  (``complete_todo_write_ask``), read by the rail like every write's words;
 - the #1605 clear-family flow, the one passthrough that could write on its
   first turn (a stored "complete" default, or the trust-inferences auto-apply),
   asks instead (``reminder_clear``, its existing always-ask questions).
@@ -33,8 +34,7 @@ the delete gate (``destructive_confirm._is_positional_only``).
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from typing import Any
 
 import structlog
 
@@ -82,39 +82,18 @@ def complete_confirm_question(text: str) -> str:
     return f'Mark "{text}" as done? (yes/no)'
 
 
-@dataclass(frozen=True)
-class FloorWriteCompleteAsk:
-    """What a marked complete turn does: exactly one of
+async def complete_todo_write_ask(request: Any) -> Any:
+    """complete_todo's ``WorkflowEntry.write_ask`` (#2304, Arch 11-06 11:38: the
+    #2219 builder moved onto the entry; the rail's entry-identity ``elif`` is gone).
 
-    - ``offer``: arm this yes/no (the one row it would complete, bound by id);
-    - ``reply``: say this (an armed pick when ``armed``, else a statement);
-    - neither: pass through to the complete workflow (a clear-family shape,
-      whose flow asks on a marked turn, or no principal, which it declines).
+    Writes nothing. Exactly one of: the words of the one row it would complete,
+    bound by id ('Mark "x" as done? (yes/no)'); an armed pick over the list just
+    shown; a statement; or a passthrough to the complete workflow (a clear-family
+    shape, whose flow asks on a marked turn, or no principal, which it declines).
     """
-
-    offer: Any = None
-    reply: Optional[str] = None
-    armed: bool = False
-    intent_data: Optional[Dict[str, Any]] = None
-
-
-async def build_floor_write_complete_ask(
-    intent: Intent,
-    message: str,
-    todo_handlers: Any,
-    todo_user_id: Any,
-    principal: Optional[str],
-    session_id: Optional[str],
-    offer_service: Any,
-) -> FloorWriteCompleteAsk:
-    """The marked complete turn's ask. Writes nothing."""
-    from services.intent_service.consent_gate import CONSENT_CHECK_KIND
+    from services.intent.intent_service import _coerce_todo_principal
     from services.intent_service.delete_todo_pick import PICK_PENDING_FLAG, arm_complete_pick
-    from services.intent_service.destructive_confirm import (
-        CONFIRM_PENDING_ACTION_WORKFLOW,
-        ConfirmationOffer,
-        _is_positional_only,
-    )
+    from services.intent_service.destructive_confirm import _is_positional_only
     from services.intent_service.reminder_clear import is_clear_family_passthrough
     from services.intent_service.todo_handlers import (
         BATCH_COMPLETE_IDS_KEY,
@@ -123,15 +102,23 @@ async def build_floor_write_complete_ask(
         _split_completion_clause,
         resolve_named_todo_target,
     )
+    from services.intent_service.write_confirm_words import ConfirmWords, WriteAsk
 
+    intent: Intent = request.intent
+    message = request.message
+    session_id = request.session_id
+    principal = request.principal
+    todo_handlers = getattr(request.intent_service, "todo_handlers", None)
+    offer_service = getattr(request.intent_service, "workflow_offer_service", None)
+    todo_user_id = _coerce_todo_principal(principal)
     original = intent.original_message or (intent.context or {}).get("original_message") or ""
     original = original or message or ""
-    if todo_user_id is None:
-        return FloorWriteCompleteAsk()  # the workflow's auth decline; it writes nothing
+    if todo_user_id is None or todo_handlers is None:
+        return WriteAsk(passthrough=True)  # the workflow's auth decline; it writes nothing
     if session_id and is_clear_family_passthrough(original):
         # #1605's own question owns the shape; on a marked turn it only asks. With
         # no session that flow steps aside, so the shape is resolved here instead.
-        return FloorWriteCompleteAsk()
+        return WriteAsk(passthrough=True)
 
     try:
         todos = await todo_handlers.todo_service.list_todos(
@@ -141,14 +128,14 @@ async def build_floor_write_complete_ask(
         Exception
     ) as e:  # silent-ok: error-logged; an honest no-op turn, nothing armed, nothing written
         logger.error("floor_write_complete_lookup_failed", error=str(e))
-        return FloorWriteCompleteAsk(
+        return WriteAsk(
             reply=(
                 "I couldn't look up your todos just now, so I haven't changed anything. "
                 "Try again in a moment."
             )
         )
     if not todos:
-        return FloorWriteCompleteAsk(
+        return WriteAsk(
             reply=(
                 "You don't have any active todos to complete. "
                 "Add one with 'add todo: [task]' first."
@@ -183,23 +170,11 @@ async def build_floor_write_complete_ask(
         intent.context[BATCH_COMPLETE_IDS_KEY] = [str(row.id)]
         intent.context[BATCH_COMPLETE_TEXTS_KEY] = [row.text]
         intent.context[BATCH_COMPLETE_LEFT_KEY] = []
-        question = complete_confirm_question(row.text)
-        summary = f'mark "{row.text}" as done'
         logger.info("floor_write_complete_confirm_armed", todo_id=str(row.id))
-        return FloorWriteCompleteAsk(
-            offer=ConfirmationOffer(
-                question=question,
-                offer={
-                    "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
-                    "question": question,
-                    "pending_action": {
-                        "kind": CONSENT_CHECK_KIND,
-                        "action": intent.action,
-                        "intent": intent,
-                        "summary": summary,
-                    },
-                    "decline_message": f"Okay — I won't {summary}. Nothing has been changed.",
-                },
+        return WriteAsk(
+            words=ConfirmWords(
+                question=complete_confirm_question(row.text),
+                summary=f'mark "{row.text}" as done',
             )
         )
 
@@ -207,11 +182,9 @@ async def build_floor_write_complete_ask(
         original, session_id, principal, todo_user_id, todos, offer_service
     )
     if pick_question is not None:
-        return FloorWriteCompleteAsk(
-            reply=pick_question, armed=True, intent_data={PICK_PENDING_FLAG: True}
-        )
+        return WriteAsk(reply=pick_question, armed=True, intent_data={PICK_PENDING_FLAG: True})
     if missed_name:
         # CXO 11-06 11:28: the name the person said (the handler's own extractor)
         # matched nothing and no list was shown. A statement; nothing armed.
-        return FloorWriteCompleteAsk(reply=complete_not_found_statement(missed_name))
-    return FloorWriteCompleteAsk(reply=COMPLETE_NO_TARGET_STATEMENT)
+        return WriteAsk(reply=complete_not_found_statement(missed_name))
+    return WriteAsk(reply=COMPLETE_NO_TARGET_STATEMENT)

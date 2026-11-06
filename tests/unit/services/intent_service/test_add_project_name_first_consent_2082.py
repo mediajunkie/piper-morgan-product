@@ -30,7 +30,6 @@ from services.database.models import SessionActivityDB
 from services.domain.models import Intent
 from services.intent.intent_service import IntentService
 from services.intent_service.add_project_clarify import (
-    ADD_PROJECT_ACCEPT_NAME_QUESTION,
     ADD_PROJECT_CONFIRM_KIND,
     ADD_PROJECT_NAME_QUESTION_KIND,
 )
@@ -38,6 +37,7 @@ from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.intent_service.classifier import IntentClassifier
 from services.intent_service.collaboration_gate import WorkingMode
 from services.intent_service.workflow_entries import register_default_workflows
+from services.intent_service.write_confirm_words import ADD_PROJECT_NAME_QUESTION
 from services.shared_types import IntentCategory
 
 _USER = "3f7b8a52-2082-4b00-9e00-000000002082"
@@ -187,13 +187,16 @@ async def test_collaborate_declarative_asks_the_name_first_no_consent_offer_no_r
     service = _service(monkeypatch)
     sid = "sess-2082-1"
     result = await _turn(service, sid, DECLARATIVE)
-    assert result.message == ADD_PROJECT_ACCEPT_NAME_QUESTION, result.message
+    # #2304: CXO's 11-06 name question (was ADD_PROJECT_ACCEPT_NAME_QUESTION,
+    # "What would you like to call it?"), still armed on the #2080 carrier.
+    assert result.message == ADD_PROJECT_NAME_QUESTION, result.message
     assert "Should I go ahead" not in result.message
     assert writes == [], writes
     pending = _pending(service, sid)
     assert pending is not None
     assert pending["pending_action"]["kind"] == ADD_PROJECT_NAME_QUESTION_KIND
     assert pending["pending_action"]["consent_owed"] is True
+    assert pending["question"] == ADD_PROJECT_NAME_QUESTION
     assert result.intent_data.get("consent_owed") is True
     assert result.intent_data.get("consent_check_pending") is None
 

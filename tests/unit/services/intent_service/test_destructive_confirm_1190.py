@@ -185,18 +185,28 @@ class TestConfirmationOfferBuilder:
         assert build_confirmation_offer(intent) is None
 
     def test_unknown_destructive_action_always_defers(self):
-        """Safe default for future tier members (generic carrier): an
-        unconfirmed destructive write must never fire, even before a
-        per-action summary exists."""
+        """Safe default for future tier members: an unconfirmed destructive write
+        must never fire. #2304: the generic confirm arms only with the entry's
+        own words (never "Are you sure you want me to purge archive?"); asked
+        with none it refuses rather than pass the write through (the rail says
+        the "not sure" statement before it ever gets here)."""
+        from services.intent_service.write_confirm_words import ConfirmWords
+
         intent = Intent(
             category=IntentCategory.EXECUTION,
             action="purge_archive",
             context={"original_message": "purge the archive"},
         )
-        offer = build_confirmation_offer(intent)
+        with pytest.raises(ValueError):
+            build_confirmation_offer(intent)
+        words = ConfirmWords(question='Purge "the archive"? (yes/no)', summary="purge the archive")
+        offer = build_confirmation_offer(intent, words)
         assert offer is not None
-        assert "(yes/no)" in offer.question
+        assert offer.question == words.question
         assert offer.offer["pending_action"]["action"] == "purge_archive"
+        assert offer.offer["decline_message"] == (
+            "Okay — I won't purge the archive. Nothing has been changed."
+        )
 
     @pytest.mark.parametrize(
         "message", ["cancel", "stop", "forget it", "Never mind.", "abort", "STOP IT"]

@@ -459,7 +459,9 @@ class ConsentCheckOffer:
 
 
 def _summary_for(intent) -> str:
-    """Plain-words action summary for the check copy (the #1190 phrasing
+    """Plain-words action summary for the TRUST-mode outward disclosure only
+    (#2304 moved the consent check onto the entry's named words; this disclosure
+    line is the one remaining reader, filed for CXO's words) (the #1190 phrasing
     convention), with the parsed issue number appended when the action is
     issue-shaped and the message carries one — same cheap parse the #1190
     gate uses; never a new read."""
@@ -496,34 +498,34 @@ def _summary_for(intent) -> str:
     return summary
 
 
-def build_consent_check_offer(intent, effect: EffectClass) -> ConsentCheckOffer:
+def build_consent_check_offer(intent, words) -> ConsentCheckOffer:
     """Build the consent-check turn for a held WRITE-effect rail action.
+
+    ``words`` (#2304) are the op's own ``write_confirm_words.ConfirmWords``, from
+    its rail entry (``resolve_write_ask``): the question says what "yes" does with
+    the thing named, in the ordinary confirms' shape (CXO 11-06). The caller asks
+    only when the args named it; otherwise it says CXO's "not sure" statement and
+    arms nothing, so no consent check ever shows an op name.
 
     Composes with — never parallels — the existing machinery:
     - The offer IS a #1190 ``pending_action`` record dispatched through
       ``CONFIRM_PENDING_ACTION_WORKFLOW`` on "yes" (original intent, original
       params, never re-classified). "no"/bare-exit cancels honestly via the
       same decline path; off-intent abandons via the pop.
-    - The effect phrase is derived from the declared EffectClass
-      (``capability_legibility.describe_effect``), so the user sees WHY this
-      action warranted a check (#1509 legibility: the check names its reason).
     - The graduation teaching phrase is the #1510 declaration-surface
       phrasing — a phrase that genuinely routes (pinned in tests); the copy
       never teaches a phrase that doesn't (#1571).
 
-    ⚠️ COPY SEAM: the wording below is Lead-drafted mechanism copy. CXO owns
-    the voice of this surface; adjust wording here (one place), not at call
-    sites.
+    ⚠️ COPY SEAM: CXO owns the voice of this surface; the per-op questions live
+    in write_confirm_words (one place), not at call sites.
     """
-    from services.intent_service.capability_legibility import describe_effect
     from services.intent_service.destructive_confirm import (
         CONFIRM_PENDING_ACTION_WORKFLOW,
     )
 
-    summary = _summary_for(intent)
+    summary = words.summary
     question = (
-        f"Quick check before I act: I'm reading that as asking me to {summary}, "
-        f"which {describe_effect(effect)}. Should I go ahead? (yes/no)\n\n"
+        f"{words.question}\n\n"
         "(If you'd rather I just act on requests like this without checking, "
         'say "just do things directly from now on.")'
     )

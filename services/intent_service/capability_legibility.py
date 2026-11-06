@@ -23,10 +23,10 @@ THE DERIVATION CHAIN (nothing here is hand-written per capability — the
         action-triggered rail entry.
 
 CONSUMERS:
-- ``consent_gate.build_consent_check_offer`` — the gate's own prompt states
-  the held action's effect tier via :func:`describe_effect` (the "while
-  intent forms" surface the synthesis names: the gate's prompts are
-  themselves capability legibility).
+- (Until #2304, ``consent_gate.build_consent_check_offer`` also stated the
+  held action's effect tier via :func:`describe_effect`. CXO 11-06: the check
+  now asks the op's own question naming the thing, in the ordinary confirms'
+  shape, so it no longer carries the effect phrase.)
 - #1462 (tool-catalog descriptions under PDR-006): :func:`capability_catalog`
   is the seam that work consumes — entry-point copy IS the tool catalog, and
   this is the registry-derived source for it. Deliberately no MCP wiring

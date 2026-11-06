@@ -14,6 +14,7 @@ from typing import Any, Dict, Optional
 import structlog
 
 from services.intent_service import workflow_dispatcher as _workflow_dispatcher
+from services.intent_service import write_confirm_words as _words
 from services.intent_service.add_project_clarify import (
     run_clarify_add_project_confirm_workflow,
     run_clarify_add_project_name_workflow,
@@ -24,6 +25,7 @@ from services.intent_service.delete_todo_pick import (
     PICK_PENDING_FLAG,
     run_clarify_delete_todo_pick_workflow,
 )
+from services.intent_service.floor_write_ask import complete_todo_write_ask
 from services.intent_service.milestone_pick import (
     run_clarify_milestone_pick_workflow,
 )
@@ -2590,6 +2592,7 @@ archive_project_entry = WorkflowEntry(
     ),
     requires_context=["intent", "intent_service"],
     action_triggered=True,
+    write_ask=_words.archive_project_write_ask,  # #2304
     flip_write_allowlist_key="archive_project",
 )
 
@@ -2632,6 +2635,7 @@ restore_project_entry = WorkflowEntry(
     ),
     requires_context=["intent", "intent_service"],
     action_triggered=True,
+    write_ask=_words.restore_project_write_ask,  # #2304
     flip_write_allowlist_key="restore_project",
 )
 
@@ -2695,6 +2699,7 @@ add_project_entry = WorkflowEntry(
     ),
     requires_context=["intent", "intent_service"],
     action_triggered=True,
+    write_ask=_words.add_project_write_ask,  # #2304
     flip_write_allowlist_key="add_project",
 )
 
@@ -3043,6 +3048,7 @@ def register_default_workflows() -> None:
         description="Update-issue via action dispatch (#1411)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.update_issue_write_ask,  # #2304
     )
     # #1412: create_issue onto the rail (same mode-4 gap as #1411; the live primary
     # write path). _handle_create_issue takes (intent, workflow_id, session_id, user_id),
@@ -3062,6 +3068,7 @@ def register_default_workflows() -> None:
         description="Create-issue via action dispatch (#1412)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.create_issue_write_ask,  # #2304
     )
     # effect: DESTRUCTIVE (#1190, PM ruling decisions.log 2026-08-10 ~10:55) —
     # _handle_reopen_issue_query calls
@@ -3277,6 +3284,7 @@ def register_default_workflows() -> None:
         description="Create-reminder via action dispatch (#1560)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.create_reminder_write_ask,  # #2304
         flip_write_allowlist_key="create_reminder",
     )
 
@@ -3341,6 +3349,7 @@ def register_default_workflows() -> None:
         description="Create-todo via action dispatch (#1685)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=_words.create_todo_write_ask,  # #2304
         flip_write_allowlist_key="create_todo",
     )
 
@@ -3529,6 +3538,7 @@ def register_default_workflows() -> None:
         ),
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        write_ask=complete_todo_write_ask,  # #2304
         flip_write_allowlist_key="complete_todo",
     )
 

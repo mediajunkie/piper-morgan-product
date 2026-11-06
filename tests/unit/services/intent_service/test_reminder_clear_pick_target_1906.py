@@ -676,8 +676,15 @@ class TestPrincipalMismatch:
                     exc
                 ), str(exc)
         handler.assert_not_awaited()
-        # The armed pick is gone; whatever the routed turn armed is its own
-        # (here the other user's own consent ask), never the first user's pick.
+        # The armed pick is gone; whatever the routed turn armed is its own,
+        # never the first user's pick. #2304: the stub replays the clear-family
+        # message, so the other user's routed complete_todo turn now reaches the
+        # #1605 flow (complete's write_ask passes a clear-family shape through)
+        # and arms that user's OWN pick; before, the generic consent check armed
+        # first. Pinned by principal, not by kind.
+        from services.intent_service.offer_principal import recorded_offer_principals
+
         after = _pending_offers(live_service).get(sid)
-        assert after is None or after["pending_action"].get("kind") != rc.CLEAR_PICK_TARGET_KIND
+        assert after is None or _USER not in recorded_offer_principals(after)
+        assert after is None or other_user in recorded_offer_principals(after)
         assert todo_boundary["completed"] == [] and todo_boundary["deleted"] == []

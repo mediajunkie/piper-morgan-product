@@ -6422,7 +6422,7 @@ GUIDANCE setup turn, reached its handler before and is unchanged. On a marked tu
 the consent verdict to CONFIRM for every non-READ op, so each arms its #1190 yes/no (the delete, unlink and
 close/reopen builders as before; any other write the generic `build_confirmation_offer`), and "yes" re-dispatches
 unmarked (`run_confirm_pending_action_workflow` drops the mark). `complete_todo` is WRITE, so it reaches the
-confirm chain only when marked; its builder (`floor_write_ask.build_floor_write_complete_ask`, the complete
+confirm chain only when marked; its builder (since #2304 its entry's `write_ask`, `floor_write_ask.complete_todo_write_ask`, the complete
 handler's own extractors and matcher) arms CXO's `Mark "high task" as done? (yes/no)` with the row bound by id
 (the yes takes the #1943 confirmed re-entry), or, when it can't name one row, picks over the numbered list just
 shown (`delete_todo_pick.arm_complete_pick`, the delete pick's record with verb "complete": the bound answer
@@ -6433,6 +6433,27 @@ form, the trust-inferences auto-apply reads back). The legacy multi-intent orche
 `_is_orchestratable_sibling` keeps a marked shape floor-routed, as before. Not a dispatch site
 (`MAX_DISPATCH_SITES` unchanged); no router, catalog or prompt bytes. Pins:
 `tests/unit/services/intent_service/test_floor_category_write_2219.py`.
+
+## A write's yes/no names the thing, from the entry (2026-11-06, #2304)
+
+Rule (CXO 11-06 11:28, the body of #2304; Arch 11-06 11:38): every write's question says what "yes" does with the
+thing named, in the ordinary confirms' shape, and never shows an op name. The words live on the rail entry:
+`WorkflowEntry.write_ask`, an async builder in `services/intent_service/write_confirm_words.py` (complete's is
+`floor_write_ask.complete_todo_write_ask`). `write_confirm_words.resolve_write_ask` is the one reader, called by
+`_dispatch_action_rail` from both askers: the #1509 consent check (COLLABORATE; `build_consent_check_offer(intent,
+words)`) and the #1190 generic confirm (CONFIRM on a marked floor-category write; `build_confirmation_offer(intent,
+words)`). A builder fills its line only from what that op's handler acts on (the intent's context slots, router args
+through the handler's own readers, or the handler's own named resolver); no new pattern. When the args name nothing,
+or the entry has no `write_ask`, the reply is `I'm not sure what you want changed, so I haven't done anything. Tell me
+what to change.` and nothing is armed. add_project with no name asks `What should I call the project? Say its name,
+for example "add project Mobile Redesign".` on the #2080 name carrier with `consent_owed` (the rail's #2082
+entry-identity branch moved into that builder). Rows filled today: create_todo (one title), create_reminder (task and
+a said time), archive/restore/add_project, create_issue (title and a named repo), update_issue (number, repo, field),
+complete_todo. Rows that always say the statement: update_document and comment_issue (the handler finds its target
+with an LLM call), link_repo, set_default_repo, set_timezone (the handler parses inline). The #2219 seam's
+`elif _floor_write and _rail_entry is ...complete_todo` is deleted. The DESTRUCTIVE builders (delete_todo,
+unlink_repo, close/reopen) are unchanged. The TRUST-mode outward disclosure (`build_outward_disclosure`) still says
+`_summary_for`'s op words (filed: 2307). Pins: `tests/unit/services/intent_service/test_write_confirm_words_2304.py`.
 
 ## Pointers
 
