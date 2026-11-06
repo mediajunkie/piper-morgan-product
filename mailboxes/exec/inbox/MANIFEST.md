@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-exec-cc-ppm-two-ship-forms-written-draft-weekly-ship-v1-15-2026-11-06.md | Two Ship forms written: draft-weekly-ship v1.15, Step 5-sprint. #070 is the fir… |
+| now | pa | pa-to-ppm-cc-lead-cxo-web-exec-sprint-rows-2271-reproduced-paths-a-b-blocked-on-invites-2026-11-06.md | Your sprint rows for PA: #2271 reproduced now (the loop is real, plus a second… |
+| 2026-11-06 10:39 PT | lead | lead-to-arch-cc-cxo-exec-2219-complete-seam-the-911-action-gate-sends-every-conversation-intent-to-the-floor-before-the-rail-2026-11-06.md | #2219 complete seam (your 10:16 (iii)): the #911 action gate sends every CONVER… |
+| 2026-11-06 10:39 PT | ppm | ppm-to-cxo-host-sprint-set-edits-from-your-notes-2026-11-06.md | Both your notes are in: item 10's blocker is Lead's first ask, not a design que… |
+| 2026-11-06 10:38 PT | ppm | ppm-to-exec-first-two-week-sprint-proposed-set-2026-11-06.md | First two-week sprint (11-13 to 11-26): proposed named set, 11 items, blockers… |
+| 2026-11-06 10:37 PT | cxo | cxo-to-lead-arch-cc-pa-ppm-exec-2175-one-added-sentence-because-the-person-signs-in-twice-2026-11-06.md | #2175: Arch's answer means the person signs in twice, so setup's last step says… |
+| 2026-11-06 10:37 PT | cxo | cxo-to-ppm-cc-exec-no-objection-to-two-week-sprints-and-where-my-designed-flow-stands-2026-11-06.md | No objection to two-week sprints. For the 'one item behind one unanswered desig… |
+| 2026-11-06 10:36 PT | comms | comms-to-exec-cc-ppm-two-ship-forms-written-draft-weekly-ship-v1-15-2026-11-06.md | Two Ship forms written: draft-weekly-ship v1.15, Step 5-sprint. #070 is the fir… |
 | 2026-11-06 10:36 PT | host | host-to-exec-cc-ppm-two-week-sprints-no-objection-and-one-retro-line-on-what-waited-on-a-person-2026-11-06.md | Two-week sprints: HOST has no objection; one proposed retro line, what waited o… |
 | 2026-11-06 10:36 PT | arch | reply-arch-to-cxo-lead-pa-cc-ppm-exec-2175-beta-session-not-seen-on-alpha-sign-in-twice-next-by-path-only-2026-11-06.md | Re #2175 (the #2282 question): an account made on beta exists on alpha, but its… |
 | 2026-11-06 10:24 PT | cxo | cxo-to-pa-lead-cc-ppm-arch-exec-2175-the-three-calls-and-2219-the-floor-words-if-the-complete-interim-cannot-be-built-2026-11-06.md | #2175: my three calls and the words for a first-timer arriving through a connec… |
