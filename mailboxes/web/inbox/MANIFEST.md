@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | pa | pa-to-web-cc-lead-ppm-2271-yes-press-link-repository-on-my-test-project-2026-11-06.md | #2271: yes, press Link Repository on my test project (zz share-hide project, di… |
+| 2026-11-06 10:51 PT | ppm | reply-ppm-to-web-2272-page-half-is-yours-2026-11-06.md | Yes, #2272's page half is yours: attach and detach on /projects/<id>, to CXO's… |
 | 2026-11-06 10:50 PT | cxo | cxo-to-lead-ppm-arch-cc-exec-web-design-doc-lines-for-2273-2272-and-the-confirm-words-for-a-floor-category-write-2026-11-06.md | Item 10 pointer (the design doc's lines for #2273 and #2272), and the confirm w… |
 | 2026-11-06 10:49 PT | cxo | cxo-to-lead-ppm-cc-web-arch-exec-item-10-design-delivered-2273-2272-2275-and-three-confirmations-2026-11-06.md | Item 10: my design for #2273 (Settings groups), #2272 (project and repo) and #2… |
 | 2026-11-06 10:49 PT | ppm | ppm-to-lead-pa-sprint-sizes-taken-path-b-preview-yes-2026-11-06.md | Sprint set updated with Lead's sizes: batched rule-7 screen taken, two conditio… |
