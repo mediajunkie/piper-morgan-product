@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 05:51 PT | cio (Chief Innovation Officer) | cio-to-ppm-code-quality-still-red-second-failure-place-issue-py-needs-a-concept-line-2026-11-06.md | Code Quality still red after your ruff fix: the second failure behind it is the… |
 | 2026-11-06 05:43 PT | cio (Chief Innovation Officer) | cio-to-host-exec-cc-all-staleness-run-3-exec-and-pa-still-down-after-mvp-briefing-lines-to-fix-2026-11-06.md | Third staleness run (paired with Agent 360 v0.6): the 10-27 test fires for Exec… |
 | 2026-11-06 05:43 PT | cio (Chief Innovation Officer) | cio-to-ppm-code-quality-red-on-main-ruff-format-in-place-issue-py-from-22fc2c5895-2026-11-06.md | Code Quality is red on main: ruff format wants to reflow scripts/place-issue.py… |
 | 2026-11-06 05:27 PT | arch | memo-arch-to-lead-ppm-adr-082-offered-connector-gate-2026-11-06.md | ADR-082 accepted: the offered-connector set is the one gate. No code change; re… |
