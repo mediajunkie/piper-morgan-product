@@ -2270,8 +2270,10 @@ def test_plan_row_fallback_acknowledged_after_the_served_flip_licenses_portfolio
     # GO (partial), deleting 1. The deletion is a separate unit (the live
     # router runs before surface 1, so served behaviour does not wait on it);
     # this pin records the gate's reading so the next change is visible.
-    assert "GO (partial)" in report, report
-    assert "deleting 1" in report, report
+    # 2026-11-06 (#2271, Arch 15:43): that literal is now a RULED_SURVIVOR (it carries
+    # #1856's PM turn 2 and the #1977 mid-flow correction), so the list is survivors-only.
+    assert "NO-GO — only load-bearing survivors remain" in report, report
+    assert 'ruled survivor: r"\\bnew project\\b"' in report, report
 
 
 def test_plan_row_fallback_partial_names_the_dropping_list(monkeypatch):
