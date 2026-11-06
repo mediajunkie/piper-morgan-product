@@ -49,7 +49,7 @@ _USER = "3f7b8a52-2140-4b00-9e00-000000002140"
 # and claims only what the census audits (Slack, GitHub), never "anything".
 NOTHING_NEW = (
     "I don't see anything new in your Piper tasks or projects {window}. Piper hasn't "
-    "posted to Slack or written to GitHub for you in that time. I haven't looked at "
+    "posted to Slack or written to GitHub or Notion for you in that time. I haven't looked at "
     "anything done in GitHub outside Piper."
 )
 # CXO 10-23 09:27, verbatim shapes.
@@ -64,7 +64,7 @@ FAILED_BESIDE_ROWS = (
 # #2258 (CXO 2026-11-03 08:2x): tasks failed; projects and the actions read empty.
 NOTHING_NEW_TASKS_FAILED = (
     f"I don't see anything new in your Piper projects {YD}, and Piper hasn't posted "
-    "to Slack or written to GitHub for you in that time. I couldn't read your Piper tasks just "
+    "to Slack or written to GitHub or Notion for you in that time. I couldn't read your Piper tasks just "
     "now, so I can't say what changed there. Try again in a moment; if it keeps failing, tell us."
 )
 

@@ -347,7 +347,7 @@ async def test_the_handler_reads_through_the_statement_once(intent_service):
 def test_the_nothing_new_line_is_cxos_three_sentences():
     assert mod.CHANGES_NOTHING_NEW == (
         "I don't see anything new in your Piper tasks or projects {window}. "
-        "Piper hasn't posted to Slack or written to GitHub for you in that time. "
+        "Piper hasn't posted to Slack or written to GitHub or Notion for you in that time. "
         "I haven't looked at anything done in GitHub outside Piper."
     )
 
@@ -359,7 +359,7 @@ async def test_an_empty_window_names_no_activity_log_and_claims_only_the_audited
     result, _ = await _run(intent_service, _intent(), [], [], [])
     assert result.message == (
         f"I don't see anything new in your Piper tasks or projects {YD}. "
-        "Piper hasn't posted to Slack or written to GitHub for you in that time. "
+        "Piper hasn't posted to Slack or written to GitHub or Notion for you in that time. "
         "I haven't looked at anything done in GitHub outside Piper."
     )
     assert "activity log" not in result.message
@@ -429,12 +429,12 @@ _SEVEN = {
     # (audit, tasks, projects) read specs → the whole reply
     ("ok", "fail", "ok"): (
         f"I don't see anything new in your Piper projects {YD}, and Piper hasn't "
-        "posted to Slack or written to GitHub for you in that time. I couldn't read your Piper "
+        "posted to Slack or written to GitHub or Notion for you in that time. I couldn't read your Piper "
         "tasks just now, so I can't say what changed there." + _TRY
     ),
     ("ok", "ok", "fail"): (
         f"I don't see anything new in your Piper tasks {YD}, and Piper hasn't posted "
-        "to Slack or written to GitHub for you in that time. I couldn't read your Piper projects "
+        "to Slack or written to GitHub or Notion for you in that time. I couldn't read your Piper projects "
         "just now, so I can't say what changed there." + _TRY
     ),
     ("fail", "ok", "ok"): (
@@ -442,7 +442,7 @@ _SEVEN = {
         f"read what Piper did for you just now, so I can't say what it did {YD}." + _TRY
     ),
     ("ok", "fail", "fail"): (
-        f"Piper hasn't posted to Slack or written to GitHub for you {YD}. I couldn't "
+        f"Piper hasn't posted to Slack or written to GitHub or Notion for you {YD}. I couldn't "
         "read your Piper tasks or projects just now, so I can't say what changed there." + _TRY
     ),
     ("fail", "fail", "ok"): (
@@ -471,11 +471,11 @@ async def test_the_seven_failure_path_strings_are_cxos(intent_service, spec):
     assert "activity log" not in result.message
 
 
-def test_the_slack_github_claim_is_one_stem_shared_with_the_nothing_new_line():
-    assert mod.CHANGES_SLACK_GITHUB_CLAIM == (
-        "Piper hasn't posted to Slack or written to GitHub for you"
+def test_the_audited_claim_is_one_stem_shared_with_the_nothing_new_line():
+    assert mod.CHANGES_AUDITED_CLAIM == (
+        "Piper hasn't posted to Slack or written to GitHub or Notion for you"
     )
-    assert f"{mod.CHANGES_SLACK_GITHUB_CLAIM} in that time." in mod.CHANGES_NOTHING_NEW
+    assert f"{mod.CHANGES_AUDITED_CLAIM} in that time." in mod.CHANGES_NOTHING_NEW
 
 
 @pytest.mark.asyncio

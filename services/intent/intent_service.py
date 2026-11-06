@@ -698,7 +698,7 @@ CHANGES_SOURCES = ("tasks", "projects", "activity log")
 # no row limit (``_visible_actions_statement``).
 CHANGES_NOTHING_NEW = (
     "I don't see anything new in your Piper tasks or projects {window}. Piper hasn't "
-    "posted to Slack or written to GitHub for you in that time. I haven't looked at "
+    "posted to Slack or written to GitHub or Notion for you in that time. I haven't looked at "
     "anything done in GitHub outside Piper."
 )
 # #2258 (CXO 2026-11-03 08:0x): the third source is shown as "what Piper did for you",
@@ -742,9 +742,11 @@ CHANGES_READ_FAILED_BESIDE_ROWS = (
 # (CXO 2026-11-03 08:2x, the seven strings read and landed with one edit): the first
 # sentence says what the good reads found, in the nothing-new line's words; the second
 # names what couldn't be read ("I can't say", never an empty result: #2140, #2151); the
-# Slack/GitHub claim is the nothing-new line's own words (one stem, pinned); no GitHub
-# waiver on a failure path. Built by ``_changes_some_failed_empty``.
-CHANGES_SLACK_GITHUB_CLAIM = "Piper hasn't posted to Slack or written to GitHub for you"
+# audited claim is the nothing-new line's own words (one stem, pinned); no GitHub
+# waiver on a failure path. Built by ``_changes_some_failed_empty``. #2262 (CXO
+# 2026-11-05 16:19; Arch 16:20): the claim names Slack, GitHub and Notion, the services
+# the census scans, never "anything"; it widens only when a connector's writes join it.
+CHANGES_AUDITED_CLAIM = "Piper hasn't posted to Slack or written to GitHub or Notion for you"
 CHANGES_TRY_AGAIN = "Try again in a moment; if it keeps failing, tell us."
 CHANGES_SOME_FAILED_EMPTY_OK = "I don't see anything new in your Piper {sources} {window}"
 CHANGES_SOME_FAILED_EMPTY_FAILED_SOURCES = (
@@ -894,9 +896,9 @@ def _changes_some_failed_empty(read_ok, failed, window: str) -> str:
         first = CHANGES_SOME_FAILED_EMPTY_OK.format(
             sources=_join_sources(ok_sources, "or"), window=window
         )
-        first += f", and {CHANGES_SLACK_GITHUB_CLAIM} in that time." if actions_ok else "."
+        first += f", and {CHANGES_AUDITED_CLAIM} in that time." if actions_ok else "."
     else:
-        first = f"{CHANGES_SLACK_GITHUB_CLAIM} {window}."
+        first = f"{CHANGES_AUDITED_CLAIM} {window}."
     if CHANGES_ACTIONS_SOURCE in failed and not failed_sources:
         second = CHANGES_SOME_FAILED_EMPTY_FAILED_ACTIONS.format(window=window)
     elif CHANGES_ACTIONS_SOURCE in failed:
