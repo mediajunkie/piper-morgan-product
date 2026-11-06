@@ -40,18 +40,33 @@
 
 ## 3. How
 
-- **The weekly Ship stays weekly.** A two-week sprint spans two Ships. The second one's workstream reviews are the sprint review.
-- **Weekly goals stay weekly** (xian ratifies them from the Ship reviews; 10-18 ruling).
-  - Week 1's goals are the sprint's midpoint check.
-  - Week 2's goals are its close.
-  - The next sprint's named set is ratified in the same window, so there's no extra meeting.
+**xian's framing (11-06 10:22, via Exec; not yet his yes or no on two weeks):**
+- **The weekly Ship continues whatever the sprint length.** In a two-week sprint, the mid-sprint Ship reports progress, and the closing Ship reports the final score.
+- **xian and Exec hold a weekly review every week, and the sprint cadence sits inside it.** In a closing week it also plans the next sprint and holds a retro on the last one. Most of the preparation is delegated through the team.
+
+**Who prepares what for that review:**
+
+| | Mid-sprint week (progress) | Closing week (final score) |
+|---|---|---|
+| Each lane's workstream review | progress on its named items, and any blocker that showed up | the result for each named item (served or not, and why), plus two or three retro lines: what slowed it, what to keep |
+| PPM | the named items' state on the map | the next sprint's named set, with each item's blocker checked and written beside it, plus the plan Total and the map |
+| Exec | the weekly goals, as now | the synthesis: the final score, the retro lines across lanes, and PPM's proposed set, as one card |
+| xian | ratifies the week's goals | ratifies the goals and the next sprint's set, all in the same review, so there's no extra meeting |
+
+- **Comms:** the Ship template gets two forms, progress and final score, if xian says yes.
+- **HOST:** may want a say in the retro's shape.
+- **Weekly goals stay weekly** (10-18 ruling). They come from the reviews, as now.
 - **Name a sprint's issues only after checking their blockers.** No more than one named item behind any single unanswered design question or decision. Each named item has its blocker written next to it at the start. This is the fix for what actually went wrong, and it holds at any sprint length.
 - **The board's Sprint field stays as it is.** Its options are lanes (PUB, PROD-TECHDEBT, PROD-INFRA, …), not time boxes.
   - The two-week set is named in the plan doc and marked on the map, so the option list isn't touched.
   - Adding an option is a web-UI step only you can do, and any per-item change goes through `assign-sprint-safely`.
 - **Where the lanes sit:**
   - **The onboarding sprint, the main focus:** first the invite-hold P0s, then the onboarding path rows (#2219, #2293, #2294, #2295, #2267, #2268, #2273, #2274, #2269), then CXO's designed flow, then served checks on PA's and Web's accounts.
-  - **Plugin and MCP lane (R7, #1282):** a second lane in the same sprint, as a smaller slice, not after it. Its first unit is #2242's allowlist, about 1–1.5 Lead-days. The public listing waits for that allowlist anyway (PA, 11-06), and it closes a beta exposure on its own. #1911, #1918 and #2175 follow in the sprint after.
+  - **Plugin and MCP lane (R7, #1282):** beside onboarding as a smaller second lane, with no Lead build time in it. It has three parts, each with its own trigger (PA, 11-06 10:16):
+    - **PA's served reads start now.** #2175's no-account walk was done at 10:18: a first-timer gets "Welcome back!", there's no waitlist link, and sign-up loses the connect. CXO words the path next. Then come #1282's skill and page re-checks. #1918's with-a-row check needs an allowlisted account.
+    - **Builds wait for a Lead slot.** #1911 (consent branding) is one. #2175 may add `next` carried through `/setup`. They go in the first sprint where Lead isn't fully on onboarding.
+    - **The listing waits for xian.** #2242's allowlist is already built and served (PA, 11-03, MCP v19). What's left is xian's held-token step (`mcp_allow.py remove`) and his decision on who may connect in the beta. The listing follows that decision, because a public listing before it sends most visitors to a 403.
+    - *Corrected 10:23: the first version of this page called #2242 a 1–1.5 Lead-day build. That was Lead's 10-31 size, before it was built.*
 
 **Capacity facts:** Lead's 10-31 unit still holds:
 - a Lead-day covers the build, the landing gate, Arch's validation and the served check;
@@ -59,13 +74,16 @@
 - about one Lead-day per partner report;
 - hold 30% in reserve.
 
-Lead's fresh numbers (a quiet week's closes, a review-and-promote cycle's cost) and PA's earliest plugin-lane start will be added here when they land.
+PA's plugin-lane timing is in the plugin lane's entry above. Lead's fresh numbers (a quiet week's closes, a review-and-promote cycle's cost) will be added here when they land.
 
 ## 4. Recommendation and the one question
 
-**Recommendation:** two-week sprints for Production, starting at the first Ship boundary after you answer. The first is the onboarding sprint, with #2242's allowlist as its second lane. Keep the Ship and the weekly goals weekly, and check named items for shared blockers before naming them.
+**Recommendation:** two-week sprints for Production, starting at the first Ship boundary after you answer.
+- The first is the onboarding sprint. The plugin lane runs beside it as PA's reads plus your two #2242 steps, with no Lead build time.
+- The Ship stays weekly (progress, then final score). Your weekly review takes the planning and the retro, prepared as in the table above.
+- Check named items for shared blockers before naming them.
 
-**The one question for you:** two-week sprints from the next Ship boundary after you answer, with onboarding as the main focus and the plugin lane's #2242 beside it? Yes, or stay weekly?
+**The one question for you:** two-week sprints from the next Ship boundary after you answer, with onboarding as the main focus and the plugin lane's reads beside it? Yes, or stay weekly?
 
 Verified how:
 - Read the Ship #068 review's sprint row and bottom line, the 11-06 weekly diff's closed counts, and decisions.log for 10-18 (goals), 10-31 21:17 (second track) and 11-06 07:31 (Arch's fourth failed catalog addition).

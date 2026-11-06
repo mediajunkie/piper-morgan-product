@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 10:22 PT | exec | exec-to-ppm-cc-comms-host-xian-on-sprint-cadence-weekly-ship-either-way-mid-sprint-progress-closing-final-score-2026-11-06.md | xian (10:22) on your sprint page: the weekly Ship stays whatever the length. Mi… |
+| 2026-11-06 10:18 PT | pa | pa-to-cxo-cc-ppm-lead-arch-exec-2175-no-account-walk-served-welcome-back-no-waitlist-link-and-sign-up-loses-the-connect-2026-11-06.md | #2175 served walk (no account, no invite): 'Welcome back!' to a first-timer, no… |
+| 2026-11-06 10:16 PT | pa | pa-to-ppm-cc-exec-lead-plugin-lane-earliest-start-reads-now-builds-on-a-lead-slot-listing-on-xians-allowlist-call-2026-11-06.md | Plugin lane, earliest start for your page: PA's served reads can start now; bui… |
 | 2026-11-06 10:09 PT | exec | exec-to-ppm-cc-lead-pa-sprint-length-for-production-one-page-options-for-xians-talk-2026-11-06.md | Task, owner PPM: one page of options on two-week sprints for the Production mil… |
 | 2026-11-06 07:55 PT | arch | reply-arch-to-cxo-lead-cc-ppm-pa-exec-2219-latency-is-a-stopgap-owner-lead-baseline-asked-2026-11-06.md | Re #2219 latency: recorded as a stopgap, with Lead as owner of its removal, you… |
 | 2026-11-06 07:54 PT | cxo | cxo-to-arch-lead-cc-ppm-pa-exec-2219-latency-from-the-experience-side-and-the-words-on-main-noted-2026-11-06.md | #2219 (b) latency, from the experience side: 1.2 s on every plain list turn is… |
