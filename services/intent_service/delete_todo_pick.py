@@ -67,7 +67,7 @@ PICK_PENDING_FLAG = "delete_todo_pick_pending"
 # (reversible) binds to the completion itself, an explicit answer (Gap B).
 VERB_DELETE = "delete"
 VERB_COMPLETE = "complete"
-# CXO 11-06 11:2x: a complete pick answered with several numbers.
+# CXO 11-06 11:28: a complete pick answered with several numbers.
 COMPLETE_ONE_AT_A_TIME_QUESTION = (
     "I can take one number at a time here. Which one should I complete?"
 )
@@ -522,7 +522,7 @@ async def handle_delete_todo_pick_turn(
     # The cap is delete's; a complete pick binds one line (several re-ask below).
     multi = [i for i in _multi_pick_indices(text, texts, due_iso) if i < len(ids)]
     if verb == VERB_COMPLETE and len(multi) > 1:
-        # CXO 11-06 11:2x: a complete pick binds one line. Several numbers never
+        # CXO 11-06 11:28: a complete pick binds one line. Several numbers never
         # complete the first and drop the rest: re-ask once on the same record; a
         # second unresolved answer releases (the pick's convention below).
         if payload.get("pick_reasked"):

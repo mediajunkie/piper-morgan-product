@@ -70,7 +70,7 @@ def unmark_floor_category_write(intent: Any) -> None:
 
 
 def complete_not_found_statement(name: str) -> str:
-    """CXO's words (11-06 11:2x), verbatim: a named complete that matches nothing."""
+    """CXO's words (11-06 11:28), verbatim: a named complete that matches nothing."""
     return (
         f'I couldn\'t find a todo called "{name}", so nothing was changed. '
         'Say "show my todos" to see them.'
@@ -203,15 +203,15 @@ async def build_floor_write_complete_ask(
             )
         )
 
-    question = arm_complete_pick(
+    pick_question = arm_complete_pick(
         original, session_id, principal, todo_user_id, todos, offer_service
     )
-    if question is not None:
+    if pick_question is not None:
         return FloorWriteCompleteAsk(
-            reply=question, armed=True, intent_data={PICK_PENDING_FLAG: True}
+            reply=pick_question, armed=True, intent_data={PICK_PENDING_FLAG: True}
         )
     if missed_name:
-        # CXO 11-06 11:2x: the name the person said (the handler's own extractor)
+        # CXO 11-06 11:28: the name the person said (the handler's own extractor)
         # matched nothing and no list was shown. A statement; nothing armed.
         return FloorWriteCompleteAsk(reply=complete_not_found_statement(missed_name))
     return FloorWriteCompleteAsk(reply=COMPLETE_NO_TARGET_STATEMENT)
