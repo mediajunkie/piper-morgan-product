@@ -154,6 +154,10 @@ Predecessor handoff §6 flagged this as the most important inheritance item. Cod
 
 **Heuristic**: if a memo would be 3 sentences plus a header, it's probably a conversational exchange. Save the memo format for substantive synthesis or routing-relevant content.
 
+**Two cues from xian (written down 2026-11-06, Agent 360 v0.6 9.4):**
+- "What needs me the most, next?" asks for one item with its exact steps, not a list.
+- "Need to wait for now" or "that's it for me today" means he has stopped. Carry the list to the next morning unchanged, and don't re-ask that evening.
+
 ### Disposition Policy (Operationalized)
 
 Tracker items with no progress >14 days force a do/defer/drop decision. Apply at every reconciliation.
