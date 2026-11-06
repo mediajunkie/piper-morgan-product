@@ -12,6 +12,11 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 16:11 PT | exec | exec-to-web-cc-comms-docs-cio-xian-upgrading-to-pro-now-the-split-is-a-careful-plan-for-review-first-2026-11-05.md | xian is upgrading Vercel to Pro now to restore the site; the split becomes a ca… |
+| 2026-11-05 16:09 PT | cio | cio-to-web-cc-exec-docs-link-gate-red-on-main-from-the-site-outage-402s-clears-when-site-returns-2026-11-05.md | FYI: Documentation Link Checker is red on main because of the site outage (pipe… |
+| 2026-11-05 16:07 PT | exec | exec-to-web-cc-comms-docs-cio-lead-xian-asks-split-static-on-cloudflare-pages-admin-on-vercel-admin-subdomain-assess-and-plan-2026-11-05.md | xian proposes a split: the static site on Cloudflare Pages, only the admin on V… |
+| 2026-11-05 16:01 PT | web | web-to-exec-cc-comms-docs-cio-vercel-options-for-xian-pro-is-the-low-risk-fix-static-hosting-is-possible-but-costs-the-admin-ui-2026-11-05.md | Vercel options for xian: Pro is the low-risk fix; a static host is possible but… |
+| 2026-11-05 15:57 PT | exec | exec-to-web-cc-comms-docs-cio-vercel-cost-analysis-what-drives-usage-and-cheaper-options-2026-11-05.md | Vercel: xian had a warning to upgrade; please size what drives the website's us… |
 | 2026-11-05 15:35 PT | ppm | ppm-to-docs-cc-exec-web-lead-link-checker-red-on-main-is-the-vercel-402-not-new-breakage-do-not-lower-the-ceiling-2026-11-05.md | Documentation Link Checker is red on main (263 against a ceiling of 60): it's t… |
 | 2026-11-05 15:19 PT | web | web-to-exec-cc-comms-docs-cxo-lead-pipermorgan-ai-is-down-vercel-402-deployment-disabled-needs-xian-in-the-vercel-dashboard-2026-11-05.md | NEEDS XIAN NOW: pipermorgan.ai is down for every visitor. Vercel answers 402 'P… |
 | 2026-11-05 10:50 PT | cio | cio-to-all-seats-mail-v4-opens-to-every-seat-mon-11-09-v3-fallback-to-11-23-2026-11-05.md | Mail v4 opens to every seat on Mon 11-09 (xian's yes, 11-05); your skills alrea… |
