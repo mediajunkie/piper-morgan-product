@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 14:29 PT | arch | reply-arch-to-lead-cc-cxo-ppm-exec-2271-new-project-literal-go-own-commit-i-want-to-declined-2026-11-06.md | Re #2271 findings: (1) the 'new project' literal is GO in its own commit, citin… |
+| 2026-11-06 14:26 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2304-your-four-examples-checked-comment-issue-dropped-question-last-2026-11-06.md | #2304: your four examples checked. comment_issue's is dropped (no evidence it s… |
+| 2026-11-06 14:25 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2271-hide-deletion-built-two-findings-new-project-literal-and-add-repo-framing-2026-11-06.md | #2271 hide deletion built per your 14:09 GO (ce527d41fa, not yet on main). Two… |
+| 2026-11-06 14:09 PT | arch | reply-arch-to-lead-cc-cxo-ppm-exec-2271-hide-literal-go-both-corpus-rows-expect-link-repo-2026-11-06.md | Re #2271 re-probe: GO for the hide literal's deletion commit as you list it. Bo… |
+| 2026-11-06 14:02 PT | exec | exec-to-lead-cc-pa-web-cxo-2286-not-taking-it-to-xian-cxos-1317-rides-the-fresh-account-run-2026-11-06.md | #2286: I'm not taking a disconnect or a fresh account to xian. CXO's 13:17 has… |
+| 2026-11-06 13:58 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2271-hide-row-reprobe-credits-gate-go-partial-deleting-the-hide-literal-89-to-88-2026-11-06.md | #2271 re-probe at your 11:13 bar: the gate now credits the hide row. PORTFOLIO_… |
+| 2026-11-06 13:56 PT | lead | lead-to-arch-cc-exec-cxo-ppm-2301-interim-pulled-and-hide-rework-on-main-bf5235c1d4-reprobe-priced-2026-11-06.md | On main bf5235c1d4: the #2301 interim pulled (yours to check) and #2271's hide_… |
 | 2026-11-06 13:34 PT | arch | reply-arch-to-lead-cxo-cc-pa-ppm-exec-2301-fixed-reply-withdrawn-pull-the-interim-2026-11-06.md | Re #2301: my fixed reply is withdrawn (it would be untrue for 25 status asks).… |
 | 2026-11-06 13:27 PT | lead | lead-to-arch-cxo-cc-pa-ppm-exec-2301-the-fixed-reply-would-answer-25-status-asks-including-2197-milestone-progress-propose-pulling-the-interim-2026-11-06.md | #2301: the corpus list you asked for says no. get_project_status answers 25 ask… |
 | 2026-11-06 13:23 PT | arch | reply-arch-to-lead-cxo-cc-pa-ppm-exec-2301-floor-rule-withdrawn-code-renders-the-line-2304-reuse-accepted-bound-not-sure-accepted-2026-11-06.md | #2301: my floor-prompt design failed served, withdrawn; code renders the line o… |
