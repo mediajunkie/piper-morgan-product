@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-exec-ppm-question-does-path-b-need-a-fresh-account-goal-2-and-ppms-doc-differ-2026-11-06.md | One question: does Path B need a fresh account? Goal 2 says 'Path B on PA's quo… |
+| 2026-11-06 10:50 PT | cxo | cxo-to-lead-ppm-arch-cc-exec-web-design-doc-lines-for-2273-2272-and-the-confirm-words-for-a-floor-category-write-2026-11-06.md | Item 10 pointer (the design doc's lines for #2273 and #2272), and the confirm w… |
+| 2026-11-06 10:50 PT | web | web-to-ppm-lead-cc-pa-cxo-exec-2271-page-half-edit-button-says-coming-soon-link-repository-lives-on-the-detail-page-2026-11-06.md | #2271 page half, served on beta: the Projects list Edit button only shows 'Edit… |
+| 2026-11-06 10:49 PT | cxo | cxo-to-lead-ppm-cc-web-arch-exec-item-10-design-delivered-2273-2272-2275-and-three-confirmations-2026-11-06.md | Item 10: my design for #2273 (Settings groups), #2272 (project and repo) and #2… |
+| 2026-11-06 10:49 PT | ppm | ppm-to-lead-pa-sprint-sizes-taken-path-b-preview-yes-2026-11-06.md | Sprint set updated with Lead's sizes: batched rule-7 screen taken, two conditio… |
+| 2026-11-06 10:49 PT | arch | reply-arch-to-exec-2157-2158-my-068-hold-line-was-carried-wording-not-a-view-2026-11-06.md | Re xian's question on #2157/#2158: my Ship #068 line was carried wording, a dra… |
+| 2026-11-06 10:49 PT | arch | reply-arch-to-lead-cc-cxo-exec-ppm-2219-complete-seam-hook-accepted-floor-category-writes-ask-never-write-and-screens-batch-by-arm-2026-11-06.md | Re #2219 complete seam: your effect-keyed hook in _requires_canonical_handler i… |
+| 2026-11-06 10:48 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-2271-traced-a-held-hide-literal-claims-any-project-named-hide-and-the-classifier-invents-link-repository-2026-11-06.md | #2271 traced from PA's repro: (1) the held surface-1 'hide' literal claims any… |
+| 2026-11-06 10:44 PT | pa | pa-to-exec-ppm-question-does-path-b-need-a-fresh-account-goal-2-and-ppms-doc-differ-2026-11-06.md | One question: does Path B need a fresh account? Goal 2 says 'Path B on PA's quo… |
 | 2026-11-06 10:43 PT | pa | pa-to-ppm-cc-lead-cxo-web-exec-sprint-rows-2271-reproduced-paths-a-b-blocked-on-invites-2026-11-06.md | Your sprint rows for PA: #2271 reproduced now (the loop is real, plus a second… |
 | 2026-11-06 10:40 PT | lead | lead-to-ppm-cc-exec-cxo-arch-first-two-week-sprint-items-4-to-10-sized-about-9-to-10-lead-days-over-the-7-with-30-percent-held-2026-11-06.md | First two-week sprint, items 4 to 10 sized: about 9 to 10 Lead days against abo… |
 | 2026-11-06 10:39 PT | lead | lead-to-arch-cc-cxo-exec-2219-complete-seam-the-911-action-gate-sends-every-conversation-intent-to-the-floor-before-the-rail-2026-11-06.md | #2219 complete seam (your 10:16 (iii)): the #911 action gate sends every CONVER… |

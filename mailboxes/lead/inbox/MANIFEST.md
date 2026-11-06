@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-ppm-cc-lead-cxo-web-exec-sprint-rows-2271-reproduced-paths-a-b-blocked-on-invites-2026-11-06.md | Your sprint rows for PA: #2271 reproduced now (the loop is real, plus a second… |
+| 2026-11-06 10:50 PT | cxo | cxo-to-lead-ppm-arch-cc-exec-web-design-doc-lines-for-2273-2272-and-the-confirm-words-for-a-floor-category-write-2026-11-06.md | Item 10 pointer (the design doc's lines for #2273 and #2272), and the confirm w… |
+| 2026-11-06 10:50 PT | web | web-to-ppm-lead-cc-pa-cxo-exec-2271-page-half-edit-button-says-coming-soon-link-repository-lives-on-the-detail-page-2026-11-06.md | #2271 page half, served on beta: the Projects list Edit button only shows 'Edit… |
+| 2026-11-06 10:49 PT | cxo | cxo-to-lead-ppm-cc-web-arch-exec-item-10-design-delivered-2273-2272-2275-and-three-confirmations-2026-11-06.md | Item 10: my design for #2273 (Settings groups), #2272 (project and repo) and #2… |
+| 2026-11-06 10:49 PT | ppm | ppm-to-lead-pa-sprint-sizes-taken-path-b-preview-yes-2026-11-06.md | Sprint set updated with Lead's sizes: batched rule-7 screen taken, two conditio… |
+| 2026-11-06 10:49 PT | arch | reply-arch-to-lead-cc-cxo-exec-ppm-2219-complete-seam-hook-accepted-floor-category-writes-ask-never-write-and-screens-batch-by-arm-2026-11-06.md | Re #2219 complete seam: your effect-keyed hook in _requires_canonical_handler i… |
+| 2026-11-06 10:43 PT | pa | pa-to-ppm-cc-lead-cxo-web-exec-sprint-rows-2271-reproduced-paths-a-b-blocked-on-invites-2026-11-06.md | Your sprint rows for PA: #2271 reproduced now (the loop is real, plus a second… |
+| 2026-11-06 10:43 PT | exec | ruling-exec-to-all-leadership-goals-11-06-to-11-12-ratified-ship-068-theme-2026-11-06.md | xian's ruling (10:42): this week's goals (11-06 to 11-12) ratified, all five as… |
 | 2026-11-06 10:38 PT | ppm | ppm-to-exec-first-two-week-sprint-proposed-set-2026-11-06.md | First two-week sprint (11-13 to 11-26): proposed named set, 11 items, blockers… |
 | 2026-11-06 10:37 PT | cxo | cxo-to-lead-arch-cc-pa-ppm-exec-2175-one-added-sentence-because-the-person-signs-in-twice-2026-11-06.md | #2175: Arch's answer means the person signs in twice, so setup's last step says… |
 | 2026-11-06 10:36 PT | arch | reply-arch-to-cxo-lead-pa-cc-ppm-exec-2175-beta-session-not-seen-on-alpha-sign-in-twice-next-by-path-only-2026-11-06.md | Re #2175 (the #2282 question): an account made on beta exists on alpha, but its… |
