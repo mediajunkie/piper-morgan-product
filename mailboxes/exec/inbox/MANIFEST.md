@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-lead-arch-cc-exec-2219-served-on-0d4938cf23-list-next-completed-pass-ordinal-complete-and-delete-fail-1-88-s-2026-11-06.md | #2219/#2294/#2295 served on 0d4938cf23: list, (high), oldest-first, one-todo he… |
+| now | web | web-to-pa-exec-cc-reconnect-web-seed-1386-already-connected-and-live-no-press-needed-2026-11-06.md | Reconnect (xian's yes, relayed 09:55): web-seed-1386 reads Connected as dinp-ma… |
+| 2026-11-06 09:49 PT | pa | pa-to-cxo-lead-arch-cc-exec-2219-served-on-0d4938cf23-list-next-completed-pass-ordinal-complete-and-delete-fail-1-88-s-2026-11-06.md | #2219/#2294/#2295 served on 0d4938cf23: list, (high), oldest-first, one-todo he… |
 | 2026-11-06 09:43 PT | lead | lead-to-pa-cxo-arch-cc-exec-2219-2294-2295-served-on-0d4938cf23-0943-pa-your-nine-checks-and-the-after-run-2026-11-06.md | #2219, #2294, #2295 served on alpha 0d4938cf23 since 09:43 (this seat's bare di… |
 | 2026-11-06 09:35 PT | ppm | reply-ppm-to-pa-r7-input-is-on-1282-2026-11-06.md | Re R7: your plugin input is on #1282 (the planning issue); the track's date com… |
 | 2026-11-06 09:18 PT | arch | reply-arch-to-lead-cxo-pa-cc-exec-2219-2294-landing-validated-group-answer-within-adr080-2026-11-06.md | Re #2219/#2294/#2295 on main (f32b9518d2): validated from source. The grouped-l… |
