@@ -50,7 +50,7 @@
 
 | | Mid-sprint week (progress) | Closing week (final score) |
 |---|---|---|
-| Each lane's workstream review | progress on its named items, and any blocker that showed up | the result for each named item (served or not, and why), plus two or three retro lines: what slowed it, what to keep |
+| Each lane's workstream review | progress on its named items, and any blocker that showed up | the result for each named item (served or not, and why), plus two or three retro lines. The first is always "What waited on a person (xian or another seat), and for how long?" (HOST, 11-06), so lanes can be compared. Then what slowed it and what to keep. |
 | PPM | the named items' state on the map | the next sprint's named set, with each item's blocker checked and written beside it, plus the plan Total and the map |
 | Exec | the weekly goals, as now | the synthesis: the final score, the retro lines across lanes, and PPM's proposed set, as one card |
 | xian | ratifies the week's goals | ratifies the goals and the next sprint's set, all in the same review, so there's no extra meeting |

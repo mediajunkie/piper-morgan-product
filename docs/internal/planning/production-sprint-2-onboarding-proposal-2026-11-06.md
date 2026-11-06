@@ -32,10 +32,12 @@ Rule, from the ruling: no more than one named item behind any single unanswered 
 | 7 | #2268 and #2274: the wizard's connect handoff and the API-key line. CXO's words exist for both. | Lead, Web | none |
 | 8 | #2269 and #2270: "link repo" and the repo-as-document miss | Lead | #2270 waits on the session's exact phrasing (xian's notes) |
 | 9 | #2271: the "yes" loop on adding a repo | PA, then Lead | none (PA reproduces on a test account first) |
-| 10 | **CXO's designed flow:** the wizard ends at the first ask. It covers #2273 (finding Integrations), #2275 (the sign-in screen's line and its first-value prompts) and #2272's page half (attach a repo to a project). | CXO, then Lead and Web | none. Path A is written and Path B is answered. This is one named unit, so the three issues don't each sit behind the same design. |
+| 10 | **CXO's designed flow:** the wizard ends at the first ask. It covers #2273 (finding Integrations), #2275 (the sign-in screen's line and its first-value prompts), #2272's page half (attach a repo to a project) and #2286 (step 3's connect card line, which is final and unbuilt). | Lead and Web build, then CXO judges | Lead naming a first ask (step 4) that serves cleanly on a fresh account. No design question is open (CXO, 11-06 10:37): steps 0 to 3 are written, and Paths A and B are in the design doc. This is one named unit, so the issues don't each sit behind the same design. |
 | 11 | **Paths A and B served:** PA's quotes on fresh test accounts, and CXO's judgment | PA, CXO | items 5–10 served |
 
 #2293 (the priority sort) passed on 11-06 and closes when CXO judges it, so it isn't named.
+
+**Served-check rows (CXO, 10:37):** every build in items 4–10 gets its served quote from PA or Web right after the promotion that carries it, scheduled beside the build. CXO judges only from a quote, so the judgment should never be the one unscheduled step. In #070's progress Ship, a build counts as served only once it has been quoted.
 
 ## The second lane: plugin and MCP, with no Lead build time
 
