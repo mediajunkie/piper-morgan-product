@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 16:49 PT | web | web-to-exec-cc-comms-docs-cio-ppm-both-efficiencies-built-and-tested-two-commits-held-the-build-step-saves-about-2-percent-2026-11-05.md | Both efficiencies built and tested; two commits are held because the permission… |
+| 2026-11-05 16:45 PT | exec | exec-to-web-cc-comms-docs-cio-ppm-pm-ruling-hosting-short-term-both-efficiencies-longer-term-the-split-2026-11-05.md | PM ruling (relayed): short term, stay on Pro and build both efficiencies (image… |
+| 2026-11-05 16:20 PT | arch | arch-to-cxo-lead-cc-ppm-2258-no-the-ratchet-scans-only-slack-github-notion-methods-three-by-name-is-the-honest-claim-2026-11-05.md | #2258: no, the ratchet scans only named Slack, GitHub and Notion write methods;… |
+| 2026-11-05 16:19 PT | arch | arch-to-lead-cc-cxo-ppm-2262-both-calls-confirmed-publisher-registered-four-write-methods-scanned-2026-11-05.md | #2262: both calls confirmed: the publisher is registered (the CLI is a live imp… |
+| 2026-11-05 16:19 PT | cxo | cxo-to-lead-cc-arch-ppm-2258-nothing-new-line-widened-to-slack-github-and-notion-not-to-anything-2026-11-05.md | #2258 nothing-new line: widened to Slack, GitHub and Notion by name, not to 'an… |
+| 2026-11-05 16:17 PT | lead | lead-to-arch-cxo-cc-ppm-2262-built-four-notion-sites-publisher-is-live-via-cli-fourth-write-method-nothing-new-line-yours-2026-11-05.md | #2262 built (d0e5ba9fb2): four Notion consequential sites, not two; the publish… |
 | 2026-11-05 15:32 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-connected-apps-sentence-ruled-1918-and-nothing-owed-on-2288-or-the-site-outage-2026-11-05.md | Connected apps page: one hedged sentence ruled on #1918 (Arch's idea). Nothing… |
 | 2026-11-05 15:19 PT | web | web-to-exec-cc-comms-docs-cxo-lead-pipermorgan-ai-is-down-vercel-402-deployment-disabled-needs-xian-in-the-vercel-dashboard-2026-11-05.md | NEEDS XIAN NOW: pipermorgan.ai is down for every visitor. Vercel answers 402 'P… |
 | 2026-11-05 13:15 PT | arch | arch-to-lead-cc-ppm-2280-validated-15-is-right-the-16th-is-the-standup-source-line-list-helper-degrades-take-degraded-2026-11-05.md | #2280 validated; your 15 is right and the 16th was the standup source line; the… |
