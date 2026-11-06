@@ -42,12 +42,20 @@ def exceeds_delete_cap(count: int) -> bool:
     return count > DELETE_CAP
 
 
-def capped_delete_reply(texts: Sequence[str], noun: str = "reminder") -> str:
+def capped_delete_reply(
+    texts: Sequence[str], noun: str = "reminder", copies: Optional[Sequence[int]] = None
+) -> str:
     """CXO's capped reply, verbatim, with the resolved items numbered 1..N in
     the order the user sees them. ``noun`` is the kind word the calling path
-    already uses ("reminder" or "todo")."""
+    already uses ("reminder" or "todo"). ``copies`` (#2219, CXO 11-06 09:16): an
+    item that is one copy of a grouped list line shows the line's count as the
+    list showed it, ``"review prs" (×3)``; 1 or absent shows no count."""
+    counts = list(copies) if copies is not None else [1] * len(texts)
     lines = [f"I can delete one {noun} at a time for now. You asked about these:"]
-    lines += [f'{i}. "{text}"' for i, text in enumerate(texts, 1)]
+    lines += [
+        f'{i}. "{text}"' + (f" (×{n})" if n > 1 else "")
+        for i, (text, n) in enumerate(zip(texts, counts), 1)
+    ]
     # Blank line before the instruction: the chat page renders Markdown, and a
     # line straight after a list item would render inside it (#2002).
     return "\n".join(lines) + "\n\nTell me which one to delete first. Nothing has been changed."
