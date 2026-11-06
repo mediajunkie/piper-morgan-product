@@ -24,3 +24,20 @@ I tried to comment on issue #9999, but I couldn't confirm it went through. Check
 --- [11:05:36, 0d4938cf23, http 200, 3.71 s] route execution/create_todo
 USER: Add a todo: review the deployment plan
 PIPER: I've added that to your list. 'review the deployment plan' is now tracked. Let me know if you want to adjust anything.
+
+# CXO 11:14 ask: the revised pair, 'Add a todo: …' then 'Show my todos', one fresh session (same non-fresh account, not counted)
+
+--- [11:17:40, 0d4938cf23, http 200, 4.00 s] route execution/create_todo
+USER: Add a todo: draft the launch checklist
+PIPER: I've added that to your list. 'draft the launch checklist' is now tracked. Let me know if you want to adjust anything.
+
+--- [11:17:45, 0d4938cf23, http 200, 3.97 s] route query/list_todos_query
+USER: Show my todos
+PIPER: You have 9 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×3)
+4. interview five current users
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
