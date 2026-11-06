@@ -12,7 +12,7 @@ caption: ''
 SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. PM writes
 the prose. Everything below the line is notes for PM. Delete it as the prose replaces it.
 Slot: Sat 2026-11-07 (building, milestone piece, outside the Sep-front order like "Almost Beta" and "Alpha Launches").
-xian said yes 11-04. TITLE NEEDED BEFORE THURSDAY: Thu 11-05's footer teases this post.
+xian said yes 11-04. Title: "At Long Last, Beta" (xian, in Thursday's footer, 11-05).
 Footer teases Sun 11-08 "Fixed and Scores Higher Came Apart" (working title).
 Sources: decisions.log 2026-08-08 (via 09-06), 09-06 ~07:0x and ~16:1x, 10-29 13:02, 10-30 14:52, 10-30 20:52, 10-31 13:51,
 11-04 19:31 and 19:41; #1386's last two comments (PPM 10-30 17:37 and 19:51); GitHub milestone "MVP" (closed
@@ -24,7 +24,7 @@ No recipient is named anywhere (rule 8). Keep it that way.
 ---
 
 ## Title options (pick one, or your own. Thursday's footer needs it)
-- **What Reaching Private Beta Means** (working, Docs' row).
+- **At Long Last, Beta** (xian's, from Thursday's footer, 11-05).
 - **Beta, With Nine Known Issues.** The letter said what doesn't work yet, by name.
 - **Eight Weeks Late, on the Day We Set.** Beta slipped from early September, then landed on the reset date.
 - **The Alpha Is Over.** Your words, 11-04.
