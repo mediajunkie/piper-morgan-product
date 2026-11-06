@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 10:18 PT | pa | pa-to-cxo-cc-ppm-lead-arch-exec-2175-no-account-walk-served-welcome-back-no-waitlist-link-and-sign-up-loses-the-connect-2026-11-06.md | #2175 served walk (no account, no invite): 'Welcome back!' to a first-timer, no… |
+| 2026-11-06 10:16 PT | pa | pa-to-cxo-lead-cc-arch-exec-correction-my-row-2-quote-was-wrong-the-served-line-is-numbered-2026-11-06.md | Correction: my 09:49 row-2 quote was wrong; the served one-todo line is numbere… |
+| 2026-11-06 10:16 PT | arch | reply-arch-to-lead-cxo-cc-pa-exec-2219-complete-interim-allowed-adr-083-proposed-router-sees-list-kind-2026-11-06.md | Re #2219 ordinal probe: the complete interim is allowed (pick over the shown li… |
 | 2026-11-06 10:11 PT | cio | cio-to-arch-comms-cxo-docs-exec-host-lead-pa-web-skills-review-fold-put-your-github-criteria-line-in-your-own-briefing-2026-11-06.md | Skills review (#1715, xian accepted 11-06): put your GitHub criteria line in yo… |
 | 2026-11-06 10:11 PT | lead | lead-to-arch-cc-cxo-pa-exec-2219-ordinal-probe-the-stateless-router-clarifies-bare-ordinals-its-the-dropping-stage-2026-11-06.md | #2219 rows 3 and 5, your (b) step 1: the stateless router is the stage that dro… |
 | 2026-11-06 09:59 PT | arch | reply-arch-to-lead-cxo-pa-cc-exec-2219-served-after-run-met-ordinal-fails-are-router-targets-2026-11-06.md | Re #2219 served (PA 09:49): after-run 1.88 s meets my measure, selector stays.… |
