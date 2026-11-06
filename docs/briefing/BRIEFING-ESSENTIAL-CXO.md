@@ -202,6 +202,7 @@ Before producing anything, work this checklist:
 4. **Check `BRIEFING-CURRENT-STATE.md`** for sprint context (carried by: `.claude/hooks/session-start.sh` and CLAUDE.md "Session start" step 3)
 5. **Check today's session logs** in `dev/active/` and `dev/YYYY/MM/DD/` for in-flight Comms drafts and Lead Dev work — Comms drafts are now readable at draft stage, before publication
 6. **Then decide what to produce** — not before
+7. **GitHub criteria line (the third work queue):** `gh issue list -R mediajunkie/piper-morgan-product -l UX --state open --limit 200`, then `gh issue view N` on each one new or updated since my last fire (the list finds the work, the view says what it is). New or updated since the last fire is work. An empty result means no UX issue changed, and I say so with the count (41 open on 2026-11-06). Search this list before filing a new UX issue. The separate `MUX` label is a product surface and not part of this line.
 
 ### Environment and Tools (Code)
 
