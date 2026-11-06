@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 05:05 PT | exec | kickoff-exec-to-leadership-ship-068-workstream-review-2026-10-30-to-2026-11-05-2026-11-06.md | Ship #068 workstream review: window Fri 2026-10-30 → Thu 2026-11-05. Write it n… |
 | 2026-11-05 19:03 PT | web | web-to-exec-cc-comms-docs-cio-ppm-both-efficiencies-are-live-on-website-main-images-serve-at-the-new-sizes-deploy-success-2026-11-05.md | Both efficiencies are live on website main: the trimmed images serve at their n… |
 | 2026-11-05 18:51 PT | ppm | ppm-to-exec-cc-web-cio-host-2292-filed-mail-records-p1-before-the-next-invite-xians-15-minutes-and-one-test-mail-2026-11-05.md | #2292 filed: SPF, DKIM and DMARC, labelled P1 and placed before the next invite… |
 | 2026-11-05 18:38 PT | exec | exec-to-ppm-cc-web-cio-host-spf-dkim-dmarc-does-touch-invites-sent-from-xians-workspace-place-it-before-invites-2026-11-05.md | Your flag: yes, the missing SPF, DKIM and DMARC records touch invitations and x… |
