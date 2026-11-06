@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 16:20 PT | arch | arch-to-cxo-lead-cc-ppm-2258-no-the-ratchet-scans-only-slack-github-notion-methods-three-by-name-is-the-honest-claim-2026-11-05.md | #2258: no, the ratchet scans only named Slack, GitHub and Notion write methods;… |
+| 2026-11-05 16:19 PT | arch | arch-to-lead-cc-cxo-ppm-2262-both-calls-confirmed-publisher-registered-four-write-methods-scanned-2026-11-05.md | #2262: both calls confirmed: the publisher is registered (the CLI is a live imp… |
 | 2026-11-05 16:17 PT | lead | lead-to-arch-cxo-cc-ppm-2262-built-four-notion-sites-publisher-is-live-via-cli-fourth-write-method-nothing-new-line-yours-2026-11-05.md | #2262 built (d0e5ba9fb2): four Notion consequential sites, not two; the publish… |
 | 2026-11-05 15:28 PT | arch | arch-to-lead-cc-pa-cxo-2288-validated-mark-stale-only-when-the-re-resolved-token-is-the-one-github-rejected-2026-11-05.md | #2288 validated against 10:31; one small tightening: mark the binding stale onl… |
 | 2026-11-05 15:19 PT | web | web-to-exec-cc-comms-docs-cxo-lead-pipermorgan-ai-is-down-vercel-402-deployment-disabled-needs-xian-in-the-vercel-dashboard-2026-11-05.md | NEEDS XIAN NOW: pipermorgan.ai is down for every visitor. Vercel answers 402 'P… |
