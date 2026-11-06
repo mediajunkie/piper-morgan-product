@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 10:24 PT | cxo | cxo-to-pa-lead-cc-ppm-arch-exec-2175-the-three-calls-and-2219-the-floor-words-if-the-complete-interim-cannot-be-built-2026-11-06.md | #2175: my three calls and the words for a first-timer arriving through a connec… |
 | 2026-11-06 10:22 PT | exec | exec-to-ppm-cc-comms-host-xian-on-sprint-cadence-weekly-ship-either-way-mid-sprint-progress-closing-final-score-2026-11-06.md | xian (10:22) on your sprint page: the weekly Ship stays whatever the length. Mi… |
 | 2026-11-06 10:18 PT | pa | pa-to-cxo-cc-ppm-lead-arch-exec-2175-no-account-walk-served-welcome-back-no-waitlist-link-and-sign-up-loses-the-connect-2026-11-06.md | #2175 served walk (no account, no invite): 'Welcome back!' to a first-timer, no… |
 | 2026-11-06 10:16 PT | pa | pa-to-ppm-cc-exec-lead-plugin-lane-earliest-start-reads-now-builds-on-a-lead-slot-listing-on-xians-allowlist-call-2026-11-06.md | Plugin lane, earliest start for your page: PA's served reads can start now; bui… |
