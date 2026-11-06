@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-ARCHITECT
 valid_from: "2025-10-19"
-last_updated: "2026-10-27"
+last_updated: "2026-11-06"
 last_verified: "2026-10-27"
 ---
 
@@ -58,7 +58,7 @@ The discipline: protect time for cross-project protocol work + architectural val
 **The Architectural Review 2026 (PM+Arch co-led, 08-29→09-01) reset this role's operating surface.**
 Read these FIRST; the sections below are historical context:
 
-- **`docs/internal/architecture/ESSENCE.md`** (v1.0.2, PM-RATIFIED) — what Piper IS: seven
+- **`docs/internal/architecture/ESSENCE.md`** (v1.1, ratified by xian 2026-10-25; the version is on its line 3) — what Piper IS: seven
   commitments, the for-whom (xian first, definitionally), the NOT-boundary. Current law.
 - **`docs/internal/architecture/SYSTEM.md`** — what's actually running (census-derived).
 - **`docs/internal/architecture/CONNECTORS.md`** — per-connector transport/grant truth + the
@@ -69,8 +69,9 @@ Read these FIRST; the sections below are historical context:
   Amendment 1, 10-23; ESSENCE v1.1 commitment 6, ratified 10-25). MCP-path completion still gates
   public beta. The legacy-classifier retirement
   criterion (plan C2) was due a check 2026-09-30 that did not happen; stated 10-13: not met (the
-  LLM classifier still serves four call sites). Its re-check trigger is the #1595 Phase 3 tail
-  reaching the ruled floor (decisions.log 10-13).
+  LLM classifier still serves four call sites). Its re-check trigger is the Phase 3 tail
+  reaching the ruled floor (decisions.log 10-13). #1595 closed 10-29 by xian's split; the tail is
+  #2195 (still open), so the trigger has not fired.
 - **`docs/internal/architecture/bets/`** — the scope-bet gate (ratified): crossing a scope
   tripwire needs a PM-ratified one-page Bet Memo first.
 - ADR corpus: **demote-don't-retire** — ADRs are append-only history; the index is a DERIVED VIEW
@@ -172,11 +173,11 @@ record only. Its size is in the line item below, measured 10-27.)*:
 - ~~UserHistoryService Layer 3 has no DB backend (#1021)~~ — ✅ resolved 2026-05-14 (DBUserHistoryRepository over extended ConversationDB; migration `a1021userhist`; user-history API surface + adaptive-greetings wiring landed; 32 tests, 11 integration)
 - ~~`services/ethics/adaptive_boundaries.py` — alive scaffolding (called from `boundary_enforcer_refactored`; learning loop inert); tracked as #1019~~ — ✅ resolved 2026-05-14 (Path C: deleted 367 LOC + cleaned `boundary_enforcer_refactored.py` + `staging_health.py` + `ethics_metrics.py`; net −543 LOC across 5 files; 111 ethics tests pass; #1004 semantic-detector substrate is structural successor; #1016 is where future learning-loop design will land)
 - 🚧 **LLM outputs reach users unfiltered (#1017)** — Phase 2 implementation **merged to main 2026-05-15** (`ba00185a`, branch `claude/1017-output-content-filter`): OutputFilter at decorator chokepoint on `LLMClient.complete()`; profile dispatch via `task_type` registry (10 user_visible / 1 internal / 1 mixed); Tier 1 PII regex (reused SecurityRedactor + added secret-format patterns) + Tier 2 BoundaryEnforcer-on-outputs; CXO-ratified canned phrasing on category violations with regenerate-trigger coupling; hash-only audit envelope (Pattern-064-adjacent invariant) via `log_output_filter_decision()` writing to `ethics_audit_log`; 55 new tests, 0 regressions. **Phase 3 probe set + CI verification gate + ADR-061 amendment** remain (gated on Architect + CXO co-design per CXO Q7 ratification)
-- Slash-command dispatch precedence (the hardcoded `/standup` short-circuit at intent_service.py:617) — tracked as **#1011** (post-MVP design decision)
+- Slash-command dispatch precedence (#1011): **ruled 2026-11-02 10:52** (decisions.log): a slash command is syntax, so an exact typed match is allowed under ADR-080, but it never bypasses permission
 - CLI bypasses intent layer (future work)
-- `services/intent/intent_service.py` at **19,468 lines** as of 2026-10-27 (`wc -l`; it was 15,607
-  on 09-23). The package `services/intent_service/` is 49,703 lines over 59 files (`find … | wc -l`,
-  10-27). The "thin orchestrator" framing doesn't hold at this size; that's a design question for a
+- `services/intent/intent_service.py` size: measure it, don't quote it (`wc -l`; 21,226 on 11-06,
+  15,607 on 09-23). The package `services/intent_service/`: `find services/intent_service -name '*.py'`
+  (70 files, 53,259 lines on 11-06). The "thin orchestrator" framing doesn't hold at this size; that's a design question for a
   full pass, not settled here
 
 ## Catalog Citation Framework
@@ -210,7 +211,7 @@ Architecture Docs: docs/internal/architecture/current/
 ADRs: See BRIEFING-CURRENT-STATE.md for current count
 Patterns: See BRIEFING-CURRENT-STATE.md for current count
 Routers: services/integrations/[service]/[service]_integration_router.py
-Plugins: services/plugins/ (7 active plugins)
+Plugins: services/integrations/*/*_plugin.py (guides in services/plugins/)
 Spatial: 3 patterns (Granular/Embedded/Delegated)
 ```
 
@@ -239,8 +240,8 @@ Product Relevance classifications:
 
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md` (sprint position, active issues)
 - **Live state**: `git grep` and the code on main (Serena retired from this seat 10-13: no Serena tool here; `knowledge/serena-briefing-queries.md` is left for seats that have one)
-- **Pattern catalog**: `docs/internal/architecture/patterns/` (81 entries, B3-dispositioned 2026-09-01)
-- **ADRs**: `docs/internal/architecture/adrs/` (79 files; index is DERIVED — trust Status lines)
+- **Pattern catalog**: `docs/internal/architecture/patterns/` (count with `ls`; B3-dispositioned 2026-09-01)
+- **ADRs**: `docs/internal/architecture/adrs/` (count with `ls adr-0*`; index is DERIVED — trust Status lines)
 - **Navigation**: `docs/NAVIGATION.md` (find anything)
 
 ---
