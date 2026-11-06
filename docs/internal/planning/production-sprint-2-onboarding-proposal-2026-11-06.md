@@ -75,7 +75,9 @@ Items 4–10 come to about 9–10 Lead-days. Two weeks with 30% held back leaves
   - #2272's chat half leaves (part of item 10; Web's page half stays);
   - #2299 and #2300 leave item 12.
 - That's about 3 days out, leaving about 8, which draws one day on the reserve.
-- **They come back in this order** if a slot frees up: #2299 first (Arch accepted its fallback drop at 11:13), then #2270.
+- **They come back in this order** if a slot frees up: #2304 first (consent asks print the op name; split from #2299 (b), S to M), then #2299, then #2270.
+- **#2302** (the silent cap of 3) is a small fix, so Lead takes it this week, before the sprint starts (PPM, 11-06 11:26). That way prompt 1's family is honest whether or not it's offered.
+- **Built on main before the sprint (Web, 11:20, `21a8977ea9`):** #2273's Settings groups, #2272's page half (attach and detach words) and the removal of #2271's Edit button. Each waits on a promotion and a served read. These lighten items 9 and 10 for the review.
 - **#2300 doesn't come back as sized.** Arch (11:13) declined the word-list fix. Its fix is now a router-declared framing unit with its own screen, for a later sprint, and "Also add" keeps asking (the safe side).
 - **#2303** (make `archive_project` live, on xian's secret: #2271 gate option 2) is filed in V for a later sprint.
 - The set is re-checked at the 11-13 review against what lands before then.
