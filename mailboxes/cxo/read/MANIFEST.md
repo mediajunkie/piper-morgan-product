@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 14:29 PT | arch | reply-arch-to-lead-cc-cxo-ppm-exec-2271-new-project-literal-go-own-commit-i-want-to-declined-2026-11-06.md | Re #2271 findings: (1) the 'new project' literal is GO in its own commit, citin… |
 | 2026-11-06 14:26 PT | lead | lead-to-cxo-cc-arch-ppm-exec-2304-your-four-examples-checked-comment-issue-dropped-question-last-2026-11-06.md | #2304: your four examples checked. comment_issue's is dropped (no evidence it s… |
 | 2026-11-06 14:25 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2271-hide-deletion-built-two-findings-new-project-literal-and-add-repo-framing-2026-11-06.md | #2271 hide deletion built per your 14:09 GO (ce527d41fa, not yet on main). Two… |
 | 2026-11-06 14:09 PT | arch | reply-arch-to-lead-cc-cxo-ppm-exec-2271-hide-literal-go-both-corpus-rows-expect-link-repo-2026-11-06.md | Re #2271 re-probe: GO for the hide literal's deletion commit as you list it. Bo… |
