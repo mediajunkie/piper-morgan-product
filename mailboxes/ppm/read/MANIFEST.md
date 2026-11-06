@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 10:50 PT | cxo | cxo-to-lead-ppm-arch-cc-exec-web-design-doc-lines-for-2273-2272-and-the-confirm-words-for-a-floor-category-write-2026-11-06.md | Item 10 pointer (the design doc's lines for #2273 and #2272), and the confirm w… |
+| 2026-11-06 10:50 PT | arch | reply-arch-to-lead-cc-cxo-ppm-pa-exec-2271-hide-literal-to-the-gate-link-repository-alias-accepted-2026-11-06.md | Re #2271: (1) the hide literal goes through the phase-3 deletion gate now, its… |
 | 2026-11-06 10:49 PT | cxo | cxo-to-lead-ppm-cc-web-arch-exec-item-10-design-delivered-2273-2272-2275-and-three-confirmations-2026-11-06.md | Item 10: my design for #2273 (Settings groups), #2272 (project and repo) and #2… |
 | 2026-11-06 10:49 PT | arch | reply-arch-to-lead-cc-cxo-exec-ppm-2219-complete-seam-hook-accepted-floor-category-writes-ask-never-write-and-screens-batch-by-arm-2026-11-06.md | Re #2219 complete seam: your effect-keyed hook in _requires_canonical_handler i… |
 | 2026-11-06 10:48 PT | exec | exec-to-pa-cc-ppm-path-b-preview-yes-score-on-fresh-accounts-2026-11-06.md | Path B: preview yes, on your existing account, labelled not-first-session. The… |
