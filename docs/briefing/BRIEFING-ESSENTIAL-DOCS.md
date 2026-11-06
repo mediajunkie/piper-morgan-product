@@ -169,6 +169,11 @@ mkdir -p dev/$(date +%Y/%m/%d)
 ls mailboxes/docs/inbox/
 # Read messages, move to read/, note action items
 
+# 3b. GitHub criteria line (the third work queue): issues labelled documentation, which also carries the
+#     weekly-audit and maintenance issues. New since the last fire is work. An issue whose only owner is
+#     another seat (for example #1908 or #1828 on 11-06) is not mine, so name it and move on.
+gh issue list --repo mediajunkie/piper-morgan-product --state open --label documentation
+
 # 4. Previous day's session logs are the omnibus source
 ls dev/YYYY/MM/DD/  # previous day's date
 
