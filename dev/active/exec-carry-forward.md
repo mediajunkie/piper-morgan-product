@@ -9,7 +9,7 @@
 **Mail v4:** read `scripts/mail4.py inbox` on every wake, alongside v3. It opens to every seat on Mon 11-09 (CIO), and v3 stays the fallback until 11-23.
 
 ## Rollup
-v847, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut** (11-05: a too-late end marker dropped two paragraphs, which I restored from HEAD). The source is in a public repo, so describe security findings by class only.
+v848, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut** (11-05: a too-late end marker dropped two paragraphs, which I restored from HEAD). The source is in a public repo, so describe security findings by class only.
 
 ## Where things stand (end of 11-05)
 - **Served:** alpha and beta run `4e4c3fb1a8` (read 22:01, healthy). Main CI is 12/12 green. **beta.pipermorgan.ai is the canonical host** (#2282 steps 1–3 done; alpha 301s to beta; the MCP OAuth issuer and sign-in stay on alpha).
