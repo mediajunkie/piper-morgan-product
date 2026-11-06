@@ -520,6 +520,10 @@ color-coding and the legend — they carry the at-a-glance meaning.
 </html>
 ```
 
+### Command cards for xian (#1715 row 12, accepted by xian 2026-11-06)
+
+When a card asks xian to run commands, put them in **one copyable block** in the order he runs them, with no `#` comments inside it. A block that commits or pushes first prints the change (`git status` and `git diff --stat`) and says what that output should show. The commit and push lines come after it, so he sees a matching stat before anything is pushed. Origin: 10-23, a push from a stale clone.
+
 ## Step 5 — Write and deliver
 
 - Write to `dev/active/{role}-cohort-attention-rollup-{DATE}.html` (e.g. `exec-cohort-attention-rollup-2026-06-10.html`).

@@ -51,7 +51,7 @@ The review never ran in September, and that silently skipped October (CIO's fix 
 **Status of the three July candidates:**
 1. **Ship-kickoff window:** done as a script, not prose. `scripts/ship-kickoff.sh` computes the window and prints `ship-status`. **Lean: close.**
 2. **Workstream-section skill:** not built. The script now carries the computed window. **Lean: keep the light option.**
-3. **Skill-scope audit:** 28 of the 36 skills carry `scope:`, so 8 are left. **Lean: finish it** (add `scope:` to the 8, and add "who runs this cold?" to creation guidance). **Done 2026-11-04 15:48 (CIO), on xian's "Yes finish it":** the five `piper-*` product skills carry `scope: product`, so all 36 skills carry `scope:`. The creation-guidance question is not part of that ruling and is not done.
+3. **Skill-scope audit:** 28 of the 36 skills carry `scope:`, so 8 are left. **Lean: finish it** (add `scope:` to the 8, and add "who runs this cold?" to creation guidance). **Done 2026-11-04 15:48 (CIO), on xian's "Yes finish it":** the five `piper-*` product skills carry `scope: product`, so every skill carries `scope:` (34 with a SKILL.md, counted 11-06; the "36" above was the 10-23 gather's count and was already wrong on 11-04). The creation-guidance question is not part of that ruling and is not done.
 
 | Candidate | Signal | Exec's lean | Reason |
 |---|---|---|---|

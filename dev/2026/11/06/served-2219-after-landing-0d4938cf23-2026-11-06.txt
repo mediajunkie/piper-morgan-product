@@ -1,0 +1,183 @@
+=== on 0d4938cf23 09:43:18
+
+
+========== Row 1: numbered list, (high) chip, oldest first within a priority (call the dentist made before review prs)
+STATE: [('pending', 'urgent', 'urgent task'), ('pending', 'high', 'high task'), ('pending', 'medium', 'call the dentist'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs')]
+
+--- [09:43:32, http 200, 4.78 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 6 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. call the dentist
+4. review prs (×3)
+
+
+========== Row 9: the order the Todos page's API returns (GET /api/v1/todos)
+API ORDER: [('pending', 'urgent', 'urgent task'), ('pending', 'high', 'high task'), ('pending', 'medium', 'call the dentist'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs')]
+
+
+========== Rows 3 to 5: ordinals after the shown list (urgent, high, review prs x3)
+STATE: [('pending', 'urgent', 'urgent task'), ('pending', 'high', 'high task'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs')]
+
+--- [09:43:36, http 200, 1.88 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 5 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×3)
+
+--- [09:43:56, http 200, 17.57 s] route CONVERSATION/complete_todo
+USER: complete the second one
+PIPER: If you'd like me to mark "high task" as complete, just tell me directly.
+
+--- [09:44:03, http 200, 5.40 s] route execution/complete_todo
+USER: complete the third one
+PIPER: "review prs" is on your list 3 times. Complete one, or all 3?
+
+--- [09:44:06, http 200, 0.29 s] route execution/complete_todo
+USER: one
+PIPER: Marked one "review prs" as done. 2 are still open.
+
+--- [09:44:09, http 200, 1.85 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×2)
+
+--- [09:44:24, http 200, 12.58 s] route execution/delete_item
+USER: delete the second one
+PIPER: Which todo should I delete?
+1. urgent task
+2. high task
+3. review prs
+4. review prs
+
+Say the number or the name, or 'never mind' to leave them alone.
+
+--- [09:44:26, http 200, 0.24 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: no
+PIPER: Okay — I haven't touched your todos. Nothing has been deleted.
+
+--- [09:44:30, http 200, 2.10 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×2)
+STATE: [('pending', 'urgent', 'urgent task'), ('pending', 'high', 'high task'), ('completed', 'medium', 'review prs'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs')]
+
+
+========== Row 6: delete the first one, fresh session, no list shown
+
+--- [09:44:44, http 200, 11.54 s] route execution/delete_item
+USER: delete the first one
+PIPER: I'm not sure which one you mean, because I haven't shown you a list to count from. Nothing was deleted. Tell me the name of the todo or reminder you want to delete.
+
+--- [09:44:56, http 200, 10.07 s] route CONVERSATION/clarification_needed
+USER: no
+PIPER: Okay.
+
+
+========== Row 7a: next todo, fresh session
+
+--- [09:45:04, http 200, 6.08 s] route query/list_todos_query
+USER: what's my next todo?
+PIPER: Your next todo is "urgent task". Say "show my todos" for the rest.
+
+
+========== Row 7b: completed todos, fresh session
+
+--- [09:45:13, http 200, 6.57 s] route query/list_todos_query
+USER: show my completed todos
+PIPER: You have 1 completed todo. Here it is:
+• review prs ✓
+
+
+========== Row 8: the selector's after-run, ten plain 'show my todos' turns, fresh sessions
+STATE: [('pending', 'urgent', 'urgent task'), ('pending', 'high', 'high task'), ('completed', 'medium', 'review prs'), ('pending', 'medium', 'review prs'), ('pending', 'medium', 'review prs')]
+
+--- [09:45:17, http 200, 2.07 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×2)
+
+--- [09:45:21, http 200, 1.88 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×2)
+
+--- [09:45:25, http 200, 1.95 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×2)
+
+--- [09:45:29, http 200, 1.99 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×2)
+
+--- [09:45:33, http 200, 1.87 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×2)
+
+--- [09:45:37, http 200, 1.85 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×2)
+
+--- [09:45:41, http 200, 2.05 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×2)
+
+--- [09:45:45, http 200, 1.82 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×2)
+
+--- [09:45:49, http 200, 1.83 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×2)
+
+--- [09:45:52, http 200, 1.82 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 4 open todos. Here they are:
+1. urgent task (urgent)
+2. high task (high)
+3. review prs (×2)
+
+TIMES: 2.07 1.88 1.95 1.99 1.87 1.85 2.05 1.82 1.83 1.82
+median 1.88 s  IQR 1.83-2.00 s  min 1.82  max 2.07
+
+
+========== Row 2: exactly one open todo
+STATE: [('pending', 'medium', 'call the dentist')]
+
+--- [09:45:59, http 200, 1.83 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 1 open todo. Here it is:
+1. call the dentist
+
+=== end on 0d4938cf23 09:46:01
