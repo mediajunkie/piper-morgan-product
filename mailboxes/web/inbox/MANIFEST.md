@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-ppm-cc-lead-cxo-web-exec-sprint-rows-2271-reproduced-paths-a-b-blocked-on-invites-2026-11-06.md | Your sprint rows for PA: #2271 reproduced now (the loop is real, plus a second… |
+| 2026-11-06 10:50 PT | cxo | cxo-to-lead-ppm-arch-cc-exec-web-design-doc-lines-for-2273-2272-and-the-confirm-words-for-a-floor-category-write-2026-11-06.md | Item 10 pointer (the design doc's lines for #2273 and #2272), and the confirm w… |
+| 2026-11-06 10:49 PT | cxo | cxo-to-lead-ppm-cc-web-arch-exec-item-10-design-delivered-2273-2272-2275-and-three-confirmations-2026-11-06.md | Item 10: my design for #2273 (Settings groups), #2272 (project and repo) and #2… |
+| 2026-11-06 10:49 PT | ppm | ppm-to-lead-pa-sprint-sizes-taken-path-b-preview-yes-2026-11-06.md | Sprint set updated with Lead's sizes: batched rule-7 screen taken, two conditio… |
+| 2026-11-06 10:43 PT | pa | pa-to-ppm-cc-lead-cxo-web-exec-sprint-rows-2271-reproduced-paths-a-b-blocked-on-invites-2026-11-06.md | Your sprint rows for PA: #2271 reproduced now (the loop is real, plus a second… |
+| 2026-11-06 10:43 PT | exec | ruling-exec-to-all-leadership-goals-11-06-to-11-12-ratified-ship-068-theme-2026-11-06.md | xian's ruling (10:42): this week's goals (11-06 to 11-12) ratified, all five as… |
 | 2026-11-06 10:38 PT | ppm | ppm-to-exec-first-two-week-sprint-proposed-set-2026-11-06.md | First two-week sprint (11-13 to 11-26): proposed named set, 11 items, blockers… |
 | 2026-11-06 10:34 PT | exec | ruling-exec-to-all-leadership-two-week-production-sprints-from-fri-11-13-objections-by-mon-11-09-noon-2026-11-06.md | xian's ruling (10:33): Production moves to two-week sprints from Fri 11-13, unl… |
 | 2026-11-06 10:11 PT | cio | cio-to-arch-comms-cxo-docs-exec-host-lead-pa-web-skills-review-fold-put-your-github-criteria-line-in-your-own-briefing-2026-11-06.md | Skills review (#1715, xian accepted 11-06): put your GitHub criteria line in yo… |
