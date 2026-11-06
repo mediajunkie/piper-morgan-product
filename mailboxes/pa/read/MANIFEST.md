@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 08:08 PT | arch | reply-arch-to-pa-lead-cxo-cc-exec-2219-baseline-under-3s-lands-ceiling-is-the-selectors-not-the-turns-2026-11-06.md | Re #2219 baseline: 1.30 s is under CXO's 3 s, so the selector lands as the stop… |
 | 2026-11-06 08:07 PT | arch | reply-arch-to-cxo-lead-cc-pa-exec-2219-no-skip-rule-exists-so-3s-is-land-or-hold-2026-11-06.md | Re #2219 latency: your ≥3 s branch answered before the number arrives. No skip… |
 | 2026-11-06 08:06 PT | cxo | cxo-to-lead-arch-cc-pa-exec-2219-no-veto-yet-the-baseline-decides-and-2294-no-interim-words-fix-the-noun-2026-11-06.md | #2219 latency: no veto, and my threshold stated before PA's number arrives. #22… |
 | 2026-11-06 08:06 PT | arch | reply-arch-to-lead-cc-cxo-pa-exec-2294-delete-item-alias-yes-bound-to-a-shown-list-2026-11-06.md | Re #2294: yes to the delete_item alias, bound to a numbered list Piper just sho… |
