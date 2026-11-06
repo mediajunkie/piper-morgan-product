@@ -28,6 +28,12 @@ ordinal / unambiguous status word / name match) — not reimplemented, and no
 new extraction regex (the #1595 ratchet is untouched; the only text reads
 here are word-set checks).
 
+#2219 row 3 (Arch 11-06 10:16 and 10:48): the same record, with ``verb``
+"complete", is the pick a floor-category complete asks over the shown list
+(``arm_complete_pick``). Its bound answer completes the line at once (a
+reversible write on an explicit answer, Gap B), or asks one, or all, for a
+grouped line; it never arms the delete confirm and never takes the delete cap.
+
 Candidates: the user's active rows, scoped to reminders (rows carrying a
 ``reminder_date``) when the ask says "reminder(s)", due-soonest first; at
 most ``MAX_LISTED`` are shown and bound (the question names exactly what the
@@ -57,6 +63,14 @@ CLARIFY_DELETE_PICK_WORKFLOW = "clarify_delete_todo_pick"
 # The intent_data flag the ARM turn stamps so ``_apply_soft_offer`` never
 # clobbers the one-slot store with a soft workflow offer (the #1648 belt).
 PICK_PENDING_FLAG = "delete_todo_pick_pending"
+# #2219 row 3: the pick's verb. Delete binds to the #1666 confirm; complete
+# (reversible) binds to the completion itself, an explicit answer (Gap B).
+VERB_DELETE = "delete"
+VERB_COMPLETE = "complete"
+# CXO 11-06 11:2x: a complete pick answered with several numbers.
+COMPLETE_ONE_AT_A_TIME_QUESTION = (
+    "I can take one number at a time here. Which one should I complete?"
+)
 # "Few" — CXO's word. Above this the question still lists this many (bound)
 # and says how many more there are.
 MAX_LISTED = 5
@@ -180,14 +194,17 @@ def _candidates(todos: List[Any], noun: str) -> List[Any]:
     return sorted(rows, key=lambda t: ensure_utc(t.reminder_date))
 
 
-def render_pick_question(noun: str, texts: List[str], more: int = 0, reasked: bool = False) -> str:
+def render_pick_question(
+    noun: str, texts: List[str], more: int = 0, reasked: bool = False, verb: str = VERB_DELETE
+) -> str:
     """The armed ask: the candidates numbered with their titles, then how to
     answer — and the #1920 exit ("never mind") so the user learns they can
-    bail before failing once."""
+    bail before failing once. ``verb`` is "complete" for #2219 row 3's pick
+    (CXO: "Which todo should I complete?")."""
     head = (
         f"Still not sure which {noun} you mean — you have:"
         if reasked
-        else f"Which {noun} should I delete?"
+        else f"Which {noun} should I {verb}?"
     )
     lines = [head] + [f"{i}. {t}" for i, t in enumerate(texts, 1)]
     tail = "Say the number or the name, or 'never mind' to leave them alone."
@@ -198,6 +215,12 @@ def render_pick_question(noun: str, texts: List[str], more: int = 0, reasked: bo
     # item, so the tail used to render INSIDE the last <li>. The blank line
     # makes it its own paragraph after the list.
     return "\n".join(lines) + "\n\n" + tail
+
+
+def _decline_message(noun: str, verb: str) -> str:
+    if verb == VERB_COMPLETE:
+        return f"Okay — I haven't touched your {noun}s. Nothing has been changed."
+    return f"Okay — I haven't touched your {noun}s. Nothing has been deleted."
 
 
 def _pick_offer(
@@ -211,10 +234,15 @@ def _pick_offer(
     reasked: bool = False,
     copies: Optional[List[int]] = None,
     display: Optional[List[str]] = None,
+    verb: str = VERB_DELETE,
+    line_ids: Optional[List[List[str]]] = None,
 ) -> Dict[str, Any]:
     """The #846 record: the rendered candidates bound at ARM time (ids +
     texts in the order shown, #1665) plus each one's due timestamp so "the
-    overdue one" binds offline on the answer turn (the #1906 idiom)."""
+    overdue one" binds offline on the answer turn (the #1906 idiom).
+    #2219 row 3: ``verb`` "complete" binds the answer to a completion, and
+    ``line_ids`` holds every copy of each shown line (a grouped line asks
+    one, or all)."""
     return {
         "workflow_type": CLARIFY_DELETE_PICK_WORKFLOW,
         "question": question,
@@ -228,12 +256,14 @@ def _pick_offer(
             "pick_due": list(due_iso),
             "original_message": original_message,
             "pick_reasked": reasked,
-            "summary": f"pick which {noun} to delete",
+            "summary": f"pick which {noun} to {verb}",
             # #2219 interim (c): the shown list's copy counts and its lines as shown.
             "pick_copies": list(copies) if copies else None,
             "pick_display": list(display) if display else None,
+            "verb": verb,
+            "pick_line_ids": [list(line) for line in line_ids] if line_ids else None,
         },
-        "decline_message": (f"Okay — I haven't touched your {noun}s. Nothing has been deleted."),
+        "decline_message": _decline_message(noun, verb),
     }
 
 
@@ -315,6 +345,51 @@ async def arm_delete_pick(
     return question
 
 
+def arm_complete_pick(
+    message: str,
+    session_id: Optional[str],
+    principal: Optional[str],
+    todo_user_id: Any,
+    todos: List[Any],
+    offer_service: Any,
+) -> Optional[str]:
+    """#2219 row 3 (Arch 11-06 10:16 and 10:48; CXO's words): a complete that
+    names no one row, right after the numbered todo list, picks over THAT
+    list's lines in shown order and grouping. Returns the armed question, or
+    ``None`` when no grouped list was shown (or nothing can pop an answer), so
+    the caller says it can't tell. Reads recorded state, never the words."""
+    if not session_id or offer_service is None:
+        return None
+    lines = _shown_lines(last_numbered_list(session_id, principal or todo_user_id), todos)
+    if not lines:
+        return None
+    from services.intent_service.reminder_clear import _due_iso
+    from services.intent_service.reminder_copy import conversation_noun
+
+    noun = conversation_noun(message, _last_list_kind(session_id, principal or todo_user_id))
+    display = [_line_display(line) for line in lines]
+    question = render_pick_question(noun, display, verb=VERB_COMPLETE)
+    offer_service.set_pending_offer(
+        session_id,
+        _pick_offer(
+            principal,
+            noun,
+            [str(line[0].id) for line in lines],
+            [line[0].text for line in lines],
+            [_due_iso(line[0], noun) for line in lines],
+            message,
+            question,
+            copies=[len(line) for line in lines],
+            display=display,
+            verb=VERB_COMPLETE,
+            line_ids=[[str(t.id) for t in line] for line in lines],
+        ),
+        user_id=principal,
+    )
+    logger.info("complete_todo_pick_armed_on_shown_lines", session_id=session_id, lines=len(lines))
+    return question
+
+
 async def handle_delete_todo_pick_turn(
     pending_offer: Dict[str, Any],
     message: str,
@@ -391,6 +466,7 @@ async def handle_delete_todo_pick_turn(
     due_iso = payload.get("pick_due") or []
     noun = payload.get("noun") or "todo"
     original_message = payload.get("original_message") or ""
+    verb = payload.get("verb") or VERB_DELETE
 
     # Arch's condition 3 on #1987 (2026-10-12 ruling; 2026-10-13 ask): the
     # pick must SURVIVE a pleasantry. "thanks" reads PASS at the acceptance
@@ -410,16 +486,16 @@ async def handle_delete_todo_pick_turn(
 
     claimed = PreClassifier.pre_classify(text)
     if claimed is not None and claimed.action in _PLEASANTRY_ACTIONS:
-        question = pending_offer.get("question") or render_pick_question(noun, shown_texts, 0)
+        question = pending_offer.get("question") or render_pick_question(
+            noun, shown_texts, 0, verb=verb
+        )
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
             {
                 "workflow_type": CLARIFY_DELETE_PICK_WORKFLOW,
                 "question": question,
                 "pending_action": dict(payload),
-                "decline_message": (
-                    f"Okay — I haven't touched your {noun}s. Nothing has been deleted."
-                ),
+                "decline_message": _decline_message(noun, verb),
             },
             user_id=user_id,
         )
@@ -443,8 +519,44 @@ async def handle_delete_todo_pick_turn(
     # names several candidates arms NO delete and deletes nothing; CXO's
     # capped reply names them in the order shown. The pick is not re-armed
     # ("Tell me which one" is an instruction, not an offer).
+    # The cap is delete's; a complete pick binds one line (several re-ask below).
     multi = [i for i in _multi_pick_indices(text, texts, due_iso) if i < len(ids)]
-    if len(multi) > 1:
+    if verb == VERB_COMPLETE and len(multi) > 1:
+        # CXO 11-06 11:2x: a complete pick binds one line. Several numbers never
+        # complete the first and drop the rest: re-ask once on the same record; a
+        # second unresolved answer releases (the pick's convention below).
+        if payload.get("pick_reasked"):
+            logger.info("complete_todo_pick_multi_release_after_reask", session_id=session_id)
+            return None
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id,
+            _pick_offer(
+                payload.get("user_id"),
+                noun,
+                ids,
+                texts,
+                due_iso,
+                original_message,
+                COMPLETE_ONE_AT_A_TIME_QUESTION,
+                reasked=True,
+                copies=payload.get("pick_copies"),
+                display=payload.get("pick_display"),
+                verb=verb,
+                line_ids=payload.get("pick_line_ids"),
+            ),
+            user_id=user_id,
+        )
+        logger.info("complete_todo_pick_multi_reasked", session_id=session_id, count=len(multi))
+        return {
+            "message": COMPLETE_ONE_AT_A_TIME_QUESTION,
+            "intent_data": {
+                "category": "execution",
+                "action": CLARIFY_DELETE_PICK_WORKFLOW,
+                PICK_PENDING_FLAG: True,
+            },
+            "requires_clarification": True,
+        }
+    if verb == VERB_DELETE and len(multi) > 1:
         from services.intent_service.delete_cap import (
             DELETE_CAPPED_FLAG,
             capped_delete_reply,
@@ -466,6 +578,18 @@ async def handle_delete_todo_pick_turn(
     status, idx = _resolve_pick_target(text, texts, due_iso)
     if status == "bound" and idx is not None and 0 <= idx < len(ids):
         copies = payload.get("pick_copies") or []
+        if verb == VERB_COMPLETE:
+            line_ids = payload.get("pick_line_ids") or []
+            return await _complete_bound(
+                line_ids[idx] if idx < len(line_ids) else [ids[idx]],
+                texts[idx],
+                noun,
+                original_message,
+                session_id,
+                user_id,
+                payload,
+                intent_service,
+            )
         return await _arm_bound_delete(
             ids[idx],
             texts[idx],
@@ -486,7 +610,7 @@ async def handle_delete_todo_pick_turn(
     # two" — is 'none' too; that one takes the ordinary re-ask below.)
     quoted = _quoted_name(text)
     if status == "none" and quoted:
-        question = render_pick_question(noun, shown_texts, 0)
+        question = render_pick_question(noun, shown_texts, 0, verb=verb)
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
             _pick_offer(
@@ -500,6 +624,8 @@ async def handle_delete_todo_pick_turn(
                 reasked=bool(payload.get("pick_reasked")),
                 copies=payload.get("pick_copies"),
                 display=payload.get("pick_display"),
+                verb=verb,
+                line_ids=payload.get("pick_line_ids"),
             ),
             user_id=user_id,
         )
@@ -552,7 +678,7 @@ async def handle_delete_todo_pick_turn(
         logger.info("delete_todo_pick_release_after_reask", session_id=session_id)
         return None  # second unresolved turn in a row — release, no loop
 
-    question = render_pick_question(noun, shown_texts, 0, reasked=True)
+    question = render_pick_question(noun, shown_texts, 0, reasked=True, verb=verb)
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         _pick_offer(
@@ -566,6 +692,8 @@ async def handle_delete_todo_pick_turn(
             reasked=True,
             copies=payload.get("pick_copies"),
             display=payload.get("pick_display"),
+            verb=verb,
+            line_ids=payload.get("pick_line_ids"),
         ),
         user_id=user_id,
     )
@@ -681,6 +809,96 @@ async def _arm_bound_delete(
     }
 
 
+async def _complete_bound(
+    line_ids: List[str],
+    text: str,
+    noun: str,
+    original_message: str,
+    session_id: Optional[str],
+    user_id: Optional[str],
+    payload: Dict[str, Any],
+    intent_service: Any,
+) -> Dict[str, Any]:
+    """#2219 row 3: a bound complete pick. The person chose the line from the
+    list Piper asked over, so the answer completes it (reversible; Gap B on an
+    explicit answer). A line with more than one open copy asks the built
+    one-or-all question instead (``todo_line_pick``). Rows are re-read first; a
+    line gone since the ask is said, never replaced by another row."""
+    from services.intent_service.todo_handlers import format_todo_completed_conscious
+
+    data = {"category": "execution", "action": "complete_todo", "complete_todo_pick_bound": True}
+    principal = str(user_id) if user_id else payload.get("user_id")
+    try:
+        todo_user_id = UUID(str(principal))
+    except (ValueError, TypeError):
+        return {
+            "message": "I need you to be logged in to complete todos. Nothing has been changed.",
+            "intent_data": {**data, "error_type": "AuthenticationRequired"},
+        }
+    todo_service = intent_service.todo_handlers.todo_service
+    try:
+        todos = await todo_service.list_todos(user_id=todo_user_id, include_completed=False)
+    except (
+        Exception
+    ) as e:  # silent-ok: error-logged with exc_info; honest no-op copy, nothing changed
+        logger.error("complete_todo_pick_list_failed", error=str(e), exc_info=True)
+        return {
+            "message": (
+                "I couldn't look up your todos just now, so I haven't changed anything. "
+                "Try again in a moment."
+            ),
+            "intent_data": data,
+        }
+    by_id = {str(t.id): t for t in todos or []}
+    rows = [by_id[str(i)] for i in line_ids if str(i) in by_id]
+    if not rows:
+        return {
+            "message": (
+                f'I can\'t find "{text}" on your list anymore. '
+                "Say 'show my todos' to see the list — nothing has been changed."
+            ),
+            "intent_data": {**data, "pick_target_gone": True},
+        }
+    if len(rows) > 1:
+        from services.intent_service.todo_line_pick import (
+            GROUP_LINE_PENDING_FLAG,
+            arm_group_line_question,
+        )
+
+        question = arm_group_line_question(
+            VERB_COMPLETE,
+            rows,
+            noun,
+            original_message,
+            session_id,
+            intent_service.workflow_offer_service,
+            principal,
+        )
+        if question is None:  # nothing could pop an answer: change nothing (todo_handlers' words)
+            return {
+                "message": (
+                    f'"{rows[0].text}" is on your list {len(rows)} times, and I need a '
+                    "session to ask which you mean. Nothing has been changed."
+                ),
+                "intent_data": data,
+            }
+        return {
+            "message": question,
+            "intent_data": {**data, GROUP_LINE_PENDING_FLAG: True},
+            "requires_clarification": True,
+        }
+    completed = await todo_service.complete_todo(
+        todo_id=UUID(str(rows[0].id)), user_id=todo_user_id
+    )
+    if not completed:
+        return {
+            "message": "I couldn't complete that todo. It might have been deleted.",
+            "intent_data": data,
+        }
+    logger.info("complete_todo_pick_bound", session_id=session_id, todo_id=str(rows[0].id))
+    return {"message": format_todo_completed_conscious(completed), "intent_data": data}
+
+
 async def run_clarify_delete_todo_pick_workflow(
     session_id: str,
     user_id: Optional[str] = None,
@@ -701,17 +919,16 @@ async def run_clarify_delete_todo_pick_workflow(
         )
         return None
     noun = payload.get("noun") or "todo"
+    verb = payload.get("verb") or VERB_DELETE
     texts = payload.get("pick_display") or payload.get("pick_texts") or []
-    question = "Just so I get it right:\n" + render_pick_question(noun, texts, 0)
+    question = "Just so I get it right:\n" + render_pick_question(noun, texts, 0, verb=verb)
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         {
             "workflow_type": CLARIFY_DELETE_PICK_WORKFLOW,
             "question": question,
             "pending_action": dict(payload),
-            "decline_message": (
-                f"Okay — I haven't touched your {noun}s. Nothing has been deleted."
-            ),
+            "decline_message": _decline_message(noun, verb),
         },
         user_id=user_id,
     )

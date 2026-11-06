@@ -810,6 +810,8 @@ async def maybe_handle_clear_family(
             intent_data=base_intent_data,
         )
 
+    from services.intent_service.floor_write_ask import is_floor_category_write
+
     return await _act_on_resolved_targets(
         intent_service,
         session_id,
@@ -824,6 +826,7 @@ async def maybe_handle_clear_family(
         candidate_effect,
         original_message,
         base_intent_data,
+        ask_only=is_floor_category_write(intent),
     )
 
 
@@ -841,6 +844,7 @@ async def _act_on_resolved_targets(
     candidate_effect: EffectClass,
     original_message: str,
     base_intent_data: Dict[str, Any],
+    ask_only: bool = False,
 ):
     """#1906 — the SHARED three-variant decision tree, reached once a
     clear-family ask has exactly ONE resolved target set: the detected
@@ -848,7 +852,12 @@ async def _act_on_resolved_targets(
     answer (``_handle_pick_target_turn`` re-enters HERE with the bound
     id/text, never a fresh classification). Extracted verbatim from
     ``maybe_handle_clear_family`` — one source of truth for the decision
-    tree, not a parallel copy that can drift."""
+    tree, not a parallel copy that can drift.
+
+    ``ask_only`` (#2219 row 3, Arch 11-06 10:48): the turn is a floor-category
+    write, so it may ask but never write. The two branches that write on this
+    turn ask their existing questions instead: a stored "complete" default takes
+    the always-ask form, and the trust-inferences auto-apply reads back."""
     from services.intent.intent_service import IntentProcessingResult
     from services.intent_service.consent_gate import decide_verb_interpretation
     from services.intent_service.verified_inference import (
@@ -881,7 +890,7 @@ async def _act_on_resolved_targets(
             VerificationMetaMode as _VMM,
         )
 
-        if await get_meta_mode(principal) is _VMM.ALWAYS_ASK:
+        if ask_only or await get_meta_mode(principal) is _VMM.ALWAYS_ASK:
             question = variant_two_always_ask_question()
             offer = _verb_question_offer(
                 principal,
@@ -986,6 +995,8 @@ async def _act_on_resolved_targets(
     # ── No stored default: effect-weighted gate (one scoring system).
     meta_mode = await get_meta_mode(principal)
     decision = decide_verb_interpretation(VERB_CONFIDENCE, candidate_effect, meta_mode)
+    if ask_only and decision is VerificationDecision.AUTO_APPLY:
+        decision = VerificationDecision.READ_BACK
 
     if decision is VerificationDecision.AUTO_APPLY:
         # Only reachable with a WRITE candidate under TRUST_INFERENCES
