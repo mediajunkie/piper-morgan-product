@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 10:43 PT | exec | ruling-exec-to-all-leadership-goals-11-06-to-11-12-ratified-ship-068-theme-2026-11-06.md | xian's ruling (10:42): this week's goals (11-06 to 11-12) ratified, all five as… |
 | 2026-11-06 10:34 PT | exec | exec-to-comms-cc-ppm-correction-first-progress-ship-is-070-not-069-2026-11-06.md | Correction to my 10:33 ruling memo: the first progress Ship is #070 (window 11-… |
 | 2026-11-06 10:34 PT | exec | ruling-exec-to-all-leadership-two-week-production-sprints-from-fri-11-13-objections-by-mon-11-09-noon-2026-11-06.md | xian's ruling (10:33): Production moves to two-week sprints from Fri 11-13, unl… |
 | 2026-11-06 10:24 PT | ppm | reply-ppm-to-exec-sprint-page-v2-xian-framing-2242-fix-2026-11-06.md | Sprint page updated: xian's 10:22 framing is in section 3 as a who-prepares-wha… |
