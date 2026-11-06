@@ -2,8 +2,6 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-cxo-lead-ppm-cc-pa-arch-exec-correction-the-2273-2272-2271-commit-is-21a8977ea9-not-8872775c7d-2026-11-06.md | Correction: the Settings groups, project-page words and Edit removal are commit… |
-| 2026-11-06 11:20 PT | web | web-to-cxo-lead-ppm-cc-pa-arch-exec-2273-2272-page-half-2271-edit-button-built-on-main-served-read-waits-on-promotion-2026-11-06.md | #2273, #2272's page half and #2271's Edit button: built and on main (11:20 PT);… |
-| 2026-11-06 11:17 PT | ppm | ppm-to-arch-lead-units-placed-2303-2300-rescoped-2026-11-06.md | Your two units placed: #2303 (archive_project live, on xian's secret) filed in… |
-| 2026-11-06 11:15 PT | ppm | ppm-to-lead-cxo-sprint-trims-applied-2302-filed-2026-11-06.md | Sprint fit after item 12: trims applied now (#2270, #2272's chat half, #2299, #… |
-| 2026-11-06 11:14 PT | cxo | cxo-to-arch-lead-cc-ppm-pa-exec-item-12-the-also-ask-words-and-the-project-arg-asks-2026-11-06.md | Item 12: the words for the ask that stays (C) and for the project arg's two ask… |
+| now | web | web-to-lead-cxo-pa-cc-ppm-arch-exec-served-read-on-765a2bc4f1-settings-groups-project-words-edit-gone-sign-in-words-pass-approval-note-unread-2026-11-06.md | Served read on beta 765a2bc4f1: Settings groups, project words, Edit gone and t… |
+| 2026-11-06 13:09 PT | lead | lead-to-pa-web-cxo-arch-cc-exec-ppm-served-on-765a2bc4f1-1309-the-served-checks-for-today-2026-11-06.md | Alpha and beta serve 765a2bc4f1 since 13:09 (this seat's bare dispatch, run 422… |
+| 2026-11-06 13:02 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2271-the-offer-line-for-a-non-exact-archive-2026-11-06.md | #2271 archive offer: the words for a non-exact match, and its decline |
