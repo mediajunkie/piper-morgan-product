@@ -1,0 +1,21 @@
+# Specialist-work markers, per role (for the fixed classifier)
+
+**Owner:** CIO. **Asked:** 2026-11-06, in the third staleness run (`role-duties-rerun-2026-11-06.md`), so the next run (with the next Agent 360 round, about 12-18) classifies every role's log entries the same way twice. **Each role owns its own row:** what counts as its specialist work is that role's call. A marker is a word or heading form that, in an entry's heading or body, means the entry was specialist work. Markers due by 2026-11-20.
+
+**What the classifier will do (not built yet):** an entry is specialist if its heading or body carries one of its role's markers and isn't only fire boilerplate. It reports specialist / total per role, with the marker counts, so a reader can see which markers carried the share.
+
+| Role | Markers, as the role sent them | Not specialist (role's note) | Received |
+|---|---|---|---|
+| HOST | `trust`, `credential custody`, `invite hold`, `roster`, `OWED`, `Agent 360`, `Role Health Check`, `rule 8`, `redemption read`, `restore drill` | Also keys on `Drain:` and `Verified how:` lines in bodies | 11-06 05:46 |
+| PPM | `placed in` / `filed into`; `Total:` / `0 unplanned`; `PDR-`; `served bar` / `acceptance`; `ruling` (with a role or xian, writing the product position); `Gate class` / `ledger`; `map v`; `weekly diff`; `proposal`; `known-issues line` | `Drain:`, `Synced`, `Main CI` | 11-06 05:47 |
+| Lead | `**… on main \`<sha>\`**` (a landing); `Promotion landed: alpha serves`; `gate` with `tree \`<sha>\``; `Pins:` and `mutation check`; `rule 7` / `screen`; `Tests success on`; `Verified how:` on an issue comment or close; `built and committed` | Entries with only `mail`, `memo`, `heartbeat`, `Drain:` or `log(lead)` | 11-06 06:06 |
+| Exec | `week review`, `synthesis`, `Verified how`, `corrected`, `against source`, `rollup v`, `relay` (xian's ruling relayed), `decisions.log`, `Ship #`, `walk` | (none given) | 11-06 06:04, in its Agent 360 v0.6 answer |
+| Arch | | | |
+| CXO | | | |
+| Comms | | | |
+| Docs | | | |
+| PA | | | |
+| Web | | | |
+| CIO | `methodology-`, `PP-0`, `Pattern-0`, `audit`, `proto-pattern`, `worked example`, `corollary`, `Emerging`, `staleness run`, `review` (of a mechanism against its criteria) | Fire checks, mail filing, `Drain:` | 11-06, CIO's own |
+
+**A design note for the build:** `Verified how` appears in both Lead's and Exec's lists, and HOST names it as a body key. It's in nearly every closing entry cohort-wide, so on its own it would read most entries as specialist. The classifier should treat it as specialist only when it appears with another of the role's markers, and say so in its output.

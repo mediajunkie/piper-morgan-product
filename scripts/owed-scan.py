@@ -15,6 +15,7 @@ typically inside the wake's `Drain:` line or right under it:
   * key: a short slug, unique per owner (e.g. `mail4-lead-flip`). Matching is by key, never by subject text.
   * by: a date, or `trigger:` plus a named event. "no rush" can't be written in the field (CLAUDE.md's named-trigger rule).
   * The owner is the role in the log's filename (`...-{role}-code-log.md`).
+  * on: optional, the person or role the item is waiting on (e.g. `on: xian`). See PARKED below.
 
 ROW DATES: the row also carries a Filed date in aging-standing-items.sh's form; that script judges the row's
 AGE, this one only whether the row EXISTS and whether `by:` (the due date) has passed (Exec's amendment).
@@ -23,6 +24,9 @@ PILOT: HOST and Exec, 10-09 to 10-16, 0 false flags; cohort-wide since 2026-10-1
 FLAGS (per open OWED, i.e. no later OWED-CLOSED with the same key by the same owner):
   NO-ROW    the owner's dev/active/{role}-standing-items.md or -carry-forward.md has no line containing `key: <slug>`
   OVERDUE   `by:` is a date in the past
+  PARKED    `by:` is past, but `on:` names someone other than the owner: printed every run with who it waits
+            on, counted apart from flags and not in the exit code, so a wait on xian doesn't read as the
+            owner's lapse (Exec, Agent 360 v0.6 5.7, 2026-11-06). Chasing it is the rollup's job.
   BAD-BY    `by:` is neither a YYYY-MM-DD date nor `trigger: ...`
   BAD-FORM  a bare key, `OWED[slug]: ...`, with no to: or by: (10-31; was NO-ROW plus BAD-BY)
   UNPARSED  an `OWED[` the pattern above can't read. Since 10-31 the trailing tag `<what>. OWED[key: ...].`
@@ -121,7 +125,7 @@ def main():
                 key = fd.get("key") or f"(no key) {what[:30]}"
                 opened[(role, key)] = dict(fd, what=what, log=str(f.relative_to(root)), day=day)
 
-    flags, open_n = [], 0
+    flags, parked, open_n = [], [], 0
     for (role, key), o in sorted(opened.items()):
         if (role, key) in closed:
             continue
@@ -139,19 +143,27 @@ def main():
             flags.append(("NO-ROW", role, key, o))
         if re.fullmatch(r"\d{4}-\d{2}-\d{2}", by):
             if dt.date.fromisoformat(by) < today:
-                flags.append(("OVERDUE", role, key, o))
+                on = o.get("on", "").strip()
+                if on and on.lower() != role:
+                    parked.append(("PARKED", role, key, o))
+                else:
+                    flags.append(("OVERDUE", role, key, o))
         elif not by.startswith("trigger:") or len(by) <= len("trigger:") + 1:
             flags.append(("BAD-BY", role, key, o))
 
     scope = f" · role={a.role}" if a.role else ""
     print(
         f"owed-scan{scope} · {sum(1 for x in logs if not a.role or x[2] == a.role)} session logs since {since} · {len(opened)} OWED markers, "
-        f"{len(opened) - open_n} closed, {open_n} open · {len(flags)} flags · "
+        f"{len(opened) - open_n} closed, {open_n} open · {len(flags)} flags · {len(parked)} parked · "
         f"{sum(map(len, unparsed.values()))} markers not parsed"
     )
     for kind, role, key, o in flags:
         print(
             f"  {kind:8} {role:<6} key={key}  to={o.get('to', '?')} by={o.get('by', '?')}  ({o['log']})  {o['what'][:70]}"
+        )
+    for kind, role, key, o in parked:
+        print(
+            f"  {kind:8} {role:<6} key={key}  on={o.get('on')} by={o.get('by', '?')}  ({o['log']})  {o['what'][:70]}"
         )
     for log, hits in sorted(unparsed.items()):
         print(f"  UNPARSED {len(hits)} in {log}  first: {hits[0]}")
