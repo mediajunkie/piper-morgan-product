@@ -420,3 +420,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v837 16:26 Thu 11-05: site back on Pro.
 - v838 16:27 Thu 11-05: hosting decision framed (cost vs resilience).
 - v839 16:45 Thu 11-05: hosting ruling recorded.
+- v840 16:50 Thu 11-05: website efficiencies built, push needs xian's word.
