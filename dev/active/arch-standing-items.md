@@ -6,11 +6,6 @@
 
 ## Open
 
-### ADR: the offered-connector predicate
-**Filed**: 2026-11-06
-
-*(filed 2026-11-06)* **ADR: the offered-connector predicate.** `offered_connectors()` / `connector_offered` is the one gate for what a beta user can connect, be offered, or have read (#2237, #2245, #2238, #2284), carried today by about eleven decisions.log lines and no ADR. Draft it before the production offer set changes. Named in my Agent 360 v0.6 answer (8.3). **Clearing condition**: the ADR is on main and the decisions.log lines point to it.
-
 ### Bets 001–003: PM's fields (PM TO FILL)
 **Filed**: 2026-09-18
 

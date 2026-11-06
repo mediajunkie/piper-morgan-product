@@ -3,17 +3,17 @@ type: adr
 title: "Architectural Decision Records (ADR) Index — DERIVED VIEW"
 status: "Index"
 valid_from: "2025-08-29"
-last_updated: "2026-10-24"
+last_updated: "2026-11-06"
 ---
 
 # Architectural Decision Records (ADR) Index — DERIVED VIEW
 
 > 🤖 **GENERATED FILE — DO NOT EDIT.** Regenerate with `python3 scripts/derive-adr-index.py`; verify with `--check`. The individual ADR files' own Status lines are the single source of truth; this index is a build artifact (Architectural Review 2026 workstream B4, closes #1455). Per the B3 rule: counts here TRIAGE, they never DISPOSE — check the live document before treating any status as the whole story.
 
-**Total ADR files**: 80 · **Numbering gaps (never filed)**: 067, 068 · **Counts by status**: Accepted: 54 · Proposed: 11 · Dormant (Proposed, unratified): 2 · Superseded: 9 · Other: 4
+**Total ADR files**: 81 · **Numbering gaps (never filed)**: 067, 068 · **Counts by status**: Accepted: 55 · Proposed: 11 · Dormant (Proposed, unratified): 2 · Superseded: 9 · Other: 4
 
 
-## Accepted (54)
+## Accepted (55)
 
 - [ADR-001: MCP Integration Pilot](adr-001-mcp-integration.md) — Accepted · July 3, 2025
 - [ADR-002: Claude Code Integration](adr-002-claude-code-integration.md) — Accepted · July 6, 2025
@@ -69,6 +69,7 @@ last_updated: "2026-10-24"
 - [ADR-079 — Owner-Scoping Integrity Contract (unscoped reads impossible-by-construction, mechanically enforced)](adr-079-owner-scoping-integrity-contract.md) — **ACCEPTED (v0.1, 2026-07-16)** — Arch-authored, on the integrity authority PM delegated + Lead's confirmation that the #1419 multi-tenancy audit's scope is systemic. Synthesizes already-accepted per-feature owner-scoping decisions into one contract + its mechanical enforcement. **HOST trust-lens welcome** (this is a trust-boundary contract) — informative, not gating, since the constituent decisions are already accepted. **PM retains veto.**
 - [ADR-080 — LLM decides meaning; code decides permission, checks meaning against real data, and shows before it acts](adr-080-llm-decides-meaning-code-decides-permission.md) — **ACCEPTED (2026-10-06)**. Arch-authored; **PM confirmed the division** on 2026-10-06 (via Exec): *"I agree with the division Arch laid
 - [ADR-081: GitHub identity — whose token serves a request, which app mints it, and who else may act](adr-081-github-identity-one-app-whose-token-serves-a-request.md) — **ACCEPTED, 2026-10-24** (Arch-authored, on xian's go-ahead in the Production-map rulings, 2026-10-24 17:28: "one ADR on GitHub identity"). D3 is accepted on the condition that its compatibility check passes; if it fails, D3's fallback governs. Finding F5 in `docs/internal/planning/production-map-review-round2-2026-10-23.md`.
+- [ADR-082: The offered-connector set is the one gate](adr-082-the-offered-connector-set-is-the-one-gate.md) — **ACCEPTED, 2026-11-06** (Arch-authored). This ADR records rulings already made and landed (decisions.log, 2026-10-30 to 2026-11-05) as one decision, so the next change to the offer set has a single place to read. It changes no code.
 
 ## Proposed (11)
 
