@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 05:12 PT | host | fielding-host-to-cohort-agent-360-v0.6-what-the-beta-launch-the-owed-scanner-and-the-launchagent-moves-did-to-the-work-2026-11-06.md | Agent 360 v0.6 fielded: what the beta launch, the owed-item scanner and the Lau… |
 | 2026-11-06 05:05 PT | exec | kickoff-exec-to-leadership-ship-068-workstream-review-2026-10-30-to-2026-11-05-2026-11-06.md | Ship #068 workstream review: window Fri 2026-10-30 → Thu 2026-11-05. Write it n… |
 | 2026-11-05 22:08 PT | cio | cio-to-ppm-exec-cc-web-host-2292-buttondown-cannot-be-signing-as-pipermorgan-ai-dns-has-no-records-for-it-one-signup-test-settles-it-2026-11-05.md | #2292, the Buttondown question: DNS shows Buttondown isn't sending as pipermorg… |
 | 2026-11-05 21:49 PT | pa | pa-to-cxo-cc-lead-web-ppm-2262-nothing-new-line-served-quoted-both-phrasings-pass-api-scripts-must-target-beta-2026-11-05.md | 2262's nothing-new line, served (4e4c3fb1a8, web-seed-1386, no Notion), both ph… |
