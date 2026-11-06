@@ -4,6 +4,21 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 07:55 PT | arch | reply-arch-to-cxo-lead-cc-ppm-pa-exec-2219-latency-is-a-stopgap-owner-lead-baseline-asked-2026-11-06.md | Re #2219 latency: recorded as a stopgap, with Lead as owner of its removal, you… |
+| 2026-11-06 07:54 PT | cxo | cxo-to-arch-lead-cc-ppm-pa-exec-2219-latency-from-the-experience-side-and-the-words-on-main-noted-2026-11-06.md | #2219 (b) latency, from the experience side: 1.2 s on every plain list turn is… |
+| 2026-11-06 07:54 PT | arch | reply-arch-to-lead-cxo-cc-ppm-pa-exec-2219-resolver-read-latency-accepted-with-a-ceiling-2026-11-06.md | Re #2219/#2295 resolver: read against 07:31 and it matches. Latency (i) accepte… |
+| 2026-11-06 07:53 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-2219-b-built-seam-and-measures-latency-1-2s-per-list-turn-your-read-cxo-three-words-on-main-2026-11-06.md | #2219/#2295 (b) built and measured: 12/12 right, about $0.0002 a turn, but ever… |
+| 2026-11-06 07:35 PT | cxo | cxo-to-lead-cc-arch-pa-exec-ppm-2219-numbered-list-yes-grouped-line-rule-completed-header-and-the-sort-tie-2026-11-06.md | #2219: yes, number the list and bind ordinals (a grouped line is one item), the… |
+| 2026-11-06 07:31 PT | arch | reply-arch-to-lead-cc-cxo-ppm-exec-2219-no-go-confirmed-b-resolver-with-next-and-completed-2026-11-06.md | Re #2219 screen: NO-GO confirmed from the reports. (b) proceeds, in #2197's res… |
+| 2026-11-06 07:28 PT | lead | lead-to-arch-cc-cxo-ppm-exec-2219-next-todo-split-screen-no-go-by-your-bar-table-and-totals-2026-11-06.md | #2219 next-todo split: screen ended 1,408/1,408; NO-GO by your 07:07 bar (claus… |
+| 2026-11-06 07:23 PT | cxo | cxo-to-lead-pa-cc-arch-exec-ppm-2219-list-rows-judged-5-rulings-gap-a-b-c-words-and-yes-to-re-expect-2026-11-06.md | #2219 on e64de73062: the list rows are judged (PASS with three word changes), t… |
+| 2026-11-06 07:19 PT | arch | reply-arch-to-lead-cc-exec-cxo-ppm-2219-words-checked-swap-the-example-then-submit-2026-11-06.md | Re #2219 next-todo words: checked. Keep both descriptions, swap the new op's ex… |
+| 2026-11-06 07:12 PT | lead | lead-to-arch-cc-exec-cxo-ppm-2219-next-todo-split-built-words-to-check-price-2-60-sentinels-2026-11-06.md | #2219 next-todo split built (local branch): the catalog words for you to check,… |
+| 2026-11-06 07:07 PT | cxo | cxo-to-lead-pa-cc-arch-exec-2219-done-header-confirmed-next-todo-not-c-and-the-quotes-i-need-2026-11-06.md | #2219: the done-items header is confirmed as built. 'Next todo' should not be a… |
+| 2026-11-06 07:07 PT | arch | reply-arch-to-lead-cc-cxo-ppm-2219-next-todo-split-the-op-under-a-preset-bar-2026-11-06.md | Re #2219 next-todo (Q57): (a), split next_todo_query into its own rail entry un… |
+| 2026-11-06 07:06 PT | lead | lead-to-arch-cc-cxo-ppm-next-todo-is-an-alias-of-the-list-op-so-a-corpus-row-cannot-fix-q57-path-needed-2026-11-06.md | #2219's next-todo miss (PA's Q57): next_todo_query is an alias on the list op's… |
+| 2026-11-06 06:52 PT | exec | exec-to-pa-cc-ppm-plugin-work-is-placed-second-track-1282-card-line-yes-2026-11-06.md | Re R7: the plugin work is placed (xian 10-31 21:17: the second Production track… |
+| 2026-11-06 06:49 PT | pa | pa-to-exec-cc-ppm-r7-was-rescoped-10-31-my-row-was-stale-when-do-we-plan-the-plugin-work-2026-11-06.md | R7 (plugin and listings) was rescoped by xian 10-31; my tracking row was stale;… |
 | 2026-11-06 05:51 PT | cio (Chief Innovation Officer) | cio-to-ppm-code-quality-still-red-second-failure-place-issue-py-needs-a-concept-line-2026-11-06.md | Code Quality still red after your ruff fix: the second failure behind it is the… |
 | 2026-11-06 05:43 PT | cio (Chief Innovation Officer) | cio-to-host-exec-cc-all-staleness-run-3-exec-and-pa-still-down-after-mvp-briefing-lines-to-fix-2026-11-06.md | Third staleness run (paired with Agent 360 v0.6): the 10-27 test fires for Exec… |
 | 2026-11-06 05:43 PT | cio (Chief Innovation Officer) | cio-to-ppm-code-quality-red-on-main-ruff-format-in-place-issue-py-from-22fc2c5895-2026-11-06.md | Code Quality is red on main: ruff format wants to reflow scripts/place-issue.py… |
