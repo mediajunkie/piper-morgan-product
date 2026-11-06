@@ -1326,6 +1326,8 @@ class IntentService:
             "reminder_task_question_pending",
             # #1987 half 2: the armed which-todo pick (numbered candidates).
             "delete_todo_pick_pending",
+            # #2219 Gap A: the armed one-or-all question on a grouped todo line.
+            "todo_group_line_pending",
             # #2184: the armed milestone pick (the milestones list's own titles).
             "milestone_pick_pending",
             # #1651: the standup's bound overdue-todo offer must survive
@@ -2485,6 +2487,27 @@ class IntentService:
                             intent_data=_dtp_turn["intent_data"],
                             requires_clarification=_dtp_turn.get("requires_clarification", False),
                         )
+                # #2219 Gap A: a pending ONE-OR-ALL question (armed when an ordinal
+                # names a grouped line of the todo list, "review prs (×3)") acts on
+                # the first copy ("one") or every copy ("all") bound at ask time.
+                # Returning None falls through exactly as the delete pick does.
+                elif _vi_payload.get("kind") == "todo_group_line_question":
+                    from services.intent_service import todo_line_pick as _tlp
+
+                    _tlp_turn = await _tlp.handle_todo_group_line_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _tlp_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_tlp_turn["message"],
+                            intent_data=_tlp_turn["intent_data"],
+                            requires_clarification=_tlp_turn.get("requires_clarification", False),
+                        )
                 # #2184 (Arch 12:45 10-28): a pending MILESTONE PICK (armed by
                 # _handle_list_milestones_query's own read) binds a message that
                 # IS one listed title and runs the issues read with that
@@ -3143,6 +3166,8 @@ class IntentService:
                         # command, decline, bare exit) drops via the pop;
                         # nothing bound, nothing deleted.
                         "delete_todo_pick_question": "delete_todo_pick_question_released",
+                        # #2219 Gap A: a released one-or-all question; nothing changed.
+                        "todo_group_line_question": "todo_group_line_question_released",
                         # #2184: a released milestone pick (any non-title turn)
                         # drops via the pop; nothing was read.
                         "milestone_pick_question": "milestone_pick_question_released",

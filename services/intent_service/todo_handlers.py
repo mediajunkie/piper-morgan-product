@@ -38,6 +38,7 @@ from services.consciousness.todo_consciousness import (
     format_todo_created_conscious,
     format_todo_deleted_conscious,
     format_todo_list_conscious,
+    group_todo_lines,
 )
 from services.domain.models import Intent, Todo
 from services.intent_service.reminder_copy import (
@@ -322,6 +323,26 @@ def resolve_router_targets(
         else:
             unresolved.append(raw)
     return picked, unresolved
+
+
+def _grouped_line_target(
+    targets: List[str], exclude: List[str], lines: List[List[Todo]]
+) -> Optional[List[Todo]]:
+    """#2219 Gap A: the rows of the one shown line a lone ordinal names ("1",
+    "#3", "last"), when that line holds more than one copy. ``None`` for every
+    other ask (names, ranges, several targets, a carve-out, a one-copy line),
+    which binds as before. Reuses the resolver's own token patterns."""
+    if len(targets) != 1 or exclude or not lines:
+        return None
+    tok = targets[0].strip().strip("\"'“”‘’").strip().lower()
+    if tok == "last":
+        line = lines[-1]
+    else:
+        m = _ORDINAL_TOKEN_RE.match(tok)
+        if not m or not 1 <= int(m.group(1)) <= len(lines):
+            return None
+        line = lines[int(m.group(1)) - 1]
+    return line if len(line) > 1 else None
 
 
 def _is_positional(token: str) -> bool:
@@ -883,12 +904,24 @@ class TodoIntentHandlers:
         if not name_pool:
             return (f"You have no {pool_kind} to mark done.", False)
         numbered = self._recall_numbered_list(session_id, principal or user_id)
-        ordinal_pool: List[Todo] = []
-        ordinal_kind = pool_kind
-        if numbered is not None:
-            by_id = {t.id: t for t in name_pool}
-            ordinal_pool = [by_id[i] for i in numbered.ids if i in by_id]
-            ordinal_kind = numbered.kind
+        ordinal_pool, ordinal_kind, shown_lines = await self._ordinal_pool(
+            numbered, name_pool, pool_kind, user_id, open_only=True
+        )
+        # #2219 Gap A (CXO 11-06 07:35): an ordinal on a grouped line asks one, or all.
+        grouped = _grouped_line_target(targets, exclude, shown_lines)
+        if grouped is not None and not grouped[0].completed:  # a done line has nothing to ask
+            return self._ask_group_line(
+                "complete",
+                grouped,
+                conversation_noun(
+                    intent.original_message or ctx.get("original_message"),
+                    numbered.kind if numbered is not None else None,
+                ),
+                intent.original_message or ctx.get("original_message") or "",
+                session_id,
+                offer_service,
+                principal,
+            )
 
         picked, unresolved = resolve_router_targets(
             targets, name_pool, ordinal_candidates=ordinal_pool
@@ -1138,12 +1171,24 @@ class TodoIntentHandlers:
         if not name_pool:
             return (f"You have no {pool_kind} to delete.", False)
         numbered = self._recall_numbered_list(session_id, principal or user_id)
-        ordinal_pool: List[Todo] = []
-        ordinal_kind = pool_kind
-        if numbered is not None:
-            by_id = {t.id: t for t in name_pool}
-            ordinal_pool = [by_id[i] for i in numbered.ids if i in by_id]
-            ordinal_kind = numbered.kind
+        ordinal_pool, ordinal_kind, shown_lines = await self._ordinal_pool(
+            numbered, name_pool, pool_kind, user_id, open_only=False
+        )
+        # #2219 Gap A (CXO 11-06 07:35): an ordinal on a grouped line asks one, or all.
+        grouped = _grouped_line_target(targets, exclude, shown_lines)
+        if grouped is not None:
+            return self._ask_group_line(
+                "delete",
+                grouped,
+                conversation_noun(
+                    intent.original_message or ctx.get("original_message"),
+                    numbered.kind if numbered is not None else None,
+                ),
+                intent.original_message or ctx.get("original_message") or "",
+                session_id,
+                offer_service,
+                principal,
+            )
         # #2219 (CXO 20:47): the noun carries from the last numbered list shown.
         noun = conversation_noun(
             intent.original_message or ctx.get("original_message"),
@@ -1288,6 +1333,65 @@ class TodoIntentHandlers:
         )
         return question, True
 
+    async def _ordinal_pool(
+        self,
+        numbered: Any,
+        name_pool: List[Todo],
+        pool_kind: str,
+        user_id: UUID,
+        open_only: bool,
+    ) -> Tuple[List[Todo], str, List[List[Todo]]]:
+        """What an ordinal may index: ``(one row per shown line, the list's kind,
+        the shown lines' rows)``. A list without groups binds as before (#1943):
+        its ids that are still in ``name_pool``, and no lines.
+
+        #2219 Gap A: the "show my todos" list records every copy per line. Its
+        rows are read from the whole list (done rows included) rather than the
+        name pool, because the due-reminder pool or a done line would otherwise
+        drop lines and shift the numbers the person saw. ``open_only`` (complete)
+        keeps a line's open copies when it has any."""
+        if numbered is None:
+            return [], pool_kind, []
+        if not numbered.groups:
+            by_id = {t.id: t for t in name_pool}
+            return [by_id[i] for i in numbered.ids if i in by_id], numbered.kind, []
+        rows = await self.todo_service.list_todos(user_id=user_id, include_completed=True)
+        by_id = {t.id: t for t in rows or []}
+        lines: List[List[Todo]] = []
+        for group in numbered.groups:
+            present = [by_id[i] for i in group if i in by_id]
+            if open_only:
+                present = [t for t in present if not t.completed] or present
+            if present:
+                lines.append(present)
+        return [line[0] for line in lines], numbered.kind, lines
+
+    def _ask_group_line(
+        self,
+        verb: str,
+        rows: List[Todo],
+        noun: str,
+        original_message: str,
+        session_id: Optional[str],
+        offer_service: Any,
+        principal: Optional[str],
+    ) -> Tuple[str, bool]:
+        """#2219 Gap A: arm CXO's one-or-all question for a grouped line
+        (``todo_line_pick``). Nothing changes this turn."""
+        from services.intent_service.todo_line_pick import arm_group_line_question
+
+        question = arm_group_line_question(
+            verb, rows, noun, original_message, session_id, offer_service, principal
+        )
+        if question is None:
+            # No way to bind the answer — never arm what nothing can pop.
+            return (
+                f'"{rows[0].text}" is on your list {len(rows)} times, and I need a '
+                "session to ask which you mean. Nothing has been changed.",
+                False,
+            )
+        return question, True
+
     def _no_list_ordinal_reply(
         self,
         name_pool: List[Todo],
@@ -1322,10 +1426,17 @@ class TodoIntentHandlers:
 
     @staticmethod
     def _remember_numbered_list(
-        session_id: Optional[str], user_id: Any, kind: str, ids: List[str], texts: List[str]
+        session_id: Optional[str],
+        user_id: Any,
+        kind: str,
+        ids: List[str],
+        texts: List[str],
+        groups: Optional[List[List[str]]] = None,
     ) -> None:
         """Record the NUMBERED list just rendered on the session context (1943).
-        Best-effort: a context failure never breaks the reply."""
+        ``groups`` (#2219 Gap A): every copy's id per grouped line; omitted by
+        lists that show one row per line. Best-effort: a context failure never
+        breaks the reply."""
         if not session_id:
             return
         try:
@@ -1335,11 +1446,35 @@ class TodoIntentHandlers:
             )
 
             ctx = get_or_create_context(session_id, user_id=user_id)
-            ctx.last_numbered_list = NumberedList(kind=kind, ids=list(ids), texts=list(texts))
+            ctx.last_numbered_list = NumberedList(
+                kind=kind,
+                ids=list(ids),
+                texts=list(texts),
+                groups=[list(g) for g in groups or []],
+            )
         except (
             Exception
         ) as e:  # silent-ok: logged; ordinals then read as unresolved (honest ask), never a guess
             logger.warning("numbered_list_remember_failed", error=str(e), session_id=session_id)
+
+    def _remember_todo_list_lines(
+        self, session_id: Optional[str], user_id: Any, todos: List[Todo]
+    ) -> None:
+        """#2219 Gap A (CXO 11-06 07:35): the "show my todos" lines are numbered,
+        so record them as the last numbered list, one entry per LINE with every
+        copy's id, and "complete the first one" binds to what was shown.
+        Best-effort, like the record itself: the reply is already composed."""
+        try:
+            lines = group_todo_lines(todos)
+            ids = [line[0].id for line in lines]
+            texts = [line[0].text for line in lines]
+            groups = [[t.id for t in line] for line in lines]
+        except (
+            Exception
+        ) as e:  # silent-ok: logged; ordinals then get the no-list reply, never a guess
+            logger.warning("todo_list_lines_remember_failed", error=str(e), session_id=session_id)
+            return
+        self._remember_numbered_list(session_id, user_id, "todos", ids, texts, groups=groups)
 
     @staticmethod
     def _recall_numbered_list(session_id: Optional[str], user_id: Any):
@@ -1966,6 +2101,8 @@ class TodoIntentHandlers:
 
             # Format with consciousness
             reply = format_todo_list_conscious(todos, include_completed=include_completed)
+            if todos:
+                self._remember_todo_list_lines(session_id, user_id, todos)
             if capped:
                 # #2151 TODO-CAP (CXO 10-23 17:55): a silent cap reads as the whole list.
                 reply = f"{reply}\n\nShowing your first {len(todos)} tasks."
