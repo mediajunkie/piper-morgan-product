@@ -423,3 +423,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v840 16:50 Thu 11-05: website efficiencies built, push needs xian's word.
 - v841 17:09 Thu 11-05: promotion ready (2b5e78433e).
 - v842 19:03 Thu 11-05: alpha 4e4c3fb1a8 (read 19:03).
+- v843 19:05 Thu 11-05: website efficiencies live.
