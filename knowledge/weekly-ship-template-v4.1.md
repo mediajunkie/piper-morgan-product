@@ -283,6 +283,8 @@ The learning pattern section is what makes Weekly Ships valuable beyond status u
 
 ### Adaptation for different phases
 
+**Production, two-week sprints (from Ship #070, xian 2026-11-06):** the Ship stays weekly. Even-numbered Ships are mid-sprint progress Ships, and odd-numbered Ships close the sprint with the final score. What changes in each form is in `draft-weekly-ship` Step 5-sprint.
+
 **Alpha/Beta phase** (current):
 - Emphasize user feedback and iteration
 - Include tester engagement metrics
