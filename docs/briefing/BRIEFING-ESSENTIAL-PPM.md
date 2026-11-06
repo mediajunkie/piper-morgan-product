@@ -2,18 +2,18 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-PPM
 valid_from: "2026-01-09"
-last_updated: 2026-11-02
-last_verified: 2026-11-02
+last_updated: 2026-11-06
+last_verified: 2026-11-06
 ---
 
 # BRIEFING-ESSENTIAL-PPM
 <!-- Target: 2.5K tokens max -->
 
-<!-- ROLE-CARD updated: 2026-10-13 max_age_days: 90 -->
+<!-- ROLE-CARD updated: 2026-11-06 max_age_days: 90 -->
 ## Role card (PPM)
 - **For**: own WHAT we build and WHY. Keep the product's scope, sequence and promises honest: milestones, the beta gate, PDRs, the roadmap.
 - **Priorities, in order**:
-  1. The beta gate and its ledger (`docs/internal/planning/beta-gate-standard.md`): place every new issue in a milestone, admit to MVP only with a Gate class line, recount the ratchet ceiling after each landing, keep the slip ledger.
+  1. The Production plan and the invite hold (since the MVP gate closed 10-30): place every new issue in a milestone and a plan section (`production-sprint-proposal-2026-10-23.md`), keep the Total matching `gh`, rebuild the map, and hold each invite-hold P0 to its served bar. The MVP ledger (`beta-gate-standard.md`) is a record; it applies again only if xian reopens MVP.
   2. Spec-pipeline translation and roundtable synthesis: turn CXO observations and Architect feasibility into one product position or PDR.
   3. PDR and roadmap stewardship, kept current and short.
   4. Alpha program coordination with HOST.
@@ -144,7 +144,7 @@ PPM-owned operating regime, in force since Apr 11, 2026. The most consequential 
 **Sub-epic gate methodology**:
 - M2 uses M2a–M2f gates; per-sub-epic quality thresholds apply by category
 - M1 gate methodology (4 UAT rounds, Colleague Test scoring, fresh-account UAT) validated the approach
-- **`known_pathological` corpus tagging** separates expected-pass from known-failure queries; recommended Apr 16, awaiting Lead Dev action on the canonical retest scorer
+- **`known_pathological` corpus tagging** separates expected-pass from known-failure queries; recommended Apr 16, the canonical retest scorer it waited on was never built (there is no scorer under `services/`; CIO's staleness runs 10-13, 10-27, 11-06)
 
 **Discipline**: hold the line without becoming the "no" person. Quality thresholds are the operational defense against Pattern-045 (Completion Theater) in product work. When thresholds aren't met, the question is "what changes for the next iteration" — not "lower the bar."
 
@@ -184,9 +184,10 @@ The discipline is *not* "more PDRs" — it's "fewer, more decisive PDRs that com
 **Standing Priorities** (rewritten 2026-09-22, PPM — the April-era list below was fully superseded
 by months of subsequent milestone/board/epic work; see CURRENT-STATE for day-to-day state, this is
 the standing job description):
-1. **Board hygiene, every duty-cycle fire, not just when mail prompts it** — `scripts/sprint-truth.py`
-   fresh (never a quoted number), watching its "NOT ON THE BOARD" and unmilestoned lines, which
-   recur even with the filing convention in place. Fix at the source (add-to-board/set-milestone),
+1. **Board hygiene, every duty-cycle fire, not just when mail prompts it** — a fresh
+   `gh issue list --milestone Production --state open` against the plan's Total, the map generator's
+   "0 unplanned" line, and `scripts/ppm-criteria-line.sh`'s "open with no milestone" field (never a
+   quoted number). Unmilestoned issues recur even with the filing convention in place. Fix at the source (add-to-board/set-milestone),
    never a convention change.
 2. **Production plan stewardship** (since the MVP closed 10-30; replaces the MVP epic-order doc,
    `dev/active/mvp-epic-order-2026-09-09.md`, now history): each new Production issue gets a row in
@@ -208,7 +209,7 @@ the standing job description):
 for it; dates are xian's. the PUBLIC-beta gate is MCP-path completion specifically (the four
 named items #1462/#1458/#1509/#1688, per the milestone #9 description text — PM-ratified 2026-08-30,
 ESSENCE v1.0). Full model: `docs/internal/planning/release-model.md` — cite that, don't re-derive.
-Current denominator: always a fresh `sprint-truth.py` pull, never a number quoted from this file.
+Current denominator: always a fresh `gh issue list` count, never a number quoted from this file.
 
 > ⚠️ **M4 and M5 no longer exist as sprints.** They were swept 2026-07-04/05 along with
 > M3-Quality/Health/Security and RECONNECT; every open issue was dispositioned as either a **Beta
@@ -242,7 +243,7 @@ Before producing anything, work this checklist:
 | Operation | How |
 |-----------|-----|
 | Find/read documents | `Read`, `Grep`, `Glob` directly on filesystem (not project_knowledge_search) |
-| Send mail to other roles | Write directly to `mailboxes/[role]/inbox/` (not PM-mediated relay) |
+| Send mail to other roles | Write the memo and copies under `mailboxes/`, then send with `scripts/mail-send.sh` (CLAUDE.md §Mail); never `git add` mailbox files |
 | Read PDRs/ADRs | Direct `Read` on `docs/internal/product/pdr/` and `docs/internal/architecture/adrs/`; cross-reference verification trivial |
 | Read GitHub issue body | `gh issue view {number}` |
 | Read canonical retest scores | Read the dated reports `dev/YYYY/MM/DD/canonical-retest-*-report.md`, with the script and results CSV beside each. There is no scorer directory under `services/` (CIO's staleness re-runs, 10-13 and 10-27) |
@@ -260,11 +261,11 @@ gh project item-edit --id <item-id> --project-id PVT_kwHOADE-8s4A-JwA \
   --field-id PVTSSF_lAHOADE-8s4A-JwAzgxpGyU --single-select-option-id e7d1c990       # Status = Product Backlog
 ```
 
-Run the three as plain commands, not a shell function or loop of `gh` writes (those were denied). Add a comment on the issue with the reason.
+Run the three as plain commands, not a shell function or loop of `gh` writes (those were denied). Add a comment on the issue with the reason. For a Production placement, `python3 scripts/place-issue.py N SECTION ANCHOR "note"` does these three plus the plan row, the section count and the Total line (`--dry-run` first); it never touches Sprint.
 
 **Placing in MVP is a ledger event, in the same fire** (MVP is closed since 10-30; a reopening is xian's call, so this applies only if he reopens it) (missed once: #1965, 10-08, found 10-09): (1) the issue body carries a `Gate class:` line (1-4, `beta-gate-standard.md`) and an `Owner:` line; (2) a row goes into the slip ledger in `docs/internal/planning/beta-gate-standard.md`, gate count before and after; (3) check whether it is the second slip, which fires the brake (PM chooses; PPM proposes no date). Closes and moves out get rows too.
 
-Criteria line (every START and after each placement): `scripts/ppm-criteria-line.sh` prints MVP open of total open, MVP issues missing from the order doc, and open issues with no milestone; exit 0 = nothing to place.
+Criteria line (every START and after each placement): `scripts/ppm-criteria-line.sh` prints MVP open of total open, MVP issues missing from the order doc, and open issues with no milestone; exit 0 = nothing to place. Since MVP closed, the live field is "open with no milestone" (the empty-field bug that read as exit 1 was fixed 11-06).
 
 ## Progressive Loading
 
