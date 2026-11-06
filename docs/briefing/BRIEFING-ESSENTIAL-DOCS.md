@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-DOCS
 valid_from: "2026-03-19"
-last_updated: "2026-11-02"
+last_updated: "2026-11-06"
 last_verified: "2026-11-02"
 verified_scope: "2026-11-02 (Docs): re-read against practice. Fixed memo naming and weekly-audit timing, confirmed every script, hook and skill path named here exists, and the blog pipeline (publish-post.js, edit-pass, the sharp fallback) as used 10-29 to 11-01. Earlier, 2026-09-01 (Docs): spot-verified blog-metadata pipeline claims against a live publish, merge-keeper section, PreCompact-hook note, cross-repo worktree warning, and Amber image-toolchain note against actual practice. Content confirmed current, no drift found. Verification history: docs/internal/architecture/decisions/claude-md-history.log."
 ---
@@ -82,7 +82,7 @@ The discipline: protect time for omnibus synthesis + canonical verification + me
 - `mailboxes/DIRECTORY.md` is the canonical slug-to-role mapping
 - `mailboxes/DELIVERY-LOG.md` no longer exists: the pre-#1259 delivery artifacts were removed from the live tree on 2026-06-21 (`c6c73b2773`); push-to-ref (`mail-send.sh`) does not write one
 - Each role has `inbox/`, `read/`, `sent/`, and `inbox/MANIFEST.md`
-- Memo naming in practice: `{from}-to-{to}[-cc-{slug}...]-{subject-words}-YYYY-MM-DD.md` (for example `docs-to-exec-11-01-omnibus-log-done-2026-11-02.md`). The older `memo-YYYY-MM-DD-from-...` form in the memo guide is history: 68 of about 19,400 files in `read/` use it. The front matter To/CC wins if the two disagree.
+- Memo naming in practice: `{from}-to-{to}[-cc-{slug}...]-{subject-words}-YYYY-MM-DD.md` (for example `docs-to-exec-11-01-omnibus-log-done-2026-11-02.md`). The older `memo-YYYY-MM-DD-from-...` form in the memo guide is history: it is a small minority of the files in `read/` (count them with `ls mailboxes/*/read | wc -l` and `ls mailboxes/*/read | grep -c '^memo-'` rather than trusting a number typed here). The front matter To/CC wins if the two disagree.
 - See `docs/internal/development/memo-format-guide.md` for full spec
 - Mailboxes are committed to git — mail is the cross-agent signaling layer (mailbox writes go to `main` only, never on feature branches)
 
@@ -141,8 +141,7 @@ conflicts, anything with suspicious files in the diff.
 - **Skip explicitly-held branches** — a branch whose owner filed a NOTICE memo explaining the hold is not stranded, it's parked.
 - **Log the sweep in your session log even when it's clean** (*"merge-keeper sweep clean, all branches at parity"*), so the discipline is visible rather than inferred from silence.
 
-**Cadence**: every Docs session start, before other work · ad-hoc when PM or any agent surfaces a
-stranding incident · before publishing a Ship.
+**Cadence**: it has lapsed since 10-28 (CIO's 11-06 staleness run found 0 of 8 STARTs), so the working cadence is: run the dry-run at the START after the omnibus, log the result in the session log, and send Lead (the owner of nearly all escalations) one memo per run when the count changes · ad-hoc when PM or any agent surfaces a stranding incident · before publishing a Ship. **Never `--apply` a branch whose diff touches `services/` or whose head commit says it is not for main**: escalate to its owner instead (11-06: two branches were "wrapped and clean" to the script and one was marked not-for-main-until-screened).
 
 ### The PreCompact hook — it fires
 
@@ -162,17 +161,18 @@ mkdir -p dev/$(date +%Y/%m/%d)
 #   (NOT -opus-/-sonnet-: model goes in the log HEADER, not the filename, since 2026-06-29.
 #    Historical logs keep their old names — leave those as-is.)
 
-# 2. Run the merge-keeper sweep (see "Merge-Keeper Sweep" section above)
-# This is now MANDATORY before other work, not optional
+# 2. Follow the duty-cycle-tick skill's START: Step 1d (prior-day omnibus, plus nudges to roles
+#    whose log has no DAY-CLOSED), Step 1e (scripts/main-ci-status.sh), then the merge-keeper
+#    dry-run (see "Merge-Keeper Sweep" above) and a one-line result in the session log
 
 # 3. Check mailbox
 ls mailboxes/docs/inbox/
 # Read messages, move to read/, note action items
 
-# 4. Check for previous day's session logs (omnibus source)
-ls dev/YYYY/MM/DD/  # Previous day's date
+# 4. Previous day's session logs are the omnibus source
+ls dev/YYYY/MM/DD/  # previous day's date
 
-# 4. Resume or start work per PM direction
+# 5. Resume or start work per PM direction
 ```
 
 **One log per day.** If resuming after compaction, add "Session Resumed" entry to existing log. Do not create a new log file for the same calendar day.
