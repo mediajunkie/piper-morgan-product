@@ -89,15 +89,50 @@ def main():
 
     gh("issue", "edit", str(a.n), "--milestone", "Production")
     url = f"https://github.com/{OWNER}/piper-morgan-product/issues/{a.n}"
-    item = gh("project", "item-add", PROJECT_NUMBER, "--owner", OWNER, "--url", url,
-              "--format", "json", "--jq", ".id")
-    gh("project", "item-edit", "--id", item, "--project-id", PROJECT_ID,
-       "--field-id", STATUS_FIELD, "--single-select-option-id", STATUS[a.status])
+    item = gh(
+        "project",
+        "item-add",
+        PROJECT_NUMBER,
+        "--owner",
+        OWNER,
+        "--url",
+        url,
+        "--format",
+        "json",
+        "--jq",
+        ".id",
+    )
+    gh(
+        "project",
+        "item-edit",
+        "--id",
+        item,
+        "--project-id",
+        PROJECT_ID,
+        "--field-id",
+        STATUS_FIELD,
+        "--single-select-option-id",
+        STATUS[a.status],
+    )
     with open(PLAN, "w") as f:
         f.write(text)
-    live = gh("issue", "list", "--milestone", "Production", "--state", "open",
-              "--limit", "1000", "--json", "number", "--jq", "length")
-    print(f"gh open Production: {live} (plan Total {total}; a lag of one is GitHub's list catching up)")
+    live = gh(
+        "issue",
+        "list",
+        "--milestone",
+        "Production",
+        "--state",
+        "open",
+        "--limit",
+        "1000",
+        "--json",
+        "number",
+        "--jq",
+        "length",
+    )
+    print(
+        f"gh open Production: {live} (plan Total {total}; a lag of one is GitHub's list catching up)"
+    )
 
 
 if __name__ == "__main__":

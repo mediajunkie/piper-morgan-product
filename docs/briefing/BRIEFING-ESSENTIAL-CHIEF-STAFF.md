@@ -229,8 +229,8 @@ Request additional detail for:
 - **Sprint position**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
 - **Team methodology**: `docs/internal/development/methodology-core/` (esp. `methodology-00-EXCELLENCE-FLYWHEEL.md` v2.0)
 - **Active issues**: GitHub issues (use `gh issue list`)
-- **Roadmap (v19.1)**: `docs/internal/planning/roadmap/roadmap.md`
-- **Vision (V2.3)**: `docs/internal/planning/current/vision.md`
+- **Roadmap**: `docs/internal/planning/roadmap/roadmap.md` (its version is in its first line)
+- **Vision**: `docs/internal/planning/current/vision.md` (its version is in its first line)
 - **Strategic context**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
 - **Weekly Ship guide**: `docs/internal/development/weekly-ship-process-guide.md`
 - **Migration checklist** (HOST-owned): `docs/internal/operations/migration-checklist.md`
