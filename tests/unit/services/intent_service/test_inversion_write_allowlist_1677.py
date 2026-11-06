@@ -428,6 +428,7 @@ class TestConstructorGuard:
             "delete_reminder",
             "remove_reminder",
             "cancel_reminder",
+            "delete_item",  # #2294: the classifier's raw "delete the first one" emission
             "set_default_repo",
             "complete_todo",
             "finish_todo",
@@ -459,6 +460,7 @@ class TestConstructorGuard:
                 "delete_reminder",
                 "remove_reminder",
                 "cancel_reminder",
+                "delete_item",
             )
         }
         set_default_repo_ids = {id(wf["set_default_repo"])}

@@ -220,6 +220,8 @@ _DELETE_TODO_FAMILY = frozenset(
         "delete_reminder",
         "remove_reminder",
         "cancel_reminder",
+        # #2294: the classifier's raw emission for a bare "delete the first one".
+        "delete_item",
     }
 )
 
