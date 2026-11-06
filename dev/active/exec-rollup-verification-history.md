@@ -441,3 +441,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v858 10:43 Fri 11-06: Ship #068 discussed (goals ratified, theme); top item now the Console screenshots; research hub retired and removed; added the weekly-rhythm proposal and the Rule 8 history rec.
 - v859 11:00 Fri 11-06: Arch's #2157/#2158 answer for xian (carried wording; drill run suggested for sprint 2).
 - v860 11:13 Fri 11-06: CIO's gate-hook paste under Your hand (patch reviewed by Exec).
+- v861 11:23 Fri 11-06: gate-hook paste done by xian; removed.

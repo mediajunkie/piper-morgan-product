@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Tuesday 3 November</h1>
-<p class="meta">Exec · v860, rebuilt 11:13 PST Fri 11-06 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v861, rebuilt 11:23 PST Fri 11-06 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -74,9 +74,6 @@
 
 <div class="card act">
 <ul>
-<li><b>Low priority, whenever: apply CIO&rsquo;s fix to the Ship gate hook</b> (the classifier won&rsquo;t let CIO edit hooks). The gate blocked ordinary commands today, not just commits, and CIO found why. I read the patch: it only adds &ldquo;no <code>git commit</code> in the command, step aside&rdquo;, and a real commit is still checked. Paste:
-<pre>! cd ~/Development/piper-morgan-worktrees/cio &amp;&amp; git apply dev/active/cio-paste-ship-gate-commit-guard-2026-11-06.diff &amp;&amp; git diff --stat</pre>
-It should show one file changed: <code>.claude/hooks/pre-commit-ship-synthesis-gate.sh</code>, 7 lines added. CIO commits it.</li>
 </ul>
 <ol>
 <li><b>Look at the early Piper database in the old Postgres folder (#2264), read-only.</b> It&rsquo;s eight small tables, including &ldquo;stakeholders&rdquo;, in the public repo&rsquo;s history since 03-30. Only you should read it, so no agent sees the contents. This prints its readable text into a pager; press q to leave:<pre>cd ~/Development/piper-morgan-product &amp;&amp; git ls-tree --name-only d3ee15de35 data/postgres/base/16384/ | grep -E '/177[0-9]{2}$' | while read f; do echo "== $f"; git show "d3ee15de35:$f" | strings -n 3; done | less</pre>Then tell me only one of two things: &ldquo;test data&rdquo;, and it closes with no rewrite (Arch, Lead and I recommend that outcome), or &ldquo;real people&rdquo;, and we plan a history rewrite. Don&rsquo;t paste any names.</li>
