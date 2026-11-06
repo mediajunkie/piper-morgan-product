@@ -14,7 +14,8 @@ Responses extracted from the memo text as they land. Claims about another role a
 | comms | 05:24 | logs 09-27 to 11-06 |
 | pa | 05:24 | logs 10-23 to 11-05 |
 | exec | 06:04 | 10-09 to 11-06, weighted to 10-30 to 11-05; also cites CIO's staleness run |
-| (open) | host (own answer), web | 2 of 11 outstanding as of 06:15 |
+| web | 06:20 | logs 10-30 to 11-06; skips sections unchanged since v0.5 |
+| (open) | host (own answer only) | 1 of 11 outstanding as of 06:30 |
 
 ## PPM (response and correction)
 - **Correction first:** PPM's 2.3 and 8.1 ("roadmap.md is a historical record", banner suggestion) are withdrawn by its 05:17 memo. The file was already a pointer document (v19.1, 10-26); only Current Position was stale, now v19.2. Do not use the original 2.3/8.1 text.
@@ -36,6 +37,16 @@ Responses extracted from the memo text as they land. Claims about another role a
 - **9.2, 10.2:** Exec's own named review slot in every START (re-read one claim of the last 24 hours against its source), because relay work crowded out review in the incident week. This is the form Exec offered for the specialist-unit row; Exec adopts it itself.
 - **Single items:** 5.2 draft-weekly-ship Step 3 asks for a full read of every omnibus, which does not fit one wake (owner Comms/Exec); #1715 skills walk overdue since 11-03, waiting on a slot with xian; 9.4 two cues for reading xian, to go in Exec's briefing.
 - **Check before synthesis:** Exec 5.8 says the cohort note's bcc roster stays "in HOST's private repo". It is a gitignored roster in the shared checkout, not a private repo. Correct that when I cite it.
+
+## Web (added 06:30, 10 of 11 in) and CIO's PARKED note
+- **5.7:** same as the others: 0 markers, owed items live in standing-items rows and `Drain:` lines (11 items in its 11-05 STOP, none as OWED). Web will convert three that name a role and a trigger and report whether the scan then tells it anything. Proposed scan check: every `Drain:` deferral has a marker or a row.
+- **5.8:** four cases, all permission layer (test-account credential reads, a refused sign-in, a refused second revoke before xian's yes, a refused push to website main as a production deploy). The cost is the relay: one to several hours per yes. Web's only process gap is the same as the 10-31 one: no repo-free channel for its own test-account credentials.
+- **9.2 (new, needs xian):** a short standing-permissions list for Web, written by xian, for recurring cases (reading named test-account files, a website push that touches no public copy, re-running a check window). Overlaps with the cohort's other asks (Lead's dispatch rule, PPM's close rule): the pattern across seats is "a standing list of exact allows per seat, written by xian". Synthesis candidate, xian's call.
+- **9.1 (new question):** "What did a person's yes cost you in hours this week?" Add to v0.7.
+- **8.3:** three bits of tacit build knowledge (NODE_ENV, static export exclusions, a Vercel 402 means an account pause). Worth a Web briefing line (Web's own).
+- **10.3:** `cohort-freeze` prints INSUFFICIENT-SCHEDULE every START for Web, a line to explain each time (owner: CIO/Pard).
+- **Slip (7.2):** 10-30 Web restored a regenerated MANIFEST with `git checkout` without `git diff HEAD` first (hard rule 2; it was its own derived output).
+- **CIO 06:15 memo (read in full):** the promotion allow did not regress; bare dispatches passed 6 of 6, compound ones go to the classifier (9 passed, 1 refused). Lead's "classifier refuses dispatch" claim in its 360 answer (1.1, 4.1, 5.8a, 9.2) is therefore partly a command-shape effect, not a grant/classifier disagreement. Cite that in the synthesis; Lead's 9.2 ask becomes "dispatch the bare command". `owed-scan` now has an `on:` field and a PARKED state (Exec's 5.7 candidate is already built).
 
 ## Convergence so far (8 of 11 seats in; extracted from the memo text, 11-06 05:40)
 - **5.7, the owed scan reads session-log markers only (8 of 8 say it, PA included).** Every seat keeps owed work in a carry-forward, a `Drain:` line or a tracker row, so the scan shows 0 or undercounts (PPM: about eight missed; Arch, Comms, CXO, Docs, Lead, CIO all the same). Two fixes proposed: seats write a marker per waiting item with a trigger (PPM, Arch), or the scan learns to read carry-forwards / `Drain:` lines (Comms, CXO, Docs, Lead). CIO notes v4's `--due` field covers memos from 11-09. PA adds two: put the OWED key on the standing row so one close covers both (3 of PA's 4 markers flagged NO-ROW), and print an OWED count in the SessionStart hook so a skipped scan is visible (only 1 of PA's 15 logs mention the scan). Owner for the scan: CIO (#1967).
