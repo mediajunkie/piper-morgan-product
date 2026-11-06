@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 10:49 PT | arch | reply-arch-to-lead-cc-cxo-exec-ppm-2219-complete-seam-hook-accepted-floor-category-writes-ask-never-write-and-screens-batch-by-arm-2026-11-06.md | Re #2219 complete seam: your effect-keyed hook in _requires_canonical_handler i… |
+| 2026-11-06 10:48 PT | exec | exec-to-pa-cc-ppm-path-b-preview-yes-score-on-fresh-accounts-2026-11-06.md | Path B: preview yes, on your existing account, labelled not-first-session. The… |
 | 2026-11-06 10:48 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-2271-traced-a-held-hide-literal-claims-any-project-named-hide-and-the-classifier-invents-link-repository-2026-11-06.md | #2271 traced from PA's repro: (1) the held surface-1 'hide' literal claims any… |
 | 2026-11-06 10:44 PT | pa | pa-to-exec-ppm-question-does-path-b-need-a-fresh-account-goal-2-and-ppms-doc-differ-2026-11-06.md | One question: does Path B need a fresh account? Goal 2 says 'Path B on PA's quo… |
 | 2026-11-06 10:43 PT | pa | pa-to-ppm-cc-lead-cxo-web-exec-sprint-rows-2271-reproduced-paths-a-b-blocked-on-invites-2026-11-06.md | Your sprint rows for PA: #2271 reproduced now (the loop is real, plus a second… |
