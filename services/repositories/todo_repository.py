@@ -8,7 +8,7 @@ from typing import Dict, List, Optional, Tuple, Union
 from uuid import UUID
 
 import structlog
-from sqlalchemy import and_, func, or_, select, update
+from sqlalchemy import and_, case, func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -17,6 +17,21 @@ from services.database.models import ItemDB, TodoDB
 from services.database.repositories import BaseRepository
 from services.shared_types import TodoPriority, TodoStatus
 from services.utils.datetime_utils import utc_now
+
+#: #2293: priority is stored as text, so ``priority.desc()`` sorted it alphabetically
+#: (urgent, medium, low, high) and put every "high" todo after "medium" and "low".
+#: Every todo priority sort orders by this rank, most important first; an unknown value
+#: sorts last.
+PRIORITY_RANK = case(
+    {
+        TodoPriority.URGENT.value: 0,
+        TodoPriority.HIGH.value: 1,
+        TodoPriority.MEDIUM.value: 2,
+        TodoPriority.LOW.value: 3,
+    },
+    value=TodoDB.priority,
+    else_=4,
+)
 
 logger = structlog.get_logger()
 
@@ -156,7 +171,7 @@ class TodoRepository(BaseRepository):
             query = query.where(TodoDB.list_id == list_id)
 
         query = query.order_by(
-            TodoDB.priority.desc(), TodoDB.due_date.asc().nulls_last(), TodoDB.created_at.desc()
+            PRIORITY_RANK.asc(), TodoDB.due_date.asc().nulls_last(), TodoDB.created_at.desc()
         ).limit(limit)
 
         result = await self.session.execute(query)
@@ -180,7 +195,7 @@ class TodoRepository(BaseRepository):
                 TodoDB.status == (status.value if isinstance(status, TodoStatus) else status)
             )
 
-        query = query.order_by(TodoDB.priority.desc(), TodoDB.due_date.asc().nulls_last())
+        query = query.order_by(PRIORITY_RANK.asc(), TodoDB.due_date.asc().nulls_last())
 
         result = await self.session.execute(query)
         db_todos = result.scalars().all()

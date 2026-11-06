@@ -12102,6 +12102,7 @@ class IntentService:
                 async with AsyncSessionFactory.session_scope() as session:
                     todo_repo = TodoRepository(session)
                     from services.database.models import TodoDB
+                    from services.repositories.todo_repository import PRIORITY_RANK
 
                     result = await session.execute(
                         select(TodoDB)
@@ -12112,7 +12113,7 @@ class IntentService:
                                 TodoDB.priority.in_(["urgent", "high"]),
                             )
                         )
-                        .order_by(TodoDB.priority.desc())
+                        .order_by(PRIORITY_RANK.asc())  # #2293
                         .limit(10)
                     )
                     todos = result.scalars().all()
