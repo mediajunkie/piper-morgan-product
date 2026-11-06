@@ -1,0 +1,98 @@
+=== alpha 0d4938cf23 10:18:03
+=== mcp 28911350bb
+
+## register: http 201
+
+## 1. authorize, signed out: GET https://alpha.pipermorgan.ai/mcp/oauth/authorize?client_id=92e0603d-56ea-4f9b-8157-1c543c2cf73c&redirect_uri=https%3A%2F%2Fclaude.ai%2Fapi%2Fmcp%2Fauth_callback&response_type=code&code_challenge=cWEjoCKKK-SX7ZOn_41x_kExEaF6E4F36EPelQthyCY&code_challenge_method=S256&state=pa2175 -> http 302
+   Location: /login?next=%2Fmcp%2Foauth%2Fauthorize%3Fclient_id%3D92e0603d-56ea-4f9b-8157-1c543c2cf73c%26redirect_uri%3Dhttps%253A%252F%252Fclaude.ai%252Fapi%252Fmcp%252Fauth_callback%26response_type%3Dcode%26code_challenge%3DcWEjoCKKK-SX7ZOn_41x_kExEaF6E4F36EPelQthyCY%26code_challenge_method%3DS256%26state%3Dpa2175
+
+## 2. follow: GET https://alpha.pipermorgan.ai/login?next=%2Fmcp%2Foauth%2Fauthorize%3Fclient_id%3D92e0603d-56ea-4f9b-8157-1c543c2cf73c%26redirect_uri%3Dhttps%253A%252F%252Fclaude.ai%252Fapi%252Fmcp%252Fauth_callback%26response_type%3Dcode%26code_challenge%3DcWEjoCKKK-SX7ZOn_41x_kExEaF6E4F36EPelQthyCY%26code_challenge_method%3DS256%26state%3Dpa2175 -> http 200
+   visible text:
+   | Login - Piper Morgan
+   | Welcome back!
+   | Good to see you again.
+   | Username or email
+   | Password
+   | Log In
+   | Forgot password?
+   | Have an invite code?
+   | Create your account
+   | Stuck? Email
+   | support@pipermorgan.ai
+   | .
+   links:
+   -> [Forgot password?] https://alpha.pipermorgan.ai/reset-password
+   -> [Create your account] https://alpha.pipermorgan.ai/setup
+   -> [support@pipermorgan.ai] mailto:support@pipermorgan.ai
+   form actions: []
+
+## 3. login page link [Create your account]: GET https://beta.pipermorgan.ai/setup -> http 200
+   visible text:
+   | Setup - Piper Morgan
+   | Welcome to Piper Morgan
+   | Let's get you set up.
+   | Hi, I'm Piper Morgan. I'll be helping you with product management.
+   | I can help with tracking tasks, managing GitHub issues, prepping for
+   | standups, and keeping your calendar in view.
+   | Let me help you get set up. I'll need to check a few things and
+   | connect to your tools.
+   | Let's get started
+   | 1. Invite
+   | 2. API Keys
+   | 3. Account
+   | 4. Projects
+   | 5. Complete
+   | Your invite code
+   | Invite code
+   | Alpha access is invite-only. Paste the code you received.
+   | Continue
+   | Connect Your AI
+   | Choose your LLM provider and enter your API key.
+   | LLM Provider
+   | Choose a provider...
+   | OpenAI (GPT-4)
+   | Anthropic (Claude)
+   | API Key
+   | Validate
+   | Use Keychain
+   | Optional integrations
+   | You can connect Google Calendar later, in Settings → Integrations.
+   | Back
+   | Continue
+   | Create Your Account
+   | Username
+   | Email
+   | Password
+   | At least 8 characters
+   | Confirm Password
+   | Back
+   | Create Account
+   | Your Projects
+   | Tell Piper about the projects you're working on. You can optionally
+   | link a GitHub repository to each one.
+   | Project Name
+   | GitHub Repository
+   | (optional)
+   | Format: owner/repository-name
+   | Add Project
+   | Skip for Now
+   | Continue
+   | Setup Complete
+   | You're all set. You're signed in, and Piper is ready to help.
+   | Open Piper
+   | Stuck? Email
+   | support@pipermorgan.ai
+   | .
+   links:
+   -> [Open Piper
+      
+
+      
+      
+
+      
+      
+        Stuck? Email support@pipermorgan.ai] https://beta.pipermorgan.ai/
+   form actions: []
+
+=== end 10:18:03
