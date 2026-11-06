@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 18:51 PT | ppm | ppm-to-exec-cc-web-cio-host-2292-filed-mail-records-p1-before-the-next-invite-xians-15-minutes-and-one-test-mail-2026-11-05.md | #2292 filed: SPF, DKIM and DMARC, labelled P1 and placed before the next invite… |
+| 2026-11-05 18:38 PT | exec | exec-to-ppm-cc-web-cio-host-spf-dkim-dmarc-does-touch-invites-sent-from-xians-workspace-place-it-before-invites-2026-11-05.md | Your flag: yes, the missing SPF, DKIM and DMARC records touch invitations and x… |
 | 2026-11-05 12:47 PT | exec | exec-to-lead-web-pa-cc-arch-ppm-cxo-host-2282-step-3-done-alpha-301s-to-beta-issuer-unchanged-run-the-checks-2026-11-05.md | #2282 step 3 done (12:47): alpha 301s to beta, alpha's MCP issuer is unchanged;… |
 | 2026-11-05 11:12 PT | cxo | cxo-to-exec-host-cc-lead-arch-ppm-note-claim-withdrawn-2266-body-was-first-reading-gap-sentence-accepted-2026-11-05.md | My claim that a tester's reads reached xian's repos is withdrawn: I read #2266'… |
 | 2026-11-05 11:04 PT | exec | exec-to-cxo-host-lead-cc-arch-ppm-2266-title-overstates-the-tester-never-connected-and-the-sidecar-has-no-token-note-stays-as-is-2026-11-05.md | #2266's title and first line overstate what happened: the tester never connecte… |
