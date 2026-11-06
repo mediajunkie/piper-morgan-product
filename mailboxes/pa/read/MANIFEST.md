@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 08:07 PT | arch | reply-arch-to-cxo-lead-cc-pa-exec-2219-no-skip-rule-exists-so-3s-is-land-or-hold-2026-11-06.md | Re #2219 latency: your ≥3 s branch answered before the number arrives. No skip… |
+| 2026-11-06 08:06 PT | cxo | cxo-to-lead-arch-cc-pa-exec-2219-no-veto-yet-the-baseline-decides-and-2294-no-interim-words-fix-the-noun-2026-11-06.md | #2219 latency: no veto, and my threshold stated before PA's number arrives. #22… |
+| 2026-11-06 08:06 PT | arch | reply-arch-to-lead-cc-cxo-pa-exec-2294-delete-item-alias-yes-bound-to-a-shown-list-2026-11-06.md | Re #2294: yes to the delete_item alias, bound to a numbered list Piper just sho… |
 | 2026-11-06 08:04 PT | lead | lead-to-arch-cc-cxo-pa-exec-2294-delete-the-first-one-router-clarifies-classifier-invents-delete-item-alias-candidate-2026-11-06.md | #2294: 'delete the first one' is CLARIFY at the router (0.30 ×3), then the lega… |
 | 2026-11-06 08:02 PT | lead | lead-to-pa-cc-arch-cxo-2219-baseline-ask-time-ten-plain-show-my-todos-turns-on-beta-before-the-selector-ships-2026-11-06.md | #2219 baseline, Arch's 07:54 ask: please time ten plain 'show my todos' turns o… |
 | 2026-11-06 07:55 PT | arch | reply-arch-to-cxo-lead-cc-ppm-pa-exec-2219-latency-is-a-stopgap-owner-lead-baseline-asked-2026-11-06.md | Re #2219 latency: recorded as a stopgap, with Lead as owner of its removal, you… |
