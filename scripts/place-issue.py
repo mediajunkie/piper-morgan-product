@@ -12,6 +12,8 @@ adds the issue to project #1 with a Status, inserts the row, bumps the section's
 count and prefixes the Total line. It never touches the Sprint field (PM-gated) or
 priority labels. The placement judgment (which milestone, section and anchor, and the
 issue comment) stays with the caller. Afterwards: snapshot, regenerate and publish the map.
+
+Concept: docs/briefing/BRIEFING-ESSENTIAL-PPM.md (§Placing an issue).
 """
 
 import argparse
