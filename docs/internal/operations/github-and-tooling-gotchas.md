@@ -288,3 +288,13 @@ When a report says one account saw another account's GitHub identity or reposito
 ## Invite redemption read, counts only: `scripts/invite_redemption_read.py` (HOST, 2026-11-04; reviewed by Lead)
 
 "Has anyone signed up with these codes?" is a read-only SELECT over `invite_tokens`, run by the operator inside the alpha container with `fly machine exec` (the census script's shape). Input is one to twenty eight-character masks (first four plus last four of a code, the form memos may carry; a full token is refused). Output per mask is `unused`, `USED <date>` or `NO ROW`, then totals. It prints no user id, email or name, and it writes nothing (no `--apply` exists). The code-to-person map stays in HOST's private roster (rule 8). Sibling of `scripts/burn_invite_tokens.py`: same mask rule, same `prod_db` URL resolution, same `= ANY(:masks)` bind.
+
+## Amber seat environment: five things that trip every seat (CIO, 2026-11-06, skills review row 5)
+
+The 2026-10 skills review (#1715) found these in the logs of six or more roles, most weeks. xian's disposition was entries here, not a skill. Each was re-checked on Amber on 11-06.
+
+- **No `venv/` in a worktree.** Neither the seat worktrees nor the shared checkout has one, so `./venv/bin/python` and `venv/bin/ruff` fail. Use the host-shared pinned tools: `scripts/ensure-ruff.sh` prints a ruff pinned to CI's version (`~/.cache/piper-morgan/ruff-0.6.9/bin/ruff`), and `scripts/ensure-pytest-env.sh` prints the shared pytest interpreter. `scripts/whats-armed.sh` shows whether both are present.
+- **zsh does not word-split an unquoted variable.** `X="a b"; for f in $X` runs once, on `a b`. A file list in a string reaches `mail-send.sh` or `git mv` as one path. Use an array (`P=(a b)`, `"${P[@]}"`) or `xargs` from a file (the cohort's mail send: `git status --porcelain mailboxes | cut -c4- > list; xargs scripts/mail-send.sh "subject" < list`).
+- **macOS `sed` is BSD sed.** `sed -i 's/a/b/' f` fails ("undefined label"); in-place needs an empty suffix, `sed -i '' 's/a/b/' f`. `-E` does not know `\s`: `echo 'a b' | sed -E 's/\s/_/'` leaves the space. Use `[[:space:]]`, or Python for anything multi-line.
+- **The mypy gate's counts depend on the venv.** See "Four instrument-integrity gotchas" above: the ratchet's numbers mean something only under CI's pinned venv.
+- **Ruff from the pinned binary, both commands.** CI runs `ruff format --check` and `ruff check`; a script that passes one can fail the other (PPM's `place-issue.py`, 11-06). Run both with the pinned binary before pushing a `.py` file.
