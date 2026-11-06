@@ -5167,12 +5167,14 @@ What would you like to set up first?"""
         message_lower = original_message.lower().strip()
 
         project_name = None
+        capture_span = None
         for pattern in ARCHIVE_PATTERNS:
             match = re.search(pattern, message_lower, re.IGNORECASE)
             if match:
                 project_name = (
                     clean_project_name(match.group(1).strip()) if match.groups() else None
                 )
+                capture_span = match.span(1) if match.groups() else None
                 break
 
         if not project_name:
@@ -5206,6 +5208,25 @@ What would you like to set up first?"""
         async with AsyncSessionFactory.session_scope() as session:
             project_repo = ProjectRepository(session)
             portfolio_service = PortfolioService(project_repo)
+
+            if getattr(intent, "action", None) == "hide_project":
+                # #2271 (Arch 11-06 11:26): the legacy emission archives by EXACT
+                # name only, with CXO's copy; every other archive caller keeps the
+                # tolerant lookup and copy below. The capture is the same match,
+                # sliced from the original message so the name keeps the user's
+                # case for the reply (when lower-casing kept the length).
+                from services.intent_service.project_archive_pick import archive_exact
+
+                stripped = original_message.strip()
+                capture = project_name
+                if capture_span and len(stripped) == len(message_lower):
+                    capture = stripped[capture_span[0] : capture_span[1]].strip()
+                return await archive_exact(
+                    capture=capture,
+                    user_id=user_id,
+                    original_message=original_message,
+                    portfolio_service=portfolio_service,
+                )
 
             project = await portfolio_service.find_project_by_name(
                 name=project_name, user_id=user_id

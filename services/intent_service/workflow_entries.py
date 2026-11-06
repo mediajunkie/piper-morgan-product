@@ -27,6 +27,10 @@ from services.intent_service.delete_todo_pick import (
 from services.intent_service.milestone_pick import (
     run_clarify_milestone_pick_workflow,
 )
+from services.intent_service.project_archive_pick import (
+    arm_pick_from_result,
+    run_clarify_project_archive_pick_workflow,
+)
 from services.intent_service.reminder_clear import (
     run_clarify_reminder_clear_verb_workflow,
     run_clear_reminders_delete_workflow,
@@ -2575,6 +2579,8 @@ async def run_archive_project_workflow(
         return None
     canonical_handlers = intent_service.canonical_handlers
     result = await canonical_handlers._handle_archive_project(intent, session_id, user_id)
+    # #2271: a hide_project several-match result carries its pick record; arm it.
+    arm_pick_from_result(intent_service, result, session_id, user_id)
     return await _finalize_canonical_rail_result(
         intent_service, intent, result, session_id, user_id
     )
@@ -3888,6 +3894,16 @@ def register_default_workflows() -> None:
             description="Re-ask the #2184 which-milestone pick on a bare affirmative",
             requires_context=["pending_action", "intent_service"],
         ),
+        # #2271: generic-accept landing for the hide_project several-match pick
+        # (project_archive_pick). effect: READ — a bare "yes" re-asks and re-arms
+        # the same bound projects; the bound number archives at the pop seam.
+        # action_triggered=False (the #1987 precedent).
+        "clarify_project_archive_pick": WorkflowEntry(
+            entry_point=run_clarify_project_archive_pick_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #2271 which-project-to-archive pick on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
         "reminder_clear_pick_target": WorkflowEntry(
             entry_point=run_reminder_clear_pick_target_workflow,
             effect=EffectClass.READ,
@@ -4004,6 +4020,12 @@ def register_default_workflows() -> None:
         # the module comment directly above archive_project_entry's
         # definition); only `search_projects` (immediately above) is new.
         "archive_project": archive_project_entry,
+        # #2271 (Arch 11-06 11:26): the legacy classifier's emission for "hide the
+        # project X" with the hide literal absent (10/10). Same entry, every gate
+        # inherited (the #1527 alias discipline); on this action the handler
+        # archives only an EXACT-name match and asks, armed, on several
+        # (project_archive_pick).
+        "hide_project": archive_project_entry,
         "restore_project": restore_project_entry,
         "add_project": add_project_entry,
         # #1595 Phase 3 (Arch's ruling 2026-10-03 §2): the WRITE third of
