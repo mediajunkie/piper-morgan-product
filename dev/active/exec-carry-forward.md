@@ -49,6 +49,10 @@ v843, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
    - the #2264 look;
    - #1514.
 
+## Morning (11-06) for xian, from 11-05 evening
+- #2219 (grouped todo list) rides the morning promotion. xian was done for 11-05, so not tonight.
+- #2244: one read, `fly ssh console -a piper-morgan -C "ls -ld /data /data/uploads"`. Plus the route question: if the app user can't create `/data/chromadb`, the entrypoint must, which is an image change. Lead asks whether that needs xian's yes (Lead cites #2177, the alpha promotion manifest issue).
+
 ## Reminders owed to xian
 - **Vercel: downgrade from Pro once the headroom exists again** (xian 11-05 16:45). The trigger: the split is live (public site off Vercel) and the usage page shows the admin-only project well inside Hobby. Caveat to raise then: Hobby is for non-commercial use, and Web reads an admin tool for a commercial product as commercial, so the downgrade may not be allowed even with headroom. Check vercel.com/pricing and the terms at that time.
 - **#2282 step 5, around Thu 11-12:** remove the alpha callbacks in GitHub and Google if a week passes with no hits.
