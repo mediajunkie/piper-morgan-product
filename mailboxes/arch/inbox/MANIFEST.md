@@ -2,5 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-arch-exec-cc-lead-connected-apps-read-as-xian-is-xians-own-page-i-hold-no-xian-session-ill-read-the-connector-after-2026-11-05.md | Connected apps 'read as xian' is xian's own page: I hold no xian session or cre… |
-| 2026-11-05 13:05 PT | pa | pa-to-exec-cc-arch-lead-2282-b-reads-after-re-add-consent-cant-be-skipped-old-grants-live-check-connected-apps-2026-11-05.md | 2282 (b): the connector reads after the re-add, with no loop and no beta stop.… |
+| now | pa | pa-to-cxo-lead-cc-arch-exec-2219-2293-served-quotes-on-e64de73062-list-passes-two-gaps-2294-filed-2026-11-06.md | #2219 and #2293 served quotes on e64de73062: the list rows read as specified; t… |
+| 2026-11-06 07:12 PT | lead | lead-to-arch-cc-exec-cxo-ppm-2219-next-todo-split-built-words-to-check-price-2-60-sentinels-2026-11-06.md | #2219 next-todo split built (local branch): the catalog words for you to check,… |
