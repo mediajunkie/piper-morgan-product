@@ -1018,6 +1018,15 @@ def _is_pr_item(item: Dict[str, Any]) -> bool:
     return bool(item.get("is_pull_request") or item.get("pull_request"))
 
 
+def _grouped_activity_lines(items: List[Dict[str, Any]]) -> List[str]:
+    """#2302: one line per distinct item text, in first-seen order, repeats counted
+    as the #2219 todo list counts them ("    - review prs (×3)")."""
+    counts: Dict[str, int] = {}
+    for item in items:
+        counts[item["text"]] = counts.get(item["text"], 0) + 1
+    return [f"    - {text}" + (f" (×{n})" if n > 1 else "") for text, n in counts.items()]
+
+
 class IntentService:
     """
     Service for processing user intents.
@@ -12023,21 +12032,22 @@ class IntentService:
                     updated = [t for t in todo_activity if t["activity"] == "updated"]
                     completed = [t for t in todo_activity if t["activity"] == "completed"]
 
+                    # #2302 (CXO 11-06): every item the count covers, repeats grouped
+                    # as the #2219 list groups them ("review prs (×3)"). The old
+                    # silent first-3 cap read "Tasks (7)" over three names.
                     if created:
                         lines.append(f"  Created: {len(created)}")
-                        for item in created[:3]:  # Show first 3
-                            lines.append(f"    - {item['text']}")
+                        lines.extend(_grouped_activity_lines(created))
                     if updated:
                         lines.append(f"  Updated: {len(updated)}")
                     if completed:
                         lines.append(f"  Completed: {len(completed)}")
-                        for item in completed[:3]:
-                            lines.append(f"    - {item['text']}")
+                        lines.extend(_grouped_activity_lines(completed))
                     lines.append("")
 
                 if project_activity:
                     lines.append(f"**Projects** ({len(project_activity)}):")
-                    for proj in project_activity[:5]:
+                    for proj in project_activity:  # #2302: no silent cap under the count
                         lines.append(f"  - {proj['activity'].capitalize()}: {proj['name']}")
                     lines.append("")
 
