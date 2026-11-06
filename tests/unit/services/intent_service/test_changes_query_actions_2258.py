@@ -285,8 +285,15 @@ def test_the_sql_key_set_is_the_predicates():
     admits for an unnested consequential row."""
     admitted = {k for k in CONSEQUENTIAL_SITES if person_visible_action("consequential", k, None)}
     assert person_visible_site_keys() == admitted
-    assert _VISIBLE == tuple(k for k in _SITE_KEYS if k != "slack.socket.placeholder")
-    assert set(_VISIBLE) == admitted and len(admitted) == 15
+    hidden = {k for k, s_ in CONSEQUENTIAL_SITES.items() if not s_.user_visible}
+    # #2262: the operator CLI's two Notion sites join the Slack placeholder as hidden.
+    assert hidden == {
+        "slack.socket.placeholder",
+        "notion.publish.create_page",
+        "notion.publish.create_database_item",
+    }
+    assert _VISIBLE == tuple(k for k in _SITE_KEYS if k not in hidden)
+    assert set(_VISIBLE) == admitted and len(admitted) == 17
 
 
 def test_the_statement_filters_groups_and_counts_in_sql_with_no_limit():

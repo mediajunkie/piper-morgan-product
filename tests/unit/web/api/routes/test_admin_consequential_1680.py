@@ -74,9 +74,9 @@ class TestShape:
         assert r.status_code == 200
         body = r.json()
         assert set(body) == {"headline", "sites", "actions", "failed_writes"}
-        assert body["headline"] == coverage_headline() == "16 of 16 sites instrumented"
+        assert body["headline"] == coverage_headline() == "20 of 20 sites instrumented"
         sites = body["sites"]
-        assert sites["instrumented"] == sites["censused"] == len(CONSEQUENTIAL_SITES) == 16
+        assert sites["instrumented"] == sites["censused"] == len(CONSEQUENTIAL_SITES) == 20
         assert sites["complete"] is True
         assert [e["key"] for e in sites["entries"]] == list(CONSEQUENTIAL_SITES)
         assert set(sites["entries"][0]) == {

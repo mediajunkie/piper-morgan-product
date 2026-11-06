@@ -464,9 +464,36 @@ class StandupWorkflowSkill(BaseSkill):
                 "time_saved_minutes": standup.get("time_saved_minutes"),
             }
 
-            result = await self._notion_service.create_page(
-                parent_id=notion_db,
-                properties=page_data,
+            # #2262 (#1680): the consequential row is written right after the call, on
+            # every outcome; credits_spent=False (no LLM call in this method).
+            from services.security.audit_logger import audit_logger
+            from services.security.consequential_outcomes import (
+                notion_write_outcome,
+                notion_write_result_outcome,
+            )
+
+            _audit_kwargs: Dict[str, Any] = {
+                "site": "notion.standup.create_page",
+                "user_id": user_id,
+                "resource_type": "notion_database",
+                "resource_id": notion_db,
+                "message": "Standup posted to Notion",
+                "credits_spent": False,
+            }
+            try:
+                result = await self._notion_service.create_page(
+                    parent_id=notion_db,
+                    properties=page_data,
+                )
+            except Exception as _write_err:
+                _a_status, _a_details = notion_write_outcome(_write_err)
+                await audit_logger.log_consequential_action(
+                    status=_a_status, details=_a_details, **_audit_kwargs
+                )
+                raise
+            _a_status, _a_details = notion_write_result_outcome(result)
+            await audit_logger.log_consequential_action(
+                status=_a_status, details=_a_details, **_audit_kwargs
             )
 
             if result is None:

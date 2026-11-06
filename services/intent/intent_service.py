@@ -7254,8 +7254,36 @@ class IntentService:
                             ]
                         },
                     }
-                    append_result = await notion_router.append_blocks(
-                        page_id=page_id, blocks=[paragraph_block]
+                    # #2262 (#1680): the consequential row is written right after the
+                    # call, on every outcome; credits_spent=True (this body's
+                    # extract_slots made an LLM call before the write).
+                    from services.security.audit_logger import audit_logger
+                    from services.security.consequential_outcomes import (
+                        notion_write_outcome,
+                        notion_write_result_outcome,
+                    )
+
+                    _audit_kwargs: Dict[str, Any] = {
+                        "site": "notion.chat.append_blocks",
+                        "user_id": _user_id,
+                        "resource_type": "notion_page",
+                        "resource_id": page_id,
+                        "message": "Appended a paragraph to a Notion page",
+                        "credits_spent": True,
+                    }
+                    try:
+                        append_result = await notion_router.append_blocks(
+                            page_id=page_id, blocks=[paragraph_block]
+                        )
+                    except Exception as _write_err:
+                        _a_status, _a_details = notion_write_outcome(_write_err)
+                        await audit_logger.log_consequential_action(
+                            status=_a_status, details=_a_details, **_audit_kwargs
+                        )
+                        raise
+                    _a_status, _a_details = notion_write_result_outcome(append_result)
+                    await audit_logger.log_consequential_action(
+                        status=_a_status, details=_a_details, **_audit_kwargs
                     )
 
                     if append_result is None:

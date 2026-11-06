@@ -2,7 +2,7 @@
 
 This registry is the census of record (Arch, decisions.log 2026-11-02 11:00, condition
 4; HOST's condition 2). Each entry is one production function that itself calls an
-external send/write client (a Slack post or a GitHub write). Coverage is a site count,
+external send/write client (a Slack post, a GitHub write or a Notion write, #2262). Coverage is a site count,
 never an action count: ``coverage_headline()`` reads "N of M sites instrumented", and
 the dashboard leaves its distinct "partial" state only when every censused site is
 instrumented (HOST's rollout trigger).
@@ -49,6 +49,7 @@ from typing import Dict, FrozenSet, Iterator, Optional, Tuple
 
 SLACK = "slack"
 GITHUB = "github"
+NOTION = "notion"
 
 
 @dataclass(frozen=True)
@@ -80,7 +81,7 @@ class ConsequentialSite:
     # may carry the ``{resource}`` slot (issue rows ``#{resource}`` from the bare number
     # the writer stores; create rows ``{resource}`` = owner/repo; Slack rows no slot, a
     # channel id never prints). A slotted site also gives the whole-sentence form for a
-    # row with no resource. Held 16 of 16 by the census test.
+    # row with no resource. Held 20 of 20 by the census test.
     phrase: str = ""
     done: str = ""
     phrase_no_resource: str = ""
@@ -374,6 +375,78 @@ _SITES: Tuple[ConsequentialSite, ...] = (
             "over the assembled standup; no LLM call. Checked 2026-11-02."
         ),
     ),
+    # ── Notion writes (#2262, Arch's option 2; CXO's slotless pairs 2026-11-03: a
+    # Notion page id never prints; the flags match the GitHub writes: it leaves Piper
+    # and it lands in someone else's system, PDR-102 C5) ──────────────────────────────────────────────────
+    ConsequentialSite(
+        key="notion.chat.append_blocks",
+        phrase="add to your Notion page",
+        done="Added to your Notion page",
+        module="services/intent/intent_service.py",
+        function="IntentService._handle_update_document_notion",
+        client_method="append_blocks",
+        family=NOTION,
+        proactive=False,
+        hard_to_reverse=True,
+        instrumented=True,
+        credits_note=(
+            "True: the body calls extract_slots (an LLM call) for the document name and "
+            "the content before the append. Checked 2026-11-05."
+        ),
+    ),
+    ConsequentialSite(
+        key="notion.standup.create_page",
+        phrase="post your standup to Notion",
+        done="Posted your standup to Notion",
+        module="services/integrations/mcp/skills/standup_workflow_skill.py",
+        function="StandupWorkflowSkill._update_notion",
+        client_method="create_page",
+        family=NOTION,
+        proactive=True,
+        hard_to_reverse=True,
+        instrumented=True,
+        credits_note=(
+            "False: copies fields of the assembled standup into a properties dict and "
+            "creates the page; no LLM call in this method. Checked 2026-11-05."
+        ),
+    ),
+    ConsequentialSite(
+        key="notion.publish.create_page",
+        # The operator CLI's `publish` command (cli/commands/publish.py) is the only
+        # caller; no person's chat reaches it, so its rows are admin-only.
+        phrase="publish a page to Notion",
+        done="Published a page to Notion",
+        module="services/publishing/publisher.py",
+        function="Publisher._publish_to_notion",
+        client_method="create_page",
+        family=NOTION,
+        proactive=False,
+        hard_to_reverse=True,
+        instrumented=True,
+        user_visible=False,
+        credits_note=(
+            "False: converts markdown to blocks locally and creates the page; no LLM "
+            "call. Checked 2026-11-05."
+        ),
+    ),
+    ConsequentialSite(
+        key="notion.publish.create_database_item",
+        # The same operator CLI command, publishing to a database; admin-only too.
+        phrase="publish an entry to a Notion database",
+        done="Published an entry to a Notion database",
+        module="services/publishing/publisher.py",
+        function="Publisher._publish_to_notion_database",
+        client_method="create_database_item",
+        family=NOTION,
+        proactive=False,
+        hard_to_reverse=True,
+        instrumented=True,
+        user_visible=False,
+        credits_note=(
+            "False: reads the ADR's metadata by splitting its lines, converts markdown to "
+            "blocks locally and creates the database entry; no LLM call. Checked 2026-11-05."
+        ),
+    ),
 )
 
 CONSEQUENTIAL_SITES: Dict[str, ConsequentialSite] = {s.key: s for s in _SITES}
@@ -387,6 +460,10 @@ TRANSPORT_MODULES: FrozenSet[str] = frozenset(
         "services/mcp/consumer/github_adapter.py",
         "services/integrations/slack/slack_integration_router.py",
         "services/integrations/slack/slack_client.py",
+        # #2262: the Notion forwarders (Arch 11-03 08:00).
+        "services/integrations/notion/notion_integration_router.py",
+        "services/domain/notion_domain_service.py",
+        "services/mcp/consumer/notion_adapter.py",
     }
 )
 

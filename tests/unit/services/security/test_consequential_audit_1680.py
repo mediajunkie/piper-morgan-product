@@ -19,6 +19,7 @@ from services.security import audit_logger as al
 from services.security.consequential_sites import (
     CONSEQUENTIAL_SITES,
     GITHUB,
+    NOTION,
     SLACK,
     TRANSPORT_MODULES,
     coverage,
@@ -47,7 +48,7 @@ def _functions_in(path: Path) -> set:
 
 class TestRegistryIntegrity:
     def test_sixteen_sites_with_unique_keys(self):
-        assert len(CONSEQUENTIAL_SITES) == 16
+        assert len(CONSEQUENTIAL_SITES) == 20
         assert all(k == s.key for k, s in CONSEQUENTIAL_SITES.items())
 
     def test_every_module_and_function_exists_on_disk(self):
@@ -66,9 +67,10 @@ class TestRegistryIntegrity:
 
     def test_families_and_flag_table(self):
         sites = CONSEQUENTIAL_SITES
-        assert {s.family for s in sites.values()} == {SLACK, GITHUB}
+        assert {s.family for s in sites.values()} == {SLACK, GITHUB, NOTION}
         assert sum(s.family == SLACK for s in sites.values()) == 7
         assert sum(s.family == GITHUB for s in sites.values()) == 9
+        assert sum(s.family == NOTION for s in sites.values()) == 4  # #2262
         assert all(s.external_message for s in sites.values())
         reversible = {k for k, s in sites.items() if not s.hard_to_reverse}
         assert reversible == {"github.chat.close_issue", "github.chat.reopen_issue"}
@@ -77,23 +79,27 @@ class TestRegistryIntegrity:
             "slack.standup.post",
             "github.standup.create_issue",
             "slack.socket.placeholder",
+            "notion.standup.create_page",
         }
         assert all(s.credits_note for s in sites.values())
 
     def test_coverage_headline(self):
-        assert coverage() == (16, 16)
-        assert coverage_headline() == "16 of 16 sites instrumented"
+        assert coverage() == (20, 20)
+        assert coverage_headline() == "20 of 20 sites instrumented"
 
     def test_every_credits_note_states_its_value_and_check_date(self):
         """Owed item 3: each note opens with the value the site passes and ends with
         the landing B check date, so each value can be checked against its code."""
         for site in CONSEQUENTIAL_SITES.values():
             assert site.credits_note.startswith(("True:", "False:")), site.key
-            assert site.credits_note.endswith("Checked 2026-11-02."), site.key
+            # landing B 2026-11-02; the Notion sites #2262 2026-11-05.
+            assert site.credits_note.endswith(
+                ("Checked 2026-11-02.", "Checked 2026-11-05.")
+            ), site.key
         true_sites = {
             k for k, s in CONSEQUENTIAL_SITES.items() if s.credits_note.startswith("True")
         }
-        assert true_sites == {"github.chat.comment_issue"}
+        assert true_sites == {"github.chat.comment_issue", "notion.chat.append_blocks"}
 
     def test_registry_docstring_states_the_credits_rule(self):
         import services.security.consequential_sites as reg

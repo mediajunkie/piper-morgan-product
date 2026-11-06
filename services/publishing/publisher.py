@@ -110,8 +110,36 @@ class Publisher:
             properties = {"title": {"title": [{"text": {"content": title}}]}}
 
             # Create page with content
-            page_result = await self.notion.create_page(
-                parent_id=parent_id, properties=properties, content=conversion["blocks"]
+            # #2262 (#1680): the consequential row is written right after the call, on
+            # every outcome; credits_spent=False (no LLM call). The operator CLI is the
+            # only caller, so there is no person's id; the row is admin-only.
+            from services.security.audit_logger import audit_logger
+            from services.security.consequential_outcomes import (
+                notion_write_outcome,
+                notion_write_result_outcome,
+            )
+
+            _audit_kwargs: Dict[str, Any] = {
+                "site": "notion.publish.create_page",
+                "user_id": None,
+                "resource_type": "notion_page",
+                "resource_id": parent_id,
+                "message": "Published a markdown file to Notion",
+                "credits_spent": False,
+            }
+            try:
+                page_result = await self.notion.create_page(
+                    parent_id=parent_id, properties=properties, content=conversion["blocks"]
+                )
+            except Exception as _write_err:
+                _a_status, _a_details = notion_write_outcome(_write_err)
+                await audit_logger.log_consequential_action(
+                    status=_a_status, details=_a_details, **_audit_kwargs
+                )
+                raise
+            _a_status, _a_details = notion_write_result_outcome(page_result)
+            await audit_logger.log_consequential_action(
+                status=_a_status, details=_a_details, **_audit_kwargs
             )
 
             if page_result:
@@ -177,8 +205,34 @@ class Publisher:
                 properties["Date"] = {"date": {"start": metadata["date"]}}
 
             # Create database item with content
-            item_result = await self.notion.create_database_item(
-                database_id=database_id, properties=properties, content=conversion["blocks"]
+            # #2262 (#1680): as _publish_to_notion; the operator CLI is the only caller.
+            from services.security.audit_logger import audit_logger
+            from services.security.consequential_outcomes import (
+                notion_write_outcome,
+                notion_write_result_outcome,
+            )
+
+            _audit_kwargs: Dict[str, Any] = {
+                "site": "notion.publish.create_database_item",
+                "user_id": None,
+                "resource_type": "notion_database",
+                "resource_id": database_id,
+                "message": "Published an ADR to a Notion database",
+                "credits_spent": False,
+            }
+            try:
+                item_result = await self.notion.create_database_item(
+                    database_id=database_id, properties=properties, content=conversion["blocks"]
+                )
+            except Exception as _write_err:
+                _a_status, _a_details = notion_write_outcome(_write_err)
+                await audit_logger.log_consequential_action(
+                    status=_a_status, details=_a_details, **_audit_kwargs
+                )
+                raise
+            _a_status, _a_details = notion_write_result_outcome(item_result)
+            await audit_logger.log_consequential_action(
+                status=_a_status, details=_a_details, **_audit_kwargs
             )
 
             if item_result:

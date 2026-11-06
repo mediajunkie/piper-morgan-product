@@ -194,3 +194,18 @@ def domain_send_result_outcome(result: Any) -> Outcome:
         "write_unconfirmed": "domain_envelope_not_success",
         "error": str(error or "unknown"),
     }
+
+
+def notion_write_outcome(exc: BaseException) -> Outcome:
+    """#2262: the status for a Notion write that raised. The router forwards to the
+    integration, which may have written before it raised, so it is "unconfirmed", never
+    "success" and never a clean "failed" (the #1220 rule GitHub's writes follow)."""
+    return "unconfirmed", {"write_error": type(exc).__name__}
+
+
+def notion_write_result_outcome(result: Any) -> Outcome:
+    """#2262: a Notion write that returned. A non-empty result is "success"; an empty
+    one is "unconfirmed" (the integration returned nothing to verify)."""
+    if result:
+        return "success", {}
+    return "unconfirmed", {"write_unconfirmed": "empty_result"}

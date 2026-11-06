@@ -575,8 +575,8 @@ class TestConsequentialSiteCensusRatchet:
     ``post_message``, ``create_issue``, ``update_issue``, ``add_comment``, in git-tracked
     ``services/**.py`` and ``web/**.py``. Excluded: ``TRANSPORT_MODULES`` (forwarders that
     implement those methods), the registry, the helper module, and ``tests/``. Comments
-    and docstrings never count (AST, not grep). DENOMINATOR: the registry's 16 sites
-    (2026-11-02: 7 Slack, 9 GitHub).
+    and docstrings never count (AST, not grep). DENOMINATOR: the registry's 20 sites
+    (2026-11-02: 7 Slack, 9 GitHub; 2026-11-05 #2262: 4 Notion).
 
     (a) every in-scope call resolves to a registered (module, function);
     (b) every ``instrumented=True`` entry calls ``log_consequential_action(`` inside its
@@ -589,7 +589,8 @@ class TestConsequentialSiteCensusRatchet:
     # 2026-11-02 landing A: 16 censused, 7 instrumented -> 9 left.
     # 2026-11-02 landing B: all 16 instrumented -> 0 (HOST's rollout trigger).
     MAX_UNINSTRUMENTED_SITES = 0
-    HEADLINE = "16 of 16 sites instrumented"
+    # 2026-11-05 #2262: the four Notion writes registered and instrumented -> 20.
+    HEADLINE = "20 of 20 sites instrumented"
 
     CLIENT_METHODS = frozenset(
         {
@@ -601,6 +602,11 @@ class TestConsequentialSiteCensusRatchet:
             "create_issue",
             "update_issue",
             "add_comment",
+            # #2262 (Arch 11-03): the Notion write calls.
+            "create_page",
+            "update_page",
+            "append_blocks",
+            "create_database_item",
         }
     )
     EXCLUDED = frozenset(
@@ -784,15 +790,18 @@ class TestConsequentialSiteCensusRatchet:
     # CXO's 16 pairs 21:48, slots and count form 22:01). ──────────────────────────────
 
     def test_every_site_has_cxos_phrase_and_done_forms(self):
-        """16 of 16, beside the instrumented assertion: a new site cannot land without
+        """20 of 20, beside the instrumented assertion: a new site cannot land without
         CXO's imperative ``phrase`` (after "I tried to") and past-tense ``done``. A
         slotted form carries exactly ``{resource}`` (issue rows ``#{resource}``, create
         rows ``in {resource}``) and a whole-sentence form for a row with no resource;
-        Slack rows carry no slot (a channel id never prints). No form holds a site key,
-        an event type, a status word or a parenthetical. ``user_visible=False`` is the
-        Slack thinking placeholder alone."""
+        Slack and Notion rows carry no slot (a channel or page id never prints). No form
+        holds a site key, an event type, a status word or a parenthetical.
+        ``user_visible=False`` is the Slack thinking placeholder and the operator CLI's two
+        Notion publish sites (#2262)."""
         from services.security.consequential_sites import (
             CONSEQUENTIAL_SITES,
+            GITHUB,
+            NOTION,
             RESOURCE_SLOT,
             SLACK,
             action_line,
@@ -817,8 +826,10 @@ class TestConsequentialSiteCensusRatchet:
                 problems.append(f"{key}: phrase and done must agree on the resource slot")
             if site.family == SLACK and slotted:
                 problems.append(f"{key}: a Slack row's resource is a channel id; no slot")
-            if site.family != SLACK and not slotted:
+            if site.family == GITHUB and not slotted:
                 problems.append(f"{key}: a GitHub row names its issue or repository")
+            if site.family == NOTION and slotted:
+                problems.append(f"{key}: a Notion row's resource is a page id; no slot")
             if slotted:
                 expected = (
                     "#{resource}"
@@ -846,13 +857,18 @@ class TestConsequentialSiteCensusRatchet:
                         problems.append(f"{key}: renders {line!r} (done={done}, {resource!r})")
         assert not problems, "\n".join(problems)
         hidden = {k for k, s_ in CONSEQUENTIAL_SITES.items() if not s_.user_visible}
-        assert hidden == {"slack.socket.placeholder"}
-        assert len(CONSEQUENTIAL_SITES) == 16
+        # #2262: the operator CLI's publish reaches no person, so its rows are admin-only.
+        assert hidden == {
+            "slack.socket.placeholder",
+            "notion.publish.create_page",
+            "notion.publish.create_database_item",
+        }
+        assert len(CONSEQUENTIAL_SITES) == 20
 
     def test_writers_store_a_bare_issue_number_never_a_hash_prefixed_one(self):
         """Arch 21:58: the issue rows' phrase carries the "#", so the writer stores the
         bare number (``str(issue_number)``); nothing is stripped at the render. Every
-        registered site's ``log_consequential_action`` kwargs dict is found (16 of 16)
+        registered site's ``log_consequential_action`` kwargs dict is found (20 of 20)
         and its ``resource_id`` is a value passed through, never an f-string, a string
         literal or a concatenation; a ``github_issue`` row's is ``str(<number>)``."""
         from services.security.consequential_sites import CONSEQUENTIAL_SITES
