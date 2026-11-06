@@ -15,7 +15,9 @@ import requests
 B = "https://beta.pipermorgan.ai"
 v = dict(line.strip().split("=", 1) for line in open(sys.argv[1]) if "=" in line)
 s = requests.Session()
-tok = s.post(B + "/api/v1/auth/login", data={"username": v["username"], "password": v["password"]}).json()
+tok = s.post(
+    B + "/api/v1/auth/login", data={"username": v["username"], "password": v["password"]}
+).json()
 s.headers["Authorization"] = "Bearer " + (tok.get("token") or tok.get("access_token"))
 
 
@@ -43,7 +45,9 @@ def chat(sid, msg):
     r = s.post(B + "/api/v1/intent", json={"message": msg, "session_id": sid}, timeout=180)
     d = r.json()
     it = d.get("intent") or {}
-    print(f"\n--- [{time.strftime('%H:%M:%S')}, http {r.status_code}] route {it.get('category')}/{it.get('action')}")
+    print(
+        f"\n--- [{time.strftime('%H:%M:%S')}, http {r.status_code}] route {it.get('category')}/{it.get('action')}"
+    )
     print("USER:", msg)
     print("PIPER:", d.get("message") or d.get("response"))
     time.sleep(2)
@@ -91,7 +95,13 @@ state()
 
 sid = row("Row 5 (#2293): one todo per priority, created low, unset, urgent, medium, high")
 clear()
-for text, p in [("low task", "low"), ("unset task", None), ("urgent task", "urgent"), ("medium task", "medium"), ("high task", "high")]:
+for text, p in [
+    ("low task", "low"),
+    ("unset task", None),
+    ("urgent task", "urgent"),
+    ("medium task", "medium"),
+    ("high task", "high"),
+]:
     add(text, p)
 state()
 chat(sid, "show my todos")

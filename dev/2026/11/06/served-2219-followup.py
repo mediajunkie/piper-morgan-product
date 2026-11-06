@@ -14,7 +14,9 @@ import requests
 B = "https://beta.pipermorgan.ai"
 v = dict(line.strip().split("=", 1) for line in open(sys.argv[1]) if "=" in line)
 s = requests.Session()
-tok = s.post(B + "/api/v1/auth/login", data={"username": v["username"], "password": v["password"]}).json()
+tok = s.post(
+    B + "/api/v1/auth/login", data={"username": v["username"], "password": v["password"]}
+).json()
 s.headers["Authorization"] = "Bearer " + (tok.get("token") or tok.get("access_token"))
 
 
@@ -22,14 +24,18 @@ def chat(sid, msg):
     r = s.post(B + "/api/v1/intent", json={"message": msg, "session_id": sid}, timeout=180)
     d = r.json()
     it = d.get("intent") or {}
-    print(f"\n--- [{time.strftime('%H:%M:%S')}, http {r.status_code}] route {it.get('category')}/{it.get('action')}")
+    print(
+        f"\n--- [{time.strftime('%H:%M:%S')}, http {r.status_code}] route {it.get('category')}/{it.get('action')}"
+    )
     print("USER:", msg)
     print("PIPER:", d.get("message") or d.get("response"))
     time.sleep(2)
 
 
 def state():
-    rows = sorted((t["status"], t["priority"], t["text"]) for t in s.get(B + "/api/v1/todos").json()["todos"])
+    rows = sorted(
+        (t["status"], t["priority"], t["text"]) for t in s.get(B + "/api/v1/todos").json()["todos"]
+    )
     print("STATE:", len(rows), "todos:", rows)
 
 
