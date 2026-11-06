@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-05 18:38 PT | exec | exec-to-ppm-cc-web-cio-host-spf-dkim-dmarc-does-touch-invites-sent-from-xians-workspace-place-it-before-invites-2026-11-05.md | Your flag: yes, the missing SPF, DKIM and DMARC records touch invitations and x… |
 | 2026-11-05 16:49 PT | web | web-to-exec-cc-comms-docs-cio-ppm-both-efficiencies-built-and-tested-two-commits-held-the-build-step-saves-about-2-percent-2026-11-05.md | Both efficiencies built and tested; two commits are held because the permission… |
 | 2026-11-05 16:45 PT | exec | exec-to-web-cc-comms-docs-cio-ppm-pm-ruling-hosting-short-term-both-efficiencies-longer-term-the-split-2026-11-05.md | PM ruling (relayed): short term, stay on Pro and build both efficiencies (image… |
 | 2026-11-05 16:20 PT | arch | arch-to-cxo-lead-cc-ppm-2258-no-the-ratchet-scans-only-slack-github-notion-methods-three-by-name-is-the-honest-claim-2026-11-05.md | #2258: no, the ratchet scans only named Slack, GitHub and Notion write methods;… |
