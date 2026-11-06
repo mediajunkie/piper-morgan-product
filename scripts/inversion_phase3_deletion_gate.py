@@ -567,11 +567,13 @@ def _surface2_misserve_safe(
     ruled_op = (ruled_destination or "").split(":", 1)[-1] if ruled_destination else ""
     ruled_entry = workflows.get(ruled_op) if ruled_op else None
     bad = []
+    exempted = 0
     for r in rows:
         sampled_action = r.get("action") or ""
         entry = workflows.get(sampled_action)
         if entry is not None and entry.needs_consent:  # effect >= WRITE
             if ruled_entry is not None and entry is ruled_entry:
+                exempted += 1
                 continue  # the ruled destination's own entry (Arch 11-06 11:49)
             bad.append(sampled_action)
     if bad:
@@ -579,10 +581,15 @@ def _surface2_misserve_safe(
             f"surface 2 lands a WRITE/DESTRUCTIVE op ({bad[0]}) in {len(bad)}/{len(rows)} "
             "probe samples — the fallback would be WORSE, not cannot-be-worse"
         )
-    return (
-        True,
-        f"surface 2 lands on no WRITE/DESTRUCTIVE op in {len(rows)}/{len(rows)} probe samples",
-    )
+    # Arch 11-06 14:09: when the exemption applied, say so; "no WRITE op" is untrue
+    # when the samples land on the ruled destination's own write.
+    if exempted == len(rows):
+        landed = "lands only on the ruled destination's own entry"
+    elif exempted:
+        landed = "lands on no WRITE/DESTRUCTIVE op but the ruled destination's own entry"
+    else:
+        landed = "lands on no WRITE/DESTRUCTIVE op"
+    return True, f"surface 2 {landed} in {len(rows)}/{len(rows)} probe samples"
 
 
 DELETED_PATTERNS_JSON = ROOT / "scripts" / "inversion_phase3_deleted_patterns.json"

@@ -28,6 +28,7 @@ def test_an_alias_of_the_ruled_destination_is_not_worse(monkeypatch):
     _samples(monkeypatch, "edit_document", "edit_document")
     ok, reason = gate._surface2_misserve_safe("edit the plan doc", "action:update_document")
     assert ok, reason
+    assert "lands only on the ruled destination's own entry" in reason  # Arch 11-06 14:09
 
 
 def test_a_different_write_still_disqualifies(monkeypatch):
