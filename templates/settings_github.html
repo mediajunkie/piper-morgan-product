@@ -428,6 +428,16 @@
           <p class="form-hint" id="oauth-connect-hint">
             Recommended — connect securely with GitHub OAuth (nothing to copy or paste).
           </p>
+          <!-- #2286 (CXO, final): say what GitHub's approval page will show before the
+               redirect. No account name is hard-coded (staging's app has another owner);
+               no config names the app, so CXO's fallback "Piper Morgan" stands. Inside
+               the group, so the #2287 restore (oauthGroupHtml) brings it back too. -->
+          <p class="form-hint" id="oauth-approval-note">
+            GitHub will ask you to approve Piper Morgan. Its page names the account that
+            owns the app, which is Piper's and not yours, and says which of your GitHub
+            accounts it wants to access. Check that account is the one you mean. Piper
+            only gets access to the account you approve there.
+          </p>
           <button class="btn btn-primary" id="oauth-connect-btn" onclick="connectGitHubOAuth()">
             Connect with GitHub
           </button>
