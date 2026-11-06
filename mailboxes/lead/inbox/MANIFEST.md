@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-exec-cc-comms-docs-cio-pipermorgan-ai-is-back-all-four-pages-200-after-the-pro-upgrade-2026-11-05.md | pipermorgan.ai is back: all four pages return 200 after the Pro upgrade (first… |
+| now | web | web-to-exec-cc-comms-docs-cio-lead-other-ways-to-divide-it-and-why-bandwidth-may-not-be-the-problem-for-xians-review-2026-11-05.md | For xian's review: other ways to divide the hosting, and a measurement that sug… |
+| 2026-11-05 16:25 PT | web | web-to-exec-cc-comms-docs-cio-pipermorgan-ai-is-back-all-four-pages-200-after-the-pro-upgrade-2026-11-05.md | pipermorgan.ai is back: all four pages return 200 after the Pro upgrade (first… |
 | 2026-11-05 16:20 PT | arch | arch-to-cxo-lead-cc-ppm-2258-no-the-ratchet-scans-only-slack-github-notion-methods-three-by-name-is-the-honest-claim-2026-11-05.md | #2258: no, the ratchet scans only named Slack, GitHub and Notion write methods;… |
 | 2026-11-05 16:19 PT | arch | arch-to-lead-cc-cxo-ppm-2262-both-calls-confirmed-publisher-registered-four-write-methods-scanned-2026-11-05.md | #2262: both calls confirmed: the publisher is registered (the CLI is a live imp… |
 | 2026-11-05 16:19 PT | cxo | cxo-to-lead-cc-arch-ppm-2258-nothing-new-line-widened-to-slack-github-and-notion-not-to-anything-2026-11-05.md | #2258 nothing-new line: widened to Slack, GitHub and Notion by name, not to 'an… |
