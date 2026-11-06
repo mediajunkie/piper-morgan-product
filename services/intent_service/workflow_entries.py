@@ -4004,12 +4004,6 @@ def register_default_workflows() -> None:
         # #1595 Phase 3 (Arch's ruling 2026-10-03 §2): the WRITE third of
         # manage_repos — link_repo (list_repos above is the READ third).
         "link_repo": link_repo_entry,
-        # #2271 (PA's served repro on 0d4938cf23; Arch 11-06 10:49): the legacy
-        # classifier's raw emission for "link repo owner/name to <project>" when the
-        # live router leaves the turn. Same entry, every gate inherited (the #1527
-        # alias discipline); the handler asks and writes nothing unless it finds
-        # both an owner/repo and an EXISTING project, and never creates a project.
-        "link_repository": link_repo_entry,
         # #1926 / #1595 Phase 3 (CXO's 2026-10-03 ruling, Arch's ruling
         # 2026-10-03 §2): the DESTRUCTIVE third of manage_repos — unlink_repo.
         # Confirms via the #1190 gate before anything executes (see
