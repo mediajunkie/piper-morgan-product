@@ -320,6 +320,9 @@ will be a research data point.~~ It hasn't, as of this verification.
 **Kept, every day (trigger: the STOP fire's day wrap):**
 - **Research signal.** One `## Research signal` block in the day's session log covering floor, ceiling and path moments (see Research Protocol) and any routing decision worth keeping as training data. Write "none today" if there were none. These lapsed from 09-13 to 10-13; the STOP wrap is now their trigger.
 
+**Kept, every fire (trigger: the duty-cycle-tick's third work queue, v1.33; added 2026-11-06 per CIO's skills-review fold):**
+- **GitHub criteria line.** `gh api "search/issues?q=repo:mediajunkie/piper-morgan-product+state:open+%221462%22"` (the hosted-MCP epic and everything citing it) and `gh api "search/issues?q=repo:mediajunkie/piper-morgan-product+state:open+label:awaiting-decision"`. A number not in `dev/state/pa-gh-criteria-seen` is work: open it with `gh issue view N` before writing any row. Empty (nothing new) means this queue is drained, not that the lane is quiet. Denominators and rejected alternatives: the carry-forward's GitHub-criteria section.
+
 **Moved:**
 - **Open-items tracking** now lives in `dev/active/pa-carry-forward.md`, rewritten at the end of every substantive fire (duty-cycle-tick skill).
 - **Routing memos between agents** is done through `scripts/mail-send.sh` and the mailbox rules in CLAUDE.md.

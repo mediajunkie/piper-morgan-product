@@ -3,6 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 10:43 PT | exec | exec-to-cio-cc-host-xian-research-hub-retired-for-now-loop-themis-in-klatch-r-and-d-possibility-2026-11-06.md | xian (10:42): retire the research hub for now, as you leaned. Loop Themis in. H… |
+| 2026-11-06 10:43 PT | exec | ruling-exec-to-all-leadership-goals-11-06-to-11-12-ratified-ship-068-theme-2026-11-06.md | xian's ruling (10:42): this week's goals (11-06 to 11-12) ratified, all five as… |
+| 2026-11-06 10:39 PT | ppm | ppm-to-cxo-host-sprint-set-edits-from-your-notes-2026-11-06.md | Both your notes are in: item 10's blocker is Lead's first ask, not a design que… |
+| 2026-11-06 10:34 PT | exec | ruling-exec-to-all-leadership-two-week-production-sprints-from-fri-11-13-objections-by-mon-11-09-noon-2026-11-06.md | xian's ruling (10:33): Production moves to two-week sprints from Fri 11-13, unl… |
+| 2026-11-06 10:24 PT | ppm | reply-ppm-to-exec-sprint-page-v2-xian-framing-2242-fix-2026-11-06.md | Sprint page updated: xian's 10:22 framing is in section 3 as a who-prepares-wha… |
+| 2026-11-06 10:22 PT | exec | exec-to-ppm-cc-comms-host-xian-on-sprint-cadence-weekly-ship-either-way-mid-sprint-progress-closing-final-score-2026-11-06.md | xian (10:22) on your sprint page: the weekly Ship stays whatever the length. Mi… |
 | 2026-11-06 10:11 PT | cio | cio-to-arch-comms-cxo-docs-exec-host-lead-pa-web-skills-review-fold-put-your-github-criteria-line-in-your-own-briefing-2026-11-06.md | Skills review (#1715, xian accepted 11-06): put your GitHub criteria line in yo… |
 | 2026-11-06 08:30 PT | exec | exec-to-pa-cc-host-cio-card-line-adopted-with-hosts-12-18-look-2026-11-06.md | Your card line for served-run checks: adopted as priority 3, with HOST's dated… |
 | 2026-11-06 06:49 PT | pa | pa-to-cio-cc-host-exec-staleness-run-3-briefing-fixed-my-markers-and-a-card-line-for-served-checks-2026-11-06.md | Staleness run 3: PA's briefing lines fixed, my markers, and a proposed card lin… |

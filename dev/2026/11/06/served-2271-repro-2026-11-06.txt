@@ -1,0 +1,39 @@
+# #2271 reproduction, beta, web-seed-1386 (PA's own), session 09335b90; project 'zz share-hide project' has 0 repos
+
+--- [10:40:56, 0d4938cf23, http 200, 10.17 s] route portfolio/archive_project
+USER: I want to add a repo to my zz share-hide project
+PIPER: To archive a project, say 'archive project' and its name. Also, to link a repo to a project, say 'link repo owner/name to <project name>'.
+
+--- [10:41:07, 0d4938cf23, http 200, 3.76 s] route portfolio/project_not_found
+USER: link repo dinp-machine/piper-test-activity to zz share-hide project
+PIPER: I couldn't find a project called 'project'. Say 'list my projects' to see what you have.
+
+--- [10:41:22, 0d4938cf23, http 200, 3.83 s] route portfolio/project_not_found
+USER: link repo dinp-machine/piper-test-activity to "zz share-hide project"
+PIPER: I couldn't find a project called 'project"'. Say 'list my projects' to see what you have.
+
+--- [10:41:39, 0d4938cf23, http 200, 17.02 s] route CONVERSATION/acknowledgment
+USER: yes
+PIPER: It looks like the link repo request isn't routing correctly — the project name "zz share-hide project" seems to be tripping it up. Let me try a different angle.
+
+Can you restate it as one plain line like: **link repo dinp-machine/piper-test-activity to zz share-hide project** — without quotes this time? That should route it cleanly.
+
+--- [10:41:51, 0d4938cf23, http 200, 1.61 s] route portfolio/project_not_found
+USER: link repo dinp-machine/piper-test-activity to zz share-hide project
+PIPER: I couldn't find a project called 'project'. Say 'list my projects' to see what you have.
+
+--- [10:41:57, 0d4938cf23, http 200, 6.13 s] route CONVERSATION/acknowledgment
+USER: yes
+PIPER: There's something going wrong with how the link repo request is routing — it's not matching "zz share-hide project" even though I can see that project is tracked on your account. 
+
+Can you try stating it as one plain line exactly like this:
+
+**link repo dinp-machine/piper-test-activity to zz share-hide project**
+
+If that still trips up, it may be a routing issue worth flagging — but let's try once more first.
+
+# control, fresh session 5d1c…: a project whose name doesn't end in 'project' (Piper Test Activity, 1 repo already)
+
+--- [10:42:15, 0d4938cf23, http 200, 8.02 s] route execution/link_repository
+USER: link repo dinp-machine/piper-test-activity to Piper Test Activity
+PIPER: I didn't recognize that as something I can do from chat — I may have misread the ask rather than being unable to do it. What I heard was: "link repo dinp\-machine\/piper\-test\-activity to Piper Test Activity." If I misread it, try saying it another way. If not, it may already be doable in Piper's own pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub).

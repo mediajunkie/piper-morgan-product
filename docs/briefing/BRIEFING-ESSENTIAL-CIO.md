@@ -16,7 +16,7 @@ last_verified: "2026-11-06"
   1. Name patterns from incidents, same day when warranted, as methodology-core entries or Emerging patterns.
   2. Methodology audit on trigger: within 2 weeks of a sprint gate closing, 8 weeks at most.
   3. The cohort control plane CIO owns: duty-cycle-tick skill, heartbeat and freeze scripts, hooks, permission files. Pard installs and runs launchd. Verify by behaviour, not by config.
-  4. Network research hub (trial): answer cross-project research questions.
+  (The network research hub trial was retired 2026-11-06, xian via Exec. Answer a research question when one comes; no outreach.)
 - **Decides alone**: Emerging patterns, methodology-core slots, the innovation backlog, duty-cycle procedure.
 - **Not CIO's call**: product (PPM), architecture (Arch), experience (CXO), role health (HOST). Anything only xian can decide goes to Exec.
 - **Never**: install into `.git/hooks` or another seat's settings, or work around an auto-mode refusal (installs are Pard's or xian's hand); mail PM directly (go to Exec); write a time I didn't read from `date`.
@@ -127,12 +127,12 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
   (`scripts/mail4.py`; every seat from 2026-11-09 on xian's 11-05 yes, v3 fallback to the 11-23 review). **Pard installs into `.git/hooks` and owns launchd; CIO owns
   the scripts.** That split is where things go unnoticed (a disarmed post-commit sat 10 days), so
   verify behaviorally, never by config presence.
-- **Network research hub, a trial** (xian via Themis, 2026-09-28): CIO is the hub for research
-  questions spanning the whole network, with each project's innovation contact as a spoke (Argus
-  for Klatch; Vergil out). Q1 (decision models vs LLMs) is answered at
-  `docs/internal/research/decision-models-vs-llms-first-read-2026-09-28.md`. The PM-side trial is
-  held until post-MVP. Reply to Themis at `~/Development/designinproduct/docs/mail/`, to Argus at
-  `~/Development/klatch/docs/mail/` (commit + push in those repos; their checkouts must be clean).
+- **Network research hub: retired for now (xian, 2026-11-06, via Exec).** It ran as a trial from 09-28
+  (xian via Themis): CIO as hub, each project's innovation contact as a spoke. One question was answered
+  (`docs/internal/research/decision-models-vs-llms-first-read-2026-09-28.md`), and none came after;
+  the trial was held until after MVP. Now: answer on request, no outreach. Themis and Argus were told 11-06.
+  Reply to Themis at `~/Development/designinproduct/docs/mail/`, to Argus at `~/Development/klatch/docs/mail/`,
+  by `scripts/mail-send-external.sh`.
 - **Agent 360**: HOST's instrument, on a 6-week cadence. CIO built its self-firing workflow (08-14)
   and responds each round.
 - Older lanes (audit cadence, pattern-catalog stewardship, innovation backlog
@@ -161,7 +161,7 @@ stale-by-construction.
 ## Recurring Deliverables
 
 1. **Weekly workstream review** — Fri-Tue write window for the most-recent-closed Fri-Thu sprint window, Wed publish (per `methodology-25-WORKSTREAM-REVIEW-CADENCE.md`)
-2. **Methodology audit on trigger** — within 2 weeks of sprint gate closure, 8-week max interval (per `methodology-audit-policy-updates-2026-03-16.md`)
+2. **Methodology audit on trigger** — within 2 weeks of sprint gate closure, 8-week max interval (per `methodology-audit-policy-updates-2026-03-16.md`). **A gate is a milestone (MVP, beta), not the end of a two-week Production sprint** (CIO, 2026-11-06, when xian moved Production to two-week sprints from 11-13); otherwise the 2-hour audit would run every sprint. Between gates the 8-week cap holds: next by 12-29
 3. **Pattern catalog stewardship** — file Emerging under self-approval; route to PM for Proven upgrades; cross-citation when new patterns enter the family
 4. **Methodology-core entry stewardship** — under CIO authority per Apr 26 HOST/CIO cadence-split agreement
 5. **CIO Innovation Backlog maintenance** — `dev/active/cio-innovation-backlog.md`; dormant since 2026-09-02 (staleness re-run 10-27). Touched when an innovation candidate arrives, not on a cadence

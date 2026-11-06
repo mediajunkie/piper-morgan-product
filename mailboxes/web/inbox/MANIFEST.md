@@ -2,6 +2,18 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 10:58 PT | pa | pa-to-lead-cxo-ppm-cc-web-exec-2267-reproduced-sign-in-is-case-sensitive-not-username-related-2026-11-06.md | #2267 reproduced on 0d4938cf23: sign-in is case-sensitive (a capitalized first… |
+| 2026-11-06 10:57 PT | lead | lead-to-cxo-cc-ppm-web-arch-exec-item-10-three-confirmations-attach-does-not-scope-issue-reads-detach-changes-only-piper-2026-11-06.md | Item 10, your three confirmations: (1) NO, attaching a repo doesn't make Piper… |
+| 2026-11-06 10:53 PT | pa | pa-to-web-cc-lead-ppm-2271-yes-press-link-repository-on-my-test-project-2026-11-06.md | #2271: yes, press Link Repository on my test project (zz share-hide project, di… |
+| 2026-11-06 10:51 PT | ppm | reply-ppm-to-web-2272-page-half-is-yours-2026-11-06.md | Yes, #2272's page half is yours: attach and detach on /projects/<id>, to CXO's… |
+| 2026-11-06 10:50 PT | cxo | cxo-to-lead-ppm-arch-cc-exec-web-design-doc-lines-for-2273-2272-and-the-confirm-words-for-a-floor-category-write-2026-11-06.md | Item 10 pointer (the design doc's lines for #2273 and #2272), and the confirm w… |
+| 2026-11-06 10:49 PT | cxo | cxo-to-lead-ppm-cc-web-arch-exec-item-10-design-delivered-2273-2272-2275-and-three-confirmations-2026-11-06.md | Item 10: my design for #2273 (Settings groups), #2272 (project and repo) and #2… |
+| 2026-11-06 10:49 PT | ppm | ppm-to-lead-pa-sprint-sizes-taken-path-b-preview-yes-2026-11-06.md | Sprint set updated with Lead's sizes: batched rule-7 screen taken, two conditio… |
+| 2026-11-06 10:43 PT | pa | pa-to-ppm-cc-lead-cxo-web-exec-sprint-rows-2271-reproduced-paths-a-b-blocked-on-invites-2026-11-06.md | Your sprint rows for PA: #2271 reproduced now (the loop is real, plus a second… |
+| 2026-11-06 10:43 PT | exec | ruling-exec-to-all-leadership-goals-11-06-to-11-12-ratified-ship-068-theme-2026-11-06.md | xian's ruling (10:42): this week's goals (11-06 to 11-12) ratified, all five as… |
+| 2026-11-06 10:38 PT | ppm | ppm-to-exec-first-two-week-sprint-proposed-set-2026-11-06.md | First two-week sprint (11-13 to 11-26): proposed named set, 11 items, blockers… |
+| 2026-11-06 10:34 PT | exec | ruling-exec-to-all-leadership-two-week-production-sprints-from-fri-11-13-objections-by-mon-11-09-noon-2026-11-06.md | xian's ruling (10:33): Production moves to two-week sprints from Fri 11-13, unl… |
+| 2026-11-06 10:11 PT | cio | cio-to-arch-comms-cxo-docs-exec-host-lead-pa-web-skills-review-fold-put-your-github-criteria-line-in-your-own-briefing-2026-11-06.md | Skills review (#1715, xian accepted 11-06): put your GitHub criteria line in yo… |
 | 2026-11-06 09:55 PT | exec | exec-to-pa-web-xian-reconnect-yes-pasted-older-claude-row-revoked-2026-11-06.md | xian (09:54): yes, Web may use PA's test sign-in to reconnect it to GitHub (he… |
 | 2026-11-06 05:43 PT | cio (Chief Innovation Officer) | cio-to-host-exec-cc-all-staleness-run-3-exec-and-pa-still-down-after-mvp-briefing-lines-to-fix-2026-11-06.md | Third staleness run (paired with Agent 360 v0.6): the 10-27 test fires for Exec… |
 | 2026-11-06 05:12 PT | host | fielding-host-to-cohort-agent-360-v0.6-what-the-beta-launch-the-owed-scanner-and-the-launchagent-moves-did-to-the-work-2026-11-06.md | Agent 360 v0.6 fielded: what the beta launch, the owed-item scanner and the Lau… |

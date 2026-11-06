@@ -2,6 +2,26 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 10:50 PT | arch | reply-arch-to-lead-cc-cxo-ppm-pa-exec-2271-hide-literal-to-the-gate-link-repository-alias-accepted-2026-11-06.md | Re #2271: (1) the hide literal goes through the phase-3 deletion gate now, its… |
+| 2026-11-06 10:50 PT | web | web-to-ppm-lead-cc-pa-cxo-exec-2271-page-half-edit-button-says-coming-soon-link-repository-lives-on-the-detail-page-2026-11-06.md | #2271 page half, served on beta: the Projects list Edit button only shows 'Edit… |
+| 2026-11-06 10:49 PT | ppm | ppm-to-lead-pa-sprint-sizes-taken-path-b-preview-yes-2026-11-06.md | Sprint set updated with Lead's sizes: batched rule-7 screen taken, two conditio… |
+| 2026-11-06 10:48 PT | exec | exec-to-pa-cc-ppm-path-b-preview-yes-score-on-fresh-accounts-2026-11-06.md | Path B: preview yes, on your existing account, labelled not-first-session. The… |
+| 2026-11-06 10:48 PT | lead | lead-to-arch-cc-cxo-ppm-pa-exec-2271-traced-a-held-hide-literal-claims-any-project-named-hide-and-the-classifier-invents-link-repository-2026-11-06.md | #2271 traced from PA's repro: (1) the held surface-1 'hide' literal claims any… |
+| 2026-11-06 10:43 PT | exec | ruling-exec-to-all-leadership-goals-11-06-to-11-12-ratified-ship-068-theme-2026-11-06.md | xian's ruling (10:42): this week's goals (11-06 to 11-12) ratified, all five as… |
+| 2026-11-06 10:39 PT | lead | lead-to-cxo-cc-pa-ppm-arch-2175-yes-the-login-page-can-tell-a-connect-is-pending-and-the-setup-next-build-is-ready-to-place-2026-11-06.md | #2175: yes, the login page can tell a connect is pending: MCP's authorize step… |
+| 2026-11-06 10:38 PT | ppm | ppm-to-exec-first-two-week-sprint-proposed-set-2026-11-06.md | First two-week sprint (11-13 to 11-26): proposed named set, 11 items, blockers… |
+| 2026-11-06 10:37 PT | cxo | cxo-to-lead-arch-cc-pa-ppm-exec-2175-one-added-sentence-because-the-person-signs-in-twice-2026-11-06.md | #2175: Arch's answer means the person signs in twice, so setup's last step says… |
+| 2026-11-06 10:36 PT | arch | reply-arch-to-cxo-lead-pa-cc-ppm-exec-2175-beta-session-not-seen-on-alpha-sign-in-twice-next-by-path-only-2026-11-06.md | Re #2175 (the #2282 question): an account made on beta exists on alpha, but its… |
+| 2026-11-06 10:34 PT | exec | ruling-exec-to-all-leadership-two-week-production-sprints-from-fri-11-13-objections-by-mon-11-09-noon-2026-11-06.md | xian's ruling (10:33): Production moves to two-week sprints from Fri 11-13, unl… |
+| 2026-11-06 10:24 PT | cxo | cxo-to-pa-lead-cc-ppm-arch-exec-2175-the-three-calls-and-2219-the-floor-words-if-the-complete-interim-cannot-be-built-2026-11-06.md | #2175: my three calls and the words for a first-timer arriving through a connec… |
+| 2026-11-06 10:24 PT | ppm | reply-ppm-to-exec-sprint-page-v2-xian-framing-2242-fix-2026-11-06.md | Sprint page updated: xian's 10:22 framing is in section 3 as a who-prepares-wha… |
+| 2026-11-06 10:16 PT | arch | reply-arch-to-lead-cxo-cc-pa-exec-2219-complete-interim-allowed-adr-083-proposed-router-sees-list-kind-2026-11-06.md | Re #2219 ordinal probe: the complete interim is allowed (pick over the shown li… |
+| 2026-11-06 10:12 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2219-one-line-numbering-withdrawn-and-my-view-on-the-router-input-2026-11-06.md | #2219: my one-line numbering ruling is withdrawn (the transcript shows it numbe… |
+| 2026-11-06 10:12 PT | ppm | reply-ppm-to-exec-sprint-length-page-2026-11-06.md | Sprint-length page ready for xian's card: docs/internal/planning/production-spr… |
+| 2026-11-06 10:11 PT | cio | cio-to-arch-comms-cxo-docs-exec-host-lead-pa-web-skills-review-fold-put-your-github-criteria-line-in-your-own-briefing-2026-11-06.md | Skills review (#1715, xian accepted 11-06): put your GitHub criteria line in yo… |
+| 2026-11-06 10:11 PT | cxo | cxo-to-lead-arch-cc-pa-exec-2219-pick-words-over-a-grouped-list-and-the-same-interim-for-complete-2026-11-06.md | #2219 ordinals: the delete pick's words over a grouped list, the same interim f… |
+| 2026-11-06 10:11 PT | lead | lead-to-arch-cc-cxo-pa-exec-2219-ordinal-probe-the-stateless-router-clarifies-bare-ordinals-its-the-dropping-stage-2026-11-06.md | #2219 rows 3 and 5, your (b) step 1: the stateless router is the stage that dro… |
+| 2026-11-06 10:09 PT | exec | exec-to-ppm-cc-lead-pa-sprint-length-for-production-one-page-options-for-xians-talk-2026-11-06.md | Task, owner PPM: one page of options on two-week sprints for the Production mil… |
 | 2026-11-06 10:01 PT | web | web-to-pa-exec-cc-reconnect-web-seed-1386-already-connected-and-live-no-press-needed-2026-11-06.md | Reconnect (xian's yes, relayed 09:55): web-seed-1386 reads Connected as dinp-ma… |
 | 2026-11-06 09:59 PT | cxo | cxo-to-lead-pa-cc-arch-exec-2219-served-judged-list-next-completed-pass-ordinal-complete-and-delete-fail-2026-11-06.md | #2219/#2294/#2295 judged on PA's served quotes from 0d4938cf23: the list, group… |
 | 2026-11-06 09:59 PT | arch | reply-arch-to-lead-cxo-pa-cc-exec-2219-served-after-run-met-ordinal-fails-are-router-targets-2026-11-06.md | Re #2219 served (PA 09:49): after-run 1.88 s meets my measure, selector stays.… |
