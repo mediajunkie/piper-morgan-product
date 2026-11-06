@@ -77,8 +77,6 @@ PROJECT_ARCHIVE_FAMILY = (
     "archive my project alpha",
     "archive the project",
     "archive project gamma",
-    "hide my project alpha",
-    "hide the project",
     "put project alpha away",
     "put my projects aside",
     "restore project alpha",
@@ -87,6 +85,13 @@ PROJECT_ARCHIVE_FAMILY = (
     "unarchive my project alpha",
     "bring back my project alpha",
     "bring back the project",
+)
+
+# #2271 (Arch 2026-11-06 14:09): the hide literal is deleted. A project hide falls
+# through surface 1; the classifier names hide_project, an archive_project alias.
+PROJECT_HIDE_NOW_DECLINES = (
+    "hide my project alpha",
+    "hide the project",
 )
 
 
@@ -132,6 +137,18 @@ class TestProjectArchiveFamilyStillClaims:
     @pytest.mark.parametrize("phrase", PROJECT_ARCHIVE_FAMILY)
     def test_multi_intent_path_claims(self, phrase):
         assert len(_portfolio_intents(_multi(phrase))) == 1
+
+
+class TestProjectHideNowDeclines:
+    """#2271: no surface-1 claim for a project hide on either path."""
+
+    @pytest.mark.parametrize("phrase", PROJECT_HIDE_NOW_DECLINES)
+    def test_single_intent_path_declines(self, phrase):
+        assert _single(phrase) is None
+
+    @pytest.mark.parametrize("phrase", PROJECT_HIDE_NOW_DECLINES)
+    def test_multi_intent_path_declines(self, phrase):
+        assert _multi(phrase) == []
 
 
 class TestArchivedListShowNowDeclines:
