@@ -1,0 +1,163 @@
+From c07ba9e7dbd98bde2cf9e57995800f9403684f1f Mon Sep 17 00:00:00 2001
+From: mediajunkie <3227378+mediajunkie@users.noreply.github.com>
+Date: Fri, 6 Nov 2026 07:18:46 -0800
+Subject: [PATCH] feat(router): 2219 next_todo_query as its own rail entry
+ (Arch 11-06 07:07, option a); candidate, not landed
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01UG2nRrP5D3DZQgvkL7zChk
+---
+ services/intent_service/rail_read_failure.py  |  1 +
+ .../intent_service/router_catalog_order.py    |  3 ++
+ services/intent_service/workflow_entries.py   | 28 ++++++++--
+ .../test_next_todo_own_op_2219.py             | 51 +++++++++++++++++++
+ .../test_read_claim_forcing_2151.py           |  1 +
+ 5 files changed, 80 insertions(+), 4 deletions(-)
+ create mode 100644 tests/unit/services/intent_service/test_next_todo_own_op_2219.py
+
+diff --git a/services/intent_service/rail_read_failure.py b/services/intent_service/rail_read_failure.py
+index 3bad011bcd..21d1c98af1 100644
+--- a/services/intent_service/rail_read_failure.py
++++ b/services/intent_service/rail_read_failure.py
+@@ -78,6 +78,7 @@ RAIL_READ_SOURCES: Dict[str, Tuple[str, str]] = {
+     "list_repos": ("your linked repositories", "which repositories are linked"),
+     "list_todos_query": ("your Piper tasks", "what is due"),
+     "local_git_status_query": ("the local repository", "what its status is"),
++    "next_todo_query": ("your Piper tasks", "which one is next"),
+     "meeting_time": ("your calendar", "what is on it"),
+     "productivity": ("your completed work", "what you got done"),
+     "pull_insights": ("what I've learned about you", "what I've noticed"),
+diff --git a/services/intent_service/router_catalog_order.py b/services/intent_service/router_catalog_order.py
+index 36bbd654dd..68f37a57d1 100644
+--- a/services/intent_service/router_catalog_order.py
++++ b/services/intent_service/router_catalog_order.py
+@@ -98,6 +98,9 @@ CATALOG_ORDER_LEDGER: tuple[str, ...] = (
+     "get_top_priority",
+     "manage_portfolio",
+     "manage_repos",
++    # Appended 2026-11-06 (#2219, Arch 07:07): next_todo_query, split from the
++    # list entry for todos.
++    "next_todo_query",
+ )
+ 
+ 
+diff --git a/services/intent_service/workflow_entries.py b/services/intent_service/workflow_entries.py
+index 9d0a5089e2..7e11602b3c 100644
+--- a/services/intent_service/workflow_entries.py
++++ b/services/intent_service/workflow_entries.py
+@@ -4352,11 +4352,11 @@ def register_default_workflows() -> None:
+         (
+             _qentry(
+                 run_todo_query_workflow,
+-                "todo list/next query via action dispatch",
++                "todo list query via action dispatch",
+                 # effect: READ — delegates to _handle_execution_intent, but the
+                 # ONLY actions registered on this entry (list_todos_query /
+-                # list_completed_todos / next_todo_query) map to list_todos /
+-                # next_todo — todo READS. The handler's write branches
++                # list_completed_todos) map to list_todos — todo READS.
++                # next_todo_query has its own entry below (#2219, Arch 11-06). The handler's write branches
+                 # (complete_todo / delete_todo / create_issue) are unreachable
+                 # from these rail keys; if a write alias is ever added here,
+                 # it needs its own entry with its own effect.
+@@ -4369,7 +4369,27 @@ def register_default_workflows() -> None:
+                 # effect declaration is honest.
+                 "read_status",
+             ),
+-            ["list_todos_query", "list_completed_todos", "next_todo_query"],
++            ["list_todos_query", "list_completed_todos"],
++        ),
++        # #2219 (Arch ruling, decisions.log 2026-11-06 07:07, option (a)): "what's my
++        # next todo?" is its own operation, so the router chooses one item or the
++        # list (ADR-080) rather than the list op swallowing it as an alias. Same
++        # adapter; the action mapper sends next_todo_query to handle_next_todo
++        # (the first open todo in priority order, #2293). Appended to the catalog
++        # order ledger, so no existing line moves.
++        (
++            _qentry(
++                run_todo_query_workflow,
++                "next todo query via action dispatch",
++                # effect: READ — next_todo_query maps to next_todo
++                # (action_mapper), which lists open todos and returns the first;
++                # no write branch is reachable from this key.
++                EffectClass.READ,
++                # flip_group: read_status — the same todo read as the list
++                # entry above, split only so the router can name it.
++                "read_status",
++            ),
++            ["next_todo_query"],
+         ),
+         # #1521: reminder LIST query — "what reminders do I have?" The
+         # pre-classifier emits QUERY/list_reminders_query (canonical); the
+diff --git a/tests/unit/services/intent_service/test_next_todo_own_op_2219.py b/tests/unit/services/intent_service/test_next_todo_own_op_2219.py
+new file mode 100644
+index 0000000000..9a7859ddd6
+--- /dev/null
++++ b/tests/unit/services/intent_service/test_next_todo_own_op_2219.py
+@@ -0,0 +1,51 @@
++"""#2219 (Arch ruling, decisions.log 2026-11-06 07:07, option (a)): "what's my next
++todo?" is its own router operation, not an alias the list op swallows.
++
++Before the split, ``next_todo_query`` shared the todo list's rail entry, so the
++grammar collapsed it into ``list_todos_query`` and the router could only answer
++"next" with the whole list (PA's Q57).
++"""
++
++from services.intent_service.action_mapper import ActionMapper
++from services.intent_service.inversion_router import derive_routing_grammar
++from services.intent_service.router_catalog_order import CATALOG_ORDER_LEDGER
++from services.intent_service.workflow_dispatcher import get_action_workflows
++from services.intent_service.workflow_entries import register_default_workflows
++
++
++def _ops():
++    return {op.name: op for op in derive_routing_grammar().operations}
++
++
++def test_next_todo_is_a_canonical_operation_with_no_aliases():
++    ops = _ops()
++    assert "next_todo_query" in ops
++    assert ops["next_todo_query"].aliases == ()
++    assert ops["next_todo_query"].description == "next todo query"
++
++
++def test_the_list_op_no_longer_claims_next():
++    op = _ops()["list_todos_query"]
++    assert "next_todo_query" not in op.aliases
++    assert op.aliases == ("list_completed_todos",)
++    assert "next" not in op.description
++
++
++def test_the_split_is_appended_to_the_order_ledger():
++    # Append-only: the new op takes the last slot, so no existing line moves.
++    assert CATALOG_ORDER_LEDGER[-1] == "next_todo_query"
++    assert CATALOG_ORDER_LEDGER.count("next_todo_query") == 1
++
++
++def test_next_todo_has_its_own_read_entry_on_the_same_adapter():
++    register_default_workflows()
++    wf = get_action_workflows()
++    nxt, lst = wf["next_todo_query"], wf["list_todos_query"]
++    assert nxt is not lst
++    assert nxt.entry_point is lst.entry_point
++    assert nxt.effect == lst.effect
++    assert nxt.flip_group == "read_status"
++
++
++def test_next_todo_query_still_maps_to_the_next_todo_handler():
++    assert ActionMapper.map_action("next_todo_query") == "next_todo"
+diff --git a/tests/unit/services/intent_service/test_read_claim_forcing_2151.py b/tests/unit/services/intent_service/test_read_claim_forcing_2151.py
+index e67194e4bd..b1b73018de 100644
+--- a/tests/unit/services/intent_service/test_read_claim_forcing_2151.py
++++ b/tests/unit/services/intent_service/test_read_claim_forcing_2151.py
+@@ -534,6 +534,7 @@ FORCE: Dict[str, Force] = {
+     ),
+     "list_projects": Force(one("db"), "list my projects"),
+     "list_todos_query": Force(one("db"), "show my todos"),
++    "next_todo_query": Force(one("db"), "what's my next todo?"),
+     "list_reminders_query": Force(
+         one("db"), "what reminders do I have?", absence=("there are none",)
+     ),
+-- 
+2.50.1 (Apple Git-155)
+

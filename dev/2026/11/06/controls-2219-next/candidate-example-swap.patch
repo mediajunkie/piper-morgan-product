@@ -1,0 +1,14 @@
+diff --git a/services/intent_service/action_registry.py b/services/intent_service/action_registry.py
+index d9d402f4bd..7a41d7dd4f 100644
+--- a/services/intent_service/action_registry.py
++++ b/services/intent_service/action_registry.py
+@@ -346,7 +346,8 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
+     ("QUERY", "session_activity_query"): "What did we create this session?",
+     ("QUERY", "list_todos_query"): "Show me my todos",
+     ("QUERY", "list_completed_todos"): "Show me completed todos",
+-    ("QUERY", "next_todo_query"): "What's my next todo?",
++    # #2219 (Arch 11-06 07:19): a catalog example is never a corpus row verbatim.
++    ("QUERY", "next_todo_query"): "What's first on my todo list?",
+     ("QUERY", "list_reminders_query"): "What reminders do I have?",
+     ("QUERY", "get_feature_info"): "Tell me more about the GitHub integration",
+     ("EXECUTION", "complete_todo"): "Mark my first todo as done",
