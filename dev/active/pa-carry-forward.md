@@ -13,7 +13,8 @@
 - **Served:** beta `0af6078171` (the armed match-list pick) as of 11-06 21:47; MCP Fly v20 `28911350bb`, `/health` 200. Read the live sha from `/health`, not from here.
 - **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta**.
 - **First thing 11-07:** Lead promotes `d48653f307` (#2315) at the 07:00 window. Then rerun Q9's #2315 rows with `dev/2026/11/06/turn.py` on web-seed-1386 (add a disposable `review prs for harbor pilot`, delete it after, with a confirmed yes). Quote to Lead, cc CXO and Arch; CXO keeps #2219 and #2294 open until then.
-- **Q9 also:** #2313 ("delete A and B") on its build; #2316 on its build; D5's ordinals wait on xian's explicit word (Exec's rollup).
+- **#2316** (`325521339a`) also rides the 07:00 promotion: over a pick, answer with a name that contains another line's number (e.g. a disposable `call 3 vendors`), expect CXO's two-line `That could mean two different todos:` question with nothing written, then a bare number binds.
+- **Q9 also:** #2313 ("delete A and B") on its build; D5's ordinals wait on xian's explicit word (Exec's rollup).
 - **#2288** (card says "Connected." on a 401 grant): served row needs a dead-grant account; xian's word for Web.
 - **#2242 (Q2):** held-token row, on xian's `mcp_allow.py remove` relayed by Exec.
 - **#2238:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
