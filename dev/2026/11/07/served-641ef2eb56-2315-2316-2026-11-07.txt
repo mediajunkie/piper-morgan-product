@@ -1,0 +1,311 @@
+# #2315 and #2316 on 641ef2eb56, web-seed-1386, PA run 07:03
+# setup (disposable)
+
+--- [07:03:35, 641ef2eb56, http 200, 4.12 s] route execution/create_todo
+USER: add a todo: review prs for harbor pilot
+PIPER: I've added that to your list. 'review prs for harbor pilot' is now tracked. Let me know if you want to adjust anything.
+
+--- [07:03:40, 641ef2eb56, http 200, 3.71 s] route execution/create_todo
+USER: add a todo: call 9 vendors
+PIPER: I've added that to your list. 'call 9 vendors' is now tracked. Let me know if you want to adjust anything.
+
+--- [07:03:44, 641ef2eb56, http 200, 3.23 s] route execution/create_todo
+USER: add a todo: call the bank
+PIPER: I've added that to your list. 'call the bank' is now tracked. Let me know if you want to adjust anything.
+
+--- [07:03:50, 641ef2eb56, http 200, 6.05 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 11 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+8. review prs for harbor pilot
+9. call 9 vendors
+10. call the bank
+
+--- [07:04:08, 641ef2eb56, http 200, 3.37 s] route execution/create_todo
+USER: add a todo: call 10 vendors
+PIPER: I've added that to your list. 'call 10 vendors' is now tracked. Let me know if you want to adjust anything.
+
+--- [07:04:12, 641ef2eb56, http 200, 3.18 s] route execution/create_todo
+USER: add a todo: last call
+PIPER: I've added that to your list. 'last call' is now tracked. Let me know if you want to adjust anything.
+
+--- [07:04:16, 641ef2eb56, http 200, 3.32 s] route execution/create_todo
+USER: add a todo: call the plumber
+PIPER: I've added that to your list. 'call the plumber' is now tracked. Let me know if you want to adjust anything.
+# 2316 (a): a name containing another line's label, over a pick
+
+--- [07:04:19, 641ef2eb56, http 200, 1.89 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 14 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+8. review prs for harbor pilot
+9. call 9 vendors
+10. call the bank
+11. call 10 vendors
+12. last call
+13. call the plumber
+
+--- [07:04:23, 641ef2eb56, http 200, 3.68 s] route execution/complete_todo
+USER: complete the call todo
+PIPER: Which todo should I complete?
+9. call 9 vendors
+10. call the bank
+11. call 10 vendors
+12. last call
+13. call the plumber
+
+Say the number or the name, or 'never mind' to leave them alone.
+
+--- [07:04:24, 641ef2eb56, http 200, 0.29 s] route execution/clarify_delete_todo_pick
+USER: call 10 vendors
+PIPER: That could mean two different todos:
+10. call the bank
+11. call 10 vendors
+Which one? Say the number shown next to it, or 'never mind' to leave them alone.
+
+--- [07:04:32, 641ef2eb56, http 200, 0.29 s] route execution/complete_todo
+USER: 11
+PIPER: Nice - I've marked 'call 10 vendors' as done. Good progress!
+# 2316 (b): no list, so labels are 1..k; a name whose number is not a label
+
+--- [07:04:34, 641ef2eb56, http 200, 1.50 s] route execution/complete_todo
+USER: complete the call todo
+PIPER: Which todo should I complete?
+1. call 9 vendors
+2. call the bank
+3. last call
+4. call the plumber
+
+Say the number or the name, or 'never mind' to leave them alone.
+
+--- [07:04:35, 641ef2eb56, http 200, 0.28 s] route execution/complete_todo
+USER: call 9 vendors
+PIPER: Nice - I've marked 'call 9 vendors' as done. Good progress!
+# 2316 (c): 'the last one' over a pick with 'last call' not last
+
+--- [07:04:45, 641ef2eb56, http 200, 1.88 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 12 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+8. review prs for harbor pilot
+9. call the bank
+10. last call
+11. call the plumber
+
+--- [07:04:50, 641ef2eb56, http 200, 3.49 s] route execution/delete_todo
+USER: delete the call todo
+PIPER: Which todo should I delete?
+9. call the bank
+10. last call
+11. call the plumber
+
+Say the number or the name, or 'never mind' to leave them alone.
+
+--- [07:04:50, 641ef2eb56, http 200, 0.25 s] route execution/delete_todo
+USER: the last one
+PIPER: Delete the todo "call the plumber"? (yes/no)
+
+--- [07:04:51, 641ef2eb56, http 200, 0.23 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete the todo "call the plumber". Nothing has been changed.
+# 2316 (c) variant: 'the last call' typed in full
+
+--- [07:04:54, 641ef2eb56, http 200, 1.84 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 12 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+8. review prs for harbor pilot
+9. call the bank
+10. last call
+11. call the plumber
+
+--- [07:04:56, 641ef2eb56, http 200, 1.43 s] route execution/delete_todo
+USER: delete the call todo
+PIPER: Which todo should I delete?
+9. call the bank
+10. last call
+11. call the plumber
+
+Say the number or the name, or 'never mind' to leave them alone.
+
+--- [07:04:57, 641ef2eb56, http 200, 0.24 s] route execution/clarify_delete_todo_pick
+USER: the last call
+PIPER: That could mean two different todos:
+10. last call
+11. call the plumber
+Which one? Say the number shown next to it, or 'never mind' to leave them alone.
+
+--- [07:04:58, 641ef2eb56, http 200, 0.25 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been deleted.
+# 2315 row 1: 'complete the review prs todo' after a list
+
+--- [07:05:06, 641ef2eb56, http 200, 1.80 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 12 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+8. review prs for harbor pilot
+9. call the bank
+10. last call
+11. call the plumber
+
+--- [07:05:11, 641ef2eb56, http 200, 3.49 s] route execution/complete_todo
+USER: complete the review prs todo
+PIPER: Which todo should I complete?
+4. review prs (×2)
+8. review prs for harbor pilot
+
+Say the number or the name, or 'never mind' to leave them alone.
+
+--- [07:05:11, 641ef2eb56, http 200, 0.24 s] route execution/complete_todo
+USER: 4
+PIPER: "review prs" is on your list 2 times. Complete one, or both?
+
+--- [07:05:12, 641ef2eb56, http 200, 0.24 s] route soft_offer_declined/clarify_todo_group_line
+USER: never mind
+PIPER: Okay — I won't mark those done. Nothing has been changed.
+# 2315 row 2: 'complete the review todo' after a list
+
+--- [07:05:15, 641ef2eb56, http 200, 1.91 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 12 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+8. review prs for harbor pilot
+9. call the bank
+10. last call
+11. call the plumber
+
+--- [07:05:19, 641ef2eb56, http 200, 3.28 s] route execution/complete_todo
+USER: complete the review todo
+PIPER: Which todo should I complete?
+2. review the deployment plan
+4. review prs (×2)
+8. review prs for harbor pilot
+
+Say the number or the name, or 'never mind' to leave them alone.
+
+--- [07:05:20, 641ef2eb56, http 200, 0.25 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been changed.
+# 2315: no match after a list
+
+--- [07:05:22, 641ef2eb56, http 200, 1.89 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 12 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+8. review prs for harbor pilot
+9. call the bank
+10. last call
+11. call the plumber
+
+--- [07:05:28, 641ef2eb56, http 200, 4.81 s] route execution/complete_todo
+USER: complete the dentist todo
+PIPER: I couldn't find a todo called "dentist", so nothing was changed. Say "show my todos" to see them.
+# cleanup
+
+--- [07:05:40, 641ef2eb56, http 200, 3.75 s] route execution/delete_todo
+USER: delete the todo review prs for harbor pilot
+PIPER: Delete the todo "review prs for harbor pilot"? (yes/no)
+
+--- [07:05:41, 641ef2eb56, http 200, 0.28 s] route execution/delete_todo
+USER: yes
+PIPER: Deleted 1 todo:
+• review prs for harbor pilot
+
+--- [07:05:45, 641ef2eb56, http 200, 3.44 s] route execution/delete_todo
+USER: delete the todo call the bank
+PIPER: Delete the todo "call the bank"? (yes/no)
+
+--- [07:05:46, 641ef2eb56, http 200, 0.26 s] route execution/delete_todo
+USER: yes
+PIPER: Deleted 1 todo:
+• call the bank
+
+--- [07:05:50, 641ef2eb56, http 200, 3.37 s] route execution/delete_todo
+USER: delete the todo last call
+PIPER: Delete the todo "last call"? (yes/no)
+
+--- [07:05:51, 641ef2eb56, http 200, 0.27 s] route execution/delete_todo
+USER: yes
+PIPER: Deleted 1 todo:
+• last call
+
+--- [07:05:55, 641ef2eb56, http 200, 3.26 s] route execution/delete_todo
+USER: delete the todo call the plumber
+PIPER: Delete the todo "call the plumber"? (yes/no)
+
+--- [07:05:56, 641ef2eb56, http 200, 0.27 s] route execution/delete_todo
+USER: yes
+PIPER: Deleted 1 todo:
+• call the plumber
+# 2315 row 3: no list, identical copies only (router path)
+
+--- [07:06:05, 641ef2eb56, http 200, 1.38 s] route execution/complete_todo
+USER: complete the review prs todo
+PIPER: "review prs" is on your list 2 times. Complete one, or both?
+
+--- [07:06:06, 641ef2eb56, http 200, 0.24 s] route soft_offer_declined/clarify_todo_group_line
+USER: never mind
+PIPER: Okay — I won't mark those done. Nothing has been changed.
+
+--- [07:06:17, 641ef2eb56, http 200, 10.70 s] route execution/complete_todo
+USER: complete review prs
+PIPER: "review prs" is on your list 2 times. Complete one, or both?
+
+--- [07:06:18, 641ef2eb56, http 200, 0.23 s] route soft_offer_declined/clarify_todo_group_line
+USER: never mind
+PIPER: Okay — I won't mark those done. Nothing has been changed.
+# end state
+
+--- [07:06:21, 641ef2eb56, http 200, 1.90 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
