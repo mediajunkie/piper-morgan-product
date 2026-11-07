@@ -160,13 +160,20 @@ class TestUnresolved:
     async def test_unresolved_strikes_the_verb_clause(self, intent_service, no_stored):
         intent = _clear_intent(["name:nonexistent reminder"])
         result = await ct.run_clear_todos(intent, "s1", _USER_ID, intent_service)
-        assert result.requires_clarification is False
-        assert "Tell me which one." in result.message
+        # #2318 (CXO 11-07 12:47, option (a)): the verb-neutral question, ARMED as
+        # the clear pick over the rows shown; the verb question follows the line.
+        assert result.requires_clarification is True
+        assert result.message.endswith(
+            "\n\nWhich one do you mean? Say the number or the name, or 'never mind' "
+            "to leave them alone."
+        )
         # the verb-neutral tail only — never "mark it done" / "delete it" /
         # "clear it"
         for word in ("mark", "delete", "clear it"):
             assert word not in result.message
-        intent_service.workflow_offer_service.set_pending_offer.assert_not_called()
+        _sid, offer = intent_service.workflow_offer_service.set_pending_offer.call_args.args[:2]
+        assert offer["pending_action"]["kind"] == "delete_todo_pick_question"
+        assert offer["pending_action"]["verb"] == "clear"
 
     @pytest.mark.asyncio
     async def test_unresolved_with_some_picked_promises_only_what_state_holds(
