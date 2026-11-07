@@ -1468,8 +1468,8 @@ class TodoIntentHandlers:
             logger.info("todo_batch_delete_capped", picked=len(picked), session_id=session_id)
             # #2219 (CXO 11-06): a pick that is one copy of a grouped line shows the
             # line as the list showed it, "review prs" (×3).
-            lines = [_grouped_line_of(t, shown_lines) or [t] for t in picked]
-            copies = [len(line) for line in lines]
+            cap_lines = [_grouped_line_of(t, shown_lines) or [t] for t in picked]
+            copies = [len(line) for line in cap_lines]
             # #2219 (CXO 11-05 20:47): the noun carries through the conversation;
             # todos read "one todo", a reminders list "one reminder" (Web 11-06).
             cap_noun = conversation_noun(
@@ -1495,7 +1495,7 @@ class TodoIntentHandlers:
                 [t.text for t in picked],
                 [_due_iso(t, cap_noun) for t in picked],
                 copies,
-                [[str(r.id) for r in line] for line in lines],
+                [[str(r.id) for r in line] for line in cap_lines],
                 labels,
                 offer_service,
             )

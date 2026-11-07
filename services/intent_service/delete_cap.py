@@ -14,9 +14,9 @@ on the same "Nothing has been changed." the N5 decline uses. A single delete
 keeps its existing named confirm; mark done on a bulk set stays uncapped.
 
 #2318 (CXO 11-07 09:2x; Arch 09:24, mechanism): where the cap can bind an answer,
-it asks an ARMED question instead (:func:`capped_pick_question`, the #1987 pick
-over the capped lines, labelled as the person saw them), so "2" or the name
-reaches the single-line confirm. The 10-14 closing instruction "Tell me which
+it asks an ARMED question instead (``delete_todo_pick.capped_pick_question``, the
+#1987 pick over the capped lines, labelled as the person saw them), so "2" or the
+name reaches the single-line confirm. The 10-14 closing instruction "Tell me which
 one to delete first." stays only where nothing can be armed.
 
 The copy lives HERE, in one place; every capped site calls
@@ -81,30 +81,3 @@ def remember_capped_list(
     TodoIntentHandlers._remember_numbered_list(
         session_id, principal, kind, [str(i) for i in ids], list(texts)
     )
-
-
-CAPPED_PICK_TAIL = (
-    "Which one should I delete first? Say the number or the name, or 'never mind' to "
-    "leave them alone."
-)
-
-
-def capped_pick_question(
-    texts: Sequence[str],
-    noun: str = "todo",
-    copies: Optional[Sequence[int]] = None,
-    labels: Optional[Sequence[int]] = None,
-) -> str:
-    """#2318, CXO 11-07 verbatim: the cap's armed question. The lines are as
-    :func:`capped_delete_reply` shows them, numbered with ``labels`` (the numbers
-    the person saw; 1..N when ``None``), then CXO's armed tail. The caller arms
-    the pick record (``delete_todo_pick.arm_capped_delete_pick``)."""
-    counts = list(copies) if copies is not None else [1] * len(texts)
-    numbers = list(labels) if labels else list(range(1, len(texts) + 1))
-    lines = [f"I can delete one {noun} at a time for now. You asked about these:"]
-    lines += [
-        f'{n}. "{text}"' + (f" (×{c})" if c > 1 else "")
-        for n, text, c in zip(numbers, texts, counts)
-    ]
-    # Blank line before the tail (#2002), as in the unarmed form.
-    return "\n".join(lines) + "\n\n" + CAPPED_PICK_TAIL

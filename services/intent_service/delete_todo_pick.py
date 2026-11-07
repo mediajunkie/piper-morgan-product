@@ -44,7 +44,7 @@ see them). No candidates → an honest "nothing to delete" line, nothing armed
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 from uuid import UUID
 
 import structlog
@@ -566,6 +566,33 @@ def _arm_line_pick(
     return question
 
 
+CAPPED_PICK_QUESTION_TAIL = (
+    "Which one should I delete first? Say the number or the name, or 'never mind' to "
+    "leave them alone."
+)
+
+
+def capped_pick_question(
+    texts: Sequence[str],
+    noun: str = "todo",
+    copies: Optional[Sequence[int]] = None,
+    labels: Optional[Sequence[int]] = None,
+) -> str:
+    """#2318, CXO 11-07 verbatim: the cap's armed question. The lines are as
+    ``delete_cap.capped_delete_reply`` shows them, numbered with ``labels`` (the numbers
+    the person saw; 1..N when ``None``), then CXO's armed tail. Armed by
+    :func:`arm_capped_delete_pick` (the #1730 rule: the asking module arms)."""
+    counts = list(copies) if copies is not None else [1] * len(texts)
+    numbers = list(labels) if labels else list(range(1, len(texts) + 1))
+    lines = [f"I can delete one {noun} at a time for now. You asked about these:"]
+    lines += [
+        f'{n}. "{text}"' + (f" (×{c})" if c > 1 else "")
+        for n, text, c in zip(numbers, texts, counts)
+    ]
+    # Blank line before the tail (#2002), as in the unarmed form.
+    return "\n".join(lines) + "\n\n" + CAPPED_PICK_QUESTION_TAIL
+
+
 def arm_capped_delete_pick(
     message: str,
     session_id: Optional[str],
@@ -585,8 +612,6 @@ def arm_capped_delete_pick(
     ``handle_delete_todo_pick_turn`` to the single-line confirm. ``None`` when
     nothing could pop an answer (no session or store): the caller keeps the
     unarmed statement."""
-    from services.intent_service.delete_cap import capped_pick_question
-
     if not session_id or offer_service is None or not ids:
         return None
     question = capped_pick_question(texts, noun, copies=copies, labels=labels)
