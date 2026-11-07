@@ -444,3 +444,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v861 11:23 Fri 11-06: gate-hook paste done by xian; removed.
 - v862 14:01 Fri 11-06: 765a2bc4f1 served (13:09) added to Settled; capitalised a sentence start.
 - v863 15:38 Fri 11-06: 7ffd460640 served (15:37) added to Settled.
+- v864 16:45 Fri 11-06: ADR-083 screen priced (~$2.60, A+C); #2270 phrasing ask added.
