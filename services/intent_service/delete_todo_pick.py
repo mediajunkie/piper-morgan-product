@@ -44,7 +44,7 @@ see them). No candidates → an honest "nothing to delete" line, nothing armed
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 from uuid import UUID
 
 import structlog
@@ -98,7 +98,12 @@ _PLEASANTRY_ACK = {
 _ALL_CANDIDATE_WORDS = frozenset({"both", "all", "every", "everything"})
 
 
-def _multi_pick_indices(text: str, texts: List[str], due_iso: List[Optional[str]]) -> List[int]:
+def _multi_pick_indices(
+    text: str,
+    texts: List[str],
+    due_iso: List[Optional[str]],
+    labels: Optional[List[int]] = None,
+) -> List[int]:
     """The shown positions an answer names when it names MORE than one
     ("1 and 2", "the first and the last", "both"), in shown order; [] when it
     names one or none (the single-bind path below is unchanged).
@@ -106,14 +111,20 @@ def _multi_pick_indices(text: str, texts: List[str], due_iso: List[Optional[str]
     Reuses the shared binder's own ordinal reader one word at a time (no new
     pattern). A quantifier ("both", "all of them") counts only when the
     whole-answer binder does not bind a single candidate, so a title that
-    happens to contain "all" still binds by name."""
+    happens to contain "all" still binds by name. With ``labels`` (#2219 Gap A
+    follow-up) each word is read the labelled way (``_label_bind``): a number
+    names a label, an ordinal word a position."""
     from services.intent_service.reminder_clear import _ordinal_index, _resolve_pick_target
 
     n = len(texts)
     words = [w.strip(".,!?;:'\"()").lower() for w in (text or "").split()]
     picked: List[int] = []
     for word in words:
-        idx = _ordinal_index(word, n) if word else None
+        if labels:
+            status, found = _label_bind(word, labels) if word else ("unread", None)
+            idx = found if status == "bound" else None
+        else:
+            idx = _ordinal_index(word, n) if word else None
         if idx is not None and idx not in picked:
             picked.append(idx)
     if len(picked) > 1:
@@ -123,6 +134,66 @@ def _multi_pick_indices(text: str, texts: List[str], due_iso: List[Optional[str]
         if status != "bound":
             return list(range(n))
     return []
+
+
+def _valid_labels(raw: Any, n: int) -> Optional[List[int]]:
+    """The record's shown-list labels, or ``None`` (the 1..k pick) when absent or
+    not one distinct int per candidate."""
+    if not raw or len(raw) != n:
+        return None
+    try:
+        labels = [int(x) for x in raw]
+    except (TypeError, ValueError):
+        return None
+    return labels if len(set(labels)) == len(labels) else None
+
+
+def _ordinal_word(number: int) -> str:
+    """The ordinal word for a number, from the shared binder's own table."""
+    from services.intent_service.reminder_clear import _ORDINAL_WORDS
+
+    return next((w for w, i in _ORDINAL_WORDS.items() if i + 1 == number), str(number))
+
+
+def _collision_question(number: int) -> str:
+    """CXO 11-06 18:47, verbatim: an ordinal word whose number is another
+    candidate's label is asked about, never bound."""
+    return (
+        f"Do you mean the line numbered {number}, or the {_ordinal_word(number)} one in "
+        "this list? Say the number shown next to it, or the name."
+    )
+
+
+def _label_bind(text: str, labels: List[int]) -> Tuple[str, Optional[int]]:
+    """#2219 Gap A follow-up (CXO 11-06 18:47; Arch 18:45): read an answer to a
+    LABELLED pick. Returns ``("bound", idx)``; ``("collision", n)`` when an ordinal
+    word's number n is the label of a DIFFERENT candidate; ``("not_a_label", None)``
+    for a number no candidate carries; ``("unread", None)`` when the answer holds
+    neither (names bind by the shared binder as before).
+
+    Words are read only by the shared ``_ordinal_index``: over the answer with its
+    digits set aside it finds an ordinal WORD (by position); over the whole answer
+    it finds a NUMBER, looked up among the labels. "last" names no number (its
+    index moves with the list's length), so it never collides."""
+    from services.intent_service.reminder_clear import _ordinal_index
+
+    n = len(labels)
+    raw = text or ""
+    words_only = "".join(c for c in raw if not c.isdigit())
+    word_idx = _ordinal_index(words_only, n)
+    if word_idx is not None:
+        if _ordinal_index(words_only, n + 1) == word_idx:  # a numbered word, not "last"
+            word_number = word_idx + 1
+            if word_number in labels and labels.index(word_number) != word_idx:
+                return "collision", word_number
+        return "bound", word_idx
+    if any(c.isdigit() for c in raw):
+        idx = _ordinal_index(raw, max(labels))
+        number = idx + 1 if idx is not None else None
+        if number is not None and number in labels:
+            return "bound", labels.index(number)
+        return "not_a_label", None
+    return "unread", None
 
 
 def _mentions_reminder(message: str) -> bool:
@@ -195,18 +266,26 @@ def _candidates(todos: List[Any], noun: str) -> List[Any]:
 
 
 def render_pick_question(
-    noun: str, texts: List[str], more: int = 0, reasked: bool = False, verb: str = VERB_DELETE
+    noun: str,
+    texts: List[str],
+    more: int = 0,
+    reasked: bool = False,
+    verb: str = VERB_DELETE,
+    labels: Optional[List[int]] = None,
 ) -> str:
     """The armed ask: the candidates numbered with their titles, then how to
     answer — and the #1920 exit ("never mind") so the user learns they can
     bail before failing once. ``verb`` is "complete" for #2219 row 3's pick
-    (CXO: "Which todo should I complete?")."""
+    (CXO: "Which todo should I complete?"). ``labels`` (#2219 Gap A follow-up,
+    CXO 11-06 18:32): each line keeps the number the person saw on the list,
+    in place of 1..k."""
     head = (
         f"Still not sure which {noun} you mean — you have:"
         if reasked
         else f"Which {noun} should I {verb}?"
     )
-    lines = [head] + [f"{i}. {t}" for i, t in enumerate(texts, 1)]
+    numbers = list(labels) if labels else list(range(1, len(texts) + 1))
+    lines = [head] + [f"{n}. {t}" for n, t in zip(numbers, texts)]
     tail = "Say the number or the name, or 'never mind' to leave them alone."
     if more:
         tail = f"(+{more} more — say 'show my todos' for the full list.) " + tail
@@ -236,13 +315,15 @@ def _pick_offer(
     display: Optional[List[str]] = None,
     verb: str = VERB_DELETE,
     line_ids: Optional[List[List[str]]] = None,
+    labels: Optional[List[int]] = None,
 ) -> Dict[str, Any]:
     """The #846 record: the rendered candidates bound at ARM time (ids +
     texts in the order shown, #1665) plus each one's due timestamp so "the
     overdue one" binds offline on the answer turn (the #1906 idiom).
     #2219 row 3: ``verb`` "complete" binds the answer to a completion, and
     ``line_ids`` holds every copy of each shown line (a grouped line asks
-    one, or all)."""
+    one, or all). ``labels`` (#2219 Gap A follow-up): the shown-list number of
+    each candidate, bound at ask time; ``None`` for the 1..k pick."""
     return {
         "workflow_type": CLARIFY_DELETE_PICK_WORKFLOW,
         "question": question,
@@ -262,6 +343,7 @@ def _pick_offer(
             "pick_display": list(display) if display else None,
             "verb": verb,
             "pick_line_ids": [list(line) for line in line_ids] if line_ids else None,
+            "pick_labels": list(labels) if labels else None,
         },
         "decline_message": _decline_message(noun, verb),
     }
@@ -363,12 +445,56 @@ def arm_complete_pick(
     lines = _shown_lines(last_numbered_list(session_id, principal or todo_user_id), todos)
     if not lines:
         return None
+    question = _arm_line_pick(
+        VERB_COMPLETE, message, session_id, principal, todo_user_id, lines, offer_service
+    )
+    logger.info("complete_todo_pick_armed_on_shown_lines", session_id=session_id, lines=len(lines))
+    return question
+
+
+def arm_named_line_pick(
+    verb: str,
+    message: str,
+    session_id: Optional[str],
+    principal: Optional[str],
+    todo_user_id: Any,
+    lines: List[List[Any]],
+    labels: List[int],
+    offer_service: Any,
+) -> Optional[str]:
+    """#2219 Gap A follow-up (CXO 11-06 18:32 words, 18:47 binding; Arch 18:45): a
+    named delete or complete that matches SEVERAL shown lines asks this armed pick
+    over exactly those lines, each labelled with the number the person saw. The ids
+    are bound now, so "6", "the second one" and "never mind" bind on the answer turn
+    (``handle_delete_todo_pick_turn``). ``None`` when nothing could pop an answer
+    (no session or store): the caller says so, asking nothing (#1730)."""
+    if not session_id or offer_service is None or not lines or len(labels) != len(lines):
+        return None
+    question = _arm_line_pick(
+        verb, message, session_id, principal, todo_user_id, lines, offer_service, labels
+    )
+    logger.info("todo_named_line_pick_armed", session_id=session_id, verb=verb, labels=labels)
+    return question
+
+
+def _arm_line_pick(
+    verb: str,
+    message: str,
+    session_id: Optional[str],
+    principal: Optional[str],
+    todo_user_id: Any,
+    lines: List[List[Any]],
+    offer_service: Any,
+    labels: Optional[List[int]] = None,
+) -> str:
+    """Arm the pick over shown lines (every copy's id rides the record) and return
+    the rendered question."""
     from services.intent_service.reminder_clear import _due_iso
     from services.intent_service.reminder_copy import conversation_noun
 
     noun = conversation_noun(message, _last_list_kind(session_id, principal or todo_user_id))
     display = [_line_display(line) for line in lines]
-    question = render_pick_question(noun, display, verb=VERB_COMPLETE)
+    question = render_pick_question(noun, display, verb=verb, labels=labels)
     offer_service.set_pending_offer(
         session_id,
         _pick_offer(
@@ -381,12 +507,12 @@ def arm_complete_pick(
             question,
             copies=[len(line) for line in lines],
             display=display,
-            verb=VERB_COMPLETE,
+            verb=verb,
             line_ids=[[str(t.id) for t in line] for line in lines],
+            labels=labels,
         ),
         user_id=principal,
     )
-    logger.info("complete_todo_pick_armed_on_shown_lines", session_id=session_id, lines=len(lines))
     return question
 
 
@@ -467,6 +593,7 @@ async def handle_delete_todo_pick_turn(
     noun = payload.get("noun") or "todo"
     original_message = payload.get("original_message") or ""
     verb = payload.get("verb") or VERB_DELETE
+    labels = _valid_labels(payload.get("pick_labels"), len(ids))
 
     # Arch's condition 3 on #1987 (2026-10-12 ruling; 2026-10-13 ask): the
     # pick must SURVIVE a pleasantry. "thanks" reads PASS at the acceptance
@@ -487,7 +614,7 @@ async def handle_delete_todo_pick_turn(
     claimed = PreClassifier.pre_classify(text)
     if claimed is not None and claimed.action in _PLEASANTRY_ACTIONS:
         question = pending_offer.get("question") or render_pick_question(
-            noun, shown_texts, 0, verb=verb
+            noun, shown_texts, 0, verb=verb, labels=labels
         )
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
@@ -520,7 +647,7 @@ async def handle_delete_todo_pick_turn(
     # capped reply names them in the order shown. The pick is not re-armed
     # ("Tell me which one" is an instruction, not an offer).
     # The cap is delete's; a complete pick binds one line (several re-ask below).
-    multi = [i for i in _multi_pick_indices(text, texts, due_iso) if i < len(ids)]
+    multi = [i for i in _multi_pick_indices(text, texts, due_iso, labels) if i < len(ids)]
     if verb == VERB_COMPLETE and len(multi) > 1:
         # CXO 11-06 11:28: a complete pick binds one line. Several numbers never
         # complete the first and drop the rest: re-ask once on the same record; a
@@ -543,6 +670,7 @@ async def handle_delete_todo_pick_turn(
                 display=payload.get("pick_display"),
                 verb=verb,
                 line_ids=payload.get("pick_line_ids"),
+                labels=payload.get("pick_labels"),
             ),
             user_id=user_id,
         )
@@ -575,7 +703,52 @@ async def handle_delete_todo_pick_turn(
             },
         }
 
-    status, idx = _resolve_pick_target(text, texts, due_iso)
+    # #2219 Gap A follow-up (CXO 11-06 18:47; Arch 18:45): a labelled pick binds a
+    # NUMBER by label and an ordinal WORD by position, unless that ordinal's number
+    # is another candidate's label (then one re-ask). A comparison of recorded
+    # state; the words are read only by the shared ``_ordinal_index``.
+    label_status, label_idx = _label_bind(text, labels) if labels else ("unread", None)
+    if label_status == "collision":
+        if payload.get("pick_reasked"):
+            logger.info("delete_todo_pick_collision_release_after_reask", session_id=session_id)
+            return None
+        question = _collision_question(label_idx or 0)
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id,
+            _pick_offer(
+                payload.get("user_id"),
+                noun,
+                ids,
+                texts,
+                due_iso,
+                original_message,
+                question,
+                reasked=True,
+                copies=payload.get("pick_copies"),
+                display=payload.get("pick_display"),
+                verb=verb,
+                line_ids=payload.get("pick_line_ids"),
+                labels=labels,
+            ),
+            user_id=user_id,
+        )
+        logger.info("delete_todo_pick_label_collision", session_id=session_id)
+        return {
+            "message": question,
+            "intent_data": {
+                "category": "execution",
+                "action": CLARIFY_DELETE_PICK_WORKFLOW,
+                PICK_PENDING_FLAG: True,
+                "pick_label_collision": True,
+            },
+            "requires_clarification": True,
+        }
+    if label_status == "bound":
+        status, idx = "bound", label_idx
+    elif label_status == "not_a_label":
+        status, idx = "none", None  # a number not on this pick re-asks (below)
+    else:
+        status, idx = _resolve_pick_target(text, texts, due_iso)
     if status == "bound" and idx is not None and 0 <= idx < len(ids):
         copies = payload.get("pick_copies") or []
         if verb == VERB_COMPLETE:
@@ -610,7 +783,7 @@ async def handle_delete_todo_pick_turn(
     # two" — is 'none' too; that one takes the ordinary re-ask below.)
     quoted = _quoted_name(text)
     if status == "none" and quoted:
-        question = render_pick_question(noun, shown_texts, 0, verb=verb)
+        question = render_pick_question(noun, shown_texts, 0, verb=verb, labels=labels)
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
             _pick_offer(
@@ -626,6 +799,7 @@ async def handle_delete_todo_pick_turn(
                 display=payload.get("pick_display"),
                 verb=verb,
                 line_ids=payload.get("pick_line_ids"),
+                labels=payload.get("pick_labels"),
             ),
             user_id=user_id,
         )
@@ -678,7 +852,7 @@ async def handle_delete_todo_pick_turn(
         logger.info("delete_todo_pick_release_after_reask", session_id=session_id)
         return None  # second unresolved turn in a row — release, no loop
 
-    question = render_pick_question(noun, shown_texts, 0, reasked=True, verb=verb)
+    question = render_pick_question(noun, shown_texts, 0, reasked=True, verb=verb, labels=labels)
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         _pick_offer(
@@ -694,6 +868,7 @@ async def handle_delete_todo_pick_turn(
             display=payload.get("pick_display"),
             verb=verb,
             line_ids=payload.get("pick_line_ids"),
+            labels=payload.get("pick_labels"),
         ),
         user_id=user_id,
     )
@@ -921,7 +1096,9 @@ async def run_clarify_delete_todo_pick_workflow(
     noun = payload.get("noun") or "todo"
     verb = payload.get("verb") or VERB_DELETE
     texts = payload.get("pick_display") or payload.get("pick_texts") or []
-    question = "Just so I get it right:\n" + render_pick_question(noun, texts, 0, verb=verb)
+    question = "Just so I get it right:\n" + render_pick_question(
+        noun, texts, 0, verb=verb, labels=payload.get("pick_labels")
+    )
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         {

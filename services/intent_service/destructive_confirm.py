@@ -73,7 +73,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import structlog
 
@@ -381,12 +381,36 @@ class TodoDeleteGate:
       (#1527 named-target leg) — return this honest ask/didn't-find turn
       directly. Nothing armed, nothing deleted; it names todos/reminders,
       never projects (the 1527 misroute's exact wound).
+    - ``line_pick``: a named target matched SEVERAL lines of the numbered list
+      the person just saw (#2219 Gap A follow-up; CXO 11-06 18:32, Arch 18:45):
+      the matching lines and the number each was shown with. The caller arms
+      the #1987 pick over them through ``delete_todo_pick.arm_named_line_pick``
+      (arming stays in the pick module); ``clarification`` then carries the
+      statement said only if nothing can pop an answer.
     """
 
     offer: Optional[ConfirmationOffer] = None
     passthrough: bool = False
     error_message: Optional[str] = None
     clarification: Optional[str] = None
+    line_pick: Optional[Tuple[List[List[Any]], List[int]]] = None
+
+
+def named_line_no_match(named: str) -> str:
+    """CXO 11-06 18:32: a name that matches no line of the list just shown."""
+    return (
+        f'I couldn\'t find a todo called "{named}", so nothing was changed. '
+        'Say "show my todos" to see them.'
+    )
+
+
+def named_line_pick_unarmable(count: int, verb: str) -> str:
+    """Said only when a several-line pick cannot be armed (no session or store):
+    a statement, never a question with nothing armed (#1730)."""
+    return (
+        f"{count} lines on your list match that. Say '{verb} todo' with the number "
+        "of the one you mean. Nothing has been changed."
+    )
 
 
 # --- #1527 named-target delete: deriving the target WITHOUT new patterns ----
@@ -924,27 +948,26 @@ async def build_todo_delete_confirmation(
     matches = [t for t in matches if named_words <= _meaningful_words(t.text)]
 
     if not matches:
+        if shown_lines:
+            # #2219 Gap A follow-up (CXO 11-06 18:32): after the list, the miss names
+            # what was asked for, as the code extracted it.
+            return TodoDeleteGate(clarification=named_line_no_match(named_target or ""))
         # CXO 10-24: never quote the stripped message back as their words.
         return TodoDeleteGate(clarification=NAMED_DELETE_NOT_FOUND)
 
     if len(matches) > 1 and shown_lines:
         # #2219 Gap A (PA's served run on 34efff2af8): matches are named by the line
         # the person saw. Copies of one grouped line ARE that line (the router path's
-        # rule, 699891f8fe); several lines list each once, by its shown number.
+        # rule, 699891f8fe); several lines are the ARMED #1987 pick over those lines,
+        # labelled by the numbers shown (CXO 11-06 18:32/18:47; Arch 18:45).
         line_of = {str(t.id): n for n, line in enumerate(shown_lines, 1) for t in line}
         hit = sorted({line_of[str(t.id)] for t in matches if str(t.id) in line_of})
         if len(hit) == 1 and all(str(t.id) in line_of for t in matches):
             return _armed_line_delete(intent, shown_lines[hit[0] - 1], hit[0], message)
         if hit and all(str(t.id) in line_of for t in matches):
-            from services.intent_service.delete_todo_pick import _line_display
-
-            candidates = ", ".join(f'{n}. "{_line_display(shown_lines[n - 1])}"' for n in hit)
             return TodoDeleteGate(
-                clarification=(
-                    f'I found {len(hit)} todos matching "{named_target}": '
-                    f"{candidates}. Which one should I delete? "
-                    "Try 'delete todo [number]'."
-                )
+                line_pick=([shown_lines[n - 1] for n in hit], hit),
+                clarification=named_line_pick_unarmable(len(hit), "delete"),
             )
 
     if len(matches) > 1:
