@@ -20227,6 +20227,43 @@ Add any additional information here.
                             error_type="TodoDeleteConfirmLookupError",
                         ),
                     )
+                if _todo_gate.line_pick is not None:
+                    # #2219 Gap A follow-up (CXO 11-06 18:32/18:47; Arch 18:45): a
+                    # name matching several shown lines asks the ARMED #1987 pick
+                    # over those lines, labelled as shown; armed in the pick module.
+                    from services.intent_service.delete_todo_pick import (
+                        PICK_PENDING_FLAG,
+                        VERB_DELETE,
+                        arm_named_line_pick,
+                    )
+
+                    _pick_lines, _pick_labels = _todo_gate.line_pick
+                    _pick_question = arm_named_line_pick(
+                        VERB_DELETE,
+                        message,
+                        session_id,
+                        str(_consent_user) if _consent_user else None,
+                        _coerce_todo_principal(_consent_user),
+                        _pick_lines,
+                        _pick_labels,
+                        self.workflow_offer_service,
+                    )
+                    return _RailOutcome(
+                        on_rail=True,
+                        result=IntentProcessingResult(
+                            success=True,
+                            message=_pick_question or (_todo_gate.clarification or ""),
+                            intent_data={
+                                "category": intent.category.value,
+                                "action": intent.action,
+                                "confidence": intent.confidence,
+                                **({PICK_PENDING_FLAG: True} if _pick_question else {}),
+                            },
+                            requires_clarification=True,
+                            suggestions=all_suggestions,
+                            preferences=preferences,
+                        ),
+                    )
                 if _todo_gate.clarification is not None:
                     # #1527 named-target leg: the named target
                     # resolved to zero or several todos — an honest

@@ -2436,7 +2436,6 @@ class TodoIntentHandlers:
                         # delete gate's #2169 word subset (every named word in the title).
                         named_words = _meaningful_words(completion_text)
                         matches = [t for t in matches if named_words <= _meaningful_words(t.text)]
-                    shown_candidates = None
                     if len(matches) > 1 and shown_lines:
                         line_of = {
                             str(t.id): n for n, line in enumerate(shown_lines, 1) for t in line
@@ -2454,29 +2453,46 @@ class TodoIntentHandlers:
                                     principal,
                                 )
                                 return question
-                            from services.intent_service.delete_todo_pick import _line_display
+                            # #2219 Gap A follow-up (CXO 11-06 18:32/18:47; Arch 18:45):
+                            # several shown lines → the ARMED #1987 pick over those
+                            # lines, labelled by the numbers the person saw.
+                            from services.intent_service.delete_todo_pick import (
+                                VERB_COMPLETE,
+                                arm_named_line_pick,
+                            )
+                            from services.intent_service.destructive_confirm import (
+                                named_line_pick_unarmable,
+                            )
 
-                            # #2219 Gap A: each matching line once, by the number shown.
-                            shown_candidates = (
-                                len(hit),
-                                ", ".join(
-                                    f'{n}. "{_line_display(shown_lines[n - 1])}"' for n in hit
-                                ),
+                            pick = arm_named_line_pick(
+                                VERB_COMPLETE,
+                                original_message,
+                                session_id,
+                                principal,
+                                user_id,
+                                [shown_lines[n - 1] for n in hit],
+                                hit,
+                                offer_service,
                             )
+                            return pick or _reply(named_line_pick_unarmable(len(hit), "complete"))
                     if len(matches) > 1:
-                        if shown_candidates is None:
-                            position_by_id = {t.id: i + 1 for i, t in enumerate(todos)}
-                            shown_candidates = (
-                                len(matches),
-                                ", ".join(f'{position_by_id[t.id]}. "{t.text}"' for t in matches),
-                            )
-                        count, candidates = shown_candidates
+                        position_by_id = {t.id: i + 1 for i, t in enumerate(todos)}
+                        candidates = ", ".join(
+                            f'{position_by_id[t.id]}. "{t.text}"' for t in matches
+                        )
                         return _reply(
-                            f"I found {count} todos matching "
+                            f"I found {len(matches)} todos matching "
                             f"'{completion_text}': {candidates}. Which one "
                             "should I complete? Try 'complete todo [number]'."
                         )
                     todo = matches[0] if matches else None
+
+                if todo is None and shown_lines:
+                    # #2219 Gap A follow-up (CXO 11-06 18:32): after the list, the miss
+                    # names what was asked for, as the code extracted it.
+                    from services.intent_service.destructive_confirm import named_line_no_match
+
+                    return _reply(named_line_no_match(completion_text))
 
                 if todo is None:
                     return _reply(
