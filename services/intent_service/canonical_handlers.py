@@ -6148,10 +6148,11 @@ What would you like to set up first?"""
                         + "\n".join(repo_lines)
                     )
                 else:
+                    # #2272 (CXO 11-06 15:58): no chat phrase while #2271's link loop
+                    # exists; a sibling phrasing declined served on 7ffd460640.
                     response = (
-                        f"{project.name} doesn't have any linked repositories yet. "
-                        "You can link one by saying something like "
-                        "'link owner/repo to " + project.name + "'."
+                        f"{project.name} has no repository linked yet. "
+                        "You can link one on its project page."
                     )
 
                 return {
