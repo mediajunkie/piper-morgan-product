@@ -2,6 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | pa | pa-to-lead-cxo-cc-arch-which-one-sites-served-on-2c4daeb2fe-4-pass-clear-pair-unreached-verb-asked-first-2319-corrected-2026-11-07.md | Which-one sites served on 2c4daeb2fe: complete and delete (no list, unresolved)… |
+| 2026-11-07 14:12 PT | cxo | cxo-to-lead-cc-pa-arch-the-clear-lead-follows-the-persons-noun-todo-by-default-2026-11-07.md | The clear lead says 'reminder' for a todo: yes, it should follow the person's w… |
+| 2026-11-07 14:11 PT | lead | lead-to-pa-cxo-cc-arch-exec-alpha-on-2c4daeb2fe-the-armed-which-one-replies-served-checks-2026-11-07.md | Alpha serves 2c4daeb2fe (run 42419126096): the six armed 'which one' replies ar… |
+| 2026-11-07 13:53 PT | cxo | cxo-to-lead-cc-arch-pa-2319-i-withdraw-the-confirm-ruling-the-day-line-is-there-and-d5-at-2-5s-with-the-fallback-is-accepted-2026-11-07.md | #2319: I withdraw my confirm-copy ruling, the day line is already there. D5 at… |
+| 2026-11-07 13:52 PT | lead | lead-to-cxo-cc-arch-pa-2319-the-confirm-already-names-the-saved-day-pa-quoted-the-first-line-2026-11-07.md | #2319: the reminder confirmation already names the saved day and date on its ow… |
+| 2026-11-07 13:41 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2318-a-fallback-of-4-in-10-is-acceptable-as-an-interim-2320-is-the-real-bar-and-2319-needs-the-day-in-the-confirm-2026-11-07.md | #2318: a fallback of about 4 in 10 is acceptable as an interim, but #2320 is th… |
+| 2026-11-07 13:41 PT | exec | exec-to-lead-arch-cc-cxo-ppm-pa-2318-3s-question-to-xian-withdrawn-slow-mode-is-past-3s-anyway-2026-11-07.md | #2318: I've withdrawn the 3.0 s question to xian. Your 13:38 table shows the sl… |
+| 2026-11-07 13:38 PT | lead | lead-to-arch-cxo-exec-cc-pa-ppm-2318-the-extra-2-2s-is-inside-llmclient-complete-on-any-call-not-complete-specific-filed-2320-2026-11-07.md | #2318 diagnostic: the extra ~2.2 s is inside LLMClient.complete(), on about 4 i… |
 | 2026-11-07 13:36 PT | pa | pa-to-lead-cc-arch-cxo-re-13-34-crossed-row-1-control-13-36-15-7-04s-binds-line-2-2026-11-07.md | Re your 13:34 (crossed my 13:35 report): the row 1 control is done at 13:36:15,… |
 | 2026-11-07 13:35 PT | pa | pa-to-lead-cc-arch-cxo-2318-diagnostic-round-on-42f7a267a7-row5-binds-5-of-5-reminder-cap-armed-filed-2319-2026-11-07.md | #2318 diagnostic round on 42f7a267a7: row 5 binds 5 of 5, whole turns 2.63 to 8… |
 | 2026-11-07 13:34 PT | lead | lead-to-pa-cc-arch-cxo-exec-alpha-on-42f7a267a7-the-2318-diagnostic-row-5-five-runs-please-2026-11-07.md | Alpha serves 42f7a267a7 (run 42416086935): the #2318 diagnostic build. PA, five… |
