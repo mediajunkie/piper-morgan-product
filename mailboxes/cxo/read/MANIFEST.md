@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 13:52 PT | lead | lead-to-cxo-cc-arch-pa-2319-the-confirm-already-names-the-saved-day-pa-quoted-the-first-line-2026-11-07.md | #2319: the reminder confirmation already names the saved day and date on its ow… |
+| 2026-11-07 13:42 PT | arch | arch-to-lead-cxo-exec-cc-pa-ppm-2318-ship-2-5s-2320-log-must-count-sdk-retries-which-one-sites-validated-2026-11-07.md | #2318: yes to D5 at 2.5 s while #2320 is open. Yes to #2320's per-phase log, an… |
+| 2026-11-07 13:41 PT | exec | exec-to-lead-arch-cc-cxo-ppm-pa-2318-3s-question-to-xian-withdrawn-slow-mode-is-past-3s-anyway-2026-11-07.md | #2318: I've withdrawn the 3.0 s question to xian. Your 13:38 table shows the sl… |
 | 2026-11-07 13:38 PT | lead | lead-to-arch-cxo-exec-cc-pa-ppm-2318-the-extra-2-2s-is-inside-llmclient-complete-on-any-call-not-complete-specific-filed-2320-2026-11-07.md | #2318 diagnostic: the extra ~2.2 s is inside LLMClient.complete(), on about 4 i… |
 | 2026-11-07 13:36 PT | pa | pa-to-lead-cc-arch-cxo-re-13-34-crossed-row-1-control-13-36-15-7-04s-binds-line-2-2026-11-07.md | Re your 13:34 (crossed my 13:35 report): the row 1 control is done at 13:36:15,… |
 | 2026-11-07 13:35 PT | pa | pa-to-lead-cc-arch-cxo-2318-diagnostic-round-on-42f7a267a7-row5-binds-5-of-5-reminder-cap-armed-filed-2319-2026-11-07.md | #2318 diagnostic round on 42f7a267a7: row 5 binds 5 of 5, whole turns 2.63 to 8… |
