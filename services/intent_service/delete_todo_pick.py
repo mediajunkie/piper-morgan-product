@@ -248,6 +248,103 @@ DELETE_ITEM_NO_LIST_ASK = (
 )
 
 
+# #2321 (Arch 11-07 14:41, option (d); CXO 14:44, words): with no recorded list,
+# ``delete_item`` keeps the 08:06 rule (no presumption of todos) but ASKS a closed
+# choice of kind instead of ending on an instruction, so no answer reaches the floor.
+DELETE_ITEM_NO_LIST_LEAD = (
+    "I'm not sure which one you mean, because I haven't shown you a list to count "
+    "from. Nothing was deleted."
+)
+KIND_CHOICE_QUESTION = (
+    "Do you want to see your todos or your reminders? Say which, or 'never mind' to "
+    "leave them alone."
+)
+KIND_CHOICE_SHORT_QUESTION = "Todos or reminders? Say which, or 'never mind' to leave them alone."
+KIND_CHOICE_DECLINE = "Okay — nothing has been deleted."
+
+
+def arm_delete_kind_choice(
+    message: str,
+    session_id: Optional[str],
+    principal: Optional[str],
+    offer_service: Any,
+    reasked: bool = False,
+) -> Optional[str]:
+    """#2321 (d): arm the todos-or-reminders choice on the delete pick's own record
+    (``kind_choice``), so the answer reaches :func:`handle_delete_todo_pick_turn`.
+    The kinds offered come from code. ``None`` when nothing could pop an answer: the
+    caller keeps the 08:06 statement, which asks nothing."""
+    if not session_id or offer_service is None:
+        return None
+    question = (
+        KIND_CHOICE_SHORT_QUESTION
+        if reasked
+        else f"{DELETE_ITEM_NO_LIST_LEAD}\n\n{KIND_CHOICE_QUESTION}"
+    )
+    record = _pick_offer(
+        principal, "todo", [], [], [], message, question, reasked=reasked, verb=VERB_DELETE
+    )
+    record["pending_action"]["kind_choice"] = True
+    record["decline_message"] = KIND_CHOICE_DECLINE
+    offer_service.set_pending_offer(session_id, record, user_id=principal)
+    logger.info("delete_kind_choice_armed", session_id=session_id, reasked=reasked)
+    return question
+
+
+async def _kind_choice_turn(
+    payload: Dict[str, Any],
+    text: str,
+    session_id: Optional[str],
+    user_id: Optional[str],
+    intent_service: Any,
+) -> Dict[str, Any]:
+    """#2321 (d): the answer to the kind choice. A named kind (the existing noun
+    detection, ``reminder_copy.said_noun``) gets that kind's #2046 no-list reply
+    with the armed delete question; anything else gets the short question once,
+    then the decline. Nothing is written."""
+    from services.intent.intent_service import _coerce_todo_principal
+    from services.intent_service.reminder_copy import said_noun
+
+    data: Dict[str, Any] = {"category": "execution", "action": CLARIFY_DELETE_PICK_WORKFLOW}
+    original_message = payload.get("original_message") or ""
+    offer_service = getattr(intent_service, "workflow_offer_service", None)
+    kind = said_noun(text)
+    if kind:
+        handlers = intent_service.todo_handlers
+        todos = await handlers.todo_service.list_todos(
+            user_id=_coerce_todo_principal(user_id), include_completed=False
+        )
+        reply, armed = handlers._no_list_ordinal_pick(
+            list(todos or []),
+            kind,
+            "delete",
+            "",
+            original_message,
+            session_id,
+            user_id,
+            offer_service,
+        )
+        logger.info("delete_kind_choice_bound", session_id=session_id, kind=kind)
+        return {
+            "message": reply,
+            "intent_data": {**data, **({PICK_PENDING_FLAG: True} if armed else {})},
+            "requires_clarification": armed,
+        }
+    if payload.get("pick_reasked"):
+        logger.info("delete_kind_choice_release_after_reask", session_id=session_id)
+        return {"message": KIND_CHOICE_DECLINE, "intent_data": data}
+    question = arm_delete_kind_choice(
+        original_message, session_id, user_id, offer_service, reasked=True
+    )
+    if question is None:
+        return {"message": KIND_CHOICE_DECLINE, "intent_data": data}
+    return {
+        "message": question,
+        "intent_data": {**data, PICK_PENDING_FLAG: True},
+        "requires_clarification": True,
+    }
+
+
 def _last_list_kind(session_id: Optional[str], user_id: Any) -> Optional[str]:
     """The kind of the last numbered list this session showed, or None."""
     shown = last_numbered_list(session_id, user_id)
@@ -791,6 +888,9 @@ async def handle_delete_todo_pick_turn(
     if verdict is AcceptanceVerdict.DECLINE:
         logger.info("delete_todo_pick_declined", session_id=session_id)
         return None
+    if payload.get("kind_choice"):
+        # #2321 (d): a bare "yes" names no kind either, so it is a stray answer here.
+        return await _kind_choice_turn(payload, text, session_id, user_id, intent_service)
     if verdict is AcceptanceVerdict.ACCEPT:
         logger.info("delete_todo_pick_bare_accept", session_id=session_id)
         return None  # names nothing — the registered landing re-asks + re-arms

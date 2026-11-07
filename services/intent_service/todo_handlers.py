@@ -2886,11 +2886,39 @@ class TodoIntentHandlers:
         if intent.action in ("delete_item", "delete_items"):
             from services.intent_service.delete_todo_pick import (
                 DELETE_ITEM_NO_LIST_ASK,
+                arm_delete_kind_choice,
                 last_numbered_list,
             )
 
             if last_numbered_list(session_id, principal or user_id) is None:
-                return DELETE_ITEM_NO_LIST_ASK
+                # #2321 (Arch 14:41 (d); CXO 14:44): no presumption of todos — a kind
+                # the person named ("delete the second reminder") goes straight to that
+                # kind's no-list reply; otherwise the armed todos-or-reminders choice.
+                from services.intent_service.reminder_copy import said_noun
+
+                _asked = intent.original_message or (intent.context or {}).get(
+                    "original_message", ""
+                )
+                _kind = said_noun(_asked)
+                if _kind:
+                    _active = await self.todo_service.list_todos(
+                        user_id=user_id, include_completed=False
+                    )
+                    _reply, _armed = self._no_list_ordinal_pick(
+                        list(_active or []),
+                        _kind,
+                        "delete",
+                        "",
+                        _asked,
+                        session_id,
+                        principal or str(user_id),
+                        offer_service,
+                    )
+                    return _reply
+                _choice = arm_delete_kind_choice(
+                    _asked, session_id, principal or str(user_id), offer_service
+                )
+                return _choice or DELETE_ITEM_NO_LIST_ASK
 
         # Note: original_message may be in intent.original_message OR intent.context["original_message"]
         # depending on how the Intent was created (Issue #744)
