@@ -234,3 +234,15 @@ async def test_no_list_several_todos_ask_the_pick_1_to_k(store):
     assert _armed(service, store)
     await _turn(service, store, "3")
     assert store["completed"] == [store["todos"][9].id]
+
+
+@pytest.mark.asyncio
+async def test_no_list_identical_copies_ask_one_or_both_too(store):
+    """CXO 11-06 21:05: with no list shown, copies of one todo ask one-or-both on this
+    path as on the legacy path; never the batch 'Complete 2 todos … (yes/no)'."""
+    service = _service()
+    result = await _turn(service, store, "complete the call mom todo")
+    assert result.message == '"call mom" is on your list 2 times. Complete one, or both?'
+    assert _armed(service, store)
+    await _turn(service, store, "one")
+    assert len(store["completed"]) == 1

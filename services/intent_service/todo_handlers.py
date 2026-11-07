@@ -1164,8 +1164,8 @@ class TodoIntentHandlers:
           (CXO 19:22).
 
         ``None`` (the resolver below runs unchanged) for anything else: ordinals,
-        ranges, "all", several targets, a carve-out, one row, or (no list) one
-        line of identical copies."""
+        ranges, "all", several targets, a carve-out, or one row. With no list, one
+        line of identical copies asks one-or-both too (CXO 21:05)."""
         if len(targets) != 1 or exclude or _is_positional(targets[0]):
             return None
         tok = targets[0].strip().strip("\"'“”‘’").strip()
@@ -1228,6 +1228,19 @@ class TodoIntentHandlers:
         lines = match_lines(matches, active or [])
         if len(lines) > 1:
             return _pick(lines, None)
+        if len(lines) == 1 and len(lines[0]) > 1:
+            # CXO 11-06 21:05: identical copies with no list shown ask one-or-both on
+            # this path too, the same question as the legacy path (19:22); a batch
+            # "Complete 2 todos …" hid that the person may want only one.
+            return self._ask_group_line(
+                "complete",
+                lines[0],
+                conversation_noun(message, "todos"),
+                message,
+                session_id,
+                offer_service,
+                principal,
+            )
         return None
 
     async def handle_delete_todo_targets(
