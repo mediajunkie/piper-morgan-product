@@ -1,71 +1,49 @@
 # Exec carry-forward
 
-**Rewritten 2026-11-05 22:02 PST at STOP** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/05/2026-11-05-0422-exec-code-log.md` (closed).
+**Rewritten 2026-11-06 22:01 PST at STOP** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/06/2026-11-06-0423-exec-code-log.md` (closed).
 
 **STATE: LIVE on LaunchAgent** `com.xian.pm-exec-cycle`, firing at :01 on hours 6, 10, 14, 18 and 22. An empty CronList is normal, and there's no STOP re-arm. Agent liveness is Pard's.
 
 **Cron gate:** the duty-cycle-tick cron steps (the CronList self-heal and the STOP re-arm) don't apply on a LaunchAgent.
 
-**Mail v4:** read `scripts/mail4.py inbox` on every wake, alongside v3. It opens to every seat on Mon 11-09 (CIO), and v3 stays the fallback until 11-23.
+**Mail v4:** read `scripts/mail4.py inbox` on every wake, alongside v3. It opens to every seat on Mon 11-09 (CIO), and v3 stays the fallback until 11-23. The v3 inbox holds 1,000+ files: find new mail with `git log --since=<last check> --diff-filter=A --name-only origin/main -- mailboxes/exec/inbox/`.
 
 ## Rollup
-v869, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut** (11-05: a too-late end marker dropped two paragraphs, which I restored from HEAD). The source is in a public repo, so describe security findings by class only.
+v869, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut**. Grep the exact anchor text before writing the replace (11-06 17:28: an anchor that wasn't there failed the assert, and the publish sent the unchanged page). When a ruling is relayed, remove its rollup item in the same commit. The source is in a public repo, so describe security findings by class only.
 
-## Where things stand (end of 11-05)
-- **Served:** alpha and beta run `4e4c3fb1a8` (read 22:01, healthy). Main CI is 12/12 green. **beta.pipermorgan.ai is the canonical host** (#2282 steps 1–3 done; alpha 301s to beta; the MCP OAuth issuer and sign-in stay on alpha).
-- **Invite hold** (xian 11-04 19:31, no invites of any kind):
-  - Met: #1551, #2178 (closed), #2283 (closed), #2282.
-  - **P0 left: #2261**, which waits on xian's #2174 runs (Lead's steps: 20:52 memo plus two lines; custody per HOST).
-  - **P1 #2292**: SPF, DKIM and DMARC are absent on pipermorgan.ai. It must be done before the next invite and the cohort note.
-  - P1 also: #2157 and #2158.
-- **GitHub incident:** closed out. Org `pipermorgan` owns both OAuth Apps ("Piper Morgan", "Piper Morgan Staging"), with wildcard off and the alpha and beta callbacks listed. Census 11-05: 0 crossings on GitHub and Calendar. #2266 was retitled to the code path (the tester never connected; the sidecar has no token).
-- **Cohort note:** HOST's v3 is final for xian's words (xian may say "beta" for "alpha"). The bcc list comes from HOST's private roster in xian's HOST session. It sends after #2292.
-- **Website:**
-  - Down 12:18–15:18 → 16:25 (Vercel 402, Hobby). xian upgraded to Pro.
-  - Both efficiencies are live (`5f1d253`). The build step's live proof is Saturday's publish (Comms).
-  - Ruling: longer term, the split (#2291, Ongoing, mail records first, xian reviews before cutover).
-- **Posts:**
-  - Thu "Don't Overpromise": published, with Medium.
-  - Sat 11-07 "At Long Last, Beta" (working title, CSV): building, status planned, xian writes it.
-  - Sun 11-08 "Fixed and Scores Higher Came Apart": insight.
-  - Tue and Thu next week: beats 2 and 3.
-  - xian wants an editorial-strategy session with Comms (a beta era for the blog, the narrative cadence).
-- **Decided 11-05:**
-  - #2283 is P0.
-  - #2282 yes.
-  - v4 widened to every seat.
-  - Vercel Pro now, plus efficiencies, then the split.
+## Where things stand (end of 11-06)
+- **Served on alpha:** `0af6078171` (Lead 20:38, run 42339059907). Today's promotions, all dispatched by Lead: `e64de73062` 07:04, `765a2bc4f1` 13:09, `7ffd460640` 15:37, `34efff2af8` 17:27, `06c71d53e2` by 18:08, `771eb4f9bd` 19:08, `0af6078171` 20:38. Main CI is 12/12 green (it was red 19:37–20:06 from Lead's push, self-reported).
+- **Closed today:** #2302, #2272, #1715 (skills review: 13 candidates, none built).
+- **Lane, open:** #2301 (interim pulled; stays FAIL until the read); #2315 ("complete the X todo" skips the pick, PA 20:47); #2314's name cut at "link" (Lead: upstream, row added).
+- **ADR-083:** the slot screen FAILED 17:24 (38 unrelated rows moved, ~$3.45). **D5 PASSED** 18:22 (~$1.42; Arch ruled 18:24). D5 is on branch `claude/lead-adr083`, off main, until xian's explicit go or veto. Arch agreed 18:45: no default window length.
+- **Invite hold** (xian 11-04 19:31, no invites of any kind): P0 left is #2261, waiting on xian's #2174 runs. #2292 mail records before the next invite and the cohort note. #2286's on-page read rides PA's fresh-account run (CXO 13:17), not xian.
+- **Two-week sprints RULED 10:33**, from Fri 11-13. PPM's proposed set (11 items, map v88), Lead sized it over capacity, so PPM trims before the 11-13 review. #2157 single drill run is an 11-13 candidate (Arch).
+- **Ship #068:** synthesis discussed (11-06). The scaffold is at `docs/public/comms/drafts/weekly-ship-068-draft-2026-11-06.md`, with the calendar row drafted and pubDate Wed 11-11. It needs xian's Console screenshots for the spend line, then his first look, then Comms.
+- **Posts:** Sat 11-07 "At Long Last, Beta" (working title, building, planned; xian writes it). Sun 11-08 "Fixed and Scores Higher Came Apart" (insight).
 
-## Waiting on xian (morning 11-06)
-1. **#2174 runs** (about 20 min, then a 5-min refresh run 8 or more hours later). They decide #2261's leg; it's the last P0.
-2. **#2292 mail records** (about 15 min, Google Admin DKIM plus Hover TXT), then one test mail checked with "Show original", plus one waiting-list sign-up from an outside Gmail to see the confirmation's From domain and results (CIO 22:18: Buttondown probably sends as itself).
-3. **The cohort note:** bcc via HOST, then send.
-4. **#2219 plus CXO's noun follow-up** ride the morning promotion (Lead says when; xian's dispatch line).
-5. **#2244:** `fly ssh console -a piper-morgan -C "ls -ld /data /data/uploads"`, plus whether an entrypoint/image change needs his yes.
-6. **Optional:**
-   - Connected apps: revoke the older Claude row if there are two.
-   - Web's dinp-machine sign-in for the last #2282 check (paste on the rollup).
-7. Bigger talks:
-   - the onboarding plan, with the advisor's feedback and CIO;
-   - sprint planning;
-   - the #1715 skills walk;
-   - the editorial strategy session with Comms.
+## Waiting on xian
+1. **ADR-083 D5: go or veto** (top of "Your word"; Arch, Lead and I recommend go). Relay the same hour, add a decisions.log line, remove the rollup item in the same commit.
+2. **Console spend screenshots, 10-30 to 11-05** (platform.claude.com → Cost, Workspace each in turn, Group by API key, each org; Usage too for tokens in and out). Then fill the scaffold's spend line and hand it to him.
+3. **Scaffold OK, or "draft it"** for Ship #068.
+4. **Weekly-rhythm card ("go" or change)** plus Thanksgiving: first closing review Fri 11-27 or Sat 11-28.
+5. **Rule 8 history:** "leave it" (my rec) or "rewrite".
+6. **#2270:** the advisor's exact repo-question phrasing, or "don't have it" (PA writes a stand-in).
+7. **#2174 runs** (decides #2261, the last P0), **#2292 mail records**, the **cohort note**, **#2244** `/data` read, **#2282 step 4** (dinp-machine sign-in word for Web).
+8. Optional: the PA rename.
 
-## Waiting on others (added 11-06)
-
-- **PPM: one-page options on 2-week sprints for Production** (whether, when, how, rec; tasked 10:09 at xian's flag). It goes on the rollup as one card when it lands. Lead feeds capacity, PA the plugin-lane timing.
-- **Two-week sprints RULED 10:33** (from Fri 11-13). Objection window closes Mon 11-09 12:00 PT (no objection so far: HOST, CXO, Comms): take any new objection to xian; if none, say so on the rollup and drop it. PPM names the first set by the 11-13 review. Ship #070 is the first progress Ship, #071 the first final score.
-- **ADR-083 D5:** PASSED 18:22 ($1.42; ruled 18:24). On the rollup as go or veto, waiting on xian's explicit word (no silent window). Relay same hour + decisions.log.
+## Waiting on others
+- **Sprint objections:** window closes Mon 11-09 12:00 PT. No objection so far from HOST, CXO or Comms (3 of 10). At noon Monday, put the tally on the rollup; take any objection to xian.
+- **PPM** trims the sprint-2 set before the 11-13 review.
 
 ## Reminders owed to xian
-- **Vercel: downgrade from Pro once the headroom exists again** (xian 11-05 16:45; standing item #182). The trigger: the split is live and admin-only usage is well inside Hobby. Raise then that Hobby is non-commercial, so the downgrade may not be allowed.
+- **Vercel: downgrade from Pro once the headroom exists again** (standing item #182). Trigger: the split is live and admin-only usage is well inside Hobby. Raise that Hobby is non-commercial, so the downgrade may not be allowed.
 - **#2282 step 5, around Thu 11-12** (standing item #183): remove the alpha callbacks in GitHub and Google if a week passes with no hits.
 
 ## Mine
-- Relay xian's rulings at once and record them in decisions.log. Timestamps come from `date` only.
-- **Review slot, every START** (adopted 11-06, Agent 360 9.2): re-read one claim I made in the last 24 hours against its source, and log the result. Nothing else fills this slot.
-- Ship-kickoff and map checks Fri 11-06.
+- Relay xian's rulings at once and record them in decisions.log. Timestamps come from a separate `date` call only, never written in the same command (today's slips: 10:03, 10:05, 10:21, "10:5x", "11:0x", "18:1x"; the last caught before publishing).
+- **Review slot, every START:** re-read one claim I made in the last 24 hours against its source, and log the result.
+- Prices to Exec: small classifier runs proceed unless stopped; screens get a ceiling with one re-run, re-priced past it.
 - Write DAY-CLOSED in grep form, `<!-- DAY-CLOSED: YYYY-MM-DD -->`, as the log's last line.
 
 ## Owed rows (owed-scan)
-- key: 1715-review. Filed: 2026-10-31. The #1715 skills walk with xian is overdue; it's on his talk list.
+- key: 1715-review. Filed: 2026-10-31. #1715 is closed (CIO 11-06); xian asked to hear skills-review outcomes, which he has. The walk itself is on his talk list only if he wants it.
