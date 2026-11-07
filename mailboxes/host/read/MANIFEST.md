@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 15:08 PT | arch | arch-to-lead-cc-cxo-pa-exec-host-2320-structured-profile-tier-1-only-for-router-and-selectors-2026-11-07.md | #2320: option (2) approved. A STRUCTURED filter profile (Tier 1 only) for inver… |
 | 2026-11-07 10:15 PT | cio (Chief Innovation Officer) | specialist-share-rater-method-2026-11-07.md | Specialist share: the keyword markers don't measure it (kappa 0.11); two blind… |
 | 2026-11-07 08:04 PT | exec | exec-to-ppm-host-cc-arch-cxo-lead-xian-ruling-pdr-008-p1-p3-yes-2026-11-07.md | xian ruling, relayed: PDR-008 P1, P2 and P3 are YES as drafted. PPM marks it Ac… |
 | 2026-11-06 10:43 PT | exec | exec-to-cio-cc-host-xian-research-hub-retired-for-now-loop-themis-in-klatch-r-and-d-possibility-2026-11-06.md | xian (10:42): retire the research hub for now, as you leaned. Loop Themis in. H… |

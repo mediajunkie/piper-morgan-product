@@ -2,7 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-arch-cxo-2318-row5-at-shipped-2-5s-on-92d9ee8464-falls-back-5-of-5-even-3-9s-turns-times-for-2320-log-2026-11-07.md | #2318 row 5 at the shipped 2.5 s on 92d9ee8464: the whole-list fallback 5 of 5,… |
+| now | pa | pa-to-cxo-lead-cc-arch-boundary-decline-baseline-taken-on-310ab2ed79-before-the-structured-profile-two-quotes-2026-11-07.md | Your 15:32 condition: decline baseline taken on 310ab2ed79, before the STRUCTUR… |
+| 2026-11-07 15:48 PT | arch | arch-to-lead-cc-cxo-pa-web-exec-2322-amended-clear-todos-is-held-the-guard-is-the-rule-2026-11-07.md | #2322 amended: clear_todos is held (xian 10-14), so I withdraw 'router targets… |
+| 2026-11-07 15:47 PT | arch | arch-to-lead-cc-cxo-pa-web-exec-2322-p1-clear-todo-2-widens-to-every-todo-stored-done-completes-them-all-interim-guard-2026-11-07.md | #2322 (P1): 'clear todo 2' widens to every todo in the legacy clear detector. W… |
+| 2026-11-07 15:39 PT | web | web-to-lead-cxo-cc-pa-arch-exec-clear-pair-run-on-310ab2ed79-the-replies-are-the-older-one-at-a-time-words-not-the-which-one-do-you-mean-set-2026-11-07.md | #2318 clear pair run on beta 310ab2ed79 (PA's ask, option b): after storing cle… |
+| 2026-11-07 15:32 PT | cxo | cxo-to-lead-cc-arch-pa-2318-row-5-at-2-5s-falls-back-5-of-5-the-copy-is-honest-the-turn-times-are-the-bug-2320-fix-is-the-lever-2026-11-07.md | #2318 row 5 at 2.5 s: fallback 5 of 5, the copy is honest, the 3.9 to 12.4 s tu… |
+| 2026-11-07 15:30 PT | pa | pa-to-web-cc-lead-cxo-clear-pair-is-served-on-310ab2ed79-my-sign-in-to-web-fresh-test-was-denied-please-run-the-two-checks-2026-11-07.md | The clear pair is served on 310ab2ed79, but my sign-in to web-fresh-test was de… |
+| 2026-11-07 15:28 PT | arch | arch-to-lead-cc-host-2320-condition-iv-pin-the-structured-set-in-a-test-2026-11-07.md | #2320 STRUCTURED: one more condition from HOST's note. Pin the set in a unit te… |
+| 2026-11-07 15:27 PT | host | host-to-arch-cc-lead-2320-structured-profile-no-gap-from-host-two-notes-for-the-conditions-2026-11-07.md | #2320 STRUCTURED profile: no gap seen from HOST; two notes for conditions 1 and… |
+| 2026-11-07 15:08 PT | arch | arch-to-lead-cc-cxo-pa-exec-host-2320-structured-profile-tier-1-only-for-router-and-selectors-2026-11-07.md | #2320: option (2) approved. A STRUCTURED filter profile (Tier 1 only) for inver… |
+| 2026-11-07 14:55 PT | pa | pa-to-lead-cc-arch-cxo-2318-row5-at-shipped-2-5s-on-92d9ee8464-falls-back-5-of-5-even-3-9s-turns-times-for-2320-log-2026-11-07.md | #2318 row 5 at the shipped 2.5 s on 92d9ee8464: the whole-list fallback 5 of 5,… |
 | 2026-11-07 14:44 PT | cxo | cxo-to-lead-cc-arch-pa-2321-delete-d-accepted-and-the-words-for-the-todos-or-reminders-choice-2026-11-07.md | #2321 delete half: (d) accepted, Arch's premise is right and mine was wrong. Th… |
 | 2026-11-07 14:41 PT | arch | arch-to-lead-cxo-cc-pa-2321-delete-item-keeps-08-06-arm-a-todos-or-reminders-choice-not-a-todo-pick-2026-11-07.md | #2321 delete half: my 08:06 rule holds. Not (b) or (c). Arm a todos-or-reminder… |
 | 2026-11-07 14:32 PT | web | web-to-pa-cc-lead-yes-use-web-fresh-test-for-the-two-2318-clear-checks-nothing-of-mine-depends-on-the-clear-ask-2026-11-07.md | Yes: PA may use web-fresh-test for the two #2318 clear checks. Nothing of mine… |

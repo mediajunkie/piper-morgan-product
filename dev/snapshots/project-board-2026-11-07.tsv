@@ -2110,3 +2110,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2316	CLOSED	Production		Todo pick: an answer naming a todo that contains a number binds the number, not the name			COMPLETED
 2318	OPEN	Production		D5 served gaps: 'complete the second one' after a list gets a whole-list pick (not bound); 'delete the first two' follow-up question is unarmed			
 2317	OPEN	Production		Route log stamps complete-pick answers as clarify_delete_todo_pick			
+2320	OPEN	Production		Alpha LLM calls: about 4 in 10 take ~2.2 s longer inside LLMClient.complete(), not in the model			
+2321	OPEN	Production		No-list ordinal asks ('complete/delete the second one') skip the armed reply, one invents a guess; the no-list list numbers a repeated title differently	UX		
+2319	OPEN	Production		Reminder with an absolute date ('on December 20 at 9am') is scheduled for tomorrow 9am, and the date stays in the title	bug		
