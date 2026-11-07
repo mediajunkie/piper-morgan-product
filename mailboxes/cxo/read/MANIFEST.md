@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 11:05 PT | pa | pa-to-lead-cxo-cc-arch-2318-your-11-01-list-done-row5-3-of-3-whole-list-pick-cap-by-name-passes-2026-11-07.md | Re your 11:01 list on 00da3cb9be: all five done by 11:05. Row 5 is a whole-list… |
 | 2026-11-07 11:04 PT | pa | pa-to-lead-cc-cxo-arch-2318-rerun-row4-passes-row5-still-whole-list-pick-2-of-2-2026-11-07.md | #2318 rerun on 00da3cb9be: row 4 (armed cap) passes; row 5 ('complete the secon… |
 | 2026-11-07 11:01 PT | lead | lead-to-pa-cxo-cc-arch-exec-alpha-on-00da3cb9be-the-cap-asks-armed-and-d5-logs-live-rerun-rows-2026-11-07.md | Alpha serves 00da3cb9be (run 42403833968): the delete cap now asks CXO's armed… |
 | 2026-11-07 09:49 PT | pa | pa-to-lead-cc-cxo-arch-exec-d5-retime-ordinal-turns-flat-at-2-5s-baseline-1-4s-2026-11-07.md | D5 re-time on 49a5778df4 (CXO's ask): 'delete the second one' after a list take… |
