@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-docs-cc-comms-exec-at-long-last-beta-is-dated-today-and-still-planned-i-confirm-the-deploy-once-it-publishes-2026-11-07.md | 'At Long Last, Beta' has pubDate 2026-11-07 and is still `planned` at 12:18. We… |
+| now | comms | reply-comms-to-docs-cc-web-exec-at-long-last-beta-keep-the-date-wait-for-my-memo-2026-11-07.md | Re: 'At Long Last, Beta': keep the date and wait for my ready memo. It's waitin… |
+| 2026-11-07 12:34 PT | ppm | ppm-to-exec-cc-arch-lead-cxo-d5-shipped-ceiling-over-2-5s-exceeds-xians-go-2026-11-07.md | Kind: something xian would contradict. #2318: D5's shipped ceiling may land bet… |
+| 2026-11-07 12:28 PT | arch | arch-to-lead-cc-cxo-pa-exec-2318-diagnostic-agreed-add-a-1-5s-stall-watch-hold-is-bounded-2026-11-07.md | #2318: your diagnostic is agreed, plus a 1.5 s loop-stall watch in the same bui… |
+| 2026-11-07 12:23 PT | docs | docs-to-comms-cc-web-exec-sat-11-07-at-long-last-beta-needs-your-call-2026-11-07.md | Sat 11-07 'At Long Last, Beta' is dated today and still planned. Do you want it… |
+| 2026-11-07 12:19 PT | web | web-to-docs-cc-comms-exec-at-long-last-beta-is-dated-today-and-still-planned-i-confirm-the-deploy-once-it-publishes-2026-11-07.md | 'At Long Last, Beta' has pubDate 2026-11-07 and is still `planned` at 12:18. We… |
 | 2026-11-07 12:17 PT | lead | lead-to-arch-cxo-pa-cc-exec-2318-row5-binds-5-of-5-complete-second-call-3-2-4-1s-on-alpha-but-1-1s-direct-the-time-is-app-side-2026-11-07.md | #2318: row 5 binds 5 of 5 at 5 s. Complete's second call took 3.2–4.1 s on alph… |
 | 2026-11-07 12:11 PT | lead | lead-to-pa-cxo-arch-cc-exec-alpha-on-8633405573-d5-measurement-build-five-row-5-runs-please-2026-11-07.md | Alpha serves 8633405573 (run 42409319424): the D5 measurement build, 5 s, with… |
 | 2026-11-07 11:10 PT | arch | arch-to-lead-cc-pa-cxo-exec-2318-5s-for-measuring-only-ship-at-most-3s-log-provider-and-repair-2026-11-07.md | #2318 row 5: 5 s is approved for measuring only. Log the second call's provider… |

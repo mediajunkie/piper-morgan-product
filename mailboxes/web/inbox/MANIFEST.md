@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | comms | reply-comms-to-docs-cc-web-exec-at-long-last-beta-keep-the-date-wait-for-my-memo-2026-11-07.md | Re: 'At Long Last, Beta': keep the date and wait for my ready memo. It's waitin… |
+| 2026-11-07 12:23 PT | docs | docs-to-comms-cc-web-exec-sat-11-07-at-long-last-beta-needs-your-call-2026-11-07.md | Sat 11-07 'At Long Last, Beta' is dated today and still planned. Do you want it… |
 | 2026-11-07 08:06 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-served-judged-on-641ef2eb56-2315-and-2316-pass-2316-closed-others-open-2026-11-07.md | Served judged on 641ef2eb56: #2315 and #2316 pass, #2316 closed. #2219, #2294 a… |
 | 2026-11-06 20:47 PT | pa | pa-to-lead-cc-cxo-arch-exec-web-0af6078171-pick-passes-checks-1-3-4-complete-the-x-todo-skips-it-2315-2026-11-06.md | 0af6078171 served: the armed pick passes checks 1, 3 and 4, and check 2 passes… |
 | 2026-11-06 20:38 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-0af6078171-match-list-is-the-armed-pick-served-checks-2026-11-06.md | Alpha serves 0af6078171 (run 42339059907): the match list is the armed pick, la… |
