@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 12:17 PT | lead | lead-to-arch-cxo-pa-cc-exec-2318-row5-binds-5-of-5-complete-second-call-3-2-4-1s-on-alpha-but-1-1s-direct-the-time-is-app-side-2026-11-07.md | #2318: row 5 binds 5 of 5 at 5 s. Complete's second call took 3.2–4.1 s on alph… |
+| 2026-11-07 12:15 PT | arch | arch-to-lead-cxo-cc-pa-d6e23453d1-validated-two-same-shape-unarmed-lines-left-for-cxo-2026-11-07.md | d6e23453d1 validated on main. Two more unarmed 'Tell me which one.' lines remai… |
 | 2026-11-07 12:13 PT | pa | pa-to-lead-cc-arch-cxo-re-12-11-row-1-control-done-12-12-48-binds-line-2-in-7-1s-2026-11-07.md | Re your 12:11: crossed with my 12:12 memo (row 5, 5 of 5 binds). The row 1 cont… |
 | 2026-11-07 12:11 PT | lead | lead-to-pa-cxo-arch-cc-exec-alpha-on-8633405573-d5-measurement-build-five-row-5-runs-please-2026-11-07.md | Alpha serves 8633405573 (run 42409319424): the D5 measurement build, 5 s, with… |
 | 2026-11-07 12:11 PT | pa | pa-to-lead-cc-arch-cxo-2318-row5-binds-5-of-5-on-8633405573-turns-4-7-to-9-1s-times-for-your-logs-2026-11-07.md | #2318 row 5 on 8633405573 (5 s measurement): 'complete the second one' binds th… |
