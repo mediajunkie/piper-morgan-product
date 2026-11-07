@@ -84,6 +84,18 @@ _OFFER_SENTENCE_RE = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 
+# #2311 (Arch 11-06 16:10, approved in principle; PPM 16:24 build now): the floor's
+# own narration before a dash, of any length, then an opener. Served: 'Deleting
+# "urgent task" and "review prs" — want me to go ahead?' with nothing armed. A dash
+# is an em or en dash (spaces optional) or a hyphen with spaces around it; a hyphen
+# inside a word is not one. Lead's census (16:20): 19 new matches over 5,379
+# served questions, every one an unarmed floor offer. A sentence matched only by
+# this form is never armed (condition 3) and is rewritten whole (CXO 16:21).
+_WIDE_OFFER_SENTENCE_RE = re.compile(
+    r"^.+?(?:\s*[—–]\s*|\s+-\s+)(?:" + "|".join(_OFFER_OPENERS) + r")\s+(?P<predicate>\S.*?)\s*\?$",
+    re.IGNORECASE | re.DOTALL,
+)
+
 # Leading decoration a sentence may carry in floor markdown (list bullet,
 # emphasis). Stripped before the anchored match so "- Want me to ...?" is still
 # read as sentence-initial. Mirrors the ask-census's trailing-closer strip.
@@ -97,6 +109,8 @@ class OfferSentence(NamedTuple):
     end: int
     sentence: str  # the sentence verbatim, decoration stripped
     predicate: str  # what was offered, e.g. "add 'One Job' ... to your projects now"
+    # #2311: matched only by the widened dash lead (never armed; rewritten whole).
+    widened: bool = False
 
 
 def _split_sentences(text: str) -> List[Tuple[int, int]]:
@@ -140,6 +154,10 @@ def detect_offer_questions(text: str) -> List[OfferSentence]:
         if not candidate:
             continue
         match = _OFFER_SENTENCE_RE.match(candidate)
+        widened = False
+        if not match:
+            match = _WIDE_OFFER_SENTENCE_RE.match(candidate)
+            widened = match is not None
         if not match:
             continue
         # Map the stripped candidate back onto the source text.
@@ -151,6 +169,7 @@ def detect_offer_questions(text: str) -> List[OfferSentence]:
                 end=abs_end,
                 sentence=candidate,
                 predicate=match.group("predicate").strip(),
+                widened=widened,
             )
         )
     return found
@@ -494,6 +513,25 @@ def _try_arm(
     return out
 
 
+# #2311 (CXO 16:21; Arch 16:22, shape chosen from a closed list, wording only).
+# Both open with the one thing true of every such sentence: the floor has no tools.
+NOTHING_DONE_WITH_OBJECT = (
+    "Nothing has been done yet. If you'd like me to {predicate}, ask me directly."
+)
+NOTHING_DONE_BARE = "Nothing has been done yet. Tell me what you'd like as a direct request."
+# Arch 16:22: shape 2 only for these bare predicates (CXO may add by name).
+BARE_OFFER_PREDICATES = frozenset({"go ahead", "do that", "do it", "proceed"})
+
+
+def rewrite_widened_offer(predicate: str) -> str:
+    """#2311: the widened (dash-lead) form. The text before the dash is the floor's
+    own narration and is dropped (CXO 16:21); no command string is offered."""
+    bare = " ".join(predicate.lower().rstrip(" .!").split())
+    if bare in BARE_OFFER_PREDICATES:
+        return NOTHING_DONE_BARE
+    return NOTHING_DONE_WITH_OBJECT.format(predicate=predicate)
+
+
 def _rewrite_preserving_open_question(offer: OfferSentence) -> str:
     """#1901 (CXO ruled 2026-09-28, split-and-preserve): a compound
     ``Want me to X, or is there Y…?`` is ONE sentence with one terminal
@@ -508,6 +546,8 @@ def _rewrite_preserving_open_question(offer: OfferSentence) -> str:
     through instead would reopen the dead-end-"yes" hole for every offer
     phrased this way.
     """
+    if offer.widened:
+        return rewrite_widened_offer(offer.predicate)
     head, sep, _ = offer.predicate.partition(", or ")
     if not sep:
         return rewrite_offer_sentence(offer.predicate)
@@ -579,7 +619,7 @@ def enforce_armed_offers(
     if not offers:
         return text, 0
 
-    if not armed_offer and arm_offer is not None and len(offers) == 1:
+    if not armed_offer and arm_offer is not None and len(offers) == 1 and not offers[0].widened:
         armed_text = _try_arm(
             text,
             offers[0],

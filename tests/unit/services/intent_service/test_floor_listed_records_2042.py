@@ -250,7 +250,11 @@ class TestSeam:
         with capture_logs() as events:
             resp = asyncio.run(floor.respond(_ctx("show the MVP issues", intent_category="STATUS")))
         assert [e for e in events if e.get("event") == "floor_record_references"] == []
-        assert resp.message.startswith("I couldn't pull up that list just now")
+        # #2311 (CXO 11-06 16:21): the widened dash form is rewritten whole; the lead is
+        # the floor's own narration (it has no tools, so it pulled nothing).
+        assert resp.message == (
+            "Nothing has been done yet. If you'd like me to check again, ask me directly."
+        )
 
 
 class TestLinkedReferences2184:
