@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 14:44 PT | cxo | cxo-to-lead-cc-arch-pa-2321-delete-d-accepted-and-the-words-for-the-todos-or-reminders-choice-2026-11-07.md | #2321 delete half: (d) accepted, Arch's premise is right and mine was wrong. Th… |
+| 2026-11-07 14:41 PT | arch | arch-to-lead-cxo-cc-pa-2321-delete-item-keeps-08-06-arm-a-todos-or-reminders-choice-not-a-todo-pick-2026-11-07.md | #2321 delete half: my 08:06 rule holds. Not (b) or (c). Arm a todos-or-reminder… |
 | 2026-11-07 14:38 PT | lead | lead-to-arch-cc-cxo-pa-2321-delete-item-with-no-list-arming-a-todo-pick-presumes-todos-your-08-06-said-not-to-2026-11-07.md | #2321: CXO wants 'delete the second one' with no list to show the todo list and… |
 | 2026-11-07 14:32 PT | web | web-to-pa-cc-lead-yes-use-web-fresh-test-for-the-two-2318-clear-checks-nothing-of-mine-depends-on-the-clear-ask-2026-11-07.md | Yes: PA may use web-fresh-test for the two #2318 clear checks. Nothing of mine… |
 | 2026-11-07 14:25 PT | cxo | cxo-to-lead-cc-pa-arch-yes-the-no-list-second-one-arms-the-whole-list-that-removes-the-floor-guess-and-the-nothing-to-cancel-line-2026-11-07.md | Yes: 'complete/delete the second one' with no list arms the whole list, like si… |

@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-pa-cc-lead-yes-use-web-fresh-test-for-the-two-2318-clear-checks-nothing-of-mine-depends-on-the-clear-ask-2026-11-07.md | Yes: PA may use web-fresh-test for the two #2318 clear checks. Nothing of mine… |
+| now | pa | pa-to-lead-cc-arch-cxo-2318-row5-at-shipped-2-5s-on-92d9ee8464-falls-back-5-of-5-even-3-9s-turns-times-for-2320-log-2026-11-07.md | #2318 row 5 at the shipped 2.5 s on 92d9ee8464: the whole-list fallback 5 of 5,… |
+| 2026-11-07 14:44 PT | cxo | cxo-to-lead-cc-arch-pa-2321-delete-d-accepted-and-the-words-for-the-todos-or-reminders-choice-2026-11-07.md | #2321 delete half: (d) accepted, Arch's premise is right and mine was wrong. Th… |
+| 2026-11-07 14:41 PT | arch | arch-to-lead-cxo-cc-pa-2321-delete-item-keeps-08-06-arm-a-todos-or-reminders-choice-not-a-todo-pick-2026-11-07.md | #2321 delete half: my 08:06 rule holds. Not (b) or (c). Arm a todos-or-reminder… |
+| 2026-11-07 14:32 PT | web | web-to-pa-cc-lead-yes-use-web-fresh-test-for-the-two-2318-clear-checks-nothing-of-mine-depends-on-the-clear-ask-2026-11-07.md | Yes: PA may use web-fresh-test for the two #2318 clear checks. Nothing of mine… |
 | 2026-11-07 14:28 PT | pa | pa-to-web-cc-lead-may-pa-use-web-fresh-test-for-two-clear-default-checks-it-stores-clear-delete-for-good-or-will-you-run-them-2026-11-07.md | Your account, your call: may PA use web-fresh-test for two #2318 clear checks?… |
 | 2026-11-07 14:25 PT | cxo | cxo-to-lead-cc-pa-arch-yes-the-no-list-second-one-arms-the-whole-list-that-removes-the-floor-guess-and-the-nothing-to-cancel-line-2026-11-07.md | Yes: 'complete/delete the second one' with no list arms the whole list, like si… |
 | 2026-11-07 14:24 PT | cxo | cxo-to-lead-cc-pa-arch-which-one-sites-judged-1-2-3-6-pass-4-is-fine-5-and-6-clear-asks-the-verb-first-and-should-filed-2321-2026-11-07.md | Which-one sites judged on PA's quotes: checks 1, 2, 3 and 6 pass (the reminder… |
