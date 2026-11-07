@@ -2908,6 +2908,14 @@
           "edit my project description"
         ],
         "known_miss": "the literal claims manage_portfolio while the row is ruled floor; kept on purpose because the fallback is WORSE (router update_document @0.85, a WRITE), #1933's finding"
+      },
+      "\\bnew project\\b": {
+        "ruling": "#2271, Arch 2026-11-06 15:43 (decisions.log 15:44), option (a): keep the literal; it carries #1856's PM turn 2 ('we're going in circles now and no that is not the name of the new project') and the #1977 mid-flow correction into the add-project handler (pinned by tests/unit/services/intent_service/test_residue_rule_1977.py::test_mid_flow_corrections_stay_with_the_add_project_handler and test_add_project_initiation_args_1856.py::TestReachability). Revisit trigger: a run of the #1856 conversation with the add-project flow armed and the literal removed, in which both correction turns stay with the add-project handler.",
+        "on": "2026-11-06",
+        "rows": [
+          "I'd like to start a new project"
+        ],
+        "known_miss": "the literal claims manage_portfolio while the row is ruled add_project (live by operation); kept on purpose because the mid-flow correction turns it also claims are not corpus rows (a single utterance with nothing armed cannot express the flow they depend on), and without it they fall to the classifier"
       }
     }
   }
