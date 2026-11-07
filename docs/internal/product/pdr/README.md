@@ -4,7 +4,7 @@
 
 This directory contains Product Decision Records (PDRs) that document significant product decisions, their context, rationale, and implications for design and implementation.
 
-**Total PDRs**: 10 records (001-007, 101, 102, plus the PDR-002 appendix). Index checked against the files 2026-10-23 (PPM); currency notes are in PPM's 10-23 PDR check memo to Exec.
+**Total PDRs**: 11 records (001-008, 101, 102, plus the PDR-002 appendix). Index checked against the files 2026-10-23 (PPM); currency notes are in PPM's 10-23 PDR check memo to Exec.
 
 ## What is a PDR?
 
@@ -33,6 +33,7 @@ Core product decisions that shape everything else. These establish patterns, pri
 | [PDR-005](PDR-005-bring-your-own-chat.md) | Bring Your Own Chat — Distribution Model | Approved (v1.0); Amendment 1 ratified 10-23 (xian) | Jun 5, 2026 |
 | [PDR-006](PDR-006-hosted-mcp-plugin-distribution.md) | Hosted MCP Endpoint + Plugin Distribution Model | Ratified; Amendment 1 ratified 10-23 (xian) | Jul 31, 2026 |
 | [PDR-007](PDR-007-editorial-data-single-source-of-truth.md) | Editorial Data — Single Source of Truth | Ratified (Option A) | Aug 28, 2026 |
+| [PDR-008](PDR-008-invite-readiness.md) | Invite Readiness — What Must Be True Before Any Invitation | Draft v1 (proposals P1–P3 await xian) | Nov 7, 2026 |
 
 ### Tier 1xx: Feature/Capability
 Major feature decisions that build on foundational PDRs. These define significant capabilities Piper should offer.
