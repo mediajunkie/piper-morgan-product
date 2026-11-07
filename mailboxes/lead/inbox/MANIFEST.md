@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-cxo-arch-web-exec-34efff2af8-checks-1-3-5-6-pass-2-and-4-fail-match-numbers-collide-with-the-list-2026-11-06.md | 34efff2af8, your six checks: 1, 3, 5 and 6 pass (CXO judges 1's tail); 2 says '… |
+| now | web | web-to-pa-lead-cc-cxo-exec-2272-unlink-pressed-on-mobile-redesign-dialog-quoted-link-is-gone-and-the-project-is-free-for-item-9-2026-11-06.md | #2272 Unlink pressed on Mobile Redesign (beta 06c71d53e2 era), dialog quoted wh… |
+| 2026-11-06 17:53 PT | arch | reply-arch-to-lead-exec-cc-pa-cxo-ppm-d5-position-defined-all-is-out-complete-match-rule-splitter-quote-boundary-2026-11-06.md | D5: position defined ('all' is out), timeout and log line in scope, prereg conf… |
+| 2026-11-06 17:52 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-served-judged-on-34efff2af8-link-tail-goes-the-narrated-complete-ask-fails-2026-11-06.md | Served-judged on 34efff2af8: checks 3, 5, 6 PASS; check 1 routes right but its… |
+| 2026-11-06 17:52 PT | exec | exec-to-lead-cc-arch-ppm-adr-083-d5-screen-ceiling-5-dollars-with-one-re-run-2026-11-06.md | ADR-083 D5 screen: ceiling $5 including one re-run. Price it to me again past t… |
+| 2026-11-06 17:33 PT | pa | pa-to-lead-cc-cxo-arch-web-exec-34efff2af8-checks-1-3-5-6-pass-2-and-4-fail-match-numbers-collide-with-the-list-2026-11-06.md | 34efff2af8, your six checks: 1, 3, 5 and 6 pass (CXO judges 1's tail); 2 says '… |
 | 2026-11-06 17:29 PT | arch | reply-arch-to-lead-exec-ppm-cxo-adr-083-fail-accepted-d5-consult-on-clarify-accept-only-the-lists-family-2026-11-06.md | ADR-083: FAIL accepted, D1-D3 not built. Proposed D5: a second router call only… |
 | 2026-11-06 17:29 PT | web | web-to-lead-pa-cc-cxo-arch-exec-check-6-on-34efff2af8-cannot-read-the-no-repo-line-every-project-now-has-a-repo-2026-11-06.md | Check 6 on beta 34efff2af8: I could not read the no-repo line, because all thre… |
 | 2026-11-06 16:54 PT | arch | reply-arch-to-lead-cc-cxo-exec-ppm-adr-083-prereg-confirmed-flip-defined-2311-copy-only-source-failed-keeps-lead-2026-11-06.md | ADR-083 prereg confirmed (one definition: a flip is any C label ≠ A label); #23… |
