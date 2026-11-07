@@ -8,20 +8,21 @@
 
 ---
 
-## Now (written 2026-11-06 21:47 STOP; replace, don't annotate)
+## Now (written 2026-11-07 12:47 WORK; replace, don't annotate)
 
-- **Served:** beta `0af6078171` (the armed match-list pick) as of 11-06 21:47; MCP Fly v20 `28911350bb`, `/health` 200. Read the live sha from `/health`, not from here.
-- **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta**.
-- **First thing 11-07:** Lead promotes `d48653f307` (#2315) at the 07:00 window. Then rerun Q9's #2315 rows with `dev/2026/11/06/turn.py` on web-seed-1386 (add a disposable `review prs for harbor pilot`, delete it after, with a confirmed yes). Quote to Lead, cc CXO and Arch; CXO keeps #2219 and #2294 open until then.
-- **#2316** (`325521339a`) also rides the 07:00 promotion: over a pick, answer with a name that contains another line's number (e.g. a disposable `call 3 vendors`), expect CXO's two-line `That could mean two different todos:` question with nothing written, then a bare number binds.
-- **Q9 also:** #2313 ("delete A and B") on its build; D5's ordinals wait on xian's explicit word (Exec's rollup).
+- **Served:** beta `8633405573` (D5 measurement build, `D5_CONSULT_CEILING_S = 5.0`) as of 12:47; MCP `/health` 200. Read the live sha from `/health`, not from here.
+- **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta** (`dev/2026/11/06/turn.py`, run from `dev/2026/11/07`).
+- **#2318 row 5:** binds 5 of 5 at 5 s; the extra 2 to 3 s is app-side (Lead 12:17). Next promotion is Lead's diagnostic build (`latency_ms`, 1.5 s stall watch, Arch 12:28). On it: row 5 three to five times, **one disposable per run** (complete writes with no confirm). If the round doesn't name the cause, the following promotion ships at most 2.5 s (Arch 12:43, Exec 12:36; 3.0 s is put to xian). Then row 5 at the shipped ceiling.
+- **Armed-pick rows owed once served:** reminder-clear arms (`d6e23453d1`, validated); Lead's sites 1 to 4 (complete and delete "Which one should I …?" with no list or unresolved); clear sites 5 and 6 wait on CXO's pick among (a)/(b)/(c).
+- **Test account web-seed-1386:** 8 open. `review the deployment plan` and `draft the launch checklist` were re-added 12:11 and sit at lines 6 and 7.
+- **Q9 also:** #2313 ("delete A and B") on its build; CXO's #2294 bulleted-list row.
 - **#2288** (card says "Connected." on a 401 grant): served row needs a dead-grant account; xian's word for Web.
 - **#2242 (Q2):** held-token row, on xian's `mcp_allow.py remove` relayed by Exec.
 - **#2238:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
-- **Fresh-account checks** (Q8: narrated "delete the first two" + "yes", #2286's note quote; plus A1, A2, first-reply notice): on the invite hold lifting (#2261, #2282, #2292) and HOST's slot with xian.
-- **R7 / plugin (#1282):** second Production track; README edit needs a permitted push or xian's hand. Standing item 2.
+- **Fresh-account checks** (Q8): on the invite hold lifting (#2261, #2282, #2292) and HOST's slot with xian.
+- **R7 / plugin (#1282):** README edit needs a permitted push or xian's hand. Standing item 2.
 - **Mail v4** opens to every seat Mon 11-09; then also `python3 scripts/mail4.py inbox --role pa`. v3 fallback until 11-23.
-- **START habit:** `python3 scripts/owed-scan.py --role pa` (run every START 11-06; 0 flags).
+- **START habit:** `python3 scripts/owed-scan.py --role pa`.
 
 ## PM Attention
 
