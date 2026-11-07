@@ -77,7 +77,7 @@ Items 4–10 come to about 9–10 Lead-days. Two weeks with 30% held back leaves
   - #2299 and #2300 leave item 12.
 - That's about 3 days out, leaving about 8, which draws one day on the reserve.
 - **#2304 pulled in as item 13** (CXO, 11-06: it puts an untrue sentence in front of a person today, and honesty outranks features). To hold the fit, **item 8 narrows to #2269 3a** (corpus rows and pins). 3b (finding the floor-written connect offer, the #2040 class) leaves. That's about 1 day out, by PPM's split of Lead's 2.5, and Lead confirms it.
-- **They come back in this order** if a slot frees up: #2269 3b, then #2305, then #2299, then #2270. #2305 (filed 11-06, placed in V at 12:34) is an untrue "trouble processing" line on a multi-intent turn with a held write sibling. It's honesty work, but neither path reaches it, so it isn't named.
+- **They come back in this order** if a slot frees up: #2309 (a corpus row: "which repos are on my X project?" says a real project doesn't exist), then #2269 3b, then #2305, then #2299, then #2270. #2305 (filed 11-06, placed in V at 12:34) is an untrue "trouble processing" line on a multi-intent turn with a held write sibling. It's honesty work, but neither path reaches it, so it isn't named.
 - **#2302** (the silent cap of 3) is a small fix, so Lead takes it this week, before the sprint starts (PPM, 11-06 11:26). That way prompt 1's family is honest whether or not it's offered.
 - **Built on main before the sprint (Web, 11:20, `21a8977ea9`; the non-admin "Advanced" heading at 12:21, `a1fd1f0ea2`):** #2273's Settings groups, #2272's page half (attach and detach words) and the removal of #2271's Edit button. Each waits on a promotion and a served read. These lighten items 9 and 10 for the review.
 - **#2300 doesn't come back as sized.** Arch (11:13) declined the word-list fix. Its fix is now a router-declared framing unit with its own screen, for a later sprint, and "Also add" keeps asking (the safe side).
@@ -94,6 +94,17 @@ Items 4–10 come to about 9–10 Lead-days. Two weeks with 30% held back leaves
   - #2286's words (item 10). They're in the served HTML but unseen on a page, which needs an unconnected account or a Disconnect window from xian.
 - **Failed:** #2301 (item 12). A served model reply improvised an offer after CXO's line. Arch withdrew the fixed reply too, since it would be untrue for 25 status asks. The interim is pulled (`bf5235c1d4`), and #2301 stays FAIL until its real read lands.
 - **#2304 (item 13)** is built on Lead's branch and held for rulings. Arch accepted reusing the existing resolvers and the "not sure" interim (13:23), and CXO worded the "not sure" replies. Five ops always say "not sure" for now. Getting their held yes back is #2308, filed and placed in V. #2307 (the trust-mode outward line still prints an op name) is in V too. Neither is named.
+
+**Served on beta at `7ffd460640` (11-06 15:43; PA's reads, CXO's judgment 15:58):**
+- **Passed:** #2271's hide and hide-again rows, and the near-match hide offer (16:10).
+- **Failed on words:**
+  - link_repo's example;
+  - #2272's chat line, which teaches a link phrasing that was declined today. CXO's interim is "You can link one on its project page."
+  - the floor's narrated delete ask. "Deleting X and Y — want me to go ahead?" is served with nothing armed; that's #2310, whose fix is ADR-083.
+
+**PPM's two calls (11-06 16:23):**
+- **#2311 is built now, before the sprint,** like #2302. It widens the #1855 seam's lead (Arch 16:10, in principle), so the dash form of the narrated ask is rewritten at the output. Lead's census of 5,379 questions found 0 false positives. It waits on CXO's rewrite words. It's honesty work and small, and it closes the worst served finding of the day without waiting on ADR-083.
+- **link_repo's held ask: option (b), pulled into item 9 from #2308.** link_repo's resolve-only step reads only its own resolver, binds what it shows, writes nothing before "yes", and CXO words the ask. It's on Path A's add-repo turn, and PA's phrasing is a real served one. It's small, so it draws on the reserve. #2308's other four ops stay out.
 
 **#2301's interim words (pulled 11-06 13:56, see above):** Lead (11:12) found that nothing failed. The project-status answer has project names and counts only. So "I couldn't read it" would be untrue. CXO words the honest interim ("I can see your projects' names, not what's in them yet"). The real fix is #2301's read.
 
