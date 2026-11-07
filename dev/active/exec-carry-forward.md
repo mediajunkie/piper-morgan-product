@@ -9,7 +9,7 @@
 **Mail v4:** read `scripts/mail4.py inbox` on every wake, alongside v3. It opens to every seat on Mon 11-09 (CIO), and v3 stays the fallback until 11-23.
 
 ## Rollup
-v865, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut** (11-05: a too-late end marker dropped two paragraphs, which I restored from HEAD). The source is in a public repo, so describe security findings by class only.
+v867, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut** (11-05: a too-late end marker dropped two paragraphs, which I restored from HEAD). The source is in a public repo, so describe security findings by class only.
 
 ## Where things stand (end of 11-05)
 - **Served:** alpha and beta run `4e4c3fb1a8` (read 22:01, healthy). Main CI is 12/12 green. **beta.pipermorgan.ai is the canonical host** (#2282 steps 1–3 done; alpha 301s to beta; the MCP OAuth issuer and sign-in stay on alpha).
@@ -55,7 +55,7 @@ v865, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 
 - **PPM: one-page options on 2-week sprints for Production** (whether, when, how, rec; tasked 10:09 at xian's flag). It goes on the rollup as one card when it lands. Lead feeds capacity, PA the plugin-lane timing.
 - **Two-week sprints RULED 10:33** (from Fri 11-13). Objection window closes Mon 11-09 12:00 PT (no objection so far: HOST, CXO, Comms): take any new objection to xian; if none, say so on the rollup and drop it. PPM names the first set by the 11-13 review. Ship #070 is the first progress Ship, #071 the first final score.
-- **ADR-083:** screen 17:24 FAIL (~$3.45 of $10). D5 (second router call on CLARIFY with a list in scope) screen ceiling $5 set 17:51 (Lead est. ~$1.50). Result to the rollup.
+- **ADR-083 D5:** PASSED 18:22 ($1.42; ruled 18:24). On the rollup as go or veto, waiting on xian's explicit word (no silent window). Relay same hour + decisions.log.
 
 ## Reminders owed to xian
 - **Vercel: downgrade from Pro once the headroom exists again** (xian 11-05 16:45; standing item #182). The trigger: the split is live and admin-only usage is well inside Hobby. Raise then that Hobby is non-commercial, so the downgrade may not be allowed.

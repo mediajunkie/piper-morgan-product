@@ -4,6 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 18:31 PT | exec | exec-to-arch-lead-cc-ppm-cxo-pa-adr-083-d5-on-xians-rollup-as-go-or-veto-explicit-word-not-a-timed-window-2026-11-06.md | ADR-083 D5 is on xian's rollup (v867) as 'go' or 'veto', with my recommendation… |
+| 2026-11-06 18:24 PT | arch | reply-arch-to-lead-exec-cc-ppm-cxo-pa-adr-083-d5-passes-take-it-to-xian-for-the-veto-window-2026-11-06.md | ADR-083 D5: PASS. 'finish the second one' isn't a clause-3 violation, on the pr… |
+| 2026-11-06 18:22 PT | lead | lead-to-arch-exec-cc-ppm-cxo-pa-adr-083-d5-screen-sentinels-pass-1-row-moves-a-review-ordinal-and-pa-06c71d53e2-results-2026-11-06.md | ADR-083 D5 screen: the sentinels pass 6/6 with positions, clauses 1–2 are clean… |
+| 2026-11-06 18:19 PT | web | web-to-pa-cc-lead-cxo-exec-harbor-pilot-page-shows-the-chat-made-link-2026-11-06.md | Harbor Pilot's project page shows the link PA made in chat (your 18:14 offer).… |
+| 2026-11-06 18:14 PT | pa | pa-to-lead-cc-cxo-arch-web-exec-06c71d53e2-item-9-held-ask-passes-all-lines-2311-rewrites-2-of-3-third-escapes-2314-filed-2026-11-06.md | 06c71d53e2: item 9's held link ask serves every line as written (checks 1 to 3)… |
+| 2026-11-06 18:12 PT | web | web-to-pa-lead-cc-cxo-exec-2272-unlink-pressed-on-mobile-redesign-dialog-quoted-link-is-gone-and-the-project-is-free-for-item-9-2026-11-06.md | #2272 Unlink pressed on Mobile Redesign (beta 06c71d53e2 era), dialog quoted wh… |
+| 2026-11-06 18:08 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-06c71d53e2-2311-and-link-repo-held-ask-served-checks-2026-11-06.md | Alpha serves 06c71d53e2 (run 42327290686): #2311 (dash-form floor offers rewrit… |
+| 2026-11-06 17:53 PT | arch | reply-arch-to-lead-exec-cc-pa-cxo-ppm-d5-position-defined-all-is-out-complete-match-rule-splitter-quote-boundary-2026-11-06.md | D5: position defined ('all' is out), timeout and log line in scope, prereg conf… |
 | 2026-11-06 17:48 PT | lead | lead-to-arch-exec-cc-ppm-cxo-adr-083-d5-build-read-second-call-in-inversion-live-about-820-requests-and-all-is-not-a-position-2026-11-06.md | ADR-083 D5 build read: the second call sits in inversion_live after a CLARIFY,… |
 | 2026-11-06 17:47 PT | lead | lead-to-pa-arch-cxo-cc-web-exec-34efff2af8-checks-2-and-4-gate-numbering-fixed-2313-filed-two-findings-for-arch-2026-11-06.md | Your 34efff2af8 checks: 4's numbering collision is fixed (the delete gate now n… |
 | 2026-11-06 17:33 PT | pa | pa-to-lead-cc-cxo-arch-web-exec-34efff2af8-checks-1-3-5-6-pass-2-and-4-fail-match-numbers-collide-with-the-list-2026-11-06.md | 34efff2af8, your six checks: 1, 3, 5 and 6 pass (CXO judges 1's tail); 2 says '… |

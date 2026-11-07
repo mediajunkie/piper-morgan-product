@@ -2066,7 +2066,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2268	OPEN	Production		Onboarding wizard records a repo but doesn't connect GitHub, so Piper says the project has a repo it can't reach (beta session 11-04)	UX,bug		
 2269	OPEN	Production		Chat tells a person to type "link repo", then doesn't recognize it; and offers to connect GitHub from chat, which it can't do (beta session 11-04)	bug		
 2270	OPEN	Production		A repo question is answered as a document request ("I don't see that document among your uploads") (beta session 11-04)	bug		
-2271	OPEN	Production		Adding a repo to a project loops on "yes": Piper's own suggested wording gets "I still don't know what you meant"; the project page edit control doesn't work (11-04)	bug		
+2271	CLOSED	Production		Adding a repo to a project loops on "yes": Piper's own suggested wording gets "I still don't know what you meant"; the project page edit control doesn't work (11-04)	bug		COMPLETED
 2272	OPEN	Production		[UX] Project and repo are treated as one thing: chat merges them, and the project page can't attach a repo (beta session 11-04)	UX		
 2273	CLOSED	Production		[UX] Settings, Integrations is hard to find and Settings is overloaded; reorganize (beta session 11-04)	UX		COMPLETED
 2274	OPEN	Production		[UX] Anthropic key step doesn't say a Claude subscription excludes API access; say so and link to funding a key (beta session 11-04)	UX		
@@ -2103,3 +2103,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2309	OPEN	Production		Repos for a project: 'which repos are on my X project?' captures the name as 'X project?' and says the project doesn't exist			
 2310	OPEN	Production		After a todo list, 'delete the first two' gets a floor-narrated delete question with nothing armed (a #2042 instance; fix is ADR-083)			
 2311	OPEN	Production		Floor offers after a long dash lead escape the #1855 seam: widen the lead so 'Deleting X and Y — want me to go ahead?' is rewritten			
+2312	OPEN	Production		Direct 'add a repo to my <project>' asks 'Which repository would you like to link?' with nothing armed (the #1730 shape)			
+2313	OPEN	Production		'delete <todo A> and <todo B>' says 'couldn't find' for real todos, or splits into a document line plus a confirm for the first only			
+2314	OPEN	Production		Add project: 'add project zz link test' is refused as a duplicate of 'zz share-hide project'			
