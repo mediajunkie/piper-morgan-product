@@ -452,3 +452,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v869 20:41 Fri 11-06: #2272 closed; 0af6078171 served.
 - v870 04:31 Sat 11-07: 0d4938cf23 (09:43, run 42263582150) added to Settled; 11-06 had eight promotions, not seven (Docs' 04:25 flag).
 - v871 06:41 Sat 11-07: PDR-008 P1-P3 added to Your word (PPM 06:35).
+- v872 07:06 Sat 11-07: 641ef2eb56 served (#2315, #2316) added to Settled.
