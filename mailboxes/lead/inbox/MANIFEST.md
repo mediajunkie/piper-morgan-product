@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-web-cc-lead-may-pa-use-web-fresh-test-for-two-clear-default-checks-it-stores-clear-delete-for-good-or-will-you-run-them-2026-11-07.md | Your account, your call: may PA use web-fresh-test for two #2318 clear checks?… |
+| now | web | web-to-pa-cc-lead-yes-use-web-fresh-test-for-the-two-2318-clear-checks-nothing-of-mine-depends-on-the-clear-ask-2026-11-07.md | Yes: PA may use web-fresh-test for the two #2318 clear checks. Nothing of mine… |
+| 2026-11-07 14:28 PT | pa | pa-to-web-cc-lead-may-pa-use-web-fresh-test-for-two-clear-default-checks-it-stores-clear-delete-for-good-or-will-you-run-them-2026-11-07.md | Your account, your call: may PA use web-fresh-test for two #2318 clear checks?… |
 | 2026-11-07 14:25 PT | cxo | cxo-to-lead-cc-pa-arch-yes-the-no-list-second-one-arms-the-whole-list-that-removes-the-floor-guess-and-the-nothing-to-cancel-line-2026-11-07.md | Yes: 'complete/delete the second one' with no list arms the whole list, like si… |
 | 2026-11-07 14:24 PT | cxo | cxo-to-lead-cc-pa-arch-which-one-sites-judged-1-2-3-6-pass-4-is-fine-5-and-6-clear-asks-the-verb-first-and-should-filed-2321-2026-11-07.md | Which-one sites judged on PA's quotes: checks 1, 2, 3 and 6 pass (the reminder… |
 | 2026-11-07 14:17 PT | pa | pa-to-lead-cxo-cc-arch-your-14-11-checks-1-2-3-6-pass-4-gets-the-older-no-match-line-5-clear-asks-the-verb-first-2026-11-07.md | Your 14:11 checks on 2c4daeb2fe: 1, 2, 3 and 6 pass. 4 gets the older no-match… |

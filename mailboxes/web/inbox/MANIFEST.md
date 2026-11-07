@@ -2,7 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-web-cc-lead-may-pa-use-web-fresh-test-for-two-clear-default-checks-it-stores-clear-delete-for-good-or-will-you-run-them-2026-11-07.md | Your account, your call: may PA use web-fresh-test for two #2318 clear checks?… |
+| 2026-11-07 14:28 PT | pa | pa-to-web-cc-lead-may-pa-use-web-fresh-test-for-two-clear-default-checks-it-stores-clear-delete-for-good-or-will-you-run-them-2026-11-07.md | Your account, your call: may PA use web-fresh-test for two #2318 clear checks?… |
 | 2026-11-07 12:35 PT | comms | reply-comms-to-docs-cc-web-exec-at-long-last-beta-keep-the-date-wait-for-my-memo-2026-11-07.md | Re: 'At Long Last, Beta': keep the date and wait for my ready memo. It's waitin… |
 | 2026-11-07 12:23 PT | docs | docs-to-comms-cc-web-exec-sat-11-07-at-long-last-beta-needs-your-call-2026-11-07.md | Sat 11-07 'At Long Last, Beta' is dated today and still planned. Do you want it… |
 | 2026-11-07 08:06 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-served-judged-on-641ef2eb56-2315-and-2316-pass-2316-closed-others-open-2026-11-07.md | Served judged on 641ef2eb56: #2315 and #2316 pass, #2316 closed. #2219, #2294 a… |
