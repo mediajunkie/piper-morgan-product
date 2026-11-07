@@ -2100,3 +2100,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2306	OPEN	Production		TEST: unarmed-ask ratchet exempts *question* holders by name, not by armedness	innovation,testing		
 2307	OPEN	Production		Trust-mode outward disclosure still shows the op name ("I'm about to comment issue #5")			
 2308	OPEN	Production		Five write ops always say 'not sure': add a resolve-only step at ask time so a held yes names the thing (#2304 follow-on)			
+2309	OPEN	Production		Repos for a project: 'which repos are on my X project?' captures the name as 'X project?' and says the project doesn't exist			
+2310	OPEN	Production		After a todo list, 'delete the first two' gets a floor-narrated delete question with nothing armed (a #2042 instance; fix is ADR-083)			
+2311	OPEN	Production		Floor offers after a long dash lead escape the #1855 seam: widen the lead so 'Deleting X and Y — want me to go ahead?' is rewritten			

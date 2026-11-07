@@ -1,0 +1,96 @@
+# Follow-ups asked by Lead, CXO and Arch (15:5x to 15:59), web-seed-1386, PA run 16:05
+# near-match row
+
+--- [16:06:01, 7ffd460640, http 200, 10.33 s] route portfolio/confirm_project_archive
+USER: hide the project Piper Test
+PIPER: I don't have a project called "Piper Test". Archive "Piper Test Activity" instead? (yes/no)
+
+--- [16:06:09, 7ffd460640, http 200, 0.25 s] route soft_offer_declined/confirm_project_archive
+USER: no
+PIPER: Okay, I won't archive "Piper Test Activity". Nothing has been changed.
+
+--- [16:06:15, 7ffd460640, http 200, 5.68 s] route query/list_projects
+USER: show my projects
+PIPER: I think I'm tracking 3 projects for you.
+
+- **Mobile Redesign** (active)
+- **Piper Test Activity** (active)
+- **zz share-hide project** (active)
+# narrated delete ask, 'yes' once on throwaway todos (Arch 15:59 approval, Lead 15:54 ask)
+
+--- [16:06:27, 7ffd460640, http 200, 3.45 s] route execution/create_todo
+USER: Add a todo: zz throwaway one
+PIPER: I've added that to your list. 'zz throwaway one' is now tracked. Let me know if you want to adjust anything.
+
+--- [16:06:31, 7ffd460640, http 200, 3.05 s] route execution/create_todo
+USER: Add a todo: zz throwaway two
+PIPER: I've added that to your list. 'zz throwaway two' is now tracked. Let me know if you want to adjust anything.
+
+--- [16:06:34, 7ffd460640, http 200, 2.00 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 9 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×3)
+3. audit the current navigation
+4. review the deployment plan
+5. draft the launch checklist
+6. zz throwaway one
+7. zz throwaway two
+
+--- [16:06:45, 7ffd460640, http 200, 10.72 s] route execution/delete_items
+USER: delete the last two
+PIPER: I didn't recognize that as something I can do from chat — I may have misread the ask rather than being unable to do it. What I heard was: "delete the last two." If I misread it, try saying it another way. If not, it may already be doable in Piper's own pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub).
+
+--- [16:06:59, 7ffd460640, http 200, 5.89 s] route execution/delete_todo
+USER: delete the sixth and seventh
+PIPER: I can delete one reminder at a time for now. You asked about these:
+1. "zz throwaway one"
+2. "zz throwaway two"
+
+Tell me which one to delete first. Nothing has been changed.
+
+--- [16:07:09, 7ffd460640, http 200, 1.87 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 9 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×3)
+3. audit the current navigation
+4. review the deployment plan
+5. draft the launch checklist
+6. zz throwaway one
+7. zz throwaway two
+
+--- [16:07:21, 7ffd460640, http 200, 11.06 s] route execution/delete_items
+USER: delete the bottom two
+PIPER: I didn't recognize that as something I can do from chat — I may have misread the ask rather than being unable to do it. What I heard was: "delete the bottom two." If I misread it, try saying it another way. If not, it may already be doable in Piper's own pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub).
+
+--- [16:07:35, 7ffd460640, http 200, 1.81 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 9 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×3)
+3. audit the current navigation
+4. review the deployment plan
+5. draft the launch checklist
+6. zz throwaway one
+7. zz throwaway two
+
+--- [16:07:48, 7ffd460640, http 200, 12.37 s] route CONVERSATION/clarification_needed
+USER: delete the first two
+PIPER: Which two should I delete — "urgent task" and "review prs"?
+# (y3 left unanswered: it names urgent task and review prs, which are not throwaway)
+
+--- [16:08:01, 7ffd460640, http 200, 2.00 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 9 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×3)
+3. audit the current navigation
+4. review the deployment plan
+5. draft the launch checklist
+6. zz throwaway one
+7. zz throwaway two
+
+--- [16:08:12, 7ffd460640, http 200, 10.63 s] route execution/delete_items
+USER: get rid of the last two
+PIPER: I didn't recognize that as something I can do from chat — I may have misread the ask rather than being unable to do it. What I heard was: "get rid of the last two." If I misread it, try saying it another way. If not, it may already be doable in Piper's own pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub).
