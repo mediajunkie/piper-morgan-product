@@ -32,7 +32,10 @@ logger = structlog.get_logger()
 
 HEARTBEAT_SECONDS = 1.0
 CHECK_SECONDS = 1.0
-STALL_SECONDS = 3.0
+# #2318 (Arch 11-07 12:27): 1.5 s for the D5 measurement window, so a ~2.2 s sync
+# stretch on the loop logs event_loop_blocked with the main thread's stack. Restore
+# 3.0 with the shipped D5 ceiling. Warnings only: nothing else reads a stall.
+STALL_SECONDS = 1.5
 STACK_LIMIT = 40
 
 _clock = time.monotonic
