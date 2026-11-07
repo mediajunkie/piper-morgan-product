@@ -495,17 +495,20 @@ class TestHandleDeleteTodoTargets:
             },
         )
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
-        assert armed is False
+        # #2318 (CXO 11-07): the belt asks the cap's armed pick, never deletes.
+        assert armed is True
         assert msg == (
             "I can delete one todo at a time for now. You asked about these:\n"
             '1. "check the test card again"\n'
             '2. "check the test card again"\n'
             '3. "review the pr"\n'
             "\n"
-            "Tell me which one to delete first. Nothing has been changed."
+            "Which one should I delete first? Say the number or the name, or 'never mind' "
+            "to leave them alone."
         )
         handlers.todo_service.delete_todo.assert_not_awaited()
-        offers.set_pending_offer.assert_not_called()
+        _sid, offer = offers.set_pending_offer.call_args.args[:2]
+        assert offer["pending_action"]["kind"] == "delete_todo_pick_question"
 
     @pytest.mark.asyncio
     async def test_confirmed_reentry_nothing_deleted(self, handlers, offers, session_ctx, four):

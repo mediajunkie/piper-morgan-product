@@ -370,17 +370,68 @@ def _capped_delete(
     noun: str,
     ids: List[str],
     texts: List[str],
-) -> str:
+    offer_service: Any = None,
+    message: str = "",
+) -> Tuple[str, bool]:
     """Issue 2019 (xian 2026-10-14, interim until soft delete): the reply for
-    a bulk delete this module would otherwise arm. Nothing is armed and
-    nothing is deleted; the capped list is remembered as the last numbered
-    list (context only) so "delete the first one" binds to what was shown.
-    The copy itself lives in ``delete_cap`` (one place, every path)."""
-    from services.intent_service.delete_cap import capped_delete_reply, remember_capped_list
+    a bulk delete this module would otherwise arm. Nothing is deleted.
 
-    remember_capped_list(session_id, principal, ids, texts, _plural(noun, 2))
+    #2318 (CXO 11-07 11:05; Arch 11:10): the cap asks an ARMED question here too,
+    the #1987 delete pick over the capped lines (``arm_capped_delete_pick``),
+    each labelled with its number on the last numbered list when that list holds
+    them all, else 1..N (and then the capped lines become the last numbered list).
+    Returns ``(reply, armed)``; when nothing can be armed (no session or store) the
+    reply is the cap's statement. The copy lives in
+    ``delete_cap`` / ``delete_todo_pick`` (one place, every path)."""
+    from services.intent_service.delete_cap import capped_delete_reply, remember_capped_list
+    from services.intent_service.delete_todo_pick import (
+        arm_capped_delete_pick,
+        last_numbered_list,
+    )
+
     logger.info("reminder_clear_delete_capped", count=len(ids), session_id=session_id)
-    return capped_delete_reply(texts, noun)
+    shown = last_numbered_list(session_id, principal)
+    position = {str(i): n for n, i in enumerate(getattr(shown, "ids", None) or [], 1)}
+    labels = (
+        [position[str(i)] for i in ids]
+        if position and all(str(i) in position for i in ids)
+        else None
+    )
+    question = arm_capped_delete_pick(
+        message,
+        session_id,
+        principal,
+        noun,
+        [str(i) for i in ids],
+        list(texts),
+        [None] * len(ids),
+        [1] * len(ids),
+        None,
+        labels,
+        offer_service,
+    )
+    if labels is None:
+        # Numbered 1..N: the capped lines ARE the numbered list now (context, not an
+        # arm), so a later "delete the first one" binds to what was just shown.
+        remember_capped_list(session_id, principal, ids, texts, _plural(noun, 2))
+    if question is not None:
+        return question, True
+    return capped_delete_reply(texts, noun), False
+
+
+def _pick_flag(armed: bool) -> Dict[str, Any]:
+    """#2318: an armed cap carries the pick's flag, so the soft offer can't clobber it."""
+    from services.intent_service.delete_todo_pick import PICK_PENDING_FLAG
+
+    return {PICK_PENDING_FLAG: True} if armed else {}
+
+
+def _capped_reply_dict(message: str, armed: bool, intent_data: Dict[str, Any]) -> Dict[str, Any]:
+    """A capped reply in this module's dict shape, armed or not (#2318)."""
+    out: Dict[str, Any] = {"message": message, "intent_data": {**intent_data, **_pick_flag(armed)}}
+    if armed:
+        out["requires_clarification"] = True
+    return out
 
 
 async def _resolve_targets(todo_service, user_uuid: UUID, noun: str) -> List[Any]:
@@ -955,10 +1006,20 @@ async def _act_on_resolved_targets(
         from services.intent_service.delete_cap import DELETE_CAPPED_FLAG, exceeds_delete_cap
 
         if exceeds_delete_cap(len(ids)):
+            capped, armed = _capped_delete(
+                session_id,
+                principal,
+                noun,
+                ids,
+                texts,
+                intent_service.workflow_offer_service,
+                original_message,
+            )
             return IntentProcessingResult(
                 success=True,
-                message=_capped_delete(session_id, principal, noun, ids, texts),
-                intent_data={**base_intent_data, DELETE_CAPPED_FLAG: True},
+                message=capped,
+                intent_data={**base_intent_data, DELETE_CAPPED_FLAG: True, **_pick_flag(armed)},
+                requires_clarification=armed,
             )
         question = variant_three_question(len(ids), verb, noun)
         intent_service.workflow_offer_service.set_pending_offer(
@@ -1161,10 +1222,20 @@ async def maybe_handle_explicit_bulk_delete(
     from services.intent_service.delete_cap import DELETE_CAPPED_FLAG, exceeds_delete_cap
 
     if exceeds_delete_cap(n):
+        capped, armed = _capped_delete(
+            session_id,
+            principal,
+            noun,
+            ids,
+            texts,
+            intent_service.workflow_offer_service,
+            original_message,
+        )
         return IntentProcessingResult(
             success=True,
-            message=_capped_delete(session_id, principal, noun, ids, texts),
-            intent_data={**base_intent_data, DELETE_CAPPED_FLAG: True},
+            message=capped,
+            intent_data={**base_intent_data, DELETE_CAPPED_FLAG: True, **_pick_flag(armed)},
+            requires_clarification=armed,
         )
     # Plain explicit confirm — variant 3's target grammar without its
     # stored-preference clause (mechanism copy at the CXO-owned seam).
@@ -1963,15 +2034,25 @@ async def _handle_verb_answer_turn(
             )
 
             if exceeds_delete_cap(len(ids)):
-                return {
-                    "message": _capped_delete(session_id, principal, noun, ids, texts),
-                    "intent_data": {
+                capped, armed = _capped_delete(
+                    session_id,
+                    principal,
+                    noun,
+                    ids,
+                    texts,
+                    intent_service.workflow_offer_service,
+                    original_message,
+                )
+                return _capped_reply_dict(
+                    capped,
+                    armed,
+                    {
                         "category": "execution",
                         "action": CLARIFY_CLEAR_VERB_WORKFLOW,
                         "this_time_only": True,
                         DELETE_CAPPED_FLAG: True,
                     },
-                }
+                )
             question = variant_three_question(len(ids), verb, noun)
             intent_service.workflow_offer_service.set_pending_offer(
                 session_id,
@@ -2050,16 +2131,26 @@ async def _handle_verb_answer_turn(
         if exceeds_delete_cap(len(ids)):
             # The verb answer is still remembered ('clear' means delete); only
             # the bulk delete itself is capped (issue 2019).
-            return {
-                "message": _capped_delete(session_id, principal, noun, ids, texts),
-                "intent_data": {
+            capped, armed = _capped_delete(
+                session_id,
+                principal,
+                noun,
+                ids,
+                texts,
+                intent_service.workflow_offer_service,
+                original_message,
+            )
+            return _capped_reply_dict(
+                capped,
+                armed,
+                {
                     "category": "execution",
                     "action": CLARIFY_CLEAR_VERB_WORKFLOW,
                     "verb_default_stored": VALUE_DELETE,
                     "verb_default_persisted": persisted,
                     DELETE_CAPPED_FLAG: True,
                 },
-            }
+            )
         question = variant_three_question(len(ids), verb, noun)
         intent_service.workflow_offer_service.set_pending_offer(
             session_id,
@@ -2227,15 +2318,25 @@ async def _handle_correction_turn(
     from services.intent_service.delete_cap import DELETE_CAPPED_FLAG, exceeds_delete_cap
 
     if exceeds_delete_cap(n):
-        return {
-            "message": _capped_delete(session_id, principal, noun, ids, texts),
-            "intent_data": {
+        capped, armed = _capped_delete(
+            session_id,
+            principal,
+            noun,
+            ids,
+            texts,
+            intent_service.workflow_offer_service,
+            payload.get("original_message") or "",
+        )
+        return _capped_reply_dict(
+            capped,
+            armed,
+            {
                 "category": "execution",
                 "action": CLEAR_CORRECTION_WORKFLOW,
                 "correction_of": VALUE_COMPLETE,
                 DELETE_CAPPED_FLAG: True,
             },
-        }
+        )
     target = f"these {n} {_plural(noun, n)}" if n != 1 else f"this {noun}"
     question = f"Got it — delete {target} instead? (yes/no)"
     intent_service.workflow_offer_service.set_pending_offer(
@@ -2523,24 +2624,31 @@ async def run_clear_reminders_delete_workflow(
             },
         }
 
-    from services.intent_service.delete_cap import (
-        DELETE_CAPPED_FLAG,
-        capped_delete_reply,
-        exceeds_delete_cap,
-    )
+    from services.intent_service.delete_cap import DELETE_CAPPED_FLAG, exceeds_delete_cap
 
     if exceeds_delete_cap(len(ids)):
         # Issue 2019 belt: a multi-item carrier armed before the cap shipped
-        # (or by any arm site the cap missed) deletes nothing.
+        # (or by any arm site the cap missed) deletes nothing; #2318: it asks the
+        # cap's armed question over those lines.
         logger.info("reminder_clear_delete_capped_at_confirm", count=len(ids))
-        return {
-            "message": capped_delete_reply(texts, noun),
-            "intent_data": {
+        capped, armed = _capped_delete(
+            session_id,
+            principal,
+            noun,
+            ids,
+            texts,
+            getattr(intent_service, "workflow_offer_service", None),
+            intent.original_message or ictx.get("original_message") or "",
+        )
+        return _capped_reply_dict(
+            capped,
+            armed,
+            {
                 "category": "execution",
                 "action": CLEAR_DELETE_WORKFLOW,
                 DELETE_CAPPED_FLAG: True,
             },
-        }
+        )
 
     todo_service = intent_service.todo_handlers.todo_service
     deleted: List[str] = []

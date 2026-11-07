@@ -242,8 +242,8 @@ class TestBulkConfirmArms:
         """RED pre-1696: 'Which todo should I remove?'. 1696 armed the
         bulk #1190 confirm. Issue 2019 (xian 2026-10-14, interim until soft
         delete): the bulk set (2 reminder-dated rows) still resolves at
-        offer time, but NOTHING arms and nothing is deleted — CXO's capped
-        reply names both, in list order."""
+        offer time and nothing is deleted — CXO's capped reply names both, in
+        list order. #2318 (CXO 11-07): it asks the armed pick over them."""
         sid = f"e2e-1696-{hash(phrase) & 0xFFFF}"
         _stub_classification(monkeypatch, live_service, phrase, "delete_todo")
         result = await live_service.process_intent(message=phrase, session_id=sid, user_id=_USER)
@@ -252,11 +252,14 @@ class TestBulkConfirmArms:
             '1. "Review the PR"\n'
             '2. "Call the vendor"\n'
             "\n"
-            "Tell me which one to delete first. Nothing has been changed."
+            "Which one should I delete first? Say the number or the name, or 'never mind' "
+            "to leave them alone."
         )
         assert result.intent_data.get(DELETE_CAPPED_FLAG) is True
         assert not result.intent_data.get("destructive_confirmation_pending")
-        assert _pending_offers(live_service).get(sid) is None
+        assert _pending_offers(live_service)[sid]["pending_action"]["kind"] == (
+            "delete_todo_pick_question"
+        )
         assert todo_boundary["deleted"] == []
 
     async def test_todo_noun_scopes_to_all_active_todos(
@@ -276,22 +279,27 @@ class TestBulkConfirmArms:
             '2. "Call the vendor"\n'
             '3. "Draft the retro notes"\n'
             "\n"
-            "Tell me which one to delete first. Nothing has been changed."
+            "Which one should I delete first? Say the number or the name, or 'never mind' "
+            "to leave them alone."
         )
-        assert _pending_offers(live_service).get(sid) is None
+        assert _pending_offers(live_service)[sid]["pending_action"]["kind"] == (
+            "delete_todo_pick_question"
+        )
         assert todo_boundary["deleted"] == []
 
     async def test_yes_after_the_capped_reply_deletes_nothing_issue_2019(
         self, live_service, monkeypatch, todo_boundary
     ):
-        """'Tell me which one' is an instruction, not an offer: a bare
-        "yes" after the capped turn has nothing to confirm."""
+        """#2318: the capped turn arms the PICK, never a delete confirm, so a
+        bare "yes" after it names no line and deletes nothing."""
         sid = "e2e-1696-capped-yes"
         _stub_classification(monkeypatch, live_service, "delete my reminders", "delete_todo")
         await live_service.process_intent(
             message="delete my reminders", session_id=sid, user_id=_USER
         )
-        assert _pending_offers(live_service).get(sid) is None
+        assert _pending_offers(live_service)[sid]["pending_action"]["kind"] == (
+            "delete_todo_pick_question"
+        )
         await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert todo_boundary["deleted"] == []
 

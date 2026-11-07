@@ -1325,6 +1325,29 @@ class TodoIntentHandlers:
                     intent.original_message or ctx.get("original_message"),
                     getattr(recalled, "kind", None),
                 )
+                # #2318 (CXO 11-07): the belt asks the cap's armed pick too, labelled by
+                # the recalled list when it holds every line, else 1..N.
+                from services.intent_service.delete_todo_pick import arm_capped_delete_pick
+
+                at = {str(i): n for n, i in enumerate(getattr(recalled, "ids", None) or [], 1)}
+                belt_labels = (
+                    [at[str(i)] for i in ids] if at and all(str(i) in at for i in ids) else None
+                )
+                belt_question = arm_capped_delete_pick(
+                    intent.original_message or ctx.get("original_message") or "",
+                    session_id,
+                    principal,
+                    cap_noun,
+                    [str(i) for i in ids],
+                    texts,
+                    [None] * len(ids),
+                    [1] * len(ids),
+                    None,
+                    belt_labels,
+                    offer_service,
+                )
+                if belt_question is not None:
+                    return belt_question, True
                 return capped_delete_reply(texts, cap_noun), False
             done_texts: List[str] = []
             failed: List[Tuple[str, str]] = []

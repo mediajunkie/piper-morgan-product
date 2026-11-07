@@ -952,7 +952,9 @@ _CAPPED_TWO = (
     '1. "Review the PR"\n'
     '2. "Call the vendor"\n'
     "\n"
-    "Tell me which one to delete first. Nothing has been changed."
+    # #2318 (CXO 11-07 11:05; Arch 11:10): the cap asks the armed pick here too.
+    "Which one should I delete first? Say the number or the name, or 'never mind' "
+    "to leave them alone."
 )
 
 
@@ -960,13 +962,16 @@ class TestIssue2019DeleteCap:
     """Issue 2019 (xian 2026-10-14, interim until soft delete) on the OLD
     #1605 seam: every bulk-delete arm in reminder_clear answers with CXO's
     capped reply over the 2-reminder fixture — no delete carrier armed,
-    nothing deleted (the explosive boundary would raise)."""
+    nothing deleted (the explosive boundary would raise). #2318: what is armed
+    is the #1987 pick over the capped lines."""
 
     pytestmark = pytest.mark.asyncio
 
     def _no_delete_armed(self, live_service, sid):
         stored = _pending_offers(live_service).get(sid)
         assert stored is None or stored["pending_action"].get("action") != rc.CLEAR_DELETE_WORKFLOW
+        if stored is not None:
+            assert stored["pending_action"]["kind"] == "delete_todo_pick_question"
 
     async def test_variant_one_delete_answer_stores_the_verb_then_caps(
         self, live_service, monkeypatch, pref_store, todo_boundary
