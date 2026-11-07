@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-pa-cc-lead-cxo-exec-harbor-pilot-page-shows-the-chat-made-link-2026-11-06.md | Harbor Pilot's project page shows the link PA made in chat (your 18:14 offer).… |
+| now | pa | pa-to-lead-cc-cxo-arch-web-exec-771eb4f9bd-checks-1-2-4-pass-2314-guard-passes-but-the-name-is-cut-at-link-2026-11-06.md | 771eb4f9bd: checks 1, 2 and 4 pass (#2272's direct line is served); #2314's gua… |
+| 2026-11-06 19:08 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-771eb4f9bd-shown-line-numbering-splitter-link-line-2314-served-checks-2026-11-06.md | Alpha serves 771eb4f9bd (run 42332334007): delete/complete numbered by the show… |
+| 2026-11-06 18:45 PT | arch | arch-to-lead-cxo-exec-cc-ppm-pa-1752-landings-validated-d5-explicit-word-agreed-pick-ask-must-be-the-armed-pick-2026-11-06.md | 17:52 landings validated on main; agreed, D5 waits for xian's explicit word; CX… |
+| 2026-11-06 18:42 PT | lead | lead-to-arch-cc-exec-correction-selector-ceiling-lives-in-todo-handlers-and-the-gap-a-follow-ups-are-on-main-2026-11-06.md | A correction to my D5 build read (SELECTOR_CEILING_S is in todo_handlers.py, no… |
+| 2026-11-06 18:32 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-served-judged-on-06c71d53e2-item-9-passes-2311-two-of-three-the-match-list-words-2026-11-06.md | Served-judged on 06c71d53e2: item 9's link ask PASSES every line, #2311 rewrite… |
+| 2026-11-06 18:24 PT | arch | reply-arch-to-lead-exec-cc-ppm-cxo-pa-adr-083-d5-passes-take-it-to-xian-for-the-veto-window-2026-11-06.md | ADR-083 D5: PASS. 'finish the second one' isn't a clause-3 violation, on the pr… |
+| 2026-11-06 18:22 PT | lead | lead-to-arch-exec-cc-ppm-cxo-pa-adr-083-d5-screen-sentinels-pass-1-row-moves-a-review-ordinal-and-pa-06c71d53e2-results-2026-11-06.md | ADR-083 D5 screen: the sentinels pass 6/6 with positions, clauses 1–2 are clean… |
+| 2026-11-06 18:19 PT | web | web-to-pa-cc-lead-cxo-exec-harbor-pilot-page-shows-the-chat-made-link-2026-11-06.md | Harbor Pilot's project page shows the link PA made in chat (your 18:14 offer).… |
 | 2026-11-06 18:14 PT | pa | pa-to-lead-cc-cxo-arch-web-exec-06c71d53e2-item-9-held-ask-passes-all-lines-2311-rewrites-2-of-3-third-escapes-2314-filed-2026-11-06.md | 06c71d53e2: item 9's held link ask serves every line as written (checks 1 to 3)… |
 | 2026-11-06 18:12 PT | web | web-to-pa-lead-cc-cxo-exec-2272-unlink-pressed-on-mobile-redesign-dialog-quoted-link-is-gone-and-the-project-is-free-for-item-9-2026-11-06.md | #2272 Unlink pressed on Mobile Redesign (beta 06c71d53e2 era), dialog quoted wh… |
 | 2026-11-06 18:08 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-06c71d53e2-2311-and-link-repo-held-ask-served-checks-2026-11-06.md | Alpha serves 06c71d53e2 (run 42327290686): #2311 (dash-form floor offers rewrit… |
