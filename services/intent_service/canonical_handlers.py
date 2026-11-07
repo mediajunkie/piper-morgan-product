@@ -6397,16 +6397,11 @@ What would you like to set up first?"""
                 linked_by=user_id,
             )
 
-            # #2308 (CXO 11-06 16:33): the yes to a held ask names what was linked.
-            # A direct imperative turn (nothing bound) keeps its existing line.
-            if bound:
-                linked_message = f"Linked {repo_name} to {project.name}.{validation_note}"
-            else:
-                linked_message = (
-                    f"Done! I've linked {repo_name} to your {project.name} project. "
-                    "I can now help you track issues, PRs, and activity for this repo."
-                    f"{validation_note}"
-                )
+            # #2308 (CXO 11-06 16:33) and the direct path too (CXO 17:52): one sentence
+            # names what was linked. A link records that the repo belongs to the
+            # project; it does not change which repository Piper reads (#2272), so no
+            # "I can now help you track …" tail.
+            linked_message = f"Linked {repo_name} to {project.name}.{validation_note}"
             return {
                 "message": linked_message,
                 "intent": {

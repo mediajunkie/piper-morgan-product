@@ -353,8 +353,10 @@ async def test_no_to_the_confirm_says_cxos_decline_and_links_nothing(store, cate
 
 
 @pytest.mark.asyncio
-async def test_a_direct_imperative_link_keeps_its_existing_reply(store):
-    """Nothing bound (a direct, unheld turn): unchanged, the existing success line."""
+async def test_a_direct_imperative_link_says_what_was_linked(store):
+    """Nothing bound (a direct, unheld turn): CXO 17:52, the same one sentence as the
+    held path; no "I can now help you track …" tail (a link doesn't change what Piper
+    reads, #2272)."""
     from services.intent_service.canonical_handlers import CanonicalHandlers
 
     intent = Intent(
@@ -365,7 +367,7 @@ async def test_a_direct_imperative_link_keeps_its_existing_reply(store):
         context={"original_message": f"link repo {_REPO} to {_PROJECT}"},
     )
     result = await CanonicalHandlers()._handle_link_repo(intent, "s-2308-direct", _USER)
-    assert result["message"].startswith(f"Done! I've linked {_REPO} to your {_PROJECT} project.")
+    assert result["message"] == f"Linked {_REPO} to {_PROJECT}."
     assert _linked(store) == [(_REPO, "proj-zz")]
 
 

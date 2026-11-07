@@ -408,7 +408,9 @@ class TestRepoManagementHandler:
 
             result = await handler._handle_link_repo(intent, "sess", user_id="u1")
 
-        assert "Done" in result["message"]
+        assert (
+            result["message"] == "Linked mediajunkie/piper-morgan to Piper Morgan."
+        )  # CXO 11-06 17:52
         assert "linked" in result["message"].lower()
         assert result["requires_clarification"] is False
         assert result["intent"]["action"] == "link_repo"
