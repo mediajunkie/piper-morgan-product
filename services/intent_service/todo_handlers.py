@@ -1713,24 +1713,42 @@ class TodoIntentHandlers:
         a reminder date, soonest first — when the noun is "reminder" and any
         exist; else the pool), then ``tail``; RECORD exactly the shown rows as
         the session's numbered list, so the next "delete reminder 1" binds to
-        these numbers. Copy: ``reminder_copy.no_list_reply``."""
-        from services.intent_service.delete_todo_pick import _candidates
+        these numbers. Copy: ``reminder_copy.no_list_reply``. #2318: the lines are
+        numbered as "show my todos" numbers them (:meth:`_no_list_lines`)."""
         from services.intent_service.reminder_copy import (
             NO_LIST_MAX_SHOWN,
             no_list_reply,
             noun_plural,
         )
 
-        rows = (_candidates(name_pool, "reminder") if noun == "reminder" else []) or list(name_pool)
-        shown = rows[:NO_LIST_MAX_SHOWN]
+        lines = self._no_list_lines(name_pool, noun)
+        shown = lines[:NO_LIST_MAX_SHOWN]
         self._remember_numbered_list(
             session_id,
             principal,
             noun_plural(noun),
-            [t.id for t in shown],
-            [t.text for t in shown],
+            [line[0].id for line in shown],
+            [line[0].text for line in shown],
+            groups=[[t.id for t in line] for line in shown],
         )
-        return no_list_reply([t.text for t in rows], noun, tail)
+        return no_list_reply(
+            [line[0].text for line in lines], noun, tail, copies=[len(line) for line in lines]
+        )
+
+    @staticmethod
+    def _no_list_lines(name_pool: List[Todo], noun: str) -> List[List[Todo]]:
+        """The no-list reply's LINES, numbered the way "show my todos" numbers them
+        (#2318, PA 14:12: the same account was 8 lines here and 7 there). Reminders
+        (rows with a reminder date, soonest first) when the noun is "reminder" and any
+        exist, one row per line as the reminders list shows them; else the todos
+        grouped into lines (``group_todo_lines``, #2219: identical copies are one line)."""
+        from services.consciousness.todo_consciousness import group_todo_lines
+        from services.intent_service.delete_todo_pick import _candidates
+
+        reminders = _candidates(name_pool, "reminder") if noun == "reminder" else []
+        if reminders:
+            return [[t] for t in reminders]
+        return group_todo_lines(list(name_pool))
 
     def _no_list_ordinal_pick(
         self,
@@ -1749,20 +1767,18 @@ class TodoIntentHandlers:
         the pick is armed over exactly the shown rows. Nothing armable: CXO's
         by-name statement, no question. Returns ``(reply, armed)``."""
         from services.intent_service.delete_todo_pick import (
-            _candidates,
-            arm_shown_rows_pick,
+            arm_shown_lines_pick,
             by_name_statement,
             shown_rows_question,
         )
         from services.intent_service.reminder_copy import NO_LIST_MAX_SHOWN
 
-        rows = (_candidates(name_pool, "reminder") if noun == "reminder" else []) or list(name_pool)
-        shown = rows[:NO_LIST_MAX_SHOWN]
+        shown = self._no_list_lines(name_pool, noun)[:NO_LIST_MAX_SHOWN]
         prefix = f"{lead} " if lead else ""
         reply = self._no_list_ordinal_reply(
             name_pool, noun, prefix + shown_rows_question(verb), session_id, principal
         )
-        if arm_shown_rows_pick(
+        if arm_shown_lines_pick(
             verb, reply, message, session_id, principal, noun, shown, offer_service
         ):
             return reply, True
@@ -2870,11 +2886,39 @@ class TodoIntentHandlers:
         if intent.action in ("delete_item", "delete_items"):
             from services.intent_service.delete_todo_pick import (
                 DELETE_ITEM_NO_LIST_ASK,
+                arm_delete_kind_choice,
                 last_numbered_list,
             )
 
             if last_numbered_list(session_id, principal or user_id) is None:
-                return DELETE_ITEM_NO_LIST_ASK
+                # #2321 (Arch 14:41 (d); CXO 14:44): no presumption of todos — a kind
+                # the person named ("delete the second reminder") goes straight to that
+                # kind's no-list reply; otherwise the armed todos-or-reminders choice.
+                from services.intent_service.reminder_copy import said_noun
+
+                _asked = intent.original_message or (intent.context or {}).get(
+                    "original_message", ""
+                )
+                _kind = said_noun(_asked)
+                if _kind:
+                    _active = await self.todo_service.list_todos(
+                        user_id=user_id, include_completed=False
+                    )
+                    _reply, _armed = self._no_list_ordinal_pick(
+                        list(_active or []),
+                        _kind,
+                        "delete",
+                        "",
+                        _asked,
+                        session_id,
+                        principal or str(user_id),
+                        offer_service,
+                    )
+                    return _reply
+                _choice = arm_delete_kind_choice(
+                    _asked, session_id, principal or str(user_id), offer_service
+                )
+                return _choice or DELETE_ITEM_NO_LIST_ASK
 
         # Note: original_message may be in intent.original_message OR intent.context["original_message"]
         # depending on how the Intent was created (Issue #744)

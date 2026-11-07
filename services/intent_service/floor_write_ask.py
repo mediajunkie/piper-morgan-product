@@ -20,9 +20,10 @@ to the floor, and never on a router emission). On a marked turn no op writes:
   intent unmarked (``run_confirm_pending_action_workflow`` drops the mark);
 - complete names the one row it would complete, in CXO's words ('Mark "high
   task" as done? (yes/no)'); when it can't name one, it picks over the numbered
-  list just shown (``delete_todo_pick.arm_complete_pick``), or says it can't
-  tell. #2304: this is complete_todo's ``WorkflowEntry.write_ask``
-  (``complete_todo_write_ask``), read by the rail like every write's words;
+  list just shown (``delete_todo_pick.arm_complete_pick``), or with no list shown
+  shows the list and arms the pick over it (#2321). #2304: this is
+  complete_todo's ``WorkflowEntry.write_ask`` (``complete_todo_write_ask``), read
+  by the rail like every write's words;
 - the #1605 clear-family flow, the one passthrough that could write on its
   first turn (a stored "complete" default, or the trust-inferences auto-apply),
   asks instead (``reminder_clear``, its existing always-ask questions).
@@ -45,10 +46,6 @@ logger = structlog.get_logger(__name__)
 # The context flag. Set by the main path (IntentService), read by the rail and
 # the clear-family flow, dropped by the confirmed "yes".
 FLOOR_WRITE_MARK_KEY = "floor_category_write"
-
-# CXO 11-06: no list was shown, so there's nothing to pick from. A statement,
-# since nothing is armed to bind an answer (the #1730 unarmed-ask ratchet).
-COMPLETE_NO_TARGET_STATEMENT = "I'm not sure which one you mean. Say its name."
 
 
 def mark_floor_category_write(intent: Intent) -> None:
@@ -187,4 +184,22 @@ async def complete_todo_write_ask(request: Any) -> Any:
         # CXO 11-06 11:28: the name the person said (the handler's own extractor)
         # matched nothing and no list was shown. A statement; nothing armed.
         return WriteAsk(reply=complete_not_found_statement(missed_name))
-    return WriteAsk(reply=COMPLETE_NO_TARGET_STATEMENT)
+    # #2321 (CXO 11-07 14:30): no list shown and nothing named ("complete the second
+    # one"): the #2046 no-list reply, the list grouped as "show my todos" groups it,
+    # with the armed question, so a number or a name binds. Nothing armable: the
+    # by-name statement, no question.
+    from services.intent_service.reminder_copy import copy_noun
+
+    reply, armed = todo_handlers._no_list_ordinal_pick(
+        todos,
+        copy_noun(original),
+        "complete",
+        "",
+        original,
+        session_id,
+        principal,
+        offer_service,
+    )
+    if armed:
+        return WriteAsk(reply=reply, armed=True, intent_data={PICK_PENDING_FLAG: True})
+    return WriteAsk(reply=reply)

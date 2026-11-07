@@ -28,7 +28,6 @@ from services.domain.models import Intent, IntentCategory, Todo
 from services.intent.intent_service import IntentService
 from services.intent_service.classifier import IntentClassifier
 from services.intent_service.floor_write_ask import (
-    COMPLETE_NO_TARGET_STATEMENT,
     FLOOR_WRITE_MARK_KEY,
 )
 from services.intent_service.todo_handlers import TodoIntentHandlers
@@ -186,14 +185,21 @@ async def test_never_mind_on_the_pick_writes_nothing(boundary):
 
 
 @pytest.mark.asyncio
-async def test_no_list_shown_is_a_statement_and_nothing_is_armed(boundary):
+async def test_no_list_shown_shows_the_list_and_arms_the_pick(boundary):
+    """#2321 (CXO 11-07 14:30): with no list shown, the #2046 no-list reply and the
+    armed question; nothing is written and no floor turn follows."""
     service = _service()
     result = await service.process_intent(
         message="complete the second one", session_id=_SID + "-nolist", user_id=_USER
     )
-    assert result.message == COMPLETE_NO_TARGET_STATEMENT
+    assert result.message.startswith("I haven't shown you a numbered list yet.")
+    assert result.message.endswith(
+        "Which one should I complete? Say the number or the name, or 'never mind' "
+        "to leave them alone."
+    )
     assert _wrote(boundary) == []
-    assert service.workflow_offer_service.peek_pending_offer(_SID + "-nolist", _USER) is None
+    armed = service.workflow_offer_service.peek_pending_offer(_SID + "-nolist", _USER)
+    assert armed["pending_action"]["verb"] == "complete"
 
 
 # ── a named target: CXO's yes/no, and only the yes writes, once ──

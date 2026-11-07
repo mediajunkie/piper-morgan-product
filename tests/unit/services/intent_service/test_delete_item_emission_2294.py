@@ -21,7 +21,12 @@ import pytest
 from services.domain.models import Todo
 from services.intent.intent_service import IntentService
 from services.intent_service.classifier import IntentClassifier
-from services.intent_service.delete_todo_pick import DELETE_ITEM_NO_LIST_ASK
+from services.intent_service.delete_todo_pick import (
+    DELETE_ITEM_NO_LIST_LEAD,
+    KIND_CHOICE_DECLINE,
+    KIND_CHOICE_QUESTION,
+    KIND_CHOICE_SHORT_QUESTION,
+)
 from services.intent_service.destructive_confirm import is_delete_todo_action
 from services.intent_service.todo_handlers import TodoIntentHandlers
 from services.intent_service.unwired_writes import GENERIC_UNWIRED_WRITE_DECLINE
@@ -125,8 +130,69 @@ async def test_with_no_list_shown_it_reshows_instead_of_the_generic_decline(todo
     )
     assert "didn't recognize" not in result.message
     assert result.message != GENERIC_UNWIRED_WRITE_DECLINE
-    assert result.message == DELETE_ITEM_NO_LIST_ASK
+    # #2321 (Arch 14:41 (d); CXO 14:44): no presumption of todos, but an ARMED
+    # closed choice of kind, so the answer never reaches the floor.
+    assert result.message == f"{DELETE_ITEM_NO_LIST_LEAD}\n\n{KIND_CHOICE_QUESTION}"
     assert "Which todo" not in result.message
+    assert result.requires_clarification is True
+
+
+async def _ask_then(service, sid, *answers):
+    await service.process_intent(message="delete the first one", session_id=sid, user_id=_USER)
+    out = None
+    for a in answers:
+        out = await service.process_intent(message=a, session_id=sid, user_id=_USER)
+    return out
+
+
+@pytest.mark.asyncio
+async def test_kind_choice_todos_shows_the_todo_list_with_the_armed_delete_question(
+    todo_boundary,
+):
+    out = await _ask_then(_service(), "e2e-2321-todos", "todos")
+    assert out.message.startswith("I haven't shown you a numbered list yet. Here are your todos:")
+    assert '"call the dentist"' in out.message
+    assert out.message.endswith(
+        "Which one should I delete? Say the number or the name, or 'never mind' "
+        "to leave them alone."
+    )
+
+
+@pytest.mark.asyncio
+async def test_kind_choice_reminders_shows_the_reminders(todo_boundary):
+    out = await _ask_then(_service(), "e2e-2321-rem", "reminders")
+    assert out.message.startswith(
+        "I haven't shown you a numbered list yet. Here are your reminders:"
+    )
+    assert '"call mom"' in out.message and "call the dentist" not in out.message
+
+
+@pytest.mark.asyncio
+async def test_kind_choice_never_mind_is_the_decline(todo_boundary):
+    out = await _ask_then(_service(), "e2e-2321-nm", "never mind")
+    assert out.message == KIND_CHOICE_DECLINE
+
+
+@pytest.mark.asyncio
+async def test_a_stray_answer_asks_once_more_then_declines(todo_boundary):
+    """CXO 14:44: a bare 2 names no kind — the short question once, then the decline;
+    never the floor."""
+    service = _service()
+    sid = "e2e-2321-stray"
+    first = await _ask_then(service, sid, "2")
+    assert first.message == KIND_CHOICE_SHORT_QUESTION
+    second = await service.process_intent(message="2", session_id=sid, user_id=_USER)
+    assert second.message == KIND_CHOICE_DECLINE
+
+
+@pytest.mark.asyncio
+async def test_an_ask_that_names_reminders_skips_the_question(todo_boundary):
+    out = await _service().process_intent(
+        message="delete the second reminder", session_id="e2e-2321-named", user_id=_USER
+    )
+    assert out.message.startswith(
+        "I haven't shown you a numbered list yet. Here are your reminders:"
+    )
 
 
 @pytest.mark.asyncio
@@ -164,4 +230,4 @@ async def test_delete_items_with_no_list_gets_the_honest_ask(todo_boundary):
         message="delete review prs and urgent task", session_id="e2e-items-none", user_id=_USER
     )
     assert "didn't recognize" not in result.message
-    assert result.message == DELETE_ITEM_NO_LIST_ASK
+    assert result.message == f"{DELETE_ITEM_NO_LIST_LEAD}\n\n{KIND_CHOICE_QUESTION}"

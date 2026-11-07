@@ -21,7 +21,6 @@ import pytest
 from services.domain.models import Intent
 from services.intent.intent_service import IntentService
 from services.intent_service.add_project_clarify import ADD_PROJECT_NAME_QUESTION_KIND
-from services.intent_service.floor_write_ask import COMPLETE_NO_TARGET_STATEMENT
 from services.intent_service.todo_handlers import TodoIntentHandlers
 from services.intent_service.workflow_dispatcher import get_action_workflows
 from services.intent_service.workflow_entries import register_default_workflows
@@ -294,11 +293,17 @@ async def test_empty_args_never_show_the_op_name(action):
         ),
     )
     said = " ".join(x for x in (ask.reply, ask.words and ask.words.question) if x)
+    # #2321: CXO's by-name floor quotes a phrasing for the person to type ("complete
+    # todo call mom"); that example is not the op name leaking, so it is set aside.
+    said = said.replace('Ask me by name, like "complete todo call mom".', "")
     assert action not in said
     assert action.replace("_", " ") not in said.lower()
     assert ask.words is None
     if get_action_workflows()[action] is get_action_workflows()["complete_todo"]:
-        assert ask.reply == COMPLETE_NO_TARGET_STATEMENT  # complete's own words for it
+        # #2321 (CXO 11-07 14:30): the no-list reply; no session here, so nothing is
+        # armed and it ends on the by-name statement.
+        assert ask.reply.startswith("I haven't shown you a numbered list yet.")
+        assert ask.reply.endswith('Ask me by name, like "complete todo call mom".')
     else:
         assert ask.reply == _expected_statement(action)
     assert ask.armed is False
