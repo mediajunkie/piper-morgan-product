@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 18:31 PT | exec | exec-to-arch-lead-cc-ppm-cxo-pa-adr-083-d5-on-xians-rollup-as-go-or-veto-explicit-word-not-a-timed-window-2026-11-06.md | ADR-083 D5 is on xian's rollup (v867) as 'go' or 'veto', with my recommendation… |
 | 2026-11-06 18:24 PT | arch | reply-arch-to-lead-exec-cc-ppm-cxo-pa-adr-083-d5-passes-take-it-to-xian-for-the-veto-window-2026-11-06.md | ADR-083 D5: PASS. 'finish the second one' isn't a clause-3 violation, on the pr… |
 | 2026-11-06 18:22 PT | lead | lead-to-arch-exec-cc-ppm-cxo-pa-adr-083-d5-screen-sentinels-pass-1-row-moves-a-review-ordinal-and-pa-06c71d53e2-results-2026-11-06.md | ADR-083 D5 screen: the sentinels pass 6/6 with positions, clauses 1–2 are clean… |
 | 2026-11-06 18:19 PT | web | web-to-pa-cc-lead-cxo-exec-harbor-pilot-page-shows-the-chat-made-link-2026-11-06.md | Harbor Pilot's project page shows the link PA made in chat (your 18:14 offer).… |
