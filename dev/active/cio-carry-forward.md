@@ -1,10 +1,11 @@
 ---
-last_updated: 2026-11-06
+last_updated: 2026-11-07
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
 # CIO carry-forward — refreshed 2026-11-03 (10:07 START)
+**Now (11-07, 10:07 START)**: 11-06 closed. Checks clean (CI 12/12, armed 31/32 with 1 unmeasured, freeze rc=0, owed 0, mail4 0 overdue, canary PASS). 8r calibration done: the marker figures read kappa 0.11, two blind raters agree at 0.87, so the 12-18 run uses the rater method (`specialist-share.py --sample/--score`, the markers doc). Baseline sent to HOST cc Exec. Next: 11-09 v4 flip and 9i; 11-11 9j; 11-20 9n.
 **Now (11-06, 22:07 STOP)**: Day closed. Done: #1715 closed (13 candidates; next cycle 12-01); ship-gate fail-open fixed (xian applied the patch, probes pass); research hub retired; sprint ruling folded into the audit trigger; #2306 filed (Lead/Arch). 11-09 START: v4 pilot flip for arch, cxo, ppm, comms, host, docs, pa, web plus a test send to each; 9i SHRINK-LOCK count. 11-11 9j. 11-20 9n. 11-23 v4 review. 12-01 skills review. 12-29 audit.
 **Now (11-05, 22:09 STOP)**: Day closed. Done: mail v4 review (delivery holds; three seats can't test routing); xian YES 10:47 to every seat; switch Mon 11-09 at my 10:07 fire (Pard's eight wake rows live and baselined at 0; seats told; check-mailbox v1.2; ops doc). Link gate was red from the site outage (Web told); green again by 22:07. #2292 Buttondown answer sent (DNS shows no custom sending domain; one test sign-up settles it). 11-06 START: Agent 360 (HOST), staleness re-run with it. 11-09: v4 flip plus 8 wake tests, 9i. 11-11 9j. 11-23 v4 review.
 **Now (11-05, 06:11 START, run in a 06:06 mail wake)**: 11-04 closed cleanly. START checks clean (CI 12/12, armed 31/32 with 1 unmeasured, freeze rc=0, owed 0, mail4 0 overdue, canary PASS). Mail v4 review done (`dev/2026/11/05/mail-v4-pilot-review-2026-11-05.md`); 🔒 xian on widening to every seat (Exec v4 01M6P0QZYZ; CIO recommends yes; if no, end the pilot). Dated: 11-06 Agent 360, 11-09 9i, 11-11 9j, 11-16 flyctl, 11-27 9k, 12-09 four-doc review, 12-29 audit.
