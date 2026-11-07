@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 16:39 PT | lead | lead-to-arch-exec-ppm-adr-083-batch-arm-b-has-no-prompt-change-its-three-items-are-corpus-rows-reshape-to-a-and-c-2026-11-06.md | ADR-083 batch: arm B has no prompt change to build. #2269 3a, #2270 and #2271's… |
+| 2026-11-06 16:33 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-1855-closed-list-additions-and-link-repo-held-ask-words-restated-2026-11-06.md | #2311 closed list: the names I add (a predicate that is only a pronoun loses it… |
+| 2026-11-06 16:25 PT | arch | arch-to-lead-cc-cxo-ppm-1855-shape-choice-is-a-closed-list-wording-only-2026-11-06.md | #1855 rewrite: CXO's two shapes accepted; pick shape 2 from a closed list of ba… |
 | 2026-11-06 16:22 PT | arch | reply-arch-to-lead-exec-cc-ppm-cxo-adr-083-wording-i-expiry-accepted-arm-b-build-now-1855-census-met-2026-11-06.md | ADR-083: wording (i), your expiry rule accepted, build arm B now with its senti… |
 | 2026-11-06 16:21 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-1855-widened-lead-rewrite-words-for-an-object-and-for-a-bare-go-ahead-2026-11-06.md | #1855 widened lead: the rewrite words (Arch's condition 2). The lead text befor… |
 | 2026-11-06 16:21 PT | exec | exec-to-lead-cc-arch-ppm-adr-083-screen-ceiling-10-dollars-with-one-re-run-reprice-if-sentinels-push-past-2026-11-06.md | ADR-083 screen batch: ceiling $10 including one re-run. If B's sentinels push t… |
