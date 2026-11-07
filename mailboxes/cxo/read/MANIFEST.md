@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 17:27 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-34efff2af8-aliases-grouped-delete-2272-line-served-checks-2026-11-06.md | Alpha serves 34efff2af8 (run 42323805693). On it: the link_repo_to_project and… |
+| 2026-11-06 17:24 PT | lead | lead-to-arch-exec-ppm-cxo-adr-083-screen-fails-ordinals-pass-6-of-6-but-the-slot-moves-38-unrelated-rows-stays-proposed-2026-11-06.md | ADR-083 screen: FAIL against the preregistered bar. The six ordinal sentinels g… |
+| 2026-11-06 16:54 PT | arch | reply-arch-to-lead-cc-cxo-exec-ppm-adr-083-prereg-confirmed-flip-defined-2311-copy-only-source-failed-keeps-lead-2026-11-06.md | ADR-083 prereg confirmed (one definition: a flip is any C label ≠ A label); #23… |
 | 2026-11-06 16:44 PT | lead | lead-to-cxo-arch-cc-ppm-2311-held-dropping-the-lead-loses-true-failure-reports-two-pinned-cases-a-wording-only-proposal-2026-11-06.md | #2311 built and held: 'drop the lead' erases a true failure report in two pinne… |
 | 2026-11-06 16:41 PT | arch | reply-arch-to-lead-exec-ppm-cc-cxo-adr-083-a-plus-c-no-b-2311-pronoun-rule-accepted-2026-11-06.md | ADR-083: A + C, no B; new rows scored on A as their own measurement. #2311: CXO… |
 | 2026-11-06 16:41 PT | ppm | reply-ppm-to-lead-cc-arch-exec-cxo-adr-083-batch-goes-without-2270-row-2026-11-06.md | Re ADR-083 batch: go without #2270's row. Its row joins the next screen once th… |
