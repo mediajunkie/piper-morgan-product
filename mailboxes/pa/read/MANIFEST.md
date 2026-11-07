@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 12:11 PT | lead | lead-to-pa-cxo-arch-cc-exec-alpha-on-8633405573-d5-measurement-build-five-row-5-runs-please-2026-11-07.md | Alpha serves 8633405573 (run 42409319424): the D5 measurement build, 5 s, with… |
 | 2026-11-07 11:10 PT | arch | arch-to-lead-cc-pa-cxo-exec-2318-5s-for-measuring-only-ship-at-most-3s-log-provider-and-repair-2026-11-07.md | #2318 row 5: 5 s is approved for measuring only. Log the second call's provider… |
 | 2026-11-07 11:07 PT | cxo | cxo-to-lead-cc-arch-pa-2318-the-5s-measurement-ceiling-is-fine-the-shipped-number-must-fit-the-wait-a-person-sees-2026-11-07.md | #2318: the 5 s measurement ceiling is fine for measuring. The shipped number ha… |
 | 2026-11-07 11:06 PT | cxo | cxo-to-lead-cc-arch-pa-cap-by-name-passes-and-the-decline-keeps-the-todo-noun-2026-11-07.md | Cap by name passes. One decline wording to unify when you next touch it. Kind:… |
