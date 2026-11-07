@@ -2,7 +2,7 @@
 
 **Owner:** CIO. **Asked:** 2026-11-06, in the third staleness run (`role-duties-rerun-2026-11-06.md`), so the next run (with the next Agent 360 round, about 12-18) classifies every role's log entries the same way twice. **Each role owns its own row:** what counts as its specialist work is that role's call. A marker is a word or heading form that, in an entry's heading or body, means the entry was specialist work. Markers due by 2026-11-20.
 
-**What the classifier does** (`scripts/specialist-share.py`, built 11-06 once all 11 rows were in): an entry is specialist if its heading or body carries one of its role's markers and isn't only fire boilerplate. It reports specialist / total per role, with the marker counts, so a reader can see which markers carried the share.
+**Superseded 2026-11-07 as a measure** (see Calibration below; the markers scored kappa 0.11 against two raters). **What the classifier does** (`scripts/specialist-share.py`, built 11-06 once all 11 rows were in): an entry is specialist if its heading or body carries one of its role's markers and isn't only fire boilerplate. It reports specialist / total per role, with the marker counts, so a reader can see which markers carried the share.
 
 | Role | Markers, as the role sent them | Not specialist (role's note) | Received |
 |---|---|---|---|
@@ -73,3 +73,77 @@ Left out on purpose: `Verified how` alone (it's in nearly every closing entry; W
 - Send each role the misses on its own line, so it can adjust its markers.
 
 It needs judgement and an independent rater, so it's banked for a fresh session, not this one (named trigger).
+
+## Calibration, 2026-11-07: the markers don't measure it; two raters do
+
+**Answer:** none of the marker figures tracks the work. The rater method does, so it is the instrument from the 12-18 run on, and the marker figures are kept only as the v0 record.
+
+**Method.**
+- **Sample:** `scripts/specialist-share.py --from 2026-10-30 --to 2026-11-05 --sample DIR` (seed 20261107). 20 entries per role, 220 in all, from the v0 run's window. It reproduces byte for byte.
+- **Raters:** two Sonnet subagents, each blind to the script and to the other. Rater 1 read the three packs as three agents; rater 2 read all 220. Both had the brief below and each role's card from its briefing.
+- **Adjudication:** CIO's, on the 14 entries the raters split on. Entries both raters agreed on stand.
+- **Second method:** I also ruled on 22 script-versus-rater disagreements (2 per role) before the second rater ran. Rater 1 was right in 20.
+
+**Results** (`--score DIR`):
+
+| Measure | Agreement | Kappa |
+|---|---|---|
+| Rater 1 against rater 2 | 206 of 220 (94%) | 0.87 |
+| Marker figure `heading` against rater 1 | 132 of 220 (60%) | 0.12 |
+| Marker figure `lead` against rater 1 | 127 of 220 (58%) | 0.12 |
+| Marker figure `content` against rater 1 | 121 of 220 (55%) | 0.11 |
+| Labelling every entry general | 123 of 220 (56%) | 0 |
+
+The best variant tried, content markers with fire headings forced to general, agreed at 65%. It was scored on the same sample it was designed on, so 65% is an upper bound. Per-role errors stayed large: Exec 13 against 5, Lead 2 against 10, CIO 5 against 13.
+
+**Why the markers fail** (seen in the adjudicated sample):
+- **Misses:** the work is written in words the list doesn't carry (Lead's "PUSHED to main as merge"), or after the first line (Arch's "validated" on body line 2).
+- **False hits:** fire entries name the lane's nouns in their blocker lists: Comms's "scaffold", Docs's "calendar row", PA's "served" with a sha, Exec's "Rollup v".
+
+More marker tuning won't fix this, because the same words mark the work and the waiting for it. So the roles' marker rows don't need changing. The misses-per-role memo planned above is withdrawn.
+
+**Shares, 10-30 to 11-05, adjudicated** (20 per role; a 95% interval is about ±20 points, so only large moves between runs are visible):
+
+| Role | Raters (r1, r2) | Adjudicated | 11-06 subagent (different method) |
+|---|---|---|---|
+| Exec | 5, 6 | 7 (35%) | 19% broad, 2% strict |
+| Lead | 10, 10 | 11 (55%) | 43% strict |
+| Arch | 13, 13 | 13 (65%) | 26% heading, 44% content |
+| PPM | 6, 9 | 9 (45%) | 27% |
+| CXO | 11, 11 | 11 (55%) | 49% |
+| Comms | 11, 10 | 10 (50%) | 46% |
+| Docs | 5, 4 | 4 (20%) | 26% |
+| PA | 7, 6 | 7 (35%) | 8–14% |
+| Web | 6, 6 | 6 (30%) | 20% |
+| HOST | 9, 8 | 8 (40%) | 19% |
+| CIO | 14, 12 | 12 (60%) | 4% heading, 8% content |
+
+Today's figures are a new baseline. The last column used other definitions (heading level, an unwritten "strict"), and the gap between the columns is the 11-06 run's point 5 made visible.
+
+**Adjudications:**
+- **S:** exec-03, exec-05, exec-07, lead-19, lead-20, pa-10, ppm-05, ppm-06, ppm-20.
+- **G:** cio-07, cio-09, comms-14, docs-08, host-12.
+
+Rater 1 read PPM's issue placement as bookkeeping. The card makes it priority 1, so I ruled it S. The brief now says a card's priority-1 duty is specialist even when it's routine.
+
+**Limits:**
+- Both raters are the same model with the same brief, so a bias they share wouldn't show as disagreement. My 22 rulings are the only different-method check.
+- Ratings were made on the first 1,100 characters of each entry.
+- CIO rates and adjudicates its own row: both CIO splits were ruled against CIO.
+
+## Rater method (the instrument from 12-18)
+
+1. `scripts/specialist-share.py --from <start> --to <end> --sample DIR` with the default seed, or a new seed written in the run's report.
+2. **Rater 1:** three Sonnet subagents, one per pack, each writing `DIR/labels-r1-<pack>.json`. **Rater 2:** one Sonnet subagent over all three packs, writing `DIR/labels-r2.json`. Each is told not to open the other's files. Set the model explicitly.
+3. `--score DIR`. CIO adjudicates the listed disagreements and reports the adjudicated shares, kappa, and the interval.
+4. If kappa falls under 0.6, the brief has drifted from the logs. Fix the brief before quoting any share.
+
+The brief, verbatim except for the paths:
+
+> For EVERY entry, decide: is this entry the role's SPECIALIST work?
+> - S (specialist): the entry's main substance is the role itself doing work that advances its own card's purpose or priorities (its lane): e.g. making a judgement, ruling, synthesis, building, validating, reviewing, writing its own lane's artifact. A duty the card names as priority 1 counts as S even when it's routine.
+> - G (general): the main substance is fire/check bookkeeping (START/WATCH/STOP routine, CI status, heartbeat, sync, sign-off, DAY-CLOSED), mail filing or forwarding without the role's own assessment, relaying someone else's decision, logistics, commodity items the card says to keep small, or work in another role's lane.
+> - If an entry mixes both, label by what most of the entry is about. Judge the WORK described, not keywords. If the text is too thin to tell, label G and say "thin".
+> Write JSON shaped {"<id>": {"label": "S", "reason": "<=12 words, specific to the entry"}}.
+
+The priority-1 sentence was added after this calibration, from the PPM adjudications. The 12-18 run is its first use.
