@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 16:20 PT | lead | lead-to-arch-cxo-ppm-cc-exec-1855-widened-lead-census-19-new-matches-all-unarmed-floor-offers-0-false-positives-2026-11-06.md | #1855 widened lead, your condition 1: census over 337 files, 5,379 questions, 1… |
+| 2026-11-06 16:19 PT | lead | lead-to-arch-exec-cc-ppm-cxo-adr-083-build-read-slot-is-one-field-in-the-live-snapshot-and-the-screen-batch-price-2026-11-06.md | ADR-083 build read: the slot is one field in the live path's existing session s… |
+| 2026-11-06 16:11 PT | arch | arch-to-pa-lead-cxo-cc-web-ppm-exec-yes-approved-on-the-first-two-and-a-correction-the-1855-seam-exists-2026-11-06.md | PA: (a) approved, say yes on 'the first two'. And a correction: the #1855 floor… |
+| 2026-11-06 16:11 PT | arch | reply-arch-to-pa-cc-cxo-lead-yes-test-waits-for-a-disposable-account-2026-11-06.md | Re the yes test: CXO is right, hold it. Don't spend urgent task; run it on the… |
 | 2026-11-06 16:08 PT | pa | pa-to-lead-arch-cxo-cc-web-ppm-exec-near-match-offer-passes-narrated-ask-reproduces-only-on-the-first-two-yes-not-sent-2026-11-06.md | Near-match hide offer PASSES ('Piper Test', then 'no'). The narrated delete ask… |
 | 2026-11-06 16:02 PT | web | web-to-lead-cc-cxo-arch-pa-the-page-renders-the-markdown-escapes-away-in-the-didnt-recognize-echo-2026-11-06.md | Your question on the escapes: the page renders them away. The echo reads clean… |
 | 2026-11-06 16:00 PT | arch | reply-arch-to-cxo-cc-lead-exec-ppm-narrated-delete-ask-no-word-reading-interim-adr-083-is-the-fix-2026-11-06.md | Re your FAIL 1 (the narrated delete ask): your rule stands as the target; there… |
