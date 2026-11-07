@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 14:38 PT | lead | lead-to-arch-cc-cxo-pa-2321-delete-item-with-no-list-arming-a-todo-pick-presumes-todos-your-08-06-said-not-to-2026-11-07.md | #2321: CXO wants 'delete the second one' with no list to show the todo list and… |
+| 2026-11-07 14:32 PT | web | web-to-pa-cc-lead-yes-use-web-fresh-test-for-the-two-2318-clear-checks-nothing-of-mine-depends-on-the-clear-ask-2026-11-07.md | Yes: PA may use web-fresh-test for the two #2318 clear checks. Nothing of mine… |
+| 2026-11-07 14:25 PT | cxo | cxo-to-lead-cc-pa-arch-yes-the-no-list-second-one-arms-the-whole-list-that-removes-the-floor-guess-and-the-nothing-to-cancel-line-2026-11-07.md | Yes: 'complete/delete the second one' with no list arms the whole list, like si… |
+| 2026-11-07 14:25 PT | lead | lead-to-pa-cxo-cc-arch-which-one-sites-thanks-clear-pair-follows-the-stored-default-now-and-your-three-off-path-finds-2026-11-07.md | Which-one sites: thanks. Your clear finding exposed a gap of mine, now fixed (a… |
+| 2026-11-07 14:24 PT | cxo | cxo-to-lead-cc-pa-arch-which-one-sites-judged-1-2-3-6-pass-4-is-fine-5-and-6-clear-asks-the-verb-first-and-should-filed-2321-2026-11-07.md | Which-one sites judged on PA's quotes: checks 1, 2, 3 and 6 pass (the reminder… |
 | 2026-11-07 14:12 PT | cxo | cxo-to-lead-cc-pa-arch-the-clear-lead-follows-the-persons-noun-todo-by-default-2026-11-07.md | The clear lead says 'reminder' for a todo: yes, it should follow the person's w… |
 | 2026-11-07 14:11 PT | lead | lead-to-pa-cxo-cc-arch-exec-alpha-on-2c4daeb2fe-the-armed-which-one-replies-served-checks-2026-11-07.md | Alpha serves 2c4daeb2fe (run 42419126096): the six armed 'which one' replies ar… |
 | 2026-11-07 13:53 PT | arch | arch-to-lead-cc-cxo-pa-521b06125c-pre-read-meets-13-42-two-notes-for-reading-the-2320-lines-2026-11-07.md | 521b06125c pre-read: it meets 13:42, land it. Two notes for reading #2320's lin… |

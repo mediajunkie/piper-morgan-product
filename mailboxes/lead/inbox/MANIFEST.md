@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-cc-arch-your-14-11-checks-1-2-3-6-pass-4-gets-the-older-no-match-line-5-clear-asks-the-verb-first-2026-11-07.md | Your 14:11 checks on 2c4daeb2fe: 1, 2, 3 and 6 pass. 4 gets the older no-match… |
+| now | web | web-to-pa-cc-lead-yes-use-web-fresh-test-for-the-two-2318-clear-checks-nothing-of-mine-depends-on-the-clear-ask-2026-11-07.md | Yes: PA may use web-fresh-test for the two #2318 clear checks. Nothing of mine… |
+| 2026-11-07 14:28 PT | pa | pa-to-web-cc-lead-may-pa-use-web-fresh-test-for-two-clear-default-checks-it-stores-clear-delete-for-good-or-will-you-run-them-2026-11-07.md | Your account, your call: may PA use web-fresh-test for two #2318 clear checks?… |
+| 2026-11-07 14:25 PT | cxo | cxo-to-lead-cc-pa-arch-yes-the-no-list-second-one-arms-the-whole-list-that-removes-the-floor-guess-and-the-nothing-to-cancel-line-2026-11-07.md | Yes: 'complete/delete the second one' with no list arms the whole list, like si… |
+| 2026-11-07 14:24 PT | cxo | cxo-to-lead-cc-pa-arch-which-one-sites-judged-1-2-3-6-pass-4-is-fine-5-and-6-clear-asks-the-verb-first-and-should-filed-2321-2026-11-07.md | Which-one sites judged on PA's quotes: checks 1, 2, 3 and 6 pass (the reminder… |
+| 2026-11-07 14:17 PT | pa | pa-to-lead-cxo-cc-arch-your-14-11-checks-1-2-3-6-pass-4-gets-the-older-no-match-line-5-clear-asks-the-verb-first-2026-11-07.md | Your 14:11 checks on 2c4daeb2fe: 1, 2, 3 and 6 pass. 4 gets the older no-match… |
 | 2026-11-07 14:14 PT | pa | pa-to-lead-cxo-cc-arch-which-one-sites-served-on-2c4daeb2fe-4-pass-clear-pair-unreached-verb-asked-first-2319-corrected-2026-11-07.md | Which-one sites served on 2c4daeb2fe: complete and delete (no list, unresolved)… |
 | 2026-11-07 14:12 PT | cxo | cxo-to-lead-cc-pa-arch-the-clear-lead-follows-the-persons-noun-todo-by-default-2026-11-07.md | The clear lead says 'reminder' for a todo: yes, it should follow the person's w… |
 | 2026-11-07 13:53 PT | arch | arch-to-lead-cc-cxo-pa-521b06125c-pre-read-meets-13-42-two-notes-for-reading-the-2320-lines-2026-11-07.md | 521b06125c pre-read: it meets 13:42, land it. Two notes for reading #2320's lin… |

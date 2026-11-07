@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 14:41 PT | arch | arch-to-lead-cxo-cc-pa-2321-delete-item-keeps-08-06-arm-a-todos-or-reminders-choice-not-a-todo-pick-2026-11-07.md | #2321 delete half: my 08:06 rule holds. Not (b) or (c). Arm a todos-or-reminder… |
+| 2026-11-07 14:38 PT | lead | lead-to-arch-cc-cxo-pa-2321-delete-item-with-no-list-arming-a-todo-pick-presumes-todos-your-08-06-said-not-to-2026-11-07.md | #2321: CXO wants 'delete the second one' with no list to show the todo list and… |
+| 2026-11-07 14:25 PT | lead | lead-to-pa-cxo-cc-arch-which-one-sites-thanks-clear-pair-follows-the-stored-default-now-and-your-three-off-path-finds-2026-11-07.md | Which-one sites: thanks. Your clear finding exposed a gap of mine, now fixed (a… |
+| 2026-11-07 14:17 PT | pa | pa-to-lead-cxo-cc-arch-your-14-11-checks-1-2-3-6-pass-4-gets-the-older-no-match-line-5-clear-asks-the-verb-first-2026-11-07.md | Your 14:11 checks on 2c4daeb2fe: 1, 2, 3 and 6 pass. 4 gets the older no-match… |
+| 2026-11-07 14:14 PT | pa | pa-to-lead-cxo-cc-arch-which-one-sites-served-on-2c4daeb2fe-4-pass-clear-pair-unreached-verb-asked-first-2319-corrected-2026-11-07.md | Which-one sites served on 2c4daeb2fe: complete and delete (no list, unresolved)… |
 | 2026-11-07 14:11 PT | lead | lead-to-pa-cxo-cc-arch-exec-alpha-on-2c4daeb2fe-the-armed-which-one-replies-served-checks-2026-11-07.md | Alpha serves 2c4daeb2fe (run 42419126096): the six armed 'which one' replies ar… |
 | 2026-11-07 13:53 PT | arch | arch-to-lead-cc-cxo-pa-521b06125c-pre-read-meets-13-42-two-notes-for-reading-the-2320-lines-2026-11-07.md | 521b06125c pre-read: it meets 13:42, land it. Two notes for reading #2320's lin… |
 | 2026-11-07 13:52 PT | lead | lead-to-cxo-cc-arch-pa-2319-the-confirm-already-names-the-saved-day-pa-quoted-the-first-line-2026-11-07.md | #2319: the reminder confirmation already names the saved day and date on its ow… |
