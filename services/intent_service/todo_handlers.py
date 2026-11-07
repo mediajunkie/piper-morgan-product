@@ -987,6 +987,20 @@ class TodoIntentHandlers:
                 principal,
             )
 
+        # #2315 (Lead 11-06; CXO 18:32/18:47/19:22): one NAMED target reads the
+        # lines the person saw, as the legacy complete and the delete gate do.
+        named_reply = await self._named_complete_target_reply(
+            targets,
+            exclude,
+            intent.original_message or ctx.get("original_message") or "",
+            session_id,
+            user_id,
+            offer_service,
+            principal,
+        )
+        if named_reply is not None:
+            return named_reply
+
         picked, unresolved = resolve_router_targets(
             targets, name_pool, ordinal_candidates=ordinal_pool
         )
@@ -1127,6 +1141,107 @@ class TodoIntentHandlers:
             session_id=session_id,
         )
         return question, True
+
+    async def _named_complete_target_reply(
+        self,
+        targets: List[str],
+        exclude: List[str],
+        message: str,
+        session_id: Optional[str],
+        user_id: UUID,
+        offer_service: Any,
+        principal: Optional[str],
+    ) -> Optional[Tuple[str, bool]]:
+        """#2315: a router-named complete with ONE name target (no carve-out) names
+        todos the way the legacy complete path does (Arch 11-06 17:52: every word
+        the person named is in the title, the delete gate's #2169 rule):
+
+        - after a grouped "show my todos": copies of ONE shown line are that line
+          (the armed one-or-all question, as delete since 699891f8fe); several
+          shown lines are the ARMED pick labelled by the shown numbers; no match
+          is CXO's line (18:32), nothing armed;
+        - with no list shown: several different todos are the ARMED pick 1..k
+          (CXO 19:22).
+
+        ``None`` (the resolver below runs unchanged) for anything else: ordinals,
+        ranges, "all", several targets, a carve-out, or one row. With no list, one
+        line of identical copies asks one-or-both too (CXO 21:05)."""
+        if len(targets) != 1 or exclude or _is_positional(targets[0]):
+            return None
+        tok = targets[0].strip().strip("\"'“”‘’").strip()
+        name = tok[5:].strip().strip("\"'“”‘’") if tok.lower().startswith("name:") else tok
+        if not name or name.lower() == "all":
+            return None
+        from services.intent_service.delete_todo_pick import (
+            VERB_COMPLETE,
+            arm_named_line_pick,
+            match_lines,
+        )
+        from services.intent_service.destructive_confirm import (
+            _shown_line_numbering,
+            named_line_no_match,
+            named_line_pick_unarmable,
+        )
+
+        active = await self.todo_service.list_todos(user_id=user_id, include_completed=False)
+        matches = resolve_named_todo_target(name, active or [])
+        if len(matches) > 1:
+            named_words = _meaningful_words(name)
+            matches = [t for t in matches if named_words <= _meaningful_words(t.text)]
+        shown = _shown_line_numbering(session_id, principal or user_id, active or [])
+
+        def _pick(lines: List[List[Todo]], labels: Optional[List[int]]) -> Tuple[str, bool]:
+            question = arm_named_line_pick(
+                VERB_COMPLETE,
+                message,
+                session_id,
+                principal,
+                user_id,
+                lines,
+                labels,
+                offer_service,
+            )
+            if question is None:
+                return named_line_pick_unarmable(len(lines), "complete"), False
+            return question, True
+
+        if shown:
+            if not matches:
+                return named_line_no_match(name), False
+            line_of = {str(t.id): n for n, line in enumerate(shown, 1) for t in line}
+            if all(str(t.id) in line_of for t in matches):
+                hit = sorted({line_of[str(t.id)] for t in matches})
+                if len(hit) > 1:
+                    return _pick([shown[n - 1] for n in hit], hit)
+                line = shown[hit[0] - 1]
+                if len(line) > 1:
+                    return self._ask_group_line(
+                        "complete",
+                        line,
+                        conversation_noun(message, "todos"),
+                        message,
+                        session_id,
+                        offer_service,
+                        principal,
+                    )
+                return None
+        lines = match_lines(matches, active or [])
+        if len(lines) > 1:
+            return _pick(lines, None)
+        if len(lines) == 1 and len(lines[0]) > 1:
+            # CXO 11-06 21:05: identical copies with no list shown ask one-or-both on
+            # this path too, the same question as the legacy path (19:22); a batch
+            # "Complete 2 todos …" hid that the person may want only one.
+            return self._ask_group_line(
+                "complete",
+                lines[0],
+                conversation_noun(message, "todos"),
+                message,
+                session_id,
+                offer_service,
+                principal,
+            )
+        return None
 
     async def handle_delete_todo_targets(
         self,
