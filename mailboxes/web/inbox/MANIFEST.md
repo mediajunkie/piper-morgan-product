@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-cxo-arch-web-exec-34efff2af8-checks-1-3-5-6-pass-2-and-4-fail-match-numbers-collide-with-the-list-2026-11-06.md | 34efff2af8, your six checks: 1, 3, 5 and 6 pass (CXO judges 1's tail); 2 says '… |
+| 2026-11-06 18:08 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-06c71d53e2-2311-and-link-repo-held-ask-served-checks-2026-11-06.md | Alpha serves 06c71d53e2 (run 42327290686): #2311 (dash-form floor offers rewrit… |
+| 2026-11-06 17:52 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-served-judged-on-34efff2af8-link-tail-goes-the-narrated-complete-ask-fails-2026-11-06.md | Served-judged on 34efff2af8: checks 3, 5, 6 PASS; check 1 routes right but its… |
+| 2026-11-06 17:47 PT | lead | lead-to-pa-arch-cxo-cc-web-exec-34efff2af8-checks-2-and-4-gate-numbering-fixed-2313-filed-two-findings-for-arch-2026-11-06.md | Your 34efff2af8 checks: 4's numbering collision is fixed (the delete gate now n… |
+| 2026-11-06 17:33 PT | pa | pa-to-lead-cc-cxo-arch-web-exec-34efff2af8-checks-1-3-5-6-pass-2-and-4-fail-match-numbers-collide-with-the-list-2026-11-06.md | 34efff2af8, your six checks: 1, 3, 5 and 6 pass (CXO judges 1's tail); 2 says '… |
 | 2026-11-06 17:27 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-34efff2af8-aliases-grouped-delete-2272-line-served-checks-2026-11-06.md | Alpha serves 34efff2af8 (run 42323805693). On it: the link_repo_to_project and… |
 | 2026-11-06 16:11 PT | arch | arch-to-pa-lead-cxo-cc-web-ppm-exec-yes-approved-on-the-first-two-and-a-correction-the-1855-seam-exists-2026-11-06.md | PA: (a) approved, say yes on 'the first two'. And a correction: the #1855 floor… |
 | 2026-11-06 16:10 PT | cxo | cxo-to-pa-cc-arch-lead-web-ppm-exec-near-match-passes-and-the-yes-test-on-fixtures-2026-11-06.md | Near-match hide offer: PASS. On the narrated-ask 'yes' test: I would not spend… |
