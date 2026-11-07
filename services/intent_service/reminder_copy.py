@@ -14,14 +14,16 @@ CXO's two rulings (the issue's copy comment and her 10-16 08:16 memo):
        1. "buy milk"
        2. "call mom"
 
-       I can delete one at a time for now. Tell me which one.
+       I can delete one at a time for now. Which one should I delete? Say the
+       number or the name, or 'never mind' to leave them alone.
 
-   The middle sentence is the issue-2019 cap (``delete_cap``), said only
-   when more than one item was asked for; a single ordinal ends on "Tell me
-   which one." Showing the list BINDS it (the caller records it as the
-   session's last numbered list), so the next "delete reminder 1" resolves
-   against exactly these numbers. "Tell me which one." is an instruction,
-   not a yes/no question: nothing is armed.
+   The first sentence of that last line is the issue-2019 cap (``delete_cap``),
+   said only when more than one item was asked for. #2318 (CXO 11-07): the
+   question is ARMED, the #1987 pick over exactly the rows shown
+   (``delete_todo_pick.arm_shown_rows_pick``), so a bare number binds; the
+   list is also recorded as the session's last numbered list. With nothing
+   armable the reply ends on a by-name statement and asks nothing. (The
+   10-16 instruction "Tell me which one." is retired.)
 
 2. **One noun.** #2219 (CXO 2026-11-05 19:25) superseded #2046's default: the
    list, the confirm and the result say "todo" (the page is titled "Todos"),
@@ -46,7 +48,6 @@ from typing import Optional, Sequence
 
 NO_LIST_OPENING = "I haven't shown you a numbered list yet. Here are your {plural}:"
 DELETE_ONE_AT_A_TIME = "I can delete one at a time for now."
-TELL_ME_WHICH_ONE = "Tell me which one."
 # The one-item delete confirm, every leg. Rendered by delete_confirm_question.
 DELETE_CONFIRM_QUESTION = 'Delete the {noun} "{title}"?'
 
@@ -133,11 +134,9 @@ def no_list_reply(texts: Sequence[str], noun: str, tail: str) -> str:
     return opening + "\n\n" + "\n".join(items) + "\n\n" + tail
 
 
-def delete_no_list_tail(requested: int) -> str:
-    """The delete tail: the issue-2019 cap sentence when more than one item
-    was asked for, then the instruction."""
+def delete_no_list_lead(requested: int) -> str:
+    """#2318: the issue-2019 cap sentence when more than one item was asked for, else
+    nothing. Leads CXO's armed question in the delete path's no-list reply."""
     from services.intent_service.delete_cap import exceeds_delete_cap
 
-    if exceeds_delete_cap(requested):
-        return f"{DELETE_ONE_AT_A_TIME} {TELL_ME_WHICH_ONE}"
-    return TELL_ME_WHICH_ONE
+    return DELETE_ONE_AT_A_TIME if exceeds_delete_cap(requested) else ""

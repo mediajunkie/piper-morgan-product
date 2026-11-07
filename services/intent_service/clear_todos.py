@@ -300,9 +300,8 @@ def _render_unresolved_reply(
     unresolved: List[str],
 ):
     """CXO ruling point 5: complete_todo's unresolved reply (CXO string 4),
-    with the verb clause struck — 'Tell me which one.' in place of 'Tell me
-    which one, and I'll mark it done.' Returns (message, listing_kind,
-    shown_ids, shown_texts) so the caller can remember the numbered list."""
+    verb-neutral. Returns (lines, listing_kind, shown rows) so the caller can
+    remember the numbered list and, with nothing changed, arm the pick (#2318)."""
     from services.intent_service.todo_handlers import _is_positional
 
     listing_pool = (
@@ -321,17 +320,14 @@ def _render_unresolved_reply(
         lines.append(f"…and {len(listing_pool) - 10} more.")
     if picked:
         lines.append("Nothing has been changed. Say it again with the right name or number.")
-    else:
-        # CXO: strike the verb clause — nothing changes, nothing is armed,
-        # and asking the verb question on a turn that holds no pending
-        # state has nowhere for the answer to bind.
-        lines.append("Tell me which one.")
+    # #2318 (CXO 11-07 12:47, option (a)): with nothing changed the caller ends on
+    # the verb-neutral armed question over the rows shown (the verb question
+    # follows the bound line), so the rows come back as rows.
     shown = listing_pool[:10]
     return (
-        "\n".join(lines),
+        lines,
         listing_kind,
-        [t.id for t in shown],
-        [t.text for t in shown],
+        shown,
     )
 
 
@@ -351,6 +347,7 @@ async def run_clear_todos(
         IntentProcessingResult,
         _coerce_todo_principal,
     )
+    from services.intent_service.delete_todo_pick import PICK_PENDING_FLAG
     from services.intent_service.reminder_clear import (
         CLARIFY_CLEAR_VERB_WORKFLOW,
         CLEAR_FAMILY_RESOLVED_KEY,
@@ -412,35 +409,67 @@ async def run_clear_todos(
         and todo_handlers._recall_numbered_list(session_id, principal or todo_user_id) is None
     ):
         # Issue 2046 (CXO line 1): positions with no numbered list shown get
-        # the list, numbered and bound — never "There's no number 1". The
-        # verb is still open here, so the tail is the bare instruction (the
-        # 2019 cap is said where the delete leg resolves).
-        from services.intent_service.reminder_copy import TELL_ME_WHICH_ONE
-
-        return IntentProcessingResult(
-            success=True,
-            message=todo_handlers._no_list_ordinal_reply(
-                name_pool,
-                _CLEAR_NOUN_LITERAL,
-                TELL_ME_WHICH_ONE,
-                session_id,
-                principal or todo_user_id,
-            ),
-            intent_data={"category": category, "action": intent.action, "router_targets": True},
-            requires_clarification=False,
-        )
-    if unresolved:
-        msg, listing_kind, shown_ids, shown_texts = _render_unresolved_reply(
-            name_pool, pool_kind, ordinal_pool, ordinal_kind, picked, unresolved
-        )
-        TodoIntentHandlers._remember_numbered_list(
-            session_id, principal or todo_user_id, listing_kind, shown_ids, shown_texts
+        # the list, numbered and bound — never "There's no number 1". The verb
+        # is still open, so #2318 (CXO 11-07 12:47, option (a)) asks the
+        # verb-neutral armed question; the verb question follows the bound line
+        # (the 2019 cap is said where the delete leg resolves).
+        msg, armed = todo_handlers._no_list_ordinal_pick(
+            name_pool,
+            _CLEAR_NOUN_LITERAL,
+            "clear",
+            "",
+            intent.original_message or (intent.context or {}).get("original_message") or "",
+            session_id,
+            principal or todo_user_id,
+            getattr(intent_service, "workflow_offer_service", None),
         )
         return IntentProcessingResult(
             success=True,
             message=msg,
-            intent_data={"category": category, "action": intent.action, "router_targets": True},
-            requires_clarification=False,
+            intent_data={
+                "category": category,
+                "action": intent.action,
+                "router_targets": True,
+                **({PICK_PENDING_FLAG: True} if armed else {}),
+            },
+            requires_clarification=armed,
+        )
+    if unresolved:
+        lines, listing_kind, shown = _render_unresolved_reply(
+            name_pool, pool_kind, ordinal_pool, ordinal_kind, picked, unresolved
+        )
+        TodoIntentHandlers._remember_numbered_list(
+            session_id,
+            principal or todo_user_id,
+            listing_kind,
+            [t.id for t in shown],
+            [t.text for t in shown],
+        )
+        armed = False
+        if picked:
+            msg = "\n".join(lines)
+        else:
+            msg, armed = todo_handlers._armed_shown_rows_reply(
+                "clear",
+                lines,
+                shown,
+                listing_kind,
+                intent,
+                intent.context or {},
+                session_id,
+                principal or todo_user_id,
+                getattr(intent_service, "workflow_offer_service", None),
+            )
+        return IntentProcessingResult(
+            success=True,
+            message=msg,
+            intent_data={
+                "category": category,
+                "action": intent.action,
+                "router_targets": True,
+                **({PICK_PENDING_FLAG: True} if armed else {}),
+            },
+            requires_clarification=armed,
         )
 
     ex_ids = {t.id for t in excluded}
@@ -551,8 +580,6 @@ async def run_clear_todos(
                 error="delete_todo dispatch failed",
                 error_type="DispatchError",
             )
-        from services.intent_service.delete_todo_pick import PICK_PENDING_FLAG
-
         if (result.intent_data or {}).get(PICK_PENDING_FLAG):
             # #2318: the delete handler capped the set (#2019) and armed the pick
             # over it; that question stands as asked, never re-worded as a confirm.

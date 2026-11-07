@@ -12,10 +12,11 @@ CXO's two lines, pinned per entry path:
 1. Ordinals with no bound list → "I haven't shown you a numbered list yet.
    Here are your reminders:", the numbered list (one item per line, blank
    lines around it so Markdown renders a real list), then "I can delete one
-   at a time for now. Tell me which one." when two or more were asked (the
-   2019 cap), or "Tell me which one." for one. Nothing is deleted, nothing
-   is armed, and the shown list is BOUND: the next ``delete reminder 1``
-   resolves against it.
+   at a time for now." when two or more were asked (the 2019 cap), then the
+   armed question (#2318, CXO 11-07: "Which one should I delete? …", or the
+   verb-neutral "Which one do you mean? …" on the clear path). Nothing is
+   deleted; the pick is armed over the rows shown and the shown list is
+   BOUND: the next ``delete reminder 1`` resolves against it.
 2. One noun: every one-item delete confirm reads ``Delete the reminder
    "buy milk"? (yes/no)`` (by title, by number, by pick, by "that"), and the
    result after a yes says "reminder". "to-do" only where the user said it.
@@ -69,9 +70,14 @@ SERVED_REPLY = (
     '1. "buy milk"\n'
     '2. "call mom"\n'
     "\n"
-    "I can delete one at a time for now. Tell me which one."
+    # #2318 (CXO 11-07): the cap sentence, then the ARMED question.
+    "I can delete one at a time for now. Which one should I delete? Say the number or the "
+    "name, or 'never mind' to leave them alone."
 )
-SINGLE_REPLY = f'{OPENING}\n\n1. "buy milk"\n2. "call mom"\n\nTell me which one.'
+SINGLE_REPLY = (
+    f'{OPENING}\n\n1. "buy milk"\n2. "call mom"\n\n'
+    "Which one should I delete? Say the number or the name, or 'never mind' to leave them alone."
+)
 MILK_CONFIRM = 'Delete the reminder "buy milk"? (yes/no)'
 # #2219 (CXO 2026-11-05 19:25): "todo" when the person named neither noun.
 MILK_CONFIRM_TODO = 'Delete the todo "buy milk"? (yes/no)'
@@ -198,7 +204,8 @@ class TestCopy:
         reply = no_list_reply(
             ["buy milk", "call mom"],
             "reminder",
-            "I can delete one at a time for now. " "Tell me which one.",
+            "I can delete one at a time for now. Which one should I delete? Say the number or "
+            "the name, or 'never mind' to leave them alone.",
         )
         assert reply == SERVED_REPLY
         # A real list: each item on its own line, a blank line on each side
@@ -242,9 +249,10 @@ class TestTargetsPathNoListShown:
     ):
         result = await _delete(intent_service, "delete the first two reminders", ["1-2"])
         assert result.message == SERVED_REPLY
-        assert result.requires_clarification is False
+        # #2318 (CXO 11-07): the question is armed — the pick over the shown rows.
+        assert result.requires_clarification is True
         assert not result.intent_data.get("destructive_confirmation_pending")
-        assert store.slot is None
+        assert store.slot["pending_action"]["kind"] == "delete_todo_pick_question"
         todo_service.delete_todo.assert_not_awaited()
         # Showing the list BINDS it — exactly the rows shown, in shown order.
         assert session_ctx.last_numbered_list.ids == [rows[1].id, rows[2].id]
@@ -266,10 +274,26 @@ class TestTargetsPathNoListShown:
             todo_id=UUID(rows[1].id), user_id=UUID(_USER)
         )
 
-    async def test_one_ordinal_ends_on_tell_me_which_one(self, intent_service, store, todo_service):
+    async def test_one_ordinal_ends_on_the_armed_question(
+        self, intent_service, store, todo_service
+    ):
         result = await _delete(intent_service, "delete the first reminder", ["1"])
         assert result.message == SINGLE_REPLY
-        assert store.slot is None
+        assert store.slot["pending_action"]["kind"] == "delete_todo_pick_question"
+        todo_service.delete_todo.assert_not_awaited()
+
+    async def test_a_bare_number_after_it_reaches_the_confirm(
+        self, intent_service, store, todo_service
+    ):
+        """#2318: the reason it is armed — a bare "2" binds the shown row 2."""
+        from services.intent_service.delete_todo_pick import handle_delete_todo_pick_turn
+
+        await _delete(intent_service, "delete the first reminder", ["1"])
+        offer = store.get_and_clear_pending_offer(_SESSION)
+        out = await handle_delete_todo_pick_turn(
+            offer, "2", session_id=_SESSION, user_id=_USER, intent_service=intent_service
+        )
+        assert out["message"] == 'Delete the reminder "call mom"? (yes/no)'
         todo_service.delete_todo.assert_not_awaited()
 
     async def test_the_user_said_to_do(self, intent_service, rows):
@@ -278,7 +302,10 @@ class TestTargetsPathNoListShown:
             "I haven't shown you a numbered list yet. Here are your todos:\n\n"
             '1. "water the plants"\n2. "buy milk"\n3. "call mom"\n\n'
         )
-        assert result.message.endswith("I can delete one at a time for now. Tell me which one.")
+        assert result.message.endswith(
+            "I can delete one at a time for now. Which one should I delete? Say the number or "
+            "the name, or 'never mind' to leave them alone."
+        )
 
     async def test_a_shown_list_still_gets_todays_out_of_range_line(
         self, intent_service, todo_service
@@ -303,13 +330,41 @@ class TestOtherEntryPaths:
     ):
         intent = _intent("clear the first two reminders", ["1-2"], action="clear_todos")
         result = await ct.run_clear_todos(intent, _SESSION, _USER, intent_service)
-        # The verb is still open on this path (mark done or delete), so the
-        # bare instruction; the cap is said where the delete leg resolves.
-        assert result.message == f'{OPENING}\n\n1. "buy milk"\n2. "call mom"\n\nTell me which one.'
-        assert store.slot is None
+        # The verb is still open on this path (mark done or delete), so #2318
+        # (CXO 11-07 12:47, option (a)) asks the verb-neutral armed question; the
+        # cap is said where the delete leg resolves.
+        assert result.message == (
+            f'{OPENING}\n\n1. "buy milk"\n2. "call mom"\n\n'
+            "Which one do you mean? Say the number or the name, or 'never mind' to leave "
+            "them alone."
+        )
+        assert store.slot["pending_action"]["verb"] == "clear"
         todo_service.delete_todo.assert_not_awaited()
         todo_service.complete_todo.assert_not_awaited()
         assert session_ctx.last_numbered_list.ids == [rows[1].id, rows[2].id]
+
+    async def test_a_clear_pick_answer_asks_the_verb_for_that_line_and_writes_nothing(
+        self, intent_service, store, todo_service, rows
+    ):
+        """Arch 12:43's conditions: the pick turn writes nothing; it arms clear's
+        existing verb question over the one bound line, resolver-marked."""
+        from services.intent_service.clear_todos import CLEAR_TODOS_RESOLVER_MARKER
+        from services.intent_service.delete_todo_pick import handle_delete_todo_pick_turn
+
+        intent = _intent("clear the first two reminders", ["1-2"], action="clear_todos")
+        await ct.run_clear_todos(intent, _SESSION, _USER, intent_service)
+        offer = store.get_and_clear_pending_offer(_SESSION)
+        out = await handle_delete_todo_pick_turn(
+            offer, "2", session_id=_SESSION, user_id=_USER, intent_service=intent_service
+        )
+        assert out["message"].startswith('You want to clear the reminder "call mom".')
+        assert out["requires_clarification"] is True
+        pa = store.slot["pending_action"]
+        assert pa[CLEAR_TODOS_RESOLVER_MARKER] is True
+        assert [str(i) for i in pa["clear_target_ids"]] == [str(rows[2].id)]
+        assert pa["clear_target_texts"] == ["call mom"]
+        todo_service.delete_todo.assert_not_awaited()
+        todo_service.complete_todo.assert_not_awaited()
 
     async def test_complete_shows_the_list_never_no_number(
         self, intent_service, store, todo_service, session_ctx, rows
@@ -321,10 +376,11 @@ class TestOtherEntryPaths:
             store,
             _USER,
         )
-        assert armed is False
+        assert armed is True  # #2318 (CXO 11-07)
         assert msg == (
             f'{OPENING}\n\n1. "buy milk"\n2. "call mom"\n\n'
-            "Tell me which one, and I'll mark it done."
+            "Which one should I complete? Say the number or the name, or 'never mind' to "
+            "leave them alone."
         )
         todo_service.complete_todo.assert_not_awaited()
         assert session_ctx.last_numbered_list.ids == [rows[1].id, rows[2].id]

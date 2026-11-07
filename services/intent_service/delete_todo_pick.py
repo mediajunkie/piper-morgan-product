@@ -67,6 +67,9 @@ PICK_PENDING_FLAG = "delete_todo_pick_pending"
 # (reversible) binds to the completion itself, an explicit answer (Gap B).
 VERB_DELETE = "delete"
 VERB_COMPLETE = "complete"
+# #2318 (CXO 11-07 12:47, option (a); Arch 12:43): a clear pick binds the LINE only;
+# the verb stays with clear's own verb question, armed on the bound line.
+VERB_CLEAR = "clear"
 # CXO 11-06 11:28: a complete pick answered with several numbers.
 COMPLETE_ONE_AT_A_TIME_QUESTION = (
     "I can take one number at a time here. Which one should I complete?"
@@ -330,7 +333,7 @@ def render_pick_question(
 
 
 def _decline_message(noun: str, verb: str) -> str:
-    if verb == VERB_COMPLETE:
+    if verb in (VERB_COMPLETE, VERB_CLEAR):
         return f"Okay — I haven't touched your {noun}s. Nothing has been changed."
     return f"Okay — I haven't touched your {noun}s. Nothing has been deleted."
 
@@ -572,6 +575,76 @@ CAPPED_PICK_QUESTION_TAIL = (
 )
 
 
+# #2318 (CXO 11-07 12:3x): the armed tail of a reply that shows rows numbered and
+# asks which one (the #2046 no-list reply and the unresolved reply), by verb.
+SHOWN_ROWS_QUESTION_TAIL = (
+    "Which one should I {verb}? Say the number or the name, or 'never mind' to leave " "them alone."
+)
+
+
+# CXO 11-07 (the clear path, option (a)): verb-neutral, since "clear" hasn't chosen.
+CLEAR_SHOWN_ROWS_QUESTION = (
+    "Which one do you mean? Say the number or the name, or 'never mind' to leave them alone."
+)
+
+
+def shown_rows_question(verb: str) -> str:
+    """CXO's armed tail for ``verb`` ("complete", "delete", or "clear")."""
+    if verb == VERB_CLEAR:
+        return CLEAR_SHOWN_ROWS_QUESTION
+    return SHOWN_ROWS_QUESTION_TAIL.format(verb=verb)
+
+
+def by_name_statement(verb: str, noun: str) -> str:
+    """CXO's floor when nothing can be armed: a true statement, no question."""
+    from services.intent_service.reminder_copy import noun_word
+
+    word = noun_word(noun)
+    if verb == VERB_CLEAR:
+        return f'Ask me by name, like "complete {word} call mom" or "delete {word} call mom".'
+    return f'Ask me by name, like "{verb} {word} call mom".'
+
+
+def arm_shown_rows_pick(
+    verb: str,
+    reply: str,
+    message: str,
+    session_id: Optional[str],
+    principal: Optional[str],
+    noun: str,
+    rows: List[Any],
+    offer_service: Any,
+) -> bool:
+    """#2318 (CXO 11-07; Arch 12:15, mechanism): arm the #1987 pick over exactly the
+    rows a reply just showed numbered 1..k, so a bare number, an ordinal or a name
+    binds on the next turn (``handle_delete_todo_pick_turn``) to the single-line
+    confirm (delete) or the completion (complete). ``reply`` is stored as the pick's
+    question. False when nothing could pop an answer (no session or store): the
+    caller ends on :func:`by_name_statement` instead, asking nothing."""
+    from services.intent_service.reminder_clear import _due_iso
+
+    if not session_id or offer_service is None or not rows:
+        return False
+    offer_service.set_pending_offer(
+        session_id,
+        _pick_offer(
+            principal,
+            noun,
+            [str(t.id) for t in rows],
+            [t.text for t in rows],
+            [_due_iso(t, noun) for t in rows],
+            message,
+            reply,
+            copies=[1] * len(rows),
+            verb=verb,
+            line_ids=[[str(t.id)] for t in rows],
+        ),
+        user_id=principal,
+    )
+    logger.info("shown_rows_pick_armed", session_id=session_id, verb=verb, count=len(rows))
+    return True
+
+
 def capped_pick_question(
     texts: Sequence[str],
     noun: str = "todo",
@@ -763,11 +836,20 @@ async def handle_delete_todo_pick_turn(
         }
 
     # Issue 2019 (xian 2026-10-14, interim until soft delete): an answer that
-    # names several candidates arms NO delete and deletes nothing; CXO's
-    # capped reply names them in the order shown. The pick is not re-armed
-    # ("Tell me which one" is an instruction, not an offer).
-    # The cap is delete's; a complete pick binds one line (several re-ask below).
+    # names several candidates arms NO delete and deletes nothing; #2318 re-arms
+    # the cap's pick over them (below). The cap is delete's; a complete pick binds
+    # one line (several re-ask below); a clear pick asks clear's verb question over
+    # the named lines (its delete leg meets the cap where it resolves).
     multi = [i for i in _multi_pick_indices(text, texts, due_iso, labels) if i < len(ids)]
+    if verb == VERB_CLEAR and len(multi) > 1:
+        return _clear_bound(
+            [ids[i] for i in multi],
+            [texts[i] for i in multi],
+            original_message,
+            session_id,
+            user_id,
+            intent_service,
+        )
     if verb == VERB_COMPLETE and len(multi) > 1:
         # CXO 11-06 11:28: a complete pick binds one line. Several numbers never
         # complete the first and drop the rest: re-ask once on the same record; a
@@ -946,6 +1028,10 @@ async def handle_delete_todo_pick_turn(
         }
     if status == "bound" and idx is not None and 0 <= idx < len(ids):
         copies = payload.get("pick_copies") or []
+        if verb == VERB_CLEAR:
+            return _clear_bound(
+                [ids[idx]], [texts[idx]], original_message, session_id, user_id, intent_service
+            )
         if verb == VERB_COMPLETE:
             line_ids = payload.get("pick_line_ids") or []
             return await _complete_bound(
@@ -1074,6 +1160,51 @@ async def handle_delete_todo_pick_turn(
             "category": "execution",
             "action": CLARIFY_DELETE_PICK_WORKFLOW,
             PICK_PENDING_FLAG: True,
+        },
+        "requires_clarification": True,
+    }
+
+
+def _clear_bound(
+    ids: List[str],
+    texts: List[str],
+    original_message: str,
+    session_id: Optional[str],
+    user_id: Optional[str],
+    intent_service: Any,
+) -> Dict[str, Any]:
+    """#2318 (CXO 11-07, option (a); Arch 12:43): a clear pick bound the line(s).
+    Nothing is written: clear's existing verb question is armed over exactly those
+    ids, as ``run_clear_todos`` does after a resolved target (the same carrier and
+    the resolver marker), so its answer's path, the delete leg's cap and confirm
+    included, is unchanged."""
+    from services.intent_service.clear_todos import (
+        _CLEAR_NOUN_LITERAL,
+        _CLEAR_VERB_LITERAL,
+        CLEAR_TODOS_RESOLVER_MARKER,
+        _clear_variant_one_with_set,
+    )
+    from services.intent_service.reminder_clear import _verb_question_offer
+
+    question = _clear_variant_one_with_set(list(texts), [])
+    offer = _verb_question_offer(
+        user_id,
+        _CLEAR_VERB_LITERAL,
+        _CLEAR_NOUN_LITERAL,
+        list(ids),
+        list(texts),
+        original_message,
+        question=question,
+    )
+    offer["pending_action"][CLEAR_TODOS_RESOLVER_MARKER] = True
+    intent_service.workflow_offer_service.set_pending_offer(session_id, offer, user_id=user_id)
+    logger.info("clear_pick_bound_verb_question", session_id=session_id, count=len(ids))
+    return {
+        "message": question,
+        "intent_data": {
+            "category": "execution",
+            "action": CLARIFY_DELETE_PICK_WORKFLOW,
+            "verb_disambiguation_pending": True,
         },
         "requires_clarification": True,
     }
