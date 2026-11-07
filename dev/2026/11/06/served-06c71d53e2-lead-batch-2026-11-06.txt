@@ -1,0 +1,125 @@
+# Lead's 18:08 batch on 06c71d53e2, web-seed-1386, PA run 18:11. Every project had a repo, so a new one first; declines (2, 3) before the link (1)
+
+--- [18:11:44, 06c71d53e2, http 200, 6.99 s] route portfolio/add_project
+USER: add project zz link test
+PIPER: You already have a project called zz share-hide project, so I have not created a second one. Say 'show my projects' to see the list.
+# check 2
+
+--- [18:11:50, 06c71d53e2, http 200, 5.89 s] route portfolio/link_repo
+USER: I want to add a repo to my zz link test project
+PIPER: I couldn't find a project called 'zz link test project'. Check the name and try again, or say 'show my projects' to see your project list.
+
+--- [18:12:02, 06c71d53e2, http 200, 3.38 s] route portfolio/add_project
+USER: add project Harbor Pilot
+PIPER: Added Harbor Pilot to your portfolio. If you want a GitHub repo on it, say: link [owner/repo] to Harbor Pilot.
+
+--- [18:12:08, 06c71d53e2, http 200, 5.17 s] route query/list_projects
+USER: show my projects
+PIPER: I think I'm tracking 4 projects for you.
+
+- **Harbor Pilot** (active)
+- **Mobile Redesign** (active)
+- **Piper Test Activity** (active)
+- **zz share-hide project** (active)
+# check 2 on Harbor Pilot
+
+--- [18:12:22, 06c71d53e2, http 200, 6.08 s] route portfolio/link_repo_needs_repository
+USER: I want to add a repo to my Harbor Pilot project
+PIPER: Which repository should I link to Harbor Pilot? Say it as owner/name.
+
+--- [18:12:31, 06c71d53e2, http 200, 0.28 s] route portfolio/link_repo
+USER: dinp-machine/piper-test-activity
+PIPER: Link dinp-machine/piper-test-activity to Harbor Pilot? (yes/no)
+
+--- [18:12:32, 06c71d53e2, http 200, 0.25 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay, I won't link dinp-machine/piper-test-activity to Harbor Pilot. Nothing has been changed.
+# check 3a
+
+--- [18:12:34, 06c71d53e2, http 200, 1.67 s] route portfolio/link_repo_needs_repository
+USER: I want to add a repo to my Harbor Pilot project
+PIPER: Which repository should I link to Harbor Pilot? Say it as owner/name.
+
+--- [18:12:35, 06c71d53e2, http 200, 0.26 s] route soft_offer_declined/clarify_link_repo_repository
+USER: no
+PIPER: Okay, I won't link a repository to Harbor Pilot. Nothing has been changed.
+# check 3b
+
+--- [18:12:39, 06c71d53e2, http 200, 3.77 s] route portfolio/link_repo_needs_repository
+USER: I want to add a repo to my Harbor Pilot project
+PIPER: Which repository should I link to Harbor Pilot? Say it as owner/name.
+
+--- [18:12:40, 06c71d53e2, http 200, 0.28 s] route portfolio/link_repo
+USER: piper
+PIPER: I didn't see a repository in owner/name form, so I haven't linked anything to Harbor Pilot.
+# check 1
+
+--- [18:12:52, 06c71d53e2, http 200, 3.97 s] route portfolio/link_repo_needs_repository
+USER: I want to add a repo to my Harbor Pilot project
+PIPER: Which repository should I link to Harbor Pilot? Say it as owner/name.
+
+--- [18:12:53, 06c71d53e2, http 200, 0.25 s] route portfolio/link_repo
+USER: dinp-machine/piper-test-activity
+PIPER: Link dinp-machine/piper-test-activity to Harbor Pilot? (yes/no)
+
+--- [18:12:54, 06c71d53e2, http 200, 0.29 s] route portfolio/link_repo
+USER: yes
+PIPER: Linked dinp-machine/piper-test-activity to Harbor Pilot.
+
+--- [18:13:00, 06c71d53e2, http 200, 5.83 s] route portfolio/list_repos
+USER: show repos for Harbor Pilot
+PIPER: **Harbor Pilot** has 1 linked repository:
+
+- 🐙 dinp-machine/piper-test-activity (github)
+# check 4
+
+--- [18:13:05, 06c71d53e2, http 200, 3.84 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [18:13:23, 06c71d53e2, http 200, 17.55 s] route CONVERSATION/clarification_needed
+USER: delete the first two
+PIPER: I can delete todos, but want to make sure I'm deleting the right ones. Going off the list from earlier, "the first two" would be:
+
+1. **urgent task**
+2. **review the deployment plan**
+
+Is that right, or did you mean the first two from a different angle (like the two "zz throwaway" ones)?
+# check 4, two more fresh samples
+
+--- [18:13:35, 06c71d53e2, http 200, 1.85 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [18:13:45, 06c71d53e2, http 200, 9.33 s] route CONVERSATION/clarification_needed
+USER: delete the first two
+PIPER: Nothing has been done yet. Tell me what you'd like as a direct request.
+
+--- [18:13:47, 06c71d53e2, http 200, 1.82 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [18:13:58, 06c71d53e2, http 200, 9.46 s] route CONVERSATION/clarification_needed
+USER: delete the first two
+PIPER: Nothing has been done yet. Tell me what you'd like as a direct request.
