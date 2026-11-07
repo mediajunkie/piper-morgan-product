@@ -73,7 +73,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 import structlog
 
@@ -689,6 +689,51 @@ def _armed_todo_delete(
     )
 
 
+def _shown_line_numbering(
+    session_id: Optional[str], todo_user_id: Any, todos: List[Any]
+) -> List[List[Any]]:
+    """#2219 Gap A (CXO 11-06 07:35: a grouped line is ONE number): the open copies on
+    each line of the last numbered todo list shown, by the number the person saw. A
+    line whose copies are all gone stays as an empty slot so later numbers never shift.
+    ``[]`` when no grouped list was recorded (only "show my todos" records groups)."""
+    from services.intent_service.delete_todo_pick import last_numbered_list
+
+    shown = last_numbered_list(session_id, todo_user_id)
+    groups = getattr(shown, "groups", None) or []
+    if not groups:
+        return []
+    by_id = {str(t.id): t for t in todos or []}
+    return [[by_id[str(i)] for i in group if str(i) in by_id] for group in groups]
+
+
+def _armed_line_delete(
+    intent: Intent, line: List[Any], number: int, message: str
+) -> TodoDeleteGate:
+    """One copy of a shown line, the same confirm the pick and the router path arm:
+    a grouped line says its count (CXO 11-06 08:30) and deletes exactly one copy."""
+    from services.intent_service.todo_handlers import grouped_delete_confirm_question
+
+    row = line[0]
+    noun = copy_noun(message)
+    copies = len(line)
+    question = (
+        grouped_delete_confirm_question(row.text, copies, noun)
+        if copies > 1
+        else delete_confirm_question(row.text, noun)
+    )
+    gate = _armed_todo_delete(
+        intent,
+        row,
+        number,
+        question=question,
+        summary=delete_summary_phrase(row.text, noun),
+        noun=noun,
+    )
+    if copies > 1:
+        intent.context[RESOLVED_TODO_CONTEXT_KEY]["copies"] = copies
+    return gate
+
+
 async def build_todo_delete_confirmation(
     intent: Intent,
     todo_handlers: Any,
@@ -806,11 +851,19 @@ async def build_todo_delete_confirmation(
             )
         )
 
+    shown_lines = _shown_line_numbering(session_id, todo_user_id, todos)
+
     if todo_number is not None:
         try:
             idx = int(todo_number) - 1
         except ValueError:
             return TodoDeleteGate(passthrough=True)
+        if shown_lines:
+            # #2219 Gap A (PA's served run on 34efff2af8): after a grouped list, "delete
+            # todo 5" means line 5 as shown, never the 5th row in storage order.
+            if idx < 0 or idx >= len(shown_lines) or not shown_lines[idx]:
+                return TodoDeleteGate(passthrough=True)
+            return _armed_line_delete(intent, shown_lines[idx], idx + 1, message)
         if idx < 0 or idx >= len(todos):
             return TodoDeleteGate(passthrough=True)
 
@@ -873,6 +926,26 @@ async def build_todo_delete_confirmation(
     if not matches:
         # CXO 10-24: never quote the stripped message back as their words.
         return TodoDeleteGate(clarification=NAMED_DELETE_NOT_FOUND)
+
+    if len(matches) > 1 and shown_lines:
+        # #2219 Gap A (PA's served run on 34efff2af8): matches are named by the line
+        # the person saw. Copies of one grouped line ARE that line (the router path's
+        # rule, 699891f8fe); several lines list each once, by its shown number.
+        line_of = {str(t.id): n for n, line in enumerate(shown_lines, 1) for t in line}
+        hit = sorted({line_of[str(t.id)] for t in matches if str(t.id) in line_of})
+        if len(hit) == 1 and all(str(t.id) in line_of for t in matches):
+            return _armed_line_delete(intent, shown_lines[hit[0] - 1], hit[0], message)
+        if hit and all(str(t.id) in line_of for t in matches):
+            from services.intent_service.delete_todo_pick import _line_display
+
+            candidates = ", ".join(f'{n}. "{_line_display(shown_lines[n - 1])}"' for n in hit)
+            return TodoDeleteGate(
+                clarification=(
+                    f'I found {len(hit)} todos matching "{named_target}": '
+                    f"{candidates}. Which one should I delete? "
+                    "Try 'delete todo [number]'."
+                )
+            )
 
     if len(matches) > 1:
         position_by_id = {t.id: i + 1 for i, t in enumerate(todos)}

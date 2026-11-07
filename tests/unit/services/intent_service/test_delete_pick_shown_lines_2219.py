@@ -134,3 +134,70 @@ async def test_a_one_copy_line_keeps_the_one_item_confirm(boundary):
     confirm = await service.process_intent(message="2", session_id=_SID, user_id=_USER)
     assert confirm.message == 'Delete the todo "high task"? (yes/no)'
     assert boundary["deleted"] == []
+
+
+# ---------------------------------------------------------------------------
+# PA's served run on 34efff2af8 (11-06 17:33): the gate's named and numbered legs
+# numbered by storage order, so after a grouped list "delete the review prs todos"
+# listed the three copies as lines 2, 6 and 7, and "delete todo 5" bound the 5th row
+# in storage, not line 5 as shown. Both now read the shown lines (CXO 07:35).
+# ---------------------------------------------------------------------------
+
+
+class _DeleteTodoEmission:
+    async def complete(self, task_type=None, **kwargs):
+        return json.dumps(dict(_EMISSION, action="delete_todo"))
+
+
+def _gate_service():
+    register_default_workflows()
+    return IntentService(intent_classifier=IntentClassifier(llm_service=_DeleteTodoEmission()))
+
+
+def _shown_with_tail(state):
+    """Lines: 1 urgent, 2 high, 3 review prs (×3), 4 zz one. Storage puts zz one 6th."""
+    state["todos"].append(_todo("zz one"))
+    t = state["todos"]
+    lines = [[t[0]], [t[1]], [t[2], t[3], t[4]], [t[5]]]
+    TodoIntentHandlers._remember_numbered_list(
+        _SID,
+        _USER,
+        "todos",
+        [line[0].id for line in lines],
+        [line[0].text for line in lines],
+        groups=[[x.id for x in line] for line in lines],
+    )
+
+
+@pytest.mark.asyncio
+async def test_a_named_grouped_line_asks_one_of_your_n_on_the_gate_path(boundary):
+    _shown_with_tail(boundary)
+    service = _gate_service()
+    confirm = await service.process_intent(
+        message="delete the review prs todos", session_id=_SID, user_id=_USER
+    )
+    assert confirm.message == 'Delete one of your 3 "review prs" todos? (yes/no)'
+    assert boundary["deleted"] == []
+    done = await service.process_intent(message="yes", session_id=_SID, user_id=_USER)
+    assert len(boundary["deleted"]) == 1
+    assert done.message == 'Deleted one "review prs". 2 are left on your list.'
+
+
+@pytest.mark.asyncio
+async def test_delete_todo_n_binds_the_line_shown_not_the_storage_row(boundary):
+    _shown_with_tail(boundary)
+    confirm = await _gate_service().process_intent(
+        message="delete todo 4", session_id=_SID, user_id=_USER
+    )
+    # Storage row 4 is a "review prs" copy; line 4 as shown is "zz one".
+    assert confirm.message == 'Delete the todo "zz one"? (yes/no)'
+    assert boundary["deleted"] == []
+
+
+@pytest.mark.asyncio
+async def test_delete_todo_n_on_a_grouped_line_says_its_count(boundary):
+    _shown_with_tail(boundary)
+    confirm = await _gate_service().process_intent(
+        message="delete todo 3", session_id=_SID, user_id=_USER
+    )
+    assert confirm.message == 'Delete one of your 3 "review prs" todos? (yes/no)'
