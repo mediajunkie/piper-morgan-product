@@ -5,7 +5,7 @@
 - **Model:** Opus 5.5.
 - **11-07 START order:**
   1. Usual START: create the 11-07 log, both inboxes, current-state Now, xpoll, `owed-scan.py --role lead`.
-  2. **#2316: DONE post-close** (with CXO 21:51 / Arch 21:54's edges, gate x green, pushed 11-06 22:3x). Check Tests on main's tip.
+  2. **#2316: DONE post-close** (with CXO 21:51 / Arch 21:54's edges, gate x green, pushed 11-06 22:35). Check Tests on main's tip.
   3. After 07:00: Tests green on main's tip, then every promotion condition (main 12/12, quiet, uptime ≥ 1800 s, a green health watch since the landing, no hold, no migration, inbox re-read). Then dispatch (bare command) and tell Exec the sha and run id. PA's checks: #2315's rows ("complete the review prs todo" → the labelled pick; "complete the review todo" → 2/4/8; a no-match; no-list copies → one-or-both) and #2316 (a name with another line's number → CXO's two-line question, nothing written). CXO closes #2219/#2294 on those quotes.
   4. **D5** on xian's explicit word via Exec (standing item): "go" → merge `claude/lead-adr083`, full gate, push, promote, PA's ordinal checks after "show my todos".
 - **Waiting on others:** #2313 (a served route read); #2312 (PPM); #2314's cut name (the args row is scored at the next screen; Arch decides after); #2244, #2288/#2266, #2261.
