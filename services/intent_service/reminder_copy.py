@@ -121,13 +121,20 @@ def delete_summary_phrase(title: str, noun: str = "todo") -> str:
     return f'delete the {noun_word(noun)} "{title}"'
 
 
-def no_list_reply(texts: Sequence[str], noun: str, tail: str) -> str:
+def no_list_reply(
+    texts: Sequence[str], noun: str, tail: str, copies: Optional[Sequence[int]] = None
+) -> str:
     """CXO line 1: the opening, the numbered list (quoted titles, one per
     line), then ``tail``. Blank lines around the list: the chat page renders
     Markdown, and a line straight after a list item renders INSIDE it (the
     #2002 run-together)."""
     shown = list(texts)[:NO_LIST_MAX_SHOWN]
-    items = [f'{i}. "{t}"' for i, t in enumerate(shown, 1)]
+    counts = list(copies) if copies is not None else [1] * len(shown)
+    # #2318: a grouped line shows its count, as "show my todos" and the cap do.
+    items = [
+        f'{i}. "{t}"' + (f" (×{n})" if n > 1 else "")
+        for i, (t, n) in enumerate(zip(shown, counts), 1)
+    ]
     if len(texts) > len(shown):
         items.append(f"…and {len(texts) - len(shown)} more.")
     opening = NO_LIST_OPENING.format(plural=noun_plural(noun))

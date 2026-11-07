@@ -243,9 +243,11 @@ class TestHandleCompleteTodoTargets:
         msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is True
         assert msg == (
+            # #2318 (PA 14:12): numbered as "show my todos" numbers them, so the two
+            # identical copies are ONE line with its count.
             "I haven't shown you a numbered list yet. Here are your todos:\n\n"
-            + "\n".join(f'{i + 1}. "{t.text}"' for i, t in enumerate(four))
-            + "\n\nWhich one should I complete? Say the number or the name, or 'never mind' "
+            '1. "check the test card again" (×2)\n2. "review the pr"\n3. "revise the pr"'
+            "\n\nWhich one should I complete? Say the number or the name, or 'never mind' "
             "to leave them alone."
         )
         assert "no number" not in msg
@@ -253,9 +255,13 @@ class TestHandleCompleteTodoTargets:
         _sid, offer = offers.set_pending_offer.call_args.args[:2]
         assert offer["pending_action"]["kind"] == "delete_todo_pick_question"
         assert offer["pending_action"]["verb"] == "complete"
-        assert offer["pending_action"]["pick_ids"] == [str(t.id) for t in four]
+        assert offer["pending_action"]["pick_ids"] == [
+            str(t.id) for t in (four[0], four[2], four[3])
+        ]
+        assert offer["pending_action"]["pick_line_ids"][0] == [str(four[0].id), str(four[1].id)]
         # the list just shown is now the numbered list
-        assert session_ctx.last_numbered_list.ids == [t.id for t in four]
+        assert session_ctx.last_numbered_list.ids == [four[0].id, four[2].id, four[3].id]
+        assert session_ctx.last_numbered_list.groups[0] == [four[0].id, four[1].id]
 
     @pytest.mark.asyncio
     async def test_confirmed_reentry_completes_exactly_the_bound_ids(

@@ -615,6 +615,22 @@ def arm_shown_rows_pick(
     rows: List[Any],
     offer_service: Any,
 ) -> bool:
+    """One row per shown line; see :func:`arm_shown_lines_pick`."""
+    return arm_shown_lines_pick(
+        verb, reply, message, session_id, principal, noun, [[t] for t in rows], offer_service
+    )
+
+
+def arm_shown_lines_pick(
+    verb: str,
+    reply: str,
+    message: str,
+    session_id: Optional[str],
+    principal: Optional[str],
+    noun: str,
+    lines: List[List[Any]],
+    offer_service: Any,
+) -> bool:
     """#2318 (CXO 11-07; Arch 12:15, mechanism): arm the #1987 pick over exactly the
     rows a reply just showed numbered 1..k, so a bare number, an ordinal or a name
     binds on the next turn (``handle_delete_todo_pick_turn``) to the single-line
@@ -623,25 +639,25 @@ def arm_shown_rows_pick(
     caller ends on :func:`by_name_statement` instead, asking nothing."""
     from services.intent_service.reminder_clear import _due_iso
 
-    if not session_id or offer_service is None or not rows:
+    if not session_id or offer_service is None or not lines:
         return False
     offer_service.set_pending_offer(
         session_id,
         _pick_offer(
             principal,
             noun,
-            [str(t.id) for t in rows],
-            [t.text for t in rows],
-            [_due_iso(t, noun) for t in rows],
+            [str(line[0].id) for line in lines],
+            [line[0].text for line in lines],
+            [_due_iso(line[0], noun) for line in lines],
             message,
             reply,
-            copies=[1] * len(rows),
+            copies=[len(line) for line in lines],
             verb=verb,
-            line_ids=[[str(t.id)] for t in rows],
+            line_ids=[[str(t.id) for t in line] for line in lines],
         ),
         user_id=principal,
     )
-    logger.info("shown_rows_pick_armed", session_id=session_id, verb=verb, count=len(rows))
+    logger.info("shown_rows_pick_armed", session_id=session_id, verb=verb, count=len(lines))
     return True
 
 
