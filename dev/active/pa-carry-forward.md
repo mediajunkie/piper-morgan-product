@@ -12,8 +12,8 @@
 
 - **Served:** beta `8633405573` (D5 measurement build, `D5_CONSULT_CEILING_S = 5.0`) as of 12:47; MCP `/health` 200. Read the live sha from `/health`, not from here.
 - **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta** (`dev/2026/11/06/turn.py`, run from `dev/2026/11/07`).
-- **#2318 row 5:** binds 5 of 5 at 5 s; the extra 2 to 3 s is app-side (Lead 12:17). Next promotion is Lead's diagnostic build (`latency_ms`, 1.5 s stall watch, Arch 12:28). On it: row 5 three to five times, **one disposable per run** (complete writes with no confirm). If the round doesn't name the cause, the following promotion ships at most 2.5 s (Arch 12:43, Exec 12:36; 3.0 s is put to xian). Then row 5 at the shipped ceiling.
-- **Armed-pick rows owed once served:** reminder-clear arms (`d6e23453d1`, validated); Lead's sites 1 to 4 (complete and delete "Which one should I …?" with no list or unresolved); clear sites 5 and 6 take option (a), "Which one do you mean? …" then clear's verb question (CXO 12:47).
+- **#2318 / #2320 / #2321 (written 15:47):** #2320's cause is the output filter's ~2 s Tier 2 call on router JSON. The fix (STRUCTURED profile) gates as z12 with the #2321 units. On its promotion, see Q9: row 5 (should bind), the two baseline decline asks compared, the grouped no-list list, complete with no list, and the (d) question with its five answers. One disposable per complete run.
+- **Clear pair: withdrawn** (the `clear_todos` resolver is held by xian since 10-14). PA can't sign in to other seats' accounts: the permission classifier denies it even with the owner's yes.
 - **Test account web-seed-1386:** 8 open. `review the deployment plan` and `draft the launch checklist` were re-added 12:11 and sit at lines 6 and 7.
 - **Q9 also:** #2313 ("delete A and B") on its build; CXO's #2294 bulleted-list row.
 - **#2288** (card says "Connected." on a 401 grant): served row needs a dead-grant account; xian's word for Web.
