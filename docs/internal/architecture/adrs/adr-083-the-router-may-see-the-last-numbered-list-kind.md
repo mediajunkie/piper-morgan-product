@@ -67,7 +67,7 @@ It's a Rule 7 screen, run under two conditions:
 - the full corpus with the slot **absent**, which must be identical in behavior to main;
 - the full corpus with the slot **present**, for kind `todos`.
 
-It also adds sentinel rows ×6: PA's three served phrasings, plus one each for complete, delete and a topic switch after a list. None of them is a catalog example verbatim (10-30 15:58).
+It also adds sentinel rows ×6: PA's three served phrasings, plus one each for complete, delete and a topic switch after a list, plus PA's 11-06 15:43 "delete the first two" (no noun, after a list; on main it reads CONVERSATION/clarification_needed and the floor narrates an unarmed delete offer, a #2042 instance). None of them is a catalog example verbatim (10-30 15:58). The seventh row was added before any run (decisions.log 11-06 15:59), so the preregistration holds.
 
 The bar has two parts.
 - **The 10-30 10:44 clauses, on both conditions:**
