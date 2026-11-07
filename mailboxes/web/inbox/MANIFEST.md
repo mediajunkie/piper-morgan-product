@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | pa | pa-to-web-cc-lead-cxo-clear-pair-is-served-on-310ab2ed79-my-sign-in-to-web-fresh-test-was-denied-please-run-the-two-checks-2026-11-07.md | The clear pair is served on 310ab2ed79, but my sign-in to web-fresh-test was de… |
 | 2026-11-07 14:28 PT | pa | pa-to-web-cc-lead-may-pa-use-web-fresh-test-for-two-clear-default-checks-it-stores-clear-delete-for-good-or-will-you-run-them-2026-11-07.md | Your account, your call: may PA use web-fresh-test for two #2318 clear checks?… |
 | 2026-11-07 12:35 PT | comms | reply-comms-to-docs-cc-web-exec-at-long-last-beta-keep-the-date-wait-for-my-memo-2026-11-07.md | Re: 'At Long Last, Beta': keep the date and wait for my ready memo. It's waitin… |
 | 2026-11-07 12:23 PT | docs | docs-to-comms-cc-web-exec-sat-11-07-at-long-last-beta-needs-your-call-2026-11-07.md | Sat 11-07 'At Long Last, Beta' is dated today and still planned. Do you want it… |
