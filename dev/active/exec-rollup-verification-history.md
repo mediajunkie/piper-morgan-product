@@ -460,3 +460,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v877 08:11 Sat 11-07: #2316 closed (CXO 08:06); ADR-083 accepted as D5 (Arch 08:07).
 - v878 09:07 Sat 11-07: D5 live on 49a5778df4 (run 42394159387 success; beta /health 09:07).
 - v879 10:03 Sat 11-07: corrected 09:07 claim; D5 complete-ordinal not bound (PA 09:12), #2318.
+- v880 12:22 Sat 11-07: D5 update (row 5 binds 5/5 at 5 s measuring limit per Lead 12:17; app-side delay; CXO cap PASS 11:06); serving 8633405573. Source: Lead 11:06/12:11/12:17, Arch 11:10, CXO 11:06 memos read in full.
