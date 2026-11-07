@@ -233,6 +233,7 @@ class TestRouteEnforcement:
         assert d.confidence == 0.92
         assert d.llm_calls == 1
         assert d.repair_attempted is False
+        assert d.repair_error is None
 
     async def test_alias_emission_is_rejected_then_repaired(self):
         """The catalog is canonical-only: an alias emission is INVALID output
@@ -250,6 +251,8 @@ class TestRouteEnforcement:
         assert d.llm_calls == 2
         assert d.repair_attempted is True
         assert "set_reminder" in llm.calls[1]["prompt"]  # error fed back
+        # #2318 (Arch 11-07): the first attempt's error survives the repair.
+        assert d.repair_error and "set_reminder" in d.repair_error
 
     async def test_malformed_twice_is_refused_never_guessed(self):
         llm = ScriptedLLM(["I think you want a reminder!", "still not json"])

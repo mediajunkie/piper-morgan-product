@@ -132,9 +132,14 @@ async def consult_on_clarify(
         outcome="accepted" if ok else "kept",
         operation=getattr(second, "operation", None),
         target_count=len(targets) if isinstance(targets, list) else 0,
-        # #2318: whether the second call needed the router's repair retry.
+        # #2318 (Arch 11-07 11:10): whether the second call needed the router's
+        # repair retry, and what served it. No message text.
         llm_calls=getattr(second, "llm_calls", None),
         repair_attempted=getattr(second, "repair_attempted", None),
+        repair_error=(getattr(second, "repair_error", None) or "")[:200] or None,
+        served_provider=getattr(second, "served_provider", None),
+        served_model=getattr(second, "served_model", None),
+        output_tokens=(getattr(second, "usage", None) or {}).get("output_tokens"),
         # Arch 11-07 09:24: how long the second call took, kept or accepted.
         elapsed_ms=int((time.monotonic() - started) * 1000),
         session_id=session_id,

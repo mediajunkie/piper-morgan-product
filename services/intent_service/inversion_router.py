@@ -214,6 +214,9 @@ class RoutingDecision:
     # summed over its calls, present only when the provider reported usage; never
     # estimated (kept when the two-stage router that first compared it was removed).
     usage: Optional[Dict[str, int]] = None
+    # #2318 (Arch 11-07 11:10): on a repaired decision, the FIRST attempt's
+    # parse/validation error (a successful repair clears ``error``). Diagnostics only.
+    repair_error: Optional[str] = None
 
     @property
     def route_label(self) -> str:
@@ -635,6 +638,8 @@ class _StageResult:
     # when complete() reported them in served["usage"]; None when it did not.
     input_tokens: Optional[int] = None
     output_tokens: Optional[int] = None
+    # #2318: the first attempt's error, kept when the repair succeeds.
+    first_validation_error: Optional[str] = None
 
 
 async def _complete_with_repair(
@@ -691,6 +696,8 @@ async def _complete_with_repair(
             break
         last_error = err
         result.validation_error = err
+        if attempt == 1:
+            result.first_validation_error = err
     result.latency_ms = (time.perf_counter() - started) * 1000.0
     return result
 
@@ -798,6 +805,7 @@ async def route(
                 served_model=served.get("model"),
                 framing=parsed.get("framing"),
                 usage=_usage_of(res),
+                repair_error=res.first_validation_error if repair_attempted else None,
             )
         operation = parsed["operation"]
         outcome = (
@@ -820,6 +828,7 @@ async def route(
             served_model=served.get("model"),
             framing=parsed.get("framing"),
             usage=_usage_of(res),
+            repair_error=res.first_validation_error if repair_attempted else None,
         )
 
     # Both attempts failed validation → REFUSED, recorded honestly. Never a

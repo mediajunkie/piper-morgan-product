@@ -127,6 +127,10 @@ def test_accepted_consult_logs_repair_data(monkeypatch):
     second = _op("delete_todo", ["2"])
     second.llm_calls = 2
     second.repair_attempted = True
+    second.repair_error = "targets: not a list"
+    second.served_provider = "anthropic"
+    second.served_model = "claude-haiku-4-5"
+    second.usage = {"input_tokens": 3300, "output_tokens": 63}
 
     async def route(message, state, **kw):
         return second
@@ -134,6 +138,10 @@ def test_accepted_consult_logs_repair_data(monkeypatch):
     _consult(_CLARIFY, _SNAP, route)
     [(_, _, fields)] = [c for c in rec.calls if c[1] == "inversion_live_d5_consult"]
     assert fields["llm_calls"] == 2 and fields["repair_attempted"] is True
+    assert fields["repair_error"] == "targets: not a list"
+    assert fields["served_provider"] == "anthropic"
+    assert fields["served_model"] == "claude-haiku-4-5"
+    assert fields["output_tokens"] == 63
 
 
 def test_shadow_call_block_has_no_list_fact(monkeypatch):
