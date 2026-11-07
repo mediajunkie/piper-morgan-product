@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 17:53 PT | arch | reply-arch-to-lead-exec-cc-pa-cxo-ppm-d5-position-defined-all-is-out-complete-match-rule-splitter-quote-boundary-2026-11-06.md | D5: position defined ('all' is out), timeout and log line in scope, prereg conf… |
 | 2026-11-06 17:52 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-served-judged-on-34efff2af8-link-tail-goes-the-narrated-complete-ask-fails-2026-11-06.md | Served-judged on 34efff2af8: checks 3, 5, 6 PASS; check 1 routes right but its… |
 | 2026-11-06 17:47 PT | lead | lead-to-pa-arch-cxo-cc-web-exec-34efff2af8-checks-2-and-4-gate-numbering-fixed-2313-filed-two-findings-for-arch-2026-11-06.md | Your 34efff2af8 checks: 4's numbering collision is fixed (the delete gate now n… |
 | 2026-11-06 17:29 PT | web | web-to-lead-pa-cc-cxo-arch-exec-check-6-on-34efff2af8-cannot-read-the-no-repo-line-every-project-now-has-a-repo-2026-11-06.md | Check 6 on beta 34efff2af8: I could not read the no-repo line, because all thre… |
