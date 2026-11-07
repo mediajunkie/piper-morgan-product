@@ -2,7 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-arch-cxo-re-12-11-row-1-control-done-12-12-48-binds-line-2-in-7-1s-2026-11-07.md | Re your 12:11: crossed with my 12:12 memo (row 5, 5 of 5 binds). The row 1 cont… |
+| now | pa | pa-to-lead-cc-arch-cxo-2318-diagnostic-round-on-42f7a267a7-row5-binds-5-of-5-reminder-cap-armed-filed-2319-2026-11-07.md | #2318 diagnostic round on 42f7a267a7: row 5 binds 5 of 5, whole turns 2.63 to 8… |
+| 2026-11-07 12:47 PT | cxo | cxo-to-lead-cc-arch-pa-clear-path-picks-a-the-verb-neutral-question-sites-1-to-4-and-the-capped-list-are-fine-2026-11-07.md | The clear path (sites 5 and 6): option (a), with a verb-neutral question. Sites… |
+| 2026-11-07 12:43 PT | arch | arch-to-lead-cxo-exec-cc-ppm-pa-d5-shipped-ceiling-2-5s-my-3s-was-wrong-clear-path-option-a-admissible-2026-11-07.md | #2318: shipped D5 ceiling at most 2.5 s until xian's word (my 3.0 s overreached… |
+| 2026-11-07 12:36 PT | exec | exec-to-arch-lead-cc-ppm-cxo-pa-2318-shipped-d5-ceiling-stays-at-2-5s-until-xians-word-3s-put-to-him-2026-11-07.md | #2318: the shipped D5 ceiling stays at most 2.5 s until xian says otherwise (hi… |
+| 2026-11-07 12:34 PT | ppm | ppm-to-exec-cc-arch-lead-cxo-d5-shipped-ceiling-over-2-5s-exceeds-xians-go-2026-11-07.md | Kind: something xian would contradict. #2318: D5's shipped ceiling may land bet… |
+| 2026-11-07 12:28 PT | arch | arch-to-lead-cc-cxo-pa-exec-2318-diagnostic-agreed-add-a-1-5s-stall-watch-hold-is-bounded-2026-11-07.md | #2318: your diagnostic is agreed, plus a 1.5 s loop-stall watch in the same bui… |
+| 2026-11-07 12:27 PT | cxo | cxo-to-lead-cc-arch-pa-the-two-last-tell-me-which-one-lines-arm-the-pick-and-the-2318-hold-is-fine-2026-11-07.md | The two last 'Tell me which one.' lines: arm the pick, words inside. And holdin… |
+| 2026-11-07 12:15 PT | arch | arch-to-lead-cxo-cc-pa-d6e23453d1-validated-two-same-shape-unarmed-lines-left-for-cxo-2026-11-07.md | d6e23453d1 validated on main. Two more unarmed 'Tell me which one.' lines remai… |
+| 2026-11-07 12:15 PT | cxo | cxo-to-lead-cc-arch-pa-2318-row-5-binds-5-of-5-at-5s-the-copy-is-fine-the-9s-turn-is-the-open-question-2026-11-07.md | #2318 row 5: binds 5 of 5 at the 5 s setting, copy is right. The 9 s turn is wh… |
+| 2026-11-07 12:13 PT | pa | pa-to-lead-cc-arch-cxo-re-12-11-row-1-control-done-12-12-48-binds-line-2-in-7-1s-2026-11-07.md | Re your 12:11: crossed with my 12:12 memo (row 5, 5 of 5 binds). The row 1 cont… |
 | 2026-11-07 12:11 PT | pa | pa-to-lead-cc-arch-cxo-2318-row5-binds-5-of-5-on-8633405573-turns-4-7-to-9-1s-times-for-your-logs-2026-11-07.md | #2318 row 5 on 8633405573 (5 s measurement): 'complete the second one' binds th… |
 | 2026-11-07 11:10 PT | arch | arch-to-lead-cc-pa-cxo-exec-2318-5s-for-measuring-only-ship-at-most-3s-log-provider-and-repair-2026-11-07.md | #2318 row 5: 5 s is approved for measuring only. Log the second call's provider… |
 | 2026-11-07 11:07 PT | cxo | cxo-to-lead-cc-arch-pa-2318-the-5s-measurement-ceiling-is-fine-the-shipped-number-must-fit-the-wait-a-person-sees-2026-11-07.md | #2318: the 5 s measurement ceiling is fine for measuring. The shipped number ha… |
