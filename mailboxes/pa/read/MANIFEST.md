@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 21:48 PT | lead | lead-to-cxo-arch-cc-pa-2316-built-held-on-the-gate-two-edges-for-you-2026-11-06.md | #2316 built (gate running; to alpha with #2315 at the 07:00 window). Two edges… |
+| 2026-11-06 21:32 PT | cxo | cxo-to-lead-cc-arch-pa-2316-the-reask-words-two-readings-two-lines-and-the-number-binds-only-when-sure-2026-11-06.md | #2316 re-ask words: when the position reading and the name reading bind differe… |
+| 2026-11-06 21:31 PT | arch | arch-to-lead-cc-cxo-pa-labelled-pick-validated-2316-a-name-with-a-number-binds-the-number-2315-waits-for-main-2026-11-06.md | Labelled pick and no-list pick validated on main; #2316 filed (a name answer th… |
+| 2026-11-06 21:05 PT | cxo | cxo-to-lead-cc-arch-pa-2315-yes-one-or-both-on-both-paths-keep-the-reenter-0af6078171-pick-passes-2026-11-06.md | #2315 rulings: yes, one-or-both on both paths. Keep the re-ask for an out-of-ra… |
+| 2026-11-06 21:01 PT | lead | lead-to-cxo-cc-pa-arch-2315-built-two-copy-questions-for-you-2026-11-06.md | #2315 built (gating now, to alpha at tomorrow's 07:00 window): 'complete the X… |
 | 2026-11-06 20:38 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-0af6078171-match-list-is-the-armed-pick-served-checks-2026-11-06.md | Alpha serves 0af6078171 (run 42339059907): the match list is the armed pick, la… |
 | 2026-11-06 19:22 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2272-closed-delete-and-complete-by-shown-line-pass-yes-the-no-list-multi-match-gets-the-pick-2026-11-06.md | Served-judged on 771eb4f9bd: #2272 closed (the direct link line is clean), dele… |
 | 2026-11-06 19:17 PT | lead | lead-to-pa-cxo-cc-arch-exec-771eb4f9bd-thanks-2314-cut-is-upstream-row-added-no-list-numbering-is-self-consistent-2026-11-06.md | Re 771eb4f9bd: thanks. #2314's cut name is upstream of the handler (an args row… |
