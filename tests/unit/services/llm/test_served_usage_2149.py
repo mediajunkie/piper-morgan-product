@@ -31,7 +31,13 @@ class TestServedUsage:
             patch("services.llm.request_key.anthropic_client_for_request"),
             patch(
                 "services.llm.clients.run_provider_call",
-                AsyncMock(return_value=_anthropic_response()),
+                # #2320: the Anthropic leg goes through with_raw_response, whose
+                # result is parsed (and carries the SDK retry count).
+                AsyncMock(
+                    return_value=SimpleNamespace(
+                        parse=_anthropic_response, retries_taken=0, status_code=200
+                    )
+                ),
             ),
             patch("services.llm.cacheable_prompt.anthropic_user_content", return_value="p"),
         ):
@@ -55,7 +61,13 @@ class TestServedUsage:
             patch("services.llm.request_key.anthropic_client_for_request"),
             patch(
                 "services.llm.clients.run_provider_call",
-                AsyncMock(return_value=_anthropic_response(usage=False)),
+                AsyncMock(
+                    return_value=SimpleNamespace(
+                        parse=lambda: _anthropic_response(usage=False),
+                        retries_taken=0,
+                        status_code=200,
+                    )
+                ),
             ),
             patch("services.llm.cacheable_prompt.anthropic_user_content", return_value="p"),
         ):

@@ -30,11 +30,28 @@ THINKING = SimpleNamespace(type="thinking", thinking="hmm")
 TEXT = SimpleNamespace(type="text", text='{"action": "x"}')
 
 
-def _llm_returning(content):
+def _llm_returning(content, retries=0):
     client = MagicMock()
-    client.messages.create = lambda **kw: SimpleNamespace(content=content, usage=_USAGE)
+    reply = SimpleNamespace(content=content, usage=_USAGE)
+    client.messages.create = lambda **kw: reply
+    # #2320: the call goes through with_raw_response so the SDK's retry count is read.
+    client.messages.with_raw_response.create = lambda **kw: SimpleNamespace(
+        parse=lambda: reply, retries_taken=retries, status_code=200
+    )
     llm = LLMClient.__new__(LLMClient)
     return llm, client
+
+
+@pytest.mark.asyncio
+async def test_the_call_records_its_phases_and_retries_2320():
+    """#2320 (Arch 11-07 13:42): client time, the executor call's time and the SDK
+    retry count, per call."""
+    llm, client = _llm_returning([TEXT], retries=1)
+    with patch("services.llm.request_key.anthropic_client_for_request", return_value=client):
+        await llm._anthropic_complete("p", _CONFIG)
+    phases = llm._last_phases
+    assert phases["retries_taken"] == 1 and phases["http_status"] == 200
+    assert {"client_ms", "call_ms"} <= set(phases)
 
 
 @pytest.mark.asyncio
