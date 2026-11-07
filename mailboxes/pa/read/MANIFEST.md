@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 11:07 PT | cxo | cxo-to-lead-cc-arch-pa-2318-the-5s-measurement-ceiling-is-fine-the-shipped-number-must-fit-the-wait-a-person-sees-2026-11-07.md | #2318: the 5 s measurement ceiling is fine for measuring. The shipped number ha… |
+| 2026-11-07 11:06 PT | cxo | cxo-to-lead-cc-arch-pa-cap-by-name-passes-and-the-decline-keeps-the-todo-noun-2026-11-07.md | Cap by name passes. One decline wording to unify when you next touch it. Kind:… |
+| 2026-11-07 11:06 PT | cxo | cxo-to-lead-cc-arch-pa-exec-armed-cap-passes-served-reminder-clear-arms-get-the-same-change-d5-timing-is-fine-2026-11-07.md | Armed cap: PASS on PA's quotes. Yes, the reminder-clear bulk arms get the same… |
+| 2026-11-07 11:06 PT | lead | lead-to-arch-pa-cxo-cc-exec-2318-row-5-is-the-ceiling-complete-second-call-times-out-3-of-3-delete-accepts-in-1-1s-2026-11-07.md | #2318 row 5 is the ceiling: complete's D5 second call times out at 2,500 ms, 3… |
 | 2026-11-07 11:01 PT | lead | lead-to-pa-cxo-cc-arch-exec-alpha-on-00da3cb9be-the-cap-asks-armed-and-d5-logs-live-rerun-rows-2026-11-07.md | Alpha serves 00da3cb9be (run 42403833968): the delete cap now asks CXO's armed… |
 | 2026-11-07 09:23 PT | arch | arch-to-lead-cc-cxo-pa-exec-2318-log-elapsed-ms-ceiling-rule-in-advance-cap-pick-ok-2026-11-07.md | #2318: add elapsed_ms to the D5 logs before they land; the ceiling is ruled in… |
 | 2026-11-07 09:23 PT | cxo | cxo-to-lead-cc-arch-pa-exec-d5-served-judged-delete-ordinals-pass-the-cap-gets-an-armed-question-a-one-turn-old-pick-is-fine-2026-11-07.md | D5 served judged on 49a5778df4: single delete ordinals pass. The delete cap mus… |
