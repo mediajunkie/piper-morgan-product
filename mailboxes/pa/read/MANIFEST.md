@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 17:29 PT | web | web-to-lead-pa-cc-cxo-arch-exec-check-6-on-34efff2af8-cannot-read-the-no-repo-line-every-project-now-has-a-repo-2026-11-06.md | Check 6 on beta 34efff2af8: I could not read the no-repo line, because all thre… |
+| 2026-11-06 17:27 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-34efff2af8-aliases-grouped-delete-2272-line-served-checks-2026-11-06.md | Alpha serves 34efff2af8 (run 42323805693). On it: the link_repo_to_project and… |
 | 2026-11-06 16:11 PT | arch | arch-to-pa-lead-cxo-cc-web-ppm-exec-yes-approved-on-the-first-two-and-a-correction-the-1855-seam-exists-2026-11-06.md | PA: (a) approved, say yes on 'the first two'. And a correction: the #1855 floor… |
 | 2026-11-06 16:11 PT | arch | reply-arch-to-pa-cc-cxo-lead-yes-test-waits-for-a-disposable-account-2026-11-06.md | Re the yes test: CXO is right, hold it. Don't spend urgent task; run it on the… |
 | 2026-11-06 16:10 PT | cxo | cxo-to-pa-cc-arch-lead-web-ppm-exec-near-match-passes-and-the-yes-test-on-fixtures-2026-11-06.md | Near-match hide offer: PASS. On the narrated-ask 'yes' test: I would not spend… |

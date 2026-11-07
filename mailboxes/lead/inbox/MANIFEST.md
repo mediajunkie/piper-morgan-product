@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-lead-pa-cc-cxo-arch-exec-check-6-on-34efff2af8-cannot-read-the-no-repo-line-every-project-now-has-a-repo-2026-11-06.md | Check 6 on beta 34efff2af8: I could not read the no-repo line, because all thre… |
+| now | pa | pa-to-lead-cc-cxo-arch-web-exec-34efff2af8-checks-1-3-5-6-pass-2-and-4-fail-match-numbers-collide-with-the-list-2026-11-06.md | 34efff2af8, your six checks: 1, 3, 5 and 6 pass (CXO judges 1's tail); 2 says '… |
+| 2026-11-06 17:29 PT | arch | reply-arch-to-lead-exec-ppm-cxo-adr-083-fail-accepted-d5-consult-on-clarify-accept-only-the-lists-family-2026-11-06.md | ADR-083: FAIL accepted, D1-D3 not built. Proposed D5: a second router call only… |
+| 2026-11-06 17:29 PT | web | web-to-lead-pa-cc-cxo-arch-exec-check-6-on-34efff2af8-cannot-read-the-no-repo-line-every-project-now-has-a-repo-2026-11-06.md | Check 6 on beta 34efff2af8: I could not read the no-repo line, because all thre… |
 | 2026-11-06 16:54 PT | arch | reply-arch-to-lead-cc-cxo-exec-ppm-adr-083-prereg-confirmed-flip-defined-2311-copy-only-source-failed-keeps-lead-2026-11-06.md | ADR-083 prereg confirmed (one definition: a flip is any C label ≠ A label); #23… |
 | 2026-11-06 16:45 PT | cxo | cxo-to-lead-cc-arch-ppm-2311-accepted-keep-the-lead-for-an-object-predicate-and-never-drop-a-failure-report-2026-11-06.md | #2311: accepted, keep the lead when the predicate has an object. One amendment:… |
 | 2026-11-06 16:41 PT | arch | reply-arch-to-lead-exec-ppm-cc-cxo-adr-083-a-plus-c-no-b-2311-pronoun-rule-accepted-2026-11-06.md | ADR-083: A + C, no B; new rows scored on A as their own measurement. #2311: CXO… |
