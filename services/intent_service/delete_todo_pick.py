@@ -196,6 +196,34 @@ def _label_bind(text: str, labels: List[int]) -> Tuple[str, Optional[int]]:
     return "unread", None
 
 
+def _name_reading_conflict(text: str, texts: List[str], bound_idx: Optional[int]) -> Optional[int]:
+    """#2316 (Arch 11-06 21:31): the candidate the answer's NAME reading binds
+    (the shared binder's ``_name_index``), when it binds one and that one differs
+    from ``bound_idx`` (the position, label or status reading). ``None`` when they
+    agree or the name reading binds nothing (a bare "3" names no title)."""
+    from services.intent_service.reminder_clear import _name_index
+
+    status, idx = _name_index(text, texts)
+    if status == "bound" and idx is not None and idx != bound_idx:
+        return idx
+    return None
+
+
+def _reading_conflict_question(
+    positions: List[int], labels: Optional[List[int]], display: List[str], n: int
+) -> str:
+    """CXO 11-06 21:32, verbatim: the two lines the answer could mean, in pick
+    order, each with the number the person saw (its label, or its 1..k position)
+    and its line as the pick shows it."""
+    numbers = list(labels) if labels else list(range(1, n + 1))
+    lines = [f"{numbers[i]}. {display[i]}" for i in positions]
+    return (
+        "That could mean two different todos:\n"
+        + "\n".join(lines)
+        + "\nWhich one? Say the number shown next to it, or 'never mind' to leave them alone."
+    )
+
+
 def _mentions_reminder(message: str) -> bool:
     words = {w.strip(".,!?;:'\"").lower() for w in (message or "").split()}
     return bool(words & _REMINDER_WORDS)
@@ -766,6 +794,48 @@ async def handle_delete_todo_pick_turn(
         status, idx = "none", None  # a number not on this pick re-asks (below)
     else:
         status, idx = _resolve_pick_target(text, texts, due_iso)
+    # #2316 (Arch 11-06 21:31; CXO 21:32): an answer whose NAME reading binds a
+    # different candidate from its number reading ("call 3 vendors" where 3 points
+    # elsewhere) binds neither; ask once on the same record. Both readings are the
+    # shared binder's own, compared over the recorded candidates.
+    name_idx = _name_reading_conflict(text, texts, idx) if status == "bound" else None
+    if name_idx is not None and idx is not None:
+        if payload.get("pick_reasked"):
+            logger.info("delete_todo_pick_reading_conflict_release", session_id=session_id)
+            return None
+        question = _reading_conflict_question(
+            sorted({idx, name_idx}), labels, shown_texts, len(ids)
+        )
+        intent_service.workflow_offer_service.set_pending_offer(
+            session_id,
+            _pick_offer(
+                payload.get("user_id"),
+                noun,
+                ids,
+                texts,
+                due_iso,
+                original_message,
+                question,
+                reasked=True,
+                copies=payload.get("pick_copies"),
+                display=payload.get("pick_display"),
+                verb=verb,
+                line_ids=payload.get("pick_line_ids"),
+                labels=labels,
+            ),
+            user_id=user_id,
+        )
+        logger.info("delete_todo_pick_reading_conflict", session_id=session_id)
+        return {
+            "message": question,
+            "intent_data": {
+                "category": "execution",
+                "action": CLARIFY_DELETE_PICK_WORKFLOW,
+                PICK_PENDING_FLAG: True,
+                "pick_reading_conflict": True,
+            },
+            "requires_clarification": True,
+        }
     if status == "bound" and idx is not None and 0 <= idx < len(ids):
         copies = payload.get("pick_copies") or []
         if verb == VERB_COMPLETE:
