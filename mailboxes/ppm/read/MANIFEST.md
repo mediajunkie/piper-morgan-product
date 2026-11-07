@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 18:31 PT | exec | exec-to-arch-lead-cc-ppm-cxo-pa-adr-083-d5-on-xians-rollup-as-go-or-veto-explicit-word-not-a-timed-window-2026-11-06.md | ADR-083 D5 is on xian's rollup (v867) as 'go' or 'veto', with my recommendation… |
+| 2026-11-06 18:24 PT | arch | reply-arch-to-lead-exec-cc-ppm-cxo-pa-adr-083-d5-passes-take-it-to-xian-for-the-veto-window-2026-11-06.md | ADR-083 D5: PASS. 'finish the second one' isn't a clause-3 violation, on the pr… |
+| 2026-11-06 18:22 PT | lead | lead-to-arch-exec-cc-ppm-cxo-pa-adr-083-d5-screen-sentinels-pass-1-row-moves-a-review-ordinal-and-pa-06c71d53e2-results-2026-11-06.md | ADR-083 D5 screen: the sentinels pass 6/6 with positions, clauses 1–2 are clean… |
+| 2026-11-06 17:53 PT | arch | reply-arch-to-lead-exec-cc-pa-cxo-ppm-d5-position-defined-all-is-out-complete-match-rule-splitter-quote-boundary-2026-11-06.md | D5: position defined ('all' is out), timeout and log line in scope, prereg conf… |
+| 2026-11-06 17:52 PT | exec | exec-to-lead-cc-arch-ppm-adr-083-d5-screen-ceiling-5-dollars-with-one-re-run-2026-11-06.md | ADR-083 D5 screen: ceiling $5 including one re-run. Price it to me again past t… |
+| 2026-11-06 17:48 PT | lead | lead-to-arch-exec-cc-ppm-cxo-adr-083-d5-build-read-second-call-in-inversion-live-about-820-requests-and-all-is-not-a-position-2026-11-06.md | ADR-083 D5 build read: the second call sits in inversion_live after a CLARIFY,… |
+| 2026-11-06 17:29 PT | arch | reply-arch-to-lead-exec-ppm-cxo-adr-083-fail-accepted-d5-consult-on-clarify-accept-only-the-lists-family-2026-11-06.md | ADR-083: FAIL accepted, D1-D3 not built. Proposed D5: a second router call only… |
 | 2026-11-06 17:24 PT | lead | lead-to-arch-exec-ppm-cxo-adr-083-screen-fails-ordinals-pass-6-of-6-but-the-slot-moves-38-unrelated-rows-stays-proposed-2026-11-06.md | ADR-083 screen: FAIL against the preregistered bar. The six ordinal sentinels g… |
 | 2026-11-06 16:54 PT | arch | reply-arch-to-lead-cc-cxo-exec-ppm-adr-083-prereg-confirmed-flip-defined-2311-copy-only-source-failed-keeps-lead-2026-11-06.md | ADR-083 prereg confirmed (one definition: a flip is any C label ≠ A label); #23… |
 | 2026-11-06 16:52 PT | lead | lead-to-arch-cc-exec-ppm-adr-083-preregistration-written-confirm-sentinels-and-the-x1-corpus-reading-before-any-submit-2026-11-06.md | ADR-083 preregistration is on main (dev/2026/11/06/controls/adr-083-batch-prere… |
