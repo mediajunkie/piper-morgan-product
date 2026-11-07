@@ -1,5 +1,5 @@
-# #2318 rerun on 00da3cb9be (carries d238b3f615 and 3604975793 logging, c87401b9ed armed cap), web-seed-1386, PA run 11:01 to 11:03
-# sessions: pa-2318-r5a and r5b = row 5 (complete the second one); r4, r4b = row 4 armed cap; t1 to t3 = D5 delete timings, declined
+# #2318 rerun on 00da3cb9be (carries d238b3f615 and 3604975793 logging, c87401b9ed armed cap), web-seed-1386, PA run 11:01 to 11:05
+# sessions: pa-2318-r5a, r5b, r5c = row 5 (complete the second one); r4, r4b, cap-name = the armed cap; t1 to t3 = D5 delete timings, declined; r5setup and clean = disposables
 
 --- [11:01:37, 00da3cb9be, http 200, 4.83 s] route execution/create_todo
 USER: add an urgent todo: zz d5 gamma
@@ -184,3 +184,85 @@ PIPER: Delete the todo "review the deployment plan"? (yes/no)
 --- [11:03:23, 00da3cb9be, http 200, 0.24 s] route soft_offer_declined/confirm_pending_action
 USER: no
 PIPER: Okay — I won't delete "review the deployment plan". Nothing has been changed.
+
+--- [11:04:46, 00da3cb9be, http 200, 3.55 s] route execution/create_todo
+USER: add an urgent todo: zz d5 delta
+PIPER: I've added that to your list. 'zz d5 delta' is now tracked, and I've marked it as urgent priority. Let me know if you want to adjust anything.
+
+--- [11:04:49, 00da3cb9be, http 200, 1.85 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 9 open todos. Here they are:
+1. urgent task (urgent)
+2. zz d5 delta (urgent)
+3. review the deployment plan
+4. draft the launch checklist
+5. review prs (×2)
+6. zz throwaway one
+7. zz throwaway two
+8. audit the current navigation
+
+--- [11:04:53, 00da3cb9be, http 200, 3.95 s] route conversation/complete_todo
+USER: complete the second one
+PIPER: Which todo should I complete?
+1. urgent task (urgent)
+2. zz d5 delta (urgent)
+3. review the deployment plan
+4. draft the launch checklist
+5. review prs (×2)
+6. zz throwaway one
+7. zz throwaway two
+8. audit the current navigation
+
+Say the number or the name, or 'never mind' to leave them alone.
+
+--- [11:04:54, 00da3cb9be, http 200, 0.23 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been changed.
+
+--- [11:04:57, 00da3cb9be, http 200, 1.95 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 9 open todos. Here they are:
+1. urgent task (urgent)
+2. zz d5 delta (urgent)
+3. review the deployment plan
+4. draft the launch checklist
+5. review prs (×2)
+6. zz throwaway one
+7. zz throwaway two
+8. audit the current navigation
+
+--- [11:05:00, 00da3cb9be, http 200, 2.50 s] route execution/delete_todo
+USER: delete the first two
+PIPER: I can delete one todo at a time for now. You asked about these:
+1. "urgent task"
+2. "zz d5 delta"
+
+Which one should I delete first? Say the number or the name, or 'never mind' to leave them alone.
+
+--- [11:05:01, 00da3cb9be, http 200, 0.27 s] route execution/delete_todo
+USER: urgent task
+PIPER: Delete the todo "urgent task"? (yes/no)
+
+--- [11:05:02, 00da3cb9be, http 200, 0.24 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete the todo "urgent task". Nothing has been changed.
+
+--- [11:05:11, 00da3cb9be, http 200, 3.27 s] route execution/delete_todo
+USER: delete the todo zz d5 delta
+PIPER: Delete the todo "zz d5 delta"? (yes/no)
+
+--- [11:05:12, 00da3cb9be, http 200, 0.26 s] route execution/delete_todo
+USER: yes
+PIPER: Deleted 1 todo:
+• zz d5 delta
+
+--- [11:05:15, 00da3cb9be, http 200, 1.83 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
