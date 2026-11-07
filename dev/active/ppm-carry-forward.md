@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-11-06 21:35 PT (21:33 STOP; the current block is at the bottom, "Now").
+**Last rewritten**: 2026-11-07 06:35 PT (06:33 START; the current block is at the bottom, "Now").
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -617,7 +617,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **Pending xian at the review:** the #2157 drill candidate.
 - **Production 269** (`gh`, 21:34), map v105 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned. Filed and placed today: #2294–#2316, except #2296 (Ongoing) and #2298 (a duplicate, closed).
 - **OWED rows** (markers in `dev/2026/11/06/2026-11-06-0509-ppm-code-log.md`):
-  - **key: invite-hold-pdr** (Filed 2026-11-06; to: exec; trigger: a fresh session). Draft a PDR for what must be true before any invitation.
+  - ~~invite-hold-pdr~~ DONE 11-07 06:35: `PDR-008-invite-readiness.md` drafted and sent to Exec as a DECISION. Proposals P1–P3 wait on xian's explicit yes. When the six conditions are met, PPM sends Exec the lift-readiness memo (PDR-008 §3).
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the hold lifts). This needs item 12's build (#2297, #2301) first.
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
