@@ -1,0 +1,114 @@
+# Lead's 19:0x batch on 771eb4f9bd, web-seed-1386, PA run 19:10
+# check 1
+
+--- [19:10:14, 771eb4f9bd, http 200, 4.84 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [19:10:18, 771eb4f9bd, http 200, 3.76 s] route execution/delete_todo
+USER: delete the review prs todos
+PIPER: Delete one of your 2 "review prs" todos? (yes/no)
+
+--- [19:10:26, 771eb4f9bd, http 200, 0.25 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete the todo "review prs". Nothing has been changed.
+
+--- [19:10:30, 771eb4f9bd, http 200, 3.15 s] route execution/delete_todo
+USER: delete todo 5
+PIPER: Delete the todo "zz throwaway one"? (yes/no)
+
+--- [19:10:31, 771eb4f9bd, http 200, 0.26 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete the todo "zz throwaway one". Nothing has been changed.
+
+--- [19:10:34, 771eb4f9bd, http 200, 1.83 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+# check 2
+
+--- [19:10:36, 771eb4f9bd, http 200, 2.04 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [19:10:40, 771eb4f9bd, http 200, 3.51 s] route execution/complete_todo
+USER: complete todo 4
+PIPER: "review prs" is on your list 2 times. Complete one, or both?
+
+--- [19:10:41, 771eb4f9bd, http 200, 0.25 s] route soft_offer_declined/clarify_todo_group_line
+USER: never mind
+PIPER: Okay — I won't mark those done. Nothing has been changed.
+# check 2b, fresh
+
+--- [19:10:53, 771eb4f9bd, http 200, 10.73 s] route execution/complete_todo
+USER: complete review prs
+PIPER: I found 2 todos matching 'review prs': 4. "review prs", 8. "review prs". Which one should I complete? Try 'complete todo [number]'.
+# check 2c: same ask after a list in the session
+
+--- [19:11:04, 771eb4f9bd, http 200, 1.87 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [19:11:06, 771eb4f9bd, http 200, 1.46 s] route execution/complete_todo
+USER: complete review prs
+PIPER: "review prs" is on your list 2 times. Complete one, or both?
+
+--- [19:11:15, 771eb4f9bd, http 200, 0.27 s] route soft_offer_declined/clarify_todo_group_line
+USER: never mind
+PIPER: Okay — I won't mark those done. Nothing has been changed.
+# check 4 (Mobile Redesign has no repo since Web's 18:12 Unlink)
+
+--- [19:11:24, 771eb4f9bd, http 200, 8.30 s] route portfolio/link_repo
+USER: link repo dinp-machine/piper-test-activity to Mobile Redesign
+PIPER: Linked dinp-machine/piper-test-activity to Mobile Redesign.
+# check 5
+
+--- [19:11:31, 771eb4f9bd, http 200, 5.99 s] route portfolio/add_project
+USER: add project zz link test
+PIPER: Added zz to your portfolio. If you want a GitHub repo on it, say: link [owner/repo] to zz.
+
+--- [19:11:35, 771eb4f9bd, http 200, 3.38 s] route portfolio/add_project
+USER: add project Harbor Pilot
+PIPER: You already have a project called Harbor Pilot, so I have not created a second one. Say 'show my projects' to see the list.
+
+--- [19:11:41, 771eb4f9bd, http 200, 5.57 s] route query/list_projects
+USER: show my projects
+PIPER: I think I'm tracking 5 projects for you.
+
+- **Harbor Pilot** (active)
+- **Mobile Redesign** (active)
+- **Piper Test Activity** (active)
+- **zz** (active)
+- **zz share-hide project** (active)
+# check 5b: a name sharing only a first word, with no 'link' in it
+
+--- [19:11:54, 771eb4f9bd, http 200, 3.59 s] route portfolio/add_project
+USER: add project Harbor Survey
+PIPER: Added Harbor Survey to your portfolio. If you want a GitHub repo on it, say: link [owner/repo] to Harbor Survey.

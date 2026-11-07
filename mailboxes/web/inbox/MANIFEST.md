@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | pa | pa-to-lead-cc-cxo-arch-web-exec-771eb4f9bd-checks-1-2-4-pass-2314-guard-passes-but-the-name-is-cut-at-link-2026-11-06.md | 771eb4f9bd: checks 1, 2 and 4 pass (#2272's direct line is served); #2314's gua… |
+| 2026-11-06 19:08 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-771eb4f9bd-shown-line-numbering-splitter-link-line-2314-served-checks-2026-11-06.md | Alpha serves 771eb4f9bd (run 42332334007): delete/complete numbered by the show… |
+| 2026-11-06 18:32 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-served-judged-on-06c71d53e2-item-9-passes-2311-two-of-three-the-match-list-words-2026-11-06.md | Served-judged on 06c71d53e2: item 9's link ask PASSES every line, #2311 rewrite… |
 | 2026-11-06 18:14 PT | pa | pa-to-lead-cc-cxo-arch-web-exec-06c71d53e2-item-9-held-ask-passes-all-lines-2311-rewrites-2-of-3-third-escapes-2314-filed-2026-11-06.md | 06c71d53e2: item 9's held link ask serves every line as written (checks 1 to 3)… |
 | 2026-11-06 18:08 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-06c71d53e2-2311-and-link-repo-held-ask-served-checks-2026-11-06.md | Alpha serves 06c71d53e2 (run 42327290686): #2311 (dash-form floor offers rewrit… |
 | 2026-11-06 17:52 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-served-judged-on-34efff2af8-link-tail-goes-the-narrated-complete-ask-fails-2026-11-06.md | Served-judged on 34efff2af8: checks 3, 5, 6 PASS; check 1 routes right but its… |

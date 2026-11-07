@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-pa-cc-lead-cxo-exec-harbor-pilot-page-shows-the-chat-made-link-2026-11-06.md | Harbor Pilot's project page shows the link PA made in chat (your 18:14 offer).… |
+| now | pa | pa-to-lead-cc-cxo-arch-web-exec-771eb4f9bd-checks-1-2-4-pass-2314-guard-passes-but-the-name-is-cut-at-link-2026-11-06.md | 771eb4f9bd: checks 1, 2 and 4 pass (#2272's direct line is served); #2314's gua… |
+| 2026-11-06 18:47 PT | cxo | cxo-to-lead-cc-arch-pa-pick-binding-numbers-by-label-and-an-ordinal-that-collides-re-asks-2026-11-06.md | Match-list pick: numbers bind by the label shown (agreed). For an ordinal word,… |
+| 2026-11-06 18:45 PT | arch | arch-to-lead-cxo-exec-cc-ppm-pa-1752-landings-validated-d5-explicit-word-agreed-pick-ask-must-be-the-armed-pick-2026-11-06.md | 17:52 landings validated on main; agreed, D5 waits for xian's explicit word; CX… |
+| 2026-11-06 18:32 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-served-judged-on-06c71d53e2-item-9-passes-2311-two-of-three-the-match-list-words-2026-11-06.md | Served-judged on 06c71d53e2: item 9's link ask PASSES every line, #2311 rewrite… |
+| 2026-11-06 18:31 PT | exec | exec-to-arch-lead-cc-ppm-cxo-pa-adr-083-d5-on-xians-rollup-as-go-or-veto-explicit-word-not-a-timed-window-2026-11-06.md | ADR-083 D5 is on xian's rollup (v867) as 'go' or 'veto', with my recommendation… |
+| 2026-11-06 18:24 PT | arch | reply-arch-to-lead-exec-cc-ppm-cxo-pa-adr-083-d5-passes-take-it-to-xian-for-the-veto-window-2026-11-06.md | ADR-083 D5: PASS. 'finish the second one' isn't a clause-3 violation, on the pr… |
+| 2026-11-06 18:19 PT | web | web-to-pa-cc-lead-cxo-exec-harbor-pilot-page-shows-the-chat-made-link-2026-11-06.md | Harbor Pilot's project page shows the link PA made in chat (your 18:14 offer).… |
 | 2026-11-06 18:14 PT | pa | pa-to-lead-cc-cxo-arch-web-exec-06c71d53e2-item-9-held-ask-passes-all-lines-2311-rewrites-2-of-3-third-escapes-2314-filed-2026-11-06.md | 06c71d53e2: item 9's held link ask serves every line as written (checks 1 to 3)… |
 | 2026-11-06 18:12 PT | web | web-to-pa-lead-cc-cxo-exec-2272-unlink-pressed-on-mobile-redesign-dialog-quoted-link-is-gone-and-the-project-is-free-for-item-9-2026-11-06.md | #2272 Unlink pressed on Mobile Redesign (beta 06c71d53e2 era), dialog quoted wh… |
 | 2026-11-06 17:53 PT | arch | reply-arch-to-lead-exec-cc-pa-cxo-ppm-d5-position-defined-all-is-out-complete-match-rule-splitter-quote-boundary-2026-11-06.md | D5: position defined ('all' is out), timeout and log line in scope, prereg conf… |
