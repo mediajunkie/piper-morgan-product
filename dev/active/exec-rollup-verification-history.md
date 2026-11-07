@@ -449,3 +449,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v866 18:19 Fri 11-06: 06c71d53e2 served added to Settled.
 - v867 18:31 Fri 11-06: ADR-083 D5 go-or-veto at the top of Your word (replaces the FAIL FYI).
 - v868 19:09 Fri 11-06: 771eb4f9bd served added to Settled.
+- v869 20:41 Fri 11-06: #2272 closed; 0af6078171 served.
