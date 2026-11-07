@@ -1,0 +1,115 @@
+# #2318 row 5 measurement on 8633405573 (D5_CONSULT_CEILING_S = 5.0), web-seed-1386, PA; sessions pa-2318-m1..m5 = row 5, pa-2318-mcap = cap; disposable zz d5 epsilon; fixtures review the deployment plan and draft the launch checklist completed by runs m2 and m3 and re-added 12:11 (new ids, now lines 6 and 7)
+
+--- [12:09:57, 8633405573, http 200, 4.49 s] route execution/create_todo
+USER: add an urgent todo: zz d5 epsilon
+PIPER: I've added that to your list. 'zz d5 epsilon' is now tracked, and I've marked it as urgent priority. Let me know if you want to adjust anything.
+
+--- [12:10:02, 8633405573, http 200, 4.19 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 9 open todos. Here they are:
+1. urgent task (urgent)
+2. zz d5 epsilon (urgent)
+3. review the deployment plan
+4. draft the launch checklist
+5. review prs (×2)
+6. zz throwaway one
+7. zz throwaway two
+8. audit the current navigation
+
+--- [12:10:12, 8633405573, http 200, 9.08 s] route execution/complete_todo
+USER: complete the second one
+PIPER: Nice - I've marked 'zz d5 epsilon' as done. Good progress!
+
+--- [12:10:14, 8633405573, http 200, 1.86 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [12:10:23, 8633405573, http 200, 7.54 s] route execution/complete_todo
+USER: complete the second one
+PIPER: Nice - I've marked 'review the deployment plan' as done. Good progress!
+
+--- [12:10:25, 8633405573, http 200, 1.91 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 7 open todos. Here they are:
+1. urgent task (urgent)
+2. draft the launch checklist
+3. review prs (×2)
+4. zz throwaway one
+5. zz throwaway two
+6. audit the current navigation
+
+--- [12:10:31, 8633405573, http 200, 5.12 s] route execution/complete_todo
+USER: complete the second one
+PIPER: Nice - I've marked 'draft the launch checklist' as done. Good progress!
+
+--- [12:10:33, 8633405573, http 200, 1.86 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 6 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×2)
+3. zz throwaway one
+4. zz throwaway two
+5. audit the current navigation
+
+--- [12:10:39, 8633405573, http 200, 4.68 s] route execution/complete_todo
+USER: complete the second one
+PIPER: "review prs" is on your list 2 times. Complete one, or both?
+
+--- [12:10:41, 8633405573, http 200, 1.85 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 6 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×2)
+3. zz throwaway one
+4. zz throwaway two
+5. audit the current navigation
+
+--- [12:10:47, 8633405573, http 200, 4.95 s] route execution/complete_todo
+USER: complete the second one
+PIPER: "review prs" is on your list 2 times. Complete one, or both?
+
+--- [12:10:58, 8633405573, http 200, 0.24 s] route soft_offer_declined/clarify_todo_group_line
+USER: never mind
+PIPER: Okay — I won't mark those done. Nothing has been changed.
+
+--- [12:10:59, 8633405573, http 200, 0.25 s] route soft_offer_declined/clarify_todo_group_line
+USER: never mind
+PIPER: Okay — I won't mark those done. Nothing has been changed.
+
+--- [12:11:10, 8633405573, http 200, 3.69 s] route execution/create_todo
+USER: add a todo: review the deployment plan
+PIPER: I've added that to your list. 'review the deployment plan' is now tracked. Let me know if you want to adjust anything.
+
+--- [12:11:14, 8633405573, http 200, 3.45 s] route execution/create_todo
+USER: add a todo: draft the launch checklist
+PIPER: I've added that to your list. 'draft the launch checklist' is now tracked. Let me know if you want to adjust anything.
+
+--- [12:11:16, 8633405573, http 200, 1.86 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×2)
+3. zz throwaway one
+4. zz throwaway two
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
+
+--- [12:11:25, 8633405573, http 200, 8.30 s] route execution/delete_todo
+USER: delete the first two
+PIPER: I can delete one todo at a time for now. You asked about these:
+1. "urgent task"
+2. "review prs" (×2)
+
+Which one should I delete first? Say the number or the name, or 'never mind' to leave them alone.
+
+--- [12:11:26, 8633405573, http 200, 0.24 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been deleted.
