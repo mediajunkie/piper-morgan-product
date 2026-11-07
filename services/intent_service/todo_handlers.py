@@ -1204,7 +1204,13 @@ class TodoIntentHandlers:
                 # Issue 2019 belt: a multi-item carrier armed before the cap
                 # shipped (or by any arm site the cap missed) deletes nothing.
                 logger.info("todo_batch_delete_capped_at_confirm", count=len(ids))
-                return capped_delete_reply(texts), False
+                # #2219 (CXO 11-05 20:47): the noun carries through the conversation.
+                recalled = self._recall_numbered_list(session_id, principal or user_id)
+                cap_noun = conversation_noun(
+                    intent.original_message or ctx.get("original_message"),
+                    getattr(recalled, "kind", None),
+                )
+                return capped_delete_reply(texts, cap_noun), False
             done_texts: List[str] = []
             failed: List[Tuple[str, str]] = []
             for tid, text in zip(ids, texts):
@@ -1348,7 +1354,13 @@ class TodoIntentHandlers:
             # #2219 (CXO 11-06): a pick that is one copy of a grouped line shows the
             # line as the list showed it, "review prs" (×3).
             copies = [len(_grouped_line_of(t, shown_lines) or [t]) for t in picked]
-            return capped_delete_reply([t.text for t in picked], copies=copies), False
+            # #2219 (CXO 11-05 20:47): the noun carries through the conversation;
+            # todos read "one todo", a reminders list "one reminder" (Web 11-06).
+            cap_noun = conversation_noun(
+                intent.original_message or ctx.get("original_message"),
+                getattr(numbered, "kind", None) or pool_kind,
+            )
+            return capped_delete_reply([t.text for t in picked], cap_noun, copies=copies), False
 
         # ── DESTRUCTIVE: always confirm (issue 2019: one item at most) ──
         question = _delete_confirm_question([t.text for t in picked], left, noun)

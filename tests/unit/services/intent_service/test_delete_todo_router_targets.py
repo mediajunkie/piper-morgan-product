@@ -334,6 +334,21 @@ class TestHandleDeleteTodoTargets:
         offers.set_pending_offer.assert_not_called()
 
     @pytest.mark.asyncio
+    async def test_capped_reply_says_todo_when_the_person_said_todos_2219(
+        self, handlers, offers, session_ctx, four
+    ):
+        """#2219 (Web 11-06, served on 7ffd460640): "delete the first two todos" got
+        "one reminder". CXO's conversation rule: the person's own word wins."""
+        self._shown(session_ctx, four)
+        intent = _intent("delete the first two todos", ["1-2"])
+        msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
+        assert armed is False
+        assert msg.splitlines()[0] == (
+            "I can delete one todo at a time for now. You asked about these:"
+        )
+        handlers.todo_service.delete_todo.assert_not_awaited()
+
+    @pytest.mark.asyncio
     async def test_all_of_twelve_is_capped_issue_2019(self, handlers, offers, session_ctx):
         """Issue 2019: "delete all of them" over 12 rows arms nothing and
         lists all 12 numbered (was: the D3 bulleted confirm)."""
@@ -458,7 +473,9 @@ class TestHandleDeleteTodoTargets:
         self, handlers, offers, session_ctx, four
     ):
         """Issue 2019 belt: a multi-id carrier armed before the cap shipped
-        deletes NOTHING on its "yes" — the capped reply instead."""
+        deletes NOTHING on its "yes" — the capped reply instead. The noun follows
+        CXO's conversation rule (#2219): no noun said and no list shown, so "todo"
+        (Web 11-06: the old default said "reminder" for todos)."""
         intent = _intent(
             "x",
             ["1-3"],
@@ -472,7 +489,7 @@ class TestHandleDeleteTodoTargets:
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
         assert armed is False
         assert msg == (
-            "I can delete one reminder at a time for now. You asked about these:\n"
+            "I can delete one todo at a time for now. You asked about these:\n"
             '1. "check the test card again"\n'
             '2. "check the test card again"\n'
             '3. "review the pr"\n'
