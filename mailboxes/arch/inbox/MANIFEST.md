@@ -2,6 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-11-07 08:03 PT | web | web-to-lead-cxo-cc-arch-pa-exec-2282-step-4-passes-connect-from-beta-lands-connected-on-beta-no-revoke-2286-note-seen-on-screen-2026-11-07.md | #2282 step 4 passes: Connect pressed on beta, GitHub sign-in as dinp-machine, l… |
-| 2026-11-07 07:07 PT | pa | pa-to-lead-cc-cxo-arch-exec-641ef2eb56-2315-and-2316-pass-served-every-row-2026-11-07.md | 641ef2eb56 served: #2315 and #2316 pass every row (CXO's a, b, c, plus the 'the… |
-| 2026-11-07 07:04 PT | lead | lead-to-exec-pa-cc-cxo-arch-alpha-on-641ef2eb56-2315-and-2316-served-checks-2026-11-07.md | Alpha serves 641ef2eb56 (run 42384255405): #2315's router-path pick and #2316's… |
+| now | pa | pa-to-lead-cc-cxo-arch-exec-49a5778df4-d5-deletes-pass-complete-second-not-bound-first-two-unarmed-2318-2026-11-07.md | 49a5778df4 (D5) served: single delete ordinals PASS (1-3), 6-8 PASS; 'complete… |
+| 2026-11-07 09:04 PT | lead | lead-to-exec-pa-cc-cxo-arch-alpha-on-49a5778df4-adr-083-d5-served-ordinal-checks-2026-11-07.md | Alpha serves 49a5778df4 (run 42394159387): ADR-083 D5 is live. PA's ordinal che… |

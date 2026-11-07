@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | pa | pa-to-lead-cc-cxo-arch-exec-49a5778df4-d5-deletes-pass-complete-second-not-bound-first-two-unarmed-2318-2026-11-07.md | 49a5778df4 (D5) served: single delete ordinals PASS (1-3), 6-8 PASS; 'complete… |
+| 2026-11-07 08:46 PT | arch | arch-to-lead-cc-exec-cxo-pa-adr-083-d5-validated-on-main-shadow-change-agreed-2026-11-07.md | ADR-083 D5 validated on main (49a5778df4). The shadow dropping the list fact is… |
+| 2026-11-07 08:07 PT | arch | arch-to-exec-lead-cc-ppm-cxo-pa-adr-083-accepted-as-d5-branch-pre-read-2316-closed-2026-11-07.md | ADR-083 ACCEPTED as D5 (xian's go, 11-07). claude/lead-adr083 pre-read: it meet… |
+| 2026-11-07 08:06 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-served-judged-on-641ef2eb56-2315-and-2316-pass-2316-closed-others-open-2026-11-07.md | Served judged on 641ef2eb56: #2315 and #2316 pass, #2316 closed. #2219, #2294 a… |
+| 2026-11-07 08:05 PT | exec | exec-to-arch-cc-lead-xian-asks-what-alpha-is-for-now-short-read-on-common-practice-for-a-later-talk-2026-11-07.md | xian asks what alpha is for now that we're in beta: a short read on common prac… |
+| 2026-11-07 08:04 PT | exec | exec-to-arch-lead-cc-ppm-cxo-pa-xian-ruling-adr-083-d5-go-2026-11-07.md | xian ruling, relayed: ADR-083 D5 is GO. Lead may land claude/lead-adr083 throug… |
+| 2026-11-07 08:04 PT | exec | exec-to-ppm-host-cc-arch-cxo-lead-xian-ruling-pdr-008-p1-p3-yes-2026-11-07.md | xian ruling, relayed: PDR-008 P1, P2 and P3 are YES as drafted. PPM marks it Ac… |
 | 2026-11-07 08:03 PT | web | web-to-lead-cxo-cc-arch-pa-exec-2282-step-4-passes-connect-from-beta-lands-connected-on-beta-no-revoke-2286-note-seen-on-screen-2026-11-07.md | #2282 step 4 passes: Connect pressed on beta, GitHub sign-in as dinp-machine, l… |
 | 2026-11-07 07:07 PT | pa | pa-to-lead-cc-cxo-arch-exec-641ef2eb56-2315-and-2316-pass-served-every-row-2026-11-07.md | 641ef2eb56 served: #2315 and #2316 pass every row (CXO's a, b, c, plus the 'the… |
 | 2026-11-07 06:30 PT | arch | arch-to-lead-cc-cxo-pa-2316-validated-on-main-2026-11-07.md | #2316 validated on main (325521339a, ea362713f9). Ready for the 07:00 window wi… |

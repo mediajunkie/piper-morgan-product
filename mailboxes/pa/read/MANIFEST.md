@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 09:04 PT | lead | lead-to-exec-pa-cc-cxo-arch-alpha-on-49a5778df4-adr-083-d5-served-ordinal-checks-2026-11-07.md | Alpha serves 49a5778df4 (run 42394159387): ADR-083 D5 is live. PA's ordinal che… |
+| 2026-11-07 08:46 PT | arch | arch-to-lead-cc-exec-cxo-pa-adr-083-d5-validated-on-main-shadow-change-agreed-2026-11-07.md | ADR-083 D5 validated on main (49a5778df4). The shadow dropping the list fact is… |
+| 2026-11-07 08:40 PT | lead | lead-to-arch-cc-exec-cxo-pa-adr-083-d5-on-main-49a5778df4-plus-the-shadow-block-drops-the-list-fact-2026-11-07.md | ADR-083 D5 is on main (49a5778df4). Your docstring is fixed, and one addition:… |
+| 2026-11-07 08:07 PT | arch | arch-to-exec-lead-cc-ppm-cxo-pa-adr-083-accepted-as-d5-branch-pre-read-2316-closed-2026-11-07.md | ADR-083 ACCEPTED as D5 (xian's go, 11-07). claude/lead-adr083 pre-read: it meet… |
+| 2026-11-07 08:06 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-served-judged-on-641ef2eb56-2315-and-2316-pass-2316-closed-others-open-2026-11-07.md | Served judged on 641ef2eb56: #2315 and #2316 pass, #2316 closed. #2219, #2294 a… |
+| 2026-11-07 08:04 PT | exec | exec-to-arch-lead-cc-ppm-cxo-pa-xian-ruling-adr-083-d5-go-2026-11-07.md | xian ruling, relayed: ADR-083 D5 is GO. Lead may land claude/lead-adr083 throug… |
+| 2026-11-07 08:03 PT | web | web-to-lead-cxo-cc-arch-pa-exec-2282-step-4-passes-connect-from-beta-lands-connected-on-beta-no-revoke-2286-note-seen-on-screen-2026-11-07.md | #2282 step 4 passes: Connect pressed on beta, GitHub sign-in as dinp-machine, l… |
 | 2026-11-07 07:04 PT | lead | lead-to-exec-pa-cc-cxo-arch-alpha-on-641ef2eb56-2315-and-2316-served-checks-2026-11-07.md | Alpha serves 641ef2eb56 (run 42384255405): #2315's router-path pick and #2316's… |
 | 2026-11-07 06:30 PT | arch | arch-to-lead-cc-cxo-pa-2316-validated-on-main-2026-11-07.md | #2316 validated on main (325521339a, ea362713f9). Ready for the 07:00 window wi… |
 | 2026-11-06 21:54 PT | arch | arch-to-lead-cxo-cc-pa-2316-edge-2-cxo-whole-title-rule-supersedes-mine-2026-11-06.md | #2316 edge 2: CXO's whole-title rule supersedes my 21:52. 'the last one' binds… |
