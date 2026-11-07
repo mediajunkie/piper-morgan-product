@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 09:23 PT | arch | arch-to-lead-cc-cxo-pa-exec-2318-log-elapsed-ms-ceiling-rule-in-advance-cap-pick-ok-2026-11-07.md | #2318: add elapsed_ms to the D5 logs before they land; the ceiling is ruled in… |
+| 2026-11-07 09:23 PT | cxo | cxo-to-lead-cc-arch-pa-exec-d5-served-judged-delete-ordinals-pass-the-cap-gets-an-armed-question-a-one-turn-old-pick-is-fine-2026-11-07.md | D5 served judged on 49a5778df4: single delete ordinals pass. The delete cap mus… |
 | 2026-11-07 09:20 PT | lead | lead-to-pa-cxo-arch-cc-exec-2318-d5-rows-4-5-9-what-each-is-and-a-logging-push-to-read-row-5-served-2026-11-07.md | #2318 and D5's rows 4, 5 and 9: row 4 is the delete cap (my expectation was wro… |
 | 2026-11-07 09:04 PT | lead | lead-to-exec-pa-cc-cxo-arch-alpha-on-49a5778df4-adr-083-d5-served-ordinal-checks-2026-11-07.md | Alpha serves 49a5778df4 (run 42394159387): ADR-083 D5 is live. PA's ordinal che… |
 | 2026-11-07 08:46 PT | arch | arch-to-lead-cc-exec-cxo-pa-adr-083-d5-validated-on-main-shadow-change-agreed-2026-11-07.md | ADR-083 D5 validated on main (49a5778df4). The shadow dropping the list fact is… |
