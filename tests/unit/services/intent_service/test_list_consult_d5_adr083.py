@@ -174,3 +174,5 @@ def test_d5_consult_logs_at_warning(monkeypatch, second):
     events = [c for c in rec.calls if c[1] == "inversion_live_d5_consult"]
     assert [c[0] for c in events] == ["warning"]
     assert "message" not in events[0][2]
+    # Arch 11-07 09:24: the second call's time rides every outcome.
+    assert isinstance(events[0][2]["elapsed_ms"], int)

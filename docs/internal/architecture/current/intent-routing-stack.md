@@ -1909,7 +1909,7 @@ Three consequences for people changing this stack:
    place to park the guess either.
 2. **A resolver for a verb-ambiguous family** (e.g. "clear") is a **resolver rail entry**: it mutates nothing, resolves the verb (ask, or the user's stored
    default), and re-enters the rail as the concrete op, which then meets its own permission gates (D3). Rail-procedure rule 5 below.
-3. **The router stays stateless** (ADR-078 D4, ADR-080 D5). If a change makes the router read session state, resolve in code at the Resolve step instead.
+3. **The router stays stateless** (ADR-078 D4, ADR-080 D5). If a change makes the router read session state, resolve in code at the Resolve step instead. One named exception (ADR-083 D5, accepted 2026-11-07 on xian's go): when the router CLARIFYs right after a numbered list, `list_consult.consult_on_clarify` makes ONE more call carrying only the list's kind and line count, and accepts it only as complete_todo/delete_todo with positional targets inside the list; every first call (live and shadow) drops the fact (`without_list_fact`). Those turns log `inversion_live_decision` and `inversion_live_d5_consult` at warning with elapsed_ms (#2318).
 
 **Review checklist** (ADR-080, five questions): (1) does this add code that guesses meaning? Not allowed. (2) Does a handler act on an interpretation without
 resolving it against real data? Add D2 resolution and ask on the unresolved. (3) Does a multi-item, excluding or destructive change act without an enumerating

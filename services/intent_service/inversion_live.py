@@ -168,6 +168,7 @@ from __future__ import annotations
 
 import hashlib
 import os
+import time
 from contextvars import ContextVar
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
@@ -1138,6 +1139,7 @@ async def consult_inversion_live(
 
     grammar = derive_routing_grammar()
     _llm = getattr(getattr(intent_service, "intent_classifier", None), "_llm", None)
+    _first_started = time.monotonic()
     decision = await route(
         message,
         RouterSnapshot(state_block=block) if block else None,
@@ -1145,6 +1147,7 @@ async def consult_inversion_live(
         grammar=grammar,
         user_id=user_id,
     )
+    first_call_elapsed_ms = int((time.monotonic() - _first_started) * 1000)
     # ADR-083 D5: one more call only on CLARIFY with a list in scope; accepted only as
     # the list family's op with positions, otherwise the CLARIFY stands.
     decision = await consult_on_clarify(
@@ -1307,6 +1310,13 @@ async def consult_inversion_live(
         # A turn right after a numbered list (ADR-083 D5 in scope) logs at warning too,
         # so its served decision is readable on alpha (#2318). No message text is logged.
         loud=(decision.outcome == "error" or bool(getattr(snapshot, "last_list_kind", None))),
+        # Arch 11-07 09:24: on those turns the first call's time too (the D5 ceiling
+        # ruling reads served numbers).
+        **(
+            {"first_call_elapsed_ms": first_call_elapsed_ms}
+            if getattr(snapshot, "last_list_kind", None)
+            else {}
+        ),
         **_sib,
     )
 

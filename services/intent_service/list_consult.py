@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import asyncio
 import dataclasses
+import time
 from typing import Any, Optional
 
 import structlog
@@ -96,6 +97,7 @@ async def consult_on_clarify(
     from services.intent_service.session_snapshot import serialize_for_prompt
     from services.intent_service.todo_handlers import SELECTOR_CEILING_S
 
+    started = time.monotonic()
     try:
         second = await asyncio.wait_for(
             route(
@@ -112,6 +114,7 @@ async def consult_on_clarify(
             "inversion_live_d5_consult",
             outcome="kept",
             reason=type(e).__name__,
+            elapsed_ms=int((time.monotonic() - started) * 1000),
             session_id=session_id,
         )
         return decision
@@ -124,6 +127,8 @@ async def consult_on_clarify(
         outcome="accepted" if ok else "kept",
         operation=getattr(second, "operation", None),
         target_count=len(targets) if isinstance(targets, list) else 0,
+        # Arch 11-07 09:24: how long the second call took, kept or accepted.
+        elapsed_ms=int((time.monotonic() - started) * 1000),
         session_id=session_id,
     )
     return second if ok else decision

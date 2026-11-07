@@ -553,6 +553,16 @@ class TestFallthroughReasons:
             svc, monkeypatch, log_rec, RoutingDecision(outcome="none")
         )
         assert out is None and f["reason"] == "router_none" and lvl == "warning"
+        assert isinstance(f["first_call_elapsed_ms"], int)  # Arch 11-07 09:24
+
+    async def test_no_list_decision_carries_no_first_call_time(
+        self, sm, mem_prefs, svc, monkeypatch, log_rec
+    ):
+        """Off D5 turns the decision line is unchanged (no timing field)."""
+        out, _, [(lvl, f)] = await self._consult(
+            svc, monkeypatch, log_rec, RoutingDecision(outcome="none")
+        )
+        assert lvl == "info" and "first_call_elapsed_ms" not in f
 
     async def test_router_refused_pinned(self, sm, mem_prefs, svc, monkeypatch, log_rec):
         out, _, [(_, f)] = await self._consult(
