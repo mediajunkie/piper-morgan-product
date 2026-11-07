@@ -459,3 +459,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v876 08:09 Sat 11-07: #2282 step 4 passed (Web 08:02); long #2282 item cut.
 - v877 08:11 Sat 11-07: #2316 closed (CXO 08:06); ADR-083 accepted as D5 (Arch 08:07).
 - v878 09:07 Sat 11-07: D5 live on 49a5778df4 (run 42394159387 success; beta /health 09:07).
+- v879 10:03 Sat 11-07: corrected 09:07 claim; D5 complete-ordinal not bound (PA 09:12), #2318.
