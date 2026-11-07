@@ -2110,6 +2110,10 @@ class ConversationalFloor:
                 intent_action=ctx.intent_action,
                 arm_offer=ctx.arm_offer,
                 user_text=f"{ctx.user_message or ''} {recent_user_turns}".strip(),
+                # #2311 (CXO 16:45): a turn that failed a read never loses its lead.
+                read_failed=any(
+                    (ctx.domain_context or {}).get(entry.flag) for entry in SOURCE_FAILED_FLAGS
+                ),
             )
             if unarmed_offers:
                 logger.warning(

@@ -79,8 +79,25 @@ _OFFER_OPENERS: Tuple[str, ...] = (
 # mention ("I can do that if you want me to…") still does not match.
 _OFFER_LEAD = r"(?:[\w'’]+(?:\s+[\w'’]+){0,2}\s*[—–:,-]\s*)?"
 
+# #2311 (Arch 11-06 16:10, approved in principle; PPM 16:24 build now): the floor's
+# own narration before a dash, of any length, then an opener. Served: 'Deleting
+# "urgent task" and "review prs" — want me to go ahead?' with nothing armed. A dash
+# is an em or en dash (spaces optional) or a hyphen with spaces around it; a hyphen
+# inside a word is not one. Lead's census (16:20): 19 new matches over 5,379 served
+# questions, every one an unarmed floor offer. The short lead is the first branch and
+# may match empty, so every sentence the #2080 form matched still matches there with
+# ``wide_lead`` unset; the wide branch is reached only when no short-lead match exists.
+# A sentence matched by it is never armed (condition 3) and is rewritten (CXO 16:45).
+_WIDE_OFFER_LEAD = r"(?P<wide_lead>.+?)(?:\s*[—–]\s*|\s+-\s+)"
+
 _OFFER_SENTENCE_RE = re.compile(
-    r"^" + _OFFER_LEAD + r"(?:" + "|".join(_OFFER_OPENERS) + r")\s+(?P<predicate>\S.*?)\s*\?$",
+    r"^(?:"
+    + _OFFER_LEAD
+    + r"|"
+    + _WIDE_OFFER_LEAD
+    + r")(?:"
+    + "|".join(_OFFER_OPENERS)
+    + r")\s+(?P<predicate>\S.*?)\s*\?$",
     re.IGNORECASE | re.DOTALL,
 )
 
@@ -97,6 +114,9 @@ class OfferSentence(NamedTuple):
     end: int
     sentence: str  # the sentence verbatim, decoration stripped
     predicate: str  # what was offered, e.g. "add 'One Job' ... to your projects now"
+    # #2311: matched only by the widened dash lead (never armed; rewritten whole).
+    widened: bool = False
+    lead: str = ""  # #2311: the text before the dash, for the widened form only
 
 
 def _split_sentences(text: str) -> List[Tuple[int, int]]:
@@ -142,6 +162,8 @@ def detect_offer_questions(text: str) -> List[OfferSentence]:
         match = _OFFER_SENTENCE_RE.match(candidate)
         if not match:
             continue
+        widened = match.group("wide_lead") is not None
+        offer_lead = match.group("wide_lead").strip() if widened else ""
         # Map the stripped candidate back onto the source text.
         abs_start = start + lead
         abs_end = abs_start + len(candidate)
@@ -151,6 +173,8 @@ def detect_offer_questions(text: str) -> List[OfferSentence]:
                 end=abs_end,
                 sentence=candidate,
                 predicate=match.group("predicate").strip(),
+                widened=widened,
+                lead=offer_lead,
             )
         )
     return found
@@ -494,7 +518,46 @@ def _try_arm(
     return out
 
 
-def _rewrite_preserving_open_question(offer: OfferSentence) -> str:
+# #2311 (CXO 16:21 and 16:45; Arch 16:22 and 16:41): copy choice only, never what is
+# armed or done. Shape 2 is a predicate with no object of its own: a bare one, or one
+# whose only object is that / it / this (optionally "up" and/or "now"). Once the lead is
+# dropped, such a pronoun points at nothing. Everything else is shape 1, which keeps the
+# lead as its own sentence and replaces only the offer.
+NOTHING_DONE_BARE = "Nothing has been done yet. Tell me what you'd like as a direct request."
+KEEP_LEAD_FORM = "{lead}. If you'd like me to {predicate}, ask me directly."
+BARE_OFFER_PREDICATES = frozenset(
+    {"go ahead", "go on", "go for it", "proceed", "do it", "do that", "do this"}
+)
+_PRONOUN_OBJECTS = frozenset({"that", "it", "this"})
+
+
+def is_shape_two_predicate(predicate: str) -> bool:
+    """#2311: a bare predicate, or one verb whose only object is that / it / this,
+    optionally followed by "up" and/or "now" (Arch 16:41)."""
+    words = predicate.lower().rstrip(" .!").split()
+    if " ".join(words) in BARE_OFFER_PREDICATES:
+        return True
+    if len(words) < 2 or not words[0].isalpha() or words[1] not in _PRONOUN_OBJECTS:
+        return False
+    tail = words[2:]
+    return tail in ([], ["up"], ["now"], ["up", "now"])
+
+
+def rewrite_widened_offer(offer: OfferSentence, *, read_failed: bool = False) -> str:
+    """#2311: the widened (dash-lead) form, rewritten whole; no command string offered.
+
+    Shape 2 drops the lead (the floor's own narration of an action that isn't
+    happening), unless this turn's read failed: then the lead may be the true failure
+    report, and it is never dropped (CXO 16:45, a state fact, not a word reading)."""
+    lead = offer.lead.rstrip(" .,:;")
+    if is_shape_two_predicate(offer.predicate) and not read_failed:
+        return NOTHING_DONE_BARE
+    if not lead:
+        return f"If you'd like me to {offer.predicate}, ask me directly."
+    return KEEP_LEAD_FORM.format(lead=lead, predicate=offer.predicate)
+
+
+def _rewrite_preserving_open_question(offer: OfferSentence, *, read_failed: bool = False) -> str:
     """#1901 (CXO ruled 2026-09-28, split-and-preserve): a compound
     ``Want me to X, or is there Y…?`` is ONE sentence with one terminal
     ``?``, so the anchored capture hands the whole tail over as the
@@ -508,6 +571,8 @@ def _rewrite_preserving_open_question(offer: OfferSentence) -> str:
     through instead would reopen the dead-end-"yes" hole for every offer
     phrased this way.
     """
+    if offer.widened:
+        return rewrite_widened_offer(offer, read_failed=read_failed)
     head, sep, _ = offer.predicate.partition(", or ")
     if not sep:
         return rewrite_offer_sentence(offer.predicate)
@@ -529,8 +594,12 @@ def enforce_armed_offers(
     intent_action: Optional[str] = None,
     arm_offer: Optional[Callable[[Dict[str, Any]], bool]] = None,
     user_text: Optional[str] = None,
+    read_failed: bool = False,
 ) -> Tuple[str, int]:
     """Enforce ask-only-when-armed in ``text``; return (text, rewrites).
+
+    ``read_failed`` (#2311): this turn armed a source-failed flag, so a widened
+    offer's lead may be the true failure report and is never dropped.
 
     ``user_text`` (#2080): the user's own words this turn (the caller may join
     recent user turns), which a floor-bound add-project NAME must be drawn from
@@ -579,7 +648,7 @@ def enforce_armed_offers(
     if not offers:
         return text, 0
 
-    if not armed_offer and arm_offer is not None and len(offers) == 1:
+    if not armed_offer and arm_offer is not None and len(offers) == 1 and not offers[0].widened:
         armed_text = _try_arm(
             text,
             offers[0],
@@ -607,7 +676,7 @@ def enforce_armed_offers(
     out = text
     # Right to left so earlier spans keep their offsets.
     for offer in reversed(offers):
-        replacement = _rewrite_preserving_open_question(offer)
+        replacement = _rewrite_preserving_open_question(offer, read_failed=read_failed)
         out = out[: offer.start] + replacement + out[offer.end :]
         logger.warning(
             "floor_unarmed_offer_rewritten",

@@ -250,7 +250,12 @@ class TestSeam:
         with capture_logs() as events:
             resp = asyncio.run(floor.respond(_ctx("show the MVP issues", intent_category="STATUS")))
         assert [e for e in events if e.get("event") == "floor_record_references"] == []
-        assert resp.message.startswith("I couldn't pull up that list just now")
+        # #2311 (CXO 16:45): the offer is replaced; the lead (a predicate with an
+        # object, shape 1) stays as its own sentence.
+        assert resp.message == (
+            "I couldn't pull up that list just now. If you'd like me to check again, "
+            "ask me directly."
+        )
 
 
 class TestLinkedReferences2184:

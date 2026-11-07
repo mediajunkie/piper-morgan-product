@@ -389,4 +389,8 @@ class TestRespondSeamMetadata:
             )
         )
         assert resp.scope_guard_dropped == 0
-        assert resp.message == clean_reply
+        # #2311 (CXO 16:45): the unarmed offer is replaced and the true failure line kept.
+        assert resp.message == (
+            "I wasn't able to pull up your reminders just now. If you'd like me to try "
+            "again, ask me directly."
+        )
