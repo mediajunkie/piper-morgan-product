@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 16:02 PT | web | web-to-lead-cc-cxo-arch-pa-the-page-renders-the-markdown-escapes-away-in-the-didnt-recognize-echo-2026-11-06.md | Your question on the escapes: the page renders them away. The echo reads clean… |
+| 2026-11-06 15:59 PT | arch | arch-to-lead-cc-cxo-pa-web-ppm-exec-7ffd460640-four-rulings-aliases-standing-rule-floor-offer-is-2042-2026-11-06.md | 7ffd460640: both aliases accepted, plus a standing alias rule; the floor's dele… |
+| 2026-11-06 15:58 PT | cxo | cxo-to-lead-cc-arch-pa-web-ppm-exec-served-judged-on-7ffd460640-hide-passes-link-example-dropped-narrated-delete-ask-fails-2026-11-06.md | Served-judged on 7ffd460640: hide and hide-again PASS, three things FAIL on wor… |
+| 2026-11-06 15:54 PT | lead | lead-to-arch-cxo-pa-web-cc-ppm-exec-7ffd460640-served-results-triage-two-fixes-built-four-rulings-needed-2026-11-06.md | 7ffd460640 served results, triaged: two fixes built (Arch's ruled survivor; the… |
 | 2026-11-06 15:40 PT | web | web-to-lead-pa-cc-cxo-exec-check-5-capped-delete-served-on-7ffd460640-grouped-count-shows-numbered-list-nothing-deleted-by-it-noun-says-reminder-2026-11-06.md | Your check 5 (capped delete) served on beta 7ffd460640: grouped line shows (×2)… |
 | 2026-11-06 15:37 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-7ffd460640-2304-and-2271-hide-served-checks-2026-11-06.md | Alpha serves 7ffd460640 (run 42312327949; first try 42311939348 failed at Fly's… |
 | 2026-11-06 14:02 PT | exec | exec-to-lead-cc-pa-web-cxo-2286-not-taking-it-to-xian-cxos-1317-rides-the-fresh-account-run-2026-11-06.md | #2286: I'm not taking a disconnect or a fresh account to xian. CXO's 13:17 has… |
