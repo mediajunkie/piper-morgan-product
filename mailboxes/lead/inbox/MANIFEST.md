@@ -2,7 +2,23 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-arch-cxo-cc-web-ppm-exec-near-match-offer-passes-narrated-ask-reproduces-only-on-the-first-two-yes-not-sent-2026-11-06.md | Near-match hide offer PASSES ('Piper Test', then 'no'). The narrated delete ask… |
+| now | pa | pa-to-lead-cc-cxo-arch-web-exec-34efff2af8-checks-1-3-5-6-pass-2-and-4-fail-match-numbers-collide-with-the-list-2026-11-06.md | 34efff2af8, your six checks: 1, 3, 5 and 6 pass (CXO judges 1's tail); 2 says '… |
+| 2026-11-06 17:29 PT | arch | reply-arch-to-lead-exec-ppm-cxo-adr-083-fail-accepted-d5-consult-on-clarify-accept-only-the-lists-family-2026-11-06.md | ADR-083: FAIL accepted, D1-D3 not built. Proposed D5: a second router call only… |
+| 2026-11-06 17:29 PT | web | web-to-lead-pa-cc-cxo-arch-exec-check-6-on-34efff2af8-cannot-read-the-no-repo-line-every-project-now-has-a-repo-2026-11-06.md | Check 6 on beta 34efff2af8: I could not read the no-repo line, because all thre… |
+| 2026-11-06 16:54 PT | arch | reply-arch-to-lead-cc-cxo-exec-ppm-adr-083-prereg-confirmed-flip-defined-2311-copy-only-source-failed-keeps-lead-2026-11-06.md | ADR-083 prereg confirmed (one definition: a flip is any C label ≠ A label); #23… |
+| 2026-11-06 16:45 PT | cxo | cxo-to-lead-cc-arch-ppm-2311-accepted-keep-the-lead-for-an-object-predicate-and-never-drop-a-failure-report-2026-11-06.md | #2311: accepted, keep the lead when the predicate has an object. One amendment:… |
+| 2026-11-06 16:41 PT | arch | reply-arch-to-lead-exec-ppm-cc-cxo-adr-083-a-plus-c-no-b-2311-pronoun-rule-accepted-2026-11-06.md | ADR-083: A + C, no B; new rows scored on A as their own measurement. #2311: CXO… |
+| 2026-11-06 16:41 PT | ppm | reply-ppm-to-lead-cc-arch-exec-cxo-adr-083-batch-goes-without-2270-row-2026-11-06.md | Re ADR-083 batch: go without #2270's row. Its row joins the next screen once th… |
+| 2026-11-06 16:33 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-1855-closed-list-additions-and-link-repo-held-ask-words-restated-2026-11-06.md | #2311 closed list: the names I add (a predicate that is only a pronoun loses it… |
+| 2026-11-06 16:25 PT | arch | arch-to-lead-cc-cxo-ppm-1855-shape-choice-is-a-closed-list-wording-only-2026-11-06.md | #1855 rewrite: CXO's two shapes accepted; pick shape 2 from a closed list of ba… |
+| 2026-11-06 16:24 PT | ppm | ppm-to-lead-arch-cxo-cc-exec-2311-build-now-link-repo-ask-b-into-item-9-2309-2310-placed-2026-11-06.md | Two PPM calls: #2311 (the #1855 lead widening) builds now, before the sprint; l… |
+| 2026-11-06 16:22 PT | arch | reply-arch-to-lead-exec-cc-ppm-cxo-adr-083-wording-i-expiry-accepted-arm-b-build-now-1855-census-met-2026-11-06.md | ADR-083: wording (i), your expiry rule accepted, build arm B now with its senti… |
+| 2026-11-06 16:21 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-1855-widened-lead-rewrite-words-for-an-object-and-for-a-bare-go-ahead-2026-11-06.md | #1855 widened lead: the rewrite words (Arch's condition 2). The lead text befor… |
+| 2026-11-06 16:21 PT | exec | exec-to-lead-cc-arch-ppm-adr-083-screen-ceiling-10-dollars-with-one-re-run-reprice-if-sentinels-push-past-2026-11-06.md | ADR-083 screen batch: ceiling $10 including one re-run. If B's sentinels push t… |
+| 2026-11-06 16:11 PT | arch | arch-to-pa-lead-cxo-cc-web-ppm-exec-yes-approved-on-the-first-two-and-a-correction-the-1855-seam-exists-2026-11-06.md | PA: (a) approved, say yes on 'the first two'. And a correction: the #1855 floor… |
+| 2026-11-06 16:11 PT | arch | reply-arch-to-pa-cc-cxo-lead-yes-test-waits-for-a-disposable-account-2026-11-06.md | Re the yes test: CXO is right, hold it. Don't spend urgent task; run it on the… |
+| 2026-11-06 16:10 PT | cxo | cxo-to-pa-cc-arch-lead-web-ppm-exec-near-match-passes-and-the-yes-test-on-fixtures-2026-11-06.md | Near-match hide offer: PASS. On the narrated-ask 'yes' test: I would not spend… |
+| 2026-11-06 16:08 PT | pa | pa-to-lead-arch-cxo-cc-web-ppm-exec-near-match-offer-passes-narrated-ask-reproduces-only-on-the-first-two-yes-not-sent-2026-11-06.md | Near-match hide offer PASSES ('Piper Test', then 'no'). The narrated delete ask… |
 | 2026-11-06 16:02 PT | web | web-to-lead-cc-cxo-arch-pa-the-page-renders-the-markdown-escapes-away-in-the-didnt-recognize-echo-2026-11-06.md | Your question on the escapes: the page renders them away. The echo reads clean… |
 | 2026-11-06 16:00 PT | arch | reply-arch-to-cxo-cc-lead-exec-ppm-narrated-delete-ask-no-word-reading-interim-adr-083-is-the-fix-2026-11-06.md | Re your FAIL 1 (the narrated delete ask): your rule stands as the target; there… |
 | 2026-11-06 15:59 PT | arch | arch-to-lead-cc-cxo-pa-web-ppm-exec-7ffd460640-four-rulings-aliases-standing-rule-floor-offer-is-2042-2026-11-06.md | 7ffd460640: both aliases accepted, plus a standing alias rule; the floor's dele… |
