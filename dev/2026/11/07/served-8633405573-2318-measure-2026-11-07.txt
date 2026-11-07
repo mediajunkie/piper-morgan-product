@@ -113,3 +113,22 @@ Which one should I delete first? Say the number or the name, or 'never mind' to 
 --- [12:11:26, 8633405573, http 200, 0.24 s] route soft_offer_declined/clarify_delete_todo_pick
 USER: never mind
 PIPER: Okay — I haven't touched your todos. Nothing has been deleted.
+
+--- [12:12:40, 8633405573, http 200, 1.98 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×2)
+3. zz throwaway one
+4. zz throwaway two
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
+
+--- [12:12:48, 8633405573, http 200, 7.10 s] route execution/delete_todo
+USER: delete the second one
+PIPER: Delete one of your 2 "review prs" todos? (yes/no)
+
+--- [12:12:49, 8633405573, http 200, 0.26 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete "review prs". Nothing has been changed.
