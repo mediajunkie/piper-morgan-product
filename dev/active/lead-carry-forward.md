@@ -1,5 +1,10 @@
 # Lead carry-forward — Fable 5.1 seat (Opus 5.5 from 11-04 19:38 until the Fable limit resets after 22:00 on 11-05); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## 2026-11-07 (open; log `dev/2026/11/07/2026-11-07-0647-lead-code-log.md`)
+- **Served:** alpha `641ef2eb56` (07:03, run 42384255405; carries #2315 and #2316 at `9409a6a5e8`). Exec and PA told at 07:04 with PA's checks.
+- **Next:** PA's quotes → CXO judges #2316 (a)(b)(c), closes #2219/#2294; I close #2315/#2316 on those quotes (close-issue-properly). D5 on xian's explicit word via Exec.
+- **Waiting on others:** unchanged from 11-06 (#2313, #2312, #2314's name, #2244, #2288/#2266, #2261).
+
 ## DAY CLOSED 2026-11-06 21:46 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-06 -->` in the 11-06 log `dev/2026/11/06/2026-11-06-0509-lead-code-log.md`)
 - **Served:** alpha `0af6078171` (20:37; five promotions today by this seat). On main, not served: #2315 (`b7c0e604ea`). #2316 (+ its edge rulings) pushed post-close after gate x.
 - **Model:** Opus 5.5.
