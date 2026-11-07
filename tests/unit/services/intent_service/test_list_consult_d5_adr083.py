@@ -141,3 +141,36 @@ def test_shadow_call_block_has_no_list_fact(monkeypatch):
     assert "block" in seen
     assert "LAST LIST SHOWN" not in (seen["block"] or "")
     assert seen["block"] == serialize_for_prompt(lc.without_list_fact(snap))
+
+
+class _Recorder:
+    def __init__(self):
+        self.calls = []
+
+    def info(self, event, **kw):
+        self.calls.append(("info", event, kw))
+
+    def warning(self, event, **kw):
+        self.calls.append(("warning", event, kw))
+
+
+@pytest.mark.parametrize(
+    "second",
+    [_op("delete_todo", ["1", "2"]), _op("delete_todo", ["all"]), None],
+    ids=["accepted", "kept", "error"],
+)
+def test_d5_consult_logs_at_warning(monkeypatch, second):
+    """#2318: alpha keeps warning-level events only; every D5 consult outcome is
+    readable there (no message text)."""
+    rec = _Recorder()
+    monkeypatch.setattr(lc, "logger", rec)
+
+    async def route(message, state, **kw):
+        if second is None:
+            raise RuntimeError("boom")
+        return second
+
+    _consult(_CLARIFY, _SNAP, route)
+    events = [c for c in rec.calls if c[1] == "inversion_live_d5_consult"]
+    assert [c[0] for c in events] == ["warning"]
+    assert "message" not in events[0][2]

@@ -539,6 +539,21 @@ class TestFallthroughReasons:
         )
         assert out is None and f["reason"] == "router_clarify"
 
+    async def test_list_in_scope_decision_is_loud(self, sm, mem_prefs, svc, monkeypatch, log_rec):
+        """#2318: a turn right after a numbered list (ADR-083 D5 in scope) logs its
+        decision at WARNING, so it is readable on alpha; otherwise unchanged."""
+        from services.intent_service import snapshot_assembly as sa
+        from services.intent_service.session_snapshot import SessionSnapshot
+
+        async def _snap(*a, **k):
+            return SessionSnapshot(last_list_kind="todos", last_list_lines=7)
+
+        monkeypatch.setattr(sa, "assemble_session_snapshot", _snap)
+        out, _, [(lvl, f)] = await self._consult(
+            svc, monkeypatch, log_rec, RoutingDecision(outcome="none")
+        )
+        assert out is None and f["reason"] == "router_none" and lvl == "warning"
+
     async def test_router_refused_pinned(self, sm, mem_prefs, svc, monkeypatch, log_rec):
         out, _, [(_, f)] = await self._consult(
             svc,

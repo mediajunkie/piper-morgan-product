@@ -108,7 +108,7 @@ async def consult_on_clarify(
             timeout=SELECTOR_CEILING_S,
         )
     except Exception as e:  # silent-ok: Arch 17:52, a timeout or failure keeps the CLARIFY, logged
-        logger.info(
+        logger.warning(
             "inversion_live_d5_consult",
             outcome="kept",
             reason=type(e).__name__,
@@ -117,7 +117,9 @@ async def consult_on_clarify(
         return decision
     ok = accepts(second, kind, lines)
     targets = (getattr(second, "args", None) or {}).get("targets")
-    logger.info(
+    # Warning, not info: alpha keeps warning-level events only, and these turns are
+    # rare (a CLARIFY right after a numbered list). #2318 needed them served.
+    logger.warning(
         "inversion_live_d5_consult",
         outcome="accepted" if ok else "kept",
         operation=getattr(second, "operation", None),

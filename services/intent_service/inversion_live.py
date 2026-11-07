@@ -1304,7 +1304,9 @@ async def consult_inversion_live(
         plan_floor_elements=(
             sum(1 for o in plan_operations if o.get("floor")) if plan_operations else None
         ),
-        loud=(decision.outcome == "error"),
+        # A turn right after a numbered list (ADR-083 D5 in scope) logs at warning too,
+        # so its served decision is readable on alpha (#2318). No message text is logged.
+        loud=(decision.outcome == "error" or bool(getattr(snapshot, "last_list_kind", None))),
         **_sib,
     )
 
