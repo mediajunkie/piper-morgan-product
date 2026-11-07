@@ -1126,21 +1126,37 @@ async def consult_inversion_live(
         derive_routing_grammar,
         route,
     )
+    from services.intent_service.list_consult import consult_on_clarify, without_list_fact
     from services.intent_service.session_snapshot import serialize_for_prompt
 
     try:
-        block = serialize_for_prompt(snapshot)
+        # ADR-083 D5: the main call never carries the list fact (its block is main's).
+        block = serialize_for_prompt(without_list_fact(snapshot))
     except Exception as e:  # silent-ok: a cap breach degrades THIS consult to no-session-state, error-logged — never fails the turn
         logger.error("inversion_live_snapshot_serialize_failed", error=str(e))
         block = ""
 
     grammar = derive_routing_grammar()
+    _llm = getattr(getattr(intent_service, "intent_classifier", None), "_llm", None)
     decision = await route(
         message,
         RouterSnapshot(state_block=block) if block else None,
-        llm_service=getattr(getattr(intent_service, "intent_classifier", None), "_llm", None),
+        llm_service=_llm,
         grammar=grammar,
         user_id=user_id,
+    )
+    # ADR-083 D5: one more call only on CLARIFY with a list in scope; accepted only as
+    # the list family's op with positions, otherwise the CLARIFY stands.
+    decision = await consult_on_clarify(
+        message,
+        decision,
+        snapshot,
+        route=route,
+        router_snapshot=RouterSnapshot,
+        llm_service=_llm,
+        grammar=grammar,
+        user_id=user_id,
+        session_id=session_id,
     )
 
     legacy_label, divergence = _legacy_preclassifier_comparison(message, decision, grammar)

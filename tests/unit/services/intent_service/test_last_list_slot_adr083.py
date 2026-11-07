@@ -22,7 +22,8 @@ from services.intent_service.snapshot_assembly import _last_list_fact, _list_kin
 def _ctx(sid, turns_ago_list_shown, n_turns=2, kind="active todos", lines=7):
     ctx = get_or_create_context(sid, "u-adr083")
     ctx.turns.clear()
-    base = datetime(2026, 11, 6, 17, 0, 0)
+    # Relative to now: the context prunes turns past its age window (max_age_minutes).
+    base = datetime.now() - timedelta(minutes=n_turns + 1)
     for i in range(n_turns):
         turn = ctx.add_turn(message=f"m{i}")
         turn.timestamp = base + timedelta(minutes=i)
