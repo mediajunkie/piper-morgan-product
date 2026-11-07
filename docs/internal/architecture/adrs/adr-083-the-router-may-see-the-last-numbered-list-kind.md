@@ -15,6 +15,8 @@ last_updated: "2026-11-06"
 
 Until accepted, nothing here changes code.
 
+**Screen, 11-06 (Lead 17:24, `dev/2026/11/06/controls/adr-083-batch-result-2026-11-06.md`): FAIL.** D1 as written (the slot on every router call) fixes the seven sentinels 6/6 but moves 38 unrelated corpus rows: clause 1 ×14 ('list my projects', 'Summarize this file', 'hide the project Beta'…), clause 3 ×37. A slot in the main routing call biases every reading, not just ordinals. D1-D3 stay PROPOSED and are not to be built as written. The candidate is D5 below.
+
 **Related**: #2219 (rows 3 and 5), #2294, ADR-078 D4 (the classifier stays stateless), ADR-080 (the LLM decides meaning, code decides permission), #1886(b) (the armed-turn consult, the precedent for a code-rendered fact in a router call).
 
 ## Context
@@ -66,6 +68,8 @@ Lead proposes the exact expiry in the build read. The rule is that a topic switc
 **D3a. Expiry, ruled 16:21.** The field renders only when `NumberedList.shown_at` is no older than the session's latest assistant turn, so only when the reply immediately before this message showed the list. Any other reply in between drops it: a code fact, with no word reading. A capped reply or a pick that re-records its list keeps a follow-up ordinal in scope.
 
 **D4. Writers.** Only code that renders a numbered list to the person may record it. Today that is the todo family. A new kind (issues, PRs) records the same field when its list is numbered, with no router change.
+
+**D5 (proposed 17:29, after the screen). Consult only on CLARIFY, and accept only the list's own family.** The main router call stays byte-identical to today, with no slot. Only when (i) that call returns CLARIFY and (ii) a numbered list is in scope under D3a does code make one second router call with the D1a slot, on the same message. Code uses the second answer only if it names that list's family op (`complete_todo` or `delete_todo` for a todo list) with a positional target in its args; anything else keeps the first call's CLARIFY. Meaning stays with the LLM (both calls). Code decides only when to consult (on the router's own output plus recorded state) and what it may accept (op and arg shape), the #1886(b) armed-consult pattern. No row the main call answers can move, by construction. The cost is one extra router call on CLARIFY-after-a-list turns; Lead's build read sets the latency against the selector ceiling. Re-scoring the 11-06 data under this rule changes two rows, both toward their expected op ('finish the second one', 'Can we just mark done here?'), and none violates a clause. That re-score is exploratory: it reuses samples already seen, so it can choose the design but not license it. Acceptance needs a fresh preregistered screen.
 
 ## Acceptance (the screen, preregistered before any run)
 
