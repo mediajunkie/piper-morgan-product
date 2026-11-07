@@ -177,8 +177,8 @@ _DIRECT_LINES = {
     + 'Say it as a direct request, like "set my default repo to owner/name".',
     "set_timezone": _SAY_IT
     + 'Say it as a direct request, like "set my timezone to America/Los_Angeles".',
-    "link_repo": _SAY_IT
-    + 'Say it as a direct request, like "link owner/name to project Mobile Redesign".',
+    # link_repo: CXO 11-06 15:58 dropped the example (a sibling failed served); plain line.
+    "link_repo": NOT_SURE_STATEMENT,
     # comment_issue: CXO's example dropped (no routed row of that shape); the plain line.
     "comment_issue": NOT_SURE_STATEMENT,
 }

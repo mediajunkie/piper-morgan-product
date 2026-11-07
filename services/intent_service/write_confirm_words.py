@@ -41,7 +41,9 @@ NOT_SURE_STATEMENT = (
 # thing before "yes" say how to go ahead. A statement; nothing is armed. Each example
 # is a phrasing shown to serve as a direct request (#2304 report: corpus row + router
 # route, surface-1 claim, or handler test); comment_issue's example was dropped for
-# want of that evidence, so it keeps NOT_SURE_STATEMENT.
+# want of that evidence, so it keeps NOT_SURE_STATEMENT. link_repo's was dropped by
+# CXO 11-06 15:58 after a sibling phrasing failed served on 7ffd460640; it returns
+# only after a served pass.
 NOT_SURE_SAY_IT_DIRECTLY = (
     "I'm not sure exactly what you want changed, so I haven't done anything. "
     "Say it as a direct request, like {example}."
@@ -53,7 +55,6 @@ NOT_SURE_UPDATE_DOCUMENT = (
 DIRECT_REQUEST_EXAMPLES = {
     "set_default_repo": '"set my default repo to owner/name"',
     "set_timezone": '"set my timezone to America/Los_Angeles"',
-    "link_repo": '"link owner/name to project Mobile Redesign"',
 }
 
 # CXO 11-06 11:28 (verbatim): add_project with no name. Armed through the #2080
@@ -395,6 +396,4 @@ set_timezone_write_ask = _statement_write_ask(
     "set_timezone",
     NOT_SURE_SAY_IT_DIRECTLY.format(example=DIRECT_REQUEST_EXAMPLES["set_timezone"]),
 )
-link_repo_write_ask = _statement_write_ask(
-    "link_repo", NOT_SURE_SAY_IT_DIRECTLY.format(example=DIRECT_REQUEST_EXAMPLES["link_repo"])
-)
+link_repo_write_ask = _statement_write_ask("link_repo", NOT_SURE_STATEMENT)
