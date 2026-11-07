@@ -611,13 +611,13 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
     - #2304 is built, held for rulings.
     - #2311 builds now.
     - #2314 is fixed on main, waiting on a served read.
-  - **Item 5 waits on xian's explicit go or veto on ADR-083 D5** (on Exec's rollup v867, recommended go). D5 passed its screen at 18:24. Silence is not consent.
+  - **Item 5: xian said GO on ADR-083 D5 (11-07 08:03, Exec 08:04).** Lead lands `claude/lead-adr083` through the gate; PA's served checks follow; then ordinal complete and delete are checked on the live site.
   - **Return order if a slot frees:** #2312, #2314, #2309, #2269 3b, #2305, #2299, #2270.
   - **Unconfirmed:** Lead's confirmation of the item 8 3a/3b split.
   - **Pending xian at the review:** the #2157 drill candidate.
 - **Production 269** (`gh`, 21:34), map v105 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned. Filed and placed today: #2294–#2316, except #2296 (Ongoing) and #2298 (a duplicate, closed).
 - **OWED rows** (markers in `dev/2026/11/06/2026-11-06-0509-ppm-code-log.md`):
-  - ~~invite-hold-pdr~~ DONE 11-07 06:35: `PDR-008-invite-readiness.md` drafted and sent to Exec as a DECISION. Proposals P1–P3 wait on xian's explicit yes. When the six conditions are met, PPM sends Exec the lift-readiness memo (PDR-008 §3).
+  - ~~invite-hold-pdr~~ DONE 11-07 06:35: `PDR-008-invite-readiness.md` drafted and sent to Exec as a DECISION. xian approved P1–P3 at 08:03, so it's Accepted. When the six conditions are met, PPM sends Exec the lift-readiness memo (PDR-008 §3).
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the hold lifts). This needs item 12's build (#2297, #2301) first.
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).

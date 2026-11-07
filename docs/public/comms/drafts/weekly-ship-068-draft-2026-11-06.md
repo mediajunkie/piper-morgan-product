@@ -8,7 +8,7 @@ caption: '"Some safety inspector you are!"'
 >
 > **Sources:** the nine workstream reviews; my week review (https://claude.ai/artifact/WgEURUof7TDHby3ma3VjJW, discussed 11-06 10:42); the editorial calendar; the counts I ran on 11-06. **Window:** Fri 10-30 to Thu 11-05. **Publishes:** Wed 11-11, so "Coming up next week" can say what happened after the window.
 >
-> **Still owed:** the spend line (your Console screenshots for 10-30 to 11-05).
+> **Still owed:** tokens in and out for the spend line (Console's Usage page). The dollar figure is in, from your Cost screenshots (11-07).
 >
 > **After you write:** Exec edits, Comms fact-checks against these bullets and runs template-audit, and Docs publishes.
 >
@@ -136,7 +136,7 @@ caption: '"Some safety inspector you are!"'
 - Open Production issues: 228 → 252
 - Website downtime: about 3 hours
 - Main CI: red on at least 5 of 7 days
-- Spend: [owed, from your Console screenshots]
+- Spend: $37.61 [tokens in and out owed, from Console's Usage page]
 
 **▸ Write about**
 - Why Production grew while closes outran opens: the 10-30 audit and the beta session filed a lot.
@@ -145,6 +145,7 @@ caption: '"Some safety inspector you are!"'
 **▸ Facts**
 - Issue counts from gh-week-counts.py (Pacific week). The Production start is PPM's corrected figure (228).
 - Spend for #067 was given as tokens in and out. Use the same form.
+- Spend, from xian's Console Cost screenshots (11-07, range Oct 30 to Nov 5 in UTC, so about 8 hours off the Pacific window): $37.61 total, all token cost. By workspace: lead-scoring $26.17 (Lead's scoring key: about $18 on Oct 30, about $7 on Nov 1; which runs those were is unverified, ask Lead before calling it screening), Web's test accounts $11.19, Default $0.25, piper-cloud $0.00. The three add to the total.
 
 # 🎯 Coming up next week
 
