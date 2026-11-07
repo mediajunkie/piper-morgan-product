@@ -53,7 +53,12 @@ class TestAmbiguousTextTargetAsksWhich:
     async def test_two_fuzzy_matches_no_unique_exact_asks_which(self, handlers):
         """'hydrate' against two non-exact fuzzy matches: no unique exact
         title, so resolve_named_todo_target returns both — ask which,
-        don't silently complete the top-scored one."""
+        don't silently complete the top-scored one.
+
+        #2219 (CXO 11-06 19:22): the ask is the ARMED #1987 pick numbered 1..k;
+        here no offer store is passed, so nothing can be armed and the reply is
+        a statement (never an unarmed question, #1730). The armed pick through
+        the real process_intent is pinned in test_named_line_pick_2219.py."""
         todos = [_todo("hydrate the plants"), _todo("hydrate the cat")]
         handlers.todo_service.list_todos = AsyncMock(return_value=todos)
 
@@ -61,8 +66,34 @@ class TestAmbiguousTextTargetAsksWhich:
             _intent("complete the hydrate todo"), "session1", uuid4()
         )
 
-        assert "which one should i complete" in result.lower()
-        assert "1." in result and "2." in result
+        assert result == (
+            '2 todos on your list match that. Say "show my todos" to see them '
+            "numbered, then 'complete todo' with the number. Nothing has been changed."
+        )
+        handlers.todo_service.complete_todo.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_two_fuzzy_matches_with_a_store_arm_the_pick(self, handlers):
+        from services.intent_service.soft_invocation import WorkflowOfferService
+
+        todos = [_todo("hydrate the plants"), _todo("hydrate the cat")]
+        handlers.todo_service.list_todos = AsyncMock(return_value=todos)
+        store = WorkflowOfferService()
+        user = uuid4()
+
+        result = await handlers.handle_complete_todo(
+            _intent("complete the hydrate todo"),
+            "session-1930-pick",
+            user,
+            offer_service=store,
+            principal=str(user),
+        )
+
+        assert result == (
+            "Which todo should I complete?\n1. hydrate the plants\n2. hydrate the cat\n\n"
+            "Say the number or the name, or 'never mind' to leave them alone."
+        )
+        assert store.peek_pending_offer("session-1930-pick", str(user)) is not None
         handlers.todo_service.complete_todo.assert_not_called()
 
     @pytest.mark.asyncio

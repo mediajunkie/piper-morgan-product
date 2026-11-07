@@ -452,6 +452,16 @@ def arm_complete_pick(
     return question
 
 
+def match_lines(matches: List[Any], todos: List[Any]) -> List[List[Any]]:
+    """#2219 (CXO 11-06 19:22): with no list shown, the todos a name matched, as
+    lines in the user's list order, identical copies grouped into one line (the
+    list's own grouping, ``group_todo_lines``)."""
+    from services.consciousness.todo_consciousness import group_todo_lines
+
+    matched = {str(t.id) for t in matches}
+    return group_todo_lines([t for t in todos if str(t.id) in matched])
+
+
 def arm_named_line_pick(
     verb: str,
     message: str,
@@ -459,7 +469,7 @@ def arm_named_line_pick(
     principal: Optional[str],
     todo_user_id: Any,
     lines: List[List[Any]],
-    labels: List[int],
+    labels: Optional[List[int]],
     offer_service: Any,
 ) -> Optional[str]:
     """#2219 Gap A follow-up (CXO 11-06 18:32 words, 18:47 binding; Arch 18:45): a
@@ -467,13 +477,20 @@ def arm_named_line_pick(
     over exactly those lines, each labelled with the number the person saw. The ids
     are bound now, so "6", "the second one" and "never mind" bind on the answer turn
     (``handle_delete_todo_pick_turn``). ``None`` when nothing could pop an answer
-    (no session or store): the caller says so, asking nothing (#1730)."""
-    if not session_id or offer_service is None or not lines or len(labels) != len(lines):
+    (no session or store): the caller says so, asking nothing (#1730).
+
+    ``labels`` ``None`` (CXO 11-06 19:22, no list shown): the lines are numbered
+    1..k, the pick's ordinary numbering."""
+    if not session_id or offer_service is None or not lines:
+        return None
+    if labels is not None and len(labels) != len(lines):
         return None
     question = _arm_line_pick(
         verb, message, session_id, principal, todo_user_id, lines, offer_service, labels
     )
-    logger.info("todo_named_line_pick_armed", session_id=session_id, verb=verb, labels=labels)
+    logger.info(
+        "todo_named_line_pick_armed", session_id=session_id, verb=verb, labels=labels or None
+    )
     return question
 
 

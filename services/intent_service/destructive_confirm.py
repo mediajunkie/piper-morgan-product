@@ -383,7 +383,8 @@ class TodoDeleteGate:
       never projects (the 1527 misroute's exact wound).
     - ``line_pick``: a named target matched SEVERAL lines of the numbered list
       the person just saw (#2219 Gap A follow-up; CXO 11-06 18:32, Arch 18:45):
-      the matching lines and the number each was shown with. The caller arms
+      the matching lines and the number each was shown with (``None`` when no
+      list was shown: the matches as lines numbered 1..k, CXO 11-06 19:22). The caller arms
       the #1987 pick over them through ``delete_todo_pick.arm_named_line_pick``
       (arming stays in the pick module); ``clarification`` then carries the
       statement said only if nothing can pop an answer.
@@ -393,7 +394,7 @@ class TodoDeleteGate:
     passthrough: bool = False
     error_message: Optional[str] = None
     clarification: Optional[str] = None
-    line_pick: Optional[Tuple[List[List[Any]], List[int]]] = None
+    line_pick: Optional[Tuple[List[List[Any]], Optional[List[int]]]] = None
 
 
 def named_line_no_match(named: str) -> str:
@@ -408,8 +409,8 @@ def named_line_pick_unarmable(count: int, verb: str) -> str:
     """Said only when a several-line pick cannot be armed (no session or store):
     a statement, never a question with nothing armed (#1730)."""
     return (
-        f"{count} lines on your list match that. Say '{verb} todo' with the number "
-        "of the one you mean. Nothing has been changed."
+        f'{count} todos on your list match that. Say "show my todos" to see them '
+        f"numbered, then '{verb} todo' with the number. Nothing has been changed."
     )
 
 
@@ -971,14 +972,18 @@ async def build_todo_delete_confirmation(
             )
 
     if len(matches) > 1:
-        position_by_id = {t.id: i + 1 for i, t in enumerate(todos)}
-        candidates = ", ".join(f'{position_by_id[t.id]}. "{t.text}"' for t in matches)
+        # #2219 (CXO 11-06 19:22): no list shown. Identical copies are ONE line: the
+        # one-copy grouped confirm. Different todos: the ARMED #1987 pick over the
+        # matches as lines, numbered 1..k (armed at the call site, in the pick module).
+        from services.intent_service.delete_todo_pick import match_lines
+
+        lines = match_lines(matches, todos)
+        if len(lines) == 1:
+            position = next(i + 1 for i, t in enumerate(todos) if t.id == lines[0][0].id)
+            return _armed_line_delete(intent, lines[0], position, message)
         return TodoDeleteGate(
-            clarification=(
-                f'I found {len(matches)} todos matching "{named_target}": '
-                f"{candidates}. Which one should I delete? "
-                "Try 'delete todo [number]'."
-            )
+            line_pick=(lines, None),
+            clarification=named_line_pick_unarmable(len(lines), "delete"),
         )
 
     todo = matches[0]

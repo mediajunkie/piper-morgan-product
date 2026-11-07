@@ -286,3 +286,121 @@ async def test_complete_no_match_says_so(store):
         'Say "show my todos" to see them.'
     )
     assert store["completed"] == []
+
+
+# --- no list shown (CXO 11-06 19:22) ------------------------------------------------
+# No grouped list recorded: identical copies are ONE line (the grouped confirm, or
+# one-or-all); different todos are the armed pick numbered 1..k over the matches.
+
+
+@pytest.fixture
+def bare(monkeypatch):
+    from services.todo.todo_management_service import TodoManagementService
+
+    t = [
+        _todo("urgent task", "urgent"),
+        _todo("review prs"),
+        _todo("hydrate the plants"),
+        _todo("review prs"),
+        _todo("hydrate the cat"),
+        _todo("water bill"),
+        _todo("water bill"),
+        _todo("water bill for alpha"),
+    ]
+    state = {"todos": t, "deleted": [], "completed": [], "sid": f"e2e-2219-bare-{uuid4()}"}
+
+    async def _list_todos(self, user_id, include_completed=False):
+        gone = set(state["deleted"]) | set(state["completed"])
+        return [x for x in state["todos"] if x.id not in gone]
+
+    async def _delete(self, todo_id, user_id):
+        state["deleted"].append(str(todo_id))
+        return True
+
+    async def _complete(self, todo_id, user_id):
+        state["completed"].append(str(todo_id))
+        return next(x for x in state["todos"] if x.id == str(todo_id))
+
+    monkeypatch.setattr(TodoManagementService, "list_todos", _list_todos)
+    monkeypatch.setattr(TodoManagementService, "delete_todo", _delete)
+    monkeypatch.setattr(TodoManagementService, "complete_todo", _complete)
+    return state
+
+
+def _bare_pick(verb):
+    return (
+        f"Which todo should I {verb}?\n"
+        "1. hydrate the plants\n"
+        "2. hydrate the cat\n"
+        "\n" + _TAIL
+    )
+
+
+@pytest.mark.asyncio
+async def test_no_list_identical_copies_take_the_grouped_delete_confirm(bare):
+    service = _service("delete_todo")
+    confirm = await _turn(service, bare, "delete the review prs todos")
+    assert confirm.message == 'Delete one of your 2 "review prs" todos? (yes/no)'
+    assert "I found" not in confirm.message
+    await _turn(service, bare, "yes")
+    assert len(bare["deleted"]) == 1
+    assert bare["deleted"][0] in {bare["todos"][1].id, bare["todos"][3].id}
+
+
+@pytest.mark.asyncio
+async def test_no_list_different_matches_ask_the_armed_pick_numbered_1_to_k(bare):
+    service = _service("delete_todo")
+    pick = await _turn(service, bare, "delete the hydrate todos")
+    assert pick.message == _bare_pick("delete")
+    assert service.workflow_offer_service.peek_pending_offer(bare["sid"], _USER) is not None
+    confirm = await _turn(service, bare, "2")
+    assert confirm.message == 'Delete the todo "hydrate the cat"? (yes/no)'
+    await _turn(service, bare, "yes")
+    assert bare["deleted"] == [bare["todos"][4].id]
+
+
+@pytest.mark.asyncio
+async def test_no_list_pick_groups_identical_matches_into_one_line(bare):
+    pick = await _turn(_service("delete_todo"), bare, "delete the water bill todos")
+    assert pick.message == (
+        "Which todo should I delete?\n"
+        "1. water bill (×2)\n"
+        "2. water bill for alpha\n"
+        "\n" + _TAIL
+    )
+
+
+@pytest.mark.asyncio
+async def test_no_list_pick_never_mind_declines(bare):
+    service = _service("delete_todo")
+    await _turn(service, bare, "delete the hydrate todos")
+    result = await _turn(service, bare, "never mind")
+    assert result.message == "Okay — I haven't touched your todos. Nothing has been deleted."
+    assert bare["deleted"] == []
+
+
+@pytest.mark.asyncio
+async def test_no_list_identical_copies_complete_asks_one_or_both(bare):
+    service = _service("complete_todo")
+    result = await _turn(service, bare, "complete review prs")
+    assert result.message == '"review prs" is on your list 2 times. Complete one, or both?'
+    await _turn(service, bare, "one")
+    assert len(bare["completed"]) == 1
+
+
+@pytest.mark.asyncio
+async def test_no_list_different_matches_complete_asks_the_armed_pick(bare):
+    service = _service("complete_todo")
+    pick = await _turn(service, bare, "complete hydrate")
+    assert pick.message == _bare_pick("complete")
+    await _turn(service, bare, "2")
+    assert bare["completed"] == [bare["todos"][4].id]
+
+
+@pytest.mark.asyncio
+async def test_no_list_complete_pick_never_mind_declines(bare):
+    service = _service("complete_todo")
+    await _turn(service, bare, "complete hydrate")
+    result = await _turn(service, bare, "never mind")
+    assert result.message == "Okay — I haven't touched your todos. Nothing has been changed."
+    assert bare["completed"] == []
