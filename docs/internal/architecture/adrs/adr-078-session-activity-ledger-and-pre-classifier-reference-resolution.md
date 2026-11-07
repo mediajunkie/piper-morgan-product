@@ -4,7 +4,7 @@ number: 78
 title: "Session-Activity Ledger + Pre-Classifier Reference Resolution (the #1394 cross-turn continuity architecture)"
 status: "ACCEPTED"
 valid_from: "2026-07-12"
-last_updated: "2026-08-29"
+last_updated: "2026-11-07"
 ---
 
 # ADR-078 — Session-Activity Ledger + Pre-Classifier Reference Resolution (the #1394 cross-turn continuity architecture)
@@ -59,6 +59,8 @@ One new migration, no touch to the protected #1312 tables, passes autogen-empty 
 **D2 — B3 closes via a PRE-CLASSIFIER reference-resolution step (surface 1), reading the ledger.** A follow-up referent ("the title", "that", "it", "the issue") is detected and resolved against the session-activity ledger *before* classification, annotating/rewriting the message so the classifier and handlers see an explicit referent ("change the title of issue #107"). The resolution is an explicit, inspectable, testable transform on the pre_classifier surface.
 
 **D3 — B4 closes via a session-activity retrieval capability over the ledger** (a reader + routing to reach it) — "what did we create/do this session" reads the ledger as the authoritative record, not the floor's ephemeral window or a live-repo query.
+
+*Amended 2026-11-07 by **ADR-083 D5** (xian's explicit go): one named exception. A second router call, only on CLARIFY right after a numbered list, may see the list's kind and line count, and code accepts its answer only as complete or delete with a shown position. The main router call stays stateless and byte-identical. Nothing else here changes.*
 
 **D4 — The classifier (surface 2) STAYS STATELESS. Do NOT inject conversation history into the classification prompt.** This is the load-bearing integrity constraint. Surface 2 is the one we have worked hardest to keep clean and deterministic (ADR-077 routing-integrity, #1283, the #1269 fabrication guard). Making it conversation-stateful would: change *all* routing behavior (every follow-up now history-influenced), risk over-anchoring (a genuine topic-switch misread as a continuation), and force a full ADR-077 D5 corpus re-validation. Antecedent resolution belongs at surface 1 (explicit, bounded, testable), not diffused into the routing LLM. **(HOST trust-lens framing, 2026-07-13, the clearest statement of the *why*): explicit resolution creates a legible, inspectable intermediate state — you can see, test, and explain "the title" being rewritten to "issue #107" before the classifier runs; implicit context-blending inside the classifier does not, and its routing effects can't be reasoned about or debugged the same way.**
 
