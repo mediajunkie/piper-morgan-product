@@ -33,7 +33,7 @@ Core product decisions that shape everything else. These establish patterns, pri
 | [PDR-005](PDR-005-bring-your-own-chat.md) | Bring Your Own Chat — Distribution Model | Approved (v1.0); Amendment 1 ratified 10-23 (xian) | Jun 5, 2026 |
 | [PDR-006](PDR-006-hosted-mcp-plugin-distribution.md) | Hosted MCP Endpoint + Plugin Distribution Model | Ratified; Amendment 1 ratified 10-23 (xian) | Jul 31, 2026 |
 | [PDR-007](PDR-007-editorial-data-single-source-of-truth.md) | Editorial Data — Single Source of Truth | Ratified (Option A) | Aug 28, 2026 |
-| [PDR-008](PDR-008-invite-readiness.md) | Invite Readiness — What Must Be True Before Any Invitation | Draft v1 (proposals P1–P3 await xian) | Nov 7, 2026 |
+| [PDR-008](PDR-008-invite-readiness.md) | Invite Readiness — What Must Be True Before Any Invitation | Accepted (xian, P1–P3 yes, 11-07) | Nov 7, 2026 |
 
 ### Tier 1xx: Feature/Capability
 Major feature decisions that build on foundational PDRs. These define significant capabilities Piper should offer.
