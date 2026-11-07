@@ -1,23 +1,27 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-05 21:19 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/11/05/2026-11-05-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-06.
+## ⭐ CURRENT STATE — 2026-11-06 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/06/2026-11-06-0508-comms-code-log.md`, DAY-CLOSED. Start a new log 11-07.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
-- **Thu 11-05 "Don't Overpromise": PUBLISHED** 18:48 (Docs), https://pipermorgan.ai/blog/dont-overpromise. The Medium crosspost is xian's ("as soon as it's live"), and Docs fills in the URL. xian kept "likely during the beta period" by his own ruling.
-- **11-06: mining pass DONE** (planning doc rev 30, section "Mining pass, Oct 23 to Nov 5". My pick: A "The Owner's Name on Every Door" with 8, or C with 8). Ship #068 review sent (472f83c8b). Agent 360 v0.6 response sent (8e4273336). **Next: the editorial-strategy talk with xian** (brief in the planning doc, "For our editorial-strategy session"). After it: put the scaffold format into `draft-blog-post` (360 item 1.3/5.3).
-- **Scaffolds up, all waiting on xian's prose:**
-  - Sat 11-07, "At Long Last, Beta": `at-long-last-beta.md` (building; title by xian; renamed from what-reaching-private-beta-means.md). It teases Sun.
-  - Sun 11-08, "Fixed and Scores Higher Came Apart": `fixed-and-scores-higher-came-apart.md` (insight). It teases Tue. The two percentages come from two different runs, so it isn't a controlled A/B.
-  - Tue 11-10, "Never Green in a Thousand Runs": `never-green-in-a-thousand-runs.md`. Only E2E never passed. It teases Thu.
-  - Thu 11-12, "The Server Key Is Not a Real Concept": `the-server-key-is-not-a-real-concept.md`. The "truth over feeling of progress" quote is about the epic, not the key. Recommend not merging beat 4. **Its tease target isn't on the calendar yet. Settle it in the strategy talk.**
-- **Publish pipeline after the Ignored Build Step:** the read check passes, because a publish writes `src/data` and `public/assets` and so always builds. Memo to Exec, cc Web and Docs (25f11f786). **Close it on Docs' Sat 11-07 publish memo showing the sha's deploy as `success`.**
-- **Hosting:** xian is on Vercel Pro. The split (Cloudflare static plus a Vercel admin) is #2291, Ongoing, with no date. When it happens, Comms checks the publish pipeline.
-- **Mail v4 from Mon 11-09:** read `python3 scripts/mail4.py inbox --role comms` as well as v3, and send in-repo mail with `mail4.py send`. v3 is the fallback until 11-23. CIO sends a test message on 11-09.
-- **Invites held (xian 11-04 19:31):** no invitations until the P0 items #1551, #2261 and #2178 are done. Copy must not imply anyone can join now.
-- **Waiting list / newsletter:** v4 is live and CXO PASSed it. **Open:** xian pastes the confirmation email and signs up. HOST then reads it, and #2256 closes on that.
+- **Strategy talk with xian: did NOT happen 11-06.** He set it for "tomorrow" on 11-05. Brief: planning doc, "For our editorial-strategy session". Mining section (rev 30–32): partners A–D for "One Account Means One Hand" (Nov 14/15). **My pick is now C, "A Grant Has to Reach the Hand That Acts", with 8**, because Ship #068's theme "Whose Connection Is It, Anyway?" (Wed 11-11) covers the tenancy day that A would repeat. Candidate I, "A Review Where Nothing Became a Skill", is xian's idea via Exec (facts: CIO's review log in `skill-candidates-review.md`), with no slot.
+  - **Waiting on the talk:** the insight partner and its calendar row, the Thu 11-12 tease target, beat merges, and then the scaffold format in `draft-blog-post` (360 item 1.3/5.3).
+- **Scaffolds up, all still waiting on xian's prose (no change since ed19844113, 11-05 18:21):**
+  - **Sat 11-07, "At Long Last, Beta"** (`at-long-last-beta.md`, building). It teases Sun. **Publishes tomorrow.** Watch for xian's admin-UI commit, then review, template-audit and publish-ready to Docs.
+  - Sun 11-08, "Fixed and Scores Higher Came Apart" (`fixed-and-scores-higher-came-apart.md`, insight). It teases Tue. The two percentages come from two different runs, so it isn't a controlled A/B.
+  - Tue 11-10, "Never Green in a Thousand Runs". Only E2E never passed. It teases Thu.
+  - Thu 11-12, "The Server Key Is Not a Real Concept". The "truth over feeling of progress" quote is about the epic, not the key. Its tease target waits on the talk.
+- **Ship #068** (Wed 11-11), theme "Whose Connection Is It, Anyway?" (xian 10:42). Comms runs the External fact-check when Exec's draft lands.
+- **Two-week sprints from Fri 11-13** (xian 10:33; objections to Exec by Mon 11-09 noon; Comms has none). The Ship stays weekly. **#069 is ordinary, #070 (11-13 to 11-19) is the first progress Ship, and #071 is the first final score.** The forms are in `draft-weekly-ship` v1.15 Step 5-sprint (e1ff112659), sent to Exec cc PPM for review.
+- **Week goals 11-06 to 11-12 ratified.** Goal 4 is editorial: the strategy session, and publishing Sat, Sun, Tue, Thu and Ship #068.
+- **GitHub criteria line** is now in my briefing (CIO's #1715 fold, due 11-20, done 11-06). Run it every fire and check the delta by createdAt.
+- **Publish pipeline after the Ignored Build Step:** the read check passes. **Close it on Docs' Sat 11-07 publish memo showing the deploy as `success`.**
+- **Hosting:** the split is #2291, Ongoing, with no date. When it happens, Comms checks the publish pipeline.
+- **Mail v4 from Mon 11-09:** read `python3 scripts/mail4.py inbox --role comms` as well as v3, and send with `mail4.py send`. v3 is the fallback until 11-23.
+- **Invites held (xian 11-04 19:31)** until P0 items #1551, #2261 and #2178 are done. Copy must not imply anyone can join now.
+- **Waiting list:** xian pastes the confirmation email and signs up. HOST then reads it, and #2256 closes on that.
 - **HOLD (PDR-102):** no ownership claim in copy until C7 is verified and C8 has a surface.
-- **Mail filing (piper-guards M-3):** plain `mv`, then mail-send with both paths. If mail-send refuses on a newer MANIFEST: `git checkout HEAD --` the manifests, merge, regenerate, resend.
-- **Standing:** the "what changed" note at the first user-visible Production ship. The narrative front is Sep 9 (beat 2).
+- **Mail filing (piper-guards M-3):** plain `mv`, then mail-send with both paths and the regenerated MANIFEST. If mail-send refuses on a newer MANIFEST: diff, `git checkout HEAD --` the manifest, merge, regenerate, resend. A cc needs its own inbox copy in the send.
+- **Standing:** the "what changed" note at the first user-visible Production ship. The narrative front is Sep 9 (beat 2). Next mining pass Fri 11-20.
 
 ## OLDER STATE blocks pruned 2026-11-06 (10-14 to 11-04). They are in git history and in the dated session logs.
 
