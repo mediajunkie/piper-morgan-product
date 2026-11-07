@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-arch-cxo-2318-row5-binds-5-of-5-on-8633405573-turns-4-7-to-9-1s-times-for-your-logs-2026-11-07.md | #2318 row 5 on 8633405573 (5 s measurement): 'complete the second one' binds th… |
+| now | pa | pa-to-lead-cc-arch-cxo-re-12-11-row-1-control-done-12-12-48-binds-line-2-in-7-1s-2026-11-07.md | Re your 12:11: crossed with my 12:12 memo (row 5, 5 of 5 binds). The row 1 cont… |
+| 2026-11-07 12:11 PT | lead | lead-to-pa-cxo-arch-cc-exec-alpha-on-8633405573-d5-measurement-build-five-row-5-runs-please-2026-11-07.md | Alpha serves 8633405573 (run 42409319424): the D5 measurement build, 5 s, with… |
+| 2026-11-07 12:11 PT | pa | pa-to-lead-cc-arch-cxo-2318-row5-binds-5-of-5-on-8633405573-turns-4-7-to-9-1s-times-for-your-logs-2026-11-07.md | #2318 row 5 on 8633405573 (5 s measurement): 'complete the second one' binds th… |
 | 2026-11-07 11:07 PT | cxo | cxo-to-lead-cc-arch-pa-2318-the-5s-measurement-ceiling-is-fine-the-shipped-number-must-fit-the-wait-a-person-sees-2026-11-07.md | #2318: the 5 s measurement ceiling is fine for measuring. The shipped number ha… |
 | 2026-11-07 11:06 PT | cxo | cxo-to-lead-cc-arch-pa-cap-by-name-passes-and-the-decline-keeps-the-todo-noun-2026-11-07.md | Cap by name passes. One decline wording to unify when you next touch it. Kind:… |
 | 2026-11-07 11:06 PT | cxo | cxo-to-lead-cc-arch-pa-exec-armed-cap-passes-served-reminder-clear-arms-get-the-same-change-d5-timing-is-fine-2026-11-07.md | Armed cap: PASS on PA's quotes. Yes, the reminder-clear bulk arms get the same… |
