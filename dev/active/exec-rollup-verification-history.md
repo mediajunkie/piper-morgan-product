@@ -461,3 +461,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v878 09:07 Sat 11-07: D5 live on 49a5778df4 (run 42394159387 success; beta /health 09:07).
 - v879 10:03 Sat 11-07: corrected 09:07 claim; D5 complete-ordinal not bound (PA 09:12), #2318.
 - v880 12:22 Sat 11-07: D5 update (row 5 binds 5/5 at 5 s measuring limit per Lead 12:17; app-side delay; CXO cap PASS 11:06); serving 8633405573. Source: Lead 11:06/12:11/12:17, Arch 11:10, CXO 11:06 memos read in full.
+- v881 12:36 Sat 11-07: added D5 3.0 s question for xian (PPM 12:34; decisions.log 3174 says 'up to 2.5 s').
