@@ -203,32 +203,38 @@ def _title_phrase_and_leaving(picked_texts: List[str], left_texts: List[str]):
     return _title_phrase(picked_texts), _leaving_line(left_texts)
 
 
-def _clear_set_lead(picked_texts: List[str], left_texts: List[str]) -> str:
+def _clear_set_lead(
+    picked_texts: List[str], left_texts: List[str], noun: str = _CLEAR_NOUN_LITERAL
+) -> str:
     """CXO ruling point 1: the set-naming lead sentence for the no-stored-
     default ask. One item: 'You want to clear the reminder "x".'; 2+:
     'You want to clear N reminders: …'. A Leaving clause only with a
     carve-out (CXO: "No set extracted: the ratified string alone" — i.e. no
     Leaving sentence without one)."""
+    from services.intent_service.reminder_copy import noun_plural, noun_word
     from services.intent_service.todo_handlers import _leaving_line, _title_phrase
 
+    # #2219 (CXO 11-07 14:12 for this lead): the person's noun, "todo" by default.
     n = len(picked_texts)
     if n == 1:
-        lead = f'You want to clear the reminder "{picked_texts[0]}".'
+        lead = f'You want to clear the {noun_word(noun)} "{picked_texts[0]}".'
     else:
-        lead = f"You want to clear {n} reminders: {_title_phrase(picked_texts)}."
+        lead = f"You want to clear {n} {noun_plural(noun)}: {_title_phrase(picked_texts)}."
     leaving = _leaving_line(left_texts)
     if leaving:
         lead += f" {leaving}"
     return lead
 
 
-def _clear_variant_one_with_set(picked_texts: List[str], left_texts: List[str]) -> str:
+def _clear_variant_one_with_set(
+    picked_texts: List[str], left_texts: List[str], noun: str = _CLEAR_NOUN_LITERAL
+) -> str:
     """CXO ruling point 1, in full: the set-naming lead, then the UNCHANGED
     ratified #1605 sentence (``reminder_clear.variant_one_question``,
     called directly — not hand-transcribed, per this module's docstring)."""
     from services.intent_service.reminder_clear import variant_one_question
 
-    lead = _clear_set_lead(picked_texts, left_texts)
+    lead = _clear_set_lead(picked_texts, left_texts, noun)
     return f"{lead} {variant_one_question(_CLEAR_VERB_LITERAL, _CLEAR_NOUN_LITERAL)}"
 
 
@@ -615,7 +621,9 @@ async def run_clear_todos(
             ),
             intent_data={"category": category, "action": intent.action},
         )
-    question = _clear_variant_one_with_set(picked_texts, left)
+    from services.intent_service.reminder_copy import copy_noun
+
+    question = _clear_variant_one_with_set(picked_texts, left, copy_noun(original_message))
     offer = _verb_question_offer(
         principal,
         _CLEAR_VERB_LITERAL,

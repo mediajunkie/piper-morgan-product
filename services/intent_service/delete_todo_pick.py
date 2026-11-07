@@ -842,12 +842,13 @@ async def handle_delete_todo_pick_turn(
     # the named lines (its delete leg meets the cap where it resolves).
     multi = [i for i in _multi_pick_indices(text, texts, due_iso, labels) if i < len(ids)]
     if verb == VERB_CLEAR and len(multi) > 1:
-        return _clear_bound(
+        return await _clear_bound(
             [ids[i] for i in multi],
             [texts[i] for i in multi],
             original_message,
             session_id,
             user_id,
+            payload,
             intent_service,
         )
     if verb == VERB_COMPLETE and len(multi) > 1:
@@ -1029,8 +1030,14 @@ async def handle_delete_todo_pick_turn(
     if status == "bound" and idx is not None and 0 <= idx < len(ids):
         copies = payload.get("pick_copies") or []
         if verb == VERB_CLEAR:
-            return _clear_bound(
-                [ids[idx]], [texts[idx]], original_message, session_id, user_id, intent_service
+            return await _clear_bound(
+                [ids[idx]],
+                [texts[idx]],
+                original_message,
+                session_id,
+                user_id,
+                payload,
+                intent_service,
             )
         if verb == VERB_COMPLETE:
             line_ids = payload.get("pick_line_ids") or []
@@ -1165,32 +1172,106 @@ async def handle_delete_todo_pick_turn(
     }
 
 
-def _clear_bound(
+async def _clear_bound(
     ids: List[str],
     texts: List[str],
     original_message: str,
     session_id: Optional[str],
     user_id: Optional[str],
+    payload: Dict[str, Any],
     intent_service: Any,
 ) -> Dict[str, Any]:
     """#2318 (CXO 11-07, option (a); Arch 12:43): a clear pick bound the line(s).
-    Nothing is written: clear's existing verb question is armed over exactly those
-    ids, as ``run_clear_todos`` does after a resolved target (the same carrier and
-    the resolver marker), so its answer's path, the delete leg's cap and confirm
-    included, is unchanged."""
+    Nothing is written here beyond what ``run_clear_todos`` does after a resolved
+    target, branch for branch:
+
+    - a stored 'clear' = done: the line completes, with clear's disclosure clause
+      (a grouped line asks its one-or-both question instead, unchanged);
+    - a stored 'clear' = delete: the line's delete confirm, worded as clear's
+      variant 3 (the delete leg's cap and confirm are the ordinary ones);
+    - no stored default: clear's existing verb question over exactly these ids,
+      with the resolver marker.
+
+    PA's served run (14:12) found the no-default case is asked the verb first, so
+    the stored branches are the ones a person meets."""
     from services.intent_service.clear_todos import (
-        _CLEAR_NOUN_LITERAL,
         _CLEAR_VERB_LITERAL,
         CLEAR_TODOS_RESOLVER_MARKER,
+        _clear_disclosure_clause,
         _clear_variant_one_with_set,
+        _clear_variant_three_question,
     )
-    from services.intent_service.reminder_clear import _verb_question_offer
+    from services.intent_service.reminder_clear import (
+        VALUE_COMPLETE,
+        VALUE_DELETE,
+        _verb_question_offer,
+        inference_key,
+    )
+    from services.intent_service.reminder_copy import copy_noun
+    from services.intent_service.verified_inference import get_verified_inference
 
-    question = _clear_variant_one_with_set(list(texts), [])
+    noun = copy_noun(original_message)
+    stored = None
+    if len(ids) == 1:
+        stored = await get_verified_inference(user_id, inference_key(_CLEAR_VERB_LITERAL))
+    stored_value = (stored or {}).get("value")
+    line_ids = payload.get("pick_line_ids") or []
+    pick_ids = payload.get("pick_ids") or []
+    if stored_value == VALUE_COMPLETE:
+        idx = pick_ids.index(ids[0]) if ids[0] in pick_ids else -1
+        out = await _complete_bound(
+            line_ids[idx] if 0 <= idx < len(line_ids) else [ids[0]],
+            texts[0],
+            noun,
+            original_message,
+            session_id,
+            user_id,
+            payload,
+            intent_service,
+        )
+        if out.get("requires_clarification") or (out.get("intent_data") or {}).get(
+            "complete_failed"
+        ):
+            return out  # the one-or-both question, or an honest failure: no disclosure
+        return {
+            **out,
+            "message": f"{out['message']}\n\n{_clear_disclosure_clause()}",
+            "intent_data": {**(out.get("intent_data") or {}), "reminder_clear_disclosure": True},
+        }
+    if stored_value == VALUE_DELETE:
+        out = await _arm_bound_delete(
+            ids[0],
+            texts[0],
+            noun,
+            original_message,
+            session_id,
+            user_id,
+            payload,
+            intent_service,
+        )
+        if not out.get("requires_clarification"):
+            return out
+        question = _clear_variant_three_question([texts[0]], [])
+        armed = intent_service.workflow_offer_service.peek_pending_offer(
+            session_id, user_id=user_id
+        )
+        if armed is not None:
+            armed = dict(armed)
+            armed["question"] = question
+            intent_service.workflow_offer_service.set_pending_offer(
+                session_id, armed, user_id=user_id
+            )
+        return {
+            **out,
+            "message": question,
+            "intent_data": {**(out.get("intent_data") or {}), "verb_default_applied": VALUE_DELETE},
+        }
+
+    question = _clear_variant_one_with_set(list(texts), [], noun)
     offer = _verb_question_offer(
         user_id,
         _CLEAR_VERB_LITERAL,
-        _CLEAR_NOUN_LITERAL,
+        "reminder",
         list(ids),
         list(texts),
         original_message,
@@ -1394,7 +1475,8 @@ async def _complete_bound(
     if not completed:
         return {
             "message": "I couldn't complete that todo. It might have been deleted.",
-            "intent_data": data,
+            # #2318: a caller adding to a success (clear's disclosure) reads this.
+            "intent_data": {**data, "complete_failed": True},
         }
     logger.info("complete_todo_pick_bound", session_id=session_id, todo_id=str(rows[0].id))
     return {"message": format_todo_completed_conscious(completed), "intent_data": data}
