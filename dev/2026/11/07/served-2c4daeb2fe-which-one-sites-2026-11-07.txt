@@ -1,0 +1,165 @@
+# Six armed which-one sites on 2c4daeb2fe (04a9f0b091, 7698c7a7c0), web-seed-1386, PA; each site a fresh chat
+
+--- [14:11:10, 2c4daeb2fe, http 200, 11.61 s] route conversation/complete_todo
+USER: complete the second one
+PIPER: I'm not sure which one you mean. Say its name.
+
+--- [14:11:11, 2c4daeb2fe, http 200, 0.28 s] route conversation/nothing_running
+USER: never mind
+PIPER: There's nothing running to cancel.
+
+--- [14:11:22, 2c4daeb2fe, http 200, 10.77 s] route execution/delete_item
+USER: delete the second one
+PIPER: I'm not sure which one you mean, because I haven't shown you a list to count from. Nothing was deleted. Tell me the name of the todo or reminder you want to delete.
+
+--- [14:11:39, 2c4daeb2fe, http 200, 16.55 s] route CONVERSATION/clarification_needed
+USER: 2
+PIPER: Looking at your pending todos, "zz throwaway two" is the second one that reads like a throwaway. But to be sure. If you'd like me to delete "zz throwaway two", ask me directly.
+
+--- [14:11:49, 2c4daeb2fe, http 200, 9.69 s] route CONVERSATION/clarification_needed
+USER: no
+PIPER: Okay.
+
+--- [14:12:11, 2c4daeb2fe, http 200, 3.34 s] route execution/complete_todo
+USER: complete todo 2
+PIPER: I haven't shown you a numbered list yet. Here are your todos:
+
+1. "urgent task"
+2. "review prs"
+3. "zz throwaway one"
+4. "zz throwaway two"
+5. "audit the current navigation"
+6. "review prs"
+7. "review the deployment plan"
+8. "draft the launch checklist"
+
+Which one should I complete? Say the number or the name, or 'never mind' to leave them alone.
+
+--- [14:12:15, 2c4daeb2fe, http 200, 3.36 s] route execution/delete_todo
+USER: delete todos 1 and 2
+PIPER: I haven't shown you a numbered list yet. Here are your todos:
+
+1. "urgent task"
+2. "review prs"
+3. "zz throwaway one"
+4. "zz throwaway two"
+5. "audit the current navigation"
+6. "review prs"
+7. "review the deployment plan"
+8. "draft the launch checklist"
+
+I can delete one at a time for now. Which one should I delete? Say the number or the name, or 'never mind' to leave them alone.
+
+--- [14:12:25, 2c4daeb2fe, http 200, 9.83 s] route execution/delete_todo
+USER: clear the second todo
+PIPER: I couldn't confidently match 'second' to exactly one todo — you have: 'urgent task', 'review prs', 'zz throwaway one', 'zz throwaway two', 'audit the current navigation', 'review prs', 'review the deployment plan', 'draft the launch checklist'. Tell me which one you mean, or say 'never mind' and I'll leave it alone.
+
+--- [14:12:35, 2c4daeb2fe, http 200, 0.25 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been changed.
+
+--- [14:12:36, 2c4daeb2fe, http 200, 0.25 s] route execution/delete_todo
+USER: 4
+PIPER: Delete the todo "zz throwaway two"? (yes/no)
+
+--- [14:12:37, 2c4daeb2fe, http 200, 0.27 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete the todo "zz throwaway two". Nothing has been changed.
+
+--- [14:12:37, 2c4daeb2fe, http 200, 0.24 s] route soft_offer_declined/reminder_clear_pick_target
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been changed.
+
+--- [14:12:46, 2c4daeb2fe, http 200, 8.17 s] route execution/complete_todo
+USER: clear todo 2
+PIPER: Before I touch these — when you say 'clear' on a todo, do you want me to mark it done, or delete it? I'll remember for next time.
+
+--- [14:12:55, 2c4daeb2fe, http 200, 0.26 s] route soft_offer_declined/clarify_reminder_clear_verb
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been changed.
+
+--- [14:13:00, 2c4daeb2fe, http 200, 4.17 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×2)
+3. zz throwaway one
+4. zz throwaway two
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
+
+--- [14:13:04, 2c4daeb2fe, http 200, 3.50 s] route execution/complete_todo
+USER: complete todo 12
+PIPER: There's no number 12 in your todos. You have 7:
+1. urgent task
+2. review prs
+3. zz throwaway one
+4. zz throwaway two
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
+
+Which one should I complete? Say the number or the name, or 'never mind' to leave them alone.
+
+--- [14:13:05, 2c4daeb2fe, http 200, 0.25 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been changed.
+
+--- [14:13:08, 2c4daeb2fe, http 200, 1.86 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×2)
+3. zz throwaway one
+4. zz throwaway two
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
+
+--- [14:13:12, 2c4daeb2fe, http 200, 3.23 s] route execution/delete_todo
+USER: delete todo 12
+PIPER: There's no number 12 in your todos. You have 7:
+1. urgent task
+2. review prs
+3. zz throwaway one
+4. zz throwaway two
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
+
+Which one should I delete? Say the number or the name, or 'never mind' to leave them alone.
+
+--- [14:13:13, 2c4daeb2fe, http 200, 0.26 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been deleted.
+
+--- [14:13:15, 2c4daeb2fe, http 200, 1.89 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×2)
+3. zz throwaway one
+4. zz throwaway two
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
+
+--- [14:13:22, 2c4daeb2fe, http 200, 6.11 s] route execution/complete_todo
+USER: clear todo 12
+PIPER: Before I touch these — when you say 'clear' on a todo, do you want me to mark it done, or delete it? I'll remember for next time.
+
+--- [14:13:33, 2c4daeb2fe, http 200, 0.24 s] route soft_offer_declined/clarify_reminder_clear_verb
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been changed.
+
+--- [14:13:36, 2c4daeb2fe, http 200, 1.91 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×2)
+3. zz throwaway one
+4. zz throwaway two
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
