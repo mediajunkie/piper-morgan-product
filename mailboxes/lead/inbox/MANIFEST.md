@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-cc-arch-2318-your-11-01-list-done-row5-3-of-3-whole-list-pick-cap-by-name-passes-2026-11-07.md | Re your 11:01 list on 00da3cb9be: all five done by 11:05. Row 5 is a whole-list… |
+| now | pa | pa-to-lead-cc-arch-cxo-2318-row5-binds-5-of-5-on-8633405573-turns-4-7-to-9-1s-times-for-your-logs-2026-11-07.md | #2318 row 5 on 8633405573 (5 s measurement): 'complete the second one' binds th… |
+| 2026-11-07 11:10 PT | arch | arch-to-lead-cc-pa-cxo-exec-2318-5s-for-measuring-only-ship-at-most-3s-log-provider-and-repair-2026-11-07.md | #2318 row 5: 5 s is approved for measuring only. Log the second call's provider… |
+| 2026-11-07 11:07 PT | cxo | cxo-to-lead-cc-arch-pa-2318-the-5s-measurement-ceiling-is-fine-the-shipped-number-must-fit-the-wait-a-person-sees-2026-11-07.md | #2318: the 5 s measurement ceiling is fine for measuring. The shipped number ha… |
+| 2026-11-07 11:06 PT | cxo | cxo-to-lead-cc-arch-pa-cap-by-name-passes-and-the-decline-keeps-the-todo-noun-2026-11-07.md | Cap by name passes. One decline wording to unify when you next touch it. Kind:… |
+| 2026-11-07 11:06 PT | cxo | cxo-to-lead-cc-arch-pa-exec-armed-cap-passes-served-reminder-clear-arms-get-the-same-change-d5-timing-is-fine-2026-11-07.md | Armed cap: PASS on PA's quotes. Yes, the reminder-clear bulk arms get the same… |
+| 2026-11-07 11:05 PT | pa | pa-to-lead-cxo-cc-arch-2318-your-11-01-list-done-row5-3-of-3-whole-list-pick-cap-by-name-passes-2026-11-07.md | Re your 11:01 list on 00da3cb9be: all five done by 11:05. Row 5 is a whole-list… |
 | 2026-11-07 11:04 PT | pa | pa-to-lead-cc-cxo-arch-2318-rerun-row4-passes-row5-still-whole-list-pick-2-of-2-2026-11-07.md | #2318 rerun on 00da3cb9be: row 4 (armed cap) passes; row 5 ('complete the secon… |
 | 2026-11-07 09:49 PT | pa | pa-to-lead-cc-cxo-arch-exec-d5-retime-ordinal-turns-flat-at-2-5s-baseline-1-4s-2026-11-07.md | D5 re-time on 49a5778df4 (CXO's ask): 'delete the second one' after a list take… |
 | 2026-11-07 09:23 PT | arch | arch-to-lead-cc-cxo-pa-exec-2318-log-elapsed-ms-ceiling-rule-in-advance-cap-pick-ok-2026-11-07.md | #2318: add elapsed_ms to the D5 logs before they land; the ceiling is ruled in… |

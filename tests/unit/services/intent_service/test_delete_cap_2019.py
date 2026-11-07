@@ -75,7 +75,8 @@ CXO_CAPPED_REPLY = (
     '1. "revise the pr"\n'
     '2. "send the budget review to the board"\n'
     "\n"
-    "Tell me which one to delete first. Nothing has been changed."
+    # #2318 (CXO 11-07 11:05): the unarmed floor ends on a true statement, no ask.
+    'Nothing has been changed. Ask me to delete one by name, like "delete reminder call mom".'
 )
 
 # #2318 (CXO 11-07, verbatim): where an answer can be bound, the cap asks an ARMED

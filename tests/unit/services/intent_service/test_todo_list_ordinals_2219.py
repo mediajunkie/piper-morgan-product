@@ -508,7 +508,8 @@ def test_the_capped_reply_without_counts_is_unchanged():
 
     assert capped_delete_reply(["a", "b"], "todo") == (
         'I can delete one todo at a time for now. You asked about these:\n1. "a"\n2. "b"'
-        "\n\nTell me which one to delete first. Nothing has been changed."
+        "\n\nNothing has been changed. "
+        'Ask me to delete one by name, like "delete todo call mom".'
     )
 
 

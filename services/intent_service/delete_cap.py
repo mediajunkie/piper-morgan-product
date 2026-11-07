@@ -16,8 +16,9 @@ keeps its existing named confirm; mark done on a bulk set stays uncapped.
 #2318 (CXO 11-07 09:23; Arch 09:24, mechanism): where the cap can bind an answer,
 it asks an ARMED question instead (``delete_todo_pick.capped_pick_question``, the
 #1987 pick over the capped lines, labelled as the person saw them), so "2" or the
-name reaches the single-line confirm. The 10-14 closing instruction "Tell me which
-one to delete first." stays only where nothing can be armed.
+name reaches the single-line confirm. Where nothing can be armed (no session or
+store), CXO's 11:05 floor: a true statement and no question (the 10-14 closing
+instruction is retired everywhere).
 
 The copy lives HERE, in one place; every capped site calls
 :func:`capped_delete_reply`. Callers (see the issue-2019 session log for the
@@ -62,7 +63,13 @@ def capped_delete_reply(
     ]
     # Blank line before the instruction: the chat page renders Markdown, and a
     # line straight after a list item would render inside it (#2002).
-    return "\n".join(lines) + "\n\nTell me which one to delete first. Nothing has been changed."
+    # #2318 (CXO 11-07 11:05): with nothing armed the reply asks nothing; it ends on a
+    # true statement (the retired 10-14 line was an instruction with no arm behind it).
+    return (
+        "\n".join(lines)
+        + "\n\nNothing has been changed. "
+        + f'Ask me to delete one by name, like "delete {noun} call mom".'
+    )
 
 
 def remember_capped_list(
