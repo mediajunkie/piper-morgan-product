@@ -108,10 +108,32 @@ def test_a_failed_second_call_keeps_the_clarify():
 
 
 def test_a_slow_second_call_times_out_to_the_clarify(monkeypatch):
-    from services.intent_service import todo_handlers
-
-    monkeypatch.setattr(todo_handlers, "SELECTOR_CEILING_S", 0.05)
+    monkeypatch.setattr(lc, "D5_CONSULT_CEILING_S", 0.05)
     assert _consult(_CLARIFY, _SNAP, _route("slow", [])) is _CLARIFY
+
+
+def test_d5_has_its_own_ceiling_within_arch_cap():
+    """Arch 11-07 09:24: D5's own constant, never the selector's, and at most 5 s."""
+    from services.intent_service.todo_handlers import SELECTOR_CEILING_S
+
+    assert 0 < lc.D5_CONSULT_CEILING_S <= 5.0
+    assert SELECTOR_CEILING_S == 2.5  # the selector keeps its own number
+
+
+def test_accepted_consult_logs_repair_data(monkeypatch):
+    """#2318: the consult line says whether the second call needed the repair retry."""
+    rec = _Recorder()
+    monkeypatch.setattr(lc, "logger", rec)
+    second = _op("delete_todo", ["2"])
+    second.llm_calls = 2
+    second.repair_attempted = True
+
+    async def route(message, state, **kw):
+        return second
+
+    _consult(_CLARIFY, _SNAP, route)
+    [(_, _, fields)] = [c for c in rec.calls if c[1] == "inversion_live_d5_consult"]
+    assert fields["llm_calls"] == 2 and fields["repair_attempted"] is True
 
 
 def test_shadow_call_block_has_no_list_fact(monkeypatch):

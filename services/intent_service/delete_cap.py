@@ -13,7 +13,7 @@ deletes nothing, and answers with CXO's capped copy (the issue's copy comment,
 on the same "Nothing has been changed." the N5 decline uses. A single delete
 keeps its existing named confirm; mark done on a bulk set stays uncapped.
 
-#2318 (CXO 11-07 09:2x; Arch 09:24, mechanism): where the cap can bind an answer,
+#2318 (CXO 11-07 09:23; Arch 09:24, mechanism): where the cap can bind an answer,
 it asks an ARMED question instead (``delete_todo_pick.capped_pick_question``, the
 #1987 pick over the capped lines, labelled as the person saw them), so "2" or the
 name reaches the single-line confirm. The 10-14 closing instruction "Tell me which

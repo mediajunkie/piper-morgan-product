@@ -33,6 +33,12 @@ D5_FAMILY = {
 }
 _WORD_POSITIONS = frozenset({"first", "last"})
 
+# Arch 11-07 09:24: D5's own ceiling, not the todo selector's 2.5 s (set 11-06 for a
+# selector, not a router call). #2318: complete's second call timed out at 2.5 s
+# 3 of 3 on alpha while delete's took 1.1 s, so this is a MEASUREMENT setting at
+# Arch's 5 s cap until five served complete times set it (highest, next half second).
+D5_CONSULT_CEILING_S = 5.0
+
 
 def _line_number(token: str, lines: int) -> bool:
     return token.isdigit() and 1 <= int(token) <= lines
@@ -95,7 +101,6 @@ async def consult_on_clarify(
     # The router and its snapshot type come from the caller (inversion_live, the one
     # allowed referrer of the router: TestInversionShadowNoExecutionBoundary).
     from services.intent_service.session_snapshot import serialize_for_prompt
-    from services.intent_service.todo_handlers import SELECTOR_CEILING_S
 
     started = time.monotonic()
     try:
@@ -107,7 +112,7 @@ async def consult_on_clarify(
                 grammar=grammar,
                 user_id=user_id,
             ),
-            timeout=SELECTOR_CEILING_S,
+            timeout=D5_CONSULT_CEILING_S,
         )
     except Exception as e:  # silent-ok: Arch 17:52, a timeout or failure keeps the CLARIFY, logged
         logger.warning(
@@ -127,6 +132,9 @@ async def consult_on_clarify(
         outcome="accepted" if ok else "kept",
         operation=getattr(second, "operation", None),
         target_count=len(targets) if isinstance(targets, list) else 0,
+        # #2318: whether the second call needed the router's repair retry.
+        llm_calls=getattr(second, "llm_calls", None),
+        repair_attempted=getattr(second, "repair_attempted", None),
         # Arch 11-07 09:24: how long the second call took, kept or accepted.
         elapsed_ms=int((time.monotonic() - started) * 1000),
         session_id=session_id,
