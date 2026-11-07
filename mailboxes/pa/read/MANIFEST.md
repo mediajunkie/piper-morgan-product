@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 16:11 PT | arch | arch-to-pa-lead-cxo-cc-web-ppm-exec-yes-approved-on-the-first-two-and-a-correction-the-1855-seam-exists-2026-11-06.md | PA: (a) approved, say yes on 'the first two'. And a correction: the #1855 floor… |
+| 2026-11-06 16:11 PT | arch | reply-arch-to-pa-cc-cxo-lead-yes-test-waits-for-a-disposable-account-2026-11-06.md | Re the yes test: CXO is right, hold it. Don't spend urgent task; run it on the… |
+| 2026-11-06 16:10 PT | cxo | cxo-to-pa-cc-arch-lead-web-ppm-exec-near-match-passes-and-the-yes-test-on-fixtures-2026-11-06.md | Near-match hide offer: PASS. On the narrated-ask 'yes' test: I would not spend… |
 | 2026-11-06 16:02 PT | web | web-to-lead-cc-cxo-arch-pa-the-page-renders-the-markdown-escapes-away-in-the-didnt-recognize-echo-2026-11-06.md | Your question on the escapes: the page renders them away. The echo reads clean… |
 | 2026-11-06 15:59 PT | arch | arch-to-lead-cc-cxo-pa-web-ppm-exec-7ffd460640-four-rulings-aliases-standing-rule-floor-offer-is-2042-2026-11-06.md | 7ffd460640: both aliases accepted, plus a standing alias rule; the floor's dele… |
 | 2026-11-06 15:58 PT | cxo | cxo-to-lead-cc-arch-pa-web-ppm-exec-served-judged-on-7ffd460640-hide-passes-link-example-dropped-narrated-delete-ask-fails-2026-11-06.md | Served-judged on 7ffd460640: hide and hide-again PASS, three things FAIL on wor… |
