@@ -243,3 +243,77 @@ async def test_labelled_complete_conflict_never_mind_declines(shown):
     result = await _turn(service, shown, "never mind")
     assert result.message == "Okay — I haven't touched your todos. Nothing has been changed."
     assert shown["completed"] == []
+
+
+# --- Arch 11-06 21:54 / CXO 21:51: whole titles only; a non-label number tries the name --
+
+
+# After "show my todos": 1 pay rent, 2 call mom, 3 water plants, 4 call 3 vendors.
+# The "call" pick is labelled 2 and 4; "call 3 vendors" carries 3, which is no label.
+@pytest.fixture
+def shown_no_label(monkeypatch):
+    state = _make_store(monkeypatch, ["pay rent", "call mom", "water plants", "call 3 vendors"])
+    t = state["todos"]
+    lines = [[t[0]], [t[1]], [t[2]], [t[3]]]
+    TodoIntentHandlers._remember_numbered_list(
+        state["sid"],
+        _USER,
+        "todos",
+        [line[0].id for line in lines],
+        [line[0].text for line in lines],
+        groups=[[x.id for x in line] for line in lines],
+    )
+    return state
+
+
+@pytest.mark.asyncio
+async def test_a_name_whose_number_is_no_label_binds_its_line_on_delete(shown_no_label):
+    service = _service("delete_todo")
+    pick = await _turn(service, shown_no_label, "delete the call todos")
+    assert pick.message.splitlines()[1:3] == ["2. call mom", "4. call 3 vendors"]
+    confirm = await _turn(service, shown_no_label, "call 3 vendors")
+    assert confirm.message == 'Delete the todo "call 3 vendors"? (yes/no)'
+
+
+@pytest.mark.asyncio
+async def test_a_name_whose_number_is_no_label_completes_its_line(shown_no_label):
+    service = _service("complete_todo")
+    await _turn(service, shown_no_label, "complete call")
+    await _turn(service, shown_no_label, "call 3 vendors")
+    assert shown_no_label["completed"] == [shown_no_label["todos"][3].id]
+
+
+@pytest.mark.asyncio
+async def test_a_bare_number_that_is_no_label_still_re_asks(shown_no_label):
+    service = _service("delete_todo")
+    await _turn(service, shown_no_label, "delete the call todos")
+    result = await _turn(service, shown_no_label, "3")
+    assert result.message.startswith("Still not sure which todo you mean")
+    assert shown_no_label["deleted"] == []
+
+
+# No list shown: the "call" pick is 1. last call, 2. call mom, 3. call the bank.
+@pytest.fixture
+def last_call(monkeypatch):
+    return _make_store(monkeypatch, ["last call", "call mom", "call the bank"])
+
+
+@pytest.mark.asyncio
+async def test_the_last_one_binds_by_position_over_a_last_call_title(last_call):
+    service = _service("delete_todo")
+    await _turn(service, last_call, "delete the call todos")
+    confirm = await _turn(service, last_call, "the last one")
+    assert confirm.message == 'Delete the todo "call the bank"? (yes/no)'
+
+
+@pytest.mark.asyncio
+async def test_the_last_call_in_full_asks_which(last_call):
+    service = _service("delete_todo")
+    await _turn(service, last_call, "delete the call todos")
+    result = await _turn(service, last_call, "the last call")
+    assert result.message == (
+        "That could mean two different todos:\n1. last call\n3. call the bank\n" + _TAIL
+    )
+    assert last_call["deleted"] == []
+    confirm = await _turn(service, last_call, "1")
+    assert confirm.message == 'Delete the todo "last call"? (yes/no)'

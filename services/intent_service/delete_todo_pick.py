@@ -196,17 +196,22 @@ def _label_bind(text: str, labels: List[int]) -> Tuple[str, Optional[int]]:
     return "unread", None
 
 
-def _name_reading_conflict(text: str, texts: List[str], bound_idx: Optional[int]) -> Optional[int]:
-    """#2316 (Arch 11-06 21:31): the candidate the answer's NAME reading binds
-    (the shared binder's ``_name_index``), when it binds one and that one differs
-    from ``bound_idx`` (the position, label or status reading). ``None`` when they
-    agree or the name reading binds nothing (a bare "3" names no title)."""
-    from services.intent_service.reminder_clear import _name_index
+def _whole_title_hit(text: str, texts: List[str]) -> Optional[int]:
+    """#2316 (Arch 11-06 21:54; CXO 21:51): the one candidate whose WHOLE title is
+    in the answer — the shared binder's exact-containment form (``_name_index``'s
+    first test), never its word-coverage fallback. ``None`` for none or several."""
+    lower = (text or "").lower()
+    hits = [i for i, t in enumerate(texts) if (t or "").strip() and (t or "").lower() in lower]
+    return hits[0] if len(hits) == 1 else None
 
-    status, idx = _name_index(text, texts)
-    if status == "bound" and idx is not None and idx != bound_idx:
-        return idx
-    return None
+
+def _name_reading_conflict(text: str, texts: List[str], bound_idx: Optional[int]) -> Optional[int]:
+    """#2316 (Arch 11-06 21:31, narrowed 21:54): the candidate whose whole title is
+    in the answer, when that one differs from ``bound_idx`` (the position, label or
+    status reading). ``None`` when they agree or no single whole title is in the
+    answer (a bare "3"; "the last one" over a pick holding "last call")."""
+    idx = _whole_title_hit(text, texts)
+    return idx if idx is not None and idx != bound_idx else None
 
 
 def _reading_conflict_question(
@@ -791,7 +796,11 @@ async def handle_delete_todo_pick_turn(
     if label_status == "bound":
         status, idx = "bound", label_idx
     elif label_status == "not_a_label":
-        status, idx = "none", None  # a number not on this pick re-asks (below)
+        # #2316 (Arch 11-06 21:54; CXO 21:51): a number that is no label re-asks
+        # (CXO 18:47), unless one candidate's whole title is in the answer ("call 3
+        # vendors" on line 4 of labels 2 and 4): that line binds by name.
+        title_idx = _whole_title_hit(text, texts)
+        status, idx = ("bound", title_idx) if title_idx is not None else ("none", None)
     else:
         status, idx = _resolve_pick_target(text, texts, due_iso)
     # #2316 (Arch 11-06 21:31; CXO 21:32): an answer whose NAME reading binds a
