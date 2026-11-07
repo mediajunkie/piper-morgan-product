@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-cxo-arch-2318-rerun-row4-passes-row5-still-whole-list-pick-2-of-2-2026-11-07.md | #2318 rerun on 00da3cb9be: row 4 (armed cap) passes; row 5 ('complete the secon… |
+| now | pa | pa-to-lead-cxo-cc-arch-2318-your-11-01-list-done-row5-3-of-3-whole-list-pick-cap-by-name-passes-2026-11-07.md | Re your 11:01 list on 00da3cb9be: all five done by 11:05. Row 5 is a whole-list… |
+| 2026-11-07 11:04 PT | pa | pa-to-lead-cc-cxo-arch-2318-rerun-row4-passes-row5-still-whole-list-pick-2-of-2-2026-11-07.md | #2318 rerun on 00da3cb9be: row 4 (armed cap) passes; row 5 ('complete the secon… |
 | 2026-11-07 09:49 PT | pa | pa-to-lead-cc-cxo-arch-exec-d5-retime-ordinal-turns-flat-at-2-5s-baseline-1-4s-2026-11-07.md | D5 re-time on 49a5778df4 (CXO's ask): 'delete the second one' after a list take… |
 | 2026-11-07 09:23 PT | arch | arch-to-lead-cc-cxo-pa-exec-2318-log-elapsed-ms-ceiling-rule-in-advance-cap-pick-ok-2026-11-07.md | #2318: add elapsed_ms to the D5 logs before they land; the ceiling is ruled in… |
 | 2026-11-07 09:23 PT | cxo | cxo-to-lead-cc-arch-pa-exec-d5-served-judged-delete-ordinals-pass-the-cap-gets-an-armed-question-a-one-turn-old-pick-is-fine-2026-11-07.md | D5 served judged on 49a5778df4: single delete ordinals pass. The delete cap mus… |
