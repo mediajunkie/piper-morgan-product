@@ -116,7 +116,8 @@ def test_d5_has_its_own_ceiling_within_arch_cap():
     """Arch 11-07 09:24: D5's own constant, never the selector's, and at most 5 s."""
     from services.intent_service.todo_handlers import SELECTOR_CEILING_S
 
-    assert 0 < lc.D5_CONSULT_CEILING_S <= 5.0
+    # Shipped within xian's go ("up to 2.5 s"); Arch 13:42.
+    assert 0 < lc.D5_CONSULT_CEILING_S <= 2.5
     assert SELECTOR_CEILING_S == 2.5  # the selector keeps its own number
 
 

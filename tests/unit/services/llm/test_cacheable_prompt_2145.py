@@ -74,6 +74,10 @@ async def test_the_anthropic_leg_sends_the_blocks():
 
     client = MagicMock()
     client.messages.create = create
+    # #2320: the leg calls through with_raw_response (the SDK retry count).
+    client.messages.with_raw_response.create = lambda **kw: SimpleNamespace(
+        parse=lambda: create(**kw), retries_taken=0, status_code=200
+    )
     llm = LLMClient.__new__(LLMClient)
     config = {
         "model": SimpleNamespace(value="claude-haiku-4-5"),

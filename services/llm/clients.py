@@ -6,6 +6,7 @@ Uses LLMConfigService for secure key management and validation.
 """
 
 import asyncio
+import time
 from collections import Counter
 from typing import Any, Dict, Optional, cast
 
@@ -355,6 +356,9 @@ class LLMClient:
         caller can attribute it correctly under concurrent traffic.
         """
         task_config = MODEL_CONFIGS.get(task_type, MODEL_CONFIGS["reasoning"])
+        # #2320 (Arch 11-07 13:42): per-phase timing for the measurement window.
+        _phase_started = time.monotonic()
+        self._last_phases = None
 
         # Resolve primary provider for the ACTING PRINCIPAL (#1415). The old
         # code read the GLOBAL default_llm_provider keychain slot right here —
@@ -415,8 +419,19 @@ class LLMClient:
         primary_exc: Exception
         primary_refused: bool
         try:
+            _select_ms = int((time.monotonic() - _phase_started) * 1000)
             result = await self._call_provider(
                 primary_provider, prompt, config, response_format, context, system
+            )
+            # #2320: where a call's time goes (selection, client, executor queue, round
+            # trip, SDK retries). Warning so alpha keeps it; diagnostics for the window.
+            logger.warning(
+                "llm_provider_phases",
+                provider=primary_provider.value,
+                task_type=str(task_type),
+                select_ms=_select_ms,
+                total_ms=int((time.monotonic() - _phase_started) * 1000),
+                **(getattr(self, "_last_phases", None) or {}),
             )
             # #1676: record the SERVING provider+model (success only).
             # resolve_model_alias(...) is the exact id the provider call sends.
@@ -612,7 +627,9 @@ class LLMClient:
         from services.llm.cacheable_prompt import anthropic_user_content
         from services.llm.request_key import anthropic_client_for_request
 
+        _client_started = time.monotonic()
         client = anthropic_client_for_request()
+        _client_ms = int((time.monotonic() - _client_started) * 1000)
 
         # Build request parameters
         # Issue #1126: temperature is conditional — some Anthropic extended-thinking
@@ -638,7 +655,23 @@ class LLMClient:
         # runs on the dedicated provider executor (services/llm/provider_bounds.py);
         # the client is still built on the loop above, where the request's key
         # contextvar is read.
-        response = await run_provider_call(client.messages.create, **request_params)
+        # #2320 (Arch 13:42): the raw response says how many SDK retries the call took
+        # (max_retries=1 hides one). Either way the provider method goes to the
+        # executor BY REFERENCE (#2101's condition 3).
+        raw_api = getattr(client.messages, "with_raw_response", None)
+        _call_started = time.monotonic()
+        raw_response = None
+        if raw_api is not None:
+            raw_response = await run_provider_call(raw_api.create, **request_params)
+            response = raw_response.parse()
+        else:
+            response = await run_provider_call(client.messages.create, **request_params)
+        self._last_phases = {
+            "client_ms": _client_ms,
+            "call_ms": int((time.monotonic() - _call_started) * 1000),
+            "retries_taken": getattr(raw_response, "retries_taken", None),
+            "http_status": getattr(raw_response, "status_code", None),
+        }
 
         # Extract actual token counts from response
         prompt_tokens = (
