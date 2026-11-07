@@ -66,6 +66,13 @@ class TestProfileFor:
         """Output parsed into structured Intent; not echoed verbatim."""
         assert profile_for("intent_classification") == Profile.INTERNAL
 
+    @pytest.mark.parametrize(
+        "task_type", ["inversion_routing", "todo_selection", "milestone_resolution"]
+    )
+    def test_machine_read_json_is_structured(self, task_type):
+        """#2320 (Arch 11-07 15:08): validated JSON parsed by code; Tier 1 only."""
+        assert profile_for(task_type) == Profile.STRUCTURED
+
     def test_general_falls_to_user_visible(self):
         """`general` mapped to mixed → user_visible (fail-closed)."""
         assert profile_for("general") == Profile.USER_VISIBLE
@@ -282,6 +289,28 @@ class TestOutputFilter:
         assert result.filtered_content == "The roadmap looks healthy this week."
         assert result.is_violation is False
         assert result.decision.action_taken == Action.PASSTHROUGH
+
+    @pytest.mark.asyncio
+    async def test_structured_output_skips_tier_2(self):
+        """#2320: the router's JSON never reaches the BoundaryEnforcer (no ~2 s LLM
+        call, no canned substitute that would break the parse)."""
+        enforcer = _MockBoundaryEnforcer(will_flag=True, violation_type="harassment")
+        of = OutputFilter(boundary_enforcer=enforcer)
+        content = '{"operation": "complete_todo", "args": {"targets": ["2"]}}'
+        result = await of.filter(content=content, task_type="inversion_routing")
+        assert enforcer.calls == 0
+        assert result.is_violation is False
+        assert result.filtered_content == content
+
+    @pytest.mark.asyncio
+    async def test_structured_output_keeps_tier_1(self):
+        """#2320 (Arch: option 1 rejected): PII and secrets are still redacted in
+        args a template may echo."""
+        of = OutputFilter()
+        content = '{"operation": "add_project", "args": {"name": "mail me at a@b.com"}}'
+        result = await of.filter(content=content, task_type="inversion_routing")
+        assert "a@b.com" not in result.filtered_content
+        assert result.decision.redactions_count >= 1
 
     @pytest.mark.asyncio
     async def test_boundary_violation_drops_to_canned(self):

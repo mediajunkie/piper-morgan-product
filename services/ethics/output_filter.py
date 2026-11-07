@@ -84,6 +84,7 @@ class Profile:
     """Filter profile selected by `task_type`."""
 
     USER_VISIBLE = "user_visible"  # Tier 1 + Tier 2
+    STRUCTURED = "structured"  # Tier 1 only (#2320, Arch 11-07 15:08)
     INTERNAL = "internal"  # log-only, no transform
     MIXED = "mixed"  # defaults to user_visible
 
@@ -103,6 +104,18 @@ class Profile:
 #   body via content_generator)
 # - intent_classification stays internal (parsed into structured Intent
 #   object; not echoed verbatim to users)
+#
+# Amendment (Arch 2026-11-07 15:08, #2320): a STRUCTURED profile, Tier 1 (PII +
+# secret rules) and no Tier 2, for task types whose output is grammar- or
+# schema-validated JSON that code parses into a decision or ids, never shown
+# verbatim: inversion_routing, todo_selection, milestone_resolution. Tier 2's only
+# action (CANNED_SUBSTITUTE) turns machine-read JSON into a parse failure, and its
+# semantic check is a ~2 s LLM call that landed on ~4 in 10 chat turns. Coverage
+# holds elsewhere: the person's message is boundary-checked on input, every
+# LLM-composed reply passes its own USER_VISIBLE filter, and every router arg that
+# becomes stored or external content passes the #1976 honesty guard (the person's
+# own words; Lead's audit for this amendment). Unknown task types still fail
+# closed to USER_VISIBLE.
 
 _PROFILE_REGISTRY: Dict[str, str] = {
     # User-visible: outputs flow to users via chat surfaces, GitHub, etc.
@@ -118,6 +131,10 @@ _PROFILE_REGISTRY: Dict[str, str] = {
     "work_item_extraction": Profile.USER_VISIBLE,
     # Internal: parsed into structured types; not surfaced verbatim.
     "intent_classification": Profile.INTERNAL,
+    # Structured (#2320): validated JSON parsed by code; Tier 1 only.
+    "inversion_routing": Profile.STRUCTURED,
+    "todo_selection": Profile.STRUCTURED,
+    "milestone_resolution": Profile.STRUCTURED,
     # Mixed: depends on caller; default to user_visible (fail-closed).
     "general": Profile.MIXED,
 }
@@ -316,8 +333,9 @@ class OutputFilter:
             else:
                 decision.severity = Severity.MEDIUM
 
-        # Tier 2 — BoundaryEnforcer category check.
-        if self._boundary_enforcer is not None:
+        # Tier 2 — BoundaryEnforcer category check. Not for STRUCTURED output
+        # (#2320): code parses it; a canned substitute would only break the parse.
+        if self._boundary_enforcer is not None and profile != Profile.STRUCTURED:
             boundary_match = await apply_boundary_rules(
                 filtered_content, self._boundary_enforcer, user_id=user_id
             )
