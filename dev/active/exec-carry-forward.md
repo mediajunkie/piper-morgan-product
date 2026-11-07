@@ -26,7 +26,7 @@ v865, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
   - Ruling: longer term, the split (#2291, Ongoing, mail records first, xian reviews before cutover).
 - **Posts:**
   - Thu "Don't Overpromise": published, with Medium.
-  - Sat 11-07 "What Reaching Private Beta Means": building, xian writes it.
+  - Sat 11-07 "At Long Last, Beta" (working title, CSV): building, status planned, xian writes it.
   - Sun 11-08 "Fixed and Scores Higher Came Apart": insight.
   - Tue and Thu next week: beats 2 and 3.
   - xian wants an editorial-strategy session with Comms (a beta era for the blog, the narrative cadence).
@@ -55,7 +55,7 @@ v865, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 
 - **PPM: one-page options on 2-week sprints for Production** (whether, when, how, rec; tasked 10:09 at xian's flag). It goes on the rollup as one card when it lands. Lead feeds capacity, PA the plugin-lane timing.
 - **Two-week sprints RULED 10:33** (from Fri 11-13). Objection window closes Mon 11-09 12:00 PT (no objection so far: HOST, CXO, Comms): take any new objection to xian; if none, say so on the rollup and drop it. PPM names the first set by the 11-13 review. Ship #070 is the first progress Ship, #071 the first final score.
-- **ADR-083 screen:** ran 17:24, FAIL (ordinals 6/6, but 38 unrelated rows moved); stays PROPOSED, ~$3.45 of the $10. Any narrower variant is re-priced to me first.
+- **ADR-083:** screen 17:24 FAIL (~$3.45 of $10). D5 (second router call on CLARIFY with a list in scope) screen ceiling $5 set 17:51 (Lead est. ~$1.50). Result to the rollup.
 
 ## Reminders owed to xian
 - **Vercel: downgrade from Pro once the headroom exists again** (xian 11-05 16:45; standing item #182). The trigger: the split is live and admin-only usage is well inside Hobby. Raise then that Hobby is non-commercial, so the downgrade may not be allowed.
