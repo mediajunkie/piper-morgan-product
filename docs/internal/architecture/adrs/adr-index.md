@@ -3,17 +3,17 @@ type: adr
 title: "Architectural Decision Records (ADR) Index — DERIVED VIEW"
 status: "Index"
 valid_from: "2025-08-29"
-last_updated: "2026-11-06"
+last_updated: "2026-11-07"
 ---
 
 # Architectural Decision Records (ADR) Index — DERIVED VIEW
 
 > 🤖 **GENERATED FILE — DO NOT EDIT.** Regenerate with `python3 scripts/derive-adr-index.py`; verify with `--check`. The individual ADR files' own Status lines are the single source of truth; this index is a build artifact (Architectural Review 2026 workstream B4, closes #1455). Per the B3 rule: counts here TRIAGE, they never DISPOSE — check the live document before treating any status as the whole story.
 
-**Total ADR files**: 82 · **Numbering gaps (never filed)**: 067, 068 · **Counts by status**: Accepted: 55 · Proposed: 12 · Dormant (Proposed, unratified): 2 · Superseded: 9 · Other: 4
+**Total ADR files**: 82 · **Numbering gaps (never filed)**: 067, 068 · **Counts by status**: Accepted: 56 · Proposed: 11 · Dormant (Proposed, unratified): 2 · Superseded: 9 · Other: 4
 
 
-## Accepted (55)
+## Accepted (56)
 
 - [ADR-001: MCP Integration Pilot](adr-001-mcp-integration.md) — Accepted · July 3, 2025
 - [ADR-002: Claude Code Integration](adr-002-claude-code-integration.md) — Accepted · July 6, 2025
@@ -70,8 +70,9 @@ last_updated: "2026-11-06"
 - [ADR-080 — LLM decides meaning; code decides permission, checks meaning against real data, and shows before it acts](adr-080-llm-decides-meaning-code-decides-permission.md) — **ACCEPTED (2026-10-06)**. Arch-authored; **PM confirmed the division** on 2026-10-06 (via Exec): *"I agree with the division Arch laid
 - [ADR-081: GitHub identity — whose token serves a request, which app mints it, and who else may act](adr-081-github-identity-one-app-whose-token-serves-a-request.md) — **ACCEPTED, 2026-10-24** (Arch-authored, on xian's go-ahead in the Production-map rulings, 2026-10-24 17:28: "one ADR on GitHub identity"). D3 is accepted on the condition that its compatibility check passes; if it fails, D3's fallback governs. Finding F5 in `docs/internal/planning/production-map-review-round2-2026-10-23.md`.
 - [ADR-082: The offered-connector set is the one gate](adr-082-the-offered-connector-set-is-the-one-gate.md) — **ACCEPTED, 2026-11-06** (Arch-authored). This ADR records rulings already made and landed (decisions.log, 2026-10-30 to 2026-11-05) as one decision, so the next change to the offer set has a single place to read. It changes no code.
+- [ADR-083: The router may see the kind of numbered list Piper just showed](adr-083-the-router-may-see-the-last-numbered-list-kind.md) — **ACCEPTED, 2026-11-07, as D5 only.** xian said go by 08:03 (relayed by Exec, decisions.log 11-07 08:04): his explicit word on this ADR-078 amendment, not a lapsed window. D1–D3 (the slot on every router call) FAILED their screen and are not accepted. D5 is the decision; D1a (the wording) and D3a (the expiry) are accepted as the parts D5 uses. Lead lands `claude/lead-adr083` through the normal gate. PA checks it served.
 
-## Proposed (12)
+## Proposed (11)
 
 - [ADR-000: Piper Morgan as Meta-Platform Vision](adr-000-meta-platform.md) — Proposed · August 17, 2025
 - [ADR-003: LLM-Based Intent Classification](adr-003-intent-classifier-enhancement.md) — Proposed · July 8, 2025
@@ -84,7 +85,6 @@ last_updated: "2026-11-06"
 - [ADR-065: Canonical Context-Package Format (BYOC / Plugin-Packaged)](adr-065-canonical-context-package-format.md) — v0.1 (filed 2026-06-06) — Architect-authored; companion to PDR-005 v1.0 §Open question 6; in-house material per Klatch-pause Evolution-section convention (HOST 2026-05-24). Three-fire bursty-lane drafted (Fire 1 skeleton + plugin-packaging framing; Fire 2 §Decision D1-D6 substantive content; Fire 3 polish + §Consequences refinement + v0.1 final). · 2026-06-06
 - [ADR-066: Packaging-Layer Abstraction (BYOC Plugin Per-Host Deployment)](adr-066-packaging-layer-abstraction.md) — v0.2 (amended 2026-06-14) — Architect-authored; companion to PDR-005 v1.0 §Open question 7; gated by ADR-065 v0.1 ✅. · 2026-06-06
 - [ADR-078 — Session-Activity Ledger + Pre-Classifier Reference Resolution (the #1394 cross-turn continuity architecture)](adr-078-session-activity-ledger-and-pre-classifier-reference-resolution.md) — **ACCEPTED (v0.2, 2026-07-14)** — Arch-accepted on the integrity authority PM delegated (2026-07-12, "maintain the architectural integrity") + greenlit authorship. Both ACCEPT gates cleared: (1) **Lead's ledger-feasibility read — DONE** (2026-07-14; it *corrected* D1 from association-over-existing to a dedicated additive `session_activity` ledger — see OQ-1); (2) **pre-classifier direction (D2/D4) — Lead CONCURS + HOST trust-lens PASS** (2026-07-13). **PM retains veto** — flagged to PM on acceptance (this is the architecture call PM asked me to hold; surfaced, not silently flipped). Lead is cleared to build B4 against the D1 `session_activity` contract. *(v0.1 PROPOSED 2026-07-12; HOST D1a folded 2026-07-13; D1 corrected + accepted 2026-07-14. **B4 built + Arch-ratified 2026-07-15** — SessionActivityDB + owner-scoped reader + central observer + recall, suite-green; B3 pre-classifier resolution pending, needs new ADR-077 D5 rows.)*
-- [ADR-083: The router may see the kind of numbered list Piper just showed](adr-083-the-router-may-see-the-last-numbered-list-kind.md) — **PROPOSED, 2026-11-06** (Arch-authored, on Lead's option 3 in the #2219 ordinal probe, 10:11). It amends ADR-078 D4 by one named exception, so it carries ADR-078's terms: xian keeps a veto (raised to Exec). Acceptance has two gates:
 
 ## Dormant (Proposed, unratified) (2)
 

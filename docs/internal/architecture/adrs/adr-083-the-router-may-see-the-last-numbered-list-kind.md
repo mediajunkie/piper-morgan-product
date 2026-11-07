@@ -2,14 +2,16 @@
 type: adr
 number: 83
 title: "The router may see one code-recorded fact: the kind of numbered list Piper just showed. Never history"
-status: "PROPOSED"
+status: "ACCEPTED"
 valid_from: "2026-11-06"
-last_updated: "2026-11-06"
+last_updated: "2026-11-07"
 ---
 
 # ADR-083: The router may see the kind of numbered list Piper just showed
 
-**Status**: **PROPOSED, 2026-11-06** (Arch-authored, on Lead's option 3 in the #2219 ordinal probe, 10:11). It amends ADR-078 D4 by one named exception, so it carries ADR-078's terms: xian keeps a veto (raised to Exec). Acceptance has two gates:
+**Status**: **ACCEPTED, 2026-11-07, as D5 only.** xian said go by 08:03 (relayed by Exec, decisions.log 11-07 08:04): his explicit word on this ADR-078 amendment, not a lapsed window. D1–D3 (the slot on every router call) FAILED their screen and are not accepted. D5 is the decision; D1a (the wording) and D3a (the expiry) are accepted as the parts D5 uses. Lead lands `claude/lead-adr083` through the normal gate. PA checks it served.
+
+History: **PROPOSED, 2026-11-06** (Arch-authored, on Lead's option 3 in the #2219 ordinal probe, 10:11). It amends ADR-078 D4 by one named exception, so it carries ADR-078's terms: xian keeps a veto (raised to Exec). Acceptance has two gates:
 1. a Rule 7 screen against a bar preregistered before the run (§Acceptance);
 2. Lead's build read (where the fact enters the router call, and its cost).
 
@@ -69,7 +71,7 @@ Lead proposes the exact expiry in the build read. The rule is that a topic switc
 
 **D4. Writers.** Only code that renders a numbered list to the person may record it. Today that is the todo family. A new kind (issues, PRs) records the same field when its list is numbered, with no router change.
 
-**D5 (proposed 17:29, after the screen). Consult only on CLARIFY, and accept only the list's own family.** The main router call stays byte-identical to today, with no slot. Only when (i) that call returns CLARIFY and (ii) a numbered list is in scope under D3a does code make one second router call with the D1a slot, on the same message. Code uses the second answer only if it names that list's family op (`complete_todo` or `delete_todo` for a todo list) with a positional target in its args; anything else keeps the first call's CLARIFY. Meaning stays with the LLM (both calls). Code decides only when to consult (on the router's own output plus recorded state) and what it may accept (op and arg shape), the #1886(b) armed-consult pattern. No row the main call answers can move, by construction. The cost is one extra router call on CLARIFY-after-a-list turns; Lead's build read sets the latency against the selector ceiling. A position is a 1-based line number, a range of them, "first" or "last", each within the recorded list's line count. "all" is not a position (decisions.log 11-06 17:52). A timeout at SELECTOR_CEILING_S keeps the CLARIFY. Re-scoring the 11-06 data under this rule changes one row, 'finish the second one', toward its expected op, and none violates a clause. 'Can we just mark done here?' came back with targets ["all"], so it stays CLARIFY. That re-score is exploratory: it reuses samples already seen, so it can choose the design but not license it. Acceptance needs a fresh preregistered screen.
+**D5 (proposed 11-06 17:29, after the screen; ACCEPTED 11-07). Consult only on CLARIFY, and accept only the list's own family.** The main router call stays byte-identical to today, with no slot. Only when (i) that call returns CLARIFY and (ii) a numbered list is in scope under D3a does code make one second router call with the D1a slot, on the same message. Code uses the second answer only if it names that list's family op (`complete_todo` or `delete_todo` for a todo list) with a positional target in its args; anything else keeps the first call's CLARIFY. Meaning stays with the LLM (both calls). Code decides only when to consult (on the router's own output plus recorded state) and what it may accept (op and arg shape), the #1886(b) armed-consult pattern. No row the main call answers can move, by construction. The cost is one extra router call on CLARIFY-after-a-list turns; Lead's build read sets the latency against the selector ceiling. A position is a 1-based line number, a range of them, "first" or "last", each within the recorded list's line count. "all" is not a position (decisions.log 11-06 17:52). A timeout at SELECTOR_CEILING_S keeps the CLARIFY. Re-scoring the 11-06 data under this rule changes one row, 'finish the second one', toward its expected op, and none violates a clause. 'Can we just mark done here?' came back with targets ["all"], so it stays CLARIFY. That re-score is exploratory: it reuses samples already seen, so it can choose the design but not license it. Acceptance needs a fresh preregistered screen.
 
 **D5 screen, 11-06 (Lead 18:22, `dev/2026/11/06/controls/adr-083-d5-result-2026-11-06.md`, prereg `cfff1ac8c1`): PASS (ruled 18:24).** The sentinels reach the family op with a position 6/6 each, and the topic switch keeps its label. Clauses 1 and 2: 0 rows. One corpus row of 624 moves: 'finish the second one', CLARIFY 6/6 → `complete_todo ["2"]` 6/6. Read literally, clause 3 trips on it. It is ruled not a violation because this paragraph's re-score named exactly that move as accepted before the preregistration and the run, the row asserts no destination (expected REVIEW, sourced from complete_todo's args family), and every other row holds clause 3. Correction: the text above at 17:52 said the row moved "toward its expected op"; its expectation is REVIEW, not complete_todo. Future preregistrations state how REVIEW rows are read under clause 3. D5 waits on xian's veto window (ADR-078's terms, through Exec) before main.
 
