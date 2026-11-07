@@ -114,8 +114,28 @@ class Profile:
 # holds elsewhere: the person's message is boundary-checked on input, every
 # LLM-composed reply passes its own USER_VISIBLE filter, and every router arg that
 # becomes stored or external content passes the #1976 honesty guard (the person's
-# own words; Lead's audit for this amendment). Unknown task types still fail
-# closed to USER_VISIBLE.
+# own words). Unknown task types still fail closed to USER_VISIBLE.
+#
+# What STRUCTURED promises (Arch's conditions ii and iv, HOST 11-07 15:27): the
+# output is validated JSON that code parses; nothing in it is shown verbatim. The
+# router args that do reach stored or external content, and why each is safe:
+#   - todo ``text`` / ``items`` / ``titles`` -> a todo's title: user_said_every_word
+#     (todo_handlers._router_todo_text / _router_todo_items).
+#   - add_project ``name`` / ``description`` -> the project row:
+#     user_said_every_word (portfolio_service.router_add_project_args).
+#   - add_project ``repo`` -> the linked repo: must appear verbatim in the message,
+#     owner/name form, no spaces (same function).
+#   - document ``title`` -> a search query only, never stored: user_said_every_word
+#     (intent_service._router_document_title).
+#   - issue-list ``milestone`` / ``label`` / ``repo`` -> read filters only:
+#     user_said_every_word; ``state`` is open|closed; ``count`` a bounded int
+#     (intent_service._router_list_issue_args).
+#   - ``targets`` / ``exclude`` -> resolved against existing rows; the stored text
+#     is the row's, never the arg's.
+#   - ``rationale`` -> logged only (shadow / preclaim telemetry).
+# todo_selection and milestone_resolution return ids or names chosen from a list
+# code supplied. A NEW task type joins STRUCTURED only by editing this list, the
+# registry and its pin (tests/ethics/test_output_filter.py, the STRUCTURED set).
 
 _PROFILE_REGISTRY: Dict[str, str] = {
     # User-visible: outputs flow to users via chat surfaces, GitHub, etc.

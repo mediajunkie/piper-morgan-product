@@ -73,6 +73,15 @@ class TestProfileFor:
         """#2320 (Arch 11-07 15:08): validated JSON parsed by code; Tier 1 only."""
         assert profile_for(task_type) == Profile.STRUCTURED
 
+    def test_the_structured_set_is_exactly_the_three(self):
+        """#2320 condition (iv) (Arch 15:28, HOST 15:27): the profile is chosen by the
+        task_type string and nothing else checks it, so the STRUCTURED set is pinned.
+        Adding a name means editing this test AND the registry comment's arg list."""
+        from services.ethics.output_filter import _PROFILE_REGISTRY
+
+        structured = {t for t, p in _PROFILE_REGISTRY.items() if p == Profile.STRUCTURED}
+        assert structured == {"inversion_routing", "todo_selection", "milestone_resolution"}
+
     def test_general_falls_to_user_visible(self):
         """`general` mapped to mixed → user_visible (fail-closed)."""
         assert profile_for("general") == Profile.USER_VISIBLE
