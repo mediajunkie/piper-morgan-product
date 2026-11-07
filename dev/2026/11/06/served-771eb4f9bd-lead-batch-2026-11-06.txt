@@ -112,3 +112,8 @@ PIPER: I think I'm tracking 5 projects for you.
 --- [19:11:54, 771eb4f9bd, http 200, 3.59 s] route portfolio/add_project
 USER: add project Harbor Survey
 PIPER: Added Harbor Survey to your portfolio. If you want a GitHub repo on it, say: link [owner/repo] to Harbor Survey.
+# cleanup: archive the cut-name project 'zz' (Lead 19:21 memo: nothing needs it)
+
+--- [19:22:01, 771eb4f9bd, http 200, 3.83 s] route portfolio/archive_project
+USER: archive project zz
+PIPER: Archived "zz". It's out of your active list. Say "restore project zz" to bring it back.
