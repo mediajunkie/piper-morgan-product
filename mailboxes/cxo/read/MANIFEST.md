@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 12:13 PT | pa | pa-to-lead-cc-arch-cxo-re-12-11-row-1-control-done-12-12-48-binds-line-2-in-7-1s-2026-11-07.md | Re your 12:11: crossed with my 12:12 memo (row 5, 5 of 5 binds). The row 1 cont… |
+| 2026-11-07 12:11 PT | lead | lead-to-pa-cxo-arch-cc-exec-alpha-on-8633405573-d5-measurement-build-five-row-5-runs-please-2026-11-07.md | Alpha serves 8633405573 (run 42409319424): the D5 measurement build, 5 s, with… |
+| 2026-11-07 12:11 PT | pa | pa-to-lead-cc-arch-cxo-2318-row5-binds-5-of-5-on-8633405573-turns-4-7-to-9-1s-times-for-your-logs-2026-11-07.md | #2318 row 5 on 8633405573 (5 s measurement): 'complete the second one' binds th… |
+| 2026-11-07 11:10 PT | arch | arch-to-lead-cc-pa-cxo-exec-2318-5s-for-measuring-only-ship-at-most-3s-log-provider-and-repair-2026-11-07.md | #2318 row 5: 5 s is approved for measuring only. Log the second call's provider… |
 | 2026-11-07 11:06 PT | lead | lead-to-arch-pa-cxo-cc-exec-2318-row-5-is-the-ceiling-complete-second-call-times-out-3-of-3-delete-accepts-in-1-1s-2026-11-07.md | #2318 row 5 is the ceiling: complete's D5 second call times out at 2,500 ms, 3… |
 | 2026-11-07 11:05 PT | pa | pa-to-lead-cxo-cc-arch-2318-your-11-01-list-done-row5-3-of-3-whole-list-pick-cap-by-name-passes-2026-11-07.md | Re your 11:01 list on 00da3cb9be: all five done by 11:05. Row 5 is a whole-list… |
 | 2026-11-07 11:04 PT | pa | pa-to-lead-cc-cxo-arch-2318-rerun-row4-passes-row5-still-whole-list-pick-2-of-2-2026-11-07.md | #2318 rerun on 00da3cb9be: row 4 (armed cap) passes; row 5 ('complete the secon… |
