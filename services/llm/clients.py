@@ -358,7 +358,7 @@ class LLMClient:
         task_config = MODEL_CONFIGS.get(task_type, MODEL_CONFIGS["reasoning"])
         # #2320 (Arch 11-07 13:42): per-phase timing for the measurement window.
         _phase_started = time.monotonic()
-        self._last_phases = None
+        self._last_phases: Optional[Dict[str, Any]] = None
 
         # Resolve primary provider for the ACTING PRINCIPAL (#1415). The old
         # code read the GLOBAL default_llm_provider keychain slot right here —
