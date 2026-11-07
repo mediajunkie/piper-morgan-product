@@ -177,8 +177,8 @@ _DIRECT_LINES = {
     + 'Say it as a direct request, like "set my default repo to owner/name".',
     "set_timezone": _SAY_IT
     + 'Say it as a direct request, like "set my timezone to America/Los_Angeles".',
-    # link_repo: CXO 11-06 15:58 dropped the example (a sibling failed served); plain line.
-    "link_repo": NOT_SURE_STATEMENT,
+    # link_repo: CXO dropped its example (served-judged 7ffd460640); it names the thing
+    # when its parse resolves (#2308, test_link_repo_held_ask_2308.py), else the plain line.
     # comment_issue: CXO's example dropped (no routed row of that shape); the plain line.
     "comment_issue": NOT_SURE_STATEMENT,
 }
@@ -201,8 +201,9 @@ def _expected_statement(action):
         ("update_document", 'update the document "Q3 Plan" with the new date', {}),
         # handler finds the comment text with an LLM call
         ("comment_issue", 'comment "looks good" on issue #5 in acme/web', {}),
+        # #2308: link_repo with neither an owner/name nor a project named
+        ("link_repo", "link it up", {}),
         # handlers parse their targets inline (no reusable resolver, no new regex)
-        ("link_repo", "link repo acme/web to project Mobile Redesign", {}),
         ("set_default_repo", "set my default repo to acme/web", {}),
         ("set_timezone", "set my timezone to Europe/Helsinki", {}),
         # no time said: CXO's row falls to the statement
