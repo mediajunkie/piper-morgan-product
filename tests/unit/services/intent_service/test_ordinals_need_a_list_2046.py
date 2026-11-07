@@ -366,6 +366,79 @@ class TestOtherEntryPaths:
         todo_service.delete_todo.assert_not_awaited()
         todo_service.complete_todo.assert_not_awaited()
 
+    async def _bound_clear(self, intent_service, store, monkeypatch, stored, message):
+        from unittest.mock import AsyncMock
+
+        from services.intent_service.delete_todo_pick import handle_delete_todo_pick_turn
+
+        monkeypatch.setattr(
+            "services.intent_service.verified_inference.get_verified_inference",
+            AsyncMock(return_value={"value": stored} if stored else None),
+        )
+        intent = _intent(message, ["1-2"], action="clear_todos")
+        await ct.run_clear_todos(intent, _SESSION, _USER, intent_service)
+        offer = store.get_and_clear_pending_offer(_SESSION)
+        return await handle_delete_todo_pick_turn(
+            offer, "2", session_id=_SESSION, user_id=_USER, intent_service=intent_service
+        )
+
+    async def test_stored_delete_binds_to_clears_own_delete_confirm(
+        self, intent_service, store, todo_service, monkeypatch
+    ):
+        """#2318 (PA 14:12): the clear pick is met with a stored default; 'delete'
+        gives the line's delete confirm in clear's variant-3 words, nothing deleted."""
+        from services.intent_service.reminder_clear import VALUE_DELETE
+
+        out = await self._bound_clear(
+            intent_service, store, monkeypatch, VALUE_DELETE, "clear the first two reminders"
+        )
+        assert out["message"] == (
+            "You've set 'clear' to mean delete — delete the reminder \"call mom\"? (yes/no)"
+        )
+        assert store.slot["question"] == out["message"]
+        todo_service.delete_todo.assert_not_awaited()
+        todo_service.complete_todo.assert_not_awaited()
+
+    async def test_stored_done_completes_the_line_with_the_disclosure(
+        self, intent_service, store, todo_service, monkeypatch
+    ):
+        """A stored 'clear' = done completes the bound line (reversible) and says so
+        with clear's disclosure clause, as run_clear_todos does."""
+        from types import SimpleNamespace
+
+        from services.intent_service.reminder_clear import VALUE_COMPLETE
+
+        todo_service.complete_todo.return_value = SimpleNamespace(
+            id="x", text="call mom", priority="medium", completed=True
+        )
+        out = await self._bound_clear(
+            intent_service, store, monkeypatch, VALUE_COMPLETE, "clear the first two reminders"
+        )
+        assert "call mom" in out["message"]
+        assert "That's what 'clear' has meant for you." in out["message"]
+        todo_service.complete_todo.assert_awaited_once()
+        todo_service.delete_todo.assert_not_awaited()
+
+    async def test_a_failed_completion_gets_no_disclosure(
+        self, intent_service, store, todo_service, monkeypatch
+    ):
+        """The disclosure says what 'clear' did; when nothing completed it says nothing."""
+        from services.intent_service.reminder_clear import VALUE_COMPLETE
+
+        out = await self._bound_clear(
+            intent_service, store, monkeypatch, VALUE_COMPLETE, "clear the first two reminders"
+        )
+        assert out["message"] == "I couldn't complete that todo. It might have been deleted."
+
+    async def test_the_clear_lead_follows_the_persons_noun(
+        self, intent_service, store, todo_service, monkeypatch
+    ):
+        """CXO 11-07 14:12 (#2219's rule): 'todo' unless the person said reminder."""
+        out = await self._bound_clear(
+            intent_service, store, monkeypatch, None, "clear the first two todos"
+        )
+        assert out["message"].startswith('You want to clear the todo "')
+
     async def test_complete_shows_the_list_never_no_number(
         self, intent_service, store, todo_service, session_ctx, rows
     ):
