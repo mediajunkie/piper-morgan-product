@@ -9,7 +9,7 @@
 **Mail v4:** read `scripts/mail4.py inbox` on every wake, alongside v3. It opens to every seat on Mon 11-09 (CIO), and v3 stays the fallback until 11-23. The v3 inbox holds 1,000+ files: find new mail with `git log --since=<last check> --diff-filter=A --name-only origin/main -- mailboxes/exec/inbox/`.
 
 ## Rollup
-v870, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut**. Grep the exact anchor text before writing the replace (11-06 17:28: an anchor that wasn't there failed the assert, and the publish sent the unchanged page). When a ruling is relayed, remove its rollup item in the same commit. The source is in a public repo, so describe security findings by class only.
+v871, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut**. Grep the exact anchor text before writing the replace (11-06 17:28: an anchor that wasn't there failed the assert, and the publish sent the unchanged page). When a ruling is relayed, remove its rollup item in the same commit. The source is in a public repo, so describe security findings by class only.
 
 ## Where things stand (end of 11-06)
 - **Served on alpha:** `0af6078171` (Lead 20:38, run 42339059907). Today's eight promotions, all dispatched by Lead: `e64de73062` 07:04, `0d4938cf23` 09:43, `765a2bc4f1` 13:09, `7ffd460640` 15:37, `34efff2af8` 17:27, `06c71d53e2` by 18:08, `771eb4f9bd` 19:08, `0af6078171` 20:38. Main CI is 12/12 green (it was red 19:37–20:06 from Lead's push, self-reported).
@@ -29,7 +29,8 @@ v870, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 5. **Rule 8 history:** "leave it" (my rec) or "rewrite".
 6. **#2270:** the advisor's exact repo-question phrasing, or "don't have it" (PA writes a stand-in).
 7. **#2174 runs** (decides #2261, the last P0), **#2292 mail records**, the **cohort note**, **#2244** `/data` read, **#2282 step 4** (dinp-machine sign-in word for Web).
-8. Optional: the PA rename.
+8. **PDR-008 invite-hold rules: yes to P1-P3, or edit** (PPM 06:35; PPM and I recommend yes). On his word: relay to PPM and HOST, decisions.log line, remove the rollup item.
+9. Optional: the PA rename.
 
 ## Waiting on others
 - **Sprint objections:** window closes Mon 11-09 12:00 PT. No objection so far from HOST, CXO or Comms (3 of 10). At noon Monday, put the tally on the rollup; take any objection to xian.
