@@ -195,3 +195,37 @@ def test_a_widened_offer_is_never_armed():
 def test_something_already_armed_passes_through():
     text = 'Deleting "urgent task" — want me to go ahead?'
     assert enforce_armed_offers(text, armed_offer="workflow_offer") == (text, 0)
+
+
+# Arch 11-06 17:52: a period inside a closing quote ends the sentence, so the offer
+# after it is sentence-initial (PA's served reply on 34efff2af8, quoted exactly).
+_NARRATED_COMPLETE = 'Completing todo #1 — "review prs." Want me to go ahead?'
+
+
+def test_a_period_inside_a_closing_quote_ends_the_sentence():
+    [offer] = detect_offer_questions(_NARRATED_COMPLETE)
+    assert offer.sentence == "Want me to go ahead?"
+    assert offer.widened is False
+
+
+def test_the_narrated_complete_ask_is_rewritten():
+    out, rewrites = enforce_armed_offers(_NARRATED_COMPLETE)
+    assert rewrites == 1
+    assert (
+        out
+        == 'Completing todo #1 — "review prs." If you\'d like me to go ahead, just tell me directly.'
+    )
+    assert "?" not in out
+
+
+@pytest.mark.parametrize("closer", ['"', "”", "'", "’"])
+def test_each_closing_quote_ends_a_sentence(closer):
+    text = f"I saw {closer}x.{closer} Want me to add it?".replace(
+        f"{closer}x.{closer}", f"{closer}x.{closer}"
+    )
+    [offer] = detect_offer_questions(text)
+    assert offer.sentence == "Want me to add it?"
+
+
+def test_a_quote_mid_word_does_not_split():
+    assert detect_offer_questions('It\'s "fine." ok want me to add it?') == []

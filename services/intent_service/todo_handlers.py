@@ -2310,7 +2310,14 @@ class TodoIntentHandlers:
             logger.error("Next todo retrieval failed", error=str(e), user_id=user_id, exc_info=True)
             return "I had trouble finding your next todo right now. You can try 'show my todos' to see your full list, or ask again in a moment."
 
-    async def handle_complete_todo(self, intent: Intent, session_id: str, user_id: UUID) -> str:
+    async def handle_complete_todo(
+        self,
+        intent: Intent,
+        session_id: str,
+        user_id: UUID,
+        offer_service: Any = None,
+        principal: Optional[str] = None,
+    ) -> str:
         """Handle: "mark todo 1 as complete" or "complete the PR review todo"
 
         Issue #904: Supports both number-based and fuzzy text-based matching.
@@ -2349,9 +2356,38 @@ class TodoIntentHandlers:
                     "Add one with 'add todo: [task]' first."
                 )
 
+            # #2219 Gap A (Arch 11-06 17:52; PA's served run on 34efff2af8): after a
+            # grouped "show my todos", numbers and match lists read the lines shown.
+            from services.intent_service.destructive_confirm import _shown_line_numbering
+
+            shown_lines = _shown_line_numbering(session_id, principal or user_id, todos)
+
             # Path 1: Try number-based matching first
             todo_number = self._extract_todo_id(primary_message)
-            if todo_number is not None:
+            if todo_number is not None and shown_lines:
+                try:
+                    line_idx = int(todo_number) - 1
+                except ValueError:
+                    line_idx = -1
+                line = shown_lines[line_idx] if 0 <= line_idx < len(shown_lines) else []
+                if not line:
+                    return _reply(
+                        f"I couldn't find todo #{todo_number} on the list I showed you. "
+                        "Say 'show my todos' to see it again."
+                    )
+                if len(line) > 1:
+                    question, _armed = self._ask_group_line(
+                        "complete",
+                        line,
+                        conversation_noun(original_message, "todos"),
+                        original_message,
+                        session_id,
+                        offer_service,
+                        principal,
+                    )
+                    return question
+                todo = line[0]
+            elif todo_number is not None:
                 try:
                     idx = int(todo_number) - 1
                     if idx < 0 or idx >= len(todos):
@@ -2396,12 +2432,47 @@ class TodoIntentHandlers:
                 if todo is None:
                     matches = resolve_named_todo_target(completion_text, todos)
                     if len(matches) > 1:
-                        position_by_id = {t.id: i + 1 for i, t in enumerate(todos)}
-                        candidates = ", ".join(
-                            f'{position_by_id[t.id]}. "{t.text}"' for t in matches
-                        )
+                        # Arch 11-06 17:52: one rule for naming a todo across ops, the
+                        # delete gate's #2169 word subset (every named word in the title).
+                        named_words = _meaningful_words(completion_text)
+                        matches = [t for t in matches if named_words <= _meaningful_words(t.text)]
+                    shown_candidates = None
+                    if len(matches) > 1 and shown_lines:
+                        line_of = {
+                            str(t.id): n for n, line in enumerate(shown_lines, 1) for t in line
+                        }
+                        hit = sorted({line_of[str(t.id)] for t in matches if str(t.id) in line_of})
+                        if hit and all(str(t.id) in line_of for t in matches):
+                            if len(hit) == 1:
+                                question, _armed = self._ask_group_line(
+                                    "complete",
+                                    shown_lines[hit[0] - 1],
+                                    conversation_noun(original_message, "todos"),
+                                    original_message,
+                                    session_id,
+                                    offer_service,
+                                    principal,
+                                )
+                                return question
+                            from services.intent_service.delete_todo_pick import _line_display
+
+                            # #2219 Gap A: each matching line once, by the number shown.
+                            shown_candidates = (
+                                len(hit),
+                                ", ".join(
+                                    f'{n}. "{_line_display(shown_lines[n - 1])}"' for n in hit
+                                ),
+                            )
+                    if len(matches) > 1:
+                        if shown_candidates is None:
+                            position_by_id = {t.id: i + 1 for i, t in enumerate(todos)}
+                            shown_candidates = (
+                                len(matches),
+                                ", ".join(f'{position_by_id[t.id]}. "{t.text}"' for t in matches),
+                            )
+                        count, candidates = shown_candidates
                         return _reply(
-                            f"I found {len(matches)} todos matching "
+                            f"I found {count} todos matching "
                             f"'{completion_text}': {candidates}. Which one "
                             "should I complete? Try 'complete todo [number]'."
                         )

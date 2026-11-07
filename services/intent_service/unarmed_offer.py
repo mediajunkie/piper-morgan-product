@@ -119,6 +119,9 @@ class OfferSentence(NamedTuple):
     lead: str = ""  # #2311: the text before the dash, for the widened form only
 
 
+_CLOSING_QUOTES = "\"”'’"
+
+
 def _split_sentences(text: str) -> List[Tuple[int, int]]:
     """Literal sentence spans: end at ``.``/``!``/``?``/newline.
 
@@ -135,6 +138,17 @@ def _split_sentences(text: str) -> List[Tuple[int, int]]:
     last = len(text) - 1
     for i, ch in enumerate(text):
         if ch == "\n" or (ch in ".!?" and (i == last or text[i + 1].isspace())):
+            spans.append((start, i + 1))
+            start = i + 1
+            continue
+        # #2311 follow-up (Arch 11-06 17:52): a period inside a closing quote ends the
+        # sentence too ('… "review prs." Want me to go ahead?' on 34efff2af8).
+        if (
+            ch in _CLOSING_QUOTES
+            and i > 0
+            and text[i - 1] in ".!?"
+            and (i == last or text[i + 1].isspace())
+        ):
             spans.append((start, i + 1))
             start = i + 1
     if start < len(text):
