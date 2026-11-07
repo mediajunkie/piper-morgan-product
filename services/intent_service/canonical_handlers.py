@@ -5657,6 +5657,16 @@ What would you like to set up first?"""
             project_repo = ProjectRepository(session)
 
             existing = await project_repo.find_by_name(name=name, owner_id=user_id)
+            # #2314 (PA, served on 06c71d53e2): a duplicate is the SAME name (CXO's #2297
+            # rule), exact or #1857-normalized ("the One Job project" = "One Job"). The
+            # lookup's prefix/substring tier is for finding a project the person meant,
+            # not for refusing to create one: "zz link test" is not "zz share-hide project".
+            from services.database.repositories import normalize_project_name
+
+            if existing is not None and normalize_project_name(
+                str(existing.name)
+            ) != normalize_project_name(name):
+                existing = None
             if existing is not None:
                 return {
                     "message": (
