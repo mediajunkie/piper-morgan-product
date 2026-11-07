@@ -69,9 +69,14 @@ SERVED_REPLY = (
     '1. "buy milk"\n'
     '2. "call mom"\n'
     "\n"
-    "I can delete one at a time for now. Tell me which one."
+    # #2318 (CXO 11-07): the cap sentence, then the ARMED question.
+    "I can delete one at a time for now. Which one should I delete? Say the number or the "
+    "name, or 'never mind' to leave them alone."
 )
-SINGLE_REPLY = f'{OPENING}\n\n1. "buy milk"\n2. "call mom"\n\nTell me which one.'
+SINGLE_REPLY = (
+    f'{OPENING}\n\n1. "buy milk"\n2. "call mom"\n\n'
+    "Which one should I delete? Say the number or the name, or 'never mind' to leave them alone."
+)
 MILK_CONFIRM = 'Delete the reminder "buy milk"? (yes/no)'
 # #2219 (CXO 2026-11-05 19:25): "todo" when the person named neither noun.
 MILK_CONFIRM_TODO = 'Delete the todo "buy milk"? (yes/no)'
@@ -198,7 +203,8 @@ class TestCopy:
         reply = no_list_reply(
             ["buy milk", "call mom"],
             "reminder",
-            "I can delete one at a time for now. " "Tell me which one.",
+            "I can delete one at a time for now. Which one should I delete? Say the number or "
+            "the name, or 'never mind' to leave them alone.",
         )
         assert reply == SERVED_REPLY
         # A real list: each item on its own line, a blank line on each side
@@ -242,9 +248,10 @@ class TestTargetsPathNoListShown:
     ):
         result = await _delete(intent_service, "delete the first two reminders", ["1-2"])
         assert result.message == SERVED_REPLY
-        assert result.requires_clarification is False
+        # #2318 (CXO 11-07): the question is armed — the pick over the shown rows.
+        assert result.requires_clarification is True
         assert not result.intent_data.get("destructive_confirmation_pending")
-        assert store.slot is None
+        assert store.slot["pending_action"]["kind"] == "delete_todo_pick_question"
         todo_service.delete_todo.assert_not_awaited()
         # Showing the list BINDS it — exactly the rows shown, in shown order.
         assert session_ctx.last_numbered_list.ids == [rows[1].id, rows[2].id]
@@ -266,10 +273,26 @@ class TestTargetsPathNoListShown:
             todo_id=UUID(rows[1].id), user_id=UUID(_USER)
         )
 
-    async def test_one_ordinal_ends_on_tell_me_which_one(self, intent_service, store, todo_service):
+    async def test_one_ordinal_ends_on_the_armed_question(
+        self, intent_service, store, todo_service
+    ):
         result = await _delete(intent_service, "delete the first reminder", ["1"])
         assert result.message == SINGLE_REPLY
-        assert store.slot is None
+        assert store.slot["pending_action"]["kind"] == "delete_todo_pick_question"
+        todo_service.delete_todo.assert_not_awaited()
+
+    async def test_a_bare_number_after_it_reaches_the_confirm(
+        self, intent_service, store, todo_service
+    ):
+        """#2318: the reason it is armed — a bare "2" binds the shown row 2."""
+        from services.intent_service.delete_todo_pick import handle_delete_todo_pick_turn
+
+        await _delete(intent_service, "delete the first reminder", ["1"])
+        offer = store.get_and_clear_pending_offer(_SESSION)
+        out = await handle_delete_todo_pick_turn(
+            offer, "2", session_id=_SESSION, user_id=_USER, intent_service=intent_service
+        )
+        assert out["message"] == 'Delete the reminder "call mom"? (yes/no)'
         todo_service.delete_todo.assert_not_awaited()
 
     async def test_the_user_said_to_do(self, intent_service, rows):
@@ -278,7 +301,10 @@ class TestTargetsPathNoListShown:
             "I haven't shown you a numbered list yet. Here are your todos:\n\n"
             '1. "water the plants"\n2. "buy milk"\n3. "call mom"\n\n'
         )
-        assert result.message.endswith("I can delete one at a time for now. Tell me which one.")
+        assert result.message.endswith(
+            "I can delete one at a time for now. Which one should I delete? Say the number or "
+            "the name, or 'never mind' to leave them alone."
+        )
 
     async def test_a_shown_list_still_gets_todays_out_of_range_line(
         self, intent_service, todo_service
@@ -321,10 +347,11 @@ class TestOtherEntryPaths:
             store,
             _USER,
         )
-        assert armed is False
+        assert armed is True  # #2318 (CXO 11-07)
         assert msg == (
             f'{OPENING}\n\n1. "buy milk"\n2. "call mom"\n\n'
-            "Tell me which one, and I'll mark it done."
+            "Which one should I complete? Say the number or the name, or 'never mind' to "
+            "leave them alone."
         )
         todo_service.complete_todo.assert_not_awaited()
         assert session_ctx.last_numbered_list.ids == [rows[1].id, rows[2].id]

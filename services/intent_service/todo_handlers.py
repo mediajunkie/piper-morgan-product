@@ -28,7 +28,7 @@ import asyncio
 import re
 import string
 from types import SimpleNamespace
-from typing import Any, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from uuid import UUID
 
 import structlog
@@ -50,7 +50,7 @@ from services.intent_service.reminder_copy import (
     conversation_noun,
     copy_noun,
     delete_confirm_question,
-    delete_no_list_tail,
+    delete_no_list_lead,
     noun_plural,
     noun_word,
 )
@@ -1013,18 +1013,19 @@ class TodoIntentHandlers:
         if unresolved and numbered is None and any(_is_positional(t) for t in unresolved):
             # Issue 2046: positions with no numbered list shown — never "no
             # number 1"; show the list and bind it. Nothing changes.
-            return (
-                self._no_list_ordinal_reply(
-                    name_pool,
-                    conversation_noun(
-                        intent.original_message or ctx.get("original_message"),
-                        numbered.kind if numbered is not None else None,
-                    ),
-                    "Tell me which one, and I'll mark it done.",
-                    session_id,
-                    principal or user_id,
+            # #2318 (CXO 11-07): armed — a bare number now binds.
+            return self._no_list_ordinal_pick(
+                name_pool,
+                conversation_noun(
+                    intent.original_message or ctx.get("original_message"),
+                    numbered.kind if numbered is not None else None,
                 ),
-                False,
+                "complete",
+                "",
+                intent.original_message or ctx.get("original_message") or "",
+                session_id,
+                principal or user_id,
+                offer_service,
             )
         if unresolved:
             # CXO string 4: nothing changes; name the list actually searched;
@@ -1056,8 +1057,6 @@ class TodoIntentHandlers:
                 lines.append(
                     "Nothing has been changed. Say it again with the right name or number."
                 )
-            else:
-                lines.append("Tell me which one, and I'll mark it done.")
             # CXO 2026-10-06 (flaw 2): "the numbered list last shown" is the rows ON
             # SCREEN — record only the capped slice, so ordinal 11 can never ground
             # against a row the user never saw.
@@ -1069,7 +1068,21 @@ class TodoIntentHandlers:
                 [t.id for t in shown],
                 [t.text for t in shown],
             )
-            return "\n".join(lines), False
+            if picked:
+                return "\n".join(lines), False
+            # #2318 (CXO 11-07): nothing was changed, so ask which one, armed over the
+            # rows shown (blank line first: #2002).
+            return self._armed_shown_rows_reply(
+                "complete",
+                lines,
+                shown,
+                listing_kind,
+                intent,
+                ctx,
+                session_id,
+                principal or user_id,
+                offer_service,
+            )
 
         ex_ids = {t.id for t in excluded}
         picked = [t for t in picked if t.id not in ex_ids]
@@ -1412,15 +1425,17 @@ class TodoIntentHandlers:
             # get the list, numbered and bound, never "There's no number 1";
             # the 2019 cap sentence when more than one was asked. Nothing
             # changes, nothing is armed.
-            return (
-                self._no_list_ordinal_reply(
-                    name_pool,
-                    noun,
-                    delete_no_list_tail(_requested_count(targets)),
-                    session_id,
-                    principal or user_id,
-                ),
-                False,
+            # #2318 (CXO 11-07): armed — the cap sentence when two or more were
+            # asked, then the armed question over the shown rows.
+            return self._no_list_ordinal_pick(
+                name_pool,
+                noun,
+                "delete",
+                delete_no_list_lead(_requested_count(targets)),
+                intent.original_message or ctx.get("original_message") or "",
+                session_id,
+                principal or user_id,
+                offer_service,
             )
         if unresolved:
             # Same unresolved reply as complete_todo's; nothing changes.
@@ -1448,10 +1463,6 @@ class TodoIntentHandlers:
                 lines.append(
                     "Nothing has been changed. Say it again with the right name or number."
                 )
-            else:
-                # "delete" in place of "mark done" (CXO) — no separate verb
-                # clause here, the verb is already "delete".
-                lines.append("Tell me which one, and I'll delete it.")
             shown = listing_pool[:10]
             self._remember_numbered_list(
                 session_id,
@@ -1460,7 +1471,20 @@ class TodoIntentHandlers:
                 [t.id for t in shown],
                 [t.text for t in shown],
             )
-            return "\n".join(lines), False
+            if picked:
+                return "\n".join(lines), False
+            # #2318 (CXO 11-07): ask which one, armed over the rows shown.
+            return self._armed_shown_rows_reply(
+                "delete",
+                lines,
+                shown,
+                listing_kind,
+                intent,
+                ctx,
+                session_id,
+                principal or user_id,
+                offer_service,
+            )
 
         ex_ids = {t.id for t in excluded}
         picked = [t for t in picked if t.id not in ex_ids]
@@ -1646,6 +1670,36 @@ class TodoIntentHandlers:
             )
         return question, True
 
+    def _armed_shown_rows_reply(
+        self,
+        verb: str,
+        lines: List[str],
+        shown: List[Todo],
+        listing_kind: str,
+        intent: Intent,
+        ctx: Dict[str, Any],
+        session_id: Optional[str],
+        principal: Any,
+        offer_service: Any,
+    ) -> Tuple[str, bool]:
+        """#2318 (CXO 11-07): the unresolved reply's head and numbered rows, then
+        CXO's armed question for ``verb`` with the pick armed over ``shown``; with
+        nothing armable, CXO's by-name statement and no question."""
+        from services.intent_service.delete_todo_pick import (
+            arm_shown_rows_pick,
+            by_name_statement,
+            shown_rows_question,
+        )
+
+        message = intent.original_message or ctx.get("original_message") or ""
+        noun = conversation_noun(message, listing_kind)
+        reply = "\n".join(lines) + "\n\n" + shown_rows_question(verb)
+        if arm_shown_rows_pick(
+            verb, reply, message, session_id, principal, noun, shown, offer_service
+        ):
+            return reply, True
+        return "\n".join(lines) + "\n\n" + by_name_statement(verb, noun), False
+
     def _no_list_ordinal_reply(
         self,
         name_pool: List[Todo],
@@ -1677,6 +1731,47 @@ class TodoIntentHandlers:
             [t.text for t in shown],
         )
         return no_list_reply([t.text for t in rows], noun, tail)
+
+    def _no_list_ordinal_pick(
+        self,
+        name_pool: List[Todo],
+        noun: str,
+        verb: str,
+        lead: str,
+        message: str,
+        session_id: Optional[str],
+        principal: Any,
+        offer_service: Any,
+    ) -> Tuple[str, bool]:
+        """#2318 (CXO 11-07): the #2046 no-list reply, armed. The opening and the
+        numbered list as :meth:`_no_list_ordinal_reply` shows them, then ``lead``
+        (the 2019 cap sentence, or nothing) and CXO's armed question for ``verb``;
+        the pick is armed over exactly the shown rows. Nothing armable: CXO's
+        by-name statement, no question. Returns ``(reply, armed)``."""
+        from services.intent_service.delete_todo_pick import (
+            _candidates,
+            arm_shown_rows_pick,
+            by_name_statement,
+            shown_rows_question,
+        )
+        from services.intent_service.reminder_copy import NO_LIST_MAX_SHOWN
+
+        rows = (_candidates(name_pool, "reminder") if noun == "reminder" else []) or list(name_pool)
+        shown = rows[:NO_LIST_MAX_SHOWN]
+        prefix = f"{lead} " if lead else ""
+        reply = self._no_list_ordinal_reply(
+            name_pool, noun, prefix + shown_rows_question(verb), session_id, principal
+        )
+        if arm_shown_rows_pick(
+            verb, reply, message, session_id, principal, noun, shown, offer_service
+        ):
+            return reply, True
+        return (
+            self._no_list_ordinal_reply(
+                name_pool, noun, prefix + by_name_statement(verb, noun), session_id, principal
+            ),
+            False,
+        )
 
     @staticmethod
     def _remember_numbered_list(

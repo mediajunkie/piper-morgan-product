@@ -133,11 +133,9 @@ def no_list_reply(texts: Sequence[str], noun: str, tail: str) -> str:
     return opening + "\n\n" + "\n".join(items) + "\n\n" + tail
 
 
-def delete_no_list_tail(requested: int) -> str:
-    """The delete tail: the issue-2019 cap sentence when more than one item
-    was asked for, then the instruction."""
+def delete_no_list_lead(requested: int) -> str:
+    """#2318: the issue-2019 cap sentence when more than one item was asked for, else
+    nothing. Leads CXO's armed question in the delete path's no-list reply."""
     from services.intent_service.delete_cap import exceeds_delete_cap
 
-    if exceeds_delete_cap(requested):
-        return f"{DELETE_ONE_AT_A_TIME} {TELL_ME_WHICH_ONE}"
-    return TELL_ME_WHICH_ONE
+    return DELETE_ONE_AT_A_TIME if exceeds_delete_cap(requested) else ""

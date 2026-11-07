@@ -237,19 +237,23 @@ class TestHandleCompleteTodoTargets:
     ):
         """CXO's scope rule: no numbered list shown → the ordinal is NOT
         guessed; the reply numbers the active list (grounding the next turn).
-        Issue 2046: CXO's opening, never "There's no number 1-3"."""
+        Issue 2046: CXO's opening, never "There's no number 1-3". #2318 (CXO
+        11-07): it asks which one, armed over the rows shown."""
         intent = _intent("Mark the first three complete and leave the fourth one pending.", ["1-3"])
         msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
-        assert armed is False
+        assert armed is True
         assert msg == (
             "I haven't shown you a numbered list yet. Here are your todos:\n\n"
             + "\n".join(f'{i + 1}. "{t.text}"' for i, t in enumerate(four))
-            + "\n\nTell me which one, and I'll mark it done."
+            + "\n\nWhich one should I complete? Say the number or the name, or 'never mind' "
+            "to leave them alone."
         )
         assert "no number" not in msg
-        assert "?" not in msg
         handlers.todo_service.complete_todo.assert_not_awaited()
-        offers.set_pending_offer.assert_not_called()
+        _sid, offer = offers.set_pending_offer.call_args.args[:2]
+        assert offer["pending_action"]["kind"] == "delete_todo_pick_question"
+        assert offer["pending_action"]["verb"] == "complete"
+        assert offer["pending_action"]["pick_ids"] == [str(t.id) for t in four]
         # the list just shown is now the numbered list
         assert session_ctx.last_numbered_list.ids == [t.id for t in four]
 
@@ -353,12 +357,16 @@ class TestHandleCompleteTodoTargets:
     ):
         intent = _intent("mark 'water the plants' done", ["name:water the plants"])
         msg, armed = await handlers.handle_complete_todo_targets(intent, "s1", uuid4(), offers, "u")
-        assert armed is False
+        assert armed is True  # #2318: the question is armed over the rows shown
         assert (
             msg.splitlines()[0]
             == 'I couldn\'t find "water the plants" in your due reminders. You have:'
         )
-        assert msg.splitlines()[-1] == "Tell me which one, and I'll mark it done."
+        assert msg.splitlines()[-1] == (
+            "Which one should I complete? Say the number or the name, or 'never mind' "
+            "to leave them alone."
+        )
+        assert msg.splitlines()[-2] == ""  # its own paragraph (#2002)
         handlers.todo_service.complete_todo.assert_not_awaited()
 
     @pytest.mark.asyncio

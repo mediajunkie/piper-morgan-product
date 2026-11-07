@@ -218,13 +218,16 @@ class TestThenTheTargetsHookOwnsTheTurn:
         )
         assert out is not None
         msg, armed = out
-        assert armed is False
+        assert armed is True  # #2318 (CXO 11-07): the question is armed
         # Issue 2046 (CXO): the list, numbered and bound, never "no number 1-2";
         # the 2019 cap sentence because two were asked.
         assert msg.startswith(
             "I haven't shown you a numbered list yet. Here are your reminders:\n\n"
         ), msg
         assert '\n1. "revise the pr"\n' in msg
-        assert msg.endswith("\n\nI can delete one at a time for now. Tell me which one.")
+        assert msg.endswith(
+            "\n\nI can delete one at a time for now. Which one should I delete? Say the "
+            "number or the name, or 'never mind' to leave them alone."
+        )
         assert "no number" not in msg
         handlers.todo_service.delete_todo.assert_not_awaited()

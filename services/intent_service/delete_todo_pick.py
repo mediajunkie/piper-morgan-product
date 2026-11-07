@@ -572,6 +572,65 @@ CAPPED_PICK_QUESTION_TAIL = (
 )
 
 
+# #2318 (CXO 11-07 12:3x): the armed tail of a reply that shows rows numbered and
+# asks which one (the #2046 no-list reply and the unresolved reply), by verb.
+SHOWN_ROWS_QUESTION_TAIL = (
+    "Which one should I {verb}? Say the number or the name, or 'never mind' to leave " "them alone."
+)
+
+
+def shown_rows_question(verb: str) -> str:
+    """CXO's armed tail for ``verb`` ("complete" or "delete")."""
+    return SHOWN_ROWS_QUESTION_TAIL.format(verb=verb)
+
+
+def by_name_statement(verb: str, noun: str) -> str:
+    """CXO's floor when nothing can be armed: a true statement, no question."""
+    from services.intent_service.reminder_copy import noun_word
+
+    return f'Ask me by name, like "{verb} {noun_word(noun)} call mom".'
+
+
+def arm_shown_rows_pick(
+    verb: str,
+    reply: str,
+    message: str,
+    session_id: Optional[str],
+    principal: Optional[str],
+    noun: str,
+    rows: List[Any],
+    offer_service: Any,
+) -> bool:
+    """#2318 (CXO 11-07; Arch 12:15, mechanism): arm the #1987 pick over exactly the
+    rows a reply just showed numbered 1..k, so a bare number, an ordinal or a name
+    binds on the next turn (``handle_delete_todo_pick_turn``) to the single-line
+    confirm (delete) or the completion (complete). ``reply`` is stored as the pick's
+    question. False when nothing could pop an answer (no session or store): the
+    caller ends on :func:`by_name_statement` instead, asking nothing."""
+    from services.intent_service.reminder_clear import _due_iso
+
+    if not session_id or offer_service is None or not rows:
+        return False
+    offer_service.set_pending_offer(
+        session_id,
+        _pick_offer(
+            principal,
+            noun,
+            [str(t.id) for t in rows],
+            [t.text for t in rows],
+            [_due_iso(t, noun) for t in rows],
+            message,
+            reply,
+            copies=[1] * len(rows),
+            verb=verb,
+            line_ids=[[str(t.id)] for t in rows],
+        ),
+        user_id=principal,
+    )
+    logger.info("shown_rows_pick_armed", session_id=session_id, verb=verb, count=len(rows))
+    return True
+
+
 def capped_pick_question(
     texts: Sequence[str],
     noun: str = "todo",

@@ -252,7 +252,7 @@ class TestHandleDeleteTodoTargets:
         )
         intent = _intent('delete the reminder "web check alpha one"', ["name:web check alpha one"])
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
-        assert armed is False
+        assert armed is True  # #2318: the unresolved reply's question is armed
         assert msg.startswith('I couldn\'t find "web check alpha one" in your due reminders.')
         handlers.todo_service.delete_todo.assert_not_awaited()
 
@@ -377,18 +377,22 @@ class TestHandleDeleteTodoTargets:
         self, handlers, offers, session_ctx, four
     ):
         """Issue 2046 (CXO line 1): one ordinal, no list shown → the opening,
-        the numbered list, "Tell me which one." (no cap sentence: one asked)."""
+        the numbered list, then (#2318, CXO 11-07) the armed question (no cap
+        sentence: one asked)."""
         intent = _intent("delete the first one", ["1"])
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
-        assert armed is False
+        assert armed is True
         assert msg == (
             "I haven't shown you a numbered list yet. Here are your todos:\n\n"
             + "\n".join(f'{i + 1}. "{t.text}"' for i, t in enumerate(four))
-            + "\n\nTell me which one."
+            + "\n\nWhich one should I delete? Say the number or the name, or 'never mind' "
+            "to leave them alone."
         )
         assert "mark it done" not in msg
         handlers.todo_service.delete_todo.assert_not_awaited()
-        offers.set_pending_offer.assert_not_called()
+        _sid, offer = offers.set_pending_offer.call_args.args[:2]
+        assert offer["pending_action"]["verb"] == "delete"
+        assert offer["pending_action"]["pick_ids"] == [str(t.id) for t in four]
         assert session_ctx.last_numbered_list.ids == [t.id for t in four]
 
     @pytest.mark.asyncio
@@ -414,12 +418,15 @@ class TestHandleDeleteTodoTargets:
     ):
         intent = _intent("delete 'water the plants'", ["name:water the plants"])
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
-        assert armed is False
+        assert armed is True  # #2318: armed over the rows shown
         assert (
             msg.splitlines()[0]
             == 'I couldn\'t find "water the plants" in your due reminders. You have:'
         )
-        assert msg.splitlines()[-1] == "Tell me which one, and I'll delete it."
+        assert msg.splitlines()[-1] == (
+            "Which one should I delete? Say the number or the name, or 'never mind' "
+            "to leave them alone."
+        )
         handlers.todo_service.delete_todo.assert_not_awaited()
 
     @pytest.mark.asyncio
