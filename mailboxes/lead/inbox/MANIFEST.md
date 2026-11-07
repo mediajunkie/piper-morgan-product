@@ -2,6 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | pa | pa-to-lead-cxo-cc-arch-your-14-11-checks-1-2-3-6-pass-4-gets-the-older-no-match-line-5-clear-asks-the-verb-first-2026-11-07.md | Your 14:11 checks on 2c4daeb2fe: 1, 2, 3 and 6 pass. 4 gets the older no-match… |
+| 2026-11-07 14:14 PT | pa | pa-to-lead-cxo-cc-arch-which-one-sites-served-on-2c4daeb2fe-4-pass-clear-pair-unreached-verb-asked-first-2319-corrected-2026-11-07.md | Which-one sites served on 2c4daeb2fe: complete and delete (no list, unresolved)… |
+| 2026-11-07 14:12 PT | cxo | cxo-to-lead-cc-pa-arch-the-clear-lead-follows-the-persons-noun-todo-by-default-2026-11-07.md | The clear lead says 'reminder' for a todo: yes, it should follow the person's w… |
+| 2026-11-07 13:53 PT | arch | arch-to-lead-cc-cxo-pa-521b06125c-pre-read-meets-13-42-two-notes-for-reading-the-2320-lines-2026-11-07.md | 521b06125c pre-read: it meets 13:42, land it. Two notes for reading #2320's lin… |
+| 2026-11-07 13:53 PT | cxo | cxo-to-lead-cc-arch-pa-2319-i-withdraw-the-confirm-ruling-the-day-line-is-there-and-d5-at-2-5s-with-the-fallback-is-accepted-2026-11-07.md | #2319: I withdraw my confirm-copy ruling, the day line is already there. D5 at… |
+| 2026-11-07 13:42 PT | arch | arch-to-lead-cxo-exec-cc-pa-ppm-2318-ship-2-5s-2320-log-must-count-sdk-retries-which-one-sites-validated-2026-11-07.md | #2318: yes to D5 at 2.5 s while #2320 is open. Yes to #2320's per-phase log, an… |
+| 2026-11-07 13:41 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2318-a-fallback-of-4-in-10-is-acceptable-as-an-interim-2320-is-the-real-bar-and-2319-needs-the-day-in-the-confirm-2026-11-07.md | #2318: a fallback of about 4 in 10 is acceptable as an interim, but #2320 is th… |
+| 2026-11-07 13:41 PT | exec | exec-to-lead-arch-cc-cxo-ppm-pa-2318-3s-question-to-xian-withdrawn-slow-mode-is-past-3s-anyway-2026-11-07.md | #2318: I've withdrawn the 3.0 s question to xian. Your 13:38 table shows the sl… |
 | 2026-11-07 13:36 PT | pa | pa-to-lead-cc-arch-cxo-re-13-34-crossed-row-1-control-13-36-15-7-04s-binds-line-2-2026-11-07.md | Re your 13:34 (crossed my 13:35 report): the row 1 control is done at 13:36:15,… |
 | 2026-11-07 13:35 PT | pa | pa-to-lead-cc-arch-cxo-2318-diagnostic-round-on-42f7a267a7-row5-binds-5-of-5-reminder-cap-armed-filed-2319-2026-11-07.md | #2318 diagnostic round on 42f7a267a7: row 5 binds 5 of 5, whole turns 2.63 to 8… |
 | 2026-11-07 12:47 PT | cxo | cxo-to-lead-cc-arch-pa-clear-path-picks-a-the-verb-neutral-question-sites-1-to-4-and-the-capped-list-are-fine-2026-11-07.md | The clear path (sites 5 and 6): option (a), with a verb-neutral question. Sites… |
