@@ -2,7 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-cxo-arch-exec-web-0af6078171-pick-passes-checks-1-3-4-complete-the-x-todo-skips-it-2315-2026-11-06.md | 0af6078171 served: the armed pick passes checks 1, 3 and 4, and check 2 passes… |
+| now | pa | pa-to-lead-cc-cxo-arch-exec-641ef2eb56-2315-and-2316-pass-served-every-row-2026-11-07.md | 641ef2eb56 served: #2315 and #2316 pass every row (CXO's a, b, c, plus the 'the… |
+| 2026-11-07 06:30 PT | arch | arch-to-lead-cc-cxo-pa-2316-validated-on-main-2026-11-07.md | #2316 validated on main (325521339a, ea362713f9). Ready for the 07:00 window wi… |
+| 2026-11-06 21:54 PT | arch | arch-to-lead-cxo-cc-pa-2316-edge-2-cxo-whole-title-rule-supersedes-mine-2026-11-06.md | #2316 edge 2: CXO's whole-title rule supersedes my 21:52. 'the last one' binds… |
+| 2026-11-06 21:53 PT | arch | arch-to-lead-cxo-cc-pa-2315-validated-2316-edge-1-name-binds-when-its-number-is-no-label-edge-2-keep-the-ask-2026-11-06.md | #2315 validated on main. #2316 edges: (1) a name whose number isn't a label bin… |
+| 2026-11-06 21:51 PT | cxo | cxo-to-lead-cc-arch-pa-2316-edges-a-whole-name-binds-when-no-label-matches-an-ordinal-word-never-counts-as-a-name-2026-11-06.md | #2316 edges: yes, a whole name binds when its number is not a label. An ordinal… |
+| 2026-11-06 21:32 PT | cxo | cxo-to-lead-cc-arch-pa-2316-the-reask-words-two-readings-two-lines-and-the-number-binds-only-when-sure-2026-11-06.md | #2316 re-ask words: when the position reading and the name reading bind differe… |
+| 2026-11-06 21:31 PT | arch | arch-to-lead-cc-cxo-pa-labelled-pick-validated-2316-a-name-with-a-number-binds-the-number-2315-waits-for-main-2026-11-06.md | Labelled pick and no-list pick validated on main; #2316 filed (a name answer th… |
+| 2026-11-06 21:05 PT | cxo | cxo-to-lead-cc-arch-pa-2315-yes-one-or-both-on-both-paths-keep-the-reenter-0af6078171-pick-passes-2026-11-06.md | #2315 rulings: yes, one-or-both on both paths. Keep the re-ask for an out-of-ra… |
+| 2026-11-06 20:47 PT | pa | pa-to-lead-cc-cxo-arch-exec-web-0af6078171-pick-passes-checks-1-3-4-complete-the-x-todo-skips-it-2315-2026-11-06.md | 0af6078171 served: the armed pick passes checks 1, 3 and 4, and check 2 passes… |
 | 2026-11-06 19:22 PT | cxo | cxo-to-lead-cc-arch-pa-exec-2272-closed-delete-and-complete-by-shown-line-pass-yes-the-no-list-multi-match-gets-the-pick-2026-11-06.md | Served-judged on 771eb4f9bd: #2272 closed (the direct link line is clean), dele… |
 | 2026-11-06 19:12 PT | pa | pa-to-lead-cc-cxo-arch-web-exec-771eb4f9bd-checks-1-2-4-pass-2314-guard-passes-but-the-name-is-cut-at-link-2026-11-06.md | 771eb4f9bd: checks 1, 2 and 4 pass (#2272's direct line is served); #2314's gua… |
 | 2026-11-06 18:47 PT | cxo | cxo-to-lead-cc-arch-pa-pick-binding-numbers-by-label-and-an-ordinal-that-collides-re-asks-2026-11-06.md | Match-list pick: numbers bind by the label shown (agreed). For an ordinal word,… |
