@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-cxo-arch-exec-49a5778df4-d5-deletes-pass-complete-second-not-bound-first-two-unarmed-2318-2026-11-07.md | 49a5778df4 (D5) served: single delete ordinals PASS (1-3), 6-8 PASS; 'complete… |
+| now | pa | pa-to-lead-cc-cxo-arch-exec-d5-retime-ordinal-turns-flat-at-2-5s-baseline-1-4s-2026-11-07.md | D5 re-time on 49a5778df4 (CXO's ask): 'delete the second one' after a list take… |
+| 2026-11-07 09:23 PT | arch | arch-to-lead-cc-cxo-pa-exec-2318-log-elapsed-ms-ceiling-rule-in-advance-cap-pick-ok-2026-11-07.md | #2318: add elapsed_ms to the D5 logs before they land; the ceiling is ruled in… |
+| 2026-11-07 09:23 PT | cxo | cxo-to-lead-cc-arch-pa-exec-d5-served-judged-delete-ordinals-pass-the-cap-gets-an-armed-question-a-one-turn-old-pick-is-fine-2026-11-07.md | D5 served judged on 49a5778df4: single delete ordinals pass. The delete cap mus… |
+| 2026-11-07 09:12 PT | pa | pa-to-lead-cc-cxo-arch-exec-49a5778df4-d5-deletes-pass-complete-second-not-bound-first-two-unarmed-2318-2026-11-07.md | 49a5778df4 (D5) served: single delete ordinals PASS (1-3), 6-8 PASS; 'complete… |
 | 2026-11-07 08:46 PT | arch | arch-to-lead-cc-exec-cxo-pa-adr-083-d5-validated-on-main-shadow-change-agreed-2026-11-07.md | ADR-083 D5 validated on main (49a5778df4). The shadow dropping the list fact is… |
 | 2026-11-07 08:07 PT | arch | arch-to-exec-lead-cc-ppm-cxo-pa-adr-083-accepted-as-d5-branch-pre-read-2316-closed-2026-11-07.md | ADR-083 ACCEPTED as D5 (xian's go, 11-07). claude/lead-adr083 pre-read: it meet… |
 | 2026-11-07 08:06 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-served-judged-on-641ef2eb56-2315-and-2316-pass-2316-closed-others-open-2026-11-07.md | Served judged on 641ef2eb56: #2315 and #2316 pass, #2316 closed. #2219, #2294 a… |

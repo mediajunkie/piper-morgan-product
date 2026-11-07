@@ -1,0 +1,201 @@
+# D5 re-time on 49a5778df4 (CXO's ask), web-seed-1386, PA run 09:48; each delete declined
+# round 1: D5 ordinal
+
+--- [09:48:07, 49a5778df4, http 200, 2.28 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [09:48:10, 49a5778df4, http 200, 2.52 s] route execution/delete_todo
+USER: delete the second one
+PIPER: Delete the todo "review the deployment plan"? (yes/no)
+
+--- [09:48:11, 49a5778df4, http 200, 0.25 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete "review the deployment plan". Nothing has been changed.
+# round 1: baseline, delete by name after a list
+
+--- [09:48:13, 49a5778df4, http 200, 1.90 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [09:48:17, 49a5778df4, http 200, 3.56 s] route execution/delete_todo
+USER: delete the todo zz throwaway one
+PIPER: Delete the todo "zz throwaway one"? (yes/no)
+
+--- [09:48:18, 49a5778df4, http 200, 0.23 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete the todo "zz throwaway one". Nothing has been changed.
+# round 2: D5 ordinal
+
+--- [09:48:21, 49a5778df4, http 200, 1.88 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [09:48:24, 49a5778df4, http 200, 2.54 s] route execution/delete_todo
+USER: delete the second one
+PIPER: Delete the todo "review the deployment plan"? (yes/no)
+
+--- [09:48:25, 49a5778df4, http 200, 0.25 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete "review the deployment plan". Nothing has been changed.
+# round 2: baseline, delete by name after a list
+
+--- [09:48:27, 49a5778df4, http 200, 1.91 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [09:48:30, 49a5778df4, http 200, 1.44 s] route execution/delete_todo
+USER: delete the todo zz throwaway one
+PIPER: Delete the todo "zz throwaway one"? (yes/no)
+
+--- [09:48:30, 49a5778df4, http 200, 0.24 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete the todo "zz throwaway one". Nothing has been changed.
+# round 3: D5 ordinal
+
+--- [09:48:33, 49a5778df4, http 200, 1.88 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [09:48:36, 49a5778df4, http 200, 2.52 s] route execution/delete_todo
+USER: delete the second one
+PIPER: Delete the todo "review the deployment plan"? (yes/no)
+
+--- [09:48:37, 49a5778df4, http 200, 0.25 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete "review the deployment plan". Nothing has been changed.
+# round 3: baseline, delete by name after a list
+
+--- [09:48:40, 49a5778df4, http 200, 1.88 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [09:48:42, 49a5778df4, http 200, 1.40 s] route execution/delete_todo
+USER: delete the todo zz throwaway one
+PIPER: Delete the todo "zz throwaway one"? (yes/no)
+
+--- [09:48:42, 49a5778df4, http 200, 0.23 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete the todo "zz throwaway one". Nothing has been changed.
+# round 4: D5 ordinal
+
+--- [09:48:45, 49a5778df4, http 200, 1.88 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [09:48:48, 49a5778df4, http 200, 2.54 s] route execution/delete_todo
+USER: delete the second one
+PIPER: Delete the todo "review the deployment plan"? (yes/no)
+
+--- [09:48:49, 49a5778df4, http 200, 0.24 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete "review the deployment plan". Nothing has been changed.
+# round 4: baseline, delete by name after a list
+
+--- [09:48:52, 49a5778df4, http 200, 1.90 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [09:48:54, 49a5778df4, http 200, 1.45 s] route execution/delete_todo
+USER: delete the todo zz throwaway one
+PIPER: Delete the todo "zz throwaway one"? (yes/no)
+
+--- [09:48:55, 49a5778df4, http 200, 0.24 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete the todo "zz throwaway one". Nothing has been changed.
+# round 5: D5 ordinal
+
+--- [09:48:57, 49a5778df4, http 200, 1.93 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [09:49:00, 49a5778df4, http 200, 2.51 s] route execution/delete_todo
+USER: delete the second one
+PIPER: Delete the todo "review the deployment plan"? (yes/no)
+
+--- [09:49:01, 49a5778df4, http 200, 0.25 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete "review the deployment plan". Nothing has been changed.
+# round 5: baseline, delete by name after a list
+
+--- [09:49:04, 49a5778df4, http 200, 1.93 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review the deployment plan
+3. draft the launch checklist
+4. review prs (×2)
+5. zz throwaway one
+6. zz throwaway two
+7. audit the current navigation
+
+--- [09:49:06, 49a5778df4, http 200, 1.44 s] route execution/delete_todo
+USER: delete the todo zz throwaway one
+PIPER: Delete the todo "zz throwaway one"? (yes/no)
+
+--- [09:49:07, 49a5778df4, http 200, 0.24 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete the todo "zz throwaway one". Nothing has been changed.
