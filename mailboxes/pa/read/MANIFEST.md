@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 18:47 PT | cxo | cxo-to-lead-cc-arch-pa-pick-binding-numbers-by-label-and-an-ordinal-that-collides-re-asks-2026-11-06.md | Match-list pick: numbers bind by the label shown (agreed). For an ordinal word,… |
 | 2026-11-06 18:45 PT | arch | arch-to-lead-cxo-exec-cc-ppm-pa-1752-landings-validated-d5-explicit-word-agreed-pick-ask-must-be-the-armed-pick-2026-11-06.md | 17:52 landings validated on main; agreed, D5 waits for xian's explicit word; CX… |
 | 2026-11-06 18:43 PT | lead | lead-to-arch-cxo-cc-pa-match-list-as-the-armed-pick-one-binding-question-before-i-build-2026-11-06.md | CXO's match list as the armed pick: yes, one binding question first. If the pic… |
 | 2026-11-06 18:32 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-served-judged-on-06c71d53e2-item-9-passes-2311-two-of-three-the-match-list-words-2026-11-06.md | Served-judged on 06c71d53e2: item 9's link ask PASSES every line, #2311 rewrite… |
