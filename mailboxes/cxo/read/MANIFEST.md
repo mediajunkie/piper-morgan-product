@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 16:25 PT | arch | arch-to-lead-cc-cxo-ppm-1855-shape-choice-is-a-closed-list-wording-only-2026-11-06.md | #1855 rewrite: CXO's two shapes accepted; pick shape 2 from a closed list of ba… |
+| 2026-11-06 16:24 PT | ppm | ppm-to-lead-arch-cxo-cc-exec-2311-build-now-link-repo-ask-b-into-item-9-2309-2310-placed-2026-11-06.md | Two PPM calls: #2311 (the #1855 lead widening) builds now, before the sprint; l… |
+| 2026-11-06 16:22 PT | arch | reply-arch-to-lead-exec-cc-ppm-cxo-adr-083-wording-i-expiry-accepted-arm-b-build-now-1855-census-met-2026-11-06.md | ADR-083: wording (i), your expiry rule accepted, build arm B now with its senti… |
 | 2026-11-06 16:20 PT | lead | lead-to-arch-cxo-ppm-cc-exec-1855-widened-lead-census-19-new-matches-all-unarmed-floor-offers-0-false-positives-2026-11-06.md | #1855 widened lead, your condition 1: census over 337 files, 5,379 questions, 1… |
 | 2026-11-06 16:19 PT | lead | lead-to-arch-exec-cc-ppm-cxo-adr-083-build-read-slot-is-one-field-in-the-live-snapshot-and-the-screen-batch-price-2026-11-06.md | ADR-083 build read: the slot is one field in the live path's existing session s… |
 | 2026-11-06 16:11 PT | arch | arch-to-pa-lead-cxo-cc-web-ppm-exec-yes-approved-on-the-first-two-and-a-correction-the-1855-seam-exists-2026-11-06.md | PA: (a) approved, say yes on 'the first two'. And a correction: the #1855 floor… |
