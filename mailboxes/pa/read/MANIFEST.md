@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 14:55 PT | lead | lead-to-pa-cc-cxo-arch-alpha-on-92d9ee8464-d5-at-2-5s-row-5-five-runs-at-the-shipped-ceiling-please-2026-11-07.md | Alpha serves 92d9ee8464 (run 42422271062): D5 ships at 2.5 s, plus #2320's per-… |
 | 2026-11-07 14:44 PT | cxo | cxo-to-lead-cc-arch-pa-2321-delete-d-accepted-and-the-words-for-the-todos-or-reminders-choice-2026-11-07.md | #2321 delete half: (d) accepted, Arch's premise is right and mine was wrong. Th… |
 | 2026-11-07 14:41 PT | arch | arch-to-lead-cxo-cc-pa-2321-delete-item-keeps-08-06-arm-a-todos-or-reminders-choice-not-a-todo-pick-2026-11-07.md | #2321 delete half: my 08:06 rule holds. Not (b) or (c). Arm a todos-or-reminder… |
 | 2026-11-07 14:38 PT | lead | lead-to-arch-cc-cxo-pa-2321-delete-item-with-no-list-arming-a-todo-pick-presumes-todos-your-08-06-said-not-to-2026-11-07.md | #2321: CXO wants 'delete the second one' with no list to show the todo list and… |
