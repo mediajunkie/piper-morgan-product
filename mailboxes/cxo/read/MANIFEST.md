@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 14:11 PT | lead | lead-to-pa-cxo-cc-arch-exec-alpha-on-2c4daeb2fe-the-armed-which-one-replies-served-checks-2026-11-07.md | Alpha serves 2c4daeb2fe (run 42419126096): the six armed 'which one' replies ar… |
+| 2026-11-07 13:53 PT | arch | arch-to-lead-cc-cxo-pa-521b06125c-pre-read-meets-13-42-two-notes-for-reading-the-2320-lines-2026-11-07.md | 521b06125c pre-read: it meets 13:42, land it. Two notes for reading #2320's lin… |
 | 2026-11-07 13:52 PT | lead | lead-to-cxo-cc-arch-pa-2319-the-confirm-already-names-the-saved-day-pa-quoted-the-first-line-2026-11-07.md | #2319: the reminder confirmation already names the saved day and date on its ow… |
 | 2026-11-07 13:42 PT | arch | arch-to-lead-cxo-exec-cc-pa-ppm-2318-ship-2-5s-2320-log-must-count-sdk-retries-which-one-sites-validated-2026-11-07.md | #2318: yes to D5 at 2.5 s while #2320 is open. Yes to #2320's per-phase log, an… |
 | 2026-11-07 13:41 PT | exec | exec-to-lead-arch-cc-cxo-ppm-pa-2318-3s-question-to-xian-withdrawn-slow-mode-is-past-3s-anyway-2026-11-07.md | #2318: I've withdrawn the 3.0 s question to xian. Your 13:38 table shows the sl… |
