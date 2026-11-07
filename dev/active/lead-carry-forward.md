@@ -1,14 +1,14 @@
 # Lead carry-forward — Fable 5.1 seat (Opus 5.5 from 11-04 19:38 until the Fable limit resets after 22:00 on 11-05); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
 ## DAY CLOSED 2026-11-06 21:46 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-06 -->` in the 11-06 log `dev/2026/11/06/2026-11-06-0509-lead-code-log.md`)
-- **Served:** alpha `0af6078171` (20:37; five promotions today by this seat). On main, not served: #2315 (`b7c0e604ea`). **Held locally on `claude/lead-cycle`:** #2316 (`325521339a` + merge `4f3fe42075`), gate w (`land-2219w.sh`) was running at close.
+- **Served:** alpha `0af6078171` (20:37; five promotions today by this seat). On main, not served: #2315 (`b7c0e604ea`). #2316 (+ its edge rulings) pushed post-close after gate x.
 - **Model:** Opus 5.5.
 - **11-07 START order:**
   1. Usual START: create the 11-07 log, both inboxes, current-state Now, xpoll, `owed-scan.py --role lead`.
-  2. **#2316:** if `origin/main..HEAD` still holds `325521339a`/`4f3fe42075`, read gate w's verdict (`scratchpad/land-2219w.out`; the known local pair is `test_fresh_install_flow` + the 10 keychain SHRINK-LOCK). Green → push with the reporting loop. Anything else → re-run the gate on a fresh merge.
+  2. **#2316: DONE post-close** (with CXO 21:51 / Arch 21:54's edges, gate x green, pushed 11-06 22:3x). Check Tests on main's tip.
   3. After 07:00: Tests green on main's tip, then every promotion condition (main 12/12, quiet, uptime ≥ 1800 s, a green health watch since the landing, no hold, no migration, inbox re-read). Then dispatch (bare command) and tell Exec the sha and run id. PA's checks: #2315's rows ("complete the review prs todo" → the labelled pick; "complete the review todo" → 2/4/8; a no-match; no-list copies → one-or-both) and #2316 (a name with another line's number → CXO's two-line question, nothing written). CXO closes #2219/#2294 on those quotes.
   4. **D5** on xian's explicit word via Exec (standing item): "go" → merge `claude/lead-adr083`, full gate, push, promote, PA's ordinal checks after "show my todos".
-- **Waiting on others:** CXO/Arch on #2316's two edges (a name whose number isn't a label; "the last one" over a title containing "last"); #2313 (a served route read); #2312 (PPM); #2314's cut name (the args row is scored at the next screen; Arch decides after); #2244, #2288/#2266, #2261.
+- **Waiting on others:** #2313 (a served route read); #2312 (PPM); #2314's cut name (the args row is scored at the next screen; Arch decides after); #2244, #2288/#2266, #2261.
 - **Rules that bit 11-06:**
   - A corpus-row push runs the full unit tier, not just the inversion suites (red 19:37–20:06).
   - A watcher's run id comes from the dispatch's output, never typed ahead of it.
