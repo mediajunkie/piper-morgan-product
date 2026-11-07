@@ -296,7 +296,8 @@ async def test_after_one_copy_is_done_the_line_asks_about_the_two_left(
     await _complete(handlers, store, 3)
     await _answer("one", intent_service, store)
     msg, armed = await _complete(handlers, store, 3)
-    assert msg == '"review prs" is on your list 2 times. Complete one, or all 2?'
+    # CXO 11-06 15:58: two copies read "both".
+    assert msg == '"review prs" is on your list 2 times. Complete one, or both?'
     assert store.slot["pending_action"]["line_ids"] == [rows[3].id, rows[4].id]
 
 
@@ -508,3 +509,20 @@ def test_the_capped_reply_without_counts_is_unchanged():
         'I can delete one todo at a time for now. You asked about these:\n1. "a"\n2. "b"'
         "\n\nTell me which one to delete first. Nothing has been changed."
     )
+
+
+@pytest.mark.asyncio
+async def test_a_named_delete_of_a_grouped_line_asks_one_of_your_n(handlers, store, service, rows):
+    """CXO 11-06 15:58 (Web's served turn on 7ffd460640, "delete the review prs todos"):
+    a NAMED target on a grouped line asks the same one-copy question as the ordinal."""
+    await _show(handlers)
+    msg, armed = await handlers.handle_delete_todo_targets(
+        _intent("delete_todo", "delete the review prs todos", ["review prs"]),
+        _SESSION,
+        UUID(_USER),
+        store,
+        _USER,
+    )
+    assert msg == 'Delete one of your 3 "review prs" todos? (yes/no)'
+    assert armed is True
+    assert service.deleted_ids == []

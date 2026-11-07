@@ -60,8 +60,10 @@ _PLEASANTRY_ACK = {"thanks": "You're welcome.", "greeting": "Hi!"}
 
 
 def render_group_line_question(verb: str, text: str, count: int) -> str:
-    """CXO's words (11-06 07:35), verbatim."""
-    return f'"{text}" is on your list {count} times. Complete one, or all {count}?'
+    """CXO's words (11-06 07:35), verbatim; with two copies, "both" (CXO 11-06 15:58).
+    "both" is already an accepted answer (``_ALL_WORDS``)."""
+    every = "both" if count == 2 else f"all {count}"
+    return f'"{text}" is on your list {count} times. Complete one, or {every}?'
 
 
 def _decline_message(verb: str, text: str) -> str:

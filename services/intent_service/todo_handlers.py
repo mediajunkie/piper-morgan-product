@@ -1328,6 +1328,13 @@ class TodoIntentHandlers:
         picked = [t for t in picked if t.id not in ex_ids]
         if not picked:
             return ("Nothing matched after the exceptions. Nothing has been changed.", False)
+        if len(picked) > 1 and not exclude:
+            # CXO 11-06 15:58 (Web's "delete the review prs todos"): a name that resolves
+            # to copies of ONE shown grouped line names that line, so it asks the same
+            # one-copy question as its ordinal, never the cap over one line's copies.
+            same_line = _grouped_line_of(picked[0], shown_lines)
+            if same_line is not None and {t.id for t in picked} <= {t.id for t in same_line}:
+                picked = picked[:1]
         left = [t.text for t in name_pool if t.id not in {p.id for p in picked}]
         if len(picked) == 1 and not exclude:
             # CXO 2026-10-07 source review: the Leaving line names what a CARVE-OUT spared.
