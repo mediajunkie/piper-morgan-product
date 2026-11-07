@@ -22,28 +22,37 @@ _USER = "3f7b8a52-2271-4b00-9e00-000000002271"
 _PHRASE = "link repo dinp-machine/piper-test-activity to Piper Test Activity"
 
 
+# The legacy classifier's invented spellings seen on alpha (#2271): 10:49, 11:26, 15:59.
+_LINK_ALIASES = ("link_repository", "link_repository_to_project", "link_repo_to_project")
+
+
 class _PinnedEmissionLLM:
+    def __init__(self, action="link_repository"):
+        self._action = action
+
     async def complete(self, task_type=None, **kwargs):
         if task_type != "intent_classification":
             raise AssertionError(f"LLM boundary touched for task_type={task_type!r}")
         return json.dumps(
             {
                 "category": "execution",
-                "action": "link_repository",
+                "action": self._action,
                 "confidence": 0.9,
                 "reasoning": "link a repository to a project",
             }
         )
 
 
-def test_link_repository_is_the_link_repo_entry():
+@pytest.mark.parametrize("alias", _LINK_ALIASES)
+def test_link_repository_is_the_link_repo_entry(alias):
     register_default_workflows()
     wf = get_action_workflows()
-    assert wf["link_repository"] is wf["link_repo"]
+    assert wf[alias] is wf["link_repo"]
 
 
 @pytest.mark.asyncio
-async def test_the_emission_reaches_the_link_handler_not_the_decline(monkeypatch):
+@pytest.mark.parametrize("alias", _LINK_ALIASES)
+async def test_the_emission_reaches_the_link_handler_not_the_decline(monkeypatch, alias):
     from services.intent_service.canonical_handlers import CanonicalHandlers
 
     seen = []
@@ -58,8 +67,12 @@ async def test_the_emission_reaches_the_link_handler_not_the_decline(monkeypatch
 
     monkeypatch.setattr(CanonicalHandlers, "_handle_link_repo", _link)
     register_default_workflows()
-    service = IntentService(intent_classifier=IntentClassifier(llm_service=_PinnedEmissionLLM()))
-    result = await service.process_intent(message=_PHRASE, session_id="e2e-2271", user_id=_USER)
+    service = IntentService(
+        intent_classifier=IntentClassifier(llm_service=_PinnedEmissionLLM(alias))
+    )
+    result = await service.process_intent(
+        message=_PHRASE, session_id=f"e2e-2271-{alias}", user_id=_USER
+    )
     assert seen == [_PHRASE]
     assert result.message != GENERIC_UNWIRED_WRITE_DECLINE
     assert "didn't recognize" not in result.message

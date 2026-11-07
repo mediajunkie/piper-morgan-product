@@ -53,6 +53,8 @@ DELETE_TODO_ALIASES = (
     # #2294: the classifier's raw emission for a bare "delete the first one" after a
     # list, the same entry object under the same #1666 ruling (1527's discipline).
     "delete_item",
+    # Arch 11-06 15:59 (the standing alias rule): its plural, the same entry.
+    "delete_items",
 )
 # #1926 / #1595 Phase 3 (2026-10-04): unlink_repo joined the destructive
 # tier — CXO's ruling on #1926 (manage_repos splits into list [READ] / link

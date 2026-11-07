@@ -141,3 +141,27 @@ async def test_a_typed_delete_todo_still_asks_which_todo_with_no_list(todo_bound
         message="delete a todo", session_id="e2e-2294-typed", user_id=_USER
     )
     assert result.message.startswith("Which todo should I delete?")
+
+
+# Arch 11-06 15:59: the plural invented noun ("delete review prs and urgent task",
+# PA's served run on 7ffd460640) is the same entry under the same 08:06 conditions.
+def test_delete_items_is_the_delete_todo_entry_and_in_the_confirm_family():
+    register_default_workflows()
+    wf = get_action_workflows()
+    assert wf["delete_items"] is wf["delete_todo"]
+    assert is_delete_todo_action("delete_items")
+
+
+@pytest.mark.asyncio
+async def test_delete_items_with_no_list_gets_the_honest_ask(todo_boundary):
+    register_default_workflows()
+    service = IntentService(
+        intent_classifier=IntentClassifier(
+            llm_service=_PinnedEmissionLLM(dict(_EMISSION, action="delete_items"))
+        )
+    )
+    result = await service.process_intent(
+        message="delete review prs and urgent task", session_id="e2e-items-none", user_id=_USER
+    )
+    assert "didn't recognize" not in result.message
+    assert result.message == DELETE_ITEM_NO_LIST_ASK

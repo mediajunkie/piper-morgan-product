@@ -429,6 +429,7 @@ class TestConstructorGuard:
             "remove_reminder",
             "cancel_reminder",
             "delete_item",  # #2294: the classifier's raw "delete the first one" emission
+            "delete_items",  # Arch 11-06 15:59: its plural, the same entry
             "set_default_repo",
             "complete_todo",
             "finish_todo",
@@ -441,6 +442,7 @@ class TestConstructorGuard:
             "link_repo",
             "link_repository",  # #2271: the classifier's raw emission, link_repo's entry
             "link_repository_to_project",  # #2271 (Arch 11-06 11:26): same entry
+            "link_repo_to_project",  # #2271 (Arch 11-06 15:59): same entry
             "unlink_repo",
         }, (
             "the create_todo, create_reminder, delete_todo, complete_todo and "
@@ -454,6 +456,7 @@ class TestConstructorGuard:
             wf["link_repository"] is wf["link_repo"]
         ), "#2271: link_repository is link_repo's entry"
         assert wf["link_repository_to_project"] is wf["link_repo"], "#2271: same entry"
+        assert wf["link_repo_to_project"] is wf["link_repo"], "#2271 (15:59): same entry"
         assert wf["hide_project"] is wf["archive_project"], "#2271: same entry"
         create_todo_ids = {id(wf[k]) for k in ("create_todo", "add_todo", "new_todo")}
         create_reminder_ids = {
@@ -469,6 +472,7 @@ class TestConstructorGuard:
                 "remove_reminder",
                 "cancel_reminder",
                 "delete_item",
+                "delete_items",
             )
         }
         set_default_repo_ids = {id(wf["set_default_repo"])}

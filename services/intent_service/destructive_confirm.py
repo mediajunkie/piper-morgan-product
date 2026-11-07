@@ -222,8 +222,14 @@ _DELETE_TODO_FAMILY = frozenset(
         "cancel_reminder",
         # #2294: the classifier's raw emission for a bare "delete the first one".
         "delete_item",
+        # Arch 11-06 15:59: its plural, "delete X and Y".
+        "delete_items",
     }
 )
+
+# The legacy classifier's generic-noun inventions (#2294, Arch 15:59): no todo is
+# presumed without a recorded numbered list.
+_GENERIC_ITEM_NOUNS = frozenset({"delete_item", "delete_items"})
 
 # Context key for the gate-time resolution (see build_todo_delete_confirmation):
 # {"todo_id": str, "text": str, "number": str}. handle_delete_todo honors it
@@ -750,6 +756,15 @@ async def build_todo_delete_confirmation(
         # #2169 (Arch 10-24 18:28): an ask that names a list or project the to-do family
         # doesn't own never resolves into it; it declines with nothing armed.
         return TodoDeleteGate(clarification=FOREIGN_CONTAINER_DECLINE[container])
+
+    if intent.action in _GENERIC_ITEM_NOUNS:
+        # Arch 11-06 08:06 (iii), restated 15:59: the invented generic nouns bind to
+        # todos only when this session recorded a numbered todo or reminder list.
+        # With none, the handler's honest ask answers, never a todo name lookup.
+        from services.intent_service.delete_todo_pick import last_numbered_list
+
+        if last_numbered_list(session_id, todo_user_id) is None:
+            return TodoDeleteGate(passthrough=True)
 
     todo_number = todo_handlers._extract_todo_id(message)
     named_target = None

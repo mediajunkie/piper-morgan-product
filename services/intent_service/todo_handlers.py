@@ -2481,10 +2481,10 @@ class TodoIntentHandlers:
             return _delete_summary([], [(_resolved["text"], "already gone")], [], _noun)
 
         # #2294 (Arch 11-06 08:06): ``delete_item`` is the legacy classifier's invented
-        # noun for "delete the first one". It reaches the todo delete path only when
+        # noun for "delete the first one" (and ``delete_items`` its plural, Arch 15:59). It reaches the todo delete path only when
         # this session just showed a numbered todo or reminder list; with none, an
         # honest ask and no presumption that the person meant todos.
-        if intent.action == "delete_item":
+        if intent.action in ("delete_item", "delete_items"):
             from services.intent_service.delete_todo_pick import (
                 DELETE_ITEM_NO_LIST_ASK,
                 last_numbered_list,

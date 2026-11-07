@@ -4068,6 +4068,9 @@ def register_default_workflows() -> None:
         # #2271 (Arch 11-06 11:26): the same write under a longer invented name
         # ("link repo X to <project>" with the hide literal absent, 10/10).
         "link_repository_to_project": link_repo_entry,
+        # #2271 (PA's served run on 7ffd460640; Arch 11-06 15:59, the standing alias
+        # rule): a third invented spelling for the same write, "link repo X to <project>".
+        "link_repo_to_project": link_repo_entry,
         # #1926 / #1595 Phase 3 (CXO's 2026-10-03 ruling, Arch's ruling
         # 2026-10-03 §2): the DESTRUCTIVE third of manage_repos — unlink_repo.
         # Confirms via the #1190 gate before anything executes (see
@@ -4141,6 +4144,11 @@ def register_default_workflows() -> None:
         # discipline as 1527 above; destructive_confirm._DELETE_TODO_FAMILY carries
         # it so the delete always confirms. Not rendered in the router catalog.
         "delete_item": delete_todo_entry,
+        # #2271 follow-up (PA's served run on 7ffd460640, "delete review prs and urgent
+        # task"; Arch 11-06 15:59 on the 08:06 conditions): the plural invented noun.
+        # Same entry and confirm family; binds to todos only with a numbered list
+        # recorded (todo_handlers' delete_item gate covers both nouns).
+        "delete_items": delete_todo_entry,
         # #1595 Phase 3: complete_todo + its ActionMapper raw-emission aliases
         # (finish_todo / mark_complete / mark_done → complete_todo,
         # action_mapper.py:93-96). Canonical key first: wired_chat_actions()
