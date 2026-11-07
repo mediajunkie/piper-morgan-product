@@ -2436,6 +2436,7 @@ class TodoIntentHandlers:
                         # delete gate's #2169 word subset (every named word in the title).
                         named_words = _meaningful_words(completion_text)
                         matches = [t for t in matches if named_words <= _meaningful_words(t.text)]
+                    shown_candidates = None
                     if len(matches) > 1 and shown_lines:
                         line_of = {
                             str(t.id): n for n, line in enumerate(shown_lines, 1) for t in line
@@ -2455,21 +2456,23 @@ class TodoIntentHandlers:
                                 return question
                             from services.intent_service.delete_todo_pick import _line_display
 
-                            candidates = ", ".join(
-                                f'{n}. "{_line_display(shown_lines[n - 1])}"' for n in hit
-                            )
-                            return _reply(
-                                f"I found {len(hit)} todos matching "
-                                f"'{completion_text}': {candidates}. Which one "
-                                "should I complete? Try 'complete todo [number]'."
+                            # #2219 Gap A: each matching line once, by the number shown.
+                            shown_candidates = (
+                                len(hit),
+                                ", ".join(
+                                    f'{n}. "{_line_display(shown_lines[n - 1])}"' for n in hit
+                                ),
                             )
                     if len(matches) > 1:
-                        position_by_id = {t.id: i + 1 for i, t in enumerate(todos)}
-                        candidates = ", ".join(
-                            f'{position_by_id[t.id]}. "{t.text}"' for t in matches
-                        )
+                        if shown_candidates is None:
+                            position_by_id = {t.id: i + 1 for i, t in enumerate(todos)}
+                            shown_candidates = (
+                                len(matches),
+                                ", ".join(f'{position_by_id[t.id]}. "{t.text}"' for t in matches),
+                            )
+                        count, candidates = shown_candidates
                         return _reply(
-                            f"I found {len(matches)} todos matching "
+                            f"I found {count} todos matching "
                             f"'{completion_text}': {candidates}. Which one "
                             "should I complete? Try 'complete todo [number]'."
                         )
