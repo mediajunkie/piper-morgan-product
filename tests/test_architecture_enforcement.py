@@ -4907,8 +4907,14 @@ class TestUnarmedAskSiteRatchet:
             (
                 "services/intent_service/todo_handlers.py",
                 "TodoIntentHandlers.handle_complete_todo",
-                2,
-                "I found {} todos matching '{}': {}. Which one should I compl",
+                # 2 -> 1 (2026-11-06, #2219, CXO 11-06 18:32 and 19:22): the "I found {}
+                # todos matching '{}' … Which one should I complete?" ask was retired; a
+                # name matching several todos now arms the #1987 pick (labelled after a
+                # shown list, 1..k otherwise) or the one-or-all question. The no-target
+                # "Which todo would you like to complete?" literal remains, so the
+                # fingerprint moved to it.
+                1,
+                "Which todo would you like to complete? Try 'complete todo 1'",
             ),
             # ---- MEASURED 2026-10-14 under the #2011 widening (Arch): scope
             # services/** minus standup/onboarding by name, after the #2011

@@ -205,20 +205,25 @@ class TestBuilderNamedTargetLeg:
         assert gate.offer is not None
         assert gate.offer.question == 'Delete the reminder "hydrate"? (yes/no)'
 
-    async def test_ambiguous_target_asks_which_with_real_positions(self):
-        """Two fuzzy candidates, no exact — the gate asks which, numbering
-        by REAL list position (so 'delete todo [number]' works verbatim),
-        and arms nothing."""
+    async def test_ambiguous_target_hands_back_the_matches_as_pick_lines(self):
+        """Two fuzzy candidates, no exact, no list shown — #2219 (CXO 11-06 19:22):
+        the gate hands the matches back as lines (numbered 1..k, no labels) for the
+        caller to arm the #1987 pick; its fallback copy is a statement, never an
+        unarmed question (#1730). Nothing is bound into the intent."""
         todos = [_todo("Review the PR"), _todo("hydrate the plants"), _todo("hydrate the cat")]
         handlers = _BuilderHandlers(todos=todos)
         intent = _delete_intent("delete my hydrate reminder")
         gate = await build_todo_delete_confirmation(intent, handlers, _USER)
-        assert gate.clarification is not None
         assert gate.offer is None and not gate.passthrough
-        assert '2. "hydrate the plants"' in gate.clarification
-        assert '3. "hydrate the cat"' in gate.clarification
-        assert "Which one should I delete?" in gate.clarification
-        # nothing bound: an unarmed turn must not leave a usable binding
+        assert gate.line_pick is not None
+        lines, labels = gate.line_pick
+        assert [[t.text for t in line] for line in lines] == [
+            ["hydrate the plants"],
+            ["hydrate the cat"],
+        ]
+        assert labels is None
+        assert gate.clarification is not None and "?" not in gate.clarification
+        # nothing bound: the pick binds by id on the answer turn, not here
         assert RESOLVED_TODO_CONTEXT_KEY not in (intent.context or {})
 
     async def test_zero_match_is_honest_todo_vocabulary_never_projects(self):
@@ -394,21 +399,27 @@ class TestEndToEndNamedDelete:
         assert todo_boundary["deleted"] == [hydrate_id]
         assert interloper.id not in todo_boundary["deleted"]
 
-    async def test_ambiguous_target_asks_which_and_arms_nothing(
+    async def test_ambiguous_target_asks_the_armed_pick(
         self, live_service, monkeypatch, todo_boundary
     ):
+        """#2219 (CXO 11-06 19:22): no list shown, two different matches → the ARMED
+        #1987 pick numbered 1..k (the unarmed "I found N todos matching" is retired)."""
         sid = "e2e-named-ambiguous"
         todo_boundary["todos"] = [_todo("hydrate the plants"), _todo("hydrate the cat")]
         _stub_classification(monkeypatch, live_service, "delete my hydrate reminder", "delete_todo")
         result = await live_service.process_intent(
             message="delete my hydrate reminder", session_id=sid, user_id=_USER
         )
-        assert "Which one should I delete?" in result.message
-        assert '1. "hydrate the plants"' in result.message
-        assert '2. "hydrate the cat"' in result.message
+        assert result.message == (
+            "Which reminder should I delete?\n"
+            "1. hydrate the plants\n"
+            "2. hydrate the cat\n"
+            "\n"
+            "Say the number or the name, or 'never mind' to leave them alone."
+        )
         assert "project" not in result.message.lower()
         assert result.requires_clarification is True
-        assert _pending_offers(live_service).get(sid) is None
+        assert _pending_offers(live_service).get(sid) is not None
         assert todo_boundary["deleted"] == []
 
     async def test_zero_match_answers_honestly_never_a_project(

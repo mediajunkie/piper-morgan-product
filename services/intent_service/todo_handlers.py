@@ -2476,15 +2476,41 @@ class TodoIntentHandlers:
                             )
                             return pick or _reply(named_line_pick_unarmable(len(hit), "complete"))
                     if len(matches) > 1:
-                        position_by_id = {t.id: i + 1 for i, t in enumerate(todos)}
-                        candidates = ", ".join(
-                            f'{position_by_id[t.id]}. "{t.text}"' for t in matches
+                        # #2219 (CXO 11-06 19:22): no list shown. Identical copies are
+                        # ONE line (one-or-all); different todos, the ARMED pick over the
+                        # matches numbered 1..k. Never an unarmed list (#1730).
+                        from services.intent_service.delete_todo_pick import (
+                            VERB_COMPLETE,
+                            arm_named_line_pick,
+                            match_lines,
                         )
-                        return _reply(
-                            f"I found {len(matches)} todos matching "
-                            f"'{completion_text}': {candidates}. Which one "
-                            "should I complete? Try 'complete todo [number]'."
+                        from services.intent_service.destructive_confirm import (
+                            named_line_pick_unarmable,
                         )
+
+                        lines = match_lines(matches, todos)
+                        if len(lines) == 1:
+                            question, _armed = self._ask_group_line(
+                                "complete",
+                                lines[0],
+                                conversation_noun(original_message, "todos"),
+                                original_message,
+                                session_id,
+                                offer_service,
+                                principal,
+                            )
+                            return question
+                        pick = arm_named_line_pick(
+                            VERB_COMPLETE,
+                            original_message,
+                            session_id,
+                            principal,
+                            user_id,
+                            lines,
+                            None,
+                            offer_service,
+                        )
+                        return pick or _reply(named_line_pick_unarmable(len(lines), "complete"))
                     todo = matches[0] if matches else None
 
                 if todo is None and shown_lines:
