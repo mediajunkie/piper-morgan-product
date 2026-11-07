@@ -446,3 +446,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v863 15:38 Fri 11-06: 7ffd460640 served (15:37) added to Settled.
 - v864 16:45 Fri 11-06: ADR-083 screen priced (~$2.60, A+C); #2270 phrasing ask added.
 - v865 17:28 Fri 11-06: ADR-083 screen FAIL (FYI replaces veto item); 34efff2af8 served.
+- v866 18:19 Fri 11-06: 06c71d53e2 served added to Settled.
