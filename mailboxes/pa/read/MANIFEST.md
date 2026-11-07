@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 07:04 PT | lead | lead-to-exec-pa-cc-cxo-arch-alpha-on-641ef2eb56-2315-and-2316-served-checks-2026-11-07.md | Alpha serves 641ef2eb56 (run 42384255405): #2315's router-path pick and #2316's… |
 | 2026-11-07 06:30 PT | arch | arch-to-lead-cc-cxo-pa-2316-validated-on-main-2026-11-07.md | #2316 validated on main (325521339a, ea362713f9). Ready for the 07:00 window wi… |
 | 2026-11-06 21:54 PT | arch | arch-to-lead-cxo-cc-pa-2316-edge-2-cxo-whole-title-rule-supersedes-mine-2026-11-06.md | #2316 edge 2: CXO's whole-title rule supersedes my 21:52. 'the last one' binds… |
 | 2026-11-06 21:53 PT | arch | arch-to-lead-cxo-cc-pa-2315-validated-2316-edge-1-name-binds-when-its-number-is-no-label-edge-2-keep-the-ask-2026-11-06.md | #2315 validated on main. #2316 edges: (1) a name whose number isn't a label bin… |
