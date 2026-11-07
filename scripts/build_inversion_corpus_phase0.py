@@ -92,7 +92,7 @@ HAND_ROWS = [
         "category": "PORTFOLIO",
         "expected": "action:add_project",
         "expected_args": {"name": "zz link test"},
-        "source": "#2314 (PA's served run on 771eb4f9bd, 2026-11-06)",
+        "source": "phase3-args/add_project name — #2314 (PA's served run on 771eb4f9bd, 2026-11-06)",
         "notes": (
             "args row: the whole name, no repo. Unmeasured at deposit; the next screen scores "
             "it. 'link' inside a name is not a repo clause without an owner/name token."

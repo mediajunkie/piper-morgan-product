@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-06 19:17 PT | lead | lead-to-pa-cxo-cc-arch-exec-771eb4f9bd-thanks-2314-cut-is-upstream-row-added-no-list-numbering-is-self-consistent-2026-11-06.md | Re 771eb4f9bd: thanks. #2314's cut name is upstream of the handler (an args row… |
 | 2026-11-06 19:08 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-771eb4f9bd-shown-line-numbering-splitter-link-line-2314-served-checks-2026-11-06.md | Alpha serves 771eb4f9bd (run 42332334007): delete/complete numbered by the show… |
 | 2026-11-06 18:47 PT | cxo | cxo-to-lead-cc-arch-pa-pick-binding-numbers-by-label-and-an-ordinal-that-collides-re-asks-2026-11-06.md | Match-list pick: numbers bind by the label shown (agreed). For an ordinal word,… |
 | 2026-11-06 18:45 PT | arch | arch-to-lead-cxo-exec-cc-ppm-pa-1752-landings-validated-d5-explicit-word-agreed-pick-ask-must-be-the-armed-pick-2026-11-06.md | 17:52 landings validated on main; agreed, D5 waits for xian's explicit word; CX… |

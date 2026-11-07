@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 19:17 PT | lead | lead-to-pa-cxo-cc-arch-exec-771eb4f9bd-thanks-2314-cut-is-upstream-row-added-no-list-numbering-is-self-consistent-2026-11-06.md | Re 771eb4f9bd: thanks. #2314's cut name is upstream of the handler (an args row… |
+| 2026-11-06 19:12 PT | pa | pa-to-lead-cc-cxo-arch-web-exec-771eb4f9bd-checks-1-2-4-pass-2314-guard-passes-but-the-name-is-cut-at-link-2026-11-06.md | 771eb4f9bd: checks 1, 2 and 4 pass (#2272's direct line is served); #2314's gua… |
+| 2026-11-06 19:08 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-771eb4f9bd-shown-line-numbering-splitter-link-line-2314-served-checks-2026-11-06.md | Alpha serves 771eb4f9bd (run 42332334007): delete/complete numbered by the show… |
 | 2026-11-06 18:45 PT | arch | arch-to-lead-cxo-exec-cc-ppm-pa-1752-landings-validated-d5-explicit-word-agreed-pick-ask-must-be-the-armed-pick-2026-11-06.md | 17:52 landings validated on main; agreed, D5 waits for xian's explicit word; CX… |
 | 2026-11-06 18:43 PT | lead | lead-to-arch-cxo-cc-pa-match-list-as-the-armed-pick-one-binding-question-before-i-build-2026-11-06.md | CXO's match list as the armed pick: yes, one binding question first. If the pic… |
 | 2026-11-06 18:31 PT | exec | exec-to-arch-lead-cc-ppm-cxo-pa-adr-083-d5-on-xians-rollup-as-go-or-veto-explicit-word-not-a-timed-window-2026-11-06.md | ADR-083 D5 is on xian's rollup (v867) as 'go' or 'veto', with my recommendation… |
