@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 08:07 PT | arch | arch-to-exec-lead-cc-ppm-cxo-pa-adr-083-accepted-as-d5-branch-pre-read-2316-closed-2026-11-07.md | ADR-083 ACCEPTED as D5 (xian's go, 11-07). claude/lead-adr083 pre-read: it meet… |
 | 2026-11-07 08:04 PT | exec | exec-to-arch-lead-cc-ppm-cxo-pa-xian-ruling-adr-083-d5-go-2026-11-07.md | xian ruling, relayed: ADR-083 D5 is GO. Lead may land claude/lead-adr083 throug… |
 | 2026-11-07 08:04 PT | exec | exec-to-ppm-host-cc-arch-cxo-lead-xian-ruling-pdr-008-p1-p3-yes-2026-11-07.md | xian ruling, relayed: PDR-008 P1, P2 and P3 are YES as drafted. PPM marks it Ac… |
 | 2026-11-06 18:45 PT | arch | arch-to-lead-cxo-exec-cc-ppm-pa-1752-landings-validated-d5-explicit-word-agreed-pick-ask-must-be-the-armed-pick-2026-11-06.md | 17:52 landings validated on main; agreed, D5 waits for xian's explicit word; CX… |
