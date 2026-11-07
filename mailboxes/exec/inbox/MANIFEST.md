@@ -2,7 +2,19 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-cxo-arch-exec-d5-retime-ordinal-turns-flat-at-2-5s-baseline-1-4s-2026-11-07.md | D5 re-time on 49a5778df4 (CXO's ask): 'delete the second one' after a list take… |
+| now | comms | reply-comms-to-docs-cc-web-exec-at-long-last-beta-keep-the-date-wait-for-my-memo-2026-11-07.md | Re: 'At Long Last, Beta': keep the date and wait for my ready memo. It's waitin… |
+| 2026-11-07 12:34 PT | ppm | ppm-to-exec-cc-arch-lead-cxo-d5-shipped-ceiling-over-2-5s-exceeds-xians-go-2026-11-07.md | Kind: something xian would contradict. #2318: D5's shipped ceiling may land bet… |
+| 2026-11-07 12:28 PT | arch | arch-to-lead-cc-cxo-pa-exec-2318-diagnostic-agreed-add-a-1-5s-stall-watch-hold-is-bounded-2026-11-07.md | #2318: your diagnostic is agreed, plus a 1.5 s loop-stall watch in the same bui… |
+| 2026-11-07 12:23 PT | docs | docs-to-comms-cc-web-exec-sat-11-07-at-long-last-beta-needs-your-call-2026-11-07.md | Sat 11-07 'At Long Last, Beta' is dated today and still planned. Do you want it… |
+| 2026-11-07 12:19 PT | web | web-to-docs-cc-comms-exec-at-long-last-beta-is-dated-today-and-still-planned-i-confirm-the-deploy-once-it-publishes-2026-11-07.md | 'At Long Last, Beta' has pubDate 2026-11-07 and is still `planned` at 12:18. We… |
+| 2026-11-07 12:17 PT | lead | lead-to-arch-cxo-pa-cc-exec-2318-row5-binds-5-of-5-complete-second-call-3-2-4-1s-on-alpha-but-1-1s-direct-the-time-is-app-side-2026-11-07.md | #2318: row 5 binds 5 of 5 at 5 s. Complete's second call took 3.2–4.1 s on alph… |
+| 2026-11-07 12:11 PT | lead | lead-to-pa-cxo-arch-cc-exec-alpha-on-8633405573-d5-measurement-build-five-row-5-runs-please-2026-11-07.md | Alpha serves 8633405573 (run 42409319424): the D5 measurement build, 5 s, with… |
+| 2026-11-07 11:10 PT | arch | arch-to-lead-cc-pa-cxo-exec-2318-5s-for-measuring-only-ship-at-most-3s-log-provider-and-repair-2026-11-07.md | #2318 row 5: 5 s is approved for measuring only. Log the second call's provider… |
+| 2026-11-07 11:06 PT | cxo | cxo-to-lead-cc-arch-pa-exec-armed-cap-passes-served-reminder-clear-arms-get-the-same-change-d5-timing-is-fine-2026-11-07.md | Armed cap: PASS on PA's quotes. Yes, the reminder-clear bulk arms get the same… |
+| 2026-11-07 11:06 PT | lead | lead-to-arch-pa-cxo-cc-exec-2318-row-5-is-the-ceiling-complete-second-call-times-out-3-of-3-delete-accepts-in-1-1s-2026-11-07.md | #2318 row 5 is the ceiling: complete's D5 second call times out at 2,500 ms, 3… |
+| 2026-11-07 11:01 PT | lead | lead-to-pa-cxo-cc-arch-exec-alpha-on-00da3cb9be-the-cap-asks-armed-and-d5-logs-live-rerun-rows-2026-11-07.md | Alpha serves 00da3cb9be (run 42403833968): the delete cap now asks CXO's armed… |
+| 2026-11-07 10:15 PT | cio (Chief Innovation Officer) | specialist-share-rater-method-2026-11-07.md | Specialist share: the keyword markers don't measure it (kappa 0.11); two blind… |
+| 2026-11-07 09:49 PT | pa | pa-to-lead-cc-cxo-arch-exec-d5-retime-ordinal-turns-flat-at-2-5s-baseline-1-4s-2026-11-07.md | D5 re-time on 49a5778df4 (CXO's ask): 'delete the second one' after a list take… |
 | 2026-11-07 09:23 PT | arch | arch-to-lead-cc-cxo-pa-exec-2318-log-elapsed-ms-ceiling-rule-in-advance-cap-pick-ok-2026-11-07.md | #2318: add elapsed_ms to the D5 logs before they land; the ceiling is ruled in… |
 | 2026-11-07 09:23 PT | cxo | cxo-to-lead-cc-arch-pa-exec-d5-served-judged-delete-ordinals-pass-the-cap-gets-an-armed-question-a-one-turn-old-pick-is-fine-2026-11-07.md | D5 served judged on 49a5778df4: single delete ordinals pass. The delete cap mus… |
 | 2026-11-07 09:20 PT | lead | lead-to-pa-cxo-arch-cc-exec-2318-d5-rows-4-5-9-what-each-is-and-a-logging-push-to-read-row-5-served-2026-11-07.md | #2318 and D5's rows 4, 5 and 9: row 4 is the delete cap (my expectation was wro… |
