@@ -104,6 +104,8 @@ Items 4–10 come to about 9–10 Lead-days. Two weeks with 30% held back leaves
 
 **Served on beta at `06c71d53e2` (11-06 18:11; CXO's judgment):** **#2271 closed.** Every row passed: the add-repo loop is gone, link_repo's held ask names the repo, the decline is honest, and the page shows the link. That completes item 9, including the link_repo slice pulled in from #2308. #2313 ("delete A and B" says "couldn't find" for real todos) is placed in V and not named.
 
+**Later 11-06:** #2272 closed (CXO 19:22, on `771eb4f9bd`), so item 10's page half is done. #2314's fix is on main (`a859041d4a`, Arch validated it at 18:45) and waits on a served read. #2315 and #2316 (todo picks, #2219's family) are placed in V and not named; the 11-13 review re-checks them against item 5.
+
 **PPM's two calls (11-06 16:23):**
 - **#2311 is built now, before the sprint,** like #2302. It widens the #1855 seam's lead (Arch 16:10, in principle), so the dash form of the narrated ask is rewritten at the output. Lead's census of 5,379 questions found 0 false positives. It waits on CXO's rewrite words. It's honesty work and small, and it closes the worst served finding of the day without waiting on ADR-083.
 - **link_repo's held ask: option (b), pulled into item 9 from #2308.** link_repo's resolve-only step reads only its own resolver, binds what it shows, writes nothing before "yes", and CXO words the ask. It's on Path A's add-repo turn, and PA's phrasing is a real served one. It's small, so it draws on the reserve. #2308's other four ops stay out.

@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-11-06 06:34 PT (06:33 START; the current block is at the bottom, "Now").
+**Last rewritten**: 2026-11-06 21:35 PT (21:33 STOP; the current block is at the bottom, "Now").
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -598,21 +598,31 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: notion-offer-ask** (Filed 2026-11-01; to: exec; by: trigger: Web's #2238 served check passes). Send Exec the one-line "offer Notion in the beta: yes or no" for xian. CXO's card words come first.
   - **Rule from PDR-102:** when PPM places a connector-ingest unit, mail Arch the same day (his ADR trigger for C2).
 
-## Now (rewritten at the 11-06 06:33 START)
+## Now (rewritten at the 11-06 21:33 STOP; carry into Sat 11-07)
 
-- **Invite hold (xian 11-04 19:31: no invitations of any kind until the P0s are done, then his word).** Re-verified 06:34 with `gh issue view`:
-  - Met: #1551 (the epic stays open), #2283 and #2178 (closed).
-  - Open P0: #2261 (no activity since 11-05 03:34; waits on xian's #2174 runs) and #2282 (live; step 4, Web's browser check, waits on xian's word for the dinp-machine sign-in).
-  - Also before the next invite: #2292 (P1; xian's 15 minutes in Google Admin and Hover). PPM's `p=none` caution is on the issue (06:10).
-  - P1, not hold conditions: #2157, #2158.
-- **Onboarding path:** #2219's words (474cdf5af4, fdb055ba7b) and #2293's priority rank (fdb055ba7b) are on main, not served. PA's served-clean quote of the skip landing comes after the next promotion.
-- **Done this morning (05:09–05:55):** the Ship #068 review and its 228 correction; the weekly diff (`production-weekly-diff-2026-11-06.md`); Agent 360 v0.6 answered, with a roadmap correction; roadmap v19.2; `scripts/place-issue.py` (dry runs only so far; the first live placement is its test); briefing lines fixed per CIO's run 3; the criteria-line empty-field bug fixed. Main CI 12 of 12 green.
-- **Production 252** (`gh`, 06:34), map v86, 0 unplanned.
-- **OWED rows** (each with its log marker in `dev/2026/11/06/2026-11-06-0509-ppm-code-log.md`):
-  - **key: invite-hold-pdr** (Filed 2026-11-06; to: exec; by: trigger: xian answers the onboarding proposal's questions 1 and 2, or a fresh session). Draft a PDR for what must be true before any invitation.
-  - **key: path-b-quote** (Filed 2026-11-06; to: cxo; by: trigger: PA's served-clean quote of Path B and the todo skip landing). Set Path B passed or failed against the proposal's line.
-  - **key: 2292-records** (Filed 2026-11-06; to: cio; by: trigger: xian's records and the Buttondown signup test). Check that DMARC starts at `p=none` and that the confirmation's From domain passes.
-  - ~~**key: sprint-shape**~~ (Filed 2026-11-06; closed 11-06 10:37): xian ruled two-week sprints at 10:33. The proposed set is `docs/internal/planning/production-sprint-2-onboarding-proposal-2026-11-06.md`, shown on map v88's sprint panel. **Next:** the set is ratified at the 11-13 review. Lead sizes the build items first. Objections are due to Exec by Mon 11-09 12:00.
-  - **key: notion-offer-ask** (row above, Filed 2026-11-01; on a yes, Lead makes the change per ADR-082 D4).
-- **Waiting on others:** #2290 (Lead's request-id middleware, not before invites); #2291 (Ongoing, mail records first); mail v4 opens to every seat Mon 11-09 (CIO).
-- **Still carried:** #2242's last row (xian's remove and re-add); #2235 (the Web staging account); #1680 (Lead and Exec); PDR-102 C1–C8 checks on document-touching placements; Agent 360 commitments (one OWED marker per waiting item; mine to keep).
+- **Invite hold (xian 11-04 19:31).** Re-verified 21:34 with `gh issue view`.
+  - Open P0s: #2261 (no activity since 11-05; waits on xian's #2174 runs) and #2282 (step 4 waits on xian's word for Web's sign-in check).
+  - #2292 (P1, xian's 15 minutes) is also before the next invite.
+- **The first two-week sprint (11-13 to 11-26)** is proposed in `docs/internal/planning/production-sprint-2-onboarding-proposal-2026-11-06.md` (13 named rows) and ratified at the 11-13 review. Objections to two-week sprints go to Exec by Mon 11-09 12:00.
+  - **State at 21:33:**
+    - Item 9 (#2271) is complete, and #2273 and #2272 are closed, so item 10's page half is done.
+    - #2302 closed.
+    - #2301 FAILs until its read lands (interim pulled).
+    - #2304 is built, held for rulings.
+    - #2311 builds now.
+    - #2314 is fixed on main, waiting on a served read.
+  - **Item 5 waits on xian's explicit go or veto on ADR-083 D5** (on Exec's rollup v867, recommended go). D5 passed its screen at 18:24. Silence is not consent.
+  - **Return order if a slot frees:** #2312, #2314, #2309, #2269 3b, #2305, #2299, #2270.
+  - **Unconfirmed:** Lead's confirmation of the item 8 3a/3b split.
+  - **Pending xian at the review:** the #2157 drill candidate.
+- **Production 269** (`gh`, 21:34), map v105 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned. Filed and placed today: #2294–#2316, except #2296 (Ongoing) and #2298 (a duplicate, closed).
+- **OWED rows** (markers in `dev/2026/11/06/2026-11-06-0509-ppm-code-log.md`):
+  - **key: invite-hold-pdr** (Filed 2026-11-06; to: exec; trigger: a fresh session). Draft a PDR for what must be true before any invitation.
+  - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the hold lifts). This needs item 12's build (#2297, #2301) first.
+  - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
+  - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
+- **Waiting on others:**
+  - #2290 (Lead's middleware);
+  - #2270's phrasing (PA or xian);
+  - mail v4 for every seat, Mon 11-09.
+- **Still carried:** #2242's last row (xian's remove and re-add); #2235; #1680; PDR-102 C1–C8 checks on document-touching placements.
