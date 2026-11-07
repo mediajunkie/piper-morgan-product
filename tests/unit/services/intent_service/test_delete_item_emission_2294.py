@@ -149,7 +149,7 @@ async def _ask_then(service, sid, *answers):
 async def test_kind_choice_todos_shows_the_todo_list_with_the_armed_delete_question(
     todo_boundary,
 ):
-    out = await _ask_then(_service(), "e2e-2321-todos", "todos")
+    out = await _ask_then(_service(), f"e2e-2321-todos-{uuid4().hex[:8]}", "todos")
     assert out.message.startswith("I haven't shown you a numbered list yet. Here are your todos:")
     assert '"call the dentist"' in out.message
     assert out.message.endswith(
@@ -160,7 +160,7 @@ async def test_kind_choice_todos_shows_the_todo_list_with_the_armed_delete_quest
 
 @pytest.mark.asyncio
 async def test_kind_choice_reminders_shows_the_reminders(todo_boundary):
-    out = await _ask_then(_service(), "e2e-2321-rem", "reminders")
+    out = await _ask_then(_service(), f"e2e-2321-rem-{uuid4().hex[:8]}", "reminders")
     assert out.message.startswith(
         "I haven't shown you a numbered list yet. Here are your reminders:"
     )
@@ -169,7 +169,7 @@ async def test_kind_choice_reminders_shows_the_reminders(todo_boundary):
 
 @pytest.mark.asyncio
 async def test_kind_choice_never_mind_is_the_decline(todo_boundary):
-    out = await _ask_then(_service(), "e2e-2321-nm", "never mind")
+    out = await _ask_then(_service(), f"e2e-2321-nm-{uuid4().hex[:8]}", "never mind")
     assert out.message == KIND_CHOICE_DECLINE
 
 
@@ -178,7 +178,7 @@ async def test_a_stray_answer_asks_once_more_then_declines(todo_boundary):
     """CXO 14:44: a bare 2 names no kind — the short question once, then the decline;
     never the floor."""
     service = _service()
-    sid = "e2e-2321-stray"
+    sid = f"e2e-2321-stray-{uuid4().hex[:8]}"
     first = await _ask_then(service, sid, "2")
     assert first.message == KIND_CHOICE_SHORT_QUESTION
     second = await service.process_intent(message="2", session_id=sid, user_id=_USER)
@@ -188,7 +188,9 @@ async def test_a_stray_answer_asks_once_more_then_declines(todo_boundary):
 @pytest.mark.asyncio
 async def test_an_ask_that_names_reminders_skips_the_question(todo_boundary):
     out = await _service().process_intent(
-        message="delete the second reminder", session_id="e2e-2321-named", user_id=_USER
+        message="delete the second reminder",
+        session_id=f"e2e-2321-named-{uuid4().hex[:8]}",
+        user_id=_USER,
     )
     assert out.message.startswith(
         "I haven't shown you a numbered list yet. Here are your reminders:"
