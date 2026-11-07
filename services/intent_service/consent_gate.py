@@ -549,7 +549,9 @@ def build_consent_check_offer(intent, words) -> ConsentCheckOffer:
                 "intent": intent,
                 "summary": summary,
             },
-            "decline_message": (f"Okay — I won't {summary}. Nothing has been changed."),
+            # #2308: an op's own decline line (CXO's words) when its words carry one.
+            "decline_message": getattr(words, "decline", None)
+            or f"Okay — I won't {summary}. Nothing has been changed.",
         },
     )
 

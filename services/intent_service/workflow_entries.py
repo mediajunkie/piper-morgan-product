@@ -26,6 +26,9 @@ from services.intent_service.delete_todo_pick import (
     run_clarify_delete_todo_pick_workflow,
 )
 from services.intent_service.floor_write_ask import complete_todo_write_ask
+from services.intent_service.link_repo_ask import (
+    run_clarify_link_repo_repository_workflow,
+)
 from services.intent_service.milestone_pick import (
     run_clarify_milestone_pick_workflow,
 )
@@ -3931,6 +3934,17 @@ def register_default_workflows() -> None:
             effect=EffectClass.WRITE,
             outwardness=Outwardness.PRIVATE,
             description="Archive the bound project from an accepted near-match offer (#2271)",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #2308 (link_repo slice; CXO 11-06 15:58): generic-accept landing for the
+        # armed "Which repository should I link to {project}?" question
+        # (link_repo_ask). effect: READ: a bare "yes" re-asks and re-arms for the
+        # same bound project; the owner/name answer arms the bound yes/no at the pop
+        # seam, and only that yes writes. action_triggered=False (the #1987 precedent).
+        "clarify_link_repo_repository": WorkflowEntry(
+            entry_point=run_clarify_link_repo_repository_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #2308 which-repository-to-link question on a bare affirmative",
             requires_context=["pending_action", "intent_service"],
         ),
         "reminder_clear_pick_target": WorkflowEntry(

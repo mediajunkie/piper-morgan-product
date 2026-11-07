@@ -2586,6 +2586,28 @@ class IntentService:
                             intent_data=_pap_turn["intent_data"],
                             requires_clarification=False,
                         )
+                # #2308 (link_repo slice): a pending WHICH-REPOSITORY question (armed
+                # by link_repo's held write ask for a found project) binds an
+                # owner/name answer, read with the handler's own parse, and arms the
+                # bound "Link … to …? (yes/no)"; nothing is written here. Returning
+                # None falls through exactly as the archive pick does.
+                elif _vi_payload.get("kind") == "link_repo_repository_question":
+                    from services.intent_service import link_repo_ask as _lra
+
+                    _lra_turn = await _lra.handle_link_repo_repository_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _lra_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_lra_turn["message"],
+                            intent_data=_lra_turn["intent_data"],
+                            requires_clarification=_lra_turn.get("requires_clarification", False),
+                        )
                 elif _vi_payload.get("kind") == "reminder_time_question":
                     from services.intent_service import todo_handlers as _th
 
@@ -3226,6 +3248,8 @@ class IntentService:
                         # #2271: a released archive pick; nothing archived.
                         "project_archive_pick_question": "project_archive_pick_question_released",
                         "project_archive_confirm_question": "project_archive_confirm_question_released",
+                        # #2308: a released which-repository question; nothing linked.
+                        "link_repo_repository_question": "link_repo_repository_question_released",
                         # #2035: an ignored yes/no add-project offer is
                         # dropped by the pop; nothing was created.
                         "add_project_offer_question": "add_project_offer_abandoned",

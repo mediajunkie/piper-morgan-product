@@ -19,8 +19,9 @@ the intent's context slots, the router's args read through the handler's own
 arg reader, or the handler's own named resolver function. No new pattern is
 written for a question. An op whose handler finds its target with an LLM call or
 with a pattern written inline in the handler (update_document, comment_issue,
-link_repo, set_default_repo, set_timezone) has nothing the question can read
-before "yes", so it gets the statement; its row is listed in #2304's report.
+set_default_repo, set_timezone) has nothing the question can read before "yes",
+so it gets the statement; its row is listed in #2304's report. link_repo's parse
+was moved into one shared resolver (#2308), so it names the thing.
 """
 
 from __future__ import annotations
@@ -53,7 +54,8 @@ NOT_SURE_UPDATE_DOCUMENT = (
 DIRECT_REQUEST_EXAMPLES = {
     "set_default_repo": '"set my default repo to owner/name"',
     "set_timezone": '"set my timezone to America/Los_Angeles"',
-    "link_repo": '"link owner/name to project Mobile Redesign"',
+    # link_repo's example was dropped (CXO 11-06, served-judged on 7ffd460640) until a
+    # link phrasing serves; link_repo now names the thing when it can (#2308).
 }
 
 # CXO 11-06 11:28 (verbatim): add_project with no name. Armed through the #2080
@@ -66,10 +68,13 @@ ADD_PROJECT_NAME_QUESTION = (
 
 @dataclass(frozen=True)
 class ConfirmWords:
-    """A filled question and its decline summary (``Okay — I won't {summary}. …``)."""
+    """A filled question and its decline summary (``Okay — I won't {summary}. …``).
+    ``decline`` (#2308): the op's own decline line in CXO's words, used verbatim by
+    both askers in place of the generic summary sentence when set."""
 
     question: str
     summary: str
+    decline: Optional[str] = None
 
 
 @dataclass(frozen=True)
@@ -395,6 +400,54 @@ set_timezone_write_ask = _statement_write_ask(
     "set_timezone",
     NOT_SURE_SAY_IT_DIRECTLY.format(example=DIRECT_REQUEST_EXAMPLES["set_timezone"]),
 )
-link_repo_write_ask = _statement_write_ask(
-    "link_repo", NOT_SURE_SAY_IT_DIRECTLY.format(example=DIRECT_REQUEST_EXAMPLES["link_repo"])
-)
+
+
+def link_repo_confirm_words(repo_name: str, project_name: str) -> ConfirmWords:
+    """CXO 11-06 15:58, final 16:33 (verbatim): ``Link {owner/name} to {project}?
+    (yes/no)``, and its decline ``Okay, I won't link … Nothing has been changed.``"""
+    return ConfirmWords(
+        question=f"Link {repo_name} to {project_name}? (yes/no)",
+        summary=f"link {repo_name} to {project_name}",
+        decline=f"Okay, I won't link {repo_name} to {project_name}. Nothing has been changed.",
+    )
+
+
+async def link_repo_write_ask(request: WriteAskRequest) -> WriteAsk:
+    """#2308's link_repo slice (Arch 11-06 15:59 (4)(b); CXO 15:58): resolve with the
+    handler's own parse (``canonical_handlers.resolve_link_repo_request``) and its own
+    project lookup (a read), then: both found, the bound yes/no; the project found
+    and no repo, CXO's which-repository question ARMED on its own carrier; a named
+    project that doesn't exist, the handler's not-found line; otherwise (neither,
+    or a repo with no project) the not-sure line. Nothing is written before "yes"."""
+    from services.intent_service import link_repo_ask as _lra
+    from services.intent_service.canonical_handlers import resolve_link_repo_request
+
+    intent = request.intent
+    message = _original(intent) or request.message
+    repo_name, project_name = resolve_link_repo_request(message)
+    owner = request.user_id or request.principal
+    if not project_name or not owner:
+        return WriteAsk(reply=NOT_SURE_STATEMENT)
+    project = await _lra.find_link_project(project_name, str(owner))
+    if project is None:
+        return WriteAsk(reply=_lra.PROJECT_NOT_FOUND_LINE.format(name=project_name))
+    name = str(project.name)
+    if repo_name:
+        bind_write_values(
+            intent, "link_repo", repo_name=repo_name, project_name=name, project_id=str(project.id)
+        )
+        return WriteAsk(words=link_repo_confirm_words(repo_name, name))
+    asked = _lra.arm_which_repository(
+        getattr(request.intent_service, "workflow_offer_service", None),
+        request.session_id,
+        str(owner),
+        project,
+        message,
+    )
+    if asked is None:
+        return WriteAsk(reply=NOT_SURE_STATEMENT)  # nowhere to bind the answer: not asked
+    return WriteAsk(
+        reply=asked,
+        armed=True,
+        intent_data={"action": "link_repo_needs_repository", _lra.REPOSITORY_PENDING_FLAG: True},
+    )

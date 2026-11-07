@@ -6230,6 +6230,11 @@ What would you like to set up first?"""
         still needs it) — this is a relocation, not a shared helper, same
         shape as _handle_list_repos's project-name extraction.
 
+        #2308: that parse now lives in ONE function,
+        ``link_repo_ask.resolve_link_repo_request`` (moved, not copied), which the
+        held write ask (``write_confirm_words.link_repo_write_ask``) reads too. A
+        confirmed held ask carries its values bound; they are written as shown.
+
         Writes via ``RepositoryRepository.link_to_project`` with
         ``is_primary`` left at its default (False) — unchanged from the
         legacy behaviour. CXO's note that a chat-driven link always writes
@@ -6241,11 +6246,11 @@ What would you like to set up first?"""
         same shape _handle_list_repos uses — never read, so no behaviour
         depends on it.
         """
-        import re
-
         from services.database.repositories import ProjectRepository, RepositoryRepository
         from services.database.session_factory import AsyncSessionFactory
         from services.domain import models as domain
+        from services.intent_service.link_repo_ask import PROJECT_NOT_FOUND_LINE
+        from services.intent_service.write_confirm_words import bound_write_values
 
         if not user_id:
             return {
@@ -6262,23 +6267,19 @@ What would you like to set up first?"""
             }
 
         original_message = intent.context.get("original_message", "")
-        message_lower = original_message.lower().strip()
 
-        repo_name = None
-        repo_match = re.search(r"([\w.-]+/[\w.-]+)", original_message)
-        if repo_match:
-            repo_name = repo_match.group(1)
-
-        project_name = None
-        link_patterns = [
-            r"\b(?:link|connect|add)\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?\s+)?(?:[\w.-]+/[\w.-]+)\s+to\s+(?:(?:my|the)\s+)?(?:project\s+)?(.+)",
-            r"\b(?:link|connect|add)\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+to\s+(?:(?:my|the)\s+)?(?:project\s+)?(.+)",
-        ]
-        for pattern in link_patterns:
-            match = re.search(pattern, message_lower, re.IGNORECASE)
-            if match:
-                project_name = self._clean_trailing_words(match.group(1).strip())
-                break
+        # #2308 (Arch 11-06 13:23, 15:59 (4)(b)): a confirmed held ask carries the
+        # values its question showed (write_ask_bound); write exactly those, never a
+        # second extraction. Unbound (a direct imperative turn): the handler's own
+        # parse, now the one shared resolver the ask reads too.
+        bound = bound_write_values(intent, "link_repo")
+        repo_name: Optional[str]
+        project_name: Optional[str]
+        if bound.get("repo_name") and bound.get("project_name"):
+            repo_name = str(bound["repo_name"])
+            project_name = str(bound["project_name"])
+        else:
+            repo_name, project_name = resolve_link_repo_request(original_message)
 
         if not repo_name:
             return {
@@ -6322,11 +6323,7 @@ What would you like to set up first?"""
             project = await project_repo.find_by_name(name=project_name, owner_id=user_id)
             if not project:
                 return {
-                    "message": (
-                        f"I couldn't find a project called '{project_name}'. "
-                        "Check the name and try again, or say 'show my projects' "
-                        "to see your project list."
-                    ),
+                    "message": PROJECT_NOT_FOUND_LINE.format(name=project_name),
                     "intent": {
                         "category": IntentCategoryEnum.PORTFOLIO.value,
                         "action": "link_repo",
@@ -6399,12 +6396,18 @@ What would you like to set up first?"""
                 linked_by=user_id,
             )
 
-            return {
-                "message": (
+            # #2308 (CXO 11-06 16:33): the yes to a held ask names what was linked.
+            # A direct imperative turn (nothing bound) keeps its existing line.
+            if bound:
+                linked_message = f"Linked {repo_name} to {project.name}.{validation_note}"
+            else:
+                linked_message = (
                     f"Done! I've linked {repo_name} to your {project.name} project. "
                     "I can now help you track issues, PRs, and activity for this repo."
                     f"{validation_note}"
-                ),
+                )
+            return {
+                "message": linked_message,
                 "intent": {
                     "category": IntentCategoryEnum.PORTFOLIO.value,
                     "action": "link_repo",
@@ -6951,6 +6954,39 @@ What would you like to set up first?"""
 
 # Global instance
 _canonical_handlers = None
+
+
+def resolve_link_repo_request(message: str) -> Tuple[Optional[str], Optional[str]]:
+    """link_repo's parse: ``(owner/name as typed, project name)``, either None.
+
+    #2308: lifted unchanged out of ``CanonicalHandlers._handle_link_repo`` (#862's
+    LINK branch) so the held write ask (``write_confirm_words.link_repo_write_ask``,
+    ``link_repo_ask``) reads the SAME parse the handler writes from: the owner/name
+    from the message as typed, the project name from the lowercased message by the
+    two link patterns, trailing filler words dropped. Moved, not copied; same file,
+    so TestBinderFileRatchet's per-file count is unchanged.
+    """
+    import re
+
+    original_message = message or ""
+    message_lower = original_message.lower().strip()
+
+    repo_name = None
+    repo_match = re.search(r"([\w.-]+/[\w.-]+)", original_message)
+    if repo_match:
+        repo_name = repo_match.group(1)
+
+    project_name = None
+    link_patterns = [
+        r"\b(?:link|connect|add)\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?\s+)?(?:[\w.-]+/[\w.-]+)\s+to\s+(?:(?:my|the)\s+)?(?:project\s+)?(.+)",
+        r"\b(?:link|connect|add)\s+(?:(?:my|the|a)\s+)?(?:repo(?:sitory)?)\s+to\s+(?:(?:my|the)\s+)?(?:project\s+)?(.+)",
+    ]
+    for pattern in link_patterns:
+        match = re.search(pattern, message_lower, re.IGNORECASE)
+        if match:
+            project_name = CanonicalHandlers._clean_trailing_words(match.group(1).strip())
+            break
+    return repo_name, project_name
 
 
 def get_canonical_handlers() -> CanonicalHandlers:

@@ -308,6 +308,7 @@ def build_confirmation_offer(intent: Intent, words: Any = None) -> Optional[Conf
     """
     action = intent.action
     issue_number = _issue_number_from(intent)
+    decline: Optional[str] = None  # #2308: an op's own decline line, when its words carry one
 
     if action in _CLOSE_FAMILY or action in _REOPEN_FAMILY:
         if issue_number is None:
@@ -328,6 +329,7 @@ def build_confirmation_offer(intent: Intent, words: Any = None) -> Optional[Conf
         # #2304: the entry's own words (CXO's per-op line, the thing named).
         summary = words.summary
         question = words.question
+        decline = words.decline
     else:
         raise ValueError(
             f"#2304: no confirm words for {action!r}; the rail resolves the entry's "
@@ -347,7 +349,7 @@ def build_confirmation_offer(intent: Intent, words: Any = None) -> Optional[Conf
                 "intent": intent,
                 "summary": summary,
             },
-            "decline_message": (f"Okay — I won't {summary}. Nothing has been changed."),
+            "decline_message": decline or f"Okay — I won't {summary}. Nothing has been changed.",
         },
     )
 
