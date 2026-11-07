@@ -859,8 +859,8 @@ async def build_todo_delete_confirmation(
         except ValueError:
             return TodoDeleteGate(passthrough=True)
         if shown_lines:
-            # #2219 Gap A (PA's served run on 34efff2af8): after a grouped list, "delete
-            # todo 5" means line 5 as shown, never the 5th row in storage order.
+            # #2219 Gap A (PA's served run on 34efff2af8): after a grouped list,
+            # "delete todo 5" means line 5 as shown, never the 5th stored row.
             if idx < 0 or idx >= len(shown_lines) or not shown_lines[idx]:
                 return TodoDeleteGate(passthrough=True)
             return _armed_line_delete(intent, shown_lines[idx], idx + 1, message)
