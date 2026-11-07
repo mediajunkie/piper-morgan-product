@@ -26,7 +26,7 @@ v865, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
   - Ruling: longer term, the split (#2291, Ongoing, mail records first, xian reviews before cutover).
 - **Posts:**
   - Thu "Don't Overpromise": published, with Medium.
-  - Sat 11-07 "What Reaching Private Beta Means": building, xian writes it.
+  - Sat 11-07 "At Long Last, Beta" (working title, CSV): building, status planned, xian writes it.
   - Sun 11-08 "Fixed and Scores Higher Came Apart": insight.
   - Tue and Thu next week: beats 2 and 3.
   - xian wants an editorial-strategy session with Comms (a beta era for the blog, the narrative cadence).
