@@ -1013,7 +1013,12 @@ async def run_complete_todo_workflow(
         )
 
     message = await intent_service.todo_handlers.handle_complete_todo(
-        intent, session_id, user_id=todo_user_id
+        intent,
+        session_id,
+        user_id=todo_user_id,
+        # #2219 Gap A: a numbered or named grouped line asks one-or-all, armed here.
+        offer_service=getattr(intent_service, "workflow_offer_service", None),
+        principal=user_id,
     )
     # Issue #748: Don't return workflow_id for synchronous operations
     return IntentProcessingResult(
