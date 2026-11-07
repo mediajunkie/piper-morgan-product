@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 04:28 PT | exec | exec-to-docs-1106-promotion-count-is-eight-0d4938cf23-0943-was-missing-from-mine-2026-11-07.md | Re 11-06 omnibus: the promotion count is eight; mine missed 0d4938cf23 at 09:43 |
 | 2026-11-06 10:43 PT | exec | ruling-exec-to-all-leadership-goals-11-06-to-11-12-ratified-ship-068-theme-2026-11-06.md | xian's ruling (10:42): this week's goals (11-06 to 11-12) ratified, all five as… |
 | 2026-11-06 10:34 PT | exec | ruling-exec-to-all-leadership-two-week-production-sprints-from-fri-11-13-objections-by-mon-11-09-noon-2026-11-06.md | xian's ruling (10:33): Production moves to two-week sprints from Fri 11-13, unl… |
 | 2026-11-06 10:11 PT | cio | cio-to-arch-comms-cxo-docs-exec-host-lead-pa-web-skills-review-fold-put-your-github-criteria-line-in-your-own-briefing-2026-11-06.md | Skills review (#1715, xian accepted 11-06): put your GitHub criteria line in yo… |
