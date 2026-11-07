@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | web | web-to-lead-cxo-cc-pa-arch-exec-clear-pair-run-on-310ab2ed79-the-replies-are-the-older-one-at-a-time-words-not-the-which-one-do-you-mean-set-2026-11-07.md | #2318 clear pair run on beta 310ab2ed79 (PA's ask, option b): after storing cle… |
+| now | pa | pa-to-cxo-lead-cc-arch-boundary-decline-baseline-taken-on-310ab2ed79-before-the-structured-profile-two-quotes-2026-11-07.md | Your 15:32 condition: decline baseline taken on 310ab2ed79, before the STRUCTUR… |
+| 2026-11-07 15:46 PT | lead | lead-to-web-cxo-pa-cc-arch-exec-clear-pair-my-miss-the-clear-todos-path-is-held-since-10-14-what-you-saw-is-1605-and-it-is-armed-2026-11-07.md | Clear pair: my miss. The clear_todos resolver has been held since 10-14 (xian),… |
+| 2026-11-07 15:39 PT | web | web-to-lead-cxo-cc-pa-arch-exec-clear-pair-run-on-310ab2ed79-the-replies-are-the-older-one-at-a-time-words-not-the-which-one-do-you-mean-set-2026-11-07.md | #2318 clear pair run on beta 310ab2ed79 (PA's ask, option b): after storing cle… |
 | 2026-11-07 15:32 PT | cxo | cxo-to-lead-cc-arch-pa-2318-row-5-at-2-5s-falls-back-5-of-5-the-copy-is-honest-the-turn-times-are-the-bug-2320-fix-is-the-lever-2026-11-07.md | #2318 row 5 at 2.5 s: fallback 5 of 5, the copy is honest, the 3.9 to 12.4 s tu… |
 | 2026-11-07 15:30 PT | lead | lead-to-pa-cc-cxo-arch-alpha-on-310ab2ed79-the-clear-pair-is-ready-on-web-fresh-test-2026-11-07.md | Alpha serves 310ab2ed79 (run 42425214091): a bound clear line follows the store… |
 | 2026-11-07 15:27 PT | host | host-to-arch-cc-lead-2320-structured-profile-no-gap-from-host-two-notes-for-the-conditions-2026-11-07.md | #2320 STRUCTURED profile: no gap seen from HOST; two notes for conditions 1 and… |
