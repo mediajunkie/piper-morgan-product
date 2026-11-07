@@ -48,6 +48,7 @@ from services.intent_service.delete_cap import (
 )
 from services.intent_service.delete_todo_pick import (
     DELETE_PICK_KIND,
+    PICK_PENDING_FLAG,
     arm_delete_pick,
     handle_delete_todo_pick_turn,
 )
@@ -75,6 +76,17 @@ CXO_CAPPED_REPLY = (
     '2. "send the budget review to the board"\n'
     "\n"
     "Tell me which one to delete first. Nothing has been changed."
+)
+
+# #2318 (CXO 11-07, verbatim): where an answer can be bound, the cap asks an ARMED
+# question over the capped lines (the #1987 pick), labelled as the person saw them.
+CXO_CAPPED_PICK = (
+    "I can delete one reminder at a time for now. You asked about these:\n"
+    '1. "revise the pr"\n'
+    '2. "send the budget review to the board"\n'
+    "\n"
+    "Which one should I delete first? Say the number or the name, or 'never mind' to "
+    "leave them alone."
 )
 
 
@@ -218,20 +230,57 @@ class TestTargetsPathThroughTheRailEntryPoint:
             context={"intent_service": intent_service, "intent": _intent(message, targets)},
         )
 
-    async def test_served_case_first_two_is_capped_and_arms_nothing(
+    async def test_served_case_first_two_is_capped_and_arms_the_pick(
         self, intent_service, store, todo_service, session_ctx, rows
     ):
         session_ctx.last_numbered_list = NumberedList(
             kind="reminders", ids=[t.id for t in rows], texts=[t.text for t in rows]
         )
         result = await self._run(intent_service, "delete the first two reminders", ["1-2"])
-        assert result.message == CXO_CAPPED_REPLY
-        assert result.requires_clarification is False
+        assert result.message == CXO_CAPPED_PICK
+        assert result.requires_clarification is True
         assert not result.intent_data.get("destructive_confirmation_pending")
-        assert store.slot is None and store.calls == []
+        assert result.intent_data.get(PICK_PENDING_FLAG) is True
+        pa = store.slot["pending_action"]
+        assert pa["kind"] == DELETE_PICK_KIND
+        assert pa["pick_ids"] == [str(rows[0].id), str(rows[1].id)]
+        assert pa["pick_labels"] == [1, 2]
         todo_service.delete_todo.assert_not_awaited()
-        # The capped list is now the numbered list on screen (context, not an arm).
-        assert session_ctx.last_numbered_list.ids == [rows[0].id, rows[1].id]
+        # The labels are the shown list's, so the shown list stays the numbered one.
+        assert session_ctx.last_numbered_list.ids == [t.id for t in rows]
+
+    async def test_capped_pick_labels_are_the_shown_numbers(
+        self, intent_service, store, todo_service, session_ctx, rows
+    ):
+        """#2318 (CXO 11-07): the numbers are the ones the person saw, not 1..N."""
+        vet = _todo("call the vet", 3)
+        shown = [rows[0], vet, rows[1]]
+        todo_service.list_todos = AsyncMock(return_value=rows + [vet])
+        session_ctx.last_numbered_list = NumberedList(
+            kind="reminders", ids=[t.id for t in shown], texts=[t.text for t in shown]
+        )
+        result = await self._run(intent_service, "delete the first and third", ["1", "3"])
+        assert '1. "revise the pr"' in result.message
+        assert '3. "send the budget review to the board"' in result.message
+        assert store.slot["pending_action"]["pick_labels"] == [1, 3]
+
+    async def test_an_answer_to_the_capped_pick_reaches_the_single_confirm(
+        self, intent_service, store, todo_service, session_ctx, rows
+    ):
+        """CXO 11-07: the number or the name binds to the single-line confirm."""
+        session_ctx.last_numbered_list = NumberedList(
+            kind="reminders", ids=[t.id for t in rows], texts=[t.text for t in rows]
+        )
+        await self._run(intent_service, "delete the first two reminders", ["1-2"])
+        offer = store.get_and_clear_pending_offer(_SESSION)
+        out = await handle_delete_todo_pick_turn(
+            offer, "2", session_id=_SESSION, user_id=_USER, intent_service=intent_service
+        )
+        assert out["message"] == (
+            'Delete the reminder "send the budget review to the board"? (yes/no)'
+        )
+        assert store.slot["pending_action"]["kind"] == DESTRUCTIVE_CONFIRM_KIND
+        todo_service.delete_todo.assert_not_awaited()
 
     async def test_one_target_still_arms_todays_named_confirm(
         self, intent_service, store, todo_service, session_ctx, rows
@@ -266,7 +315,7 @@ class TestPickPath:
     @pytest.mark.parametrize(
         "answer", ["1 and 2", "both", "the first and the last", "all of them", "#1, #2"]
     )
-    async def test_multi_answer_is_capped_and_arms_nothing(
+    async def test_multi_answer_is_capped_and_arms_the_pick(
         self, intent_service, store, todo_service, answer
     ):
         offer = await _armed(intent_service, store, todo_service)
@@ -274,10 +323,15 @@ class TestPickPath:
             offer, answer, session_id=_SESSION, user_id=_USER, intent_service=intent_service
         )
         assert out is not None, answer
-        assert out["message"] == CXO_CAPPED_REPLY, answer
+        assert out["message"] == CXO_CAPPED_PICK, answer
         assert out["intent_data"][DELETE_CAPPED_FLAG] is True
-        assert not out.get("requires_clarification")
-        assert store.slot is None, answer  # neither a delete confirm nor a re-armed pick
+        assert out["intent_data"][PICK_PENDING_FLAG] is True
+        assert out.get("requires_clarification") is True
+        # #2318: the capped lines re-armed as the pick, never a delete confirm.
+        pa = store.slot["pending_action"]
+        assert pa["kind"] == DELETE_PICK_KIND, answer
+        assert pa["pick_texts"] == ["revise the pr", "send the budget review to the board"]
+        assert pa["pick_labels"] == [1, 2]
         todo_service.delete_todo.assert_not_awaited()
 
     @pytest.mark.parametrize("answer", ["2", "the second one", "budget review"])

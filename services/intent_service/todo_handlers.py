@@ -1460,28 +1460,58 @@ class TodoIntentHandlers:
         if exceeds_delete_cap(len(picked)):
             # Issue 2019 (xian 2026-10-14, interim until soft delete): a
             # multi-item set arms NO delete carrier and deletes nothing — CXO's
-            # capped reply names the set in the order resolved. The list is
-            # remembered as the last numbered list (context, not an arm) so
-            # "delete the first one" binds to what the user was just shown.
+            # capped reply names the set in the order resolved.
             from services.intent_service.delete_cap import remember_capped_list
+            from services.intent_service.delete_todo_pick import arm_capped_delete_pick
+            from services.intent_service.reminder_clear import _due_iso
 
-            remember_capped_list(
-                session_id,
-                principal or user_id,
-                [t.id for t in picked],
-                [t.text for t in picked],
-                pool_kind,
-            )
             logger.info("todo_batch_delete_capped", picked=len(picked), session_id=session_id)
             # #2219 (CXO 11-06): a pick that is one copy of a grouped line shows the
             # line as the list showed it, "review prs" (×3).
-            copies = [len(_grouped_line_of(t, shown_lines) or [t]) for t in picked]
+            lines = [_grouped_line_of(t, shown_lines) or [t] for t in picked]
+            copies = [len(line) for line in lines]
             # #2219 (CXO 11-05 20:47): the noun carries through the conversation;
             # todos read "one todo", a reminders list "one reminder" (Web 11-06).
             cap_noun = conversation_noun(
                 intent.original_message or ctx.get("original_message"),
                 getattr(numbered, "kind", None) or pool_kind,
             )
+            # #2318 (CXO 11-07): the cap asks an armed pick over these lines, each
+            # labelled with the number the person saw (1..N when no list was shown).
+            label_of = {
+                str(t.id): n for n, line in enumerate(shown_lines or [], 1) for t in line
+            } or {str(i): n for n, i in enumerate(getattr(numbered, "ids", None) or [], 1)}
+            labels = (
+                [label_of[str(t.id)] for t in picked]
+                if label_of and all(str(t.id) in label_of for t in picked)
+                else None
+            )
+            question = arm_capped_delete_pick(
+                intent.original_message or ctx.get("original_message") or "",
+                session_id,
+                principal,
+                cap_noun,
+                [str(t.id) for t in picked],
+                [t.text for t in picked],
+                [_due_iso(t, cap_noun) for t in picked],
+                copies,
+                [[str(r.id) for r in line] for line in lines],
+                labels,
+                offer_service,
+            )
+            if labels is None:
+                # The capped lines ARE the numbered list now (context, not an arm), so
+                # "delete the first one" binds to what the user was just shown. With
+                # shown labels the shown list stays the numbered one.
+                remember_capped_list(
+                    session_id,
+                    principal or user_id,
+                    [t.id for t in picked],
+                    [t.text for t in picked],
+                    pool_kind,
+                )
+            if question is not None:
+                return question, True
             return capped_delete_reply([t.text for t in picked], cap_noun, copies=copies), False
 
         # ── DESTRUCTIVE: always confirm (issue 2019: one item at most) ──

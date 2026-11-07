@@ -189,7 +189,8 @@ class TestThenTheTargetsHookOwnsTheTurn:
         self, handlers, offers, session_ctx, four
     ):
         """Resolution unchanged (exactly rows 1 and 2 of the list shown);
-        issue 2019 caps the turn: nothing armed, CXO's capped reply."""
+        issue 2019 caps the turn: nothing deleted, CXO's capped question, armed as
+        the #1987 pick over those two lines (#2318, CXO 11-07)."""
         session_ctx.last_numbered_list = NumberedList(
             kind="reminders", ids=[t.id for t in four], texts=[t.text for t in four]
         )
@@ -198,13 +199,15 @@ class TestThenTheTargetsHookOwnsTheTurn:
         )
         assert out is not None
         msg, armed = out
-        assert armed is False
+        assert armed is True
         assert msg.startswith("I can delete one reminder at a time for now."), msg
         assert '1. "revise the pr"' in msg
         assert '2. "send the budget review to finance"' in msg
         assert "web check alpha" not in msg, msg
         handlers.todo_service.delete_todo.assert_not_awaited()
-        offers.set_pending_offer.assert_not_called()
+        _sid, offer = offers.set_pending_offer.call_args.args[:2]
+        assert offer["pending_action"]["kind"] == "delete_todo_pick_question"
+        assert offer["pending_action"]["pick_labels"] == [1, 2]
 
     @pytest.mark.asyncio
     async def test_first_two_with_no_numbered_list_shown_asks_honestly_and_numbers_the_list(

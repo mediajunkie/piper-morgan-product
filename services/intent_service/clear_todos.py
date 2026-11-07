@@ -551,6 +551,12 @@ async def run_clear_todos(
                 error="delete_todo dispatch failed",
                 error_type="DispatchError",
             )
+        from services.intent_service.delete_todo_pick import PICK_PENDING_FLAG
+
+        if (result.intent_data or {}).get(PICK_PENDING_FLAG):
+            # #2318: the delete handler capped the set (#2019) and armed the pick
+            # over it; that question stands as asked, never re-worded as a confirm.
+            return result
         question = _clear_variant_three_question(picked_texts, left)
         if result.requires_clarification and offer_service is not None and session_id:
             armed = offer_service.peek_pending_offer(session_id, user_id=principal)

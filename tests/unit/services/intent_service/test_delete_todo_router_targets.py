@@ -317,21 +317,24 @@ class TestHandleDeleteTodoTargets:
         self, handlers, offers, session_ctx, four
     ):
         """Issue 2019 (xian 2026-10-14): two resolved items after a carve-out
-        arm NOTHING and delete nothing — CXO's capped reply names each item
-        in the order resolved (was: the D2 enumerating confirm)."""
+        delete nothing — CXO's capped reply names each item in the order
+        resolved (was: the D2 enumerating confirm). #2318 (CXO 11-07): it asks
+        an armed question, the #1987 pick over those lines, labelled as shown."""
         self._shown(session_ctx, four)
         intent = _intent("delete the first three except the pr one", ["1-3"], exclude=["3"])
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
-        assert armed is False
+        assert armed is True
         assert msg == (
             "I can delete one reminder at a time for now. You asked about these:\n"
             '1. "check the test card again"\n'
             '2. "check the test card again"\n'
             "\n"
-            "Tell me which one to delete first. Nothing has been changed."
+            "Which one should I delete first? Say the number or the name, or 'never mind' "
+            "to leave them alone."
         )
         handlers.todo_service.delete_todo.assert_not_awaited()
-        offers.set_pending_offer.assert_not_called()
+        _sid, offer = offers.set_pending_offer.call_args.args[:2]
+        assert offer["pending_action"]["kind"] == "delete_todo_pick_question"
 
     @pytest.mark.asyncio
     async def test_capped_reply_says_todo_when_the_person_said_todos_2219(
@@ -342,7 +345,7 @@ class TestHandleDeleteTodoTargets:
         self._shown(session_ctx, four)
         intent = _intent("delete the first two todos", ["1-2"])
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
-        assert armed is False
+        assert armed is True  # #2318: the capped question is armed
         assert msg.splitlines()[0] == (
             "I can delete one todo at a time for now. You asked about these:"
         )
@@ -350,19 +353,24 @@ class TestHandleDeleteTodoTargets:
 
     @pytest.mark.asyncio
     async def test_all_of_twelve_is_capped_issue_2019(self, handlers, offers, session_ctx):
-        """Issue 2019: "delete all of them" over 12 rows arms nothing and
-        lists all 12 numbered (was: the D3 bulleted confirm)."""
+        """Issue 2019: "delete all of them" over 12 rows deletes nothing and
+        lists all 12 numbered (was: the D3 bulleted confirm); #2318: armed as
+        the pick over the 12, numbered 1..12 since no list was shown."""
         twelve = [_due(f"item {i}", 100 - i) for i in range(12)]
         handlers.todo_service.list_todos = AsyncMock(return_value=twelve)
         intent = _intent("delete all of them", ["all"])
         msg, armed = await handlers.handle_delete_todo_targets(intent, "s1", uuid4(), offers, "u")
-        assert armed is False
+        assert armed is True
         lines = msg.splitlines()
         assert lines[0] == "I can delete one reminder at a time for now. You asked about these:"
         assert lines[1:13] == [f'{i + 1}. "item {i}"' for i in range(12)]
-        assert lines[-1] == "Tell me which one to delete first. Nothing has been changed."
+        assert lines[-1] == (
+            "Which one should I delete first? Say the number or the name, or 'never mind' "
+            "to leave them alone."
+        )
         handlers.todo_service.delete_todo.assert_not_awaited()
-        offers.set_pending_offer.assert_not_called()
+        _sid, offer = offers.set_pending_offer.call_args.args[:2]
+        assert len(offer["pending_action"]["pick_ids"]) == 12
 
     @pytest.mark.asyncio
     async def test_ordinal_without_a_numbered_list_shows_the_list_and_asks(

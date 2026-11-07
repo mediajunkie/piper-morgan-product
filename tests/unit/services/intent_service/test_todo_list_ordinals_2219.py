@@ -487,7 +487,8 @@ def test_the_line_pick_refuses_to_arm_a_delete():
 
 @pytest.mark.asyncio
 async def test_a_capped_multi_delete_shows_a_grouped_line_as_the_list_did(handlers, store, service):
-    """CXO 11-06 09:16: the capped list names a grouped line as shown, "review prs" (×3)."""
+    """CXO 11-06 09:16: the capped list names a grouped line as shown, "review prs" (×3).
+    #2318 (CXO 11-07): numbered as the list showed them, and armed as the pick."""
     await _show(handlers)
     msg, armed = await handlers.handle_delete_todo_targets(
         _intent("delete_todo", "delete the first and third", ["1", "3"]),
@@ -496,9 +497,9 @@ async def test_a_capped_multi_delete_shows_a_grouped_line_as_the_list_did(handle
         store,
         _USER,
     )
-    assert armed is False
+    assert armed is True
     assert '1. "urgent task"\n' in msg
-    assert '2. "review prs" (×3)' in msg
+    assert '3. "review prs" (×3)' in msg
     assert service.deleted_ids == []
 
 

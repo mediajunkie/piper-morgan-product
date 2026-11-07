@@ -320,8 +320,9 @@ class TestStoredDelete:
     ):
         """Issue 2019 (xian 2026-10-14): stored 'clear' = delete over 2+
         items re-enters delete_todo (real dispatch), whose handler caps the
-        set — nothing armed, nothing deleted, CXO's capped reply (was the
-        variant-3 enumerating confirm)."""
+        set — nothing deleted, CXO's capped reply (was the variant-3
+        enumerating confirm). #2318 (CXO 11-07): the cap now arms the #1987
+        pick over the capped lines, labelled as shown, and asks CXO's question."""
         _stored(monkeypatch, rc.VALUE_DELETE)
         intent = _clear_intent(["1-3"], exclude=["3"])
         intent_service._session_ctx.last_numbered_list = NumberedList(
@@ -333,12 +334,18 @@ class TestStoredDelete:
             '1. "check the test card again"\n'
             '2. "check the test card again"\n'
             "\n"
-            "Tell me which one to delete first. Nothing has been changed."
+            "Which one should I delete first? Say the number or the name, or 'never mind' "
+            "to leave them alone."
         )
-        assert result.requires_clarification is False
+        assert result.requires_clarification is True
         intent_service.todo_handlers.todo_service.delete_todo.assert_not_awaited()
-        intent_service.workflow_offer_service.set_pending_offer.assert_not_called()
-        assert intent_service.workflow_offer_service.peek_pending_offer("s1") is None
+        from services.intent_service.delete_todo_pick import DELETE_PICK_KIND
+
+        intent_service.workflow_offer_service.set_pending_offer.assert_called_once()
+        _sid, offer = intent_service.workflow_offer_service.set_pending_offer.call_args.args[:2]
+        assert offer["pending_action"]["kind"] == DELETE_PICK_KIND
+        assert offer["pending_action"]["pick_labels"] == [1, 2]
+        assert offer["question"] == result.message
 
 
 class TestIssue2019VerbAnswerReentry:
@@ -363,12 +370,18 @@ class TestIssue2019VerbAnswerReentry:
             '1. "review the pr"\n'
             '2. "revise the pr"\n'
             "\n"
-            "Tell me which one to delete first. Nothing has been changed."
+            "Which one should I delete first? Say the number or the name, or 'never mind' "
+            "to leave them alone."
         )
-        assert not result.get("requires_clarification")
+        # #2318 (CXO 11-07): the cap arms the #1987 pick over the capped lines.
+        assert result.get("requires_clarification") is True
         intent_service.todo_handlers.todo_service.delete_todo.assert_not_awaited()
-        intent_service.workflow_offer_service.set_pending_offer.assert_not_called()
-        assert intent_service.workflow_offer_service.peek_pending_offer("s1") is None
+        from services.intent_service.delete_todo_pick import DELETE_PICK_KIND, PICK_PENDING_FLAG
+
+        _sid, offer = intent_service.workflow_offer_service.set_pending_offer.call_args.args[:2]
+        assert offer["pending_action"]["kind"] == DELETE_PICK_KIND
+        assert offer["pending_action"]["pick_texts"] == ["review the pr", "revise the pr"]
+        assert result["intent_data"][PICK_PENDING_FLAG] is True
 
     @pytest.mark.asyncio
     async def test_delete_answer_on_one_item_still_arms_the_named_confirm(

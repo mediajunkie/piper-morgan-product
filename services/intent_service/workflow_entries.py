@@ -867,6 +867,18 @@ async def run_delete_todo_workflow(
     )
     if _targets_result is not None:
         _msg, _armed = _targets_result
+        # #2318: the #2019 cap now arms the #1987 pick, not a delete confirm; the
+        # result says which, so the pick's flag guards it from the soft offer.
+        _armed_flag = {"destructive_confirmation_pending": True} if _armed else {}
+        if _armed:
+            try:
+                _tp = intent_service.workflow_offer_service.peek_pending_offer(session_id)
+                if _tp and (_tp.get("pending_action") or {}).get("kind") == DELETE_PICK_KIND:
+                    _armed_flag = {PICK_PENDING_FLAG: True}
+            except (
+                Exception
+            ):  # silent-ok: flag derivation only — the reply itself is already composed
+                pass
         return IntentProcessingResult(
             success=True,
             message=_msg,
@@ -875,7 +887,7 @@ async def run_delete_todo_workflow(
                 "action": intent.action,
                 "confidence": intent.confidence,
                 "router_targets": True,
-                **({"destructive_confirmation_pending": True} if _armed else {}),
+                **_armed_flag,
             },
             requires_clarification=_armed,
         )

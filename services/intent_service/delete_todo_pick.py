@@ -566,6 +566,51 @@ def _arm_line_pick(
     return question
 
 
+def arm_capped_delete_pick(
+    message: str,
+    session_id: Optional[str],
+    principal: Optional[str],
+    noun: str,
+    ids: List[str],
+    texts: List[str],
+    due_iso: List[Optional[str]],
+    copies: List[int],
+    line_ids: Optional[List[List[str]]],
+    labels: Optional[List[int]],
+    offer_service: Any,
+) -> Optional[str]:
+    """#2318 (CXO 11-07; Arch 09:24): the #2019 cap asks an armed question. The
+    ordinary delete pick over exactly the capped lines, ids bound now, worded as
+    the cap (``delete_cap.capped_pick_question``); the answer binds through
+    ``handle_delete_todo_pick_turn`` to the single-line confirm. ``None`` when
+    nothing could pop an answer (no session or store): the caller keeps the
+    unarmed statement."""
+    from services.intent_service.delete_cap import capped_pick_question
+
+    if not session_id or offer_service is None or not ids:
+        return None
+    question = capped_pick_question(texts, noun, copies=copies, labels=labels)
+    offer_service.set_pending_offer(
+        session_id,
+        _pick_offer(
+            principal,
+            noun,
+            ids,
+            texts,
+            due_iso,
+            message,
+            question,
+            copies=copies,
+            verb=VERB_DELETE,
+            line_ids=line_ids,
+            labels=labels,
+        ),
+        user_id=principal,
+    )
+    logger.info("delete_cap_pick_armed", session_id=session_id, count=len(ids))
+    return question
+
+
 async def handle_delete_todo_pick_turn(
     pending_offer: Dict[str, Any],
     message: str,
@@ -742,8 +787,37 @@ async def handle_delete_todo_pick_turn(
         )
 
         multi_texts = [texts[i] for i in multi]
-        remember_capped_list(session_id, user_id, [ids[i] for i in multi], multi_texts, f"{noun}s")
         logger.info("delete_todo_pick_capped", session_id=session_id, count=len(multi))
+        # #2318 (CXO 11-07): the cap asks an armed pick over the lines the answer
+        # named, each keeping the number the person saw in this pick.
+        rec_copies = payload.get("pick_copies") or []
+        rec_lines = payload.get("pick_line_ids") or []
+        rec_due = payload.get("pick_due") or []
+        question = arm_capped_delete_pick(
+            original_message,
+            session_id,
+            user_id,
+            noun,
+            [ids[i] for i in multi],
+            multi_texts,
+            [rec_due[i] if i < len(rec_due) else None for i in multi],
+            [int(rec_copies[i]) if i < len(rec_copies) else 1 for i in multi],
+            [list(rec_lines[i]) for i in multi] if len(rec_lines) == len(ids) else None,
+            [labels[i] for i in multi] if labels else [i + 1 for i in multi],
+            getattr(intent_service, "workflow_offer_service", None),
+        )
+        if question is not None:
+            return {
+                "message": question,
+                "intent_data": {
+                    "category": "execution",
+                    "action": CLARIFY_DELETE_PICK_WORKFLOW,
+                    DELETE_CAPPED_FLAG: True,
+                    PICK_PENDING_FLAG: True,
+                },
+                "requires_clarification": True,
+            }
+        remember_capped_list(session_id, user_id, [ids[i] for i in multi], multi_texts, f"{noun}s")
         return {
             "message": capped_delete_reply(multi_texts, noun),
             "intent_data": {
