@@ -554,6 +554,7 @@ class TestFallthroughReasons:
         )
         assert out is None and f["reason"] == "router_none" and lvl == "warning"
         assert isinstance(f["first_call_elapsed_ms"], int)  # Arch 11-07 09:24
+        assert "first_call_llm_ms" in f  # #2318: the router's own time, beside it
 
     async def test_no_list_decision_carries_no_first_call_time(
         self, sm, mem_prefs, svc, monkeypatch, log_rec

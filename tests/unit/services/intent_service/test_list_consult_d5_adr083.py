@@ -131,6 +131,7 @@ def test_accepted_consult_logs_repair_data(monkeypatch):
     second.served_provider = "anthropic"
     second.served_model = "claude-haiku-4-5"
     second.usage = {"input_tokens": 3300, "output_tokens": 63}
+    second.llm_latency_ms = 1090
 
     async def route(message, state, **kw):
         return second
@@ -142,6 +143,7 @@ def test_accepted_consult_logs_repair_data(monkeypatch):
     assert fields["served_provider"] == "anthropic"
     assert fields["served_model"] == "claude-haiku-4-5"
     assert fields["output_tokens"] == 63
+    assert fields["llm_latency_ms"] == 1090  # #2318: beside elapsed_ms
 
 
 def test_shadow_call_block_has_no_list_fact(monkeypatch):

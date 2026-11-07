@@ -234,6 +234,7 @@ class TestRouteEnforcement:
         assert d.llm_calls == 1
         assert d.repair_attempted is False
         assert d.repair_error is None
+        assert isinstance(d.llm_latency_ms, int)  # #2318: the stage's own time
 
     async def test_alias_emission_is_rejected_then_repaired(self):
         """The catalog is canonical-only: an alias emission is INVALID output

@@ -140,6 +140,8 @@ async def consult_on_clarify(
         served_provider=getattr(second, "served_provider", None),
         served_model=getattr(second, "served_model", None),
         output_tokens=(getattr(second, "usage", None) or {}).get("output_tokens"),
+        # #2318: the router's own time around the provider call, beside elapsed_ms.
+        llm_latency_ms=getattr(second, "llm_latency_ms", None),
         # Arch 11-07 09:24: how long the second call took, kept or accepted.
         elapsed_ms=int((time.monotonic() - started) * 1000),
         session_id=session_id,

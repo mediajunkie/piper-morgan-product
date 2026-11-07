@@ -1148,6 +1148,7 @@ async def consult_inversion_live(
         user_id=user_id,
     )
     first_call_elapsed_ms = int((time.monotonic() - _first_started) * 1000)
+    first_call_llm_ms = getattr(decision, "llm_latency_ms", None)
     # ADR-083 D5: one more call only on CLARIFY with a list in scope; accepted only as
     # the list family's op with positions, otherwise the CLARIFY stands.
     decision = await consult_on_clarify(
@@ -1313,7 +1314,7 @@ async def consult_inversion_live(
         # Arch 11-07 09:24: on those turns the first call's time too (the D5 ceiling
         # ruling reads served numbers).
         **(
-            {"first_call_elapsed_ms": first_call_elapsed_ms}
+            {"first_call_elapsed_ms": first_call_elapsed_ms, "first_call_llm_ms": first_call_llm_ms}
             if getattr(snapshot, "last_list_kind", None)
             else {}
         ),

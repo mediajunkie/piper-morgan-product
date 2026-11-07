@@ -217,6 +217,9 @@ class RoutingDecision:
     # #2318 (Arch 11-07 11:10): on a repaired decision, the FIRST attempt's
     # parse/validation error (a successful repair clears ``error``). Diagnostics only.
     repair_error: Optional[str] = None
+    # #2318: the stage's own time around the provider call(s), from _StageResult;
+    # set wherever usage is. Diagnostics only (served time vs. the model's).
+    llm_latency_ms: Optional[int] = None
 
     @property
     def route_label(self) -> str:
@@ -788,6 +791,7 @@ async def route(
             repair_attempted=repair_attempted,
             error=res.llm_error,
             usage=_usage_of(res),
+            llm_latency_ms=int(res.latency_ms),
         )
     parsed = res.parsed
     raw = res.raw
@@ -805,6 +809,7 @@ async def route(
                 served_model=served.get("model"),
                 framing=parsed.get("framing"),
                 usage=_usage_of(res),
+                llm_latency_ms=int(res.latency_ms),
                 repair_error=res.first_validation_error if repair_attempted else None,
             )
         operation = parsed["operation"]
@@ -828,6 +833,7 @@ async def route(
             served_model=served.get("model"),
             framing=parsed.get("framing"),
             usage=_usage_of(res),
+            llm_latency_ms=int(res.latency_ms),
             repair_error=res.first_validation_error if repair_attempted else None,
         )
 
@@ -843,4 +849,5 @@ async def route(
         served_provider=served.get("provider"),
         served_model=served.get("model"),
         usage=_usage_of(res),
+        llm_latency_ms=int(res.latency_ms),
     )
