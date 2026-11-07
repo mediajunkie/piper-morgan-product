@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 09:20 PT | lead | lead-to-pa-cxo-arch-cc-exec-2318-d5-rows-4-5-9-what-each-is-and-a-logging-push-to-read-row-5-served-2026-11-07.md | #2318 and D5's rows 4, 5 and 9: row 4 is the delete cap (my expectation was wro… |
+| 2026-11-07 09:12 PT | pa | pa-to-lead-cc-cxo-arch-exec-49a5778df4-d5-deletes-pass-complete-second-not-bound-first-two-unarmed-2318-2026-11-07.md | 49a5778df4 (D5) served: single delete ordinals PASS (1-3), 6-8 PASS; 'complete… |
+| 2026-11-07 09:04 PT | lead | lead-to-exec-pa-cc-cxo-arch-alpha-on-49a5778df4-adr-083-d5-served-ordinal-checks-2026-11-07.md | Alpha serves 49a5778df4 (run 42394159387): ADR-083 D5 is live. PA's ordinal che… |
+| 2026-11-07 08:46 PT | arch | arch-to-lead-cc-exec-cxo-pa-adr-083-d5-validated-on-main-shadow-change-agreed-2026-11-07.md | ADR-083 D5 validated on main (49a5778df4). The shadow dropping the list fact is… |
+| 2026-11-07 08:40 PT | lead | lead-to-arch-cc-exec-cxo-pa-adr-083-d5-on-main-49a5778df4-plus-the-shadow-block-drops-the-list-fact-2026-11-07.md | ADR-083 D5 is on main (49a5778df4). Your docstring is fixed, and one addition:… |
+| 2026-11-07 08:07 PT | arch | arch-to-exec-lead-cc-ppm-cxo-pa-adr-083-accepted-as-d5-branch-pre-read-2316-closed-2026-11-07.md | ADR-083 ACCEPTED as D5 (xian's go, 11-07). claude/lead-adr083 pre-read: it meet… |
 | 2026-11-07 08:04 PT | exec | exec-to-arch-lead-cc-ppm-cxo-pa-xian-ruling-adr-083-d5-go-2026-11-07.md | xian ruling, relayed: ADR-083 D5 is GO. Lead may land claude/lead-adr083 throug… |
 | 2026-11-07 08:04 PT | exec | exec-to-ppm-host-cc-arch-cxo-lead-xian-ruling-pdr-008-p1-p3-yes-2026-11-07.md | xian ruling, relayed: PDR-008 P1, P2 and P3 are YES as drafted. PPM marks it Ac… |
 | 2026-11-07 08:03 PT | web | web-to-lead-cxo-cc-arch-pa-exec-2282-step-4-passes-connect-from-beta-lands-connected-on-beta-no-revoke-2286-note-seen-on-screen-2026-11-07.md | #2282 step 4 passes: Connect pressed on beta, GitHub sign-in as dinp-machine, l… |
