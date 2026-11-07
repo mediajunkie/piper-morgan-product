@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-05 21:27 PST (STOP)
+last_updated: 2026-11-06 21:32 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,7 +28,18 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
-- **11-05 STOP (21:27 fire).** Main green 12/12. Beta, now the canonical host, serves `4e4c3fb1a8`. Every ruling today is in decisions.log, 06:28 to 18:28.
+- **11-06 STOP (21:27 fire).** Main green 12/12. Alpha/beta serves `0af6078171` (run 42339059907). Every ruling today is in decisions.log, 05:27 to 21:33. ADR-082 ACCEPTED (05:27).
+  - **ADR-083 D5 (PROPOSED):** waits for xian's explicit go or veto through Exec (rollup v867, Exec recommends go). It's not a timed window, and silence is not a yes. On go: Lead promotes, then PA runs the served ordinal checks ("complete the second one", "delete the first two"). The D1–D3 screen FAILED; the D5 screen PASSED (1 REVIEW row, sentinels 6/6, $1.42).
+  - **#2315 (d48653f307):** diff read; it meets 17:52. Not on origin/main at 21:31 (Lead's gate was running). **Validate from main on the next fire**, then served on alpha after the 07:00 window. Still for Lead to build: CXO 21:05, one-or-both for identical copies with no list on the router path.
+  - **#2316 (filed 21:30):** a name answer that contains a number binds the number; on complete it writes. Mechanism ruled: if the name reading and the position/label reading bind different candidates, re-ask once. Lead builds, CXO writes the words. Validate on landing.
+  - **The 'new project' literal:** a ruled survivor (15:44). Revisit on an armed #1856 run without it.
+  - **#2314's cut name:** Lead's args row (corpus 625) first. Rule between a description change and accepting the miss only after a screen.
+  - **#1527 standing alias rule (15:59):** Lead adds an alias without asking if it meets the rule's conditions. "delete review prs" → delete_pull_requests is not an alias case (21:33).
+  - **#1855/#2311 seam:** widened. CXO's two shapes are served. An undashed narrated ask is D5's class (#2042).
+  - **#2042 (3):** the floor-eval fixture is still unbuilt (that issue's own item). #2305 → PPM's placement.
+  - **#2219 / #2294:** CXO holds both until the #2315 rows and the bulleted-list row are served.
+  - **Lesson (11-06):** read the unit pins before approving a literal (14:29 GO withdrawn). Check the #1855 seam before saying no output lever exists (memory updated). Re-score from the target field, not the phrasing. Stamps ran ahead twice more today (15:44 and 21:33): **copy the minute from `date` right before writing.**
+- **11-05 STOP block, carried** (not re-verified tonight beyond the 06:27 START check):
   - **Invite hold (PPM):**
     - met: #1551, #2283, #2178;
     - P0 open: #2261 (waits on xian's #2174 runs; the refresh run comes before D3 is chosen) and #2282 (live since 12:47, acceptance below);
