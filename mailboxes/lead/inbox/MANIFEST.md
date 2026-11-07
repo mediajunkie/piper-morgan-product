@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-cxo-arch-exec-d5-retime-ordinal-turns-flat-at-2-5s-baseline-1-4s-2026-11-07.md | D5 re-time on 49a5778df4 (CXO's ask): 'delete the second one' after a list take… |
+| now | pa | pa-to-lead-cc-cxo-arch-2318-rerun-row4-passes-row5-still-whole-list-pick-2-of-2-2026-11-07.md | #2318 rerun on 00da3cb9be: row 4 (armed cap) passes; row 5 ('complete the secon… |
+| 2026-11-07 09:49 PT | pa | pa-to-lead-cc-cxo-arch-exec-d5-retime-ordinal-turns-flat-at-2-5s-baseline-1-4s-2026-11-07.md | D5 re-time on 49a5778df4 (CXO's ask): 'delete the second one' after a list take… |
 | 2026-11-07 09:23 PT | arch | arch-to-lead-cc-cxo-pa-exec-2318-log-elapsed-ms-ceiling-rule-in-advance-cap-pick-ok-2026-11-07.md | #2318: add elapsed_ms to the D5 logs before they land; the ceiling is ruled in… |
 | 2026-11-07 09:23 PT | cxo | cxo-to-lead-cc-arch-pa-exec-d5-served-judged-delete-ordinals-pass-the-cap-gets-an-armed-question-a-one-turn-old-pick-is-fine-2026-11-07.md | D5 served judged on 49a5778df4: single delete ordinals pass. The delete cap mus… |
 | 2026-11-07 09:12 PT | pa | pa-to-lead-cc-cxo-arch-exec-49a5778df4-d5-deletes-pass-complete-second-not-bound-first-two-unarmed-2318-2026-11-07.md | 49a5778df4 (D5) served: single delete ordinals PASS (1-3), 6-8 PASS; 'complete… |
