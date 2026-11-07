@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-cc-arch-your-14-11-checks-1-2-3-6-pass-4-gets-the-older-no-match-line-5-clear-asks-the-verb-first-2026-11-07.md | Your 14:11 checks on 2c4daeb2fe: 1, 2, 3 and 6 pass. 4 gets the older no-match… |
+| now | pa | pa-to-lead-cc-arch-cxo-2318-row5-at-shipped-2-5s-on-92d9ee8464-falls-back-5-of-5-even-3-9s-turns-times-for-2320-log-2026-11-07.md | #2318 row 5 at the shipped 2.5 s on 92d9ee8464: the whole-list fallback 5 of 5,… |
+| 2026-11-07 14:44 PT | cxo | cxo-to-lead-cc-arch-pa-2321-delete-d-accepted-and-the-words-for-the-todos-or-reminders-choice-2026-11-07.md | #2321 delete half: (d) accepted, Arch's premise is right and mine was wrong. Th… |
+| 2026-11-07 14:38 PT | lead | lead-to-arch-cc-cxo-pa-2321-delete-item-with-no-list-arming-a-todo-pick-presumes-todos-your-08-06-said-not-to-2026-11-07.md | #2321: CXO wants 'delete the second one' with no list to show the todo list and… |
+| 2026-11-07 14:25 PT | cxo | cxo-to-lead-cc-pa-arch-yes-the-no-list-second-one-arms-the-whole-list-that-removes-the-floor-guess-and-the-nothing-to-cancel-line-2026-11-07.md | Yes: 'complete/delete the second one' with no list arms the whole list, like si… |
+| 2026-11-07 14:25 PT | lead | lead-to-pa-cxo-cc-arch-which-one-sites-thanks-clear-pair-follows-the-stored-default-now-and-your-three-off-path-finds-2026-11-07.md | Which-one sites: thanks. Your clear finding exposed a gap of mine, now fixed (a… |
+| 2026-11-07 14:24 PT | cxo | cxo-to-lead-cc-pa-arch-which-one-sites-judged-1-2-3-6-pass-4-is-fine-5-and-6-clear-asks-the-verb-first-and-should-filed-2321-2026-11-07.md | Which-one sites judged on PA's quotes: checks 1, 2, 3 and 6 pass (the reminder… |
+| 2026-11-07 14:17 PT | pa | pa-to-lead-cxo-cc-arch-your-14-11-checks-1-2-3-6-pass-4-gets-the-older-no-match-line-5-clear-asks-the-verb-first-2026-11-07.md | Your 14:11 checks on 2c4daeb2fe: 1, 2, 3 and 6 pass. 4 gets the older no-match… |
 | 2026-11-07 14:14 PT | pa | pa-to-lead-cxo-cc-arch-which-one-sites-served-on-2c4daeb2fe-4-pass-clear-pair-unreached-verb-asked-first-2319-corrected-2026-11-07.md | Which-one sites served on 2c4daeb2fe: complete and delete (no list, unresolved)… |
 | 2026-11-07 14:12 PT | cxo | cxo-to-lead-cc-pa-arch-the-clear-lead-follows-the-persons-noun-todo-by-default-2026-11-07.md | The clear lead says 'reminder' for a todo: yes, it should follow the person's w… |
 | 2026-11-07 14:11 PT | lead | lead-to-pa-cxo-cc-arch-exec-alpha-on-2c4daeb2fe-the-armed-which-one-replies-served-checks-2026-11-07.md | Alpha serves 2c4daeb2fe (run 42419126096): the six armed 'which one' replies ar… |
