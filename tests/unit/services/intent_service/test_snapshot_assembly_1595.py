@@ -516,8 +516,9 @@ async def _drain_shadow_tasks():
 class TestShadowWiring:
     async def test_serialized_block_reaches_shadow_context(self, monkeypatch):
         """maybe_schedule_shadow_check(snapshot=...) → the routed
-        session_state carries EXACTLY serialize_for_prompt(snapshot), and
-        the composed routing prompt contains it verbatim."""
+        session_state carries EXACTLY serialize_for_prompt(snapshot) less the
+        ADR-083 list fact (no first router call carries it), and the composed
+        routing prompt contains it verbatim."""
         from services.intent_service import inversion_router as ir
         from services.intent_service.inversion_shadow import (
             maybe_schedule_shadow_check,
@@ -540,10 +541,13 @@ class TestShadowWiring:
         assert len(calls) == 1
         state = calls[0].session_state
         assert state is not None
-        assert state.state_block == GOLDEN_SERIALIZED
+        list_line = "LAST LIST SHOWN: 7 numbered todos\n"
+        assert list_line in GOLDEN_SERIALIZED
+        expected = GOLDEN_SERIALIZED.replace(list_line, "")
+        assert state.state_block == expected
         # ...and the composed shadow context (the routing prompt) carries it.
         prompt = ir.build_routing_prompt("yes, file it", ir.derive_routing_grammar(), state)
-        assert GOLDEN_SERIALIZED in prompt
+        assert expected in prompt
         assert "Session state:" in prompt
 
     async def test_no_snapshot_falls_back_to_legacy_peek(self, monkeypatch):
