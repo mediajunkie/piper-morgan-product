@@ -69,9 +69,26 @@ def _render(args) -> None:
     # Harness only: the served router still resolves through config.py.
     model_id = getattr(args, "model", None) or model.value
     no_thinking = bool(getattr(args, "no_thinking", False))
+    # ADR-083 arm C (screen harness only): every request carries the slot, rendered by
+    # the served serializer from the served snapshot type, so the screened bytes are
+    # the bytes the live consult would send with that list recorded.
+    session_state = None
+    last_list = getattr(args, "last_list", None)
+    if last_list:
+        from services.intent_service.inversion_router import SessionSnapshot as RouterSnapshot
+        from services.intent_service.session_snapshot import (
+            SessionSnapshot,
+            serialize_for_prompt,
+        )
+
+        kind, _, lines = last_list.partition(":")
+        block = serialize_for_prompt(
+            SessionSnapshot(last_list_kind=kind, last_list_lines=int(lines))
+        )
+        session_state = RouterSnapshot(state_block=block)
     with open(args.out, "w") as f:
         for i, phrase in enumerate(args.phrase):
-            prompt = build_routing_prompt(phrase, grammar)
+            prompt = build_routing_prompt(phrase, grammar, session_state)
             for n in range(1, args.samples + 1):
                 params = {
                     "model": resolve_model_alias(model_id),
@@ -276,6 +293,11 @@ def main() -> int:
         help="send thinking={'type': 'disabled'} (models that think by default)",
     )
     r.add_argument("--phrase", action="append", default=[])
+    r.add_argument(
+        "--last-list",
+        default=None,
+        help="ADR-083 arm C: KIND:LINES, e.g. todos:7 (the slot on every request; harness only)",
+    )
     r.add_argument(
         "--corpus", action="store_true", help="every phrase of the inversion corpus (a full run)"
     )

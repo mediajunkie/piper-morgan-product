@@ -237,7 +237,10 @@ async def _shadow_check(
             # #1595 Phase 2.0: the assembled contract snapshot, serialized
             # via the golden-pinned renderer, IS the session-state block.
             try:
-                block = serialize_for_prompt(snapshot)
+                from services.intent_service.list_consult import without_list_fact
+
+                # ADR-083 D5: no first router call carries the list fact (live's block is main's).
+                block = serialize_for_prompt(without_list_fact(snapshot))
             except Exception as e:  # silent-ok: a serialization failure (cap breach) degrades to no-session-state for THIS shadow call, logged loudly — never fails the task
                 logger.error("shadow_snapshot_serialize_failed", error=str(e))
                 block = ""

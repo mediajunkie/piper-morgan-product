@@ -72,6 +72,11 @@ class SessionSnapshot:
     recent_issue_number: Optional[int] = None
     recent_issue_repo: Optional[str] = None
 
+    # --- the last numbered list shown (ADR-083 D1/D1a: kind and line count only; no
+    # texts, no ids, no history; set only when D3a's expiry holds) ---
+    last_list_kind: Optional[str] = None  # "todos" | "reminders"
+    last_list_lines: Optional[int] = None
+
     # --- standing preferences (the #1510/#1605 stores, fail-safe reads) ---
     declared_working_mode: Optional[str] = None  # "execute" | "collaborate" | None
     stored_clear_verb: Optional[str] = None  # per-verb reminder default, if any
@@ -110,6 +115,9 @@ def serialize_for_prompt(snap: SessionSnapshot) -> str:
         lines.append(
             f"RECENT ISSUE: #{snap.recent_issue_number}{repo} (bare 'it'/'that issue' likely refers here)"
         )
+    if snap.last_list_kind and snap.last_list_lines:
+        # ADR-083 wording (i) (Arch 11-06 16:21): the bare fact, no steering clause.
+        lines.append(f"LAST LIST SHOWN: {snap.last_list_lines} numbered {snap.last_list_kind}")
     if snap.declared_working_mode:
         lines.append(f"DECLARED MODE: {snap.declared_working_mode}")
     if snap.stored_clear_verb:
