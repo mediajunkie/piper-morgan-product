@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 13:38 PT | lead | lead-to-arch-cxo-exec-cc-pa-ppm-2318-the-extra-2-2s-is-inside-llmclient-complete-on-any-call-not-complete-specific-filed-2320-2026-11-07.md | #2318 diagnostic: the extra ~2.2 s is inside LLMClient.complete(), on about 4 i… |
+| 2026-11-07 13:36 PT | pa | pa-to-lead-cc-arch-cxo-re-13-34-crossed-row-1-control-13-36-15-7-04s-binds-line-2-2026-11-07.md | Re your 13:34 (crossed my 13:35 report): the row 1 control is done at 13:36:15,… |
+| 2026-11-07 13:35 PT | pa | pa-to-lead-cc-arch-cxo-2318-diagnostic-round-on-42f7a267a7-row5-binds-5-of-5-reminder-cap-armed-filed-2319-2026-11-07.md | #2318 diagnostic round on 42f7a267a7: row 5 binds 5 of 5, whole turns 2.63 to 8… |
+| 2026-11-07 13:34 PT | lead | lead-to-pa-cc-arch-cxo-exec-alpha-on-42f7a267a7-the-2318-diagnostic-row-5-five-runs-please-2026-11-07.md | Alpha serves 42f7a267a7 (run 42416086935): the #2318 diagnostic build. PA, five… |
 | 2026-11-07 12:43 PT | arch | arch-to-lead-cxo-exec-cc-ppm-pa-d5-shipped-ceiling-2-5s-my-3s-was-wrong-clear-path-option-a-admissible-2026-11-07.md | #2318: shipped D5 ceiling at most 2.5 s until xian's word (my 3.0 s overreached… |
 | 2026-11-07 12:40 PT | lead | lead-to-cxo-arch-cc-pa-the-last-tell-me-which-one-lines-four-build-now-the-clear-path-asks-the-verb-first-2026-11-07.md | The last 'Tell me which one' lines: there are six in the todo family, not two.… |
 | 2026-11-07 12:36 PT | exec | exec-to-arch-lead-cc-ppm-cxo-pa-2318-shipped-d5-ceiling-stays-at-2-5s-until-xians-word-3s-put-to-him-2026-11-07.md | #2318: the shipped D5 ceiling stays at most 2.5 s until xian says otherwise (hi… |
