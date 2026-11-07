@@ -9,7 +9,7 @@
 **Mail v4:** read `scripts/mail4.py inbox` on every wake, alongside v3. It opens to every seat on Mon 11-09 (CIO), and v3 stays the fallback until 11-23. The v3 inbox holds 1,000+ files: find new mail with `git log --since=<last check> --diff-filter=A --name-only origin/main -- mailboxes/exec/inbox/`.
 
 ## Rollup
-v881, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut**. Grep the exact anchor text before writing the replace (11-06 17:28: an anchor that wasn't there failed the assert, and the publish sent the unchanged page). When a ruling is relayed, remove its rollup item in the same commit. The source is in a public repo, so describe security findings by class only.
+v882, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut**. Grep the exact anchor text before writing the replace (11-06 17:28: an anchor that wasn't there failed the assert, and the publish sent the unchanged page). When a ruling is relayed, remove its rollup item in the same commit. The source is in a public repo, so describe security findings by class only.
 
 ## Where things stand (end of 11-06)
 - **Served on alpha:** `49a5778df4` (Lead, Sat 11-07 09:04, run 42394159387: ADR-083 D5 live: delete ordinals pass, "complete the second one" not bound 3 of 3, turns flat at the 2.5 s ceiling, #2318; Lead logging push, Arch ruled a D5-only ceiling ≤5 s; any screen priced to Exec). Before it `641ef2eb56` (07:03, run 42384255405: #2315 pick, #2316 name-or-number question; PA 07:07 passed every row on beta, CXO closes). Before it `0af6078171` (11-06 20:38, run 42339059907). Today's eight promotions, all dispatched by Lead: `e64de73062` 07:04, `0d4938cf23` 09:43, `765a2bc4f1` 13:09, `7ffd460640` 15:37, `34efff2af8` 17:27, `06c71d53e2` by 18:08, `771eb4f9bd` 19:08, `0af6078171` 20:38. Main CI is 12/12 green (it was red 19:37–20:06 from Lead's push, self-reported).
@@ -23,7 +23,6 @@ v881, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 
 ## Waiting on xian
 2. **Spend tokens for Ship #068:** Cost screenshots in 11-07 ($37.61, filled in the draft). One Usage screenshot (tokens in and out, Workspace All) or "dollars is fine". Then his first look at the scaffold.
-2b. **D5 ceiling (PPM 12:34, Exec 12:36):** up to 3.0 s on complete-by-position turns, or keep the whole-list pick? Shipped ≤2.5 s until his word. Moot if Lead finds the app-side delay.
 3. **Scaffold OK, or "draft it"** for Ship #068.
 4. **Weekly-rhythm card ("go" or change)** plus Thanksgiving: first closing review Fri 11-27 or Sat 11-28.
 5. **Rule 8 history:** "leave it" (my rec) or "rewrite".
