@@ -455,3 +455,5 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v872 07:06 Sat 11-07: 641ef2eb56 served (#2315, #2316) added to Settled.
 - v873 07:29 Sat 11-07: Saturday rebuild for xian's preview (top card: post, two words, hold-clearing tasks, spend screenshots); served line 641ef2eb56 on all three hosts (/health 07:28); stale 4e4c3fb1a8 line removed.
 - v874 07:33 Sat 11-07: PA 07:07 passed #2315 and #2316 on 641ef2eb56.
+- v875 08:06 Sat 11-07: D5 and PDR-008 removed (ruled, relayed); #2282 step 4 done; spend item now asks for Usage tokens; alpha/beta talk card added.
+- v876 08:09 Sat 11-07: #2282 step 4 passed (Web 08:02); long #2282 item cut.
