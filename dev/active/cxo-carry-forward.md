@@ -1,23 +1,26 @@
 ---
-last_updated: 2026-11-04
+last_updated: 2026-11-06
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — current state, 2026-11-05 21:31 STOP (the older rules below still stand)
+# CXO carry-forward — current state, 2026-11-06 21:31 STOP (the older rules below still stand)
 
-**Serving:** alpha and beta `4e4c3fb1a8` (19:02). Closed on served quotes 11-05: #2188, #2279, #2190. #2282 (beta the one host) is live, alpha 301s to beta.
-**Judged PASS on served text:** #2281 signed-out page, Slack card on xian's account, #1918 description sentence, #2190 toasts, #2287 dialogs (both cases), "Connected as", degrade-alone, GitHub's page after the transfer (button "Authorize pipermorgan").
-**Open on my side:**
-- #2287 row 2: after a Disconnect the page shows no lingering "Connected" line. Needs a real Disconnect (revokes at GitHub), so a Web window with xian's yes.
-- #2262/#2258: widened nothing-new line ("Piper hasn't posted to Slack or written to GitHub or Notion for you"), served at 19:02, no quote yet. PA reads it as a non-Notion account.
-- #2219 (todos): built, rides the morning promotion. My rulings: "todo" default, person's word wins, else the last list's kind, else "todo"; "todo/todos" no hyphen; done-items header with counts. Judge a quoted reply, noun both ways. Next-todo sentence waits for #2293 (priority sort is alphabetical) and the router miss (corpus row, Arch's rule 7): `Your next todo is "review prs" (×3). Say "show my todos" for the rest.`
-- #2286 (connect-card line, final words on the issue, no host or owner named) and #2290 (reference code on failures; I word it once Lead says a request id exists, no timestamp or sender): Lead builds, PPM places.
-- #1918 stays open (rest of the page unjudged).
-**Rulings given, not yet built or served:** Connected apps sentence is built; #2178 failed-revoke sentence (can't be caused on purpose, judge on text and pins); #2227 catalog fixes; positioning line (#2275); onboarding Path A (HOST's fresh account), Path B (#2219 on the path).
-**Waiting on xian:** #2256 (Buttondown paste, own sign-up), the "nothing else is sent without notice" yes/no, the Disconnect window yes. First-cohort note v3 (HOST) is xian's words. Invites held on #2261 (xian's #2174 runs), xian's word.
-**Waiting on owners:** #1270 and #2247.
-**Lessons today:** an incident issue's body can be the first reading (check later comments and decisions.log: memory saved); search my own open UX issues before filing (#2285 was a duplicate of #2190).
+**Serving:** alpha and beta `0af6078171` (Lead's promotion 20:38). Main CI 12 of 12 green at 21:31. `d48653f307` (#2315) is merged and goes to alpha at the 07:00 window on 11-07.
+**Closed on served quotes 11-06:** #2273, #2302, #2271, #2272.
+**Judged PASS on served text today:** hide, already-archived, near-match offer and decline; item 9 link ask (all lines); #2311 (2 of 3); #2272 Unlink dialog and direct link line; delete and complete by shown line; the armed match-list pick with labels (checks 1, 3, 4 on 0af6078171); "complete review prs" pick.
+**Open, with what each still needs:**
+- #2315 (`complete the X todo`): FAIL on 0af6078171 (batch confirm drops a line, narrated ask, storage-numbered list). Built; judge a PA quote after the 07:00 promotion. My rulings sent 21:05: one-or-both on both paths, keep the generic re-ask for an out-of-range ordinal.
+- #2219: capped multi-delete `(×3)` quote and floor-category ask (needs #2304 phrasing). #2294: the same turn after a bulleted list with no numbers.
+- #2301: FAIL, interim pulled; waits on sprint item 12's read, then words only for "what's in X" asks.
+- Narrated delete/complete asks: ADR-083 D5 waits on xian's explicit go or veto (Exec put it, rollup v867). PA's "yes" test rides the fresh-account run.
+- #2313 (delete two named todos says "couldn't find"), #2314 (name cut at "link": "add project zz link test" makes "zz"; Lead's args row, corpus 625), #2309 (trailing "project?").
+- #2286 words pass, on-page read rides PA's fresh-account run step 3. #2267 needs a sign-in quote from an account with a username set. #2287 row 2 needs a Disconnect window and xian's yes. #2295 "none" line. Splitter closing-quote not yet seen served.
+- Path A/B fresh-account run (after the invite hold lifts and HOST mints), #2175 pages once built.
+**Waiting on others:** xian: D5 go/veto, #2256 Buttondown paste, the "nothing else is sent without notice" yes/no, #2174 runs (for #2261). Lead: promotion, #2313, #2314. Arch: binding rulings. Exec: prices ($10 screen ceiling). PPM: placements, #2308 order.
+**Dates:** Mon 11-09 12:00 sprint objection deadline (none from me); Mon 11-09 Mail v4 widens to every seat (`python3 scripts/mail4.py inbox --role cxo`; v3 works until 11-23); sprint starts Fri 11-13.
+**Lessons today:** judge only on quoted text and say so; a narrated question that nothing is armed to answer must not be asked; never drop a failure report to tidy a reply (`source_failed` never-drop); run `TZ=America/Los_Angeles date` before writing a log heading.
+
 
 # CXO carry-forward — updated 2026-10-07 22:2x (STOP); structure from the 10-05 22:2x STOP rewrite.
 

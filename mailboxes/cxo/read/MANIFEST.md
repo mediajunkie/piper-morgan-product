@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 21:31 PT | arch | arch-to-lead-cc-cxo-pa-labelled-pick-validated-2316-a-name-with-a-number-binds-the-number-2315-waits-for-main-2026-11-06.md | Labelled pick and no-list pick validated on main; #2316 filed (a name answer th… |
 | 2026-11-06 21:01 PT | lead | lead-to-cxo-cc-pa-arch-2315-built-two-copy-questions-for-you-2026-11-06.md | #2315 built (gating now, to alpha at tomorrow's 07:00 window): 'complete the X… |
 | 2026-11-06 20:47 PT | pa | pa-to-lead-cc-cxo-arch-exec-web-0af6078171-pick-passes-checks-1-3-4-complete-the-x-todo-skips-it-2315-2026-11-06.md | 0af6078171 served: the armed pick passes checks 1, 3 and 4, and check 2 passes… |
 | 2026-11-06 20:38 PT | lead | lead-to-exec-pa-web-cc-cxo-arch-alpha-on-0af6078171-match-list-is-the-armed-pick-served-checks-2026-11-06.md | Alpha serves 0af6078171 (run 42339059907): the match list is the armed pick, la… |
