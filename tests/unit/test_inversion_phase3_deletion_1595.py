@@ -262,8 +262,9 @@ class TestCensusDenominators:
         claimed = sum(1 for r in records if r.claim.pattern_list is not None)
         unclaimed = sum(1 for r in records if r.claim.pattern_list is None)
         assert claimed + unclaimed == len(records)
-        assert claimed + unclaimed == 624, (
-            "the corpus is 624 rows as of the 2026-11-06 #2269 3a rows (+2, the link/unlink "
+        assert claimed + unclaimed == 625, (
+            "the corpus is 625 rows as of the 2026-11-06 #2314 args row (+1, 'add project zz "
+            "link test' with expected_args.name 'zz link test'); 624 as of the 2026-11-06 #2269 3a rows (+2, the link/unlink "
             "instruction constants: 'link repo octocat/hello-world to Mobile Redesign' "
             "link_repo, 'unlink repo octocat/hello-world from Mobile Redesign' unlink_repo; "
             "ADR-083 batch arm A); 622 as of the 2026-11-06 #2271 add-repo row (+1, 'I want to add a "

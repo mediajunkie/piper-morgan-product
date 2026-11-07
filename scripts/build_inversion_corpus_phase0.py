@@ -83,6 +83,21 @@ _ACTION_CATEGORY = {
 # Inversion's question to answer, not an assertion.
 # ---------------------------------------------------------------------------
 HAND_ROWS = [
+    # #2314 (PA, served on 771eb4f9bd 11-06 19:1x): "add project zz link test" created a
+    # project named "zz" -- the name was cut at "link", read as the start of a repo
+    # clause (the local #1856 extractor yields "zz link test", so the cut is upstream,
+    # most likely the router's name arg). A failing phrasing gets an args row, not a regex.
+    {
+        "phrase": "add project zz link test",
+        "category": "PORTFOLIO",
+        "expected": "action:add_project",
+        "expected_args": {"name": "zz link test"},
+        "source": "#2314 (PA's served run on 771eb4f9bd, 2026-11-06)",
+        "notes": (
+            "args row: the whole name, no repo. Unmeasured at deposit; the next screen scores "
+            "it. 'link' inside a name is not a repo clause without an owner/name token."
+        ),
+    },
     # #2269 3a (Lead's sprint item 8; ADR-083 batch preregistration, arm A, 11-06): a row
     # per instruction constant that tells the person what to type. ADOPTED_REPO_LINK_LINE
     # ("link repo {repo} to <project name>") and its unlink sibling. The bare
