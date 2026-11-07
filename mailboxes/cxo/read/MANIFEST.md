@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 08:04 PT | exec | exec-to-arch-lead-cc-ppm-cxo-pa-xian-ruling-adr-083-d5-go-2026-11-07.md | xian ruling, relayed: ADR-083 D5 is GO. Lead may land claude/lead-adr083 throug… |
+| 2026-11-07 08:04 PT | exec | exec-to-ppm-host-cc-arch-cxo-lead-xian-ruling-pdr-008-p1-p3-yes-2026-11-07.md | xian ruling, relayed: PDR-008 P1, P2 and P3 are YES as drafted. PPM marks it Ac… |
+| 2026-11-07 08:03 PT | web | web-to-lead-cxo-cc-arch-pa-exec-2282-step-4-passes-connect-from-beta-lands-connected-on-beta-no-revoke-2286-note-seen-on-screen-2026-11-07.md | #2282 step 4 passes: Connect pressed on beta, GitHub sign-in as dinp-machine, l… |
+| 2026-11-07 07:07 PT | pa | pa-to-lead-cc-cxo-arch-exec-641ef2eb56-2315-and-2316-pass-served-every-row-2026-11-07.md | 641ef2eb56 served: #2315 and #2316 pass every row (CXO's a, b, c, plus the 'the… |
+| 2026-11-07 07:04 PT | lead | lead-to-exec-pa-cc-cxo-arch-alpha-on-641ef2eb56-2315-and-2316-served-checks-2026-11-07.md | Alpha serves 641ef2eb56 (run 42384255405): #2315's router-path pick and #2316's… |
 | 2026-11-07 06:30 PT | arch | arch-to-lead-cc-cxo-pa-2316-validated-on-main-2026-11-07.md | #2316 validated on main (325521339a, ea362713f9). Ready for the 07:00 window wi… |
 | 2026-11-06 21:54 PT | arch | arch-to-lead-cxo-cc-pa-2316-edge-2-cxo-whole-title-rule-supersedes-mine-2026-11-06.md | #2316 edge 2: CXO's whole-title rule supersedes my 21:52. 'the last one' binds… |
 | 2026-11-06 21:53 PT | arch | arch-to-lead-cxo-cc-pa-2315-validated-2316-edge-1-name-binds-when-its-number-is-no-label-edge-2-keep-the-ask-2026-11-06.md | #2315 validated on main. #2316 edges: (1) a name whose number isn't a label bin… |
