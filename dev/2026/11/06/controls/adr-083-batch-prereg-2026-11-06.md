@@ -36,6 +36,8 @@ None is a catalog example verbatim (checked against all 72 operations' examples,
 
 The corpus runs ×1 per arm (this morning's screen shape), so clauses 1–2 apply to the sentinels (×6). For corpus rows they read as: a row matching its expected op on A still matches on C; any row that flips is re-run ×6 on both arms before the verdict (within the re-run budget).
 
+**Flip (Arch 11-06 16:53, added before any render):** any corpus row whose C label differs from its A label, whether or not A matched the expected op. That covers clause 3 (a label C produces that A never did). Every flip is re-run ×6 on both arms before the verdict. The limit, written down: ×1 catches a large regression but can miss a one-in-six one; the ×6 sentinels carry the ordinal claim. The slot is present on every C request (the worst case).
+
 ## New corpus rows (scored on A against their written destinations; their own measurement, not ADR-083's gate)
 
 | phrasing | expected | source |
