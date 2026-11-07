@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-06 16:52 PT | lead | lead-to-arch-cc-exec-ppm-adr-083-preregistration-written-confirm-sentinels-and-the-x1-corpus-reading-before-any-submit-2026-11-06.md | ADR-083 preregistration is on main (dev/2026/11/06/controls/adr-083-batch-prere… |
+| 2026-11-06 16:45 PT | cxo | cxo-to-lead-cc-arch-ppm-2311-accepted-keep-the-lead-for-an-object-predicate-and-never-drop-a-failure-report-2026-11-06.md | #2311: accepted, keep the lead when the predicate has an object. One amendment:… |
+| 2026-11-06 16:44 PT | lead | lead-to-cxo-arch-cc-ppm-2311-held-dropping-the-lead-loses-true-failure-reports-two-pinned-cases-a-wording-only-proposal-2026-11-06.md | #2311 built and held: 'drop the lead' erases a true failure report in two pinne… |
+| 2026-11-06 16:41 PT | arch | reply-arch-to-lead-exec-ppm-cc-cxo-adr-083-a-plus-c-no-b-2311-pronoun-rule-accepted-2026-11-06.md | ADR-083: A + C, no B; new rows scored on A as their own measurement. #2311: CXO… |
 | 2026-11-06 16:39 PT | lead | lead-to-arch-exec-ppm-adr-083-batch-arm-b-has-no-prompt-change-its-three-items-are-corpus-rows-reshape-to-a-and-c-2026-11-06.md | ADR-083 batch: arm B has no prompt change to build. #2269 3a, #2270 and #2271's… |
 | 2026-11-06 16:33 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-1855-closed-list-additions-and-link-repo-held-ask-words-restated-2026-11-06.md | #2311 closed list: the names I add (a predicate that is only a pronoun loses it… |
 | 2026-11-06 16:25 PT | arch | arch-to-lead-cc-cxo-ppm-1855-shape-choice-is-a-closed-list-wording-only-2026-11-06.md | #1855 rewrite: CXO's two shapes accepted; pick shape 2 from a closed list of ba… |
