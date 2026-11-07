@@ -433,6 +433,8 @@ GOLDEN_FULL_SNAPSHOT = SessionSnapshot(
     draft_title="Fix the login flow",
     recent_issue_number=1595,
     recent_issue_repo="mediajunkie/test-piper-morgan",
+    last_list_kind="todos",
+    last_list_lines=7,
     declared_working_mode="execute",
     stored_clear_verb="delete",
 )
@@ -444,6 +446,7 @@ GOLDEN_SERIALIZED = (
     "ACTIVE PROCESS: standup (mid-exchange; answers belong to it)\n"
     "DRAFT IN COMPOSE: Fix the login flow — prose likely extends the draft\n"
     "RECENT ISSUE: #1595 in mediajunkie/test-piper-morgan (bare 'it'/'that issue' likely refers here)\n"
+    "LAST LIST SHOWN: 7 numbered todos\n"
     "DECLARED MODE: execute\n"
     "STORED CLEAR-VERB: delete"
 )

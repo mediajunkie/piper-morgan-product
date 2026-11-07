@@ -83,6 +83,24 @@ _ACTION_CATEGORY = {
 # Inversion's question to answer, not an assertion.
 # ---------------------------------------------------------------------------
 HAND_ROWS = [
+    # #2269 3a (Lead's sprint item 8; ADR-083 batch preregistration, arm A, 11-06): a row
+    # per instruction constant that tells the person what to type. ADOPTED_REPO_LINK_LINE
+    # ("link repo {repo} to <project name>") and its unlink sibling. The bare
+    # "link owner/repo to [project]" shape is already a row (corpus-1283).
+    {
+        "phrase": "link repo octocat/hello-world to Mobile Redesign",
+        "category": "PORTFOLIO",
+        "expected": "action:link_repo",
+        "source": "#2269 3a: adopted_category_reads_only.ADOPTED_REPO_LINK_LINE",
+        "notes": "The phrasing Piper tells the person to type; it must route where it says.",
+    },
+    {
+        "phrase": "unlink repo octocat/hello-world from Mobile Redesign",
+        "category": "PORTFOLIO",
+        "expected": "action:unlink_repo",
+        "source": "#2269 3a: adopted_category_reads_only's unlink line",
+        "notes": "The phrasing Piper tells the person to type; it must route where it says.",
+    },
     # #2271 (PA's served phrasings on alpha, 2026-11-06; Arch 14:09, decisions.log): linking a
     # repo to that project. A failing phrasing gets a corpus row, not a regex. The second is a
     # first-person wish: Arch 14:29 declined "I want to" for _EXECUTE_RE and ruled the row

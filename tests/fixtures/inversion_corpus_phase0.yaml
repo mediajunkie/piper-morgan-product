@@ -445,6 +445,16 @@ corpus:
     source: "probe-row-52"
     surface1_claim: "priority/get_top_priority"
     probe_verdict: "DISAGREE"
+  - phrase: "link repo octocat/hello-world to Mobile Redesign"
+    category: PORTFOLIO
+    expected: action:link_repo
+    source: "#2269 3a: adopted_category_reads_only.ADOPTED_REPO_LINK_LINE"
+    notes: "The phrasing Piper tells the person to type; it must route where it says."
+  - phrase: "unlink repo octocat/hello-world from Mobile Redesign"
+    category: PORTFOLIO
+    expected: action:unlink_repo
+    source: "#2269 3a: adopted_category_reads_only's unlink line"
+    notes: "The phrasing Piper tells the person to type; it must route where it says."
   - phrase: "link repo dinp-machine/piper-test-activity to zz share-hide project"
     category: PORTFOLIO
     expected: action:link_repo

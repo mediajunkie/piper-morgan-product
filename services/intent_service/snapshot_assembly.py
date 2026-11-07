@@ -51,7 +51,7 @@ from __future__ import annotations
 
 import asyncio
 import dataclasses
-from typing import Any, Optional, Set
+from typing import Any, Optional, Set, Tuple
 
 import structlog
 
@@ -216,6 +216,8 @@ async def assemble_session_snapshot(
     if head is not None:
         recent_issue_repo, recent_issue_number = head
 
+    last_list_kind, last_list_lines = _last_list_fact(session_id, user_id, errors)
+
     return SessionSnapshot(
         pending_offer_kind=pending_offer_kind,
         pending_offer_question=pending_offer_question,
@@ -225,7 +227,55 @@ async def assemble_session_snapshot(
         draft_title=draft_title,
         recent_issue_number=recent_issue_number,
         recent_issue_repo=recent_issue_repo,
+        last_list_kind=last_list_kind,
+        last_list_lines=last_list_lines,
         declared_working_mode=declared_working_mode,
         stored_clear_verb=stored_clear_verb,
         field_errors=_ordered(errors),
     )
+
+
+def _list_kind(kind: Optional[str]) -> Optional[str]:
+    """ADR-083 D1: the router-facing kind of a recorded list ("active todos" and
+    "due reminders" are copy text). Only the todo family records lists today (D4);
+    any other kind renders nothing."""
+    k = (kind or "").lower()
+    if "reminder" in k:
+        return "reminders"
+    if "todo" in k or "to-do" in k:
+        return "todos"
+    return None
+
+
+def _last_list_fact(
+    session_id: Optional[str], user_id: Optional[str], errors: set
+) -> Tuple[Optional[str], Optional[int]]:
+    """ADR-083 D1a / D3a (Arch 11-06 16:21): the kind and line count of the numbered
+    list Piper showed in the turn right before this message, else nothing.
+
+    The current message is already ``turns[-1]`` (``add_turn`` runs at the top of
+    processing), so the previous exchange is ``turns[-2]``; the list renders only when
+    it was shown during that exchange (``shown_at`` at or after its timestamp). Any
+    reply in between, or a topic switch, drops it; a new list replaces it. Code facts
+    only, no word reading. Fails open to nothing, named in ``field_errors``."""
+    if not session_id:
+        return None, None
+    try:
+        from services.intent_service.conversation_context import get_or_create_context
+
+        ctx = get_or_create_context(session_id, user_id)
+        numbered = getattr(ctx, "last_numbered_list", None)
+        turns = list(getattr(ctx, "turns", None) or [])
+        if numbered is None or len(turns) < 2:
+            return None, None
+        if numbered.shown_at < turns[-2].timestamp:
+            return None, None
+        kind = _list_kind(numbered.kind)
+        lines = len(numbered.ids or [])
+        if kind is None or lines < 1:
+            return None, None
+        return kind, lines
+    except Exception as e:  # silent-ok: contract item 3, fails open to None + field_errors
+        logger.warning("snapshot_last_list_read_failed", error=str(e))
+        errors.update({"last_list_kind", "last_list_lines"})
+        return None, None
