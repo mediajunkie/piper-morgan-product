@@ -458,6 +458,7 @@ class TestEndToEndVariantTwo:
     ):
         """A second 'clear' auto-applies per the stored default: variant-2
         ratified disclosure leads the message, no block, items completed."""
+        todo_boundary["todos"] = todo_boundary["todos"][:1]  # #2322: one item auto-applies; 2+ asks
         sid = "e2e-1605-v2"
         _seed_verb_default(pref_store, "complete")
         _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
@@ -466,7 +467,7 @@ class TestEndToEndVariantTwo:
             message="clear my reminders", session_id=sid, user_id=_USER
         )
         assert result.message.startswith(variant_two_disclosure())
-        assert len(todo_boundary["completed"]) == 2
+        assert len(todo_boundary["completed"]) == 1
         assert result.intent_data.get("verb_default_applied") == "complete"
         # The one-turn correction window is armed.
         stored = _pending_offers(live_service).get(sid)
@@ -598,6 +599,7 @@ class TestMetaChannelStillGoverns:
     async def test_trust_meta_auto_applies_write_candidate(
         self, live_service, monkeypatch, pref_store, todo_boundary
     ):
+        todo_boundary["todos"] = todo_boundary["todos"][:1]  # #2322: one item auto-applies; 2+ asks
         sid = "e2e-1605-meta-write"
         _seed_meta_trust(pref_store)
         _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
@@ -608,7 +610,7 @@ class TestMetaChannelStillGoverns:
         # No question — applied, disclosed, correctable; stored meta_auto.
         assert "(yes/no)" not in result.message
         assert result.message.startswith("Marking these done.")
-        assert len(todo_boundary["completed"]) == 2
+        assert len(todo_boundary["completed"]) == 1
         record = pref_store["verified_inferences"][rc.inference_key("clear")]
         assert record["value"] == "complete"
         assert record["source"] == "meta_auto"
@@ -837,6 +839,7 @@ class TestAlwaysAskLeadingQuestion:
     async def test_default_meta_mode_unchanged_v2_still_discloses(
         self, live_service, monkeypatch, pref_store, todo_boundary
     ):
+        todo_boundary["todos"] = todo_boundary["todos"][:1]  # #2322: one item auto-applies; 2+ asks
         sid = "e2e-1605-aa-default"
         _seed_verb_default(pref_store, "complete")
         _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
@@ -1091,3 +1094,77 @@ class TestIssue2019DeleteCap:
         assert out["message"] == _CAPPED_TWO
         assert out["intent_data"][DELETE_CAPPED_FLAG] is True
         assert todo_boundary["deleted"] == []
+
+
+class TestIssue2322ASetNeverAutoApplies:
+    """#2322 (Arch 11-07 15:47/15:48, P1): the legacy clear detector ignores
+    positions, so "clear todo 2" can resolve to every todo. A set of more than one
+    never auto-applies: stored done asks the ratified always-ask question; stored
+    delete meets the #2019 cap. Nothing is completed or deleted on the ask turn."""
+
+    pytestmark = pytest.mark.asyncio
+
+    @pytest.mark.parametrize(
+        "phrase",
+        ["clear todo 2", "clear todo 12", "clear the first two todos", "clear my reminders"],
+    )
+    async def test_stored_done_over_a_set_asks_and_completes_nothing(
+        self, live_service, monkeypatch, pref_store, todo_boundary, phrase
+    ):
+        sid = f"e2e-2322-done-{abs(hash(phrase)) % 10000}"
+        _seed_verb_default(pref_store, "complete")
+        todo_boundary["allow_complete"] = True  # a widened set WOULD complete here
+        _stub_classification(monkeypatch, live_service, phrase, "complete_todo")
+        result = await live_service.process_intent(message=phrase, session_id=sid, user_id=_USER)
+        assert todo_boundary["completed"] == []
+        assert todo_boundary["deleted"] == []
+        if result.requires_clarification:
+            assert "(yes/no)" not in result.message or "delete" in result.message
+
+    async def test_stored_done_set_gets_the_always_ask_question(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = "e2e-2322-done-q"
+        _seed_verb_default(pref_store, "complete")
+        todo_boundary["allow_complete"] = True  # a widened set WOULD complete here
+        _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
+        result = await live_service.process_intent(
+            message="clear my reminders", session_id=sid, user_id=_USER
+        )
+        assert result.message == rc.variant_two_always_ask_question()
+        assert result.requires_clarification is True
+        assert todo_boundary["completed"] == []
+
+    async def test_trust_meta_over_a_set_reads_back_instead(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = "e2e-2322-meta"
+        _seed_meta_trust(pref_store)
+        # The meta mode read is pinned so this cell is order-independent.
+        from services.intent_service import verified_inference as _vi
+
+        async def _trust(_principal):
+            return _vi.VerificationMetaMode.TRUST_INFERENCES
+
+        monkeypatch.setattr(_vi, "get_meta_mode", _trust)
+        todo_boundary["allow_complete"] = True
+        _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
+        result = await live_service.process_intent(
+            message="clear my reminders", session_id=sid, user_id=_USER
+        )
+        assert todo_boundary["completed"] == []
+        assert result.requires_clarification is True
+
+    @pytest.mark.parametrize(
+        "phrase", ["clear todo 2", "clear todo 12", "clear the first two todos"]
+    )
+    async def test_stored_delete_over_a_set_deletes_nothing(
+        self, live_service, monkeypatch, pref_store, todo_boundary, phrase
+    ):
+        sid = f"e2e-2322-del-{abs(hash(phrase)) % 10000}"
+        _seed_verb_default(pref_store, "delete")
+        todo_boundary["allow_complete"] = True
+        _stub_classification(monkeypatch, live_service, phrase, "delete_todo")
+        await live_service.process_intent(message=phrase, session_id=sid, user_id=_USER)
+        assert todo_boundary["deleted"] == []
+        assert todo_boundary["completed"] == []

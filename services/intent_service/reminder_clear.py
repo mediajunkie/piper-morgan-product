@@ -941,7 +941,10 @@ async def _act_on_resolved_targets(
             VerificationMetaMode as _VMM,
         )
 
-        if ask_only or await get_meta_mode(principal) is _VMM.ALWAYS_ASK:
+        # #2322 (Arch 11-07 15:47/15:48, P1): the legacy detector ignores positions,
+        # so "clear todo 2" can resolve to every todo. A set of more than one never
+        # auto-applies: it asks (a count code holds; no word reading, no new copy).
+        if ask_only or len(ids) > 1 or await get_meta_mode(principal) is _VMM.ALWAYS_ASK:
             question = variant_two_always_ask_question()
             offer = _verb_question_offer(
                 principal,
@@ -1056,7 +1059,8 @@ async def _act_on_resolved_targets(
     # ── No stored default: effect-weighted gate (one scoring system).
     meta_mode = await get_meta_mode(principal)
     decision = decide_verb_interpretation(VERB_CONFIDENCE, candidate_effect, meta_mode)
-    if ask_only and decision is VerificationDecision.AUTO_APPLY:
+    # #2322: a set of more than one never auto-applies (see variant 2 above).
+    if (ask_only or len(ids) > 1) and decision is VerificationDecision.AUTO_APPLY:
         decision = VerificationDecision.READ_BACK
 
     if decision is VerificationDecision.AUTO_APPLY:

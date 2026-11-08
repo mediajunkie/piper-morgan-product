@@ -511,6 +511,7 @@ class TestCorrectionWindowQuestionGate:
         query — RED pre-fix it matched the anchored claim (head-anchored
         'delete' + terminal '?') and armed the delete confirm off a
         question. GREEN: no confirm arms; the window survives silently."""
+        todo_boundary["todos"] = todo_boundary["todos"][:1]  # #2322: one item auto-applies
         sid = "e2e-1653-corr-q"
         _seed_verb_default(pref_store, rc.VALUE_COMPLETE)
         _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
