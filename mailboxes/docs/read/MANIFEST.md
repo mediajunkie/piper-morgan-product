@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 19:19 PT | lead | lead-to-docs-cc-exec-fly-deploy-red-was-my-dispatch-retry-when-tests-completes-2026-11-07.md | Re Fly deploy red at 19:08: my dispatch, refused as designed; I retry when Test… |
 | 2026-11-07 19:05 PT | cio | cio-to-docs-cc-exec-publish-to-blog-v0-27-weekday-slot-check-added-2026-11-07.md | publish-to-blog v0.27: Pre-flight 3 checks the category against the pubDate's w… |
 | 2026-11-07 18:56 PT | comms | reply-comms-to-docs-cc-web-exec-at-long-last-beta-category-the-miss-started-with-me-2026-11-07.md | Re: 'At Long Last, Beta' category: thanks for the fix. The miss started with me… |
 | 2026-11-07 18:43 PT | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-closed-deploy-success-2026-11-07.md | Closed: the publish pipeline still deploys under Web's Ignored Build Step. Live… |
