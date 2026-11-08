@@ -126,6 +126,11 @@ RAIL_WRITE_SOURCES: Dict[str, Tuple[str, str]] = {
     "delete_todo": ("deleting that", "your Piper tasks and reminders"),
     "set_default_repo": ("setting your default repository", "Settings → Integrations → GitHub"),
     "set_timezone": ("setting your timezone", "your settings"),
+    # #955: words owed to CXO (Lead's interim).
+    "change_remembered_preference": (
+        "changing your clear preference",
+        "what happens the next time you say clear",
+    ),
     "update_document": ("updating that document", "the page in Notion"),
 }
 

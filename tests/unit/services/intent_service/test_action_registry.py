@@ -392,6 +392,10 @@ class TestNoStubPhrases:
             # RECONNECT #1327: conversational set-default-repo
             "set_default_repo",
             "set_timezone",  # #1876: set_timezone_entry (workflow_entries.py), rail-dispatched
+            # #955: change_remembered_preference_entry's three classifier aliases
+            "forget_clear_preference",
+            "set_clear_preference_done",
+            "set_clear_preference_delete",
             # RECONNECT #1327 build #2: conversational get-default-repo (read)
             "get_default_repo",
             # #1433/F24 — rail-handled since #1044 (_handle_local_git_status_query

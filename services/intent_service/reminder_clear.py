@@ -148,7 +148,9 @@ def variant_one_question(
     return (
         f"Before I touch {lead or 'these'} — when you say '{verb}' on a {noun}, "
         f"do you want me to mark it done, or delete it? "
-        f"I'll remember for next time."
+        f"I'll remember for next time. "
+        # #955 line 7 (CXO 11-07 18:03): only with the forget op built.
+        f'Say "forget my {verb} preference" to undo that.'
     )
 
 

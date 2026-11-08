@@ -224,6 +224,11 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # via the workflow rail. Same shape as set_default_repo (#1327): a WRITE,
     # PRIVATE-outwardness preference, no OAuth/connector gate to pass.
     ("QUERY", "set_timezone"): ActionDisposition.WORKFLOW,
+    # #955 (Arch 11-08 07:33): change or forget the remembered "clear" preference —
+    # three aliases of one rail entry; the alias names the change (a closed code table).
+    ("QUERY", "forget_clear_preference"): ActionDisposition.WORKFLOW,
+    ("QUERY", "set_clear_preference_done"): ActionDisposition.WORKFLOW,
+    ("QUERY", "set_clear_preference_delete"): ActionDisposition.WORKFLOW,
     # Issue #1039: GitHub milestone + release listing
     ("QUERY", "list_milestones_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_releases_query"): ActionDisposition.WORKFLOW,
@@ -330,6 +335,9 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "set_default_repo"): "set my default repo to mediajunkie/piper-morgan-product",
     ("QUERY", "get_default_repo"): "what is my default repo?",
     ("QUERY", "set_timezone"): "set my timezone to Europe/Helsinki",
+    ("QUERY", "forget_clear_preference"): "forget my clear preference",
+    ("QUERY", "set_clear_preference_done"): "make clear mean mark it done",
+    ("QUERY", "set_clear_preference_delete"): "make clear mean delete",
     ("QUERY", "list_milestones_query"): "Show milestones",
     ("QUERY", "list_releases_query"): "Recent releases",
     ("QUERY", "list_labels_query"): "List labels",
@@ -712,6 +720,9 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "set_default_repo": Verb.SET,  # RECONNECT #1327
     "get_default_repo": Verb.GET,  # RECONNECT #1327 build #2
     "set_timezone": Verb.SET,  # #1876
+    "forget_clear_preference": Verb.SET,  # #955
+    "set_clear_preference_done": Verb.SET,  # #955
+    "set_clear_preference_delete": Verb.SET,  # #955
     "list_milestones_query": Verb.LIST,
     "list_releases_query": Verb.LIST,
     "list_labels_query": Verb.LIST,

@@ -10084,6 +10084,26 @@ class IntentService:
             )
         return None
 
+    async def _handle_change_remembered_preference(
+        self, intent: Intent, workflow_id: str
+    ) -> IntentProcessingResult:
+        """#955: forget or set the person's remembered "clear" preference
+        (``preference_change``; Arch 11-08 07:33, CXO 11-07 18:03's words)."""
+        from services.intent_service.preference_change import change_remembered_preference
+
+        outcome = await change_remembered_preference(intent, _principal_from_intent(intent))
+        return IntentProcessingResult(
+            success=outcome["outcome"] not in ("failed", "unreadable", "no_principal"),
+            message=outcome["message"],
+            intent_data={
+                "category": "query",
+                "action": intent.action,
+                "preference_change": outcome["outcome"],
+            },
+            workflow_id=workflow_id,
+            requires_clarification=False,
+        )
+
     async def _handle_set_timezone(
         self, intent: Intent, workflow_id: str
     ) -> IntentProcessingResult:
@@ -20492,6 +20512,14 @@ Add any additional information here.
                 framing_hint=_resolve_framing_hint(intent),
                 action=intent.action,
             )
+            # #955 (Arch 11-08 08:05): a declared consent-narrowing action (forget)
+            # proceeds where the matrix says COLLABORATE; CONFIRM is never overridden.
+            if (
+                _consent_verdict is _consent.ConsentDecision.COLLABORATE
+                and intent.action in _rail_entry.consent_narrowing_actions
+            ):
+                self.logger.info("consent_narrowing_action_proceeds", action=intent.action)
+                _consent_verdict = _consent.ConsentDecision.PROCEED
         else:
             _consent_verdict = None
         if _consent_verdict is not None and (_consent_verdict is _consent.ConsentDecision.CONFIRM):

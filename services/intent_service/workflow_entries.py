@@ -3773,6 +3773,33 @@ def register_default_workflows() -> None:
         write_ask=_words.set_timezone_write_ask,  # #2304
     )
 
+    # #955 (Arch 11-08 07:33): change or forget the person's remembered "clear"
+    # preference. One entry; three classifier-named aliases map to the change through
+    # preference_change.CHANGE_BY_ACTION (a closed code table, no word reading).
+    # effect: WRITE — stores or deletes the person's own verified-inference row
+    # (users.preferences), reversible by answering the first-time question again.
+    # outwardness: PRIVATE — the person's own preference. No confirm (CXO 18:15).
+    change_remembered_preference_entry = WorkflowEntry(
+        entry_point=_make_query_dispatch_entry_point("_handle_change_remembered_preference"),
+        effect=EffectClass.WRITE,
+        outwardness=Outwardness.PRIVATE,
+        description=(
+            "Forget the user's remembered meaning of 'clear' (so Piper asks again), "
+            "or set it to mark-done or delete (#955)"
+        ),
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+        # Arch 11-08 07:53: router-hidden (the #2132 ratchet at 3, its LAST raise;
+        # exit #2149). The live router can't reach a write outside alpha's live set,
+        # and its catalog line moved live delete_todo rows in the screen. If the op
+        # ever joins the live set, it turns visible behind a fresh rule-7 screen.
+        router_visible=False,
+        # Arch 11-08 08:05: forget only makes Piper ask more, so it proceeds where the
+        # matrix says COLLABORATE. Set-directly keeps the check (no write_ask yet, so
+        # CXO's #2304 statement until she words one).
+        consent_narrowing_actions=frozenset({"forget_clear_preference"}),
+    )
+
     # #1333 (Arch-ruled 2026-06-30): the former per-action unwired-write registration
     # (a hand-maintained `UNWIRED_WRITE_ACTIONS` list fanned onto the rail) is RETIRED.
     # The honest-decline is now DERIVED by construction: any unwired EXECUTION action
@@ -4224,6 +4251,11 @@ def register_default_workflows() -> None:
         # emission is the reachability path, per the 2026-08-29 corpus-deposit
         # ruling).
         "set_timezone": set_timezone_entry,
+        # #955: the canonical first (wired_chat_actions names an entry by its first key).
+        "change_remembered_preference": change_remembered_preference_entry,
+        "forget_clear_preference": change_remembered_preference_entry,
+        "set_clear_preference_done": change_remembered_preference_entry,
+        "set_clear_preference_delete": change_remembered_preference_entry,
         # #1570: archived-projects list — canonical key first (wired_chat_actions
         # names each unique entry by its first-registered key), then the mode-4
         # defense aliases for LLM paraphrase emissions.
