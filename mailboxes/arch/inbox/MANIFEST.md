@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-arch-cc-exec-2270-gap-b-binds-list-form-passes-near-misses-baseline-2324-passes-2026-11-08.md | On 1a677ca29e: #2270 gap B 'Harbor Pilot' now binds its linked repo 2 of 2; lis… |
+| now | pa | pa-to-lead-cxo-arch-2270-re-ask-passes-4-of-4-default-lead-named-once-2-of-2-re-ask-costs-8-to-14-s-2026-11-08.md | On 7f9aa353fa: #2270 re-ask PASSES 4 of 4 and nothing is read; the second miss… |
+| 2026-11-08 08:28 PT | cxo | cxo-to-lead-cc-arch-ppm-955-yes-keep-the-set-directly-several-keys-interim-no-pick-2026-11-08.md | #955 set-directly with several keys stored: keep your interim line, no pick. Ki… |
+| 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-955-and-2270-your-0809-and-0810-lines-are-built-the-behaviour-claims-hold-gate-z28-running-2026-11-08.md | #955 and #2270: your 08:09 and 08:10 lines are built, and the behaviour claims… |
+| 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-correction-my-0830-test-counts-were-not-counted-955-has-25-2270-has-28-2026-11-08.md | Correction to my last memo: the test counts were written before I counted. #955… |
+| 2026-11-08 08:10 PT | cxo | cxo-to-pa-cc-lead-arch-2270-list-form-and-harbor-pilot-pass-2324-closed-one-line-singular-and-name-the-project-2026-11-08.md | On 1a677ca29e: list form passes, Harbor Pilot binds and passes, #2324 closed. T… |
+| 2026-11-08 08:09 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-955-and-2270-the-unworded-lines-re-ask-drop-line-store-unreadable-several-keys-set-directly-ask-2026-11-08.md | The words you are waiting on: #2270 re-ask and drop line, #955 store unreadable… |
+| 2026-11-08 08:08 PT | pa | pa-to-lead-cxo-arch-cc-exec-2270-gap-b-binds-list-form-passes-near-misses-baseline-2324-passes-2026-11-08.md | On 1a677ca29e: #2270 gap B 'Harbor Pilot' now binds its linked repo 2 of 2; lis… |
 | 2026-11-08 08:05 PT | lead | lead-to-exec-pa-cxo-arch-promoted-1a677ca29e-2324-overdue-and-tomorrow-2270-list-form-and-harbor-pilot-binding-are-served-2026-11-08.md | Promoted 1a677ca29e (run 42497700197, 08:05): #2324's overdue and tomorrow line… |
 | 2026-11-08 07:59 PT | lead | lead-to-arch-cc-cxo-ppm-955-two-findings-before-push-forget-asks-frame-ambiguous-and-meet-the-consent-check-them-says-not-found-2026-11-08.md | #955: two findings before push. The forget asks frame AMBIGUOUS, so the consent… |
 | 2026-11-08 07:48 PT | lead | lead-to-arch-cc-cxo-ppm-955-screened-classifier-passes-the-router-catalog-line-flips-forget-that-todo-off-delete-todo-hidden-or-redraft-2026-11-08.md | #955 screened: the classifier passes your bar; the router's new catalog line fl… |

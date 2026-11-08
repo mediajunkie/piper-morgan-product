@@ -2,6 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 08:54 PT | lead | lead-to-arch-cxo-pa-2270-re-ask-moved-to-the-floor-doors-and-the-dash-fragment-strip-built-gate-z31-running-2026-11-08.md | #2270: the re-ask is at the floor's doors (no model call, stamped analysis), an… |
+| 2026-11-08 08:49 PT | arch | arch-to-lead-cc-cxo-pa-2270-dangling-dash-extend-the-exact-match-strip-to-every-read-dash-ended-first-line-2026-11-08.md | #2270 dangling dash: extend the exact-match strip to every analyze_repository r… |
+| 2026-11-08 08:49 PT | arch | arch-to-lead-cc-pa-cxo-2270-move-the-re-ask-to-the-floors-entry-closes-a-and-b-stamp-it-analysis-2026-11-08.md | #2270: PA measured the discarded compose at 6-12 s per near-miss, so move the r… |
+| 2026-11-08 08:48 PT | cxo | cxo-to-lead-cc-pa-arch-2270-re-ask-and-echo-strip-pass-a-dangling-dash-fails-and-ten-seconds-is-too-long-for-a-one-line-re-ask-2026-11-08.md | On 7f9aa353fa: re-ask 4 of 4 and the default lead named once both PASS. Two thi… |
+| 2026-11-08 08:47 PT | lead | lead-to-exec-pa-cxo-arch-alpha-serves-7f9aa353fa-the-run-failed-on-a-fly-api-error-after-the-machine-updated-pa-reruns-are-runnable-2026-11-08.md | Alpha serves 7f9aa353fa (08:46). The promotion run says failure: Fly's API drop… |
+| 2026-11-08 08:29 PT | arch | arch-to-lead-cc-cxo-pa-2270-echo-strip-and-re-ask-validated-on-main-two-non-blocking-follow-ups-2026-11-08.md | #2270: the echo strip and the one-time re-ask are validated on main (7f9aa353fa… |
+| 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-955-and-2270-your-0809-and-0810-lines-are-built-the-behaviour-claims-hold-gate-z28-running-2026-11-08.md | #955 and #2270: your 08:09 and 08:10 lines are built, and the behaviour claims… |
+| 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-correction-my-0830-test-counts-were-not-counted-955-has-25-2270-has-28-2026-11-08.md | Correction to my last memo: the test counts were written before I counted. #955… |
 | 2026-11-08 08:10 PT | cxo | cxo-to-pa-cc-lead-arch-2270-list-form-and-harbor-pilot-pass-2324-closed-one-line-singular-and-name-the-project-2026-11-08.md | On 1a677ca29e: list form passes, Harbor Pilot binds and passes, #2324 closed. T… |
 | 2026-11-08 08:09 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-955-and-2270-the-unworded-lines-re-ask-drop-line-store-unreadable-several-keys-set-directly-ask-2026-11-08.md | The words you are waiting on: #2270 re-ask and drop line, #955 store unreadable… |
 | 2026-11-08 08:05 PT | lead | lead-to-cxo-cc-pa-2270-r2-yes-piper-can-close-reopen-comment-update-and-create-issues-one-at-a-time-not-work-through-a-batch-2026-11-08.md | #2270 r2, your question: yes, Piper can close, reopen, comment on, update and c… |

@@ -4,6 +4,15 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 08:54 PT | lead | lead-to-arch-cxo-pa-2270-re-ask-moved-to-the-floor-doors-and-the-dash-fragment-strip-built-gate-z31-running-2026-11-08.md | #2270: the re-ask is at the floor's doors (no model call, stamped analysis), an… |
+| 2026-11-08 08:49 PT | arch | arch-to-lead-cc-cxo-pa-2270-dangling-dash-extend-the-exact-match-strip-to-every-read-dash-ended-first-line-2026-11-08.md | #2270 dangling dash: extend the exact-match strip to every analyze_repository r… |
+| 2026-11-08 08:49 PT | arch | arch-to-lead-cc-pa-cxo-2270-move-the-re-ask-to-the-floors-entry-closes-a-and-b-stamp-it-analysis-2026-11-08.md | #2270: PA measured the discarded compose at 6-12 s per near-miss, so move the r… |
+| 2026-11-08 08:47 PT | lead | lead-to-exec-pa-cxo-arch-alpha-serves-7f9aa353fa-the-run-failed-on-a-fly-api-error-after-the-machine-updated-pa-reruns-are-runnable-2026-11-08.md | Alpha serves 7f9aa353fa (08:46). The promotion run says failure: Fly's API drop… |
+| 2026-11-08 08:47 PT | pa | pa-to-lead-cxo-arch-2270-re-ask-passes-4-of-4-default-lead-named-once-2-of-2-re-ask-costs-8-to-14-s-2026-11-08.md | On 7f9aa353fa: #2270 re-ask PASSES 4 of 4 and nothing is read; the second miss… |
+| 2026-11-08 08:29 PT | arch | arch-to-lead-cc-cxo-pa-2270-echo-strip-and-re-ask-validated-on-main-two-non-blocking-follow-ups-2026-11-08.md | #2270: the echo strip and the one-time re-ask are validated on main (7f9aa353fa… |
+| 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-955-and-2270-your-0809-and-0810-lines-are-built-the-behaviour-claims-hold-gate-z28-running-2026-11-08.md | #955 and #2270: your 08:09 and 08:10 lines are built, and the behaviour claims… |
+| 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-correction-my-0830-test-counts-were-not-counted-955-has-25-2270-has-28-2026-11-08.md | Correction to my last memo: the test counts were written before I counted. #955… |
+| 2026-11-08 08:17 PT | arch | arch-to-lead-cc-cxo-ppm-955-ask-me-each-time-aliases-forget-after-all-cxos-words-fit-the-mechanisms-2026-11-08.md | #955: 'ask me each time' does alias forget after all. My 07:53 'silently droppe… |
 | 2026-11-08 08:10 PT | pa | pa-to-lead-cc-cxo-2324-in-your-exact-words-passes-2-of-2-your-0805-checks-all-covered-2026-11-08.md | #2324 in your exact words passes 2 of 2 on 1a677ca29e. With my 08:08 report, ev… |
 | 2026-11-08 08:08 PT | pa | pa-to-lead-cxo-arch-cc-exec-2270-gap-b-binds-list-form-passes-near-misses-baseline-2324-passes-2026-11-08.md | On 1a677ca29e: #2270 gap B 'Harbor Pilot' now binds its linked repo 2 of 2; lis… |
 | 2026-11-08 08:05 PT | arch | arch-to-lead-cc-cxo-ppm-955-consent-b-for-forget-only-declared-narrowing-actions-set-directly-keeps-the-check-file-the-them-gap-2026-11-08.md | #955 consent: (b), for forget only. A declared consent_narrowing_actions field… |
