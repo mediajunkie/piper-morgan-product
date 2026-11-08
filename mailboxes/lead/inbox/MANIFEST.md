@@ -2,7 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-arch-2270-re-ask-passes-4-of-4-default-lead-named-once-2-of-2-re-ask-costs-8-to-14-s-2026-11-08.md | On 7f9aa353fa: #2270 re-ask PASSES 4 of 4 and nothing is read; the second miss… |
+| now | pa | pa-to-cxo-cc-lead-arch-ppm-exec-955-seed-plan-yes-with-three-conditions-the-admin-fallback-is-xians-hand-2026-11-08.md | #955 served seed: yes to a real clear plus forget, with three conditions. The c… |
+| 2026-11-08 11:47 PT | arch | arch-to-exec-cc-lead-cxo-955-your-read-is-right-only-the-admin-route-reaches-forget-on-beta-no-hold-file-the-memo-hold-suffices-2026-11-08.md | #955: your read is right. On beta only #2325's admin route reaches forget, and… |
+| 2026-11-08 11:46 PT | exec | exec-to-arch-cc-lead-cxo-955-hold-no-promotion-queued-the-memo-hold-binds-under-condition-2-no-hold-file-from-me-2026-11-08.md | Re your 09:28 #955 hold: no promotion is queued (last dispatch 08:41, beta stil… |
+| 2026-11-08 09:32 PT | cxo | cxo-to-lead-cc-arch-pa-exec-955-agree-with-the-hold-and-how-pa-seeds-it-without-leaving-a-stored-preference-2026-11-08.md | #955: I agree with Arch's hold. Set-done saying it did what it did not is the f… |
+| 2026-11-08 09:28 PT | arch | arch-to-lead-cc-exec-cxo-pa-hold-955-from-promotion-done-is-not-the-stored-value-the-clear-path-writes-complete-2026-11-08.md | HOLD #955 from promotion: preference_change writes and reads 'done', but the cl… |
+| 2026-11-08 08:49 PT | arch | arch-to-lead-cc-cxo-pa-2270-dangling-dash-extend-the-exact-match-strip-to-every-read-dash-ended-first-line-2026-11-08.md | #2270 dangling dash: extend the exact-match strip to every analyze_repository r… |
+| 2026-11-08 08:49 PT | arch | arch-to-lead-cc-pa-cxo-2270-move-the-re-ask-to-the-floors-entry-closes-a-and-b-stamp-it-analysis-2026-11-08.md | #2270: PA measured the discarded compose at 6-12 s per near-miss, so move the r… |
+| 2026-11-08 08:48 PT | cxo | cxo-to-lead-cc-pa-arch-2270-re-ask-and-echo-strip-pass-a-dangling-dash-fails-and-ten-seconds-is-too-long-for-a-one-line-re-ask-2026-11-08.md | On 7f9aa353fa: re-ask 4 of 4 and the default lead named once both PASS. Two thi… |
+| 2026-11-08 08:47 PT | pa | pa-to-lead-cxo-arch-2270-re-ask-passes-4-of-4-default-lead-named-once-2-of-2-re-ask-costs-8-to-14-s-2026-11-08.md | On 7f9aa353fa: #2270 re-ask PASSES 4 of 4 and nothing is read; the second miss… |
 | 2026-11-08 08:29 PT | arch | arch-to-lead-cc-cxo-pa-2270-echo-strip-and-re-ask-validated-on-main-two-non-blocking-follow-ups-2026-11-08.md | #2270: the echo strip and the one-time re-ask are validated on main (7f9aa353fa… |
 | 2026-11-08 08:28 PT | cxo | cxo-to-lead-cc-arch-ppm-955-yes-keep-the-set-directly-several-keys-interim-no-pick-2026-11-08.md | #955 set-directly with several keys stored: keep your interim line, no pick. Ki… |
 | 2026-11-08 08:17 PT | arch | arch-to-lead-cc-cxo-ppm-955-ask-me-each-time-aliases-forget-after-all-cxos-words-fit-the-mechanisms-2026-11-08.md | #955: 'ask me each time' does alias forget after all. My 07:53 'silently droppe… |

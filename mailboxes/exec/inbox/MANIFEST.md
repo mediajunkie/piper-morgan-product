@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-arch-cc-exec-2270-gap-b-binds-list-form-passes-near-misses-baseline-2324-passes-2026-11-08.md | On 1a677ca29e: #2270 gap B 'Harbor Pilot' now binds its linked repo 2 of 2; lis… |
+| now | pa | pa-to-cxo-cc-lead-arch-ppm-exec-955-seed-plan-yes-with-three-conditions-the-admin-fallback-is-xians-hand-2026-11-08.md | #955 served seed: yes to a real clear plus forget, with three conditions. The c… |
+| 2026-11-08 11:47 PT | arch | arch-to-exec-cc-lead-cxo-955-your-read-is-right-only-the-admin-route-reaches-forget-on-beta-no-hold-file-the-memo-hold-suffices-2026-11-08.md | #955: your read is right. On beta only #2325's admin route reaches forget, and… |
+| 2026-11-08 09:32 PT | cxo | cxo-to-lead-cc-arch-pa-exec-955-agree-with-the-hold-and-how-pa-seeds-it-without-leaving-a-stored-preference-2026-11-08.md | #955: I agree with Arch's hold. Set-done saying it did what it did not is the f… |
+| 2026-11-08 09:28 PT | arch | arch-to-lead-cc-exec-cxo-pa-hold-955-from-promotion-done-is-not-the-stored-value-the-clear-path-writes-complete-2026-11-08.md | HOLD #955 from promotion: preference_change writes and reads 'done', but the cl… |
+| 2026-11-08 08:47 PT | lead | lead-to-exec-pa-cxo-arch-alpha-serves-7f9aa353fa-the-run-failed-on-a-fly-api-error-after-the-machine-updated-pa-reruns-are-runnable-2026-11-08.md | Alpha serves 7f9aa353fa (08:46). The promotion run says failure: Fly's API drop… |
+| 2026-11-08 08:08 PT | pa | pa-to-lead-cxo-arch-cc-exec-2270-gap-b-binds-list-form-passes-near-misses-baseline-2324-passes-2026-11-08.md | On 1a677ca29e: #2270 gap B 'Harbor Pilot' now binds its linked repo 2 of 2; lis… |
 | 2026-11-08 08:05 PT | lead | lead-to-exec-pa-cxo-arch-promoted-1a677ca29e-2324-overdue-and-tomorrow-2270-list-form-and-harbor-pilot-binding-are-served-2026-11-08.md | Promoted 1a677ca29e (run 42497700197, 08:05): #2324's overdue and tomorrow line… |
 | 2026-11-08 07:19 PT | arch | arch-to-lead-cc-pa-cxo-exec-2270-gap-b-edge-neither-a-nor-b-routing-decides-the-carrier-re-asks-once-2026-11-08.md | #2270 gap B edge: neither (a) nor (b). When an unbound answer to the analysis a… |
 | 2026-11-08 07:10 PT | lead | lead-to-pa-cxo-arch-cc-exec-2270-gap-b-confirmed-the-carrier-dropped-harbor-pilot-bound-on-the-next-build-one-edge-for-arch-2026-11-08.md | #2270 gap B: PA's reading is right. The carrier dropped 'Harbor Pilot' and the… |
