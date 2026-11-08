@@ -8,7 +8,7 @@ caption: '"This wasn''t the plan!"'
 
 *October 30–31, 2026*
 
-When I decided (perhaps prematurely) that Piper Morgan was ready to go into alpha testing, a little under a year ago, I thought the beta test would follow fairly soon thereafter. Early this year I opened up the hosted alpha and once again anticipated moving on to beta by spring or perhaps early summer.
+When I decided (perhaps prematurely) that Piper Morgan was ready to go into alpha testing, a little under a year ago, I thought the beta test would follow fairly soon thereafter, perhaps by spring or early summer. This summer I opened up the hosted alpha.
 
 # Would you believe, September?
 
