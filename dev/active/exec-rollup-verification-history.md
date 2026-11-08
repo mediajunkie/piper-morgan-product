@@ -476,3 +476,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v893 13:08 Sun 11-08: beta 2824ed3437 (/health 13:08; Lead run 42523135649); main 12/12; #955 hold lifted by Arch's sha condition (176a6db0ce ancestor of main and beta; Tests success on 2824ed3437).
 - v894 13:20 Sun 11-08: #2325 a/b replaced by the one concrete reset call (PA 13:12, PPM 13:16), console fetch given; route reads require_admin + cookie auth per auth_middleware (code read, not run).
 - v895 13:21 Sun 11-08: reset ask withdrawn from xian (Arch 13:20: the forget-alias fix makes PA's own 'forget my handle preference' the cleanup; xian's call stays fallback).
+- v896 14:01 Sun 11-08: #2270 CLOSED (gh 14:01; CXO 13:44); #955 per-verb fix next (Arch 13:32, live wrong-verb write); beta 2824ed3437, main 12/12.
