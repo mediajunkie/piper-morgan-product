@@ -18,6 +18,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import structlog
 
 from services.intent_service import verified_inference as vi
+from services.intent_service.reminder_clear import VALUE_COMPLETE, VALUE_DELETE
 
 logger = structlog.get_logger(__name__)
 
@@ -39,8 +40,12 @@ CHANGE_ACTIONS = ("change_remembered_preference", *CHANGE_BY_ACTION)
 
 CLEAR_KEY_PREFIX = "reminder_clear_verb:"
 
-#: CXO 18:03 (3): ``{X}`` is ``mark it done`` or ``delete it``.
-MEANING_WORDS = {CHANGE_DONE: "mark it done", CHANGE_DELETE: "delete it"}
+# Arch 11-08 09:28: ONE store, ONE vocabulary. The values are the clear path's own
+# (reminder_clear.VALUE_COMPLETE / VALUE_DELETE, what its first-time answer stores);
+# this module holds no value strings. ``change`` is the request's name for the edit.
+STORED_VALUE = {CHANGE_DONE: VALUE_COMPLETE, CHANGE_DELETE: VALUE_DELETE}
+#: CXO 18:03 (3): ``{X}`` is ``mark it done`` or ``delete it``, keyed on the stored value.
+MEANING_WORDS = {VALUE_COMPLETE: "mark it done", VALUE_DELETE: "delete it"}
 
 # CXO 11-07 18:03, verbatim for "clear"; the verb label takes its place for a sibling.
 FORGOTTEN_LINE = (
@@ -210,16 +215,17 @@ async def change_remembered_preference(
     if change == CHANGE_FORGET:
         return await forget_one(user_id, key, old_x)
 
-    if str(record.get("value")) == change:
+    target = STORED_VALUE[change]
+    if str(record.get("value")) == target:
         return {"message": ALREADY_LINE.format(verb=verb, x=old_x), "outcome": "already"}
     # Set directly (Arch 07:18 (i)): store, read back, and render from the STORED value.
     stored_ok = await vi.store_verified_inference(
-        user_id, key, change, source=vi.SOURCE_USER_DECLARED
+        user_id, key, target, source=vi.SOURCE_USER_DECLARED
     )
     after = await vi.get_verified_inference(user_id, key) if stored_ok else None
-    if after is not None and str(after.get("value")) == change:
+    if after is not None and str(after.get("value")) == target:
         return {
-            "message": SET_LINE.format(verb=verb, x=MEANING_WORDS[change]),
+            "message": SET_LINE.format(verb=verb, x=MEANING_WORDS[target]),
             "outcome": "set",
         }
     return {"message": FAILED_LINE.format(verb=verb, x=old_x), "outcome": "failed"}
@@ -252,11 +258,12 @@ async def change_preference_write_ask(request: Any) -> Any:
     key, record = next(iter(keys.items()))
     verb = key[len(CLEAR_KEY_PREFIX) :]
     old_x = _meaning(record) or "something I can’t read"
-    if str(record.get("value")) == change:
+    target = STORED_VALUE[change]
+    if str(record.get("value")) == target:
         return WriteAsk(reply=ALREADY_LINE.format(verb=verb, x=old_x))
     return WriteAsk(
         words=ConfirmWords(
-            question=SET_ASK_QUESTION.format(verb=verb, old=old_x, new=MEANING_WORDS[change]),
+            question=SET_ASK_QUESTION.format(verb=verb, old=old_x, new=MEANING_WORDS[target]),
             summary="change it",
             decline=SET_DECLINE_LINE,
         )

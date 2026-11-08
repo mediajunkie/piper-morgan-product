@@ -16,7 +16,7 @@ import pytest
 from services.domain.models import Intent
 from services.intent_service import preference_change as pc
 from services.intent_service import verified_inference as vi
-from services.intent_service.reminder_clear import inference_key
+from services.intent_service.reminder_clear import VALUE_COMPLETE, VALUE_DELETE, inference_key
 from services.shared_types import IntentCategory
 
 _USER = "955bbbbb-0000-4000-8000-000000000955"
@@ -83,7 +83,7 @@ async def _stored(key, value):
 
 
 async def test_forget_says_forgotten_after_the_read_back(mem_prefs, handler):
-    await _stored(_CLEAR, "delete")
+    await _stored(_CLEAR, VALUE_DELETE)
     result = await handler(_intent("forget_clear_preference"), "wf")
     assert result.message == (
         'Okay. I\'ve forgotten that "clear" means delete it. '
@@ -104,7 +104,7 @@ async def test_forget_with_nothing_stored(mem_prefs, handler):
 
 async def test_an_unconfirmed_forget_never_says_forgotten(mem_prefs, handler):
     _, calls = mem_prefs
-    await _stored(_CLEAR, "done")
+    await _stored(_CLEAR, VALUE_COMPLETE)
     calls["save_lies"] = True
     result = await handler(_intent("forget_clear_preference"), "wf")
     assert result.message == (
@@ -126,14 +126,14 @@ async def test_an_unreadable_store_changes_nothing(mem_prefs, handler):
 @pytest.mark.parametrize(
     "action, stored, words",
     [
-        ("set_clear_preference_done", "done", "mark it done"),
-        ("set_clear_preference_delete", "delete", "delete it"),
+        ("set_clear_preference_done", VALUE_COMPLETE, "mark it done"),
+        ("set_clear_preference_delete", VALUE_DELETE, "delete it"),
     ],
 )
 async def test_set_directly_renders_from_the_stored_value(
     mem_prefs, handler, action, stored, words
 ):
-    await _stored(_CLEAR, "done" if stored == "delete" else "delete")
+    await _stored(_CLEAR, VALUE_COMPLETE if stored == VALUE_DELETE else VALUE_DELETE)
     result = await handler(_intent(action), "wf")
     assert result.message == (
         f'Okay. From now on "clear" means {words}. '
@@ -152,7 +152,7 @@ async def test_set_directly_never_creates_a_preference(mem_prefs, handler):
 
 async def test_a_set_that_did_not_stick_says_the_old_value(mem_prefs, handler):
     _, calls = mem_prefs
-    await _stored(_CLEAR, "done")
+    await _stored(_CLEAR, VALUE_COMPLETE)
     calls["save_lies"] = True
     result = await handler(_intent("set_clear_preference_delete"), "wf")
     assert 'still remembering that "clear" means mark it done' in result.message
@@ -160,8 +160,8 @@ async def test_a_set_that_did_not_stick_says_the_old_value(mem_prefs, handler):
 
 async def test_several_keys_change_nothing_and_name_each(mem_prefs, handler):
     _, calls = mem_prefs
-    await _stored(_CLEAR, "done")
-    await _stored(inference_key("handle"), "delete")
+    await _stored(_CLEAR, VALUE_COMPLETE)
+    await _stored(inference_key("handle"), VALUE_DELETE)
     before = calls["saves"]
     result = await handler(_intent("forget_clear_preference"), "wf")
     assert result.message == (
@@ -172,13 +172,13 @@ async def test_several_keys_change_nothing_and_name_each(mem_prefs, handler):
 
 
 async def test_another_family_verb_is_named_by_its_own_label(mem_prefs, handler):
-    await _stored(inference_key("handle"), "delete")
+    await _stored(inference_key("handle"), VALUE_DELETE)
     result = await handler(_intent("forget_clear_preference"), "wf")
     assert result.message.startswith('Okay. I\'ve forgotten that "handle" means delete it.')
 
 
 async def test_the_canonical_binds_only_a_router_change_arg(mem_prefs, handler):
-    await _stored(_CLEAR, "done")
+    await _stored(_CLEAR, VALUE_COMPLETE)
     unnamed = await handler(_intent("change_remembered_preference"), "wf")
     assert unnamed.message == 'Right now "clear" means mark it done. I haven\'t changed it.'
     odd = await handler(_intent("change_remembered_preference", {"change": "maybe"}), "wf")
@@ -270,7 +270,7 @@ async def test_landing_pin_the_routers_none_does_not_floor_the_hidden_entry(mem_
 
     monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", _ALPHA_LIVE)
     monkeypatch.setattr(il, "consult_inversion_live", _router_none)
-    await _stored(_CLEAR, "delete")
+    await _stored(_CLEAR, VALUE_DELETE)
     try:
         result = await svc.process_intent(
             message="make clear mean mark it done", session_id="pc-955", user_id=_USER
@@ -387,7 +387,7 @@ async def test_ambiguous_forget_asks_reach_forget_in_collaborate_mode(
     from services.intent_service.collaboration_gate import FRAMING_AMBIGUOUS, classify_framing
 
     assert classify_framing(words) == FRAMING_AMBIGUOUS
-    await _stored(_CLEAR, "delete")
+    await _stored(_CLEAR, VALUE_DELETE)
     result = await _through_process_intent(monkeypatch, words, "forget_clear_preference")
     assert result.message.startswith('Okay. I\'ve forgotten that "clear" means delete it.')
     assert await vi.get_verified_inference(_USER, _CLEAR) is None
@@ -396,18 +396,18 @@ async def test_ambiguous_forget_asks_reach_forget_in_collaborate_mode(
 async def test_an_ambiguous_set_still_checks_with_cxos_yes_no(mem_prefs, monkeypatch):
     """Set-directly keeps the consent check (Arch 08:05); the check asks CXO's 08:09
     yes/no, built from the stored key and target value. Nothing changes until "yes"."""
-    await _stored(_CLEAR, "delete")
+    await _stored(_CLEAR, VALUE_DELETE)
     result = await _through_process_intent(
         monkeypatch, "don't delete when I clear", "set_clear_preference_done"
     )
     assert result.message.endswith('Change "clear" from delete it to mark it done? (yes/no)')
-    assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == "delete"
+    assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == VALUE_DELETE
 
 
 async def test_the_set_ask_with_the_value_already_stored_says_so(mem_prefs):
     from services.intent_service.write_confirm_words import WriteAskRequest
 
-    await _stored(_CLEAR, "done")
+    await _stored(_CLEAR, VALUE_COMPLETE)
     ask = await pc.change_preference_write_ask(
         WriteAskRequest(intent=_intent("set_clear_preference_done"), message="x", principal=_USER)
     )
@@ -418,7 +418,7 @@ async def test_the_set_ask_with_the_value_already_stored_says_so(mem_prefs):
 async def test_the_set_ask_carries_cxos_decline(mem_prefs):
     from services.intent_service.write_confirm_words import WriteAskRequest
 
-    await _stored(_CLEAR, "done")
+    await _stored(_CLEAR, VALUE_COMPLETE)
     ask = await pc.change_preference_write_ask(
         WriteAskRequest(intent=_intent("set_clear_preference_delete"), message="x", principal=_USER)
     )
@@ -427,7 +427,7 @@ async def test_the_set_ask_carries_cxos_decline(mem_prefs):
 
 
 async def test_ask_me_each_time_is_forget(mem_prefs, handler):
-    await _stored(_CLEAR, "delete")
+    await _stored(_CLEAR, VALUE_DELETE)
     result = await handler(_intent("set_clear_preference_ask"), "wf")
     assert result.message.startswith('Okay. I\'ve forgotten that "clear" means delete it.')
 
@@ -438,8 +438,8 @@ async def test_ask_me_each_time_is_forget(mem_prefs, handler):
 async def test_several_keys_arm_the_forget_pick_and_a_number_forgets_that_row(mem_prefs):
     from services.intent_service.soft_invocation import WorkflowOfferService
 
-    await _stored(_CLEAR, "done")
-    await _stored(inference_key("handle"), "delete")
+    await _stored(_CLEAR, VALUE_COMPLETE)
+    await _stored(inference_key("handle"), VALUE_DELETE)
     store = WorkflowOfferService()
     out = await pc.change_remembered_preference(
         _intent("forget_clear_preference"), _USER, session_id="s-pick", offer_service=store
@@ -454,7 +454,7 @@ async def test_several_keys_arm_the_forget_pick_and_a_number_forgets_that_row(me
     picked = await pc.handle_forget_pick_turn(offer, "2", session_id="s-pick", user_id=_USER)
     assert picked["message"].startswith('Okay. I\'ve forgotten that "handle" means delete it.')
     assert await vi.get_verified_inference(_USER, inference_key("handle")) is None
-    assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == "done"
+    assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == VALUE_COMPLETE
     # An off-list number or words bind nothing (the generic seam takes them).
     assert await pc.handle_forget_pick_turn(offer, "7", session_id="s", user_id=_USER) is None
     assert await pc.handle_forget_pick_turn(offer, "clear", session_id="s", user_id=_USER) is None
@@ -462,8 +462,8 @@ async def test_several_keys_arm_the_forget_pick_and_a_number_forgets_that_row(me
 
 async def test_several_keys_with_no_session_change_nothing(mem_prefs, handler):
     _, calls = mem_prefs
-    await _stored(_CLEAR, "done")
-    await _stored(inference_key("handle"), "delete")
+    await _stored(_CLEAR, VALUE_COMPLETE)
+    await _stored(inference_key("handle"), VALUE_DELETE)
     before = calls["saves"]
     result = await handler(_intent("forget_clear_preference"), "wf")
     assert "I haven't changed any of them." in result.message
@@ -490,3 +490,45 @@ async def test_a_narrowing_action_off_the_allowlist_fails_at_construction():
             effect=EffectClass.WRITE,
             consent_narrowing_actions=frozenset({"set_clear_preference_delete"}),
         )
+
+
+# ── Arch 11-08 09:28: one store, one vocabulary (the clear path's own values) ──
+
+
+async def test_the_module_holds_no_value_strings_of_its_own():
+    from services.intent_service import reminder_clear as rc
+
+    assert pc.STORED_VALUE == {"done": rc.VALUE_COMPLETE, "delete": rc.VALUE_DELETE}
+    assert set(pc.MEANING_WORDS) == {rc.VALUE_COMPLETE, rc.VALUE_DELETE}
+
+
+async def test_a_row_the_clear_path_wrote_is_read_forgotten_and_set_over(mem_prefs, handler):
+    """The clear path's own write (its first-time 'mark it done' answer and its
+    meta-auto store both write VALUE_COMPLETE under inference_key(verb))."""
+    from services.intent_service import reminder_clear as rc
+    from services.intent_service.verified_inference import (
+        SOURCE_USER_VERIFIED,
+        store_verified_inference,
+    )
+
+    async def clear_path_answer(value):
+        assert await store_verified_inference(
+            _USER,
+            rc.inference_key("clear"),
+            value,
+            source=SOURCE_USER_VERIFIED,
+            confidence=rc.VERB_CONFIDENCE,
+        )
+
+    await clear_path_answer(rc.VALUE_COMPLETE)
+    already = await handler(_intent("set_clear_preference_done"), "wf")
+    assert already.message == '"clear" already means mark it done, so I haven\'t changed anything.'
+    gone = await handler(_intent("forget_clear_preference"), "wf")
+    assert gone.message.startswith('Okay. I\'ve forgotten that "clear" means mark it done.')
+
+    await clear_path_answer(rc.VALUE_DELETE)
+    set_done = await handler(_intent("set_clear_preference_done"), "wf")
+    assert set_done.message.startswith('Okay. From now on "clear" means mark it done.')
+    # What the clear path's next turn compares against: its own VALUE_COMPLETE.
+    stored = await vi.get_verified_inference(_USER, rc.inference_key("clear"))
+    assert stored["value"] == rc.VALUE_COMPLETE
