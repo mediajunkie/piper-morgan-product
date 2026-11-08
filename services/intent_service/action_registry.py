@@ -230,6 +230,16 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("QUERY", "set_clear_preference_done"): ActionDisposition.WORKFLOW,
     ("QUERY", "set_clear_preference_delete"): ActionDisposition.WORKFLOW,
     ("QUERY", "set_clear_preference_ask"): ActionDisposition.WORKFLOW,  # Arch 11-08 08:16
+    # #955 per-verb aliases (Arch 11-08 13:20 forget, 13:21 set): the alias names the verb.
+    ("QUERY", "forget_handle_preference"): ActionDisposition.WORKFLOW,
+    ("QUERY", "set_handle_preference_done"): ActionDisposition.WORKFLOW,
+    ("QUERY", "set_handle_preference_delete"): ActionDisposition.WORKFLOW,
+    ("QUERY", "forget_take_care_of_preference"): ActionDisposition.WORKFLOW,
+    ("QUERY", "set_take_care_of_preference_done"): ActionDisposition.WORKFLOW,
+    ("QUERY", "set_take_care_of_preference_delete"): ActionDisposition.WORKFLOW,
+    ("QUERY", "forget_reset_preference"): ActionDisposition.WORKFLOW,
+    ("QUERY", "set_reset_preference_done"): ActionDisposition.WORKFLOW,
+    ("QUERY", "set_reset_preference_delete"): ActionDisposition.WORKFLOW,
     # Issue #1039: GitHub milestone + release listing
     ("QUERY", "list_milestones_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_releases_query"): ActionDisposition.WORKFLOW,
@@ -340,6 +350,15 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "set_clear_preference_done"): "make clear mean mark it done",
     ("QUERY", "set_clear_preference_delete"): "make clear mean delete",
     ("QUERY", "set_clear_preference_ask"): "ask me each time when I clear",
+    ("QUERY", "forget_handle_preference"): "forget my handle preference",
+    ("QUERY", "set_handle_preference_done"): "make handle mean mark it done",
+    ("QUERY", "set_handle_preference_delete"): "make handle mean delete",
+    ("QUERY", "forget_take_care_of_preference"): "forget my take care of preference",
+    ("QUERY", "set_take_care_of_preference_done"): "make take care of mean mark it done",
+    ("QUERY", "set_take_care_of_preference_delete"): "make take care of mean delete",
+    ("QUERY", "forget_reset_preference"): "forget my reset preference",
+    ("QUERY", "set_reset_preference_done"): "make reset mean mark it done",
+    ("QUERY", "set_reset_preference_delete"): "make reset mean delete",
     ("QUERY", "list_milestones_query"): "Show milestones",
     ("QUERY", "list_releases_query"): "Recent releases",
     ("QUERY", "list_labels_query"): "List labels",
@@ -726,6 +745,15 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "set_clear_preference_done": Verb.SET,  # #955
     "set_clear_preference_delete": Verb.SET,  # #955
     "set_clear_preference_ask": Verb.SET,  # #955 (forget, Arch 08:16)
+    "forget_handle_preference": Verb.SET,  # #955 per-verb (Arch 13:20/13:21)
+    "set_handle_preference_done": Verb.SET,  # #955 per-verb (Arch 13:20/13:21)
+    "set_handle_preference_delete": Verb.SET,  # #955 per-verb (Arch 13:20/13:21)
+    "forget_take_care_of_preference": Verb.SET,  # #955 per-verb (Arch 13:20/13:21)
+    "set_take_care_of_preference_done": Verb.SET,  # #955 per-verb (Arch 13:20/13:21)
+    "set_take_care_of_preference_delete": Verb.SET,  # #955 per-verb (Arch 13:20/13:21)
+    "forget_reset_preference": Verb.SET,  # #955 per-verb (Arch 13:20/13:21)
+    "set_reset_preference_done": Verb.SET,  # #955 per-verb (Arch 13:20/13:21)
+    "set_reset_preference_delete": Verb.SET,  # #955 per-verb (Arch 13:20/13:21)
     "list_milestones_query": Verb.LIST,
     "list_releases_query": Verb.LIST,
     "list_labels_query": Verb.LIST,

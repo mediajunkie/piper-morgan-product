@@ -2916,3 +2916,13 @@ corpus:
     expected: REVIEW
     source: "issue-955 Lead screen 2026-11-08 (classifier and router x6, main and control)"
     notes: "Arch 07:53: a standing miss, not #955's. Classifier x6 on main = control = candidate: execution/complete_todo x6 (it reads a set-directly ask as an objectless complete). Router x6: CLARIFY @0.40 x6 on all three trees. The objectless complete on 'them' must ask which and complete nothing (pinned in test_change_remembered_preference_955.py; the ask is #2328). REVIEW, not asserted."
+  - phrase: "forget my take care of preference"
+    category: QUERY
+    expected: REVIEW
+    source: "issue-955 Lead per-verb screen 2026-11-08 (classifier x6, main = control = candidate)"
+    notes: "Arch 13:32 (4): the classifier names forget_clear_preference x6, not forget_take_care_of_preference. Since 13:32 the clear forget never forgets another verb unasked (one non-clear key gets the pick with that row). A per-verb classifier example is pre-approved, with its own priced screen. REVIEW, not asserted."
+  - phrase: "make take care of mean mark it done"
+    category: QUERY
+    expected: REVIEW
+    source: "issue-955 Lead per-verb screen 2026-11-08 (classifier x6, main = control = candidate)"
+    notes: "Arch 13:32 (1)/(4): the classifier names set_clear_preference_done x6. Since 13:32 the clear set acts only on the 'clear' key (before it wrote the one stored key, whatever its verb). Honest, not working, until a per-verb example and its screen. REVIEW, not asserted."
