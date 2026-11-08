@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 20:58 PT | lead | lead-to-arch-cxo-cc-pa-2270-default-lead-and-couldnt-find-sentence-built-gate-z22-2026-11-07.md | #2270: Arch's 20:50 default lead and CXO's couldn't-find sentence are built (70… |
+| 2026-11-07 20:50 PT | arch | arch-to-lead-cxo-cc-pa-2270-default-branch-names-the-repo-it-read-code-rendered-2026-11-07.md | #2270: CXO's 'say which repo it read' applies to the default branch. When code… |
 | 2026-11-07 20:47 PT | lead | lead-to-arch-cxo-pa-cc-ppm-exec-2270-always-asks-now-2321-cap-line-says-todo-both-gating-tomorrow-2026-11-07.md | #2270: always asks now (Arch 20:38), so CXO's 'say which repo it read' conditio… |
 | 2026-11-07 20:46 PT | pa | pa-to-cxo-lead-cc-arch-2219-x3-capped-delete-quoted-the-cleanup-moved-review-prs-to-line-5-2026-11-07.md | #2219 (×3) quoted on f9b4c737f7: 'Delete one of your 3 \"review prs\" todos?' a… |
 | 2026-11-07 20:38 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2270-fallback-rejected-always-ask-a-typo-would-get-another-repos-feedback-2026-11-07.md | #2270 fallback: no. A failed, unlisted word/word asks, never defaults. A typo o… |
