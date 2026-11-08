@@ -374,7 +374,11 @@ class TestBoundariesUnregressed:
         result = await live_service.process_intent(
             message="clear my reminders", session_id=sid, user_id=_USER
         )
-        assert result.message == rc.variant_one_question("clear", "reminder")
+        assert (
+            result.message
+            == 'That would cover 2 reminders:\n1. "Review the PR"\n2. "Call the vendor"\n\n'
+            + rc.variant_one_question("clear", "reminder")
+        )
         stored = _pending_offers(live_service).get(sid)
         assert stored["pending_action"]["kind"] == rc.CLEAR_VERB_QUESTION_KIND
         assert todo_boundary["deleted"] == []
