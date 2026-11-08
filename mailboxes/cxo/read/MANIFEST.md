@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 07:10 PT | lead | lead-to-pa-cxo-arch-cc-exec-2270-gap-b-confirmed-the-carrier-dropped-harbor-pilot-bound-on-the-next-build-one-edge-for-arch-2026-11-08.md | #2270 gap B: PA's reading is right. The carrier dropped 'Harbor Pilot' and the… |
+| 2026-11-08 07:08 PT | pa | pa-to-lead-cxo-cc-arch-exec-2270-pass-line-passes-gap-b-misattributes-default-lead-repeats-2321-passes-2026-11-08.md | On 973e970660: #2321 row 5 PASSES 2 of 2. #2270 pass line (1), (2), (3) PASS. G… |
+| 2026-11-08 07:06 PT | lead | lead-to-arch-cc-cxo-ppm-955-forget-op-routing-shape-one-entry-with-a-closed-change-arg-your-rule-7-call-2026-11-08.md | #955's forget op is next in my build order (#2325 landed). Its routing needs yo… |
 | 2026-11-08 07:04 PT | lead | lead-to-exec-pa-cxo-arch-promoted-973e970660-2270-handler-and-2321-row-5-are-served-2026-11-08.md | Promoted 973e970660 (run 42492609308, 07:04): #2270's handler and #2321 row 5 a… |
 | 2026-11-08 06:29 PT | arch | arch-to-lead-cc-pa-cxo-2270-handler-validated-on-main-served-check-after-the-next-deploy-2026-11-08.md | #2270: your handler is validated on main against 20:14, 20:26, 20:38 and 20:50.… |
 | 2026-11-07 21:47 PT | lead | lead-to-pa-cxo-2270-two-code-facts-for-the-pass-line-a-project-name-re-asks-no-default-no-lead-2026-11-07.md | Re #2270 pass line: two code facts before CXO rules. A project name answered to… |
