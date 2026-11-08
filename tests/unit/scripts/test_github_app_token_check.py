@@ -102,3 +102,41 @@ def test_the_narrowing_row_passes_only_when_github_refuses(monkeypatch):
     for status, want in [(404, "PASS"), (403, "PASS"), (200, "FAIL readable (200)")]:
         monkeypatch.setattr("aiohttp.ClientSession", lambda headers=None, _s=status: _S(_s))
         assert asyncio.run(chk.run_narrowing("t", "o/p"))[0][1] == want
+
+
+def _reply(text):
+    from types import SimpleNamespace
+
+    return SimpleNamespace(content=[SimpleNamespace(text=text)], isError=False)
+
+
+def test_the_issue_number_comes_from_the_url_when_the_reply_has_none():
+    """#2174 (xian 11-07 16:23): the create reply carried no 'number'; #43 was made."""
+    from scripts.github_app_token_check import _first_issue_number
+
+    url = "https://github.com/dinp-machine/piper-test-activity/issues/43"
+    assert _first_issue_number(_reply('{"id": 1, "html_url": "' + url + '"}')) == 43
+    assert _first_issue_number(_reply('{"id": 1, "url": "' + url + '"}')) == 43
+    assert _first_issue_number(_reply("created " + url)) == 43
+    assert _first_issue_number(_reply('{"number": 7}')) == 7
+    assert _first_issue_number(_reply('{"id": 1}')) is None
+
+
+def test_issue_needs_writes(monkeypatch, capsys):
+    from scripts import github_app_token_check as m
+
+    monkeypatch.setenv(m.TOKEN_ENV, "x")
+    rc = m.main(
+        [
+            "--repo",
+            m.WRITES_ALLOWED_REPO,
+            "--mcp-url",
+            "http://x",
+            "--uninstalled-private-repo",
+            "a/b",
+            "--issue",
+            "43",
+        ]
+    )
+    assert rc == 2
+    assert "--issue needs --writes" in capsys.readouterr().out

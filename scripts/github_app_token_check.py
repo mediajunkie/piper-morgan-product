@@ -107,8 +107,15 @@ def _tool_ok(result: Any) -> bool:
 
 
 def _first_issue_number(result: Any) -> int | None:
+    """The created issue's number from the MCP reply: a ``number`` field, else the
+    ``/issues/N`` in its URL (xian's 11-07 run: github-mcp-server's create reply
+    carried no ``number`` though #43 was created)."""
     import json
     import re
+
+    def _from_url(value: Any) -> int | None:
+        m = re.search(r"/issues/(\d+)", str(value or ""))
+        return int(m.group(1)) if m else None
 
     for part in getattr(result, "content", []) or []:
         text = getattr(part, "text", "") or ""
@@ -116,14 +123,19 @@ def _first_issue_number(result: Any) -> int | None:
             data = json.loads(text)
         except ValueError:
             m = re.search(r'"number"\s*:\s*(\d+)', text)
-            return int(m.group(1)) if m else None
-        if isinstance(data, dict) and "number" in data:
-            return int(data["number"])
+            return int(m.group(1)) if m else _from_url(text)
+        if isinstance(data, dict):
+            if "number" in data:
+                return int(data["number"])
+            for key in ("html_url", "url"):
+                n = _from_url(data.get(key))
+                if n is not None:
+                    return n
     return None
 
 
 async def run_mcp(
-    token: str, url: str, owner: str, repo: str, writes: bool
+    token: str, url: str, owner: str, repo: str, writes: bool, issue: int | None = None
 ) -> List[Tuple[str, str]]:
     from services.mcp.consumer.mcp_client import MCPClient
 
@@ -137,7 +149,11 @@ async def run_mcp(
                 except Exception as e:
                     rows.append((name, f"FAIL {type(e).__name__}"))
             created = None
-            if writes:
+            if writes and issue is not None:
+                # --issue N: the write rows run against an existing issue, no new create.
+                rows.append(("issue_write create", f"SKIPPED (--issue {issue})"))
+                created = issue
+            elif writes:
                 try:
                     res = await c.call_tool(
                         "issue_write",
@@ -149,8 +165,15 @@ async def run_mcp(
                             "body": "#2174 check; closed by the same run.",
                         },
                     )
-                    created = _first_issue_number(res) if _tool_ok(res) else None
-                    rows.append(("issue_write create", "PASS" if created else "FAIL tool-error"))
+                    ok = _tool_ok(res)
+                    created = _first_issue_number(res) if ok else None
+                    if not ok:
+                        rows.append(("issue_write create", "FAIL tool-error"))
+                    elif created is None:
+                        # The create succeeded; only the reply's number was missing.
+                        rows.append(("issue_write create", "OK, NO NUMBER (rerun with --issue N)"))
+                    else:
+                        rows.append(("issue_write create", "PASS"))
                 except Exception as e:
                     rows.append(("issue_write create", f"FAIL {type(e).__name__}"))
             target = created
@@ -196,11 +219,20 @@ def main(argv: List[str] | None = None) -> int:
         "--writes", action="store_true", help="also create, comment on and close one issue"
     )
     p.add_argument(
+        "--issue",
+        type=int,
+        default=None,
+        help="with --writes: read, comment on and close this EXISTING issue instead of creating one",
+    )
+    p.add_argument(
         "--uninstalled-private-repo",
         required=True,
         help="owner/name of a PRIVATE repository the App is NOT installed on (must be refused)",
     )
     ns = p.parse_args(argv)
+    if ns.issue is not None and not ns.writes:
+        print("refusing: --issue needs --writes")
+        return 2
     if ns.writes and ns.repo != WRITES_ALLOWED_REPO:
         print(f"refusing: --writes only runs against {WRITES_ALLOWED_REPO}")
         return 2
@@ -214,7 +246,7 @@ def main(argv: List[str] | None = None) -> int:
         return 2
     rows = asyncio.run(run_rest(token, owner, repo))
     rows += asyncio.run(run_narrowing(token, ns.uninstalled_private_repo))
-    rows += asyncio.run(run_mcp(token, ns.mcp_url, owner, repo, ns.writes))
+    rows += asyncio.run(run_mcp(token, ns.mcp_url, owner, repo, ns.writes, ns.issue))
     width = max(len(r[0]) for r in rows)
     for name, verdict in rows:
         print(f"{name.ljust(width)}  {verdict}")
