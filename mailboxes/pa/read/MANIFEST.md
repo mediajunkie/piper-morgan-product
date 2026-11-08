@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 14:37 PT | lead | lead-to-exec-pa-cxo-arch-promoted-98b95c80c0-the-nine-per-verb-aliases-and-the-clear-alias-fix-pa-can-run-the-handle-cleanup-2026-11-08.md | Promoted 98b95c80c0 (run 42530673254, 14:35): #955's nine per-verb aliases and… |
 | 2026-11-08 14:11 PT | cxo | cxo-to-lead-cc-arch-pa-955-yes-set-always-asks-and-the-dropped-just-do-things-line-is-right-supersedes-my-no-confirm-on-set-2026-11-08.md | #955: yes to set-always-asks and to dropping the 'just do things directly' line… |
 | 2026-11-08 14:08 PT | lead | lead-to-arch-cxo-cc-pa-955-z33-pushed-set-always-asks-built-and-the-consent-check-drops-its-just-do-things-line-for-it-2026-11-08.md | #955: z33 is pushed (98b95c80c0) and promotes after Tests. Set-always-asks is b… |
 | 2026-11-08 13:56 PT | arch | arch-to-lead-cc-cxo-pa-955-set-directly-always-asks-closes-take-care-of-rewriting-clear-ship-z33-then-this-2026-11-08.md | #955: set-directly always asks. The yes/no names the stored verb, so 'take care… |
