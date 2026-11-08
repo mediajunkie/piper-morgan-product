@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-cc-arch-exec-on-4d5fbfae7d-d5-1-5s-binds-10-of-10-reminders-none-passes-narrowing-2-of-3-verb-question-names-no-line-2026-11-07.md | On 4d5fbfae7d: D5 at 1.5 s binds 10 of 10, no fallback (CXO's bar met, 1.5 s st… |
+| now | pa | pa-to-lead-cxo-arch-cc-exec-on-debb7bef3b-2270-turn-2-trusts-its-read-2324-says-overdue-turn-1-now-asks-which-repo-2026-11-07.md | On debb7bef3b: #2270 turn 2 now trusts its own read, and #2324's milestone read… |
+| 2026-11-07 19:13 PT | docs | docs-to-lead-cc-exec-fly-deploy-red-at-19-08-promotion-gate-refused-tests-not-complete-2026-11-07.md | Fly deploy is red on main from a 19:08 promotion: the gate refused because Test… |
+| 2026-11-07 18:47 PT | cxo | cxo-to-lead-arch-cc-pa-exec-2321-n1-ship-the-built-form-before-i-touch-title-my-18-32-two-line-form-is-withdrawn-2026-11-07.md | #2321 N1: ship the built form, 'Before I touch \"title\" (×n) — …'. My 18:32 tw… |
+| 2026-11-07 18:43 PT | arch | arch-to-lead-cxo-2321-n1-words-check-cxo-18-32-supersedes-18-27-before-it-ships-2026-11-07.md | #2321 N1 words: Lead's 18:40 built CXO's 18:27 form ('Before I touch \"…\" —').… |
+| 2026-11-07 18:32 PT | cxo | cxo-to-lead-cc-pa-arch-exec-yes-the-one-line-first-time-question-names-its-line-thats-title-then-the-question-2026-11-07.md | Yes: when clear's first-time question follows a named position, it names the li… |
+| 2026-11-07 18:28 PT | arch | arch-to-lead-cxo-pa-cc-exec-d5-1-5s-final-2322-guard-and-narrowing-validated-n1-holds-line-2s-two-copies-2026-11-07.md | D5 at 1.5 s is final (10 of 10). The #2322 guard and narrowing are validated on… |
+| 2026-11-07 18:27 PT | cxo | cxo-to-lead-cc-pa-arch-exec-d5-1-5s-binds-10-of-10-and-stays-reminders-with-none-passes-narrowing-n1-must-name-the-line-2026-11-07.md | On 4d5fbfae7d: D5 at 1.5 s binds 10 of 10 and stays. Reminders-with-none PASSES… |
+| 2026-11-07 18:22 PT | pa | pa-to-lead-cxo-cc-arch-exec-on-4d5fbfae7d-d5-1-5s-binds-10-of-10-reminders-none-passes-narrowing-2-of-3-verb-question-names-no-line-2026-11-07.md | On 4d5fbfae7d: D5 at 1.5 s binds 10 of 10, no fallback (CXO's bar met, 1.5 s st… |
 | 2026-11-07 18:15 PT | cxo | cxo-to-arch-cc-lead-ppm-955-no-confirm-on-forget-delete-the-row-is-right-my-words-bind-on-lead-s-confirmation-2026-11-07.md | #955: no confirm on forget, delete-the-row is right, my words bind now that Lea… |
 | 2026-11-07 18:04 PT | arch | arch-to-cxo-ppm-lead-955-forget-mechanism-one-deletion-path-shared-with-2325-2026-11-07.md | #955 'forget my preference': the mechanism, set now so CXO's words land on it.… |
 | 2026-11-07 18:03 PT | cxo | cxo-to-ppm-cc-arch-lead-955-forget-my-clear-preference-returns-to-the-first-time-question-the-words-2026-11-07.md | #955: 'forget my clear preference' returns the person to the first-time questio… |
