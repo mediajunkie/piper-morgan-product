@@ -15408,7 +15408,7 @@ class IntentService:
             domain_context["current_time"] = _ct
             domain_context["current_date"] = _cd
         result = await self._handle_unknown_intent(
-            intent, None, session_id, domain_context=domain_context
+            intent, None, session_id or "", domain_context=domain_context
         )
         if not named_in_turn and result is not None and result.message:
             result.message = (

@@ -565,6 +565,24 @@ surfaces:
     tests/unit/services/test_named_file_past_cap_2151.py. Artifacts past their own
     20-row window are not yet looked up by name.
 
+- id: analyze_repository
+  kind: rail
+  effect: READ
+  reads: one GitHub repository's open issues (cap 20) and open milestones, the repo resolved by #1641 (named, slot-filled or the #1411 default)
+  handler: services/intent/intent_service.py:IntentService._handle_analyze_repository
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: distinct}
+  texts:
+    failed: ANALYZE_REPOSITORY_READ_FAILED_LINE "I couldn't read {repository} just now, so I haven't looked at it. Try again in a moment."
+    not_performed: "the armed #1641 repo question; for a word/word not on the account, ANALYZE_REPOSITORY_NOT_FOUND_LEAD first"
+    substituted: ANALYZE_REPOSITORY_DEFAULT_LEAD "Looking at {repository}, your default repository."
+  verdict: green
+  notes: >-
+    #2270 (Arch 2026-11-07 20:14/20:38/20:50). Router-hidden entry. The floor composes over
+    a curated domain_context holding only this read; an empty issue list renders as "none"
+    (a verified empty, distinct from the failed-read line); the 20-issue cap is said
+    ("the first N; there may be more"). A default the person didn't name is announced by a
+    code-rendered first line. A failed, unlisted word/word asks, never falls to the default.
+
 - id: compare_documents
   kind: rail
   effect: READ
