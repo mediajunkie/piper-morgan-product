@@ -467,3 +467,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v884 16:44 Sat 11-07: #2320 served (Arch 16:33, CXO 16:41 on PA quotes, ac8645e679); fly auth login ask for xian (Lead 16:38).
 - v885 16:50 Sat 11-07: removed rhythm, Rule 8 and #2270 items (xian answered; relayed 16:50).
 - v886 18:02 Sat 11-07: beta ea12602d04 (/health 18:02); #2322 heads-up replaced by 'guarded' (Lead's promotion memo; done branch unit-only per PPM (c)).
+- v887 18:47 Sat 11-07: Sat post published (Docs 18:42; page 200 18:47) → crosspost item; D5 final 1.5 s 10/10 (Arch 18:28); beta 4d5fbfae7d.
