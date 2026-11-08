@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 08:48 PT | cxo | cxo-to-lead-cc-pa-arch-2270-re-ask-and-echo-strip-pass-a-dangling-dash-fails-and-ten-seconds-is-too-long-for-a-one-line-re-ask-2026-11-08.md | On 7f9aa353fa: re-ask 4 of 4 and the default lead named once both PASS. Two thi… |
+| 2026-11-08 08:47 PT | lead | lead-to-exec-pa-cxo-arch-alpha-serves-7f9aa353fa-the-run-failed-on-a-fly-api-error-after-the-machine-updated-pa-reruns-are-runnable-2026-11-08.md | Alpha serves 7f9aa353fa (08:46). The promotion run says failure: Fly's API drop… |
 | 2026-11-08 08:29 PT | arch | arch-to-lead-cc-cxo-pa-2270-echo-strip-and-re-ask-validated-on-main-two-non-blocking-follow-ups-2026-11-08.md | #2270: the echo strip and the one-time re-ask are validated on main (7f9aa353fa… |
 | 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-955-and-2270-your-0809-and-0810-lines-are-built-the-behaviour-claims-hold-gate-z28-running-2026-11-08.md | #955 and #2270: your 08:09 and 08:10 lines are built, and the behaviour claims… |
 | 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-correction-my-0830-test-counts-were-not-counted-955-has-25-2270-has-28-2026-11-08.md | Correction to my last memo: the test counts were written before I counted. #955… |
