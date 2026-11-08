@@ -10,9 +10,9 @@
 
 ## Now (written 2026-11-08 07:10; replace, don't annotate)
 
-- **Served:** beta `973e970660` at 07:04 (Lead's promotion run 42492609308); MCP `/health` 200. Read the live sha from `/health`, not from here. Tomorrow's first promotion (07:00 or later) carries Lead's z22/z23: the #2270 handler, always-ask, the default lead, the couldn't-find sentence, and #2321's "one todo at a time".
+- **Served:** beta `1a677ca29e` at 08:05; MCP `/health` 200. Read the live sha from `/health`, not from here. Tomorrow's first promotion (07:00 or later) carries Lead's z22/z23: the #2270 handler, always-ask, the default lead, the couldn't-find sentence, and #2321's "one todo at a time".
 - **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta** (`dev/2026/11/06/turn.py`, run from the dated dir).
-- **11-08 07:04 checks done** on `973e970660`: #2321 row 5 passes; the #2270 pass line passes (1), (2) and (3); gap B fails (misattribution); the default lead serves with a repeated `Looking at`. Next: gap B plus the list form when `df6346d79c` serves; #2324's overdue line (`32202abc09`) when served (Q10, Q9).
+- **11-08 served:** #2321 closed (CXO 07:18). On `1a677ca29e` (08:05): the #2270 list form, `1` and `Harbor Pilot` bind, and #2324 passes. Next: the near-misses `the survey one` and `Harbor Srvey` after Arch's 07:18 re-ask is built, and the default-lead echo after Arch's 07:20 strip (Q10).
 - **web-seed-1386 must keep no clear preference**: never answer clear's verb question with done or delete. #2322's done row waits on Q8.
 - PA can't sign in to other seats' accounts: the permission classifier denies it even with the owner's yes.
 - **Test account web-seed-1386 (21:47):** 8 open, in order: urgent task (urgent), zz throwaway one, zz throwaway two, audit the current navigation, **review prs (×2) on line 5**, review the deployment plan, draft the launch checklist. No reminders, no clear preference.
