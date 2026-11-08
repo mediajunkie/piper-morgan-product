@@ -1,10 +1,33 @@
 # Lead carry-forward — Fable 5.1 seat (Opus 5.5 from 11-04 19:38 until the Fable limit resets after 22:00 on 11-05); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
-## 2026-11-07 (open; log `dev/2026/11/07/2026-11-07-0647-lead-code-log.md`)
-- **Served:** alpha `49a5778df4` (09:04, run 42394159387): **ADR-083 D5** (xian GO 08:03; Arch ACCEPTED as D5, validated on main; the shadow block drops the list fact too). Before it: `641ef2eb56` (07:03) with #2315/#2316, both CLOSED on PA's quotes (CXO PASS).
-- **Next:** PA's nine D5 rows → CXO judges. #2219/#2294 stay open on CXO's rows (the capped `(×3)` quote, #2313, the floor ask after #2304; a bulleted-list turn). #2317 filed (route stamp; CXO and PA ask no change).
-- **Waiting on others:** #2313, #2312, #2314's name, #2244, #2288/#2266, #2261. Exec's "what is alpha for" is Arch's ask (cc only).
-- **Note:** the scratch A/B baseline files (`ab-unit-sorted.txt`, `ab-int-sorted.txt`, `known15-norm.txt`) are gone; the backlog gate covers both tiers. Rebuild a baseline before the next gate if a tier compare is wanted.
+## DAY CLOSED 2026-11-07 21:46 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-07 -->` in the 11-07 log `dev/2026/11/07/2026-11-07-0647-lead-code-log.md`)
+- **Served:** alpha `f9b4c737f7` (20:18, run 42446024382; carries `198fbdd89d`: #2325's admin reset, #2321 N1's words). Promotions today: 13 by this seat (one refused 19:09 on staging's untested sha, re-dispatched 19:31). Served and passed tonight: D5 at 1.5 s (10/10, final), reminders-with-none, #2321 N1 (rows 6 and 7), #2219 `(×3)`, #2324's "overdue" and today's date, #2270 turn 2 on the access-check route only.
+- **Local on `claude/lead-cycle`, NOT pushed (gate z23 run at close; read its verdict line first):**
+  - `c76d7a7f70`, `27f42eb2b3`, `a3b9376789`, `700d7ff874` and `551a812306`: **#2270's `analyze_repository` handler** (router-hidden; resolve via #1641, read one repo, `record_read`, a curated floor). The #2132 ratchet goes to 2 (Arch 20:26), with the landing pin. Always ask on a failed, unlisted pair (Arch 20:38). The default lead (Arch 20:50). CXO's couldn't-find sentence. The inventory row, and mypy at 1074.
+  - **#2321 row 5:** the no-list cap line says `one {noun} at a time` (CXO 20:35).
+  - `8279572d8a` reverts the gather-record fix (`6540fa6787`; it stays retired, per Arch 20:14).
+- **Model:** Opus 5.5.
+- **11-08 START order:**
+  1. Usual START: create the 11-08 log, inbox, current-state Now, xpoll, owed-scan.
+  2. Read gate z23's verdict (`gate-2219z23.out` in the scratchpad). If it's green apart from the known local-only `test_fresh_install_flow` failure and the SHRINK-LOCK keychain list, push: fetch, merge, push loop, then `sync-pm-local`. If it isn't green, fix it first.
+  3. After 07:00, once Tests passes on the pushed sha: check every promotion condition, re-read the inbox, dispatch with the bare command, then mail Exec, PA, CXO and Arch.
+  4. **PA's served asks:**
+     - #2270: the advisor's exact words ×6 (no document reply; at least 3 of 6 give feedback with a next step); gap B by name; turn 2 in my wording ×2 (`I thought you had access to the GitHub repository. Did you actually look at it?`), expecting the fact line.
+     - #2321 row 5: the no-list cap line.
+     - #2270's sentinel is done (holds).
+  5. **The next #2270 unit:** CXO's 20:02 list-form ask. Every linked repo is listed and numbered, with the never-mind line. The carrier must bind a number. Add the "none linked" line and the "project has no repo" line. A project name binds to its own repo. Turn 1 isn't claimed until this is served.
+  6. **#2324:** gap A, `Due {date} (overdue by N days)` on every milestone render (CXO 20:02 words; the person's local date; omit when unknown). Tomorrow's template, "Today is …. Tomorrow is Sunday, November 8." (Arch 20:03).
+  7. **#955's forget op:** say "forgotten" only after a read-back confirms the delete (Arch 20:26). PPM places it (section T).
+- **Waiting on others:**
+  - #2325's served check needs an admin caller (xian's account); asked via Exec.
+  - xian's `! fly auth login` (relayed via Exec).
+  - #2322 stored-done (via #2325 or Q8); #2313, #2312, #2314's name, #2244, #2288/#2266, #2261; #2326 (armed read offer, Backlog).
+- **Rules that bit 11-07:**
+  - Before building a ruling, check the mail for a later one. I built CXO's 18:32 five minutes after she withdrew it, and Arch caught the crossing.
+  - A served check must name the path that's live, and how I confirmed it. Memory `feedback_confirm_path_is_live_before_asking_for_served_check`.
+  - A raised ratchet needs the owner's explicit word, even after he rules the change that trips it (#2132, Arch 20:26).
+  - Promotion deploys staging's sha. Another seat's later push with a script change needs its own Tests before the dispatch passes.
+  - The owner/name slot-fill takes any bare `word/word` (the advisor's "project/repository").
 
 ## DAY CLOSED 2026-11-06 21:46 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-06 -->` in the 11-06 log `dev/2026/11/06/2026-11-06-0509-lead-code-log.md`)
 - **Served:** alpha `0af6078171` (20:37; five promotions today by this seat). On main, not served: #2315 (`b7c0e604ea`). #2316 (+ its edge rulings) pushed post-close after gate x.
