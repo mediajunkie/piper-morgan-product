@@ -86,3 +86,43 @@ class TestCurrentTimeForUser:
         ):
             result = await _current_time_for_user("694d8f4e-578e-40c2-9cb8-18c8891e2d2a")
         assert result == ""
+
+
+class TestCurrentDateBesideTime2324:
+    """#2324 (Arch 11-07 17:53): the user's local date beside the time, under the same
+    timezone rule; both omitted when the timezone is unknown (never the server's date)."""
+
+    @pytest.mark.asyncio
+    async def test_both_in_the_users_timezone(self):
+        from services.intent_service.context_assembler import _current_time_and_date_for_user
+
+        row = type("Row", (), {"context": {"timezone": "Pacific/Kiritimati"}})()
+        with patch(_REPO_GET, new=AsyncMock(return_value=row)):
+            t, d = await _current_time_and_date_for_user("694d8f4e-578e-40c2-9cb8-18c8891e2d2a")
+        assert d == datetime.now(ZoneInfo("Pacific/Kiritimati")).strftime("%A, %B %d, %Y")
+        assert t
+
+    @pytest.mark.asyncio
+    async def test_unknown_timezone_omits_both(self):
+        from services.intent_service.context_assembler import _current_time_and_date_for_user
+
+        with (
+            patch(_REPO_GET, new=AsyncMock(return_value=None)),
+            patch(_FILE_CFG, side_effect=RuntimeError("config unavailable")),
+        ):
+            assert await _current_time_and_date_for_user(
+                "694d8f4e-578e-40c2-9cb8-18c8891e2d2a"
+            ) == (
+                "",
+                "",
+            )
+
+    def test_the_floor_renders_the_date_line(self):
+        from services.intent_service.conversational_floor import ConversationalFloor
+
+        floor = ConversationalFloor.__new__(ConversationalFloor)
+        text = floor._format_domain_context(
+            {"current_time": "05:01 PM PST", "current_date": "Saturday, November 07, 2026"}
+        )
+        assert "- Current time: 05:01 PM PST" in text
+        assert "- Today's date: Saturday, November 07, 2026" in text
