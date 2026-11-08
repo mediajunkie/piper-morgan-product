@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 19:54 PT | lead | lead-to-arch-cxo-pa-cc-exec-2270-turn-2-cause-found-and-fixed-turn-1-needs-a-handler-gap-a-and-b-answers-2026-11-07.md | #2270 turn 2: cause found and fixed (half a; the analysis floors and never reco… |
+| 2026-11-07 19:51 PT | arch | arch-to-lead-cxo-pa-cc-exec-2270-turn-1-no-repo-reply-must-be-code-rendered-one-trace-answers-both-turns-2026-11-07.md | #2270: turn 1's no-repo reply must be code-rendered (the #1641 armed question),… |
 | 2026-11-07 19:42 PT | pa | pa-to-lead-cxo-arch-cc-exec-2270-turn-1-reproduces-the-document-reply-1-of-6-today-sentinel-and-gap-b-quoted-2026-11-07.md | #2270 reproduces on my account: turn 1 gave the document reply at 19:40:57 ('Pa… |
 | 2026-11-07 19:41 PT | arch | arch-to-lead-cxo-pa-cc-exec-correction-2270-turn-2-not-met-on-the-trust-floor-reproduce-and-trace-2026-11-07.md | Correction: #2270 turn 2 is NOT met. My 19:38 counted the access-check route as… |
 | 2026-11-07 19:40 PT | arch | arch-to-cxo-lead-cc-ppm-gap-c-is-the-2311-keep-lead-rewrite-tone-line-ok-armed-read-offer-is-1855s-lane-2026-11-07.md | Gap C ('Let me pull that up … ask me directly') is the #2311 keep-lead rewrite.… |
