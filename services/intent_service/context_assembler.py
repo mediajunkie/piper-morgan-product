@@ -39,7 +39,19 @@ logger = structlog.get_logger()
 
 
 async def _current_time_for_user(user_id=None) -> str:
-    """Current time in the USER's timezone, e.g. '12:54 PM PDT' — or "" (omit).
+    """The time of day only; see :func:`_current_time_and_date_for_user`."""
+    return (await _current_time_and_date_for_user(user_id))[0]
+
+
+async def _current_time_and_date_for_user(user_id=None) -> "tuple[str, str]":
+    """Current time AND date in the USER's timezone, e.g. ('12:54 PM PDT',
+    'Saturday, November 07, 2026') — or ("", "") to omit both.
+
+    #2324 (Arch 11-07 17:53): the date rides beside the time, under the same
+    timezone rule, so relative claims ("runway", "due soon", "overdue") are
+    checkable on every turn, not only TEMPORAL ones. One timezone resolution
+    for both. When the timezone is unknown, BOTH are omitted: never the server's
+    date (#1381).
 
     #1150 made this configured-tz-aware via the single PM config file; #1381
     found the hosted consequence: on the multi-user droplet that file (or its
@@ -76,13 +88,14 @@ async def _current_time_for_user(user_id=None) -> str:
         except Exception:
             tz_name = None
     if not tz_name:
-        return ""
+        return "", ""
     try:
         from zoneinfo import ZoneInfo
 
-        return datetime.now(ZoneInfo(tz_name)).strftime("%I:%M %p %Z")
+        now = datetime.now(ZoneInfo(tz_name))
+        return now.strftime("%I:%M %p %Z"), now.strftime("%A, %B %d, %Y")
     except Exception:  # silent-ok: pure display; a stored bad tz would log every turn — no clock face beats a wrong one (#1589 rationale)
-        return ""
+        return "", ""
 
 
 # #984: TTL defaults per data type (PM-approved 2026-05-12).
@@ -433,9 +446,12 @@ class ContextAssembler:
         # Current time — in the USER's timezone (#1381) or omitted entirely;
         # the floor's renderer skips the line when the key is absent. Never
         # the server clock in user clothing.
-        _ct = await _current_time_for_user(user_id)
+        _ct, _cd = await _current_time_and_date_for_user(user_id)
         if _ct:
             context["current_time"] = _ct
+        if _cd:
+            # #2324: the user's local date beside the time (both or neither).
+            context["current_date"] = _cd
         # current_time has no provenance (always-available system value); we
         # deliberately don't attribute it — it's not a "fact about the user"
         # subject to "why did you cite that?"

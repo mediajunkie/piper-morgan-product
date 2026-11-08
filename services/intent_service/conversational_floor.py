@@ -1135,6 +1135,9 @@ class ConversationalFloor:
 
         if "current_time" in domain_context:
             lines.append(f"- Current time: {domain_context['current_time']}")
+        if "current_date" in domain_context:
+            # #2324 (Arch 11-07 17:53): today's date, so relative claims are checkable.
+            lines.append(f"- Today's date: {domain_context['current_date']}")
 
         # #1596: a guided flow (standup interview, onboarding, …) ended or
         # paused on THIS turn — the #1529/#899 escape fall-through. Without
