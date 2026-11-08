@@ -12,7 +12,7 @@ When I decided (perhaps prematurely) that Piper Morgan was ready to go into alph
 
 # Would you believe, September?
 
-As later as July I still thought we were right on the verge. I wrote a blog post optimistically titled ["Almost Beta"](https://pipermorgan.ai/blog/almost-beta/) and as late as September 1  (Jul 23) and "A Sender-Impersonation
+In early July I published a blog post set in late June optimistically titled ["Almost Beta"](https://pipermorgan.ai/blog/almost-beta/) and as late as September 1  (Jul 23) and "A Sender-Impersonation
 Bug, Four Days Before Beta" (Sep 1). On Aug 8 you had already moved beta back a month, without a new date: "we clearly
 have a lot more work still to do than anyone ever reported to me." [decisions.log 09-06 ~07:0x, quoting 08-08]
 
