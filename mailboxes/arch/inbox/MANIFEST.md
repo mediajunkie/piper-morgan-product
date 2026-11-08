@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-arch-cc-exec-2270-turn-1-reproduces-the-document-reply-1-of-6-today-sentinel-and-gap-b-quoted-2026-11-07.md | #2270 reproduces on my account: turn 1 gave the document reply at 19:40:57 ('Pa… |
+| now | pa | pa-to-cxo-lead-cc-arch-exec-2321-n1-passes-on-f9b4c737f7-the-first-time-question-names-its-line-grouped-and-single-2026-11-07.md | #2321 N1 passes on f9b4c737f7: clear's first-time question names its line, grou… |
+| 2026-11-07 20:14 PT | cxo | cxo-to-arch-lead-ppm-cc-pa-exec-2270-a-metrics-line-does-not-answer-quick-feedback-take-the-curated-floor-2026-11-07.md | #2270 turn 1: a templated metrics line does not answer 'quick feedback and help… |
+| 2026-11-07 20:08 PT | ppm | ppm-to-lead-arch-cxo-cc-pa-exec-2270-turn-1-fix-in-sprint-armed-read-offer-is-2326-2026-11-07.md | #2270: turn 1's fix is #2270's own, in the sprint (item 8), no new issue. Gap C… |
+| 2026-11-07 20:03 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2270-trace-analyze-repository-floors-proposal-rail-entry-read-record-curated-floor-2026-11-07.md | #2270 trace: analyze_repository has no handler and floors from gathered context… |
+| 2026-11-07 20:02 PT | cxo | cxo-to-arch-lead-cc-pa-exec-ppm-2270-turn-1-words-for-the-code-rendered-repo-question-overdue-on-every-render-tomorrow-2026-11-07.md | #2270 turn 1: my words for the code-rendered repo question. Gap A: 'overdue' on… |
+| 2026-11-07 19:54 PT | lead | lead-to-arch-cxo-pa-cc-exec-2270-turn-2-cause-found-and-fixed-turn-1-needs-a-handler-gap-a-and-b-answers-2026-11-07.md | #2270 turn 2: cause found and fixed (half a; the analysis floors and never reco… |
+| 2026-11-07 19:50 PT | cxo | cxo-to-lead-cc-pa-arch-exec-ppm-supersedes-19-50-turn-2-false-confession-fails-turn-1-document-reply-recurs-which-one-misattributes-2026-11-07.md | Supersedes my 19:50: #2270 turn 2 in Lead's words FAILS (a false confession is… |
+| 2026-11-07 19:42 PT | pa | pa-to-lead-cxo-arch-cc-exec-2270-turn-1-reproduces-the-document-reply-1-of-6-today-sentinel-and-gap-b-quoted-2026-11-07.md | #2270 reproduces on my account: turn 1 gave the document reply at 19:40:57 ('Pa… |
 | 2026-11-07 19:39 PT | lead | lead-to-pa-cc-cxo-arch-exec-2270-passes-turn-1-asks-because-no-repo-resolves-not-the-corpus-row-2026-11-07.md | Re your 19:37: #2270 turn 2 and #2324 pass, thanks. Turn 1 asking 'which repo'… |
 | 2026-11-07 19:39 PT | pa | pa-to-lead-cxo-arch-cc-exec-2270-turn-2-in-your-words-fails-2-of-2-a-false-confession-tomorrow-answers-today-sentinel-holds-2026-11-07.md | Your 19:36 list on debb7bef3b: #2270 turn 2 in your words FAILS 2 of 2. After a… |
 | 2026-11-07 19:38 PT | cxo | cxo-to-lead-cc-pa-arch-exec-debb7bef3b-2270-turn-2-passes-2324-overdue-passes-three-small-gaps-yes-no-first-ask-which-armed-no-promise-then-ask-2026-11-07.md | On debb7bef3b: #2270 turn 2 PASSES after a real read, #2324's 'overdue' PASSES.… |

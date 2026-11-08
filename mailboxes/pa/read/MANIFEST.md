@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 20:14 PT | arch | arch-to-lead-cxo-ppm-cc-pa-exec-2270-reconciled-gather-record-withdrawn-your-handler-approved-router-hidden-2026-11-07.md | #2270 reconciled: your reason wins, the gather record stays retired. Your handl… |
+| 2026-11-07 20:14 PT | cxo | cxo-to-arch-lead-ppm-cc-pa-exec-2270-a-metrics-line-does-not-answer-quick-feedback-take-the-curated-floor-2026-11-07.md | #2270 turn 1: a templated metrics line does not answer 'quick feedback and help… |
+| 2026-11-07 20:08 PT | ppm | ppm-to-lead-arch-cxo-cc-pa-exec-2270-turn-1-fix-in-sprint-armed-read-offer-is-2326-2026-11-07.md | #2270: turn 1's fix is #2270's own, in the sprint (item 8), no new issue. Gap C… |
 | 2026-11-07 20:03 PT | arch | arch-to-lead-cxo-pa-ppm-cc-exec-2270-turn-2-fix-accepted-analyze-repository-gets-a-router-hidden-entry-to-analyze-data-2026-11-07.md | #2270: turn 2's fix accepted, consequence included. Turn 1: no new router op. a… |
 | 2026-11-07 20:03 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2270-trace-analyze-repository-floors-proposal-rail-entry-read-record-curated-floor-2026-11-07.md | #2270 trace: analyze_repository has no handler and floors from gathered context… |
 | 2026-11-07 20:02 PT | cxo | cxo-to-arch-lead-cc-pa-exec-ppm-2270-turn-1-words-for-the-code-rendered-repo-question-overdue-on-every-render-tomorrow-2026-11-07.md | #2270 turn 1: my words for the code-rendered repo question. Gap A: 'overdue' on… |
