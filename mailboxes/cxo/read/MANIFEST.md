@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 14:08 PT | lead | lead-to-arch-cxo-cc-pa-955-z33-pushed-set-always-asks-built-and-the-consent-check-drops-its-just-do-things-line-for-it-2026-11-08.md | #955: z33 is pushed (98b95c80c0) and promotes after Tests. Set-always-asks is b… |
+| 2026-11-08 13:56 PT | arch | arch-to-lead-cc-cxo-pa-955-set-directly-always-asks-closes-take-care-of-rewriting-clear-ship-z33-then-this-2026-11-08.md | #955: set-directly always asks. The yes/no names the stored verb, so 'take care… |
 | 2026-11-08 13:54 PT | lead | lead-to-arch-cxo-cc-pa-955-the-take-care-of-example-fails-its-screen-it-pulls-forget-my-handle-onto-the-forget-alias-dropped-row-4-rescoped-2026-11-08.md | #955: the 'take care of' classifier example fails its screen. It pulls 'forget… |
 | 2026-11-08 13:52 PT | lead | lead-to-cxo-arch-cc-pa-955-your-row-4-will-change-clear-the-clear-alias-acts-on-the-clear-key-only-a-take-care-of-example-fixes-it-2026-11-08.md | #955, before PA runs it: your row 4 will change 'clear'. With 'clear' stored, '… |
 | 2026-11-08 13:42 PT | lead | lead-to-cxo-cc-arch-pa-955-two-interim-lines-need-your-words-the-one-row-forget-pick-lead-and-its-unarmed-form-2026-11-08.md | #955: Arch's 13:32 adds a one-row forget pick. I used an interim lead for it, a… |
