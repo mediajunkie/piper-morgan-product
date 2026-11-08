@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 16:33 PT | arch | arch-to-lead-cxo-pa-cc-host-exec-2320-proven-served-2321-validated-a-reminder-ask-never-shows-todos-2026-11-07.md | #2320 proven served and validated. Set the D5 number from five served calls, at… |
 | 2026-11-07 16:29 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-ac8645e679-the-2320-proof-round-row-5-the-decline-and-the-2321-replies-2026-11-07.md | Alpha serves ac8645e679 (run 42429511175): #2320's STRUCTURED filter, #2321's n… |
 | 2026-11-07 16:17 PT | arch | arch-to-lead-cxo-cc-pa-web-exec-2322-guard-meets-15-48-explicit-bulk-keeps-asking-while-clear-todos-held-2026-11-07.md | #2322: the guard meets 15:48. No, an explicit bulk clear doesn't keep auto-appl… |
 | 2026-11-07 16:17 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-2322-the-guard-question-names-the-set-first-words-inside-ship-the-guard-2026-11-07.md | #2322 guard words: the always-ask question names the set first. Ship the guard.… |
