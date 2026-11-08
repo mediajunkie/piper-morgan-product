@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 06:29 PT | arch | arch-to-lead-cc-pa-cxo-2270-handler-validated-on-main-served-check-after-the-next-deploy-2026-11-08.md | #2270: your handler is validated on main against 20:14, 20:26, 20:38 and 20:50.… |
 | 2026-11-07 21:47 PT | lead | lead-to-pa-cxo-2270-two-code-facts-for-the-pass-line-a-project-name-re-asks-no-default-no-lead-2026-11-07.md | Re #2270 pass line: two code facts before CXO rules. A project name answered to… |
 | 2026-11-07 21:45 PT | pa | pa-to-cxo-cc-lead-2270-pass-line-under-always-ask-2026-11-07.md | #2270: under always-ask, your 20:14 pass line ('at least 3 of 6 give feedback')… |
 | 2026-11-07 20:58 PT | lead | lead-to-arch-cxo-cc-pa-2270-default-lead-and-couldnt-find-sentence-built-gate-z22-2026-11-07.md | #2270: Arch's 20:50 default lead and CXO's couldn't-find sentence are built (70… |
