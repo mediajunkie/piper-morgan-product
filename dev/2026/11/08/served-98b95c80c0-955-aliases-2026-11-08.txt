@@ -1,0 +1,148 @@
+# #955 on 98b95c80c0 (z33: nine per-verb aliases, 13:32 clear-alias fix), web-seed-1386, PA. Cleanup + missing row first (forget handle), then the handle re-ask, set-done over a re-seeded handle row, and CXO's row 4 rescoped (take care of stored, clear not stored). Each write on its own disposable. Stop on a failed forget.
+
+--- [14:36:36, 98b95c80c0, http 200, 5.15 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. zz throwaway one
+3. zz throwaway two
+4. audit the current navigation
+5. review prs (×2)
+6. review the deployment plan
+7. draft the launch checklist
+
+--- [14:36:44, 98b95c80c0, http 200, 7.42 s] route query/forget_handle_preference
+USER: forget my handle preference
+PIPER: Okay. I've forgotten that "handle" means delete it. Next time you say handle, I'll ask which you want.
+
+--- [14:36:56, 98b95c80c0, http 200, 3.51 s] route execution/create_todo
+USER: add a todo: zz 955 h1
+PIPER: I've added that to your list. 'zz 955 h1' is now tracked. Let me know if you want to adjust anything.
+
+--- [14:37:06, 98b95c80c0, http 200, 9.63 s] route execution/handle_todo
+USER: handle the zz 955 h1 todo
+PIPER: Before I touch "zz 955 h1" — when you say 'handle' on a todo, do you want me to mark it done, or delete it? I'll remember for next time. Say "forget my handle preference" to undo that.
+
+# Re-seed handle = delete on h1 (the answer to the re-ask), then set-done in a new session
+
+--- [14:37:14, 98b95c80c0, http 200, 0.26 s] route execution/clear_reminders_delete
+USER: delete it
+PIPER: You've set 'handle' to mean delete — delete this todo? (yes/no)
+
+--- [14:37:23, 98b95c80c0, http 200, 0.29 s] route execution/clear_reminders_delete
+USER: yes
+PIPER: Deleted 1 todo:
+• zz 955 h1
+
+--- [14:37:30, 98b95c80c0, http 200, 7.05 s] route query/set_handle_preference_done
+USER: make handle mean mark it done
+PIPER: Okay. From now on "handle" means mark it done. Say "forget my handle preference" any time to be asked again.
+
+--- [14:37:41, 98b95c80c0, http 200, 3.77 s] route execution/create_todo
+USER: add a todo: zz 955 h2
+PIPER: I've added that to your list. 'zz 955 h2' is now tracked. Let me know if you want to adjust anything.
+
+--- [14:37:51, 98b95c80c0, http 200, 9.85 s] route execution/handle_todo
+USER: handle the zz 955 h2 todo
+PIPER: Marking these done — that's what 'handle' has meant for you. Say so if you meant delete this time.
+
+Marked 1 todo done:
+• zz 955 h2
+
+# Cleanup: forget handle (second time), then handle re-asks on a disposable
+
+--- [14:38:01, 98b95c80c0, http 200, 1.53 s] route query/forget_handle_preference
+USER: forget my handle preference
+PIPER: Okay. I've forgotten that "handle" means mark it done. Next time you say handle, I'll ask which you want.
+
+--- [14:38:11, 98b95c80c0, http 200, 3.55 s] route execution/create_todo
+USER: add a todo: zz 955 h3
+PIPER: I've added that to your list. 'zz 955 h3' is now tracked. Let me know if you want to adjust anything.
+
+--- [14:38:21, 98b95c80c0, http 200, 9.50 s] route execution/handle_todo
+USER: handle the zz 955 h3 todo
+PIPER: Before I touch "zz 955 h3" — when you say 'handle' on a todo, do you want me to mark it done, or delete it? I'll remember for next time. Say "forget my handle preference" to undo that.
+
+--- [14:38:22, 98b95c80c0, http 200, 0.26 s] route soft_offer_declined/clarify_reminder_clear_verb
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been changed.
+
+--- [14:38:33, 98b95c80c0, http 200, 3.63 s] route execution/delete_todo
+USER: delete the todo zz 955 h3
+PIPER: Delete the todo "zz 955 h3"? (yes/no)
+
+--- [14:38:42, 98b95c80c0, http 200, 0.31 s] route execution/delete_todo
+USER: yes
+PIPER: Deleted 1 todo:
+• zz 955 h3
+
+# CXO row 4 rescoped (Lead 13:54): seed 'take care of' on a disposable, clear not stored
+
+--- [14:38:47, 98b95c80c0, http 200, 3.88 s] route execution/create_todo
+USER: add a todo: zz 955 t1
+PIPER: I've added that to your list. 'zz 955 t1' is now tracked. Let me know if you want to adjust anything.
+
+--- [14:38:58, 98b95c80c0, http 200, 10.18 s] route execution/complete_todo
+USER: take care of the zz 955 t1 todo
+PIPER: Before I touch "zz 955 t1" — when you say 'take care of' on a todo, do you want me to mark it done, or delete it? I'll remember for next time. Say "forget my take care of preference" to undo that.
+
+--- [14:39:05, 98b95c80c0, http 200, 0.27 s] route execution/clear_reminders_delete
+USER: delete it
+PIPER: You've set 'take care of' to mean delete — delete this todo? (yes/no)
+
+--- [14:39:06, 98b95c80c0, http 200, 0.29 s] route execution/clear_reminders_delete
+USER: yes
+PIPER: Deleted 1 todo:
+• zz 955 t1
+
+--- [14:39:15, 98b95c80c0, http 200, 7.91 s] route query/set_clear_preference_done
+USER: make take care of mean mark it done
+PIPER: I wasn't remembering a clear preference, so there's nothing to forget. When you say clear, I ask which you want.
+
+# Read back and clean up: the forget phrasing Piper's own question offered (lands on the clear forget alias; one key stored, not clear -> the one-row pick)
+
+--- [14:39:31, 98b95c80c0, http 200, 7.33 s] route query/forget_clear_preference
+USER: forget my take care of preference
+PIPER: Here's what I'm remembering:
+
+1. "take care of" means delete it
+
+Which one should I forget? Say the number, or 'never mind' to leave them alone.
+
+--- [14:39:39, 98b95c80c0, http 200, 0.27 s] route query/forget_clear_preference
+USER: 1
+PIPER: Okay. I've forgotten that "take care of" means delete it. Next time you say take care of, I'll ask which you want.
+
+# take care of re-asks after the forget; then the end state
+
+--- [14:39:53, 98b95c80c0, http 200, 3.57 s] route execution/create_todo
+USER: add a todo: zz 955 t2
+PIPER: I've added that to your list. 'zz 955 t2' is now tracked. Let me know if you want to adjust anything.
+
+--- [14:40:03, 98b95c80c0, http 200, 9.75 s] route execution/complete_todo
+USER: take care of the zz 955 t2 todo
+PIPER: Before I touch "zz 955 t2" — when you say 'take care of' on a todo, do you want me to mark it done, or delete it? I'll remember for next time. Say "forget my take care of preference" to undo that.
+
+--- [14:40:04, 98b95c80c0, http 200, 0.24 s] route soft_offer_declined/clarify_reminder_clear_verb
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been changed.
+
+--- [14:40:08, 98b95c80c0, http 200, 3.20 s] route execution/delete_todo
+USER: delete the todo zz 955 t2
+PIPER: Delete the todo "zz 955 t2"? (yes/no)
+
+--- [14:40:09, 98b95c80c0, http 200, 0.28 s] route execution/delete_todo
+USER: yes
+PIPER: Deleted 1 todo:
+• zz 955 t2
+
+--- [14:40:12, 98b95c80c0, http 200, 1.77 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. zz throwaway one
+3. zz throwaway two
+4. audit the current navigation
+5. review prs (×2)
+6. review the deployment plan
+7. draft the launch checklist

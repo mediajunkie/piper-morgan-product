@@ -8,17 +8,16 @@
 
 ---
 
-## Now (written 2026-11-08 12:16; replace, don't annotate)
+## Now (written 2026-11-08 14:42; replace, don't annotate)
 
-- **Served:** beta `2824ed3437` (13:06); MCP `/health` 200. Read the live sha from `/health`, not from here. Tomorrow's first promotion (07:00 or later) carries Lead's z22/z23: the #2270 handler, always-ask, the default lead, the couldn't-find sentence, and #2321's "one todo at a time".
+- **Served:** beta `98b95c80c0` (z33, 14:35); MCP `/health` 200. Read the live sha from `/health`, not from here. Next: z34 (set-always-asks, `392875ebe9`), with its own push and promotion.
 - **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta** (`dev/2026/11/06/turn.py`, run from the dated dir).
-- **11-08 served:** #2321 and #2324 closed. On `7f9aa353fa`, #2270's re-ask passes 4 of 4 and the repo is named once 2 of 2. CXO failed the dangling dash, and the 8 to 14 s re-ask is too slow.
-- **Next, on z31** (Lead will say when it serves): the #2270 near-misses at about 2 s stamped `analysis/`, the drop line, `1` after a re-ask, `leave it alone.`, and the `Harbor Pilot` project lead (Q10).
-- **#955 (Q11):** held (Arch 09:28). Once the fix is validated and served, seed through a real clear on `zz 955 seed`, **last in the batch**. CXO said yes; PPM co-decides; Lead answers the second key.
-- **web-seed-1386 stores `reminder_clear_verb:handle` = delete** (13:09, #955 seed; forget-handle misrouted). `clear` is fresh (re-asked 13:11). Never answer clear's verb question with done or delete. Avoid `handle` on fixtures: it deletes behind a yes/no. Cleanup is my served `forget my handle preference` on Arch's alias build (Exec 13:21 withdrew the xian ask; xian's #2325 call is the fallback if that fails). #2322's done row waits on Q8.
+- **11-08 served:** #2321, #2324 and #2270 closed (CXO 13:44). #955 on z33 (14:36–14:40): the handle forget, re-ask and set-done pass, and row 4 (take care of stored, clear not) writes nothing.
+- **#955 (Q11) owed on z34:** row 4 with clear stored (seed clear = delete on a disposable, expect the ask naming "clear", `no`, then forget clear and quote the clear re-ask), plus `make clear mean delete` asking. #2330 (take care of by name) is low and CXO's.
+- **web-seed-1386 is fully fresh** (14:40): no clear, handle or take-care-of preference stored. Never answer clear's verb question with done or delete except Q11's forget-ended run. #2322's done row waits on Q8.
 - PA can't sign in to other seats' accounts: the permission classifier denies it even with the owner's yes.
 - **Test account web-seed-1386 (21:47):** 8 open, in order: urgent task (urgent), zz throwaway one, zz throwaway two, audit the current navigation, **review prs (×2) on line 5**, review the deployment plan, draft the launch checklist. No reminders, no clear preference.
-- **Q9 also:** #2313 ("delete A and B") on its build; CXO's #2294 bulleted-list row; #2324 "tomorrow" and gap A on Lead.
+- **Q9 also:** #2313 ("delete A and B") on its build; CXO's #2294 bulleted-list row.
 - **#2288** (card says "Connected." on a 401 grant): served row needs a dead-grant account; xian's word for Web.
 - **#2242 (Q2):** held-token row, on xian's `mcp_allow.py remove` relayed by Exec.
 - **#2238:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
