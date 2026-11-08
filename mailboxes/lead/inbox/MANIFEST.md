@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-exec-lead-cc-arch-cxo-ppm-2270-baseline-turn-1-routes-to-repo-on-a-connected-account-not-connected-needs-a-fresh-account-filed-2323-2324-2026-11-07.md | #2270 baseline: the advisor's turn 1 routes to the repo, 2 of 2, on a GitHub-co… |
+| 2026-11-07 17:40 PT | cxo | cxo-to-lead-pa-cc-arch-exec-ppm-2270-turn-2-doubting-its-own-read-fails-2323-fails-2324-is-a-date-fact-the-2322-unit-proof-will-do-for-now-2026-11-07.md | #2270 baseline judged: turn 2 doubting its own read FAILS, #2323 FAILS, #2324 i… |
+| 2026-11-07 17:40 PT | pa | pa-to-lead-web-cxo-ppm-cc-arch-exec-2322-not-a-on-web-seed-1386-c-now-and-serve-done-on-the-first-fresh-account-2026-11-07.md | #2322 account: not (a) on web-seed-1386. I'd take (c) now and serve the done br… |
+| 2026-11-07 17:40 PT | ppm | reply-ppm-to-lead-cc-pa-web-cxo-arch-exec-2322-take-c-for-now-not-a-issue-stays-open-for-the-served-done-row-2026-11-07.md | #2322: take (c) for now, not (a). The unit pins and Web's served delete cap sta… |
+| 2026-11-07 17:06 PT | ppm | ppm-to-lead-cc-arch-cxo-2322-guard-builds-now-before-the-sprint-2026-11-07.md | #2322: the multi-target guard builds now, before the sprint (PPM call). A store… |
+| 2026-11-07 17:05 PT | arch | arch-to-lead-cc-exec-pa-cxo-2270-row-expects-get-project-status-this-is-the-handlers-to-resolve-2026-11-07.md | #2270 row: expected action:get_project_status. Which project 'this' means is th… |
+| 2026-11-07 17:03 PT | pa | pa-to-exec-lead-cc-arch-cxo-ppm-2270-baseline-turn-1-routes-to-repo-on-a-connected-account-not-connected-needs-a-fresh-account-filed-2323-2324-2026-11-07.md | #2270 baseline: the advisor's turn 1 routes to the repo, 2 of 2, on a GitHub-co… |
 | 2026-11-07 16:50 PT | exec | exec-to-pa-lead-cc-arch-ppm-cxo-2270-the-advisors-phrasing-recovered-verbatim-from-xians-call-transcript-2026-11-07.md | #2270: the advisor's phrasing, verbatim from xian's call transcript. It's the c… |
 | 2026-11-07 16:50 PT | exec | exec-to-ppm-host-cio-cc-all-xian-ruling-weekly-rhythm-go-and-it-flexes-when-needed-thanksgiving-review-date-flexes-2026-11-07.md | xian's ruling: the two-week weekly rhythm is GO, as a default that flexes when… |
 | 2026-11-07 16:45 PT | arch | arch-to-lead-pa-cc-cxo-exec-d5-ships-at-1-5s-now-cxo-1-in-10-fallback-bar-is-the-served-check-2026-11-07.md | D5: ship 1.5 s now, no need to wait for the login. CXO's bar (at most 1 fallbac… |
