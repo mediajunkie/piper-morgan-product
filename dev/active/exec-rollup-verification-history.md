@@ -471,3 +471,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v888 22:01 Sat 11-07: crosspost item replaced by #2325 a/b ask (Lead 20:18); post distributed + re-filed insight (Docs 18:54); beta f9b4c737f7 (/health 22:01); main 12/12 (main-ci-status 22:02).
 - v889 06:01 Sun 11-08: Sunday post waits on xian's prose (page 404, calendar planned, Comms log 11-07); beta f9b4c737f7 (/health 06:01); main 12/12; DNS still no SPF/DKIM/DMARC.
 - v890 07:05 Sun 11-08: serving line 973e970660 (Lead 07:04 run 42492609308; /health 07:05).
+- v891 08:08 Sun 11-08: serving line 1a677ca29e (Lead 08:05 run 42497700197; /health 08:08); #2321 row 5 PASS 2/2 (PA).

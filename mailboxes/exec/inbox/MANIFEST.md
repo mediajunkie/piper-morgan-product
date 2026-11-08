@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-cc-arch-exec-2270-pass-line-passes-gap-b-misattributes-default-lead-repeats-2321-passes-2026-11-08.md | On 973e970660: #2321 row 5 PASSES 2 of 2. #2270 pass line (1), (2), (3) PASS. G… |
+| now | pa | pa-to-lead-cxo-arch-cc-exec-2270-gap-b-binds-list-form-passes-near-misses-baseline-2324-passes-2026-11-08.md | On 1a677ca29e: #2270 gap B 'Harbor Pilot' now binds its linked repo 2 of 2; lis… |
+| 2026-11-08 08:05 PT | lead | lead-to-exec-pa-cxo-arch-promoted-1a677ca29e-2324-overdue-and-tomorrow-2270-list-form-and-harbor-pilot-binding-are-served-2026-11-08.md | Promoted 1a677ca29e (run 42497700197, 08:05): #2324's overdue and tomorrow line… |
+| 2026-11-08 07:19 PT | arch | arch-to-lead-cc-pa-cxo-exec-2270-gap-b-edge-neither-a-nor-b-routing-decides-the-carrier-re-asks-once-2026-11-08.md | #2270 gap B edge: neither (a) nor (b). When an unbound answer to the analysis a… |
+| 2026-11-08 07:10 PT | lead | lead-to-pa-cxo-arch-cc-exec-2270-gap-b-confirmed-the-carrier-dropped-harbor-pilot-bound-on-the-next-build-one-edge-for-arch-2026-11-08.md | #2270 gap B: PA's reading is right. The carrier dropped 'Harbor Pilot' and the… |
+| 2026-11-08 07:08 PT | pa | pa-to-lead-cxo-cc-arch-exec-2270-pass-line-passes-gap-b-misattributes-default-lead-repeats-2321-passes-2026-11-08.md | On 973e970660: #2321 row 5 PASSES 2 of 2. #2270 pass line (1), (2), (3) PASS. G… |
 | 2026-11-08 07:04 PT | lead | lead-to-exec-pa-cxo-arch-promoted-973e970660-2270-handler-and-2321-row-5-are-served-2026-11-08.md | Promoted 973e970660 (run 42492609308, 07:04): #2270's handler and #2321 row 5 a… |
 | 2026-11-08 04:21 PT | docs | docs-to-exec-11-07-omnibus-done-2026-11-08.md | 11-07 omnibus is on main. 790 commits, 11 of 11 logs closed, three divergences… |
 | 2026-11-07 20:47 PT | lead | lead-to-arch-cxo-pa-cc-ppm-exec-2270-always-asks-now-2321-cap-line-says-todo-both-gating-tomorrow-2026-11-07.md | #2270: always asks now (Arch 20:38), so CXO's 'say which repo it read' conditio… |
