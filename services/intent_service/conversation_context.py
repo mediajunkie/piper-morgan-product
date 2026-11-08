@@ -121,6 +121,19 @@ class CreatedTodo:
 
 
 @dataclass
+class RecordedRead:
+    """#2270 (Arch 11-07 17:53): a read this session actually performed, recorded by
+    the read's own handler on success, so a later turn can state it as a fact (the
+    floor's honesty rule unchanged: this is code-held state, not a prior reply
+    vouching for itself). ``covered`` names what the read covered, in copy words."""
+
+    op: str
+    target: str
+    covered: str
+    at: datetime = field(default_factory=datetime.now)
+
+
+@dataclass
 class NumberedList:
     """The last NUMBERED list this session rendered — the only thing an
     ordinal target may index (1943, CXO's rule). ``kind`` names the list in
@@ -181,6 +194,10 @@ class ConversationContext:
     # In-memory, within-session (not serialized; a restart forgets it, and an
     # ordinal then reads as unresolved — the honest ask — not as a guess).
     last_numbered_list: Optional["NumberedList"] = None
+
+    # #2270: reads this session performed (most recent last, capped at 5). In-memory,
+    # within-session, like last_numbered_list.
+    recorded_reads: list["RecordedRead"] = field(default_factory=list)
 
     # #1987: the row this session just CREATED ("Reminder saved: …"), so the
     # next turn's "delete that reminder" / "delete it" has a referent the
@@ -802,3 +819,18 @@ async def hydrate_turns_from_db(
             exc_info=True,
         )
         return False
+
+
+def record_read(
+    session_id: Optional[str], user_id: Any, op: str, target: str, covered: str
+) -> None:
+    """#2270: record a read that just succeeded (best-effort; never breaks a reply)."""
+    if not session_id or not target:
+        return
+    try:
+        ctx = get_or_create_context(session_id, user_id=user_id)
+        ctx.recorded_reads = (
+            ctx.recorded_reads + [RecordedRead(op=op, target=target, covered=covered)]
+        )[-5:]
+    except Exception as e:  # silent-ok: logged; a missing fact only costs the later line
+        logger.warning("record_read_failed", error=str(e), session_id=session_id)

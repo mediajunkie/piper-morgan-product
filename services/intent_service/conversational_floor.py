@@ -1138,6 +1138,14 @@ class ConversationalFloor:
         if "current_date" in domain_context:
             # #2324 (Arch 11-07 17:53): today's date, so relative claims are checkable.
             lines.append(f"- Today's date: {domain_context['current_date']}")
+        for read in domain_context.get("recorded_reads") or []:
+            # #2270 (Arch 11-07 17:53): a read this session performed, recorded by its
+            # handler (code-held), so "do you have access?" can be answered with it.
+            ago = read.get("minutes_ago", 0)
+            when = "just now" if ago < 1 else f"{ago} minute{'s' if ago != 1 else ''} ago"
+            lines.append(
+                f"- Earlier this session you read {read['target']} " f"({read['covered']}), {when}."
+            )
 
         # #1596: a guided flow (standup interview, onboarding, …) ended or
         # paused on THIS turn — the #1529/#899 escape fall-through. Without

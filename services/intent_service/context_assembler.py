@@ -38,6 +38,28 @@ from services.utils.datetime_utils import ensure_utc, utc_now
 logger = structlog.get_logger()
 
 
+def _recorded_reads_for(session_id, user_id) -> list:
+    """#2270: this session's recorded reads as plain facts, most recent last:
+    ``{"target", "covered", "minutes_ago"}``. Empty when none (or no session)."""
+    if not session_id:
+        return []
+    try:
+        from services.intent_service.conversation_context import get_or_create_context
+
+        ctx = get_or_create_context(session_id, user_id=user_id)
+        now = datetime.now()
+        return [
+            {
+                "target": r.target,
+                "covered": r.covered,
+                "minutes_ago": max(0, int((now - r.at).total_seconds() // 60)),
+            }
+            for r in getattr(ctx, "recorded_reads", None) or []
+        ]
+    except Exception:  # silent-ok: an absent fact line is the honest default
+        return []
+
+
 async def _current_time_for_user(user_id=None) -> str:
     """The time of day only; see :func:`_current_time_and_date_for_user`."""
     return (await _current_time_and_date_for_user(user_id))[0]
@@ -452,6 +474,10 @@ class ContextAssembler:
         if _cd:
             # #2324: the user's local date beside the time (both or neither).
             context["current_date"] = _cd
+        # #2270 (Arch 11-07 17:53): reads this session performed, as code-held facts.
+        _reads = _recorded_reads_for(session_id, user_id)
+        if _reads:
+            context["recorded_reads"] = _reads
         # current_time has no provenance (always-available system value); we
         # deliberately don't attribute it — it's not a "fact about the user"
         # subject to "why did you cite that?"

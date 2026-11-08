@@ -880,6 +880,13 @@ class CanonicalHandlers:
             message = self._format_project_specific_status(
                 specific_project, metadata, user_context, spatial_pattern
             )
+            if metadata.get("has_github"):
+                # #2270: the project's GitHub status was read this turn.
+                from services.intent_service.conversation_context import record_read
+
+                record_read(
+                    session_id, user_id, "get_project_status", str(specific_project), "its status"
+                )
             return {
                 "message": message,
                 "intent": {
@@ -912,6 +919,11 @@ class CanonicalHandlers:
             message = self._format_standard_status(projects, user_context, project_metadata)
 
         message += self._degrade_nudge(project_metadata)  # #1231
+        if project_metadata:
+            # #2270: the projects' GitHub status was read this turn.
+            from services.intent_service.conversation_context import record_read
+
+            record_read(session_id, user_id, "get_project_status", "your projects", "their status")
 
         project_context = {
             "projects": projects,
