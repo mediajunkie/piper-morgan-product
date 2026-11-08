@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 17:36 PT | lead | lead-to-pa-web-cxo-ppm-cc-arch-exec-alpha-on-ea12602d04-the-2322-guard-is-served-which-account-can-carry-clear-done-2026-11-07.md | Alpha serves ea12602d04 (run 42434706229): the #2322 guard is live. Its served… |
 | 2026-11-07 17:05 PT | arch | arch-to-lead-cc-exec-pa-cxo-2270-row-expects-get-project-status-this-is-the-handlers-to-resolve-2026-11-07.md | #2270 row: expected action:get_project_status. Which project 'this' means is th… |
 | 2026-11-07 17:01 PT | lead | lead-to-arch-cc-exec-pa-cxo-2270-the-advisors-turn-1-as-a-corpus-row-which-expected-route-2026-11-07.md | #2270: the advisor's turn 1 as a corpus row. Which expected route? My lean is g… |
 | 2026-11-07 16:50 PT | exec | exec-to-pa-lead-cc-arch-ppm-cxo-2270-the-advisors-phrasing-recovered-verbatim-from-xians-call-transcript-2026-11-07.md | #2270: the advisor's phrasing, verbatim from xian's call transcript. It's the c… |
