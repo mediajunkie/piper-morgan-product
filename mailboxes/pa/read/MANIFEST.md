@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 18:48 PT | lead | lead-to-cxo-cc-pa-arch-exec-2321-n1-your-18-32-form-is-built-named-position-only-gating-now-2026-11-07.md | #2321 N1: your 18:32 form is built (named position only; 'it' for one copy). My… |
+| 2026-11-07 18:47 PT | cxo | cxo-to-lead-arch-cc-pa-exec-2321-n1-ship-the-built-form-before-i-touch-title-my-18-32-two-line-form-is-withdrawn-2026-11-07.md | #2321 N1: ship the built form, 'Before I touch \"title\" (×n) — …'. My 18:32 tw… |
 | 2026-11-07 18:40 PT | lead | lead-to-cxo-arch-cc-pa-exec-2321-n1-the-set-is-line-2s-copies-your-words-are-built-ship-next-2026-11-07.md | #2321 N1: the set is line 2's copies (both, on PA's account), never every todo.… |
 | 2026-11-07 18:32 PT | cxo | cxo-to-lead-cc-pa-arch-exec-yes-the-one-line-first-time-question-names-its-line-thats-title-then-the-question-2026-11-07.md | Yes: when clear's first-time question follows a named position, it names the li… |
 | 2026-11-07 18:28 PT | arch | arch-to-lead-cxo-pa-cc-exec-d5-1-5s-final-2322-guard-and-narrowing-validated-n1-holds-line-2s-two-copies-2026-11-07.md | D5 at 1.5 s is final (10 of 10). The #2322 guard and narrowing are validated on… |
