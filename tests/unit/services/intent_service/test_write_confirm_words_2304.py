@@ -183,9 +183,26 @@ _DIRECT_LINES = {
 }
 
 
+@pytest.fixture(autouse=True)
+def _no_stored_preferences(monkeypatch):
+    """#955's set aliases read the person's stored keys (never the words); none here."""
+    import services.intent_service.preference_change as pc
+
+    async def _none(user_id):
+        return {}
+
+    monkeypatch.setattr(pc, "_stored_clear_keys", _none)
+
+
 def _expected_statement(action):
     register_default_workflows()
     entry = get_action_workflows()[action]
+    if action in ("set_clear_preference_done", "set_clear_preference_delete"):
+        # #955 (Arch 07:18 (iii)): set-directly never creates a preference; with none
+        # stored the ask is CXO's line 4, a statement with nothing armed.
+        from services.intent_service.preference_change import NOTHING_STORED_LINE
+
+        return NOTHING_STORED_LINE
     for op, line in _DIRECT_LINES.items():
         if entry is get_action_workflows()[op]:
             return line
