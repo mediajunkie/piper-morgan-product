@@ -659,3 +659,76 @@ async def test_a_project_bound_read_drops_an_echoing_opening(service, monkeypatc
     assert reply.message == (
         f"Looking at {_OTHER}, the repository linked to Harbor Pilot.\n\nFinding one."
     )
+
+
+# ── Arch 11-08 08:48/08:49: the re-ask at the floor's door; the dash fragment ──
+
+
+async def test_the_reask_makes_no_floor_model_call_and_is_stamped_analysis(
+    service, monkeypatch, github, captured_floor
+):
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    await _turn(service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository")
+    reply = await _turn(
+        service,
+        monkeypatch,
+        sid,
+        "the survey one",
+        IntentCategory.CONVERSATION,
+        "clarification_needed",
+    )
+    assert reply.message.startswith('I couldn\'t find "the survey one"')
+    assert captured_floor == []  # no composition was made and thrown away
+    assert reply.intent_data["category"] == "analysis"
+    assert reply.intent_data["action"] == "analyze_repository"
+    second = await _turn(
+        service,
+        monkeypatch,
+        sid,
+        "Harbor Srvey",
+        IntentCategory.CONVERSATION,
+        "clarification_needed",
+    )
+    assert captured_floor == []
+    assert second.intent_data == {"category": "analysis", "action": "analyze_repository"}
+
+
+async def test_the_dash_fragment_rule():
+    from services.intent.intent_service import _drop_dash_repo_fragment as drop
+
+    n3 = f"Looking at **{_REPO}** —\n\nA few things jump out:\n- one"
+    assert drop(n3, _REPO) == "A few things jump out:\n- one"
+    assert drop(f"Looking at {_REPO} -\nNext.", _REPO) == "Next."
+    # A complete first sentence is unchanged, even with the bold repo.
+    whole = f"Looking at **{_REPO}**, two things stand out.\n\nOne."
+    assert drop(whole, _REPO) == whole
+    # Another repo, or no dash, or nothing after: unchanged.
+    other = f"Looking at **{_OTHER}** —\n\nA."
+    assert drop(other, _REPO) == other
+    assert drop(f"Looking at **{_REPO}** —", _REPO) == f"Looking at **{_REPO}** —"
+
+
+async def test_a_number_after_the_reask_reads_without_the_dash_fragment(
+    service, monkeypatch, github
+):
+    """PA's n3 on 7f9aa353fa: `1` after a re-ask read the repo, and the body opened with
+    a dangling `Looking at **repo** —`. A named read gets no lead; the fragment goes."""
+
+    async def respond(self, ctx):
+        return cf.FloorResponse(message=f"Looking at **{_REPO}** —\n\nA few things jump out:")
+
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    await _turn(service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository")
+    await _turn(
+        service,
+        monkeypatch,
+        sid,
+        "the survey one",
+        IntentCategory.CONVERSATION,
+        "clarification_needed",
+    )
+    monkeypatch.setattr(cf.ConversationalFloor, "respond", respond)
+    reply = await _turn(service, monkeypatch, sid, "1", IntentCategory.CONVERSATION, "small_talk")
+    assert reply.message == "A few things jump out:"
