@@ -1016,6 +1016,9 @@ ANALYZE_REPOSITORY_NO_SESSION_LINE = (
 #: #2270 (Arch 20:50, CXO's 20:38 words): when code chose the repo (the default), the
 #: reply's first sentence says which.
 ANALYZE_REPOSITORY_DEFAULT_LEAD = "Looking at {repository}, your default repository."
+#: #2270 (CXO 11-08): an answer that was a project name binds that project's repo, and
+#: the reply says so first (code-rendered; the same exact-match strip applies).
+ANALYZE_REPOSITORY_PROJECT_LEAD = "Looking at {repository}, the repository linked to {project}."
 #: #2270 (CXO 20:5x): a word/word that failed to read and isn't on the account opens
 #: the armed repo question with this sentence.
 ANALYZE_REPOSITORY_NOT_FOUND_LEAD = 'I couldn\'t find "{pair}" among your repositories.'
@@ -15515,7 +15518,8 @@ class IntentService:
                 for m in (milestones or [])
             ],
         }
-        if not named_in_turn:
+        bound_project = intent.context.get("bound_project")
+        if not named_in_turn or bound_project:
             read["lead_shown"] = True
         domain_context: Dict[str, Any] = {"repository_read": read}
         from services.intent_service.context_assembler import _current_time_and_date_for_user
@@ -15527,10 +15531,14 @@ class IntentService:
         result = await self._handle_unknown_intent(
             intent, None, session_id or "", domain_context=domain_context
         )
-        if not named_in_turn and result is not None and result.message:
+        if result is not None and result.message and (not named_in_turn or bound_project):
+            lead = (
+                ANALYZE_REPOSITORY_PROJECT_LEAD.format(repository=repository, project=bound_project)
+                if bound_project
+                else ANALYZE_REPOSITORY_DEFAULT_LEAD.format(repository=repository)
+            )
             result.message = (
-                f"{ANALYZE_REPOSITORY_DEFAULT_LEAD.format(repository=repository)}\n\n"
-                f"{_drop_repeated_repo_opening(result.message, str(repository))}"
+                f"{lead}\n\n{_drop_repeated_repo_opening(result.message, str(repository))}"
             )
         return result
 

@@ -419,7 +419,10 @@ async def test_a_project_name_reads_its_own_linked_repo(
 ):
     _, reply = await _ask_then_answer(service, monkeypatch, github, "Harbor Pilot")
     assert github["reads"][0] == ("issues", "dinp-machine", "harbor-pilot")
-    assert reply.message == "(stubbed floor answer)"
+    # CXO 11-08: a project-name answer says which project it bound, first.
+    assert reply.message == (
+        f"Looking at {_OTHER}, the repository linked to Harbor Pilot.\n\n(stubbed floor answer)"
+    )
 
 
 async def test_a_project_with_no_repo_says_so_and_reads_nothing(
@@ -480,6 +483,8 @@ async def test_one_linked_repo_is_listed_and_asked_never_read_unasked(
         service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository"
     )
     assert first.message == listed_repo_question([_REPO])
+    # CXO 11-08: one line is singular.
+    assert first.message.endswith("Say the number or the name, or 'never mind' to leave it alone.")
     assert f"\n\n1. {_REPO}\n\n" in first.message and github["reads"] == []
     reply = await _turn(service, monkeypatch, sid, "1", IntentCategory.CONVERSATION, "small_talk")
     assert github["reads"][0] == ("issues", "dinp-machine", "piper-test-activity")
@@ -614,7 +619,11 @@ async def test_the_second_miss_drops_the_ask(service, monkeypatch, github, captu
         IntentCategory.CONVERSATION,
         "clarification_needed",
     )
-    assert second.message == ANALYSIS_ASK_DROP_LINE
+    assert second.message == (
+        "I still couldn't find \"Harbor Srvey\", so I haven't looked at anything. "
+        "Tell me a repository as owner/name whenever you want me to look."
+    )
+    assert ANALYSIS_ASK_DROP_LINE.format(words="Harbor Srvey") == second.message
     assert service.workflow_offer_service._pending_offers.get(sid) is None
     assert github["reads"] == []
 
@@ -632,3 +641,21 @@ async def test_a_command_mid_ask_still_routes(service, monkeypatch, github, capt
         "create_todo",
     )
     assert "among your repositories or projects" not in (reply.message or "")
+
+
+async def test_a_project_bound_read_drops_an_echoing_opening(service, monkeypatch, github):
+    """The exact-match strip applies to the project lead too (CXO 11-08, Arch 08:16)."""
+
+    async def respond(self, ctx):
+        return cf.FloorResponse(message=f"Looking at {_OTHER}, two things.\n\nFinding one.")
+
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    await _turn(service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository")
+    monkeypatch.setattr(cf.ConversationalFloor, "respond", respond)
+    reply = await _turn(
+        service, monkeypatch, sid, "Harbor Pilot", IntentCategory.CONVERSATION, "small_talk"
+    )
+    assert reply.message == (
+        f"Looking at {_OTHER}, the repository linked to Harbor Pilot.\n\nFinding one."
+    )
