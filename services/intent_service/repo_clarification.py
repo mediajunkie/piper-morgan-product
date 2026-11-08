@@ -847,6 +847,92 @@ async def _bind_and_dispatch(
     return result
 
 
+# ── #2270 gap B (Arch 11-08 07:18): the analysis ask re-asks once ────────────
+
+ANALYSIS_UNBOUND_ATTR = "_analysis_repo_ask_unbound"
+#: CXO 11-08: the re-ask's lead, the person's words quoted verbatim.
+ANALYSIS_REASK_LEAD = 'I couldn\'t find "{words}" among your repositories or projects.'
+#: The second unbound turn drops the ask. Words owed to CXO (Arch 07:18); until then the
+#: carrier's own decline line for this operation.
+ANALYSIS_ASK_DROP_LINE = repo_question_decline_message(None, "give you feedback")
+
+
+def note_unbound_analysis_answer(
+    intent_service: Any,
+    session_id: Optional[str],
+    pending_offer: Dict[str, Any],
+    text: str,
+    user_id: Optional[str],
+) -> None:
+    """Record THIS turn's unbound answer to the analysis repo ask (turn-scoped:
+    consumed or cleared by ``process_intent`` the same turn)."""
+    if not session_id or intent_service is None:
+        return
+    slot = getattr(intent_service, ANALYSIS_UNBOUND_ATTR, None)
+    if not isinstance(slot, dict):
+        slot = {}
+        try:
+            setattr(intent_service, ANALYSIS_UNBOUND_ATTR, slot)
+        except AttributeError:
+            return
+    slot[session_id] = {"offer": pending_offer, "words": text, "user_id": user_id}
+
+
+def clear_unbound_analysis_answer(intent_service: Any, session_id: Optional[str]) -> None:
+    slot = getattr(intent_service, ANALYSIS_UNBOUND_ATTR, None)
+    if isinstance(slot, dict) and session_id:
+        slot.pop(session_id, None)
+
+
+def analysis_reask_after_routing(
+    intent_service: Any,
+    session_id: Optional[str],
+    routed_action: Optional[str],
+) -> Optional[Dict[str, Any]]:
+    """Arch 07:18: the analysis ask's answer didn't bind (and wasn't a decline,
+    bare exit or state question: those never note), and routing named no rail
+    op. Then re-ask once, re-arming the same question, opening with the
+    couldn't-find line on the person's words. A second miss drops the ask.
+    A rail op means a new request: None, and the routed result stands."""
+    slot = getattr(intent_service, ANALYSIS_UNBOUND_ATTR, None)
+    if not isinstance(slot, dict) or not session_id:
+        return None
+    noted = slot.pop(session_id, None)
+    if not noted:
+        return None
+    from services.intent_service.workflow_dispatcher import get_registered_workflows
+
+    if routed_action and routed_action in get_registered_workflows():
+        return None
+    offer = noted["offer"]
+    payload = offer.get("pending_action") or {}
+    if payload.get("reasked"):
+        logger.info("analysis_repo_ask_dropped_second_miss", session_id=session_id)
+        return {
+            "message": ANALYSIS_ASK_DROP_LINE,
+            "intent_data": {"category": "analysis", "action": "analyze_repository"},
+            "requires_clarification": False,
+        }
+    payload["reasked"] = True
+    question = offer.get("question") or open_repo_question(None, "give you feedback")
+    # The stored question may already carry a lead (an earlier couldn't-find); the
+    # re-ask names only this turn's words, then the list or open ask itself.
+    for prefix in (LISTED_REPO_QUESTION_HEAD, "Which repository should I use"):
+        if prefix in question and not question.startswith(prefix):
+            question = question[question.index(prefix) :]
+            break
+    copy = ANALYSIS_REASK_LEAD.format(words=noted["words"].strip()) + " " + question
+    logger.info("analysis_repo_ask_reasked", session_id=session_id, routed_action=routed_action)
+    return _reask(
+        offer,
+        payload,
+        copy,
+        session_id=session_id,
+        user_id=noted.get("user_id"),
+        intent_service=intent_service,
+    )
+
+
 def _bare_answer(text: str) -> str:
     """The answer with closing punctuation and wrapping quotes taken off."""
     return text.strip().rstrip(".!?").strip().strip("\"'‘’“”").strip()
@@ -1105,6 +1191,11 @@ async def handle_repo_question_turn(
                 "intent_data": _pending_intent_data(payload),
                 "requires_clarification": True,
             }
+        # #2270 gap B (Arch 11-08 07:18): the analysis ask's unbound answer is
+        # noted for this turn; if routing then lands on no rail op, the turn
+        # re-asks instead of composing (``analysis_reask_after_routing``).
+        if payload.get("action") == "analyze_repository":
+            note_unbound_analysis_answer(intent_service, session_id, pending_offer, text, user_id)
         return None  # not an answer → generic accept / off-intent flow
 
     if "/" in ref:

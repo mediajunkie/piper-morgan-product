@@ -562,3 +562,73 @@ async def test_a_named_read_is_never_touched(service, monkeypatch, github):
     )
     assert result.message == body
     assert "start with the findings" not in _prompt(respond.ctx)
+
+
+# ── #2270 gap B edge (Arch 11-08 07:18): an unbound answer re-asks once ───────
+
+
+@pytest.mark.parametrize("words", ["the survey one", "Harbor Srvey"])
+async def test_an_unbound_answer_that_routes_nowhere_reasks_and_reads_nothing(
+    service, monkeypatch, github, captured_floor, words
+):
+    from services.intent_service.repo_clarification import listed_repo_question
+
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    await _turn(service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository")
+    reply = await _turn(
+        service, monkeypatch, sid, words, IntentCategory.CONVERSATION, "clarification_needed"
+    )
+    assert reply.message == (
+        f'I couldn\'t find "{words}" among your repositories or projects. '
+        + listed_repo_question([_REPO, _OTHER])
+    )
+    assert github["reads"] == []
+    offer = service.workflow_offer_service._pending_offers.get(sid)
+    assert offer["pending_action"]["listed_repos"] == [_REPO, _OTHER]
+    # A number now still binds the re-armed list.
+    bound = await _turn(service, monkeypatch, sid, "1", IntentCategory.CONVERSATION, "small_talk")
+    assert github["reads"][0] == ("issues", "dinp-machine", "piper-test-activity")
+    assert bound.message == "(stubbed floor answer)"
+
+
+async def test_the_second_miss_drops_the_ask(service, monkeypatch, github, captured_floor):
+    from services.intent_service.repo_clarification import ANALYSIS_ASK_DROP_LINE
+
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    await _turn(service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository")
+    await _turn(
+        service,
+        monkeypatch,
+        sid,
+        "the survey one",
+        IntentCategory.CONVERSATION,
+        "clarification_needed",
+    )
+    second = await _turn(
+        service,
+        monkeypatch,
+        sid,
+        "Harbor Srvey",
+        IntentCategory.CONVERSATION,
+        "clarification_needed",
+    )
+    assert second.message == ANALYSIS_ASK_DROP_LINE
+    assert service.workflow_offer_service._pending_offers.get(sid) is None
+    assert github["reads"] == []
+
+
+async def test_a_command_mid_ask_still_routes(service, monkeypatch, github, captured_floor):
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    await _turn(service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository")
+    reply = await _turn(
+        service,
+        monkeypatch,
+        sid,
+        "add a todo to call the vet",
+        IntentCategory.EXECUTION,
+        "create_todo",
+    )
+    assert "among your repositories or projects" not in (reply.message or "")

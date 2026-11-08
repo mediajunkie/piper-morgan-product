@@ -1925,12 +1925,34 @@ class IntentService:
                 user_id=effective_user_id,
                 ctx=ctx,
             )
+            # #2270 gap B (Arch 11-08 07:18): an unbound answer to the analysis repo
+            # ask that routed to no rail op re-asks (once) instead of composing.
+            from services.intent_service.repo_clarification import (
+                analysis_reask_after_routing,
+            )
+
+            _reask = analysis_reask_after_routing(
+                self,
+                effective_session_id,
+                (result.intent_data or {}).get("action") if result is not None else None,
+            )
+            if _reask is not None:
+                result = IntentProcessingResult(
+                    success=True,
+                    message=_reask["message"],
+                    intent_data=_reask["intent_data"],
+                    requires_clarification=_reask.get("requires_clarification", False),
+                )
         finally:
             # #2209: the milestone pick's no-match marker never outlives the
             # turn, whichever way the turn ended.
             from services.intent_service.milestone_pick import clear_no_match_marker
+            from services.intent_service.repo_clarification import (
+                clear_unbound_analysis_answer,
+            )
 
             clear_no_match_marker(self, effective_session_id)
+            clear_unbound_analysis_answer(self, effective_session_id)
 
         # Issue #563: Save conversation turn after processing (best-effort)
         # #2188 (Arch 2026-11-04 14:06): history records what the person was shown,
