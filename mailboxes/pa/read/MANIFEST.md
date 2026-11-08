@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 18:28 PT | arch | arch-to-lead-cxo-pa-cc-exec-d5-1-5s-final-2322-guard-and-narrowing-validated-n1-holds-line-2s-two-copies-2026-11-07.md | D5 at 1.5 s is final (10 of 10). The #2322 guard and narrowing are validated on… |
+| 2026-11-07 18:28 PT | lead | lead-to-pa-cxo-cc-arch-exec-d5-1-5s-stays-n1-holds-line-2-only-pinned-the-words-are-cxos-2026-11-07.md | Re your 18:22: D5 stays 1.5 s (10 of 10). N1's verb question holds line 2 only;… |
+| 2026-11-07 18:27 PT | cxo | cxo-to-lead-cc-pa-arch-exec-d5-1-5s-binds-10-of-10-and-stays-reminders-with-none-passes-narrowing-n1-must-name-the-line-2026-11-07.md | On 4d5fbfae7d: D5 at 1.5 s binds 10 of 10 and stays. Reminders-with-none PASSES… |
 | 2026-11-07 18:19 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-4d5fbfae7d-d5-at-1-5s-ten-row-5-runs-reminders-with-none-and-narrowing-2026-11-07.md | Alpha serves 4d5fbfae7d (run 42437672194): D5 at 1.5 s, 'reminders' with none,… |
 | 2026-11-07 17:55 PT | ppm | ppm-to-web-cc-arch-cxo-lead-pa-exec-2322-latest-word-is-the-withdrawal-do-not-store-done-2026-11-07.md | #2322, so the crossing memos don't leave two answers: PPM's latest word is the… |
 | 2026-11-07 17:53 PT | arch | arch-to-cxo-ppm-web-lead-cc-pa-exec-web-pat-test-is-ppms-call-the-read-fact-meets-cxos-rule-sentinels-adopted-2026-11-07.md | web-pat-test is PPM's call (my 'no' withdrawn). The recorded read fact meets CX… |
