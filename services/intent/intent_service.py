@@ -1023,6 +1023,27 @@ ANALYZE_REPOSITORY_NOT_FOUND_LEAD = 'I couldn\'t find "{pair}" among your reposi
 ANALYZE_REPOSITORY_ISSUE_CAP = 20
 
 
+def _drop_repeated_repo_opening(body: str, repository: str) -> str:
+    """#2270 (CXO 11-08, Arch's mechanism): under the default lead, drop the composed
+    body's first sentence only when it starts with ``Looking at`` AND contains the exact
+    ``owner/repo`` code read. Both are exact matches against code-held strings (our own
+    output, our own token); no meaning is read. Otherwise the body is returned unchanged,
+    and nothing else is ever reworded or trimmed."""
+    text = body.lstrip()
+    if not text.startswith("Looking at") or repository not in text:
+        return body
+    start = text.index(repository) + len(repository)
+    end = None
+    for i in range(start, len(text)):
+        if text[i] in ".!?:" and (i + 1 == len(text) or text[i + 1].isspace()):
+            end = i + 1
+            break
+    if end is None:
+        return body
+    rest = text[end:].lstrip()
+    return rest if rest else body
+
+
 #: #2151 (CXO 10-23 18:12): Piper can't see the user's machine; offer what it can check.
 LOCAL_GIT_DECLINE_LINE = (
     "I can't see repositories on your computer. I can check a GitHub repository for you. "
@@ -15452,6 +15473,8 @@ class IntentService:
                 for m in (milestones or [])
             ],
         }
+        if not named_in_turn:
+            read["lead_shown"] = True
         domain_context: Dict[str, Any] = {"repository_read": read}
         from services.intent_service.context_assembler import _current_time_and_date_for_user
 
@@ -15465,7 +15488,7 @@ class IntentService:
         if not named_in_turn and result is not None and result.message:
             result.message = (
                 f"{ANALYZE_REPOSITORY_DEFAULT_LEAD.format(repository=repository)}\n\n"
-                f"{result.message}"
+                f"{_drop_repeated_repo_opening(result.message, str(repository))}"
             )
         return result
 
