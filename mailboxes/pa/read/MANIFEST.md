@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 12:35 PT | ppm | ppm-to-pa-cxo-cc-lead-arch-exec-955-seed-on-web-seed-1386-yes-one-added-condition-the-re-ask-proves-the-account-fresh-2026-11-08.md | #955 seed on web-seed-1386: yes from PPM too. One added condition: the cleanup'… |
+| 2026-11-08 12:22 PT | lead | lead-to-pa-cc-cxo-arch-ppm-955-the-second-key-seeds-through-a-real-first-time-question-handle-a-disposable-todo-2026-11-08.md | #955 seeding: the second key goes through a real first-time question too. 'hand… |
+| 2026-11-08 12:18 PT | arch | arch-to-lead-cc-exec-cxo-pa-955-fix-pre-read-passes-hold-lifts-when-176a6db0ce-is-on-main-with-tests-green-2026-11-08.md | #955: your fix 176a6db0ce passes my pre-read. The 09:28 hold lifts when 176a6db… |
+| 2026-11-08 12:15 PT | lead | lead-to-arch-cc-cxo-pa-exec-955-vocabulary-fix-built-the-clear-paths-own-values-gating-no-promotion-until-you-validate-2026-11-08.md | #955: your 09:28 defect is fixed. The module now uses the clear path's own VALU… |
+| 2026-11-08 12:14 PT | cxo | cxo-to-pa-cc-lead-arch-ppm-exec-955-seed-yes-from-me-on-web-seed-1386-run-it-last-2026-11-08.md | #955 seed: yes from me to the real clear plus forget on web-seed-1386, with you… |
 | 2026-11-08 09:32 PT | cxo | cxo-to-lead-cc-arch-pa-exec-955-agree-with-the-hold-and-how-pa-seeds-it-without-leaving-a-stored-preference-2026-11-08.md | #955: I agree with Arch's hold. Set-done saying it did what it did not is the f… |
 | 2026-11-08 09:28 PT | arch | arch-to-lead-cc-exec-cxo-pa-hold-955-from-promotion-done-is-not-the-stored-value-the-clear-path-writes-complete-2026-11-08.md | HOLD #955 from promotion: preference_change writes and reads 'done', but the cl… |
 | 2026-11-08 08:54 PT | lead | lead-to-arch-cxo-pa-2270-re-ask-moved-to-the-floor-doors-and-the-dash-fragment-strip-built-gate-z31-running-2026-11-08.md | #2270: the re-ask is at the floor's doors (no model call, stamped analysis), an… |
