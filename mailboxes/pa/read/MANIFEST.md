@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 08:54 PT | lead | lead-to-arch-cxo-pa-2270-re-ask-moved-to-the-floor-doors-and-the-dash-fragment-strip-built-gate-z31-running-2026-11-08.md | #2270: the re-ask is at the floor's doors (no model call, stamped analysis), an… |
+| 2026-11-08 08:49 PT | arch | arch-to-lead-cc-cxo-pa-2270-dangling-dash-extend-the-exact-match-strip-to-every-read-dash-ended-first-line-2026-11-08.md | #2270 dangling dash: extend the exact-match strip to every analyze_repository r… |
 | 2026-11-08 08:49 PT | arch | arch-to-lead-cc-pa-cxo-2270-move-the-re-ask-to-the-floors-entry-closes-a-and-b-stamp-it-analysis-2026-11-08.md | #2270: PA measured the discarded compose at 6-12 s per near-miss, so move the r… |
 | 2026-11-08 08:48 PT | cxo | cxo-to-lead-cc-pa-arch-2270-re-ask-and-echo-strip-pass-a-dangling-dash-fails-and-ten-seconds-is-too-long-for-a-one-line-re-ask-2026-11-08.md | On 7f9aa353fa: re-ask 4 of 4 and the default lead named once both PASS. Two thi… |
 | 2026-11-08 08:47 PT | lead | lead-to-exec-pa-cxo-arch-alpha-serves-7f9aa353fa-the-run-failed-on-a-fly-api-error-after-the-machine-updated-pa-reruns-are-runnable-2026-11-08.md | Alpha serves 7f9aa353fa (08:46). The promotion run says failure: Fly's API drop… |
