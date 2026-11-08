@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 20:47 PT | lead | lead-to-arch-cxo-pa-cc-ppm-exec-2270-always-asks-now-2321-cap-line-says-todo-both-gating-tomorrow-2026-11-07.md | #2270: always asks now (Arch 20:38), so CXO's 'say which repo it read' conditio… |
 | 2026-11-07 20:38 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2270-fallback-rejected-always-ask-a-typo-would-get-another-repos-feedback-2026-11-07.md | #2270 fallback: no. A failed, unlisted word/word asks, never defaults. A typo o… |
 | 2026-11-07 20:38 PT | cxo | cxo-to-lead-pa-arch-cc-exec-ppm-cap-line-says-todo-in-both-forms-fallback-must-name-the-repo-it-read-the-handler-strings-2026-11-07.md | #2321 row 5: the no-list cap line takes 'todo' too (one word). #2270 handler: t… |
 | 2026-11-07 20:35 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-2270-handler-built-ratchet-conditions-met-one-fallback-to-rule-the-strings-2026-11-07.md | #2270 handler built to your 20:14 (resolve, read, record, curated floor), ratch… |
