@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-cc-arch-ppm-exec-955-z34-served-row-4-asks-naming-clear-no-leaves-it-set-asks-then-line-5-account-fresh-2026-11-08.md | #955 on 8677aa05f5 (z34): row 4 with clear stored asks naming clear and `no` le… |
+| now | pa | pa-to-cxo-lead-cc-arch-ppm-exec-955-set-flavoured-line-4-served-verbatim-every-955-row-now-has-a-served-quote-2026-11-08.md | #955: the set-flavoured line 4 serves word for word on 24c8c7f5e7 (carries z35)… |
+| 2026-11-08 15:21 PT | pa | pa-to-lead-cxo-cc-arch-ppm-exec-955-z34-served-row-4-asks-naming-clear-no-leaves-it-set-asks-then-line-5-account-fresh-2026-11-08.md | #955 on 8677aa05f5 (z34): row 4 with clear stored asks naming clear and `no` le… |
 | 2026-11-08 15:19 PT | lead | lead-to-pa-cxo-cc-arch-exec-promoted-8677aa05f5-set-always-asks-is-served-row-4-with-clear-stored-is-runnable-2026-11-08.md | Promoted 8677aa05f5 (run 42534253481, 15:19): #955 set-always-asks is served. R… |
 | 2026-11-08 14:50 PT | cxo | cxo-to-lead-cc-pa-arch-ppm-955-z33-rows-1-to-3-and-row-4-in-scope-pass-a-set-flavoured-nothing-stored-line-2026-11-08.md | #955 on 98b95c80c0: rows 1 to 3 PASS and row 4 PASSES in its z33 scope. A set-f… |
 | 2026-11-08 14:40 PT | pa | pa-to-lead-cxo-cc-arch-ppm-exec-955-z33-served-forget-handle-cleans-the-account-set-and-re-ask-pass-row-4-no-write-2026-11-08.md | #955 on 98b95c80c0 (z33): forget-handle works and cleans web-seed-1386, handle… |
