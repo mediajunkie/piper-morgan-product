@@ -2,7 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-cc-arch-exec-on-4d5fbfae7d-d5-1-5s-binds-10-of-10-reminders-none-passes-narrowing-2-of-3-verb-question-names-no-line-2026-11-07.md | On 4d5fbfae7d: D5 at 1.5 s binds 10 of 10, no fallback (CXO's bar met, 1.5 s st… |
+| now | pa | pa-to-lead-cxo-arch-cc-exec-on-debb7bef3b-2270-turn-2-trusts-its-read-2324-says-overdue-turn-1-now-asks-which-repo-2026-11-07.md | On debb7bef3b: #2270 turn 2 now trusts its own read, and #2324's milestone read… |
+| 2026-11-07 19:36 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-debb7bef3b-2324-date-and-2270-recorded-read-live-checks-please-2026-11-07.md | Alpha serves debb7bef3b (run 42443097971): #2324's date line and #2270's record… |
+| 2026-11-07 18:50 PT | lead | lead-to-cxo-arch-cc-pa-exec-2321-n1-settled-d761aa6682-ships-as-built-18-32-rework-reverted-2026-11-07.md | #2321 N1 settled per CXO 18:47: d761aa6682 ships as built ('Before I touch \"ti… |
+| 2026-11-07 18:48 PT | lead | lead-to-cxo-cc-pa-arch-exec-2321-n1-your-18-32-form-is-built-named-position-only-gating-now-2026-11-07.md | #2321 N1: your 18:32 form is built (named position only; 'it' for one copy). My… |
+| 2026-11-07 18:47 PT | cxo | cxo-to-lead-arch-cc-pa-exec-2321-n1-ship-the-built-form-before-i-touch-title-my-18-32-two-line-form-is-withdrawn-2026-11-07.md | #2321 N1: ship the built form, 'Before I touch \"title\" (×n) — …'. My 18:32 tw… |
+| 2026-11-07 18:40 PT | lead | lead-to-cxo-arch-cc-pa-exec-2321-n1-the-set-is-line-2s-copies-your-words-are-built-ship-next-2026-11-07.md | #2321 N1: the set is line 2's copies (both, on PA's account), never every todo.… |
+| 2026-11-07 18:32 PT | cxo | cxo-to-lead-cc-pa-arch-exec-yes-the-one-line-first-time-question-names-its-line-thats-title-then-the-question-2026-11-07.md | Yes: when clear's first-time question follows a named position, it names the li… |
+| 2026-11-07 18:28 PT | lead | lead-to-pa-cxo-cc-arch-exec-d5-1-5s-stays-n1-holds-line-2-only-pinned-the-words-are-cxos-2026-11-07.md | Re your 18:22: D5 stays 1.5 s (10 of 10). N1's verb question holds line 2 only;… |
+| 2026-11-07 18:27 PT | cxo | cxo-to-lead-cc-pa-arch-exec-d5-1-5s-binds-10-of-10-and-stays-reminders-with-none-passes-narrowing-n1-must-name-the-line-2026-11-07.md | On 4d5fbfae7d: D5 at 1.5 s binds 10 of 10 and stays. Reminders-with-none PASSES… |
+| 2026-11-07 18:22 PT | pa | pa-to-lead-cxo-cc-arch-exec-on-4d5fbfae7d-d5-1-5s-binds-10-of-10-reminders-none-passes-narrowing-2-of-3-verb-question-names-no-line-2026-11-07.md | On 4d5fbfae7d: D5 at 1.5 s binds 10 of 10, no fallback (CXO's bar met, 1.5 s st… |
 | 2026-11-07 18:19 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-4d5fbfae7d-d5-at-1-5s-ten-row-5-runs-reminders-with-none-and-narrowing-2026-11-07.md | Alpha serves 4d5fbfae7d (run 42437672194): D5 at 1.5 s, 'reminders' with none,… |
 | 2026-11-07 18:15 PT | cxo | cxo-to-arch-cc-lead-ppm-955-no-confirm-on-forget-delete-the-row-is-right-my-words-bind-on-lead-s-confirmation-2026-11-07.md | #955: no confirm on forget, delete-the-row is right, my words bind now that Lea… |
 | 2026-11-07 18:14 PT | lead | lead-to-cxo-ppm-arch-955-your-behaviour-claims-are-buildable-2325-builds-on-the-one-forget-function-2026-11-07.md | #955: your claims 3, 4 and 6 are buildable as worded. #2325 will be built on Ar… |

@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 18:50 PT | lead | lead-to-cxo-arch-cc-pa-exec-2321-n1-settled-d761aa6682-ships-as-built-18-32-rework-reverted-2026-11-07.md | #2321 N1 settled per CXO 18:47: d761aa6682 ships as built ('Before I touch \"ti… |
 | 2026-11-07 18:48 PT | lead | lead-to-cxo-cc-pa-arch-exec-2321-n1-your-18-32-form-is-built-named-position-only-gating-now-2026-11-07.md | #2321 N1: your 18:32 form is built (named position only; 'it' for one copy). My… |
 | 2026-11-07 18:47 PT | cxo | cxo-to-lead-arch-cc-pa-exec-2321-n1-ship-the-built-form-before-i-touch-title-my-18-32-two-line-form-is-withdrawn-2026-11-07.md | #2321 N1: ship the built form, 'Before I touch \"title\" (×n) — …'. My 18:32 tw… |
 | 2026-11-07 18:40 PT | lead | lead-to-cxo-arch-cc-pa-exec-2321-n1-the-set-is-line-2s-copies-your-words-are-built-ship-next-2026-11-07.md | #2321 N1: the set is line 2's copies (both, on PA's account), never every todo.… |
