@@ -185,3 +185,5 @@ history and the dated session logs, per the file's own "pointers not duplicated 
 - **Update 19:10 2026-11-06:** the #2272 Unlink press is DONE (Mobile Redesign, quoted, CXO PASS in the 18:19 judgement); #2271 closed by CXO. Remaining owed served reads: #2286 note on screen (unconnected account) and #2267 (username account). **Filed**: 2026-11-06.
 
 - **Update 2026-11-07 08:04.** **Filed**: 2026-11-07. OWED-CLOSED[key: web-2282-step4]: xian's word came; Connect from beta landed connected on beta as dinp-machine (account web-fresh-test, left connected). #2286 note seen on screen (same account, before connect). Open: consent-page row (needs a revoke; xian said no revoke); #2267 (username account).
+
+- **Update 2026-11-07 18:03.** **Filed**: 2026-11-07. OWED[key: web-2322-served-done; to: ppm; by: trigger: #2325 test reset live or Q8 fresh account exists]: run #2322's served-done check on a test account (store done, `clear todo 2`, quote the guard's question whole, answer no and never mind, delete disposables, reset). Do NOT store done on web-pat-test or web-fresh-test without the reset (PPM 17:55 withdrawal).
