@@ -28,7 +28,6 @@ from types import SimpleNamespace
 from uuid import UUID, uuid4
 
 import pytest
-from uuid import uuid4
 
 from services.domain.models import Intent, Todo
 from services.intent.intent_service import IntentService
@@ -788,7 +787,8 @@ class TestAlwaysAskLeadingQuestion:
         result = await live_service.process_intent(
             message="clear my reminders", session_id=sid, user_id=_USER
         )
-        assert result.message.startswith(rc.variant_two_always_ask_question())
+        # #2322: two reminders, so the set leads (CXO 16:17); the question is verbatim.
+        assert result.message.endswith(rc.variant_two_always_ask_question())
         assert todo_boundary["completed"] == [] and todo_boundary["deleted"] == []
         assert result.intent_data.get("verb_disambiguation_pending") is True
 

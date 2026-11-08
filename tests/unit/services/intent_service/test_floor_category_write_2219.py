@@ -409,7 +409,9 @@ async def test_a_marked_clear_family_turn_asks_where_it_would_have_written(
     assert _wrote(boundary) == []
     assert result.requires_clarification
     if stored:
-        assert result.message == variant_two_always_ask_question()
+        # #2322 (CXO 11-07 16:17): over a set of more than one the guard names the
+        # set first; the ratified question is the last line, verbatim.
+        assert result.message.endswith(variant_two_always_ask_question())
 
 
 # ── CXO 11-06 11:2x: a named miss with no list, and several numbers on the pick ──
