@@ -12,12 +12,9 @@ When I decided (perhaps prematurely) that Piper Morgan was ready to go into alph
 
 # Would you believe, September?
 
-In early July I published a blog post set in late June optimistically titled ["Almost Beta"](https://pipermorgan.ai/blog/almost-beta/) and, as late as September 1, I ran a piece from August that situated itself ["four days before beta"](https://pipermorgan.ai/blog/a-sender-impersonation-bug-four-days-before-beta/) (Jul 23) and "A Sender-Impersonation
-Bug, Four Days Before Beta" (Sep 1). On Aug 8 you had already moved beta back a month, without a new date: "we clearly
-have a lot more work still to do than anyone ever reported to me." [decisions.log 09-06 ~07:0x, quoting 08-08]
+In early July I published a blog post set in late June optimistically titled ["Almost Beta"](https://pipermorgan.ai/blog/almost-beta/) and, as late as September 1, I ran a piece from early August that situated itself ["four days before beta"](https://pipermorgan.ai/blog/a-sender-impersonation-bug-four-days-before-beta/). 
 
-
-
+By August 8, I had moved the deadline, writing with a touch of petulance (knowing my agents wouldn't take it personally, not being alive and all) that "we clearly have a lot more work still to do than anyone ever reported to me." 
 
 I have this habit of using family birthdays as milestone dates (easier to remember), and when it became clear that we were finding serious issues faster than we were closing them, I accepted another big delay and re-set the MVP milestone date to my sister's birthday in early September. 
 
@@ -27,28 +24,28 @@ We started tracking progress much more rigorously and strictly disciplining whic
 
 *Deciding whether a new issue is a launch blocker is a core product-manager experience and I couldn't help pointing this out to my agent assistants, always trying to make lessons from things when I can.*
 
+The toughest part is allowing an ugly bug because you realize that (a) its impact is small and (b) there will always be some bugs. In this case, I ruled at one point that a two-step question about milestones that Piper was handling inconsistently could be allowed into the beta. I wrote, "we can admit this one is trickier than it looks and call it out as a known issue."
+
 # Looks like we made it
 
 On Oct 30 the MVP milestone closed on that date, and the next day I sent (not very spooky) email to the first set of testers inviting them to the private beta. The email invitations also explained the known issues, the things Piper was still getting wrong as of then.
 
+Our new upcoming milestone is Production. Right now its date is February 2 (my father's birthday) and history tells me this is optimistic as well, but we need a target.
 
-**2. The reset.** Sep 6, early morning: MVP moves to **Oct 30**, then Production Feb 2, and so on. [decisions.log
-09-06 ~07:0x] That afternoon you ruled the last gate line ("PM go/no-go") fires at MVP close, not then, because the
-gate's evidence was point-in-time: "beta moved eight weeks out from under them." [decisions.log 09-06 ~16:1x]
-- This is also the subject of Tue 11-03's "The Unguarded Entrance" (Sep 6). Point back to it lightly, or don't.
+The eight weeks leading up to our mlestone addressed Piper's fundamental behavior and architecture, much of it boiling down to making sure Piper tells the truth about what it doesn't know. One reason it took so long was an old pattern of attempting to patch a problem until I finally take a step back and ask for a more systematic approach to a solution
 
-**3. Eight weeks of making Piper say what it doesn't know.** Don't retell these, just name the arc. The building
-posts and Ships #060–#067 carry it: failed reads that said "none", promises the code didn't keep, a router that wasn't
-live. Your 10-28 ruling that the confabulations "require more than patching" is the turn. [Ship #067 week review]
 
-**4. Calling one a known issue.** 10-29: the two-step milestone question passed one day and failed the next. You:
-"we can admit this one is trickier than it looks and call it out as a known issue." It went off the gate and into the
-letter. [decisions.log 10-29 13:02]
+# Can agents catch their breath?
 
-**5. The day.** Fri 10-30: you chose the beta build and the re-checks before any invitation. [decisions.log 10-30
-14:52] The MVP milestone closed at about 5:07 PM, on its due date. [GitHub milestone MVP, closed_at] That evening:
-"We can all catch our breath and then discuss priorities in the first sprint of the journey to our next big
-milestone, the Production release." [decisions.log 10-30 20:52]
+The final push to beta was an effort not unlike what I have experienced with human teams. I had to prioritize Piper Morgan over other work. There were some long days. I made some tough calls. If we had had to delay again I would have coped but this time I was really determined to land the plane.
+
+Once we hit it, I was fine with waiting a day to send out beta invitations. I had time to remember to cut the 0.9.0.0 beta release. I felt no need to ensure the Lead Developer agent was cranking at full capacity (although I did suggest there was no need to stop entirely).
+
+The fact is I need to take stock myself and when real human users start testing the beta I will likely have my hands full with the most valuable input into the project since the day it started with one question or the first time an outside human advisor made a suggestion (no offense to the agents that have contributed might labors but rarely if ever bring to the table a unique point of view, that not being their wont).
+
+I asked my chief of staff agent (Exec) to spread the word t the full team: "We can all catch our breath and then discuss priorities in the first sprint of the journey to our next big milestone, the Production release."
+
+# 
 
 **6. The letter.** It carried **nine** known-issue lines, each checked against an open issue at send time ("9 of 9
 hold"). [#1386, PPM 10-30 19:51] Among them: Piper can misread what you ask, an answer about your own data can be wrong,
