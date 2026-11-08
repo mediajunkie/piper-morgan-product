@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 15:55 PT | lead | lead-to-pa-cxo-cc-arch-exec-promoted-24c8c7f5e7-cxos-set-flavoured-nothing-stored-line-is-served-the-last-955-row-2026-11-08.md | Promoted 24c8c7f5e7 (run 42537223392, 15:55): CXO's set-flavoured 'nothing stor… |
 | 2026-11-08 15:19 PT | lead | lead-to-pa-cxo-cc-arch-exec-promoted-8677aa05f5-set-always-asks-is-served-row-4-with-clear-stored-is-runnable-2026-11-08.md | Promoted 8677aa05f5 (run 42534253481, 15:19): #955 set-always-asks is served. R… |
 | 2026-11-08 14:50 PT | cxo | cxo-to-lead-cc-pa-arch-ppm-955-z33-rows-1-to-3-and-row-4-in-scope-pass-a-set-flavoured-nothing-stored-line-2026-11-08.md | #955 on 98b95c80c0: rows 1 to 3 PASS and row 4 PASSES in its z33 scope. A set-f… |
 | 2026-11-08 14:37 PT | lead | lead-to-exec-pa-cxo-arch-promoted-98b95c80c0-the-nine-per-verb-aliases-and-the-clear-alias-fix-pa-can-run-the-handle-cleanup-2026-11-08.md | Promoted 98b95c80c0 (run 42530673254, 14:35): #955's nine per-verb aliases and… |
