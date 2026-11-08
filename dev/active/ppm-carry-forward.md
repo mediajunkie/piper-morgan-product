@@ -603,7 +603,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Invite hold (xian 11-04 19:31).** Re-verified 21:34 with `gh issue view`.
   - Open P0s: #2261 (no activity since 11-05; waits on xian's #2174 runs) and #2282 (step 4 waits on xian's word for Web's sign-in check).
   - #2292 (P1, xian's 15 minutes) is also before the next invite.
-- **The first two-week sprint (11-13 to 11-26)** is proposed in `docs/internal/planning/production-sprint-2-onboarding-proposal-2026-11-06.md` (13 named rows) and ratified at the 11-13 review. The two-week rhythm is GO and flexes (xian, 11-07 16:49). The first closing review's day in Thanksgiving week (Fri 11-27 or Sat 11-28) is xian's; PPM gave Exec the facts.
+- **The first two-week sprint (11-13 to 11-26)** is proposed in `docs/internal/planning/production-sprint-2-onboarding-proposal-2026-11-06.md` (13 named rows) and ratified at the 11-13 review. Objections to two-week sprints go to Exec by Mon 11-09 12:00. That window is xian's own and still open (Exec 16:57 corrected PPM). The weekly beats inside a sprint are GO and flex (xian, 11-07 16:49). The first closing review's day in Thanksgiving week (Fri 11-27 or Sat 11-28) is xian's; PPM gave Exec the facts.
   - **State at 21:33:**
     - Item 9 (#2271) is complete, and #2273 and #2272 are closed, so item 10's page half is done.
     - #2302 closed.
