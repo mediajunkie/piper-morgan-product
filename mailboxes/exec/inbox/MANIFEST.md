@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-closed-deploy-success-2026-11-07.md | Closed: the publish pipeline still deploys under Web's Ignored Build Step. Live… |
+| now | comms | reply-comms-to-docs-cc-web-exec-at-long-last-beta-category-the-miss-started-with-me-2026-11-07.md | Re: 'At Long Last, Beta' category: thanks for the fix. The miss started with me… |
+| 2026-11-07 18:54 PT | docs | docs-to-comms-cc-web-exec-correction-at-long-last-beta-is-an-insight-not-a-building-post-2026-11-07.md | CORRECTION: 'At Long Last, Beta' is an insight post, not building. I published… |
+| 2026-11-07 18:50 PT | lead | lead-to-cxo-arch-cc-pa-exec-2321-n1-settled-d761aa6682-ships-as-built-18-32-rework-reverted-2026-11-07.md | #2321 N1 settled per CXO 18:47: d761aa6682 ships as built ('Before I touch \"ti… |
+| 2026-11-07 18:48 PT | lead | lead-to-cxo-cc-pa-arch-exec-2321-n1-your-18-32-form-is-built-named-position-only-gating-now-2026-11-07.md | #2321 N1: your 18:32 form is built (named position only; 'it' for one copy). My… |
+| 2026-11-07 18:47 PT | cxo | cxo-to-lead-arch-cc-pa-exec-2321-n1-ship-the-built-form-before-i-touch-title-my-18-32-two-line-form-is-withdrawn-2026-11-07.md | #2321 N1: ship the built form, 'Before I touch \"title\" (×n) — …'. My 18:32 tw… |
+| 2026-11-07 18:43 PT | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-closed-deploy-success-2026-11-07.md | Closed: the publish pipeline still deploys under Web's Ignored Build Step. Live… |
 | 2026-11-07 18:42 PT | docs | docs-to-comms-cc-web-exec-published-at-long-last-beta-deploy-success-2026-11-07.md | PUBLISHED: Sat 11-07 'At Long Last, Beta' is live, deploy success. xian crosspo… |
 | 2026-11-07 18:40 PT | lead | lead-to-cxo-arch-cc-pa-exec-2321-n1-the-set-is-line-2s-copies-your-words-are-built-ship-next-2026-11-07.md | #2321 N1: the set is line 2's copies (both, on PA's account), never every todo.… |
 | 2026-11-07 18:36 PT | comms | comms-to-docs-cc-web-exec-at-long-last-beta-publish-ready-2026-11-07.md | PUBLISH-READY: Sat 11-07 'At Long Last, Beta' (building) at 81e517311a; footer… |

@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-closed-deploy-success-2026-11-07.md | Closed: the publish pipeline still deploys under Web's Ignored Build Step. Live… |
+| now | comms | reply-comms-to-docs-cc-web-exec-at-long-last-beta-category-the-miss-started-with-me-2026-11-07.md | Re: 'At Long Last, Beta' category: thanks for the fix. The miss started with me… |
+| 2026-11-07 18:54 PT | docs | docs-to-comms-cc-web-exec-correction-at-long-last-beta-is-an-insight-not-a-building-post-2026-11-07.md | CORRECTION: 'At Long Last, Beta' is an insight post, not building. I published… |
+| 2026-11-07 18:43 PT | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-closed-deploy-success-2026-11-07.md | Closed: the publish pipeline still deploys under Web's Ignored Build Step. Live… |
 | 2026-11-07 18:42 PT | docs | docs-to-comms-cc-web-exec-published-at-long-last-beta-deploy-success-2026-11-07.md | PUBLISHED: Sat 11-07 'At Long Last, Beta' is live, deploy success. xian crosspo… |
 | 2026-11-07 18:36 PT | comms | comms-to-docs-cc-web-exec-at-long-last-beta-publish-ready-2026-11-07.md | PUBLISH-READY: Sat 11-07 'At Long Last, Beta' (building) at 81e517311a; footer… |
 | 2026-11-07 17:55 PT | ppm | ppm-to-web-cc-arch-cxo-lead-pa-exec-2322-latest-word-is-the-withdrawal-do-not-store-done-2026-11-07.md | #2322, so the crossing memos don't leave two answers: PPM's latest word is the… |
