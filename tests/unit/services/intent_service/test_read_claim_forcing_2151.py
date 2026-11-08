@@ -611,9 +611,7 @@ FORCE: Dict[str, Force] = {
     "generate_report": Force(
         gh(native=False), f"generate a report for {REPO}", context={"repository": REPO}
     ),
-    "analyze_repository": Force(
-        gh(native=False), f"look at {REPO}", context={"repository": REPO}
-    ),
+    "analyze_repository": Force(gh(native=False), f"look at {REPO}", context={"repository": REPO}),
     "analyze_data": Force(
         gh(native=False),
         f"analyze data for {REPO}",

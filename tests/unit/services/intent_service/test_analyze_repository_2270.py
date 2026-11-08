@@ -247,3 +247,39 @@ async def test_sentinel_turn_2_alone_claims_no_read(service, monkeypatch, github
     sid = f"ar-{uuid4().hex[:8]}"
     await _turn(service, monkeypatch, sid, TURN_2, IntentCategory.TRUST, "explain_trust")
     assert "Earlier this session you read" not in _prompt(captured_floor[-1])
+
+
+# Alpha's live set as of 2026-11-07 (the #2112 test's ALPHA_LIVE).
+_ALPHA_LIVE = (
+    "add_project,complete_todo,create_reminder,create_todo,delete_todo,read_canonical,"
+    "read_floor,read_portfolio,read_referent,read_status,read_strategic,read_synthesis,"
+    "read_temporal"
+)
+
+
+async def test_landing_pin_the_routers_none_does_not_floor_the_hidden_entry(
+    service, monkeypatch, github, captured_floor
+):
+    """Arch 20:26 (the #2132 ratchet raised to 2), condition 2: through process_intent with
+    the advisor's exact words, a live consult that declines with router_none at 0.95 on
+    alpha's live set leaves the legacy landing on the hidden entry standing."""
+    import services.intent_service.inversion_live as il
+
+    async def _router_none(*a, **k):
+        il.publish_live_route_provenance(
+            il.LiveRouteProvenance(routed_live=False, reason="router_none", confidence=0.95)
+        )
+        return None
+
+    monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", _ALPHA_LIVE)
+    monkeypatch.setattr(il, "consult_inversion_live", _router_none)
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, _REPO)
+    try:
+        await _turn(
+            service, monkeypatch, sid, ADVISOR_TURN_1, IntentCategory.ANALYSIS, "analyze_repository"
+        )
+    finally:
+        il.publish_live_route_provenance(None)
+    assert ("issues", "dinp-machine", "piper-test-activity") in github["reads"]
+    assert captured_floor[-1].domain_context["repository_read"]["repository"] == _REPO

@@ -1,4 +1,7 @@
-"""#2132 option (b), Arch condition 3: router-hidden rail entries are a ratchet, ceiling 1.
+"""#2132 option (b), Arch condition 3: router-hidden rail entries are a ratchet, ceiling 2.
+
+Ceiling 1 (compare_documents, 10-23); raised to 2 by Arch's ruling 2026-11-07 20:26 for
+analyze_repository (#2270), with the same named exit.
 
 A ``router_visible=False`` entry is reachable only through the legacy classifier.
 That is a bounded exception with a named exit (#2149, catalog size), never a
@@ -14,8 +17,10 @@ must exempt router-hidden landings, or the hidden entry closes nothing.
 from services.intent_service.workflow_dispatcher import get_action_workflows
 from services.intent_service.workflow_entries import register_default_workflows
 
-ROUTER_HIDDEN_CEILING = 1
-EXPECTED_ROUTER_HIDDEN = {"compare_documents"}
+# Arch 2026-11-07 20:26 (#2270): raised to 2 for analyze_repository, the same exit
+# (#2149); its landing pin is test_analyze_repository_2270.py's router-none test.
+ROUTER_HIDDEN_CEILING = 2
+EXPECTED_ROUTER_HIDDEN = {"compare_documents", "analyze_repository"}
 
 
 def test_router_hidden_entries_are_ratcheted():
