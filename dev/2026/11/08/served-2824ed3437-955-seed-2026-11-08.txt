@@ -1,0 +1,105 @@
+# #955 served seed on 2824ed3437 (carries 176a6db0ce), web-seed-1386, PA. CXO 12:14, PPM 12:35, Lead 12:22 script. Each seed on its own disposable. Run last in the batch, after the #2270 z31 checks.
+
+--- [13:08:29, 2824ed3437, http 200, 3.90 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. zz throwaway one
+3. zz throwaway two
+4. audit the current navigation
+5. review prs (×2)
+6. review the deployment plan
+7. draft the launch checklist
+
+--- [13:08:34, 2824ed3437, http 200, 3.62 s] route execution/create_todo
+USER: add a todo: zz 955 seed a
+PIPER: I've added that to your list. 'zz 955 seed a' is now tracked. Let me know if you want to adjust anything.
+
+--- [13:08:44, 2824ed3437, http 200, 9.28 s] route execution/complete_todo
+USER: clear the zz 955 seed a todo
+PIPER: Before I touch "zz 955 seed a" — when you say 'clear' on a todo, do you want me to mark it done, or delete it? I'll remember for next time. Say "forget my clear preference" to undo that.
+
+--- [13:08:54, 2824ed3437, http 200, 0.27 s] route execution/complete_todo
+USER: mark it done
+PIPER: Got it — 'clear' means mark done, and I'll remember that.
+
+Marked 1 todo done:
+• zz 955 seed a
+
+--- [13:09:02, 2824ed3437, http 200, 7.79 s] route query/set_clear_preference_done
+USER: make clear mean mark it done
+PIPER: "clear" already means mark it done, so I haven't changed anything.
+
+--- [13:09:18, 2824ed3437, http 200, 3.49 s] route execution/create_todo
+USER: add a todo: zz 955 seed b
+PIPER: I've added that to your list. 'zz 955 seed b' is now tracked. Let me know if you want to adjust anything.
+
+--- [13:09:23, 2824ed3437, http 200, 4.39 s] route execution/complete_todo
+USER: handle the zz 955 seed b todo
+PIPER: Before I touch "zz 955 seed b" — when you say 'handle' on a todo, do you want me to mark it done, or delete it? I'll remember for next time. Say "forget my handle preference" to undo that.
+
+--- [13:09:32, 2824ed3437, http 200, 0.25 s] route execution/clear_reminders_delete
+USER: delete it
+PIPER: You've set 'handle' to mean delete — delete this todo? (yes/no)
+
+--- [13:09:42, 2824ed3437, http 200, 0.26 s] route execution/clear_reminders_delete
+USER: yes
+PIPER: Deleted 1 todo:
+• zz 955 seed b
+
+--- [13:09:49, 2824ed3437, http 200, 7.06 s] route query/forget_clear_preference
+USER: forget my clear preference
+PIPER: I'm remembering more than one of these:
+
+1. "clear" means mark it done
+2. "handle" means delete it
+
+Which one should I forget? Say the number, or 'never mind' to leave them alone.
+
+--- [13:09:59, 2824ed3437, http 200, 0.27 s] route query/forget_clear_preference
+USER: 1
+PIPER: Okay. I've forgotten that "clear" means mark it done. Next time you say clear, I'll ask which you want.
+
+--- [13:10:15, 2824ed3437, http 200, 14.68 s] route query/set_handle_preference_done
+USER: make handle mean mark it done
+PIPER: Got it — you want "handle" to mean mark something done. Just to make sure I wire this up right: do you mean you want me to remember that when you say "handle [todo]" you want it completed, or something broader (like closing issues too)?
+
+--- [13:10:29, 2824ed3437, http 200, 3.64 s] route query/update_document_query
+USER: change my handle preference to mark it done
+PIPER: I can't update documents from chat yet. Tell me what you want changed and I'll draft the text for you to paste.
+
+--- [13:10:54, 2824ed3437, http 200, 11.22 s] route query/forget_handle_preference
+USER: forget my handle preference
+PIPER: Done for this conversation — I won't use a handle when addressing you. If you want that set permanently across all your conversations, you can do that in your account preferences directly.
+
+--- [13:11:16, 2824ed3437, http 200, 4.23 s] route execution/create_todo
+USER: add a todo: zz 955 seed c
+PIPER: I've added that to your list. 'zz 955 seed c' is now tracked. Let me know if you want to adjust anything.
+
+--- [13:11:27, 2824ed3437, http 200, 10.29 s] route execution/complete_todo
+USER: clear the zz 955 seed c todo
+PIPER: Before I touch "zz 955 seed c" — when you say 'clear' on a todo, do you want me to mark it done, or delete it? I'll remember for next time. Say "forget my clear preference" to undo that.
+
+--- [13:11:35, 2824ed3437, http 200, 0.26 s] route soft_offer_declined/clarify_reminder_clear_verb
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been changed.
+
+--- [13:11:40, 2824ed3437, http 200, 4.33 s] route execution/delete_todo
+USER: delete the todo zz 955 seed c
+PIPER: Delete the todo "zz 955 seed c"? (yes/no)
+
+--- [13:11:47, 2824ed3437, http 200, 0.29 s] route execution/delete_todo
+USER: yes
+PIPER: Deleted 1 todo:
+• zz 955 seed c
+
+--- [13:11:49, 2824ed3437, http 200, 1.96 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. zz throwaway one
+3. zz throwaway two
+4. audit the current navigation
+5. review prs (×2)
+6. review the deployment plan
+7. draft the launch checklist

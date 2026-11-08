@@ -1,0 +1,124 @@
+# #2270 on 2824ed3437 (carries a163c8d6fc z31: floor-door re-ask, dash strip, CXO 08:09 lines), web-seed-1386, PA. Reads only.
+
+--- [13:06:55, 2824ed3437, http 200, 12.11 s] route analysis/analyze_repository
+USER: look at this project/repository. Give me quick feedback and then help me to move forward.
+PIPER: I couldn't find "project/repository" among your repositories. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:07:03, 2824ed3437, http 200, 8.06 s] route analysis/analyze_repository
+USER: the survey one
+PIPER: I couldn't find "the survey one" among your repositories or projects. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:07:11, 2824ed3437, http 200, 6.75 s] route analysis/analyze_repository
+USER: the harbor one
+PIPER: I still couldn't find "the harbor one", so I haven't looked at anything. Tell me a repository as owner/name whenever you want me to look.
+
+--- [13:07:14, 2824ed3437, http 200, 2.28 s] route analysis/analyze_repository
+USER: look at this project/repository. Give me quick feedback and then help me to move forward.
+PIPER: I couldn't find "project/repository" among your repositories. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:07:23, 2824ed3437, http 200, 8.76 s] route analysis/analyze_repository
+USER: Harbor Srvey
+PIPER: I couldn't find "Harbor Srvey" among your repositories or projects. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:07:33, 2824ed3437, http 200, 9.72 s] route analysis/analyze_repository
+USER: 1
+PIPER: **Quick read:**
+
+The backlog has some real signal mixed in with a lot of noise. Issues #2 through #6 look like genuine product work — search in settings, dark mode flicker, off-by-one dashboard counts, CSV export, onboarding link bug. Those are the ones worth keeping.
+
+But there's a cluster of duplicates around full-text search (#32, #31, #38 all say the same thing), several that look like test/diagnostic entries (#30, #33, #34, #37, #36, #35, #43), and #43 is even flagged "safe to close." That's a lot of clutter to navigate around.
+
+The **Beta launch milestone** is also overdue — it closed out with 4 issues still open and 0 closed against it, which suggests either the milestone wasn't maintained or the launch slipped.
+
+**Biggest immediate problem:** the backlog doesn't reflect reality. Before you can move forward confidently, you'd want to know which issues are actually active work vs. artifacts from testing.
+
+---
+
+**Suggested next step:** Close the obvious noise first — the duplicates, the test entries, and #43. If you'd like me to close those out, just tell me directly. If you tell me which ones you want gone, I can take care of it.
+
+--- [13:07:36, 2824ed3437, http 200, 2.13 s] route analysis/analyze_repository
+USER: look at this project/repository. Give me quick feedback and then help me to move forward.
+PIPER: I couldn't find "project/repository" among your repositories. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:07:42, 2824ed3437, http 200, 5.54 s] route analysis/analyze_repository
+USER: the survey one
+PIPER: I couldn't find "the survey one" among your repositories or projects. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:07:45, 2824ed3437, http 200, 2.20 s] route analysis/analyze_repository
+USER: look at this project/repository. Give me quick feedback and then help me to move forward.
+PIPER: I couldn't find "project/repository" among your repositories. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:07:57, 2824ed3437, http 200, 11.27 s] route analysis/analyze_repository
+USER: Harbor Pilot
+PIPER: Looking at dinp-machine/piper-test-activity, the repository linked to Harbor Pilot.
+
+Quick read on dinp-machine/piper-test-activity:
+
+**The signal in the noise:** You've got 20 open issues, and they split pretty cleanly into two buckets — real product work and what looks like test/diagnostic noise. Issues like #5 (onboarding email links), #6 (dashboard counts off by one), #3 (CSV export), #4 (dark mode flicker), and the search cluster (#38–42) are legitimate. But #30 ("testing"), #34, #33, #37, #36, #35, and #43 read like dev/QA artifacts that were never closed out.
+
+**The milestone is overdue:** Beta launch had 4 open issues and was due 2026-10-29. That's slipped, and it's not clear from here whether those 4 issues are the real blockers or just what got tagged.
+
+**The search work is fragmented:** Issues #31, #32, and #38 all describe "full-text search across nav and global search bar" — looks like the same feature filed multiple times. #39, #40, #41, #42 extend it to specific pages. Worth consolidating before anyone picks this up.
+
+---
+
+Two obvious first moves:
+
+1. **Clean up the noise** — close the test artifacts (#30, #33, #34, #35, #36, #37, #43) so the board reflects real work.
+2. **Triage the Beta milestone** — figure out which of those 4 open issues are actually blocking launch, and whether the milestone date needs to be reset.
+
+If you'd like me to start closing the test issues, just tell me directly — or would you rather dig into the Beta milestone first?
+
+--- [13:08:00, 2824ed3437, http 200, 2.46 s] route analysis/analyze_repository
+USER: look at this project/repository. Give me quick feedback and then help me to move forward.
+PIPER: I couldn't find "project/repository" among your repositories. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:08:11, 2824ed3437, http 200, 10.32 s] route analysis/analyze_repository
+USER: Harbor Pilot
+PIPER: Looking at dinp-machine/piper-test-activity, the repository linked to Harbor Pilot.
+
+A few things stand out right away.
+
+**The Beta launch milestone is overdue.** It was due 2026-10-29 and still has 4 open issues against it — nothing closed. That's the most urgent thing to address.
+
+**There's a lot of noise in the open issues.** You've got clear test/check issues (#43, #37, #36, #35, #34, #33, #30, #7) that look like they were filed for diagnostic purposes and are cluttering the board. #43 is even labeled "safe to close" in its own title.
+
+**Search is fragmented.** Issues #32 and #31 are both titled "Implement full-text search across nav and global search bar" — duplicates of each other, and possibly of #38 and #39 as well. You've got at least 6 search-related issues open, some clearly overlapping. That needs to be consolidated before it becomes a planning headache.
+
+**The real product issues** (#5 wrong onboarding link, #6 dashboard count bug, #3 CSV export, #4 dark mode flicker, #2 settings search) look like legitimate backlog — the kind of thing that should be on a roadmap.
+
+---
+
+Good next move: clean house first. If you'd like me to close the test/diagnostic issues (#43, #37, #36, #35, #34, #33, #30, #7) in one pass, and then help you deduplicate the search cluster, just tell me directly.
