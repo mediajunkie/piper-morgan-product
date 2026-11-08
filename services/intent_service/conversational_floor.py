@@ -1369,6 +1369,13 @@ class ConversationalFloor:
                 + ("\n".join(issue_lines) if issue_lines else "  none")
                 + "\n  Open milestones:\n"
                 + ("\n".join(ms_lines) if ms_lines else "  none")
+                + (
+                    # #2270 (Arch 11-08): code already opened the reply naming the repo.
+                    "\n  Your reply already opens with a line naming this repository; "
+                    "start with the findings, not with which repository you looked at."
+                    if rr.get("lead_shown")
+                    else ""
+                )
             )
 
         # Issue #1030 INSIGHT-PULL: surface composted insights when the user

@@ -496,3 +496,139 @@ async def test_harbor_pilot_answer_binds_even_when_the_list_was_unreadable(
     _, reply = await _ask_then_answer(service, monkeypatch, github, "Harbor Pilot")
     assert github["reads"][0] == ("issues", "dinp-machine", "harbor-pilot")
     assert f"You read the GitHub repository {_OTHER} this turn" in _prompt(captured_floor[-1])
+
+
+# ── #2270 default-lead echo (CXO 11-08; Arch's mechanism): the repo is named once ──
+
+
+async def test_the_echo_rule_drops_only_an_exact_looking_at_repo_opening():
+    from services.intent.intent_service import _drop_repeated_repo_opening as drop
+
+    r8 = (
+        f"Looking at {_REPO}, a few things stand out right away.\n\n"
+        "**The Beta launch milestone is overdue.**"
+    )
+    assert drop(r8, _REPO) == "**The Beta launch milestone is overdue.**"
+    # A body that opens with a finding is unchanged.
+    finding = f"The Beta launch milestone is overdue. Looking at {_REPO}, ..."
+    assert drop(finding, _REPO) == finding
+    # "Looking at" without the exact repo, or another repo, is unchanged.
+    assert drop("Looking at your repo, things look fine. More.", _REPO).startswith("Looking at")
+    assert drop(f"Looking at {_OTHER}, x. y", _REPO).startswith("Looking at")
+    # No sentence end, or nothing after it: unchanged.
+    assert drop(f"Looking at {_REPO} now", _REPO) == f"Looking at {_REPO} now"
+    assert drop(f"Looking at {_REPO}.", _REPO) == f"Looking at {_REPO}."
+    # A dot inside the repo name is not a sentence end.
+    assert drop("Looking at a/b.js, two notes. Next.", "a/b.js") == "Next."
+
+
+async def test_the_default_read_names_the_repo_once(service, monkeypatch, github):
+    async def respond(self, ctx):
+        respond.ctx = ctx
+        return cf.FloorResponse(
+            message=f"Looking at {_REPO}, a few things stand out right away.\n\nFinding one."
+        )
+
+    monkeypatch.setattr(cf.ConversationalFloor, "respond", respond)
+    _default_repo(monkeypatch, service, _REPO)
+    result = await _turn(
+        service,
+        monkeypatch,
+        f"ar-{uuid4().hex[:8]}",
+        UNNAMED,
+        IntentCategory.ANALYSIS,
+        "analyze_repository",
+    )
+    assert result.message == f"Looking at {_REPO}, your default repository.\n\nFinding one."
+    assert "start with the findings" in _prompt(respond.ctx)
+
+
+async def test_a_named_read_is_never_touched(service, monkeypatch, github):
+    body = f"Looking at {_REPO}, a few things stand out.\n\nFinding one."
+
+    async def respond(self, ctx):
+        respond.ctx = ctx
+        return cf.FloorResponse(message=body)
+
+    monkeypatch.setattr(cf.ConversationalFloor, "respond", respond)
+    _default_repo(monkeypatch, service, None)
+    result = await _turn(
+        service,
+        monkeypatch,
+        f"ar-{uuid4().hex[:8]}",
+        NAMED_TURN_1,
+        IntentCategory.ANALYSIS,
+        "analyze_repository",
+    )
+    assert result.message == body
+    assert "start with the findings" not in _prompt(respond.ctx)
+
+
+# ── #2270 gap B edge (Arch 11-08 07:18): an unbound answer re-asks once ───────
+
+
+@pytest.mark.parametrize("words", ["the survey one", "Harbor Srvey"])
+async def test_an_unbound_answer_that_routes_nowhere_reasks_and_reads_nothing(
+    service, monkeypatch, github, captured_floor, words
+):
+    from services.intent_service.repo_clarification import listed_repo_question
+
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    await _turn(service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository")
+    reply = await _turn(
+        service, monkeypatch, sid, words, IntentCategory.CONVERSATION, "clarification_needed"
+    )
+    assert reply.message == (
+        f'I couldn\'t find "{words}" among your repositories or projects. '
+        + listed_repo_question([_REPO, _OTHER])
+    )
+    assert github["reads"] == []
+    offer = service.workflow_offer_service._pending_offers.get(sid)
+    assert offer["pending_action"]["listed_repos"] == [_REPO, _OTHER]
+    # A number now still binds the re-armed list.
+    bound = await _turn(service, monkeypatch, sid, "1", IntentCategory.CONVERSATION, "small_talk")
+    assert github["reads"][0] == ("issues", "dinp-machine", "piper-test-activity")
+    assert bound.message == "(stubbed floor answer)"
+
+
+async def test_the_second_miss_drops_the_ask(service, monkeypatch, github, captured_floor):
+    from services.intent_service.repo_clarification import ANALYSIS_ASK_DROP_LINE
+
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    await _turn(service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository")
+    await _turn(
+        service,
+        monkeypatch,
+        sid,
+        "the survey one",
+        IntentCategory.CONVERSATION,
+        "clarification_needed",
+    )
+    second = await _turn(
+        service,
+        monkeypatch,
+        sid,
+        "Harbor Srvey",
+        IntentCategory.CONVERSATION,
+        "clarification_needed",
+    )
+    assert second.message == ANALYSIS_ASK_DROP_LINE
+    assert service.workflow_offer_service._pending_offers.get(sid) is None
+    assert github["reads"] == []
+
+
+async def test_a_command_mid_ask_still_routes(service, monkeypatch, github, captured_floor):
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    await _turn(service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository")
+    reply = await _turn(
+        service,
+        monkeypatch,
+        sid,
+        "add a todo to call the vet",
+        IntentCategory.EXECUTION,
+        "create_todo",
+    )
+    assert "among your repositories or projects" not in (reply.message or "")
