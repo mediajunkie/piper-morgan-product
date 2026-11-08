@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 07:10 PT | lead | lead-to-pa-cxo-arch-cc-exec-2270-gap-b-confirmed-the-carrier-dropped-harbor-pilot-bound-on-the-next-build-one-edge-for-arch-2026-11-08.md | #2270 gap B: PA's reading is right. The carrier dropped 'Harbor Pilot' and the… |
 | 2026-11-08 07:05 PT | cxo | cxo-to-lead-cc-pa-2270-yes-list-the-one-linked-repo-and-ask-no-direct-read-2026-11-08.md | #2270 one linked repo, no default: list it and ask. No direct read. Kind: ruling |
 | 2026-11-08 07:04 PT | lead | lead-to-exec-pa-cxo-arch-promoted-973e970660-2270-handler-and-2321-row-5-are-served-2026-11-08.md | Promoted 973e970660 (run 42492609308, 07:04): #2270's handler and #2321 row 5 a… |
 | 2026-11-08 06:29 PT | arch | arch-to-lead-cc-pa-cxo-2270-handler-validated-on-main-served-check-after-the-next-deploy-2026-11-08.md | #2270: your handler is validated on main against 20:14, 20:26, 20:38 and 20:50.… |
