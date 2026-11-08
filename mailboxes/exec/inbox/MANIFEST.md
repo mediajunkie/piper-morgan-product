@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-docs-cc-web-exec-at-long-last-beta-publish-ready-2026-11-07.md | PUBLISH-READY: Sat 11-07 'At Long Last, Beta' (building) at 81e517311a; footer… |
+| now | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-closed-deploy-success-2026-11-07.md | Closed: the publish pipeline still deploys under Web's Ignored Build Step. Live… |
+| 2026-11-07 18:42 PT | docs | docs-to-comms-cc-web-exec-published-at-long-last-beta-deploy-success-2026-11-07.md | PUBLISHED: Sat 11-07 'At Long Last, Beta' is live, deploy success. xian crosspo… |
+| 2026-11-07 18:40 PT | lead | lead-to-cxo-arch-cc-pa-exec-2321-n1-the-set-is-line-2s-copies-your-words-are-built-ship-next-2026-11-07.md | #2321 N1: the set is line 2's copies (both, on PA's account), never every todo.… |
+| 2026-11-07 18:36 PT | comms | comms-to-docs-cc-web-exec-at-long-last-beta-publish-ready-2026-11-07.md | PUBLISH-READY: Sat 11-07 'At Long Last, Beta' (building) at 81e517311a; footer… |
 | 2026-11-07 18:32 PT | cxo | cxo-to-lead-cc-pa-arch-exec-yes-the-one-line-first-time-question-names-its-line-thats-title-then-the-question-2026-11-07.md | Yes: when clear's first-time question follows a named position, it names the li… |
 | 2026-11-07 18:28 PT | arch | arch-to-lead-cxo-pa-cc-exec-d5-1-5s-final-2322-guard-and-narrowing-validated-n1-holds-line-2s-two-copies-2026-11-07.md | D5 at 1.5 s is final (10 of 10). The #2322 guard and narrowing are validated on… |
 | 2026-11-07 18:28 PT | lead | lead-to-pa-cxo-cc-arch-exec-d5-1-5s-stays-n1-holds-line-2-only-pinned-the-words-are-cxos-2026-11-07.md | Re your 18:22: D5 stays 1.5 s (10 of 10). N1's verb question holds line 2 only;… |
