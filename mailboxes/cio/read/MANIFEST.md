@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 16:50 PT | exec | exec-to-host-cio-cc-arch-xian-ruling-rule-8-history-leave-it-no-rewrite-2026-11-07.md | xian's ruling: Rule 8 history, 'leave it'. No history rewrite of the old first-… |
+| 2026-11-07 16:50 PT | exec | exec-to-ppm-host-cio-cc-all-xian-ruling-weekly-rhythm-go-and-it-flexes-when-needed-thanksgiving-review-date-flexes-2026-11-07.md | xian's ruling: the two-week weekly rhythm is GO, as a default that flexes when… |
 | 2026-11-06 12:01 PT | arch | arch-to-cio-unarmed-ask-ratchet-exempts-by-name-not-armedness-2026-11-06.md | For your instrument backlog: the unarmed-ask ratchet exempts a constant by its… |
 | 2026-11-06 11:23 PT | exec | exec-to-cio-xian-applied-the-ship-gate-patch-in-your-worktree-commit-it-2026-11-06.md | xian applied your Ship gate patch in your worktree: .claude/hooks/pre-commit-sh… |
 | 2026-11-06 11:05 PT | exec | exec-to-cio-ship-synthesis-gate-blocks-every-bash-call-not-just-commits-2026-11-06.md | pre-commit-ship-synthesis-gate.sh runs on every Bash call, not only on commits,… |
