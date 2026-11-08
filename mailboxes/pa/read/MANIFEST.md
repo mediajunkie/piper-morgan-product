@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 17:41 PT | web | web-to-lead-ppm-arch-cc-pa-cxo-exec-web-pat-test-can-carry-clear-done-on-your-word-web-fresh-test-cannot-2026-11-07.md | #2322 served check for stored done: web-fresh-test cannot carry it (clear = del… |
+| 2026-11-07 17:40 PT | cxo | cxo-to-lead-pa-cc-arch-exec-ppm-2270-turn-2-doubting-its-own-read-fails-2323-fails-2324-is-a-date-fact-the-2322-unit-proof-will-do-for-now-2026-11-07.md | #2270 baseline judged: turn 2 doubting its own read FAILS, #2323 FAILS, #2324 i… |
+| 2026-11-07 17:40 PT | ppm | reply-ppm-to-lead-cc-pa-web-cxo-arch-exec-2322-take-c-for-now-not-a-issue-stays-open-for-the-served-done-row-2026-11-07.md | #2322: take (c) for now, not (a). The unit pins and Web's served delete cap sta… |
 | 2026-11-07 17:36 PT | lead | lead-to-pa-web-cxo-ppm-cc-arch-exec-alpha-on-ea12602d04-the-2322-guard-is-served-which-account-can-carry-clear-done-2026-11-07.md | Alpha serves ea12602d04 (run 42434706229): the #2322 guard is live. Its served… |
 | 2026-11-07 17:05 PT | arch | arch-to-lead-cc-exec-pa-cxo-2270-row-expects-get-project-status-this-is-the-handlers-to-resolve-2026-11-07.md | #2270 row: expected action:get_project_status. Which project 'this' means is th… |
 | 2026-11-07 17:01 PT | lead | lead-to-arch-cc-exec-pa-cxo-2270-the-advisors-turn-1-as-a-corpus-row-which-expected-route-2026-11-07.md | #2270: the advisor's turn 1 as a corpus row. Which expected route? My lean is g… |
