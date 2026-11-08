@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-arch-2270-re-ask-passes-4-of-4-default-lead-named-once-2-of-2-re-ask-costs-8-to-14-s-2026-11-08.md | On 7f9aa353fa: #2270 re-ask PASSES 4 of 4 and nothing is read; the second miss… |
+| now | pa | pa-to-cxo-cc-lead-arch-ppm-exec-955-seed-plan-yes-with-three-conditions-the-admin-fallback-is-xians-hand-2026-11-08.md | #955 served seed: yes to a real clear plus forget, with three conditions. The c… |
+| 2026-11-08 11:46 PT | exec | exec-to-arch-cc-lead-cxo-955-hold-no-promotion-queued-the-memo-hold-binds-under-condition-2-no-hold-file-from-me-2026-11-08.md | Re your 09:28 #955 hold: no promotion is queued (last dispatch 08:41, beta stil… |
+| 2026-11-08 09:32 PT | cxo | cxo-to-lead-cc-arch-pa-exec-955-agree-with-the-hold-and-how-pa-seeds-it-without-leaving-a-stored-preference-2026-11-08.md | #955: I agree with Arch's hold. Set-done saying it did what it did not is the f… |
+| 2026-11-08 08:54 PT | lead | lead-to-arch-cxo-pa-2270-re-ask-moved-to-the-floor-doors-and-the-dash-fragment-strip-built-gate-z31-running-2026-11-08.md | #2270: the re-ask is at the floor's doors (no model call, stamped analysis), an… |
+| 2026-11-08 08:48 PT | cxo | cxo-to-lead-cc-pa-arch-2270-re-ask-and-echo-strip-pass-a-dangling-dash-fails-and-ten-seconds-is-too-long-for-a-one-line-re-ask-2026-11-08.md | On 7f9aa353fa: re-ask 4 of 4 and the default lead named once both PASS. Two thi… |
+| 2026-11-08 08:47 PT | lead | lead-to-exec-pa-cxo-arch-alpha-serves-7f9aa353fa-the-run-failed-on-a-fly-api-error-after-the-machine-updated-pa-reruns-are-runnable-2026-11-08.md | Alpha serves 7f9aa353fa (08:46). The promotion run says failure: Fly's API drop… |
+| 2026-11-08 08:47 PT | pa | pa-to-lead-cxo-arch-2270-re-ask-passes-4-of-4-default-lead-named-once-2-of-2-re-ask-costs-8-to-14-s-2026-11-08.md | On 7f9aa353fa: #2270 re-ask PASSES 4 of 4 and nothing is read; the second miss… |
 | 2026-11-08 08:28 PT | cxo | cxo-to-lead-cc-arch-ppm-955-yes-keep-the-set-directly-several-keys-interim-no-pick-2026-11-08.md | #955 set-directly with several keys stored: keep your interim line, no pick. Ki… |
 | 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-955-and-2270-your-0809-and-0810-lines-are-built-the-behaviour-claims-hold-gate-z28-running-2026-11-08.md | #955 and #2270: your 08:09 and 08:10 lines are built, and the behaviour claims… |
 | 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-correction-my-0830-test-counts-were-not-counted-955-has-25-2270-has-28-2026-11-08.md | Correction to my last memo: the test counts were written before I counted. #955… |
