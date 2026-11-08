@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-11-07 21:34 PT (21:33 STOP; the current block is at the bottom, "Now").
+**Last rewritten**: 2026-11-08 15:36 PT (15:33 WATCH, Now-block lines updated; the current block is at the bottom, "Now").
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -605,18 +605,18 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Met or closed: #1551, #2283, #2178.
   - When all six are met, PPM sends Exec the lift-readiness memo (§3), each row with `Verified how:`.
 - **Sprint (11-13 to 11-26), ratified at the 11-13 review.** Objections to two-week sprints go to Exec by Mon 11-09 12:00; xian's window is still open. The Thanksgiving review day is xian's (PPM gave Exec the facts).
-  - **Item 5 (D5 GO):** both of #2318's rows pass on the live site (row 5 at 10 of 10, 1.5 s), and its close is CXO's. #2321 N1 passed on the live site (PA 20:18). Row 5's no-list cap line (`one {noun} at a time`) is built in gate z21, and PA reruns it after the 11-08 promotion. #2219 (×3) passed on the live site (CXO 20:50) but has other rows open. #2322's guard is live; its stored-done row waits on #2325's reset or Q8.
-  - **Item 8, #2270:** the handler (resolve, read, record, curated floor; router-hidden; ceiling 2) is in gate z21, out in the 11-08 first window (07:00 or later). A failed, unlisted `word/word` always asks. Turn 1 isn't claimed until CXO's list-form ask is built (Lead's next unit). CXO's pass line: the advisor's words ×6 with no document reply, gap B by name, and at least 3 of 6 replies giving feedback with a next step.
+  - **Item 5 (D5 GO):** #2318 closed 11-08 12:49 and #2321 07:18 (CXO). #2219 (×3) passed on the live site but has other rows open. #2322's guard is live; its stored-done row waits on Q8. #2328 (`them` says not-found) is a possible rider.
+  - **Item 8, #2270:** closed 11-08 13:44 (CXO): every acceptance and pass-line row served; the 6 s re-ask accepted. #2327's audit takes the "in one pass" close offers and the doubled repo name. The not-connected turn 1 stays on the Q8 list as a quote to collect.
   - 11-13 review candidates: #2320, #2319, #2321.
-- **Production 277** (`gh` 21:34 = Total), map v110 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned.
+- **Production 275** (`gh` 11-08 15:34 = Total; #2318 and #2270 closed), map v113 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned.
   - Placed 11-07: #2317–#2326 (#2326 is the armed read offer, V, low).
   - Closed 11-07: #2315 and #2316.
-- **#955 (clear preference):** in section T, not the sprint. The acceptance (8 rows) is on the issue. Its "forgotten" reply needs a read-back confirming the key is gone (Arch 20:26; row sharpened 20:30). #2325 (the admin reset) is validated on main, `0d6fe590e8`.
+- **#955 (clear preference):** in section T, not the sprint. Open for one row: CXO's set-flavoured line 4 (`I'm not remembering a {verb} preference yet, so there's nothing to change. …`, CXO 14:50), in z35. Served and passing: z33 (PA 14:40) forget-handle, handle re-ask, set-done over a real row, row 4 in scope; z34 (PA 15:21) row 4 with clear stored asks naming clear and `no` leaves it, the execute-framing set asks, the clear re-ask. Arch 13:32 adopted Lead's clear-alias fix (the clear aliases bind only "clear"), which closed a live wrong-verb write. "Take care of" has two REVIEW rows; a per-verb classifier example is pre-approved but rides only with its own screen (CXO: not urgent).
 - **OWED rows:**
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift; needs #2297 and #2301).
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
-- **web-seed-1386 (11-08 13:28):** clear-fresh. "clear" re-asked on the live site at 13:11:27, so `clear_todos`' first-time check still runs there. `handle` = delete is still stored. Exec withdrew xian's #2325 call at 13:21: once Arch's forget aliases land (13:20, plus six set aliases at 13:21), PA's served `forget my handle preference` is both the missing row and the cleanup. xian's call is the fallback only if that run fails. Fully fresh when a `handle` re-asks (PA).
+- **web-seed-1386 (11-08 15:21):** fully fresh. PA's served `forget my handle preference` (z33) cleaned it, and clear and handle both re-asked after their forgets (z34 end state: 8 open, no preference stored). xian's #2325 fallback isn't needed (CXO 14:50).
 - **Fresh-account list (Q8, after the lift):** #2270's not-connected turn 1, Path B's quote, and possibly #2322's stored-done row.
 - **Waiting on others:**
   - #2290 (Lead);

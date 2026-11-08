@@ -2065,7 +2065,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2267	OPEN	Production		Sign-in by email fails once the account has set a username, and sends the person to password reset (beta session 11-04)	bug		
 2268	OPEN	Production		Onboarding wizard records a repo but doesn't connect GitHub, so Piper says the project has a repo it can't reach (beta session 11-04)	UX,bug		
 2269	OPEN	Production		Chat tells a person to type "link repo", then doesn't recognize it; and offers to connect GitHub from chat, which it can't do (beta session 11-04)	bug		
-2270	OPEN	Production		A repo question is answered as a document request ("I don't see that document among your uploads") (beta session 11-04)	bug		
+2270	CLOSED	Production		A repo question is answered as a document request ("I don't see that document among your uploads") (beta session 11-04)	bug		COMPLETED
 2271	CLOSED	Production		Adding a repo to a project loops on "yes": Piper's own suggested wording gets "I still don't know what you meant"; the project page edit control doesn't work (11-04)	bug		COMPLETED
 2272	CLOSED	Production		[UX] Project and repo are treated as one thing: chat merges them, and the project page can't attach a repo (beta session 11-04)	UX		COMPLETED
 2273	CLOSED	Production		[UX] Settings, Integrations is hard to find and Settings is overloaded; reorganize (beta session 11-04)	UX		COMPLETED
@@ -2108,7 +2108,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2314	OPEN	Production		Add project: 'add project zz link test' is refused as a duplicate of 'zz share-hide project'			
 2315	CLOSED	Production		'complete the X todo' skips the named-line pick: asks to complete both copies, or says 'couldn't find' and re-lists by storage numbers			COMPLETED
 2316	CLOSED	Production		Todo pick: an answer naming a todo that contains a number binds the number, not the name			COMPLETED
-2318	OPEN	Production		D5 served gaps: 'complete the second one' after a list gets a whole-list pick (not bound); 'delete the first two' follow-up question is unarmed			
+2318	CLOSED	Production		D5 served gaps: 'complete the second one' after a list gets a whole-list pick (not bound); 'delete the first two' follow-up question is unarmed			COMPLETED
 2317	OPEN	Production		Route log stamps complete-pick answers as clarify_delete_todo_pick			
 2320	OPEN	Production		Alpha LLM calls: about 4 in 10 take ~2.2 s longer inside LLMClient.complete(), not in the model			
 2321	CLOSED	Production		No-list ordinal asks ('complete/delete the second one') skip the armed reply, one invents a guess; the no-list list numbers a repeated title differently	UX		COMPLETED
