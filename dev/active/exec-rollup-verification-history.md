@@ -468,3 +468,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v885 16:50 Sat 11-07: removed rhythm, Rule 8 and #2270 items (xian answered; relayed 16:50).
 - v886 18:02 Sat 11-07: beta ea12602d04 (/health 18:02); #2322 heads-up replaced by 'guarded' (Lead's promotion memo; done branch unit-only per PPM (c)).
 - v887 18:47 Sat 11-07: Sat post published (Docs 18:42; page 200 18:47) → crosspost item; D5 final 1.5 s 10/10 (Arch 18:28); beta 4d5fbfae7d.
+- v888 22:01 Sat 11-07: crosspost item replaced by #2325 a/b ask (Lead 20:18); post distributed + re-filed insight (Docs 18:54); beta f9b4c737f7 (/health 22:01); main 12/12 (main-ci-status 22:02).
