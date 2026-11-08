@@ -311,9 +311,22 @@ async def _kind_choice_turn(
     kind = said_noun(text)
     if kind:
         handlers = intent_service.todo_handlers
-        todos = await handlers.todo_service.list_todos(
-            user_id=_coerce_todo_principal(user_id), include_completed=False
-        )
+        try:
+            todos = await handlers.todo_service.list_todos(
+                user_id=_coerce_todo_principal(user_id), include_completed=False
+            )
+        except (
+            Exception
+        ) as e:  # silent-ok: logged; the #2151 rule — a failed read says so, never "none"
+            logger.warning("delete_kind_choice_list_failed", error=str(e), session_id=session_id)
+            scope = "reminders" if kind == "reminder" else "todos"
+            return {
+                "message": (
+                    f"I had trouble loading your {scope} just now, so I haven't touched "
+                    "anything. You can try again in a moment."
+                ),
+                "intent_data": data,
+            }
         reply, armed = handlers._no_list_ordinal_pick(
             list(todos or []),
             kind,
@@ -690,6 +703,13 @@ def shown_rows_question(verb: str) -> str:
     if verb == VERB_CLEAR:
         return CLEAR_SHOWN_ROWS_QUESTION
     return SHOWN_ROWS_QUESTION_TAIL.format(verb=verb)
+
+
+def no_reminders_statement(verb: str) -> str:
+    """CXO 11-07 16:41: a reminders list asked for when there are none. The reminders
+    list's own empty line, then what was (not) done; asks nothing."""
+    tail = "Nothing was deleted." if verb == VERB_DELETE else "Nothing was changed."
+    return f"I checked your saved reminders and there are none right now. {tail}"
 
 
 def by_name_statement(verb: str, noun: str) -> str:

@@ -233,3 +233,29 @@ async def test_delete_items_with_no_list_gets_the_honest_ask(todo_boundary):
     )
     assert "didn't recognize" not in result.message
     assert result.message == f"{DELETE_ITEM_NO_LIST_LEAD}\n\n{KIND_CHOICE_QUESTION}"
+
+
+@pytest.mark.asyncio
+async def test_kind_choice_reminders_with_none_says_so_and_shows_no_todos(todo_boundary):
+    """Arch 16:33 / CXO 16:41 (PA's FAIL on ac8645e679): with no reminders, the
+    reminders list's own empty line, nothing armed; todos are never shown as reminders."""
+    todo_boundary["todos"] = [_todo("call the dentist")]  # a todo, no reminders
+    out = await _ask_then(_service(), f"e2e-2321-none-{uuid4().hex[:8]}", "reminders")
+    assert out.message == (
+        "I checked your saved reminders and there are none right now. Nothing was deleted."
+    )
+    assert "call the dentist" not in out.message
+    assert not out.requires_clarification
+
+
+@pytest.mark.asyncio
+async def test_a_reminder_named_ask_with_none_says_so(todo_boundary):
+    todo_boundary["todos"] = [_todo("call the dentist")]
+    out = await _service().process_intent(
+        message="delete the second reminder",
+        session_id=f"e2e-2321-none2-{uuid4().hex[:8]}",
+        user_id=_USER,
+    )
+    assert out.message == (
+        "I checked your saved reminders and there are none right now. Nothing was deleted."
+    )

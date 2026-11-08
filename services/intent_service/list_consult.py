@@ -33,12 +33,12 @@ D5_FAMILY = {
 }
 _WORD_POSITIONS = frozenset({"first", "last"})
 
-# Arch 11-07 09:24: D5's own ceiling, not the todo selector's (set 11-06 for a
-# selector, not a router call). Shipped at 2.5 s (Arch 13:42, within xian's go of "up
-# to 2.5 s"; Exec's interim): fast-mode second calls bind (~1.1-1.2 s on alpha), and a
-# #2320 slow-mode call falls back to the honest whole-list pick (CXO accepted). Arch's
-# 11:10 sizing rule is suspended while #2320 is open; measure again after its fix.
-D5_CONSULT_CEILING_S = 2.5
+# Arch 11-07 09:24: D5's own ceiling, not the todo selector's. Set by Arch's 11:10
+# rule (the highest served second call, rounded up to the next half second, within
+# xian's go of "up to 2.5 s"): seven served fast-mode calls, 1,085-1,199 ms, give
+# 1.5 s (Arch 16:45). #2320's STRUCTURED profile removed the ~2.2 s slow mode. The
+# served check is CXO's bar: at most 1 fallback in the first 10 row 5 runs, else 2.0 s.
+D5_CONSULT_CEILING_S = 1.5
 
 
 def _line_number(token: str, lines: int) -> bool:

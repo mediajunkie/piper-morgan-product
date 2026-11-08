@@ -1774,9 +1774,10 @@ class TodoIntentHandlers:
         from services.consciousness.todo_consciousness import group_todo_lines
         from services.intent_service.delete_todo_pick import _candidates
 
-        reminders = _candidates(name_pool, "reminder") if noun == "reminder" else []
-        if reminders:
-            return [[t] for t in reminders]
+        if noun == "reminder":
+            # Arch 11-07 16:33: never one kind's rows under another kind's noun; with
+            # no reminders there are no lines (the caller says so).
+            return [[t] for t in _candidates(name_pool, "reminder")]
         return group_todo_lines(list(name_pool))
 
     def _no_list_ordinal_pick(
@@ -1798,11 +1799,17 @@ class TodoIntentHandlers:
         from services.intent_service.delete_todo_pick import (
             arm_shown_lines_pick,
             by_name_statement,
+            no_reminders_statement,
             shown_rows_question,
         )
         from services.intent_service.reminder_copy import NO_LIST_MAX_SHOWN
 
         shown = self._no_list_lines(name_pool, noun)[:NO_LIST_MAX_SHOWN]
+        if not shown and noun == "reminder":
+            # CXO 11-07 16:41: the reminders list's own empty line; arms nothing. The
+            # read was real (name_pool is a completed read; a failed one never gets
+            # here, it says the trouble line upstream).
+            return no_reminders_statement(verb), False
         prefix = f"{lead} " if lead else ""
         reply = self._no_list_ordinal_reply(
             name_pool, noun, prefix + shown_rows_question(verb), session_id, principal
