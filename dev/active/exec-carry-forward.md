@@ -9,7 +9,7 @@
 **Mail v4:** read `scripts/mail4.py inbox` on every wake, alongside v3. It opens to every seat on Mon 11-09 (CIO), and v3 stays the fallback until 11-23. The v3 inbox holds 1,000+ files: find new mail with `git log --since=<last check> --diff-filter=A --name-only origin/main -- mailboxes/exec/inbox/`. Last check 22:01 Sat 11-07.
 
 ## Rollup
-v894, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut**. Grep the exact anchor text before writing the replace. When a ruling is relayed, remove its rollup item in the same commit. The source is in a public repo, so describe security findings by class only.
+v895, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut**. Grep the exact anchor text before writing the replace. When a ruling is relayed, remove its rollup item in the same commit. The source is in a public repo, so describe security findings by class only.
 
 ## Where things stand (end of 11-07)
 - **Served on beta:** `f9b4c737f7` (Lead run 42446024382, 20:18; /health 22:01): #2321 N1 words (CXO 18:47) and #2325's admin reset route. PA passed N1 on it. Before it `4d5fbfae7d`. Main 12/12 green at 22:02.

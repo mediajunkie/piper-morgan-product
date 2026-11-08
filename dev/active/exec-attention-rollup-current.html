@@ -37,14 +37,14 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Saturday 7 November</h1>
-<p class="meta">Exec · v894, rebuilt 13:20 PST Sun 11-08 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v895, rebuilt 13:21 PST Sun 11-08 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
 <div class="card hot">
 <p class="ct"><b>Saturday, in order.</b> Nothing is urgent. Main is 12 of 12 green, and beta serves <code>2824ed3437</code> (<code>/health</code> read 13:08 Sun): #955 (forget or change what &ldquo;clear&rdquo; means, after Arch&rsquo;s morning hold was fixed and lifted) and #2270&rsquo;s wording fixes. PA is checking both.. <b>D5 is final at 1.5 s:</b> &ldquo;complete the second one&rdquo; worked 10 of 10 in PA&rsquo;s chats, with no fallback (Arch 18:28). <b>#2322 (P1) is guarded on beta:</b> with &ldquo;clear&rdquo; set to &ldquo;done&rdquo;, &ldquo;clear todo 2&rdquo; now asks before marking more than one todo done. That branch is proven by unit tests only, since no test account has clear = done; it gets a served check on the first fresh account after the invite hold lifts. The delete branch is served.</p>
 <ol>
-<li><b>One reset call, not urgent (PA 13:12, PPM 13:16):</b> PA&rsquo;s #955 check left the test account web-seed-1386 remembering that &ldquo;handle&rdquo; means delete, because &ldquo;forget my handle preference&rdquo; went to the wrong place. Only your admin account can clear it. Signed in on beta, open the browser console and paste: <code>fetch('/api/v1/admin/test-preferences/forget',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'web-seed-1386',key:'reminder_clear_verb:handle'})}).then(r=>r.json()).then(console.log)</code>. Tell me the <code>outcome</code> it prints. If it says 401 or 403, Lead sends a curl instead. This also answers last night&rsquo;s a-or-b: (a), your call. &ldquo;At Long Last, Beta&rdquo; is fully distributed (your Medium and LinkedIn URLs), and Docs re-filed it as an insight. <b>Today&rsquo;s post, &ldquo;When Accuracy Scores Worse&rdquo;, waits on your prose</b> (you said last night or this morning). It isn&rsquo;t live yet (404 at 06:01), and Comms reviews it once it lands.</li>
+<li>&ldquo;At Long Last, Beta&rdquo; is fully distributed (your Medium and LinkedIn URLs), and Docs re-filed it as an insight. <b>Today&rsquo;s post, &ldquo;When Accuracy Scores Worse&rdquo;, waits on your prose</b> (you said last night or this morning). It isn&rsquo;t live yet (404 at 06:01), and Comms reviews it once it lands.</li>
 <li><b>Done (08:03): ADR-083 D5 &ldquo;go&rdquo; and PDR-008 &ldquo;yes&rdquo;.</b> Relayed to Arch, Lead, PPM and HOST and recorded in decisions.log at 08:04. Lead lands D5 through the normal gate.</li>
 <li><b>If you have hands-on time after writing, these clear the invite hold.</b> All three open conditions wait on you:
 <ul>
