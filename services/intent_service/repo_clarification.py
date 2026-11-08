@@ -889,33 +889,33 @@ def clear_unbound_analysis_answer(intent_service: Any, session_id: Optional[str]
         slot.pop(session_id, None)
 
 
-def analysis_reask_after_routing(
-    intent_service: Any,
-    session_id: Optional[str],
-    routed_action: Optional[str],
+#: The re-ask and the drop are the analysis op's turns (Arch 08:48: one category).
+_ANALYSIS_INTENT_DATA = {"category": "analysis", "action": "analyze_repository"}
+
+
+def analysis_reask_at_floor(
+    intent_service: Any, session_id: Optional[str]
 ) -> Optional[Dict[str, Any]]:
-    """Arch 07:18: the analysis ask's answer didn't bind (and wasn't a decline,
-    bare exit or state question: those never note), and routing named no rail
-    op. Then re-ask once, re-arming the same question, opening with the
-    couldn't-find line on the person's words. A second miss drops the ask.
-    A rail op means a new request: None, and the routed result stands."""
+    """Arch 11-08 07:18, moved to the floor's entry at 08:48: the analysis ask's answer
+    didn't bind (and wasn't a decline, bare exit or state question: those never note),
+    and the turn reached the floor. Re-ask once, re-arming the same question, opening
+    with the couldn't-find line on the person's words; a second miss drops the ask.
+    Only floor turns get here, so a rail handler's reply is never replaced, and no
+    model call is made and thrown away."""
     slot = getattr(intent_service, ANALYSIS_UNBOUND_ATTR, None)
     if not isinstance(slot, dict) or not session_id:
         return None
     noted = slot.pop(session_id, None)
     if not noted:
         return None
-    from services.intent_service.workflow_dispatcher import get_registered_workflows
-
-    if routed_action and routed_action in get_registered_workflows():
-        return None
     offer = noted["offer"]
     payload = offer.get("pending_action") or {}
+    words = noted["words"].strip()
     if payload.get("reasked"):
         logger.info("analysis_repo_ask_dropped_second_miss", session_id=session_id)
         return {
-            "message": ANALYSIS_ASK_DROP_LINE.format(words=noted["words"].strip()),
-            "intent_data": {"category": "analysis", "action": "analyze_repository"},
+            "message": ANALYSIS_ASK_DROP_LINE.format(words=words),
+            "intent_data": dict(_ANALYSIS_INTENT_DATA),
             "requires_clarification": False,
         }
     payload["reasked"] = True
@@ -926,9 +926,9 @@ def analysis_reask_after_routing(
         if prefix in question and not question.startswith(prefix):
             question = question[question.index(prefix) :]
             break
-    copy = ANALYSIS_REASK_LEAD.format(words=noted["words"].strip()) + " " + question
-    logger.info("analysis_repo_ask_reasked", session_id=session_id, routed_action=routed_action)
-    return _reask(
+    copy = ANALYSIS_REASK_LEAD.format(words=words) + " " + question
+    logger.info("analysis_repo_ask_reasked", session_id=session_id)
+    out = _reask(
         offer,
         payload,
         copy,
@@ -936,6 +936,8 @@ def analysis_reask_after_routing(
         user_id=noted.get("user_id"),
         intent_service=intent_service,
     )
+    out["intent_data"] = {**out["intent_data"], **_ANALYSIS_INTENT_DATA}
+    return out
 
 
 def _bare_answer(text: str) -> str:
@@ -1200,9 +1202,9 @@ async def handle_repo_question_turn(
                 "intent_data": _pending_intent_data(payload),
                 "requires_clarification": True,
             }
-        # #2270 gap B (Arch 11-08 07:18): the analysis ask's unbound answer is
-        # noted for this turn; if routing then lands on no rail op, the turn
-        # re-asks instead of composing (``analysis_reask_after_routing``).
+        # #2270 gap B (Arch 11-08 07:18; 08:48): the analysis ask's unbound answer
+        # is noted for this turn; if the turn then reaches the floor, the floor
+        # re-asks instead of composing (``analysis_reask_at_floor``).
         if payload.get("action") == "analyze_repository":
             note_unbound_analysis_answer(intent_service, session_id, pending_offer, text, user_id)
         return None  # not an answer → generic accept / off-intent flow

@@ -1026,6 +1026,26 @@ ANALYZE_REPOSITORY_NOT_FOUND_LEAD = 'I couldn\'t find "{pair}" among your reposi
 ANALYZE_REPOSITORY_ISSUE_CAP = 20
 
 
+def _drop_dash_repo_fragment(body: str, repository: str) -> str:
+    """#2270 (CXO 11-08 08:48, Arch 08:49): on EVERY analyze_repository read, drop the
+    composed body's first line when it starts with ``Looking at``, contains the exact
+    owner/repo code read (bare or wrapped in ``**``), and, trimmed, ends in a dash
+    (— – -). A fragment like ``Looking at **owner/repo** —`` reads as broken; nothing
+    replaces it. Exact matches on code-held strings only; anything else is unchanged."""
+    text = body.lstrip()
+    first, sep, rest = text.partition("\n")
+    line = first.strip()
+    if (
+        sep
+        and line.startswith("Looking at")
+        and (repository in line or f"**{repository}**" in line)
+        and line[-1:] in ("—", "–", "-")
+        and rest.strip()
+    ):
+        return rest.lstrip()
+    return body
+
+
 def _drop_repeated_repo_opening(body: str, repository: str) -> str:
     """#2270 (CXO 11-08, Arch's mechanism): under the default lead, drop the composed
     body's first sentence only when it starts with ``Looking at`` AND contains the exact
@@ -1930,24 +1950,6 @@ class IntentService:
                 user_id=effective_user_id,
                 ctx=ctx,
             )
-            # #2270 gap B (Arch 11-08 07:18): an unbound answer to the analysis repo
-            # ask that routed to no rail op re-asks (once) instead of composing.
-            from services.intent_service.repo_clarification import (
-                analysis_reask_after_routing,
-            )
-
-            _reask = analysis_reask_after_routing(
-                self,
-                effective_session_id,
-                (result.intent_data or {}).get("action") if result is not None else None,
-            )
-            if _reask is not None:
-                result = IntentProcessingResult(
-                    success=True,
-                    message=_reask["message"],
-                    intent_data=_reask["intent_data"],
-                    requires_clarification=_reask.get("requires_clarification", False),
-                )
         finally:
             # #2209: the milestone pick's no-match marker never outlives the
             # turn, whichever way the turn ended.
@@ -1957,6 +1959,7 @@ class IntentService:
             )
 
             clear_no_match_marker(self, effective_session_id)
+            # #2270: a note that never reached the floor (a rail op answered) is dropped.
             clear_unbound_analysis_answer(self, effective_session_id)
 
         # Issue #563: Save conversation turn after processing (best-effort)
@@ -15556,6 +15559,8 @@ class IntentService:
         result = await self._handle_unknown_intent(
             intent, None, session_id or "", domain_context=domain_context
         )
+        if result is not None and result.message:
+            result.message = _drop_dash_repo_fragment(result.message, str(repository))
         if result is not None and result.message and (not named_in_turn or bound_project):
             lead = (
                 ANALYZE_REPOSITORY_PROJECT_LEAD.format(repository=repository, project=bound_project)
@@ -21322,6 +21327,27 @@ Add any additional information here.
             requires_clarification=reply["requires_clarification"],
         )
 
+    def _analysis_reask_if_noted(
+        self, intent: Intent, session_id: Optional[str]
+    ) -> Optional[IntentProcessingResult]:
+        """#2270 (Arch 11-08 08:48): at a floor door, before any model call, an unbound
+        answer to the analysis repo ask re-asks (or drops on the second miss). A rail op
+        whose handler is the floor (the read_floor groups) is a new request (07:18)."""
+        from services.intent_service.repo_clarification import analysis_reask_at_floor
+        from services.intent_service.workflow_dispatcher import get_registered_workflows
+
+        if (intent.action or "") in get_registered_workflows():
+            return None
+        _reask = analysis_reask_at_floor(self, session_id)
+        if _reask is None:
+            return None
+        return IntentProcessingResult(
+            success=True,
+            message=_reask["message"],
+            intent_data=_reask["intent_data"],
+            requires_clarification=_reask.get("requires_clarification", False),
+        )
+
     async def _handle_floor_with_context(
         self,
         intent: Intent,
@@ -21337,6 +21363,9 @@ Add any additional information here.
         Uses ContextAssembler to gather structured data, then creates
         FloorContext and calls ConversationalFloor.respond().
         """
+        _reask = self._analysis_reask_if_noted(intent, session_id)
+        if _reask is not None:
+            return _reask
         # #2209: an armed milestone pick's no-match answers instead of the
         # floor, before any context assembly or model call. Un-armed: None.
         # GUIDANCE is a chosen category and the floor only renders it (Arch
@@ -21719,6 +21748,14 @@ Add any additional information here.
         _mp_no_match = self._milestone_pick_no_match_result(session_id)
         if _mp_no_match is not None:
             return _mp_no_match
+        # #2270 (Arch 11-08 08:48): an unbound answer to the analysis repo ask that
+        # reached the floor re-asks (or drops on the second miss) here, before any
+        # model call. A rail handler composing over its own read (domain_context, e.g.
+        # analyze_repository's bound read) is a new request and is never replaced.
+        if domain_context is None:
+            _reask = self._analysis_reask_if_noted(intent, session_id)
+            if _reask is not None:
+                return _reask
         # #1394: recover the principal when a caller dropped it. The registry
         # key is user-scoped (#817), and the outer seam records every turn
         # under the AUTHENTICATED key — a None user_id here made
