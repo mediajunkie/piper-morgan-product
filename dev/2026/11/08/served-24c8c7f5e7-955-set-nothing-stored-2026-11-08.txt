@@ -1,0 +1,13 @@
+# #955 on 24c8c7f5e7 (carries z35 3125937733: CXO's set-flavoured line 4), web-seed-1386, PA. Nothing stored; set and forget with nothing stored, then a handle per-verb set. No writes expected.
+
+--- [15:55:37, 24c8c7f5e7, http 200, 8.28 s] route query/set_clear_preference_delete
+USER: make clear mean delete
+PIPER: I'm not remembering a clear preference yet, so there's nothing to change. Say "clear" on a todo and I'll ask which you want, then remember it.
+
+--- [15:55:45, 24c8c7f5e7, http 200, 7.26 s] route query/set_handle_preference_done
+USER: make handle mean mark it done
+PIPER: I'm not remembering a handle preference yet, so there's nothing to change. Say "handle" on a todo and I'll ask which you want, then remember it.
+
+--- [15:55:53, 24c8c7f5e7, http 200, 6.68 s] route query/forget_clear_preference
+USER: forget my clear preference
+PIPER: I wasn't remembering a clear preference, so there's nothing to forget. When you say clear, I ask which you want.
