@@ -187,3 +187,5 @@ history and the dated session logs, per the file's own "pointers not duplicated 
 - **Update 2026-11-07 08:04.** **Filed**: 2026-11-07. OWED-CLOSED[key: web-2282-step4]: xian's word came; Connect from beta landed connected on beta as dinp-machine (account web-fresh-test, left connected). #2286 note seen on screen (same account, before connect). Open: consent-page row (needs a revoke; xian said no revoke); #2267 (username account).
 
 - **Update 2026-11-07 18:03.** **Filed**: 2026-11-07. OWED[key: web-2322-served-done; to: ppm; by: trigger: #2325 test reset live or Q8 fresh account exists]: run #2322's served-done check on a test account (store done, `clear todo 2`, quote the guard's question whole, answer no and never mind, delete disposables, reset). Do NOT store done on web-pat-test or web-fresh-test without the reset (PPM 17:55 withdrawal).
+
+| 2026-11-08 | Web look: blog post body headings render as h1 (5-6 per post, site-wide); find whether drafts or renderer cause it, report to Lead/CXO before any change | Filed 2026-11-08 | open |
