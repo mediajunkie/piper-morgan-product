@@ -618,7 +618,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Production 269** (`gh`, 21:34), map v105 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned. Filed and placed today: #2294–#2316, except #2296 (Ongoing) and #2298 (a duplicate, closed).
 - **OWED rows** (markers in `dev/2026/11/06/2026-11-06-0509-ppm-code-log.md`):
   - ~~invite-hold-pdr~~ DONE 11-07 06:35: `PDR-008-invite-readiness.md` drafted and sent to Exec as a DECISION. xian approved P1–P3 at 08:03, so it's Accepted. When the six conditions are met, PPM sends Exec the lift-readiness memo (PDR-008 §3).
-  - **Fresh-account list (Q8, after the lift):** one account carries #2270's not-connected turn 1 and Path B's quote. #2322's stored-done row moved to web-pat-test (PPM go, 11-07 17:52). Web runs it once CXO's set-first words are on alpha, and #2322 closes on that run.
+  - **Open product question (Arch 17:52):** should a person be able to say "forget my clear preference"? It's PPM's and CXO's, and goes to CXO.
+  - **Fresh-account list (Q8, after the lift):** one account carries #2270's not-connected turn 1 and Path B's quote. #2322's stored-done row waits on whichever comes first: Arch's test-only reset (store done on a test account, then reset) or Q8. PPM's 17:52 go on web-pat-test was withdrawn at 17:53.
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the hold lifts). This needs item 12's build (#2297, #2301) first.
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).

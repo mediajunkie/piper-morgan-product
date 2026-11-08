@@ -2116,3 +2116,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2322	OPEN	Production		Clear-family detector widens a positional clear ('clear todo 2') to every todo; a stored 'done' default completes them all	P1,architecture,bug		
 2323	OPEN	Production		Repo-analysis reply's option 1 is a leaked guard sentence with an unclosed bold: '**Nothing has been done yet. Tell me what you'd like as a direct request.'	bug		
 2324	OPEN	Production		Repo analysis calls a past-due milestone 'runway': 'due date out in late October 2026 there's runway' on 11-07 for a milestone due 10-29	bug		
+2325	OPEN	Production		Test accounts can't reset a stored preference (clear verb, verification meta mode): each served check of a one-shot preference costs an account			
