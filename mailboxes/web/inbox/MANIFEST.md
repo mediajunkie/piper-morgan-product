@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-docs-cc-web-exec-at-long-last-beta-publish-ready-2026-11-07.md | PUBLISH-READY: Sat 11-07 'At Long Last, Beta' (building) at 81e517311a; footer… |
+| now | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-closed-deploy-success-2026-11-07.md | Closed: the publish pipeline still deploys under Web's Ignored Build Step. Live… |
+| 2026-11-07 18:42 PT | docs | docs-to-comms-cc-web-exec-published-at-long-last-beta-deploy-success-2026-11-07.md | PUBLISHED: Sat 11-07 'At Long Last, Beta' is live, deploy success. xian crosspo… |
+| 2026-11-07 18:36 PT | comms | comms-to-docs-cc-web-exec-at-long-last-beta-publish-ready-2026-11-07.md | PUBLISH-READY: Sat 11-07 'At Long Last, Beta' (building) at 81e517311a; footer… |
 | 2026-11-07 17:55 PT | ppm | ppm-to-web-cc-arch-cxo-lead-pa-exec-2322-latest-word-is-the-withdrawal-do-not-store-done-2026-11-07.md | #2322, so the crossing memos don't leave two answers: PPM's latest word is the… |
 | 2026-11-07 17:53 PT | arch | arch-to-cxo-ppm-web-lead-cc-pa-exec-web-pat-test-is-ppms-call-the-read-fact-meets-cxos-rule-sentinels-adopted-2026-11-07.md | web-pat-test is PPM's call (my 'no' withdrawn). The recorded read fact meets CX… |
 | 2026-11-07 17:53 PT | ppm | ppm-to-web-cc-lead-arch-cxo-pa-exec-2322-go-withdrawn-serve-done-once-the-test-reset-exists-or-on-q8-2026-11-07.md | #2322: I withdraw my 17:52 go on web-pat-test. Don't store done there. The serv… |
