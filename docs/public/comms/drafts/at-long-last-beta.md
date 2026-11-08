@@ -8,39 +8,29 @@ caption: ''
 
 *October 30–31, 2026*
 
-<!--
-SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. PM writes
-the prose. Everything below the line is notes for PM. Delete it as the prose replaces it.
-Slot: Sat 2026-11-07 (building, milestone piece, outside the Sep-front order like "Almost Beta" and "Alpha Launches").
-xian said yes 11-04. Title: "At Long Last, Beta" (xian, in Thursday's footer, 11-05).
-Footer teases Sun 11-08 "Fixed and Scores Higher Came Apart" (working title).
-Sources: decisions.log 2026-08-08 (via 09-06), 09-06 ~07:0x and ~16:1x, 10-29 13:02, 10-30 14:52, 10-30 20:52, 10-31 13:51,
-11-04 19:31 and 19:41; #1386's last two comments (PPM 10-30 17:37 and 19:51); GitHub milestone "MVP" (closed
-2026-10-31T00:07:54Z = Fri 10-30 17:07 PT); the Ship #067 week review; published posts "Almost Beta" (07-23),
-"A Sender-Impersonation Bug, Four Days Before Beta" (09-01), Ship #067. Comms opened each line quoted below at source.
-No recipient is named anywhere (rule 8). Keep it that way.
--->
+When I decided (perhaps prematurely) that Piper Morgan was ready to go into alpha testing, a little under a year ago, I thought the beta test would follow fairly soon thereafter. Early this year I opened up the hosted alpha and once again anticipating moving on to beta by spring or perhaps early summer.
 
----
+# Would you believe, September?
 
-## Title options (pick one, or your own. Thursday's footer needs it)
-- **At Long Last, Beta** (xian's, from Thursday's footer, 11-05).
-- **Beta, With Nine Known Issues.** The letter said what doesn't work yet, by name.
-- **Eight Weeks Late, on the Day We Set.** Beta slipped from early September, then landed on the reset date.
-- **The Alpha Is Over.** Your words, 11-04.
-- **Almost Beta, Then Beta.** Calls back to the July post.
-
-## The story in one sentence
-
-Beta was "four days away" on Sep 1. On Sep 6 you reset the date to Oct 30 and admitted the gate's evidence would go
-stale. On Oct 30 the MVP milestone closed on that date, and the next day you sent the private-beta letters, each one
-saying in plain words what Piper still gets wrong.
-
-## Beats, in order (facts verified, source in brackets)
-
-**1. The near miss.** The blog already told readers beta was close: "Almost Beta" (Jul 23) and "A Sender-Impersonation
+As later as July I still thought we were right on the verge. I wrote a blog post optimistically titled "Almost Beta" (Jul 23) and "A Sender-Impersonation
 Bug, Four Days Before Beta" (Sep 1). On Aug 8 you had already moved beta back a month, without a new date: "we clearly
 have a lot more work still to do than anyone ever reported to me." [decisions.log 09-06 ~07:0x, quoting 08-08]
+
+
+
+
+I have this habit of using family birthdays as milestone dates (easier to remember), and when it became clear that we were finding serious issues faster than we were closing them, I accepted another big delay and re-set the MVP milestone date to my sister's birthday in early September. 
+
+On the first of that month we took stock of the remaining work, and after close consultation with my agent team and some ruthless MVP triage, on Sep 6 I reset the target date one more time to October 30, my own birthday. 
+
+We started tracking progress much more rigorously and strictly disciplining which new issues could be added to the ongoing "final" sprint of the MVP milestone that had to be completed before we could start the beta.
+
+*Deciding whether a new issue is a launch blocker is a core product-manager experience and I couldn't help pointing this out to my agent assistants, always trying to make lessons from things when I can.*
+
+# Looks like we made it
+
+On Oct 30 the MVP milestone closed on that date, and the next day I sent (not very spooky) email to the first set of testers inviting them to the private beta. The email invitations also explained the known issues, the things Piper was still getting wrong as of then.
+
 
 **2. The reset.** Sep 6, early morning: MVP moves to **Oct 30**, then Production Feb 2, and so on. [decisions.log
 09-06 ~07:0x] That afternoon you ruled the last gate line ("PM go/no-go") fires at MVP close, not then, because the
