@@ -226,7 +226,7 @@ class TestThenTheTargetsHookOwnsTheTurn:
         ), msg
         assert '\n1. "revise the pr"\n' in msg
         assert msg.endswith(
-            "\n\nI can delete one at a time for now. Which one should I delete? Say the "
+            "\n\nI can delete one reminder at a time for now. Which one should I delete? Say the "
             "number or the name, or 'never mind' to leave them alone."
         )
         assert "no number" not in msg

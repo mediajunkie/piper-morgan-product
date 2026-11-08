@@ -14,7 +14,7 @@ CXO's two rulings (the issue's copy comment and her 10-16 08:16 memo):
        1. "buy milk"
        2. "call mom"
 
-       I can delete one at a time for now. Which one should I delete? Say the
+       I can delete one reminder at a time for now. Which one should I delete? Say the
        number or the name, or 'never mind' to leave them alone.
 
    The first sentence of that last line is the issue-2019 cap (``delete_cap``),
@@ -47,7 +47,9 @@ from typing import Optional, Sequence
 # --- CXO's strings (issue 2046) -------------------------------------------
 
 NO_LIST_OPENING = "I haven't shown you a numbered list yet. Here are your {plural}:"
-DELETE_ONE_AT_A_TIME = "I can delete one at a time for now."
+# CXO 11-07 20:35 (#2321 row 5): the cap names its noun in the no-list form too, as the
+# after-list form does (#2219's one-noun rule).
+DELETE_ONE_AT_A_TIME = "I can delete one {noun} at a time for now."
 # The one-item delete confirm, every leg. Rendered by delete_confirm_question.
 DELETE_CONFIRM_QUESTION = 'Delete the {noun} "{title}"?'
 
@@ -141,9 +143,9 @@ def no_list_reply(
     return opening + "\n\n" + "\n".join(items) + "\n\n" + tail
 
 
-def delete_no_list_lead(requested: int) -> str:
+def delete_no_list_lead(requested: int, noun: str = "todo") -> str:
     """#2318: the issue-2019 cap sentence when more than one item was asked for, else
     nothing. Leads CXO's armed question in the delete path's no-list reply."""
     from services.intent_service.delete_cap import exceeds_delete_cap
 
-    return DELETE_ONE_AT_A_TIME if exceeds_delete_cap(requested) else ""
+    return DELETE_ONE_AT_A_TIME.format(noun=noun) if exceeds_delete_cap(requested) else ""

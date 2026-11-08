@@ -15315,16 +15315,11 @@ class IntentService:
             # The owner/name slot-fill takes any bare "word/word": the advisor's own
             # "look at this project/repository" reads as repo project/repository. A
             # pair that failed to read AND is not one of the account's repositories
-            # was most likely never a repository, so ask which (armed, #1641). One of
-            # the account's own that failed to read is said as a failed read.
+            # asks which (armed, #1641), never falls to the default (Arch 20:38: code
+            # can't tell that from a typo of the person's own repo, and the default
+            # would give another repo's feedback unannounced). One of the account's
+            # own that failed to read is said as a failed read.
             if await self._repo_unknown_to_account(principal, str(repository)):
-                # Not a repository the person named, by everything code knows, so the
-                # #1411 default stands in when there is one (CXO 20:02: one default,
-                # read it); otherwise the armed question.
-                default = await self._resolve_default_repository(principal)
-                if default and str(default).lower() != str(repository).lower():
-                    intent.context["repository"] = default
-                    return await self._handle_analyze_repository(intent, workflow_id, session_id)
                 ask = await self._ask_for_repository(
                     intent, None, session_id, principal, operation="give you feedback"
                 )

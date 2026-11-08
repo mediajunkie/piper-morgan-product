@@ -191,19 +191,42 @@ async def test_named_repo_reads_records_and_the_trust_floor_states_it(
     )
 
 
-async def test_the_advisors_unnamed_words_read_the_default_repo(
+async def test_the_advisors_unnamed_words_ask_even_with_a_default(
+    service, monkeypatch, github, captured_floor
+):
+    """Arch 20:38: the slot-fill reads "project/repository" from these words; it fails
+    to read and isn't on the account, so it ASKS, never falls to the default (code can't
+    tell it from a typo of the person's own repo)."""
+    from services.intent_service.repo_clarification import REPO_QUESTION_KIND, open_repo_question
+
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, _REPO)
+    result = await _turn(
+        service, monkeypatch, sid, ADVISOR_TURN_1, IntentCategory.ANALYSIS, "analyze_repository"
+    )
+    assert github["reads"][0] == ("issues", "project", "repository")
+    assert ("issues", "dinp-machine", "piper-test-activity") not in github["reads"]
+    assert result.message == open_repo_question(None, "give you feedback")
+    offer = service.workflow_offer_service._pending_offers.get(sid)
+    assert offer["pending_action"]["kind"] == REPO_QUESTION_KIND
+    assert captured_floor == []
+
+
+async def test_a_typo_of_an_own_repo_asks_never_reads_the_default(
     service, monkeypatch, github, captured_floor
 ):
     sid = f"ar-{uuid4().hex[:8]}"
     _default_repo(monkeypatch, service, _REPO)
-    await _turn(
-        service, monkeypatch, sid, ADVISOR_TURN_1, IntentCategory.ANALYSIS, "analyze_repository"
+    result = await _turn(
+        service,
+        monkeypatch,
+        sid,
+        "look at dinp-machine/piper-test-activty and give me feedback",
+        IntentCategory.ANALYSIS,
+        "analyze_repository",
     )
-    # The slot-fill reads "project/repository" from these words; it isn't a repo (no
-    # read, not on the account), so the default stands in.
-    assert github["reads"][0] == ("issues", "project", "repository")
-    assert ("issues", "dinp-machine", "piper-test-activity") in github["reads"]
-    assert captured_floor[-1].domain_context["repository_read"]["repository"] == _REPO
+    assert ("issues", "dinp-machine", "piper-test-activity") not in github["reads"]
+    assert result.requires_clarification and captured_floor == []
 
 
 @pytest.mark.parametrize(
@@ -281,5 +304,11 @@ async def test_landing_pin_the_routers_none_does_not_floor_the_hidden_entry(
         )
     finally:
         il.publish_live_route_provenance(None)
-    assert ("issues", "dinp-machine", "piper-test-activity") in github["reads"]
-    assert captured_floor[-1].domain_context["repository_read"]["repository"] == _REPO
+    # The legacy landing stood: the hidden entry ran (it read the slot-filled pair, then
+    # armed the repo question), and the floor was never reached.
+    from services.intent_service.repo_clarification import REPO_QUESTION_KIND
+
+    assert github["reads"][0] == ("issues", "project", "repository")
+    assert captured_floor == []
+    offer = service.workflow_offer_service._pending_offers.get(sid)
+    assert offer["pending_action"]["kind"] == REPO_QUESTION_KIND

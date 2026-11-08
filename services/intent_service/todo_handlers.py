@@ -1431,7 +1431,7 @@ class TodoIntentHandlers:
                 name_pool,
                 noun,
                 "delete",
-                delete_no_list_lead(_requested_count(targets)),
+                delete_no_list_lead(_requested_count(targets), noun),
                 intent.original_message or ctx.get("original_message") or "",
                 session_id,
                 principal or user_id,

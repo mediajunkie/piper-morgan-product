@@ -71,7 +71,7 @@ SERVED_REPLY = (
     '2. "call mom"\n'
     "\n"
     # #2318 (CXO 11-07): the cap sentence, then the ARMED question.
-    "I can delete one at a time for now. Which one should I delete? Say the number or the "
+    "I can delete one reminder at a time for now. Which one should I delete? Say the number or the "
     "name, or 'never mind' to leave them alone."
 )
 SINGLE_REPLY = (
@@ -204,7 +204,7 @@ class TestCopy:
         reply = no_list_reply(
             ["buy milk", "call mom"],
             "reminder",
-            "I can delete one at a time for now. Which one should I delete? Say the number or "
+            "I can delete one reminder at a time for now. Which one should I delete? Say the number or "
             "the name, or 'never mind' to leave them alone.",
         )
         assert reply == SERVED_REPLY
@@ -303,7 +303,7 @@ class TestTargetsPathNoListShown:
             '1. "water the plants"\n2. "buy milk"\n3. "call mom"\n\n'
         )
         assert result.message.endswith(
-            "I can delete one at a time for now. Which one should I delete? Say the number or "
+            "I can delete one todo at a time for now. Which one should I delete? Say the number or "
             "the name, or 'never mind' to leave them alone."
         )
 
