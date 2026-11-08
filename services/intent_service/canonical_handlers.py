@@ -346,6 +346,10 @@ class CanonicalHandlers:
         else:
             # Standard/Granular: Include time
             message = f"Today is {current_date} at {current_time}."
+            # #2324 (CXO 11-07 20:02, Arch 20:03): both days on every time reply,
+            # so "what day is it tomorrow?" is answered without reading the words.
+            _tomorrow = _now + timedelta(days=1)
+            message += f" Tomorrow is {_tomorrow.strftime('%A, %B')} {_tomorrow.day}."
             if user_tz == DEFAULT_USER_TIMEZONE:
                 # The face is honest but the zone is the DEFAULT, not a choice the
                 # user made (#1876) — say so and point at the one place to change it.

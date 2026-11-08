@@ -65,9 +65,8 @@ async def _current_time_for_user(user_id=None) -> str:
     return (await _current_time_and_date_for_user(user_id))[0]
 
 
-async def _current_time_and_date_for_user(user_id=None) -> "tuple[str, str]":
-    """Current time AND date in the USER's timezone, e.g. ('12:54 PM PDT',
-    'Saturday, November 07, 2026') — or ("", "") to omit both.
+async def _user_local_now(user_id=None) -> "Optional[datetime]":
+    """The current moment in the USER's timezone, or None to omit it.
 
     #2324 (Arch 11-07 17:53): the date rides beside the time, under the same
     timezone rule, so relative claims ("runway", "due soon", "overdue") are
@@ -110,14 +109,30 @@ async def _current_time_and_date_for_user(user_id=None) -> "tuple[str, str]":
         except Exception:
             tz_name = None
     if not tz_name:
-        return "", ""
+        return None
     try:
         from zoneinfo import ZoneInfo
 
-        now = datetime.now(ZoneInfo(tz_name))
-        return now.strftime("%I:%M %p %Z"), now.strftime("%A, %B %d, %Y")
+        return datetime.now(ZoneInfo(tz_name))
     except Exception:  # silent-ok: pure display; a stored bad tz would log every turn — no clock face beats a wrong one (#1589 rationale)
+        return None
+
+
+async def _current_time_and_date_for_user(user_id=None) -> "tuple[str, str]":
+    """Current time AND date in the USER's timezone, e.g. ('12:54 PM PDT',
+    'Saturday, November 07, 2026') — or ("", "") to omit both. See
+    :func:`_user_local_now` for the timezone rule."""
+    now = await _user_local_now(user_id)
+    if now is None:
         return "", ""
+    return now.strftime("%I:%M %p %Z"), now.strftime("%A, %B %d, %Y")
+
+
+async def _user_local_today(user_id=None):
+    """#2324 gap A: the person's local DATE, or None when their timezone is
+    unknown (never the server's date)."""
+    now = await _user_local_now(user_id)
+    return now.date() if now is not None else None
 
 
 # #984: TTL defaults per data type (PM-approved 2026-05-12).

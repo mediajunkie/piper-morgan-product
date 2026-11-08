@@ -10592,6 +10592,11 @@ class IntentService:
                         key=lambda m: (m.get("due_on") is None, m.get("due_on") or ""),
                     )
                     message += "\n\nUpcoming:"
+                    # #2324 gap A: the person's local date marks a past due date.
+                    from services.intent_service.context_assembler import _user_local_today
+                    from services.intent_service.milestone_render import overdue_note
+
+                    _today = await _user_local_today(_principal_from_intent(intent))
                     # #1762 epic 6 — see the issues handler; same shared shape.
                     _lines = []
                     for m in sorted_ms:
@@ -10601,7 +10606,11 @@ class IntentService:
                         # #2200 (CXO's words, 2026-10-29): two strings, never one
                         # template with the absence dropped into the date slot
                         # ("Ongoing — due no due date").
-                        due = f"Due {due_raw.split('T')[0]}." if due_raw else "no due date."
+                        due = (
+                            f"Due {due_raw.split('T')[0]}{overdue_note(m, _today)}."
+                            if due_raw
+                            else "no due date."
+                        )
                         open_count = m.get("open_issues", 0)
                         suffix = f" ({open_count} open issue" f"{'s' if open_count != 1 else ''})"
                         _lines.append(f"\n- **{title}** — {due}{suffix}")
@@ -21003,6 +21012,7 @@ Add any additional information here.
         the read came from. No repo (or no session) → no arm and no offer
         line. Nothing the resolver's model wrote is rendered, and no floor or
         context assembler is called (Arch's condition)."""
+        from services.intent_service.context_assembler import _user_local_today
         from services.intent_service.milestone_pick import (
             ORIGIN_RESOLVED,
             PICK_PENDING_FLAG,
@@ -21015,7 +21025,11 @@ Add any additional information here.
             render_one_milestone,
         )
 
-        message = render_one_milestone(milestone)
+        # #2324 gap A: only the person's local date (its timezone read), not the
+        # assembler's gather, so Arch's no-assembler condition holds.
+        message = render_one_milestone(
+            milestone, await _user_local_today(_principal_from_intent(intent))
+        )
         title = display_title(milestone.get("title"), UNTITLED_MILESTONE)
         armed = False
         if open_count(milestone) > 0:

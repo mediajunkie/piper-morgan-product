@@ -9,10 +9,15 @@ milestone was meant, by index, and these functions render that read.
 The due date is the DATE PART of ``due_on`` exactly as GitHub gives it
 (``2026-11-20T00:00:00Z`` → ``2026-11-20``): no timezone conversion, no
 "in N days". A ``due_on`` that is not a string renders as no due date.
+
+#2324 gap A (CXO 11-07 20:02): an open milestone with open issues whose due
+date is past in the person's local date says so: ``Due 2026-10-29 (overdue by
+9 days).`` The caller passes that date; None (timezone unknown) adds nothing.
 """
 
 from __future__ import annotations
 
+from datetime import date
 from typing import Any, Dict, Optional
 
 from services.utils.text_sanitation import display_title
@@ -40,6 +45,24 @@ def due_date_part(due_on: Any) -> Optional[str]:
     return due_on.strip().split("T")[0]
 
 
+def overdue_note(m: Dict[str, Any], today: Optional[date]) -> str:
+    """`` (overdue by N days)`` for an open milestone with open issues whose
+    due date is before ``today``; ``""`` otherwise, and always when ``today``
+    is None (never guessed from the server clock)."""
+    if today is None or m.get("state") == "closed" or _count(m, "open_issues") == 0:
+        return ""
+    due = due_date_part(m.get("due_on"))
+    if not due:
+        return ""
+    try:
+        days = (today - date.fromisoformat(due)).days
+    except ValueError:
+        return ""
+    if days <= 0:
+        return ""
+    return f" (overdue by {days} day{'s' if days != 1 else ''})"
+
+
 def _count(m: Dict[str, Any], key: str) -> int:
     value = m.get(key)
     return value if isinstance(value, int) and not isinstance(value, bool) and value > 0 else 0
@@ -49,8 +72,9 @@ def open_count(m: Dict[str, Any]) -> int:
     return _count(m, "open_issues")
 
 
-def render_one_milestone(m: Dict[str, Any]) -> str:
-    """CXO's one-milestone line from the read dict."""
+def render_one_milestone(m: Dict[str, Any], today: Optional[date] = None) -> str:
+    """CXO's one-milestone line from the read dict; ``today`` is the person's
+    local date (#2324 gap A)."""
     title = display_title(m.get("title"), UNTITLED_MILESTONE)
     opened = _count(m, "open_issues")
     closed = _count(m, "closed_issues")
@@ -58,7 +82,7 @@ def render_one_milestone(m: Dict[str, Any]) -> str:
     if m.get("state") == "closed":
         return f"**{title}** is closed: {closed} of {total} issues done."
     due = due_date_part(m.get("due_on"))
-    due_clause = f"Due {due}." if due else "No due date is set."
+    due_clause = f"Due {due}{overdue_note(m, today)}." if due else "No due date is set."
     if total == 0:
         return f"**{title}** has no issues yet. {due_clause}"
     return f"**{title}**: {closed} of {total} issues closed, {opened} still open. {due_clause}"
@@ -76,6 +100,7 @@ __all__ = (
     "STATUS_LEAD_IN",
     "LIST_LEAD_IN",
     "due_date_part",
+    "overdue_note",
     "open_count",
     "render_one_milestone",
     "prefix_lines",

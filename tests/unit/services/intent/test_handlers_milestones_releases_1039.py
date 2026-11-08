@@ -65,9 +65,16 @@ class TestListMilestonesHandler:
     """_handle_list_milestones_query — Issue #1039."""
 
     async def test_populated_milestones_response(self, intent_service):
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
-        ) as MockRouter:
+        # #2324 gap A: no local date (timezone unknown) adds no overdue note.
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
+            ) as MockRouter,
+            patch(
+                "services.intent_service.context_assembler._user_local_today",
+                AsyncMock(return_value=None),
+            ),
+        ):
             mock_router = AsyncMock()
             mock_router.list_milestones_via_mcp = AsyncMock(
                 return_value=[
