@@ -35,6 +35,7 @@ v885, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - **PPM** trims the sprint-2 set before the 11-13 review.
 
 ## Reminders owed to xian
+- **Thanksgiving week (Mon 11-23):** PPM's one-liner: "First closing review Fri 11-27 or Sat 11-28? Thu 11-26 is the usual filing day, so when should seats file that week?" (xian 11-07: the rhythm flexes when needed.)
 - **Vercel: downgrade from Pro once the headroom exists again** (standing item #182). Trigger: the split is live and admin-only usage is well inside Hobby. Raise that Hobby is non-commercial, so the downgrade may not be allowed.
 - **#2282 step 5, around Thu 11-12** (standing item #183): remove the alpha callbacks in GitHub and Google if a week passes with no hits.
 
