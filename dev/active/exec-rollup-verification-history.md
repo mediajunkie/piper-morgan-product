@@ -463,3 +463,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v880 12:22 Sat 11-07: D5 update (row 5 binds 5/5 at 5 s measuring limit per Lead 12:17; app-side delay; CXO cap PASS 11:06); serving 8633405573. Source: Lead 11:06/12:11/12:17, Arch 11:10, CXO 11:06 memos read in full.
 - v881 12:36 Sat 11-07: added D5 3.0 s question for xian (PPM 12:34; decisions.log 3174 says 'up to 2.5 s').
 - v882 13:41 Sat 11-07: D5 3.0 s question withdrawn (slow mode 3.18–4.09 s, Lead 13:38); #2320 FYI added.
+- v883 16:24 Sat 11-07: beta 310ab2ed79 (/health 16:24); #2322 P1 heads-up (clear=done + 'clear todo 2' completes all; guard d1a7e86ac6 in gate); #2320 cause = output filter Tier 2 on router JSON (Lead 15:04, Arch 15:08 STRUCTURED).
