@@ -484,3 +484,15 @@ async def test_one_linked_repo_is_listed_and_asked_never_read_unasked(
     reply = await _turn(service, monkeypatch, sid, "1", IntentCategory.CONVERSATION, "small_talk")
     assert github["reads"][0] == ("issues", "dinp-machine", "piper-test-activity")
     assert reply.message == "(stubbed floor answer)"
+
+
+async def test_harbor_pilot_answer_binds_even_when_the_list_was_unreadable(
+    service, monkeypatch, github, captured_floor
+):
+    """PA 11-08 07:06 (gap B): "Harbor Pilot", answered to the open ask, fell off the
+    carrier and the floor put the test repo's issues under its name. The project name
+    binds that project's own repo through the carrier, whatever the ask's form."""
+    github["linked"] = None
+    _, reply = await _ask_then_answer(service, monkeypatch, github, "Harbor Pilot")
+    assert github["reads"][0] == ("issues", "dinp-machine", "harbor-pilot")
+    assert f"You read the GitHub repository {_OTHER} this turn" in _prompt(captured_floor[-1])

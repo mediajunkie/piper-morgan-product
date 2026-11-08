@@ -15317,7 +15317,10 @@ class IntentService:
             principal,
             operation="give you feedback",
             question_override=question,
-            listed_repos=linked,
+            # [] when the list couldn't be read: a project name still binds its own
+            # repo (PA 11-08 gap B: "Harbor Pilot" fell off the carrier to the floor,
+            # which showed another repo's issues under its name).
+            listed_repos=linked if linked is not None else [],
         )
         if ask is not None:
             return ask
