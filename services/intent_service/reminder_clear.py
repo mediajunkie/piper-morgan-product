@@ -139,14 +139,12 @@ def inference_key(verb: str) -> str:
 
 
 def variant_one_question(
-    verb: str = "clear", noun: str = "reminder", lead: Optional[str] = None
+    verb: str = "clear", noun: str = "reminder", referent: str = "these"
 ) -> str:
-    """Variant 1 — first encounter, no stored default.
-
-    ``lead`` (CXO 11-07 18:27, #2321 N1): when the set is one line, the lead names it
-    (``"review prs" (×2)``) in place of "these"; everything after it is unchanged."""
+    """Variant 1 — first encounter, no stored default. ``referent`` is "it" when a
+    named position bound a single copy (CXO 11-07 18:32); otherwise "these"."""
     return (
-        f"Before I touch {lead or 'these'} — when you say '{verb}' on a {noun}, "
+        f"Before I touch {referent} — when you say '{verb}' on a {noun}, "
         f"do you want me to mark it done, or delete it? "
         f"I'll remember for next time."
     )
@@ -462,6 +460,20 @@ def _guard_set_lead(ids: List[str], texts: List[str], message: str) -> str:
     if len(order) > len(shown):
         lines.append(f"…and {len(order) - len(shown)} more.")
     return "\n".join(lines)
+
+
+def _named_position_first_time_question(
+    ids: List[str], texts: List[str], verb: str, noun: str, message: str
+) -> str:
+    """#2321 N1 (CXO 11-07 18:32): after a named position narrowed the set, the set
+    comes first, then the ratified question. One line: 'That's "{title}" (×n).' and
+    "these" for a group, "it" for one copy; several lines: the guard's list."""
+    lines = list(dict.fromkeys(texts))
+    if len(lines) > 1:
+        return f"{_guard_set_lead(ids, texts, message)}\n\n{variant_one_question(verb, noun)}"
+    count = f" (×{len(ids)})" if len(ids) > 1 else ""
+    referent = "these" if len(ids) > 1 else "it"
+    return f'That\'s "{lines[0]}"{count}.\n{variant_one_question(verb, noun, referent)}'
 
 
 def _names_a_position(message: str) -> bool:
@@ -917,6 +929,7 @@ async def maybe_handle_clear_family(
         )
 
     todo_service = intent_service.todo_handlers.todo_service
+    named_position = False
     try:
         targets = await _resolve_targets(todo_service, todo_user_id, ask.noun)
         # #2321 row 7 / #2322 (CXO 11-07 15:50, Arch 15:48): a position the person
@@ -936,6 +949,7 @@ async def maybe_handle_clear_family(
             if isinstance(narrowed, IntentProcessingResult):
                 return narrowed
             targets = narrowed
+            named_position = True
         if ask.named_target:
             wanted = ask.named_target.lower()
             matches = [t for t in targets if wanted in (t.text or "").lower()]
@@ -1033,6 +1047,7 @@ async def maybe_handle_clear_family(
         original_message,
         base_intent_data,
         ask_only=is_floor_category_write(intent),
+        named_position=named_position,
     )
 
 
@@ -1051,6 +1066,7 @@ async def _act_on_resolved_targets(
     original_message: str,
     base_intent_data: Dict[str, Any],
     ask_only: bool = False,
+    named_position: bool = False,
 ):
     """#1906 — the SHARED three-variant decision tree, reached once a
     clear-family ask has exactly ONE resolved target set: the detected
@@ -1271,18 +1287,9 @@ async def _act_on_resolved_targets(
         return None
 
     # ── Variant 1: first encounter — ask, bind the answer via the offer seam.
-    # CXO 11-07 18:27 (#2321 N1): one line is named in the lead; a set of several
-    # lines is listed first in the guard's words and the lead stays "these". True
-    # however the set was reached (a named position, a name, or the whole list).
-    line_texts = list(dict.fromkeys(texts))
-    if len(line_texts) == 1:
-        lead = f'"{line_texts[0]}"' + (f" (×{len(ids)})" if len(ids) > 1 else "")
-        question = variant_one_question(verb, noun, lead=lead)
-    else:
-        question = (
-            f"{_guard_set_lead(ids, texts, original_message)}\n\n"
-            f"{variant_one_question(verb, noun)}"
-        )
+    question = variant_one_question(verb, noun)
+    if named_position:
+        question = _named_position_first_time_question(ids, texts, verb, noun, original_message)
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         _verb_question_offer(

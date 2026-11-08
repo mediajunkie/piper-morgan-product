@@ -461,7 +461,7 @@ class TestBindingContinuesTheFlow:
         result = await live_service.process_intent(
             message="Clear the first one.", session_id=sid, user_id=_USER
         )
-        assert result.message == variant_one_question(lead='"check the test card"')
+        assert result.message == variant_one_question()
         assert result.requires_clarification is True
         stored = _pending_offers(live_service).get(sid)
         assert stored["pending_action"]["kind"] == rc.CLEAR_VERB_QUESTION_KIND

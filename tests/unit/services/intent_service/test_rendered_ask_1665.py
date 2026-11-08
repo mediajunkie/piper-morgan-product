@@ -341,9 +341,7 @@ class TestReminderClearAsks:
     async def test_variant_one_arm_stores_the_ratified_ask(self, mem_prefs):
         svc = _fake_service(_FakeTodoService([_todo()]))
         result = await _run_clear(svc)
-        assert result.message == rc.variant_one_question(
-            "clear", "reminder", lead='"pay the invoice"'
-        )
+        assert result.message == rc.variant_one_question("clear", "reminder")
         assert _stored(svc)["question"] == result.message
 
     async def test_variant_three_arm_stores_the_confirm_ask(self, mem_prefs):

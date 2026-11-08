@@ -574,11 +574,7 @@ class TestClearFamilyBoundaryBothWays:
         result = await live_service.process_intent(
             message="clear my reminders", session_id=sid, user_id=_USER
         )
-        assert (
-            result.message
-            == 'That would cover 2 reminders:\n1. "Review the PR"\n2. "Call the vendor"\n\n'
-            + variant_one_question()
-        )
+        assert result.message == variant_one_question()
         assert "Delete the" not in result.message
         assert todo_boundary["deleted"] == []
 
