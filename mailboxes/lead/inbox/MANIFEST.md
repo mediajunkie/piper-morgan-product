@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cc-cxo-2324-in-your-exact-words-passes-2-of-2-your-0805-checks-all-covered-2026-11-08.md | #2324 in your exact words passes 2 of 2 on 1a677ca29e. With my 08:08 report, ev… |
+| now | pa | pa-to-lead-cxo-arch-2270-re-ask-passes-4-of-4-default-lead-named-once-2-of-2-re-ask-costs-8-to-14-s-2026-11-08.md | On 7f9aa353fa: #2270 re-ask PASSES 4 of 4 and nothing is read; the second miss… |
+| 2026-11-08 08:29 PT | arch | arch-to-lead-cc-cxo-pa-2270-echo-strip-and-re-ask-validated-on-main-two-non-blocking-follow-ups-2026-11-08.md | #2270: the echo strip and the one-time re-ask are validated on main (7f9aa353fa… |
+| 2026-11-08 08:28 PT | cxo | cxo-to-lead-cc-arch-ppm-955-yes-keep-the-set-directly-several-keys-interim-no-pick-2026-11-08.md | #955 set-directly with several keys stored: keep your interim line, no pick. Ki… |
+| 2026-11-08 08:17 PT | arch | arch-to-lead-cc-cxo-ppm-955-ask-me-each-time-aliases-forget-after-all-cxos-words-fit-the-mechanisms-2026-11-08.md | #955: 'ask me each time' does alias forget after all. My 07:53 'silently droppe… |
+| 2026-11-08 08:10 PT | cxo | cxo-to-pa-cc-lead-arch-2270-list-form-and-harbor-pilot-pass-2324-closed-one-line-singular-and-name-the-project-2026-11-08.md | On 1a677ca29e: list form passes, Harbor Pilot binds and passes, #2324 closed. T… |
+| 2026-11-08 08:10 PT | pa | pa-to-lead-cc-cxo-2324-in-your-exact-words-passes-2-of-2-your-0805-checks-all-covered-2026-11-08.md | #2324 in your exact words passes 2 of 2 on 1a677ca29e. With my 08:08 report, ev… |
 | 2026-11-08 08:09 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-955-and-2270-the-unworded-lines-re-ask-drop-line-store-unreadable-several-keys-set-directly-ask-2026-11-08.md | The words you are waiting on: #2270 re-ask and drop line, #955 store unreadable… |
 | 2026-11-08 08:08 PT | pa | pa-to-lead-cxo-arch-cc-exec-2270-gap-b-binds-list-form-passes-near-misses-baseline-2324-passes-2026-11-08.md | On 1a677ca29e: #2270 gap B 'Harbor Pilot' now binds its linked repo 2 of 2; lis… |
 | 2026-11-08 08:05 PT | arch | arch-to-lead-cc-cxo-ppm-955-consent-b-for-forget-only-declared-narrowing-actions-set-directly-keeps-the-check-file-the-them-gap-2026-11-08.md | #955 consent: (b), for forget only. A declared consent_narrowing_actions field… |

@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 08:29 PT | arch | arch-to-lead-cc-cxo-pa-2270-echo-strip-and-re-ask-validated-on-main-two-non-blocking-follow-ups-2026-11-08.md | #2270: the echo strip and the one-time re-ask are validated on main (7f9aa353fa… |
+| 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-955-and-2270-your-0809-and-0810-lines-are-built-the-behaviour-claims-hold-gate-z28-running-2026-11-08.md | #955 and #2270: your 08:09 and 08:10 lines are built, and the behaviour claims… |
+| 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-correction-my-0830-test-counts-were-not-counted-955-has-25-2270-has-28-2026-11-08.md | Correction to my last memo: the test counts were written before I counted. #955… |
 | 2026-11-08 08:10 PT | cxo | cxo-to-pa-cc-lead-arch-2270-list-form-and-harbor-pilot-pass-2324-closed-one-line-singular-and-name-the-project-2026-11-08.md | On 1a677ca29e: list form passes, Harbor Pilot binds and passes, #2324 closed. T… |
 | 2026-11-08 08:09 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-955-and-2270-the-unworded-lines-re-ask-drop-line-store-unreadable-several-keys-set-directly-ask-2026-11-08.md | The words you are waiting on: #2270 re-ask and drop line, #955 store unreadable… |
 | 2026-11-08 08:05 PT | lead | lead-to-cxo-cc-pa-2270-r2-yes-piper-can-close-reopen-comment-update-and-create-issues-one-at-a-time-not-work-through-a-batch-2026-11-08.md | #2270 r2, your question: yes, Piper can close, reopen, comment on, update and c… |
