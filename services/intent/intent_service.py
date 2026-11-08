@@ -15341,6 +15341,21 @@ class IntentService:
                     activity, repository, days, timeframe, intent
                 )
 
+            # #2270: a read that happened is recorded, so a later turn may state it.
+            from services.intent_service.conversation_context import record_read
+
+            record_read(
+                session_id,
+                _principal_from_intent(intent),
+                "analyze_repository",
+                str(repository),
+                {
+                    "repository_metrics": "its issues, pull requests and milestones",
+                    "activity_trends": "its recent activity",
+                    "contributor_stats": "its contributors",
+                }.get(data_type, "its activity"),
+            )
+
             # Return success
             return IntentProcessingResult(
                 success=True,
