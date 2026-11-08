@@ -477,6 +477,11 @@ corpus:
     expected: action:set_default_repo
     source: "#2255 (PA's armed-draft P2 probe 2026-11-02 15:07; Arch 15:11)"
     notes: "Armed-draft context: the consult stands down on the turn after an armed draft (#1190), so the served reply there is #2255's fix, not this row's. On the flat router the phrase routes set_default_repo (PA's P1, 2026-11-02 15:07)."
+  - phrase: "look at this project/repository. Give me quick feedback and then help me to move forward."
+    category: STATUS
+    expected: action:get_project_status
+    source: "#2270 the advisor's turn 1, 11-04 beta session (Exec's recovery 2026-11-07)"
+    notes: "Arch 2026-11-07 17:05: not CLARIFY at the router; which project is the handler's. The screen reports a document-op outcome on this row separately"
   - phrase: "what's the progress on the MVP milestone?"
     category: STATUS
     expected: action:get_project_status

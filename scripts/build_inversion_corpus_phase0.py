@@ -158,6 +158,22 @@ HAND_ROWS = [
             "router the phrase routes set_default_repo (PA's P1, 2026-11-02 15:07)."
         ),
     },
+    # #2270 (the advisor's turn 1 in the 11-04 beta session, recovered from xian's call
+    # transcript by Exec 11-07; Arch 17:05): a repo/project read answered as a document
+    # request. Expected get_project_status; the handler resolves "this" from recorded
+    # state. A document op (analyze_document / summarize_document / search_documents) is
+    # the failure this row exists for.
+    {
+        "phrase": "look at this project/repository. Give me quick feedback and then help me "
+        "to move forward.",
+        "category": "STATUS",
+        "expected": "action:get_project_status",
+        "source": "#2270 the advisor's turn 1, 11-04 beta session (Exec's recovery 2026-11-07)",
+        "notes": (
+            "Arch 2026-11-07 17:05: not CLARIFY at the router; which project is the handler's. "
+            "The screen reports a document-op outcome on this row separately"
+        ),
+    },
     # #2197 (CXO's list 2026-11-01 11:17; PPM's placement 11:18/11:19; Arch's destination (A)):
     # a progress ask about a named milestone routes get_project_status, whose handler resolves
     # the milestone op-locally from this turn's read. No router change for any of these.
