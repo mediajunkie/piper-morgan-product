@@ -1,0 +1,100 @@
+# #2270 re-ask timing vs classifier cache (Lead 13:17) on 2824ed3437, web-seed-1386, PA. c1: a plain ask in never-used words. c2/c3/c4: the advisor's ask (cached) then 'the survey one' (c2 uncached?), then twice more in fresh sessions (should be cached). c5: a never-used near-miss. Reads only.
+
+--- [13:20:44, 2824ed3437, http 200, 19.93 s] route analysis/analyze_repository
+USER: look over the repo and tell me what to fix first
+PIPER: Looking at dinp-machine/piper-test-activity, your default repository.
+
+The Beta launch milestone is overdue — it was due October 29th and still has 4 open issues against it. That's the most urgent thing to address. I'd start there and figure out whether those issues are actually blocking a launch or just got swept up in the milestone without being true blockers.
+
+The open issue list also has some noise worth cleaning up: there are three near-identical "Implement full-text search across nav and global search bar" issues (#32, #31, #38), plus a cluster of search-related issues (#39, #40, #41, #42) that look like they could be consolidated. And #43 is flagged as safe to close. That's easy housekeeping that'll make it easier to see what's actually real work.
+
+The issues that look like genuine product debt — #5 (onboarding email links to wrong page), #6 (dashboard counts off by one), #4 (dark mode flickers on load), #3 (CSV export) — are worth a quick triage pass to see if any of them belong in that Beta milestone.
+
+Two concrete next steps I'd suggest:
+
+1. **Close the obvious clutter** — #43, the duplicate search issues, and anything else that's clearly stale. If you'd like me to close those out, just tell me directly.
+2. **Audit the Beta milestone** — pull up what those 4 open issues actually are so you can decide if the milestone needs to be rescheduled or just pushed through.
+
+Which do you want to tackle first?
+
+--- [13:20:47, 2824ed3437, http 200, 2.21 s] route analysis/analyze_repository
+USER: look at this project/repository. Give me quick feedback and then help me to move forward.
+PIPER: I couldn't find "project/repository" among your repositories. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:20:54, 2824ed3437, http 200, 5.97 s] route analysis/analyze_repository
+USER: the survey one
+PIPER: I couldn't find "the survey one" among your repositories or projects. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:20:57, 2824ed3437, http 200, 2.23 s] route analysis/analyze_repository
+USER: look at this project/repository. Give me quick feedback and then help me to move forward.
+PIPER: I couldn't find "project/repository" among your repositories. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:21:03, 2824ed3437, http 200, 6.10 s] route analysis/analyze_repository
+USER: the survey one
+PIPER: I couldn't find "the survey one" among your repositories or projects. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:21:06, 2824ed3437, http 200, 2.21 s] route analysis/analyze_repository
+USER: look at this project/repository. Give me quick feedback and then help me to move forward.
+PIPER: I couldn't find "project/repository" among your repositories. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:21:13, 2824ed3437, http 200, 6.12 s] route analysis/analyze_repository
+USER: the survey one
+PIPER: I couldn't find "the survey one" among your repositories or projects. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:21:16, 2824ed3437, http 200, 2.30 s] route analysis/analyze_repository
+USER: look at this project/repository. Give me quick feedback and then help me to move forward.
+PIPER: I couldn't find "project/repository" among your repositories. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:21:24, 2824ed3437, http 200, 7.57 s] route analysis/analyze_repository
+USER: the lighthouse thing
+PIPER: I couldn't find "the lighthouse thing" among your repositories or projects. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+# c6/c7: uncached plain asks that end in the couldn't-find list (no compose), the fair comparator
+
+--- [13:21:45, 2824ed3437, http 200, 9.80 s] route analysis/analyze_repository
+USER: take a look at acme/widgets and give me feedback on it
+PIPER: I couldn't find "acme/widgets" among your repositories. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
+
+--- [13:21:55, 2824ed3437, http 200, 9.90 s] route analysis/analyze_repository
+USER: review northwind/orders for me and say what to do next
+PIPER: I couldn't find "northwind/orders" among your repositories. Which repository do you want me to look at?
+
+1. dinp-machine/piper-test-activity
+
+Say the number or the name, or 'never mind' to leave it alone.
