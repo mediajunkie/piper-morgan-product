@@ -3711,6 +3711,28 @@ def register_default_workflows() -> None:
         router_visible=False,
     )
 
+    # #2270 (Arch 20:14, CXO 20:1x): "look at this repository, give me feedback". The
+    # legacy classifier emits analyze_repository; before this entry no rail key caught
+    # it and it floored over the gathered baseline (read / ask / document reply, and a
+    # project name could get another repo's issues). The handler resolves (#1641, the
+    # armed repo question), reads that one repo, records the read, then composes on a
+    # floor curated to that read.
+    # effect: READ — GitHub open issues and open milestones of one repository.
+    # outwardness: PRIVATE — rendered to the asking user in their own chat.
+    # Router-hidden (Arch 20:14, the #2132 mechanism): the derived router grammar has
+    # no analyze_repository op, and a visible entry would add one (rule 7).
+    analyze_repository_entry = WorkflowEntry(
+        entry_point=_make_query_dispatch_entry_point(
+            "_handle_analyze_repository", pass_session_id=True
+        ),
+        effect=EffectClass.READ,
+        outwardness=Outwardness.PRIVATE,
+        description="Read one of the user's GitHub repositories and give feedback on it",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+        router_visible=False,
+    )
+
     # RECONNECT #1327 build #2: conversational "what's my default repo" — the read
     # counterpart. Same 2-arg (intent, workflow_id) factory + action-dispatch rail.
     # effect: READ — _handle_get_default_repo reads the same preference key the
@@ -4218,6 +4240,7 @@ def register_default_workflows() -> None:
         "summarize_upload": summarize_document_entry,
         "summarize_uploaded_file": summarize_document_entry,
         "compare_documents": compare_documents_entry,
+        "analyze_repository": analyze_repository_entry,
     }
 
     # #1124 step 3 cohort 2: GitHub read-query cohort — one shared entry point per

@@ -339,7 +339,8 @@ class TestFlipGroupDeclaration:
         # ungrouped READ op still fails this assertion.
         # compare_documents (#2132 option (b), 2026-10-23): router-hidden by
         # construction (router_visible=False), so it can never hold a flip group.
-        expected_ungrouped = {"clear_todos", "compare_documents"}
+        # analyze_repository (#2270, Arch 2026-11-07 20:14): router-hidden the same way.
+        expected_ungrouped = {"clear_todos", "compare_documents", "analyze_repository"}
         ungrouped_reads = {
             k for k, e in rail.items() if e.effect == EffectClass.READ and e.flip_group is None
         }
@@ -636,7 +637,8 @@ class TestLiveConsultSurfaces:
         read_keys = {k: e for k, e in rail.items() if e.effect == EffectClass.READ}
         # compare_documents (#2132 option (b), 2026-10-23): router-hidden by
         # construction (router_visible=False), so it can never hold a flip group.
-        expected_ungrouped = {"clear_todos", "compare_documents"}
+        # analyze_repository (#2270, Arch 2026-11-07 20:14): router-hidden the same way.
+        expected_ungrouped = {"clear_todos", "compare_documents", "analyze_repository"}
         ungrouped = {k for k, e in read_keys.items() if e.flip_group is None}
         assert ungrouped == expected_ungrouped, (
             f"{len(ungrouped)}/{len(read_keys)} READ keys ungrouped, expected only "
@@ -937,11 +939,13 @@ class TestFlipCoverageAudit:
             k for k, e in rail.items() if e.effect == EffectClass.READ and e.flip_group is None
         ]
         # compare_documents: router-hidden (#2132 option (b)), so never flip-grouped.
+        # analyze_repository: router-hidden too (#2270, Arch 2026-11-07 20:14).
         assert unassigned == [
             "clear_todos",
             "compare_documents",
-        ], f"expected only clear_todos and compare_documents, found: {unassigned}"
-        assert "UNASSIGNED — the 2 READ keys NO WAVE CAN FLIP, by name" in report
+            "analyze_repository",
+        ], f"expected only clear_todos, compare_documents, analyze_repository: {unassigned}"
+        assert "UNASSIGNED — the 3 READ keys NO WAVE CAN FLIP, by name" in report
         for op in unassigned:
             assert op in report, f"unassigned op {op} missing from --audit output"
 

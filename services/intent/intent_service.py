@@ -1004,6 +1004,19 @@ WRITE_TARGET_NO_SESSION_LINE = (
 )
 
 
+#: #2270 (Arch 20:14): the analyze_repository read failed (#2151: a failed read is
+#: never an empty one). Words owed to CXO.
+ANALYZE_REPOSITORY_READ_FAILED_LINE = (
+    "I couldn't read {repository} just now, so I haven't looked at it. " "Try again in a moment."
+)
+#: #2270: no session to hold the repo question (the #1641 honest refusal). Words owed to CXO.
+ANALYZE_REPOSITORY_NO_SESSION_LINE = (
+    'Name the repository as owner/name, like "look at octocat/hello-world", ' "and I'll look at it."
+)
+#: How many open issues the curated read carries to the floor.
+ANALYZE_REPOSITORY_ISSUE_CAP = 20
+
+
 #: #2151 (CXO 10-23 18:12): Piper can't see the user's machine; offer what it can check.
 LOCAL_GIT_DECLINE_LINE = (
     "I can't see repositories on your computer. I can check a GitHub repository for you. "
@@ -15236,6 +15249,162 @@ class IntentService:
                 report += f"- **{msg[:80]}** by {author_name} on {date_str}\n"
 
         return report
+
+    async def _handle_analyze_repository(
+        self, intent: Intent, workflow_id: Optional[str], session_id: Optional[str] = None
+    ) -> IntentProcessingResult:
+        """#2270 (Arch 20:14, CXO 20:1x): "look at this repository, give me feedback".
+
+        Before this, ``analyze_repository`` had no handler: it floored over the gathered
+        baseline, so the reply varied (read, ask, a request to paste a document), a
+        project name could get another repo's issues, and nothing recorded the read.
+
+        In order: (a) resolve with ``_resolve_analysis_repository`` (#1641: message,
+        named repo, default, else the ARMED repo question); (b) read exactly that
+        repo's open issues and open milestones (a failed read says so, #2151);
+        (c) ``record_read`` after the read succeeds; (d) compose on the floor over a
+        curated ``domain_context`` holding only that read (the #1187 summarize
+        pattern), so feedback is grounded in one repo and nothing else."""
+        repository, early = await self._resolve_analysis_repository(
+            intent,
+            workflow_id,
+            session_id,
+            operation="give you feedback",
+            refusal_message=ANALYZE_REPOSITORY_NO_SESSION_LINE,
+        )
+        if early is not None:
+            return early
+        if not repository or "/" not in str(repository):
+            ask = await self._ask_for_repository(
+                intent,
+                None,
+                session_id,
+                _principal_from_intent(intent),
+                operation="give you feedback",
+            )
+            if ask is not None:
+                return ask
+            return IntentProcessingResult(
+                success=False,
+                message=ANALYZE_REPOSITORY_NO_SESSION_LINE,
+                intent_data={"category": intent.category.value, "action": intent.action},
+                workflow_id=workflow_id,
+                requires_clarification=True,
+                clarification_type="repository_required",
+            )
+
+        owner, name = str(repository).split("/", 1)
+        principal = _principal_from_intent(intent)
+        try:
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
+            )
+
+            github = GitHubIntegrationRouter()
+            await github.initialize(user_id=principal)
+            issues = await github.get_open_issues(
+                limit=ANALYZE_REPOSITORY_ISSUE_CAP, owner=owner, repo=name, strict=True
+            )
+            milestones = await github.list_milestones_via_mcp(state="open", owner=owner, repo=name)
+        except (
+            Exception
+        ) as e:  # silent-ok: LOGGED; the failed read is said, never shown as an empty repo (#2151)
+            self.logger.warning(
+                "analyze_repository_read_failed", repository=repository, error=str(e)
+            )
+            # The owner/name slot-fill takes any bare "word/word": the advisor's own
+            # "look at this project/repository" reads as repo project/repository. A
+            # pair that failed to read AND is not one of the account's repositories
+            # was most likely never a repository, so ask which (armed, #1641). One of
+            # the account's own that failed to read is said as a failed read.
+            if await self._repo_unknown_to_account(principal, str(repository)):
+                # Not a repository the person named, by everything code knows, so the
+                # #1411 default stands in when there is one (CXO 20:02: one default,
+                # read it); otherwise the armed question.
+                default = await self._resolve_default_repository(principal)
+                if default and str(default).lower() != str(repository).lower():
+                    intent.context["repository"] = default
+                    return await self._handle_analyze_repository(intent, workflow_id, session_id)
+                ask = await self._ask_for_repository(
+                    intent, None, session_id, principal, operation="give you feedback"
+                )
+                if ask is not None:
+                    return ask
+            return IntentProcessingResult(
+                success=True,
+                message=ANALYZE_REPOSITORY_READ_FAILED_LINE.format(repository=repository),
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "repository": repository,
+                    "read_failed": True,
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+            )
+
+        from services.intent_service.conversation_context import record_read
+
+        record_read(
+            session_id,
+            principal,
+            "analyze_repository",
+            str(repository),
+            "its open issues and milestones",
+        )
+
+        read = {
+            "repository": str(repository),
+            "open_issues": [
+                {
+                    "number": i.get("number"),
+                    "title": i.get("title"),
+                    "labels": i.get("labels", []),
+                    "milestone": i.get("milestone"),
+                    "updated_at": i.get("updated_at"),
+                }
+                for i in (issues or [])
+            ],
+            "open_issues_shown_cap": ANALYZE_REPOSITORY_ISSUE_CAP,
+            "milestones": [
+                {
+                    "title": m.get("title"),
+                    "due_on": m.get("due_on"),
+                    "open_issues": m.get("open_issues"),
+                    "closed_issues": m.get("closed_issues"),
+                }
+                for m in (milestones or [])
+            ],
+        }
+        domain_context: Dict[str, Any] = {"repository_read": read}
+        from services.intent_service.context_assembler import _current_time_and_date_for_user
+
+        _ct, _cd = await _current_time_and_date_for_user(principal)
+        if _ct and _cd:
+            domain_context["current_time"] = _ct
+            domain_context["current_date"] = _cd
+        return await self._handle_unknown_intent(
+            intent, None, session_id, domain_context=domain_context
+        )
+
+    async def _repo_unknown_to_account(self, principal: Optional[str], repository: str) -> bool:
+        """#2270: True only when the account's repository list was read AND does not
+        hold ``repository``. An unreadable list is not evidence (False)."""
+        if not principal:
+            return False
+        try:
+            from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+            result = await GitHubMCPSpatialAdapter().search_user_repositories(str(principal))
+        except (
+            Exception
+        ) as e:  # silent-ok: an unreadable list is not evidence; the caller says the failed read
+            self.logger.warning("analyze_repository_repo_list_failed", error=str(e))
+            return False
+        if result.degradation is not None:
+            return False
+        known = {str(r.get("full_name") or "").lower() for r in (result.repositories or [])}
+        return repository.lower() not in known
 
     async def _handle_analyze_data(
         self, intent: Intent, workflow_id: str, session_id: Optional[str] = None

@@ -45,6 +45,7 @@ RAIL_READ_SOURCES: Dict[str, Tuple[str, str]] = {
     "analyze_blockers": ("your projects and GitHub issues", "what is blocking them"),
     "analyze_commits": ("your GitHub commits", "what changed in the code"),
     "analyze_data": ("your GitHub activity", "what your repository metrics are"),
+    "analyze_repository": ("that repository", "what's in it"),
     "analyze_document": ("your documents", "what that document says"),
     "attention_query": ("your tasks, meetings and projects", "what needs your attention"),
     "changes_query": ("your recent activity", "what changed"),

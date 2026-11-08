@@ -1328,6 +1328,49 @@ class ConversationalFloor:
                     f"content to summarize:\n{content}"
                 )
 
+        # #2270 (Arch 20:14): the analyze_repository handler read exactly one repository
+        # this turn and curated the context to that read alone. The floor gives feedback
+        # from it; nothing else (no project, no other repo) is attributed to it.
+        if "repository_read" in domain_context:
+            rr = domain_context["repository_read"] or {}
+            repo = rr.get("repository", "the repository")
+            issues = rr.get("open_issues") or []
+            issue_lines = [
+                f"  #{i.get('number')} {i.get('title')}"
+                + (
+                    f" [labels: {', '.join(map(str, i.get('labels') or []))}]"
+                    if i.get("labels")
+                    else ""
+                )
+                + (f" [milestone: {i.get('milestone')}]" if i.get("milestone") else "")
+                for i in issues
+            ]
+            ms_lines = [
+                f"  {m.get('title')}: {m.get('open_issues') or 0} open, "
+                f"{m.get('closed_issues') or 0} closed"
+                + (
+                    f", due {str(m.get('due_on')).split('T')[0]}"
+                    if m.get("due_on")
+                    else ", no due date"
+                )
+                for m in (rr.get("milestones") or [])
+            ]
+            cap_note = (
+                f" (the first {len(issues)}; there may be more)"
+                if len(issues) >= int(rr.get("open_issues_shown_cap") or 0) > 0
+                else ""
+            )
+            lines.append(
+                f"- You read the GitHub repository {repo} this turn. The user asked for quick "
+                "feedback on it and help moving forward: give it from this read alone, then "
+                "suggest a next step. Say only what this read shows; attribute it to "
+                f"{repo}, not to any project or other repository.\n"
+                f"  Open issues{cap_note}:\n"
+                + ("\n".join(issue_lines) if issue_lines else "  none")
+                + "\n  Open milestones:\n"
+                + ("\n".join(ms_lines) if ms_lines else "  none")
+            )
+
         # Issue #1030 INSIGHT-PULL: surface composted insights when the user
         # asked "what have you learned about X" / pull-mode triggers.
         # Sectioned by confidence band per PM R5 (2026-05-31).
