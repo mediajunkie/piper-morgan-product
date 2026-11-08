@@ -434,6 +434,139 @@ def _capped_reply_dict(message: str, armed: bool, intent_data: Dict[str, Any]) -
     return out
 
 
+def _guard_set_lead(ids: List[str], texts: List[str], message: str) -> str:
+    """#2322 (CXO 11-07): 'That would cover {N} todos:' and the set, numbered and
+    grouped as "show my todos" groups it, up to 10 lines then '…and K more.'. The
+    noun follows the person's word (#2219)."""
+    from services.intent_service.reminder_copy import copy_noun, noun_plural
+
+    order: List[str] = []
+    counts: Dict[str, int] = {}
+    for text in texts:
+        if text not in counts:
+            order.append(text)
+            counts[text] = 0
+        counts[text] += 1
+    noun = copy_noun(message)
+    shown = order[:10]
+    lines = [f"That would cover {len(ids)} {noun_plural(noun)}:"]
+    lines += [
+        f'{n}. "{t}"' + (f" (×{counts[t]})" if counts[t] > 1 else "")
+        for n, t in enumerate(shown, 1)
+    ]
+    if len(order) > len(shown):
+        lines.append(f"…and {len(order) - len(shown)} more.")
+    return "\n".join(lines)
+
+
+def _names_a_position(message: str) -> bool:
+    """Whether the person's words name a position at all ('2', '#12', 'the first',
+    'last'): the shared ordinal reader with an unbounded list. No new pattern."""
+    return _ordinal_index(message or "", 10_000) is not None
+
+
+async def _narrow_to_named_positions(
+    intent_service: Any,
+    intent: Any,
+    ask: Any,
+    todo_service: Any,
+    todo_user_id: UUID,
+    original_message: str,
+    session_id: Optional[str],
+    principal: str,
+    base_intent_data: Dict[str, Any],
+) -> Any:
+    """#2321 row 7 (CXO: a named number must never widen; narrowing is yes) on the
+    live #1605 path. Returns the rows the named positions bind, or a reply:
+
+    - a numbered list was shown: each position binds that list's line (its every
+      copy, as recorded); several positions bind several lines (the set then meets
+      the >1 guard or the cap); a position past the list gets the list again with
+      the armed clear question;
+    - no list was shown: the #2046 no-list reply with the armed clear question.
+
+    Positions are read by the shared ordinal readers against the recorded list
+    (``_ordinal_index``, ``delete_todo_pick._multi_pick_indices``): no new pattern,
+    nothing written here."""
+    from services.intent.intent_service import IntentProcessingResult
+    from services.intent_service.delete_todo_pick import (
+        PICK_PENDING_FLAG,
+        VERB_CLEAR,
+        _multi_pick_indices,
+        last_numbered_list,
+    )
+
+    handlers = intent_service.todo_handlers
+    offer_service = getattr(intent_service, "workflow_offer_service", None)
+    active = list(await todo_service.list_todos(user_id=todo_user_id, include_completed=False))
+    shown = last_numbered_list(session_id, principal)
+    shown_ids = [str(i) for i in (getattr(shown, "ids", None) or [])]
+
+    def _armed(reply_and_flag: Tuple[str, bool]) -> IntentProcessingResult:
+        reply, armed = reply_and_flag
+        return IntentProcessingResult(
+            success=True,
+            message=reply,
+            intent_data={
+                **base_intent_data,
+                "clear_position_unbound": True,
+                **({PICK_PENDING_FLAG: True} if armed else {}),
+            },
+            requires_clarification=armed,
+        )
+
+    if not shown_ids:
+        logger.info("reminder_clear_position_no_list", session_id=session_id)
+        return _armed(
+            handlers._no_list_ordinal_pick(
+                active,
+                ask.noun,
+                VERB_CLEAR,
+                "",
+                original_message,
+                session_id,
+                principal,
+                offer_service,
+            )
+        )
+
+    by_id = {str(t.id): t for t in active}
+    groups = getattr(shown, "groups", None) or [[i] for i in shown_ids]
+    lines = [[by_id[str(i)] for i in g if str(i) in by_id] for g in groups]
+    texts = [line[0].text if line else "" for line in lines]
+    picked = _multi_pick_indices(original_message, texts, [None] * len(texts))
+    if not picked:
+        one = _ordinal_index(original_message, len(lines))
+        picked = [one] if one is not None else []
+    picked = [i for i in picked if 0 <= i < len(lines) and lines[i]]
+    if picked:
+        logger.info("reminder_clear_position_bound", count=len(picked), session_id=session_id)
+        return [t for i in picked for t in lines[i]]
+
+    # A position past the list shown: show it again and ask, armed.
+    live = [line for line in lines if line]
+    kind = getattr(shown, "kind", None) or f"{ask.noun}s"
+    head = f"I can't find that number in your {kind}. You have {len(live)}:"
+    body = [head] + [
+        f"{n}. {line[0].text}" + (f" (×{len(line)})" if len(line) > 1 else "")
+        for n, line in enumerate(live, 1)
+    ]
+    logger.info("reminder_clear_position_out_of_range", session_id=session_id)
+    return _armed(
+        handlers._armed_shown_lines_reply(
+            VERB_CLEAR,
+            body,
+            live,
+            kind,
+            intent,
+            intent.context or {},
+            session_id,
+            principal,
+            offer_service,
+        )
+    )
+
+
 async def _resolve_targets(todo_service, user_uuid: UUID, noun: str) -> List[Any]:
     """The whole ask's target set (scope narrowing is #1563's lane):
     noun 'reminder' -> active todos carrying a reminder_date (the
@@ -781,6 +914,23 @@ async def maybe_handle_clear_family(
     todo_service = intent_service.todo_handlers.todo_service
     try:
         targets = await _resolve_targets(todo_service, todo_user_id, ask.noun)
+        # #2321 row 7 / #2322 (CXO 11-07 15:50, Arch 15:48): a position the person
+        # named binds from recorded state and never widens to the whole set.
+        if not ask.named_target and _names_a_position(original_message):
+            narrowed = await _narrow_to_named_positions(
+                intent_service,
+                intent,
+                ask,
+                todo_service,
+                todo_user_id,
+                original_message,
+                session_id,
+                principal,
+                base_intent_data,
+            )
+            if isinstance(narrowed, IntentProcessingResult):
+                return narrowed
+            targets = narrowed
         if ask.named_target:
             wanted = ask.named_target.lower()
             matches = [t for t in targets if wanted in (t.text or "").lower()]
@@ -946,6 +1096,10 @@ async def _act_on_resolved_targets(
         # auto-applies: it asks (a count code holds; no word reading, no new copy).
         if ask_only or len(ids) > 1 or await get_meta_mode(principal) is _VMM.ALWAYS_ASK:
             question = variant_two_always_ask_question()
+            if len(ids) > 1:
+                # #2322 (CXO 11-07 16:17): name the set in front of the ratified
+                # question, true however the set was reached.
+                question = f"{_guard_set_lead(ids, texts, original_message)}\n\n{question}"
             offer = _verb_question_offer(
                 principal,
                 verb,
