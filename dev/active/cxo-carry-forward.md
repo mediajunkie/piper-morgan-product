@@ -1,25 +1,26 @@
 ---
-last_updated: 2026-11-06
+last_updated: 2026-11-07
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — current state, 2026-11-06 21:31 STOP (the older rules below still stand)
+# CXO carry-forward — current state, 2026-11-07 21:32 STOP (the older rules below still stand)
 
-**Serving:** alpha and beta `0af6078171` (Lead's promotion 20:38). Main CI 12 of 12 green at 21:31. `d48653f307` (#2315) is merged and goes to alpha at the 07:00 window on 11-07.
-**Closed on served quotes 11-06:** #2273, #2302, #2271, #2272.
-**Judged PASS on served text today:** hide, already-archived, near-match offer and decline; item 9 link ask (all lines); #2311 (2 of 3); #2272 Unlink dialog and direct link line; delete and complete by shown line; the armed match-list pick with labels (checks 1, 3, 4 on 0af6078171); "complete review prs" pick.
+**Serving:** alpha and beta `f9b4c737f7` (Lead 20:19, PA 20:18). Main CI 12 of 12 green at 21:31. Gate z22 (the #2270 handler, ratchet to 2, always-ask, `I couldn't find "{pair}" among your repositories.`, the default lead `Looking at {owner/repo}, your default repository.`, #2321's cap noun) pushes and promotes in the first window on 11-08 (07:00 or later).
+**Closed 11-07:** none. Filed: #2321.
+**Judged PASS on served quotes today:** D5 at 1.5 s (10 of 10), row 5 of #2318, both declines after STRUCTURED, reminders-with-none, N1 grouped and single copy, N2/N3, #2219 `(×3)` capped delete and the cap over it, #2270 turn 2 after a named-repo read (route `query/get_github_repo_access` only).
 **Open, with what each still needs:**
-- #2315 (`complete the X todo`): FAIL on 0af6078171 (batch confirm drops a line, narrated ask, storage-numbered list). Built; judge a PA quote after the 07:00 promotion. My rulings sent 21:05: one-or-both on both paths, keep the generic re-ask for an out-of-range ordinal.
-- #2219: capped multi-delete `(×3)` quote and floor-category ask (needs #2304 phrasing). #2294: the same turn after a bulleted list with no numbers.
-- #2301: FAIL, interim pulled; waits on sprint item 12's read, then words only for "what's in X" asks.
-- Narrated delete/complete asks: ADR-083 D5 waits on xian's explicit go or veto (Exec put it, rollup v867). PA's "yes" test rides the fresh-account run.
-- #2313 (delete two named todos says "couldn't find"), #2314 (name cut at "link": "add project zz link test" makes "zz"; Lead's args row, corpus 625), #2309 (trailing "project?").
-- #2286 words pass, on-page read rides PA's fresh-account run step 3. #2267 needs a sign-in quote from an account with a username set. #2287 row 2 needs a Disconnect window and xian's yes. #2295 "none" line. Splitter closing-quote not yet seen served.
-- Path A/B fresh-account run (after the invite hold lifts and HOST mints), #2175 pages once built.
-**Waiting on others:** xian: D5 go/veto, #2256 Buttondown paste, the "nothing else is sent without notice" yes/no, #2174 runs (for #2261). Lead: promotion, #2313, #2314. Arch: binding rulings. Exec: prices ($10 screen ceiling). PPM: placements, #2308 order.
+- #2270: turn 1 reproduces the document reply (1 of 6) and the "which one" name misattributes; turn 2 on the TRUST floor failed 2 of 2 on debb7bef3b (one doubt, one false confession). All wait on z22. Pass line: the advisor's words x6 with no document reply and at least 3 of 6 giving feedback with a next step, gap B by name, turn 2 in Lead's wording x2. List-form ask (Lead's next unit). Gap C (armed read offer) is #2326, low.
+- #2321: row 5 no-list cap line needs `one todo at a time` (built in z22, PA reruns). Then close with rows 1 to 7 served.
+- #2322: guard and narrowing live; served-done row waits on #2325's reset (live, needs an admin caller, xian via Exec) or the Q8 account. Do not store done on a seat account.
+- #2324: wrong claim fixed on the analysis reply; "tomorrow" and "overdue by N days" and both days on every time reply are built or ruled, unserved.
+- #955: forget words ruled (back to the first-time question, "forgotten" only after a confirmed delete). Not in the 11-13 sprint.
+- #2219: #2313 (delete two named), floor-category ask. #2294: bulleted-list turn, plus PA's stray "2" floor reply with an invented "5 items". #2323 (spliced option, unclosed bold): not reproduced, stays open.
+- #2301: FAIL, waits on sprint item 12. #2314: name cut at "link". #2286: wizard step and consent page. #2287 row 2, #2295 "none" line.
+- Path A/B fresh-account run (invite hold lifts, HOST mints): also carries #2270's not-connected case.
+**Waiting on others:** Lead: z22 promotion, list-form ask, #2313, #2314. Arch: nothing owed. PA: reruns after promotion. xian via Exec: `fly auth login` (logs), an admin call for #2325, `clear_todos` flip (held), #2256. PPM: placements.
 **Dates:** Mon 11-09 12:00 sprint objection deadline (none from me); Mon 11-09 Mail v4 widens to every seat (`python3 scripts/mail4.py inbox --role cxo`; v3 works until 11-23); sprint starts Fri 11-13.
-**Lessons today:** judge only on quoted text and say so; a narrated question that nothing is armed to answer must not be asked; never drop a failure report to tidy a reply (`source_failed` never-drop); run `TZ=America/Los_Angeles date` before writing a log heading.
+**Lessons today:** read the newest report from the seat before ruling (my 19:50 passes rested on a report two later memos superseded); ask what is already built before ruling words, or two forms cross (#2321 N1); never ask for a permanent state on a seat account for one quote; do not rule on copy that claims behaviour Lead has not confirmed.
 
 
 # CXO carry-forward — updated 2026-10-07 22:2x (STOP); structure from the 10-05 22:2x STOP rewrite.

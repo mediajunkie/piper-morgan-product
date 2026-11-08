@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-11-07 06:35 PT (06:33 START; the current block is at the bottom, "Now").
+**Last rewritten**: 2026-11-07 21:34 PT (21:33 STOP; the current block is at the bottom, "Now").
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -598,33 +598,28 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: notion-offer-ask** (Filed 2026-11-01; to: exec; by: trigger: Web's #2238 served check passes). Send Exec the one-line "offer Notion in the beta: yes or no" for xian. CXO's card words come first.
   - **Rule from PDR-102:** when PPM places a connector-ingest unit, mail Arch the same day (his ADR trigger for C2).
 
-## Now (rewritten at the 11-06 21:33 STOP; carry into Sat 11-07)
+## Now (rewritten at the 11-07 21:33 STOP; carry into Sun 11-08)
 
-- **Invite hold (xian 11-04 19:31).** Re-verified 21:34 with `gh issue view`.
-  - Open P0s: #2261 (no activity since 11-05; waits on xian's #2174 runs) and #2282 (step 4 waits on xian's word for Web's sign-in check).
-  - #2292 (P1, xian's 15 minutes) is also before the next invite.
-- **The first two-week sprint (11-13 to 11-26)** is proposed in `docs/internal/planning/production-sprint-2-onboarding-proposal-2026-11-06.md` (13 named rows) and ratified at the 11-13 review. Objections to two-week sprints go to Exec by Mon 11-09 12:00. That window is xian's own and still open (Exec 16:57 corrected PPM). The weekly beats inside a sprint are GO and flex (xian, 11-07 16:49). The first closing review's day in Thanksgiving week (Fri 11-27 or Sat 11-28) is xian's; PPM gave Exec the facts.
-  - **State at 21:33:**
-    - Item 9 (#2271) is complete, and #2273 and #2272 are closed, so item 10's page half is done.
-    - #2302 closed.
-    - #2301 FAILs until its read lands (interim pulled).
-    - #2304 is built, held for rulings.
-    - #2311 builds now.
-    - #2314 is fixed on main, waiting on a served read.
-  - **Item 5: xian said GO on ADR-083 D5 (11-07 08:03, Exec 08:04).** Lead lands `claude/lead-adr083` through the gate; PA's served checks follow; then ordinal complete and delete are checked on the live site.
-  - **Return order if a slot frees:** #2312, #2314, #2309, #2269 3b, #2305, #2299, #2270.
-  - **Unconfirmed:** Lead's confirmation of the item 8 3a/3b split.
-  - **Pending xian at the review:** the #2157 drill candidate.
-- **Production 269** (`gh`, 21:34), map v105 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned. Filed and placed today: #2294–#2316, except #2296 (Ongoing) and #2298 (a duplicate, closed).
-- **OWED rows** (markers in `dev/2026/11/06/2026-11-06-0509-ppm-code-log.md`):
-  - ~~invite-hold-pdr~~ DONE 11-07 06:35: `PDR-008-invite-readiness.md` drafted and sent to Exec as a DECISION. xian approved P1–P3 at 08:03, so it's Accepted. When the six conditions are met, PPM sends Exec the lift-readiness memo (PDR-008 §3).
-  - **Open product question (Arch 17:52):** should a person be able to say "forget my clear preference"? It's PPM's and CXO's, and goes to CXO.
-  - **Fresh-account list (Q8, after the lift):** one account carries #2270's not-connected turn 1 and Path B's quote. #2322's stored-done row waits on whichever comes first: Arch's test-only reset (store done on a test account, then reset) or Q8. PPM's 17:52 go on web-pat-test was withdrawn at 17:53.
-  - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the hold lifts). This needs item 12's build (#2297, #2301) first.
+- **Invite hold, PDR-008 (Accepted 11-07, P1–P3 xian yes).** Re-verified 21:34 with `gh issue view`.
+  - Open: #2261 (waits on xian's #2174 runs), #2282 (its browser row waits on xian's word for Web's sign-in check), and #2292 (P1, xian's records).
+  - Met or closed: #1551, #2283, #2178.
+  - When all six are met, PPM sends Exec the lift-readiness memo (§3), each row with `Verified how:`.
+- **Sprint (11-13 to 11-26), ratified at the 11-13 review.** Objections to two-week sprints go to Exec by Mon 11-09 12:00; xian's window is still open. The Thanksgiving review day is xian's (PPM gave Exec the facts).
+  - **Item 5 (D5 GO):** both of #2318's rows pass on the live site (row 5 at 10 of 10, 1.5 s), and its close is CXO's. #2321 N1 passed on the live site (PA 20:18). Row 5's no-list cap line (`one {noun} at a time`) is built in gate z21, and PA reruns it after the 11-08 promotion. #2219 (×3) passed on the live site (CXO 20:50) but has other rows open. #2322's guard is live; its stored-done row waits on #2325's reset or Q8.
+  - **Item 8, #2270:** the handler (resolve, read, record, curated floor; router-hidden; ceiling 2) is in gate z21, out in the 11-08 first window (07:00 or later). A failed, unlisted `word/word` always asks. Turn 1 isn't claimed until CXO's list-form ask is built (Lead's next unit). CXO's pass line: the advisor's words ×6 with no document reply, gap B by name, and at least 3 of 6 replies giving feedback with a next step.
+  - 11-13 review candidates: #2320, #2319, #2321.
+- **Production 277** (`gh` 21:34 = Total), map v110 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned.
+  - Placed 11-07: #2317–#2326 (#2326 is the armed read offer, V, low).
+  - Closed 11-07: #2315 and #2316.
+- **#955 (clear preference):** in section T, not the sprint. The acceptance (8 rows) is on the issue. Its "forgotten" reply needs a read-back confirming the key is gone (Arch 20:26; row sharpened 20:30). #2325 (the admin reset) is validated on main, `0d6fe590e8`.
+- **OWED rows:**
+  - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift; needs #2297 and #2301).
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
+- **Fresh-account list (Q8, after the lift):** #2270's not-connected turn 1, Path B's quote, and possibly #2322's stored-done row.
 - **Waiting on others:**
-  - #2290 (Lead's middleware);
-  - #2270's corpus row and served check (Lead, PA; phrasing arrived 11-07);
+  - #2290 (Lead);
+  - #2320's per-phase log (Lead);
+  - #2324's date build, plus gap A ("overdue") and "tomorrow" (Lead, CXO's words);
   - mail v4 for every seat, Mon 11-09.
 - **Still carried:** #2242's last row (xian's remove and re-add); #2235; #1680; PDR-102 C1–C8 checks on document-touching placements.

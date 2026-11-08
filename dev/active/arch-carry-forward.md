@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-06 21:32 PST (STOP)
+last_updated: 2026-11-07 21:28 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,17 +28,32 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
-- **11-06 STOP (21:27 fire).** Main green 12/12. Alpha/beta serves `0af6078171` (run 42339059907). Every ruling today is in decisions.log, 05:27 to 21:33. ADR-082 ACCEPTED (05:27).
-  - **ADR-083 D5 (PROPOSED):** waits for xian's explicit go or veto through Exec (rollup v867, Exec recommends go). It's not a timed window, and silence is not a yes. On go: Lead promotes, then PA runs the served ordinal checks ("complete the second one", "delete the first two"). The D1–D3 screen FAILED; the D5 screen PASSED (1 REVIEW row, sentinels 6/6, $1.42).
-  - **#2315 (d48653f307):** diff read; it meets 17:52. Not on origin/main at 21:31 (Lead's gate was running). **Validate from main on the next fire**, then served on alpha after the 07:00 window. Still for Lead to build: CXO 21:05, one-or-both for identical copies with no list on the router path.
-  - **#2316 (filed 21:30):** a name answer that contains a number binds the number; on complete it writes. Mechanism ruled: if the name reading and the position/label reading bind different candidates, re-ask once. Lead builds, CXO writes the words. Validate on landing.
-  - **The 'new project' literal:** a ruled survivor (15:44). Revisit on an armed #1856 run without it.
-  - **#2314's cut name:** Lead's args row (corpus 625) first. Rule between a description change and accepting the miss only after a screen.
-  - **#1527 standing alias rule (15:59):** Lead adds an alias without asking if it meets the rule's conditions. "delete review prs" → delete_pull_requests is not an alias case (21:33).
-  - **#1855/#2311 seam:** widened. CXO's two shapes are served. An undashed narrated ask is D5's class (#2042).
-  - **#2042 (3):** the floor-eval fixture is still unbuilt (that issue's own item). #2305 → PPM's placement.
-  - **#2219 / #2294:** CXO holds both until the #2315 rows and the bulleted-list row are served.
-  - **Lesson (11-06):** read the unit pins before approving a literal (14:29 GO withdrawn). Check the #1855 seam before saying no output lever exists (memory updated). Re-score from the target field, not the phrasing. Stamps ran ahead twice more today (15:44 and 21:33): **copy the minute from `date` right before writing.**
+- **11-07 STOP (21:27 fire).** Main green 12/12. Alpha/beta last served `f9b4c737f7` (N1 words, #2325 reset). Every ruling today is in decisions.log, 06:30 to 20:50.
+  - **Shipped and validated today:**
+    - ADR-083 D5 is ACCEPTED (xian's go 08:04) and served. The D5 ceiling is FINAL at 1.5 s (10 of 10 bound, CXO's bar); the log confirmation was dropped.
+    - #2320 STRUCTURED filter profile (Tier 1 only for inversion_routing, todo_selection and milestone_resolution), pinned set, ceiling 2 hidden: validated and proven served.
+    - #2322 guard (a set of more than one never auto-applies in the #1605 tree) and #1605 narrowing ("clear todo 2" binds line 2 from the recorded list): validated.
+    - #2321 (d), the todos-or-reminders choice; reminders-with-none; the no-list grouping; N1 words: served PASS.
+    - #2324 date line and #2325 reset (one `forget_verified_inference`): validated.
+  - **#2270 (sprint item 8), owed on landing:** Lead's handler (c76d7a7f70, 27f42eb2b3, 700d7ff874; gates z20–z22). It goes out in 11-08's first window (07:00 or later). On landing, validate against:
+    - **20:14:** resolve via #1641, read one repo, record_read after that read, curated floor; `router_visible=False`;
+    - **20:26 ratchet:** ceiling 2, exit #2149, a landing pin, a docstring note;
+    - **20:38:** a failed, unlisted word/word always asks;
+    - **20:50:** a code-rendered "Looking at {repo}, your default repository." when the person named none.
+    - The gather record (6540fa6787) stays retired.
+    - **PA's pass line:** the advisor's words ×6 with no document reply and at least 3 of 6 giving feedback with a next step; gap B by name; turn 2 in Lead's wording ×2, with no recanting.
+  - **#2322 (P1, open):** the served stored-done row now runs on a test account via the #2325 reset (store done, run `clear todo 2`, reset). It closes on that plus the pins.
+  - **#955 forget (PPM places; not this sprint):** one deletion path; the next ask is the first-time question; no confirm. Condition: say "forgotten" only after a read-back.
+  - **Rulings made, builds pending (Lead):**
+    - #2324: "now overdue" on every milestone render; the time reply carries both days.
+    - #2321: reminders-with-none.
+    - #2326: armed read offer (gap C), Backlog.
+  - **Correction on record:** 19:38's #2270 turn-2 "served" was wrong (a different route); corrected 19:40, and the memory was updated.
+  - **xian:** `fly auth login` (Lead's log capture) is no longer needed for D5.
+  - **Lessons (11-07):**
+    - I cited stamps I hadn't read back three times (17:53, 17:55, 19:41) and wrote "x" minutes twice; copy the STAMP echo into the memo.
+    - Read the route stamp before counting a served pass.
+    - Read the approval's own bound before setting a number (3.0 s overreached xian's 2.5 s; memory saved).
 - **11-05 STOP block, carried** (not re-verified tonight beyond the 06:27 START check):
   - **Invite hold (PPM):**
     - met: #1551, #2283, #2178;

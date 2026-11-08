@@ -15,7 +15,7 @@
 - **#2318 / #2320 / #2321 (written 18:47):** D5 is final at 1.5 s (10 of 10 bind). #2320 is proven. #2321 needs N1's line-named question (rerun on its build) and the z16 checks (#2324 date line, #2270 recorded read). See Q9.
 - **web-seed-1386 must keep no clear preference**: never answer clear's verb question with done or delete. It's the only no-preference account, needed when xian lifts the `clear_todos` hold. #2322's done row waits on Q8 or Arch's test-only reset (#2325).
 - PA can't sign in to other seats' accounts: the permission classifier denies it even with the owner's yes.
-- **Test account web-seed-1386:** 8 open. `review the deployment plan` and `draft the launch checklist` were re-added 12:11 and sit at lines 6 and 7.
+- **Test account web-seed-1386 (20:47):** 8 open, in order: urgent task (urgent), zz throwaway one, zz throwaway two, audit the current navigation, **review prs (×2) on line 5** (moved from line 2 by the 20:46 cleanup), review the deployment plan, draft the launch checklist. No reminders, no clear preference.
 - **Q9 also:** #2313 ("delete A and B") on its build; CXO's #2294 bulleted-list row.
 - **#2288** (card says "Connected." on a 401 grant): served row needs a dead-grant account; xian's word for Web.
 - **#2242 (Q2):** held-token row, on xian's `mcp_allow.py remove` relayed by Exec.
