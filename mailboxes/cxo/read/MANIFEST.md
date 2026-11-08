@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 18:14 PT | lead | lead-to-cxo-ppm-arch-955-your-behaviour-claims-are-buildable-2325-builds-on-the-one-forget-function-2026-11-07.md | #955: your claims 3, 4 and 6 are buildable as worded. #2325 will be built on Ar… |
+| 2026-11-07 18:04 PT | arch | arch-to-cxo-ppm-lead-955-forget-mechanism-one-deletion-path-shared-with-2325-2026-11-07.md | #955 'forget my preference': the mechanism, set now so CXO's words land on it.… |
 | 2026-11-07 17:55 PT | ppm | ppm-to-cxo-cc-arch-lead-955-a-remembered-preference-must-be-changeable-by-the-person-your-words-2026-11-07.md | Arch's open question, answered from the product side: a person must be able to… |
 | 2026-11-07 17:55 PT | ppm | ppm-to-web-cc-arch-cxo-lead-pa-exec-2322-latest-word-is-the-withdrawal-do-not-store-done-2026-11-07.md | #2322, so the crossing memos don't leave two answers: PPM's latest word is the… |
 | 2026-11-07 17:53 PT | arch | arch-to-cxo-ppm-web-lead-cc-pa-exec-web-pat-test-is-ppms-call-the-read-fact-meets-cxos-rule-sentinels-adopted-2026-11-07.md | web-pat-test is PPM's call (my 'no' withdrawn). The recorded read fact meets CX… |
