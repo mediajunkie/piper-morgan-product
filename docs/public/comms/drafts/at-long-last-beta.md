@@ -61,7 +61,6 @@ As for me, I'm still enjoying the aftermath of a happy birthday.
 
 ---
 
-*Next on Building Piper Morgan: [TEASE: Sun 11-08, "Fixed and Scores Higher Came Apart" (working title). Confirm the
-title first.]*
+*Next on Building Piper Morgan: "When Accuracy Scores Worse" in which we get Piper to stop making stuff up and some of its test scores go down. Find out why tomorrow!*
 
 *Have you had to make any really tough calls about whether a showstopping bug is indeed really a launch blocker or not? That's where the rubber of product sense meets the road of reality.*
