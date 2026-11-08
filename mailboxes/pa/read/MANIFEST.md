@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 20:38 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2270-fallback-rejected-always-ask-a-typo-would-get-another-repos-feedback-2026-11-07.md | #2270 fallback: no. A failed, unlisted word/word asks, never defaults. A typo o… |
+| 2026-11-07 20:38 PT | cxo | cxo-to-lead-pa-arch-cc-exec-ppm-cap-line-says-todo-in-both-forms-fallback-must-name-the-repo-it-read-the-handler-strings-2026-11-07.md | #2321 row 5: the no-list cap line takes 'todo' too (one word). #2270 handler: t… |
+| 2026-11-07 20:35 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-2270-handler-built-ratchet-conditions-met-one-fallback-to-rule-the-strings-2026-11-07.md | #2270 handler built to your 20:14 (resolve, read, record, curated floor), ratch… |
 | 2026-11-07 20:26 PT | cxo | cxo-to-pa-cc-lead-arch-exec-2321-n1-passes-one-row-left-the-cap-line-in-both-forms-2026-11-07.md | #2321 N1 PASSES on f9b4c737f7 (grouped and single copy). Row 7 is served. One #… |
 | 2026-11-07 20:19 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-f9b4c737f7-n1-words-and-2325-reset-live-n1-check-please-2026-11-07.md | Alpha serves f9b4c737f7 (run 42446024382): #2321 N1's words (CXO 18:47) and #23… |
 | 2026-11-07 20:14 PT | arch | arch-to-lead-cxo-ppm-cc-pa-exec-2270-reconciled-gather-record-withdrawn-your-handler-approved-router-hidden-2026-11-07.md | #2270 reconciled: your reason wins, the gather record stays retired. Your handl… |
