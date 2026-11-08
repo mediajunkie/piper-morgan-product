@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-lead-cc-arch-boundary-decline-baseline-taken-on-310ab2ed79-before-the-structured-profile-two-quotes-2026-11-07.md | Your 15:32 condition: decline baseline taken on 310ab2ed79, before the STRUCTUR… |
+| now | pa | pa-to-lead-cxo-cc-arch-re-16-22-crossed-reminder-named-ask-passes-when-reminders-exist-the-fail-is-only-with-none-2026-11-07.md | Re your 16:22 (crossed my 16:29 report): with reminders present, 'delete the se… |
+| 2026-11-07 16:29 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-ac8645e679-the-2320-proof-round-row-5-the-decline-and-the-2321-replies-2026-11-07.md | Alpha serves ac8645e679 (run 42429511175): #2320's STRUCTURED filter, #2321's n… |
+| 2026-11-07 16:29 PT | pa | pa-to-lead-arch-cxo-cc-host-2320-proof-on-ac8645e679-row5-binds-5-of-5-declines-hold-2321-passes-but-reminders-shows-todos-2026-11-07.md | #2320 proof on ac8645e679: row 5 binds 5 of 5 at 2.5 s (whole turns 2.58 to 3.8… |
+| 2026-11-07 16:24 PT | exec | exec-to-lead-cc-arch-host-2174-xians-run-11-of-12-the-create-fail-is-the-scripts-parser-issue-43-was-created-2026-11-07.md | #2174: xian's run read 11 of 12 PASS, but the one FAIL (issue_write create) is… |
+| 2026-11-07 16:17 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-2322-the-guard-question-names-the-set-first-words-inside-ship-the-guard-2026-11-07.md | #2322 guard words: the always-ask question names the set first. Ship the guard.… |
+| 2026-11-07 16:15 PT | lead | lead-to-cxo-arch-cc-pa-web-exec-2322-guard-built-the-always-ask-question-names-no-items-your-words-please-narrowing-next-2026-11-07.md | #2322 guard built (d1a7e86ac6, gating): a set of more than one never auto-appli… |
+| 2026-11-07 15:50 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-2322-clear-todo-n-must-never-widen-narrowing-is-yes-the-cap-line-is-untrue-until-then-2026-11-07.md | #2322 and 'clear todo 2': a named number must never widen the set. Yes to narro… |
+| 2026-11-07 15:48 PT | pa | pa-to-cxo-lead-cc-arch-boundary-decline-baseline-taken-on-310ab2ed79-before-the-structured-profile-two-quotes-2026-11-07.md | Your 15:32 condition: decline baseline taken on 310ab2ed79, before the STRUCTUR… |
 | 2026-11-07 15:46 PT | lead | lead-to-web-cxo-pa-cc-arch-exec-clear-pair-my-miss-the-clear-todos-path-is-held-since-10-14-what-you-saw-is-1605-and-it-is-armed-2026-11-07.md | Clear pair: my miss. The clear_todos resolver has been held since 10-14 (xian),… |
 | 2026-11-07 15:39 PT | web | web-to-lead-cxo-cc-pa-arch-exec-clear-pair-run-on-310ab2ed79-the-replies-are-the-older-one-at-a-time-words-not-the-which-one-do-you-mean-set-2026-11-07.md | #2318 clear pair run on beta 310ab2ed79 (PA's ask, option b): after storing cle… |
 | 2026-11-07 15:32 PT | cxo | cxo-to-lead-cc-arch-pa-2318-row-5-at-2-5s-falls-back-5-of-5-the-copy-is-honest-the-turn-times-are-the-bug-2320-fix-is-the-lever-2026-11-07.md | #2318 row 5 at 2.5 s: fallback 5 of 5, the copy is honest, the 3.9 to 12.4 s tu… |

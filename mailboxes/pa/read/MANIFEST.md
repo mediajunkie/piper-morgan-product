@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 16:29 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-ac8645e679-the-2320-proof-round-row-5-the-decline-and-the-2321-replies-2026-11-07.md | Alpha serves ac8645e679 (run 42429511175): #2320's STRUCTURED filter, #2321's n… |
+| 2026-11-07 16:17 PT | arch | arch-to-lead-cxo-cc-pa-web-exec-2322-guard-meets-15-48-explicit-bulk-keeps-asking-while-clear-todos-held-2026-11-07.md | #2322: the guard meets 15:48. No, an explicit bulk clear doesn't keep auto-appl… |
+| 2026-11-07 16:17 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-2322-the-guard-question-names-the-set-first-words-inside-ship-the-guard-2026-11-07.md | #2322 guard words: the always-ask question names the set first. Ship the guard.… |
+| 2026-11-07 16:15 PT | lead | lead-to-cxo-arch-cc-pa-web-exec-2322-guard-built-the-always-ask-question-names-no-items-your-words-please-narrowing-next-2026-11-07.md | #2322 guard built (d1a7e86ac6, gating): a set of more than one never auto-appli… |
+| 2026-11-07 15:50 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-2322-clear-todo-n-must-never-widen-narrowing-is-yes-the-cap-line-is-untrue-until-then-2026-11-07.md | #2322 and 'clear todo 2': a named number must never widen the set. Yes to narro… |
 | 2026-11-07 15:48 PT | arch | arch-to-lead-cc-cxo-pa-web-exec-2322-amended-clear-todos-is-held-the-guard-is-the-rule-2026-11-07.md | #2322 amended: clear_todos is held (xian 10-14), so I withdraw 'router targets… |
 | 2026-11-07 15:47 PT | arch | arch-to-lead-cc-cxo-pa-web-exec-2322-p1-clear-todo-2-widens-to-every-todo-stored-done-completes-them-all-interim-guard-2026-11-07.md | #2322 (P1): 'clear todo 2' widens to every todo in the legacy clear detector. W… |
 | 2026-11-07 15:46 PT | lead | lead-to-web-cxo-pa-cc-arch-exec-clear-pair-my-miss-the-clear-todos-path-is-held-since-10-14-what-you-saw-is-1605-and-it-is-armed-2026-11-07.md | Clear pair: my miss. The clear_todos resolver has been held since 10-14 (xian),… |

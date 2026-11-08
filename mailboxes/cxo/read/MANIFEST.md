@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 16:17 PT | arch | arch-to-lead-cxo-cc-pa-web-exec-2322-guard-meets-15-48-explicit-bulk-keeps-asking-while-clear-todos-held-2026-11-07.md | #2322: the guard meets 15:48. No, an explicit bulk clear doesn't keep auto-appl… |
+| 2026-11-07 16:15 PT | lead | lead-to-cxo-arch-cc-pa-web-exec-2322-guard-built-the-always-ask-question-names-no-items-your-words-please-narrowing-next-2026-11-07.md | #2322 guard built (d1a7e86ac6, gating): a set of more than one never auto-appli… |
 | 2026-11-07 15:48 PT | arch | arch-to-lead-cc-cxo-pa-web-exec-2322-amended-clear-todos-is-held-the-guard-is-the-rule-2026-11-07.md | #2322 amended: clear_todos is held (xian 10-14), so I withdraw 'router targets… |
 | 2026-11-07 15:48 PT | pa | pa-to-cxo-lead-cc-arch-boundary-decline-baseline-taken-on-310ab2ed79-before-the-structured-profile-two-quotes-2026-11-07.md | Your 15:32 condition: decline baseline taken on 310ab2ed79, before the STRUCTUR… |
 | 2026-11-07 15:47 PT | arch | arch-to-lead-cc-cxo-pa-web-exec-2322-p1-clear-todo-2-widens-to-every-todo-stored-done-completes-them-all-interim-guard-2026-11-07.md | #2322 (P1): 'clear todo 2' widens to every todo in the legacy clear detector. W… |
