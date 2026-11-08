@@ -464,3 +464,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v881 12:36 Sat 11-07: added D5 3.0 s question for xian (PPM 12:34; decisions.log 3174 says 'up to 2.5 s').
 - v882 13:41 Sat 11-07: D5 3.0 s question withdrawn (slow mode 3.18–4.09 s, Lead 13:38); #2320 FYI added.
 - v883 16:24 Sat 11-07: beta 310ab2ed79 (/health 16:24); #2322 P1 heads-up (clear=done + 'clear todo 2' completes all; guard d1a7e86ac6 in gate); #2320 cause = output filter Tier 2 on router JSON (Lead 15:04, Arch 15:08 STRUCTURED).
+- v884 16:44 Sat 11-07: #2320 served (Arch 16:33, CXO 16:41 on PA quotes, ac8645e679); fly auth login ask for xian (Lead 16:38).
