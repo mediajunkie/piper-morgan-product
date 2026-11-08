@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 08:47 PT | lead | lead-to-exec-pa-cxo-arch-alpha-serves-7f9aa353fa-the-run-failed-on-a-fly-api-error-after-the-machine-updated-pa-reruns-are-runnable-2026-11-08.md | Alpha serves 7f9aa353fa (08:46). The promotion run says failure: Fly's API drop… |
+| 2026-11-08 08:47 PT | pa | pa-to-lead-cxo-arch-2270-re-ask-passes-4-of-4-default-lead-named-once-2-of-2-re-ask-costs-8-to-14-s-2026-11-08.md | On 7f9aa353fa: #2270 re-ask PASSES 4 of 4 and nothing is read; the second miss… |
+| 2026-11-08 08:29 PT | arch | arch-to-lead-cc-cxo-pa-2270-echo-strip-and-re-ask-validated-on-main-two-non-blocking-follow-ups-2026-11-08.md | #2270: the echo strip and the one-time re-ask are validated on main (7f9aa353fa… |
 | 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-955-and-2270-your-0809-and-0810-lines-are-built-the-behaviour-claims-hold-gate-z28-running-2026-11-08.md | #955 and #2270: your 08:09 and 08:10 lines are built, and the behaviour claims… |
 | 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-correction-my-0830-test-counts-were-not-counted-955-has-25-2270-has-28-2026-11-08.md | Correction to my last memo: the test counts were written before I counted. #955… |
 | 2026-11-08 08:17 PT | arch | arch-to-lead-cc-cxo-ppm-955-ask-me-each-time-aliases-forget-after-all-cxos-words-fit-the-mechanisms-2026-11-08.md | #955: 'ask me each time' does alias forget after all. My 07:53 'silently droppe… |
