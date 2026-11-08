@@ -3818,6 +3818,20 @@ def register_default_workflows() -> None:
         ),
         # CXO 11-08 08:09: the set aliases' yes/no, from the stored key and target.
         write_ask=_change_preference_write_ask,
+        # Arch 11-08 13:56: set-directly always asks (a clear set alias can be named
+        # for another verb's words; the ask names the stored verb before any write).
+        consent_tightening_actions=frozenset(
+            {
+                "set_clear_preference_done",
+                "set_clear_preference_delete",
+                "set_handle_preference_done",
+                "set_handle_preference_delete",
+                "set_take_care_of_preference_done",
+                "set_take_care_of_preference_delete",
+                "set_reset_preference_done",
+                "set_reset_preference_delete",
+            }
+        ),
     )
 
     # #1333 (Arch-ruled 2026-06-30): the former per-action unwired-write registration

@@ -626,6 +626,10 @@ class WorkflowEntry:
     # #955 (Arch 11-08 08:05): this entry's aliases that narrow what Piper does
     # unasked; each must be on CONSENT_NARROWING_ALLOWLIST (checked below).
     consent_narrowing_actions: frozenset = frozenset()
+    # #955 (Arch 11-08 13:56): this entry's aliases that always get the consent check,
+    # in every framing (PROCEED becomes COLLABORATE). Tightening only adds a check, so
+    # no allowlist; it is declared on the entry, never inferred.
+    consent_tightening_actions: frozenset = frozenset()
 
     def __post_init__(self) -> None:
         """Reject an unrepresentable flip declaration LOUDLY, at construction.

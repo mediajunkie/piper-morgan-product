@@ -284,9 +284,9 @@ async def test_landing_pin_the_routers_none_does_not_floor_the_hidden_entry(mem_
     finally:
         il.publish_live_route_provenance(None)
     assert floored == []
-    # An execute-framed ask (consent PROCEED). The forget asks frame AMBIGUOUS and meet
-    # the consent check, which forget proceeds past (Arch 08:05; pinned below).
-    assert result.message.startswith('Okay. From now on "clear" means mark it done.')
+    # The hidden entry handled it (not the floor): set-directly always asks (Arch 13:56),
+    # naming the stored verb, with no execute-mode teaching line (it would not skip it).
+    assert result.message == 'Change "clear" from delete it to mark it done? (yes/no)'
 
 
 # ── Arch 11-08 07:53 (3): the standing classifier miss completes nothing ───────
@@ -651,3 +651,108 @@ async def test_a_clear_set_never_writes_another_verb(mem_prefs, handler, action)
     result = await handler(_intent(action), "wf")
     assert result.message == pc.NOTHING_STORED_LINE
     assert calls["saves"] == before
+
+
+# ── Arch 11-08 13:56: set-directly always asks, in every framing ──
+
+
+async def _service_for(monkeypatch, turns):
+    """One IntentService whose classifier answers each message from ``turns``."""
+    from types import SimpleNamespace
+    from unittest.mock import patch
+
+    from services.intent.intent_service import IntentService
+    from services.intent_service import conversational_floor as cf
+    from services.intent_service.classifier import IntentClassifier
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    register_default_workflows()
+
+    async def _floor(self, ctx):
+        raise AssertionError("floored")
+
+    monkeypatch.setattr(cf.ConversationalFloor, "respond", _floor)
+
+    class _NoLLM:
+        def __getattr__(self, name):
+            raise AssertionError(f"LLM touched ({name})")
+
+    with patch("services.intent.intent_service.LearningHandler"):
+        with patch("services.intent.intent_service.ConversationKnowledgeGraphIntegration"):
+            svc = IntentService(intent_classifier=IntentClassifier(llm_service=_NoLLM()))
+
+    async def _classify_multiple(msg, context=None, user_id=None, session_id=None):
+        category, action = turns[msg]
+        intent = Intent(
+            category=category,
+            action=action,
+            original_message=msg,
+            confidence=0.95,
+            context={"original_message": msg},
+        )
+        return SimpleNamespace(
+            intents=[intent],
+            is_multi_intent=False,
+            has_greeting=False,
+            has_substantive_intent=True,
+            primary_intent=intent,
+            secondary_intents=[],
+        )
+
+    monkeypatch.setattr(svc.intent_classifier, "classify_multiple", _classify_multiple)
+    return svc
+
+
+_TURNS = {
+    "make clear mean delete": (IntentCategory.QUERY, "set_clear_preference_delete"),
+    "make take care of mean mark it done": (IntentCategory.QUERY, "set_clear_preference_done"),
+    "yes": (IntentCategory.CONVERSATION, "small_talk"),
+    "no": (IntentCategory.CONVERSATION, "small_talk"),
+}
+
+
+async def test_an_execute_framed_set_now_asks_and_yes_sets_it(mem_prefs, monkeypatch):
+    from services.intent_service.collaboration_gate import FRAMING_EXECUTE, classify_framing
+
+    assert classify_framing("make clear mean delete") == FRAMING_EXECUTE
+    await _stored(_CLEAR, VALUE_COMPLETE)
+    svc = await _service_for(monkeypatch, _TURNS)
+    asked = await svc.process_intent("make clear mean delete", session_id="t1", user_id=_USER)
+    assert asked.message == 'Change "clear" from mark it done to delete it? (yes/no)'
+    assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == VALUE_COMPLETE
+    done = await svc.process_intent("yes", session_id="t1", user_id=_USER)
+    assert done.message.startswith('Okay. From now on "clear" means delete it.')
+    assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == VALUE_DELETE
+
+
+async def test_no_changes_nothing(mem_prefs, monkeypatch):
+    await _stored(_CLEAR, VALUE_COMPLETE)
+    svc = await _service_for(monkeypatch, _TURNS)
+    await svc.process_intent("make clear mean delete", session_id="t2", user_id=_USER)
+    declined = await svc.process_intent("no", session_id="t2", user_id=_USER)
+    assert "won't change it" in declined.message
+    assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == VALUE_COMPLETE
+
+
+async def test_cxo_row_4_with_clear_stored_names_clear_and_no_leaves_it(mem_prefs, monkeypatch):
+    """The classifier sends 'make take care of mean mark it done' to the CLEAR set
+    alias (x6). With clear stored, the ask names "clear" first; 'no' leaves it."""
+    await _stored(_CLEAR, VALUE_DELETE)
+    svc = await _service_for(monkeypatch, _TURNS)
+    asked = await svc.process_intent(
+        "make take care of mean mark it done", session_id="t3", user_id=_USER
+    )
+    assert asked.message.endswith('Change "clear" from delete it to mark it done? (yes/no)')
+    await svc.process_intent("no", session_id="t3", user_id=_USER)
+    assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == VALUE_DELETE
+
+
+async def test_every_set_alias_is_tightening_and_no_forget_is():
+    from services.intent_service.workflow_dispatcher import get_action_workflows
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    register_default_workflows()
+    entry = get_action_workflows()["change_remembered_preference"]
+    sets = {a for a, c in pc.CHANGE_BY_ACTION.items() if c in (pc.CHANGE_DONE, pc.CHANGE_DELETE)}
+    assert entry.consent_tightening_actions == sets
+    assert not (entry.consent_tightening_actions & entry.consent_narrowing_actions)

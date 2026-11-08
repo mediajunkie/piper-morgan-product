@@ -498,7 +498,7 @@ def _summary_for(intent) -> str:
     return summary
 
 
-def build_consent_check_offer(intent, words) -> ConsentCheckOffer:
+def build_consent_check_offer(intent, words, *, teach: bool = True) -> ConsentCheckOffer:
     """Build the consent-check turn for a held WRITE-effect rail action.
 
     ``words`` (#2304) are the op's own ``write_confirm_words.ConfirmWords``, from
@@ -525,11 +525,17 @@ def build_consent_check_offer(intent, words) -> ConsentCheckOffer:
 
     summary = words.summary
     # CXO 11-06: the teaching line first, the yes/no question last.
+    # #955 (Arch 11-08 13:56): ``teach=False`` for an action that always asks (a
+    # consent-tightening action): execute mode would not skip it, so the line
+    # would promise what doesn't happen.
     question = (
-        "(If you'd rather I just act on requests like this without checking, "
-        'say "just do things directly from now on.")\n\n'
-        f"{words.question}"
-    )
+        (
+            "(If you'd rather I just act on requests like this without checking, "
+            'say "just do things directly from now on.")\n\n'
+        )
+        if teach
+        else ""
+    ) + f"{words.question}"
     return ConsentCheckOffer(
         question=question,
         offer={
