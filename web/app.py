@@ -385,6 +385,12 @@ RouterInitializer.mount_router(
     "router",
     "Admin Invites API",  # Issue #2081
 )
+RouterInitializer.mount_router(
+    app,
+    "web.api.routes.admin_test_preferences",
+    "router",
+    "Admin test-account preference reset",  # Issue #2325
+)
 
 # Phase 3: Mount extracted route modules (Issue #385 - INFR-MAINT-REFACTOR)
 # Previously: Inline routes scattered throughout web/app.py

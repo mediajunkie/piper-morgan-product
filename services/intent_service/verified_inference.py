@@ -224,6 +224,69 @@ async def store_verified_inference(
         return False
 
 
+class ForgetOutcome(str, Enum):
+    """What ``forget_verified_inference`` did. ``FAILED`` is never ``NOTHING_STORED``:
+    a read or write that failed says so (the #2151 rule, a failed source is not an
+    empty one), so a caller never tells a person "forgotten" or "nothing to forget"
+    on a store it could not read."""
+
+    FORGOTTEN = "forgotten"
+    NOTHING_STORED = "nothing_stored"
+    FAILED = "failed"
+
+
+@dataclass(frozen=True)
+class ForgetResult:
+    outcome: ForgetOutcome
+    # The record that was removed (FORGOTTEN), or the record still stored when the
+    # write failed after a successful read (FAILED); None otherwise. CXO's #955 replies
+    # name its value ("I've forgotten that "clear" means {X}").
+    record: Optional[Dict[str, Any]] = None
+
+
+async def forget_verified_inference(user_id: Optional[str], key: str) -> ForgetResult:
+    """Delete one verified inference, so the next ask is the first-time question.
+
+    The ONE deletion path (Arch, #955/#2325, decisions.log 2026-11-07 18:03): the
+    admin test-account reset (#2325) and the person-facing forget (#955) both call
+    this, each with its own gate; neither writes ``users.preferences`` any other way.
+    Deleting the row, not storing a default, is the ruling: forget returns to asking.
+    """
+    if not user_id or not key:
+        return ForgetResult(ForgetOutcome.FAILED)
+    from services.intent_service.collaboration_gate import (
+        _load_preferences,
+        _save_preference,
+    )
+
+    try:
+        store = dict(
+            (await _load_preferences(str(user_id))).get(VERIFIED_INFERENCES_PREF_KEY) or {}
+        )
+    except (
+        Exception
+    ) as e:  # silent-ok: FAILED is surfaced to the caller, never read as "nothing stored"
+        logger.warning(
+            "verified_inference_forget_read_failed user_id=%s key=%s error=%s", user_id, key, e
+        )
+        return ForgetResult(ForgetOutcome.FAILED)
+    record = store.pop(str(key), None)
+    if not isinstance(record, dict):
+        return ForgetResult(ForgetOutcome.NOTHING_STORED)
+    try:
+        saved = await _save_preference(str(user_id), VERIFIED_INFERENCES_PREF_KEY, store)
+    except (
+        Exception
+    ) as e:  # silent-ok: FAILED is surfaced to the caller with the record still stored
+        logger.warning(
+            "verified_inference_forget_write_failed user_id=%s key=%s error=%s", user_id, key, e
+        )
+        saved = False
+    if not saved:
+        return ForgetResult(ForgetOutcome.FAILED, record)
+    return ForgetResult(ForgetOutcome.FORGOTTEN, record)
+
+
 async def get_meta_mode(user_id: Optional[str]) -> VerificationMetaMode:
     """The user's verification-process meta-preference; DEFAULT when unset,
     unknown, or on storage error (fail-safe: the ruled read-back behavior)."""
