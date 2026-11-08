@@ -8,13 +8,13 @@
 
 ---
 
-## Now (written 2026-11-08 14:42; replace, don't annotate)
+## Now (written 2026-11-08 15:22; replace, don't annotate)
 
-- **Served:** beta `98b95c80c0` (z33, 14:35); MCP `/health` 200. Read the live sha from `/health`, not from here. Next: z34 (set-always-asks, `392875ebe9`), with its own push and promotion.
+- **Served:** beta `8677aa05f5` (z34, 15:19); MCP `/health` 200. Read the live sha from `/health`, not from here. Next: z35 (`3125937733`, CXO's set-flavoured line 4).
 - **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta** (`dev/2026/11/06/turn.py`, run from the dated dir).
 - **11-08 served:** #2321, #2324 and #2270 closed (CXO 13:44). #955 on z33 (14:36–14:40): the handle forget, re-ask and set-done pass, and row 4 (take care of stored, clear not) writes nothing.
-- **#955 (Q11) owed on z34:** row 4 with clear stored (seed clear = delete on a disposable, expect the ask naming "clear", `no`, then forget clear and quote the clear re-ask), plus `make clear mean delete` asking. #2330 (take care of by name) is low and CXO's.
-- **web-seed-1386 is fully fresh** (14:40): no clear, handle or take-care-of preference stored. Never answer clear's verb question with done or delete except Q11's forget-ended run. #2322's done row waits on Q8.
+- **#955 (Q11):** z33 and z34 rows all pass (14:36–15:21). Only owed: quote the set-flavoured line 4 on z35 (`make clear mean delete` with nothing stored; it writes nothing). #2330 (take care of by name) is low and CXO's.
+- **web-seed-1386 is fully fresh** (15:21): no clear, handle or take-care-of preference stored. Never answer clear's verb question with done or delete except Q11's forget-ended run. #2322's done row waits on Q8.
 - PA can't sign in to other seats' accounts: the permission classifier denies it even with the owner's yes.
 - **Test account web-seed-1386 (21:47):** 8 open, in order: urgent task (urgent), zz throwaway one, zz throwaway two, audit the current navigation, **review prs (×2) on line 5**, review the deployment plan, draft the launch checklist. No reminders, no clear preference.
 - **Q9 also:** #2313 ("delete A and B") on its build; CXO's #2294 bulleted-list row.

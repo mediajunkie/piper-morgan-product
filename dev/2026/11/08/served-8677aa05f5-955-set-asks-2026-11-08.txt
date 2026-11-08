@@ -1,0 +1,87 @@
+# #955 on 8677aa05f5 (z34: set-always-asks), web-seed-1386, PA. Lead 15:19 script: seed clear = delete on a disposable; row 4 with clear stored (ask names clear, no); make clear mean mark it done asks, yes -> line 5; forget clear; clear re-asks. Each write on its own disposable. Stop on a failed forget.
+
+--- [15:19:33, 8677aa05f5, http 200, 4.68 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. zz throwaway one
+3. zz throwaway two
+4. audit the current navigation
+5. review prs (×2)
+6. review the deployment plan
+7. draft the launch checklist
+
+--- [15:19:38, 8677aa05f5, http 200, 3.98 s] route execution/create_todo
+USER: add a todo: zz 955 c1
+PIPER: I've added that to your list. 'zz 955 c1' is now tracked. Let me know if you want to adjust anything.
+
+--- [15:19:49, 8677aa05f5, http 200, 10.58 s] route execution/complete_todo
+USER: clear the zz 955 c1 todo
+PIPER: Before I touch "zz 955 c1" — when you say 'clear' on a todo, do you want me to mark it done, or delete it? I'll remember for next time. Say "forget my clear preference" to undo that.
+
+--- [15:19:58, 8677aa05f5, http 200, 0.26 s] route execution/clear_reminders_delete
+USER: delete it
+PIPER: You've set 'clear' to mean delete — delete this todo? (yes/no)
+
+--- [15:19:59, 8677aa05f5, http 200, 0.29 s] route execution/clear_reminders_delete
+USER: yes
+PIPER: Deleted 1 todo:
+• zz 955 c1
+
+# Row 4 with clear stored (new session)
+
+--- [15:20:09, 8677aa05f5, http 200, 9.25 s] route query/set_clear_preference_done
+USER: make take care of mean mark it done
+PIPER: Change "clear" from delete it to mark it done? (yes/no)
+
+--- [15:20:16, 8677aa05f5, http 200, 0.24 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay. I won't change it.
+
+# Execute framing: make clear mean mark it done (new session) asks; yes -> line 5
+
+--- [15:20:23, 8677aa05f5, http 200, 6.92 s] route query/set_clear_preference_done
+USER: make clear mean mark it done
+PIPER: Change "clear" from delete it to mark it done? (yes/no)
+
+--- [15:20:32, 8677aa05f5, http 200, 0.27 s] route query/set_clear_preference_done
+USER: yes
+PIPER: Okay. From now on "clear" means mark it done. Say "forget my clear preference" any time to be asked again.
+
+# Cleanup: forget clear, then clear re-asks on a disposable
+
+--- [15:20:40, 8677aa05f5, http 200, 7.45 s] route query/forget_clear_preference
+USER: forget my clear preference
+PIPER: Okay. I've forgotten that "clear" means mark it done. Next time you say clear, I'll ask which you want.
+
+--- [15:20:50, 8677aa05f5, http 200, 4.36 s] route execution/create_todo
+USER: add a todo: zz 955 c2
+PIPER: I've added that to your list. 'zz 955 c2' is now tracked. Let me know if you want to adjust anything.
+
+--- [15:21:02, 8677aa05f5, http 200, 10.82 s] route execution/complete_todo
+USER: clear the zz 955 c2 todo
+PIPER: Before I touch "zz 955 c2" — when you say 'clear' on a todo, do you want me to mark it done, or delete it? I'll remember for next time. Say "forget my clear preference" to undo that.
+
+--- [15:21:03, 8677aa05f5, http 200, 0.28 s] route soft_offer_declined/clarify_reminder_clear_verb
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been changed.
+
+--- [15:21:06, 8677aa05f5, http 200, 3.23 s] route execution/delete_todo
+USER: delete the todo zz 955 c2
+PIPER: Delete the todo "zz 955 c2"? (yes/no)
+
+--- [15:21:07, 8677aa05f5, http 200, 0.27 s] route execution/delete_todo
+USER: yes
+PIPER: Deleted 1 todo:
+• zz 955 c2
+
+--- [15:21:10, 8677aa05f5, http 200, 1.83 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. zz throwaway one
+3. zz throwaway two
+4. audit the current navigation
+5. review prs (×2)
+6. review the deployment plan
+7. draft the launch checklist
