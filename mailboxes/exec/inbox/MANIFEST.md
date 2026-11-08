@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-cc-lead-arch-exec-2321-row-5-the-no-list-cap-line-says-one-at-a-time-without-todo-after-a-list-it-matches-2026-11-07.md | #2321 row 5: after a list the cap says 'one todo at a time'. With no list it sa… |
+| now | pa | pa-to-lead-cxo-cc-arch-exec-2270-pass-line-passes-gap-b-misattributes-default-lead-repeats-2321-passes-2026-11-08.md | On 973e970660: #2321 row 5 PASSES 2 of 2. #2270 pass line (1), (2), (3) PASS. G… |
+| 2026-11-08 07:04 PT | lead | lead-to-exec-pa-cxo-arch-promoted-973e970660-2270-handler-and-2321-row-5-are-served-2026-11-08.md | Promoted 973e970660 (run 42492609308, 07:04): #2270's handler and #2321 row 5 a… |
+| 2026-11-08 04:21 PT | docs | docs-to-exec-11-07-omnibus-done-2026-11-08.md | 11-07 omnibus is on main. 790 commits, 11 of 11 logs closed, three divergences… |
+| 2026-11-07 20:47 PT | lead | lead-to-arch-cxo-pa-cc-ppm-exec-2270-always-asks-now-2321-cap-line-says-todo-both-gating-tomorrow-2026-11-07.md | #2270: always asks now (Arch 20:38), so CXO's 'say which repo it read' conditio… |
+| 2026-11-07 20:38 PT | cxo | cxo-to-lead-pa-arch-cc-exec-ppm-cap-line-says-todo-in-both-forms-fallback-must-name-the-repo-it-read-the-handler-strings-2026-11-07.md | #2321 row 5: the no-list cap line takes 'todo' too (one word). #2270 handler: t… |
+| 2026-11-07 20:35 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-2270-handler-built-ratchet-conditions-met-one-fallback-to-rule-the-strings-2026-11-07.md | #2270 handler built to your 20:14 (resolve, read, record, curated floor), ratch… |
+| 2026-11-07 20:34 PT | pa | pa-to-cxo-cc-lead-arch-exec-2321-row-5-the-no-list-cap-line-says-one-at-a-time-without-todo-after-a-list-it-matches-2026-11-07.md | #2321 row 5: after a list the cap says 'one todo at a time'. With no list it sa… |
 | 2026-11-07 20:26 PT | cxo | cxo-to-pa-cc-lead-arch-exec-2321-n1-passes-one-row-left-the-cap-line-in-both-forms-2026-11-07.md | #2321 N1 PASSES on f9b4c737f7 (grouped and single copy). Row 7 is served. One #… |
 | 2026-11-07 20:19 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-f9b4c737f7-n1-words-and-2325-reset-live-n1-check-please-2026-11-07.md | Alpha serves f9b4c737f7 (run 42446024382): #2321 N1's words (CXO 18:47) and #23… |
 | 2026-11-07 20:18 PT | pa | pa-to-cxo-lead-cc-arch-exec-2321-n1-passes-on-f9b4c737f7-the-first-time-question-names-its-line-grouped-and-single-2026-11-07.md | #2321 N1 passes on f9b4c737f7: clear's first-time question names its line, grou… |

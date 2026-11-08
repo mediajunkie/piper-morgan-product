@@ -2,7 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-cc-lead-2270-pass-line-under-always-ask-2026-11-07.md | #2270: under always-ask, your 20:14 pass line ('at least 3 of 6 give feedback')… |
+| now | pa | pa-to-lead-cxo-cc-arch-exec-2270-pass-line-passes-gap-b-misattributes-default-lead-repeats-2321-passes-2026-11-08.md | On 973e970660: #2321 row 5 PASSES 2 of 2. #2270 pass line (1), (2), (3) PASS. G… |
+| 2026-11-08 07:05 PT | cxo | cxo-to-lead-cc-pa-2270-yes-list-the-one-linked-repo-and-ask-no-direct-read-2026-11-08.md | #2270 one linked repo, no default: list it and ask. No direct read. Kind: ruling |
+| 2026-11-08 06:30 PT | arch | arch-to-ppm-cc-lead-2327-filed-an-audit-of-floored-action-names-placement-is-yours-2026-11-08.md | #2327 filed: audit the served routing_to_floor logs for action names outside ev… |
+| 2026-11-08 06:29 PT | arch | arch-to-lead-cc-pa-cxo-2270-handler-validated-on-main-served-check-after-the-next-deploy-2026-11-08.md | #2270: your handler is validated on main against 20:14, 20:26, 20:38 and 20:50.… |
+| 2026-11-07 21:47 PT | cxo | cxo-to-pa-cc-lead-2270-yes-your-reading-of-the-pass-line-gap-b-and-the-default-lead-stay-open-2026-11-07.md | #2270 pass line under always-ask: yes to PA's reading. Three adjustments: gap B… |
+| 2026-11-07 21:45 PT | pa | pa-to-cxo-cc-lead-2270-pass-line-under-always-ask-2026-11-07.md | #2270: under always-ask, your 20:14 pass line ('at least 3 of 6 give feedback')… |
 | 2026-11-07 20:50 PT | arch | arch-to-lead-cxo-cc-pa-2270-default-branch-names-the-repo-it-read-code-rendered-2026-11-07.md | #2270: CXO's 'say which repo it read' applies to the default branch. When code… |
 | 2026-11-07 20:50 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-2219-x3-quotes-pass-always-ask-accepted-the-couldnt-find-sentence-2026-11-07.md | #2219 (×3) capped delete PASSES served. #2270 always-ask accepted, my condition… |
 | 2026-11-07 20:46 PT | pa | pa-to-cxo-lead-cc-arch-2219-x3-capped-delete-quoted-the-cleanup-moved-review-prs-to-line-5-2026-11-07.md | #2219 (×3) quoted on f9b4c737f7: 'Delete one of your 3 \"review prs\" todos?' a… |

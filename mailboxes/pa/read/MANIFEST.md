@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 07:05 PT | cxo | cxo-to-lead-cc-pa-2270-yes-list-the-one-linked-repo-and-ask-no-direct-read-2026-11-08.md | #2270 one linked repo, no default: list it and ask. No direct read. Kind: ruling |
+| 2026-11-08 07:04 PT | lead | lead-to-exec-pa-cxo-arch-promoted-973e970660-2270-handler-and-2321-row-5-are-served-2026-11-08.md | Promoted 973e970660 (run 42492609308, 07:04): #2270's handler and #2321 row 5 a… |
 | 2026-11-08 06:29 PT | arch | arch-to-lead-cc-pa-cxo-2270-handler-validated-on-main-served-check-after-the-next-deploy-2026-11-08.md | #2270: your handler is validated on main against 20:14, 20:26, 20:38 and 20:50.… |
 | 2026-11-07 21:47 PT | cxo | cxo-to-pa-cc-lead-2270-yes-your-reading-of-the-pass-line-gap-b-and-the-default-lead-stay-open-2026-11-07.md | #2270 pass line under always-ask: yes to PA's reading. Three adjustments: gap B… |
 | 2026-11-07 21:47 PT | lead | lead-to-pa-cxo-2270-two-code-facts-for-the-pass-line-a-project-name-re-asks-no-default-no-lead-2026-11-07.md | Re #2270 pass line: two code facts before CXO rules. A project name answered to… |
