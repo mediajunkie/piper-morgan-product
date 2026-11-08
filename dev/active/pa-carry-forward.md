@@ -8,19 +8,24 @@
 
 ---
 
-## Now (written 2026-11-07 12:47 WORK; replace, don't annotate)
+## Now (written 2026-11-07 21:47 STOP; replace, don't annotate)
 
-- **Served:** beta `8633405573` (D5 measurement build, `D5_CONSULT_CEILING_S = 5.0`) as of 12:47; MCP `/health` 200. Read the live sha from `/health`, not from here.
-- **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta** (`dev/2026/11/06/turn.py`, run from `dev/2026/11/07`).
-- **#2318 / #2320 / #2321 (written 18:47):** D5 is final at 1.5 s (10 of 10 bind). #2320 is proven. #2321 needs N1's line-named question (rerun on its build) and the z16 checks (#2324 date line, #2270 recorded read). See Q9.
-- **web-seed-1386 must keep no clear preference**: never answer clear's verb question with done or delete. It's the only no-preference account, needed when xian lifts the `clear_todos` hold. #2322's done row waits on Q8 or Arch's test-only reset (#2325).
+- **Served:** beta `f9b4c737f7` at 21:47; MCP `/health` 200. Read the live sha from `/health`, not from here. Tomorrow's first promotion (07:00 or later) carries Lead's z22/z23: the #2270 handler, always-ask, the default lead, the couldn't-find sentence, and #2321's "one todo at a time".
+- **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta** (`dev/2026/11/06/turn.py`, run from the dated dir).
+- **First checks on 11-08, after the promotion serves:**
+  1. #2321 no-list rerun: `delete the first two todos` with no list. Expect `I can delete one todo at a time for now.` (Q9).
+  2. #2270 (Q10): the advisor's turn 1 ×6. Expect `I couldn't find "project/repository" among your repositories. Which repository should I use…` and no document reply.
+  3. Name answers: `piper-test-activity` should bind and give feedback with a next step (at least 3 of 6, CXO 21:47: `owner/name` and the bare name each at least once; counts-only fails). `Harbor Pilot` should re-ask honestly (gap B can't pass until the list-form unit).
+  4. Default lead: only on an account with a default. If web-seed-1386 has none, don't set one; tell CXO, and it moves to Q8.
+  5. Turn 2 in Lead's words ×2 after a real read.
+- **web-seed-1386 must keep no clear preference**: never answer clear's verb question with done or delete. #2322's done row waits on Q8.
 - PA can't sign in to other seats' accounts: the permission classifier denies it even with the owner's yes.
-- **Test account web-seed-1386 (20:47):** 8 open, in order: urgent task (urgent), zz throwaway one, zz throwaway two, audit the current navigation, **review prs (×2) on line 5** (moved from line 2 by the 20:46 cleanup), review the deployment plan, draft the launch checklist. No reminders, no clear preference.
-- **Q9 also:** #2313 ("delete A and B") on its build; CXO's #2294 bulleted-list row.
+- **Test account web-seed-1386 (21:47):** 8 open, in order: urgent task (urgent), zz throwaway one, zz throwaway two, audit the current navigation, **review prs (×2) on line 5**, review the deployment plan, draft the launch checklist. No reminders, no clear preference.
+- **Q9 also:** #2313 ("delete A and B") on its build; CXO's #2294 bulleted-list row; #2324 "tomorrow" and gap A on Lead.
 - **#2288** (card says "Connected." on a 401 grant): served row needs a dead-grant account; xian's word for Web.
 - **#2242 (Q2):** held-token row, on xian's `mcp_allow.py remove` relayed by Exec.
 - **#2238:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
-- **Fresh-account checks** (Q8): on the invite hold lifting (#2261, #2282, #2292) and HOST's slot with xian.
+- **Fresh-account checks** (Q8): on the invite hold lifting (#2261, #2282, #2292, #2322 done row) and HOST's slot with xian.
 - **R7 / plugin (#1282):** README edit needs a permitted push or xian's hand. Standing item 2.
 - **Mail v4** opens to every seat Mon 11-09; then also `python3 scripts/mail4.py inbox --role pa`. v3 fallback until 11-23.
 - **START habit:** `python3 scripts/owed-scan.py --role pa`.
