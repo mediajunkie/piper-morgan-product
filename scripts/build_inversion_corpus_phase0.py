@@ -4765,6 +4765,13 @@ HAND_ROWS = [
         "source": "issue-2132 Web served alpha fc183c41bc 2026-10-22",
         "notes": "the title arg is a later screened change (Arch 10-23); this row checks the op only",
     },
+    {
+        "phrase": "make clear mark them done",
+        "category": "EXECUTION",
+        "expected": "REVIEW",
+        "source": "issue-955 Lead screen 2026-11-08 (classifier and router x6, main and control)",
+        "notes": "Arch 07:53: a standing miss, not #955's. Classifier x6 on main = control = candidate: execution/complete_todo x6 (it reads a set-directly ask as an objectless complete). Router x6: CLARIFY @0.40 x6 on all three trees. The objectless complete on 'them' must ask which and complete nothing (pinned in test_change_remembered_preference_955.py; the ask is #2328). REVIEW, not asserted.",
+    },
 ]
 
 
