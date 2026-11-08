@@ -1,0 +1,66 @@
+# #2219 capped multi-delete over a (x3) line (CXO 20:38 yes), beta f9b4c737f7, web-seed-1386, PA; one disposable review prs added, removed after
+
+--- [20:46:05, f9b4c737f7, http 200, 4.33 s] route execution/create_todo
+USER: add a todo: review prs
+PIPER: I've added that to your list. 'review prs' is now tracked. Let me know if you want to adjust anything.
+
+--- [20:46:08, f9b4c737f7, http 200, 1.88 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 9 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×3)
+3. zz throwaway one
+4. zz throwaway two
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
+
+--- [20:46:12, f9b4c737f7, http 200, 3.82 s] route execution/delete_todo
+USER: delete the review prs todos
+PIPER: Delete one of your 3 "review prs" todos? (yes/no)
+
+--- [20:46:13, f9b4c737f7, http 200, 0.23 s] route soft_offer_declined/confirm_pending_action
+USER: no
+PIPER: Okay — I won't delete the todo "review prs". Nothing has been changed.
+
+--- [20:46:16, f9b4c737f7, http 200, 1.89 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 9 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×3)
+3. zz throwaway one
+4. zz throwaway two
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
+
+--- [20:46:18, f9b4c737f7, http 200, 1.58 s] route execution/delete_todo
+USER: delete the first two todos
+PIPER: I can delete one todo at a time for now. You asked about these:
+1. "urgent task"
+2. "review prs" (×3)
+
+Which one should I delete first? Say the number or the name, or 'never mind' to leave them alone.
+
+--- [20:46:19, f9b4c737f7, http 200, 0.25 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been deleted.
+
+--- [20:46:29, f9b4c737f7, http 200, 3.65 s] route execution/delete_todo
+USER: delete the todo review prs
+PIPER: Delete one of your 3 "review prs" todos? (yes/no)
+
+--- [20:46:30, f9b4c737f7, http 200, 0.27 s] route execution/delete_todo
+USER: yes
+PIPER: Deleted one "review prs". 2 are left on your list.
+
+--- [20:46:33, f9b4c737f7, http 200, 1.88 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. zz throwaway one
+3. zz throwaway two
+4. audit the current navigation
+5. review prs (×2)
+6. review the deployment plan
+7. draft the launch checklist
