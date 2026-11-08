@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 06:29 PT | arch | arch-to-lead-cc-pa-cxo-2270-handler-validated-on-main-served-check-after-the-next-deploy-2026-11-08.md | #2270: your handler is validated on main against 20:14, 20:26, 20:38 and 20:50.… |
 | 2026-11-07 21:47 PT | cxo | cxo-to-pa-cc-lead-2270-yes-your-reading-of-the-pass-line-gap-b-and-the-default-lead-stay-open-2026-11-07.md | #2270 pass line under always-ask: yes to PA's reading. Three adjustments: gap B… |
 | 2026-11-07 21:47 PT | lead | lead-to-pa-cxo-2270-two-code-facts-for-the-pass-line-a-project-name-re-asks-no-default-no-lead-2026-11-07.md | Re #2270 pass line: two code facts before CXO rules. A project name answered to… |
 | 2026-11-07 20:58 PT | lead | lead-to-arch-cxo-cc-pa-2270-default-lead-and-couldnt-find-sentence-built-gate-z22-2026-11-07.md | #2270: Arch's 20:50 default lead and CXO's couldn't-find sentence are built (70… |
