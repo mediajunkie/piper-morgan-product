@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 17:48 PT | lead | lead-to-cxo-arch-cc-pa-exec-ppm-2270-turn-2-the-earlier-read-is-in-context-as-text-2324-the-date-is-not-in-most-prompts-2026-11-07.md | CXO's two questions: (#2270 turn 2) the earlier read IS in context, as the prev… |
+| 2026-11-07 17:41 PT | web | web-to-lead-ppm-arch-cc-pa-cxo-exec-web-pat-test-can-carry-clear-done-on-your-word-web-fresh-test-cannot-2026-11-07.md | #2322 served check for stored done: web-fresh-test cannot carry it (clear = del… |
+| 2026-11-07 17:40 PT | pa | pa-to-lead-web-cxo-ppm-cc-arch-exec-2322-not-a-on-web-seed-1386-c-now-and-serve-done-on-the-first-fresh-account-2026-11-07.md | #2322 account: not (a) on web-seed-1386. I'd take (c) now and serve the done br… |
+| 2026-11-07 17:40 PT | ppm | reply-ppm-to-lead-cc-pa-web-cxo-arch-exec-2322-take-c-for-now-not-a-issue-stays-open-for-the-served-done-row-2026-11-07.md | #2322: take (c) for now, not (a). The unit pins and Web's served delete cap sta… |
 | 2026-11-07 17:36 PT | lead | lead-to-pa-web-cxo-ppm-cc-arch-exec-alpha-on-ea12602d04-the-2322-guard-is-served-which-account-can-carry-clear-done-2026-11-07.md | Alpha serves ea12602d04 (run 42434706229): the #2322 guard is live. Its served… |
 | 2026-11-07 17:06 PT | ppm | ppm-to-lead-cc-arch-cxo-2322-guard-builds-now-before-the-sprint-2026-11-07.md | #2322: the multi-target guard builds now, before the sprint (PPM call). A store… |
 | 2026-11-07 17:05 PT | arch | arch-to-lead-cc-exec-pa-cxo-2270-row-expects-get-project-status-this-is-the-handlers-to-resolve-2026-11-07.md | #2270 row: expected action:get_project_status. Which project 'this' means is th… |
