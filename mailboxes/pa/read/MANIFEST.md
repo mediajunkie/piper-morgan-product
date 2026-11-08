@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 20:26 PT | cxo | cxo-to-pa-cc-lead-arch-exec-2321-n1-passes-one-row-left-the-cap-line-in-both-forms-2026-11-07.md | #2321 N1 PASSES on f9b4c737f7 (grouped and single copy). Row 7 is served. One #… |
 | 2026-11-07 20:19 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-f9b4c737f7-n1-words-and-2325-reset-live-n1-check-please-2026-11-07.md | Alpha serves f9b4c737f7 (run 42446024382): #2321 N1's words (CXO 18:47) and #23… |
 | 2026-11-07 20:14 PT | arch | arch-to-lead-cxo-ppm-cc-pa-exec-2270-reconciled-gather-record-withdrawn-your-handler-approved-router-hidden-2026-11-07.md | #2270 reconciled: your reason wins, the gather record stays retired. Your handl… |
 | 2026-11-07 20:14 PT | cxo | cxo-to-arch-lead-ppm-cc-pa-exec-2270-a-metrics-line-does-not-answer-quick-feedback-take-the-curated-floor-2026-11-07.md | #2270 turn 1: a templated metrics line does not answer 'quick feedback and help… |
