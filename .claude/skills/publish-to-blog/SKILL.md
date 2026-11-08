@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.26
+version: 0.27
 created: 2026-03-16
-updated: 2026-09-29
+updated: 2026-11-07
 concept: "Concept: docs/internal/planning/comms/content-publishing-run-of-show.md (added 2026-10-14, sunset-or-renew inventory; CIO)"
 ---
 
@@ -143,6 +143,36 @@ copies as *expected* and reconcile every time.
 Do **not** assume the newer mtime is the better one — read the diff. The 07-30 case was an *addition*
 present only in the copy that does **not** ship.
 
+### Pre-flight 3: the category must match the pubDate's weekday (mandatory, v0.27 — 2026-11-07)
+
+The calendar's `theme` is the `--category`, and the calendar can be wrong. "At Long Last, Beta" was
+filed as a building row for Saturday 11-07, Comms' memos said building, and it published as building.
+Weekends are insights (xian caught it). Step 0's "confirm the category" read the row, and the row was the
+error. So check the row against the slot table before passing `--category`:
+
+```bash
+python3 - "{exact calendar title}" <<'EOF'
+import csv, datetime, runpy, sys
+slots = runpy.run_path("scripts/validate-editorial-calendar.py", run_name="slots")["SLOT_BY_WEEKDAY"]
+rows = [r for r in csv.DictReader(open("docs/internal/planning/comms/editorial-calendar.csv")) if r["title"] == sys.argv[1]]
+if len(rows) != 1:
+    sys.exit(f"STOP: {len(rows)} calendar rows titled {sys.argv[1]!r}")
+r = rows[0]
+d = datetime.date.fromisoformat(r["pubDate"])
+want = slots.get(d.weekday())
+print(f"{r['pubDate']} {d:%a}: row says {r['theme']}, slot says {want or 'no post'}")
+sys.exit(0 if r["theme"] == want else "STOP: ask Comms before --category")
+EOF
+```
+
+- The table is `SLOT_BY_WEEKDAY` in `scripts/validate-editorial-calendar.py`, so there's one copy. The
+  readable form, with syndication targets, is "Publishing Slots and Syndication" in
+  `docs/briefing/BRIEFING-ESSENTIAL-DOCS.md`. Sat and Sun are insight, Tue and Thu building, Wed ship,
+  and Mon and Fri have no post.
+- **On a STOP, ask Comms, and don't publish first.** A memo's category is a claim to check, not a source.
+  If xian has moved a post off its slot on purpose, his word in the row's `notes` is the answer. Say so
+  in your log and pass the row's category.
+
 Future CLI enhancement candidate (flagged to web in the May 17 feature-corpus memo): a `--check` mode that runs all pre-mutation validation (image exists, frontmatter populated, slug not already used) without doing anything else.
 
 ## Filename Convention (which draft is the source of truth?)
@@ -223,7 +253,7 @@ Confirm:
 - **pubDate** — when is this scheduled? Is it today, or is there scheduling slack?
 - **status** — `queued` (ready to schedule), `ready` (approved to publish), or other?
 - **workDate / endWorkDate** — the source-work-period; must match the post's dateline
-- **category** — `building`, `insight`, or `ship` (needed for publish-post.js `--category` flag)
+- **category** — `building`, `insight`, or `ship` (needed for publish-post.js `--category` flag). It must match the pubDate's weekday: run Pre-flight 3.
 - **draft path** — confirm it matches the file you're about to read
 
 Surface any mismatches before doing anything else. The calendar is the ground truth for scheduling and dateline semantics; the draft is the artifact. A dateline disagreement caught here costs nothing. Caught at publish time, it means a re-push.
@@ -310,7 +340,7 @@ def parse_draft(path):
 ```
 
 Look up the next post in the editorial calendar for the footer teaser.
-Determine category from the editorial calendar (`building`, `insight`, or `ship`).
+Determine category from the editorial calendar (`building`, `insight`, or `ship`), after Pre-flight 3 has confirmed it matches the weekday.
 
 ### Step 2: Generate hashId
 
@@ -618,6 +648,8 @@ After publishing:
 ---
 
 *Changelog gap, noted 2026-07-31: frontmatter read `version: 0.20` while the notes below stop at v0.16 — versions 0.17-0.20 were bumped without entries. Not backfilled here; I don't know what they changed and inventing it would be worse than the gap.*
+
+*v0.27 — **Pre-flight 3: the category is checked against the pubDate's weekday** (Docs' ask, 2026-11-07, cc Exec). "At Long Last, Beta" published as building on a Saturday because the row said building, and nothing compared the row to the slot table. The check reads `SLOT_BY_WEEKDAY` from Docs' validator rather than keeping a second table. Tested on five cases: the real 11-07 row (insight, pass); the same row reverted to building (STOP, rc 1); a missing title (STOP); and live Tue, Thu and Wed rows (pass).*
 
 *v0.26 — **`--cluster` is now optional, derived from `--work-date` against `ERAS`, and fails loud
 rather than silently empty when it can't be derived** (Web, `e2baf72`, #1905). Two posts (09-26,

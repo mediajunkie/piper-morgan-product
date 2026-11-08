@@ -53,6 +53,7 @@ cannot catch escape errors on quoted fields; the Python csv module does.
 """
 
 import csv
+import datetime
 import os
 import re
 import sys
@@ -115,6 +116,11 @@ URL_COLS = ("mediumURL", "linkedinURL", "blogURL")
 
 # Soft threshold — WARNING ONLY. See the docstring on false corrections.
 ALT_TEXT_WARN_CHARS = 400
+
+# Weekday slot -> category (Mon=0). Source: reference_publishing_cadence; see BRIEFING-ESSENTIAL-DOCS.md.
+SLOT_BY_WEEKDAY = {1: "building", 2: "ship", 3: "building", 5: "insight", 6: "insight"}
+WEEKDAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+OPEN_STATUSES = {"planned", "drafted", "draft", "ready", "queued", "ready-for-docs"}
 
 
 def check_row(line_no: int, row: list[str], idx: dict) -> tuple[list[str], list[str]]:
@@ -284,6 +290,29 @@ def check_row(line_no: int, row: list[str], idx: dict) -> tuple[list[str], list[
         warnings.append(f"{tag}: has blogPath but blogURL is empty (inconsistent pair)")
     if val("blogURL") and not val("blogPath"):
         warnings.append(f"{tag}: has blogURL but blogPath is empty (inconsistent pair)")
+
+    # --- SOFT: weekday slot vs category. WARNING ONLY, and only for OPEN rows.
+    # Slots: Sat/Sun insight, Tue/Thu building, Wed ship, no Mon/Fri post. Measured
+    # 2026-11-07: 167 already-distributed rows break the slot (the cadence changed over
+    # time), so checking history would be pure noise. An open row (not yet published)
+    # that breaks it is the live mistake: "At Long Last, Beta" was created as building on
+    # a Saturday and published that way (11-07). Zero open rows violated when added. ---
+    if val("pubDate") and val("status") in OPEN_STATUSES:
+        try:
+            wd = datetime.date.fromisoformat(val("pubDate")).weekday()
+        except ValueError:
+            wd = None
+        if wd is not None:
+            want = SLOT_BY_WEEKDAY.get(wd)
+            if want is None:
+                warnings.append(
+                    f"{tag}: pubDate {val('pubDate')} is a {WEEKDAY_NAMES[wd]}, which has no post slot"
+                )
+            elif val("theme") != want:
+                warnings.append(
+                    f"{tag}: pubDate {val('pubDate')} is a {WEEKDAY_NAMES[wd]} ({want} slot) "
+                    f"but theme={val('theme')!r}"
+                )
 
     return errors, warnings
 

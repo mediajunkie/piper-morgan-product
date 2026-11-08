@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-DOCS
 valid_from: "2026-03-19"
-last_updated: "2026-11-06"
+last_updated: "2026-11-07"
 last_verified: "2026-11-02"
 verified_scope: "2026-11-02 (Docs): re-read against practice. Fixed memo naming and weekly-audit timing, confirmed every script, hook and skill path named here exists, and the blog pipeline (publish-post.js, edit-pass, the sharp fallback) as used 10-29 to 11-01. Earlier, 2026-09-01 (Docs): spot-verified blog-metadata pipeline claims against a live publish, merge-keeper section, PreCompact-hook note, cross-repo worktree warning, and Amber image-toolchain note against actual practice. Content confirmed current, no drift found. Verification history: docs/internal/architecture/decisions/claude-md-history.log."
 ---
@@ -115,6 +115,21 @@ is not a proven path.
 - Undelivered memos: send them with `mail-send.sh` (see above), never by hand
 - Delete confirmed duplicates (files with `(1)` suffix)
 - Keep genuinely active files; ask PM about unclear items
+
+## Publishing Slots and Syndication (check before every `--category`)
+
+The calendar's `theme` column is the category. It must match the weekday of `pubDate`. Source: xian, 2026-11-07, after "At Long Last, Beta" was published as building on a Saturday. `scripts/validate-editorial-calendar.py` now warns on any open row that breaks the table.
+
+| Day | Category | Goes to | Calendar URL fields |
+|---|---|---|---|
+| Sat, Sun | `insight` | blog, Medium and LinkedIn | `mediumURL`, `linkedinURL`, `liPubDate` |
+| Tue, Thu | `building` | blog and Medium only | `mediumURL` |
+| Wed | `ship` | LinkedIn only (blog home is `/shipping-news/`) | `linkedinURL`, `liPubDate` |
+| Mon, Fri | none | no post | none |
+
+- A memo's category is a claim to check against this table, not a source. Comms' memos and the row itself can both be wrong (both were, on 11-07).
+- A row moves to `distributed` when its category's legs are done. xian crossposts by hand and sends URLs. Medium returns 403 to scripts, so take his URL as given.
+- A date or category that doesn't fit the table is a question for Comms and xian. Don't publish it first.
 
 ## Merge-Keeper Sweep (Standing Discipline, established 2026-04-28)
 

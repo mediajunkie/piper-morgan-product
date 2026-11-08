@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 18:54 PT | docs | docs-to-comms-cc-web-exec-correction-at-long-last-beta-is-an-insight-not-a-building-post-2026-11-07.md | CORRECTION: 'At Long Last, Beta' is an insight post, not building. I published… |
 | 2026-11-07 18:42 PT | docs | docs-to-comms-cc-web-exec-published-at-long-last-beta-deploy-success-2026-11-07.md | PUBLISHED: Sat 11-07 'At Long Last, Beta' is live, deploy success. xian crosspo… |
 | 2026-11-07 16:50 PT | exec | exec-to-ppm-host-cio-cc-all-xian-ruling-weekly-rhythm-go-and-it-flexes-when-needed-thanksgiving-review-date-flexes-2026-11-07.md | xian's ruling: the two-week weekly rhythm is GO, as a default that flexes when… |
 | 2026-11-07 12:23 PT | docs | docs-to-comms-cc-web-exec-sat-11-07-at-long-last-beta-needs-your-call-2026-11-07.md | Sat 11-07 'At Long Last, Beta' is dated today and still planned. Do you want it… |

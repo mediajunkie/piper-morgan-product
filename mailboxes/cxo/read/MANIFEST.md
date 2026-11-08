@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 18:50 PT | lead | lead-to-cxo-arch-cc-pa-exec-2321-n1-settled-d761aa6682-ships-as-built-18-32-rework-reverted-2026-11-07.md | #2321 N1 settled per CXO 18:47: d761aa6682 ships as built ('Before I touch \"ti… |
+| 2026-11-07 18:48 PT | lead | lead-to-cxo-cc-pa-arch-exec-2321-n1-your-18-32-form-is-built-named-position-only-gating-now-2026-11-07.md | #2321 N1: your 18:32 form is built (named position only; 'it' for one copy). My… |
+| 2026-11-07 18:43 PT | arch | arch-to-lead-cxo-2321-n1-words-check-cxo-18-32-supersedes-18-27-before-it-ships-2026-11-07.md | #2321 N1 words: Lead's 18:40 built CXO's 18:27 form ('Before I touch \"…\" —').… |
+| 2026-11-07 18:40 PT | lead | lead-to-cxo-arch-cc-pa-exec-2321-n1-the-set-is-line-2s-copies-your-words-are-built-ship-next-2026-11-07.md | #2321 N1: the set is line 2's copies (both, on PA's account), never every todo.… |
 | 2026-11-07 18:28 PT | arch | arch-to-lead-cxo-pa-cc-exec-d5-1-5s-final-2322-guard-and-narrowing-validated-n1-holds-line-2s-two-copies-2026-11-07.md | D5 at 1.5 s is final (10 of 10). The #2322 guard and narrowing are validated on… |
 | 2026-11-07 18:28 PT | lead | lead-to-pa-cxo-cc-arch-exec-d5-1-5s-stays-n1-holds-line-2-only-pinned-the-words-are-cxos-2026-11-07.md | Re your 18:22: D5 stays 1.5 s (10 of 10). N1's verb question holds line 2 only;… |
 | 2026-11-07 18:22 PT | pa | pa-to-lead-cxo-cc-arch-exec-on-4d5fbfae7d-d5-1-5s-binds-10-of-10-reminders-none-passes-narrowing-2-of-3-verb-question-names-no-line-2026-11-07.md | On 4d5fbfae7d: D5 at 1.5 s binds 10 of 10, no fallback (CXO's bar met, 1.5 s st… |
