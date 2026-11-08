@@ -1,27 +1,24 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-06 21:19 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/11/06/2026-11-06-0508-comms-code-log.md`, DAY-CLOSED. Start a new log 11-07.
+## ⭐ CURRENT STATE — 2026-11-07 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/07/2026-11-07-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-08.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
-- **Strategy talk with xian: did NOT happen 11-06.** He set it for "tomorrow" on 11-05. Brief: planning doc, "For our editorial-strategy session". Mining section (rev 30–32): partners A–D for "One Account Means One Hand" (Nov 14/15). **My pick is now C, "A Grant Has to Reach the Hand That Acts", with 8**, because Ship #068's theme "Whose Connection Is It, Anyway?" (Wed 11-11) covers the tenancy day that A would repeat. Candidate I, "A Review Where Nothing Became a Skill", is xian's idea via Exec (facts: CIO's review log in `skill-candidates-review.md`), with no slot.
-  - **Waiting on the talk:** the insight partner and its calendar row, the Thu 11-12 tease target, beat merges, and then the scaffold format in `draft-blog-post` (360 item 1.3/5.3).
-- **Scaffolds up, all still waiting on xian's prose (no change since ed19844113, 11-05 18:21):**
-  - **Sat 11-07, "At Long Last, Beta"** (`at-long-last-beta.md`, building). It teases Sun. **Publishes tomorrow.** Watch for xian's admin-UI commit, then review, template-audit and publish-ready to Docs.
-  - Sun 11-08, "Fixed and Scores Higher Came Apart" (`fixed-and-scores-higher-came-apart.md`, insight). It teases Tue. The two percentages come from two different runs, so it isn't a controlled A/B.
-  - Tue 11-10, "Never Green in a Thousand Runs". Only E2E never passed. It teases Thu.
-  - Thu 11-12, "The Server Key Is Not a Real Concept". The "truth over feeling of progress" quote is about the epic, not the key. Its tease target waits on the talk.
-- **Ship #068** (Wed 11-11), theme "Whose Connection Is It, Anyway?" (xian 10:42). Comms runs the External fact-check when Exec's draft lands.
-- **Two-week sprints from Fri 11-13** (xian 10:33; objections to Exec by Mon 11-09 noon; Comms has none). The Ship stays weekly. **#069 is ordinary, #070 (11-13 to 11-19) is the first progress Ship, and #071 is the first final score.** The forms are in `draft-weekly-ship` v1.15 Step 5-sprint (e1ff112659), sent to Exec cc PPM for review.
-- **Week goals 11-06 to 11-12 ratified.** Goal 4 is editorial: the strategy session, and publishing Sat, Sun, Tue, Thu and Ship #068.
-- **GitHub criteria line** is now in my briefing (CIO's #1715 fold, due 11-20, done 11-06). Run it every fire and check the delta by createdAt.
-- **Publish pipeline after the Ignored Build Step:** the read check passes. **Close it on Docs' Sat 11-07 publish memo showing the deploy as `success`.**
-- **Hosting:** the split is #2291, Ongoing, with no date. When it happens, Comms checks the publish pipeline.
-- **Mail v4 from Mon 11-09:** read `python3 scripts/mail4.py inbox --role comms` as well as v3, and send with `mail4.py send`. v3 is the fallback until 11-23.
-- **Invites held (xian 11-04 19:31)** until P0 items #1551, #2261 and #2178 are done. Copy must not imply anyone can join now.
-- **Waiting list:** xian pastes the confirmation email and signs up. HOST then reads it, and #2256 closes on that.
+- **Weekend slots are INSIGHTS (Sat and Sun, Medium + LinkedIn).** Tue/Thu building, Wed Ship. I called Sat "building" three times (11-04 memo, scaffold, publish-ready); Docs corrected it 11-07. **Every publish-ready memo now states the category, checked against the weekday.**
+- **Sat 11-07 "At Long Last, Beta": PUBLISHED and DISTRIBUTED** (https://pipermorgan.ai/blog/at-long-last-beta, website 7a6605009f; insight; xian's Medium and LinkedIn URLs on the calendar). Draft archived by Docs.
+- **Publish pipeline after the Ignored Build Step: CLOSED** on Sat's live deploy (`success`), memo a05c096c1.
+- **Sun 11-08 "When Accuracy Scores Worse"** (`docs/public/comms/drafts/when-accuracy-scores-worse.md`, renamed from `fixed-and-scores-higher-came-apart.md`; insight). Body is still my scaffold. **xian: "will either write that tonight or tomorrow morning."** Watch for his admin-UI commit, then review, fact-check, template-audit and a publish-ready that states the category. Facts: the two percentages come from two different runs, not a controlled A/B. It teases Tue.
+- **Tue 11-10 "Never Green in a Thousand Runs"** (building): only E2E never passed. Teases Thu. **Thu 11-12 "The Server Key Is Not a Real Concept"** (building): the "truth over feeling of progress" quote is about the epic, not the key. Its tease target waits on the talk.
+- **Strategy talk with xian: still not held** (blocked on his time). Brief: planning doc rev 32, "For our editorial-strategy session". My pick for the "One Account Means One Hand" partner (Nov 14/15) is **C with 8**. Candidate I, "A Review Where Nothing Became a Skill", has no slot. Waiting on the talk: the partner and its calendar row, Thu's tease target, beat merges, then the scaffold format in `draft-blog-post`.
+- **Ship #068** (Wed 11-11), "Whose Connection Is It, Anyway?". Comms runs the External fact-check when Exec's draft lands.
+- **Two-week sprints from Fri 11-13; rhythm GO as a default that flexes (xian 11-07 16:49).** #069 ordinary, #070 first progress, #071 first final score; even = progress, odd = final score. Forms in `draft-weekly-ship` v1.15 Step 5-sprint. Comms has no objection (deadline Mon 11-09 noon).
+- **GitHub criteria line:** in my briefing; run every fire, delta by createdAt. 11-07 delta: #2324 (repo-analysis "runway" wording), not Comms work.
+- **Mail v4 from Mon 11-09:** read `python3 scripts/mail4.py inbox --role comms` as well as v3. v3 is the fallback until 11-23.
+- **Invites held (xian 11-04)** until #1551, #2261 and #2178 are done. Copy must not imply anyone can join now.
+- **Waiting list (#2256):** xian pastes the confirmation email and signs up, then HOST reads it.
 - **HOLD (PDR-102):** no ownership claim in copy until C7 is verified and C8 has a surface.
-- **Mail filing (piper-guards M-3):** plain `mv`, then mail-send with both paths and the regenerated MANIFEST. If mail-send refuses on a newer MANIFEST: diff, `git checkout HEAD --` the manifest, merge, regenerate, resend. A cc needs its own inbox copy in the send.
-- **Standing:** the "what changed" note at the first user-visible Production ship. The narrative front is Sep 9 (beat 2). Next mining pass Fri 11-20.
+- **Mail filing:** plain `mv`, then mail-send with both paths and the regenerated MANIFEST (`git status --short -- 'mailboxes/*MANIFEST*'`). A cc needs its own inbox copy.
+- **Rule 8:** the beta tester xian named in chat appears nowhere in the repo; keep it that way.
+- **Standing:** the "what changed" note at the first user-visible Production ship. Narrative front Sep 9 (beat 2). Next mining pass Fri 11-20.
 
 ## OLDER STATE blocks pruned 2026-11-06 (10-14 to 11-04). They are in git history and in the dated session logs.
 
