@@ -1198,6 +1198,24 @@ class TestIssue2321Row7Narrowing:
         line2 = todo_boundary["todos"][1]
         assert [str(i) for i in todo_boundary["completed"]] == [str(line2.id)]
 
+    async def test_first_time_question_after_a_list_holds_line_2_only(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        """PA 11-07 18:21 (N1): with no stored preference the reply is the ratified
+        variant 1 ("Before I touch these"), which names no line, so the reply layer
+        can't show narrowing. The armed set is the proof: one id, line 2."""
+        sid = f"e2e-2321-v1-{uuid4().hex[:8]}"
+        self._shown(sid, todo_boundary["todos"])
+        _stub_classification(monkeypatch, live_service, "clear todo 2", "complete_todo")
+        result = await live_service.process_intent(
+            message="clear todo 2", session_id=sid, user_id=_USER
+        )
+        assert result.message == rc.variant_one_question("clear", "todo")
+        stored = _pending_offers(live_service).get(sid)
+        line2 = todo_boundary["todos"][1]
+        assert stored["pending_action"]["clear_target_ids"] == [str(line2.id)]
+        assert todo_boundary["completed"] == []
+
     async def test_after_a_list_a_number_past_it_shows_the_list_and_asks(
         self, live_service, monkeypatch, pref_store, todo_boundary
     ):
