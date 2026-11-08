@@ -14292,6 +14292,7 @@ class IntentService:
         *,
         operation: str,
         refusal_message: str,
+        list_form: bool = False,
     ) -> tuple[Optional[str], Optional[IntentProcessingResult]]:
         """#1641: the ANALYSIS handlers' repository consult — the #1567 shape
         applied to the three 'repository not specified' dead-ends
@@ -14310,6 +14311,9 @@ class IntentService:
         Returns ``(repository, None)`` when a repo resolved, or
         ``(None, result)`` when the caller should return ``result`` (the ask
         or the honest refusal).
+
+        ``list_form`` (#2270, analyze_repository): the open ask and a named repo
+        not found become ``_analyze_repository_ask``'s numbered list.
         """
         repository = intent.context.get("repository") or intent.context.get("repo")
         if repository:
@@ -14346,6 +14350,13 @@ class IntentService:
             res = await resolve_repo_name(_user_id, named)
             if res.status == "resolved":
                 return res.full_name, None
+            if list_form and res.status == "not_found":
+                return None, await self._analyze_repository_ask(
+                    intent,
+                    workflow_id,
+                    session_id,
+                    lead=ANALYZE_REPOSITORY_NOT_FOUND_LEAD.format(pair=named),
+                )
             ask = await self._ask_for_repository(
                 intent,
                 None,
@@ -14361,6 +14372,8 @@ class IntentService:
         if repository:
             return repository, None
 
+        if list_form:
+            return None, await self._analyze_repository_ask(intent, workflow_id, session_id)
         ask = await self._ask_for_repository(
             intent, None, session_id, _user_id, operation=operation
         )
@@ -14425,6 +14438,7 @@ class IntentService:
         operation: Optional[str] = None,
         question_override: Optional[str] = None,
         persist_default: bool = False,
+        listed_repos: Optional[List[str]] = None,
     ) -> Optional[IntentProcessingResult]:
         """#1567: ARM the repo-question carrier and return the ask, or None
         when there is no session to bind the answer to (callers fall through
@@ -14486,6 +14500,7 @@ class IntentService:
             # form, whichever this turn chose — stored verbatim.
             question=question,
             persist_default=persist_default,
+            listed_repos=listed_repos,
         )
         self.workflow_offer_service.set_pending_offer(session_id, offer, user_id=user_id)
         self.logger.info(
@@ -15265,6 +15280,56 @@ class IntentService:
 
         return report
 
+    async def _analyze_repository_ask(
+        self,
+        intent: Intent,
+        workflow_id: Optional[str],
+        session_id: Optional[str],
+        *,
+        lead: Optional[str] = None,
+    ) -> IntentProcessingResult:
+        """#2270 list form (CXO 11-07 20:02): the armed which-repo ask lists every
+        linked repo, numbered (the answer's number or name binds; a project name binds
+        that project's repo). None linked says so. An unreadable list keeps the open
+        ask. ``lead`` goes first (CXO's couldn't-find sentence). No session: the
+        #1641 honest line."""
+        from services.intent_service.repo_clarification import (
+            NONE_LINKED_LINE,
+            linked_github_repos,
+            listed_repo_question,
+            open_repo_question,
+        )
+
+        principal = _principal_from_intent(intent)
+        linked = await linked_github_repos(principal)
+        if linked is None:
+            question = open_repo_question(None, "give you feedback")
+        elif not linked:
+            question = NONE_LINKED_LINE
+        else:
+            question = listed_repo_question(linked)
+        if lead:
+            question = f"{lead} {question}"
+        ask = await self._ask_for_repository(
+            intent,
+            None,
+            session_id,
+            principal,
+            operation="give you feedback",
+            question_override=question,
+            listed_repos=linked,
+        )
+        if ask is not None:
+            return ask
+        return IntentProcessingResult(
+            success=False,
+            message=ANALYZE_REPOSITORY_NO_SESSION_LINE,
+            intent_data={"category": intent.category.value, "action": intent.action},
+            workflow_id=workflow_id,
+            requires_clarification=True,
+            clarification_type="repository_required",
+        )
+
     async def _handle_analyze_repository(
         self, intent: Intent, workflow_id: Optional[str], session_id: Optional[str] = None
     ) -> IntentProcessingResult:
@@ -15286,6 +15351,7 @@ class IntentService:
             session_id,
             operation="give you feedback",
             refusal_message=ANALYZE_REPOSITORY_NO_SESSION_LINE,
+            list_form=True,
         )
         if early is not None:
             return early
@@ -15302,23 +15368,7 @@ class IntentService:
             or extract_natural_repo_name(_message)
         )
         if not repository or "/" not in str(repository):
-            ask = await self._ask_for_repository(
-                intent,
-                None,
-                session_id,
-                _principal_from_intent(intent),
-                operation="give you feedback",
-            )
-            if ask is not None:
-                return ask
-            return IntentProcessingResult(
-                success=False,
-                message=ANALYZE_REPOSITORY_NO_SESSION_LINE,
-                intent_data={"category": intent.category.value, "action": intent.action},
-                workflow_id=workflow_id,
-                requires_clarification=True,
-                clarification_type="repository_required",
-            )
+            return await self._analyze_repository_ask(intent, workflow_id, session_id)
 
         owner, name = str(repository).split("/", 1)
         principal = _principal_from_intent(intent)
@@ -15347,22 +15397,12 @@ class IntentService:
             # would give another repo's feedback unannounced). One of the account's
             # own that failed to read is said as a failed read.
             if await self._repo_unknown_to_account(principal, str(repository)):
-                from services.intent_service.repo_clarification import open_repo_question
-
-                ask = await self._ask_for_repository(
+                return await self._analyze_repository_ask(
                     intent,
-                    None,
+                    workflow_id,
                     session_id,
-                    principal,
-                    operation="give you feedback",
-                    question_override=(
-                        ANALYZE_REPOSITORY_NOT_FOUND_LEAD.format(pair=repository)
-                        + " "
-                        + open_repo_question(None, "give you feedback")
-                    ),
+                    lead=ANALYZE_REPOSITORY_NOT_FOUND_LEAD.format(pair=repository),
                 )
-                if ask is not None:
-                    return ask
             return IntentProcessingResult(
                 success=True,
                 message=ANALYZE_REPOSITORY_READ_FAILED_LINE.format(repository=repository),
