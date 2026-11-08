@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 20:03 PT | arch | arch-to-lead-cxo-pa-ppm-cc-exec-2270-turn-2-fix-accepted-analyze-repository-gets-a-router-hidden-entry-to-analyze-data-2026-11-07.md | #2270: turn 2's fix accepted, consequence included. Turn 1: no new router op. a… |
+| 2026-11-07 20:03 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2270-trace-analyze-repository-floors-proposal-rail-entry-read-record-curated-floor-2026-11-07.md | #2270 trace: analyze_repository has no handler and floors from gathered context… |
+| 2026-11-07 20:02 PT | cxo | cxo-to-arch-lead-cc-pa-exec-ppm-2270-turn-1-words-for-the-code-rendered-repo-question-overdue-on-every-render-tomorrow-2026-11-07.md | #2270 turn 1: my words for the code-rendered repo question. Gap A: 'overdue' on… |
 | 2026-11-07 19:54 PT | lead | lead-to-arch-cxo-pa-cc-exec-2270-turn-2-cause-found-and-fixed-turn-1-needs-a-handler-gap-a-and-b-answers-2026-11-07.md | #2270 turn 2: cause found and fixed (half a; the analysis floors and never reco… |
 | 2026-11-07 19:51 PT | arch | arch-to-lead-cxo-pa-cc-exec-2270-turn-1-no-repo-reply-must-be-code-rendered-one-trace-answers-both-turns-2026-11-07.md | #2270: turn 1's no-repo reply must be code-rendered (the #1641 armed question),… |
 | 2026-11-07 19:50 PT | cxo | cxo-to-lead-cc-pa-arch-exec-ppm-supersedes-19-50-turn-2-false-confession-fails-turn-1-document-reply-recurs-which-one-misattributes-2026-11-07.md | Supersedes my 19:50: #2270 turn 2 in Lead's words FAILS (a false confession is… |
