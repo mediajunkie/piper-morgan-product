@@ -27,6 +27,7 @@ caching consequence because caching is per-source inside get_or_compute,
 not prompt-prefix-based.
 """
 
+import re
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -36,6 +37,21 @@ from services.intent_service.context_cache import ContextCache
 from services.utils.datetime_utils import ensure_utc, utc_now
 
 logger = structlog.get_logger()
+
+
+_GITHUB_REPO_URL = re.compile(r"github\.com/([^/\s]+)/([^/\s#?]+)")
+
+
+def _repo_read_target(context: Dict[str, Any]) -> Optional[str]:
+    """#2270: ``owner/repo`` of the open issues this gather actually read, from the
+    issues' own URLs. None when no issue was read, or the read failed (#2151)."""
+    if context.get("open_issues_source_failed"):
+        return None
+    for issue in context.get("high_priority_issues") or []:
+        match = _GITHUB_REPO_URL.search(str((issue or {}).get("url") or ""))
+        if match:
+            return f"{match.group(1)}/{match.group(2)}"
+    return None
 
 
 def _recorded_reads_for(session_id, user_id) -> list:
@@ -666,6 +682,18 @@ class ContextAssembler:
                     context_keys=list(context.keys()),
                     note="Floor received a data-query category with no user data",
                 )
+
+        # #2270 (Arch 19:41, PA 19:39): an analysis the person asked for reaches the
+        # floor (analysis/analyze_repository has no handler), and the floor composes
+        # from the GitHub issues gathered here. That read is recorded, so a later
+        # turn's floor states it. Only ANALYSIS turns: other floor turns gather the
+        # same baseline without the person asking for a read (Arch's sentinel).
+        if category == "ANALYSIS":
+            _target = _repo_read_target(context)
+            if _target:
+                from services.intent_service.conversation_context import record_read
+
+                record_read(session_id, user_id, "analysis_floor", _target, "its open issues")
 
         return context
 
