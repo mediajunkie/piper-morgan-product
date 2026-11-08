@@ -98,6 +98,9 @@ SET_DECLINE_LINE = "Okay. I won't change it."
 SET_ASK_QUESTION = 'Change "{verb}" from {old} to {new}? (yes/no)'
 # The several-keys forget pick (CXO 08:09), armed over exactly the rows shown.
 FORGET_PICK_LEAD = "I'm remembering more than one of these:"
+# Lead's interim (Arch 13:32 ruled the one-row pick; words owed to CXO): a clear forget
+# with only another verb's key stored shows that row before anything is forgotten.
+FORGET_PICK_LEAD_ONE = "Here's what I'm remembering:"
 FORGET_PICK_QUESTION = (
     "Which one should I forget? Say the number, or 'never mind' to leave them alone."
 )
@@ -124,6 +127,24 @@ def change_for(intent: Any) -> Optional[str]:
 def verb_for(intent: Any) -> Optional[str]:
     """The verb a per-verb alias names (None for the clear-family aliases)."""
     return VERB_BY_ACTION.get(getattr(intent, "action", None) or "")
+
+
+CLEAR_KEY = f"{CLEAR_KEY_PREFIX}clear"
+
+
+def _scope_for(
+    keys: Dict[str, Dict[str, Any]], intent: Any
+) -> Tuple[Dict[str, Dict[str, Any]], Optional[str]]:
+    """The keys this request may act on, and the verb its replies name.
+
+    Arch 11-08 13:32: a per-verb alias acts only on its verb's key; a CLEAR SET alias acts
+    only on the "clear" key (the classifier sends "make take care of mean …" there, and
+    a family-wide bind wrote the wrong verb); a clear forget keeps the whole family (the
+    pick decides which)."""
+    verb = verb_for(intent)
+    if verb is None and change_for(intent) in (CHANGE_DONE, CHANGE_DELETE):
+        verb = "clear"
+    return _scope(keys, verb), verb
 
 
 def _scope(keys: Dict[str, Dict[str, Any]], verb: Optional[str]) -> Dict[str, Dict[str, Any]]:
@@ -179,7 +200,8 @@ def _rows(keys: Dict[str, Dict[str, Any]]) -> List[Tuple[str, str]]:
 
 def forget_pick_question(rows: List[Tuple[str, str]]) -> str:
     lines = "\n".join(f"{i}. {text}" for i, (_k, text) in enumerate(rows, start=1))
-    return f"{FORGET_PICK_LEAD}\n\n{lines}\n\n{FORGET_PICK_QUESTION}"
+    lead = FORGET_PICK_LEAD if len(rows) > 1 else FORGET_PICK_LEAD_ONE
+    return f"{lead}\n\n{lines}\n\n{FORGET_PICK_QUESTION}"
 
 
 def _arm_forget_pick(
@@ -229,20 +251,35 @@ async def change_remembered_preference(
     if not user_id:
         return {"message": UNREADABLE_LINE, "outcome": "no_principal"}
     try:
-        keys = _scope(await _stored_clear_keys(user_id), verb_for(intent))
+        keys, scoped_verb = _scope_for(await _stored_clear_keys(user_id), intent)
     except Exception as e:  # silent-ok: LOGGED; said as unreadable, nothing changed (#2151)
         logger.warning("preference_change_read_failed", error=str(e))
         return {"message": UNREADABLE_LINE, "outcome": "unreadable"}
     if not keys:
         # Arch 07:18 (iii): set-directly never creates a preference; a per-verb ask
         # whose verb isn't stored says so for that verb (Arch 13:20).
-        return {"message": _nothing_line(verb_for(intent)), "outcome": "nothing_stored"}
-    if len(keys) > 1:
+        return {"message": _nothing_line(scoped_verb), "outcome": "nothing_stored"}
+    # Arch 13:32 (2): a clear forget binds one stored key only if it is "clear";
+    # one other verb's key gets the pick with that one row.
+    _one_other = (
+        change == CHANGE_FORGET and scoped_verb is None and len(keys) == 1 and CLEAR_KEY not in keys
+    )
+    if len(keys) > 1 or _one_other:
         rows = _rows(keys)
         if change == CHANGE_FORGET:
             question = _arm_forget_pick(intent, rows, user_id, session_id, offer_service)
             if question is not None:
                 return {"message": question, "outcome": "pick_armed", "armed": True}
+        if len(rows) == 1:
+            # Nothing could be armed (no session): say what is stored, change nothing.
+            _k, _rec = next(iter(keys.items()))
+            return {
+                "message": CURRENT_LINE.format(
+                    verb=_k[len(CLEAR_KEY_PREFIX) :],
+                    x=_meaning(_rec) or "something I can’t read",
+                ),
+                "outcome": "unchanged",
+            }
         listed = ", ".join(text for _k, text in rows)
         return {"message": SEVERAL_LINE.format(listed=listed), "outcome": "several"}
 
@@ -288,12 +325,12 @@ async def change_preference_write_ask(request: Any) -> Any:
     if not user_id:
         return WriteAsk(reply=UNREADABLE_LINE)
     try:
-        keys = _scope(await _stored_clear_keys(str(user_id)), verb_for(request.intent))
+        keys, scoped_verb = _scope_for(await _stored_clear_keys(str(user_id)), request.intent)
     except Exception as e:  # silent-ok: LOGGED; said as unreadable, nothing armed (#2151)
         logger.warning("preference_write_ask_read_failed", error=str(e))
         return WriteAsk(reply=UNREADABLE_LINE)
     if not keys:
-        return WriteAsk(reply=_nothing_line(verb_for(request.intent)))
+        return WriteAsk(reply=_nothing_line(scoped_verb))
     if len(keys) > 1:
         listed = ", ".join(text for _k, text in _rows(keys))
         return WriteAsk(reply=SEVERAL_LINE.format(listed=listed))

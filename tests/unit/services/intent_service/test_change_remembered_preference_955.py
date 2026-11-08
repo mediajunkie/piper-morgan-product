@@ -171,10 +171,16 @@ async def test_several_keys_change_nothing_and_name_each(mem_prefs, handler):
     assert calls["saves"] == before
 
 
-async def test_another_family_verb_is_named_by_its_own_label(mem_prefs, handler):
+async def test_a_clear_forget_with_only_another_verb_stored_shows_it_first(mem_prefs, handler):
+    """Arch 13:32 (2): a clear forget binds one stored key only if it is "clear"; one
+    other verb's key gets the pick with that row (here no session, so it says what is
+    stored and changes nothing)."""
     await _stored(inference_key("handle"), VALUE_DELETE)
     result = await handler(_intent("forget_clear_preference"), "wf")
-    assert result.message.startswith('Okay. I\'ve forgotten that "handle" means delete it.')
+    assert result.message == 'Right now "handle" means delete it. I haven\'t changed it.'
+    assert (await vi.get_verified_inference(_USER, inference_key("handle")))["value"] == (
+        VALUE_DELETE
+    )
 
 
 async def test_the_canonical_binds_only_a_router_change_arg(mem_prefs, handler):
@@ -616,3 +622,32 @@ async def test_every_per_verb_alias_is_on_the_one_entry():
         assert flows[alias] is entry
     assert entry.consent_narrowing_actions >= pc.PER_VERB_FORGET_ACTIONS
     assert not any(a.startswith("set_") for a in pc.PER_VERB_FORGET_ACTIONS)
+
+
+async def test_the_one_row_pick_is_armed_and_binds(mem_prefs):
+    from services.intent_service.soft_invocation import WorkflowOfferService
+
+    await _stored(inference_key("handle"), VALUE_DELETE)
+    store = WorkflowOfferService()
+    out = await pc.change_remembered_preference(
+        _intent("forget_clear_preference"), _USER, session_id="s1", offer_service=store
+    )
+    assert out["message"] == (
+        "Here's what I'm remembering:\n\n1. \"handle\" means delete it\n\n"
+        "Which one should I forget? Say the number, or 'never mind' to leave them alone."
+    )
+    offer = store.peek_pending_offer("s1", _USER)
+    picked = await pc.handle_forget_pick_turn(offer, "1", session_id="s1", user_id=_USER)
+    assert picked["message"].startswith('Okay. I\'ve forgotten that "handle" means delete it.')
+
+
+@pytest.mark.parametrize("action", ["set_clear_preference_done", "set_clear_preference_delete"])
+async def test_a_clear_set_never_writes_another_verb(mem_prefs, handler, action):
+    """Arch 13:32 (1): 'make take care of mean mark it done' reaches the CLEAR set alias
+    (classifier x6); with clear not stored it is line 4 for clear, whatever else is."""
+    _, calls = mem_prefs
+    await _stored(inference_key("take care of"), VALUE_DELETE)
+    before = calls["saves"]
+    result = await handler(_intent(action), "wf")
+    assert result.message == pc.NOTHING_STORED_LINE
+    assert calls["saves"] == before
