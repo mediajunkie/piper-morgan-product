@@ -245,3 +245,73 @@ PIPER: You have 8 open todos. Here they are:
 5. audit the current navigation
 6. review the deployment plan
 7. draft the launch checklist
+
+--- [16:30:48, ac8645e679, http 200, 3.89 s] route execution/create_reminder
+USER: remind me to zz rem r1 tomorrow at 9am
+PIPER: Reminder saved: **zz rem r1** (scheduled for tomorrow at 9am).
+
+📅 Sunday, November 8 at 9:00 AM PST
+
+It lives with your todos (you'll see it on the Todos page) and I'll surface it in conversation once it's due.
+
+--- [16:30:52, ac8645e679, http 200, 3.42 s] route execution/create_reminder
+USER: remind me to zz rem r2 tomorrow at 10am
+PIPER: Reminder saved: **zz rem r2** (scheduled for tomorrow at 10am).
+
+📅 Sunday, November 8 at 10:00 AM PST
+
+It lives with your todos (you'll see it on the Todos page) and I'll surface it in conversation once it's due.
+
+--- [16:30:54, ac8645e679, http 200, 1.45 s] route execution/delete_todo
+USER: delete the second reminder
+PIPER: I haven't shown you a numbered list yet. Here are your reminders:
+
+1. "zz rem r1"
+2. "zz rem r2"
+
+Which one should I delete? Say the number or the name, or 'never mind' to leave them alone.
+
+--- [16:30:55, ac8645e679, http 200, 0.27 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your reminders. Nothing has been deleted.
+
+--- [16:30:57, ac8645e679, http 200, 1.39 s] route execution/delete_item
+USER: delete the second one
+PIPER: I'm not sure which one you mean, because I haven't shown you a list to count from. Nothing was deleted.
+
+Do you want to see your todos or your reminders? Say which, or 'never mind' to leave them alone.
+
+--- [16:30:58, ac8645e679, http 200, 0.26 s] route execution/clarify_delete_todo_pick
+USER: reminders
+PIPER: I haven't shown you a numbered list yet. Here are your reminders:
+
+1. "zz rem r1"
+2. "zz rem r2"
+
+Which one should I delete? Say the number or the name, or 'never mind' to leave them alone.
+
+--- [16:30:59, ac8645e679, http 200, 0.24 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your reminders. Nothing has been deleted.
+
+--- [16:31:09, ac8645e679, http 200, 3.22 s] route execution/delete_todo
+USER: delete the reminder zz rem r1
+PIPER: Delete the reminder "zz rem r1"? (yes/no)
+
+--- [16:31:10, ac8645e679, http 200, 0.27 s] route execution/delete_todo
+USER: yes
+PIPER: Deleted 1 reminder:
+• zz rem r1
+
+--- [16:31:15, ac8645e679, http 200, 3.51 s] route execution/delete_todo
+USER: delete the reminder zz rem r2
+PIPER: Delete the reminder "zz rem r2"? (yes/no)
+
+--- [16:31:15, ac8645e679, http 200, 0.28 s] route execution/delete_todo
+USER: yes
+PIPER: Deleted 1 reminder:
+• zz rem r2
+
+--- [16:31:17, ac8645e679, http 200, 1.31 s] route query/list_reminders_query
+USER: show my reminders
+PIPER: I checked your saved reminders and there are none right now. You can set one with 'remind me to [task] tomorrow at 9am'.
