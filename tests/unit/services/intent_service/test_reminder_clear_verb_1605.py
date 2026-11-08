@@ -62,7 +62,9 @@ class TestRatifiedCopyPins:
         assert variant_one_question() == (
             "Before I touch these — when you say 'clear' on a reminder, "
             "do you want me to mark it done, or delete it? "
-            "I'll remember for next time."
+            "I'll remember for next time. "
+            # #955 line 7 (CXO 11-07 18:03), shipped with the forget op.
+            'Say "forget my clear preference" to undo that.'
         )
 
     def test_variant_two_verbatim(self):

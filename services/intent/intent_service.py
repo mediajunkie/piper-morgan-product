@@ -10084,6 +10084,26 @@ class IntentService:
             )
         return None
 
+    async def _handle_change_remembered_preference(
+        self, intent: Intent, workflow_id: str
+    ) -> IntentProcessingResult:
+        """#955: forget or set the person's remembered "clear" preference
+        (``preference_change``; Arch 11-08 07:33, CXO 11-07 18:03's words)."""
+        from services.intent_service.preference_change import change_remembered_preference
+
+        outcome = await change_remembered_preference(intent, _principal_from_intent(intent))
+        return IntentProcessingResult(
+            success=outcome["outcome"] not in ("failed", "unreadable", "no_principal"),
+            message=outcome["message"],
+            intent_data={
+                "category": "query",
+                "action": intent.action,
+                "preference_change": outcome["outcome"],
+            },
+            workflow_id=workflow_id,
+            requires_clarification=False,
+        )
+
     async def _handle_set_timezone(
         self, intent: Intent, workflow_id: str
     ) -> IntentProcessingResult:

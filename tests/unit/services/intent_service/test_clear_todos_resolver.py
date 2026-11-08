@@ -200,7 +200,8 @@ class TestNoStoredDefault:
             'You want to clear 2 reminders: "check the test card again" (2 items). '
             'Leaving "review the pr" and "revise the pr" as is. '
             "Before I touch these — when you say 'clear' on a reminder, do you want "
-            "me to mark it done, or delete it? I'll remember for next time."
+            "me to mark it done, or delete it? I'll remember for next time. "
+            'Say "forget my clear preference" to undo that.'
         )
         intent_service.workflow_offer_service.set_pending_offer.assert_called_once()
         _sid, offer = intent_service.workflow_offer_service.set_pending_offer.call_args.args[:2]
@@ -221,7 +222,8 @@ class TestNoStoredDefault:
         assert result.message == (
             'You want to clear the reminder "review the pr". '
             "Before I touch these — when you say 'clear' on a reminder, do you want "
-            "me to mark it done, or delete it? I'll remember for next time."
+            "me to mark it done, or delete it? I'll remember for next time. "
+            'Say "forget my clear preference" to undo that.'
         )
         assert "Leaving" not in result.message
 
