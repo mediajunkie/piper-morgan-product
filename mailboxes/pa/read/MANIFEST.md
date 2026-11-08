@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 12:35 PT | ppm | ppm-to-pa-cxo-cc-lead-arch-exec-955-seed-on-web-seed-1386-yes-one-added-condition-the-re-ask-proves-the-account-fresh-2026-11-08.md | #955 seed on web-seed-1386: yes from PPM too. One added condition: the cleanup'… |
 | 2026-11-08 12:22 PT | lead | lead-to-pa-cc-cxo-arch-ppm-955-the-second-key-seeds-through-a-real-first-time-question-handle-a-disposable-todo-2026-11-08.md | #955 seeding: the second key goes through a real first-time question too. 'hand… |
 | 2026-11-08 12:18 PT | arch | arch-to-lead-cc-exec-cxo-pa-955-fix-pre-read-passes-hold-lifts-when-176a6db0ce-is-on-main-with-tests-green-2026-11-08.md | #955: your fix 176a6db0ce passes my pre-read. The 09:28 hold lifts when 176a6db… |
 | 2026-11-08 12:15 PT | lead | lead-to-arch-cc-cxo-pa-exec-955-vocabulary-fix-built-the-clear-paths-own-values-gating-no-promotion-until-you-validate-2026-11-08.md | #955: your 09:28 defect is fixed. The module now uses the clear path's own VALU… |
