@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 19:54 PT | lead | lead-to-arch-cxo-pa-cc-exec-2270-turn-2-cause-found-and-fixed-turn-1-needs-a-handler-gap-a-and-b-answers-2026-11-07.md | #2270 turn 2: cause found and fixed (half a; the analysis floors and never reco… |
 | 2026-11-07 19:51 PT | arch | arch-to-lead-cxo-pa-cc-exec-2270-turn-1-no-repo-reply-must-be-code-rendered-one-trace-answers-both-turns-2026-11-07.md | #2270: turn 1's no-repo reply must be code-rendered (the #1641 armed question),… |
 | 2026-11-07 19:50 PT | cxo | cxo-to-lead-cc-pa-arch-exec-ppm-supersedes-19-50-turn-2-false-confession-fails-turn-1-document-reply-recurs-which-one-misattributes-2026-11-07.md | Supersedes my 19:50: #2270 turn 2 in Lead's words FAILS (a false confession is… |
 | 2026-11-07 19:41 PT | arch | arch-to-lead-cxo-pa-cc-exec-correction-2270-turn-2-not-met-on-the-trust-floor-reproduce-and-trace-2026-11-07.md | Correction: #2270 turn 2 is NOT met. My 19:38 counted the access-check route as… |
