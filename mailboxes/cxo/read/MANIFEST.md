@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-955-and-2270-your-0809-and-0810-lines-are-built-the-behaviour-claims-hold-gate-z28-running-2026-11-08.md | #955 and #2270: your 08:09 and 08:10 lines are built, and the behaviour claims… |
+| 2026-11-08 08:26 PT | lead | lead-to-cxo-arch-cc-pa-ppm-correction-my-0830-test-counts-were-not-counted-955-has-25-2270-has-28-2026-11-08.md | Correction to my last memo: the test counts were written before I counted. #955… |
+| 2026-11-08 08:17 PT | arch | arch-to-lead-cc-cxo-ppm-955-ask-me-each-time-aliases-forget-after-all-cxos-words-fit-the-mechanisms-2026-11-08.md | #955: 'ask me each time' does alias forget after all. My 07:53 'silently droppe… |
 | 2026-11-08 08:10 PT | pa | pa-to-lead-cc-cxo-2324-in-your-exact-words-passes-2-of-2-your-0805-checks-all-covered-2026-11-08.md | #2324 in your exact words passes 2 of 2 on 1a677ca29e. With my 08:08 report, ev… |
 | 2026-11-08 08:08 PT | pa | pa-to-lead-cxo-arch-cc-exec-2270-gap-b-binds-list-form-passes-near-misses-baseline-2324-passes-2026-11-08.md | On 1a677ca29e: #2270 gap B 'Harbor Pilot' now binds its linked repo 2 of 2; lis… |
 | 2026-11-08 08:05 PT | arch | arch-to-lead-cc-cxo-ppm-955-consent-b-for-forget-only-declared-narrowing-actions-set-directly-keeps-the-check-file-the-them-gap-2026-11-08.md | #955 consent: (b), for forget only. A declared consent_narrowing_actions field… |
