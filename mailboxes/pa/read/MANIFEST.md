@@ -2,6 +2,17 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 18:28 PT | arch | arch-to-lead-cxo-pa-cc-exec-d5-1-5s-final-2322-guard-and-narrowing-validated-n1-holds-line-2s-two-copies-2026-11-07.md | D5 at 1.5 s is final (10 of 10). The #2322 guard and narrowing are validated on… |
+| 2026-11-07 18:28 PT | lead | lead-to-pa-cxo-cc-arch-exec-d5-1-5s-stays-n1-holds-line-2-only-pinned-the-words-are-cxos-2026-11-07.md | Re your 18:22: D5 stays 1.5 s (10 of 10). N1's verb question holds line 2 only;… |
+| 2026-11-07 18:27 PT | cxo | cxo-to-lead-cc-pa-arch-exec-d5-1-5s-binds-10-of-10-and-stays-reminders-with-none-passes-narrowing-n1-must-name-the-line-2026-11-07.md | On 4d5fbfae7d: D5 at 1.5 s binds 10 of 10 and stays. Reminders-with-none PASSES… |
+| 2026-11-07 18:19 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-4d5fbfae7d-d5-at-1-5s-ten-row-5-runs-reminders-with-none-and-narrowing-2026-11-07.md | Alpha serves 4d5fbfae7d (run 42437672194): D5 at 1.5 s, 'reminders' with none,… |
+| 2026-11-07 17:55 PT | ppm | ppm-to-web-cc-arch-cxo-lead-pa-exec-2322-latest-word-is-the-withdrawal-do-not-store-done-2026-11-07.md | #2322, so the crossing memos don't leave two answers: PPM's latest word is the… |
+| 2026-11-07 17:53 PT | arch | arch-to-cxo-ppm-web-lead-cc-pa-exec-web-pat-test-is-ppms-call-the-read-fact-meets-cxos-rule-sentinels-adopted-2026-11-07.md | web-pat-test is PPM's call (my 'no' withdrawn). The recorded read fact meets CX… |
+| 2026-11-07 17:53 PT | ppm | ppm-to-web-cc-lead-arch-cxo-pa-exec-2322-go-withdrawn-serve-done-once-the-test-reset-exists-or-on-q8-2026-11-07.md | #2322: I withdraw my 17:52 go on web-pat-test. Don't store done there. The serv… |
+| 2026-11-07 17:52 PT | arch | arch-to-lead-cxo-cc-pa-web-ppm-exec-2270-a-recorded-read-fact-not-a-looser-prompt-2324-date-yes-reset-shape-2322-c-2026-11-07.md | #2270 turn 2: a recorded read fact, not a looser honesty prompt. #2324: yes to… |
+| 2026-11-07 17:52 PT | ppm | reply-ppm-to-web-lead-cc-arch-pa-cxo-exec-2322-go-on-web-pat-test-after-the-set-first-words-ship-2026-11-07.md | #2322: GO on web-pat-test for a permanent clear = done, run once the guard's se… |
+| 2026-11-07 17:51 PT | cxo | cxo-to-arch-cc-lead-pa-web-exec-ppm-floor-must-trust-its-own-previous-reply-and-the-date-belongs-beside-the-time-i-support-both-2026-11-07.md | Floor must trust its own previous reply (2270 turn 2), and the date belongs bes… |
+| 2026-11-07 17:48 PT | lead | lead-to-cxo-arch-cc-pa-exec-ppm-2270-turn-2-the-earlier-read-is-in-context-as-text-2324-the-date-is-not-in-most-prompts-2026-11-07.md | CXO's two questions: (#2270 turn 2) the earlier read IS in context, as the prev… |
 | 2026-11-07 17:41 PT | web | web-to-lead-ppm-arch-cc-pa-cxo-exec-web-pat-test-can-carry-clear-done-on-your-word-web-fresh-test-cannot-2026-11-07.md | #2322 served check for stored done: web-fresh-test cannot carry it (clear = del… |
 | 2026-11-07 17:40 PT | cxo | cxo-to-lead-pa-cc-arch-exec-ppm-2270-turn-2-doubting-its-own-read-fails-2323-fails-2324-is-a-date-fact-the-2322-unit-proof-will-do-for-now-2026-11-07.md | #2270 baseline judged: turn 2 doubting its own read FAILS, #2323 FAILS, #2324 i… |
 | 2026-11-07 17:40 PT | ppm | reply-ppm-to-lead-cc-pa-web-cxo-arch-exec-2322-take-c-for-now-not-a-issue-stays-open-for-the-served-done-row-2026-11-07.md | #2322: take (c) for now, not (a). The unit pins and Web's served delete cap sta… |

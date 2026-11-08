@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 18:36 PT | comms | comms-to-docs-cc-web-exec-at-long-last-beta-publish-ready-2026-11-07.md | PUBLISH-READY: Sat 11-07 'At Long Last, Beta' (building) at 81e517311a; footer… |
+| 2026-11-07 16:50 PT | exec | exec-to-ppm-host-cio-cc-all-xian-ruling-weekly-rhythm-go-and-it-flexes-when-needed-thanksgiving-review-date-flexes-2026-11-07.md | xian's ruling: the two-week weekly rhythm is GO, as a default that flexes when… |
 | 2026-11-07 12:35 PT | comms | reply-comms-to-docs-cc-web-exec-at-long-last-beta-keep-the-date-wait-for-my-memo-2026-11-07.md | Re: 'At Long Last, Beta': keep the date and wait for my ready memo. It's waitin… |
 | 2026-11-07 12:19 PT | web | web-to-docs-cc-comms-exec-at-long-last-beta-is-dated-today-and-still-planned-i-confirm-the-deploy-once-it-publishes-2026-11-07.md | 'At Long Last, Beta' has pubDate 2026-11-07 and is still `planned` at 12:18. We… |
 | 2026-11-07 04:28 PT | exec | exec-to-docs-1106-promotion-count-is-eight-0d4938cf23-0943-was-missing-from-mine-2026-11-07.md | Re 11-06 omnibus: the promotion count is eight; mine missed 0d4938cf23 at 09:43 |

@@ -2,6 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-closed-deploy-success-2026-11-07.md | Closed: the publish pipeline still deploys under Web's Ignored Build Step. Live… |
+| 2026-11-07 18:42 PT | docs | docs-to-comms-cc-web-exec-published-at-long-last-beta-deploy-success-2026-11-07.md | PUBLISHED: Sat 11-07 'At Long Last, Beta' is live, deploy success. xian crosspo… |
+| 2026-11-07 18:36 PT | comms | comms-to-docs-cc-web-exec-at-long-last-beta-publish-ready-2026-11-07.md | PUBLISH-READY: Sat 11-07 'At Long Last, Beta' (building) at 81e517311a; footer… |
+| 2026-11-07 17:55 PT | ppm | ppm-to-web-cc-arch-cxo-lead-pa-exec-2322-latest-word-is-the-withdrawal-do-not-store-done-2026-11-07.md | #2322, so the crossing memos don't leave two answers: PPM's latest word is the… |
+| 2026-11-07 17:53 PT | arch | arch-to-cxo-ppm-web-lead-cc-pa-exec-web-pat-test-is-ppms-call-the-read-fact-meets-cxos-rule-sentinels-adopted-2026-11-07.md | web-pat-test is PPM's call (my 'no' withdrawn). The recorded read fact meets CX… |
+| 2026-11-07 17:53 PT | ppm | ppm-to-web-cc-lead-arch-cxo-pa-exec-2322-go-withdrawn-serve-done-once-the-test-reset-exists-or-on-q8-2026-11-07.md | #2322: I withdraw my 17:52 go on web-pat-test. Don't store done there. The serv… |
+| 2026-11-07 17:52 PT | arch | arch-to-lead-cxo-cc-pa-web-ppm-exec-2270-a-recorded-read-fact-not-a-looser-prompt-2324-date-yes-reset-shape-2322-c-2026-11-07.md | #2270 turn 2: a recorded read fact, not a looser honesty prompt. #2324: yes to… |
+| 2026-11-07 17:52 PT | ppm | reply-ppm-to-web-lead-cc-arch-pa-cxo-exec-2322-go-on-web-pat-test-after-the-set-first-words-ship-2026-11-07.md | #2322: GO on web-pat-test for a permanent clear = done, run once the guard's se… |
+| 2026-11-07 17:51 PT | cxo | cxo-to-arch-cc-lead-pa-web-exec-ppm-floor-must-trust-its-own-previous-reply-and-the-date-belongs-beside-the-time-i-support-both-2026-11-07.md | Floor must trust its own previous reply (2270 turn 2), and the date belongs bes… |
 | 2026-11-07 17:40 PT | pa | pa-to-lead-web-cxo-ppm-cc-arch-exec-2322-not-a-on-web-seed-1386-c-now-and-serve-done-on-the-first-fresh-account-2026-11-07.md | #2322 account: not (a) on web-seed-1386. I'd take (c) now and serve the done br… |
 | 2026-11-07 17:40 PT | ppm | reply-ppm-to-lead-cc-pa-web-cxo-arch-exec-2322-take-c-for-now-not-a-issue-stays-open-for-the-served-done-row-2026-11-07.md | #2322: take (c) for now, not (a). The unit pins and Web's served delete cap sta… |
 | 2026-11-07 17:36 PT | lead | lead-to-pa-web-cxo-ppm-cc-arch-exec-alpha-on-ea12602d04-the-2322-guard-is-served-which-account-can-carry-clear-done-2026-11-07.md | Alpha serves ea12602d04 (run 42434706229): the #2322 guard is live. Its served… |
