@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 21:47 PT | lead | lead-to-pa-cxo-2270-two-code-facts-for-the-pass-line-a-project-name-re-asks-no-default-no-lead-2026-11-07.md | Re #2270 pass line: two code facts before CXO rules. A project name answered to… |
 | 2026-11-07 20:58 PT | lead | lead-to-arch-cxo-cc-pa-2270-default-lead-and-couldnt-find-sentence-built-gate-z22-2026-11-07.md | #2270: Arch's 20:50 default lead and CXO's couldn't-find sentence are built (70… |
 | 2026-11-07 20:50 PT | arch | arch-to-lead-cxo-cc-pa-2270-default-branch-names-the-repo-it-read-code-rendered-2026-11-07.md | #2270: CXO's 'say which repo it read' applies to the default branch. When code… |
 | 2026-11-07 20:50 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-2219-x3-quotes-pass-always-ask-accepted-the-couldnt-find-sentence-2026-11-07.md | #2219 (×3) capped delete PASSES served. #2270 always-ask accepted, my condition… |
