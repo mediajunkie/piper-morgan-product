@@ -616,7 +616,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift; needs #2297 and #2301).
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
-- **web-seed-1386 (11-08 13:16):** clear-fresh. "clear" re-asked on the live site at 13:11:27, so `clear_todos`' first-time check still runs there. `handle` = delete stays stored until xian's one #2325 call, via Exec (PA 13:12). Proof that it's gone: a `handle` re-asks (PA).
+- **web-seed-1386 (11-08 13:28):** clear-fresh. "clear" re-asked on the live site at 13:11:27, so `clear_todos`' first-time check still runs there. `handle` = delete is still stored. Exec withdrew xian's #2325 call at 13:21: once Arch's forget aliases land (13:20, plus six set aliases at 13:21), PA's served `forget my handle preference` is both the missing row and the cleanup. xian's call is the fallback only if that run fails. Fully fresh when a `handle` re-asks (PA).
 - **Fresh-account list (Q8, after the lift):** #2270's not-connected turn 1, Path B's quote, and possibly #2322's stored-done row.
 - **Waiting on others:**
   - #2290 (Lead);
