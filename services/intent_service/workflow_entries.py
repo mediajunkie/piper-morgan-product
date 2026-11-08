@@ -3789,6 +3789,11 @@ def register_default_workflows() -> None:
         ),
         requires_context=["intent", "intent_service"],
         action_triggered=True,
+        # Arch 11-08 07:53: router-hidden (the #2132 ratchet at 3, its LAST raise;
+        # exit #2149). The live router can't reach a write outside alpha's live set,
+        # and its catalog line moved live delete_todo rows in the screen. If the op
+        # ever joins the live set, it turns visible behind a fresh rule-7 screen.
+        router_visible=False,
     )
 
     # #1333 (Arch-ruled 2026-06-30): the former per-action unwired-write registration

@@ -203,3 +203,122 @@ async def test_one_entry_three_aliases_registered():
     for alias in pc.CHANGE_BY_ACTION:
         assert flows[alias] is entry
         assert ("QUERY", alias) in ACTION_REGISTRY and ("QUERY", alias) in ACTION_EXAMPLES
+
+
+# ── Arch 11-08 07:53 condition: the landing pin through router_none_stands ─────
+
+_ALPHA_LIVE = (
+    "add_project,complete_todo,create_reminder,create_todo,delete_todo,read_canonical,"
+    "read_floor,read_portfolio,read_referent,read_status,read_strategic,read_synthesis,"
+    "read_temporal"
+)
+
+
+async def test_landing_pin_the_routers_none_does_not_floor_the_hidden_entry(mem_prefs, monkeypatch):
+    """Through process_intent with alpha's live set: a live consult that declines with
+    router_none at 0.95 leaves the classifier's landing on the hidden entry standing."""
+    from types import SimpleNamespace
+    from unittest.mock import patch
+
+    import services.intent_service.inversion_live as il
+    from services.intent.intent_service import IntentService
+    from services.intent_service import conversational_floor as cf
+    from services.intent_service.classifier import IntentClassifier
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    register_default_workflows()
+    floored = []
+
+    async def _floor(self, ctx):
+        floored.append(ctx)
+        return cf.FloorResponse(message="(floor)")
+
+    monkeypatch.setattr(cf.ConversationalFloor, "respond", _floor)
+
+    class _NoLLM:
+        def __getattr__(self, name):
+            raise AssertionError(f"LLM touched ({name})")
+
+    with patch("services.intent.intent_service.LearningHandler"):
+        with patch("services.intent.intent_service.ConversationKnowledgeGraphIntegration"):
+            svc = IntentService(intent_classifier=IntentClassifier(llm_service=_NoLLM()))
+
+    async def _classify_multiple(msg, context=None, user_id=None, session_id=None):
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="set_clear_preference_done",
+            original_message=msg,
+            confidence=0.95,
+            context={"original_message": msg},
+        )
+        return SimpleNamespace(
+            intents=[intent],
+            is_multi_intent=False,
+            has_greeting=False,
+            has_substantive_intent=True,
+            primary_intent=intent,
+            secondary_intents=[],
+        )
+
+    monkeypatch.setattr(svc.intent_classifier, "classify_multiple", _classify_multiple)
+
+    async def _router_none(*a, **k):
+        il.publish_live_route_provenance(
+            il.LiveRouteProvenance(routed_live=False, reason="router_none", confidence=0.95)
+        )
+        return None
+
+    monkeypatch.setenv("PIPER_INVERSION_LIVE_CATEGORIES", _ALPHA_LIVE)
+    monkeypatch.setattr(il, "consult_inversion_live", _router_none)
+    await _stored(_CLEAR, "delete")
+    try:
+        result = await svc.process_intent(
+            message="make clear mean mark it done", session_id="pc-955", user_id=_USER
+        )
+    finally:
+        il.publish_live_route_provenance(None)
+    assert floored == []
+    # An execute-framed ask (consent PROCEED). The forget asks frame AMBIGUOUS and meet
+    # the consent check (raised with Arch 11-08; not pinned until he rules).
+    assert result.message.startswith('Okay. From now on "clear" means mark it done.')
+
+
+# ── Arch 11-08 07:53 (3): the standing classifier miss completes nothing ───────
+
+
+async def test_make_clear_mark_them_done_as_complete_todo_completes_nothing():
+    """The classifier reads "make clear mark them done" as complete_todo x6 (main and
+    candidate; corpus REVIEW row). The objectless "them" must complete nothing. Today
+    it says it couldn't find "them" rather than asking which (reported to Arch)."""
+    from unittest.mock import AsyncMock
+    from uuid import uuid4
+
+    from services.domain.models import Todo
+    from services.intent_service.soft_invocation import WorkflowOfferService
+    from services.intent_service.todo_handlers import TodoIntentHandlers
+
+    def todo(text):
+        t = Todo(text=text, priority="medium")
+        t.id = str(uuid4())
+        return t
+
+    h = TodoIntentHandlers()
+    h.todo_service = AsyncMock()
+    h.todo_service.list_todos = AsyncMock(
+        return_value=[todo("review prs"), todo("call the vet"), todo("hydrate")]
+    )
+    user = uuid4()
+    result = await h.handle_complete_todo(
+        Intent(
+            category=IntentCategory.EXECUTION,
+            action="complete_todo",
+            original_message="make clear mark them done",
+            confidence=0.9,
+        ),
+        "s-955",
+        user,
+        offer_service=WorkflowOfferService(),
+        principal=str(user),
+    )
+    h.todo_service.complete_todo.assert_not_called()
+    assert "Nothing" in result or "couldn't find" in result
