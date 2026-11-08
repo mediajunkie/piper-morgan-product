@@ -20558,6 +20558,19 @@ Add any additional information here.
             ):
                 self.logger.info("consent_narrowing_action_proceeds", action=intent.action)
                 _consent_verdict = _consent.ConsentDecision.PROCEED
+            # #955 (Arch 11-08 13:56): a declared consent-TIGHTENING action (set-directly)
+            # always gets the check, in every framing: PROCEED becomes COLLABORATE so its
+            # write_ask names the verb before anything changes. Only ever adds a check.
+            elif (
+                _consent_verdict
+                in (
+                    _consent.ConsentDecision.PROCEED,
+                    _consent.ConsentDecision.PROCEED_WITH_DISCLOSURE,
+                )
+                and intent.action in _rail_entry.consent_tightening_actions
+            ):
+                self.logger.info("consent_tightening_action_asks", action=intent.action)
+                _consent_verdict = _consent.ConsentDecision.COLLABORATE
         else:
             _consent_verdict = None
         if _consent_verdict is not None and (_consent_verdict is _consent.ConsentDecision.CONFIRM):
@@ -20824,7 +20837,11 @@ Add any additional information here.
                         intent, _held_ask, False, all_suggestions, preferences
                     )
             if _held_ask is not None and _held_ask.words is not None:
-                _check = _consent.build_consent_check_offer(intent, _held_ask.words)
+                _check = _consent.build_consent_check_offer(
+                    intent,
+                    _held_ask.words,
+                    teach=intent.action not in _rail_entry.consent_tightening_actions,
+                )
                 self.workflow_offer_service.set_pending_offer(
                     session_id, _check.offer, user_id=user_id
                 )

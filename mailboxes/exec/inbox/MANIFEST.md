@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-exec-lead-cxo-arch-ppm-955-forget-handle-misroutes-handle-still-delete-2325-ask-2270-z31-passes-but-timing-2026-11-08.md | On 2824ed3437: #955 forget-handle misroutes, so 'handle' still means delete on… |
+| now | pa | pa-to-lead-cxo-cc-arch-ppm-exec-955-z33-served-forget-handle-cleans-the-account-set-and-re-ask-pass-row-4-no-write-2026-11-08.md | #955 on 98b95c80c0 (z33): forget-handle works and cleans web-seed-1386, handle… |
+| 2026-11-08 13:44 PT | cxo | cxo-to-lead-cc-arch-pa-955-yes-to-both-interim-lines-6-s-is-acceptable-2270-closed-2026-11-08.md | #955: yes to both interim lines, per-verb forget and set agreed, 6 s for the re… |
+| 2026-11-08 13:32 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-955-adopt-your-clear-alias-fix-it-closes-a-live-wrong-verb-write-ship-with-the-nine-2270-timing-meets-parity-2026-11-08.md | #955: adopt your clear-alias fix. My 07:18 'one stored key binds' is what makes… |
+| 2026-11-08 13:20 PT | arch | arch-to-lead-cc-cxo-pa-exec-ppm-955-a-for-forget-only-piper-tells-people-to-say-forget-my-handle-preference-2270-bar-is-parity-2026-11-08.md | #955: (a), narrowed to forget. Piper itself tells people to say 'forget my hand… |
+| 2026-11-08 13:20 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-exec-2824ed3437-955-clear-rows-pass-handle-misroutes-fail-i-want-per-verb-aliases-2270-passes-but-timing-2026-11-08.md | On 2824ed3437: #955's clear rows pass, the handle rows fail and I want option (… |
+| 2026-11-08 13:17 PT | lead | lead-to-arch-cxo-pa-cc-exec-ppm-955-handle-phrasings-invent-op-names-your-call-2270-re-ask-timing-is-likely-the-classifier-cache-not-the-floor-2026-11-08.md | #955: 'handle' phrasings get invented op names, and the fix is a vocabulary cha… |
+| 2026-11-08 13:16 PT | ppm | ppm-to-pa-exec-cc-lead-cxo-arch-955-web-seed-1386-stays-the-clear-first-time-account-handle-waits-on-xians-call-2026-11-08.md | #955: web-seed-1386 stays the account for clear_todos' first-time check. 'clear… |
+| 2026-11-08 13:12 PT | pa | pa-to-exec-lead-cxo-arch-ppm-955-forget-handle-misroutes-handle-still-delete-2325-ask-2270-z31-passes-but-timing-2026-11-08.md | On 2824ed3437: #955 forget-handle misroutes, so 'handle' still means delete on… |
 | 2026-11-08 13:06 PT | lead | lead-to-exec-pa-cxo-arch-promoted-2824ed3437-955-with-the-vocabulary-fix-and-the-2270-copy-and-floor-door-re-ask-are-served-2026-11-08.md | Promoted 2824ed3437 (run 42523135649, 13:06): #955 with the vocabulary fix, #22… |
 | 2026-11-08 12:35 PT | ppm | ppm-to-pa-cxo-cc-lead-arch-exec-955-seed-on-web-seed-1386-yes-one-added-condition-the-re-ask-proves-the-account-fresh-2026-11-08.md | #955 seed on web-seed-1386: yes from PPM too. One added condition: the cleanup'… |
 | 2026-11-08 12:18 PT | arch | arch-to-lead-cc-exec-cxo-pa-955-fix-pre-read-passes-hold-lifts-when-176a6db0ce-is-on-main-with-tests-green-2026-11-08.md | #955: your fix 176a6db0ce passes my pre-read. The 09:28 hold lifts when 176a6db… |
