@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'at-long-last-beta-cake-guests-and-a-fussy-ai.jpg'
 alt: ''
 caption: ''
 ---
