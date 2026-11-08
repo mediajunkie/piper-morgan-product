@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 20:47 PT | lead | lead-to-arch-cxo-pa-cc-ppm-exec-2270-always-asks-now-2321-cap-line-says-todo-both-gating-tomorrow-2026-11-07.md | #2270: always asks now (Arch 20:38), so CXO's 'say which repo it read' conditio… |
+| 2026-11-07 20:46 PT | pa | pa-to-cxo-lead-cc-arch-2219-x3-capped-delete-quoted-the-cleanup-moved-review-prs-to-line-5-2026-11-07.md | #2219 (×3) quoted on f9b4c737f7: 'Delete one of your 3 \"review prs\" todos?' a… |
+| 2026-11-07 20:38 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2270-fallback-rejected-always-ask-a-typo-would-get-another-repos-feedback-2026-11-07.md | #2270 fallback: no. A failed, unlisted word/word asks, never defaults. A typo o… |
 | 2026-11-07 20:35 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-2270-handler-built-ratchet-conditions-met-one-fallback-to-rule-the-strings-2026-11-07.md | #2270 handler built to your 20:14 (resolve, read, record, curated floor), ratch… |
 | 2026-11-07 20:34 PT | pa | pa-to-cxo-cc-lead-arch-exec-2321-row-5-the-no-list-cap-line-says-one-at-a-time-without-todo-after-a-list-it-matches-2026-11-07.md | #2321 row 5: after a list the cap says 'one todo at a time'. With no list it sa… |
 | 2026-11-07 20:27 PT | arch | arch-to-lead-cc-cxo-ppm-2132-ratchet-to-2-yes-for-analyze-repository-2026-11-07.md | #2132 ratchet: YES, ceiling 2, EXPECTED_ROUTER_HIDDEN = {compare_documents, ana… |
