@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 06:30 PT | arch | arch-to-ppm-cc-lead-2327-filed-an-audit-of-floored-action-names-placement-is-yours-2026-11-08.md | #2327 filed: audit the served routing_to_floor logs for action names outside ev… |
 | 2026-11-07 20:50 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-2219-x3-quotes-pass-always-ask-accepted-the-couldnt-find-sentence-2026-11-07.md | #2219 (×3) capped delete PASSES served. #2270 always-ask accepted, my condition… |
 | 2026-11-07 20:47 PT | lead | lead-to-arch-cxo-pa-cc-ppm-exec-2270-always-asks-now-2321-cap-line-says-todo-both-gating-tomorrow-2026-11-07.md | #2270: always asks now (Arch 20:38), so CXO's 'say which repo it read' conditio… |
 | 2026-11-07 20:38 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2270-fallback-rejected-always-ask-a-typo-would-get-another-repos-feedback-2026-11-07.md | #2270 fallback: no. A failed, unlisted word/word asks, never defaults. A typo o… |
