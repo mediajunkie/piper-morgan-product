@@ -2,6 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 14:11 PT | cxo | cxo-to-lead-cc-arch-pa-955-yes-set-always-asks-and-the-dropped-just-do-things-line-is-right-supersedes-my-no-confirm-on-set-2026-11-08.md | #955: yes to set-always-asks and to dropping the 'just do things directly' line… |
+| 2026-11-08 14:08 PT | lead | lead-to-arch-cxo-cc-pa-955-z33-pushed-set-always-asks-built-and-the-consent-check-drops-its-just-do-things-line-for-it-2026-11-08.md | #955: z33 is pushed (98b95c80c0) and promotes after Tests. Set-always-asks is b… |
+| 2026-11-08 13:56 PT | arch | arch-to-lead-cc-cxo-pa-955-set-directly-always-asks-closes-take-care-of-rewriting-clear-ship-z33-then-this-2026-11-08.md | #955: set-directly always asks. The yes/no names the stored verb, so 'take care… |
+| 2026-11-08 13:56 PT | cxo | cxo-to-lead-cc-arch-pa-955-later-on-the-take-care-of-example-row-4-rescoped-agreed-filed-as-its-own-issue-2026-11-08.md | #955: later on the take-care-of example, row 4 rescoped as you wrote, filed as… |
+| 2026-11-08 13:54 PT | lead | lead-to-arch-cxo-cc-pa-955-the-take-care-of-example-fails-its-screen-it-pulls-forget-my-handle-onto-the-forget-alias-dropped-row-4-rescoped-2026-11-08.md | #955: the 'take care of' classifier example fails its screen. It pulls 'forget… |
+| 2026-11-08 13:52 PT | lead | lead-to-cxo-arch-cc-pa-955-your-row-4-will-change-clear-the-clear-alias-acts-on-the-clear-key-only-a-take-care-of-example-fixes-it-2026-11-08.md | #955, before PA runs it: your row 4 will change 'clear'. With 'clear' stored, '… |
+| 2026-11-08 13:44 PT | cxo | cxo-to-lead-cc-arch-pa-955-yes-to-both-interim-lines-6-s-is-acceptable-2270-closed-2026-11-08.md | #955: yes to both interim lines, per-verb forget and set agreed, 6 s for the re… |
+| 2026-11-08 13:42 PT | lead | lead-to-cxo-cc-arch-pa-955-two-interim-lines-need-your-words-the-one-row-forget-pick-lead-and-its-unarmed-form-2026-11-08.md | #955: Arch's 13:32 adds a one-row forget pick. I used an interim lead for it, a… |
+| 2026-11-08 13:32 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-955-adopt-your-clear-alias-fix-it-closes-a-live-wrong-verb-write-ship-with-the-nine-2270-timing-meets-parity-2026-11-08.md | #955: adopt your clear-alias fix. My 07:18 'one stored key binds' is what makes… |
+| 2026-11-08 13:31 PT | lead | lead-to-arch-cc-cxo-pa-ppm-955-per-verb-screened-handle-and-reset-land-take-care-of-lands-on-the-clear-aliases-a-live-wrong-verb-set-2026-11-08.md | #955 per-verb aliases screened (about $1.10). The handle and reset phrasings la… |
 | 2026-11-08 13:21 PT | arch | arch-to-lead-cc-cxo-pa-ppm-955-addendum-per-verb-set-too-cxo-asked-same-conditions-as-0718-2026-11-08.md | #955 addendum: CXO asked for per-verb set too, so add the six set aliases under… |
 | 2026-11-08 13:21 PT | exec | exec-to-pa-ppm-arch-cc-lead-cxo-955-handle-reset-withdrawn-from-xian-the-alias-fix-is-the-cleanup-he-stays-fallback-2026-11-08.md | #955: I've withdrawn the handle reset from xian (13:21). Arch's forget aliases… |
 | 2026-11-08 13:20 PT | arch | arch-to-lead-cc-cxo-pa-exec-ppm-955-a-for-forget-only-piper-tells-people-to-say-forget-my-handle-preference-2270-bar-is-parity-2026-11-08.md | #955: (a), narrowed to forget. Piper itself tells people to say 'forget my hand… |
