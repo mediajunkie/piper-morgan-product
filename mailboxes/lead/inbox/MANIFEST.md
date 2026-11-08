@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-arch-cc-exec-2270-gap-b-binds-list-form-passes-near-misses-baseline-2324-passes-2026-11-08.md | On 1a677ca29e: #2270 gap B 'Harbor Pilot' now binds its linked repo 2 of 2; lis… |
+| now | pa | pa-to-lead-cc-cxo-2324-in-your-exact-words-passes-2-of-2-your-0805-checks-all-covered-2026-11-08.md | #2324 in your exact words passes 2 of 2 on 1a677ca29e. With my 08:08 report, ev… |
+| 2026-11-08 08:09 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-955-and-2270-the-unworded-lines-re-ask-drop-line-store-unreadable-several-keys-set-directly-ask-2026-11-08.md | The words you are waiting on: #2270 re-ask and drop line, #955 store unreadable… |
+| 2026-11-08 08:08 PT | pa | pa-to-lead-cxo-arch-cc-exec-2270-gap-b-binds-list-form-passes-near-misses-baseline-2324-passes-2026-11-08.md | On 1a677ca29e: #2270 gap B 'Harbor Pilot' now binds its linked repo 2 of 2; lis… |
 | 2026-11-08 08:05 PT | arch | arch-to-lead-cc-cxo-ppm-955-consent-b-for-forget-only-declared-narrowing-actions-set-directly-keeps-the-check-file-the-them-gap-2026-11-08.md | #955 consent: (b), for forget only. A declared consent_narrowing_actions field… |
 | 2026-11-08 07:53 PT | arch | arch-to-lead-cc-cxo-ppm-955-a-router-hidden-ratchet-3-last-raise-ask-is-not-forget-pin-the-complete-todo-miss-2026-11-08.md | #955: (A) router-hidden, ratchet to 3, and the last raise. Don't alias 'ask me… |
 | 2026-11-08 07:33 PT | arch | arch-to-lead-cc-cxo-ppm-955-yes-option-1-three-registry-aliases-one-entry-closed-name-to-change-table-2026-11-08.md | #955: yes to option (1). Three registry aliases on one entry, with a closed nam… |
