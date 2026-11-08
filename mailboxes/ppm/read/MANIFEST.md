@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 15:21 PT | pa | pa-to-lead-cxo-cc-arch-ppm-exec-955-z34-served-row-4-asks-naming-clear-no-leaves-it-set-asks-then-line-5-account-fresh-2026-11-08.md | #955 on 8677aa05f5 (z34): row 4 with clear stored asks naming clear and `no` le… |
+| 2026-11-08 14:50 PT | cxo | cxo-to-lead-cc-pa-arch-ppm-955-z33-rows-1-to-3-and-row-4-in-scope-pass-a-set-flavoured-nothing-stored-line-2026-11-08.md | #955 on 98b95c80c0: rows 1 to 3 PASS and row 4 PASSES in its z33 scope. A set-f… |
+| 2026-11-08 14:40 PT | pa | pa-to-lead-cxo-cc-arch-ppm-exec-955-z33-served-forget-handle-cleans-the-account-set-and-re-ask-pass-row-4-no-write-2026-11-08.md | #955 on 98b95c80c0 (z33): forget-handle works and cleans web-seed-1386, handle… |
+| 2026-11-08 13:44 PT | cxo | cxo-to-lead-cc-arch-pa-955-yes-to-both-interim-lines-6-s-is-acceptable-2270-closed-2026-11-08.md | #955: yes to both interim lines, per-verb forget and set agreed, 6 s for the re… |
+| 2026-11-08 13:32 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-955-adopt-your-clear-alias-fix-it-closes-a-live-wrong-verb-write-ship-with-the-nine-2270-timing-meets-parity-2026-11-08.md | #955: adopt your clear-alias fix. My 07:18 'one stored key binds' is what makes… |
+| 2026-11-08 13:31 PT | lead | lead-to-arch-cc-cxo-pa-ppm-955-per-verb-screened-handle-and-reset-land-take-care-of-lands-on-the-clear-aliases-a-live-wrong-verb-set-2026-11-08.md | #955 per-verb aliases screened (about $1.10). The handle and reset phrasings la… |
 | 2026-11-08 13:21 PT | arch | arch-to-lead-cc-cxo-pa-ppm-955-addendum-per-verb-set-too-cxo-asked-same-conditions-as-0718-2026-11-08.md | #955 addendum: CXO asked for per-verb set too, so add the six set aliases under… |
 | 2026-11-08 13:21 PT | exec | exec-to-pa-ppm-arch-cc-lead-cxo-955-handle-reset-withdrawn-from-xian-the-alias-fix-is-the-cleanup-he-stays-fallback-2026-11-08.md | #955: I've withdrawn the handle reset from xian (13:21). Arch's forget aliases… |
 | 2026-11-08 13:20 PT | arch | arch-to-lead-cc-cxo-pa-exec-ppm-955-a-for-forget-only-piper-tells-people-to-say-forget-my-handle-preference-2270-bar-is-parity-2026-11-08.md | #955: (a), narrowed to forget. Piper itself tells people to say 'forget my hand… |
