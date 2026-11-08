@@ -48,3 +48,45 @@ PIPER: You have 8 open todos. Here they are:
 5. audit the current navigation
 6. review the deployment plan
 7. draft the launch checklist
+# --- CXO 20:26: #2321 row 5, the cap line in both forms ---
+
+--- [20:34:10, f9b4c737f7, http 200, 3.97 s] route execution/delete_todo
+USER: delete the first two todos
+PIPER: I haven't shown you a numbered list yet. Here are your todos:
+
+1. "urgent task"
+2. "review prs" (×2)
+3. "zz throwaway one"
+4. "zz throwaway two"
+5. "audit the current navigation"
+6. "review the deployment plan"
+7. "draft the launch checklist"
+
+I can delete one at a time for now. Which one should I delete? Say the number or the name, or 'never mind' to leave them alone.
+
+--- [20:34:11, f9b4c737f7, http 200, 0.24 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been deleted.
+
+--- [20:34:13, f9b4c737f7, http 200, 1.88 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. review prs (×2)
+3. zz throwaway one
+4. zz throwaway two
+5. audit the current navigation
+6. review the deployment plan
+7. draft the launch checklist
+
+--- [20:34:15, f9b4c737f7, http 200, 1.41 s] route execution/delete_todo
+USER: delete the first two todos
+PIPER: I can delete one todo at a time for now. You asked about these:
+1. "urgent task"
+2. "review prs" (×2)
+
+Which one should I delete first? Say the number or the name, or 'never mind' to leave them alone.
+
+--- [20:34:16, f9b4c737f7, http 200, 0.24 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been deleted.
