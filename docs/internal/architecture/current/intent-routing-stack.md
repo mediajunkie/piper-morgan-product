@@ -1812,6 +1812,12 @@ Arch's 2026-10-29 21:08 ruling (decisions.log) puts the #1425/#1717 rule on `Con
 
 The denominator for these read-claim states is computed, never hand-listed: `scripts/read_claim_inventory.py` walks the rail, the legacy mapping and the floor's sources and joins them with the classification in `docs/internal/architecture/current/read-claim-inventory.yaml` (#2151 step 1, 2026-10-23).
 
+### `analyze_repository` has its own handler and an armed list ask (#2270, 2026-11-07/08)
+
+"Look at this repository, give me feedback" (`analysis/analyze_repository`) used to floor over the gathered baseline, so turn 1 varied (a read, an ask, a request to paste a document) and nothing recorded the read. Now (Arch 11-07 20:14, router-hidden, the #2132 ratchet at 2) `_handle_analyze_repository` resolves one repo (#1641's order), reads its open issues and milestones, calls `record_read`, and floors over that read alone (`domain_context["repository_read"]`). When code chose the repo (the default), a fixed first line names it, and an exact `Looking at {owner/repo}…` opening of the composed body is dropped (Arch 11-08, exact match on code-held strings only). A failed, unlisted `word/word` always asks (Arch 20:38).
+- **The ask is CXO's numbered list** (`repo_clarification.listed_repo_question`): every linked GitHub repo (`RepositoryRepository.list_by_owner`), numbered, with the never-mind line. The carrier stores `listed_repos`. On the answer turn a bare number binds its line, a bare name of one listed line binds it, and a project name binds that project's own linked repo (or says it has none). None linked: CXO's line. An unreadable list keeps the open ask, and project names still bind.
+- **An unbound answer re-asks once (Arch 11-08 07:18).** The carrier notes an answer to the analysis ask that bound nothing (never a decline, a bare exit or a state question). After routing, if the turn landed on no registered rail op, `process_intent` replaces the composed reply with `I couldn't find "{their words}" among your repositories or projects.` and re-arms the same question. The second miss drops the ask. A rail op means a new request and stands. Pins: `test_analyze_repository_2270.py`.
+
 ### The floor's LLM-ERROR path — a fifth, orthogonal classification, not a
 ### routing surface (#1872, 2026-09-24)
 
