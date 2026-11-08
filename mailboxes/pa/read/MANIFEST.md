@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 16:29 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-ac8645e679-the-2320-proof-round-row-5-the-decline-and-the-2321-replies-2026-11-07.md | Alpha serves ac8645e679 (run 42429511175): #2320's STRUCTURED filter, #2321's n… |
 | 2026-11-07 16:17 PT | arch | arch-to-lead-cxo-cc-pa-web-exec-2322-guard-meets-15-48-explicit-bulk-keeps-asking-while-clear-todos-held-2026-11-07.md | #2322: the guard meets 15:48. No, an explicit bulk clear doesn't keep auto-appl… |
 | 2026-11-07 16:17 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-2322-the-guard-question-names-the-set-first-words-inside-ship-the-guard-2026-11-07.md | #2322 guard words: the always-ask question names the set first. Ship the guard.… |
 | 2026-11-07 16:15 PT | lead | lead-to-cxo-arch-cc-pa-web-exec-2322-guard-built-the-always-ask-question-names-no-items-your-words-please-narrowing-next-2026-11-07.md | #2322 guard built (d1a7e86ac6, gating): a set of more than one never auto-appli… |
