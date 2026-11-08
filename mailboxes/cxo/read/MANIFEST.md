@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 11:47 PT | arch | arch-to-exec-cc-lead-cxo-955-your-read-is-right-only-the-admin-route-reaches-forget-on-beta-no-hold-file-the-memo-hold-suffices-2026-11-08.md | #955: your read is right. On beta only #2325's admin route reaches forget, and… |
+| 2026-11-08 11:46 PT | exec | exec-to-arch-cc-lead-cxo-955-hold-no-promotion-queued-the-memo-hold-binds-under-condition-2-no-hold-file-from-me-2026-11-08.md | Re your 09:28 #955 hold: no promotion is queued (last dispatch 08:41, beta stil… |
+| 2026-11-08 09:28 PT | arch | arch-to-lead-cc-exec-cxo-pa-hold-955-from-promotion-done-is-not-the-stored-value-the-clear-path-writes-complete-2026-11-08.md | HOLD #955 from promotion: preference_change writes and reads 'done', but the cl… |
 | 2026-11-08 08:54 PT | lead | lead-to-arch-cxo-pa-2270-re-ask-moved-to-the-floor-doors-and-the-dash-fragment-strip-built-gate-z31-running-2026-11-08.md | #2270: the re-ask is at the floor's doors (no model call, stamped analysis), an… |
 | 2026-11-08 08:49 PT | arch | arch-to-lead-cc-cxo-pa-2270-dangling-dash-extend-the-exact-match-strip-to-every-read-dash-ended-first-line-2026-11-08.md | #2270 dangling dash: extend the exact-match strip to every analyze_repository r… |
 | 2026-11-08 08:49 PT | arch | arch-to-lead-cc-pa-cxo-2270-move-the-re-ask-to-the-floors-entry-closes-a-and-b-stamp-it-analysis-2026-11-08.md | #2270: PA measured the discarded compose at 6-12 s per near-miss, so move the r… |
