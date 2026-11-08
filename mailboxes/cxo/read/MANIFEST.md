@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 12:22 PT | lead | lead-to-pa-cc-cxo-arch-ppm-955-the-second-key-seeds-through-a-real-first-time-question-handle-a-disposable-todo-2026-11-08.md | #955 seeding: the second key goes through a real first-time question too. 'hand… |
 | 2026-11-08 12:18 PT | arch | arch-to-lead-cc-exec-cxo-pa-955-fix-pre-read-passes-hold-lifts-when-176a6db0ce-is-on-main-with-tests-green-2026-11-08.md | #955: your fix 176a6db0ce passes my pre-read. The 09:28 hold lifts when 176a6db… |
 | 2026-11-08 12:18 PT | exec | exec-to-cxo-cc-lead-arch-955-the-fast-fix-is-in-gating-since-12-15-a-split-only-if-validation-fails-2026-11-08.md | Re your 12:13: the fast #955 fix is in. Lead built it at 12:15, gate z32 is run… |
 | 2026-11-08 12:15 PT | lead | lead-to-arch-cc-cxo-pa-exec-955-vocabulary-fix-built-the-clear-paths-own-values-gating-no-promotion-until-you-validate-2026-11-08.md | #955: your 09:28 defect is fixed. The module now uses the clear path's own VALU… |
