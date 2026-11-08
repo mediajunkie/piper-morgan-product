@@ -45,42 +45,23 @@ The fact is I need to take stock myself and when real human users start testing 
 
 I asked my chief of staff agent (Exec) to spread the word t the full team: "We can all catch our breath and then discuss priorities in the first sprint of the journey to our next big milestone, the Production release."
 
-# 
+# Nine known issues for mortal users...
 
-**6. The letter.** It carried **nine** known-issue lines, each checked against an open issue at send time ("9 of 9
-hold"). [#1386, PPM 10-30 19:51] Among them: Piper can misread what you ask, an answer about your own data can be wrong,
-it can state a detail it didn't look up, and there's no undo for a deleted to-do. [#1386, PPM 10-30 17:37] You sent
-them Sat 10-31. [decisions.log 10-31 13:51]
+The invitation letter lists the nine key known issues in the beta build right now, none of which are great. For example, thing like Piper can misunderstand what you ask, can give you an incorrect answer about your own data, and will still mentions details it did not really look up. Oh, and there's no undo for a deleted to-do. 
 
-**7. What beta means, per you.** "trust me, the alpha is over. the beta has started. the alpha ended when the MVP
-milestone closed." [decisions.log 11-04 19:41]
+Then the first beta tester showed me a result that made me worry there was a credential leak between accounts (where one user might get access to another's github account). Eventually I realized this was not what had happened but the investigation turned up an edge case in which a default fallback might pick up a different user's access. 
 
-**8. Optional coda, your call whether it's public.** On 11-04 you held all further invitations until three security
-items are done: "No invitations of any kind go out until this is sorted." [decisions.log 11-04 19:31] It fits the
-post's theme (beta is a door you can close again), but it's very fresh. Leave it out if you'd rather it surface in
-Ship #069.
+I ruled that no new invitations should go out until we ensure this cannot happen, since multi-tenancy privacy is one of the requirements of this beta.
 
-## Careful with these (accuracy)
-- **Private** beta: invitation only, sent personally, in waves. The public site offers a waiting list
-  (pipermorgan.ai/try/beta/), not sign-up. Don't imply anyone can join now.
-- Don't count recipients or name anyone. The letters' recipients and codes are held privately on purpose.
-- "On the day we set" is true for the milestone (due Oct 30, closed Oct 30). The letters went the next day.
-- The known-issues quotes are paraphrases from PPM's table, not the letter's exact copy. If you quote the letter, take
-  the words from `beta-invitation-letter-draft-2026-10-30.md`.
+# Keeping thing manageable for now
 
-## Already told elsewhere: don't retell
-- **Ship #067** (11-04) ends: "Since Thursday, the MVP closed on Friday, which ended the alpha, and the private beta
-  began with Saturday's invitations." This post is the meaning, not the news.
-- **Ship #068** (Wed 11-11) will cover Oct 30–Nov 5 as news. Leave the sprint details for it.
+For now we will stay in private beta so I can give each user who engages personal attention and learn as much as possible from their feedback. We are collecting signups for the [waiting list]((pipermorgan.ai/try/beta/) and I will announce when new invitations are going out.
 
-## Your angle, maybe
-- What it felt like on Oct 30, against Ship #067's P.S. ("There are times I never thought I'd get this close").
-- Why a letter that lists what's broken is the right way to invite people.
-- What "beta" means to you as a PM, compared with how products usually use the word.
+As for me, I'm still enjoying the aftermath of a happy birthday.
 
 ---
 
 *Next on Building Piper Morgan: [TEASE: Sun 11-08, "Fixed and Scores Higher Came Apart" (working title). Confirm the
 title first.]*
 
-*[Reader question, yours to write. A start: "When you launch something, what do you tell people it can't do yet?"]*
+*Have you had to make any really tough calls about whether a showstopping bug is indeed really a launch blocker or not? That's where the rubber of product sense meets the road of reality.*
