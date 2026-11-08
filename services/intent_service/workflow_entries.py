@@ -607,6 +607,13 @@ async def run_comment_issue_workflow(
 # registration in register_default_workflows(); a unit test asserts every
 # registered handler name actually exists on IntentService — closing the
 # getattr-typo blind spot that a MagicMock-based test would otherwise hide.
+async def _change_preference_write_ask(request: Any) -> Any:
+    """#955's write_ask (lazy import: preference_change reads the verified store)."""
+    from services.intent_service.preference_change import change_preference_write_ask
+
+    return await change_preference_write_ask(request)
+
+
 def _make_query_dispatch_entry_point(
     handler_attr: str,
     *,
@@ -3780,7 +3787,9 @@ def register_default_workflows() -> None:
     # (users.preferences), reversible by answering the first-time question again.
     # outwardness: PRIVATE — the person's own preference. No confirm (CXO 18:15).
     change_remembered_preference_entry = WorkflowEntry(
-        entry_point=_make_query_dispatch_entry_point("_handle_change_remembered_preference"),
+        entry_point=_make_query_dispatch_entry_point(
+            "_handle_change_remembered_preference", pass_session_id=True
+        ),
         effect=EffectClass.WRITE,
         outwardness=Outwardness.PRIVATE,
         description=(
@@ -3797,7 +3806,11 @@ def register_default_workflows() -> None:
         # Arch 11-08 08:05: forget only makes Piper ask more, so it proceeds where the
         # matrix says COLLABORATE. Set-directly keeps the check (no write_ask yet, so
         # CXO's #2304 statement until she words one).
-        consent_narrowing_actions=frozenset({"forget_clear_preference"}),
+        consent_narrowing_actions=frozenset(
+            {"forget_clear_preference", "set_clear_preference_ask"}
+        ),
+        # CXO 11-08 08:09: the set aliases' yes/no, from the stored key and target.
+        write_ask=_change_preference_write_ask,
     )
 
     # #1333 (Arch-ruled 2026-06-30): the former per-action unwired-write registration
@@ -4256,6 +4269,7 @@ def register_default_workflows() -> None:
         "forget_clear_preference": change_remembered_preference_entry,
         "set_clear_preference_done": change_remembered_preference_entry,
         "set_clear_preference_delete": change_remembered_preference_entry,
+        "set_clear_preference_ask": change_remembered_preference_entry,  # Arch 08:16
         # #1570: archived-projects list — canonical key first (wired_chat_actions
         # names each unique entry by its first-registered key), then the mode-4
         # defense aliases for LLM paraphrase emissions.

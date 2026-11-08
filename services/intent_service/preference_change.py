@@ -13,7 +13,7 @@ The keys are the clear family's (``reminder_clear_verb:{verb}``, one per verb la
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import structlog
 
@@ -28,6 +28,10 @@ CHANGE_DELETE = "delete"
 #: Arch 07:33: the alias the classifier names → the change. Closed; code-held.
 CHANGE_BY_ACTION: Dict[str, str] = {
     "forget_clear_preference": CHANGE_FORGET,
+    # Arch 11-08 08:16: "ask me each time when I clear" (the classifier names this
+    # alias, screen 6/6) is forget: line 3 says the next clear asks, and the next
+    # clear's read-back discloses what it stores (CXO 08:09: forget's lines fit).
+    "set_clear_preference_ask": CHANGE_FORGET,
     "set_clear_preference_done": CHANGE_DONE,
     "set_clear_preference_delete": CHANGE_DELETE,
 }
@@ -55,11 +59,22 @@ FAILED_LINE = (
     "I couldn't change that just now, so I'm still remembering that \"{verb}\" means {x}. "
     "Try again in a moment."
 )
-# Interim lines (Arch 07:33 accepted the behaviour; words owed to CXO).
+# CXO 11-08 08:09.
 UNREADABLE_LINE = (
-    "I couldn't check your clear preference just now, so I haven't changed anything. "
+    "I couldn't check what I'm remembering just now, so I haven't changed anything. "
     "Try again in a moment."
 )
+ALREADY_LINE = '"{verb}" already means {x}, so I haven\'t changed anything.'
+SET_DECLINE_LINE = "Okay. I won't change it."
+SET_ASK_QUESTION = 'Change "{verb}" from {old} to {new}? (yes/no)'
+# The several-keys forget pick (CXO 08:09), armed over exactly the rows shown.
+FORGET_PICK_LEAD = "I'm remembering more than one of these:"
+FORGET_PICK_QUESTION = (
+    "Which one should I forget? Say the number, or 'never mind' to leave them alone."
+)
+FORGET_PICK_DECLINE_LINE = "Okay. I haven't forgotten anything."
+FORGET_PICK_KIND = "preference_forget_pick"
+# Lead's interim for SET with several keys stored (CXO worded only forget's pick).
 CURRENT_LINE = 'Right now "{verb}" means {x}. I haven\'t changed it.'
 SEVERAL_LINE = (
     "You have more than one of these remembered: {listed}. I haven't changed any of them."
@@ -95,8 +110,75 @@ async def _stored_clear_keys(user_id: str) -> Dict[str, Dict[str, Any]]:
     }
 
 
-async def change_remembered_preference(intent: Any, user_id: Optional[str]) -> Dict[str, Any]:
-    """Returns ``{"message", "outcome"}``. Writes only the person's own stored key."""
+async def forget_one(user_id: str, key: str, old_x: str) -> Dict[str, Any]:
+    """Forget one stored key, saying "forgotten" only after the read-back (Arch 20:26)."""
+    verb = key[len(CLEAR_KEY_PREFIX) :]
+    result = await vi.forget_verified_inference(user_id, key, read_back=True)
+    if result.outcome is vi.ForgetOutcome.FORGOTTEN:
+        x = _meaning(result.record) or old_x
+        return {"message": FORGOTTEN_LINE.format(verb=verb, x=x), "outcome": "forgotten"}
+    if result.outcome is vi.ForgetOutcome.NOTHING_STORED:
+        return {"message": NOTHING_STORED_LINE, "outcome": "nothing_stored"}
+    x = _meaning(result.record) or old_x
+    return {"message": FAILED_LINE.format(verb=verb, x=x), "outcome": "failed"}
+
+
+def _rows(keys: Dict[str, Dict[str, Any]]) -> List[Tuple[str, str]]:
+    """``(key, '"verb" means X')`` for each stored key, in a stable order."""
+    return [
+        (k, f'"{k[len(CLEAR_KEY_PREFIX):]}" means {_meaning(v) or "something I can’t read"}')
+        for k, v in sorted(keys.items())
+    ]
+
+
+def forget_pick_question(rows: List[Tuple[str, str]]) -> str:
+    lines = "\n".join(f"{i}. {text}" for i, (_k, text) in enumerate(rows, start=1))
+    return f"{FORGET_PICK_LEAD}\n\n{lines}\n\n{FORGET_PICK_QUESTION}"
+
+
+def _arm_forget_pick(
+    intent: Any,
+    rows: List[Tuple[str, str]],
+    user_id: str,
+    session_id: Optional[str],
+    offer_service: Any,
+) -> Optional[str]:
+    """Arm the several-keys pick over exactly the rows shown; the question, or None
+    when nothing could be armed (no session or store)."""
+    if not session_id or offer_service is None:
+        return None
+    from services.intent_service.destructive_confirm import CONFIRM_PENDING_ACTION_WORKFLOW
+
+    question = forget_pick_question(rows)
+    offer = {
+        "workflow_type": CONFIRM_PENDING_ACTION_WORKFLOW,
+        "question": question,
+        "pending_action": {
+            "kind": FORGET_PICK_KIND,
+            "action": getattr(intent, "action", None),
+            "intent": intent,
+            "summary": "forget a remembered preference",
+            "user_id": user_id,
+            "rows": [list(r) for r in rows],
+        },
+        "decline_message": FORGET_PICK_DECLINE_LINE,
+    }
+    try:
+        offer_service.set_pending_offer(session_id, offer, user_id=user_id)
+    except Exception as e:  # silent-ok: LOGGED; an unarmed pick is never asked (#1730)
+        logger.error("preference_forget_pick_arm_failed", error=str(e))
+        return None
+    return question
+
+
+async def change_remembered_preference(
+    intent: Any,
+    user_id: Optional[str],
+    session_id: Optional[str] = None,
+    offer_service: Any = None,
+) -> Dict[str, Any]:
+    """Returns ``{"message", "outcome"}`` (``"armed": True`` when a pick was armed).
+    Writes only the person's own stored key."""
     change = change_for(intent)
     if not user_id:
         return {"message": UNREADABLE_LINE, "outcome": "no_principal"}
@@ -109,10 +191,12 @@ async def change_remembered_preference(intent: Any, user_id: Optional[str]) -> D
         # Arch 07:18 (iii): set-directly never creates a preference.
         return {"message": NOTHING_STORED_LINE, "outcome": "nothing_stored"}
     if len(keys) > 1:
-        listed = ", ".join(
-            f'"{k[len(CLEAR_KEY_PREFIX):]}" means {_meaning(v) or "something I can’t read"}'
-            for k, v in sorted(keys.items())
-        )
+        rows = _rows(keys)
+        if change == CHANGE_FORGET:
+            question = _arm_forget_pick(intent, rows, user_id, session_id, offer_service)
+            if question is not None:
+                return {"message": question, "outcome": "pick_armed", "armed": True}
+        listed = ", ".join(text for _k, text in rows)
         return {"message": SEVERAL_LINE.format(listed=listed), "outcome": "several"}
 
     key, record = next(iter(keys.items()))
@@ -124,15 +208,10 @@ async def change_remembered_preference(intent: Any, user_id: Optional[str]) -> D
         return {"message": CURRENT_LINE.format(verb=verb, x=old_x), "outcome": "unchanged"}
 
     if change == CHANGE_FORGET:
-        result = await vi.forget_verified_inference(user_id, key, read_back=True)
-        if result.outcome is vi.ForgetOutcome.FORGOTTEN:
-            x = _meaning(result.record) or old_x
-            return {"message": FORGOTTEN_LINE.format(verb=verb, x=x), "outcome": "forgotten"}
-        if result.outcome is vi.ForgetOutcome.NOTHING_STORED:
-            return {"message": NOTHING_STORED_LINE, "outcome": "nothing_stored"}
-        x = _meaning(result.record) or old_x
-        return {"message": FAILED_LINE.format(verb=verb, x=x), "outcome": "failed"}
+        return await forget_one(user_id, key, old_x)
 
+    if str(record.get("value")) == change:
+        return {"message": ALREADY_LINE.format(verb=verb, x=old_x), "outcome": "already"}
     # Set directly (Arch 07:18 (i)): store, read back, and render from the STORED value.
     stored_ok = await vi.store_verified_inference(
         user_id, key, change, source=vi.SOURCE_USER_DECLARED
@@ -144,3 +223,71 @@ async def change_remembered_preference(intent: Any, user_id: Optional[str]) -> D
             "outcome": "set",
         }
     return {"message": FAILED_LINE.format(verb=verb, x=old_x), "outcome": "failed"}
+
+
+async def change_preference_write_ask(request: Any) -> Any:
+    """#2304 write_ask for the set aliases (CXO 08:09; Arch 08:16: built from the stored
+    key and the target value, never the words). Forget never reaches the check
+    (consent-narrowing), so its request passes through."""
+    from services.intent_service.write_confirm_words import ConfirmWords, WriteAsk
+
+    change = change_for(request.intent)
+    if change not in (CHANGE_DONE, CHANGE_DELETE):
+        return WriteAsk(passthrough=True)
+    user_id = request.principal or request.user_id
+    if not user_id:
+        return WriteAsk(reply=UNREADABLE_LINE)
+    try:
+        keys = await _stored_clear_keys(str(user_id))
+    except Exception as e:  # silent-ok: LOGGED; said as unreadable, nothing armed (#2151)
+        logger.warning("preference_write_ask_read_failed", error=str(e))
+        return WriteAsk(reply=UNREADABLE_LINE)
+    if not keys:
+        return WriteAsk(reply=NOTHING_STORED_LINE)
+    if len(keys) > 1:
+        listed = ", ".join(text for _k, text in _rows(keys))
+        return WriteAsk(reply=SEVERAL_LINE.format(listed=listed))
+    key, record = next(iter(keys.items()))
+    verb = key[len(CLEAR_KEY_PREFIX) :]
+    old_x = _meaning(record) or "something I can’t read"
+    if str(record.get("value")) == change:
+        return WriteAsk(reply=ALREADY_LINE.format(verb=verb, x=old_x))
+    return WriteAsk(
+        words=ConfirmWords(
+            question=SET_ASK_QUESTION.format(verb=verb, old=old_x, new=MEANING_WORDS[change]),
+            summary="change it",
+            decline=SET_DECLINE_LINE,
+        )
+    )
+
+
+async def handle_forget_pick_turn(
+    pending_offer: Dict[str, Any],
+    message: str,
+    *,
+    session_id: Optional[str],
+    user_id: Optional[str],
+) -> Optional[Dict[str, Any]]:
+    """The several-keys pick's answer: a number on the list forgets that row's key.
+    None hands the turn to the generic seam (a decline says CXO's decline line;
+    a bare "yes" re-dispatches the original, which re-asks; anything else pops)."""
+    payload = pending_offer.get("pending_action") or {}
+    if payload.get("kind") != FORGET_PICK_KIND:
+        return None
+    if not user_id or (payload.get("user_id") and payload.get("user_id") != str(user_id)):
+        return None
+    answer = (message or "").strip().rstrip(".!?").strip()
+    rows = payload.get("rows") or []
+    if not answer.isdigit() or not (1 <= int(answer) <= len(rows)):
+        return None
+    key, text = rows[int(answer) - 1]
+    old_x = text.split(" means ", 1)[1] if " means " in text else "something I can’t read"
+    out = await forget_one(str(user_id), key, old_x)
+    return {
+        "message": out["message"],
+        "intent_data": {
+            "category": "query",
+            "action": payload.get("action") or "forget_clear_preference",
+            "preference_change": out["outcome"],
+        },
+    }

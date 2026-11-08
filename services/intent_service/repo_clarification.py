@@ -529,6 +529,8 @@ def repo_question_decline_message(
 
 LISTED_REPO_QUESTION_HEAD = "Which repository do you want me to look at?"
 LISTED_REPO_QUESTION_TAIL = "Say the number or the name, or 'never mind' to leave them alone."
+#: CXO 11-08: one line listed is singular.
+LISTED_REPO_QUESTION_TAIL_ONE = "Say the number or the name, or 'never mind' to leave it alone."
 NONE_LINKED_LINE = (
     "I don't have a repository linked to your account yet, so there's nothing for me "
     "to look at. You can connect GitHub in Settings, under Integrations, or name a "
@@ -543,7 +545,8 @@ def listed_repo_question(repos: List[str]) -> str:
     """CXO's armed which-one ask: every repo listed and numbered, never "a couple
     others". The number binds through ``listed_repos`` on the carrier."""
     lines = "\n".join(f"{i}. {r}" for i, r in enumerate(repos, start=1))
-    return f"{LISTED_REPO_QUESTION_HEAD}\n\n{lines}\n\n{LISTED_REPO_QUESTION_TAIL}"
+    tail = LISTED_REPO_QUESTION_TAIL_ONE if len(repos) == 1 else LISTED_REPO_QUESTION_TAIL
+    return f"{LISTED_REPO_QUESTION_HEAD}\n\n{lines}\n\n{tail}"
 
 
 async def linked_github_repos(user_id: Optional[str]) -> Optional[List[str]]:
@@ -852,9 +855,11 @@ async def _bind_and_dispatch(
 ANALYSIS_UNBOUND_ATTR = "_analysis_repo_ask_unbound"
 #: CXO 11-08: the re-ask's lead, the person's words quoted verbatim.
 ANALYSIS_REASK_LEAD = 'I couldn\'t find "{words}" among your repositories or projects.'
-#: The second unbound turn drops the ask. Words owed to CXO (Arch 07:18); until then the
-#: carrier's own decline line for this operation.
-ANALYSIS_ASK_DROP_LINE = repo_question_decline_message(None, "give you feedback")
+#: The second unbound turn drops the ask (CXO 11-08 08:09, the person's words verbatim).
+ANALYSIS_ASK_DROP_LINE = (
+    "I still couldn't find \"{words}\", so I haven't looked at anything. "
+    "Tell me a repository as owner/name whenever you want me to look."
+)
 
 
 def note_unbound_analysis_answer(
@@ -909,7 +914,7 @@ def analysis_reask_after_routing(
     if payload.get("reasked"):
         logger.info("analysis_repo_ask_dropped_second_miss", session_id=session_id)
         return {
-            "message": ANALYSIS_ASK_DROP_LINE,
+            "message": ANALYSIS_ASK_DROP_LINE.format(words=noted["words"].strip()),
             "intent_data": {"category": "analysis", "action": "analyze_repository"},
             "requires_clarification": False,
         }
@@ -992,6 +997,10 @@ async def _listed_answer(
     project_name, repos = project
     logger.info("repo_question_project_named", repos=len(repos), session_id=session_id)
     if len(repos) == 1:
+        # CXO 11-08: the reply says which project the answer bound (a code-rendered lead).
+        bound = payload.get("intent")
+        if bound is not None:
+            bound.context = {**(bound.context or {}), "bound_project": project_name}
         return await _bind_and_dispatch(pending_offer, payload, repos[0], None, **kw)
     if not repos:
         copy = PROJECT_NO_REPO_LINE.format(project=project_name) + "\n\n" + stored_question

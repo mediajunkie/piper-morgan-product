@@ -1016,6 +1016,9 @@ ANALYZE_REPOSITORY_NO_SESSION_LINE = (
 #: #2270 (Arch 20:50, CXO's 20:38 words): when code chose the repo (the default), the
 #: reply's first sentence says which.
 ANALYZE_REPOSITORY_DEFAULT_LEAD = "Looking at {repository}, your default repository."
+#: #2270 (CXO 11-08): an answer that was a project name binds that project's repo, and
+#: the reply says so first (code-rendered; the same exact-match strip applies).
+ANALYZE_REPOSITORY_PROJECT_LEAD = "Looking at {repository}, the repository linked to {project}."
 #: #2270 (CXO 20:5x): a word/word that failed to read and isn't on the account opens
 #: the armed repo question with this sentence.
 ANALYZE_REPOSITORY_NOT_FOUND_LEAD = 'I couldn\'t find "{pair}" among your repositories.'
@@ -1395,6 +1398,8 @@ class IntentService:
             "delete_todo_pick_pending",
             # #2219 Gap A: the armed one-or-all question on a grouped todo line.
             "todo_group_line_pending",
+            # #955: the armed several-keys forget pick.
+            "preference_forget_pick_pending",
             # #2184: the armed milestone pick (the milestones list's own titles).
             "milestone_pick_pending",
             # #2271: the armed which-project-to-archive pick (exact-name matches)
@@ -2764,6 +2769,22 @@ class IntentService:
                 # re-dispatch re-asks), "no"/bare exit → honest decline,
                 # unrelated commands → abandoned via the pop and routed
                 # normally (the #1631 discrimination at the generic seam).
+                # #955: the several-keys forget pick (CXO 11-08 08:09). A number on the
+                # list forgets that row's key; None hands the turn to the generic seam
+                # (decline line, a bare "yes" re-asks, anything else pops).
+                elif _vi_payload.get("kind") == "preference_forget_pick":
+                    from services.intent_service import preference_change as _pc
+
+                    _pf_turn = await _pc.handle_forget_pick_turn(
+                        pending_offer, message, session_id=session_id, user_id=user_id
+                    )
+                    if _pf_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_pf_turn["message"],
+                            intent_data=_pf_turn["intent_data"],
+                            requires_clarification=False,
+                        )
                 elif _vi_payload.get("kind") == "issue_repo_question":
                     from services.intent_service import repo_clarification as _rq
 
@@ -10085,13 +10106,19 @@ class IntentService:
         return None
 
     async def _handle_change_remembered_preference(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """#955: forget or set the person's remembered "clear" preference
-        (``preference_change``; Arch 11-08 07:33, CXO 11-07 18:03's words)."""
+        (``preference_change``; Arch 11-08 07:33, CXO 11-07 18:03 and 11-08 08:09)."""
         from services.intent_service.preference_change import change_remembered_preference
 
-        outcome = await change_remembered_preference(intent, _principal_from_intent(intent))
+        outcome = await change_remembered_preference(
+            intent,
+            _principal_from_intent(intent),
+            session_id=session_id,
+            offer_service=getattr(self, "workflow_offer_service", None),
+        )
+        armed = bool(outcome.get("armed"))
         return IntentProcessingResult(
             success=outcome["outcome"] not in ("failed", "unreadable", "no_principal"),
             message=outcome["message"],
@@ -10099,9 +10126,10 @@ class IntentService:
                 "category": "query",
                 "action": intent.action,
                 "preference_change": outcome["outcome"],
+                **({"preference_forget_pick_pending": True} if armed else {}),
             },
             workflow_id=workflow_id,
-            requires_clarification=False,
+            requires_clarification=armed,
         )
 
     async def _handle_set_timezone(
@@ -15515,7 +15543,8 @@ class IntentService:
                 for m in (milestones or [])
             ],
         }
-        if not named_in_turn:
+        bound_project = intent.context.get("bound_project")
+        if not named_in_turn or bound_project:
             read["lead_shown"] = True
         domain_context: Dict[str, Any] = {"repository_read": read}
         from services.intent_service.context_assembler import _current_time_and_date_for_user
@@ -15527,10 +15556,14 @@ class IntentService:
         result = await self._handle_unknown_intent(
             intent, None, session_id or "", domain_context=domain_context
         )
-        if not named_in_turn and result is not None and result.message:
+        if result is not None and result.message and (not named_in_turn or bound_project):
+            lead = (
+                ANALYZE_REPOSITORY_PROJECT_LEAD.format(repository=repository, project=bound_project)
+                if bound_project
+                else ANALYZE_REPOSITORY_DEFAULT_LEAD.format(repository=repository)
+            )
             result.message = (
-                f"{ANALYZE_REPOSITORY_DEFAULT_LEAD.format(repository=repository)}\n\n"
-                f"{_drop_repeated_repo_opening(result.message, str(repository))}"
+                f"{lead}\n\n{_drop_repeated_repo_opening(result.message, str(repository))}"
             )
         return result
 

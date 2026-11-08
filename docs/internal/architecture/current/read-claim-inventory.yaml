@@ -565,6 +565,17 @@ surfaces:
     tests/unit/services/test_named_file_past_cap_2151.py. Artifacts past their own
     20-row window are not yet looked up by name.
 
+- id: change_remembered_preference
+  kind: rail
+  effect: WRITE
+  reads: the person's stored clear-family preferences (reminder_clear_verb:* in users.preferences) before forgetting or setting one
+  handler: services/intent/intent_service.py:IntentService._handle_change_remembered_preference
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
+  texts:
+    failed: UNREADABLE_LINE "I couldn't check what I'm remembering just now, so I haven't changed anything. Try again in a moment."
+    verified: NOTHING_STORED_LINE when none stored; FORGOTTEN_LINE only after the read-back (#955, Arch 20:26)
+  verdict: green
+
 - id: analyze_repository
   kind: rail
   effect: READ
