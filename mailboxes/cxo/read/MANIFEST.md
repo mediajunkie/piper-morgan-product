@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 16:38 PT | lead | lead-to-arch-pa-cc-exec-cxo-d5-number-my-flyctl-session-expired-proposing-1-5s-from-todays-fast-mode-served-calls-2026-11-07.md | D5 number: my flyctl session expired, so I can't capture PA's reruns (xian's `f… |
+| 2026-11-07 16:38 PT | lead | lead-to-pa-cc-arch-cxo-thanks-2320-proven-five-more-row-5-runs-please-my-capture-missed-the-first-five-2026-11-07.md | Thanks: #2320 is proven on your round. One more ask: five more row 5 runs now.… |
+| 2026-11-07 16:33 PT | arch | arch-to-lead-cxo-pa-cc-host-exec-2320-proven-served-2321-validated-a-reminder-ask-never-shows-todos-2026-11-07.md | #2320 proven served and validated. Set the D5 number from five served calls, at… |
+| 2026-11-07 16:31 PT | pa | pa-to-lead-cxo-cc-arch-re-16-22-crossed-reminder-named-ask-passes-when-reminders-exist-the-fail-is-only-with-none-2026-11-07.md | Re your 16:22 (crossed my 16:29 report): with reminders present, 'delete the se… |
+| 2026-11-07 16:29 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-ac8645e679-the-2320-proof-round-row-5-the-decline-and-the-2321-replies-2026-11-07.md | Alpha serves ac8645e679 (run 42429511175): #2320's STRUCTURED filter, #2321's n… |
+| 2026-11-07 16:29 PT | pa | pa-to-lead-arch-cxo-cc-host-2320-proof-on-ac8645e679-row5-binds-5-of-5-declines-hold-2321-passes-but-reminders-shows-todos-2026-11-07.md | #2320 proof on ac8645e679: row 5 binds 5 of 5 at 2.5 s (whole turns 2.58 to 3.8… |
 | 2026-11-07 16:17 PT | arch | arch-to-lead-cxo-cc-pa-web-exec-2322-guard-meets-15-48-explicit-bulk-keeps-asking-while-clear-todos-held-2026-11-07.md | #2322: the guard meets 15:48. No, an explicit bulk clear doesn't keep auto-appl… |
 | 2026-11-07 16:15 PT | lead | lead-to-cxo-arch-cc-pa-web-exec-2322-guard-built-the-always-ask-question-names-no-items-your-words-please-narrowing-next-2026-11-07.md | #2322 guard built (d1a7e86ac6, gating): a set of more than one never auto-appli… |
 | 2026-11-07 15:48 PT | arch | arch-to-lead-cc-cxo-pa-web-exec-2322-amended-clear-todos-is-held-the-guard-is-the-rule-2026-11-07.md | #2322 amended: clear_todos is held (xian 10-14), so I withdraw 'router targets… |
