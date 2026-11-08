@@ -138,10 +138,15 @@ def inference_key(verb: str) -> str:
 # ---------------------------------------------------------------------------
 
 
-def variant_one_question(verb: str = "clear", noun: str = "reminder") -> str:
-    """Variant 1 — first encounter, no stored default."""
+def variant_one_question(
+    verb: str = "clear", noun: str = "reminder", lead: Optional[str] = None
+) -> str:
+    """Variant 1 — first encounter, no stored default.
+
+    ``lead`` (CXO 11-07 18:27, #2321 N1): when the set is one line, the lead names it
+    (``"review prs" (×2)``) in place of "these"; everything after it is unchanged."""
     return (
-        f"Before I touch these — when you say '{verb}' on a {noun}, "
+        f"Before I touch {lead or 'these'} — when you say '{verb}' on a {noun}, "
         f"do you want me to mark it done, or delete it? "
         f"I'll remember for next time."
     )
@@ -1266,7 +1271,18 @@ async def _act_on_resolved_targets(
         return None
 
     # ── Variant 1: first encounter — ask, bind the answer via the offer seam.
-    question = variant_one_question(verb, noun)
+    # CXO 11-07 18:27 (#2321 N1): one line is named in the lead; a set of several
+    # lines is listed first in the guard's words and the lead stays "these". True
+    # however the set was reached (a named position, a name, or the whole list).
+    line_texts = list(dict.fromkeys(texts))
+    if len(line_texts) == 1:
+        lead = f'"{line_texts[0]}"' + (f" (×{len(ids)})" if len(ids) > 1 else "")
+        question = variant_one_question(verb, noun, lead=lead)
+    else:
+        question = (
+            f"{_guard_set_lead(ids, texts, original_message)}\n\n"
+            f"{variant_one_question(verb, noun)}"
+        )
     intent_service.workflow_offer_service.set_pending_offer(
         session_id,
         _verb_question_offer(

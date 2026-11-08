@@ -379,7 +379,11 @@ class TestEndToEndVariantOne:
         result = await live_service.process_intent(
             message="clear my reminders", session_id=sid, user_id=_USER
         )
-        assert result.message == variant_one_question()
+        assert (
+            result.message
+            == 'That would cover 2 reminders:\n1. "Review the PR"\n2. "Call the vendor"\n\n'
+            + variant_one_question()
+        )
         assert result.intent_data.get("verb_disambiguation_pending") is True
         assert result.requires_clarification is True
         stored = _pending_offers(live_service).get(sid)
@@ -644,7 +648,11 @@ class TestMetaChannelStillGoverns:
         result = await live_service.process_intent(
             message="clear my reminders", session_id=sid, user_id=_USER
         )
-        assert result.message == variant_one_question()
+        assert (
+            result.message
+            == 'That would cover 2 reminders:\n1. "Review the PR"\n2. "Call the vendor"\n\n'
+            + variant_one_question()
+        )
         assert todo_boundary["completed"] == [] and todo_boundary["deleted"] == []
 
 
@@ -700,7 +708,11 @@ class TestUnmappedSiblingClaim:
         result = await live_service.process_intent(
             message="clear my reminders", session_id=sid, user_id=_USER
         )
-        assert result.message == variant_one_question()
+        assert (
+            result.message
+            == 'That would cover 2 reminders:\n1. "Review the PR"\n2. "Call the vendor"\n\n'
+            + variant_one_question()
+        )
         assert "can't" not in result.message.lower()
         assert result.intent_data.get("unwired_action") is None
 
@@ -1201,19 +1213,52 @@ class TestIssue2321Row7Narrowing:
     async def test_first_time_question_after_a_list_holds_line_2_only(
         self, live_service, monkeypatch, pref_store, todo_boundary
     ):
-        """PA 11-07 18:21 (N1): with no stored preference the reply is the ratified
-        variant 1 ("Before I touch these"), which names no line, so the reply layer
-        can't show narrowing. The armed set is the proof: one id, line 2."""
+        """PA 11-07 18:21 (N1): with no stored preference the first-time question named
+        no line, so the reply couldn't show narrowing. CXO 18:27: the lead names the
+        line. Both layers: the reply names line 2, and the armed set is line 2 only."""
         sid = f"e2e-2321-v1-{uuid4().hex[:8]}"
         self._shown(sid, todo_boundary["todos"])
         _stub_classification(monkeypatch, live_service, "clear todo 2", "complete_todo")
         result = await live_service.process_intent(
             message="clear todo 2", session_id=sid, user_id=_USER
         )
-        assert result.message == rc.variant_one_question("clear", "todo")
-        stored = _pending_offers(live_service).get(sid)
         line2 = todo_boundary["todos"][1]
+        # CXO 18:27: the lead names the one line.
+        assert result.message == rc.variant_one_question("clear", "todo", lead=f'"{line2.text}"')
+        stored = _pending_offers(live_service).get(sid)
         assert stored["pending_action"]["clear_target_ids"] == [str(line2.id)]
+        assert todo_boundary["completed"] == []
+
+    async def test_a_grouped_line_is_named_with_its_count_and_arms_every_copy(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        """Arch 18:28: on PA's account line 2 is "review prs" (×2). CXO 18:27: a grouped
+        line carries its count in the lead; the set is that line's copies."""
+        from dataclasses import replace
+
+        sid = f"e2e-2321-grp-{uuid4().hex[:8]}"
+        first, second = todo_boundary["todos"][:2]
+        copy = replace(second, id=str(uuid4()))
+        todo_boundary["todos"].append(copy)
+        from services.intent_service.todo_handlers import TodoIntentHandlers
+
+        TodoIntentHandlers._remember_numbered_list(
+            sid,
+            _USER,
+            "todos",
+            [first.id, second.id],
+            [first.text, second.text],
+            groups=[[first.id], [second.id, copy.id]],
+        )
+        _stub_classification(monkeypatch, live_service, "clear todo 2", "complete_todo")
+        result = await live_service.process_intent(
+            message="clear todo 2", session_id=sid, user_id=_USER
+        )
+        assert result.message == rc.variant_one_question(
+            "clear", "todo", lead=f'"{second.text}" (×2)'
+        )
+        armed = _pending_offers(live_service).get(sid)["pending_action"]["clear_target_ids"]
+        assert sorted(armed) == sorted([str(second.id), str(copy.id)])
         assert todo_boundary["completed"] == []
 
     async def test_after_a_list_a_number_past_it_shows_the_list_and_asks(
