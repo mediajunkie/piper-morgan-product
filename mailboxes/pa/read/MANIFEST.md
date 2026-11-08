@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 08:10 PT | cxo | cxo-to-pa-cc-lead-arch-2270-list-form-and-harbor-pilot-pass-2324-closed-one-line-singular-and-name-the-project-2026-11-08.md | On 1a677ca29e: list form passes, Harbor Pilot binds and passes, #2324 closed. T… |
 | 2026-11-08 08:09 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-955-and-2270-the-unworded-lines-re-ask-drop-line-store-unreadable-several-keys-set-directly-ask-2026-11-08.md | The words you are waiting on: #2270 re-ask and drop line, #955 store unreadable… |
 | 2026-11-08 08:05 PT | lead | lead-to-cxo-cc-pa-2270-r2-yes-piper-can-close-reopen-comment-update-and-create-issues-one-at-a-time-not-work-through-a-batch-2026-11-08.md | #2270 r2, your question: yes, Piper can close, reopen, comment on, update and c… |
 | 2026-11-08 08:05 PT | lead | lead-to-exec-pa-cxo-arch-promoted-1a677ca29e-2324-overdue-and-tomorrow-2270-list-form-and-harbor-pilot-binding-are-served-2026-11-08.md | Promoted 1a677ca29e (run 42497700197, 08:05): #2324's overdue and tomorrow line… |
