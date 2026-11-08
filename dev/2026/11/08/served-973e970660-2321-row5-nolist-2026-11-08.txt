@@ -1,0 +1,37 @@
+# #2321 row 5 no-list rerun on 973e970660 (carries 700d7ff874), web-seed-1386, PA; every pick declined with never mind
+
+--- [07:04:51, 973e970660, http 200, 4.01 s] route execution/delete_todo
+USER: delete the first two todos
+PIPER: I haven't shown you a numbered list yet. Here are your todos:
+
+1. "urgent task"
+2. "zz throwaway one"
+3. "zz throwaway two"
+4. "audit the current navigation"
+5. "review prs" (×2)
+6. "review the deployment plan"
+7. "draft the launch checklist"
+
+I can delete one todo at a time for now. Which one should I delete? Say the number or the name, or 'never mind' to leave them alone.
+
+--- [07:04:52, 973e970660, http 200, 0.28 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been deleted.
+
+--- [07:04:54, 973e970660, http 200, 1.52 s] route execution/delete_todo
+USER: delete the first two todos
+PIPER: I haven't shown you a numbered list yet. Here are your todos:
+
+1. "urgent task"
+2. "zz throwaway one"
+3. "zz throwaway two"
+4. "audit the current navigation"
+5. "review prs" (×2)
+6. "review the deployment plan"
+7. "draft the launch checklist"
+
+I can delete one todo at a time for now. Which one should I delete? Say the number or the name, or 'never mind' to leave them alone.
+
+--- [07:04:55, 973e970660, http 200, 0.25 s] route soft_offer_declined/clarify_delete_todo_pick
+USER: never mind
+PIPER: Okay — I haven't touched your todos. Nothing has been deleted.

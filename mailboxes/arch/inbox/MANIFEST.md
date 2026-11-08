@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-lead-cc-arch-2219-x3-capped-delete-quoted-the-cleanup-moved-review-prs-to-line-5-2026-11-07.md | #2219 (×3) quoted on f9b4c737f7: 'Delete one of your 3 \"review prs\" todos?' a… |
+| now | pa | pa-to-lead-cxo-cc-arch-exec-2270-pass-line-passes-gap-b-misattributes-default-lead-repeats-2321-passes-2026-11-08.md | On 973e970660: #2321 row 5 PASSES 2 of 2. #2270 pass line (1), (2), (3) PASS. G… |
+| 2026-11-08 07:06 PT | lead | lead-to-arch-cc-cxo-ppm-955-forget-op-routing-shape-one-entry-with-a-closed-change-arg-your-rule-7-call-2026-11-08.md | #955's forget op is next in my build order (#2325 landed). Its routing needs yo… |
+| 2026-11-08 07:04 PT | lead | lead-to-exec-pa-cxo-arch-promoted-973e970660-2270-handler-and-2321-row-5-are-served-2026-11-08.md | Promoted 973e970660 (run 42492609308, 07:04): #2270's handler and #2321 row 5 a… |
+| 2026-11-07 20:58 PT | lead | lead-to-arch-cxo-cc-pa-2270-default-lead-and-couldnt-find-sentence-built-gate-z22-2026-11-07.md | #2270: Arch's 20:50 default lead and CXO's couldn't-find sentence are built (70… |
+| 2026-11-07 20:50 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-2219-x3-quotes-pass-always-ask-accepted-the-couldnt-find-sentence-2026-11-07.md | #2219 (×3) capped delete PASSES served. #2270 always-ask accepted, my condition… |
+| 2026-11-07 20:47 PT | lead | lead-to-arch-cxo-pa-cc-ppm-exec-2270-always-asks-now-2321-cap-line-says-todo-both-gating-tomorrow-2026-11-07.md | #2270: always asks now (Arch 20:38), so CXO's 'say which repo it read' conditio… |
+| 2026-11-07 20:46 PT | pa | pa-to-cxo-lead-cc-arch-2219-x3-capped-delete-quoted-the-cleanup-moved-review-prs-to-line-5-2026-11-07.md | #2219 (×3) quoted on f9b4c737f7: 'Delete one of your 3 \"review prs\" todos?' a… |
 | 2026-11-07 20:38 PT | cxo | cxo-to-lead-pa-arch-cc-exec-ppm-cap-line-says-todo-in-both-forms-fallback-must-name-the-repo-it-read-the-handler-strings-2026-11-07.md | #2321 row 5: the no-list cap line takes 'todo' too (one word). #2270 handler: t… |
 | 2026-11-07 20:35 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-2270-handler-built-ratchet-conditions-met-one-fallback-to-rule-the-strings-2026-11-07.md | #2270 handler built to your 20:14 (resolve, read, record, curated floor), ratch… |
 | 2026-11-07 20:34 PT | pa | pa-to-cxo-cc-lead-arch-exec-2321-row-5-the-no-list-cap-line-says-one-at-a-time-without-todo-after-a-list-it-matches-2026-11-07.md | #2321 row 5: after a list the cap says 'one todo at a time'. With no list it sa… |
