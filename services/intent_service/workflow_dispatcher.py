@@ -480,6 +480,13 @@ FLIP_GROUPS: frozenset[str] = frozenset(
 #                 cross-family-release an armed EXECUTION carrier, pinned
 #                 alongside the other four in
 #                 test_inversion_cross_family_release_1920.py.
+# #955 (Arch 11-08 08:05, decisions.log): actions whose ONLY effect narrows what Piper
+# does unasked (forget deletes the person's own stored preference, so Piper asks more,
+# never acts more). For these the rail proceeds where the #1509 matrix says COLLABORATE;
+# it never overrides CONFIRM, and decide_consent stays untouched. A second name here
+# needs Arch's ruling: an entry declaring one outside this set fails at construction.
+CONSENT_NARROWING_ALLOWLIST: frozenset[str] = frozenset({"forget_clear_preference"})
+
 FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset(
     {
         "create_todo",
@@ -608,6 +615,9 @@ class WorkflowEntry:
     # resolve_write_ask. None, or a builder whose args name nothing, gets CXO's
     # "not sure" statement with nothing armed: an op name is never shown.
     write_ask: Optional[Callable[..., Awaitable[Any]]] = None
+    # #955 (Arch 11-08 08:05): this entry's aliases that narrow what Piper does
+    # unasked; each must be on CONSENT_NARROWING_ALLOWLIST (checked below).
+    consent_narrowing_actions: frozenset = frozenset()
 
     def __post_init__(self) -> None:
         """Reject an unrepresentable flip declaration LOUDLY, at construction.
@@ -635,6 +645,13 @@ class WorkflowEntry:
             raise ValueError(
                 "a router-hidden WorkflowEntry cannot hold a flip_group "
                 f"({self.flip_group!r}): the router never sees it, so it can never flip"
+            )
+        _unlisted = set(self.consent_narrowing_actions) - CONSENT_NARROWING_ALLOWLIST
+        if _unlisted:
+            raise ValueError(
+                f"consent_narrowing_actions {sorted(_unlisted)} on "
+                f"{self.description or 'unnamed'} are not on CONSENT_NARROWING_ALLOWLIST "
+                f"(#955, Arch 11-08 08:05): a second consent-narrowing action needs his ruling."
             )
         if (
             self.flip_write_allowlist_key is not None

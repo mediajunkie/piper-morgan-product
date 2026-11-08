@@ -3794,6 +3794,10 @@ def register_default_workflows() -> None:
         # and its catalog line moved live delete_todo rows in the screen. If the op
         # ever joins the live set, it turns visible behind a fresh rule-7 screen.
         router_visible=False,
+        # Arch 11-08 08:05: forget only makes Piper ask more, so it proceeds where the
+        # matrix says COLLABORATE. Set-directly keeps the check (no write_ask yet, so
+        # CXO's #2304 statement until she words one).
+        consent_narrowing_actions=frozenset({"forget_clear_preference"}),
     )
 
     # #1333 (Arch-ruled 2026-06-30): the former per-action unwired-write registration

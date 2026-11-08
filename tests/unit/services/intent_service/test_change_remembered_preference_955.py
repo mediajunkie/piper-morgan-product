@@ -279,7 +279,7 @@ async def test_landing_pin_the_routers_none_does_not_floor_the_hidden_entry(mem_
         il.publish_live_route_provenance(None)
     assert floored == []
     # An execute-framed ask (consent PROCEED). The forget asks frame AMBIGUOUS and meet
-    # the consent check (raised with Arch 11-08; not pinned until he rules).
+    # the consent check, which forget proceeds past (Arch 08:05; pinned below).
     assert result.message.startswith('Okay. From now on "clear" means mark it done.')
 
 
@@ -322,3 +322,103 @@ async def test_make_clear_mark_them_done_as_complete_todo_completes_nothing():
     )
     h.todo_service.complete_todo.assert_not_called()
     assert "Nothing" in result or "couldn't find" in result
+
+
+# ── Arch 11-08 08:05: forget is consent-narrowing; set-directly keeps the check ──
+
+
+async def _through_process_intent(monkeypatch, message, action):
+    from types import SimpleNamespace
+    from unittest.mock import patch
+
+    from services.intent.intent_service import IntentService
+    from services.intent_service import conversational_floor as cf
+    from services.intent_service.classifier import IntentClassifier
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    register_default_workflows()
+
+    async def _floor(self, ctx):
+        raise AssertionError("floored")
+
+    monkeypatch.setattr(cf.ConversationalFloor, "respond", _floor)
+
+    class _NoLLM:
+        def __getattr__(self, name):
+            raise AssertionError(f"LLM touched ({name})")
+
+    with patch("services.intent.intent_service.LearningHandler"):
+        with patch("services.intent.intent_service.ConversationKnowledgeGraphIntegration"):
+            svc = IntentService(intent_classifier=IntentClassifier(llm_service=_NoLLM()))
+
+    async def _classify_multiple(msg, context=None, user_id=None, session_id=None):
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action=action,
+            original_message=msg,
+            confidence=0.95,
+            context={"original_message": msg},
+        )
+        return SimpleNamespace(
+            intents=[intent],
+            is_multi_intent=False,
+            has_greeting=False,
+            has_substantive_intent=True,
+            primary_intent=intent,
+            secondary_intents=[],
+        )
+
+    monkeypatch.setattr(svc.intent_classifier, "classify_multiple", _classify_multiple)
+    return await svc.process_intent(message=message, session_id="pc-955b", user_id=_USER)
+
+
+@pytest.mark.parametrize(
+    "words",
+    [
+        "forget my clear preference",
+        "stop remembering that",
+        "don't remember what clear means",
+        "when I say clear, ask me",
+    ],
+)
+async def test_ambiguous_forget_asks_reach_forget_in_collaborate_mode(
+    mem_prefs, monkeypatch, words
+):
+    from services.intent_service.collaboration_gate import FRAMING_AMBIGUOUS, classify_framing
+
+    assert classify_framing(words) == FRAMING_AMBIGUOUS
+    await _stored(_CLEAR, "delete")
+    result = await _through_process_intent(monkeypatch, words, "forget_clear_preference")
+    assert result.message.startswith('Okay. I\'ve forgotten that "clear" means delete it.')
+    assert await vi.get_verified_inference(_USER, _CLEAR) is None
+
+
+async def test_an_ambiguous_set_still_checks_and_changes_nothing(mem_prefs, monkeypatch):
+    from services.intent_service.write_confirm_words import NOT_SURE_STATEMENT
+
+    await _stored(_CLEAR, "delete")
+    result = await _through_process_intent(
+        monkeypatch, "don't delete when I clear", "set_clear_preference_done"
+    )
+    assert result.message == NOT_SURE_STATEMENT
+    assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == "delete"
+
+
+async def test_a_narrowing_action_off_the_allowlist_fails_at_construction():
+    from services.intent_service.workflow_dispatcher import (
+        CONSENT_NARROWING_ALLOWLIST,
+        EffectClass,
+        WorkflowEntry,
+    )
+
+    assert CONSENT_NARROWING_ALLOWLIST == frozenset({"forget_clear_preference"})
+
+    async def _ep(*a, **k):
+        return None
+
+    with pytest.raises(ValueError, match="CONSENT_NARROWING_ALLOWLIST"):
+        WorkflowEntry(
+            entry_point=_ep,
+            effect=EffectClass.WRITE,
+            consent_narrowing_actions=frozenset({"set_clear_preference_delete"}),
+        )

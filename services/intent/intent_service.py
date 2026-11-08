@@ -20512,6 +20512,14 @@ Add any additional information here.
                 framing_hint=_resolve_framing_hint(intent),
                 action=intent.action,
             )
+            # #955 (Arch 11-08 08:05): a declared consent-narrowing action (forget)
+            # proceeds where the matrix says COLLABORATE; CONFIRM is never overridden.
+            if (
+                _consent_verdict is _consent.ConsentDecision.COLLABORATE
+                and intent.action in _rail_entry.consent_narrowing_actions
+            ):
+                self.logger.info("consent_narrowing_action_proceeds", action=intent.action)
+                _consent_verdict = _consent.ConsentDecision.PROCEED
         else:
             _consent_verdict = None
         if _consent_verdict is not None and (_consent_verdict is _consent.ConsentDecision.CONFIRM):
