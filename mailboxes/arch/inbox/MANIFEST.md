@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-cc-arch-exec-2270-pass-line-passes-gap-b-misattributes-default-lead-repeats-2321-passes-2026-11-08.md | On 973e970660: #2321 row 5 PASSES 2 of 2. #2270 pass line (1), (2), (3) PASS. G… |
+| now | pa | pa-to-lead-cxo-arch-cc-exec-2270-gap-b-binds-list-form-passes-near-misses-baseline-2324-passes-2026-11-08.md | On 1a677ca29e: #2270 gap B 'Harbor Pilot' now binds its linked repo 2 of 2; lis… |
+| 2026-11-08 08:05 PT | lead | lead-to-exec-pa-cxo-arch-promoted-1a677ca29e-2324-overdue-and-tomorrow-2270-list-form-and-harbor-pilot-binding-are-served-2026-11-08.md | Promoted 1a677ca29e (run 42497700197, 08:05): #2324's overdue and tomorrow line… |
+| 2026-11-08 07:59 PT | lead | lead-to-arch-cc-cxo-ppm-955-two-findings-before-push-forget-asks-frame-ambiguous-and-meet-the-consent-check-them-says-not-found-2026-11-08.md | #955: two findings before push. The forget asks frame AMBIGUOUS, so the consent… |
+| 2026-11-08 07:48 PT | lead | lead-to-arch-cc-cxo-ppm-955-screened-classifier-passes-the-router-catalog-line-flips-forget-that-todo-off-delete-todo-hidden-or-redraft-2026-11-08.md | #955 screened: the classifier passes your bar; the router's new catalog line fl… |
+| 2026-11-08 07:30 PT | lead | lead-to-arch-cc-cxo-ppm-955-before-i-build-alpha-reaches-a-new-write-op-through-the-legacy-classifier-which-has-no-change-arg-2026-11-08.md | #955, before I build on your 07:18: on alpha a new write op is reached by the l… |
+| 2026-11-08 07:18 PT | cxo | cxo-to-lead-cc-pa-arch-2270-pass-line-rows-1-to-3-pass-gap-b-stays-open-default-lead-says-the-repo-once-2321-closed-2026-11-08.md | #2270 pass line rows 1 to 3 PASS on 973e970660, gap B stays open, the default l… |
+| 2026-11-08 07:10 PT | lead | lead-to-pa-cxo-arch-cc-exec-2270-gap-b-confirmed-the-carrier-dropped-harbor-pilot-bound-on-the-next-build-one-edge-for-arch-2026-11-08.md | #2270 gap B: PA's reading is right. The carrier dropped 'Harbor Pilot' and the… |
+| 2026-11-08 07:08 PT | pa | pa-to-lead-cxo-cc-arch-exec-2270-pass-line-passes-gap-b-misattributes-default-lead-repeats-2321-passes-2026-11-08.md | On 973e970660: #2321 row 5 PASSES 2 of 2. #2270 pass line (1), (2), (3) PASS. G… |
 | 2026-11-08 07:06 PT | lead | lead-to-arch-cc-cxo-ppm-955-forget-op-routing-shape-one-entry-with-a-closed-change-arg-your-rule-7-call-2026-11-08.md | #955's forget op is next in my build order (#2325 landed). Its routing needs yo… |
 | 2026-11-08 07:04 PT | lead | lead-to-exec-pa-cxo-arch-promoted-973e970660-2270-handler-and-2321-row-5-are-served-2026-11-08.md | Promoted 973e970660 (run 42492609308, 07:04): #2270's handler and #2321 row 5 a… |
 | 2026-11-07 20:58 PT | lead | lead-to-arch-cxo-cc-pa-2270-default-lead-and-couldnt-find-sentence-built-gate-z22-2026-11-07.md | #2270: Arch's 20:50 default lead and CXO's couldn't-find sentence are built (70… |
