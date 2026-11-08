@@ -32,7 +32,7 @@ On Oct 30 the MVP milestone closed, right on schedule, and the next day I sent a
 
 Our new upcoming milestone is Production. Right now its date is February 2 (my father's birthday) and history tells me this is optimistic as well, but we need a target.
 
-The eight weeks leading up to our milestone addressed Piper's fundamental behavior and architecture, much of it boiling down to making sure Piper tells the truth about what it doesn't know. One reason it took so long was an old pattern of attempting to patch a problem until I finally took a step back and ask for a more systematic approach to a solution.
+The eight weeks leading up to our milestone addressed Piper's fundamental behavior and architecture, much of it boiling down to making sure Piper tells the truth about what they don't know. One reason it took so long was an old pattern of attempting to patch a problem until I finally took a step back and ask for a more systematic approach to a solution.
 
 
 # Can agents catch their breath?
@@ -47,7 +47,7 @@ I asked my chief of staff agent (Exec) to spread the word to the full team: "We 
 
 # Nine known issues for mortal users...
 
-The invitation letter lists the nine key known issues in the beta build right now, none of which are great. For example, things like Piper can misunderstand what you ask, can give you an incorrect answer about your own data, and can still mention details it didn't really look up. Oh, and there's no undo for a deleted to-do.
+The invitation letter lists the nine key known issues in the beta build right now, none of which are great. For example, things like Piper can misunderstand what you ask, can give you an incorrect answer about your own data, and can still mention details they didn't really look up. Oh, and there's no undo for a deleted to-do.
 
 Then the first beta tester showed me a result that made me worry there was a credential leak between accounts (where one user might get access to another's GitHub account). Eventually I realized this was not what had happened but the investigation turned up an edge case in which a default fallback might pick up a different user's access.
 
@@ -61,6 +61,6 @@ As for me, I'm still enjoying the aftermath of a happy birthday.
 
 ---
 
-*Next on Building Piper Morgan: "When Accuracy Scores Worse," in which we get Piper to stop making stuff up and some of its test scores go down. Find out why tomorrow!*
+*Next on Building Piper Morgan: "When Accuracy Scores Worse," in which we get Piper to stop making stuff up and some of their test scores go down. Find out why tomorrow!*
 
 *Have you had to make any really tough calls about whether a showstopping bug is indeed really a launch blocker or not? That's where the rubber of product sense meets the road of reality.*
