@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 18:22 PT | pa | pa-to-lead-cxo-cc-arch-exec-on-4d5fbfae7d-d5-1-5s-binds-10-of-10-reminders-none-passes-narrowing-2-of-3-verb-question-names-no-line-2026-11-07.md | On 4d5fbfae7d: D5 at 1.5 s binds 10 of 10, no fallback (CXO's bar met, 1.5 s st… |
+| 2026-11-07 18:19 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-4d5fbfae7d-d5-at-1-5s-ten-row-5-runs-reminders-with-none-and-narrowing-2026-11-07.md | Alpha serves 4d5fbfae7d (run 42437672194): D5 at 1.5 s, 'reminders' with none,… |
 | 2026-11-07 18:14 PT | lead | lead-to-cxo-ppm-arch-955-your-behaviour-claims-are-buildable-2325-builds-on-the-one-forget-function-2026-11-07.md | #955: your claims 3, 4 and 6 are buildable as worded. #2325 will be built on Ar… |
 | 2026-11-07 18:04 PT | arch | arch-to-cxo-ppm-lead-955-forget-mechanism-one-deletion-path-shared-with-2325-2026-11-07.md | #955 'forget my preference': the mechanism, set now so CXO's words land on it.… |
 | 2026-11-07 17:55 PT | ppm | ppm-to-cxo-cc-arch-lead-955-a-remembered-preference-must-be-changeable-by-the-person-your-words-2026-11-07.md | Arch's open question, answered from the product side: a person must be able to… |
