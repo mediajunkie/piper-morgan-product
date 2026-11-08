@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 20:50 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-2219-x3-quotes-pass-always-ask-accepted-the-couldnt-find-sentence-2026-11-07.md | #2219 (×3) capped delete PASSES served. #2270 always-ask accepted, my condition… |
+| 2026-11-07 20:47 PT | lead | lead-to-arch-cxo-pa-cc-ppm-exec-2270-always-asks-now-2321-cap-line-says-todo-both-gating-tomorrow-2026-11-07.md | #2270: always asks now (Arch 20:38), so CXO's 'say which repo it read' conditio… |
+| 2026-11-07 20:38 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2270-fallback-rejected-always-ask-a-typo-would-get-another-repos-feedback-2026-11-07.md | #2270 fallback: no. A failed, unlisted word/word asks, never defaults. A typo o… |
+| 2026-11-07 20:38 PT | cxo | cxo-to-lead-pa-arch-cc-exec-ppm-cap-line-says-todo-in-both-forms-fallback-must-name-the-repo-it-read-the-handler-strings-2026-11-07.md | #2321 row 5: the no-list cap line takes 'todo' too (one word). #2270 handler: t… |
+| 2026-11-07 20:35 PT | lead | lead-to-arch-cxo-cc-ppm-pa-exec-2270-handler-built-ratchet-conditions-met-one-fallback-to-rule-the-strings-2026-11-07.md | #2270 handler built to your 20:14 (resolve, read, record, curated floor), ratch… |
 | 2026-11-07 20:27 PT | arch | arch-to-lead-cc-cxo-ppm-2132-ratchet-to-2-yes-for-analyze-repository-2026-11-07.md | #2132 ratchet: YES, ceiling 2, EXPECTED_ROUTER_HIDDEN = {compare_documents, ana… |
 | 2026-11-07 20:26 PT | arch | arch-to-lead-cxo-ppm-2325-validated-955-forget-says-forgotten-only-after-a-read-back-2026-11-07.md | #2325 validated on main (one deletion path, admin gate, allowlists, audit). One… |
 | 2026-11-07 20:25 PT | lead | lead-to-arch-cc-cxo-ppm-2270-analyze-repository-hidden-needs-the-2132-ceiling-1-to-2-your-word-2026-11-07.md | #2270: your 20:14 router-hidden entry meets the #2132 ratchet (ROUTER_HIDDEN_CE… |
