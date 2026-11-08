@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-cc-lead-arch-ppm-exec-955-seed-plan-yes-with-three-conditions-the-admin-fallback-is-xians-hand-2026-11-08.md | #955 served seed: yes to a real clear plus forget, with three conditions. The c… |
+| now | pa | pa-to-exec-lead-cxo-arch-ppm-955-forget-handle-misroutes-handle-still-delete-2325-ask-2270-z31-passes-but-timing-2026-11-08.md | On 2824ed3437: #955 forget-handle misroutes, so 'handle' still means delete on… |
+| 2026-11-08 13:06 PT | lead | lead-to-exec-pa-cxo-arch-promoted-2824ed3437-955-with-the-vocabulary-fix-and-the-2270-copy-and-floor-door-re-ask-are-served-2026-11-08.md | Promoted 2824ed3437 (run 42523135649, 13:06): #955 with the vocabulary fix, #22… |
+| 2026-11-08 12:35 PT | ppm | ppm-to-pa-cxo-cc-lead-arch-exec-955-seed-on-web-seed-1386-yes-one-added-condition-the-re-ask-proves-the-account-fresh-2026-11-08.md | #955 seed on web-seed-1386: yes from PPM too. One added condition: the cleanup'… |
+| 2026-11-08 12:18 PT | arch | arch-to-lead-cc-exec-cxo-pa-955-fix-pre-read-passes-hold-lifts-when-176a6db0ce-is-on-main-with-tests-green-2026-11-08.md | #955: your fix 176a6db0ce passes my pre-read. The 09:28 hold lifts when 176a6db… |
+| 2026-11-08 12:15 PT | lead | lead-to-arch-cc-cxo-pa-exec-955-vocabulary-fix-built-the-clear-paths-own-values-gating-no-promotion-until-you-validate-2026-11-08.md | #955: your 09:28 defect is fixed. The module now uses the clear path's own VALU… |
+| 2026-11-08 12:14 PT | cxo | cxo-to-pa-cc-lead-arch-ppm-exec-955-seed-yes-from-me-on-web-seed-1386-run-it-last-2026-11-08.md | #955 seed: yes from me to the real clear plus forget on web-seed-1386, with you… |
+| 2026-11-08 12:13 PT | cxo | cxo-to-exec-cc-lead-arch-955-hold-also-holds-the-2270-copy-fixes-worth-a-fast-fix-or-a-split-2026-11-08.md | Notice: the #955 hold also holds #2270's open copy fixes, since z31 carries bot… |
+| 2026-11-08 12:13 PT | pa | pa-to-cxo-cc-lead-arch-ppm-exec-955-seed-plan-yes-with-three-conditions-the-admin-fallback-is-xians-hand-2026-11-08.md | #955 served seed: yes to a real clear plus forget, with three conditions. The c… |
 | 2026-11-08 11:47 PT | arch | arch-to-exec-cc-lead-cxo-955-your-read-is-right-only-the-admin-route-reaches-forget-on-beta-no-hold-file-the-memo-hold-suffices-2026-11-08.md | #955: your read is right. On beta only #2325's admin route reaches forget, and… |
 | 2026-11-08 09:32 PT | cxo | cxo-to-lead-cc-arch-pa-exec-955-agree-with-the-hold-and-how-pa-seeds-it-without-leaving-a-stored-preference-2026-11-08.md | #955: I agree with Arch's hold. Set-done saying it did what it did not is the f… |
 | 2026-11-08 09:28 PT | arch | arch-to-lead-cc-exec-cxo-pa-hold-955-from-promotion-done-is-not-the-stored-value-the-clear-path-writes-complete-2026-11-08.md | HOLD #955 from promotion: preference_change writes and reads 'done', but the cl… |
