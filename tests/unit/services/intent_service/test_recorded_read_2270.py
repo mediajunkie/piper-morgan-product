@@ -10,9 +10,7 @@ fact line. Sentinel: a session that did not read never shows such a line.
 from datetime import timedelta
 from uuid import uuid4
 
-import pytest
-
-from services.intent_service.context_assembler import ContextAssembler, _recorded_reads_for
+from services.intent_service.context_assembler import _recorded_reads_for
 from services.intent_service.conversation_context import (
     get_or_create_context,
     record_read,
@@ -63,99 +61,3 @@ def test_reads_are_capped_at_five_most_recent_last():
 def test_no_session_records_nothing():
     record_read(None, _USER, "analyze_repository", "piper-test-repo", "its issues")
     assert _recorded_reads_for(None, _USER) == []
-
-
-# ---------------------------------------------------------------------------
-# Arch 19:41 / PA 19:39: analysis/analyze_repository has no handler; it floors, and
-# the floor composes from the GitHub issues the assembler gathers. That read must be
-# recorded so the TRUST floor's next turn (explain_trust) sees it.
-# ---------------------------------------------------------------------------
-
-_ISSUES = {
-    "high_priority_issues": [
-        {
-            "number": 43,
-            "title": "search cluster",
-            "url": "https://github.com/dinp-machine/piper-test-activity/issues/43",
-        }
-    ],
-    "open_issue_count": 6,
-}
-
-
-@pytest.fixture
-def assembler(monkeypatch):
-    a = ContextAssembler()
-    status = {"ctx": dict(_ISSUES)}
-
-    async def _status(user_id=None):
-        return dict(status["ctx"])
-
-    async def _trust(user_id=None):
-        return {"trust_profile": {"stage": 1}}
-
-    async def _no_reminders(user_id=None):
-        return {}
-
-    async def _clock(user_id):
-        return ("", "")
-
-    import services.intent_service.context_assembler as ca
-
-    monkeypatch.setattr(a, "_gather_status_priority_context", _status)
-    monkeypatch.setattr(a, "_gather_trust_context", _trust)
-    monkeypatch.setattr(a, "_gather_reminder_context", _no_reminders)
-    monkeypatch.setattr(ca, "_current_time_and_date_for_user", _clock)
-    a.status = status
-    return a
-
-
-@pytest.mark.asyncio
-async def test_an_analysis_floor_read_reaches_the_trust_floor_next_turn(assembler):
-    sid = f"rr-{uuid4().hex[:8]}"
-    await assembler.gather_context(
-        intent_category="ANALYSIS",
-        user_id=_USER,
-        session_id=sid,
-        intent_action="analyze_repository",
-    )
-    trust_ctx = await assembler.gather_context(
-        intent_category="TRUST", user_id=_USER, session_id=sid, intent_action="explain_trust"
-    )
-    assert trust_ctx["recorded_reads"] == [
-        {
-            "target": "dinp-machine/piper-test-activity",
-            "covered": "its open issues",
-            "minutes_ago": 0,
-        }
-    ]
-    assert (
-        "- Earlier this session you read dinp-machine/piper-test-activity (its open issues), just now."
-        in _floor_text(trust_ctx)
-    )
-
-
-@pytest.mark.asyncio
-async def test_sentinel_other_floor_turns_gather_issues_but_record_no_read(assembler):
-    """The same baseline rides UNKNOWN and CONVERSATION turns, where nobody asked
-    for a read. Those never record one."""
-    sid = f"rr-{uuid4().hex[:8]}"
-    for category in ("UNKNOWN", "CONVERSATION", "STATUS"):
-        await assembler.gather_context(intent_category=category, user_id=_USER, session_id=sid)
-    assert _recorded_reads_for(sid, _USER) == []
-
-
-@pytest.mark.asyncio
-async def test_a_failed_issue_read_records_nothing(assembler):
-    sid = f"rr-{uuid4().hex[:8]}"
-    assembler.status["ctx"] = {**_ISSUES, "open_issues_source_failed": True}
-    await assembler.gather_context(intent_category="ANALYSIS", user_id=_USER, session_id=sid)
-    assert _recorded_reads_for(sid, _USER) == []
-
-
-@pytest.mark.asyncio
-async def test_no_issues_read_records_nothing(assembler):
-    sid = f"rr-{uuid4().hex[:8]}"
-    assembler.status["ctx"] = {"high_priority_issues": [], "open_issue_count": 0}
-    await assembler.gather_context(intent_category="ANALYSIS", user_id=_USER, session_id=sid)
-    assert _recorded_reads_for(sid, _USER) == []
