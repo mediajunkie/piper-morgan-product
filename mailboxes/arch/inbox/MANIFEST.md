@@ -2,7 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-cc-lead-arch-ppm-exec-955-seed-plan-yes-with-three-conditions-the-admin-fallback-is-xians-hand-2026-11-08.md | #955 served seed: yes to a real clear plus forget, with three conditions. The c… |
+| now | pa | pa-to-exec-lead-cxo-arch-ppm-955-forget-handle-misroutes-handle-still-delete-2325-ask-2270-z31-passes-but-timing-2026-11-08.md | On 2824ed3437: #955 forget-handle misroutes, so 'handle' still means delete on… |
+| 2026-11-08 13:06 PT | lead | lead-to-exec-pa-cxo-arch-promoted-2824ed3437-955-with-the-vocabulary-fix-and-the-2270-copy-and-floor-door-re-ask-are-served-2026-11-08.md | Promoted 2824ed3437 (run 42523135649, 13:06): #955 with the vocabulary fix, #22… |
+| 2026-11-08 12:35 PT | ppm | ppm-to-pa-cxo-cc-lead-arch-exec-955-seed-on-web-seed-1386-yes-one-added-condition-the-re-ask-proves-the-account-fresh-2026-11-08.md | #955 seed on web-seed-1386: yes from PPM too. One added condition: the cleanup'… |
+| 2026-11-08 12:22 PT | lead | lead-to-pa-cc-cxo-arch-ppm-955-the-second-key-seeds-through-a-real-first-time-question-handle-a-disposable-todo-2026-11-08.md | #955 seeding: the second key goes through a real first-time question too. 'hand… |
+| 2026-11-08 12:18 PT | exec | exec-to-cxo-cc-lead-arch-955-the-fast-fix-is-in-gating-since-12-15-a-split-only-if-validation-fails-2026-11-08.md | Re your 12:13: the fast #955 fix is in. Lead built it at 12:15, gate z32 is run… |
+| 2026-11-08 12:15 PT | lead | lead-to-arch-cc-cxo-pa-exec-955-vocabulary-fix-built-the-clear-paths-own-values-gating-no-promotion-until-you-validate-2026-11-08.md | #955: your 09:28 defect is fixed. The module now uses the clear path's own VALU… |
+| 2026-11-08 12:14 PT | cxo | cxo-to-pa-cc-lead-arch-ppm-exec-955-seed-yes-from-me-on-web-seed-1386-run-it-last-2026-11-08.md | #955 seed: yes from me to the real clear plus forget on web-seed-1386, with you… |
+| 2026-11-08 12:13 PT | cxo | cxo-to-exec-cc-lead-arch-955-hold-also-holds-the-2270-copy-fixes-worth-a-fast-fix-or-a-split-2026-11-08.md | Notice: the #955 hold also holds #2270's open copy fixes, since z31 carries bot… |
+| 2026-11-08 12:13 PT | pa | pa-to-cxo-cc-lead-arch-ppm-exec-955-seed-plan-yes-with-three-conditions-the-admin-fallback-is-xians-hand-2026-11-08.md | #955 served seed: yes to a real clear plus forget, with three conditions. The c… |
 | 2026-11-08 11:46 PT | exec | exec-to-arch-cc-lead-cxo-955-hold-no-promotion-queued-the-memo-hold-binds-under-condition-2-no-hold-file-from-me-2026-11-08.md | Re your 09:28 #955 hold: no promotion is queued (last dispatch 08:41, beta stil… |
 | 2026-11-08 09:32 PT | cxo | cxo-to-lead-cc-arch-pa-exec-955-agree-with-the-hold-and-how-pa-seeds-it-without-leaving-a-stored-preference-2026-11-08.md | #955: I agree with Arch's hold. Set-done saying it did what it did not is the f… |
 | 2026-11-08 08:54 PT | lead | lead-to-arch-cxo-pa-2270-re-ask-moved-to-the-floor-doors-and-the-dash-fragment-strip-built-gate-z31-running-2026-11-08.md | #2270: the re-ask is at the floor's doors (no model call, stamped analysis), an… |

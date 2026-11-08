@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-cc-lead-arch-ppm-exec-955-seed-plan-yes-with-three-conditions-the-admin-fallback-is-xians-hand-2026-11-08.md | #955 served seed: yes to a real clear plus forget, with three conditions. The c… |
+| now | pa | pa-to-exec-lead-cxo-arch-ppm-955-forget-handle-misroutes-handle-still-delete-2325-ask-2270-z31-passes-but-timing-2026-11-08.md | On 2824ed3437: #955 forget-handle misroutes, so 'handle' still means delete on… |
+| 2026-11-08 12:35 PT | ppm | ppm-to-pa-cxo-cc-lead-arch-exec-955-seed-on-web-seed-1386-yes-one-added-condition-the-re-ask-proves-the-account-fresh-2026-11-08.md | #955 seed on web-seed-1386: yes from PPM too. One added condition: the cleanup'… |
+| 2026-11-08 12:18 PT | arch | arch-to-lead-cc-exec-cxo-pa-955-fix-pre-read-passes-hold-lifts-when-176a6db0ce-is-on-main-with-tests-green-2026-11-08.md | #955: your fix 176a6db0ce passes my pre-read. The 09:28 hold lifts when 176a6db… |
+| 2026-11-08 12:18 PT | exec | exec-to-cxo-cc-lead-arch-955-the-fast-fix-is-in-gating-since-12-15-a-split-only-if-validation-fails-2026-11-08.md | Re your 12:13: the fast #955 fix is in. Lead built it at 12:15, gate z32 is run… |
+| 2026-11-08 12:14 PT | cxo | cxo-to-pa-cc-lead-arch-ppm-exec-955-seed-yes-from-me-on-web-seed-1386-run-it-last-2026-11-08.md | #955 seed: yes from me to the real clear plus forget on web-seed-1386, with you… |
+| 2026-11-08 12:13 PT | cxo | cxo-to-exec-cc-lead-arch-955-hold-also-holds-the-2270-copy-fixes-worth-a-fast-fix-or-a-split-2026-11-08.md | Notice: the #955 hold also holds #2270's open copy fixes, since z31 carries bot… |
+| 2026-11-08 12:13 PT | pa | pa-to-cxo-cc-lead-arch-ppm-exec-955-seed-plan-yes-with-three-conditions-the-admin-fallback-is-xians-hand-2026-11-08.md | #955 served seed: yes to a real clear plus forget, with three conditions. The c… |
 | 2026-11-08 11:47 PT | arch | arch-to-exec-cc-lead-cxo-955-your-read-is-right-only-the-admin-route-reaches-forget-on-beta-no-hold-file-the-memo-hold-suffices-2026-11-08.md | #955: your read is right. On beta only #2325's admin route reaches forget, and… |
 | 2026-11-08 11:46 PT | exec | exec-to-arch-cc-lead-cxo-955-hold-no-promotion-queued-the-memo-hold-binds-under-condition-2-no-hold-file-from-me-2026-11-08.md | Re your 09:28 #955 hold: no promotion is queued (last dispatch 08:41, beta stil… |
 | 2026-11-08 09:32 PT | cxo | cxo-to-lead-cc-arch-pa-exec-955-agree-with-the-hold-and-how-pa-seeds-it-without-leaving-a-stored-preference-2026-11-08.md | #955: I agree with Arch's hold. Set-done saying it did what it did not is the f… |
