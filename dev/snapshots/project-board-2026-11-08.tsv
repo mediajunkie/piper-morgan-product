@@ -2111,11 +2111,12 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2318	OPEN	Production		D5 served gaps: 'complete the second one' after a list gets a whole-list pick (not bound); 'delete the first two' follow-up question is unarmed			
 2317	OPEN	Production		Route log stamps complete-pick answers as clarify_delete_todo_pick			
 2320	OPEN	Production		Alpha LLM calls: about 4 in 10 take ~2.2 s longer inside LLMClient.complete(), not in the model			
-2321	OPEN	Production		No-list ordinal asks ('complete/delete the second one') skip the armed reply, one invents a guess; the no-list list numbers a repeated title differently	UX		
+2321	CLOSED	Production		No-list ordinal asks ('complete/delete the second one') skip the armed reply, one invents a guess; the no-list list numbers a repeated title differently	UX		COMPLETED
 2319	OPEN	Production		Reminder with an absolute date ('on December 20 at 9am') is scheduled for tomorrow 9am, and the date stays in the title	bug		
 2322	OPEN	Production		Clear-family detector widens a positional clear ('clear todo 2') to every todo; a stored 'done' default completes them all	P1,architecture,bug		
 2323	OPEN	Production		Repo-analysis reply's option 1 is a leaked guard sentence with an unclosed bold: '**Nothing has been done yet. Tell me what you'd like as a direct request.'	bug		
-2324	OPEN	Production		Repo analysis calls a past-due milestone 'runway': 'due date out in late October 2026 there's runway' on 11-07 for a milestone due 10-29	bug		
+2324	CLOSED	Production		Repo analysis calls a past-due milestone 'runway': 'due date out in late October 2026 there's runway' on 11-07 for a milestone due 10-29	bug		COMPLETED
 2325	OPEN	Production		Test accounts can't reset a stored preference (clear verb, verification meta mode): each served check of a one-shot preference costs an account			
 2326	OPEN	Production		Floor offers to read ("Want me to look at it now?") aren't armed, so yes reads nothing: arm read offers with a resolvable target			
 2327	OPEN	Production		Floored action names outside every vocabulary go unread: audit the served routing_to_floor logs	architecture		
+2328	OPEN	Production		complete_todo: "make clear mark them done" says it couldn't find a todo matching 'them' instead of asking which	UX		

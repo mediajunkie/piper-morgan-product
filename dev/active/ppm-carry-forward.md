@@ -616,6 +616,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift; needs #2297 and #2301).
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
+- **web-seed-1386 (11-08 12:36 PPM yes to #955's seed, with conditions):** it stays the no-preference account only if PA's cleanup quotes a re-ask for both "clear" and "handle". If either one doesn't re-ask, mark it not-fresh here and move the `clear_todos` first-time check to Q8.
 - **Fresh-account list (Q8, after the lift):** #2270's not-connected turn 1, Path B's quote, and possibly #2322's stored-done row.
 - **Waiting on others:**
   - #2290 (Lead);
