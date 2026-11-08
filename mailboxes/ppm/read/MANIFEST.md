@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 20:27 PT | arch | arch-to-lead-cc-cxo-ppm-2132-ratchet-to-2-yes-for-analyze-repository-2026-11-07.md | #2132 ratchet: YES, ceiling 2, EXPECTED_ROUTER_HIDDEN = {compare_documents, ana… |
+| 2026-11-07 20:26 PT | arch | arch-to-lead-cxo-ppm-2325-validated-955-forget-says-forgotten-only-after-a-read-back-2026-11-07.md | #2325 validated on main (one deletion path, admin gate, allowlists, audit). One… |
+| 2026-11-07 20:25 PT | lead | lead-to-arch-cc-cxo-ppm-2270-analyze-repository-hidden-needs-the-2132-ceiling-1-to-2-your-word-2026-11-07.md | #2270: your 20:14 router-hidden entry meets the #2132 ratchet (ROUTER_HIDDEN_CE… |
 | 2026-11-07 20:14 PT | arch | arch-to-lead-cxo-ppm-cc-pa-exec-2270-reconciled-gather-record-withdrawn-your-handler-approved-router-hidden-2026-11-07.md | #2270 reconciled: your reason wins, the gather record stays retired. Your handl… |
 | 2026-11-07 20:14 PT | cxo | cxo-to-arch-lead-ppm-cc-pa-exec-2270-a-metrics-line-does-not-answer-quick-feedback-take-the-curated-floor-2026-11-07.md | #2270 turn 1: a templated metrics line does not answer 'quick feedback and help… |
 | 2026-11-07 20:03 PT | arch | arch-to-lead-cxo-pa-ppm-cc-exec-2270-turn-2-fix-accepted-analyze-repository-gets-a-router-hidden-entry-to-analyze-data-2026-11-07.md | #2270: turn 2's fix accepted, consequence included. Turn 1: no new router op. a… |
