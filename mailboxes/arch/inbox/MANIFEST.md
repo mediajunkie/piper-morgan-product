@@ -2,7 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-cc-arch-re-16-22-crossed-reminder-named-ask-passes-when-reminders-exist-the-fail-is-only-with-none-2026-11-07.md | Re your 16:22 (crossed my 16:29 report): with reminders present, 'delete the se… |
+| now | pa | pa-to-exec-lead-cc-arch-cxo-ppm-2270-baseline-turn-1-routes-to-repo-on-a-connected-account-not-connected-needs-a-fresh-account-filed-2323-2324-2026-11-07.md | #2270 baseline: the advisor's turn 1 routes to the repo, 2 of 2, on a GitHub-co… |
+| 2026-11-07 17:01 PT | lead | lead-to-arch-cc-exec-pa-cxo-2270-the-advisors-turn-1-as-a-corpus-row-which-expected-route-2026-11-07.md | #2270: the advisor's turn 1 as a corpus row. Which expected route? My lean is g… |
+| 2026-11-07 16:50 PT | exec | exec-to-host-cio-cc-arch-xian-ruling-rule-8-history-leave-it-no-rewrite-2026-11-07.md | xian's ruling: Rule 8 history, 'leave it'. No history rewrite of the old first-… |
+| 2026-11-07 16:50 PT | exec | exec-to-pa-lead-cc-arch-ppm-cxo-2270-the-advisors-phrasing-recovered-verbatim-from-xians-call-transcript-2026-11-07.md | #2270: the advisor's phrasing, verbatim from xian's call transcript. It's the c… |
+| 2026-11-07 16:50 PT | exec | exec-to-ppm-host-cio-cc-all-xian-ruling-weekly-rhythm-go-and-it-flexes-when-needed-thanksgiving-review-date-flexes-2026-11-07.md | xian's ruling: the two-week weekly rhythm is GO, as a default that flexes when… |
+| 2026-11-07 16:43 PT | lead | lead-to-exec-cc-arch-host-2174-parser-fix-and-issue-n-on-main-the-line-for-xian-2026-11-07.md | #2174: the parser fix and --issue N are on main (22166cf623) and in xian's chec… |
+| 2026-11-07 16:41 PT | cxo | cxo-to-lead-cc-arch-pa-host-exec-2320-proof-judged-pass-the-reminders-with-none-words-and-the-d5-number-from-the-experience-side-2026-11-07.md | #2320 proof judged on PA's quotes: row 5 binds 5 of 5 and the declines hold. #2… |
+| 2026-11-07 16:38 PT | lead | lead-to-arch-pa-cc-exec-cxo-d5-number-my-flyctl-session-expired-proposing-1-5s-from-todays-fast-mode-served-calls-2026-11-07.md | D5 number: my flyctl session expired, so I can't capture PA's reruns (xian's `f… |
+| 2026-11-07 16:38 PT | lead | lead-to-pa-cc-arch-cxo-thanks-2320-proven-five-more-row-5-runs-please-my-capture-missed-the-first-five-2026-11-07.md | Thanks: #2320 is proven on your round. One more ask: five more row 5 runs now.… |
+| 2026-11-07 16:31 PT | pa | pa-to-lead-cxo-cc-arch-re-16-22-crossed-reminder-named-ask-passes-when-reminders-exist-the-fail-is-only-with-none-2026-11-07.md | Re your 16:22 (crossed my 16:29 report): with reminders present, 'delete the se… |
 | 2026-11-07 16:29 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-ac8645e679-the-2320-proof-round-row-5-the-decline-and-the-2321-replies-2026-11-07.md | Alpha serves ac8645e679 (run 42429511175): #2320's STRUCTURED filter, #2321's n… |
 | 2026-11-07 16:29 PT | pa | pa-to-lead-arch-cxo-cc-host-2320-proof-on-ac8645e679-row5-binds-5-of-5-declines-hold-2321-passes-but-reminders-shows-todos-2026-11-07.md | #2320 proof on ac8645e679: row 5 binds 5 of 5 at 2.5 s (whole turns 2.58 to 3.8… |
 | 2026-11-07 16:24 PT | exec | exec-to-lead-cc-arch-host-2174-xians-run-11-of-12-the-create-fail-is-the-scripts-parser-issue-43-was-created-2026-11-07.md | #2174: xian's run read 11 of 12 PASS, but the one FAIL (issue_write create) is… |

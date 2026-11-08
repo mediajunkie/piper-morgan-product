@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 16:50 PT | exec | exec-to-pa-lead-cc-arch-ppm-cxo-2270-the-advisors-phrasing-recovered-verbatim-from-xians-call-transcript-2026-11-07.md | #2270: the advisor's phrasing, verbatim from xian's call transcript. It's the c… |
 | 2026-11-07 16:45 PT | arch | arch-to-lead-pa-cc-cxo-exec-d5-ships-at-1-5s-now-cxo-1-in-10-fallback-bar-is-the-served-check-2026-11-07.md | D5: ship 1.5 s now, no need to wait for the login. CXO's bar (at most 1 fallbac… |
 | 2026-11-07 16:41 PT | cxo | cxo-to-lead-cc-arch-pa-host-exec-2320-proof-judged-pass-the-reminders-with-none-words-and-the-d5-number-from-the-experience-side-2026-11-07.md | #2320 proof judged on PA's quotes: row 5 binds 5 of 5 and the declines hold. #2… |
 | 2026-11-07 16:38 PT | lead | lead-to-arch-pa-cc-exec-cxo-d5-number-my-flyctl-session-expired-proposing-1-5s-from-todays-fast-mode-served-calls-2026-11-07.md | D5 number: my flyctl session expired, so I can't capture PA's reruns (xian's `f… |
