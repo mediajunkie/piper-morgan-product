@@ -1670,6 +1670,35 @@ class TodoIntentHandlers:
             )
         return question, True
 
+    def _armed_shown_lines_reply(
+        self,
+        verb: str,
+        lines: List[str],
+        shown: List[List[Todo]],
+        listing_kind: str,
+        intent: Intent,
+        ctx: Dict[str, Any],
+        session_id: Optional[str],
+        principal: Any,
+        offer_service: Any,
+    ) -> Tuple[str, bool]:
+        """#2321 row 7: :meth:`_armed_shown_rows_reply` over shown LINES (a grouped
+        line keeps every copy), as the #1605 clear path's out-of-range reply needs."""
+        from services.intent_service.delete_todo_pick import (
+            arm_shown_lines_pick,
+            by_name_statement,
+            shown_rows_question,
+        )
+
+        message = intent.original_message or ctx.get("original_message") or ""
+        noun = conversation_noun(message, listing_kind)
+        reply = "\n".join(lines) + "\n\n" + shown_rows_question(verb)
+        if arm_shown_lines_pick(
+            verb, reply, message, session_id, principal, noun, shown, offer_service
+        ):
+            return reply, True
+        return "\n".join(lines) + "\n\n" + by_name_statement(verb, noun), False
+
     def _armed_shown_rows_reply(
         self,
         verb: str,

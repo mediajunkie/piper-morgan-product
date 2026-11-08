@@ -787,7 +787,8 @@ class TestAlwaysAskLeadingQuestion:
         result = await live_service.process_intent(
             message="clear my reminders", session_id=sid, user_id=_USER
         )
-        assert result.message.startswith(rc.variant_two_always_ask_question())
+        # #2322: two reminders, so the set leads (CXO 16:17); the question is verbatim.
+        assert result.message.endswith(rc.variant_two_always_ask_question())
         assert todo_boundary["completed"] == [] and todo_boundary["deleted"] == []
         assert result.intent_data.get("verb_disambiguation_pending") is True
 
@@ -1131,7 +1132,9 @@ class TestIssue2322ASetNeverAutoApplies:
         result = await live_service.process_intent(
             message="clear my reminders", session_id=sid, user_id=_USER
         )
-        assert result.message == rc.variant_two_always_ask_question()
+        # CXO 11-07 16:17: the set in front, the ratified question last.
+        assert result.message.startswith("That would cover 2 reminders:\n1. ")
+        assert result.message.endswith("\n\n" + rc.variant_two_always_ask_question())
         assert result.requires_clarification is True
         assert todo_boundary["completed"] == []
 
@@ -1167,4 +1170,79 @@ class TestIssue2322ASetNeverAutoApplies:
         _stub_classification(monkeypatch, live_service, phrase, "delete_todo")
         await live_service.process_intent(message=phrase, session_id=sid, user_id=_USER)
         assert todo_boundary["deleted"] == []
+        assert todo_boundary["completed"] == []
+
+
+class TestIssue2321Row7Narrowing:
+    """#2321 row 7 (CXO 11-07 15:50; Arch 15:48): on the live #1605 path a position the
+    person named binds from recorded state and never widens to the whole set."""
+
+    pytestmark = pytest.mark.asyncio
+
+    def _shown(self, sid, todos):
+        from services.intent_service.todo_handlers import TodoIntentHandlers
+
+        TodoIntentHandlers._remember_numbered_list(
+            sid, _USER, "todos", [t.id for t in todos], [t.text for t in todos]
+        )
+
+    async def test_after_a_list_clear_todo_2_binds_line_2_only(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = f"e2e-2321-n2-{uuid4().hex[:8]}"
+        _seed_verb_default(pref_store, "complete")
+        todo_boundary["allow_complete"] = True
+        self._shown(sid, todo_boundary["todos"])
+        _stub_classification(monkeypatch, live_service, "clear todo 2", "complete_todo")
+        await live_service.process_intent(message="clear todo 2", session_id=sid, user_id=_USER)
+        line2 = todo_boundary["todos"][1]
+        assert [str(i) for i in todo_boundary["completed"]] == [str(line2.id)]
+
+    async def test_after_a_list_a_number_past_it_shows_the_list_and_asks(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = f"e2e-2321-n12-{uuid4().hex[:8]}"
+        _seed_verb_default(pref_store, "complete")
+        todo_boundary["allow_complete"] = True
+        self._shown(sid, todo_boundary["todos"])
+        _stub_classification(monkeypatch, live_service, "clear todo 12", "complete_todo")
+        result = await live_service.process_intent(
+            message="clear todo 12", session_id=sid, user_id=_USER
+        )
+        assert todo_boundary["completed"] == []
+        assert result.message.endswith(
+            "Which one do you mean? Say the number or the name, or 'never mind' to leave "
+            "them alone."
+        )
+        assert result.requires_clarification is True
+
+    async def test_with_no_list_it_shows_the_list_and_asks(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = f"e2e-2321-nolist-{uuid4().hex[:8]}"
+        _seed_verb_default(pref_store, "complete")
+        todo_boundary["allow_complete"] = True
+        _stub_classification(monkeypatch, live_service, "clear todo 2", "complete_todo")
+        result = await live_service.process_intent(
+            message="clear todo 2", session_id=sid, user_id=_USER
+        )
+        assert todo_boundary["completed"] == []
+        assert result.message.startswith("I haven't shown you a numbered list yet.")
+        assert result.message.endswith(
+            "Which one do you mean? Say the number or the name, or 'never mind' to leave "
+            "them alone."
+        )
+
+    async def test_an_unnumbered_clear_still_means_the_set(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        """No position named: the old meaning holds (and the #2322 guard asks)."""
+        sid = f"e2e-2321-all-{uuid4().hex[:8]}"
+        _seed_verb_default(pref_store, "complete")
+        todo_boundary["allow_complete"] = True
+        _stub_classification(monkeypatch, live_service, "clear my reminders", "complete_todo")
+        result = await live_service.process_intent(
+            message="clear my reminders", session_id=sid, user_id=_USER
+        )
+        assert result.message.startswith("That would cover 2 reminders:")
         assert todo_boundary["completed"] == []
