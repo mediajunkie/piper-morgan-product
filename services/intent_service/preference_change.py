@@ -80,6 +80,11 @@ NOTHING_STORED_TEMPLATE = (
     "When you say {verb}, I ask which you want."
 )
 NOTHING_STORED_LINE = NOTHING_STORED_TEMPLATE.format(verb="clear")
+# CXO 11-08 14:4x: a SET request with nothing stored for that verb (forget keeps line 4).
+NOTHING_TO_CHANGE_TEMPLATE = (
+    "I'm not remembering a {verb} preference yet, so there's nothing to change. "
+    'Say "{verb}" on a todo and I\'ll ask which you want, then remember it.'
+)
 SET_LINE = (
     'Okay. From now on "{verb}" means {x}. '
     'Say "forget my {verb} preference" any time to be asked again.'
@@ -155,8 +160,13 @@ def _scope(keys: Dict[str, Dict[str, Any]], verb: Optional[str]) -> Dict[str, Di
     return {key: keys[key]} if key in keys else {}
 
 
-def _nothing_line(verb: Optional[str]) -> str:
-    return NOTHING_STORED_TEMPLATE.format(verb=verb or "clear")
+def _nothing_line(verb: Optional[str], change: Optional[str] = None) -> str:
+    template = (
+        NOTHING_TO_CHANGE_TEMPLATE
+        if change in (CHANGE_DONE, CHANGE_DELETE)
+        else NOTHING_STORED_TEMPLATE
+    )
+    return template.format(verb=verb or "clear")
 
 
 def _meaning(record: Optional[Dict[str, Any]]) -> Optional[str]:
@@ -258,7 +268,7 @@ async def change_remembered_preference(
     if not keys:
         # Arch 07:18 (iii): set-directly never creates a preference; a per-verb ask
         # whose verb isn't stored says so for that verb (Arch 13:20).
-        return {"message": _nothing_line(scoped_verb), "outcome": "nothing_stored"}
+        return {"message": _nothing_line(scoped_verb, change), "outcome": "nothing_stored"}
     # Arch 13:32 (2): a clear forget binds one stored key only if it is "clear";
     # one other verb's key gets the pick with that one row.
     _one_other = (
@@ -330,7 +340,7 @@ async def change_preference_write_ask(request: Any) -> Any:
         logger.warning("preference_write_ask_read_failed", error=str(e))
         return WriteAsk(reply=UNREADABLE_LINE)
     if not keys:
-        return WriteAsk(reply=_nothing_line(scoped_verb))
+        return WriteAsk(reply=_nothing_line(scoped_verb, change))
     if len(keys) > 1:
         listed = ", ".join(text for _k, text in _rows(keys))
         return WriteAsk(reply=SEVERAL_LINE.format(listed=listed))

@@ -146,7 +146,10 @@ async def test_set_directly_renders_from_the_stored_value(
 async def test_set_directly_never_creates_a_preference(mem_prefs, handler):
     _, calls = mem_prefs
     result = await handler(_intent("set_clear_preference_delete"), "wf")
-    assert result.message == pc.NOTHING_STORED_LINE
+    assert result.message == (
+        "I'm not remembering a clear preference yet, so there's nothing to change. "
+        'Say "clear" on a todo and I\'ll ask which you want, then remember it.'
+    )
     assert calls["saves"] == 0
 
 
@@ -567,12 +570,17 @@ async def test_a_per_verb_ask_for_an_unstored_verb_never_touches_another_key(mem
     _, calls = mem_prefs
     await _stored(_CLEAR, VALUE_COMPLETE)
     before = calls["saves"]
-    for action in ("forget_reset_preference", "set_reset_preference_delete"):
-        result = await handler(_intent(action), "wf")
-        assert result.message == (
-            "I wasn't remembering a reset preference, so there's nothing to forget. "
-            "When you say reset, I ask which you want."
-        )
+    forget = await handler(_intent("forget_reset_preference"), "wf")
+    assert forget.message == (
+        "I wasn't remembering a reset preference, so there's nothing to forget. "
+        "When you say reset, I ask which you want."
+    )
+    set_ = await handler(_intent("set_reset_preference_delete"), "wf")
+    # CXO 11-08 14:4x: a set with nothing stored gets the set-flavoured line.
+    assert set_.message == (
+        "I'm not remembering a reset preference yet, so there's nothing to change. "
+        'Say "reset" on a todo and I\'ll ask which you want, then remember it.'
+    )
     assert calls["saves"] == before
     assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == VALUE_COMPLETE
 
@@ -649,7 +657,7 @@ async def test_a_clear_set_never_writes_another_verb(mem_prefs, handler, action)
     await _stored(inference_key("take care of"), VALUE_DELETE)
     before = calls["saves"]
     result = await handler(_intent(action), "wf")
-    assert result.message == pc.NOTHING_STORED_LINE
+    assert result.message == pc.NOTHING_TO_CHANGE_TEMPLATE.format(verb="clear")
     assert calls["saves"] == before
 
 
