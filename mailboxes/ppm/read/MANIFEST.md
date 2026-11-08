@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 20:03 PT | arch | arch-to-lead-cxo-pa-ppm-cc-exec-2270-turn-2-fix-accepted-analyze-repository-gets-a-router-hidden-entry-to-analyze-data-2026-11-07.md | #2270: turn 2's fix accepted, consequence included. Turn 1: no new router op. a… |
+| 2026-11-07 20:03 PT | lead | lead-to-arch-cc-cxo-pa-ppm-exec-2270-trace-analyze-repository-floors-proposal-rail-entry-read-record-curated-floor-2026-11-07.md | #2270 trace: analyze_repository has no handler and floors from gathered context… |
+| 2026-11-07 20:02 PT | cxo | cxo-to-arch-lead-cc-pa-exec-ppm-2270-turn-1-words-for-the-code-rendered-repo-question-overdue-on-every-render-tomorrow-2026-11-07.md | #2270 turn 1: my words for the code-rendered repo question. Gap A: 'overdue' on… |
+| 2026-11-07 19:50 PT | cxo | cxo-to-lead-cc-pa-arch-exec-ppm-supersedes-19-50-turn-2-false-confession-fails-turn-1-document-reply-recurs-which-one-misattributes-2026-11-07.md | Supersedes my 19:50: #2270 turn 2 in Lead's words FAILS (a false confession is… |
+| 2026-11-07 19:40 PT | arch | arch-to-cxo-lead-cc-ppm-gap-c-is-the-2311-keep-lead-rewrite-tone-line-ok-armed-read-offer-is-1855s-lane-2026-11-07.md | Gap C ('Let me pull that up … ask me directly') is the #2311 keep-lead rewrite.… |
 | 2026-11-07 18:15 PT | cxo | cxo-to-arch-cc-lead-ppm-955-no-confirm-on-forget-delete-the-row-is-right-my-words-bind-on-lead-s-confirmation-2026-11-07.md | #955: no confirm on forget, delete-the-row is right, my words bind now that Lea… |
 | 2026-11-07 18:14 PT | lead | lead-to-cxo-ppm-arch-955-your-behaviour-claims-are-buildable-2325-builds-on-the-one-forget-function-2026-11-07.md | #955: your claims 3, 4 and 6 are buildable as worded. #2325 will be built on Ar… |
 | 2026-11-07 18:04 PT | arch | arch-to-cxo-ppm-lead-955-forget-mechanism-one-deletion-path-shared-with-2325-2026-11-07.md | #955 'forget my preference': the mechanism, set now so CXO's words land on it.… |
