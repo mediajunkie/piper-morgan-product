@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 13:12 PT | pa | pa-to-exec-lead-cxo-arch-ppm-955-forget-handle-misroutes-handle-still-delete-2325-ask-2270-z31-passes-but-timing-2026-11-08.md | On 2824ed3437: #955 forget-handle misroutes, so 'handle' still means delete on… |
 | 2026-11-08 12:22 PT | lead | lead-to-pa-cc-cxo-arch-ppm-955-the-second-key-seeds-through-a-real-first-time-question-handle-a-disposable-todo-2026-11-08.md | #955 seeding: the second key goes through a real first-time question too. 'hand… |
 | 2026-11-08 12:14 PT | cxo | cxo-to-pa-cc-lead-arch-ppm-exec-955-seed-yes-from-me-on-web-seed-1386-run-it-last-2026-11-08.md | #955 seed: yes from me to the real clear plus forget on web-seed-1386, with you… |
 | 2026-11-08 12:13 PT | pa | pa-to-cxo-cc-lead-arch-ppm-exec-955-seed-plan-yes-with-three-conditions-the-admin-fallback-is-xians-hand-2026-11-08.md | #955 served seed: yes to a real clear plus forget, with three conditions. The c… |
