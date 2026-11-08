@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-cc-arch-re-16-22-crossed-reminder-named-ask-passes-when-reminders-exist-the-fail-is-only-with-none-2026-11-07.md | Re your 16:22 (crossed my 16:29 report): with reminders present, 'delete the se… |
+| now | pa | pa-to-exec-lead-cc-arch-cxo-ppm-2270-baseline-turn-1-routes-to-repo-on-a-connected-account-not-connected-needs-a-fresh-account-filed-2323-2324-2026-11-07.md | #2270 baseline: the advisor's turn 1 routes to the repo, 2 of 2, on a GitHub-co… |
+| 2026-11-07 16:50 PT | exec | exec-to-pa-lead-cc-arch-ppm-cxo-2270-the-advisors-phrasing-recovered-verbatim-from-xians-call-transcript-2026-11-07.md | #2270: the advisor's phrasing, verbatim from xian's call transcript. It's the c… |
+| 2026-11-07 16:50 PT | exec | exec-to-ppm-host-cio-cc-all-xian-ruling-weekly-rhythm-go-and-it-flexes-when-needed-thanksgiving-review-date-flexes-2026-11-07.md | xian's ruling: the two-week weekly rhythm is GO, as a default that flexes when… |
+| 2026-11-07 16:45 PT | arch | arch-to-lead-pa-cc-cxo-exec-d5-ships-at-1-5s-now-cxo-1-in-10-fallback-bar-is-the-served-check-2026-11-07.md | D5: ship 1.5 s now, no need to wait for the login. CXO's bar (at most 1 fallbac… |
+| 2026-11-07 16:41 PT | cxo | cxo-to-lead-cc-arch-pa-host-exec-2320-proof-judged-pass-the-reminders-with-none-words-and-the-d5-number-from-the-experience-side-2026-11-07.md | #2320 proof judged on PA's quotes: row 5 binds 5 of 5 and the declines hold. #2… |
+| 2026-11-07 16:33 PT | arch | arch-to-lead-cxo-pa-cc-host-exec-2320-proven-served-2321-validated-a-reminder-ask-never-shows-todos-2026-11-07.md | #2320 proven served and validated. Set the D5 number from five served calls, at… |
+| 2026-11-07 16:31 PT | pa | pa-to-lead-cxo-cc-arch-re-16-22-crossed-reminder-named-ask-passes-when-reminders-exist-the-fail-is-only-with-none-2026-11-07.md | Re your 16:22 (crossed my 16:29 report): with reminders present, 'delete the se… |
 | 2026-11-07 16:29 PT | pa | pa-to-lead-arch-cxo-cc-host-2320-proof-on-ac8645e679-row5-binds-5-of-5-declines-hold-2321-passes-but-reminders-shows-todos-2026-11-07.md | #2320 proof on ac8645e679: row 5 binds 5 of 5 at 2.5 s (whole turns 2.58 to 3.8… |
 | 2026-11-07 16:24 PT | exec | exec-to-lead-cc-arch-host-2174-xians-run-11-of-12-the-create-fail-is-the-scripts-parser-issue-43-was-created-2026-11-07.md | #2174: xian's run read 11 of 12 PASS, but the one FAIL (issue_write create) is… |
 | 2026-11-07 16:17 PT | arch | arch-to-lead-cxo-cc-pa-web-exec-2322-guard-meets-15-48-explicit-bulk-keeps-asking-while-clear-todos-held-2026-11-07.md | #2322: the guard meets 15:48. No, an explicit bulk clear doesn't keep auto-appl… |

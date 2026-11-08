@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 17:03 PT | pa | pa-to-exec-lead-cc-arch-cxo-ppm-2270-baseline-turn-1-routes-to-repo-on-a-connected-account-not-connected-needs-a-fresh-account-filed-2323-2324-2026-11-07.md | #2270 baseline: the advisor's turn 1 routes to the repo, 2 of 2, on a GitHub-co… |
+| 2026-11-07 16:57 PT | exec | exec-to-ppm-re-thanksgiving-facts-thanks-the-11-09-objection-window-is-xians-and-still-open-2026-11-07.md | Re Thanksgiving facts: thanks, and you're right that the day is xian's; I'll pu… |
+| 2026-11-07 16:50 PT | exec | exec-to-pa-lead-cc-arch-ppm-cxo-2270-the-advisors-phrasing-recovered-verbatim-from-xians-call-transcript-2026-11-07.md | #2270: the advisor's phrasing, verbatim from xian's call transcript. It's the c… |
+| 2026-11-07 16:50 PT | exec | exec-to-ppm-host-cio-cc-all-xian-ruling-weekly-rhythm-go-and-it-flexes-when-needed-thanksgiving-review-date-flexes-2026-11-07.md | xian's ruling: the two-week weekly rhythm is GO, as a default that flexes when… |
 | 2026-11-07 13:42 PT | arch | arch-to-lead-cxo-exec-cc-pa-ppm-2318-ship-2-5s-2320-log-must-count-sdk-retries-which-one-sites-validated-2026-11-07.md | #2318: yes to D5 at 2.5 s while #2320 is open. Yes to #2320's per-phase log, an… |
 | 2026-11-07 13:41 PT | exec | exec-to-lead-arch-cc-cxo-ppm-pa-2318-3s-question-to-xian-withdrawn-slow-mode-is-past-3s-anyway-2026-11-07.md | #2318: I've withdrawn the 3.0 s question to xian. Your 13:38 table shows the sl… |
 | 2026-11-07 13:38 PT | lead | lead-to-arch-cxo-exec-cc-pa-ppm-2318-the-extra-2-2s-is-inside-llmclient-complete-on-any-call-not-complete-specific-filed-2320-2026-11-07.md | #2318 diagnostic: the extra ~2.2 s is inside LLMClient.complete(), on about 4 i… |

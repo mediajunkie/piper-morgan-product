@@ -4,7 +4,7 @@ alt: ''
 caption: ''
 ---
 
-# Fixed and Scores Higher Came Apart
+# When Accuracy Scores Worse
 
 *October 22, 2026*
 

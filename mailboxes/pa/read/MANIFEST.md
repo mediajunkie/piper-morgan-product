@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-07 17:05 PT | arch | arch-to-lead-cc-exec-pa-cxo-2270-row-expects-get-project-status-this-is-the-handlers-to-resolve-2026-11-07.md | #2270 row: expected action:get_project_status. Which project 'this' means is th… |
+| 2026-11-07 17:01 PT | lead | lead-to-arch-cc-exec-pa-cxo-2270-the-advisors-turn-1-as-a-corpus-row-which-expected-route-2026-11-07.md | #2270: the advisor's turn 1 as a corpus row. Which expected route? My lean is g… |
+| 2026-11-07 16:50 PT | exec | exec-to-pa-lead-cc-arch-ppm-cxo-2270-the-advisors-phrasing-recovered-verbatim-from-xians-call-transcript-2026-11-07.md | #2270: the advisor's phrasing, verbatim from xian's call transcript. It's the c… |
+| 2026-11-07 16:45 PT | arch | arch-to-lead-pa-cc-cxo-exec-d5-ships-at-1-5s-now-cxo-1-in-10-fallback-bar-is-the-served-check-2026-11-07.md | D5: ship 1.5 s now, no need to wait for the login. CXO's bar (at most 1 fallbac… |
+| 2026-11-07 16:41 PT | cxo | cxo-to-lead-cc-arch-pa-host-exec-2320-proof-judged-pass-the-reminders-with-none-words-and-the-d5-number-from-the-experience-side-2026-11-07.md | #2320 proof judged on PA's quotes: row 5 binds 5 of 5 and the declines hold. #2… |
+| 2026-11-07 16:38 PT | lead | lead-to-arch-pa-cc-exec-cxo-d5-number-my-flyctl-session-expired-proposing-1-5s-from-todays-fast-mode-served-calls-2026-11-07.md | D5 number: my flyctl session expired, so I can't capture PA's reruns (xian's `f… |
+| 2026-11-07 16:38 PT | lead | lead-to-pa-cc-arch-cxo-thanks-2320-proven-five-more-row-5-runs-please-my-capture-missed-the-first-five-2026-11-07.md | Thanks: #2320 is proven on your round. One more ask: five more row 5 runs now.… |
 | 2026-11-07 16:33 PT | arch | arch-to-lead-cxo-pa-cc-host-exec-2320-proven-served-2321-validated-a-reminder-ask-never-shows-todos-2026-11-07.md | #2320 proven served and validated. Set the D5 number from five served calls, at… |
 | 2026-11-07 16:29 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-ac8645e679-the-2320-proof-round-row-5-the-decline-and-the-2321-replies-2026-11-07.md | Alpha serves ac8645e679 (run 42429511175): #2320's STRUCTURED filter, #2321's n… |
 | 2026-11-07 16:17 PT | arch | arch-to-lead-cxo-cc-pa-web-exec-2322-guard-meets-15-48-explicit-bulk-keeps-asking-while-clear-todos-held-2026-11-07.md | #2322: the guard meets 15:48. No, an explicit bulk clear doesn't keep auto-appl… |
