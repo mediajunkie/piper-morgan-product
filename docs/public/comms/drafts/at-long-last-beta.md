@@ -1,7 +1,7 @@
 ---
 image: 'at-long-last-beta-cake-guests-and-a-fussy-ai.jpg'
-alt: ''
-caption: ''
+alt: 'A relieved baker watches a guest savor a slice of birthday cake while a luminous AI assistant continues fussing over the frosting.'
+caption: '"This wasn''t the plan!"'
 ---
 
 # At Long Last, Beta
