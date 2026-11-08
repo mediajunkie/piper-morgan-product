@@ -478,7 +478,13 @@ async def test_a_narrowing_action_off_the_allowlist_fails_at_construction():
     )
 
     assert CONSENT_NARROWING_ALLOWLIST == frozenset(
-        {"forget_clear_preference", "set_clear_preference_ask"}
+        {
+            "forget_clear_preference",
+            "set_clear_preference_ask",
+            "forget_handle_preference",
+            "forget_take_care_of_preference",
+            "forget_reset_preference",
+        }
     )
 
     async def _ep(*a, **k):
@@ -532,3 +538,81 @@ async def test_a_row_the_clear_path_wrote_is_read_forgotten_and_set_over(mem_pre
     # What the clear path's next turn compares against: its own VALUE_COMPLETE.
     stored = await vi.get_verified_inference(_USER, rc.inference_key("clear"))
     assert stored["value"] == rc.VALUE_COMPLETE
+
+
+# ── Arch 11-08 13:20/13:21: per-verb aliases act only on that verb's stored key ──
+
+_HANDLE = inference_key("handle")
+
+
+async def test_forget_handle_forgets_only_the_handle_key(mem_prefs, handler):
+    await _stored(_CLEAR, VALUE_COMPLETE)
+    await _stored(_HANDLE, VALUE_DELETE)
+    result = await handler(_intent("forget_handle_preference"), "wf")
+    assert result.message == (
+        'Okay. I\'ve forgotten that "handle" means delete it. '
+        "Next time you say handle, I'll ask which you want."
+    )
+    assert await vi.get_verified_inference(_USER, _HANDLE) is None
+    assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == VALUE_COMPLETE
+
+
+async def test_a_per_verb_ask_for_an_unstored_verb_never_touches_another_key(mem_prefs, handler):
+    _, calls = mem_prefs
+    await _stored(_CLEAR, VALUE_COMPLETE)
+    before = calls["saves"]
+    for action in ("forget_reset_preference", "set_reset_preference_delete"):
+        result = await handler(_intent(action), "wf")
+        assert result.message == (
+            "I wasn't remembering a reset preference, so there's nothing to forget. "
+            "When you say reset, I ask which you want."
+        )
+    assert calls["saves"] == before
+    assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == VALUE_COMPLETE
+
+
+async def test_set_handle_done_over_a_real_handle_row(mem_prefs, handler):
+    await _stored(_HANDLE, VALUE_DELETE)
+    result = await handler(_intent("set_handle_preference_done"), "wf")
+    assert result.message == (
+        'Okay. From now on "handle" means mark it done. '
+        'Say "forget my handle preference" any time to be asked again.'
+    )
+    assert (await vi.get_verified_inference(_USER, _HANDLE))["value"] == VALUE_COMPLETE
+
+
+async def test_take_care_of_is_named_by_its_label(mem_prefs, handler):
+    key = inference_key("take care of")
+    await _stored(key, VALUE_COMPLETE)
+    result = await handler(_intent("forget_take_care_of_preference"), "wf")
+    assert result.message.startswith(
+        'Okay. I\'ve forgotten that "take care of" means mark it done.'
+    )
+
+
+async def test_per_verb_forget_is_consent_narrowing_per_verb_set_asks(mem_prefs, monkeypatch):
+    await _stored(_HANDLE, VALUE_DELETE)
+    forgot = await _through_process_intent(
+        monkeypatch, "forget my handle preference", "forget_handle_preference"
+    )
+    assert forgot.message.startswith('Okay. I\'ve forgotten that "handle" means delete it.')
+    await _stored(_HANDLE, VALUE_DELETE)
+    asked = await _through_process_intent(
+        monkeypatch, "when I say handle, mark it done", "set_handle_preference_done"
+    )
+    assert asked.message.endswith('Change "handle" from delete it to mark it done? (yes/no)')
+    assert (await vi.get_verified_inference(_USER, _HANDLE))["value"] == VALUE_DELETE
+
+
+async def test_every_per_verb_alias_is_on_the_one_entry():
+    from services.intent_service.workflow_dispatcher import get_action_workflows
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    register_default_workflows()
+    flows = get_action_workflows()
+    entry = flows["change_remembered_preference"]
+    assert len(pc.VERB_BY_ACTION) == 9
+    for alias in pc.VERB_BY_ACTION:
+        assert flows[alias] is entry
+    assert entry.consent_narrowing_actions >= pc.PER_VERB_FORGET_ACTIONS
+    assert not any(a.startswith("set_") for a in pc.PER_VERB_FORGET_ACTIONS)

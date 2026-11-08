@@ -197,12 +197,12 @@ def _no_stored_preferences(monkeypatch):
 def _expected_statement(action):
     register_default_workflows()
     entry = get_action_workflows()[action]
-    if action in ("set_clear_preference_done", "set_clear_preference_delete"):
-        # #955 (Arch 07:18 (iii)): set-directly never creates a preference; with none
-        # stored the ask is CXO's line 4, a statement with nothing armed.
-        from services.intent_service.preference_change import NOTHING_STORED_LINE
+    from services.intent_service import preference_change as pc
 
-        return NOTHING_STORED_LINE
+    if pc.CHANGE_BY_ACTION.get(action) in (pc.CHANGE_DONE, pc.CHANGE_DELETE):
+        # #955 (Arch 07:18 (iii)): set-directly never creates a preference; with none
+        # stored the ask is CXO's line 4 for that verb (Arch 13:21), nothing armed.
+        return pc.NOTHING_STORED_TEMPLATE.format(verb=pc.VERB_BY_ACTION.get(action, "clear"))
     for op, line in _DIRECT_LINES.items():
         if entry is get_action_workflows()[op]:
             return line

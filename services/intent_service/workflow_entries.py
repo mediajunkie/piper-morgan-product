@@ -3807,7 +3807,14 @@ def register_default_workflows() -> None:
         # matrix says COLLABORATE. Set-directly keeps the check (no write_ask yet, so
         # CXO's #2304 statement until she words one).
         consent_narrowing_actions=frozenset(
-            {"forget_clear_preference", "set_clear_preference_ask"}
+            {
+                "forget_clear_preference",
+                "set_clear_preference_ask",
+                # Arch 13:20: per-verb forget narrows like forget; per-verb set does not.
+                "forget_handle_preference",
+                "forget_take_care_of_preference",
+                "forget_reset_preference",
+            }
         ),
         # CXO 11-08 08:09: the set aliases' yes/no, from the stored key and target.
         write_ask=_change_preference_write_ask,
@@ -4270,6 +4277,16 @@ def register_default_workflows() -> None:
         "set_clear_preference_done": change_remembered_preference_entry,
         "set_clear_preference_delete": change_remembered_preference_entry,
         "set_clear_preference_ask": change_remembered_preference_entry,  # Arch 08:16
+        # Arch 13:20/13:21: the per-verb aliases (the alias names the verb).
+        "forget_handle_preference": change_remembered_preference_entry,
+        "set_handle_preference_done": change_remembered_preference_entry,
+        "set_handle_preference_delete": change_remembered_preference_entry,
+        "forget_take_care_of_preference": change_remembered_preference_entry,
+        "set_take_care_of_preference_done": change_remembered_preference_entry,
+        "set_take_care_of_preference_delete": change_remembered_preference_entry,
+        "forget_reset_preference": change_remembered_preference_entry,
+        "set_reset_preference_done": change_remembered_preference_entry,
+        "set_reset_preference_delete": change_remembered_preference_entry,
         # #1570: archived-projects list — canonical key first (wired_chat_actions
         # names each unique entry by its first-registered key), then the mode-4
         # defense aliases for LLM paraphrase emissions.

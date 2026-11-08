@@ -36,6 +36,29 @@ CHANGE_BY_ACTION: Dict[str, str] = {
     "set_clear_preference_done": CHANGE_DONE,
     "set_clear_preference_delete": CHANGE_DELETE,
 }
+# Arch 11-08 13:20 (forget) and 13:21 (set): per-verb aliases. The classifier names the
+# verb by choosing the alias; code still acts only on that verb's STORED key (rule 2
+# refined: never another verb's key, never a new key). "clear" aliases above name no
+# verb and act over the whole stored family (one binds, several get the pick).
+VERB_BY_ACTION: Dict[str, str] = {}
+for _alias_verb, _label in (
+    ("handle", "handle"),
+    ("take_care_of", "take care of"),
+    ("reset", "reset"),
+):
+    CHANGE_BY_ACTION[f"forget_{_alias_verb}_preference"] = CHANGE_FORGET
+    CHANGE_BY_ACTION[f"set_{_alias_verb}_preference_done"] = CHANGE_DONE
+    CHANGE_BY_ACTION[f"set_{_alias_verb}_preference_delete"] = CHANGE_DELETE
+    for _a in (
+        f"forget_{_alias_verb}_preference",
+        f"set_{_alias_verb}_preference_done",
+        f"set_{_alias_verb}_preference_delete",
+    ):
+        VERB_BY_ACTION[_a] = _label
+#: The per-verb forget aliases (consent-narrowing, like forget; Arch 13:20).
+PER_VERB_FORGET_ACTIONS = frozenset(
+    a for a, c in CHANGE_BY_ACTION.items() if c == CHANGE_FORGET and a in VERB_BY_ACTION
+)
 CHANGE_ACTIONS = ("change_remembered_preference", *CHANGE_BY_ACTION)
 
 CLEAR_KEY_PREFIX = "reminder_clear_verb:"
@@ -52,10 +75,11 @@ FORGOTTEN_LINE = (
     'Okay. I\'ve forgotten that "{verb}" means {x}. '
     "Next time you say {verb}, I'll ask which you want."
 )
-NOTHING_STORED_LINE = (
-    "I wasn't remembering a clear preference, so there's nothing to forget. "
-    "When you say clear, I ask which you want."
+NOTHING_STORED_TEMPLATE = (
+    "I wasn't remembering a {verb} preference, so there's nothing to forget. "
+    "When you say {verb}, I ask which you want."
 )
+NOTHING_STORED_LINE = NOTHING_STORED_TEMPLATE.format(verb="clear")
 SET_LINE = (
     'Okay. From now on "{verb}" means {x}. '
     'Say "forget my {verb} preference" any time to be asked again.'
@@ -97,6 +121,23 @@ def change_for(intent: Any) -> Optional[str]:
     return value if value in (CHANGE_FORGET, CHANGE_DONE, CHANGE_DELETE) else None
 
 
+def verb_for(intent: Any) -> Optional[str]:
+    """The verb a per-verb alias names (None for the clear-family aliases)."""
+    return VERB_BY_ACTION.get(getattr(intent, "action", None) or "")
+
+
+def _scope(keys: Dict[str, Dict[str, Any]], verb: Optional[str]) -> Dict[str, Dict[str, Any]]:
+    """A per-verb alias acts only on that verb's stored key; otherwise the whole family."""
+    if verb is None:
+        return keys
+    key = f"{CLEAR_KEY_PREFIX}{verb}"
+    return {key: keys[key]} if key in keys else {}
+
+
+def _nothing_line(verb: Optional[str]) -> str:
+    return NOTHING_STORED_TEMPLATE.format(verb=verb or "clear")
+
+
 def _meaning(record: Optional[Dict[str, Any]]) -> Optional[str]:
     value = (record or {}).get("value")
     return MEANING_WORDS.get(str(value)) if value is not None else None
@@ -123,7 +164,7 @@ async def forget_one(user_id: str, key: str, old_x: str) -> Dict[str, Any]:
         x = _meaning(result.record) or old_x
         return {"message": FORGOTTEN_LINE.format(verb=verb, x=x), "outcome": "forgotten"}
     if result.outcome is vi.ForgetOutcome.NOTHING_STORED:
-        return {"message": NOTHING_STORED_LINE, "outcome": "nothing_stored"}
+        return {"message": _nothing_line(verb), "outcome": "nothing_stored"}
     x = _meaning(result.record) or old_x
     return {"message": FAILED_LINE.format(verb=verb, x=x), "outcome": "failed"}
 
@@ -188,13 +229,14 @@ async def change_remembered_preference(
     if not user_id:
         return {"message": UNREADABLE_LINE, "outcome": "no_principal"}
     try:
-        keys = await _stored_clear_keys(user_id)
+        keys = _scope(await _stored_clear_keys(user_id), verb_for(intent))
     except Exception as e:  # silent-ok: LOGGED; said as unreadable, nothing changed (#2151)
         logger.warning("preference_change_read_failed", error=str(e))
         return {"message": UNREADABLE_LINE, "outcome": "unreadable"}
     if not keys:
-        # Arch 07:18 (iii): set-directly never creates a preference.
-        return {"message": NOTHING_STORED_LINE, "outcome": "nothing_stored"}
+        # Arch 07:18 (iii): set-directly never creates a preference; a per-verb ask
+        # whose verb isn't stored says so for that verb (Arch 13:20).
+        return {"message": _nothing_line(verb_for(intent)), "outcome": "nothing_stored"}
     if len(keys) > 1:
         rows = _rows(keys)
         if change == CHANGE_FORGET:
@@ -246,12 +288,12 @@ async def change_preference_write_ask(request: Any) -> Any:
     if not user_id:
         return WriteAsk(reply=UNREADABLE_LINE)
     try:
-        keys = await _stored_clear_keys(str(user_id))
+        keys = _scope(await _stored_clear_keys(str(user_id)), verb_for(request.intent))
     except Exception as e:  # silent-ok: LOGGED; said as unreadable, nothing armed (#2151)
         logger.warning("preference_write_ask_read_failed", error=str(e))
         return WriteAsk(reply=UNREADABLE_LINE)
     if not keys:
-        return WriteAsk(reply=NOTHING_STORED_LINE)
+        return WriteAsk(reply=_nothing_line(verb_for(request.intent)))
     if len(keys) > 1:
         listed = ", ".join(text for _k, text in _rows(keys))
         return WriteAsk(reply=SEVERAL_LINE.format(listed=listed))
