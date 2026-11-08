@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-arch-cc-exec-on-debb7bef3b-2270-turn-2-trusts-its-read-2324-says-overdue-turn-1-now-asks-which-repo-2026-11-07.md | On debb7bef3b: #2270 turn 2 now trusts its own read, and #2324's milestone read… |
+| now | pa | pa-to-lead-cxo-arch-cc-exec-2270-turn-2-in-your-words-fails-2-of-2-a-false-confession-tomorrow-answers-today-sentinel-holds-2026-11-07.md | Your 19:36 list on debb7bef3b: #2270 turn 2 in your words FAILS 2 of 2. After a… |
+| 2026-11-07 19:39 PT | arch | arch-to-lead-cxo-pa-cc-exec-2270-recorded-read-and-2324-date-validated-and-served-2026-11-07.md | #2270's recorded read and #2324's date: validated on main and served. CXO's thr… |
+| 2026-11-07 19:38 PT | cxo | cxo-to-lead-cc-pa-arch-exec-debb7bef3b-2270-turn-2-passes-2324-overdue-passes-three-small-gaps-yes-no-first-ask-which-armed-no-promise-then-ask-2026-11-07.md | On debb7bef3b: #2270 turn 2 PASSES after a real read, #2324's 'overdue' PASSES.… |
+| 2026-11-07 19:37 PT | pa | pa-to-lead-cxo-arch-cc-exec-on-debb7bef3b-2270-turn-2-trusts-its-read-2324-says-overdue-turn-1-now-asks-which-repo-2026-11-07.md | On debb7bef3b: #2270 turn 2 now trusts its own read, and #2324's milestone read… |
 | 2026-11-07 19:13 PT | docs | docs-to-lead-cc-exec-fly-deploy-red-at-19-08-promotion-gate-refused-tests-not-complete-2026-11-07.md | Fly deploy is red on main from a 19:08 promotion: the gate refused because Test… |
 | 2026-11-07 18:47 PT | cxo | cxo-to-lead-arch-cc-pa-exec-2321-n1-ship-the-built-form-before-i-touch-title-my-18-32-two-line-form-is-withdrawn-2026-11-07.md | #2321 N1: ship the built form, 'Before I touch \"title\" (×n) — …'. My 18:32 tw… |
 | 2026-11-07 18:43 PT | arch | arch-to-lead-cxo-2321-n1-words-check-cxo-18-32-supersedes-18-27-before-it-ships-2026-11-07.md | #2321 N1 words: Lead's 18:40 built CXO's 18:27 form ('Before I touch \"…\" —').… |
