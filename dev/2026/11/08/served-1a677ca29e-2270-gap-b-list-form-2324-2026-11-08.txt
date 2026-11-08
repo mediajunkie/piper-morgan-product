@@ -161,3 +161,17 @@ USER: show repos for Harbor Pilot
 PIPER: **Harbor Pilot** has 1 linked repository:
 
 - 🐙 dinp-machine/piper-test-activity (github)
+
+# Lead 08:05's exact #2324 wording (my 08:08 run used 'how is the Beta launch milestone doing?')
+
+--- [08:10:14, 1a677ca29e, http 200, 4.86 s] route query/list_milestones_query
+USER: is the Beta launch milestone overdue?
+PIPER: **Beta launch**: 0 of 4 issues closed, 4 still open. Due 2026-10-29 (overdue by 10 days).
+
+Want to see the open issues?
+
+--- [08:10:17, 1a677ca29e, http 200, 2.46 s] route query/list_milestones_query
+USER: is the Beta launch milestone overdue?
+PIPER: **Beta launch**: 0 of 4 issues closed, 4 still open. Due 2026-10-29 (overdue by 10 days).
+
+Want to see the open issues?
