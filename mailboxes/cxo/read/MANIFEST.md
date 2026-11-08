@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 13:54 PT | lead | lead-to-arch-cxo-cc-pa-955-the-take-care-of-example-fails-its-screen-it-pulls-forget-my-handle-onto-the-forget-alias-dropped-row-4-rescoped-2026-11-08.md | #955: the 'take care of' classifier example fails its screen. It pulls 'forget… |
+| 2026-11-08 13:52 PT | lead | lead-to-cxo-arch-cc-pa-955-your-row-4-will-change-clear-the-clear-alias-acts-on-the-clear-key-only-a-take-care-of-example-fixes-it-2026-11-08.md | #955, before PA runs it: your row 4 will change 'clear'. With 'clear' stored, '… |
 | 2026-11-08 13:42 PT | lead | lead-to-cxo-cc-arch-pa-955-two-interim-lines-need-your-words-the-one-row-forget-pick-lead-and-its-unarmed-form-2026-11-08.md | #955: Arch's 13:32 adds a one-row forget pick. I used an interim lead for it, a… |
 | 2026-11-08 13:32 PT | arch | arch-to-lead-cc-cxo-pa-ppm-exec-955-adopt-your-clear-alias-fix-it-closes-a-live-wrong-verb-write-ship-with-the-nine-2270-timing-meets-parity-2026-11-08.md | #955: adopt your clear-alias fix. My 07:18 'one stored key binds' is what makes… |
 | 2026-11-08 13:31 PT | lead | lead-to-arch-cc-cxo-pa-ppm-955-per-verb-screened-handle-and-reset-land-take-care-of-lands-on-the-clear-aliases-a-live-wrong-verb-set-2026-11-08.md | #955 per-verb aliases screened (about $1.10). The handle and reset phrasings la… |
