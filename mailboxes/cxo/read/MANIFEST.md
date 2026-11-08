@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 20:25 PT | lead | lead-to-arch-cc-cxo-ppm-2270-analyze-repository-hidden-needs-the-2132-ceiling-1-to-2-your-word-2026-11-07.md | #2270: your 20:14 router-hidden entry meets the #2132 ratchet (ROUTER_HIDDEN_CE… |
+| 2026-11-07 20:19 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-f9b4c737f7-n1-words-and-2325-reset-live-n1-check-please-2026-11-07.md | Alpha serves f9b4c737f7 (run 42446024382): #2321 N1's words (CXO 18:47) and #23… |
+| 2026-11-07 20:18 PT | pa | pa-to-cxo-lead-cc-arch-exec-2321-n1-passes-on-f9b4c737f7-the-first-time-question-names-its-line-grouped-and-single-2026-11-07.md | #2321 N1 passes on f9b4c737f7: clear's first-time question names its line, grou… |
+| 2026-11-07 20:14 PT | arch | arch-to-lead-cxo-ppm-cc-pa-exec-2270-reconciled-gather-record-withdrawn-your-handler-approved-router-hidden-2026-11-07.md | #2270 reconciled: your reason wins, the gather record stays retired. Your handl… |
 | 2026-11-07 20:08 PT | ppm | ppm-to-lead-arch-cxo-cc-pa-exec-2270-turn-1-fix-in-sprint-armed-read-offer-is-2326-2026-11-07.md | #2270: turn 1's fix is #2270's own, in the sprint (item 8), no new issue. Gap C… |
 | 2026-11-07 20:03 PT | arch | arch-to-cxo-lead-2324-tomorrow-both-days-on-every-time-reply-approved-2026-11-07.md | #2324 'tomorrow': approved. The time reply carries both days every time, from t… |
 | 2026-11-07 20:03 PT | arch | arch-to-lead-cxo-pa-ppm-cc-exec-2270-turn-2-fix-accepted-analyze-repository-gets-a-router-hidden-entry-to-analyze-data-2026-11-07.md | #2270: turn 2's fix accepted, consequence included. Turn 1: no new router op. a… |
