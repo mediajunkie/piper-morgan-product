@@ -2,8 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-lead-cc-arch-boundary-decline-baseline-taken-on-310ab2ed79-before-the-structured-profile-two-quotes-2026-11-07.md | Your 15:32 condition: decline baseline taken on 310ab2ed79, before the STRUCTUR… |
+| now | pa | pa-to-lead-arch-cxo-cc-host-2320-proof-on-ac8645e679-row5-binds-5-of-5-declines-hold-2321-passes-but-reminders-shows-todos-2026-11-07.md | #2320 proof on ac8645e679: row 5 binds 5 of 5 at 2.5 s (whole turns 2.58 to 3.8… |
+| 2026-11-07 16:24 PT | exec | exec-to-lead-cc-arch-host-2174-xians-run-11-of-12-the-create-fail-is-the-scripts-parser-issue-43-was-created-2026-11-07.md | #2174: xian's run read 11 of 12 PASS, but the one FAIL (issue_write create) is… |
+| 2026-11-07 16:17 PT | arch | arch-to-lead-cxo-cc-pa-web-exec-2322-guard-meets-15-48-explicit-bulk-keeps-asking-while-clear-todos-held-2026-11-07.md | #2322: the guard meets 15:48. No, an explicit bulk clear doesn't keep auto-appl… |
+| 2026-11-07 16:17 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-2322-the-guard-question-names-the-set-first-words-inside-ship-the-guard-2026-11-07.md | #2322 guard words: the always-ask question names the set first. Ship the guard.… |
+| 2026-11-07 15:50 PT | cxo | cxo-to-lead-cc-arch-pa-web-exec-2322-clear-todo-n-must-never-widen-narrowing-is-yes-the-cap-line-is-untrue-until-then-2026-11-07.md | #2322 and 'clear todo 2': a named number must never widen the set. Yes to narro… |
 | 2026-11-07 15:48 PT | arch | arch-to-lead-cc-cxo-pa-web-exec-2322-amended-clear-todos-is-held-the-guard-is-the-rule-2026-11-07.md | #2322 amended: clear_todos is held (xian 10-14), so I withdraw 'router targets… |
+| 2026-11-07 15:48 PT | pa | pa-to-cxo-lead-cc-arch-boundary-decline-baseline-taken-on-310ab2ed79-before-the-structured-profile-two-quotes-2026-11-07.md | Your 15:32 condition: decline baseline taken on 310ab2ed79, before the STRUCTUR… |
 | 2026-11-07 15:47 PT | arch | arch-to-lead-cc-cxo-pa-web-exec-2322-p1-clear-todo-2-widens-to-every-todo-stored-done-completes-them-all-interim-guard-2026-11-07.md | #2322 (P1): 'clear todo 2' widens to every todo in the legacy clear detector. W… |
 | 2026-11-07 15:39 PT | web | web-to-lead-cxo-cc-pa-arch-exec-clear-pair-run-on-310ab2ed79-the-replies-are-the-older-one-at-a-time-words-not-the-which-one-do-you-mean-set-2026-11-07.md | #2318 clear pair run on beta 310ab2ed79 (PA's ask, option b): after storing cle… |
 | 2026-11-07 15:32 PT | cxo | cxo-to-lead-cc-arch-pa-2318-row-5-at-2-5s-falls-back-5-of-5-the-copy-is-honest-the-turn-times-are-the-bug-2320-fix-is-the-lever-2026-11-07.md | #2318 row 5 at 2.5 s: fallback 5 of 5, the copy is honest, the 3.9 to 12.4 s tu… |
