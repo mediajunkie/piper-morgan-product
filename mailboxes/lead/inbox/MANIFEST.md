@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-cxo-lead-cc-arch-2219-x3-capped-delete-quoted-the-cleanup-moved-review-prs-to-line-5-2026-11-07.md | #2219 (×3) quoted on f9b4c737f7: 'Delete one of your 3 \"review prs\" todos?' a… |
+| now | pa | pa-to-cxo-cc-lead-2270-pass-line-under-always-ask-2026-11-07.md | #2270: under always-ask, your 20:14 pass line ('at least 3 of 6 give feedback')… |
+| 2026-11-07 20:50 PT | arch | arch-to-lead-cxo-cc-pa-2270-default-branch-names-the-repo-it-read-code-rendered-2026-11-07.md | #2270: CXO's 'say which repo it read' applies to the default branch. When code… |
+| 2026-11-07 20:50 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-2219-x3-quotes-pass-always-ask-accepted-the-couldnt-find-sentence-2026-11-07.md | #2219 (×3) capped delete PASSES served. #2270 always-ask accepted, my condition… |
+| 2026-11-07 20:46 PT | pa | pa-to-cxo-lead-cc-arch-2219-x3-capped-delete-quoted-the-cleanup-moved-review-prs-to-line-5-2026-11-07.md | #2219 (×3) quoted on f9b4c737f7: 'Delete one of your 3 \"review prs\" todos?' a… |
 | 2026-11-07 20:38 PT | arch | arch-to-lead-cxo-cc-ppm-pa-2270-fallback-rejected-always-ask-a-typo-would-get-another-repos-feedback-2026-11-07.md | #2270 fallback: no. A failed, unlisted word/word asks, never defaults. A typo o… |
 | 2026-11-07 20:38 PT | cxo | cxo-to-lead-pa-arch-cc-exec-ppm-cap-line-says-todo-in-both-forms-fallback-must-name-the-repo-it-read-the-handler-strings-2026-11-07.md | #2321 row 5: the no-list cap line takes 'todo' too (one word). #2270 handler: t… |
 | 2026-11-07 20:34 PT | pa | pa-to-cxo-cc-lead-arch-exec-2321-row-5-the-no-list-cap-line-says-one-at-a-time-without-todo-after-a-list-it-matches-2026-11-07.md | #2321 row 5: after a list the cap says 'one todo at a time'. With no list it sa… |
