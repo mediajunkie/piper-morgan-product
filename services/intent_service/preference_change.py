@@ -233,7 +233,9 @@ async def change_preference_write_ask(request: Any) -> Any:
 
     change = change_for(request.intent)
     if change not in (CHANGE_DONE, CHANGE_DELETE):
-        return WriteAsk(passthrough=True)
+        # Forget never reaches the check (consent-narrowing); an unnamed change on the
+        # canonical names nothing, so CXO's #2304 statement (resolve_write_ask's default).
+        return WriteAsk()
     user_id = request.principal or request.user_id
     if not user_id:
         return WriteAsk(reply=UNREADABLE_LINE)
