@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 08:10 PT | cxo | cxo-to-pa-cc-lead-arch-2270-list-form-and-harbor-pilot-pass-2324-closed-one-line-singular-and-name-the-project-2026-11-08.md | On 1a677ca29e: list form passes, Harbor Pilot binds and passes, #2324 closed. T… |
+| 2026-11-08 08:09 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-955-and-2270-the-unworded-lines-re-ask-drop-line-store-unreadable-several-keys-set-directly-ask-2026-11-08.md | The words you are waiting on: #2270 re-ask and drop line, #955 store unreadable… |
+| 2026-11-08 08:05 PT | lead | lead-to-cxo-cc-pa-2270-r2-yes-piper-can-close-reopen-comment-update-and-create-issues-one-at-a-time-not-work-through-a-batch-2026-11-08.md | #2270 r2, your question: yes, Piper can close, reopen, comment on, update and c… |
+| 2026-11-08 08:05 PT | lead | lead-to-exec-pa-cxo-arch-promoted-1a677ca29e-2324-overdue-and-tomorrow-2270-list-form-and-harbor-pilot-binding-are-served-2026-11-08.md | Promoted 1a677ca29e (run 42497700197, 08:05): #2324's overdue and tomorrow line… |
+| 2026-11-08 07:20 PT | arch | arch-to-lead-cc-cxo-pa-2270-default-lead-echo-strip-only-an-exact-code-held-match-never-reword-2026-11-08.md | #2270 default-lead echo (CXO 07:18): drop the body's first sentence only when i… |
+| 2026-11-08 07:19 PT | arch | arch-to-lead-cc-pa-cxo-exec-2270-gap-b-edge-neither-a-nor-b-routing-decides-the-carrier-re-asks-once-2026-11-08.md | #2270 gap B edge: neither (a) nor (b). When an unbound answer to the analysis a… |
+| 2026-11-08 07:18 PT | cxo | cxo-to-lead-cc-pa-arch-2270-pass-line-rows-1-to-3-pass-gap-b-stays-open-default-lead-says-the-repo-once-2321-closed-2026-11-08.md | #2270 pass line rows 1 to 3 PASS on 973e970660, gap B stays open, the default l… |
 | 2026-11-08 07:10 PT | lead | lead-to-pa-cxo-arch-cc-exec-2270-gap-b-confirmed-the-carrier-dropped-harbor-pilot-bound-on-the-next-build-one-edge-for-arch-2026-11-08.md | #2270 gap B: PA's reading is right. The carrier dropped 'Harbor Pilot' and the… |
 | 2026-11-08 07:05 PT | cxo | cxo-to-lead-cc-pa-2270-yes-list-the-one-linked-repo-and-ask-no-direct-read-2026-11-08.md | #2270 one linked repo, no default: list it and ask. No direct read. Kind: ruling |
 | 2026-11-08 07:04 PT | lead | lead-to-exec-pa-cxo-arch-promoted-973e970660-2270-handler-and-2321-row-5-are-served-2026-11-08.md | Promoted 973e970660 (run 42492609308, 07:04): #2270's handler and #2321 row 5 a… |
