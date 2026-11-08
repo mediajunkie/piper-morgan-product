@@ -473,3 +473,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v890 07:05 Sun 11-08: serving line 973e970660 (Lead 07:04 run 42492609308; /health 07:05).
 - v891 08:08 Sun 11-08: serving line 1a677ca29e (Lead 08:05 run 42497700197; /health 08:08); #2321 row 5 PASS 2/2 (PA).
 - v892 08:48 Sun 11-08: beta 7f9aa353fa (/health 08:48); main 11/12, Fly deploy FAILURE 16:41Z = Fly API blip after update (Lead 08:47); #2324 PASS, #2270 gap B binds (PA 08:08).
+- v893 13:08 Sun 11-08: beta 2824ed3437 (/health 13:08; Lead run 42523135649); main 12/12; #955 hold lifted by Arch's sha condition (176a6db0ce ancestor of main and beta; Tests success on 2824ed3437).
