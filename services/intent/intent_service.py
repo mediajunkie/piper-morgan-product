@@ -1398,6 +1398,8 @@ class IntentService:
             "delete_todo_pick_pending",
             # #2219 Gap A: the armed one-or-all question on a grouped todo line.
             "todo_group_line_pending",
+            # #955: the armed several-keys forget pick.
+            "preference_forget_pick_pending",
             # #2184: the armed milestone pick (the milestones list's own titles).
             "milestone_pick_pending",
             # #2271: the armed which-project-to-archive pick (exact-name matches)
@@ -2767,6 +2769,22 @@ class IntentService:
                 # re-dispatch re-asks), "no"/bare exit → honest decline,
                 # unrelated commands → abandoned via the pop and routed
                 # normally (the #1631 discrimination at the generic seam).
+                # #955: the several-keys forget pick (CXO 11-08 08:09). A number on the
+                # list forgets that row's key; None hands the turn to the generic seam
+                # (decline line, a bare "yes" re-asks, anything else pops).
+                elif _vi_payload.get("kind") == "preference_forget_pick":
+                    from services.intent_service import preference_change as _pc
+
+                    _pf_turn = await _pc.handle_forget_pick_turn(
+                        pending_offer, message, session_id=session_id, user_id=user_id
+                    )
+                    if _pf_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_pf_turn["message"],
+                            intent_data=_pf_turn["intent_data"],
+                            requires_clarification=False,
+                        )
                 elif _vi_payload.get("kind") == "issue_repo_question":
                     from services.intent_service import repo_clarification as _rq
 
@@ -10088,13 +10106,19 @@ class IntentService:
         return None
 
     async def _handle_change_remembered_preference(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """#955: forget or set the person's remembered "clear" preference
-        (``preference_change``; Arch 11-08 07:33, CXO 11-07 18:03's words)."""
+        (``preference_change``; Arch 11-08 07:33, CXO 11-07 18:03 and 11-08 08:09)."""
         from services.intent_service.preference_change import change_remembered_preference
 
-        outcome = await change_remembered_preference(intent, _principal_from_intent(intent))
+        outcome = await change_remembered_preference(
+            intent,
+            _principal_from_intent(intent),
+            session_id=session_id,
+            offer_service=getattr(self, "workflow_offer_service", None),
+        )
+        armed = bool(outcome.get("armed"))
         return IntentProcessingResult(
             success=outcome["outcome"] not in ("failed", "unreadable", "no_principal"),
             message=outcome["message"],
@@ -10102,9 +10126,10 @@ class IntentService:
                 "category": "query",
                 "action": intent.action,
                 "preference_change": outcome["outcome"],
+                **({"preference_forget_pick_pending": True} if armed else {}),
             },
             workflow_id=workflow_id,
-            requires_clarification=False,
+            requires_clarification=armed,
         )
 
     async def _handle_set_timezone(

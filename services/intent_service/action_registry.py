@@ -229,6 +229,7 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("QUERY", "forget_clear_preference"): ActionDisposition.WORKFLOW,
     ("QUERY", "set_clear_preference_done"): ActionDisposition.WORKFLOW,
     ("QUERY", "set_clear_preference_delete"): ActionDisposition.WORKFLOW,
+    ("QUERY", "set_clear_preference_ask"): ActionDisposition.WORKFLOW,  # Arch 11-08 08:16
     # Issue #1039: GitHub milestone + release listing
     ("QUERY", "list_milestones_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_releases_query"): ActionDisposition.WORKFLOW,
@@ -338,6 +339,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "forget_clear_preference"): "forget my clear preference",
     ("QUERY", "set_clear_preference_done"): "make clear mean mark it done",
     ("QUERY", "set_clear_preference_delete"): "make clear mean delete",
+    ("QUERY", "set_clear_preference_ask"): "ask me each time when I clear",
     ("QUERY", "list_milestones_query"): "Show milestones",
     ("QUERY", "list_releases_query"): "Recent releases",
     ("QUERY", "list_labels_query"): "List labels",
@@ -723,6 +725,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "forget_clear_preference": Verb.SET,  # #955
     "set_clear_preference_done": Verb.SET,  # #955
     "set_clear_preference_delete": Verb.SET,  # #955
+    "set_clear_preference_ask": Verb.SET,  # #955 (forget, Arch 08:16)
     "list_milestones_query": Verb.LIST,
     "list_releases_query": Verb.LIST,
     "list_labels_query": Verb.LIST,

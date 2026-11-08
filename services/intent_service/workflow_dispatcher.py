@@ -485,7 +485,9 @@ FLIP_GROUPS: frozenset[str] = frozenset(
 # never acts more). For these the rail proceeds where the #1509 matrix says COLLABORATE;
 # it never overrides CONFIRM, and decide_consent stays untouched. A second name here
 # needs Arch's ruling: an entry declaring one outside this set fails at construction.
-CONSENT_NARROWING_ALLOWLIST: frozenset[str] = frozenset({"forget_clear_preference"})
+CONSENT_NARROWING_ALLOWLIST: frozenset[str] = frozenset(
+    {"forget_clear_preference", "set_clear_preference_ask"}  # Arch 08:05; 08:16
+)
 
 FLIP_WRITE_ALLOWLIST: frozenset[str] = frozenset(
     {

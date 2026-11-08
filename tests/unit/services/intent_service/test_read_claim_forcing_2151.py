@@ -522,6 +522,11 @@ FORCE: Dict[str, Force] = {
     "unlink_repo": Force(one("db"), f"unlink {REPO} from Alpha"),
     "delete_todo": Force(one("db"), "delete todo 1"),
     "complete_todo": Force(one("db"), "complete todo 1"),
+    # #955: reads the person's stored clear-family keys before writing; an unreadable
+    # store says so and changes nothing (CXO 08:09), never "nothing to forget".
+    "change_remembered_preference": Force(
+        one("db"), "forget my clear preference", absence=("wasn't remembering",)
+    ),
     "clear_todos": Force(one("db"), "clear my todos"),
     "get_default_repo": Force(
         one("db"), "what's my default repo?", absence=("haven't set a default repo",)

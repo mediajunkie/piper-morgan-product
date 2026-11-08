@@ -393,15 +393,81 @@ async def test_ambiguous_forget_asks_reach_forget_in_collaborate_mode(
     assert await vi.get_verified_inference(_USER, _CLEAR) is None
 
 
-async def test_an_ambiguous_set_still_checks_and_changes_nothing(mem_prefs, monkeypatch):
-    from services.intent_service.write_confirm_words import NOT_SURE_STATEMENT
-
+async def test_an_ambiguous_set_still_checks_with_cxos_yes_no(mem_prefs, monkeypatch):
+    """Set-directly keeps the consent check (Arch 08:05); the check asks CXO's 08:09
+    yes/no, built from the stored key and target value. Nothing changes until "yes"."""
     await _stored(_CLEAR, "delete")
     result = await _through_process_intent(
         monkeypatch, "don't delete when I clear", "set_clear_preference_done"
     )
-    assert result.message == NOT_SURE_STATEMENT
+    assert result.message.endswith('Change "clear" from delete it to mark it done? (yes/no)')
     assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == "delete"
+
+
+async def test_the_set_ask_with_the_value_already_stored_says_so(mem_prefs):
+    from services.intent_service.write_confirm_words import WriteAskRequest
+
+    await _stored(_CLEAR, "done")
+    ask = await pc.change_preference_write_ask(
+        WriteAskRequest(intent=_intent("set_clear_preference_done"), message="x", principal=_USER)
+    )
+    assert ask.reply == '"clear" already means mark it done, so I haven\'t changed anything.'
+    assert ask.words is None
+
+
+async def test_the_set_ask_carries_cxos_decline(mem_prefs):
+    from services.intent_service.write_confirm_words import WriteAskRequest
+
+    await _stored(_CLEAR, "done")
+    ask = await pc.change_preference_write_ask(
+        WriteAskRequest(intent=_intent("set_clear_preference_delete"), message="x", principal=_USER)
+    )
+    assert ask.words.question == 'Change "clear" from mark it done to delete it? (yes/no)'
+    assert ask.words.decline == "Okay. I won't change it."
+
+
+async def test_ask_me_each_time_is_forget(mem_prefs, handler):
+    await _stored(_CLEAR, "delete")
+    result = await handler(_intent("set_clear_preference_ask"), "wf")
+    assert result.message.startswith('Okay. I\'ve forgotten that "clear" means delete it.')
+
+
+# ── CXO 08:09: several keys, the armed forget pick over exactly the rows shown ──
+
+
+async def test_several_keys_arm_the_forget_pick_and_a_number_forgets_that_row(mem_prefs):
+    from services.intent_service.soft_invocation import WorkflowOfferService
+
+    await _stored(_CLEAR, "done")
+    await _stored(inference_key("handle"), "delete")
+    store = WorkflowOfferService()
+    out = await pc.change_remembered_preference(
+        _intent("forget_clear_preference"), _USER, session_id="s-pick", offer_service=store
+    )
+    assert out["message"] == (
+        "I'm remembering more than one of these:\n\n"
+        '1. "clear" means mark it done\n2. "handle" means delete it\n\n'
+        "Which one should I forget? Say the number, or 'never mind' to leave them alone."
+    )
+    offer = store.peek_pending_offer("s-pick", _USER)
+    assert offer["decline_message"] == "Okay. I haven't forgotten anything."
+    picked = await pc.handle_forget_pick_turn(offer, "2", session_id="s-pick", user_id=_USER)
+    assert picked["message"].startswith('Okay. I\'ve forgotten that "handle" means delete it.')
+    assert await vi.get_verified_inference(_USER, inference_key("handle")) is None
+    assert (await vi.get_verified_inference(_USER, _CLEAR))["value"] == "done"
+    # An off-list number or words bind nothing (the generic seam takes them).
+    assert await pc.handle_forget_pick_turn(offer, "7", session_id="s", user_id=_USER) is None
+    assert await pc.handle_forget_pick_turn(offer, "clear", session_id="s", user_id=_USER) is None
+
+
+async def test_several_keys_with_no_session_change_nothing(mem_prefs, handler):
+    _, calls = mem_prefs
+    await _stored(_CLEAR, "done")
+    await _stored(inference_key("handle"), "delete")
+    before = calls["saves"]
+    result = await handler(_intent("forget_clear_preference"), "wf")
+    assert "I haven't changed any of them." in result.message
+    assert calls["saves"] == before
 
 
 async def test_a_narrowing_action_off_the_allowlist_fails_at_construction():
@@ -411,7 +477,9 @@ async def test_a_narrowing_action_off_the_allowlist_fails_at_construction():
         WorkflowEntry,
     )
 
-    assert CONSENT_NARROWING_ALLOWLIST == frozenset({"forget_clear_preference"})
+    assert CONSENT_NARROWING_ALLOWLIST == frozenset(
+        {"forget_clear_preference", "set_clear_preference_ask"}
+    )
 
     async def _ep(*a, **k):
         return None

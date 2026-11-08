@@ -396,6 +396,7 @@ class TestNoStubPhrases:
             "forget_clear_preference",
             "set_clear_preference_done",
             "set_clear_preference_delete",
+            "set_clear_preference_ask",
             # RECONNECT #1327 build #2: conversational get-default-repo (read)
             "get_default_repo",
             # #1433/F24 — rail-handled since #1044 (_handle_local_git_status_query
