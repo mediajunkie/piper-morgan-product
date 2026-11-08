@@ -244,13 +244,19 @@ class ForgetResult:
     record: Optional[Dict[str, Any]] = None
 
 
-async def forget_verified_inference(user_id: Optional[str], key: str) -> ForgetResult:
+async def forget_verified_inference(
+    user_id: Optional[str], key: str, *, read_back: bool = False
+) -> ForgetResult:
     """Delete one verified inference, so the next ask is the first-time question.
 
     The ONE deletion path (Arch, #955/#2325, decisions.log 2026-11-07 18:03): the
     admin test-account reset (#2325) and the person-facing forget (#955) both call
     this, each with its own gate; neither writes ``users.preferences`` any other way.
     Deleting the row, not storing a default, is the ruling: forget returns to asking.
+
+    ``read_back`` (Arch 11-07 20:26, #955's condition): re-read the store after the
+    write, and say FORGOTTEN only when the key is confirmed gone. A re-read that fails
+    or still finds the key is FAILED. The admin reset (#2325) rests on the boolean.
     """
     if not user_id or not key:
         return ForgetResult(ForgetOutcome.FAILED)
@@ -284,6 +290,21 @@ async def forget_verified_inference(user_id: Optional[str], key: str) -> ForgetR
         saved = False
     if not saved:
         return ForgetResult(ForgetOutcome.FAILED, record)
+    if read_back:
+        try:
+            after = (await _load_preferences(str(user_id))).get(VERIFIED_INFERENCES_PREF_KEY) or {}
+        except (
+            Exception
+        ) as e:  # silent-ok: an unconfirmed delete is FAILED, never "forgotten" (#2151)
+            logger.warning(
+                "verified_inference_forget_readback_failed user_id=%s key=%s error=%s",
+                user_id,
+                key,
+                e,
+            )
+            return ForgetResult(ForgetOutcome.FAILED, record)
+        if str(key) in after:
+            return ForgetResult(ForgetOutcome.FAILED, record)
     return ForgetResult(ForgetOutcome.FORGOTTEN, record)
 
 

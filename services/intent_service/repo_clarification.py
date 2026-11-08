@@ -525,6 +525,83 @@ def repo_question_decline_message(
     )
 
 
+# ── #2270 list form (CXO 11-07 20:02): every linked repo, numbered ───────────
+
+LISTED_REPO_QUESTION_HEAD = "Which repository do you want me to look at?"
+LISTED_REPO_QUESTION_TAIL = "Say the number or the name, or 'never mind' to leave them alone."
+NONE_LINKED_LINE = (
+    "I don't have a repository linked to your account yet, so there's nothing for me "
+    "to look at. You can connect GitHub in Settings, under Integrations, or name a "
+    'repository, like "look at owner/name".'
+)
+PROJECT_NO_REPO_LINE = (
+    "{project} has no repository linked yet. You can link one on its project page."
+)
+
+
+def listed_repo_question(repos: List[str]) -> str:
+    """CXO's armed which-one ask: every repo listed and numbered, never "a couple
+    others". The number binds through ``listed_repos`` on the carrier."""
+    lines = "\n".join(f"{i}. {r}" for i, r in enumerate(repos, start=1))
+    return f"{LISTED_REPO_QUESTION_HEAD}\n\n{lines}\n\n{LISTED_REPO_QUESTION_TAIL}"
+
+
+async def linked_github_repos(user_id: Optional[str]) -> Optional[List[str]]:
+    """The account's linked GitHub repositories (owner/name), or None when they
+    can't be read (the caller keeps the open ask, never claims "none linked")."""
+    if not user_id:
+        return None
+    try:
+        from services.database.repositories import RepositoryRepository
+        from services.database.session_factory import AsyncSessionFactory
+
+        async with AsyncSessionFactory.session_scope() as session:
+            rows = await RepositoryRepository(session).list_by_owner(
+                owner_id=str(user_id), provider="github"
+            )
+    except (
+        Exception
+    ) as e:  # silent-ok: LOGGED; an unreadable list degrades to the open ask, never "none linked"
+        logger.warning("linked_repos_read_failed", error=str(e))
+        return None
+    seen: List[str] = []
+    for r in rows:
+        name = getattr(r, "full_name", None)
+        if name and "/" in name and name not in seen:
+            seen.append(name)
+    return seen
+
+
+async def project_linked_repos(
+    user_id: Optional[str], name: str
+) -> Optional[Tuple[str, List[str]]]:
+    """``(project name, its linked GitHub repos)`` when ``name`` is one of the
+    person's projects (``find_by_name``: case-insensitive, then normalized), else
+    None. A failed read is None too: the answer then goes the repo-name way."""
+    if not user_id or not name:
+        return None
+    try:
+        from services.database.repositories import ProjectRepository, RepositoryRepository
+        from services.database.session_factory import AsyncSessionFactory
+
+        async with AsyncSessionFactory.session_scope() as session:
+            project = await ProjectRepository(session).find_by_name(
+                name=name, owner_id=str(user_id)
+            )
+            if project is None:
+                return None
+            rows = await RepositoryRepository(session).list_by_project(str(project.id))
+    except Exception as e:  # silent-ok: LOGGED; the answer falls to the repo-name resolution
+        logger.warning("project_repo_lookup_failed", error=str(e))
+        return None
+    repos = [
+        r.full_name
+        for r in rows
+        if getattr(r, "provider", "github") == "github" and "/" in (r.full_name or "")
+    ]
+    return str(project.name), repos
+
+
 # ── Offer builder (the #1190 action-agnostic carrier shape) ──────────────────
 
 
@@ -538,6 +615,7 @@ def build_repo_question_offer(
     operation: Optional[str] = None,
     question: Optional[str] = None,
     persist_default: bool = False,
+    listed_repos: Optional[List[str]] = None,
 ) -> Dict[str, Any]:
     """The #846 pending-offer record binding the ORIGINAL Intent while the
     repository slot fills. workflow_type is the #1190 confirm carrier, so a
@@ -556,7 +634,11 @@ def build_repo_question_offer(
 
     ``persist_default`` (#2205): the ask said "and I'll keep it as your default", so
     the bound answer is stored as the user's default with source ``user`` before the
-    held write re-dispatches."""
+    held write re-dispatches.
+
+    ``listed_repos`` (#2270 list form): the repos the ask numbered, in order. A
+    bare number answer binds its line, and a project name binds that project's
+    linked repo (the list form is the analysis ask's)."""
     if issue_number is not None:
         summary = f"{intent.action} for issue #{issue_number}"
     else:
@@ -576,6 +658,7 @@ def build_repo_question_offer(
             "operation": operation,
             "restatement_verbs": list(restatement_verbs_for(intent.action)),
             "persist_default": persist_default,
+            "listed_repos": list(listed_repos) if listed_repos is not None else None,
         },
         "decline_message": repo_question_decline_message(issue_number, operation),
     }
@@ -764,6 +847,76 @@ async def _bind_and_dispatch(
     return result
 
 
+def _bare_answer(text: str) -> str:
+    """The answer with closing punctuation and wrapping quotes taken off."""
+    return text.strip().rstrip(".!?").strip().strip("\"'‘’“”").strip()
+
+
+def _reask(
+    pending_offer: Dict[str, Any],
+    payload: Dict[str, Any],
+    copy: str,
+    *,
+    session_id: Optional[str],
+    user_id: Optional[str],
+    intent_service: Any,
+    **extra: Any,
+) -> Dict[str, Any]:
+    rearmed = _rearm(intent_service, session_id, user_id, pending_offer)
+    if not rearmed:
+        copy += " (I couldn't keep the question pending — please give me the full request again.)"
+    return {
+        "message": copy,
+        "intent_data": {**_pending_intent_data(payload), **extra},
+        "requires_clarification": True,
+    }
+
+
+async def _listed_answer(
+    pending_offer: Dict[str, Any],
+    payload: Dict[str, Any],
+    text: str,
+    *,
+    session_id: Optional[str],
+    user_id: Optional[str],
+    intent_service: Any,
+) -> Optional[Dict[str, Any]]:
+    """#2270: bind a number against ``listed_repos`` or a project name against
+    the person's projects. None = neither; the turn goes the usual way."""
+    listed: List[str] = list(payload.get("listed_repos") or [])
+    answer = _bare_answer(text)
+    stored_question = pending_offer.get("question") or listed_repo_question(listed)
+    kw = {"session_id": session_id, "user_id": user_id, "intent_service": intent_service}
+    if answer.isdigit():
+        n = int(answer)
+        if 1 <= n <= len(listed):
+            return await _bind_and_dispatch(pending_offer, payload, listed[n - 1], None, **kw)
+        # A number that isn't a line binds nothing: the same list, asked again.
+        logger.info("repo_question_number_off_list", number=n, listed=len(listed))
+        return _reask(pending_offer, payload, stored_question, **kw)
+    if not answer or "/" in answer:
+        return None
+    # A bare name of exactly one listed line binds that line (what the person saw).
+    same_name = [r for r in listed if r.split("/", 1)[1].lower() == answer.lower()]
+    if len(same_name) == 1:
+        return await _bind_and_dispatch(pending_offer, payload, same_name[0], None, **kw)
+    project = await project_linked_repos(user_id, answer)
+    if project is None:
+        return None
+    project_name, repos = project
+    logger.info("repo_question_project_named", repos=len(repos), session_id=session_id)
+    if len(repos) == 1:
+        return await _bind_and_dispatch(pending_offer, payload, repos[0], None, **kw)
+    if not repos:
+        copy = PROJECT_NO_REPO_LINE.format(project=project_name) + "\n\n" + stored_question
+        return _reask(pending_offer, payload, copy, **kw)
+    # Several repos on the project: list those, numbered, and bind against them.
+    question = listed_repo_question(repos)
+    pending_offer["question"] = question
+    payload["listed_repos"] = repos
+    return _reask(pending_offer, payload, question, **kw)
+
+
 async def handle_repo_question_turn(
     pending_offer: Dict[str, Any],
     message: str,
@@ -825,6 +978,21 @@ async def handle_repo_question_turn(
                 "principal_mismatch": True,
             },
         }
+
+    # #2270 list form (CXO 20:02): a number names a line of the list just shown, and
+    # a project name binds that project's linked repo. Both are lookups against what
+    # the ask listed and the person's own projects, never a guess.
+    if payload.get("listed_repos") is not None:
+        listed_result = await _listed_answer(
+            pending_offer,
+            payload,
+            text,
+            session_id=session_id,
+            user_id=user_id,
+            intent_service=intent_service,
+        )
+        if listed_result is not None:
+            return listed_result
 
     # #1739 (adopted 2026-09-10): the accept/decline DECISION at this seam
     # routes through THE acceptance predicate, threading the carrier's

@@ -22,6 +22,7 @@ from services.shared_types import IntentCategory
 
 _USER = "2270bbbb-0000-4000-8000-000000002270"
 _REPO = "dinp-machine/piper-test-activity"
+_OTHER = "dinp-machine/harbor-pilot"
 ADVISOR_TURN_1 = (
     "look at this project/repository. Give me quick feedback and then help me to move forward."
 )
@@ -76,9 +77,26 @@ def github(monkeypatch):
         ],
         "fail": False,
         "reads": [],
-        "exists": {_REPO},
+        "exists": {_REPO, _OTHER},
         "account_repos": [{"name": "piper-test-activity", "full_name": _REPO}],
+        # #2270 list form: the account's linked repos, and its projects' links.
+        "linked": [_REPO, _OTHER],
+        "projects": {
+            "harbor pilot": ("Harbor Pilot", [_OTHER]),
+            "mobile redesign": ("Mobile Redesign", []),
+        },
     }
+
+    import services.intent_service.repo_clarification as rc
+
+    async def _linked(user_id):
+        return None if state["linked"] is None else list(state["linked"])
+
+    async def _project(user_id, name):
+        return state["projects"].get(name.lower())
+
+    monkeypatch.setattr(rc, "linked_github_repos", _linked)
+    monkeypatch.setattr(rc, "project_linked_repos", _project)
 
     async def _init(self, *a, **k):
         return None
@@ -197,7 +215,7 @@ async def test_the_advisors_unnamed_words_ask_even_with_a_default(
     """Arch 20:38: the slot-fill reads "project/repository" from these words; it fails
     to read and isn't on the account, so it ASKS, never falls to the default (code can't
     tell it from a typo of the person's own repo)."""
-    from services.intent_service.repo_clarification import REPO_QUESTION_KIND, open_repo_question
+    from services.intent_service.repo_clarification import REPO_QUESTION_KIND
 
     sid = f"ar-{uuid4().hex[:8]}"
     _default_repo(monkeypatch, service, _REPO)
@@ -206,9 +224,12 @@ async def test_the_advisors_unnamed_words_ask_even_with_a_default(
     )
     assert github["reads"][0] == ("issues", "project", "repository")
     assert ("issues", "dinp-machine", "piper-test-activity") not in github["reads"]
+    # CXO 20:02's list form: every linked repo, numbered, never "a couple others".
     assert result.message == (
         'I couldn\'t find "project/repository" among your repositories. '
-        + open_repo_question(None, "give you feedback")
+        "Which repository do you want me to look at?\n\n"
+        f"1. {_REPO}\n2. {_OTHER}\n\n"
+        "Say the number or the name, or 'never mind' to leave them alone."
     )
     offer = service.workflow_offer_service._pending_offers.get(sid)
     assert offer["pending_action"]["kind"] == REPO_QUESTION_KIND
@@ -270,7 +291,10 @@ async def test_the_default_read_names_the_repo_first_a_named_read_does_not(
 async def test_no_repo_resolves_asks_the_armed_repo_question_never_a_document(
     service, monkeypatch, github, captured_floor, message
 ):
-    from services.intent_service.repo_clarification import REPO_QUESTION_KIND, open_repo_question
+    from services.intent_service.repo_clarification import (
+        LISTED_REPO_QUESTION_TAIL,
+        REPO_QUESTION_KIND,
+    )
 
     sid = f"ar-{uuid4().hex[:8]}"
     _default_repo(monkeypatch, service, None)
@@ -278,8 +302,9 @@ async def test_no_repo_resolves_asks_the_armed_repo_question_never_a_document(
         service, monkeypatch, sid, message, IntentCategory.ANALYSIS, "analyze_repository"
     )
     # The advisor's words slot-fill "project/repository", so that ask opens with CXO's
-    # couldn't-find sentence; either way it ends with the armed repo question.
-    assert result.message.endswith(open_repo_question(None, "give you feedback"))
+    # couldn't-find sentence; either way it ends with the armed, numbered list.
+    assert result.message.endswith(LISTED_REPO_QUESTION_TAIL)
+    assert f"1. {_REPO}\n2. {_OTHER}" in result.message
     offer = service.workflow_offer_service._pending_offers.get(sid)
     assert offer["pending_action"]["kind"] == REPO_QUESTION_KIND
     assert captured_floor == []
@@ -349,3 +374,125 @@ async def test_landing_pin_the_routers_none_does_not_floor_the_hidden_entry(
     assert captured_floor == []
     offer = service.workflow_offer_service._pending_offers.get(sid)
     assert offer["pending_action"]["kind"] == REPO_QUESTION_KIND
+
+
+# ── #2270 list form (CXO 11-07 20:02): the answer binds a number or a project ──
+
+UNNAMED = "give me quick feedback on my repo and help me move forward"
+
+
+async def _ask_then_answer(service, monkeypatch, github, answer):
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    await _turn(service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository")
+    assert github["reads"] == []
+    reply = await _turn(
+        service, monkeypatch, sid, answer, IntentCategory.CONVERSATION, "small_talk"
+    )
+    return sid, reply
+
+
+@pytest.mark.parametrize("answer", ["2", "2.", "dinp-machine/harbor-pilot", "harbor-pilot"])
+async def test_a_number_or_a_name_reads_that_line(
+    service, monkeypatch, github, captured_floor, answer
+):
+    sid, reply = await _ask_then_answer(service, monkeypatch, github, answer)
+    assert github["reads"][0] == ("issues", "dinp-machine", "harbor-pilot")
+    assert f"You read the GitHub repository {_OTHER} this turn" in _prompt(captured_floor[-1])
+    assert reply.message == "(stubbed floor answer)"  # the person named it: no default lead
+
+
+async def test_a_number_off_the_list_binds_nothing_and_asks_again(
+    service, monkeypatch, github, captured_floor
+):
+    from services.intent_service.repo_clarification import listed_repo_question
+
+    sid, reply = await _ask_then_answer(service, monkeypatch, github, "7")
+    assert github["reads"] == [] and captured_floor == []
+    assert reply.message == listed_repo_question([_REPO, _OTHER])
+    offer = service.workflow_offer_service._pending_offers.get(sid)
+    assert offer["pending_action"]["listed_repos"] == [_REPO, _OTHER]
+
+
+async def test_a_project_name_reads_its_own_linked_repo(
+    service, monkeypatch, github, captured_floor
+):
+    _, reply = await _ask_then_answer(service, monkeypatch, github, "Harbor Pilot")
+    assert github["reads"][0] == ("issues", "dinp-machine", "harbor-pilot")
+    assert reply.message == "(stubbed floor answer)"
+
+
+async def test_a_project_with_no_repo_says_so_and_reads_nothing(
+    service, monkeypatch, github, captured_floor
+):
+    from services.intent_service.repo_clarification import listed_repo_question
+
+    sid, reply = await _ask_then_answer(service, monkeypatch, github, "Mobile Redesign")
+    assert github["reads"] == [] and captured_floor == []
+    assert reply.message == (
+        "Mobile Redesign has no repository linked yet. You can link one on its project page."
+        "\n\n" + listed_repo_question([_REPO, _OTHER])
+    )
+    assert service.workflow_offer_service._pending_offers.get(sid) is not None
+
+
+async def test_none_linked_says_so(service, monkeypatch, github, captured_floor):
+    from services.intent_service.repo_clarification import NONE_LINKED_LINE
+
+    github["linked"] = []
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    result = await _turn(
+        service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository"
+    )
+    assert result.message == NONE_LINKED_LINE
+    assert NONE_LINKED_LINE == (
+        "I don't have a repository linked to your account yet, so there's nothing for me to "
+        "look at. You can connect GitHub in Settings, under Integrations, or name a "
+        'repository, like "look at owner/name".'
+    )
+
+
+async def test_an_unreadable_list_keeps_the_open_ask_never_none_linked(
+    service, monkeypatch, github, captured_floor
+):
+    from services.intent_service.repo_clarification import open_repo_question
+
+    github["linked"] = None
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    result = await _turn(
+        service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository"
+    )
+    assert result.message == open_repo_question(None, "give you feedback")
+
+
+async def test_one_linked_repo_is_listed_and_asked_never_read_unasked(
+    service, monkeypatch, github, captured_floor
+):
+    """CXO 11-08 07:0x: one linked repo is not a default; list it and ask."""
+    from services.intent_service.repo_clarification import listed_repo_question
+
+    github["linked"] = [_REPO]
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    first = await _turn(
+        service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository"
+    )
+    assert first.message == listed_repo_question([_REPO])
+    assert f"\n\n1. {_REPO}\n\n" in first.message and github["reads"] == []
+    reply = await _turn(service, monkeypatch, sid, "1", IntentCategory.CONVERSATION, "small_talk")
+    assert github["reads"][0] == ("issues", "dinp-machine", "piper-test-activity")
+    assert reply.message == "(stubbed floor answer)"
+
+
+async def test_harbor_pilot_answer_binds_even_when_the_list_was_unreadable(
+    service, monkeypatch, github, captured_floor
+):
+    """PA 11-08 07:06 (gap B): "Harbor Pilot", answered to the open ask, fell off the
+    carrier and the floor put the test repo's issues under its name. The project name
+    binds that project's own repo through the carrier, whatever the ask's form."""
+    github["linked"] = None
+    _, reply = await _ask_then_answer(service, monkeypatch, github, "Harbor Pilot")
+    assert github["reads"][0] == ("issues", "dinp-machine", "harbor-pilot")
+    assert f"You read the GitHub repository {_OTHER} this turn" in _prompt(captured_floor[-1])
