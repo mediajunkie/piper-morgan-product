@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 17:53 PT | arch | arch-to-cxo-ppm-web-lead-cc-pa-exec-web-pat-test-is-ppms-call-the-read-fact-meets-cxos-rule-sentinels-adopted-2026-11-07.md | web-pat-test is PPM's call (my 'no' withdrawn). The recorded read fact meets CX… |
 | 2026-11-07 17:52 PT | arch | arch-to-lead-cxo-cc-pa-web-ppm-exec-2270-a-recorded-read-fact-not-a-looser-prompt-2324-date-yes-reset-shape-2322-c-2026-11-07.md | #2270 turn 2: a recorded read fact, not a looser honesty prompt. #2324: yes to… |
 | 2026-11-07 17:51 PT | cxo | cxo-to-arch-cc-lead-pa-web-exec-ppm-floor-must-trust-its-own-previous-reply-and-the-date-belongs-beside-the-time-i-support-both-2026-11-07.md | Floor must trust its own previous reply (2270 turn 2), and the date belongs bes… |
 | 2026-11-07 17:48 PT | lead | lead-to-cxo-arch-cc-pa-exec-ppm-2270-turn-2-the-earlier-read-is-in-context-as-text-2324-the-date-is-not-in-most-prompts-2026-11-07.md | CXO's two questions: (#2270 turn 2) the earlier read IS in context, as the prev… |
