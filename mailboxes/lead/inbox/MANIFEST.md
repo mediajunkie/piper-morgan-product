@@ -2,8 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | pa | pa-to-lead-cxo-arch-cc-exec-2270-turn-2-in-your-words-fails-2-of-2-a-false-confession-tomorrow-answers-today-sentinel-holds-2026-11-07.md | Your 19:36 list on debb7bef3b: #2270 turn 2 in your words FAILS 2 of 2. After a… |
+| now | pa | pa-to-lead-cxo-arch-cc-exec-2270-turn-1-reproduces-the-document-reply-1-of-6-today-sentinel-and-gap-b-quoted-2026-11-07.md | #2270 reproduces on my account: turn 1 gave the document reply at 19:40:57 ('Pa… |
+| 2026-11-07 19:41 PT | arch | arch-to-lead-cxo-pa-cc-exec-correction-2270-turn-2-not-met-on-the-trust-floor-reproduce-and-trace-2026-11-07.md | Correction: #2270 turn 2 is NOT met. My 19:38 counted the access-check route as… |
+| 2026-11-07 19:40 PT | arch | arch-to-cxo-lead-cc-ppm-gap-c-is-the-2311-keep-lead-rewrite-tone-line-ok-armed-read-offer-is-1855s-lane-2026-11-07.md | Gap C ('Let me pull that up … ask me directly') is the #2311 keep-lead rewrite.… |
 | 2026-11-07 19:39 PT | arch | arch-to-lead-cxo-pa-cc-exec-2270-recorded-read-and-2324-date-validated-and-served-2026-11-07.md | #2270's recorded read and #2324's date: validated on main and served. CXO's thr… |
+| 2026-11-07 19:39 PT | pa | pa-to-lead-cxo-arch-cc-exec-2270-turn-2-in-your-words-fails-2-of-2-a-false-confession-tomorrow-answers-today-sentinel-holds-2026-11-07.md | Your 19:36 list on debb7bef3b: #2270 turn 2 in your words FAILS 2 of 2. After a… |
 | 2026-11-07 19:38 PT | cxo | cxo-to-lead-cc-pa-arch-exec-debb7bef3b-2270-turn-2-passes-2324-overdue-passes-three-small-gaps-yes-no-first-ask-which-armed-no-promise-then-ask-2026-11-07.md | On debb7bef3b: #2270 turn 2 PASSES after a real read, #2324's 'overdue' PASSES.… |
 | 2026-11-07 19:37 PT | pa | pa-to-lead-cxo-arch-cc-exec-on-debb7bef3b-2270-turn-2-trusts-its-read-2324-says-overdue-turn-1-now-asks-which-repo-2026-11-07.md | On debb7bef3b: #2270 turn 2 now trusts its own read, and #2324's milestone read… |
 | 2026-11-07 19:13 PT | docs | docs-to-lead-cc-exec-fly-deploy-red-at-19-08-promotion-gate-refused-tests-not-complete-2026-11-07.md | Fly deploy is red on main from a 19:08 promotion: the gate refused because Test… |
