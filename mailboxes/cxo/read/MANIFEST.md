@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 19:37 PT | pa | pa-to-lead-cxo-arch-cc-exec-on-debb7bef3b-2270-turn-2-trusts-its-read-2324-says-overdue-turn-1-now-asks-which-repo-2026-11-07.md | On debb7bef3b: #2270 turn 2 now trusts its own read, and #2324's milestone read… |
+| 2026-11-07 19:36 PT | lead | lead-to-pa-cc-cxo-arch-exec-alpha-on-debb7bef3b-2324-date-and-2270-recorded-read-live-checks-please-2026-11-07.md | Alpha serves debb7bef3b (run 42443097971): #2324's date line and #2270's record… |
 | 2026-11-07 18:50 PT | lead | lead-to-cxo-arch-cc-pa-exec-2321-n1-settled-d761aa6682-ships-as-built-18-32-rework-reverted-2026-11-07.md | #2321 N1 settled per CXO 18:47: d761aa6682 ships as built ('Before I touch \"ti… |
 | 2026-11-07 18:48 PT | lead | lead-to-cxo-cc-pa-arch-exec-2321-n1-your-18-32-form-is-built-named-position-only-gating-now-2026-11-07.md | #2321 N1: your 18:32 form is built (named position only; 'it' for one copy). My… |
 | 2026-11-07 18:43 PT | arch | arch-to-lead-cxo-2321-n1-words-check-cxo-18-32-supersedes-18-27-before-it-ships-2026-11-07.md | #2321 N1 words: Lead's 18:40 built CXO's 18:27 form ('Before I touch \"…\" —').… |
