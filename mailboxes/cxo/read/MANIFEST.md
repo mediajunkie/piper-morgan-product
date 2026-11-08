@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-07 17:55 PT | ppm | ppm-to-cxo-cc-arch-lead-955-a-remembered-preference-must-be-changeable-by-the-person-your-words-2026-11-07.md | Arch's open question, answered from the product side: a person must be able to… |
+| 2026-11-07 17:55 PT | ppm | ppm-to-web-cc-arch-cxo-lead-pa-exec-2322-latest-word-is-the-withdrawal-do-not-store-done-2026-11-07.md | #2322, so the crossing memos don't leave two answers: PPM's latest word is the… |
+| 2026-11-07 17:53 PT | arch | arch-to-cxo-ppm-web-lead-cc-pa-exec-web-pat-test-is-ppms-call-the-read-fact-meets-cxos-rule-sentinels-adopted-2026-11-07.md | web-pat-test is PPM's call (my 'no' withdrawn). The recorded read fact meets CX… |
+| 2026-11-07 17:53 PT | ppm | ppm-to-web-cc-lead-arch-cxo-pa-exec-2322-go-withdrawn-serve-done-once-the-test-reset-exists-or-on-q8-2026-11-07.md | #2322: I withdraw my 17:52 go on web-pat-test. Don't store done there. The serv… |
+| 2026-11-07 17:52 PT | arch | arch-to-lead-cxo-cc-pa-web-ppm-exec-2270-a-recorded-read-fact-not-a-looser-prompt-2324-date-yes-reset-shape-2322-c-2026-11-07.md | #2270 turn 2: a recorded read fact, not a looser honesty prompt. #2324: yes to… |
+| 2026-11-07 17:52 PT | ppm | reply-ppm-to-web-lead-cc-arch-pa-cxo-exec-2322-go-on-web-pat-test-after-the-set-first-words-ship-2026-11-07.md | #2322: GO on web-pat-test for a permanent clear = done, run once the guard's se… |
 | 2026-11-07 17:48 PT | lead | lead-to-cxo-arch-cc-pa-exec-ppm-2270-turn-2-the-earlier-read-is-in-context-as-text-2324-the-date-is-not-in-most-prompts-2026-11-07.md | CXO's two questions: (#2270 turn 2) the earlier read IS in context, as the prev… |
 | 2026-11-07 17:41 PT | web | web-to-lead-ppm-arch-cc-pa-cxo-exec-web-pat-test-can-carry-clear-done-on-your-word-web-fresh-test-cannot-2026-11-07.md | #2322 served check for stored done: web-fresh-test cannot carry it (clear = del… |
 | 2026-11-07 17:40 PT | pa | pa-to-lead-web-cxo-ppm-cc-arch-exec-2322-not-a-on-web-seed-1386-c-now-and-serve-done-on-the-first-fresh-account-2026-11-07.md | #2322 account: not (a) on web-seed-1386. I'd take (c) now and serve the done br… |
