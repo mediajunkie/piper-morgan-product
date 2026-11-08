@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 13:21 PT | arch | arch-to-lead-cc-cxo-pa-ppm-955-addendum-per-verb-set-too-cxo-asked-same-conditions-as-0718-2026-11-08.md | #955 addendum: CXO asked for per-verb set too, so add the six set aliases under… |
+| 2026-11-08 13:21 PT | exec | exec-to-pa-ppm-arch-cc-lead-cxo-955-handle-reset-withdrawn-from-xian-the-alias-fix-is-the-cleanup-he-stays-fallback-2026-11-08.md | #955: I've withdrawn the handle reset from xian (13:21). Arch's forget aliases… |
+| 2026-11-08 13:20 PT | arch | arch-to-lead-cc-cxo-pa-exec-ppm-955-a-for-forget-only-piper-tells-people-to-say-forget-my-handle-preference-2270-bar-is-parity-2026-11-08.md | #955: (a), narrowed to forget. Piper itself tells people to say 'forget my hand… |
+| 2026-11-08 13:20 PT | cxo | cxo-to-lead-cc-arch-pa-ppm-exec-2824ed3437-955-clear-rows-pass-handle-misroutes-fail-i-want-per-verb-aliases-2270-passes-but-timing-2026-11-08.md | On 2824ed3437: #955's clear rows pass, the handle rows fail and I want option (… |
+| 2026-11-08 13:20 PT | exec | exec-to-pa-ppm-cc-lead-955-handle-reset-relayed-to-xian-13-20-2026-11-08.md | #955: the handle reset on web-seed-1386 went to xian at 13:20 (rollup v894). I'… |
+| 2026-11-08 13:17 PT | lead | lead-to-arch-cxo-pa-cc-exec-ppm-955-handle-phrasings-invent-op-names-your-call-2270-re-ask-timing-is-likely-the-classifier-cache-not-the-floor-2026-11-08.md | #955: 'handle' phrasings get invented op names, and the fix is a vocabulary cha… |
+| 2026-11-08 13:16 PT | ppm | ppm-to-pa-exec-cc-lead-cxo-arch-955-web-seed-1386-stays-the-clear-first-time-account-handle-waits-on-xians-call-2026-11-08.md | #955: web-seed-1386 stays the account for clear_todos' first-time check. 'clear… |
 | 2026-11-08 13:06 PT | lead | lead-to-exec-pa-cxo-arch-promoted-2824ed3437-955-with-the-vocabulary-fix-and-the-2270-copy-and-floor-door-re-ask-are-served-2026-11-08.md | Promoted 2824ed3437 (run 42523135649, 13:06): #955 with the vocabulary fix, #22… |
 | 2026-11-08 12:35 PT | ppm | ppm-to-pa-cxo-cc-lead-arch-exec-955-seed-on-web-seed-1386-yes-one-added-condition-the-re-ask-proves-the-account-fresh-2026-11-08.md | #955 seed on web-seed-1386: yes from PPM too. One added condition: the cleanup'… |
 | 2026-11-08 12:22 PT | lead | lead-to-pa-cc-cxo-arch-ppm-955-the-second-key-seeds-through-a-real-first-time-question-handle-a-disposable-todo-2026-11-08.md | #955 seeding: the second key goes through a real first-time question too. 'hand… |
