@@ -465,3 +465,22 @@ async def test_an_unreadable_list_keeps_the_open_ask_never_none_linked(
         service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository"
     )
     assert result.message == open_repo_question(None, "give you feedback")
+
+
+async def test_one_linked_repo_is_listed_and_asked_never_read_unasked(
+    service, monkeypatch, github, captured_floor
+):
+    """CXO 11-08 07:0x: one linked repo is not a default; list it and ask."""
+    from services.intent_service.repo_clarification import listed_repo_question
+
+    github["linked"] = [_REPO]
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, None)
+    first = await _turn(
+        service, monkeypatch, sid, UNNAMED, IntentCategory.ANALYSIS, "analyze_repository"
+    )
+    assert first.message == listed_repo_question([_REPO])
+    assert f"\n\n1. {_REPO}\n\n" in first.message and github["reads"] == []
+    reply = await _turn(service, monkeypatch, sid, "1", IntentCategory.CONVERSATION, "small_talk")
+    assert github["reads"][0] == ("issues", "dinp-machine", "piper-test-activity")
+    assert reply.message == "(stubbed floor answer)"
