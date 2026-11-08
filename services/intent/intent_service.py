@@ -1013,6 +1013,12 @@ ANALYZE_REPOSITORY_READ_FAILED_LINE = (
 ANALYZE_REPOSITORY_NO_SESSION_LINE = (
     'Name the repository as owner/name, like "look at octocat/hello-world", ' "and I'll look at it."
 )
+#: #2270 (Arch 20:50, CXO's 20:38 words): when code chose the repo (the default), the
+#: reply's first sentence says which.
+ANALYZE_REPOSITORY_DEFAULT_LEAD = "Looking at {repository}, your default repository."
+#: #2270 (CXO 20:5x): a word/word that failed to read and isn't on the account opens
+#: the armed repo question with this sentence.
+ANALYZE_REPOSITORY_NOT_FOUND_LEAD = 'I couldn\'t find "{pair}" among your repositories.'
 #: How many open issues the curated read carries to the floor.
 ANALYZE_REPOSITORY_ISSUE_CAP = 20
 
@@ -15274,6 +15280,18 @@ class IntentService:
         )
         if early is not None:
             return early
+        # Arch 20:50: did the person name the repo this turn (the resolver's own first
+        # three sources: context, owner/name slot-fill, a natural name)? If not, code
+        # chose it (the #1411 default) and a fixed first line says which.
+        from services.intent_service.repo_clarification import extract_natural_repo_name
+
+        _message = intent.original_message or intent.context.get("original_message") or ""
+        named_in_turn = bool(
+            intent.context.get("repository")
+            or intent.context.get("repo")
+            or self._slotfill_issue_request(_message).get("repository")
+            or extract_natural_repo_name(_message)
+        )
         if not repository or "/" not in str(repository):
             ask = await self._ask_for_repository(
                 intent,
@@ -15320,8 +15338,19 @@ class IntentService:
             # would give another repo's feedback unannounced). One of the account's
             # own that failed to read is said as a failed read.
             if await self._repo_unknown_to_account(principal, str(repository)):
+                from services.intent_service.repo_clarification import open_repo_question
+
                 ask = await self._ask_for_repository(
-                    intent, None, session_id, principal, operation="give you feedback"
+                    intent,
+                    None,
+                    session_id,
+                    principal,
+                    operation="give you feedback",
+                    question_override=(
+                        ANALYZE_REPOSITORY_NOT_FOUND_LEAD.format(pair=repository)
+                        + " "
+                        + open_repo_question(None, "give you feedback")
+                    ),
                 )
                 if ask is not None:
                     return ask
@@ -15378,9 +15407,15 @@ class IntentService:
         if _ct and _cd:
             domain_context["current_time"] = _ct
             domain_context["current_date"] = _cd
-        return await self._handle_unknown_intent(
+        result = await self._handle_unknown_intent(
             intent, None, session_id, domain_context=domain_context
         )
+        if not named_in_turn and result is not None and result.message:
+            result.message = (
+                f"{ANALYZE_REPOSITORY_DEFAULT_LEAD.format(repository=repository)}\n\n"
+                f"{result.message}"
+            )
+        return result
 
     async def _repo_unknown_to_account(self, principal: Optional[str], repository: str) -> bool:
         """#2270: True only when the account's repository list was read AND does not

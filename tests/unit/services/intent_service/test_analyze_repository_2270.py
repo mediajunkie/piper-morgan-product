@@ -206,7 +206,10 @@ async def test_the_advisors_unnamed_words_ask_even_with_a_default(
     )
     assert github["reads"][0] == ("issues", "project", "repository")
     assert ("issues", "dinp-machine", "piper-test-activity") not in github["reads"]
-    assert result.message == open_repo_question(None, "give you feedback")
+    assert result.message == (
+        'I couldn\'t find "project/repository" among your repositories. '
+        + open_repo_question(None, "give you feedback")
+    )
     offer = service.workflow_offer_service._pending_offers.get(sid)
     assert offer["pending_action"]["kind"] == REPO_QUESTION_KIND
     assert captured_floor == []
@@ -227,6 +230,38 @@ async def test_a_typo_of_an_own_repo_asks_never_reads_the_default(
     )
     assert ("issues", "dinp-machine", "piper-test-activity") not in github["reads"]
     assert result.requires_clarification and captured_floor == []
+    assert result.message.startswith(
+        'I couldn\'t find "dinp-machine/piper-test-activty" among your repositories.'
+    )
+
+
+async def test_the_default_read_names_the_repo_first_a_named_read_does_not(
+    service, monkeypatch, github, captured_floor
+):
+    """Arch 20:50: when code chose the repo (the default), the first sentence says which;
+    when the person named it, no lead."""
+    sid = f"ar-{uuid4().hex[:8]}"
+    _default_repo(monkeypatch, service, _REPO)
+    result = await _turn(
+        service,
+        monkeypatch,
+        sid,
+        "give me quick feedback on my repo and help me move forward",
+        IntentCategory.ANALYSIS,
+        "analyze_repository",
+    )
+    assert result.message == (
+        f"Looking at {_REPO}, your default repository.\n\n(stubbed floor answer)"
+    )
+    named = await _turn(
+        service,
+        monkeypatch,
+        f"ar-{uuid4().hex[:8]}",
+        NAMED_TURN_1,
+        IntentCategory.ANALYSIS,
+        "analyze_repository",
+    )
+    assert named.message == "(stubbed floor answer)"
 
 
 @pytest.mark.parametrize(
@@ -242,7 +277,9 @@ async def test_no_repo_resolves_asks_the_armed_repo_question_never_a_document(
     result = await _turn(
         service, monkeypatch, sid, message, IntentCategory.ANALYSIS, "analyze_repository"
     )
-    assert result.message == open_repo_question(None, "give you feedback")
+    # The advisor's words slot-fill "project/repository", so that ask opens with CXO's
+    # couldn't-find sentence; either way it ends with the armed repo question.
+    assert result.message.endswith(open_repo_question(None, "give you feedback"))
     offer = service.workflow_offer_service._pending_offers.get(sid)
     assert offer["pending_action"]["kind"] == REPO_QUESTION_KIND
     assert captured_floor == []
