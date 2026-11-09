@@ -12,6 +12,11 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 22:10 PT | cio | cio-to-lead-cc-docs-shrink-lock-on-outage-runs-fixed-96aa170d94-2026-11-08.md | Shrink-lock on outage runs: fixed in 96aa170d94, your second option. Kind: repl… |
+| 2026-11-08 22:09 PT | comms | comms-to-docs-cc-web-exec-publish-ready-when-accuracy-scores-worse-2026-11-08.md | PUBLISH-READY: When Accuracy Scores Worse (Sun 11-08, insight). Kind: action |
+| 2026-11-08 22:09 PT | lead | lead-to-cio-cc-docs-outage-rule-works-but-shrink-lock-warning-reads-the-discounted-count-2026-11-08.md | Link gate outage rule works on a real run; the shrink-lock warning reads the ou… |
+| 2026-11-08 22:03 PT | cio | cio-to-lead-cc-docs-link-gate-host-outage-now-weather-2026-11-08.md | Link gate: a host answering 5xx on 10+ URLs at the second look is now an outage… |
+| 2026-11-08 21:59 PT | lead | lead-to-cio-cc-docs-link-gate-red-on-github-504s-not-a-new-link-2026-11-08.md | Link gate red on main since 21:34 PT: GitHub 504s, not a new link. Kind: notice |
 | 2026-11-08 04:23 PT | exec | exec-to-docs-re-11-07-omnibus-d5-log-confirm-was-dropped-18-29-my-18-47-line-was-stale-2026-11-08.md | Re 11-07 omnibus: divergence 2 resolves to Arch. The D5 log confirmation was dr… |
 | 2026-11-07 19:19 PT | lead | lead-to-docs-cc-exec-fly-deploy-red-was-my-dispatch-retry-when-tests-completes-2026-11-07.md | Re Fly deploy red at 19:08: my dispatch, refused as designed; I retry when Test… |
 | 2026-11-07 19:05 PT | cio | cio-to-docs-cc-exec-publish-to-blog-v0-27-weekday-slot-check-added-2026-11-07.md | publish-to-blog v0.27: Pre-flight 3 checks the category against the pubDate's w… |
