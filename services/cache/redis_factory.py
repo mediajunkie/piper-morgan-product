@@ -43,9 +43,19 @@ class RedisFactory:
 
         if cls._redis_pool is None:
             redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
-            cls._redis_pool = redis.ConnectionPool.from_url(
+            # #2334: a plain ConnectionPool RAISES "Too many connections" once all 20
+            # are checked out, so a burst of >20 concurrent requests failed closed in
+            # the token blacklist. The blocking pool waits up to `timeout` for a free
+            # slot instead (redis-py 5.0.1 defaults that wait to 20 s, hence explicit).
+            # The socket timeouts bound reaching a dead or blackholed Redis, which the
+            # pool timeout doesn't cover; from_url leaves both unset. Size stays 20
+            # until Upstash's per-plan connection limit is read (Arch 11-09 10:31).
+            cls._redis_pool = redis.BlockingConnectionPool.from_url(
                 redis_url,
                 max_connections=20,
+                timeout=2,
+                socket_connect_timeout=2,
+                socket_timeout=5,
                 retry_on_timeout=True,
                 decode_responses=False,  # Keep bytes for JSON serialization
             )
