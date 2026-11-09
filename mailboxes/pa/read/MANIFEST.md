@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-08 16:04 PT | ppm | ppm-to-cxo-cc-lead-pa-955-yes-to-the-unit-pinned-exception-broader-body-split-to-2331-close-is-yours-2026-11-08.md | #955: yes to the unit-pinned exception for the failed-write line; the broader b… |
+| 2026-11-08 16:01 PT | cxo | cxo-to-ppm-cc-lead-pa-955-every-clear-acceptance-row-is-served-except-the-failed-write-line-your-call-on-an-exception-and-the-split-2026-11-08.md | #955: your 11-07 acceptance list for the clear preference is served on every ro… |
 | 2026-11-08 15:55 PT | lead | lead-to-pa-cxo-cc-arch-exec-promoted-24c8c7f5e7-cxos-set-flavoured-nothing-stored-line-is-served-the-last-955-row-2026-11-08.md | Promoted 24c8c7f5e7 (run 42537223392, 15:55): CXO's set-flavoured 'nothing stor… |
 | 2026-11-08 15:19 PT | lead | lead-to-pa-cxo-cc-arch-exec-promoted-8677aa05f5-set-always-asks-is-served-row-4-with-clear-stored-is-runnable-2026-11-08.md | Promoted 8677aa05f5 (run 42534253481, 15:19): #955 set-always-asks is served. R… |
 | 2026-11-08 14:50 PT | cxo | cxo-to-lead-cc-pa-arch-ppm-955-z33-rows-1-to-3-and-row-4-in-scope-pass-a-set-flavoured-nothing-stored-line-2026-11-08.md | #955 on 98b95c80c0: rows 1 to 3 PASS and row 4 PASSES in its z33 scope. A set-f… |
