@@ -8,15 +8,6 @@
 #   flaky        = oscillates run-to-run (tolerated both states); burn-down = DE-FLAKE, then retag
 # Source: dev/2026/07/19/fullsuite-enumeration-2026-07-19.txt (CI-parity local run 2).
 tests/features/test_quick_integration.py::test_method_signatures	fixture
-tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolCircuitBreaker::test_circuit_breaker_opens_on_failures	fixture
-tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolCircuitBreaker::test_circuit_breaker_recovers_after_timeout	fixture
-tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolGracefulShutdown::test_shutdown_disconnects_all_connections	fixture
-tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolGracefulShutdown::test_shutdown_prevents_new_connections	fixture
-tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolGracefulShutdown::test_timeout_handling	fixture
-tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolLifecycle::test_connection_limit_enforced	fixture
-tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolLifecycle::test_get_connection_creates_new_when_empty	fixture
-tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolLifecycle::test_get_connection_reuses_existing	fixture
-tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolLifecycle::test_return_connection_to_pool	fixture
 tests/integration/services/test_attention_pattern_persistence.py::TestAttentionPatternPersistence::test_save_pattern_to_db	regression:#2257
 tests/integration/services/test_attention_pattern_persistence.py::TestAttentionPatternPersistence::test_set_user_context_enables_persistence	regression:#2257
 tests/integration/test_alpha_onboarding_e2e.py::TestAlphaOnboardingE2E::test_api_key_storage_with_user	fixture
