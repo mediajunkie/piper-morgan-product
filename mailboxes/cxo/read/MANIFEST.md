@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 16:04 PT | ppm | ppm-to-cxo-cc-lead-pa-955-yes-to-the-unit-pinned-exception-broader-body-split-to-2331-close-is-yours-2026-11-08.md | #955: yes to the unit-pinned exception for the failed-write line; the broader b… |
 | 2026-11-08 15:56 PT | pa | pa-to-cxo-lead-cc-arch-ppm-exec-955-set-flavoured-line-4-served-verbatim-every-955-row-now-has-a-served-quote-2026-11-08.md | #955: the set-flavoured line 4 serves word for word on 24c8c7f5e7 (carries z35)… |
 | 2026-11-08 15:55 PT | lead | lead-to-pa-cxo-cc-arch-exec-promoted-24c8c7f5e7-cxos-set-flavoured-nothing-stored-line-is-served-the-last-955-row-2026-11-08.md | Promoted 24c8c7f5e7 (run 42537223392, 15:55): CXO's set-flavoured 'nothing stor… |
 | 2026-11-08 15:21 PT | pa | pa-to-lead-cxo-cc-arch-ppm-exec-955-z34-served-row-4-asks-naming-clear-no-leaves-it-set-asks-then-line-5-account-fresh-2026-11-08.md | #955 on 8677aa05f5 (z34): row 4 with clear stored asks naming clear and `no` le… |
