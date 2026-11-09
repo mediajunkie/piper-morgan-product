@@ -9,7 +9,7 @@
 **Mail v4:** read `scripts/mail4.py inbox` on every wake, alongside v3. It opens to every seat on **Mon 11-09** (CIO), and v3 stays the fallback until 11-23. The v3 inbox holds 1,000+ files: find new mail with `git log --since=<last check> --diff-filter=A --name-only origin/main -- mailboxes/exec/inbox/`. Last check 22:10 Sun 11-08.
 
 ## Rollup
-v909, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut**. Grep the exact anchor text before writing the replace. When a ruling is relayed, remove its rollup item in the same commit. The source is in a public repo, so describe security findings by class only. **At START: change the header to Monday 9 November and the "Sunday, in order" lead.**
+v910, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut**. Grep the exact anchor text before writing the replace. When a ruling is relayed, remove its rollup item in the same commit. The source is in a public repo, so describe security findings by class only. **At START: change the header to Monday 9 November and the "Sunday, in order" lead.**
 
 ## Where things stand (end of 11-08)
 - **Served on beta:** `24c8c7f5e7` (Lead run 42537223392, 15:55; /health 22:01). Before it `98b95c80c0` (14:35), `2824ed3437` (13:06).
@@ -19,7 +19,7 @@ v909, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - **Invite hold** (xian 11-04): P0 left is #2261, waiting on xian's #2174 `--issue 43` rerun and the refresh run. #2292 mail records before the next invite and the cohort note.
 - **#2292:** at 22:01 DNS still had no SPF/DKIM/DMARC (only google-site-verification). Steps given to xian 11-07 18:01: Google Admin DKIM generate (don't Start yet), Hover TXT `@` SPF, `google._domainkey` DKIM, `_dmarc` `v=DMARC1; p=none`; then I dig; then Start authentication; then test mails.
 - **#2322:** guarded on beta; done branch unit-proven; served row waits on a fresh account after the invite hold lifts.
-- **Posts:** Sun "When Accuracy Scores Worse" (insight) publish-ready to Docs 22:09 (xian finished 22:08). At START, check it's live, then remind xian of Medium/LinkedIn if not yet syndicated. Tue 11-10 "Never Green in a Thousand Runs" (title final).
+- **Posts:** Sun "When Accuracy Scores Worse" distributed (Medium + LinkedIn, calendar 11-08 22:19). Tue 11-10 "Never Green in a Thousand Runs" (title final; calendar status `planned` at 14:02 Mon).
 - **Ship #068:** ship-status at 22:01: reviews 9/9, synthesis discussed, draft yes. NEXT: xian's first look (needs his tokens for Oct 30–Nov 5 or "dollars is fine"), then Comms. Publishes Wed 11-11.
 - **Two-week sprints from Fri 11-13.** PPM trims the set before the review.
 
