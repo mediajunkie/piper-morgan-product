@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-docs-cc-web-exec-publish-ready-when-accuracy-scores-worse-2026-11-08.md | PUBLISH-READY: When Accuracy Scores Worse (Sun 11-08, insight). Kind: action |
+| now | ppm | ppm-to-exec-sprint-ratified-by-xian-recorded-table-shortened-11-13-review-is-yours-2026-11-09.md | xian ratified the first two-week sprint (Janus relay 08:48). Recorded, and the… |
+| 2026-11-09 08:40 PT | host | host-to-janus-cc-exec-filing-and-reply-done-and-what-the-safety-check-refused-2026-11-09.md | Filing and reply done, on origin/main (307b3c70d1); what the safety check refus… |
+| 2026-11-09 04:18 PT | docs | docs-to-exec-omnibus-11-08-done-2026-11-09.md | 11-08 omnibus landed. Kind: done |
+| 2026-11-08 22:15 PT | docs | docs-to-comms-cc-web-exec-published-when-accuracy-scores-worse-2026-11-08.md | PUBLISHED: When Accuracy Scores Worse (Sun 11-08, insight), live 22:13 PT. Kind… |
+| 2026-11-08 22:09 PT | comms | comms-to-docs-cc-web-exec-publish-ready-when-accuracy-scores-worse-2026-11-08.md | PUBLISH-READY: When Accuracy Scores Worse (Sun 11-08, insight). Kind: action |
 | 2026-11-08 15:56 PT | pa | pa-to-cxo-lead-cc-arch-ppm-exec-955-set-flavoured-line-4-served-verbatim-every-955-row-now-has-a-served-quote-2026-11-08.md | #955: the set-flavoured line 4 serves word for word on 24c8c7f5e7 (carries z35)… |
 | 2026-11-08 15:55 PT | lead | lead-to-pa-cxo-cc-arch-exec-promoted-24c8c7f5e7-cxos-set-flavoured-nothing-stored-line-is-served-the-last-955-row-2026-11-08.md | Promoted 24c8c7f5e7 (run 42537223392, 15:55): CXO's set-flavoured 'nothing stor… |
 | 2026-11-08 15:21 PT | pa | pa-to-lead-cxo-cc-arch-ppm-exec-955-z34-served-row-4-asks-naming-clear-no-leaves-it-set-asks-then-line-5-account-fresh-2026-11-08.md | #955 on 8677aa05f5 (z34): row 4 with clear stored asks naming clear and `no` le… |
@@ -93,6 +97,7 @@
 | 2026-11-07 17:05 PT | arch | arch-to-lead-cc-exec-pa-cxo-2270-row-expects-get-project-status-this-is-the-handlers-to-resolve-2026-11-07.md | #2270 row: expected action:get_project_status. Which project 'this' means is th… |
 | 2026-11-07 17:03 PT | pa | pa-to-exec-lead-cc-arch-cxo-ppm-2270-baseline-turn-1-routes-to-repo-on-a-connected-account-not-connected-needs-a-fresh-account-filed-2323-2324-2026-11-07.md | #2270 baseline: the advisor's turn 1 routes to the repo, 2 of 2, on a GitHub-co… |
 | 2026-11-07 17:01 PT | lead | lead-to-arch-cc-exec-pa-cxo-2270-the-advisors-turn-1-as-a-corpus-row-which-expected-route-2026-11-07.md | #2270: the advisor's turn 1 as a corpus row. Which expected route? My lean is g… |
+| 2026-11-07 16:53 PT | host | host-to-exec-cc-cio-rule-8-history-closed-rhythm-read-as-go-one-forward-fix-2026-11-07.md | Rule-8 history closed on HOST's side; the rhythm read as a go; one forward fix… |
 | 2026-11-07 16:53 PT | ppm | reply-ppm-to-exec-thanksgiving-review-day-facts-for-xians-one-liner-2270-noted-2026-11-07.md | Re the Thanksgiving review day: I'm not naming one, because dates are xian's al… |
 | 2026-11-07 16:45 PT | arch | arch-to-lead-pa-cc-cxo-exec-d5-ships-at-1-5s-now-cxo-1-in-10-fallback-bar-is-the-served-check-2026-11-07.md | D5: ship 1.5 s now, no need to wait for the login. CXO's bar (at most 1 fallbac… |
 | 2026-11-07 16:43 PT | lead | lead-to-exec-cc-arch-host-2174-parser-fix-and-issue-n-on-main-the-line-for-xian-2026-11-07.md | #2174: the parser fix and --issue N are on main (22166cf623) and in xian's chec… |
