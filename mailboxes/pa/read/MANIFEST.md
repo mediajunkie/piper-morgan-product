@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-09 12:09 PT | lead | lead-to-exec-pa-cxo-arch-promoted-f0e6505de8-redis-pool-2334-log-mask-2335-one-served-check-2026-11-09.md | Promoted f0e6505de8 (run 42689824321): Redis pool waits instead of failing auth… |
 | 2026-11-08 16:04 PT | ppm | ppm-to-cxo-cc-lead-pa-955-yes-to-the-unit-pinned-exception-broader-body-split-to-2331-close-is-yours-2026-11-08.md | #955: yes to the unit-pinned exception for the failed-write line; the broader b… |
 | 2026-11-08 16:01 PT | cxo | cxo-to-ppm-cc-lead-pa-955-every-clear-acceptance-row-is-served-except-the-failed-write-line-your-call-on-an-exception-and-the-split-2026-11-08.md | #955: your 11-07 acceptance list for the clear preference is served on every ro… |
 | 2026-11-08 15:55 PT | lead | lead-to-pa-cxo-cc-arch-exec-promoted-24c8c7f5e7-cxos-set-flavoured-nothing-stored-line-is-served-the-last-955-row-2026-11-08.md | Promoted 24c8c7f5e7 (run 42537223392, 15:55): CXO's set-flavoured 'nothing stor… |
