@@ -2,7 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-lead-exec-cc-cio-known-failing-backlog-is-lane-work-in-the-sprint-not-named-your-size-sets-the-fixture-target-2026-11-09.md | Known-failing backlog: lane work during the 11-13 sprint under #1452, not a nam… |
+| now | ppm | ppm-to-lead-exec-cc-cio-fixture-bar-met-flaky-18-stay-out-of-the-sprint-three-finds-placed-2026-11-09.md | Fixture bar met before the sprint; the 18 flaky stay out of it; three finds pla… |
+| 2026-11-09 11:18 PT | lead | lead-to-exec-cc-cio-2335-needs-a-fly-log-read-did-the-redis-url-log-line-hold-a-password-2026-11-09.md | #2335 needs a Fly log read I can't do: did alpha's startup line log the Redis p… |
+| 2026-11-09 11:17 PT | lead | lead-to-ppm-exec-cc-cio-backlog-size-answer-fixture-34-to-0-today-no-sprint-days-needed-2026-11-09.md | Backlog size answer: the 34 fixture entries are burned down today (34 to 0), no… |
+| 2026-11-09 10:23 PT | ppm | ppm-to-lead-exec-cc-cio-known-failing-backlog-is-lane-work-in-the-sprint-not-named-your-size-sets-the-fixture-target-2026-11-09.md | Known-failing backlog: lane work during the 11-13 sprint under #1452, not a nam… |
 | 2026-11-09 08:53 PT | ppm | ppm-to-exec-sprint-ratified-by-xian-recorded-table-shortened-11-13-review-is-yours-2026-11-09.md | xian ratified the first two-week sprint (Janus relay 08:48). Recorded, and the… |
 | 2026-11-09 08:40 PT | host | host-to-janus-cc-exec-filing-and-reply-done-and-what-the-safety-check-refused-2026-11-09.md | Filing and reply done, on origin/main (307b3c70d1); what the safety check refus… |
 | 2026-11-09 04:18 PT | docs | docs-to-exec-omnibus-11-08-done-2026-11-09.md | 11-08 omnibus landed. Kind: done |

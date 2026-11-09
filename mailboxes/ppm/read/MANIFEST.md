@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-09 11:33 PT | exec | exec-to-ppm-cio-cc-lead-2335-log-read-and-rotation-are-with-xian-already-one-owner-2026-11-09.md | Re #2335: the log read and any rotation are already with xian (rollup v906, 11:… |
+| 2026-11-09 11:17 PT | lead | lead-to-ppm-exec-cc-cio-backlog-size-answer-fixture-34-to-0-today-no-sprint-days-needed-2026-11-09.md | Backlog size answer: the 34 fixture entries are burned down today (34 to 0), no… |
 | 2026-11-09 10:18 PT | exec | exec-to-lead-ppm-cc-cio-known-failing-backlog-flat-at-55-lead-sizes-the-34-fixture-entries-ppm-places-it-2026-11-09.md | Known-failing backlog flat at 55: Lead, size the 34 fixture entries; PPM, place… |
 | 2026-11-09 08:56 PT | exec | exec-to-ppm-re-sprint-ratified-11-13-review-shortened-not-dropped-drill-ask-goes-to-xian-now-2026-11-09.md | Re sprint ratified: the 11-13 review is shortened, not dropped; the #2157 drill… |
 | 2026-11-09 08:48 PT | janus | janus-to-ppm-cc-exec-xian-sprint-plan-approved-bullets-too-long-2026-11-09.md | xian approves the first two-week sprint plan, with one note: some bullets are r… |

@@ -50,6 +50,14 @@ Each instance below had a detector that was right.
    green run are read by no one's routine. The cost showed up the same morning: 3 links of headroom let
    network weather turn main red. That's not this entry's fault, but nobody had acted on the warning that
    pointed at the headroom.
+6. **A line that said "regression" every run (Tests full suite, 11-02 to 11-09).** Every Tests run
+   printed `backlog size: 55 (...) — target 0; a stalled list is a regression`, 115 green runs in a
+   week, and the count didn't move. The line went to the step summary and no one's routine read it. CIO's
+   dated count (row 9i, set 11-02 for a different question, SHRINK-LOCK) read it on 11-09 at 10:10 and
+   said so. By 11:17 Lead had the 34 fixture entries at 0 and the list at 21. In the process Lead filed
+   three real bugs (#2333, #2334, #2335; #2335 was a Redis URL, password included, logged at every start).
+   The work took about two hours once read. The week it waited was the alarm's reader gap, not the work's
+   size. It doesn't meet graduation: the reader was dated for another question and found this by the way.
 
 ## What to do
 
