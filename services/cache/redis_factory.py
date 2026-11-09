@@ -5,6 +5,7 @@ Provides Redis client management with connection pooling and health monitoring
 
 import asyncio
 import os
+import time
 import weakref
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator, Optional
@@ -17,6 +18,12 @@ from services.health.integration_health_monitor import health_monitor
 
 logger = structlog.get_logger()
 
+# #2336: create_client used to PING on every client it handed out, an extra round
+# trip on every Redis read (each authenticated request's revocation check). The
+# ping gates nothing (a failure only logs); it feeds the redis_connection health
+# record. So it runs on a new pool's first client, then at most once per interval.
+_HEALTH_PING_INTERVAL_S = 30.0
+
 
 def _redis_host(redis_url: str) -> str:
     """host:port of a Redis URL, for logs; drops the scheme, user and password."""
@@ -28,6 +35,7 @@ class RedisFactory:
     """Redis client factory following AsyncSessionFactory pattern"""
 
     _redis_pool: Optional[redis.ConnectionPool] = None
+    _last_health_ping: Optional[float] = None  # time.monotonic(); None = never on this pool
     # A weak reference, not id(loop): a collected loop's id() can be handed to
     # the next loop, which then inherited the dead loop's pool (found 11-09 by
     # the 2334 rebuild pin failing only in the full suite).
@@ -72,6 +80,7 @@ class RedisFactory:
             )
 
             cls._pool_loop_ref = weakref.ref(loop)
+            cls._last_health_ping = None
             # #2335: never log the URL itself; an Upstash REDIS_URL carries the password.
             logger.info("Redis connection pool initialized", redis_host=_redis_host(redis_url))
 
@@ -81,13 +90,18 @@ class RedisFactory:
         await cls.initialize()
         client = redis.Redis(connection_pool=cls._redis_pool)
 
-        # Test connection
-        try:
-            await client.ping()
-            health_monitor.record_success("redis_connection", 5.0, {"status": "connected"})
-        except Exception as e:
-            health_monitor.record_failure("redis_connection", str(e))
-            logger.error(f"Redis connection test failed: {e}")
+        now = time.monotonic()
+        if cls._last_health_ping is None or now - cls._last_health_ping >= _HEALTH_PING_INTERVAL_S:
+            cls._last_health_ping = now
+            try:
+                await client.ping()
+                latency_ms = (time.monotonic() - now) * 1000
+                health_monitor.record_success(
+                    "redis_connection", latency_ms, {"status": "connected"}
+                )
+            except Exception as e:
+                health_monitor.record_failure("redis_connection", str(e))
+                logger.error(f"Redis connection test failed: {e}")
 
         return client
 
