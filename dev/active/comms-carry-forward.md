@@ -1,7 +1,7 @@
 # Comms carry-forward
 
 ## ⭐ CURRENT STATE — 2026-11-08 21:19 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/11/08/2026-11-08-0604-comms-code-log.md`, DAY-CLOSED. Start a new log 11-09.
+- **Log:** `dev/2026/11/08/2026-11-08-0604-comms-code-log.md`, DAY-CLOSED. 11-09 log: `dev/2026/11/09/2026-11-09-0619-comms-code-log.md`.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
 - **Weekend slots are INSIGHTS (Sat and Sun, Medium + LinkedIn).** Tue/Thu building, Wed Ship. I called Sat "building" three times (11-04 memo, scaffold, publish-ready); Docs corrected it 11-07. **Every publish-ready memo now states the category, checked against the weekday.**
 - **Sat 11-07 "At Long Last, Beta": PUBLISHED and DISTRIBUTED** (https://pipermorgan.ai/blog/at-long-last-beta, website 7a6605009f; insight; xian's Medium and LinkedIn URLs on the calendar). Draft archived by Docs.
