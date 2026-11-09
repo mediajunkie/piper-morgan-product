@@ -6,6 +6,7 @@ Provides Redis client management with connection pooling and health monitoring
 import os
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator, Optional
+from urllib.parse import urlsplit
 
 import redis.asyncio as redis
 import structlog
@@ -13,6 +14,12 @@ import structlog
 from services.health.integration_health_monitor import health_monitor
 
 logger = structlog.get_logger()
+
+
+def _redis_host(redis_url: str) -> str:
+    """host:port of a Redis URL, for logs; drops the scheme, user and password."""
+    parts = urlsplit(redis_url)
+    return f"{parts.hostname}:{parts.port or 6379}"
 
 
 class RedisFactory:
@@ -61,7 +68,8 @@ class RedisFactory:
             )
 
             cls._pool_loop_id = loop_id
-            logger.info("Redis connection pool initialized", redis_url=redis_url)
+            # #2335: never log the URL itself; an Upstash REDIS_URL carries the password.
+            logger.info("Redis connection pool initialized", redis_host=_redis_host(redis_url))
 
     @classmethod
     async def create_client(cls) -> redis.Redis:

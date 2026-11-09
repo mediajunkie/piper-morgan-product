@@ -104,3 +104,17 @@ async def test_fifty_concurrent_lookups_on_twenty_connections(fresh_factory, mon
 
     assert results == [False] * 50
     assert fresh_factory._redis_pool.max_connections == 20
+
+
+async def test_startup_log_never_carries_the_redis_password(fresh_factory, monkeypatch):
+    """#2335: the pool-init log line names host:port only, never the URL."""
+    from structlog.testing import capture_logs
+
+    monkeypatch.setenv("REDIS_URL", "redis://default:s3cret-pw-2335@redis.example.test:6380")
+    with capture_logs() as logs:
+        await fresh_factory.initialize()
+
+    init = [e for e in logs if e.get("event") == "Redis connection pool initialized"]
+    assert init, logs
+    assert init[0]["redis_host"] == "redis.example.test:6380"
+    assert "s3cret-pw-2335" not in repr(logs)
