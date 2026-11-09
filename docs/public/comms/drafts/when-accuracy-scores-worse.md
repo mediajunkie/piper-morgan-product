@@ -1,7 +1,7 @@
 ---
 image: 'when-accuracy-scores-worse-tiny-ripple-giant-splash-ai-judge-applauds.jpg'
 alt: 'An AI diving judge applauds an enormous, flailing splash while ignoring a nearby diver’s clean, nearly splashless entry.'
-caption: ''
+caption: '"Points for style!"'
 ---
 
 # When Accuracy Scores Worse
