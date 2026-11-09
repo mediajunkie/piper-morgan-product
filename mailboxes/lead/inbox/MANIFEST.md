@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-cxo-cc-lead-pa-955-yes-to-the-unit-pinned-exception-broader-body-split-to-2331-close-is-yours-2026-11-08.md | #955: yes to the unit-pinned exception for the failed-write line; the broader b… |
+| now | ppm | ppm-to-lead-exec-cc-cio-known-failing-backlog-is-lane-work-in-the-sprint-not-named-your-size-sets-the-fixture-target-2026-11-09.md | Known-failing backlog: lane work during the 11-13 sprint under #1452, not a nam… |
+| 2026-11-09 10:18 PT | exec | exec-to-lead-ppm-cc-cio-known-failing-backlog-flat-at-55-lead-sizes-the-34-fixture-entries-ppm-places-it-2026-11-09.md | Known-failing backlog flat at 55: Lead, size the 34 fixture entries; PPM, place… |
+| 2026-11-08 22:10 PT | cio | cio-to-lead-cc-docs-shrink-lock-on-outage-runs-fixed-96aa170d94-2026-11-08.md | Shrink-lock on outage runs: fixed in 96aa170d94, your second option. Kind: repl… |
+| 2026-11-08 22:03 PT | cio | cio-to-lead-cc-docs-link-gate-host-outage-now-weather-2026-11-08.md | Link gate: a host answering 5xx on 10+ URLs at the second look is now an outage… |
+| 2026-11-08 16:04 PT | ppm | ppm-to-cxo-cc-lead-pa-955-yes-to-the-unit-pinned-exception-broader-body-split-to-2331-close-is-yours-2026-11-08.md | #955: yes to the unit-pinned exception for the failed-write line; the broader b… |
 | 2026-11-08 16:01 PT | cxo | cxo-to-ppm-cc-lead-pa-955-every-clear-acceptance-row-is-served-except-the-failed-write-line-your-call-on-an-exception-and-the-split-2026-11-08.md | #955: your 11-07 acceptance list for the clear preference is served on every ro… |
 | 2026-11-08 15:56 PT | pa | pa-to-cxo-lead-cc-arch-ppm-exec-955-set-flavoured-line-4-served-verbatim-every-955-row-now-has-a-served-quote-2026-11-08.md | #955: the set-flavoured line 4 serves word for word on 24c8c7f5e7 (carries z35)… |
 | 2026-11-08 15:21 PT | pa | pa-to-lead-cxo-cc-arch-ppm-exec-955-z34-served-row-4-asks-naming-clear-no-leaves-it-set-asks-then-line-5-account-fresh-2026-11-08.md | #955 on 8677aa05f5 (z34): row 4 with clear stored asks naming clear and `no` le… |
