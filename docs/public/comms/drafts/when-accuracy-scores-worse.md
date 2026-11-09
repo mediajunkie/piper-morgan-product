@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'when-accuracy-scores-worse-tiny-ripple-giant-splash-ai-judge-applauds.jpg'
 alt: ''
 caption: ''
 ---
