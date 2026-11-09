@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-11-08 15:36 PT (15:33 WATCH, Now-block lines updated; the current block is at the bottom, "Now").
+**Last rewritten**: 2026-11-08 21:34 PT (21:33 STOP; the current block is at the bottom, "Now").
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -598,29 +598,28 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: notion-offer-ask** (Filed 2026-11-01; to: exec; by: trigger: Web's #2238 served check passes). Send Exec the one-line "offer Notion in the beta: yes or no" for xian. CXO's card words come first.
   - **Rule from PDR-102:** when PPM places a connector-ingest unit, mail Arch the same day (his ADR trigger for C2).
 
-## Now (rewritten at the 11-07 21:33 STOP; carry into Sun 11-08)
+## Now (rewritten at the 11-08 21:33 STOP; carry into Mon 11-09)
 
-- **Invite hold, PDR-008 (Accepted 11-07, P1–P3 xian yes).** Re-verified 21:34 with `gh issue view`.
+- **Invite hold, PDR-008 (Accepted 11-07, P1–P3 xian yes).** Re-verified 21:34 11-08 with `gh issue view`.
   - Open: #2261 (waits on xian's #2174 runs), #2282 (its browser row waits on xian's word for Web's sign-in check), and #2292 (P1, xian's records).
   - Met or closed: #1551, #2283, #2178.
   - When all six are met, PPM sends Exec the lift-readiness memo (§3), each row with `Verified how:`.
-- **Sprint (11-13 to 11-26), ratified at the 11-13 review.** Objections to two-week sprints go to Exec by Mon 11-09 12:00; xian's window is still open. The Thanksgiving review day is xian's (PPM gave Exec the facts).
-  - **Item 5 (D5 GO):** #2318 closed 11-08 12:49 and #2321 07:18 (CXO). #2219 (×3) passed on the live site but has other rows open. #2322's guard is live; its stored-done row waits on Q8. #2328 (`them` says not-found) is a possible rider.
-  - **Item 8, #2270:** closed 11-08 13:44 (CXO): every acceptance and pass-line row served; the 6 s re-ask accepted. #2327's audit takes the "in one pass" close offers and the doubled repo name. The not-connected turn 1 stays on the Q8 list as a quote to collect.
-  - 11-13 review candidates: #2320, #2319, #2321.
-- **Production 276** (`gh` 11-08 18:33 = Total; #2318, #2270 and #955 closed, #2331 and #2330 placed in T), map v115 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned.
-  - Placed 11-07: #2317–#2326 (#2326 is the armed read offer, V, low).
-  - Closed 11-07: #2315 and #2316.
-- **#955: closed 11-08 16:10 (CXO)** on the clear-preference slice, with PPM's unit-pinned exception for the failed-write line. The rest is #2331 (T); #2330 (T, low). Follow-up, not owed by PPM: #2232's local fault run adds the failed-write row when it lands.
+- **Sprint (11-13 to 11-26), ratified at the 11-13 review.** Objections to two-week sprints go to Exec by **Mon 11-09 12:00**; xian's window is still open, and the tally is Exec's. The Thanksgiving review day is xian's (PPM gave Exec the facts).
+  - **Item 5 (D5):** #2318 and #2321 closed 11-08 (CXO). #2219 (×3) passed on the live site but has other rows open. #2322's stored-done row waits on Q8. #2328 (`them` says not-found, V) is a possible rider.
+  - **Item 8, #2270:** closed 11-08 13:44 (CXO). #2327's audit takes the "in one pass" close offers and the doubled repo name.
+  - 11-13 review candidates: #2320, #2319.
+- **Production 276** (`gh` 21:34 11-08 = Total), map v115 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned.
+  - Placed 11-08: #2327 (Q), #2328 (V), #2331 and #2330 (T).
+  - Closed 11-08: #2321, #2324, #2318, #2270, #955.
+- **#955 closed 11-08 16:10 (CXO)** on the clear-preference slice, with PPM's unit-pinned exception for the failed-write line. The rest is #2331 (T); #2330 (T, low). Not owed by PPM: #2232's local fault run adds the failed-write row when it lands.
 - **OWED rows:**
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift; needs #2297 and #2301).
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
-- **web-seed-1386 (11-08 15:21):** fully fresh. PA's served `forget my handle preference` (z33) cleaned it, and clear and handle both re-asked after their forgets (z34 end state: 8 open, no preference stored). xian's #2325 fallback isn't needed (CXO 14:50).
+- **web-seed-1386:** fully fresh since 11-08 15:21 (no preference stored, 8 open todos). #2325's admin reset wasn't needed.
 - **Fresh-account list (Q8, after the lift):** #2270's not-connected turn 1, Path B's quote, and possibly #2322's stored-done row.
 - **Waiting on others:**
   - #2290 (Lead);
   - #2320's per-phase log (Lead);
-  - #2324's date build, plus gap A ("overdue") and "tomorrow" (Lead, CXO's words);
   - mail v4 for every seat, Mon 11-09.
 - **Still carried:** #2242's last row (xian's remove and re-add); #2235; #1680; PDR-102 C1–C8 checks on document-touching placements.
