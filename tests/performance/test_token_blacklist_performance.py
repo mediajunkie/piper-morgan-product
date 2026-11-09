@@ -69,9 +69,7 @@ async def sample_tokens(blacklist):
     # Add 10 sample tokens to blacklist
     for i in range(10):
         token_id = f"test_token_{uuid.uuid4()}"
-        await blacklist.add(
-            token_id=token_id, reason="performance_test", expires_at=expires_at
-        )
+        await blacklist.add(token_id=token_id, reason="performance_test", expires_at=expires_at)
         token_ids.append(token_id)
 
     yield token_ids
@@ -234,9 +232,7 @@ async def test_concurrent_blacklist_lookups():
     expires_at = datetime.now(timezone.utc) + timedelta(hours=1)
     for i in range(10):
         token_id = f"test_token_{uuid.uuid4()}"
-        await blacklist.add(
-            token_id=token_id, reason="performance_test", expires_at=expires_at
-        )
+        await blacklist.add(token_id=token_id, reason="performance_test", expires_at=expires_at)
         token_ids.append(token_id)
 
     num_concurrent = 50
