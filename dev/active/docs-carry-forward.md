@@ -5,7 +5,7 @@
 ## NOW (11-08 22:12 STOP)
 - **Mon 11-09 04:12 START owes the 11-08 omnibus** (Sonnet subagent draft, model set explicitly, then I verify: commit recount, anchored `^<!-- DAY-CLOSED` lines, prose-rule greps, capitalized-word scan, Docs verification bullet, Exec done-memo). Exact marker only.
 - **Done 11-08:** 11-07 omnibus landed. "When Accuracy Scores Worse" PUBLISHED 22:13 (site e4459f8926, deployments API success), row `published`, draft archived.
-- **Owed from xian:** Medium and LinkedIn URLs for "When Accuracy Scores Worse". On receipt set `mediumURL`, `linkedinURL`, status `distributed`, `canonicalSite` distributed (`liPubDate` only if he gives a date). Ask once at the next START if still absent.
+- **Owed from xian:** the Medium URL for "When Accuracy Scores Worse" (LinkedIn URL recorded 11-08). On receipt set `mediumURL`, `linkedinURL`, status `distributed`, `canonicalSite` distributed (`liPubDate` only if he gives a date). Ask once at the next START if still absent.
 - **PRE-FLIGHT (xian 11-07):** slot must match weekday (Sat/Sun insight, Tue/Thu building, Wed ship, no Mon/Fri). Run publish-to-blog Pre-flight 3. Never take a category from a memo alone. If the dry-run shows stray mid-sentence breaks, join hard-wrapped lines in the draft (whitespace only) and tell Comms.
 - **Mon 11-09: mail v4 opens to my seat** (CIO sends a test message). `python3 scripts/mail4.py inbox --role docs`, `read ID`, `ack ID done`, `send --to <role> --type ... --subject ... --body-file ...`. v3 is the fallback to 11-23: say why in my log and tell CIO. Mail for PM goes to Exec. Outside agents use `mail-send-external.sh`.
 - **Mon 11-09: weekly audit.** Next monthly Dec 7.
