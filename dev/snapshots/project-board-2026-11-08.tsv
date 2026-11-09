@@ -2120,3 +2120,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2326	OPEN	Production		Floor offers to read ("Want me to look at it now?") aren't armed, so yes reads nothing: arm read offers with a resolvable target			
 2327	OPEN	Production		Floored action names outside every vocabulary go unread: audit the served routing_to_floor logs	architecture		
 2328	OPEN	Production		complete_todo: "make clear mark them done" says it couldn't find a todo matching 'them' instead of asking which	UX		
+2331	OPEN	Production		PREF-INFER: inferred preferences, 'what have you learned about me', and preferences in the floor prompt (split from #955)	enhancement,journey:manage-my-data		
+2330	OPEN	Production		"make take care of mean mark it done" changes "clear" when clear is stored: the classifier names the clear alias for the take-care-of verb	UX		
