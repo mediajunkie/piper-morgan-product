@@ -2123,5 +2123,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2331	OPEN	Production		PREF-INFER: inferred preferences, 'what have you learned about me', and preferences in the floor prompt (split from #955)	enhancement,journey:manage-my-data		
 2330	OPEN	Production		"make take care of mean mark it done" changes "clear" when clear is stored: the classifier names the clear alias for the take-care-of verb	UX		
 2333	OPEN	Production		Slack spatial positions use salted hash(): a room's position changes on every process start	bug		
-2334	OPEN	Production		Token blacklist fails closed under >20 concurrent requests: Redis ConnectionPool raises 'Too many connections' instead of waiting	bug		
+2334	CLOSED	Production		Token blacklist fails closed under >20 concurrent requests: Redis ConnectionPool raises 'Too many connections' instead of waiting	bug		COMPLETED
 2335	OPEN	Production		RedisFactory logs the full REDIS_URL at startup; an Upstash URL carries the password	bug		
+2336	OPEN	Production		RedisFactory.create_client pings Redis on every client it hands out: one extra round trip on every Redis read, including each authenticated request's revocation check	architecture		
