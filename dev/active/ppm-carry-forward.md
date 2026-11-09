@@ -612,7 +612,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Placed 11-08: #2327 (Q), #2328 (V), #2331 and #2330 (T).
   - Closed 11-08: #2321, #2324, #2318, #2270, #955.
   - Placed 11-09: #2333 (C), #2334 (Q), #2335 (D), from Lead's #1452 burn-down.
-- **Known-failing backlog (#1452):** fixture 34 to 0 by Lead 11-09 morning; 21 left (flaky 18, regression 3). The 18 flaky stay out of the 11-13 sprint (PPM 11:23); the 11-26 review can take them up. #2335's live-log check is CIO's.
+- **Known-failing backlog (#1452):** fixture 34 to 0 by Lead 11-09 morning; 21 left (flaky 18, regression 3). The 18 flaky stay out of the 11-13 sprint (PPM 11:23); the 11-26 review can take them up. #2335's live-log check and any rotation are xian's, on Exec's rollup v906 (Exec 11:33).
 - **#955 closed 11-08 16:10 (CXO)** on the clear-preference slice, with PPM's unit-pinned exception for the failed-write line. The rest is #2331 (T); #2330 (T, low). Not owed by PPM: #2232's local fault run adds the failed-write row when it lands.
 - **OWED rows:**
   - **key: sprint-state-refresh** (Filed 2026-11-09; to: exec; trigger: Fri 11-13 START. Refresh the sprint table's State column from `gh issue view` on every named issue, before the review).
