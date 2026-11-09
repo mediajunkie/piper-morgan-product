@@ -619,8 +619,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
 - **web-seed-1386:** fully fresh since 11-08 15:21 (no preference stored, 8 open todos). #2325's admin reset wasn't needed.
 - **Fresh-account list (Q8, after the lift):** #2270's not-connected turn 1, Path B's quote, and possibly #2322's stored-done row.
+- **Mail v4 is live for PPM (CIO, 11-09 10:09; acked 10:10).** Every inbox check reads both: the v3 folder and `python3 scripts/mail4.py inbox --role ppm`. v3 stays the fallback until the 11-23 review. Ops doc: `docs/internal/operations/mail-v4-pilot.md`.
 - **Waiting on others:**
   - #2290 (Lead);
   - #2320's per-phase log (Lead);
-  - mail v4 for every seat, Mon 11-09.
 - **Still carried:** #2242's last row (xian's remove and re-add); #2235; #1680; PDR-102 C1–C8 checks on document-touching placements.
