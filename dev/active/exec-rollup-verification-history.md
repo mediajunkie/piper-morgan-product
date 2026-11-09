@@ -483,3 +483,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v900 22:10 Sun 11-08: Sunday post publish-ready to Docs (Comms 22:09); link checker red from GitHub 5xx (run 42569350529: 81 with 23 x 5xx; run 42570768907 counted 46 before cancel). Beta 24c8c7f5e7.
 - v901 04:22 Mon 11-09: Sunday post live (Docs 22:13; curl -L 200 at 04:22); Medium/LinkedIn owed by xian.
 - v902 06:02 Mon 11-09: Monday lead; beta 24c8c7f5e7 (/health 06:01); main 12/12; sprint window closes 12:00; weekend items (D5, #2270) dropped.
+- v903 08:56 Mon 11-09: sprint ratified (xian via Janus 08:48, PPM 08:53); 11-13 review shortened; #2157 drill ask moved to xian now; planning-proposal item removed.

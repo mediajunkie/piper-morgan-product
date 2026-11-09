@@ -104,13 +104,15 @@ def load_sprint(path):
     for line in open(path, encoding="utf-8"):
         if line.startswith("# ") and not title:
             title = line[2:].strip()
-        elif line.startswith("**Author:**") and "**Status:**" in line:
-            status = line.split("**Status:**", 1)[1].split(".")[0].strip()
+        elif "**Status:" in line and not status:
+            # "**Status:** a proposal." (11-06) or "**Status: ratified by xian, Mon 11-09** (...)" (11-09)
+            status = line.split("**Status:", 1)[1].replace("**", "").split(".")[0].strip()
         elif line.startswith("## "):
             in_set = line.startswith("## The named set")
         elif in_set:
             cols = [c.strip() for c in line.strip().strip("|").split("|")]
-            if len(cols) == 4 and cols[0].isdigit():
+            # 4 columns until 11-09; a fifth, "State, 11-09", since
+            if len(cols) in (4, 5) and cols[0].isdigit():
                 rows.append((cols[0], cols[1], cols[3]))
     return title, status, rows
 
@@ -321,7 +323,7 @@ def main():
             f"<h2>{esc(title)}</h2><p>{esc(status[:1].upper() + status[1:])}. Read from {esc(SPRINT)}.</p>"
         )
         w(
-            '<div class="scroll"><table><tr><th>#</th><th>Item</th><th>Issues</th><th>Blocker at the start</th></tr>'
+            '<div class="scroll"><table><tr><th>#</th><th>Item</th><th>Issues</th><th>Blocker</th></tr>'
         )
         for num, item, blocker in srows:
             ns = [int(x) for x in re.findall(r"#(\d+)", item)]

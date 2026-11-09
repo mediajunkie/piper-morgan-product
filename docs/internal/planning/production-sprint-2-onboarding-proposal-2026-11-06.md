@@ -1,6 +1,8 @@
-# First two-week Production sprint (11-13 to 11-26): proposed named set
+# First two-week Production sprint (11-13 to 11-26): the named set
 
-**Author:** PPM, 2026-11-06, under xian's 10:33 ruling (two-week sprints from Fri 11-13; Exec's memo 10:34). **For:** the 11-13 weekly review, where xian ratifies it. **Status:** a proposal. Lead sizes the build items before the review. The Sprint field isn't touched: this set lives here and on the map.
+**Status: ratified by xian, Mon 11-09** ("PM sprint plan approved", to Janus, relayed 08:48). The Friday 11-13 review is shortened, not dropped (Exec, decisions.log 08:56): no ratification there, only a one-line re-check of the State column, which PPM refreshes that morning. The Sprint field isn't touched: this set lives here and on the map.
+**Author:** PPM, 2026-11-06, under xian's 10:33 ruling (two-week sprints from Fri 11-13; Exec's memo 10:34).
+**Layout (11-09, on xian's note that some bullets were run-on):** one short line per table cell. Each item's history is in "History" at the bottom, unchanged.
 
 - **Main focus:** onboarding to first value (xian, 11-04).
 - **Ships:** #070 (11-13 to 11-19) reports progress, and #071 (11-20 to 11-26) reports the final score.
@@ -20,6 +22,60 @@ Beta-user sessions come after the hold lifts. They aren't in this sprint's score
 ## The named set, with each item's blocker written beside it
 
 Rule, from the ruling: no more than one named item behind any single unanswered design question or decision.
+
+| # | Item | Owner | Blocker | State, 11-09 |
+|---|---|---|---|---|
+| 1 | #2261: narrow GitHub's `repo` scope | Lead | xian's #2174 runs | Open |
+| 2 | #2282: one canonical host, `beta.pipermorgan.ai` | Web | xian's word for Web's sign-in check | Open |
+| 3 | #2292: SPF, DKIM and DMARC | xian | xian's records in Google Admin and Hover | Open |
+| 4 | #2266's last box: a run as a second GitHub account | Web or PA | xian's second GitHub account | Open |
+| 5 | #2219, #2295, #2294: todo replies (ordinal complete and delete) | Lead, then CXO | none | D5 rows done (#2318, #2321 closed 11-08); #2219's other rows open |
+| 6 | #2267: email sign-in after a username is set | Lead | none | Wrong-password words passed; username row open |
+| 7 | #2268, #2274: the wizard's connect handoff and API-key line | Lead, Web | none | Open |
+| 8 | #2269 3a: "link repo" corpus rows | Lead | none | Open. #2270 (repo as document) closed 11-08 |
+| 9 | #2271: the "yes" loop on adding a repo | Lead, Web | none | **Done** (closed 11-06) |
+| 10 | CXO's wizard flow: #2273, #2275, #2272's page half, #2286 | Lead, Web, then CXO | Lead names the first ask; prompt 3 needs a fresh connected account | #2273 and #2272 closed; #2275 and #2286 open |
+| 11 | Paths A and B served on fresh accounts | PA, CXO | the invite hold lifting | Not started |
+| 12 | Path B's build: #2297 and #2301 | Lead | Lead's size; Arch on attachment | Open |
+| 13 | #2304: consent asks say what they'd do, not an op name | Lead | none | Open |
+
+#2293 (the priority sort) passed on 11-06 and closes when CXO judges it, so it isn't named.
+
+**Served-check rows (CXO, 10:37):** every build in items 4–10 gets its served quote from PA or Web right after the promotion that carries it, scheduled beside the build. CXO judges only from a quote, so the judgment should never be the one unscheduled step. In #070's progress Ship, a build counts as served only once it has been quoted.
+
+## The second lane: plugin and MCP, with no Lead build time
+
+- **PA's served reads:** #2175's no-account walk is done (11-06), and CXO's three calls are on the issue. #1282's skill and page re-checks are next.
+- **xian's two #2242 steps:** the held-token `mcp_allow.py remove`, and his decision on who may connect in the beta. The listing follows that decision.
+- **Builds (#1911, and #2175's `next` through `/setup`)** go in the next sprint where Lead isn't fully on onboarding.
+
+## Candidate for xian (sent to him on Exec's rollup 11-09; he books his own hour)
+
+- **One #2157 restore-drill run** early in the sprint, using the 11-04 16:38 safe form, without the full write-up. Arch recommends it (11-06, via Exec 11:01): about an hour, and it retires the larger of the two P1 risks. It needs xian's terminal, because the drill password stays with him. That's a fifth xian step, separate from the other four, so the blocker rule holds. #2157 stays P1, not a hold item. #2158 stays unnamed, since the erase script already serves a request by hand.
+
+## Not named, and why
+
+- **#2157 and #2158 (P1, the restore drill and the purge):** they keep their place, but aren't hold conditions (xian, 11-04).
+- **#2164 (the waitlist):** waits on HOST confirming the waves.
+- **#2247 (Slack as a source):** 4.5–5.5 Lead-days, plus #1514's review.
+- **#2226 (local embeddings):** xian's "when".
+- **#2149 and the router items it holds (#2195, #2184, #2209):** the catalog's shape is an open design question. Naming them again would repeat the first sprint's bunching.
+
+## Fit
+
+Estimates, not measurements (Lead's sizes, 11-06).
+- About 8 Lead-days of named work against about 7 available, so it draws one day on the reserve.
+- Trimmed out on 11-06: #2272's chat half, #2299, #2300 and #2269 3b.
+- They come back in this order if a slot frees up: #2312, #2314, #2309, #2269 3b, #2305, #2299.
+- The working behind these numbers is under "History".
+
+**Reserve:** 30% of Lead-days for beta-session and partner reports (Lead's 10-31 rule).
+
+Verified how (11-09 08:52 layout pass): `gh issue view` on the 43 issues in the table and the lists above it, for the "State, 11-09" column. Layer: GitHub state. No sizes changed.
+
+## History (moved from the table 11-09, unchanged)
+
+The table's earlier cells, as they stood on 11-08:
 
 | # | Item | Owner | Blocker at the start |
 |---|---|---|---|
@@ -43,29 +99,9 @@ Rule, from the ruling: no more than one named item behind any single unanswered 
 | 13 | **#2304: consent asks say what they'd do, never an op name.** Every "Quick check" ask gets a summary built from the declared args, or CXO's statement with nothing armed. It's the same root as #2219's seam write asks (Lead, 11-06). CXO's twelve confirms (11:28) are its body, and its commit deletes the seam's `elif` (Arch, 11:38). | Lead (S to M) | none. CXO's words exist. Pulled in 11-06 on CXO's case: it puts an untrue sentence in front of a person today. |
 | 11 | **Paths A and B served:** PA's quotes on fresh test accounts, and CXO's judgment | PA, CXO | the invite hold lifting (items 1–3), then HOST mints fresh accounts with xian present. Path B can be previewed sooner on PA's existing account, labelled not first-session, and never counted. |
 
-#2293 (the priority sort) passed on 11-06 and closes when CXO judges it, so it isn't named.
+### Fit and served reads, 11-06 to 11-08 (moved 11-09, unchanged)
 
-**Served-check rows (CXO, 10:37):** every build in items 4–10 gets its served quote from PA or Web right after the promotion that carries it, scheduled beside the build. CXO judges only from a quote, so the judgment should never be the one unscheduled step. In #070's progress Ship, a build counts as served only once it has been quoted.
-
-## The second lane: plugin and MCP, with no Lead build time
-
-- **PA's served reads:** #2175's no-account walk is done (11-06), and CXO's three calls are on the issue. #1282's skill and page re-checks are next.
-- **xian's two #2242 steps:** the held-token `mcp_allow.py remove`, and his decision on who may connect in the beta. The listing follows that decision.
-- **Builds (#1911, and #2175's `next` through `/setup`)** go in the next sprint where Lead isn't fully on onboarding.
-
-## Candidate for xian at the 11-13 review
-
-- **One #2157 restore-drill run** early in the sprint, using the 11-04 16:38 safe form, without the full write-up. Arch recommends it (11-06, via Exec 11:01): about an hour, and it retires the larger of the two P1 risks. It needs xian's terminal, because the drill password stays with him. That's a fifth xian step, separate from the other four, so the blocker rule holds. #2157 stays P1, not a hold item. #2158 stays unnamed, since the erase script already serves a request by hand.
-
-## Not named, and why
-
-- **#2157 and #2158 (P1, the restore drill and the purge):** they keep their place, but aren't hold conditions (xian, 11-04).
-- **#2164 (the waitlist):** waits on HOST confirming the waves.
-- **#2247 (Slack as a source):** 4.5–5.5 Lead-days, plus #1514's review.
-- **#2226 (local embeddings):** xian's "when".
-- **#2149 and the router items it holds (#2195, #2184, #2209):** the catalog's shape is an open design question. Naming them again would repeat the first sprint's bunching.
-
-## Fit (Lead's sizes, 11-06 10:40; estimates, not measurements)
+**Fit (Lead's sizes, 11-06 10:40; estimates, not measurements)**
 
 Items 4–10 come to about 9–10 Lead-days. Two weeks with 30% held back leaves about 7. PPM's trims:
 1. **Taken: one batched rule-7 screen, as one run with separate arms, each with its own preregistered bar (Arch, 10:48),** covering #2269 3a, #2270, #2271's offered wording and ADR-083's screen. That saves about a day. Lead prices it to Exec first.
@@ -123,7 +159,6 @@ Items 4–10 come to about 9–10 Lead-days. Two weeks with 30% held back leaves
 
 **Item 10, settled at 10:49:** CXO delivered the #2273, #2272 and #2275 design into the design doc. The day-5 trigger for #2272's chat half now turns on Lead's three confirmations, not on design.
 
-**Reserve:** 30% of Lead-days for beta-session and partner reports (Lead's 10-31 rule).
 
 Verified how:
 - `gh issue view` this turn on all 26 issues named here: states, labels, and the latest comment on 13 of them.
@@ -131,3 +166,4 @@ Verified how:
 - decisions.log at 11-06 10:22 and 10:33, and Exec's two 10:34 memos.
 
 Layer: GitHub and repo text. No sizes are claimed (Lead sizes before the review), and no dates beyond the ruling's.
+

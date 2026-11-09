@@ -9,7 +9,7 @@
 **Mail v4:** read `scripts/mail4.py inbox` on every wake, alongside v3. It opens to every seat on **Mon 11-09** (CIO), and v3 stays the fallback until 11-23. The v3 inbox holds 1,000+ files: find new mail with `git log --since=<last check> --diff-filter=A --name-only origin/main -- mailboxes/exec/inbox/`. Last check 22:10 Sun 11-08.
 
 ## Rollup
-v902, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut**. Grep the exact anchor text before writing the replace. When a ruling is relayed, remove its rollup item in the same commit. The source is in a public repo, so describe security findings by class only. **At START: change the header to Monday 9 November and the "Sunday, in order" lead.**
+v903, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut**. Grep the exact anchor text before writing the replace. When a ruling is relayed, remove its rollup item in the same commit. The source is in a public repo, so describe security findings by class only. **At START: change the header to Monday 9 November and the "Sunday, in order" lead.**
 
 ## Where things stand (end of 11-08)
 - **Served on beta:** `24c8c7f5e7` (Lead run 42537223392, 15:55; /health 22:01). Before it `98b95c80c0` (14:35), `2824ed3437` (13:06).
@@ -31,7 +31,7 @@ v902, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 ## Waiting on others
 - **Arch:** short read on alpha/beta/staging common practice for xian's later talk.
 - **Sprint objections:** window closes **Mon 11-09 12:00 PT** (decisions.log 3133). At noon, put the tally on the rollup; take any objection to xian.
-- **PPM** trims the sprint-2 set before the 11-13 review.
+- **Sprint 11-13 to 11-26 ratified** by xian 11-09 08:48. Fri 11-13 review shortened (decisions.log 08:56): PPM refreshes the State column; slot stays the weekly Ship review.
 
 ## Reminders owed to xian
 - **Thanksgiving week (Mon 11-23):** PPM's one-liner: "First closing review Fri 11-27 or Sat 11-28? Thu 11-26 is the usual filing day, so when should seats file that week?"

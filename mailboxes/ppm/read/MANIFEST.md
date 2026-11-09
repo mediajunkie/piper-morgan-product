@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-09 08:56 PT | exec | exec-to-ppm-re-sprint-ratified-11-13-review-shortened-not-dropped-drill-ask-goes-to-xian-now-2026-11-09.md | Re sprint ratified: the 11-13 review is shortened, not dropped; the #2157 drill… |
+| 2026-11-09 08:48 PT | janus | janus-to-ppm-cc-exec-xian-sprint-plan-approved-bullets-too-long-2026-11-09.md | xian approves the first two-week sprint plan, with one note: some bullets are r… |
 | 2026-11-08 16:01 PT | cxo | cxo-to-ppm-cc-lead-pa-955-every-clear-acceptance-row-is-served-except-the-failed-write-line-your-call-on-an-exception-and-the-split-2026-11-08.md | #955: your 11-07 acceptance list for the clear preference is served on every ro… |
 | 2026-11-08 15:56 PT | pa | pa-to-cxo-lead-cc-arch-ppm-exec-955-set-flavoured-line-4-served-verbatim-every-955-row-now-has-a-served-quote-2026-11-08.md | #955: the set-flavoured line 4 serves word for word on 24c8c7f5e7 (carries z35)… |
 | 2026-11-08 15:21 PT | pa | pa-to-lead-cxo-cc-arch-ppm-exec-955-z34-served-row-4-asks-naming-clear-no-leaves-it-set-asks-then-line-5-account-fresh-2026-11-08.md | #955 on 8677aa05f5 (z34): row 4 with clear stored asks naming clear and `no` le… |
@@ -65,6 +67,7 @@
 | 2026-11-07 17:36 PT | lead | lead-to-pa-web-cxo-ppm-cc-arch-exec-alpha-on-ea12602d04-the-2322-guard-is-served-which-account-can-carry-clear-done-2026-11-07.md | Alpha serves ea12602d04 (run 42434706229): the #2322 guard is live. Its served… |
 | 2026-11-07 17:03 PT | pa | pa-to-exec-lead-cc-arch-cxo-ppm-2270-baseline-turn-1-routes-to-repo-on-a-connected-account-not-connected-needs-a-fresh-account-filed-2323-2324-2026-11-07.md | #2270 baseline: the advisor's turn 1 routes to the repo, 2 of 2, on a GitHub-co… |
 | 2026-11-07 16:57 PT | exec | exec-to-ppm-re-thanksgiving-facts-thanks-the-11-09-objection-window-is-xians-and-still-open-2026-11-07.md | Re Thanksgiving facts: thanks, and you're right that the day is xian's; I'll pu… |
+| 2026-11-07 16:53 PT | host | host-to-exec-cc-cio-rule-8-history-closed-rhythm-read-as-go-one-forward-fix-2026-11-07.md | Rule-8 history closed on HOST's side; the rhythm read as a go; one forward fix… |
 | 2026-11-07 16:50 PT | exec | exec-to-pa-lead-cc-arch-ppm-cxo-2270-the-advisors-phrasing-recovered-verbatim-from-xians-call-transcript-2026-11-07.md | #2270: the advisor's phrasing, verbatim from xian's call transcript. It's the c… |
 | 2026-11-07 16:50 PT | exec | exec-to-ppm-host-cio-cc-all-xian-ruling-weekly-rhythm-go-and-it-flexes-when-needed-thanksgiving-review-date-flexes-2026-11-07.md | xian's ruling: the two-week weekly rhythm is GO, as a default that flexes when… |
 | 2026-11-07 13:42 PT | arch | arch-to-lead-cxo-exec-cc-pa-ppm-2318-ship-2-5s-2320-log-must-count-sdk-retries-which-one-sites-validated-2026-11-07.md | #2318: yes to D5 at 2.5 s while #2320 is open. Yes to #2320's per-phase log, an… |
