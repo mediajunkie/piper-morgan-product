@@ -49,6 +49,13 @@ Rule, from the ruling: no more than one named item behind any single unanswered 
 - **xian's two #2242 steps:** the held-token `mcp_allow.py remove`, and his decision on who may connect in the beta. The listing follows that decision.
 - **Builds (#1911, and #2175's `next` through `/setup`)** go in the next sprint where Lead isn't fully on onboarding.
 
+## The health lane: the known-failing backlog (PPM, 11-09 10:23)
+
+- **#1452 (section Q), not a named item.** The backlog sat flat at 55 since 11-02: fixture 34, flaky 19, regression 2 (CIO's week count, Exec 10:18).
+- **Why a lane, not the set:** the set already runs about a day over, and the score is onboarding. Adding it would push out Path B's build, and that's the one item the score can't lose.
+- **The bar:** the 34 fixture entries go down in the sprint, and #070 and #071 each report the count. Lead's size (asked 10:18) sets the target. If a Sonnet subagent can do most of it from a brief, Lead reviews it without spending onboarding days.
+- If Lead's size says it can't move without taking named-set days, it comes back to PPM, and then to Exec if the set's scope would change.
+
 ## Candidate for xian (sent to him on Exec's rollup 11-09; he books his own hour)
 
 - **One #2157 restore-drill run** early in the sprint, using the 11-04 16:38 safe form, without the full write-up. Arch recommends it (11-06, via Exec 11:01): about an hour, and it retires the larger of the two P1 risks. It needs xian's terminal, because the drill password stays with him. That's a fifth xian step, separate from the other four, so the blocker rule holds. #2157 stays P1, not a hold item. #2158 stays unnamed, since the erase script already serves a request by hand.
