@@ -2125,4 +2125,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2333	OPEN	Production		Slack spatial positions use salted hash(): a room's position changes on every process start	bug		
 2334	CLOSED	Production		Token blacklist fails closed under >20 concurrent requests: Redis ConnectionPool raises 'Too many connections' instead of waiting	bug		COMPLETED
 2335	OPEN	Production		RedisFactory logs the full REDIS_URL at startup; an Upstash URL carries the password	bug		
-2336	OPEN	Production		RedisFactory.create_client pings Redis on every client it hands out: one extra round trip on every Redis read, including each authenticated request's revocation check	architecture		
+2336	CLOSED	Production		RedisFactory.create_client pings Redis on every client it hands out: one extra round trip on every Redis read, including each authenticated request's revocation check	architecture		COMPLETED
