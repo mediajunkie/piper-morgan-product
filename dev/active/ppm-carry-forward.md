@@ -611,9 +611,10 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Production 276** (`gh` 21:34 11-08 = Total), map v115 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned.
   - Placed 11-08: #2327 (Q), #2328 (V), #2331 and #2330 (T).
   - Closed 11-08: #2321, #2324, #2318, #2270, #955.
+  - Placed 11-09: #2333 (C), #2334 (Q), #2335 (D), from Lead's #1452 burn-down.
+- **Known-failing backlog (#1452):** fixture 34 to 0 by Lead 11-09 morning; 21 left (flaky 18, regression 3). The 18 flaky stay out of the 11-13 sprint (PPM 11:23); the 11-26 review can take them up. #2335's live-log check is CIO's.
 - **#955 closed 11-08 16:10 (CXO)** on the clear-preference slice, with PPM's unit-pinned exception for the failed-write line. The rest is #2331 (T); #2330 (T, low). Not owed by PPM: #2232's local fault run adds the failed-write row when it lands.
 - **OWED rows:**
-  - **key: 1452-fixture-target** (Filed 2026-11-09; to: lead; trigger: Lead's size for the 34 fixture entries. Write the target on #1452; placed as lane work in the sprint, PPM 10:23).
   - **key: sprint-state-refresh** (Filed 2026-11-09; to: exec; trigger: Fri 11-13 START. Refresh the sprint table's State column from `gh issue view` on every named issue, before the review).
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift; needs #2297 and #2301).
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).

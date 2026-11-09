@@ -55,6 +55,9 @@ Rule, from the ruling: no more than one named item behind any single unanswered 
 - **Why a lane, not the set:** the set already runs about a day over, and the score is onboarding. Adding it would push out Path B's build, and that's the one item the score can't lose.
 - **The bar:** the 34 fixture entries go down in the sprint, and #070 and #071 each report the count. Lead's size (asked 10:18) sets the target. If a Sonnet subagent can do most of it from a brief, Lead reviews it without spending onboarding days.
 - If Lead's size says it can't move without taking named-set days, it comes back to PPM, and then to Exec if the set's scope would change.
+- **Met before the sprint (11-09 11:23).** Lead took the fixture entries 34 to 0 this morning, about two Lead-hours, off CIO's 10:10 count. The backlog is 21: flaky 18, regression 3 (CI confirms on the gating push).
+- **The 18 flaky stay out of this sprint.** Lead's size is about one Lead-day with a subagent, the same day the set already runs over. #070 and #071 report the count by kind from CI's `backlog size:` line, and the 11-26 review can take them up.
+- Burn-down finds, placed 11-09: #2333 (C, spatial, Arch sequences), #2334 (Q, built), #2335 (D, built; CIO checks the live log line).
 
 ## Candidate for xian (sent to him on Exec's rollup 11-09; he books his own hour)
 
