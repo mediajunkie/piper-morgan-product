@@ -1,18 +1,18 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-07 21:19 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/11/07/2026-11-07-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-08.
+## ⭐ CURRENT STATE — 2026-11-08 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/08/2026-11-08-0604-comms-code-log.md`, DAY-CLOSED. Start a new log 11-09.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
 - **Weekend slots are INSIGHTS (Sat and Sun, Medium + LinkedIn).** Tue/Thu building, Wed Ship. I called Sat "building" three times (11-04 memo, scaffold, publish-ready); Docs corrected it 11-07. **Every publish-ready memo now states the category, checked against the weekday.**
 - **Sat 11-07 "At Long Last, Beta": PUBLISHED and DISTRIBUTED** (https://pipermorgan.ai/blog/at-long-last-beta, website 7a6605009f; insight; xian's Medium and LinkedIn URLs on the calendar). Draft archived by Docs.
 - **Publish pipeline after the Ignored Build Step: CLOSED** on Sat's live deploy (`success`), memo a05c096c1.
-- **Sun 11-08 "When Accuracy Scores Worse"** (`docs/public/comms/drafts/when-accuracy-scores-worse.md`, renamed from `fixed-and-scores-higher-came-apart.md`; insight). Body is still my scaffold. **xian: "will either write that tonight or tomorrow morning."** Watch for his admin-UI commit, then review, fact-check, template-audit and a publish-ready that states the category. Facts: the two percentages come from two different runs, not a controlled A/B. It teases Tue.
+- **Sun 11-08 "When Accuracy Scores Worse"** (`docs/public/comms/drafts/when-accuracy-scores-worse.md`, renamed from `fixed-and-scores-higher-came-apart.md`; insight). Body is still my scaffold. **xian (11-07): "will either write that tonight or tomorrow morning." It was NOT written on 11-08** (no commit, no local edit by 21:19); the calendar row still says planned for 11-08. Moving the date is xian's call, not mine. **Title lock: Sun can't go to Docs until xian confirms Tue's final title** (asked in chat 11-08 18:19 with the four scaffold options). Watch for his admin-UI commit, then review, fact-check, template-audit and a publish-ready that states the category. Facts: the two percentages come from two different runs, not a controlled A/B. It teases Tue.
 - **Tue 11-10 "Never Green in a Thousand Runs"** (building): only E2E never passed. Teases Thu. **Thu 11-12 "The Server Key Is Not a Real Concept"** (building): the "truth over feeling of progress" quote is about the epic, not the key. Its tease target waits on the talk.
 - **Strategy talk with xian: still not held** (blocked on his time). Brief: planning doc rev 32, "For our editorial-strategy session". My pick for the "One Account Means One Hand" partner (Nov 14/15) is **C with 8**. Candidate I, "A Review Where Nothing Became a Skill", has no slot. Waiting on the talk: the partner and its calendar row, Thu's tease target, beat merges, then the scaffold format in `draft-blog-post`.
 - **Ship #068** (Wed 11-11), "Whose Connection Is It, Anyway?": a **scaffold for xian** (`weekly-ship-068-draft-2026-11-06.md`, 8 `[xian]` slots), not an Exec draft (Exec 11-08). Waits on xian's tokens and prose; Comms runs the External fact-check when his prose lands.
 - **Two-week sprints from Fri 11-13; rhythm GO as a default that flexes (xian 11-07 16:49).** #069 ordinary, #070 first progress, #071 first final score; even = progress, odd = final score. Forms in `draft-weekly-ship` v1.15 Step 5-sprint. Comms has no objection (deadline Mon 11-09 noon).
 - **GitHub criteria line:** in my briefing; run every fire, delta by createdAt. 11-07 delta: #2324 (repo-analysis "runway" wording), not Comms work.
-- **Mail v4 from Mon 11-09:** read `python3 scripts/mail4.py inbox --role comms` as well as v3. v3 is the fallback until 11-23.
+- **Mail v4 from Mon 11-09 (starts today):** read `python3 scripts/mail4.py inbox --role comms` as well as v3. v3 is the fallback until 11-23.
 - **Invites held (xian 11-04)** until #1551, #2261 and #2178 are done. Copy must not imply anyone can join now.
 - **Waiting list (#2256):** xian pastes the confirmation email and signs up, then HOST reads it.
 - **HOLD (PDR-102):** no ownership claim in copy until C7 is verified and C8 has a surface.
