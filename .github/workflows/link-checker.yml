@@ -91,6 +91,7 @@ jobs:
         if: always()
         run: |
           CEILING=60
+          UNMEASURED=0
           COUNT=$(grep -oE '🚫 Errors\.+[0-9]+' link-checker-results.md | grep -oE '[0-9]+$' || echo "")
           if [ -z "$COUNT" ]; then
             echo "::error::#1593 ratchet could not read an error count from lychee output — refusing to pass on a missing measurement (m-44: a clear that measured nothing is not a clear)"
@@ -141,6 +142,7 @@ jobs:
               for h in $(printf '%s\n' $DOWN | sort | uniq -c | awk '$1 >= 10 {print $2}'); do
                 n=$(grep -cE "\[5[0-9]{2}\] https?://$(echo "$h" | sed 's/\./\\./g')[/ :]" link-checker-results.md || true)
                 COUNT=$((COUNT - n))
+                UNMEASURED=$((UNMEASURED + n))
                 echo "::warning::$h answered 5xx on both looks for $n links: a host outage, not $n broken links. -$n; links on $h are NOT MEASURED this run"
               done
               echo "broken links after the second look: $COUNT (frozen ceiling: $CEILING)"
@@ -150,7 +152,12 @@ jobs:
             echo "::error::broken links $COUNT exceed frozen ceiling $CEILING — new breakage may not ship. Fix the new links, or (for cleanup) lower CEILING in this workflow in the same commit."
             exit 1
           fi
-          if [ "$COUNT" -lt "$CEILING" ]; then
+          # A count with a host left out is a floor, not a measurement: never
+          # lock a ceiling to it (the first real run, 11-08: 74 -> 46 with
+          # GitHub's 21 links unmeasured, and it advised CEILING=46).
+          if [ "$COUNT" -lt "$CEILING" ] && [ "$UNMEASURED" -gt 0 ]; then
+            echo "broken links $COUNT are below ceiling $CEILING, but $UNMEASURED links were not measured this run: don't lower CEILING from this run"
+          elif [ "$COUNT" -lt "$CEILING" ]; then
             echo "::warning::broken links $COUNT are BELOW ceiling $CEILING — cleanup happened; lower CEILING to $COUNT in this workflow to lock it in (shrink-lock)"
           fi
 

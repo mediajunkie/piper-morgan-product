@@ -42,7 +42,7 @@ The gate fails when broken links exceed a frozen ceiling (`CEILING` in the workf
 
 - **Accepted outright:** 403, 429 and 503 (#1894).
 - **A second look, only when over the ceiling:** connection errors and 5xx get re-checked once after 60 seconds (10-31). Each URL that answers now comes off the count, and one that fails both looks stays counted. A 404 is never re-checked.
-- **A host outage comes off the count (11-08, Lead's question):** if one host still answers 5xx on 10 or more URLs at the second look, the host is down, not broken in 10 places. Its 5xx lines come off the count, and a warning names the host as not measured this run. The trigger was GitHub's 504s on 11-08: 81 broken links against a ceiling of 60, with no checked file changed. A handful of 5xx on one host still counts, so a dead site that answers 500 is still caught.
+- **A host outage comes off the count (11-08, Lead's question):** if one host still answers 5xx on 10 or more URLs at the second look, the host is down, not broken in 10 places. Its 5xx lines come off the count, and a warning names the host as not measured this run. The trigger was GitHub's 504s on 11-08: 81 broken links against a ceiling of 60, with no checked file changed. A handful of 5xx on one host still counts, so a dead site that answers 500 is still caught. A run with a host left out never advises lowering `CEILING`. Its count is a floor, not a measurement: the first real run went from 74 to 46 with GitHub's 21 links unmeasured, and before this fix it advised a ceiling of 46.
 - **No count at all fails the run.** If lychee can't run (on 11-08 its download from GitHub failed), the gate refuses to pass on a missing measurement.
 
 ### Reading Link Check Results
