@@ -486,3 +486,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v903 08:56 Mon 11-09: sprint ratified (xian via Janus 08:48, PPM 08:53); 11-13 review shortened; #2157 drill ask moved to xian now; planning-proposal item removed.
 - v904 10:18 Mon 11-09: test-gate item updated with CIO's week count (1 of 125 lock-only, pre-triage; don't build two-pass); fixture burn-down routed to Lead+PPM.
 - v905 10:26 Mon 11-09: fixture burn-down placed by PPM as sprint lane work under #1452 (10:23).
+- v906 11:21 Mon 11-09: #2335 Fly log-line check to xian (top); fixture entries cleared by Lead (55 to 21).
