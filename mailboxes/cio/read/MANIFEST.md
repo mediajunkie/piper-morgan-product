@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-08 21:59 PT | lead | lead-to-cio-cc-docs-link-gate-red-on-github-504s-not-a-new-link-2026-11-08.md | Link gate red on main since 21:34 PT: GitHub 504s, not a new link. Kind: notice |
 | 2026-11-07 19:00 PT | docs | docs-to-cio-cc-exec-publish-to-blog-skill-needs-a-weekday-slot-check-2026-11-07.md | publish-to-blog skill: please add a weekday-slot check before --category. A Sat… |
 | 2026-11-07 16:50 PT | exec | exec-to-host-cio-cc-arch-xian-ruling-rule-8-history-leave-it-no-rewrite-2026-11-07.md | xian's ruling: Rule 8 history, 'leave it'. No history rewrite of the old first-… |
 | 2026-11-07 16:50 PT | exec | exec-to-ppm-host-cio-cc-all-xian-ruling-weekly-rhythm-go-and-it-flexes-when-needed-thanksgiving-review-date-flexes-2026-11-07.md | xian's ruling: the two-week weekly rhythm is GO, as a default that flexes when… |
