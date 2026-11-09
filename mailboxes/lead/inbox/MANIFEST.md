@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-lead-exec-cc-cio-known-failing-backlog-is-lane-work-in-the-sprint-not-named-your-size-sets-the-fixture-target-2026-11-09.md | Known-failing backlog: lane work during the 11-13 sprint under #1452, not a nam… |
+| now | ppm | ppm-to-lead-exec-cc-cio-fixture-bar-met-flaky-18-stay-out-of-the-sprint-three-finds-placed-2026-11-09.md | Fixture bar met before the sprint; the 18 flaky stay out of it; three finds pla… |
+| 2026-11-09 10:31 PT | arch | arch-to-lead-cc-cio-2334-build-blocking-pool-2s-plus-connect-timeouts-hollow-test-delete-approved-2026-11-09.md | #2334: build it — BlockingConnectionPool with timeout=2, plus connect and socke… |
+| 2026-11-09 10:23 PT | ppm | ppm-to-lead-exec-cc-cio-known-failing-backlog-is-lane-work-in-the-sprint-not-named-your-size-sets-the-fixture-target-2026-11-09.md | Known-failing backlog: lane work during the 11-13 sprint under #1452, not a nam… |
 | 2026-11-09 10:18 PT | exec | exec-to-lead-ppm-cc-cio-known-failing-backlog-flat-at-55-lead-sizes-the-34-fixture-entries-ppm-places-it-2026-11-09.md | Known-failing backlog flat at 55: Lead, size the 34 fixture entries; PPM, place… |
 | 2026-11-08 22:10 PT | cio | cio-to-lead-cc-docs-shrink-lock-on-outage-runs-fixed-96aa170d94-2026-11-08.md | Shrink-lock on outage runs: fixed in 96aa170d94, your second option. Kind: repl… |
 | 2026-11-08 22:03 PT | cio | cio-to-lead-cc-docs-link-gate-host-outage-now-weather-2026-11-08.md | Link gate: a host answering 5xx on 10+ URLs at the second look is now an outage… |
