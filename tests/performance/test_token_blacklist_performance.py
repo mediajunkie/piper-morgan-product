@@ -274,10 +274,13 @@ async def test_concurrent_blacklist_lookups():
 
     print(f"{'='*60}\n")
 
-    # Assert reasonable performance under concurrent load
-    assert (
-        avg_latency <= TARGET_LATENCY_MS * 2
-    ), f"Concurrent avg latency {avg_latency:.3f}ms should be <{TARGET_LATENCY_MS*2}ms"
+    # Correctness, not wall time (Arch 11-09 11:21): an average on a shared CI
+    # runner is weather, and the old <10 ms bar was never measured because the
+    # test crashed on the pool first (issue 2334). The latency stays printed above.
+    assert len(results) == num_concurrent
+    assert all(
+        blacklisted for _, blacklisted in results
+    ), "every looked-up token was blacklisted, so every lookup must say so"
 
     # Cleanup: Close database connection to prevent event loop issues
     await db.close()
