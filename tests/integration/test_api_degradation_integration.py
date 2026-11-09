@@ -60,8 +60,9 @@ class TestAPIDegradationIntegration:
             assert "clarification_type" in data
 
             # Verify degradation message is user-friendly (stored in error field per Pattern-007)
-            assert "Database temporarily unavailable" in data["error"]
-            assert "Docker" in data["error"] or "try again" in data["error"]
+            # #1116 made this honest: it names the intent service, not the database.
+            assert "Intent service is currently unavailable" in data["error"]
+            assert "restart" in data["error"]
 
     def test_api_handles_circuit_breaker_degradation(self, test_client):
         """Test API handles exceptions during intent processing gracefully"""

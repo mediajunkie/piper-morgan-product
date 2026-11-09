@@ -76,31 +76,9 @@ async def test_service_container_full_lifecycle():
     ServiceContainer.reset()
 
 
-@pytest.mark.asyncio
-async def test_multiple_containers_are_singleton():
-    """
-    Integration test: Verify singleton pattern works across multiple instantiations.
-    """
-    # Reset to clean state
-    ServiceContainer.reset()
-
-    # Create first container and initialize
-    container1 = ServiceContainer()
-    await container1.initialize()
-
-    # Create second container (should be same instance)
-    container2 = ServiceContainer()
-
-    # Verify same instance
-    assert container1 is container2
-
-    # Verify second container sees initialized state
-    assert container2.is_initialized()
-    assert "llm" in container2.list_services()
-    assert "intent" in container2.list_services()
-
-    # Clean up
-    ServiceContainer.reset()
+# test_multiple_containers_are_singleton asserted the singleton that #322 removed on
+# purpose (one container per app via the lifespan; the unit tier pins that).
+# Removed 2026-11-09 off the full-suite backlog (1452).
 
 
 @pytest.mark.asyncio

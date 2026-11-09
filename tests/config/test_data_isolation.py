@@ -91,17 +91,9 @@ class TestDataIsolation:
         for section in expected_sections:
             assert section in content, f"PIPER.md should document '{section}' generically"
 
-    def test_piper_md_backup_exists(self):
-        """
-        Verify backup was created before modifications.
-
-        Success Criteria:
-        - Backup file exists with date suffix
-        - Backup contains original content (before extraction)
-        """
-        backup_files = list(Path("config").glob("PIPER.md.backup-*"))
-
-        assert len(backup_files) > 0, "PIPER.md backup should exist before modifications"
+    # test_piper_md_backup_exists checked for the one-time config/PIPER.md.backup-* file
+    # from the extraction; the backup was deleted on purpose (541dbb9561). Removed
+    # 2026-11-09 off the full-suite backlog (1452).
 
 
 # Fixtures for database session

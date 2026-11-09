@@ -236,7 +236,9 @@ class TestAlphaOnboardingE2E:
         """
         username = clean_test_user
         user_id = uuid.uuid4()
-        test_key = "sk-proj-test123abc456def789"
+        # High-entropy fake: the #268 validator rejects "test123"-style keys as weak,
+        # and this test is about storage, not the validator.
+        test_key = "sk-proj-Hq4Tz8Wm2Rk7Vb1Nc5Xj9Lp3Fd6Gs0Ya"
 
         # Create user
         async with AsyncSessionFactory.session_scope_fresh() as session:
@@ -264,6 +266,7 @@ class TestAlphaOnboardingE2E:
                     user_id=user_id_str,
                     provider="openai",
                     api_key=test_key,
+                    validate=False,
                 )
 
                 assert result is not None, "API key storage should return UserAPIKey"

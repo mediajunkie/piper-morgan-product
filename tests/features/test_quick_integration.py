@@ -31,30 +31,8 @@ def test_file_structure_exists():
     print("✅ All required files exist")
 
 
-def test_method_signatures():
-    """Test method signatures without importing classes."""
-    print("🔍 Testing method signatures...")
-
-    # Read files and check for method names
-    morning_standup_path = "services/features/morning_standup.py"
-    with open(morning_standup_path, "r") as f:
-        content = f.read()
-
-    # Check for required methods
-    assert "def generate_with_issues" in content, "Missing generate_with_issues method"
-    assert "def generate_standup" in content, "Missing generate_standup method"
-    print("✅ Required methods found in Morning Standup")
-
-    # Check CLI file
-    cli_path = "cli/commands/standup.py"
-    with open(cli_path, "r") as f:
-        cli_content = f.read()
-
-    assert "def run_standup" in cli_content, "Missing run_standup method"
-    assert "with_issues" in cli_content, "Missing with_issues parameter"
-    print("✅ Required CLI methods found")
-
-    print("✅ All required method signatures found")
+# test_method_signatures checked generate_with_issues/generate_standup, deleted with the
+# MorningStandupWorkflow engine in #1289; removed 2026-11-09 off the full-suite backlog (1452).
 
 
 def test_import_safety():
@@ -88,7 +66,6 @@ def main():
 
     try:
         test_file_structure_exists()
-        test_method_signatures()
         test_import_safety()
 
         print("=" * 60)

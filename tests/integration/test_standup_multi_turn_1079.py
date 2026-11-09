@@ -123,7 +123,7 @@ class TestStandupMultiTurnState:
         assert r2.intent_data["action"] == "standup_conversation_turn"
         # ABANDONED state acknowledgement
         assert (
-            "no problem" in r2.message.lower()
+            "no standup for now" in r2.message.lower()
         ), f"Expected cancellation acknowledgement; got {r2.message[:120]!r}"
 
 

@@ -4,6 +4,8 @@ import os
 from unittest.mock import Mock, patch
 
 import keyring
+import keyring.backend
+import keyring.errors
 import pytest
 
 from services.infrastructure.keychain_service import (
@@ -13,13 +15,45 @@ from services.infrastructure.keychain_service import (
 )
 
 
+class _InMemoryKeyring(keyring.backend.KeyringBackend):
+    """A process-local keyring, so these tests run where no OS keyring exists.
+
+    Hosted Linux CI resolves to keyring.backends.fail.Keyring, and KeychainService
+    then routes to the encrypted-DB store, which refuses a custom service_name
+    (#1764). These tests are about the service's behaviour over a keyring, not
+    about the OS keychain, so they bring their own (full-suite backlog, 1452).
+    """
+
+    priority = 1
+
+    def __init__(self):
+        super().__init__()
+        self._store = {}
+
+    def get_password(self, service, username):
+        return self._store.get((service, username))
+
+    def set_password(self, service, username, password):
+        self._store[(service, username)] = password
+
+    def delete_password(self, service, username):
+        try:
+            del self._store[(service, username)]
+        except KeyError:
+            raise keyring.errors.PasswordDeleteError("not found") from None
+
+
 class TestKeychainService:
     """Test keychain service functionality"""
 
     @pytest.fixture
-    def service(self):
-        """Create keychain service for testing"""
-        return KeychainService(service_name="piper-test")
+    def service(self, monkeypatch):
+        """Keychain service over an in-memory keyring (never the real OS keychain)"""
+        monkeypatch.setenv("PIPER_CREDENTIAL_STORE", "keychain")
+        previous = keyring.get_keyring()
+        keyring.set_keyring(_InMemoryKeyring())
+        yield KeychainService(service_name="piper-test")
+        keyring.set_keyring(previous)
 
     @pytest.fixture(autouse=True)
     def cleanup(self, service):
@@ -111,6 +145,10 @@ class TestKeychainService:
 class TestKeychainIntegration:
     """Integration tests with actual keychain"""
 
+    @pytest.mark.skipif(
+        "fail" in keyring.get_keyring().__class__.__module__,
+        reason="no OS keyring on this host (hosted Linux CI); this test is about the real one",
+    )
     def test_real_keychain_roundtrip(self):
         """Can store and retrieve from real macOS keychain"""
         service = KeychainService(service_name="piper-test-integration")

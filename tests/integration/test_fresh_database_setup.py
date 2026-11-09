@@ -68,17 +68,16 @@ async def test_create_tables_from_scratch():
         # model-less legacy tables that create_all neither makes nor should:
         #   - `alpha_users` — no model; dropped by migration af770c5854fe (data → `users`)
         #   - `todos` — no model; refactored into items/todo_items (234aa8ec628c)
+        #   - `todo_lists` — dropped and replaced by `lists` (see 44f5cd40b495's note); removed 2026-11-09 (1452)
+        #   - `tasks`, `intents` — dead persistence twins deleted with their tables (1797); removed 2026-11-09 (1452)
         # (The Alembic-migration path is covered by TestModelMigrationCoverage.)
         essential_tables = [
             "users",
             "user_api_keys",
             "audit_logs",
             "projects",
-            "todo_lists",
             "lists",
             "workflows",
-            "tasks",
-            "intents",
         ]
 
         for table in essential_tables:

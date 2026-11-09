@@ -70,7 +70,7 @@ async def sample_tokens(blacklist):
     for i in range(10):
         token_id = f"test_token_{uuid.uuid4()}"
         await blacklist.add(
-            token_id=token_id, reason="performance_test", expires_at=expires_at, user_id=f"user_{i}"
+            token_id=token_id, reason="performance_test", expires_at=expires_at
         )
         token_ids.append(token_id)
 
@@ -173,7 +173,6 @@ async def test_blacklist_add_latency():
                 token_id=token_id,
                 reason="performance_test_add",
                 expires_at=expires_at,
-                user_id=f"user_{i}",
             )
         )
         latencies.append(latency_ms)
@@ -236,7 +235,7 @@ async def test_concurrent_blacklist_lookups():
     for i in range(10):
         token_id = f"test_token_{uuid.uuid4()}"
         await blacklist.add(
-            token_id=token_id, reason="performance_test", expires_at=expires_at, user_id=f"user_{i}"
+            token_id=token_id, reason="performance_test", expires_at=expires_at
         )
         token_ids.append(token_id)
 
