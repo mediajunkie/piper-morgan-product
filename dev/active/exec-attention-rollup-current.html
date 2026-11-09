@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Monday 9 November</h1>
-<p class="meta">Exec · v906, rebuilt 11:21 PST Mon 11-09 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v907, rebuilt 11:33 PST Mon 11-09 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -61,7 +61,7 @@
 
 <div class="card act">
 <ul>
-<li><b>First, about two minutes: check one Fly log line (#2335).</b> Since an old change, the app has logged its full Redis address at every start, and an Upstash address usually carries the password. Lead&rsquo;s fix is built and pushing; agent seats can&rsquo;t read Fly logs. In the Fly dashboard for app <code>piper-morgan</code>, open Logs and search <code>Redis connection pool initialized</code>. Look at the <code>redis_url</code> value, and tell me only &ldquo;yes, it had a password&rdquo; or &ldquo;no&rdquo;; never paste the line. If yes, the password is spent: rotate it in the Upstash console (or the Fly Redis dashboard) and update the app&rsquo;s <code>REDIS_URL</code> secret. I&rsquo;ll bring Lead in to confirm the app reconnects.</li>
+<li><b>First, about two minutes: check one Fly log line (#2335).</b> Since an old change, the app has logged its full Redis address at every start, and an Upstash address usually carries the password. Lead&rsquo;s fix is built and pushing; agent seats can&rsquo;t read Fly logs. In the Fly dashboard for app <code>piper-morgan</code>, open Logs and search <code>Redis connection pool initialized</code>. Look at the <code>redis_url</code> value, and tell me only &ldquo;yes, it had a password&rdquo; or &ldquo;no&rdquo;; never paste the line. If yes, the password is spent: rotate it in the Upstash console (or the Fly Redis dashboard) and update the app&rsquo;s <code>REDIS_URL</code> secret. I&rsquo;ll bring Lead in to confirm the app reconnects. Only this app: the MCP app had no Redis address at its last secrets list.</li>
 <li><b>When you can book an hour: one #2157 restore-drill run, early in the sprint.</b> It restores a snapshot of the alpha database to a new app and never touches the live one. Arch says it retires most of the bigger P1 risk (a lost alpha database). It needs your terminal, because the drill password stays with you. Say when, and Arch brings the steps (the 11-04 16:38 safe form).</li>
 <li><b>For your information: the skills review is done (#1715 closed).</b> 13 candidates; none became a new skill. 5 folded into what exists, 6 declined, 2 closed as already done. CIO&rsquo;s read: most of the signal was a missing line somewhere that already exists, or a tool or permission, not a missing procedure. Next cycle Tue 12-01. Comms has the facts for the post idea.</li>
 <li><b>Whenever convenient, nothing waits on it: a new name for PA?</b> On 10-28 you floated renaming PA once MVP closed and the private beta began. That happened 10-30, and PA raised it late (this morning). If you want a new name, say so, and PA lists what changes (slug, briefing, mailbox, LaunchAgent, roster).</li>
