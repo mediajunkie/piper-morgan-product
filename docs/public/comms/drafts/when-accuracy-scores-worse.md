@@ -15,12 +15,9 @@ preferred a full-sounding answer over a shorter true one.
 
 A while back I decided that one way to ensure Piper can provide a core set of experiences to people was to come up with a list of "canonical queries" that Piper should be able to respond to competently. I compared it to a litany or even a startup sequence, and eventually it evolved into a test suite.
 
-We were probing the alpha with the now 61-question test run, assessing both the quality of the routing (did Piper understand the r
+We were probing the alpha with the now 61-question test run, assessing both the quality of the routing (did Piper understand the request properly?) and of the response (did Piper answer the question correctly?). Routing is pass/fail but the replies are judged PASS, MARGINAL or FAIL by an LLM.
 
-## The episode, in order (facts verified, source in brackets)
-
-**1. The test.** #1386 criterion 2 was a 61-question run against alpha with two bars: routing (did Piper pick the
-right action) and expected-pass (a model judge rates each reply PASS, MARGINAL or FAIL). [10-22 omnibus, Core Theme 2]
+That morning my product assistant agent (Piper Alpha) 
 
 **2. Morning run.** PA's Run 1 scored expected-pass 24 of 42, **57.1% raw**. Both bars missed. CXO read all 20
 MARGINAL rows and held five, including Q25 and Q51, because those replies were false. [PA l.48; CXO l.32]
