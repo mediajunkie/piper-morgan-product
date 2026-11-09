@@ -8,12 +8,12 @@
 
 ---
 
-## Now (written 2026-11-08 15:57; replace, don't annotate)
+## Now (written 2026-11-08 18:50; replace, don't annotate)
 
 - **Served:** beta `24c8c7f5e7` (carries z35, 15:55); MCP `/health` 200. Read the live sha from `/health`, not from here.
 - **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta** (`dev/2026/11/06/turn.py`, run from the dated dir).
 - **11-08 served:** #2321, #2324 and #2270 closed (CXO 13:44). #955 on z33 (14:36–14:40): the handle forget, re-ask and set-done pass, and row 4 (take care of stored, clear not) writes nothing.
-- **#955 (Q11):** every row is served (13:08–15:55), and nothing is owed. Closing is CXO's and Lead's. #2330 (take care of by name) is low and CXO's.
+- **#955 closed** (CXO, 16:10): eight rows served, the failed-write line excepted as unit-pinned (PPM 16:04). Its unbuilt body is **#2331** (section T); #2330 sits beside it. Nothing owed by PA.
 - **web-seed-1386 is fully fresh** (15:21): no clear, handle or take-care-of preference stored. Never answer clear's verb question with done or delete except Q11's forget-ended run. #2322's done row waits on Q8.
 - PA can't sign in to other seats' accounts: the permission classifier denies it even with the owner's yes.
 - **Test account web-seed-1386 (21:47):** 8 open, in order: urgent task (urgent), zz throwaway one, zz throwaway two, audit the current navigation, **review prs (×2) on line 5**, review the deployment plan, draft the launch checklist. No reminders, no clear preference.
