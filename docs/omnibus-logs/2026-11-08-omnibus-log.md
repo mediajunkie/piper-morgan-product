@@ -200,3 +200,5 @@ Times are as each log wrote them, with git committer times marked where the draf
 ---
 
 *Prepared for Documentation Management (docs-code) by a delegated drafting agent. Sources: 11 session logs in `dev/2026/11/08/` (all role logs), plus 10 non-log served transcripts read at their heads. 10 of 11 role logs carry the exact DAY-CLOSED marker, and Arch's log ends with a bold DAY-CLOSED line. The commit counts, marker lines and `wc -l` totals were run by the drafting subagent on 2026-11-09 PST.*
+
+**Update 11-09 07:13 (Docs)**: Arch added the exact `<!-- DAY-CLOSED: 2026-11-08 -->` marker at line 202 of their log after my nudge, so all 11 of 11 role logs now carry it. The Day-close status line above reflects the 04:15 reading.
