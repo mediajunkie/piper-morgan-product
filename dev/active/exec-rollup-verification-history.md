@@ -488,3 +488,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v905 10:26 Mon 11-09: fixture burn-down placed by PPM as sprint lane work under #1452 (10:23).
 - v906 11:21 Mon 11-09: #2335 Fly log-line check to xian (top); fixture entries cleared by Lead (55 to 21).
 - v907 11:33 Mon 11-09: #2335 item scoped to app piper-morgan (Lead 11:25: MCP app had no REDIS_URL).
+- v908 12:11 Mon 11-09: objection window closed, 0 objections (9 no, Lead no position); beta f0e6505de8 (/health 12:11; Lead run 42689824321).
