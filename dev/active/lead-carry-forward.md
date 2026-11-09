@@ -1,5 +1,25 @@
 # Lead carry-forward — Fable 5.1 seat (Opus 5.5 from 11-04 19:38 until the Fable limit resets after 22:00 on 11-05); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY CLOSED 2026-11-08 21:46 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-08 -->` in the 11-08 log `dev/2026/11/08/2026-11-08-0646-lead-code-log.md`)
+- **Served:** alpha `24c8c7f5e7` (15:55, run 42537223392). Promotions today: 7 by this seat (07:04, 08:05, 08:46, 13:06, 14:35, 15:19, 15:55). Nothing of mine is on main unpromoted.
+- **Closed today:** #2270 (CXO 14:50, every row served); #955 (CXO, after PPM 16:04 accepted the failed-write line as unit-pinned and split the unbuilt body to #2331); #2324 (CXO).
+- **Main at close:** 11/12. Documentation Link Checker is red because GitHub was answering 504 (81 left after the second look against a ceiling of 60, with 132 `[504] github.com` lines; one run failed downloading lychee). No checked doc changed since the last green run. Fly deploy hit the same outage on `ce2ebe81aa` and went green on `bc6e2a3e94`. I sent CIO (cc Docs) a notice at 21:59.
+- **Model:** Opus 5.5.
+- **11-09 START order:**
+  1. Usual START: create the 11-09 log, inbox, current-state Now, xpoll, owed-scan.
+  2. `scripts/main-ci-status.sh`. If Fly deploy or the link checker is still red, read the failing log: a GitHub 504 means rerun it; a real count over 60 means find the new link and mail its owner.
+  3. Mail first: PPM may place #2328; CXO's #2327 audit may land.
+- **Lead's open items (each with its blocker):**
+  - #955's failed-write row goes into #2232's fault-run driver. Blocker: #2232 landing (open).
+  - #2328 (the "them" pick after a clear-verb reply). Blocker: PPM's placement.
+  - #2327 (floored action names outside every vocabulary). Blocker: CXO's audit.
+  - #2270 re-ask follow-up (a): key the re-ask on the floor's own result marker. Trigger: the next unit that touches the re-ask (standing items).
+- **Waiting on others:** #2330 and #2331 (PPM placed in section T, sprint unset); #2325's served check (admin caller via Exec); xian's `! fly auth login`.
+- **Rules that bit 11-08:**
+  - Seed test fixtures from the producer's own constants, never my own vocabulary (#955's 'done' vs 'complete', Arch 09:28).
+  - An additive router example can move other live rows: the take-care-of example pulled 'forget my handle' onto the forget alias, and the ×6 screen caught it.
+  - Write the minute, never an estimate stamp, in the log (the stamp check flags 'HH:4x').
+
 ## DAY CLOSED 2026-11-07 21:46 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-07 -->` in the 11-07 log `dev/2026/11/07/2026-11-07-0647-lead-code-log.md`)
 - **Served:** alpha `f9b4c737f7` (20:18, run 42446024382; carries `198fbdd89d`: #2325's admin reset, #2321 N1's words). Promotions today: 13 by this seat (one refused 19:09 on staging's untested sha, re-dispatched 19:31). Served and passed tonight: D5 at 1.5 s (10/10, final), reminders-with-none, #2321 N1 (rows 6 and 7), #2219 `(×3)`, #2324's "overdue" and today's date, #2270 turn 2 on the access-check route only.
 - **Local on `claude/lead-cycle`, NOT pushed (gate z23 run at close; read its verdict line first):**
