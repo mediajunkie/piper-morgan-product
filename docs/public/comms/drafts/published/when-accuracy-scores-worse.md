@@ -8,8 +8,7 @@ caption: '"Points for style!"'
 
 *October 22–23, 2026*
 
-When we got Piper Morgan to stop making things up, an automated quality score went *down*, because the judge
-preferred a full-sounding answer over a shorter true one.
+When we got Piper Morgan to stop making things up, an automated quality score went *down*, because the judge preferred a full-sounding answer over a shorter true one.
 
 # The 61-question catechism
 
@@ -31,8 +30,7 @@ We make sure that the raw figures are stored along with the waivers, so that we 
 
 # Close enough for jazz
 
-With a week left in the MVP milestone according to our current plan, I reviewed the recommendations and judged it "close enough", adding only a single document bug to the list of issues that had to close before any beta
-invitation went out.
+With a week left in the MVP milestone according to our current plan, I reviewed the recommendations and judged it "close enough", adding only a single document bug to the list of issues that had to close before any beta invitation went out.
 
 In the long run, I need to take another look at this automated judge. Its preference for fuller-*sounding* answers results in misleading test results, and bears some review. We may be able to prompt the judge more carefully to better distinguish a high-quality answer from a confident-but-incorrect-or-padded reply.
 
