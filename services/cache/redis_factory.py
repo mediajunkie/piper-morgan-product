@@ -3,7 +3,9 @@ Redis Connection Factory - Following AsyncSessionFactory Pattern
 Provides Redis client management with connection pooling and health monitoring
 """
 
+import asyncio
 import os
+import weakref
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator, Optional
 from urllib.parse import urlsplit
@@ -26,7 +28,10 @@ class RedisFactory:
     """Redis client factory following AsyncSessionFactory pattern"""
 
     _redis_pool: Optional[redis.ConnectionPool] = None
-    _pool_loop_id: Optional[int] = None
+    # A weak reference, not id(loop): a collected loop's id() can be handed to
+    # the next loop, which then inherited the dead loop's pool (found 11-09 by
+    # the 2334 rebuild pin failing only in the full suite).
+    _pool_loop_ref: Optional["weakref.ReferenceType[asyncio.AbstractEventLoop]"] = None
 
     @classmethod
     async def initialize(cls) -> None:
@@ -38,10 +43,9 @@ class RedisFactory:
         503 capacity_check_unavailable (the Redis twin of the #1193 poisoned
         DB-pool class). Detect loop change and rebuild.
         """
-        import asyncio
-
-        loop_id = id(asyncio.get_running_loop())
-        if cls._redis_pool is not None and cls._pool_loop_id != loop_id:
+        loop = asyncio.get_running_loop()
+        pool_loop = cls._pool_loop_ref() if cls._pool_loop_ref is not None else None
+        if cls._redis_pool is not None and pool_loop is not loop:
             try:
                 await cls._redis_pool.disconnect()
             except Exception:
@@ -67,7 +71,7 @@ class RedisFactory:
                 decode_responses=False,  # Keep bytes for JSON serialization
             )
 
-            cls._pool_loop_id = loop_id
+            cls._pool_loop_ref = weakref.ref(loop)
             # #2335: never log the URL itself; an Upstash REDIS_URL carries the password.
             logger.info("Redis connection pool initialized", redis_host=_redis_host(redis_url))
 

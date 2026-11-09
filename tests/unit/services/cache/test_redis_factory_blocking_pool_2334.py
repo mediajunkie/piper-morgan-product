@@ -9,6 +9,7 @@ concurrency pin is tests/performance/test_token_blacklist_performance.py
 """
 
 import asyncio
+import gc
 import socket
 import time
 from unittest.mock import MagicMock
@@ -25,7 +26,7 @@ from services.cache.redis_factory import RedisFactory
 def fresh_factory(monkeypatch):
     """No pool carried in from another test; none left behind."""
     monkeypatch.setattr(RedisFactory, "_redis_pool", None)
-    monkeypatch.setattr(RedisFactory, "_pool_loop_id", None)
+    monkeypatch.setattr(RedisFactory, "_pool_loop_ref", None)
     yield RedisFactory
 
 
@@ -57,6 +58,7 @@ def test_a_new_event_loop_rebuilds_the_blocking_pool(fresh_factory, monkeypatch)
         return fresh_factory._redis_pool
 
     first = asyncio.run(build())
+    gc.collect()  # free the first loop, so the next one can reuse its id()
     second = asyncio.run(build())
 
     assert second is not first
