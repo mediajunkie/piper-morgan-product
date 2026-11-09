@@ -1,26 +1,23 @@
 ---
-last_updated: 2026-11-07
+last_updated: 2026-11-08
 currency_claim: per-stop
 max_age_days: 1
 ---
 
-# CXO carry-forward — current state, 2026-11-07 21:32 STOP (the older rules below still stand)
+# CXO carry-forward — current state, 2026-11-08 18:31 (the older rules below still stand)
 
-**Serving:** alpha and beta `f9b4c737f7` (Lead 20:19, PA 20:18). Main CI 12 of 12 green at 21:31. Gate z22 (the #2270 handler, ratchet to 2, always-ask, `I couldn't find "{pair}" among your repositories.`, the default lead `Looking at {owner/repo}, your default repository.`, #2321's cap noun) pushes and promotes in the first window on 11-08 (07:00 or later).
-**Closed 11-07:** none. Filed: #2321.
-**Judged PASS on served quotes today:** D5 at 1.5 s (10 of 10), row 5 of #2318, both declines after STRUCTURED, reminders-with-none, N1 grouped and single copy, N2/N3, #2219 `(×3)` capped delete and the cap over it, #2270 turn 2 after a named-repo read (route `query/get_github_repo_access` only).
+**Serving:** alpha and beta `24c8c7f5e7` (z35, 15:55). Main CI 12 of 12 green at 18:31.
+**Closed 11-08:** #2321, #2324, #2318, #2270, #955 (eight of nine rows served, ninth excepted by PPM: failed-write line stays unit-pinned, Lead adds it to #2232's fault driver). Filed: #2328 (the "them" gap), #2330 (take care of by name, low). PPM filed #2331 (inference body split from #955).
 **Open, with what each still needs:**
-- #2270: turn 1 reproduces the document reply (1 of 6) and the "which one" name misattributes; turn 2 on the TRUST floor failed 2 of 2 on debb7bef3b (one doubt, one false confession). All wait on z22. Pass line: the advisor's words x6 with no document reply and at least 3 of 6 giving feedback with a next step, gap B by name, turn 2 in Lead's wording x2. List-form ask (Lead's next unit). Gap C (armed read offer) is #2326, low.
-- #2321: row 5 no-list cap line needs `one todo at a time` (built in z22, PA reruns). Then close with rows 1 to 7 served.
-- #2322: guard and narrowing live; served-done row waits on #2325's reset (live, needs an admin caller, xian via Exec) or the Q8 account. Do not store done on a seat account.
-- #2324: wrong claim fixed on the analysis reply; "tomorrow" and "overdue by N days" and both days on every time reply are built or ruled, unserved.
-- #955: forget words ruled (back to the first-time question, "forgotten" only after a confirmed delete). Not in the 11-13 sprint.
-- #2219: #2313 (delete two named), floor-category ask. #2294: bulleted-list turn, plus PA's stray "2" floor reply with an invented "5 items". #2323 (spliced option, unclosed bold): not reproduced, stays open.
-- #2301: FAIL, waits on sprint item 12. #2314: name cut at "link". #2286: wizard step and consent page. #2287 row 2, #2295 "none" line.
-- Path A/B fresh-account run (invite hold lifts, HOST mints): also carries #2270's not-connected case.
-**Waiting on others:** Lead: z22 promotion, list-form ask, #2313, #2314. Arch: nothing owed. PA: reruns after promotion. xian via Exec: `fly auth login` (logs), an admin call for #2325, `clear_todos` flip (held), #2256. PPM: placements.
+- #2322: served-done row waits on #2325's reset (admin caller, xian via Exec) or the Q8 account. Do not store done on a seat account.
+- #2219: #2313 (delete two named), floor-category ask. #2294: bulleted-list turn, PA's stray "2" floor reply. #2323 not reproduced, stays open.
+- #2327: floor audit. Offers to close issues in one pass or work through them overpromise (Piper's issue ops are one issue per request). Doubled repo name in one project-lead run. Words wait for the audit.
+- #2328 (build, then served), #2330 (low, needs a screened wording), #2331 (PPM's).
+- #2301: FAIL, waits on sprint item 12. #2314: name cut at "link". #2286: wizard step and consent page. #2287 row 2, #2295 "none" line. #2275, #2297, #2274, #2268.
+- Path A/B fresh-account run (invite hold lifts, HOST mints) and #2175 pages.
+**Waiting on others:** Lead: #2313, #2314, #2328 rider, #2232 fault driver. Arch: validates builds. PA: reruns. xian via Exec: `fly auth login`, an admin call for #2325, `clear_todos` flip (held since 10-14), #2256, Q8 account. PPM: placements.
 **Dates:** Mon 11-09 12:00 sprint objection deadline (none from me); Mon 11-09 Mail v4 widens to every seat (`python3 scripts/mail4.py inbox --role cxo`; v3 works until 11-23); sprint starts Fri 11-13.
-**Lessons today:** read the newest report from the seat before ruling (my 19:50 passes rested on a report two later memos superseded); ask what is already built before ruling words, or two forms cross (#2321 N1); never ask for a permanent state on a seat account for one quote; do not rule on copy that claims behaviour Lead has not confirmed.
+**Lessons today:** set always asks (superseded my no-confirm ruling after Arch's wrong-verb finding); never seed a permanent preference on a seat account, seed through a real first-time question and end with forget plus a re-ask; judge on the newest report; close only when every row is served or PPM records the exception.
 
 
 # CXO carry-forward — updated 2026-10-07 22:2x (STOP); structure from the 10-05 22:2x STOP rewrite.
