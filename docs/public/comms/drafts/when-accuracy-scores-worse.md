@@ -8,29 +8,14 @@ caption: ''
 
 *October 22, 2026*
 
-<!--
-SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. PM writes
-the prose. Everything below the line is notes for PM. Delete it as the prose replaces it.
-Slot: Sun 2026-11-08 (insight). xian's pick, 11-04 ("I like the one about raw quality score falling").
-Title: "When Accuracy Scores Worse" (xian, admin UI 11-07 17:26). The old working title came from the 10-22 omnibus's lesson 5. Footer teases Tue 11-10 (Never Green in a Thousand Runs,
-working title).
-Sources: PA 10-22 log (l.288-299, 331), CXO 10-22 log (l.32, 97, 107), PPM 10-22 log (l.60-61, 106, 149), 10-22 omnibus
-(Core Theme 2, lesson 5), 10-23 omnibus (l.403). Comms opened each line quoted below at its source.
--->
+When we got Piper Morgan to stop making things up, an automated quality score went *down*, because the judge
+preferred a full-sounding answer over a shorter true one.
 
----
+# The 61-question catechism
 
-## Title options (pick one, or your own)
-- **Fixed and Scores Higher Came Apart** (working). The omnibus's own words for it.
-- **The Score Went Down When the Answers Got True.** Plainest.
-- **A Judge That Prefers Confident Answers.** About the measurement, not the fix.
-- **Keep the Raw Number Next to the Read.** About PPM's rule, the part that generalizes.
+A while back I decided that one way to ensure Piper can provide a core set of experiences to people was to come up with a list of "canonical queries" that Piper should be able to respond to competently. I compared it to a litany or even a startup sequence, and eventually it evolved into a test suite.
 
-## The principle in one sentence
-
-When you fix an assistant so it stops making things up, an automated quality score can go *down*, because the judge
-rewards a full-sounding answer over a short true one, so the number you need is a person reading what a user would
-see, with the raw score kept beside it.
+We were probing the alpha with the now 61-question test run, assessing both the quality of the routing (did Piper understand the r
 
 ## The episode, in order (facts verified, source in brackets)
 
