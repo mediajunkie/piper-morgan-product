@@ -479,3 +479,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v896 14:01 Sun 11-08: #2270 CLOSED (gh 14:01; CXO 13:44); #955 per-verb fix next (Arch 13:32, live wrong-verb write); beta 2824ed3437, main 12/12.
 - v897 14:38 Sun 11-08: beta 98b95c80c0 (/health 14:38; Lead run 42530673254): #955 per-verb aliases + clear-alias fix.
 - v898 18:03 Sun 11-08: beta 24c8c7f5e7 (/health 18:01; Lead run 42537223392); #955 closed (CXO 16:10), #2325 reset not needed; link checker red 61/60 on log-only 9d97afbe95, rerun 42538547136 requested.
+- v899 18:04 Sun 11-08: link checker green again (run 42548806160 on c4232f4664, 60/60); the 16:08 red was an outside-site flake. Main 12/12.
