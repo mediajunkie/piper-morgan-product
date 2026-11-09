@@ -608,10 +608,10 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **Item 5 (D5 GO):** #2318 closed 11-08 12:49 and #2321 07:18 (CXO). #2219 (×3) passed on the live site but has other rows open. #2322's guard is live; its stored-done row waits on Q8. #2328 (`them` says not-found) is a possible rider.
   - **Item 8, #2270:** closed 11-08 13:44 (CXO): every acceptance and pass-line row served; the 6 s re-ask accepted. #2327's audit takes the "in one pass" close offers and the doubled repo name. The not-connected turn 1 stays on the Q8 list as a quote to collect.
   - 11-13 review candidates: #2320, #2319, #2321.
-- **Production 277** (`gh` 11-08 16:04 = Total; #2318 and #2270 closed, #2331 and #2330 placed in T), map v114 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned.
+- **Production 276** (`gh` 11-08 18:33 = Total; #2318, #2270 and #955 closed, #2331 and #2330 placed in T), map v115 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned.
   - Placed 11-07: #2317–#2326 (#2326 is the armed read offer, V, low).
   - Closed 11-07: #2315 and #2316.
-- **#955 (clear preference):** every row served except the failed-write line, which PPM excepted as unit-pinned at 16:04 (comment 6729044401; a served failure can't be induced safely). Close is CXO's. The unbuilt original body is split to #2331 (T); #2330 ("take care of" by name, low) placed in T. Follow-up, not a close condition: #2232's local fault run adds the failed-write row when it lands.
+- **#955: closed 11-08 16:10 (CXO)** on the clear-preference slice, with PPM's unit-pinned exception for the failed-write line. The rest is #2331 (T); #2330 (T, low). Follow-up, not owed by PPM: #2232's local fault run adds the failed-write row when it lands.
 - **OWED rows:**
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift; needs #2297 and #2301).
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).

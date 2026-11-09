@@ -783,7 +783,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 949	CLOSED	MVP	M5 - Distribution + Polish	DEV: Server restart reliability — stale .pyc, orphaned processes, startup timing	bug		COMPLETED
 951	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONTEXT-ASSEMBLER-EXPAND: Context assembly for all floor-routed categories	enhancement		COMPLETED
 954	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	TRUST-LITE: Trust graduation via context (lightweight implementation)	enhancement,journey:come-back		
-955	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	PREF-INFER: User-correctable preferences (Claude memory model)	enhancement,journey:manage-my-data		
+955	CLOSED	Production	PROD-TRUST - Trust + Learning Continuation	PREF-INFER: User-correctable preferences (Claude memory model)	enhancement,journey:manage-my-data		COMPLETED
 956	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	LEARNING-SURFACE: Trust-graduated learning surfacing	enhancement,journey:come-back		
 957	CLOSED	Production	PROD-DIST - MCP Marketplace Distribution	DIST-MCPB-BUNDLE: MCPB packaging for Claude Desktop one-click install	desktop,distribution,enhancement,packaging		NOT_PLANNED
 958	OPEN	Fast Follow		DIST-PROJECT-TEMPLATE: Claude Project template for Piper persona	distribution,enhancement		
