@@ -8,11 +8,11 @@
 
 ---
 
-## Now (written 2026-11-08 18:50; replace, don't annotate)
+## Now (written 2026-11-09 06:55; replace, don't annotate)
 
 - **Served:** beta `24c8c7f5e7` (carries z35, 15:55); MCP `/health` 200. Read the live sha from `/health`, not from here.
 - **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta** (`dev/2026/11/06/turn.py`, run from the dated dir).
-- **11-08 served:** #2321, #2324 and #2270 closed (CXO 13:44). #955 on z33 (14:36–14:40): the handle forget, re-ask and set-done pass, and row 4 (take care of stored, clear not) writes nothing.
+- **11-08 served:** #2321, #2324, #2270 and #955 all closed on PA's served quotes. Q10 and Q11 were removed from standing items 11-09.
 - **#955 closed** (CXO, 16:10): eight rows served, the failed-write line excepted as unit-pinned (PPM 16:04). Its unbuilt body is **#2331** (section T); #2330 sits beside it. Nothing owed by PA.
 - **web-seed-1386 is fully fresh** (15:21): no clear, handle or take-care-of preference stored. Never answer clear's verb question with done or delete except Q11's forget-ended run. #2322's done row waits on Q8.
 - PA can't sign in to other seats' accounts: the permission classifier denies it even with the owner's yes.
@@ -23,7 +23,7 @@
 - **#2238:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
 - **Fresh-account checks** (Q8): on the invite hold lifting (#2261, #2282, #2292, #2322 done row) and HOST's slot with xian.
 - **R7 / plugin (#1282):** README edit needs a permitted push or xian's hand. Standing item 2.
-- **Mail v4** opens to every seat Mon 11-09; then also `python3 scripts/mail4.py inbox --role pa`. v3 fallback until 11-23.
+- **Mail v4 is open** (11-09): every fire checks `python3 scripts/mail4.py inbox --role pa` as well as the v3 inbox; v3 is the fallback until 11-23. The first read on 11-09 passed its canary, with 0 addressed to pa.
 - **START habit:** `python3 scripts/owed-scan.py --role pa`.
 
 ## PM Attention
