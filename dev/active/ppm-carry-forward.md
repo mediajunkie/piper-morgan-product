@@ -613,6 +613,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Closed 11-08: #2321, #2324, #2318, #2270, #955.
 - **#955 closed 11-08 16:10 (CXO)** on the clear-preference slice, with PPM's unit-pinned exception for the failed-write line. The rest is #2331 (T); #2330 (T, low). Not owed by PPM: #2232's local fault run adds the failed-write row when it lands.
 - **OWED rows:**
+  - **key: 1452-fixture-target** (Filed 2026-11-09; to: lead; trigger: Lead's size for the 34 fixture entries. Write the target on #1452; placed as lane work in the sprint, PPM 10:23).
   - **key: sprint-state-refresh** (Filed 2026-11-09; to: exec; trigger: Fri 11-13 START. Refresh the sprint table's State column from `gh issue view` on every named issue, before the review).
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift; needs #2297 and #2301).
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
