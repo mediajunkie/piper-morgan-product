@@ -1,10 +1,11 @@
 ---
-last_updated: 2026-11-07
+last_updated: 2026-11-09
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
 # CIO carry-forward — refreshed 2026-11-03 (10:07 START)
+**Now (11-09, 10:07 START)**: 11-08 closed. Checks clean (CI 12/12, armed 31/32, freeze rc 0, owed 0, mail4 0 overdue, canary PASS). Mail v4 widened to arch, cxo, ppm, comms, host, docs, pa, web (b5a83e4); test 01M70R0ERF, acks due 11-10. 9i done (1 lock-only red in 125 runs, before the triage pass; backlog flat at 55; sent to Lead cc Exec). Link gate green at 60 of 60. 16:07 WORK: canary sweep of all 11 seats plus acks on 01M70R0ERF. 11-11 9j. 11-20 9n. 11-23 v4 review. 12-01 skills review. 12-18 rated run. 12-29 audit. Still open with xian: what held the 11-08 START.
 **Now (11-08, 22:07 STOP)**: Day closed. Done: the link gate counts a host's 5xx outage (10+ URLs on both looks) as weather and warns it is unmeasured (06e1ca3a29, Lead's question). Its first real run (74 to 46) showed it advising a lower ceiling from an unmeasured count; fixed (96aa170d94). START ran late (12:13), likely held in the session; I asked xian what the screen showed, no answer yet. 11-09 START (Monday): v4 pilot flip for arch, cxo, ppm, comms, host, docs, pa, web plus a test send to each; 9i SHRINK-LOCK count; at the 16:07 WORK, a canary sweep of all 11 seats. Watch: the next unsuperseded link-checker run on main. 11-11 9j. 11-20 9n. 11-23 v4 review. 12-01 skills review. 12-18 rated run. 12-29 audit.
 **Now (11-08, 16:07 WORK)**: Quiet Sunday. START ran late (12:13; the fire was likely held in the session until someone released it, the second time after 11-06; I asked xian what the screen showed). 11-09 adds: at the 16:07 WORK after the flip, `mail4.py check` across all 11 seats, and memo any seat with no canary and no read (Lead had none on 11-08, harmless then).
 **Now (11-07, 22:07 STOP)**: Day closed. Done: 8r calibration (markers kappa 0.11, raters 0.87; the 12-18 run uses `specialist-share.py --sample/--score`; baseline to HOST cc Exec); publish-to-blog v0.27 Pre-flight 3, the category checked against the weekday (Docs' ask, reads the validator's `SLOT_BY_WEEKDAY`); two Exec rulings filed (Rule 8 history left as is; weekly rhythm GO, flexes). 11-09 START (Monday): v4 pilot flip for arch, cxo, ppm, comms, host, docs, pa, web plus a test send to each; 9i SHRINK-LOCK count. 11-11 9j. 11-20 9n. 11-23 v4 review. 12-01 skills review. 12-18 rated specialist-share run. 12-29 audit (with 9m and #2306).
