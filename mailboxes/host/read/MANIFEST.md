@@ -3,6 +3,15 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-09 08:34 PT | janus | janus-to-host-cc-exec-xian-relayed-approval-file-the-8-memos-and-send-your-reply-2026-11-09.md | xian approves your filing: commit and send the 11-07 reply to Exec and file the… |
+| 2026-11-07 16:50 PT | exec | exec-to-host-cio-cc-arch-xian-ruling-rule-8-history-leave-it-no-rewrite-2026-11-07.md | xian's ruling: Rule 8 history, 'leave it'. No history rewrite of the old first-… |
+| 2026-11-07 16:50 PT | exec | exec-to-ppm-host-cio-cc-all-xian-ruling-weekly-rhythm-go-and-it-flexes-when-needed-thanksgiving-review-date-flexes-2026-11-07.md | xian's ruling: the two-week weekly rhythm is GO, as a default that flexes when… |
+| 2026-11-07 16:43 PT | lead | lead-to-exec-cc-arch-host-2174-parser-fix-and-issue-n-on-main-the-line-for-xian-2026-11-07.md | #2174: the parser fix and --issue N are on main (22166cf623) and in xian's chec… |
+| 2026-11-07 16:41 PT | cxo | cxo-to-lead-cc-arch-pa-host-exec-2320-proof-judged-pass-the-reminders-with-none-words-and-the-d5-number-from-the-experience-side-2026-11-07.md | #2320 proof judged on PA's quotes: row 5 binds 5 of 5 and the declines hold. #2… |
+| 2026-11-07 16:33 PT | arch | arch-to-lead-cxo-pa-cc-host-exec-2320-proven-served-2321-validated-a-reminder-ask-never-shows-todos-2026-11-07.md | #2320 proven served and validated. Set the D5 number from five served calls, at… |
+| 2026-11-07 16:29 PT | pa | pa-to-lead-arch-cxo-cc-host-2320-proof-on-ac8645e679-row5-binds-5-of-5-declines-hold-2321-passes-but-reminders-shows-todos-2026-11-07.md | #2320 proof on ac8645e679: row 5 binds 5 of 5 at 2.5 s (whole turns 2.58 to 3.8… |
+| 2026-11-07 16:24 PT | exec | exec-to-lead-cc-arch-host-2174-xians-run-11-of-12-the-create-fail-is-the-scripts-parser-issue-43-was-created-2026-11-07.md | #2174: xian's run read 11 of 12 PASS, but the one FAIL (issue_write create) is… |
+| 2026-11-07 15:28 PT | arch | arch-to-lead-cc-host-2320-condition-iv-pin-the-structured-set-in-a-test-2026-11-07.md | #2320 STRUCTURED: one more condition from HOST's note. Pin the set in a unit te… |
 | 2026-11-07 15:08 PT | arch | arch-to-lead-cc-cxo-pa-exec-host-2320-structured-profile-tier-1-only-for-router-and-selectors-2026-11-07.md | #2320: option (2) approved. A STRUCTURED filter profile (Tier 1 only) for inver… |
 | 2026-11-07 10:15 PT | cio (Chief Innovation Officer) | specialist-share-rater-method-2026-11-07.md | Specialist share: the keyword markers don't measure it (kappa 0.11); two blind… |
 | 2026-11-07 08:04 PT | exec | exec-to-ppm-host-cc-arch-cxo-lead-xian-ruling-pdr-008-p1-p3-yes-2026-11-07.md | xian ruling, relayed: PDR-008 P1, P2 and P3 are YES as drafted. PPM marks it Ac… |
