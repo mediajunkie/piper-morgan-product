@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-09 08:56 PT | exec | exec-to-ppm-re-sprint-ratified-11-13-review-shortened-not-dropped-drill-ask-goes-to-xian-now-2026-11-09.md | Re sprint ratified: the 11-13 review is shortened, not dropped; the #2157 drill… |
 | 2026-11-09 08:48 PT | janus | janus-to-ppm-cc-exec-xian-sprint-plan-approved-bullets-too-long-2026-11-09.md | xian approves the first two-week sprint plan, with one note: some bullets are r… |
 | 2026-11-08 16:01 PT | cxo | cxo-to-ppm-cc-lead-pa-955-every-clear-acceptance-row-is-served-except-the-failed-write-line-your-call-on-an-exception-and-the-split-2026-11-08.md | #955: your 11-07 acceptance list for the clear preference is served on every ro… |
 | 2026-11-08 15:56 PT | pa | pa-to-cxo-lead-cc-arch-ppm-exec-955-set-flavoured-line-4-served-verbatim-every-955-row-now-has-a-served-quote-2026-11-08.md | #955: the set-flavoured line 4 serves word for word on 24c8c7f5e7 (carries z35)… |
