@@ -117,6 +117,7 @@ jobs:
             if [ -n "$WEATHER" ]; then
               echo "over the ceiling: re-checking $(echo "$WEATHER" | wc -l | tr -d ' ') connection-error or 5xx URLs after 60s"
               sleep 60
+              DOWN=""
               for u in $WEATHER; do
                 code=$(curl -sS -o /dev/null -L --max-time 30 -w '%{http_code}' "$u" 2>/dev/null || true)
                 case "$code" in
@@ -124,8 +125,23 @@ jobs:
                     n=$(grep -F " $u |" link-checker-results.md | grep -cE '\[(ERR|5[0-9]{2})\] ' || true)
                     COUNT=$((COUNT - n))
                     echo "  reachable now ($code), -$n: $u" ;;
+                  5??)
+                    DOWN="$DOWN $(echo "$u" | awk -F/ '{print $3}')"
+                    echo "  still failing ($code): $u" ;;
                   *) echo "  still failing (${code:-none}): $u" ;;
                 esac
+              done
+              # 2026-11-08 (CIO, Lead's question): a host that answers 5xx on 10
+              # or more URLs on both looks is down, not broken in 10 places.
+              # GitHub's 504s on 11-08 put 81 over a ceiling of 60 with no
+              # checked file changed. A dead page answers 404, which is never
+              # re-checked, so this drops only an outage. One host's handful of
+              # 5xx still counts. Those links are unmeasured this run, and the
+              # warning says so.
+              for h in $(printf '%s\n' $DOWN | sort | uniq -c | awk '$1 >= 10 {print $2}'); do
+                n=$(grep -cE "\[5[0-9]{2}\] https?://$(echo "$h" | sed 's/\./\\./g')[/ :]" link-checker-results.md || true)
+                COUNT=$((COUNT - n))
+                echo "::warning::$h answered 5xx on both looks for $n links: a host outage, not $n broken links. -$n; links on $h are NOT MEASURED this run"
               done
               echo "broken links after the second look: $COUNT (frozen ceiling: $CEILING)"
             fi
