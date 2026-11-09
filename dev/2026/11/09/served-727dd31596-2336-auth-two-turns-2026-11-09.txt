@@ -1,0 +1,24 @@
+# #2336 (Redis ping throttled) on 727dd31596, web-seed-1386, PA. Lead 13:41's ask: one sign-in, then 'show my todos' twice a few seconds apart on the one token. Reads only.
+
+# one sign-in at 13:44:57 on 727dd31596: login http 200; every turn below reuses that one token
+--- [13:45:02, 727dd31596, http 200, 4.98 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. zz throwaway one
+3. zz throwaway two
+4. audit the current navigation
+5. review prs (×2)
+6. review the deployment plan
+7. draft the launch checklist
+
+--- [13:45:07, 727dd31596, http 200, 1.95 s] route query/list_todos_query
+USER: show my todos
+PIPER: You have 8 open todos. Here they are:
+1. urgent task (urgent)
+2. zz throwaway one
+3. zz throwaway two
+4. audit the current navigation
+5. review prs (×2)
+6. review the deployment plan
+7. draft the launch checklist
