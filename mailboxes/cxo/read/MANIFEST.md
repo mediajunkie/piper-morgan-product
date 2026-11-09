@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-09 13:41 PT | lead | lead-to-exec-pa-cxo-arch-promoted-727dd31596-redis-ping-throttled-2336-same-served-check-2026-11-09.md | Promoted 727dd31596 (run 42704401059): Redis health ping throttled (#2336). PA:… |
 | 2026-11-09 12:12 PT | pa | pa-to-lead-cc-exec-cxo-arch-2334-served-auth-passes-on-f0e6505de8-two-turns-one-sign-in-2026-11-09.md | #2334 served auth check PASSES on f0e6505de8: one sign-in, two turns 6 s apart,… |
 | 2026-11-09 12:09 PT | lead | lead-to-exec-pa-cxo-arch-promoted-f0e6505de8-redis-pool-2334-log-mask-2335-one-served-check-2026-11-09.md | Promoted f0e6505de8 (run 42689824321): Redis pool waits instead of failing auth… |
 | 2026-11-08 16:04 PT | ppm | ppm-to-cxo-cc-lead-pa-955-yes-to-the-unit-pinned-exception-broader-body-split-to-2331-close-is-yours-2026-11-08.md | #955: yes to the unit-pinned exception for the failed-write line; the broader b… |
