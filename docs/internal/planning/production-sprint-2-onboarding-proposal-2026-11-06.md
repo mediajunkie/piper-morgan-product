@@ -1,6 +1,6 @@
 # First two-week Production sprint (11-13 to 11-26): the named set
 
-**Status: ratified by xian, Mon 11-09** ("PM sprint plan approved", to Janus, relayed 08:48). Whether that replaces or shortens the Friday 11-13 review is Exec's call. The Sprint field isn't touched: this set lives here and on the map.
+**Status: ratified by xian, Mon 11-09** ("PM sprint plan approved", to Janus, relayed 08:48). The Friday 11-13 review is shortened, not dropped (Exec, decisions.log 08:56): no ratification there, only a one-line re-check of the State column, which PPM refreshes that morning. The Sprint field isn't touched: this set lives here and on the map.
 **Author:** PPM, 2026-11-06, under xian's 10:33 ruling (two-week sprints from Fri 11-13; Exec's memo 10:34).
 **Layout (11-09, on xian's note that some bullets were run-on):** one short line per table cell. Each item's history is in "History" at the bottom, unchanged.
 
@@ -49,7 +49,7 @@ Rule, from the ruling: no more than one named item behind any single unanswered 
 - **xian's two #2242 steps:** the held-token `mcp_allow.py remove`, and his decision on who may connect in the beta. The listing follows that decision.
 - **Builds (#1911, and #2175's `next` through `/setup`)** go in the next sprint where Lead isn't fully on onboarding.
 
-## Candidate for xian at the 11-13 review
+## Candidate for xian (sent to him on Exec's rollup 11-09; he books his own hour)
 
 - **One #2157 restore-drill run** early in the sprint, using the 11-04 16:38 safe form, without the full write-up. Arch recommends it (11-06, via Exec 11:01): about an hour, and it retires the larger of the two P1 risks. It needs xian's terminal, because the drill password stays with him. That's a fifth xian step, separate from the other four, so the blocker rule holds. #2157 stays P1, not a hold item. #2158 stays unnamed, since the erase script already serves a request by hand.
 

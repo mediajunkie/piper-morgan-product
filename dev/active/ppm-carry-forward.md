@@ -604,7 +604,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Open: #2261 (waits on xian's #2174 runs), #2282 (its browser row waits on xian's word for Web's sign-in check), and #2292 (P1, xian's records).
   - Met or closed: #1551, #2283, #2178.
   - When all six are met, PPM sends Exec the lift-readiness memo (§3), each row with `Verified how:`.
-- **Sprint (11-13 to 11-26): RATIFIED by xian 11-09** (via Janus 08:48; decisions.log 08:53). The table is now one short line per cell (his run-on note), history below it. Whether that replaces the 11-13 review is Exec's call. The objection window closes 12:00 today (Exec's tally). The Thanksgiving review day is xian's.
+- **Sprint (11-13 to 11-26): RATIFIED by xian 11-09** (via Janus 08:48; decisions.log 08:53). The table is now one short line per cell (his run-on note), history below it. The 11-13 review is shortened, not dropped (Exec 08:56): PPM refreshes the State column Fri morning. The #2157 drill ask went to xian on the rollup 11-09. The 12:00 tally is about sprint length only (Exec's). The Thanksgiving review day is xian's.
   - **Item 5 (D5):** #2318 and #2321 closed 11-08 (CXO). #2219 (×3) passed on the live site but has other rows open. #2322's stored-done row waits on Q8. #2328 (`them` says not-found, V) is a possible rider.
   - **Item 8, #2270:** closed 11-08 13:44 (CXO). #2327's audit takes the "in one pass" close offers and the doubled repo name.
   - 11-13 review candidates: #2320, #2319.
@@ -613,6 +613,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Closed 11-08: #2321, #2324, #2318, #2270, #955.
 - **#955 closed 11-08 16:10 (CXO)** on the clear-preference slice, with PPM's unit-pinned exception for the failed-write line. The rest is #2331 (T); #2330 (T, low). Not owed by PPM: #2232's local fault run adds the failed-write row when it lands.
 - **OWED rows:**
+  - **key: sprint-state-refresh** (Filed 2026-11-09; to: exec; trigger: Fri 11-13 START. Refresh the sprint table's State column from `gh issue view` on every named issue, before the review).
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift; needs #2297 and #2301).
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
