@@ -38,6 +38,7 @@ v911, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - Relay xian's rulings at once and record them in decisions.log. Timestamps from a `date` call in the same command; **never write a stamp a few minutes ahead "for when it publishes"** (11-09: 14:05 and 14:06 written at 14:02 and 14:04, both caught before publish).
 - **Review slot, every START:** re-read one claim from the last 24 hours against its source. Candidate for 11-10: my 14:01 claim that #2151 and #2155 are "still open, in the same stream" (states checked; "same stream" is not re-verified).
 - **Calendar check every fire**, not only at START: rows `published` in the last 7 days, and the next post's status. 11-09: a syndicated post stayed on the rollup as "needs Medium/LinkedIn" for 16 hours.
+- **A tally or ruling written to decisions.log also goes out by mail the same hour** (11-09: the sprint tally sat in decisions.log only; PPM waited all afternoon; mailed 11-10 04:22).
 - Write DAY-CLOSED in grep form, `<!-- DAY-CLOSED: YYYY-MM-DD -->`, as the log's last line.
 
 ## Owed rows (owed-scan)
