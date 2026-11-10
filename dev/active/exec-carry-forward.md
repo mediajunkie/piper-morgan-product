@@ -7,7 +7,7 @@
 **Mail v4:** read `scripts/mail4.py inbox` on every wake, alongside v3; ack with `python3 scripts/mail4.py ack <ID>`. Open to every seat since Mon 11-09; v3 stays the fallback until 11-23. Find new v3 mail with `git log --since=<last check> --diff-filter=A --name-only --format= origin/main -- mailboxes/exec/inbox/`. Last check 22:01 Mon 11-09.
 
 ## Rollup
-v911, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert. **To cut a span: anchor both ends on exact text, assert the block's `<li>`/`<div>` count, and assert the five or so neighbouring items still exist afterwards** (11-09 14:03: an `rfind("<li")` cut removed five unrelated cards; rebuilt from the committed version). Describe security findings by class only. **At START: header to Tuesday 10 November; re-check the Tuesday post item (published or slipped) and remove it.**
+v912, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert. **To cut a span: anchor both ends on exact text, assert the block's `<li>`/`<div>` count, and assert the five or so neighbouring items still exist afterwards** (11-09 14:03: an `rfind("<li")` cut removed five unrelated cards; rebuilt from the committed version). Describe security findings by class only. **Tue 11-10 06:01: header set to Tuesday. The Tue post item stays until the post publishes or xian says "slip it"; check the calendar every fire.**
 
 ## Where things stand (end of 11-09)
 - **Served on beta:** `727dd31596` (Lead run 42704401059, 13:37; /health 22:01 healthy). It carries #2334 (Redis pool waits instead of failing sign-ins), #2335 (startup log shows host and port only) and #2336 (Redis health ping every 30 s, not per request). PA's served two-turn sign-in checks passed on `f0e6505de8` (12:12) and `727dd31596` (13:45).
@@ -36,7 +36,7 @@ v911, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 
 ## Mine
 - Relay xian's rulings at once and record them in decisions.log. Timestamps from a `date` call in the same command; **never write a stamp a few minutes ahead "for when it publishes"** (11-09: 14:05 and 14:06 written at 14:02 and 14:04, both caught before publish).
-- **Review slot, every START:** re-read one claim from the last 24 hours against its source. Candidate for 11-10: my 14:01 claim that #2151 and #2155 are "still open, in the same stream" (states checked; "same stream" is not re-verified).
+- **Review slot, every START:** re-read one claim from the last 24 hours against its source. 11-10 done: the #2151/#2155 "same stream" claim held (Arch's 10-24 15:29 comment on #2151: commit a3bc9a89c8 carries the #2155 copy line). Candidate for 11-11: pick at START from the last 24 hours.
 - **Calendar check every fire**, not only at START: rows `published` in the last 7 days, and the next post's status. 11-09: a syndicated post stayed on the rollup as "needs Medium/LinkedIn" for 16 hours.
 - **A tally or ruling written to decisions.log also goes out by mail the same hour** (11-09: the sprint tally sat in decisions.log only; PPM waited all afternoon; mailed 11-10 04:22).
 - Write DAY-CLOSED in grep form, `<!-- DAY-CLOSED: YYYY-MM-DD -->`, as the log's last line.
