@@ -495,3 +495,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v911 18:02 Mon 11-09: added Tue 11-10 post still a scaffold (prose is xian's; calendar planned; draft unchanged since 11-05 06:23).
 - v912 (06:02 Tue 11-10 START): header to Tuesday; Tue post item now 'today's slot', calendar row planned. Checks: CI 12/12, beta 727dd31596 healthy, DNS unchanged, mail 0.
 - v913 (10:02 Tue 11-10 WORK): intro card rewritten for Tuesday, resolved Monday news cut. The Ship #068 item now asks for the first look (publishes Wed); before this it asked only for spend tokens. Checks: CI 12/12, beta 727dd31596, DNS unchanged, mail 0.
+- v914 (14:02 Tue 11-10 WORK): the Tue post item now also names Thursday's scaffold ('The Server Key Is Not a Real Concept'); /health stamp 14:02. CI 12/12, beta 727dd31596, mail 0.
