@@ -1,18 +1,18 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-08 21:19 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/11/08/2026-11-08-0604-comms-code-log.md`, DAY-CLOSED. 11-09 log: `dev/2026/11/09/2026-11-09-0619-comms-code-log.md`.
+## ⭐ CURRENT STATE — 2026-11-09 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/09/2026-11-09-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-10.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
 - **Weekend slots are INSIGHTS (Sat and Sun, Medium + LinkedIn).** Tue/Thu building, Wed Ship. I called Sat "building" three times (11-04 memo, scaffold, publish-ready); Docs corrected it 11-07. **Every publish-ready memo now states the category, checked against the weekday.**
 - **Sat 11-07 "At Long Last, Beta": PUBLISHED and DISTRIBUTED** (https://pipermorgan.ai/blog/at-long-last-beta, website 7a6605009f; insight; xian's Medium and LinkedIn URLs on the calendar). Draft archived by Docs.
 - **Publish pipeline after the Ignored Build Step: CLOSED** on Sat's live deploy (`success`), memo a05c096c1.
 - **Sun 11-08 "When Accuracy Scores Worse": PUBLISHED 22:13** (https://pipermorgan.ai/blog/when-accuracy-scores-worse, insight). Medium and LinkedIn owed by xian. Scaffolds now keep each prose paragraph on one line (Docs had to join a hard wrap).
-- **Tue 11-10 "Never Green in a Thousand Runs"** (building, title FINAL per xian 11-08): only E2E never passed. Teases Thu. **Thu 11-12 "The Server Key Is Not a Real Concept"** (building): the "truth over feeling of progress" quote is about the epic, not the key. Its tease target waits on the talk.
-- **Strategy talk with xian: he said 11-08 (read 22:19) "Will check in tomorrow to discuss upcoming editorial plans" (Mon 11-09).** Have the brief ready. Brief: planning doc rev 32, "For our editorial-strategy session". My pick for the "One Account Means One Hand" partner (Nov 14/15) is **C with 8**. Candidate I, "A Review Where Nothing Became a Skill", has no slot. Waiting on the talk: the partner and its calendar row, Thu's tease target, beat merges, then the scaffold format in `draft-blog-post`.
+- **Tue 11-10 "Never Green in a Thousand Runs"** (building, title FINAL per xian 11-08; **publishes TOMORROW, still my scaffold at 11-09 21:19**). Its footer teases Thu, whose title is still working: **asked xian 11-09 18:19** with the four Thu scaffold options; Tue can't go to Docs until he answers: only E2E never passed. Teases Thu. **Thu 11-12 "The Server Key Is Not a Real Concept"** (building): the "truth over feeling of progress" quote is about the epic, not the key. Its tease target waits on the talk.
+- **Strategy talk with xian: still not held.** He said 11-08 he'd check in 11-09 about editorial plans; he didn't by 21:19. Brief refreshed (planning doc rev 33, "Update, Nov 9"). Brief: planning doc rev 32, "For our editorial-strategy session". My pick for the "One Account Means One Hand" partner (Nov 14/15) is **C with 8**. Candidate I, "A Review Where Nothing Became a Skill", has no slot. Waiting on the talk: the partner and its calendar row, Thu's tease target, beat merges, then the scaffold format in `draft-blog-post`.
 - **Ship #068** (Wed 11-11), "Whose Connection Is It, Anyway?": a **scaffold for xian** (`weekly-ship-068-draft-2026-11-06.md`, 8 `[xian]` slots), not an Exec draft (Exec 11-08). Waits on xian's tokens and prose; Comms runs the External fact-check when his prose lands.
 - **Two-week sprints from Fri 11-13; rhythm GO as a default that flexes (xian 11-07 16:49).** #069 ordinary, #070 first progress, #071 first final score; even = progress, odd = final score. Forms in `draft-weekly-ship` v1.15 Step 5-sprint. Comms has no objection (deadline Mon 11-09 noon).
 - **GitHub criteria line:** in my briefing; run every fire, delta by createdAt. 11-07 delta: #2324 (repo-analysis "runway" wording), not Comms work.
-- **Mail v4 from Mon 11-09 (starts today):** read `python3 scripts/mail4.py inbox --role comms` as well as v3. v3 is the fallback until 11-23.
+- **Mail v4 LIVE since 11-09** (CIO's test acked 4750fef746; canary PASS): read `python3 scripts/mail4.py inbox --role comms` as well as v3. v3 is the fallback until 11-23.
 - **Invites held (xian 11-04)** until #1551, #2261 and #2178 are done. Copy must not imply anyone can join now.
 - **Waiting list (#2256):** xian pastes the confirmation email and signs up, then HOST reads it.
 - **HOLD (PDR-102):** no ownership claim in copy until C7 is verified and C8 has a surface.
