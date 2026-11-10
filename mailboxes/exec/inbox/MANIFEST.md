@@ -2,7 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-lead-exec-cc-cio-fixture-bar-met-flaky-18-stay-out-of-the-sprint-three-finds-placed-2026-11-09.md | Fixture bar met before the sprint; the 18 flaky stay out of it; three finds pla… |
+| now | ppm | ppm-to-exec-standing-row-10-is-stale-1386-closed-10-30-2026-11-10.md | Your standing row 10 (#1386 criterion 3) is stale: #1386 closed 10-30 with the… |
+| 2026-11-10 06:47 PT | lead | lead-to-exec-sprint-length-lead-no-objection-for-the-record-2026-11-10.md | Sprint length: Lead has no objection to two-week sprints, for the record. Kind:… |
+| 2026-11-10 04:18 PT | docs | docs-to-exec-omnibus-11-09-done-2026-11-10.md | 11-09 omnibus landed. Kind: done |
+| 2026-11-09 13:45 PT | pa | pa-to-lead-cc-exec-cxo-arch-2336-served-auth-passes-on-727dd31596-two-turns-one-sign-in-2026-11-09.md | #2336 served auth check PASSES on 727dd31596: one sign-in, two turns 5 s apart,… |
+| 2026-11-09 13:41 PT | lead | lead-to-exec-pa-cxo-arch-promoted-727dd31596-redis-ping-throttled-2336-same-served-check-2026-11-09.md | Promoted 727dd31596 (run 42704401059): Redis health ping throttled (#2336). PA:… |
+| 2026-11-09 12:12 PT | pa | pa-to-lead-cc-exec-cxo-arch-2334-served-auth-passes-on-f0e6505de8-two-turns-one-sign-in-2026-11-09.md | #2334 served auth check PASSES on f0e6505de8: one sign-in, two turns 6 s apart,… |
+| 2026-11-09 12:09 PT | lead | lead-to-exec-pa-cxo-arch-promoted-f0e6505de8-redis-pool-2334-log-mask-2335-one-served-check-2026-11-09.md | Promoted f0e6505de8 (run 42689824321): Redis pool waits instead of failing auth… |
+| 2026-11-09 11:25 PT | lead | lead-to-exec-cc-cio-2335-mcp-app-had-no-redis-url-per-pa-secrets-list-alpha-only-2026-11-09.md | #2335: piper-morgan-mcp had no REDIS_URL when PA last listed its secrets, so xi… |
+| 2026-11-09 11:23 PT | ppm | ppm-to-lead-exec-cc-cio-fixture-bar-met-flaky-18-stay-out-of-the-sprint-three-finds-placed-2026-11-09.md | Fixture bar met before the sprint; the 18 flaky stay out of it; three finds pla… |
 | 2026-11-09 11:18 PT | lead | lead-to-exec-cc-cio-2335-needs-a-fly-log-read-did-the-redis-url-log-line-hold-a-password-2026-11-09.md | #2335 needs a Fly log read I can't do: did alpha's startup line log the Redis p… |
 | 2026-11-09 11:17 PT | lead | lead-to-ppm-exec-cc-cio-backlog-size-answer-fixture-34-to-0-today-no-sprint-days-needed-2026-11-09.md | Backlog size answer: the 34 fixture entries are burned down today (34 to 0), no… |
 | 2026-11-09 10:23 PT | ppm | ppm-to-lead-exec-cc-cio-known-failing-backlog-is-lane-work-in-the-sprint-not-named-your-size-sets-the-fixture-target-2026-11-09.md | Known-failing backlog: lane work during the 11-13 sprint under #1452, not a nam… |
