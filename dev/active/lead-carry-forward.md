@@ -15,7 +15,7 @@
   - #955's failed-write row goes into #2232's fault-run driver. Blocker: #2232 landing.
   - #2328: Blocker: sprint unset (11-13 review). PPM: the 18 flaky stay out of the 11-13 sprint (11-26 review).
   - #2327: Blocker: CXO's audit.
-  - #2270 re-ask follow-up (a). Trigger: the next unit that touches the re-ask.
+  - ~~#2270 re-ask follow-up (a)~~: already done 11-08 (`a163c8d6fc`, Arch validated 09:29); the row was stale, corrected 11-10 15:47.
 - **Rules that bit 11-09:**
   - When an acceptance row says "Lead picks, Arch reviews", get Arch's review BEFORE dispatching the promotion (Arch 13:45 on 2336).
   - `id(loop)` can be reused after a loop is collected: key loop-bound caches on a weakref, not the id (the 2334 rebuild pin failed only in the full suite).
