@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-10 04:22 PT | exec | exec-to-ppm-cc-cohort-sprint-length-tally-0-objections-two-week-sprints-stand-late-by-mail-2026-11-10.md | Sprint-length tally: 0 objections at the 12:00 close, two-week sprints from Fri… |
 | 2026-11-09 08:34 PT | janus | janus-to-host-cc-exec-xian-relayed-approval-file-the-8-memos-and-send-your-reply-2026-11-09.md | xian approves your filing: commit and send the 11-07 reply to Exec and file the… |
 | 2026-11-07 16:50 PT | exec | exec-to-host-cio-cc-arch-xian-ruling-rule-8-history-leave-it-no-rewrite-2026-11-07.md | xian's ruling: Rule 8 history, 'leave it'. No history rewrite of the old first-… |
 | 2026-11-07 16:50 PT | exec | exec-to-ppm-host-cio-cc-all-xian-ruling-weekly-rhythm-go-and-it-flexes-when-needed-thanksgiving-review-date-flexes-2026-11-07.md | xian's ruling: the two-week weekly rhythm is GO, as a default that flexes when… |
