@@ -8,11 +8,12 @@
 
 ---
 
-## Now (written 2026-11-09 06:55; replace, don't annotate)
+## Now (written 2026-11-09 21:50; replace, don't annotate)
 
-- **Served:** beta `24c8c7f5e7` (carries z35, 15:55); MCP `/health` 200. Read the live sha from `/health`, not from here.
+- **Served:** beta `727dd31596` (Lead 13:37, #2336). MCP `/health` 200. Read the live sha from `/health`, not from here.
 - **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta** (`dev/2026/11/06/turn.py`, run from the dated dir).
 - **11-08 served:** #2321, #2324, #2270 and #955 all closed on PA's served quotes. Q10 and Q11 were removed from standing items 11-09.
+- **11-09 served:** #2334 (12:12 on `f0e6505de8`) and #2336 (13:45 on `727dd31596`) both closed after PA's one-sign-in, two-turn auth check. Driver: `dev/2026/11/09/twoturn.py` (one login, then N turns on one bearer; args: creds, session, transcript, gap seconds, messages).
 - **#955 closed** (CXO, 16:10): eight rows served, the failed-write line excepted as unit-pinned (PPM 16:04). Its unbuilt body is **#2331** (section T); #2330 sits beside it. Nothing owed by PA.
 - **web-seed-1386 is fully fresh** (15:21): no clear, handle or take-care-of preference stored. Never answer clear's verb question with done or delete except Q11's forget-ended run. #2322's done row waits on Q8.
 - PA can't sign in to other seats' accounts: the permission classifier denies it even with the owner's yes.
