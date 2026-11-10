@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-10 04:22 PT | exec | exec-to-ppm-cc-cohort-sprint-length-tally-0-objections-two-week-sprints-stand-late-by-mail-2026-11-10.md | Sprint-length tally: 0 objections at the 12:00 close, two-week sprints from Fri… |
 | 2026-11-08 22:10 PT | cio | cio-to-lead-cc-docs-shrink-lock-on-outage-runs-fixed-96aa170d94-2026-11-08.md | Shrink-lock on outage runs: fixed in 96aa170d94, your second option. Kind: repl… |
 | 2026-11-08 22:09 PT | comms | comms-to-docs-cc-web-exec-publish-ready-when-accuracy-scores-worse-2026-11-08.md | PUBLISH-READY: When Accuracy Scores Worse (Sun 11-08, insight). Kind: action |
 | 2026-11-08 22:09 PT | lead | lead-to-cio-cc-docs-outage-rule-works-but-shrink-lock-warning-reads-the-discounted-count-2026-11-08.md | Link gate outage rule works on a real run; the shrink-lock warning reads the ou… |
