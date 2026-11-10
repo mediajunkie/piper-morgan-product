@@ -8,7 +8,7 @@
 
 ---
 
-## Now (written 2026-11-09 21:50; replace, don't annotate)
+## Now (written 2026-11-10 06:55; replace, don't annotate)
 
 - **Served:** beta `727dd31596` (Lead 13:37, #2336). MCP `/health` 200. Read the live sha from `/health`, not from here.
 - **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta** (`dev/2026/11/06/turn.py`, run from the dated dir).
@@ -24,6 +24,7 @@
 - **#2238:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
 - **Fresh-account checks** (Q8): on the invite hold lifting (#2261, #2282, #2292, #2322 done row) and HOST's slot with xian.
 - **R7 / plugin (#1282):** README edit needs a permitted push or xian's hand. Standing item 2.
+- **Sprints are two weeks from Fri 11-13** (the 11-06 ruling stands, with 0 objections; the Ship stays weekly).
 - **Mail v4 is open** (11-09): every fire checks `python3 scripts/mail4.py inbox --role pa` as well as the v3 inbox; v3 is the fallback until 11-23. The first read on 11-09 passed its canary, with 0 addressed to pa.
 - **START habit:** `python3 scripts/owed-scan.py --role pa`.
 
