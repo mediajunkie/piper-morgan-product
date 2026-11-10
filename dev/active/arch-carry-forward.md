@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-08 21:28 PST (STOP)
+last_updated: 2026-11-09 21:27 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,6 +28,11 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
+- **11-09 STOP (21:27 fire).** Main 12/12 green. Beta serves `727dd31596`. Every ruling today is in decisions.log (10:31, 11:21, 12:11, 13:45).
+  - **Closed today:** #2334 (BlockingConnectionPool timeout=2, connect 2, socket 5; a weakref loop key replaces id(loop) in the #1452 rebuild; validated on served f0e6505de8; PA's served auth passes) and #2336 (health ping on a new pool, then at most every 30 s; validated post hoc; PA's served auth passes).
+  - **Open:** #2335 (the old pool-init log line printed REDIS_URL, which may carry the Upstash password; the code fix is served; xian's check of the live logs and a rotation if needed, via Exec). #2333 (spatial `hash()` salted per process; fix shape: a stable digest; Lead or PPM to schedule).
+  - **Mail v4 is live for arch** (CIO 11-09): every inbox check reads v3 and `python3 scripts/mail4.py inbox --role arch`. Ack with `mail4.py ack <id> done --as arch`.
+  - **Lesson (11-09):** two more stamps ahead of the clock (11:27 against 11:21, 12:13 against 12:11). The fix in use since 12:11: `T=$(TZ=America/Los_Angeles date +%H:%M)` inside the heredoc, never typed by hand.
 - **11-08 STOP (21:27 fire).** Main 11/12 at the fire: Documentation Link Checker red on c8e33744bf from a lychee setup tar error (weather, not links); rerun requested. Alpha/beta serve `24c8c7f5e7`. Every ruling today is in decisions.log, 06:28 to 14:38.
   - **Closed today:** #2270 (analyze_repository; the floor-door re-ask meets uncached-ask parity, about 6 s against 10 s; CXO closed it) and #955 (preference change; every row served across 2824ed3437, 98b95c80c0, 8677aa05f5 and 24c8c7f5e7; closed 16:10).
   - **Standing from today's rulings:** `ROUTER_HIDDEN_CEILING = 3` is the last raise, and the exit is #2149. #955's clear aliases bind "clear" only, per-verb aliases bind their own key, and set-directly always asks. `CONSENT_NARROWING_ALLOWLIST` holds the forget aliases only.
