@@ -9,7 +9,7 @@
 **Mail v4:** read `scripts/mail4.py inbox` on every wake, alongside v3. It opens to every seat on **Mon 11-09** (CIO), and v3 stays the fallback until 11-23. The v3 inbox holds 1,000+ files: find new mail with `git log --since=<last check> --diff-filter=A --name-only origin/main -- mailboxes/exec/inbox/`. Last check 22:10 Sun 11-08.
 
 ## Rollup
-v910, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut**. Grep the exact anchor text before writing the replace. When a ruling is relayed, remove its rollup item in the same commit. The source is in a public repo, so describe security findings by class only. **At START: change the header to Monday 9 November and the "Sunday, in order" lead.**
+v911, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert, and **assert both ends of any span you cut**. Grep the exact anchor text before writing the replace. When a ruling is relayed, remove its rollup item in the same commit. The source is in a public repo, so describe security findings by class only. **At START: change the header to Monday 9 November and the "Sunday, in order" lead.**
 
 ## Where things stand (end of 11-08)
 - **Served on beta:** `24c8c7f5e7` (Lead run 42537223392, 15:55; /health 22:01). Before it `98b95c80c0` (14:35), `2824ed3437` (13:06).

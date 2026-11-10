@@ -492,3 +492,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v909 13:45 Mon 11-09: beta 727dd31596 (#2336, Lead run 42704401059; /health 13:44 healthy).
 - v910 14:04 Mon 11-09: removed stale 'When Accuracy Scores Worse needs Medium/LinkedIn' (calendar distributed 11-08 22:19, both URLs) and the 11-07 'Done (08:03)' item; trimmed #2282 to its open row.
   Also pruned 'Your hand' (11-05 Decided item; GitHub-done text), the v0.9.0.0 Done card, In motion (#2146 closed; #2151 stale sha; mail v4 line), Where things stand (11-06 diff; beta 727dd31596), sitemap card trimmed to the optional paste.
+- v911 18:02 Mon 11-09: added Tue 11-10 post still a scaffold (prose is xian's; calendar planned; draft unchanged since 11-05 06:23).
