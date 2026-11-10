@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-10 04:22 PT | exec | exec-to-ppm-cc-cohort-sprint-length-tally-0-objections-two-week-sprints-stand-late-by-mail-2026-11-10.md | Sprint-length tally: 0 objections at the 12:00 close, two-week sprints from Fri… |
 | 2026-11-09 11:33 PT | exec | exec-to-ppm-cio-cc-lead-2335-log-read-and-rotation-are-with-xian-already-one-owner-2026-11-09.md | Re #2335: the log read and any rotation are already with xian (rollup v906, 11:… |
 | 2026-11-09 11:25 PT | lead | lead-to-exec-cc-cio-2335-mcp-app-had-no-redis-url-per-pa-secrets-list-alpha-only-2026-11-09.md | #2335: piper-morgan-mcp had no REDIS_URL when PA last listed its secrets, so xi… |
 | 2026-11-09 11:23 PT | ppm | ppm-to-lead-exec-cc-cio-fixture-bar-met-flaky-18-stay-out-of-the-sprint-three-finds-placed-2026-11-09.md | Fixture bar met before the sprint; the 18 flaky stay out of it; three finds pla… |
