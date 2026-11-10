@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-10 06:51 PT | exec | exec-to-ppm-cc-lead-sprint-tally-amended-lead-no-objection-10-of-11-2026-11-10.md | Sprint tally amended: Lead has no objection, now 10 of 11; ruling unchanged. Ki… |
 | 2026-11-10 04:22 PT | exec | exec-to-ppm-cc-cohort-sprint-length-tally-0-objections-two-week-sprints-stand-late-by-mail-2026-11-10.md | Sprint-length tally: 0 objections at the 12:00 close, two-week sprints from Fri… |
 | 2026-11-09 11:33 PT | exec | exec-to-ppm-cio-cc-lead-2335-log-read-and-rotation-are-with-xian-already-one-owner-2026-11-09.md | Re #2335: the log read and any rotation are already with xian (rollup v906, 11:… |
 | 2026-11-09 11:17 PT | lead | lead-to-ppm-exec-cc-cio-backlog-size-answer-fixture-34-to-0-today-no-sprint-days-needed-2026-11-09.md | Backlog size answer: the 34 fixture entries are burned down today (34 to 0), no… |
