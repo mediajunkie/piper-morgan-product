@@ -598,31 +598,27 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: notion-offer-ask** (Filed 2026-11-01; to: exec; by: trigger: Web's #2238 served check passes). Send Exec the one-line "offer Notion in the beta: yes or no" for xian. CXO's card words come first.
   - **Rule from PDR-102:** when PPM places a connector-ingest unit, mail Arch the same day (his ADR trigger for C2).
 
-## Now (rewritten at the 11-08 21:33 STOP; carry into Mon 11-09)
+## Now (rewritten at the 11-09 21:33 STOP; carry into Tue 11-10)
 
-- **Invite hold, PDR-008 (Accepted 11-07, P1–P3 xian yes).** Re-verified 21:34 11-08 with `gh issue view`.
+- **Invite hold, PDR-008 (Accepted 11-07, P1–P3 xian yes).** Re-verified 21:35 11-09 with `gh issue view`.
   - Open: #2261 (waits on xian's #2174 runs), #2282 (its browser row waits on xian's word for Web's sign-in check), and #2292 (P1, xian's records).
   - Met or closed: #1551, #2283, #2178.
   - When all six are met, PPM sends Exec the lift-readiness memo (§3), each row with `Verified how:`.
-- **Sprint (11-13 to 11-26): RATIFIED by xian 11-09** (via Janus 08:48; decisions.log 08:53). The table is now one short line per cell (his run-on note), history below it. The 11-13 review is shortened, not dropped (Exec 08:56): PPM refreshes the State column Fri morning. The #2157 drill ask went to xian on the rollup 11-09. The 12:00 tally is about sprint length only (Exec's). The Thanksgiving review day is xian's.
-  - **Item 5 (D5):** #2318 and #2321 closed 11-08 (CXO). #2219 (×3) passed on the live site but has other rows open. #2322's stored-done row waits on Q8. #2328 (`them` says not-found, V) is a possible rider.
-  - **Item 8, #2270:** closed 11-08 13:44 (CXO). #2327's audit takes the "in one pass" close offers and the doubled repo name.
+- **Sprint (11-13 to 11-26): RATIFIED by xian 11-09** (via Janus 08:48; decisions.log 08:53). The table is one short line per cell, with history below it. The 11-13 review is shortened, not dropped (Exec 08:56): PPM refreshes the State column Fri morning. The #2157 drill ask is on xian's rollup. Exec's 12:00 sprint-length tally hadn't reached PPM's mail by 21:33; it's Exec's to send, nothing for PPM to chase.
+  - **Item 5 (D5):** #2219 (×3) passed on the live site but has other rows open. #2322's stored-done row waits on Q8. #2328 (`them` says not-found, V) is a possible rider.
   - 11-13 review candidates: #2320, #2319.
-- **Production 276** (`gh` 21:34 11-08 = Total), map v115 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned.
-  - Placed 11-08: #2327 (Q), #2328 (V), #2331 and #2330 (T).
-  - Closed 11-08: #2321, #2324, #2318, #2270, #955.
-  - Placed 11-09: #2333 (C), #2334 (Q), #2335 (D), from Lead's #1452 burn-down.
-- **Known-failing backlog (#1452):** fixture 34 to 0 by Lead 11-09 morning; 21 left (flaky 18, regression 3). The 18 flaky stay out of the 11-13 sprint (PPM 11:23); the 11-26 review can take them up. #2335's live-log check and any rotation are xian's, on Exec's rollup v906 (Exec 11:33).
-- **#955 closed 11-08 16:10 (CXO)** on the clear-preference slice, with PPM's unit-pinned exception for the failed-write line. The rest is #2331 (T); #2330 (T, low). Not owed by PPM: #2232's local fault run adds the failed-write row when it lands.
+- **Health lane (#1452):** Lead took the fixture entries 34 to 0 on 11-09 (backlog 55 to 20 by Lead's log after #2334). The 18 flaky stay out of the sprint (PPM 11:23); the 11-26 review can take them up. #070 and #071 report the count from CI's `backlog size:` line.
+- **Production 278** (`gh` 21:33 11-09 = Total), map v119 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned.
+  - Placed 11-09: #2333 (C, spatial, Arch sequences), #2334 (Q), #2335 (D), #2336 (Q).
+  - Closed 11-09: #2334 (12:16), #2336 (14:00), both Lead with PA's served turns.
+  - #2335: built; the live-log read and any rotation are xian's, on Exec's rollup v906 (Exec 11:33). Exec relays his answer.
 - **OWED rows:**
   - **key: sprint-state-refresh** (Filed 2026-11-09; to: exec; trigger: Fri 11-13 START. Refresh the sprint table's State column from `gh issue view` on every named issue, before the review).
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift; needs #2297 and #2301).
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
-- **web-seed-1386:** fully fresh since 11-08 15:21 (no preference stored, 8 open todos). #2325's admin reset wasn't needed.
+- **#955 closed 11-08 (CXO).** The rest is #2331 (T); #2330 (T, low). #2232's local fault run adds the failed-write row when it lands.
 - **Fresh-account list (Q8, after the lift):** #2270's not-connected turn 1, Path B's quote, and possibly #2322's stored-done row.
-- **Mail v4 is live for PPM (CIO, 11-09 10:09; acked 10:10).** Every inbox check reads both: the v3 folder and `python3 scripts/mail4.py inbox --role ppm`. v3 stays the fallback until the 11-23 review. Ops doc: `docs/internal/operations/mail-v4-pilot.md`.
-- **Waiting on others:**
-  - #2290 (Lead);
-  - #2320's per-phase log (Lead);
+- **Mail v4 is live for PPM (CIO, 11-09 10:09).** Every inbox check reads both: the v3 folder and `python3 scripts/mail4.py inbox --role ppm`. v3 stays the fallback until the 11-23 review.
+- **Waiting on others:** #2290 (Lead); #2320's per-phase log (Lead); #2219's other rows and #2328 (Lead, then CXO).
 - **Still carried:** #2242's last row (xian's remove and re-add); #2235; #1680; PDR-102 C1–C8 checks on document-touching placements.
