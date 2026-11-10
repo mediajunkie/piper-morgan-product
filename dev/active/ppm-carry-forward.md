@@ -604,7 +604,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Open: #2261 (waits on xian's #2174 runs), #2282 (its browser row waits on xian's word for Web's sign-in check), and #2292 (P1, xian's records).
   - Met or closed: #1551, #2283, #2178.
   - When all six are met, PPM sends Exec the lift-readiness memo (§3), each row with `Verified how:`.
-- **Sprint (11-13 to 11-26): RATIFIED by xian 11-09** (via Janus 08:48; decisions.log 08:53). The table is one short line per cell, with history below it. The 11-13 review is shortened, not dropped (Exec 08:56): PPM refreshes the State column Fri morning. The #2157 drill ask is on xian's rollup. Exec's 12:00 sprint-length tally hadn't reached PPM's mail by 21:33; it's Exec's to send, nothing for PPM to chase.
+- **Sprint (11-13 to 11-26): RATIFIED by xian 11-09** (via Janus 08:48; decisions.log 08:53). The table is one short line per cell, with history below it. The 11-13 review is shortened, not dropped (Exec 08:56): PPM refreshes the State column Fri morning. The #2157 drill ask is on xian's rollup. Sprint length: the objection window closed 11-09 12:00 with 0 objections; two-week sprints stand (decisions.log 11-09 12:11; Exec mailed it 11-10 04:22).
   - **Item 5 (D5):** #2219 (×3) passed on the live site but has other rows open. #2322's stored-done row waits on Q8. #2328 (`them` says not-found, V) is a possible rider.
   - 11-13 review candidates: #2320, #2319.
 - **Health lane (#1452):** Lead took the fixture entries 34 to 0 on 11-09 (backlog 55 to 20 by Lead's log after #2334). The 18 flaky stay out of the sprint (PPM 11:23); the 11-26 review can take them up. #070 and #071 report the count from CI's `backlog size:` line.
