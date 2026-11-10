@@ -1,5 +1,27 @@
 # Lead carry-forward — Fable 5.1 seat (Opus 5.5 from 11-04 19:38 until the Fable limit resets after 22:00 on 11-05); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY CLOSED 2026-11-09 21:46 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-09 -->` in the 11-09 log `dev/2026/11/09/2026-11-09-0646-lead-code-log.md`)
+- **Served:** alpha/beta `727dd31596` (13:37, run 42704401059; beta /health healthy at 21:46). Promotions today: 2 by this seat (12:06 `f0e6505de8`, 13:37 `727dd31596`). Nothing of mine is on main unpromoted.
+- **Closed today:** #2334 (BlockingConnectionPool, PA served 12:12); #2336 (bounded 30 s health ping, PA served 13:45, Arch content 13:45).
+- **Main at close:** 12/12 green. Full-suite backlog 55 → 20 (fixture 0, flaky 18, regression:2257 ×2), confirmed in CI.
+- **Model:** Opus 5.5.
+- **11-10 START order:**
+  1. Usual START: create the 11-10 log, inbox, current-state Now, xpoll, owed-scan.
+  2. `scripts/main-ci-status.sh`.
+  3. Mail first: Exec may relay xian's yes/no on 2335.
+- **Lead's open items (each with its blocker):**
+  - #2335 (REDIS_URL logged in full): code fix served. Blocker: xian's yes/no on whether the live log held the Upstash password (Exec rollup v906). If he rotates, confirm the reconnect, then close.
+  - #2333 (salted hash() spatial positions): placed in C. Blocker: Arch sequences the fix (stable digest).
+  - #955's failed-write row goes into #2232's fault-run driver. Blocker: #2232 landing.
+  - #2328: Blocker: sprint unset (11-13 review). PPM: the 18 flaky stay out of the 11-13 sprint (11-26 review).
+  - #2327: Blocker: CXO's audit.
+  - #2270 re-ask follow-up (a). Trigger: the next unit that touches the re-ask.
+- **Rules that bit 11-09:**
+  - When an acceptance row says "Lead picks, Arch reviews", get Arch's review BEFORE dispatching the promotion (Arch 13:45 on 2336).
+  - `id(loop)` can be reused after a loop is collected: key loop-bound caches on a weakref, not the id (the 2334 rebuild pin failed only in the full suite).
+  - The autouse `mock_token_blacklist` stubs the blacklist unless the test is marked `integration` or `performance`; a fail-closed pin must carry the mark.
+  - Run `ruff format` before every code commit (format drift pushed in `a86234d972`).
+
 ## DAY CLOSED 2026-11-08 21:46 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-08 -->` in the 11-08 log `dev/2026/11/08/2026-11-08-0646-lead-code-log.md`)
 - **Served:** alpha `24c8c7f5e7` (15:55, run 42537223392). Promotions today: 7 by this seat (07:04, 08:05, 08:46, 13:06, 14:35, 15:19, 15:55). Nothing of mine is on main unpromoted.
 - **Closed today:** #2270 (CXO 14:50, every row served); #955 (CXO, after PPM 16:04 accepted the failed-write line as unit-pinned and split the unbuilt body to #2331); #2324 (CXO).
