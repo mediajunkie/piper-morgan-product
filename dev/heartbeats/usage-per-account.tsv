@@ -816,3 +816,5 @@ ts_local	account	config_dir	five_hour_pct	five_hour_reset	seven_day_pct	seven_da
 2026-11-09 21:23 PST	designinproduct.com	~/.claude	NO-WINDOW				usage-read.sh	five_hour is null (no open window); seven_day=35.0% resets 2026-11-12T03:59			
 2026-11-10 00:23 PST	pipermorgan.ai	~/.claude-pm	NO-WINDOW				usage-read.sh	five_hour is null (no open window); seven_day=29.0% resets 2026-11-13T04:59			
 2026-11-10 00:23 PST	designinproduct.com	~/.claude	EXPIRED-TOKEN				usage-read.sh	the stored credential expired at 2026-11-09 22:47:02; a live session refreshes it, a scheduled read cannot			
+2026-11-10 03:23 PST	pipermorgan.ai	~/.claude-pm	NO-WINDOW				usage-read.sh	five_hour is null (no open window); seven_day=29.0% resets 2026-11-13T04:59			
+2026-11-10 03:23 PST	designinproduct.com	~/.claude	EXPIRED-TOKEN				usage-read.sh	the stored credential expired at 2026-11-09 22:47:02; a live session refreshes it, a scheduled read cannot			
