@@ -39,6 +39,7 @@ v912, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - **Review slot, every START:** re-read one claim from the last 24 hours against its source. 11-10 done: the #2151/#2155 "same stream" claim held (Arch's 10-24 15:29 comment on #2151: commit a3bc9a89c8 carries the #2155 copy line). Candidate for 11-11: pick at START from the last 24 hours.
 - **Calendar check every fire**, not only at START: rows `published` in the last 7 days, and the next post's status. 11-09: a syndicated post stayed on the rollup as "needs Medium/LinkedIn" for 16 hours.
 - **A tally or ruling written to decisions.log also goes out by mail the same hour** (11-09: the sprint tally sat in decisions.log only; PPM waited all afternoon; mailed 11-10 04:22).
+- **At START, run `scripts/aging-standing-items.sh exec` and close any row whose subject has closed** (11-10: PPM flagged row 10, #1386, 11 days after the gate closed).
 - Write DAY-CLOSED in grep form, `<!-- DAY-CLOSED: YYYY-MM-DD -->`, as the log's last line.
 
 ## Owed rows (owed-scan)
