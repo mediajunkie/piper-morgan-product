@@ -280,7 +280,7 @@ def _tail(path: Path, lines: int = 40) -> str:
 
 
 @pytest.fixture(scope="session")
-def live_server():
+def live_server(app_child_env):
     """Start the REAL server (main.py) as a subprocess, env-stripped, on a
     port of its own; health-wait; guaranteed teardown.
 
@@ -299,7 +299,7 @@ def live_server():
         or tempfile.mkstemp(prefix=f"piper-live-{port}-", suffix=".log")[1]
     )
 
-    env = dict(os.environ)
+    env = app_child_env()  # #2338: PIPER_CREDENTIAL_STORE=db unless the keychain opt-in is set
     for var in _POISON_ENV_VARS:
         env.pop(var, None)
     env.setdefault("POSTGRES_PORT", "5433")

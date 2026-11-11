@@ -94,6 +94,26 @@ def _dev_keychain_or_none():
         return None
 
 
+def child_app_env(base=None) -> dict:
+    """The environment for an app process a test starts (``main.py`` as a child).
+
+    The in-memory keyring swap is in-process only, so a child with no store set
+    would read the developer's login keychain at startup (#2338; Arch 11:39).
+    Without the opt-in the child gets ``PIPER_CREDENTIAL_STORE=db`` (setdefault: an
+    explicit choice by the caller or the shell stands). Set on the CHILD's
+    environment only, never ``os.environ``, so in-process tests keep the swap."""
+    env = dict(os.environ if base is None else base)
+    if not _keychain_opted_in():
+        env.setdefault("PIPER_CREDENTIAL_STORE", "db")
+    return env
+
+
+@pytest.fixture(scope="session")
+def app_child_env():
+    """``child_app_env`` for harnesses that start the app as a subprocess."""
+    return child_app_env
+
+
 def _use_in_memory_keyring() -> bool:
     """#2338: point the ``keyring`` module at a process-local, in-memory backend for
     this test run, so no test READS OR WRITES the developer's login keychain.
@@ -236,6 +256,12 @@ def pytest_configure(config):
                 print("  [conftest] Loaded GITHUB_TOKEN from gh CLI")
         except (FileNotFoundError, subprocess.TimeoutExpired):
             pass  # gh not installed or timed out - skip silently
+
+    # #2338 (Arch, decisions.log 2026-11-11 11:39): the opt-in grants READING, not
+    # writing. The keys are in the environment now, so the rest of the run gets the
+    # in-memory keyring too, and a test's leftovers never land in the real one.
+    if _use_in_memory_keyring():
+        print("  [conftest] Keys loaded; OS keyring replaced by an in-memory one for this run")
 
 
 # ============================================================================
