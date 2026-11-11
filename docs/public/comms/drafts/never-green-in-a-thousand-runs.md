@@ -16,22 +16,28 @@ I carved out time on September for some live testing, something I cannot delegat
 
 My chief of staff agent (Exec) summarized it in the "attention rollup" artifact they maintain for me, noting that the sprint backlog went from 28 to 34, as it "grew by six while PM closed six" (they often refer to me as simply PM, the human product manager they all work for). 
 
-Exec also noted some "never started" work that was still being postponed. This got me wondering. What is blocking that work? Why has it not yet started? How can I be blocking it yet if hasn't yet even started? How can you have any pudding when you haven't finished your meat?
-**2. Your question, and Lead's answer.** About 1:15 PM you asked how you could be blocking never-started work. Lead's
-log heading: "PM's how-am-I-blocking-never-started question answered HONESTLY: they weren't. I was." [Lead 09-09 l.37]
-- The mechanism: for two weeks every duty fire drained incoming mail first, so the agent was never idle, and the
-  backlog-intake step never ran. In Lead's words: "Each fire locally correct; the sum wrong." [l.39-41]
-- To Exec: "nothing prevents starting a never-started item — PM has never been the blocker on them, I have." [Exec
-  09-09 l.132-134]
-- Your exact question isn't recorded anywhere. Write it from memory, or paraphrase.
+# The work that didn't start
 
-**3. Your words for the reporting problem.** The same day, of the status reports: "the state of the forest and not
-just the most recently noticed trees." [Exec 09-09 l.148-149] Exec retracted two of three throughput numbers given
-to you that day.
+Exec also noted some "never started" work that was still being postponed. This got me wondering. What is blocking that work? Why has it not yet started? How can I be blocking it yet if hasn't yet even started? How can you have any pudding if you don't eat your meat? Well, not that.
 
-**4. "Fully green."** Lead's week before had been reported as "the CI belt fully green for the first time on record".
-[Ship #059 internal report, 09-04 l.137] On Fri Sep 11 that morning, Lead again: "Belt fully green as of this
-morning's fix." [Lead 09-11 l.41]
+My lead developer agent peeked at the issue and took the blame, saying they had been blocking it themselves, not I. A faulty duty-cycle mechanism tied the backlog-intake to an idle state that never came. 
+
+Exec and I also discussed how to escalate items to me if they sit unaddressed for too long and Exec spread the work among the agent team.
+
+# Trying to see the big picture
+
+In discussing how I didn't feel I had a good grip on where we stood and whether we were really making progress or just slipping sideways, I said something about how I needed to understand "the state of the forest and not
+just the most recently noticed trees." 
+
+This led to a productive conversation that improved how we track and measure throuput.
+
+# Evergreen vs. never green
+
+Several times in this period Lead shared reports about how the CI (continuous integration) test belt was "fully green" but when asked for more details on this, Lead realized that their reports had been partial at best and misleading at worst.
+
+
+
+ 
 
 **5. The denominator.** 3:31 PM, Lead took a snapshot for the close-out and found it: "the 'Tests' and 'E2E & AAXT'
 workflows are STANDING-RED (every visible run) and were never in 1687's four-workflow scope — so my every 'belt fully
