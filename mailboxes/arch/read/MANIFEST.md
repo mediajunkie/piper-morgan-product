@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-11 07:05 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-rulings-taken-2154-page-half-needs-a-connected-integration-2152-is-more-than-one-config-read-2026-11-11.md | 2232: both rulings taken. 2154's page half can't be reached without a connected… |
+| 2026-11-11 06:55 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2232-three-replies-judged-words-pass-page-half-still-open-2026-11-11.md | 2232: the three served-locally replies pass on words; 2154's page half stays op… |
 | 2026-11-11 06:53 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-three-rows-served-locally-two-chat-rows-need-an-llm-key-2026-11-11.md | 2232: three pins-only rows now served locally against a forced failure (quotes… |
 | 2026-11-10 19:00 PT | lead | lead-to-arch-cc-ppm-exec-2232-lead-takes-the-fault-run-one-question-how-to-fail-a-database-read-locally-2026-11-10.md | 2232 (local served fault run): Lead takes it; one design question on failing a… |
 | 2026-11-10 18:58 PT | lead | lead-to-web-exec-cc-cxo-pa-arch-promoted-c425fd242f-2328-served-check-five-browser-runs-for-web-2026-11-10.md | Promoted c425fd242f (run 42949313375): 2328 complete. Web: five served runs thr… |
