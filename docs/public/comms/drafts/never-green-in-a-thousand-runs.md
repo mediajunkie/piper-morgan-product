@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'never-green-in-a-thousand-runs-proud-spare-two-flat-tires.jpg'
+alt: 'A cheerful AI mechanic proudly presents a fully inflated spare tire while a puzzled woman gestures toward the car beside them, its tires visibly flat.'
 caption: ''
 ---
 
