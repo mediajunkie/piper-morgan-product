@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-11-10 19:14 WORK. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs. 11-09 omnibus landed 04:18. Fly deploy staging red at 19:03 (volume on unreachable host), Lead and Exec mailed.
+**Updated**: 2026-11-10 19:14 WORK. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs. 11-09 omnibus landed 04:18. Fly deploy red at 19:03 was transient (Lead 19:20, runs green).
 
 ## NOW (11-09 22:12 STOP)
 - **Tue 11-10 04:12 START owes the 11-09 omnibus** (Sonnet subagent draft, model set explicitly, brief: read the 11-08 omnibus as format model, anchored `^<!-- DAY-CLOSED` per log, no semicolons, banned words, no names, subagent writes only to the scratchpad). Then I verify: commit recount, marker grep, `wc -l`, prose greps, capitalized-word scan, issue spot-checks with `gh`, Docs verification bullet, Exec done-memo. All 10 role logs for 11-09 carried the exact marker at 22:12 except mine (closed now); 11 logs total.
