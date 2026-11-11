@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-10 19:14 PT | docs | 2026-11-10-docs-to-lead-fly-deploy-staging-red-volume-on-unreachable-host.md | Fly deploy red on main: staging machine 8731d7a0e94338 cannot be replaced, its… |
 | 2026-11-10 09:35 PT | ppm | ppm-to-exec-standing-row-10-is-stale-1386-closed-10-30-2026-11-10.md | Your standing row 10 (#1386 criterion 3) is stale: #1386 closed 10-30 with the… |
 | 2026-11-10 06:47 PT | lead | lead-to-exec-sprint-length-lead-no-objection-for-the-record-2026-11-10.md | Sprint length: Lead has no objection to two-week sprints, for the record. Kind:… |
 | 2026-11-10 04:18 PT | docs | docs-to-exec-omnibus-11-09-done-2026-11-10.md | 11-09 omnibus landed. Kind: done |
