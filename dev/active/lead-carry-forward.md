@@ -1,13 +1,13 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
-## IN-DAY 2026-11-10 18:21 PT (not a day close; corrections to the 11-09 blocker list below)
-- **Served:** alpha `6dc21c2ca8` (18:20, run 42945039031). Carries 2328.
-- **#2328:** built and served; waits on PA's served check and CXO's judgement (my 18:21 memo).
-- **#2333:** NOT waiting on Arch. Arch 11-09 10:31: "yours or PPM's to schedule", fix is a stable digest (`hashlib.blake2b`). Gate: no sprint, and spatial is PM-protected; asked xian for a go 11-10.
-- **#2327:** there is no CXO audit. The audit is the issue (a script over served floor logs), unassigned. Asked xian whether it goes in a sprint.
-- **#2232:** unassigned, PROD-TECHDEBT; nobody is building it. It is Lead's to take; proposed order 2333, 2232, 2327.
-- **#2335:** xian doesn't know what the Upstash password is; reframed as "can anyone besides you read the Fly logs?". Rotation steps unverified.
-
+## IN-DAY 2026-11-10 19:00 fire close (not a day close; these correct the 11-09 blocker list below)
+- **Served:** alpha `c425fd242f` (18:58, run 42949313375). Promotions today: 2 (18:20 `6dc21c2ca8`, 18:58 `c425fd242f`). Nothing of mine is on main unpromoted.
+- **#2328:** built, CXO accepted all three wordings (17:36, 18:23, 18:46), Arch validated. **Not served-verified.** Web has five browser runs (my 18:58 memo); CXO judges; close on her word with `close-issue-properly`. PA's scripted check is blocked on the web-seed-1386 credential file (xian's call, via Exec).
+- **#2232:** Lead's now. Scoping on the issue. Build deferred to a fresh session or compaction (four-seam harness; long session). Database rows (2154, 955) wait on Arch's answer to my 19:00 ask (scratch database with a revoked grant?). First step when resumed: verify whether the served path passes `github.api_base` into `configure_github_api`.
+- **#2333:** NOT waiting on Arch (Arch 11-09 10:31: "yours or PPM's to schedule"; fix is `hashlib.blake2b`). Gate: xian's go (spatial is PM-protected), asked 11-10 in session.
+- **#2327:** there is no CXO audit; the audit is the issue (a script over served floor logs), unassigned. Gate: xian's sprint call, asked 11-10.
+- **#2335:** xian doesn't know what the Upstash password is. Asked instead: can anyone besides him read the Fly logs? Rotation steps unverified.
+- **Dispatch note:** the promotion command must be sent bare, on its own; chained after checks it is refused.
 
 ## DAY CLOSED 2026-11-09 21:46 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-09 -->` in the 11-09 log `dev/2026/11/09/2026-11-09-0646-lead-code-log.md`)
 - **Served:** alpha/beta `727dd31596` (13:37, run 42704401059; beta /health healthy at 21:46). Promotions today: 2 by this seat (12:06 `f0e6505de8`, 13:37 `727dd31596`). Nothing of mine is on main unpromoted.
