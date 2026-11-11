@@ -180,8 +180,14 @@ def app_db_url(password: str) -> str:
 class FailingProxy:
     """Answers ``502 Bad Gateway`` to every request (a CONNECT included) and records
     the request line only (never a header or a body). Every fault server gets one as
-    its HTTPS proxy, so a run cannot reach a real provider, and the evidence shows
-    what the server tried to reach."""
+    its HTTPS proxy, and the evidence shows what the server tried to reach.
+
+    Limit (found 2026-11-11): only clients that read the proxy from the environment
+    go through it (httpx, the Anthropic SDK). The ``aiohttp.ClientSession()`` call
+    sites (Slack's client, the settings routes' provider lists) do not, so the sink
+    neither refuses nor records them. The rows here run on accounts with nothing
+    connected, so by a source reading none reaches those sites; the sink cannot show
+    that, and a row that would reach one must not cite the sink as proof."""
 
     def __init__(self) -> None:
         self.requests: List[str] = []
@@ -243,7 +249,8 @@ class Server:
         self.base = f"http://127.0.0.1:{self.port}"
         self.log_path = log_dir / f"server-{name}.log"
         env = _base_env()
-        # Every outbound HTTPS call is refused and recorded by the sink. The credential
+        # Outbound HTTPS from proxy-honouring clients is refused and recorded by the
+        # sink (see FailingProxy for the aiohttp limit). The credential
         # store is the encrypted database store the hosted app uses (in the scratch
         # database), never this machine's OS keychain.
         self.sink = FailingProxy()

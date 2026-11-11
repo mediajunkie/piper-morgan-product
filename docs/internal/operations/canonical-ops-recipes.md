@@ -343,6 +343,17 @@ as a check of partner phrasing. The server runs with the mirror of alpha's live 
 `scripts/inversion_phase3_deletion_gate.py`. Where no served trace exists, the row needs a real key
 through Exec instead.
 
+The page half of `2154` (`--hold-2154 FILE` keeps the failed-read state up for a browser; deleting FILE
+ends it). A settings page loads its preferences only after the provider answers (status, then the
+repository or channel list), and those calls use `aiohttp` at hard-coded hosts, so no local server can
+reach that state by itself. The 11-11 check scripted those two answers in the browser (an init script
+wrapping `fetch` for `GET …/github` and `GET …/github/repositories`) and let every other request reach
+the local server, so the 503 on `…/github/preferences` was the server's own. Say "provider legs
+scripted in the browser" wherever that evidence is quoted.
+
+Limit of the outbound sink: `aiohttp.ClientSession()` ignores the proxy environment, so the sink
+neither refuses nor records those calls. It covers httpx and the Anthropic SDK only.
+
 ## Promotion checklist: read staging's sha from staging, not from the deploy-run list (Lead, 2026-10-16)
 
 **Why:** the 10:51 dispatch under the standing grant was refused by the promote gate. The gate reads the sha staging's
