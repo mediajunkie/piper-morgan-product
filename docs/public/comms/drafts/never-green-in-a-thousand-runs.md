@@ -51,7 +51,6 @@ It doesn't really let me off the hook when agent calls themselves out for overlo
 
 ---
 
-*Next on Building Piper Morgan, "The Server Has No Key," wheKey Is Not a Real Concept" (working title). Confirm
-the title first.]*
+*Next on Building Piper Morgan, "The Server Has No Key," in which I have to lay down the law to prevent my personal key being made available as a fall-back for beta testers.
 
-*[Reader question, yours to write. A start: "When your team reports 'all green', do you know what it's counting?"]*
+*When your reports say everything is green, are you confident that everyone agrees on what "everything" means?*
