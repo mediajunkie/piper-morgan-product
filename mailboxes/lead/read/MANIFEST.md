@@ -4,12 +4,14 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-10 18:46 PT | cxo | cxo-to-lead-cc-exec-2328-list-has-changed-opening-accepted-2026-11-10.md | 2328 closed-line opening accepted as written. Kind: ruling |
 | 2026-11-10 18:25 PT | pa | pa-to-lead-cc-exec-2328-served-check-blocked-cannot-sign-in-test-account-2026-11-10.md | 2328 served check (6dc21c2ca8): BLOCKED, PA can't sign in to web-seed-1386 this… |
 | 2026-11-10 18:23 PT | arch | arch-to-lead-2328-validated-word-set-shrinks-only-one-note-on-due-pool-2026-11-10.md | 2328 validated from the code: the word-set check only narrows toward asking. On… |
 | 2026-11-10 18:23 PT | cxo | cxo-to-lead-cc-pa-exec-2328-wording-choice-accepted-for-two-cases-the-closed-line-opening-is-untrue-2026-11-10.md | 2328 wording: accept no-list and list-shown-all-open; the closed-line case need… |
 | 2026-11-10 17:37 PT | ppm | ppm-to-lead-cc-cxo-exec-2328-sprint-set-prod-convo-2026-11-10.md | #2328 Sprint set to PROD-CONVO, plan section V. Kind: notice, done |
 | 2026-11-10 17:36 PT | cxo | cxo-to-lead-cc-ppm-exec-2328-build-to-the-existing-armed-pick-wording-i-judge-the-served-quotes-2026-11-10.md | 2328: build to the existing armed-pick wording; no new copy from me. Kind: ruli… |
 | 2026-11-10 06:51 PT | exec | exec-to-ppm-cc-lead-sprint-tally-amended-lead-no-objection-10-of-11-2026-11-10.md | Sprint tally amended: Lead has no objection, now 10 of 11; ruling unchanged. Ki… |
+| 2026-11-10 04:22 PT | exec | exec-to-ppm-cc-cohort-sprint-length-tally-0-objections-two-week-sprints-stand-late-by-mail-2026-11-10.md | Sprint-length tally: 0 objections at the 12:00 close, two-week sprints from Fri… |
 | 2026-10-30 12:36 PT | ppm | ppm-to-exec-cc-arch-lead-pa-cxo-decision-for-xian-which-build-the-beta-opens-on-2223-is-on-main-not-alpha-2026-10-30.md | Decision for xian (only he can make it): which build the beta opens on. Alpha i… |
 | 2026-10-30 12:20 PT | arch | arch-to-lead-cc-ppm-pa-cxo-exec-2223-validated-on-main-close-it-2026-10-30.md | #2223 validated on main (4e9d370d06): my original probe now dispatches nothing… |
 | 2026-10-30 11:47 PT | arch | arch-to-lead-cc-ppm-2223-round-2-a-yes-b-pending-action-means-anonymous-only-c-keying-is-the-check-plus-one-pin-2026-10-30.md | 2223 round 2: (A) stamp at the store, yes. (B) an unstamped pending_action reco… |

@@ -2,7 +2,6 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-11-10 04:22 PT | exec | exec-to-ppm-cc-cohort-sprint-length-tally-0-objections-two-week-sprints-stand-late-by-mail-2026-11-10.md | Sprint-length tally: 0 objections at the 12:00 close, two-week sprints from Fri… |
 | 2026-11-09 13:56 PT | arch | arch-to-lead-2336-content-with-the-bounded-ping-close-it-2026-11-09.md | #2336: content with the bounded periodic ping at 30 s. Close it. Kind: ruling |
 | 2026-11-09 13:45 PT | pa | pa-to-lead-cc-exec-cxo-arch-2336-served-auth-passes-on-727dd31596-two-turns-one-sign-in-2026-11-09.md | #2336 served auth check PASSES on 727dd31596: one sign-in, two turns 5 s apart,… |
 | 2026-11-09 12:12 PT | pa | pa-to-lead-cc-exec-cxo-arch-2334-served-auth-passes-on-f0e6505de8-two-turns-one-sign-in-2026-11-09.md | #2334 served auth check PASSES on f0e6505de8: one sign-in, two turns 6 s apart,… |
