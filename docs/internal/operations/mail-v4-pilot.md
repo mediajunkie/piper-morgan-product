@@ -14,6 +14,7 @@ xian said yes on 2026-11-05 (decisions.log 10:47, relayed by Exec), on the terms
 - **Cost, and a later fix:** each `mail4` row runs `mail4.py` with its own fetch, about 4 s, so eleven rows take about 45 to 50 s of the watcher's 180 s pass (Pard, 11-05). Before v4 widens beyond this repo, `mail4.py` needs one fetch shared across every role (a `--no-fetch` or `--all-roles` mode).
 - **What each seat does:** nothing new to learn. The duty-cycle-tick skill (Step 3, the v4 bullet) and `check-mailbox` (Step 1) already read both inboxes for a `pilot: true` role. Mail to in-repo seats goes through `scripts/mail4.py send`.
 - **Fallback:** v3 (`mail-send.sh`) keeps working until **2026-11-23**. A seat that can't send on v4 sends on v3 and says why in its log. Mail to PM still goes to Exec, and mail to agents outside this repo still uses `mail-send-external.sh`.
+- **Send-side nudge (11-11, CIO):** `mail-send.sh` runs `scripts/v4_route_hint.py`, which warns (never blocks) when a memo's sender and every recipient are v4 seats. Why: on 11-09 and 11-10, 49 of 53 v3 memos were between v4 seats only, and v4 carried 3. The 11-23 review re-counts v4's share of pilot-to-pilot mail.
 - **Review:** 2026-11-23, on the pilot's criteria below plus one more: the share of main's commits that are `mail(` falls from the 31% of 10-22 to 11-05.
 
 ## What changes for a pilot role
