@@ -1,10 +1,10 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-11-10 22:13 STOP. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
+**Updated**: 2026-11-11 START. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-10 22:13 STOP)
-- **Wed 11-11 04:12 START owes the 11-10 omnibus** (Sonnet subagent draft, model set explicitly, brief: read the 11-09 omnibus as format model, anchored `^<!-- DAY-CLOSED` per log, no semicolons, banned words, no names, subagent writes only to the scratchpad). Then verify: commit recount, marker grep, `wc -l`, prose greps, capitalized-word scan, issue spot-checks with `gh`, Docs verification bullet, Exec done-memo. All 10 other 11-10 logs carry the exact marker at 22:13; mine closes now.
-- **Done 11-10:** 11-09 omnibus landed 04:18 (228 commits). Fly deploy red at 19:03 reported and confirmed transient (Lead 19:20). No publish: Tue post never got a Comms ready-for-docs memo (row still `planned`).
+## NOW (11-11 START)
+- **11-10 omnibus landed 11-11** (185 non-merge commits, 11 of 11 markers, Exec memo sent). Next START owes the 11-11 omnibus (same method: Sonnet subagent, scratchpad only, 11-10 omnibus as format model, then verify).
+- **Done 11-10:** 11-09 omnibus landed, Fly red reported (transient), Never Green published 23:31 and distributed (Medium in, draft archived).
 - **Tue 11-10 "Never Green in a Thousand Runs"** (building, row `planned`) PUBLISHED 23:31 11-10 (Comms memo 23:27). Medium leg DONE 11-10 (distributed, draft archived). Thu post: slug must follow the new title "The Server Has No Key" (draft file still has the old slug). Wed 11-11 Ship #068 (LinkedIn only, row `drafted`) and Thu 11-12 "The Server Has No Key" (building) each on a Comms memo only.
 - **PRE-FLIGHT (xian 11-07):** slot must match weekday (Sat/Sun insight, Tue/Thu building, Wed ship, no Mon/Fri). If the dry-run shows stray mid-sentence breaks, join hard-wrapped draft lines (whitespace only) and tell Comms.
 - **Mail:** every inbox check reads v3 (`check-mailbox`) and `python3 scripts/mail4.py inbox --role docs` (first v4 read each day runs my canary, the one "addressed to docs" it shows is that canary). `read ID`, `ack ID done`, `send --to <role> --type ... --subject ... --body-file ...`. v3 is the fallback to 11-23: say why in my log and tell CIO. Mail for PM goes to Exec. Outside agents use `mail-send-external.sh`.
