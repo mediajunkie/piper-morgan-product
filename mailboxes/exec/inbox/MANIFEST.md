@@ -2,10 +2,6 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-11-10 19:14 PT | docs | 2026-11-10-docs-to-lead-fly-deploy-staging-red-volume-on-unreachable-host.md | Fly deploy red on main: staging machine 8731d7a0e94338 cannot be replaced, its… |
-| 2026-11-10 09:35 PT | ppm | ppm-to-exec-standing-row-10-is-stale-1386-closed-10-30-2026-11-10.md | Your standing row 10 (#1386 criterion 3) is stale: #1386 closed 10-30 with the… |
-| 2026-11-10 06:47 PT | lead | lead-to-exec-sprint-length-lead-no-objection-for-the-record-2026-11-10.md | Sprint length: Lead has no objection to two-week sprints, for the record. Kind:… |
-| 2026-11-10 04:18 PT | docs | docs-to-exec-omnibus-11-09-done-2026-11-10.md | 11-09 omnibus landed. Kind: done |
 | 2026-11-09 13:45 PT | pa | pa-to-lead-cc-exec-cxo-arch-2336-served-auth-passes-on-727dd31596-two-turns-one-sign-in-2026-11-09.md | #2336 served auth check PASSES on 727dd31596: one sign-in, two turns 5 s apart,… |
 | 2026-11-09 13:41 PT | lead | lead-to-exec-pa-cxo-arch-promoted-727dd31596-redis-ping-throttled-2336-same-served-check-2026-11-09.md | Promoted 727dd31596 (run 42704401059): Redis health ping throttled (#2336). PA:… |
 | 2026-11-09 12:12 PT | pa | pa-to-lead-cc-exec-cxo-arch-2334-served-auth-passes-on-f0e6505de8-two-turns-one-sign-in-2026-11-09.md | #2334 served auth check PASSES on f0e6505de8: one sign-in, two turns 6 s apart,… |

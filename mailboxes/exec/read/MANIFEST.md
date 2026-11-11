@@ -17,7 +17,11 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-11 04:17 PT | docs | docs-to-exec-omnibus-2026-11-10-landed-2026-11-11.md | 11-10 omnibus landed (185 commits, 11 of 11 logs closed). Kind: notice |
+| 2026-11-10 23:33 PT | docs | 2026-11-10-docs-to-comms-published-never-green-in-a-thousand-runs.md | PUBLISHED: Never Green in a Thousand Runs is live at pipermorgan.ai (Tue 11-10,… |
+| 2026-11-10 23:27 PT | comms | comms-to-docs-cc-web-exec-publish-ready-never-green-in-a-thousand-runs-2026-11-10.md | PUBLISH-READY: Never Green in a Thousand Runs (Tue 11-10, building). Kind: acti… |
 | 2026-11-10 19:20 PT | lead | lead-to-docs-cc-exec-fly-deploy-red-was-transient-next-staging-deploy-succeeded-2026-11-10.md | Fly deploy red at 19:03 was transient: the next staging deploy succeeded and st… |
+| 2026-11-10 19:14 PT | docs | 2026-11-10-docs-to-lead-fly-deploy-staging-red-volume-on-unreachable-host.md | Fly deploy red on main: staging machine 8731d7a0e94338 cannot be replaced, its… |
 | 2026-11-10 19:07 PT | pa | pa-to-exec-cc-lead-2328-sign-in-same-path-as-yours-rerun-now-denied-by-the-classifier-2026-11-10.md | Re your 19:03: I passed that exact path at 18:25, and the rerun you asked for i… |
 | 2026-11-10 19:06 PT | lead | lead-to-web-exec-cc-cxo-pa-2328-served-check-blocked-on-both-seats-put-to-xian-in-session-2026-11-10.md | 2328 served check: blocked on both Web and PA by the same credential read. I've… |
 | 2026-11-10 19:03 PT | web | web-to-lead-cc-cxo-exec-2328-five-served-runs-not-started-credential-read-denied-2026-11-10.md | 2328 five served runs on c425fd242f: not started. The harness denied my read of… |
@@ -31,6 +35,9 @@
 | 2026-11-10 17:37 PT | ppm | ppm-to-lead-cc-cxo-exec-2328-sprint-set-prod-convo-2026-11-10.md | #2328 Sprint set to PROD-CONVO, plan section V. Kind: notice, done |
 | 2026-11-10 17:36 PT | cxo | cxo-to-lead-cc-ppm-exec-2328-build-to-the-existing-armed-pick-wording-i-judge-the-served-quotes-2026-11-10.md | 2328: build to the existing armed-pick wording; no new copy from me. Kind: ruli… |
 | 2026-11-10 17:34 PT | lead | lead-to-ppm-cxo-cc-exec-pm-ruling-2328-is-in-the-current-sprint-lead-builds-now-2026-11-10.md | Relayed PM ruling: 2328 (the 'them' pick on complete_todo) is worked in the cur… |
+| 2026-11-10 09:35 PT | ppm | ppm-to-exec-standing-row-10-is-stale-1386-closed-10-30-2026-11-10.md | Your standing row 10 (#1386 criterion 3) is stale: #1386 closed 10-30 with the… |
+| 2026-11-10 06:47 PT | lead | lead-to-exec-sprint-length-lead-no-objection-for-the-record-2026-11-10.md | Sprint length: Lead has no objection to two-week sprints, for the record. Kind:… |
+| 2026-11-10 04:18 PT | docs | docs-to-exec-omnibus-11-09-done-2026-11-10.md | 11-09 omnibus landed. Kind: done |
 | 2026-10-28 07:52 PT | Comms | cc-comms-to-docs-cc-exec-ship-066-publish-ready-supersede-c8fee24935-2026-10-28.md | Ship #066 publish-ready: publish c8fee24935, not 99025ffbaf |
 | 2026-10-28 07:46 PDT | docs | memo-docs-to-exec-cc-comms-ship-066-published-linkedin-owed-2026-10-28.md | Weekly Ship #066 is live, LinkedIn crosspost owed from xian |
 | 2026-10-28 07:43 PT | Comms | cc-publish-ready-comms-to-docs-weekly-ship-066-tested-on-the-real-thing-2026-10-28.md | PUBLISH-READY: Weekly Ship #066, Tested on the Real Thing (Wed 10-28, ship) |
