@@ -154,6 +154,10 @@ fi
 DRAFT_AGE=$( (cd "$REPO" && python3 "$REPO/scripts/draft_births.py" check "$@") 2>&1 ) || true
 [ -n "$DRAFT_AGE" ] && echo "$DRAFT_AGE" >&2
 
+# v4 routing hint (CIO 2026-11-11): a memo whose sender and every recipient are mail v4 seats belongs on
+# scripts/mail4.py send. Advisory, never blocks; v3 stays the fallback to 11-23 (xian's yes, 11-05).
+(cd "$REPO" && python3 "$REPO/scripts/v4_route_hint.py" "$@") || true
+
 # Gravestoned-recipient guard: mailboxes/pard/ was ruled an orphan by PM 2026-09-12 (only PM team
 # members have mailboxes in this repo) — Pard's real inbox is ~/Development/mediajunkie/docs/mail/,
 # an external repo this script does not and should not reach into (see
