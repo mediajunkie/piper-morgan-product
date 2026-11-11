@@ -322,16 +322,26 @@ failing stub, sends the HTTP request a browser sends, and prints the reply with 
 line for the branch reached. It never touches the dev database and changes no served code.
 
 ```bash
-venv/bin/python scripts/served_fault_run.py                 # every row that needs no LLM key
+venv/bin/python scripts/served_fault_run.py                 # every row (none needs a real LLM key)
 venv/bin/python scripts/served_fault_run.py --rows 2154     # one row
 ```
 
 Rows today: `2125-store` (wrong-length `ENCRYPTION_MASTER_KEY`), `2125-check` (the provider unreachable:
-an HTTPS proxy stub answering 502), `2154` (SELECT on `connector_configs` revoked from the app's role).
+an HTTPS proxy stub answering 502), `2154` (SELECT on `connector_configs` revoked from the app's role),
+`955` (a chat turn, "forget my clear preference", with UPDATE on `users.preferences` revoked).
 Two rules from Arch's 11-10 ruling hold for any database row: the app connects as a non-superuser role
 (the compose role `piper` is a superuser and ignores grants), and a probe proves the denial before the
 request, or the row reports NOT RUN. The layer is the local server's HTTP reply: not alpha, and not the
 rendered page. Evidence goes on #2231 under the row.
+
+A chat row runs on a scripted model (Arch, decisions.log 2026-11-11 06:55): `ANTHROPIC_BASE_URL` points
+the server at a local stub, and the request carries a throwaway string in `X-User-Api-Key`. Three
+conditions: the stub's answers are copied from a served trace of the same phrasing and the row cites it;
+the row proves the stub was the model (no key anywhere, stub hits above 0, no request to the real
+provider, no unscripted request); and the row says "routing scripted from <trace>", so nobody reads it
+as a check of partner phrasing. The server runs with the mirror of alpha's live router flag kept in
+`scripts/inversion_phase3_deletion_gate.py`. Where no served trace exists, the row needs a real key
+through Exec instead.
 
 ## Promotion checklist: read staging's sha from staging, not from the deploy-run list (Lead, 2026-10-16)
 

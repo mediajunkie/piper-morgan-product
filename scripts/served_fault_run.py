@@ -10,7 +10,7 @@ upstream failure on the host partners use).
 
 No served code is changed by this script and nothing here is imported by the app.
 
-Rows (``--rows``, comma-separated; default: all that need no LLM key):
+Rows (``--rows``, comma-separated; default: all; none needs a real LLM key):
   2125-store   wizard validate-key on a server whose ENCRYPTION_MASTER_KEY is the
                wrong length -> "The server can't store keys right now..."
   2125-check   wizard validate-key while the provider cannot be reached (the
@@ -18,6 +18,12 @@ Rows (``--rows``, comma-separated; default: all that need no LLM key):
                -> "The key check couldn't run just now..."
   2154         GET the four preferences routes while the app's database role is refused
                SELECT on connector_configs -> 503 with CXO's line
+  955          chat turn "forget my clear preference" while the app's role is refused
+               UPDATE on users.preferences -> "I couldn't change that just now..."
+               The model is a local scripted stub (Arch, decisions.log 2026-11-11
+               06:55): its answers are copied from a served trace of the same phrasing,
+               the row proves the stub was the model (no key, stub hits, nothing sent
+               to the real provider), and the row says "routing scripted from <trace>".
 
 Arch's conditions for the database row (decisions.log 2026-11-10 19:02):
   1. the app connects as a NON-superuser login role (the compose role ``piper``
@@ -46,8 +52,9 @@ import sys
 import tempfile
 import threading
 import time
+import uuid
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import httpx
 
@@ -478,10 +485,329 @@ def hold_2154(db_url: str, log_dir: Path, hold_file: Path) -> Dict[str, Any]:
         server.stop()
 
 
+# ── the scripted model: a local stand-in for the Anthropic Messages API ────
+
+
+def _prompt_text(req: Dict[str, Any]) -> str:
+    """Every text part of a Messages request (system and messages), unescaped."""
+    parts: List[str] = []
+
+    def walk(node: Any) -> None:
+        if isinstance(node, str):
+            parts.append(node)
+        elif isinstance(node, list):
+            for item in node:
+                walk(item)
+        elif isinstance(node, dict):
+            walk(node.get("text") if "text" in node else node.get("content"))
+
+    walk(req.get("system"))
+    walk(req.get("messages"))
+    return "\n".join(parts)
+
+
+class LLMStub:
+    """Answers ``POST /v1/messages`` from a script (Arch, decisions.log 2026-11-11
+    06:55). Each rule is ``(name, needles, reply text)``; a request whose prompt holds
+    every needle gets that reply in the Messages API shape. A request no rule matches
+    is answered 500 and counted as unscripted, so a run never rests on an answer nobody
+    wrote down. Records, per request: the rule, the model asked for, and whether the
+    key header was the run's throwaway string (never the header itself)."""
+
+    def __init__(self, rules: List[Tuple[str, Tuple[str, ...], str]], fake_key: str) -> None:
+        import http.server
+
+        self.rules = rules
+        self.hits: List[Dict[str, Any]] = []
+        stub = self
+
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def log_message(self, *a: Any) -> None:  # quiet
+                return
+
+            def do_POST(self) -> None:
+                raw = self.rfile.read(int(self.headers.get("content-length") or 0))
+                try:
+                    req = json.loads(raw)
+                except ValueError:
+                    req = {}
+                prompt = _prompt_text(req)
+                rule = next(
+                    (r for r in stub.rules if all(n in prompt for n in r[1])),
+                    None,
+                )
+                stub.hits.append(
+                    {
+                        "path": self.path,
+                        "model": req.get("model"),
+                        "rule": rule[0] if rule else None,
+                        "throwaway_key": self.headers.get("x-api-key") == fake_key,
+                        "prompt_head": prompt[:160] if rule is None else None,
+                    }
+                )
+                if rule is None:
+                    body = {
+                        "type": "error",
+                        "error": {"type": "api_error", "message": "unscripted"},
+                    }
+                    code = 500
+                else:
+                    body = {
+                        "id": "msg_fault_run_stub",
+                        "type": "message",
+                        "role": "assistant",
+                        "model": req.get("model"),
+                        "content": [{"type": "text", "text": rule[2]}],
+                        "stop_reason": "end_turn",
+                        "stop_sequence": None,
+                        "usage": {"input_tokens": 1, "output_tokens": 1},
+                    }
+                    code = 200
+                data = json.dumps(body).encode()
+                self.send_response(code)
+                self.send_header("content-type", "application/json")
+                self.send_header("content-length", str(len(data)))
+                self.end_headers()
+                self.wfile.write(data)
+
+        self._httpd = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        self.url = f"http://127.0.0.1:{self._httpd.server_address[1]}"
+        threading.Thread(target=self._httpd.serve_forever, daemon=True).start()
+
+    def close(self) -> None:
+        self._httpd.shutdown()
+
+
+# ── row 955: the failed-write line of "forget my clear preference" ─────────
+
+TRACE_955 = "dev/2026/11/08/served-8677aa05f5-955-set-asks-2026-11-08.txt"
+PHRASE_955 = "forget my clear preference"
+# The served trace (beta 8677aa05f5, 15:20:40) stamps this phrasing
+# ``route query/forget_clear_preference``: the classifier's category and action. The
+# alias takes no arguments. Two things the trace does NOT record are written here:
+#   * the classifier's confidence (0.9 is the value in the served prompt's own example
+#     for this phrase, ``services/intent_service/prompts.py``);
+#   * the live router's answer. The entry is router-hidden (#2132), so the router
+#     cannot name it, and the stamped route shows the router did not send the turn
+#     elsewhere; NONE is scripted, the case the landing pin covers
+#     (``test_landing_pin_the_routers_none_does_not_floor_the_hidden_entry``).
+CLASSIFIER_955 = json.dumps(
+    {
+        "category": "query",
+        "action": "forget_clear_preference",
+        "confidence": 0.9,
+        "reasoning": f"scripted from {TRACE_955}",
+    }
+)
+ROUTER_955 = json.dumps(
+    {
+        "operation": "NONE",
+        "args": {},
+        "confidence": 0.95,
+        "rationale": "scripted: the entry is router-hidden",
+    }
+)
+# The mirror of alpha's live flag kept in scripts/inversion_phase3_deletion_gate.py
+# (CURRENT_LIVE_CATEGORIES). The served secret itself is not read by this script.
+ALPHA_LIVE_MIRROR = (
+    "ADD_PROJECT,COMPLETE_TODO,CREATE_REMINDER,CREATE_TODO,DELETE_TODO,READ_CANONICAL,"
+    "READ_FLOOR,READ_FLOOR_2,READ_PORTFOLIO,READ_REFERENT,READ_STATUS,READ_STRATEGIC,"
+    "READ_SYNTHESIS,READ_TEMPORAL,SET_DEFAULT_REPO"
+)
+PREF_KEY_955 = "reminder_clear_verb:clear"
+
+
+def _seed_clear_preference(db_url: str, user_id: str) -> None:
+    """Store "clear means mark it done" with the product's own writer, in the scratch
+    database, so the stored record has the shape the first-time answer writes."""
+    env = _base_env()
+    env["DATABASE_URL"] = db_url
+    env["PIPER_CREDENTIAL_STORE"] = "db"  # never this machine's OS keychain
+    code = (
+        "import asyncio, sys\n"
+        "from services.intent_service import verified_inference as vi\n"
+        "from services.intent_service.reminder_clear import VALUE_COMPLETE\n"
+        f"ok = asyncio.run(vi.store_verified_inference({user_id!r}, {PREF_KEY_955!r}, VALUE_COMPLETE))\n"
+        "sys.exit(0 if ok else 1)\n"
+    )
+    out = subprocess.run(
+        [str(ROOT / "venv/bin/python"), "-c", code],
+        cwd=ROOT,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    if out.returncode != 0:
+        raise NotRun(f"seeding the preference failed: {out.stderr[-400:]}")
+
+
+def _stored_clear_value(user_id: str) -> str:
+    return _psql_ok(
+        "SELECT coalesce(preferences->'verified_inferences'->"
+        f"'{PREF_KEY_955}'->>'value', '') FROM users WHERE id = '{user_id}'",
+        db=SCRATCH_DB,
+    )
+
+
+def _chat(client: httpx.Client, message: str, fake_key: str) -> Dict[str, Any]:
+    r = client.post(
+        "/api/v1/intent",
+        json={"message": message, "session_id": str(uuid.uuid4())},
+        headers={"X-User-Api-Key": fake_key},
+        timeout=180.0,
+    )
+    body = _body(r)
+    data = body if isinstance(body, dict) else {}
+    intent = data.get("intent") or data.get("intent_data") or {}
+    return {
+        "status": r.status_code,
+        "route": f"{intent.get('category')}/{intent.get('action')}",
+        "preference_change": intent.get("preference_change"),
+        "reply": data.get("message") or data.get("response") or body,
+    }
+
+
+def row_955(db_url: str, log_dir: Path) -> Dict[str, Any]:
+    fake_key = "fault-run-not-a-key-" + secrets.token_hex(8)
+    stub = LLMStub(
+        [
+            # The classifier's prompt lists the alias by name; the router's cannot.
+            ("classifier", (PHRASE_955, "forget_clear_preference"), CLASSIFIER_955),
+            ("router", (PHRASE_955, '"operation"'), ROUTER_955),
+        ],
+        fake_key,
+    )
+    server = Server(
+        db_url,
+        log_dir,
+        "955",
+        extra_env={
+            "ANTHROPIC_BASE_URL": stub.url,
+            "PIPER_INVERSION_LIVE_CATEGORIES": ALPHA_LIVE_MIRROR,
+        },
+    )
+    try:
+        server.wait_healthy()
+        client = _create_account(server)
+        name, _pw = client.fault_run_login  # type: ignore[attr-defined]
+        user_id = _psql_ok(f"SELECT id FROM users WHERE username = '{name}'", db=SCRATCH_DB)
+        stored_keys = _psql_ok("SELECT count(*) FROM user_api_keys", db=SCRATCH_DB)
+
+        # Healthy first: the same turn on a writable store forgets, and the key is gone.
+        _seed_clear_preference(db_url, user_id)
+        if _stored_clear_value(user_id) == "":
+            raise NotRun("the seeded preference was not stored")
+        healthy = _chat(client, PHRASE_955, fake_key)
+        healthy["stored_after"] = _stored_clear_value(user_id)
+        if healthy["preference_change"] != "forgotten" or healthy["stored_after"] != "":
+            raise NotRun(f"the healthy turn did not forget: {healthy}; stub {stub.hits}")
+
+        # The fault: this role may update every users column except preferences.
+        _seed_clear_preference(db_url, user_id)
+        seeded = _stored_clear_value(user_id)
+        cols = _psql_ok(
+            "SELECT string_agg(quote_ident(column_name), ', ') FROM information_schema.columns "
+            "WHERE table_schema = 'public' AND table_name = 'users' "
+            "AND column_name <> 'preferences'",
+            db=SCRATCH_DB,
+        )
+        _psql_ok(f"REVOKE UPDATE ON users FROM {APP_ROLE}", db=SCRATCH_DB)
+        _psql_ok(f"GRANT UPDATE ({cols}) ON users TO {APP_ROLE}", db=SCRATCH_DB)
+        hits_before = len(stub.hits)
+        try:
+            probe = _psql(
+                "UPDATE users SET preferences = preferences WHERE false",
+                db=SCRATCH_DB,
+                role=APP_ROLE,
+            )
+            if probe.returncode == 0 or "permission denied" not in probe.stderr:
+                raise NotRun(
+                    f"the denial was not proved (probe rc={probe.returncode}: {probe.stderr.strip()!r})"
+                )
+            read_probe = _psql(
+                f"SELECT preferences IS NOT NULL FROM users WHERE id = '{user_id}'",
+                db=SCRATCH_DB,
+                role=APP_ROLE,
+            )
+            if read_probe.returncode != 0:
+                raise NotRun(f"the read was refused too: {read_probe.stderr.strip()!r}")
+            failed = _chat(client, PHRASE_955, fake_key)
+        finally:
+            _psql_ok(f"GRANT UPDATE ON users TO {APP_ROLE}", db=SCRATCH_DB)
+        stored_after = _stored_clear_value(user_id)
+        real_provider = [q for q in server.sink.requests if "anthropic" in q.lower()]
+        unscripted = [h for h in stub.hits if h["rule"] is None]
+        fault_hits = stub.hits[hits_before:]
+        # The classifier caches by message in process (IntentCache), so the fault turn
+        # reuses the stub's own classifier answer from the healthy turn; the router is
+        # asked again. Either way every model answer in this row came from the stub.
+        if not fault_hits or not any(h["rule"] == "classifier" for h in stub.hits):
+            raise NotRun(f"the scripted model was not asked: {stub.hits}")
+        if unscripted:
+            raise NotRun(f"the server asked the model something unscripted: {unscripted}")
+        if real_provider:
+            raise NotRun(f"the server tried the real provider: {real_provider}")
+        return {
+            "row": "955 (failed write on forget; routing scripted from " + TRACE_955 + ")",
+            "routing": {
+                "scripted_from": TRACE_955,
+                "phrase": PHRASE_955,
+                "served_route_in_trace": "query/forget_clear_preference",
+                "scripted_classifier_answer": json.loads(CLASSIFIER_955),
+                "scripted_router_answer": json.loads(ROUTER_955),
+                "not_in_trace": [
+                    "the classifier's confidence (0.9, the served prompt's own example)",
+                    "the classifier's reasoning text (a required field; a label here)",
+                    "the live router's answer (NONE scripted; the entry is router-hidden)",
+                ],
+                "live_flag": "mirror of alpha's set from the deletion gate, not read from the host",
+            },
+            "model_was_the_stub": {
+                "anthropic_env_stripped": [k for k in STRIPPED if k.startswith("ANTHROPIC")],
+                "stored_llm_keys_in_scratch_db": stored_keys,
+                "request_key": "a throwaway string in X-User-Api-Key (not a provider key)",
+                "stub_hits": len(stub.hits),
+                "stub_hits_by_rule": {
+                    r: sum(1 for h in stub.hits if h["rule"] == r) for r in ("router", "classifier")
+                },
+                "stub_hits_on_fault_turn": fault_hits,
+                "classifier_on_fault_turn": (
+                    "asked"
+                    if any(h["rule"] == "classifier" for h in fault_hits)
+                    else "not asked: the classifier's in-process cache (IntentCache, keyed "
+                    "on the message) returned the stub's answer from the healthy turn"
+                ),
+                "unscripted_requests": unscripted,
+                "requests_to_real_provider": real_provider,
+                "sink_saw": sorted(set(server.sink.requests)),
+            },
+            "fault": (
+                f"REVOKE UPDATE ON users FROM {APP_ROLE}, then GRANT UPDATE on every "
+                "users column except preferences (non-superuser app role)"
+            ),
+            "probe": probe.stderr.strip(),
+            "seeded_value": seeded,
+            "healthy_first": healthy,
+            "request": f"POST /api/v1/intent {{message: {PHRASE_955!r}}} (signed-in scratch account)",
+            "status": failed["status"],
+            "route": failed["route"],
+            "preference_change": failed["preference_change"],
+            "reply": failed["reply"],
+            "stored_value_after": stored_after,
+            "branch": [
+                ln[:500] for ln in server.log_lines("verified_inference_forget_write_failed")
+            ],
+        }
+    finally:
+        server.stop()
+        stub.close()
+
+
 ROWS: Dict[str, Callable[[str, Path], Dict[str, Any]]] = {
     "2125-store": row_2125_store,
     "2125-check": row_2125_check,
     "2154": row_2154,
+    "955": row_955,
 }
 
 
