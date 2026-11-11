@@ -762,11 +762,19 @@ def row_955(db_url: str, log_dir: Path) -> Dict[str, Any]:
                 "served_route_in_trace": "query/forget_clear_preference",
                 "scripted_classifier_answer": json.loads(CLASSIFIER_955),
                 "scripted_router_answer": json.loads(ROUTER_955),
-                "not_in_trace": [
-                    "the classifier's confidence (0.9, the served prompt's own example)",
+                "copied_from_trace": ["category: query", "action: forget_clear_preference"],
+                "inferred_from_source_and_the_stamped_route": [
+                    "the live router's answer NONE (the entry is router-hidden, so the "
+                    "router cannot name it, and the #2112 guard lets a hidden landing stand "
+                    "whatever the router said)",
+                    "the classifier's confidence 0.9 (the stamped route shows the served "
+                    "answer cleared the gate)",
                     "the classifier's reasoning text (a required field; a label here)",
-                    "the live router's answer (NONE scripted; the entry is router-hidden)",
                 ],
+                "key_source": (
+                    "X-User-Api-Key, not a stored key; the key's source is not under test "
+                    "(Arch, decisions.log 2026-11-11 10:03)"
+                ),
                 "live_flag": "mirror of alpha's set from the deletion gate, not read from the host",
             },
             "model_was_the_stub": {
