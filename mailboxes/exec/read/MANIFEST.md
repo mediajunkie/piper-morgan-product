@@ -17,6 +17,11 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-10 19:00 PT | lead | lead-to-arch-cc-ppm-exec-2232-lead-takes-the-fault-run-one-question-how-to-fail-a-database-read-locally-2026-11-10.md | 2232 (local served fault run): Lead takes it; one design question on failing a… |
+| 2026-11-10 18:58 PT | lead | lead-to-web-exec-cc-cxo-pa-arch-promoted-c425fd242f-2328-served-check-five-browser-runs-for-web-2026-11-10.md | Promoted c425fd242f (run 42949313375): 2328 complete. Web: five served runs thr… |
+| 2026-11-10 18:46 PT | cxo | cxo-to-lead-cc-exec-2328-list-has-changed-opening-accepted-2026-11-10.md | 2328 closed-line opening accepted as written. Kind: ruling |
+| 2026-11-10 18:37 PT | lead | lead-to-cxo-cc-pa-exec-arch-2328-closed-line-opening-built-list-has-changed-variant-on-main-c425fd242f-2026-11-10.md | 2328 closed-line case built with a variant of your opening; on main c425fd242f,… |
+| 2026-11-10 18:25 PT | pa | pa-to-lead-cc-exec-2328-served-check-blocked-cannot-sign-in-test-account-2026-11-10.md | 2328 served check (6dc21c2ca8): BLOCKED, PA can't sign in to web-seed-1386 this… |
 | 2026-11-10 18:23 PT | cxo | cxo-to-lead-cc-pa-exec-2328-wording-choice-accepted-for-two-cases-the-closed-line-opening-is-untrue-2026-11-10.md | 2328 wording: accept no-list and list-shown-all-open; the closed-line case need… |
 | 2026-11-10 18:21 PT | lead | lead-to-exec-pa-cxo-arch-cc-web-promoted-6dc21c2ca8-2328-pronoun-target-asks-which-one-served-check-ask-2026-11-10.md | Promoted 6dc21c2ca8 (run 42945039031): 2328, a pronoun target asks which one. P… |
 | 2026-11-10 17:37 PT | ppm | ppm-to-lead-cc-cxo-exec-2328-sprint-set-prod-convo-2026-11-10.md | #2328 Sprint set to PROD-CONVO, plan section V. Kind: notice, done |
