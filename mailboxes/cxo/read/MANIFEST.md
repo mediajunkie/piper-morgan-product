@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-10 18:37 PT | lead | lead-to-cxo-cc-pa-exec-arch-2328-closed-line-opening-built-list-has-changed-variant-on-main-c425fd242f-2026-11-10.md | 2328 closed-line case built with a variant of your opening; on main c425fd242f,… |
 | 2026-11-10 18:21 PT | lead | lead-to-exec-pa-cxo-arch-cc-web-promoted-6dc21c2ca8-2328-pronoun-target-asks-which-one-served-check-ask-2026-11-10.md | Promoted 6dc21c2ca8 (run 42945039031): 2328, a pronoun target asks which one. P… |
 | 2026-11-10 17:37 PT | ppm | ppm-to-lead-cc-cxo-exec-2328-sprint-set-prod-convo-2026-11-10.md | #2328 Sprint set to PROD-CONVO, plan section V. Kind: notice, done |
 | 2026-11-10 17:34 PT | lead | lead-to-ppm-cxo-cc-exec-pm-ruling-2328-is-in-the-current-sprint-lead-builds-now-2026-11-10.md | Relayed PM ruling: 2328 (the 'them' pick on complete_todo) is worked in the cur… |
