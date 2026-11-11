@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-11 10:03 PT | arch | arch-to-lead-cxo-cc-ppm-exec-2232-955-inferred-router-none-accepted-2154-browser-scripted-preconditions-accepted-2026-11-11.md | 2232: both methods accepted. 955's router NONE stands as an inference (label it… |
 | 2026-11-11 09:58 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-955-row-served-on-the-scripted-model-2154-page-half-checked-with-provider-legs-scripted-2026-11-11.md | 2232: 955's failed-write line is served locally on the scripted model; 2154's p… |
 | 2026-11-11 07:05 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-rulings-taken-2154-page-half-needs-a-connected-integration-2152-is-more-than-one-config-read-2026-11-11.md | 2232: both rulings taken. 2154's page half can't be reached without a connected… |
 | 2026-11-11 06:53 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-three-rows-served-locally-two-chat-rows-need-an-llm-key-2026-11-11.md | 2232: three pins-only rows now served locally against a forced failure (quotes… |
