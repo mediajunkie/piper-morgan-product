@@ -24,6 +24,12 @@ Rows (``--rows``, comma-separated; default: all; none needs a real LLM key):
                06:55): its answers are copied from a served trace of the same phrasing,
                the row proves the stub was the model (no key, stub hits, nothing sent
                to the real provider), and the row says "routing scripted from <trace>".
+  2337         GET github/repositories on an account with a GitHub connection, while the
+               app's role is refused SELECT on connector_configs -> 503 with "your saved
+               repository choices". The connection is seeded through
+               persist_github_connection with a fake grant (the OAuth exchange is not
+               run) and the repository list comes from a local MCP stub at
+               GITHUB_MCP_SERVER_URL (Arch, decisions.log 2026-11-11 10:19).
 
 Arch's conditions for the database row (decisions.log 2026-11-10 19:02):
   1. the app connects as a NON-superuser login role (the compose role ``piper``
@@ -271,9 +277,12 @@ class Server:
                 env.pop(key, None)
             else:
                 env[key] = value
+        self.env = env
         self._log = open(self.log_path, "w")
         self.proc = subprocess.Popen(
-            [str(ROOT / "venv/bin/python"), "main.py"],
+            # --no-browser: main.py opens the default browser at startup otherwise, one
+            # dead localhost tab per server start on the machine this runs on.
+            [str(ROOT / "venv/bin/python"), "main.py", "--no-browser"],
             cwd=ROOT,
             env=env,
             stdout=self._log,
@@ -490,6 +499,297 @@ def hold_2154(db_url: str, log_dir: Path, hold_file: Path) -> Dict[str, Any]:
         }
     finally:
         server.stop()
+
+
+# ── 2337: the repositories route's own 503 on a connected account ───────────
+
+# The repository list is a PRECONDITION of this row, not the claim under test. The
+# payload is copied from ``_PAYLOAD`` in
+# tests/unit/services/mcp/consumer/test_github_repositories_1327.py (the shape
+# ``_parse_repo_search`` reads: {total_count, incomplete_results, items[]}). Arch found
+# no recorded live payload in tests/ or dev/ (decisions.log 2026-11-11 10:19).
+REPO_PAYLOAD_SOURCE = "tests/unit/services/mcp/consumer/test_github_repositories_1327.py (_PAYLOAD)"
+REPO_PAYLOAD_2337 = json.dumps(
+    {
+        "total_count": 2,
+        "incomplete_results": False,
+        "items": [
+            {
+                "id": 123,
+                "name": "piper-morgan-product",
+                "full_name": "mediajunkie/piper-morgan-product",
+                "description": "Piper Morgan AI Assistant",
+                "private": False,
+                "fork": False,
+            },
+            {
+                "id": 456,
+                "name": "other-project",
+                "full_name": "mediajunkie/other-project",
+                "description": None,
+                "private": True,
+                "fork": False,
+            },
+        ],
+    }
+)
+REPOS_ROUTE = f"{PREFS_BASE}/github/repositories"
+
+# Run with the SERVER's environment (same scratch database, same throwaway master key,
+# the database credential store), so the grant is stored exactly as the OAuth callback
+# stores it. Arch's condition 1: never SQL.
+SEED_2337 = """
+import asyncio, sys
+from services.database.session_factory import AsyncSessionFactory
+from services.mcp.consumer.github_oauth_handler import persist_github_connection
+
+async def main():
+    async with AsyncSessionFactory.session_scope() as session:
+        await persist_github_connection(session, sys.argv[1], sys.argv[2])
+
+asyncio.run(main())
+"""
+
+
+class MCPStub:
+    """A local streamable-HTTP MCP server with one tool, ``search_repositories``, that
+    answers the fixture payload. It stands where GITHUB_MCP_SERVER_URL points, so the
+    served adapter reaches it with no code change. It records each HTTP request's
+    Authorization header (compared with the seeded fake grant, never printed) and each
+    tool call's query."""
+
+    def __init__(self, payload: str) -> None:
+        import uvicorn
+        from mcp.server.fastmcp import FastMCP
+
+        self.port = _free_port()
+        self.url = f"http://127.0.0.1:{self.port}/mcp"
+        self.bearers: List[str] = []
+        self.tool_calls: List[Dict[str, str]] = []
+        mcp = FastMCP(
+            "fault-run-github-stub", host="127.0.0.1", port=self.port, log_level="WARNING"
+        )
+
+        @mcp.tool()
+        def search_repositories(query: str) -> str:
+            self.tool_calls.append({"tool": "search_repositories", "query": query})
+            return payload
+
+        inner = mcp.streamable_http_app()
+
+        async def app(scope: Any, receive: Any, send: Any) -> None:
+            if scope["type"] == "http":
+                headers = dict(scope["headers"])
+                self.bearers.append(headers.get(b"authorization", b"").decode("latin-1"))
+            await inner(scope, receive, send)
+
+        self._server = uvicorn.Server(
+            uvicorn.Config(app, host="127.0.0.1", port=self.port, log_level="warning")
+        )
+        self._thread = threading.Thread(target=self._server.run, daemon=True)
+        self._thread.start()
+        deadline = time.time() + 20
+        while not self._server.started:
+            if time.time() > deadline or not self._thread.is_alive():
+                raise RuntimeError("the MCP stub did not start")
+            time.sleep(0.1)
+
+    def close(self) -> None:
+        self._server.should_exit = True
+        self._thread.join(timeout=10)
+
+
+def _binding_row(user_id: str) -> str:
+    return _psql_ok(
+        "SELECT status || ' / mcp_server_ref=' || mcp_server_ref FROM connector_bindings "
+        f"WHERE owner_id = '{user_id}' AND connector = 'github'",
+        db=SCRATCH_DB,
+    )
+
+
+def _setup_2337(
+    db_url: str, log_dir: Path, name: str
+) -> Tuple[Server, MCPStub, httpx.Client, Dict[str, Any]]:
+    """Server + MCP stub + a scratch account with a seeded GitHub connection, with the
+    healthy read proved (Arch's condition 3). The caller stops the server and the stub."""
+    stub = MCPStub(REPO_PAYLOAD_2337)
+    server = Server(db_url, log_dir, name, extra_env={"GITHUB_MCP_SERVER_URL": stub.url})
+    try:
+        server.wait_healthy()
+        client = _create_account(server)
+        username, _pw = client.fault_run_login  # type: ignore[attr-defined]
+        user_id = _psql_ok(f"SELECT id FROM users WHERE username = '{username}'", db=SCRATCH_DB)
+        fake_grant = "fault-run-not-a-grant-" + secrets.token_hex(12)
+        seed = subprocess.run(
+            [str(ROOT / "venv/bin/python"), "-c", SEED_2337, user_id, fake_grant],
+            cwd=ROOT,
+            env=server.env,
+            capture_output=True,
+            text=True,
+        )
+        if seed.returncode != 0:
+            raise NotRun(f"persist_github_connection failed: {seed.stderr.strip()[-600:]}")
+        binding = _binding_row(user_id)
+        if not binding.startswith("bound"):
+            raise NotRun(f"the seeded binding is not bound: {binding!r}")
+
+        # Arch's condition 4: what the status routes answer, as the page would read them.
+        status_routes = {
+            route: {"status": r.status_code, "body": _body(r)}
+            for route, r in (
+                (route, client.get(f"{PREFS_BASE}/{route}"))
+                for route in ("github", "github/oauth-status")
+            )
+        }
+
+        sink_before = len(server.sink.requests)
+        healthy = client.get(REPOS_ROUTE)
+        body = _body(healthy)
+        names = (
+            [r.get("full_name") for r in body.get("repositories", [])]
+            if isinstance(body, dict)
+            else []
+        )
+        expected = [i["full_name"] for i in json.loads(REPO_PAYLOAD_2337)["items"]]
+        if healthy.status_code != 200 or names != expected:
+            raise NotRun(
+                f"the healthy read did not return the stub's list: {healthy.status_code} {body!r}"
+            )
+        expected_bearer = f"Bearer {fake_grant}"
+        if not stub.tool_calls or not stub.bearers:
+            raise NotRun("the healthy read never reached the MCP stub")
+        if any(b != expected_bearer for b in stub.bearers):
+            raise NotRun("the MCP stub received a bearer that is not the seeded fake grant")
+        if stub.tool_calls[-1] != {"tool": "search_repositories", "query": "user:@me"}:
+            raise NotRun(f"the stub was called with something else: {stub.tool_calls[-1]!r}")
+        # The route logs ``github_repositories_fetched source=connector`` at info, and the
+        # served log level drops info events (seen 2026-11-11: the line is absent from a
+        # run whose read succeeded). The source is shown by the stub instead: the list is
+        # the stub's, fetched with the seeded grant, and the other source (the account's
+        # own personal token against api.github.com) cannot return it.
+        fetched = server.log_lines("github_repositories_fetched")
+        facts = {
+            "user_id": user_id,
+            "expected_bearer": expected_bearer,
+            "sink_before": sink_before,
+            "seed": "connection seeded through persist_github_connection; OAuth exchange not run",
+            "binding_after_seed": binding,
+            "status_routes": status_routes,
+            "healthy_first": {
+                "status": healthy.status_code,
+                "repositories": names,
+                "source": "connector, shown by the stub (its list, its tool call, the seeded "
+                "bearer); the route's info log line is not emitted at the served log level",
+                "log": [ln[:300] for ln in fetched],
+            },
+            "stub_payload_source": REPO_PAYLOAD_SOURCE,
+            "stub_url_env": "GITHUB_MCP_SERVER_URL",
+        }
+        return server, stub, client, facts
+    except BaseException:
+        server.stop()
+        stub.close()
+        raise
+
+
+def _head_tail(lines: List[str]) -> List[str]:
+    """A long JSON log line cut to its start (the exception) and its end (the event)."""
+    return [ln if len(ln) <= 560 else f"{ln[:330]} [...] {ln[-220:]}" for ln in lines]
+
+
+def _stub_evidence(stub: MCPStub, expected_bearer: str) -> Dict[str, Any]:
+    return {
+        "http_requests": len(stub.bearers),
+        "tool_calls": list(stub.tool_calls),
+        "every_bearer_is_the_seeded_fake": all(b == expected_bearer for b in stub.bearers),
+    }
+
+
+def _aftermath_2337(server: Server, facts: Dict[str, Any]) -> Dict[str, Any]:
+    """What the sink and the database can show about outbound calls. The aiohttp call
+    sites are outside the sink (see FailingProxy): by a source reading the three GETs of
+    this row reach none of them on a bound account with no personal token, and the
+    binding still being ``bound`` is the one runtime sign (a GitHub 401 on the fake
+    grant would have marked it stale)."""
+    return {
+        "sink_saw_during_row": server.sink.requests[facts["sink_before"] :],
+        "binding_at_end": _binding_row(facts["user_id"]),
+        "server_log_keychain_lines": len(server.log_lines("from keychain")),
+    }
+
+
+def row_2337(db_url: str, log_dir: Path) -> Dict[str, Any]:
+    server, stub, client, facts = _setup_2337(db_url, log_dir, "2337")
+    try:
+        calls_before = len(stub.tool_calls)
+        _psql_ok(f"REVOKE SELECT ON connector_configs FROM {APP_ROLE}", db=SCRATCH_DB)
+        try:
+            probe = _psql("SELECT 1 FROM connector_configs LIMIT 1", db=SCRATCH_DB, role=APP_ROLE)
+            if probe.returncode == 0 or "permission denied" not in probe.stderr:
+                raise NotRun(
+                    f"the denial was not proved (probe rc={probe.returncode}: {probe.stderr.strip()!r})"
+                )
+            r = client.get(REPOS_ROUTE)
+        finally:
+            _psql_ok(f"GRANT SELECT ON connector_configs TO {APP_ROLE}", db=SCRATCH_DB)
+        body = _body(r)
+        if len(stub.tool_calls) <= calls_before:
+            raise NotRun(
+                "the faulted request never reached the MCP stub, so the GitHub read did not run"
+            )
+        expected_bearer = facts.pop("expected_bearer")
+        return {
+            "row": "2337 (repositories route: saved selection unreadable)",
+            "fault": f"REVOKE SELECT ON connector_configs FROM {APP_ROLE} (non-superuser app role)",
+            "probe": probe.stderr.strip(),
+            **{k: v for k, v in facts.items() if k not in ("sink_before", "user_id")},
+            "request": f"GET {REPOS_ROUTE} (signed-in scratch account, GitHub connection seeded)",
+            "status": r.status_code,
+            "reply": body.get("detail") if isinstance(body, dict) else body,
+            "body": body,
+            "stub": _stub_evidence(stub, expected_bearer),
+            "stub_tool_calls_during_fault": len(stub.tool_calls) - calls_before,
+            "branch": _head_tail(server.log_lines("github_prefs_db_load_failed")),
+            **_aftermath_2337(server, facts),
+        }
+    finally:
+        server.stop()
+        stub.close()
+
+
+def hold_2337(db_url: str, log_dir: Path, hold_file: Path) -> Dict[str, Any]:
+    """The page half of 2337: the connected account in the failed-read state, HELD for a
+    browser check (same contract as ``hold_2154``: sign-in written to ``hold_file``,
+    deleting the file ends the hold)."""
+    server, stub, client, facts = _setup_2337(db_url, log_dir, "2337-hold")
+    try:
+        name, password = client.fault_run_login  # type: ignore[attr-defined]
+        _psql_ok(f"REVOKE SELECT ON connector_configs FROM {APP_ROLE}", db=SCRATCH_DB)
+        try:
+            probe = _psql("SELECT 1 FROM connector_configs LIMIT 1", db=SCRATCH_DB, role=APP_ROLE)
+            if probe.returncode == 0 or "permission denied" not in probe.stderr:
+                raise NotRun(f"the denial was not proved ({probe.stderr.strip()!r})")
+            hold_file.write_text(
+                json.dumps({"base": server.base, "username": name, "password": password})
+            )
+            while hold_file.exists():
+                time.sleep(1.0)
+        finally:
+            _psql_ok(f"GRANT SELECT ON connector_configs TO {APP_ROLE}", db=SCRATCH_DB)
+        expected_bearer = facts.pop("expected_bearer")
+        return {
+            "row": "2337 (held for a browser check)",
+            "probe": probe.stderr.strip(),
+            **{k: v for k, v in facts.items() if k not in ("sink_before", "user_id")},
+            "stub": _stub_evidence(stub, expected_bearer),
+            "posts_seen_by_server": server.log_lines('"POST /api/v1/settings/integrations'),
+            "gets_seen_by_server": server.log_lines('"GET /api/v1/settings/integrations'),
+            "branch": _head_tail(server.log_lines("github_prefs_db_load_failed")),
+            **_aftermath_2337(server, facts),
+        }
+    finally:
+        server.stop()
+        stub.close()
 
 
 # ── the scripted model: a local stand-in for the Anthropic Messages API ────
@@ -823,6 +1123,7 @@ ROWS: Dict[str, Callable[[str, Path], Dict[str, Any]]] = {
     "2125-check": row_2125_check,
     "2154": row_2154,
     "955": row_955,
+    "2337": row_2337,
 }
 
 
@@ -839,6 +1140,12 @@ def main() -> int:
         metavar="FILE",
         help="hold the 2154 failed-read state for a browser check; sign-in details are "
         "written to FILE, and deleting FILE ends the hold (no other row runs)",
+    )
+    ap.add_argument(
+        "--hold-2337",
+        default=None,
+        metavar="FILE",
+        help="the same hold for the 2337 state (connected account, saved selection unreadable)",
     )
     args = ap.parse_args()
     wanted = [r.strip() for r in args.rows.split(",") if r.strip()]
@@ -869,6 +1176,13 @@ def main() -> int:
                 results.append({"name": "2154-hold", "ran": True, **held})
             except NotRun as e:
                 results.append({"name": "2154-hold", "ran": False, "why": str(e)})
+        elif args.hold_2337:
+            wanted = []
+            try:
+                held = hold_2337(app_db_url(password), log_dir, Path(args.hold_2337))
+                results.append({"name": "2337-hold", "ran": True, **held})
+            except NotRun as e:
+                results.append({"name": "2337-hold", "ran": False, "why": str(e)})
         for name in wanted:
             try:
                 results.append(
