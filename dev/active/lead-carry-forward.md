@@ -1,8 +1,11 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
-## IN-DAY 2026-11-11 10:0x, after the 09:46 fire (not a day close)
-- **#2232: every row now has a local run.** 955's failed-write line on the scripted model (`--rows 955`, `3fa06c51be`; issuecomment-6803256246) and 2154's page half on the GitHub page with the provider legs scripted in the browser (issuecomment-6803330240). **Waiting on (mail 09:58):** CXO's judgement of the page half; Arch on (a) the router's `NONE` scripted from a source reading, not from the trace, and (b) scripting two provider answers in the browser versus a served-code base URL. On their yes: ask CXO/PPM about striking the 2231 rows, then close 2232 with `close-issue-properly`. On a no from Arch for (a): the row needs a real key through Exec.
-- **Driver limit, written into the driver and recipe 9:** `aiohttp.ClientSession()` ignores the proxy environment; the sink covers httpx and the Anthropic SDK only.
+## IN-DAY 2026-11-11 10:15, after the 09:46 fire and the 10:06 mail wake (not a day close)
+- **#2232 CLOSED 10:15** (board Done). Driver `scripts/served_fault_run.py`, ops recipe 9. CXO passed 955's line and 2154's page half (GitHub page only); Arch accepted the inferred router `NONE` and the two browser-scripted GETs, and ruled out a configurable GitHub base. 2125 and 2154 rows struck on #2231 at the local layer; the 2152 row there is CXO's and PPM's call.
+- **Still unserved, on #2231's 2154 row:** the repositories-503 branch (no local run can reach it) and the Slack, Calendar and Notion pages. CXO would like the repositories-503 line seen once; not a requirement.
+- **Driver rules:** `aiohttp.ClientSession()` ignores the proxy environment, so the sink covers httpx and the Anthropic SDK only; a row that connects an account re-checks the `aiohttp` sites first (Arch 10:03). A scripted field whose plausible values reach different branches needs a trace or a real key.
+- Tests runs on main get cancelled by the next push; read which sha the last green run was on before a close.
+- **#2337 (filed 11-11, mine): the repositories route's own 503 on the GitHub settings page** (CXO 10:14 wants it seen once, from the server's failure). Shape by source reading: bound binding + grant seeded in the scratch database, local MCP stub at `GITHUB_MCP_SERVER_URL` answering `search_repositories`, the existing `connector_configs` revoke. **Waits on:** Arch's method ruling (asked 10:2x) and a fresh session or compaction. Re-check the `aiohttp` sites first. Re-read the inbox right before any close (I closed 2232 one minute after CXO's memo landed).
 - The block below is the 07:1x state; its "next build" list is done.
 
 ## IN-DAY 2026-11-11 07:1x START fire close (not a day close)
