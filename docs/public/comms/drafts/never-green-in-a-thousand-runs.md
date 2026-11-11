@@ -8,38 +8,15 @@ caption: ''
 
 *September 9–11, 2026*
 
-<!--
-SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. PM writes
-the prose. Everything below the line is notes for PM. Delete it as the prose replaces it.
-Slot: Tue 2026-11-10 (building). Beat 2, next in strict order after Thu 11-05 "Don't Overpromise" (Sep 7–8). xian said
-yes 11-04 and may change the title.
-Footer teases Thu 11-12 "The Server Key Is Not a Real Concept" (working title). Ship #068 (Wed 11-11) sits between
-them and is skipped by the tease rule.
-Sources: Lead 09-09 log (l.25-27, 37-70), Exec 09-09 log (l.94-103, 127-137, 148-149), Lead 09-11 log (l.41, 78-106),
-prog 09-11 log (l.21-37), omnibus 09-09 (l.258-261) and 09-11 (l.308-312, 524-525), ship-059 internal report 09-04
-(l.137), decisions.log l.1865. Facts gathered by a Sonnet subagent. Comms re-opened the key quotes at source.
--->
+In early September I felt nervous about how our progress toward the MVP milestone. It felt like we were taking one step forward, two steps back. Meanwhile, we were relying on a report of "green tests" that only covered four of the many, many tests, and excluded one that have never yet been green once in over a thousand runs.
 
----
+# The pile that wouldn't shrink.
 
-## Title options (pick one, or your own)
-- **Never Green in a Thousand Runs** (working). Exact for the end-to-end suite only. See the accuracy notes.
-- **A Subset Phrased as a Total.** Lead's own words for the mistake, and the thread through both halves.
-- **Locally Correct, the Sum Wrong.** Lead's words for the first half.
-- **They Weren't. I Was.** Lead's answer to your question.
+I carved out time on September for some live testing, something I cannot delegate, and after a series of verification passes we closed six issues by midday, while the backlog still grew. My tests were finding new issues and fixes were discovering new issues or deeper patterns. 
 
-## The story in one sentence
+My chief of staff agent (Exec) summarized it in the "attention rollup" artifact they maintain for me, noting that the sprint backlog went from 28 to 34, as it "grew by six while PM closed six" (they often refer to me as simply PM, the human product manager they all work for). 
 
-You asked how you could be the one blocking work nobody had started, and Lead said you weren't, Lead was. Two days
-later Lead found that "the belt is fully green" had been true only for the four checks Lead was counting, while one
-of the others had not passed once in a thousand runs.
-
-## Beats, in order (facts verified, source in brackets)
-
-**1. The pile that didn't shrink.** Wed Sep 9: your live test pass closed six more issues around midday, and the
-backlog still grew. Exec's rollup: Sprint Backlog went from 28 to 34, "grew by six while PM closed six", and
-"Never-started hasn't moved down all week." [Lead 09-09 l.25-27, Exec 09-09 l.94-103]
-
+Exec also noted some "never started" work that was still being postponed. This got me wondering. What is blocking that work? Why has it not yet started? How can I be blocking it yet if hasn't yet even started? How can you have any pudding when you haven't finished your meat?
 **2. Your question, and Lead's answer.** About 1:15 PM you asked how you could be blocking never-started work. Lead's
 log heading: "PM's how-am-I-blocking-never-started question answered HONESTLY: they weren't. I was." [Lead 09-09 l.37]
 - The mechanism: for two weeks every duty fire drained incoming mail first, so the agent was never idle, and the
