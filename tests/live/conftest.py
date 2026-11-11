@@ -99,19 +99,22 @@ _POISON_ENV_VARS = (
     "ANTHROPIC_AUTH_TOKEN",
     "ANTHROPIC_CUSTOM_HEADERS",
 )
-# #2338 (Arch, decisions.log 2026-11-11 11:51): the #1258 poison is an EMPTY
-# ANTHROPIC_API_KEY from the Claude Code shell. A non-empty one is a real key (the
-# keychain opt-in has just loaded it, or the developer exported it), and it is the
-# only way the child gets a key now that its store is forced to the database.
-_SCRUB_ONLY_WHEN_EMPTY = ("ANTHROPIC_API_KEY",)
+# #2338 (Arch, decisions.log 2026-11-11 11:51 and his 12:03 note): the child's store is
+# forced to the database, so with the keychain opt-in set the key conftest has just
+# loaded into ANTHROPIC_API_KEY is the only way the child gets one; a non-empty value
+# passes through THEN. Without the opt-in the variable is stripped as before, empty or
+# not, so a shell that exports its own key can never leak it into the app (#1258).
+_PASS_WHEN_OPTED_IN = ("ANTHROPIC_API_KEY",)
+_KEYCHAIN_OPT_IN_ENV = "PIPER_TESTS_USE_KEYCHAIN"  # tests/conftest.py KEYCHAIN_OPT_IN_ENV
 
 
 def scrub_child_env(env: dict) -> dict:
     """Drop the Claude Code shell's poison from a server child's environment."""
     for var in _POISON_ENV_VARS:
         env.pop(var, None)
-    for var in _SCRUB_ONLY_WHEN_EMPTY:
-        if not (env.get(var) or "").strip():
+    opted_in = (env.get(_KEYCHAIN_OPT_IN_ENV) or "").strip().lower() in ("1", "true", "yes")
+    for var in _PASS_WHEN_OPTED_IN:
+        if not (opted_in and (env.get(var) or "").strip()):
             env.pop(var, None)
     return env
 

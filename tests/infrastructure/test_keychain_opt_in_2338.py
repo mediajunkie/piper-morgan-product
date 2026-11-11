@@ -264,7 +264,7 @@ def _load_live_conftest():
     return module
 
 
-def test_live_harness_strips_an_empty_anthropic_key_but_passes_a_real_one():
+def test_live_harness_passes_the_anthropic_key_only_when_opted_in():
     live = _load_live_conftest()
     poison = {
         "ANTHROPIC_API_KEY": "",
@@ -274,9 +274,19 @@ def test_live_harness_strips_an_empty_anthropic_key_but_passes_a_real_one():
         "KEEP": "1",
     }
     assert live.scrub_child_env(dict(poison)) == {"KEEP": "1"}
-    assert live.scrub_child_env({"ANTHROPIC_API_KEY": "   "}) == {}
-    real = live.scrub_child_env({"ANTHROPIC_API_KEY": "a-real-key", "ANTHROPIC_BASE_URL": "x"})
-    assert real == {"ANTHROPIC_API_KEY": "a-real-key"}
+    # Not opted in: a non-empty key is stripped too (a shell's own key never leaks).
+    assert live.scrub_child_env({"ANTHROPIC_API_KEY": "a-shell-key"}) == {}
+    assert live.scrub_child_env({"ANTHROPIC_API_KEY": "k", _OPT_IN: "0"}) == {_OPT_IN: "0"}
+    # Opted in: the key conftest loaded passes; an empty one and the rest still go.
+    opted = live.scrub_child_env(
+        {"ANTHROPIC_API_KEY": "loaded-key", "ANTHROPIC_BASE_URL": "x", _OPT_IN: "1"}
+    )
+    assert opted == {"ANTHROPIC_API_KEY": "loaded-key", _OPT_IN: "1"}
+    assert live.scrub_child_env({"ANTHROPIC_API_KEY": "  ", _OPT_IN: "1"}) == {_OPT_IN: "1"}
+
+
+def test_live_harness_opt_in_name_matches_the_root_conftest():
+    assert _load_live_conftest()._KEYCHAIN_OPT_IN_ENV == _load_root_conftest().KEYCHAIN_OPT_IN_ENV
 
 
 def test_every_test_harness_that_starts_main_py_uses_child_app_env():
