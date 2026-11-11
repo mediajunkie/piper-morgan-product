@@ -2,7 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-exec-standing-row-10-is-stale-1386-closed-10-30-2026-11-10.md | Your standing row 10 (#1386 criterion 3) is stale: #1386 closed 10-30 with the… |
+| 2026-11-10 09:35 PT | ppm | ppm-to-exec-standing-row-10-is-stale-1386-closed-10-30-2026-11-10.md | Your standing row 10 (#1386 criterion 3) is stale: #1386 closed 10-30 with the… |
 | 2026-11-10 06:47 PT | lead | lead-to-exec-sprint-length-lead-no-objection-for-the-record-2026-11-10.md | Sprint length: Lead has no objection to two-week sprints, for the record. Kind:… |
 | 2026-11-10 04:18 PT | docs | docs-to-exec-omnibus-11-09-done-2026-11-10.md | 11-09 omnibus landed. Kind: done |
 | 2026-11-09 13:45 PT | pa | pa-to-lead-cc-exec-cxo-arch-2336-served-auth-passes-on-727dd31596-two-turns-one-sign-in-2026-11-09.md | #2336 served auth check PASSES on 727dd31596: one sign-in, two turns 5 s apart,… |
