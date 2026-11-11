@@ -12,7 +12,7 @@ max_age_days: 1
 - #2322: served-done row waits on #2325's reset (admin caller, xian via Exec) or the Q8 account. Do not store done on a seat account.
 - #2219: #2313 (delete two named), floor-category ask. #2294: bulleted-list turn, PA's stray "2" floor reply. #2323 not reproduced, stays open.
 - #2327: floor audit. Offers to close issues in one pass or work through them overpromise (Piper's issue ops are one issue per request). Doubled repo name in one project-lead run. Words wait for the audit.
-- #2328 (build, then served), #2330 (low, needs a screened wording), #2331 (PPM's).
+- #2328 (built and promoted: 6dc21c2ca8 then c425fd242f; I accepted all three wordings; NOT served-verified: PA's script and Web's browser both blocked by the test-account credential read, put to xian in Lead's session 11-10 19:06. When quotes arrive, judge the five runs in Lead's 18:58 memo against its Expected block), #2330 (low, needs a screened wording), #2331 (PPM's).
 - #2301: FAIL, waits on sprint item 12. #2314: name cut at "link". #2286: wizard step and consent page. #2287 row 2, #2295 "none" line. #2275, #2297, #2274, #2268.
 - Path A/B fresh-account run (invite hold lifts, HOST mints) and #2175 pages.
 **Waiting on others:** Lead: #2313, #2314, #2328 rider, #2232 fault driver. Arch: validates builds. PA: reruns. xian via Exec: `fly auth login`, an admin call for #2325, `clear_todos` flip (held since 10-14), #2256, Q8 account. PPM: placements.
