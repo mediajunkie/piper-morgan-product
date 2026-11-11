@@ -30,6 +30,7 @@ v917, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - **Arch:** short read on alpha/beta/staging common practice for xian's later talk.
 
 ## Reminders owed to xian
+- **Wed 11-11, first thing in his session and on the rollup:** xian wants to share and discuss a beta tester's feedback (sent to him via LinkedIn or email). He asked 11-10 23:25 to be reminded. The name is in designinproduct `docs/mail/exec-private-beta-tester-feedback-reminder-2026-11-10.md`; never write it in this repo. Ask him to paste or forward the feedback; don't go looking in his mail unasked.
 - **#2282 step 5, around Thu 11-12** (standing item #183): remove the alpha callbacks in GitHub and Google if a week passes with no hits.
 - **Thanksgiving week (Mon 11-23):** PPM's one-liner: "First closing review Fri 11-27 or Sat 11-28? Thu 11-26 is the usual filing day, so when should seats file that week?"
 - **Vercel: downgrade from Pro once the headroom exists again** (standing item #182). Raise that Hobby is non-commercial.
