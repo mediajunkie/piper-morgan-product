@@ -4,7 +4,7 @@ alt: ''
 caption: ''
 ---
 
-# The Server Key Is Not a Real Concept
+# The Server Has No Key
 
 *September 13–15, 2026*
 
