@@ -167,6 +167,47 @@ def app_db_url(password: str) -> str:
     return f"postgresql://{APP_ROLE}:{password}@localhost:{PG_PORT}/{SCRATCH_DB}"
 
 
+# ── the outbound sink: an HTTPS proxy that answers 502 to everything ────────
+
+
+class FailingProxy:
+    """Answers ``502 Bad Gateway`` to every request (a CONNECT included) and records
+    the request line only (never a header or a body). Every fault server gets one as
+    its HTTPS proxy, so a run cannot reach a real provider, and the evidence shows
+    what the server tried to reach."""
+
+    def __init__(self) -> None:
+        self.requests: List[str] = []
+        self._sock = socket.socket()
+        self._sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self._sock.bind(("127.0.0.1", 0))
+        self._sock.listen(8)
+        self.port = int(self._sock.getsockname()[1])
+        self._stop = False
+        threading.Thread(target=self._serve, daemon=True).start()
+
+    def _serve(self) -> None:
+        while not self._stop:
+            try:
+                conn, _ = self._sock.accept()
+            except OSError:
+                return
+            with conn:
+                try:
+                    conn.settimeout(5)
+                    first = conn.recv(4096).split(b"\r\n", 1)[0].decode("latin-1")
+                    self.requests.append(first)
+                    conn.sendall(
+                        b"HTTP/1.1 502 Bad Gateway\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"
+                    )
+                except OSError:
+                    pass
+
+    def close(self) -> None:
+        self._stop = True
+        self._sock.close()
+
+
 # ── the local server ─────────────────────────────────────────────────────────
 
 
@@ -185,20 +226,37 @@ def _free_port() -> int:
 
 class Server:
     def __init__(
-        self, db_url: str, log_dir: Path, name: str, extra_env: Optional[Dict[str, str]] = None
+        self,
+        db_url: str,
+        log_dir: Path,
+        name: str,
+        extra_env: Optional[Dict[str, Optional[str]]] = None,
     ):
         self.port = _free_port()
         self.base = f"http://127.0.0.1:{self.port}"
         self.log_path = log_dir / f"server-{name}.log"
         env = _base_env()
+        # Every outbound HTTPS call is refused and recorded by the sink. The credential
+        # store is the encrypted database store the hosted app uses (in the scratch
+        # database), never this machine's OS keychain.
+        self.sink = FailingProxy()
+        sink_url = f"http://127.0.0.1:{self.sink.port}"
         env.update(
             DATABASE_URL=db_url,
             PIPER_PORT=str(self.port),
             JWT_SECRET_KEY=secrets.token_urlsafe(32),
+            HTTPS_PROXY=sink_url,
+            https_proxy=sink_url,
             NO_PROXY="127.0.0.1,localhost",
             no_proxy="127.0.0.1,localhost",
+            PIPER_CREDENTIAL_STORE="db",
+            ENCRYPTION_MASTER_KEY=base64.b64encode(secrets.token_bytes(32)).decode(),
         )
-        env.update(extra_env or {})
+        for key, value in (extra_env or {}).items():
+            if value is None:
+                env.pop(key, None)
+            else:
+                env[key] = value
         self._log = open(self.log_path, "w")
         self.proc = subprocess.Popen(
             [str(ROOT / "venv/bin/python"), "main.py"],
@@ -240,45 +298,7 @@ class Server:
             except subprocess.TimeoutExpired:
                 self.proc.kill()
         self._log.close()
-
-
-# ── the failing stub: an HTTPS proxy that answers 502 to everything ──────────
-
-
-class FailingProxy:
-    """Answers ``502 Bad Gateway`` to every request (a CONNECT included) and records
-    the request line, so the evidence shows the server really tried the provider."""
-
-    def __init__(self) -> None:
-        self.requests: List[str] = []
-        self._sock = socket.socket()
-        self._sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self._sock.bind(("127.0.0.1", 0))
-        self._sock.listen(8)
-        self.port = int(self._sock.getsockname()[1])
-        self._stop = False
-        threading.Thread(target=self._serve, daemon=True).start()
-
-    def _serve(self) -> None:
-        while not self._stop:
-            try:
-                conn, _ = self._sock.accept()
-            except OSError:
-                return
-            with conn:
-                try:
-                    conn.settimeout(5)
-                    first = conn.recv(4096).split(b"\r\n", 1)[0].decode("latin-1")
-                    self.requests.append(first)
-                    conn.sendall(
-                        b"HTTP/1.1 502 Bad Gateway\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"
-                    )
-                except OSError:
-                    pass
-
-    def close(self) -> None:
-        self._stop = True
-        self._sock.close()
+        self.sink.close()
 
 
 # ── rows ─────────────────────────────────────────────────────────────────────
@@ -317,21 +337,19 @@ def row_2125_store(db_url: str, log_dir: Path) -> Dict[str, Any]:
 
 
 def row_2125_check(db_url: str, log_dir: Path) -> Dict[str, Any]:
-    proxy = FailingProxy()
-    url = f"http://127.0.0.1:{proxy.port}"
-    server = Server(db_url, log_dir, "2125-check", {"HTTPS_PROXY": url, "https_proxy": url})
+    server = Server(db_url, log_dir, "2125-check")
     try:
         server.wait_healthy()
-        before = len(proxy.requests)  # startup makes its own provider calls
+        before = len(server.sink.requests)  # startup may make its own provider calls
         r = _validate_key(server)
-        during = proxy.requests[before:]
+        during = server.sink.requests[before:]
         if not any(req.startswith("CONNECT api.anthropic.com") for req in during):
             raise NotRun(f"this request never reached the stub (stub saw {during!r} during it)")
         return {
             "row": "2125 (key check couldn't run)",
             "fault": "the server's HTTPS proxy is a stub answering 502 to CONNECT",
             "stub_saw_during_request": during,
-            "stub_saw_at_startup": proxy.requests[:before],
+            "stub_saw_at_startup": server.sink.requests[:before],
             "request": "POST /api/v1/setup/validate-key {provider: anthropic, api_key: <fake>}",
             "status": r.status_code,
             "reply": r.json().get("message"),
@@ -340,7 +358,6 @@ def row_2125_check(db_url: str, log_dir: Path) -> Dict[str, Any]:
         }
     finally:
         server.stop()
-        proxy.close()
 
 
 def _create_account(server: Server) -> httpx.Client:
