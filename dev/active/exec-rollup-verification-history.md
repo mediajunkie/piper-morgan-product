@@ -501,3 +501,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v917 (22:08 Tue 11-10 STOP): Tue post mid-rewrite by xian (beats 1-4 his; Comms 9 notes at 21:19); Thu renamed 'The Server Has No Key'; 2328 served check needs xian (both seats refused the credential read); correction of my 16:34 chat claim that Ship 068 spend was settled as dollars (the draft still says tokens owed). /health 22:01 c425fd242f; CI 12/12.
 - v918 (06:05 Wed 11-11 START): Wednesday heading; beta-tester feedback reminder (name in private repo only); Tue post published 23:31 and Medium 23:34 (calendar distributed, live page 200); Ship 068 'publishes today' moved to item 1; Thu post item; /health 06:03 c425fd242f; CI 12/12.
 - 10:01 v919: #2232 In-motion line (Lead's four memos; keychain note). Source: mailboxes/exec/read/ 2232 memos, decisions.log 11-11 06:55 and 07:08.
+- 10:14 v920: #2232 line, CXO passed both remaining lines (cxo memo 10:02).
