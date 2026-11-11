@@ -65,20 +65,99 @@ collect_ignore_glob = [
 
 
 # ============================================================================
-# Load API keys from macOS Keychain for LLM tests (#742)
+# Load API keys from macOS Keychain for LLM tests (#742): OPT-IN ONLY (#2338)
 # ============================================================================
+# #2338 (xian's ruling, decisions.log 2026-11-11 11:12; Arch's mechanism 11:16):
+# nothing a test run does may read the developer's login keychain unless the
+# developer asks for it. The #742/#914 loads below, the `gh auth token` fallback
+# (gh keeps its token in the login keychain on macOS) and the live-LLM fixture's
+# keychain rung all run ONLY when this variable is set to 1/true/yes. Without it,
+# tests use keys already in the environment or skip visibly (#1748's path).
+# Pinned by tests/infrastructure/test_keychain_opt_in_2338.py.
+KEYCHAIN_OPT_IN_ENV = "PIPER_TESTS_USE_KEYCHAIN"
+
+
+def _keychain_opted_in() -> bool:
+    return os.environ.get(KEYCHAIN_OPT_IN_ENV, "").strip().lower() in ("1", "true", "yes")
+
+
+def _dev_keychain_or_none():
+    """The developer's KeychainService for the live-LLM fixture, or None. None
+    without the #2338 opt-in, so the service is never even constructed."""
+    if not _keychain_opted_in():
+        return None
+    from services.infrastructure.keychain_service import KeychainService
+
+    try:
+        return KeychainService()
+    except Exception:  # silent-ok: no keychain backend -> env-only binding
+        return None
+
+
+def _use_in_memory_keyring() -> bool:
+    """#2338: point the ``keyring`` module at a process-local, in-memory backend for
+    this test run, so no test READS OR WRITES the developer's login keychain.
+    ``KeychainService`` calls ``keyring.get_password`` / ``set_password`` /
+    ``delete_password``, which dispatch to whatever backend is current, so one swap
+    covers every test. (Found 2026-11-11: a smoke test's Slack OAuth callback stored
+    its ``xoxb-test-token`` through the real service on every pre-push run.)
+
+    Only a live OS backend is replaced. Where the backend is already dead (CI, a
+    container) nothing changes, so the #1382 database fallback and #1748's pins see
+    exactly what they saw before. Returns True when the swap was made."""
+    try:
+        import keyring
+        from keyring.backend import KeyringBackend
+        from keyring.errors import PasswordDeleteError
+    except ImportError:
+        return False
+    current = keyring.get_keyring()
+    if "fail" in current.__class__.__module__ or getattr(current, "piper_test_in_memory", False):
+        return False
+
+    class InMemoryTestKeyring(KeyringBackend):
+        priority = 1  # type: ignore[assignment]
+        piper_test_in_memory = True
+
+        def __init__(self) -> None:
+            super().__init__()
+            self._items: dict = {}
+
+        def get_password(self, service, username):
+            return self._items.get((service, username))
+
+        def set_password(self, service, username, password):
+            self._items[(service, username)] = password
+
+        def delete_password(self, service, username):
+            if (service, username) not in self._items:
+                raise PasswordDeleteError("not found")
+            del self._items[(service, username)]
+
+    keyring.set_keyring(InMemoryTestKeyring())
+    return True
+
+
 def pytest_configure(config):
     """
-    Load API keys from macOS Keychain before test collection.
+    Load API keys from macOS Keychain before test collection, when opted in.
 
     This allows LLM and GitHub integration tests to run when keys are stored
     securely in keychain rather than requiring them to be exported to shell
-    environment.
+    environment. Off by default (#2338): set PIPER_TESTS_USE_KEYCHAIN=1.
 
     Keys are loaded from the "piper-morgan" keychain service.
 
     Issue #914: Added GitHub token loading from keychain.
     """
+    if not _keychain_opted_in():
+        swapped = _use_in_memory_keyring()
+        print(
+            f"  [conftest] Keychain not read ({KEYCHAIN_OPT_IN_ENV} unset, #2338); "
+            "LLM/GitHub tests use env vars or skip"
+            + ("; OS keyring replaced by an in-memory one for this run" if swapped else "")
+        )
+        return
     try:
         # Import here to avoid dependency issues if keyring not installed
         from services.infrastructure.keychain_service import get_keychain_service
@@ -233,17 +312,13 @@ def _live_llm_spend_binding_1819():
     test that will actually run (live keys present). See the comment there. Binds the
     developer's own keys as an explicit provider-keyed mapping — the operator binding
     this fixture used to hold was deleted by #1812 step 5. Env first, then the dev
-    keychain, per provider: that is exactly the credential set the old operator form
+    keychain (only with the #2338 opt-in), per provider: that is exactly the credential set the old operator form
     spent (the server clients were built from the keychain), so live-tier provider
     selection is unchanged by the seam's removal. Never autouse — non-live tests keep
     the refusing UNBOUND default, which is itself under test."""
-    from services.infrastructure.keychain_service import KeychainService
     from services.llm.request_key import request_api_key
 
-    try:
-        keychain = KeychainService()
-    except Exception:  # silent-ok: no keychain backend -> env-only binding
-        keychain = None
+    keychain = _dev_keychain_or_none()  # #2338: None unless the developer opted in
 
     def _dev_key(provider: str, env_var: str):
         key = os.environ.get(env_var)
