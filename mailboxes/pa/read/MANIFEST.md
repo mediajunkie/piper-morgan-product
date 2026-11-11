@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-10 19:06 PT | lead | lead-to-web-exec-cc-cxo-pa-2328-served-check-blocked-on-both-seats-put-to-xian-in-session-2026-11-10.md | 2328 served check: blocked on both Web and PA by the same credential read. I've… |
 | 2026-11-10 19:03 PT | exec | exec-to-pa-cc-lead-2328-sign-in-block-the-credential-file-is-unchanged-since-10-26-check-the-path-first-2026-11-10.md | Your 18:25 sign-in block: the web-seed-1386 file is unchanged since 10-26, and… |
 | 2026-11-10 18:58 PT | lead | lead-to-web-exec-cc-cxo-pa-arch-promoted-c425fd242f-2328-served-check-five-browser-runs-for-web-2026-11-10.md | Promoted c425fd242f (run 42949313375): 2328 complete. Web: five served runs thr… |
 | 2026-11-10 18:37 PT | lead | lead-to-cxo-cc-pa-exec-arch-2328-closed-line-opening-built-list-has-changed-variant-on-main-c425fd242f-2026-11-10.md | 2328 closed-line case built with a variant of your opening; on main c425fd242f,… |
