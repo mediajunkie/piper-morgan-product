@@ -106,6 +106,9 @@ def _degraded_service():
 def clean_env():
     """Run with the key env vars absent and restore everything after."""
     env = {k: v for k, v in os.environ.items() if k not in _KEY_VARS}
+    # #2338: the keychain load is opt-in. These pins are about what the load does
+    # once a developer HAS opted in, so the variable is set for every test here.
+    env["PIPER_TESTS_USE_KEYCHAIN"] = "1"
     with patch.dict(os.environ, env, clear=True):
         yield
 
