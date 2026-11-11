@@ -47,6 +47,10 @@ from typing import Optional, Sequence
 # --- CXO's strings (issue 2046) -------------------------------------------
 
 NO_LIST_OPENING = "I haven't shown you a numbered list yet. Here are your {plural}:"
+# #2328 (CXO 11-10 18:23): a list WAS shown and a line on it has since closed. The
+# no-list opening would be false; this one says the list changed (true whether the
+# line was completed or deleted, and for one line or several).
+LIST_CHANGED_OPENING = "That list has changed since I showed it, so here it is as it stands:"
 # CXO 11-07 20:35 (#2321 row 5): the cap names its noun in the no-list form too, as the
 # after-list form does (#2219's one-noun rule).
 DELETE_ONE_AT_A_TIME = "I can delete one {noun} at a time for now."
@@ -124,7 +128,11 @@ def delete_summary_phrase(title: str, noun: str = "todo") -> str:
 
 
 def no_list_reply(
-    texts: Sequence[str], noun: str, tail: str, copies: Optional[Sequence[int]] = None
+    texts: Sequence[str],
+    noun: str,
+    tail: str,
+    copies: Optional[Sequence[int]] = None,
+    opening: Optional[str] = None,
 ) -> str:
     """CXO line 1: the opening, the numbered list (quoted titles, one per
     line), then ``tail``. Blank lines around the list: the chat page renders
@@ -139,7 +147,7 @@ def no_list_reply(
     ]
     if len(texts) > len(shown):
         items.append(f"…and {len(texts) - len(shown)} more.")
-    opening = NO_LIST_OPENING.format(plural=noun_plural(noun))
+    opening = opening or NO_LIST_OPENING.format(plural=noun_plural(noun))
     return opening + "\n\n" + "\n".join(items) + "\n\n" + tail
 
 

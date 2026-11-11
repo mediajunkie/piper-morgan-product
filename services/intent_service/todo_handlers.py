@@ -1777,6 +1777,7 @@ class TodoIntentHandlers:
         tail: str,
         session_id: Optional[str],
         principal: Any,
+        opening: Optional[str] = None,
     ) -> str:
         """Issue 2046 (CXO line 1): ordinals arrived and this session has shown
         no numbered list. Show the user's rows numbered (reminders — rows with
@@ -1802,7 +1803,11 @@ class TodoIntentHandlers:
             groups=[[t.id for t in line] for line in shown],
         )
         return no_list_reply(
-            [line[0].text for line in lines], noun, tail, copies=[len(line) for line in lines]
+            [line[0].text for line in lines],
+            noun,
+            tail,
+            copies=[len(line) for line in lines],
+            opening=opening,
         )
 
     @staticmethod
@@ -1831,6 +1836,7 @@ class TodoIntentHandlers:
         session_id: Optional[str],
         principal: Any,
         offer_service: Any,
+        opening: Optional[str] = None,
     ) -> Tuple[str, bool]:
         """#2318 (CXO 11-07): the #2046 no-list reply, armed. The opening and the
         numbered list as :meth:`_no_list_ordinal_reply` shows them, then ``lead``
@@ -1853,7 +1859,7 @@ class TodoIntentHandlers:
             return no_reminders_statement(verb), False
         prefix = f"{lead} " if lead else ""
         reply = self._no_list_ordinal_reply(
-            name_pool, noun, prefix + shown_rows_question(verb), session_id, principal
+            name_pool, noun, prefix + shown_rows_question(verb), session_id, principal, opening
         )
         if arm_shown_lines_pick(
             verb, reply, message, session_id, principal, noun, shown, offer_service
@@ -1861,7 +1867,12 @@ class TodoIntentHandlers:
             return reply, True
         return (
             self._no_list_ordinal_reply(
-                name_pool, noun, prefix + by_name_statement(verb, noun), session_id, principal
+                name_pool,
+                noun,
+                prefix + by_name_statement(verb, noun),
+                session_id,
+                principal,
+                opening,
             ),
             False,
         )
@@ -1899,8 +1910,20 @@ class TodoIntentHandlers:
                 offer_service,
             ):
                 return question, True
+        # CXO 11-10 18:23: a list was shown and a line has closed. Show it afresh
+        # (numbers never shift silently) under an opening that says it changed.
+        from services.intent_service.reminder_copy import LIST_CHANGED_OPENING
+
         return self._no_list_ordinal_pick(
-            todos, noun, VERB_COMPLETE, "", message, session_id, principal, offer_service
+            todos,
+            noun,
+            VERB_COMPLETE,
+            "",
+            message,
+            session_id,
+            principal,
+            offer_service,
+            opening=LIST_CHANGED_OPENING if shown_lines and not all(shown_lines) else None,
         )
 
     @staticmethod

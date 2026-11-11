@@ -109,8 +109,16 @@ async def test_a_shown_list_with_a_closed_line_is_shown_again_never_renumbered_s
 
     reply = await _ask(h, "complete them", session, user, offers)
 
-    assert '1. "review prs"\n2. "hydrate"' in reply and reply.endswith(QUESTION)
+    # CXO 11-10 18:23: never "I haven't shown you a numbered list yet" here.
+    assert reply == (
+        "That list has changed since I showed it, so here it is as it stands:\n\n"
+        '1. "review prs"\n2. "hydrate"\n\n' + QUESTION
+    )
     h.todo_service.complete_todo.assert_not_called()
+    pending = offers.peek_pending_offer(session, str(user))["pending_action"]
+    assert pending["kind"] == DELETE_PICK_KIND and pending["verb"] == "complete"
+    # The fresh list is now the session's numbered list: "2" means "hydrate".
+    assert [str(i) for i in last_numbered_list(session, str(user)).ids] == [r.id for r in rows]
 
 
 @pytest.mark.parametrize(

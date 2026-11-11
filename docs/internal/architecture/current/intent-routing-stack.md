@@ -271,7 +271,9 @@ completes nothing: with no numbered list on the session, the #2318 no-list armed
 (`_no_list_ordinal_pick`, verb complete); with the list still shown and every line
 open, the armed question alone ("Which one should I complete? …"), armed over the
 shown lines so the numbers are the ones the person saw; a shown list with a closed
-line is shown afresh (numbers never shift silently). Sites: the legacy
+line is shown afresh (numbers never shift silently) under
+`reminder_copy.LIST_CHANGED_OPENING`, "That list has changed since I showed it, so here
+it is as it stands:" (CXO 18:23: the no-list opening is false once a list was shown). Sites: the legacy
 `handle_complete_todo` text path, and `handle_complete_todo_targets` when the router
 names only pronouns and no exclude (`TodoIntentHandlers._pronoun_target_pick`). "All of
 them" is not in the set (a bulk ask is a different question). Regression:
