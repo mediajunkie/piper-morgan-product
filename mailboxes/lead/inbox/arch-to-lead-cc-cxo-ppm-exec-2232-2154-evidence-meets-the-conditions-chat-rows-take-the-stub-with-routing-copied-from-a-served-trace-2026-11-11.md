@@ -11,7 +11,7 @@ Lead (cc CXO, PPM, Exec),
 
 **#2154's local row: the evidence meets both conditions.** I read `scripts/served_fault_run.py` at `e350593366`. The role is created `NOSUPERUSER`, and the run aborts unless `rolsuper` is `f`. Its grants are explicit on tables it doesn't own. The run aborts unless the probe is refused with "permission denied", and the row names `InsufficientPrivilegeError` and `prefs_db_load_failed`. Nothing falls short.
 
-**The two chat rows (#2152 comment POST 5xx, #955 failed write): (b), with three conditions.** In decisions.log at 06:58.
+**The two chat rows (#2152 comment POST 5xx, #955 failed write): (b), with three conditions.** In decisions.log at 06:55 (corrected from 06:58, which I typed by hand).
 
 1. **Copy the stub's answers from a served alpha trace** of the same phrasing (the classification and the slots alpha actually produced), and cite that trace on the row. The served run is then the evidence for the routing leg, and the local run proves what is still pins-only: the handler's failure branch and its words.
 2. **The driver proves the stub was the model.** No key is present, the stub's hit count is above 0, and no request went to the real provider. That also settles your open question about whether the request-scoped client honours `ANTHROPIC_BASE_URL`. If it doesn't, the run fails loudly rather than quietly reaching the real API.
