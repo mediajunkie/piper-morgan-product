@@ -191,20 +191,25 @@ def test_default_configure_swaps_a_live_os_keyring_for_an_in_memory_one(
     assert fake_os_keyring.calls == []
 
 
-def test_opted_in_the_os_keyring_is_left_in_place(env_without_keys, fake_os_keyring):
+def test_opted_in_reads_first_then_swaps_so_nothing_is_written(env_without_keys, fake_os_keyring):
+    """Arch 11:39: the opt-in grants reading, not writing."""
     import keyring
 
     os.environ[_OPT_IN] = "1"
+    service = _Keyring()
     conftest_mod = _load_root_conftest()
     with (
         patch(
             "services.infrastructure.keychain_service.get_keychain_service",
-            return_value=_Keyring(),
+            return_value=service,
         ),
         patch("subprocess.run", side_effect=FileNotFoundError("gh disabled in pin")),
     ):
         conftest_mod.pytest_configure(config=None)
-    assert keyring.get_keyring() is fake_os_keyring
+    assert os.environ["ANTHROPIC_API_KEY"] == "real-anthropic"  # read happened first
+    assert getattr(keyring.get_keyring(), "piper_test_in_memory", False) is True
+    keyring.set_password("piper-morgan", "slack_bot", "xoxb-test-token")
+    assert [c for c in fake_os_keyring.calls if c[0] in ("set", "delete")] == []
 
 
 def test_a_dead_backend_is_not_replaced(env_without_keys):
@@ -221,3 +226,46 @@ def test_a_dead_backend_is_not_replaced(env_without_keys):
         assert keyring.get_keyring() is dead
     finally:
         keyring.set_keyring(before)
+
+
+# ── an app process a test starts never reads the keychain either ───────────────
+
+
+def test_child_app_env_forces_the_database_store_by_default(env_without_keys):
+    os.environ.pop("PIPER_CREDENTIAL_STORE", None)
+    conftest_mod = _load_root_conftest()
+    env = conftest_mod.child_app_env()
+    assert env["PIPER_CREDENTIAL_STORE"] == "db"
+    assert "PIPER_CREDENTIAL_STORE" not in os.environ  # the parent keeps the swap
+
+
+def test_child_app_env_keeps_an_explicit_store_and_a_given_base(env_without_keys):
+    conftest_mod = _load_root_conftest()
+    env = conftest_mod.child_app_env({"PIPER_CREDENTIAL_STORE": "keychain", "X": "1"})
+    assert env == {"PIPER_CREDENTIAL_STORE": "keychain", "X": "1"}
+
+
+def test_child_app_env_leaves_the_store_alone_when_opted_in(env_without_keys):
+    os.environ.pop("PIPER_CREDENTIAL_STORE", None)
+    os.environ[_OPT_IN] = "1"
+    conftest_mod = _load_root_conftest()
+    assert "PIPER_CREDENTIAL_STORE" not in conftest_mod.child_app_env()
+
+
+def test_every_test_harness_that_starts_main_py_uses_child_app_env():
+    """Any test file that starts ``main.py`` as a child must build the child's
+    environment through ``app_child_env`` (the two known today, and any new one)."""
+    tests_root = Path(__file__).resolve().parents[1]
+    starters = []
+    for path in tests_root.rglob("*.py"):
+        if path == Path(__file__).resolve():
+            continue
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        if 'sys.executable, "main.py"' in text or '"python", "main.py"' in text:
+            starters.append(path)
+    assert sorted(p.relative_to(tests_root).as_posix() for p in starters) == [
+        "integration/test_startup.py",
+        "live/conftest.py",
+    ]
+    for path in starters:
+        assert "app_child_env" in path.read_text(encoding="utf-8"), path

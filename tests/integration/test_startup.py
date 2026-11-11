@@ -16,7 +16,7 @@ import requests
 class TestStartupIntegration:
     """Test that the application starts successfully"""
 
-    def test_main_py_startup_no_hanging(self):
+    def test_main_py_startup_no_hanging(self, app_child_env):
         """Test that python main.py starts without hanging"""
         # Start the application in a subprocess
         # sys.executable, not bare "python": hosts without a `python` shim on
@@ -28,6 +28,7 @@ class TestStartupIntegration:
             stderr=subprocess.PIPE,
             text=True,
             cwd=Path(__file__).parent.parent.parent,  # Project root
+            env=app_child_env(),  # #2338: never the developer's login keychain
         )
 
         try:
