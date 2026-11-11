@@ -263,6 +263,19 @@ carrier armed before the cap deletes nothing. Unchanged: single deletes (the
 #1666 gate, the legacy handler, D1, variant 3 / explicit confirm at N=1), and
 mark done on any set. Regression: `test_delete_cap_2019.py` plus the updated
 pins in the 1696, 1605, 1653, 1753, 1943, router-targets and clear_todos suites.
+**Issue 2328 a pronoun is not a title (2026-11-10, CXO 17:36, existing words only)**: a
+completion whose only target is a pronoun ("complete them", "make clear mark them
+done"; `todo_handlers._is_pronoun_only_target`, a word-set check, no new pattern) used
+to answer "I couldn't find a todo matching 'them'". It now asks which one, armed, and
+completes nothing: with no numbered list on the session, the #2318 no-list armed pick
+(`_no_list_ordinal_pick`, verb complete); with the list still shown and every line
+open, the armed question alone ("Which one should I complete? …"), armed over the
+shown lines so the numbers are the ones the person saw; a shown list with a closed
+line is shown afresh (numbers never shift silently). Sites: the legacy
+`handle_complete_todo` text path, and `handle_complete_todo_targets` when the router
+names only pronouns and no exclude (`TodoIntentHandlers._pronoun_target_pick`). "All of
+them" is not in the set (a bulk ask is a different question). Regression:
+`test_pronoun_target_pick_2328.py`.
 **Issue 2046 ordinals need a list, one noun (2026-10-16, CXO's lines)**: an
 ordinal/range target with NO numbered list bound on the session
 (`last_numbered_list is None`) used to answer "There's no number 1 in your

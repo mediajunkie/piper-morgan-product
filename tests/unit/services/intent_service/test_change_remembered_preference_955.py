@@ -297,8 +297,8 @@ async def test_landing_pin_the_routers_none_does_not_floor_the_hidden_entry(mem_
 
 async def test_make_clear_mark_them_done_as_complete_todo_completes_nothing():
     """The classifier reads "make clear mark them done" as complete_todo x6 (main and
-    candidate; corpus REVIEW row). The objectless "them" must complete nothing. Today
-    it says it couldn't find "them" rather than asking which (reported to Arch)."""
+    candidate; corpus REVIEW row). The objectless "them" must complete nothing. It asks
+    which one, armed (#2328; pinned in full in test_pronoun_target_pick_2328.py)."""
     from unittest.mock import AsyncMock
     from uuid import uuid4
 
@@ -330,7 +330,11 @@ async def test_make_clear_mark_them_done_as_complete_todo_completes_nothing():
         principal=str(user),
     )
     h.todo_service.complete_todo.assert_not_called()
-    assert "Nothing" in result or "couldn't find" in result
+    assert result.endswith(
+        "Which one should I complete? Say the number or the name, or "
+        "'never mind' to leave them alone."
+    )
+    assert "couldn't find" not in result
 
 
 # ── Arch 11-08 08:05: forget is consent-narrowing; set-directly keeps the check ──

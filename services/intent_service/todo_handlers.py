@@ -363,6 +363,24 @@ def _is_positional(token: str) -> bool:
     return t == "last" or bool(_ORDINAL_TOKEN_RE.match(t)) or bool(_RANGE_TOKEN_RE.match(t))
 
 
+# #2328: words that point at something without naming it. A completion target made
+# only of these is not a todo title (a word-set check, not an extraction pattern).
+_PRONOUN_TARGET_WORDS = frozenset(
+    {"them", "it", "that", "this", "those", "these", "they", "one", "ones"}
+)
+_PRONOUN_TARGET_HEADS = frozenset({"them", "it", "that", "this", "those", "these", "they"})
+
+
+def _is_pronoun_only_target(text: Optional[str]) -> bool:
+    words = [w.strip(".,!?;:\"'“”‘’") for w in (text or "").lower().split()]
+    words = [w for w in words if w]
+    return (
+        bool(words)
+        and all(w in _PRONOUN_TARGET_WORDS for w in words)
+        and any(w in _PRONOUN_TARGET_HEADS for w in words)
+    )
+
+
 def _requested_count(tokens: List[str]) -> int:
     """How many items the router's tokens ask for, before any resolution
     (issue 2046: the 2019 cap sentence is said when more than one was
@@ -957,6 +975,29 @@ class TodoIntentHandlers:
 
                 summary = f"{summary}\n\n{_clear_disclosure_clause()}"
             return summary, False
+
+        # #2328: the router named only a pronoun ("them"). No title to look for:
+        # the armed which-one pick, as the legacy handler gives it.
+        if (
+            not exclude
+            and targets
+            and all(
+                _is_pronoun_only_target(t[5:] if t.lower().startswith("name:") else t)
+                for t in targets
+            )
+        ):
+            from services.intent_service.destructive_confirm import _shown_line_numbering
+
+            _active = await self.todo_service.list_todos(user_id=user_id, include_completed=False)
+            if _active:
+                return self._pronoun_target_pick(
+                    list(_active),
+                    _shown_line_numbering(session_id, principal or user_id, _active),
+                    intent.original_message or ctx.get("original_message") or "",
+                    session_id,
+                    principal or user_id,
+                    offer_service,
+                )
 
         # ── candidate sets: what names/"all" index, and what ordinals may index ──
         due = await self._due_reminder_todos(user_id)
@@ -1823,6 +1864,43 @@ class TodoIntentHandlers:
                 name_pool, noun, prefix + by_name_statement(verb, noun), session_id, principal
             ),
             False,
+        )
+
+    def _pronoun_target_pick(
+        self,
+        todos: List[Todo],
+        shown_lines: List[List[Todo]],
+        message: str,
+        session_id: Optional[str],
+        principal: Any,
+        offer_service: Any,
+    ) -> Tuple[str, bool]:
+        """#2328: a completion whose only target is a pronoun. With the numbered list
+        still on screen and every line open, CXO's armed question alone, armed over
+        those lines (the numbers the person saw). Otherwise the #2318 no-list armed
+        pick (it shows the list and arms it). Completes nothing. ``(reply, armed)``."""
+        from services.intent_service.delete_todo_pick import (
+            VERB_COMPLETE,
+            arm_shown_lines_pick,
+            shown_rows_question,
+        )
+
+        noun = conversation_noun(message, "todos")
+        if shown_lines and all(shown_lines):
+            question = shown_rows_question(VERB_COMPLETE)
+            if arm_shown_lines_pick(
+                VERB_COMPLETE,
+                question,
+                message,
+                session_id,
+                principal,
+                noun,
+                shown_lines,
+                offer_service,
+            ):
+                return question, True
+        return self._no_list_ordinal_pick(
+            todos, noun, VERB_COMPLETE, "", message, session_id, principal, offer_service
         )
 
     @staticmethod
@@ -2724,6 +2802,19 @@ class TodoIntentHandlers:
                         "Which todo would you like to complete? "
                         "Try 'complete todo 1' or 'complete the [description]'."
                     )
+
+                if _is_pronoun_only_target(completion_text):
+                    # #2328 (CXO 11-10 17:36): "them" / "it" is no todo title. Ask which
+                    # one, armed, never a not-found for a word that names nothing.
+                    question, _armed = self._pronoun_target_pick(
+                        todos,
+                        shown_lines,
+                        original_message,
+                        session_id,
+                        principal or user_id,
+                        offer_service,
+                    )
+                    return _reply(question)
 
                 # #1943 step 6 (Arch's (a), 2026-10-08): the #1914 ordinal binder that
                 # bound "the first one" / "the last one" / "#2" by POSITION against the
