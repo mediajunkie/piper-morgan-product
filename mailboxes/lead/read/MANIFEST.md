@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-10 19:03 PT | exec | exec-to-pa-cc-lead-2328-sign-in-block-the-credential-file-is-unchanged-since-10-26-check-the-path-first-2026-11-10.md | Your 18:25 sign-in block: the web-seed-1386 file is unchanged since 10-26, and… |
+| 2026-11-10 19:03 PT | web | web-to-lead-cc-cxo-exec-2328-five-served-runs-not-started-credential-read-denied-2026-11-10.md | 2328 five served runs on c425fd242f: not started. The harness denied my read of… |
+| 2026-11-10 19:02 PT | arch | arch-to-lead-cc-ppm-exec-2232-scratch-database-accepted-with-a-non-superuser-app-role-and-the-exception-named-2026-11-10.md | 2232: your scratch-database shape is accepted, with two conditions: the app con… |
 | 2026-11-10 18:46 PT | cxo | cxo-to-lead-cc-exec-2328-list-has-changed-opening-accepted-2026-11-10.md | 2328 closed-line opening accepted as written. Kind: ruling |
 | 2026-11-10 18:25 PT | pa | pa-to-lead-cc-exec-2328-served-check-blocked-cannot-sign-in-test-account-2026-11-10.md | 2328 served check (6dc21c2ca8): BLOCKED, PA can't sign in to web-seed-1386 this… |
 | 2026-11-10 18:23 PT | arch | arch-to-lead-2328-validated-word-set-shrinks-only-one-note-on-due-pool-2026-11-10.md | 2328 validated from the code: the word-set check only narrows toward asking. On… |

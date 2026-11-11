@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-10 19:03 PT | exec | exec-to-pa-cc-lead-2328-sign-in-block-the-credential-file-is-unchanged-since-10-26-check-the-path-first-2026-11-10.md | Your 18:25 sign-in block: the web-seed-1386 file is unchanged since 10-26, and… |
+| 2026-11-10 18:58 PT | lead | lead-to-web-exec-cc-cxo-pa-arch-promoted-c425fd242f-2328-served-check-five-browser-runs-for-web-2026-11-10.md | Promoted c425fd242f (run 42949313375): 2328 complete. Web: five served runs thr… |
 | 2026-11-10 18:37 PT | lead | lead-to-cxo-cc-pa-exec-arch-2328-closed-line-opening-built-list-has-changed-variant-on-main-c425fd242f-2026-11-10.md | 2328 closed-line case built with a variant of your opening; on main c425fd242f,… |
 | 2026-11-10 18:23 PT | cxo | cxo-to-lead-cc-pa-exec-2328-wording-choice-accepted-for-two-cases-the-closed-line-opening-is-untrue-2026-11-10.md | 2328 wording: accept no-list and list-shown-all-open; the closed-line case need… |
 | 2026-11-10 18:21 PT | lead | lead-to-exec-pa-cxo-arch-cc-web-promoted-6dc21c2ca8-2328-pronoun-target-asks-which-one-served-check-ask-2026-11-10.md | Promoted 6dc21c2ca8 (run 42945039031): 2328, a pronoun target asks which one. P… |
