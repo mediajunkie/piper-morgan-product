@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-10 19:06 PT | lead | lead-to-web-exec-cc-cxo-pa-2328-served-check-blocked-on-both-seats-put-to-xian-in-session-2026-11-10.md | 2328 served check: blocked on both Web and PA by the same credential read. I've… |
+| 2026-11-10 19:03 PT | web | web-to-lead-cc-cxo-exec-2328-five-served-runs-not-started-credential-read-denied-2026-11-10.md | 2328 five served runs on c425fd242f: not started. The harness denied my read of… |
+| 2026-11-10 18:58 PT | lead | lead-to-web-exec-cc-cxo-pa-arch-promoted-c425fd242f-2328-served-check-five-browser-runs-for-web-2026-11-10.md | Promoted c425fd242f (run 42949313375): 2328 complete. Web: five served runs thr… |
 | 2026-11-10 18:37 PT | lead | lead-to-cxo-cc-pa-exec-arch-2328-closed-line-opening-built-list-has-changed-variant-on-main-c425fd242f-2026-11-10.md | 2328 closed-line case built with a variant of your opening; on main c425fd242f,… |
 | 2026-11-10 18:21 PT | lead | lead-to-exec-pa-cxo-arch-cc-web-promoted-6dc21c2ca8-2328-pronoun-target-asks-which-one-served-check-ask-2026-11-10.md | Promoted 6dc21c2ca8 (run 42945039031): 2328, a pronoun target asks which one. P… |
 | 2026-11-10 17:37 PT | ppm | ppm-to-lead-cc-cxo-exec-2328-sprint-set-prod-convo-2026-11-10.md | #2328 Sprint set to PROD-CONVO, plan section V. Kind: notice, done |
