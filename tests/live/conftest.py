@@ -95,11 +95,26 @@ LIVE_ENABLED = os.environ.get("PIPER_LIVE") == "1"
 # server they shadow real key resolution and every LLM call fails with a fake
 # "connection error" (#1258). Always scrubbed from the server subprocess.
 _POISON_ENV_VARS = (
-    "ANTHROPIC_API_KEY",
     "ANTHROPIC_BASE_URL",
     "ANTHROPIC_AUTH_TOKEN",
     "ANTHROPIC_CUSTOM_HEADERS",
 )
+# #2338 (Arch, decisions.log 2026-11-11 11:51): the #1258 poison is an EMPTY
+# ANTHROPIC_API_KEY from the Claude Code shell. A non-empty one is a real key (the
+# keychain opt-in has just loaded it, or the developer exported it), and it is the
+# only way the child gets a key now that its store is forced to the database.
+_SCRUB_ONLY_WHEN_EMPTY = ("ANTHROPIC_API_KEY",)
+
+
+def scrub_child_env(env: dict) -> dict:
+    """Drop the Claude Code shell's poison from a server child's environment."""
+    for var in _POISON_ENV_VARS:
+        env.pop(var, None)
+    for var in _SCRUB_ONLY_WHEN_EMPTY:
+        if not (env.get(var) or "").strip():
+            env.pop(var, None)
+    return env
+
 
 # Degradation shapes POST /api/v1/intent returns with HTTP 200 (#875 design:
 # business errors are conversational). A live driver must not count these as
@@ -299,9 +314,7 @@ def live_server(app_child_env):
         or tempfile.mkstemp(prefix=f"piper-live-{port}-", suffix=".log")[1]
     )
 
-    env = app_child_env()  # #2338: PIPER_CREDENTIAL_STORE=db unless the keychain opt-in is set
-    for var in _POISON_ENV_VARS:
-        env.pop(var, None)
+    env = scrub_child_env(app_child_env())  # #2338: the child's store is always the database
     env.setdefault("POSTGRES_PORT", "5433")
     env["PIPER_PORT"] = str(port)
 
