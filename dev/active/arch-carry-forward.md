@@ -28,6 +28,10 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
+- **11-10 STOP (21:27 fire).** Main 12/12 green. Alpha serves `c425fd242f` (#2328 complete; Web's browser served check pending, CXO judges, Lead closes).
+  - **Rulings today:** #2328 validated from source (18:23; the pronoun check is a word-set check and asks, writing nothing; note: the router path picks over all active todos, not the due pool). #2232's database rows (decisions.log 19:02): scratch database plus a revoked grant, with the app on a non-superuser, non-owner role, a probe proving the denial first, and the report naming InsufficientPrivilege and the `except Exception` branch. Lead owns #2232 now.
+  - **Open, not mine to move:** #2335 (xian's live-log check, via Exec); #2333 (Lead or PPM to schedule); #2328 (closes on CXO's word); #2232 (Lead building).
+  - **Lesson (11-10):** 165 memos from 11-07 to 11-09 sat in inbox/ unfiled while fires reported "mail checked, nothing new". Filed by log evidence plus reading 16 in full (22d7330af). Every mail wake files its memos in the same mail-send call as the reply. A "nothing new" line must also mean "inbox/ holds only MANIFEST".
 - **11-09 STOP (21:27 fire).** Main 12/12 green. Beta serves `727dd31596`. Every ruling today is in decisions.log (10:31, 11:21, 12:11, 13:45).
   - **Closed today:** #2334 (BlockingConnectionPool timeout=2, connect 2, socket 5; a weakref loop key replaces id(loop) in the #1452 rebuild; validated on served f0e6505de8; PA's served auth passes) and #2336 (health ping on a new pool, then at most every 30 s; validated post hoc; PA's served auth passes).
   - **Open:** #2335 (the old pool-init log line printed REDIS_URL, which may carry the Upstash password; the code fix is served; xian's check of the live logs and a rotation if needed, via Exec). #2333 (spatial `hash()` salted per process; fix shape: a stable digest; Lead or PPM to schedule).
