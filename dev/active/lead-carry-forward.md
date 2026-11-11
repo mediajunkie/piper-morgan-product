@@ -5,6 +5,7 @@
 - **Still unserved, on #2231's 2154 row:** the repositories-503 branch (no local run can reach it) and the Slack, Calendar and Notion pages. CXO would like the repositories-503 line seen once; not a requirement.
 - **Driver rules:** `aiohttp.ClientSession()` ignores the proxy environment, so the sink covers httpx and the Anthropic SDK only; a row that connects an account re-checks the `aiohttp` sites first (Arch 10:03). A scripted field whose plausible values reach different branches needs a trace or a real key.
 - Tests runs on main get cancelled by the next push; read which sha the last green run was on before a close.
+- **#2337 (filed 11-11, mine): the repositories route's own 503 on the GitHub settings page** (CXO 10:14 wants it seen once, from the server's failure). Shape by source reading: bound binding + grant seeded in the scratch database, local MCP stub at `GITHUB_MCP_SERVER_URL` answering `search_repositories`, the existing `connector_configs` revoke. **Waits on:** Arch's method ruling (asked 10:2x) and a fresh session or compaction. Re-check the `aiohttp` sites first. Re-read the inbox right before any close (I closed 2232 one minute after CXO's memo landed).
 - The block below is the 07:1x state; its "next build" list is done.
 
 ## IN-DAY 2026-11-11 07:1x START fire close (not a day close)
