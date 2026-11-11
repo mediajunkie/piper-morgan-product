@@ -245,11 +245,38 @@ def test_child_app_env_keeps_an_explicit_store_and_a_given_base(env_without_keys
     assert env == {"PIPER_CREDENTIAL_STORE": "keychain", "X": "1"}
 
 
-def test_child_app_env_leaves_the_store_alone_when_opted_in(env_without_keys):
+def test_child_app_env_forces_the_database_store_when_opted_in_too(env_without_keys):
+    """Arch 11:51: read-not-write holds in child processes; keys go by environment."""
     os.environ.pop("PIPER_CREDENTIAL_STORE", None)
     os.environ[_OPT_IN] = "1"
+    os.environ["ANTHROPIC_API_KEY"] = "loaded-by-the-opt-in"
     conftest_mod = _load_root_conftest()
-    assert "PIPER_CREDENTIAL_STORE" not in conftest_mod.child_app_env()
+    env = conftest_mod.child_app_env()
+    assert env["PIPER_CREDENTIAL_STORE"] == "db"
+    assert env["ANTHROPIC_API_KEY"] == "loaded-by-the-opt-in"
+
+
+def _load_live_conftest():
+    path = Path(__file__).resolve().parents[1] / "live" / "conftest.py"
+    spec = importlib.util.spec_from_file_location("_live_conftest_2338", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_live_harness_strips_an_empty_anthropic_key_but_passes_a_real_one():
+    live = _load_live_conftest()
+    poison = {
+        "ANTHROPIC_API_KEY": "",
+        "ANTHROPIC_BASE_URL": "http://shell-proxy",
+        "ANTHROPIC_AUTH_TOKEN": "t",
+        "ANTHROPIC_CUSTOM_HEADERS": "h",
+        "KEEP": "1",
+    }
+    assert live.scrub_child_env(dict(poison)) == {"KEEP": "1"}
+    assert live.scrub_child_env({"ANTHROPIC_API_KEY": "   "}) == {}
+    real = live.scrub_child_env({"ANTHROPIC_API_KEY": "a-real-key", "ANTHROPIC_BASE_URL": "x"})
+    assert real == {"ANTHROPIC_API_KEY": "a-real-key"}
 
 
 def test_every_test_harness_that_starts_main_py_uses_child_app_env():

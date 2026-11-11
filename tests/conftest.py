@@ -98,13 +98,14 @@ def child_app_env(base=None) -> dict:
     """The environment for an app process a test starts (``main.py`` as a child).
 
     The in-memory keyring swap is in-process only, so a child with no store set
-    would read the developer's login keychain at startup (#2338; Arch 11:39).
-    Without the opt-in the child gets ``PIPER_CREDENTIAL_STORE=db`` (setdefault: an
-    explicit choice by the caller or the shell stands). Set on the CHILD's
-    environment only, never ``os.environ``, so in-process tests keep the swap."""
+    would read, and could write, the developer's login keychain (#2338). The child
+    therefore ALWAYS gets ``PIPER_CREDENTIAL_STORE=db``, opt-in or not (Arch,
+    decisions.log 2026-11-11 11:51): read-not-write holds in child processes too,
+    and a child's keys reach it through the environment only. setdefault, so an
+    explicit store set by the caller or the developer's shell stands. Set on the
+    CHILD's environment only, never ``os.environ``, so in-process tests keep the swap."""
     env = dict(os.environ if base is None else base)
-    if not _keychain_opted_in():
-        env.setdefault("PIPER_CREDENTIAL_STORE", "db")
+    env.setdefault("PIPER_CREDENTIAL_STORE", "db")
     return env
 
 
