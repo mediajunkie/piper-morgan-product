@@ -1,12 +1,8 @@
-[Note to Exec: Are we adopting the frontmatter convention from blogs but for the featured blog-post image or is this slippage, given that the ship always gets the piper-ship image?]
-
 ---
-image: 'the-unguarded-entrance-sheepish-inspector-helmet-on-table.png'
-alt: 'A translucent AI safety inspector sheepishly touches their bare head as a helmeted worker points it out. The inspector’s hard hat sits beside a clipboard on a small table.'
-caption: '"Some safety inspector you are!"'
+image: 'piper-ship.png'
+alt: 'A child and a crew of robots checking each other''s work on a boat.'
+caption: ''
 ---
-
-**Next steps:** Exec edits, Comms fact-checks against these bullets and runs template-audit, and Docs publishes.
 
 # Weekly Ship #068: Whose Connection Is It, Anyway?
 
@@ -30,7 +26,7 @@ There was also a three-hour website outage triggered by process and storage bloa
 
 The old alpha.pipermorgan.ai address now redirects to beta.pipermorgan.ai.
 
-There were 18 successful updates to the hosted build and six deploys of the MCP server, with v20 carrying the GitHub guard. Lead Dev closed 32 issues. Main CI went red 5 times during the week and got fixed the same day each tme.
+There were 18 successful updates to the hosted build and six deploys of the MCP server, with v20 carrying the GitHub guard. Lead Dev closed 32 issues. Main CI went red on at least five of the seven days and got fixed the same day each time.
 
 ## 🎯 Product & experience
 
@@ -88,7 +84,7 @@ Keeping up with the publishing schedule has taken extra effort, but I hope to ge
 - Main CI: red on at least 5 of 7 days
 - Spend: 45.4M tokens in, 1.3M out ($37.61)
 
-As we got close to the MVP milestone, we didn't stop discovering new issues that will need attention. However, I was ruthless about only allowing blocker bugs into that final sprint. This explains why we added 24 issues to the Production milestone we are working on now. Interestingly, this milestone also has 207 issues that were already closed, many of them before it officially started, as a consequence of addressing MVP issues.
+As we got close to the MVP milestone, we didn't stop discovering new issues that will need attention. However, I was ruthless about only allowing blocker bugs into that final sprint. This explains why the open count in the Production milestone we are working on now grew by 24. Interestingly, by the end of the week this milestone also had 194 issues that were already closed, many of them before it officially started, as a consequence of addressing MVP issues.
 
 # 🎯 Coming up next week
 
@@ -101,7 +97,7 @@ The Shipping News will continue to feature weekly updates (we don't call it the 
 
 # 🚧 Blockers & asks
 
-Invitations are on hold until the I do about 20 minutes of testing with a follow up about eight hours afterward to ensure the GitHub connector system is fully isolated as intended.
+Invitations are on hold until the I do about 20 minutes of testing with a follow up about eight hours afterward to ensure the GitHub connector system is fully isolated as intended, and until our email domain has the mail records that keep invitations out of spam folders.
 
 If you'd like to be join the beta waiting list, you're welcome to signup at pipermorgan.ai/try/.
 
@@ -113,7 +109,7 @@ Before building a guard to prevent a specific problem from occurring, investigat
 
 The correct solution is a class-wide guard that addresses the shared root issue and not the hallmarks of each individual symptom.
 
-[Exec: feel free to suggest how to describe / connect an illustrative example and any other potential refinements to this
+[xian to decide, Exec's suggested example: "Our example this week is the isolation check. It looks for code that reads a setting for the whole deployment where it should read it for one person. Earlier cases had each been fixed where they showed up, and the class-wide check split off in August was never built. On its first run the new check flagged 50 places, now down to 11, and one of them was a live calendar bug nobody had reported."]
 
 **Thanks,**
 xian + Piper Morgan Development Team
