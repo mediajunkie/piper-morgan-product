@@ -29,6 +29,8 @@ Arch's conditions for the database row (decisions.log 2026-11-10 19:02):
 Usage (repo root, local Postgres up on 5433):
     venv/bin/python scripts/served_fault_run.py
     venv/bin/python scripts/served_fault_run.py --rows 2154 --keep-logs /tmp/x
+
+Concept: docs/internal/operations/canonical-ops-recipes.md (recipe 9)
 """
 
 from __future__ import annotations

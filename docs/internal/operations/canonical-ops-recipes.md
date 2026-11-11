@@ -313,6 +313,26 @@ So, before any run that needs a fresh sign-up:
 Verified how: `consume_invite_token` read from source on main 2026-10-18; the 10-17 sequence (mint 16:06,
 sign-up 16:09 consumed it and `/setup/complete` 403'd, file saved 16:10) reconstructed by PA from Lead's log.
 
+## 9. Local served fault run: `scripts/served_fault_run.py` (#2232, Lead, 2026-11-11)
+
+For a failure branch that cannot be forced on alpha (Arch, 2026-10-30: no fault switch in served code,
+no forced upstream failure on the host partners use). The script starts `main.py` from the tree on a
+scratch database (`piper_fault_run`, local Postgres 5433, dropped afterwards), points one upstream at a
+failing stub, sends the HTTP request a browser sends, and prints the reply with the server's own log
+line for the branch reached. It never touches the dev database and changes no served code.
+
+```bash
+venv/bin/python scripts/served_fault_run.py                 # every row that needs no LLM key
+venv/bin/python scripts/served_fault_run.py --rows 2154     # one row
+```
+
+Rows today: `2125-store` (wrong-length `ENCRYPTION_MASTER_KEY`), `2125-check` (the provider unreachable:
+an HTTPS proxy stub answering 502), `2154` (SELECT on `connector_configs` revoked from the app's role).
+Two rules from Arch's 11-10 ruling hold for any database row: the app connects as a non-superuser role
+(the compose role `piper` is a superuser and ignores grants), and a probe proves the denial before the
+request, or the row reports NOT RUN. The layer is the local server's HTTP reply: not alpha, and not the
+rendered page. Evidence goes on #2231 under the row.
+
 ## Promotion checklist: read staging's sha from staging, not from the deploy-run list (Lead, 2026-10-16)
 
 **Why:** the 10:51 dispatch under the standing grant was refused by the promote gate. The gate reads the sha staging's
