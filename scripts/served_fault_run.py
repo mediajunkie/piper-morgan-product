@@ -16,7 +16,7 @@ Rows (``--rows``, comma-separated; default: all that need no LLM key):
   2125-check   wizard validate-key while the provider cannot be reached (the
                server's HTTPS proxy is a stub answering 502 to CONNECT)
                -> "The key check couldn't run just now..."
-  2154         GET a preferences route while the app's database role is refused
+  2154         GET the four preferences routes while the app's database role is refused
                SELECT on connector_configs -> 503 with CXO's line
 
 Arch's conditions for the database row (decisions.log 2026-11-10 19:02):
@@ -366,7 +366,23 @@ def _create_account(server: Server) -> httpx.Client:
     return client
 
 
-PREFS_ROUTE = "/api/v1/settings/integrations/slack/preferences"
+PREFS_BASE = "/api/v1/settings/integrations"
+# The four preferences GETs an account with nothing connected can reach. The calendars
+# list, the Notion databases and the GitHub repositories read the provider first, so
+# they need a connected account and are not run here.
+PREFS_ROUTES = (
+    "slack/preferences",
+    "calendar/preferences",
+    "notion/preferences",
+    "github/preferences",
+)
+
+
+def _body(r: httpx.Response) -> Any:
+    try:
+        return r.json()
+    except ValueError:
+        return r.text
 
 
 def row_2154(db_url: str, log_dir: Path) -> Dict[str, Any]:
@@ -374,11 +390,9 @@ def row_2154(db_url: str, log_dir: Path) -> Dict[str, Any]:
     try:
         server.wait_healthy()
         client = _create_account(server)
-        healthy = client.get(PREFS_ROUTE)
-        if healthy.status_code != 200:
-            raise NotRun(
-                f"the healthy read did not answer 200 first: {healthy.status_code} {healthy.text[:300]}"
-            )
+        healthy = {route: client.get(f"{PREFS_BASE}/{route}").status_code for route in PREFS_ROUTES}
+        if any(code != 200 for code in healthy.values()):
+            raise NotRun(f"a healthy read did not answer 200 first: {healthy}")
         _psql_ok(f"REVOKE SELECT ON connector_configs FROM {APP_ROLE}", db=SCRATCH_DB)
         try:
             probe = _psql("SELECT 1 FROM connector_configs LIMIT 1", db=SCRATCH_DB, role=APP_ROLE)
@@ -386,23 +400,27 @@ def row_2154(db_url: str, log_dir: Path) -> Dict[str, Any]:
                 raise NotRun(
                     f"the denial was not proved (probe rc={probe.returncode}: {probe.stderr.strip()!r})"
                 )
-            r = client.get(PREFS_ROUTE)
+            replies = {}
+            for route in PREFS_ROUTES:
+                r = client.get(f"{PREFS_BASE}/{route}")
+                body = _body(r)
+                replies[route] = {
+                    "status": r.status_code,
+                    "reply": body.get("detail") if isinstance(body, dict) else body,
+                }
         finally:
             _psql_ok(f"GRANT SELECT ON connector_configs TO {APP_ROLE}", db=SCRATCH_DB)
-        try:
-            body: Any = r.json()
-        except ValueError:
-            body = r.text
+        branch = server.log_lines("InsufficientPrivilege")
         return {
             "row": "2154 (failed preferences read)",
             "fault": f"REVOKE SELECT ON connector_configs FROM {APP_ROLE} (non-superuser app role)",
             "probe": probe.stderr.strip(),
-            "healthy_first": f"{healthy.status_code} {healthy.text[:200]}",
-            "request": f"GET {PREFS_ROUTE} (signed-in account made by the wizard's create-user)",
-            "status": r.status_code,
-            "reply": body.get("detail") if isinstance(body, dict) else body,
-            "body": body,
-            "branch": server.log_lines("prefs_db_load_failed"),
+            "healthy_first": healthy,
+            "request": f"GET {PREFS_BASE}/<route> (signed-in account made by the wizard's create-user)",
+            "replies": replies,
+            "status": sorted({v["status"] for v in replies.values()}),
+            "reply": sorted({str(v["reply"]) for v in replies.values()}),
+            "branch": [ln[:400] for ln in branch],
         }
     finally:
         server.stop()

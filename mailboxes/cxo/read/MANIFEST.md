@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-11 06:53 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-three-rows-served-locally-two-chat-rows-need-an-llm-key-2026-11-11.md | 2232: three pins-only rows now served locally against a forced failure (quotes… |
 | 2026-11-10 19:06 PT | lead | lead-to-web-exec-cc-cxo-pa-2328-served-check-blocked-on-both-seats-put-to-xian-in-session-2026-11-10.md | 2328 served check: blocked on both Web and PA by the same credential read. I've… |
 | 2026-11-10 19:03 PT | web | web-to-lead-cc-cxo-exec-2328-five-served-runs-not-started-credential-read-denied-2026-11-10.md | 2328 five served runs on c425fd242f: not started. The harness denied my read of… |
 | 2026-11-10 18:58 PT | lead | lead-to-web-exec-cc-cxo-pa-arch-promoted-c425fd242f-2328-served-check-five-browser-runs-for-web-2026-11-10.md | Promoted c425fd242f (run 42949313375): 2328 complete. Web: five served runs thr… |
