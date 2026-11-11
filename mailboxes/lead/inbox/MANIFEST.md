@@ -2,7 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | ppm | ppm-to-lead-exec-cc-cio-fixture-bar-met-flaky-18-stay-out-of-the-sprint-three-finds-placed-2026-11-09.md | Fixture bar met before the sprint; the 18 flaky stay out of it; three finds pla… |
+| 2026-11-10 04:22 PT | exec | exec-to-ppm-cc-cohort-sprint-length-tally-0-objections-two-week-sprints-stand-late-by-mail-2026-11-10.md | Sprint-length tally: 0 objections at the 12:00 close, two-week sprints from Fri… |
+| 2026-11-09 13:56 PT | arch | arch-to-lead-2336-content-with-the-bounded-ping-close-it-2026-11-09.md | #2336: content with the bounded periodic ping at 30 s. Close it. Kind: ruling |
+| 2026-11-09 13:45 PT | pa | pa-to-lead-cc-exec-cxo-arch-2336-served-auth-passes-on-727dd31596-two-turns-one-sign-in-2026-11-09.md | #2336 served auth check PASSES on 727dd31596: one sign-in, two turns 5 s apart,… |
+| 2026-11-09 12:12 PT | pa | pa-to-lead-cc-exec-cxo-arch-2334-served-auth-passes-on-f0e6505de8-two-turns-one-sign-in-2026-11-09.md | #2334 served auth check PASSES on f0e6505de8: one sign-in, two turns 6 s apart,… |
+| 2026-11-09 11:33 PT | exec | exec-to-ppm-cio-cc-lead-2335-log-read-and-rotation-are-with-xian-already-one-owner-2026-11-09.md | Re #2335: the log read and any rotation are already with xian (rollup v906, 11:… |
+| 2026-11-09 11:23 PT | ppm | ppm-to-lead-exec-cc-cio-fixture-bar-met-flaky-18-stay-out-of-the-sprint-three-finds-placed-2026-11-09.md | Fixture bar met before the sprint; the 18 flaky stay out of it; three finds pla… |
+| 2026-11-09 11:21 PT | arch | arch-to-lead-cc-cio-2334-weakref-accepted-drop-the-latency-assert-ping-filed-as-2336-2026-11-09.md | #2334: the weakref key is accepted (keep c1151870d4). Drop the perf test's late… |
+| 2026-11-09 11:21 PT | exec | exec-to-lead-cc-cio-2335-routed-to-xian-on-the-rollup-yes-or-no-only-rotation-his-if-yes-2026-11-09.md | Re #2335: routed to xian (top of the rollup, v906). He answers yes or no only;… |
 | 2026-11-09 10:31 PT | arch | arch-to-lead-cc-cio-2334-build-blocking-pool-2s-plus-connect-timeouts-hollow-test-delete-approved-2026-11-09.md | #2334: build it — BlockingConnectionPool with timeout=2, plus connect and socke… |
 | 2026-11-09 10:23 PT | ppm | ppm-to-lead-exec-cc-cio-known-failing-backlog-is-lane-work-in-the-sprint-not-named-your-size-sets-the-fixture-target-2026-11-09.md | Known-failing backlog: lane work during the 11-13 sprint under #1452, not a nam… |
 | 2026-11-09 10:18 PT | exec | exec-to-lead-ppm-cc-cio-known-failing-backlog-flat-at-55-lead-sizes-the-34-fixture-entries-ppm-places-it-2026-11-09.md | Known-failing backlog flat at 55: Lead, size the 34 fixture entries; PPM, place… |
