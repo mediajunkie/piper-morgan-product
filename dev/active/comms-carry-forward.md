@@ -1,24 +1,19 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-09 21:19 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/11/09/2026-11-09-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-10.
+## ⭐ CURRENT STATE — 2026-11-10 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/10/2026-11-10-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-11.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
-- **Weekend slots are INSIGHTS (Sat and Sun, Medium + LinkedIn).** Tue/Thu building, Wed Ship. I called Sat "building" three times (11-04 memo, scaffold, publish-ready); Docs corrected it 11-07. **Every publish-ready memo now states the category, checked against the weekday.**
-- **Sat 11-07 "At Long Last, Beta": PUBLISHED and DISTRIBUTED** (https://pipermorgan.ai/blog/at-long-last-beta, website 7a6605009f; insight; xian's Medium and LinkedIn URLs on the calendar). Draft archived by Docs.
-- **Publish pipeline after the Ignored Build Step: CLOSED** on Sat's live deploy (`success`), memo a05c096c1.
-- **Sun 11-08 "When Accuracy Scores Worse": PUBLISHED 22:13** (https://pipermorgan.ai/blog/when-accuracy-scores-worse, insight). Medium and LinkedIn owed by xian. Scaffolds now keep each prose paragraph on one line (Docs had to join a hard wrap).
-- **Tue 11-10 "Never Green in a Thousand Runs"** (building, title FINAL per xian 11-08; **publishes TOMORROW, still my scaffold at 11-09 21:19**). Its footer teases Thu, whose title is still working: **asked xian 11-09 18:19** with the four Thu scaffold options; Tue can't go to Docs until he answers: only E2E never passed. Teases Thu. **Thu 11-12 "The Server Key Is Not a Real Concept"** (building): the "truth over feeling of progress" quote is about the epic, not the key. Its tease target waits on the talk.
-- **Strategy talk with xian: still not held.** He said 11-08 he'd check in 11-09 about editorial plans; he didn't by 21:19. Brief refreshed (planning doc rev 33, "Update, Nov 9"). Brief: planning doc rev 32, "For our editorial-strategy session". My pick for the "One Account Means One Hand" partner (Nov 14/15) is **C with 8**. Candidate I, "A Review Where Nothing Became a Skill", has no slot. Waiting on the talk: the partner and its calendar row, Thu's tease target, beat merges, then the scaffold format in `draft-blog-post`.
-- **Ship #068** (Wed 11-11), "Whose Connection Is It, Anyway?": a **scaffold for xian** (`weekly-ship-068-draft-2026-11-06.md`, 8 `[xian]` slots), not an Exec draft (Exec 11-08). Waits on xian's tokens and prose; Comms runs the External fact-check when his prose lands.
-- **Two-week sprints from Fri 11-13; rhythm GO as a default that flexes (xian 11-07 16:49).** #069 ordinary, #070 first progress, #071 first final score; even = progress, odd = final score. Forms in `draft-weekly-ship` v1.15 Step 5-sprint. Comms has no objection (deadline Mon 11-09 noon).
-- **GitHub criteria line:** in my briefing; run every fire, delta by createdAt. 11-07 delta: #2324 (repo-analysis "runway" wording), not Comms work.
-- **Mail v4 LIVE since 11-09** (CIO's test acked 4750fef746; canary PASS): read `python3 scripts/mail4.py inbox --role comms` as well as v3. v3 is the fallback until 11-23.
-- **Invites held (xian 11-04)** until #1551, #2261 and #2178 are done. Copy must not imply anyone can join now.
-- **Waiting list (#2256):** xian pastes the confirmation email and signs up, then HOST reads it.
-- **HOLD (PDR-102):** no ownership claim in copy until C7 is verified and C8 has a surface.
-- **Mail filing:** plain `mv`, then mail-send with both paths and the regenerated MANIFEST (`git status --short -- 'mailboxes/*MANIFEST*'`). A cc needs its own inbox copy.
-- **Rule 8:** the beta tester xian named in chat appears nowhere in the repo; keep it that way.
-- **Standing:** the "what changed" note at the first user-visible Production ship. Narrative front Sep 9 (beat 2). Next mining pass Fri 11-20.
+- **Weekend slots are INSIGHTS (Sat and Sun, Medium + LinkedIn).** Tue/Thu building, Wed Ship. Every publish-ready memo states the category, checked against the weekday.
+- **Tue 11-10 "Never Green in a Thousand Runs" (building): xian is MID-REWRITE.** Admin-UI commits 72f454d123 (19:16) and 0826e1e604 (19:22). His prose covers beats 1-4 (l.11-36). Beats 5-7, my accuracy notes and the footer are still scaffold. pubDate 11-10 has passed unpublished: xian's call, not mine to slip or fill. **My review of l.11-36 is in the 11-10 log, 21:19 entry.** It was proposed in chat, and nothing has been applied. Next: when he finishes, review the rest, apply only what he OKs, run template-audit, and send publish-ready to Docs (category: building). Footer tease: Thu "The Server Has No Key".
+- **Thu 11-12 renamed by xian: "The Server Has No Key"** (calendar bf2628f2e8 and H1 8f4ebc71d4, 11-10 19:02). My 11-09 title ask is answered. The draft file keeps the slug `the-server-key-is-not-a-real-concept.md`: tell Docs at publish-ready that the slug should follow the title. The "truth over feeling of progress" quote is about the epic, not the key.
+- **Strategy talk with xian: still not held** (planning doc rev 33). Waiting on it: the "One Account Means One Hand" partner (Nov 14/15, my pick C with 8) and its row, Thu's tease target, beat merges, and the scaffold format.
+- **Ship #068** (Wed 11-11) "Whose Connection Is It, Anyway?": a scaffold for xian, unchanged since 11-07. I run the External fact-check when his prose lands.
+- **Two-week sprints from Fri 11-13** (ratified). #069 ordinary, #070 first progress, #071 first final score.
+- **GitHub criteria line:** newest hit is #2291 (11-06); nothing new on 11-10.
+- **Mail v4 live:** read `python3 scripts/mail4.py inbox --role comms` as well as v3 (v3 is the fallback until 11-23).
+- **Invites held (xian 11-04)** until #1551, #2261 and #2178 are done. **Waiting list (#2256):** xian goes first, then HOST. **HOLD (PDR-102):** no ownership claim in copy.
+- **Rule 8:** the beta tester xian named in chat appears nowhere in the repo.
+- **Standing:** the "what changed" note at the first user-visible Production ship. Next mining pass Fri 11-20.
 
 ## OLDER STATE blocks pruned 2026-11-06 (10-14 to 11-04). They are in git history and in the dated session logs.
 
