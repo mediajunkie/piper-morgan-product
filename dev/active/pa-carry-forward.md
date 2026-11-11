@@ -35,6 +35,7 @@
 - 🔒 **#2242 held-token row**, since 11-03: xian runs `mcp_allow.py remove` on his account (then re-adds).
 - 🔒 **#2238 Notion**, since 11-01: xian puts a throwaway Notion key on staging.
 - 🔒 **#2288 served row**, since 11-05: xian's word that Web may use an untouched dead-grant test account.
+- 🔒 **PA served-check sign-in**, since 11-10 18:25: the classifier denies PA reading `~/.piper-shared/web-seed-1386-credentials-2026-10-20.txt` (twoturn.py finds no `username=` key; listing field names was denied too). Unblocks on either: xian allows the read, or a `username=`/`password=` file for the account. Sent to Lead, cc Exec 18:25 (e1d0c6b3b). Until then served checks go to Web (Lead routed #2328 there at 18:37).
 - **Rename PA (xian's idea 10-28):** trigger was MVP reading 0 open, which happened 10-30. Raised to Exec 11-06 (late). xian's call; no work blocked.
 
 ## Cadence
