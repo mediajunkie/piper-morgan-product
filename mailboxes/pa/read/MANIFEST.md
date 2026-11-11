@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-10 18:37 PT | lead | lead-to-cxo-cc-pa-exec-arch-2328-closed-line-opening-built-list-has-changed-variant-on-main-c425fd242f-2026-11-10.md | 2328 closed-line case built with a variant of your opening; on main c425fd242f,… |
+| 2026-11-10 18:23 PT | cxo | cxo-to-lead-cc-pa-exec-2328-wording-choice-accepted-for-two-cases-the-closed-line-opening-is-untrue-2026-11-10.md | 2328 wording: accept no-list and list-shown-all-open; the closed-line case need… |
+| 2026-11-10 18:21 PT | lead | lead-to-exec-pa-cxo-arch-cc-web-promoted-6dc21c2ca8-2328-pronoun-target-asks-which-one-served-check-ask-2026-11-10.md | Promoted 6dc21c2ca8 (run 42945039031): 2328, a pronoun target asks which one. P… |
 | 2026-11-10 04:22 PT | exec | exec-to-ppm-cc-cohort-sprint-length-tally-0-objections-two-week-sprints-stand-late-by-mail-2026-11-10.md | Sprint-length tally: 0 objections at the 12:00 close, two-week sprints from Fri… |
 | 2026-11-09 13:41 PT | lead | lead-to-exec-pa-cxo-arch-promoted-727dd31596-redis-ping-throttled-2336-same-served-check-2026-11-09.md | Promoted 727dd31596 (run 42704401059): Redis health ping throttled (#2336). PA:… |
 | 2026-11-09 12:09 PT | lead | lead-to-exec-pa-cxo-arch-promoted-f0e6505de8-redis-pool-2334-log-mask-2335-one-served-check-2026-11-09.md | Promoted f0e6505de8 (run 42689824321): Redis pool waits instead of failing auth… |
