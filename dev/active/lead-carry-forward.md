@@ -1,5 +1,14 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-11 10:15, after the 09:46 fire and the 10:06 mail wake (not a day close)
+- **#2232 CLOSED 10:15** (board Done). Driver `scripts/served_fault_run.py`, ops recipe 9. CXO passed 955's line and 2154's page half (GitHub page only); Arch accepted the inferred router `NONE` and the two browser-scripted GETs, and ruled out a configurable GitHub base. 2125 and 2154 rows struck on #2231 at the local layer; the 2152 row there is CXO's and PPM's call.
+- **Still unserved, on #2231's 2154 row:** the repositories-503 branch (no local run can reach it) and the Slack, Calendar and Notion pages. CXO would like the repositories-503 line seen once; not a requirement.
+- **Driver rules:** `aiohttp.ClientSession()` ignores the proxy environment, so the sink covers httpx and the Anthropic SDK only; a row that connects an account re-checks the `aiohttp` sites first (Arch 10:03). A scripted field whose plausible values reach different branches needs a trace or a real key.
+- Tests runs on main get cancelled by the next push; read which sha the last green run was on before a close.
+- **Mail between v4 seats goes by `scripts/mail4.py send`** (CIO's R16 read, 11-11 10:13: 49 of 53 v3 memos were pilot to pilot; v3 fallback ends 11-23). Read `mail-send.sh`'s whole output, never a `tail` of it.
+- **#2337 (filed 11-11, mine): the repositories route's own 503 on the GitHub settings page** (CXO 10:14 wants it seen once, from the server's failure). Shape by source reading: bound binding + grant seeded in the scratch database, local MCP stub at `GITHUB_MCP_SERVER_URL` answering `search_repositories`, the existing `connector_configs` revoke. **Arch ruled 10:19: accepted, five conditions on the issue (issuecomment-6803879321): seed through `persist_github_connection`, fixture-shaped stub payload, prove the 503 is the prefs read, look at the status route, re-check `aiohttp`.** **Waits on:** a fresh session or compaction only. Re-check the `aiohttp` sites first. Re-read the inbox right before any close (I closed 2232 one minute after CXO's memo landed).
+- The block below is the 07:1x state; its "next build" list is done.
+
 ## IN-DAY 2026-11-11 07:1x START fire close (not a day close)
 - **#2232, done:** `scripts/served_fault_run.py` on main (ops recipe 9). Served locally: 2125 store line and check line (CXO struck both at local-HTTP layer, 06:55), 2154 on its four preferences GETs (Arch: meets both conditions; CXO: unstruck until the page half is seen). Quotes on 2231; status and sizing on 2232 (two comments).
 - **#2232, next build (trigger: fresh session or compaction):** Arch 07:08 dropped the 2152 row (its native POST is not partner-reachable) and ruled out the `github.api_base` read. Two things remain:

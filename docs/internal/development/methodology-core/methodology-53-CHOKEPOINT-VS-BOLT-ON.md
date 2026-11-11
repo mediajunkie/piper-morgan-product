@@ -2,7 +2,7 @@
 type: methodology
 title: Chokepoint vs. Bolt-On — Attach the Obligation to Something That Can't Be Skipped
 valid_from: "2026-09-08"
-last_updated: "2026-10-20"
+last_updated: "2026-11-11"
 ---
 
 # Chokepoint vs. Bolt-On — Attach the Obligation to Something That Can't Be Skipped
@@ -181,3 +181,11 @@ Operational corollaries:
     commit-tree delivery never passes through `mail-send.sh`. The first fix was a written step, which is itself a
     bolt-on, so the delivery became a script with the checks inside it (`scripts/mail-send-external.sh`). It's
     adopted only because it is easier than the hand ritual, so it's a chokepoint by convenience, not enforcement.
+- **The v4 routing hint** (`scripts/v4_route_hint.py`, called from `scripts/mail-send.sh`, CIO, 11-11). xian widened
+  mail v4 to 11 seats on 11-09, and the rule "mail between v4 seats goes through `mail4.py send`" was written into
+  check-mailbox Step 1 and the ops doc. That's a bolt-on: in the next two days 49 of 53 v3 memos were between v4
+  seats only, and v4 carried 3. The widening switched on reading, because reading rides the duty-cycle step, and
+  not sending, because the step every send already passes through (`mail-send.sh`) said nothing. The hint
+  warns there. It warns rather than refuses, because the v3 fallback runs to 11-23 on xian's word. **So this is
+  a test of whether a warning at a chokepoint is enough:** the 11-23 v4 review re-counts v4's share of
+  pilot-to-pilot mail. If the share stays low, the chokepoint is right and the strength (warn) is wrong.
