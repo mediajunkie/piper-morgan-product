@@ -505,3 +505,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v921 (10:18): R3 line replaced with CIO's week read (v4 01M75X0X9CA1V2CNHZVZR9XAN2).
 - v922 (11:12): beta-tester reminder replaced (feedback received, private note dee0d21); keychain ruling line.
 - v923 (11:19): Your-word card, CLAUDE.md mail line and two start scripts (CIO 01M760HB, Lead 01M760GV); #2338 noted.
+- v924 (11:43): Whenever card, leftover test keychain entry (Lead 01M761S2).
