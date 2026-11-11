@@ -121,7 +121,7 @@ lsof -i :8001  # Should return nothing
 # Start fresh, from a Claude Code shell: strip the inherited Anthropic variables or every LLM call fails
 export JWT_SECRET_KEY=$(python -c 'import secrets; print(secrets.token_urlsafe(32))')   # main.py refuses to start without it
 env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
-  POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &
+  PIPER_CREDENTIAL_STORE=db POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &   # =db: never xian's keychain (rule 11-11)
 
 # Verify
 lsof -i :8001  # Should show new PID

@@ -1203,3 +1203,7 @@ Quick reference, local-server command. Added `PIPER_CREDENTIAL_STORE=db` and a l
 login keyring is live on his Mac. With `=db`, KeychainService routes to the encrypted DB store (keychain_service.py
 `_verify_keyring_backend`); no other code under services/, web/ or main.py reads the keyring directly (git grep). Same change in
 canonical-ops-recipes.md recipe 1. Verified at the source layer only; not run, since a wrong run would break the rule it serves.
+Same day, after Lead's count (v4 01M760GVAH): the bare `python main.py` line in Quick reference also sets `=db`, and so does the
+third copy of the block in docs/agent-protocols/git-workflow.md. Without ENCRYPTION_MASTER_KEY the DB store fails to initialize
+and that is caught: the server starts, reads return None, writes raise, and the keychain is not opened. Lead's line also generates
+a random ENCRYPTION_MASTER_KEY per start; not adopted, because how a random key interacts with an existing local one is unverified.

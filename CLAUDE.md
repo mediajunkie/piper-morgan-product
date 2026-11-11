@@ -122,7 +122,7 @@ If it is not empty: `git fetch origin main && git merge origin/main && git push 
 ## Quick reference
 
 ```bash
-python main.py                    # server, port 8001 (entry point; not web/app.py)
+PIPER_CREDENTIAL_STORE=db python main.py   # server, port 8001 (entry point; not web/app.py); =db keeps it out of xian's keychain
 python -m pytest tests/unit/ -v
 docker compose up -d && alembic upgrade head   # Postgres 5433
 ./scripts/fix-newlines.sh         # before committing
