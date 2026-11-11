@@ -8,7 +8,7 @@ caption: '"This one passes every time!"'
 
 *September 9–11, 2026*
 
-In early September I felt nervous about our progress toward the MVP milestone. It felt like we were taking one step forward, two steps back. Meanwhile, we were relying on a report of "green tests" that only covered four of the many, many tests, and excluded one that had never yet been green once in over a thousand runs.
+In early September I felt nervous about our progress toward the MVP milestone. It felt like we were taking one step forward, two steps back. Meanwhile, we were relying on a report of "green tests" that only covered four of our seven test workflows, and excluded one that had never yet been green once in a thousand runs.
 
 # The pile that wouldn't shrink
 
@@ -30,7 +30,7 @@ This led to a productive conversation that improved how we track and measure thr
 
 # Evergreen vs. never green
 
-Several times in this period Lead shared reports about how the CI (continuous integration) test belt was "fully green" but when asked for more details on this, Lead realized that their reports had been partial at best and misleading at worst.
+Several times in this period Lead shared reports about how the CI (continuous integration) test belt was "fully green" but when Lead took a closer look, they realized that their reports had been partial at best and misleading at worst.
 
 It turns out two workflows were red on every visible run but were not being included in the summary. For at least one of these (a set of end-to-end or "E2E" tests) the two provider test keys (for Anthropic and OpenAI) that I had set up were both dead.
 
@@ -40,7 +40,7 @@ One thing that had masked the key problem was that local test runs had been able
 
 By that evening six of seven workflows were now green, with the seventh still blocked by the need for me to "rotate a secret" (update a credential).
 
-# It's not you; it's me
+# It's not you, it's me
 
 My agent team is getting a lot better at doing work thoroughly and reporting on it accurately, but the mechanisms that drive them still have gaps that can lead to completely ignoring relevant information and sometimes missing the forest for the trees.
 
@@ -50,6 +50,6 @@ It doesn't really let me off the hook when an agent calls themselves out for ove
 
 ---
 
-*Next on Building Piper Morgan: "The Server Has No Key," in which I have to lay down the law to prevent my personal key being made available as a fallback for beta testers.*
+*Next on Building Piper Morgan: "The Server Has No Key," in which I have to lay down the law to prevent my personal key being made available as a fallback for testers.*
 
 *When your reports say everything is green, are you confident that everyone agrees on what "everything" means?*
