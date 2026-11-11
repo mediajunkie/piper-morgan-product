@@ -502,3 +502,5 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v918 (06:05 Wed 11-11 START): Wednesday heading; beta-tester feedback reminder (name in private repo only); Tue post published 23:31 and Medium 23:34 (calendar distributed, live page 200); Ship 068 'publishes today' moved to item 1; Thu post item; /health 06:03 c425fd242f; CI 12/12.
 - 10:01 v919: #2232 In-motion line (Lead's four memos; keychain note). Source: mailboxes/exec/read/ 2232 memos, decisions.log 11-11 06:55 and 07:08.
 - v920 (about 10:02, time corrected): #2232 line, CXO passed both remaining lines (cxo memo 10:02).
+- v921 (10:18): R3 line replaced with CIO's week read (v4 01M75X0X9CA1V2CNHZVZR9XAN2).
+- v922 (11:12): beta-tester reminder replaced (feedback received, private note dee0d21); keychain ruling line.
