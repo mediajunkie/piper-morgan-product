@@ -1,5 +1,11 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-11 16:00, after the 15:46 fire (not a day close)
+- **#2337 built and run, open for two reads.** Driver commit `39a066f46d` (row `2337`, `MCPStub`, `--hold-2337`); evidence issuecomment-6810122294; pointer on #2231 (issuecomment-6810126929). Server half: seeded connection through `persist_github_connection`, healthy read of the stub's list, revoke, the route's own 503 with "your saved repository choices". Page half with no page-side scripting: line shown, Save disabled, 0 POSTs. **Waiting:** CXO's read of the words; Arch's read of one deviation (the `source=connector` info line is not emitted at the served log level; the stub shows the source). Mail v4 01M76GK8B5RPC35T63V5EWZ2W8. Close with `close-issue-properly` when both answer; re-read the inbox right before the close.
+- **Not run:** the Slack, Calendar and Notion page sweep (CXO's "sweep, not a gate"). Asked CXO whether she still wants it.
+- **The driver opened browser tabs on xian's Mac** (main.py opens the default browser at startup). Fixed with `--no-browser` in the same commit; told Exec for xian (v4 01M76GK04HVWV02FMA209PF78Q). Any other local `main.py` start by a seat should pass `--no-browser` too.
+- Unchanged and still xian's: 2328 (credential read), 2335, 2333, 2327. At the 18:46 fire, if 2333 and 2327 are still unanswered, mail Exec once as an escalation.
+
 ## IN-DAY 2026-11-11 10:15, after the 09:46 fire and the 10:06 mail wake (not a day close)
 - **#2232 CLOSED 10:15** (board Done). Driver `scripts/served_fault_run.py`, ops recipe 9. CXO passed 955's line and 2154's page half (GitHub page only); Arch accepted the inferred router `NONE` and the two browser-scripted GETs, and ruled out a configurable GitHub base. 2125 and 2154 rows struck on #2231 at the local layer; the 2152 row there is CXO's and PPM's call.
 - **Still unserved, on #2231's 2154 row:** the repositories-503 branch (no local run can reach it) and the Slack, Calendar and Notion pages. CXO would like the repositories-503 line seen once; not a requirement.
