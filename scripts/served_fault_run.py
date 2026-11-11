@@ -382,6 +382,7 @@ def _create_account(server: Server) -> httpx.Client:
     )
     if r.status_code != 200 or not r.json().get("success"):
         raise NotRun(f"create-user failed: {r.status_code} {r.text[:300]}")
+    client.fault_run_login = (name, password)  # type: ignore[attr-defined]
     return client
 
 
@@ -445,6 +446,38 @@ def row_2154(db_url: str, log_dir: Path) -> Dict[str, Any]:
         server.stop()
 
 
+def hold_2154(db_url: str, log_dir: Path, hold_file: Path) -> Dict[str, Any]:
+    """The page half of 2154 (CXO, 11-11): bring the server up in the failed-read state
+    and HOLD it there for a browser check. Writes the base URL and the scratch account's
+    sign-in to ``hold_file`` (a throwaway account in a database that is dropped on exit)
+    and waits until that file is deleted, then restores the grant and stops."""
+    server = Server(db_url, log_dir, "2154-hold")
+    try:
+        server.wait_healthy()
+        client = _create_account(server)
+        name, password = client.fault_run_login  # type: ignore[attr-defined]
+        _psql_ok(f"REVOKE SELECT ON connector_configs FROM {APP_ROLE}", db=SCRATCH_DB)
+        try:
+            probe = _psql("SELECT 1 FROM connector_configs LIMIT 1", db=SCRATCH_DB, role=APP_ROLE)
+            if probe.returncode == 0 or "permission denied" not in probe.stderr:
+                raise NotRun(f"the denial was not proved ({probe.stderr.strip()!r})")
+            hold_file.write_text(
+                json.dumps({"base": server.base, "username": name, "password": password})
+            )
+            while hold_file.exists():
+                time.sleep(1.0)
+        finally:
+            _psql_ok(f"GRANT SELECT ON connector_configs TO {APP_ROLE}", db=SCRATCH_DB)
+        return {
+            "row": "2154 (held for a browser check)",
+            "probe": probe.stderr.strip(),
+            "posts_seen_by_server": server.log_lines('"POST /api/v1/settings/integrations'),
+            "gets_seen_by_server": server.log_lines('"GET /api/v1/settings/integrations'),
+        }
+    finally:
+        server.stop()
+
+
 ROWS: Dict[str, Callable[[str, Path], Dict[str, Any]]] = {
     "2125-store": row_2125_store,
     "2125-check": row_2125_check,
@@ -459,6 +492,13 @@ def main() -> int:
         "--keep-logs", default=None, help="directory for server logs (default: a temp dir)"
     )
     ap.add_argument("--keep-db", action="store_true", help="leave the scratch database in place")
+    ap.add_argument(
+        "--hold-2154",
+        default=None,
+        metavar="FILE",
+        help="hold the 2154 failed-read state for a browser check; sign-in details are "
+        "written to FILE, and deleting FILE ends the hold (no other row runs)",
+    )
     args = ap.parse_args()
     wanted = [r.strip() for r in args.rows.split(",") if r.strip()]
     unknown = [r for r in wanted if r not in ROWS]
@@ -481,6 +521,13 @@ def main() -> int:
     results: List[Dict[str, Any]] = []
     password = prepare_scratch_db()
     try:
+        if args.hold_2154:
+            wanted = []
+            try:
+                held = hold_2154(app_db_url(password), log_dir, Path(args.hold_2154))
+                results.append({"name": "2154-hold", "ran": True, **held})
+            except NotRun as e:
+                results.append({"name": "2154-hold", "ran": False, "why": str(e)})
         for name in wanted:
             try:
                 results.append(
