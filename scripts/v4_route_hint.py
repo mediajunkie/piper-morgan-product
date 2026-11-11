@@ -13,13 +13,16 @@ ends and v4 carried 3. The send rule lived in prose (check-mailbox Step 1, the v
 mail-send.sh, the tool every seat already reaches for, said nothing. CIO 2026-11-11.
 Concept: docs/internal/operations/mail-v4-pilot.md
 """
+
 import os
 import re
 import subprocess
 import sys
 from pathlib import Path
 
-MAIL_REPO = Path(os.environ.get("PIPER_MAIL4_REPO", str(Path.home() / "Development/piper-morgan-mail")))
+MAIL_REPO = Path(
+    os.environ.get("PIPER_MAIL4_REPO", str(Path.home() / "Development/piper-morgan-mail"))
+)
 FALLBACK_END = "2026-11-23"
 
 
@@ -27,7 +30,9 @@ def pilots():
     try:
         out = subprocess.run(
             ["git", "-C", str(MAIL_REPO), "show", "origin/main:roles.yaml"],
-            capture_output=True, text=True, timeout=10,
+            capture_output=True,
+            text=True,
+            timeout=10,
         )
     except Exception:
         return set()
@@ -47,7 +52,9 @@ def main(paths):
         return 0
     seen = set()
     for path in paths:
-        if not re.match(r"mailboxes/[^/]+/(inbox|sent)/[^/]+\.md$", path) or path.endswith("MANIFEST.md"):
+        if not re.match(r"mailboxes/[^/]+/(inbox|sent)/[^/]+\.md$", path) or path.endswith(
+            "MANIFEST.md"
+        ):
             continue
         name = path.rsplit("/", 1)[1]
         if name in seen:
