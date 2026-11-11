@@ -8,24 +8,24 @@
 
 ---
 
-## Now (written 2026-11-10 06:55; replace, don't annotate)
+## Now (written 2026-11-10 21:50; replace, don't annotate)
 
-- **Served:** beta `727dd31596` (Lead 13:37, #2336). MCP `/health` 200. Read the live sha from `/health`, not from here.
-- **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta** (`dev/2026/11/06/turn.py`, run from the dated dir).
-- **11-08 served:** #2321, #2324, #2270 and #955 all closed on PA's served quotes. Q10 and Q11 were removed from standing items 11-09.
-- **11-09 served:** #2334 (12:12 on `f0e6505de8`) and #2336 (13:45 on `727dd31596`) both closed after PA's one-sign-in, two-turn auth check. Driver: `dev/2026/11/09/twoturn.py` (one login, then N turns on one bearer; args: creds, session, transcript, gap seconds, messages).
-- **#955 closed** (CXO, 16:10): eight rows served, the failed-write line excepted as unit-pinned (PPM 16:04). Its unbuilt body is **#2331** (section T); #2330 sits beside it. Nothing owed by PA.
-- **web-seed-1386 is fully fresh** (15:21): no clear, handle or take-care-of preference stored. Never answer clear's verb question with done or delete except Q11's forget-ended run. #2322's done row waits on Q8.
+- **Served:** beta `c425fd242f` (Lead 18:58, #2328 complete). MCP `/health` 200. Read the live sha from `/health`, not from here.
+- **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta.**
+- **PA's served-check lane is DOWN (11-10 18:25):** the classifier refuses every read of `~/.piper-shared/web-seed-1386-credentials-2026-10-20.txt` (four denials: field names, an email-key retry, a transcript search, a plain rerun). `twoturn.py` with the raw file raised KeyError 'username'. Unverified guess: 11-09 passed it through a key=value process substitution, but my 11-09 log doesn't record the command. **Lesson: log the exact driver invocation (credential path shape included, never the contents) in the session log on every served run.** With Exec and Lead for xian; on PM Attention. Don't retry until xian rules.
+- **#2328 (pronoun target asks which one):** OPEN, 0 of 5 served. Web is blocked on the same file. Once unblocked, run Lead's 18:58 five cases (memo in `mailboxes/pa/read/`).
+- **No python with `requests` on PATH:** the 11-10 scratch venv was session-only. Make one again (`python3 -m venv <scratch>/venv && pip install requests`) before running a driver.
+- **11-09 served:** #2334 and #2336 closed on `twoturn.py` (one login, then N turns on one bearer; args: creds, session, transcript, gap seconds, messages).
+- **Test account web-seed-1386 (11-09 21:47, untouched 11-10):** 8 open, in order: urgent task (urgent), zz throwaway one, zz throwaway two, audit the current navigation, **review prs (×2) on line 5**, review the deployment plan, draft the launch checklist. No reminders, no clear preference.
 - PA can't sign in to other seats' accounts: the permission classifier denies it even with the owner's yes.
-- **Test account web-seed-1386 (21:47):** 8 open, in order: urgent task (urgent), zz throwaway one, zz throwaway two, audit the current navigation, **review prs (×2) on line 5**, review the deployment plan, draft the launch checklist. No reminders, no clear preference.
 - **Q9 also:** #2313 ("delete A and B") on its build; CXO's #2294 bulleted-list row.
 - **#2288** (card says "Connected." on a 401 grant): served row needs a dead-grant account; xian's word for Web.
 - **#2242 (Q2):** held-token row, on xian's `mcp_allow.py remove` relayed by Exec.
 - **#2238:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
 - **Fresh-account checks** (Q8): on the invite hold lifting (#2261, #2282, #2292, #2322 done row) and HOST's slot with xian.
 - **R7 / plugin (#1282):** README edit needs a permitted push or xian's hand. Standing item 2.
-- **Sprints are two weeks from Fri 11-13** (the 11-06 ruling stands, with 0 objections; the Ship stays weekly).
-- **Mail v4 is open** (11-09): every fire checks `python3 scripts/mail4.py inbox --role pa` as well as the v3 inbox; v3 is the fallback until 11-23. The first read on 11-09 passed its canary, with 0 addressed to pa.
+- **Sprints are two weeks from Fri 11-13**; the Ship stays weekly.
+- **Mail v4:** every fire checks `scripts/mail4.py inbox` as well as the v3 inbox; v3 is the fallback until 11-23.
 - **START habit:** `python3 scripts/owed-scan.py --role pa`.
 
 ## PM Attention
