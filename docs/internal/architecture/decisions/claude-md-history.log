@@ -1196,3 +1196,10 @@ Mail section. Cross-repo mail goes through `scripts/mail-send-external.sh`, neve
 memo to Pard that morning was a hand commit: no trailer, a guessed `date:`). New line: write `date: now`;
 mail-send.sh and mail-send-external.sh stamp the clock, refuse a stamp ahead of it (was: 5 min), and add
 the session's derived attribution trailers (scripts/session_trailers.sh).
+
+2026-11-11 (CIO; xian's ruling via Exec 11:12, decisions.log 11-11 11:12, "keep my local keychain off-limits, at least without permission"):
+Quick reference, local-server command. Added `PIPER_CREDENTIAL_STORE=db` and a line on where provider keys come from. Arch found
+(v4 01M760HTD4) that the recipe as written read xian's OpenAI and Anthropic keychain slots at startup: unset means auto, and the
+login keyring is live on his Mac. With `=db`, KeychainService routes to the encrypted DB store (keychain_service.py
+`_verify_keyring_backend`); no other code under services/, web/ or main.py reads the keyring directly (git grep). Same change in
+canonical-ops-recipes.md recipe 1. Verified at the source layer only; not run, since a wrong run would break the rule it serves.

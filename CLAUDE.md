@@ -134,8 +134,10 @@ From a Claude Code shell, start the server with the inherited Anthropic vars str
 
 ```bash
 env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
-  POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &
+  PIPER_CREDENTIAL_STORE=db POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &
 ```
+
+`PIPER_CREDENTIAL_STORE=db` keeps the server out of xian's login keychain (his rule, 2026-11-11: nothing we run reads it without his permission). Provider keys come from the database store, or from a key variable you put on the command line after the `env -u` flags (which strip any inherited `ANTHROPIC_API_KEY`). If a run would need the keychain, stop and ask xian through Exec.
 
 A local server also needs `JWT_SECRET_KEY` set, or `main.py` refuses to start: `export JWT_SECRET_KEY=$(python -c 'import secrets; print(secrets.token_urlsafe(32))')`.
 
