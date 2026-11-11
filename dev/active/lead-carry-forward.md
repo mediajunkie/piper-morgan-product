@@ -1,5 +1,9 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-11 06:55 START fire close (not a day close)
+- **#2232:** driver built and on main (`scripts/served_fault_run.py`). Served locally: 2125 store line, 2125 check line, 2154 on its four preferences GETs. Quotes on 2231 (two comments), status on 2232, board In Progress, assigned. **Waiting:** CXO's judgement of the words; Arch's ruling on the two chat rows (2152, 955): a real LLM key from xian for local runs, or a scripted LLM stub (my 06:53 memo; I lean to the real key). 2152 also needs one config read for the GitHub API base (diff to Arch before it lands).
+- Everything else as in the 11-10 close below: 2328 (xian's credential call), 2333 (xian's go), 2327 (xian's sprint call), 2335 (xian's answer). If 2333 and 2327 are still unanswered at the 18:46 fire they have sat a day: mail Exec once, as an escalation.
+
 ## DAY CLOSED 2026-11-10 21:46 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-10 -->` in the 11-10 log `dev/2026/11/10/2026-11-10-0646-lead-code-log.md`)
 - **Served:** alpha `c425fd242f` (18:58, run 42949313375). Promotions today: 2 by this seat (18:20 `6dc21c2ca8`, 18:58 `c425fd242f`). Nothing of mine is on main unpromoted.
 - **Closed today:** none. **Filed today:** none.
