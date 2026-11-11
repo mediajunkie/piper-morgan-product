@@ -14,7 +14,8 @@ v917, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - **Main CI:** 12/12 green at 22:01. A transient staging deploy red at 19:14 cleared on the next run (Lead 19:20).
 - **Sprint 11-13 to 11-26** ratified; all ten seats no objection.
 - **Invite hold** unchanged: #2261 waits on xian's #2174 test; #2292 records before the next invite.
-- **Posts:** Tue "Never Green in a Thousand Runs" is **mid-rewrite by xian** (19:16, 19:22): beats 1-4 his, 5-7 scaffold, not published. Comms has 9 review notes (21:19 log). Thu 11-12 renamed by xian to **"The Server Has No Key"**.
+- **Posts:** Tue "Never Green in a Thousand Runs" **published 23:31 PT 11-10** (xian finished 23:23; Comms audit 16/16; Docs, website `108509e`, served HTML checked): https://pipermorgan.ai/blog/never-green-in-a-thousand-runs/ . Owed: xian's Medium crosspost URL, then Docs sets `distributed`. Thu 11-12 "The Server Has No Key" (renamed 19:02), prose xian's; Docs makes the slug follow the new title.
+- **04:17 mail wake (11-11, before START):** seven memos filed (4be8850a8): the post published, the 11-10 omnibus landed (185 commits, 11/11 logs closed), Docs' 19:14 Fly-red note (already cleared, Lead 19:20), and three older 11-10 notices already acted on. START at 06:01 still runs in full: create the 11-11 log first, log this wake there, and put the Medium ask and the beta-tester reminder on the rollup.
 - **Ship #068** (Wed 11-11): NEXT xian's first look. Spend: tokens still owed or "dollars is fine". **I misstated this at 16:34 in chat** (said dollars was settled); corrected on rollup v917.
 - **#2232:** Lead took it 19:00; question to Arch on failing a database read locally. Nothing for Exec.
 
