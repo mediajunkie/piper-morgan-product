@@ -109,7 +109,7 @@ Before building a guard to prevent a specific problem from occurring, investigat
 
 The correct solution is a class-wide guard that addresses the shared root issue and not the hallmarks of each individual symptom.
 
-[xian to decide, Exec's suggested example: "Our example this week is the isolation check. It looks for code that reads a setting for the whole deployment where it should read it for one person. Earlier cases had each been fixed where they showed up, and the class-wide check split off in August was never built. On its first run the new check flagged 50 places, now down to 11, and one of them was a live calendar bug nobody had reported."]
+Our example this week is the isolation check. It looks for code that reads a setting for the whole deployment when it should really just read it for one person. Earlier cases had each been fixed one at a time where they showed up, and a proposed class-wide check split off in August was never built. On its first run the new check flagged 50 problem places (!), now down to 11.
 
 **Thanks,**
 xian + Piper Morgan Development Team
