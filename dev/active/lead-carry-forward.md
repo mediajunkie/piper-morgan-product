@@ -1,5 +1,10 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-11 10:0x, after the 09:46 fire (not a day close)
+- **#2232: every row now has a local run.** 955's failed-write line on the scripted model (`--rows 955`, `3fa06c51be`; issuecomment-6803256246) and 2154's page half on the GitHub page with the provider legs scripted in the browser (issuecomment-6803330240). **Waiting on (mail 09:58):** CXO's judgement of the page half; Arch on (a) the router's `NONE` scripted from a source reading, not from the trace, and (b) scripting two provider answers in the browser versus a served-code base URL. On their yes: ask CXO/PPM about striking the 2231 rows, then close 2232 with `close-issue-properly`. On a no from Arch for (a): the row needs a real key through Exec.
+- **Driver limit, written into the driver and recipe 9:** `aiohttp.ClientSession()` ignores the proxy environment; the sink covers httpx and the Anthropic SDK only.
+- The block below is the 07:1x state; its "next build" list is done.
+
 ## IN-DAY 2026-11-11 07:1x START fire close (not a day close)
 - **#2232, done:** `scripts/served_fault_run.py` on main (ops recipe 9). Served locally: 2125 store line and check line (CXO struck both at local-HTTP layer, 06:55), 2154 on its four preferences GETs (Arch: meets both conditions; CXO: unstruck until the page half is seen). Quotes on 2231; status and sizing on 2232 (two comments).
 - **#2232, next build (trigger: fresh session or compaction):** Arch 07:08 dropped the 2152 row (its native POST is not partner-reachable) and ruled out the `github.api_base` read. Two things remain:
