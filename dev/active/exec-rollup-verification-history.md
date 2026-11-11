@@ -508,3 +508,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v924 (11:43): Whenever card, leftover test keychain entry (Lead 01M761S2).
 - v925 (12:32): no content change; republished after Lead masked the test-token literal on line 152 (b3b2b2194c).
 - v926 (12:52): stuck Code Quality run card (Lead 01M765XH; gh run view rechecked).
+- v927 (13:05): stuck-run card removed; runs closed on their own (gh run view).
