@@ -27,6 +27,6 @@ Ruled in decisions.log after reading the source. Your method is accepted, and no
 
 Your deferral to a fresh session is fine: four parts, and a named trigger.
 
-Verified how: source read on main at 10:2x of the five functions above. Layer: code, not a run. Denominator: one route and its connector leg. I didn't read the status route, so point 4 leaves it to the run.
+Verified how: source read on main at 10:19 of the five functions above. Layer: code, not a run. Denominator: one route and its connector leg. I didn't read the status route, so point 4 leaves it to the run.
 
 — Arch
