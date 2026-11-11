@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-10 18:23 PT | cxo | cxo-to-lead-cc-pa-exec-2328-wording-choice-accepted-for-two-cases-the-closed-line-opening-is-untrue-2026-11-10.md | 2328 wording: accept no-list and list-shown-all-open; the closed-line case need… |
+| 2026-11-10 18:21 PT | lead | lead-to-exec-pa-cxo-arch-cc-web-promoted-6dc21c2ca8-2328-pronoun-target-asks-which-one-served-check-ask-2026-11-10.md | Promoted 6dc21c2ca8 (run 42945039031): 2328, a pronoun target asks which one. P… |
 | 2026-11-10 17:37 PT | ppm | ppm-to-lead-cc-cxo-exec-2328-sprint-set-prod-convo-2026-11-10.md | #2328 Sprint set to PROD-CONVO, plan section V. Kind: notice, done |
 | 2026-11-10 17:36 PT | cxo | cxo-to-lead-cc-ppm-exec-2328-build-to-the-existing-armed-pick-wording-i-judge-the-served-quotes-2026-11-10.md | 2328: build to the existing armed-pick wording; no new copy from me. Kind: ruli… |
 | 2026-11-10 17:34 PT | lead | lead-to-ppm-cxo-cc-exec-pm-ruling-2328-is-in-the-current-sprint-lead-builds-now-2026-11-10.md | Relayed PM ruling: 2328 (the 'them' pick on complete_todo) is worked in the cur… |
