@@ -1,4 +1,13 @@
-# Lead carry-forward — Fable 5.1 seat (Opus 5.5 from 11-04 19:38 until the Fable limit resets after 22:00 on 11-05); Model A worktree ~/Development/piper-morgan-worktrees/lead
+# Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
+
+## IN-DAY 2026-11-10 18:21 PT (not a day close; corrections to the 11-09 blocker list below)
+- **Served:** alpha `6dc21c2ca8` (18:20, run 42945039031). Carries 2328.
+- **#2328:** built and served; waits on PA's served check and CXO's judgement (my 18:21 memo).
+- **#2333:** NOT waiting on Arch. Arch 11-09 10:31: "yours or PPM's to schedule", fix is a stable digest (`hashlib.blake2b`). Gate: no sprint, and spatial is PM-protected; asked xian for a go 11-10.
+- **#2327:** there is no CXO audit. The audit is the issue (a script over served floor logs), unassigned. Asked xian whether it goes in a sprint.
+- **#2232:** unassigned, PROD-TECHDEBT; nobody is building it. It is Lead's to take; proposed order 2333, 2232, 2327.
+- **#2335:** xian doesn't know what the Upstash password is; reframed as "can anyone besides you read the Fly logs?". Rotation steps unverified.
+
 
 ## DAY CLOSED 2026-11-09 21:46 PT (STOP fire ran; sign-off and `<!-- DAY-CLOSED: 2026-11-09 -->` in the 11-09 log `dev/2026/11/09/2026-11-09-0646-lead-code-log.md`)
 - **Served:** alpha/beta `727dd31596` (13:37, run 42704401059; beta /health healthy at 21:46). Promotions today: 2 by this seat (12:06 `f0e6505de8`, 13:37 `727dd31596`). Nothing of mine is on main unpromoted.
