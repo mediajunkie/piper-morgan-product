@@ -94,6 +94,50 @@ def _dev_keychain_or_none():
         return None
 
 
+def _use_in_memory_keyring() -> bool:
+    """#2338: point the ``keyring`` module at a process-local, in-memory backend for
+    this test run, so no test READS OR WRITES the developer's login keychain.
+    ``KeychainService`` calls ``keyring.get_password`` / ``set_password`` /
+    ``delete_password``, which dispatch to whatever backend is current, so one swap
+    covers every test. (Found 2026-11-11: a smoke test's Slack OAuth callback stored
+    its ``xoxb-test-token`` through the real service on every pre-push run.)
+
+    Only a live OS backend is replaced. Where the backend is already dead (CI, a
+    container) nothing changes, so the #1382 database fallback and #1748's pins see
+    exactly what they saw before. Returns True when the swap was made."""
+    try:
+        import keyring
+        from keyring.backend import KeyringBackend
+        from keyring.errors import PasswordDeleteError
+    except ImportError:
+        return False
+    current = keyring.get_keyring()
+    if "fail" in current.__class__.__module__ or getattr(current, "piper_test_in_memory", False):
+        return False
+
+    class InMemoryTestKeyring(KeyringBackend):
+        priority = 1  # type: ignore[assignment]
+        piper_test_in_memory = True
+
+        def __init__(self) -> None:
+            super().__init__()
+            self._items: dict = {}
+
+        def get_password(self, service, username):
+            return self._items.get((service, username))
+
+        def set_password(self, service, username, password):
+            self._items[(service, username)] = password
+
+        def delete_password(self, service, username):
+            if (service, username) not in self._items:
+                raise PasswordDeleteError("not found")
+            del self._items[(service, username)]
+
+    keyring.set_keyring(InMemoryTestKeyring())
+    return True
+
+
 def pytest_configure(config):
     """
     Load API keys from macOS Keychain before test collection, when opted in.
@@ -107,9 +151,11 @@ def pytest_configure(config):
     Issue #914: Added GitHub token loading from keychain.
     """
     if not _keychain_opted_in():
+        swapped = _use_in_memory_keyring()
         print(
             f"  [conftest] Keychain not read ({KEYCHAIN_OPT_IN_ENV} unset, #2338); "
             "LLM/GitHub tests use env vars or skip"
+            + ("; OS keyring replaced by an in-memory one for this run" if swapped else "")
         )
         return
     try:

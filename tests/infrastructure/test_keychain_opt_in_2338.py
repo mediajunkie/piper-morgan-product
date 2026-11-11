@@ -10,7 +10,8 @@ by default, on only when ``PIPER_TESTS_USE_KEYCHAIN`` is set.
 Layer: these call the real ``pytest_configure`` hook and the real
 ``_dev_keychain_or_none`` helper from ``tests/conftest.py`` with the keyring, the
 keychain service and ``subprocess.run`` replaced by tripwires. They do not prove
-that product modules imported by other tests never construct a KeychainService.
+that product modules imported by other tests never construct a KeychainService;
+the in-memory swap (last three tests) is what keeps such a service off the OS keyring.
 """
 
 from __future__ import annotations
@@ -130,3 +131,93 @@ def test_live_llm_fixture_gets_the_keychain_when_opted_in(env_without_keys):
     sentinel = object()
     with patch("services.infrastructure.keychain_service.KeychainService", return_value=sentinel):
         assert conftest_mod._dev_keychain_or_none() is sentinel
+
+
+# ── no test reads or writes the OS keyring either ──────────────────────────────
+
+
+class _FakeOSKeyring:
+    """A live-looking OS backend (its module name has no "fail" in it) that must
+    never be reached once the default configure has run."""
+
+    def __init__(self):
+        self.calls = []
+
+    def get_password(self, service, username):
+        self.calls.append(("get", service, username))
+        return "a-real-secret"
+
+    def set_password(self, service, username, password):
+        self.calls.append(("set", service, username))
+
+    def delete_password(self, service, username):
+        self.calls.append(("delete", service, username))
+
+
+@pytest.fixture
+def fake_os_keyring():
+    import keyring
+    from keyring.backend import KeyringBackend
+
+    class FakeOS(_FakeOSKeyring, KeyringBackend):
+        priority = 1
+
+        def __init__(self):
+            KeyringBackend.__init__(self)
+            _FakeOSKeyring.__init__(self)
+
+    before = keyring.get_keyring()
+    fake = FakeOS()
+    keyring.set_keyring(fake)
+    try:
+        yield fake
+    finally:
+        keyring.set_keyring(before)
+
+
+def test_default_configure_swaps_a_live_os_keyring_for_an_in_memory_one(
+    env_without_keys, fake_os_keyring
+):
+    import keyring
+
+    conftest_mod = _load_root_conftest()
+    conftest_mod.pytest_configure(config=None)
+
+    assert getattr(keyring.get_keyring(), "piper_test_in_memory", False) is True
+    keyring.set_password("piper-morgan", "slack_bot", "xoxb-test-token")
+    assert keyring.get_password("piper-morgan", "slack_bot") == "xoxb-test-token"
+    assert keyring.get_password("piper-morgan", "anthropic") is None
+    keyring.delete_password("piper-morgan", "slack_bot")
+    assert fake_os_keyring.calls == []
+
+
+def test_opted_in_the_os_keyring_is_left_in_place(env_without_keys, fake_os_keyring):
+    import keyring
+
+    os.environ[_OPT_IN] = "1"
+    conftest_mod = _load_root_conftest()
+    with (
+        patch(
+            "services.infrastructure.keychain_service.get_keychain_service",
+            return_value=_Keyring(),
+        ),
+        patch("subprocess.run", side_effect=FileNotFoundError("gh disabled in pin")),
+    ):
+        conftest_mod.pytest_configure(config=None)
+    assert keyring.get_keyring() is fake_os_keyring
+
+
+def test_a_dead_backend_is_not_replaced(env_without_keys):
+    """CI's keyring is the fail backend; the database fallback must stay in charge."""
+    import keyring
+    from keyring.backends.fail import Keyring as FailKeyring
+
+    before = keyring.get_keyring()
+    dead = FailKeyring()
+    keyring.set_keyring(dead)
+    try:
+        conftest_mod = _load_root_conftest()
+        assert conftest_mod._use_in_memory_keyring() is False
+        assert keyring.get_keyring() is dead
+    finally:
+        keyring.set_keyring(before)
