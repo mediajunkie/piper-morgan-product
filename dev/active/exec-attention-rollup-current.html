@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Wednesday 11 November</h1>
-<p class="meta">Exec · v930, rebuilt 18:54 PST Wed 11-11 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v931, rebuilt 19:04 PST Wed 11-11 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -45,10 +45,30 @@
 <p class="ct"><b>Wednesday evening.</b> <b>Ship #068 is out and crossposted</b> (published 16:12, calendar <code>distributed</code>). Nothing is owed on it. <b>Thursday&rsquo;s post</b> you write Thursday morning (your word, 17:5x), and Comms and Docs follow the same day. Main is 12 of 12 green, and beta serves <code>c425fd242f</code> (<code>/health</code> 18:01).</p>
 <ol>
 <li><b>#2174 passed (18:52).</b> The refreshed token got 14 of 14, and the old token got 401. Issue #43 is closed through the App. #2261 is now built on the GitHub App (D3), and Lead records it. The invite hold waits on that build and on #2292.</li>
-<li><b>#2292, the email records</b> (about 15 minutes): DKIM in Google Admin, then SPF, DKIM and DMARC in Hover, then one test mail with &ldquo;Show original&rdquo;.</li>
+<li><b>#2292, the email records</b> (about 15 minutes): steps are in the card below. This is the invite-hold item that waits on you.</li>
 <li><b>#2328&rsquo;s served check:</b> PA confirmed why yesterday&rsquo;s sign-in failed. The password file is written as <code>key: value</code>, and the driver needs <code>key=value</code>. Either save a <code>username=</code> / <code>password=</code> copy, or sign in for Web in its Chrome tab.</li>
 </ol>
 <p class="ct"><b>Settled today, for reference:</b> <b>API budget</b> sent to Themis (private repo): Anthropic $0 from your card while the $200 monthly grant runs ($164.99 left, expires Dec 4); OpenAI topped up $10 by you (balance $9.90), with manual top-ups per planned test. <b>The 4,861 OpenAI requests on Oct 23 UTC</b> were mostly Lead&rsquo;s 10-23 routing screens on your keychain key (about 4,000), not a loop. Lead filed #2340 so those scripts stop reading the keychain and stop instead of switching provider, and PA is removing the same fallback from its harness. <b>Your keychain</b> is off-limits to anything we run without your permission (#2338 closed: tests and harnesses opt in only). The fault-run driver opened localhost tabs in your browser today; they are dead and can be closed, and it is fixed (<code>39a066f46d</code>).</p>
+</div>
+
+<h2>#2292 email records, step by step</h2>
+
+<div class="card act">
+<p class="ct">Why: invitations go out from your Workspace address at pipermorgan.ai, and the domain publishes no SPF, DKIM or DMARC (I checked with <code>dig</code> at 19:04: only the Google site-verification record). Big inboxes reject or spam-file mail like that. The DNS is at Hover (<code>ns1.hover.com</code>). Nothing here is secret. Google&rsquo;s and Hover&rsquo;s menu names are from memory, so if a page words a step differently, follow the page.</p>
+<ol>
+<li><b>Google Admin: make the DKIM key.</b> admin.google.com &rarr; Apps &rarr; Google Workspace &rarr; Gmail &rarr; <b>Authenticate email</b>. Pick pipermorgan.ai &rarr; <b>Generate new record</b> (2048-bit, prefix <code>google</code>). Copy the long TXT value it shows, starting <code>v=DKIM1; k=rsa; p=…</code>. Don&rsquo;t press &ldquo;Start authentication&rdquo; yet.</li>
+<li><b>Hover: add three TXT records.</b> Hover &rarr; pipermorgan.ai &rarr; DNS &rarr; Add a record, type <b>TXT</b>, three times:
+<ul>
+<li>Hostname <code>@</code>, value <code>v=spf1 include:_spf.google.com ~all</code> (SPF: only Google sends for the domain)</li>
+<li>Hostname <code>google._domainkey</code>, value: the DKIM text from step 1</li>
+<li>Hostname <code>_dmarc</code>, value <code>v=DMARC1; p=none</code> (DMARC in watch-only mode, so nothing gets rejected while we check. It can be tightened later.)</li>
+</ul>
+Keep the existing <code>google-site-verification</code> record.</li>
+<li><b>Tell me when they&rsquo;re in.</b> I check all three with <code>dig</code>. DNS usually shows up within minutes to an hour.</li>
+<li><b>Back in Google Admin: Start authentication</b> on the same Authenticate email page. It only works once the DKIM record is visible.</li>
+<li><b>Test mail.</b> Send one mail from your pipermorgan.ai address to any outside Gmail. In that Gmail, open it &rarr; &#8942; &rarr; <b>Show original</b>. Tell me the three lines: SPF, DKIM and DMARC should each say PASS.</li>
+</ol>
+<p class="ct">Then I put the three verdicts on #2292, and it closes. The issue also asks whether Buttondown&rsquo;s confirmation mails are covered. That&rsquo;s for Web or CIO to read, not you.</p>
 </div>
 
 <h2>Your word, one each</h2>
