@@ -20,8 +20,9 @@ What it does, in order:
    minute), every page on beta answers 503 "capacity_check_unavailable", because the
    usage cap needs Redis and refuses without it.
 3. ``fly redis reset NAME``. The old password stops working at once.
-4. Reads the new address from ``fly redis status NAME`` and checks its password is not
-   the old one.
+4. Reads the address again from ``fly redis status NAME``. Whether its password
+   differs from the one before decides whether the reset happened, whatever
+   ``fly redis reset`` exited with. If it did not change, nothing was changed.
 5. Sets ``REDIS_URL`` on each app that held it, through ``fly secrets import`` on
    standard input.
 6. Waits until beta has restarted and reads healthy, then asks a page the usage cap
@@ -68,12 +69,13 @@ from github_app_cutover_sitting import (  # noqa: E402 - sibling script, after t
 MAIN_APP = "piper-morgan"
 MCP_APP = "piper-morgan-mcp"
 HEALTH_URL = "https://beta.pipermorgan.ai/health"
+MCP_HEALTH_URL = "https://mcp.pipermorgan.ai/health"
 SECRET_NAME = "REDIS_URL"
 BLOCK_START = "===== paste this block on issue 2335 ====="
 BLOCK_END = "===== end of block ====="
 HALF_STATE = (
-    "The Redis password WAS reset and at least one app still holds the old address. "
-    "Until it has the new one, beta answers 503 on every page.\n"
+    "The Redis password was reset, or may have been, and an app may still hold the old "
+    "address. If so, beta answers 503 on every page until it has the new one.\n"
     "Run this again to finish (it skips the reset):\n"
     "    python3 scripts/redis_password_rotate.py --after-reset"
 )
@@ -88,16 +90,23 @@ _URL = re.compile(r"rediss?://[^\s\"'<>|]+")
 _NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
 
 
-def find_url(text: str) -> Optional[str]:
-    """The Redis address in a command's output that carries a password, or None."""
+def find_urls(text: str) -> List[str]:
+    """Every distinct Redis address in a command's output that carries a password."""
+    found: List[str] = []
     for candidate in _URL.findall(text):
         try:
             parts = urlsplit(candidate)
         except ValueError:
             continue
-        if parts.password and parts.hostname:
-            return candidate
-    return None
+        if parts.password and parts.hostname and candidate not in found:
+            found.append(candidate)
+    return found
+
+
+def find_url(text: str) -> Optional[str]:
+    """The one such address, or None when there is none or more than one."""
+    found = find_urls(text)
+    return found[0] if len(found) == 1 else None
 
 
 def password_of(url: str) -> str:
@@ -137,6 +146,7 @@ class Rotation:
         runner: Runner = run,
         health: Callable[[], Dict[str, object]] = read_health,
         probe: Callable[[str], int] = probe_status,
+        mcp_health: Callable[[], Dict[str, object]] = lambda: read_health(MCP_HEALTH_URL),
         confirm: Callable[[str], str] = input,
         sleep: Callable[[float], None] = time.sleep,
         clock: Callable[[], float] = time.monotonic,
@@ -147,6 +157,7 @@ class Rotation:
         self.runner = runner
         self.health = health
         self.probe = probe
+        self.mcp_health = mcp_health
         self.confirm = confirm
         self.sleep = sleep
         self.clock = clock
@@ -156,6 +167,7 @@ class Rotation:
         self.held: List[str] = []
         self.lines: List[str] = []
         self.was_reset = False
+        self.verified_change = True
         self.finished = False
 
     def hold(self, url: Optional[str]) -> None:
@@ -170,7 +182,10 @@ class Rotation:
     def call(self, argv: List[str], stdin: Optional[str] = None) -> Tuple[int, str]:
         """Run a command. Any Redis address in its output is held, then scrubbed."""
         code, output = self.runner(argv, stdin)
-        self.hold(find_url(output))
+        # Every one, not the first (CIO, 2026-11-12): a second address in the output
+        # must be scrubbed from a failure tail as surely as the one this run uses.
+        for url in find_urls(output):
+            self.hold(url)
         return code, output
 
     def tail(self, output: str, lines: int = 4) -> str:
@@ -209,13 +224,19 @@ class Rotation:
 
     def read_address(self, name: str, what: str) -> str:
         code, output = self.call(["fly", "redis", "status", name])
-        url = find_url(output)
-        if code != 0 or not url:
+        found = find_urls(output)
+        if code != 0 or not found:
             raise Stop(
                 f"could not read {what} from `fly redis status {name}` (exit {code}; "
                 "no address with a password in its output)."
             )
-        return url
+        if len(found) > 1:
+            # HOST, 2026-11-12: with two, the order would decide what every app gets.
+            raise Stop(
+                f"`fly redis status {name}` gave {len(found)} different addresses with a "
+                "password; this command will not pick one."
+            )
+        return found[0]
 
     def preflight(self, wanted: Optional[str]) -> Tuple[str, List[str]]:
         code, output = self.call(["fly", "auth", "whoami"])
@@ -231,13 +252,29 @@ class Rotation:
         return name, self.holders()
 
     # --- steps 3 to 6 -------------------------------------------------------------
-    def reset(self, name: str) -> None:
-        # From here a failure may have reset it; treat the password as changed.
+    def reset(self, name: str, old: str) -> str:
+        """Reset the password and return the new address.
+
+        What changed decides, not the exit code (HOST, CIO 2026-11-12): the address is
+        read again and its password compared with the one before. So a reset that
+        failed without changing anything is reported as that, never as a reset.
+        """
+        # Until the address is read again, treat the password as possibly changed.
         self.was_reset = True
         code, output = self.call(["fly", "redis", "reset", name])
+        new = self.read_address(name, "the address after the reset")
+        if password_of(new) == password_of(old):
+            self.was_reset = False
+            raise Stop(
+                f"`fly redis reset {name}` did not change the password (exit {code}). Nothing "
+                "was changed. If it asks a question this command cannot answer, run "
+                f"`fly redis reset {name}` yourself in this terminal, then this command with "
+                f"--after-reset.\n{self.tail(output)}"
+            )
+        self.note(f"password reset on {name}: the address now carries a different one   PASS")
         if code != 0:
-            raise Stop(f"`fly redis reset {name}` failed or half-finished.\n{self.tail(output)}")
-        self.note(f"password reset on {name}             PASS")
+            self.note(f"NOTE: `fly redis reset` exited {code} although the password changed")
+        return new
 
     def set_address(self, apps: List[str], url: str) -> None:
         for app in apps:
@@ -277,7 +314,11 @@ class Rotation:
         since = self.clock()
         if after_reset:
             self.was_reset = True
-            self.note("--after-reset: the reset is skipped")
+            self.verified_change = False
+            self.note(
+                "--after-reset: the reset is skipped, so this run cannot check that the "
+                "password changed"
+            )
             new = self.read_address(name, "the new address")
         else:
             old = self.read_address(name, "the address")
@@ -294,13 +335,18 @@ class Rotation:
             if self.confirm("Type yes to reset: ").strip().lower() != "yes":
                 raise Stop("not confirmed; nothing was changed")
             since = self.clock()
-            self.reset(name)
-            new = self.read_address(name, "the new address")
-            if password_of(new) == password_of(old):
-                raise Stop("the address after the reset carries the same password as before")
-            self.note("the new address has a different password PASS")
+            new = self.reset(name, old)
+        self.note(f"address scheme: {urlsplit(new).scheme}")
         self.set_address(apps, new)
         self.wait_and_probe(since)
+        if MCP_APP in apps:
+            if self.mcp_health().get("status") != "healthy":
+                raise Stop(f"{MCP_APP} did not read healthy after the new address was set")
+            self.note(f"{MCP_APP} reads healthy                 PASS")
+        self.note(
+            "if the reset emptied Redis, the restart refilled the revoked-token list from "
+            "the database (it is seeded at every start)"
+        )
         self.finished = True
 
 
@@ -351,7 +397,10 @@ def main(
     r.out("")
     r.out(BLOCK_START)
     r.out(scrub("\n".join(r.lines), r.held))
-    r.out("RESULT: " + ("DONE" if r.finished else "NOT FINISHED"))
+    if r.finished and not r.verified_change:
+        r.out("RESULT: DONE (address set; change of password NOT verified by this run)")
+    else:
+        r.out("RESULT: " + ("DONE" if r.finished else "NOT FINISHED"))
     r.out(BLOCK_END)
     if r.was_reset and not r.finished:
         r.out("")

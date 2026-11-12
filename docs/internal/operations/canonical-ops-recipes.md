@@ -523,8 +523,16 @@ hands it to `fly secrets import` on standard input.
 - **It stops before the reset** if it cannot read an address with a password from
   `fly redis status`. What that command prints is not in Fly's published pages, so this check is
   what keeps a surprise there from costing anything.
+- **Whether the reset happened is decided by what changed,** not by `fly redis reset`'s exit code:
+  the command reads the address again and compares passwords. A reset that failed without changing
+  anything is reported as "nothing was changed" (HOST, CIO, 2026-11-12).
 - **If it stops after the reset,** it says so and gives `--after-reset`, which skips the reset and
-  sets the new address.
+  sets the new address. That mode cannot compare passwords, so its result line says
+  "change of password NOT verified by this run".
+- **Two addresses:** if `fly redis status` shows more than one address with a password, the command
+  stops before the reset and will not pick one. Every address it sees is scrubbed from its output.
+- **If the reset empties Redis,** nothing a person owns is lost: the restart that follows refills
+  the revoked-token list from the database, which is its record (Arch's question, 2026-11-12).
 - **How the old password is shown dead:** the reset is what kills it, and the command checks the new
   address carries a different password. Nobody types the old one to test it.
 - **Served confirmation:** the command waits for a restart, then asks `/login` and expects anything

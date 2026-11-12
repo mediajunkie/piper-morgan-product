@@ -47,6 +47,8 @@ class World:
         self.restarted_at = None
         self.status_shows_url = True
         self.reset_changes = True
+        self.second_address = None
+        self.mcp_status = "healthy"
 
     def runner(self, argv, stdin):
         self.calls.append((list(argv), stdin))
@@ -67,13 +69,16 @@ class World:
             if key in self.fail:
                 return 1, "Error: not found"
             line = f"  Private URL = {_url(self.password)}\n" if self.status_shows_url else ""
+            if self.second_address:
+                line += f"  Public URL = {self.second_address}\n"
             return 0, f"Redis\n  Name = {argv[3]}\n{line}"
         if argv[:3] == ["fly", "redis", "reset"]:
             if key in self.fail:
-                return 1, "Error: timeout"
+                return 1, "Error: timeout"  # failed and changed nothing
             if self.reset_changes:
                 self.password = NEW_PW
-            return 0, f"Your Redis database {argv[3]} was reset: {_url(self.password)}"
+            code = 1 if "reset exits 1 after changing" in self.fail else 0
+            return code, f"Your Redis database {argv[3]} was reset: {_url(self.password)}"
         if argv[:3] == ["fly", "secrets", "import"]:
             app = argv[4]
             if f"import {app}" in self.fail:
@@ -87,6 +92,9 @@ class World:
     def health(self):
         up = 99999 if self.restarted_at is None else self.t - self.restarted_at
         return {"status": "healthy", "services": {"uptime_seconds": up}}
+
+    def mcp_health(self):
+        return {"status": self.mcp_status}
 
     def probe(self, url):
         return 200 if self.app_has.get(rr.MAIN_APP) == self.password else 503
@@ -106,6 +114,7 @@ class World:
             runner=self.runner,
             health=self.health,
             probe=self.probe,
+            mcp_health=self.mcp_health,
             confirm=self.confirm,
             sleep=self.sleep,
             clock=self.clock,
@@ -127,7 +136,8 @@ def _leaks(text):
 def test_a_full_run_resets_then_sets_the_new_address_on_the_holder():
     w = World()
     code, text = w.go()
-    assert code == 0 and "RESULT: DONE" in text
+    assert code == 0 and "RESULT: DONE\n" in text + "\n"
+    assert "NOT verified" not in text
     assert w.app_has[rr.MAIN_APP] == NEW_PW
     changing = [a for a in w.argvs() if "reset" in a or "import" in a]
     assert changing == [f"fly redis reset {DB}", f"fly secrets import -a {rr.MAIN_APP}"]
@@ -205,20 +215,83 @@ def test_two_databases_need_a_name_and_a_named_one_is_used():
     assert code == 1 and "no Redis database named missing" in text
 
 
-@pytest.mark.parametrize("fail", ["fly redis reset", f"import {rr.MAIN_APP}"])
-def test_a_failure_from_the_reset_on_names_the_half_state(fail):
-    w = World(fail={fail})
+def test_a_failure_after_the_reset_names_the_half_state():
+    w = World(fail={f"import {rr.MAIN_APP}"})
     code, text = w.go()
     assert code == 1 and rr.HALF_STATE in text
     assert _leaks(text) == []
+
+
+def test_a_reset_that_failed_and_changed_nothing_is_not_called_a_reset():
+    """HOST 2026-11-12: e.g. `fly redis reset` asks a question and gets no input."""
+    w = World(fail={"fly redis reset"})
+    code, text = w.go()
+    assert code == 1 and w.password == OLD_PW
+    assert "did not change the password" in text and "Nothing was changed" in text
+    assert rr.HALF_STATE not in text
+    assert not any("import" in a for a in w.argvs())
+
+
+def test_a_reset_that_changed_the_password_counts_even_if_fly_exits_nonzero():
+    w = World(fail={"reset exits 1 after changing"})
+    code, text = w.go()
+    assert code == 0 and "RESULT: DONE" in text
+    assert "exited 1 although the password changed" in text
+    assert w.app_has[rr.MAIN_APP] == NEW_PW
+
+
+def test_two_addresses_stop_the_run_before_the_reset_and_neither_is_printed():
+    """HOST's change 2 and CIO's: never pick one of two, and scrub both."""
+    w = World()
+    other_pw = "made-up-public-word"
+    w.second_address = f"rediss://default:{other_pw}@fly-example-db-public.upstash.io:6379"
+    code, text = w.go()
+    assert code == 1 and "will not pick one" in text
+    assert not any("reset" in a.split()[2:3] or "import" in a for a in w.argvs())
+    assert _leaks(text) == [] and other_pw not in text and "public.upstash" not in text
+
+
+def test_a_second_address_in_a_failing_command_is_scrubbed_from_the_tail():
+    w = World()
+    other = "rediss://default:made-up-public-word@fly-other.upstash.io:6379"
+    real = w.runner
+
+    def noisy(argv, stdin):
+        code, out = real(argv, stdin)
+        if argv[:3] == ["fly", "secrets", "import"]:
+            return 1, f"Error\nold {_url(OLD_PW)}\nalso {other}\n{stdin}"
+        return code, out
+
+    w.runner = noisy
+    code, text = w.go()
+    assert code == 1
+    assert _leaks(text) == [] and "made-up-public-word" not in text and "[hidden]" in text
+
+
+def test_the_block_names_the_scheme_and_nothing_else_of_the_address():
+    w = World()
+    _, text = w.go()
+    assert "address scheme: redis" in text
+    assert HOST.split(":")[0] not in text
+
+
+def test_an_mcp_holder_must_read_healthy_afterwards():
+    w = World(holders=(rr.MAIN_APP, rr.MCP_APP))
+    _, text = w.go()
+    assert f"{rr.MCP_APP} reads healthy" in text
+    w2 = World(holders=(rr.MAIN_APP, rr.MCP_APP))
+    w2.mcp_status = "degraded"
+    code, text = w2.go()
+    assert code == 1 and "did not read healthy" in text and rr.HALF_STATE in text
 
 
 def test_a_reset_that_did_not_change_the_password_stops_before_setting_anything():
     w = World()
     w.reset_changes = False
     code, text = w.go()
-    assert code == 1 and "same password as before" in text
+    assert code == 1 and "did not change the password" in text
     assert not any("import" in a for a in w.argvs())
+    assert rr.HALF_STATE not in text
 
 
 def test_a_503_after_the_restart_is_a_failure():
@@ -232,7 +305,9 @@ def test_after_reset_skips_the_reset_and_asks_nothing():
     w = World(answers=())
     w.password = NEW_PW  # already reset by hand; the app still holds the old one
     code, text = w.go(["--after-reset"])
-    assert code == 0 and "RESULT: DONE" in text
+    assert code == 0
+    # HOST's change 1: this mode cannot compare passwords, so it must not claim it did.
+    assert "RESULT: DONE (address set; change of password NOT verified by this run)" in text
     assert not any("reset" in a.split()[2] for a in w.argvs() if a.startswith("fly redis"))
     assert w.app_has[rr.MAIN_APP] == NEW_PW
 
@@ -267,6 +342,8 @@ def test_the_command_takes_no_address_argument():
 
 def test_find_url_wants_a_password_and_reads_tls_addresses():
     assert rr.find_url("Public URL = redis://fly-x.upstash.io:6379") is None
+    two = "redis://a:pw-one@h1:6379 and redis://a:pw-two@h2:6379 and redis://a:pw-one@h1:6379"
+    assert rr.find_url(two) is None and len(rr.find_urls(two)) == 2
     tls = f"rediss://default:{NEW_PW}@fly-x.upstash.io:6379"
     assert rr.find_url(f"| Private URL | {tls} |") == tls
     assert rr.redis_names("NAME\tORG\nmy-db\tpersonal\n\n") == ["my-db"]
