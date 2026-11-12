@@ -58,6 +58,7 @@ Rule, from the ruling: no more than one named item behind any single unanswered 
 - **Met before the sprint (11-09 11:23).** Lead took the fixture entries 34 to 0 this morning, about two Lead-hours, off CIO's 10:10 count. The backlog is 21: flaky 18, regression 3 (CI confirms on the gating push).
 - **The 18 flaky stay out of this sprint.** Lead's size is about one Lead-day with a subagent, the same day the set already runs over. #070 and #071 report the count by kind from CI's `backlog size:` line, and the 11-26 review can take them up.
 - Burn-down finds, placed 11-09: #2333 (C, spatial, Arch sequences), #2334 (Q, built), #2335 (D, built; xian checks the live log line, on Exec's rollup).
+- **11-12, xian via Exec:** #2333 is a **go** (13:59). In this sprint. Arch sequenced it (14:07): Lead builds now, and it rides the first beta promotion after #2342's served rows close, so nothing changes under those rows. #2327 (Piper's analysis reply offers to "close the obvious clutter" in bulk, which it can't do; the issue's audit of floored action names) gets **"yes, Friday"** (14:00): PPM places it at the 11-13 review.
 
 ## Candidate for xian (sent to him on Exec's rollup 11-09; he books his own hour)
 
