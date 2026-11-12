@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-09 21:27 PST (STOP)
+last_updated: 2026-11-11 21:28 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -28,26 +28,22 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
+- **11-11 STOP (21:27 fire).** Main 12/12 green. Every ruling today is in decisions.log.
+  - **xian's keychain rule (11-11 11:12):** nothing a seat runs reads his login keychain without his permission. Prefix `PIPER_CREDENTIAL_STORE=db` on any local server or pytest run. #2338 is closed: tests and the documented starts are opted out by default (`PIPER_TESTS_USE_KEYCHAIN` opts in). #2340 is closed: the one binder `scripts/dev_key_binding.py` requires the store to be set, binds only the named providers, and refuses otherwise. Rule-7 screens are stopped until xian says how a provider key is handed to a seat (Lead raised it via Exec). Leftover fake Slack test entry in his keychain, and his start scripts: xian's call via Exec.
+  - **ADR-081 D3's condition is met (#2174, decisions.log 18:56).** D3 governs; the OAuth App fallback is off. The ADR holds the result, both tables, the 401 correction (the old token's 401 is explained by its 8-hour expiry, not by revocation on refresh), and the narrowed refresh mapping: a rejected refresh is STALE_TOKEN, read from the reply's `error` field; a refresh that could not complete is UNREACHABLE with the stored pair untouched; never CONNECT_REQUIRED. Open: the running github-mcp-server version line (xian's Fly read, or #2341's script on its next run).
+  - **#2342 (D3 build; Lead, fresh session at 11-12 START; served rows blocked on xian registering the App).** My rulings on the issue: classic grants go STALE at cutover; only a grant with an explicit App marker serves; tokens are deleted and a revoke is attempted (failures counted, not blocking); a new `status_reason` column on connector_bindings (`cutover` or `refresh_rejected`, cleared on rebind) picks the words; the migration keeps `connector_configs` byte-identical; on a rejected refresh, re-read the store before mapping. **Validate the landing against all of these.** CXO's final words are on the thread.
+  - **Closed or settled today:** #2337 (the repositories-503 row; condition 3 met by the stub's evidence, and the sink is blind to aiohttp: `aiohttp.ClientSession()` defaults trust_env False); #2232 method rows; #2340; #2338.
+  - **Open, not mine to move:** #2328 (CXO's word); #2335 (xian via Exec); #2333 (Lead/PPM); #2261 now lands on D3 via #2342 (PPM sequencing; invite hold waits on 2261 and 2292).
+  - **Lessons (11-11):** (1) Estimated stamps, five today. The habit that works: back-references come from `grep` of the line itself, and new stamps from `$(TZ=America/Los_Angeles date +%H:%M)` inside the heredoc. Never type a minute; never write a memo ID before the send returns. (2) No literal token-shaped placeholders in any committed file, not even fake ones: describe them. (3) Never filter mail-send or mail4 output. (4) The proxy sink cannot see aiohttp; never cite it for an aiohttp path. (5) A ruling's count must come from the grep output, not a glance (12 vs 10 users of the binder).
 - **11-10 STOP (21:27 fire).** Main 12/12 green. Alpha serves `c425fd242f` (#2328 complete; Web's browser served check pending, CXO judges, Lead closes).
   - **Rulings today:** #2328 validated from source (18:23; the pronoun check is a word-set check and asks, writing nothing; note: the router path picks over all active todos, not the due pool). #2232's database rows (decisions.log 19:02): scratch database plus a revoked grant, with the app on a non-superuser, non-owner role, a probe proving the denial first, and the report naming InsufficientPrivilege and the `except Exception` branch. Lead owns #2232 now.
   - **Open, not mine to move:** #2335 (xian's live-log check, via Exec); #2333 (Lead or PPM to schedule); #2328 (closes on CXO's word); #2232 (Lead building).
   - **Lesson (11-10):** 165 memos from 11-07 to 11-09 sat in inbox/ unfiled while fires reported "mail checked, nothing new". Filed by log evidence plus reading 16 in full (22d7330af). Every mail wake files its memos in the same mail-send call as the reply. A "nothing new" line must also mean "inbox/ holds only MANIFEST".
-- **11-09 STOP (21:27 fire).** Main 12/12 green. Beta serves `727dd31596`. Every ruling today is in decisions.log (10:31, 11:21, 12:11, 13:45).
-  - **Closed today:** #2334 (BlockingConnectionPool timeout=2, connect 2, socket 5; a weakref loop key replaces id(loop) in the #1452 rebuild; validated on served f0e6505de8; PA's served auth passes) and #2336 (health ping on a new pool, then at most every 30 s; validated post hoc; PA's served auth passes).
-  - **Open:** #2335 (the old pool-init log line printed REDIS_URL, which may carry the Upstash password; the code fix is served; xian's check of the live logs and a rotation if needed, via Exec). #2333 (spatial `hash()` salted per process; fix shape: a stable digest; Lead or PPM to schedule).
-  - **Mail v4 is live for arch** (CIO 11-09): every inbox check reads v3 and `python3 scripts/mail4.py inbox --role arch`. Ack with `mail4.py ack <id> done --as arch`.
-  - **Lesson (11-09):** two more stamps ahead of the clock (11:27 against 11:21, 12:13 against 12:11). The fix in use since 12:11: `T=$(TZ=America/Los_Angeles date +%H:%M)` inside the heredoc, never typed by hand.
-- **11-08 STOP (21:27 fire).** Main 11/12 at the fire: Documentation Link Checker red on c8e33744bf from a lychee setup tar error (weather, not links); rerun requested. Alpha/beta serve `24c8c7f5e7`. Every ruling today is in decisions.log, 06:28 to 14:38.
-  - **Closed today:** #2270 (analyze_repository; the floor-door re-ask meets uncached-ask parity, about 6 s against 10 s; CXO closed it) and #955 (preference change; every row served across 2824ed3437, 98b95c80c0, 8677aa05f5 and 24c8c7f5e7; closed 16:10).
-  - **Standing from today's rulings:** `ROUTER_HIDDEN_CEILING = 3` is the last raise, and the exit is #2149. #955's clear aliases bind "clear" only, per-verb aliases bind their own key, and set-directly always asks. `CONSENT_NARROWING_ALLOWLIST` holds the forget aliases only.
-  - **Open, not mine to move:** #2330 (take care of by name, low, CXO/PPM); #2328 ("them" says not-found, Backlog); #2327 (audit of floored action names in served logs, PPM placing).
-  - **#2322 (P1):** the served stored-done row on a test account via the #2325 reset, plus pins. Still open.
-  - **Rulings made, builds pending (Lead), from 11-07:** #2324 "now overdue" on every milestone render; #2321 reminders-with-none; #2326 armed read offer (Backlog).
-  - **Lesson (11-08):** fixtures seeded in a module's own vocabulary prove nothing about the store (memory feedback_verify_at_the_right_layer, fifth instance). Four stamps went ahead of the clock again (06:31, 07:21, 07:34, 14:12): copy `date`'s minute.
+- **11-08 and 11-09, still open:** #2322 (P1, the served stored-done row via the #2325 reset); builds owed by Lead from 11-07 rulings: #2324, #2321, #2326 (Backlog); #2330 and #2327 (PPM placing). Standing: `ROUTER_HIDDEN_CEILING = 3` is the last raise (exit #2149); `CONSENT_NARROWING_ALLOWLIST` holds the forget aliases only. Full text in git history.
 - **11-05 STOP block, carried** (not re-verified tonight beyond the 06:27 START check):
   - **Invite hold (PPM):**
     - met: #1551, #2283, #2178;
-    - P0 open: #2261 (waits on xian's #2174 runs; the refresh run comes before D3 is chosen) and #2282 (live since 12:47, acceptance below);
+    - P0 open: #2261 (D3 chosen 11-11; lands on #2342) and #2282 (live since 12:47, acceptance below);
     - P1: #2157, #2158.
     - No invitations of any kind.
   - **#2282 (beta canonical, alpha 301s):** served, and my curl probes of the boundary pass (12:51). The MCP OAuth issuer stays `https://alpha.pipermorgan.ai/mcp/oauth`. Kept unredirected on alpha: /mcp/oauth/*, both .well-known paths, /login, POST /api/v1/auth/login, /static, /assets, /health. Open acceptance:
