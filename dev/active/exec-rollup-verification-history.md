@@ -540,3 +540,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v953 (13:28): 2292 closed (2344 split); install scope option 2 agreed safe by Arch/HOST/PPM
 - v954 (13:47): 1423 answered (xian moved it; relayed to PPM 01M78VMV), item removed
 - v955 (13:56): PUB-clear yes/no added (PPM 01M78W2T)
+- v956 (14:01): 2333 go routed (01M78WDW); 2335 rotate + Redis a/b/c routed (01M78WDY)
