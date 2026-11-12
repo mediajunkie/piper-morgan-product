@@ -103,9 +103,17 @@ def github_degrade_reply(degradation) -> str:
     sentences that COMPOSE with the short stale phrase (the standup disclosure, Radar,
     the default-repo check) keep reading ``user_message`` and are unchanged."""
     reason = getattr(degradation, "reason", None)
+    # #2342 (Arch 2026-11-12 07:35): ``detail`` is a closed set of named constants
+    # (``cutover``, ``app_not_installed``, ``app_install_link_missing``), and every
+    # surface picks its line by it, never by reading a message.
+    detail = getattr(degradation, "detail", None)
+    if detail == DETAIL_APP_NOT_INSTALLED:
+        return GITHUB_APP_NOT_INSTALLED_REPLY
+    if detail == DETAIL_APP_INSTALL_LINK_MISSING:
+        return GITHUB_APP_INSTALL_LINK_MISSING_REPLY
     if reason is DegradationReason.STALE_TOKEN:
-        if getattr(degradation, "detail", None) == REASON_CUTOVER:
-            return GITHUB_CUTOVER_STALE_REPLY  # #2342
+        if detail == REASON_CUTOVER:
+            return GITHUB_CUTOVER_STALE_REPLY
         return GITHUB_STALE_TOKEN_REPLY
     return getattr(degradation, "user_message", "") or "The GitHub connector is degraded."
 
@@ -1543,6 +1551,14 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 "GitHub MCP search failed (server unreachable/unprovisioned)", exc_info=True
             )
             return GitHubIssuesResult(degradation=await self._degrade_for_exc(binding, exc))
+        if not items and not total:
+            # #2342 requirement 2: for a person who authorized the GitHub App and
+            # installed it on no repository, an empty result is not "no issues". It is
+            # the install step's named state, on every surface (the connector's GitHub
+            # resource reads through here and never resolves a repository; PA 07:31).
+            install_step = await self._install_step_degrade(user_id, credential=binding)
+            if install_step is not None:
+                return GitHubIssuesResult(degradation=install_step)
         return GitHubIssuesResult(issues=items, total=total)
 
     @staticmethod
@@ -1811,26 +1827,38 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 user_id=user_uuid, project_id=project_id, explicit=explicit_repo
             )
         except UnresolvedRepoError:
-            degraded = await self.degrade(DegradationReason.REPO_UNRESOLVED)
-            if await self._app_installed_nowhere(user_id):
-                # #2342 (CXO): "Which repo?" is the wrong question for a person who has
-                # authorized but installed the App on nothing. Say that instead.
-                if app_install_url() is None:
-                    # CXO 07:30: with no link to give, never say "install it".
-                    degraded = dataclasses.replace(
-                        degraded,
-                        user_message=GITHUB_APP_INSTALL_LINK_MISSING_REPLY,
-                        detail=DETAIL_APP_INSTALL_LINK_MISSING,
-                    )
-                else:
-                    degraded = dataclasses.replace(
-                        degraded,
-                        user_message=GITHUB_APP_NOT_INSTALLED_REPLY,
-                        detail=DETAIL_APP_NOT_INSTALLED,
-                    )
-            return degraded
+            # #2342 (CXO): "Which repo?" is the wrong question for a person who has
+            # authorized but installed the App on nothing. Say that instead.
+            install_step = await self._install_step_degrade(user_id)
+            if install_step is not None:
+                return install_step
+            return await self.degrade(DegradationReason.REPO_UNRESOLVED)
 
-    async def app_installed_repositories(self, user_id) -> Optional[InstalledRepositories]:
+    async def _install_step_degrade(
+        self, user_id, *, credential=None
+    ) -> Optional[DegradationResponse]:
+        """#2342 requirement 2: the named state for "authorized, App installed on no
+        repository", or None when that isn't the case or can't be told. Rides
+        REPO_UNRESOLVED with a ``detail`` (no new degradation reason). With no install
+        link to give, the detail and words say the problem is on our side (CXO 07:30)."""
+        if not await self._app_installed_nowhere(user_id, credential=credential):
+            return None
+        degraded = await self.degrade(DegradationReason.REPO_UNRESOLVED)
+        if app_install_url() is None:
+            return dataclasses.replace(
+                degraded,
+                user_message=GITHUB_APP_INSTALL_LINK_MISSING_REPLY,
+                detail=DETAIL_APP_INSTALL_LINK_MISSING,
+            )
+        return dataclasses.replace(
+            degraded,
+            user_message=GITHUB_APP_NOT_INSTALLED_REPLY,
+            detail=DETAIL_APP_NOT_INSTALLED,
+        )
+
+    async def app_installed_repositories(
+        self, user_id, *, credential=None
+    ) -> Optional[InstalledRepositories]:
         """#2342: the repositories the GitHub App is installed on for this account, or
         None when that question doesn't apply (App mode off, or the account is not
         served by an App grant: a personal token, a degrade, no binding).
@@ -1839,18 +1867,19 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         never reported as "not installed"."""
         if not app_mode():
             return None
-        credential = await self.resolve_credential(user_id)
+        if credential is None:
+            credential = await self.resolve_credential(user_id)
         if not isinstance(credential, GitHubCredential) or credential.leg != "oauth":
             return None
         if not credential.token:
             return None
         return await list_installed_repositories(credential.token)
 
-    async def _app_installed_nowhere(self, user_id) -> bool:
+    async def _app_installed_nowhere(self, user_id, *, credential=None) -> bool:
         """True only when the installation read ANSWERED and found no repository. Any
         failure or doubt is False, so the ordinary "which repo?" stays."""
         try:
-            installed = await self.app_installed_repositories(user_id)
+            installed = await self.app_installed_repositories(user_id, credential=credential)
         except InstallationReadFailed:
             return False
         except Exception:
