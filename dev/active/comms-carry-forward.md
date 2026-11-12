@@ -1,7 +1,7 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-11 18:19 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/11/11/2026-11-11-0619-comms-code-log.md` (open; STOP at 21:19).
+## ⭐ CURRENT STATE — 2026-11-11 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/11/2026-11-11-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-12.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
 - **Weekend slots are INSIGHTS (Sat and Sun, Medium + LinkedIn).** Tue/Thu building, Wed Ship. Every publish-ready memo states the category, checked against the weekday.
 - **Tue 11-10 "Never Green in a Thousand Runs": DONE.** Published 11-10 23:31 (website 108509e), calendar `distributed` with xian's Medium URL. Nothing owed.
