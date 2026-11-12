@@ -85,7 +85,7 @@ If it is not empty: `git fetch origin main && git merge origin/main && git push 
 
 ## Mail
 
-- Write memo, cc copies and sent mirror under `mailboxes/`, then send with `scripts/mail-send.sh "mail({role}): {subject}" <every changed path>`. Don't `git add` or commit mailbox files yourself. Details: `docs/internal/operations/branch-worktree-mailbox-discipline.md`.
+- Mail to a seat in this repo goes on mail v4: `scripts/mail4.py send --to <roles> [--cc <roles>] --type <type> --subject "..." --body-file <file>`. Use `scripts/mail-send.sh` (memo, cc copies and sent mirror under `mailboxes/`, then `mail-send.sh "mail({role}): {subject}" <every changed path>`) only when a party isn't on v4 (Spec), or v4 fails; say why in your log. v3 is the fallback until 2026-11-23. Don't `git add` or commit mailbox files yourself. Details: `docs/internal/operations/mail-v4-pilot.md`, `docs/internal/operations/branch-worktree-mailbox-discipline.md`.
 - Routing: `mailboxes/DIRECTORY.md`. Every memo's frontmatter carries `reply-to: piper-morgan-product:mailboxes/{your-slug}/inbox/`; reply to the memo's `reply-to`.
 - Never cc PM and never address mail to PM (the `mailboxes/xian (ceo)/` box is retired). Anything that needs PM (a decision only PM can make, a relayed PM ruling, something PM would contradict) goes **to `exec`**, with which of the three in the subject.
 - Mail to an agent outside this repo (Janus, Pard, Dispatch, …) goes to that agent's home repo: look it up in `~/Development/dispatch/CLAUDE.md` §"Mail routing" and send it with `scripts/mail-send-external.sh`, never a hand commit. Steps: `mailboxes/DIRECTORY.md`.
