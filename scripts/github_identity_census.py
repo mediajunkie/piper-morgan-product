@@ -209,6 +209,17 @@ async def _verify_logins(session, operator_login: str, operator_user_id: str | N
         if not grant:
             counts["grant missing"] += 1
             continue
+        # #2342: the stored value is a classic token or a GitHub App grant record. The
+        # bearer for an App grant is its access token, never the record.
+        from services.mcp.consumer.github_app_grant import GrantRecordDamaged, classify
+
+        try:
+            app_grant = classify(grant)
+        except GrantRecordDamaged:
+            counts["grant unreadable"] += 1
+            continue
+        if app_grant is not None:
+            grant = app_grant.access_token
         login = await _login_for_grant(grant)
         if login is None:
             counts["GitHub rejected the grant"] += 1

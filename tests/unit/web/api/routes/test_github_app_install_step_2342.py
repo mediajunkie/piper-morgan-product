@@ -406,6 +406,106 @@ class TestAnEmptyUserWideReadIsNotNoIssues:
         read.assert_not_awaited()
 
 
+_EMPTY = '{"total_count":0,"items":[]}'
+_USER_WIDE_READS = {
+    "issues": (lambda a: a.list_open_issues(_OWNER), lambda r: r.issues),
+    "pull requests": (lambda a: a.list_open_prs(_OWNER), lambda r: r.issues),
+    "repositories": (lambda a: a.search_user_repositories(_OWNER), lambda r: r.repositories),
+}
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("read_name", sorted(_USER_WIDE_READS))
+class TestEachUserWideReadInEachOutcome:
+    """Arch 2026-11-12 07:48: the three reads that resolve no repository (``assignee:@me``
+    issues, ``author:@me`` pull requests, ``user:@me`` repositories), each in the three
+    outcomes of the installation read that an empty result triggers."""
+
+    async def _run(self, monkeypatch, read_name, installed):
+        adapter, read = TestAnEmptyUserWideReadIsNotNoIssues._adapter(
+            monkeypatch, _EMPTY, installed
+        )
+        call, items = _USER_WIDE_READS[read_name]
+        result = await call(adapter)
+        return result, items(result), read
+
+    async def test_installed_nowhere_degrades_with_the_install_detail(
+        self, app_on, monkeypatch, read_name
+    ):
+        result, items, _ = await self._run(
+            monkeypatch, read_name, InstalledRepositories(installations=0)
+        )
+        assert items is None
+        assert result.degradation.reason is DegradationReason.REPO_UNRESOLVED
+        assert result.degradation.detail == DETAIL_APP_NOT_INSTALLED
+
+    async def test_installed_nowhere_with_no_slug_degrades_with_the_link_missing_detail(
+        self, app_on, monkeypatch, read_name
+    ):
+        monkeypatch.delenv(grant_mod.ENV_APP_SLUG)
+        result, items, _ = await self._run(
+            monkeypatch, read_name, InstalledRepositories(installations=0)
+        )
+        assert items is None
+        assert result.degradation.detail == install_mod.DETAIL_APP_INSTALL_LINK_MISSING
+
+    async def test_installed_somewhere_the_empty_result_is_true(
+        self, app_on, monkeypatch, read_name
+    ):
+        result, items, read = await self._run(
+            monkeypatch,
+            read_name,
+            InstalledRepositories(installations=1, repositories=[_repo(1)]),
+        )
+        assert items == [] and result.degradation is None
+        read.assert_awaited_once()
+
+    async def test_a_failed_installation_read_leaves_the_empty_result(
+        self, app_on, monkeypatch, read_name
+    ):
+        result, items, _ = await self._run(monkeypatch, read_name, InstallationReadFailed(503))
+        assert items == [] and result.degradation is None
+
+
+@pytest.mark.asyncio
+class TestConnectorResourceEndToEnd:
+    """Arch 07:48, PA 07:44: through ``_read_github_issues``, the connector's only GitHub
+    surface, a person who installed the App nowhere reads CXO's connector install line."""
+
+    async def _payload(self, monkeypatch, installed):
+        import json as _json
+
+        from services.mcp.server import resources
+
+        adapter, _ = TestAnEmptyUserWideReadIsNotNoIssues._adapter(monkeypatch, _EMPTY, installed)
+        monkeypatch.setattr(resources, "GitHubMCPSpatialAdapter", lambda: adapter)
+        monkeypatch.setattr(resources, "current_user_id", lambda: _OWNER)
+        return _json.loads(await resources._read_github_issues())
+
+    async def test_installed_nowhere_reads_the_connector_install_line(self, app_on, monkeypatch):
+        payload = await self._payload(monkeypatch, InstalledRepositories(installations=0))
+        assert payload["available"] is False
+        assert payload["message"] == gh_mod.GITHUB_CONNECTOR_APP_NOT_INSTALLED_REPLY
+        assert "in the Piper Morgan app" in payload["message"]
+
+    async def test_no_slug_reads_the_on_our_side_line(self, app_on, monkeypatch):
+        monkeypatch.delenv(grant_mod.ENV_APP_SLUG)
+        payload = await self._payload(monkeypatch, InstalledRepositories(installations=0))
+        assert payload["message"] == gh_mod.GITHUB_APP_INSTALL_LINK_MISSING_REPLY
+
+    async def test_installed_somewhere_reads_an_honest_empty_list(self, app_on, monkeypatch):
+        payload = await self._payload(
+            monkeypatch, InstalledRepositories(installations=1, repositories=[_repo(1)])
+        )
+        assert payload["available"] is True and payload["issues"] == [] and payload["total"] == 0
+
+    async def test_a_failed_installation_read_reads_the_empty_list_as_today(
+        self, app_on, monkeypatch
+    ):
+        payload = await self._payload(monkeypatch, InstallationReadFailed(None, "timeout"))
+        assert payload["available"] is True and payload["issues"] == []
+
+
 class TestRepliesArePickedByDetail:
     """Arch 2026-11-12 07:35: ``detail`` is a closed set of named constants and every
     surface picks its line by it, never by reading a message."""
