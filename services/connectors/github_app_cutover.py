@@ -24,6 +24,7 @@ It prints and returns counts only. No token, login, email or name leaves this mo
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
 import structlog
@@ -150,10 +151,13 @@ async def run_cutover(*, apply: bool = False) -> Dict[str, int]:
     return counts
 
 
-def format_counts(counts: Dict[str, int], *, applied: bool) -> str:
-    """The lines the script prints. Counts only."""
+def format_counts(counts: Dict[str, int], *, applied: bool, ran_at: Optional[str] = None) -> str:
+    """The lines the script prints. Counts only, and the time the run finished (Arch
+    2026-11-12 08:28: the apply prints when it ran, so the record shows it was the same
+    sitting as the secrets)."""
     head = "APPLIED" if applied else "DRY RUN (nothing changed; pass --apply to change it)"
-    lines = [f"github app cutover: {head}"]
+    when = ran_at or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    lines = [f"github app cutover: {head}", f"  ran at {when}"]
     labels = {
         "seen": "classic grants found",
         "marked": "bindings marked stale (cutover)" if applied else "bindings that would be marked",

@@ -280,7 +280,13 @@ class TestScriptOutput:
         sm, _ = world
         await _seed_three(sm)
         counts = await cut.run_cutover(apply=True)
-        shown = cut.format_counts(counts, applied=True)
+        shown = cut.format_counts(counts, applied=True, ran_at="2026-11-12T16:00:00Z")
         assert "APPLIED" in shown
+        assert "ran at 2026-11-12T16:00:00Z" in shown  # Arch 08:28: the apply says when it ran
+        import re
+
+        assert re.search(
+            r"ran at \d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ", cut.format_counts(counts, applied=True)
+        )
         for secret in ("classic-a", "classic-b", "access-app", _A, _B):
             assert secret not in shown

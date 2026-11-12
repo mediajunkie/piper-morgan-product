@@ -401,6 +401,56 @@ First instance: `scripts/github_app_refresh_check.py` (Lead, #2341, ADR-081 D3's
 This rule does not cover how a provider key reaches a seat for its own runs. That is open with xian
 through Exec (Arch, decisions.log 2026-11-11 18:43, #2340).
 
+## 11. The GitHub App cutover sitting: register, promote, set the secrets, run the cutover (#2342, Lead, 2026-11-12)
+
+ADR-081 D3 moves GitHub connect from the classic OAuth App to one published GitHub App. The code is on
+main and does nothing until the App's two variables are set on the main app. This is the order for the
+sitting in which xian turns it on. Every step is his hand. Steps 3 and 4 are one sitting, not two days
+(Arch, 2026-11-12 08:28): once the secrets are set, a classic token is refused by the main app but
+stays valid at GitHub, and still serves the Claude connector, until the script in step 4 has run.
+
+**Before the sitting**
+
+1. **Register the published App** with HOST's settings on issue 2342: the four permissions, "Expire
+   user authorization tokens" on, no private key, webhook off. Callback URL, exact, one per hosted
+   origin that should connect: `<origin>/api/v1/settings/integrations/github/callback`, where
+   `<origin>` is that host's `PIPER_BASE_URL` (beta: `https://beta.pipermorgan.ai`). If
+   `GITHUB_OAUTH_REDIRECT_URI` is set on a host, the callback is that value instead; the App and the
+   classic app use the same one. No seat can read either value.
+2. **Promote a build that carries the code**, at or after main `7f17d1a841`. It carries the migration
+   `u2342reason` (one nullable column), so it needs xian's explicit word, not the standing grant. With
+   the secrets unset the build behaves as the classic app does.
+
+**The sitting**
+
+3. **Set the values.** On the main app (`piper-morgan`): `GITHUB_APP_CLIENT_ID`,
+   `GITHUB_APP_CLIENT_SECRET`, `GITHUB_APP_SLUG`. On the MCP app (`piper-morgan-mcp`):
+   `GITHUB_APP_SLUG` only (CXO, 08:28). The client ID and secret never go on the MCP app (Arch, PA;
+   the note is in `fly.mcp.toml`). One alone on the main app leaves App mode off, and the startup log
+   names the missing one. The client secret must not be typed into a command line or pasted into a
+   session; the one command for this step is issue 2343.
+4. **Run the cutover, in the main app's container:**
+   `python scripts/github_app_cutover.py` (a dry run: it prints what it would do), then
+   `python scripts/github_app_cutover.py --apply`, then the dry run again, which should find no classic
+   grant. It prints counts and the time it ran, never a token. `--apply` is refused unless both App
+   variables are set. Put the three outputs on issue 2342. A revoke that failed is counted and does not
+   stop the run.
+5. **Check it took.** The main app's startup log reads "GitHub connect mode: GitHub App". On beta,
+   Settings, Integrations, GitHub: an account that was connected before reads CXO's cutover line and
+   offers Reconnect.
+
+**After**
+
+6. The served acceptance rows on issue 2342 (Web's browser, PA's connector turns, CXO's judgment).
+7. When they pass: widen who can install the App, and retire the classic app's client secret. Until
+   then the classic `GITHUB_OAUTH_CLIENT_ID` and secret stay set, because the script's revoke and the
+   disconnect of a classic grant read them.
+
+**To turn it off again:** unset the two App variables on the main app. Connect returns to the classic
+app. Accounts already moved keep their App grant, which then serves only until its access token
+expires (8 hours) and cannot be refreshed; accounts the script marked stay stale until they reconnect.
+So this is a way back for new connections, not an undo of the cutover.
+
 ## Promotion checklist: read staging's sha from staging, not from the deploy-run list (Lead, 2026-10-16)
 
 **Why:** the 10:51 dispatch under the standing grant was refused by the promote gate. The gate reads the sha staging's
