@@ -529,3 +529,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 11-12 07:46 v942: main 12/12 green again (Architecture Enforcement success on 88da3f58a8). Verified: gh run list + main-ci-status.sh 07:45.
 - 11-12 08:54 v943: #2342 card -> xian's three steps (Lead 01M78AEQ), promotion yes/no, container-command confirm. Verified: memo read in full; xian's prior fly ssh console use from Lead 10-18 and PA 10-29 logs.
 - v944 (10:02): 10:01 WORK, quiet; 2342 Arch fix f28201fade landed, Tests green 09:40; main 12/12
+- v945 (11:44): xian promote yes relayed to Lead (01M78MKY); alpha-retired answer; App-vs-OAuth paragraph; fly ssh confirm removed (team's to settle)
