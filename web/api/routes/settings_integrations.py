@@ -262,6 +262,15 @@ class GitHubRepositoryListResponse(BaseModel):
     """Response containing list of GitHub repositories."""
 
     repositories: List[GitHubRepositoryInfo]
+    # #2342: a named state in place of an empty list. ``app_not_installed``: the person
+    # has authorized the GitHub App but installed it on no repository. ``message`` is
+    # CXO's card line; ``install_url`` is where to install it (None when no slug is set).
+    state: Optional[str] = None
+    message: Optional[str] = None
+    install_url: Optional[str] = None
+    # #2342 (CXO 2026-11-12 07:30): a quiet line under a NON-EMPTY list in App mode,
+    # saying the list is where the App is installed. Never set beside ``state``.
+    note: Optional[str] = None
 
 
 class GitHubPreferencesRequest(BaseModel):
@@ -2402,11 +2411,67 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
     Issue #573: GitHub repository preferences
     """
     try:
+        # --- #2342 (ADR-081 D3): in GitHub App mode, on the App grant, the list is the
+        # repositories the App is INSTALLED on, read from GitHub with the person's own
+        # token. The user:@me search below also returns public repositories the App is
+        # not installed on, which Piper could read but not write to. ---
+        from services.mcp.consumer.github_app_grant import app_mode
+
+        installed = None
+        try:
+            if app_mode():  # with App mode off this route is exactly as it was
+                installed = await GitHubMCPSpatialAdapter().app_installed_repositories(
+                    current_user.sub
+                )
+        except Exception as e:
+            # A failed read is never "not installed" and never an empty list (#1231).
+            logger.warning(
+                "github_app_installation_read_failed",
+                user_id=str(current_user.sub),
+                error=type(e).__name__,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_502_BAD_GATEWAY,
+                detail="I couldn't load your repositories. Try refreshing the page.",
+            )
+        if installed is not None and installed.installed_nowhere:
+            from services.mcp.consumer.github_adapter import (
+                GITHUB_APP_INSTALL_LINK_MISSING_CARD_LINE,
+                GITHUB_APP_NOT_INSTALLED_CARD_LINE,
+            )
+            from services.mcp.consumer.github_app_grant import app_install_url
+
+            install_url = app_install_url()
+            logger.info(
+                "github_app_installed_nowhere",
+                user_id=str(current_user.sub),
+                has_install_link=bool(install_url),
+            )
+            # CXO 2026-11-12 07:30: never "install it" with no way to. With no link, the
+            # card says the problem is on our side.
+            return GitHubRepositoryListResponse(
+                repositories=[],
+                state="app_not_installed",
+                message=(
+                    GITHUB_APP_NOT_INSTALLED_CARD_LINE
+                    if install_url
+                    else GITHUB_APP_INSTALL_LINK_MISSING_CARD_LINE
+                ),
+                install_url=install_url,
+            )
+
         # --- Connector-first (#1327 gap 3): the user's own repos over the OAuth connector. ---
-        connector_result = await GitHubMCPSpatialAdapter().search_user_repositories(
-            current_user.sub, limit=100
-        )
-        if connector_result.repositories is not None:
+        if installed is not None:
+            connector_result = None
+            repo_dicts = installed.repositories
+            source = "app_installation"
+        else:
+            connector_result = await GitHubMCPSpatialAdapter().search_user_repositories(
+                current_user.sub, limit=100
+            )
+        if connector_result is None:
+            pass  # the App's installed repositories, set above
+        elif connector_result.repositories is not None:
             repo_dicts = connector_result.repositories  # normalized {id,name,full_name,description}
             source = "connector"
         elif (
@@ -2458,7 +2523,12 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
             source=source,
         )
 
-        return GitHubRepositoryListResponse(repositories=repositories)
+        note = None
+        if source == "app_installation" and repositories:
+            from services.mcp.consumer.github_adapter import GITHUB_APP_INSTALLED_LIST_NOTE
+
+            note = GITHUB_APP_INSTALLED_LIST_NOTE
+        return GitHubRepositoryListResponse(repositories=repositories, note=note)
 
     except HTTPException:
         raise
