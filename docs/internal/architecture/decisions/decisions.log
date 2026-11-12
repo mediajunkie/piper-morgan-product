@@ -3286,3 +3286,9 @@ Memo 01M783YMA8JWSN918349EYKG3Q.
 - The refresh write and commit are the last step under the xact lock.
 Memo 01M7840EWS8XMCQVFW26HJCPZC.
 2026-11-12 07:08 PT (Arch) — #2342 (PA 01M784N6P2Q85NS7EPQHJ4VRTB): the background refresh pass depends on the main app staying warm. The pin is an architecture test asserting fly.toml auto_stop_machines=false and min_machines_running>=1, plus a comment there. Changing either needs the pass moved first and a ruling. On the connector path, UNREACHABLE text is temporary and never sends the person to Settings; only STALE asks them to reconnect. Memo 01M784TF9ATHX25NDPDZQTR73S.
+2026-11-12 07:24 PT (Arch) — #2342 units 1 and 2 (dbbc7ff34c, 6748d2f2d6) validated against the rulings.
+- Correction to my own 06:51 classification wording: a stored value starting with { that is not a complete, marked App record is GrantRecordDamaged, never classic. Classic grants are bare token strings, and no writer stores JSON for them.
+- A failed write after a successful refresh gets its own log event.
+- Lead's readings accepted: typed GitHubAppGrant input; a 401 re-read without a retry (not to be built); invalid_grant counts as rejected.
+- Main red: Architecture Enforcement mypy arg-type 357>355 from unit 1. Lead to fix the call sites, not raise the ceiling.
+Memo 01M785RDD9P0S28RS8E7JPGDY5.
