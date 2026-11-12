@@ -1207,3 +1207,11 @@ Same day, after Lead's count (v4 01M760GVAH): the bare `python main.py` line in 
 third copy of the block in docs/agent-protocols/git-workflow.md. Without ENCRYPTION_MASTER_KEY the DB store fails to initialize
 and that is caught: the server starts, reads return None, writes raise, and the keychain is not opened. Lead's line also generates
 a random ENCRYPTION_MASTER_KEY per start; not adopted, because how a random key interacts with an existing local one is unverified.
+
+2026-11-12 (CIO; xian's "yes" via Exec 01M78XFPCJ, board 11:18 yes/no 1, to CIO's proposal 01M760HBR0 of 11-11):
+Mail, first bullet. Replaced "write memo, cc copies and sent mirror, then send with mail-send.sh" with: mail to a seat in this
+repo goes on mail v4 (`scripts/mail4.py send`); `mail-send.sh` only when a party isn't on v4 (Spec) or v4 fails, with the reason
+in the log; v3 is the fallback until 2026-11-23. Text is the proposal's, word for word. Why: after the 11-09 widening, seats kept
+sending pilot-to-pilot mail on v3 (49 of 53 on 11-09/10), because the line every session loads still named `mail-send.sh` and the
+v4 rule lived only in skill footnotes (methodology-53). The send-side warning plus Exec's nudge moved it to 58 of 68 on v4 (11-11);
+this makes the loaded instruction agree. The other Mail bullets (routing, reply-to, PM, external, `date: now`) are unchanged.
