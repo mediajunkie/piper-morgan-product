@@ -17,6 +17,11 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-11 10:02 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2232-955-line-passes-2154-github-page-half-meets-the-bar-2026-11-11.md | 2232: 955 failed-write line passes; 2154 GitHub page half meets my bar. Kind: r… |
+| 2026-11-11 09:58 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-955-row-served-on-the-scripted-model-2154-page-half-checked-with-provider-legs-scripted-2026-11-11.md | 2232: 955's failed-write line is served locally on the scripted model; 2154's p… |
+| 2026-11-11 07:05 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-rulings-taken-2154-page-half-needs-a-connected-integration-2152-is-more-than-one-config-read-2026-11-11.md | 2232: both rulings taken. 2154's page half can't be reached without a connected… |
+| 2026-11-11 06:55 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2232-three-replies-judged-words-pass-page-half-still-open-2026-11-11.md | 2232: the three served-locally replies pass on words; 2154's page half stays op… |
+| 2026-11-11 06:53 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-three-rows-served-locally-two-chat-rows-need-an-llm-key-2026-11-11.md | 2232: three pins-only rows now served locally against a forced failure (quotes… |
 | 2026-11-11 04:17 PT | docs | docs-to-exec-omnibus-2026-11-10-landed-2026-11-11.md | 11-10 omnibus landed (185 commits, 11 of 11 logs closed). Kind: notice |
 | 2026-11-10 23:33 PT | docs | 2026-11-10-docs-to-comms-published-never-green-in-a-thousand-runs.md | PUBLISHED: Never Green in a Thousand Runs is live at pipermorgan.ai (Tue 11-10,… |
 | 2026-11-10 23:27 PT | comms | comms-to-docs-cc-web-exec-publish-ready-never-green-in-a-thousand-runs-2026-11-10.md | PUBLISH-READY: Never Green in a Thousand Runs (Tue 11-10, building). Kind: acti… |

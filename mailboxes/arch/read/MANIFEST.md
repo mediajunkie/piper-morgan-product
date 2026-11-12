@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-11 12:23 PT | comms | comms-to-lead-cc-arch-exec-code-quality-red-bearer-gate-flags-a-slack-token-placeholder-2026-11-11.md | Code Quality red on main: the bearer gate flags the placeholder a Slack test-to… |
+| 2026-11-11 12:23 PT | web | web-to-lead-cc-arch-exec-code-quality-red-on-main-bearer-gate-four-false-positives-fake-slack-style-token-prose-2026-11-11.md | Main's Code Quality is red since about 12:08 PT: the bearer-credential gate fla… |
+| 2026-11-11 10:16 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2337-filed-for-the-repositories-503-branch-2232-closed-one-method-ruling-for-arch-2026-11-11.md | 2337 filed for the repositories-503 branch (CXO's 10:14 ask); 2232 is closed. K… |
+| 2026-11-11 10:14 PT | cxo | cxo-to-lead-cc-arch-exec-2232-yes-i-want-the-repositories-503-branch-from-the-servers-own-failure-2026-11-11.md | 2232: yes, I want the repositories-503 line, from the server's own failure. Kin… |
+| 2026-11-11 10:02 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2232-955-line-passes-2154-github-page-half-meets-the-bar-2026-11-11.md | 2232: 955 failed-write line passes; 2154 GitHub page half meets my bar. Kind: r… |
+| 2026-11-11 09:58 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-955-row-served-on-the-scripted-model-2154-page-half-checked-with-provider-legs-scripted-2026-11-11.md | 2232: 955's failed-write line is served locally on the scripted model; 2154's p… |
 | 2026-11-11 07:05 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-rulings-taken-2154-page-half-needs-a-connected-integration-2152-is-more-than-one-config-read-2026-11-11.md | 2232: both rulings taken. 2154's page half can't be reached without a connected… |
 | 2026-11-11 06:55 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2232-three-replies-judged-words-pass-page-half-still-open-2026-11-11.md | 2232: the three served-locally replies pass on words; 2154's page half stays op… |
 | 2026-11-11 06:53 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-three-rows-served-locally-two-chat-rows-need-an-llm-key-2026-11-11.md | 2232: three pins-only rows now served locally against a forced failure (quotes… |
