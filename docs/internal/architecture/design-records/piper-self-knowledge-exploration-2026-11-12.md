@@ -1,6 +1,6 @@
 # Piper self-knowledge: design exploration
 
-**Status:** DRAFT. Arch's sections are written. CXO's and Docs' input was folded in at 14:25 PST (memos 01M78XJ2P371XTWETCC8PSXAKW, 01M78XKW74E2EQQCAJQ2Z1TWSR). CIO's section (area 5) and the cost answer were written in place at 14:28 PST (memo 01M78XVXC3).
+**Status:** RECOMMENDATION READY (2026-11-12 14:29 PST). All three contributions are in: CXO 01M78XJ2P371XTWETCC8PSXAKW, Docs 01M78XKW74E2EQQCAJQ2Z1TWSR, and CIO 01M78XVXC34GVSQAZQF67DX88W, written in place. Open: xian's answer on "whose Piper".
 **Owner:** Arch. **Contributors:** CXO (ethos and voice), Docs (documentation and lore), CIO (methodology and best practices). PPM places it.
 **Started:** 2026-11-12 14:22 PST, on xian's ask relayed by Exec.
 **Milestone:** Production.
@@ -134,6 +134,47 @@ Both are methodology-53. For Piper this means:
 
 **Arch's leaning (updated after CXO's and Docs' input):** Tier 1 first, as a curated, voice-passed corpus traced to shipped behaviour. That's option A's briefing plus option B's retrieval over a manifest Docs owns. Option C's repository tools wait for Tier 2, behind an account line. **Arch's earlier leaning, before contributions:** D. A short generated briefing extends what `capability_catalog()` already does. Read-only tools over the served snapshot cover codebase and architecture depth, with an allow-list of paths: code, `docs/internal/architecture/`, the help docs. Logs, mail, `dev/` and the briefings stay out. Lore comes only from its published form. The same rule as ADR-080 holds: the LLM decides what the person is asking about, and code decides which paths it may read.
 
+## Recommendation (Arch)
+
+**Build Tier 1 first. Treat "following" and "knowing" as two mechanisms (CIO's finding). Never index raw team records.**
+
+**1. Following (every Piper, first):** a small, versioned **conduct layer** in the per-turn prompt (`config/PIPER.md` and its loader), with code guards where a rule can be checked. It holds the practices Piper acts by: honest limits, no claim without a source, verify before "done", say when it doesn't know.
+- CIO drafts it from the Proven entries, CXO voices it, and xian approves the wording.
+- **Budget:** CIO's cap of about 1,000 tokens, in the cacheable static prefix (#2145). The build fails above the cap. Every token is the user's money on every turn.
+
+**2. Knowing, Tier 1 (every Piper):** a **curated user corpus**, retrieved on demand through the existing ingestion stack and built at deploy from a manifest. It has three parts:
+- (a) **What Piper can and can't do,** *generated* from `capability_catalog()`, never written by hand. This answers CXO's largest trust risk: no capability claim without a source in code.
+- (b) **How it works and what it stands for:** user-register explanations written from the `current/` architecture docs, PDR-004 and the ADRs, voice-passed by CXO.
+- (c) **Teachable practice:** the blog's insight posts first, then rewritten user-register summaries of Proven methodology entries.
+
+Rules for the corpus:
+- Each item carries a source path and a last-verified date. **Docs owns the manifest, and CIO owns the methodology rows.**
+- A deploy fails if the manifest names a missing file, or an item past its re-verify window.
+- Answers about how Piper works describe the **served** build.
+
+**3. Knowing, Tier 2 (team account only, second):** copy the agents' layering, not one index:
+- a briefing;
+- read-only tools over the served snapshot, with a path **allow-list** (code, `docs/internal/architecture/`, `docs/briefing/`, the user docs);
+- the Tier 1 corpus.
+
+An account line in code decides who gets Tier 2. The LLM decides what the person asks about, and code decides which paths it may read (ADR-080).
+
+**Excluded for every tier, pinned by an enforcement test:** `dev/`, `mailboxes/`, the omnibuses and agent memory. Lore comes only from its published form (the blog), cited as dated history, never as current fact.
+
+**4. Verification (served, not unit):** CXO's question set plus CIO's three questions, run against the live reply and judged on quoted replies. It includes a feature that isn't built (expect an honest no) and a person or business-matter question (expect a decline with no leak).
+
+**Options for xian:**
+- **Smaller:** the conduct layer and 2(a), the generated capability answers, alone. That's the cheapest real gain, and it closes #1186's original "how do you work" decline.
+- **As recommended:** parts 1, 2 and 4.
+- **Larger:** add part 3 for the team account. Do it only once Tier 1's corpus discipline (manifest, dates, voice) has held for a sprint. The repository's privacy surface is far bigger.
+
+**Owners (proposed; PPM places it):**
+- Conduct layer: CIO drafts, CXO voices, xian says yes, Lead builds.
+- Manifest and the generated capability answers: Docs and Lead.
+- Corpus items: Docs, with CXO's voice pass.
+- Exclusion test and served question set: Lead, with CXO judging.
+- Tier 2 after.
+
 ## Open questions
 
 0. **Whose Piper: Tier 1, Tier 2, or both, and in what order?** xian's call, sent through Exec.
@@ -151,4 +192,4 @@ Both are methodology-53. For Piper this means:
 
 - 2026-11-12: this draft (Arch's sections).
 - 2026-11-13 15:00 PST: CXO, Docs and CIO sections due.
-- 2026-11-14 12:00 PST: Arch's recommendation with options, to Exec for xian's board.
+- 2026-11-14 12:00 PST: Arch's recommendation with options, to Exec for xian's board. **Delivered early, 2026-11-12 14:29 PST,** once all three contributions had arrived.
