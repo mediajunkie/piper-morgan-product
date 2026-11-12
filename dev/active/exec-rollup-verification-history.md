@@ -527,3 +527,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 11-12 07:16 v939: #2342 unit 1 on main 07:11 (git log), migration means next promotion needs xian's word (Lead 01M7854M). Verified: commit time from git log.
 - 11-12 07:31 v940: status line main 11/12 (Architecture Enforcement red on #2342 unit 1, Lead's). Verified: scripts/main-ci-status.sh 07:30.
 - 11-12 07:46 v942: main 12/12 green again (Architecture Enforcement success on 88da3f58a8). Verified: gh run list + main-ci-status.sh 07:45.
+- 11-12 08:54 v943: #2342 card -> xian's three steps (Lead 01M78AEQ), promotion yes/no, container-command confirm. Verified: memo read in full; xian's prior fly ssh console use from Lead 10-18 and PA 10-29 logs.
