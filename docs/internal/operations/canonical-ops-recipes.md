@@ -330,7 +330,8 @@ venv/bin/python scripts/served_fault_run.py --rows 2154     # one row
 
 Rows today: `2125-store` (wrong-length `ENCRYPTION_MASTER_KEY`), `2125-check` (the provider unreachable:
 an HTTPS proxy stub answering 502), `2154` (SELECT on `connector_configs` revoked from the app's role),
-`955` (a chat turn, "forget my clear preference", with UPDATE on `users.preferences` revoked).
+`955` (a chat turn, "forget my clear preference", with UPDATE on `users.preferences` revoked),
+`2337` (the repositories route on a connected account, same revoke as `2154`).
 Two rules from Arch's 11-10 ruling hold for any database row: the app connects as a non-superuser role
 (the compose role `piper` is a superuser and ignores grants), and a probe proves the denial before the
 request, or the row reports NOT RUN. The layer is the local server's HTTP reply: not alpha, and not the
@@ -352,6 +353,20 @@ reach that state by itself. The 11-11 check scripted those two answers in the br
 wrapping `fetch` for `GET …/github` and `GET …/github/repositories`) and let every other request reach
 the local server, so the 503 on `…/github/preferences` was the server's own. Say "provider legs
 scripted in the browser" wherever that evidence is quoted.
+
+A row that needs a connected GitHub account (`2337`, Arch, decisions.log 2026-11-11 10:19): the
+connection is seeded by calling `persist_github_connection` with a fake grant, in a child process that
+has the server's environment (never SQL; say "OAuth exchange not run" on the row), and
+`GITHUB_MCP_SERVER_URL` points the server at a local MCP stub whose one tool answers the fixture
+payload from `tests/unit/services/mcp/consumer/test_github_repositories_1327.py`. The row proves the
+stub was the source: its tool was called with `user:@me`, every request carried the seeded grant, and
+the healthy read returned the stub's list before the revoke. A connected-but-degraded connector answers
+502, so the 503 is the saved-selection read. `--hold-2337 FILE` holds that state for a browser, and the
+page needs no scripting (the status routes answer connected from the binding). The route's
+`source=connector` info line is not emitted at the served log level, so don't cite it.
+
+The driver starts `main.py` with `--no-browser`. Without it every server start opens a tab in the
+default browser of the machine it runs on (it did, on 2026-11-11, until this was added).
 
 Limit of the outbound sink: `aiohttp.ClientSession()` ignores the proxy environment, so the sink
 neither refuses nor records those calls. It covers httpx and the Anthropic SDK only.

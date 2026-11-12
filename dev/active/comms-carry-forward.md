@@ -1,15 +1,16 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-10 21:19 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/11/10/2026-11-10-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-11.
+## ⭐ CURRENT STATE — 2026-11-11 15:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/11/2026-11-11-0619-comms-code-log.md` (open; STOP at 21:19).
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
 - **Weekend slots are INSIGHTS (Sat and Sun, Medium + LinkedIn).** Tue/Thu building, Wed Ship. Every publish-ready memo states the category, checked against the weekday.
-- **Tue 11-10 "Never Green in a Thousand Runs" (building): xian is MID-REWRITE.** Admin-UI commits 72f454d123 (19:16) and 0826e1e604 (19:22). His prose covers beats 1-4 (l.11-36). Beats 5-7, my accuracy notes and the footer are still scaffold. pubDate 11-10 has passed unpublished: xian's call, not mine to slip or fill. **My review of l.11-36 is in the 11-10 log, 21:19 entry.** It was proposed in chat, and nothing has been applied. Next: when he finishes, review the rest, apply only what he OKs, run template-audit, and send publish-ready to Docs (category: building). Footer tease: Thu "The Server Has No Key".
-- **Thu 11-12 renamed by xian: "The Server Has No Key"** (calendar bf2628f2e8 and H1 8f4ebc71d4, 11-10 19:02). My 11-09 title ask is answered. The draft file keeps the slug `the-server-key-is-not-a-real-concept.md`: tell Docs at publish-ready that the slug should follow the title. The "truth over feeling of progress" quote is about the epic, not the key.
-- **Strategy talk with xian: still not held** (planning doc rev 33). Waiting on it: the "One Account Means One Hand" partner (Nov 14/15, my pick C with 8) and its row, Thu's tease target, beat merges, and the scaffold format.
-- **Ship #068** (Wed 11-11) "Whose Connection Is It, Anyway?": a scaffold for xian, unchanged since 11-07. I run the External fact-check when his prose lands.
+- **Tue 11-10 "Never Green in a Thousand Runs": DONE.** Published 11-10 23:31 (website 108509e), calendar `distributed` with xian's Medium URL. Nothing owed.
+- **Thu 11-12 "The Server Has No Key" (building):** still scaffold, waiting on xian's prose (a day-before rewrite is normal). Docs confirmed 11-10 23:35 the slug will follow the title; file is still `the-server-key-is-not-a-real-concept.md`. The "truth over feeling of progress" quote is about the epic, not the key. Tue's tease promises he "lays down the law" so his key isn't a fallback for testers.
+- **Ship #068** (Wed 11-11) "Whose Connection Is It, Anyway?": Exec filled spend 11-11 11:28 (55c55553e3). Waiting on xian's prose; I run the External fact-check when it lands.
+- **Strategy talk with xian: still not held.** Waiting on it: the "One Account Means One Hand" partner (Nov 14/15, my pick C with 8) and its row, Thu's tease target, beat merges, the scaffold format.
 - **Two-week sprints from Fri 11-13** (ratified). #069 ordinary, #070 first progress, #071 first final score.
-- **GitHub criteria line:** newest hit is #2291 (11-06); nothing new on 11-10.
+- **GitHub criteria line:** nothing Comms-shaped since #2291 (11-06). #2337/#2338 (11-11) are product/test issues.
+- **Keychain rule (xian via Exec, 11-11):** nothing we run reads xian's login keychain without his permission. `PIPER_CREDENTIAL_STORE=db`.
 - **Mail v4 live:** read `python3 scripts/mail4.py inbox --role comms` as well as v3 (v3 is the fallback until 11-23).
 - **Invites held (xian 11-04)** until #1551, #2261 and #2178 are done. **Waiting list (#2256):** xian goes first, then HOST. **HOLD (PDR-102):** no ownership claim in copy.
 - **Rule 8:** the beta tester xian named in chat appears nowhere in the repo.
