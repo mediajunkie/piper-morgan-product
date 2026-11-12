@@ -527,6 +527,43 @@ class TestConnectorResourceEndToEnd:
         assert payload["available"] is True and payload["issues"] == []
 
 
+class TestNoSurfaceSpellsADetailAsAString:
+    """Arch 2026-11-12 08:55 (condition 4 of 07:35): the detail values are named
+    constants, picked by name on every surface. Only the two modules that define them
+    may spell them as string literals."""
+
+    def test_services_and_web_use_the_constants(self):
+        root = Path(__file__).resolve().parents[5]
+        allowed = {
+            "services/mcp/consumer/github_app_install.py",
+            "services/mcp/consumer/github_app_grant.py",
+        }
+        needles = (
+            '"app_not_installed"',
+            '"app_install_link_missing"',
+            '"cutover"',
+            '"refresh_rejected"',
+        )
+        offenders = []
+        scanned = 0
+        for top in ("services", "web"):
+            for path in (root / top).rglob("*.py"):
+                rel = path.relative_to(root).as_posix()
+                if rel in allowed or "__pycache__" in path.parts:
+                    continue
+                scanned += 1
+                text = path.read_text(encoding="utf-8", errors="ignore")
+                offenders += [f"{rel}: {n}" for n in needles if n in text]
+        assert scanned > 400  # vacuity guard: the sweep really walked the trees
+        assert offenders == []
+
+    def test_the_cards_script_reads_the_same_value_the_route_sends(self):
+        source = (
+            Path(__file__).resolve().parents[5] / "templates" / "settings_github.html"
+        ).read_text(encoding="utf-8")
+        assert f"data.state === '{DETAIL_APP_NOT_INSTALLED}'" in source
+
+
 class TestRepliesArePickedByDetail:
     """Arch 2026-11-12 07:35: ``detail`` is a closed set of named constants and every
     surface picks its line by it, never by reading a message."""

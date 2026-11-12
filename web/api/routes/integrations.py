@@ -845,8 +845,13 @@ async def _test_github(user_id: Optional[str] = None) -> Dict[str, Any]:
         result = await adapter.search_user_repositories(user_id, limit=1)
         stale = getattr(credential, "stale_oauth_reason", None)
         if result.degradation is not None:
+            from services.mcp.consumer.github_app_install import (
+                DETAIL_APP_INSTALL_LINK_MISSING,
+                DETAIL_APP_NOT_INSTALLED,
+            )
+
             install_state = getattr(result.degradation, "detail", None)
-            if install_state in ("app_not_installed", "app_install_link_missing"):
+            if install_state in (DETAIL_APP_NOT_INSTALLED, DETAIL_APP_INSTALL_LINK_MISSING):
                 # #2342 (Arch 2026-11-12 08:02): GitHub answered this account's own
                 # grant, so the connection works and the card stays connected. What is
                 # missing is an installation; the result carries that state beside it.

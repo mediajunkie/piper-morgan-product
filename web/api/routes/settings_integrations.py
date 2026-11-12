@@ -2442,7 +2442,7 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
             )
             return GitHubRepositoryListResponse(
                 repositories=[],
-                state="app_not_installed",
+                state=DETAIL_APP_NOT_INSTALLED,  # the card's JS reads this value
                 message=(
                     GITHUB_APP_NOT_INSTALLED_CARD_LINE
                     if install_url
