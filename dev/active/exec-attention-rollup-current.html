@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 12 November</h1>
-<p class="meta">Exec · v962, rebuilt 14:35 PST Thu 11-12 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v963, rebuilt 14:46 PST Thu 11-12 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -73,7 +73,7 @@
 </ul></li>
 
 <li><b>Two yes/no answers from the keychain and mail follow-up (11:18).</b> (1) <b>CLAUDE.md&rsquo;s mail line:</b> CIO found the warning fires too late, after the memo is already written for the old mail, and CLAUDE.md&rsquo;s Mail section still tells every seat to use the old send tool. CIO proposes replacing that bullet so seats send by v4 by default and use the old tool only when a party isn&rsquo;t on v4 or v4 fails. Yes or no? <i>Not urgent now (CIO 22:08): today seats switched anyway, v4 carried 58 of 68 seat-to-seat memos since 10:12, up from 3 of 52 on 11-09/10. Still the durable fix; the 11-23 review can decide it instead if you prefer.</i> (2) <b>Your two start scripts</b> (<code>scripts/restart-server.sh</code>, <code>scripts/start-piper.sh</code>) still read your keychain, since that&rsquo;s how you run Piper with your own keys. Leave them as yours, or make them default to the database store? Already done, under your 11:12 rule: CLAUDE.md&rsquo;s server-start commands and the ops recipes now set <code>PIPER_CREDENTIAL_STORE=db</code> (CIO, 11:16 and 11:17). #2338 is closed: tests here no longer read your keychain unless someone opts in.</li>
-<li><b>#2335, Redis password: you said rotate it. Not ready for you yet.</b> Lead built a one-line command for it. Nobody types or sees the password, because it reads the new address from Fly itself. HOST asked for two fixes first, so it can&rsquo;t report a rotation that didn&rsquo;t happen. Lead also found the old line was very likely never written to Fly&rsquo;s logs: it was logged below the level the servers keep. That fits your search. Rotating is still the right insurance. Expect about a minute of errors on beta while it runs, so it goes after the GitHub sitting, on its own. Your three Redis questions: Arch has answered (a); Lead&rsquo;s (b) and the joint (c) come next, then one card here.</li>
+<li><b>#2335, Redis password: ready, after the GitHub sitting, on its own.</b> In Terminal, when beta is quiet:<br><code>cd ~/Development/piper-morgan-worktrees/exec &amp;&amp; git pull -q --ff-only origin main &amp;&amp; python3 scripts/redis_password_rotate.py</code><br>Nobody types or sees the password: it reads the new address from Fly itself. Expect about a minute of errors on beta. HOST&rsquo;s and CIO&rsquo;s fixes are in (Lead, 14:41): it now checks the password really changed before saying so. It has never been run for real; yours is the first run. Paste me the summary at the end. The log line was very likely never written, so this is insurance.</li>
 <li><b>When you can book an hour: one #2157 restore-drill run, early in the sprint.</b> It restores a snapshot of the alpha database to a new app and never touches the live one. Arch says it retires most of the bigger P1 risk (a lost alpha database). It needs your terminal, because the drill password stays with you. Say when, and Arch brings the steps (the 11-04 16:38 safe form).</li>
 <li><b>For your information: the skills review is done (#1715 closed).</b> 13 candidates; none became a new skill. 5 folded into what exists, 6 declined, 2 closed as already done. CIO&rsquo;s read: most of the signal was a missing line somewhere that already exists, or a tool or permission, not a missing procedure. Next cycle Tue 12-01. Comms has the facts for the post idea.</li>
 <li><b>Whenever convenient, nothing waits on it: a new name for PA?</b> On 10-28 you floated renaming PA once MVP closed and the private beta began. That happened 10-30, and PA raised it late (this morning). If you want a new name, say so, and PA lists what changes (slug, briefing, mailbox, LaunchAgent, roster).</li>
@@ -139,6 +139,7 @@ If you didn't sign up, ignore this email and you won't hear from us.</pre>Then s
 </div>
 
 <h2>Older, at your pace</h2>
+<div class="card"><p class="ct"><b>Low priority, about 10 minutes, not blocking invites (#2344):</b> do the waiting-list confirmations from Buttondown pass the same email checks? Two things only you can give Web: (1) Buttondown&rsquo;s sending-domain settings, names only, no keys (is a custom sending domain set, and which DKIM records does it show?); (2) a mailbox Web may sign up with, such as a plus-address. When the confirmation arrives, paste its &ldquo;Show original&rdquo; headers to Web. This only matters before tightening DMARC past watch-only.</p></div>
 
 
 

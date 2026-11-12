@@ -547,3 +547,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v960 (14:28): self-knowledge dates (Arch 01M78XRJ: contributions Fri 15:00, recommendation Sat 12:00)
 - v961 (14:34): self-knowledge recommendation card (reviewed: capability_catalog, PIPER.md 8150 chars ≈ 2k tokens, CacheablePrompt exist); Redis a/b/c card
 - v962 (14:35): Docs caveat on blog register (01M78Y7V)
+- v963 (14:46): rotation ready card; 2344 low-priority card; CLAUDE.md v4 line landed 3f7bc83a64
