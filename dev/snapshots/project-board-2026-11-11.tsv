@@ -1237,7 +1237,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1432	CLOSED	MVP	Beta Blockers - Hard Gates Only	Half-landed #1124 Phase-4: verb-emitting classifier prompt never flipped on the primary chat path (F22, census 2026-07-16)			COMPLETED
 1433	CLOSED	MVP	Beta Blockers - Hard Gates Only	Extended reachability ratchet: CHAT_POINTERS product-surface ledger + decline-copy freshness (census D §6 design)			COMPLETED
 1422	CLOSED	MVP	Beta Blockers - Hard Gates Only	Personality preferences dead product-wide: load_with_preferences reads users.preferences which #262 never migrated from alpha_users			COMPLETED
-1423	OPEN	Ongoing	Beta Blockers - Hard Gates Only	Silent-death pattern: broad try/except on the core path converts broken features into invisible defaults — inventory + un-swallow			
+1423	OPEN	Production	PUB - Public Beta	Silent-death pattern: broad try/except on the core path converts broken features into invisible defaults — inventory + un-swallow			
 1419	CLOSED	MVP	Beta Blockers - Hard Gates Only	EPIC: Multi-tenancy debt — the codebase defaults to single-tenant; make per-user the enforced norm	epic		COMPLETED
 1434	CLOSED	MVP	Beta Blockers - Hard Gates Only	Missing await on jwt_service.validate_token() in setup key path — auth check silently never passes, falls back to non-scoped key (B1, census 2026-07-16)			COMPLETED
 1435	CLOSED	MVP	Beta Blockers - Hard Gates Only	List/todo metadata silently never persists: from_domain passes metadata= which SQLAlchemy resolves to the class-level MetaData attr (B3, census 2026-07-16)			COMPLETED
@@ -2126,4 +2126,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2334	CLOSED	Production		Token blacklist fails closed under >20 concurrent requests: Redis ConnectionPool raises 'Too many connections' instead of waiting	bug		COMPLETED
 2335	OPEN	Production		RedisFactory logs the full REDIS_URL at startup; an Upstash URL carries the password	bug		
 2336	CLOSED	Production		RedisFactory.create_client pings Redis on every client it hands out: one extra round trip on every Redis read, including each authenticated request's revocation check	architecture		COMPLETED
-2337	OPEN	Production		Local fault run: the repositories route's own 503 on the GitHub settings page ("your saved repository choices"), the 2154 branch not yet seen			
+2337	CLOSED	Production		Local fault run: the repositories route's own 503 on the GitHub settings page ("your saved repository choices"), the 2154 branch not yet seen			COMPLETED
+2339	OPEN	Production		Local fault run: the failed-preferences line on the Slack, Calendar and Notion settings pages (the unserved rest of 2154)			
+2340	OPEN	Production		Rule-7 screening scripts read provider keys from xian's keychain and carry on against OpenAI when Anthropic refuses			
