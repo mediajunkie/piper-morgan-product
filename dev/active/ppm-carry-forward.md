@@ -602,7 +602,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 
 - **Invite hold, PDR-008.** Re-verified 21:33 11-11 with `gh issue view`.
   - #2261: leg decided **D3** on 11-11 (#2174 passed, xian's run 18:52, 14 of 14; Arch validated 18:56, ADR-081). It lands on **#2342** (D3's build, PUB under #2261, Sprint PUB). Order: xian registers the published App, Lead builds (unit layer from the 11-12 START, fresh session), CXO's install, stale and cutover lines are in, then a served connect on alpha. Arch ruled classic grants go stale at cutover.
-  - #2282 (xian's word on Web's sign-in check) and #2292 (P1, xian's mail records) unchanged. #2335's log line and any rotation are xian's (Exec's rollup).
+  - #2282 (xian's word on Web's sign-in check) unchanged. **#2292 closed 11-12 13:27** (rows 1 and 2 served; Buttondown split to #2344, Q, not a blocker). #2335's log line and any rotation are xian's (Exec's rollup).
   - 11-12: beta serves #2342 (xian's promotion yes 11:44); #2343's command built. xian's sitting paused before the first yes at 13:20 (10 classic grants). Arch, HOST, CXO and PPM agree option 2 (install scope "Any account" before `--apply`) is safe, on HOST's four conditions; xian's choice. #2342's served bar for the memo: Web's card in a browser, PA's connector turns, CXO's judgment, and the install-line row from a non-owner account (CXO 13:33).
   - When all are met, PPM sends Exec the lift-readiness memo (§3), each row with `Verified how:`.
 - **#1423 settled 11-12:** xian moved it (Exec 13:46). PPM kept it in Production and moved its row from Q to H beside #2151. Sprint field cleared; decisions.log 13:53. Open: Exec weighs PPM's note that 37 open items still carry Sprint PUB ("now over" per xian). PPM sets no new PUB values.
@@ -613,7 +613,6 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: sprint-state-refresh** (Filed 2026-11-09; to: exec; trigger: Fri 11-13 START. Refresh the State column from `gh issue view` on every named issue, before the review).
   - **11-13 review placements:** #2327, on xian's "yes, Friday" (11-12 14:00). Place it in the sprint at the review; the candidates already named are #2320 and #2319. #2333 is in the sprint on xian's go (13:59); Arch sequenced it 14:07 (build now, promote after #2342's rows).
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift; needs #2297 and #2301).
-  - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
 - **Fresh-account list (Q8, after the lift):** #2270's not-connected turn 1, Path B's quote, and possibly #2322's stored-done row.
 - **Mail:** read both v3 and `python3 scripts/mail4.py inbox --role ppm` at every check.

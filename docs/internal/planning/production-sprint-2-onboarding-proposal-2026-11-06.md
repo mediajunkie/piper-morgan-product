@@ -27,7 +27,7 @@ Rule, from the ruling: no more than one named item behind any single unanswered 
 |---|---|---|---|---|
 | 1 | #2261: narrow GitHub's `repo` scope, built on D3 (#2342) | Lead | xian registering the published GitHub App, Lead's #2342 build, xian's yes to one promotion (given 11-12 11:44; beta serves it 11:52), then xian's one sitting: App values set and the cutover script run, through #2343's one command (Arch 11-12 06:51 and 08:28; Lead 08:46) | Open; leg decided D3 11-11 (#2174 passed, xian's run 18:52); #2342's unit layer built 11-12 07:39 (Lead, `88da3f58a8`, switched off until the App's ID and secret are set); beta serves it since 11-12 11:52 on xian's promotion yes (11:44); #2343's command built and read by Arch, CIO and HOST (`2456cd7e5f`); left: xian registers the App, then his sitting |
 | 2 | #2282: one canonical host, `beta.pipermorgan.ai` | Web | xian's word for Web's sign-in check | Open |
-| 3 | #2292: SPF, DKIM and DMARC | xian | xian's records in Google Admin and Hover | Open |
+| 3 | #2292: SPF, DKIM and DMARC | xian | none | **Closed 11-12 13:27** (records at 8.8.8.8 3 of 3, `p=none`; one Workspace message passes SPF, DKIM and DMARC at Gmail). Buttondown's check split to #2344 (Q, not an invite blocker) |
 | 4 | #2266's last box: a run as a second GitHub account | Web or PA | xian's second GitHub account | Open |
 | 5 | #2219, #2295, #2294, #2328: todo replies (ordinal complete and delete; "them") | Lead, then CXO | none | D5 rows done (#2318, #2321 closed 11-08); #2219's other rows open; #2328 in progress (xian, 11-10) |
 | 6 | #2267: email sign-in after a username is set | Lead | none | Wrong-password words passed; username row open |
