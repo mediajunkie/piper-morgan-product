@@ -139,6 +139,7 @@ Versions:
 How the token expires and refreshes (the check's item 4):
 - Observed: the first access token was good for 8 hours (Exec, 11-07). The refresh on 11-11, four days later, used the stored refresh token and the App's client secret, returned a new access token, and the old access token then answered 401 on `GET /user`. That 401 is explained by the 8-hour expiry alone, so it is not evidence that a refresh revokes the previous access token.
 - From GitHub's documentation, not observed here: a refresh also returns a new refresh token and the one used stops working, and a refresh token lasts about six months. So the grant store must write the new pair back on every refresh, in one step.
+- For the next run of the check: `scripts/github_app_refresh_check.py` (#2341) does the refresh, the old-token 401 check, the proxy and the table as one command with hidden prompts, and its table names the server's handshake version.
 - For the build: a refresh is a resolver step, and a *rejected* refresh (GitHub refuses the refresh token, read from the reply's `error` field) maps to STALE_TOKEN; a refresh that could not complete (timeout, connection failure, 5xx) maps to UNREACHABLE and leaves the stored pair untouched; neither maps to CONNECT_REQUIRED (Arch, 2026-11-11, on CXO's condition; #2342).
 
 ### D4: The user's own PAT stays a supported leg
