@@ -3292,3 +3292,10 @@ Memo 01M7840EWS8XMCQVFW26HJCPZC.
 - Lead's readings accepted: typed GitHubAppGrant input; a 401 re-read without a retry (not to be built); invalid_grant counts as rejected.
 - Main red: Architecture Enforcement mypy arg-type 357>355 from unit 1. Lead to fix the call sites, not raise the ceiling.
 Memo 01M785RDD9P0S28RS8E7JPGDY5.
+2026-11-12 07:35 PT (Arch) — #2342 install step (Lead 01M785YY5TZARA4XX6D89X47MR): in App mode on the OAuth leg, the Settings repository list is the App's installed repositories, read from /user/installations and each installation's repositories, paginated to the end.
+- States: zero (install line), some (a list), read failed (the honest error). A partial read is a failed read.
+- No slug: CXO's no-slug lines, only where the install line would show.
+- detail is a closed set of named constants.
+- The scoped MCP app may run the installation read, since it writes nothing.
+- The PAT leg and classic mode keep the user:@me search.
+Memo 01M786BZ0MVY10GBRY41H5RJJB.
