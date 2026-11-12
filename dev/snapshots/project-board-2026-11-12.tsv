@@ -2135,6 +2135,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2349	OPEN	Production		EPIC: Piper self-knowledge: codebase, ethos, documentation, lore and best practices (design exploration first; Arch owns)	epic		
 2344	OPEN	Production		Buttondown confirmations: read the sending-domain setup and check SPF/DKIM/DMARC (split from 2292)			
 2345	OPEN	Production		GitHub and Calendar connect keep their sign-in state in the process, not Redis			
-2346	OPEN	Production		The revoked-token list decides Redis or database once at startup and never retries			
+2346	CLOSED	Production		The revoked-token list decides Redis or database once at startup and never retries			NOT_PLANNED
 2347	OPEN	Production		Remove two dead Redis paths: the conversation manager's turn cache and FeedbackCapture			
 2348	OPEN	Production		/health should report Redis, as it does the database and the credential store			
+2350	OPEN	Production		Hosts drop every info log line (root WARNING from the CLI quiet mode); evidence events need a named logger kept at INFO	architecture		
