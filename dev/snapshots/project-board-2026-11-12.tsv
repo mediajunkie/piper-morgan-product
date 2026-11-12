@@ -1237,7 +1237,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1432	CLOSED	MVP	Beta Blockers - Hard Gates Only	Half-landed #1124 Phase-4: verb-emitting classifier prompt never flipped on the primary chat path (F22, census 2026-07-16)			COMPLETED
 1433	CLOSED	MVP	Beta Blockers - Hard Gates Only	Extended reachability ratchet: CHAT_POINTERS product-surface ledger + decline-copy freshness (census D §6 design)			COMPLETED
 1422	CLOSED	MVP	Beta Blockers - Hard Gates Only	Personality preferences dead product-wide: load_with_preferences reads users.preferences which #262 never migrated from alpha_users			COMPLETED
-1423	OPEN	Production	PUB - Public Beta	Silent-death pattern: broad try/except on the core path converts broken features into invisible defaults — inventory + un-swallow			
+1423	OPEN	Production		Silent-death pattern: broad try/except on the core path converts broken features into invisible defaults — inventory + un-swallow			
 1419	CLOSED	MVP	Beta Blockers - Hard Gates Only	EPIC: Multi-tenancy debt — the codebase defaults to single-tenant; make per-user the enforced norm	epic		COMPLETED
 1434	CLOSED	MVP	Beta Blockers - Hard Gates Only	Missing await on jwt_service.validate_token() in setup key path — auth check silently never passes, falls back to non-scoped key (B1, census 2026-07-16)			COMPLETED
 1435	CLOSED	MVP	Beta Blockers - Hard Gates Only	List/todo metadata silently never persists: from_domain passes metadata= which SQLAlchemy resolves to the class-level MetaData attr (B3, census 2026-07-16)			COMPLETED
@@ -2084,7 +2084,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2287	OPEN	Production		GitHub Disconnect: the dialog still says 'disconnect your GitHub account', and the old 'Connected' line lingers until reload	UX		
 2288	OPEN	Production		GitHub card says "Connected." on a grant GitHub rejects (401) until a chat read marks it stale: a card GET /user 401 should mark STALE	bug		
 2290	OPEN	Production		Failure pages and toasts give the person nothing to send us: show a short reference code that finds the request in the logs			
-2292	OPEN	Production		pipermorgan.ai has no SPF, DKIM or DMARC: invitations and the cohort note from xian's Workspace address may be rejected or spam-foldered; add the three records before the next invite	P1		
+2292	CLOSED	Production		pipermorgan.ai has no SPF, DKIM or DMARC: invitations and the cohort note from xian's Workspace address may be rejected or spam-foldered; add the three records before the next invite	P1		COMPLETED
 2293	OPEN	Production		Todo priority sorts alphabetically: 'high' comes after 'medium' and 'low', so the list order and 'next todo' are wrong for high-priority items	bug		
 2294	OPEN	Production		'delete the first one' after a todo or reminder list routes to delete_item and gets the generic can't-do reply	bug		
 2295	OPEN	Production		[UX] 'Show my completed todos' lists every todo, not the completed ones	UX		
