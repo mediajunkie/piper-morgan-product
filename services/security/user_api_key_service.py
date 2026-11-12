@@ -427,6 +427,37 @@ class UserAPIKeyService:
             f"an active {provider} key row could not be read ({read.provenance.value})"
         )
 
+    async def retrieve_encrypted_secret_strict(
+        self, session: AsyncSession, user_id: str, provider: str
+    ) -> Optional[str]:
+        """#2342 (Arch 2026-11-12): the row's encrypted-at-rest secret and nothing else.
+
+        None only when no active row exists. A row whose encrypted secret is absent or
+        can't be decrypted raises ``UserKeyReadFailed``. There is NO keychain fallback:
+        a refreshed GitHub App grant leaves a dead pair in any keychain copy, and a
+        local keychain read is against xian's 2026-11-11 rule."""
+        try:
+            row_user = uuid.UUID(str(user_id))
+        except ValueError:
+            return None
+        result = await session.execute(
+            select(UserAPIKey).where(
+                and_(
+                    UserAPIKey.user_id == row_user,
+                    UserAPIKey.provider == provider,
+                    UserAPIKey.is_active == True,
+                )
+            )
+        )
+        user_key = result.scalar_one_or_none()
+        if not user_key:
+            return None
+        if user_key.encrypted_secret and self._encryptor:
+            secret = self._decrypt_secret(user_key.encrypted_secret, provider)
+            if secret is not None:
+                return secret
+        raise UserKeyReadFailed(f"an active {provider} key row has no readable encrypted secret")
+
     async def retrieve_user_key(
         self, session: AsyncSession, user_id: str, provider: str
     ) -> Optional[str]:

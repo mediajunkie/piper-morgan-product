@@ -8948,6 +8948,10 @@ class TestSecurityCheckBypassCallers1982:
     ALLOWED = {
         "services/connectors/github_pat_store.py",
         "scripts/backfill_github_pat_rows_1982.py",
+        # #2342 (Arch 2026-11-12 06:53): a grant record issued by GitHub's token
+        # endpoint in the same call. Only ``store_app_grant`` may pass it; that scope is
+        # pinned in tests/unit/services/mcp/consumer/test_github_app_grant_2342.py.
+        "services/mcp/consumer/connector_grant_store.py",
     }
     NEEDLE = "security_check=False"
 

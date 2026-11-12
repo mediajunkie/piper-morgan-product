@@ -96,6 +96,9 @@ class ConnectorBindingRepository:
             row.mcp_server_ref = mcp_server_ref
         if status is not None:
             row.status = status
+            # #2342: a status write through upsert is a (re)bind or an unbind; either
+            # way the old reason no longer describes the row.
+            row.status_reason = None
         if capability_profile is not None:
             row.capability_profile = dict(capability_profile)
         if is_native_legacy is not None:
@@ -104,11 +107,20 @@ class ConnectorBindingRepository:
         return row
 
     async def set_status(
-        self, owner_id: Union[str, UUID, None], connector: str, status: str
+        self,
+        owner_id: Union[str, UUID, None],
+        connector: str,
+        status: str,
+        *,
+        reason: Optional[str] = None,
     ) -> Optional[ConnectorBinding]:
         """Update just the binding's status (bound/unbound/unreachable/stale). Returns the row,
         or None if no binding exists for (owner, connector) — status is a no-op without a binding
         (you can't be 'bound' before connect() creates the row).
+
+        #2342: ``reason`` is written with the status every time, so a status change
+        without a reason clears the stored one (``status_reason`` never outlives the
+        state it explained).
         """
         owner = _as_uuid_or_none(owner_id)
         if owner is None:
@@ -117,5 +129,6 @@ class ConnectorBindingRepository:
         if row is None:
             return None
         row.status = status
+        row.status_reason = reason
         await self.session.flush()
         return row

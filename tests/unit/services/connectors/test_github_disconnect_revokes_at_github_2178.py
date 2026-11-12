@@ -59,7 +59,7 @@ async def _run(grant_value=None, grant_raises=False, revoke_ok=True):
         patch(
             "services.connectors.binding_repository.ConnectorBindingRepository", return_value=repo
         ),
-        patch.object(GitHubOAuthHandler, "__init__", lambda self: None),
+        patch.object(GitHubOAuthHandler, "__init__", lambda self, **kw: None),
         patch.object(GitHubOAuthHandler, "revoke_grant", _revoke),
         patch.object(d, "_keychain_copy_gone", AsyncMock(return_value=True)),
         patch("services.connectors.github_pat_store.delete_user_pat_at_rest", AsyncMock()),
