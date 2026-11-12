@@ -2129,3 +2129,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2337	CLOSED	Production		Local fault run: the repositories route's own 503 on the GitHub settings page ("your saved repository choices"), the 2154 branch not yet seen			COMPLETED
 2339	OPEN	Production		Local fault run: the failed-preferences line on the Slack, Calendar and Notion settings pages (the unserved rest of 2154)			
 2340	OPEN	Production		Rule-7 screening scripts read provider keys from xian's keychain and carry on against OpenAI when Anthropic refuses			
+2341	OPEN	Production		One command with hidden prompts for procedures where xian holds the secrets (first: ADR-081 D3's refresh check)			
+2342	OPEN	Production	PUB - Public Beta	Build ADR-081 D3: GitHub connect through one published GitHub App, with user tokens that expire and refresh			

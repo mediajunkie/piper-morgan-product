@@ -371,6 +371,36 @@ default browser of the machine it runs on (it did, on 2026-11-11, until this was
 Limit of the outbound sink: `aiohttp.ClientSession()` ignores the proxy environment, so the sink
 neither refuses nor records those calls. It covers httpx and the Anthropic SDK only.
 
+## 10. A step only xian can run because he holds the secrets: one command with hidden prompts (CIO, 2026-11-11, #2341)
+
+xian, 11-11, running #2174's refresh check by hand: "I find this process super tedious and wish we could
+script it all somehow so I'm not a human copy/paste machine." So a seat that needs xian to run something
+with secrets only he holds (a GitHub App's client secret, a refresh token, a Fly secret, a provider key)
+gives him one command instead of a list of steps with placeholders to edit. The rules for that command:
+
+1. **It asks for each secret once, with the input hidden:** `getpass` in Python, `read -rs` in a shell
+   script. It never reads them from his keychain. He types them; the keychain stays off-limits (his
+   ruling of 11-11).
+2. **No secret goes in argv, which `ps` shows.** It is never echoed, logged, written to a file or saved
+   in shell history. A child process gets a secret through its environment or stdin.
+3. **It does every step itself,** including starting and stopping helpers such as `fly proxy`, and it
+   stops them on every path, failures included. If a step fails, it prints the error and stops before
+   the next one.
+4. **It prints one marked block to paste back,** and nothing secret is in that block. If any step ever
+   prints a value the run holds, that value is replaced with `[hidden]`.
+5. **If the procedure replaces a secret** (a GitHub refresh replaces the refresh token), the script
+   shows the new one once, only when he answers yes, and outside the block.
+6. **Unit tests pin rules 2 to 4:** no secret in argv or in the block, helpers stopped on every path,
+   and a failed first step stops the run. xian's first run is the served check, and no seat can stand in
+   for it.
+7. **The seat that needs the result writes the script.** The issue or memo that asks xian gives him the
+   one command line, and never asks him to paste a secret into a session, memo, issue or chat.
+
+First instance: `scripts/github_app_refresh_check.py` (Lead, #2341, ADR-081 D3's refresh check).
+
+This rule does not cover how a provider key reaches a seat for its own runs. That is open with xian
+through Exec (Arch, decisions.log 2026-11-11 18:43, #2340).
+
 ## Promotion checklist: read staging's sha from staging, not from the deploy-run list (Lead, 2026-10-16)
 
 **Why:** the 10:51 dispatch under the standing grant was refused by the promote gate. The gate reads the sha staging's

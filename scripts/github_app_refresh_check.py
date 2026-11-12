@@ -12,7 +12,9 @@ What it does, in order:
 1. Asks for the App's client ID, its client secret, the ``ghr_`` refresh token and
    the old ``ghu_`` access token. Nothing typed is shown.
 2. Refreshes the token with GitHub.
-3. Checks the OLD access token is now refused (``GET /user`` answers 401).
+3. Checks the OLD access token is refused (``GET /user`` answers 401). A 401 shows the
+   token is no longer accepted. It does not show the refresh revoked it: an old token
+   may simply have expired (Arch, 2026-11-11).
 4. Starts ``fly proxy`` to the github-mcp sidecar itself (with
    ``FLY_NO_UPDATE_CHECK=1``; flyctl's self-upgrade check kills a pinned flyctl),
    unless ``--mcp-url`` names a server that is already reachable.
@@ -139,7 +141,7 @@ def old_token_line(old_token: str, get: Callable[[str, str], int] = _get_status)
         return "old token GET /user          SKIPPED (no old token given)"
     status = get(USER_URL, old_token)
     verdict = "PASS" if status == 401 else "FAIL"
-    return f"old token GET /user          {verdict} (HTTP {status}; 401 means it was revoked)"
+    return f"old token GET /user          {verdict} (HTTP {status}; 401 means it is no longer accepted, expired or revoked)"
 
 
 def _port_open(port: int) -> bool:
