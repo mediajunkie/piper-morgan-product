@@ -395,6 +395,14 @@ gives him one command instead of a list of steps with placeholders to edit. The 
    for it.
 7. **The seat that needs the result writes the script.** The issue or memo that asks xian gives him the
    one command line, and never asks him to paste a secret into a session, memo, issue or chat.
+8. **He runs it in a real terminal, and the script refuses without one.** Its first line of work checks
+   `sys.stdin.isatty()` (in a shell, `[ -t 0 ]`) and, if that is false, stops before any check or prompt
+   with: "run this in a real terminal (Terminal.app), not through Claude Code's ! prefix". The command
+   line given to him says "in Terminal". Why: the `!` prefix has no terminal, so `getpass` can't hide
+   the input and warns that it "may be echoed". On 11-12 xian's first run of the second instance went
+   through `!`. The first prompt got end-of-input and the run stopped with nothing typed and nothing set
+   (Exec 01M78T4M9N). That was safe only by luck: a prompt that might echo must never be reached. The
+   `!` prefix is still right for commands that take no secret.
 
 First instance: `scripts/github_app_refresh_check.py` (Lead, #2341, ADR-081 D3's refresh check).
 Second: `scripts/github_app_cutover_sitting.py` (Lead, #2343), section 11's sitting. It also sets Fly
