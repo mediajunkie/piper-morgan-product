@@ -36,6 +36,9 @@ class RedisFactory:
 
     _redis_pool: Optional[redis.ConnectionPool] = None
     _last_health_ping: Optional[float] = None  # time.monotonic(); None = never on this pool
+    # #2348: the outcome of the most recent health ping, for /health. None = no ping yet in
+    # this process. /health reads it and never pings (the #2336 lesson: it is hit too often).
+    _last_ping_ok: Optional[bool] = None
     # A weak reference, not id(loop): a collected loop's id() can be handed to
     # the next loop, which then inherited the dead loop's pool (found 11-09 by
     # the 2334 rebuild pin failing only in the full suite).
@@ -99,11 +102,24 @@ class RedisFactory:
                 health_monitor.record_success(
                     "redis_connection", latency_ms, {"status": "connected"}
                 )
+                cls._last_ping_ok = True
             except Exception as e:
+                cls._last_ping_ok = False
                 health_monitor.record_failure("redis_connection", str(e))
                 logger.error(f"Redis connection test failed: {e}")
 
         return client
+
+    @classmethod
+    def recorded_health(cls) -> str:
+        """``ok`` or ``unavailable``: the recorded outcome of the last health ping (#2348).
+
+        Never pings and never raises. No ping yet in this process reads ``unavailable``,
+        since nothing has shown Redis answering. The ping runs when a client is taken
+        and at most every 30 s, so on a quiet host the record is as old as the last
+        request that used Redis.
+        """
+        return "ok" if cls._last_ping_ok is True else "unavailable"
 
     @classmethod
     @asynccontextmanager

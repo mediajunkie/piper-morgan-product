@@ -23,11 +23,17 @@ source "$SCRIPT_DIR/lib/os-detect.sh"
 export ENVIRONMENT="${ENVIRONMENT:-development}"
 export BACKEND_PORT="${BACKEND_PORT:-8001}"
 export WEB_PORT="${WEB_PORT:-8081}"
+# xian, 2026-11-12: "default them to the database store." Credentials come from the
+# encrypted database store, never the login keychain, unless PIPER_CREDENTIAL_STORE=keychain
+# is set on purpose (xian's own permission; a seat never sets it). Both processes this
+# script starts inherit it.
+export PIPER_CREDENTIAL_STORE="${PIPER_CREDENTIAL_STORE:-db}"
 
 echo "🚀 Starting Piper Morgan..."
 echo "🔧 Environment: $ENVIRONMENT"
 echo "🔧 Backend Port: $BACKEND_PORT"
 echo "🌐 Web Port: $WEB_PORT"
+echo "🔐 Credential store: $PIPER_CREDENTIAL_STORE"
 echo "================================"
 
 # Check if Docker Desktop is running

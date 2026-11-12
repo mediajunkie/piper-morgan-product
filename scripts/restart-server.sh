@@ -23,6 +23,10 @@
 #   ./scripts/restart-server.sh             # Default (port 8001, log to /tmp)
 #   LOG_FILE=/tmp/my-run.log ./scripts/restart-server.sh
 #   PORT=8002 ./scripts/restart-server.sh   # Different port
+#   PIPER_CREDENTIAL_STORE=keychain ./scripts/restart-server.sh   # xian only: use the login keychain
+#
+# Credentials: defaults to PIPER_CREDENTIAL_STORE=db (xian's rule, 2026-11-12), so a start
+# never reads the login keychain unless that variable is set to keychain on purpose.
 #
 # Exit codes:
 #   0 — server is up and healthy
@@ -39,6 +43,10 @@ PORT="${PORT:-8001}"
 LOG_FILE="${LOG_FILE:-/tmp/piper-server.log}"
 HEALTH_TIMEOUT="${HEALTH_TIMEOUT:-30}"  # Max seconds to wait for health
 POSTGRES_PORT="${POSTGRES_PORT:-5433}"  # Override if your .env disagrees
+# xian, 2026-11-12: "default them to the database store." The server reads credentials
+# from the encrypted database store, never the login keychain, unless the caller sets
+# PIPER_CREDENTIAL_STORE=keychain on purpose (xian's own permission; a seat never sets it).
+PIPER_CREDENTIAL_STORE="${PIPER_CREDENTIAL_STORE:-db}"
 
 # Resolve script location to find project root reliably
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -127,7 +135,7 @@ green "✓ Cleared $PYC_BEFORE .pyc files and $PYCACHE_BEFORE __pycache__ dirs"
 
 # ── 4. Start the server ───────────────────────────────────────────────────────
 
-step "Starting server (POSTGRES_PORT=$POSTGRES_PORT, log: $LOG_FILE)"
+step "Starting server (POSTGRES_PORT=$POSTGRES_PORT, credential store: $PIPER_CREDENTIAL_STORE, log: $LOG_FILE)"
 
 # Truncate log so we can tail cleanly
 : > "$LOG_FILE"
@@ -139,6 +147,7 @@ step "Starting server (POSTGRES_PORT=$POSTGRES_PORT, log: $LOG_FILE)"
 # 2026-06-04 (CLAUDE.md). Streamlining #3 (6/15): makes the documented strip automatic.
 env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
     PYTHONUNBUFFERED=1 POSTGRES_PORT="$POSTGRES_PORT" \
+    PIPER_CREDENTIAL_STORE="$PIPER_CREDENTIAL_STORE" \
     nohup ./venv/bin/python -u main.py > "$LOG_FILE" 2>&1 &
 SERVER_PID=$!
 
