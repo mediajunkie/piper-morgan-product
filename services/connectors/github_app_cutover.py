@@ -120,7 +120,7 @@ async def run_cutover(*, apply: bool = False) -> Dict[str, int]:
         counts["seen"] += 1
         if apply:
             # Revoke first: it needs the token, and after the delete nobody holds it.
-            if await handler.revoke_grant(raw):
+            if handler is not None and await handler.revoke_grant(raw):
                 counts["revoke_ok"] += 1
             else:
                 counts["revoke_failed"] += 1

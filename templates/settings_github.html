@@ -831,6 +831,44 @@
         if (btn) btn.disabled = true;
       }
 
+      // #2342: nothing was listed, so nothing may be saved over the kept choices.
+      let appNotInstalled = false;
+
+      function showAppNotInstalled(el, line, installUrl) {
+        appNotInstalled = true;
+        loadedRepositories = [];
+        el.innerHTML = '';
+        const note = document.createElement('div');
+        note.className = 'repository-list-empty app-not-installed';
+        note.setAttribute('role', 'status');
+        const text = document.createElement('p');
+        text.textContent = line;
+        note.appendChild(text);
+        const actions = document.createElement('div');
+        actions.className = 'app-not-installed-actions';
+        if (installUrl) {
+          const install = document.createElement('a');
+          install.className = 'btn btn-primary';
+          install.id = 'github-app-install-link';
+          install.href = installUrl;
+          install.target = '_blank';
+          install.rel = 'noopener';
+          install.textContent = 'Install on GitHub';
+          actions.appendChild(install);
+        }
+        const refresh = document.createElement('button');
+        refresh.type = 'button';
+        refresh.className = 'btn btn-secondary';
+        refresh.id = 'github-app-refresh-list';
+        refresh.textContent = 'Refresh';
+        refresh.addEventListener('click', () => loadRepositoryList());
+        actions.appendChild(refresh);
+        note.appendChild(actions);
+        el.appendChild(note);
+        const btn = document.getElementById('save-github-prefs-btn');
+        if (btn) btn.disabled = true;
+      }
+
       async function loadRepositoryList() {
         const listEl = document.getElementById('repository-list');
         listEl.innerHTML = '<div class="repository-list-loading"><span class="loading-spinner"></span> Loading repositories...</div>';
@@ -852,8 +890,29 @@
           }
 
           const data = await response.json();
+          if (data.state === 'app_not_installed') {
+            // #2342: authorized, but the GitHub App is installed on no repository.
+            // A named state with CXO's words, an install link and a real re-read.
+            showAppNotInstalled(listEl, data.message, data.install_url);
+            return;
+          }
+          const wasNotInstalled = appNotInstalled;
+          appNotInstalled = false;
           loadedRepositories = data.repositories || [];
           renderRepositoryList(loadedRepositories);
+          if (data.note && loadedRepositories.length > 0) {
+            // #2342 (CXO): a quiet line under a non-empty list in GitHub App mode.
+            const note = document.createElement('p');
+            note.className = 'repository-list-note';
+            note.id = 'github-app-list-note';
+            note.textContent = data.note;
+            listEl.appendChild(note);
+          }
+          if (wasNotInstalled && !prefsLoadFailed) {
+            // Only undo what the not-installed state itself disabled.
+            const saveBtn = document.getElementById('save-github-prefs-btn');
+            if (saveBtn) saveBtn.disabled = false;
+          }
         } catch (error) {
           console.error('Failed to load repositories:', error);
           prefsLoadFailed = true; // #2154: nothing was read, so nothing may be saved
@@ -955,6 +1014,7 @@
 
       async function saveGitHubPreferences() {
         if (prefsLoadFailed) return; // #2154: no POST after a failed preferences read
+        if (appNotInstalled) return; // #2342: no POST over the kept choices from an empty list
         const selectedRepositories = getSelectedRepositoryFullNames();
         const defaultRepository = document.getElementById('default-repository-select').value;
 

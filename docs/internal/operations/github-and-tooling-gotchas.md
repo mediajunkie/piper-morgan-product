@@ -309,3 +309,14 @@ The 2026-10 skills review (#1715) found these in the logs of six or more roles, 
 4. For CI's full suite, `scripts/check_fullsuite_backlog.py <out>` is the verdict; NEW and SHRINK-LOCK lines are read, not skimmed.
 
 The deletion form of the same discipline is in `.claude/skills/delete-module-safely/SKILL.md` ("Read every verdict whole").
+
+## Green tests and a green smoke are not a green push: run `scripts/run-push-gates.sh` (Lead, 2026-11-12, #2342)
+
+Two red windows on main in one morning came from code pushes whose unit tests (16,270 passed) and pre-push smoke both passed:
+
+- **Code Quality** failed on the env credential-read gate (`scripts/env_credential_read_lint.py`): a new module read a client secret from the environment and had no SYSTEM_ONLY ruling.
+- **Architecture Enforcement** failed on the mypy ratchet (`scripts/check_mypy_gate.py`): two new `[arg-type]` errors over the ceiling.
+
+Neither gate is a pytest test, so `pytest` and the smoke can't see them. `scripts/run-push-gates.sh` runs every `python scripts/...` gate command in `.github/workflows/lint.yml` (read from the workflow at run time) and the mypy gate in its own environment (`scripts/bootstrap-mypy-gate-venv.sh`; the dev venv gives a different count). It prints PASS or FAIL per gate, shows the failing gate's last lines, and exits non-zero if any failed. It takes about a minute, most of it mypy; `--no-mypy` skips that.
+
+Run it before pushing code, as well as the tests. It is not wired into the pre-push hook; that is CIO's call.

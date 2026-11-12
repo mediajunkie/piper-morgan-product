@@ -483,6 +483,14 @@ try:
         logger.warning(f"⚠️ {_github_app_warning}")
     else:
         logger.info(f"GitHub connect mode: {'GitHub App' if app_mode() else 'classic OAuth App'}")
+        if app_mode():
+            from services.mcp.consumer.github_app_grant import ENV_APP_SLUG, app_install_url
+
+            if app_install_url() is None:
+                logger.warning(
+                    f"⚠️ {ENV_APP_SLUG} is not set: the Settings card's install step will "
+                    "show CXO's line with no install link (#2342)"
+                )
 except Exception as e:
     logger.error(f"⚠️ GitHub App mode check failed (#2342): {e}")
 

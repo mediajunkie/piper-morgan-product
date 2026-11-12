@@ -13,10 +13,13 @@ access token, its expiry, the refresh token, its expiry, and the marker
 
 How a stored value is classified when read (Arch's condition on the record):
 
-* not JSON, or JSON without the marker: a **classic** grant (``classify`` returns None);
-* starts with ``{`` but does not parse, or carries the marker with a token or an expiry
-  missing: a **read failure** (``GrantRecordDamaged``). Never classic, or a damaged App
-  grant would be marked ``cutover`` and its user told the wrong thing.
+* does not start with ``{``: a **classic** grant, which is a bare token string and the
+  only shape any writer has ever stored one in (``classify`` returns None);
+* starts with ``{`` and is anything but a complete, marked record (it does not parse,
+  it lost or mangled its marker, a token or an expiry is missing): a **read failure**
+  (``GrantRecordDamaged``). Never classic, or a damaged App grant would be marked
+  ``cutover``, its user told the wrong thing, and the cutover script would delete it
+  (Arch 2026-11-12 06:51, corrected 07:24).
 
 Neither token ever appears in a ``repr``, a log line or an exception message.
 """
@@ -119,10 +122,11 @@ class GitHubAppGrant:
 
 
 def classify(raw: Optional[str]) -> Optional[GitHubAppGrant]:
-    """The App grant a stored value holds, or None for a classic (markerless) grant.
+    """The App grant a stored value holds, or None for a classic grant (a bare token
+    string: anything that does not start with ``{``).
 
-    Raises ``GrantRecordDamaged`` for a value that starts with ``{`` and does not parse,
-    or that carries the marker without a complete, well-typed pair.
+    Raises ``GrantRecordDamaged`` for a value that starts with ``{`` and is not a
+    complete, marked, well-typed record.
     """
     if raw is None:
         return None
@@ -133,15 +137,24 @@ def classify(raw: Optional[str]) -> Optional[GitHubAppGrant]:
         data = json.loads(text)
     except ValueError as e:
         raise GrantRecordDamaged("grant record is not valid JSON") from e
-    if not isinstance(data, dict) or data.get("minted_by") != MINTED_BY_APP:
-        return None
+    if not isinstance(data, dict):
+        raise GrantRecordDamaged("grant record is not a JSON object")
+    if data.get("minted_by") != MINTED_BY_APP:
+        # Arch 2026-11-12 07:24: a classic grant is a bare token string; no writer has
+        # ever stored one as JSON. An object that lost or mangled its marker is damage.
+        raise GrantRecordDamaged("grant record carries no App marker")
     access = data.get("access_token")
     refresh = data.get("refresh_token")
     access_exp = data.get("access_expires_at")
     refresh_exp = data.get("refresh_expires_at")
     if not (isinstance(access, str) and access and isinstance(refresh, str) and refresh):
         raise GrantRecordDamaged("App grant record is missing a token")
-    if not all(isinstance(v, int) and not isinstance(v, bool) for v in (access_exp, refresh_exp)):
+    if (
+        not isinstance(access_exp, int)
+        or isinstance(access_exp, bool)
+        or not isinstance(refresh_exp, int)
+        or isinstance(refresh_exp, bool)
+    ):
         raise GrantRecordDamaged("App grant record is missing an expiry")
     return GitHubAppGrant(
         access_token=access,

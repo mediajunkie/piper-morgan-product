@@ -108,10 +108,23 @@ class TestGrantRecord:
 
     @pytest.mark.parametrize(
         "raw",
-        [_CLASSIC, "", '["a","b"]', '{"access_token":"x"}', '{"minted_by":"someone_else"}'],
+        [_CLASSIC, "", '["a","b"]', "  a-token-with-spaces-around  "],
     )
-    def test_a_value_without_the_marker_is_a_classic_grant(self, raw):
+    def test_a_bare_string_is_a_classic_grant(self, raw):
         assert classify(raw) is None
+
+    @pytest.mark.parametrize(
+        "raw",
+        [
+            '{"access_token":"x"}',  # a parsed object with no marker
+            '{"minted_by":"someone_else","access_token":"x"}',  # a wrong marker value
+            "{}",
+        ],
+    )
+    def test_a_json_object_without_the_right_marker_is_damage_not_classic(self, raw):
+        # Arch 2026-11-12 07:24: no writer has ever stored a classic grant as JSON.
+        with pytest.raises(GrantRecordDamaged):
+            classify(raw)
 
     def test_no_value_is_not_a_grant(self):
         assert classify(None) is None
@@ -603,6 +616,37 @@ class TestResolverRefresh:
         row = await _row(world)
         assert row.status == ConnectorStatusState.BOUND.value and row.status_reason is None
         assert refresher.calls == []
+
+    async def test_an_object_that_lost_its_marker_is_a_failed_read_never_cutover(
+        self, world, app_on, monkeypatch
+    ):
+        record = json.loads(_grant("x").encode())
+        del record["minted_by"]
+        await _seed(world, stored=json.dumps(record))
+        result = await GitHubMCPSpatialAdapter().resolve_credential(_OWNER)
+        assert result.reason is DegradationReason.UNREACHABLE
+        row = await _row(world)
+        assert row.status == ConnectorStatusState.BOUND.value and row.status_reason is None
+
+    async def test_a_failed_write_after_a_refresh_has_its_own_log_event(
+        self, world, app_on, monkeypatch
+    ):
+        await _seed(world, stored=_grant("old", access_in=60).encode())
+        _use(monkeypatch, _FakeRefresher(RefreshOutcome(grant=_grant("new"))))
+
+        async def _boom(self, session, user_id, connector, grant):
+            raise RuntimeError("disk full")
+
+        monkeypatch.setattr(_FakeStore, "store_app_grant", _boom)
+        events = []
+        monkeypatch.setattr(
+            refresh_mod.logger, "error", lambda event, **kw: events.append((event, kw))
+        )
+        result = await GitHubMCPSpatialAdapter().resolve_credential(_OWNER)
+        assert result.reason is DegradationReason.UNREACHABLE  # never "reconnect"
+        assert [e for e, _ in events] == ["github_app_grant_refreshed_write_failed"]
+        assert "new" not in repr(events) and "disk full" not in repr(events)
+        assert (await _row(world)).status == ConnectorStatusState.BOUND.value
 
     async def test_the_bearer_is_the_access_token_never_the_record(
         self, world, app_on, monkeypatch

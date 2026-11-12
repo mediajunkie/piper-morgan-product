@@ -185,7 +185,19 @@ async def _refresh_under_lock(
                 if outcome.refreshed:
                     # One write, both tokens: the old refresh token is already spent.
                     # LAST step under the lock: this call commits, which releases it.
-                    await store.store_app_grant(session, str(owner_id), _GITHUB, outcome.grant)
+                    try:
+                        await store.store_app_grant(session, str(owner_id), _GITHUB, outcome.grant)
+                    except Exception as e:
+                        # Arch 2026-11-12 07:24: GitHub has already spent the old refresh
+                        # token, so the next refresh will be rejected and the person told
+                        # to reconnect. Its own event, so that later ``refresh_rejected``
+                        # can be explained from the log.
+                        logger.error(
+                            "github_app_grant_refreshed_write_failed",
+                            owner_id=str(owner_id),
+                            error=type(e).__name__,
+                        )
+                        return AppGrantVerdict(read_failed=True, event="could_not_complete")
                     logger.info("github_app_grant_refreshed", owner_id=str(owner_id))
                     return AppGrantVerdict(token=outcome.grant.access_token, event="refreshed")
                 if outcome.could_not_complete:

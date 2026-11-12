@@ -228,6 +228,17 @@ class TestApply:
         assert revoker.calls == [] and _Grants.deleted == []
         assert (await _binding(sm, _A)).status == ConnectorStatusState.BOUND.value
 
+    async def test_an_app_record_that_lost_its_marker_is_never_deleted(self, world):
+        # Arch 2026-11-12 07:24: a JSON object without the marker is damage, not a
+        # classic grant. The script counts it and leaves it alone.
+        sm, revoker = world
+        await _bind(sm, _A)
+        _Grants.values = {_A: '{"access_token":"access-app","refresh_token":"refresh-app"}'}
+        counts = await cut.run_cutover(apply=True)
+        assert counts["unreadable"] == 1 and counts["seen"] == 0 and counts["deleted"] == 0
+        assert revoker.calls == [] and _A in _Grants.values
+        assert (await _binding(sm, _A)).status == ConnectorStatusState.BOUND.value
+
     async def test_saved_repository_choices_are_byte_identical_afterwards(self, world):
         sm, _ = world
         await _seed_three(sm)

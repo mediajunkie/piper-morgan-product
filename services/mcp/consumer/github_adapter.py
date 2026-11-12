@@ -52,7 +52,14 @@ from .connector import (
     ResourceQuery,
 )
 from .connector_grant_store import ConnectorGrantStore
-from .github_app_grant import REASON_CUTOVER, app_mode
+from .github_app_grant import REASON_CUTOVER, app_install_url, app_mode
+from .github_app_install import (
+    DETAIL_APP_INSTALL_LINK_MISSING,
+    DETAIL_APP_NOT_INSTALLED,
+    InstallationReadFailed,
+    InstalledRepositories,
+    list_installed_repositories,
+)
 from .github_app_refresh import app_grant_verdict
 from .mcp_client import MCPClient
 
@@ -103,6 +110,43 @@ def github_degrade_reply(degradation) -> str:
     return getattr(degradation, "user_message", "") or "The GitHub connector is degraded."
 
 
+# #2342 (CXO 2026-11-11 19:08): authorized, but the App is installed on no repository. A
+# named state, never an empty list. The card line needs a working install link and a
+# Refresh that really re-reads; it must not show once any repository is installed.
+GITHUB_APP_NOT_INSTALLED_CARD_LINE = (
+    "GitHub is connected, but the Piper GitHub app isn't installed on any of your "
+    "repositories yet, so I can't see any. Install it on the ones you want me to use, "
+    "then refresh this list."
+)
+GITHUB_APP_NOT_INSTALLED_REPLY = (
+    "You're connected to GitHub, but the Piper GitHub app isn't installed on any of your "
+    "repositories yet, so there's nothing for me to read. Install it on the ones you want "
+    "in Settings, under Integrations."
+)
+# CXO 2026-11-12 07:30: no install link to give (``GITHUB_APP_SLUG`` unset). Never say
+# "install it" with no way to; it is our configuration problem, so say that. Neither
+# line names the variable; the startup warning is the operator's line. The chat line
+# names no Settings page, so the connector uses it as it is.
+GITHUB_APP_INSTALL_LINK_MISSING_CARD_LINE = (
+    "GitHub is connected, but I can't show you where to install the Piper GitHub app just "
+    "now. This is on our side, so please tell us."
+)
+GITHUB_APP_INSTALL_LINK_MISSING_REPLY = (
+    "You're connected to GitHub, but I can't point you to where the Piper GitHub app gets "
+    "installed just now. This is on our side, so please tell us."
+)
+# CXO 2026-11-12 07:30: under a non-empty list in App mode, so an absent repository is
+# explained. Never beside the empty-state line.
+GITHUB_APP_INSTALLED_LIST_NOTE = (
+    "These are the repositories the Piper GitHub app is installed on. To add another, "
+    "install the app on it."
+)
+GITHUB_CONNECTOR_APP_NOT_INSTALLED_REPLY = (
+    "You're connected to GitHub, but the Piper GitHub app isn't installed on any of your "
+    "repositories yet, so there's nothing for me to read. Install it on the ones you want "
+    "in the Piper Morgan app, in Settings under Integrations."
+)
+
 # #2342 (CXO 2026-11-12 07:19; Arch 07:08): the connector's own lines. A person in the
 # Claude connector reads the MCP tool's text and may never have opened the web app, so
 # "Settings" is named as being in the Piper Morgan app, and UNREACHABLE reads as a wait,
@@ -127,6 +171,11 @@ def github_connector_reply(degradation) -> str:
     tool text calls this; no flag marks a request as coming through the connector.
     Reasons CXO gave no connector line for keep their ``user_message``."""
     reason = getattr(degradation, "reason", None)
+    detail = getattr(degradation, "detail", None)
+    if detail == DETAIL_APP_NOT_INSTALLED:
+        return GITHUB_CONNECTOR_APP_NOT_INSTALLED_REPLY
+    if detail == DETAIL_APP_INSTALL_LINK_MISSING:
+        return GITHUB_APP_INSTALL_LINK_MISSING_REPLY
     if reason is DegradationReason.UNREACHABLE:
         return GITHUB_CONNECTOR_UNREACHABLE_REPLY
     if reason is DegradationReason.STALE_TOKEN:
@@ -1762,7 +1811,52 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 user_id=user_uuid, project_id=project_id, explicit=explicit_repo
             )
         except UnresolvedRepoError:
-            return await self.degrade(DegradationReason.REPO_UNRESOLVED)
+            degraded = await self.degrade(DegradationReason.REPO_UNRESOLVED)
+            if await self._app_installed_nowhere(user_id):
+                # #2342 (CXO): "Which repo?" is the wrong question for a person who has
+                # authorized but installed the App on nothing. Say that instead.
+                if app_install_url() is None:
+                    # CXO 07:30: with no link to give, never say "install it".
+                    degraded = dataclasses.replace(
+                        degraded,
+                        user_message=GITHUB_APP_INSTALL_LINK_MISSING_REPLY,
+                        detail=DETAIL_APP_INSTALL_LINK_MISSING,
+                    )
+                else:
+                    degraded = dataclasses.replace(
+                        degraded,
+                        user_message=GITHUB_APP_NOT_INSTALLED_REPLY,
+                        detail=DETAIL_APP_NOT_INSTALLED,
+                    )
+            return degraded
+
+    async def app_installed_repositories(self, user_id) -> Optional[InstalledRepositories]:
+        """#2342: the repositories the GitHub App is installed on for this account, or
+        None when that question doesn't apply (App mode off, or the account is not
+        served by an App grant: a personal token, a degrade, no binding).
+
+        Raises ``InstallationReadFailed`` when GitHub didn't answer. A failed read is
+        never reported as "not installed"."""
+        if not app_mode():
+            return None
+        credential = await self.resolve_credential(user_id)
+        if not isinstance(credential, GitHubCredential) or credential.leg != "oauth":
+            return None
+        if not credential.token:
+            return None
+        return await list_installed_repositories(credential.token)
+
+    async def _app_installed_nowhere(self, user_id) -> bool:
+        """True only when the installation read ANSWERED and found no repository. Any
+        failure or doubt is False, so the ordinary "which repo?" stays."""
+        try:
+            installed = await self.app_installed_repositories(user_id)
+        except InstallationReadFailed:
+            return False
+        except Exception:
+            logger.warning("GitHub App installation check failed", exc_info=True)
+            return False
+        return installed is not None and installed.installed_nowhere
 
     async def _bound_binding_or_degrade(self, user_id):
         """The credential half of every connector read: the resolver's verdict
