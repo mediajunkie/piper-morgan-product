@@ -100,6 +100,15 @@ class TokenBlacklist:
             # called and made a real determination, not that it succeeded.
             self._initialized = True
 
+    @property
+    def revocation_source(self) -> str:
+        """``redis`` or ``database``: where this process checks revocations (#2348).
+
+        Decided once at startup and not retried (Arch, 2026-11-12): a process that
+        started with Redis down stays on the database, which is the record.
+        """
+        return "redis" if self._redis_available else "database"
+
     async def _seed_redis_from_database(self, redis) -> int:
         """Copy every unexpired DB revocation into Redis with its remaining TTL.
 

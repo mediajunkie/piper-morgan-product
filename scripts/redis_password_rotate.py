@@ -307,6 +307,18 @@ class Rotation:
                 "Redis is not answering the app"
             )
         self.note(f"a page the usage cap guards answers {status} (not 503)   PASS")
+        # #2348: a build that serves these says so directly. Read after the page above,
+        # because that request is what makes the pool record a fresh ping.
+        services = self.health().get("services")
+        if isinstance(services, dict) and "redis" in services:
+            if services.get("redis") != "ok":
+                raise Stop(f"/health reads redis: {services.get('redis')} after the restart")
+            self.note(
+                "/health reads redis: ok, revocation_source: "
+                f"{services.get('revocation_source', 'not served')}   PASS"
+            )
+        else:
+            self.note("/health does not serve a redis field on this build (older than 2348)")
 
     # --- the whole run ------------------------------------------------------------
     def run_all(self, wanted: Optional[str], after_reset: bool) -> None:

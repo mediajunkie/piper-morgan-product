@@ -120,6 +120,28 @@ def _credential_store_status() -> str:
         return "unavailable"
 
 
+def _redis_status() -> str:
+    """#2348 (Arch's shape): ok | unavailable, from the pool's RECORDED health ping.
+    Never pings (/health is hit too often, #2336) and never raises. No address."""
+    try:
+        from services.cache.redis_factory import RedisFactory
+
+        return RedisFactory.recorded_health()
+    except Exception:
+        return "unavailable"
+
+
+def _revocation_source() -> str:
+    """#2348: redis | database, the store this process checks revoked tokens in. A process
+    that started with Redis down stays on the database (the record) until it restarts."""
+    try:
+        from services.auth.container import AuthContainer
+
+        return str(AuthContainer.get_token_blacklist().revocation_source)
+    except Exception:
+        return "database"
+
+
 def _uptime_seconds() -> int:
     """Seconds since this process started (the quiet count zeroes on a restart)."""
     try:
@@ -231,6 +253,10 @@ async def health(request: Request):
         # #2125: a box that cannot store keys reads degraded before anyone presses Validate,
         # and the promote step's health refusal holds a promotion onto it.
         "credential_store": _credential_store_status(),
+        # #2348: Redis is on the path of every request (the usage cap refuses without
+        # it) and nothing served showed it. Informational: neither changes `status`.
+        "redis": _redis_status(),
+        "revocation_source": _revocation_source(),
     }
 
     # Overall status degrades if any required service is missing, the DB is unreachable,

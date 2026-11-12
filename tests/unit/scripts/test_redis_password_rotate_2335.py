@@ -48,6 +48,7 @@ class World:
         self.status_shows_url = True
         self.reset_changes = True
         self.second_address = None
+        self.serves_redis_field = False
         self.mcp_status = "healthy"
 
     def runner(self, argv, stdin):
@@ -91,7 +92,12 @@ class World:
 
     def health(self):
         up = 99999 if self.restarted_at is None else self.t - self.restarted_at
-        return {"status": "healthy", "services": {"uptime_seconds": up}}
+        services = {"uptime_seconds": up}
+        if self.serves_redis_field:
+            answering = self.app_has.get(rr.MAIN_APP) == self.password
+            services["redis"] = "ok" if answering else "unavailable"
+            services["revocation_source"] = "redis" if answering else "database"
+        return {"status": "healthy", "services": services}
 
     def mcp_health(self):
         return {"status": self.mcp_status}
@@ -347,3 +353,32 @@ def test_find_url_wants_a_password_and_reads_tls_addresses():
     tls = f"rediss://default:{NEW_PW}@fly-x.upstash.io:6379"
     assert rr.find_url(f"| Private URL | {tls} |") == tls
     assert rr.redis_names("NAME\tORG\nmy-db\tpersonal\n\n") == ["my-db"]
+
+
+def test_a_build_that_serves_the_redis_field_is_read_for_the_confirmation():
+    """#2348: /health says redis ok and which store revocations use."""
+    w = World()
+    w.serves_redis_field = True
+    code, text = w.go()
+    assert code == 0
+    assert "/health reads redis: ok, revocation_source: redis" in text
+    older = World()
+    _, text = older.go()
+    assert "does not serve a redis field" in text
+
+
+def test_health_reading_redis_unavailable_after_the_restart_is_a_failure():
+    w = World()
+    w.serves_redis_field = True
+    w.probe = lambda url: 200  # the page loads, yet the record says Redis is not answering
+    real = w.runner
+
+    def wrong_value(argv, stdin):
+        code, out = real(argv, stdin)
+        if argv[:3] == ["fly", "secrets", "import"]:
+            w.app_has[rr.MAIN_APP] = "something-else"
+        return code, out
+
+    w.runner = wrong_value
+    code, text = w.go()
+    assert code == 1 and "/health reads redis: unavailable" in text and rr.HALF_STATE in text
