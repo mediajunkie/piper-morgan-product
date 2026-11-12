@@ -537,3 +537,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v950 (13:13): MCP app deployed by xian, serves 4666e38493 (7e32d63f68 included)
 - v951 (13:16): App registered (org pipermorgan, slug piper-morgan); sitting is next
 - v952 (13:23): sitting paused: alpha callback + install-scope decision (Lead 01M78T3H, PA 01M78T1R)
+- v953 (13:28): 2292 closed (2344 split); install scope option 2 agreed safe by Arch/HOST/PPM
