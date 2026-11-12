@@ -15,7 +15,7 @@ v933, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollu
 - **#2174 PASSED** 18:52 (xian, Amber). D3 governs (ADR-081, decisions.log). Build is **#2342**, placed by PPM 19:11 in PUB under #2261, Sprint PUB: (1) xian registers the published App and approves its secrets on hosts, (2) Arch rules the classic-grant cutover, (3) Lead builds with CXO's words, (4) served connect on alpha closes #2342 and #2261's code half. Lead starts the unit layer at 11-12 START in a fresh session. **#2341** script built, closes on xian's first run.
 - **#2340** closed (screen scripts no longer read the keychain). Real screens wait on xian's key choice.
 - **Budget:** memo to Themis in designinproduct only (f8185d229f). Never mirror business spending here.
-- **Invite hold:** #2342 (xian's App registration first), #2282 (his word on Web's sign-in check), #2292 (his mail records; still only google-site-verification TXT at 19:0x).
+- **Invite hold:** #2342 (xian's App registration first), #2282 (his word on Web's sign-in check), #2292 (his mail records; still only google-site-verification TXT when checked for the 19:05 reply).
 
 ## Waiting on xian (all on board v933)
 1. #2292 email records (step card on board).
