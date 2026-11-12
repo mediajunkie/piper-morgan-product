@@ -1,12 +1,12 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-11 15:19 PT. Read this first. It supersedes everything below.
+## ⭐ CURRENT STATE — 2026-11-11 18:19 PT. Read this first. It supersedes everything below.
 - **Log:** `dev/2026/11/11/2026-11-11-0619-comms-code-log.md` (open; STOP at 21:19).
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
 - **Weekend slots are INSIGHTS (Sat and Sun, Medium + LinkedIn).** Tue/Thu building, Wed Ship. Every publish-ready memo states the category, checked against the weekday.
 - **Tue 11-10 "Never Green in a Thousand Runs": DONE.** Published 11-10 23:31 (website 108509e), calendar `distributed` with xian's Medium URL. Nothing owed.
 - **Thu 11-12 "The Server Has No Key" (building):** still scaffold, waiting on xian's prose (a day-before rewrite is normal). Docs confirmed 11-10 23:35 the slug will follow the title; file is still `the-server-key-is-not-a-real-concept.md`. The "truth over feeling of progress" quote is about the epic, not the key. Tue's tease promises he "lays down the law" so his key isn't a fallback for testers.
-- **Ship #068** (Wed 11-11) "Whose Connection Is It, Anyway?": Exec filled spend 11-11 11:28 (55c55553e3). Waiting on xian's prose; I run the External fact-check when it lands.
+- **Ship #068 "Whose Connection Is It, Anyway?": DONE.** Published 11-11 16:12 (website f4e2914), `distributed` with xian's LinkedIn URL (76e8302e31). Nothing owed.
 - **Strategy talk with xian: still not held.** Waiting on it: the "One Account Means One Hand" partner (Nov 14/15, my pick C with 8) and its row, Thu's tease target, beat merges, the scaffold format.
 - **Two-week sprints from Fri 11-13** (ratified). #069 ordinary, #070 first progress, #071 first final score.
 - **GitHub criteria line:** nothing Comms-shaped since #2291 (11-06). #2337/#2338 (11-11) are product/test issues.
