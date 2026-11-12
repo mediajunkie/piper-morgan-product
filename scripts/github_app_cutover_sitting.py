@@ -12,8 +12,10 @@ step itself, stops at the first failure, and prints one block to paste on issue 
 What it does, in order (canonical-ops-recipes.md section 11, steps 3 and 4):
 
 1. Checks, before asking for anything: ``fly`` is signed in; beta's ``/health`` reads
-   healthy; the build beta serves contains ``scripts/github_app_cutover.py``; and a
-   dry run of that script works in the main app's container. Nothing has changed yet.
+   healthy; the build beta serves contains ``scripts/github_app_cutover.py``; the MCP
+   app serves a build with the fix that keeps a grant record from being sent as a
+   bearer (recipe 11, step 2a); and a dry run of the cutover works in the main app's
+   container. Nothing has changed yet.
 2. Asks for the three values. The client ID and secret are typed hidden.
 3. Asks GitHub whether the client ID and secret belong together, with a sign-in code
    that cannot exist. GitHub answers ``bad_verification_code`` for a real pair. Any
@@ -64,6 +66,10 @@ ROOT = Path(__file__).resolve().parent.parent
 MAIN_APP = "piper-morgan"
 MCP_APP = "piper-morgan-mcp"
 HEALTH_URL = "https://beta.pipermorgan.ai/health"
+MCP_HEALTH_URL = "https://mcp.pipermorgan.ai/health"
+#: The fix that stops the MCP app sending a stored grant record as a bearer. An MCP
+#: build without it would forward a reconnected person's refresh token (PA, 2026-11-12).
+MCP_NEEDS_COMMIT = "7e32d63f688109cb1e6ad642d515f9f7269fb2b3"
 TOKEN_URL = "https://github.com/login/oauth/access_token"  # noqa: S105 - an endpoint
 CUTOVER_IN_IMAGE = "/app/scripts/github_app_cutover.py"
 CUTOVER_IN_REPO = "scripts/github_app_cutover.py"
@@ -204,6 +210,7 @@ class Sitting:
         self,
         runner: Runner = run,
         health: Callable[[], Dict[str, object]] = read_health,
+        mcp_health: Callable[[], Dict[str, object]] = lambda: read_health(MCP_HEALTH_URL),
         github: Callable[[str, str], str] = ask_github,
         confirm: Callable[[str], str] = input,
         sleep: Callable[[float], None] = time.sleep,
@@ -212,6 +219,7 @@ class Sitting:
     ) -> None:
         self.runner = runner
         self.health = health
+        self.mcp_health = mcp_health
         self.github = github
         self.confirm = confirm
         self.sleep = sleep
@@ -233,7 +241,7 @@ class Sitting:
         return code, scrub(output, self.held)
 
     # --- step 1: checks that change nothing -------------------------------------
-    def preflight(self) -> None:
+    def preflight(self, cutover_only: bool = False) -> None:
         code, output = self.call(["fly", "auth", "whoami"])
         if code != 0:
             raise Stop("`fly` is not signed in (or not installed). Run `fly auth login` first.")
@@ -251,6 +259,25 @@ class Sitting:
                 "this checkout does not have that commit. Promote first (recipe 11, step 2)."
             )
         self.note(f"beta serves {sha[:10]}, with the cutover script   PASS")
+
+        mcp_sha = str(self.mcp_health().get("git_sha") or "")
+        code = 1
+        if mcp_sha:
+            code, _ = self.call(["git", "merge-base", "--is-ancestor", MCP_NEEDS_COMMIT, mcp_sha])
+        if code == 0:
+            self.note(f"MCP app serves {mcp_sha[:10]}, with the bearer fix   PASS")
+        elif cutover_only:
+            # The values are already set, so finishing the cutover is still right.
+            self.note(
+                f"MCP app serves {mcp_sha[:10] or 'an unread build'}, WITHOUT the bearer fix   "
+                "WARNING: deploy it now (recipe 11, step 2a)"
+            )
+        else:
+            raise Stop(
+                f"the MCP app serves {mcp_sha[:10] or 'a build this could not read'}, which does "
+                "not have the fix that keeps a grant record from being sent as a bearer. "
+                "Deploy the MCP app from main first (recipe 11, step 2a). Nothing was set."
+            )
 
     def cutover(self, apply: bool, label: str) -> str:
         code, output = self.call(cutover_argv(apply))
@@ -317,7 +344,7 @@ class Sitting:
 
     # --- the whole run ------------------------------------------------------------
     def run_all(self, cutover_only: bool, ask: Callable[[], Dict[str, str]] = ask_values) -> None:
-        self.preflight()
+        self.preflight(cutover_only)
         if cutover_only:
             self.main_set = True
             self.note("--cutover-only: no value asked for or set")

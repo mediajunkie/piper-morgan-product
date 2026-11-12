@@ -49,6 +49,7 @@ class World:
         self.grants = 3
         self.t = 0.0
         self.restarted_at = None
+        self.mcp_sha = "5a87cce789" + "0" * 30
 
     def runner(self, argv, stdin):
         self.calls.append((list(argv), stdin))
@@ -79,6 +80,9 @@ class World:
         up = 99999 if self.restarted_at is None else self.t - self.restarted_at
         return {"status": "healthy", "git_sha": SHA, "services": {"uptime_seconds": up}}
 
+    def mcp_health(self):
+        return {"status": "healthy", "git_sha": self.mcp_sha} if self.mcp_sha else {}
+
     def github(self, client_id, client_secret):
         assert (client_id, client_secret) == (CLIENT_ID, CLIENT_SECRET)
         return self.github_answer
@@ -97,6 +101,7 @@ class World:
         return cs.Sitting(
             runner=self.runner,
             health=self.health,
+            mcp_health=self.mcp_health,
             github=self.github,
             confirm=self.confirm,
             sleep=self.sleep,
@@ -168,6 +173,7 @@ def test_nothing_printed_carries_a_value_even_when_fly_echoes_it():
     [
         ("fly auth whoami", "whoami"),
         ("git cat-file -e", "cat-file"),
+        ("git merge-base --is-ancestor", "merge-base"),
         ("dry0", "ssh"),
     ],
 )
@@ -288,3 +294,26 @@ def test_hidden_prompts_and_value_shape():
 def test_the_command_takes_no_value_argument():
     with pytest.raises(SystemExit):
         cs.main(["--client-secret", CLIENT_SECRET])
+
+
+def test_an_mcp_app_that_cannot_be_read_stops_before_anything_is_set():
+    w = World()
+    w.mcp_sha = ""
+    code, text = w.go()
+    assert code == 1
+    assert "recipe 11, step 2a" in text
+    assert not any(a.startswith("fly secrets") or a.startswith("fly ssh") for a in w.argvs())
+
+
+def test_the_mcp_check_asks_git_about_the_bearer_fix_and_the_served_sha():
+    w = World()
+    w.go()
+    assert f"git merge-base --is-ancestor {cs.MCP_NEEDS_COMMIT} {w.mcp_sha}" in w.argvs()
+    assert len(cs.MCP_NEEDS_COMMIT) == 40
+
+
+def test_cutover_only_warns_about_an_old_mcp_app_and_still_finishes():
+    w = World(fail={"git merge-base --is-ancestor"}, answers=("yes",))
+    code, text = w.go(cutover_only=True)
+    assert code == 0 and "RESULT: DONE" in text
+    assert "WITHOUT the bearer fix" in text
