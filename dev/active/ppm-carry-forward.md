@@ -611,6 +611,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Production 281** (`gh` 21:33 11-11 = Total), map v123, 0 unplanned. 11-11: #2232, #2337 and #2340 closed; #2337, #2339, #2340, #2341 and #2342 placed; #1423 found.
 - **OWED rows:**
   - **key: sprint-state-refresh** (Filed 2026-11-09; to: exec; trigger: Fri 11-13 START. Refresh the State column from `gh issue view` on every named issue, before the review).
+  - **11-13 review placements:** #2327, on xian's "yes, Friday" (11-12 14:00). Place it in the sprint at the review; the candidates already named are #2320 and #2319. #2333 is in the sprint on xian's go (13:59); Arch sequenced it 14:07 (build now, promote after #2342's rows).
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift; needs #2297 and #2301).
   - **key: 2292-records** (Filed 2026-11-06; to: cio; trigger: xian's records and the Buttondown signup test).
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
