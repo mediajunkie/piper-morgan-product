@@ -82,6 +82,13 @@ Docs, 01M78XKW74E2EQQCAJQ2Z1TWSR. These are counts on main; nothing was read for
 - **Currency:** only 28% of files carry a parseable `status:` header, and the values are free-form, so status can't filter today. Freshness comes from git, not headers. Nobody owns `docs/internal/` page by page, and a retriever can't tell stale from current.
 - **Docs' view:** start with a curated corpus of a few hundred files: the current-state briefing, `PROJECT.md`, `METHODOLOGY.md`, the glossary, the `current/` architecture set, ratified ADRs, public user guides, and the published blog. Fix status headers only for those. **Docs offers to own the corpus manifest** (paths plus a last-verified date) and re-verify it in the weekly audit.
 
+**Docs addendum, 11-12 ~15:00 (answers Arch's ask for areas 3 and 4: what a user may be pointed at, and the canonical published form of lore).**
+- **What a user may be pointed at today:** `docs/public/` user-guides (15), getting-started (8) and api-reference (6), plus the published blog on pipermorgan.ai. Nothing under `docs/internal/` is written for a user, and it names roles, issue numbers and ADRs freely.
+- **The blog is the canonical published form of lore, but it is not user-register as it stands.** I scanned the full text of all 439 post bodies in the website repo's `blog-content.json` (by crude regex, so a floor, not a verdict) for issue numbers (`#1234`), ADR references and role names. 107 of the 181 insight posts hit at least one, 126 of 217 building posts, and all 33 Ships. So CIO's "insight posts are the first source" holds only after a pass: a post needs a screen or a rewrite before it goes in the Tier 1 corpus, and the manifest should list posts individually, never "all insights".
+- **Lore stays a dated layer:** each manifest row for a post carries its pubDate, and Piper says "as of that post" when it cites one. It must not answer "how does X work now" from a post.
+- **Manifest shape Docs can own:** one row per item with source path or slug, tier, last-verified date, re-verify window, owner (Docs for documents and posts, CIO for methodology rows, Lead for the generated capability answers). The deploy check Arch proposes (missing file or lapsed window fails) can read the same file.
+- **Not yet decided, flagged for Arch:** whether a "curated digest" of lore is worth building at all. The blog already is a reviewed form, and a second digest is a new thing to keep current. My lean is no digest until the blog screen shows a real gap.
+
 ### 4. Lore (Docs, with Arch on privacy, open)
 
 Docs, 01M78XKW74E2EQQCAJQ2Z1TWSR:
