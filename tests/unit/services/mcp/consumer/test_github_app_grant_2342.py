@@ -449,19 +449,95 @@ class TestLandingChangesNothingForAClassicGrant:
         credential = await GitHubMCPSpatialAdapter().resolve_credential(_OWNER)
         assert isinstance(credential, GitHubCredential)
         assert credential.leg == "oauth" and credential.token == _CLASSIC
+        assert credential.app_grant is False
         row = await _row(world)
         assert row.status == ConnectorStatusState.BOUND.value and row.status_reason is None
         assert refresher.calls == []
 
-    async def test_an_app_record_met_with_app_mode_off_is_not_decoded(
+    async def test_a_record_is_never_forwarded_as_a_bearer_even_with_app_mode_off(
         self, world, app_off, monkeypatch
     ):
-        # Not a supported state (secrets removed after a connect); pinned so the
-        # classic path is seen to be untouched: it reads the value and never refreshes.
-        await _seed(world, stored=_grant().encode())
+        # The MCP app holds no client secret, so App mode is off there. A stored record
+        # holds the refresh token: its access token serves, the record never does.
+        record = _grant("live").encode()
+        await _seed(world, stored=record)
         refresher = _use(monkeypatch, _FakeRefresher(RefreshOutcome(rejected=True)))
-        await GitHubMCPSpatialAdapter().resolve_credential(_OWNER)
+        credential = await GitHubMCPSpatialAdapter().resolve_credential(_OWNER)
+        assert isinstance(credential, GitHubCredential)
+        assert credential.token == "access-live" and credential.token != record
+        assert credential.app_grant is True  # a fact about the grant, not the config
+        assert "refresh-live" not in credential.token
+        headers = await GitHubMCPSpatialAdapter()._grant_headers_or_raise(_OWNER)
+        assert headers == {"Authorization": "Bearer access-live"}
         assert refresher.calls == [] and _FakeStore.writes == []
+
+    async def test_the_older_store_re_read_never_turns_a_record_into_a_bearer(
+        self, world, app_off, monkeypatch
+    ):
+        # A credential built without a token falls back to a store read (the pre-#2266
+        # path, still used by callers that mock the resolver).
+        import contextlib
+
+        from services.integrations.github.read_failed import GitHubReadFailed
+
+        record = _grant("live").encode()
+        adapter = GitHubMCPSpatialAdapter()
+        adapter.resolve_credential = AsyncMock(
+            return_value=GitHubCredential(
+                owner_id=_OWNER, mcp_server_ref="github", token=None, leg="oauth"
+            )
+        )
+
+        class _Store:
+            value = record
+
+            async def get(self, session, user_id, connector):
+                return _Store.value
+
+        monkeypatch.setattr(gh_mod, "ConnectorGrantStore", _Store)
+        headers = await adapter._grant_headers_or_raise(_OWNER)
+        assert headers == {"Authorization": "Bearer access-live"}
+        for bad in (_grant("gone", access_in=-5).encode(), '{"minted_by":"github_app"'):
+            _Store.value = bad
+            with pytest.raises(GitHubReadFailed) as exc:
+                await adapter._grant_headers_or_raise(_OWNER)
+            assert exc.value.detail == "grant_missing"
+        _Store.value = _CLASSIC  # a classic grant is still read as before
+        assert await adapter._grant_headers_or_raise(_OWNER) == {
+            "Authorization": f"Bearer {_CLASSIC}"
+        }
+
+    async def test_an_expired_record_with_app_mode_off_is_unreachable_never_refreshed(
+        self, world, app_off, monkeypatch
+    ):
+        old = _grant("old", access_in=-10).encode()
+        await _seed(world, stored=old)
+        refresher = _use(monkeypatch, _FakeRefresher(RefreshOutcome(grant=_grant("new"))))
+        result = await GitHubMCPSpatialAdapter().resolve_credential(_OWNER)
+        assert result.reason is DegradationReason.UNREACHABLE
+        assert refresher.calls == [] and _FakeStore.values[_OWNER] == old
+        row = await _row(world)
+        assert row.status == ConnectorStatusState.BOUND.value and row.status_reason is None
+
+    async def test_a_damaged_record_with_app_mode_off_is_a_failed_read_not_a_bearer(
+        self, world, app_off, monkeypatch
+    ):
+        await _seed(world, stored='{"minted_by":"github_app","access_token":"a"')
+        result = await GitHubMCPSpatialAdapter().resolve_credential(_OWNER)
+        assert result.reason is DegradationReason.UNREACHABLE
+        assert (await _row(world)).status == ConnectorStatusState.BOUND.value
+
+    async def test_a_401_on_a_replaced_token_is_not_stale_with_app_mode_off(self, world, app_off):
+        await _seed(world, stored=_grant("new").encode())
+        held = GitHubCredential(
+            owner_id=_OWNER, mcp_server_ref="github", token="access-old", leg="oauth"
+        )
+        rejection = gh_mod.GitHubToolError(
+            "failed to search issues: GET https://api.github.com/search/issues: 401 Bad credentials []"
+        )
+        result = await GitHubMCPSpatialAdapter()._degrade_for_exc(held, rejection)
+        assert result.reason is DegradationReason.UNREACHABLE
+        assert (await _row(world)).status == ConnectorStatusState.BOUND.value
 
 
 @pytest.mark.asyncio
