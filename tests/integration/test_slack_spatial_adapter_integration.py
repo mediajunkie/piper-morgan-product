@@ -103,9 +103,9 @@ class TestSlackSpatialAdapter:
         assert isinstance(spatial_event, SpatialEvent)
         assert spatial_event.event_type == event_type
         assert spatial_event.territory_position == 0  # Default from context
-        # room_id with no room_position maps to hash(room_id) % 1000; str hashes are
-        # salted per process, so only the range is stable (issue 2333).
-        assert 0 <= spatial_event.room_position < 1000
+        # room_id with no room_position maps to stable_position(room_id): crc32 of
+        # "C789012" mod 1000, the same in every process (issue 2333).
+        assert spatial_event.room_position == 785
         assert spatial_event.object_position == 1  # First position
         assert spatial_event.actor_id == "U123456"
         assert spatial_event.significance_level == "routine"

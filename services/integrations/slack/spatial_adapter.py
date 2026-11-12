@@ -8,6 +8,7 @@ for use within Piper Morgan's spatial metaphor system.
 
 import asyncio
 import logging
+import zlib
 from datetime import datetime
 from typing import Any, Dict, Optional
 
@@ -20,6 +21,20 @@ from services.integrations.spatial_adapter import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def stable_position(value: str, modulus: int = 1000) -> int:
+    """The spatial position for a string ID: the same in every process (#2333).
+
+    Python's builtin ``hash`` is salted per process (PYTHONHASHSEED), so a room got a
+    different position after every restart and two processes disagreed. This is crc32
+    of the UTF-8 bytes, mod ``modulus``. It is not a security hash and need not be one.
+
+    A position is a coordinate, never an identity (Arch, 2026-11-12): two IDs can share
+    one, as they always could mod 1000. No code may look up a territory, room or path
+    by its position.
+    """
+    return zlib.crc32(str(value).encode("utf-8")) % modulus
 
 
 class SlackSpatialAdapter(BaseSpatialAdapter):
@@ -155,21 +170,21 @@ class SlackSpatialAdapter(BaseSpatialAdapter):
         # Handle both integer positions and string IDs
         territory_position = context.get("territory_position", 0)
         if isinstance(territory_position, str):
-            # Convert territory_id to integer position (simple hash for now)
-            territory_position = hash(territory_position) % 1000
+            # Convert territory_id to integer position
+            territory_position = stable_position(territory_position)
 
         room_position = context.get("room_position", 0)
         if isinstance(room_position, str):
-            # Convert room_id to integer position (simple hash for now)
-            room_position = hash(room_position) % 1000
+            # Convert room_id to integer position
+            room_position = stable_position(room_position)
         elif "room_id" in context and not room_position:
             # Use room_id if room_position not provided
-            room_position = hash(context["room_id"]) % 1000
+            room_position = stable_position(context["room_id"])
 
         path_position = context.get("path_position")
         if isinstance(path_position, str):
             # Convert path_id to integer position
-            path_position = hash(path_position) % 1000
+            path_position = stable_position(path_position)
 
         object_position = position.position
 
