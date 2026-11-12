@@ -317,6 +317,13 @@ Two red windows on main in one morning came from code pushes whose unit tests (1
 - **Code Quality** failed on the env credential-read gate (`scripts/env_credential_read_lint.py`): a new module read a client secret from the environment and had no SYSTEM_ONLY ruling.
 - **Architecture Enforcement** failed on the mypy ratchet (`scripts/check_mypy_gate.py`): two new `[arg-type]` errors over the ceiling.
 
-Neither gate is a pytest test, so `pytest` and the smoke can't see them. `scripts/run-push-gates.sh` runs every `python scripts/...` gate command in `.github/workflows/lint.yml` (read from the workflow at run time) and the mypy gate in its own environment (`scripts/bootstrap-mypy-gate-venv.sh`; the dev venv gives a different count). It prints PASS or FAIL per gate, shows the failing gate's last lines, and exits non-zero if any failed. It takes about a minute, most of it mypy; `--no-mypy` skips that.
+Neither gate is a pytest test, so `pytest` and the smoke can't see them. `scripts/run-push-gates.sh` runs:
+- ruff as the lint workflow does (`ruff format --check .`, `ruff check .`), with the pinned binary from `scripts/ensure-ruff.sh`;
+- every `python scripts/...` gate command in `.github/workflows/lint.yml`, read from the workflow at run time;
+- the mypy gate in its own environment (`scripts/bootstrap-mypy-gate-venv.sh`; the dev venv gives a different count).
 
-Run it before pushing code, as well as the tests. It is not wired into the pre-push hook; that is CIO's call.
+It prints PASS or FAIL per gate, shows the failing gate's last lines, and exits non-zero if any failed. About 30 seconds. `--no-mypy` skips mypy.
+
+**In the pre-push hook (CIO's ruling, 2026-11-12).** `scripts/git-hooks/pre-push` runs it as `--hook` before the smoke, on a push that touches the smoke's code paths or `scripts/`, `.github/`, `.claude/` or a `.*-baseline.txt` file. A failed gate blocks the push. `PIPER_SKIP_PUSH_GATES=1` skips the gates only (logged; say why in your log); it is separate from `PIPER_SKIP_PREPUSH_SMOKE`. In the hook the mypy environment is never built: if `venv-mypy-gate` is absent in your worktree, mypy is reported UNCHECKED and the push goes on, so run `scripts/bootstrap-mypy-gate-venv.sh` once per worktree. The hook takes effect in a worktree once the file is copied to the shared hooks directory (Pard).
+
+The gates read the tree on disk, as the smoke does: an untracked file under `scripts/` counts.

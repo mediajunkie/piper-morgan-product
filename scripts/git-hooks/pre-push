@@ -26,14 +26,35 @@
 # hook, once installed, gates all 14 worktrees, not just Lead's seat. If a seat's env resolution
 # ever fails, it fails OPEN and LOUD (see below) — a miss is visible, not silent.
 #
+# PUSH GATES (Lead, 2026-11-12, on CIO's ruling of that day, six conditions; #2342's two reds).
+# The smoke is pytest; the Code Quality and Architecture Enforcement workflows also run gates that
+# are NOT pytest tests (ruff, the lint workflow's `python scripts/...` gates, the mypy ratchet).
+# Two red windows on main on 11-12 came from pushes whose tests and smoke passed. So before the
+# smoke, the hook runs `scripts/run-push-gates.sh --hook`:
+# - Trigger: the smoke's code paths PLUS scripts/, .github/, .claude/ and the .*-baseline.txt
+#   files. Two of 11-11's reds were scripts/ pushes the smoke's trigger does not match.
+# - A failed gate BLOCKS the push, as a failed smoke does. Its own escape hatch is
+#   PIPER_SKIP_PUSH_GATES=1 (logged), separate from PIPER_SKIP_PREPUSH_SMOKE: skipping one never
+#   skips the other.
+# - A gate already red on main blocks too (a seat merges main before pushing, so a red main is a
+#   red tree, and the push that fixes it passes). The message says how to skip and to log why.
+# - The mypy environment is never BUILT inside the hook (a network pip install at push time, per
+#   worktree). If venv-mypy-gate is absent, mypy is reported UNCHECKED and the push goes on:
+#   fail open and loud, like the missing pytest env.
+# - The gates need no database, so they run before the smoke takes its lock.
+#
 # Mechanism sunset-or-renew (docs/internal/operations/mechanism-sunset-or-renew.md):
-#   Cost:    ~28s warm / ~50s cold per code-touching push (first push per host/key pays the cold
-#            cost once; every push after is warm). ~0.5s on non-code pushes (mail/log/docs/
-#            heartbeats never invoke pytest).
-#   Benefit: measuring — the per-run log line below (scripts/git-hooks/pre-push's own log at
-#            "$(git rev-parse --git-common-dir)/piper-prepush-smoke.log") is the evidence; no
-#            benefit count exists yet because the hook is not installed.
-#   Review:  2026-11-29 (8 weeks out)
+#   Cost:    Smoke: ~28s warm / ~50s cold per code-touching push. Gates: ~34s without mypy plus
+#            ~7s for mypy where its environment exists (CIO's measurement, 2026-11-12), on a push
+#            touching code paths, scripts/, .github/, .claude/ or a baseline file. On 11-11 the
+#            smoke's trigger matched 7 of 333 commits and the gates' wider trigger 21: about 14
+#            minutes a day across the cohort. ~0.5s on every other push (mail/log/docs/heartbeats
+#            invoke neither).
+#   Benefit: counted from the log ("$(git rev-parse --git-common-dir)/piper-prepush-smoke.log"):
+#            `outcome=fail` lines are smoke failures caught before main, `outcome=gates-fail`
+#            lines are gate failures caught before main, `outcome=gates-skip` lines are the
+#            skips CIO counts at the review (were they reds the seat didn't cause?).
+#   Review:  2026-11-29
 #   Owner:   Lead
 #
 # Contract:
@@ -64,6 +85,8 @@ set -u
 top="$(git rev-parse --show-toplevel)"
 common="$(git rev-parse --git-common-dir)"
 code_re='^(services/|web/|tests/|main\.py$|alembic/|pytest\.ini$|requirements[^/]*\.txt$)'
+# The gates' trigger (CIO 2026-11-12, condition 1): the smoke's paths plus these.
+gates_re='^(services/|web/|tests/|main\.py$|alembic/|pytest\.ini$|requirements[^/]*\.txt$|scripts/|\.github/|\.claude/|\.[^/]*-baseline\.txt$)'
 zero=0000000000000000000000000000000000000000
 
 pushes="$(cat)"
@@ -91,6 +114,7 @@ if [ -f "$sentinels" ]; then
 fi
 
 touched=""
+gates_touched=""
 while read -r local_ref local_sha remote_ref remote_sha; do
   [ "$local_sha" = "$zero" ] && continue                   # branch deletion
   if [ "$remote_sha" = "$zero" ]; then
@@ -105,12 +129,51 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   fi
   hit="$(printf '%s\n' "$files" | grep -E "$code_re" | head -1 || true)"
   [ -n "$hit" ] && touched="$hit"
+  ghit="$(printf '%s\n' "$files" | grep -E "$gates_re" | head -1 || true)"
+  [ -n "$ghit" ] && gates_touched="$ghit"
 done <<< "$pushes"
 
-[ -z "$touched" ] && exit 0
+[ -z "$touched" ] && [ -z "$gates_touched" ] && exit 0
 
 start_ts=$(date +%s)
 logfile="$common/piper-prepush-smoke.log"
+
+# --- Push gates (see header). Before the smoke: they need no database and no lock. ---
+gates_log() {
+  # gates_log <outcome> [extra]
+  local when dur
+  when="$(date +%Y-%m-%dT%H:%M:%S%z)"
+  dur=$(( $(date +%s) - start_ts ))
+  printf 'ts=%s worktree=%s code_path=%s outcome=%s duration=%ss%s\n' \
+    "$when" "$top" "$gates_touched" "$1" "$dur" "${2:+ $2}" >> "$logfile" 2>/dev/null
+}
+if [ -n "$gates_touched" ]; then
+  if [ "${PIPER_SKIP_PUSH_GATES:-}" = "1" ]; then
+    echo "⚠️  pre-push gates SKIPPED by PIPER_SKIP_PUSH_GATES=1 (path touched: $gates_touched). Say why in your log." >&2
+    gates_log "gates-skip"
+  elif [ ! -x "$top/scripts/run-push-gates.sh" ]; then
+    echo "⚠️  pre-push: scripts/run-push-gates.sh not found in this tree. Gates UNCHECKED." >&2
+    gates_log "gates-unchecked" "reason=no_script"
+  else
+    echo "pre-push: path touched ($gates_touched) — running the CI gates (~40s)…" >&2
+    gates_out="$(cd "$top" && scripts/run-push-gates.sh --hook 2>&1)"
+    gates_rc=$?
+    gates_summary="$(printf '%s\n' "$gates_out" | grep -E '^run-push-gates:' | tail -1)"
+    printf '%s\n' "$gates_out" | grep -E '^UNCHECKED' >&2
+    if [ $gates_rc -ne 0 ]; then
+      printf '%s\n' "$gates_out" | grep -vE '^PASS ' >&2
+      echo "❌ pre-push: a CI gate FAILED (${gates_summary:-no summary}). Push blocked: it would turn main red." >&2
+      echo "   Fix it. If this gate is already red on main, it isn't your push: skip with" >&2
+      echo "   PIPER_SKIP_PUSH_GATES=1 git push … and say why in your log." >&2
+      gates_log "gates-fail" "summary=\"$gates_summary\""
+      exit 1
+    fi
+    echo "pre-push: gates passed (${gates_summary#run-push-gates: })." >&2
+    gates_log "gates-pass" "summary=\"$gates_summary\""
+  fi
+fi
+
+[ -z "$touched" ] && exit 0
 
 log_line() {
   # log_line <interpreter> <outcome> [extra]

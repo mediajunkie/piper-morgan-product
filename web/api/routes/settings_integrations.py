@@ -2411,44 +2411,35 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
     Issue #573: GitHub repository preferences
     """
     try:
-        # --- #2342 (ADR-081 D3): in GitHub App mode, on the App grant, the list is the
-        # repositories the App is INSTALLED on, read from GitHub with the person's own
-        # token. The user:@me search below also returns public repositories the App is
-        # not installed on, which Piper could read but not write to. ---
-        from services.mcp.consumer.github_app_grant import app_mode
+        # --- Connector-first (#1327 gap 3): the user's own repos over the OAuth connector.
+        # #2342 (ADR-081 D3; Arch 2026-11-12 08:02): on a GitHub App grant the adapter
+        # answers this from the installation read, so the list is the repositories the
+        # App is INSTALLED on, here and on every other surface. ---
+        from services.mcp.consumer.github_app_install import (
+            DETAIL_APP_INSTALL_LINK_MISSING,
+            DETAIL_APP_NOT_INSTALLED,
+        )
 
-        installed = None
-        try:
-            if app_mode():  # with App mode off this route is exactly as it was
-                installed = await GitHubMCPSpatialAdapter().app_installed_repositories(
-                    current_user.sub
-                )
-        except Exception as e:
-            # A failed read is never "not installed" and never an empty list (#1231).
-            logger.warning(
-                "github_app_installation_read_failed",
-                user_id=str(current_user.sub),
-                error=type(e).__name__,
-            )
-            raise HTTPException(
-                status_code=status.HTTP_502_BAD_GATEWAY,
-                detail="I couldn't load your repositories. Try refreshing the page.",
-            )
-        if installed is not None and installed.installed_nowhere:
+        connector_result = await GitHubMCPSpatialAdapter().search_user_repositories(
+            current_user.sub, limit=100
+        )
+        install_detail = getattr(connector_result.degradation, "detail", None)
+        if install_detail in (DETAIL_APP_NOT_INSTALLED, DETAIL_APP_INSTALL_LINK_MISSING):
+            # Authorized, but the App is installed on no repository: a named state with
+            # CXO's words, never an empty list. With no install link to give
+            # (CXO 07:30), the card says the problem is on our side.
             from services.mcp.consumer.github_adapter import (
                 GITHUB_APP_INSTALL_LINK_MISSING_CARD_LINE,
                 GITHUB_APP_NOT_INSTALLED_CARD_LINE,
             )
             from services.mcp.consumer.github_app_grant import app_install_url
 
-            install_url = app_install_url()
+            install_url = app_install_url() if install_detail == DETAIL_APP_NOT_INSTALLED else None
             logger.info(
                 "github_app_installed_nowhere",
                 user_id=str(current_user.sub),
                 has_install_link=bool(install_url),
             )
-            # CXO 2026-11-12 07:30: never "install it" with no way to. With no link, the
-            # card says the problem is on our side.
             return GitHubRepositoryListResponse(
                 repositories=[],
                 state="app_not_installed",
@@ -2459,18 +2450,12 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
                 ),
                 install_url=install_url,
             )
-
-        # --- Connector-first (#1327 gap 3): the user's own repos over the OAuth connector. ---
-        if installed is not None:
-            connector_result = None
-            repo_dicts = installed.repositories
+        if (
+            connector_result.repositories is not None
+            and getattr(connector_result, "from_installation", False) is True
+        ):
+            repo_dicts = connector_result.repositories
             source = "app_installation"
-        else:
-            connector_result = await GitHubMCPSpatialAdapter().search_user_repositories(
-                current_user.sub, limit=100
-            )
-        if connector_result is None:
-            pass  # the App's installed repositories, set above
         elif connector_result.repositories is not None:
             repo_dicts = connector_result.repositories  # normalized {id,name,full_name,description}
             source = "connector"
