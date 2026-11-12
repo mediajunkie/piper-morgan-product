@@ -498,6 +498,43 @@ app. Accounts already moved keep their App grant, which then serves only until i
 expires (8 hours) and cannot be refreshed; accounts the script marked stay stale until they reconnect.
 So this is a way back for new connections, not an undo of the cutover.
 
+## 12. Rotating the hosted Redis password: `scripts/redis_password_rotate.py` (#2335, Lead, 2026-11-12)
+
+xian ruled the rotation on 11-12 as a precaution: Fly keeps 7 days of logs, so whether the old startup
+line ever wrote the password there cannot be shown. One command, run by xian in Terminal from a clean
+worktree where `fly` is signed in (section 10, rule 8):
+
+```
+python3 scripts/redis_password_rotate.py
+```
+
+Nobody types or sees the password. The command reads the new address from `fly redis status` and
+hands it to `fly secrets import` on standard input.
+
+- **Which Redis:** Fly's own (Upstash behind Fly; `fly.toml` says `REDIS_URL` comes from
+  `fly redis create`). The command lists the databases and stops if there is more than one, until
+  `--redis NAME` says which.
+- **Which apps:** it reads the secret names of `piper-morgan` and `piper-morgan-mcp` and sets the
+  new address only on those that hold `REDIS_URL`. Staging has its own database and is not touched
+  unless named (the docstring gives the line).
+- **The cost:** from the reset until the main app restarts, about a minute, every page on beta
+  answers 503 `capacity_check_unavailable`, because the usage cap refuses without Redis (ADR-076
+  D4). Run it when beta's `/health` shows `chat_turns_last_30m.quiet: true`.
+- **It stops before the reset** if it cannot read an address with a password from
+  `fly redis status`. What that command prints is not in Fly's published pages, so this check is
+  what keeps a surprise there from costing anything.
+- **If it stops after the reset,** it says so and gives `--after-reset`, which skips the reset and
+  sets the new address.
+- **How the old password is shown dead:** the reset is what kills it, and the command checks the new
+  address carries a different password. Nobody types the old one to test it.
+- **Served confirmation:** the command waits for a restart, then asks `/login` and expects anything
+  but 503. A seat can repeat that read: beta `/health` healthy with a small `uptime_seconds`, and
+  `/login` answering 200.
+- **Other copies:** a local `.env` that was ever pointed at the hosted Redis is xian's to check. No
+  GitHub Actions secret holds it (HOST's grep of `.github/`).
+
+Not run against the hosts by any seat; xian's first run is the check.
+
 ## Promotion checklist: read staging's sha from staging, not from the deploy-run list (Lead, 2026-10-16)
 
 **Why:** the 10:51 dispatch under the standing grant was refused by the promote gate. The gate reads the sha staging's
