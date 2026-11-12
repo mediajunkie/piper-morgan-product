@@ -8,16 +8,18 @@
 
 ---
 
-## Now (written 2026-11-10 21:50; replace, don't annotate)
+## Now (written 2026-11-11 21:50; replace, don't annotate)
 
-- **Served:** beta `c425fd242f` (Lead 18:58, #2328 complete). MCP `/health` 200. Read the live sha from `/health`, not from here.
+- **Served:** beta `c425fd242f`. MCP `/health` 200. Read the live sha from `/health`, not from here.
 - **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta.**
-- **PA's served-check lane is DOWN (11-10 18:25):** the classifier refuses every read of `~/.piper-shared/web-seed-1386-credentials-2026-10-20.txt` (four denials: field names, an email-key retry, a transcript search, a plain rerun). `twoturn.py` with the raw file raised KeyError 'username'. Unverified guess: 11-09 passed it through a key=value process substitution, but my 11-09 log doesn't record the command. **Lesson: log the exact driver invocation (credential path shape included, never the contents) in the session log on every served run.** With Exec and Lead for xian; on PM Attention. Don't retry until xian rules.
+- **PA's served-check lane is DOWN since 11-10 18:25.** Cause confirmed (10-22 log line 23): the `~/.piper-shared` credential files are `key: value`, the drivers (`twoturn.py`, `turn.py`) expect `key=value`, and the old process-substitution conversion is now classifier-refused. With Exec and Lead for xian; on PM Attention. Don't retry or route around it. **If 11-12 ends with no ruling, mail Exec once (decision in the subject).** Lesson: log the exact driver invocation (credential path shape, never contents) on every served run.
 - **#2328 (pronoun target asks which one):** OPEN, 0 of 5 served. Web is blocked on the same file. Once unblocked, run Lead's 18:58 five cases (memo in `mailboxes/pa/read/`).
-- **No python with `requests` on PATH:** the 11-10 scratch venv was session-only. Make one again (`python3 -m venv <scratch>/venv && pip install requests`) before running a driver.
-- **11-09 served:** #2334 and #2336 closed on `twoturn.py` (one login, then N turns on one bearer; args: creds, session, transcript, gap seconds, messages).
-- **Test account web-seed-1386 (11-09 21:47, untouched 11-10):** 8 open, in order: urgent task (urgent), zz throwaway one, zz throwaway two, audit the current navigation, **review prs (×2) on line 5**, review the deployment plan, draft the launch checklist. No reminders, no clear preference.
+- **xian's keychain rule (11-11 11:12, decisions.log):** nothing we run reads his login keychain without permission. PA's 1386 harness fallback is removed (`5ea17b4b6b`); the shared binder is fixed (#2340, `5f31a9fb76`). Rule-7 screens wait on xian's key handover (Lead via Exec).
+- **Inspecting an old commit:** use a scratch `git worktree add --detach`, never `git checkout <sha>` in this worktree (11-11 slip).
+- **No python with `requests` on PATH:** make a scratch venv (`python3 -m venv <scratch>/venv && pip install requests`) before running a driver.
+- **Test account web-seed-1386 (11-09 21:47, untouched since):** 8 open, in order: urgent task (urgent), zz throwaway one, zz throwaway two, audit the current navigation, **review prs (x2) on line 5**, review the deployment plan, draft the launch checklist. No reminders, no clear preference.
 - PA can't sign in to other seats' accounts: the permission classifier denies it even with the owner's yes.
+- **#2174:** github-mcp-server version line lands from xian's #2341 run; PA reads it there, no action.
 - **Q9 also:** #2313 ("delete A and B") on its build; CXO's #2294 bulleted-list row.
 - **#2288** (card says "Connected." on a 401 grant): served row needs a dead-grant account; xian's word for Web.
 - **#2242 (Q2):** held-token row, on xian's `mcp_allow.py remove` relayed by Exec.
@@ -35,7 +37,7 @@
 - 🔒 **#2242 held-token row**, since 11-03: xian runs `mcp_allow.py remove` on his account (then re-adds).
 - 🔒 **#2238 Notion**, since 11-01: xian puts a throwaway Notion key on staging.
 - 🔒 **#2288 served row**, since 11-05: xian's word that Web may use an untouched dead-grant test account.
-- 🔒 **PA served-check sign-in**, since 11-10 18:25: the classifier denies PA reading `~/.piper-shared/web-seed-1386-credentials-2026-10-20.txt` (twoturn.py finds no `username=` key; listing field names was denied too). Unblocks on either: xian allows the read, or a `username=`/`password=` file for the account. Sent to Lead, cc Exec 18:25 (e1d0c6b3b). Until then served checks go to Web (Lead routed #2328 there at 18:37).
+- 🔒 **PA served-check sign-in**, since 11-10 18:25: the classifier denies PA reading `~/.piper-shared/web-seed-1386-credentials-2026-10-20.txt` (twoturn.py finds no `username=` key; listing field names was denied too). Cause confirmed 11-11: the file is `key: value`, the drivers want `key=value`. Unblocks on either: xian allows the read, or a `username=`/`password=` file for the account. Sent to Lead, cc Exec 18:25 (e1d0c6b3b). Until then served checks go to Web (Lead routed #2328 there at 18:37).
 - **Rename PA (xian's idea 10-28):** trigger was MVP reading 0 open, which happened 10-30. Raised to Exec 11-06 (late). xian's call; no work blocked.
 
 ## Cadence
