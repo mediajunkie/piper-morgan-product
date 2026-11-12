@@ -598,17 +598,16 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: notion-offer-ask** (Filed 2026-11-01; to: exec; by: trigger: Web's #2238 served check passes). Send Exec the one-line "offer Notion in the beta: yes or no" for xian. CXO's card words come first.
   - **Rule from PDR-102:** when PPM places a connector-ingest unit, mail Arch the same day (his ADR trigger for C2).
 
-## Now (rewritten at the 11-10 21:33 STOP; carry into Wed 11-11)
+## Now (rewritten at the 11-11 21:33 STOP; carry into Thu 11-12)
 
-- **Invite hold, PDR-008.** Re-verified 21:33 11-10 with `gh issue view`.
-  - Open: #2261 (leg decided D3 11-11 on #2174's pass; waits on Lead's ADR-081 record, Arch's validation and Lead's build), #2282 (its browser row waits on xian's word for Web's sign-in check), #2292 (P1, xian's records). #2335's log line and any rotation are xian's (Exec's rollup).
+- **Invite hold, PDR-008.** Re-verified 21:33 11-11 with `gh issue view`.
+  - #2261: leg decided **D3** on 11-11 (#2174 passed, xian's run 18:52, 14 of 14; Arch validated 18:56, ADR-081). It lands on **#2342** (D3's build, PUB under #2261, Sprint PUB). Order: xian registers the published App, Lead builds (unit layer from the 11-12 START, fresh session), CXO's install, stale and cutover lines are in, then a served connect on alpha. Arch ruled classic grants go stale at cutover.
+  - #2282 (xian's word on Web's sign-in check) and #2292 (P1, xian's mail records) unchanged. #2335's log line and any rotation are xian's (Exec's rollup).
   - When all are met, PPM sends Exec the lift-readiness memo (§3), each row with `Verified how:`.
-- **Sprint (11-13 to 11-26), ratified 11-09; two-week sprints stand (10 of 11 on record).** Membership lives in `production-sprint-2-onboarding-proposal-2026-11-06.md` and on the map, not in the board's Sprint field.
-  - **#2328 joined item 5 on xian's word, 11-10 17:31** (Lead's relay). Lead builds to the existing armed-pick wording (CXO 17:36), and CXO judges served quotes for both phrasings. The board shows Sprint PROD-CONVO (set 17:36 on Lead's ask; a topical tag from plan section V) and Status In Progress.
-  - 11-13 review candidates: #2320, #2319.
-- **#2232 (local served fault run, Q):** Lead took it 11-10 19:00 and asked Arch how to fail a database read locally. Once it lands, it gives #955's failed-write row and #2154's preferences row. Board under PROD-TECHDEBT; nothing for PPM.
-- **Health lane (#1452):** as 11-09. The 18 flaky stay out of the sprint, and the 11-26 review can take them up.
-- **Production 278** (`gh` 21:33 11-10 = Total), map v120 (`https://claude.ai/artifact/63oejcubP3zEj617nFAN68`), 0 unplanned. No placements or closes 11-10.
+- **#1423 question to Exec (11-11 18:35, 2e963f7d5):** moved Ongoing to Production 15:37 with no record. It has a provisional Q row. If xian didn't move it, return it to Ongoing under his 09-25 ruling and drop the row.
+- **Sprint (11-13 to 11-26), ratified 11-09.** Membership lives in `production-sprint-2-onboarding-proposal-2026-11-06.md` and on the map, not the board's Sprint field. Item 1 now names #2342 and xian's App registration. #2328 in item 5 (Lead built; CXO's served judgment). 11-13 review candidates: #2320, #2319.
+- **#2231 (pins-only tracker):** PPM struck the #2152 row 11-11 on Arch's 07:08 ruling (not partner-reachable) and moved the partner-reachable comment failure into the #2205 row. CXO invited to object; no reply as of 21:33. #2154: GitHub page served locally (#2232, #2337); Slack, Calendar and Notion remain unserved (#2339, not a gate).
+- **Production 281** (`gh` 21:33 11-11 = Total), map v123, 0 unplanned. 11-11: #2232, #2337 and #2340 closed; #2337, #2339, #2340, #2341 and #2342 placed; #1423 found.
 - **OWED rows:**
   - **key: sprint-state-refresh** (Filed 2026-11-09; to: exec; trigger: Fri 11-13 START. Refresh the State column from `gh issue view` on every named issue, before the review).
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift; needs #2297 and #2301).
@@ -616,6 +615,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
 - **Fresh-account list (Q8, after the lift):** #2270's not-connected turn 1, Path B's quote, and possibly #2322's stored-done row.
 - **Mail:** read both v3 and `python3 scripts/mail4.py inbox --role ppm` at every check.
-- **Waiting on others:** #2290 (Lead); #2320's per-phase log (Lead); #2219's other rows and #2328 (Lead, then CXO); #2333 (Arch).
+- **Waiting on others:** #2290, #2320, #2339, #2342 (Lead); #2341 (xian's first run); #2328 (CXO); #2333 (Arch).
+- **xian's rule, 11-11 11:12:** nothing a seat runs reads his login keychain without his permission. PPM runs no local servers or scripts that touch it.
 - **Still carried:** #2242's last row (xian's remove and re-add); #2235; #1680; PDR-102 C1–C8 checks on document-touching placements.
-- **Superseded:** the older "No Sprint-field or label edits by PPM" line above. On another seat's ask, PPM may set a Sprint value that matches the plan section (precedent: #2200 and #2328). Sprint membership itself is recorded in the sprint doc.
+- **Sprint field:** on another seat's ask, PPM may set a Sprint value that matches the plan section (precedent #2200, #2328, #2342).
