@@ -535,3 +535,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v948 (12:32): 2343 ready (Lead 01M78PVC, 2456cd7e5f); sitting command on the card
 - v949 (12:55): sitting command corrected to python3 (no venv on Amber worktrees; xian's run failed at the shell, nothing ran)
 - v950 (13:13): MCP app deployed by xian, serves 4666e38493 (7e32d63f68 included)
+- v951 (13:16): App registered (org pipermorgan, slug piper-morgan); sitting is next
