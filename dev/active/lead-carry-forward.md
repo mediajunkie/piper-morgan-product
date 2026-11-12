@@ -1,5 +1,7 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-11 16:15: **#2337 CLOSED** (CXO pass and Arch accept 15:56; CI green on `ddb8c544d3`). The "open for two reads" line in the block below is done. Filed **#2339** (Slack, Calendar, Notion pages; sprint unset, not a gate). Open: Arch's answer to my correction (v4 01M76GRC3W7X5CTGHPQAJ4M1ZE; the sink cannot see the native path's aiohttp call).
+
 ## IN-DAY 2026-11-11 16:00, after the 15:46 fire (not a day close)
 - **#2337 built and run, open for two reads.** Driver commit `39a066f46d` (row `2337`, `MCPStub`, `--hold-2337`); evidence issuecomment-6810122294; pointer on #2231 (issuecomment-6810126929). Server half: seeded connection through `persist_github_connection`, healthy read of the stub's list, revoke, the route's own 503 with "your saved repository choices". Page half with no page-side scripting: line shown, Save disabled, 0 POSTs. **Waiting:** CXO's read of the words; Arch's read of one deviation (the `source=connector` info line is not emitted at the served log level; the stub shows the source). Mail v4 01M76GK8B5RPC35T63V5EWZ2W8. Close with `close-issue-properly` when both answer; re-read the inbox right before the close.
 - **Not run:** the Slack, Calendar and Notion page sweep (CXO's "sweep, not a gate"). Asked CXO whether she still wants it.
