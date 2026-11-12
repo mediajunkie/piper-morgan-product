@@ -524,3 +524,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 11-12 06:29 v936: #2282 step 5 card adds /setup calendar start (Arch 01M781YJ). Verified: Arch's memo read in full; code layer is Arch's.
 - 11-12 06:50 v937: #2342 card: Lead's build started 06:49; possible cutover script in xian's hand pending Arch (01M783R0). Verified: memo read in full.
 - 11-12 07:04 v938: #2342 switchover script ruled (Arch 06:51). Verified: four memos read; bypass list ownership from decisions.log 2026-10-11.
+- 11-12 07:16 v939: #2342 unit 1 on main 07:11 (git log), migration means next promotion needs xian's word (Lead 01M7854M). Verified: commit time from git log.
