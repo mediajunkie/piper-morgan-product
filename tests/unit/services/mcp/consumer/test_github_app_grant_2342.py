@@ -917,3 +917,77 @@ class TestRejectedTokenAlreadyReplaced:
         result = await GitHubMCPSpatialAdapter()._degrade_for_exc(held, self._rejection())
         assert result.reason is DegradationReason.STALE_TOKEN
         assert (await _row(world)).status == ConnectorStatusState.STALE.value
+
+
+# ── the connector's own lines ───────────────────────────────────────────────────────
+
+
+class TestConnectorLines:
+    """CXO 2026-11-12 07:19 (Arch 07:08): a person in the Claude connector may never have
+    opened the web app. UNREACHABLE reads as a wait and never names Settings; STALE is
+    the only state that asks for a reconnect, and says where Settings is."""
+
+    def test_unreachable_is_temporary_and_sends_nobody_to_settings(self):
+        line = gh_mod.github_connector_reply(
+            DegradationResponse(reason=DegradationReason.UNREACHABLE, user_message="internal")
+        )
+        assert line == (
+            "I couldn't reach GitHub just now. This is temporary, so please try again in a "
+            "moment."
+        )
+        assert "Settings" not in line and "MCP" not in line
+
+    def test_stale_asks_for_a_reconnect_in_the_piper_morgan_app(self):
+        line = gh_mod.github_connector_reply(
+            DegradationResponse(reason=DegradationReason.STALE_TOKEN, user_message="short")
+        )
+        assert line == (
+            "Your GitHub connection needs re-authorizing. Reconnect GitHub in the Piper "
+            "Morgan app, in Settings under Integrations."
+        )
+
+    def test_cutover_differs_from_the_web_line_only_by_naming_the_app(self):
+        line = gh_mod.github_connector_reply(
+            DegradationResponse(
+                reason=DegradationReason.STALE_TOKEN, user_message="short", detail=REASON_CUTOVER
+            )
+        )
+        assert line == (
+            "GitHub now connects through the Piper GitHub app, so your connection needs to "
+            "be set up again. Reconnect GitHub in the Piper Morgan app, in Settings under "
+            "Integrations, and choose which repositories I can see. Your saved settings are "
+            "unchanged."
+        )
+        assert line.replace(
+            " in the Piper Morgan app, in Settings under", " in Settings, under"
+        ) == (GITHUB_CUTOVER_STALE_REPLY)
+
+    def test_a_reason_with_no_connector_line_keeps_its_message(self):
+        line = gh_mod.github_connector_reply(
+            DegradationResponse(
+                reason=DegradationReason.CONNECT_REQUIRED,
+                user_message="Connect GitHub to continue.",
+            )
+        )
+        assert line == "Connect GitHub to continue."
+
+    @pytest.mark.asyncio
+    async def test_the_mcp_resource_shows_the_connector_line(self, monkeypatch):
+        import json as _json
+
+        from services.mcp.server import resources
+
+        degraded = DegradationResponse(
+            reason=DegradationReason.UNREACHABLE,
+            user_message="GitHub's MCP server is unreachable right now.",
+        )
+
+        class _Adapter:
+            async def list_open_issues(self, user_id, limit):
+                return gh_mod.GitHubIssuesResult(issues=None, degradation=degraded)
+
+        monkeypatch.setattr(resources, "GitHubMCPSpatialAdapter", _Adapter)
+        monkeypatch.setattr(resources, "current_user_id", lambda: _OWNER)
+        payload = _json.loads(await resources._read_github_issues())
+        assert payload["available"] is False and payload["reason"] == "unreachable"
+        assert payload["message"] == gh_mod.GITHUB_CONNECTOR_UNREACHABLE_REPLY

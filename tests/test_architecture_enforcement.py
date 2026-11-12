@@ -9412,3 +9412,49 @@ class TestReminderGatherHasOneFloorCaller:
             "bypassing the #2233 ride gate and the #1625 mention gate (the #2042 aside): "
             + ", ".join(outside)
         )
+
+
+class TestMainAppStaysWarmForGrantRefresh2342:
+    """#2342 (PA's finding, Arch's ruling, 2026-11-12 07:08): the main app must not be
+    able to stop while it runs the background refresh of GitHub App grants.
+
+    The MCP app is decrypt-only (#1982) and can never refresh a token. A person who uses
+    Piper only through the Claude connector sends traffic to ``piper-morgan-mcp``, which
+    never wakes the main app. So the main app's 30-minute pass
+    (``services/scheduler/github_app_refresh_job.py``) is what keeps their token alive,
+    and it runs only while a main-app machine is up. If ``fly.toml`` ever lets the main
+    app scale to zero, those tokens expire silently.
+
+    If this setting has to change, the pass moves first, and that needs a ruling.
+
+    LAYER (m-43): the checked-in ``fly.toml``, not the live machines' settings (no seat
+    reads those). Vacuity guard: the pass must still exist, so a removed job retires
+    this test deliberately instead of leaving it pinning nothing.
+    """
+
+    def _http_service(self) -> dict:
+        import tomllib
+
+        repo_root = Path(__file__).resolve().parent.parent
+        with open(repo_root / "fly.toml", "rb") as handle:
+            return tomllib.load(handle)["http_service"]
+
+    def test_the_main_app_never_stops_its_machines(self):
+        assert self._http_service().get("auto_stop_machines") in (False, "off"), (
+            "fly.toml lets the main app stop its machines; the #2342 background refresh "
+            "of GitHub App grants would stop with them"
+        )
+
+    def test_the_main_app_keeps_at_least_one_machine_running(self):
+        assert int(self._http_service().get("min_machines_running", 0)) >= 1, (
+            "fly.toml no longer keeps one main-app machine running; connector-only "
+            "accounts would lose their GitHub token refresh (#2342)"
+        )
+
+    def test_the_pass_this_pins_still_exists(self):
+        repo_root = Path(__file__).resolve().parent.parent
+        job = repo_root / "services" / "scheduler" / "github_app_refresh_job.py"
+        assert job.exists() and "background_refresh_pass" in job.read_text(encoding="utf-8")
+        assert "GitHubAppRefreshPhase" in (repo_root / "web" / "startup.py").read_text(
+            encoding="utf-8"
+        )
