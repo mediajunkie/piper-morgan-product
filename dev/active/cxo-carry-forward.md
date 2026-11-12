@@ -1,8 +1,15 @@
 ---
-last_updated: 2026-11-08
+last_updated: 2026-11-11
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward — current state, 2026-11-11 21:31 STOP (11-08 state below still stands except where this block says otherwise)
+
+**11-11 changes:** #2232 closed and #2337 closed (Lead). I passed on the words for #2125 store and check lines, #2154 (preferences 503 and the repositories 503, GitHub page only), #955 failed-write line (scripted model, labelled). Slack, Calendar, Notion pages stay unserved, not a gate. #2152 stays closed on pins (Arch: no partner reaches the native POST).
+**#2342 (GitHub App, D3), the live one:** I gave the words: install-step card and chat (needs a working install link and a real refresh), stale after a REJECTED refresh reuses GITHUB_STALE_TOKEN_REPLY (unreachable refresh must map to UNREACHABLE), and the cutover line with "Your saved settings are unchanged" (Arch: status_reason column, connector_configs kept). Lead builds from the 11-12 START; served rows wait on xian registering the App. When quotes arrive, judge them whole, keep "repositories I can see" (App install) apart from "saved settings".
+**#2328:** still not served-verified. Needs xian's credential permission for the test account (Web's three options, put to xian 11-10 19:06), then Web or PA runs the five in Lead's 18:58 memo. Judge against its Expected block.
+**Rule new today:** xian's local keychain is off-limits to anything we run without his permission (decisions.log 11-11 11:12). I start no servers.
 
 # CXO carry-forward — current state, 2026-11-08 18:31 (the older rules below still stand)
 
