@@ -140,3 +140,15 @@ def test_issue_needs_writes(monkeypatch, capsys):
     )
     assert rc == 2
     assert "--issue needs --writes" in capsys.readouterr().out
+
+
+def test_the_table_names_the_servers_handshake_version_and_does_not_count_it(monkeypatch, capsys):
+    """#2341: the ADR records the version that answered, not the pinned image tag."""
+    import types
+
+    mod = chk
+    info = types.SimpleNamespace(name="github-mcp-server", version="1.5.0")
+    assert mod._server_version(types.SimpleNamespace(server_info=info)) == (
+        "INFO github-mcp-server 1.5.0"
+    )
+    assert mod._server_version(types.SimpleNamespace(server_info=None)) == "INFO not reported"
