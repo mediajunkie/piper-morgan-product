@@ -2,14 +2,14 @@
 type: adr
 number: 81
 title: "GitHub identity: a request is served as its account, one published Piper app mints the grant, and no deployment identity exists on a hosted deploy"
-status: "ACCEPTED (D3 conditional on its compatibility check)"
+status: "ACCEPTED (D3's compatibility check passed 2026-11-11)"
 valid_from: "2026-10-24"
-last_updated: "2026-10-24"
+last_updated: "2026-11-11"
 ---
 
 # ADR-081: GitHub identity — whose token serves a request, which app mints it, and who else may act
 
-**Status**: **ACCEPTED, 2026-10-24** (Arch-authored, on xian's go-ahead in the Production-map rulings, 2026-10-24 17:28: "one ADR on GitHub identity"). D3 is accepted on the condition that its compatibility check passes; if it fails, D3's fallback governs. Finding F5 in `docs/internal/planning/production-map-review-round2-2026-10-23.md`.
+**Status**: **ACCEPTED, 2026-10-24** (Arch-authored, on xian's go-ahead in the Production-map rulings, 2026-10-24 17:28: "one ADR on GitHub identity"). D3 is accepted on the condition that its compatibility check passes; if it fails, D3's fallback governs. **2026-11-11: the condition is met (Arch, from #2174's two runs); D3 governs and the fallback does not apply.** See "D3's check, result" under D3. Finding F5 in `docs/internal/planning/production-map-review-round2-2026-10-23.md`.
 **Amends**: ADR-070 D3 and Amendment B (this ADR is the identity half; Amendment B stays the resolver half).
 **Related issues**: #1966, #2123, #1514 (GitHub part), #1325, #2136, #1061, and #2151 (the `is_available()` ruling, 10-24 16:49).
 
@@ -79,6 +79,15 @@ This is unverified today. Whoever builds it (Lead) checks it first, against a te
 Onboarding copy and the install step's experience are CXO's. The app's registration under xian's GitHub account, and the custody of its private key, are HOST's to record.
 
 **D3's check, tooling (Lead, 2026-11-04; #2174):** `scripts/github_app_token_check.py` runs the check once a test GitHub App is installed and a user access token exists. It takes the token from `GITHUB_CHECK_TOKEN` only, calls every github-mcp-server tool Piper uses and the REST reads named above, and prints PASS or FAIL per call and totals, never the token or any body; `--writes` also creates, comments on and closes one issue in a test repository. The result, tool by tool with the versions tested, is recorded here when it runs.
+
+**D3's check, result (Arch's validation, 2026-11-11; #2174).** Condition met; D3 governs.
+- **Condition 1 (the MCP tools).** Piper's GitHub adapter (`services/mcp/consumer/github_adapter.py`) calls nine github-mcp-server tools: `search_issues`, `search_pull_requests`, `search_repositories`, `list_issues`, `list_branches`, `list_releases`, `issue_read`, `issue_write` (create and update) and `add_issue_comment`. All nine passed with a GitHub App user access token as the bearer. `issue_write create` passed on 11-07, when it made the test issue through the App; the rest passed on 11-11 with a refreshed token. `_RESOLVE_TOOL` (`resolve_resource`) is a provisional placeholder, not a github-mcp-server tool, and is outside this condition.
+- **Condition 2 (native REST).** `GET /user`, milestones, labels and `/user/repos` passed.
+- **Least privilege.** "A private repo the App is not installed on is refused" passed.
+- **D1 (writes are the user's).** The test issue's comment is authored by the test user, with `performed_via_github_app` set to the test App (Exec's API read).
+- **Refresh.** A refresh with the stored refresh token minted a new token, and the old one then answered 401.
+- **Server.** The run went through `fly proxy` to `piper-morgan-gh-mcp`, the sidecar both `fly.toml` and `fly.mcp.toml` point `GITHUB_MCP_SERVER_URL` at. Its image is pinned to `ghcr.io/github/github-mcp-server:v1.5.0` in `deploy/fly/github-mcp.fly.toml`. Lead records the running machine's version alongside the two tables below.
+- **Verified how:** the 15-row table xian ran on Amber on 11-11, the 11-07 run, and Exec's API read of the test issue, set against a source reading of the adapter's tool constants and the deploy files. Layer: GitHub API and the deployed MCP sidecar through a proxy. Not seen: the MCP server's own logs.
 
 ### D4: The user's own PAT stays a supported leg
 
