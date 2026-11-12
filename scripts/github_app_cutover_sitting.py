@@ -4,7 +4,7 @@
 For the person who holds the App's values (xian). Run it from a checkout, on a machine
 where ``fly`` is signed in:
 
-    venv/bin/python scripts/github_app_cutover_sitting.py
+    python3 scripts/github_app_cutover_sitting.py
 
 It asks for the App's client ID and client secret (hidden) and its slug, does every
 step itself, stops at the first failure, and prints one block to paste on issue 2342.
@@ -80,7 +80,7 @@ HALF_STATE = (
     "App mode is ON on the main app and the cutover has NOT finished. A classic token is "
     "refused by the main app and is still valid at GitHub.\n"
     "Run this again to finish, with no values to type:\n"
-    "    venv/bin/python scripts/github_app_cutover_sitting.py --cutover-only"
+    "    python3 scripts/github_app_cutover_sitting.py --cutover-only"
 )
 
 #: A value goes to ``fly secrets import`` as one NAME=VALUE line, so it can hold no

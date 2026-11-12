@@ -438,7 +438,7 @@ stays valid at GitHub, and still serves the Claude connector, until the script i
 Steps 3 and 4 are one command (issue 2343), run from a checkout where `fly` is signed in:
 
 ```
-venv/bin/python scripts/github_app_cutover_sitting.py
+python3 scripts/github_app_cutover_sitting.py
 ```
 
 It checks first (step 2a's MCP build among the checks) and changes nothing until two typed `yes` answers: one before the values are set, one
