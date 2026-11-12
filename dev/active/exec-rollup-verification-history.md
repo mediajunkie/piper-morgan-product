@@ -522,3 +522,5 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 11-12 06:03 v934: Thursday header; Thu post status (planned, scaffold); #2282 step 5 card (asked Lead for hit evidence, 01M7813W); PPM #2261 time 18:56 per GitHub comment. Verified: gh issue view 2261 comments, /health, calendar CSV.
 - 11-12 06:17 v935: #2282 step 5 card rewritten to Lead's redirect_uri check (01M78189). Verified: Lead's memo read in full; code layer is Lead's.
 - 11-12 06:29 v936: #2282 step 5 card adds /setup calendar start (Arch 01M781YJ). Verified: Arch's memo read in full; code layer is Arch's.
+- 11-12 06:50 v937: #2342 card: Lead's build started 06:49; possible cutover script in xian's hand pending Arch (01M783R0). Verified: memo read in full.
+- 11-12 07:04 v938: #2342 switchover script ruled (Arch 06:51). Verified: four memos read; bypass list ownership from decisions.log 2026-10-11.
