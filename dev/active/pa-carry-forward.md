@@ -19,7 +19,7 @@
 - **No python with `requests` on PATH:** make a scratch venv (`python3 -m venv <scratch>/venv && pip install requests`) before running a driver.
 - **Test account web-seed-1386 (11-09 21:47, untouched since):** 8 open, in order: urgent task (urgent), zz throwaway one, zz throwaway two, audit the current navigation, **review prs (x2) on line 5**, review the deployment plan, draft the launch checklist. No reminders, no clear preference.
 - PA can't sign in to other seats' accounts: the permission classifier denies it even with the owner's yes.
-- **MCP app on `28911350bb` (11-05), pre-#2342 (11-12 11:57):** must be deployed from main before the #2342 sitting (recipe 11 step 2a). Asked xian via Exec (`01M78NERFGT751DKMPEPTSQWEB`). After it, read `/health` and confirm the sha is at or after `7e32d63f68`.
+- **MCP app on `4666e38493` (v21, 11-12 13:12)**, has #2342's fixes; recipe step 2a done and PA-verified. Connector baseline 13:18: github-issues `available: true`, total 366.
 - **#2342 (GitHub App):** unit 1 on main `6eb68ac7a4`, inert until xian registers the App and sets both App variables. Then PA checks the connector path served (a GitHub read through the Claude connector on an App grant). The main-app pass depends on `fly.toml` staying warm; Arch ordered a test pin (built). MCP app custody: only `GITHUB_APP_SLUG` on `piper-morgan-mcp` (comment in `fly.mcp.toml`, `841ef936a9`); set it there once the slug exists.
 - **#2174:** github-mcp-server version line lands from xian's #2341 run; PA reads it there, no action.
 - **Q9 also:** #2313 ("delete A and B") on its build; CXO's #2294 bulleted-list row.
@@ -40,7 +40,6 @@
 - 🔒 **#2238 Notion**, since 11-01: xian puts a throwaway Notion key on staging.
 - 🔒 **#2288 served row**, since 11-05: xian's word that Web may use an untouched dead-grant test account.
 - 🔒 **PA served-check sign-in**, since 11-10 18:25: the classifier denies PA reading `~/.piper-shared/web-seed-1386-credentials-2026-10-20.txt` (twoturn.py finds no `username=` key; listing field names was denied too). Cause confirmed 11-11: the file is `key: value`, the drivers want `key=value`. Unblocks on either: xian allows the read, or a `username=`/`password=` file for the account. Sent to Lead, cc Exec 18:25 (e1d0c6b3b). Until then served checks go to Web (Lead routed #2328 there at 18:37).
-- 🔒 **MCP app deploy before the #2342 sitting**, since 11-12 12:05: xian runs `git fetch -q origin main && git merge -q --ff-only origin/main && scripts/deploy-mcp.sh` (PA's run is classifier-denied). Sent to Exec (`01M78NERFGT751DKMPEPTSQWEB`).
 - **Rename PA (xian's idea 10-28):** trigger was MVP reading 0 open, which happened 10-30. Raised to Exec 11-06 (late). xian's call; no work blocked.
 
 ## Cadence
