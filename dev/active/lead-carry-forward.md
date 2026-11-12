@@ -1,5 +1,16 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-12 14:58 (supersedes the earlier in-day blocks where they differ)
+
+- **Beta** serves `d4fd55e6c5` (2342 build, promoted 11:52 on xian's word). **MCP app** serves `4666e38493` (has the bearer fix). **No promotion until 2342's served rows close** (Arch): 2333 and 2348 ride that promotion.
+- **2342 sitting, xian's:** App registered (org `pipermorgan`, slug `piper-morgan`, beta callback only). Before his first yes: add the alpha callback; choose install scope (Arch, HOST, PPM, CXO all accept "Any account" on HOST's four conditions). Then `python3 scripts/github_app_cutover_sitting.py` **in Terminal** (his first run via the `!` prefix stopped at the prompt, nothing set; dry run read 10 classic grants). After it, PA reads the connector before he reconnects.
+- **2343** command accepted by Arch, HOST, CIO; refuses without a terminal; row 3 is his run.
+- **2335 Redis rotation, xian's, after the sitting:** `python3 scripts/redis_password_rotate.py` in Terminal; about a minute of 503s on beta. Accepted by HOST, CIO, Arch with changes made (`0bf8af3a1d`). Never run against the hosts. The old password was probably never logged (hosts run at WARNING).
+- **2333** built `8f4fe8e998`, with Arch for validation. **2348** built `d026bb4575` (`/health` redis and revocation_source), two choices put to Arch.
+- **Start scripts** default to the database store (`45882abf32`). Open with xian via Exec: does he still start Piper locally himself? If yes, build the Terminal key helper and step list.
+- **Filed today:** 2343, 2345 (connect state to Redis; after the sitting), 2346 (closed, answered), 2347 (dead Redis paths), 2348. Arch filed 2350 (evidence logger at INFO): mine to build, after the sitting.
+- **Pushing:** main is busy; use a fetch-merge-push loop, confirm with `git log origin/main..HEAD` before naming a sha in any memo. Directory-wide pytest runs keep the repo's addopts.
+
 ## IN-DAY 2026-11-12 12:05 (supersedes the 09:46 block below where they differ)
 
 - **Beta serves `d4fd55e6c5`** since 11:52 (run 43294075652, on xian's "Yes, promote." via Exec 11:44). It carries migration `u2342reason`. App mode is off: no App values set. Say "beta" to xian; the Fly app is `piper-morgan`.
