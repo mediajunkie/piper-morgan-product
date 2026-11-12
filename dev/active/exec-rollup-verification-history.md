@@ -534,3 +534,6 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v947 (12:19): 2343 accepted by Arch 01M78PE4, HOST 01M78PEB (hold lifted), CIO 01M78NX6, each with one change for Lead
 - v948 (12:32): 2343 ready (Lead 01M78PVC, 2456cd7e5f); sitting command on the card
 - v949 (12:55): sitting command corrected to python3 (no venv on Amber worktrees; xian's run failed at the shell, nothing ran)
+- v950 (13:13): MCP app deployed by xian, serves 4666e38493 (7e32d63f68 included)
+- v951 (13:16): App registered (org pipermorgan, slug piper-morgan); sitting is next
+- v952 (13:23): sitting paused: alpha callback + install-scope decision (Lead 01M78T3H, PA 01M78T1R)
