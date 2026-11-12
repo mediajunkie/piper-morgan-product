@@ -3278,3 +3278,10 @@ Memo 01M783VMFQ4HJ1DS3PFP9VV0CS.
 - Scoped floor: never refresh. An expired token is UNREACHABLE, never STALE. On a 401, re-read the store once and retry if the token differs; otherwise #2288's rule applies.
 - (b) declined: a new credential. (c) ruled out: it undoes #1982.
 Memo 01M783YMA8JWSN918349EYKG3Q.
+2026-11-12 06:54 PT (Arch) — #2342 point 8 (Lead 01M783XHXM7C2SC4R0DG5PCT44): connector_grant_store.py joins the #1982 security_check bypass list, scoped to store_app_grant.
+- The reason recorded: a grant record issued by GitHub's token endpoint in the same call.
+- A test pins the bypass to that one function, and the bare store keeps the validator.
+- The function takes the parsed token reply and refuses unless the marker, both tokens and both expiries are present.
+- Callers: the connect callback and the refresh only.
+- The refresh write and commit are the last step under the xact lock.
+Memo 01M7840EWS8XMCQVFW26HJCPZC.
