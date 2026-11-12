@@ -786,6 +786,13 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return GitHubReposResult(
                 degradation=await self._degrade_for_exc(binding_or_degrade, exc)
             )
+        if not repos:
+            # #2342 (Arch 2026-11-12 07:48): the third user-wide read. An empty result in
+            # App mode, on the App grant, with the App installed nowhere, is the install
+            # step's state, not "no repositories".
+            install_step = await self._install_step_degrade(user_id, credential=binding_or_degrade)
+            if install_step is not None:
+                return GitHubReposResult(degradation=install_step)
         return GitHubReposResult(repositories=repos)
 
     @staticmethod
@@ -1552,10 +1559,13 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             )
             return GitHubIssuesResult(degradation=await self._degrade_for_exc(binding, exc))
         if not items and not total:
-            # #2342 requirement 2: for a person who authorized the GitHub App and
-            # installed it on no repository, an empty result is not "no issues". It is
-            # the install step's named state, on every surface (the connector's GitHub
-            # resource reads through here and never resolves a repository; PA 07:31).
+            # #2342 requirement 2 (Arch 2026-11-12 07:48, PA's finding): for a person who
+            # authorized the GitHub App and installed it on no repository, an empty
+            # result is not "no issues" or "no pull requests". It is the install step's
+            # named state, on every surface (the connector's GitHub resource reads
+            # through here and never resolves a repository). One or more installed: the
+            # empty result is true. Installation read failed: the empty result stands;
+            # one unverified claim is not swapped for another.
             install_step = await self._install_step_degrade(user_id, credential=binding)
             if install_step is not None:
                 return GitHubIssuesResult(degradation=install_step)
