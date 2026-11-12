@@ -3272,3 +3272,9 @@ Option 2 (a floor prompt directive) was refused: a prompt instruction is a reque
 - The refresh lock is pg_advisory_xact_lock on a namespaced key.
 - Lead's choices 5 and 6 are accepted as written.
 Memo 01M783VMFQ4HJ1DS3PFP9VV0CS.
+2026-11-12 06:53 PT (Arch) — #2342 seventh point (Lead 01M783SKZBRF4BT56049ABPDHX): the scoped MCP app cannot write a new pair (ScopedEncryptRefused, verified), so the main app refreshes in the background.
+- The pass runs in App mode only, every 30 min. It takes App-marked CONNECTED grants with under 2 h left, under the per-owner advisory lock.
+- A rejected refresh marks the binding STALE with refresh_rejected. A refresh that cannot complete writes nothing.
+- Scoped floor: never refresh. An expired token is UNREACHABLE, never STALE. On a 401, re-read the store once and retry if the token differs; otherwise #2288's rule applies.
+- (b) declined: a new credential. (c) ruled out: it undoes #1982.
+Memo 01M783YMA8JWSN918349EYKG3Q.
