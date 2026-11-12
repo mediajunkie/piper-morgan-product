@@ -545,3 +545,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v958 (14:22): 2335 rotation not yet ready (HOST changes); 2333 built; self-knowledge/start-scripts/CLAUDE.md routed
 - v959 (14:27): self-knowledge whose-Piper question (Arch 01M78XXS), epic 2349
 - v960 (14:28): self-knowledge dates (Arch 01M78XRJ: contributions Fri 15:00, recommendation Sat 12:00)
+- v961 (14:34): self-knowledge recommendation card (reviewed: capability_catalog, PIPER.md 8150 chars ≈ 2k tokens, CacheablePrompt exist); Redis a/b/c card

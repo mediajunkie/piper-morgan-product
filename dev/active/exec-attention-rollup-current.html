@@ -37,7 +37,7 @@
 </style>
 <div class="wrap">
 <h1>Attention rollup — Thursday 12 November</h1>
-<p class="meta">Exec · v960, rebuilt 14:28 PST Thu 11-12 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
+<p class="meta">Exec · v961, rebuilt 14:34 PST Thu 11-12 (<code>dev/active/exec-attention-rollup-current.html</code>), one published page (claude.ai/artifact/719UZ4h1NELjEwWZbDCceT). If the version number here differs from the one in my reply, you are reading a stale copy.</p>
 
 <h2>Next, in order</h2>
 
@@ -59,7 +59,11 @@
 
 <div class="card act">
 <ul>
-<li><b>Piper&rsquo;s self-knowledge: whose Piper? (Arch, any time before Sat noon)</b> Your request is now an active design exploration, epic #2349 in Production, owned by Arch with CXO, Docs and CIO. One fork decides the design: <b>(1)</b> every user&rsquo;s Piper knows how it works and what it stands for; <b>(2)</b> Piper on the team&rsquo;s own account knows the code, methods and lore the way an agent here does; <b>(3)</b> both, in some order. They need different sources and different privacy lines. Arch and CXO lean toward both, with (1) first, as a hand-written set of answers for users, not search over the repository, because a user must never see logs, mail or anyone&rsquo;s name. If you don&rsquo;t answer, the recommendation covers both and orders them. Arch brings the recommendation Sat 11-14 by noon; contributions are due Fri 15:00.</li>
+<li><b>Piper&rsquo;s self-knowledge: Arch&rsquo;s recommendation is ready (14:29, two days early).</b> Epic #2349, written with CXO, Docs and CIO. I checked the code and files it cites. In short:
+<ul><li><b>Following and knowing are two separate builds.</b> The practices Piper must act by go in a small &ldquo;conduct&rdquo; section it reads on every turn. It&rsquo;s about 1,000 tokens, cached, and you approve the wording. Each user pays for those tokens on every turn, which is why it&rsquo;s capped. Search over documents gives knowledge, not behaviour.</li>
+<li><b>Every user&rsquo;s Piper first:</b> a hand-picked set of answers written for users. &ldquo;What I can do&rdquo; is generated from the code, so Piper can&rsquo;t claim a feature that isn&rsquo;t built. &ldquo;How I work and what I stand for&rdquo; gets CXO&rsquo;s voice pass. Lessons come from the blog first.</li>
+<li><b>A Piper on the team&rsquo;s own account that reads the code like an agent comes second.</b> Under every option, Piper never reads session logs, mail, omnibus logs or agent memory, and a test enforces that.</li></ul>
+<b>Your call:</b> <b>smaller</b> (the conduct section plus generated &ldquo;what I can do&rdquo; answers; cheapest, and closes #1186), <b>as recommended</b> (all of every user&rsquo;s Piper, checked on the live server), or <b>larger</b> (also the team-account Piper, only after the first part has held for a sprint). Arch recommends the middle one. This also answers &ldquo;whose Piper&rdquo;: every user&rsquo;s first, the team&rsquo;s second. Doc: <code>docs/internal/architecture/design-records/piper-self-knowledge-exploration-2026-11-12.md</code>.</li>
 <li><b>Yes or no: clear the finished &ldquo;PUB&rdquo; sprint from 37 open issues? (PPM, 13:56)</b> You called it &ldquo;the (now over) final sprint.&rdquo; 37 open issues still carry it on the board, #2342 among them. Since 10-30 the plan, not that field, says what&rsquo;s in a sprint. PPM recommends clearing them one at a time (safely, so other fields aren&rsquo;t touched) and not setting PUB again. It&rsquo;s a bulk board change, so it needs your yes. (#1423 is done: it stays in Production, out of that sprint.)</li>
 <li><b>Lead&rsquo;s escalation (18:39): one question left</b> (#2333: built on your &ldquo;go&rdquo; (Lead 14:18, Arch checking); it goes live with the first beta update after the GitHub tests. #2327: your &ldquo;yes, Friday&rdquo; is with PPM). None blocks tonight. (The other two are already on this page: #2328&rsquo;s sign-in in the top card.)
 <ul>
@@ -120,6 +124,19 @@ If you didn't sign up, ignore this email and you won't hear from us.</pre>Then s
 
 
 
+
+<h2>Your Redis questions, answered (Arch, Lead and me)</h2>
+<div class="card">
+<p class="ct"><b>(a) How it should work:</b> Redis holds nothing a user owns. Emptying it must lose nothing. It holds only short-lived coordination every server process must agree on: signed-out tokens, usage caps, rate limits and one-time sign-in codes. Most of those refuse safely when Redis is down rather than letting things through; the MCP rate limit instead counts on each machine (see the gap list).</p>
+<p class="ct"><b>(b) How it works now:</b> on the main app, Redis is used on every request and is working (beta&rsquo;s pages load, and the usage cap refuses without Redis). Your log search found nothing because that line is written below the level the servers keep. So the password was very likely never logged; rotating is insurance.</p>
+<p class="ct"><b>(c) The gaps, and whose call:</b></p>
+<ul>
+<li>GitHub and Calendar sign-in codes live in one process, so a restart mid-connect gives an error (#2345, under #2189). Lead builds it after the GitHub sitting.</li>
+<li>The MCP rate limit counts per machine. Arch: fine for now, since it still enforces. Revisit at the first MCP directory submission. No secret change for you.</li>
+<li><code>/health</code> will report Redis (#2348). Signed-out-token checks fall back to the database after a bad start; Arch rules no retry, just make it visible (#2346). Two dead code paths get removed (#2347). The servers will keep evidence lines (#2350). All Arch-ruled, Lead&rsquo;s to build. Nothing for you.</li>
+</ul>
+<p class="ct"><b>One small ask, after the GitHub sitting:</b> your search showed 2 Redis lines from the main app (11-10) and 1 from the MCP app (11-12). Tell me only whether each says &ldquo;using database fallback,&rdquo; &ldquo;connection test failed,&rdquo; or something else. Don&rsquo;t paste them. If it&rsquo;s the fallback, one process ran on the database; that&rsquo;s safe, but we should know.</p>
+</div>
 
 <h2>Older, at your pace</h2>
 
