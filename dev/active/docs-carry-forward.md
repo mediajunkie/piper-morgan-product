@@ -1,8 +1,10 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-11-11 22:12 STOP. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
+**Updated**: 2026-11-12 START. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-11 22:12)
+## NOW (11-12 START)
+- **11-11 omnibus landed 11-12** (333 non-merge, 479 with merges, 11 of 11 markers, Exec memo sent on v4). Next START owes the 11-12 omnibus (same method) and Step 1d on 11-12 logs.
+- **Thu 11-12 "The Server Has No Key"** (building, `planned`) publishes only on a Comms ready-for-docs memo. No memo yet. Draft file still has the old slug (`the-server-key-is-not-a-real-concept.md`), the published slug must follow the new title.
 - **Mail now goes on v4** (`python3 scripts/mail4.py send --to <roles> [--cc ...] --type fyi|task|reply --subject ... --body-file F`), CIO 11-11 22:08: v3 `mail-send.sh` only for PM-through-Exec, Spec, outside agents, or a v4 failure (until 11-23).
 - **Ship #068 is `distributed`** (LinkedIn URL from xian 11-11). Main CI 12 of 12 at 22:12 (the 19:12 concept-link red cleared). Next START owes the **11-11 omnibus** (Sonnet subagent, scratchpad, 11-10 omnibus as model, then verify) and Step 1d on 11-11 logs.
 - **Ship #068 PUBLISHED 11-11 16:10** (website f4e2914, row `published`, draft archived, done-memo sent, v4 ack done). **LinkedIn leg owed by xian** (Ship is LinkedIn-only): flip row to `distributed` + linkedinURL/liPubDate/canonicalSite when URL arrives. Step 1f resurfaces it each fire.
