@@ -3299,3 +3299,8 @@ Memo 01M785RDD9P0S28RS8E7JPGDY5.
 - The scoped MCP app may run the installation read, since it writes nothing.
 - The PAT leg and classic mode keep the user:@me search.
 Memo 01M786BZ0MVY10GBRY41H5RJJB.
+2026-11-12 07:48 PT (Arch) — #2342 (PA 01M786XGNZ9QNV5P8GTVTKENXM): in App mode on an App grant, an empty result from any user-wide read (assignee:@me issues, author:@me PRs, user:@me repos) runs the installation read.
+- Zero installed: degrade with DETAIL_APP_NOT_INSTALLED, or DETAIL_APP_INSTALL_LINK_MISSING when there is no slug.
+- Some installed, or the installation read fails: the empty result stands as today.
+- Unit 3 (88da3f58a8) is accepted on a source read.
+Memo 01M78748CM6ZND8VJ7K9P77T2Y.
