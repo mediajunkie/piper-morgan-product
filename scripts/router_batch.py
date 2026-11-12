@@ -113,7 +113,7 @@ def _submit(args) -> None:
             reqs.append({"custom_id": r["custom_id"], "params": r["params"]})
     ids = [r["custom_id"] for r in reqs]
     assert len(ids) == len(set(ids)), "custom_id collision: give each tree a distinct --label"
-    with developer_keys_bound(require=True):
+    with developer_keys_bound(providers=("anthropic",), require=True):
         from services.llm.request_key import anthropic_client_for_request
 
         client = anthropic_client_for_request()

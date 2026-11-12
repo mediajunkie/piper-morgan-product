@@ -55,7 +55,8 @@ surface 0 note) — so the counterfactual matches the classifier's actual
 production input shape, not an impoverished lab version of it.
 
 Run (env-stripped per CLAUDE.md — inherited empty ANTHROPIC_API_KEY shadows
-the env fallback; keychain resolves first):
+the env fallback; name a key after the env -u flags, with
+PIPER_CREDENTIAL_STORE=db and --provider, #2340):
 
     env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN \
       -u ANTHROPIC_CUSTOM_HEADERS POSTGRES_PORT=5433 \
@@ -490,11 +491,19 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    ap.add_argument(
+        "--provider",
+        default=None,
+        choices=("anthropic", "openai"),
+        help="the one provider this run binds a key for and spends on (#2340)",
+    )
     args = ap.parse_args()
     # #1812 aftermath: scripts must bind the developer's own keys — the
     # server-key fallback this instrument silently relied on is gone.
     sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
-    from dev_key_binding import developer_keys_bound
+    from dev_key_binding import developer_keys_bound, providers_from_flag
 
-    with developer_keys_bound(require=not args.dry_run):
+    with developer_keys_bound(
+        providers=providers_from_flag(args.provider), require=not args.dry_run
+    ):
         sys.exit(asyncio.run(run(args.dry_run, args.out)))
