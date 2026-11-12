@@ -39,7 +39,10 @@ import structlog
 from mcp.server.fastmcp import FastMCP
 from mcp.types import ToolAnnotations
 
-from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+from services.mcp.consumer.github_adapter import (
+    GitHubMCPSpatialAdapter,
+    github_connector_reply,
+)
 from services.mcp.server.identity import current_user_id
 from services.user_context_service import user_context_service
 
@@ -365,7 +368,9 @@ async def _read_github_issues() -> str:
         "reason": degradation.reason.value if degradation else "unknown",
     }
     if degradation is not None:
-        payload["message"] = degradation.user_message
+        # #2342 (CXO 2026-11-12 07:19): the connector's own lines. This process IS the
+        # connector path, so the text is picked here by state.
+        payload["message"] = github_connector_reply(degradation)
     return _json(payload)
 
 

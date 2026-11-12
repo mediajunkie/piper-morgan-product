@@ -103,6 +103,39 @@ def github_degrade_reply(degradation) -> str:
     return getattr(degradation, "user_message", "") or "The GitHub connector is degraded."
 
 
+# #2342 (CXO 2026-11-12 07:19; Arch 07:08): the connector's own lines. A person in the
+# Claude connector reads the MCP tool's text and may never have opened the web app, so
+# "Settings" is named as being in the Piper Morgan app, and UNREACHABLE reads as a wait,
+# never as a reason to reconnect. STALE is the only state that asks for a reconnect.
+GITHUB_CONNECTOR_UNREACHABLE_REPLY = (
+    "I couldn't reach GitHub just now. This is temporary, so please try again in a moment."
+)
+GITHUB_CONNECTOR_STALE_REPLY = (
+    "Your GitHub connection needs re-authorizing. Reconnect GitHub in the Piper Morgan app, "
+    "in Settings under Integrations."
+)
+GITHUB_CONNECTOR_CUTOVER_STALE_REPLY = (
+    "GitHub now connects through the Piper GitHub app, so your connection needs to be set "
+    "up again. Reconnect GitHub in the Piper Morgan app, in Settings under Integrations, "
+    "and choose which repositories I can see. Your saved settings are unchanged."
+)
+
+
+def github_connector_reply(degradation) -> str:
+    """The line a person in the Claude connector reads for a GitHub degrade (#2342).
+    The MCP app is the connector path by construction (Arch 2026-11-12 07:08), so its
+    tool text calls this; no flag marks a request as coming through the connector.
+    Reasons CXO gave no connector line for keep their ``user_message``."""
+    reason = getattr(degradation, "reason", None)
+    if reason is DegradationReason.UNREACHABLE:
+        return GITHUB_CONNECTOR_UNREACHABLE_REPLY
+    if reason is DegradationReason.STALE_TOKEN:
+        if getattr(degradation, "detail", None) == REASON_CUTOVER:
+            return GITHUB_CONNECTOR_CUTOVER_STALE_REPLY
+        return GITHUB_CONNECTOR_STALE_REPLY
+    return getattr(degradation, "user_message", "") or "The GitHub connector is degraded."
+
+
 # The github-mcp-server tool + canonical query for the user's open issues (#1322 cutover).
 # search_issues is user-wide (assignee:@me, across repos) → no repo resolution, sidestepping
 # the vestigial resolve_repo / #1230. De-risked live (179 issues). Isolated for testability.

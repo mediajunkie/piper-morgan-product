@@ -142,6 +142,14 @@ How the token expires and refreshes (the check's item 4):
 - For the next run of the check: `scripts/github_app_refresh_check.py` (#2341) does the refresh, the old-token 401 check, the proxy and the table as one command with hidden prompts, and its table names the server's handshake version.
 - For the build: a refresh is a resolver step, and a *rejected* refresh (GitHub refuses the refresh token, read from the reply's `error` field) maps to STALE_TOKEN; a refresh that could not complete (timeout, connection failure, 5xx) maps to UNREACHABLE and leaves the stored pair untouched; neither maps to CONNECT_REQUIRED (Arch, 2026-11-11, on CXO's condition; #2342).
 
+**D3's build (#2342, 2026-11-12).** The unit layer is on main and inert until the App is registered and its secrets are set. Arch's rulings are on issue 2342 and in decisions.log.
+
+- **The switch is configuration.** App mode is on only when `GITHUB_APP_CLIENT_ID` and `GITHUB_APP_CLIENT_SECRET` are both set (`services/mcp/consumer/github_app_grant.py`). `GITHUB_APP_SLUG` gives the install link. With App mode off, the classic app behaves as before.
+- **The grant record** is one value in the encrypted `github_mcp_oauth` row: both tokens, both expiries and `minted_by: github_app`. A value without the marker is a classic grant and never serves in App mode.
+- **Refresh** happens in the one resolver before a token with under five minutes left is used, under a per-owner lock, and in the background every 30 minutes for grants with under two hours left, because the decrypt-only MCP app can't refresh (`services/mcp/consumer/github_app_refresh.py`, `services/scheduler/github_app_refresh_job.py`).
+- **Why a binding is stale is stored** in `connector_bindings.status_reason`: `cutover` or `refresh_rejected`. The reply is picked by it.
+- **The cutover is a script in xian's hand**, `scripts/github_app_cutover.py`, run in the same sitting as setting the secrets. It is a dry run by default. With `--apply`, for every stored grant the App did not mint, it tries the revoke at GitHub with the classic app's credentials, marks the binding stale with `cutover`, and deletes the token. It leaves personal tokens, saved repository choices and App grants alone, prints counts only, and finds nothing on a second run.
+
 ### D4: The user's own PAT stays a supported leg
 
 Amendment B2's PAT leg stays, with #1966 option (i). It is the user's own credential, pasted in by them, encrypted at rest and never shared. It serves self-hosting and users who won't install an app.

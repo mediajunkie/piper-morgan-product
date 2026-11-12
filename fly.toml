@@ -41,6 +41,11 @@ primary_region = "sjc"
   internal_port = 8001
   force_https = true
   # beta server stays warm — no scale-to-zero surprises for testers
+  # #2342 (PA and Arch, 2026-11-12): a second reason these two lines stay as they are.
+  # The main app's 30-minute background pass refreshes GitHub App grants for people who
+  # use Piper only through the Claude connector (traffic that lands on piper-morgan-mcp
+  # and never wakes this app). If this app could stop, those tokens would expire
+  # silently. Pinned by TestMainAppStaysWarmForGrantRefresh2342; move the pass first.
   auto_stop_machines = false
   auto_start_machines = true
   min_machines_running = 1
