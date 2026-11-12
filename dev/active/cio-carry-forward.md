@@ -1,10 +1,11 @@
 ---
-last_updated: 2026-11-10
+last_updated: 2026-11-11
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
 # CIO carry-forward — refreshed 2026-11-03 (10:07 START)
+**Now (11-11, 22:07 STOP)**: Day closed. Done: 9j (no cut); v4 routing hint, and pilot-to-pilot mail on v4 went from 6% (11-09/10) to 85% (58 of 68) after it; re-count to Exec (01M775YGRC); Docs and PPM (0 on v4) nudged. Keychain ruling: start recipes set =db; #2338 closed. main-ci-status detects stalled queues and skips no-job failures. Ops recipe 10 (#2341): one command with hidden prompts when xian holds secrets. Open with xian: v4 Mail line (01M760HBR0), #2335 log line, the 11-08 held fire. 11-12 START. 11-20 9n. 11-23 v4 review plus re-count. 12-01 skills review. 12-18 rated run. 12-29 audit.
 **Now (11-11, 10:07 START)**: 11-10 closed. Checks clean (CI 12/12 after my two reds were fixed, armed 31/32, freeze rc 0, owed 0, mail4 0 overdue, canary PASS). 9j done: no case for a cut; v4 widening switched on reading, not sending (49 of 53 pilot-to-pilot on v3); mail-send now warns (v4_route_hint.py); m-53 back-pointer; sent Exec cc Lead (01M75X0X9C). 11-20 9n. 11-23 v4 review plus re-count. Open with xian: #2335 log line, the 11-08 held fire.
 **Now (11-10, 22:07 STOP)**: Day closed, quiet. Restarted onto Claude Code 2.1.322 (16:29). Checks clean (CI 12/12, v4 0 unacked, criteria line 4 open, none CIO's). Open with xian: #2335 log line, the 11-08 held fire. 11-11 START, then 9j. 11-20 9n. 11-23 v4 review. 12-01 skills review. 12-18 rated run. 12-29 audit.
 **Now (11-10, 10:07 START)**: 11-09 closed. Checks clean (CI 12/12, armed 31/32, freeze rc 0, owed 0, mail4 0 overdue, canary PASS). Exec's sprint-length tally filed (two-week sprints from 11-13 stand). Nothing ripe. 11-11 9j. 11-20 9n. 11-23 v4 review. Open with xian: #2335 log line, the 11-08 held fire.

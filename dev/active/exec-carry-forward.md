@@ -1,48 +1,44 @@
 # Exec carry-forward
 
-**Rewritten 2026-11-10 22:08 PST at STOP** (Opus 5.5, Claude Code 2.1.322 since 16:29). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/10/2026-11-10-0422-exec-code-log.md` (closed).
+**Rewritten 2026-11-11 22:09 PST at STOP** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/11/2026-11-11-0601-exec-code-log.md` (closed).
 
-**STATE: LIVE on LaunchAgent** `com.xian.pm-exec-cycle`, firing at :01 on hours 6, 10, 14, 18 and 22. An empty CronList is normal, and there's no STOP re-arm. Agent liveness is Pard's.
+**STATE: LIVE on LaunchAgent** `com.xian.pm-exec-cycle`, firing at :01 on hours 6, 10, 14, 18 and 22. Empty CronList is normal. Liveness is Pard's.
 
-**Mail v4:** read `scripts/mail4.py inbox` on every wake, alongside v3; ack with `python3 scripts/mail4.py ack <ID>`. Open to every seat since Mon 11-09; v3 stays the fallback until 11-23. Find new v3 mail with `git log --since=<last check> --diff-filter=A --name-only --format= origin/main -- mailboxes/exec/inbox/`. Last check 22:01 Mon 11-09.
+**Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake, plus v3 via `git log --since=<last> --name-only --format= origin/main -- mailboxes/exec/inbox/`. Last check 22:01 Wed 11-11. File v3 with plain `mv` + `scripts/mail-send.sh` (both paths); never `git mv` on the branch (M-3 guard).
 
 ## Rollup
-v918, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with a Python replace plus an assert. **To cut a span: anchor both ends on exact text, assert the block's `<li>`/`<div>` count, and assert the five or so neighbouring items still exist afterwards** (11-09 14:03: an `rfind("<li")` cut removed five unrelated cards; rebuilt from the committed version). Describe security findings by class only. **Tue 11-10 06:01: header set to Tuesday. The Tue post item stays until the post publishes or xian says "slip it"; check the calendar every fire.**
+v933, artifact `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus assert; for span cuts anchor both ends and assert neighbours survive. Steps for xian go in a card on the board, not in chat (his ask, 11-11).
 
-## Where things stand (end of 11-10)
-- **Served on beta:** `c425fd242f` (Lead 18:58, run 42949313375; /health 22:01). Carries #2328: a pronoun-only completion ("complete them") asks which one, armed; a shown list whose lines changed opens "That list has changed since I showed it" (CXO accepted 18:46). Earlier today `6dc21c2ca8` (18:20). **Not served-verified:** PA and Web were both refused reading the web-seed-1386 credential file (PA 18:25/19:07, Web 19:03). Put to xian 19:08 in this session and by Lead in his.
-- **Main CI:** 12/12 green at 22:01. A transient staging deploy red at 19:14 cleared on the next run (Lead 19:20).
-- **Sprint 11-13 to 11-26** ratified; all ten seats no objection.
-- **Invite hold** unchanged: #2261 waits on xian's #2174 test; #2292 records before the next invite.
-- **Posts:** Tue "Never Green in a Thousand Runs" **published 23:31 PT 11-10** (xian finished 23:23; Comms audit 16/16; Docs, website `108509e`, served HTML checked): https://pipermorgan.ai/blog/never-green-in-a-thousand-runs/ . Medium crosspost done 23:34 (calendar `distributed`, 942078f35b); nothing owed. Docs' 23:33 "still owed" was 3 minutes stale. Thu 11-12 "The Server Has No Key" (renamed 19:02), prose xian's; Docs makes the slug follow the new title.
-- **04:17 mail wake (11-11, before START):** seven memos filed (4be8850a8): the post published, the 11-10 omnibus landed (185 commits, 11/11 logs closed), Docs' 19:14 Fly-red note (already cleared, Lead 19:20), and three older 11-10 notices already acted on. START at 06:01 still runs in full: create the 11-11 log first, log this wake there, Done at 06:05: rollup v918.
-- **Ship #068** (Wed 11-11): NEXT xian's first look. Spend: tokens still owed or "dollars is fine". **I misstated this at 16:34 in chat** (said dollars was settled); corrected on rollup v917.
-- **#2232:** Lead took it 19:00; question to Arch on failing a database read locally. Nothing for Exec.
+## Where things stand (end of 11-11)
+- **Main CI** 12/12 green at 22:01.
+- **Ship #068** published 16:12, `distributed`. Done.
+- **#2174 PASSED** 18:52 (xian, Amber). D3 governs (ADR-081, decisions.log). Build is **#2342**, placed by PPM 19:11 in PUB under #2261, Sprint PUB: (1) xian registers the published App and approves its secrets on hosts, (2) Arch rules the classic-grant cutover, (3) Lead builds with CXO's words, (4) served connect on alpha closes #2342 and #2261's code half. Lead starts the unit layer at 11-12 START in a fresh session. **#2341** script built, closes on xian's first run.
+- **#2340** closed (screen scripts no longer read the keychain). Real screens wait on xian's key choice.
+- **Budget:** memo to Themis in designinproduct only (f8185d229f). Never mirror business spending here.
+- **Invite hold:** #2342 (xian's App registration first), #2282 (his word on Web's sign-in check), #2292 (his mail records; still only google-site-verification TXT when checked for the 19:05 reply).
 
-## Waiting on xian
-1. **#2335:** in the Fly dashboard for `piper-morgan`, did the `Redis connection pool initialized` line hold the Redis password? Yes or no only. If yes, he rotates it and updates `REDIS_URL`. Relay to Lead, PPM, CIO the same hour; Lead confirms the reconnect.
-2. **Tue post**: finish beats 5-7 (mid-rewrite), or "slip it". Thu post prose.
-2b. **#2328 served check**: sign in for Web in its Chrome tab, or a plain username=/password= copy for PA, or a Read allow.
-3. **Ship #068** tokens and first look.
-4. **#2174 `--issue 43` rerun + refresh run** (decides #2261), **#2292 Hover records**, **#2157 drill hour** (book early in the sprint), `! fly auth login`, the **cohort note**, **#2244** `/data` read, #2282 consent revoke.
-5. Optional: the PA rename.
-
-## Waiting on others
-- **Arch:** short read on alpha/beta/staging common practice for xian's later talk.
+## Waiting on xian (all on board v933)
+1. #2292 email records (step card on board).
+2. #2342 App registration + secrets word (when he is ready; no date).
+3. Yes/no: #1423 Ongoing→Production move (PPM asks); #2340 key handover (rec: one capped lead-scoring key he puts in the local DB store); #2333 go (rec yes after Arch sequences); #2327 sprint (rec PPM Friday); CLAUDE.md v4 Mail line (CIO 01M760HBR0); start scripts keep-or-switch.
+4. #2328 sign-in (key=value copy for PA, or sign in Web's Chrome); #2335 Fly log yes/no only; #2282 consent revoke; #2157 restore drill hour.
+5. Optional: `FLY_NO_UPDATE_CHECK=1 fly image show -a piper-morgan-gh-mcp` Repository/Tag/Digest.
+6. **Thu 11-12 post "The Server Has No Key"**: xian writes it Thursday morning; draft still scaffold, calendar `planned`. Check every fire.
+7. Talk later: beta tester feedback (private file in designinproduct), self-hosted beta, skills, Piper self-knowledge.
 
 ## Reminders owed to xian
-- **Wed 11-11, first thing in his session and on the rollup:** xian wants to share and discuss a beta tester's feedback (sent to him via LinkedIn or email). He asked 11-10 23:25 to be reminded. The name is in designinproduct `docs/mail/exec-private-beta-tester-feedback-reminder-2026-11-10.md`; never write it in this repo. Ask him to paste or forward the feedback; don't go looking in his mail unasked.
-- **#2282 step 5, around Thu 11-12** (standing item #183): remove the alpha callbacks in GitHub and Google if a week passes with no hits.
-- **Thanksgiving week (Mon 11-23):** PPM's one-liner: "First closing review Fri 11-27 or Sat 11-28? Thu 11-26 is the usual filing day, so when should seats file that week?"
-- **Vercel: downgrade from Pro once the headroom exists again** (standing item #182). Raise that Hobby is non-commercial.
+- #2282 step 5 around Thu 11-12 (standing item #183): remove alpha callbacks in GitHub and Google if a week passes with no hits.
+- flyctl planned upgrade 11-16 (Pard upgrades, CIO regenerates fly rules).
+- Thanksgiving week Mon 11-23: PPM's closing-review question. v4 review 11-23.
+- Vercel downgrade once headroom exists (standing item #182).
 
 ## Mine
-- Relay xian's rulings at once and record them in decisions.log. Timestamps from a `date` call in the same command; **never write a stamp a few minutes ahead "for when it publishes"** (11-09: 14:05 and 14:06 written at 14:02 and 14:04, both caught before publish).
-- **Review slot, every START:** re-read one claim from the last 24 hours against its source. 11-10 done: the #2151/#2155 "same stream" claim held (Arch's 10-24 15:29 comment on #2151: commit a3bc9a89c8 carries the #2155 copy line). Candidate for 11-11: pick at START from the last 24 hours.
-- **Calendar check every fire**, not only at START: rows `published` in the last 7 days, and the next post's status. 11-09: a syndicated post stayed on the rollup as "needs Medium/LinkedIn" for 16 hours.
-- **A tally or ruling written to decisions.log also goes out by mail the same hour** (11-09: the sprint tally sat in decisions.log only; PPM waited all afternoon; mailed 11-10 04:22).
-- **At START, run `scripts/aging-standing-items.sh exec` and close any row whose subject has closed** (11-10: PPM flagged row 10, #1386, 11 days after the gate closed).
-- Write DAY-CLOSED in grep form, `<!-- DAY-CLOSED: YYYY-MM-DD -->`, as the log's last line.
+- Timestamps only from a `date` call in the same command (11-11: guessed twice, both caught).
+- Review slot every START: re-read one claim from the last 24 hours against its source.
+- Calendar check every fire. Run `scripts/aging-standing-items.sh exec` at START.
+- Relay xian's rulings at once; decisions.log + mail the same hour.
+- DAY-CLOSED in grep form as the log's last line.
+- Keychain stays off-limits without xian's permission; secrets stay in his password manager.
 
 ## Owed rows (owed-scan)
-- key: 1715-review. Filed: 2026-10-31. #1715 is closed (CIO 11-06); the walk is on xian's talk list only if he wants it.
+- key: 1715-review. Filed: 2026-10-31. #1715 closed (CIO 11-06); walk on xian's talk list only if he wants it.
