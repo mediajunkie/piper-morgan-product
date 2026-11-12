@@ -422,6 +422,14 @@ stays valid at GitHub, and still serves the Claude connector, until the script i
    the secrets unset the build behaves as the classic app does.
    **Done 2026-11-12 11:52 PT:** beta serves `d4fd55e6c5` (run 43294075652, on xian's "Yes, promote.").
    "Beta" is the Fly app `piper-morgan`; the deploy input is still named `promote_to_alpha`.
+2a. **Deploy the MCP app from main too** (PA, 2026-11-12 12:05). The MCP app (`piper-morgan-mcp`) is
+   its own image and isn't moved by step 2. At 11:57 it served `28911350bb` (11-05), which has none of
+   #2342's code. That build sends whatever is stored as the bearer (`Bearer {grant}` in
+   `_grant_headers_or_raise`), so once one account reconnects through the App it would forward the
+   whole grant record, refresh token included, the defect Lead fixed in unit 4 (`7e32d63f68`). Run
+   `git fetch -q origin main && git merge -q --ff-only origin/main && scripts/deploy-mcp.sh` from a
+   clean worktree, then check `https://mcp.pipermorgan.ai/health` serves a sha at or after `7e32d63f68`.
+   With the App values unset it behaves as today. **Don't start step 3 until it does.**
 
 **The sitting**
 
