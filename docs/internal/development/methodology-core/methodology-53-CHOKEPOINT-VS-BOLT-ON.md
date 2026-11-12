@@ -2,7 +2,7 @@
 type: methodology
 title: Chokepoint vs. Bolt-On — Attach the Obligation to Something That Can't Be Skipped
 valid_from: "2026-09-08"
-last_updated: "2026-11-11"
+last_updated: "2026-11-12"
 ---
 
 # Chokepoint vs. Bolt-On — Attach the Obligation to Something That Can't Be Skipped
@@ -189,3 +189,16 @@ Operational corollaries:
   warns there. It warns rather than refuses, because the v3 fallback runs to 11-23 on xian's word. **So this is
   a test of whether a warning at a chokepoint is enough:** the 11-23 v4 review re-counts v4's share of
   pilot-to-pilot mail. If the share stays low, the chokepoint is right and the strength (warn) is wrong.
+  First reading, 11-11 10:12 to 22:10: v4 carried 58 of 68 pilot-to-pilot memos (85%), up from 3 of 52. The warning
+  came the same day as Exec's direct nudge, so the two can't be separated. The warning only fires after a memo
+  has been composed, so its effect is on the next memo. Two seats, Docs and PPM, sent nothing on v4 that day.
+- **The push gates in the pre-push hook** (`scripts/run-push-gates.sh --hook`, Lead on CIO's ruling, 11-12). The
+  chokepoint covered less than the gate it stood in for. The hook ran the pytest smoke, and "run the lint gates
+  before pushing" was a lesson in the seats' logs, which made it a bolt-on. Code Quality and Architecture
+  Enforcement also run ruff, nine `python scripts/...` gates and the mypy ratchet, none of which are pytest. The
+  hook's path trigger also skipped `scripts/`. Main went red three times in two days from pushes whose tests and
+  smoke passed: a concept link and ruff on 11-11 (both `scripts/` pushes), then the env-read gate and mypy on
+  11-12. The fix moved the CI gate commands into the hook, read from `lint.yml` at run time so a new gate is
+  covered the day it lands, and widened the trigger. The general check: when a local chokepoint stands in for a
+  remote gate, list the remote gate's steps and confirm each one runs locally. Its first live run was Lead's
+  push at 09:01: 12 gates, 12 passed, 31 s.
