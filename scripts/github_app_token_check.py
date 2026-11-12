@@ -134,6 +134,16 @@ def _first_issue_number(result: Any) -> int | None:
     return None
 
 
+def _server_version(client: Any) -> str:
+    """``INFO <name> <version>`` as the server reported it, for the ADR's record."""
+    info = getattr(client, "server_info", None)
+    name = getattr(info, "name", None)
+    version = getattr(info, "version", None)
+    if not name and not version:
+        return "INFO not reported"
+    return f"INFO {name or '?'} {version or '?'}"
+
+
 async def run_mcp(
     token: str, url: str, owner: str, repo: str, writes: bool, issue: int | None = None
 ) -> List[Tuple[str, str]]:
@@ -142,6 +152,7 @@ async def run_mcp(
     rows: List[Tuple[str, str]] = []
     try:
         async with MCPClient.connect_http(url, headers={"Authorization": f"Bearer {token}"}) as c:
+            rows.append(("mcp server (from its handshake)", _server_version(c)))
             for name, args in read_tools(owner, repo):
                 try:
                     res = await c.call_tool(name, args)
@@ -252,7 +263,8 @@ def main(argv: List[str] | None = None) -> int:
         print(f"{name.ljust(width)}  {verdict}")
     passed = sum(1 for _, v in rows if v == "PASS")
     failed = sum(1 for _, v in rows if v.startswith("FAIL"))
-    print(f"--- {len(rows)} calls: {passed} pass, {failed} fail")
+    calls = sum(1 for _, v in rows if not v.startswith("INFO"))
+    print(f"--- {calls} calls: {passed} pass, {failed} fail")
     return 1 if failed else 0
 
 

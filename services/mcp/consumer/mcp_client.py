@@ -42,6 +42,9 @@ class MCPClient:
 
     def __init__(self, session: ClientSession) -> None:
         self._session = session
+        # The server's name and version from the initialize handshake, when the
+        # client was built by connect_stdio / connect_http. None otherwise.
+        self.server_info: Any = None
 
     async def list_resources(self):
         """List the resources the connected MCP server exposes (real call)."""
@@ -73,8 +76,10 @@ class MCPClient:
         """
         async with stdio_client(server_params) as (read, write):
             async with ClientSession(read, write) as session:
-                await session.initialize()
-                yield cls(session)
+                init = await session.initialize()
+                client = cls(session)
+                client.server_info = getattr(init, "serverInfo", None)
+                yield client
 
     @classmethod
     @asynccontextmanager
@@ -103,8 +108,12 @@ class MCPClient:
                 streamable_http_client(url, http_client=http_client)
             )
             session = await stack.enter_async_context(ClientSession(read, write))
-            await session.initialize()
-            yield cls(session)
+            init = await session.initialize()
+            client = cls(session)
+            # The server's own name and version from the handshake (#2174: the ADR
+            # records the version that actually answered, not the pinned image tag).
+            client.server_info = getattr(init, "serverInfo", None)
+            yield client
 
 
 def _as_url(uri: Union[str, AnyUrl]) -> AnyUrl:

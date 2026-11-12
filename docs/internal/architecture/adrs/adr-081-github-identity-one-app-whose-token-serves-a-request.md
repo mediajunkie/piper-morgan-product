@@ -89,6 +89,58 @@ Onboarding copy and the install step's experience are CXO's. The app's registrat
 - **Server.** The run went through `fly proxy` to `piper-morgan-gh-mcp`, the sidecar both `fly.toml` and `fly.mcp.toml` point `GITHUB_MCP_SERVER_URL` at. Its image is pinned to `ghcr.io/github/github-mcp-server:v1.5.0` in `deploy/fly/github-mcp.fly.toml`. Lead records the running machine's version alongside the two tables below.
 - **Verified how:** the 15-row table xian ran on Amber on 11-11, the 11-07 run, and Exec's API read of the test issue, set against a source reading of the adapter's tool constants and the deploy files. Layer: GitHub API and the deployed MCP sidecar through a proxy. Not seen: the MCP server's own logs.
 
+**D3's check, the two tables and the versions (Lead, 2026-11-11; #2174).** Both runs were xian's, on Amber, from `~/Development/piper-morgan-product`, through `fly proxy` to `piper-morgan-gh-mcp`, against the test repository `dinp-machine/piper-test-activity` with the test App `piper-morgan-d3-check`. No token, secret or client ID is recorded here.
+
+Run 1, 2026-11-07 16:23 PT, first token, `--writes` (script at `abfe9f115f`):
+
+```
+rest GET /user                                    PASS
+rest GET milestones                               PASS
+rest GET labels                                   PASS
+rest GET /user/repos                              PASS
+narrowing: private repo not installed is refused  PASS
+search_issues                                     PASS
+search_pull_requests                              PASS
+search_repositories                               PASS
+list_issues                                       PASS
+list_branches                                     PASS
+list_releases                                     PASS
+issue_write create                                FAIL tool-error
+--- 12 calls: 11 pass, 1 fail
+```
+
+The one FAIL was the script's, not the server's: the create made issue 43 through the App (Exec's API read at 16:24: created by the test user, `performed_via_github_app.slug = piper-morgan-d3-check`), and the script then failed to read the new issue's number from the reply. Fixed in `ad35f8325d`, which also added `--issue N`.
+
+Run 2, 2026-11-11 18:52 PT, the refreshed token, `--writes --issue 43` (script at `ad35f8325d`):
+
+```
+rest GET /user                                    PASS
+rest GET milestones                               PASS
+rest GET labels                                   PASS
+rest GET /user/repos                              PASS
+narrowing: private repo not installed is refused  PASS
+search_issues                                     PASS
+search_pull_requests                              PASS
+search_repositories                               PASS
+list_issues                                       PASS
+list_branches                                     PASS
+list_releases                                     PASS
+issue_write create                                SKIPPED (--issue 43)
+issue_read get                                    PASS
+add_issue_comment                                 PASS
+issue_write update (close)                        PASS
+--- 15 calls: 14 pass, 0 fail
+```
+
+Versions:
+- **github-mcp-server:** the image is pinned to `v1.5.0` in `deploy/fly/github-mcp.fly.toml`. The running machine's version was **not read** for either run: no seat runs `fly`, and the check script did not print the server's own version until 2026-11-11 (#2341). The read is asked of xian through Exec. Until it is recorded here, "v1.5.0" is the pin, not a measurement.
+- **GitHub REST:** `X-GitHub-Api-Version: 2022-11-28`, sent by the script on every REST row.
+
+How the token expires and refreshes (the check's item 4):
+- Observed: the first access token was good for 8 hours (Exec, 11-07). The refresh on 11-11, four days later, used the stored refresh token and the App's client secret, returned a new access token, and the old access token then answered 401 on `GET /user`.
+- From GitHub's documentation, not observed here: a refresh also returns a new refresh token and the one used stops working, and a refresh token lasts about six months. So the grant store must write the new pair back on every refresh, in one step.
+- For the build: a refresh is a resolver step, and a failed refresh maps to STALE_TOKEN, never CONNECT_REQUIRED.
+
 ### D4: The user's own PAT stays a supported leg
 
 Amendment B2's PAT leg stays, with #1966 option (i). It is the user's own credential, pasted in by them, encrypted at rest and never shared. It serves self-hosting and users who won't install an app.
