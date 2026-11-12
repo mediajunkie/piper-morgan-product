@@ -426,16 +426,16 @@ _EMPTY = '{"total_count":0,"items":[]}'
 _USER_WIDE_READS = {
     "issues": (lambda a: a.list_open_issues(_OWNER), lambda r: r.issues),
     "pull requests": (lambda a: a.list_open_prs(_OWNER), lambda r: r.issues),
-    "repositories": (lambda a: a.search_user_repositories(_OWNER), lambda r: r.repositories),
 }
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("read_name", sorted(_USER_WIDE_READS))
 class TestEachUserWideReadInEachOutcome:
-    """Arch 2026-11-12 07:48: the three reads that resolve no repository (``assignee:@me``
-    issues, ``author:@me`` pull requests, ``user:@me`` repositories), each in the three
-    outcomes of the installation read that an empty result triggers."""
+    """Arch 2026-11-12 07:48: the two searches that resolve no repository (``assignee:@me``
+    issues, ``author:@me`` pull requests), each in the outcomes of the installation read
+    that an empty result triggers. The third read, repositories, answers from the
+    installation read itself on an App grant (Arch 08:02): see the class below."""
 
     async def _run(self, monkeypatch, read_name, installed):
         adapter, read = TestAnEmptyUserWideReadIsNotNoIssues._adapter(
@@ -611,16 +611,19 @@ def _user():
     return user
 
 
-def _adapter_class(installed=None, error=None):
+def _adapter_class(result):
+    """An adapter class whose ``search_user_repositories`` answers ``result``."""
     instance = MagicMock()
-    if error is not None:
-        instance.app_installed_repositories = AsyncMock(side_effect=error)
-    else:
-        instance.app_installed_repositories = AsyncMock(return_value=installed)
-    instance.search_user_repositories = AsyncMock(
-        side_effect=AssertionError("the user:@me search must not run")
-    )
+    instance.search_user_repositories = AsyncMock(return_value=result)
     return MagicMock(return_value=instance), instance
+
+
+def _install_degrade(detail):
+    return gh_mod.GitHubReposResult(
+        degradation=DegradationResponse(
+            reason=DegradationReason.REPO_UNRESOLVED, user_message="x", detail=detail
+        )
+    )
 
 
 _ADAPTER = "web.api.routes.settings_integrations.GitHubMCPSpatialAdapter"
@@ -630,7 +633,7 @@ _PREFS = "web.api.routes.settings_integrations._load_github_prefs_db"
 @pytest.mark.asyncio
 class TestSettingsRepositoryList:
     async def test_installed_nowhere_is_a_named_state_with_the_install_link(self, app_on):
-        cls, _ = _adapter_class(InstalledRepositories(installations=0))
+        cls, _ = _adapter_class(_install_degrade(DETAIL_APP_NOT_INSTALLED))
         with patch(_ADAPTER, cls):
             result = await routes.get_github_repositories(current_user=_user())
         assert result.repositories == []
@@ -639,11 +642,10 @@ class TestSettingsRepositoryList:
         assert result.install_url == "https://github.com/apps/piper-example/installations/new"
 
     async def test_without_a_slug_the_card_says_it_is_on_our_side_and_never_install_it(
-        self, app_on, monkeypatch
+        self, app_on
     ):
         # CXO 2026-11-12 07:30: never "install it" with no way to.
-        monkeypatch.delenv(grant_mod.ENV_APP_SLUG)
-        cls, _ = _adapter_class(InstalledRepositories(installations=0))
+        cls, _ = _adapter_class(_install_degrade(install_mod.DETAIL_APP_INSTALL_LINK_MISSING))
         with patch(_ADAPTER, cls):
             result = await routes.get_github_repositories(current_user=_user())
         assert result.state == "app_not_installed" and result.install_url is None
@@ -654,14 +656,14 @@ class TestSettingsRepositoryList:
         assert "GITHUB_APP_SLUG" not in result.message and "Install it" not in result.message
 
     async def test_installed_somewhere_is_an_ordinary_list_and_the_line_never_shows(self, app_on):
-        installed = InstalledRepositories(
-            installations=1,
+        installed = gh_mod.GitHubReposResult(
             repositories=[
                 {"id": 1, "name": "r1", "full_name": "octo/r1", "description": ""},
                 {"id": 2, "name": "r2", "full_name": "octo/r2", "description": "two"},
             ],
+            from_installation=True,
         )
-        cls, instance = _adapter_class(installed)
+        cls, _ = _adapter_class(installed)
         saved = {"selected_repositories": ["octo/r2", "octo/not-installed-any-more"]}
         with patch(_ADAPTER, cls), patch(_PREFS, new=AsyncMock(return_value=saved)):
             result = await routes.get_github_repositories(current_user=_user())
@@ -674,42 +676,243 @@ class TestSettingsRepositoryList:
             ("octo/r1", False),
             ("octo/r2", True),
         ]  # a saved choice the App isn't installed on simply doesn't appear (Arch)
-        instance.search_user_repositories.assert_not_awaited()
 
-    @pytest.mark.parametrize("error", [InstallationReadFailed(502), RuntimeError("boom")])
-    async def test_a_failed_read_is_an_honest_error_never_the_install_line(self, app_on, error):
-        cls, _ = _adapter_class(error=error)
+    @pytest.mark.parametrize(
+        "reason", [DegradationReason.UNREACHABLE, DegradationReason.STALE_TOKEN]
+    )
+    async def test_a_failed_read_is_an_honest_error_never_the_install_line(self, app_on, reason):
+        failed = gh_mod.GitHubReposResult(
+            degradation=DegradationResponse(reason=reason, user_message="failed")
+        )
+        cls, _ = _adapter_class(failed)
         with patch(_ADAPTER, cls):
             with pytest.raises(HTTPException) as exc:
                 await routes.get_github_repositories(current_user=_user())
         assert exc.value.status_code == 502
         assert "installed" not in str(exc.value.detail)
 
-    async def test_an_account_not_on_an_app_grant_keeps_the_search(self, app_on):
-        from services.mcp.consumer.github_adapter import GitHubReposResult
+    async def test_a_search_list_carries_no_app_note(self, app_on):
+        searched = gh_mod.GitHubReposResult(
+            repositories=[{"id": 9, "name": "p", "full_name": "me/p", "description": ""}]
+        )
+        cls, _ = _adapter_class(searched)
+        with patch(_ADAPTER, cls), patch(_PREFS, new=AsyncMock(return_value={})):
+            result = await routes.get_github_repositories(current_user=_user())
+        assert [r.full_name for r in result.repositories] == ["me/p"]
+        assert result.state is None and result.note is None
 
-        cls, instance = _adapter_class(None)
-        instance.search_user_repositories = AsyncMock(
-            return_value=GitHubReposResult(
-                repositories=[{"id": 9, "name": "p", "full_name": "me/p", "description": ""}]
+
+# ── the repository search is the one source (Arch 08:02) ────────────────────────────
+
+
+@pytest.mark.asyncio
+class TestRepositorySearchIsTheOneSource:
+    """Arch 2026-11-12 08:02: on a GitHub App grant ``search_user_repositories`` answers
+    from the installation read, so Settings, the "my repos" turn, the resolver and the
+    "which repo?" choices all draw from one source. ``user:@me`` is never sent."""
+
+    @staticmethod
+    def _adapter(monkeypatch, installed, credential=None):
+        import contextlib
+
+        adapter = GitHubMCPSpatialAdapter()
+        adapter.resolve_credential = AsyncMock(return_value=credential or _oauth())
+
+        @contextlib.asynccontextmanager
+        async def _never(binding):
+            raise AssertionError("the user:@me search must not run on an App grant")
+            yield  # pragma: no cover
+
+        adapter._mcp_client_ctx = _never
+        if isinstance(installed, Exception):
+            read = AsyncMock(side_effect=installed)
+        else:
+            read = AsyncMock(return_value=installed)
+        monkeypatch.setattr(gh_mod, "list_installed_repositories", read)
+        return adapter, read
+
+    async def test_installed_repositories_are_the_list(self, app_on, monkeypatch):
+        many = [_repo(n) for n in range(150)]  # more than the search's cap of 100
+        adapter, read = self._adapter(
+            monkeypatch, InstalledRepositories(installations=2, repositories=many)
+        )
+        result = await adapter.search_user_repositories(_OWNER, limit=1)
+        assert result.from_installation is True and result.degradation is None
+        assert len(result.repositories) == 150  # never part of a list as if complete
+        read.assert_awaited_once_with("access-live")
+
+    async def test_installed_nowhere_is_the_install_step_degrade(self, app_on, monkeypatch):
+        adapter, _ = self._adapter(monkeypatch, InstalledRepositories(installations=0))
+        result = await adapter.search_user_repositories(_OWNER)
+        assert result.repositories is None
+        assert result.degradation.detail == DETAIL_APP_NOT_INSTALLED
+
+    async def test_installed_nowhere_with_no_slug(self, app_on, monkeypatch):
+        monkeypatch.delenv(grant_mod.ENV_APP_SLUG)
+        adapter, _ = self._adapter(monkeypatch, InstalledRepositories(installations=0))
+        result = await adapter.search_user_repositories(_OWNER)
+        assert result.degradation.detail == install_mod.DETAIL_APP_INSTALL_LINK_MISSING
+
+    @pytest.mark.parametrize("error", [InstallationReadFailed(502), InstallationReadFailed(None)])
+    async def test_a_failed_read_is_unreachable_never_empty_never_the_search(
+        self, app_on, monkeypatch, error
+    ):
+        adapter, _ = self._adapter(monkeypatch, error)
+        result = await adapter.search_user_repositories(_OWNER)
+        assert result.repositories is None
+        assert result.degradation.reason is DegradationReason.UNREACHABLE
+        assert result.degradation.detail is None
+
+    async def test_githubs_401_is_the_stale_path(self, app_on, monkeypatch):
+        adapter, _ = self._adapter(monkeypatch, InstallationReadFailed(401))
+        adapter._rejected_token_was_replaced = AsyncMock(return_value=False)
+        marked = AsyncMock(return_value=True)
+        monkeypatch.setattr(GitHubMCPSpatialAdapter, "_mark_oauth_binding_stale", marked)
+        result = await adapter.search_user_repositories(_OWNER)
+        assert result.degradation.reason is DegradationReason.STALE_TOKEN
+        marked.assert_awaited_once()
+
+    async def test_a_401_on_a_token_already_replaced_is_not_stale(self, app_on, monkeypatch):
+        adapter, _ = self._adapter(monkeypatch, InstallationReadFailed(401))
+        adapter._rejected_token_was_replaced = AsyncMock(return_value=True)
+        marked = AsyncMock()
+        monkeypatch.setattr(GitHubMCPSpatialAdapter, "_mark_oauth_binding_stale", marked)
+        result = await adapter.search_user_repositories(_OWNER)
+        assert result.degradation.reason is DegradationReason.UNREACHABLE
+        marked.assert_not_awaited()
+
+    @pytest.mark.parametrize(
+        "credential",
+        [
+            GitHubCredential(owner_id=_OWNER, mcp_server_ref="github", token="pat", leg="pat"),
+            GitHubCredential(
+                owner_id=_OWNER, mcp_server_ref="github", token="classic", leg="oauth"
+            ),
+        ],
+    )
+    async def test_a_personal_token_and_a_classic_grant_keep_the_search(
+        self, app_on, monkeypatch, credential
+    ):
+        import contextlib
+
+        adapter, read = self._adapter(
+            monkeypatch, AssertionError("no installation read"), credential
+        )
+        seen = {}
+
+        class _Client:
+            async def call_tool(self, tool, args):
+                seen["tool"], seen["query"] = tool, args["query"]
+                return '{"total_count":1,"items":[{"id":5,"name":"p","full_name":"me/p"}]}'
+
+        @contextlib.asynccontextmanager
+        async def _ctx(binding):
+            yield _Client()
+
+        adapter._mcp_client_ctx = _ctx
+        monkeypatch.setattr(GitHubMCPSpatialAdapter, "_tool_text", classmethod(lambda cls, r: r))
+        result = await adapter.search_user_repositories(_OWNER)
+        assert seen == {"tool": "search_repositories", "query": "user:@me"}
+        assert [r["full_name"] for r in result.repositories] == ["me/p"]
+        assert result.from_installation is False
+        read.assert_not_awaited()
+
+    async def test_the_which_repo_choices_draw_only_from_installed_repositories(
+        self, app_on, monkeypatch
+    ):
+        from services.intent_service import repo_clarification
+
+        adapter, _ = self._adapter(
+            monkeypatch,
+            InstalledRepositories(
+                installations=1,
+                repositories=[
+                    {"id": 1, "name": "site", "full_name": "octo/site", "description": ""}
+                ],
+            ),
+        )
+        monkeypatch.setattr(gh_mod, "GitHubMCPSpatialAdapter", lambda: adapter)
+        monkeypatch.setattr(
+            "services.integrations.github.repo_resolver.get_user_default_repo",
+            AsyncMock(return_value=None),
+        )
+        found = await repo_clarification.resolve_repo_name(_OWNER, "site")
+        assert found.status == "resolved" and found.full_name == "octo/site"
+        # A repository the App isn't installed on is not offered, whatever exists.
+        missing = await repo_clarification.resolve_repo_name(_OWNER, "public-but-not-installed")
+        assert missing.status != "resolved"
+
+    async def test_the_resolvers_recovery_draws_only_from_installed_repositories(
+        self, app_on, monkeypatch
+    ):
+        from uuid import UUID
+
+        from services.integrations.github import repo_resolver
+
+        adapter, read = self._adapter(
+            monkeypatch,
+            InstalledRepositories(
+                installations=1,
+                repositories=[
+                    {"id": 1, "name": "site", "full_name": "octo/site", "description": ""}
+                ],
+            ),
+        )
+        monkeypatch.setattr(gh_mod, "GitHubMCPSpatialAdapter", lambda: adapter)
+        repo_resolver.reset_recovery_guard()
+        status = MagicMock()
+        status.is_configured = AsyncMock(return_value=True)
+        monkeypatch.setattr(
+            "services.integrations.integration_status_service.IntegrationStatusService",
+            lambda: status,
+        )
+        applied = AsyncMock()
+        monkeypatch.setattr(repo_resolver, "apply_default_default_if_unset", applied)
+        monkeypatch.setattr(
+            repo_resolver, "_resolve_from_user_default", AsyncMock(return_value=None)
+        )
+        await repo_resolver._attempt_default_repo_recovery(UUID(_OWNER))
+        read.assert_awaited_once()
+        offered = applied.call_args.args[1]
+        assert [r["full_name"] for r in offered] == ["octo/site"]
+
+
+@pytest.mark.asyncio
+class TestCardProbeStaysConnected:
+    """Arch 08:02: the card's Test is the same authenticated read. A person with zero
+    installations is connected (GitHub answered their own grant) and the result carries
+    the install state beside that."""
+
+    async def _test(self, monkeypatch, search_result):
+        from web.api.routes import integrations
+
+        adapter = MagicMock()
+        adapter.resolve_credential = AsyncMock(return_value=_oauth())
+        adapter.search_user_repositories = AsyncMock(return_value=search_result)
+        monkeypatch.setattr(gh_mod, "GitHubMCPSpatialAdapter", lambda: adapter)
+        return await integrations._test_github(_OWNER)
+
+    @pytest.mark.parametrize(
+        "detail",
+        [DETAIL_APP_NOT_INSTALLED, install_mod.DETAIL_APP_INSTALL_LINK_MISSING],
+    )
+    async def test_zero_installations_is_connected_with_the_install_state(
+        self, monkeypatch, detail
+    ):
+        result = await self._test(monkeypatch, _install_degrade(detail))
+        assert result["success"] is True and result["leg"] == "oauth"
+        assert result["install_state"] == detail
+        assert "error" not in result
+
+    async def test_a_real_failure_is_still_a_failure(self, monkeypatch):
+        failed = gh_mod.GitHubReposResult(
+            degradation=DegradationResponse(
+                reason=DegradationReason.STALE_TOKEN, user_message="needs re-authorizing"
             )
         )
-        with patch(_ADAPTER, cls), patch(_PREFS, new=AsyncMock(return_value={})):
-            result = await routes.get_github_repositories(current_user=_user())
-        assert [r.full_name for r in result.repositories] == ["me/p"] and result.state is None
-        assert result.note is None  # the search path's list carries no App note
-
-    async def test_with_app_mode_off_the_installation_read_is_never_made(self, app_off):
-        from services.mcp.consumer.github_adapter import GitHubReposResult
-
-        cls, instance = _adapter_class(error=AssertionError("must not be called"))
-        instance.search_user_repositories = AsyncMock(
-            return_value=GitHubReposResult(repositories=[])
-        )
-        with patch(_ADAPTER, cls), patch(_PREFS, new=AsyncMock(return_value={})):
-            result = await routes.get_github_repositories(current_user=_user())
-        assert result.state is None
-        instance.app_installed_repositories.assert_not_awaited()
+        result = await self._test(monkeypatch, failed)
+        assert result["success"] is False and result["error_type"] == "stale_token"
+        assert "install_state" not in result
 
 
 # ── the card ────────────────────────────────────────────────────────────────────────

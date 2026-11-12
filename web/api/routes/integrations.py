@@ -843,9 +843,21 @@ async def _test_github(user_id: Optional[str] = None) -> Dict[str, Any]:
         if isinstance(credential, DegradationResponse):
             return _github_failure(credential)
         result = await adapter.search_user_repositories(user_id, limit=1)
-        if result.degradation is not None:
-            return _github_failure(result.degradation)
         stale = getattr(credential, "stale_oauth_reason", None)
+        if result.degradation is not None:
+            install_state = getattr(result.degradation, "detail", None)
+            if install_state in ("app_not_installed", "app_install_link_missing"):
+                # #2342 (Arch 2026-11-12 08:02): GitHub answered this account's own
+                # grant, so the connection works and the card stays connected. What is
+                # missing is an installation; the result carries that state beside it.
+                return {
+                    "success": True,
+                    "message": _github_success_line(credential),
+                    "leg": getattr(credential, "leg", None),
+                    "stale_oauth_reason": getattr(stale, "value", stale),
+                    "install_state": install_state,
+                }
+            return _github_failure(result.degradation)
         return {
             "success": True,
             "message": _github_success_line(credential),

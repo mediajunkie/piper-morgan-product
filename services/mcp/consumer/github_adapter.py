@@ -380,6 +380,9 @@ class GitHubReposResult:
 
     repositories: Optional[List[Dict[str, Any]]] = None
     degradation: Optional[DegradationResponse] = None
+    # #2342: True when the list is the GitHub App's installed repositories (an App
+    # grant), not the ``user:@me`` search.
+    from_installation: bool = False
 
 
 @dataclass
@@ -778,6 +781,13 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         binding_or_degrade = await self._bound_binding_or_degrade(user_id)
         if isinstance(binding_or_degrade, DegradationResponse):
             return GitHubReposResult(degradation=binding_or_degrade)
+        if binding_or_degrade.leg == "oauth" and binding_or_degrade.app_grant:
+            # #2342 (Arch 2026-11-12 08:02): on a GitHub App grant this is the ONE source
+            # for "the person's repositories" on every surface (Settings, the "my repos"
+            # turn, the resolver, the "which repo?" choices): the repositories the App
+            # is installed on. ``user:@me`` would also return public repositories the
+            # App isn't installed on, splitting one fact across two sources.
+            return await self._installed_repositories_result(binding_or_degrade)
         try:
             async with self._mcp_client_ctx(binding_or_degrade) as client:
                 result = await client.call_tool(_REPOS_TOOL, {"query": _MY_REPOS_QUERY})
@@ -790,14 +800,32 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return GitHubReposResult(
                 degradation=await self._degrade_for_exc(binding_or_degrade, exc)
             )
-        if not repos:
-            # #2342 (Arch 2026-11-12 07:48): the third user-wide read. An empty result in
-            # App mode, on the App grant, with the App installed nowhere, is the install
-            # step's state, not "no repositories".
-            install_step = await self._install_step_degrade(user_id, credential=binding_or_degrade)
-            if install_step is not None:
-                return GitHubReposResult(degradation=install_step)
         return GitHubReposResult(repositories=repos)
+
+    async def _installed_repositories_result(self, credential) -> GitHubReposResult:
+        """#2342 (Arch 08:02): the repository list for an App grant, from the
+        installation read, paginated to the end (``limit`` is the search's cap and does
+        not apply: never part of a list as if it were complete).
+
+        Installed nowhere: the install-step degrade. A failed read: the honest failure
+        (GitHub's 401 is the stale path, with the re-read rule; anything else is
+        UNREACHABLE). Never an empty list, and never a fall-back to ``user:@me``."""
+        try:
+            installed = await list_installed_repositories(credential.token)
+        except InstallationReadFailed as exc:
+            if exc.status == 401:
+                if await self._rejected_token_was_replaced(credential):
+                    return GitHubReposResult(
+                        degradation=await self.degrade(DegradationReason.UNREACHABLE)
+                    )
+                await self._mark_oauth_binding_stale(credential)
+                return GitHubReposResult(
+                    degradation=await self.degrade(DegradationReason.STALE_TOKEN)
+                )
+            return GitHubReposResult(degradation=await self.degrade(DegradationReason.UNREACHABLE))
+        if installed.installed_nowhere:
+            return GitHubReposResult(degradation=await self._install_step_response())
+        return GitHubReposResult(repositories=installed.repositories, from_installation=True)
 
     @staticmethod
     def _parse_repo_search(payload: Optional[str], *, limit: int) -> List[Dict[str, Any]]:
@@ -1857,6 +1885,11 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         link to give, the detail and words say the problem is on our side (CXO 07:30)."""
         if not await self._app_installed_nowhere(user_id, credential=credential):
             return None
+        return await self._install_step_response()
+
+    async def _install_step_response(self) -> DegradationResponse:
+        """The install step's degrade itself, once the installation read has ANSWERED
+        that the App is installed on no repository."""
         degraded = await self.degrade(DegradationReason.REPO_UNRESOLVED)
         if app_install_url() is None:
             return dataclasses.replace(
