@@ -515,3 +515,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 2026-11-11 18:38 v929 (artifact version 941): PPM's 1423 yes/no added to Your word.
 2026-11-11 18:40 v929 (artifact version 942): 2174 card fly commands prefixed FLY_NO_UPDATE_CHECK=1 (xian's fly auth login hit the pinned-flyctl self-upgrade).
 2026-11-11 18:43 v929 (artifact version 943): Lead's 18:39 escalation added to Your word (2340 key, 2333, 2327).
+2026-11-11 18:54 v930: 2174 PASS (xian 18:52); step card removed; top item replaced with the result.
