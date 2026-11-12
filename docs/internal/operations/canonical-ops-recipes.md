@@ -419,6 +419,12 @@ stays valid at GitHub, and still serves the Claude connector, until the script i
    `<origin>` is that host's `PIPER_BASE_URL` (beta: `https://beta.pipermorgan.ai`). If
    `GITHUB_OAUTH_REDIRECT_URI` is set on a host, the callback is that value instead; the App and the
    classic app use the same one. No seat can read either value.
+   **Settled 2026-11-12 13:12 (Arch, HOST; Lead for the source):** the owner is org `pipermorgan`,
+   install scope "Only on this account", and the served rows run on a test repository in that org
+   (not the product repo; the rows write). List both the beta and the alpha callback, since a host
+   sends one and no seat can read which. Leave "Request user authorization (OAuth) during
+   installation" and "Enable Device Flow" unticked: the callback refuses a request without our
+   `state`, and device flow is unused.
 2. **Promote a build that carries the code**, at or after main `7f17d1a841`. It carries the migration
    `u2342reason` (one nullable column), so it needs xian's explicit word, not the standing grant. With
    the secrets unset the build behaves as the classic app does.
@@ -432,6 +438,7 @@ stays valid at GitHub, and still serves the Claude connector, until the script i
    `git fetch -q origin main && git merge -q --ff-only origin/main && scripts/deploy-mcp.sh` from a
    clean worktree, then check `https://mcp.pipermorgan.ai/health` serves a sha at or after `7e32d63f68`.
    With the App values unset it behaves as today. **Don't start step 3 until it does.**
+   **Done 2026-11-12 13:12:** the MCP app serves `4666e38493` (xian's deploy; Exec's and Lead's reads).
 
 **The sitting**
 
