@@ -533,3 +533,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v946 (12:07): beta d4fd55e6c5 (Lead 11:52, read by Exec); MCP deploy step 2a for xian (PA 01M78NER, Arch/HOST agree); 2343 built ab810775b2, under review
 - v947 (12:19): 2343 accepted by Arch 01M78PE4, HOST 01M78PEB (hold lifted), CIO 01M78NX6, each with one change for Lead
 - v948 (12:32): 2343 ready (Lead 01M78PVC, 2456cd7e5f); sitting command on the card
+- v949 (12:55): sitting command corrected to python3 (no venv on Amber worktrees; xian's run failed at the shell, nothing ran)
