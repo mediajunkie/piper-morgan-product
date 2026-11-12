@@ -167,7 +167,9 @@ def _run_main(
     monkeypatch.setattr(rc, "run_check", fake_check)
     monkeypatch.setattr("builtins.input", lambda prompt: answer)
     try:
-        code = rc.main(["--uninstalled-private-repo", "o/private", "--issue", "43"])
+        code = rc.main(
+            ["--uninstalled-private-repo", "o/private", "--issue", "43"], terminal=lambda: True
+        )
     except RuntimeError:
         code = "raised"
     return code, capsys.readouterr().out, stopped
@@ -209,3 +211,16 @@ def test_the_proxy_is_stopped_when_the_check_raises(monkeypatch, capsys):
     code, _out, stopped = _run_main(monkeypatch, capsys, _good_post, raises=RuntimeError("boom"))
     assert code == "raised"
     assert stopped == ["proxy"]
+
+
+def test_without_a_terminal_it_refuses_before_any_prompt(monkeypatch, capsys):
+    """Section 10 rule 8: Claude Code's ! prefix has no terminal, so getpass could echo."""
+
+    def never(*a, **k):
+        raise AssertionError("reached a step without a terminal")
+
+    monkeypatch.setattr(rc, "ask_secrets", never)
+    monkeypatch.setattr(rc, "refresh", never)
+    code = rc.main(["--uninstalled-private-repo", "o/private"], terminal=lambda: False)
+    assert code == 2
+    assert rc.NO_TERMINAL in capsys.readouterr().out

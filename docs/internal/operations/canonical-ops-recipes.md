@@ -450,7 +450,8 @@ stays valid at GitHub, and still serves the Claude connector, until the script i
 
 **The sitting**
 
-Steps 3 and 4 are one command (issue 2343), run from a checkout where `fly` is signed in:
+Steps 3 and 4 are one command (issue 2343). Run it in Terminal, from a clean worktree where `fly` is
+signed in, never through Claude Code's `!` prefix (section 10 rule 8; it refuses without a terminal):
 
 ```
 python3 scripts/github_app_cutover_sitting.py

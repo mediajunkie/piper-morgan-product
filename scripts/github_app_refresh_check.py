@@ -2,9 +2,11 @@
 """github_app_refresh_check.py: ADR-081 D3's refresh check as ONE command (#2341).
 
 For the person who holds the secrets (xian). It asks for each secret once with the
-input hidden, does every step itself, and prints only the block to paste back.
+input hidden, does every step itself, and prints only the block to paste back. Run
+it in Terminal: it refuses at once without a real terminal (Claude Code's ``!`` prefix
+gives none), because a hidden prompt could echo.
 
-    venv/bin/python scripts/github_app_refresh_check.py --issue 43 \\
+    python3 scripts/github_app_refresh_check.py --issue 43 \\
         --uninstalled-private-repo OWNER/PRIVATE-REPO
 
 What it does, in order:
@@ -228,7 +230,22 @@ def scrub(text: str, secrets: List[str]) -> str:
     return text
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+NO_TERMINAL = (
+    "stopped before anything ran: this command asks for secrets at hidden prompts and "
+    "needs a real terminal.\n"
+    "Run it in Terminal.app, not through Claude Code's ! prefix and not through a pipe."
+)
+
+
+def has_terminal() -> bool:
+    """True when standard input is a terminal, so a hidden prompt cannot echo."""
+    try:
+        return bool(sys.stdin.isatty())
+    except (AttributeError, ValueError):
+        return False
+
+
+def main(argv: Optional[List[str]] = None, terminal: Callable[[], bool] = has_terminal) -> int:
     p = argparse.ArgumentParser(description="ADR-081 D3 refresh check as one command (#2341)")
     p.add_argument("--repo", default=DEFAULT_REPO, help="the TEST repository (owner/name)")
     p.add_argument(
@@ -248,6 +265,11 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="a github-mcp-server that is already reachable; omit to start `fly proxy`",
     )
     ns = p.parse_args(argv)
+
+    # Section 10 rule 8: before any step, so a prompt that might echo is never reached.
+    if not terminal():
+        print(NO_TERMINAL)
+        return 2
 
     secrets = ask_secrets()
     reply, refresh_line = refresh(secrets)

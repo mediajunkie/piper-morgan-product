@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """github_app_cutover_sitting.py: the GitHub App cutover sitting as ONE command (#2343).
 
-For the person who holds the App's values (xian). Run it from a checkout, on a machine
-where ``fly`` is signed in:
+For the person who holds the App's values (xian). Run it in Terminal, from a clean
+worktree, on a machine where ``fly`` is signed in. It refuses at once without a real
+terminal (Claude Code's ``!`` prefix gives none), because a hidden prompt could echo:
 
     python3 scripts/github_app_cutover_sitting.py
 
@@ -407,7 +408,26 @@ class Sitting:
         self.finished = True
 
 
-def main(argv: Optional[List[str]] = None, sitting: Optional[Sitting] = None) -> int:
+NO_TERMINAL = (
+    "stopped before anything ran: this command asks for secrets at hidden prompts and "
+    "needs a real terminal.\n"
+    "Run it in Terminal.app, not through Claude Code's ! prefix and not through a pipe."
+)
+
+
+def has_terminal() -> bool:
+    """True when standard input is a terminal, so a hidden prompt cannot echo."""
+    try:
+        return bool(sys.stdin.isatty())
+    except (AttributeError, ValueError):
+        return False
+
+
+def main(
+    argv: Optional[List[str]] = None,
+    sitting: Optional[Sitting] = None,
+    terminal: Callable[[], bool] = has_terminal,
+) -> int:
     p = argparse.ArgumentParser(description="The GitHub App cutover sitting as one command (#2343)")
     p.add_argument(
         "--cutover-only",
@@ -415,6 +435,10 @@ def main(argv: Optional[List[str]] = None, sitting: Optional[Sitting] = None) ->
         help="the values are already set: ask for nothing, wait for nothing, run the cutover",
     )
     ns = p.parse_args(argv)
+    # Section 10 rule 8: before any check, so a prompt that might echo is never reached.
+    if not terminal():
+        print(NO_TERMINAL)
+        return 2
     s = sitting or Sitting()
     code = 0
     try:

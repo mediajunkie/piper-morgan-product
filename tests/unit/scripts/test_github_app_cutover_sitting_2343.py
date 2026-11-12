@@ -113,7 +113,7 @@ class World:
         s = self.sitting()
         orig = s.run_all
         s.run_all = lambda only: orig(only, ask=lambda: dict(VALUES))
-        code = cs.main(["--cutover-only"] if cutover_only else [], sitting=s)
+        code = cs.main(["--cutover-only"] if cutover_only else [], sitting=s, terminal=lambda: True)
         return code, "\n".join(self.printed)
 
     def argvs(self):
@@ -399,3 +399,20 @@ def test_unreadable_rows_after_the_apply_get_a_note_in_the_block():
     code, text = w.go()
     assert code == 0
     assert "NOTE: 2 row(s) could not be read" in text
+
+
+@pytest.mark.parametrize("argv", [[], ["--cutover-only"]])
+def test_without_a_terminal_it_refuses_before_any_check_or_prompt(argv, capsys):
+    """Section 10 rule 8: Claude Code's ! prefix has no terminal, so getpass could echo."""
+    w = World()
+    code = cs.main(argv, sitting=w.sitting(), terminal=lambda: False)
+    assert code == 2
+    assert w.calls == [] and w.printed == []
+    assert cs.NO_TERMINAL in capsys.readouterr().out
+
+
+def test_has_terminal_is_false_for_a_closed_or_piped_standard_input(monkeypatch):
+    import io
+
+    monkeypatch.setattr(sys, "stdin", io.StringIO(""))
+    assert cs.has_terminal() is False
