@@ -911,3 +911,5 @@ STATE @ 2026-10-15 21:48 PT (DAY CLOSED) — next promotion READY on e4f21e9ca8 
 - Watch: Web's quoted served checks on alpha 4bd1a236e9 (6 turns); #1958 + CXO's team-calendar probe after the NEXT promotion.
 - **Wed 10-14 START: cron rotation** (e5491d18 expires ~10-17; delete-then-create; registry row) + PPM's tripwire read (127 ceiling, tail 97
   or 87 if the stripper is named). **Fri 10-16:** key switch — steps in `dev/active/lead-prod-key-move-2026-10-16.md` (PM's hand).
+
+**IN-DAY 17:43:** issue 2340 filed (screening scripts read the keychain and switch to OpenAI on a refusal); answer on the Oct 23 OpenAI requests sent to Exec (v4 01M76PSHFCH6T06NVXDCMGX8XF). Filed today: 2337, 2339, 2340. No rule-7 screen runs without xian's permission (keychain rule).
