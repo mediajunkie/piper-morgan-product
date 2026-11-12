@@ -41,6 +41,7 @@ def health(monkeypatch):
     monkeypatch.setenv("REDIS_URL", ADDRESS)
     monkeypatch.setattr(turn_activity, "TURN_ACTIVITY", turn_activity.TurnActivity())
     monkeypatch.setattr(RedisFactory, "_last_ping_ok", None)
+    monkeypatch.setattr(RedisFactory, "_last_ping_recorded_at", None)
     blacklist = TokenBlacklist(redis_factory=RedisFactory(), db_session_factory=None)
     monkeypatch.setattr(AuthContainer, "_token_blacklist", blacklist)
 
@@ -50,8 +51,17 @@ def health(monkeypatch):
     monkeypatch.setattr(RedisFactory, "create_client", classmethod(no_ping))
     app = FastAPI()
     app.include_router(admin_router)
+    app.state.intent_service = object()  # so only Redis can move the status below
     client = TestClient(app)
     return lambda: client.get("/health").json(), blacklist
+
+
+def _record(monkeypatch, ok, age_s):
+    """Set the pool's recorded ping: its outcome and how long ago it happened."""
+    import time
+
+    monkeypatch.setattr(RedisFactory, "_last_ping_ok", ok)
+    monkeypatch.setattr(RedisFactory, "_last_ping_recorded_at", time.monotonic() - age_s)
 
 
 def test_no_ping_yet_reads_unavailable_and_database(health):
@@ -85,11 +95,55 @@ def test_the_two_fields_are_independent(health, monkeypatch):
     assert (services["redis"], services["revocation_source"]) == ("ok", "database")
 
 
-def test_neither_field_changes_the_overall_status(health, monkeypatch):
+def test_a_fresh_unavailable_degrades_the_status(health, monkeypatch):
+    """Arch 2026-11-12: without Redis every page is a 503, so the host is down for users."""
     read, _ = health
-    before = read()["status"]
-    monkeypatch.setattr(RedisFactory, "_last_ping_ok", False)
-    assert read()["status"] == before
+    _record(monkeypatch, False, 5)
+    body = read()
+    assert body["services"]["redis"] == "unavailable"
+    assert body["status"] == "degraded"
+    assert 5 <= body["services"]["redis_checked_s"] < 30
+
+
+def test_a_stale_unavailable_does_not_degrade_and_shows_its_age(health, monkeypatch):
+    """On a host with no traffic an old failure must not hold promotions or keep alerting."""
+    read, _ = health
+    _record(monkeypatch, False, admin_module.REDIS_FRESH_SECONDS + 60)
+    body = read()
+    assert body["services"]["redis"] == "unavailable"
+    assert body["status"] == "healthy"
+    assert body["services"]["redis_checked_s"] >= admin_module.REDIS_FRESH_SECONDS + 60
+
+
+def test_ok_is_healthy_and_no_ping_yet_is_healthy_with_a_null_age(health, monkeypatch):
+    read, _ = health
+    body = read()
+    assert body["status"] == "healthy" and body["services"]["redis_checked_s"] is None
+    _record(monkeypatch, True, 3)
+    body = read()
+    assert body["status"] == "healthy" and body["services"]["redis"] == "ok"
+
+
+def test_the_http_code_is_200_whatever_redis_reads(health, monkeypatch):
+    """Fly's machine check reads the code; a Redis outage must not restart the machine."""
+    _record(monkeypatch, False, 1)
+    app = FastAPI()
+    app.include_router(admin_router)
+    app.state.intent_service = object()
+    response = TestClient(app).get("/health")
+    assert response.status_code == 200 and response.json()["status"] == "degraded"
+
+
+def test_the_window_is_120_seconds(health):
+    assert admin_module.REDIS_FRESH_SECONDS == 120
+
+
+def test_revocation_source_database_never_degrades(health, monkeypatch):
+    read, blacklist = health
+    _record(monkeypatch, True, 1)
+    blacklist._redis_available = False
+    body = read()
+    assert body["services"]["revocation_source"] == "database" and body["status"] == "healthy"
 
 
 def test_no_part_of_the_address_reaches_the_body(health, monkeypatch):

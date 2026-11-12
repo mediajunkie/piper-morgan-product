@@ -43,7 +43,7 @@ deployment infrastructure that cannot authenticate. See its docstring.
 import asyncio
 import time
 from datetime import datetime, timezone
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import structlog
 from fastapi import APIRouter, Depends, Request
@@ -129,6 +129,23 @@ def _redis_status() -> str:
         return RedisFactory.recorded_health()
     except Exception:
         return "unavailable"
+
+
+#: A recorded "unavailable" degrades the body status only while it is this fresh (Arch,
+#: 2026-11-12). The record refreshes when a request takes a Redis client, never from
+#: /health, so on a host with no traffic an old failure must not hold promotions or keep
+#: alerting after Redis has come back.
+REDIS_FRESH_SECONDS = 120
+
+
+def _redis_checked_s() -> Optional[int]:
+    """#2348: seconds since the recorded ping, or None when there has been none."""
+    try:
+        from services.cache.redis_factory import RedisFactory
+
+        return RedisFactory.recorded_health_age_s()
+    except Exception:
+        return None
 
 
 def _revocation_source() -> str:
@@ -237,6 +254,9 @@ async def health(request: Request):
         "running" if _watchdog is not None and getattr(_watchdog, "is_running", False) else "absent"
     )
 
+    redis_status: str = _redis_status()
+    redis_age: Optional[int] = _redis_checked_s()
+
     services_status = {
         "web": "healthy",
         "intent_enforcement": "active",
@@ -254,18 +274,26 @@ async def health(request: Request):
         # and the promote step's health refusal holds a promotion onto it.
         "credential_store": _credential_store_status(),
         # #2348: Redis is on the path of every request (the usage cap refuses without
-        # it) and nothing served showed it. Informational: neither changes `status`.
-        "redis": _redis_status(),
+        # it) and nothing served showed it. `redis_checked_s` is the record's age.
+        # `revocation_source` is informational: the database is safe and a restart fixes it.
+        "redis": redis_status,
+        "redis_checked_s": redis_age,
         "revocation_source": _revocation_source(),
     }
+    # Arch, 2026-11-12: without Redis the usage cap answers every page 503, so the host
+    # is down for users and `status` says so, but only on a FRESH record.
+    redis_down_now = (
+        redis_status == "unavailable" and redis_age is not None and redis_age < REDIS_FRESH_SECONDS
+    )
 
     # Overall status degrades if any required service is missing, the DB is unreachable,
-    # or the credential store cannot encrypt.
+    # the credential store cannot encrypt, or a fresh record says Redis is not answering.
     overall_status = (
         "healthy"
         if intent_service_present
         and database_status == "healthy"
         and services_status["credential_store"] != "unavailable"
+        and not redis_down_now
         else "degraded"
     )
 
