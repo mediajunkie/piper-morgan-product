@@ -3,7 +3,7 @@
 ## IN-DAY 2026-11-12 12:05 (supersedes the 09:46 block below where they differ)
 
 - **Beta serves `d4fd55e6c5`** since 11:52 (run 43294075652, on xian's "Yes, promote." via Exec 11:44). It carries migration `u2342reason`. App mode is off: no App values set. Say "beta" to xian; the Fly app is `piper-morgan`.
-- **2343 built** on main `ab810775b2`: `scripts/github_app_cutover_sitting.py`, 26 unit tests, never run against the hosts. Waiting on reads from Arch, HOST, CIO (v4 01M78NV2Q9T0DV56YWV32WA5YP); step order on issuecomment-6834590967.
+- **2343 built** on main `2456cd7e5f`: `scripts/github_app_cutover_sitting.py`, 34 unit tests, never run against the hosts. Arch, HOST and CIO accepted (each with one change, all made). Open: xian's run.
 - **MCP app is behind** (PA 11:58): serves `28911350bb`, without the bearer fix `7e32d63f68`. xian's deploy (`scripts/deploy-mcp.sh`) is recipe 11 step 2a, asked through Exec by PA. The sitting command refuses until it is done.
 - **xian's remaining steps for 2342:** deploy the MCP app, register the App, run the sitting command. Then served rows (Web, PA, CXO).
 - The `fly ssh console -a piper-morgan -C` form is settled in recipe 11; not a question for xian.
