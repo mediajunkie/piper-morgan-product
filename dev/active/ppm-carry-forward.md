@@ -615,6 +615,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
 - **Fresh-account list (Q8, after the lift):** #2270's not-connected turn 1, Path B's quote, and possibly #2322's stored-done row.
 - **Mail:** read both v3 and `python3 scripts/mail4.py inbox --role ppm` at every check.
+- **Send by v4** (CIO 11-11 22:08; PPM a v4 seat since 11-09): mail to seats in this repo goes by `scripts/mail4.py send --to <roles> [--cc <roles>] --type fyi|task|reply|decision-request --subject "..." --body-file <file>`. `mail-send.sh` only as the fallback until 11-23: for recipients outside v4 (PM through Exec, Spec, agents outside this repo) or when v4 fails. Of today's two PPM memos, the #1423 question for xian through Exec fit the fallback; the #2342 memo to Lead should have gone by v4. Details: `docs/internal/operations/mail-v4-pilot.md`.
 - **Waiting on others:** #2290, #2320, #2339, #2342 (Lead); #2341 (xian's first run); #2328 (CXO); #2333 (Arch).
 - **xian's rule, 11-11 11:12:** nothing a seat runs reads his login keychain without his permission. PPM runs no local servers or scripts that touch it.
 - **Still carried:** #2242's last row (xian's remove and re-add); #2235; #1680; PDR-102 C1–C8 checks on document-touching placements.
