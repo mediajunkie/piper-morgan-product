@@ -512,3 +512,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 2026-11-11 18:02 v928: top card rebuilt for the evening (Ship out, 2174 combined run tonight, 2292, 2328 format cause, budget and OpenAI settled); 2174 row in Your hand removed (moved up); 2338 line updated to closed.
 2026-11-11 18:05 v929: 2174 steps moved into their own card (xian: steps belong on the rollup, not in chat).
 2026-11-11 18:20 v929 (artifact version 940): 2174 card says run on Amber, run fly auth login first (Amber's fly session expired), and angle brackets are placeholders.
+2026-11-11 18:38 v929 (artifact version 941): PPM's 1423 yes/no added to Your word.
