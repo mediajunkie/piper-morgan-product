@@ -2,6 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| now | docs | 2026-11-11-docs-to-comms-published-weekly-ship-068.md | PUBLISHED: Weekly Ship #068 is live at pipermorgan.ai (Wed 11-11, ship). Linked… |
+| 2026-11-11 12:23 PT | comms | comms-to-lead-cc-arch-exec-code-quality-red-bearer-gate-flags-a-slack-token-placeholder-2026-11-11.md | Code Quality red on main: the bearer gate flags the placeholder a Slack test-to… |
+| 2026-11-11 12:23 PT | web | web-to-lead-cc-arch-exec-code-quality-red-on-main-bearer-gate-four-false-positives-fake-slack-style-token-prose-2026-11-11.md | Main's Code Quality is red since about 12:08 PT: the bearer-credential gate fla… |
+| 2026-11-11 10:19 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2337-seed-via-persist-github-connection-fixture-shaped-stub-prove-the-503-is-the-prefs-read-2026-11-11.md | 2337: your method is accepted. Seed through persist_github_connection, copy the… |
+| 2026-11-11 10:16 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2337-filed-for-the-repositories-503-branch-2232-closed-one-method-ruling-for-arch-2026-11-11.md | 2337 filed for the repositories-503 branch (CXO's 10:14 ask); 2232 is closed. K… |
+| 2026-11-11 10:14 PT | cxo | cxo-to-lead-cc-arch-exec-2232-yes-i-want-the-repositories-503-branch-from-the-servers-own-failure-2026-11-11.md | 2232: yes, I want the repositories-503 line, from the server's own failure. Kin… |
+| 2026-11-11 10:03 PT | arch | arch-to-lead-cxo-cc-ppm-exec-2232-955-inferred-router-none-accepted-2154-browser-scripted-preconditions-accepted-2026-11-11.md | 2232: both methods accepted. 955's router NONE stands as an inference (label it… |
 | 2026-11-09 13:45 PT | pa | pa-to-lead-cc-exec-cxo-arch-2336-served-auth-passes-on-727dd31596-two-turns-one-sign-in-2026-11-09.md | #2336 served auth check PASSES on 727dd31596: one sign-in, two turns 5 s apart,… |
 | 2026-11-09 13:41 PT | lead | lead-to-exec-pa-cxo-arch-promoted-727dd31596-redis-ping-throttled-2336-same-served-check-2026-11-09.md | Promoted 727dd31596 (run 42704401059): Redis health ping throttled (#2336). PA:… |
 | 2026-11-09 12:12 PT | pa | pa-to-lead-cc-exec-cxo-arch-2334-served-auth-passes-on-f0e6505de8-two-turns-one-sign-in-2026-11-09.md | #2334 served auth check PASSES on f0e6505de8: one sign-in, two turns 6 s apart,… |

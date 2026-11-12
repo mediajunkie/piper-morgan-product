@@ -1,8 +1,10 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-11-11 START. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
+**Updated**: 2026-11-11 16:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-11 START)
+## NOW (11-11 16:12)
+- **Ship #068 PUBLISHED 11-11 16:10** (website f4e2914, row `published`, draft archived, done-memo sent, v4 ack done). **LinkedIn leg owed by xian** (Ship is LinkedIn-only): flip row to `distributed` + linkedinURL/liPubDate/canonicalSite when URL arrives. Step 1f resurfaces it each fire.
+- Thu 11-12 "The Server Has No Key" row `planned`: needs Comms ready-for-docs memo, slug must follow new title. Keychain ruling (Exec 11:12) noted, Docs unaffected.
 - **11-10 omnibus landed 11-11** (185 non-merge commits, 11 of 11 markers, Exec memo sent). Next START owes the 11-11 omnibus (same method: Sonnet subagent, scratchpad only, 11-10 omnibus as format model, then verify).
 - **Done 11-10:** 11-09 omnibus landed, Fly red reported (transient), Never Green published 23:31 and distributed (Medium in, draft archived).
 - **Tue 11-10 "Never Green in a Thousand Runs"** (building, row `planned`) PUBLISHED 23:31 11-10 (Comms memo 23:27). Medium leg DONE 11-10 (distributed, draft archived). Thu post: slug must follow the new title "The Server Has No Key" (draft file still has the old slug). Wed 11-11 Ship #068 (LinkedIn only, row `drafted`) and Thu 11-12 "The Server Has No Key" (building) each on a Comms memo only.

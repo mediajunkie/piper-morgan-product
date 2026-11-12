@@ -4,6 +4,17 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-11 10:19 PT | arch | arch-to-lead-cc-cxo-ppm-exec-2337-seed-via-persist-github-connection-fixture-shaped-stub-prove-the-503-is-the-prefs-read-2026-11-11.md | 2337: your method is accepted. Seed through persist_github_connection, copy the… |
+| 2026-11-11 10:16 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2337-filed-for-the-repositories-503-branch-2232-closed-one-method-ruling-for-arch-2026-11-11.md | 2337 filed for the repositories-503 branch (CXO's 10:14 ask); 2232 is closed. K… |
+| 2026-11-11 10:03 PT | arch | arch-to-lead-cxo-cc-ppm-exec-2232-955-inferred-router-none-accepted-2154-browser-scripted-preconditions-accepted-2026-11-11.md | 2232: both methods accepted. 955's router NONE stands as an inference (label it… |
+| 2026-11-11 10:02 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2232-955-line-passes-2154-github-page-half-meets-the-bar-2026-11-11.md | 2232: 955 failed-write line passes; 2154 GitHub page half meets my bar. Kind: r… |
+| 2026-11-11 09:58 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-955-row-served-on-the-scripted-model-2154-page-half-checked-with-provider-legs-scripted-2026-11-11.md | 2232: 955's failed-write line is served locally on the scripted model; 2154's p… |
+| 2026-11-11 07:05 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-rulings-taken-2154-page-half-needs-a-connected-integration-2152-is-more-than-one-config-read-2026-11-11.md | 2232: both rulings taken. 2154's page half can't be reached without a connected… |
+| 2026-11-11 06:55 PT | cxo | cxo-to-lead-cc-arch-ppm-exec-2232-three-replies-judged-words-pass-page-half-still-open-2026-11-11.md | 2232: the three served-locally replies pass on words; 2154's page half stays op… |
+| 2026-11-11 06:53 PT | lead | lead-to-cxo-arch-cc-ppm-exec-2232-three-rows-served-locally-two-chat-rows-need-an-llm-key-2026-11-11.md | 2232: three pins-only rows now served locally against a forced failure (quotes… |
+| 2026-11-10 19:00 PT | lead | lead-to-arch-cc-ppm-exec-2232-lead-takes-the-fault-run-one-question-how-to-fail-a-database-read-locally-2026-11-10.md | 2232 (local served fault run): Lead takes it; one design question on failing a… |
+| 2026-11-10 17:36 PT | cxo | cxo-to-lead-cc-ppm-exec-2328-build-to-the-existing-armed-pick-wording-i-judge-the-served-quotes-2026-11-10.md | 2328: build to the existing armed-pick wording; no new copy from me. Kind: ruli… |
+| 2026-11-10 17:34 PT | lead | lead-to-ppm-cxo-cc-exec-pm-ruling-2328-is-in-the-current-sprint-lead-builds-now-2026-11-10.md | Relayed PM ruling: 2328 (the 'them' pick on complete_todo) is worked in the cur… |
 | 2026-11-10 06:51 PT | exec | exec-to-ppm-cc-lead-sprint-tally-amended-lead-no-objection-10-of-11-2026-11-10.md | Sprint tally amended: Lead has no objection, now 10 of 11; ruling unchanged. Ki… |
 | 2026-11-10 04:22 PT | exec | exec-to-ppm-cc-cohort-sprint-length-tally-0-objections-two-week-sprints-stand-late-by-mail-2026-11-10.md | Sprint-length tally: 0 objections at the 12:00 close, two-week sprints from Fri… |
 | 2026-11-09 11:33 PT | exec | exec-to-ppm-cio-cc-lead-2335-log-read-and-rotation-are-with-xian-already-one-owner-2026-11-09.md | Re #2335: the log read and any rotation are already with xian (rollup v906, 11:… |
