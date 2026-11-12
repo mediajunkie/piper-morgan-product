@@ -25,7 +25,7 @@ Rule, from the ruling: no more than one named item behind any single unanswered 
 
 | # | Item | Owner | Blocker | State, 11-09 |
 |---|---|---|---|---|
-| 1 | #2261: narrow GitHub's `repo` scope, built on D3 (#2342) | Lead | xian registering the published GitHub App, Lead's #2342 build, then xian setting the App secrets on the host and running the cutover script in the same sitting (Arch 11-12 06:51) | Open; leg decided D3 11-11 (#2174 passed, xian's run 18:52) |
+| 1 | #2261: narrow GitHub's `repo` scope, built on D3 (#2342) | Lead | xian registering the published GitHub App, Lead's #2342 build, then xian setting the App secrets on the host and running the cutover script in the same sitting (Arch 11-12 06:51) | Open; leg decided D3 11-11 (#2174 passed, xian's run 18:52); #2342's unit layer built 11-12 07:39 (Lead, `88da3f58a8`, switched off until the App's ID and secret are set); the rest waits on xian's App |
 | 2 | #2282: one canonical host, `beta.pipermorgan.ai` | Web | xian's word for Web's sign-in check | Open |
 | 3 | #2292: SPF, DKIM and DMARC | xian | xian's records in Google Admin and Hover | Open |
 | 4 | #2266's last box: a run as a second GitHub account | Web or PA | xian's second GitHub account | Open |
