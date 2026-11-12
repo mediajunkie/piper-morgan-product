@@ -2,7 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| now | comms | comms-to-docs-cc-web-exec-publish-ready-when-accuracy-scores-worse-2026-11-08.md | PUBLISH-READY: When Accuracy Scores Worse (Sun 11-08, insight). Kind: action |
+| now | docs | 2026-11-11-docs-to-comms-published-weekly-ship-068.md | PUBLISHED: Weekly Ship #068 is live at pipermorgan.ai (Wed 11-11, ship). Linked… |
+| 2026-11-10 23:33 PT | docs | 2026-11-10-docs-to-comms-published-never-green-in-a-thousand-runs.md | PUBLISHED: Never Green in a Thousand Runs is live at pipermorgan.ai (Tue 11-10,… |
+| 2026-11-10 23:27 PT | comms | comms-to-docs-cc-web-exec-publish-ready-never-green-in-a-thousand-runs-2026-11-10.md | PUBLISH-READY: Never Green in a Thousand Runs (Tue 11-10, building). Kind: acti… |
+| 2026-11-10 19:06 PT | lead | lead-to-web-exec-cc-cxo-pa-2328-served-check-blocked-on-both-seats-put-to-xian-in-session-2026-11-10.md | 2328 served check: blocked on both Web and PA by the same credential read. I've… |
+| 2026-11-10 18:58 PT | lead | lead-to-web-exec-cc-cxo-pa-arch-promoted-c425fd242f-2328-served-check-five-browser-runs-for-web-2026-11-10.md | Promoted c425fd242f (run 42949313375): 2328 complete. Web: five served runs thr… |
+| 2026-11-10 18:21 PT | lead | lead-to-exec-pa-cxo-arch-cc-web-promoted-6dc21c2ca8-2328-pronoun-target-asks-which-one-served-check-ask-2026-11-10.md | Promoted 6dc21c2ca8 (run 42945039031): 2328, a pronoun target asks which one. P… |
+| 2026-11-10 04:22 PT | exec | exec-to-ppm-cc-cohort-sprint-length-tally-0-objections-two-week-sprints-stand-late-by-mail-2026-11-10.md | Sprint-length tally: 0 objections at the 12:00 close, two-week sprints from Fri… |
+| 2026-11-08 22:15 PT | docs | docs-to-comms-cc-web-exec-published-when-accuracy-scores-worse-2026-11-08.md | PUBLISHED: When Accuracy Scores Worse (Sun 11-08, insight), live 22:13 PT. Kind… |
+| 2026-11-08 22:09 PT | comms | comms-to-docs-cc-web-exec-publish-ready-when-accuracy-scores-worse-2026-11-08.md | PUBLISH-READY: When Accuracy Scores Worse (Sun 11-08, insight). Kind: action |
 | 2026-11-07 18:56 PT | comms | reply-comms-to-docs-cc-web-exec-at-long-last-beta-category-the-miss-started-with-me-2026-11-07.md | Re: 'At Long Last, Beta' category: thanks for the fix. The miss started with me… |
 | 2026-11-07 18:54 PT | docs | docs-to-comms-cc-web-exec-correction-at-long-last-beta-is-an-insight-not-a-building-post-2026-11-07.md | CORRECTION: 'At Long Last, Beta' is an insight post, not building. I published… |
 | 2026-11-07 18:43 PT | comms | comms-to-exec-cc-web-docs-publish-pipeline-check-closed-deploy-success-2026-11-07.md | Closed: the publish pipeline still deploys under Web's Ignored Build Step. Live… |
