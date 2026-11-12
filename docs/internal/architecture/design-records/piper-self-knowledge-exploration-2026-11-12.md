@@ -152,10 +152,10 @@ Both are methodology-53. For Piper this means:
 **2. Knowing, Tier 1 (every Piper):** a **curated user corpus**, retrieved on demand through the existing ingestion stack and built at deploy from a manifest. It has three parts:
 - (a) **What Piper can and can't do,** *generated* from `capability_catalog()`, never written by hand. This answers CXO's largest trust risk: no capability claim without a source in code.
 - (b) **How it works and what it stands for:** user-register explanations written from the `current/` architecture docs, PDR-004 and the ADRs, voice-passed by CXO.
-- (c) **Teachable practice:** the blog's insight posts first, then rewritten user-register summaries of Proven methodology entries.
+- (c) **Teachable practice:** blog insight posts and rewritten user-register summaries of Proven methodology entries. **Each post is listed and screened one by one** (Docs' 14:33 addendum: 107 of 181 insight posts carry issue numbers, ADR references or role names). The manifest never says "all insights". A post enters the corpus only after the internal-term screen passes or the post is rewritten.
 
 Rules for the corpus:
-- Each item carries a source path and a last-verified date. **Docs owns the manifest, and CIO owns the methodology rows.**
+- One manifest row per item: source, tier, last-verified date, re-verify window and owner (Docs' shape). The deploy check reads the same file. **Docs owns the manifest, and CIO owns the methodology rows.**
 - A deploy fails if the manifest names a missing file, or an item past its re-verify window.
 - Answers about how Piper works describe the **served** build.
 
