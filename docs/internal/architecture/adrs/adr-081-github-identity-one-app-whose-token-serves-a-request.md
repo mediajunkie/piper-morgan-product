@@ -85,7 +85,7 @@ Onboarding copy and the install step's experience are CXO's. The app's registrat
 - **Condition 2 (native REST).** `GET /user`, milestones, labels and `/user/repos` passed.
 - **Least privilege.** "A private repo the App is not installed on is refused" passed.
 - **D1 (writes are the user's).** The test issue's comment is authored by the test user, with `performed_via_github_app` set to the test App (Exec's API read).
-- **Refresh.** A refresh with the stored refresh token minted a new token, and the old one then answered 401.
+- **Refresh.** A refresh with the stored refresh token, four days after it was issued, minted a working access token. The old access token's 401 shows only that it was dead: it had passed its 8 hours on 11-07. It does not show that a refresh revokes the previous access token. (Correction, Arch, 2026-11-11 19:08)
 - **Server.** The run went through `fly proxy` to `piper-morgan-gh-mcp`, the sidecar both `fly.toml` and `fly.mcp.toml` point `GITHUB_MCP_SERVER_URL` at. Its image is pinned to `ghcr.io/github/github-mcp-server:v1.5.0` in `deploy/fly/github-mcp.fly.toml`. Lead records the running machine's version alongside the two tables below.
 - **Verified how:** the 15-row table xian ran on Amber on 11-11, the 11-07 run, and Exec's API read of the test issue, set against a source reading of the adapter's tool constants and the deploy files. Layer: GitHub API and the deployed MCP sidecar through a proxy. Not seen: the MCP server's own logs.
 
@@ -137,7 +137,7 @@ Versions:
 - **GitHub REST:** `X-GitHub-Api-Version: 2022-11-28`, sent by the script on every REST row.
 
 How the token expires and refreshes (the check's item 4):
-- Observed: the first access token was good for 8 hours (Exec, 11-07). The refresh on 11-11, four days later, used the stored refresh token and the App's client secret, returned a new access token, and the old access token then answered 401 on `GET /user`.
+- Observed: the first access token was good for 8 hours (Exec, 11-07). The refresh on 11-11, four days later, used the stored refresh token and the App's client secret, returned a new access token, and the old access token then answered 401 on `GET /user`. That 401 is explained by the 8-hour expiry alone, so it is not evidence that a refresh revokes the previous access token.
 - From GitHub's documentation, not observed here: a refresh also returns a new refresh token and the one used stops working, and a refresh token lasts about six months. So the grant store must write the new pair back on every refresh, in one step.
 - For the build: a refresh is a resolver step, and a failed refresh maps to STALE_TOKEN, never CONNECT_REQUIRED.
 
