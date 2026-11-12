@@ -921,3 +921,5 @@ STATE @ 2026-10-15 21:48 PT (DAY CLOSED) — next promotion READY on e4f21e9ca8 
 **IN-DAY 19:15:** 2340 CLOSED. Filed today: 2337, 2339, 2340, 2341, 2342. Closed today: 2232, 2337, 2340. **11-12 START, first build: 2342** (Sprint PUB; Arch issuecomment-6813211960 and the requirement-5 ruling on the issue; CXO words in v4 01M76VNP06NG8K7YYNCBB23XZ2; unit layer needs no registration, served rows need xian's App). Lesson: run `scripts/check-concept-links.py` before pushing a script with a Concept line.
 
 **IN-DAY 19:26:** 2342 build inputs, all on the issue: Arch cutover ruling (classic grants STALE, tokens deleted, revoke attempted), requirement 5 narrowed, `status_reason` column (`cutover` / `refresh_rejected`), `connector_configs` kept byte-identical; CXO words with two conditions. Read every Arch and CXO comment on 2342 before the first line of code.
+
+**IN-DAY 19:38:** 2342 cutover copy: use CXO's FINAL lines in v4 01M76X4BY75B8EZ8Q2KPW199QD (they supersede 01M76WDVJXGRHBYQA3SF5B06YV). "choose which repositories I can see" = the App install choice; "saved settings" = the kept `connector_configs`.
