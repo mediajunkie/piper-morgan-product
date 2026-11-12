@@ -530,3 +530,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - 11-12 08:54 v943: #2342 card -> xian's three steps (Lead 01M78AEQ), promotion yes/no, container-command confirm. Verified: memo read in full; xian's prior fly ssh console use from Lead 10-18 and PA 10-29 logs.
 - v944 (10:02): 10:01 WORK, quiet; 2342 Arch fix f28201fade landed, Tests green 09:40; main 12/12
 - v945 (11:44): xian promote yes relayed to Lead (01M78MKY); alpha-retired answer; App-vs-OAuth paragraph; fly ssh confirm removed (team's to settle)
+- v946 (12:07): beta d4fd55e6c5 (Lead 11:52, read by Exec); MCP deploy step 2a for xian (PA 01M78NER, Arch/HOST agree); 2343 built ab810775b2, under review
