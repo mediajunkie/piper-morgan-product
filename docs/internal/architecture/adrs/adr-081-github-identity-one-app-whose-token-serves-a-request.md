@@ -66,7 +66,7 @@ Why a GitHub App and not a published OAuth App:
 - **The user picks the repos.** The user installs the app on the repositories they choose. Piper can only touch what the user granted, and the user can see that list.
 - **It still acts as the user.** A user access token is bounded by both the user's access and the installation's, and its writes are attributed to the user. D1 holds.
 - **It expires and refreshes.** A token that expires, with a refresh token held in the grant store, can be revoked and limits the damage from a leak.
-  - Cost: the resolver gains a refresh step. A failed refresh maps to STALE_TOKEN, never CONNECT_REQUIRED.
+  - Cost: the resolver gains a refresh step. A *rejected* refresh (GitHub refuses the refresh token, read from the reply's `error` field) maps to STALE_TOKEN; a refresh that could not complete (timeout, connection failure, 5xx) maps to UNREACHABLE and leaves the stored pair untouched; neither maps to CONNECT_REQUIRED (Arch, 2026-11-11, on CXO's condition; #2342).
 - **It is #1514's GitHub piece.** One app, registered once, with no per-install client setup.
 
 **Condition (the compatibility check, before any build):**
@@ -139,7 +139,7 @@ Versions:
 How the token expires and refreshes (the check's item 4):
 - Observed: the first access token was good for 8 hours (Exec, 11-07). The refresh on 11-11, four days later, used the stored refresh token and the App's client secret, returned a new access token, and the old access token then answered 401 on `GET /user`. That 401 is explained by the 8-hour expiry alone, so it is not evidence that a refresh revokes the previous access token.
 - From GitHub's documentation, not observed here: a refresh also returns a new refresh token and the one used stops working, and a refresh token lasts about six months. So the grant store must write the new pair back on every refresh, in one step.
-- For the build: a refresh is a resolver step, and a failed refresh maps to STALE_TOKEN, never CONNECT_REQUIRED.
+- For the build: a refresh is a resolver step, and a *rejected* refresh (GitHub refuses the refresh token, read from the reply's `error` field) maps to STALE_TOKEN; a refresh that could not complete (timeout, connection failure, 5xx) maps to UNREACHABLE and leaves the stored pair untouched; neither maps to CONNECT_REQUIRED (Arch, 2026-11-11, on CXO's condition; #2342).
 
 ### D4: The user's own PAT stays a supported leg
 
