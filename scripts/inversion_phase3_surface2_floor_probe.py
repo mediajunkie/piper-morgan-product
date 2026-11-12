@@ -12,7 +12,7 @@ reaches the same destination. This script measures exactly that, so the gate
 can read a frozen artifact instead of assuming.
 
 Layer (m-43): ``IntentClassifier._classify_with_reasoning`` ONLY — surface 1
-bypassed by construction, no session context, the dev keychain key via
+bypassed by construction, no session context, the developer's named key via
 ``dev_key_binding``. N samples per phrase (default 5 — Arch's condition 2,
 2026-10-02); the gate credits a phrase only when EVERY sample's category
 equals the expected action's registry category.
@@ -101,7 +101,7 @@ def write_report(rows: list[dict], out: Path, samples: int) -> None:
         "",
         f"Run {datetime.now(timezone.utc):%Y-%m-%d %H:%MZ} · {samples} sample(s) per phrase · "
         "LAYER (m-43): `IntentClassifier._classify_with_reasoning` only (surface 1 bypassed, "
-        "no session context, dev keychain key). Read by "
+        "no session context, the developer's named key). Read by "
         "`scripts/inversion_phase3_deletion_gate.py` (SURFACE2_FLOOR_PROBES) to credit a "
         "category-reached row whose pattern the router does not replace: the row is OK to lose "
         "its pattern when EVERY sample lands in the expected action's own category.",
@@ -166,8 +166,8 @@ if __name__ == "__main__":
         "--provider", default=None, help="force the classifier's provider (anthropic | openai)"
     )
     args = ap.parse_args()
-    from dev_key_binding import developer_keys_bound
+    from dev_key_binding import developer_keys_bound, providers_from_flag
 
-    with developer_keys_bound(require=True):
+    with developer_keys_bound(providers=providers_from_flag(args.provider), require=True):
         result = asyncio.run(_probe(args.phrase, args.samples, args.provider))
     write_report(result, args.out, args.samples)
