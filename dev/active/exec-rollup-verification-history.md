@@ -510,3 +510,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v926 (12:52): stuck Code Quality run card (Lead 01M765XH; gh run view rechecked).
 - v927 (13:05): stuck-run card removed; runs closed on their own (gh run view).
 2026-11-11 18:02 v928: top card rebuilt for the evening (Ship out, 2174 combined run tonight, 2292, 2328 format cause, budget and OpenAI settled); 2174 row in Your hand removed (moved up); 2338 line updated to closed.
+2026-11-11 18:05 v929: 2174 steps moved into their own card (xian: steps belong on the rollup, not in chat).
