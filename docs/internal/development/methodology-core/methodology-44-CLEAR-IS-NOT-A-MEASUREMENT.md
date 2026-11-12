@@ -2,12 +2,12 @@
 type: methodology
 title: "\"Clear\" Is Not a Measurement — An Instrument Must Assert What It Looked At"
 valid_from: "2026-07-27"
-last_updated: "2026-10-26"
+last_updated: "2026-11-12"
 ---
 
 # "Clear" Is Not a Measurement — An Instrument Must Assert What It Looked At
 
-**Status**: Emerging → strong. **Eleven instances in 96 hours across four roles and two projects, plus five later (12 on 10-16, 13 and 14 on 10-23, 15 on 10-24 from a third project, Klatch, 16 on 10-26)** *(count unaffected by the 2026-07-31 boundary ruling — see the three-routes section below, including a correction to how that ruling was first written here)*, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** — as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.
+**Status**: Emerging → strong. **Eleven instances in 96 hours across four roles and two projects, plus five later (12 on 10-16, 13 and 14 on 10-23, 15 on 10-24 from a third project, Klatch, 16 on 10-26, 17 on 11-12)** *(count unaffected by the 2026-07-31 boundary ruling — see the three-routes section below, including a correction to how that ruling was first written here)*, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** — as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.
 **Filed**: 2026-07-27 by CIO
 **Origin**: **Arch's bequest.** Its migration handoff (`dev/2026/07/25/handoff-arch-amber-2026-07-25.md`, §4.1) named the "blind-sweep class" from six instances and flagged writing it up as *"the highest-value un-started piece of Architect methodology work I'm leaving."* Written up here at the altitude the evidence now supports, with three more roles' independent corroboration: HOST's Criteria G, Janus's (Design in Product) show-your-work principle, and CIO's own instruments failing the same way twice.
 **Related**: methodology-43 (Name the Layer — the agent-side twin; boundary below), methodology-36 (mechanisms over vigilance), methodology-42 (reflexive verification)
@@ -114,6 +114,10 @@ That second one is the strongest evidence in this document. **The class recurs i
 ### Instance 16, 2026-10-26: commit-fresh, content-stale *(HOST found it; recorded by CIO)*
 
 16. **A briefing's commit date said current; its content didn't.** HOST's role-health audit (#2179, finding 2) found every role briefing last committed 10-13 or 10-14, recent by date, while none but two named the Readiness lane, and none named the production map, the restore-drill proofs or promises.yaml, all added since. The disposition's own follow-up was a `git log -1` per briefing, which would have passed any briefing touched by a one-line edit. **Cure:** `scripts/briefing-pointer-check.sh` reads each briefing for the named pointers and prints the commit date beside them, so the two readings sit side by side. On first run it measured 1 of 13 complete (HOST's, refreshed that morning) and 58 gaps. Its own first run also repeated the entry's shape: a grep pattern error printed `-`, the same as "missing", until the error got its own exit code.
+
+### Instance 17, 2026-11-12: a log search for a line the hosts never keep *(Lead found the cause; recorded by CIO)*
+
+#2335 asked whether the Redis password had reached the hosts' logs. xian searched Fly's logs for 7 days (Grafana, VictoriaLogs, counts only). "Redis connection pool initialized" returned **no data**, and so did any Redis URL carrying a password. That reads as a clear. Lead then found that the line was logged at info level, and the hosts run at WARNING, where the app's logging setup drops info lines. Lead ran that setup locally, and the line is dropped. So the search would have printed "no data" whether or not the password was ever in the line: it ran against nothing. Fly's 7-day retention covered the other half of the window. The honest result was "undeterminable", which is how the acceptance row was closed, and xian rotated anyway as a precaution. The same filter had already hidden a route's evidence line on 11-11 (Arch, decisions.log 15:56, #2337). **The check to ask before a log search counts as evidence:** at the level the host runs, does the line you're searching for reach the store at all? Run m-44's question first: what would this search print if the event had happened but the line was never kept? Here it would print exactly what it did.
 
 ## Why "be more careful" fails here
 
