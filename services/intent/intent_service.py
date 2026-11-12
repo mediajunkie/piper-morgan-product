@@ -8113,6 +8113,9 @@ class IntentService:
                     workflow_id=workflow_id,
                     requires_clarification=(
                         connector_result.degradation.reason is DegradationReason.REPO_UNRESOLVED
+                        # #2342: the install step rides REPO_UNRESOLVED with a ``detail``.
+                        # Its line is a statement ("install the app"), not "which repo?".
+                        and not getattr(_deg, "detail", None)
                     ),
                 )
 

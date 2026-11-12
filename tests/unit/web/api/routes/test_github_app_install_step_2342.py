@@ -152,8 +152,38 @@ class TestInstallationRead:
                 ),
             }
         )
-        result = await self._read(monkeypatch, http, limit=500)
-        assert len(result.repositories) == 101
+        result = await self._read(monkeypatch, http)
+        assert len(result.repositories) == 101  # pagination is followed to the end
+
+    async def test_the_installation_listing_is_paginated_too(self, monkeypatch):
+        first = [{"id": n} for n in range(100)]
+        routes_ = {
+            ("/user/installations", 1): _Resp(200, {"installations": first}),
+            ("/user/installations", 2): _Resp(200, {"installations": [{"id": 100}]}),
+        }
+        for n in range(101):
+            routes_[(f"/user/installations/{n}/repositories", 1)] = _Resp(
+                200, {"repositories": [_repo(n)]}
+            )
+        result = await self._read(monkeypatch, _HTTP(routes_))
+        assert result.installations == 101 and len(result.repositories) == 101
+
+    async def test_a_partial_read_is_a_failed_read(self, monkeypatch):
+        # Arch 2026-11-12 07:35: never part of a list as if it were complete.
+        http = _HTTP(
+            {
+                ("/user/installations", 1): _Resp(200, {"installations": [{"id": 7}, {"id": 8}]}),
+                ("/user/installations/7/repositories", 1): _Resp(200, {"repositories": [_repo(1)]}),
+                ("/user/installations/8/repositories", 1): _Resp(502, {}),
+            }
+        )
+        with pytest.raises(InstallationReadFailed):
+            await self._read(monkeypatch, http)
+
+    async def test_an_installation_without_an_id_fails_the_read(self, monkeypatch):
+        http = _HTTP({("/user/installations", 1): _Resp(200, {"installations": [{"slug": "x"}]})})
+        with pytest.raises(InstallationReadFailed):
+            await self._read(monkeypatch, http)
 
     @pytest.mark.parametrize("status", [401, 403, 404, 500, 502])
     async def test_a_refused_read_raises_and_is_never_not_installed(self, monkeypatch, status):
@@ -282,6 +312,148 @@ class TestChatAsksToInstallNotWhichRepo:
         result = await self._unresolved(monkeypatch, adapter)
         assert result.reason is DegradationReason.REPO_UNRESOLVED and result.detail is None
         assert result.user_message.startswith("Which repo?")
+
+
+@pytest.mark.asyncio
+class TestAnEmptyUserWideReadIsNotNoIssues:
+    """Requirement 2 on the user-wide reads (PA 07:31): the connector's GitHub resource
+    and "my open issues" never resolve a repository, so for a person who installed the
+    App nowhere an empty result must be the install step's state, not "no issues"."""
+
+    @staticmethod
+    def _adapter(monkeypatch, payload, installed):
+        import contextlib
+
+        adapter = GitHubMCPSpatialAdapter()
+        adapter.resolve_credential = AsyncMock(return_value=_oauth())
+
+        class _Client:
+            async def call_tool(self, tool, args):
+                return payload
+
+        @contextlib.asynccontextmanager
+        async def _ctx(binding):
+            yield _Client()
+
+        adapter._mcp_client_ctx = _ctx
+        monkeypatch.setattr(GitHubMCPSpatialAdapter, "_tool_text", classmethod(lambda cls, r: r))
+        if isinstance(installed, Exception):
+            read = AsyncMock(side_effect=installed)
+        else:
+            read = AsyncMock(return_value=installed)
+        monkeypatch.setattr(gh_mod, "list_installed_repositories", read)
+        return adapter, read
+
+    async def test_empty_and_installed_nowhere_is_the_install_state(self, app_on, monkeypatch):
+        adapter, read = self._adapter(
+            monkeypatch, '{"total_count":0,"items":[]}', InstalledRepositories(installations=0)
+        )
+        result = await adapter.list_open_issues(_OWNER)
+        assert result.issues is None
+        assert result.degradation.detail == DETAIL_APP_NOT_INSTALLED
+        assert (
+            gh_mod.github_connector_reply(result.degradation)
+            == gh_mod.GITHUB_CONNECTOR_APP_NOT_INSTALLED_REPLY
+        )
+        read.assert_awaited_once_with("access-live")  # the credential already in hand
+
+    async def test_empty_with_the_app_installed_somewhere_is_an_honest_empty(
+        self, app_on, monkeypatch
+    ):
+        adapter, _ = self._adapter(
+            monkeypatch,
+            '{"total_count":0,"items":[]}',
+            InstalledRepositories(installations=1, repositories=[_repo(1)]),
+        )
+        result = await adapter.list_open_issues(_OWNER)
+        assert result.issues == [] and result.degradation is None
+
+    async def test_empty_with_a_failed_installation_read_stays_an_empty_result(
+        self, app_on, monkeypatch
+    ):
+        adapter, _ = self._adapter(
+            monkeypatch, '{"total_count":0,"items":[]}', InstallationReadFailed(502)
+        )
+        result = await adapter.list_open_issues(_OWNER)
+        assert result.issues == [] and result.degradation is None
+
+    async def test_a_non_empty_result_never_asks_about_installations(self, app_on, monkeypatch):
+        payload = '{"total_count":1,"items":[{"number":1,"title":"t","html_url":"u"}]}'
+        adapter, read = self._adapter(monkeypatch, payload, AssertionError("no installation read"))
+        result = await adapter.list_open_issues(_OWNER)
+        assert result.degradation is None and len(result.issues) == 1
+        read.assert_not_awaited()
+
+    async def test_classic_mode_never_asks_about_installations(self, app_off, monkeypatch):
+        adapter, read = self._adapter(
+            monkeypatch, '{"total_count":0,"items":[]}', AssertionError("no installation read")
+        )
+        result = await adapter.list_open_issues(_OWNER)
+        assert result.issues == [] and result.degradation is None
+        read.assert_not_awaited()
+
+    async def test_a_personal_token_never_asks_about_installations(self, app_on, monkeypatch):
+        adapter, read = self._adapter(
+            monkeypatch, '{"total_count":0,"items":[]}', AssertionError("no installation read")
+        )
+        adapter.resolve_credential = AsyncMock(
+            return_value=GitHubCredential(
+                owner_id=_OWNER, mcp_server_ref="github", token="pat", leg="pat"
+            )
+        )
+        result = await adapter.list_open_issues(_OWNER)
+        assert result.issues == [] and result.degradation is None
+        read.assert_not_awaited()
+
+
+class TestRepliesArePickedByDetail:
+    """Arch 2026-11-12 07:35: ``detail`` is a closed set of named constants and every
+    surface picks its line by it, never by reading a message."""
+
+    @pytest.mark.parametrize(
+        "detail,web,connector",
+        [
+            (
+                install_mod.DETAIL_APP_NOT_INSTALLED,
+                gh_mod.GITHUB_APP_NOT_INSTALLED_REPLY,
+                gh_mod.GITHUB_CONNECTOR_APP_NOT_INSTALLED_REPLY,
+            ),
+            (
+                install_mod.DETAIL_APP_INSTALL_LINK_MISSING,
+                gh_mod.GITHUB_APP_INSTALL_LINK_MISSING_REPLY,
+                gh_mod.GITHUB_APP_INSTALL_LINK_MISSING_REPLY,
+            ),
+        ],
+    )
+    def test_each_install_detail_picks_its_line_whatever_the_message_says(
+        self, detail, web, connector
+    ):
+        degraded = DegradationResponse(
+            reason=DegradationReason.REPO_UNRESOLVED,
+            user_message="a message nobody should read the state from",
+            detail=detail,
+        )
+        assert gh_mod.github_degrade_reply(degraded) == web
+        assert gh_mod.github_connector_reply(degraded) == connector
+
+    def test_the_details_are_three_named_constants(self):
+        assert {
+            grant_mod.REASON_CUTOVER,
+            install_mod.DETAIL_APP_NOT_INSTALLED,
+            install_mod.DETAIL_APP_INSTALL_LINK_MISSING,
+        } == {"cutover", "app_not_installed", "app_install_link_missing"}
+
+    def test_the_install_line_is_not_a_clarifying_question(self):
+        # The get-issue handler arms a "which repo?" follow-up on REPO_UNRESOLVED; the
+        # install step's statement must not arm it. A source pin: no handler-level
+        # fixture exists for that branch.
+        source = (
+            Path(__file__).resolve().parents[5] / "services" / "intent" / "intent_service.py"
+        ).read_text(encoding="utf-8")
+        branch = source[
+            source.index("requires_clarification=(\n                        connector_result") :
+        ]
+        assert 'and not getattr(_deg, "detail", None)' in branch[:500]
 
 
 class TestInstallCopy:

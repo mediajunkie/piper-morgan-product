@@ -69,9 +69,20 @@ async def _get_json(session, url: str, token: str, params: Dict[str, Any]) -> Di
     return data
 
 
-async def list_installed_repositories(token: str, *, limit: int = 100) -> InstalledRepositories:
-    """Every repository the App is installed on for the token's person, up to ``limit``.
-    Raises ``InstallationReadFailed`` on any failed read. Never logs the token."""
+#: A bound on pages per listing, so a reply that never ends can't hold a request. At 100
+#: per page this is 10,000 repositories; reaching it fails the read rather than showing
+#: part of a list as if it were complete (Arch 2026-11-12 07:35).
+_MAX_PAGES = 100
+
+
+async def list_installed_repositories(token: str) -> InstalledRepositories:
+    """Every repository the App is installed on for the token's person, following
+    pagination to the end (Arch 2026-11-12 07:35). With a user token GitHub returns the
+    overlap of the person's access and the installation's repositories, which is the set
+    Piper can act on; it is not intersected with any search.
+
+    A partial read is a failed read: if any page of any installation can't be read,
+    ``InstallationReadFailed`` is raised and nothing is returned. Never logs the token."""
     if not token:
         raise InstallationReadFailed(None, "no_token")
     repositories: List[Dict[str, Any]] = []
@@ -79,16 +90,28 @@ async def list_installed_repositories(token: str, *, limit: int = 100) -> Instal
     try:
         timeout = aiohttp.ClientTimeout(total=_TIMEOUT_SECONDS)
         async with aiohttp.ClientSession(timeout=timeout) as session:
-            listing = await _get_json(
-                session, f"{_API}/user/installations", token, {"per_page": _PER_PAGE}
-            )
-            installations = listing.get("installations") or []
+            installations: List[Dict[str, Any]] = []
+            page = 1
+            while True:
+                listing = await _get_json(
+                    session,
+                    f"{_API}/user/installations",
+                    token,
+                    {"per_page": _PER_PAGE, "page": page},
+                )
+                batch = listing.get("installations") or []
+                installations.extend(batch)
+                if len(batch) < _PER_PAGE:
+                    break
+                page += 1
+                if page > _MAX_PAGES:
+                    raise InstallationReadFailed(None, "too_many_pages")
             for installation in installations:
                 installation_id = installation.get("id")
                 if installation_id is None:
-                    continue
+                    raise InstallationReadFailed(200, "installation_without_id")
                 page = 1
-                while len(repositories) < limit:
+                while True:
                     data = await _get_json(
                         session,
                         f"{_API}/user/installations/{installation_id}/repositories",
@@ -112,11 +135,11 @@ async def list_installed_repositories(token: str, *, limit: int = 100) -> Instal
                     if len(batch) < _PER_PAGE:
                         break
                     page += 1
+                    if page > _MAX_PAGES:
+                        raise InstallationReadFailed(None, "too_many_pages")
     except InstallationReadFailed:
         raise
     except Exception as e:  # timeout, connection failure, a body that isn't JSON
         logger.warning("github_app_installation_read_failed", error=type(e).__name__)
         raise InstallationReadFailed(None, type(e).__name__) from e
-    return InstalledRepositories(
-        installations=len(installations), repositories=repositories[:limit]
-    )
+    return InstalledRepositories(installations=len(installations), repositories=repositories)
