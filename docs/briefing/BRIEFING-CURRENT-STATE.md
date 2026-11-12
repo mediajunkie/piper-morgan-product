@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-CURRENT-STATE.md - Where We Are Right Now
 valid_from: "2025-09-30"
-last_updated: 2026-11-11
+last_updated: 2026-11-12
 last_verified: 2026-10-27
 size_cap_bytes: 12000
 ---
@@ -27,7 +27,7 @@ log, never here. Bump `last_updated` to the newest line's date, or CI fails. Ski
 
 ## Now
 
-- **Beta (live; alpha 301s to beta.pipermorgan.ai since 11-05 12:47, #2282)** *(Arch, 2026-11-11 06:28 PST, `curl https://beta.pipermorgan.ai/health`)*: healthy, version 0.9.0.0, git_sha `c425fd242f` (promoted 11-10 18:58; carries #2328: a completion whose only target is a pronoun asks which one, armed, and completes nothing). Older shas: `briefing-current-state-history.log` (Arch 11-07); 11-09 ended on 727dd31596, and 11-10 went 6dc21c2ca8, then c425fd242f.
+- **Beta (live; alpha 301s to beta.pipermorgan.ai since 11-05 12:47, #2282)** *(Arch, 2026-11-12 06:29 PST, `curl https://beta.pipermorgan.ai/health`, unchanged since 11-10)*: healthy, version 0.9.0.0, git_sha `c425fd242f` (promoted 11-10 18:58; carries #2328: a completion whose only target is a pronoun asks which one, armed, and completes nothing). Older shas: `briefing-current-state-history.log` (Arch 11-07); 11-09 ended on 727dd31596, and 11-10 went 6dc21c2ca8, then c425fd242f.
   (promotion 1 of 2 today). It carries Monday's finds: #2093, #2091, #2092 (calendar in chat), #2094, #2095 (todos), #2096 (`/feedback`), #2097 (create confirmed by number), #2099 (mint refreshes),
   #2100 (what chat reads), #2102, the DB pool pre-ping, the #2101 bounds and the Alpha Health Watch. Slot 2 (same day, from a green Tests on `1cb1e79dc1`) adds the #2101 thread surface,
   the event-loop watchdog, the #2098 consult, the #2097 list-read confirm, the #2106 refusal line, the Slack session fix and the calendar reads off the loop.
