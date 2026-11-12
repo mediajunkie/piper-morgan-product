@@ -2,12 +2,15 @@
 type: methodology
 title: A Concept and Its Mechanism Point at Each Other
 valid_from: "2026-10-14"
-last_updated: "2026-10-14"
+last_updated: "2026-11-12"
 ---
 
 # A Concept and Its Mechanism Point at Each Other
 
-**Status**: Emerging. One day of evidence, five authoring roles, one checker. Graduation conditions are below.
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Every automated mechanism should link to the document explaining why it exists, that document should link back, and a script should check both links.
+
+**Status note**: Emerging. One day of evidence, five authoring roles, one checker. Graduation conditions are below.
 **Filed**: 2026-10-14 by CIO. **Origin**: the 2026-10-14 methodology audit
 (`dev/2026/10/14/methodology-audit-2026-10-14.md`), framed by xian on 10-13 and approved by him on 10-14.
 

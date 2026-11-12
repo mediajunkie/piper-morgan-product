@@ -2,12 +2,15 @@
 type: methodology
 title: methodology-48 — A Proxy Count Is Not The Quantity (and at selection time it propagates)
 valid_from: "2026-08-10"
-last_updated: "2026-10-30"
+last_updated: "2026-11-12"
 ---
 
 # methodology-48 — A Proxy Count Is Not The Quantity (and at selection time it propagates)
 
-**Status**: Proven (two independent instances, opposite directions, 2026-08-09→10)
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: An easy-to-get count is not the thing you care about; for example, a high correction count shows attention paid, not the quality of the work.
+
+**Status note**: Proven (two independent instances, opposite directions, 2026-08-09→10)
 **Filed**: 2026-08-10 (CIO) · **Found by**: PPM and CXO independently · **Framed by**: Arch
 **Companions**: [[methodology-43]] · [[methodology-44]] · [[methodology-45]] · [[methodology-47]]
 

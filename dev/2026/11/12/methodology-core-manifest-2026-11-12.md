@@ -1,64 +1,66 @@
-# methodology-core manifest, 2026-11-12 (CIO, for Arch's self-knowledge exploration)
+# methodology-core manifest (CIO; refreshed 2026-11-12 for standing item 9p)
 
-Mechanical: one row per `methodology-NN-*.md` on origin/main at 3732765e89. **status** is the first `**Status**:` line, cut to its first words (blank if none); **updated** is the file's last git commit date; **pushed from** lists which always-loaded or trigger-loaded surfaces name the entry by number (CLAUDE.md, `.claude/skills/`, `docs/briefing/`). **User-safe** is not judged yet: every entry is written for the team, in its register (roles, issue numbers, quotes), so none is user-ready as written.
+One row per `methodology-NN-*.md`. **status** and **summary** are the canonical `**Status**:` and `**Summary**:` lines under each entry's title (set 2026-11-12; any earlier status text is kept in the entry as `**Status note**:`). **pushed from** lists the always-loaded or trigger-loaded surfaces that name the entry by number (CLAUDE.md, `.claude/skills/`, `docs/briefing/`). **audience** says whether the summary teaches a PM something outside this team (user-teachable) or is about the cohort's own mechanics (internal-only). It is a first cut for Arch's self-knowledge exploration, and it does not make an entry user-ready: a user-facing text is a rewrite, voice-passed by CXO, of a Proven, user-teachable entry.
 
-| entry | status | updated | pushed from |
-|---|---|---|---|
-| methodology-00-EXCELLENCE-FLYWHEEL | v3.0 — Layer 2 re-derived for autonomous | 2026-09-19 | BRIEFING-ESSENTIAL-ARCHITECT.md BRIEFING-ESSENTIAL-CHIEF-STAFF.md BRIEFING-ESSENTIAL-CIO.md BRIEFING-ESSENTIAL-COMMS.md BRIEFING-ESSENTIAL-LEAD-DEV.md BRIEFING-piper-alpha.md METHODOLOGY.md PROJECT.md |
-| methodology-01-TDD-REQUIREMENTS |  | 2026-09-19 | none |
-| methodology-02-AGENT-COORDINATION |  | 2026-09-19 | METHODOLOGY.md |
-| methodology-03-COMMON-FAILURES |  | 2026-09-19 | none |
-| methodology-04-ARCHITECTURAL-AGILITY |  | 2026-09-19 | none |
-| methodology-05-AGENT-METHODOLOGY |  | 2026-10-01 | none |
-| methodology-06-CORE-PATTERNS |  | 2026-10-01 | none |
-| methodology-07-VERIFICATION-FIRST |  | 2026-09-19 | none |
-| methodology-08-ISSUE-TRACKING | ✅ PRODUCTION READY - Systematic Protocol | 2026-10-01 | none |
-| methodology-09-MCP-SPATIAL |  | 2026-09-19 | none |
-| methodology-10-SYSTEMATIC-BREAKTHROUGHS |  | 2026-10-01 | none |
-| methodology-11-ORCHESTRATION-TESTING |  | 2026-10-01 | none |
-| methodology-12-ENHANCED-AUTONOMY |  | 2026-10-01 | none |
-| methodology-13-REQUIREMENTS-FRAMEWORK |  | 2026-09-19 | none |
-| methodology-14-DOCUMENTATION-STANDARDS |  | 2026-10-01 | none |
-| methodology-15-TESTING-VALIDATION |  | 2026-09-19 | none |
-| methodology-16-STOP-CONDITIONS |  | 2026-10-01 | none |
-| methodology-17-CROSS-VALIDATION-PROTOCOL |  | 2026-09-19 | none |
-| methodology-18-CASCADE-PROTOCOL |  | 2026-10-01 | none |
-| methodology-19-INTEGRATION-POINTS |  | 2026-09-19 | none |
-| methodology-20-OMNIBUS-SESSION-LOGS | Day of Rest - No Scheduled Work | 2026-10-14 | skill:create-omnibus |
-| methodology-21-CODE-HYGIENE-AUDIT |  | 2026-09-19 | none |
-| methodology-22-ROUNDTABLE-SYNTHESIS |  | 2026-09-19 | none |
-| methodology-23-M1-INNOVATIONS |  | 2026-09-19 | none |
-| methodology-24-BRANCH-OR-ANCHOR |  | 2026-09-19 | BRIEFING-ESSENTIAL-CIO.md |
-| methodology-25-WORKSTREAM-REVIEW-CADENCE |  | 2026-09-19 | BRIEFING-ESSENTIAL-CIO.md skill:draft-weekly-ship |
-| methodology-26-INDOOR-PLUMBING-SCOPE-FILTER |  | 2026-09-19 | none |
-| methodology-27-TYPE-2-DREAMING-ANXIETY-DREAMS |  | 2026-09-19 | none |
-| methodology-28-PRE-FILING-SLOT-AVAILABILITY-CHECK |  | 2026-09-19 | none |
-| methodology-29-PATTERN-FORMATION-VIA-SUCCESSFUL-IMITATION |  | 2026-09-19 | none |
-| methodology-30-CONSUMER-TRACE-VERIFICATION |  | 2026-09-19 | skill:narrative-verification |
-| methodology-31-APPEND-ONLY-AUTONOMOUS-CYCLE-ARCHITECTURE |  | 2026-10-14 | none |
-| methodology-32-POSTEL-FOR-MEMO-HEADERS |  | 2026-09-19 | none |
-| methodology-33-SESSION-TYPE-DETERMINES-GIT-PERMISSION-SCOPE |  | 2026-09-19 | none |
-| methodology-34-COHORT-DISCIPLINE-AS-MOAT | ONE instance (the BYO-colleague thesis — | 2026-09-19 | none |
-| methodology-35-ASYMMETRIC-DISCIPLINE-CREATION-WITHOUT-PAIRED-CLEANUP |  | 2026-09-19 | BRIEFING-ESSENTIAL-HOST.md skill:cleanup-dev-active |
-| methodology-36-DERIVED-VIEWS-OVER-HAND-MAINTAINED-TRACKERS |  | 2026-10-27 | none |
-| methodology-37-COVERAGE-AUDIT-GATE-FOR-REFACTOR-DELTAS |  | 2026-09-19 | none |
-| methodology-38-PDR-ADR-TIER-SEPARATION | v0.1 — Emerging (Architect-authored; CIO | 2026-09-19 | none |
-| methodology-39-AUTONOMY-RELOCATES-THE-BOTTLENECK | Emerging (filed 2026-06-03; PM-ratificat | 2026-09-19 | BRIEFING-ESSENTIAL-HOST.md |
-| methodology-40-LAYER-THEN-MIGRATE | v0.1 — Emerging (Architect-authored 2026 | 2026-09-19 | none |
-| methodology-41-MECHANISM-DISPLACES-UNREFERENCED-DISCIPLINE | PROVEN (2026-06-12 — the second structur | 2026-09-19 | skill:cleanup-dev-active |
-| methodology-42-REFLEXIVE-VERIFICATION-SELF-EXEMPTION-UNDER-PRESSURE | Emerging (5 cohort instances clear the m | 2026-09-19 | none |
-| methodology-43-NAME-THE-LAYER | Emerging (5 instances in one day across  | 2026-10-15 | none |
-| methodology-44-CLEAR-IS-NOT-A-MEASUREMENT | Emerging → strong. Eleven instances in 9 | 2026-11-12 | skill:duty-cycle-tick skill:template-audit |
-| methodology-45-AGREEMENT-IS-NOT-REPLICATION | Emerging, with unusually clean evidence  | 2026-09-19 | none |
-| methodology-46-PROMOTION-IS-A-RE-VERIFICATION-EVENT | EMERGING. Limb 2 now has a shipped, inde | 2026-10-15 | none |
-| methodology-47-SECOND-ORDER-CLAIMS-NEED-FIRST-ORDER-RIGOR | Proven (two distinct instances, both wit | 2026-09-19 | none |
-| methodology-48-A-PROXY-COUNT-IS-NOT-THE-QUANTITY | Proven (two independent instances, oppos | 2026-10-31 | none |
-| methodology-49-DESCRIBED-IS-NOT-RUNNING | Emerging (one canonical instance plus fi | 2026-10-22 | none |
-| methodology-50-SELF-ATTESTATION-IS-NOT-VERIFICATION | Emerging (three confirmed real instances | 2026-09-19 | skill:duty-cycle-tick |
-| methodology-51-A-BOUNDED-SEARCH-IS-NOT-A-TOTAL |  | 2026-11-02 | none |
-| methodology-52-OPEN-IT-A-SUMMARY-IS-NOT-ITS-CONTENTS | PROVEN (2026-10-19): the promotion trigg | 2026-10-19 | none |
-| methodology-53-CHOKEPOINT-VS-BOLT-ON | Proven-by-use, filed late. This is not a | 2026-11-12 | none |
-| methodology-54-A-FALSE-CLAIM-IN-A-DURABLE-DOC-IS-A-LENS | Emerging (one clean instance, self-corre | 2026-09-19 | none |
-| methodology-55-A-NAME-IS-NOT-A-DEFINITION | Emerging. Two instances from one author  | 2026-11-02 | none |
-| methodology-56-CONCEPT-AND-MECHANISM-POINT-AT-EACH-OTHER | Emerging. One day of evidence, five auth | 2026-10-19 | none |
-| methodology-57-AN-ALARM-NEEDS-A-READER | Emerging. Five instances over three mont | 2026-11-09 | none |
+Counts: 58 entries; Proven 19, Emerging 25, Retired 14; user-teachable 42, internal-only 16; named by a loaded surface 11.
+
+| entry | status | summary | audience | pushed from |
+|---|---|---|---|---|
+| methodology-00-EXCELLENCE-FLYWHEEL | Proven | Work compounds when each cycle ends by feeding what you learned back into the next: verify first, build, check with evidence, then record. | user-teachable | BRIEFING-ESSENTIAL-ARCHITECT.md BRIEFING-ESSENTIAL-CHIEF-STAFF.md BRIEFING-ESSENTIAL-CIO.md BRIEFING-ESSENTIAL-COMMS.md BRIEFING-ESSENTIAL-LEAD-DEV.md BRIEFING-piper-alpha.md METHODOLOGY.md PROJECT.md |
+| methodology-01-TDD-REQUIREMENTS | Proven | Write each requirement as a test before building, so "done" is something you can run and watch pass rather than argue about. | user-teachable | none |
+| methodology-02-AGENT-COORDINATION | Retired | How to split work between two AI coding tools with handoffs and checks; replaced by a newer coordination approach. | internal-only | METHODOLOGY.md |
+| methodology-03-COMMON-FAILURES | Proven | The five habits that most often wreck quality: skipping verification, code before tests, solo heroics, assuming instead of checking, and declaring done early. | user-teachable | none |
+| methodology-04-ARCHITECTURAL-AGILITY | Retired | Make technical decisions from evidence and a long-term view, so the design can change quickly without piling up debt. | user-teachable | none |
+| methodology-05-AGENT-METHODOLOGY | Retired | A ritual of command-driven agent routines from 2025 that no current instructions use. | internal-only | none |
+| methodology-06-CORE-PATTERNS | Retired | An early mandatory-rules document for a two-tool development setup; its gates reference scripts that no longer exist. | internal-only | none |
+| methodology-07-VERIFICATION-FIRST | Proven | Before changing anything, look at what already exists and confirm your assumptions, so you do not duplicate or break working things. | user-teachable | none |
+| methodology-08-ISSUE-TRACKING | Retired | A tracking-number verification scheme tied to files that no longer exist; the issue tracker itself is now the single source. | internal-only | none |
+| methodology-09-MCP-SPATIAL | Proven | Build a new integration by testing first, measuring against stated targets, and reusing a proven reference implementation. | user-teachable | none |
+| methodology-10-SYSTEMATIC-BREAKTHROUGHS | Retired | A 2025 diary of two finished tasks; its one lasting lesson, verify before creating, now lives in the core instructions. | internal-only | none |
+| methodology-11-ORCHESTRATION-TESTING | Retired | Test plan for a multi-agent coordinator component that has been removed from the product. | internal-only | none |
+| methodology-12-ENHANCED-AUTONOMY | Retired | A report on a four-hour autonomous-agent experiment, duplicated elsewhere, with speed-up claims that cannot be re-checked. | internal-only | none |
+| methodology-13-REQUIREMENTS-FRAMEWORK | Proven | When a test and the domain model disagree, trust the researched domain model and fix the test; when behavior is missing, fix the code. | user-teachable | none |
+| methodology-14-DOCUMENTATION-STANDARDS | Retired | A checklist for where to put new documents, built on a structure plan file that no longer exists. | internal-only | none |
+| methodology-15-TESTING-VALIDATION | Proven | Tests should pass both with and without the real database, because passing only on the fallback path hides broken real integrations. | user-teachable | none |
+| methodology-16-STOP-CONDITIONS | Retired | A list of situations where an agent must stop and ask rather than assume; its supporting example proved a false alarm. | internal-only | none |
+| methodology-17-CROSS-VALIDATION-PROTOCOL | Proven | Have a second independent reviewer verify any important claim with evidence instead of accepting one agent's word. | user-teachable | none |
+| methodology-18-CASCADE-PROTOCOL | Retired | A scheme for passing method rules down through every layer of coordination, which agents absorb at onboarding instead of consulting. | internal-only | none |
+| methodology-19-INTEGRATION-POINTS | Retired | An old to-do list of files to update for one methodology rollout, with stale paths and placeholder entries. | internal-only | none |
+| methodology-20-OMNIBUS-SESSION-LOGS | Proven | Merge parallel work logs into one chronological story of the day, so later readers can see who noticed what and why plans changed. | user-teachable | skill:create-omnibus |
+| methodology-21-CODE-HYGIENE-AUDIT | Emerging | Clean up a file's small defects in one focused pass that changes no behavior, and accept partial progress when full cleanup is too big. | user-teachable | none |
+| methodology-22-ROUNDTABLE-SYNTHESIS | Proven | For cross-cutting decisions, collect each expert's analysis independently first, then merge them, to avoid anchoring on the first opinion. | user-teachable | none |
+| methodology-23-M1-INNOVATIONS | Retired | Catalog of process changes adopted in one phase, such as auditing methods after each milestone and letting early-stage patterns be logged without sign-off. | internal-only | none |
+| methodology-24-BRANCH-OR-ANCHOR | Emerging | When extending a shared standard, either use it unchanged or rename your version; never silently change a standard while keeping its name. | user-teachable | BRIEFING-ESSENTIAL-CIO.md |
+| methodology-25-WORKSTREAM-REVIEW-CADENCE | Proven | Collect a short, scoped summary from each function every week over the same fixed window, then synthesize them into the weekly update. | internal-only | BRIEFING-ESSENTIAL-CIO.md skill:draft-weekly-ship |
+| methodology-26-INDOOR-PLUMBING-SCOPE-FILTER | Proven | Ask of every feature whether it is commodity plumbing to reuse or a differentiator worth building, and stop building commodity work. | user-teachable | none |
+| methodology-27-TYPE-2-DREAMING-ANXIETY-DREAMS | Emerging | Beyond filing memories away, an assistant can rehearse what could go wrong overnight by replaying past events in worst-case combinations. | user-teachable | none |
+| methodology-28-PRE-FILING-SLOT-AVAILABILITY-CHECK | Emerging | Before claiming the next number in a shared sequence, check what already exists there, because two people can pick the same one. | user-teachable | none |
+| methodology-29-PATTERN-FORMATION-VIA-SUCCESSFUL-IMITATION | Emerging | A practice is real once a clean example gets reused unprompted on a second and third problem; formalize it then, not earlier. | user-teachable | none |
+| methodology-30-CONSUMER-TRACE-VERIFICATION | Proven | Before saying one thing uses another, trace from the claim to the actual call and observe the behavior; shape alone is not evidence. | user-teachable | skill:narrative-verification |
+| methodology-31-APPEND-ONLY-AUTONOMOUS-CYCLE-ARCHITECTURE | Retired | An unattended loop should write to one append-only file and read others' state without touching it; the branch model is superseded. | internal-only | none |
+| methodology-32-POSTEL-FOR-MEMO-HEADERS | Emerging | Be strict in the message format you send and tolerant in what you accept, so messy inputs from others still get read. | internal-only | none |
+| methodology-33-SESSION-TYPE-DETERMINES-GIT-PERMISSION-SCOPE | Emerging | Whether an automated session can save changes to the main branch depends on how it was launched, so check before relying on it. | internal-only | none |
+| methodology-34-COHORT-DISCIPLINE-AS-MOAT | Emerging | As vendors productize tools, a team's lasting edge is its working habits: how it commits, names things, briefs people and checks work. | user-teachable | none |
+| methodology-35-ASYMMETRIC-DISCIPLINE-CREATION-WITHOUT-PAIRED-CLEANUP | Emerging | Any rule that tells people to create something must also say when to remove it, or clutter accumulates unnoticed. | user-teachable | BRIEFING-ESSENTIAL-HOST.md skill:cleanup-dev-active |
+| methodology-36-DERIVED-VIEWS-OVER-HAND-MAINTAINED-TRACKERS | Proven | If a checklist keeps being missed, do not ask for more care; derive the view from source data or build a step that enforces it. | user-teachable | none |
+| methodology-37-COVERAGE-AUDIT-GATE-FOR-REFACTOR-DELTAS | Emerging | After a large restructuring of startup or routing code, list everything that was connected before and confirm each piece is still connected. | user-teachable | none |
+| methodology-38-PDR-ADR-TIER-SEPARATION | Emerging | Record product decision rules separately from technical design decisions, because they are made at different levels and by different people. | user-teachable | none |
+| methodology-39-AUTONOMY-RELOCATES-THE-BOTTLENECK | Emerging | When AI agents handle their own work well, the constraint shifts to the one human whose attention cannot be parallelized, so protect it. | user-teachable | BRIEFING-ESSENTIAL-HOST.md |
+| methodology-40-LAYER-THEN-MIGRATE | Emerging | To retire an old abstraction safely, first add the new layer over it, move consumers across, and only then remove the old one. | user-teachable | none |
+| methodology-41-MECHANISM-DISPLACES-UNREFERENCED-DISCIPLINE | Proven | When you add automation, check which older manual practice it silently replaces, and update or reference that practice so it is not lost. | user-teachable | skill:cleanup-dev-active |
+| methodology-42-REFLEXIVE-VERIFICATION-SELF-EXEMPTION-UNDER-PRESSURE | Emerging | Teams skip their own checks when under pressure, usually on the very rules they wrote; name that tendency so you can catch it. | user-teachable | none |
+| methodology-43-NAME-THE-LAYER | Emerging | People verify whatever is closest at hand instead of the actual claim; state exactly which layer you checked and which you did not. | user-teachable | none |
+| methodology-44-CLEAR-IS-NOT-A-MEASUREMENT | Emerging | A report of "nothing found" means nothing unless the checking tool states what it looked at and how much of the whole that covered. | user-teachable | skill:duty-cycle-tick skill:template-audit |
+| methodology-45-AGREEMENT-IS-NOT-REPLICATION | Emerging | Several reviewers agreeing proves little if they used the same method and shared the same blind spot; use a different method to confirm. | user-teachable | none |
+| methodology-46-PROMOTION-IS-A-RE-VERIFICATION-EVENT | Emerging | When you copy a claim into a more permanent document, re-check it against live reality at that moment and name its source. | user-teachable | none |
+| methodology-47-SECOND-ORDER-CLAIMS-NEED-FIRST-ORDER-RIGOR | Proven | A correction or retraction is still a claim; before sending one, read the original and confirm who said what and whether it still stands. | user-teachable | none |
+| methodology-48-A-PROXY-COUNT-IS-NOT-THE-QUANTITY | Proven | An easy-to-get count is not the thing you care about; for example, a high correction count shows attention paid, not the quality of the work. | user-teachable | none |
+| methodology-49-DESCRIBED-IS-NOT-RUNNING | Emerging | A document or config saying a process exists is not proof it runs; watch it actually fire before you rely on it. | user-teachable | none |
+| methodology-50-SELF-ATTESTATION-IS-NOT-VERIFICATION | Emerging | Someone saying they checked something is not a check; verification needs evidence from an independent look at the result. | user-teachable | skill:duty-cycle-tick |
+| methodology-51-A-BOUNDED-SEARCH-IS-NOT-A-TOTAL | Emerging | A search covers only the scope you chose, so before saying "none exist" confirm the scope matched the question and report its limits. | user-teachable | none |
+| methodology-52-OPEN-IT-A-SUMMARY-IS-NOT-ITS-CONTENTS | Proven | Do not judge a document, ticket or report by its title or summary; open it and read the contents before relying on it. | user-teachable | none |
+| methodology-53-CHOKEPOINT-VS-BOLT-ON | Proven | Attach a required step to something that cannot be skipped, rather than adding a separate check that people can forget or bypass. | user-teachable | none |
+| methodology-54-A-FALSE-CLAIM-IN-A-DURABLE-DOC-IS-A-LENS | Emerging | An unverified claim in a lasting document shapes how every later reader interprets new evidence, so verify before writing it down. | user-teachable | none |
+| methodology-55-A-NAME-IS-NOT-A-DEFINITION | Emerging | A label that looks official, such as an enum name or checkbox, does not settle a decision; the real definition is in the logic behind it. | user-teachable | none |
+| methodology-56-CONCEPT-AND-MECHANISM-POINT-AT-EACH-OTHER | Emerging | Every automated mechanism should link to the document explaining why it exists, that document should link back, and a script should check both links. | user-teachable | none |
+| methodology-57-AN-ALARM-NEEDS-A-READER | Emerging | A check is not finished until its alert has a named reader, a named time and a named step; an unread alert equals none. | user-teachable | none |

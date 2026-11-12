@@ -2,10 +2,13 @@
 type: methodology
 title: Architectural Agility - Systematic Excellence in Technical Decision Making
 valid_from: "2025-09-21"
-last_updated: "2025-09-21"
+last_updated: "2026-11-12"
 ---
 
 # Architectural Agility - Systematic Excellence in Technical Decision Making
+
+**Status**: Retired. Set 2026-11-12 by CIO (standing item 9p) (2025 general principles with no instances and nothing pointing at it; m-07 and m-43 carry its working parts).
+**Summary**: Make technical decisions from evidence and a long-term view, so the design can change quickly without piling up debt.
 
 ## Overview
 

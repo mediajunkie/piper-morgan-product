@@ -2,12 +2,15 @@
 type: methodology
 title: Autonomy Relocates the Bottleneck to the Convergence Point
 valid_from: "2026-06-03"
-last_updated: "2026-06-03"
+last_updated: "2026-11-12"
 ---
 
 # Autonomy Relocates the Bottleneck to the Convergence Point
 
-**Status**: Emerging (filed 2026-06-03; PM-ratification pending on framing). Credit: PM (framing) + PA (the mechanism — attention-dashboard v0.1).
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: When AI agents handle their own work well, the constraint shifts to the one human whose attention cannot be parallelized, so protect it.
+
+**Status note**: Emerging (filed 2026-06-03; PM-ratification pending on framing). Credit: PM (framing) + PA (the mechanism — attention-dashboard v0.1).
 
 ## Overview
 

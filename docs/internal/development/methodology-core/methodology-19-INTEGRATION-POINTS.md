@@ -2,10 +2,13 @@
 type: methodology
 title: Methodology Integration Points
 valid_from: "2025-09-21"
-last_updated: "2026-08-12"
+last_updated: "2026-11-12"
 ---
 
 # Methodology Integration Points
+
+**Status**: Retired. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: An old to-do list of files to update for one methodology rollout, with stale paths and placeholder entries.
 
 > ⚠️ **Legacy planning doc — numbering resolved 2026-08-12 (CIO, #1584 Part C, Docs-flagged).** This file
 > predates the current numbering convention and the `docs/internal/development/` path (it still refers to

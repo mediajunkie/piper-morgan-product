@@ -2,10 +2,13 @@
 type: methodology
 title: STOP Conditions for Agent Deployment
 valid_from: "2025-09-21"
-last_updated: "2025-09-21"
+last_updated: "2026-11-12"
 ---
 
 # STOP Conditions for Agent Deployment
+
+**Status**: Retired. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: A list of situations where an agent must stop and ask rather than assume; its supporting example proved a false alarm.
 
 > **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
 > Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): its "most recent" citation is a confirmed false positive (a prior CIO investigation logged the keyword match explicitly as "not a capture"). Explicitly Cursor-aware. CLAUDE.md carries its own, differently-structured STOP Conditions section actually in use.

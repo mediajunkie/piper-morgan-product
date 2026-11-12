@@ -2,10 +2,13 @@
 type: methodology
 title: TDD Requirements Methodology
 valid_from: "2025-09-21"
-last_updated: "2025-09-21"
+last_updated: "2026-11-12"
 ---
 
 # TDD Requirements Methodology
+
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p) (founding practice; CLAUDE.md's Done rule carries it).
+**Summary**: Write each requirement as a test before building, so "done" is something you can run and watch pass rather than argue about.
 
 ## Overview
 

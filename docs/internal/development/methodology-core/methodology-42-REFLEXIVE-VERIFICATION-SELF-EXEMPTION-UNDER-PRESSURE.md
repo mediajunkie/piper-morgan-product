@@ -2,12 +2,15 @@
 type: methodology
 title: Reflexive Verification — We Self-Exempt From Our Own Rigor Under Pressure
 valid_from: "2026-06-11"
-last_updated: "2026-06-11"
+last_updated: "2026-11-12"
 ---
 
 # Reflexive Verification — We Self-Exempt From Our Own Rigor Under Pressure
 
-**Status**: Emerging (5 cohort instances clear the methodology-29 formation threshold; Proven awaits evidence that naming it reduces recurrence)
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Teams skip their own checks when under pressure, usually on the very rules they wrote; name that tendency so you can catch it.
+
+**Status note**: Emerging (5 cohort instances clear the methodology-29 formation threshold; Proven awaits evidence that naming it reduces recurrence)
 **Filed**: 2026-06-11 by CIO Vehicle 2
 **Origin**: Architect cohort-pattern recognition (2026-06-11) across the cron-halt / displacement / durable-flag arc
 **Related**: methodology-30 (the most-self-exempted discipline), Pattern-045 (completion bias — adjacent), methodology-34 (naming-makes-self-catchable — the prevention)

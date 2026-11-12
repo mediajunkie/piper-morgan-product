@@ -2,10 +2,13 @@
 type: methodology
 title: Testing Methodology Validation Summary - 2025-08-14
 valid_from: "2025-09-21"
-last_updated: "2026-05-18"
+last_updated: "2026-11-12"
 ---
 
 # Testing Methodology Validation Summary - 2025-08-14
+
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Tests should pass both with and without the real database, because passing only on the fallback path hides broken real integrations.
 
 ## 🎯 **Learned Testing Principle Validated**
 
