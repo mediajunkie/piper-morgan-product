@@ -7,6 +7,7 @@ spatial adapter pattern for external system integration.
 
 import asyncio
 import contextlib
+import dataclasses
 import html
 import json
 import logging
@@ -51,6 +52,8 @@ from .connector import (
     ResourceQuery,
 )
 from .connector_grant_store import ConnectorGrantStore
+from .github_app_grant import REASON_CUTOVER, app_mode
+from .github_app_refresh import app_grant_verdict
 from .mcp_client import MCPClient
 
 _GITHUB = "github"
@@ -76,6 +79,15 @@ CREDENTIAL_STORE_FAILED_MESSAGE = (
 GITHUB_STALE_TOKEN_REPLY = (
     "Your GitHub connection needs re-authorizing. Reconnect GitHub in Settings, under Integrations."
 )
+# #2342 (CXO's FINAL lines, 2026-11-11 19:38): a classic grant met after the move to the
+# GitHub App. "choose which repositories I can see" is the App's install choice; "saved
+# settings" are the kept ``connector_configs`` rows. Chosen by the stored
+# ``status_reason``, never inferred.
+GITHUB_CUTOVER_STALE_REPLY = (
+    "GitHub now connects through the Piper GitHub app, so your connection needs to be set "
+    "up again. Reconnect GitHub in Settings, under Integrations, and choose which "
+    "repositories I can see. Your saved settings are unchanged."
+)
 
 
 def github_degrade_reply(degradation) -> str:
@@ -85,6 +97,8 @@ def github_degrade_reply(degradation) -> str:
     the default-repo check) keep reading ``user_message`` and are unchanged."""
     reason = getattr(degradation, "reason", None)
     if reason is DegradationReason.STALE_TOKEN:
+        if getattr(degradation, "detail", None) == REASON_CUTOVER:
+            return GITHUB_CUTOVER_STALE_REPLY  # #2342
         return GITHUB_STALE_TOKEN_REPLY
     return getattr(degradation, "user_message", "") or "The GitHub connector is degraded."
 
@@ -530,12 +544,39 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         stored state instead of each re-deriving it."""
         reason = self._degrade_reason_for_exc(exc)
         if reason is DegradationReason.STALE_TOKEN:
+            if await self._rejected_token_was_replaced(credential):
+                # #2342 (Arch 2026-11-12 06:52, #2288's rule): a refresh landed while this
+                # request held the old token. The connection is fine; never mark it
+                # stale or tell the person to reconnect. They can simply ask again.
+                return await self.degrade(DegradationReason.UNREACHABLE)
             await self._mark_oauth_binding_stale(credential)
         return await self.degrade(reason)
 
+    async def _rejected_token_was_replaced(self, credential) -> bool:
+        """#2342: in App mode, after GitHub's 401 on the OAuth leg, re-read the store
+        once. True only when the stored access token is no longer the one GitHub
+        rejected. Any doubt (classic mode, a PAT, an unreadable row) is False, so the
+        existing stale rule applies."""
+        if not app_mode():
+            return False
+        if not isinstance(credential, GitHubCredential) or credential.leg != "oauth":
+            return False
+        if not credential.token:
+            return False
+        try:
+            from .github_app_grant import classify
+
+            stored = classify(await self._oauth_grant(credential.owner_id))
+        except Exception:
+            return False
+        return stored is not None and stored.access_token != credential.token
+
     @staticmethod
-    async def _mark_oauth_binding_stale(credential) -> bool:
-        """#2029: write ``STALE`` to the user's GitHub binding after GitHub rejected the
+    async def _mark_oauth_binding_stale(credential, *, reason: Optional[str] = None) -> bool:
+        """#2342: ``reason`` is the stored ``status_reason`` (``cutover`` or
+        ``refresh_rejected``); None for GitHub's 401 and for an absent grant.
+
+        #2029: write ``STALE`` to the user's GitHub binding after GitHub rejected the
         OAuth grant (401). Only the OAuth leg: a rejected personal token says nothing about
         the grant. Only over ``BOUND``: never resurrect an unbound (disconnected) row or
         overwrite another non-bound state. Best-effort: a failed write must never turn an
@@ -549,9 +590,13 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 if row is None or row.status != ConnectorStatusState.BOUND.value:
                     return False
                 await repo.set_status(
-                    credential.owner_id, _GITHUB, ConnectorStatusState.STALE.value
+                    credential.owner_id, _GITHUB, ConnectorStatusState.STALE.value, reason=reason
                 )
-            _slog.info("github_oauth_binding_marked_stale", owner_id=str(credential.owner_id))
+            _slog.info(
+                "github_oauth_binding_marked_stale",
+                owner_id=str(credential.owner_id),
+                status_reason=reason,
+            )
             return True
         except Exception:
             logger.warning("GitHub binding STALE write failed (best-effort)", exc_info=True)
@@ -1699,9 +1744,15 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
     async def _oauth_grant(owner_id) -> Optional[str]:
         """#2266: the account's stored OAuth grant, strictly: None ONLY when no grant row
         exists; raises when a row exists but cannot be read. The resolver's one read of
-        the grant; tests patch this seam."""
+        the grant; tests patch this seam.
+
+        #2342: in App mode the value comes from the encrypted row only. A keychain copy
+        can hold a pair a refresh has already spent."""
         async with AsyncSessionFactory.session_scope() as session:
-            return await ConnectorGrantStore().get_strict(session, str(owner_id), _GITHUB)
+            store = ConnectorGrantStore()
+            if app_mode():
+                return await store.get_encrypted_strict(session, str(owner_id), _GITHUB)
+            return await store.get_strict(session, str(owner_id), _GITHUB)
 
     @staticmethod
     async def _user_pat_at_rest(user_id) -> Optional[str]:
@@ -1840,7 +1891,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         async with AsyncSessionFactory.session_scope() as session:
             binding = await ConnectorBindingRepository(session).get(user_id, _GITHUB)
         stale = None
+        stale_detail = None  # #2342: the stored status_reason behind a STALE binding
         grant_failed = False
+        refresh_unreachable = False
         if binding is not None and binding.status == ConnectorStatusState.BOUND.value:
             # OAuth leg. #2266 (2026-11-04): the grant is read HERE, with the strict
             # read, never lazily at connect time. Before this, a BOUND binding whose
@@ -1857,6 +1910,16 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             except Exception:
                 logger.warning("GitHub OAuth grant read failed", exc_info=True)
                 grant_failed = True
+            mark_reason = None
+            if grant and app_mode():
+                # #2342 (ADR-081 D3): in App mode the stored value is a grant record. Only
+                # a record carrying the App marker serves, after a refresh when it is due;
+                # a markerless (classic) grant never serves and is recorded as ``cutover``.
+                verdict = await app_grant_verdict(binding.owner_id, grant)
+                grant = verdict.token
+                grant_failed = verdict.read_failed
+                refresh_unreachable = verdict.unreachable
+                mark_reason = verdict.stale_reason
             if grant:
                 return GitHubCredential(
                     owner_id=binding.owner_id,
@@ -1864,18 +1927,23 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                     token=grant,
                     leg="oauth",
                 )
-            if not grant_failed:
+            if not grant_failed and not refresh_unreachable:
                 await self._mark_oauth_binding_stale(
                     GitHubCredential(
                         owner_id=binding.owner_id,
                         mcp_server_ref=binding.mcp_server_ref,
                         token=None,
                         leg="oauth",
-                    )
+                    ),
+                    reason=mark_reason,
                 )
-            stale = DegradationReason.STALE_TOKEN
+                stale = DegradationReason.STALE_TOKEN
+                stale_detail = mark_reason
+            elif not refresh_unreachable:
+                stale = DegradationReason.STALE_TOKEN
         elif binding is not None:
             stale = _NONBOUND_REASON.get(binding.status, DegradationReason.CONNECT_REQUIRED)
+            stale_detail = getattr(binding, "status_reason", None)
         # #2151 (Arch 10-24 16:49): a leg that failed is not absence. Either leg's token
         # still serves; with none, a failed leg degrades UNREACHABLE, never CONNECT_REQUIRED.
         store_failed = False
@@ -1897,8 +1965,16 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 reason=DegradationReason.UNREACHABLE,
                 user_message=CREDENTIAL_STORE_FAILED_MESSAGE,
             )
+        if refresh_unreachable:
+            # #2342 (Arch 2026-11-11 19:11): a refresh that could not complete is
+            # UNREACHABLE, never stale. The stored pair is untouched; the next request
+            # tries again.
+            return await self.degrade(DegradationReason.UNREACHABLE)
         if stale is not None and stale is not DegradationReason.CONNECT_REQUIRED:
-            return await self.degrade(stale)
+            degraded = await self.degrade(stale)
+            if stale is DegradationReason.STALE_TOKEN and stale_detail == REASON_CUTOVER:
+                degraded = dataclasses.replace(degraded, detail=REASON_CUTOVER)
+            return degraded
         if store_failed:
             return DegradationResponse(
                 reason=DegradationReason.UNREACHABLE,
@@ -2060,7 +2136,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 repo=repo,
                 detail=credential.reason.value,
             )
-        if credential.leg == "pat":
+        if credential.leg == "pat" or credential.token or app_mode():
+            # #2342: the resolver's token is the credential on both legs. In App mode the
+            # stored value is a grant record, never a bearer, so it is not re-read here.
             grant = credential.token
         else:
             async with AsyncSessionFactory.session_scope() as session:

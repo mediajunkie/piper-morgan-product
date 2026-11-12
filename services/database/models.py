@@ -793,6 +793,11 @@ class ConnectorBinding(Base, TimestampMixin):
     mcp_server_ref = Column(String(255), nullable=True)
     # Binding health (ADR-070 D5 status states): unbound / bound / unreachable / stale.
     status = Column(String(32), nullable=False, default="unbound")
+    # #2342 (Arch 2026-11-11 19:23): WHY a binding is STALE, stored when the fact is
+    # observed and never inferred at render time. ``cutover`` (a classic OAuth grant met
+    # in GitHub App mode) or ``refresh_rejected`` (GitHub refused the refresh token).
+    # NULL for every other state, and cleared on rebind.
+    status_reason = Column(String(32), nullable=True)
     # The bound server's capability profile (D3 "capability profile"). JSONB on Postgres /
     # JSON on the SQLite test backend (#1038 cross-dialect pattern). Holds NO credentials (D3).
     capability_profile = Column(

@@ -64,6 +64,9 @@ class DegradationResponse:
     reason: DegradationReason
     user_message: str
     action_hint: Optional[str] = None
+    # #2342: a stored fact that picks between replies for one reason (today only
+    # STALE_TOKEN's ``cutover``). Never inferred when the reply is rendered.
+    detail: Optional[str] = None
 
 
 @dataclass(frozen=True)

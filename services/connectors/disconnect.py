@@ -141,9 +141,19 @@ async def _revoke_github_grant_at_github(user_id: str) -> bool:
         return True
     if not grant:
         return False  # nothing granted to this app: no call, nothing to report
+    from services.mcp.consumer.github_app_grant import GrantRecordDamaged, classify
     from services.mcp.consumer.github_oauth_handler import GitHubOAuthHandler
 
-    return not await GitHubOAuthHandler().revoke_grant(grant)
+    # #2342: the stored value is either a classic token or a GitHub App grant record.
+    # Each is revoked with the credentials of the app that minted it.
+    try:
+        app_grant = classify(grant)
+    except GrantRecordDamaged:
+        logger.warning("github_grant_record_damaged_for_revoke")
+        return True  # can't be revoked: say it may stay valid at GitHub
+    if app_grant is not None:
+        return not await GitHubOAuthHandler().revoke_grant(app_grant.access_token)
+    return not await GitHubOAuthHandler(classic=True).revoke_grant(grant)
 
 
 async def _disconnect_github(user_id: str) -> tuple[list[str], bool]:

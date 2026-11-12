@@ -126,13 +126,14 @@ async def test_a_new_grant_forgets_the_previous_grants_check():
         yield SimpleNamespace(commit=AsyncMock())
 
     handler = SimpleNamespace(
+        app_mode=False,  # #2342: the callback asks the handler which app minted the grant
         handle_oauth_callback=AsyncMock(
             return_value={
                 "user_id": "user-1",
                 "tokens": SimpleNamespace(access_token="ghu_x"),
                 "login": "someone",
             }
-        )
+        ),
     )
     with (
         patch(

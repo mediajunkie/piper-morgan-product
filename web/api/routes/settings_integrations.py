@@ -1514,14 +1514,19 @@ async def handle_github_callback(
             persist_github_connection,
         )
 
-        result = await GitHubOAuthHandler().handle_oauth_callback(
+        handler = GitHubOAuthHandler()
+        result = await handler.handle_oauth_callback(
             code, state, session_user_id=getattr(browser_session, "sub", None)
         )
         user_id = result.get("user_id")
         access_token = result["tokens"].access_token
+        # #2342: a GitHub App connect stores the whole grant record (both tokens, both
+        # expiries, the App marker). A reply without the expiring pair fails the connect
+        # here, before anything is stored.
+        app_grant = result["tokens"].as_app_grant() if handler.app_mode is True else None
 
         async with AsyncSessionFactory.session_scope() as session:
-            await persist_github_connection(session, user_id, access_token)
+            await persist_github_connection(session, user_id, access_token, app_grant=app_grant)
             await session.commit()
 
         # #2187: a NEW grant must not inherit the previous grant's Test result (the

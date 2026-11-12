@@ -2177,6 +2177,26 @@ None of them reads the OS keychain. Only the named provider is bound, so when it
 stops with `UnboundLLMKeyError`; it does not carry on against the other provider. The two
 screens print `PLANNED: N … calls on <provider>` before the first call.
 
+**GitHub connect through the GitHub App (#2342, ADR-081 D3, 2026-11-12).** The one GitHub
+credential resolver (`GitHubMCPSpatialAdapter.resolve_credential`) has an **App mode**,
+on only when `GITHUB_APP_CLIENT_ID` and `GITHUB_APP_CLIENT_SECRET` are both configured
+(`services/mcp/consumer/github_app_grant.py`). With it off, nothing differs. With it on:
+- The stored grant is one record (access token, its expiry, refresh token, its expiry,
+  `minted_by: github_app`). A value without the marker is a classic grant and never
+  serves: the binding goes STALE with `status_reason = cutover`. A damaged record is a
+  failed read (UNREACHABLE), never classic.
+- A token with under five minutes left is refreshed before serving
+  (`services/mcp/consumer/github_app_refresh.py`), under a per-owner lock
+  (`pg_advisory_xact_lock`), so two requests spend the refresh token once. A rejected
+  refresh is STALE_TOKEN with `status_reason = refresh_rejected`; one that could not
+  complete is UNREACHABLE with the store untouched.
+- The MCP app is decrypt-only and never refreshes. The main app refreshes in the
+  background every 30 minutes (`services/scheduler/github_app_refresh_job.py`).
+- **Chat replies:** `github_degrade_reply` picks the whole-reply line by the stored
+  reason. `cutover` gives `GITHUB_CUTOVER_STALE_REPLY` (CXO's words); every other stale
+  binding keeps `GITHUB_STALE_TOKEN_REPLY`. The reason is stored when the fact is
+  observed and is never inferred when a reply is rendered.
+
 ### The two-stage router (#2149, 2026-11-01): built behind a flag, measured, rejected, removed
 
 Arch's #2149 question was whether a grouped catalog (stage 1 picks one of nine `RouteGroup`s,

@@ -9,6 +9,14 @@ then stored encrypted (the #358 ``user_api_keys`` store) and the #1229 binding h
 OAuth grants permitted, encrypted-at-rest, binding = pointer).
 
 State is user_id-bound, single-use, and expiring (CSRF + multi-tenant isolation, #734).
+
+#2342 (ADR-081 D3): in **App mode** (``github_app_grant.app_mode``: the published GitHub
+App's client ID and secret are both configured) the same authorization-code flow runs
+against the App instead of the classic OAuth App. No ``scope`` is sent: the App's
+permissions and the user's installation decide the reach. The token reply carries an
+expiring access token and a refresh token, stored together as one grant record, and
+``refresh_grant`` exchanges the refresh token for a new pair. With App mode off, nothing
+here differs from before.
 """
 
 from __future__ import annotations
@@ -24,6 +32,8 @@ from urllib.parse import urlencode
 
 import aiohttp
 import structlog
+
+from .github_app_grant import GitHubAppGrant, app_client, app_mode
 
 logger = structlog.get_logger(__name__)
 
@@ -56,6 +66,65 @@ class GitHubOAuthTokens:
     expires_at: Optional[int] = None  # Unix ts, if the App issues expiring tokens
     token_type: str = "Bearer"
     scope: str = ""
+    refresh_expires_at: Optional[int] = None  # #2342: Unix ts of the refresh token's end
+
+    def __repr__(self) -> str:  # never a token
+        return (
+            f"GitHubOAuthTokens(expires_at={self.expires_at}, "
+            f"refresh_expires_at={self.refresh_expires_at}, "
+            f"has_refresh={bool(self.refresh_token)})"
+        )
+
+    def as_app_grant(self) -> GitHubAppGrant:
+        """#2342: the grant record for a token reply from the GitHub App. Raises
+        ``ValueError`` when the reply lacks the refresh token or either expiry: the App
+        must have "Expire user authorization tokens" on, and a record without the pair
+        could never be refreshed."""
+        if not (self.refresh_token and self.expires_at and self.refresh_expires_at):
+            raise ValueError(
+                "GitHub App token reply has no expiring pair "
+                '(is "Expire user authorization tokens" on for the App?)'
+            )
+        return GitHubAppGrant(
+            access_token=self.access_token,
+            access_expires_at=int(self.expires_at),
+            refresh_token=self.refresh_token,
+            refresh_expires_at=int(self.refresh_expires_at),
+        )
+
+
+@dataclass(frozen=True)
+class RefreshOutcome:
+    """#2342, Arch's requirement 5 (2026-11-11 19:11). Exactly one of three:
+
+    * ``grant`` set: GitHub issued a new pair;
+    * ``rejected``: GitHub answered and refused the refresh token (expired, revoked or
+      already spent), read from the reply body's ``error`` field, never from the status
+      alone;
+    * neither: the refresh could not complete (timeout, connection failure, 5xx, or an
+      answer with no ``error`` and no token). The stored pair must be left as it was.
+    """
+
+    grant: Optional[GitHubAppGrant] = None
+    rejected: bool = False
+    error: Optional[str] = None  # GitHub's error code, or our own short label
+    status: Optional[int] = None
+
+    @property
+    def refreshed(self) -> bool:
+        return self.grant is not None
+
+    @property
+    def could_not_complete(self) -> bool:
+        return self.grant is None and not self.rejected
+
+
+# GitHub's token-endpoint error codes that mean "this refresh token is refused". Any
+# other error code (for example ``incorrect_client_credentials``, a deployment fault) is
+# not the person's grant going stale, so it reads as could-not-complete.
+_REFRESH_REJECTED_ERRORS = frozenset({"bad_refresh_token", "invalid_grant"})
+#: Bound on the refresh call; the per-owner lock is held across it (Arch: 10 s).
+REFRESH_TIMEOUT_SECONDS = 10
 
 
 class GitHubOAuthHandler:
@@ -67,10 +136,18 @@ class GitHubOAuthHandler:
 
     STATE_EXPIRATION = 900  # 15 min
 
-    def __init__(self):
-        self.client_id, self.client_secret = self._load_credentials()
+    def __init__(self, *, classic: bool = False):
+        """``classic=True`` forces the classic OAuth App's credentials even in App mode.
+        Only two callers may pass it (Arch 2026-11-12): the cutover script's revoke and
+        the disconnect of a classic grant."""
+        self.app_mode = app_mode() and not classic
+        if self.app_mode:
+            self.client_id, self.client_secret = app_client()
+            self.scopes = []  # #2342: no scope; the App's permissions and install decide
+        else:
+            self.client_id, self.client_secret = self._load_credentials()
+            self.scopes = _DEFAULT_SCOPES
         self.redirect_uri = os.getenv("GITHUB_OAUTH_REDIRECT_URI") or _default_redirect()  # #2043
-        self.scopes = _DEFAULT_SCOPES
 
     def _load_credentials(self) -> Tuple[str, str]:
         """env first, then KeychainService (provider github_oauth_client_id/_secret)."""
@@ -102,9 +179,10 @@ class GitHubOAuthHandler:
         params = {
             "client_id": self.client_id,
             "redirect_uri": self.redirect_uri,
-            "scope": " ".join(self.scopes),
             "state": state,
         }
+        if self.scopes:  # #2342: the GitHub App flow sends no scope at all
+            params["scope"] = " ".join(self.scopes)
         auth_url = f"{self.AUTHORIZATION_URL}?{urlencode(params)}"
         logger.info("github_oauth_url_generated", user_id=user_id, state_prefix=state[:8])
         return auth_url, state
@@ -185,14 +263,74 @@ class GitHubOAuthHandler:
                     raise ValueError(
                         f"GitHub token exchange failed: {data.get('error', response.status)}"
                     )
-                expires_in = data.get("expires_in")
-                return GitHubOAuthTokens(
-                    access_token=data["access_token"],
-                    refresh_token=data.get("refresh_token"),
-                    expires_at=(int(time.time()) + expires_in) if expires_in else None,
-                    token_type=data.get("token_type", "Bearer"),
-                    scope=data.get("scope", ""),
-                )
+                return self._tokens_from_reply(data)
+
+    @staticmethod
+    def _tokens_from_reply(data: Dict) -> GitHubOAuthTokens:
+        """The token endpoint's reply as tokens: the four fields #2342 stores are the
+        access token, ``expires_in``, the refresh token and ``refresh_token_expires_in``."""
+        now = int(time.time())
+        expires_in = data.get("expires_in")
+        refresh_expires_in = data.get("refresh_token_expires_in")
+        return GitHubOAuthTokens(
+            access_token=data["access_token"],
+            refresh_token=data.get("refresh_token"),
+            expires_at=(now + int(expires_in)) if expires_in else None,
+            token_type=data.get("token_type", "Bearer"),
+            scope=data.get("scope", ""),
+            refresh_expires_at=(now + int(refresh_expires_in)) if refresh_expires_in else None,
+        )
+
+    async def refresh_grant(self, refresh_token: str) -> RefreshOutcome:
+        """#2342: exchange a refresh token for a new pair at GitHub's token endpoint.
+
+        GitHub spends the refresh token it is given, so the caller must hold the
+        per-owner lock and write the returned pair before releasing it. Never raises and
+        never logs a token. See ``RefreshOutcome`` for the three results."""
+        if not (self.app_mode and refresh_token):
+            return RefreshOutcome(error="not_app_mode")
+        try:
+            timeout = aiohttp.ClientTimeout(total=REFRESH_TIMEOUT_SECONDS)
+            async with aiohttp.ClientSession(timeout=timeout) as session:
+                async with session.post(
+                    self.TOKEN_URL,
+                    headers={"Accept": "application/json"},
+                    data={
+                        "client_id": self.client_id,
+                        "client_secret": self.client_secret,
+                        "grant_type": "refresh_token",
+                        "refresh_token": refresh_token,
+                    },
+                ) as response:
+                    status = response.status
+                    try:
+                        data = await response.json(content_type=None)
+                    except Exception:
+                        data = None
+        except Exception as e:  # timeout, DNS, connection reset
+            logger.warning("github_app_refresh_unreachable", error=type(e).__name__)
+            return RefreshOutcome(error=type(e).__name__)
+        if not isinstance(data, dict):
+            data = {}
+        error = data.get("error")
+        if status >= 500:
+            logger.warning("github_app_refresh_unreachable", status=status)
+            return RefreshOutcome(error="server_error", status=status)
+        if isinstance(error, str) and error:
+            if error in _REFRESH_REJECTED_ERRORS:
+                logger.info("github_app_refresh_rejected", error=error, status=status)
+                return RefreshOutcome(rejected=True, error=error, status=status)
+            logger.warning("github_app_refresh_refused_other", error=error, status=status)
+            return RefreshOutcome(error=error, status=status)
+        if data.get("access_token"):
+            try:
+                grant = self._tokens_from_reply(data).as_app_grant()
+            except ValueError:
+                logger.warning("github_app_refresh_reply_incomplete", status=status)
+                return RefreshOutcome(error="incomplete_reply", status=status)
+            return RefreshOutcome(grant=grant, status=status)
+        logger.warning("github_app_refresh_unclassifiable", status=status)
+        return RefreshOutcome(error="unclassifiable", status=status)
 
     REVOKE_URL_TEMPLATE = "https://api.github.com/applications/{client_id}/grant"
 
@@ -281,6 +419,7 @@ async def persist_github_connection(
     *,
     grant_store=None,
     server_ref: Optional[str] = None,
+    app_grant: Optional[GitHubAppGrant] = None,
 ) -> None:
     """Complete a GitHub connection (#1317 inc.2 slice D orchestration).
 
@@ -288,13 +427,20 @@ async def persist_github_connection(
     and marks the #1229 ``ConnectorBinding`` BOUND, recording the self-hosted server ref.
     The binding references the grant by the ``(owner, connector)`` convention — it holds
     no token (ADR-070 D3). Caller owns the transaction (commit after).
+
+    #2342: with ``app_grant`` (a GitHub App connect) the grant record is stored, both
+    tokens and both expiries in one row, and ``access_token`` is ignored. Marking the
+    binding BOUND clears any stored ``status_reason``.
     """
     from services.connectors.binding_repository import ConnectorBindingRepository
 
     from .connector_grant_store import ConnectorGrantStore
 
     store = grant_store or ConnectorGrantStore()
-    await store.store(session, user_id, "github", access_token)
+    if app_grant is not None:
+        await store.store_app_grant(session, user_id, "github", app_grant)
+    else:
+        await store.store(session, user_id, "github", access_token)
     await ConnectorBindingRepository(session).upsert(
         user_id,
         "github",

@@ -505,6 +505,36 @@ class AttentionDecayPhase:
         print("🛑 Attention decay shutdown complete")
 
 
+class GitHubAppRefreshPhase:
+    """#2342 (Arch 2026-11-12 06:52): background refresh of GitHub App grants, so the
+    decrypt-only MCP app nearly always finds a live token. Each pass is a no-op outside
+    App mode and in a scoped process, so the job is safe to start everywhere."""
+
+    @staticmethod
+    async def startup(app) -> None:
+        try:
+            import asyncio
+
+            from services.scheduler.github_app_refresh_job import GitHubAppRefreshJob
+
+            job = GitHubAppRefreshJob()
+            task = asyncio.create_task(job.start())
+            app.state.github_app_refresh_job = job
+            app.state.github_app_refresh_task = task
+            print("✅ GitHub App grant refresh job started (every 30 minutes; App mode only)")
+        except Exception as e:
+            print(f"⚠️ Failed to start GitHub App grant refresh job: {e}")
+
+    @staticmethod
+    async def shutdown(app) -> None:
+        job = getattr(app.state, "github_app_refresh_job", None)
+        if job:
+            try:
+                await job.stop()
+            except Exception as e:
+                print(f"⚠️ GitHub App grant refresh job shutdown error: {e}")
+
+
 class EthicsAuditCleanupPhase:
     """Issue #1018 Phase 2: scheduled retention sweep for ethics_audit_log table.
 
@@ -746,6 +776,7 @@ class StartupManager:
             EthicsAuditCleanupPhase,  # Issue #1018 Phase 2: ethics_audit_log retention sweep
             OutputFilterWiringPhase,  # Issue #1017 Phase 2.3: attach OutputFilter to LLMClient
             CompostingSchedulerPhase,  # Issue #1035 Phase 5: insight composting cycle
+            GitHubAppRefreshPhase,  # #2342: background refresh of GitHub App grants
             SlackSocketModePhase,  # Issue #1129: Slack inbound (Socket Mode)
             LoopWatchdogPhase,  # #2101: name the call that blocks the event loop
         ]
