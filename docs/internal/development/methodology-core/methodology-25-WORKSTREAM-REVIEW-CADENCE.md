@@ -2,10 +2,13 @@
 type: methodology
 title: Workstream Review Cadence
 valid_from: "2026-04-27"
-last_updated: "2026-08-30"
+last_updated: "2026-11-12"
 ---
 
 # Workstream Review Cadence
+
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p) (a live weekly cadence (the draft-weekly-ship skill)).
+**Summary**: Collect a short, scoped summary from each function every week over the same fixed window, then synthesize them into the weekly update.
 
 ## Overview
 

@@ -2,12 +2,15 @@
 type: methodology
 title: methodology-49 — Described Is Not Running
 valid_from: "2026-08-12"
-last_updated: "2026-10-22"
+last_updated: "2026-11-12"
 ---
 
 # methodology-49 — Described Is Not Running
 
-**Status**: Emerging (one canonical instance plus five corroborating — three original, two added
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: A document or config saying a process exists is not proof it runs; watch it actually fire before you rely on it.
+
+**Status note**: Emerging (one canonical instance plus five corroborating — three original, two added
 2026-09-07 from CXO's own re-sorted evidence, four more on 2026-10-21 from three seats in one
 incident, and a fifth in the same thread on 10-22; watching for independent cross-project recurrence before Proven)
 **Filed**: 2026-08-12 (CIO) · **Found by**: Janus (canonical instance) · **Routed by**: Docs

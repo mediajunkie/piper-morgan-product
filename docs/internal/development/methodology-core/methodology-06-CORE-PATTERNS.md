@@ -2,10 +2,13 @@
 type: methodology
 title: "MANDATORY: Piper Morgan Development Methodology"
 valid_from: "2025-09-21"
-last_updated: "2025-09-21"
+last_updated: "2026-11-12"
 ---
 
 # MANDATORY: Piper Morgan Development Methodology
+
+**Status**: Retired. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: An early mandatory-rules document for a two-tool development setup; its gates reference scripts that no longer exist.
 
 > **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
 > Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): explicit Cursor/Claude-Code dual-agent era language; its "MANDATORY E2E Validation" gate names 4 scripts, only 1 exists (untouched >1 year). Superseded by CLAUDE.md's Completion Discipline.

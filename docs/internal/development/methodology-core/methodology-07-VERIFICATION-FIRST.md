@@ -2,10 +2,13 @@
 type: methodology
 title: Verification-First Methodology
 valid_from: "2025-09-21"
-last_updated: "2026-09-01"
+last_updated: "2026-11-12"
 ---
 
 # Verification-First Methodology
+
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Before changing anything, look at what already exists and confirm your assumptions, so you do not duplicate or break working things.
 
 > **Cross-corpus note (2026-09-01)**: ruled canonical for this principle by Arch's B3 synthesis
 > motion — `pattern-006-verification-first.md` described the same practice independently in the

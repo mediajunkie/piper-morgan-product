@@ -2,12 +2,15 @@
 type: methodology
 title: "Methodology-40: Layer-Then-Migrate — Decision Discipline for Retiring Legacy Abstractions Safely"
 valid_from: "2026-06-09"
-last_updated: "2026-08-29"
+last_updated: "2026-11-12"
 ---
 
 # Methodology-40: Layer-Then-Migrate — Decision Discipline for Retiring Legacy Abstractions Safely
 
-**Status**: v0.1 — **Emerging** (Architect-authored 2026-06-09; **CIO catalog confirmed 2026-06-09** — slot 40 allocated + indexed in INDEX.md; the m-38 precedent honored)
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: To retire an old abstraction safely, first add the new layer over it, move consumers across, and only then remove the old one.
+
+**Status note**: v0.1 — **Emerging** (Architect-authored 2026-06-09; **CIO catalog confirmed 2026-06-09** — slot 40 allocated + indexed in INDEX.md; the m-38 precedent honored)
 **Date**: 2026-06-09 (cohort discipline matured 2026-06-06 → 2026-06-08 across 8 instances)
 **Origin instance**: ADR-060 amendment verb-enum vs `action_registry` keys (2026-06-06; #1124 cohort + #1158 consult)
 **Related**: methodology-30 (Consumer-Trace Verification; load-bearing input), methodology-32 (Postel for Memo Headers; additive-evolution discipline this composes with), methodology-38 (PDR/ADR Tier Separation; sibling decision-altitude framework), methodology-39 (Autonomy Relocates the Bottleneck; m-40 retirement decisions are convergence-point material), Pattern-072 (Registries that Grow into Architectural Shapes; common substrate), Pattern-073 (Documentation-Asserted-Behavior Drift; sibling spec-layer pattern)

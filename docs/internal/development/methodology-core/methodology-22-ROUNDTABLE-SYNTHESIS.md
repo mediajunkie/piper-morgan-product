@@ -2,10 +2,13 @@
 type: methodology
 title: "Methodology-22: Roundtable Synthesis"
 valid_from: "2026-03-23"
-last_updated: "2026-09-01"
+last_updated: "2026-11-12"
 ---
 
 # Methodology-22: Roundtable Synthesis
+
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: For cross-cutting decisions, collect each expert's analysis independently first, then merge them, to avoid anchoring on the first opinion.
 
 ## Purpose
 

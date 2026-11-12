@@ -2,10 +2,13 @@
 type: methodology
 title: Code Hygiene Audit Methodology
 valid_from: "2025-12-02"
-last_updated: "2025-12-02"
+last_updated: "2026-11-12"
 ---
 
 # Code Hygiene Audit Methodology
+
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Clean up a file's small defects in one focused pass that changes no behavior, and accept partial progress when full cleanup is too big.
 
 ## Overview
 

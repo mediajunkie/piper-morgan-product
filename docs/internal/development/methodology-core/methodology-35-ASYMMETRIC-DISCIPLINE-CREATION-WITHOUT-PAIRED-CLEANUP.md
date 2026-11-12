@@ -2,10 +2,13 @@
 type: methodology
 title: Asymmetric Discipline — Operational Rules with Creation Without Paired Cleanup
 valid_from: "2026-05-24"
-last_updated: "2026-08-29"
+last_updated: "2026-11-12"
 ---
 
 # Asymmetric Discipline — Operational Rules with Creation Without Paired Cleanup
+
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Any rule that tells people to create something must also say when to remove it, or clutter accumulates unnoticed.
 
 ## Overview
 

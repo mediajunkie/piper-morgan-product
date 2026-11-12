@@ -2,10 +2,13 @@
 type: methodology
 title: Consumer-Trace Verification
 valid_from: "2026-05-18"
-last_updated: "2026-06-16"
+last_updated: "2026-11-12"
 ---
 
 # Consumer-Trace Verification
+
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Before saying one thing uses another, trace from the claim to the actual call and observe the behavior; shape alone is not evidence.
 
 ## Overview
 

@@ -2,12 +2,15 @@
 type: methodology
 title: methodology-47 — Second-Order Claims Need First-Order Rigor
 valid_from: "2026-08-07"
-last_updated: "2026-08-07"
+last_updated: "2026-11-12"
 ---
 
 # methodology-47 — Second-Order Claims Need First-Order Rigor
 
-**Status**: Proven (two distinct instances, both with measured cost, 2026-08-05→07)
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: A correction or retraction is still a claim; before sending one, read the original and confirm who said what and whether it still stands.
+
+**Status note**: Proven (two distinct instances, both with measured cost, 2026-08-05→07)
 **Filed**: 2026-08-07 (CIO) · **Companions**: [[methodology-43]] · [[methodology-44]] · [[methodology-45]]
 
 ---

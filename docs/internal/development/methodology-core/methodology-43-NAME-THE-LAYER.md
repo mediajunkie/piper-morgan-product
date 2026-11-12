@@ -2,12 +2,15 @@
 type: methodology
 title: Name the Layer — We Verify the Proxy Nearest to Hand, Not the Claim
 valid_from: "2026-07-25"
-last_updated: "2026-10-15"
+last_updated: "2026-11-12"
 ---
 
 # Name the Layer — We Verify the Proxy Nearest to Hand, Not the Claim
 
-**Status**: Emerging (5 instances in one day across 2 roles — clears the methodology-29 formation threshold; Proven awaits evidence that naming it reduces recurrence)
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: People verify whatever is closest at hand instead of the actual claim; state exactly which layer you checked and which you did not.
+
+**Status note**: Emerging (5 instances in one day across 2 roles — clears the methodology-29 formation threshold; Proven awaits evidence that naming it reduces recurrence)
 **Filed**: 2026-07-25 by CIO
 **Origin**: HOST's structural read of a four-instance run during the Amber/pipermorgan.ai migration, plus a fifth HOST caught in itself; framing at HOST's invitation, CIO's lane
 **Related**: methodology-42 (reflexive verification — the adjacent failure, boundary drawn below), methodology-36 (mechanisms over vigilance — why the fix can't be "be more careful"), methodology-41 (mechanism displaces unreferenced discipline)

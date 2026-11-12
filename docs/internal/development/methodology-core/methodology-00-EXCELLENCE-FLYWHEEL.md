@@ -2,12 +2,15 @@
 type: methodology
 title: The Excellence Flywheel — Methodology-00
 valid_from: "2025-09-21"
-last_updated: "2026-09-11"
+last_updated: "2026-11-12"
 ---
 
 # The Excellence Flywheel — Methodology-00
 
-**Status**: v3.0 — Layer 2 re-derived for autonomous agent-pull operation (Sept 11, 2026)
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Work compounds when each cycle ends by feeding what you learned back into the next: verify first, build, check with evidence, then record.
+
+**Status note**: v3.0 — Layer 2 re-derived for autonomous agent-pull operation (Sept 11, 2026)
 **v3.0 source**: PM-approved re-evaluation, triggered by PM naming "something has been lost despite this huge autonomy improvement" (Sept 8) — Exec scope → 7 independent reads → Arch synthesis → challenge round (5 amendments) → PM ratification Sept 11 ("The flywheel v3 layer 3 text looks good. I approve it" — referring to the Layer 2 replacement text; recorded as-stated per the ratifying memo). Full record: `dev/active/flywheel-v3-synthesis-2026-09-08.md`.
 **Predecessor**: v2.0 — Three-layer reformulation (Apr 26, 2026), itself superseding v1.0 "Four Pillars" (July 2025 – Apr 2026). Layer 1 (Concept) and Layer 3 (Mnemonic) are unchanged in v3.0; only Layer 2 (Practice) and the review-trigger were in scope.
 

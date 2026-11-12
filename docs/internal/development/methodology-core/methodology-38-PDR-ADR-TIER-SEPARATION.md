@@ -2,12 +2,15 @@
 type: methodology
 title: "Methodology-38: PDR/ADR Tier Separation — Decision-Rule Altitude vs Architectural-Implementation Altitude"
 valid_from: "2026-06-03"
-last_updated: "2026-08-29"
+last_updated: "2026-11-12"
 ---
 
 # Methodology-38: PDR/ADR Tier Separation — Decision-Rule Altitude vs Architectural-Implementation Altitude
 
-**Status**: v0.1 — **Emerging** (Architect-authored; CIO catalog confirmed 2026-06-03)
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Record product decision rules separately from technical design decisions, because they are made at different levels and by different people.
+
+**Status note**: v0.1 — **Emerging** (Architect-authored; CIO catalog confirmed 2026-06-03)
 **Date**: 2026-06-03 (cohort discipline matured Apr 27 → May 20, 2026)
 **Origin instance**: BYOC (Bring Your Own Chat) routing from anticipated single-ADR (Apr 27 360-tracker commitment) → PDR-005 + companion ADRs (Q6/Q7) shape (HOST 360-tracker item 1.3 close, May 20)
 **Related**: methodology-29 (Pattern Formation via Successful Imitation), Pattern-072 (Registries that Grow into Architectural Shapes; Proven), Pattern-064 (Alive Scaffolding — Evolution-section convention)

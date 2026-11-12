@@ -2,10 +2,13 @@
 type: methodology
 title: Agent Methodology for Piper Morgan
 valid_from: "2025-09-21"
-last_updated: "2025-09-21"
+last_updated: "2026-11-12"
 ---
 
 # Agent Methodology for Piper Morgan
+
+**Status**: Retired. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: A ritual of command-driven agent routines from 2025 that no current instructions use.
 
 > **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
 > Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): describes a `/agent`-command ritual model (Monday architecture sweeps, Chain-of-Draft cost tables) with zero trace in current CLAUDE.md or any 2026 session log. Superseded by the current skills + duty-cycle model.

@@ -2,10 +2,13 @@
 type: methodology
 title: Mechanism Beats Vigilance — Promote Recurring Vigilance-Disciplines to Mechanisms
 valid_from: "2026-05-24"
-last_updated: "2026-10-27"
+last_updated: "2026-11-12"
 ---
 
 # Mechanism Beats Vigilance — Promote Recurring Vigilance-Disciplines to Mechanisms
+
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p) (widely invoked across roles; the basis of m-53).
+**Summary**: If a checklist keeps being missed, do not ask for more care; derive the view from source data or build a step that enforces it.
 
 *(Originating instance + file slug: Derived Views Over Hand-Maintained Trackers, 2026-05-24. Generalized beyond trackers 2026-05-28 per PM steer.)*
 

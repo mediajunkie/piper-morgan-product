@@ -2,10 +2,13 @@
 type: methodology
 title: Postel for Memo Headers
 valid_from: "2026-05-18"
-last_updated: "2026-05-24"
+last_updated: "2026-11-12"
 ---
 
 # Postel for Memo Headers
+
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Be strict in the message format you send and tolerant in what you accept, so messy inputs from others still get read.
 
 ## Overview
 
