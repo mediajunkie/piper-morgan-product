@@ -913,3 +913,7 @@ STATE @ 2026-10-15 21:48 PT (DAY CLOSED) — next promotion READY on e4f21e9ca8 
   or 87 if the stripper is named). **Fri 10-16:** key switch — steps in `dev/active/lead-prod-key-move-2026-10-16.md` (PM's hand).
 
 **IN-DAY 17:43:** issue 2340 filed (screening scripts read the keychain and switch to OpenAI on a refusal); answer on the Oct 23 OpenAI requests sent to Exec (v4 01M76PSHFCH6T06NVXDCMGX8XF). Filed today: 2337, 2339, 2340. No rule-7 screen runs without xian's permission (keychain rule).
+
+**IN-DAY 18:39:** 2340 built on main `5f31a9fb76` (binder requires the store, names providers); waits on Arch's accept of the variance and CI, then close with close-issue-properly. Escalation on xian's five questions sent to Exec at 18:4x; do not send another today. Routing screens cannot run until xian supplies a key.
+
+**IN-DAY 19:07:** Filed today: 2337, 2339, 2340, 2341, 2342. Closed today: 2232, 2337. Open and waiting: 2340 (Arch landing check, CI green on 345bb918ef), 2174 (running github-mcp-server version from xian, then close-issue-properly), 2341 (xian runs `scripts/github_app_refresh_check.py`; CIO writes the rule), 2342 (D3 build; blocked on the published App registration and PPM placement). CI on `ad2189835e` not yet read at 19:07.

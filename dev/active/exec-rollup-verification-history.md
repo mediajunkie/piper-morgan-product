@@ -512,3 +512,9 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 2026-11-11 18:02 v928: top card rebuilt for the evening (Ship out, 2174 combined run tonight, 2292, 2328 format cause, budget and OpenAI settled); 2174 row in Your hand removed (moved up); 2338 line updated to closed.
 2026-11-11 18:05 v929: 2174 steps moved into their own card (xian: steps belong on the rollup, not in chat).
 2026-11-11 18:20 v929 (artifact version 940): 2174 card says run on Amber, run fly auth login first (Amber's fly session expired), and angle brackets are placeholders.
+2026-11-11 18:38 v929 (artifact version 941): PPM's 1423 yes/no added to Your word.
+2026-11-11 18:40 v929 (artifact version 942): 2174 card fly commands prefixed FLY_NO_UPDATE_CHECK=1 (xian's fly auth login hit the pinned-flyctl self-upgrade).
+2026-11-11 18:43 v929 (artifact version 943): Lead's 18:39 escalation added to Your word (2340 key, 2333, 2327).
+2026-11-11 18:54 v930: 2174 PASS (xian 18:52); step card removed; top item replaced with the result.
+2026-11-11 19:04 v931: #2292 step card (dig confirmed no SPF/DKIM/DMARC; NS hover).
+2026-11-11 19:08 v932: 2174 item updated (D3 governs, 2342 blocked on xian's App registration, fly image read optional, 2341 script built).

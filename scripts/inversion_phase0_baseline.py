@@ -307,10 +307,16 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--full", action="store_true")
     ap.add_argument("--out", type=Path, default=None)
+    ap.add_argument(
+        "--provider",
+        default=None,
+        choices=("anthropic", "openai"),
+        help="the one provider this run binds a key for and spends on (#2340)",
+    )
     args = ap.parse_args()
     # #1812 aftermath: bind the developer's own keys (no server-key fallback).
     sys.path.insert(0, str(ROOT / "scripts"))
-    from dev_key_binding import developer_keys_bound
+    from dev_key_binding import developer_keys_bound, providers_from_flag
 
-    with developer_keys_bound():
+    with developer_keys_bound(providers=providers_from_flag(args.provider)):
         asyncio.run(run(args.full, args.out))

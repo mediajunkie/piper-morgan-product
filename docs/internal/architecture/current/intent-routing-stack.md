@@ -2168,6 +2168,15 @@ go at the FRONT of `PHASE3_REPORTS` in `scripts/inversion_phase3_deletion_gate.p
 first; a re-score overrides). `scripts/inversion_phase1_shadow_score.py` has `--phrase` for a
 one-row re-score and `--source-prefix` for a deposit batch.
 
+**Keys for the scoring and screening scripts (#2340, 2026-11-11).** Every script that binds
+keys through `scripts/dev_key_binding.py` (the phase 0 to 3 instruments, `inversion_router_control`,
+`router_batch` and the probes) needs three things or it refuses before the first call:
+`PIPER_CREDENTIAL_STORE=db`, a key named on the command line after the `env -u` flags
+(`ANTHROPIC_API_KEY=…` or `OPENAI_API_KEY=…`) or held in the database store, and `--provider`.
+None of them reads the OS keychain. Only the named provider is bound, so when it refuses, the run
+stops with `UnboundLLMKeyError`; it does not carry on against the other provider. The two
+screens print `PLANNED: N … calls on <provider>` before the first call.
+
 ### The two-stage router (#2149, 2026-11-01): built behind a flag, measured, rejected, removed
 
 Arch's #2149 question was whether a grouped catalog (stage 1 picks one of nine `RouteGroup`s,

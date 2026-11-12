@@ -601,7 +601,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 ## Now (rewritten at the 11-10 21:33 STOP; carry into Wed 11-11)
 
 - **Invite hold, PDR-008.** Re-verified 21:33 11-10 with `gh issue view`.
-  - Open: #2261 (waits on xian's #2174 runs), #2282 (its browser row waits on xian's word for Web's sign-in check), #2292 (P1, xian's records). #2335's log line and any rotation are xian's (Exec's rollup).
+  - Open: #2261 (leg decided D3 11-11 on #2174's pass; waits on Lead's ADR-081 record, Arch's validation and Lead's build), #2282 (its browser row waits on xian's word for Web's sign-in check), #2292 (P1, xian's records). #2335's log line and any rotation are xian's (Exec's rollup).
   - When all are met, PPM sends Exec the lift-readiness memo (§3), each row with `Verified how:`.
 - **Sprint (11-13 to 11-26), ratified 11-09; two-week sprints stand (10 of 11 on record).** Membership lives in `production-sprint-2-onboarding-proposal-2026-11-06.md` and on the map, not in the board's Sprint field.
   - **#2328 joined item 5 on xian's word, 11-10 17:31** (Lead's relay). Lead builds to the existing armed-pick wording (CXO 17:36), and CXO judges served quotes for both phrasings. The board shows Sprint PROD-CONVO (set 17:36 on Lead's ask; a topical tag from plan section V) and Status In Progress.
