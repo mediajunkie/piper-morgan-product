@@ -543,3 +543,5 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v956 (14:01): 2333 go routed (01M78WDW); 2335 rotate + Redis a/b/c routed (01M78WDY)
 - v957 (14:02): 14:01 WORK; 2327 yes-Friday relayed to PPM
 - v958 (14:22): 2335 rotation not yet ready (HOST changes); 2333 built; self-knowledge/start-scripts/CLAUDE.md routed
+- v959 (14:27): self-knowledge whose-Piper question (Arch 01M78XXS), epic 2349
+- v960 (14:28): self-knowledge dates (Arch 01M78XRJ: contributions Fri 15:00, recommendation Sat 12:00)
