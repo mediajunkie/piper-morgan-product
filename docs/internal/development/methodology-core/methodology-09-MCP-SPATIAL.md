@@ -2,10 +2,13 @@
 type: methodology
 title: MCP+Spatial Pattern Implementation Methodology
 valid_from: "2025-09-21"
-last_updated: "2026-08-29"
+last_updated: "2026-11-12"
 ---
 
 # MCP+Spatial Pattern Implementation Methodology
+
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Build a new integration by testing first, measuring against stated targets, and reusing a proven reference implementation.
 
 > ⚠️ **Dated note (2026-08-29)**: code excerpts below referencing `NotionSpatialIntelligence`
 > are HISTORICAL — that module was disposed of in the PM-ruled 2026-08-15/16 spatial cold-island

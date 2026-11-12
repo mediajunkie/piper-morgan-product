@@ -2,12 +2,15 @@
 type: methodology
 title: methodology-50 — Self-Attestation Is Not Verification
 valid_from: "2026-09-05"
-last_updated: "2026-09-05"
+last_updated: "2026-11-12"
 ---
 
 # methodology-50 — Self-Attestation Is Not Verification
 
-**Status**: Emerging (three confirmed real instances in one week, plus a distinct fourth-order
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Someone saying they checked something is not a check; verification needs evidence from an independent look at the result.
+
+**Status note**: Emerging (three confirmed real instances in one week, plus a distinct fourth-order
 instance in the citation history of this entry's own filing — watching for cross-project
 recurrence before Proven)
 **Filed**: 2026-09-05 (CIO) · **Seed formulation**: CXO, 2026-08-30 (uncited, correct) ·

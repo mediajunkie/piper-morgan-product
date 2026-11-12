@@ -2,10 +2,13 @@
 type: methodology
 title: Systematic Methodology Breakthroughs
 valid_from: "2025-09-21"
-last_updated: "2025-09-21"
+last_updated: "2026-11-12"
 ---
 
 # Systematic Methodology Breakthroughs
+
+**Status**: Retired. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: A 2025 diary of two finished tasks; its one lasting lesson, verify before creating, now lives in the core instructions.
 
 > **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
 > Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): backward-looking diary of two closed issues (2025); its one durable principle is covered continuously by CLAUDE.md's "Verify First, Create Second."

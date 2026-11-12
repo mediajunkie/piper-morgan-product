@@ -2,10 +2,13 @@
 type: methodology
 title: Session-Type Determines Git-Permission Scope
 valid_from: "2026-05-18"
-last_updated: "2026-05-18"
+last_updated: "2026-11-12"
 ---
 
 # Session-Type Determines Git-Permission Scope
+
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Whether an automated session can save changes to the main branch depends on how it was launched, so check before relying on it.
 
 ## Overview
 

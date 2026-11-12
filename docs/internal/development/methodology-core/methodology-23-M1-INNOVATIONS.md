@@ -2,10 +2,13 @@
 type: methodology
 title: "Methodology 23: M1-Era Methodology Innovations"
 valid_from: "2026-03-31"
-last_updated: "2026-08-29"
+last_updated: "2026-11-12"
 ---
 
 # Methodology 23: M1-Era Methodology Innovations
+
+**Status**: Retired. Set 2026-11-12 by CIO (standing item 9p) (a catalog of M1-era changes, each of which now lives in its own home (the audit trigger in CIO's role card)).
+**Summary**: Catalog of process changes adopted in one phase, such as auditing methods after each milestone and letting early-stage patterns be logged without sign-off.
 
 *Catalog of methodology changes from the M0-M1 period (Mar 2026). These innovations are already in practice but were not previously documented in methodology-core.*
 

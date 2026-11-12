@@ -2,12 +2,15 @@
 type: methodology
 title: An Alarm Needs a Reader
 valid_from: "2026-10-31"
-last_updated: "2026-10-31"
+last_updated: "2026-11-12"
 ---
 
 # An Alarm Needs a Reader
 
-**Status**: Emerging. Five instances over three months, from four roles' lanes. Graduation conditions are below.
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: A check is not finished until its alert has a named reader, a named time and a named step; an unread alert equals none.
+
+**Status note**: Emerging. Five instances over three months, from four roles' lanes. Graduation conditions are below.
 **Filed**: 2026-10-31 by CIO. **Origin**: #1967's leftover, which HOST named twice before CIO answered.
 **Companions**: [[methodology-44]] (a clear is not a measurement; this is the alarm-side twin) ·
 [[methodology-36]] (mechanisms over vigilance) · [[methodology-53]] (chokepoint vs bolt-on)

@@ -6,11 +6,6 @@
 
 ## Open
 
-### Piper self-knowledge: Arch's recommendation with options (xian's ask, Production)
-**Filed**: 2026-11-12
-
-- [ ] Draft on main: `docs/internal/architecture/design-records/piper-self-knowledge-exploration-2026-11-12.md`. Contributions (CXO area 2, Docs areas 3–4, CIO area 5) due 2026-11-13 15:00 PST. **Owed: the recommendation to Exec by 2026-11-14 12:00 PST** (memo 01M78XRJBSMHW8HB0F1PA4TP21). If a contribution is missing at 15:00 Friday, write the recommendation with that area marked "contributor input pending". Don't slip the date.
-
 ### Bets 001–003: PM's fields (PM TO FILL)
 **Filed**: 2026-09-18
 

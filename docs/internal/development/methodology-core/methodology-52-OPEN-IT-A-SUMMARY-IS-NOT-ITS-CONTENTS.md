@@ -2,12 +2,15 @@
 type: methodology
 title: Open It — A Summary Is Not Its Contents
 valid_from: "2026-09-07"
-last_updated: "2026-10-19"
+last_updated: "2026-11-12"
 ---
 
 # Open It — A Summary Is Not Its Contents
 
-**Status**: **PROVEN (2026-10-19)**: the promotion trigger below was met by a third instance from a
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Do not judge a document, ticket or report by its title or summary; open it and read the contents before relying on it.
+
+**Status note**: **PROVEN (2026-10-19)**: the promotion trigger below was met by a third instance from a
 third seat (Lead, #2081, evidence item 3), six weeks after filing, on an unrelated topic, with a
 measured cost (xian: "it has wasted at least half a day"). As filed: **Two instances, two seats, one week** — CXO's own m-45 miscitation and Exec's
 #1386 criterion-3 miss — arrived at independently in real time (two separate real mistakes, on two

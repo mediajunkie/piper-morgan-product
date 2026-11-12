@@ -2,10 +2,13 @@
 type: methodology
 title: Orchestration Testing Methodology
 valid_from: "2025-09-21"
-last_updated: "2025-09-21"
+last_updated: "2026-11-12"
 ---
 
 # Orchestration Testing Methodology
+
+**Status**: Retired. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Test plan for a multi-agent coordinator component that has been removed from the product.
 
 > **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
 > Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): entirely about testing `MultiAgentCoordinator`/`ExcellenceFlywheelIntegrator`; `services/orchestration/` confirmed absent, referenced test files confirmed absent. Same deleted subsystem.

@@ -2,12 +2,15 @@
 type: methodology
 title: Mechanism Displaces Unreferenced Discipline
 valid_from: "2026-06-09"
-last_updated: "2026-06-13"
+last_updated: "2026-11-12"
 ---
 
 # Mechanism Displaces Unreferenced Discipline
 
-**Status**: **PROVEN** (2026-06-12 — the second structurally-different instance landed: the migration carry-forward variant-preservation trap; Architect concurred 3/3; PM ratified pending concur). Filed Emerging 2026-06-09; promotion gate (a structurally-different second instance) met in 3 days.
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: When you add automation, check which older manual practice it silently replaces, and update or reference that practice so it is not lost.
+
+**Status note**: **PROVEN** (2026-06-12 — the second structurally-different instance landed: the migration carry-forward variant-preservation trap; Architect concurred 3/3; PM ratified pending concur). Filed Emerging 2026-06-09; promotion gate (a structurally-different second instance) met in 3 days.
 **Filed**: 2026-06-09 by CIO Vehicle 2 · **Promoted**: 2026-06-12
 **Origin**: session-log-vs-cycle-log displacement (PM flag 2026-06-09 16:48; Architect analysis; Docs cohort-wide audit)
 **Related**: methodology-31 (founding instance's surface), methodology-35 (sibling incomplete-specification failure), methodology-36 (the cure class), methodology-40 (the cure-instantiation rollout runs through layer-then-migrate)

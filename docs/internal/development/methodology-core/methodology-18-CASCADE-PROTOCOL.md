@@ -2,10 +2,13 @@
 type: methodology
 title: Methodology Cascade Protocol
 valid_from: "2025-09-21"
-last_updated: "2025-09-21"
+last_updated: "2026-11-12"
 ---
 
 # Methodology Cascade Protocol
+
+**Status**: Retired. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: A scheme for passing method rules down through every layer of coordination, which agents absorb at onboarding instead of consulting.
 
 > **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
 > Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): a prior CIO's own 2026-03-19 mailbox testimony states this range is "internalized during onboarding," not consulted. Two of its five referenced templates don't exist. More hierarchical/synchronous than today's duty-cycle model.

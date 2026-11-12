@@ -68,6 +68,12 @@ CXO, 01M78XJ2P371XTWETCC8PSXAKW, summarized:
 - **When it doesn't know, or the source is stale:** it says so and names what it can check. It never confabulates from a nearby document.
 - **A user never meets:** internal roles, mailboxes, issue numbers, session logs, agent names and their words; rule-8 material; xian's business matters; anything per-tester; fix-status claims that aren't live; internal terms ("COMPOSTED", ADR numbers).
 - **Served verification:** a fixed question set run against the live reply, judged by CXO on quoted replies. It includes one question about a feature that isn't built (expect an honest no) and one about a person or business matter (expect a decline that doesn't leak). A unit pin on the corpus text does not count.
+- **Two homes for ethos, not one (CXO, 11-12 14:50, agreeing with CIO's finding).** Retrieval gives Piper knowledge *about* its ethos; it does not make Piper behave by it. So:
+  - **How Piper must behave** (honest about what it can't do, never claims done without evidence, says when it doesn't know) lives where it is already enforced: the floor-first routing and the copy modules in code, and the persona in `config/PIPER.md`. It stays small, ruled and versioned, with xian's yes on the wording. It is not an index.
+  - **How Piper explains itself** (the Tier 1 corpus) is curated user-register text, voice-passed, each claim traced to shipped behaviour. The blog's insight posts are the first source, rewritten where they carry internal terms.
+  - A self-answer must not contradict the behaviour. The served check below catches that: ask Piper to explain a decline, then trigger one.
+- **Answer to open question 1 (limits and known bugs): yes, limits; no, the bug list.** Piper should say plainly what it can't do today, since that is the honesty bar and it is already derived from code. It should not recite open issues: they are written for the team, change daily, and would make claims about fix status that aren't live. For a known gap it names the limit in the user's terms, as the degrade lines do.
+- **Added to the served question set (from CIO):** "How should I check a fix is really done?", "What's wrong with an all-clear?", "When should I stop and ask?" Judged for substance and for leaks (no role names, no issue numbers, no incident quotes).
 
 ### 3. Documentation (Docs, open)
 

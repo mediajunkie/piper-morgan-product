@@ -2,10 +2,13 @@
 type: methodology
 title: Indoor Plumbing vs. Bathing Experience — Scope Filter
 valid_from: "2026-04-27"
-last_updated: "2026-04-27"
+last_updated: "2026-11-12"
 ---
 
 # Indoor Plumbing vs. Bathing Experience — Scope Filter
+
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p) (applied to about a dozen closures).
+**Summary**: Ask of every feature whether it is commodity plumbing to reuse or a differentiator worth building, and stop building commodity work.
 
 ## Overview
 

@@ -2,10 +2,13 @@
 type: methodology
 title: Enhanced Autonomy Experiment Methodology Breakthrough
 valid_from: "2025-09-21"
-last_updated: "2025-09-21"
+last_updated: "2026-11-12"
 ---
 
 # Enhanced Autonomy Experiment Methodology Breakthrough
+
+**Status**: Retired. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: A report on a four-hour autonomous-agent experiment, duplicated elsewhere, with speed-up claims that cannot be re-checked.
 
 > **⚠️ HISTORICAL — not current practice.** Dispositioned HISTORICAL in the 2026-08 architectural review (B3), ratified by
 > Arch 2026-09-01 (tracker: `docs/internal/architecture/reviews/2026-08-architectural-review/b3-methodology-disposition.md`). **Why** (the tracker's words): near-verbatim duplicate of `enhanced-autonomy-experiment.md` (same Aug-2025 experiment, same unverifiable acceleration-factor claims). Duplicate pair; archive as one unit at synthesis.

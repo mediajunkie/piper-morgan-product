@@ -2,10 +2,13 @@
 type: methodology
 title: Pre-Filing Slot-Availability Check
 valid_from: "2026-05-15"
-last_updated: "2026-08-29"
+last_updated: "2026-11-12"
 ---
 
 # Pre-Filing Slot-Availability Check
+
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Before claiming the next number in a shared sequence, check what already exists there, because two people can pick the same one.
 
 ## Overview
 

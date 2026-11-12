@@ -2,10 +2,13 @@
 type: methodology
 title: Agent Coordination Methodology
 valid_from: "2025-09-21"
-last_updated: "2026-09-01"
+last_updated: "2026-11-12"
 ---
 
 # Agent Coordination Methodology
+
+**Status**: Retired. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: How to split work between two AI coding tools with handoffs and checks; replaced by a newer coordination approach.
 
 > **Status: HISTORICAL — superseded by `pattern-029-multi-agent-coordination.md`** (B3
 > disposition, 2026-09-01). This document's coordination model predates the current duty-cycle

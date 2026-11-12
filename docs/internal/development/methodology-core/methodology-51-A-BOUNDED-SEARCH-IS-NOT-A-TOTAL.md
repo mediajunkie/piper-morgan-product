@@ -2,10 +2,13 @@
 type: methodology
 title: A Bounded Search Is Not a Total — The Scope Was Chosen, Not Given
 valid_from: "2026-09-06"
-last_updated: "2026-11-02"
+last_updated: "2026-11-12"
 ---
 
 # A Bounded Search Is Not a Total — The Scope Was Chosen, Not Given
+
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: A search covers only the scope you chose, so before saying "none exist" confirm the scope matched the question and report its limits.
 
 **Status (2026-11-02)**: Emerging, **four seats**: CXO (three instances), Lead (10-17), Arch (10-23, caught in review before it ran), CIO (11-01, a search bounded by one name; 11-02, a search bounded by its own context padding, caught because it was sent as a question); see the sections below. Promotion review at the 12-09 audit. **Original status (2026-09-06)**: Emerging, scoped to one seat. **Three instances, one week, one agent (CXO)** — by this
 entry's own companion (m-45), that is one agent's habit observed three times, not three independent

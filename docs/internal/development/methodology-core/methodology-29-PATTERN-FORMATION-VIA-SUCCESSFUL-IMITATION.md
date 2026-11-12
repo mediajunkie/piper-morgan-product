@@ -2,10 +2,13 @@
 type: methodology
 title: Pattern Formation via Successful Imitation
 valid_from: "2026-05-15"
-last_updated: "2026-05-18"
+last_updated: "2026-11-12"
 ---
 
 # Pattern Formation via Successful Imitation
+
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: A practice is real once a clean example gets reused unprompted on a second and third problem; formalize it then, not earlier.
 
 ## Overview
 

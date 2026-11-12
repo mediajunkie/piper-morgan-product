@@ -2,10 +2,13 @@
 type: methodology
 title: Branch-or-Anchor Discipline
 valid_from: "2026-04-27"
-last_updated: "2026-08-29"
+last_updated: "2026-11-12"
 ---
 
 # Branch-or-Anchor Discipline
+
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: When extending a shared standard, either use it unchanged or rename your version; never silently change a standard while keeping its name.
 
 ## Overview
 
