@@ -539,3 +539,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v952 (13:23): sitting paused: alpha callback + install-scope decision (Lead 01M78T3H, PA 01M78T1R)
 - v953 (13:28): 2292 closed (2344 split); install scope option 2 agreed safe by Arch/HOST/PPM
 - v954 (13:47): 1423 answered (xian moved it; relayed to PPM 01M78VMV), item removed
+- v955 (13:56): PUB-clear yes/no added (PPM 01M78W2T)
