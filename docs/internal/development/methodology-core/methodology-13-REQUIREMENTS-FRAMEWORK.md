@@ -2,10 +2,13 @@
 type: methodology
 title: TDD and Domain Authority Requirements
 valid_from: "2025-09-21"
-last_updated: "2025-09-21"
+last_updated: "2026-11-12"
 ---
 
 # TDD and Domain Authority Requirements
+
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p) (founding TDD rule; re-check its wording at the 12-29 audit).
+**Summary**: When a test and the domain model disagree, trust the researched domain model and fix the test; when behavior is missing, fix the code.
 
 ## Domain Authority Principle
 

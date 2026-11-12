@@ -7,7 +7,10 @@ last_updated: "2026-11-12"
 
 # Chokepoint vs. Bolt-On — Attach the Obligation to Something That Can't Be Skipped
 
-**Status**: Proven-by-use, filed late. **This is not a new claim** — it has shaped at least four
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Attach a required step to something that cannot be skipped, rather than adding a separate check that people can forget or bypass.
+
+**Status note**: Proven-by-use, filed late. **This is not a new claim** — it has shaped at least four
 shipped mechanisms this week (the role-health-check natural experiment that motivated it, the
 NO-SESSION-LOG detector, the subagent-worktree cleanup fix, and the duty-cycle backlog-intake
 amendment) plus the 7k synthesis sent to PM — entirely as oral tradition in `decisions.log` and

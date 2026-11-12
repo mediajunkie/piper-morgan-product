@@ -2,10 +2,13 @@
 type: methodology
 title: Coverage-Audit Gate for Refactor Deltas
 valid_from: "2026-05-27"
-last_updated: "2026-08-29"
+last_updated: "2026-11-12"
 ---
 
 # Coverage-Audit Gate for Refactor Deltas
+
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: After a large restructuring of startup or routing code, list everything that was connected before and confirm each piece is still connected.
 
 ## Overview
 

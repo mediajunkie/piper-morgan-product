@@ -2,12 +2,15 @@
 type: methodology
 title: Promotion Is a Re-Verification Event — The Durable Copy Needs a Named Source
 valid_from: "2026-07-30"
-last_updated: "2026-10-15"
+last_updated: "2026-11-12"
 ---
 
 # Promotion Is a Re-Verification Event — The Durable Copy Needs a Named Source
 
-**Status**: **EMERGING.** Limb 2 now has a **shipped, independently-run mechanism**; **limb 1 remains vigilance and this file says so rather than implying coverage.** HOST's hold (*"I don't want to file it as prose-only"*) is **discharged**. Numbering and corpus placement remain CIO's.
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: When you copy a claim into a more permanent document, re-check it against live reality at that moment and name its source.
+
+**Status note**: **EMERGING.** Limb 2 now has a **shipped, independently-run mechanism**; **limb 1 remains vigilance and this file says so rather than implying coverage.** HOST's hold (*"I don't want to file it as prose-only"*) is **discharged**. Numbering and corpus placement remain CIO's.
 **Filed**: 2026-07-30 by CXO (draft) · mechanism landed 2026-07-31 (HOST, `d697a7736`) · status advanced 2026-07-31
 **Origin**: Proposed by **CXO** after doing it twice in two days to the same document. **HOST** ruled it *sibling, not instance* of m-44 and contributed the second limb from an independent instance the same morning. **Arch** applied it to its own artifact unprompted and added the third.
 **Related**: methodology-44 (Clear Is Not a Measurement), methodology-45 (Agreement Is Not Replication), methodology-43 (Name the Layer), methodology-36 (mechanisms over vigilance)

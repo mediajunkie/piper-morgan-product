@@ -2,10 +2,13 @@
 type: methodology
 title: Common Failures That Break The Flywheel
 valid_from: "2025-09-21"
-last_updated: "2025-12-02"
+last_updated: "2026-11-12"
 ---
 
 # Common Failures That Break The Flywheel
+
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p) (founding practice; CLAUDE.md's working rules carry it).
+**Summary**: The five habits that most often wreck quality: skipping verification, code before tests, solo heroics, assuming instead of checking, and declaring done early.
 
 ## Top 5 Excellence Killers
 

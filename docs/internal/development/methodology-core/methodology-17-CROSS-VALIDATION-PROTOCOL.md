@@ -2,10 +2,13 @@
 type: methodology
 title: Cross-Validation Protocol
 valid_from: "2025-09-21"
-last_updated: "2026-05-18"
+last_updated: "2026-11-12"
 ---
 
 # Cross-Validation Protocol
+
+**Status**: Proven. Set 2026-11-12 by CIO (standing item 9p) (founding practice; m-45 sharpens it).
+**Summary**: Have a second independent reviewer verify any important claim with evidence instead of accepting one agent's word.
 **Version**: 1.0
 **Date**: September 4, 2025
 **Purpose**: Ensure multi-agent work quality through systematic verification

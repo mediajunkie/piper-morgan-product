@@ -2,10 +2,13 @@
 type: methodology
 title: Cohort-Discipline as Moat — Operating Norms the Platform Doesn't Productize
 valid_from: "2026-05-24"
-last_updated: "2026-06-10"
+last_updated: "2026-11-12"
 ---
 
 # Cohort-Discipline as Moat — Operating Norms the Platform Doesn't Productize
+
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: As vendors productize tools, a team's lasting edge is its working habits: how it commits, names things, briefs people and checks work.
 
 ## Overview
 

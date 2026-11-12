@@ -2,12 +2,15 @@
 type: methodology
 title: A False Claim in a Durable Doc Is a Lens, Not Just an Error
 valid_from: "2026-09-13"
-last_updated: "2026-09-13"
+last_updated: "2026-11-12"
 ---
 
 # A False Claim in a Durable Doc Is a Lens, Not Just an Error
 
-**Status**: Emerging (one clean instance, self-corrected by its own author within four days;
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: An unverified claim in a lasting document shapes how every later reader interprets new evidence, so verify before writing it down.
+
+**Status note**: Emerging (one clean instance, self-corrected by its own author within four days;
 watching for a second instance from a different seat before promoting further).
 **Filed**: 2026-09-13 by CIO · **Origin**: Lead's finding, 2026-09-11 — self-reported, not found by
 someone else · **Related**: [[methodology-44]] (Clear Is Not a Measurement — the instrument-layer

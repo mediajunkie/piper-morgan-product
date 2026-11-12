@@ -2,12 +2,15 @@
 type: methodology
 title: A Name Is Not a Definition
 valid_from: "2026-09-25"
-last_updated: "2026-11-02"
+last_updated: "2026-11-12"
 ---
 
 # A Name Is Not a Definition
 
-**Status**: Emerging. Two instances from one author (Arch, 09-20), plus one cross-author instance (CIO and HOST's spec, caught by Lead; 2026-11-02, below). See "What is NOT established" for what one cross-author instance does and doesn't settle.
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: A label that looks official, such as an enum name or checkbox, does not settle a decision; the real definition is in the logic behind it.
+
+**Status note**: Emerging. Two instances from one author (Arch, 09-20), plus one cross-author instance (CIO and HOST's spec, caught by Lead; 2026-11-02, below). See "What is NOT established" for what one cross-author instance does and doesn't settle.
 **Filed**: 2026-09-25 by Arch · **Origin**: Arch's own two rulings, 2026-09-20 (#1818) and
 2026-09-23 (#1744), surfaced while drafting Agent 360 v0.5 · **Ruled Emerging by**: CIO, 2026-09-25
 (`ruling-cio-to-arch-cc-host-pm-name-is-not-a-definition-file-as-emerging-2026-09-25.md`) · **Related**:

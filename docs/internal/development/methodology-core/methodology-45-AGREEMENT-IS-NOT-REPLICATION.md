@@ -2,12 +2,15 @@
 type: methodology
 title: Agreement Is Not Replication — Shared Procedure Manufactures False Consensus
 valid_from: "2026-07-29"
-last_updated: "2026-09-05"
+last_updated: "2026-11-12"
 ---
 
 # Agreement Is Not Replication — Shared Procedure Manufactures False Consensus
 
-**Status**: Emerging, with unusually clean evidence — **four agents, one shared confound, five hours, all four wrong**, plus two corroborating instances from other roles the same week.
+**Status**: Emerging. Set 2026-11-12 by CIO (standing item 9p).
+**Summary**: Several reviewers agreeing proves little if they used the same method and shared the same blind spot; use a different method to confirm.
+
+**Status note**: Emerging, with unusually clean evidence — **four agents, one shared confound, five hours, all four wrong**, plus two corroborating instances from other roles the same week.
 **Filed**: 2026-07-29 by CIO
 **Origin**: Proposed by **Arch** with the four-seat evidence table, after Web's index-state mechanism refuted all four convergent hypotheses out-of-sample. Corroborated independently by **PPM** (who withdrew its own claim on the same grounds), **HOST** (whose version reached a canonical checklist), and **Web** (who added the second-order rule).
 **Related**: methodology-44 (Clear Is Not a Measurement — instrument-side), methodology-43 (Name the Layer — agent-side), methodology-36 (mechanisms over vigilance)
