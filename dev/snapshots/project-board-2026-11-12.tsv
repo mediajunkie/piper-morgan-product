@@ -2132,3 +2132,9 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2341	OPEN	Production		One command with hidden prompts for procedures where xian holds the secrets (first: ADR-081 D3's refresh check)			
 2342	OPEN	Production	PUB - Public Beta	Build ADR-081 D3: GitHub connect through one published GitHub App, with user tokens that expire and refresh			
 2343	OPEN	Production		One command for the GitHub App cutover sitting: set the App's values and run the cutover, secret never in argv (issue 2342's step 3 and 4)			
+2349	OPEN	Production		EPIC: Piper self-knowledge: codebase, ethos, documentation, lore and best practices (design exploration first; Arch owns)	epic		
+2344	OPEN	Production		Buttondown confirmations: read the sending-domain setup and check SPF/DKIM/DMARC (split from 2292)			
+2345	OPEN	Production		GitHub and Calendar connect keep their sign-in state in the process, not Redis			
+2346	OPEN	Production		The revoked-token list decides Redis or database once at startup and never retries			
+2347	OPEN	Production		Remove two dead Redis paths: the conversation manager's turn cache and FeedbackCapture			
+2348	OPEN	Production		/health should report Redis, as it does the database and the credential store			
