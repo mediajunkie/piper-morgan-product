@@ -3285,3 +3285,4 @@ Memo 01M783YMA8JWSN918349EYKG3Q.
 - Callers: the connect callback and the refresh only.
 - The refresh write and commit are the last step under the xact lock.
 Memo 01M7840EWS8XMCQVFW26HJCPZC.
+2026-11-12 07:08 PT (Arch) — #2342 (PA 01M784N6P2Q85NS7EPQHJ4VRTB): the background refresh pass depends on the main app staying warm. The pin is an architecture test asserting fly.toml auto_stop_machines=false and min_machines_running>=1, plus a comment there. Changing either needs the pass moved first and a ruling. On the connector path, UNREACHABLE text is temporary and never sends the person to Settings; only STALE asks them to reconnect. Memo 01M784TF9ATHX25NDPDZQTR73S.
