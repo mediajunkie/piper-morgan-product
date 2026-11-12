@@ -441,7 +441,7 @@ Steps 3 and 4 are one command (issue 2343), run from a checkout where `fly` is s
 venv/bin/python scripts/github_app_cutover_sitting.py
 ```
 
-It checks first and changes nothing until two typed `yes` answers: one before the values are set, one
+It checks first (step 2a's MCP build among the checks) and changes nothing until two typed `yes` answers: one before the values are set, one
 before `--apply`. It asks GitHub whether the client ID and secret belong together before setting
 them. It prints one block for issue 2342. If it stops after the main app's values are set, it says so
 and gives the line that finishes the job with nothing to type (`--cutover-only`). Not yet run against

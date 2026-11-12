@@ -1,5 +1,13 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-12 12:05 (supersedes the 09:46 block below where they differ)
+
+- **Beta serves `d4fd55e6c5`** since 11:52 (run 43294075652, on xian's "Yes, promote." via Exec 11:44). It carries migration `u2342reason`. App mode is off: no App values set. Say "beta" to xian; the Fly app is `piper-morgan`.
+- **2343 built** on main `ab810775b2`: `scripts/github_app_cutover_sitting.py`, 26 unit tests, never run against the hosts. Waiting on reads from Arch, HOST, CIO (v4 01M78NV2Q9T0DV56YWV32WA5YP); step order on issuecomment-6834590967.
+- **MCP app is behind** (PA 11:58): serves `28911350bb`, without the bearer fix `7e32d63f68`. xian's deploy (`scripts/deploy-mcp.sh`) is recipe 11 step 2a, asked through Exec by PA. The sitting command refuses until it is done.
+- **xian's remaining steps for 2342:** deploy the MCP app, register the App, run the sitting command. Then served rows (Web, PA, CXO).
+- The `fly ssh console -a piper-morgan -C` form is settled in recipe 11; not a question for xian.
+
 ## IN-DAY 2026-11-12 09:46 (not a day close) — 2342's unit layer is built and on main `36bc04e0c6`, CI green; everything left waits on xian
 - **2342 (GitHub connect through the published App): OPEN, unit layer done, inert until `GITHUB_APP_CLIENT_ID` and `GITHUB_APP_CLIENT_SECRET` are set on the main app.** Description and evidence comment are current (issuecomment-6830687425, CI note 6831233840). Served rows wait on xian's three steps: register the App, a yes to one promotion (main carries migration `u2342reason`, so the standing grant doesn't cover it), the cutover sitting (canonical-ops-recipes section 11). Not done by design: removing `_DEFAULT_SCOPES = ["repo"]` (after the served rows). Words owed by CXO: the Integrations card's line for `install_state`.
 - **2343 (one command for the sitting): filed, deferred to a fresh session or a compaction** (it sets production secrets and starts the token-deleting step; no seat can test it against the hosts). Build it on `fly ssh console -a piper-morgan -C "<command>"` unless xian says otherwise (Exec's record, board v943 has his yes/no). Section 10 of canonical-ops-recipes has the rules; `scripts/github_app_refresh_check.py` is the pattern. Arch, HOST and CIO read the step order before xian runs it.
