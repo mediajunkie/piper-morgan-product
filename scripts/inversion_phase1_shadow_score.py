@@ -26,12 +26,14 @@ scored by resolving the router's operation to its ACTION_REGISTRY category
 NO-MATCH with an annotation rather than a silent pass — a gate that cannot
 see a row must say so (m-44).
 
-Usage (env-stripped per CLAUDE.md; keys resolve via Keychain):
+Usage (env-stripped per CLAUDE.md; PIPER_CREDENTIAL_STORE=db, a key named after the
+env -u flags, and --provider, #2340):
 
     env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN \
       -u ANTHROPIC_CUSTOM_HEADERS POSTGRES_PORT=5433 \
+      PIPER_CREDENTIAL_STORE=db ANTHROPIC_API_KEY=… \
       venv/bin/python scripts/inversion_phase1_shadow_score.py \
-      [--dry-run] [--out PATH]
+      --provider anthropic [--dry-run] [--out PATH]
 
 Cost: one Haiku-class call per corpus row (93), plus at most one repair retry
 per row. --dry-run validates corpus + grammar + row selections, no LLM calls.
@@ -1064,6 +1066,16 @@ async def run(
     async def router_fn(phrase: str):
         return await route(phrase, None, llm_service=llm, grammar=grammar, user_id=None)
 
+    if not replay:
+        from dev_key_binding import planned_calls_line, providers_from_flag
+
+        print(
+            planned_calls_line(
+                len(rows),
+                providers_from_flag(provider),
+                "router calls (one per row, before repair retries)",
+            )
+        )
     decisions = await route_all(rows, router_fn)
     scored = score(rows, decisions)
     calls = sum(getattr(d, "llm_calls", 0) for d in decisions)
@@ -1118,9 +1130,12 @@ if __name__ == "__main__":
     # #1812 aftermath: scripts must bind the developer's own keys — the
     # server-key fallback this instrument silently relied on is gone.
     sys.path.insert(0, str(ROOT / "scripts"))
-    from dev_key_binding import developer_keys_bound
+    from dev_key_binding import developer_keys_bound, providers_from_flag
 
-    with developer_keys_bound(require=not args.dry_run):
+    with developer_keys_bound(
+        providers=providers_from_flag(args.provider),
+        require=not (args.dry_run or args.replay),
+    ):
         sys.exit(
             asyncio.run(
                 run(

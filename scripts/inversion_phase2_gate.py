@@ -47,11 +47,13 @@ armed rows, that is a REPORTED RESULT. This script contains no
 tune-until-green loop and its report prints raw REFUSED/mismatch rows
 verbatim.
 
-Usage (env-stripped per CLAUDE.md; keys resolve via Keychain):
+Usage (env-stripped per CLAUDE.md; PIPER_CREDENTIAL_STORE=db, a key named after the
+env -u flags, and --provider, #2340):
 
     env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN \
       -u ANTHROPIC_CUSTOM_HEADERS POSTGRES_PORT=5433 \
-      venv/bin/python scripts/inversion_phase2_gate.py [--dry] [--out PATH]
+      PIPER_CREDENTIAL_STORE=db ANTHROPIC_API_KEY=… \
+      venv/bin/python scripts/inversion_phase2_gate.py --provider anthropic [--dry] [--out PATH]
 
 Cost: one Haiku-class call per phase0 row (93) + two per armed row (7) +
 one per control row (7) = 114 planned calls, plus at most one repair retry
@@ -758,7 +760,7 @@ if __name__ == "__main__":
         print(flip_coverage_audit(), end="")
         sys.exit(0)
     # #1812 aftermath: bind the developer's own keys (no server-key fallback).
-    from dev_key_binding import developer_keys_bound
+    from dev_key_binding import developer_keys_bound, providers_from_flag
 
-    with developer_keys_bound(require=not args.dry):
+    with developer_keys_bound(providers=providers_from_flag(args.provider), require=not args.dry):
         sys.exit(asyncio.run(run(args.dry, args.out, args.provider)))
