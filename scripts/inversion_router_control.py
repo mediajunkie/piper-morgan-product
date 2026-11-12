@@ -7,8 +7,10 @@ on its moved rows plus a sentinel set BEFORE the one full ~577-call run that
 only the landing candidate owes. Until 2026-10-11 every lane wrote its own
 throwaway ``control7.py``; this is that script, kept.
 
-Usage (env-stripped per CLAUDE.md; keys resolve via Keychain):
+Usage (env-stripped per CLAUDE.md; PIPER_CREDENTIAL_STORE=db, a key named after the
+env -u flags, and --provider, #2340):
     env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN \\
+      PIPER_CREDENTIAL_STORE=db ANTHROPIC_API_KEY=… \\
       venv/bin/python scripts/inversion_router_control.py --provider anthropic \\
       --samples 6 --phrase "show today's tasks" --phrase "what needs my attention?" \\
       --label candidate --out /path/report.md
@@ -140,9 +142,15 @@ def main() -> int:
     ap.add_argument("--out", type=Path, required=True)
     args = ap.parse_args()
     sys.path.insert(0, str(ROOT / "scripts"))
-    from dev_key_binding import developer_keys_bound
+    from dev_key_binding import (
+        developer_keys_bound,
+        planned_calls_line,
+        providers_from_flag,
+    )
 
-    with developer_keys_bound(require=True):
+    _providers = providers_from_flag(args.provider)
+    with developer_keys_bound(providers=_providers, require=True):
+        print(planned_calls_line(len(args.phrase) * args.samples, _providers, "router calls"))
         rows = asyncio.run(_control(args.phrase, args.samples, args.provider))
     write_report(rows, args.out, args.samples, args.label)
     return 1 if any(r["error"] for r in rows) else 0
