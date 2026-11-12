@@ -420,6 +420,8 @@ stays valid at GitHub, and still serves the Claude connector, until the script i
 2. **Promote a build that carries the code**, at or after main `7f17d1a841`. It carries the migration
    `u2342reason` (one nullable column), so it needs xian's explicit word, not the standing grant. With
    the secrets unset the build behaves as the classic app does.
+   **Done 2026-11-12 11:52 PT:** beta serves `d4fd55e6c5` (run 43294075652, on xian's "Yes, promote.").
+   "Beta" is the Fly app `piper-morgan`; the deploy input is still named `promote_to_alpha`.
 
 **The sitting**
 
@@ -429,10 +431,16 @@ stays valid at GitHub, and still serves the Claude connector, until the script i
    the note is in `fly.mcp.toml`). One alone on the main app leaves App mode off, and the startup log
    names the missing one. The client secret must not be typed into a command line or pasted into a
    session; the one command for this step is issue 2343.
-4. **Run the cutover, in the main app's container:**
-   `python scripts/github_app_cutover.py` (a dry run: it prints what it would do), then
-   `python scripts/github_app_cutover.py --apply`, then the dry run again, which should find no classic
-   grant. It prints counts and the time it ran, never a token. `--apply` is refused unless both App
+4. **Run the cutover, in the main app's container.** The form is the one already used for every
+   script xian runs there (section 7's `erase_user.py`, the 10-18 password-reset mint): one
+   `fly ssh console -a piper-morgan -C "<command>"` per run, with the script's full path, since the
+   image's working directory is `/app` and it carries `scripts/` (`Dockerfile`: `WORKDIR /app`,
+   `COPY . .`). Settled from that record by Lead on 2026-11-12, not a question for xian (Exec, 11:44);
+   issue 2343's one command uses the same form. The three runs:
+   `fly ssh console -a piper-morgan -C "python /app/scripts/github_app_cutover.py"` (a dry run: it
+   prints what it would do), then the same line with `--apply` after the script name, then the dry
+   run again, which should find no classic grant. None of the three carries a secret: the script
+   reads the App's values from the container's environment. It prints counts and the time it ran, never a token. `--apply` is refused unless both App
    variables are set. Put the three outputs on issue 2342. A revoke that failed is counted and does not
    stop the run.
 5. **Check it took.** The main app's startup log reads "GitHub connect mode: GitHub App". On beta,
