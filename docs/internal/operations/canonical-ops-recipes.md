@@ -397,6 +397,8 @@ gives him one command instead of a list of steps with placeholders to edit. The 
    one command line, and never asks him to paste a secret into a session, memo, issue or chat.
 
 First instance: `scripts/github_app_refresh_check.py` (Lead, #2341, ADR-081 D3's refresh check).
+Second: `scripts/github_app_cutover_sitting.py` (Lead, #2343), section 11's sitting. It also sets Fly
+secrets, which go to `fly secrets import` on standard input.
 
 This rule does not cover how a provider key reaches a seat for its own runs. That is open with xian
 through Exec (Arch, decisions.log 2026-11-11 18:43, #2340).
@@ -425,12 +427,25 @@ stays valid at GitHub, and still serves the Claude connector, until the script i
 
 **The sitting**
 
+Steps 3 and 4 are one command (issue 2343), run from a checkout where `fly` is signed in:
+
+```
+venv/bin/python scripts/github_app_cutover_sitting.py
+```
+
+It checks first and changes nothing until two typed `yes` answers: one before the values are set, one
+before `--apply`. It asks GitHub whether the client ID and secret belong together before setting
+them. It prints one block for issue 2342. If it stops after the main app's values are set, it says so
+and gives the line that finishes the job with nothing to type (`--cutover-only`). Not yet run against
+the hosts by anyone; xian's first run is the check. What it does, and the by-hand form if it fails:
+
 3. **Set the values.** On the main app (`piper-morgan`): `GITHUB_APP_CLIENT_ID`,
    `GITHUB_APP_CLIENT_SECRET`, `GITHUB_APP_SLUG`. On the MCP app (`piper-morgan-mcp`):
    `GITHUB_APP_SLUG` only (CXO, 08:28). The client ID and secret never go on the MCP app (Arch, PA;
    the note is in `fly.mcp.toml`). One alone on the main app leaves App mode off, and the startup log
    names the missing one. The client secret must not be typed into a command line or pasted into a
-   session; the one command for this step is issue 2343.
+   session. By hand, the form that keeps it off the command line is `fly secrets import -a <app>`,
+   which reads `NAME=VALUE` lines from standard input.
 4. **Run the cutover, in the main app's container.** The form is the one already used for every
    script xian runs there (section 7's `erase_user.py`, the 10-18 password-reset mint): one
    `fly ssh console -a piper-morgan -C "<command>"` per run, with the script's full path, since the
