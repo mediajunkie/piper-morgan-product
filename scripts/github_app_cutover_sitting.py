@@ -49,6 +49,7 @@ from __future__ import annotations
 
 import argparse
 import getpass
+import http.client
 import json
 import os
 import re
@@ -87,6 +88,7 @@ HALF_STATE = (
 _NO_SPACE = re.compile(r"^\S+$")
 _SLUG = re.compile(r"^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")
 _FOUND = re.compile(r"classic grants found\s+(\d+)\s*$", re.MULTILINE)
+_UNREADABLE = re.compile(r"rows that could not be read \(left alone\)\s+(\d+)\s*$", re.MULTILINE)
 
 #: (argv, standard input or None) -> (exit code, output). The seam the tests replace.
 Runner = Callable[[List[str], Optional[str]], Tuple[int, str]]
@@ -137,7 +139,7 @@ def read_health(url: str = HEALTH_URL) -> Dict[str, object]:
     try:
         with urllib.request.urlopen(req, timeout=20) as resp:  # noqa: S310
             body = json.loads(resp.read().decode() or "{}")
-    except (urllib.error.URLError, ValueError, OSError):
+    except (urllib.error.URLError, http.client.HTTPException, ValueError, OSError):
         return {}
     return body if isinstance(body, dict) else {}
 
@@ -177,6 +179,16 @@ def import_argv(app: str) -> List[str]:
 def classic_found(output: str) -> Optional[int]:
     m = _FOUND.search(output)
     return int(m.group(1)) if m else None
+
+
+def unreadable_rows(output: str) -> int:
+    m = _UNREADABLE.search(output)
+    return int(m.group(1)) if m else 0
+
+
+def masked(value: str) -> str:
+    """The repo's masked form, first four and last four. Too short to mask: nothing."""
+    return f"{value[:4]}…{value[-4:]}" if len(value) >= 12 else "(too short to mask)"
 
 
 def ask_values(
@@ -281,9 +293,15 @@ class Sitting:
 
     def cutover(self, apply: bool, label: str) -> str:
         code, output = self.call(cutover_argv(apply))
-        if code != 0 or "github app cutover:" not in output:
-            tail = "\n".join(output.strip().splitlines()[-6:])
-            raise Stop(f"{label} did not run (exit {code}).\n{tail}")
+        tail = "\n".join(output.strip().splitlines()[-6:])
+        # Whether `fly ssh console -C` hands back the remote exit code is not on record
+        # (Arch, 2026-11-12), so the script's own first line decides, whatever the code.
+        for bad in ("REFUSED", "ERROR"):
+            if f"github app cutover: {bad}" in output:
+                raise Stop(f"{label}: the cutover script answered {bad}.\n{tail}")
+        wanted = "github app cutover: " + ("APPLIED" if apply else "DRY RUN")
+        if code != 0 or wanted not in output:
+            raise Stop(f"{label} did not run (exit {code}; no '{wanted}' line).\n{tail}")
         kept = [
             line
             for line in output.splitlines()
@@ -324,6 +342,8 @@ class Sitting:
             tail = "\n".join(output.strip().splitlines()[-4:])
             raise Stop(f"setting the values on {MAIN_APP} failed or half-finished.\n{tail}")
         self.note(f"three values set on {MAIN_APP}          PASS")
+        # HOST's record line. The client ID is public; masked by the repo's convention.
+        self.lines.append(f"{now()}  client ID (masked): {masked(values['client_id'])}")
 
     # --- step 6 -------------------------------------------------------------------
     def wait_for_restart(self, since: float, limit_s: float = 420.0) -> None:
@@ -378,6 +398,12 @@ class Sitting:
         if left != 0:
             raise Stop(f"the dry run after still finds classic grants ({left})")
         self.note("no classic grant left                    PASS")
+        skipped = unreadable_rows(last)
+        if skipped:
+            self.note(
+                f"NOTE: {skipped} row(s) could not be read and were left alone. They may be "
+                "classic grants; tell Lead."
+            )
         self.finished = True
 
 
@@ -398,6 +424,10 @@ def main(argv: Optional[List[str]] = None, sitting: Optional[Sitting] = None) ->
         code = 1
     except KeyboardInterrupt:
         s.note("STOPPED: interrupted")
+        code = 1
+    except Exception as e:  # noqa: BLE001 - the block and the half-state text must print
+        # The type only: a message could carry a value this run holds (CIO, 2026-11-12).
+        s.note(f"STOPPED: unexpected {type(e).__name__}")
         code = 1
 
     s.out("")

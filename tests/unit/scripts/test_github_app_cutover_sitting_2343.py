@@ -317,3 +317,85 @@ def test_cutover_only_warns_about_an_old_mcp_app_and_still_finishes():
     code, text = w.go(cutover_only=True)
     assert code == 0 and "RESULT: DONE" in text
     assert "WITHOUT the bearer fix" in text
+
+
+@pytest.mark.parametrize("word", ["REFUSED", "ERROR"])
+@pytest.mark.parametrize("which", ["apply", "dry"])
+def test_a_refused_or_error_line_stops_the_run_even_with_exit_zero(word, which):
+    w = World()
+    real = w.runner
+    seen = {"dry": 0}
+
+    def lying(argv, stdin):
+        code, out = real(argv, stdin)
+        if argv[:3] == ["fly", "ssh", "console"]:
+            is_apply = argv[-1].endswith("--apply")
+            if not is_apply:
+                seen["dry"] += 1
+            if (which == "apply" and is_apply) or (which == "dry" and seen["dry"] == 2):
+                return 0, f"github app cutover: {word}. Nothing was changed."
+        return code, out
+
+    w.runner = lying
+    code, text = w.go()
+    assert code == 1
+    assert f"the cutover script answered {word}" in text
+    assert "RESULT: NOT FINISHED" in text and cs.HALF_STATE in text
+    if which == "dry":
+        assert not any(a.endswith("--apply") for a in w.argvs())
+
+
+def test_an_apply_that_prints_a_dry_run_line_is_not_taken_as_applied():
+    w = World()
+    real = w.runner
+
+    def wrong(argv, stdin):
+        if argv[:3] == ["fly", "ssh", "console"] and argv[-1].endswith("--apply"):
+            return 0, _counts(3)
+        return real(argv, stdin)
+
+    w.runner = wrong
+    code, text = w.go()
+    assert code == 1
+    assert "no 'github app cutover: APPLIED' line" in text
+
+
+def test_an_unexpected_exception_after_the_set_still_prints_the_block_and_the_half_state():
+    w = World()
+    real = w.health
+
+    def breaks():
+        if w.restarted_at is not None:
+            raise RuntimeError(f"connection reset while sending {CLIENT_SECRET}")
+        return real()
+
+    w.health = breaks
+    code, text = w.go()
+    assert code == 1
+    assert "STOPPED: unexpected RuntimeError" in text
+    assert cs.BLOCK_START in text and cs.HALF_STATE in text
+    assert CLIENT_SECRET not in text and "connection reset" not in text
+
+
+def test_the_block_carries_the_client_id_masked_and_never_whole():
+    w = World()
+    _, text = w.go()
+    assert f"client ID (masked): {CLIENT_ID[:4]}…{CLIENT_ID[-4:]}" in text
+    assert CLIENT_ID not in text
+    assert cs.masked("short") == "(too short to mask)"
+
+
+def test_unreadable_rows_after_the_apply_get_a_note_in_the_block():
+    w = World()
+    real = w.runner
+
+    def with_unreadable(argv, stdin):
+        code, out = real(argv, stdin)
+        if argv[:3] == ["fly", "ssh", "console"]:
+            out += "  rows that could not be read (left alone)     2\n"
+        return code, out
+
+    w.runner = with_unreadable
+    code, text = w.go()
+    assert code == 0
+    assert "NOTE: 2 row(s) could not be read" in text
