@@ -76,7 +76,7 @@ Why a GitHub App and not a published OAuth App:
 This is unverified today. Whoever builds it (Lead) checks it first, against a test installation, and records the result in this ADR.
 - **Fallback if it fails:** one published GitHub **OAuth App** with the narrowest scope that serves our tools. D1, D2 and D4 are unchanged. The gain is #1514's "one app", and the least-privilege benefit is lost until the server supports App tokens.
 
-Onboarding copy and the install step's experience are CXO's. The app's registration under xian's GitHub account, and the custody of its private key, are HOST's to record.
+Onboarding copy and the install step's experience are CXO's. The app's registration and the custody of its credentials are HOST's to record. **Owner (Arch, 2026-11-12 13:08, memo 01M78SDJP2DZK5C33SYB4KN8TZ):** the org `pipermorgan` owns the published App, not xian's personal account, as the classic OAuth Apps have since 11-04. It is registered with install scope "Only on this account" until recipe 11 step 7 widens it. The served rows run on a test repository in the org.
 
 **D3's check, tooling (Lead, 2026-11-04; #2174):** `scripts/github_app_token_check.py` runs the check once a test GitHub App is installed and a user access token exists. It takes the token from `GITHUB_CHECK_TOKEN` only, calls every github-mcp-server tool Piper uses and the REST reads named above, and prints PASS or FAIL per call and totals, never the token or any body; `--writes` also creates, comments on and closes one issue in a test repository. The result, tool by tool with the versions tested, is recorded here when it runs.
 
