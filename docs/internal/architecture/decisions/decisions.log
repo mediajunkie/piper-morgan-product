@@ -3304,3 +3304,8 @@ Memo 01M786BZ0MVY10GBRY41H5RJJB.
 - Some installed, or the installation read fails: the empty result stands as today.
 - Unit 3 (88da3f58a8) is accepted on a source read.
 Memo 01M78748CM6ZND8VJ7K9P77T2Y.
+2026-11-12 08:02 PT (Arch) — #2342 unit 3b (693f5631f5): the empty-result install check on the issues and PRs reads is kept.
+- In App mode on an App grant, search_user_repositories answers from the installation read: installed repositories; the install-step degrade when installed nowhere; the honest failure when the read fails, never a fall-back to user:@me.
+- That makes it the one source for the person's repositories on every surface (Settings, chat, repo resolver, clarification choices, card probe).
+- The PAT leg and classic mode are unchanged.
+Memo 01M787XA2DJCCBF33FMF1C4B8Y.
