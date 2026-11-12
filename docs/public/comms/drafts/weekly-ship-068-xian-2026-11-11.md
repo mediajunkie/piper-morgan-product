@@ -12,7 +12,7 @@ This sprint week started with my birthday on which we hit the MVP milestone and 
 
 Then one of the first beta testers showed me a screen in the GitHub-connector setup that made me worry about a cross-account authentication leak.
 
-It turned out this was a false alarm related to how a GitHub OAuth app owned by a personal account presents the signup flow, but it did reveal a potential edge-case scenario that could leak credentials, so I halted beta invitations and prepared a heads-up to the first cohort of invitees.
+It turned out this was a false alarm related to how a GitHub OAuth app owned by a personal account presents the signup flow, but it did reveal a potential edge-case scenario that could leak credentials. I had already halted beta invitations, and I prepared a heads-up to the first cohort of invitees.
 
 Most of the fixes this week involve hardening the logic such that a connection can only be used by the person who connected it.
 
@@ -22,7 +22,7 @@ Most of the fixes this week involve hardening the logic such that a connection c
 
 The team built a class-level guard against tenancy leaks, resisting the urge to patch potential issues one at a time. Also, multiple attempts to improve the router failed to deliver measurable improvement, leaving it unchanged for now.
 
-There was also a three-hour website outage triggered by process and storage bloat. We exceeded the free tier for pipermorgan.ai at Vercel, but then realized we could optimize things and revert to a free account after this one month. (Images are now 71% smaller, and docs-only commits skip the build.)
+There was also a three-hour website outage when we exceeded the free tier for pipermorgan.ai at Vercel. We moved to a paid plan, but then realized we could optimize things and revert to a free account after this one month. (Our largest images are now 71% smaller, and docs-only commits skip the build.)
 
 The old alpha.pipermorgan.ai address now redirects to beta.pipermorgan.ai.
 
@@ -53,7 +53,7 @@ I've backed off from reworking AI-written early drafts as I found that it was ma
 
 For this entire sprint week all blog posts and the weekly ship followed my "AI prompts human" pattern, in which an agent provides me with the agreed upon scaffold and potential outline along with relevant researched and verified facts, along with suggestions to consider. That gives me enough to write something I can feel comfortable putting my name to, as I am doing right now.
 
-After the first blog post written this way (we had had quite a few working drafts in the pipeline to finish well after this decision was made a few weeks ago), I reported back to the agents trying to do what I want a new way yet again, "this first test … went well".
+After the first blog post written this way (we still had quite a few working drafts in the pipeline to finish well after this decision was made a few weeks ago), I told the agents, who were trying yet again to do things the way I want, "this first test … went well."
 
 ## 🌍 External relations & community
 
@@ -109,7 +109,7 @@ Before building a guard to prevent a specific problem from occurring, investigat
 
 The correct solution is a class-wide guard that addresses the shared root issue and not the hallmarks of each individual symptom.
 
-Our example this week is the isolation check. It looks for code that reads a setting for the whole deployment when it should really just read it for one person. Earlier cases had each been fixed one at a time where they showed up, and a proposed class-wide check split off in August was never built. On its first run the new check flagged 50 problem places (!), now down to 11.
+Our example this week is the isolation check. It looks for code that reads a setting for the whole deployment when it should really just read it for one person. Earlier cases had each been fixed one at a time where they showed up, and a proposed class-wide check split off in August was never built. On its first run the new check flagged 50 places to check (!). Most were fine, and the list is now down to 11.
 
 **Thanks,**
 xian + Piper Morgan Development Team
