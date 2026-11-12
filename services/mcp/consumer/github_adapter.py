@@ -52,7 +52,7 @@ from .connector import (
     ResourceQuery,
 )
 from .connector_grant_store import ConnectorGrantStore
-from .github_app_grant import REASON_CUTOVER, app_install_url, app_mode
+from .github_app_grant import REASON_CUTOVER, app_install_url, app_mode, looks_like_record
 from .github_app_install import (
     DETAIL_APP_INSTALL_LINK_MISSING,
     DETAIL_APP_NOT_INSTALLED,
@@ -347,6 +347,10 @@ class GitHubCredential:
     token: Optional[str]
     leg: str
     stale_oauth_reason: Optional[DegradationReason] = None
+    # #2342: True when ``token`` is the access token of a GitHub App grant record. A
+    # fact about the stored grant, not about this process's configuration, so the MCP
+    # app (which holds no App client secret) can tell an App grant from a classic one.
+    app_grant: bool = False
 
 
 @dataclass
@@ -643,12 +647,10 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         return await self.degrade(reason)
 
     async def _rejected_token_was_replaced(self, credential) -> bool:
-        """#2342: in App mode, after GitHub's 401 on the OAuth leg, re-read the store
-        once. True only when the stored access token is no longer the one GitHub
-        rejected. Any doubt (classic mode, a PAT, an unreadable row) is False, so the
-        existing stale rule applies."""
-        if not app_mode():
-            return False
+        """#2342: after GitHub's 401 on the OAuth leg, re-read the store once. True only
+        when the stored value is an App grant whose access token is no longer the one
+        GitHub rejected. Any doubt (a classic grant, a PAT, an unreadable row) is False,
+        so the existing stale rule applies."""
         if not isinstance(credential, GitHubCredential) or credential.leg != "oauth":
             return False
         if not credential.token:
@@ -656,6 +658,8 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         try:
             from .github_app_grant import classify
 
+            # Not gated on App mode: a process without it (the MCP app) still serves App
+            # grants. A classic stored value classifies as None, so this stays False.
             stored = classify(await self._oauth_grant(credential.owner_id))
         except Exception:
             return False
@@ -1870,18 +1874,19 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         self, user_id, *, credential=None
     ) -> Optional[InstalledRepositories]:
         """#2342: the repositories the GitHub App is installed on for this account, or
-        None when that question doesn't apply (App mode off, or the account is not
-        served by an App grant: a personal token, a degrade, no binding).
+        None when that question doesn't apply: the account is not served by a GitHub
+        App grant (a classic grant, a personal token, a degrade, no binding).
+
+        Keyed on the credential, not on this process's configuration: the MCP app holds
+        no App client secret, and Arch ruled it runs this read (2026-11-12 07:35).
 
         Raises ``InstallationReadFailed`` when GitHub didn't answer. A failed read is
         never reported as "not installed"."""
-        if not app_mode():
-            return None
         if credential is None:
             credential = await self.resolve_credential(user_id)
         if not isinstance(credential, GitHubCredential) or credential.leg != "oauth":
             return None
-        if not credential.token:
+        if not credential.app_grant or not credential.token:
             return None
         return await list_installed_repositories(credential.token)
 
@@ -2077,12 +2082,20 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 logger.warning("GitHub OAuth grant read failed", exc_info=True)
                 grant_failed = True
             mark_reason = None
-            if grant and app_mode():
+            from_record = False
+            if grant and (app_mode() or looks_like_record(grant)):
                 # #2342 (ADR-081 D3): in App mode the stored value is a grant record. Only
                 # a record carrying the App marker serves, after a refresh when it is due;
                 # a markerless (classic) grant never serves and is recorded as ``cutover``.
+                #
+                # A value shaped like a record goes this way in EVERY mode, so the record
+                # itself (which holds the refresh token) is never forwarded as a bearer.
+                # That matters in a process without App mode: the MCP app holds no client
+                # secret. There its access token serves while it lasts, and it is never
+                # refreshed.
                 verdict = await app_grant_verdict(binding.owner_id, grant)
                 grant = verdict.token
+                from_record = True
                 grant_failed = verdict.read_failed
                 refresh_unreachable = verdict.unreachable
                 mark_reason = verdict.stale_reason
@@ -2092,6 +2105,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                     mcp_server_ref=binding.mcp_server_ref,
                     token=grant,
                     leg="oauth",
+                    app_grant=from_record,
                 )
             if not grant_failed and not refresh_unreachable:
                 await self._mark_oauth_binding_stale(
@@ -2302,13 +2316,24 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 repo=repo,
                 detail=credential.reason.value,
             )
-        if credential.leg == "pat" or credential.token or app_mode():
-            # #2342: the resolver's token is the credential on both legs. In App mode the
-            # stored value is a grant record, never a bearer, so it is not re-read here.
-            grant = credential.token
-        else:
+        grant = credential.token
+        if not grant and credential.leg != "pat":
+            # The resolver carries the token on both legs since #2266; this re-read is
+            # the older path, kept for a credential built without one. #2342: a stored
+            # value shaped like a grant record is never a bearer (it holds the refresh
+            # token). Its access token serves, or nothing does.
             async with AsyncSessionFactory.session_scope() as session:
-                grant = await ConnectorGrantStore().get(session, str(credential.owner_id), _GITHUB)
+                stored = await ConnectorGrantStore().get(session, str(credential.owner_id), _GITHUB)
+            if looks_like_record(stored):
+                from .github_app_grant import GrantRecordDamaged, classify
+
+                try:
+                    record = classify(stored)
+                except GrantRecordDamaged:
+                    record = None
+                grant = record.access_token if record and not record.access_expired() else None
+            else:
+                grant = stored
         if not grant:
             raise GitHubReadFailed(
                 "the connected account's grant is missing",

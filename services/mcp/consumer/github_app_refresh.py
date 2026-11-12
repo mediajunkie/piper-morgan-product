@@ -152,9 +152,15 @@ async def app_grant_verdict(owner_id, raw: Optional[str]) -> AppGrantVerdict:
         return verdict
     if not grant.refresh_due():
         return AppGrantVerdict(token=grant.access_token, event="fresh")
-    if not process_can_refresh():
+    if not process_can_refresh() or not app_mode():
+        # A scoped process can't write a new pair; a process without App mode holds no
+        # client secret. Neither may spend the refresh token.
         if grant.access_expired():
-            logger.warning("github_app_grant_expired_in_scoped_process")
+            logger.warning(
+                "github_app_grant_expired_where_it_cannot_be_refreshed",
+                scoped=not process_can_refresh(),
+                app_mode=app_mode(),
+            )
             return AppGrantVerdict(unreachable=True)
         return AppGrantVerdict(token=grant.access_token)
     return await _refresh_under_lock(owner_id)

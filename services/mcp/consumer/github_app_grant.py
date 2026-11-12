@@ -121,6 +121,13 @@ class GitHubAppGrant:
         return current >= self.access_expires_at - REFRESH_SKEW_SECONDS
 
 
+def looks_like_record(raw: Optional[str]) -> bool:
+    """True when a stored value is shaped like a grant record (it starts with ``{``),
+    whatever mode this process is in. Such a value must never be forwarded as a bearer:
+    it holds the refresh token. ``classify`` then says whether it is usable."""
+    return raw is not None and raw.strip().startswith("{")
+
+
 def classify(raw: Optional[str]) -> Optional[GitHubAppGrant]:
     """The App grant a stored value holds, or None for a classic grant (a bare token
     string: anything that does not start with ``{``).

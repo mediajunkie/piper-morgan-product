@@ -212,18 +212,33 @@ class TestInstallationRead:
 # ── the adapter ─────────────────────────────────────────────────────────────────────
 
 
-def _oauth():
+def _oauth(app_grant=True):
     return GitHubCredential(
-        owner_id=_OWNER, mcp_server_ref="github", token="access-live", leg="oauth"
+        owner_id=_OWNER,
+        mcp_server_ref="github",
+        token="access-live",
+        leg="oauth",
+        app_grant=app_grant,
     )
 
 
 @pytest.mark.asyncio
 class TestAdapterInstalledRepositories:
-    async def test_outside_app_mode_the_question_does_not_apply(self, app_off):
+    async def test_a_classic_grant_is_not_asked(self, app_off, monkeypatch):
         adapter = GitHubMCPSpatialAdapter()
-        adapter.resolve_credential = AsyncMock(side_effect=AssertionError("not consulted"))
+        adapter.resolve_credential = AsyncMock(return_value=_oauth(app_grant=False))
+        read = AsyncMock(side_effect=AssertionError("no installation read"))
+        monkeypatch.setattr(gh_mod, "list_installed_repositories", read)
         assert await adapter.app_installed_repositories(_OWNER) is None
+
+    async def test_an_app_grant_is_asked_even_where_app_mode_is_off(self, app_off, monkeypatch):
+        # The MCP app holds no App client secret, so App mode is off there; Arch ruled
+        # it runs this read. The credential says the grant is an App grant.
+        adapter = GitHubMCPSpatialAdapter()
+        adapter.resolve_credential = AsyncMock(return_value=_oauth())
+        found = InstalledRepositories(installations=0)
+        monkeypatch.setattr(gh_mod, "list_installed_repositories", AsyncMock(return_value=found))
+        assert await adapter.app_installed_repositories(_OWNER) is found
 
     @pytest.mark.parametrize(
         "credential",
@@ -384,10 +399,11 @@ class TestAnEmptyUserWideReadIsNotNoIssues:
         assert result.degradation is None and len(result.issues) == 1
         read.assert_not_awaited()
 
-    async def test_classic_mode_never_asks_about_installations(self, app_off, monkeypatch):
+    async def test_a_classic_grant_never_asks_about_installations(self, app_off, monkeypatch):
         adapter, read = self._adapter(
             monkeypatch, '{"total_count":0,"items":[]}', AssertionError("no installation read")
         )
+        adapter.resolve_credential = AsyncMock(return_value=_oauth(app_grant=False))
         result = await adapter.list_open_issues(_OWNER)
         assert result.issues == [] and result.degradation is None
         read.assert_not_awaited()
@@ -481,6 +497,11 @@ class TestConnectorResourceEndToEnd:
         monkeypatch.setattr(resources, "GitHubMCPSpatialAdapter", lambda: adapter)
         monkeypatch.setattr(resources, "current_user_id", lambda: _OWNER)
         return _json.loads(await resources._read_github_issues())
+
+    async def test_it_works_in_a_process_with_app_mode_off(self, app_off, monkeypatch):
+        # The MCP app's real situation: no App client secret, an App grant in the store.
+        payload = await self._payload(monkeypatch, InstalledRepositories(installations=0))
+        assert payload["message"] == gh_mod.GITHUB_APP_INSTALL_LINK_MISSING_REPLY
 
     async def test_installed_nowhere_reads_the_connector_install_line(self, app_on, monkeypatch):
         payload = await self._payload(monkeypatch, InstalledRepositories(installations=0))
