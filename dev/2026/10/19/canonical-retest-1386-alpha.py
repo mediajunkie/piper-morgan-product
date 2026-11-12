@@ -51,22 +51,16 @@ try:
 except ImportError:
     pass
 
-# #1118: If .env did not provide the key, fall back to macOS Keychain
-# (mirrors tests/conftest.py pattern — keychain is the canonical store for
-# this project). Without this fallback the script silently disables the
-# LLM-as-judge and produces routing-only data.
-try:
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        from services.infrastructure.keychain_service import get_keychain_service
-
-        anthropic_key = get_keychain_service().get_api_key("anthropic")
-        if anthropic_key:
-            os.environ["ANTHROPIC_API_KEY"] = anthropic_key
-            print("[bootstrap] Loaded ANTHROPIC_API_KEY from keychain")
-except Exception:
-    # Don't hard-error on keychain absence — env-only run is still useful
-    # for the routing-side checks.
-    pass
+# xian's rule (decisions.log 2026-11-11 11:12): nothing we run reads his login
+# keychain without his permission. The #1118 keychain fallback that stood here
+# is removed. The judge key comes only from ANTHROPIC_API_KEY in the environment
+# (the command line, or the .env load above); without one the judge is off and
+# the run is routing-only.
+if not os.environ.get("ANTHROPIC_API_KEY"):
+    print(
+        "[bootstrap] No ANTHROPIC_API_KEY in the environment: the judge is off and this run "
+        "is routing-only. Put a key on the command line; never read the keychain."
+    )
 
 # --- Configuration ---
 # #1386 (PA, 2026-10-19): hosted-ready copy of dev/2026/04/11/canonical-retest-m1.py (Runs 10-12).
