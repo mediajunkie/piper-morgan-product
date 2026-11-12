@@ -34,6 +34,11 @@ primary_region = "sjc"
 # the GitHub-only decrypt subkey (#1982). ENCRYPTION_MASTER_KEY must NOT be set on
 # this app; main_mcp.py refuses to start if it is. Runbook:
 # docs/internal/operations/mcp-scoped-subkey-runbook-1982.md
+# #2342 (PA, 2026-11-12; Lead 08:23, CXO and Arch 08:28): of the GitHub App variables,
+# only GITHUB_APP_SLUG goes on this app (not a secret; it turns the connector's
+# "on our side" line into the install line). GITHUB_APP_CLIENT_ID and
+# GITHUB_APP_CLIENT_SECRET go on the main app ONLY, never here: this app is decrypt-only
+# and never refreshes a grant.
 [env]
   PIPER_ENVIRONMENT = "production"
   PORT = "8080"
