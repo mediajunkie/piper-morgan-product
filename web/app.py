@@ -473,6 +473,19 @@ try:
 except Exception as e:
     logger.error(f"⚠️ Failed to mount MCP OAuth AS (#1462 unit 4): {e}")
 
+# #2342 (Arch 2026-11-12 06:51): GitHub App mode is on only when BOTH the App's client ID
+# and its secret are configured. One alone is never a half-on mode: say which is missing.
+try:
+    from services.mcp.consumer.github_app_grant import app_mode, app_mode_config_warning
+
+    _github_app_warning = app_mode_config_warning()
+    if _github_app_warning:
+        logger.warning(f"⚠️ {_github_app_warning}")
+    else:
+        logger.info(f"GitHub connect mode: {'GitHub App' if app_mode() else 'classic OAuth App'}")
+except Exception as e:
+    logger.error(f"⚠️ GitHub App mode check failed (#2342): {e}")
+
 # Web components (Jinja2 templates, config_parser, personality_enhancer) are now initialized
 # in WebComponentsInitializationPhase during startup and stored in app.state (Phase 4)
 

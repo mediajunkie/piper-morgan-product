@@ -100,6 +100,11 @@ SYSTEM_ONLY: Dict[Tuple[str, str], str] = {
         "services/mcp/consumer/github_oauth_handler.py",
         "GITHUB_OAUTH_CLIENT_SECRET",
     ): "the GitHub OAuth App registration",
+    # #2342 (Arch 2026-11-12 06:51, point 6: environment only, no keychain fallback).
+    (
+        "services/mcp/consumer/github_app_grant.py",
+        "GITHUB_APP_CLIENT_SECRET",
+    ): "the published GitHub App's registration (ADR-081 D3)",
     (
         "services/integrations/calendar/oauth_handler.py",
         "GOOGLE_CLIENT_SECRET",
