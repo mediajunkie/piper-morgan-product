@@ -61,3 +61,14 @@
 | 12 | #1164 | OPEN |
 | 13 | (no issue on the page) | n/a |
 | removed | #1497, #1481 (Slack), plus the offered-set line | OPEN |
+
+
+## Held rows after CXO's pass and PPM's calls (11-13), kept out of `docs/known-limits.md`
+
+Moved here so they cannot be indexed before they pass.
+
+- **Deleting several todos at once (#2025).** Held by CXO until PA's served check in both shapes (a list shown, and "delete todo 1 and 2" with none). Arch: ADR-083 D5 may have fixed the shown-list half. Keep only the half that still fails, delete the row if both pass. Text if it survives: "If you ask me to delete two todos in one message, I may delete only the first and not tell you about the second. Ask me one at a time."
+- **Deleting or archiving a chat (#1516).** Held by PPM until PA's read, because the tester page's Needs Testing table says hide or delete works from History. CXO had passed the wording. One of the two documents is wrong.
+- **A failed action that looks like a success (#2208).** CXO returned it: "a learned pattern" is internal. Facts I read in the issue (not served): a suggested action that creates a GitHub issue can be reported as done when it failed, through the learned-pattern execute route. I do not know how a person meets that route in the screens, so I cannot name the action in a user's words yet. Needs a reader of the Learning page or a code read, and PA's served read. CXO's kept line: "I can say it worked when it didn't. Check the result."
+- **Preferences on a repeated question (#2056).** CXO: re-check that it still happens on the served build before passing. If it does: "If you ask me something I answered recently, I may repeat the old answer and miss a preference you changed since."
+- **The Claude and MCP connection.** Off the list under PPM's rule (b) and CXO. If a specific limit meets (a) to (c) it gets its own row. The example named is a "Connection closed" on the first request after a long gap, held until the count on #2342 rows 2 and 3 is read.
