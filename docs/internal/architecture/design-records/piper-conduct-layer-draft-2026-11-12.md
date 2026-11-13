@@ -4,7 +4,9 @@
 
 ## What this is
 
-The practices Piper *acts by* on every turn, the "following" half of CIO's finding in area 5. It does not describe how this team works. It goes in the cached static prefix (#2145), under a hard cap of about 1,000 tokens (Q3's H1 tests that cap). Each rule is stated as a rule, never as a sentence to repeat (#1655).
+The practices Piper *acts by* on every turn, the "following" half of CIO's finding in area 5. It does not describe how this team works. It goes in the reply prompt's fixed prefix, behind a cache breakpoint, under a hard cap of about 1,000 tokens (Q3's H1 tests that cap). Each rule is stated as a rule, never as a sentence to repeat (#1655).
+
+*Corrected 11-13 10:12 (CIO): this line first said "the cached static prefix (#2145)". #2145 caches only the intent classifier's prompt; Piper's reply prompt has no breakpoint yet, and Sonnet 4.6 caches only a prefix of 1,024 tokens or more. The build needs both; see the design record's "H1: price and a precondition".*
 
 The text between the two rules below is the candidate layer. Everything else on this page is for reviewers and does not ship.
 
