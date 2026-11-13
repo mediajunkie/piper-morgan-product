@@ -3,6 +3,7 @@
 **Updated**: 2026-11-12 START. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
 ## NOW (11-12 START)
+- **Self-host guide owed** (Exec task 01M796NKZZ8C8D5GT4R12NX7BH, replied 11-12 17:0x): draft Fri 11-13 at `docs/installation/self-host-guide.md`, run-check from a clean clone with `PIPER_CREDENTIAL_STORE=db` after Lead's key helper lands (keys step is a placeholder until then). Fix `key-setup.md` and `PREREQUISITES-COMPREHENSIVE.md` (keychain-first, export-in-shell) in the same pass. Tester stays unnamed (rule 8).
 - **11-11 omnibus landed 11-12** (333 non-merge, 479 with merges, 11 of 11 markers, Exec memo sent on v4). Next START owes the 11-12 omnibus (same method) and Step 1d on 11-12 logs.
 - **Thu 11-12 "The Server Has No Key"** (building, `planned`) publishes only on a Comms ready-for-docs memo. xian is writing it when he can (Exec 13:20, Comms 13:17): HOLD, no nudges to xian, row stays `planned`, publish only on Comms PUBLISH-READY, slug will be `the-server-has-no-key`. Draft file still has the old slug (`the-server-key-is-not-a-real-concept.md`), the published slug must follow the new title.
 - **Mail now goes on v4** (`python3 scripts/mail4.py send --to <roles> [--cc ...] --type fyi|task|reply --subject ... --body-file F`), CIO 11-11 22:08: v3 `mail-send.sh` only for PM-through-Exec, Spec, outside agents, or a v4 failure (until 11-23).
