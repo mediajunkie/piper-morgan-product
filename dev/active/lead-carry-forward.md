@@ -1,5 +1,13 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-13 09:25 (supersedes the 08:21 block below where they differ)
+
+- **Beta serves `bb7c76de5c` since 09:23** (run 43471952702; second promotion of the day, granted by Arch for the 2362 fix). It adds the access-line fix (`43ec0dbed8`) and CXO's private-beta invite wording (`e4499c53d8`) to the 08:20 build.
+- **The 08:20 build (`d5905b6946`) served a defect of mine for an hour:** the redaction filter cleared `record.args`, uvicorn's access formatter needs them, and each request wrote a logging-error traceback. Nothing leaked. **Lesson: a logging-filter change is tested with the formatters the app actually installs** (Arch's ratchet now does this), and by a local server's log, not only unit tests.
+- **Both of Arch's promotion grants are used. No further promotion without Arch's word** while 2342's rows are open.
+- **Served rows open:** 2362 and 2350 (xian's log read via Exec, with Arch's grep pattern; Arch re-sends the probe); 2351's hosted invite wording (CXO on Web's rendered read; local screens and replies PASS); 2342 rows 2 to 4 (xian's reconnect).
+- A local server for a seat's rendered read: `scratchpad/web_local.py` pattern (the fault driver's `Server` on a scratch database, a placeholder key seeded through `KeychainService` under `=db`, stop file). Scratch files do not survive the session; the driver is `scripts/served_fault_run.py`.
+
 ## IN-DAY 2026-11-13 08:21 (supersedes the 11-12 DAY CLOSED block where they differ)
 
 - **Beta serves `d5905b6946` since 08:20** (run 43461278591, standing grant). It carries 2350 (with two 11-13 fixes, `dc099f1dd4`, `f18a4f83c1`, both accepted by Arch), 2362, 2333, 2348, 2351's words, 2353, 2347. Arch's one-promotion lift is used: **no further promotion until 2342's served rows close**, unless Arch says otherwise.
