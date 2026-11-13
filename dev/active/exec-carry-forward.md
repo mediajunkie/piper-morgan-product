@@ -34,7 +34,7 @@ v966 (artifact version 981 after the timestamp fix), `719UZ4h1NELjEwWZbDCceT`. S
 - Timestamps only from a `date` call. "HH:Mx" trips stamp-check; write the minute.
 - Review slot every START. Calendar check every fire. `scripts/aging-standing-items.sh exec` at START.
 - Relay xian's rulings the same hour, with verbatim quotes.
-- DAY-CLOSED in grep form as the log's last line.
+- Close the log with the exact line `<!-- DAY-CLOSED: YYYY-MM-DD -->` as its last line (Docs greps that form; the plain form missed on 11-12).
 - Keychain off-limits without xian's permission. Secrets stay in his password manager.
 
 ## Owed rows (owed-scan)
