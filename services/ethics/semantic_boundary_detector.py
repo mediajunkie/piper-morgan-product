@@ -1,8 +1,11 @@
 """
 #1004 Fix B — Semantic Boundary Detector
 
-LLM-based classifier that runs as Layer 2 of the two-layer detector when the
-literal-trigger fast-path returns no hit. Produces structured JSON conforming
+LLM-based classifier. Since #2364 (2026-11-13) it is the only layer that decides a
+boundary: the literal-trigger substring fast path that used to run before it is
+removed from `BoundaryEnforcer.enforce_boundaries`. (The two prompt bodies below still
+mention "literal-trigger" in their refusal example; they are kept verbatim because
+they are the calibrated text.) Produces structured JSON conforming
 to `SemanticDetectorOutput` for the BoundaryEnforcer's downstream tier
 classification (block / ambiguous / pass).
 
@@ -97,7 +100,7 @@ REFUSAL_FALLBACK = SemanticDetectorOutput(
     violation_detected=False,
     category="none",
     confidence=0.0,
-    reasoning="Detector unable to classify; falling through to literal-trigger result.",
+    reasoning="Detector unable to classify; the semantic layer did not run.",
     redirect_hint=None,
 )
 
