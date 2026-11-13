@@ -91,6 +91,23 @@ def test_both_helpers_delete_base_items_before_lists():
     ) < _statement_line(per_user, "DELETE FROM lists WHERE owner_id")
 
 
+@pytest.mark.smoke
+def test_both_helpers_delete_repository_links_before_repositories_and_projects():
+    """2026-11-13: ``project_repository_links`` references repositories and projects
+    with no cascade. Left out, one link row made the repositories delete fail, and
+    then the users delete, so ``fresh_database`` handed over a database with a user
+    in it (seen as a duplicate ``test_user`` on a dev machine)."""
+    src = _conftest_source()
+    blanket = src[src.index("async def fresh_database") : src.index("class TransitionState")]
+    per_user = src[src.index("async def delete_test_user_fully") :]
+    links = _statement_line(blanket, "DELETE FROM project_repository_links")
+    assert links < _statement_line(blanket, "DELETE FROM repositories")
+    assert links < _statement_line(blanket, "DELETE FROM projects")
+    links = _statement_line(per_user, "DELETE FROM project_repository_links WHERE repository_id IN")
+    assert links < _statement_line(per_user, "DELETE FROM repositories WHERE owner_id")
+    assert links < _statement_line(per_user, "DELETE FROM projects WHERE owner_id")
+
+
 @pytest.mark.asyncio
 @pytest.mark.smoke
 async def test_per_user_cleanup_removes_a_base_item_its_list_and_the_user(db_session):

@@ -799,6 +799,11 @@ async def fresh_database(db_session):
         "DELETE FROM items",
         "DELETE FROM lists",
         "DELETE FROM project_integrations",
+        # 2026-11-13: the project-to-repository links (#866) reference both tables
+        # with no cascade and were never deleted here. With one link row present the
+        # repositories delete fails, is rolled back, and the users delete fails after
+        # it on repositories' FK, so a user row survives a "fresh" database.
+        "DELETE FROM project_repository_links",
         "DELETE FROM repositories",
         "DELETE FROM projects",
         "DELETE FROM slack_link_attempts",
@@ -1027,6 +1032,10 @@ async def delete_test_user_fully(session, user_id: str) -> None:
         "DELETE FROM items WHERE list_id IN (SELECT id FROM lists WHERE owner_id = CAST(:u AS uuid))",
         "DELETE FROM lists WHERE owner_id = CAST(:u AS uuid)",
         "DELETE FROM project_integrations WHERE owner_id = CAST(:u AS uuid)",
+        # 2026-11-13: the user's project-to-repository links go first (see fresh_database).
+        "DELETE FROM project_repository_links WHERE repository_id IN "
+        "(SELECT id FROM repositories WHERE owner_id = CAST(:u AS uuid)) "
+        "OR project_id IN (SELECT id FROM projects WHERE owner_id = :u)",
         "DELETE FROM repositories WHERE owner_id = CAST(:u AS uuid)",
         "DELETE FROM projects WHERE owner_id = :u",
         "DELETE FROM connector_bindings WHERE owner_id = CAST(:u AS uuid)",

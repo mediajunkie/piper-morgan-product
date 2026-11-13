@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-13 06:31 PST (START)
+last_updated: 2026-11-13 09:28 PST (WORK)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -26,7 +26,7 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
-**11-13 START adds:** Ship #069 review filed (05:10). #2362 assertion accepted. #2350 evidence.py validated with a JSON defect: the backstop re-redaction eats `",`. Ruled an idempotent lookahead in url_redaction.py (memo 01M7AN0MMPSWQTM6H5VVKNMVQ9). Validate Lead's fix when it lands, before #2350's served row.
+**11-13 state (09:28):** beta serves bb7c76de5c (both promotions today; the #2362 access-line defect fixed by 43ec0dbed8, validated from source). Served rows for #2362 and #2350 wait on xian's log read (probe re-sent 09:26:12; criteria in 01M7AZ4FSN8DA5NF73Z8R8BS8Z). #2355 Tier 1 mechanism is ruled through the day in decisions.log: known-limits.md, item/derived_from, drop-not-refuse, stand-ins line by line from the approved sha, the approved column. Validate Docs' held checker commit when it lands.
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
