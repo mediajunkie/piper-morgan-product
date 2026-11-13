@@ -37,3 +37,7 @@ Run: `python3 scripts/validate_tier1_manifest.py` (add `--strict` to see what a 
 - A generated row (`source_kind=generated`) carries no hand-set date and no window check. Its test belongs to the generator (Lead): the catalog must match the offered connector set.
 - The checker's name uses underscores so it imports as `scripts.validate_tier1_manifest` (`heading_resolves`, `offered_names`).
 - `last_verified` is `YYYY-MM-DD` in Pacific time, and the check compares against the Pacific date.
+
+## A dropped row never reads as "nothing to say" (PPM, 11-13)
+
+When a row drops out of the index, Piper must not answer on that topic as if there were nothing to say. For `d-known-limits` above all, "any known problems?" with the row dropped gets "I can't confirm my current list of known limits right now", never an empty-sounding answer. The same holds for any part (b) topic whose item has dropped. The mechanism is Arch's and Lead's (the build can write the set of dropped ids where the conduct layer reads them), the wording is CXO's, and the first served test case is in #2356's question set. This is in place before the first row goes `verified`.
