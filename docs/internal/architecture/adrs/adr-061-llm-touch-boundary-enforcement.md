@@ -290,7 +290,7 @@ Audit envelope changes:
 - `detector` is `"semantic" | "semantic-unavailable" | "none"`. `"literal-trigger"` is no longer emitted.
 - `fast_path_hit` and `patterns_checked` are removed. Their only readers were tests, and a field that can only be false tells an operator nothing.
 
-The merge gate is one live run per provider that can serve the detector call. The detector runs on the acting user's own provider (`get_default_provider(user_id)`): Anthropic, Gemini or OpenAI, with the client's fallback order. The run uses the 20 probes plus the six ordinary rows, and it passes when every true positive declined on the April record is still declined, 0 of 5 controls are declined, and 0 of 6 ordinary rows are declined. A provider that was not run is unverified, and the deletion does not merge.
+The merge gate is one live run per provider that can serve the detector call. The detector runs on the acting user's own provider (`get_default_provider(user_id)`). Today that means Anthropic or OpenAI: the Gemini leg always refuses (`_gemini_complete`, #1819; `PER_REQUEST_CLIENT_PROVIDERS` is anthropic and openai), so a Gemini user gets no completion at all, the detector included. Whether Gemini stays offered is #1612. A Gemini serving path, when one exists, adds a gate run before it ships. The run uses the 20 probes plus the six ordinary rows, and it passes when every true positive declined on the April record is still declined, 0 of 5 controls are declined, and 0 of 6 ordinary rows are declined. A provider that was not run is unverified, and the deletion does not merge.
 
 `check_harassment_patterns` and `check_inappropriate_content` remain only for the knowledge graph's node filter. That reader's substring decision is #2365.
 
