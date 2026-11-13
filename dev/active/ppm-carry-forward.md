@@ -643,6 +643,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift).
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
   - #2344: xian's two Buttondown steps (Q, not a blocker).
+  - **key: tier1-approval-batch** (Filed 2026-11-13; to: exec; trigger: the first Tier 1 rows are verified and voice-passed. One batch for xian's quoted yes, which sets `approved`, Arch 07:26).
+- **#2355 known limits (11-13):** `docs/known-limits.md` has 6 draft rows, plus 4 held. PA's reads are blocked on xian's 1386 sign-in decision (01M79Q8226TJGVZ9XK9FAC0K1X; Exec told 07:12). PPM's membership rule (a)–(c) and the dropped-row condition are in decisions.log. Private session is off (rule a).
 - **Mail:** read v3 and `python3 scripts/mail4.py inbox --role ppm` every check; send by v4.
 - **xian's rule, 11-11 11:12:** no seat reads his login keychain without permission; `PIPER_CREDENTIAL_STORE=db`.
 - **Still carried:** #2242's last row; #2235; #1680; PDR-102 C1–C8 checks on document-touching placements. Sprint field: PPM may set a value matching the plan section on another seat's ask.
