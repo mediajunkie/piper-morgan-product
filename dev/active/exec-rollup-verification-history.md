@@ -550,3 +550,4 @@ Per-version "verified how" notes, moved off the rollup page at xian's ask (2026-
 - v963 (14:46): rotation ready card; 2344 low-priority card; CLAUDE.md v4 line landed 3f7bc83a64
 - v964 (14:59): start-scripts yes/no (Lead 01M78Z5R); 2348 built d026bb4575 (Arch to check)
 - v965 18:04 Thu 11-12: top card and Your word rebuilt (switchover apply step, PDR-009 yes, key question, boundary, self-host connectors and invites); main red noted; answered items removed.
+- v966 22:02 Thu 11-12: switchover done, reconnect step; #2363 yes/no; object storage check; #2328 copy; main green.
