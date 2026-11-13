@@ -200,3 +200,31 @@ An account line in code decides who gets Tier 2. The LLM decides what the person
 - 2026-11-12: this draft (Arch's sections).
 - 2026-11-13 15:00 PST: CXO, Docs and CIO sections due.
 - 2026-11-14 12:00 PST: Arch's recommendation with options, to Exec for xian's board. **Delivered early, 2026-11-12 14:29 PST,** once all three contributions had arrived.
+
+## The tier boundary, revised (Arch, 2026-11-12 17:26, after xian's answers)
+
+xian, relayed by Exec (01M797TQEAE37X7AYMMZ3V1KZ9): "if every user's Piper doesn't have some of the skills and isn't able to use all of the methods that my own agent team has available then we're giving people a weaker form of assistance than I have developed for myself." He asked us to probe the boundary.
+
+**The proposal: draw the line at whose records Piper reads, not at how much it knows or what it can do.** The earlier split put three different things in Tier 2 (methods, depth on its own code, and the team's records), and only the last needs an account line.
+
+| What | Who gets it | Mechanism | Token cost (unmeasured; to measure under Q3) | Privacy cost |
+|---|---|---|---|---|
+| **Methods it follows** (verify before "done", say what it measured, ask when unsure) | Every Piper | The conduct layer (recommendation part 1), plus code guards | The ~1,000-token cap on every turn, cached | None, if written in user register |
+| **Methods it uses on a task** (the team's skills: drafting an issue or a spec, planning a sprint, a stakeholder update, a verification checklist) | **Every Piper (moved from Tier 2)** | Task-loaded procedures, the shape agents use. Piper already ships some: `.claude/skills/piper-*`, `trust-check`, `propose-feature`, `compost-review`, `update-piper`. The new work is rewriting team procedures that are worth having (CIO's Proven entries, the review and verification skills) into that user-register form. | Paid only on a turn whose task matches, the size of one procedure | None for a rewritten procedure. The team's own skills cite roles, issues and xian's words, so they are rewritten, never copied. |
+| **Knowing how its own code works** (reading the source to answer "how does saving work?") | **Every Piper (moved from Tier 2),** behind a read budget | Read-only tools over the served snapshot (option C), with a path allow-list: `services/`, `web/`, `config/`, `docs/internal/architecture/current/` and the user docs. The tools are offered only on a turn the LLM classes as a question about Piper itself, and code caps the reads per turn (a proposed starting cap is 3 reads and 20 KB, to be tuned by the Q3 experiment). | The most expensive row: every read is the user's tokens. This is why it has a budget and goes after the corpus. | Low. The code is public, as xian says. The allow-list still matters because rule 8's old mentions of outside people can sit anywhere in the repo, not only in `dev/` and `mailboxes/`. A file found to hold one leaves the allow-list (we report the mention and don't edit it out). |
+| **The team's records** (sprint position, logs, mail, briefings, decisions in progress) | **Nobody, as a self-knowledge source** | None | None | High: rule 8, and the incident register |
+
+**What happens to Tier 2.** It goes away as a tier. When xian's own Piper knows where the Piper Morgan project stands, that is the ordinary thing every user gets: Piper reading the user's own project through their GitHub connector (issues and milestones). It is not a special index of the team's repo. `dev/`, `mailboxes/`, the omnibuses, `docs/briefing/` and agent memory stay excluded for every account, pinned by the enforcement test.
+
+**Exec's point on "open source, so nothing to reveal."** I agree, with one widening. The exclusion is not about secrecy. It exists because rule 8 says old mentions of outside people may sit in the repo and are reported, not removed. The same reason means the allow-list is a list of paths, checked file by file when a path is added. It is never "the repo minus dev/ and mailboxes/".
+
+**Self-hosters (Q2, yes).** It's the same mechanism. The "served snapshot" for a self-hoster is their own checkout at its commit. The allow-list and the read budget apply unchanged.
+
+**Order (unchanged in spirit):**
+1. The conduct layer.
+2. The Tier 1 corpus, including the answers generated from `capability_catalog()`.
+3. Served verification.
+4. The task-loaded procedures, one at a time, each through CXO's voice pass.
+5. Code-reading tools behind the budget, once the Q3 experiment has measured their per-question cost against CXO's question set.
+
+**Q3 experiment (research, not the plan).** Run CXO's and CIO's question set three ways on one account: corpus only; corpus plus code tools; code tools only. For each, record tokens per answer, the share of answers that are right on the served build, and any leaks. CIO's budget is the hypothesis to test. Lead runs it, CXO judges the replies, and it uses a provider key handed over the way xian rules (the rule-7 key question).
