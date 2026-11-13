@@ -236,7 +236,7 @@ xian's words on question 3: "let's do some research and experimentation to figur
 
 **Rules for every run**
 - **Price first.** Before any paid run, write the number of calls, the expected tokens and the cost at the current Anthropic pricing page, and send it to Exec. Nothing runs on an unpriced estimate.
-- **Key.** Runs use a provider key handed over the way xian rules on the rule-7 key question. Planning and the zero-cost steps don't wait for that ruling, but every paid run does.
+- **Key.** Runs go through one test account on the served beta, so they need that account's own stored provider key. Which key pays, and who enters it, is xian's call. It is #2340's open key-handover question (paid rule-7 screens), applied to a served account, and Exec puts it on his board (CIO 01M799HEVBM5KDWBJ7ND67R24E, 11-12). Planning and the zero-cost steps don't wait for that ruling, but every paid run does.
 - **Served build.** Runs go against a served build at a named sha, never a local stand-in, and answers are judged against that build.
 - **Results.** They go in a dated section of this record, next to the pass lines, including any that fail.
 - **Owners.** Lead runs, CXO judges replies (right for the build, register, leaks), and CIO writes up the numbers against the pass lines.
