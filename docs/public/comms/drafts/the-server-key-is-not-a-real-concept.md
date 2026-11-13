@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'the-server-key-is-not-a-real-concept-ef13a6ab-ad10-4ae4-806d-bf09bb466add.jpg'
 alt: ''
 caption: ''
 ---
