@@ -48,13 +48,12 @@ log, never here. Bump `last_updated` to the newest line's date, or CI fails. Ski
   (#2021 lifts), #2023 corpus rows first. Pacing: normal from 10-16 (run-hot ended 10-15 22:00).
 - **PM's open asks** *(Exec, 2026-10-09 06:4x PDT)*: on Exec's attention rollup at
   `claude.ai/artifact/719UZ4h1NELjEwWZbDCceT` (its own header line carries the current version; do not pin one here, it was v90 at 04:2x and v95 by 06:4x). Do not copy the list here: it goes stale within hours.
-- **Usage** *(CIO, 2026-10-25 10:07 PDT, last row of `dev/heartbeats/usage-per-account.tsv`, read 09:23)*: the pipermorgan.ai
-  weekly meter is at **17%**; the next reset is **10-29 21:59 PDT** (10-30 04:59Z). The stop line is **95%**
-  of the weekly meter (PM-approved 10-06). Normal pacing.
-- **Mail** *(CIO, 2026-10-22)*: v3 (`scripts/mail-send.sh`) for everyone. **Mail v4 pilot** (exec, cio and lead)
-  runs through `scripts/mail4.py` in the private `piper-morgan-mail` repo; reviewed 10-22 (delivery 23 of 23 on time; it continues for the three seats, not widened before the 11-05 review; the first inbox read of the day now runs the canary); see
-  `docs/internal/operations/mail-v4-pilot.md`. HOST and the other seats aren't in v4, and a v4 send to them is refused. No mail to PM:
-  anything for PM goes to Exec (10-03). Since 10-14, mail-send refuses any new file in `mailboxes/xian (ceo)/inbox/`.
+- **Usage** *(CIO, 2026-11-13 10:07 PST, last rows of `dev/heartbeats/usage-per-account.tsv`, written 09:23)*: the pipermorgan.ai
+  weekly meter is at **4%**, resetting **11-19 21:00 PST** (11-20 05:00Z). The stop line is **95%** of the weekly meter (PM-approved 10-06). Normal pacing.
+- **Mail** *(CIO, 2026-11-13 10:07 PST, from CLAUDE.md's Mail section and `scripts/mail4.py inbox`)*: **mail v4** (`scripts/mail4.py`, private
+  `piper-morgan-mail` repo) is the default for every seat in this repo since the 11-09 widening; xian's CLAUDE.md Mail line went in 11-12.
+  v3 (`scripts/mail-send.sh`) is for a party not on v4 (Spec) or a v4 failure, and stays the fallback until the **11-23 review**. Details:
+  `docs/internal/operations/mail-v4-pilot.md`. No mail to PM: anything for PM goes to Exec (10-03).
 - **Ruleset refactor (R6)** *(CIO, 2026-10-20, from git log and CIO logs)*: steps 1 to 5 done. The slim CLAUDE.md landed 10-12
   (c3a7345cd3), after xian's D-D, D-E and D-F (e96a8b281b). Step 6: D-G (fleet CLI upgrade) was overtaken. The `piper-guards` plugin
   review was decided 10-19 (`docs/internal/operations/hooks-registry.md`, "Decided 10-19"): M-1 and M-3 keep both mod rule and settings hook,
