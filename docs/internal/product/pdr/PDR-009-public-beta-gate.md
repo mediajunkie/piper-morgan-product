@@ -1,6 +1,6 @@
 # PDR-009: The Public-Beta Gate — What Must Be True Before Beta Opens to the Public
 
-**Status**: 📝 **Draft v1, 2026-11-12 17:16, PPM, for xian's yes or no via Exec.** History: v0 at 17:03; v0.1 (17:06) folded in CXO's experience rows E1 to E8; v0.2 (17:08) folded in Arch's technical rows T1 to T7; v0.3 took Arch's 17:08 read (G1, G2, G6, G7 accepted with edits); v1 takes CXO's 17:11 read (G4, G5, G6) and CXO's sort of the experience issues. No seat disagrees on a row or a sort. One yes or no covers the gate and the PUB disposition in section 5; #1612 (section 4) is the one separate choice.
+**Status**: ✅ **Accepted 2026-11-12.** xian, in conversation with Exec (relayed 17:28): "The gate sounds good." Exec reads it as covering the gate and the section 5 proposal, as one yes or no. On #1612: "Agree that mult-LLM isn't required for the gate. nice to have, though!", so it stays off the gate and in the plan. Sprint PUB was cleared per item on 37 issues at 17:32 by PPM. History: v0 17:03, then CXO's rows (v0.1), Arch's rows (v0.2, v0.3), then CXO's read (v1, 17:16), all PPM.
 **Author**: PPM
 **Stakeholders**: xian (decides), Exec (relays), CXO (experience rows), Arch (technical rows), HOST (admission and support), Lead (builds), PA (MCP rows)
 **Source**: xian, 11-12 (via Exec, verbatim): "While the old PUB sprint label is likely superseded given the reorg of the Production milestone, it remains for us to define a gate for the public beta." Earlier rulings this has to stay inside are listed in section 2.
