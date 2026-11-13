@@ -1,10 +1,12 @@
-# Piper Morgan: API Key Setup (older keychain-based method)
+# Piper Morgan: API Key Setup
 
-> **Running Piper on your own computer?** Follow the [self-host guide](./self-host-guide.md). It stores your provider key at a hidden prompt in your local database and never asks you to use a keychain, an `export` line or a command-line key. The rest of this page describes the older keychain-based setup.
+> **Running Piper on your own computer?** Follow the [self-host guide](./self-host-guide.md). It stores your provider key at a hidden prompt in your local database and never asks you to use a keychain, an `export` line or a command-line key.
 
-Your API keys are stored securely in your operating system's keychain, never in plaintext config files.
+Your API keys are stored encrypted in Piper's database, never in plaintext config files. Since 2026-11-12, the OS keychain is used only when `PIPER_CREDENTIAL_STORE=keychain` is set. Otherwise Piper uses its encrypted database store.
 
-## Where Keys Are Stored
+## If you choose the OS keychain
+
+Only with `PIPER_CREDENTIAL_STORE=keychain` set. Keys then live here:
 
 - **macOS**: Keychain Access (service: `piper-morgan`)
 - **Windows**: Credential Manager
@@ -19,25 +21,9 @@ Your API keys are stored securely in your operating system's keychain, never in 
 | Gemini | Optional | API key from Google Cloud |
 | Perplexity | Optional | `pplx-...` |
 
-## Method 1: Setup Wizard (Recommended)
+## How to add a key
 
-```bash
-python main.py setup
-```
-
-Steps:
-1. System checks (Docker, Python, port 8001, database)
-2. Create user account (username, optional email)
-3. Add API keys:
-   - Enter key (input masked, won't appear on screen)
-   - Key is validated with provider API
-   - Key is stored securely in OS keychain
-
-Supports resume: if setup interrupted, run again to continue from where you left off.
-
-## Method 2: Commands and environment variables
-
-The older `python main.py keys` commands and environment-variable setup have been removed from this page. Some of them show a pasted key or write to your computer's keychain without asking. Use the [self-host guide](./self-host-guide.md), which enters the key at a hidden prompt.
+Run `python scripts/local_key_setup.py` in a terminal and answer the prompts. The key is entered with the typing hidden and stored encrypted in your database. `--list` shows which providers have a key and `--remove <provider>` deletes one. The self-host guide has the full steps.
 
 ## Troubleshooting
 
@@ -72,7 +58,7 @@ The older `python main.py keys` commands and environment-variable setup have bee
 ## Configuration File Separation
 
 - `config/PIPER.user.md` → Your preferences, timezone, working hours, projects, etc.
-- OS Keychain → Your API keys (secure, encrypted)
+- Piper's encrypted database store → Your API keys (the OS keychain only if you set `PIPER_CREDENTIAL_STORE=keychain`)
 
 DO NOT mix them up!
 

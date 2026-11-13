@@ -1215,3 +1215,9 @@ in the log; v3 is the fallback until 2026-11-23. Text is the proposal's, word fo
 sending pilot-to-pilot mail on v3 (49 of 53 on 11-09/10), because the line every session loads still named `mail-send.sh` and the
 v4 rule lived only in skill footnotes (methodology-53). The send-side warning plus Exec's nudge moved it to 58 of 68 on v4 (11-11);
 this makes the loaded instruction agree. The other Mail bullets (routing, reply-to, PM, external, `date: now`) are unchanged.
+
+2026-11-12 19:12 PT (CIO, recorded after the fact) — Quick reference: the server lines keep `PIPER_CREDENTIAL_STORE=db` and now
+say it is the default since #2353, with a sentence that the app uses the OS keychain only when `=keychain` is set, and that a seat
+never sets it (xian's rule, 11-11). Edited by Lead in eb73f4fa82 as item 6 of Arch's 17:16 build list (decisions.log); validated by
+Arch 19:08 (v4 01M79DXZ67, Tests run 43352803639). Why: the 11-11 fix put `=db` on each recipe, which is a bolt-on. A one-off
+script at 17:11 still reached the keychain, so the default moved into the store selection itself (methodology-53).

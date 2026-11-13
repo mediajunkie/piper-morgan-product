@@ -8,9 +8,9 @@
 
 ## Overview
 
-> **Running Piper on your own computer?** Use the [self-host guide](../installation/self-host-guide.md) for the key step. It enters the key at a hidden prompt into your local database. The environment-variable method below has been removed.
+> **Running Piper on your own computer?** Use the [self-host guide](../installation/self-host-guide.md) for the key step. It enters the key at a hidden prompt into your local database. The older keychain-script method has been replaced, and the environment-variable method was removed.
 
-Piper Morgan supports multiple LLM providers (OpenAI, Anthropic, Gemini, Perplexity) with secure keychain storage for API keys.
+Piper Morgan supports multiple LLM providers (OpenAI, Anthropic, Gemini, Perplexity) with encrypted storage for API keys. Since 2026-11-12 the OS keychain is used only when `PIPER_CREDENTIAL_STORE=keychain` is set. Otherwise keys go in Piper's database store.
 
 ---
 
@@ -51,13 +51,11 @@ You'll need at least one provider's API key:
 #### Method A: Interactive Setup (Easiest)
 
 ```bash
-# Run the setup script
-python scripts/migrate_keys_to_keychain.py
+# Run the key script, in a terminal
+python scripts/local_key_setup.py
 
-# Follow the prompts to:
-# 1. Enter your API keys
-# 2. Confirm storage in keychain
-# 3. Verify they work
+# It asks which provider, then asks for the key with the typing hidden,
+# stores it encrypted in your database and reads it back.
 ```
 
 #### Method B: removed
@@ -73,8 +71,8 @@ Putting a key in a shell profile leaves it in plain text and in shell history, s
 python scripts/test_llm_keys.py
 
 # Expected output:
-# ✓ openai      - Valid (from keychain)
-# ✓ anthropic   - Valid (from keychain)
+# ✓ openai      - Valid
+# ✓ anthropic   - Valid
 # ...
 ```
 
@@ -145,7 +143,7 @@ python scripts/test_llm_keys.py
 
 Check:
 
-1. Keys are in keychain (Keychain Access.app → search "piper-morgan")
+1. Keys are stored: `python scripts/local_key_setup.py --list` (if you chose the OS keychain, look in Keychain Access.app for "piper-morgan")
 2. Keys are valid (not expired)
 3. Keys have correct permissions
 
@@ -160,7 +158,7 @@ Your API key may be:
 
 Get a new key from the provider and re-run setup.
 
-### Keys Not Loading from Keychain
+### Keys Not Loading from the Keychain (only if you set `PIPER_CREDENTIAL_STORE=keychain`)
 
 First access requires keychain password. If prompted:
 
@@ -172,7 +170,7 @@ First access requires keychain password. If prompted:
 ## Security Notes
 
 - **Never commit** `.env` files with keys
-- **Always use keychain** for production
+- **Never put a key in a command or shell profile**, enter it at a hidden prompt
 - **Rotate keys** regularly
 - **Limit key permissions** to minimum needed
 

@@ -205,7 +205,7 @@ Operational corollaries:
   covered the day it lands, and widened the trigger. The general check: when a local chokepoint stands in for a
   remote gate, list the remote gate's steps and confirm each one runs locally. Its first live run was Lead's
   push at 09:01: 12 gates, 12 passed, 31 s.
-- **xian's keychain rule (11-12; ruled, build pending).** xian ruled on 11-11 that nothing agents run on his Mac reads his
+- **xian's keychain rule (11-12; built and validated the same day).** xian ruled on 11-11 that nothing agents run on his Mac reads his
   keychain without his permission. The fixes put `PIPER_CREDENTIAL_STORE=db` in the server-start recipes
   (CLAUDE.md, the ops doc and the start scripts) and made pytest opt in. Each of those covers one route, so
   together they are a bolt-on. The step every route passes through is the app's own choice of credential store,
@@ -216,6 +216,6 @@ Operational corollaries:
   database store when `ENCRYPTION_MASTER_KEY` is set. Arch ruled the stricter form at 17:16 (decisions.log): the
   keychain is opt-in only (`PIPER_CREDENTIAL_STORE=keychain`), and unset means the database store, or no store
   with a plain message. Keying on the master key would have missed this very case, because the unloaded file
-  held the master key too. Lead builds it. The recipes keep `=db` until it's validated. The general check: when
+  held the master key too. Lead built it (eb73f4fa82). A test seam that named a store, not a backend, briefly turned main red, and on a Mac it could have reached the real keychain. Arch ruled that the seam must carry the backend through one accessor (5272bbbbf0), and validated it at 19:08. The recipes keep `=db` only for clarity. The general check: when
   a rule is "every X must set Y", find the single place that reads Y and ask what it does when Y is missing,
   then test the proposed default against the incident that prompted it.
