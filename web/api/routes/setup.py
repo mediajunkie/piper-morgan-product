@@ -810,9 +810,9 @@ async def validate_api_key(req: ApiKeyValidateRequest):
 
 
 # #2151 route group 3: what the wizard hears on a hosted deploy, where no keychain is the
-# visitor's own. Wording pending CXO.
+# visitor's own. CXO's wording, 2026-11-13: no string a person could reach says "keychain".
 HOSTED_NO_KEYCHAIN_MESSAGE = (
-    "Paste your key here. This hosted instance doesn't read keys from a keychain."
+    "Paste your key here. This hosted version doesn't read saved keys from your computer."
 )
 
 
