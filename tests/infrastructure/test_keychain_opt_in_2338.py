@@ -166,13 +166,21 @@ def fake_os_keyring():
             KeyringBackend.__init__(self)
             _FakeOSKeyring.__init__(self)
 
+    from services.infrastructure import keychain_service
+
     before = keyring.get_keyring()
+    # #2353: the swap also sets the in-process store default to "keychain". It belongs to
+    # the backend it was set for, so it is put back with that backend. Left on, every later
+    # test on a machine with no keyring (CI) was sent to the keyring: main went red at
+    # eb73f4fa82 for exactly this.
+    default_before = keychain_service._process_default_store
     fake = FakeOS()
     keyring.set_keyring(fake)
     try:
         yield fake
     finally:
         keyring.set_keyring(before)
+        keychain_service._process_default_store = default_before
 
 
 def test_default_configure_swaps_a_live_os_keyring_for_an_in_memory_one(
@@ -184,6 +192,9 @@ def test_default_configure_swaps_a_live_os_keyring_for_an_in_memory_one(
     conftest_mod.pytest_configure(config=None)
 
     assert getattr(keyring.get_keyring(), "piper_test_in_memory", False) is True
+    from services.infrastructure import keychain_service
+
+    assert keychain_service._process_default_store == "keychain"  # #2353, with the swap
     keyring.set_password("piper-morgan", "slack_bot", "xoxb-test-token")
     assert keyring.get_password("piper-morgan", "slack_bot") == "xoxb-test-token"
     assert keyring.get_password("piper-morgan", "anthropic") is None
@@ -208,6 +219,9 @@ def test_opted_in_reads_first_then_swaps_so_nothing_is_written(env_without_keys,
         conftest_mod.pytest_configure(config=None)
     assert os.environ["ANTHROPIC_API_KEY"] == "real-anthropic"  # read happened first
     assert getattr(keyring.get_keyring(), "piper_test_in_memory", False) is True
+    from services.infrastructure import keychain_service
+
+    assert keychain_service._process_default_store == "keychain"  # #2353, with the swap
     keyring.set_password("piper-morgan", "slack_bot", "xoxb-test-token")
     assert [c for c in fake_os_keyring.calls if c[0] in ("set", "delete")] == []
 

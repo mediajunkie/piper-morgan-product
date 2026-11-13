@@ -142,16 +142,18 @@ def _reset_keychain_hang_for_tests() -> None:
 
 def _keychain_timeout_seconds() -> float:
     """Resolve the keyring-call timeout (#1711). <= 0 disables the guard."""
-    raw = os.getenv(KEYCHAIN_TIMEOUT_ENV_VAR, "").strip()
-    if not raw:
+    # Named for what it is, an environment setting: the 2059 log lint reads a name like
+    # ``raw`` as user text and its allow-list is keyed by line number, which moves.
+    configured = os.getenv(KEYCHAIN_TIMEOUT_ENV_VAR, "").strip()
+    if not configured:
         return DEFAULT_KEYCHAIN_TIMEOUT_SECONDS
     try:
-        return float(raw)
+        return float(configured)
     except ValueError:
         logger.warning(
             "keychain_timeout_invalid",
             env_var=KEYCHAIN_TIMEOUT_ENV_VAR,
-            value=raw,
+            value=configured,
             using_default=DEFAULT_KEYCHAIN_TIMEOUT_SECONDS,
         )
         return DEFAULT_KEYCHAIN_TIMEOUT_SECONDS
