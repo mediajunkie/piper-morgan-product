@@ -40,10 +40,27 @@ def _fresh_service(**env):
 
 
 class TestStoreSelection:
-    def test_alive_backend_keeps_os_keychain(self):
+    @pytest.fixture(autouse=True)
+    def _no_process_default(self, monkeypatch):
+        # The test run's own in-process default ("keychain", for the in-memory backend)
+        # is removed, so "" here means what it means in a real process: unset (#2353).
+        from services.infrastructure import keychain_service as mod
+
+        monkeypatch.setattr(mod, "_process_default_store", None)
+
+    def test_alive_backend_unset_no_longer_picks_the_os_keychain_2353(self, monkeypatch):
+        """Was ``test_alive_backend_keeps_os_keychain``. Arch's ruling of 2026-11-12:
+        the keychain is opt-in only, so a live backend with the store unset routes to
+        the database store exactly as a dead one does."""
+        monkeypatch.setenv("ENCRYPTION_MASTER_KEY", "S" * 43 + "=")
         with patch("keyring.get_keyring", return_value=_AliveBackend()):
             svc = _fresh_service(PIPER_CREDENTIAL_STORE="")
-        assert svc._db_store is None
+        assert svc._db_store is not None
+
+    def test_alive_backend_keeps_os_keychain_when_chosen(self):
+        with patch("keyring.get_keyring", return_value=_AliveBackend()):
+            svc = _fresh_service(PIPER_CREDENTIAL_STORE="keychain")
+        assert svc._db_store is None and svc._no_secure_store is None
 
     def test_dead_backend_with_encryptor_routes_to_db(self, monkeypatch):
         monkeypatch.setenv("ENCRYPTION_MASTER_KEY", "S" * 43 + "=")

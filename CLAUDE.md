@@ -122,7 +122,7 @@ If it is not empty: `git fetch origin main && git merge origin/main && git push 
 ## Quick reference
 
 ```bash
-PIPER_CREDENTIAL_STORE=db python main.py   # server, port 8001 (entry point; not web/app.py); =db keeps it out of xian's keychain
+PIPER_CREDENTIAL_STORE=db python main.py   # server, port 8001 (entry point; not web/app.py); =db is the default since #2353, kept here for clarity
 python -m pytest tests/unit/ -v
 docker compose up -d && alembic upgrade head   # Postgres 5433
 ./scripts/fix-newlines.sh         # before committing
@@ -137,7 +137,7 @@ env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHRO
   PIPER_CREDENTIAL_STORE=db POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &
 ```
 
-`PIPER_CREDENTIAL_STORE=db` keeps the server out of xian's login keychain (his rule, 2026-11-11: nothing we run reads it without his permission). Provider keys come from the database store, or from a key variable you put on the command line after the `env -u` flags (which strip any inherited `ANTHROPIC_API_KEY`). If a run would need the keychain, stop and ask xian through Exec.
+The app uses the OS keychain only when `PIPER_CREDENTIAL_STORE=keychain` is set (#2353); unset means the database store. `=db` stays on these lines for clarity. xian's rule (2026-11-11): nothing we run reads his login keychain without his permission, so a seat never sets `=keychain`. Provider keys come from the database store, or from a key variable you put on the command line after the `env -u` flags (which strip any inherited `ANTHROPIC_API_KEY`). If a run would need the keychain, stop and ask xian through Exec.
 
 A local server also needs `JWT_SECRET_KEY` set, or `main.py` refuses to start: `export JWT_SECRET_KEY=$(python -c 'import secrets; print(secrets.token_urlsafe(32))')`.
 
