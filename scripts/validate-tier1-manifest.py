@@ -17,6 +17,8 @@ No item lies under the never-indexed trees (dev/, mailboxes/, omnibus-logs/,
 memory). An item may not be an ADR, a .py file or a design record marked "not
 ratified" (Arch, 11-13: the build would retrieve internal language or code).
 A row past `candidate` needs an item. A `verified` row needs a date.
+A part (b) item may not name a member of the offered-connector sets, which code decides at
+call time per host (ADR-082, Arch 11-13).
 Written by Docs 2026-11-13 as a proposal for Lead to adapt.
 Concept: docs/internal/design/tier1-corpus-manifest.md
 """
@@ -71,6 +73,25 @@ def heading_resolves(path, heading):
             if re.match(r"\s*(#|\*\*)", line) and want in line.lower():
                 return True
     return False
+
+
+def offered_names():
+    """Values of the offered-connector dicts, read from source without importing it."""
+    import ast
+
+    names = set()
+    try:
+        tree = ast.parse(open("services/integrations/integration_status_service.py").read())
+    except OSError:
+        return names
+    for node in ast.walk(tree):
+        target = getattr(node, "target", None) or (getattr(node, "targets", [None])[0])
+        if getattr(target, "id", "") in (
+            "BETA_OFFERED_CONNECTORS",
+            "STAGING_ONLY_OFFERED_CONNECTORS",
+        ) and isinstance(getattr(node, "value", None), ast.Dict):
+            names |= {v.value for v in node.value.values if isinstance(v, ast.Constant)}
+    return names
 
 
 def not_ratified(path):
@@ -129,6 +150,14 @@ def main(argv):
                         errors.append(
                             f"{rid}: item {p} is an ADR, code or a not-ratified record, never indexed"
                         )
+        if d["part"] == "b" and d["item"] and os.path.exists(d["item"].split("#")[0]):
+            text = open(d["item"].split("#")[0], encoding="utf-8").read().lower()
+            hit = sorted(n for n in offered_names() if n.lower() in text)
+            if hit:
+                errors.append(
+                    f"{rid}: item names offered connectors {hit}. State the rule, not the members "
+                    "(ADR-082): the names come from part (a)"
+                )
         lv = d["last_verified"]
         if d["status"] == "verified" and not lv:
             errors.append(f"{rid}: status verified but no last_verified date")
