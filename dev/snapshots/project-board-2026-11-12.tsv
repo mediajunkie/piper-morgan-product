@@ -2148,3 +2148,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2353	OPEN	Production		The OS keychain is opt-in only: PIPER_CREDENTIAL_STORE unset means the database store (Arch ruling 11-12)			
 2358	OPEN	Production		Self-knowledge item 4: team methods as task-loaded procedures for every Piper, rewritten into user register one at a time			
 2359	OPEN	Production		Self-knowledge item 5: read-only code tools over the served snapshot, with a path allow-list and a read budget (after the experiment)			
+2360	OPEN	Production		Notion CLI setup text tells the reader to export a token on a command line			
+2361	OPEN	Production		Pause admission: a switch that stops new accounts being created until it's turned back on (PDR-009 G7)			

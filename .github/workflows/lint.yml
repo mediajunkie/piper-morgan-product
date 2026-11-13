@@ -23,6 +23,8 @@ on:
       - '.pylintrc'
       - 'setup.cfg'
       - 'scripts/**'
+      - '**/*.md'
+      - '*.md'
       - '.github/workflows/**'
       - 'mailboxes/**'
       - 'docs/**'
@@ -41,6 +43,8 @@ on:
       - '.pylintrc'
       - 'setup.cfg'
       - 'scripts/**'
+      - '**/*.md'
+      - '*.md'
       - '.github/workflows/**'
       - 'mailboxes/**'
       - 'docs/**'
@@ -180,6 +184,16 @@ jobs:
           # product script may point at any existing .md that names it. The ceiling
           # comes down in the commit that adds a line. CIO's proposal; Lead's gate.
           python scripts/check-concept-links.py --ratchet
+
+      - name: Key-in-docs gate (CIO, 2026-11-12; canonical-ops-recipes section 10)
+        run: |
+          # Reader-facing Markdown must not tell anyone to put a key, token, secret or
+          # password on a command line: `export NAME=value` (a `$` expansion passes, and
+          # so does `read -rs NAME && export NAME`) or `security add-generic-password
+          # ... -w <value>`. docs/internal, dev, mailboxes, archives and omnibuses are
+          # outside it. The count was 0 when this was wired, so there is no baseline: a
+          # new site turns main red. CIO's check; Exec's yes; Lead's gate.
+          python scripts/key_in_docs_lint.py
 
       - name: Quality summary
         run: |

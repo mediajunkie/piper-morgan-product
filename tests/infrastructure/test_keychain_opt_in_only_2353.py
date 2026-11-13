@@ -52,11 +52,12 @@ class FakeDbStore:
 
 @pytest.fixture
 def live_keyring(monkeypatch):
-    """A live, recording backend, with the test run's own process default removed."""
+    """A live, recording backend in keyring's global, with the test run's own backend
+    seam removed, so the service behaves as it does in a real process."""
     backend = RecordingKeyring()
     previous = keyring.get_keyring()
     keyring.set_keyring(backend)
-    monkeypatch.setattr(ks, "_process_default_store", None)
+    monkeypatch.setattr(ks, "_test_keyring_backend", None)
     monkeypatch.delenv(ks.STORE_ENV_VAR, raising=False)
     looked_up = []
     real = keyring.get_keyring
@@ -118,18 +119,74 @@ def test_keychain_is_used_when_chosen(live_keyring, monkeypatch, value):
     assert ("get", "anthropic_api_key") in live_keyring.calls
 
 
-def test_the_environment_wins_over_the_process_default(live_keyring, db_store, monkeypatch):
-    monkeypatch.setattr(ks, "_process_default_store", "keychain")
-    assert ks.selected_store() == "keychain"
+def test_an_explicit_db_wins_over_the_test_backend(live_keyring, db_store, monkeypatch):
+    seam = RecordingKeyring()
+    monkeypatch.setattr(ks, "_test_keyring_backend", seam)
+    assert ks.selected_store() == "keychain"  # unset + a test backend
     monkeypatch.setenv(ks.STORE_ENV_VAR, "db")
     assert ks.selected_store() == "db"
     ks.KeychainService().get_api_key("anthropic")
-    assert live_keyring.calls == []
+    assert seam.calls == [] and live_keyring.calls == []
 
 
-def test_the_process_default_is_not_an_environment_variable():
+@pytest.mark.parametrize("store", [None, "keychain"])
+def test_with_the_seam_set_nothing_reaches_keyrings_global(live_keyring, monkeypatch, store):
+    """Arch's pin. The seam carries the backend: with it set, a read, a write and a
+    delete touch only it, whatever keyring's global holds (here a recorder standing in
+    for a real keyring that a test replaced or a reload restored), and the global is
+    never even looked up. True with the store unset and with it set to keychain."""
+    seam = RecordingKeyring()
+    monkeypatch.setattr(ks, "_test_keyring_backend", seam)
+    if store:
+        monkeypatch.setenv(ks.STORE_ENV_VAR, store)
+    svc = ks.KeychainService()
+    assert svc._db_store is None and svc._no_secure_store is None
+    svc.store_api_key("anthropic", "fake-value")
+    assert svc.get_api_key("anthropic") == "fake-value"
+    assert svc.read_secret("anthropic").is_present
+    assert svc.delete_api_key("anthropic") is True
+    assert {c[0] for c in seam.calls} == {"set", "get", "delete"}
+    assert live_keyring.calls == [] and live_keyring.looked_up == []
+
+
+def test_nothing_outside_tests_assigns_the_test_backend():
+    """Arch's ratchet: the seam is set by tests/ only. Production code may read it in
+    keychain_service.py and nowhere assigns it a value other than its ``None`` default."""
+    import re
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2]
+    assign = re.compile(r"_test_keyring_backend\s*(?::[^=\n]*)?=(?!=)")
+    offenders = []
+    for folder in ("services", "web", "cli", "scripts", "config"):
+        for path in (root / folder).rglob("*.py"):
+            for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+                if assign.search(line) or "setattr" in line and "_test_keyring_backend" in line:
+                    offenders.append(f"{path.relative_to(root)}:{n}: {line.strip()}")
+    offenders += [
+        f"main.py:{n}"
+        for n, line in enumerate((root / "main.py").read_text().splitlines(), 1)
+        if "_test_keyring_backend" in line
+    ]
+    assert offenders == [
+        "services/infrastructure/keychain_service.py:"
+        + str(
+            next(
+                n
+                for n, line in enumerate(
+                    (root / "services/infrastructure/keychain_service.py").read_text().splitlines(),
+                    1,
+                )
+                if line.startswith("_test_keyring_backend: Optional[Any] = None")
+            )
+        )
+        + ": _test_keyring_backend: Optional[Any] = None"
+    ], offenders
+
+
+def test_the_seam_is_not_an_environment_variable():
     """A child process inherits os.environ; the test run's opt-in must not travel."""
     src = open("tests/conftest.py").read()
-    assert "_process_default_store" in src
+    assert "_test_keyring_backend = backend" in src
     assert 'os.environ["PIPER_CREDENTIAL_STORE"] = "keychain"' not in src
     assert 'setdefault("PIPER_CREDENTIAL_STORE", "keychain")' not in src
