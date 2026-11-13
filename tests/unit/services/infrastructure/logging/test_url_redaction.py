@@ -292,6 +292,29 @@ class TestRedactionIsIdempotent:
         out = URLRedactionFilter().redact_message("u?key=[REDACTED]&token=NOT-A-VALUE-1&x=1")
         assert out == "u?key=[REDACTED]&token=[REDACTED]&x=1"
 
+    @pytest.mark.parametrize(
+        "message",
+        [
+            "key=[REDACTED]NOT-A-VALUE-1",
+            "u?token=[REDACTED]NOT-A-VALUE-1&x=1",
+            "https://x.invalid/cb?code=[REDACTED]NOT-A-VALUE-1",
+        ],
+    )
+    def test_a_value_that_only_begins_with_the_marker_is_redacted_whole(self, message):
+        # Arch, 2026-11-13: the marker is "already redacted" only before a delimiter
+        # or the end of the text.
+        f = URLRedactionFilter()
+        once = f.redact_message(message)
+        assert "NOT-A-VALUE" not in once
+        assert f.redact_message(once) == once
+
+    @pytest.mark.parametrize(
+        "tail", ["", "&x=1", " next", '"', "',", ",", ";", ")", "]", "}", '\\"']
+    )
+    def test_the_marker_before_a_delimiter_is_left_alone(self, tail):
+        line = "key=[REDACTED]" + tail
+        assert URLRedactionFilter().redact_message(line) == line
+
 
 class TestInstallFunctions:
     """Tests for the filter installation functions."""
