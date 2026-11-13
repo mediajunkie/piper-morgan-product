@@ -25,6 +25,10 @@ item to appear in the item at that sha, so a deleted line keeps the approval and
 new or changed line drops the row ("text changed since approval"). The comparison
 needs git history. Generated rows carry their approval on the template instead.
 
+A stand-in line per row (Arch, 11-13): docs/tier1/stand-ins.md holds the template and
+one `id: user phrase` line per manifest row, so a dropped row's stand-in never
+shows a manifest id. A row without a line is a note, and fails with --strict.
+
 Checks: header, field counts, unique ids, enums, dates, positive integer
 windows. Every `item` and `derived_from` path exists. A `path#heading` must
 resolve, meaning the file holds a heading or a bold line containing that text.
@@ -51,7 +55,6 @@ HEADER = [
     "id",
     "part",
     "topic",
-    "stand_in_topic",
     "item",
     "derived_from",
     "source_kind",
@@ -244,6 +247,16 @@ def main(argv):
                 errors.append(f"{rid}: last_verified={lv!r}")
         elif d["status"] != "candidate" and not generated:
             notes.append(f"{rid}: unverified")
+    stand_ins = "docs/tier1/stand-ins.md"
+    if os.path.exists(stand_ins):
+        with open(stand_ins, encoding="utf-8") as f:
+            have = {ln.split(":", 1)[0].strip() for ln in f if re.match(r"^[a-z]-[\w-]+:", ln)}
+        for r in rows[1:]:
+            rid = r[0]
+            if rid != "s-stand-ins" and rid not in have:
+                notes.append(f"{rid}: no line in {stand_ins} (it would fall back to a manifest id)")
+    else:
+        notes.append(f"{stand_ins} is missing")
     for e in errors:
         print("ERROR", e)
     for m in notes:
