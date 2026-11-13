@@ -2,6 +2,8 @@
 
 **Owner:** Docs (wording for CXO's pass). **Date:** 2026-11-13. **Source page:** `docs/ALPHA_KNOWN_ISSUES.md` (last updated 2026-10-31). **Manifest row:** `d-known-limits`. **Status:** DRAFT. Nothing here is approved, and nothing here has been re-checked against the served build. Every limit is carried from the page as written on 10-31 and is marked unverified.
 
+> **Superseded in part, 11-13:** Arch and PPM ruled the split (01M7APG3SB, 01M7AP6MM5). The clean rows now live in `docs/known-limits.md`, the three unsupported workarounds below are cut, and the row-to-issue map moved to the manifest's `d-known-limits` notes. This file stays as the record of why.
+
 ## What changed from the page, and why
 
 - **Issue numbers and internal labels are out of the answer text.** They sit in the mapping table at the end, which is for the team and is not corpus text (CXO's leak list, Arch's ruling 01M7ANVMYA).
