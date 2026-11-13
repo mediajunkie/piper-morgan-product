@@ -3,7 +3,7 @@
 **Updated**: 2026-11-12 START. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
 ## NOW (11-12 STOP)
-- **"The Server Has No Key" PUBLISHED 11-12 22:17** (website 512dd36, row `published`, draft archived, done-memo sent). **Medium leg only, owed by xian** (Comms correction 01M79RN9CZS32K9QNWAP7Z30TD, no LinkedIn). When the Medium URL arrives: row to `distributed`, mediumURL, canonicalSite `distributed`. Step 1f resurfaces it. No nudges. Next: Sat 11-14 insight "Which Agent Did It?" (planned).
+- **"The Server Has No Key" PUBLISHED 11-12 22:17 and DISTRIBUTED (Medium only, xian 11-12). Nothing owed. xian signed off for the night. Next: Sat 11-14 insight "Which Agent Did It?" (planned).**
 - **Next START (11-13) owes:** the 11-12 omnibus (Sonnet subagent, scratchpad, 11-11 omnibus as model, then verify), Step 1d on 11-12 logs, fresh session log.
 - **Gate live (fdd93440e7):** no `export NAME=value` for a key, token, secret or password in reader-facing Markdown (use `read -rs`), or Code Quality goes red. Run `python scripts/key_in_docs_lint.py` before pushing any page edit.
 - **Self-knowledge, xian answered 11-12 17:19:** Tier 1 first (curated, versioned, user-focused corpus), leans parts 1, 2, 4. Docs owns the Tier 1 manifest once PPM files the issues, none yet. Do not say the app's credential default changed in the guide until Lead validates Arch's ruling 01M797MMH85K9G4GEEY7TDN9JG.
