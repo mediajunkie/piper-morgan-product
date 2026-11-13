@@ -644,9 +644,9 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
   - #2344: xian's two Buttondown steps (Q, not a blocker).
   - **key: tier1-approval-batch** (Filed 2026-11-13; to: exec; trigger: the first Tier 1 rows are verified and voice-passed. One batch for xian's quoted yes, which sets `approved`, Arch 07:26).
-  - **key: 2364-sprint-go** (Filed 2026-11-13; to: exec; trigger: xian's go or no on ruling step 1 in sprint 2's health lane, asked 13:26 in 01M7BCWQ3EW3C9QGSYZV5DW1DB). On a go: sprint doc health-lane line plus the board Sprint value.
-  - **key: 2364-known-limit** (Filed 2026-11-13; to: docs; trigger: PA's served probe confirms the decline on beta). Then it becomes a known-limits row, removed when the fix is served.
-  - **key: 2364-selfhost-wording** (Filed 2026-11-13; trigger: ruling 3's default flip lands). Self-host guide line: one extra provider call per turn on the self-hoster's key.
+  - **key: 2364-sprint-go** (Filed 2026-11-13; to: exec; trigger: xian's go or no on ruling step 1 in sprint 2's health lane, asked 13:26 in 01M7BCWQ3EW3C9QGSYZV5DW1DB). Paired 13:39 with Lead's live probe run (about 26 calls; provider key), since step 1 can't land without it (01M7BDEYT970R4SZQSMDHP76D5). Arch rules on prompt v0.2 going live. Lead's size: about half a Lead-day. On a go: sprint doc health-lane line plus the board Sprint value.
+  - **key: 2364-known-limit** (Filed 2026-11-13; to: docs; trigger: Web's served probe confirms the decline on beta (moved from PA, Arch 13:28). Then it becomes a known-limits row, removed when the fix is served.
+  - **key: 2364-selfhost-wording** (Filed 2026-11-13; trigger: xian rules on the flip, a reversal of 04-22 sent through Exec, and the flip lands). Self-host guide line: one extra provider call per turn on the self-hoster's key.
 - **#2355 known limits (11-13):** `docs/known-limits.md` has 6 draft rows, plus 4 held. PA's reads are blocked on xian's 1386 sign-in decision (01M79Q8226TJGVZ9XK9FAC0K1X; Exec told 07:12). PPM's membership rule (a)–(c) and the dropped-row condition are in decisions.log. Private session is off (rule a).
 - **Mail:** read v3 and `python3 scripts/mail4.py inbox --role ppm` every check; send by v4.
 - **xian's rule, 11-11 11:12:** no seat reads his login keychain without permission; `PIPER_CREDENTIAL_STORE=db`.
