@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-11-13 13:2x. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
+**Updated**: 2026-11-13 13:15. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
 ## NOW (11-13 09:16)
 - **Tier 1 corpus (#2355) is Docs' lane, second-lane work.** Manifest `docs/internal/design/tier1-corpus-manifest.csv` (25 rows, README beside it), checker `scripts/validate_tier1_manifest.py` (`--strict`, `--deploy`, 7 tests in `tests/unit/scripts/`). Rules (Arch/Lead/PPM/CIO): `item` is the one indexed file, `derived_from` is what facts are checked against, indexed = verified + voice_pass passed + resolves + in window + `approved` (sha at xian's quoted yes, current lines must appear in the approved text). A stale or unapproved row DROPS (no deploy refusal), only an indexed item on an excluded path or an unreadable stand-ins sha exits 1. Stand-ins live in `docs/tier1/stand-ins.md` (row `s-stand-ins`, kind `template`). Nothing is indexed: no row is approved. Do NOT push to scripts/, tests/, services/, web/ while Lead's hold is on (his second hold: until the served commit after d80610b579). docs/, dev/ and mail are fine.
