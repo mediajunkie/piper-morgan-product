@@ -139,6 +139,12 @@ Arch surfaced a same-shape candidate at a **non-code altitude** (`mailboxes/cio/
 
 **Disposition:** keep at Emerging (2-of-3 unchanged). If consumer-trace-at-the-routing-layer is *applied* (not just recognized) to catch a dropped cross-agent signal before it costs a block, that would be a genuine 3rd-instance candidate — and a strong one, being a different applier + a different altitude.
 
+### Worked example: a filter tested against a stand-in for its consumer (#2362, 2026-11-13)
+
+Lead's #2362 filter made the root redaction filter cover child loggers. It merges a record's arguments into its message and sets `record.args = None`. Its tests formatted the filtered records with a plain `logging.Formatter`. The real consumer of uvicorn's access records is uvicorn's `AccessFormatter`, which unpacks `record.args` into client, method, path, version and status. On a served build, every request's access line raised `TypeError` inside logging, and a traceback was printed in its place. Lead found it at 08:26, the morning after the change, from a local server's log. Nothing leaked, because the message was already redacted, but the served row "the access line appears, redacted" failed.
+
+The m-30 reading: the tests proved the filter's output had the right *shape* for a consumer, not that the *actual* consumer could read it. The fix (Lead's, in progress) adds a test that formats a filtered access record with uvicorn's own `AccessFormatter`, which is the consumer trace this entry asks for. A change that rewrites a shared object another library reads (a log record, a request, a settings dict) is checked with that library's reader, not a stand-in. This is a recognition, applied after the fact, so it is a worked example, not a new instance. Entry 53 has the same incident's first half (the filter's chokepoint, 11-12). Arch's ruling (11-13 08:35) turns the trace into a ratchet: after the filter is installed, every installed handler's formatter must format a sample record with arguments without raising. That covers the next consumer as well as this one, which is entry 36's move (a mechanism, not a reminder) applied to a consumer trace. Arch also recorded the ruling's own share: it checked that the filter redacted, not that every formatter could still render the record.
+
 Slot 30 reserved May 15 per pre-filing slot-availability check (methodology-28); this filing claims the slot. Filed alongside methodology-31 (Append-Only Autonomous-Cycle Architecture, 2026-05-18) and methodology-32 (Postel for Memo Headers, 2026-05-18) as the May 18 batch.
 
 ---

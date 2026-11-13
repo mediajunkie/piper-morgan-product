@@ -143,8 +143,9 @@ class TestURLRedactionFilter:
 
         redaction_filter.filter(record)
 
-        # #2362: the filter merges the arguments first and redacts the finished message.
-        assert record.args is None
+        # 2026-11-13: a string argument is redacted in place and the arguments are kept,
+        # so a formatter that reads them still works.
+        assert record.args == ("https://api.example.com?token=[REDACTED]",)
         assert "abc123" not in record.getMessage()
         assert record.getMessage() == "Request: https://api.example.com?token=[REDACTED]"
 
@@ -166,7 +167,7 @@ class TestURLRedactionFilter:
 
         redaction_filter.filter(record)
 
-        assert record.args is None
+        assert record.args == {"url": "https://api.example.com?api_key=[REDACTED]"}
         assert record.getMessage() == "Request: https://api.example.com?api_key=[REDACTED]"
 
     def test_a_format_string_with_a_sensitive_looking_placeholder_still_formats(
@@ -243,6 +244,85 @@ class TestURLRedactionFilter:
         )
         redaction_filter.filter(record)
         assert record.msg is payload
+
+
+class TestArgumentsSurviveForFormattersThatReadThem:
+    """2026-11-13, served on beta from d5905b6946: the filter set ``record.args`` to
+    ``None`` on every record that had arguments. uvicorn's access formatter unpacks
+    five arguments, so each request wrote a logging-error traceback where its access
+    line should be. No test used that formatter."""
+
+    @pytest.fixture
+    def redaction_filter(self):
+        return URLRedactionFilter()
+
+    @staticmethod
+    def _access_record(path):
+        return logging.LogRecord(
+            name="uvicorn.access",
+            level=logging.INFO,
+            pathname="h11_impl.py",
+            lineno=1,
+            msg='%s - "%s %s HTTP/%s" %d',
+            args=("127.0.0.1:50546", "GET", path, "1.1", 200),
+            exc_info=None,
+        )
+
+    def test_uvicorn_access_formatter_formats_a_filtered_record(self, redaction_filter):
+        from uvicorn.logging import AccessFormatter
+
+        record = self._access_record("/health?code=NOT-A-1&state=NOT-A-2&token=NOT-A-3&x=1")
+        assert redaction_filter.filter(record) is True
+        line = AccessFormatter(
+            fmt='%(client_addr)s - "%(request_line)s" %(status_code)s', use_colors=False
+        ).format(record)
+        assert "NOT-A-" not in line
+        assert (
+            '"GET /health?code=[REDACTED]&state=[REDACTED]&token=[REDACTED]&x=1 HTTP/1.1" 200'
+            in line
+        )
+
+    def test_a_record_passing_two_filters_still_formats(self, redaction_filter):
+        # The logger's filter and the handler's filter both run on one record.
+        from uvicorn.logging import AccessFormatter
+
+        record = self._access_record("/cb?code=NOT-A-1")
+        redaction_filter.filter(record)
+        URLRedactionFilter().filter(record)
+        assert len(record.args) == 5
+        line = AccessFormatter(
+            fmt='%(client_addr)s - "%(request_line)s" %(status_code)s', use_colors=False
+        ).format(record)
+        assert "/cb?code=[REDACTED] HTTP/1.1" in line
+
+    def test_an_access_line_with_nothing_sensitive_keeps_its_arguments_untouched(
+        self, redaction_filter
+    ):
+        record = self._access_record("/health")
+        before = record.args
+        redaction_filter.filter(record)
+        assert record.args == before
+
+    def test_a_split_value_is_still_merged(self, redaction_filter):
+        record = logging.LogRecord("t", logging.INFO, "t.py", 1, "token=%s", ("NOT-A-1",), None)
+        redaction_filter.filter(record)
+        assert record.args is None
+        assert record.getMessage() == "token=[REDACTED]"
+
+    def test_a_value_in_a_non_string_argument_is_still_merged(self, redaction_filter):
+        class Url:
+            def __str__(self):
+                return "https://x.invalid/v1?key=NOT-A-1"
+
+        record = logging.LogRecord("t", logging.INFO, "t.py", 1, "GET %s", (Url(),), None)
+        redaction_filter.filter(record)
+        assert record.args is None
+        assert record.getMessage() == "GET https://x.invalid/v1?key=[REDACTED]"
+
+    def test_non_string_arguments_are_kept_as_they_were(self, redaction_filter):
+        record = logging.LogRecord("t", logging.INFO, "t.py", 1, "%s took %d ms", ("a", 12), None)
+        redaction_filter.filter(record)
+        assert record.args == ("a", 12)
 
 
 class TestRedactionIsIdempotent:
@@ -407,3 +487,63 @@ class TestIntegrationWithLogging:
 
         assert "AIzaSyDfakekey123456789" not in caplog.text
         assert "key=[REDACTED]" in caplog.text
+
+
+def test_every_installed_handler_formats_a_filtered_record_with_arguments():
+    """Arch's ratchet, 2026-11-13. In an app-shaped setup (``logging.basicConfig``,
+    then ``uvicorn.Config`` as ``main.py`` builds it, then the handler install), every
+    handler's own formatter must format a record with arguments after the handler's
+    filters have run. The next formatter that reads ``record.args`` fails here, not
+    on a host. Run in a bare subprocess so no logging state leaks into this one."""
+    import json
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[5]
+    code = r"""
+import json, logging, sys
+import uvicorn
+from services.infrastructure.logging.url_redaction import (
+    _all_handlers, handlers_without_redaction, install_handler_redaction_filter,
+)
+
+async def app(scope, receive, send):
+    return None
+
+logging.basicConfig(level=logging.INFO)
+uvicorn.Config(app, log_level="info")
+install_handler_redaction_filter()
+out = {"without": handlers_without_redaction(), "handlers": []}
+for owner, handler in _all_handlers():
+    if owner == "uvicorn.access":
+        record = logging.LogRecord(owner, logging.INFO, "x.py", 1, '%s - "%s %s HTTP/%s" %d',
+            ("127.0.0.1:1", "GET", "/health?code=NOT-A-1&state=NOT-A-2&token=NOT-A-3", "1.1", 200), None)
+    else:
+        record = logging.LogRecord(owner, logging.INFO, "x.py", 1, "%s took %d ms",
+            ("https://x.invalid/v1?key=NOT-A-1", 12), None)
+    entry = {"owner": owner, "formatter": type(handler.formatter).__name__}
+    try:
+        handler.filter(record)
+        entry["line"] = handler.format(record)
+    except Exception as exc:
+        entry["error"] = repr(exc)
+    out["handlers"].append(entry)
+print("RESULT " + json.dumps(out))
+"""
+    run = subprocess.run(
+        [sys.executable, "-c", code], cwd=str(root), capture_output=True, text=True, timeout=120
+    )
+    assert run.returncode == 0, run.stderr[-800:]
+    result = json.loads(
+        [ln for ln in run.stdout.splitlines() if ln.startswith("RESULT ")][0][len("RESULT ") :]
+    )
+    assert result["without"] == []
+    owners = {h["owner"] for h in result["handlers"]}
+    assert {"root", "uvicorn", "uvicorn.access"} <= owners, owners
+    for h in result["handlers"]:
+        assert "error" not in h, h
+        assert "NOT-A-" not in h["line"], h
+    access = [h for h in result["handlers"] if h["owner"] == "uvicorn.access"][0]
+    assert access["formatter"] == "AccessFormatter"
+    assert access["line"].count("[REDACTED]") == 3

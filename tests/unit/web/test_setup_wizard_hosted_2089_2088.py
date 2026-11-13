@@ -37,7 +37,9 @@ class TestRender:
         assert "System Requirements" not in html
         assert "check-system-btn" not in html
         assert 'id="invite-token-first"' in html
-        assert "Alpha access is invite-only. Paste the code you received." in html
+        assert (
+            "Piper is invite-only while it's in private beta. Paste the code you received." in html
+        )
         # carried hidden to Create Account, never asked twice
         assert re.search(r'<input type="hidden" id="invite-token"', html)
         assert 'for="invite-token"' not in html

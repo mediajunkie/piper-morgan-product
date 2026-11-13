@@ -108,3 +108,23 @@ def test_verified_row_without_approval_drops(v, capsys):
     v.PATH = _temp_manifest(v, edit)
     assert v.main(["--deploy"]) == 0
     assert "b-connectors: verified but not approved" in capsys.readouterr().out
+
+
+def test_unreadable_approval_drops_an_item_but_fails_a_stand_in_build(v, capsys):
+    """Arch, 11-13: an item with an unreadable approval is a DROP, the stand-ins file is exit 1."""
+
+    def edit_item(r, i):
+        if r[i["id"]] == "b-connectors":
+            r[i["status"]], r[i["last_verified"]] = "verified", "2026-11-13"
+            r[i["voice_pass"]], r[i["approved"]] = "passed", "0" * 40
+
+    v.PATH = _temp_manifest(v, edit_item)
+    assert v.main(["--deploy"]) == 0
+    assert "b-connectors: approval can't be checked" in capsys.readouterr().out
+
+    def edit_stand_in(r, i):
+        if r[i["id"]] == "s-stand-ins":
+            r[i["approved"]] = "0" * 40
+
+    v.PATH = _temp_manifest(v, edit_stand_in)
+    assert v.main(["--deploy"]) == 1
