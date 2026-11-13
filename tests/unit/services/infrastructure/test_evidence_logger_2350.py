@@ -94,6 +94,7 @@ def test_a_url_in_an_evidence_line_is_redacted(captured):
         "mcp_rate_limit_backend_active", backend="https://example.invalid/x?key=NOT-A-VALUE-1"
     )
     assert "NOT-A-VALUE-1" not in captured.getvalue()
+    assert "key=[REDACTED]" in captured.getvalue()
 
 
 def test_a_field_named_like_a_value_is_dropped_and_the_drop_is_said(captured):
@@ -117,8 +118,49 @@ def test_an_unlisted_event_is_still_written_and_flagged(captured):
 
 
 def test_it_never_raises(monkeypatch):
-    monkeypatch.setattr(ev.structlog, "get_logger", lambda *_a, **_k: 1 / 0)
+    monkeypatch.setattr(ev, "configure_evidence_logger", lambda: 1 / 0)
     ev.evidence("github_app_grant_refreshed", owner_id="x")
+
+
+def test_the_line_is_valid_json_with_the_event_and_fields(captured):
+    import json
+
+    ev.evidence("TokenBlacklist: Redis available", seeded_entries=4)
+    line = json.loads(captured.getvalue().strip().splitlines()[-1])
+    assert line["event"] == "TokenBlacklist: Redis available" and line["seeded_entries"] == 4
+    assert line["logger"] == "piper.evidence" and line["level"] == "info"
+    assert line["timestamp"].endswith("Z")
+
+
+def test_it_does_not_go_through_structlog():
+    """Arch, 2026-11-12: the path to the filter and handler must not depend on
+    structlog.configure having run first."""
+    src = Path(ev.__file__).read_text()
+    assert "import structlog" not in src and "structlog.get_logger" not in src
+
+
+def test_a_bare_process_redacts_a_url_in_an_allowed_field():
+    """Arch's test: no logging setup, no structlog configuration, nothing imported
+    first. The line is written, and a ``key=`` value in an allowed field is not."""
+    import json
+    import subprocess
+    import sys
+
+    code = (
+        "from services.infrastructure.logging.evidence import evidence\n"
+        "evidence('mcp_rate_limit_backend_active', "
+        "backend='https://example.invalid/x?key=NOT-A-VALUE-1&plain=ok')\n"
+    )
+    out = subprocess.run(
+        [sys.executable, "-c", code], cwd=str(ROOT), capture_output=True, text=True, timeout=60
+    )
+    assert out.returncode == 0, out.stderr[-500:]
+    text = out.stdout + out.stderr
+    assert "NOT-A-VALUE-1" not in text
+    lines = [ln for ln in text.splitlines() if "mcp_rate_limit_backend_active" in ln]
+    assert len(lines) == 1, text[-500:]
+    line = json.loads(lines[0])
+    assert line["backend"] == "https://example.invalid/x?key=[REDACTED]&plain=ok"
 
 
 def test_every_evidence_call_uses_a_listed_literal_and_every_listed_event_has_a_site():

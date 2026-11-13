@@ -109,14 +109,33 @@ async def test_fifty_concurrent_lookups_on_twenty_connections(fresh_factory, mon
 
 
 async def test_startup_log_never_carries_the_redis_password(fresh_factory, monkeypatch):
-    """#2335: the pool-init log line names host:port only, never the URL."""
+    """#2335: the pool-init log line names host:port only, never the URL. Since #2350
+    the line is operational evidence: one JSON string on the ``piper.evidence`` logger,
+    so it is read from that logger's output (and structlog's capture, for anything the
+    factory still logs there)."""
+    import io
+    import json
+    import logging
+
     from structlog.testing import capture_logs
 
-    monkeypatch.setenv("REDIS_URL", "redis://default:s3cret-pw-2335@redis.example.test:6380")
-    with capture_logs() as logs:
-        await fresh_factory.initialize()
+    from services.infrastructure.logging.evidence import configure_evidence_logger
 
-    init = [e for e in logs if e.get("event") == "Redis connection pool initialized"]
-    assert init, logs
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    handler.setFormatter(logging.Formatter("%(message)s"))
+    evidence_log = configure_evidence_logger()
+    evidence_log.addHandler(handler)
+    monkeypatch.setenv("REDIS_URL", "redis://default:s3cret-pw-2335@redis.example.test:6380")
+    try:
+        with capture_logs() as logs:
+            await fresh_factory.initialize()
+    finally:
+        evidence_log.removeHandler(handler)
+
+    lines = [json.loads(ln) for ln in stream.getvalue().splitlines() if ln.strip()]
+    init = [e for e in lines if e.get("event") == "Redis connection pool initialized"]
+    assert init, stream.getvalue()
     assert init[0]["redis_host"] == "redis.example.test:6380"
+    assert "s3cret-pw-2335" not in stream.getvalue()
     assert "s3cret-pw-2335" not in repr(logs)
