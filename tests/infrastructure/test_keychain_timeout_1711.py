@@ -43,6 +43,37 @@ def _hanging_keyring_call(*args, **kwargs):
     return None
 
 
+import keyring as _keyring  # noqa: E402
+
+_REAL = (_keyring.get_password, _keyring.set_password, _keyring.delete_password)
+
+
+class _PatchedOrMemory:
+    """#2353: KeychainService reaches a keyring only through its backend seam, never
+    through the ``keyring`` module's functions. These tests simulate a hang by patching
+    those functions, so this seam backend forwards to one when, and only when, a test has
+    patched it; otherwise it answers from its own memory. It never reaches keyring's
+    global backend."""
+
+    def __init__(self):
+        self.items = {}
+
+    def get_password(self, service, name):
+        if _keyring.get_password is not _REAL[0]:
+            return _keyring.get_password(service, name)
+        return self.items.get((service, name))
+
+    def set_password(self, service, name, value):
+        if _keyring.set_password is not _REAL[1]:
+            return _keyring.set_password(service, name, value)
+        self.items[(service, name)] = value
+
+    def delete_password(self, service, name):
+        if _keyring.delete_password is not _REAL[2]:
+            return _keyring.delete_password(service, name)
+        self.items.pop((service, name), None)
+
+
 @pytest.fixture(autouse=True)
 def _isolate(monkeypatch):
     """Fresh hang-memo + fast timeout + FORCED keychain store, per test.
@@ -60,6 +91,7 @@ def _isolate(monkeypatch):
     _reset_keychain_hang_for_tests()
     _release.clear()
     monkeypatch.setenv("PIPER_CREDENTIAL_STORE", "keychain")
+    monkeypatch.setattr(keychain_module, "_test_keyring_backend", _PatchedOrMemory())
     monkeypatch.setenv(KEYCHAIN_TIMEOUT_ENV_VAR, "0.2")
     yield
     _release.set()  # release any abandoned worker threads

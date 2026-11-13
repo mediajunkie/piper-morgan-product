@@ -42,11 +42,11 @@ def _fresh_service(**env):
 class TestStoreSelection:
     @pytest.fixture(autouse=True)
     def _no_process_default(self, monkeypatch):
-        # The test run's own in-process default ("keychain", for the in-memory backend)
-        # is removed, so "" here means what it means in a real process: unset (#2353).
+        # The test run's own backend seam is removed, so "" here means what it means in
+        # a real process: unset (#2353).
         from services.infrastructure import keychain_service as mod
 
-        monkeypatch.setattr(mod, "_process_default_store", None)
+        monkeypatch.setattr(mod, "_test_keyring_backend", None)
 
     def test_alive_backend_unset_no_longer_picks_the_os_keychain_2353(self, monkeypatch):
         """Was ``test_alive_backend_keeps_os_keychain``. Arch's ruling of 2026-11-12:
