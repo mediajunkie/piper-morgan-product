@@ -11,6 +11,7 @@ integers, every source path exists (a source is `path`, `path#heading` or
 `path::symbol`, several joined by "; "), and no source lies under the
 never-indexed trees (dev/, mailboxes/, omnibus-logs/, agent memory).
 Written by Docs 2026-11-13 as a proposal for Lead to adapt.
+Concept: docs/internal/design/tier1-corpus-manifest.md
 """
 
 import csv
