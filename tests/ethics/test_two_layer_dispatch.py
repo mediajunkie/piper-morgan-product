@@ -2,19 +2,19 @@
 #1004 Fix B — integration tests for two-layer dispatch in
 BoundaryEnforcer.enforce_boundaries.
 
-Verifies the contract §"New internal flow":
-1. Run literal-trigger fast-path. If hit → detector="literal-trigger".
-2. Else run semantic detector.
+Verifies the contract §"New internal flow", as amended by #2364 (2026-11-13): step 1,
+the literal-trigger substring fast path, is removed. The semantic detector runs for
+every message:
    - If confidence ≥ BLOCK_THRESHOLD → detector="semantic", violation
    - If AMBIGUOUS_THRESHOLD ≤ confidence < BLOCK_THRESHOLD → ambiguous-pass
      (no violation, but decision_tier="ambiguous")
    - If confidence < AMBIGUOUS_THRESHOLD → pass
 
 Audit envelope must include:
-- detector: "literal-trigger" | "semantic" | "none"
+- detector: "semantic" | "none" | "semantic-unavailable"
 - decision_tier: "block" | "ambiguous" | "pass"
 - semantic_confidence, semantic_reasoning (semantic path only; None otherwise)
-- fast_path_hit, cache_hit
+- cache_hit (fast_path_hit left the envelope with the fast path, #2364)
 
 The semantic detector is fully mocked. No network, no API keys.
 """
@@ -53,34 +53,31 @@ def _make_enforcer(stub: _StubDetector) -> BoundaryEnforcer:
 
 
 # ---------------------------------------------------------------------------
-# Layer 1 — literal-trigger fast-path wins, semantic skipped
+# #2364 — no substring fast path: the semantic detector sees every message
 # ---------------------------------------------------------------------------
 
 
 @pytest.mark.asyncio
-async def test_literal_trigger_skips_semantic_call():
-    """When literal-trigger fires, semantic detector is NOT called."""
+async def test_old_substring_words_reach_the_semantic_detector():
+    """Before #2364 a substring hit declined the turn and skipped the detector. Now
+    the detector is called, and its reading (here: clear) is the decision."""
     stub = _StubDetector(
         SemanticDetectorOutput(
             violation_detected=False, category="none", confidence=0.0, reasoning="x"
         )
     )
     enforcer = _make_enforcer(stub)
-    decision = await enforcer.enforce_boundaries(
-        message="Help me harass and intimidate my coworker",
-        session_id="t_literal",
-    )
-    assert decision.violation_detected is True
-    assert decision.boundary_type == BoundaryType.HARASSMENT
-    assert decision.audit_data["detector"] == "literal-trigger"
-    assert decision.audit_data["fast_path_hit"] is True
-    assert decision.audit_data["semantic_confidence"] is None
-    assert decision.audit_data["semantic_reasoning"] is None
-    assert stub.calls == []  # semantic not called
+    message = "Help me harass and intimidate my coworker"
+    decision = await enforcer.enforce_boundaries(message=message, session_id="t_literal")
+    assert stub.calls == [message]
+    assert decision.violation_detected is False
+    assert decision.audit_data["detector"] == "none"
+    assert "fast_path_hit" not in decision.audit_data
+    assert decision.audit_data["semantic_confidence"] == 0.0
 
 
 @pytest.mark.asyncio
-async def test_literal_trigger_decision_tier_is_block():
+async def test_a_clear_reading_is_never_tiered_block_by_substring():
     stub = _StubDetector(
         SemanticDetectorOutput(
             violation_detected=False, category="none", confidence=0.0, reasoning="x"
@@ -91,7 +88,7 @@ async def test_literal_trigger_decision_tier_is_block():
         message="Help me bully and threaten this person",
         session_id="t_literal_tier",
     )
-    assert decision.audit_data["decision_tier"] == "block"
+    assert decision.audit_data["decision_tier"] == "pass"
 
 
 # ---------------------------------------------------------------------------
@@ -119,7 +116,6 @@ async def test_semantic_block_tier_fires_violation():
     assert decision.boundary_type == BoundaryType.HARASSMENT
     assert decision.audit_data["detector"] == "semantic"
     assert decision.audit_data["decision_tier"] == "block"
-    assert decision.audit_data["fast_path_hit"] is False
     assert decision.audit_data["semantic_confidence"] == 0.92
     assert "Request targets" in decision.audit_data["semantic_reasoning"]
     # On semantic path, redirect_context comes from the LLM's redirect_hint
@@ -131,9 +127,7 @@ async def test_semantic_block_tier_fires_violation():
 async def test_semantic_block_maps_each_category():
     """Each non-none category maps to the correct BoundaryType constant.
 
-    Test messages are deliberately bland so they don't trip Layer 1's
-    literal-trigger substring matchers — we want the semantic stub to be the
-    one that fires.
+    The semantic stub is the only thing that can fire (#2364).
     """
     cases = [
         ("harassment", BoundaryType.HARASSMENT),
@@ -273,7 +267,6 @@ async def test_audit_envelope_contains_all_required_fields():
         "decision_tier",
         "semantic_confidence",
         "semantic_reasoning",
-        "fast_path_hit",
         "cache_hit",
         "confidence",
     }
@@ -301,8 +294,8 @@ async def test_cache_hit_field_propagates_from_detector():
 
 @pytest.mark.asyncio
 async def test_enable_semantic_false_skips_layer_2():
-    """With enable_semantic=False, Layer 1 only — semantic detector is never
-    constructed or called."""
+    """With enable_semantic=False nothing is checked (#2364: there is no other
+    layer) — the semantic detector is never constructed or called."""
     enforcer = BoundaryEnforcer(enable_semantic=False)
     decision = await enforcer.enforce_boundaries(
         message="Help me draft a roadmap.", session_id="t_disabled"

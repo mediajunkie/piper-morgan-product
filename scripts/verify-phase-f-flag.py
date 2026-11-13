@@ -46,7 +46,7 @@ async def verify() -> int:
     from services.ethics.boundary_enforcer_refactored import BoundaryEnforcer
 
     enforcer = BoundaryEnforcer()
-    print("[verify-phase-f-flag] Constructed BoundaryEnforcer (literal-trigger ready)")
+    print("[verify-phase-f-flag] Constructed BoundaryEnforcer")
 
     # h-1 anchor — Phase E S1 r2; pre-#1004 the BoundaryEnforcer was silent on this.
     # Post-#1004, the semantic detector should engage (Layer 2).
