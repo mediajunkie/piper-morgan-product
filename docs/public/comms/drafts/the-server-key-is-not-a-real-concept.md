@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'the-server-key-is-not-a-real-concept-ef13a6ab-ad10-4ae4-806d-bf09bb466add.jpg'
+alt: 'An AI locksmith secures a coin purse attached to a vending machine while a puzzled proprietor gestures toward it and a customer waits with their own coin.'
 caption: ''
 ---
 
