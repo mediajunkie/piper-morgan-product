@@ -78,21 +78,9 @@ docker --version   # Should show: Docker version 20.x+
 
 These are automatically managed by the wizard, but listed for reference:
 
-### API Keys (via OS Keychain - Preferred)
+### API Keys
 
-Stored securely in OS keychain, not environment variables. Use setup wizard:
-
-```bash
-python3.12 main.py setup
-```
-
-### Alternative: Environment Variables (for headless/servers)
-
-```bash
-export OPENAI_API_KEY="sk-..."           # For OpenAI models
-export ANTHROPIC_API_KEY="sk-ant-..."    # For Claude models
-export GEMINI_API_KEY="..."              # For Google models
-```
+Enter your provider key at a hidden prompt. See the [self-host guide](./self-host-guide.md), step 5. Do not put a key in an `export` line or a shell profile.
 
 ### Optional: Integration Credentials
 

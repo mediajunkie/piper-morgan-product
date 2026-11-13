@@ -8,6 +8,8 @@
 
 ## Overview
 
+> **Running Piper on your own computer?** Use the [self-host guide](../installation/self-host-guide.md) for the key step. It enters the key at a hidden prompt into your local database. The environment-variable method below has been removed.
+
 Piper Morgan supports multiple LLM providers (OpenAI, Anthropic, Gemini, Perplexity) with secure keychain storage for API keys.
 
 ---
@@ -58,21 +60,9 @@ python scripts/migrate_keys_to_keychain.py
 # 3. Verify they work
 ```
 
-#### Method B: Environment Variables (Advanced)
+#### Method B: removed
 
-> ⚠️ **If you're setting shell environment variables on a shared machine, be aware they can affect every process that reads the environment on that machine, not just Piper Morgan** — a keychain-based setup (Method A) avoids this by scoping keys per-application instead.
-
-```bash
-# Add to your shell profile (~/.zshrc or ~/.bashrc)
-export OPENAI_API_KEY="sk-..."
-export ANTHROPIC_API_KEY="sk-ant-..."
-export GEMINI_API_KEY="..."
-export PERPLEXITY_API_KEY="..."
-
-# Then migrate to keychain
-source ~/.zshrc  # or ~/.bashrc
-python scripts/migrate_keys_to_keychain.py
-```
+Putting a key in a shell profile leaves it in plain text and in shell history, so this page no longer shows it. Use Method A or the self-host guide.
 
 ---
 
