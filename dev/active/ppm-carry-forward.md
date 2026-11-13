@@ -636,7 +636,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **#2361 pause switch:** Arch ruled (database setting + `can_pause_admission`); proposed sprint 6; no HOST account now (xian's yes is permission); xian flips it meanwhile.
 - **#2351 local running:** clean-clone run Mon 11-16 (Docs). PPM's connector-scope call (GitHub and Calendar, Notion when #2238 serves) is with Exec as something xian may contradict.
 - **Self-knowledge (#2349):** #2354 to #2357 open; #2358 and #2359 wait on xian's word on Arch's revised boundary. CXO's Tier 1 voice spec due Mon 11-16 12:00.
-- **Production 297** (`gh` 13:3x 11-13 = Total, after #2348 closed and #2364 placed in H), map v139, 0 unplanned, 0 unmilestoned. 11-12 21:40: #2343, #2347, #2353 closed; #2362 and #2363 placed in Q.
+- **Production 297** (`gh` 13:27 11-13 = Total, after #2348 closed and #2364 placed in H), map v139, 0 unplanned, 0 unmilestoned. 11-12 21:40: #2343, #2347, #2353 closed; #2362 and #2363 placed in Q.
 - **OWED rows:**
   - **key: sprint-state-refresh** (Filed 2026-11-09; to: exec; trigger: Fri 11-13 START).
   - **11-13 review placements:** #2327 (xian "yes, Friday"); candidates #2320, #2319. #2333 is in on xian's go.
@@ -644,7 +644,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
   - #2344: xian's two Buttondown steps (Q, not a blocker).
   - **key: tier1-approval-batch** (Filed 2026-11-13; to: exec; trigger: the first Tier 1 rows are verified and voice-passed. One batch for xian's quoted yes, which sets `approved`, Arch 07:26).
-  - **key: 2364-sprint-go** (Filed 2026-11-13; to: exec; trigger: xian's go or no on ruling step 1 in sprint 2's health lane, asked 13:3x in 01M7BCWQ3EW3C9QGSYZV5DW1DB). On a go: sprint doc health-lane line plus the board Sprint value.
+  - **key: 2364-sprint-go** (Filed 2026-11-13; to: exec; trigger: xian's go or no on ruling step 1 in sprint 2's health lane, asked 13:26 in 01M7BCWQ3EW3C9QGSYZV5DW1DB). On a go: sprint doc health-lane line plus the board Sprint value.
   - **key: 2364-known-limit** (Filed 2026-11-13; to: docs; trigger: PA's served probe confirms the decline on beta). Then it becomes a known-limits row, removed when the fix is served.
   - **key: 2364-selfhost-wording** (Filed 2026-11-13; trigger: ruling 3's default flip lands). Self-host guide line: one extra provider call per turn on the self-hoster's key.
 - **#2355 known limits (11-13):** `docs/known-limits.md` has 6 draft rows, plus 4 held. PA's reads are blocked on xian's 1386 sign-in decision (01M79Q8226TJGVZ9XK9FAC0K1X; Exec told 07:12). PPM's membership rule (a)–(c) and the dropped-row condition are in decisions.log. Private session is off (rule a).
