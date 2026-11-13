@@ -2154,3 +2154,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2363	OPEN	Production		Promote gate searches only the first parent for a tested ancestor, so a merge commit from a seat's branch is refused though Tests is green			
 2364	OPEN	Production		Ethics check declines ordinary requests on a substring ('home page', 'private repo', 'explicit'); reply-side boundary check reads a field that doesn't exist	bug		
 2365	OPEN	Production		Knowledge graph redacts or rejects a node's own text on a substring match ('explicit', 'unwanted'), a write decided by substring	bug		
+2366	OPEN	Production		LLM keys page offers to save a Google (Gemini) key, but Piper can't serve any reply on Gemini	bug		
