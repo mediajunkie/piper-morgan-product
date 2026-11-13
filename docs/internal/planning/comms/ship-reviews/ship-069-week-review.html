@@ -1,0 +1,147 @@
+<title>Ship 069 Week Review</title>
+<style>
+/* Layout: one reading column, bottom line first, a glance table, then short scannable sections; tables scroll in their own box. Same system as the Ship 068 review. */
+:root{
+  --bg:#f6f7f9; --fg:#1d232b; --muted:#5b6673; --rule:#d9dee5; --accent:#2b5d8a; --warn:#9a5a00; --ok:#2f6b3f; --card:#ffffff;
+  --display:"Source Serif 4",Georgia,serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181d;--fg:#e4e8ee;--muted:#9aa5b2;--rule:#2c333c;--accent:#7fb1dc;--warn:#e0a54a;--ok:#7cc48e;--card:#1b2027;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14181d;--fg:#e4e8ee;--muted:#9aa5b2;--rule:#2c333c;--accent:#7fb1dc;--warn:#e0a54a;--ok:#7cc48e;--card:#1b2027;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--body)}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:28px 48px}
+h1{font:600 1.9rem/1.2 var(--display);margin:0 0 4px;text-wrap:balance}
+h2{font:600 1.25rem/1.3 var(--display);margin:32px 0 8px;padding-top:12px;border-top:1px solid var(--rule);text-wrap:balance}
+h3{font:600 1rem/1.3 var(--body);margin:18px 0 4px}
+.meta{color:var(--muted);font-size:.85rem;margin:0 0 20px}
+.bluf{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--accent);padding:14px 16px;border-radius:4px}
+.bluf p{margin:.3em 0}
+ul{padding-left:1.2em;margin:.4em 0}
+li{margin:.3em 0}
+code{font:0.88em var(--mono)}
+.tag{font:600 .72rem var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:3px;border:1px solid currentColor;margin-right:4px;white-space:nowrap}
+.ok{color:var(--ok)} .warn{color:var(--warn)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+footer{margin-top:36px;color:var(--muted);font-size:.82rem;border-top:1px solid var(--rule);padding-top:10px}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:wght@600&display=swap">
+<div class="wrap">
+<h1>Ship #069: the week of Nov 6&ndash;12</h1>
+<p class="meta">Exec synthesis for our discussion, before any Ship draft. From all ten workstream reviews (Docs filed one this week) and my own 11-06 to 11-12 logs. Draft 1, Fri 11-13. Things after Thursday are marked &ldquo;since Thursday&rdquo;.</p>
+
+<div class="bluf">
+<p><b>Bottom line.</b> Of last week&rsquo;s five goals, two were met (the posts, mail v4) and two partly (the invite hold, onboarding). One didn&rsquo;t move: none of the six built-but-unserved issues closed.</p>
+<p>For users, three everyday asks now act on what the person meant. &ldquo;Complete the second one&rdquo; acts on the line just shown, a repo question gets a repo answer, and a learned preference can be changed or forgotten. All three are served.</p>
+<p>One step back, on purpose: your 11-12 cutover moved GitHub onto the published Piper app and revoked all 10 old tokens. <b>Every connected tester has to reconnect, starting with you.</b> That reconnect also opens #2342&rsquo;s rows 2 and 3, and through them #2261, the last item on the invite hold. #2292 (the mail records) closed Thursday.</p>
+<p>You also accepted the public-beta gate (PDR-009). Its likeliest close is sprint 6 or 7 (01-08 to 02-04).</p>
+</div>
+
+<h2>At a glance</h2>
+<div class="tbl"><table>
+<tr><th>Measure</th><th>This week</th><th>Note</th></tr>
+<tr><td>Invite hold</td><td>#2261 left</td><td>#2292 closed 11-12 13:27 (SPF, DKIM, DMARC). #2261 was built through #2174 (your run, 14 of 14), ADR-081 D3 and #2342, then cut over 11-12 19:06. It waits on #2342 rows 2 and 3. #2282 step 4 passed 11-07; step 5 is still to do.</td></tr>
+<tr><td>GitHub tokens</td><td>10 revoked, 0 left</td><td>Your apply output, 19:06 PT. Row 1 passed (PA 19:15, CXO ruled). Rows 2 to 4 aren&rsquo;t served yet.</td></tr>
+<tr><td>Updates to beta</td><td>32 of 36</td><td>Successful promotion dispatches (<code>gh run list</code>). Lead counts 33 builds that reached beta, because one run was marked failed after the machine had updated. Two were refused by the gate: one on 11-07 (Tests still running) and one on 11-12 (#2363).</td></tr>
+<tr><td>MCP deploys</td><td>1</td><td>v21 (<code>4666e38493</code>), yours, 11-12, before the cutover. Until then mcp.pipermorgan.ai had been a week behind (PA found it). This count is from PA&rsquo;s review; I didn&rsquo;t read the Fly releases.</td></tr>
+<tr><td>Issues filed / closed</td><td>70 / 26</td><td><code>gh-week-counts.py</code>, Pacific week. Production went from 252 to 297 open (PPM), with 22 Production closes.</td></tr>
+<tr><td>Main CI</td><td>Red on at least 3 of 7 days</td><td>Lead&rsquo;s pushes turned it red 7 times (11-06 once, 11-11 three times, 11-12 three times), for 5 to 60 minutes each. All 12 workflows were green at 05:09 today (HOST).</td></tr>
+<tr><td>Router screens</td><td>About $12, D5 passed</td><td>11-06 to 11-08: one NO-GO, one FAIL and a D5 PASS. None since 11-09: they&rsquo;re stopped until you pick a provider key.</td></tr>
+<tr><td>Keychain reads</td><td>3, now opt-in</td><td>All three were Lead&rsquo;s (below). Since #2338, #2340 and #2353, nothing reads your keychain unless <code>PIPER_CREDENTIAL_STORE=keychain</code> is set.</td></tr>
+<tr><td>Spend</td><td><span class="tag warn">owed</span></td><td>This needs your Console Usage and Cost screenshots for 11-06 to 11-12, as last week.</td></tr>
+<tr><td>Published</td><td>5 posts</td><td>All five are distributed, including Ship #068. &ldquo;The Server Has No Key&rdquo; went to Medium only, on your word.</td></tr>
+</table></div>
+
+<h2>Last week&rsquo;s goals</h2>
+<ol>
+<li><span class="tag warn">partly</span><b>Lift the invite hold.</b> #2174 passed, D3 was chosen, #2342 was built and promoted, and the cutover ran. #2292 closed. #2261 and #2282 are still open: the first waits on your reconnect, the second on step 5. The cohort note and the invitations haven&rsquo;t started.</li>
+<li><span class="tag warn">partly</span><b>Onboarding to first value.</b> The sprint shape is set (two weeks, your 11-06 ruling, ratified 11-09), and Sprint 2 starts today. #2219&rsquo;s list rows and #2293 were served 11-06, but both issues are open. Paths A and B haven&rsquo;t started, because they need the hold lifted.</li>
+<li><span class="tag warn">not met</span><b>Serve what&rsquo;s built: #2237, #2238, #2245, #2284, #2288, #2262, and build #2286.</b> All seven are still open (<code>gh</code>, this morning). The week went to the todo series and the GitHub App instead.</li>
+<li><span class="tag ok">met</span><b>Editorial.</b> Sat, Sun, Tue, Ship #068 and Thu all went out. The strategy talk itself is still not held (Comms).</li>
+<li><span class="tag ok">met</span><b>Mail v4 to every seat, 11-09.</b> 11 of 11 canaries answered. Seat mail on v4 went from 6% to 85% by 11-11 (CIO).</li>
+</ol>
+
+<h2>What a user can do now that they couldn&rsquo;t on 11-05</h2>
+<ul>
+<li><span class="tag ok">served</span><b>Point at a todo after a list.</b> &ldquo;Complete the second one&rdquo;, &ldquo;delete the first two&rdquo; and &ldquo;complete the X todo&rdquo; act on the lines just shown. When the words fit more than one line, Piper asks which. With no list shown, it asks rather than guessing (#2318, #2321, #2315, #2316). ADR-083 D5 is on your 11-07 go: 10 of 10 bound, within a 1.5 s cap.</li>
+<li><span class="tag ok">served</span><b>Ask about a repo and get the repo.</b> Before, the answer could be &ldquo;I don&rsquo;t see that document&rdquo;. It now asks which repo when there are several, and a past-due milestone is called overdue, not &ldquo;runway&rdquo; (#2270, #2132, #2324). Your advisor&rsquo;s phrasing went from 1 of 6 to 7 of 7.</li>
+<li><span class="tag ok">served</span><b>Change or forget a learned preference,</b> with consent before forgetting (#955).</li>
+<li><span class="tag ok">served</span><b>Add a repo to a project without a &ldquo;yes&rdquo; loop,</b> and find Integrations in a reorganized Settings (#2271, #2272, #2273). Sign-in accepts a wrong-case email (#2267, partly).</li>
+<li><span class="tag ok">served</span><b>Stay signed in under load.</b> Past 20 concurrent requests, sign-in no longer refuses everyone (#2334, #2336).</li>
+<li><span class="tag ok">served</span><b>Receive invitation mail that passes SPF, DKIM and DMARC</b> (#2292).</li>
+<li><span class="tag warn">step back</span><b>GitHub needs a reconnect.</b> Testers see CXO&rsquo;s line: &ldquo;&hellip; Reconnect GitHub in the Piper Morgan app, in Settings under Integrations, and choose which repositories I can see. Your saved settings are unchanged.&rdquo; Once they reconnect, they grant the repos they choose, not every repo.</li>
+<li><span class="tag warn">not yet</span><b>Complete a todo by pronoun</b> (#2328). 0 of 5 served: PA&rsquo;s and Web&rsquo;s reads of the test-account credential file were refused, and it waits on you.</li>
+<li><span class="tag warn">not yet</span><b>Run Piper on their own computer.</b> The helper and the setup words are on main, and Docs&rsquo; guide is a draft. Its clean-clone run is Mon 11-16.</li>
+<li><span class="tag warn">not yet</span><b>Be invited,</b> or reach a first valuable thing in a first session.</li>
+</ul>
+
+<h2>What went wrong, and the patterns in it</h2>
+<h3>Four patterns</h3>
+<ul>
+<li><b>An operator&rsquo;s credential, read by default.</b> Five local server starts on 11-11 read your OpenAI and Anthropic keys. A Slack smoke test wrote a fake entry to your login keychain on every run. On 11-12 at 17:11 a check script asked for one entry and timed out. Each fix bolted onto one script missed the next one. The fix that held was at the chokepoint: the store default (#2353), plus tests (#2338) and screens (#2340). CIO counts this under methodology-53, chokepoint versus bolt-on.</li>
+<li><b>Built isn&rsquo;t served, three layers deep.</b> The MCP app ran a week behind main until PA caught it before the cutover. A promotion was refused because a seat&rsquo;s merge commit hid main&rsquo;s tested commit (#2363). And last week&rsquo;s goal 3 shows the same at the issue level: seven built items, none closed.</li>
+<li><b>The classifier as a stop, again.</b> Credential reads for PA and Web were refused on 11-10. Nobody worked around them, and #2328 has sat at 0 of 5 since. The cost lands on you, as last week.</li>
+<li><b>Guessed clock times, every seat.</b> Docs, CIO, PA, PPM, Comms, Lead and I each report one or more. The stamp check catches them before commit. The habit hasn&rsquo;t changed.</li>
+</ul>
+<h3>Specific misses</h3>
+<ul>
+<li><b>Lead:</b> the three keychain reads above. Main went red 7 times, because a local run was narrower than CI. Small model probes ran without being priced to me first. A browser tab opened on your Mac at every fault-driver start on 11-11.</li>
+<li><b>Arch:</b> 9 rulings withdrawn or corrected within the hour. The #2353 seam ruling turned main red (7 Slack tests).</li>
+<li><b>Docs and Comms:</b> &ldquo;At Long Last, Beta&rdquo; went out labelled as a building post. Weekends are insights. A slot guard now checks the weekday.</li>
+<li><b>HOST:</b> said the App would be under your account. It&rsquo;s the <code>pipermorgan</code> org. HOST also edited a log line against the append-only rule, then restored it.</li>
+<li><b>CXO:</b> the first self-host invite lines said the code comes from us. A local database has no codes.</li>
+<li><b>PA:</b> a false #2270 PASS from a reworded ask, and a check that completed the wrong todo after the list reordered. Both were disclosed the same hour.</li>
+<li><b>Mine.</b> I told you &ldquo;complete the second one now just works&rdquo; from a promotion memo, before PA&rsquo;s served check. I relayed D5&rsquo;s cap without checking it against your approval. I copied a fake test token into a committed rollup, which turned the bearer gate red. And I left a tally in decisions.log without mailing it to PPM.</li>
+</ul>
+
+<h2>By workstream</h2>
+<div class="tbl"><table>
+<tr><th>Role</th><th>Progress this week</th><th>Next week / blocked on you</th></tr>
+<tr><td>Lead</td><td>11 closes. 36 promotion dispatches. The todo series, the repo handler, #955, the Redis fixes, #2342&rsquo;s build, the cutover command, the keychain opt-in, and log redaction. The test backlog went from 55 to 20.</td><td>Today&rsquo;s promotion, #2342&rsquo;s rows, then #2345 and the first gate row. Blocked on you: reconnect, #2363, the Redis rotation, a provider key, #2328, object storage.</td></tr>
+<tr><td>PA</td><td>Served checks on about 15 beta builds. Found the MCP app a week behind, and that the connector couldn&rsquo;t reach the install line. Row 1 passed. Wrote <code>twoturn.py</code>.</td><td>Rows 2 and 3, the MCP redeploy, and #2328. Blocked on your reconnect and the credential-file decision.</td></tr>
+<tr><td>Arch</td><td>160 rulings. ADR-082 and ADR-083 (D5) accepted, ADR-081 D3 governing. The technical rows of PDR-009. Rulings on #2158, #2361 and #2157, and the self-knowledge boundary.</td><td>#2342, #2362, #2363 and the gate builds. Blocked on: reconnect, #2363, the key, object storage, the Redis rotation, the boundary word.</td></tr>
+<tr><td>CXO</td><td>Judged #955, #2270 and #2318 on served replies. The #2342 copy (cutover line passed word for word). PDR-009&rsquo;s E1&ndash;E8.</td><td>Tier 1 voice spec, Mon 11-16 12:00. Rows 2 and 3, and the #2351 lines once served.</td></tr>
+<tr><td>PPM</td><td>Sprint 2 ratified. PDR-008 and PDR-009 accepted. The gate map (sprint 6&ndash;7 likeliest). #2349&rsquo;s issues filed. Self-hoster connectors called: the same as beta.</td><td>Today&rsquo;s sprint review (#2327 placed), and the lift-readiness memo after the rows.</td></tr>
+<tr><td>HOST</td><td>#2342&rsquo;s trust lines and custody record. The four conditions for &ldquo;Any account&rdquo;. Read the cutover command in full (415 lines). Positions on #2335, #2158, #2157 and #2361.</td><td>Custody facts: the secret&rsquo;s creation date and the masked client ID. Served-pass checks after your reconnect. The invite hold stands.</td></tr>
+<tr><td>CIO</td><td>The key-in-docs lint (3 sites to 0). The self-knowledge experiment plan (#2357) and conduct draft (#2354). Mail v4 at 85%. The skills review closed. Found #2363.</td><td>H1 priced to you before it runs. The guide check on 11-16.</td></tr>
+<tr><td>Comms</td><td>Five posts, each your prose checked against sources, with fixes only on your OK. Titles locked a day early. The mining pass, and the Ship forms for two-week sprints.</td><td>Sat 11-14 &ldquo;Which Agent Did It?&rdquo;. The editorial-strategy talk. The #2256 paste.</td></tr>
+<tr><td>Docs</td><td>Seven omnibuses. The self-host guide (draft). Nine pages no longer teach a key on a command line. #2332 closed. The slot guard.</td><td>The guide&rsquo;s clean-clone run, Mon 11-16. It needs a real provider key.</td></tr>
+<tr><td>Web</td><td>Five deploy checks. Served rows for #2273, #2271 and #2272, and #2282 step 4. Found the multiple <code>&lt;h1&gt;</code> per post.</td><td>#2328&rsquo;s five runs, and #2344 row 2 (a mailbox you name). The <code>&lt;h1&gt;</code> change needs CXO&rsquo;s and your go.</td></tr>
+</table></div>
+
+<h2>Where the sources disagreed</h2>
+<ul>
+<li><b>Posts.</b> Web&rsquo;s summary said four, and its table listed five. Web corrected it to five.</li>
+<li><b>Promotions.</b> Lead counts 33 builds on beta. GitHub shows 32 successes, because one run was marked failed after the update landed. Both are right about different things.</li>
+<li><b>Closes.</b> Repo-wide, 26 (<code>gh</code>). Production, 22 (PPM). Lead closed 11, and CXO and Arch closed most of the rest on served rows.</li>
+<li><b>The App&rsquo;s values.</b> Lead says they were set &ldquo;about 17:25&rdquo;. HOST recorded the half-state window from 17:26.</li>
+</ul>
+
+<h2>Since Thursday</h2>
+<ul>
+<li>All ten reviews were in by 05:14. Docs&rsquo; 11-12 omnibus counts 547 commits (333 the day before).</li>
+<li>Sprint 2 (onboarding to first value, 11-13 to 11-26) starts today, with PPM&rsquo;s review this morning. Ship #070 will be its progress report.</li>
+<li>The held promotion goes after 07:00 under the standing grant. It carries #2350, #2362, #2333, #2348, #2351&rsquo;s words, #2353 and #2347. Beta still serves <code>d4fd55e6c5</code> (05:16).</li>
+</ul>
+
+<h2>Draft goals for 11-13 to 11-19</h2>
+<p>From the reviews&rsquo; &ldquo;Next week&rdquo; sections, for you to edit and ratify.</p>
+<ol>
+<li><b>Finish the GitHub move:</b> your reconnect, then rows 2 and 3. Then #2261 closes, and PPM writes the lift-readiness memo. #2282 step 5 follows.</li>
+<li><b>Sprint 2&rsquo;s first week:</b> the todo rows (#2219, #2294, #2295, #2328), #2267, the wizard (#2268, #2274, #2275, #2286), Path B&rsquo;s build (#2297, #2301), #2304 and #2333.</li>
+<li><b>Promote and serve the held set,</b> then the MCP redeploy with #2362.</li>
+<li><b>Self-host and self-knowledge:</b> the guide&rsquo;s clean-clone run and CXO&rsquo;s voice spec, both Mon 11-16. H1 is priced before it runs.</li>
+<li><b>Editorial:</b> Sat 11-14 &ldquo;Which Agent Did It?&rdquo;, and Ship #069 on Wed 11-18.</li>
+</ol>
+
+<h2>For our discussion</h2>
+<ol>
+<li><b>The Ship&rsquo;s theme.</b> #068 was &ldquo;Whose Connection Is It, Anyway?&rdquo;, so a GitHub-only theme would repeat it. My candidates: &ldquo;Point at the Line&rdquo; (Piper acts on what you meant), &ldquo;A Step Back on Purpose&rdquo; (the reconnect), or &ldquo;Off-Limits by Default&rdquo; (the keychain). That last one overlaps Thursday&rsquo;s post.</li>
+<li><b>Last week&rsquo;s goal 3.</b> Seven built items didn&rsquo;t move. Should they go into Sprint 2, or wait? None of them is in Sprint 2&rsquo;s named set.</li>
+<li><b>The provider key.</b> This is the one question in almost every review: Lead&rsquo;s screens, Docs&rsquo; guide run, CIO&rsquo;s H1. My recommendation is (a): a dedicated capped Anthropic key that you enter once.</li>
+<li><b>Small answers:</b> #2363 (<code>^@</code>), #2328&rsquo;s credential file, object storage, and the Console screenshots for spend.</li>
+</ol>
+
+<footer>Verified how: I read all ten reviews in full this morning, plus Web&rsquo;s correction. I didn&rsquo;t re-read the 11-06 to 11-11 omnibus logs, so the patterns rest on the reviews and my own logs. Counts I ran at 05:1x: <code>gh-week-counts.py 2026-11-06 2026-11-12</code> (70 opened, 26 closed); <code>gh run list -w fly-deploy.yml -e workflow_dispatch</code> for 11-06 to 11-12 Pacific (32 success, 4 failure); <code>gh issue view</code> on the 14 goal issues (#2292 closed 11-12 21:27Z, 13 open); beta <code>/health</code> (<code>d4fd55e6c5</code>). Production counts are PPM&rsquo;s. Served claims are the seats&rsquo; reads, as recorded; nothing was re-served. Layer: GitHub and the logs.</footer>
+</div>
