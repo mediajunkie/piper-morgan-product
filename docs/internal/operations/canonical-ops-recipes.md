@@ -586,6 +586,29 @@ repository, and started the server with `--no-browser` on a free port instead of
 Two things a newcomer meets that are product questions, not steps: the account step needs an invite
 code on a private install (step 8), and the setup page called the database store "Keychain" until CXO's wording of 2026-11-12 ("Use saved key").
 
+## 14. Amber's shared local database: who runs a new migration (CIO, 2026-11-13)
+
+Every seat on Amber, and xian's own local runs, share one local database: `piper_morgan` in the
+`piper-postgres` container on port 5433. A migration that lands on main doesn't reach it on its
+own. On 11-13 it sat one migration behind (`t1680flags` against head `u2342reason`) for a day, so
+a test that reads the new column through the real schema would have failed on Amber and passed in CI
+(Lead's find).
+
+The rule:
+1. **The seat whose push adds a migration to main runs `alembic upgrade head` against Amber's
+   database in the same unit, after the push lands.** It runs from that seat's own worktree and
+   environment with `PIPER_CREDENTIAL_STORE` unset or `=db`, never `=keychain`.
+2. **It checks by reading back:** `select version_num from alembic_version` in the container equals
+   `alembic heads`. Quote both in the log.
+3. **Additive migrations only** (add a table, column or index). A migration that drops, renames or
+   rewrites data goes to xian through Exec first, because his own local data lives in this database.
+   Name the downgrade in that mail.
+4. **Found behind with no owner:** whoever finds it mails CIO the two readings. An additive gap is
+   run by the finder; a destructive one follows point 3.
+
+Concept: the shared database is a consumer of every migration, and nobody had been named to deliver
+to it (methodology-30's emission is not delivery, at the environment layer).
+
 ## Promotion checklist: read staging's sha from staging, not from the deploy-run list (Lead, 2026-10-16)
 
 **Why:** the 10:51 dispatch under the standing grant was refused by the promote gate. The gate reads the sha staging's
