@@ -205,3 +205,13 @@ Operational corollaries:
   covered the day it lands, and widened the trigger. The general check: when a local chokepoint stands in for a
   remote gate, list the remote gate's steps and confirm each one runs locally. Its first live run was Lead's
   push at 09:01: 12 gates, 12 passed, 31 s.
+- **xian's keychain rule (open, 11-12).** xian ruled on 11-11 that nothing agents run on his Mac reads his
+  keychain without his permission. The fixes put `PIPER_CREDENTIAL_STORE=db` in the server-start recipes
+  (CLAUDE.md, the ops doc and the start scripts) and made pytest opt in. Each of those covers one route, so
+  together they are a bolt-on. The step every route passes through is the app's own choice of credential store,
+  which on a Mac goes to the keychain whenever the setting is unset. On 11-12 at 17:11, a one-off check script of
+  Lead's imported the app with the setting unset (`load_dotenv()` with no path searches from the script's folder,
+  not the working folder). It made one keychain request, which timed out with no value read. No recipe covered a
+  one-off script, and no recipe could list every future one. Lead raised the chokepoint with Arch the same hour:
+  default to the database store when `ENCRYPTION_MASTER_KEY` is set. Arch decides it. The general check: when a
+  rule is "every X must set Y", find the single place that reads Y and ask what it does when Y is missing.
