@@ -8375,7 +8375,6 @@ class TestLogNeverSlicesUserText2059:
     # "path:line" -> reason. Every entry is a name that LOOKS like user text but is
     # system text (verified by reading the call and its callers, 2026-10-16).
     ALLOW_SITES: dict = {
-        "services/infrastructure/keychain_service.py:128": "`raw` is an environment-variable value (the keychain timeout), not user text",
         "web/startup.py:114": "`message` is the upload-dir probe's own status string",
         "web/startup.py:117": "`message` is the upload-dir probe's own status string",
         "web/utils/error_responses.py:124": "`message` is the server's HTTP error summary (system copy)",
@@ -8601,7 +8600,9 @@ class TestLogNeverSlicesUserText2059:
 
     def test_allow_list_is_only_the_helper_and_commented_system_text(self):
         assert set(self.ALLOW_FILES) == {"services/utils/utterance_log.py"}
-        assert len(self.ALLOW_SITES) == 9, "ALLOW_SITES grew: it is for system text only"
+        # 9 -> 8 (2353, 2026-11-12): keychain_service's timeout variable was renamed
+        # from ``raw``, so that site needs no exemption.
+        assert len(self.ALLOW_SITES) == 8, "ALLOW_SITES grew: it is for system text only"
         assert all(len(reason) > 20 for reason in self.ALLOW_SITES.values())
 
     def test_census_unsliced_names_ceiling_zero_and_allow_list_not_stale(self):
