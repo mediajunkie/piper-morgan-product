@@ -89,7 +89,7 @@ async def test_use_keychain_names_no_model_and_renders_no_exception_text():
     with patch("services.infrastructure.keychain_service.KeychainService", return_value=keychain):
         response = await use_keychain(KeychainUseRequest(provider="anthropic"))
     assert response.success is True
-    assert response.message == "Using the Anthropic key from your keychain."  # CXO: display name
+    assert response.message == "Using the Anthropic key you already saved."  # CXO: display name
     for model_word in ("claude", "gpt", "gemini-pro", "3.5"):
         assert model_word not in response.message
     broken = MagicMock()

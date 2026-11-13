@@ -559,7 +559,7 @@ steps as run from a fresh clone and a fresh virtual environment. Docs' page for 
    It never replaces one that is there. The key goes encrypted into the `secure_credentials` table.
 6. `python main.py`. It prints the setup address (`http://localhost:8001/setup`).
 7. On the setup page: Check System, then on "Connect Your AI" choose the provider and press
-   **Use Keychain** (on a local install that button means the key stored in step 5).
+   **Use saved key** (the key stored in step 5).
 8. "Create Your Account" asks for an invite code. On your own install you make one:
    `python scripts/mint_invite_tokens.py 1 --apply` prints it. Paste it, choose a username and password.
 9. Skip or add a project. "Setup Complete" says you are signed in; Open Piper.
@@ -577,7 +577,7 @@ Windows and Linux, and updating an existing install. The run cloned from a local
 repository, and started the server with `--no-browser` on a free port instead of 8001.
 
 Two things a newcomer meets that are product questions, not steps: the account step needs an invite
-code on a private install (step 8), and the setup page calls the database store "Keychain" (step 7).
+code on a private install (step 8), and the setup page called the database store "Keychain" until CXO's wording of 2026-11-12 ("Use saved key").
 
 ## Promotion checklist: read staging's sha from staging, not from the deploy-run list (Lead, 2026-10-16)
 

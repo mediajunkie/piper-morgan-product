@@ -78,7 +78,7 @@ def test_stores_reads_back_and_never_prints_the_key(tmp_path):
     assert code == 0
     assert service.rows == {"anthropic": FAKE}
     assert "stored, read back and matched" in text
-    assert "python main.py" in text and "Use Keychain" in text
+    assert "python main.py" in text and "Use saved key" in text
     assert FAKE not in text
 
 
