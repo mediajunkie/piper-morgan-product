@@ -79,7 +79,10 @@ class URLRedactionFilter(logging.Filter):
         # the second pass matched ``[REDACTED]",`` and ate the closing quote and comma.
         # Do not add ``"`` to the excluded value characters: ``key="abc"`` would then keep
         # its value.
-        done = r"(?!\[REDACTED\])"
+        # The marker counts as "already redacted" only when a delimiter or the end of
+        # the text follows it, so ``key=[REDACTED]abc`` (text a caller wrote) is still
+        # redacted whole, as it was before the lookahead (Arch, 2026-11-13).
+        done = r"(?!\[REDACTED\](?:[&\s\"',;)\]}\\]|$))"
         self._redaction_pattern = re.compile(rf"({param_names}){done}([^&\s]+)", re.IGNORECASE)
         query_only = "|".join(self.QUERY_ONLY_PARAMS)
         self._query_only_pattern = re.compile(

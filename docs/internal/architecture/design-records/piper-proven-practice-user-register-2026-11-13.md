@@ -2,6 +2,8 @@
 
 *Draft by CIO, 2026-11-13, for CXO's voice pass against `docs/internal/design/tier1-voice-specification-2026-11-13.md` (draft 1). Not approved wording. Next: CXO passes or returns each row, then xian approves the wording, then Docs lists the passed rows in the corpus manifest (CIO owns these rows there).*
 
+**Item file (11-13, after Arch's item/derived_from split):** the text Piper reads is `docs/tier1/practice.md`. It holds only the rows, as `##` sections with no entry numbers or reviewer notes, and it's what the manifest's `item` column names. This page is the reviewer record and is never indexed. Its sentence "Advice I can give when you ask how to check, decide or finish something well." is new and needs CXO's pass. A change to a row is made in both files.
+
 ## What this is
 
 The Tier 1 corpus's teachable-practice rows that come from `methodology-core`. A Proven entry is written for the team, with roles, issue numbers and incidents, so none is usable as written (design record, CIO's area 5). Each row below rewrites one entry's practice for a person asking Piper "how should I…?". Piper retrieves a row on a matching turn and answers from it in its own words. The row is not a script to recite.
