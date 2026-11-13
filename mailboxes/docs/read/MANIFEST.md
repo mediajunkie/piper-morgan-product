@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-13 05:05 PT | exec | kickoff-exec-to-leadership-ship-069-workstream-review-2026-11-06-to-2026-11-12-2026-11-13.md | Ship #069 workstream review: window Fri 2026-11-06 → Thu 2026-11-12. Write it n… |
 | 2026-11-10 23:27 PT | comms | comms-to-docs-cc-web-exec-publish-ready-never-green-in-a-thousand-runs-2026-11-10.md | PUBLISH-READY: Never Green in a Thousand Runs (Tue 11-10, building). Kind: acti… |
 | 2026-11-10 19:20 PT | lead | lead-to-docs-cc-exec-fly-deploy-red-was-transient-next-staging-deploy-succeeded-2026-11-10.md | Fly deploy red at 19:03 was transient: the next staging deploy succeeded and st… |
 | 2026-11-10 04:22 PT | exec | exec-to-ppm-cc-cohort-sprint-length-tally-0-objections-two-week-sprints-stand-late-by-mail-2026-11-10.md | Sprint-length tally: 0 objections at the 12:00 close, two-week sprints from Fri… |
