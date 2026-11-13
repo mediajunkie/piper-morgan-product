@@ -2140,3 +2140,9 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2348	OPEN	Production		/health should report Redis, as it does the database and the credential store			
 2350	OPEN	Production		Hosts drop every info log line (root WARNING from the CLI quiet mode); evidence events need a named logger kept at INFO	architecture		
 2351	OPEN	Production		Local running as a supported path for an outside tester: hidden-prompt key helper, tested step list, self-host guide			
+2354	OPEN	Production		Self-knowledge part 1: conduct layer in the cached prompt prefix, with a size cap and code guards			
+2355	OPEN	Production		Self-knowledge part 2: Tier 1 user corpus from a manifest (generated capability answers, how Piper works, teachable practice, known limits)			
+2356	OPEN	Production		Self-knowledge part 4: exclusion test and the served question set			
+2357	OPEN	Production		Self-knowledge research: a lean deployment (measure the conduct layer's cost and the retrieval trigger rate)			
+2352	OPEN	Production		Local key commands: rotate-key shows the pasted key, keys add writes the OS keychain by default			
+2353	OPEN	Production		The OS keychain is opt-in only: PIPER_CREDENTIAL_STORE unset means the database store (Arch ruling 11-12)			
