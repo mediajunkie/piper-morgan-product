@@ -1,16 +1,16 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-12 21:19 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/11/12/2026-11-12-0619-comms-code-log.md`, DAY-CLOSED. Start a new log 11-13.
+## ⭐ CURRENT STATE — 2026-11-13 06:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/13/2026-11-13-0509-comms-code-log.md` (opened at the 05:09 Ship kickoff wake).
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
 - **Weekend slots are INSIGHTS (Sat and Sun, Medium + LinkedIn).** Tue/Thu building, Wed Ship. Every publish-ready memo states the category, checked against the weekday.
-- **Tue 11-10 "Never Green in a Thousand Runs": DONE.** Published 11-10 23:31 (website 108509e), calendar `distributed` with xian's Medium URL. Nothing owed.
-- **Thu 11-12 "The Server Has No Key" (building): NOT published, pubDate passed.** xian (via Exec 11-12 13:20): "I will write when I can", no new slot. Row stays `planned`; Docs publishes only on my PUBLISH-READY; **no nudges** from Comms or Docs (Exec carries it). Told Docs the slug will be `the-server-has-no-key`, and that image and alt come from xian. File still `the-server-key-is-not-a-real-concept.md`. The "truth over feeling of progress" quote is about the epic, not the key. Tue's tease promises he "lays down the law" so his key isn't a fallback for testers.
-- **Ship #068 "Whose Connection Is It, Anyway?": DONE.** Published 11-11 16:12 (website f4e2914), `distributed` with xian's LinkedIn URL (76e8302e31). Nothing owed.
-- **Strategy talk with xian: still not held.** Waiting on it: the "One Account Means One Hand" partner (Nov 14/15, my pick C with 8) and its row, Thu's tease target, beat merges, the scaffold format.
+- **Thu 11-12 "The Server Has No Key": DONE.** Published 11-12 22:17 (website 512dd36), `distributed` with xian's Medium URL (xian: "just Medium"). Nothing owed.
+- **Sat 11-14 "Which Agent Did It?" (insight):** scaffold `docs/public/comms/drafts/which-agent-did-it.md`, calendar `drafted`. Waiting on xian's prose, image and a footer-tease target (nothing on the calendar after Sat except Ships; next building beat is beat 4, "The Wall", Sep 15-18). No nudges (xian via Exec 11-12). Then review, fact-check, template-audit, PUBLISH-READY (category insight).
+- **Ship #069 workstream review: SENT** 11-13 05:10 (c871ba02a). Ship #069 External fact-check when Exec's draft or xian's prose lands.
+- **Strategy talk with xian: still not held.** Waiting on it: beat merges, pacing, the scaffold format into `draft-blog-post`.
 - **Two-week sprints from Fri 11-13** (ratified). #069 ordinary, #070 first progress, #071 first final score.
-- **GitHub criteria line:** nothing Comms-shaped since #2291 (11-06). #2337/#2338 (11-11) are product/test issues.
-- **Keychain rule (xian via Exec, 11-11):** nothing we run reads xian's login keychain without his permission. `PIPER_CREDENTIAL_STORE=db`.
+- **GitHub criteria line:** nothing Comms-shaped through #2363. #2349 (self-knowledge EPIC) and #2355 may use blog insight posts as corpus; Docs owns the manifest, CXO the voice. #2342 (published GitHub App) is the candidate for the "what changed" note when it ships to users.
+- **Keychain rule (xian via Exec, 11-11; #2353):** nothing we run reads xian's login keychain without his permission.
 - **Mail v4 live:** read `python3 scripts/mail4.py inbox --role comms` as well as v3 (v3 is the fallback until 11-23).
 - **Invites held (xian 11-04)** until #1551, #2261 and #2178 are done. **Waiting list (#2256):** xian goes first, then HOST. **HOLD (PDR-102):** no ownership claim in copy.
 - **Rule 8:** the beta tester xian named in chat appears nowhere in the repo.

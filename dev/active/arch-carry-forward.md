@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-12 21:28 PST (STOP)
+last_updated: 2026-11-13 06:31 PST (START)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -25,6 +25,8 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
 
 ## IN FLIGHT — current state only
+
+**11-13 START adds:** Ship #069 review filed (05:10). #2362 assertion accepted. #2350 evidence.py validated with a JSON defect: the backstop re-redaction eats `",`. Ruled an idempotent lookahead in url_redaction.py (memo 01M7AN0MMPSWQTM6H5VVKNMVQ9). Validate Lead's fix when it lands, before #2350's served row.
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
