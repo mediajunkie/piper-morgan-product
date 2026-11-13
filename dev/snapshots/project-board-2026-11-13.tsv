@@ -2152,3 +2152,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2361	OPEN	Production		Pause admission: a switch that stops new accounts being created until it's turned back on (PDR-009 G7)			
 2362	OPEN	Production		The root URL-redaction filter does not see records from other loggers (a logger's filter is not inherited); attach it to the handlers			
 2363	OPEN	Production		Promote gate searches only the first parent for a tested ancestor, so a merge commit from a seat's branch is refused though Tests is green			
+2364	OPEN	Production		Ethics check declines ordinary requests on a substring ('home page', 'private repo', 'explicit'); reply-side boundary check reads a field that doesn't exist	bug		
