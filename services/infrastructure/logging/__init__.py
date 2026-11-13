@@ -1,6 +1,7 @@
 # logging module
 
 from services.infrastructure.logging.url_redaction import (
+    RedactionAtStartup,
     URLRedactionFilter,
     handlers_without_redaction,
     install_handler_redaction_filter,
@@ -14,4 +15,5 @@ __all__ = [
     "install_root_redaction_filter",
     "install_handler_redaction_filter",
     "handlers_without_redaction",
+    "RedactionAtStartup",
 ]

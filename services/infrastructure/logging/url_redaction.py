@@ -54,6 +54,11 @@ class URLRedactionFilter(logging.Filter):
         r"credentials=",
     ]
 
+    # #2362 (Arch, 2026-11-12): an OAuth callback's ``code`` and ``state``. Matched only
+    # as query parameters (straight after ``?`` or ``&``), so ``status_code=200`` in an
+    # ordinary line survives.
+    QUERY_ONLY_PARAMS: List[str] = ["code", "state"]
+
     # Compiled regex pattern for efficient matching
     # Matches: param_name=value (where value continues until & or end of string/whitespace)
     _redaction_pattern: Pattern = None
@@ -69,6 +74,8 @@ class URLRedactionFilter(logging.Filter):
         # Match: (param_name=)(value until & or whitespace or end)
         # The value can contain any characters except & and whitespace
         self._redaction_pattern = re.compile(rf"({param_names})([^&\s]+)", re.IGNORECASE)
+        query_only = "|".join(self.QUERY_ONLY_PARAMS)
+        self._query_only_pattern = re.compile(rf"([?&](?:{query_only})=)([^&\s]+)", re.IGNORECASE)
 
     def redact_message(self, message: str) -> str:
         """
@@ -84,7 +91,8 @@ class URLRedactionFilter(logging.Filter):
             return message
 
         # Replace all matches with param_name=[REDACTED]
-        return self._redaction_pattern.sub(r"\1[REDACTED]", str(message))
+        redacted = self._redaction_pattern.sub(r"\1[REDACTED]", str(message))
+        return self._query_only_pattern.sub(r"\1[REDACTED]", redacted)
 
     def filter(self, record: logging.LogRecord) -> bool:
         """
@@ -105,8 +113,17 @@ class URLRedactionFilter(logging.Filter):
         try:
             message = record.getMessage()
         except Exception:
-            # A malformed format string or arguments. Leave the record as it is: the
-            # handler will report the formatting error exactly as it would have.
+            # A malformed format string or arguments. Left alone, the handler would
+            # print the raw message and arguments in its formatting-error report,
+            # unredacted (Arch, 2026-11-12). So build one line from both, redact it, and
+            # clear the arguments: the line is written, redacted, and nothing is lost.
+            try:
+                raw = f"{record.msg} (log arguments could not be merged: {record.args!r})"
+                record.msg = self.redact_message(raw)
+                record.args = None
+            except Exception:  # pragma: no cover - redaction must never break logging
+                record.msg = "[log record could not be rendered or redacted]"
+                record.args = None
             return True
         try:
             redacted = self.redact_message(message)
@@ -204,3 +221,31 @@ def handlers_without_redaction() -> List[str]:
         for owner, handler in _all_handlers()
         if not any(isinstance(f, URLRedactionFilter) for f in handler.filters)
     ]
+
+
+class RedactionAtStartup:
+    """ASGI wrapper: re-run the handler install once the app's startup has finished.
+
+    #2362 (Arch, 2026-11-12): a handler created during startup, after the entry point's
+    own install, would otherwise be left without the filter. The install is idempotent,
+    so running it again at the end of startup costs nothing. It runs when the wrapped
+    app reports ``lifespan.startup.complete``, and passes every message through.
+    """
+
+    def __init__(self, app):
+        self.app = app
+
+    async def __call__(self, scope, receive, send):
+        if scope.get("type") != "lifespan":
+            await self.app(scope, receive, send)
+            return
+
+        async def send_and_install(message):
+            if message.get("type") == "lifespan.startup.complete":
+                try:
+                    install_handler_redaction_filter()
+                except Exception:  # pragma: no cover - never block startup on this
+                    pass
+            await send(message)
+
+        await self.app(scope, receive, send_and_install)

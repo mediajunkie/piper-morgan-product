@@ -786,6 +786,21 @@ class StartupManager:
         for phase_class in self.phases:
             await phase_class.startup(self.app)
 
+        # #2362 (Arch): the URL redaction filter goes on every log handler. main.py
+        # installs it before serving; this runs it again at the END of startup, for any
+        # handler a phase created, and for a start that did not come through main.py
+        # (``uvicorn web.app:app``). Idempotent, and it never blocks startup.
+        try:
+            from services.infrastructure.logging.url_redaction import (
+                install_root_redaction_filter,
+                install_url_redaction_filter,
+            )
+
+            install_url_redaction_filter()
+            install_root_redaction_filter()  # also covers every handler that exists now
+        except Exception as _e:  # pragma: no cover
+            print(f"   ⚠️ log redaction re-install failed ({type(_e).__name__})")
+
         print("🚀 Web server startup complete")
 
     async def shutdown(self) -> None:

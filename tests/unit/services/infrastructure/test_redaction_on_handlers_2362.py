@@ -174,3 +174,56 @@ def test_the_docstring_says_what_the_function_guarantees():
     doc = ur.install_root_redaction_filter.__doc__
     assert "ensures ALL log messages" not in doc
     assert "handler" in doc
+
+
+async def test_the_install_runs_again_when_startup_has_finished():
+    """Arch, 2026-11-12: a handler created during startup, after the entry point's own
+    install, gets the filter when the app reports that startup is complete."""
+    late = logging.getLogger("created.during.startup.2362")
+    late.propagate = False
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    sent = []
+
+    async def inner(scope, receive, send):
+        assert scope["type"] == "lifespan"
+        late.addHandler(handler)  # a handler appears during startup
+        assert "created.during.startup.2362" in ur.handlers_without_redaction()
+        await send({"type": "lifespan.startup.complete"})
+        await send({"type": "lifespan.shutdown.complete"})
+
+    async def receive():
+        return {"type": "lifespan.startup"}
+
+    async def send(message):
+        sent.append(message["type"])
+
+    try:
+        await ur.RedactionAtStartup(inner)({"type": "lifespan"}, receive, send)
+        assert sent == ["lifespan.startup.complete", "lifespan.shutdown.complete"]
+        assert ur.handlers_without_redaction() == []
+        late.warning(LINE)
+        assert "NOT-A-REAL-VALUE-123" not in stream.getvalue()
+    finally:
+        late.removeHandler(handler)
+
+
+async def test_the_wrapper_passes_requests_straight_through():
+    seen = []
+
+    async def inner(scope, receive, send):
+        seen.append(scope["type"])
+
+    await ur.RedactionAtStartup(inner)({"type": "http"}, None, None)
+    assert seen == ["http"]
+
+
+def test_both_apps_reinstall_at_the_end_of_startup():
+    startup = (ROOT / "web/startup.py").read_text()
+    body = startup[startup.index("    async def startup(self) -> None:") :]
+    body = body[: body.index("    async def shutdown(self) -> None:")]
+    assert body.index("await phase_class.startup(self.app)") < body.index(
+        "install_root_redaction_filter()"
+    )
+    assert body.index("install_root_redaction_filter()") < body.index("Web server startup complete")
+    assert "RedactionAtStartup(app)" in (ROOT / "main_mcp.py").read_text()
