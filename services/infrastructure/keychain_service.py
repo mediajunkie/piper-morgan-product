@@ -59,17 +59,47 @@ NO_STORE_FIX = (
     "(a local install: python scripts/local_key_setup.py creates it), "
     "or opt in to the OS keychain with PIPER_CREDENTIAL_STORE=keychain."
 )
-# The store for THIS process when the variable is unset. tests/conftest.py sets it to
-# "keychain" after it has replaced the OS keyring with an in-memory one, so in-process
-# tests keep that backend. A module value, not an environment variable, on purpose: a
-# child process inherits the environment and must not inherit a keychain opt-in.
-_process_default_store: Optional[str] = None
+# Tests only (Arch's ruling on #2353, 2026-11-12): the keyring backend for THIS process.
+# tests/conftest.py sets it to its in-memory backend. It carries the backend itself, not
+# a store name, so nothing a test does to the ``keyring`` module's global (replace it,
+# reload it) can send a call to a real keyring: while it is set, every keyring call here
+# goes to it and ``keyring.get_keyring()`` is never asked. A module value, not an
+# environment variable, on purpose: a child process inherits the environment and must
+# not inherit a keychain opt-in. Nothing outside tests/ assigns it (ratchet in
+# tests/infrastructure/test_keychain_opt_in_only_2353.py).
+_test_keyring_backend: Optional[Any] = None
 
 
 def selected_store() -> str:
-    """``"keychain"`` only when it was chosen on purpose; otherwise ``"db"``."""
-    chosen = (os.getenv(STORE_ENV_VAR) or _process_default_store or "").strip().lower()
-    return STORE_KEYCHAIN if chosen == STORE_KEYCHAIN else "db"
+    """``"keychain"`` only when it was chosen on purpose; otherwise ``"db"``.
+
+    Chosen means PIPER_CREDENTIAL_STORE=keychain, or (tests) the variable unset with a
+    test backend installed. Any other value of the variable is the database store."""
+    chosen = (os.getenv(STORE_ENV_VAR) or "").strip().lower()
+    if chosen == STORE_KEYCHAIN:
+        return STORE_KEYCHAIN
+    if not chosen and _test_keyring_backend is not None:
+        return STORE_KEYCHAIN
+    return "db"
+
+
+def _keyring_backend() -> Any:
+    """The one way to a keyring: the test backend when set, else the OS one."""
+    if _test_keyring_backend is not None:
+        return _test_keyring_backend
+    return keyring.get_keyring()
+
+
+def _keyring_get(service: str, name: str) -> Optional[str]:
+    return _keyring_backend().get_password(service, name)
+
+
+def _keyring_set(service: str, name: str, value: str) -> None:
+    _keyring_backend().set_password(service, name, value)
+
+
+def _keyring_delete(service: str, name: str) -> None:
+    _keyring_backend().delete_password(service, name)
 
 
 class KeychainTimeoutError(RuntimeError):
@@ -218,7 +248,7 @@ class KeychainService:
         """
         if selected_store() == STORE_KEYCHAIN:
             try:
-                backend_name = keyring.get_keyring().__class__.__name__
+                backend_name = _keyring_backend().__class__.__name__
             except Exception as e:
                 logger.error(f"Failed to initialize keyring: {e}")
                 raise RuntimeError(f"Keyring initialization failed: {e}")
@@ -368,7 +398,7 @@ class KeychainService:
             else:
                 self._keyring_call(
                     "set_password",
-                    keyring.set_password,
+                    _keyring_set,
                     self.service_name,
                     self._get_key_name(provider, username),
                     api_key,
@@ -394,7 +424,7 @@ class KeychainService:
         else:
             key = self._keyring_call(
                 "get_password",
-                keyring.get_password,
+                _keyring_get,
                 self.service_name,
                 self._get_key_name(provider, username),
             )
@@ -500,7 +530,7 @@ class KeychainService:
             else:
                 self._keyring_call(
                     "delete_password",
-                    keyring.delete_password,
+                    _keyring_delete,
                     self.service_name,
                     self._get_key_name(provider, username),
                 )
