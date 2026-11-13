@@ -49,3 +49,9 @@ A row is indexed only when it is `verified`, `voice_pass` is `passed`, the item 
 ## The stand-in for a dropped row (CXO, 11-13)
 
 When a row drops, its topic gets one stand-in: "I can't confirm {topic} right now, so I won't guess, and I won't tell you there's nothing to know. If it matters, tell me what you're trying to do and I'll say what I can check." `{topic}` is a user's phrase, one line per row id in `docs/tier1/stand-ins.md`. That file is itself a manifest row (`s-stand-ins`), so the phrases get CXO's pass, xian's approval and the line check like any item, and `--strict` fails a row with no line there (Arch, 11-13). The offer is "I'll say", never "I'll fix". Arch's mechanism (each dropped row becomes a generated stand-in in the index) and Lead's build are theirs.
+
+## Row kinds, and how stand-ins resolve (Arch, 11-13)
+
+`source_kind` is `doc`, `generated` or `template`. A `generated` row has no date, no window and no approval check on its output (its approval is on its template). A `template` row (the stand-ins file, and the part (a) generator's templates) has no window or date check, but the approval check applies. A `doc` row has all of them.
+
+Stand-ins resolve line by line from the file at `s-stand-ins`'s `approved` sha, never as a whole-file drop. A row added since the approval has no approved phrase and, having no approved item either, was never indexed. A new or changed phrase waits for xian's next yes and the row keeps its old approved phrase. If a build cannot read the file at that sha, `--deploy` exits 1 (a build fault, not corpus upkeep). For any other row, an approval that cannot be checked is a `DROP`, never a skipped check.

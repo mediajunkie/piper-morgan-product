@@ -69,7 +69,7 @@ HEADER = [
 ]
 PARTS = {"a", "b", "c", "d", "candidate"}
 STATUS = {"candidate", "unverified", "verified"}
-KINDS = {"doc", "generated"}
+KINDS = {"doc", "generated", "template"}
 VOICE = {"pending", "passed", "returned"}
 OWNERS = {"docs", "lead", "cio", "cxo", "arch", "ppm"}
 EXCLUDED = ("dev/", "mailboxes/", "docs/omnibus-logs/", ".claude-pm/", "memory/")
@@ -173,7 +173,8 @@ def main(argv):
                 errors.append(f"{rid}: {col}={d[col]!r}")
         if d["tier"] != "1":
             errors.append(f"{rid}: tier={d['tier']!r} (this manifest is Tier 1 only)")
-        if not d["reverify_window_days"].isdigit() or int(d["reverify_window_days"]) < 1:
+        window_ok = d["reverify_window_days"].isdigit() and int(d["reverify_window_days"]) >= 1
+        if not window_ok and d["source_kind"] != "template":
             errors.append(f"{rid}: reverify_window_days={d['reverify_window_days']!r}")
         if d["status"] != "candidate" and not d["item"]:
             errors.append(f"{rid}: status {d['status']} but no item file")
@@ -204,7 +205,9 @@ def main(argv):
                 )
         if d["approved"] and not re.fullmatch(r"[0-9a-f]{7,40}", d["approved"]):
             errors.append(f"{rid}: approved={d['approved']!r} is not a commit sha")
-        if d["status"] == "verified" and d["source_kind"] != "generated":
+        if (d["status"] == "verified" and d["source_kind"] != "generated") or (
+            d["source_kind"] == "template" and d["approved"]
+        ):
             if deploy and d["voice_pass"] != "passed":
                 drops.append(f"{rid}: verified but voice_pass is {d['voice_pass']}")
             if deploy and not d["approved"]:
@@ -219,9 +222,16 @@ def main(argv):
                 if ok is False:
                     drops.append(f"{rid}: text changed since approval")
                 elif ok is None and os.path.exists(item_path):
-                    notes.append(f"{rid}: approval sha not readable here, text check skipped")
+                    if d["source_kind"] == "template":
+                        # Arch 11-13: a build that cannot read the stand-in file at its approved
+                        # sha can produce no stand-in. That is a build fault, so exit 1.
+                        errors.append(
+                            f"{rid}: approval sha {d['approved']} not readable (a build fault)"
+                        )
+                    else:
+                        drops.append(f"{rid}: approval can't be checked")
         lv = d["last_verified"]
-        generated = d["source_kind"] == "generated"
+        generated = d["source_kind"] in ("generated", "template")
         if d["status"] == "verified" and not lv and not generated:
             errors.append(f"{rid}: status verified but no last_verified date")
         if lv:
