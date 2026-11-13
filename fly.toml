@@ -22,6 +22,11 @@ primary_region = "sjc"
   PIPER_HOST = "0.0.0.0"
   PORT = "8001"
   PYTHONPATH = "/app"
+  # #2350: the root log level on this host. WARNING keeps library info lines (httpx and
+  # others) out of the platform's logs; one once leaked a key (2026-01-17). Operational
+  # evidence lines do not depend on this: they go through the piper.evidence logger,
+  # which is always INFO. Change this only with Arch's ruling.
+  LOG_LEVEL = "WARNING"
   ENABLE_ETHICS_ENFORCEMENT = "true"
   AUTH_ENABLED = "true"
   # #1401: uploads on the mounted volume (see [mounts]) — survives deploys.

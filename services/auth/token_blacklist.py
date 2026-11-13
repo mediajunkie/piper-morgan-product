@@ -26,6 +26,7 @@ import structlog
 from services.auth.jwt_service import BlacklistUnavailable
 from services.cache.redis_factory import RedisFactory
 from services.database.session_factory import AsyncSessionFactory
+from services.infrastructure.logging.evidence import evidence  # noqa: E402 (#2350)
 from services.utils.datetime_utils import ensure_utc, utc_now
 
 logger = structlog.get_logger(__name__)
@@ -88,7 +89,7 @@ class TokenBlacklist:
             await redis.ping()
             seeded = await self._seed_redis_from_database(redis)
             self._redis_available = True
-            logger.info("TokenBlacklist: Redis available", seeded_entries=seeded)
+            evidence("TokenBlacklist: Redis available", seeded_entries=seeded)
         except Exception as e:
             logger.warning(
                 "TokenBlacklist: Redis unavailable, using database fallback",

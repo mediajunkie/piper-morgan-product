@@ -46,6 +46,7 @@ import structlog
 from sqlalchemy import select, text
 
 from services.database.session_factory import AsyncSessionFactory
+from services.infrastructure.logging.evidence import evidence  # noqa: E402 (#2350)
 from services.security.field_encryption import ENV_SCOPED_SUBKEYS
 
 from .connector_grant_store import ConnectorGrantStore
@@ -204,7 +205,7 @@ async def _refresh_under_lock(
                             error=type(e).__name__,
                         )
                         return AppGrantVerdict(read_failed=True, event="could_not_complete")
-                    logger.info("github_app_grant_refreshed", owner_id=str(owner_id))
+                    evidence("github_app_grant_refreshed", owner_id=str(owner_id))
                     return AppGrantVerdict(token=outcome.grant.access_token, event="refreshed")
                 if outcome.could_not_complete:
                     # Nothing is written back and the binding is not marked.
@@ -228,7 +229,7 @@ async def _refresh_under_lock(
             and newer.refresh_token != rejected_pair.refresh_token
             and not newer.access_expired()
         ):
-            logger.info("github_app_grant_refresh_raced_served_newer", owner_id=str(owner_id))
+            evidence("github_app_grant_refresh_raced_served_newer", owner_id=str(owner_id))
             return AppGrantVerdict(token=newer.access_token, event="raced")
         return AppGrantVerdict(stale_reason=REASON_REFRESH_REJECTED, event="rejected")
 
@@ -296,7 +297,7 @@ async def background_refresh_pass(
             await _mark_refresh_rejected(owner_id)
         else:
             counts["could_not_complete"] += 1
-    logger.info("github_app_background_refresh_pass", **counts)
+    evidence("github_app_background_refresh_pass", **counts)
     return counts
 
 

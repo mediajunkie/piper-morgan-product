@@ -566,8 +566,10 @@ class TestActiveBackendLoggedOnce:
         monkeypatch.setattr(AsyncSessionFactory, "session_scope", scope)
         monkeypatch.delenv("REDIS_URL", raising=False)
         infos: list[tuple] = []
+        # #2350: the backend line is operational evidence and goes through the
+        # piper.evidence logger (always INFO on a host), not the module's own logger.
         monkeypatch.setattr(
-            rate_limit_mod.logger, "info", lambda event, **kw: infos.append((event, kw))
+            rate_limit_mod, "evidence", lambda event, **kw: infos.append((event, kw))
         )
 
         app = build_asgi_app()
@@ -585,8 +587,10 @@ class TestActiveBackendLoggedOnce:
         await _seed_token(factory, user_id=USER_A, raw_token=raw_token)
         monkeypatch.setattr(AsyncSessionFactory, "session_scope", scope)
         infos: list[tuple] = []
+        # #2350: the backend line is operational evidence and goes through the
+        # piper.evidence logger (always INFO on a host), not the module's own logger.
         monkeypatch.setattr(
-            rate_limit_mod.logger, "info", lambda event, **kw: infos.append((event, kw))
+            rate_limit_mod, "evidence", lambda event, **kw: infos.append((event, kw))
         )
 
         app = build_asgi_app()
