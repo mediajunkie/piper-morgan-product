@@ -1,9 +1,7 @@
 """
 Feedback Service
-Captures and processes user corrections for learning
+The feedback a person sends from the app: ``models`` and ``feedback_service``.
 """
-
-from .capture import FeedbackCapture
 
 # The Issue-623 grammar-conscious triplet (narrative_bridge / narrative_helpers /
 # response_context) was disposed 2026-08-30 in the Batch-2 census-dead-family
@@ -11,10 +9,7 @@ from .capture import FeedbackCapture
 # disposal record in decisions.log. The pattern's in-tree exemplar lives on in
 # services/onboarding/narrative_bridge.py.
 
-# Note: We'll create the global instance in main.py after Redis is initialized
-# since FeedbackCapture requires a Redis connection
+# ``capture.FeedbackCapture`` (a Redis-backed correction capture that was never
+# constructed) was deleted 2026-11-12, #2347, on Arch's ruling; see decisions.log.
 
-__all__ = [
-    # Capture
-    "FeedbackCapture",
-]
+__all__: list = []
