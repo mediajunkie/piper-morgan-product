@@ -7,9 +7,13 @@ leaked a key (2026-01-17). So operational evidence has its own logger:
 
 - its level is INFO whatever the root's is;
 - it writes through its own handler, so it works in a process that never configured
-  logging (the MCP app), and the URL redaction filter is attached to the logger itself.
+  logging, and the URL redaction filter is attached to the logger and to that handler.
   (A filter on the root logger does not see records from other loggers; only records
-  logged on the root pass through it.)
+  logged on the root pass through it: #2362.)
+- it writes through the standard library's logger directly, as one JSON string, and
+  not through structlog (Arch, 2026-11-12): the path to the filter and the handler
+  must not depend on ``structlog.configure`` having run first. String field values
+  are redacted before the line is built, so the JSON stays valid.
 
 An evidence line is a low-volume event a seat will later cite as proof that something
 happened: a pool coming up, a refresh pass and its outcomes, a status change. It
@@ -23,11 +27,11 @@ every call site, so moving one back to a plain logger fails.
 
 from __future__ import annotations
 
+import json
 import logging
 import sys
+from datetime import datetime, timezone
 from typing import Any
-
-import structlog
 
 from services.infrastructure.logging.url_redaction import URLRedactionFilter
 
@@ -75,24 +79,36 @@ def configure_evidence_logger() -> logging.Logger:
         handler = logging.StreamHandler(sys.stderr)
         handler.setLevel(logging.INFO)
         handler.setFormatter(logging.Formatter("%(message)s"))
+        handler.addFilter(URLRedactionFilter())
         handler.piper_evidence_handler = True  # type: ignore[attr-defined]
         log.addHandler(handler)
     return log
 
 
+_REDACTOR = URLRedactionFilter()
+
+
+def _safe(value: Any) -> Any:
+    """A string value with any credential-bearing URL parameter redacted."""
+    return _REDACTOR.redact_message(value) if isinstance(value, str) else value
+
+
 def evidence(event: str, **fields: Any) -> None:
     """Emit one evidence line. Never raises: a log call must not break its caller."""
     try:
-        configure_evidence_logger()
+        log = configure_evidence_logger()
         dropped = sorted(name for name in fields if _is_value_field(name))
-        kept = {name: value for name, value in fields.items() if name not in dropped}
-        log = structlog.get_logger(EVIDENCE_LOGGER_NAME)
+        line = {name: _safe(value) for name, value in fields.items() if name not in dropped}
         if event not in EVIDENCE_EVENTS:
             # Still emitted (losing evidence is worse), and flagged so it gets listed.
-            kept["evidence_event_unlisted"] = True
+            line["evidence_event_unlisted"] = True
         if dropped:
-            kept["evidence_fields_dropped"] = dropped
-        log.info(event, **kept)
+            line["evidence_fields_dropped"] = dropped
+        line["event"] = event
+        line["logger"] = EVIDENCE_LOGGER_NAME
+        line["level"] = "info"
+        line["timestamp"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        log.info(json.dumps(line, default=str))
     except Exception:  # pragma: no cover - logging must never take a caller down
         pass
 

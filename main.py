@@ -225,6 +225,14 @@ async def main():
             # This message only appears after socket is bound, signaling true readiness
             log_level="info",
         )
+        # #2362: uvicorn.Config() has just built the uvicorn and uvicorn.access
+        # handlers. They do not propagate to the root, so they need the redaction
+        # filter themselves (an access line carries the request's query string).
+        from services.infrastructure.logging.url_redaction import (
+            install_handler_redaction_filter,
+        )
+
+        install_handler_redaction_filter()
         server = uvicorn.Server(config)
         await server.serve()
 
