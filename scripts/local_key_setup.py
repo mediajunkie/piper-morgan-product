@@ -287,7 +287,11 @@ def main(
         key = ask_key(provider, hidden)
         store_key(service, provider, key)
         out(f"{provider}: key {'replaced' if replacing else 'stored'}, read back and matched")
-        out("Next: start Piper (python main.py). It checks the key with the provider as it starts.")
+        out("Next: start Piper (python main.py) and open the setup page it names.")
+        out(
+            'On the "Connect Your AI" step choose this provider and press "Use Keychain": '
+            "on a local install that button means the key stored here."
+        )
         return 0
     except Stop as stop:
         out(f"STOPPED: {stop}")
