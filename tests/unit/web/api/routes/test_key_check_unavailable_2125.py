@@ -231,5 +231,6 @@ def test_the_keychain_no_store_message_carries_the_type_not_the_cause():
     from pathlib import Path
 
     src = Path("services/infrastructure/keychain_service.py").read_text()
-    assert 'f"unavailable ({type(e).__name__})' in src
-    assert 'f"unavailable ({e})' not in src
+    # #2353 reworded the sentence; the rule is the same: the type, never the cause.
+    assert "unavailable ({type(e).__name__})" in src
+    assert "unavailable ({e})" not in src and "unavailable ({str(e)})" not in src

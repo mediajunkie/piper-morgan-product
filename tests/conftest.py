@@ -156,6 +156,12 @@ def _use_in_memory_keyring() -> bool:
             del self._items[(service, username)]
 
     keyring.set_keyring(InMemoryTestKeyring())
+    # #2353: the keychain is opt-in only now. In-process tests keep the in-memory backend
+    # by a module value, never an environment variable: a child process inherits the
+    # environment, and must not inherit a keychain opt-in (its keyring would be the real one).
+    from services.infrastructure import keychain_service
+
+    keychain_service._process_default_store = "keychain"
     return True
 
 
