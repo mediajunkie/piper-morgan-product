@@ -10,7 +10,7 @@ Issue: Security incident - Gemini API key leaked via httpx INFO logs
 
 import logging
 import re
-from typing import List, Pattern
+from typing import Any, List, Pattern
 
 
 class URLRedactionFilter(logging.Filter):
@@ -138,12 +138,48 @@ class URLRedactionFilter(logging.Filter):
                 record.args = None
             return True
         try:
+            if record.args and self._keep_arguments_redacted(record):
+                return True
             redacted = self.redact_message(message)
             if redacted != message or record.args:
                 record.msg = redacted
                 record.args = None
         except Exception:  # pragma: no cover - redaction must never break logging
             pass
+        return True
+
+    def _keep_arguments_redacted(self, record: logging.LogRecord) -> bool:
+        """Redact each string argument in place and keep the arguments, when that is
+        enough. Returns False when the record must be merged instead.
+
+        2026-11-13: merging every record that had arguments set ``record.args`` to
+        ``None``, and a formatter that reads the arguments failed on it. uvicorn's
+        access formatter unpacks five of them, so every request wrote a logging-error
+        traceback in place of its access line (served on beta from ``d5905b6946``).
+
+        Keeping the arguments is safe only when the finished line holds nothing more
+        to redact. So: redact the string arguments, merge a copy, and redact that. If
+        the merged line changes, a value is split between the format string and an
+        argument (``"token=%s"``), or sits in a non-string argument, and the caller
+        merges as before. The format string itself is never redacted separately (that
+        was #2362's lost-placeholder bug).
+        """
+        args = record.args
+        if isinstance(args, tuple):
+            kept: Any = tuple(self.redact_message(a) if isinstance(a, str) else a for a in args)
+        elif isinstance(args, dict):
+            kept = {
+                k: (self.redact_message(v) if isinstance(v, str) else v) for k, v in args.items()
+            }
+        else:
+            return False
+        try:
+            merged = str(record.msg) % kept
+        except Exception:
+            return False
+        if self.redact_message(merged) != merged:
+            return False
+        record.args = kept
         return True
 
 

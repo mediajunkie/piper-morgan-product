@@ -44,9 +44,11 @@ def test_local_invite_field_says_you_make_your_own_code():
     assert "paste the code you received" not in html
 
 
-def test_hosted_invite_words_are_unchanged():
+def test_hosted_invite_words_say_private_beta():
+    # CXO, 2026-11-13: "alpha" was the old word.
     html = _render(True)
-    assert "Alpha access is invite-only. Paste the code you received." in html
+    assert "Piper is invite-only while it's in private beta. Paste the code you received." in html
+    assert "Alpha access" not in html
     assert LOCAL_HELP not in html
 
 
@@ -93,3 +95,20 @@ async def test_route_messages_say_saved_not_keychain(monkeypatch):
         checked = await setup_routes.check_keychain("anthropic")
         assert "keychain" not in checked.message.lower()
         assert checked.exists is (value is not None)
+
+
+def test_both_hosted_empty_field_paths_say_the_same_private_beta_line():
+    # CXO, 2026-11-13: step 1's Continue and Create Account's check used different words.
+    js = (REPO_ROOT / "web/static/js/setup.js").read_text()
+    line = "Please enter your invite code. Piper is invite-only while it's in private beta."
+    assert js.count(line) == 2
+    assert "alpha access" not in js.lower()
+
+
+def test_the_hosted_saved_key_reply_never_says_keychain():
+    from web.api.routes.setup import HOSTED_NO_KEYCHAIN_MESSAGE
+
+    assert "keychain" not in HOSTED_NO_KEYCHAIN_MESSAGE.lower()
+    assert HOSTED_NO_KEYCHAIN_MESSAGE == (
+        "Paste your key here. This hosted version doesn't read saved keys from your computer."
+    )
