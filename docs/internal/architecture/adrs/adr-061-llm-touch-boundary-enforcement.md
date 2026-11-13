@@ -9,7 +9,7 @@ last_updated: "2026-08-29"
 
 # ADR-061: LLM-Touch Boundary Enforcement — Two-Layer Detection with Floor as De-Facto Ethics Layer
 
-**Status**: **Ratified** v1.0 (PM verbal ratification 2026-05-03); **v1.1 amendment 2026-05-15** (output-side companion shipped per #1017 — see §"Amendment 2026-05-15")
+**Status**: **Ratified** v1.0 (PM verbal ratification 2026-05-03); **v1.1 amendment 2026-05-15** (output-side companion shipped per #1017 — see §"Amendment 2026-05-15"); **v1.2 amendment 2026-11-13** (Layer 1 removed, #2364; effective on merge — see §"Amendment 2026-11-13")
 **Date**: 2026-04-28 (v0.1) → 2026-04-30 (v1.0 — Lead Dev fixes + CEO calibration reframe applied) → 2026-05-03 (verbally ratified) → 2026-05-04 (status block updated) → 2026-05-15 (v1.1 — output-side companion amendment per #1017)
 **Supersedes**: None (extends ADR-060 with a complementary boundary-enforcement architecture)
 **Issues**: #1002 (the reframe), #1003 (the diagnostic), #1004 (the structural fix), #992 (ETHICS-ACTIVATE Phase A redirect_context), #1016 (LLM-touch boundary principle epic), #1017 (output-side companion — v1.1 amendment)
@@ -279,6 +279,22 @@ Together, both surfaces satisfy the four-element principle at the two boundaries
 - #1017 issue + CXO/Architect ratification memos in `mailboxes/lead/read/`
 
 ---
+
+## Amendment 2026-11-13: Layer 1 removed (#2364)
+
+**Takes effect when #2364 step 1 merges** (it is held on `lead/2364-step1` until its live gate passes). Until then, the text above describes what is served.
+
+The literal-trigger fast path (Layer 1) is removed from `enforce_boundaries`. It decided meaning by substring ("home page", "private repo" and "make the AC explicit" were declined on beta), which ADR-080 forbids. The semantic detector is the only input-side layer and is called for every message that reaches the gate. It runs the v0.2 prompt (CXO's calibrated prompt, `LIVE_SEMANTIC_PROMPT`), and a test pins that prompt on the built instance. When the detector is unavailable, #2134's policy applies unchanged: pass, recorded `unavailable`, never cached.
+
+Audit envelope changes:
+- `detector` is `"semantic" | "semantic-unavailable" | "none"`. `"literal-trigger"` is no longer emitted.
+- `fast_path_hit` and `patterns_checked` are removed. Their only readers were tests, and a field that can only be false tells an operator nothing.
+
+The merge gate is one live run per provider that can serve the detector call. The detector runs on the acting user's own provider (`get_default_provider(user_id)`): Anthropic, Gemini or OpenAI, with the client's fallback order. The run uses the 20 probes plus the six ordinary rows, and it passes when every true positive declined on the April record is still declined, 0 of 5 controls are declined, and 0 of 6 ordinary rows are declined. A provider that was not run is unverified, and the deletion does not merge.
+
+`check_harassment_patterns` and `check_inappropriate_content` remain only for the knowledge graph's node filter. That reader's substring decision is #2365.
+
+Trigger to revisit this layer: a new detector prompt, a new provider, or a served false decline or false pass.
 
 ## Related Patterns and Decisions
 
