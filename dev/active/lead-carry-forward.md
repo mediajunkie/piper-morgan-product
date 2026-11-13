@@ -1,5 +1,15 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-13 08:21 (supersedes the 11-12 DAY CLOSED block where they differ)
+
+- **Beta serves `d5905b6946` since 08:20** (run 43461278591, standing grant). It carries 2350 (with two 11-13 fixes, `dc099f1dd4`, `f18a4f83c1`, both accepted by Arch), 2362, 2333, 2348, 2351's words, 2353, 2347. Arch's one-promotion lift is used: **no further promotion until 2342's served rows close**, unless Arch says otherwise.
+- **Served rows open:** 2342 rows 2 to 4 (xian's reconnect, then PA, CXO/Web, the refresh row); 2350 (one evidence line in beta's logs: PA or xian); 2362 (Arch names the row); 2351's setup words (CXO on a quoted screen). 2348 served by my `/health` read (`redis: ok`, `revocation_source: redis`); its close needs the issue's acceptance rows read.
+- **When the Tests queue churns** (one queued run on main, replaced by each tested-path push): ask seats to hold tested-path pushes, and poll the gate's check with a probe that refuses an empty sha. An empty staging read is NOT an accept (my 07:26 false ACCEPT).
+- **2355 Tier 1 corpus:** Lead's build items are in standing items (11-13). Not in sprint 2.
+- **Ship 069 workstream review filed 05:14** (`mailboxes/exec/inbox/workstream-069-lead-2026-11-13.md`).
+- Local test database on this Mac holds a leftover `test_user` row; `tests/integration/test_fresh_install_flow.py::test_store_user_key_succeeds_after_user_created` fails on it locally and not in CI.
+- Unchanged from 11-12: 2363 (xian's yes), 2335 rotation (xian's run), 2345 (after 2342 rows 2 and 3), `scripts/secret_prompt.py`, 2352/2360 placement, 2361, 2158, a provider key, 2174, 2341, 2328, 2327, 2339.
+
 ## STATE @ 2026-11-12 22:00 PT (DAY CLOSED) — main 12/12 green; beta unchanged on `d4fd55e6c5` with App mode ON and the cutover applied; inbox 0; log dev/2026/11/12/2026-11-12-0646-lead-code-log.md
 
 **First thing on 11-13: one promotion, after 07:00 PT, under the standing grant.**
