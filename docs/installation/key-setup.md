@@ -1,4 +1,6 @@
-# Piper Morgan: Secure API Key Setup (Keychain-First)
+# Piper Morgan: API Key Setup (older keychain-based method)
+
+> **Running Piper on your own computer?** Follow the [self-host guide](./self-host-guide.md). It stores your provider key at a hidden prompt in your local database and never asks you to use a keychain, an `export` line or a command-line key. The rest of this page describes the older keychain-based setup.
 
 Your API keys are stored securely in your operating system's keychain, never in plaintext config files.
 
@@ -33,32 +35,9 @@ Steps:
 
 Supports resume: if setup interrupted, run again to continue from where you left off.
 
-## Method 2: CLI Commands
+## Method 2: Commands and environment variables
 
-```bash
-# Add a new key (key input is masked)
-python main.py keys add openai
-
-# List all configured providers
-python main.py keys list
-
-# Validate all configured keys
-python main.py keys validate
-
-# Validate a single provider
-python main.py keys validate anthropic
-```
-
-## Environment Variables (Headless / Server)
-
-For headless servers without GUI keychain access, you can set environment variables:
-
-```bash
-export OPENAI_API_KEY="sk-..."
-export ANTHROPIC_API_KEY="sk-ant-..."
-```
-
-The app will read these if keychain keys aren't found. However, on laptops, keychain is strongly recommended for security.
+The older `python main.py keys` commands and environment-variable setup have been removed from this page. Some of them show a pasted key or write to your computer's keychain without asking. Use the [self-host guide](./self-host-guide.md), which enters the key at a hidden prompt.
 
 ## Troubleshooting
 
@@ -87,14 +66,13 @@ The app will read these if keychain keys aren't found. However, on laptops, keyc
 - **Never** commit API keys to Git
 - **Never** paste keys in chat/email/documents
 - **Never** store keys in `config/PIPER.user.md` (that file is for preferences only)
-- Use OS keychain or environment variables; keychain is preferred on laptops
-- Rotate keys regularly (see `python main.py keys validate` or setup wizard to update)
+- Enter keys only at a hidden prompt (see the self-host guide), never in a command, a config file or a shell profile
+- Rotate keys regularly: remove the old one with `python scripts/local_key_setup.py --remove <provider>` and enter the new one at the prompt
 
 ## Configuration File Separation
 
 - `config/PIPER.user.md` → Your preferences, timezone, working hours, projects, etc.
 - OS Keychain → Your API keys (secure, encrypted)
-- Environment variables → For server/headless deployments
 
 DO NOT mix them up!
 
