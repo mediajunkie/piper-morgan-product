@@ -205,6 +205,11 @@ Operational corollaries:
   covered the day it lands, and widened the trigger. The general check: when a local chokepoint stands in for a
   remote gate, list the remote gate's steps and confirm each one runs locally. Its first live run was Lead's
   push at 09:01: 12 gates, 12 passed, 31 s.
+  The same day showed what it still left out. The hook mirrors `lint.yml` but covers the Tests workflow only
+  through the smoke marker. Main went red twice from Tests that evening (the keyring seam, then a redaction test
+  that depended on test order), both from local runs narrower than CI's full suite in one process. Lead's answer
+  was a personal rule: run the whole tree for process-wide changes. That is a bolt-on. Whether it becomes a
+  path trigger is a question for the 11-29 hook review (CIO standing item 9s).
 - **xian's keychain rule (11-12; built and validated the same day).** xian ruled on 11-11 that nothing agents run on his Mac reads his
   keychain without his permission. The fixes put `PIPER_CREDENTIAL_STORE=db` in the server-start recipes
   (CLAUDE.md, the ops doc and the start scripts) and made pytest opt in. Each of those covers one route, so
