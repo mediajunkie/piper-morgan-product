@@ -54,6 +54,9 @@ UNSERVED_LLM_PROVIDERS = LLM_KEY_PROVIDERS - PER_REQUEST_CLIENT_PROVIDERS
 PROVIDER_NOT_USED_YET = (
     "Piper doesn't use Google (Gemini) keys yet. Anthropic and OpenAI keys work."
 )
+# CXO 2026-11-13 15:23 (#2368): a value that names no provider at all gets its own
+# sentence; the one above names Gemini and is only right for Gemini.
+NOT_A_PROVIDER_PIPER_USES = "That isn't a provider Piper uses. Anthropic and OpenAI keys work."
 
 
 def _refuse_unserved_provider(provider: str) -> None:

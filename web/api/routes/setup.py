@@ -164,6 +164,30 @@ class SetupCompleteRequest(BaseModel):
     anthropic_key: Optional[str] = Field(default=None, description="Anthropic API key (optional)")
     notion_key: Optional[str] = Field(default=None, description="Notion API key (optional)")
 
+    @field_validator("default_llm_provider")
+    @classmethod
+    def default_provider_can_serve(cls, v: Optional[str]) -> Optional[str]:
+        """#2368 (Arch 2026-11-13 15:14): `complete_setup` appends this value to
+        `authorized_llm_providers`, the #946 consent list, and stores it as the person's
+        default. That list is permission data, so it never holds an unvalidated string.
+        Accepted: nothing, or a provider a reply can be served on, read from the one
+        place that says which (`PER_REQUEST_CLIENT_PROVIDERS`). Anything else is refused
+        here, before `complete_setup` stores any key. CXO's words (15:23): an LLM
+        provider no reply can be served on (Gemini today) gets the #2367 sentence; any
+        other value gets "That isn't a provider Piper uses."."""
+        from services.llm.request_key import PER_REQUEST_CLIENT_PROVIDERS
+        from web.api.routes.api_keys import (
+            NOT_A_PROVIDER_PIPER_USES,
+            PROVIDER_NOT_USED_YET,
+            UNSERVED_LLM_PROVIDERS,
+        )
+
+        if v is None or v in PER_REQUEST_CLIENT_PROVIDERS:
+            return v
+        if v in UNSERVED_LLM_PROVIDERS:
+            raise ValueError(PROVIDER_NOT_USED_YET)
+        raise ValueError(NOT_A_PROVIDER_PIPER_USES)
+
 
 class SetupCompleteResponse(BaseModel):
     """Response model for completing setup"""
