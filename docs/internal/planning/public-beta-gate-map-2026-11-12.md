@@ -25,7 +25,7 @@ Sprints are two weeks from 11-13 (xian, 11-06). Only sprint 2 is ratified, and t
 
 | Sprint | Dates | Gate work | Lead-days |
 |---|---|---|---|
-| 2 (ratified) | 11-13 to 11-26 | **G1:** the hold rows (#2261 via #2342 and #2343, #2282, #2266), waiting on xian's App registration and sitting. **G4:** onboarding paths A and B. **G5:** served checks and closes for #2183, #2185 and #2209 (PA and CXO, no build). **Decisions** (below). | in sprint 2's own fit |
+| 2 (ratified) | 11-13 to 11-26 | **G1:** the hold rows (#2261 via #2342 and #2343, #2282, #2266). xian's switchover ran 11-12 19:06 (10 of 10 classic tokens revoked, 0 left); #2342's served rows follow PA's read and xian's reconnect. **G4:** onboarding paths A and B. **G5:** served checks and closes for #2183, #2185 and #2209 (PA and CXO, no build). **Decisions** (below). | in sprint 2's own fit |
 | 3 | 11-27 to 12-10 | **G6:** #1441, the Calendar port (4–6). **G4:** #2175, the arrival path (1–2). **G2:** #2165, limits (3–5). **G7:** #2345 and #2350 once the #2342 sitting has run (1.5–2.5). | 9.5–15.5 |
 | 4 | 12-11 to 12-24 | **G6:** #1705 and #1703 (3–5). **G2:** #1378, CSRF and lockout (2–2.5). **G3:** #2159, export (3–4). | 8–11.5 |
 | 5 | 12-25 to 01-07 (holidays) | **G6:** #1701 and #1702 (2–4). **G3:** #2158, deletion (3–5, after its record's home is decided). **G7:** #2157's drill as one command (1.5–2.5). | 6.5–11.5 |
@@ -34,12 +34,12 @@ Sprints are two weeks from 11-13 (xian, 11-06). Only sprint 2 is ratified, and t
 
 G4's #2164 (the waiting list) lives in Buttondown, with Lead's part at 0 to 1 day. It rides whichever sprint HOST's wave plan needs.
 
-## Four decisions that shorten it more than Lead-days do (Lead's list; two made 11-12)
+## Four decisions that shorten it more than Lead-days do (Lead's list; three made 11-12, and xian's provider key is left)
 
 1. ~~Where the deletion record lives~~ **Ruled by Arch, 11-12 19:00:** an append-only bucket outside the cluster, written before the deletion runs. First step: xian confirms the Fly org has object storage, and what it costs.
 2. **A provider key for rule-7 screens** (xian). #2186 unit 2 and #2184 can't land without one.
 3. ~~The pause switch~~ **Ruled by Arch, 11-12 19:00 (#2361):** a database setting on the admin page, read when the code is spent, failing closed, with a narrow `can_pause_admission` flag. Whether HOST may hold that flag is xian's call. Lead's size grows by about half a day, to 1.5–2.
-4. **HOST's drill design for #2157**, so the one-command drill can be built while the Terms are written.
+4. ~~HOST's drill design for #2157~~ **Written by HOST, 11-12 19:05** (on #2157). The copy gets an allowlist of secrets and nothing else. Lead can start from it.
 
 And one not on Lead's list: **xian starts the legal review (#2063)** so it runs alongside the builds.
 
