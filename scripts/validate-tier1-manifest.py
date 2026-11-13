@@ -12,14 +12,27 @@ integers, every source path exists (a source is `path`, `path#heading` or
 never-indexed trees (dev/, mailboxes/, omnibus-logs/, agent memory).
 Written by Docs 2026-11-13 as a proposal for Lead to adapt.
 """
+
 import csv
 import datetime
 import os
 import sys
 
 PATH = "docs/internal/design/tier1-corpus-manifest.csv"
-HEADER = ["id", "part", "topic", "source", "source_kind", "tier", "status",
-          "last_verified", "reverify_window_days", "owner", "voice_pass", "notes"]
+HEADER = [
+    "id",
+    "part",
+    "topic",
+    "source",
+    "source_kind",
+    "tier",
+    "status",
+    "last_verified",
+    "reverify_window_days",
+    "owner",
+    "voice_pass",
+    "notes",
+]
 PARTS = {"a", "b", "c", "d", "candidate"}
 STATUS = {"candidate", "unverified", "verified"}
 KINDS = {"doc", "generated"}
@@ -53,8 +66,13 @@ def main(argv):
         if not rid or rid in seen:
             errors.append(f"row {n}: id {rid!r} empty or repeated")
         seen.add(rid)
-        for col, ok in (("part", PARTS), ("status", STATUS), ("source_kind", KINDS),
-                        ("voice_pass", VOICE), ("owner", OWNERS)):
+        for col, ok in (
+            ("part", PARTS),
+            ("status", STATUS),
+            ("source_kind", KINDS),
+            ("voice_pass", VOICE),
+            ("owner", OWNERS),
+        ):
             if d[col] not in ok:
                 errors.append(f"{rid}: {col}={d[col]!r}")
         if d["tier"] != "1":
@@ -73,7 +91,9 @@ def main(argv):
             try:
                 age = (today - datetime.date.fromisoformat(lv)).days
                 if age > int(d["reverify_window_days"] or 0):
-                    notes.append(f"{rid}: verified {lv}, {age} days ago, past its {d['reverify_window_days']}-day window")
+                    notes.append(
+                        f"{rid}: verified {lv}, {age} days ago, past its {d['reverify_window_days']}-day window"
+                    )
             except ValueError:
                 errors.append(f"{rid}: last_verified={lv!r}")
         elif d["status"] != "candidate":
