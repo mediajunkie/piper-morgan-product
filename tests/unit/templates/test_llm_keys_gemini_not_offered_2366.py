@@ -142,3 +142,12 @@ def test_with_no_keys_the_note_stays_hidden(tmp_path):
     result = _run_page_script(tmp_path, [])
     assert "No keys stored yet." in result["rows"]
     assert result["noteHidden"] is True
+
+
+def test_the_save_line_names_the_provider_as_the_table_does():
+    """CXO 2026-11-13: "Key saved for Anthropic.", not "Key saved for anthropic."."""
+    src = _src()
+    assert "const savedName = PROVIDER_NAMES[provider] || provider;" in src
+    assert 'setStatus("Key saved for " + savedName + ".", true);' in src
+    assert '"Key saved for " + provider' not in src
+    assert '"Saved, but " + provider' not in src

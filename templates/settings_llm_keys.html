@@ -158,10 +158,12 @@
       }
       keyInput.value = "";
       // Saved either way (#485); a failed validation carries its reason in data.message (#1718).
+      // CXO 2026-11-13 (#2366): the provider's name, as the table shows it, not its id.
+      const savedName = PROVIDER_NAMES[provider] || provider;
       if (data.is_validated === false) {
-        setStatus(data.message || ("Saved, but " + provider + "'s key could not be validated."), false);
+        setStatus(data.message || ("Saved, but " + savedName + "'s key could not be validated."), false);
       } else {
-        setStatus("Key saved for " + provider + ".", true);
+        setStatus("Key saved for " + savedName + ".", true);
       }
       refresh();
     } catch (e) {
