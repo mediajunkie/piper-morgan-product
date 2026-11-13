@@ -159,9 +159,8 @@ Options:
 $ python cli/commands/publish.py publish README.md --to notion --location abc123
 ❌ NOTION_API_KEY not found in environment
 
-Please set NOTION_API_KEY:
-1. Create .env file with: NOTION_API_KEY=secret_your_key
-2. Or export NOTION_API_KEY=secret_your_key
+Notion is not offered in this beta, self-hosted installs included.
+Do not put the token in a command or shell profile.
 ```
 
 ### Platform Not Supported

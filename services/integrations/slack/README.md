@@ -46,12 +46,7 @@ SlackIntegrationRouter
 
 ### Quick Start
 
-**Option 1: Environment Variables** (recommended for sensitive data):
-```bash
-export SLACK_BOT_TOKEN="xoxb-your-bot-token"
-export SLACK_WEBHOOK_URL="https://hooks.slack.com/services/YOUR/WEBHOOK/URL"
-export SLACK_DEFAULT_CHANNEL="general"
-```
+**Option 1: not offered.** Slack is not offered in this beta, self-hosted installs included, and its connect routes refuse. Do not put a bot token in an `export` line or any command, because it stays in shell history.
 
 **Option 2: PIPER.user.md** (user-specific config):
 ```yaml

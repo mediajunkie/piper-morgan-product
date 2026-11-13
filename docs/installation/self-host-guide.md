@@ -57,6 +57,10 @@
 
 Ask Piper a short question in the chat. **(not yet run: this needs a real provider key and was only run with a stand-in key so far)** If it answers, the key and the install are good.
 
+## What your install offers
+
+A self-hosted install offers the same connectors as the private beta, GitHub and Google Calendar. Notion and Slack are not offered in this beta, self-hosted installs included. Calendar on your own install needs your own Google OAuth client ID and secret, entered on the setup page or in Settings. **(not yet run by Docs)**
+
 ## Update later
 
 **(not yet run)** From the `piper-morgan-product` folder, with Docker running:
