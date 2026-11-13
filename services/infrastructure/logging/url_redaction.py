@@ -110,9 +110,12 @@ class URLRedactionFilter(logging.Filter):
         """
         Filter method called by logging framework.
 
-        Redacts the FINISHED message: the format string and its arguments are merged
-        first, then the result is redacted and stored as the record's message with no
-        arguments left. Always returns True (the record goes through, redacted).
+        A record with arguments keeps them, each string argument redacted in place,
+        whenever that leaves nothing more to redact in the finished line (see
+        ``_keep_arguments_redacted``; a formatter that reads ``record.args`` needs
+        them). Otherwise, as the fallback, the format string and its arguments are
+        merged, the result is redacted and stored as the record's message, and the
+        arguments are cleared. Always returns True (the record goes through, redacted).
 
         #2362: this used to redact ``record.msg`` and each string argument
         separately. A format string such as ``"lookup key=%s failed"`` then lost its
