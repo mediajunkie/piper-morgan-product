@@ -1,11 +1,11 @@
 ---
 title: Role Portfolio — Chief of Staff (Exec)
 author: Exec (Chief of Staff)
-status: v0.3 — priorities refreshed 2026-11-06 (Ship #068 week review)
+status: v0.3 — priorities refreshed 2026-11-13 (Ship #069 week review)
 role_slug: exec
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 valid_from: "2026-06-19"
-last_verified: "2026-11-06"
+last_verified: "2026-11-13"
 ---
 
 # Role Portfolio — Chief of Staff (Exec)
@@ -22,12 +22,12 @@ The trust property underneath it: PM can step away **because** the board is veri
 
 ## Priorities — current, steerable *(Rule 4: each has a direction + status + forward indicator)*
 
-| Priority | Direction (advancing toward) | Status (2026-11-06) | How we'll know it's moving |
+| Priority | Direction (advancing toward) | Status (2026-11-13) | How we'll know it's moving |
 |---|---|---|---|
-| **Review judgment** | Drafts, handoffs and completion claims are checked against source before they reach xian or the public | Weak this week. CIO's 11-06 staleness run reads 19% of my log as specialist work (28% on 10-13). I relayed an MCP deploy as landed when both runs were refused (11-04), told HOST to keep outside names in a live briefing against xian's 10-25 ruling (11-06), and claimed Thursday's post proved the build step. The corrections came from me or Docs the same day. One good catch: I corrected #2266's first reading before it reached the cohort note (11-05) | No claim reaches xian that a later read reverses; corrections come from me, not from him |
-| **xian's attention** | One short rollup, bottom line first, settled items removed | Rollup v846 leads with Friday's five-item morning list; the settled GitHub and website cards were folded to one line | xian acts from the rollup without asking for context; the page stays short |
-| **Cross-role blockers** | Every blocker has one named owner and a next step the same hour | The incident week: the invite hold's P0 order relayed the same hour (11-04 19:31), and #2282 steps 1 to 3 walked with xian in one sitting (11-05). Open: #1715's walk is overdue (owed-scan flag since 11-03) | Nothing waits on a question nobody owns; owed-scan shows 0 flags (cleared 10-31) |
-| **Weekly Ship** | Ship tells the week's product delta from the canonical artifacts, with Comms | #067 published 11-04. #068 week review written 11-06 from 9 of 9 reviews, Janus notified; the kickoff went by LaunchAgent at 05:05 | Each Ship is drafted from reviews, not reconstructed; the kickoff goes out on Friday by LaunchAgent |
+| **Review judgment** | Drafts, handoffs and completion claims are checked against source before they reach xian or the public | Mixed. I told xian "complete the second one now just works" from a promotion memo before PA's served check (11-07), relayed D5's cap without checking it against his approval, and copied a fake test token into a committed rollup, which turned the bearer gate red (11-11). Each was corrected the same day, by me or a seat. The #2342 sitting went through with every step read against source first | No claim reaches xian that a later read reverses; corrections come from me, not from him |
+| **xian's attention** | One short rollup, bottom line first, settled items removed | Rollup v967 leads with four Friday items (Ship talk, reconnect, three small answers, #2282 step 5). Eight items still wait on him, and he asked to walk them one at a time | xian acts from the rollup without asking for context; the page stays short |
+| **Cross-role blockers** | Every blocker has one named owner and a next step the same hour | The #2342 switchover ran in one sitting (11-12) with every seat's condition met first. Open: the provider-key question blocks Lead's screens, Docs' guide run and CIO's H1. #2328 has been stopped since 11-10 on a credential-file decision. owed-scan: 0 flags, 1 parked (#1715) | Nothing waits on a question nobody owns; owed-scan shows 0 flags |
+| **Weekly Ship** | Ship tells the week's product delta from the canonical artifacts, with Comms | #068 published 11-11. #069 week review written 11-13 05:19 from 10 of 10 reviews (Docs filed one), before the discussion | Each Ship is drafted from reviews, not reconstructed; the kickoff goes out on Friday by LaunchAgent |
 
 ## Standing responsibilities — the slow-pace layer *(Rule 2: named, but under purpose — this is how I sustain the above)*
 
