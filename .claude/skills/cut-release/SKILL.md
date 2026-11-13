@@ -113,8 +113,9 @@ Work through this list in order. For each file: **read it first**, then make the
 ### 3d. docs/ALPHA_KNOWN_ISSUES.md
 - [ ] Header version, title line `(vX.Y.Z)`, Last Updated
 - [ ] Check GitHub for open bugs: `gh issue list --label bug --state open`
-- [ ] Move any fixed issues OUT of Known Issues
-- [ ] Add any newly discovered issues
+- [ ] Move any fixed issues OUT of Known Issues (the tester page may say "Fixed in": it describes a release)
+- [ ] Add any newly discovered issues. A limit that meets PPM's three-part rule (a limit of something offered, can cost a person time, data or a wrong belief, safe to say before the fix is live) goes in `docs/known-limits.md` instead, with no issue number (the number goes in the `d-known-limits` notes of `docs/internal/design/tier1-corpus-manifest.csv`). The tester page links to it and keeps only tester-only items.
+- [ ] `docs/known-limits.md`: a fixed limit is DELETED from it, never marked fixed, in a commit that has the fix as an ancestor (Arch, 11-13). PPM passes membership on every added or removed row, CXO passes the words, Docs re-verifies each row on the served build and sets `last_verified` only for rows actually read. See #2355 part (d).
 - [ ] Update "Needs Testing" for this release
 - [ ] Keep under 200 lines (if longer, content is misplaced)
 
@@ -159,6 +160,7 @@ git add pyproject.toml \
   docs/ALPHA_QUICKSTART.md \
   docs/ALPHA_TESTING_GUIDE.md \
   docs/ALPHA_KNOWN_ISSUES.md \
+  docs/known-limits.md \
   docs/briefing/BRIEFING-CURRENT-STATE.md \
   docs/operations/alpha-onboarding/email-template.md \
   docs/versioning.md \
@@ -228,6 +230,7 @@ Read each of these sections and confirm they describe THIS release, not the prev
 | ALPHA_QUICKSTART | Testing Focus | Reflects what's newly shipped |
 | ALPHA_TESTING_GUIDE | What's New | Same check |
 | ALPHA_KNOWN_ISSUES | Known Issues | Fixed issues removed; new issues added |
+| known-limits | every row | Fixed limits deleted, new ones meet PPM's rule, no issue numbers |
 
 If any section still describes old functionality: fix it now, before the release is done.
 
@@ -271,6 +274,7 @@ Phase 3 — Documentation
 - [ ] docs/ALPHA_QUICKSTART.md — version strings AND prose body
 - [ ] docs/ALPHA_TESTING_GUIDE.md — version strings AND prose body
 - [ ] docs/ALPHA_KNOWN_ISSUES.md
+- [ ] docs/known-limits.md
 - [ ] docs/briefing/BRIEFING-CURRENT-STATE.md
 - [ ] docs/operations/alpha-onboarding/email-template.md
 - [ ] docs/versioning.md
@@ -309,6 +313,7 @@ Phase 7 — Audit
 
 ## Changelog
 
+- **v1.4** (2026-11-13, Docs): Step 3d now routes limits that meet PPM's rule to `docs/known-limits.md` (the Tier 1 corpus file, no issue numbers, fixed limits deleted not marked fixed) and lists it in the staging and completion checks. Arch's ruling 01M7APG3SB, PPM 01M7AP6MM5, CXO's go 01M7AQHDM7. The tester page keeps its issue numbers and "Fixed in".
 - **v1.3** (2026-09-29, Lead): `production` branch DELETED at cutover step 11 (PM-ruled); Phase 5 is now the single-lineage rule, pointing at pipeline plan §4e for the stable-cut-for-testers mechanism.
 - **v1.2** (2026-09-24, Lead): Phase 5 rewritten for the Fly era — `production` is retiring, deploys come from `origin/main`; Phase 7's deployment block is the actual `fly deploy` from a detached clean worktree with the sha build-arg and the `/health` READ, replacing the droplet instructions. Completion matrix updated to match.
 
