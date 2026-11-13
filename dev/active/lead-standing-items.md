@@ -55,3 +55,12 @@ lives in GitHub, this file holds only durable owed/queued items.)
 - 2351 setup words (`62aefca5e5`): served check after the promotion; CXO judges a quoted screen.
 - 2352, 2360: wait on PPM placement and Arch's keep-or-retire answer.
 - 2361: PPM's sprint 6 proposal.
+
+### Follow-ups from 2026-11-13
+**Filed**: 2026-11-13
+- 2355 Tier 1 corpus, Lead's parts (not in sprint 2; PPM 11-13 06:50; the next sprint review sequences them). Blocker: placement. What Arch ruled on 11-13 that the build must follow:
+  - The part (a) generator from `capability_catalog()`, with a test that the catalog matches the offered connector set.
+  - The deploy build reads `scripts/validate_tier1_manifest.py --deploy`: refuse only an indexed item on an excluded path; a stale or unapproved row is a DROP, written as one evidence line each (id and reason, no text).
+  - A dropped, `candidate` or `unverified` row gets a generated stand-in for its topic from one CXO-passed template, built before the first row goes `verified`.
+  - Indexed = verified, voice-passed, resolves, in window, and `approved` (the item's sha at xian's quoted yes; current lines must appear in the approved text). How the deploy reads the CI result of that line check is Lead's to decide.
+  - A pin that the checker's `ast` read of `BETA_OFFERED_CONNECTORS` and `STAGING_ONLY_OFFERED_CONNECTORS` equals the imported values.
