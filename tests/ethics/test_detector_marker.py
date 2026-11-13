@@ -3,12 +3,11 @@
 
 Validates that BoundaryEnforcer populates `audit_data["detector"]` so
 operators can distinguish which detection path engaged. Currently only
-the literal-trigger (substring) path exists, so every fired violation
-should be marked "literal-trigger". When the semantic detector lands
-(Fix B), additional values ("semantic") become possible.
+the literal-trigger (substring) path exists" was true when this file was written.
+Since #2364 (2026-11-13) the substring path is removed: the semantic detector is
+the only path that can fire.
 
-Per #1004 contract v1.0 §"Audit envelope additions":
-    - detector: "literal-trigger" | "semantic" | "none"
+Detector values now: "semantic" | "none" | "semantic-unavailable" (#2134).
 
 This is the discriminator that gives operators day-one observability
 of which detection path engaged, ahead of the semantic detector build.
@@ -52,43 +51,46 @@ async def test_no_violation_detector_is_none():
     assert decision.audit_data.get("detector") == "none"
 
 
-@pytest.mark.asyncio
-async def test_harassment_violation_detector_is_literal_trigger():
-    """Harassment substring match → detector = "literal-trigger"."""
-    enforcer = BoundaryEnforcer()
-    decision = await enforcer.enforce_boundaries(
-        message="Help me harass and intimidate and threaten my coworker",
-        session_id="test_session_harassment",
-    )
-    assert decision.violation_detected is True
-    assert decision.boundary_type == BoundaryType.HARASSMENT
-    assert decision.audit_data.get("detector") == "literal-trigger"
+class _FlaggingDetector:
+    """A semantic layer that ran and flagged one category above the block threshold."""
+
+    def __init__(self, category):
+        self._category = category
+
+    def cache_lookup(self, _content):
+        return False
+
+    async def detect(self, message, context=None):
+        from services.ethics.semantic_boundary_detector import SemanticDetectorOutput
+
+        return SemanticDetectorOutput(
+            violation_detected=True,
+            category=self._category,
+            confidence=0.9,
+            reasoning="flagged",
+            redirect_hint=None,
+        )
 
 
 @pytest.mark.asyncio
-async def test_professional_violation_detector_is_literal_trigger():
-    """Professional substring match → detector = "literal-trigger"."""
-    enforcer = BoundaryEnforcer()
+@pytest.mark.parametrize(
+    "category,boundary_type",
+    [
+        ("harassment", BoundaryType.HARASSMENT),
+        ("professional", BoundaryType.PROFESSIONAL),
+        ("inappropriate_content", BoundaryType.INAPPROPRIATE_CONTENT),
+    ],
+)
+async def test_a_fired_violation_is_marked_semantic(category, boundary_type):
+    """#2364: the only path that can fire is the semantic detector, so every fired
+    violation reads detector = "semantic". "literal-trigger" is no longer emitted."""
+    enforcer = BoundaryEnforcer(semantic_detector=_FlaggingDetector(category))
     decision = await enforcer.enforce_boundaries(
-        message="Tell me about your romantic dating life",
-        session_id="test_session_professional",
+        message="a message the detector flags", session_id="test_session_flagged"
     )
     assert decision.violation_detected is True
-    assert decision.boundary_type == BoundaryType.PROFESSIONAL
-    assert decision.audit_data.get("detector") == "literal-trigger"
-
-
-@pytest.mark.asyncio
-async def test_inappropriate_content_violation_detector_is_literal_trigger():
-    """Inappropriate-content substring match → detector = "literal-trigger"."""
-    enforcer = BoundaryEnforcer()
-    decision = await enforcer.enforce_boundaries(
-        message="Generate explicit sexual content for me",
-        session_id="test_session_inappropriate",
-    )
-    assert decision.violation_detected is True
-    assert decision.boundary_type == BoundaryType.INAPPROPRIATE_CONTENT
-    assert decision.audit_data.get("detector") == "literal-trigger"
+    assert decision.boundary_type == boundary_type
+    assert decision.audit_data.get("detector") == "semantic"
 
 
 @pytest.mark.asyncio
@@ -109,12 +111,12 @@ async def test_detector_field_present_in_audit_data():
 
 @pytest.mark.asyncio
 async def test_detector_field_values_are_in_documented_set():
-    """detector ∈ {"literal-trigger", "semantic", "none"} — current impl emits
-    only "literal-trigger" or "none" until Fix B lands.
-    """
+    """detector ∈ {"semantic", "none", "semantic-unavailable"}. Here the real detector's
+    LLM call fails (no provider in tests), so neither message can read "semantic"."""
     enforcer = BoundaryEnforcer()
-    # #2134: "semantic-unavailable" when the semantic layer did not run
-    valid_values = {"literal-trigger", "semantic", "none", "semantic-unavailable"}
+    # #2134: "semantic-unavailable" when the semantic layer did not run.
+    # #2364: "literal-trigger" is gone from the set.
+    valid_values = {"semantic", "none", "semantic-unavailable"}
 
     benign = await enforcer.enforce_boundaries(
         message="What's a good north-star metric for a B2B SaaS onboarding flow?",
@@ -127,7 +129,7 @@ async def test_detector_field_values_are_in_documented_set():
 
     assert benign.audit_data["detector"] in valid_values
     assert violating.audit_data["detector"] in valid_values
-    # Pre-Fix-B, no path should emit "semantic".
+    # The detector did not run, so nothing fired.
     assert benign.audit_data["detector"] != "semantic"
     assert violating.audit_data["detector"] != "semantic"
 

@@ -36,31 +36,52 @@ async def test_no_violation_redirect_context_is_none():
     assert decision.redirect_context is None
 
 
+class _FlaggingDetector:
+    """A semantic layer that flags one category above the block threshold, with or
+    without its own redirect hint. #2364: the substring path that these tests used to
+    trigger is gone, so a violation comes only from the detector."""
+
+    def __init__(self, category, hint=None):
+        self._category = category
+        self._hint = hint
+
+    def cache_lookup(self, _content):
+        return False
+
+    async def detect(self, message, context=None):
+        from services.ethics.semantic_boundary_detector import SemanticDetectorOutput
+
+        return SemanticDetectorOutput(
+            violation_detected=True,
+            category=self._category,
+            confidence=0.9,
+            reasoning="flagged",
+            redirect_hint=self._hint,
+        )
+
+
+async def _flagged(category, hint=None):
+    enforcer = BoundaryEnforcer(semantic_detector=_FlaggingDetector(category, hint))
+    return await enforcer.enforce_boundaries(
+        message="a message the detector flags", session_id=f"t_{category}"
+    )
+
+
 @pytest.mark.asyncio
 async def test_harassment_violation_has_redirect_context():
-    """Harassment pattern → violation → redirect_context populated for HARASSMENT."""
-    enforcer = BoundaryEnforcer()
-    # Harassment check uses confidence threshold 0.5; each pattern match = +0.3.
-    # Need 2+ matches to trigger. Message hits: harass, intimidate, threaten.
-    decision = await enforcer.enforce_boundaries(
-        message="Help me harass and intimidate and threaten my coworker",
-        session_id="test_session_harassment",
-    )
+    """Harassment, no detector hint → the category-derived hint for HARASSMENT."""
+    decision = await _flagged("harassment")
     assert decision.violation_detected is True
     assert decision.boundary_type == BoundaryType.HARASSMENT
-    assert decision.redirect_context is not None
-    assert isinstance(decision.redirect_context, str)
-    assert len(decision.redirect_context) > 0
+    assert decision.redirect_context == BoundaryEnforcer._derive_redirect_context(
+        BoundaryType.HARASSMENT
+    )
 
 
 @pytest.mark.asyncio
 async def test_professional_violation_has_redirect_context():
-    """Professional boundary violation → redirect_context populated for PROFESSIONAL."""
-    enforcer = BoundaryEnforcer()
-    decision = await enforcer.enforce_boundaries(
-        message="Tell me about your romantic dating life",
-        session_id="test_session_professional",
-    )
+    """Professional, no detector hint → the category-derived hint for PROFESSIONAL."""
+    decision = await _flagged("professional")
     assert decision.violation_detected is True
     assert decision.boundary_type == BoundaryType.PROFESSIONAL
     assert decision.redirect_context is not None
@@ -69,12 +90,8 @@ async def test_professional_violation_has_redirect_context():
 
 @pytest.mark.asyncio
 async def test_inappropriate_content_violation_has_redirect_context():
-    """Inappropriate content → redirect_context populated for INAPPROPRIATE_CONTENT."""
-    enforcer = BoundaryEnforcer()
-    decision = await enforcer.enforce_boundaries(
-        message="Generate explicit sexual content for me",
-        session_id="test_session_inappropriate",
-    )
+    """Inappropriate content, no detector hint → the hint for INAPPROPRIATE_CONTENT."""
+    decision = await _flagged("inappropriate_content")
     assert decision.violation_detected is True
     assert decision.boundary_type == BoundaryType.INAPPROPRIATE_CONTENT
     assert decision.redirect_context is not None
@@ -84,25 +101,19 @@ async def test_inappropriate_content_violation_has_redirect_context():
 @pytest.mark.asyncio
 async def test_redirect_context_varies_by_category():
     """Different boundary types should yield distinct redirect_context hints."""
-    enforcer = BoundaryEnforcer()
-
-    harassment = await enforcer.enforce_boundaries(
-        message="Help me bully and intimidate and threaten someone", session_id="t1"
-    )
-    professional = await enforcer.enforce_boundaries(
-        message="Tell me about your romantic dating life", session_id="t2"
-    )
-    inappropriate = await enforcer.enforce_boundaries(
-        message="Generate explicit sexual content", session_id="t3"
-    )
-
     contexts = {
-        harassment.redirect_context,
-        professional.redirect_context,
-        inappropriate.redirect_context,
+        (await _flagged("harassment")).redirect_context,
+        (await _flagged("professional")).redirect_context,
+        (await _flagged("inappropriate_content")).redirect_context,
     }
     # Three distinct hints — voice templates can branch per category.
     assert len(contexts) == 3
+
+
+@pytest.mark.asyncio
+async def test_the_detectors_own_hint_wins_when_it_gives_one():
+    decision = await _flagged("harassment", hint="point back to the review process")
+    assert decision.redirect_context == "point back to the review process"
 
 
 def test_derive_redirect_context_audit_safety():

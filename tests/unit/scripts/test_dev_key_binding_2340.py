@@ -22,6 +22,7 @@ sys.path.insert(0, str(SCRIPTS))
 import dev_key_binding as binder  # noqa: E402
 
 BINDER_USERS = (
+    "ethics_gate_run_2364.py",
     "inversion_phase0_baseline.py",
     "inversion_phase1_shadow_score.py",
     "inversion_phase2_gate.py",
