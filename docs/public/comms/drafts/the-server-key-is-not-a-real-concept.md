@@ -8,53 +8,32 @@ caption: ''
 
 *September 13–15, 2026*
 
-<!--
-SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. PM writes
-the prose. Everything below the line is notes for PM. Delete it as the prose replaces it.
-Slot: Thu 2026-11-12 (building). Beat 3, after Tue 11-10 "Never Green in a Thousand Runs" (Sep 9–11). xian said yes
-11-04 and may change the title.
-Merge with beat 4 ("The Wall")? Recommend NO. See the bottom of these notes.
-Footer teases whatever follows on the calendar (nothing after Thu 11-12 yet except Ships). Pick it at the weekend.
-Sources: decisions.log l.1885, 1887, 1889, 1891 (09-14); Lead 09-14 log (l.102-110, 140-152, 177-221); Exec 09-14 log
-(l.118-164); Arch 09-14 log (l.84-86); PPM 09-14 log (l.150); omnibus 09-13 (l.126-131), 09-14 (l.141, 160-192, 225) and
-09-15 (l.31-82, 186-193). Facts gathered by a Sonnet subagent. Comms re-opened the key quotes at source.
-The tester is never named in this post or this file (rule 8). Some sources name them. Do not copy that.
--->
+An outside tester's invitation was ready to send when Lead found that any signed-in user with no key of their own would end spending against my own key. I held up the invitations and also asked why there was an operator key with money to spend from my Claude account at all?
 
----
+# Inviting an alpha tester
 
-## Title options (pick one, or your own)
-- **The Server Key Is Not a Real Concept** (working). Your ruling, nearly word for word.
-- **Why Does the Operator Have Money to Spend?** The question that turned a fix into a deletion.
-- **Authentication Is Not Billing.** Lead's diagnosis.
-- **Hold Until We Stanch This Leak.** Your hold, as typed (minus the typo).
+A reader asked to join the alpha test and we prepared their invitation. My head of sapient trust agent (HOST) told me it was "ready whenever you want to send it."
 
-## The story in one sentence
+Around this time, a thorough check for any potential server-key exposure the top priority revealed that the code looked for a key in this order: the request, the user's stored key, then the **server key**, for any signed-in caller. 
 
-An outside tester's invitation was minted and ready to send when Lead found that any signed-in user with no key of
-their own would spend yours, and that the tester's key would silently replace yours. You held the invitation, and then
-asked the better question: why does the operator have money to spend at all?
+# Fixing a hole
 
-## Beats, in order (facts verified, source in brackets)
+An earlier fix had made this server key off-limits for anonymous callers, based on reasoning that this made it "safe, because the caller is a
+known, authenticated identity". My lead developer agent (Lead) acknowledged that this “conflates authentication with BILLING AUTHORIZATION.”
 
-**1. Someone asks to join.** Sun Sep 13, about 1:00 PM: you forwarded an outside tester's request to join the alpha.
-HOST checked alpha was live and routed the invite. By Monday HOST had it minted: "ready whenever you want to send it."
-[omnibus 09-13 l.126-131, Exec 09-14 l.124-127]
+This had only been true when I was the single person with an authenticated account, but broke down as soon as a second person logs in. Lead fixed this rhe same day.
 
-**2. The fallback.** Mon Sep 14, 1:02 PM: you made server-key exposure the top priority. Lead found that the code
-looked for a key in order: the request, the user's stored key, then the **server key**, for any signed-in caller. An
-earlier fix had closed it only for anonymous callers. The code comment called it "safe, because the caller is a
-known, authenticated identity". Lead: "that conflates authentication with BILLING AUTHORIZATION. True enough when the
-only authenticated identity was PM; false the moment a second person logs in." [Lead 09-14 l.102-108]
-- Fixed and deployed by 1:25 PM. Four existing tests had pinned the hole as intended behavior. [Lead l.140-152]
+# Musical keys
 
-**3. Worse.** The setup flow also copied every user's key into one shared slot, last writer wins. The tester's first
-setup would have made their key "the server key": billing them for anything that still used it, and displacing yours.
-Exec: sending the invite "IS the trigger." [Exec 09-14 l.118-135, omnibus 09-14 l.225]
-- Exec's aside: the shared write survived a whole security epic because its comment read like plumbing ("so LLMClient
-  can find keys during server startup"). [Exec l.136-139]
+Then, it turned out we had a worse problem. The setup flow lazily copied every user's key into a single shared slot, last writer wins. The new tester's first setup would have made their key "the server key" (replacing mine), and billing them for anything that still used it.
 
-**4. The hold.** About 4:05 PM, as you typed it: "yes hold under we stanch this leak." Arch's bar: the shared write is
+Note: This serious security leak survived an epic dedicating to rooting out such vulnerabilities because it had a comment that made it sound like routine plumbing
+
+> # so LLMClient can find keys during server startup
+
+# Stop the presses
+
+: "hold under we stanch this leak." Arch's bar: the shared write is
 gone, and that is seen in a real setup flow, not only in a test. [Arch 09-14 l.84-86, decisions.log l.1885]
 
 **5. The question.** 5:30 PM, your ruling: "THE SERVER KEY IS NOT A REAL CONCEPT AND WILL NOT BE SUPPORTED IN ANY
