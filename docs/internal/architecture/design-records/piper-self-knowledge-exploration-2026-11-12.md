@@ -268,6 +268,9 @@ xian's words on question 3: "let's do some research and experimentation to figur
 - On Sonnet 4.6 the API caches only a prefix of at least 1,024 tokens (prompt-caching reference). The layer alone is about 510 tokens, so it caches only as part of a larger fixed prefix: the system prompt plus the layer, with nothing per-user or per-turn in front of the breakpoint.
 - OpenAI caches stable prefixes on its own, also from 1,024 tokens, so the same size condition holds for users on that key.
 - **This is for Lead and Arch to build or rule. H1's caching half can't pass until it's built.** H1's size half (the token count) doesn't depend on it.
+- **Arch's ruling (11-13 10:19, 01M7B26F1A):** the reply `system` starts with the per-user base. The layer goes after the static addendum and before the capability manifest. The breakpoint goes after the manifest, and the per-user warmth guidance stays after it. So the cache is **per user**. Lead accepted (01M7B25Q4M); #2354 isn't placed in a sprint yet.
+- **H1's caching half, restated to match:** one user's turns 2 to 10, sent less than 5 minutes apart, read the layer from cache on at least 80% of them. A hit across different users isn't the measure. A shared cache would need the base moved after the breakpoint, which is a screened behavior change and a separate item. File it only if the per-user rate turns out too low to matter.
+- **New check for the build report:** base + addendum + layer + manifest must reach 1,024 tokens on Sonnet 4.6. A short neutral base could leave the prefix under it, and then nothing caches at all.
 
 **Price of H1.**
 - **Token count of the layer:** one `count_tokens` call. The pricing page lists no rate for it, and I haven't checked whether it's free, so I treat it as $0.01 at most.
