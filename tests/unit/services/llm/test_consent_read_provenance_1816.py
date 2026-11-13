@@ -103,13 +103,14 @@ def _real_keychain_on_os_backend() -> KeychainService:
 
 @contextlib.contextmanager
 def _keyring_raising():
-    """Patch the module's keyring so the underlying store genuinely fails."""
+    """Make the underlying store genuinely fail. Since #2353 the service reaches a keyring
+    only through its backend seam, so the failing backend is installed there."""
 
     def _boom(*args, **kwargs):
         raise RuntimeError("keyring backend exploded (real store failure)")
 
     fake = SimpleNamespace(get_password=_boom, set_password=_boom, get_keyring=lambda: None)
-    with patch.object(ks_module, "keyring", fake):
+    with patch.object(ks_module, "_test_keyring_backend", fake):
         yield
 
 
@@ -121,7 +122,7 @@ def _keyring_returning(value):
     fake = SimpleNamespace(
         get_password=_get, set_password=lambda *a: None, get_keyring=lambda: None
     )
-    with patch.object(ks_module, "keyring", fake):
+    with patch.object(ks_module, "_test_keyring_backend", fake):
         yield
 
 
@@ -191,7 +192,7 @@ class TestRealKeychainFailureDoesNotWidenConsent:
         fake = SimpleNamespace(
             get_password=_get, set_password=lambda *a: None, get_keyring=lambda: None
         )
-        with patch.object(ks_module, "keyring", fake):
+        with patch.object(ks_module, "_test_keyring_backend", fake):
             with pytest.raises(ConsentUnreadableError):
                 resolve_authorized_providers("user-a", ALL_CONFIGURED, kc)
 
