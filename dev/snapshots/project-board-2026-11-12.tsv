@@ -2139,3 +2139,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2347	OPEN	Production		Remove two dead Redis paths: the conversation manager's turn cache and FeedbackCapture			
 2348	OPEN	Production		/health should report Redis, as it does the database and the credential store			
 2350	OPEN	Production		Hosts drop every info log line (root WARNING from the CLI quiet mode); evidence events need a named logger kept at INFO	architecture		
+2351	OPEN	Production		Local running as a supported path for an outside tester: hidden-prompt key helper, tested step list, self-host guide			
