@@ -2156,3 +2156,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2365	OPEN	Production		Knowledge graph redacts or rejects a node's own text on a substring match ('explicit', 'unwanted'), a write decided by substring	bug		
 2366	OPEN	Production		LLM keys page offers to save a Google (Gemini) key, but Piper can't serve any reply on Gemini	bug		
 2367	OPEN	Production		Key save route still accepts a Google (Gemini) key from a direct API call and reports success	bug		
+2368	OPEN	Production		Setup's /complete accepts any default_llm_provider (e.g. gemini) unvalidated and stores it	bug		
