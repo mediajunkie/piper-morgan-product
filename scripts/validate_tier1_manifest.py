@@ -90,10 +90,8 @@ def offered_names():
     import ast
 
     names = set()
-    try:
-        tree = ast.parse(open("services/integrations/integration_status_service.py").read())
-    except OSError:
-        return names
+    with open("services/integrations/integration_status_service.py", encoding="utf-8") as f:
+        tree = ast.parse(f.read())
     for node in ast.walk(tree):
         target = getattr(node, "target", None) or (getattr(node, "targets", [None])[0])
         if getattr(target, "id", "") in (
@@ -101,6 +99,12 @@ def offered_names():
             "STAGING_ONLY_OFFERED_CONNECTORS",
         ) and isinstance(getattr(node, "value", None), ast.Dict):
             names |= {v.value for v in node.value.values if isinstance(v, ast.Constant)}
+    if not names:
+        # Fail closed (Lead, 11-13): finding neither dict is an error, never an empty pass.
+        raise SystemExit(
+            "ERROR: could not read BETA_OFFERED_CONNECTORS or STAGING_ONLY_OFFERED_CONNECTORS "
+            "as dict literals from services/integrations/integration_status_service.py"
+        )
     return names
 
 
