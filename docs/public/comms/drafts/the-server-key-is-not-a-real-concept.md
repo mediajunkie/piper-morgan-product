@@ -18,7 +18,7 @@ Around this time, I made a thorough check for any potential server-key exposure 
 
 # Fixing a hole
 
-An earlier fix had made this server key off-limits for anonymous callers, based on reasoning that this made it "safe, because the caller is a known, authenticated identity". My lead developer agent (Lead) acknowledged that this "conflates authentication with BILLING AUTHORIZATION."
+An earlier fix had made this server key off-limits for anonymous callers but left it open to signed-in ones, on the reasoning that this was "safe, because the caller is a known, authenticated identity." My lead developer agent (Lead) pointed out that this "conflates authentication with BILLING AUTHORIZATION."
 
 This had only been true when I was the single person with an authenticated account, but broke down as soon as a second person logged in. Lead fixed this the same day.
 
@@ -38,11 +38,11 @@ I decided to freeze the invitation while we sorted out the problem, saying "hold
 
 > THE SERVER KEY IS NOT A REAL CONCEPT AND WILL NOT BE SUPPORTED IN ANY SENSE. I don't understand why anybody should ever be able to spend the operator's money or why the operator even has money to spend… The software that we're building should never be accessing an API for its own purposes.
 
-This is why we have always followed a bring your own key (BYOK) or bring your own chat (BYOC) model, or at least I had thought that was well understood.
+That ruling just follows from our bring-your-own-key (BYOK) and bring-your-own-chat (BYOC) model, or at least I had thought that was well understood.
 
 # The operator has no money
 
-I kept explaining: "We don't use the business model of reselling tokens or anything like that, unless someone can describe some sort of minimal bootstrap situation." (Nobody could.) Lead's census found background jobs make zero model calls.
+I kept explaining: "We don't use the business model of reselling tokens or anything like that." I left one door open: "unless someone can describe some sort of minimal bootstrap situation." Nobody could. Lead's census found background jobs make zero model calls.
 
 The concept was eliminated, not put behind a gate. Gone. Lead logged a wry observation: "I spent the day fixing WHO may spend the operator's money without ever asking why the operator has money to spend."
 
