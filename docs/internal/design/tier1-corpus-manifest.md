@@ -6,12 +6,13 @@ One row per item Piper may use to answer about itself on every install. A row is
 
 ## Columns
 
-`id`, `part` (a to d of #2355, or `candidate`), `topic`, `source` (a path, `path#heading` or `path::symbol`, several joined by "; "), `source_kind` (`doc` or `generated`), `tier` (always 1 here), `status` (`candidate`, `unverified`, `verified`), `last_verified` (an ISO date, set only for a row someone actually checked against the code or the served build), `reverify_window_days`, `owner`, `voice_pass` (CXO: `pending`, `passed`, `returned`), `notes`.
+`id`, `part` (a to d of #2355, or `candidate`), `topic`, `item` (the one file Piper reads, in the user register and voice-passed, the only path a build may index, as `path`, `path#heading` or `path::symbol`), `derived_from` (what the item's facts are checked against: ADRs, docs, code. Never indexed. Several joined by "; "), `source_kind` (`doc` or `generated`), `tier` (always 1 here), `status` (`candidate`, `unverified`, `verified`), `last_verified` (an ISO date, set only when the item's facts were checked against `derived_from` or the served build, with the method in `notes`), `reverify_window_days`, `owner`, `voice_pass` (CXO: `pending`, `passed`, `returned`), `notes`.
 
 ## Rules the checker enforces
 
-- Every source path exists in the checkout.
-- No source lies under `dev/`, `mailboxes/`, `docs/omnibus-logs/` or agent memory (these are never indexed, #2356).
+- Every `item` and `derived_from` path exists in the checkout, and a `path#heading` must resolve to a heading or bold line in the file (Arch, 11-13).
+- An `item` may not be an ADR, a `.py` file or a design record marked not ratified. A row past `candidate` needs an item, and a `verified` row needs a date.
+- No `item` lies under `dev/`, `mailboxes/`, `docs/omnibus-logs/` or agent memory (these are never indexed, #2356).
 - A `verified` row has a date. A row past its window is reported. With `--strict`, unverified and past-window rows fail, which is the behaviour Lead's deploy check can adopt.
 - Ids are unique and the enums hold.
 

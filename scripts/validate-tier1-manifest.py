@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
 """Validate docs/internal/design/tier1-corpus-manifest.csv (#2355).
 
-One row per Tier 1 corpus item: source, tier, last-verified date, re-verify
-window, owner. Errors fail (exit 1). Rows that are unverified or past their
-window are reported, and fail only with --strict, because Lead's deploy check
-decides what to enforce at deploy.
+One row per Tier 1 corpus item. `item` is the one file Piper reads (user
+register, voice-passed, the only path a build may index). `derived_from` lists
+what the item's facts are checked against (ADRs, docs, code), never indexed.
+`last_verified` is the date those facts were checked against `derived_from` or
+the served build, with the method in `notes`.
 
-Checks: header, field counts, unique ids, enums, dates, windows are positive
-integers, every source path exists (a source is `path`, `path#heading` or
-`path::symbol`, several joined by "; "), and no source lies under the
-never-indexed trees (dev/, mailboxes/, omnibus-logs/, agent memory).
+Errors fail (exit 1). Unverified and past-window rows are notes, and fail only
+with --strict, which is the behaviour Lead's deploy check can adopt.
+
+Checks: header, field counts, unique ids, enums, dates, positive integer
+windows. Every `item` and `derived_from` path exists. A `path#heading` must
+resolve, meaning the file holds a heading or a bold line containing that text.
+No item lies under the never-indexed trees (dev/, mailboxes/, omnibus-logs/,
+memory). An item may not be an ADR, a .py file or a design record marked "not
+ratified" (Arch, 11-13: the build would retrieve internal language or code).
+A row past `candidate` needs an item. A `verified` row needs a date.
 Written by Docs 2026-11-13 as a proposal for Lead to adapt.
 Concept: docs/internal/design/tier1-corpus-manifest.md
 """
@@ -17,6 +24,7 @@ Concept: docs/internal/design/tier1-corpus-manifest.md
 import csv
 import datetime
 import os
+import re
 import sys
 
 PATH = "docs/internal/design/tier1-corpus-manifest.csv"
@@ -24,7 +32,8 @@ HEADER = [
     "id",
     "part",
     "topic",
-    "source",
+    "item",
+    "derived_from",
     "source_kind",
     "tier",
     "status",
@@ -42,11 +51,34 @@ OWNERS = {"docs", "lead", "cio", "cxo", "arch", "ppm"}
 EXCLUDED = ("dev/", "mailboxes/", "docs/omnibus-logs/", ".claude-pm/", "memory/")
 
 
-def sources(cell):
+def refs(cell):
+    """Yield (path, heading or None) for each `;`-joined reference."""
     for part in cell.split(";"):
         part = part.strip()
-        if part:
-            yield part.split("::")[0].split("#")[0]
+        if not part:
+            continue
+        path = part.split("::")[0]
+        heading = None
+        if "#" in path:
+            path, heading = path.split("#", 1)
+        yield path, (heading.strip('" ') if heading else None)
+
+
+def heading_resolves(path, heading):
+    want = heading.rstrip(".").lower()
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            if re.match(r"\s*(#|\*\*)", line) and want in line.lower():
+                return True
+    return False
+
+
+def not_ratified(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            return "not ratified" in "".join(f.readlines()[:15]).lower()
+    except OSError:
+        return False
 
 
 def main(argv):
@@ -80,11 +112,23 @@ def main(argv):
             errors.append(f"{rid}: tier={d['tier']!r} (this manifest is Tier 1 only)")
         if not d["reverify_window_days"].isdigit() or int(d["reverify_window_days"]) < 1:
             errors.append(f"{rid}: reverify_window_days={d['reverify_window_days']!r}")
-        for p in sources(d["source"]):
-            if p.startswith(EXCLUDED):
-                errors.append(f"{rid}: source {p} is under a never-indexed tree")
-            elif not os.path.exists(p):
-                errors.append(f"{rid}: source {p} does not exist")
+        if d["status"] != "candidate" and not d["item"]:
+            errors.append(f"{rid}: status {d['status']} but no item file")
+        for col in ("item", "derived_from"):
+            for p, h in refs(d[col]):
+                if col == "item" and p.startswith(EXCLUDED):
+                    errors.append(f"{rid}: item {p} is under a never-indexed tree")
+                    continue
+                if not os.path.exists(p):
+                    errors.append(f"{rid}: {col} {p} does not exist")
+                    continue
+                if h and not heading_resolves(p, h):
+                    errors.append(f"{rid}: {col} {p} has no heading or bold line {h!r}")
+                if col == "item" and d["source_kind"] != "generated":
+                    if "/adrs/" in p or p.endswith(".py") or not_ratified(p):
+                        errors.append(
+                            f"{rid}: item {p} is an ADR, code or a not-ratified record, never indexed"
+                        )
         lv = d["last_verified"]
         if d["status"] == "verified" and not lv:
             errors.append(f"{rid}: status verified but no last_verified date")
@@ -93,7 +137,8 @@ def main(argv):
                 age = (today - datetime.date.fromisoformat(lv)).days
                 if age > int(d["reverify_window_days"] or 0):
                     notes.append(
-                        f"{rid}: verified {lv}, {age} days ago, past its {d['reverify_window_days']}-day window"
+                        f"{rid}: verified {lv}, {age} days ago, past its "
+                        f"{d['reverify_window_days']}-day window"
                     )
             except ValueError:
                 errors.append(f"{rid}: last_verified={lv!r}")
@@ -103,8 +148,7 @@ def main(argv):
         print("ERROR", e)
     for m in notes:
         print("NOTE ", m)
-    count = len(rows) - 1
-    print(f"{PATH}: {count} rows, {len(errors)} error(s), {len(notes)} note(s)")
+    print(f"{PATH}: {len(rows) - 1} rows, {len(errors)} error(s), {len(notes)} note(s)")
     return 1 if errors or (strict and notes) else 0
 
 
