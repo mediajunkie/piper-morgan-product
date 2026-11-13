@@ -6,7 +6,9 @@
 
 The Tier 1 corpus's teachable-practice rows that come from `methodology-core`. A Proven entry is written for the team, with roles, issue numbers and incidents, so none is usable as written (design record, CIO's area 5). Each row below rewrites one entry's practice for a person asking Piper "how should I…?". Piper retrieves a row on a matching turn and answers from it in its own words. The row is not a script to recite.
 
-Source: the Status and Summary lines from 9p (2026-11-12). 19 entries are Proven. 15 of them are covered by the 14 rows below (two rows draw on two entries), and 4 are left out with the reason given.
+Source: the Status and Summary lines from 9p (2026-11-12). 19 entries are Proven. 14 of them are covered by the 13 rows below (two rows draw on two entries, and one row was cut), and 5 are left out with the reason given.
+
+**CXO's pass (11-13 06:50):** 11 rows passed. Two were returned and rewritten the same morning ("Don't call it done early", now one habit; "Write down what you'd do differently", formerly "Close each cycle…"). One row was cut (13). The two rewrites wait on CXO's second look.
 
 ## How each row was written
 
@@ -35,7 +37,7 @@ Before you start something new, check what's already there and whether your assu
 Before work starts, write each requirement as a check you could run or watch, such as "a new user can sign in and see their project". Then "done" is something you can see pass, not something to argue about.
 
 **Don't call it done early.** *(03)*
-The habits that most often hurt quality: skipping the check, building before you know what passing looks like, working alone on something risky, assuming instead of looking, and calling it done before anyone has seen it work. Each one has a fix, and it's usually the step that felt skippable.
+Before you say something is done, watch it work once, the way the person who asked will use it. If you haven't seen that yet, say what's left instead of "done".
 
 **Get a second look at what matters.** *(17)*
 For a claim with real stakes, have someone else check it with the evidence in front of them, not your summary of it. A second reader catches what the first one stopped seeing.
@@ -58,11 +60,8 @@ A new tool often quietly takes over a habit nobody wrote down. Check what people
 **Build what makes you different, reuse the rest.** *(26)*
 For each piece of work, ask whether it's ordinary plumbing that already exists elsewhere or the thing that makes your product worth using. Reuse or buy the plumbing, and spend your effort on the difference.
 
-**Close each cycle by feeding back what you learned.** *(00)*
-Work gets easier over time when each round ends by recording what you learned and using it in the next: check first, build, show it works, then write down what you'd do differently.
-
-**When a test and the facts disagree, check the facts.** *(13)*
-If a check fails, first ask whether the check or the work is wrong. When you've researched how something really works, trust that and fix the check. When the behaviour is missing, fix the work.
+**Write down what you'd do differently.** *(00)*
+When a piece of work ends, write down one or two things you'd do differently. Read them before you start the next piece like it.
 
 ---
 
@@ -71,11 +70,12 @@ If a check fails, first ask whether the check or the work is wrong. When you've 
 | Entry | Why it has no row |
 |---|---|
 | 09 Integration testing | Engineering practice for building connectors. It's useful to a developer, but outside what a product-work assistant teaches, and its useful core is already in the rows drawn from 01 and 07. |
+| 13 When a test and the facts disagree | Developer-only. Drafted, then cut at CXO's pass (11-13). |
 | 15 Testing with and without the database | Engineering-only. |
 | 20 Omnibus session logs | About how the team records its own day. Teaching it would describe the machinery (leak list). |
 | 25 Workstream review cadence | Internal-only (the design record says so). |
 
-Entry 13 has a row, but it's the most developer-flavoured of the 14. CXO may cut it.
+Entry 13's row was cut by CXO (developer-only, 06:50).
 
 ## Two points for CXO
 
@@ -84,7 +84,7 @@ Entry 13 has a row, but it's the most developer-flavoured of the 14. CXO may cut
    - "When should I stop and ask?" maps to the "ask when it matters" rule of the conduct layer (#2354), from 03.
    - **"What's wrong with an all-clear?" has no Proven entry behind it.** Its source is methodology-44 ("a report of nothing found means nothing unless it says what it looked at"), and 44 is still Emerging. Under the Proven-only rule it can't be taught yet.
    - I propose swapping it for **"How do I know a number means what I think?"** (row "A count isn't the thing you care about", 48). If 44 is graduated at the 12-29 audit, it comes back.
-   - It's your call, since the set is yours to judge.
+   - CXO accepted the swap (11-13 06:50) and recorded it in the spec's section 7.
 2. **Rows overlap with the conduct layer on purpose.** The conduct layer says what Piper does on every turn. These rows say what Piper teaches when asked. Rows 07, 47 and 48 are the same practice in both places, and the wording should agree after your pass.
 
-Verified how: Status and Summary lines read this hour with `grep` over all 58 `methodology-core` entries. 19 are Proven: 15 covered by 14 rows, 4 left out (15 + 4 = 19), and 13 flagged. Checked against the spec's sections 2 to 4 by reading each row myself. No served check: these are corpus text, judged by CXO on served replies later.
+Verified how: Status and Summary lines read this hour with `grep` over all 58 `methodology-core` entries. 19 are Proven: 14 covered by 13 rows and 5 left out (14 + 5 = 19), after CXO's cut of 13. Checked against the spec's sections 2 to 4 by reading each row myself. No served check: these are corpus text, judged by CXO on served replies later.
