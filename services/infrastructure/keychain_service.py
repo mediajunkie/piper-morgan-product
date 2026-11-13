@@ -48,6 +48,29 @@ KEYCHAIN_HANG_GUIDANCE = (
     "environment"
 )
 
+# #2353 (Arch, 2026-11-12): the OS keychain is opt-in only. It is read or written only
+# when PIPER_CREDENTIAL_STORE=keychain is set; unset (or anything else) means the
+# encrypted database store.
+STORE_ENV_VAR = "PIPER_CREDENTIAL_STORE"
+STORE_KEYCHAIN = "keychain"
+# What to do about having no store, in the words a person can act on.
+NO_STORE_FIX = (
+    "Set ENCRYPTION_MASTER_KEY to use the encrypted database store "
+    "(a local install: python scripts/local_key_setup.py creates it), "
+    "or opt in to the OS keychain with PIPER_CREDENTIAL_STORE=keychain."
+)
+# The store for THIS process when the variable is unset. tests/conftest.py sets it to
+# "keychain" after it has replaced the OS keyring with an in-memory one, so in-process
+# tests keep that backend. A module value, not an environment variable, on purpose: a
+# child process inherits the environment and must not inherit a keychain opt-in.
+_process_default_store: Optional[str] = None
+
+
+def selected_store() -> str:
+    """``"keychain"`` only when it was chosen on purpose; otherwise ``"db"``."""
+    chosen = (os.getenv(STORE_ENV_VAR) or _process_default_store or "").strip().lower()
+    return STORE_KEYCHAIN if chosen == STORE_KEYCHAIN else "db"
+
 
 class KeychainTimeoutError(RuntimeError):
     """A keyring call exceeded the bounded wait (#1711 ACL-dialog hang)."""
@@ -185,24 +208,18 @@ class KeychainService:
     def _verify_keyring_backend(self) -> None:
         """Verify keyring backend availability and select the credential store.
 
-        Selection (#1382): env PIPER_CREDENTIAL_STORE=db forces the encrypted-DB
-        store; =keychain forces the OS keyring (legacy behavior incl. its failure
-        mode); unset → auto: a dead/fail backend with a field encryptor available
-        routes to the DB store. Dead backend AND no encryptor → hard error (fail
-        closed — there is nowhere secure to put a secret).
+        Selection (#2353, Arch 2026-11-12; supersedes #1382's auto choice): the OS
+        keyring is used only when PIPER_CREDENTIAL_STORE=keychain is set. Unset, ``db``
+        or anything else selects the encrypted-DB store, and the keyring module is not
+        consulted. No field encryptor (no ENCRYPTION_MASTER_KEY) -> no secure store:
+        writes raise, reads return None, and the message names both ways out.
         """
-        forced = os.getenv("PIPER_CREDENTIAL_STORE", "").strip().lower()
-        try:
-            backend = keyring.get_keyring()
-            backend_name = backend.__class__.__name__
-            backend_dead = "fail" in backend.__class__.__module__ or forced == "db"
-        except Exception as e:
-            if forced == "keychain":
+        if selected_store() == STORE_KEYCHAIN:
+            try:
+                backend_name = keyring.get_keyring().__class__.__name__
+            except Exception as e:
                 logger.error(f"Failed to initialize keyring: {e}")
                 raise RuntimeError(f"Keyring initialization failed: {e}")
-            backend_name, backend_dead = "unavailable", True
-
-        if forced == "keychain":
             logger.info(
                 "Keychain service initialized",
                 backend=backend_name,
@@ -210,63 +227,60 @@ class KeychainService:
             )
             return
 
-        if backend_dead:
-            # #1764: the DB store keys rows by bare composed name — it has NO
-            # service_name dimension, so two KeychainService instances with
-            # different service_names would silently READ AND WRITE EACH OTHER'S
-            # ROWS on the same database (the OS keyring namespaces by
-            # (service_name, account); this backend flattens that away, and the
-            # encryption context binds the bare name, so retrofitting the
-            # namespace requires a decrypt/re-encrypt migration — planned on the
-            # issue, not yet ruled). Until parity exists, a non-default
-            # service_name over this backend is a silent-collision trap: refuse
-            # LOUDLY at construction instead. Zero current callers hit this
-            # (only the #1711 tests use a custom service_name, and they force
-            # PIPER_CREDENTIAL_STORE=keychain before construction).
-            if self.service_name != SERVICE_NAME:
-                raise RuntimeError(
-                    f"KeychainService(service_name={self.service_name!r}) cannot "
-                    "use the encrypted-DB store: that backend has no service_name "
-                    "namespace, so a custom namespace would silently collide with "
-                    f"the default ({SERVICE_NAME!r}) on the same database (#1764). "
-                    "Either use the default service_name, force the OS keyring "
-                    "(PIPER_CREDENTIAL_STORE=keychain), or implement the #1764 "
-                    "namespace migration first."
-                )
-            try:
-                from services.infrastructure.secure_credential_store import (
-                    EncryptedDBCredentialStore,
-                )
+        # Not chosen: the keyring module is not consulted at all (#2353).
+        backend_name = "not consulted"
 
-                self._db_store = EncryptedDBCredentialStore()
-                logger.info(
-                    "Keychain service initialized",
-                    backend="EncryptedDBCredentialStore (#1382 hosted fallback)",
-                    os_backend=backend_name,
-                    service_name=self.service_name,
-                )
-                return
-            except Exception as e:
-                # #2125 (Arch): the cause stays in the log below; the message carries only
-                # the type, so no caller can print a key parameter whatever its catch-all does.
-                self._no_secure_store = (
-                    "No OS keyring backend AND the encrypted-DB fallback is "
-                    f"unavailable ({type(e).__name__}) — no secure credential store; refusing "
-                    "the operation (#1382)."
-                )
-                logger.error(
-                    "keychain_no_secure_store",
-                    os_backend=backend_name,
-                    fallback_error=str(e),
-                    effect="credential writes will raise; reads return None",
-                )
-                return
+        # #1764: the DB store keys rows by bare composed name — it has NO
+        # service_name dimension, so two KeychainService instances with
+        # different service_names would silently READ AND WRITE EACH OTHER'S
+        # ROWS on the same database (the OS keyring namespaces by
+        # (service_name, account); this backend flattens that away, and the
+        # encryption context binds the bare name, so retrofitting the
+        # namespace requires a decrypt/re-encrypt migration — planned on the
+        # issue, not yet ruled). Until parity exists, a non-default
+        # service_name over this backend is a silent-collision trap: refuse
+        # LOUDLY at construction instead. Zero current callers hit this
+        # (only the #1711 tests use a custom service_name, and they force
+        # PIPER_CREDENTIAL_STORE=keychain before construction).
+        if self.service_name != SERVICE_NAME:
+            raise RuntimeError(
+                f"KeychainService(service_name={self.service_name!r}) cannot "
+                "use the encrypted-DB store: that backend has no service_name "
+                "namespace, so a custom namespace would silently collide with "
+                f"the default ({SERVICE_NAME!r}) on the same database (#1764). "
+                "Either use the default service_name, force the OS keyring "
+                "(PIPER_CREDENTIAL_STORE=keychain), or implement the #1764 "
+                "namespace migration first."
+            )
+        try:
+            from services.infrastructure.secure_credential_store import (
+                EncryptedDBCredentialStore,
+            )
 
-        logger.info(
-            "Keychain service initialized",
-            backend=backend_name,
-            service_name=self.service_name,
-        )
+            self._db_store = EncryptedDBCredentialStore()
+            logger.info(
+                "Keychain service initialized",
+                backend="EncryptedDBCredentialStore (#1382 hosted fallback)",
+                os_backend=backend_name,
+                service_name=self.service_name,
+            )
+            return
+        except Exception as e:
+            # #2125 (Arch): the cause stays in the log below; the message carries only
+            # the type, so no caller can print a key parameter whatever its catch-all does.
+            self._no_secure_store = (
+                f"The encrypted database store is unavailable ({type(e).__name__}) and "
+                "the OS keychain was not chosen — no secure credential store; refusing "
+                f"the operation (#1382, #2353). {NO_STORE_FIX}"
+            )
+            logger.error(
+                "keychain_no_secure_store",
+                os_backend=backend_name,
+                fallback_error=str(e),
+                effect="credential writes will raise; reads return None",
+                fix=NO_STORE_FIX,
+            )
+            return
 
     def _keyring_call(self, operation: str, fn: Callable[..., Any], *args: Any) -> Any:
         """Run a raw keyring call with a bounded wait (#1711).

@@ -78,7 +78,7 @@ def test_stores_reads_back_and_never_prints_the_key(tmp_path):
     assert code == 0
     assert service.rows == {"anthropic": FAKE}
     assert "stored, read back and matched" in text
-    assert "python main.py" in text and "Use Keychain" in text
+    assert "python main.py" in text and "Use saved key" in text
     assert FAKE not in text
 
 
@@ -204,3 +204,16 @@ def test_source_has_no_keychain_or_env_key_read():
     src = Path(lk.__file__).read_text()
     assert "import keyring" not in src and "_API_KEY" not in src
     assert "subprocess" not in src and "httpx" not in src and "requests" not in src
+
+
+def test_an_existing_loose_settings_file_is_made_owner_only_and_says_so(tmp_path):
+    path = tmp_path / "settings.env"
+    path.write_text("OTHER=1\n")
+    path.chmod(0o644)
+    code, text, _, _, _ = run(["openai"], tmp_path)
+    assert code == 0 and stat.S_IMODE(path.stat().st_mode) == 0o600
+    assert "now owner-only" in text
+    # nothing to add on the second run, so the mode is left alone and nothing is said
+    path.chmod(0o640)
+    code, text, _, _, _ = run(["openai"], tmp_path)
+    assert "now owner-only" not in text

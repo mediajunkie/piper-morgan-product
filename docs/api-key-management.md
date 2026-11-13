@@ -6,14 +6,16 @@
 
 Each signed-in user stores their own LLM provider key. Piper makes that user's LLM calls with that user's key and never with anyone else's. This page describes where the key lives, the REST routes that manage it, and what happens on store, delete and rotate.
 
-Verified against: `services/security/user_api_key_service.py`, `web/api/routes/api_keys.py`, `services/infrastructure/keychain_service.py` and the `UserAPIKey` model in `services/database/models.py`, read 2026-10-31.
+Verified against: `services/security/user_api_key_service.py`, `web/api/routes/api_keys.py`, `services/infrastructure/keychain_service.py` and the `UserAPIKey` model in `services/database/models.py`, read 2026-10-31; the storage section re-read 2026-11-12 for the keychain opt-in change (#2353).
 
 ## Where the key is stored
 
-Two stores, with the database one preferred:
+The key is stored encrypted in the database. The OS keychain is used only if you choose it.
 
-1. **Encrypted at rest in the database** (`user_api_keys.encrypted_secret`). The key is encrypted field by field (AES-256-GCM) with a key derived from `ENCRYPTION_MASTER_KEY`. This is the durable store on the hosted app, which has no OS keychain. If `ENCRYPTION_MASTER_KEY` is not set, this store is skipped.
-2. **The OS keychain** (`KeychainService`), best effort. A local install with no master key uses the keychain alone and fails the store if the keychain write fails. When the encrypted column is available, a keychain failure is logged and the store continues. Reads prefer the encrypted column and fall back to the keychain for older rows and local installs.
+1. **Encrypted at rest in the database** (`user_api_keys.encrypted_secret`). The key is encrypted field by field (AES-256-GCM) with a key derived from `ENCRYPTION_MASTER_KEY`. This is the durable store on the hosted app and on a local install. A second encrypted copy goes to the `secure_credentials` table through `KeychainService`, which is the database store unless you chose the keychain.
+2. **The OS keychain**, only when `PIPER_CREDENTIAL_STORE=keychain` is set. Since 2026-11-12 the app never reads or writes the OS keychain on its own: with the variable unset it uses the database store. Someone who already keeps keys in their own keychain sets the variable to go on using them. When the encrypted column is available, a keychain failure is logged and the store continues. Reads prefer the encrypted column and fall back to the `KeychainService` copy: the `secure_credentials` row, or the keychain when it was chosen.
+
+With no `ENCRYPTION_MASTER_KEY` and no keychain choice there is nowhere secure to put a key: storing fails and says so, and reads find no key. On a local install, `python scripts/local_key_setup.py` creates the master key and stores a provider key at a hidden prompt.
 
 The `user_api_keys` table (one row per user and provider, unique on the pair) also holds metadata: `provider`, `key_reference` (`piper_{user_id}_{provider}`), `is_active`, `is_validated`, `last_validated_at`, `previous_key_reference`, `rotated_at`.
 
@@ -62,7 +64,7 @@ Never paste a real key into a document, an issue or a commit.
 
 - **404 on delete**: no key is stored for that provider for your user. List first. (Validate wraps every failure, a missing key included, in a 500 "Failed to validate API key".)
 - **400 "This page is for AI provider keys only"**: the provider is a connector, not an LLM provider. Use Settings → Integrations.
-- **Store fails on a local install**: with no `ENCRYPTION_MASTER_KEY` the OS keychain is the only store, so a keychain failure fails the store. Set the master key or fix the keychain.
+- **Store fails on a local install**: with no `ENCRYPTION_MASTER_KEY` there is no store, because the OS keychain is used only when `PIPER_CREDENTIAL_STORE=keychain` is set. Run `python scripts/local_key_setup.py` (it creates the master key), or set that variable to use your keychain.
 
 ## Not verified here
 

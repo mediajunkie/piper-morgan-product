@@ -441,7 +441,7 @@
               class="keychain-btn hidden"
               data-provider=""
             >
-              Use Keychain
+              Use saved key
             </button>
           </div>
           <div id="llm-status" class="validation-status"></div>
@@ -476,7 +476,7 @@
               class="keychain-btn hidden"
               data-provider="notion"
             >
-              Use Keychain
+              Use saved key
             </button>
           </div>
           <div id="notion-status" class="validation-status"></div>
@@ -702,9 +702,11 @@
               name="invite_token"
               required
               autocomplete="off"
-              placeholder="From your invitation"
+              placeholder="Your invite code"
             />
-            <small>Alpha access is invite-only — paste the code you received.</small>
+            <!-- CXO 2026-11-12 (#2351): the local-install form only. A code can't come
+                 from us: a local database starts empty, so the person makes their own. -->
+            <small>Piper is invite-only while it's in private beta. On your own copy, you make your own code. Step 8 of the self-host guide (docs/installation/self-host-guide.md in the Piper Morgan repository) shows the one command.</small>
           </div>
           {% endif %}
           <div class="form-group">

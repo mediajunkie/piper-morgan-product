@@ -348,7 +348,7 @@
             const provider = this.dataset.provider;
 
             this.disabled = true;
-            llmStatusDiv.textContent = 'Retrieving from keychain...';
+            llmStatusDiv.textContent = 'Checking for your saved key...';
             llmStatusDiv.className = 'validation-status';
 
             try {
@@ -372,13 +372,13 @@
                     document.getElementById('next-2').disabled = false;
                     llmProviderSelect.disabled = true;
                 } else {
-                    llmStatusDiv.textContent = '✗ ' + (data.message || 'Keychain retrieval failed');
+                    llmStatusDiv.textContent = '✗ ' + (data.message || "The saved key couldn't be used");
                     llmStatusDiv.className = 'validation-status invalid';
                 }
             } catch (err) {
-                llmStatusDiv.textContent = '✗ Keychain access failed';
+                llmStatusDiv.textContent = "✗ The saved key couldn't be used";
                 llmStatusDiv.className = 'validation-status invalid';
-                showError('Unable to access system keychain. Enter key manually instead.', 'Keychain Error');
+                showError("I couldn't use the saved key. Paste it above instead.", 'Saved key');
             }
             this.disabled = false;
         });
@@ -444,7 +444,7 @@
             const statusDiv = document.getElementById(`${provider}-status`);
 
             this.disabled = true;
-            statusDiv.textContent = 'Retrieving from keychain...';
+            statusDiv.textContent = 'Checking for your saved key...';
             statusDiv.className = 'validation-status';
 
             try {
@@ -469,7 +469,7 @@
                     statusDiv.className = 'validation-status invalid';
                 }
             } catch (err) {
-                statusDiv.textContent = '✗ Keychain access failed';
+                statusDiv.textContent = "✗ The saved key couldn't be used";
                 statusDiv.className = 'validation-status invalid';
             }
             this.disabled = false;
@@ -513,7 +513,13 @@
         // omitted it, so every account creation failed with a 422.
         const inviteToken = document.getElementById('invite-token').value.trim();
         if (!inviteToken) {
-            showError('Please enter your invite code — alpha access is invite-only.', 'Invite Code Required');
+            // CXO 2026-11-12 (#2351): on a local install the person makes their own code.
+            showError(
+                hosted
+                    ? 'Please enter your invite code — alpha access is invite-only.'
+                    : 'Please enter your invite code. On your own copy you make it yourself; the setup guide shows how.',
+                'Invite Code Required'
+            );
             return;
         }
 

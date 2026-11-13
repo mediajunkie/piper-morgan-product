@@ -664,6 +664,12 @@ def provider_display_name(provider: str) -> str:
     return PROVIDER_DISPLAY_NAMES.get(provider, provider)
 
 
+def saved_key_not_found_message(provider: str) -> str:
+    """CXO 2026-11-12 (#2351): say only what was checked, that no saved key exists, never
+    where a key lives. True on the database store, the keychain and the local helper's route."""
+    return f"I couldn't find a saved {provider_display_name(provider)} key. Paste it above to save one."
+
+
 KEY_CHECK_COULD_NOT_RUN_MESSAGE = KEY_CHECK_UNAVAILABLE_MESSAGE  # one sentence, one source
 # #2125 (Arch, CXO): no page prints str(e). One tail, one line per route; the cause is logged.
 _TRY_AGAIN = "Try again in a moment; if it keeps failing, tell us."
@@ -849,9 +855,9 @@ async def check_keychain(provider: str):
         exists = key is not None
 
         if exists:
-            message = f"{provider.capitalize()} key found in keychain"
+            message = f"A saved {provider_display_name(provider)} key was found."
         else:
-            message = f"No {provider} key in keychain"
+            message = saved_key_not_found_message(provider)
 
         return KeychainCheckResponse(
             provider=provider,
@@ -905,7 +911,7 @@ async def use_keychain(req: KeychainUseRequest):
                 provider=req.provider,
                 success=False,
                 valid=False,
-                message=f"No {req.provider} key found in keychain",
+                message=saved_key_not_found_message(req.provider),
             )
 
         # Key exists in keychain - trust it was validated when stored
@@ -916,7 +922,7 @@ async def use_keychain(req: KeychainUseRequest):
             provider=req.provider,
             success=True,
             valid=True,
-            message=f"Using the {provider_display_name(req.provider)} key from your keychain.",
+            message=f"Using the {provider_display_name(req.provider)} key you already saved.",
         )
 
     except Exception as e:
