@@ -35,6 +35,7 @@ from services.ethics.semantic_boundary_detector import (
     AMBIGUOUS_THRESHOLD,
     BLOCK_THRESHOLD,
     REFUSAL_FALLBACK,
+    SEMANTIC_DETECTOR_PROMPT_V0_2,
     SemanticBoundaryDetector,
     SemanticDetectorOutput,
     classify_decision,
@@ -49,6 +50,10 @@ from services.infrastructure.monitoring.ethics_metrics import (
 )
 
 # REMOVED: from fastapi import Request (Line 21 in original)
+
+# The detector prompt the served enforcer uses (#2364). v0.2 is CXO's calibrated
+# body (2026-04-27). Changing this needs a live run of the probe set first.
+LIVE_SEMANTIC_PROMPT = SEMANTIC_DETECTOR_PROMPT_V0_2
 
 
 class BoundaryType:
@@ -111,14 +116,18 @@ class BoundaryEnforcer:
         self.ethics_logger = get_ethics_logger(__name__)
         self.metrics = ethics_metrics
 
-        # #1004 Fix B Layer 2 — semantic detector (lazy-injectable for tests).
-        # `enable_semantic=False` keeps Layer 1 only (literal-trigger fast-path).
-        # On first real call we lazy-initialize so module import doesn't require
-        # an LLM client to be present in test environments.
+        # #1004 Fix B — semantic detector (lazy-injectable for tests). It is the only
+        # layer that decides a boundary (#2364): `enable_semantic=False` means nothing
+        # is checked. On first real call we lazy-initialize so module import doesn't
+        # require an LLM client to be present in test environments.
         self._enable_semantic = enable_semantic
         self._semantic_detector = semantic_detector
 
-        # Boundary violation patterns (unchanged from original)
+        # Substring lists. #2364 (Arch, 2026-11-13): these no longer decide a turn in
+        # `enforce_boundaries`; a substring declined "home page" and "private repo"
+        # before the semantic detector saw the message. They stay for one reader, the
+        # knowledge graph's privacy level (`check_harassment_patterns`,
+        # `check_inappropriate_content`; #1089, and #2365 for that reader's own question).
         self.harassment_patterns = [
             "harass",
             "harassment",
@@ -130,18 +139,6 @@ class BoundaryEnforcer:
             "unwanted",
             "uncomfortable",
             "offensive",
-        ]
-
-        self.professional_boundary_patterns = [
-            "personal",
-            "private",
-            "relationship",
-            "romantic",
-            "dating",
-            "family",
-            "home",
-            "personal life",
-            "private life",
         ]
 
         self.inappropriate_content_patterns = [
@@ -202,36 +199,13 @@ class BoundaryEnforcer:
         explanation = ""
         confidence = 0.0
 
-        # Check for harassment patterns
-        harassment_result = await self._enhanced_harassment_check(content)
-        if harassment_result["violation"]:
-            violation_detected = True
-            boundary_type = BoundaryType.HARASSMENT
-            explanation = harassment_result["explanation"]
-            confidence = harassment_result["confidence"]
-
-        # Check professional boundaries
-        elif await self.validate_professional_boundaries(content):
-            violation_detected = True
-            boundary_type = BoundaryType.PROFESSIONAL
-            explanation = "Content crosses professional boundaries"
-            confidence = 0.8
-
-        # Check inappropriate content
-        elif await self.check_inappropriate_content(content):
-            violation_detected = True
-            boundary_type = BoundaryType.INAPPROPRIATE_CONTENT
-            explanation = "Content contains inappropriate material"
-            confidence = 0.75
-
-        # #1004 Fix B Layer 2 — semantic detector dispatch.
-        # Runs only when literal-trigger fast-path returned no hit. Confidence
-        # tiering: ≥BLOCK_THRESHOLD → block / AMBIGUOUS_THRESHOLD–BLOCK →
-        # ambiguous-pass / <AMBIGUOUS → pass. Per contract §"New internal flow".
-        fast_path_hit = violation_detected
+        # #1004 Fix B — semantic detector dispatch. #2364: it runs for every message;
+        # the substring fast path that used to run first, and skip it on a hit, is
+        # gone. Confidence tiering: ≥BLOCK_THRESHOLD → block / AMBIGUOUS_THRESHOLD–BLOCK
+        # → ambiguous-pass / <AMBIGUOUS → pass. Per contract §"New internal flow".
         semantic_output: Optional[SemanticDetectorOutput] = None
         cache_hit = False
-        if not fast_path_hit and self._enable_semantic:
+        if self._enable_semantic:
             detector_instance = self._get_semantic_detector()
             if detector_instance is None:
                 # #2134 edge (Arch 14:30): enabled but the detector failed to build: the
@@ -256,12 +230,9 @@ class BoundaryEnforcer:
         response_time_ms = (time.time() - start_time) * 1000
         decision_id = f"bd_{int(time.time() * 1000)}"
 
-        # #1004 Fix C1 — detector marker: distinguishes which detection path
-        # engaged. With Fix B Layer 2 in place, the value can now also be
-        # "semantic" when the LLM detector fires.
-        if fast_path_hit:
-            detector = "literal-trigger"
-        elif is_unavailable(semantic_output):
+        # #1004 Fix C1 — detector marker: which detection path engaged. Since #2364
+        # the values are "semantic", "semantic-unavailable" and "none".
+        if is_unavailable(semantic_output):
             # #2134: the semantic layer did not run; never recorded as "none"
             detector = "semantic-unavailable"
         elif (
@@ -280,8 +251,6 @@ class BoundaryEnforcer:
             decision_tier = "unavailable"
         elif semantic_output is not None:
             decision_tier = classify_decision(semantic_output.confidence)
-        elif fast_path_hit:
-            decision_tier = "block"
         else:
             decision_tier = "pass"
 
@@ -305,13 +274,7 @@ class BoundaryEnforcer:
                 "decision_tier": decision_tier,
                 "semantic_confidence": semantic_confidence,
                 "semantic_reasoning": semantic_reasoning,
-                "fast_path_hit": fast_path_hit,
                 "cache_hit": cache_hit,
-                "patterns_checked": len(
-                    self.harassment_patterns
-                    + self.professional_boundary_patterns
-                    + self.inappropriate_content_patterns
-                ),
             },
             timestamp=datetime.now(timezone.utc),
         )
@@ -340,7 +303,6 @@ class BoundaryEnforcer:
                 "semantic_confidence": semantic_confidence,
                 "latency_ms": response_time_ms,
                 "cache_hit": cache_hit,
-                "fast_path_hit": fast_path_hit,
             },
         )
 
@@ -386,7 +348,6 @@ class BoundaryEnforcer:
                 "decision_tier": decision_tier,
                 "semantic_confidence": semantic_confidence,
                 "semantic_reasoning": semantic_reasoning,
-                "fast_path_hit": fast_path_hit,
                 "cache_hit": cache_hit,
             },
             session_id=session_id,
@@ -443,12 +404,15 @@ class BoundaryEnforcer:
     # ------------------------------------------------------------------
 
     def _get_semantic_detector(self) -> Optional[SemanticBoundaryDetector]:
-        """Lazy-initialize the semantic detector. Returns None on init failure
-        so the literal-trigger path remains the conservative fallback."""
+        """Lazy-initialize the semantic detector on the live prompt. Returns None on
+        init failure; the caller records the layer as unavailable (#2134)."""
         if self._semantic_detector is not None:
             return self._semantic_detector
         try:
-            self._semantic_detector = SemanticBoundaryDetector()
+            # #2364: the prompt is passed here, not left to the constructor's default.
+            # The default stayed on v0.1 from April to November while v0.2 was the
+            # calibrated one; the pin asserts the prompt on this built instance.
+            self._semantic_detector = SemanticBoundaryDetector(prompt=LIVE_SEMANTIC_PROMPT)
             return self._semantic_detector
         except Exception as exc:  # noqa: BLE001
             self.ethics_logger.log_decision_point(
@@ -479,9 +443,7 @@ class BoundaryEnforcer:
     ) -> Optional[str]:
         """Choose redirect_context source.
 
-        Per Architect's prompt-body-ack observation (memo 2026-04-26): on the
-        literal-trigger path, redirect_hint stays structurally audit-safe via
-        the hardcoded category-string mapping. On the semantic path, the LLM-
+        Per Architect's prompt-body-ack observation (memo 2026-04-26): the LLM-
         produced hint is acceptable because (a) the prompt enumerates the
         no-quoting / no-pattern-name / no-template-phrase rules and (b) the
         probe set asserts those properties at CI time.
@@ -492,52 +454,8 @@ class BoundaryEnforcer:
             return semantic_hint
         return self._derive_redirect_context(boundary_type)
 
-    async def _enhanced_harassment_check(self, content: str) -> Dict[str, Any]:
-        """Harassment detection with substring-pattern matching + confidence scoring.
-
-        #1019 (Path C, May 2026): adaptive_enhancement parameter removed; the
-        learned-pattern adjustment was always-zero and the temporal_risk_factor
-        was always 1.0, so removing them is semantically a no-op. Method
-        retains its own internal logic (base_confidence math + matched_patterns
-        tracking).
-        """
-        content_lower = content.lower()
-        base_confidence = 0.0
-        matched_patterns = []
-
-        for pattern in self.harassment_patterns:
-            if pattern in content_lower:
-                matched_patterns.append(pattern)
-                base_confidence += 0.3
-
-        final_confidence = min(1.0, base_confidence)
-
-        violation_threshold = 0.5
-        violation_detected = final_confidence > violation_threshold
-
-        explanation = "Content contains potential harassment patterns"
-        if matched_patterns:
-            explanation += f" (matched: {len(matched_patterns)} patterns)"
-
-        return {
-            "violation": violation_detected,
-            "confidence": final_confidence,
-            "explanation": explanation,
-            "matched_patterns": len(matched_patterns),
-        }
-
-    async def validate_professional_boundaries(self, content: str) -> bool:
-        """Check if content crosses professional boundaries (UNCHANGED)"""
-        content_lower = content.lower()
-
-        for pattern in self.professional_boundary_patterns:
-            if pattern in content_lower:
-                return True
-
-        return False
-
     async def check_harassment_patterns(self, content: str) -> bool:
-        """Check for harassment patterns in content (UNCHANGED)"""
+        """Substring check, read only by the knowledge graph's privacy level (#1089)."""
         content_lower = content.lower()
 
         for pattern in self.harassment_patterns:
@@ -547,7 +465,7 @@ class BoundaryEnforcer:
         return False
 
     async def check_inappropriate_content(self, content: str) -> bool:
-        """Check for inappropriate content patterns (UNCHANGED)"""
+        """Substring check, read only by the knowledge graph's privacy level (#1089)."""
         content_lower = content.lower()
 
         for pattern in self.inappropriate_content_patterns:

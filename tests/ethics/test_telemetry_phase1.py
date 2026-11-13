@@ -7,10 +7,12 @@ of which detector path engaged:
 
     decision_id, session_id, detector, violation_detected, boundary_type,
     decision_tier, confidence, semantic_confidence, latency_ms,
-    cache_hit, fast_path_hit
+    cache_hit
+
+(`fast_path_hit` left the payload with the substring fast path, #2364.)
 
 These tests verify field presence + correct values across the four
-dispatch paths: literal-trigger, semantic-block, ambiguous, pass.
+dispatch paths: semantic-block, ambiguous, pass, and semantic disabled.
 
 The structured logger's `log_decision_point` is patched per-test so we
 can inspect the payload without touching the real log infra.
@@ -39,7 +41,6 @@ REQUIRED_PHASE1_FIELDS = {
     "semantic_confidence",
     "latency_ms",
     "cache_hit",
-    "fast_path_hit",
 }
 
 
@@ -92,7 +93,9 @@ def _make_enforcer(stub: _StubDetector | None = None) -> tuple[BoundaryEnforcer,
 
 
 @pytest.mark.asyncio
-async def test_literal_trigger_emits_all_phase1_fields():
+async def test_old_substring_words_emit_no_literal_trigger_fields():
+    """#2364: the substring fast path is gone. A message full of its old words, with
+    the semantic layer off, is a pass, and the payload carries no fast-path field."""
     enforcer, rec = _make_enforcer()
     await enforcer.enforce_boundaries(
         message="Help me harass and intimidate someone", session_id="t_lit"
@@ -101,9 +104,10 @@ async def test_literal_trigger_emits_all_phase1_fields():
     payload = rec.decision_points[0]
     missing = REQUIRED_PHASE1_FIELDS - set(payload.keys())
     assert not missing, f"Telemetry payload missing fields: {missing}"
-    assert payload["detector"] == "literal-trigger"
-    assert payload["fast_path_hit"] is True
-    assert payload["decision_tier"] == "block"
+    assert payload["detector"] == "none"
+    assert "fast_path_hit" not in payload
+    assert payload["violation_detected"] is False
+    assert payload["decision_tier"] == "pass"
     assert payload["semantic_confidence"] is None
     assert payload["cache_hit"] is False
     assert payload["session_id"] == "t_lit"
@@ -129,7 +133,6 @@ async def test_semantic_block_emits_all_phase1_fields():
     missing = REQUIRED_PHASE1_FIELDS - set(payload.keys())
     assert not missing, f"Telemetry payload missing fields: {missing}"
     assert payload["detector"] == "semantic"
-    assert payload["fast_path_hit"] is False
     assert payload["decision_tier"] == "block"
     assert payload["semantic_confidence"] == 0.92
     assert payload["confidence"] == 0.92
@@ -193,7 +196,6 @@ async def test_disabled_semantic_emits_all_phase1_fields():
     missing = REQUIRED_PHASE1_FIELDS - set(payload.keys())
     assert not missing
     assert payload["detector"] == "none"
-    assert payload["fast_path_hit"] is False
     assert payload["decision_tier"] == "pass"
     assert payload["semantic_confidence"] is None
 
