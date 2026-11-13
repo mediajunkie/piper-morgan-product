@@ -177,7 +177,8 @@
         const input = document.getElementById('invite-token-first');
         const code = input ? input.value.trim() : '';
         if (!code) {
-            showError('Alpha access is invite-only. Paste the code you received.', 'Invite code');
+            // CXO 2026-11-13: the hosted empty-field line, the same on both hosted paths.
+            showError("Please enter your invite code. Piper is invite-only while it's in private beta.", 'Invite code');
             if (input) input.focus();
             return;
         }
@@ -516,7 +517,7 @@
             // CXO 2026-11-12 (#2351): on a local install the person makes their own code.
             showError(
                 hosted
-                    ? 'Please enter your invite code — alpha access is invite-only.'
+                    ? "Please enter your invite code. Piper is invite-only while it's in private beta."
                     : 'Please enter your invite code. On your own copy you make it yourself; the setup guide shows how.',
                 'Invite Code Required'
             );
