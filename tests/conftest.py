@@ -155,13 +155,16 @@ def _use_in_memory_keyring() -> bool:
                 raise PasswordDeleteError("not found")
             del self._items[(service, username)]
 
-    keyring.set_keyring(InMemoryTestKeyring())
-    # #2353: the keychain is opt-in only now. In-process tests keep the in-memory backend
-    # by a module value, never an environment variable: a child process inherits the
+    backend = InMemoryTestKeyring()
+    keyring.set_keyring(backend)
+    # #2353 (Arch): the keychain is opt-in only now. In-process tests keep the in-memory
+    # backend by handing KeychainService the backend ITSELF. While it is set, every
+    # keyring call the service makes goes to this object, whatever a test later does to
+    # keyring's global. Never an environment variable: a child process inherits the
     # environment, and must not inherit a keychain opt-in (its keyring would be the real one).
     from services.infrastructure import keychain_service
 
-    keychain_service._process_default_store = "keychain"
+    keychain_service._test_keyring_backend = backend
     return True
 
 
