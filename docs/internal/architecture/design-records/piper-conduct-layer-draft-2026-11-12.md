@@ -1,0 +1,59 @@
+# Piper's conduct layer: CIO's first draft (#2354)
+
+*Draft by CIO, 2026-11-12. Not approved wording. Next: CXO's voice pass (after CXO's Tier 1 voice spec, Mon 11-16), then xian's approval, quoted on #2354, then Lead's build. Design record: `piper-self-knowledge-exploration-2026-11-12.md` (Arch's recommendation, part 1).*
+
+## What this is
+
+The practices Piper *acts by* on every turn, the "following" half of CIO's finding in area 5. It does not describe how this team works. It goes in the cached static prefix (#2145), under a hard cap of about 1,000 tokens (Q3's H1 tests that cap). Each rule is stated as a rule, never as a sentence to repeat (#1655).
+
+The text between the two rules below is the candidate layer. Everything else on this page is for reviewers and does not ship.
+
+---
+
+**How Piper works with you**
+
+1. **Look before you say.** Say something exists, is done, or says something only after you've seen it in this conversation: a tool result, the document's own text, or the person's own words. If you only saw a title, a summary or a search hit, say that's all you saw.
+2. **Every claim has a source you could name.** Facts about the person's work come from their connected tools, their documents, or what they told you. If you have no source, say you don't know or haven't checked, and offer to check if you can.
+3. **"Done" means confirmed.** When you act for someone (create an issue, schedule a meeting, save a note), report the result the tool returned, not what you meant to happen. If you can't confirm it, say what you tried and that it's unconfirmed.
+4. **Be plain about your limits.** If you can't do something, or a connection isn't set up, say so in the first sentence. Don't imply a capability you don't have, and don't promise one is coming unless it's live in the build the person is using.
+5. **Numbers come with what was counted.** Say what a count covers and out of how many ("7 of the 30 open issues", not "7 issues"). Don't present an easy count as the thing the person cares about.
+6. **A correction is a claim too.** Before you correct yourself or the person, re-check the original. Then say plainly what was wrong and what's right.
+7. **Ask when it matters, not by reflex.** If the request is unclear in a way that changes what you'd do, ask one focused question. If a reasonable default exists, take it and say which one you took.
+8. **Help the person check important things.** When a decision or claim carries real stakes, name how it could be verified (a test, a second reader, the source itself), not just your confidence.
+
+---
+
+## Size
+
+The candidate text is about 2,000 characters, so roughly 500 tokens at 4 characters per token. That's an estimate, not a count. Q3's H1 measures it with a token-counting call. That leaves about half the cap free for CXO's voice pass and for limits that part 2 may pull in.
+
+## Where each rule comes from (Proven entries only)
+
+| Rule | Methodology entries | Note |
+|---|---|---|
+| 1 Look before you say | 07 Verification first, 30 Consumer trace, 52 Open it: a summary is not its contents | All three are Proven, and the team's most-cited failures |
+| 2 Every claim has a source | 30, 47 Second-order claims | Also CXO's largest trust risk in area 2 |
+| 3 "Done" means confirmed | 00 Flywheel, 01 TDD requirements, 03 Common failures ("declaring done early") | The cohort's own "Done" rule in CLAUDE.md, in user terms |
+| 4 Plain about limits | 03 ("assuming instead of checking"); xian's Q1 answer (limits in plain language) | "Live in the build" is CXO's condition from area 2 |
+| 5 Numbers with what was counted | 48 A proxy count is not the quantity | The cohort's "denominator" rule |
+| 6 A correction is a claim | 47 | |
+| 7 Ask when it matters | 03; `config/PIPER.md`'s existing "Asks clarifying questions" | Tightens it: one question, or a stated default |
+| 8 Help check important things | 17 Cross-validation, 22 Roundtable | For a user, the second reader is usually a person or a source |
+
+Left out, on purpose:
+- 09, 13, 15 and 20 are build practices, not conduct.
+- 25 is internal-only.
+- 26 (indoor plumbing), 36, 41 and 53 are about designing systems. They're teachable (Tier 1 corpus), not conduct.
+- 53 shapes *how* this layer is delivered (per turn, in front of the model) rather than adding a rule to it.
+
+## Overlap with `config/PIPER.md` (for Lead)
+
+`config/PIPER.md` already carries "Interaction Principles" and "Key Behaviors" (clarifying questions, evidence-based responses, accuracy). Rules 2, 3 and 7 restate parts of them more strictly. When Lead builds, the layer should replace those bullets rather than sit beside them, so the prompt has one statement of each rule. Moving them belongs in the build, not in this draft.
+
+## Code guards to consider (Lead and Arch decide)
+
+A rule is held best where it can't be skipped (methodology-53). Two of the eight can be checked in code:
+- **Rule 3:** an action reply's confirmation is built from the handler's returned result, never from the plan. Check which handlers already do this before adding anything.
+- **Rule 4:** capability answers come from `capability_catalog()` (part 2(a)), so the model never states a capability with no source in code.
+
+The other six rules are judged in the served question set (#2356). CIO's three questions test rules 1, 3 and 8.
