@@ -7,7 +7,7 @@
 - **2343** command accepted by Arch, HOST, CIO; refuses without a terminal; row 3 is his run.
 - **2335 Redis rotation, xian's, after the sitting:** `python3 scripts/redis_password_rotate.py` in Terminal; about a minute of 503s on beta. Accepted by HOST, CIO, Arch with changes made (`0bf8af3a1d`). Never run against the hosts. The old password was probably never logged (hosts run at WARNING).
 - **2333** built `8f4fe8e998`, with Arch for validation. **2348** built `d026bb4575` (`/health` redis and revocation_source), two choices put to Arch.
-- **Start scripts** default to the database store (`45882abf32`). Open with xian via Exec: does he still start Piper locally himself? If yes, build the Terminal key helper and step list.
+- **Start scripts** default to the database store (`45882abf32`). Local running is a supported path (xian, 11-12, issue 2351): key helper `scripts/local_key_setup.py` on main (`28fbc880cf`), step list in recipe 13. Open: invite code locally (PPM, CXO), "Keychain" wording (CXO), Arch on a database-store default, 2352.
 - **Filed today:** 2343, 2345 (connect state to Redis; after the sitting), 2346 (closed, answered), 2347 (dead Redis paths), 2348. Arch filed 2350 (evidence logger at INFO): mine to build, after the sitting.
 - **Pushing:** main is busy; use a fetch-merge-push loop, confirm with `git log origin/main..HEAD` before naming a sha in any memo. Directory-wide pytest runs keep the repo's addopts.
 
