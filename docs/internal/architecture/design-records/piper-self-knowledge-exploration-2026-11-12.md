@@ -194,9 +194,67 @@ An account line in code decides who gets Tier 2. The LLM decides what the person
    - **Put the briefing in the cacheable static prefix** (#2145's `CacheablePrompt`) on every call that carries it, so repeat turns are billed at the cache-read rate. Today only the classifier uses that prefix. The cache-read price comes from the current Anthropic pricing page at build time, not from this note.
    - **Retrieval (option B):** an index built at deploy costs one embedding pass per deploy, and a retrieval call happens only when a self-knowledge question is detected. Measure the share of turns that trigger it in the first week, and say the expected range before building.
    - None of these numbers is measured yet. This is the budget to measure against, not a measurement.
+   - **xian (11-12): research and experiment.** The plan is in "Question 3: the experiment plan" below.
 
 ## Timeline
 
 - 2026-11-12: this draft (Arch's sections).
 - 2026-11-13 15:00 PST: CXO, Docs and CIO sections due.
 - 2026-11-14 12:00 PST: Arch's recommendation with options, to Exec for xian's board. **Delivered early, 2026-11-12 14:29 PST,** once all three contributions had arrived.
+
+## The tier boundary, revised (Arch, 2026-11-12 17:26, after xian's answers)
+
+xian, relayed by Exec (01M797TQEAE37X7AYMMZ3V1KZ9): "if every user's Piper doesn't have some of the skills and isn't able to use all of the methods that my own agent team has available then we're giving people a weaker form of assistance than I have developed for myself." He asked us to probe the boundary.
+
+**The proposal: draw the line at whose records Piper reads, not at how much it knows or what it can do.** The earlier split put three different things in Tier 2 (methods, depth on its own code, and the team's records), and only the last needs an account line.
+
+| What | Who gets it | Mechanism | Token cost (unmeasured; to measure under Q3) | Privacy cost |
+|---|---|---|---|---|
+| **Methods it follows** (verify before "done", say what it measured, ask when unsure) | Every Piper | The conduct layer (recommendation part 1), plus code guards | The ~1,000-token cap on every turn, cached | None, if written in user register |
+| **Methods it uses on a task** (the team's skills: drafting an issue or a spec, planning a sprint, a stakeholder update, a verification checklist) | **Every Piper (moved from Tier 2)** | Task-loaded procedures, the shape agents use. Piper already ships some: `.claude/skills/piper-*`, `trust-check`, `propose-feature`, `compost-review`, `update-piper`. The new work is rewriting team procedures that are worth having (CIO's Proven entries, the review and verification skills) into that user-register form. | Paid only on a turn whose task matches, the size of one procedure | None for a rewritten procedure. The team's own skills cite roles, issues and xian's words, so they are rewritten, never copied. |
+| **Knowing how its own code works** (reading the source to answer "how does saving work?") | **Every Piper (moved from Tier 2),** behind a read budget | Read-only tools over the served snapshot (option C), with a path allow-list: `services/`, `web/`, `config/`, `docs/internal/architecture/current/` and the user docs. The tools are offered only on a turn the LLM classes as a question about Piper itself, and code caps the reads per turn (a proposed starting cap is 3 reads and 20 KB, to be tuned by the Q3 experiment). | The most expensive row: every read is the user's tokens. This is why it has a budget and goes after the corpus. | Low. The code is public, as xian says. The allow-list still matters because rule 8's old mentions of outside people can sit anywhere in the repo, not only in `dev/` and `mailboxes/`. A file found to hold one leaves the allow-list (we report the mention and don't edit it out). |
+| **The team's records** (sprint position, logs, mail, briefings, decisions in progress) | **Nobody, as a self-knowledge source** | None | None | High: rule 8, and the incident register |
+
+**What happens to Tier 2.** It goes away as a tier. When xian's own Piper knows where the Piper Morgan project stands, that is the ordinary thing every user gets: Piper reading the user's own project through their GitHub connector (issues and milestones). It is not a special index of the team's repo. `dev/`, `mailboxes/`, the omnibuses, `docs/briefing/` and agent memory stay excluded for every account, pinned by the enforcement test.
+
+**Exec's point on "open source, so nothing to reveal."** I agree, with one widening. The exclusion is not about secrecy. It exists because rule 8 says old mentions of outside people may sit in the repo and are reported, not removed. The same reason means the allow-list is a list of paths, checked file by file when a path is added. It is never "the repo minus dev/ and mailboxes/".
+
+**Self-hosters (Q2, yes).** It's the same mechanism. The "served snapshot" for a self-hoster is their own checkout at its commit. The allow-list and the read budget apply unchanged.
+
+**Order (unchanged in spirit):**
+1. The conduct layer.
+2. The Tier 1 corpus, including the answers generated from `capability_catalog()`.
+3. Served verification.
+4. The task-loaded procedures, one at a time, each through CXO's voice pass.
+5. Code-reading tools behind the budget, once the Q3 experiment has measured their per-question cost against CXO's question set.
+
+**Q3 experiment (research, not the plan).** Run CXO's and CIO's question set three ways on one account: corpus only; corpus plus code tools; code tools only. For each, record tokens per answer, the share of answers that are right on the served build, and any leaks. CIO's budget is the hypothesis to test. Lead runs it, CXO judges the replies, and it uses a provider key handed over the way xian rules (the rule-7 key question).
+
+## Question 3: the experiment plan (CIO, 2026-11-12 17:30, after xian's answers and Arch's revised boundary)
+
+xian's words on question 3: "let's do some research and experimentation to figure out how we may deploy a lean effective solution." This plan turns the cost answer above into four hypotheses. Each one gets a measure, a pass line written *before* the run, and the cheapest run that settles it. Expectations are written down now so the results can contradict them. They are guesses, not measurements.
+
+**Rules for every run**
+- **Price first.** Before any paid run, write the number of calls, the expected tokens and the cost at the current Anthropic pricing page, and send it to Exec. Nothing runs on an unpriced estimate.
+- **Key.** Runs use a provider key handed over the way xian rules on the rule-7 key question. Planning and the zero-cost steps don't wait for that ruling, but every paid run does.
+- **Served build.** Runs go against a served build at a named sha, never a local stand-in, and answers are judged against that build.
+- **Results.** They go in a dated section of this record, next to the pass lines, including any that fail.
+- **Owners.** Lead runs, CXO judges replies (right for the build, register, leaks), and CIO writes up the numbers against the pass lines.
+
+| # | Hypothesis | Measure | Pass line (set now) | Cheapest run | Expectation (a guess) |
+|---|---|---|---|---|---|
+| H1 | The conduct layer fits about 1,000 tokens and is billed mostly as cache reads | Token count of the drafted layer. On a multi-turn session, the share of turns 2+ whose layer tokens come back as `cache_read_input_tokens` in the API usage fields | At most 1,000 tokens. At least 80% of turns 2+ read it from cache | A token-counting call on the draft (no generation), then one 10-turn scripted session | Fits. Cache share depends on the prefix staying byte-identical, so a timestamp or user name in the prefix would break it |
+| H2 | Questions about Piper itself are a small share of turns, so retrieval cost is small in total | The share of served turns the router's LLM classification marks as a self-knowledge question, never a keyword match (ADR-080). Counted only, never the content, through the `piper.evidence` logger (#2350). The line isn't emitted until the router has that class (Arch, 11-12) | Below 10% of turns. Above that, retrieval cost is per-turn-scale and gets its own budget | A counter, live for one week after the corpus ships. No paid run needed | 1 to 5% |
+| H3 | The corpus alone answers most questions right, and code tools earn their cost only on how-it-works questions | Run CXO's set plus CIO's three in four arms. Arm 0 is the leaner alternative #2357 asks for: generated capability answers in the prompt, with no retrieval. Then Arch's three: corpus only, corpus plus code tools, code tools only. For each: input and output tokens per answer, right on the served build (CXO), and leaks (CXO's leak list). Each question 3 times per arm, for variance | Corpus only: at least 80% right on what-can-you-do and practice questions, with 0 leaks. Code tools are adopted for a question type only if they raise the right share there by at least 20 points at no more than 5 times the corpus-only tokens. Any leak in any arm fails that arm until it's fixed | Arm 0 and corpus only first, side by side. If arm 0 meets the same 80% with 0 leaks on a question type, it wins that type, because it has no retrieval cost. The two code arms run only if corpus-only misses the 80% on some question type | Corpus only is enough for capability and practice questions, and the code arms win on "how does X work". Code tools cost 3 to 10 times as many tokens |
+| H4 (Arch) | A task-loaded procedure costs tokens only when its task matches, and matches rarely when it shouldn't | Token size of each procedure. Over a mixed question set (matching and non-matching tasks): the share of matching turns that loaded it, and the share of non-matching turns that loaded it anyway | Each procedure at most 1,500 tokens. It loads on at least 90% of matching turns and on at most 10% of non-matching ones | The first rewritten procedure only, on 20 mixed prompts | Loading by task is easy to get right on matching turns and harder on near-misses |
+
+**Order.** H1's token count and H2's counter cost nothing, so they run first, with the build. H4 runs when the first procedure is rewritten. H3's corpus-only arm runs when the corpus is served. The code arms run last, and only if H3 says they are needed. That is the same order as step 5 of Arch's sequence.
+
+**What the results decide**
+- H1 fails on size: the layer is cut, not the cap raised. Raising the cap is xian's call, because it's the user's money.
+- H1 fails on caching: fix the prefix before shipping more of it.
+- H2 is above 10%: retrieval gets a per-turn budget like the code tools.
+- H3: decides whether code-reading tools ship at all, and for which question types.
+- H4: decides whether procedures load by task or need an explicit trigger.
+
+**Self-hosters (Q2).** It's the same mechanism and the same costs, on their own key. They need no separate run. The served-build rule becomes "their checkout at its commit".
