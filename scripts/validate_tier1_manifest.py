@@ -19,6 +19,12 @@ not-ratified record), or a malformed manifest. A generated row carries no date a
 generator's). Dates are YYYY-MM-DD in Pacific time. Importable as
 `scripts.validate_tier1_manifest` (heading_resolves, offered_names).
 
+Fifth condition (Arch and CIO, 11-13): `approved` is the commit sha of the item at
+xian's quoted approval. Indexing also needs every non-blank line of the current
+item to appear in the item at that sha, so a deleted line keeps the approval and a
+new or changed line drops the row ("text changed since approval"). The comparison
+needs git history. Generated rows carry their approval on the template instead.
+
 Checks: header, field counts, unique ids, enums, dates, positive integer
 windows. Every `item` and `derived_from` path exists. A `path#heading` must
 resolve, meaning the file holds a heading or a bold line containing that text.
@@ -36,6 +42,7 @@ import csv
 import datetime
 import os
 import re
+import subprocess
 import sys
 from zoneinfo import ZoneInfo
 
@@ -44,6 +51,7 @@ HEADER = [
     "id",
     "part",
     "topic",
+    "stand_in_topic",
     "item",
     "derived_from",
     "source_kind",
@@ -53,6 +61,7 @@ HEADER = [
     "reverify_window_days",
     "owner",
     "voice_pass",
+    "approved",
     "notes",
 ]
 PARTS = {"a", "b", "c", "d", "candidate"}
@@ -106,6 +115,21 @@ def offered_names():
             "as dict literals from services/integrations/integration_status_service.py"
         )
     return names
+
+
+def approved_text_ok(sha, path):
+    """True when every non-blank line of `path` now also appears in `path` at `sha`.
+    Deleting a line keeps the approval, adding or changing one needs a new approval.
+    Returns None when git cannot show the file at that sha (no history)."""
+    try:
+        old = subprocess.run(
+            ["git", "show", f"{sha}:{path}"], capture_output=True, text=True, check=True
+        ).stdout
+    except (subprocess.CalledProcessError, OSError):
+        return None
+    old_lines = {ln.strip() for ln in old.splitlines() if ln.strip()}
+    with open(path, encoding="utf-8") as f:
+        return all(ln.strip() in old_lines for ln in f if ln.strip())
 
 
 def not_ratified(path):
@@ -175,8 +199,24 @@ def main(argv):
                     f"{rid}: item names offered connectors {hit}. State the rule, not the members "
                     "(ADR-082): the names come from part (a)"
                 )
-        if deploy and d["status"] == "verified" and d["voice_pass"] != "passed":
-            drops.append(f"{rid}: verified but voice_pass is {d['voice_pass']}")
+        if d["approved"] and not re.fullmatch(r"[0-9a-f]{7,40}", d["approved"]):
+            errors.append(f"{rid}: approved={d['approved']!r} is not a commit sha")
+        if d["status"] == "verified" and d["source_kind"] != "generated":
+            if deploy and d["voice_pass"] != "passed":
+                drops.append(f"{rid}: verified but voice_pass is {d['voice_pass']}")
+            if deploy and not d["approved"]:
+                drops.append(f"{rid}: verified but not approved (no sha in approved)")
+            elif d["approved"] and d["item"]:
+                item_path = d["item"].split("#")[0]
+                ok = (
+                    approved_text_ok(d["approved"], item_path)
+                    if os.path.exists(item_path)
+                    else None
+                )
+                if ok is False:
+                    drops.append(f"{rid}: text changed since approval")
+                elif ok is None and os.path.exists(item_path):
+                    notes.append(f"{rid}: approval sha not readable here, text check skipped")
         lv = d["last_verified"]
         generated = d["source_kind"] == "generated"
         if d["status"] == "verified" and not lv and not generated:
