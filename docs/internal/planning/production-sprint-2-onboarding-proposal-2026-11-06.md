@@ -23,21 +23,21 @@ Beta-user sessions come after the hold lifts. They aren't in this sprint's score
 
 Rule, from the ruling: no more than one named item behind any single unanswered design question or decision.
 
-| # | Item | Owner | Blocker | State, 11-09 |
+| # | Item | Owner | Blocker | State, 11-13 06:34 (PPM, `gh issue view`) |
 |---|---|---|---|---|
-| 1 | #2261: narrow GitHub's `repo` scope, built on D3 (#2342) | Lead | xian registering the published GitHub App, Lead's #2342 build, xian's yes to one promotion (given 11-12 11:44; beta serves it 11:52), then xian's one sitting: App values set and the cutover script run, through #2343's one command (Arch 11-12 06:51 and 08:28; Lead 08:46) | Open; leg decided D3 11-11 (#2174 passed, xian's run 18:52); #2342's unit layer built 11-12 07:39 (Lead, `88da3f58a8`, switched off until the App's ID and secret are set); beta serves it since 11-12 11:52 on xian's promotion yes (11:44); #2343's command built and read by Arch, CIO and HOST (`2456cd7e5f`); left: xian registers the App, then his sitting |
-| 2 | #2282: one canonical host, `beta.pipermorgan.ai` | Web | xian's word for Web's sign-in check | Open |
+| 1 | #2261: narrow GitHub's `repo` scope, built on D3 (#2342) | Lead | xian registering the published GitHub App, Lead's #2342 build, xian's yes to one promotion (given 11-12 11:44; beta serves it 11:52), then xian's one sitting: App values set and the cutover script run, through #2343's one command (Arch 11-12 06:51 and 08:28; Lead 08:46) | Open. Cutover applied 11-12 19:06 (xian: 10 of 10 classic tokens revoked, 0 left); #2343 closed 11-12 19:17. #2342 row 1 PASS (PA read, CXO ruled). Left: xian reconnects without installing (PA row 2), installs (PA row 3), the refresh row; then #2261 closes |
+| 2 | #2282: one canonical host, `beta.pipermorgan.ai` | Web | xian's word for Web's sign-in check | Open, no change since 11-09 (xian's word) |
 | 3 | #2292: SPF, DKIM and DMARC | xian | none | **Closed 11-12 13:27** (records at 8.8.8.8 3 of 3, `p=none`; one Workspace message passes SPF, DKIM and DMARC at Gmail). Buttondown's check split to #2344 (Q, not an invite blocker) |
-| 4 | #2266's last box: a run as a second GitHub account | Web or PA | xian's second GitHub account | Open |
-| 5 | #2219, #2295, #2294, #2328: todo replies (ordinal complete and delete; "them") | Lead, then CXO | none | D5 rows done (#2318, #2321 closed 11-08); #2219's other rows open; #2328 in progress (xian, 11-10) |
-| 6 | #2267: email sign-in after a username is set | Lead | none | Wrong-password words passed; username row open |
-| 7 | #2268, #2274: the wizard's connect handoff and API-key line | Lead, Web | none | Open |
-| 8 | #2269 3a: "link repo" corpus rows | Lead | none | Open. #2270 (repo as document) closed 11-08 |
+| 4 | #2266's last box: a run as a second GitHub account | Web or PA | xian's second GitHub account | Open, no change since 11-09 |
+| 5 | #2219, #2295, #2294, #2328: todo replies (ordinal complete and delete; "them") | Lead, then CXO | none | #2318, #2321 closed 11-08. #2328's follow-up served on alpha 11-10 18:58 (Lead), open. #2219, #2295, #2294 open, no change since 11-09 |
+| 6 | #2267: email sign-in after a username is set | Lead | none | Open, no change since 11-09 (username row) |
+| 7 | #2268, #2274: the wizard's connect handoff and API-key line | Lead, Web | none | Both open, no change since 11-09 |
+| 8 | #2269 3a: "link repo" corpus rows | Lead | none | Open, no change since 11-09 |
 | 9 | #2271: the "yes" loop on adding a repo | Lead, Web | none | **Done** (closed 11-06) |
-| 10 | CXO's wizard flow: #2273, #2275, #2272's page half, #2286 | Lead, Web, then CXO | Lead names the first ask; prompt 3 needs a fresh connected account | #2273 and #2272 closed; #2275 and #2286 open |
-| 11 | Paths A and B served on fresh accounts | PA, CXO | the invite hold lifting | Not started |
-| 12 | Path B's build: #2297 and #2301 | Lead | Lead's size; Arch on attachment | Open |
-| 13 | #2304: consent asks say what they'd do, not an op name | Lead | none | Open |
+| 10 | CXO's wizard flow: #2273, #2275, #2272's page half, #2286 | Lead, Web, then CXO | Lead names the first ask; prompt 3 needs a fresh connected account | #2273, #2272 closed; #2275, #2286 open, no change since 11-09 |
+| 11 | Paths A and B served on fresh accounts | PA, CXO | the invite hold lifting | Not started (the hold stands) |
+| 12 | Path B's build: #2297 and #2301 | Lead | Lead's size; Arch on attachment | Both open, no change since 11-09 |
+| 13 | #2304: consent asks say what they'd do, not an op name | Lead | none | Open, no change since 11-09 |
 
 #2293 (the priority sort) passed on 11-06 and closes when CXO judges it, so it isn't named.
 
@@ -59,6 +59,7 @@ Rule, from the ruling: no more than one named item behind any single unanswered 
 - **The 18 flaky stay out of this sprint.** Lead's size is about one Lead-day with a subagent, the same day the set already runs over. #070 and #071 report the count by kind from CI's `backlog size:` line, and the 11-26 review can take them up.
 - Burn-down finds, placed 11-09: #2333 (C, spatial, Arch sequences), #2334 (Q, built), #2335 (D, built; xian checks the live log line, on Exec's rollup).
 - **11-12, xian via Exec:** #2333 is a **go** (13:59). In this sprint. Arch sequenced it (14:07): Lead builds now, and it rides the first beta promotion after #2342's served rows close, so nothing changes under those rows. #2327 (Piper's analysis reply offers to "close the obvious clutter" in bulk, which it can't do; the issue's audit of floored action names) gets **"yes, Friday"** (14:00): PPM places it at the 11-13 review.
+- **11-13 06:35, #2327 placed (PPM, on xian's "yes, Friday"):** in this sprint's health lane, beside #2333, not a named item. It has no user-visible change, so it isn't in the score. Not yet sized: Lead sizes it, and it takes no named-set day while the set runs over. CXO's 11-08 find (the analysis reply offers a bulk "close the obvious clutter" Piper can't do) rides it, so that reply's words come out of the audit. #2320 and #2319 stay candidates, not placed: neither has a go, and the set has no free slot.
 
 ## Candidate for xian (sent to him on Exec's rollup 11-09; he books his own hour)
 
