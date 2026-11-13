@@ -181,7 +181,6 @@ class TestConversationManagerPersistsIntent:
         mgr = ConversationManager()
         mgr._get_next_turn_number = AsyncMock(return_value=1)
         mgr._save_turn_to_database = AsyncMock()
-        mgr._update_cached_context = AsyncMock()
 
         turn = await mgr.save_conversation_turn(
             conversation_id="conv-1518",
@@ -203,7 +202,6 @@ class TestConversationManagerPersistsIntent:
         mgr = ConversationManager()
         mgr._get_next_turn_number = AsyncMock(return_value=1)
         mgr._save_turn_to_database = AsyncMock()
-        mgr._update_cached_context = AsyncMock()
 
         turn = await mgr.save_conversation_turn(
             conversation_id="conv-1518",
