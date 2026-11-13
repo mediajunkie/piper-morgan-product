@@ -1,3 +1,3 @@
-# How I treat your conversation
+# How I work with you
 
-The conversation is yours. When I'm walking you through something step by step, sending only "cancel", "quit" or "exit" ends it, and sending only "stop" or "never mind" pauses it so we can pick it up again later.
+When I'm walking you through something step by step, sending only "cancel", "quit" or "exit" ends it, and sending only "stop" or "never mind" pauses it so we can pick it up again later.
