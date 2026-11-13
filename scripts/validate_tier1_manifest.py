@@ -8,7 +8,16 @@ what the item's facts are checked against (ADRs, docs, code), never indexed.
 the served build, with the method in `notes`.
 
 Errors fail (exit 1). Unverified and past-window rows are notes, and fail only
-with --strict, which is the behaviour Lead's deploy check can adopt.
+with --strict (Docs' own stricter read). `--deploy` is the narrower gate for a
+deploy check (Lead and Arch, 11-13). A row is indexed only when it is `verified`,
+voice_pass is `passed`, its item resolves and it is inside its window. In
+`--deploy` mode a row that fails any of those DROPS out of the index and is
+reported as a `DROP` line (id and reason, no text), and the deploy is NOT
+refused. The deploy is refused (exit 1) only for an indexed item on an excluded
+path (dev/, mailboxes/, omnibus-logs, memory, an ADR, a .py file or a
+not-ratified record), or a malformed manifest. A generated row carries no date and no window check (its test is the
+generator's). Dates are YYYY-MM-DD in Pacific time. Importable as
+`scripts.validate_tier1_manifest` (heading_resolves, offered_names).
 
 Checks: header, field counts, unique ids, enums, dates, positive integer
 windows. Every `item` and `derived_from` path exists. A `path#heading` must
@@ -28,6 +37,7 @@ import datetime
 import os
 import re
 import sys
+from zoneinfo import ZoneInfo
 
 PATH = "docs/internal/design/tier1-corpus-manifest.csv"
 HEADER = [
@@ -104,8 +114,9 @@ def not_ratified(path):
 
 def main(argv):
     strict = "--strict" in argv
-    today = datetime.date.today()
-    errors, notes = [], []
+    deploy = "--deploy" in argv
+    today = datetime.datetime.now(ZoneInfo("America/Los_Angeles")).date()
+    errors, notes, drops = [], [], []
     with open(PATH, newline="", encoding="utf-8") as f:
         rows = list(csv.reader(f))
     if rows[0] != HEADER:
@@ -141,10 +152,12 @@ def main(argv):
                     errors.append(f"{rid}: item {p} is under a never-indexed tree")
                     continue
                 if not os.path.exists(p):
-                    errors.append(f"{rid}: {col} {p} does not exist")
+                    (drops if deploy else errors).append(f"{rid}: {col} {p} does not exist")
                     continue
                 if h and not heading_resolves(p, h):
-                    errors.append(f"{rid}: {col} {p} has no heading or bold line {h!r}")
+                    (drops if deploy else errors).append(
+                        f"{rid}: {col} {p} has no heading or bold line {h!r}"
+                    )
                 if col == "item" and d["source_kind"] != "generated":
                     if "/adrs/" in p or p.endswith(".py") or not_ratified(p):
                         errors.append(
@@ -158,25 +171,41 @@ def main(argv):
                     f"{rid}: item names offered connectors {hit}. State the rule, not the members "
                     "(ADR-082): the names come from part (a)"
                 )
+        if deploy and d["status"] == "verified" and d["voice_pass"] != "passed":
+            drops.append(f"{rid}: verified but voice_pass is {d['voice_pass']}")
         lv = d["last_verified"]
-        if d["status"] == "verified" and not lv:
+        generated = d["source_kind"] == "generated"
+        if d["status"] == "verified" and not lv and not generated:
             errors.append(f"{rid}: status verified but no last_verified date")
         if lv:
             try:
                 age = (today - datetime.date.fromisoformat(lv)).days
-                if age > int(d["reverify_window_days"] or 0):
+                if generated:
+                    pass
+                elif (
+                    age > int(d["reverify_window_days"] or 0)
+                    and deploy
+                    and d["status"] == "verified"
+                ):
+                    drops.append(
+                        f"{rid}: verified {lv}, {age} days ago, past its "
+                        f"{d['reverify_window_days']}-day window"
+                    )
+                elif age > int(d["reverify_window_days"] or 0):
                     notes.append(
                         f"{rid}: verified {lv}, {age} days ago, past its "
                         f"{d['reverify_window_days']}-day window"
                     )
             except ValueError:
                 errors.append(f"{rid}: last_verified={lv!r}")
-        elif d["status"] != "candidate":
+        elif d["status"] != "candidate" and not generated:
             notes.append(f"{rid}: unverified")
     for e in errors:
         print("ERROR", e)
     for m in notes:
         print("NOTE ", m)
+    for dr in drops:
+        print("DROP ", dr)
     print(f"{PATH}: {len(rows) - 1} rows, {len(errors)} error(s), {len(notes)} note(s)")
     return 1 if errors or (strict and notes) else 0
 
