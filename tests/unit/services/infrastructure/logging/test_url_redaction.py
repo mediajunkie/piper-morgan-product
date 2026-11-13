@@ -143,8 +143,10 @@ class TestURLRedactionFilter:
 
         redaction_filter.filter(record)
 
-        assert "abc123" not in str(record.args)
-        assert "[REDACTED]" in str(record.args)
+        # #2362: the filter merges the arguments first and redacts the finished message.
+        assert record.args is None
+        assert "abc123" not in record.getMessage()
+        assert record.getMessage() == "Request: https://api.example.com?token=[REDACTED]"
 
     def test_filter_handles_args_dict(self, redaction_filter):
         """Test that filter redacts sensitive data in args dict."""
@@ -164,8 +166,67 @@ class TestURLRedactionFilter:
 
         redaction_filter.filter(record)
 
-        assert "secret" not in str(record.args)
-        assert "[REDACTED]" in str(record.args)
+        assert record.args is None
+        assert record.getMessage() == "Request: https://api.example.com?api_key=[REDACTED]"
+
+    def test_a_format_string_with_a_sensitive_looking_placeholder_still_formats(
+        self, redaction_filter
+    ):
+        """#2362, the defect found when the filter went onto handlers: redacting the
+        format string turned ``key=%s`` into ``key=[REDACTED]``, the placeholder was
+        gone, and merging the arguments raised TypeError, losing the line."""
+        record = logging.LogRecord(
+            name="test",
+            level=logging.WARNING,
+            pathname="test.py",
+            lineno=1,
+            msg="readback_failed user_id=%s key=%s error=%s",
+            args=("u-1", "theme", "db down"),
+            exc_info=None,
+        )
+        assert redaction_filter.filter(record) is True
+        message = record.getMessage()  # must not raise
+        assert message.startswith("readback_failed user_id=u-1 key=[REDACTED] error=db down")
+
+    def test_a_value_split_between_format_string_and_argument_is_redacted(self, redaction_filter):
+        record = logging.LogRecord(
+            name="test",
+            level=logging.WARNING,
+            pathname="test.py",
+            lineno=1,
+            msg="calling https://example.invalid/v1?token=%s now",
+            args=("NOT-A-REAL-VALUE-789",),
+            exc_info=None,
+        )
+        redaction_filter.filter(record)
+        assert "NOT-A-REAL-VALUE-789" not in record.getMessage()
+
+    def test_a_malformed_record_is_left_alone_and_the_filter_does_not_raise(self, redaction_filter):
+        record = logging.LogRecord(
+            name="test",
+            level=logging.WARNING,
+            pathname="test.py",
+            lineno=1,
+            msg="two placeholders %s %s",
+            args=("only-one",),
+            exc_info=None,
+        )
+        assert redaction_filter.filter(record) is True
+        assert record.args == ("only-one",)
+
+    def test_a_record_with_nothing_to_redact_and_no_arguments_is_untouched(self, redaction_filter):
+        payload = {"event": "x"}
+        record = logging.LogRecord(
+            name="test",
+            level=logging.INFO,
+            pathname="test.py",
+            lineno=1,
+            msg=payload,
+            args=None,
+            exc_info=None,
+        )
+        redaction_filter.filter(record)
+        assert record.msg is payload
 
 
 class TestInstallFunctions:

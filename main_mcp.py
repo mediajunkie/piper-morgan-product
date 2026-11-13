@@ -17,6 +17,11 @@ import uvicorn
 # Side effect: configures structlog (JSON, correlation-ready) the same way
 # every other Piper entrypoint does — reused, not reimplemented here.
 import services.infrastructure.logging.config  # noqa: F401
+from services.infrastructure.logging.url_redaction import (
+    install_handler_redaction_filter,
+    install_root_redaction_filter,
+    install_url_redaction_filter,
+)
 from services.mcp.server.app import build_asgi_app, refuse_master_key
 
 logger = structlog.get_logger(__name__)
@@ -29,7 +34,15 @@ def main() -> None:
     refuse_master_key()  # #1982: the one place the guard lives (see its docstring)
     app = build_asgi_app()
     logger.info("mcp_server_starting", host=HOST, port=PORT, service="piper-morgan-mcp")
-    uvicorn.run(app, host=HOST, port=PORT, log_level="info")
+    # #2362: the same URL redaction the main app installs, on this process too. The
+    # HTTP client loggers and the root first; then, once uvicorn.Config() has built the
+    # uvicorn and uvicorn.access handlers (which do not propagate to the root), every
+    # handler that exists.
+    install_url_redaction_filter()
+    install_root_redaction_filter()
+    config = uvicorn.Config(app, host=HOST, port=PORT, log_level="info")
+    install_handler_redaction_filter()
+    uvicorn.Server(config).run()
 
 
 if __name__ == "__main__":

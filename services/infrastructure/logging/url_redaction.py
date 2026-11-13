@@ -90,32 +90,31 @@ class URLRedactionFilter(logging.Filter):
         """
         Filter method called by logging framework.
 
-        Modifies the log record in place to redact sensitive data.
-        Always returns True (allows the record through after redaction).
+        Redacts the FINISHED message: the format string and its arguments are merged
+        first, then the result is redacted and stored as the record's message with no
+        arguments left. Always returns True (the record goes through, redacted).
 
-        Args:
-            record: The log record to filter
-
-        Returns:
-            True (always allows record, but modifies it)
+        #2362: this used to redact ``record.msg`` and each string argument
+        separately. A format string such as ``"lookup key=%s failed"`` then lost its
+        placeholder (``key=[REDACTED]``), and merging the arguments raised
+        ``TypeError: not all arguments converted``, so the line was lost. It also
+        could not redact a value split between the format string and an argument
+        (``"token=%s"`` with the value as the argument). Never raises: a filter that
+        raised would take the log call's caller down with it.
         """
-        # Redact the main message
-        if record.msg:
-            record.msg = self.redact_message(str(record.msg))
-
-        # Redact any arguments that might contain URLs
-        if record.args:
-            if isinstance(record.args, dict):
-                record.args = {
-                    k: self.redact_message(str(v)) if isinstance(v, str) else v
-                    for k, v in record.args.items()
-                }
-            elif isinstance(record.args, tuple):
-                record.args = tuple(
-                    self.redact_message(str(arg)) if isinstance(arg, str) else arg
-                    for arg in record.args
-                )
-
+        try:
+            message = record.getMessage()
+        except Exception:
+            # A malformed format string or arguments. Leave the record as it is: the
+            # handler will report the formatting error exactly as it would have.
+            return True
+        try:
+            redacted = self.redact_message(message)
+            if redacted != message or record.args:
+                record.msg = redacted
+                record.args = None
+        except Exception:  # pragma: no cover - redaction must never break logging
+            pass
         return True
 
 
@@ -155,10 +154,14 @@ def install_url_redaction_filter(logger_names: List[str] = None) -> None:
 
 def install_root_redaction_filter() -> None:
     """
-    Install the URL redaction filter on the root logger.
+    Install the URL redaction filter on the root logger AND on every handler.
 
-    This ensures ALL log messages are filtered, regardless of which
-    logger emits them. Use this for maximum security coverage.
+    A filter on a logger applies only to records logged ON that logger; a record from
+    any other logger reaches the root's handlers without passing the root logger's
+    filters (#2362: until 2026-11-12 this function attached to the root logger alone,
+    and a child logger's line kept its ``key=`` value). A handler's filters see every
+    record the handler emits, so the coverage lives there. The root-logger filter is
+    kept for records logged directly on the root before any handler exists.
     """
     redaction_filter = URLRedactionFilter()
     root_logger = logging.getLogger()
@@ -166,3 +169,38 @@ def install_root_redaction_filter() -> None:
     # Check if filter already installed to avoid duplicates
     if not any(isinstance(f, URLRedactionFilter) for f in root_logger.filters):
         root_logger.addFilter(redaction_filter)
+    install_handler_redaction_filter()
+
+
+def _all_handlers() -> List[tuple]:
+    """(owner name, handler) for the root's handlers and every other logger's own
+    handlers (a non-propagating logger such as uvicorn's writes only through its own)."""
+    found = [("root", h) for h in logging.getLogger().handlers]
+    for name, obj in list(logging.root.manager.loggerDict.items()):
+        if isinstance(obj, logging.Logger):
+            found.extend((name, h) for h in obj.handlers)
+    return found
+
+
+def install_handler_redaction_filter() -> List[str]:
+    """Put the redaction filter on every logging handler that exists right now (#2362).
+
+    Call it after anything that creates handlers: ``logging.basicConfig``, and
+    ``uvicorn.Config(...)``, which builds the ``uvicorn`` and ``uvicorn.access``
+    handlers. Idempotent. Returns the owner name of each handler it added a filter to.
+    """
+    added: List[str] = []
+    for owner, handler in _all_handlers():
+        if not any(isinstance(f, URLRedactionFilter) for f in handler.filters):
+            handler.addFilter(URLRedactionFilter())
+            added.append(owner)
+    return added
+
+
+def handlers_without_redaction() -> List[str]:
+    """Owner names of handlers that do not carry the filter. Empty is the goal."""
+    return [
+        owner
+        for owner, handler in _all_handlers()
+        if not any(isinstance(f, URLRedactionFilter) for f in handler.filters)
+    ]
