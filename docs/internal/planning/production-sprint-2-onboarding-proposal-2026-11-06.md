@@ -49,7 +49,7 @@ Rule, from the ruling: no more than one named item behind any single unanswered 
 - **xian's two #2242 steps:** the held-token `mcp_allow.py remove`, and his decision on who may connect in the beta. The listing follows that decision.
 - **Builds (#1911, and #2175's `next` through `/setup`)** go in the next sprint where Lead isn't fully on onboarding.
 - **Docs: #2355's manifest (PPM, 11-13 06:50).** Docs owns it from today: the row shape, then the row list, with the known-limits list as Arch ruled (`docs/ALPHA_KNOWN_ISSUES.md`, a fixed limit deleted). Second lane, no Lead day. Lead's deploy check isn't in this sprint.
-- **PA: served reads of `docs/known-limits.md`'s rows (PPM, 11-13 07:02, on Arch's ruling that this is PA's lane).** Second lane. Order: #2025 in both shapes, then delete or archive a chat, then private session, then the rest. Docs sets `last_verified` only from PA's quotes. The MCP "rougher" row is off under rule (b).
+- **PA: served reads of `docs/known-limits.md`'s rows (PPM, 11-13 07:02, on Arch's ruling that this is PA's lane).** Second lane. Order: #2025 in both shapes, then delete or archive a chat, then the rest (private session came off the list 07:11, Arch: the switch is hidden on beta, rule a). Blocked on PA's sign-in decision for xian (01M79Q8226TJGVZ9XK9FAC0K1X), the same one as #2328. Docs sets `last_verified` only from PA's quotes. The MCP "rougher" row is off under rule (b).
 
 ## The health lane: the known-failing backlog (PPM, 11-09 10:23)
 
