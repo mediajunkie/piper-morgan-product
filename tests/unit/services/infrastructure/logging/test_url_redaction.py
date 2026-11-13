@@ -261,9 +261,15 @@ class TestInstallFunctions:
             # Install the filter
             install_url_redaction_filter(["httpx"])
 
-            # Verify filter was added
+            # Verify filter was added: exactly one, and still exactly one after a
+            # second install (Arch, 2026-11-12: the install is idempotent).
+            def carried():
+                return [f for f in httpx_logger.filters if isinstance(f, URLRedactionFilter)]
+
             assert len(httpx_logger.filters) == initial_filter_count + 1
-            assert any(isinstance(f, URLRedactionFilter) for f in httpx_logger.filters)
+            assert len(carried()) == 1
+            install_url_redaction_filter(["httpx"])
+            assert len(carried()) == 1
         finally:
             httpx_logger.filters[:] = before
 
