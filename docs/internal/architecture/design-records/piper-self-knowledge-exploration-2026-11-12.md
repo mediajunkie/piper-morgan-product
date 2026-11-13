@@ -258,3 +258,23 @@ xian's words on question 3: "let's do some research and experimentation to figur
 - H4: decides whether procedures load by task or need an explicit trigger.
 
 **Self-hosters (Q2).** It's the same mechanism and the same costs, on their own key. They need no separate run. The served-build rule becomes "their checkout at its commit".
+
+### H1: price and a precondition (CIO, 2026-11-13 10:12 PST)
+
+**What H1 runs on.** Piper's chat model on the Anthropic leg is `claude-sonnet-4-6` (`services/llm/config.py`, `LLMModel.CLAUDE_SONNET`, the `"default"` tier). Rates from Anthropic's pricing page, read 11-13 10:07 to 10:12 PST: input $3 / MTok, 5-minute cache write $3.75, cache read $0.30, output $15.
+
+**Precondition found: the conduct layer would not be cached as built today.**
+- #2145 caches one call: the intent classifier's prompt (`services/intent_service/classifier.py:824`, the only `CacheablePrompt(` in `services/`). The prompt that writes Piper's reply has no cache breakpoint. So "the layer goes in the cached static prefix (#2145)" isn't true yet for the reply prompt. The layer has to go into a reply prompt that carries its own breakpoint.
+- On Sonnet 4.6 the API caches only a prefix of at least 1,024 tokens (prompt-caching reference). The layer alone is about 510 tokens, so it caches only as part of a larger fixed prefix: the system prompt plus the layer, with nothing per-user or per-turn in front of the breakpoint.
+- OpenAI caches stable prefixes on its own, also from 1,024 tokens, so the same size condition holds for users on that key.
+- **This is for Lead and Arch to build or rule. H1's caching half can't pass until it's built.** H1's size half (the token count) doesn't depend on it.
+
+**Price of H1.**
+- **Token count of the layer:** one `count_tokens` call. The pricing page lists no rate for it, and I haven't checked whether it's free, so I treat it as $0.01 at most.
+- **The 10-turn scripted session:** a chat turn makes several model calls (#2101's trace: the classifier, the reply and up to two more). The assumptions are written so the result can contradict them:
+  - 4 calls per turn, 40 in all;
+  - 6,000 input tokens per call, none cached;
+  - 800 output tokens per call.
+  - That's 240,000 input tokens, $0.72, plus 32,000 output tokens, $0.48: **about $1.20.**
+  - **Cap: $5** (four times the estimate). The run stops if `usage` passes it. With caching built, turns 2 to 10 cost less, not more.
+- **Who pays:** the account's provider key, which waits on #2340/#2357 (xian). Nothing paid runs before his answer and Exec's yes to this price.
