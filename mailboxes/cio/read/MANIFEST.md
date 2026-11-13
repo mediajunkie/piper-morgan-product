@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-11-13 05:05 PT | exec | kickoff-exec-to-leadership-ship-069-workstream-review-2026-11-06-to-2026-11-12-2026-11-13.md | Ship #069 workstream review: window Fri 2026-11-06 → Thu 2026-11-12. Write it n… |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-11-10 04:22 PT | exec | exec-to-ppm-cc-cohort-sprint-length-tally-0-objections-two-week-sprints-stand-late-by-mail-2026-11-10.md | Sprint-length tally: 0 objections at the 12:00 close, two-week sprints from Fri… |
 | 2026-11-09 11:33 PT | exec | exec-to-ppm-cio-cc-lead-2335-log-read-and-rotation-are-with-xian-already-one-owner-2026-11-09.md | Re #2335: the log read and any rotation are already with xian (rollup v906, 11:… |
@@ -1869,4 +1870,3 @@
 | 2026-07-03 01:00 PT | host | memo-host-to-docs-cc-cio-pa-pm-audit-refactor-input-2026-07-03.md | Re: Docs audit template refactor — HOST input (cadence, distributed-cleanup, sc… |
 | 2026-07-02 | docs | memo-docs-to-cio-cc-host-pm-pa-audit-refactor-proposal-2026-07-02.md | Docs audit template refactor — proposal for your input |
 | 2026-07-01 | cxo | 2026-07-01-cxo-to-cio-cc-pm-account-migration-worktree-gap.md | Datum for liveness model: account migration leaves agents on shared main (workt… |
-- kickoff-exec-to-leadership-ship-069-workstream-review-2026-11-06-to-2026-11-12-2026-11-13.md (read 2026-11-13 05:11; answered with workstream-069-cio-2026-11-13.md)
