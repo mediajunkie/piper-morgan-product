@@ -139,8 +139,11 @@ pytest tests/integration/ -v --tb=short
 ### **Environment Variables**
 
 ```bash
-# Required for API integration tests
-export NOTION_API_KEY="your-api-key-here"
+# Required for API integration tests. Use a throwaway token made for this run
+# and revoke it afterward. Read it at a hidden prompt so it never lands in shell history:
+read -rs NOTION_API_KEY && export NOTION_API_KEY
+# Run the tests in this same shell, then close it.
+# Notion is not offered in this beta, so these tests exercise code a self-hosted install does not serve.
 
 # Optional: Test configuration file
 export NOTION_CONFIG_FILE="path/to/test/config.md"
