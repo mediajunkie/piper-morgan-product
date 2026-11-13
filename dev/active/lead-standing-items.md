@@ -45,8 +45,13 @@ lives in GitHub, this file holds only durable owed/queued items.)
 - **#2345 GitHub and Calendar connect state to Redis (2189's unbuilt part).** **Trigger:** xian's 2342 sitting has run (Arch: not during a cutover). **Filed**: 2026-11-12
 - **Terminal helper to put a local account's provider key into the database store, with one step list (Exec 11-12, relaying xian).** **Trigger:** xian answers, through Exec, that he still starts Piper locally himself. **Filed**: 2026-11-12
 
-### 2353 and 2351 follow-ups
+### Follow-ups from 2026-11-12
 **Filed**: 2026-11-12
-- 2353 (keychain opt-in only, `eb73f4fa82`): waits on Arch's source read, including the `_process_default_store` test seam. When validated, tell Docs so the guide and the three key pages can say the default changed.
-- 2351 setup words (`62aefca5e5`): CXO to pass four lines of mine; served check after the next promotion (waits on 2342's rows).
-- 2352 (rotate-key visible prompt, keys add, January wizard): unplaced; waits on PPM placement and Arch's keep-or-retire answer.
+- Promotion of main to beta: after 07:00 PT on 11-13, under the standing grant, with Arch's one-promotion lift. Blocker tonight was the grant's hours and the gate's refusal (2363).
+- 2363 promote gate fix (`"${SHA}^@"`): waits on xian's yes via Exec.
+- 2362 and 2350: wait on Arch's source reads; then served rows after the promotion.
+- 2345: waits on 2342's rows 2 and 3 closing.
+- `scripts/secret_prompt.py` shared module: waits on xian's Redis rotation run.
+- 2351 setup words (`62aefca5e5`): served check after the promotion; CXO judges a quoted screen.
+- 2352, 2360: wait on PPM placement and Arch's keep-or-retire answer.
+- 2361: PPM's sprint 6 proposal.

@@ -1,5 +1,36 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## STATE @ 2026-11-12 22:00 PT (DAY CLOSED) — main 12/12 green; beta unchanged on `d4fd55e6c5` with App mode ON and the cutover applied; inbox 0; log dev/2026/11/12/2026-11-12-0646-lead-code-log.md
+
+**First thing on 11-13: one promotion, after 07:00 PT, under the standing grant.**
+- It carries 2350 (evidence logger), 2362 (redaction on handlers, with Arch's four follow-ups), 2333, 2348, 2351's setup words, 2353, 2347. No migration (check `git diff --name-only <beta sha> <staging sha> -- alembic/versions` again).
+- Arch lifted his hold for ONE promotion; timing is between PA's reads and never while xian is between Connect and the return from GitHub (connect state lives in the process, 2345). Tell Exec and PA the window, and mail the served commit.
+- **The gate refused on 11-12 20:36** (run 43366687006): staging served another seat's merge commit and the gate walks the first parent only (2363). Until xian says yes to the one-token fix (`"${SHA}^@"`, asked via Exec), make my own push the last before the dispatch and check that the green Tests commit is an ancestor of the served commit's FIRST parent.
+- Needs Tests green on what staging serves. Tests on `1373a4a89c` (run 43374449931) had not reported at close.
+- After it: tell Exec, PA, Web; the served rows it opens are 2350's (one evidence line in beta's logs: PA or xian), 2351's setup words (CXO judges a quoted screen), 2333, 2348.
+
+**2342 (GitHub App cutover):** xian's sitting ran 11-12 (values 17:25, apply 19:06, 10 of 10 classic tokens revoked, 0 left). Row 1 PASS (PA 19:15, CXO). Waiting: xian's reconnect, then PA's rows 2 and 3, CXO's non-owner row (Web), the refresh row (a grant about 8 h old). The MCP app stays on `4666e38493` until the rows close; its next deploy (xian's `scripts/deploy-mcp.sh`) brings `uptime_seconds` and the redaction install.
+
+**Run tests in CI's shape before pushing anything that touches process-wide state** (logging, credential-store selection, module globals): the whole `tests/` tree in one process with CI's flags, and CI's keyring-less mode (`PYTHON_KEYRING_BACKEND=keyring.backends.fail.Keyring` plus the test master key from test.yml). Main went red twice on 11-12 from narrower local runs (2353, 2362). CI's full suite has a known-failures backlog: read "NEW failures not in the backlog".
+
+**Open, with what each waits on**
+- 2363 promote gate fix: xian's yes (via Exec). Arch and CIO agree.
+- 2362: Arch's read of the build and follow-ups (`8a5306c467`, `3c03b97ace`, tests `855ed2e154`, `1373a4a89c`); then served.
+- 2350: Arch's read after his change; served row.
+- 2345 (connect state to Redis): 2342's rows 2 and 3 closing (it rewrites the path they are served on).
+- Shared prompt module `scripts/secret_prompt.py`: xian's Redis rotation run (the rotation command imports from the sitting script).
+- 2335 Redis rotation: xian's run, `python3 scripts/redis_password_rotate.py` in Terminal.
+- 2351: Docs' run-check Mon 11-16; a chat that answers from a clean clone needs a real key; the mint script's last line and fixed settings path are CIO's.
+- 2352 (older local key commands) and 2360 (Notion CLI text): PPM's placement, Arch's keep-or-retire.
+- 2361 pause switch: PPM proposes sprint 6; about 2 Lead-days; carries a migration.
+- 2158 deletion record: xian's read of whether the Fly org has object storage. 2157 drill: HOST's design is on the issue; build not started, not placed.
+- 2186 unit 2, 2184: a provider key from xian (rule-7 screens stopped).
+- Unchanged, xian's: 2174, 2341, 2328, 2327, 2339.
+
+**Closed 11-12:** 2343, 2346 (not planned), 2347, 2353. **Filed 11-12:** 2343, 2345, 2346, 2347, 2348, 2352, 2353, 2362, 2363.
+
+**My mistakes today, for the record:** a check script asked xian's keychain for one entry at 17:11 (timed out, no value; reported to Exec); main red about 17:48 to 18:05 (2353) and about 21:33 to 21:57 (2362 follow-ups); 2347 closed a minute before CI was read, reopened, closed on green.
+
 ## IN-DAY 2026-11-12 14:58 (supersedes the earlier in-day blocks where they differ)
 
 - **Beta** serves `d4fd55e6c5` (2342 build, promoted 11:52 on xian's word). **MCP app** serves `4666e38493` (has the bearer fix). **No promotion until 2342's served rows close** (Arch): 2333 and 2348 ride that promotion.
