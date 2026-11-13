@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-13 09:28 PST (WORK)
+last_updated: 2026-11-13 15:29 PST (WORK)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -26,7 +26,13 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
-**11-13 state (09:28):** beta serves bb7c76de5c (both promotions today; the #2362 access-line defect fixed by 43ec0dbed8, validated from source). Served rows for #2362 and #2350 wait on xian's log read (probe re-sent 09:26:12; criteria in 01M7AZ4FSN8DA5NF73Z8R8BS8Z). #2355 Tier 1 mechanism is ruled through the day in decisions.log: known-limits.md, item/derived_from, drop-not-refuse, stand-ins line by line from the approved sha, the approved column. Validate Docs' held checker commit when it lands.
+**11-13 state (15:29):** beta serves bb7c76de5c. Main 12/12 green.
+- **#2362/#2350 served rows:** wait on xian's log read (probe 09:26:12; criteria 01M7AZ4FSN8DA5NF73Z8R8BS8Z).
+- **#2364 (ethics substring fast path over-declines on beta; reply-side tier reads a missing `is_violation`):** ruled 13:21, 13:25 (default flip goes to xian), 13:37 (v0.2 live in the same unit, live-run gate, KG keeps check_*), 13:53 and 14:04 (gate = two runs, Anthropic + OpenAI, 26 calls each; Gemini can't serve), 13:55 (an unrun provider is skipped only if no connected account uses it and xian has approved a known-limits row). ADR-061 v1.2 (Layer 1 removed, effective on merge). Lead holds the build `b16b83dcef` on `lead/2364-step1`. Waits on xian: provider keys plus which providers testers use, the sprint go, the default flip. Served probe: PA and Web both blocked on the web-seed-1386 decision. Ruling 2 (reply tier acting) is a later unit behind a served-reply screen.
+- **#2365 (KG redacts a node on a substring), #2366/#2367 (Gemini keys page and route, on main at 3405614ea1, not served), #2368 (setup default_llm_provider validated against PER_REQUEST_CLIENT_PROVIDERS, ruled 15:13; CXO wants two refusal sentences).** On a promotion request, check the exact commit against #2342's open rows.
+- **#2355 Tier 1:** checker da2f5c5f84 VALIDATED (decisions.log 15:29). b-cant-read and b-stance verified (code reads), approval pending. b-wont-do stays unindexed until xian's default answer and #2364. The future CI step needs the approved shas in its checkout.
+- **#2354:** reply-prompt cache order ruled (10:20, per user). Lead builds when placed.
+- **Correction recorded:** 11-07 16:33's decline attribution (it was the model's own; the output filter's boundary tier can't act).
 
 Day blocks before 10-27 were cut at the 10-27 STOP rewrite; their threads are resolved, carried below, or in their own day's log and decisions.log. Prior text is in git history (`git log -p -- dev/active/arch-carry-forward.md`).
 
