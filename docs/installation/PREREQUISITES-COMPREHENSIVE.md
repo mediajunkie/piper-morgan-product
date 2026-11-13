@@ -140,7 +140,7 @@ piper-morgan-product/
 
 **Created by**: Wizard or manually (`cp config/PIPER.user.md.example config/PIPER.user.md`)
 **Contains**: Working hours, timezone, project preferences, personality settings
-**Does NOT contain**: API keys (those go in OS keychain)
+**Does NOT contain**: API keys (those go in Piper's encrypted database store)
 **Location**: `config/PIPER.user.md`
 
 ### 2. `.env` (Optional, for advanced users)
@@ -168,11 +168,8 @@ piper-morgan-product/
 
 ### Storage Location
 
-- **Primary**: OS Keychain (secure, recommended)
-  - macOS: Keychain Access
-  - Windows: Credential Manager
-  - Linux: Secret Service
-- **Fallback**: Environment variables (for servers)
+- **Primary**: Piper's encrypted database store, filled at a hidden prompt by `python scripts/local_key_setup.py`
+- **Optional**: the OS keychain, only when `PIPER_CREDENTIAL_STORE=keychain` is set
 - **Never**: PIPER.user.md config file
 
 ---

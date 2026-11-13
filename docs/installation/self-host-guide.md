@@ -76,6 +76,8 @@ Then stop Piper with Ctrl-C and run `python main.py` again. Your `.env` and your
 
 ## Managing your keys
 
+Piper uses its encrypted database store by default. It touches your computer's keychain only if you set `PIPER_CREDENTIAL_STORE=keychain`, which you would do only if you already keep your provider keys there.
+
 - `python scripts/local_key_setup.py --list` shows which providers have a key stored, never the key itself.
 - `python scripts/local_key_setup.py --remove <provider>` deletes one.
 
