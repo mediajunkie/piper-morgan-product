@@ -71,8 +71,15 @@ if args.verbose:
         level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
 else:
-    # Quiet mode (default) - minimal output
-    logging.basicConfig(level=logging.WARNING, format="%(message)s")
+    # Quiet mode (default) - minimal output. #2350 (Arch): the level is LOG_LEVEL,
+    # default WARNING, so a host's log policy is a visible setting (fly.toml) and not
+    # an accident of the CLI's quiet mode. Operational evidence does not depend on it:
+    # it goes through the ``piper.evidence`` logger, which is always INFO.
+    _level_name = (os.getenv("LOG_LEVEL") or "WARNING").strip().upper()
+    _level = logging.getLevelName(_level_name)
+    logging.basicConfig(
+        level=_level if isinstance(_level, int) else logging.WARNING, format="%(message)s"
+    )
 
 # SECURITY: Install URL parameter redaction filter to prevent API key leaks in logs
 # See: 2026-01-17 security incident (Gemini API key leaked via httpx INFO logs)

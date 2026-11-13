@@ -111,6 +111,7 @@ from starlette.responses import JSONResponse
 from starlette.types import ASGIApp, Receive, Scope, Send
 
 from services.cache.redis_factory import RedisFactory
+from services.infrastructure.logging.evidence import evidence  # noqa: E402 (#2350)
 from services.mcp.server.identity import MCPTokenVerifier
 
 logger = structlog.get_logger(__name__)
@@ -260,7 +261,7 @@ class MCPRateLimitMiddleware:
             return
         self._backend_logged = True
         backend = "redis" if _redis_url_configured() else "memory"
-        logger.info("mcp_rate_limit_backend_active", backend=backend)
+        evidence("mcp_rate_limit_backend_active", backend=backend)
 
     def _warn_redis_fallback_once(self, error: Exception) -> None:
         if self._redis_fallback_warned:

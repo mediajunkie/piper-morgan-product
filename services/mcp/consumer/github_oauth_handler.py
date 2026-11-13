@@ -33,6 +33,8 @@ from urllib.parse import urlencode
 import aiohttp
 import structlog
 
+from services.infrastructure.logging.evidence import evidence  # noqa: E402 (#2350)
+
 from .github_app_grant import GitHubAppGrant, app_client, app_mode
 
 logger = structlog.get_logger(__name__)
@@ -318,7 +320,7 @@ class GitHubOAuthHandler:
             return RefreshOutcome(error="server_error", status=status)
         if isinstance(error, str) and error:
             if error in _REFRESH_REJECTED_ERRORS:
-                logger.info("github_app_refresh_rejected", error=error, status=status)
+                evidence("github_app_refresh_rejected", error=error, status=status)
                 return RefreshOutcome(rejected=True, error=error, status=status)
             logger.warning("github_app_refresh_refused_other", error=error, status=status)
             return RefreshOutcome(error=error, status=status)
