@@ -219,3 +219,12 @@ Operational corollaries:
   held the master key too. Lead built it (eb73f4fa82). A test seam that named a store, not a backend, briefly turned main red, and on a Mac it could have reached the real keychain. Arch ruled that the seam must carry the backend through one accessor (5272bbbbf0), and validated it at 19:08. The recipes keep `=db` only for clarity. The general check: when
   a rule is "every X must set Y", find the single place that reads Y and ask what it does when Y is missing,
   then test the proposed default against the incident that prompted it.
+- **The log redaction filter (#2362, Lead's finding, 11-12; Arch to rule).** `install_root_redaction_filter()` attaches
+  the filter to the root *logger*. In Python's logging, a logger's filters apply only to records logged on that
+  logger, not to records that propagate up from child loggers. Every record does pass through a *handler*. Lead
+  measured it: a WARNING from a child logger printed a URL's `key=` parameter in full, and the same line logged on
+  the root printed `[REDACTED]`. The named HTTP-client loggers carry their own filter, so January's incident path was
+  covered, but no other logger was. The proposed fix moves the filter to the handlers, the step every record passes.
+  #2350's evidence logger was built the same way for the same reason: its own handler carries the filter. The
+  general check, for any framework: when a guard sits on a hook, confirm that every path you mean to cover runs
+  through that hook. The name ("root") suggests full coverage, which the mechanism doesn't give.
