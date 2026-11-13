@@ -250,16 +250,22 @@ class TestInstallFunctions:
 
     def test_install_url_redaction_filter_adds_to_httpx(self):
         """Test that install function adds filter to httpx logger."""
-        # Get httpx logger before installation
+        # Start from an httpx logger with no redaction filter. An app startup earlier in
+        # the same test run installs one (#2362: the install runs at the end of startup),
+        # and this test then saw nothing to add: main went red on 875c051bee for it.
         httpx_logger = logging.getLogger("httpx")
+        before = list(httpx_logger.filters)
+        httpx_logger.filters[:] = [f for f in before if not isinstance(f, URLRedactionFilter)]
         initial_filter_count = len(httpx_logger.filters)
+        try:
+            # Install the filter
+            install_url_redaction_filter(["httpx"])
 
-        # Install the filter
-        install_url_redaction_filter(["httpx"])
-
-        # Verify filter was added
-        assert len(httpx_logger.filters) > initial_filter_count
-        assert any(isinstance(f, URLRedactionFilter) for f in httpx_logger.filters)
+            # Verify filter was added
+            assert len(httpx_logger.filters) == initial_filter_count + 1
+            assert any(isinstance(f, URLRedactionFilter) for f in httpx_logger.filters)
+        finally:
+            httpx_logger.filters[:] = before
 
     def test_install_does_not_duplicate_filters(self):
         """Test that installing multiple times doesn't duplicate filters."""
