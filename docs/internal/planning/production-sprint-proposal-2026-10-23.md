@@ -133,7 +133,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2365 | Knowledge graph redacts or rejects a node's own text on a substring match ('explicit', 'unwanted'), a write… (split from #2364, Arch 13:37; first step lists the live callers) | — |
 | #2366 | LLM keys page offers to save a Google (Gemini) key, but Piper can't serve any reply on Gemini (Lead's #2364 read: a Gemini-only account gets no replies; honest interim for #1612; known-limits: yes until fixed) | — |
 | #2367 | Key save route still accepts a Google (Gemini) key from a direct API call and reports success (after #2366; CXO's 4xx words) | — |
-| #2368 | Setup's /complete accepts any default_llm_provider (e.g. gemini) unvalidated and stores it (low; crafted call only; Arch says do or accept) | — |
+| #2368 | Setup's /complete accepts any default_llm_provider (e.g. gemini) unvalidated and stores it (low; Arch 15:14: do it, a validator on the request model; may land when built) | — |
 | #2147 | "show all events" answers with today's meeting time only and omits the week's other events, without saying … | — |
 | #2150 | Calendar: a later revoke of calendar access in the user's Google account leaves Settings saying connected u… | — |
 | #2151 | Sweep: every reply that reads user data says 'none / 0 / not connected / can't see it' only on a verified r… | — |
