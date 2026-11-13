@@ -156,8 +156,13 @@ def ensure_settings(path: Path, environ: Dict[str, str]) -> List[str]:
         fd = os.open(path, flags, stat.S_IRUSR | stat.S_IWUSR)
         with os.fdopen(fd, "a") as fh:
             fh.write(lead + body)
-        if created:
+        # CIO (2026-11-12): a file that was already there (copied from the example, say)
+        # is usually readable by others, and it now holds the encryption key.
+        loose = stat.S_IMODE(path.stat().st_mode) & (stat.S_IRWXG | stat.S_IRWXO)
+        if created or loose:
             os.chmod(path, stat.S_IRUSR | stat.S_IWUSR)
+        if loose and not created:
+            notes.append(f"{path.name} was readable by other accounts; it is now owner-only")
     return notes
 
 
