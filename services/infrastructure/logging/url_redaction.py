@@ -73,9 +73,18 @@ class URLRedactionFilter(logging.Filter):
         param_names = "|".join(self.SENSITIVE_PARAM_PATTERNS)
         # Match: (param_name=)(value until & or whitespace or end)
         # The value can contain any characters except & and whitespace
-        self._redaction_pattern = re.compile(rf"({param_names})([^&\s]+)", re.IGNORECASE)
+        # #2350 (Arch, 2026-11-13): the lookahead makes redaction idempotent. A line can
+        # pass through this more than once (the evidence logger redacts a value, then the
+        # logger's and the handler's filters run over the finished JSON line). Without it
+        # the second pass matched ``[REDACTED]",`` and ate the closing quote and comma.
+        # Do not add ``"`` to the excluded value characters: ``key="abc"`` would then keep
+        # its value.
+        done = r"(?!\[REDACTED\])"
+        self._redaction_pattern = re.compile(rf"({param_names}){done}([^&\s]+)", re.IGNORECASE)
         query_only = "|".join(self.QUERY_ONLY_PARAMS)
-        self._query_only_pattern = re.compile(rf"([?&](?:{query_only})=)([^&\s]+)", re.IGNORECASE)
+        self._query_only_pattern = re.compile(
+            rf"([?&](?:{query_only})=){done}([^&\s]+)", re.IGNORECASE
+        )
 
     def redact_message(self, message: str) -> str:
         """

@@ -245,6 +245,54 @@ class TestURLRedactionFilter:
         assert record.msg is payload
 
 
+class TestRedactionIsIdempotent:
+    """#2350 (Arch, 2026-11-13): a line can pass through redaction more than once
+    (a value redacted before ``json.dumps``, then the logger's and the handler's
+    filters over the finished line). A second pass must change nothing."""
+
+    CASES = [
+        "https://api.example.com/v1?key=NOT-A-VALUE-1&other=value",
+        "https://api.example.com/v1?other=value&api_key=NOT-A-VALUE-1",
+        "POST https://x.invalid/t?client_secret=NOT-A-VALUE-1&access_token=NOT-A-VALUE-2 200",
+        "https://x.invalid/cb?code=NOT-A-VALUE-1&state=NOT-A-VALUE-2",
+        "https://x.invalid/cb?state=NOT-A-VALUE-2",
+        'key="NOT-A-VALUE-1"',
+        "lookup key=NOT-A-VALUE-1 failed",
+        "TOKEN=NOT-A-VALUE-1",
+        "status_code=200 and nothing sensitive",
+        "",
+    ]
+
+    @pytest.mark.parametrize("message", CASES)
+    def test_a_second_pass_changes_nothing(self, message):
+        f = URLRedactionFilter()
+        once = f.redact_message(message)
+        assert "NOT-A-VALUE" not in once
+        assert f.redact_message(once) == once
+
+    def test_a_json_line_ending_a_string_in_a_redacted_parameter_keeps_its_quote(self):
+        import json
+
+        f = URLRedactionFilter()
+        line = json.dumps(
+            {
+                "reason": f.redact_message("https://x.invalid/y?code=NOT-A-1&state=NOT-A-2"),
+                "count": 3,
+            }
+        )
+        again = f.redact_message(line)
+        assert again == line
+        assert json.loads(again)["count"] == 3
+
+    def test_a_quoted_value_is_still_redacted(self):
+        # Arch's point 2: ``"`` is not an excluded value character.
+        assert "NOT-A-VALUE-1" not in URLRedactionFilter().redact_message('key="NOT-A-VALUE-1"')
+
+    def test_a_parameter_after_a_redacted_one_is_still_redacted(self):
+        out = URLRedactionFilter().redact_message("u?key=[REDACTED]&token=NOT-A-VALUE-1&x=1")
+        assert out == "u?key=[REDACTED]&token=[REDACTED]&x=1"
+
+
 class TestInstallFunctions:
     """Tests for the filter installation functions."""
 
