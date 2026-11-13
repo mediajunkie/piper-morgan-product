@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-11-08 21:34 PT (21:33 STOP; the current block is at the bottom, "Now").
+**Last rewritten**: 2026-11-12 21:40 PT (21:33 STOP; the current block is at the bottom, "Now").
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -598,7 +598,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **key: notion-offer-ask** (Filed 2026-11-01; to: exec; by: trigger: Web's #2238 served check passes). Send Exec the one-line "offer Notion in the beta: yes or no" for xian. CXO's card words come first.
   - **Rule from PDR-102:** when PPM places a connector-ingest unit, mail Arch the same day (his ADR trigger for C2).
 
-## Now (rewritten at the 11-11 21:33 STOP; carry into Thu 11-12)
+## Superseded Now block (11-11 21:33 STOP; replaced 11-12 21:40)
 
 - **Invite hold, PDR-008.** Re-verified 21:33 11-11 with `gh issue view`.
   - #2261: leg decided **D3** on 11-11 (#2174 passed, xian's run 18:52, 14 of 14; Arch validated 18:56, ADR-081). It lands on **#2342** (D3's build, PUB under #2261, Sprint PUB). Order: xian registers the published App, Lead builds (unit layer from the 11-12 START, fresh session), CXO's install, stale and cutover lines are in, then a served connect on alpha. Arch ruled classic grants go stale at cutover.
@@ -625,3 +625,24 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **11-12 17:11, sent 17:16:** PDR-009 v1 went to Exec (was owed by Fri 11-13 15:33), for xian's one yes or no on the gate and the PUB disposition. v0.3 is on main with CXO's E1 to E8 and Arch's T1 to T7, and no row is disputed. Waiting on CXO's per-issue PUB sort (they said end of Fri). If it isn't in by 15:33, send v1 with PPM's sort and say CXO's follows. On xian's yes, clear Sprint PUB per item. #2351 (local running): Lead's date pending; Docs Fri 11-13 draft, run Mon 11-16 or after the helper; CIO reads each.
 - **11-12 17:36:** PDR-009 accepted; Sprint PUB cleared on 37 items. Gate-close estimate sent. Next: when Lead's sizes arrive, a sprint-by-sprint gate map (aim for the 11-13 review). Not done: the plan's "PUB" section header still reads "Public Beta gate". Rework it to the G-rows when the map is redone. Self-knowledge: #2354 to #2357 filed; Arch's tier boundary (task-loaded procedures) waits on xian, and would edit #2354 and #2355 if accepted.
 - **11-12 19:17 status:** #2342's cutover applied 19:06 (10 of 10 revoked). The lift memo now waits on #2342's served rows (PA's read, xian's reconnect, then Web, PA and CXO), #2261's close, and #2282 (xian's word on Web's sign-in check). The gate map is on main (likeliest sprint 6 or 7); xian's provider key is the last of its four decisions.
+
+## Now (rewritten at the 11-12 21:33 STOP; carry into Fri 11-13)
+
+- **Invite hold, PDR-008.** Re-verified 21:36 11-12 with `gh issue view`: #2261, #2282 and #2342 open.
+  - #2342: cutover applied 19:06 (xian; 10 of 10 classic tokens revoked, 0 left). Row 1 PASS (PA's served read, CXO ruled, per Arch's 11-12 log). Next: xian reconnects without installing, PA reads row 2, xian installs, PA reads row 3; then the refresh row.
+  - Lift-readiness memo to Exec (§3, each row `Verified how:`) waits on #2342's rows, #2261's close and #2282 (xian's word on Web's sign-in check).
+- **Promotion 11-13 after 07:00 (Lead).** Tonight's was refused by the gate's first-parent walk (#2363, needs xian's yes). Main's Tests red since 21:11 on #2362's test (`test_install_url_redaction_filter_adds_to_httpx`); Arch told Lead the fix; promotion waits on green. Not PPM's to fix.
+- **PDR-009 accepted 11-12;** PUB Sprint cleared (37). Gate map `public-beta-gate-map-2026-11-12.md`: likeliest sprint 6 or 7; three of four decisions made; left: xian's provider key. Plan's PUB header still reads "Public Beta gate": rework it to the G-rows at the next map redo.
+- **#2361 pause switch:** Arch ruled (database setting + `can_pause_admission`); proposed sprint 6; no HOST account now (xian's yes is permission); xian flips it meanwhile.
+- **#2351 local running:** clean-clone run Mon 11-16 (Docs). PPM's connector-scope call (GitHub and Calendar, Notion when #2238 serves) is with Exec as something xian may contradict.
+- **Self-knowledge (#2349):** #2354 to #2357 open; #2358 and #2359 wait on xian's word on Arch's revised boundary. CXO's Tier 1 voice spec due Mon 11-16 12:00.
+- **Production 297** (`gh` 21:40 11-12 = Total), map v136, 0 unplanned, 0 unmilestoned. 11-12 21:40: #2343, #2347, #2353 closed; #2362 and #2363 placed in Q.
+- **OWED rows:**
+  - **key: sprint-state-refresh** (Filed 2026-11-09; to: exec; trigger: Fri 11-13 START).
+  - **11-13 review placements:** #2327 (xian "yes, Friday"); candidates #2320, #2319. #2333 is in on xian's go.
+  - **key: path-b-quote** (Filed 2026-11-06; to: cxo; trigger: PA's served Path B quote on a fresh account, after the lift).
+  - **key: notion-offer-ask** (Filed 2026-11-01; trigger: #2238's served check).
+  - #2344: xian's two Buttondown steps (Q, not a blocker).
+- **Mail:** read v3 and `python3 scripts/mail4.py inbox --role ppm` every check; send by v4.
+- **xian's rule, 11-11 11:12:** no seat reads his login keychain without permission; `PIPER_CREDENTIAL_STORE=db`.
+- **Still carried:** #2242's last row; #2235; #1680; PDR-102 C1–C8 checks on document-touching placements. Sprint field: PPM may set a value matching the plan section on another seat's ask.

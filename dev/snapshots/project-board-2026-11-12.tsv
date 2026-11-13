@@ -2131,12 +2131,12 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2340	CLOSED	Production		Rule-7 screening scripts read provider keys from xian's keychain and carry on against OpenAI when Anthropic refuses			COMPLETED
 2341	OPEN	Production		One command with hidden prompts for procedures where xian holds the secrets (first: ADR-081 D3's refresh check)			
 2342	OPEN	Production		Build ADR-081 D3: GitHub connect through one published GitHub App, with user tokens that expire and refresh			
-2343	OPEN	Production		One command for the GitHub App cutover sitting: set the App's values and run the cutover, secret never in argv (issue 2342's step 3 and 4)			
+2343	CLOSED	Production		One command for the GitHub App cutover sitting: set the App's values and run the cutover, secret never in argv (issue 2342's step 3 and 4)			COMPLETED
 2349	OPEN	Production		EPIC: Piper self-knowledge: codebase, ethos, documentation, lore and best practices (design exploration first; Arch owns)	epic		
 2344	OPEN	Production		Buttondown confirmations: read the sending-domain setup and check SPF/DKIM/DMARC (split from 2292)			
 2345	OPEN	Production		GitHub and Calendar connect keep their sign-in state in the process, not Redis			
 2346	CLOSED	Production		The revoked-token list decides Redis or database once at startup and never retries			NOT_PLANNED
-2347	OPEN	Production		Remove two dead Redis paths: the conversation manager's turn cache and FeedbackCapture			
+2347	CLOSED	Production		Remove two dead Redis paths: the conversation manager's turn cache and FeedbackCapture			COMPLETED
 2348	OPEN	Production		/health should report Redis, as it does the database and the credential store			
 2350	OPEN	Production		Hosts drop every info log line (root WARNING from the CLI quiet mode); evidence events need a named logger kept at INFO	architecture		
 2351	OPEN	Production		Local running as a supported path for an outside tester: hidden-prompt key helper, tested step list, self-host guide			
@@ -2145,8 +2145,10 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2356	OPEN	Production		Self-knowledge part 4: exclusion test and the served question set			
 2357	OPEN	Production		Self-knowledge research: a lean deployment (measure the conduct layer's cost and the retrieval trigger rate)			
 2352	OPEN	Production		Local key commands: rotate-key shows the pasted key, keys add writes the OS keychain by default			
-2353	OPEN	Production		The OS keychain is opt-in only: PIPER_CREDENTIAL_STORE unset means the database store (Arch ruling 11-12)			
+2353	CLOSED	Production		The OS keychain is opt-in only: PIPER_CREDENTIAL_STORE unset means the database store (Arch ruling 11-12)			COMPLETED
 2358	OPEN	Production		Self-knowledge item 4: team methods as task-loaded procedures for every Piper, rewritten into user register one at a time			
 2359	OPEN	Production		Self-knowledge item 5: read-only code tools over the served snapshot, with a path allow-list and a read budget (after the experiment)			
 2360	OPEN	Production		Notion CLI setup text tells the reader to export a token on a command line			
 2361	OPEN	Production		Pause admission: a switch that stops new accounts being created until it's turned back on (PDR-009 G7)			
+2362	OPEN	Production		The root URL-redaction filter does not see records from other loggers (a logger's filter is not inherited); attach it to the handlers			
+2363	OPEN	Production		Promote gate searches only the first parent for a tested ancestor, so a merge commit from a seat's branch is refused though Tests is green			
