@@ -44,3 +44,13 @@ lives in GitHub, this file holds only durable owed/queued items.)
 - **#2350 evidence logger at INFO (Arch's ruling 11-12): Lead builds.** **Trigger:** xian's 2342 sitting has run (Arch's sequence); needed before the served refresh row. **Filed**: 2026-11-12
 - **#2345 GitHub and Calendar connect state to Redis (2189's unbuilt part).** **Trigger:** xian's 2342 sitting has run (Arch: not during a cutover). **Filed**: 2026-11-12
 - **Terminal helper to put a local account's provider key into the database store, with one step list (Exec 11-12, relaying xian).** **Trigger:** xian answers, through Exec, that he still starts Piper locally himself. **Filed**: 2026-11-12
+
+### Gate-row sizes for PPM (public-beta gate)
+**Filed**: 2026-11-12
+PPM asked (v4 01M798RW…) for rough Lead-day sizes for the unsized gate rows: 1441, 2158, 2159, 2160, 2062, 2157, 2162, 2164, a pause switch for admission waves, 2345, 2350, and the G5 set (2183, 2184, 2185, 2186, 2209). Promised for Fri 2026-11-13, in the form of the 10-31 sizes page. Trigger: the first fire of 11-13.
+
+### 2353 and 2351 follow-ups
+**Filed**: 2026-11-12
+- 2353 (keychain opt-in only, `eb73f4fa82`): waits on Arch's source read, including the `_process_default_store` test seam. When validated, tell Docs so the guide and the three key pages can say the default changed.
+- 2351 setup words (`62aefca5e5`): CXO to pass four lines of mine; served check after the next promotion (waits on 2342's rows).
+- 2352 (rotate-key visible prompt, keys add, January wizard): unplaced; waits on PPM placement and Arch's keep-or-retire answer.
