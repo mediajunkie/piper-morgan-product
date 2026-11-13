@@ -287,11 +287,10 @@ Piper Morgan implements graceful degradation for webhook security.
 # 2. Scroll to "App Credentials"
 # 3. Copy "Signing Secret"
 
-# Set environment variable
-export SLACK_SIGNING_SECRET=your_secret_here
+# Set the environment variable at a hidden prompt so it stays out of shell history
+read -rs SLACK_SIGNING_SECRET && export SLACK_SIGNING_SECRET
 
-# Or in .env file
-echo "SLACK_SIGNING_SECRET=your_secret_here" >> .env
+# Or add it to your .env file with an editor, never with echo on the command line
 
 # Restart server to activate
 ./stop-piper.sh && ./start-piper.sh
@@ -425,7 +424,7 @@ psql -h localhost -p 5433 -U piper -d piper_morgan -c "SELECT pg_size_pretty(pg_
 **Solutions**:
 1. Set signing secret:
    ```bash
-   export SLACK_SIGNING_SECRET=your_secret_here
+   read -rs SLACK_SIGNING_SECRET && export SLACK_SIGNING_SECRET
    ```
 
 2. Restart server:

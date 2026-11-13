@@ -24,8 +24,8 @@ Piper Morgan provides several APIs for different use cases:
 All API requests require authentication via API key:
 
 ```bash
-# Set your API key
-export PIPER_API_KEY="your-api-key-here"
+# Set your API key at a hidden prompt so it stays out of shell history
+read -rs PIPER_API_KEY && export PIPER_API_KEY
 
 # Test authentication
 curl -H "Authorization: Bearer $PIPER_API_KEY" \

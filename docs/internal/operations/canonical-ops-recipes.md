@@ -411,6 +411,13 @@ secrets, which go to `fly secrets import` on standard input.
 This rule does not cover how a provider key reaches a seat for its own runs. That is open with xian
 through Exec (Arch, decisions.log 2026-11-11 18:43, #2340).
 
+**The same rule for readers' pages (CIO, 2026-11-12).** Once local running became a supported path
+(xian via Exec 01M796NKZZ), no page a user, tester or developer follows may tell them to put a secret in
+an `export NAME=value` line or in `security add-generic-password ... -w <value>`. Both leave it in shell
+history. Pages point to a hidden prompt instead: `scripts/local_key_setup.py` (section 13) for provider
+keys, or `read -rs NAME` in a shell. `scripts/key_in_docs_lint.py` checks tracked Markdown outside
+`docs/internal/`, `dev/`, `mailboxes/` and archives. Whether it runs in CI and the push gates is Lead's call.
+
 ## 11. The GitHub App cutover sitting: register, promote, set the secrets, run the cutover (#2342, Lead, 2026-11-12)
 
 ADR-081 D3 moves GitHub connect from the classic OAuth App to one published GitHub App. The code is on
