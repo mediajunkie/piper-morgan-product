@@ -33,7 +33,7 @@ Run: `python3 scripts/validate_tier1_manifest.py` (add `--strict` to see what a 
 
 - `python3 scripts/validate_tier1_manifest.py` lists errors and notes. Errors fail.
 - `--strict` also fails on every note (unverified and past-window rows). That is Docs' own stricter read.
-- `--deploy` is the narrow gate for a deploy check: it fails a `verified` row whose `last_verified` plus its window is past, and any `item` or `derived_from` that does not resolve. It never fails on a `candidate` or `unverified` row.
+- `--deploy` is the narrow gate for a deploy check (Arch's rule, 11-13). A row is indexed only when it is `verified`, `voice_pass` is `passed`, its `item` resolves and it is inside its window. A row that fails any of those drops out of the index at build and is reported as a `DROP` line (id and reason, no text). The deploy is refused, exit 1, only for an indexed `item` on an excluded path (`dev/`, `mailboxes/`, omnibuses, memory, an ADR, a `.py` file or a not-ratified record) or a malformed manifest.
 - A generated row (`source_kind=generated`) carries no hand-set date and no window check. Its test belongs to the generator (Lead): the catalog must match the offered connector set.
 - The checker's name uses underscores so it imports as `scripts.validate_tier1_manifest` (`heading_resolves`, `offered_names`).
 - `last_verified` is `YYYY-MM-DD` in Pacific time, and the check compares against the Pacific date.
