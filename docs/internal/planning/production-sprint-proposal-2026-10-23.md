@@ -131,7 +131,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2134 | Semantic boundary detector: a failed check is cached as clear and recorded as a pass (48/63 turns off, unse… | — |
 | #2364 | Ethics check declines ordinary requests on a substring ('home page', 'private repo', 'explicit'); reply-si… (on beta; Arch 11-13: v0.2 live, merge after a live run on xian's key; known-limits: yes once Web's probe confirms) | — |
 | #2365 | Knowledge graph redacts or rejects a node's own text on a substring match ('explicit', 'unwanted'), a write… (split from #2364, Arch 13:37; first step lists the live callers) | — |
-| #2366 | LLM keys page offers to save a Google (Gemini) key, but Piper can't serve any reply on Gemini (Lead's #2364 read; honest interim for #1612; known-limits: yes until fixed) | — |
+| #2366 | LLM keys page offers to save a Google (Gemini) key, but Piper can't serve any reply on Gemini (Lead's #2364 read: a Gemini-only account gets no replies; honest interim for #1612; known-limits: yes until fixed) | — |
 | #2147 | "show all events" answers with today's meeting time only and omits the week's other events, without saying … | — |
 | #2150 | Calendar: a later revoke of calendar access in the user's Google account leaves Settings saying connected u… | — |
 | #2151 | Sweep: every reply that reads user data says 'none / 0 / not connected / can't see it' only on a verified r… | — |
