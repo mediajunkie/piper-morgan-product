@@ -18,6 +18,7 @@ from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.database.session_factory import AsyncSessionFactory
 from services.llm.config import LLMProvider
+from services.llm.request_key import PER_REQUEST_CLIENT_PROVIDERS
 from services.security.user_api_key_service import UserAPIKeyService
 
 router = APIRouter(prefix="/api/v1/keys", tags=["api-keys"])
@@ -39,6 +40,25 @@ NOT_AN_LLM_PROVIDER = (
 def _require_llm_provider(provider: str) -> None:
     if provider not in LLM_KEY_PROVIDERS:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=NOT_AN_LLM_PROVIDER)
+
+
+# #2367 (CXO 2026-11-13 14:27; mechanism Arch 14:38): a save or a rotate is refused
+# for an LLM provider no reply can be served on. Which providers can serve is said
+# in one place, `PER_REQUEST_CLIENT_PROVIDERS` (services/llm/request_key.py), so this
+# set is derived from it and is not a second list: today it is Gemini
+# (`LLMClient._gemini_complete` always refuses, #1819). A success here would give the
+# belief the keys page stopped giving in #2366 and could leave an account whose only
+# key Piper can't use. A key stored earlier is untouched: still listed, still
+# removable. When #1612 adds Gemini to that set, the refusal lifts with no change here.
+UNSERVED_LLM_PROVIDERS = LLM_KEY_PROVIDERS - PER_REQUEST_CLIENT_PROVIDERS
+PROVIDER_NOT_USED_YET = (
+    "Piper doesn't use Google (Gemini) keys yet. Anthropic and OpenAI keys work."
+)
+
+
+def _refuse_unserved_provider(provider: str) -> None:
+    if provider in UNSERVED_LLM_PROVIDERS:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=PROVIDER_NOT_USED_YET)
 
 
 def build_audit_context(request: Request) -> Dict[str, Any]:
@@ -170,6 +190,7 @@ async def store_api_key(
     Issue #249: Added audit logging
     """
     _require_llm_provider(request.provider)
+    _refuse_unserved_provider(request.provider)
     try:
         # Build audit context from request (Issue #249)
         audit_context = build_audit_context(req)
@@ -407,6 +428,7 @@ async def rotate_api_key(
     Issue #249: Added audit logging
     """
     _require_llm_provider(provider)
+    _refuse_unserved_provider(provider)
     try:
         # Build audit context from request (Issue #249)
         audit_context = build_audit_context(req)

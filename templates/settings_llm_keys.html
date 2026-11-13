@@ -33,6 +33,7 @@
   .llmkeys-badge { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.78rem; }
   .llmkeys-badge.ok { background: #dcfce7; color: #166534; }
   .llmkeys-badge.warn { background: #fef9c3; color: #854d0e; }
+  .llmkeys-badge.unused { background: #e5e7eb; color: #374151; }
   .llmkeys-status { margin-top: 0.6rem; font-size: 0.9rem; min-height: 1.2rem; }
   .llmkeys-status.ok { color: #166534; }
   .llmkeys-status.err { color: #b91c1c; }
@@ -53,7 +54,6 @@
       <select id="llm-provider" aria-label="LLM provider">
         <option value="anthropic">Anthropic (Claude)</option>
         <option value="openai">OpenAI</option>
-        <option value="gemini">Google (Gemini)</option>
       </select>
       <input type="password" id="llm-key-input" placeholder="Paste your API key"
              autocomplete="new-password" aria-label="API key" />
@@ -76,6 +76,7 @@
         <tr><td colspan="4">Loading…</td></tr>
       </tbody>
     </table>
+    <p class="llmkeys-note" id="llm-keys-unused-note" hidden>Piper doesn't use Google (Gemini) keys yet, so this one isn't doing anything. It stays saved until you remove it. Anthropic and OpenAI keys work.</p>
   </div>
 </div>
 {% endblock %}
@@ -90,6 +91,11 @@
   const providerSel = document.getElementById("llm-provider");
   // Display names for provider ids (the select's own labels say the same).
   const PROVIDER_NAMES = { anthropic: "Anthropic", openai: "OpenAI", gemini: "Google Gemini" };
+  // #2366 (CXO 2026-11-13): no reply can be served on a Gemini key (#1819), so the page
+  // doesn't offer to save one. A key stored earlier stays listed and removable, with a
+  // grey "not used yet" badge in place of validated/unvalidated, and a line under the table.
+  const UNUSED_PROVIDERS = ["gemini"];
+  const unusedNote = document.getElementById("llm-keys-unused-note");
   const keyInput = document.getElementById("llm-key-input");
 
   function setStatus(text, ok) {
@@ -104,6 +110,7 @@
   }
 
   async function refresh() {
+    unusedNote.hidden = true;
     try {
       const res = await fetch("/api/v1/keys/list", { credentials: "same-origin" });
       if (!res.ok) throw new Error("HTTP " + res.status);
@@ -112,8 +119,11 @@
         tbody.innerHTML = '<tr><td colspan="4">No keys stored yet.</td></tr>';
         return;
       }
+      unusedNote.hidden = !keys.some(function (k) { return UNUSED_PROVIDERS.includes(k.provider); });
       tbody.innerHTML = keys.map(function (k) {
-        const badge = k.is_validated
+        const badge = UNUSED_PROVIDERS.includes(k.provider)
+          ? '<span class="llmkeys-badge unused">not used yet</span>'
+          : k.is_validated
           ? '<span class="llmkeys-badge ok">validated</span>'
           : '<span class="llmkeys-badge warn">unvalidated</span>';
         const added = k.created_at ? new Date(k.created_at).toLocaleDateString() : "—";
@@ -148,10 +158,12 @@
       }
       keyInput.value = "";
       // Saved either way (#485); a failed validation carries its reason in data.message (#1718).
+      // CXO 2026-11-13 (#2366): the provider's name, as the table shows it, not its id.
+      const savedName = PROVIDER_NAMES[provider] || provider;
       if (data.is_validated === false) {
-        setStatus(data.message || ("Saved, but " + provider + "'s key could not be validated."), false);
+        setStatus(data.message || ("Saved, but " + savedName + "'s key could not be validated."), false);
       } else {
-        setStatus("Key saved for " + provider + ".", true);
+        setStatus("Key saved for " + savedName + ".", true);
       }
       refresh();
     } catch (e) {
