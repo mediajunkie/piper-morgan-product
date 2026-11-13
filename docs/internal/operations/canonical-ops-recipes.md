@@ -543,6 +543,42 @@ hands it to `fly secrets import` on standard input.
 
 Not run against the hosts by any seat; xian's first run is the check.
 
+## 13. Running Piper locally from a clean clone: the tested steps and `scripts/local_key_setup.py` (#2351, Lead, 2026-11-12)
+
+Local running is a supported path for a person outside the team (xian, 2026-11-12). These are the
+steps as run from a fresh clone and a fresh virtual environment. Docs' page for an outside reader is
+`docs/installation/self-host-guide.md`; this section is the tested list it draws on.
+
+1. `git clone https://github.com/mediajunkie/piper-morgan-product.git` and `cd` into it.
+2. `python3.12 -m venv venv`, then `source venv/bin/activate`, then `pip install -r requirements.txt`.
+3. `docker compose up -d` (Postgres 5433, Redis 6379, ChromaDB 8000).
+4. `alembic upgrade head`.
+5. `python scripts/local_key_setup.py`, in a terminal. It asks which provider and then for the key,
+   with the input hidden. On its first run it also creates the three local settings in the
+   git-ignored `.env`: `ENCRYPTION_MASTER_KEY`, `JWT_SECRET_KEY` and `PIPER_CREDENTIAL_STORE=db`.
+   It never replaces one that is there. The key goes encrypted into the `secure_credentials` table.
+6. `python main.py`. It prints the setup address (`http://localhost:8001/setup`).
+7. On the setup page: Check System, then on "Connect Your AI" choose the provider and press
+   **Use Keychain** (on a local install that button means the key stored in step 5).
+8. "Create Your Account" asks for an invite code. On your own install you make one:
+   `python scripts/mint_invite_tokens.py 1 --apply` prints it. Paste it, choose a username and password.
+9. Skip or add a project. "Setup Complete" says you are signed in; Open Piper.
+
+Rules the helper holds: it refuses without a terminal, a key is never a command-line argument or an
+environment variable, nothing is printed but plain status lines, it does not contact the provider,
+and it stops if `PIPER_CREDENTIAL_STORE` is set to anything but `db`. `--list` shows which providers
+have a key; `--remove <provider>` deletes one.
+
+Keep `.env`: its encryption key is the only thing that can read the stored keys.
+
+Not covered by the run of 2026-11-12: fresh Docker services (the run used a scratch database in a
+Postgres container that was already up), a chat that answers (that needs a real provider key),
+Windows and Linux, and updating an existing install. The run cloned from a local copy of the
+repository, and started the server with `--no-browser` on a free port instead of 8001.
+
+Two things a newcomer meets that are product questions, not steps: the account step needs an invite
+code on a private install (step 8), and the setup page calls the database store "Keychain" (step 7).
+
 ## Promotion checklist: read staging's sha from staging, not from the deploy-run list (Lead, 2026-10-16)
 
 **Why:** the 10:51 dispatch under the standing grant was refused by the promote gate. The gate reads the sha staging's

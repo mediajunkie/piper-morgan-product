@@ -25,6 +25,8 @@ provider. The server checks the key against the provider when it starts.
 
 Keep ``.env``. The encryption key in it is the only thing that can read the stored
 provider keys; if it is lost, run this again to enter them again.
+
+Concept: docs/internal/operations/canonical-ops-recipes.md (section 13)
 """
 
 from __future__ import annotations
