@@ -163,6 +163,37 @@ def test_a_bare_process_redacts_a_url_in_an_allowed_field():
     assert line["backend"] == "https://example.invalid/x?key=[REDACTED]&plain=ok"
 
 
+def test_a_bare_process_line_stays_json_when_a_field_ends_in_a_redacted_parameter():
+    """Arch's 11-13 defect: the value is redacted before ``json.dumps``, then the
+    logger's and handler's filters run over the finished line. The second pass used
+    to match ``[REDACTED]",`` and remove the closing quote and comma. Every evidence
+    line must parse, including one whose string field ENDS in a redacted parameter."""
+    import json
+    import subprocess
+    import sys
+
+    code = (
+        "from services.infrastructure.logging.evidence import evidence\n"
+        "evidence('github_app_refresh_rejected', "
+        "reason='https://example.invalid/y?code=NOT-A-VALUE-2&state=NOT-A-VALUE-3', count=3)\n"
+        "evidence('github_app_refresh_rejected', reason='lookup key=NOT-A-VALUE-4', count=4)\n"
+    )
+    out = subprocess.run(
+        [sys.executable, "-c", code], cwd=str(ROOT), capture_output=True, text=True, timeout=60
+    )
+    assert out.returncode == 0, out.stderr[-500:]
+    text = out.stdout + out.stderr
+    for value in ("NOT-A-VALUE-2", "NOT-A-VALUE-3", "NOT-A-VALUE-4"):
+        assert value not in text
+    lines = [ln for ln in text.splitlines() if "github_app_refresh_rejected" in ln]
+    assert len(lines) == 2, text[-500:]
+    first, second = (json.loads(ln) for ln in lines)
+    assert first["reason"] == "https://example.invalid/y?code=[REDACTED]&state=[REDACTED]"
+    assert first["count"] == 3
+    assert second["reason"] == "lookup key=[REDACTED]"
+    assert second["count"] == 4
+
+
 def test_every_evidence_call_uses_a_listed_literal_and_every_listed_event_has_a_site():
     calls = _calls({"evidence"})
     assert calls, "no evidence() call found"
