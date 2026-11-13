@@ -15,6 +15,7 @@ import redis.asyncio as redis
 import structlog
 
 from services.health.integration_health_monitor import health_monitor
+from services.infrastructure.logging.evidence import evidence  # noqa: E402 (#2350)
 
 logger = structlog.get_logger()
 
@@ -86,7 +87,7 @@ class RedisFactory:
             cls._pool_loop_ref = weakref.ref(loop)
             cls._last_health_ping = None
             # #2335: never log the URL itself; an Upstash REDIS_URL carries the password.
-            logger.info("Redis connection pool initialized", redis_host=_redis_host(redis_url))
+            evidence("Redis connection pool initialized", redis_host=_redis_host(redis_url))
 
     @classmethod
     async def create_client(cls) -> redis.Redis:

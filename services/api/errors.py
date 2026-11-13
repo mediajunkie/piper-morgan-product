@@ -90,13 +90,6 @@ class DocumentProcessingError(APIError):
 # --- Enhanced User Experience Errors ---
 
 
-class FeedbackCaptureError(APIError):
-    def __init__(self, operation: str = "capturing feedback", details: Dict[str, Any] = None):
-        details = details or {}
-        details["operation"] = operation
-        super().__init__(500, "FEEDBACK_CAPTURE_FAILED", details)
-
-
 class ConfigurationError(APIError):
     def __init__(self, config_item: str = "system settings", details: Dict[str, Any] = None):
         details = details or {}
@@ -158,7 +151,6 @@ ERROR_MESSAGES = {
     "NO_RELEVANT_KNOWLEDGE": "I don't have enough context about that topic. Try providing more details or uploading relevant documents. You can also reference specific files or projects for better context.",
     "DOCUMENT_PROCESSING_FAILED": "I couldn't process that document. Please check the file format (supported: PDF, TXT, MD, DOCX) and try again. Large files may take a moment to process.",
     # New user-friendly error categories
-    "FEEDBACK_CAPTURE_FAILED": "I couldn't save your feedback right now. Your input is valuable - please try again in a moment or contact support if this continues.",
     "CONFIGURATION_ERROR": "There's an issue with the system configuration. Please check your settings or contact your administrator for assistance.",
     "VALIDATION_ERROR": "Please check the information you provided. {field} is required and must be in the correct format.",
     "AUTHENTICATION_REQUIRED": "You need to sign in to access this feature. Please check your authentication status and try again.",

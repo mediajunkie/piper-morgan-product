@@ -1,6 +1,6 @@
 """
 PM-034 Phase 3: ConversationManager - Core Conversation Context Management
-Built on bulletproof foundation: AsyncSessionFactory + Circuit Breaker + Health Monitoring
+Built on AsyncSessionFactory + Health Monitoring
 Target: 10-turn context window, <150ms additional latency, 90% reference resolution
 
 Architecture (#1207 unification, 2026-06-12 — single source of truth):
@@ -12,9 +12,11 @@ Architecture (#1207 unification, 2026-06-12 — single source of truth):
   ADR-005 dual-implementation rule: "conversation + turns" is what the
   domain ``Conversation`` already expresses.)
 - The DATABASE (conversation_turns + conversations.context JSONB) is the
-  system of record. Redis, when configured, is a read-through cache of
-  recent-turn lists; the production container currently constructs this
-  manager WITHOUT a redis client, so reads come from the DB.
+  system of record, and the only store: every read comes from it. (A Redis
+  read-through cache of recent-turn lists lived here until #2347, 2026-11-12.
+  No construction site ever passed it a client, and Arch ruled it dead, not
+  parked: it would have put conversation content in Redis, widening the
+  account-deletion purge (#2158) and the isolation surface.)
 - The in-process discourse working state
   (services/intent_service/conversation_context.ConversationContext —
   last offer, floor flags, provenance sidecar, recent-turn
@@ -24,13 +26,11 @@ Architecture (#1207 unification, 2026-06-12 — single source of truth):
   at the process_intent outer seam. It never persists anything itself.
 """
 
-import json
 import time
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple
 from uuid import uuid4
 
-import redis.asyncio as redis
 import structlog
 
 from services.conversation.reference_resolver import ReferenceResolver, ResolvedReference
@@ -72,40 +72,20 @@ class ConversationManager:
 
     Features:
     - 10-turn context window
-    - Redis caching (5-min TTL) of recent-turn lists, when configured
     - Anaphoric reference resolution
-    - Circuit breaker protection
-    - Stateless design (no global state)
+    - Stateless design (no global state); the database is the only store
     """
 
-    def __init__(
-        self,
-        redis_client: Optional[redis.Redis] = None,
-        context_window_size: int = 10,
-        cache_ttl: int = 300,  # 5 minutes
-    ):
-        self.redis_client = redis_client
+    def __init__(self, context_window_size: int = 10):
         self.context_window_size = context_window_size
-        self.cache_ttl = cache_ttl
         self.reference_resolver = ReferenceResolver()
 
-        # Circuit breaker for Redis operations
-        self.redis_failure_count = 0
-        self.redis_last_failure = 0
-        self.redis_circuit_open = False
-        self.circuit_breaker_threshold = 3
-        self.circuit_breaker_timeout = 60  # 1 minute
-
-        logger.info(
-            "ConversationManager initialized",
-            context_window=context_window_size,
-            cache_ttl=cache_ttl,
-        )
+        logger.info("ConversationManager initialized", context_window=context_window_size)
 
     async def get_recent_turns(
         self, conversation_id: str, limit: Optional[int] = None, user_id=UNSCOPED_PRINCIPAL
     ) -> List[ConversationTurn]:
-        """Get the recent persisted turns for a conversation (cache → DB).
+        """Get the recent persisted turns for a conversation, from the database.
 
         THE read path for conversation history (#1207): the discourse
         working state hydrates from here, and reference resolution reads
@@ -114,12 +94,10 @@ class ConversationManager:
         any failure — read is best-effort, never raises).
 
         #1532 F3: ``user_id`` is the requesting principal. When threaded, the
-        read verifies conversation ownership FIRST (before cache or DB): an
+        read verifies conversation ownership FIRST (before the DB read): an
         owner mismatch behaves as not-found (empty list) + a warning log with
         both ids — turns are never leaked across principals. When omitted
-        (legacy sentinel) the read is unscoped and WARNs (m-40 shim). The
-        ownership probe runs before the cache read on purpose: the cache key
-        is not principal-scoped, so the check must gate BOTH sources.
+        (legacy sentinel) the read is unscoped and WARNs (m-40 shim).
         """
         limit = limit or self.context_window_size
         try:
@@ -132,23 +110,14 @@ class ConversationManager:
                 conversation_id, user_id, surface="get_recent_turns"
             ):
                 return []
-            # Try Redis cache first (with circuit breaker)
-            cached_turns = await self._get_from_cache(conversation_id)
-            if cached_turns:
-                health_monitor.record_success(
-                    "conversation_cache", 5.0, {"cache": "hit", "conversation_id": conversation_id}
-                )
-                return cached_turns[-limit:]
-
-            # Fallback to database
             db_turns = await self._get_from_database(conversation_id)
             if db_turns:
-                # Cache for future use
-                await self._save_to_cache(conversation_id, db_turns)
+                # The component keeps its historical name ("conversation_cache"): the
+                # host health monitor and an enforcement pin name it by literal.
                 health_monitor.record_success(
                     "conversation_cache",
                     25.0,
-                    {"cache": "miss", "conversation_id": conversation_id},
+                    {"source": "database", "conversation_id": conversation_id},
                 )
                 return db_turns[-limit:]
 
@@ -213,9 +182,6 @@ class ConversationManager:
         # Save to database (pass user_id for conversation ownership)
         await self._save_turn_to_database(turn, user_id=user_id, context_state=context_state)
 
-        # Update cached context
-        await self._update_cached_context(conversation_id, turn)
-
         logger.info(
             "Conversation turn saved",
             conversation_id=conversation_id,
@@ -277,70 +243,6 @@ class ConversationManager:
             )
             return message, []  # Graceful degradation
 
-    async def _get_from_cache(self, conversation_id: str) -> Optional[List[ConversationTurn]]:
-        """Get recent turns from Redis cache with circuit breaker.
-
-        Key prefix is ``conversation_turns:`` (#1207 — the old
-        ``conversation:`` entries serialized the deleted context aggregate;
-        prefix change orphans them safely, TTL reaps them).
-        """
-        if self.redis_circuit_open or not self.redis_client:
-            return None
-
-        try:
-            cache_key = f"conversation_turns:{conversation_id}"
-            cached_data = await self.redis_client.get(cache_key)
-
-            if cached_data:
-                data = json.loads(cached_data)
-                return [
-                    ConversationTurn(
-                        id=turn_data["id"],
-                        conversation_id=turn_data["conversation_id"],
-                        turn_number=turn_data["turn_number"],
-                        user_message=turn_data["user_message"],
-                        assistant_response=turn_data["assistant_response"],
-                        entities=turn_data["entities"],
-                        created_at=datetime.fromisoformat(turn_data["created_at"]),
-                    )
-                    for turn_data in data["turns"]
-                ]
-
-            return None
-
-        except Exception as e:
-            await self._handle_redis_failure(e)
-            return None
-
-    async def _save_to_cache(self, conversation_id: str, turns: List[ConversationTurn]) -> None:
-        """Save recent turns to Redis cache with circuit breaker"""
-        if self.redis_circuit_open or not self.redis_client:
-            return
-
-        try:
-            cache_key = f"conversation_turns:{conversation_id}"
-
-            # Serialize to JSON (bounded by the context window)
-            data = {
-                "turns": [
-                    {
-                        "id": turn.id,
-                        "conversation_id": turn.conversation_id,
-                        "turn_number": turn.turn_number,
-                        "user_message": turn.user_message,
-                        "assistant_response": turn.assistant_response,
-                        "entities": turn.entities,
-                        "created_at": turn.created_at.isoformat(),
-                    }
-                    for turn in turns[-self.context_window_size :]
-                ],
-            }
-
-            await self.redis_client.setex(cache_key, self.cache_ttl, json.dumps(data))
-
-        except Exception as e:
-            await self._handle_redis_failure(e)
-
     async def _get_from_database(self, conversation_id: str) -> List[ConversationTurn]:
         """Get recent turns from database using AsyncSessionFactory"""
         try:
@@ -348,8 +250,7 @@ class ConversationManager:
                 from services.database.repositories import ConversationRepository
 
                 repo = ConversationRepository(session)
-                # #1223: this is the "recent turns" fallback — fetch the NEWEST
-                # window, not the oldest. (Cache path already returns newest.)
+                # #1223: fetch the NEWEST window, not the oldest.
                 return await repo.get_conversation_turns(
                     conversation_id, limit=self.context_window_size, most_recent=True
                 )
@@ -480,49 +381,13 @@ class ConversationManager:
             logger.error(f"Failed to get next turn number: {e}")
             return 1  # Fallback to turn 1
 
-    async def _update_cached_context(
-        self, conversation_id: str, new_turn: ConversationTurn
-    ) -> None:
-        """Append a new turn to the cached recent-turn list (if cached)"""
-        turns = await self._get_from_cache(conversation_id)
-        if turns:
-            turns.append(new_turn)
-            await self._save_to_cache(conversation_id, turns)
-
-    async def _handle_redis_failure(self, error: Exception) -> None:
-        """Handle Redis failures with circuit breaker pattern"""
-        self.redis_failure_count += 1
-        self.redis_last_failure = time.time()
-
-        if self.redis_failure_count >= self.circuit_breaker_threshold:
-            self.redis_circuit_open = True
-            logger.warning(
-                "Redis circuit breaker opened",
-                failure_count=self.redis_failure_count,
-                error=str(error),
-            )
-
-        # Check if we should close the circuit breaker
-        if (
-            self.redis_circuit_open
-            and time.time() - self.redis_last_failure > self.circuit_breaker_timeout
-        ):
-            self.redis_circuit_open = False
-            self.redis_failure_count = 0
-            logger.info("Redis circuit breaker closed")
-
     async def get_manager_stats(self) -> Dict[str, Any]:
         """Get conversation manager statistics"""
         return {
             "conversation_manager": "active",
             "context_window_size": self.context_window_size,
-            "cache_ttl": self.cache_ttl,
-            "redis_available": self.redis_client is not None,
-            "redis_circuit_open": self.redis_circuit_open,
-            "redis_failure_count": self.redis_failure_count,
             "components": {
                 "reference_resolver": True,
-                "redis_cache": not self.redis_circuit_open,
-                "database_fallback": True,
+                "database": True,
             },
         }

@@ -7,13 +7,11 @@ Target: <150ms additional latency, 90% resolution accuracy
 import asyncio
 import time
 from datetime import datetime
-from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 import pytest_asyncio
 from sqlalchemy import delete, select
 
-from services.cache.redis_factory import RedisFactory
 from services.conversation.conversation_manager import ConversationManager
 from services.conversation.reference_resolver import ResolvedReference
 from services.database.models import ConversationDB, ConversationTurnDB
@@ -30,24 +28,11 @@ TEST_USER_ID = "11111111-1111-1111-1111-111111111111"
 
 
 class TestConversationManagerIntegration:
-    """Test ConversationManager integration with QueryRouter and Redis"""
+    """Test ConversationManager against the database (its only store since #2347)"""
 
     @pytest.fixture
-    async def mock_redis_client(self):
-        """Mock Redis client for testing"""
-        mock_client = AsyncMock()
-        mock_client.ping = AsyncMock(return_value=True)
-        mock_client.get = AsyncMock(return_value=None)
-        mock_client.setex = AsyncMock(return_value=True)
-        mock_client.close = AsyncMock()
-        return mock_client
-
-    @pytest.fixture
-    def conversation_manager(self, mock_redis_client):
-        """ConversationManager with mocked Redis"""
-        return ConversationManager(
-            redis_client=mock_redis_client, context_window_size=10, cache_ttl=300
-        )
+    def conversation_manager(self):
+        return ConversationManager(context_window_size=10)
 
     @pytest_asyncio.fixture(autouse=True)
     async def _fresh_factory(self, monkeypatch):
@@ -159,46 +144,15 @@ class TestConversationManagerIntegration:
 
 
 class TestRecentTurnsWindow:
-    """#1207: the windowing concept lives in the manager's read/cache paths
-    now (the manager-local ConversationContext aggregate was eliminated —
-    the domain Conversation + turn lists express it)."""
-
-    @pytest.mark.asyncio
-    async def test_cache_write_trims_to_window(self):
-        """_save_to_cache keeps at most context_window_size turns"""
-        mock_client = AsyncMock()
-        stored = {}
-
-        async def _setex(key, ttl, value):
-            stored[key] = value
-
-        mock_client.setex = AsyncMock(side_effect=_setex)
-        manager = ConversationManager(redis_client=mock_client, context_window_size=10)
-
-        turns = [
-            ConversationTurn(
-                id=f"turn_{i}",
-                conversation_id="test_001",
-                turn_number=i + 1,
-                user_message=f"Message {i+1}",
-                assistant_response=f"Response {i+1}",
-                entities=[],
-                created_at=datetime.now(),
-            )
-            for i in range(15)  # Exceeds 10-turn window
-        ]
-        await manager._save_to_cache("test_001", turns)
-
-        import json as _json
-
-        cached = _json.loads(stored["conversation_turns:test_001"])
-        assert len(cached["turns"]) == 10
-        assert cached["turns"][-1]["user_message"] == "Message 15"
+    """#1207: the windowing concept lives in the manager's read path now (the
+    manager-local ConversationContext aggregate was eliminated — the domain
+    Conversation + turn lists express it). The cache-write test went with the
+    Redis cache it tested (#2347)."""
 
     @pytest.mark.asyncio
     async def test_get_recent_turns_respects_limit(self):
         """get_recent_turns slices the window to the requested limit"""
-        manager = ConversationManager(redis_client=None)
+        manager = ConversationManager()
         many = [
             ConversationTurn(
                 id=f"turn_{i}",

@@ -75,6 +75,18 @@ class TestHealthAndRootStayOpen:
         assert "version" in body
         assert "git_sha" in body
 
+    def test_health_reports_uptime_so_a_restart_can_be_told_from_idle(self, monkeypatch) -> None:
+        """PA, 2026-11-12: the field beta's /health already has. An int of seconds
+        since this process started, from a clock that cannot go backwards."""
+        from services.mcp.server import app as app_mod
+
+        monkeypatch.setattr(app_mod, "_PROCESS_STARTED", app_mod.time.monotonic() - 125.4)
+        with TestClient(build_asgi_app()) as client:
+            body = client.get("/health").json()
+        assert isinstance(body["uptime_seconds"], int)
+        assert 125 <= body["uptime_seconds"] <= 130
+        assert set(body) == {"status", "service", "version", "git_sha", "uptime_seconds"}
+
     def test_root_is_a_plain_text_pointer(self) -> None:
         app = build_asgi_app()
         with TestClient(app) as client:

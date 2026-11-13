@@ -60,6 +60,7 @@ Three structural decisions worth reading before touching this file:
 from __future__ import annotations
 
 import os
+import time
 
 import mcp.types as mcp_types
 import structlog
@@ -205,6 +206,18 @@ async def _server_card(mcp: FastMCP) -> dict:
     }
 
 
+# When this process started, on a clock that never goes backwards. ``/health`` reports
+# the age so a reader can tell a restart from an idle connection (PA, 2026-11-12: the
+# connector's first read after a long gap answered "Connection closed" twice, and
+# nothing showed whether the app had restarted in between). Beta's ``/health`` has the
+# same field.
+_PROCESS_STARTED = time.monotonic()
+
+
+def _uptime_seconds() -> int:
+    return int(time.monotonic() - _PROCESS_STARTED)
+
+
 def _health_response() -> JSONResponse:
     """Mirror alpha's ``/health`` deploy-identity fields via the shared helper.
 
@@ -226,6 +239,7 @@ def _health_response() -> JSONResponse:
             "service": SERVICE_NAME,
             "version": identity["version"],
             "git_sha": identity["git_sha"],
+            "uptime_seconds": _uptime_seconds(),
         }
     )
 
