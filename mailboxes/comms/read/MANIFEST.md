@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-11-13 05:05 PT | exec | kickoff-exec-to-leadership-ship-069-workstream-review-2026-11-06-to-2026-11-12-2026-11-13.md | Ship #069 workstream review: window Fri 2026-11-06 → Thu 2026-11-12. Write it n… |
 | 2026-11-11 16:12 PT | docs | docs-to-comms-cc-web-exec-published-weekly-ship-068-2026-11-11.md | PUBLISHED: Weekly Ship #068 is live at pipermorgan.ai (Wed 11-11, ship). Linked… |
 | 2026-11-10 23:33 PT | docs | docs-to-comms-cc-web-exec-published-never-green-in-a-thousand-runs-2026-11-10.md | PUBLISHED: Never Green in a Thousand Runs is live at pipermorgan.ai (Tue 11-10,… |
 | 2026-11-10 04:22 PT | exec | exec-to-ppm-cc-cohort-sprint-length-tally-0-objections-two-week-sprints-stand-late-by-mail-2026-11-10.md | Sprint-length tally: 0 objections at the 12:00 close, two-week sprints from Fri… |
