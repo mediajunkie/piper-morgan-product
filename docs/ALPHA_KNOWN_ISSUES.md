@@ -13,6 +13,8 @@ a test row.
 
 ## Known Issues in 0.9.0
 
+The limits Piper itself can describe to you, in plain words, are in [known-limits.md](known-limits.md): counting issues, milestone questions, overdue todos, sharing, several requests in one message, and the iPad portrait layout. Those rows moved there and are not repeated below. What stays here is for testers: items still being re-checked, and interface notes that do not change what Piper says.
+
 ### Connectors
 
 - **Only GitHub and Google Calendar are offered in this beta.** Other connectors are not offered.
@@ -20,21 +22,15 @@ a test row.
 
 ### Chat and data
 
-- **Issue counts and "most recent"** ([#2185](https://github.com/mediajunkie/piper-morgan-product/issues/2185)) — "You have 261 open issues" can count issues assigned to you across all repositories, archived ones included, and "most recent" is not sorted.
-- **Milestone questions** ([#2184](https://github.com/mediajunkie/piper-morgan-product/issues/2184)) — a question about a milestone's issues can be answered with the wrong issues, because no read lists a milestone's issues yet.
 - **"Delete todo 1 and 2"** ([#2025](https://github.com/mediajunkie/piper-morgan-product/issues/2025)) removes only the first, and the second is dropped without a message. Delete them one at a time.
-- **Struck-through overdue todo** ([#1961](https://github.com/mediajunkie/piper-morgan-product/issues/1961)) — a "show my todos" reply can strike through an open overdue todo, which makes it look done.
-- **Sharing fails** ([#2166](https://github.com/mediajunkie/piper-morgan-product/issues/2166)) — sharing a todo, list or project from the UI fails with an error.
-- **Multi-part messages** ([#2041](https://github.com/mediajunkie/piper-morgan-product/issues/2041), [#2030](https://github.com/mediajunkie/piper-morgan-product/issues/2030)) — a write offer or a question from one part can be lost or shown as plain text. Send the parts as separate messages.
 - **Learned-pattern execute route** ([#2208](https://github.com/mediajunkie/piper-morgan-product/issues/2208)) can report a failed action as a success.
 - **Preferences on a cached reply** ([#2056](https://github.com/mediajunkie/piper-morgan-product/issues/2056)) are not always applied.
 
 ### Interface
 
 - **Switching between chats flashes** ([#1515](https://github.com/mediajunkie/piper-morgan-product/issues/1515)) — the whole screen redraws. Nothing is lost.
-- **iPad Safari in portrait** ([#1907](https://github.com/mediajunkie/piper-morgan-product/issues/1907)) — a new chat can show an empty gray panel with the composer pushed off screen.
 - **No reachable control to delete or archive a conversation** in the current navigation ([#1516](https://github.com/mediajunkie/piper-morgan-product/issues/1516)).
-- **"Start private session"** in the History slide-out ([#1164](https://github.com/mediajunkie/piper-morgan-product/issues/1164)) is a display toggle with no backend behavior. Do not rely on it.
+- **"Start private session"** in the History slide-out ([#1164](https://github.com/mediajunkie/piper-morgan-product/issues/1164)) is hidden in this beta, because it is a display toggle with no backend behavior. If you ever see it, do not rely on it.
 
 ### Not for beta use
 
