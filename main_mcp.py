@@ -18,6 +18,7 @@ import uvicorn
 # every other Piper entrypoint does — reused, not reimplemented here.
 import services.infrastructure.logging.config  # noqa: F401
 from services.infrastructure.logging.url_redaction import (
+    RedactionAtStartup,
     install_handler_redaction_filter,
     install_root_redaction_filter,
     install_url_redaction_filter,
@@ -40,7 +41,9 @@ def main() -> None:
     # handler that exists.
     install_url_redaction_filter()
     install_root_redaction_filter()
-    config = uvicorn.Config(app, host=HOST, port=PORT, log_level="info")
+    # RedactionAtStartup runs the install once more when startup has finished, for any
+    # handler created during it.
+    config = uvicorn.Config(RedactionAtStartup(app), host=HOST, port=PORT, log_level="info")
     install_handler_redaction_filter()
     uvicorn.Server(config).run()
 

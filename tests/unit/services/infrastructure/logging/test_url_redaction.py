@@ -201,18 +201,34 @@ class TestURLRedactionFilter:
         redaction_filter.filter(record)
         assert "NOT-A-REAL-VALUE-789" not in record.getMessage()
 
-    def test_a_malformed_record_is_left_alone_and_the_filter_does_not_raise(self, redaction_filter):
+    def test_a_malformed_record_is_written_redacted_not_left_raw(self, redaction_filter):
+        """Arch, 2026-11-12: when the arguments cannot be merged, the handler would
+        print the raw message and arguments in its error report. The filter builds one
+        line from both, redacts it and clears the arguments, and never raises."""
         record = logging.LogRecord(
             name="test",
             level=logging.WARNING,
             pathname="test.py",
             lineno=1,
             msg="two placeholders %s %s",
-            args=("only-one",),
+            args=("https://example.invalid/v1?token=NOT-A-REAL-VALUE-321",),
             exc_info=None,
         )
         assert redaction_filter.filter(record) is True
-        assert record.args == ("only-one",)
+        assert record.args is None
+        message = record.getMessage()  # no longer raises
+        assert "NOT-A-REAL-VALUE-321" not in message
+        assert "two placeholders" in message and "could not be merged" in message
+
+    def test_oauth_code_and_state_are_redacted_as_query_parameters_only(self, redaction_filter):
+        """Arch, 2026-11-12: only straight after ``?`` or ``&``, so an ordinary
+        ``status_code=200`` or ``state=ready`` survives."""
+        line = 'GET /cb?code=NOT-A-CODE-1&state=NOT-A-STATE-2&plain=ok HTTP/1.1" 200'
+        out = redaction_filter.redact_message(line)
+        assert "NOT-A-CODE-1" not in out and "NOT-A-STATE-2" not in out
+        assert out == 'GET /cb?code=[REDACTED]&state=[REDACTED]&plain=ok HTTP/1.1" 200'
+        plain = "status_code=200 state=ready code=7 exit_code=0"
+        assert redaction_filter.redact_message(plain) == plain
 
     def test_a_record_with_nothing_to_redact_and_no_arguments_is_untouched(self, redaction_filter):
         payload = {"event": "x"}
