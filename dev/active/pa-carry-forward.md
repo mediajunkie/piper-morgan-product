@@ -8,29 +8,31 @@
 
 ---
 
-## Now (written 2026-11-11 21:50; replace, don't annotate)
+## Now (written 2026-11-12 21:49; replace, don't annotate)
 
-- **Served:** beta `d4fd55e6c5` (11-12 11:52, #2342 build, inert). MCP `/health` 200. Read the live sha from `/health`, not from here.
-- **Since #2282 (11-05), alpha redirects to beta** except the MCP OAuth paths, the well-knowns, `/login`, the login POST, `/static`, `/assets`, `/health`. **Scripts target beta.**
-- **PA's served-check lane is DOWN since 11-10 18:25.** Cause confirmed (10-22 log line 23): the `~/.piper-shared` credential files are `key: value`, the drivers (`twoturn.py`, `turn.py`) expect `key=value`, and the old process-substitution conversion is now classifier-refused. With Exec and Lead for xian; on PM Attention. Don't retry or route around it. **If 11-12 ends with no ruling, mail Exec once (decision in the subject).** Lesson: log the exact driver invocation (credential path shape, never contents) on every served run.
-- **#2328 (pronoun target asks which one):** OPEN, 0 of 5 served. Web is blocked on the same file. Once unblocked, run Lead's 18:58 five cases (memo in `mailboxes/pa/read/`).
-- **xian's keychain rule (11-11 11:12, decisions.log):** nothing we run reads his login keychain without permission. PA's 1386 harness fallback is removed (`5ea17b4b6b`); the shared binder is fixed (#2340, `5f31a9fb76`). Rule-7 screens wait on xian's key handover (Lead via Exec).
-- **Inspecting an old commit:** use a scratch `git worktree add --detach`, never `git checkout <sha>` in this worktree (11-11 slip).
-- **No python with `requests` on PATH:** make a scratch venv (`python3 -m venv <scratch>/venv && pip install requests`) before running a driver.
-- **Test account web-seed-1386 (11-09 21:47, untouched since):** 8 open, in order: urgent task (urgent), zz throwaway one, zz throwaway two, audit the current navigation, **review prs (x2) on line 5**, review the deployment plan, draft the launch checklist. No reminders, no clear preference.
-- PA can't sign in to other seats' accounts: the permission classifier denies it even with the owner's yes.
-- **MCP app on `4666e38493` (v21, 11-12 13:12)**, has #2342's fixes; recipe step 2a done and PA-verified. Connector baseline 13:18: github-issues `available: true`, total 366.
-- **#2342 (GitHub App):** unit 1 on main `6eb68ac7a4`, inert until xian registers the App and sets both App variables. Then PA checks the connector path served (a GitHub read through the Claude connector on an App grant). The main-app pass depends on `fly.toml` staying warm; Arch ordered a test pin (built). MCP app custody: only `GITHUB_APP_SLUG` on `piper-morgan-mcp` (comment in `fly.mcp.toml`, `841ef936a9`); set it there once the slug exists.
-- **#2174:** github-mcp-server version line lands from xian's #2341 run; PA reads it there, no action.
-- **Q9 also:** #2313 ("delete A and B") on its build; CXO's #2294 bulleted-list row.
-- **#2288** (card says "Connected." on a 401 grant): served row needs a dead-grant account; xian's word for Web.
-- **#2242 (Q2):** held-token row, on xian's `mcp_allow.py remove` relayed by Exec.
-- **#2238:** xian's Notion key on staging, then Web runs `dev/2026/11/01/notion-chat-check-2238.py`.
-- **Fresh-account checks** (Q8): on the invite hold lifting (#2261, #2282, #2292, #2322 done row) and HOST's slot with xian.
-- **R7 / plugin (#1282):** README edit needs a permitted push or xian's hand. Standing item 2.
-- **Sprints are two weeks from Fri 11-13**; the Ship stays weekly.
-- **Mail v4:** every fire checks `scripts/mail4.py inbox` as well as the v3 inbox; v3 is the fallback until 11-23.
-- **START habit:** `python3 scripts/owed-scan.py --role pa`.
+- **Served:** beta `d4fd55e6c5` (11-12 11:52; #2342 App mode ON since xian's 17:25 sitting). MCP app `4666e38493` (v21). Read the live sha from `/health`, not from here.
+- **#2342 cutover APPLIED 11-12 19:06:** 10 of 10 classic tokens revoked at GitHub, 0 left. App "Any account", alpha and beta callbacks.
+- **#2342 connector rows (PA's, on xian's account via this session's connector, `piper://me/github/issues`):**
+  - Row 1 (cutover line) PASS 19:15, and CXO ruled PASS. On #2342 (issuecomment-6842746817).
+  - **Next, row 2:** on Exec's word that xian has reconnected (sign-in only, nothing installed), read and expect the install line. If the slug isn't on the MCP app, it gives the "on our side" line instead, which is itself the finding.
+  - Row 3: after he installs (can be his `mediajunkie` account), read again.
+  - Row 4 (UNREACHABLE): mark not served.
+  - Quote each reply to Exec, cc CXO, HOST, Lead, Arch, and on #2342.
+- **Connection closed:** the first read after a long gap failed at 13:18 and 19:15; the warm read at 19:26 served. Count first-read failures at rows 2 and 3 and report them to CXO (E6 question, not filed).
+- **Beta promotion** refused by the gate at 20:36 (#2363: the ancestor walk follows the first parent only). It goes 11-13 after 07:00 with #2350 and #2362. PA reads only after `/health` shows the announced commit, never during a promotion.
+- **MCP app redeploy after rows 2 to 4 close** (xian's `scripts/deploy-mcp.sh`): it brings #2362 redaction (the MCP entry point had none) and `uptime_seconds` (`f326229e78`). Re-check `7e32d63f68` is an ancestor after it. Arch agreed: no MCP deploy mid-rows.
+- **Main Tests red at 21:47** (run 43370392319, `875c051bee`, new failure `test_install_url_redaction_filter_adds_to_httpx`); mailed Lead `01M79Q7PPX3K0Y7FP58PJ0F5X2`. Re-check at START.
+- **PA's served-check lane is DOWN since 11-10 18:25** (the 1386 credential file is `key: value`; the drivers want `key=value`; the read is classifier-refused). The decision reminder went to Exec 11-12 21:48 (`01M79Q8226TJGVZ9XK9FAC0K1X`); don't re-send. Don't retry or route around it.
+- **#2328:** OPEN, 0 of 5 served. Lead's 18:58 cases are in `mailboxes/pa/read/`.
+- **xian's keychain rule (11-11):** nothing we run reads his login keychain without permission.
+- **Inspecting an old commit:** scratch `git worktree add --detach`, never `git checkout <sha>` here.
+- **No python with `requests` on PATH:** use a scratch venv before running a driver.
+- **Test account web-seed-1386 (11-09 21:47, untouched since):** 8 open, unchanged from the 11-11 list.
+- PA can't sign in to other seats' accounts (classifier).
+- **#2174:** github-mcp-server version line from xian's #2341 run; read only.
+- **Q9:** #2313 on its build; CXO's #2294 bulleted-list row. **#2288**, **#2242**, **#2238**: see PM Attention. **Fresh-account checks (Q8):** on the invite hold lifting. **R7 (#1282):** README needs a permitted push.
+- **mail4 gotchas:** `--cc a b c` (space-separated, not commas); `--type` is one of fyi, task, decision-request, ruling-relay, reply, canary. A `cannot lock ref` on fetch is a concurrent fetch: retry.
+- **Sprints are two weeks from Fri 11-13.** Mail v4 is checked every fire; v3 is the fallback until 11-23. START: `python3 scripts/owed-scan.py --role pa`.
 
 ## PM Attention
 
@@ -39,7 +41,7 @@
 - 🔒 **#2242 held-token row**, since 11-03: xian runs `mcp_allow.py remove` on his account (then re-adds).
 - 🔒 **#2238 Notion**, since 11-01: xian puts a throwaway Notion key on staging.
 - 🔒 **#2288 served row**, since 11-05: xian's word that Web may use an untouched dead-grant test account.
-- 🔒 **PA served-check sign-in**, since 11-10 18:25: the classifier denies PA reading `~/.piper-shared/web-seed-1386-credentials-2026-10-20.txt` (twoturn.py finds no `username=` key; listing field names was denied too). Cause confirmed 11-11: the file is `key: value`, the drivers want `key=value`. Unblocks on either: xian allows the read, or a `username=`/`password=` file for the account. Sent to Lead, cc Exec 18:25 (e1d0c6b3b). Until then served checks go to Web (Lead routed #2328 there at 18:37).
+- 🔒 **PA served-check sign-in**, since 11-10 18:25 (decision reminder to Exec 11-12 21:48, 01M79Q8226TJGVZ9XK9FAC0K1X): the classifier denies PA reading `~/.piper-shared/web-seed-1386-credentials-2026-10-20.txt` (twoturn.py finds no `username=` key; listing field names was denied too). Cause confirmed 11-11: the file is `key: value`, the drivers want `key=value`. Unblocks on either: xian allows the read, or a `username=`/`password=` file for the account. Sent to Lead, cc Exec 18:25 (e1d0c6b3b). Until then served checks go to Web (Lead routed #2328 there at 18:37).
 - **Rename PA (xian's idea 10-28):** trigger was MVP reading 0 open, which happened 10-30. Raised to Exec 11-06 (late). xian's call; no work blocked.
 
 ## Cadence
