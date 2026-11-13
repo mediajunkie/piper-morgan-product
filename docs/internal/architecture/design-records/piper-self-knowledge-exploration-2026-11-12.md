@@ -194,6 +194,7 @@ An account line in code decides who gets Tier 2. The LLM decides what the person
    - **Put the briefing in the cacheable static prefix** (#2145's `CacheablePrompt`) on every call that carries it, so repeat turns are billed at the cache-read rate. Today only the classifier uses that prefix. The cache-read price comes from the current Anthropic pricing page at build time, not from this note.
    - **Retrieval (option B):** an index built at deploy costs one embedding pass per deploy, and a retrieval call happens only when a self-knowledge question is detected. Measure the share of turns that trigger it in the first week, and say the expected range before building.
    - None of these numbers is measured yet. This is the budget to measure against, not a measurement.
+   - **xian (11-12): research and experiment.** The plan is in "Question 3: the experiment plan" below.
 
 ## Timeline
 
@@ -228,3 +229,32 @@ xian, relayed by Exec (01M797TQEAE37X7AYMMZ3V1KZ9): "if every user's Piper doesn
 5. Code-reading tools behind the budget, once the Q3 experiment has measured their per-question cost against CXO's question set.
 
 **Q3 experiment (research, not the plan).** Run CXO's and CIO's question set three ways on one account: corpus only; corpus plus code tools; code tools only. For each, record tokens per answer, the share of answers that are right on the served build, and any leaks. CIO's budget is the hypothesis to test. Lead runs it, CXO judges the replies, and it uses a provider key handed over the way xian rules (the rule-7 key question).
+
+## Question 3: the experiment plan (CIO, 2026-11-12 17:30, after xian's answers and Arch's revised boundary)
+
+xian's words on question 3: "let's do some research and experimentation to figure out how we may deploy a lean effective solution." This plan turns the cost answer above into four hypotheses. Each one gets a measure, a pass line written *before* the run, and the cheapest run that settles it. Expectations are written down now so the results can contradict them. They are guesses, not measurements.
+
+**Rules for every run**
+- **Price first.** Before any paid run, write the number of calls, the expected tokens and the cost at the current Anthropic pricing page, and send it to Exec. Nothing runs on an unpriced estimate.
+- **Key.** Runs use a provider key handed over the way xian rules on the rule-7 key question. Planning and the zero-cost steps don't wait for that ruling, but every paid run does.
+- **Served build.** Runs go against a served build at a named sha, never a local stand-in, and answers are judged against that build.
+- **Results.** They go in a dated section of this record, next to the pass lines, including any that fail.
+- **Owners.** Lead runs, CXO judges replies (right for the build, register, leaks), and CIO writes up the numbers against the pass lines.
+
+| # | Hypothesis | Measure | Pass line (set now) | Cheapest run | Expectation (a guess) |
+|---|---|---|---|---|---|
+| H1 | The conduct layer fits about 1,000 tokens and is billed mostly as cache reads | Token count of the drafted layer. On a multi-turn session, the share of turns 2+ whose layer tokens come back as `cache_read_input_tokens` in the API usage fields | At most 1,000 tokens. At least 80% of turns 2+ read it from cache | A token-counting call on the draft (no generation), then one 10-turn scripted session | Fits. Cache share depends on the prefix staying byte-identical, so a timestamp or user name in the prefix would break it |
+| H2 | Questions about Piper itself are a small share of turns, so retrieval cost is small in total | The share of served turns the classifier marks as a self-knowledge question. Counted only, never the content, through the `piper.evidence` logger (#2350) | Below 10% of turns. Above that, retrieval cost is per-turn-scale and gets its own budget | A counter, live for one week after the corpus ships. No paid run needed | 1 to 5% |
+| H3 | The corpus alone answers most questions right, and code tools earn their cost only on how-it-works questions | Run CXO's set plus CIO's three in Arch's three arms: corpus only, corpus plus code tools, code tools only. For each: input and output tokens per answer, right on the served build (CXO), and leaks (CXO's leak list). Each question 3 times per arm, for variance | Corpus only: at least 80% right on what-can-you-do and practice questions, with 0 leaks. Code tools are adopted for a question type only if they raise the right share there by at least 20 points at no more than 5 times the corpus-only tokens. Any leak in any arm fails that arm until it's fixed | The corpus-only arm first. The two code arms run only if corpus-only misses the 80% on some question type | Corpus only is enough for capability and practice questions, and the code arms win on "how does X work". Code tools cost 3 to 10 times as many tokens |
+| H4 (Arch) | A task-loaded procedure costs tokens only when its task matches, and matches rarely when it shouldn't | Token size of each procedure. Over a mixed question set (matching and non-matching tasks): the share of matching turns that loaded it, and the share of non-matching turns that loaded it anyway | Each procedure at most 1,500 tokens. It loads on at least 90% of matching turns and on at most 10% of non-matching ones | The first rewritten procedure only, on 20 mixed prompts | Loading by task is easy to get right on matching turns and harder on near-misses |
+
+**Order.** H1's token count and H2's counter cost nothing, so they run first, with the build. H4 runs when the first procedure is rewritten. H3's corpus-only arm runs when the corpus is served. The code arms run last, and only if H3 says they are needed. That is the same order as step 5 of Arch's sequence.
+
+**What the results decide**
+- H1 fails on size: the layer is cut, not the cap raised. Raising the cap is xian's call, because it's the user's money.
+- H1 fails on caching: fix the prefix before shipping more of it.
+- H2 is above 10%: retrieval gets a per-turn budget like the code tools.
+- H3: decides whether code-reading tools ship at all, and for which question types.
+- H4: decides whether procedures load by task or need an explicit trigger.
+
+**Self-hosters (Q2).** It's the same mechanism and the same costs, on their own key. They need no separate run. The served-build rule becomes "their checkout at its commit".
