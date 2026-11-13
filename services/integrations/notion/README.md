@@ -22,10 +22,7 @@ The integration uses **macOS Keychain** as the primary credential store (worktre
 2. Name it (e.g. "Piper Alpha")
 3. Capabilities: **Read content**, **Read user information** for search-only scope. (Skip write capabilities until #1080 NOTION-WRITE activates.)
 4. Save → copy the **Internal Integration Token** (starts with `ntn_*` or `secret_*`)
-5. Store via macOS keychain:
-   ```
-   security add-generic-password -s piper-morgan -a notion_api_key -w 'YOUR_TOKEN' -U
-   ```
+5. Enter the token in the password field at Settings → Integrations → Notion. That route is offered on the staging app only. Notion is not offered in this beta, self-hosted installs included, and the route answers "Notion isn't available in this beta yet." Do not put the token in a command or a shell profile, because it stays in shell history.
 6. Open each Notion page/database you want Piper to search → ⋯ menu → **Connections** → add your integration. (Sub-pages inherit.)
 
 ### Verify
@@ -74,11 +71,7 @@ NotionIntegrationRouter
 
 ### Quick Start
 
-**Option 1: Environment Variable** (recommended for sensitive data):
-```bash
-export NOTION_API_KEY="secret_your_integration_token"
-export NOTION_WORKSPACE_ID="workspace_id"  # Optional
-```
+**Option 1: Settings page.** Enter the token in the password field at Settings → Integrations → Notion (staging app only today). Do not put it in an `export` line or any command.
 
 **Option 2: PIPER.user.md** (user-specific config):
 ```yaml

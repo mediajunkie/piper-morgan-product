@@ -44,7 +44,7 @@
    python main.py
    ```
    It prints the setup address, `http://localhost:8001/setup`. Open it in your browser.
-7. **Connect your AI.** On the setup page choose Check System. Under "Connect Your AI" pick your provider and press the button that uses a saved key. It is labeled **Use Keychain** today and will read **Use saved key** after a wording fix. Either way, on your own install it uses the key you stored in step 5, not anything from your computer's keychain.
+7. **Connect your AI.** On the setup page choose Check System. Under "Connect Your AI" pick your provider and press **Use saved key**. That uses the key you stored in step 5. **(an install cloned before 2026-11-12 shows the older label "Use Keychain" for the same button)**
 8. **Create your account.** Piper is invite-only while it is in private beta, and that includes your own copy. A code from the hosted beta does nothing on your machine, because your install checks codes against your own database, which starts empty. So you make your own. Open a second terminal in the same folder, activate the environment, and run:
    ```bash
    source venv/bin/activate
@@ -56,6 +56,10 @@
 ## Check it works
 
 Ask Piper a short question in the chat. **(not yet run: this needs a real provider key and was only run with a stand-in key so far)** If it answers, the key and the install are good.
+
+## What your install offers
+
+A self-hosted install offers the same connectors as the private beta, GitHub and Google Calendar. Notion and Slack are not offered in this beta, self-hosted installs included. Calendar on your own install needs your own Google OAuth client ID and secret, entered on the setup page or in Settings. **(not yet run by Docs)**
 
 ## Update later
 

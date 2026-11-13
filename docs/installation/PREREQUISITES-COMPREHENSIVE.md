@@ -84,11 +84,7 @@ Enter your provider key at a hidden prompt. See the [self-host guide](./self-hos
 
 ### Optional: Integration Credentials
 
-```bash
-export NOTION_API_KEY="..."              # Notion integration
-export SLACK_BOT_TOKEN="xoxb-..."        # Slack bot
-export SLACK_SIGNING_SECRET="..."        # Slack signing secret
-```
+Notion and Slack are not offered in this beta, self-hosted installs included, so there is nothing to set up for them. GitHub and Google Calendar connect from Settings → Integrations in the browser after Piper is running.
 
 ---
 
