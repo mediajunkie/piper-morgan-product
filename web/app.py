@@ -387,6 +387,12 @@ RouterInitializer.mount_router(
 )
 RouterInitializer.mount_router(
     app,
+    "web.api.routes.admin_ops",
+    "router",
+    "Admin operations reads and narrow account flags",  # Issue #2327
+)
+RouterInitializer.mount_router(
+    app,
     "web.api.routes.admin_test_preferences",
     "router",
     "Admin test-account preference reset",  # Issue #2325

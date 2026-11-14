@@ -1065,6 +1065,31 @@ async def delete_test_user_fully(session, user_id: str) -> None:
 
 
 @pytest.fixture(autouse=True)
+def _2327_no_floored_action_counter_writes(request, monkeypatch):
+    """#2327: tests must not write to the floored-action counter.
+
+    Every chat turn that reaches a floor fallthrough site with an action name outside
+    the vocabulary calls ``floored_action_audit.note_floored_action``, which upserts a
+    row. Hundreds of tests drive those sites with made-up names ("unknown", "test",
+    "analyze_vibes_unrailed"), so on the first whole-tree run with the audit in place
+    they wrote 15 rows of test names into the shared developer database
+    (2026-11-14). The counter write is replaced by a no-op for every test except the
+    counter's own database-layer file, where the write IS the test subject. The
+    evidence line and the vocabulary check still run for real."""
+    if "test_floored_action_counter_2327" in str(request.node.fspath):
+        return
+    try:
+        from services.intent_service import floored_action_audit
+    except Exception:  # an import failure is the subject of other tests, not this fixture
+        return
+
+    async def _no_write(name, site):
+        return None
+
+    monkeypatch.setattr(floored_action_audit, "_increment", _no_write)
+
+
+@pytest.fixture(autouse=True)
 def _1452_usage_cap_headroom(request, monkeypatch):
     """#1452: the instance-wide concurrency cap (10) is an OPS guard, not
     test-subject behavior — sweep residue in the shared dev Redis fills the

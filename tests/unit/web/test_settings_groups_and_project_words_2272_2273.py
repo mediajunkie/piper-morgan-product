@@ -25,7 +25,12 @@ GROUPS = [
     ),
     ("About you", ["/account", "/settings/preferences", "/personality-preferences", "/learning"]),
     ("Privacy and trust", ["/settings/privacy", "/transparency"]),
-    ("For admins and developers", ["/settings/invites", "/settings/advanced"]),
+    # #2327: Account flags is an admin-only card (it renders only for an admin), after
+    # Invites, in the admins' group.
+    (
+        "For admins and developers",
+        ["/settings/invites", "/settings/account-flags", "/settings/advanced"],
+    ),
 ]
 
 
@@ -39,7 +44,8 @@ def test_four_groups_in_order_with_their_cards():
 
 def test_every_card_has_a_group_and_integrations_is_first():
     hrefs = re.findall(r'<a href="([^"]+)" class="settings-card">', SETTINGS)
-    assert len(hrefs) == 12 and hrefs[0] == "/settings/integrations"
+    # 13 since #2327 added the admin-only Account flags card (12 before).
+    assert len(hrefs) == 13 and hrefs[0] == "/settings/integrations"
 
 
 def test_group_headings_are_h2_labelling_their_section():
