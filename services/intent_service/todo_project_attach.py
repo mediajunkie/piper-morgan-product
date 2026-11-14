@@ -68,8 +68,8 @@ PICK_DECLINE_LINE = "Okay, I haven't added anything. Nothing has been changed."
 # #2301. CXO 11-06 11:14 (verbatim): the empty project. The header for a project
 # with todos is format_todo_list_grouped(owner=...).
 PROJECT_EMPTY_LINE = "{project} has no todos yet."
-# NOT YET RULED by CXO (asked in the 2301 build report): the read's not-found,
-# no-name, several-match and decline lines, shaped on the ruled create lines.
+# CXO 11-14 (read-lines mail, PASS): the read's not-found, no-name and
+# several-match lines. "show my projects" is a corpus row (list_projects).
 READ_NOT_FOUND_LINE = (
     'I couldn\'t find a project called "{name}". Check the name, or say "show my projects".'
 )
@@ -78,14 +78,19 @@ READ_SEVERAL_QUESTION = (
     "I found more than one project with that name: {listed}. "
     "Which one do you mean? Say the number."
 )
-READ_PICK_DECLINE_LINE = "Okay. Nothing has been changed."
+# CXO 11-14 (read-lines mail): a read changes nothing, so the decline says what
+# won't happen. The not-armed read line is Arch's suggested form, CXO's to confirm.
+READ_PICK_DECLINE_LINE = "Okay, I won't list anything."
+READ_NOT_ARMED_LINE = "I found more than one project with that name."
 PURPOSE_ADD = "add"
 PURPOSE_READ = "read"
 PRINCIPAL_MISMATCH_LINE = "Let's hold off on that — nothing has been changed."
 # CXO 11-14 (settled): no rename path exists today (Arch, from source) and the
 # names differ at most in case, so the line stops here.
 NOT_ARMED_LINE = "I found more than one project with that name, so I haven't added anything."
-# NOT YET RULED by CXO: the project read failed before the write (nothing written).
+# CXO 11-14 (PASS): the project read failed before the write (nothing written).
+# The second sentence is the rail's own couldn't-check retry sentence
+# (rail_read_failure.RAIL_READ_FAILED_TEMPLATE), so the two failures sound alike.
 RESOLVE_FAILED_LINE = (
     "I couldn't check your projects just now, so I haven't added anything. "
     "Try again in a moment; if it keeps failing, tell us."
@@ -103,7 +108,8 @@ _MAX_ANSWER_WORDS = 3
 class ProjectRef:
     """A resolved project: its id and its stored name (never the typed one).
     ``created`` is the stored creation date as ``3 Nov`` (the row's own
-    ``created_at``, UTC as stored; never inferred), or "" when the row has none."""
+    ``created_at``, never inferred), on the person's stored timezone when they have
+    one (CXO 11-14), else as stored; "" when the row has no date."""
 
     id: str
     name: str
@@ -162,22 +168,45 @@ def router_project_name(intent: Any) -> Optional[str]:
     return name
 
 
-def _created_label(project: Any) -> str:
+def _created_label(project: Any, tz_name: Optional[str] = None) -> str:
     created = getattr(project, "created_at", None)
+    if created is None:
+        return ""
+    if tz_name and getattr(created, "tzinfo", None) is not None:
+        try:
+            from zoneinfo import ZoneInfo
+
+            created = created.astimezone(ZoneInfo(tz_name))
+        except (KeyError, ValueError, OSError):
+            # An unknown zone name: the date reads as stored, never guessed.
+            logger.warning("todo_project_created_zone_unknown")
     try:
-        return f"{created.day} {created.strftime('%b')}" if created is not None else ""
+        return f"{created.day} {created.strftime('%b')}"
     except (AttributeError, ValueError):
         return ""
 
 
-def exact_matches(projects: List[Any], name: str) -> List[ProjectRef]:
+async def _stored_timezone(user_id: Any) -> Optional[str]:
+    """The person's stored IANA zone, or None (then dates read as stored)."""
+    try:
+        from services.utils.user_timezone import get_user_timezone
+
+        return await get_user_timezone(user_id)
+    except Exception as e:  # silent-ok: logged; the date label falls back to the stored value
+        logger.warning("todo_project_timezone_failed", error=str(e))
+        return None
+
+
+def exact_matches(
+    projects: List[Any], name: str, tz_name: Optional[str] = None
+) -> List[ProjectRef]:
     """The projects whose whole stored name equals ``name``, case-insensitively, in
     the order given."""
     key = _key(name)
     if not key:
         return []
     return [
-        ProjectRef(id=str(p.id), name=str(p.name), created=_created_label(p))
+        ProjectRef(id=str(p.id), name=str(p.name), created=_created_label(p, tz_name))
         for p in projects or []
         if _key(getattr(p, "name", None)) == key
     ]
@@ -210,6 +239,11 @@ async def resolve(intent: Any, user_id: Any) -> Optional[Resolution]:
     if name is None:
         return None
     matches = exact_matches(await _active_projects(str(user_id)), name)
+    if len(matches) > 1:
+        # Only a several-match pick shows dates; put them on the person's clock.
+        tz_name = await _stored_timezone(user_id)
+        if tz_name:
+            matches = exact_matches(await _active_projects(str(user_id)), name, tz_name)
     logger.info("todo_project_resolved", matches=len(matches))
     return Resolution(name=name, matches=matches)
 

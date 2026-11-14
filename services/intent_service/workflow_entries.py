@@ -921,8 +921,9 @@ async def run_list_project_todos_workflow(
             purpose=_attach.PURPOSE_READ,
         )
         if not _attach.arm_pick(intent_service, record, session_id, user_id):
+            # Arch 11-14: the name was clear here; say what is true, ask nothing.
             return IntentProcessingResult(
-                success=True, message=_attach.READ_NO_NAME_LINE, intent_data=data
+                success=True, message=_attach.READ_NOT_ARMED_LINE, intent_data=data
             )
         return IntentProcessingResult(
             success=True,
@@ -3543,10 +3544,14 @@ def register_default_workflows() -> None:
     list_project_todos_entry = WorkflowEntry(
         entry_point=run_list_project_todos_workflow,
         effect=EffectClass.READ,
+        # Arch's edit, 11-14 (01M7DE33RF…): the pointer sentence is there because
+        # the screen measures exactly that split; keep or trim it as the first
+        # screen shows.
         description=(
-            "List the todos in ONE of the person's projects, the project they "
-            'name ("what\'s in my Mobile Redesign project?"); put that '
-            "project's name in args as project (#2301)"
+            "List the open todos in ONE project the person names (\"what's in "
+            "my Mobile Redesign project?\"); put that project's name in args as "
+            "project, in their words. For all todos use list_todos_query; for "
+            "how a project is going use get_project_status. (#2301)"
         ),
         requires_context=["intent", "intent_service"],
         action_triggered=True,
