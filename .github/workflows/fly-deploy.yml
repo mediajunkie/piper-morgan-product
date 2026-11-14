@@ -393,6 +393,15 @@ jobs:
           # pushes (186 on 10-14, all logs and mail), so the gate refused a sha whose code WAS green.
           # Now: one call lists Tests' 100 newest run heads on main; the walk is a local rev-list
           # (2000 commits) intersected with that set, so its bound is commits and runs, not calls.
+          #
+          # Refinement (Lead, 2026-11-13, issue 2363, xian's yes relayed by Exec 17:41; Arch and CIO
+          # agreed the form 11-12): the walk starts from `${SHA}^@`, EVERY parent of the served
+          # commit, not `${SHA}^`, the first parent only. Seats push merge commits whose first
+          # parent is the seat's branch line and whose second parent is main, and Tests runs exist
+          # only for main heads; the first-parent walk looked down the wrong line and refused code
+          # that was green (run 43366687006). Acceptance is unchanged: it still rests on the diff of
+          # tested paths between the chosen ancestor and the served commit being empty and that
+          # ancestor's Tests being success, so the worst a wider walk can do is refuse.
           runs_conclusion() {
             gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/test.yml/runs?head_sha=$1&per_page=20" \
               -q '[.workflow_runs[] | select(.status=="completed") | .conclusion] | if index("success") then "success" else (.[0] // "none") end'
@@ -414,20 +423,20 @@ jobs:
           fi
           run_heads="$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/test.yml/runs?branch=main&per_page=100" -q '.workflow_runs[].head_sha')"
           anc=""; anc_conc="none"
-          for c in $(git rev-list --max-count=2000 "${SHA}^"); do
+          for c in $(git rev-list --max-count=2000 "${SHA}^@"); do
             if grep -qx "$c" <<<"$run_heads"; then anc="$c"; anc_conc="$(runs_conclusion "$c")"; break; fi
           done
           if [ -z "$anc" ]; then
-            echo "::error title=No Tests run found::None of the last 2000 ancestors of ${SHA} is the head of one of Tests' 100 newest runs on main. Nothing was promoted."
+            echo "::error title=No Tests run found::None of the last 2000 ancestors of ${SHA} (searched from every parent, not the first only) is the head of one of Tests' 100 newest runs on main. Nothing was promoted."
             exit 1
           fi
           changed="$(git diff --name-only "$anc" "$SHA" | grep -E "$TESTED_PATHS_RE" || true)"
           if [ -n "$changed" ]; then
-            echo "::error title=Tests never ran on the code staging serves::${SHA} has no Tests run and changes tested paths since ${anc}: $(echo "$changed" | head -5 | tr '\n' ' '). Nothing was promoted."
+            echo "::error title=Tests never ran on the code staging serves::${SHA} has no Tests run and changes tested paths since ${anc} (its nearest tested ancestor, searched from every parent): $(echo "$changed" | head -5 | tr '\n' ' '). Nothing was promoted."
             exit 1
           fi
           if [ "$anc_conc" != "success" ]; then
-            echo "::error title=Tests not green on the staging code::Tests on ${anc} (the nearest tested ancestor of ${SHA}; only untested paths changed since) reads '${anc_conc}'. Nothing was promoted. Wait for it, then dispatch again."
+            echo "::error title=Tests not green on the staging code::Tests on ${anc} (the nearest tested ancestor of ${SHA}, searched from every parent; only untested paths changed since) reads '${anc_conc}'. Nothing was promoted. Wait for it, then dispatch again."
             exit 1
           fi
           echo "Tests concluded success on ${anc}; ${SHA} differs from it only outside Tests' trigger paths ($(git diff --name-only "$anc" "$SHA" | wc -l | tr -d ' ') files)"
