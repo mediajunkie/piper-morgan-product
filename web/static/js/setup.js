@@ -261,6 +261,9 @@
             llmKeyInput.disabled = false;
             llmKeyInput.placeholder = providerPlaceholders[provider] || '';
             llmKeyLabel.textContent = providerLabels[provider] || 'API Key';
+            // #2274 (CXO 11-04): the subscription sentence is about Anthropic only.
+            const subscriptionNote = document.getElementById('llm-key-subscription-note');
+            if (subscriptionNote) subscriptionNote.hidden = provider !== 'anthropic';
             validateLlmBtn.dataset.provider = provider;
             validateLlmBtn.disabled = false;
             keychainLlmBtn.dataset.provider = provider;
