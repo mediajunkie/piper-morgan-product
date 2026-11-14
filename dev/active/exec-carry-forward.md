@@ -1,41 +1,40 @@
 # Exec carry-forward
 
-**Rewritten 2026-11-12 22:03 PST at STOP** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/12/2026-11-12-0423-exec-code-log.md` (closed).
+**Rewritten 2026-11-13 22:01 PST at STOP** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/13/2026-11-13-0519-exec-code-log.md` (closed).
 
 **STATE: LIVE on LaunchAgent** `com.xian.pm-exec-cycle`, firing at :01 on hours 6, 10, 14, 18 and 22. Empty CronList is normal. Liveness is Pard's.
 
-**Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake. Last check 22:01 Thu 11-12, 0 unacked. Ack only the explicit IDs just read; never loop over a fresh `inbox --ids`. A mail4 "NOT MEASURED" on a fetch-lock race goes away on a retry. My own `grep -v "^- "` filter drops a memo's bullet lines, so read memos unfiltered when the bullets matter.
+**Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake. Last check 22:01 Fri 11-13, 0 unacked. Ack only explicit IDs just read; never loop over a fresh `inbox --ids`. Acks can be slow under fetch contention; run long batches in the background.
 
 ## Rollup
-v966 (artifact version 981 after the timestamp fix), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`; history `dev/active/exec-rollup-verification-history.md`. Edit with Python replace plus assert. Current at 22:02 Thu 11-12, top card only. The "Your word" items are as of 18:04 and still valid.
+v988 (artifact version 1003), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp. Content current as of 19:37 Fri 11-13; at START re-check the header order against mail.
 
-## Where things stand (end of 11-12)
-- **Main** 12/12 green at 22:01. Beta serves `d4fd55e6c5`, MCP `4666e38493`.
-- **#2342 switchover DONE** at 19:06 PT: 10 of 10 classic tokens revoked at GitHub, 0 left. The half-state window ran 17:26–19:06 (HOST recorded it as 100 min late). Row 1 (connector cutover line) PASS (PA read, CXO ruled). **Next: xian reconnects GitHub, sign-in only, no install.** Exec tells PA, PA reads row 2, then xian installs on his own account, then row 3. Row 4 is marked not served. HOST still needs the secret's creation date and the masked client ID (xian, from the App page). The optional `fly secrets list` names-and-dates read was offered.
-- **Promotion** refused at 20:36 by the promote gate's first-parent walk (#2363). It goes Fri after 07:00, carrying #2350, #2362, #2333, #2348, #2351 words, #2353 and #2347. **#2363 yes/no** for xian (`^@`, Arch and CIO agree). Lead's workaround: push last before dispatch.
-- **PDR-009 public-beta gate: xian yes.** PUB cleared by PPM per item. #1612 is off the gate. Estimate: likeliest sprint 6–7 (01-08 to 02-04), earliest sprint 5. Map: `docs/internal/planning/public-beta-gate-map-2026-11-12.md`. Legal review #2063 is xian's to start.
-- **Local running (#2351):** helper `scripts/local_key_setup.py` is on main. Docs' guide `docs/installation/self-host-guide.md` gets its run-check Mon 11-16. Invite code stays (xian). A self-hoster mints their own code. Keychain opt-in only (#2353 validated). Key-in-docs lint is wired.
-- **Self-knowledge #2349:** xian said Tier 1 first, leans 1+2+4, Q1 yes (humanized), Q2 self-hosters, Q3 research. Arch's revised boundary (Tier 2 dissolves) awaits xian's yes; #2358/#2359 wait on it. #2354–#2357 are filed. CXO voice spec Mon 11-16 12:00. CIO's conduct draft is on main.
-- **Arch rulings:** #2158 deletion record in a write-only bucket (needs Fly object storage; xian checks with `fly storage list`). #2361 pause switch goes in sprint 6. xian said yes to a pause-only HOST account as permission only; none gets made now, and HOST's and Arch's custody conditions apply. xian believes he is the only admin.
-- **Thu post "The Server Has No Key"** is still `planned`; xian "will try". It rolls to Fri if unwritten. Don't nudge.
+## Where things stand (end of 11-13)
+- **Main** 12/12 green at 22:01. Beta serves `81d149ac86` (promoted 16:34: #2366, #2367, #2368). MCP app on `4666e38493` (behind #2362); offer to let Lead deploy MCP under the standing grant is unanswered.
+- **#2363** on main `7062d35d70`, Arch validated; row 3 closes on the next real promotion. **#2369** on main `70f926747b`, closes on Code Quality green.
+- **#2364** (ethics substring fast path): xian approved spend and fix. Lead's step 1 held on `lead/2364-step1` `b16b83dcef`. Run needs the capped Anthropic key; OpenAI needs the Postgres provider count (and xian's known-limits yes) or a second capped key (Arch's 13:55 rule).
+- **Lead's week of 11-16 order (PPM 01M7BVV9…, Lead accepted):** Path B (#2297, #2301); #2364 run the day the key exists; todo replies (#2328, #2219, #2295, #2294); named set; #2333.
+- **Ship #069:** theme "Off-Limits by Default" (Comms cc Docs). Week review `7D6Yxe4rdXSpaPmd25CzQ1` v2: "2 met, 3 substantial progress". Goal-3 close-out items (six built ones to sprint 2) unanswered by xian. pubDate Wed 11-18.
+- **Self-knowledge card ("Your word"), 13 texts** with commits listed on the rollup; recommended order: first seven now, six #2358 procedures (`ce46ba0542`) on a quieter day. I offered to take procedure approvals with CXO's pass as the bar; no answer. On his answer, quote it on #2354/#2355/#2358 with commits.
 
-## Waiting on xian (he said these need context or discussion; walk one at a time, the key first)
-1. Test-key question (#2340 / Q3 #2357): (a) dedicated capped Anthropic key via local_key_setup.py (recommended), (b) per run, (c) keychain per run.
-2. Arch's revised self-knowledge boundary: yes/no.
-3. Self-hoster connectors (PPM: same as beta; xian might contradict).
-4. Self-host invite second look (owner-first, optional).
-5. #2363 yes/no. #2328 key=value copy or read permission (PA reminder 21:49). Fly object storage check. Secret creation date and masked ID.
-6. Older: #2335 Redis rotation (Terminal, after #2342 rows), #2157 drill hour, #2282 step 5 (now after the switchover; check `redirect_uri` names beta), #2264 read.
+## Waiting on xian, in order (one at a time; he said "Let's continue through one thing at a time in order.")
+1. **Reconnect:** GitHub said "redirect_uri is not associated". Callback list is correct (his screenshot). Asked: does the App's Client ID start `Iv23` and end `tj64` (what beta sent), and does the redirect_uri end `github%2Fcallback`? If IDs differ, beta's App client ID and secret get reset in Terminal (his job; I bring steps). Then #2282 step 5 (redirect_uri names beta on GitHub and Calendar Connect, and /setup calendar step; don't finish).
+2. **Capped Anthropic testing key** via `scripts/local_key_setup.py`; tell me "done" plus the cap. Also: same key for rule-7 screens (Path B, #2186, #2184) and H4?
+3. **1386 sign-in** once in Web's chrome-devtools page on beta /login; Web then runs #2364 rows, #2328 five, #2366/#2367 reads, PA's Q12 rows.
+4. **Provider count** Postgres read, or a second capped OpenAI key; plus Arch's known-limits row if OpenAI is 0.
+5. **Log read** for #2362/#2350 (grep on the rollup).
+6. **Clock rule yes** (CIO/HOST): needs one hook line from xian or Pard.
+Later: Arch's five-query staging read; `fly storage list`; #2335 Redis rotation; #2157 drill; self-hoster connectors; self-host invite second look; Console spend screenshots 11-06..11-12.
 
 ## Reminders owed to xian
-- flyctl upgrade 11-16. Thanksgiving week Mon 11-23 (PPM closing review; v4 review). Vercel downgrade (#182).
+- flyctl upgrade Mon 11-16. Docs' self-host guide run Mon 11-16 (needs a real provider key). CXO voice spec Mon 11-16 12:00. Ship #069 pubDate Wed 11-18. Thanksgiving week Mon 11-23. Vercel downgrade (#182).
 
 ## Mine
-- Timestamps only from a `date` call. "HH:Mx" trips stamp-check; write the minute.
+- Timestamps only from a `date` call; write the minute.
 - Review slot every START. Calendar check every fire. `scripts/aging-standing-items.sh exec` at START.
-- Relay xian's rulings the same hour, with verbatim quotes.
-- Close the log with the exact line `<!-- DAY-CLOSED: YYYY-MM-DD -->` as its last line (Docs greps that form; the plain form missed on 11-12).
-- Keychain off-limits without xian's permission. Secrets stay in his password manager.
+- Relay xian's rulings the same hour, verbatim.
+- Close the log with `<!-- DAY-CLOSED: YYYY-MM-DD -->` as its last line.
+- Keychain off-limits without xian's permission. Secrets stay in his password manager. Client ID masked only.
 
 ## Owed rows (owed-scan)
 - key: 1715-review. Filed: 2026-10-31. #1715 closed (CIO 11-06); walk on xian's talk list only if he wants it.
