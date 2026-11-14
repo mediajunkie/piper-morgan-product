@@ -1,4 +1,4 @@
-"""#2151 TODO-CAP (CXO 10-23 17:55): "Showing your first 100 tasks."
+"""#2151 TODO-CAP (CXO 10-23 17:55; noun changed to "todos" by CXO 11-14): "Showing your first 100 todos."
 
 The list read took a 100-row window that included completed rows and dropped them
 afterwards, so an account with many completed todos saw a short active list, and
@@ -117,7 +117,7 @@ async def _list_reply(page):
 @pytest.mark.asyncio
 async def test_a_capped_list_says_so_in_cxos_words():
     page = TodoPage([_todo(i) for i in range(100)], capped=True)
-    assert await _list_reply(page) == "FAKE LIST\n\nShowing your first 100 tasks."
+    assert await _list_reply(page) == "FAKE LIST\n\nShowing your first 100 todos."
 
 
 @pytest.mark.asyncio

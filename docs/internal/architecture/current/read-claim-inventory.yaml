@@ -961,7 +961,7 @@ surfaces:
     handler). TODO-CAP fixed for this reply 2026-10-24 (Lead): completion is filtered
     in SQL, so the 100-row window holds active rows (it held completed ones too, so an
     active list could come back short), and a capped list ends "Showing your first 100
-    tasks." (CXO's line). Pins: tests/unit/services/test_todo_cap_line_2151.py.
+    todos." (CXO's line; the noun was "tasks" until 2026-11-14). Pins: tests/unit/services/test_todo_cap_line_2151.py.
 
 - id: list_reminders_query
   kind: rail

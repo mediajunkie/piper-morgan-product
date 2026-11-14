@@ -2659,7 +2659,9 @@ class TodoIntentHandlers:
                 self._remember_todo_list_lines(session_id, user_id, todos)
             if capped:
                 # #2151 TODO-CAP (CXO 10-23 17:55): a silent cap reads as the whole list.
-                reply = f"{reply}\n\nShowing your first {len(todos)} tasks."
+                # CXO 11-14: "todos", the noun the list's own header uses ("You
+                # have N open todos"); "tasks" changed the noun inside one reply.
+                reply = f"{reply}\n\nShowing your first {len(todos)} todos."
             return reply
 
         # #1423: narrowed from `except Exception` — expected failures are DB-layer
