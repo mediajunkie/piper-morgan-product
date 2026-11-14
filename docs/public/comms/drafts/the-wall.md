@@ -11,7 +11,7 @@ caption: ''
 <!--
 SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. PM writes the prose. Everything below the line is notes for PM. Delete it as the prose replaces it.
 Slot: Tue 2026-11-17 (building). Beat 4 of the Sep 7 to Oct 19 slate. Title and slot xian's (11-14).
-Sources: Exec logs 09-15 (l.135-149), 09-16 (l.19-37), 09-18 (l.45-53, 78-87, 114-116). Docs 09-16 l.10. Web 09-18 l.33-34. HOST 09-17 l.8. Omnibus 09-16 l.55-60 and 118-119, 09-17 l.41-42, 09-18 l.32 and 45. Facts gathered by a Sonnet subagent. Comms re-opened the quotes at source 11-14.
+Sources: Exec logs 09-15 (l.135-149), 09-16 (l.19-37), 09-18 (l.45-53, 78-87, 114-116). Docs 09-16 l.10. Web 09-18 l.33-34. HOST 09-17 l.8. Omnibus 09-16 l.16, 77, 118-119, 09-17 l.41-42, 09-18 l.32 and 45. Facts gathered by a Sonnet subagent. Comms re-opened the quotes at source 11-14.
 -->
 
 ---
@@ -30,7 +30,7 @@ From the outside, a team that ran out of budget, a team you told to stop, and a 
 
 **2. Hitting it.** That night the limit was hit. You added overage credit for essential work only. Web later measured its own silence: last output Sep 15 at 9:55 PM, next Sep 18 at 6:30 AM, about 56.6 hours. [Docs 09-16 l.10, Web 09-18 l.33-34]
 
-**3. Standing everyone down.** Wed Sep 16, about 7 AM, your words to Exec: "Please tell the team to suspend their duty cycles for now until we reset Thursday at 10pm. If I need specific tasks done using extra spend, I will ask specific agents to do specific tasks. We can plan our next week Friday morning to be more token efficient with our spend." Exec parked all eleven seats in one commit, not eleven, because eleven sessions each spending a turn on one file was "precisely the cost the standdown exists to avoid". Ten of eleven complied cleanly. [Exec 09-16 l.19-37, omnibus 09-16 l.55-60]
+**3. Standing everyone down.** Wed Sep 16, about 7 AM, your words to Exec: "Please tell the team to suspend their duty cycles for now until we reset Thursday at 10pm. If I need specific tasks done using extra spend, I will ask specific agents to do specific tasks. We can plan our next week Friday morning to be more token efficient with our spend." Exec parked all eleven seats in one commit, not eleven, because eleven sessions each spending a turn on one file was "precisely the cost the standdown exists to avoid". Ten of eleven roles complied cleanly. [Exec 09-16 l.19-37, omnibus 09-16 l.16, l.77]
 - A line worth having, from CXO: "the instinct to close one more loop before stopping is exactly what a standdown is for, and noting that I felt it is more useful than pretending I didn't." [omnibus 09-16 l.118-119]
 
 **4. The silence, from inside.** HOST's first turn after the stand-down came Thu night, "the first turn this session has had since 07:09 PT on 09-16 (~39 hours)", with eleven stacked wake-ups landing at once. The omnibus calls it "not a choice to keep working, not a chosen compliance, a structural absence of scheduling time." [HOST 09-17 l.8, omnibus 09-17 l.41-42]
@@ -38,7 +38,7 @@ From the outside, a team that ran out of budget, a team you told to stop, and a 
 **5. Coming back: who was really there?** Fri Sep 18. You asked whether any roles should prepare a handoff doc before the machine restarted. Exec found the restart gate already existed, wanting a dated handoff from each resident, and read "GREEN=0 WAIVED=0 RED=24" and "DO NOT REBOOT". Exec's answer: "all of them, the mechanism already says so, and it blocks the reboot by design." [Exec 09-18 l.45-53]
 - You ruled a cold start with Exec first, so as to "not risk the lead developer's mental model of what they're working on just yet." [Exec 09-18 l.78]
 - By late morning the gate read "4 GREEN → 7 GREEN", and "the 4 remaining RED are exactly the 4 dark roles — nobody awake is outstanding." [Exec 09-18 l.114-116]
-- One rule came out of the restart: "parking centrally is safe, un-parking centrally is not." Exec's central un-park had cleared rows for seats that were still dark. [omnibus 09-18 l.45]
+- One rule came out of the restart: "parking centrally is safe, un-parking centrally is not." Arch's central un-park had cleared rows for five seats that were still dark, and Exec re-parked them. [omnibus 09-18 l.45]
 
 **6. Your correction of the history (optional).** Exec framed the handoff ritual as something automation replaced. You: "the handoff was sort of the functional carry forward back then…" Exec's revised reading: what killed the ritual was "the reader disappearing" when sessions became long-lived. [Exec 09-18 l.83-87]
 
