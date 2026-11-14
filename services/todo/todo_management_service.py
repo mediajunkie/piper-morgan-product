@@ -188,6 +188,7 @@ class TodoManagementService:
         list_id: Optional[str] = None,
         status: Optional[str] = None,
         include_completed: bool = False,
+        project_id: Optional[str] = None,
     ) -> "TodoPage":
         """List todos for a user.
 
@@ -224,6 +225,8 @@ class TodoManagementService:
                 list_id=list_id,
                 completed=None if include_completed else False,
                 limit=TODO_LIST_CAP,
+                # #2301: one project's todos, filtered in SQL like the rest.
+                **({"project_id": project_id} if project_id else {}),
             )
             return TodoPage(todos, capped=total > len(todos))
 

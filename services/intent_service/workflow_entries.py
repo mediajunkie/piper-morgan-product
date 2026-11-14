@@ -12,6 +12,7 @@ No switch statements. No modifying intent_service.py.
 from typing import Any, Dict, Optional
 
 import structlog
+from sqlalchemy.exc import SQLAlchemyError
 
 from services.intent_service import todo_project_attach as _attach
 from services.intent_service import workflow_dispatcher as _workflow_dispatcher
@@ -784,7 +785,18 @@ async def run_create_todo_workflow(
                 intent_data={"category": category, "action": intent.action},
             )
     else:
-        resolution = await _attach.resolve(intent, todo_user_id)
+        try:
+            resolution = await _attach.resolve(intent, todo_user_id)
+        except (SQLAlchemyError, OSError) as e:
+            # The project read failed BEFORE any write, so the handler knows the
+            # outcome (CXO's case 1, #2151): say nothing was added; never attach
+            # or fall back to a plain todo the person didn't ask for.
+            logger.error("todo_project_resolve_failed", error=str(e))
+            return IntentProcessingResult(
+                success=True,
+                message=_attach.RESOLVE_FAILED_LINE,
+                intent_data={"category": category, "action": intent.action},
+            )
         if resolution is not None and not resolution.matches:
             return IntentProcessingResult(
                 success=True,
@@ -848,6 +860,84 @@ async def run_create_todo_workflow(
             "confidence": intent.confidence,
         },
     )
+
+
+async def run_list_project_todos_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#2301 (Arch 11-06 13:34): one project's open todos, through the op's own
+    catalog line. The router names the project (``project`` arg); code resolves it
+    against the person's own active projects by exact name (todo_project_attach)
+    and never guesses: no arg or no match is a statement, several is the armed
+    numbered pick (purpose "read"). effect: READ — nothing is written; the shown
+    lines are recorded on the session as the main list records its own."""
+    from services.intent.intent_service import (
+        IntentProcessingResult,
+        _coerce_todo_principal,
+    )
+
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "list_project_todos_workflow_missing_context",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    category = intent.category.value if intent.category else "query"
+    data = {"category": category, "action": _attach.LIST_PROJECT_TODOS_OP}
+    todo_user_id = _coerce_todo_principal(user_id)
+    if not todo_user_id:
+        return IntentProcessingResult(
+            success=False,
+            message="I need you to be logged in to see your todos. Please log in and try again.",
+            intent_data=data,
+            error="User not authenticated",
+            error_type="AuthenticationRequired",
+        )
+    resolution = await _attach.resolve(intent, todo_user_id)
+    if resolution is None:
+        return IntentProcessingResult(
+            success=True, message=_attach.READ_NO_NAME_LINE, intent_data=data
+        )
+    if not resolution.matches:
+        return IntentProcessingResult(
+            success=True,
+            message=_attach.READ_NOT_FOUND_LINE.format(name=resolution.name),
+            intent_data={**data, "project_not_found": True},
+        )
+    if resolution.one is None:
+        original = intent.original_message or (intent.context or {}).get("original_message", "")
+        record = _attach.build_pick_offer(
+            str(user_id) if user_id else None,
+            resolution.matches,
+            [],
+            "medium",
+            original,
+            purpose=_attach.PURPOSE_READ,
+        )
+        if not _attach.arm_pick(intent_service, record, session_id, user_id):
+            return IntentProcessingResult(
+                success=True, message=_attach.READ_NO_NAME_LINE, intent_data=data
+            )
+        return IntentProcessingResult(
+            success=True,
+            message=record["question"],
+            intent_data={
+                **data,
+                "action": _attach.TODO_PROJECT_PICK_WORKFLOW,
+                _attach.PICK_PENDING_FLAG: True,
+            },
+            requires_clarification=True,
+        )
+    message = await intent_service.todo_handlers.handle_list_project_todos(
+        session_id, todo_user_id, resolution.one
+    )
+    return IntentProcessingResult(success=True, message=message, intent_data=data)
 
 
 async def run_delete_todo_workflow(
@@ -3441,6 +3531,28 @@ def register_default_workflows() -> None:
     # drawing create_ticket for "add todo …" (1/3–2/3 of samples). The
     # inversion's constrained router picks from the derived grammar instead,
     # so the todo-create shape stops depending on that draw.
+    # #2301 (Arch 11-06 13:34): one project's todos, through its own catalog
+    # line. effect: READ — run_list_project_todos_workflow resolves the router's
+    # `project` arg against the person's own active projects and lists that
+    # project's open todos (TodoManagementService.list_todos, a SELECT); the only
+    # thing it stores is the session's last-numbered-list record and, for several
+    # same-named projects, the #846 pick record. flip_group: read_status, the
+    # group the main todo list read (list_todos_query) holds: a state listing
+    # over the person's own items. The description below IS router catalog text
+    # (rule 7): it lands only with arm B's screen.
+    list_project_todos_entry = WorkflowEntry(
+        entry_point=run_list_project_todos_workflow,
+        effect=EffectClass.READ,
+        description=(
+            "List the todos in ONE of the person's projects, the project they "
+            'name ("what\'s in my Mobile Redesign project?"); put that '
+            "project's name in args as project (#2301)"
+        ),
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+        flip_group="read_status",
+    )
+
     create_todo_entry = WorkflowEntry(
         entry_point=run_create_todo_workflow,
         effect=EffectClass.WRITE,
@@ -4307,6 +4419,8 @@ def register_default_workflows() -> None:
         # Canonical key first: wired_chat_actions() names each unique entry
         # by its first-registered key.
         "create_todo": create_todo_entry,
+        # #2301: the project-scoped todo read (no aliases).
+        "list_project_todos": list_project_todos_entry,
         "add_todo": create_todo_entry,
         "new_todo": create_todo_entry,
         # #1666: delete_todo + its ActionMapper raw-emission aliases

@@ -16,6 +16,12 @@ Arch's ruling (decisions.log 2026-11-06 11:13, (A)) and CXO's words (11-06 11:14
 - A todo is never attached to a fuzzy guess, and a project is never created here.
 
 No ``project`` arg: this module returns ``None`` and create_todo is unchanged.
+
+#2301 (Arch 11-06 13:34: "a project-scoped todo read reached through its own
+catalog line"): the ``list_project_todos`` op resolves its ``project`` arg the same
+way and shows that one project's open todos. One: the list (CXO's header). None,
+or no arg: a statement; nothing is guessed. Several: the same armed numbered pick
+with ``purpose`` "read", whose number shows the bound project's todos.
 """
 
 from __future__ import annotations
@@ -54,11 +60,34 @@ SEVERAL_QUESTION = (
 # adopted-write decline copy.
 ATTACHED_SEVERAL_LINE = "I've added {count} todos to {project}: {names}."
 PICK_DECLINE_LINE = "Okay, I haven't added anything. Nothing has been changed."
+# #2301. CXO 11-06 11:14 (verbatim): the empty project. The header for a project
+# with todos is format_todo_list_grouped(owner=...).
+PROJECT_EMPTY_LINE = "{project} has no todos yet."
+# NOT YET RULED by CXO (asked in the 2301 build report): the read's not-found,
+# no-name, several-match and decline lines, shaped on the ruled create lines.
+READ_NOT_FOUND_LINE = (
+    'I couldn\'t find a project called "{name}". Check the name, or say "show my projects".'
+)
+READ_NO_NAME_LINE = 'I\'m not sure which project you mean. Say its name, or say "show my projects".'
+READ_SEVERAL_QUESTION = (
+    "I found more than one project with that name: {listed}. "
+    "Which one do you mean? Say the number."
+)
+READ_PICK_DECLINE_LINE = "Okay. Nothing has been changed."
+PURPOSE_ADD = "add"
+PURPOSE_READ = "read"
 PRINCIPAL_MISMATCH_LINE = "Let's hold off on that — nothing has been changed."
 NOT_ARMED_LINE = (
     "I found more than one project with that name, so I haven't added anything. "
     "Rename one of them, then ask again."
 )
+# NOT YET RULED by CXO: the project read failed before the write (nothing written).
+RESOLVE_FAILED_LINE = (
+    "I couldn't check your projects just now, so I haven't added anything. "
+    "Try again in a moment; if it keeps failing, tell us."
+)
+READ_PROJECT_GONE_LINE = "I couldn't find that project anymore."
+LIST_PROJECT_TODOS_OP = "list_project_todos"
 PROJECT_GONE_LINE = "I couldn't find that project anymore, so I haven't added anything."
 
 # A pick answer is a short reply ("2", "the second one"); a longer message is a
@@ -151,9 +180,14 @@ def render_attached(titles: List[str], project_name: str) -> str:
     return ATTACHED_SEVERAL_LINE.format(count=len(titles), project=project_name, names=joined)
 
 
-def render_several(names: List[str]) -> str:
+def render_several(names: List[str], purpose: str = PURPOSE_ADD) -> str:
     listed = " ".join(f"{i}. {n}" for i, n in enumerate(names, 1))
-    return SEVERAL_QUESTION.format(listed=listed)
+    template = READ_SEVERAL_QUESTION if purpose == PURPOSE_READ else SEVERAL_QUESTION
+    return template.format(listed=listed)
+
+
+def _decline_line(purpose: str) -> str:
+    return READ_PICK_DECLINE_LINE if purpose == PURPOSE_READ else PICK_DECLINE_LINE
 
 
 def build_pick_offer(
@@ -162,13 +196,15 @@ def build_pick_offer(
     titles: List[str],
     priority: str,
     original_message: str,
+    purpose: str = PURPOSE_ADD,
 ) -> Dict[str, Any]:
     """The #846 record: the matched projects (ids and names in the order the
-    question numbers them) and the todo titles, all bound at ask time."""
+    question numbers them) and the todo titles, all bound at ask time.
+    ``purpose`` "read" (#2301) carries no titles: the number shows the project."""
     names = [m.name for m in matches]
     return {
         "workflow_type": TODO_PROJECT_PICK_WORKFLOW,
-        "question": render_several(names),
+        "question": render_several(names, purpose),
         "pending_action": {
             "kind": TODO_PROJECT_PICK_KIND,
             "action": TODO_PROJECT_PICK_WORKFLOW,
@@ -177,10 +213,15 @@ def build_pick_offer(
             "pick_names": names,
             "titles": list(titles),
             "priority": priority,
+            "purpose": purpose,
             "original_message": original_message,
-            "summary": "pick which project to add the todo to",
+            "summary": (
+                "pick which project to show"
+                if purpose == PURPOSE_READ
+                else "pick which project to add the todo to"
+            ),
         },
-        "decline_message": PICK_DECLINE_LINE,
+        "decline_message": _decline_line(purpose),
     }
 
 
@@ -232,7 +273,8 @@ async def handle_todo_project_pick_turn(
         }
     ids = [str(i) for i in payload.get("pick_ids") or []]
     titles = [str(t) for t in payload.get("titles") or [] if str(t).strip()]
-    if not ids or not titles or len(text.split()) > _MAX_ANSWER_WORDS:
+    reading = payload.get("purpose") == PURPOSE_READ
+    if not ids or (not titles and not reading) or len(text.split()) > _MAX_ANSWER_WORDS:
         return None
     idx = _ordinal_index(text, len(ids))
     if idx is None:
@@ -244,8 +286,16 @@ async def handle_todo_project_pick_turn(
         return {"message": PRINCIPAL_MISMATCH_LINE, "intent_data": intent_data}
     project = await _owned_active_project(ids[idx], str(todo_user))
     if project is None:
-        return {"message": PROJECT_GONE_LINE, "intent_data": intent_data}
-    logger.info("todo_project_pick_bound", session_id=session_id, position=idx + 1)
+        return {
+            "message": READ_PROJECT_GONE_LINE if reading else PROJECT_GONE_LINE,
+            "intent_data": intent_data,
+        }
+    logger.info("todo_project_pick_bound", session_id=session_id, position=idx + 1, reading=reading)
+    if reading:
+        reply = await intent_service.todo_handlers.handle_list_project_todos(
+            session_id, todo_user, project
+        )
+        return {"message": reply, "intent_data": {**intent_data, "action": LIST_PROJECT_TODOS_OP}}
     reply = await intent_service.todo_handlers.create_titles_in_project(
         titles, session_id, todo_user, str(payload.get("priority") or "medium"), project
     )
@@ -270,12 +320,13 @@ async def run_clarify_todo_project_pick_workflow(
             has_intent_service=intent_service is not None,
         )
         return None
-    question = render_several([str(n) for n in payload.get("pick_names") or []])
+    purpose = str(payload.get("purpose") or PURPOSE_ADD)
+    question = render_several([str(n) for n in payload.get("pick_names") or []], purpose)
     record = {
         "workflow_type": TODO_PROJECT_PICK_WORKFLOW,
         "question": question,
         "pending_action": dict(payload),
-        "decline_message": PICK_DECLINE_LINE,
+        "decline_message": _decline_line(purpose),
     }
     intent_service.workflow_offer_service.set_pending_offer(session_id, record, user_id=user_id)
     return {
