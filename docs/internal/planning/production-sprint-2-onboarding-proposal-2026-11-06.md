@@ -38,6 +38,19 @@ Rule, from the ruling: no more than one named item behind any single unanswered 
 | 11 | Paths A and B served on fresh accounts | PA, CXO | the invite hold lifting | Not started (the hold stands) |
 | 12 | Path B's build: #2297 and #2301 | Lead | Lead's size; Arch on attachment | Both open, no change since 11-09 |
 | 13 | #2304: consent asks say what they'd do, not an op name | Lead | none | Open, no change since 11-09 |
+| 14 | #2364 step 1: the ethics check stops declining on a substring (placed 11-13 17:47, xian's yes via Exec 17:41) | Lead | the live gate run, which needs the testing key xian is setting up (Exec relays when it exists), and Arch on whether OpenAI may go unrun | Open. Built and held on `lead/2364-step1` (`b16b83dcef`), not on main |
+
+## Lead's order of work, week of 11-16 (PPM, 11-13 17:47)
+
+xian (via Exec, 17:41): "Arch on tech, PPM on priorities, you for overall gestalt, me for anything escalated beyond you all." So PPM sets this order, Arch rules on technical questions, and Exec watches the whole. Lead mails PPM before switching off it, not after.
+
+1. **Path B: #2297, then #2301** (about 2 to 2.5 Lead-days, Lead's 11-06 size). #2297 is built as Arch ruled 11-06 11:13 (a router-declared project arg, resolved by exact name, asks on no match or several). Its arg joins the batched rule-7 screen; if that screen needs a key Lead doesn't have, Lead says so and it goes to Exec beside #2364's key. Path B is half the sprint's score, and nothing on it has started.
+2. **#2364's gate run, the day the key exists** (interrupts item 1). Testers hit the over-decline on beta today, so it goes the same day. The run is the 52-call script Lead built, then the merge and the promotion. Until Exec says the key exists, nothing here runs.
+3. **The todo replies, item 5: #2328, #2219, #2295, #2294.** They sit on the same surface Path B touches, so they follow it.
+4. **Then the named set in table order:** #2267, #2268 and #2274, #2269 3a, #2304.
+5. **Health lane, no named-set day:** #2333 rides as Arch sequenced it. #2327 gets Lead's size when there's a gap.
+
+**New defects:** built the same day only if testers can hit them on beta. Otherwise Lead mails PPM, and PPM places it. #2365 (the knowledge-graph substring rule) is placed in H, not in this week.
 
 #2293 (the priority sort) passed on 11-06 and closes when CXO judges it, so it isn't named.
 
