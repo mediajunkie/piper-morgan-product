@@ -30,6 +30,7 @@ on:
       - 'docs/**'
       - 'dev/**'
       - '.mailbox-bearer-lint-baseline.txt'
+      - '.dockerignore'
   pull_request:
     branches: [main]
     paths:
@@ -50,6 +51,7 @@ on:
       - 'docs/**'
       - 'dev/**'
       - '.mailbox-bearer-lint-baseline.txt'
+      - '.dockerignore'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -194,6 +196,17 @@ jobs:
           # outside it. The count was 0 when this was wired, so there is no baseline: a
           # new site turns main red. CIO's check; Exec's yes; Lead's gate.
           python scripts/key_in_docs_lint.py
+
+      - name: Deploy-trigger parity (issue 2369; CIO's placement, Arch's ruling, 2026-11-13)
+        run: |
+          # fly-deploy.yml's paths-ignore must mirror .dockerignore: the trigger may skip a push
+          # only when that push cannot change the image. Blocks only the dangerous direction
+          # (the trigger ignores a path the image contains); the harmless direction is a
+          # warning; a .dockerignore row git cannot see change (untracked and gitignored) is
+          # exempt and named. Until 2026-11-13 its only caller was scope-guard.yml, which is
+          # dispatch-only, so a drift sat unseen. A shell step, so scripts/run-push-gates.sh
+          # (which reads the `python scripts/` lines here) does not run it.
+          ./scripts/check-deploy-trigger-parity.sh
 
       - name: Quality summary
         run: |
