@@ -2,7 +2,10 @@
 
 **Updated**: 2026-11-13 13:15. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-13 09:16)
+## NOW (11-14 14:3x)
+- **11-14:** "Which Agent Did It?" published and fully distributed (blog e93c7a7, LinkedIn and Medium URLs in the row, draft archived). Next publishes: Sun 11-15 "No New Skills This Time" (insight) and Tue 11-17 "The Wall" (building, last day-by-day beat), each on a Comms ready-for-docs memo. xian adopted a trial of narrative arcs (Comms ruling relay 01M7E142TS), weekdays for the new cadence not set, so the weekday table may change. 11-13 omnibus landed with Exec's theme 6 correction. xian will set provider keys (Anthropic, OpenAI) 11-14 for the Mon 11-16 guide run-check. xian is troubleshooting the GitHub App reconnect (#2342). xian has NOT yet approved the three Tier 1 texts (how-i-act, cant-read, stance).
+
+## (older) NOW (11-13 09:16)
 - **Tier 1 corpus (#2355) is Docs' lane, second-lane work.** Manifest `docs/internal/design/tier1-corpus-manifest.csv` (25 rows, README beside it), checker `scripts/validate_tier1_manifest.py` (`--strict`, `--deploy`, 7 tests in `tests/unit/scripts/`). Rules (Arch/Lead/PPM/CIO): `item` is the one indexed file, `derived_from` is what facts are checked against, indexed = verified + voice_pass passed + resolves + in window + `approved` (sha at xian's quoted yes, current lines must appear in the approved text). A stale or unapproved row DROPS (no deploy refusal), only an indexed item on an excluded path or an unreadable stand-ins sha exits 1. Stand-ins live in `docs/tier1/stand-ins.md` (row `s-stand-ins`, kind `template`). Nothing is indexed: no row is approved. Do NOT push to scripts/, tests/, services/, web/ while Lead's hold is on (his second hold: until the served commit after d80610b579). docs/, dev/ and mail are fine.
 - **Items written:** `docs/tier1/connectors.md` (CXO passed), `learning.md` (CXO's words, Arch's code read), `how-i-act.md` (b-understanding, verified, CXO passed), `practice.md` and the c rows (CIO's), `stand-ins.md` (CXO passed, goes on Exec's approval card for xian). `docs/known-limits.md` is a DRAFT (6 rows, CXO passed the words, facts wait on PA's served reads which wait on the web-seed-1386 sign-in decision). Tester page ALPHA_KNOWN_ISSUES.md links to it, cut-release 3d is v1.4.
 - **13:12 fire: drafted b-wont-do, b-cant-read, b-stance items (docs/tier1/wont-do.md, cant-read.md, stance.md), all unverified, voice_pass pending, mailed CXO and Arch. Finding sent to Arch/Lead/CXO: ENABLE_ETHICS_ENFORCEMENT code default is false, so a self-hosted python main.py has the check off (fly.toml sets true). Only b-github-access remains, blocked on #2342 (open). Stance wording from CXO needs a code check per sentence.**
@@ -16,7 +19,7 @@
 - **Mistakes to not repeat:** guessed times in headings (read `date`), mail sent before the push it describes, calling a lane "rule 7" when it is PA's, writing "her" for an agent.
 
 ## Held
-- #1909 fixtures box (Lead). Glossary re-verify about 11-30. #2249 blog legacy-error audit (not scheduled, my lane). The stray baking-art webp in `drafts/published/` (delete only if xian asks). The rule-8 name in `ROLE-PORTFOLIO-HOST.md` line 48 (xian decides with history). Not mine: Arch's 27 status-Unknown files, #1847, PPM's issue routing.
+- #1909 fixtures box (Lead). Glossary re-verify about 11-30. #2249 blog legacy-error audit (not scheduled, my lane). (Stray baking-art webp deleted 11-14 on xian's OK. The rule-8 name in `ROLE-PORTFOLIO-HOST.md` was already abstracted by HOST 11-07, f9a279cd3b, so only git history holds it, and xian said no human name is needed in a ROLE doc: nothing to do unless he asks for a history rewrite.) Not mine: Arch's 27 status-Unknown files, #1847, PPM's issue routing.
 
 ## Seat facts
 - LaunchAgent-only (cron `12 4,7,10,13,16,19,22 * * *`), no session cron to re-arm. START opens every fire. xian's pace: steady, no urgency deadlines, unblocked work still doesn't wait without a named trigger.
