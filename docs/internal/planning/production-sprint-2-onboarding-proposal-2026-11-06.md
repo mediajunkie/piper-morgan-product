@@ -36,7 +36,7 @@ Rule, from the ruling: no more than one named item behind any single unanswered 
 | 9 | #2271: the "yes" loop on adding a repo | Lead, Web | none | **Done** (closed 11-06) |
 | 10 | CXO's wizard flow: #2273, #2275, #2272's page half, #2286 | Lead, Web, then CXO | Lead names the first ask; prompt 3 needs a fresh connected account | #2273, #2272 closed; #2275, #2286 open, no change since 11-09 |
 | 11 | Paths A and B served on fresh accounts | PA, CXO | the invite hold lifting | Not started (the hold stands) |
-| 12 | Path B's build: #2297 and #2301 | Lead | #2297's rule-7 screen needs a provider key (stopped since 11-11; asked of xian beside #2364's key, PPM 11-13 18:20). The build and pins don't wait | Both open. Built 11-14 and held on `lead/2301-project-read` (`5c36ffa916` after the second round, 09:01; #2297 validated at `9979fc2fe6`). The arm B screen is priced at about 1,700 calls, $2 to $5, cap $8 (Lead), and is on xian's card with the key (Exec 08:24). #2301 is todos only (row amended, PPM 08:28 11-14). Lands with the screen. |
+| 12 | Path B's build: #2297 and #2301 | Lead | #2297's rule-7 screen needs a provider key (stopped since 11-11; asked of xian beside #2364's key, PPM 11-13 18:20). The build and pins don't wait | Both open. Built 11-14 and held on `lead/2301-project-read` (`7dfab574a4` after the cap-line noun, 09:11; #2297 validated at `9979fc2fe6`). The arm B screen is priced at about 1,700 calls, $2 to $5, cap $8 (Lead), and is on xian's card with the key (Exec 08:24). #2301 is todos only (row amended, PPM 08:28 11-14). Lands with the screen. |
 | 13 | #2304: consent asks say what they'd do, not an op name | Lead | none | Open, no change since 11-09 |
 | 14 | #2364 step 1: the ethics check stops declining on a substring (placed 11-13 17:47, xian's yes via Exec 17:41) | Lead | the live gate run, which needs the testing key xian is setting up (Exec relays when it exists), and Arch on whether OpenAI may go unrun | Open. Built and held on `lead/2364-step1` (`b16b83dcef`), not on main |
 
@@ -46,7 +46,7 @@ xian (via Exec, 17:41): "Arch on tech, PPM on priorities, you for overall gestal
 
 1. **Path B: #2297, then #2301** (about 2 to 2.5 Lead-days, Lead's 11-06 size). #2297 is built as Arch ruled 11-06 11:13 (a router-declared project arg, resolved by exact name, asks on no match or several). Its arg joins the batched rule-7 screen; if that screen needs a key Lead doesn't have, Lead says so and it goes to Exec beside #2364's key. Path B is half the sprint's score, and nothing on it has started.
 2. **#2364's gate run, the day the key exists** (interrupts item 1). Testers hit the over-decline on beta today, so it goes the same day. The run is the 52-call script Lead built, then the merge and the promotion. Until Exec says the key exists, nothing here runs.
-3. **The todo replies, item 5: #2328, #2219, #2295, #2294.** They sit on the same surface Path B touches, so they follow it.
+3. **The todo replies, item 5: #2328, #2219, #2295, #2294.** They sit on the same surface Path B touches, so they follow it. *State 11-14 09:17 (Lead's triage, 01M7DGT0PE):* Lead's part is done. #2328, #2219 and #2295 need only served quotes, which wait on a sign-in (xian's 1386 decision). #2294 has one 11-07 question with CXO. PPM moved Lead to item 4 at 09:17, and #2294's ruling is built in the gap.
 4. **Then the named set in table order:** #2267, #2268 and #2274, #2269 3a, #2304.
 5. **Health lane, no named-set day:** #2333 rides as Arch sequenced it. #2327 gets Lead's size when there's a gap.
 
