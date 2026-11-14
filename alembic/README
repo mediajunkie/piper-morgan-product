@@ -1,1 +1,12 @@
 Generic single-database configuration.
+
+Rules for a new migration (issue 2372, ruled 2026-11-14):
+
+- Alembic is the only thing that creates tables in a real database. The setup
+  wizard, the self-host guide and CI all run `alembic upgrade head` and nothing else.
+- A migration creates and drops its objects plainly. Do not add a skip-if-exists
+  guard (`has_table`, `get_columns` and the like): it hides drift between the
+  models and the migrations. `v2327floored` carries one as an accepted one-off;
+  `tests/unit/scripts/test_setup_wizard_alembic_only_2372.py` freezes the list.
+- If a database already has a table your migration creates, something built it
+  outside alembic. Find that, do not work around it.
