@@ -120,4 +120,4 @@ jobs:
       # remembered. This lives HERE and not in fly-deploy.yml because that workflow is itself
       # paths-filtered now -- a lint inside it could be skipped by the very drift it checks for.
       - name: fly-deploy paths-ignore still mirrors .dockerignore
-        run: ./scripts/check-deploy-trigger-parity.sh
+        run: ./scripts/check-deploy-trigger-parity.sh --strict
