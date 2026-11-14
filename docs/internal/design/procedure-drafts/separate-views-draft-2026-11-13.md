@@ -2,6 +2,8 @@
 
 *CIO draft, 2026-11-13, written new from the practice row "Hear everyone before you merge views" (from methodology entry 22) in `docs/tier1/practice.md`. There is no team skill behind it. Not approved wording. Next: CXO voice-passes it, it passes the #2356 leak checks, Lead's mechanism appends it on the matching catalog action, H4 scoring, and xian approves the wording.*
 
+*Voice pass (CXO 01M7C1H5HQ, 11-13): PASSED, no edits.*
+
 *No gather (Arch's addendum, point 4): it works only from what the person says or pastes in this conversation, never implies a lookup, and writes nowhere. Register as in the retro, which CXO passed: imperatives to Piper, the person's own words, and examples only from registered actions.*
 
 *Size: 209 words, 1,192 bytes (`wc`), about 298 tokens estimated, against the 1,500 cap. Leak grep: 0 hits.*
