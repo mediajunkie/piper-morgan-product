@@ -1,6 +1,6 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
-## IN-DAY 2026-11-14 12:40 (supersedes the 10:14 block below where they differ)
+## IN-DAY 2026-11-14 12:31 (supersedes the 10:14 block below where they differ)
 
 - **Main is `9d6646f6a2`. It now carries migration `v2327floored`, so the next promotion needs XIAN'S WORD (via Exec), then Arch's word on the exact sha.** Unserved on main today: the archive pick's date, both cap lines, 2274, 2294's net, 2268 (with the rejected-grant line), the archive corpus row and pins, and 2327.
 - **2327 (floored action names outside every vocabulary) is built:** counter table, evidence line, `require_ops_reader` on `GET /api/v1/admin/floored-actions`, Settings > Account flags (admin only, closed list, never `is_admin`), `scripts/floored_action_tally.py`. Asked of Arch and HOST: validation of `46c5f26fd5`, `f6c6bc8776`, `7d9bf68929`; of CXO: the page's words (mail 01M7DW1M…). Rows 2 to 4 need: the promotion, xian ticking Operations reader for the test account, then a seat reads the counter in the signed-in profile and runs the tally.
