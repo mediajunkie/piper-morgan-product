@@ -786,6 +786,49 @@ async def require_admin(
     return current_user
 
 
+async def _user_can_read_ops(user_id) -> bool:
+    """Live DB read: an admin, or an account holding the narrow ``ops_reader`` flag.
+    A one-line boundary, as ``_user_is_admin`` is; raises on DB failure."""
+    from services.database.models import User
+    from services.database.session_factory import AsyncSessionFactory
+
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        row = await session.get(User, user_id)
+        return bool(row and (row.is_admin or row.ops_reader))
+
+
+async def require_ops_reader(
+    current_user: JWTClaims = Depends(get_current_user),
+) -> JWTClaims:
+    """FastAPI dependency: an admin OR an account with ``users.ops_reader`` (#2327).
+
+    Arch's ruling (2026-11-14): the read-only operations counters get their own
+    narrow gate. Making an account an admin so it can read one counter would open
+    every admin route to it; "any signed-in user" would show cross-account
+    aggregates to testers who have no use for them. The flag opens ONLY the routes
+    that declare this dependency (pinned: the counter read and nothing else) and
+    grants no write. Checked live, never from token claims. Fail-closed: a lookup
+    failure refuses (503), never allows.
+    """
+    try:
+        allowed = await _user_can_read_ops(current_user.user_id)
+    except Exception as e:
+        logger.warning(
+            "ops_reader_check_unavailable", user_id=str(current_user.user_id), error=str(e)
+        )
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Couldn't verify permissions right now. Try again in a moment.",
+        )
+    if not allowed:
+        logger.warning("ops_read_refused", user_id=str(current_user.user_id))
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="This page is for operations readers.",
+        )
+    return current_user
+
+
 def require_scopes(required_scopes: List[str]):
     """
     FastAPI dependency to require specific scopes.

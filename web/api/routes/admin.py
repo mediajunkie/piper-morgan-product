@@ -343,51 +343,6 @@ async def version():
     return deploy_identity()
 
 
-FLOORED_ACTIONS_MAX_DAYS = 90
-
-
-@router.get("/api/v1/admin/floored-actions")
-async def floored_actions(days: int = 30, admin: JWTClaims = Depends(require_admin)):
-    """#2327: the out-of-vocabulary floored action counter (admin only).
-
-    Each row is a name (or ``(withheld)``), the floor site, a UTC day and a count,
-    and nothing else (HOST's content bar): no user, no message text. ``window`` is
-    the day range that was asked for, and ``first_day``/``last_day`` are the days
-    that actually hold rows, so "no names" is never read without its window (the
-    #2335/#2337 rule: absence must not read as clear). Read by
-    ``scripts/floored_action_tally.py``.
-    """
-    from datetime import datetime, timedelta, timezone
-
-    from sqlalchemy import select
-
-    from services.database.models import FlooredActionCountDB
-    from services.database.session_factory import AsyncSessionFactory
-
-    span = max(1, min(int(days), FLOORED_ACTIONS_MAX_DAYS))
-    today = datetime.now(timezone.utc).date()
-    since = today - timedelta(days=span - 1)
-    async with AsyncSessionFactory.session_scope() as session:
-        result = await session.execute(
-            select(FlooredActionCountDB)
-            .where(FlooredActionCountDB.day >= since)
-            .order_by(
-                FlooredActionCountDB.day, FlooredActionCountDB.name, FlooredActionCountDB.site
-            )
-        )
-        rows = [
-            {"name": r.name, "site": r.site, "day": str(r.day), "count": int(r.count or 0)}
-            for r in result.scalars().all()
-        ]
-    return {
-        "window": {"days": span, "since": since.isoformat(), "through": today.isoformat()},
-        "first_day": rows[0]["day"] if rows else None,
-        "last_day": rows[-1]["day"] if rows else None,
-        "row_count": len(rows),
-        "rows": rows,
-    }
-
-
 @router.get("/health/config")
 async def health_config(admin: JWTClaims = Depends(require_admin)):
     """

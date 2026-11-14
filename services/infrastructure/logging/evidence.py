@@ -55,6 +55,9 @@ EVIDENCE_EVENTS = frozenset(
         # services/intent_service/floored_action_audit.py: a floored action name in
         # no vocabulary (#2327); the site, the name if a short identifier, a sha256
         "floored_action_outside_vocabulary",
+        # services/auth/narrow_flags.py: an admin turned a narrow account flag on or
+        # off (#2327): the flag, the account id, on/off, the admin's id; no names
+        "account_narrow_flag_changed",
     }
 )
 

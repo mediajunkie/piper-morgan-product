@@ -33,9 +33,6 @@ GATED = {
     "/api/admin/intent-cache-metrics",
     "/api/admin/piper-config-cache-metrics",
     "/api/admin/user-context-cache-metrics",
-    # #2327: the out-of-vocabulary floored action counter (name or "(withheld)",
-    # site, day, count; no user, no text). Admin only.
-    "/api/v1/admin/floored-actions",
 }
 
 UNGATED_READONLY = {

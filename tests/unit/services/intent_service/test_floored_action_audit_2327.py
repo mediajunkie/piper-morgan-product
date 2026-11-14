@@ -13,6 +13,7 @@ logger captured, source pins on the four call sites, and the tally script's pure
 functions. The counter's SQL and the admin endpoint are in the integration test.
 DENOMINATOR: known, absent, invented (short, long, off-shape), a failing counter, an
 unknown site; every importable name against the shape; the four sites; the tally.
+The endpoint's gate and the flag control are in tests/unit/web/api/routes/test_admin_ops_2327.py.
 """
 
 import ast
@@ -190,6 +191,13 @@ class TestTheNote:
         assert lines()[0]["message_sha256"] == utterance_sha256("")
 
 
+class TestTestsDoNotWriteTheCounter:
+    def test_the_counter_write_is_a_no_op_under_pytest(self):
+        """The autouse fixture in tests/conftest.py replaces the write, so a test that
+        floors a made-up action name leaves no row in a shared developer database."""
+        assert audit._increment.__name__ == "_no_write"
+
+
 class TestTheFourSites:
     def test_each_floor_site_calls_the_note_with_its_own_site(self):
         """Each of the four ``*_routing_to_floor`` log calls is followed by the note,
@@ -294,14 +302,3 @@ class TestTheTally:
         assert tally_script.main(["tally", str(bad)]) == 2
         bad.write_text("not json")
         assert tally_script.main(["tally", str(bad)]) == 2
-
-
-class TestTheEndpointIsAdminOnly:
-    def test_the_route_depends_on_require_admin(self):
-        from services.auth.auth_middleware import require_admin
-        from web.api.routes import admin
-
-        route = next(r for r in admin.router.routes if r.path == "/api/v1/admin/floored-actions")
-        assert route.methods == {"GET"}
-        deps = {d.call for d in route.dependant.dependencies}
-        assert require_admin in deps

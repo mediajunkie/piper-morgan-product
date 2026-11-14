@@ -147,6 +147,10 @@ class User(Base):
     is_verified = Column(Boolean, default=False, nullable=False)
     is_alpha = Column(Boolean, default=False, nullable=False)  # Issue #262 - alpha user flag
     is_admin = Column(Boolean, default=False, nullable=False)  # Issue #357 - SEC-RBAC admin bypass
+    # #2327 (Arch and HOST, 2026-11-14): a NARROW flag. It opens the read-only
+    # operations counters (require_ops_reader) and nothing else. Set from the admin
+    # account-flags page, by an admin, on one named account.
+    ops_reader = Column(Boolean, default=False, nullable=False, server_default=text("false"))
 
     # Setup tracking (Issue #389)
     setup_complete = Column(Boolean, default=False, nullable=False)
