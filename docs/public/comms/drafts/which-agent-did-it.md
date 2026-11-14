@@ -1,7 +1,7 @@
 ---
 image: 'docs/public/comms/drafts/which-agent-did-it-which-agent-wears-my-face.jpg'
 alt: 'A puzzled man gestures toward three translucent AI coworkers at a workbench, each holding an identical cardboard mask of his face in front of their own.'
-caption: ''
+caption: '"Which one of me did this?"'
 ---
 
 # Which Agent Did It?
