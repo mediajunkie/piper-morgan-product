@@ -26,7 +26,7 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
-**11-13 state (21:27, STOP):** main 12/12 green; inbox empty. #2369 CLOSED. #2363 validated at 7062d35d70 (row 3 = next real promotion, needs Arch's word). #2358: all seven procedures CONFORM to rulings 18:30/18:43/19:08/19:14/19:19 and are voice-passed; six at ce46ba0542 are on xian's card (Exec rollup v988). The build waits on PPM scheduling, then Lead. #2364 step 1: no `2364` ref on origin at 21:27; ask Lead where b16b83dcef lives before validating. Waits on xian: beta log read, #2364 key/provider read, one-key question, staging read, 1386 profile sign-in, procedure approval.
+**11-13 state (21:27, STOP):** main 12/12 green; inbox empty. #2369 CLOSED. #2363 validated at 7062d35d70 (row 3 = next real promotion, needs Arch's word). #2358: all seven procedures CONFORM to rulings 18:30/18:43/19:08/19:14/19:19 and are voice-passed; six at ce46ba0542 are on xian's card (Exec rollup v988). The build waits on PPM scheduling, then Lead. #2364 step 1: b16b83dcef pushed to origin `lead/2364-step1` at 21:34 (Lead 01M7C8THV5…); validate the post-rebase sha Lead mails before the gate. Waits on xian: beta log read, #2364 key/provider read, one-key question, staging read, 1386 profile sign-in, procedure approval.
 
 **11-13 state (17:58):** beta serves 81d149ac86 (since 16:34). xian's 17:41 answers via Exec are in:
 - **#2362/#2350:** a fresh probe was sent at 17:47:45 on 81d149ac86. The pass line counts from the 16:34 start; reply 01M7BVW607…. Waiting on xian's log read.
