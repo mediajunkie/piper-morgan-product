@@ -963,6 +963,26 @@ surfaces:
     active list could come back short), and a capped list ends "Showing your first 100
     tasks." (CXO's line). Pins: tests/unit/services/test_todo_cap_line_2151.py.
 
+- id: list_project_todos
+  kind: rail
+  effect: READ
+  reads: the open todos of one of the user's own projects, named by the router's project arg
+  handler: services/intent_service/workflow_entries.py:run_list_project_todos_workflow
+  states: {verified: distinct, failed: distinct, narrowed: distinct, not_performed: distinct, substituted: n/a}
+  texts:
+    verified: "Mobile Redesign has no todos yet."
+    failed: "I couldn't check your Piper tasks just now, so I can't say what is in that project. ..."
+    not_performed: "I'm not sure which project you mean. ..."
+  verdict: green
+  notes: >-
+    #2301 (2026-11-14, Lead; held with arm B's rule-7 screen). Both reads (the user's
+    active projects, then that project's todos) raise on a database error and the rail
+    says the couldn't-check line (rail_read_failure); forced in
+    test_read_claim_forcing_2151.py. No project named, or a name that matches none of the
+    user's projects, is a statement that says so and reads no todos. A capped list ends
+    "Showing the first 100 tasks in <project>." Pins:
+    tests/unit/services/intent_service/test_list_project_todos_2301.py.
+
 - id: list_reminders_query
   kind: rail
   effect: READ

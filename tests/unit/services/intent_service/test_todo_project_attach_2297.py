@@ -113,6 +113,100 @@ class TestRouterArg:
         assert attach.exact_matches(ps, "Redesign") == []
 
 
+class TestWordGuard:
+    """Arch 11-14 ruling 1: the arg is the person's only when every word of it is
+    in their message. Otherwise it is no arg, and create_todo is today's."""
+
+    async def test_an_arg_with_a_word_not_said_makes_the_plain_todo(self, monkeypatch):
+        monkeypatch.setattr(attach, "_active_projects", AsyncMock(side_effect=AssertionError))
+        msg = "add a todo: interview five current users"
+        svc = _service()
+        result = await _run(_intent(msg, {"text": TITLE, "project": "Mobile Redesign"}), svc)
+        assert "project_id" not in svc.todo_handlers._calls[0]
+        assert svc.todo_handlers._calls[0]["text"] == TITLE
+        assert result.message.startswith("I've added that to your list.")
+        assert "Mobile Redesign" not in result.message
+
+    def test_one_missing_word_is_enough(self):
+        intent = _intent("add to Mobile: x", {"project": "Mobile Redesign"})
+        assert attach.router_project_name(intent) is None
+
+    def test_all_words_said_in_any_case_and_punctuation_passes(self):
+        intent = _intent("add 'x' to the MOBILE redesign, please", {"project": "Mobile Redesign"})
+        assert attach.router_project_name(intent) == "Mobile Redesign"
+
+    async def test_the_ask_for_a_guarded_out_arg_is_the_plain_question(self, monkeypatch):
+        monkeypatch.setattr(attach, "_active_projects", AsyncMock(side_effect=AssertionError))
+        intent = _intent("also add: buy oat milk", {"text": "buy oat milk", "project": "Home"})
+        ask = await create_todo_write_ask(
+            WriteAskRequest(
+                intent=intent,
+                message=intent.original_message,
+                intent_service=_service(),
+                principal=USER,
+            )
+        )
+        assert ask.words.question == 'Add "buy oat milk" to your todos? (yes/no)'
+
+
+class TestPickShowsWhatItWrites:
+    """Arch 11-14 ruling 2, CXO's words: the number is the consent only because the
+    question shows each bound title exactly as stored, on the re-ask too."""
+
+    def _matches(self):
+        import datetime as dt
+
+        return attach.exact_matches(
+            [
+                types.SimpleNamespace(id="p1", name="Launch", created_at=dt.datetime(2026, 11, 3)),
+                types.SimpleNamespace(id="p2", name="launch", created_at=dt.datetime(2026, 11, 9)),
+            ],
+            "Launch",
+        )
+
+    @pytest.mark.parametrize(
+        "titles,shown",
+        [
+            (["interview five current users"], "'interview five current users'"),
+            (["draft brief", "book venue"], "'draft brief' and 'book venue'"),
+            (["a", "b", "c"], "'a', 'b' and 'c'"),
+        ],
+    )
+    async def test_question_and_reask_carry_every_stored_title(self, titles, shown):
+        record = attach.build_pick_offer(USER, self._matches(), titles, "medium", "m")
+        assert record["question"] == (
+            "I found more than one project with that name: 1. Launch (created 3 Nov) "
+            f"2. launch (created 9 Nov). Which one should I add {shown} to? Say the number."
+        )
+        for title in record["pending_action"]["titles"]:
+            assert f"'{title}'" in record["question"]
+        svc = _service()
+        out = await attach.run_clarify_todo_project_pick_workflow(
+            "s1", USER, {"pending_action": record["pending_action"], "intent_service": svc}
+        )
+        assert out["message"] == record["question"]
+
+    def test_a_row_with_no_created_date_shows_the_name_alone(self):
+        ref = attach.exact_matches([_project("p1", "Launch")], "launch")[0]
+        assert ref.label == "Launch"
+
+
+class TestPriorityClause:
+    """CXO 11-14: a stored non-default priority is said; the default says nothing."""
+
+    async def test_high_priority_is_said(self, projects):
+        projects[USER] = [_project("p1", "Mobile Redesign")]
+        svc = _service()
+        svc.todo_handlers._extract_priority = lambda _m: "high"
+        result = await _run(_intent(args={"text": TITLE, "project": "Mobile Redesign"}), svc)
+        assert result.message == (
+            "I've added 'interview five current users' to Mobile Redesign, at high priority."
+        )
+
+    def test_default_priority_says_nothing(self):
+        assert attach.render_attached(["x"], "P", priority="medium") == "I've added 'x' to P."
+
+
 class TestNoArgIsUnchanged:
     async def test_plain_create_passes_no_project_and_reads_no_projects(self, monkeypatch):
         monkeypatch.setattr(attach, "_active_projects", AsyncMock(side_effect=AssertionError))
@@ -190,7 +284,8 @@ class TestSeveralMatches:
         assert svc.todo_handlers._calls == []
         assert result.message == (
             "I found more than one project with that name: 1. Mobile Redesign "
-            "2. mobile redesign. Which one should I add it to? Say the number."
+            "2. mobile redesign. Which one should I add 'interview five current users' to? "
+            "Say the number."
         )
         assert result.requires_clarification is True
         assert result.intent_data[attach.PICK_PENDING_FLAG] is True
@@ -208,8 +303,9 @@ class TestSeveralMatches:
         svc = _service(store=False)
         result = await _run(_intent("add to A: x y", {"text": "x y", "project": "A"}), svc)
         assert svc.todo_handlers._calls == []
-        assert result.message == attach.NOT_ARMED_LINE
-        assert "?" not in result.message
+        assert result.message == (
+            "I found more than one project with that name, so I haven't added anything."
+        )
 
     def _pending(self, titles=(TITLE,), user=USER):
         return attach.build_pick_offer(

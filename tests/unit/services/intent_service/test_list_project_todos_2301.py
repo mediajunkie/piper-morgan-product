@@ -113,7 +113,7 @@ class TestOneProject:
     async def test_one_line_reads_here_it_is_and_repeats_group(self, projects):
         projects[USER] = [_project("p1", "Launch")]
         svc = _service({"p1": [_todo("a", "review prs"), _todo("b", "review prs")]})
-        result = await _run(_intent({"project": "Launch"}), svc)
+        result = await _run(_intent({"project": "Launch"}, "what's in Launch?"), svc)
         assert result.message == "Launch has 2 open todos. Here it is:\n1. review prs (×2)"
 
     async def test_a_project_with_no_todos_says_so(self, projects):
@@ -144,6 +144,17 @@ class TestNothingToList:
         )
         assert "added" not in result.message
         assert svc.todo_handlers._calls == []
+
+
+class TestWordGuard:
+    async def test_a_project_the_person_did_not_say_is_no_project(self, monkeypatch):
+        """The same reader as create (Arch 11-14 ruling 1): a model-written name is
+        never resolved and never shown."""
+        monkeypatch.setattr(attach, "_active_projects", AsyncMock(side_effect=AssertionError))
+        svc = _service({})
+        result = await _run(_intent({"project": "Launch Plan"}, "what's in my project?"), svc)
+        assert result.message == attach.READ_NO_NAME_LINE
+        assert "Launch" not in result.message
 
 
 class TestSeveralProjects:
