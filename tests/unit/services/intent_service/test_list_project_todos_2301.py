@@ -199,6 +199,54 @@ class TestSeveralProjects:
         assert rearmed["decline_message"] == attach.READ_PICK_DECLINE_LINE
 
 
+class TestPurposesNeverCross:
+    async def test_a_read_record_with_titles_injected_still_only_reads(self, projects):
+        """Arch 11-14: one pick record, two purposes. A read pick never writes."""
+        projects[USER] = [_project("p1", "A"), _project("p2", "a")]
+        svc = _service({"p1": [_todo("t", "existing")]})
+        svc.todo_handlers.todo_service.create_todo = AsyncMock(side_effect=AssertionError)
+        svc.todo_handlers.create_titles_in_project = AsyncMock(side_effect=AssertionError)
+        record = attach.build_pick_offer(
+            USER,
+            [attach.ProjectRef("p1", "A"), attach.ProjectRef("p2", "a")],
+            ["injected title"],
+            "medium",
+            MSG,
+            purpose=attach.PURPOSE_READ,
+        )
+        turn = await attach.handle_todo_project_pick_turn(record, "1", "s1", USER, svc)
+        assert turn["message"] == "A has 1 open todo. Here it is:\n1. existing"
+        assert "injected title" not in record["question"]
+
+    async def test_no_store_for_a_read_pick_says_what_is_true(self, projects):
+        projects[USER] = [_project("p1", "A"), _project("p2", "a")]
+        svc = _service({}, store=False)
+        result = await _run(_intent({"project": "A"}, "what's in A?"), svc)
+        assert result.message == "I found more than one project with that name."
+        assert svc.todo_handlers._calls == []
+
+    def test_the_read_decline_says_what_will_not_happen(self):
+        record = attach.build_pick_offer(
+            USER, [attach.ProjectRef("p1", "A")], [], "medium", MSG, purpose=attach.PURPOSE_READ
+        )
+        assert record["decline_message"] == "Okay, I won't list anything."
+
+
+class TestCreatedDateOnThePersonsClock:
+    def test_a_stored_zone_moves_the_date_and_no_zone_leaves_it(self):
+        import datetime as dt
+
+        row = types.SimpleNamespace(
+            id="p1",
+            name="Launch",
+            created_at=dt.datetime(2026, 11, 4, 3, 0, tzinfo=dt.timezone.utc),
+        )
+        assert attach.exact_matches([row], "launch")[0].created == "4 Nov"
+        assert attach.exact_matches([row], "launch", "America/Los_Angeles")[0].created == "3 Nov"
+        # An unknown zone name: the date reads as stored.
+        assert attach.exact_matches([row], "launch", "Not/AZone")[0].created == "4 Nov"
+
+
 class TestMainListUnchanged:
     def test_the_main_lists_header_is_what_it_was(self):
         todos = [_todo("a", "one"), _todo("b", "two")]
@@ -221,9 +269,10 @@ class TestRegistry:
         assert entry.effect is EffectClass.READ
         assert entry.flip_group == "read_status"
         assert entry.description == (
-            "List the todos in ONE of the person's projects, the project they name "
-            "(\"what's in my Mobile Redesign project?\"); put that project's name in args "
-            "as project (#2301)"
+            "List the open todos in ONE project the person names (\"what's in my Mobile "
+            "Redesign project?\"); put that project's name in args as project, in their "
+            "words. For all todos use list_todos_query; for how a project is going use "
+            "get_project_status. (#2301)"
         )
         assert ACTION_REGISTRY[("QUERY", "list_project_todos")] is ActionDisposition.WORKFLOW
         # Append-only ledger: a new op goes at the END and moves no other line.
