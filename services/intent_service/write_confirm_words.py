@@ -167,8 +167,14 @@ def bound_write_values(intent: Any, op: str) -> Dict[str, Any]:
 async def create_todo_write_ask(request: WriteAskRequest) -> WriteAsk:
     """``Add "x" to your todos?`` from handle_create_todo's own resolver chain: the
     router's items / text (its honesty-guarded readers), else its extractor.
-    Several router items have no CXO row, and no project arg exists yet (#2297),
-    so neither is worded here."""
+    Several router items have no CXO row, so they are not worded here.
+
+    #2297 (CXO 11-06 11:14): when the router named a project, the question names
+    the project the write would go to, resolved as the handler resolves it (one
+    exact match among the person's own active projects), and binds its id. No
+    match or several: ``passthrough``, so the op itself says the not-found line or
+    asks the numbered pick; nothing is written by either."""
+    from services.intent_service import todo_project_attach as _attach
     from services.intent_service.todo_handlers import TodoIntentHandlers
 
     intent = request.intent
@@ -183,6 +189,26 @@ async def create_todo_write_ask(request: WriteAskRequest) -> WriteAsk:
     named = _text(text)
     if not named:
         return WriteAsk()
+    if _attach.router_project_name(intent) is not None:
+        resolution = None
+        if request.principal:
+            from services.intent.intent_service import _coerce_todo_principal
+
+            todo_user = _coerce_todo_principal(request.principal)
+            if todo_user:
+                resolution = await _attach.resolve(intent, todo_user)
+        project = resolution.one if resolution is not None else None
+        if project is None:
+            return WriteAsk(passthrough=True)
+        bind_write_values(
+            intent, "create_todo", text=named, project_id=project.id, project_name=project.name
+        )
+        return WriteAsk(
+            words=ConfirmWords(
+                question=f'Add "{named}" to {project.name}? (yes/no)',
+                summary=f'add "{named}" to {project.name}',
+            )
+        )
     bind_write_values(intent, "create_todo", text=named)
     return WriteAsk(
         words=ConfirmWords(
