@@ -47,7 +47,6 @@ Just this past week I had to make it 100% clear: "We do need to keep my local ke
 
 ---
 
-*Next on Building Piper Morgan: [TEASE: the next post after Sat 11-14. Nothing is on the calendar yet except Ships. Next
-building beat in order is beat 4, "The Wall" (Sep 15–18), or a Sun insight if you add one.]*
+*Next on Building Piper Morgan: "No New Skills This Time," in which the team reviews thirteen ideas for new agent skills and builds none of them.*
 
 *If you looked at your own team's written history today (human or otherwise), could you tell who actually did each thing?*
