@@ -1,8 +1,18 @@
 ---
-last_updated: 2026-11-11
+last_updated: 2026-11-13
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward: 2026-11-13 21:31 STOP (11-11 and 11-08 blocks below still stand except where this one says otherwise)
+
+**Serving:** beta `81d149ac86` (16:34; 2366, 2367, 2368). Main CI 12 of 12 green at 21:31. #2342 newest comment is still the 11-12 cutover record (rows 2 and 3 not served).
+**Done 11-13:** Ship #069 report to Exec (mail v4). Tier 1: voice spec draft 1 (due Mon 11-16 12:00 PST), practice rows, conduct layer, connectors, how-i-act, stand-ins, wont-do (wording passed, unindexed), cant-read, stance (passed at 26547ce624). Known-limits pass (six passed, four held, three off). #2351 judged PASS. #2366 words (Gemini removed from the select; stored row "not used yet" plus one line), #2367 and #2368 refusal sentences. #2358: all seven procedures voice-passed (procedure 1 at 7caa12d2ea with "Holding things up"; six others at ce46ba0542).
+**Owed by me:** Tier 1 voice spec final, Mon 11-16 12:00 PST (any mail naming it needs --due). Served reads: 2366 hosted keys select (needs a sign-in), 2367 direct call (test account), 2368 none. #2358 served judging after Lead's mechanism and gather, the #2356 leak checks, H4 scoring and xian's yes. After the ethics-default flip is served: re-read wont-do.md for the self-host reading. Final read of any procedure file at the commit that goes to xian. #2168 ratify or amend after G6. G4 walk (needs a build and a minted account). Hosted Create Account invite line (needs a code).
+**Waiting on xian via Exec:** the web-seed-1386 credential decision (blocks #2328, #2364 served probe, PA's twelve known-limits reads, signed-in served reads); the GitHub reconnect (#2342 rows 2-3); the approval card (Tier 1 conduct layer, practice, stand-ins; three Tier 1 b texts; seven procedures); per-provider keys and a production read for #2364's gate; the tier-boundary word; G6; older items (fly auth login, admin call for #2325, clear_todos flip, #2256, Q8 account). Yes already given: ethics on by default for self-hosted, self-knowledge boundary accepted.
+**Held known-limits rows:** deleting several todos (#2025), chat delete/archive (#1516), failed action looks like success (#2208), preferences on repeated question (#2056); each waits on PA's served read.
+**Rules:** keychain off-limits without xian (decisions.log 11-11); I start no servers; no bearer credentials or outside names in the repo; mail to PM goes to exec. mail4 send can report "NOT MEASURED" on a fetch lock: check, then resend (it did not send the first time).
+**label:UX open:** 30. Next START (11-14 06:31): Step 0 check for the 11-13 DAY-CLOSED marker.
 
 # CXO carry-forward — current state, 2026-11-11 21:31 STOP (11-08 state below still stands except where this block says otherwise)
 
