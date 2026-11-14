@@ -26,6 +26,14 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
+**11-13 state (17:58):** beta serves 81d149ac86 (since 16:34). xian's 17:41 answers via Exec are in:
+- **#2362/#2350:** a fresh probe was sent at 17:47:45 on 81d149ac86. The pass line counts from the 16:34 start; reply 01M7BVW607…. Waiting on xian's log read.
+- **#2364:** xian said yes to the spend and to step 1. Key (a), a capped key, is pending with Exec. OpenAI may go unrun only after the user_api_keys read plus a known-limits row; otherwise a second key (decisions.log 17:50). Ethics on by default is now YES and lands after step 1 is served (DECISIONS.md line, decisions.log 17:56). The floor-inversion link is on the issue.
+- **#2363:** xian said yes; Lead builds `^@`. Validate when it lands.
+- **1386 route (17:53):** the xian-signed browser profile is APPROVED. NO to a password allow rule. No longer session for test accounts, because refresh slides 7 days. A staging test account is OK once staging is confirmed to hold no real data, with the staging-vs-beta row split.
+- **Self-knowledge boundary:** ACCEPTED; #2358 and #2359 can move.
+- **Sprint 2:** Arch rules tech for Lead. PPM's order: Path B #2297/#2301 first, then #2364's run the day the key exists.
+
 **11-13 state (15:29):** beta serves bb7c76de5c. Main 12/12 green.
 - **#2362/#2350 served rows:** wait on xian's log read (probe 09:26:12; criteria 01M7AZ4FSN8DA5NF73Z8R8BS8Z).
 - **#2364 (ethics substring fast path over-declines on beta; reply-side tier reads a missing `is_violation`):** ruled 13:21, 13:25 (default flip goes to xian), 13:37 (v0.2 live in the same unit, live-run gate, KG keeps check_*), 13:53 and 14:04 (gate = two runs, Anthropic + OpenAI, 26 calls each; Gemini can't serve), 13:55 (an unrun provider is skipped only if no connected account uses it and xian has approved a known-limits row). ADR-061 v1.2 (Layer 1 removed, effective on merge). Lead holds the build `b16b83dcef` on `lead/2364-step1`. Waits on xian: provider keys plus which providers testers use, the sprint go, the default flip. Served probe: PA and Web both blocked on the web-seed-1386 decision. Ruling 2 (reply tier acting) is a later unit behind a served-reply screen.

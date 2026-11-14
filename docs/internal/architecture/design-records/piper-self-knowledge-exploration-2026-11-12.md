@@ -1,6 +1,6 @@
 # Piper self-knowledge: design exploration
 
-**Status:** RECOMMENDATION READY (2026-11-12 14:29 PST). All three contributions are in: CXO 01M78XJ2P371XTWETCC8PSXAKW, Docs 01M78XKW74E2EQQCAJQ2Z1TWSR, and CIO 01M78XVXC34GVSQAZQF67DX88W, written in place. Open: xian's answer on "whose Piper".
+**Status:** BOUNDARY ACCEPTED by xian, 2026-11-13 ("accepted", relayed by Exec 01M7BW10QMGKW11P13PJZKMWZK): the revised boundary below, under which Tier 2 is no longer a tier. #2358 and #2359 can move. Previously: RECOMMENDATION READY (2026-11-12 14:29 PST). All three contributions are in: CXO 01M78XJ2P371XTWETCC8PSXAKW, Docs 01M78XKW74E2EQQCAJQ2Z1TWSR, and CIO 01M78XVXC34GVSQAZQF67DX88W, written in place. Open: xian's answer on "whose Piper".
 **Owner:** Arch. **Contributors:** CXO (ethos and voice), Docs (documentation and lore), CIO (methodology and best practices). PPM places it.
 **Started:** 2026-11-12 14:22 PST, on xian's ask relayed by Exec.
 **Milestone:** Production.
@@ -203,6 +203,8 @@ An account line in code decides who gets Tier 2. The LLM decides what the person
 - 2026-11-14 12:00 PST: Arch's recommendation with options, to Exec for xian's board. **Delivered early, 2026-11-12 14:29 PST,** once all three contributions had arrived.
 
 ## The tier boundary, revised (Arch, 2026-11-12 17:26, after xian's answers)
+
+**Accepted by xian 2026-11-13** (Exec 01M7BW10QM…).
 
 xian, relayed by Exec (01M797TQEAE37X7AYMMZ3V1KZ9): "if every user's Piper doesn't have some of the skills and isn't able to use all of the methods that my own agent team has available then we're giving people a weaker form of assistance than I have developed for myself." He asked us to probe the boundary.
 
