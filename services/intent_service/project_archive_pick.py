@@ -124,8 +124,26 @@ def exact_matches(projects: List[Any], capture: Optional[str]) -> List[Any]:
     return [p for p in projects or [] if _key(getattr(p, "name", None)) in keys]
 
 
-def render_several(names: List[str]) -> str:
-    listed = " ".join(f"{i}. {n}" for i, n in enumerate(names, 1))
+def created_label(project: Any) -> str:
+    """The row's own stored creation date as ``3 Nov`` (UTC as stored), or "" when
+    the row has none. Read from the person's own row, never inferred."""
+    created = getattr(project, "created_at", None)
+    try:
+        return f"{created.day} {created.strftime('%b')}" if created is not None else ""
+    except (AttributeError, ValueError):
+        return ""
+
+
+def pick_label(project: Any) -> str:
+    """CXO 11-14: the projects in a several-match pick have the same name (they
+    differ at most in case), so each numbered line also shows one stored
+    difference the person can recognise: ``Beta (created 3 Nov)``."""
+    created = created_label(project)
+    return f"{project.name} (created {created})" if created else str(project.name)
+
+
+def render_several(labels: List[str]) -> str:
+    listed = " ".join(f"{i}. {n}" for i, n in enumerate(labels, 1))
     return SEVERAL_QUESTION.format(listed=listed)
 
 
@@ -136,7 +154,8 @@ def build_pick_offer(principal: Optional[str], projects: List[Any], original_mes
     store; see ``arm_pick_from_result``)."""
     ids = [str(p.id) for p in projects]
     names = [str(p.name) for p in projects]
-    question = render_several(names)
+    labels = [pick_label(p) for p in projects]
+    question = render_several(labels)
     return {
         "workflow_type": PROJECT_ARCHIVE_PICK_WORKFLOW,
         "question": question,
@@ -146,6 +165,8 @@ def build_pick_offer(principal: Optional[str], projects: List[Any], original_mes
             "user_id": principal,
             "pick_ids": ids,
             "pick_names": names,
+            # The numbered lines exactly as shown, so a re-ask is the same text.
+            "pick_labels": labels,
             "original_message": original_message,
             "summary": "pick which project to archive",
         },
@@ -378,7 +399,7 @@ async def run_clarify_project_archive_pick_workflow(
         )
         return None
     names = [str(n) for n in payload.get("pick_names") or []]
-    question = render_several(names)
+    question = render_several([str(n) for n in payload.get("pick_labels") or names])
     record = {
         "workflow_type": PROJECT_ARCHIVE_PICK_WORKFLOW,
         "question": question,
