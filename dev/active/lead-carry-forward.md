@@ -2,7 +2,8 @@
 
 ## DAY CLOSED 2026-11-13 21:47 (the 18:28 block below is still current; this adds the evening)
 
-- **Path B: 2297 handler side BUILT AND HELD 11-14 07:14 on origin branch `lead/2297-project-attach` (`5ad68888b6`)**; rulings asked of Arch (3) and CXO (4 lines) in mail 01M7D9XZ…; lands only with arm B's screen. 2301 (project-scoped read, its own catalog line) is next. Before any rule-7 screen: send its call count and cost to Exec, and wait for the provider key.
+- **Path B: 2297 and 2301 are BUILT AND HELD together on origin branch `lead/2301-project-read` (`9979fc2fe6`, 11-14 08:19)**, Arch's and CXO's 11-14 rulings applied. Lands only with arm B's rule-7 screen (provider key via Exec; price sent in mail 01M7DDPG…: about 1,700 calls, cap $8, an estimate; recount from the scripts' dry run first). Open asks in that mail: Arch (2301's catalog line, flip group, todos-only scope), CXO (seven read lines). Arm B's `create_todo` wording is Arch's 11-14 edit (in his mail 01M7DAA1GT…); the served description stays pinned until the arm lands. PPM's acceptance: 0 destination-word controls get the not-found line. After a rebase, mail Arch the new sha.
+- **Owed, small, on main:** the 2271 archive pick shows `(created 3 Nov)` beside same-named projects (CXO 11-14); code-rendered, no screen.
 - **2364 step 1:** `b16b83dcef` is on origin as side branch `lead/2364-step1` (pushed 21:34, Arch told). After the rebase, push the new sha to the same branch and mail it to Arch before the gate runs. Still waits on the key (Exec) and, for the promotion, Arch's word.
 - **Beta serves `81d149ac86`**, healthy at 21:46. Main 12 of 12 green. Mail 0.
 - Arch's two notes for the 2358 build (close offer restates open steps and their count; an explicit need-more state that arms nothing) are in the collected comment on issue 2358.
