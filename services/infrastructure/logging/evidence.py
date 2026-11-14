@@ -52,6 +52,9 @@ EVIDENCE_EVENTS = frozenset(
         "github_app_grant_refresh_raced_served_newer",
         # services/mcp/consumer/github_oauth_handler.py: GitHub refused a refresh
         "github_app_refresh_rejected",
+        # services/intent_service/floored_action_audit.py: a floored action name in
+        # no vocabulary (#2327); the site, the name if a short identifier, a sha256
+        "floored_action_outside_vocabulary",
     }
 )
 

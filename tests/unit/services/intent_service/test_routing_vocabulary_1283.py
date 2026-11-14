@@ -22,9 +22,15 @@ scripts/routing_probe_1283.py runs it against the frozen corpus
 """
 
 import re
+import sys
 from pathlib import Path
 
 import yaml
+
+from services.intent_service import routing_vocabulary
+
+sys.path.insert(0, str(Path(__file__).parents[4] / "scripts"))
+import routing_vocabulary_full  # noqa: E402
 
 from services.intent_service.action_registry import ACTION_REGISTRY
 from services.intent_service.workflow_dispatcher import get_action_workflows
@@ -40,31 +46,27 @@ PRE_CLASSIFIER = _ROOT / "services" / "intent_service" / "pre_classifier.py"
 FLOOR_ALLOWLIST: dict = {}
 
 
+# #2327 (Arch 2026-11-14): the derivations live in ONE module the lint, the runtime
+# floored-action check and the tally script all import. These names stay as the
+# lint's own handles on them.
 def _rail() -> set:
-    register_default_workflows()
-    return set(get_action_workflows().keys())
+    return routing_vocabulary.rail_names()
 
 
 def _pre_classifier_surface() -> set:
-    """Derive the actions pre_classifier can emit, from its two source idioms:
-    ``action="name"`` kwargs and ``(PATTERNS, IntentCategory.X, "name")`` tuples.
-    If the file's idiom changes, names drop out of this set and the reachability
-    test FAILS LOUDLY — the safe failure direction (update the extractor here)."""
-    src = PRE_CLASSIFIER.read_text()
-    kw = set(re.findall(r'action="([a-z_]+)"', src))
-    tup = set(re.findall(r'IntentCategory\.\w+,\s*"([a-z_]+)"', src))
-    return kw | tup
+    """The actions pre_classifier can emit, derived from its source idioms
+    (``scripts/routing_vocabulary_full.py``; it reads source text, so it is not a
+    services module). If the file's idiom changes, names drop out of this set and
+    the reachability test FAILS LOUDLY, the safe failure direction (update the
+    extractor there)."""
+    return routing_vocabulary_full.pre_classifier_surface(PRE_CLASSIFIER)
 
 
 def _action_mapper_surface() -> set:
     """The 4th dispatch surface (Arch-ratified 2026-07-16, the forward-guard
-    D4-bridge): LLM free-form -> ActionMapper canonical -> EXECUTION elif. Its
-    canonical value set is DERIVED from the mapper itself (never hand-listed) —
-    a mapped_action token is reachable by construction (the mapper canonicalizes
-    the LLM's variants onto it)."""
-    from services.intent_service.action_mapper import ActionMapper
-
-    return set(ActionMapper.ACTION_MAPPING.values())
+    D4-bridge): LLM free-form -> ActionMapper canonical -> EXECUTION elif. DERIVED
+    from the mapper itself (never hand-listed)."""
+    return routing_vocabulary.action_mapper_names()
 
 
 class TestRoutingVocabularyReachability:
@@ -111,17 +113,9 @@ class TestRoutingVocabularyReachability:
         informational, but it still may not drift silently)."""
         from services.intent_service.prompts import INTENT_CLASSIFICATION_PROMPT
 
-        CATEGORY_TEACHING = {
-            # probe run-1 verified each of these routes correctly by category:
-            "get_role",  # IDENTITY (probe row 8 PASS)
-            "provide_guidance",  # GUIDANCE (row 9)
-            "create_ticket",  # EXECUTION (row 10)
-            "generate_summary",  # SYNTHESIS (row 12)
-            "clarification_needed",  # CONVERSATION (row 28, corpus-ratified)
-            "get_time_info",  # QUERY general-fact teaching example
-            "get_information",  # QUERY general-knowledge teaching example
-            "specific_action_name",  # the format placeholder, not a name
-        }
+        # The category-routed teaching names, each with its probe evidence, live in
+        # routing_vocabulary.CATEGORY_TEACHING (one list, #2327).
+        CATEGORY_TEACHING = set(routing_vocabulary.CATEGORY_TEACHING)
         taught = set(re.findall(r'"action":\s*"([a-z_]+)"', INTENT_CLASSIFICATION_PROMPT))
         known = (
             {a for (_c, a) in ACTION_REGISTRY}

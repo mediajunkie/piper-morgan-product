@@ -41,6 +41,7 @@ from services.database.session_factory import AsyncSessionFactory
 from services.domain.models import Intent, RequestContext
 from services.ethics.boundary_enforcer_refactored import boundary_enforcer_refactored
 from services.intent_service import classifier
+from services.intent_service import floored_action_audit as _floored_action_audit
 from services.intent_service.action_mapper import ActionMapper
 from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.intent_service.conversation_context import (
@@ -4390,6 +4391,12 @@ class IntentService:
                         action=intent.action,
                         **_utterance_fields(intent.original_message, key="original_message"),
                     )
+                    # #2327: a floored name outside every vocabulary is a handler-gap candidate.
+                    await _floored_action_audit.note_floored_action(
+                        _floored_action_audit.SITE_CANONICAL_GENERIC,
+                        intent.action,
+                        intent.original_message,
+                    )
                     # #2209 (Arch 2026-10-30 09:28): a CanonicalHandlers answer
                     # for a REGISTERED op that came back generic is that op's
                     # dispatch rerouted to the floor, the same as the rail's
@@ -6793,6 +6800,10 @@ class IntentService:
             "query_action_routing_to_floor",
             action=intent.action,
             reason="no_specialized_handler",
+        )
+        # #2327: a floored name outside every vocabulary is a handler-gap candidate.
+        await _floored_action_audit.note_floored_action(
+            _floored_action_audit.SITE_QUERY_ACTION, intent.action, intent.original_message
         )
         return await self._handle_unknown_intent(
             intent,
@@ -15115,6 +15126,10 @@ class IntentService:
             action=intent.action,
             reason="no_specialized_handler",
         )
+        # #2327: a floored name outside every vocabulary is a handler-gap candidate.
+        await _floored_action_audit.note_floored_action(
+            _floored_action_audit.SITE_ANALYSIS_ACTION, intent.action, intent.original_message
+        )
         return await self._handle_unknown_intent(intent, None, session_id)
 
     async def _handle_analyze_commits(
@@ -21449,6 +21464,10 @@ Add any additional information here.
             category=category,
             action=intent.action,
             **_utterance_fields(intent.original_message, key="original_message"),
+        )
+        # #2327: a floored name outside every vocabulary is a handler-gap candidate.
+        await _floored_action_audit.note_floored_action(
+            _floored_action_audit.SITE_ACTION_GATE, intent.action, intent.original_message
         )
 
         from services.intent_service.context_assembler import ContextAssembler

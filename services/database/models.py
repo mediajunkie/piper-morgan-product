@@ -14,6 +14,7 @@ from sqlalchemy import (
     Boolean,
     CheckConstraint,
     Column,
+    Date,
     DateTime,
     Enum,
     Float,
@@ -3592,3 +3593,22 @@ class SecureCredentialDB(Base):
     encrypted_value = Column(Text, nullable=False)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+
+
+class FlooredActionCountDB(Base):
+    """#2327: how often a floored action name outside every vocabulary was seen.
+
+    One row per (name, site, UTC day), holding a count and nothing else (HOST's
+    content bar, 2026-11-14): no user, no message text. ``name`` is the action
+    name only when it is a short identifier (``routing_vocabulary.fits_recorded_shape``);
+    otherwise the literal ``(withheld)``, which cannot match that shape. ``site`` is
+    one of the four floor fallthrough sites. Written by
+    ``services.intent_service.floored_action_audit`` with an idempotent upsert.
+    """
+
+    __tablename__ = "floored_action_counts"
+
+    name = Column(String(40), primary_key=True)
+    site = Column(String(64), primary_key=True)
+    day = Column(Date, primary_key=True)
+    count = Column(Integer, nullable=False, server_default="0")
