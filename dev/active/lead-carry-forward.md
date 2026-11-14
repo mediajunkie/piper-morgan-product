@@ -1,6 +1,6 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
-## DAY CLOSED 2026-11-13 21:52 (the 18:28 block below is still current; this adds the evening)
+## DAY CLOSED 2026-11-13 21:47 (the 18:28 block below is still current; this adds the evening)
 
 - **11-14 START begins Path B (2297 then 2301) in a fresh session** (deferred there on purpose). Before any rule-7 screen: send its call count and cost to Exec, and wait for the provider key.
 - **2364 step 1:** `b16b83dcef` is on origin as side branch `lead/2364-step1` (pushed 21:34, Arch told). After the rebase, push the new sha to the same branch and mail it to Arch before the gate runs. Still waits on the key (Exec) and, for the promotion, Arch's word.
