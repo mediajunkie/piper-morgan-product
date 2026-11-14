@@ -7,7 +7,7 @@
 4. *H4 scoring.*
 5. *xian approves the wording, as for Tier 1 text.*
 
-*Size: the text below the line is 340 words and 1,848 bytes (`wc`, after the 11-13 edits). At about 4 bytes per token that is roughly 460 tokens, an estimate rather than a count_tokens figure, against the 1,500 cap.*
+*Size: the text below the line is 323 words and 1,749 bytes (`wc`, after the settled line came out). At about 4 bytes per token that is roughly 440 tokens, an estimate rather than a count_tokens figure, against the 1,500 cap.*
 
 *What the team skill does that this leaves out:*
 - *liveness checks on agents;*
@@ -21,6 +21,8 @@
 *Claims checked against conduct rule 4, so nothing here promises a tool Piper lacks.*
 
 *Voice pass (CXO, 11-13): PASSED, with CXO's three edits ("Holding things up"; the empty-result line in place of "An empty list is good news"; "a link when the items below carry one"). Arch: conforms to the addendum, with "Settled… only if the items below mark it". If Lead's gather can't supply that state, the bucket comes out of the text. All four applied 11-13.*
+
+*11-13 19:14: "Settled since you last looked" removed (Lead 01M7C0EPJC: no closed-since read exists; Arch 01M7C0H111 and PPM 01M7C0HNQA agree). If it's wanted later, it becomes its own unit (PPM's later candidate on #2358).*
 
 *Revised 11-13 after Arch's addendum (01M7BZ0DY1): the floor has no tools, so code gathers the items and the model only sorts and writes. Steps 1, 2 and 6 now refer only to what the gather supplies: the items, each source's status (read, failed or not connected) and the counts. The field names follow once Lead names them. "Settled since you last looked" stays only if the gather supplies it; otherwise that bucket is dropped.*
 
@@ -36,7 +38,6 @@ The person wants a short list they can act from, not a report to read.
    - **Holding things up:** work that can't move until they act. These always go first.
    - **Needs your call:** a decision they should make, though nothing is stuck yet.
    - **Worth knowing:** no decision needed.
-   - **Settled since you last looked:** only if the items below mark it. Otherwise leave this out.
    If nothing needs a decision, say so plainly and say what you checked, so the empty result means something. If a source couldn't be read, don't present the list as clear.
 4. **Make every line usable on its own, later.** Each item gets a plain description of what's being decided, and a link when the items below carry one. A bare ticket number or an internal label means nothing a few days later. Write the noun, not the shorthand.
 5. **Say how long each one has waited**, using the item's own dates, for example "waiting 9 days". Age is part of the finding. If an item has no date, don't guess one.
