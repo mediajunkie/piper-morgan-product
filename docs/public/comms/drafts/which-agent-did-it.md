@@ -6,43 +6,24 @@ caption: ''
 
 # Which Agent Did It?
 
-*October 21–23, 2026*
+The question of how to attribute and trace work done by agents is more complicated than it looks. For example, Piper Morgan has a project repository at GitHub where I host the codebase, documents, and the rest of the context the agents need to do their jobs. All of the agents interact with GitHub to keep their work in sync, to send each other memos, to rebuild the software and test it, and so on.
 
-<!--
-SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. PM writes
-the prose. Everything below the line is notes for PM. Delete it as the prose replaces it.
-Slot: Sat 2026-11-14 (insight). Mining candidate 8 ("One Account Means One Hand", held 11-04), retitled by xian 11-12.
-Teased by Thu 11-12 "The Server Has No Key": "every agent on the team has been acting on GitHub as me."
-Sources: CIO 10-21 log l.107, 109; omnibus 10-21 l.117-119; omnibus 10-22 l.184-186; CIO 10-23 log l.61; omnibus 10-23
-l.200-209; omnibus 10-30 l.286-287; decisions.log l.3252 (11-11), l.3342 (11-12); issues 2353 and 2342; omnibus 10-02 l.287;
-git log on origin/main (measured 11-12 22:15). Facts gathered by a Sonnet subagent. Comms re-opened every quote at source.
-The dateline covers the core episode. Change it if you lead with the November hooks.
--->
+The thing is, they all log in as me. It's my account. Sure, stuff Claude does gets that "coauthored by [your name] and Claude" line added here and there, but when reviewing or tracing pass commits or closed issues, we have not had a clear, traceable way for agents (or "seats" as they've taken to referring to each other when discussing logistics) to sign their own work.
 
----
+# I used to live in room full of mirrors
 
-## Title
-**Which Agent Did It?** (xian's title, 11-12).
+My chief innovation agent (CIO) was doing some diligent checking related to a database restarter on the agenda, trying to anticipate any adverse impact on the main branch. CIO pointed out that "every seat acts on GitHub as `mediajunkie`, xian's own account" and also my account is "the repo's admin." 
 
-## The principle in one sentence
+This means every agent, acting as me, also inherited the right to bypass any rules, meaning they can approve their own runs, with the only thing holding them back being our own internal rules.
 
-Splitting work across agents with different jobs means nothing for accountability if they all act under one person's
-name. A rule that checks *who* is acting can't tell them apart, and neither can anyone reading the record later.
+This for example meant that my head of sapient trust agent (HOST) has to withdraw their earlier claim that a pull request that requires a reviewer counts as "attended" because I have to approve the PR for it to go through. If any agent can act as me and approve it then requiring a reviewer does not necessarily mean the approval has to be attended by the human who owns the loop (me).
 
-## Beats, in order (facts verified, source in brackets)
+As CIO put it "The chokepoint (required reviewer, rules) checks an identity, and every seat passes as that identity."
 
-**1. The finding.** Wed Oct 21, 3:20 PM. CIO, looking at what would protect main before the database restarter was built,
-found: "every seat acts on GitHub as `mediajunkie`, xian's own account and the repo's admin." And the only
-rule lets that account bypass it ("`current_user_can_bypass: always`"). So "no rule separates a seat from xian, and a seat
-could approve its own `alpha-db` run." [CIO 10-21 l.107, omnibus 10-21 l.117-119]
-- HOST had ruled at 12:42 that a required reviewer counted as "attended". It withdrew that at 3:27, right after CIO's finding.
-  (My reading, not in the source: the reviewer would be you, whichever agent clicked.) [omnibus 10-21 l.119]
-- CIO's pattern note, the line that names the insight: "The chokepoint (required reviewer, rules) checks an identity, and
-  every seat passes as that identity." [CIO 10-21 l.109]
+This "acting as me" loophole extends deeper than GitHub. The agent team debated narrowing what each agent's key could do but CIO argued "scoping can't meet the bar, because all 26 Claude processes run as Unix user `xian`, and read-denies are advisory, not OS permissions." On my Mac Studio, every agent is me, as well.
 
-**2. It goes deeper than GitHub.** Fri Oct 23: CIO, answering a proposal to just narrow what each agent's key could do:
-"scoping can't meet the bar, because all 26 Claude processes run as Unix user `xian`, and read-denies are advisory, not
-OS permissions." [CIO 10-23 log l.61, omnibus 10-23 l.205] On the Mac, too, every agent is you.
+# How to distinguish them from me
+
 
 **3. What you did.** Thu Oct 22: HOST filed the problem about 4:28 PM, and you had created a GitHub App for the agents,
 `piper-morgan-agents`, by 5:13 PM. Fri Oct 23 it was installed on this one repo, with read/write on code, issues, pull
