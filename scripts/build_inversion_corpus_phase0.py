@@ -116,6 +116,17 @@ HAND_ROWS = [
         "source": "#2269 3a: adopted_category_reads_only's unlink line",
         "notes": "The phrasing Piper tells the person to type; it must route where it says.",
     },
+    # #2269 3a, the archive how-to line (Arch 11-14 YES under his 11-04 rule; PPM and CXO
+    # agree): ADOPTED_WRITE_HOW_TO_LINES["archive"] says "say 'archive project {name}'".
+    # add and restore already had a row of their instruction's exact shape; archive had
+    # only near phrasings ("Archive my project Test."). Scored on arm B's run.
+    {
+        "phrase": "archive project Mobile Redesign",
+        "category": "PORTFOLIO",
+        "expected": "action:archive_project",
+        "source": "#2269 3a: adopted_category_reads_only.ADOPTED_WRITE_HOW_TO_LINES['archive']",
+        "notes": "The phrasing Piper tells the person to type; it must route where it says. Unmeasured at deposit; the next screen scores it.",
+    },
     # #2271 (PA's served phrasings on alpha, 2026-11-06; Arch 14:09, decisions.log): linking a
     # repo to that project. A failing phrasing gets a corpus row, not a regex. The second is a
     # first-person wish: Arch 14:29 declined "I want to" for _EXECUTE_RE and ruled the row

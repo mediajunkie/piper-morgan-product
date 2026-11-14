@@ -12,8 +12,8 @@ the new phrasing (which the next router screen then scores).
 
 LAYER: the constants against the corpus file. It does not run a router; whether the
 row routes as expected is the corpus run's measurement.
-DENOMINATOR: the two repo instruction constants (link, unlink). The project how-to
-lines in the same module are listed with what the corpus holds for each.
+DENOMINATOR: the two repo instruction constants (link, unlink) by exact phrase, and
+the three project how-to lines (archive, add, restore) by the instruction's shape.
 """
 
 import re
@@ -68,17 +68,22 @@ def test_the_instructions_read_as_written():
     )
 
 
-def test_project_how_to_lines_have_a_row_of_their_shape_or_are_listed_as_missing():
-    """The project how-to lines ("say 'add project {name}'") are the same class. This
-    records what the corpus holds today so a new gap is seen: add and restore have a
-    row of the instruction's exact shape; archive has only near phrasings ("Archive my
-    project Test.") and is listed here until its row is ruled and added."""
-    phrases = list(_rows())
-    have = {
-        verb: any(p.lower().startswith(f"{verb} project ") for p in phrases)
-        for verb in ("add", "restore", "archive")
-    }
-    assert have == {"add": True, "restore": True, "archive": False}, (
-        "the corpus's coverage of the project how-to lines changed; update this record "
-        "(a new True is good news: say so in the docstring and flip it here)"
-    )
+@pytest.mark.parametrize(
+    "verb,expected",
+    [
+        ("archive", "action:archive_project"),
+        ("add", "action:add_project"),
+        ("restore", "action:restore_project"),
+    ],
+)
+def test_each_project_how_to_instruction_has_a_corpus_row_of_its_shape(verb, expected):
+    """The project how-to lines say "say '<verb> project {name}'". Each has a corpus
+    row of exactly that shape (archive's was added 2026-11-14 on Arch's yes)."""
+    template = lines.ADOPTED_WRITE_HOW_TO_LINES[verb]
+    assert f"'{verb} project {{name}}'" in template
+    matching = [
+        row
+        for phrase, row in _rows().items()
+        if phrase.lower().startswith(f"{verb} project ") and row["expected"] == expected
+    ]
+    assert matching, f"no corpus row of the shape '{verb} project <name>' expecting {expected}"

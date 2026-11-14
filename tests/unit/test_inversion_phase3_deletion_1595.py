@@ -262,8 +262,10 @@ class TestCensusDenominators:
         claimed = sum(1 for r in records if r.claim.pattern_list is not None)
         unclaimed = sum(1 for r in records if r.claim.pattern_list is None)
         assert claimed + unclaimed == len(records)
-        assert claimed + unclaimed == 629, (
-            "the corpus is 629 rows as of the 2026-11-08 #955 'take care of' REVIEW rows (+2, "
+        assert claimed + unclaimed == 630, (
+            "the corpus is 630 rows as of the 2026-11-14 #2269 3a archive how-to row (+1, "
+            "'archive project Mobile Redesign', Arch's yes of 11-14); 629 as of the "
+            "2026-11-08 #955 'take care of' REVIEW rows (+2, "
             "Arch 13:32: the classifier names the clear aliases for both); 627 rows as of the 2026-11-08 #955 REVIEW row (+1, 'make clear "
             "mark them done', a standing classifier complete_todo miss, Arch 07:53); "
             "626 as of the 2026-11-07 #2270 row (+1, the advisor's turn 1 "

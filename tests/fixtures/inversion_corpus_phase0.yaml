@@ -461,6 +461,11 @@ corpus:
     expected: action:unlink_repo
     source: "#2269 3a: adopted_category_reads_only's unlink line"
     notes: "The phrasing Piper tells the person to type; it must route where it says."
+  - phrase: "archive project Mobile Redesign"
+    category: PORTFOLIO
+    expected: action:archive_project
+    source: "#2269 3a: adopted_category_reads_only.ADOPTED_WRITE_HOW_TO_LINES['archive']"
+    notes: "The phrasing Piper tells the person to type; it must route where it says. Unmeasured at deposit; the next screen scores it."
   - phrase: "link repo dinp-machine/piper-test-activity to zz share-hide project"
     category: PORTFOLIO
     expected: action:link_repo
