@@ -774,6 +774,71 @@ def _correction_offer(
     }
 
 
+# #2294 (CXO and Arch, 2026-11-14): the named-target statement when the person has
+# NO reminders (or todos) of that kind. It used to end "Tell me which one you mean,
+# or say 'never mind'…" with nothing armed, so the next turn's bare "2" went to the
+# floor, which invented a count (PA, beta, 11-07). Now it is a statement that stops,
+# and a short closed marker is recorded for the NEXT TURN ONLY: a bare position on
+# that turn gets a code-owned line and never reaches the floor; any other message
+# routes exactly as if nothing were recorded. Nothing is written on either turn.
+NO_TARGETS_MARKER_KIND = "no_targets_statement_marker"
+NO_TARGETS_MARKER_FLAG = "no_targets_marker_pending"
+# CXO 11-14 (verbatim): the number is echoed as the person typed it, never rewritten.
+NO_TARGETS_NUMBER_LINE = (
+    "I'm not sure what \"{said}\" refers to. You don't have any {plural} right now."
+)
+# A bare position is a short reply ("2", "the second", "the second one"); a longer
+# message is a new request.
+_MARKER_MAX_WORDS = 3
+# Any in-range reading counts: the question is only "did they name a position".
+_MARKER_POSITION_SPAN = 1000
+
+
+def _no_targets_marker(
+    principal: Optional[str], noun: str, original_message: str
+) -> Dict[str, Any]:
+    """The one-turn marker. It asks nothing (``question`` is empty) and binds
+    nothing; it exists so code, not the floor, answers a bare position next turn."""
+    return {
+        "workflow_type": NO_TARGETS_MARKER_KIND,
+        "question": "",
+        "pending_action": {
+            "kind": NO_TARGETS_MARKER_KIND,
+            "action": NO_TARGETS_MARKER_KIND,
+            "user_id": principal,
+            "clear_noun": noun,
+            "original_message": original_message,
+            "summary": f"answer a bare number after the no-{noun}s statement",
+        },
+        "decline_message": "",
+    }
+
+
+def no_targets_marker_turn(pending_offer: Dict[str, Any], message: str) -> Optional[Dict[str, Any]]:
+    """The turn after the no-targets statement. A short message that names a
+    position (the existing ordinal reader; no new pattern) gets CXO's line.
+    ``None`` for anything else: the caller drops the marker and the turn routes
+    as if nothing had been recorded."""
+    payload = pending_offer.get("pending_action") or {}
+    if payload.get("kind") != NO_TARGETS_MARKER_KIND:
+        return None
+    said = (message or "").strip()
+    if not said or len(said.split()) > _MARKER_MAX_WORDS:
+        return None
+    if _ordinal_index(said, _MARKER_POSITION_SPAN) is None:
+        return None
+    noun = str(payload.get("clear_noun") or "reminder")
+    logger.info("no_targets_marker_answered", noun=noun)
+    return {
+        "message": NO_TARGETS_NUMBER_LINE.format(said=said, plural=_plural(noun, 2)),
+        "intent_data": {
+            "category": "execution",
+            "action": NO_TARGETS_MARKER_KIND,
+            "nothing_written": True,
+        },
+    }
+
+
 def _pick_target_offer(
     principal: Optional[str],
     verb: str,
@@ -961,10 +1026,36 @@ async def maybe_handle_clear_family(
                     candidates=len(matches),
                     session_id=session_id,
                 )
+                if not targets:
+                    # #2294 (Arch 11-14): with nothing to pick from this is a
+                    # STATEMENT. "Tell me which one" had no carrier and "never
+                    # mind" is a decline only at the acceptance seam, which
+                    # exists only when something is armed; both were untrue here.
+                    statement = (
+                        f"I couldn't confidently match '{ask.named_target}' to exactly one "
+                        f"{ask.noun} — you don't have any right now."
+                    )
+                    offer_service = getattr(intent_service, "workflow_offer_service", None)
+                    marker_data: Dict[str, Any] = {}
+                    if session_id and offer_service is not None:
+                        offer_service.set_pending_offer(
+                            session_id,
+                            _no_targets_marker(principal, ask.noun, original_message),
+                            user_id=user_id,
+                        )
+                        marker_data[NO_TARGETS_MARKER_FLAG] = True
+                    return IntentProcessingResult(
+                        success=True,
+                        message=statement,
+                        intent_data={
+                            **base_intent_data,
+                            "named_target_unmatched": True,
+                            **marker_data,
+                        },
+                    )
                 question = (
                     f"I couldn't confidently match '{ask.named_target}' to exactly one "
-                    f"{ask.noun}"
-                    + (f" — you have: {names}." if names else " — you don't have any right now.")
+                    f"{ask.noun} — you have: {names}."
                     # #1920 exit (CXO's copy, 2026-10-02): the user learns they
                     # can bail BEFORE failing once; "never mind" is the one
                     # phrase at both prompt sites and resolves as a DECLINE
@@ -974,8 +1065,7 @@ async def maybe_handle_clear_family(
                 )
                 # #1906: ARM the pick — the one branch in this module that
                 # used to answer "tell me which one" without a carrier for
-                # the answer. No targets -> nothing to bind to; stays
-                # unarmed (the "you don't have any right now" case).
+                # the answer. (No targets returned above as a statement.)
                 if targets:
                     pick_ids = [str(t.id) for t in targets]
                     pick_texts = [t.text for t in targets]

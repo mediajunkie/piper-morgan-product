@@ -1408,6 +1408,42 @@ class SetupProjectResponse(BaseModel):
     success: bool
     project_id: str = ""
     message: str = ""
+    # #2268: what the wizard says under a project that was given a repo.
+    repo_line: str = ""
+
+
+# #2268 (Arch 11-04: a repo name on a project is not a connection). CXO's words,
+# 11-04: the not-connected line until the wizard itself leads into connect; the
+# connected line from the first-session design (step 2).
+WIZARD_REPO_NOT_CONNECTED_LINE = (
+    "I've noted {repo} for this project. GitHub isn't connected yet, so I can't read it. "
+    "Connect GitHub in Settings, under Integrations."
+)
+WIZARD_REPO_LINKED_LINE = "{repo} is linked to this project."
+
+
+async def _wizard_repo_line(user_id: str, repo: str) -> str:
+    """The line for a project that was given a repo, from THIS person's GitHub
+    connection state (``IntegrationStatusService``, binding-first: the read the
+    Settings card uses). Not connected: the not-connected line. Connected and not
+    known broken: the linked line. When the check itself failed, or the connection
+    exists but GitHub has rejected it, neither sentence is true, so nothing is said."""
+    from services.integrations.integration_status_service import IntegrationStatusService
+
+    try:
+        state = await IntegrationStatusService().get_status(user_id, "github")
+    except (
+        Exception
+    ) as e:  # silent-ok: logged; the project is saved, the line is left out, never guessed
+        logger.warning("setup_repo_line_status_failed", error=str(e))
+        return ""
+    if state.get("check_failed"):
+        return ""
+    if not state.get("configured"):
+        return WIZARD_REPO_NOT_CONNECTED_LINE.format(repo=repo)
+    if state.get("healthy") is False:
+        return ""
+    return WIZARD_REPO_LINKED_LINE.format(repo=repo)
 
 
 @router.post("/projects", response_model=SetupProjectResponse)
@@ -1519,10 +1555,16 @@ async def create_setup_project(
             has_github_repo=bool(req.github_repo),
         )
 
+        repo_line = ""
+        if req.github_repo and req.github_repo.strip():
+            # After the commit: the project and its repo are saved whatever this says.
+            repo_line = await _wizard_repo_line(user_id, req.github_repo.strip())
+
         return SetupProjectResponse(
             success=True,
             project_id=project_id,
             message=f"Project '{req.project_name}' created",
+            repo_line=repo_line,
         )
 
     except HTTPException:

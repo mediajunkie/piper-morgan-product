@@ -374,9 +374,14 @@ class TestArmingRegression:
         due = stored["pending_action"]["clear_target_due"]
         assert due[0] is not None and due[1] is not None and due[2] is not None
 
-    async def test_no_candidates_stays_unarmed(self, live_service, monkeypatch, pref_store):
-        """The OTHER unmatched case — 'you don't have any right now' — has
-        nothing to bind to and correctly stays unarmed."""
+    async def test_no_candidates_is_a_statement_with_a_one_turn_marker(
+        self, live_service, monkeypatch, pref_store
+    ):
+        """#2294 (Arch and CXO, 2026-11-14): with nothing to pick from, the reply is
+        a statement that stops. It no longer says "Tell me which one you mean" or
+        "never mind" (nothing was armed to answer either). A one-turn marker is
+        recorded so a bare number next turn gets a code-owned line, not the floor."""
+        from services.intent_service import reminder_clear as rc
         from services.todo.todo_management_service import TodoManagementService
 
         async def _empty_list(self, user_id, include_completed=False):
@@ -387,8 +392,72 @@ class TestArmingRegression:
         msg = "clear the overdue reminder"
         _stub_classification(monkeypatch, live_service, msg, "complete_todo")
         result = await live_service.process_intent(message=msg, session_id=sid, user_id=_USER)
-        assert "don't have any right now" in result.message
+        assert result.message.endswith("you don't have any right now.")
+        assert "which one" not in result.message.lower()
+        assert "never mind" not in result.message.lower()
+        assert "?" not in result.message
+        assert not result.requires_clarification
+        assert result.intent_data[rc.NO_TARGETS_MARKER_FLAG] is True
+        stored = _pending_offers(live_service).get(sid)
+        assert stored["pending_action"]["kind"] == rc.NO_TARGETS_MARKER_KIND
+        assert stored["question"] == ""  # it asks nothing
+
+        # The next turn's bare number: CXO's line, echoing what was typed; the
+        # classifier is never consulted (the explosive LLM boundary would raise).
+        answer = await live_service.process_intent(message="2", session_id=sid, user_id=_USER)
+        assert answer.message == (
+            "I'm not sure what \"2\" refers to. You don't have any reminders right now."
+        )
         assert _pending_offers(live_service).get(sid) is None
+
+    async def test_with_candidates_the_armed_question_is_unchanged(
+        self, live_service, monkeypatch, pref_store, todo_boundary
+    ):
+        sid = "e2e-1906-still-asks"
+        stored = await _arm_pick_target(monkeypatch, live_service, sid, todo_boundary)
+        assert "Tell me which one you mean, or say 'never mind'" in stored["question"]
+        assert stored["pending_action"]["kind"] == "reminder_clear_pick_target_question"
+
+
+class TestNoTargetsMarkerTurn:
+    """#2294: the marker answers a bare position and nothing else."""
+
+    def _marker(self, noun="reminder"):
+        from services.intent_service import reminder_clear as rc
+
+        return rc._no_targets_marker(_USER, noun, "clear the overdue reminder")
+
+    # The existing ordinal reader's forms. A spelled cardinal ("two") is not one of
+    # them, so it routes as any other message; no word list is added for it here.
+    @pytest.mark.parametrize("said", ["2", "the second", "the second one", "#2", "last"])
+    def test_a_bare_position_is_echoed_as_typed(self, said):
+        from services.intent_service import reminder_clear as rc
+
+        turn = rc.no_targets_marker_turn(self._marker(), said)
+        assert turn["message"] == (
+            f"I'm not sure what \"{said}\" refers to. You don't have any reminders right now."
+        )
+        assert turn["intent_data"]["nothing_written"] is True
+
+    @pytest.mark.parametrize(
+        "said",
+        ["", "yes", "never mind", "show me my todos", "remind me to call the dentist at 2", "two"],
+    )
+    def test_anything_else_is_not_the_markers(self, said):
+        from services.intent_service import reminder_clear as rc
+
+        assert rc.no_targets_marker_turn(self._marker(), said) is None
+
+    def test_another_kinds_record_is_not_the_markers(self):
+        from services.intent_service import reminder_clear as rc
+
+        assert rc.no_targets_marker_turn({"pending_action": {"kind": "other"}}, "2") is None
+
+    def test_the_noun_is_the_statements_own(self):
+        from services.intent_service import reminder_clear as rc
+
+        turn = rc.no_targets_marker_turn(self._marker("todo"), "2")
+        assert turn["message"].endswith("You don't have any todos right now.")
 
 
 class TestBindingContinuesTheFlow:
