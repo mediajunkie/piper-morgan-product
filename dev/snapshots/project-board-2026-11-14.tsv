@@ -2159,5 +2159,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2368	OPEN	Production		Setup's /complete accepts any default_llm_provider (e.g. gemini) unvalidated and stores it	bug		
 2369	CLOSED	Production		Deploy-trigger parity check fails on main: three .dockerignore rows missing from fly-deploy paths-ignore, and the check runs nowhere			COMPLETED
 2371	OPEN	Production		Numbered picks list same-named options with nothing to tell them apart (2297 project pick, 2271 archive pick)			
-2370	OPEN	Production		Read-failure forcing test: five floor rows time out when run alone on a Mac with local Redis blocked, and pass in the full folder run	bug		
+2370	OPEN	Production		Unreachable Redis costs 2 s per call (redis-py 5.0.1 blocking pool waits on itself); five forcing-test rows time out when run alone	bug		
 2372	OPEN	Production		DB-CREATE-ALL: create_all in the fresh-database test and setup_wizard pre-empts alembic (shared DB, self-host)			
+2373	OPEN	Production		Floored-action counter write is awaited on the person's turn: bound it with a short timeout (2327 follow-up)	enhancement		
