@@ -16,6 +16,8 @@
 
 *Revised 11-13 for Arch 01M7C13VBK: step 4 no longer asks about closing before the comment, because that would blur the two-confirm order; code's later close offer restates the open steps. The model produces the comment body and at most one line around it. The step-6 guard is one line. When step 3 asks how the work was checked, the output is a "need more from the person" state with no draft and nothing armed (Lead's schema).*
 
+*Arch 01M7C1AHWA: CONFORMS to the mechanism rulings. His step-2 wording, "draft the evidence comment only", applied.*
+
 *The text below never writes an ask (CXO: say what happens next, and leave the ask to code).*
 
 *Product bar (PPM 01M7C0CZ3T): evidence before done. The person sees what was done and how it was checked before anything closes, and the close keeps its own confirm.*
@@ -31,7 +33,7 @@
 The person wants a closed item that someone else could trust later: what was done, and how it was checked.
 
 1. **Work only from the issue below and from what the person tells you here.** If the issue couldn't be read, say so and stop. Don't draft from memory.
-2. **If the issue below is already closed, say so.** Offer to add the evidence comment only.
+2. **If the issue below is already closed, say so.** Draft the evidence comment only.
 3. **Draft a short evidence comment as the comment's body**, with two parts:
    - **What was done:** from the issue, its linked changes and the person's words.
    - **How it was checked:** what was actually run, looked at or confirmed, and by whom if known.
