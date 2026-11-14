@@ -104,6 +104,54 @@ class TestWhichRouteUsesWhichGate:
 
         assert require_admin in _deps(ui.router, "/settings/account-flags", "GET")
 
+    async def test_a_non_admin_gets_403_on_the_page_and_both_flag_routes(self):
+        """Arch's condition for the ledger row (2026-11-14, the #2081 precedent): the
+        page and both API routes run ``require_admin``, and that dependency, run for
+        real with only its database read replaced, refuses a non-admin with 403."""
+        from web.api.routes import ui
+
+        gated = [
+            _deps(ui.router, "/settings/account-flags", "GET"),
+            _deps(admin_ops.router, "/api/v1/admin/account-flags", "GET"),
+            _deps(admin_ops.router, "/api/v1/admin/account-flags", "POST"),
+        ]
+        assert all(require_admin in deps for deps in gated)
+        with patch.object(auth_middleware, "_user_is_admin", AsyncMock(return_value=False)):
+            with pytest.raises(HTTPException) as refused:
+                await require_admin(CLAIMS)
+        assert refused.value.status_code == 403
+
+    def test_no_chat_or_agent_path_can_set_a_narrow_flag(self):
+        """Arch's condition: outside the gate, the flag service, the admin route file
+        and the model, no code under services/ or web/ names the flag or its setter
+        (comments aside). A privilege flag set from chat would be a write on
+        interpreted meaning to a permission."""
+        allowed = {
+            "services/auth/auth_middleware.py",
+            "services/auth/narrow_flags.py",
+            "services/database/models.py",
+            "web/api/routes/admin_ops.py",
+        }
+        import io
+        import tokenize
+
+        # Code tokens only: a comment or a docstring that mentions the flag is not a
+        # code path. A NAME token is an identifier the code actually uses.
+        watched = {"ops_reader", "narrow_flags", "set_flag"}
+        offenders = []
+        for folder in ("web", "services"):
+            for path in (ROOT / folder).rglob("*.py"):
+                rel = path.relative_to(ROOT).as_posix()
+                if rel in allowed:
+                    continue
+                text = path.read_text(encoding="utf-8")
+                if not any(word in text for word in watched):
+                    continue
+                for token in tokenize.generate_tokens(io.StringIO(text).readline):
+                    if token.type == tokenize.NAME and token.string in watched:
+                        offenders.append(f"{rel}:{token.start[0]}: {token.string}")
+        assert offenders == []
+
     def test_the_counter_rows_have_exactly_the_four_keys(self):
         assert admin_ops.FLOORED_ACTION_ROW_KEYS == ("name", "site", "day", "count")
         src = (ROOT / "web/api/routes/admin_ops.py").read_text()
