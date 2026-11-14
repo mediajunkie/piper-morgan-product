@@ -204,6 +204,13 @@ CHAT_POINTERS = {
             "free text blindly. Ceiling move 29 -> 30 on Arch's word."
         ),
     ),
+    "page:/settings/account-flags": CHAT_INVISIBLE(
+        issue=2327,
+        note=(
+            "admin-only operator page (require_admin); by design: no chat or agent "
+            "path sets an account flag (Arch 2026-11-14)"
+        ),
+    ),
     "page:/settings/invites": CHAT_INVISIBLE(
         issue=2081,
         note=(

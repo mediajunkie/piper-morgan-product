@@ -1,0 +1,205 @@
+{% extends "layouts/app_shell.html" %}
+{# #2327 (Arch, HOST, 2026-11-14) — Account flags: an admin gives one named account a #}
+{# narrow flag. The flags are a closed list in services/auth/narrow_flags.py; is_admin  #}
+{# is not one of them. The route is admin-only; the API is /api/v1/admin/account-flags. #}
+
+{% block page_title %}Account flags - Piper Morgan{% endblock %}
+
+{% block head_extra %}
+<style>
+  .settings-container {
+    font-family: var(--font-family);
+    max-width: 760px;
+    margin: 0 auto;
+    padding: var(--space-3xl) var(--space-lg);
+  }
+  .page-header { margin-bottom: var(--space-xl); }
+  .page-header h1 {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-sm) 0;
+  }
+  .page-description { color: var(--color-text-secondary); margin: 0; line-height: 1.5; }
+  .flags-section {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+  }
+  .flags-section h2 { font-size: var(--font-size-lg); margin: 0 0 var(--space-sm) 0; }
+  .lookup-row { display: flex; gap: var(--space-sm); align-items: center; flex-wrap: wrap; }
+  .lookup-row input[type="text"] { flex: 1; min-width: 14rem; padding: var(--space-xs) var(--space-sm); border: 1px solid var(--color-border); border-radius: var(--radius-md); font-size: var(--font-size-base); }
+  .btn { border: 0; border-radius: var(--radius-md); padding: var(--space-sm) var(--space-md); font-size: var(--font-size-base); cursor: pointer; }
+  .btn-primary { background: var(--color-primary); color: #fff; }
+  .btn-primary:disabled { opacity: 0.6; cursor: default; }
+  .flag-row { display: flex; gap: var(--space-sm); align-items: flex-start; margin: var(--space-sm) 0; }
+  .flag-row label { line-height: 1.4; }
+  .flag-note { color: var(--color-text-secondary); font-size: var(--font-size-sm); }
+  .flags-status { margin-top: var(--space-md); min-height: 1.4em; }
+  .flags-status.err { color: var(--color-danger, #b91c1c); }
+  [hidden] { display: none !important; }
+</style>
+{% endblock %}
+
+{% block main %}
+  {% set breadcrumbs = [
+    {"label": "Settings", "url": "/settings"},
+    {"label": "Account flags", "url": None}
+  ] %}
+  {% include 'components/breadcrumbs.html' %}
+
+  <div class="settings-container" id="account-flags-page">
+    <div class="page-header">
+      <h1>Account flags</h1>
+      <p class="page-description">
+        Give one account a narrow permission. Each flag opens one thing and nothing else.
+        This page cannot make an account an admin.
+      </p>
+    </div>
+
+    <section class="flags-section" aria-labelledby="lookup-heading">
+      <h2 id="lookup-heading">Find the account</h2>
+      <div class="lookup-row">
+        <input type="text" id="flags-username" placeholder="Exact username" autocomplete="off" aria-label="Username" />
+        <button class="btn btn-primary" id="flags-lookup">Look up</button>
+      </div>
+      <div class="flags-status" id="flags-lookup-status" role="status"></div>
+    </section>
+
+    <section class="flags-section" id="flags-edit" aria-labelledby="edit-heading" hidden>
+      <h2 id="edit-heading">Flags for <span id="flags-account"></span></h2>
+      <div id="flags-list"></div>
+      <button class="btn btn-primary" id="flags-save">Save</button>
+      <div class="flags-status" id="flags-save-status" role="status"></div>
+    </section>
+  </div>
+
+  {% include 'components/toast.html' %}
+  {% include 'components/signed_out_modal.html' %}
+{% endblock %}
+
+{% block scripts %}
+  <script>
+(function () {
+  "use strict";
+  // What each flag opens, in plain words. A flag the server lists that has no entry
+  // here is shown by its name.
+  const FLAG_WORDS = {
+    ops_reader: {
+      label: "Operations reader",
+      note: "Can read the operations counters. Nothing else.",
+    },
+  };
+  const usernameInput = document.getElementById("flags-username");
+  const lookupBtn = document.getElementById("flags-lookup");
+  const lookupStatus = document.getElementById("flags-lookup-status");
+  const editSection = document.getElementById("flags-edit");
+  const accountEl = document.getElementById("flags-account");
+  const listEl = document.getElementById("flags-list");
+  const saveBtn = document.getElementById("flags-save");
+  const saveStatus = document.getElementById("flags-save-status");
+  let current = null; // {username, flags, settable} as the server last gave it
+
+  function say(el, text, isError) {
+    el.textContent = text;
+    el.className = "flags-status" + (isError ? " err" : "");
+  }
+
+  async function detailOf(res) {
+    try { const body = await res.json(); return body.detail || ""; } catch (e) { return ""; }
+  }
+
+  function render(account) {
+    current = account;
+    accountEl.textContent = account.username;
+    listEl.textContent = "";
+    account.settable.forEach(function (flag) {
+      const words = FLAG_WORDS[flag] || { label: flag, note: "" };
+      const row = document.createElement("div");
+      row.className = "flag-row";
+      const box = document.createElement("input");
+      box.type = "checkbox";
+      box.id = "flag-" + flag;
+      box.dataset.flag = flag;
+      box.checked = !!account.flags[flag];
+      const label = document.createElement("label");
+      label.htmlFor = box.id;
+      const name = document.createElement("strong");
+      name.textContent = words.label;
+      const note = document.createElement("div");
+      note.className = "flag-note";
+      note.textContent = words.note;
+      label.appendChild(name);
+      label.appendChild(note);
+      row.appendChild(box);
+      row.appendChild(label);
+      listEl.appendChild(row);
+    });
+    editSection.hidden = false;
+  }
+
+  lookupBtn.addEventListener("click", async function () {
+    const username = usernameInput.value.trim();
+    editSection.hidden = true;
+    say(saveStatus, "", false);
+    if (!username) { say(lookupStatus, "Type a username.", true); return; }
+    say(lookupStatus, "", false);
+    lookupBtn.disabled = true;
+    try {
+      const res = await fetch("/api/v1/admin/account-flags?username=" + encodeURIComponent(username), {
+        credentials: "same-origin",
+      });
+      if (!res.ok) {
+        say(lookupStatus, (await detailOf(res)) || "Couldn't look that up. Nothing was changed.", true);
+        return;
+      }
+      const account = await res.json();
+      if (!account.found) { say(lookupStatus, account.message, true); return; }
+      render(account);
+    } catch (e) {
+      say(lookupStatus, "Couldn't look that up. Nothing was changed.", true);
+    } finally {
+      lookupBtn.disabled = false;
+    }
+  });
+
+  saveBtn.addEventListener("click", async function () {
+    if (!current) return;
+    const changes = [];
+    listEl.querySelectorAll("input[type=checkbox]").forEach(function (box) {
+      if (box.checked !== !!current.flags[box.dataset.flag]) {
+        changes.push({ flag: box.dataset.flag, on: box.checked });
+      }
+    });
+    if (!changes.length) { say(saveStatus, "Nothing to save. The flags are as shown.", false); return; }
+    saveBtn.disabled = true;
+    try {
+      let latest = current;
+      for (const change of changes) {
+        const res = await fetch("/api/v1/admin/account-flags", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: current.username, flag: change.flag, on: change.on }),
+        });
+        if (!res.ok) {
+          say(saveStatus, (await detailOf(res)) || "Couldn't save. Look the account up again to see what is set.", true);
+          return;
+        }
+        const answer = await res.json();
+        if (!answer.found) { say(saveStatus, answer.message, true); return; }
+        latest = answer;
+      }
+      render(latest);
+      say(saveStatus, "Saved for " + latest.username + ".", false);
+    } catch (e) {
+      say(saveStatus, "Couldn't save. Look the account up again to see what is set.", true);
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+})();
+  </script>
+{% endblock %}

@@ -478,6 +478,20 @@ async def invites_admin_page(request: Request, admin: JWTClaims = Depends(requir
     )
 
 
+@router.get("/settings/account-flags", response_class=HTMLResponse)
+async def account_flags_admin_page(request: Request, admin: JWTClaims = Depends(require_admin)):
+    """Account flags page (#2327): an admin gives one named account a narrow flag
+    (the closed list in services/auth/narrow_flags.py; never is_admin). Admin only
+    (users.is_admin, live read, fail closed). The API is
+    web/api/routes/admin_ops.py.
+    """
+    templates = _get_templates(request)
+    user_context = _extract_user_context(request)
+    return templates.TemplateResponse(
+        "settings_account_flags.html", {"request": request, "user": user_context}
+    )
+
+
 @router.get("/feedback", response_class=HTMLResponse)
 async def feedback_page(request: Request):
     """Send feedback page (#2096, CXO's shape): one box, one button; success only
