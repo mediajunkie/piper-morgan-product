@@ -34,7 +34,7 @@ from services.repositories.todo_repository import TodoRepository
 logger = structlog.get_logger()
 from services.todo_service import TodoService
 
-# #2151 TODO-CAP: the list window; a reply over a full window says "Showing your first N tasks".
+# #2151 TODO-CAP: the list window; a reply over a full window says "Showing your first N todos".
 TODO_LIST_CAP = 100
 
 
