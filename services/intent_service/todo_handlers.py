@@ -2751,7 +2751,8 @@ class TodoIntentHandlers:
         reply = format_todo_list_grouped(todos, owner=project.name)
         self._remember_todo_list_lines(session_id, user_id, todos)
         if bool(getattr(todos, "capped", False)):
-            reply = f"{reply}\n\nShowing the first {len(todos)} tasks in {project.name}."
+            # CXO 11-14: "todos", the noun this reply's own header uses.
+            reply = f"{reply}\n\nShowing the first {len(todos)} todos in {project.name}."
         return reply
 
     async def _resolve_list_selection(self, message: str, user_id: Any):

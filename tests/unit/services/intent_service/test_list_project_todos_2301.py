@@ -116,6 +116,21 @@ class TestOneProject:
         result = await _run(_intent({"project": "Launch"}, "what's in Launch?"), svc)
         assert result.message == "Launch has 2 open todos. Here it is:\n1. review prs (×2)"
 
+    async def test_a_capped_list_says_so_with_the_headers_noun(self, projects):
+        """CXO 11-14: "todos", as the header says; never "tasks" in the same reply."""
+        projects[USER] = [_project("p1", "Mobile Redesign")]
+        svc = _service({})
+
+        class _Page(list):
+            capped = True
+
+        svc.todo_handlers.todo_service.list_todos = AsyncMock(
+            return_value=_Page([_todo("a", "one"), _todo("b", "two")])
+        )
+        result = await _run(_intent({"project": "Mobile Redesign"}), svc)
+        assert result.message.endswith("\n\nShowing the first 2 todos in Mobile Redesign.")
+        assert "tasks" not in result.message
+
     async def test_a_project_with_no_todos_says_so(self, projects):
         projects[USER] = [_project("p1", "Mobile Redesign")]
         svc = _service({})

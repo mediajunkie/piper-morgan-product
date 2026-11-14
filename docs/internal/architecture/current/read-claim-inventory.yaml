@@ -980,7 +980,7 @@ surfaces:
     says the couldn't-check line (rail_read_failure); forced in
     test_read_claim_forcing_2151.py. No project named, or a name that matches none of the
     user's projects, is a statement that says so and reads no todos. A capped list ends
-    "Showing the first 100 tasks in <project>." Pins:
+    "Showing the first 100 todos in <project>." Pins:
     tests/unit/services/intent_service/test_list_project_todos_2301.py.
 
 - id: list_reminders_query
