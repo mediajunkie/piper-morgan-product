@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'docs/public/comms/drafts/which-agent-did-it-which-agent-wears-my-face.jpg'
+alt: 'A puzzled man gestures toward three translucent AI coworkers at a workbench, each holding an identical cardboard mask of his face in front of their own.'
+caption: '"Which one of me did this?"'
 ---
 
 # Which Agent Did It?
@@ -14,7 +14,7 @@ The thing is, they all log in as me. It's my account. Sure, stuff Claude does ge
 
 # I used to live in a room full of mirrors
 
-My chief innovation agent (CIO) was doing some diligent checking related to a database restarter on the agenda, trying to anticipate any adverse impact on the main branch. CIO pointed out that "every seat acts on GitHub as `mediajunkie`, xian's own account" and also my account is "the repo's admin." 
+My chief innovation agent (CIO) was doing some diligent checking related to a database restarter on the agenda, trying to anticipate any adverse impact on the main branch. CIO pointed out that "every seat acts on GitHub as `mediajunkie`, xian's own account" and also my account is "the repo's admin."
 
 This means every agent, acting as me, also inherited my account's right to bypass the repo's rule, meaning an agent could approve its own run, with the only thing holding them back being our own internal rules.
 
@@ -26,7 +26,7 @@ This "acting as me" loophole extends deeper than GitHub. The agent team debated 
 
 # How to distinguish them from me
 
-The solution the team came up with was for me to create a GitHub App for the agents. The app is installed just in the relevant repo and has read/write permissions on code, issues, pull requests and Actions, but no workflow permission. 
+The solution the team came up with was for me to create a GitHub App for the agents. The app is installed just in the relevant repo and has read/write permissions on code, issues, pull requests and Actions, but no workflow permission.
 
 A first test push to a protected branch was refused as expected, specifying who or what was refused: "actor `piper-morgan-agents[bot]`," while my own ordinary pushes went through fine by means of the bypass set up for my own convenience.
 
@@ -47,7 +47,6 @@ Just this past week I had to make it 100% clear: "We do need to keep my local ke
 
 ---
 
-*Next on Building Piper Morgan: [TEASE: the next post after Sat 11-14. Nothing is on the calendar yet except Ships. Next
-building beat in order is beat 4, "The Wall" (Sep 15–18), or a Sun insight if you add one.]*
+*Next on Building Piper Morgan: "No New Skills This Time," in which the team reviews thirteen ideas for new agent skills and builds none of them.*
 
 *If you looked at your own team's written history today (human or otherwise), could you tell who actually did each thing?*
