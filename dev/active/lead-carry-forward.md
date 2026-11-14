@@ -1,5 +1,13 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-14 12:40 (supersedes the 10:14 block below where they differ)
+
+- **Main is `9d6646f6a2`. It now carries migration `v2327floored`, so the next promotion needs XIAN'S WORD (via Exec), then Arch's word on the exact sha.** Unserved on main today: the archive pick's date, both cap lines, 2274, 2294's net, 2268 (with the rejected-grant line), the archive corpus row and pins, and 2327.
+- **2327 (floored action names outside every vocabulary) is built:** counter table, evidence line, `require_ops_reader` on `GET /api/v1/admin/floored-actions`, Settings > Account flags (admin only, closed list, never `is_admin`), `scripts/floored_action_tally.py`. Asked of Arch and HOST: validation of `46c5f26fd5`, `f6c6bc8776`, `7d9bf68929`; of CXO: the page's words (mail 01M7DW1M…). Rows 2 to 4 need: the promotion, xian ticking Operations reader for the test account, then a seat reads the counter in the signed-in profile and runs the tally.
+- **Shared local database is at `v2327floored`** (migrated 11-14 from my worktree; `floored_action_counts` emptied of 15 test rows on CIO's yes). Tests no longer write counter rows (autouse fixture in `tests/conftest.py`).
+- **2372 (CIO, ruled by Arch):** the wizard runs only alembic; the fresh-database test gets its own scratch database; no new migration takes a skip-if-exists guard. Not mine unless placed.
+- **Lessons:** a new model table gets created in the shared database by `test_fresh_database_setup.py` before its migration; a new column on `users` fails every local user-insert test until the shared database is migrated; a whole-tree run against the fault driver's scratch database is NOT a usable verdict (restricted role, empty database); a new page needs a chat-pointers ledger row, and a `CHAT_INVISIBLE` one moves a ceiling that only Arch moves; a 404's words are rewritten by the app's error handler; a regex in `services/intent_service/` counts against the binder ratchet.
+
 ## IN-DAY 2026-11-14 10:14 (supersedes the blocks below where they differ)
 
 - **Main is `e7c210bd8f`. Six unserved changes of mine from today, no migration:** the 2271 archive pick's created date (`d769f3a7b0`), the main list's "todos" cap line (`bd5470462e`), 2274 (`e1616bb0df`), 2294's safety net (`c63a6af540`, Arch validated `dbfff4dce3`), 2268 (`0a17e30af7`), the 2269 pin (`e7c210bd8f`). **Promotion: ask Arch with the exact sha once CI is green on the newest head, and tell him whether staging serves a merge commit (2363 row 3).** Beta serves `81d149ac86`.
