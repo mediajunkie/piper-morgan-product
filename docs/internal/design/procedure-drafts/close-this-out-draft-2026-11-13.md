@@ -8,6 +8,8 @@
 - *There's no combined confirm. If the comment fails, close isn't offered. If the issue is already closed, Piper says so and offers the comment only.*
 - *The router has to tell "close #42" (the existing action) from "close this out" (this one), scored with H4. If it can't, this doesn't ship.*
 
+*Voice pass (CXO 01M7C1H5HQ, 11-13): PASSED, no edits.*
+
 *Write fields (Arch 01M7C0QSG0):*
 - *The compose call returns the comment's `body` as structured output.*
 - *Code renders the shown comment from it and arms the comment offer from the same value (pinned byte for byte).*
