@@ -1425,6 +1425,8 @@ class IntentService:
             # #2271: the armed which-project-to-archive pick (exact-name matches)
             # and the armed near-match archive yes/no (one flag for both).
             "project_archive_pick_pending",
+            # #2294: the one-turn marker after the no-reminders statement.
+            "no_targets_marker_pending",
             # #1651: the standup's bound overdue-todo offer must survive
             # this turn (armed on the rail-dispatched get_standup path).
             "standup_todo_offer_pending",
@@ -2473,6 +2475,27 @@ class IntentService:
                 ):
                     pending_offer = None
                     _offer_dropped_for_principal = True
+            if (
+                pending_offer
+                and (pending_offer.get("pending_action") or {}).get("kind")
+                == "no_targets_statement_marker"
+            ):
+                # #2294 (CXO and Arch 11-14): the one-turn marker left by the
+                # "you don't have any right now" statement. A bare position gets a
+                # code-owned line and never the floor. Anything else: the marker is
+                # gone (popped above) and the turn routes as if nothing had been
+                # recorded, so it never reaches the generic accept/decline either.
+                from services.intent_service import reminder_clear as _ntm
+
+                _ntm_turn = _ntm.no_targets_marker_turn(pending_offer, message)
+                pending_offer = None
+                if _ntm_turn is not None:
+                    return IntentProcessingResult(
+                        success=True,
+                        message=_ntm_turn["message"],
+                        intent_data=_ntm_turn["intent_data"],
+                        requires_clarification=False,
+                    )
             if pending_offer:
                 # #1510 (inferred half, PM ruling via Exec 2026-08-13): on a
                 # verification read-back turn, meta-feedback about the

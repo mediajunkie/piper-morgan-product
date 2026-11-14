@@ -50,6 +50,8 @@
 
   <div class="llmkeys-card">
     <h2>Add or replace a key</h2>
+    {# #2274 (CXO 11-04): shown while Anthropic is the chosen provider (the default). #}
+    <p class="llmkeys-note" id="llm-key-subscription-note">A Claude subscription (Pro or Max) doesn't include API access. Piper needs an API key from the <a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer">Anthropic Console</a>, which is billed separately from your subscription.</p>
     <div class="llmkeys-row">
       <select id="llm-provider" aria-label="LLM provider">
         <option value="anthropic">Anthropic (Claude)</option>
@@ -97,6 +99,13 @@
   const UNUSED_PROVIDERS = ["gemini"];
   const unusedNote = document.getElementById("llm-keys-unused-note");
   const keyInput = document.getElementById("llm-key-input");
+  // #2274 (CXO 11-04): the subscription sentence is about Anthropic only.
+  const subscriptionNote = document.getElementById("llm-key-subscription-note");
+  function syncSubscriptionNote() {
+    subscriptionNote.hidden = providerSel.value !== "anthropic";
+  }
+  providerSel.addEventListener("change", syncSubscriptionNote);
+  syncSubscriptionNote();
 
   function setStatus(text, ok) {
     statusEl.textContent = text;
