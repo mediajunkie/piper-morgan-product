@@ -261,6 +261,9 @@
             llmKeyInput.disabled = false;
             llmKeyInput.placeholder = providerPlaceholders[provider] || '';
             llmKeyLabel.textContent = providerLabels[provider] || 'API Key';
+            // #2274 (CXO 11-04): the subscription sentence is about Anthropic only.
+            const subscriptionNote = document.getElementById('llm-key-subscription-note');
+            if (subscriptionNote) subscriptionNote.hidden = provider !== 'anthropic';
             validateLlmBtn.dataset.provider = provider;
             validateLlmBtn.disabled = false;
             keychainLlmBtn.dataset.provider = provider;
@@ -634,11 +637,16 @@
             return;
         }
 
+        // #2268: the server's line about the repo (connected or not), as text. The
+        // name and repo the person typed are shown as text too (they were markup).
+        const escapeText = (value) => String(value)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         listEl.innerHTML = setupProjects.map((p, i) => `
             <div class="service-status ready" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <div>
-                    <strong>${p.name}</strong>
-                    ${p.repo ? ` — <span style="color: #6c757d;">${p.repo}</span>` : ''}
+                    <strong>${escapeText(p.name)}</strong>
+                    ${p.repo ? ` — <span style="color: #6c757d;">${escapeText(p.repo)}</span>` : ''}
+                    ${p.repoLine ? `<div class="setup-project-repo-line" style="color: #555; font-size: 0.9rem; margin-top: 4px;">${escapeText(p.repoLine)}</div>` : ''}
                 </div>
                 <button type="button" onclick="window._removeSetupProject(${i})"
                     style="background: none; border: none; color: #dc3545; cursor: pointer; font-size: 16px;"
@@ -697,7 +705,8 @@
                     setupProjects.push({
                         id: data.project_id,
                         name: projectName,
-                        repo: githubRepo || null
+                        repo: githubRepo || null,
+                        repoLine: data.repo_line || ''
                     });
                     renderSetupProjects();
                     nameInput.value = '';
