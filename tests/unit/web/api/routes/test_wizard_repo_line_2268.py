@@ -62,11 +62,21 @@ class TestTheLineFollowsTheConnection:
     async def test_connected_and_never_tested_still_reads_as_linked(self):
         assert await _line(_status(configured=True, via="pat", healthy=None)) == LINKED
 
-    async def test_a_rejected_grant_says_nothing(self):
-        """Connected but GitHub has rejected it: "isn't connected yet" and "is linked"
-        would both be untrue, so the wizard says neither."""
+    async def test_a_rejected_grant_gets_the_one_stale_sentence(self):
+        """CXO 11-14: one sentence for one state across chat and the wizard."""
+        from services.mcp.consumer.github_adapter import GITHUB_STALE_TOKEN_REPLY
+
         state = _status(configured=True, via="oauth_binding_stale", healthy=False)
-        assert await _line(state) == ""
+        line = await _line(state)
+        assert line == GITHUB_STALE_TOKEN_REPLY
+        assert line == (
+            "Your GitHub connection needs re-authorizing. "
+            "Reconnect GitHub in Settings, under Integrations."
+        )
+
+    async def test_a_connection_whose_own_test_failed_says_nothing(self):
+        """Not a rejected grant, and not known to work: neither sentence is true."""
+        assert await _line(_status(configured=True, via="pat", healthy=False)) == ""
 
     async def test_a_failed_check_says_nothing(self):
         assert await _line(_status(check_failed=True)) == ""
