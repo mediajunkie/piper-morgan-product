@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'docs/public/comms/drafts/which-agent-did-it-which-agent-wears-my-face.jpg'
 alt: ''
 caption: ''
 ---
