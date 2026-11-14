@@ -424,6 +424,8 @@
         </div>
 
         <div class="form-group" id="llm-key-group" style="display: none;">
+          {# #2274 (CXO 11-04): a sentence before the field, shown for Anthropic only. #}
+          <p id="llm-key-subscription-note" style="font-size: 0.9rem; color: #555; margin: 0 0 0.75rem;" hidden>A Claude subscription (Pro or Max) doesn't include API access. Piper needs an API key from the <a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer">Anthropic Console</a>, which is billed separately from your subscription.</p>
           <label for="llm-key" id="llm-key-label">API Key</label>
           <div class="key-validation">
             <input type="password" id="llm-key" autocomplete="new-password" placeholder="" />
