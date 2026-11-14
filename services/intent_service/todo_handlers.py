@@ -43,6 +43,7 @@ from services.consciousness.todo_consciousness import (
     format_todo_created_conscious,
     format_todo_deleted_conscious,
     format_todo_list_conscious,
+    format_todo_list_grouped,
     group_todo_lines,
 )
 from services.domain.models import Intent, Todo
@@ -2730,6 +2731,28 @@ class TodoIntentHandlers:
             if not selector_task.done():
                 selector_task.cancel()
             raise
+
+    async def handle_list_project_todos(self, session_id: str, user_id: UUID, project: Any) -> str:
+        """#2301 (CXO 11-06 11:14): the open todos of ONE project, resolved by the
+        rail adapter to a ``ProjectRef`` (the person's own, by id). The list is the
+        main list's own render (grouping, chips, order, numbering) under the
+        project's header, and its lines are recorded as the last numbered list, so
+        "complete the first one" binds to what was shown."""
+        from services.intent_service.todo_project_attach import PROJECT_EMPTY_LINE
+
+        # A failed read RAISES: the rail says CXO's couldn't-check line for this op
+        # (rail_read_failure, #2151) and never falls through to the floor.
+        todos = await self.todo_service.list_todos(
+            user_id=user_id, include_completed=False, project_id=str(project.id)
+        )
+        logger.info("Project todo list retrieved", user_id=user_id, count=len(todos))
+        if not todos:
+            return PROJECT_EMPTY_LINE.format(project=project.name)
+        reply = format_todo_list_grouped(todos, owner=project.name)
+        self._remember_todo_list_lines(session_id, user_id, todos)
+        if bool(getattr(todos, "capped", False)):
+            reply = f"{reply}\n\nShowing the first {len(todos)} tasks in {project.name}."
+        return reply
 
     async def _resolve_list_selection(self, message: str, user_id: Any):
         """#2219 / #2295: the op-local selector call (``todo_select_resolve``). Its own

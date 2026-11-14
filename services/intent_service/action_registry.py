@@ -265,6 +265,7 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("QUERY", "session_activity_query"): ActionDisposition.WORKFLOW,
     # ---- QUERY: Todos ----
     ("QUERY", "list_todos_query"): ActionDisposition.WORKFLOW,
+    ("QUERY", "list_project_todos"): ActionDisposition.WORKFLOW,  # #2301
     ("QUERY", "list_completed_todos"): ActionDisposition.WORKFLOW,
     ("QUERY", "next_todo_query"): ActionDisposition.WORKFLOW,
     # #1521: reminder LIST query ("what reminders do I have?") — pre-classifier
@@ -374,6 +375,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "productivity_query"): "How productive was I this week?",
     ("QUERY", "session_activity_query"): "What did we create this session?",
     ("QUERY", "list_todos_query"): "Show me my todos",
+    ("QUERY", "list_project_todos"): "What's in my Mobile Redesign project?",
     ("QUERY", "list_completed_todos"): "Show me completed todos",
     ("QUERY", "next_todo_query"): "What's my next todo?",
     ("QUERY", "list_reminders_query"): "What reminders do I have?",
@@ -765,6 +767,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "productivity_query": Verb.GET,
     "session_activity_query": Verb.GET,
     "list_todos_query": Verb.LIST,
+    "list_project_todos": Verb.LIST,  # #2301
     "list_completed_todos": Verb.LIST,
     "list_reminders_query": Verb.LIST,
     "next_todo_query": Verb.GET,

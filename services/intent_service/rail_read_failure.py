@@ -77,6 +77,7 @@ RAIL_READ_SOURCES: Dict[str, Tuple[str, str]] = {
     "list_releases": ("your GitHub releases", "what the latest release is"),
     "list_reminders_query": ("your reminders", "what is coming up"),
     "list_repos": ("your linked repositories", "which repositories are linked"),
+    "list_project_todos": ("your Piper tasks", "what is in that project"),
     "list_todos_query": ("your Piper tasks", "what is due"),
     "local_git_status_query": ("the local repository", "what its status is"),
     "meeting_time": ("your calendar", "what is on it"),

@@ -51,22 +51,28 @@ def group_todo_lines(todos: List[Todo]) -> List[List[Todo]]:
     return groups
 
 
-def format_todo_list_grouped(todos: List[Todo], include_completed: bool = False) -> str:
+def format_todo_list_grouped(
+    todos: List[Todo], include_completed: bool = False, owner: Optional[str] = None
+) -> str:
     """#2219 (CXO 10-30): the list itself. ``You have 13 open todos. Here they are:``,
     then one line per distinct item in the list's order (priority, then oldest first),
     repeats grouped as ``review prs (×3)``. An item keeps its priority note; a done one
     says so. One line shown reads ``Here it is:`` (CXO 11-06 07:23). The lines are
-    numbered, done lines too (CXO 11-06 07:35), so "the first one" can name a line."""
+    numbered, done lines too (CXO 11-06 07:35), so "the first one" can name a line.
+
+    ``owner`` (#2301, CXO 11-06 11:14): a project's stored name. The header then reads
+    ``Mobile Redesign has 2 open todos. Here they are:``; the lines are the same."""
     groups = group_todo_lines(todos)
+    has = f"{owner} has" if owner else "You have"
     open_count = sum(1 for t in todos if not _todo_is_done(t))
     done_count = len(todos) - open_count
     noun = "todo" if open_count == 1 else "todos"
     here = "Here it is:" if len(groups) == 1 else "Here they are:"
     if include_completed and done_count:
         # CXO's form (#2219, ruled 11-05 19:25).
-        header = f"You have {open_count} open {noun} and {done_count} done. {here}"
+        header = f"{has} {open_count} open {noun} and {done_count} done. {here}"
     else:
-        header = f"You have {open_count} open {noun}. {here}"
+        header = f"{has} {open_count} open {noun}. {here}"
     lines = [header]
     for number, group in enumerate(groups, 1):
         first = group[0]

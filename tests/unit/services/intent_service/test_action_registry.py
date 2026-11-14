@@ -385,6 +385,7 @@ class TestNoStubPhrases:
             # #1412 — handled by _handle_create_issue via the rail (+ elif backstop)
             "create_issue",
             "list_todos_query",
+            "list_project_todos",  # #2301: run_list_project_todos_workflow
             "list_completed_todos",
             "next_todo_query",
             # #1521 — handled by _handle_list_reminders_query via the rail

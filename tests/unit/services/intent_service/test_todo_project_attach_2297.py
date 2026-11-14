@@ -170,6 +170,18 @@ class TestNoMatch:
         svc.workflow_offer_service.set_pending_offer.assert_not_called()
 
 
+class TestProjectReadFails:
+    async def test_a_failed_project_read_writes_nothing_and_says_so(self, monkeypatch):
+        """The lookup runs BEFORE the write, so the outcome is known: nothing added.
+        Never a plain todo the person didn't ask for."""
+        monkeypatch.setattr(attach, "_active_projects", AsyncMock(side_effect=OSError("down")))
+        svc = _service()
+        result = await _run(_intent(args={"text": TITLE, "project": "Mobile Redesign"}), svc)
+        assert svc.todo_handlers._calls == []
+        assert result.message == attach.RESOLVE_FAILED_LINE
+        assert "haven't added anything" in result.message
+
+
 class TestSeveralMatches:
     async def test_asks_an_armed_pick_and_writes_nothing(self, projects):
         projects[USER] = [_project("p1", "Mobile Redesign"), _project("p2", "mobile redesign")]
