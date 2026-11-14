@@ -598,6 +598,11 @@ The rule:
 1. **The seat whose push adds a migration to main runs `alembic upgrade head` against Amber's
    database in the same unit, after the push lands.** It runs from that seat's own worktree and
    environment with `PIPER_CREDENTIAL_STORE` unset or `=db`, never `=keychain`.
+   Migrating just before the push is also allowed (11-14, Lead and Arch: it closes the window
+   where a seat that pulls sees test failures). In that case, if the push doesn't land with the
+   migration file unchanged, the seat runs `alembic downgrade <previous head>` before editing the
+   file. Until main has the file, that seat is the only one that can undo the stamp, and every
+   other seat's `alembic upgrade head` fails on an unknown revision.
 2. **It checks by reading back:** `select version_num from alembic_version` in the container equals
    `alembic heads`. Quote both in the log.
 3. **Additive migrations only** (add a table, column or index). A migration that drops, renames or
