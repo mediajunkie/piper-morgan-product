@@ -1,12 +1,13 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-13 06:19 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/11/13/2026-11-13-0509-comms-code-log.md` (opened at the 05:09 Ship kickoff wake).
+## ⭐ CURRENT STATE — 2026-11-13 21:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/13/2026-11-13-0509-comms-code-log.md` DAY-CLOSED. Start a new log 11-14.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
 - **Weekend slots are INSIGHTS (Sat and Sun, Medium + LinkedIn).** Tue/Thu building, Wed Ship. Every publish-ready memo states the category, checked against the weekday.
 - **Thu 11-12 "The Server Has No Key": DONE.** Published 11-12 22:17 (website 512dd36), `distributed` with xian's Medium URL (xian: "just Medium"). Nothing owed.
 - **Sat 11-14 "Which Agent Did It?" (insight):** scaffold `docs/public/comms/drafts/which-agent-did-it.md`, calendar `drafted`. Waiting on xian's prose, image and a footer-tease target (nothing on the calendar after Sat except Ships; next building beat is beat 4, "The Wall", Sep 15-18). No nudges (xian via Exec 11-12). Then review, fact-check, template-audit, PUBLISH-READY (category insight).
-- **Ship #069 workstream review: SENT** 11-13 05:10 (c871ba02a). Ship #069 External fact-check when Exec's draft or xian's prose lands.
+- **Ship #069 workstream review: SENT** 11-13 05:10 (c871ba02a).
+- **Ship #069 "Off-Limits by Default" (Wed 11-18):** theme picked by xian 11-13 (Exec v4 01M7BSGS7M55DG6GHZJQSMWQZC), calendar row titled. Source `docs/internal/planning/comms/ship-reviews/ship-069-week-review.html`. Lean on the week's facts (keychain reads, #2353, App cutover's narrower grants), not Thu's post. **Don't start the scaffold until Exec relays xian's goals.**
 - **Strategy talk with xian: still not held.** Waiting on it: beat merges, pacing, the scaffold format into `draft-blog-post`.
 - **Two-week sprints from Fri 11-13** (ratified). #069 ordinary, #070 first progress, #071 first final score.
 - **GitHub criteria line:** nothing Comms-shaped through #2363. #2349 (self-knowledge EPIC) and #2355 may use blog insight posts as corpus; Docs owns the manifest, CXO the voice. #2342 (published GitHub App) is the candidate for the "what changed" note when it ships to users.

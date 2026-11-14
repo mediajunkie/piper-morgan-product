@@ -7,6 +7,8 @@
 - *"File it" goes through `create_issue`, unchanged, and success copy comes from the tool result.*
 - *The router has to tell "create an issue about X" (the existing action) from "we should track that" (this one), scored with H4. If it can't, this doesn't ship.*
 
+*Voice pass (CXO 01M7C1H5HQ, 11-13): PASSED, no edits.*
+
 *Write fields (Arch 01M7C0QSG0, Lead's three conditions accepted):*
 - *The compose call returns `title` and `body` as structured output.*
 - *Code renders the shown draft from those fields and arms the offer from the same value (pinned byte for byte).*
