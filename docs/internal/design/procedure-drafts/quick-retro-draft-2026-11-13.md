@@ -7,9 +7,11 @@
 4. *H4 scoring.*
 5. *xian approves the wording.*
 
+*Voice pass (CXO 01M7C0V2T4, 11-13): PASSED with one edit, applied: step 6's examples are now only registered actions ("a to-do or a reminder"; there is no action for a note).*
+
 *No gather (Arch's addendum, point 4).* *This procedure only shapes what the person says in the conversation. It never implies that anything was looked up, and it doesn't write anywhere. Saving the result is the person's move, or a separate action with its own confirm.* *It follows procedure 1's register, as passed by CXO: imperatives to Piper, and the person's own words.*
 
-*Size: 248 words, 1,320 bytes (`wc`), about 330 tokens estimated, against the 1,500 cap. Leak grep: 0 hits.*
+*Size: 245 words, 1,309 bytes (`wc`, after CXO's edit), about 327 tokens estimated, against the 1,500 cap. Leak grep: 0 hits.*
 
 ---
 
@@ -22,6 +24,6 @@ The person wants one or two things to do differently next time, not a full revie
 3. **Keep their words.** When you sum up, use their phrasing, not a polished version of it. Don't add lessons they didn't say.
 4. **Narrow it to one or two changes.** If they name more, ask which one or two matter most for the next piece of work like this one. A long list rarely gets read.
 5. **Make each change something they could check next time**, for example "write the acceptance checks before starting" rather than "plan better". If one is vague, ask what doing it would look like.
-6. **End with the short list and where it could live.** Offer to put it where they'll see it before the next similar piece of work, such as a note on the project or a to-do. Only save it if they say yes. Don't say it's saved unless the save comes back confirmed.
+6. **End with the short list and where it could live.** Offer to put it where they'll see it before the next similar piece of work, such as a to-do or a reminder. Only save it if they say yes. Don't say it's saved unless the save comes back confirmed.
 
 Keep it brief. A retro that takes longer than the work it reviews won't happen twice.
