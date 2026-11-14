@@ -343,3 +343,47 @@ async def test_order_an_archived_exact_name_beats_a_near_active_match(
     )
     assert portfolio["archived"] == []
     assert _armed(service, sid) is None
+
+
+@pytest.mark.asyncio
+async def test_same_named_projects_show_their_stored_created_date_and_the_reask_matches():
+    """CXO 11-14: the several-match pick's names are the same (case aside), so each
+    line shows the row's stored created date. The re-ask is the same text."""
+    import datetime as dt
+
+    from services.intent_service import project_archive_pick as pick
+
+    projects = [
+        SimpleNamespace(id="p-4", name="Beta", created_at=dt.datetime(2026, 11, 3, 23, 30)),
+        SimpleNamespace(id="p-5", name="beta", created_at=dt.datetime(2026, 11, 9, 1, 0)),
+    ]
+    record = pick.build_pick_offer(_USER, projects, "hide the project Beta")
+    assert record["question"] == (
+        "I found more than one project with that name: 1. Beta (created 3 Nov) "
+        "2. beta (created 9 Nov). Which one should I archive? Say the number."
+    )
+    # Ids and plain names are unchanged: the number still writes to the bound id.
+    assert record["pending_action"]["pick_ids"] == ["p-4", "p-5"]
+    assert record["pending_action"]["pick_names"] == ["Beta", "beta"]
+
+    class _Store:
+        def set_pending_offer(self, _sid, rec, user_id=None):
+            self.rec = rec
+
+    store = _Store()
+    out = await pick.run_clarify_project_archive_pick_workflow(
+        "s1",
+        _USER,
+        {
+            "pending_action": record["pending_action"],
+            "intent_service": SimpleNamespace(workflow_offer_service=store),
+        },
+    )
+    assert out["message"] == record["question"]
+    assert store.rec["question"] == record["question"]
+
+
+def test_a_row_with_no_created_date_shows_the_name_alone():
+    from services.intent_service import project_archive_pick as pick
+
+    assert pick.pick_label(_project("p-1", "Beta")) == "Beta"
