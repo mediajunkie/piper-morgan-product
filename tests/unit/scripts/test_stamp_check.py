@@ -33,6 +33,10 @@ DAY = "2026-10-16"
         ("2026-10-16 15:40 PT", "WARN"),
         ("2026-10-14", "WARN"),
         ("2026-10-17 09:00 PT", "BLOCK"),
+        # 11-13: a short MM-DD before a time dates it (Lead's "Before the fire (10-15 22:11 to ...)").
+        ("### Before the fire (10-15 22:11 to 10-16 06:21)", "WARN"),
+        ("### 10-16 16:40 - planned", "BLOCK"),
+        ("### #2270 note 16:40", "BLOCK"),
     ],
 )
 def test_judge(stamp, level):

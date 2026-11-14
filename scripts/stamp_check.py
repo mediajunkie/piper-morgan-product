@@ -44,6 +44,9 @@ MX = re.compile(r"\b(\d{1,2}):(\d)[xX]\b")
 NEAR = timedelta(minutes=10)
 CLOCK = re.compile(r"\b(\d{1,2}):(\d{2})\b")
 DAY = re.compile(r"\b(\d{4}-\d{2}-\d{2})\b")
+# 11-13: a short `MM-DD` right before a time ("11-11 22:11 to 11-12 06:21") dates that time too. Without it,
+# a heading naming yesterday's time read as today's and as ahead of the clock (Lead dbbc7ff3, CIO's backtest).
+SHORT_DAY = re.compile(r"(?<![\d-])(\d{2})-(\d{2})(?=\s+\d{1,2}:\d)")
 BRIEFING = "docs/briefing/BRIEFING-CURRENT-STATE.md"
 BRIEF_STAMP = re.compile(r"\(\w[\w ]*, (\d{4}-\d{2}-\d{2}) (~?\d{1,2}:\d[\dxX])")
 DECISIONS = "docs/internal/architecture/decisions/decisions.log"
@@ -57,7 +60,15 @@ def git(*a):
 def judge(stamp: str, now: datetime, default_day: str):
     """Return (level, reason) for one stamp, or None if it's fine."""
     d = DAY.search(stamp)
-    day = d.group(1) if d else default_day
+    if not d:
+        sd = SHORT_DAY.search(stamp)
+        if sd and 1 <= int(sd.group(1)) <= 12:
+            d = sd
+            day = f"{now.year}-{sd.group(1)}-{sd.group(2)}"
+    if d is not None and d.re is DAY:
+        day = d.group(1)
+    elif d is None:
+        day = default_day
     rest = stamp[d.end() :] if d else stamp
     m = MX.search(rest)
     if m:
