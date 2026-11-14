@@ -79,9 +79,9 @@ READ_SEVERAL_QUESTION = (
     "Which one do you mean? Say the number."
 )
 # CXO 11-14 (read-lines mail): a read changes nothing, so the decline says what
-# won't happen. The not-armed read line is Arch's suggested form, CXO's to confirm.
+# won't happen; the not-armed read line parallels the create side's.
 READ_PICK_DECLINE_LINE = "Okay, I won't list anything."
-READ_NOT_ARMED_LINE = "I found more than one project with that name."
+READ_NOT_ARMED_LINE = "I found more than one project with that name, so I haven't listed anything."
 PURPOSE_ADD = "add"
 PURPOSE_READ = "read"
 PRINCIPAL_MISMATCH_LINE = "Let's hold off on that — nothing has been changed."
@@ -108,8 +108,9 @@ _MAX_ANSWER_WORDS = 3
 class ProjectRef:
     """A resolved project: its id and its stored name (never the typed one).
     ``created`` is the stored creation date as ``3 Nov`` (the row's own
-    ``created_at``, never inferred), on the person's stored timezone when they have
-    one (CXO 11-14), else as stored; "" when the row has no date."""
+    ``created_at``, UTC as stored; never inferred), or "" when the row has none.
+    CXO 11-14: the stored date is enough to tell same-named rows apart; putting it
+    on the person's clock is a candidate only if a tester reports a day off."""
 
     id: str
     name: str
@@ -168,45 +169,24 @@ def router_project_name(intent: Any) -> Optional[str]:
     return name
 
 
-def _created_label(project: Any, tz_name: Optional[str] = None) -> str:
+def _created_label(project: Any) -> str:
+    # The same rendering as project_archive_pick.created_label on main (Arch
+    # 11-14: at the merge, import that one so the two picks can't drift).
     created = getattr(project, "created_at", None)
-    if created is None:
-        return ""
-    if tz_name and getattr(created, "tzinfo", None) is not None:
-        try:
-            from zoneinfo import ZoneInfo
-
-            created = created.astimezone(ZoneInfo(tz_name))
-        except (KeyError, ValueError, OSError):
-            # An unknown zone name: the date reads as stored, never guessed.
-            logger.warning("todo_project_created_zone_unknown")
     try:
-        return f"{created.day} {created.strftime('%b')}"
+        return f"{created.day} {created.strftime('%b')}" if created is not None else ""
     except (AttributeError, ValueError):
         return ""
 
 
-async def _stored_timezone(user_id: Any) -> Optional[str]:
-    """The person's stored IANA zone, or None (then dates read as stored)."""
-    try:
-        from services.utils.user_timezone import get_user_timezone
-
-        return await get_user_timezone(user_id)
-    except Exception as e:  # silent-ok: logged; the date label falls back to the stored value
-        logger.warning("todo_project_timezone_failed", error=str(e))
-        return None
-
-
-def exact_matches(
-    projects: List[Any], name: str, tz_name: Optional[str] = None
-) -> List[ProjectRef]:
+def exact_matches(projects: List[Any], name: str) -> List[ProjectRef]:
     """The projects whose whole stored name equals ``name``, case-insensitively, in
     the order given."""
     key = _key(name)
     if not key:
         return []
     return [
-        ProjectRef(id=str(p.id), name=str(p.name), created=_created_label(p, tz_name))
+        ProjectRef(id=str(p.id), name=str(p.name), created=_created_label(p))
         for p in projects or []
         if _key(getattr(p, "name", None)) == key
     ]
@@ -239,11 +219,6 @@ async def resolve(intent: Any, user_id: Any) -> Optional[Resolution]:
     if name is None:
         return None
     matches = exact_matches(await _active_projects(str(user_id)), name)
-    if len(matches) > 1:
-        # Only a several-match pick shows dates; put them on the person's clock.
-        tz_name = await _stored_timezone(user_id)
-        if tz_name:
-            matches = exact_matches(await _active_projects(str(user_id)), name, tz_name)
     logger.info("todo_project_resolved", matches=len(matches))
     return Resolution(name=name, matches=matches)
 

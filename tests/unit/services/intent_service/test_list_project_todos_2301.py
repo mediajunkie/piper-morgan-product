@@ -222,7 +222,9 @@ class TestPurposesNeverCross:
         projects[USER] = [_project("p1", "A"), _project("p2", "a")]
         svc = _service({}, store=False)
         result = await _run(_intent({"project": "A"}, "what's in A?"), svc)
-        assert result.message == "I found more than one project with that name."
+        assert result.message == (
+            "I found more than one project with that name, so I haven't listed anything."
+        )
         assert svc.todo_handlers._calls == []
 
     def test_the_read_decline_says_what_will_not_happen(self):
@@ -232,8 +234,8 @@ class TestPurposesNeverCross:
         assert record["decline_message"] == "Okay, I won't list anything."
 
 
-class TestCreatedDateOnThePersonsClock:
-    def test_a_stored_zone_moves_the_date_and_no_zone_leaves_it(self):
+class TestCreatedDateIsTheStoredDate:
+    def test_the_label_is_the_rows_own_date_as_stored(self):
         import datetime as dt
 
         row = types.SimpleNamespace(
@@ -242,9 +244,6 @@ class TestCreatedDateOnThePersonsClock:
             created_at=dt.datetime(2026, 11, 4, 3, 0, tzinfo=dt.timezone.utc),
         )
         assert attach.exact_matches([row], "launch")[0].created == "4 Nov"
-        assert attach.exact_matches([row], "launch", "America/Los_Angeles")[0].created == "3 Nov"
-        # An unknown zone name: the date reads as stored.
-        assert attach.exact_matches([row], "launch", "Not/AZone")[0].created == "4 Nov"
 
 
 class TestMainListUnchanged:
