@@ -58,6 +58,6 @@ From the outside, a team that ran out of budget, a team you told to stop, and a 
 
 ---
 
-*Next on Building Piper Morgan: [TEASE: the next post after Tue 11-17. Not on the calendar yet. Depends on your cadence decision.]*
+*Next on Building Piper Morgan: [TEASE: the first arc post, likely "Letting a Stranger In" (working title). This is the last day-by-day beat (xian 11-14: the story moves up a level to arcs about taking a product into beta), so the closing can say the story zooms out from here.]*
 
 *[Reader question, yours to write. A start: "If your team went quiet tomorrow, how would you know whether they were stuck, stopped or done?"]*
