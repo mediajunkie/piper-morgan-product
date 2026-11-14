@@ -1,5 +1,15 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-13 15:50 (supersedes the 09:25 block below where they differ)
+
+- **Beta still serves `bb7c76de5c`.** Main is ahead by three small honesty fixes, none served: 2366 (`737c1ec85d`, the keys page no longer offers Gemini), 2367 (`0aea1c40f1`, store and rotate refuse a Gemini key), 2368 (`ef0a3abab6`, setup's `default_llm_provider` validated). No migration. **A promotion needs Arch's word on the exact commit** ("ask me with the exact commit"); none touches 2342's paths.
+- **2364 step 1 is BUILT AND HELD on local branch `lead/2364-step1` (`b16b83dcef`), not pushed.** It removes the substring fast path from `enforce_boundaries` and makes detector prompt v0.2 live (the served detector has been on v0.1 since April). It merges only after: (1) two live gate runs pass, `scripts/ethics_gate_run_2364.py --provider anthropic` and `--provider openai`, 26 calls each (a key per provider and xian's word, via Exec); (2) the whole tree again on the final commit; (3) xian's sprint go. If a run fails, take the per-probe table to Arch; nothing merges partially. The branch lives only in this worktree: rebase it on main before the runs.
+- **Still Arch's or xian's on 2364:** the default flip (xian's yes; "Don't build the flip yet"), ruling 2's test double and reply-side tier (after step 1), which providers the connected accounts use (a production read).
+- **Served rows open:** 2366 and 2367 (after a promotion: CXO's hosted read of the select; a test account for 2367's call, which is xian's credential decision); 2364's probe on beta (PA and Web both blocked on the same decision); 2362 and 2350 (xian's Fly log read); 2342 rows 2 to 4 (xian's reconnect).
+- **Open question with Arch and CXO on 2368:** the refusal is FastAPI's 422 with the sentence inside its error list; move it to a 400 in the handler only if they ask.
+- **Lessons from today:** the repo ignores `*.png`, so a screenshot is never "pushed" (I said it was, and corrected it). On a side branch `mail4.py` can't infer the role: `send` takes `--as lead`, and `inbox`/`ack` wait until back on `claude/lead-cycle`. Don't edit files while the whole-tree run is using the working tree.
+- A local server for a signed-in rendered read: the `scratchpad/web_local_2366.py` pattern (the fault driver's `Server`, `_create_account`, rows seeded through the service, STOP file, drops its database). Scratch files do not survive the session.
+
 ## IN-DAY 2026-11-13 09:25 (supersedes the 08:21 block below where they differ)
 
 - **Beta serves `bb7c76de5c` since 09:23** (run 43471952702; second promotion of the day, granted by Arch for the 2362 fix). It adds the access-line fix (`43ec0dbed8`) and CXO's private-beta invite wording (`e4499c53d8`) to the 08:20 build.
