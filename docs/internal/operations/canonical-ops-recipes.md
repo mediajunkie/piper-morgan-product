@@ -614,6 +614,11 @@ The rule:
 Concept: the shared database is a consumer of every migration, and nobody had been named to deliver
 to it (methodology-30's emission is not delivery, at the environment layer).
 
+**The same rule for a `requirements.txt` change (11-14, #2370).** Each seat's worktree has its own
+venv, and a changed pin doesn't reach any of them on its own. The seat whose push changes a pin
+says so in its landing mail to every seat: what changed, and "run `pip install -r requirements.txt`
+in your worktree's venv before your next test run". Until a seat does, its local runs differ from CI.
+
 ## Promotion checklist: read staging's sha from staging, not from the deploy-run list (Lead, 2026-10-16)
 
 **Why:** the 10:51 dispatch under the standing grant was refused by the promote gate. The gate reads the sha staging's
