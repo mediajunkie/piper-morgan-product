@@ -15,6 +15,8 @@
 
 *Revised 11-13 for Arch 01M7C13VBK: the model produces the fields and at most one line around them. Code shows the draft and the ask, and code supplies the default repository. The acceptance turn's copy is code's, so the model is left one guard line (never claim a write). The "go back to what they were doing" step is cut: the floor isn't on that turn, and a one-line return in code's success copy is a CXO and Lead option.*
 
+*Arch 01M7C1AHWA: CONFORMS to the mechanism rulings.*
+
 *So the text below governs what goes into the two fields and the one line around them. It never writes the ask (CXO: say what happens next, and leave the ask to code).*
 
 *Product bar (PPM 01M7C0CZ3T): something noticed mid-conversation becomes an issue at once. The draft shows what will be filed, and nothing is filed without a yes.*
