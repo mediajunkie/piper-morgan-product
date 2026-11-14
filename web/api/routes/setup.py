@@ -1426,9 +1426,15 @@ async def _wizard_repo_line(user_id: str, repo: str) -> str:
     """The line for a project that was given a repo, from THIS person's GitHub
     connection state (``IntegrationStatusService``, binding-first: the read the
     Settings card uses). Not connected: the not-connected line. Connected and not
-    known broken: the linked line. When the check itself failed, or the connection
-    exists but GitHub has rejected it, neither sentence is true, so nothing is said."""
-    from services.integrations.integration_status_service import IntegrationStatusService
+    known broken: the linked line. A grant GitHub has rejected (CXO 11-14): the one
+    stale-connection sentence chat already uses, never a second wording. When the
+    check itself failed, or the person's own Test last failed, no sentence here is
+    true, so nothing is said (CXO 11-14: silent on an optional step)."""
+    from services.integrations.integration_status_service import (
+        IntegrationStatusService,
+        needs_reconnecting,
+    )
+    from services.mcp.consumer.github_adapter import GITHUB_STALE_TOKEN_REPLY
 
     try:
         state = await IntegrationStatusService().get_status(user_id, "github")
@@ -1441,6 +1447,8 @@ async def _wizard_repo_line(user_id: str, repo: str) -> str:
         return ""
     if not state.get("configured"):
         return WIZARD_REPO_NOT_CONNECTED_LINE.format(repo=repo)
+    if needs_reconnecting(state):
+        return GITHUB_STALE_TOKEN_REPLY
     if state.get("healthy") is False:
         return ""
     return WIZARD_REPO_LINKED_LINE.format(repo=repo)
