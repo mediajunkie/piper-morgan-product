@@ -1,7 +1,7 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-13 21:19 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/11/13/2026-11-13-0509-comms-code-log.md` DAY-CLOSED. Start a new log 11-14.
+## ⭐ CURRENT STATE — 2026-11-14 06:19 PT. Read this first. It supersedes everything below.
+- **Log:** `dev/2026/11/14/2026-11-14-0619-comms-code-log.md`.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
 - **Weekend slots are INSIGHTS (Sat and Sun, Medium + LinkedIn).** Tue/Thu building, Wed Ship. Every publish-ready memo states the category, checked against the weekday.
 - **Thu 11-12 "The Server Has No Key": DONE.** Published 11-12 22:17 (website 512dd36), `distributed` with xian's Medium URL (xian: "just Medium"). Nothing owed.
