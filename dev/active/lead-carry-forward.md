@@ -1,5 +1,12 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY CLOSED 2026-11-13 21:47 (the 18:28 block below is still current; this adds the evening)
+
+- **11-14 START begins Path B (2297 then 2301) in a fresh session** (deferred there on purpose). Before any rule-7 screen: send its call count and cost to Exec, and wait for the provider key.
+- **2364 step 1:** `b16b83dcef` is on origin as side branch `lead/2364-step1` (pushed 21:34, Arch told). After the rebase, push the new sha to the same branch and mail it to Arch before the gate runs. Still waits on the key (Exec) and, for the promotion, Arch's word.
+- **Beta serves `81d149ac86`**, healthy at 21:46. Main 12 of 12 green. Mail 0.
+- Arch's two notes for the 2358 build (close offer restates open steps and their count; an explicit need-more state that arms nothing) are in the collected comment on issue 2358.
+
 ## IN-DAY 2026-11-13 18:28 (supersedes the 15:50 block below where they differ)
 
 - **Beta serves `81d149ac86` since 16:34** (run 43534769050, Arch's grant for that commit only; carries 2366, 2367, 2368; no migration). **The next promotion needs Arch's word again**; when asking, tell him whether staging serves a merge commit of the 11-12 shape, so the run can close 2363's row 3.
