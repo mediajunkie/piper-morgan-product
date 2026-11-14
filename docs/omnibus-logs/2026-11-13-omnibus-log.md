@@ -42,7 +42,7 @@ Subagents recorded in the logs. Docs records one Sonnet subagent that drafted th
 - **Web, HOST, Comms and PA** are quiet-fire logs for much of the day. HOST's 09:26, 12:26 and 15:26 entries are identical in content. Comms' fires from 06:19 to 21:19 repeat the same four blockers. Web ran no served row because every one needs a sign-in.
 - **Docs'** log has a 06:56 heading twice (a manifest entry and a code-check entry) and a 13:15 pair of entries, as logged. Its last entry is headed 22:12 and the file's last line is the marker.
 
-**Docs verification**: done 2026-11-14 04:2x (Docs, after `git fetch origin main`). The commit recount printed 466 non-merge and 792 with merges, matching the drafting agent's figures after the fetch. The marker, semicolon and banned-word checks were rerun on this file. Individual issue numbers and hashes were not rechecked against `gh`. Not checked by the drafting agent: individual issue numbers and hashes against `gh`, and the unresolved divergences below, which are preserved as logged.
+**Docs verification**: done 2026-11-14 04:23 (Docs, after `git fetch origin main`). The commit recount printed 466 non-merge and 792 with merges, matching the drafting agent's figures after the fetch. The marker, semicolon and banned-word checks were rerun on this file. Individual issue numbers and hashes were not rechecked against `gh`. Not checked by the drafting agent: individual issue numbers and hashes against `gh`, and the unresolved divergences below, which are preserved as logged.
 
 ---
 
