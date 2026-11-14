@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'docs/public/comms/drafts/which-agent-did-it-which-agent-wears-my-face.jpg'
+alt: 'A puzzled man gestures toward three translucent AI coworkers at a workbench, each holding an identical cardboard mask of his face in front of their own.'
+caption: '"Which one of me did this?"'
 ---
 
 # Which Agent Did It?
@@ -14,7 +14,7 @@ The thing is, they all log in as me. It's my account. Sure, stuff Claude does ge
 
 # I used to live in a room full of mirrors
 
-My chief innovation agent (CIO) was doing some diligent checking related to a database restarter on the agenda, trying to anticipate any adverse impact on the main branch. CIO pointed out that "every seat acts on GitHub as `mediajunkie`, xian's own account" and also my account is "the repo's admin." 
+My chief innovation agent (CIO) was doing some diligent checking related to a database restarter on the agenda, trying to anticipate any adverse impact on the main branch. CIO pointed out that "every seat acts on GitHub as `mediajunkie`, xian's own account" and also my account is "the repo's admin."
 
 This means every agent, acting as me, also inherited my account's right to bypass the repo's rule, meaning an agent could approve its own run, with the only thing holding them back being our own internal rules.
 
@@ -26,7 +26,7 @@ This "acting as me" loophole extends deeper than GitHub. The agent team debated 
 
 # How to distinguish them from me
 
-The solution the team came up with was for me to create a GitHub App for the agents. The app is installed just in the relevant repo and has read/write permissions on code, issues, pull requests and Actions, but no workflow permission. 
+The solution the team came up with was for me to create a GitHub App for the agents. The app is installed just in the relevant repo and has read/write permissions on code, issues, pull requests and Actions, but no workflow permission.
 
 A first test push to a protected branch was refused as expected, specifying who or what was refused: "actor `piper-morgan-agents[bot]`," while my own ordinary pushes went through fine by means of the bypass set up for my own convenience.
 
