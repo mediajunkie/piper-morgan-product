@@ -225,8 +225,9 @@ class TodoManagementService:
                 list_id=list_id,
                 completed=None if include_completed else False,
                 limit=TODO_LIST_CAP,
-                # #2301: one project's todos, filtered in SQL like the rest.
-                **({"project_id": project_id} if project_id else {}),
+                # #2301: one project's todos, filtered in SQL like the rest
+                # (None: no project filter, as before).
+                project_id=project_id,
             )
             return TodoPage(todos, capped=total > len(todos))
 
