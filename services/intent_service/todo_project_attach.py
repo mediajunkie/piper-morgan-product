@@ -26,6 +26,7 @@ with ``purpose`` "read", whose number shows the bound project's todos.
 
 from __future__ import annotations
 
+import string
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
@@ -51,13 +52,17 @@ NOT_FOUND_LINE = (
 )
 # Named *_QUESTION: rendered only by build_pick_offer / the re-ask landing, which
 # store it as the record's ``question`` and arm the record (the #1766 rule).
+# CXO 11-14 (pick-question mail, verbatim) on Arch's ruling 2 (11-14): the question
+# shows the bound title(s) exactly as stored, so the number names both the project
+# and a write the person has seen, and is the consent.
 SEVERAL_QUESTION = (
     "I found more than one project with that name: {listed}. "
-    "Which one should I add it to? Say the number."
+    "Which one should I add {titles} to? Say the number."
 )
-# NOT YET RULED by CXO (asked in the 2297 build report): several titles into one
-# project, and the decline of the pick. Shaped on the ruled single line and on the
-# adopted-write decline copy.
+# CXO 11-14 (PASS): several titles into one project; the decline of the pick (the
+# house decline sentence kept); a non-default priority the code stored is said,
+# the default says nothing, and it is never inferred.
+ATTACHED_PRIORITY_LINE = "I've added '{text}' to {project}, at {priority} priority."
 ATTACHED_SEVERAL_LINE = "I've added {count} todos to {project}: {names}."
 PICK_DECLINE_LINE = "Okay, I haven't added anything. Nothing has been changed."
 # #2301. CXO 11-06 11:14 (verbatim): the empty project. The header for a project
@@ -77,10 +82,9 @@ READ_PICK_DECLINE_LINE = "Okay. Nothing has been changed."
 PURPOSE_ADD = "add"
 PURPOSE_READ = "read"
 PRINCIPAL_MISMATCH_LINE = "Let's hold off on that — nothing has been changed."
-NOT_ARMED_LINE = (
-    "I found more than one project with that name, so I haven't added anything. "
-    "Rename one of them, then ask again."
-)
+# CXO 11-14 (settled): no rename path exists today (Arch, from source) and the
+# names differ at most in case, so the line stops here.
+NOT_ARMED_LINE = "I found more than one project with that name, so I haven't added anything."
 # NOT YET RULED by CXO: the project read failed before the write (nothing written).
 RESOLVE_FAILED_LINE = (
     "I couldn't check your projects just now, so I haven't added anything. "
@@ -97,10 +101,19 @@ _MAX_ANSWER_WORDS = 3
 
 @dataclass(frozen=True)
 class ProjectRef:
-    """A resolved project: its id and its stored name (never the typed one)."""
+    """A resolved project: its id and its stored name (never the typed one).
+    ``created`` is the stored creation date as ``3 Nov`` (the row's own
+    ``created_at``, UTC as stored; never inferred), or "" when the row has none."""
 
     id: str
     name: str
+    created: str = ""
+
+    @property
+    def label(self) -> str:
+        """CXO 11-14: same-named projects in a pick show one stored difference,
+        ``Launch (created 3 Nov)``."""
+        return f"{self.name} (created {self.created})" if self.created else self.name
 
 
 @dataclass(frozen=True)
@@ -120,14 +133,41 @@ def _key(name: Any) -> str:
     return " ".join(str(name or "").split()).casefold()
 
 
+def _words(text: str) -> set:
+    found = {w.strip(string.punctuation).lower() for w in (text or "").split()}
+    found.discard("")
+    return found
+
+
 def router_project_name(intent: Any) -> Optional[str]:
-    """The router's ``project`` arg, whitespace-collapsed, or ``None``. A non-string
-    or empty value is no arg at all."""
-    args = (getattr(intent, "context", None) or {}).get("inversion_args")
+    """The router's ``project`` arg, whitespace-collapsed, or ``None``.
+
+    Arch 11-14 ruling 1 (the #1976 word-set guard, the ONE reader every caller
+    uses): the arg counts as the person's only when every word of it occurs in
+    their message. An arg with a word they did not say is NO arg: create_todo
+    then runs exactly as it does without one, so a model-written name can neither
+    stop a write the person asked for nor be shown to them. A non-string or empty
+    value is no arg either. A word set, no pattern."""
+    context = getattr(intent, "context", None) or {}
+    args = context.get("inversion_args")
     raw = args.get(ROUTER_PROJECT_ARG) if isinstance(args, dict) else None
     if not isinstance(raw, str) or not raw.strip():
         return None
-    return " ".join(raw.split())
+    name = " ".join(raw.split())
+    message = getattr(intent, "original_message", None) or context.get("original_message") or ""
+    wanted = _words(name)
+    if not wanted or not wanted <= _words(message):
+        logger.info("todo_project_arg_not_the_persons_words")
+        return None
+    return name
+
+
+def _created_label(project: Any) -> str:
+    created = getattr(project, "created_at", None)
+    try:
+        return f"{created.day} {created.strftime('%b')}" if created is not None else ""
+    except (AttributeError, ValueError):
+        return ""
 
 
 def exact_matches(projects: List[Any], name: str) -> List[ProjectRef]:
@@ -137,7 +177,7 @@ def exact_matches(projects: List[Any], name: str) -> List[ProjectRef]:
     if not key:
         return []
     return [
-        ProjectRef(id=str(p.id), name=str(p.name))
+        ProjectRef(id=str(p.id), name=str(p.name), created=_created_label(p))
         for p in projects or []
         if _key(getattr(p, "name", None)) == key
     ]
@@ -157,7 +197,9 @@ async def _owned_active_project(project_id: str, user_id: str) -> Optional[Proje
     """The project by id IF this person owns it and it is still active."""
     for project in await _active_projects(user_id):
         if str(project.id) == str(project_id):
-            return ProjectRef(id=str(project.id), name=str(project.name))
+            return ProjectRef(
+                id=str(project.id), name=str(project.name), created=_created_label(project)
+            )
     return None
 
 
@@ -172,18 +214,37 @@ async def resolve(intent: Any, user_id: Any) -> Optional[Resolution]:
     return Resolution(name=name, matches=matches)
 
 
-def render_attached(titles: List[str], project_name: str) -> str:
-    if len(titles) == 1:
-        return ATTACHED_LINE.format(text=titles[0], project=project_name)
+def _quoted(titles: List[str]) -> str:
+    """``'a'``, ``'a' and 'b'``, ``'a', 'b' and 'c'``: each title as stored, in
+    straight single quotes (CXO 11-14)."""
     names = [f"'{t}'" for t in titles]
-    joined = ", ".join(names[:-1]) + " and " + names[-1]
-    return ATTACHED_SEVERAL_LINE.format(count=len(titles), project=project_name, names=joined)
+    if len(names) <= 1:
+        return "".join(names)
+    return ", ".join(names[:-1]) + " and " + names[-1]
 
 
-def render_several(names: List[str], purpose: str = PURPOSE_ADD) -> str:
-    listed = " ".join(f"{i}. {n}" for i, n in enumerate(names, 1))
-    template = READ_SEVERAL_QUESTION if purpose == PURPOSE_READ else SEVERAL_QUESTION
-    return template.format(listed=listed)
+def render_attached(titles: List[str], project_name: str, priority: Optional[str] = None) -> str:
+    if len(titles) == 1:
+        if priority and priority != "medium":
+            return ATTACHED_PRIORITY_LINE.format(
+                text=titles[0], project=project_name, priority=priority
+            )
+        return ATTACHED_LINE.format(text=titles[0], project=project_name)
+    return ATTACHED_SEVERAL_LINE.format(
+        count=len(titles), project=project_name, names=_quoted(titles)
+    )
+
+
+def render_several(
+    labels: List[str], purpose: str = PURPOSE_ADD, titles: Optional[List[str]] = None
+) -> str:
+    """The pick question. ``labels`` are the numbered lines as shown (name, with
+    the stored created date when there is one). For an add, ``titles`` are the
+    bound titles, shown exactly as stored (Arch 11-14 ruling 2)."""
+    listed = " ".join(f"{i}. {n}" for i, n in enumerate(labels, 1))
+    if purpose == PURPOSE_READ:
+        return READ_SEVERAL_QUESTION.format(listed=listed)
+    return SEVERAL_QUESTION.format(listed=listed, titles=_quoted(list(titles or [])))
 
 
 def _decline_line(purpose: str) -> str:
@@ -202,15 +263,18 @@ def build_pick_offer(
     question numbers them) and the todo titles, all bound at ask time.
     ``purpose`` "read" (#2301) carries no titles: the number shows the project."""
     names = [m.name for m in matches]
+    labels = [m.label for m in matches]
     return {
         "workflow_type": TODO_PROJECT_PICK_WORKFLOW,
-        "question": render_several(names, purpose),
+        "question": render_several(labels, purpose, titles),
         "pending_action": {
             "kind": TODO_PROJECT_PICK_KIND,
             "action": TODO_PROJECT_PICK_WORKFLOW,
             "user_id": principal,
             "pick_ids": [m.id for m in matches],
             "pick_names": names,
+            # The numbered lines exactly as shown, so the re-ask is the same text.
+            "pick_labels": labels,
             "titles": list(titles),
             "priority": priority,
             "purpose": purpose,
@@ -321,7 +385,11 @@ async def run_clarify_todo_project_pick_workflow(
         )
         return None
     purpose = str(payload.get("purpose") or PURPOSE_ADD)
-    question = render_several([str(n) for n in payload.get("pick_names") or []], purpose)
+    question = render_several(
+        [str(n) for n in payload.get("pick_labels") or payload.get("pick_names") or []],
+        purpose,
+        [str(t) for t in payload.get("titles") or []],
+    )
     record = {
         "workflow_type": TODO_PROJECT_PICK_WORKFLOW,
         "question": question,

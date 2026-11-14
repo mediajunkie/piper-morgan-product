@@ -2259,7 +2259,7 @@ class TodoIntentHandlers:
                 # the project's id on the line above.
                 from services.intent_service.todo_project_attach import render_attached
 
-                return render_attached([todo.text], project.name)
+                return render_attached([todo.text], project.name, priority=todo.priority)
             # Format response with consciousness
             return format_todo_created_conscious(todo)
 
