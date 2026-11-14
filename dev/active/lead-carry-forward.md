@@ -1,5 +1,14 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-14 13:17 (supersedes the 12:31 block below where they differ)
+
+- **Promotion is NOT dispatched.** Arch granted `79f35f1089` contingent on xian's yes; staging then moved to `d0bc53644f` (docs-only on top: xian's 13:04 draft edit plus logs; not a merge commit). Asked Arch (mail 01M7DYE2Y6…) whether the grant carries and whether 2363 row 3 still counts. Exec's card (v992) asks xian about the code and migration as of `79f35f1089`. **Before any dispatch: re-read staging `/health`, diff it against `79f35f1089` (must be only dev/, docs/, mailboxes/), have BOTH words, re-read the inbox.** After it serves quote for Arch: beta's sha, the gate's "Tests concluded success on <anc>" line, that the migration ran.
+- **No code push to main while the ask is open** (a push can move staging). Held side branches on origin: `lead/2372-alembic-only` (`5a0f87c7d5`, lands right after the promotion; evidence on the issue), `lead/2301-project-read` (`7dfab574a4`, Path B, waits on arm B's screen), `lead/2364-step1` (`b16b83dcef`).
+- **After the promotion, in order:** land 2372; fold in 2373 (bound the counter write, about 2 s); tell Web, PA and CXO which served rows are now readable; xian ticks Operations reader (Exec's card), then a seat reads `/api/v1/admin/floored-actions` and runs `scripts/floored_action_tally.py`.
+- **2370:** cause is served behaviour (an unreachable Redis costs 2 s per call; redis 5.0.1's blocking pool waits on itself; `redis_factory.py` timeout=2). Four options with Arch (mail 01M7DYN45C…). Build nothing until he rules. Unverified: why the rows pass in a folder run.
+- **2345:** deferred to a FRESH SESSION after Arch rules 2370; held branch `lead/2345-…`, mail Arch the sha. PPM told.
+- **PPM's order after that:** nothing else ruled; mail PPM before picking outside it.
+
 ## IN-DAY 2026-11-14 12:31 (supersedes the 10:14 block below where they differ)
 
 - **Main is `9d6646f6a2`. It now carries migration `v2327floored`, so the next promotion needs XIAN'S WORD (via Exec), then Arch's word on the exact sha.** Unserved on main today: the archive pick's date, both cap lines, 2274, 2294's net, 2268 (with the rejected-grant line), the archive corpus row and pins, and 2327.
