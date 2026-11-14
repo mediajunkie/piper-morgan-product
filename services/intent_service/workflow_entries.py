@@ -13,6 +13,7 @@ from typing import Any, Dict, Optional
 
 import structlog
 
+from services.intent_service import todo_project_attach as _attach
 from services.intent_service import workflow_dispatcher as _workflow_dispatcher
 from services.intent_service import write_confirm_words as _words
 from services.intent_service.add_project_clarify import (
@@ -768,8 +769,74 @@ async def run_create_todo_workflow(
             error_type="AuthenticationRequired",
         )
 
+    # #2297 (Arch 11-06 11:13 (A)): the router's `project` arg, resolved against
+    # the person's own active projects by exact name. No arg: unchanged below.
+    project = None
+    bound_project_id = _words.bound_write_values(intent, "create_todo").get("project_id")
+    if bound_project_id:
+        # A confirmed "Add "x" to <project>?": the id bound at ask time, re-checked
+        # against this turn's principal. No second resolution by name.
+        project = await _attach._owned_active_project(str(bound_project_id), str(todo_user_id))
+        if project is None:
+            return IntentProcessingResult(
+                success=True,
+                message=_attach.PROJECT_GONE_LINE,
+                intent_data={"category": category, "action": intent.action},
+            )
+    else:
+        resolution = await _attach.resolve(intent, todo_user_id)
+        if resolution is not None and not resolution.matches:
+            return IntentProcessingResult(
+                success=True,
+                message=_attach.NOT_FOUND_LINE.format(name=resolution.name),
+                intent_data={
+                    "category": category,
+                    "action": intent.action,
+                    "project_not_found": True,
+                },
+            )
+        if resolution is not None and resolution.one is None:
+            handlers = intent_service.todo_handlers
+            original = intent.original_message or (intent.context or {}).get("original_message", "")
+            titles = handlers.resolve_create_titles(intent, original)
+            if not titles:
+                return IntentProcessingResult(
+                    success=True,
+                    message=await handlers.handle_create_todo(
+                        intent, session_id, user_id=todo_user_id
+                    ),
+                    intent_data={"category": category, "action": intent.action},
+                )
+            record = _attach.build_pick_offer(
+                str(user_id) if user_id else None,
+                resolution.matches,
+                titles,
+                handlers._extract_priority(original),
+                original,
+            )
+            if not _attach.arm_pick(intent_service, record, session_id, user_id):
+                # No store to hold the pick: say so rather than ask a question
+                # nothing can answer. Nothing is written.
+                return IntentProcessingResult(
+                    success=True,
+                    message=_attach.NOT_ARMED_LINE,
+                    intent_data={"category": category, "action": intent.action},
+                )
+            return IntentProcessingResult(
+                success=True,
+                message=record["question"],
+                intent_data={
+                    "category": category,
+                    "action": _attach.TODO_PROJECT_PICK_WORKFLOW,
+                    _attach.PICK_PENDING_FLAG: True,
+                },
+                requires_clarification=True,
+            )
+        if resolution is not None:
+            project = resolution.one
+
     message = await intent_service.todo_handlers.handle_create_todo(
-        intent, session_id, user_id=todo_user_id
+        intent, session_id, user_id=todo_user_id, project=project
     )
     # Issue #748: Don't return workflow_id for synchronous operations
     return IntentProcessingResult(
@@ -4012,6 +4079,16 @@ def register_default_workflows() -> None:
             entry_point=run_clarify_milestone_pick_workflow,
             effect=EffectClass.READ,
             description="Re-ask the #2184 which-milestone pick on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #2297: generic-accept landing for the which-project pick of a todo
+        # create (todo_project_attach). effect: READ — a bare "yes" re-asks and
+        # re-arms the same bound projects and titles; the bound number writes at
+        # the pop seam. action_triggered=False (the #1987 precedent).
+        _attach.TODO_PROJECT_PICK_WORKFLOW: WorkflowEntry(
+            entry_point=_attach.run_clarify_todo_project_pick_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #2297 which-project pick of a todo create on a bare affirmative",
             requires_context=["pending_action", "intent_service"],
         ),
         # #2271: generic-accept landing for the archive several-match pick

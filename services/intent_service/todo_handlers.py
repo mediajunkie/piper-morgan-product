@@ -247,6 +247,12 @@ _ORDINAL_TOKEN_RE = re.compile(r"^#?(\d{1,3})$")
 _RANGE_TOKEN_RE = re.compile(r"^#?(\d{1,3})\s*[-–—]\s*#?(\d{1,3})$")
 
 
+def _project_kwargs(project: Optional[Any]) -> Dict[str, Any]:
+    """#2297: ``project_id`` for the create call only when a project was resolved,
+    so a plain create's call is byte-for-byte what it was."""
+    return {"project_id": str(project.id)} if project is not None else {}
+
+
 def _router_target_tokens(value: Any) -> List[str]:
     """``targets``/``exclude`` as the router sent them: a list of strings, or
     one comma/semicolon-joined string. Anything else is "no targets"."""
@@ -2089,23 +2095,32 @@ class TodoIntentHandlers:
         return due
 
     async def _create_todos_from_items(
-        self, items: List[str], session_id: str, user_id: UUID, original_message: str
+        self,
+        items: List[str],
+        session_id: str,
+        user_id: UUID,
+        original_message: str,
+        project: Optional[Any] = None,
+        priority: Optional[str] = None,
     ) -> str:
         """#2094: one todo per router-named title; the reply names every one.
 
         Each row is remembered (the last stays the #1987 referent) and every
         row is parked for the #2095 ledger (a list; the observer writes one
-        row per element). A failure after some writes says what was saved."""
+        row per element). A failure after some writes says what was saved.
+        ``project`` (#2297): a resolved ``ProjectRef``; every row is written
+        with its id and the reply names the project."""
         from services.consciousness.todo_consciousness import format_todos_created_conscious
 
-        priority = self._extract_priority(original_message)
+        if priority is None:
+            priority = self._extract_priority(original_message)
         created = []
         try:
             for title in items:
                 # Arch (#2094 validation): a router title is the user's words as
                 # the router read them; only the regex fallback strips a leading "to".
                 todo = await self.todo_service.create_todo(
-                    user_id=user_id, text=title, priority=priority
+                    user_id=user_id, text=title, priority=priority, **_project_kwargs(project)
                 )
                 created.append(todo)
                 self._remember_created_todo(session_id, user_id, todo, "todo")
@@ -2124,8 +2139,46 @@ class TodoIntentHandlers:
                 "I had trouble saving those todos — it may be a temporary issue. You can try again."
             )
         self._park_created_activities(session_id, user_id, created, "todo")
-        logger.info("Todos created from router items", count=len(created), user_id=user_id)
+        logger.info(
+            "Todos created from router items",
+            count=len(created),
+            user_id=user_id,
+            in_project=project is not None,
+        )
+        if project is not None:
+            from services.intent_service.todo_project_attach import render_attached
+
+            return render_attached([t.text for t in created], project.name)
         return format_todos_created_conscious(created)
+
+    async def create_titles_in_project(
+        self, titles: List[str], session_id: str, user_id: UUID, priority: str, project: Any
+    ) -> str:
+        """#2297: write titles bound at ask time (the which-project pick) into the
+        project bound by id. No extraction: what the question was asked about is
+        what is written."""
+        return await self._create_todos_from_items(
+            list(titles), session_id, user_id, "", project=project, priority=priority
+        )
+
+    def resolve_create_titles(self, intent: Intent, original_message: str) -> List[str]:
+        """The titles ``handle_create_todo`` would write, by its own chain: the
+        bound title of a confirmed ask (#2304), the router's items (#2094), the
+        router's text (#1976), then the regex extractor with a leading "to"
+        dropped (#2095). Empty when nothing names a title."""
+        from services.intent_service.write_confirm_words import bound_write_values
+
+        bound_text = bound_write_values(intent, "create_todo").get("text")
+        if bound_text:
+            return [bound_text]
+        items = self._router_todo_items(intent, original_message)
+        if len(items) >= 2:
+            return items
+        text = (items[0] if items else "") or self._router_todo_text(intent, original_message)
+        if not text:
+            # The regex fallback only: a router title is never stripped (Arch, #2094).
+            text = self._strip_leading_to(self._extract_todo_text(original_message))
+        return [text] if text else []
 
     @staticmethod
     def _park_created_activities(
@@ -2149,37 +2202,31 @@ class TodoIntentHandlers:
         except Exception as e:  # silent-ok: logged; the ledger misses rows, the save reply stands
             logger.warning("created_activities_park_failed", error=str(e), session_id=session_id)
 
-    async def handle_create_todo(self, intent: Intent, session_id: str, user_id: UUID) -> str:
+    async def handle_create_todo(
+        self, intent: Intent, session_id: str, user_id: UUID, project: Optional[Any] = None
+    ) -> str:
         """
         Handle: "add todo: Review PR #285"
         Extract text, create todo with database persistence, format response.
+
+        ``project`` (#2297): a ``ProjectRef`` the rail adapter resolved from the
+        router's ``project`` arg (one exact match among the person's own active
+        projects). The todo is written with its id and the reply names it.
         """
         # Note: original_message may be in intent.original_message OR intent.context["original_message"]
         # depending on how the Intent was created (Issue #744)
         original_message = intent.original_message or intent.context.get("original_message", "")
 
-        from services.intent_service.write_confirm_words import bound_write_values
-
         # #2304 (Arch 11-06 13:23): a confirmed "yes" writes the title its question
-        # showed, bound at ask time; no second extraction.
-        bound_text = bound_write_values(intent, "create_todo").get("text")
-        items = [] if bound_text else self._router_todo_items(intent, original_message)
-        # #2094: a LIST of titles from the router ("Add three todos …: a, b, c")
-        # makes one todo per element; code never splits a string.
-        if len(items) >= 2:
-            return await self._create_todos_from_items(items, session_id, user_id, original_message)
-
-        # #1976: the router's extracted text first ('add a todo to X' → X), the
-        # regex extractor as the fallback for every other path. #2094/#2095: a
-        # single router title wins over the regex; a leading "to " is dropped.
-        text = (
-            bound_text
-            or (items[0] if items else "")
-            or self._router_todo_text(intent, original_message)
-        )
-        if not text:
-            # The regex fallback only: a router title is never stripped (Arch, #2094).
-            text = self._strip_leading_to(self._extract_todo_text(original_message))
+        # showed, bound at ask time; no second extraction. #2094: a LIST of titles
+        # from the router makes one todo per element; code never splits a string.
+        # #1976/#2095: a single router title wins over the regex.
+        titles = self.resolve_create_titles(intent, original_message)
+        if len(titles) >= 2:
+            return await self._create_todos_from_items(
+                titles, session_id, user_id, original_message, project=project
+            )
+        text = titles[0] if titles else ""
         if not text:
             return "I didn't catch what you'd like me to add. Could you try: 'add todo: [description]'?"
 
@@ -2189,7 +2236,7 @@ class TodoIntentHandlers:
         try:
             # Create todo via service (database persistence)
             todo = await self.todo_service.create_todo(
-                user_id=user_id, text=text, priority=priority
+                user_id=user_id, text=text, priority=priority, **_project_kwargs(project)
             )
 
             # #1987: the row just made is the referent of a following
@@ -2203,8 +2250,15 @@ class TodoIntentHandlers:
                 **utterance_fields(text, key="text"),
                 priority=priority,
                 user_id=user_id,
+                in_project=project is not None,
             )
 
+            if project is not None:
+                # #2297 (CXO 11-06): true only because the row was written with
+                # the project's id on the line above.
+                from services.intent_service.todo_project_attach import render_attached
+
+                return render_attached([todo.text], project.name)
             # Format response with consciousness
             return format_todo_created_conscious(todo)
 
