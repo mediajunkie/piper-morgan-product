@@ -2,7 +2,7 @@
 
 ## DAY CLOSED 2026-11-13 21:47 (the 18:28 block below is still current; this adds the evening)
 
-- **11-14 START begins Path B (2297 then 2301) in a fresh session** (deferred there on purpose). Before any rule-7 screen: send its call count and cost to Exec, and wait for the provider key.
+- **Path B: 2297 handler side BUILT AND HELD 11-14 07:14 on origin branch `lead/2297-project-attach` (`5ad68888b6`)**; rulings asked of Arch (3) and CXO (4 lines) in mail 01M7D9XZ…; lands only with arm B's screen. 2301 (project-scoped read, its own catalog line) is next. Before any rule-7 screen: send its call count and cost to Exec, and wait for the provider key.
 - **2364 step 1:** `b16b83dcef` is on origin as side branch `lead/2364-step1` (pushed 21:34, Arch told). After the rebase, push the new sha to the same branch and mail it to Arch before the gate runs. Still waits on the key (Exec) and, for the promotion, Arch's word.
 - **Beta serves `81d149ac86`**, healthy at 21:46. Main 12 of 12 green. Mail 0.
 - Arch's two notes for the 2358 build (close offer restates open steps and their count; an explicit need-more state that arms nothing) are in the collected comment on issue 2358.
