@@ -250,10 +250,14 @@ jobs:
       # subset steps (interface/contract/bypass/accuracy) ran subsets of this
       # same sweep under addopts' -x, so any backlog test in a subset turned the
       # job red before the gate could judge — the gate must see the whole run.
+      # #2372 (Arch, 2026-11-15): -rfEs prints every skip with its reason, so a test that
+      # skips where it should run is visible in the log (grep its file among the SKIPPED
+      # lines). It must be -rfEs, never bare -rs: -r REPLACES pytest's default (fE), and
+      # without f and E the FAILED/ERROR lines the gate below reads would disappear.
       - name: Full suite under the burn-down gate (#1452)
         run: |
           set -o pipefail
-          python -m pytest tests/ -m "not llm" -q --tb=no \
+          python -m pytest tests/ -m "not llm" -q --tb=no -rfEs \
             -o addopts="--ignore=tests/archive --ignore=services/integrations --ignore=dev/ --import-mode=importlib" \
             2>&1 | tee /tmp/fullsuite.out || true
           python scripts/check_fullsuite_backlog.py /tmp/fullsuite.out | tee /tmp/gate.out
