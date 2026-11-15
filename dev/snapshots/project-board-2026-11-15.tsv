@@ -2164,5 +2164,8 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2373	CLOSED	Production		Floored-action counter write is awaited on the person's turn: bound it with a short timeout (2327 follow-up)	enhancement		COMPLETED
 2374	OPEN	Production		On a GitHub App grant, issue and PR searches still read every repository the person is assigned in, not the installed set (2342 one-source gap)	architecture		
 2375	OPEN	Production		[UX] GitHub install step is on a page with no navigation path; per-integration settings pages don't share one page shape	UX		
-2376	OPEN	Production		GitHub settings: the personal-token field can arrive autofilled, and Update would save it	bug		
+2376	OPEN	Production		GitHub settings: an App-connected account is offered a personal-token form that reads as if a token were stored	bug		
 2377	OPEN	Production		[UX] Per-integration settings pages share the app shell and one page shape (split from 2375)	enhancement		
+2378	CLOSED	Production		On a GitHub App grant, single-repository reads (by number, branches, releases) still reach repositories outside the installed set (2374 follow-up)	architecture		NOT_PLANNED
+2380	OPEN	Production		GitHub connect in one trip: install and authorize together (ordinary-user path)	enhancement		
+2379	OPEN	Production		On a GitHub App grant, repo-scoped reads (branches, releases, one issue) can answer for a public repository the App isn't installed on			REOPENED
