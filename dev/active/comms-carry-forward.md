@@ -1,21 +1,20 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-14 06:19 PT. Read this first. It supersedes everything below.
-- **Log:** `dev/2026/11/14/2026-11-14-0619-comms-code-log.md`.
-- **Pace (xian, 11-02):** keep working, not racing. The drain rule holds.
-- **Weekend slots are INSIGHTS (Sat and Sun, Medium + LinkedIn).** Tue/Thu building, Wed Ship. Every publish-ready memo states the category, checked against the weekday.
-- **Thu 11-12 "The Server Has No Key": DONE.** Published 11-12 22:17 (website 512dd36), `distributed` with xian's Medium URL (xian: "just Medium"). Nothing owed.
-- **Sat 11-14 "Which Agent Did It?" (insight):** scaffold `docs/public/comms/drafts/which-agent-did-it.md`, calendar `drafted`. Waiting on xian's prose, image and a footer-tease target (nothing on the calendar after Sat except Ships; next building beat is beat 4, "The Wall", Sep 15-18). No nudges (xian via Exec 11-12). Then review, fact-check, template-audit, PUBLISH-READY (category insight).
-- **Ship #069 workstream review: SENT** 11-13 05:10 (c871ba02a).
-- **Ship #069 "Off-Limits by Default" (Wed 11-18):** theme picked by xian 11-13 (Exec v4 01M7BSGS7M55DG6GHZJQSMWQZC), calendar row titled. Source `docs/internal/planning/comms/ship-reviews/ship-069-week-review.html`. Lean on the week's facts (keychain reads, #2353, App cutover's narrower grants), not Thu's post. **Don't start the scaffold until Exec relays xian's goals.**
-- **Narrative mode ADOPTED 11-14 (xian, trial):** arcs about moving a product into beta, larger time spans, not day-by-day beats. Arc map in the planning doc rev 34 (1 Letting a Stranger In, 2 Ready or Not, 3 Open Then Hold, 4 What the Beta Is Teaching Us). Tue 11-17 "The Wall" is the bridge. decisions.log line. Cadence leaning: one narrative + one insight a week + Ship, weekdays not settled.
-- **Two-week sprints from Fri 11-13** (ratified). #069 ordinary, #070 first progress, #071 first final score.
-- **GitHub criteria line:** nothing Comms-shaped through #2363. #2349 (self-knowledge EPIC) and #2355 may use blog insight posts as corpus; Docs owns the manifest, CXO the voice. #2342 (published GitHub App) is the candidate for the "what changed" note when it ships to users.
+## ⭐ CURRENT STATE — 2026-11-14 21:19 PT (STOP). Read this first. It supersedes everything below.
+- **Log 11-14:** `dev/2026/11/14/2026-11-14-0619-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
+- **Pace (xian, 11-02):** keep working, not racing. The drain rule holds. No nudges to xian about posts (Exec 11-12).
+- **Sat 11-14 "Which Agent Did It?": DONE.** Published 13:59 (website e93c7a7), `distributed` with Medium and LinkedIn (Docs, eea1822f2a, 93e70fdad1).
+- **Sun 11-15 "No New Skills This Time" (insight):** scaffold `docs/public/comms/drafts/no-new-skills-this-time.md`, calendar `drafted`. Waiting on xian's prose, art and footer tease (to "The Wall"). Then review, fact-check, template-audit, PUBLISH-READY (category insight). Caution: 13 candidates, "12 leans".
+- **Tue 11-17 "The Wall" (building, beat 4, the bridge):** scaffold `docs/public/comms/drafts/the-wall.md`, `drafted`. Waiting on xian's prose. Footer teases arc 1.
+- **Narrative mode ADOPTED 11-14 (xian, trial):** arcs about moving a product into beta. Arc map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86, rev 36): 1 Letting a Stranger In (sourced, Sep 19 to Oct 7), 2 Ready or Not, 3 Open Then Hold, 4 What the Beta Is Teaching Us. **xian to pick:** cadence weekdays (I suggested narrative Tue, insight Sat, Ship Wed), arc titles, arc 1's main thread (3 options in chat). Nothing on the calendar past 11-17, and no arc 1 scaffold, until then.
+- **Ship #069 "Off-Limits by Default" (Wed 11-18):** don't start the scaffold until Exec relays xian's goals. Source `docs/internal/planning/comms/ship-reviews/ship-069-week-review.html`. Then External fact-check.
+- **Two-week sprints from Fri 11-13.** #069 ordinary, #070 first progress, #071 first final score.
+- **GitHub criteria line:** nothing Comms-shaped through #2373. #2342 is the candidate for the "what changed" note.
 - **Keychain rule (xian via Exec, 11-11; #2353):** nothing we run reads xian's login keychain without his permission.
-- **Mail v4 live:** read `python3 scripts/mail4.py inbox --role comms` as well as v3 (v3 is the fallback until 11-23).
-- **Invites held (xian 11-04)** until #1551, #2261 and #2178 are done. **Waiting list (#2256):** xian goes first, then HOST. **HOLD (PDR-102):** no ownership claim in copy.
-- **Rule 8:** the beta tester xian named in chat appears nowhere in the repo.
-- **Standing:** the "what changed" note at the first user-visible Production ship. Next mining pass Fri 11-20.
+- **Mail v4 live;** v3 is the fallback until 11-23.
+- **Invites held (xian 11-04)** until #1551, #2261 and #2178 are done. **Waiting list (#2256):** xian first, then HOST. **HOLD (PDR-102):** no ownership claim in copy.
+- **Rule 8:** no outside person named anywhere in the repo.
+- **Standing:** next mining pass Fri 11-20.
 
 ## OLDER STATE blocks pruned 2026-11-06 (10-14 to 11-04). They are in git history and in the dated session logs.
 
