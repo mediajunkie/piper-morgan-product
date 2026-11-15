@@ -310,10 +310,38 @@ class TestManyInstalledRepositories:
             assert reply(result.degradation) == gh_mod.GITHUB_APP_TOO_MANY_REPOSITORIES_REPLY
 
     async def test_a_named_repository_is_read_however_many_are_installed(self, monkeypatch):
+        # CXO's condition on the too-many line (2026-11-15 15:33) and Arch's on the
+        # mechanism: "Ask me about one repository by name" has to work in that state.
         names = self._names(400)
         adapter, seen, _ = _adapter(monkeypatch, _installed(*names))
         result = await adapter.list_open_issues(_OWNER, repository=names[399])
-        assert len(seen) == 1 and result.degradation is None
+        assert [s["query"] for s in seen] == [f"repo:{names[399]} is:issue is:open"]
+        assert result.degradation is None and result.issues
+
+    async def test_a_named_repository_outside_a_too_many_set_is_still_refused(self, monkeypatch):
+        adapter, seen, _ = _adapter(monkeypatch, _installed(*self._names(400)))
+        result = await adapter.list_open_issues(_OWNER, repository="someone/public")
+        assert seen == []
+        assert result.degradation.detail == DETAIL_APP_NOT_ON_REPOSITORY
+
+
+class TestTheWordsAreCXOs:
+    """CXO 2026-11-15 15:33, verbatim."""
+
+    async def test_the_three_lines(self):
+        assert gh_mod.GITHUB_APP_NOT_ON_REPOSITORY_REPLY == (
+            "The Piper GitHub app isn't installed on that repository, so I can't read it. "
+            "If it's yours, install it there in Settings, under Integrations."
+        )
+        assert gh_mod.GITHUB_CONNECTOR_APP_NOT_ON_REPOSITORY_REPLY == (
+            "The Piper GitHub app isn't installed on that repository, so I can't read it. "
+            "If it's yours, install it there in the Piper Morgan app, in Settings under "
+            "Integrations."
+        )
+        assert gh_mod.GITHUB_APP_TOO_MANY_REPOSITORIES_REPLY == (
+            "The Piper GitHub app is installed on more repositories than I can search at "
+            "once. Ask me about one repository by name."
+        )
 
     async def test_a_malformed_name_in_the_listing_fails_the_read(self, monkeypatch):
         adapter, seen, _ = _adapter(monkeypatch, _installed("octo/a", "octo/b is:closed"))

@@ -160,19 +160,22 @@ GITHUB_CONNECTOR_APP_NOT_INSTALLED_REPLY = (
     "repositories yet, so there's nothing for me to read. Install it on the ones you want "
     "in the Piper Morgan app, in Settings under Integrations."
 )
-# #2374 (Lead's draft 2026-11-15, CXO to rule): a repository named in the request that
-# the App isn't installed on. Never a public read of it (Arch, the issue's mechanism).
-# The lines name no repository, so they stay constants picked by ``detail``.
+# #2374 (CXO 2026-11-15 15:33): a repository named in the request that the App isn't
+# installed on. Never a public read of it (Arch, the issue's mechanism). "If it's
+# yours": a person can name a public repository they can't install anything on. The
+# lines name no repository, so they stay constants picked by ``detail``.
 GITHUB_APP_NOT_ON_REPOSITORY_REPLY = (
     "The Piper GitHub app isn't installed on that repository, so I can't read it. "
-    "Install it there in Settings, under Integrations."
+    "If it's yours, install it there in Settings, under Integrations."
 )
 GITHUB_CONNECTOR_APP_NOT_ON_REPOSITORY_REPLY = (
     "The Piper GitHub app isn't installed on that repository, so I can't read it. "
-    "Install it there in the Piper Morgan app, in Settings under Integrations."
+    "If it's yours, install it there in the Piper Morgan app, in Settings under Integrations."
 )
-# #2374 (Lead's draft, CXO to rule): the App is installed on more repositories than one
+# #2374 (CXO 2026-11-15 15:33): the App is installed on more repositories than one
 # read's searches cover. Said plainly, never part of a list as if it were complete.
+# CXO's condition, and Arch's on the mechanism: a repository named in the request is
+# still read in this state when the App is installed on it.
 GITHUB_APP_TOO_MANY_REPOSITORIES_REPLY = (
     "The Piper GitHub app is installed on more repositories than I can search at once. "
     "Ask me about one repository by name."
