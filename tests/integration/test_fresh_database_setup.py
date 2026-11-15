@@ -1,7 +1,7 @@
 """
 Integration test for fresh database schema creation.
 
-This test ensures that `db.create_tables()` works on an empty database,
+This test ensures that ``Base.metadata.create_all`` works on an EMPTY database,
 catching issues like:
 - Missing GIN indexes for JSON columns
 - Circular foreign key dependencies
@@ -11,17 +11,64 @@ catching issues like:
 Found during alpha onboarding testing (Oct 29, 2025) when the setup wizard
 discovered JSON columns with BTree indexes instead of GIN indexes.
 
-Issue: Database schema bug - JSON index misconfiguration
+#2372 (Arch 2026-11-14): it runs in a scratch database it creates and drops, never
+the configured one. It used to call ``create_all`` on whatever database was
+configured. On a shared developer database that created every new model's table
+ahead of its migration, and the migration's ``create_table`` then failed with
+DuplicateTable (this happened with ``floored_action_counts`` on 2026-11-14). It was
+also never a fresh-database test there: ``create_all`` skips tables that exist.
 """
+
+import os
+import uuid
 
 import pytest
 from sqlalchemy import text
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.pool import NullPool
 
-from services.database.connection import Base, db
+from services.database.connection import Base
+
+
+def _server_url(database: str) -> str:
+    """The configured PostgreSQL server (the test suite's own variables), with the
+    database name swapped. The scratch database lives on the same server."""
+    user = os.getenv("POSTGRES_USER", "piper")
+    password = os.getenv("POSTGRES_PASSWORD", "dev_changeme_in_production")
+    host = os.getenv("POSTGRES_HOST", "localhost")
+    port = os.getenv("POSTGRES_PORT", "5433")
+    return f"postgresql+asyncpg://{user}:{password}@{host}:{port}/{database}"
+
+
+@pytest.fixture
+async def scratch_database():
+    """An empty database for this test alone, dropped afterwards. Created from the
+    configured database's connection, which is only used to issue CREATE and DROP
+    DATABASE (no table in it is read or written)."""
+    name = f"piper_fresh_{uuid.uuid4().hex[:12]}"
+    admin = create_async_engine(
+        _server_url(os.getenv("POSTGRES_DB", "piper_morgan")),
+        poolclass=NullPool,
+        isolation_level="AUTOCOMMIT",
+    )
+    try:
+        async with admin.connect() as conn:
+            await conn.execute(text(f'CREATE DATABASE "{name}"'))
+    except Exception as e:
+        await admin.dispose()
+        pytest.skip(f"this role cannot create a scratch database ({type(e).__name__})")
+    engine = create_async_engine(_server_url(name), poolclass=NullPool)
+    try:
+        yield engine
+    finally:
+        await engine.dispose()
+        async with admin.connect() as conn:
+            await conn.execute(text(f'DROP DATABASE IF EXISTS "{name}" WITH (FORCE)'))
+        await admin.dispose()
 
 
 @pytest.mark.asyncio
-async def test_create_tables_from_scratch():
+async def test_create_tables_from_scratch(scratch_database):
     """
     Test that database schema can be created from scratch.
 
@@ -32,15 +79,16 @@ async def test_create_tables_from_scratch():
     4. All enums and custom types work
     5. No circular dependencies exist
 
-    This test runs against the actual test database and verifies
-    the entire schema creation process works end-to-end.
+    It runs in an empty scratch database, so every table is really created.
     """
-    # Initialize database connection if needed
-    if not db.engine:
-        await db.initialize()
+    async with scratch_database.begin() as conn:
+        before = (
+            await conn.execute(
+                text("SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public'")
+            )
+        ).scalar()
+        assert before == 0, "the scratch database must start empty"
 
-    # Get a connection to verify schema creation
-    async with db.engine.begin() as conn:
         # Verify we can create all tables without errors
         # This will fail if:
         # - JSON columns have BTree indexes (need GIN)
@@ -61,6 +109,8 @@ async def test_create_tables_from_scratch():
             )
         )
         tables = [row[0] for row in result.fetchall()]
+        # Every model's table was created here, not found already present.
+        assert set(Base.metadata.tables) <= set(tables)
 
         # Check for essential tables.
         # NOTE: only tables with an ORM model belong here — this test exercises

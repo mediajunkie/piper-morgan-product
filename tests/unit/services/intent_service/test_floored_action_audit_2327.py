@@ -174,6 +174,36 @@ class TestTheNote:
         )
         assert len(lines()) == 1
 
+    async def test_a_hung_counter_write_is_bounded_and_the_line_is_still_written_2373(
+        self, lines, monkeypatch
+    ):
+        """#2373: the write is awaited on the person's turn. A write that never returns
+        costs the reply the bound and no more; it is cancelled, and nothing raises."""
+        import asyncio
+        import time
+
+        cancelled = []
+
+        async def hangs(name, site):
+            try:
+                await asyncio.sleep(60)
+            except asyncio.CancelledError:
+                cancelled.append(site)
+                raise
+
+        monkeypatch.setattr(audit, "_increment", hangs)
+        monkeypatch.setattr(audit, "COUNT_WRITE_TIMEOUT_S", 0.2)
+        start = time.monotonic()
+        await audit.note_floored_action(
+            audit.SITE_QUERY_ACTION, "tidy_the_whole_repository", MESSAGE
+        )
+        assert time.monotonic() - start < 1.5
+        assert len(lines()) == 1
+        assert cancelled == [audit.SITE_QUERY_ACTION]  # not left running after the turn
+
+    def test_the_shipped_bound_is_about_two_seconds_2373(self):
+        assert audit.COUNT_WRITE_TIMEOUT_S == 2.0
+
     async def test_a_failing_vocabulary_read_never_fails_the_turn(self, counter, monkeypatch):
         monkeypatch.setattr(audit, "importable_vocabulary", lambda: 1 / 0)
         await audit.note_floored_action(
