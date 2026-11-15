@@ -1,5 +1,15 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-15 08:00 (supersedes the blocks below where they differ)
+
+- **Promotion DONE.** xian's word in session ("I approve promoting the latest build to beta."), run 43731273625, beta serves `4f75863c48` since 07:44 with migration `v2327floored`. Evidence in the 11-15 log and mail 01M7FY4EYP…. 2363 row 3 still open (the head had one parent).
+- **On main `a62240fe78`, not served:** 2372 (`a626f3eaaa`), 2370 (`6cfc69a572`), 2373 (`63a6eb885c`). Owed: quote `test_create_tables_from_scratch` PASSED from CI to Arch; Arch validates 2373; then close the three with evidence. The held branches `lead/2372-alembic-only` and `lead/2370-redis-pin` are now merged work; leave them on origin.
+- **Next promotion:** no migration, so the standing grant applies once CI is green and Arch has validated 2373. Re-read the inbox first.
+- **Waiting on xian:** Operations reader tick for the test account (Exec's card), the sign-in sitting, the testing key.
+- **2345:** a fresh session, the Redis upgrade is on main now. Held branch, mail Arch the sha.
+- Still held on origin: `lead/2301-project-read` (arm B's screen), `lead/2364-step1` (the key).
+- They/them for every seat (Docs's note, 11-15).
+
 ## DAY CLOSED 2026-11-14 21:47 (the 13:17 block below is still current; nothing changed after it)
 
 - Three quiet fires (15:46, 18:46, 21:46): mail 0, main 12 of 12 green, beta on `81d149ac86`. No word from xian on the promotion was relayed.
