@@ -259,4 +259,4 @@ git checkout production-pre-main-merge-2025-11-30
 ---
 
 **Last Updated**: Nov 30, 2025
-**Related Docs**: [ALPHA_QUICKSTART.md](../ALPHA_QUICKSTART.md), [ALPHA_TESTING_GUIDE.md](../ALPHA_TESTING_GUIDE.md)
+**Related Docs**: [BETA_QUICKSTART.md](../BETA_QUICKSTART.md), [BETA_TESTING_GUIDE.md](../BETA_TESTING_GUIDE.md)

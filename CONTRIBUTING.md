@@ -54,7 +54,7 @@ python -c "import asyncio; asyncio.timeout(1.0); print('✅ Python 3.11 ready')"
 
 ### 1b. Running the Full App Locally
 
-*Added 2026-08-31, moved from `docs/ALPHA_QUICKSTART.md` — testers now use the hosted app
+*Added 2026-08-31, moved from `docs/BETA_QUICKSTART.md` — testers now use the hosted app
 ([piper-morgan.fly.dev](https://piper-morgan.fly.dev)), so this is an engineer/contributor path,
 not a tester one. Steps below are probe-measured (Lead, 2026-08-31 fresh-clone test), not
 assumed — see #1708.*
@@ -516,7 +516,7 @@ docker-compose exec app python --version  # Verify 3.11+
 
 ### Running the app locally — port, database, and environment issues
 
-*Moved from `docs/ALPHA_QUICKSTART.md`, 2026-08-31 (#1708).*
+*Moved from `docs/BETA_QUICKSTART.md`, 2026-08-31 (#1708).*
 
 **Port 8001 already taken?**
 ```bash

@@ -30,7 +30,7 @@ Best,
 Christian
 
 Attachments:
-- ALPHA_TESTING_GUIDE.md (comprehensive setup guide)
+- BETA_TESTING_GUIDE.md (comprehensive setup guide)
 - ALPHA_AGREEMENT.md (legal terms)
-- ALPHA_QUICKSTART.md (minimal 2-minute guide)
-- ALPHA_KNOWN_ISSUES.md (current bugs and limitations)
+- BETA_QUICKSTART.md (minimal 2-minute guide)
+- BETA_KNOWN_ISSUES.md (current bugs and limitations)

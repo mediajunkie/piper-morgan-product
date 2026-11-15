@@ -22,9 +22,9 @@ Piper Morgan is currently in **invite-only private beta** at [beta.pipermorgan.a
 
 If you're part of the beta:
 
-- **[Beta Quick Start](ALPHA_QUICKSTART.md)** — get running in a few minutes
-- **[Testing Guide](ALPHA_TESTING_GUIDE.md)** — what to test and how to give feedback
-- **[Known Issues](ALPHA_KNOWN_ISSUES.md)** — current limitations
+- **[Beta Quick Start](BETA_QUICKSTART.md)** — get running in a few minutes
+- **[Testing Guide](BETA_TESTING_GUIDE.md)** — what to test and how to give feedback
+- **[Known Issues](BETA_KNOWN_ISSUES.md)** — current limitations
 - **[Terms](https://pipermorgan.ai/terms/)** — terms and expectations
 - **[Release Notes v0.9.0.0](releases/RELEASE-NOTES-v0.9.0.0.md)** — what changed in the latest release
 
