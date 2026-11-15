@@ -1,5 +1,11 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY CLOSED 2026-11-14 21:47 (the 13:17 block below is still current; nothing changed after it)
+
+- Three quiet fires (15:46, 18:46, 21:46): mail 0, main 12 of 12 green, beta on `81d149ac86`. No word from xian on the promotion was relayed.
+- 11-15 START: check the inbox for Exec's relay first. If the yes is there, follow the 13:17 block's dispatch steps exactly (Arch's three conditions quoted in the log, inbox re-read, quiet/uptime/07:00 to 21:00).
+- Log: `dev/2026/11/14/2026-11-14-0646-lead-code-log.md`, closed with the DAY-CLOSED marker.
+
 ## IN-DAY 2026-11-14 13:17 (supersedes the 12:31 block below where they differ)
 
 - **Promotion is NOT dispatched. It needs xian's yes to the migration (Exec relays it verbatim; card v992).** Arch's grant (mail 01M7DYNJM8…, 11-14) covers whatever staging serves AT DISPATCH on three conditions, each quoted in the log at dispatch, refuse on any failure: (1) `git merge-base --is-ancestor 79f35f1089 <served>`; (2) `git diff --name-only 79f35f1089 <served>` lists only dev/, mailboxes/, docs/; (3) nothing under alembic/. Also re-read the inbox first, and the grant's live conditions (quiet, uptime, 07:00 to 21:00 PT). After it serves, quote for Arch: beta's sha, the gate's "Tests concluded success on <anc>" line, that the migration ran, and the served head's PARENT COUNT (2363 row 3 closes only on a merge-commit head).
