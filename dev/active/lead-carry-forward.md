@@ -1,5 +1,15 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-15 09:10 (supersedes the earlier 11-15 block where they differ)
+
+- **Beta serves `ddd3d49240` since 09:08** (run 43739113185, Arch's grant of 08:58, no migration): redis 5.0.8, 2372, 2373. `redis: ok`, `revocation_source: redis`. Evidence mail 01M7G3063M….
+- **2370, 2372, 2373 CLOSED.** CI's full-suite step runs with `-rfEs` (`e3f2656a85`; never bare `-rs`, it drops FAILED lines).
+- **2363 row 3:** the head was a merge commit (two parents) and the gate line is quoted to Arch; theirs to validate, then the 2363 close read.
+- **Nothing held for promotion.** Main and beta differ only in logs and the test workflow.
+- **Waiting on xian:** Operations reader tick for the test account (Exec's card), the sign-in sitting, the testing key.
+- **2345:** a fresh session (the Redis upgrade is served now); PPM adds: it stays out until 2342 rows 2 and 3 are read. Held branch, mail Arch the sha.
+- Still held on origin: `lead/2301-project-read` (arm B's screen), `lead/2364-step1` (the key).
+
 ## IN-DAY 2026-11-15 08:00 (supersedes the blocks below where they differ)
 
 - **Promotion DONE.** xian's word in session ("I approve promoting the latest build to beta."), run 43731273625, beta serves `4f75863c48` since 07:44 with migration `v2327floored`. Evidence in the 11-15 log and mail 01M7FY4EYP…. 2363 row 3 still open (the head had one parent).
