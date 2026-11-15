@@ -4,7 +4,7 @@
 
 - **Beta serves `ddd3d49240` since 09:08** (run 43739113185, Arch's grant of 08:58, no migration): redis 5.0.8, 2372, 2373. `redis: ok`, `revocation_source: redis`. Evidence mail 01M7G3063M….
 - **2370, 2372, 2373 CLOSED.** CI's full-suite step runs with `-rfEs` (`e3f2656a85`; never bare `-rs`, it drops FAILED lines).
-- **2363 row 3:** the head was a merge commit (two parents) and the gate line is quoted to Arch; theirs to validate, then the 2363 close read.
+- **2363 row 3: NOT met (Arch 09:18).** Both parents of `ddd3d49240` hold the tested commit, so it does not tell the old gate from the new. BEFORE EVERY DISPATCH run `git merge-base --is-ancestor <tested sha> <head>^1 || echo "second-parent only"`; if it prints and the gate accepts, quote both lines to Arch and the row closes.
 - **Nothing held for promotion.** Main and beta differ only in logs and the test workflow.
 - **Waiting on xian:** Operations reader tick for the test account (Exec's card), the sign-in sitting, the testing key.
 - **2345:** a fresh session (the Redis upgrade is served now); PPM adds: it stays out until 2342 rows 2 and 3 are read. Held branch, mail Arch the sha.
