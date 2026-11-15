@@ -20,6 +20,7 @@ Arch's ruling (2026-11-14), HOST's content bar:
 
 from __future__ import annotations
 
+import asyncio
 from datetime import datetime, timezone
 from typing import Any, Dict, Optional
 
@@ -35,6 +36,10 @@ EVIDENCE_EVENT = "floored_action_outside_vocabulary"
 # The counter's value for a name that is off the shape. It cannot match the shape
 # (parentheses), so it can never collide with a real name.
 WITHHELD = "(withheld)"
+# #2373: the counter write is awaited on the person's turn, so it is bounded. A hung
+# database connection costs the reply at most this long; the evidence line is already
+# written by then.
+COUNT_WRITE_TIMEOUT_S = 2.0
 
 SITE_CANONICAL_GENERIC = "canonical_generic_detected_routing_to_floor"
 SITE_QUERY_ACTION = "query_action_routing_to_floor"
@@ -101,7 +106,12 @@ async def note_floored_action(site: str, action: Any, message: Optional[str]) ->
         logger.warning("floored_action_audit_failed", error=str(e))
         return
     try:
-        await _increment(name if name is not None else WITHHELD, site)
+        await asyncio.wait_for(
+            _increment(name if name is not None else WITHHELD, site),
+            timeout=COUNT_WRITE_TIMEOUT_S,
+        )
+    except asyncio.TimeoutError:  # silent-ok: logged; the evidence line already recorded it
+        logger.warning("floored_action_count_timed_out", site=site, bound_s=COUNT_WRITE_TIMEOUT_S)
     except (
         Exception
     ) as e:  # silent-ok: logged; the evidence line above already recorded the sighting
