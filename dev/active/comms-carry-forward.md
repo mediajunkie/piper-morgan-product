@@ -8,6 +8,7 @@
 - **Tue 11-17 "The Wall" (building, beat 4, the bridge):** scaffold `docs/public/comms/drafts/the-wall.md`, `drafted`. Waiting on xian's prose. Footer teases arc 1.
 - **Narrative mode ADOPTED 11-14 (xian, trial):** arcs about moving a product into beta. Arc map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86, rev 36): 1 Letting a Stranger In (sourced, Sep 19 to Oct 7), 2 Ready or Not, 3 Open Then Hold, 4 What the Beta Is Teaching Us. **xian to pick:** cadence weekdays (I suggested narrative Tue, insight Sat, Ship Wed), arc titles, arc 1's main thread (3 options in chat). Nothing on the calendar past 11-17, and no arc 1 scaffold, until then.
 - **Ship #069 "Off-Limits by Default" (Wed 11-18):** don't start the scaffold until Exec relays xian's goals. Source `docs/internal/planning/comms/ship-reviews/ship-069-week-review.html`. Then External fact-check.
+- **#2374 (11-15):** on an App grant, issue and PR searches still read every repo the person is assigned in, not just the installed set. Ship #069 External check: "narrower grants" holds for repositories only, not issue/PR searches, until 2374 lands.
 - **Two-week sprints from Fri 11-13.** #069 ordinary, #070 first progress, #071 first final score.
 - **GitHub criteria line:** nothing Comms-shaped through #2373. #2342 is the candidate for the "what changed" note.
 - **Keychain rule (xian via Exec, 11-11; #2353):** nothing we run reads xian's login keychain without his permission.
