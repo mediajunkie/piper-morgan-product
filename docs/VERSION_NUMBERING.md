@@ -231,9 +231,9 @@ No. Alpha versions (0.8.x) are explicitly **not** for production use. See ALPHA_
 
 ## See Also
 
-- `ALPHA_TESTING_GUIDE.md` - Setup instructions for v0.8.0
+- `BETA_TESTING_GUIDE.md` - Setup instructions for v0.8.0
 - `ALPHA_AGREEMENT.md` - Legal terms for alpha testing
-- `ALPHA_KNOWN_ISSUES.md` - Current bugs and limitations
+- `BETA_KNOWN_ISSUES.md` - Current bugs and limitations
 - `CHANGELOG.md` - Detailed changes between versions
 
 ---

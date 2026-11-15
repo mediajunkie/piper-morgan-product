@@ -89,7 +89,7 @@ Work through this list in order. For each file: **read it first**, then make the
 - [ ] Add row to Release History table (version, date, type, highlights)
 - [ ] Update "Last updated" date
 
-### 3b. docs/ALPHA_QUICKSTART.md
+### 3b. docs/BETA_QUICKSTART.md
 **Two separate tasks — do not conflate:**
 
 **Task 1 — version strings** (grep-able):
@@ -102,15 +102,15 @@ Work through this list in order. For each file: **read it first**, then make the
 - [ ] **"Testing Focus" section**: rewrite entirely. What should testers pay attention to in THIS release? What's newly shipped and needs eyes?
 - [ ] **"What's Working" section**: update to reflect current capabilities. Remove features that have been superseded; add what's genuinely stable in THIS release.
 
-**Verification**: after editing, `grep -n "0\.8\." docs/ALPHA_QUICKSTART.md` — all version references should be NEW_VERSION. Read the What's New section and ask: does this describe what THIS release ships, or the previous one?
+**Verification**: after editing, `grep -n "0\.8\." docs/BETA_QUICKSTART.md` — all version references should be NEW_VERSION. Read the What's New section and ask: does this describe what THIS release ships, or the previous one?
 
-### 3c. docs/ALPHA_TESTING_GUIDE.md
+### 3c. docs/BETA_TESTING_GUIDE.md
 - [ ] Header version + Last Updated
 - [ ] **"What's New" section**: rewrite for THIS release (same discipline as Quickstart)
 - [ ] **"Testing Focus"**: update for what's new to test
 - [ ] Footer version
 
-### 3d. docs/ALPHA_KNOWN_ISSUES.md
+### 3d. docs/BETA_KNOWN_ISSUES.md
 - [ ] Header version, title line `(vX.Y.Z)`, Last Updated
 - [ ] Check GitHub for open bugs: `gh issue list --label bug --state open`
 - [ ] Move any fixed issues OUT of Known Issues (the tester page may say "Fixed in": it describes a release)
@@ -157,9 +157,9 @@ ls docs/versioning.md docs/VERSION_NUMBERING.md 2>/dev/null
 git add pyproject.toml \
   docs/releases/RELEASE-NOTES-v{NEW_VERSION}.md \
   docs/releases/README.md \
-  docs/ALPHA_QUICKSTART.md \
-  docs/ALPHA_TESTING_GUIDE.md \
-  docs/ALPHA_KNOWN_ISSUES.md \
+  docs/BETA_QUICKSTART.md \
+  docs/BETA_TESTING_GUIDE.md \
+  docs/BETA_KNOWN_ISSUES.md \
   docs/known-limits.md \
   docs/briefing/BRIEFING-CURRENT-STATE.md \
   docs/operations/alpha-onboarding/email-template.md \
@@ -225,11 +225,11 @@ Read each of these sections and confirm they describe THIS release, not the prev
 
 | Doc | Section to read | What to verify |
 |-----|-----------------|----------------|
-| ALPHA_QUICKSTART | What's New | Features are from THIS release |
-| ALPHA_QUICKSTART | What's Working | Capabilities list is current |
-| ALPHA_QUICKSTART | Testing Focus | Reflects what's newly shipped |
-| ALPHA_TESTING_GUIDE | What's New | Same check |
-| ALPHA_KNOWN_ISSUES | Known Issues | Fixed issues removed; new issues added |
+| BETA_QUICKSTART | What's New | Features are from THIS release |
+| BETA_QUICKSTART | What's Working | Capabilities list is current |
+| BETA_QUICKSTART | Testing Focus | Reflects what's newly shipped |
+| BETA_TESTING_GUIDE | What's New | Same check |
+| BETA_KNOWN_ISSUES | Known Issues | Fixed issues removed; new issues added |
 | known-limits | every row | Fixed limits deleted, new ones meet PPM's rule, no issue numbers |
 
 If any section still describes old functionality: fix it now, before the release is done.
@@ -271,9 +271,9 @@ Phase 2 — Version bump
 
 Phase 3 — Documentation
 - [ ] docs/releases/README.md
-- [ ] docs/ALPHA_QUICKSTART.md — version strings AND prose body
-- [ ] docs/ALPHA_TESTING_GUIDE.md — version strings AND prose body
-- [ ] docs/ALPHA_KNOWN_ISSUES.md
+- [ ] docs/BETA_QUICKSTART.md — version strings AND prose body
+- [ ] docs/BETA_TESTING_GUIDE.md — version strings AND prose body
+- [ ] docs/BETA_KNOWN_ISSUES.md
 - [ ] docs/known-limits.md
 - [ ] docs/briefing/BRIEFING-CURRENT-STATE.md
 - [ ] docs/operations/alpha-onboarding/email-template.md
@@ -322,4 +322,4 @@ Phase 7 — Audit
   with VERSION stale — the file #1839's /health reads; caught by the same-session docs
   audit). Phase 7's deployment note gains the PIPER_GIT_SHA build-arg + the live
   /health identity check.
-- **v1.0** (2026-06-20, PA): Initial skill. Created after ALPHA_QUICKSTART was discovered with stale body content post-v0.8.8 release — version header bumped but "What's New", "Testing Focus", and "What's Working" sections still described v0.8.6 features. Root cause: runbook listed "Update Version and 'What's New' section" as one checkbox item; under time pressure it read as one action (bump the number). This skill splits them explicitly and makes prose rewrites non-skippable.
+- **v1.0** (2026-06-20, PA): Initial skill. Created after BETA_QUICKSTART was discovered with stale body content post-v0.8.8 release — version header bumped but "What's New", "Testing Focus", and "What's Working" sections still described v0.8.6 features. Root cause: runbook listed "Update Version and 'What's New' section" as one checkbox item; under time pressure it read as one action (bump the number). This skill splits them explicitly and makes prose rewrites non-skippable.

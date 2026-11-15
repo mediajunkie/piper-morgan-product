@@ -2,7 +2,7 @@
 
 Complete step-by-step guide to set up the Piper Morgan development environment.
 
-> **Not a developer?** If you're an alpha tester who just wants to try Piper Morgan, see [ALPHA_QUICKSTART.md](docs/ALPHA_QUICKSTART.md) instead. This guide is for contributors who want to modify the codebase.
+> **Not a developer?** If you're an alpha tester who just wants to try Piper Morgan, see [BETA_QUICKSTART.md](docs/BETA_QUICKSTART.md) instead. This guide is for contributors who want to modify the codebase.
 
 > ⚠️ **Overlap note, added 2026-08-31 (#1708)**: `CONTRIBUTING.md` §"1b. Running the Full App
 > Locally" now also covers this setup, with steps that are probe-measured against a real fresh

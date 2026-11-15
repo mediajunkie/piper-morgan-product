@@ -56,14 +56,14 @@ See [versioning.md](../versioning.md) for full versioning strategy.
 
 ## Known Issues
 
-For current known issues and limitations, see [ALPHA_KNOWN_ISSUES.md](../ALPHA_KNOWN_ISSUES.md).
+For current known issues and limitations, see [BETA_KNOWN_ISSUES.md](../BETA_KNOWN_ISSUES.md).
 
 ---
 
 ## For Alpha Testers
 
-- [Alpha Testing Guide](../ALPHA_TESTING_GUIDE.md) - How to test Piper Morgan
-- [Alpha Quickstart](../ALPHA_QUICKSTART.md) - Getting started fast
+- [Alpha Testing Guide](../BETA_TESTING_GUIDE.md) - How to test Piper Morgan
+- [Alpha Quickstart](../BETA_QUICKSTART.md) - Getting started fast
 - [Alpha Agreement](../ALPHA_AGREEMENT_v2.md) - Terms for alpha testing
 
 ---
