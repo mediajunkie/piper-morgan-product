@@ -8,17 +8,6 @@ caption: ''
 
 *October 23 – November 6, 2026*
 
-<!--
-SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. PM writes the prose. Everything below the line is notes for PM. Delete it as the prose replaces it.
-Slot: Sun 2026-11-15 (insight). Mining candidate I, title xian's (11-14). xian's idea, 11-06 via Exec: the review "may make for an interesting blog post at some point".
-Sources: docs/internal/operations/skill-candidates-review.md (l.3, 5, 11, 49-74), decisions.log l.2776 (10-23 17:03), l.2782 (10-23 18:10), l.3129 (11-06 10:04), mailboxes/comms/read/exec-to-cio-1715-xian-accepts-all-12-leans-close-it-2026-11-06.md. Comms read every line at source 11-14.
--->
-
----
-
-## Title
-**No New Skills This Time** (xian's title, 11-14).
-
 ## The principle in one sentence
 
 When a team reviews what it keeps wishing it had, the honest answer is usually a missing line in something that already exists, not a new procedure, and a review that builds nothing has still done its job.
