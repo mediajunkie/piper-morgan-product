@@ -129,9 +129,9 @@ Create `docs/releases/RELEASE-NOTES-vX.Y.Z.md` with:
 
 These files have version numbers in their headers that MUST be updated:
 
-- [ ] `docs/ALPHA_TESTING_GUIDE.md` - Update **Version** and **Last Updated** in header
-- [ ] `docs/ALPHA_KNOWN_ISSUES.md` - Update **Version**, **Last Updated**, and title `(vX.Y.Z)`
-- [ ] `docs/ALPHA_QUICKSTART.md` - Update **Version** and "What's New" section
+- [ ] `docs/BETA_TESTING_GUIDE.md` - Update **Version** and **Last Updated** in header
+- [ ] `docs/BETA_KNOWN_ISSUES.md` - Update **Version**, **Last Updated**, and title `(vX.Y.Z)`
+- [ ] `docs/BETA_QUICKSTART.md` - Update **Version** and "What's New" section
 - [ ] `docs/ALPHA_AGREEMENT_v2.md` - Update version in 3 places (header, line 15, line 153)
 
 ### 3. Alpha Templates (MANDATORY - update version numbers)
@@ -164,7 +164,7 @@ python -m pytest tests/ --collect-only -q 2>/dev/null | tail -3
 # Record: X tests collected
 ```
 
-- [ ] `docs/ALPHA_KNOWN_ISSUES.md` - Update test count (e.g., "2100+ tests")
+- [ ] `docs/BETA_KNOWN_ISSUES.md` - Update test count (e.g., "2100+ tests")
 - [ ] `docs/internal/testing/canonical-query-test-matrix-v3.md` - Review and update if new queries implemented:
   - Update "Last Tested" date
   - Update coverage percentages if changed
@@ -320,22 +320,22 @@ For each alpha-facing document, verify these content areas are current:
 
 | Content Area | Where to Check | Common Drift |
 |-------------|----------------|--------------|
-| **Test counts** | ALPHA_KNOWN_ISSUES, ALPHA_QUICKSTART | Run `pytest --collect-only -q` and compare |
-| **Python version** | ALPHA_TESTING_GUIDE, ALPHA_AGREEMENT, email template | Currently 3.11 or 3.12 |
-| **Git branch** | Release notes, ALPHA_TESTING_GUIDE, ALPHA_QUICKSTART | Testers use `production`, not `main` |
-| **"What's New" sections** | ALPHA_TESTING_GUIDE, ALPHA_QUICKSTART | Should reflect THIS release, not old ones |
-| **"What's Working" lists** | ALPHA_QUICKSTART | Must match actual current capabilities |
+| **Test counts** | BETA_KNOWN_ISSUES, BETA_QUICKSTART | Run `pytest --collect-only -q` and compare |
+| **Python version** | BETA_TESTING_GUIDE, ALPHA_AGREEMENT, email template | Currently 3.11 or 3.12 |
+| **Git branch** | Release notes, BETA_TESTING_GUIDE, BETA_QUICKSTART | Testers use `production`, not `main` |
+| **"What's New" sections** | BETA_TESTING_GUIDE, BETA_QUICKSTART | Should reflect THIS release, not old ones |
+| **"What's Working" lists** | BETA_QUICKSTART | Must match actual current capabilities |
 | **"New in X.Y" labels** | All alpha docs | Remove or update labels from old releases |
-| **"Planned for Beta"** | ALPHA_KNOWN_ISSUES | Should reflect current MVP milestone issues |
+| **"Planned for Beta"** | BETA_KNOWN_ISSUES | Should reflect current MVP milestone issues |
 | **Feature descriptions** | All alpha docs | Must match what's actually shipped |
-| **Accessibility claims** | Email template, ALPHA_TESTING_GUIDE | Update if WCAG compliance changed |
-| **Screenshots** | ALPHA_TESTING_GUIDE, ALPHA_QUICKSTART | Flag if UI changed since last capture |
+| **Accessibility claims** | Email template, BETA_TESTING_GUIDE | Update if WCAG compliance changed |
+| **Screenshots** | BETA_TESTING_GUIDE, BETA_QUICKSTART | Flag if UI changed since last capture |
 
 **Procedure**: Read each alpha doc in full. For each content area above, verify the claim matches reality. If screenshots are stale, flag for PM (screenshots require human capture).
 
 ### Alpha Known Issues Maintenance
 
-**Purpose**: `ALPHA_KNOWN_ISSUES.md` exists to save testers time by documenting what's broken, incomplete, or needs testing. It is NOT a feature list.
+**Purpose**: `BETA_KNOWN_ISSUES.md` exists to save testers time by documenting what's broken, incomplete, or needs testing. It is NOT a feature list.
 
 **Structure** (maintain this order):
 1. Known Issues (Blocking / Annoying / Cosmetic) — the actual purpose
@@ -354,7 +354,7 @@ For each alpha-facing document, verify these content areas are current:
 - [ ] Update version number and date in header
 
 **Anti-patterns to avoid**:
-- Detailed feature descriptions (belongs in ALPHA_FEATURE_GUIDE.md)
+- Detailed feature descriptions (belongs in BETA_FEATURE_GUIDE.md)
 - Resolved issue numbers (historical, not useful to testers)
 - Feature marketing copy (this is an issues doc)
 
@@ -362,7 +362,7 @@ For each alpha-facing document, verify these content areas are current:
 
 ### Alpha Feature Guide Maintenance
 
-**Purpose**: `ALPHA_FEATURE_GUIDE.md` documents what Piper can do and how to use it.
+**Purpose**: `BETA_FEATURE_GUIDE.md` documents what Piper can do and how to use it.
 
 **Per-release updates**:
 - [ ] Add new features with brief "How to use" guidance
@@ -385,10 +385,10 @@ For each alpha-facing document, verify these content areas are current:
 | Version Numbering | `docs/VERSION_NUMBERING.md` | Current Version header, era history entry, ← CURRENT marker moved, Last Updated |
 | Briefing | `docs/briefing/BRIEFING-CURRENT-STATE.md` | STATUS BANNER version, Last Updated, history table |
 | **Tier 2: Alpha Docs** | | |
-| Testing Guide | `docs/ALPHA_TESTING_GUIDE.md` | Header version, What's New section, footer |
-| Known Issues | `docs/ALPHA_KNOWN_ISSUES.md` | Header version, title with (vX.Y.Z), <200 lines |
-| Feature Guide | `docs/ALPHA_FEATURE_GUIDE.md` | Header version, test count in Technical Details |
-| Quickstart | `docs/ALPHA_QUICKSTART.md` | Header version, What's New section |
+| Testing Guide | `docs/BETA_TESTING_GUIDE.md` | Header version, What's New section, footer |
+| Known Issues | `docs/BETA_KNOWN_ISSUES.md` | Header version, title with (vX.Y.Z), <200 lines |
+| Feature Guide | `docs/BETA_FEATURE_GUIDE.md` | Header version, test count in Technical Details |
+| Quickstart | `docs/BETA_QUICKSTART.md` | Header version, What's New section |
 | Agreement | `docs/ALPHA_AGREEMENT_v2.md` | Version in 3 places |
 | **Tier 3: Other Docs** | | |
 | Docs README | `docs/README.md` | Release notes quick link (line ~18) |
@@ -422,10 +422,10 @@ For each alpha-facing document, verify these content areas are current:
 - [ ] docs/VERSION_NUMBERING.md updated
 - [ ] docs/briefing/BRIEFING-CURRENT-STATE.md updated
 - [ ] docs/README.md updated (release notes quick link)
-- [ ] docs/ALPHA_TESTING_GUIDE.md updated
-- [ ] docs/ALPHA_KNOWN_ISSUES.md updated (<200 lines, issues first)
-- [ ] docs/ALPHA_FEATURE_GUIDE.md updated
-- [ ] docs/ALPHA_QUICKSTART.md updated
+- [ ] docs/BETA_TESTING_GUIDE.md updated
+- [ ] docs/BETA_KNOWN_ISSUES.md updated (<200 lines, issues first)
+- [ ] docs/BETA_FEATURE_GUIDE.md updated
+- [ ] docs/BETA_QUICKSTART.md updated
 - [ ] docs/ALPHA_AGREEMENT_v2.md updated
 - [ ] docs/operations/alpha-onboarding/email-template.md updated
 
@@ -454,7 +454,7 @@ For each alpha-facing document, verify these content areas are current:
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.7 | 2026-07-02 | Fixed a completeness gap (not content drift): VERSION file + docs/VERSION_NUMBERING.md were never listed anywhere in this runbook, so both silently went unmaintained for multiple releases (VERSION frozen 4 releases behind). Added both explicitly to Version Bump / Documentation Updates / Quick Audit Checklist / Completion Matrix, plus `scripts/check-version-consistency.py` to make the VERSION↔pyproject.toml pairing mechanically checkable instead of eyeballed. |
-| 1.6 | 2026-01-31 | Added ALPHA_KNOWN_ISSUES and ALPHA_FEATURE_GUIDE maintenance guidance, updated Completion Matrix |
+| 1.6 | 2026-01-31 | Added BETA_KNOWN_ISSUES and BETA_FEATURE_GUIDE maintenance guidance, updated Completion Matrix |
 | 1.5 | 2026-01-28 | Added Content Accuracy Audit (beyond version grep), consolidated to single email template, updated Completion Matrix |
 | 1.4 | 2026-01-19 | Added Documentation Audit Step with grep command, added Completion Matrix template |
 | 1.3 | 2026-01-15 | Complete file inventory: marked Alpha docs and templates as MANDATORY, added specific file locations |

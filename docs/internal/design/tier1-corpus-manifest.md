@@ -18,7 +18,7 @@ One row per item Piper may use to answer about itself on every install. A row is
 
 ## Rules from the rulings
 
-- Part (d) is one row for `docs/ALPHA_KNOWN_ISSUES.md`. A fixed limit is deleted from that file, never marked fixed (Arch, 11-13).
+- Part (d) is one row for `docs/BETA_KNOWN_ISSUES.md`. A fixed limit is deleted from that file, never marked fixed (Arch, 11-13).
 - The only list of what Piper offers comes from part (a), generated, never from a hand-written row (Arch, 11-13).
 - Windows (14 days for generated and known-limits rows, 30 for how-it-works rows, 90 for methodology rows) are Docs' first proposals and Lead's check may change them.
 - Nothing here is approved wording until its row's `approved` column is set. CXO passes each row's text (`voice_pass`), and xian's approval is recorded in `approved` (a commit sha, below).
