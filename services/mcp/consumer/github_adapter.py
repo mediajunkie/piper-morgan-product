@@ -56,6 +56,8 @@ from .github_app_grant import REASON_CUTOVER, app_install_url, app_mode, looks_l
 from .github_app_install import (
     DETAIL_APP_INSTALL_LINK_MISSING,
     DETAIL_APP_NOT_INSTALLED,
+    DETAIL_APP_NOT_ON_REPOSITORY,
+    DETAIL_APP_TOO_MANY_REPOSITORIES,
     InstallationReadFailed,
     InstalledRepositories,
     list_installed_repositories,
@@ -111,6 +113,10 @@ def github_degrade_reply(degradation) -> str:
         return GITHUB_APP_NOT_INSTALLED_REPLY
     if detail == DETAIL_APP_INSTALL_LINK_MISSING:
         return GITHUB_APP_INSTALL_LINK_MISSING_REPLY
+    if detail == DETAIL_APP_NOT_ON_REPOSITORY:
+        return GITHUB_APP_NOT_ON_REPOSITORY_REPLY
+    if detail == DETAIL_APP_TOO_MANY_REPOSITORIES:
+        return GITHUB_APP_TOO_MANY_REPOSITORIES_REPLY
     if reason is DegradationReason.STALE_TOKEN:
         if detail == REASON_CUTOVER:
             return GITHUB_CUTOVER_STALE_REPLY
@@ -154,6 +160,23 @@ GITHUB_CONNECTOR_APP_NOT_INSTALLED_REPLY = (
     "repositories yet, so there's nothing for me to read. Install it on the ones you want "
     "in the Piper Morgan app, in Settings under Integrations."
 )
+# #2374 (Lead's draft 2026-11-15, CXO to rule): a repository named in the request that
+# the App isn't installed on. Never a public read of it (Arch, the issue's mechanism).
+# The lines name no repository, so they stay constants picked by ``detail``.
+GITHUB_APP_NOT_ON_REPOSITORY_REPLY = (
+    "The Piper GitHub app isn't installed on that repository, so I can't read it. "
+    "Install it there in Settings, under Integrations."
+)
+GITHUB_CONNECTOR_APP_NOT_ON_REPOSITORY_REPLY = (
+    "The Piper GitHub app isn't installed on that repository, so I can't read it. "
+    "Install it there in the Piper Morgan app, in Settings under Integrations."
+)
+# #2374 (Lead's draft, CXO to rule): the App is installed on more repositories than one
+# read's searches cover. Said plainly, never part of a list as if it were complete.
+GITHUB_APP_TOO_MANY_REPOSITORIES_REPLY = (
+    "The Piper GitHub app is installed on more repositories than I can search at once. "
+    "Ask me about one repository by name."
+)
 
 # #2342 (CXO 2026-11-12 07:19; Arch 07:08): the connector's own lines. A person in the
 # Claude connector reads the MCP tool's text and may never have opened the web app, so
@@ -184,6 +207,10 @@ def github_connector_reply(degradation) -> str:
         return GITHUB_CONNECTOR_APP_NOT_INSTALLED_REPLY
     if detail == DETAIL_APP_INSTALL_LINK_MISSING:
         return GITHUB_APP_INSTALL_LINK_MISSING_REPLY
+    if detail == DETAIL_APP_NOT_ON_REPOSITORY:
+        return GITHUB_CONNECTOR_APP_NOT_ON_REPOSITORY_REPLY
+    if detail == DETAIL_APP_TOO_MANY_REPOSITORIES:
+        return GITHUB_APP_TOO_MANY_REPOSITORIES_REPLY
     if reason is DegradationReason.UNREACHABLE:
         return GITHUB_CONNECTOR_UNREACHABLE_REPLY
     if reason is DegradationReason.STALE_TOKEN:
@@ -237,6 +264,48 @@ def _qualified_search_query(
         if isinstance(value, str) and value.replace('"', "").strip():
             query += f" {key}:{_search_quote(value.strip())}"
     return query
+
+
+# #2374: the installed-repository qualifiers of one search. GitHub accepted 85 ``repo:``
+# qualifiers (2,289 characters) in one issue search on 2026-11-15 (unauthenticated read
+# of public repositories), so one query's qualifiers stay under 2,000 characters. Five
+# queries is the bound for one read; beyond it the read says so.
+_REPO_QUALIFIER_BUDGET = 2000
+_INSTALLED_SEARCH_MAX_QUERIES = 5
+_REPO_NAME_CHARS = frozenset("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.")
+
+
+def _is_repo_full_name(value: str) -> bool:
+    """``owner/name`` in GitHub's own characters, so it can go into a query as it is."""
+    owner, sep, name = value.partition("/")
+    return bool(sep and owner and name) and all(ch in _REPO_NAME_CHARS for ch in owner + name)
+
+
+def _repo_qualifier_chunks(names: List[str]) -> List[str]:
+    """``repo:owner/name`` for every name, packed into strings no longer than the
+    budget. Every name appears exactly once; the order is the listing's."""
+    chunks: List[str] = []
+    current = ""
+    for name in names:
+        qualifier = f"repo:{name}"
+        if current and len(current) + 1 + len(qualifier) > _REPO_QUALIFIER_BUDGET:
+            chunks.append(current)
+            current = qualifier
+        else:
+            current = f"{current} {qualifier}" if current else qualifier
+    if current:
+        chunks.append(current)
+    return chunks
+
+
+def _newest_first(items: List[Any]) -> List[Any]:
+    """Search items by ``created_at``, newest first (the sort every search here asks
+    for). ISO timestamps in one zone sort as text; an item without one goes last."""
+    return sorted(
+        items,
+        key=lambda it: str(it.get("created_at") or "") if isinstance(it, dict) else "",
+        reverse=True,
+    )
 
 
 # Repos (#1327 gap 3): the Settings repo-config dropdown — the user's OWN repos. search_repositories
@@ -750,7 +819,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         query = f"repo:{repository} is:issue is:open" if repository else _MY_OPEN_ISSUES_QUERY
         query = _qualified_search_query(query, milestone=milestone, label=label, state=state)
         return await self._search_via_connector(
-            user_id, tool=_ISSUES_TOOL, query=query, limit=limit
+            user_id, tool=_ISSUES_TOOL, query=query, limit=limit, repository=repository
         )
 
     async def list_open_prs(self, user_id: str, *, limit: int = 50) -> GitHubIssuesResult:
@@ -810,22 +879,77 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         Installed nowhere: the install-step degrade. A failed read: the honest failure
         (GitHub's 401 is the stale path, with the re-read rule; anything else is
         UNREACHABLE). Never an empty list, and never a fall-back to ``user:@me``."""
+        installed = await self._installed_or_degrade(credential)
+        if isinstance(installed, DegradationResponse):
+            return GitHubReposResult(degradation=installed)
+        return GitHubReposResult(repositories=installed.repositories, from_installation=True)
+
+    async def _installed_or_degrade(self, credential):
+        """The installation read for an App grant: the installed repositories (one or
+        more), or the degrade a surface shows instead. Installed nowhere is the install
+        step. A failed read is the honest failure: GitHub's 401 is the stale path, with
+        the re-read rule; anything else is UNREACHABLE. One place, so the repository
+        list (#2342) and the issue and pull-request searches (#2374) can't differ."""
         try:
             installed = await list_installed_repositories(credential.token)
         except InstallationReadFailed as exc:
             if exc.status == 401:
                 if await self._rejected_token_was_replaced(credential):
-                    return GitHubReposResult(
-                        degradation=await self.degrade(DegradationReason.UNREACHABLE)
-                    )
+                    return await self.degrade(DegradationReason.UNREACHABLE)
                 await self._mark_oauth_binding_stale(credential)
-                return GitHubReposResult(
-                    degradation=await self.degrade(DegradationReason.STALE_TOKEN)
-                )
-            return GitHubReposResult(degradation=await self.degrade(DegradationReason.UNREACHABLE))
+                return await self.degrade(DegradationReason.STALE_TOKEN)
+            return await self.degrade(DegradationReason.UNREACHABLE)
         if installed.installed_nowhere:
-            return GitHubReposResult(degradation=await self._install_step_response())
-        return GitHubReposResult(repositories=installed.repositories, from_installation=True)
+            return await self._install_step_response()
+        return installed
+
+    async def _installed_search_queries(self, credential, query: str, repository: Optional[str]):
+        """#2374 (Arch 2026-11-15): on an App grant, the queries that cover ``query``
+        over the installed repositories only, or the degrade to show instead. The
+        installation read comes first, before any search.
+
+        A named ``repository``: the query as it is when the App is installed on it, else
+        the "not installed on that repository" answer (never a public read). Otherwise
+        ``repo:`` qualifiers for every installed repository, split across as many
+        queries as their length needs; the sets are disjoint, so the counts add up to
+        GitHub's own. More queries than the bound is said plainly, never cut short."""
+        installed = await self._installed_or_degrade(credential)
+        if isinstance(installed, DegradationResponse):
+            return installed
+        names = [str(r.get("full_name") or "") for r in installed.repositories]
+        if not all(_is_repo_full_name(n) for n in names):
+            # A listing GitHub would not send. Dropping the entry would undercount.
+            logger.warning("GitHub installation listing held a malformed repository name")
+            return await self.degrade(DegradationReason.UNREACHABLE)
+        if repository:
+            if repository.casefold() in {n.casefold() for n in names}:
+                return [query]
+            return await self._not_on_repository_response()
+        chunks = _repo_qualifier_chunks(names)
+        if len(chunks) > _INSTALLED_SEARCH_MAX_QUERIES:
+            degraded = await self.degrade(DegradationReason.REPO_UNRESOLVED)
+            return dataclasses.replace(
+                degraded,
+                user_message=GITHUB_APP_TOO_MANY_REPOSITORIES_REPLY,
+                detail=DETAIL_APP_TOO_MANY_REPOSITORIES,
+            )
+        return [f"{query} {chunk}" for chunk in chunks]
+
+    async def _not_on_repository_response(self) -> DegradationResponse:
+        """#2374: the named repository is outside the installed set. With no install
+        link to give, the existing "on our side" state (CXO 2026-11-12 07:30)."""
+        degraded = await self.degrade(DegradationReason.REPO_UNRESOLVED)
+        if app_install_url() is None:
+            return dataclasses.replace(
+                degraded,
+                user_message=GITHUB_APP_INSTALL_LINK_MISSING_REPLY,
+                detail=DETAIL_APP_INSTALL_LINK_MISSING,
+            )
+        return dataclasses.replace(
+            degraded,
+            user_message=GITHUB_APP_NOT_ON_REPOSITORY_REPLY,
+            detail=DETAIL_APP_NOT_ON_REPOSITORY,
+        )
 
     @staticmethod
     def _parse_repo_search(payload: Optional[str], *, limit: int) -> List[Dict[str, Any]]:
@@ -1555,7 +1679,13 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         )
 
     async def _search_via_connector(
-        self, user_id: str, *, tool: str, query: str, limit: int
+        self,
+        user_id: str,
+        *,
+        tool: str,
+        query: str,
+        limit: int,
+        repository: Optional[str] = None,
     ) -> GitHubIssuesResult:
         """Binding-aware GitHub search over the OAuth connector → (item page + true total), or
         an honest degrade — the shared rail behind ``list_open_issues`` / ``list_open_prs``.
@@ -1564,10 +1694,24 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         (+ connect link); non-bound → its stored reason; bound-but-server-unreachable →
         UNREACHABLE. Mirrors ``resolve()``'s rail. (Rule-of-three dedup of the per-connector
         rail into a shared mixin is tracked as #1323.)
+
+        #2374: on a GitHub App grant the search covers the installed repositories only,
+        the same source as the repository list (Arch 2026-11-12 08:02). A user-wide
+        search would also return public repositories the person never gave the App.
+        ``repository`` is the one the caller named, if any. The personal-token leg and
+        classic grants search as before.
         """
         binding = await self.resolve_credential(user_id)  # #1965 (b): the one resolver
         if isinstance(binding, DegradationResponse):
             return GitHubIssuesResult(degradation=binding)
+        queries = [query]
+        if isinstance(binding, GitHubCredential) and binding.leg == "oauth" and binding.app_grant:
+            scoped = await self._installed_search_queries(binding, query, repository)
+            if isinstance(scoped, DegradationResponse):
+                return GitHubIssuesResult(degradation=scoped)
+            queries = scoped
+        items: List[Dict[str, Any]] = []
+        total: Optional[int] = 0
         try:
             async with self._mcp_client_ctx(binding) as client:
                 # #2005: github-mcp-server's search tools page at 30 by default; ask for the
@@ -1575,32 +1719,30 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 # returns 50, not 30. total_count stays the authoritative count either way.
                 # #2186: newest first, the form the module's two other search calls
                 # use, so a page (and a count slice of it) is the most recent items.
-                result = await client.call_tool(
-                    tool,
-                    {
-                        "query": query,
-                        "perPage": max(1, min(limit, 100)),
-                        "sort": _SEARCH_SORT,
-                        "order": _SEARCH_ORDER,
-                    },
-                )
-                items, total = self._parse_issue_search(self._tool_text(result), limit=limit)
+                for one in queries:
+                    result = await client.call_tool(
+                        tool,
+                        {
+                            "query": one,
+                            "perPage": max(1, min(limit, 100)),
+                            "sort": _SEARCH_SORT,
+                            "order": _SEARCH_ORDER,
+                        },
+                    )
+                    page, count = self._parse_issue_search(self._tool_text(result), limit=limit)
+                    items.extend(page)
+                    total = None if total is None or count is None else total + count
         except Exception as exc:
             logger.warning(
                 "GitHub MCP search failed (server unreachable/unprovisioned)", exc_info=True
             )
             return GitHubIssuesResult(degradation=await self._degrade_for_exc(binding, exc))
-        if not items and not total:
-            # #2342 requirement 2 (Arch 2026-11-12 07:48, PA's finding): for a person who
-            # authorized the GitHub App and installed it on no repository, an empty
-            # result is not "no issues" or "no pull requests". It is the install step's
-            # named state, on every surface (the connector's GitHub resource reads
-            # through here and never resolves a repository). One or more installed: the
-            # empty result is true. Installation read failed: the empty result stands;
-            # one unverified claim is not swapped for another.
-            install_step = await self._install_step_degrade(user_id, credential=binding)
-            if install_step is not None:
-                return GitHubIssuesResult(degradation=install_step)
+        if len(queries) > 1:
+            # Each page is newest first; so is the merged page, cut to the same limit.
+            items = _newest_first(items)[:limit]
+        # #2374: an empty result here is true. On an App grant the installation read
+        # already answered (installed nowhere never reaches a search); on the other legs
+        # there is no install step.
         return GitHubIssuesResult(issues=items, total=total)
 
     @staticmethod
