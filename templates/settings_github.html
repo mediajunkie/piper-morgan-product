@@ -443,8 +443,12 @@
           </button>
         </div>
 
+        {# #2376 (Arch 2026-11-15): on an account connected through the GitHub App this
+           section is hidden, and a token already on file is shown as stored with Remove
+           only (the section after it). applyTokenFormState() decides. #}
+        <div id="pat-form-section">
         <hr style="border: none; border-top: 1px solid var(--border, #e1e4e8); margin: 1rem 0;" />
-        <p class="form-hint" style="margin-bottom: 0.5rem;">Or connect with a personal access token:</p>
+        <p class="form-hint" id="pat-form-hint" style="margin-bottom: 0.5rem;">Or connect with a personal access token:</p>
 
         <div class="form-group">
           <label for="token">Personal Access Token</label>
@@ -462,6 +466,15 @@
             </a>
             with <code>repo</code> scope for full repository access.
           </p>
+        </div>
+        </div>
+
+        <div id="pat-stored-section" style="display: none;">
+          <hr style="border: none; border-top: 1px solid var(--border, #e1e4e8); margin: 1rem 0;" />
+          <p class="form-hint" id="pat-stored-line"></p>
+          <button class="btn btn-secondary" id="pat-remove-btn" onclick="removeGitHubToken()">
+            Remove token
+          </button>
         </div>
 
         <div class="button-group">
@@ -518,9 +531,78 @@
     <script>
       // Load current status on page load
       document.addEventListener('DOMContentLoaded', () => {
+        const tokenEl = document.getElementById('token');
+        if (tokenEl) tokenEl.addEventListener('input', syncSaveButton);
+        syncSaveButton();
         loadGitHubStatus();
         checkGitHubOAuthStatus();
       });
+
+      // #2376: the personal-token form's state comes from two reads. `connected` is the
+      // page's own status (configured and valid); `oauth` is oauth-status, which says
+      // whether the account is connected through the GitHub App and whether a personal
+      // token is on file. Lines: Lead's drafts 2026-11-15, CXO rules them.
+      const PAT_TOKEN_PLACEHOLDER = 'ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+      const PAT_STORED_PLACEHOLDER = '••••••••••••••••••••••••••••••••';
+      const PAT_STORED_LINE =
+        'A personal token is also stored for this account. Piper uses it only if the GitHub app connection stops working.';
+      const PAT_PREFIXES = ['ghp_', 'github_pat_'];
+      let githubConnectedValid = false;
+      let githubOAuthData = null;
+
+      function syncSaveButton() {
+        // CXO 2026-11-15 15:33: the button is disabled while the field is empty.
+        const tokenEl = document.getElementById('token');
+        const saveBtnEl = document.getElementById('save-btn');
+        if (!tokenEl || !saveBtnEl) return;
+        saveBtnEl.disabled = tokenEl.value.trim() === '';
+      }
+
+      function applyTokenFormState() {
+        const formSection = document.getElementById('pat-form-section');
+        const storedSection = document.getElementById('pat-stored-section');
+        const storedLine = document.getElementById('pat-stored-line');
+        const formTitleEl = document.getElementById('form-title');
+        const hintEl = document.getElementById('pat-form-hint');
+        const saveBtnEl = document.getElementById('save-btn');
+        const tokenEl = document.getElementById('token');
+        if (!formSection || !storedSection || !saveBtnEl || !tokenEl) return;
+        const oauth = githubOAuthData || {};
+        const onFile = oauth.pat_on_file === true;
+
+        if (oauth.app_connected) {
+          // Connected through the app: no form to add a token. One already on file is
+          // named, with Remove only.
+          formSection.style.display = 'none';
+          saveBtnEl.style.display = 'none';
+          tokenEl.value = '';
+          if (formTitleEl) formTitleEl.textContent = 'GitHub connection';
+          storedSection.style.display = onFile ? 'block' : 'none';
+          if (storedLine) storedLine.textContent = onFile ? PAT_STORED_LINE : '';
+          return;
+        }
+        formSection.style.display = 'block';
+        saveBtnEl.style.display = '';
+        storedSection.style.display = 'none';
+        if (!githubConnectedValid) {
+          // Not connected, or the connection needs fixing: updateStatusUI's words stand.
+          syncSaveButton();
+          return;
+        }
+        if (onFile) {
+          if (formTitleEl) formTitleEl.textContent = 'Update token';
+          if (hintEl) hintEl.textContent = 'Replace the personal access token on file:';
+          saveBtnEl.textContent = 'Update token';
+          tokenEl.placeholder = PAT_STORED_PLACEHOLDER;
+        } else {
+          // Connected, and no personal token is on file: never dots, never "Update".
+          if (formTitleEl) formTitleEl.textContent = 'Add a personal token (optional)';
+          if (hintEl) hintEl.textContent = 'You can also add a personal access token:';
+          saveBtnEl.textContent = 'Save token';
+          tokenEl.placeholder = PAT_TOKEN_PLACEHOLDER;
+        }
+        syncSaveButton();
+      }
 
       async function loadGitHubStatus() {
         try {
@@ -529,6 +611,7 @@
 
           const data = await response.json();
           updateStatusUI(data);
+          applyTokenFormState();  // #2376: with whatever oauth-status last said
         } catch (error) {
           console.error('Failed to load GitHub status:', error);
           Toast.show('error', 'Error', 'Failed to load connection status');
@@ -549,6 +632,7 @@
 
         // Get repository selection card element (Issue #573)
         const repoCardEl = document.getElementById('repository-selection-card');
+        githubConnectedValid = Boolean(data.configured && data.valid);
 
         if (data.check_failed) {
           // #2151: the check couldn't run. Neither connected nor "Not Connected".
@@ -565,10 +649,11 @@
           iconEl.textContent = '✅';
           titleEl.textContent = 'Connected';
           subtitleEl.textContent = data.username ? `Signed in as @${data.username}` : 'GitHub is connected';
-          formTitleEl.textContent = 'Update Token';
-          saveBtnEl.textContent = 'Update';
+          // #2376: the token form's heading, button and placeholder depend on whether a
+          // personal token is on file and whether the account is connected through the
+          // app. applyTokenFormState() sets them; this branch no longer shows "Update"
+          // and dots on every connected account.
           disconnectBtnEl.style.display = 'block';
-          tokenEl.placeholder = '••••••••••••••••••••••••••••••••';
 
           // Show repository selection card and load repositories (Issue #573)
           repoCardEl.style.display = 'block';
@@ -595,7 +680,7 @@
           formTitleEl.textContent = 'Connect GitHub';
           saveBtnEl.textContent = 'Connect';
           disconnectBtnEl.style.display = 'none';
-          tokenEl.placeholder = 'ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+          tokenEl.placeholder = PAT_TOKEN_PLACEHOLDER;
 
           // Hide repository selection when not connected (Issue #573)
           repoCardEl.style.display = 'none';
@@ -642,6 +727,8 @@
           const resp = await fetch('/api/v1/settings/integrations/github/oauth-status');
           if (!resp.ok) return;
           const data = await resp.json();
+          githubOAuthData = data;
+          applyTokenFormState();  // #2376
           const group = document.getElementById('oauth-connect-group');
           if (group && oauthGroupHtml === null) oauthGroupHtml = group.innerHTML;
           githubOAuthGrant = Boolean(data.connected || data.stale);
@@ -710,8 +797,9 @@
           return;
         }
 
-        // Validate format (classic PAT or fine-grained)
-        if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
+        // Validate format (classic PAT or fine-grained). #2376: the route makes the same
+        // check before any call to GitHub.
+        if (!PAT_PREFIXES.some((prefix) => token.startsWith(prefix))) {
           Toast.show('warning', 'Invalid Format', 'GitHub tokens start with "ghp_" (classic) or "github_pat_" (fine-grained)');
           tokenEl.focus();
           return;
@@ -749,14 +837,41 @@
           console.error('Save failed:', error);
           Toast.show('error', 'Connection Failed', error.message);
         } finally {
-          saveBtnEl.disabled = false;
           saveBtnEl.textContent = originalText;
+          syncSaveButton();  // #2376: disabled again once the field is empty
         }
       }
 
       const DISCONNECT_LINE_OAUTH =
         'Piper will stop reading your GitHub and remove its access from your GitHub account. You can connect again anytime.';
       const DISCONNECT_LINE_PAT = 'Piper will stop reading your GitHub. You can connect again anytime.';
+
+      // #2376 (Arch 2026-11-15): remove the personal token only. The app connection stays.
+      async function removeGitHubToken() {
+        const ok = await Dialog.confirm({
+          title: 'Remove the personal token?',
+          message: 'Your GitHub app connection stays as it is.',
+          confirmText: 'Remove token'
+        });
+        if (!ok) return;
+        const btn = document.getElementById('pat-remove-btn');
+        btn.disabled = true;
+        try {
+          const response = await fetch('/api/v1/settings/integrations/github/token/remove', {
+            method: 'POST'
+          });
+          const data = response.ok ? await response.json() : { success: false };
+          if (!data.success) {
+            throw new Error(data.message || "I couldn't remove the personal token. Try again.");
+          }
+          Toast.show('success', 'Removed', data.message);
+          await loadGitHubStatus();
+        } catch (error) {
+          Toast.show('error', 'Not removed', error.message);
+        } finally {
+          btn.disabled = false;
+        }
+      }
 
       async function disconnectGitHub() {
         const ok = await Dialog.confirm({
