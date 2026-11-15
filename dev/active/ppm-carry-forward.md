@@ -672,3 +672,5 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Update 11-15 08:07:** 2370, 2372, 2373 on main `a62240fe78`, not served (Lead 01M7FYYN77). 2373 awaits Arch validation; 2372 awaits the CI PASSED quote.
 - **Update 11-15 09:13:** beta serves `ddd3d49240` (09:08, no migration): 2370, 2372, 2373 served and closed. Production 302, map v148. Gap order leaves only 2345 (behind #2342 rows 2–3).
 - **Update 11-15 12:34:** carried item "PUB header still reads Public Beta gate" CLOSED: section header already PDR-009 since 11-13; summary table row 1 and Open column refreshed (sum 302).
+- **Update 11-15 14:55:** xian's GitHub reconnect succeeded on beta about 14:52 (Exec 01M7GPK13N). Install on a test repo next, then PA reads #2342 rows 2–3. That unblocks #2345 and moves the lift-readiness memo closer.
+- **Update 11-15 15:18:** #2374 (App-grant issue/PR searches use the installed set) placed in C beside #2345; Lead builds today on a held branch (PPM 01M7GR0MX8); ships with a promotion plus xian's MCP deploy. #2342 row 2 readable now on a repository surface (Arch). Production 303, map v149.
