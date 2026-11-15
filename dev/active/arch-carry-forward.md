@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-13 15:29 PST (WORK)
+last_updated: 2026-11-14 21:27 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -25,6 +25,8 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
 
 ## IN FLIGHT — current state only
+
+**11-14 state (21:27, STOP):** main 12/12 green all day; inbox empty. Rulings today are all in decisions.log (#2297/#2301 attach and pick lines, #2271, #2294, #2327, #2372, #2370, promotion grant form). **The promotion of staging 79f35f1089** (migration `v2327floored`) is GRANTED on Arch's side, waiting on xian's migration yes (Exec card v992). After it: xian sets `users.ops_reader` on web-seed-1386 (Settings, Account flags); Lead lands #2372 (5a0f87c7d5, CI must show `test_create_tables_from_scratch` PASSED) and #2370 (111f747922, redis==5.0.8, pip line in the landing mail) and builds #2373 (bound the counter write about 2 s or detach it, matching my follow-up note). The next promotion with a merge head closes #2363 row 3 (Lead quotes the parent count). #2345 goes to a fresh Lead session after the redis upgrade. The grant covers a later staging sha only if 79f35f1089 is an ancestor and the diff touches only dev/, mailboxes/ or docs/ (no alembic/). Redis down means every beta request gets 503 (usage cap middleware); HOST's rotation record and xian's card say so.
 
 **11-13 state (21:27, STOP):** main 12/12 green; inbox empty. #2369 CLOSED. #2363 validated at 7062d35d70 (row 3 = next real promotion, needs Arch's word). #2358: all seven procedures CONFORM to rulings 18:30/18:43/19:08/19:14/19:19 and are voice-passed; six at ce46ba0542 are on xian's card (Exec rollup v988). The build waits on PPM scheduling, then Lead. #2364 step 1: b16b83dcef pushed to origin `lead/2364-step1` at 21:34 (Lead 01M7C8THV5…); validate the post-rebase sha Lead mails before the gate. Waits on xian: beta log read, #2364 key/provider read, one-key question, staging read, 1386 profile sign-in, procedure approval.
 
