@@ -1207,60 +1207,61 @@ async def _wizard_system_checks() -> bool:
     return True
 
 
+MIGRATION_TIMEOUT_SECONDS = 600
+
+
+def _run_migrations(project_root: str) -> "subprocess.CompletedProcess[str]":
+    """``alembic upgrade head`` with this interpreter (so it does not depend on an
+    ``alembic`` executable being on PATH). One seam for the wizard and its tests."""
+    return subprocess.run(
+        [sys.executable, "-m", "alembic", "upgrade", "head"],
+        capture_output=True,
+        text=True,
+        timeout=MIGRATION_TIMEOUT_SECONDS,
+        cwd=project_root,
+    )
+
+
 async def _wizard_database_setup() -> bool:
-    """Initialize database schema and run migrations"""
+    """Build or update the database schema with alembic, and only alembic.
+
+    #2372 (Arch 2026-11-14): this used to run ``db.create_tables()``
+    (``Base.metadata.create_all``) on an empty database and THEN
+    ``alembic upgrade head``. The first migrations then met tables that already
+    existed, the failure was printed as a warning, setup continued, and the
+    database was left without an ``alembic_version`` stamp, so every later
+    ``alembic upgrade head`` (the self-host guide's update step) failed too. Now
+    the wizard takes the one path the guide and CI use. A migration failure STOPS
+    setup with the error: a half-built schema is not something to continue on.
+    """
     print("\n" + "=" * 50)
     print("📊 Database Schema")
     print("=" * 50)
-    print("   Checking for existing tables...")
+    print("   Running database migrations (this builds the tables on a new database)...")
 
-    from services.database.connection import db
-    from services.database.session_factory import AsyncSessionFactory
-
-    # Check if tables exist
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     try:
-        async with AsyncSessionFactory.session_scope_fresh() as session:
-            from sqlalchemy import text
-
-            result = await session.execute(text("SELECT 1 FROM users LIMIT 1"))
-        print("   ✓ Database tables already exist")
-    except Exception:
-        # Tables don't exist, create them
-        print("   Creating database tables...")
-        await db.initialize()
-        await db.create_tables()
-        print("   ✓ Database tables created")
-
-    # Run database migrations
-    print("   Running database migrations...")
-    try:
-        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        migration_result = subprocess.run(
-            ["alembic", "upgrade", "head"],
-            capture_output=True,
-            text=True,
-            timeout=30,
-            cwd=project_root,
-        )
-        if migration_result.returncode == 0:
-            print("   ✓ Database schema up to date")
-        else:
-            print(f"   ⚠️  Migration had issues:")
-            if migration_result.stderr:
-                print(f"      {migration_result.stderr.strip()}")
-            if migration_result.stdout:
-                print(f"      {migration_result.stdout.strip()}")
-            print("   Continuing setup...")
+        migration_result = _run_migrations(project_root)
     except subprocess.TimeoutExpired:
-        print("   ⚠️  Migration timeout (taking longer than expected)")
-        print("   Continuing setup...")
-    except FileNotFoundError:
-        print("   ⚠️  Alembic not found in PATH")
-        print("   Please run 'alembic upgrade head' manually after setup")
+        print(f"   ❌ Migrations did not finish in {MIGRATION_TIMEOUT_SECONDS} seconds.")
+        print("   Setup has stopped. Check that PostgreSQL is running, then run the wizard again.")
+        return False
     except Exception as e:
-        print(f"   ⚠️  Unexpected error running migrations: {e}")
-        print("   Please run 'alembic upgrade head' manually after setup")
+        print(f"   ❌ Could not run the migrations: {e}")
+        print("   Setup has stopped. Nothing else was changed.")
+        return False
 
+    if migration_result.returncode != 0:
+        print("   ❌ The database migrations failed. Setup has stopped.")
+        if migration_result.stderr:
+            print(f"      {migration_result.stderr.strip()}")
+        if migration_result.stdout:
+            print(f"      {migration_result.stdout.strip()}")
+        print("   Fix the error above, then run the wizard again. It is safe to re-run:")
+        print("   a migration that already ran is not run twice.")
+        return False
+
+    print("   ✓ Database schema up to date")
     return True
 
 
