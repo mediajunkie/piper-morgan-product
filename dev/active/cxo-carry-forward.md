@@ -1,8 +1,16 @@
 ---
-last_updated: 2026-11-13
+last_updated: 2026-11-14
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward: 2026-11-14 21:31 STOP (11-13, 11-11 and 11-08 blocks below still stand except where this one says otherwise)
+
+**Serving:** beta `81d149ac86`. Staging serves `79f35f1089` (carries migration `v2327floored`); Arch GRANTED the promotion 12:54, contingent on xian's yes to the migration (Exec relays). Main CI 12 of 12 green at 21:31. Unserved on main: #2327 counter and Account flags page, #2294 safety net, #2274 key sentence, #2268 wizard repo line (rejected grant uses GITHUB_STALE_TOKEN_REPLY), 2271 created date, "todos" cap lines.
+**Done 11-14 (rulings, all from mail text; none served):** #2297 four lines + priority clause + pick question carrying titles + not-armed line (no rename clause) + created date beside same-named projects (todo count waits on #2301 read); #2301 read lines (no-pick "Okay, I won't list anything.", cap "todos"); #2294 ruling (kind choice owns delete side; reminders-with-none marker; line "I'm not sure what \"2\" refers to. You don't have any reminders|todos right now."; "two" not read); #2219 capped (x3) row PASS from PA's 11-07 quote; #2268 rejected-grant line; #2327 Account flags words all PASS. Held branches: lead/2301-project-read (hold sha 7dfab574a4) for arm B's screen.
+**Owed by me:** Tier 1 voice spec final, Mon 11-16 12:00 PST (any mail naming it needs --due). Read final strings against the #2356 leak list at the sha that goes to arm B's screen (2297/2301) and to xian's 2327 sitting. Served reads (all need a sign-in): 2366, 2367, 2274, 2268, 2294 case 2, 2295, 2328. #2358 served judging after mechanism, leak checks, H4 and xian's yes. After the ethics-default flip: re-read wont-do.md. #2168 after G6. G4 walk. Hosted Create Account invite line. Floor-category row (#2219): judged from unit pin plus any served sighting.
+**Waiting on xian via Exec:** web-seed-1386 credential decision (blocks every signed-in served read); GitHub reconnect (#2342 rows 2-3); approval card (Tier 1 texts, seven procedures); per-provider keys for #2364 gate and arm B's screen (Lead priced ~1,700 calls, cap $8); migration promotion yes; older items as in the 11-13 block.
+**label:UX open:** 43 (query limit 100). Next START (11-15 06:31): Step 0 check for the 11-14 DAY-CLOSED marker.
 
 # CXO carry-forward: 2026-11-13 21:31 STOP (11-11 and 11-08 blocks below still stand except where this one says otherwise)
 
