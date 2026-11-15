@@ -156,9 +156,9 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 
 ### 🧪 Alpha Testers
 
-- **[Alpha Quickstart](BETA_QUICKSTART.md)** - Quick 2-5 minute setup guide
-- **[Alpha Testing Guide](BETA_TESTING_GUIDE.md)** - Comprehensive testing guide
-- **[Alpha Known Issues](BETA_KNOWN_ISSUES.md)** - Current bugs and feature status
+- **[Beta Quickstart](BETA_QUICKSTART.md)** - Quick 2-5 minute setup guide
+- **[Beta Testing Guide](BETA_TESTING_GUIDE.md)** - Comprehensive testing guide
+- **[Beta Known Issues](BETA_KNOWN_ISSUES.md)** - Current bugs and feature status
 - **[Alpha Agreement](ALPHA_AGREEMENT_v2.md)** - Legal terms and conditions
 - **[Email Templates](operations/alpha-onboarding/email-template.md)** - Internal onboarding communications
 - **[Collaborator Profile Template](operations/alpha-onboarding/human-collaborator-profile-template.md)** - Template for creating new collaborator profiles

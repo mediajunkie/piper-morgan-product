@@ -8,7 +8,7 @@
 > [alpha.pipermorgan.ai](https://alpha.pipermorgan.ai)** — no local install needed). Newer
 > capabilities not yet covered here include the hosted setup, GitHub connector via OAuth, morning
 > standup, and the Radar view. For current setup use the
-> **[Alpha Quick Start](BETA_QUICKSTART.md)**; for what changed each release, see
+> **[Beta Quick Start](BETA_QUICKSTART.md)**; for what changed each release, see
 > **[Release Notes](releases/)**. A v0.8.11 refresh of this guide is in progress (2026-08-13).
 
 A guide to what Piper Morgan can do in the current alpha release.
