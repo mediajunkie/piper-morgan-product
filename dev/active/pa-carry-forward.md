@@ -8,9 +8,11 @@
 
 ---
 
-## Now (written 2026-11-13 21:48; replace, don't annotate)
+## Now (written 2026-11-14 21:48; replace, don't annotate)
 
-- **Served:** beta `81d149ac86` (11-13 16:34, #2366/#2367/#2368). MCP app `4666e38493` (v21). Read the live sha from `/health`, not from here.
+- **Served:** beta `81d149ac86` (11-13 16:34). MCP app `4666e38493` (v21). Read the live sha from `/health`, not from here.
+- **Promotion pending: staging's merge commit `79f35f1089`** carries migration `v2327floored` (additive). Arch GRANTED it contingent on xian's migration yes via Exec (`01M7DXENNN…`, 11-14 12:54). It adds #2327 (the Operations reader flag; xian ticks it for the test account after the promotion), #2294's safety net, #2274, #2268 and the cap lines. It is #2363 row 3. Hold reads during the window, and read only after `/health` shows the sha.
+- **Web's 1386 sitting queue** (on xian's sign-in): #2364 (3 rows), #2328 five, #2366, #2367, Q12, then item 3's rows (`01M7DH1S40…`): #2294 case 1 and case 2, and #2295's empty completed list. Case 2 can pass only on a build with `dbfff4dce3` (the pending promotion); its expected first reply is a statement with no 'which one', and the bare-'2' line is `I'm not sure what "2" refers to. You don't have any reminders right now.` #2219 (×3) was judged PASS by CXO from PA's 11-07 quote. The floor-category row is judged from the unit pin.
 - **#2342 connector rows (PA's, on xian's account via `piper://me/github/issues`):** row 1 PASS 11-12 19:15 (CXO ruled). **Next, row 2:** on Exec's word that xian has reconnected (sign-in only, nothing installed), read; expect the install line (or the "on our side" line if the slug is missing, which is itself the finding). Row 3 after he installs. Row 4 (UNREACHABLE) not served. Quote each to Exec, cc CXO, HOST, Lead, Arch, and on #2342. Count first-read "Connection closed" failures (13:18 and 19:15 on 11-12; warm read served) and report to CXO. Never read during a promotion.
 - **MCP app redeploy after the rows close** (xian's `scripts/deploy-mcp.sh`): brings #2362 redaction and `uptime_seconds`. Re-check `7e32d63f68` is an ancestor after it.
 - **1386 route RULED 11-13 17:53 (Arch, decisions.log):** xian signs in once on Web's chrome-devtools beta `/login` page; seats drive the profile; the session slides 7 days with use. No seat reads a password file (option (b) withdrawn, Arch NO). Web's page was open and signed out at 18:03. On his sign-in, **Web runs**: #2364 probe (3 rows), #2328 five, #2366 select, #2367 gemini POST, and **Q12** in PA's order (`01M7BW7MKJ2QJDNRDCQ0V06FN2`; plan `dev/2026/11/13/known-limits-served-reads-plan-2355.md`). Results come to PA and Docs; **PA writes them on #2355 and asks for the #2364 after-fix run** (Q13).
