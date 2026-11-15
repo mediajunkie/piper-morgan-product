@@ -1,40 +1,42 @@
 # Exec carry-forward
 
-**Rewritten 2026-11-13 22:01 PST at STOP** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/13/2026-11-13-0519-exec-code-log.md` (closed).
+**Rewritten 2026-11-14 22:03 PST at STOP** (Opus 5.5). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/14/2026-11-14-0601-exec-code-log.md` (closed).
 
 **STATE: LIVE on LaunchAgent** `com.xian.pm-exec-cycle`, firing at :01 on hours 6, 10, 14, 18 and 22. Empty CronList is normal. Liveness is Pard's.
 
-**Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake. Last check 22:01 Fri 11-13, 0 unacked. Ack only explicit IDs just read; never loop over a fresh `inbox --ids`. Acks can be slow under fetch contention; run long batches in the background.
+**Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake. Last check 22:01 Sat 11-14, 0 unacked. Ack only explicit IDs just read; never loop over a fresh `inbox --ids`.
 
 ## Rollup
-v988 (artifact version 1003), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp. Content current as of 19:37 Fri 11-13; at START re-check the header order against mail.
+v994 (artifact version 1009), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp. At START re-check the header order against mail; "Saturday's fixes" wording on the top card is now day-relative-safe.
 
-## Where things stand (end of 11-13)
-- **Main** 12/12 green at 22:01. Beta serves `81d149ac86` (promoted 16:34: #2366, #2367, #2368). MCP app on `4666e38493` (behind #2362); offer to let Lead deploy MCP under the standing grant is unanswered.
-- **#2363** on main `7062d35d70`, Arch validated; row 3 closes on the next real promotion. **#2369** on main `70f926747b`, closes on Code Quality green.
-- **#2364** (ethics substring fast path): xian approved spend and fix. Lead's step 1 held on `lead/2364-step1` `b16b83dcef`. Run needs the capped Anthropic key; OpenAI needs the Postgres provider count (and xian's known-limits yes) or a second capped key (Arch's 13:55 rule).
-- **Lead's week of 11-16 order (PPM 01M7BVV9…, Lead accepted):** Path B (#2297, #2301); #2364 run the day the key exists; todo replies (#2328, #2219, #2295, #2294); named set; #2333.
-- **Ship #069:** theme "Off-Limits by Default" (Comms cc Docs). Week review `7D6Yxe4rdXSpaPmd25CzQ1` v2: "2 met, 3 substantial progress". Goal-3 close-out items (six built ones to sprint 2) unanswered by xian. pubDate Wed 11-18.
-- **Self-knowledge card ("Your word"), 13 texts** with commits listed on the rollup; recommended order: first seven now, six #2358 procedures (`ce46ba0542`) on a quieter day. I offered to take procedure approvals with CXO's pass as the bar; no answer. On his answer, quote it on #2354/#2355/#2358 with commits.
+## Where things stand (end of 11-14)
+- **Main** 12/12 green at 22:01. Beta serves `81d149ac86` (unchanged since 11-13 16:34). Every other seat closed its day.
+- **Top card: promotion with migration `v2327floored`** (Lead's ask 01M7DX6A…, Arch's grant 01M7DXEN…, contingent on xian's yes). Grant covers staging at dispatch if `79f35f1089` is an ancestor and the diff above it is only dev/, docs/, mailboxes/ with no alembic/ change (Arch 01M7DYNJ…). #2363 row 3 needs a merge-commit head. No yes on 11-14; window 07:00–21:00 PT. After the serve: xian ticks "Operations reader" on the test account (Settings → Account flags); Arch wants the beta /health sha, the promote run's "Tests concluded success on <anc>" line, and that the migration ran, quoted.
+- **Held until after the promotion:** #2372 (Arch validated `5a0f87c7d5`), #2373 (counter write timeout, PPM section Q, not blocking). Then #2370 (redis-py upgrade after CIO's read), #2345 (held until #2342 rows 2–3 are read). #2335 rotation after #2342.
+- **Path B (#2297/#2301)** held on `lead/2301-project-read` `7dfab574a4` for the arm B router screen (~1,700 calls, est. $2–5, hard stop $8); needs the capped Anthropic key.
+- **#2364** (ethics substring fast path): spend approved; needs the capped Anthropic key, and for OpenAI the Postgres provider count or a second capped key.
+- **Blog:** "Which Agent Did It?" published; Medium + LinkedIn owed by xian's hand (on rollup). Narrative trial adopted (arcs about taking the product into beta; "The Wall" Tue 11-17 as bridge; cadence and weekdays still a leaning). Sun 11-15 "No New Skills This Time" drafted. Comms owns Ship #069 (pubDate Wed 11-18); goal-3 close-outs unanswered.
+- **Self-knowledge card, 13 texts:** first seven now, six #2358 procedures (`ce46ba0542`) later; my offer to take procedure approvals with CXO's pass as the bar is unanswered.
 
-## Waiting on xian, in order (one at a time; he said "Let's continue through one thing at a time in order.")
-1. **Reconnect:** GitHub said "redirect_uri is not associated". Callback list is correct (his screenshot). Asked: does the App's Client ID start `Iv23` and end `tj64` (what beta sent), and does the redirect_uri end `github%2Fcallback`? If IDs differ, beta's App client ID and secret get reset in Terminal (his job; I bring steps). Then #2282 step 5 (redirect_uri names beta on GitHub and Calendar Connect, and /setup calendar step; don't finish).
-2. **Capped Anthropic testing key** via `scripts/local_key_setup.py`; tell me "done" plus the cap. Also: same key for rule-7 screens (Path B, #2186, #2184) and H4?
-3. **1386 sign-in** once in Web's chrome-devtools page on beta /login; Web then runs #2364 rows, #2328 five, #2366/#2367 reads, PA's Q12 rows.
-4. **Provider count** Postgres read, or a second capped OpenAI key; plus Arch's known-limits row if OpenAI is 0.
-5. **Log read** for #2362/#2350 (grep on the rollup).
-6. **Clock rule yes** (CIO/HOST): needs one hook line from xian or Pard.
-Later: Arch's five-query staging read; `fly storage list`; #2335 Redis rotation; #2157 drill; self-hoster connectors; self-host invite second look; Console spend screenshots 11-06..11-12.
+## Waiting on xian, in order (one at a time)
+0. Promotion yes/no, then the flag tick.
+1. Reconnect: does the App's Client ID start `Iv23` and end `tj64`? Then #2282 step 5.
+2. Capped Anthropic testing key via `scripts/local_key_setup.py`; "done" plus the cap; may it serve rule-7 screens (arm B, $8 cap) and H4?
+3. Sign in once as web-seed-1386 in Web's open beta /login page (also the first counter read).
+4. #2364 provider count or a second capped OpenAI key, plus Arch's known-limits row if OpenAI is 0.
+5. Log read for #2362/#2350 (grep on the rollup).
+6. Clock rule yes; needs one hook line from xian or Pard.
+Later: Arch's five-query staging read; `fly storage list`; #2335 rotation; #2157 drill; self-hoster connectors; self-host invite second look; Console spend screenshots 11-06..11-12; Ship #069 goal-3 close-outs.
 
 ## Reminders owed to xian
-- flyctl upgrade Mon 11-16. Docs' self-host guide run Mon 11-16 (needs a real provider key). CXO voice spec Mon 11-16 12:00. Ship #069 pubDate Wed 11-18. Thanksgiving week Mon 11-23. Vercel downgrade (#182).
+- flyctl upgrade Mon 11-16. Docs' self-host guide run Mon 11-16. CXO voice spec Mon 11-16 12:00. Ship #069 pubDate Wed 11-18. Thanksgiving week Mon 11-23. Vercel downgrade (#182).
 
 ## Mine
 - Timestamps only from a `date` call; write the minute.
-- Review slot every START. Calendar check every fire. `scripts/aging-standing-items.sh exec` at START.
+- Review slot every START (Docs' 11-14 omnibus is due). Calendar check every fire. `scripts/aging-standing-items.sh exec` at START.
 - Relay xian's rulings the same hour, verbatim.
 - Close the log with `<!-- DAY-CLOSED: YYYY-MM-DD -->` as its last line.
-- Keychain off-limits without xian's permission. Secrets stay in his password manager. Client ID masked only.
+- Keychain off-limits without xian's permission. Secrets stay in his password manager. Client ID masked only. No seat runs `fly`.
 
 ## Owed rows (owed-scan)
 - key: 1715-review. Filed: 2026-10-31. #1715 closed (CIO 11-06); walk on xian's talk list only if he wants it.
