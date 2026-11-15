@@ -83,9 +83,9 @@ Great — saw you're in! A few pointers for the first real session:
 - Connect GitHub under Settings → Integrations if you want issue features
 
 **THE DOCS** (attached / linked)
-- ALPHA_QUICKSTART.md — the 2-minute version of everything above
-- ALPHA_TESTING_GUIDE.md — test walks for this release
-- ALPHA_KNOWN_ISSUES.md — don't waste time on what we already know
+- BETA_QUICKSTART.md — the 2-minute version of everything above
+- BETA_TESTING_GUIDE.md — test walks for this release
+- BETA_KNOWN_ISSUES.md — don't waste time on what we already know
 
 Looking forward to your feedback — you're helping shape the future of AI-assisted PM
 work.
@@ -127,7 +127,7 @@ Before sending:
 upfront.
 
 **Documentation References**: always reference official docs by filename
-(`ALPHA_TESTING_GUIDE.md`), and versions by number
+(`BETA_TESTING_GUIDE.md`), and versions by number
 (0.9.0.0, not "latest").
 
 **Support Commitment**: only promise what you can deliver. Small cohort is what makes
@@ -137,8 +137,8 @@ close support possible.
 
 ## See Also
 
-- `../../ALPHA_QUICKSTART.md` — what the tester's first ten minutes look like
-- `../../ALPHA_TESTING_GUIDE.md` — what testers receive for depth
+- `../../BETA_QUICKSTART.md` — what the tester's first ten minutes look like
+- `../../BETA_TESTING_GUIDE.md` — what testers receive for depth
 - `../../VERSION_NUMBERING.md` — version scheme documentation
 
 ---

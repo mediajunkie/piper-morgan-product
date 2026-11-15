@@ -1,6 +1,6 @@
 # Known limits
 
-**Status: DRAFT 2026-11-13.** These are limits of what Piper offers today, written the way Piper would say them. CXO has passed the wording of the rows below, and nobody has checked each limit on a served build yet, so this page is not yet used as Piper's own source. The tester page [ALPHA_KNOWN_ISSUES.md](./ALPHA_KNOWN_ISSUES.md) keeps the tester-only items and the release history.
+**Status: DRAFT 2026-11-13.** These are limits of what Piper offers today, written the way Piper would say them. CXO has passed the wording of the rows below, and nobody has checked each limit on a served build yet, so this page is not yet used as Piper's own source. The tester page [BETA_KNOWN_ISSUES.md](./BETA_KNOWN_ISSUES.md) keeps the tester-only items and the release history.
 
 ## Chat and data
 
