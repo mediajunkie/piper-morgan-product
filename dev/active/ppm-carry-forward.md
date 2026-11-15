@@ -625,7 +625,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **xian's rule, 11-11 11:12:** no seat reads his login keychain without permission; `PIPER_CREDENTIAL_STORE=db`.
 - **Still carried:** #2242's last row; #2235; #1680; PDR-102 C1–C8 checks on document-touching placements. Sprint field: PPM may set a value matching the plan section on another seat's ask.
 
-## Now (rewritten at the 11-13 21:33 STOP; carry into Sat 11-14)
+## Superseded Now block (11-13 21:33 STOP; replaced 11-14 21:34)
 
 - **Invite hold, PDR-008.** Re-verified 21:36 11-13 with `gh issue view`: #2261, #2282 and #2342 open.
   - #2342: row 1 PASS. Next: xian reconnects without installing, PA reads row 2, xian installs, PA reads row 3; then the refresh row.
@@ -651,3 +651,20 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Mail:** read v3 and `python3 scripts/mail4.py inbox --role ppm` every check; send by v4.
 - **xian's rule, 11-11 11:12:** no seat reads his login keychain without permission; `PIPER_CREDENTIAL_STORE=db`.
 - **Still carried:** #2242's last row; #2235; #1680; PDR-102 C1–C8 checks on document-touching placements; plan's PUB header still reads "Public Beta gate" (rework to G-rows at the next map redo).
+
+## Now (rewritten at the 11-14 21:33 STOP; carry into Sun 11-15)
+
+- **Invite hold, PDR-008.** Re-verified at 21:34 11-14 with `gh issue view`: #2261, #2282 and #2342 open. #2342: row 1 PASS; rows 2–3 wait on xian reconnecting (PA reads). Lift-readiness memo to Exec waits on #2342 rows 2–3, #2261's close and #2282.
+- **Promotion (the big gate).** Staging carries `79f35f1089` with migration `v2327floored`. Arch GRANTS promotion if that sha is an ancestor and the diff since is only dev/, docs/, mailboxes/ (no alembic/). Needs xian's migration yes; Exec carried it (rollup v992). After it: xian sets `ops_reader` on web-seed-1386 from the admin "Account flags" page (HOST: 1386 is never admin). #2363 row 3 needs a merge head.
+- **Land after the promotion (held branches, Arch-validated):** #2372 `lead/2372-alembic-only` `5a0f87c7d5`; #2370 `lead/2370-redis-pin` `111f747922` (redis 5.0.8; pip-install line to every seat). Then #2345 (held branch, out of any promotion until #2342 rows 2–3 read; Lead takes it in a fresh session). #2373 (bound the 2327 counter write, about 2 s) placed in Q 15:33, lands after the promotion too.
+- **On main, not served** (need served quotes after the promotion): #2294 safety net `c63a6af540`; #2327 counter `9d6646f6a2`; archive-pick date `d769f3a7b0`; main-list cap line `bd5470462e`; #2274, #2268, #2269 pin (sprint items 3–4, Lead's part done; #2219 ×3 PASSED).
+- **Path B #2297/#2301 (Lead's order item 1)** held on `lead/2301-project-read` `7dfab574a4` (+ cap-noun change). Arm B screen: about 1,700 calls, $2–5, cap $8, waits on the testing key (xian's card). PPM bar: a todo is never dropped over a project name the person didn't say; arm B acceptance 0 dropped on destination-word controls. #2301 row 1 is todos only (amended 01M7DE4QCC). #2371 archive half on main; count half after #2301.
+- **Lead's order item 6** (gap work outside sprint 2, PPM 01M7DX7M1W): #2372, #2370, #2345. Lead mails PPM before taking anything else in an idle stretch.
+- **#2335 rotation:** about a minute of 503 `capacity_check_unavailable` on every beta request, signed-in too (fail-closed by design, ADR-076); xian's card should say expected, not an outage. Not held for #2370; timing is xian's, after #2342.
+- **#2364, ethics, self-knowledge, rule-7, #2361, #2351:** unchanged from the superseded block above (key with xian; ethics default not served; Tier 1 and seven #2358 texts await xian's yes; CXO Tier 1 voice spec and #2351 clean-clone run due Mon 11-16).
+- **Production 305** (`gh` 21:34 11-14 = Total), map v147, 0 unmilestoned. Today placed: #2370 (Q), #2371 (V, PPM filed), #2372 (D), #2373 (Q).
+- **OWED rows:** unchanged keys: 2364-known-limit, 2364-untested-provider-row, 2364-selfhost-wording, tier1-approval-batch, 2358-procedure-texts, rule7-key-ask, path-b-quote, notion-offer-ask (triggers as in the superseded block). #2344: xian's Buttondown steps.
+- **Waiting on xian:** promotion + migration yes; ops_reader on 1386; testing key (#2364, arm B, rule-7/H4); 1386 sign-in decision (01M79Q8226TJGVZ9XK9FAC0K1X); Tier 1 and #2358 wording; #2342 rows 2–3; #2335 timing; #2344.
+- **Mail:** read v3 and `python3 scripts/mail4.py inbox --role ppm 2>&1 | tail -8` (never tail -1); send by v4.
+- **Rules carried:** no seat reads xian's keychain (`PIPER_CREDENTIAL_STORE=db`); #2242's last row; #2235; #1680; PDR-102 C1–C8 checks; PUB header rework at the next map redo.
+- **Freeze note 21:33:** CIO absent from the 17:33–21:33 emitter list; detector raised nothing. Not PPM's lane; recheck at START.
