@@ -35,9 +35,9 @@ Every release MUST update these files (complete inventory):
 - `docs/versioning.md` - update Current Version, Version History table, Last updated
 
 ### Alpha Documentation (4 files)
-- `docs/ALPHA_TESTING_GUIDE.md` - Version and Last Updated in header
-- `docs/ALPHA_KNOWN_ISSUES.md` - Version, Last Updated, and title
-- `docs/ALPHA_QUICKSTART.md` - Version and "What's New" section
+- `docs/BETA_TESTING_GUIDE.md` - Version and Last Updated in header
+- `docs/BETA_KNOWN_ISSUES.md` - Version, Last Updated, and title
+- `docs/BETA_QUICKSTART.md` - Version and "What's New" section
 - `docs/ALPHA_AGREEMENT_v2.md` - Version in 3 places (header, line 15, line 153)
 
 ### Alpha Template (1 file — single canonical template)

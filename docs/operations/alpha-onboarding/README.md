@@ -50,10 +50,10 @@ Before sending pre-qualification:
 Before sending confirmation:
 - [ ] Schedule setup call first
 - [ ] Attach current documentation from `docs/`:
-  - ALPHA_TESTING_GUIDE.md
+  - BETA_TESTING_GUIDE.md
   - ALPHA_AGREEMENT_v2.md
-  - ALPHA_QUICKSTART.md
-  - ALPHA_KNOWN_ISSUES.md
+  - BETA_QUICKSTART.md
+  - BETA_KNOWN_ISSUES.md
 - [ ] Update internal tracking (who's in alpha cohort)
 
 ---
@@ -80,7 +80,7 @@ Before sending confirmation:
 
 ## See Also
 
-- `../../ALPHA_TESTING_GUIDE.md` - Reference for what testers will receive
+- `../../BETA_TESTING_GUIDE.md` - Reference for what testers will receive
 - `../../ALPHA_AGREEMENT_v2.md` - Legal terms testers will see
-- `../../ALPHA_QUICKSTART.md` - Quick reference guide for testers
-- `../../ALPHA_KNOWN_ISSUES.md` - Current bugs and limitations
+- `../../BETA_QUICKSTART.md` - Quick reference guide for testers
+- `../../BETA_KNOWN_ISSUES.md` - Current bugs and limitations

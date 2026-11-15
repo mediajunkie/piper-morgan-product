@@ -235,7 +235,7 @@ jobs:
               - [ ] **Review docs/README.md (pmorgan.tech homepage)** — distinct from the GitHub-view root README:
                 - [ ] Verify current version number matches \`pyproject.toml\`
                 - [ ] Verify current capabilities list is accurate (no deprecated features, no missing shipped features)
-                - [ ] Check linked docs (ALPHA_QUICKSTART.md, ALPHA_TESTING_GUIDE.md, ALPHA_KNOWN_ISSUES.md) are current — especially re: standup, authentication, and integration steps
+                - [ ] Check linked docs (BETA_QUICKSTART.md, BETA_TESTING_GUIDE.md, BETA_KNOWN_ISSUES.md) are current — especially re: standup, authentication, and integration steps
                 - [ ] Verify roadmap section matches active sprint sequence from BRIEFING-CURRENT-STATE
                 - [ ] Ensure no deprecated workflow names (e.g., MorningStandupWorkflow retired via #1289)
                 - [ ] Ensure content is accurate and doesn't reference work-in-progress as shipped
