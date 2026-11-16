@@ -11,6 +11,9 @@ provider legs in ``services/llm/clients.py`` ask before every call and report af
 - ``settle(reservation, usage)`` replaces the estimate with the cost from the
   provider's own token counts.
 
+A refusal ends the run: every later call is refused too, the provider legs let the
+refusal pass without trying another provider, and the binder exits non-zero.
+
 A call that raises keeps its upper estimate on the total: a timed-out request may
 still have been billed, and the cap is a bound, so the doubt counts against the run.
 
@@ -118,6 +121,14 @@ class SpendCap:
             raise
         with self._lock:
             committed = self.counted_usd + self.reserved_usd
+            if self.refused:
+                # A refused call ends the run (Arch 2026-11-16): its rows are not
+                # counted, so nothing more is sent on its behalf.
+                self.refused += 1
+                raise SpendCapReached(
+                    "REFUSED: an earlier call in this run was refused at the cap, so the "
+                    "run is over. Nothing was sent."
+                )
             if committed + upper > self.max_usd:
                 self.refused += 1
                 raise SpendCapReached(
@@ -201,7 +212,10 @@ def settle_call(reservation: Optional[Reservation], usage: Optional[Mapping[str,
 
 def refuse_uncounted(what: str) -> None:
     """For a spend site that reports no cost (embeddings): refuse it under a cap."""
-    if _cap.get() is not None:
+    cap = _cap.get()
+    if cap is not None:
+        with cap._lock:
+            cap.refused += 1
         raise SpendCapUncounted(
             f"REFUSED: {what} has no cost count, so a capped run can't include it. "
             "Nothing was sent."
