@@ -34,7 +34,10 @@ call that could take the run past the cap. The binder prints a ``PLANNED:`` line
 on entry and a ``COST:`` line, from the provider's own token counts, on exit. It
 never prints a key or the environment. A batch submit is not a live call: it is
 bounded by ``router_batch.py submit --cap-usd`` before it is sent, and passes that
-same figure here.
+same figure here. A cap above $10.00 is refused unless the run passes
+``approved_by``, the mail id of Exec's relay of xian's approval, which the
+``PLANNED:`` line prints. A run in which any call was refused at the cap exits
+non-zero when the block ends.
 
 Usage::
 
@@ -48,10 +51,16 @@ from __future__ import annotations
 
 import contextlib
 import os
+import re
 import sys
 from typing import Dict, Iterator, Optional, Sequence
 
 KNOWN_PROVIDERS = ("anthropic", "openai")
+# The most a seat's run may spend without asking (xian, 2026-11-16; ADR-084 D2,
+# docs/internal/architecture/adrs/adr-084-seat-resources-are-separate-granted-once-and-bounded.md).
+# A higher cap needs the mail id of Exec's relay of xian's approval.
+PER_RUN_USD_WITHOUT_ASKING = 10.00
+_MAIL_ID = re.compile(r"^01[0-9A-HJKMNP-TV-Z]{24}$")
 _ENV_VAR = {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY"}
 _ALLOWED_STORES = ("db", "keychain")
 
@@ -86,12 +95,28 @@ def planned_calls_line(
     providers: Sequence[str],
     what: str = "model calls",
     max_usd: Optional[float] = None,
+    approved_by: Optional[str] = None,
 ) -> str:
     """The line a script prints before its first call (#2340 ask 3, #2383)."""
     named = ", ".join(providers) if providers else "no provider named"
     count = f"{calls} {what}" if calls is not None else f"{what}, count not stated"
     cap = f" Cap ${max_usd:.2f}." if max_usd is not None else ""
+    if max_usd is not None and max_usd > PER_RUN_USD_WITHOUT_ASKING:
+        cap += f" Above ${PER_RUN_USD_WITHOUT_ASKING:.2f} on approval {approved_by}."
     return f"PLANNED: {count} on {named}.{cap} Nothing has been sent yet."
+
+
+def pop_approved_by_flag(argv: list[str]) -> Optional[str]:
+    """Take ``--approved-by ID`` (or ``--approved-by=ID``) out of ``argv`` and return ID."""
+    for i, arg in enumerate(argv):
+        if arg == "--approved-by" and i + 1 < len(argv):
+            value = argv[i + 1]
+            del argv[i : i + 2]
+            return value
+        if arg.startswith("--approved-by="):
+            del argv[i]
+            return arg.split("=", 1)[1]
+    return None
 
 
 def pop_max_usd_flag(argv: list[str]) -> Optional[float]:
@@ -130,6 +155,24 @@ def _checked_cap(max_usd: Optional[float]) -> float:
     if isinstance(max_usd, bool) or not isinstance(max_usd, (int, float)) or not max_usd > 0:
         _refuse(f"the cap must be a dollar figure above zero, not {max_usd!r}.")
     return float(max_usd)  # type: ignore[arg-type]
+
+
+def _checked_approval(cap_usd: float, approved_by: Optional[str]) -> None:
+    """A cap above the per-run figure needs the id of Exec's relay of xian's approval."""
+    if cap_usd <= PER_RUN_USD_WITHOUT_ASKING:
+        return
+    if not approved_by:
+        _refuse(
+            f"a cap of ${cap_usd:.2f} is above the ${PER_RUN_USD_WITHOUT_ASKING:.2f} a run may "
+            "spend without asking (ADR-084 D2). Ask xian through Exec, then pass "
+            "--approved-by with the mail id of Exec's relay of his approval. Refusing "
+            "before the first call."
+        )
+    if not _MAIL_ID.match(approved_by or ""):
+        _refuse(
+            "--approved-by takes the mail id of Exec's relay (26 characters, starting 01), "
+            f"not {approved_by!r}."
+        )
 
 
 def _refuse(message: str) -> None:
@@ -192,6 +235,7 @@ def developer_keys_bound(
     providers: Sequence[str],
     max_usd: Optional[float] = None,
     planned_calls: Optional[int] = None,
+    approved_by: Optional[str] = None,
     announce: bool = True,
     require: bool = True,
 ) -> Iterator[Dict[str, str]]:
@@ -199,7 +243,10 @@ def developer_keys_bound(
 
     ``max_usd`` is the run's dollar cap and is required when the run makes calls
     (#2383). ``planned_calls`` is the count for the ``PLANNED:`` line, when the
-    script knows it. ``announce=False`` is for a batch submit, which prints its
+    script knows it. ``approved_by`` is the mail id of Exec's relay of xian's
+    approval, required for a cap above ``PER_RUN_USD_WITHOUT_ASKING``. A run in
+    which the cap refused any call exits non-zero here, whatever caught the
+    refusal on the way: its rows are not counted. ``announce=False`` is for a batch submit, which prints its
     own two lines. ``require=False`` is for dry runs that make no model call:
     nothing is looked up, nothing is bound and no cap is needed.
     """
@@ -212,9 +259,15 @@ def developer_keys_bound(
         return
 
     cap_usd = _checked_cap(max_usd)
+    _checked_approval(cap_usd, approved_by)
     keys = _developer_keys(tuple(providers))
     if announce:
-        print(planned_calls_line(planned_calls, tuple(providers), max_usd=cap_usd), flush=True)
+        print(
+            planned_calls_line(
+                planned_calls, tuple(providers), max_usd=cap_usd, approved_by=approved_by
+            ),
+            flush=True,
+        )
     with spend_cap(cap_usd) as cap:
         try:
             with request_api_key(keys):
@@ -222,3 +275,9 @@ def developer_keys_bound(
         finally:
             if announce:
                 print(cap.cost_line(), flush=True)
+            if cap.refused:
+                # Whatever caught the refusal in between, the run did not finish.
+                _refuse(
+                    f"the run was stopped at its ${cap_usd:.2f} cap: {cap.refused} calls were "
+                    "refused and not sent. The run is incomplete; do not count its rows."
+                )
