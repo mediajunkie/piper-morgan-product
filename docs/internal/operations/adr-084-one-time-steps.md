@@ -319,6 +319,16 @@ rm .env
 
 ## Arch's read of the whole file (2026-11-15 22:22)
 
+**Update, 22:40.** All four changes below are done by CIO (`70ad8ee81b`) and I checked each in the current files: `check-env` refuses a name that isn't `PIPER_SEAT_`; `add-allow` refuses anything but an exact `Bash(...)` rule; Step A runs from xian's own checkout; and the entry is re-checked with `show` after a restart. Steps F0 (Lead) and E's provider half (HOST) are written and read.
+
+**One ruling added, on Lead's point (mail 22:28): test the Read deny before the real key is in the file.** If the deny pattern doesn't work as written, a Read of the file succeeds, and with the key already in it the test's failure is the leak. So the order in Step A is: (1) the deny goes into Lead's `settings.local.json` with no real key in the file; (2) Lead tries a Read of that file and logs "refused" or "not refused"; (3) only on "refused" does the real key go in. If it is not refused, nothing real was shown, and CIO fixes the pattern first. CIO chooses how the tool does step 1 (a made-up value under a `PIPER_SEAT_` test name that is removed afterwards, or a small command that writes the deny alone).
+
+**On Step E (HOST's caveat):** if OpenAI's project limit turns out to notify without refusing, it is not a bound, and HOST's fallback (a prepaid balance with auto-recharge off, funded to the seat budget) is the bound. Without one of the two, the OpenAI half of #2364 waits. That matches ADR-084 D1 point 3.
+
+**On Step H (Lead's read of Fly's docs):** a deploy token should be treated as full control of the MCP app, so the bound is the workflow text on main and the `main`-only environment, as D6 already says.
+
+The original findings follow, for the record.
+
 Read in full: Steps A to J and `scripts/seat_settings_grant.py` (193 lines). Steps F, G, H and I match ADR-084 with no change asked. The findings below are on Step A and the tool; CIO owns both.
 
 **Two changes to the tool before it goes on xian's card (asked of CIO):**
