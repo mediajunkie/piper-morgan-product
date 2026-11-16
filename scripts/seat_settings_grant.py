@@ -4,6 +4,10 @@
 Run by xian in Terminal, never by a seat (auto mode refuses a seat a settings edit, and that is
 right). It edits one file, the seat's git-ignored ``.claude/settings.local.json``:
 
+    scripts/seat_settings_grant.py grant-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY   # all of Step A
+
+The single steps, for a repair or a second seat:
+
     scripts/seat_settings_grant.py fleet-deny
     scripts/seat_settings_grant.py prepare   --seat lead
     scripts/seat_settings_grant.py add-key   --seat lead --name PIPER_SEAT_ANTHROPIC_KEY
@@ -181,10 +185,75 @@ def show(path: Path, data: dict) -> list[str]:
     return lines
 
 
+def is_terminal() -> bool:
+    return sys.stdin.isatty() and sys.stdout.isatty()
+
+
+def grant_key(seat: str, name: str, root: Path, shared: Path) -> int:
+    """Step A of ADR-084 as ONE command (Exec, 2026-11-15): denies first, a wait while seats test
+    them, and the key only after xian confirms every Read was refused. Stops at the first failure."""
+    if not NAME_RE.match(name):
+        raise SystemExit(f"{name!r} is not a PIPER_SEAT_ name; nothing was changed")
+    if not is_terminal():
+        raise SystemExit(
+            "grant-key asks questions and takes a key at a hidden prompt; run it in a terminal. Nothing was changed."
+        )
+    path = settings_path(seat, root)
+    load(path)  # refuse a broken seat file before touching the shared one
+
+    print("1 of 4. The shared settings file (every PM seat reads it).")
+    added = fleet_deny(shared)
+    backup = shared.with_name(shared.name + ".before-fleet-deny")
+    print(
+        f"   added {len(added)} Read deny rule(s); {len(FLEET_DENIES) - len(added)} were already there."
+    )
+    if added:
+        print(f"   the file as it was is kept at: {backup}")
+        print(f"   to undo this step: mv '{backup}' '{shared}'")
+
+    print(f"2 of 4. Seat {seat}'s own settings file.")
+    data = load(path)
+    deny = data.setdefault("permissions", {}).setdefault("deny", [])
+    if SELF_DENY not in deny:
+        deny.append(SELF_DENY)
+    save(path, data)
+    print("   mode 0600; the seat's own Read deny is in place; no key is in the file.")
+
+    print("3 of 4. Three Read tests, with no key anywhere. Tell Exec this line is on your screen:")
+    print(f"   WAITING FOR READ TESTS on seat {seat}")
+    print(f"   a. {seat} tries to Read its own settings file: {path}")
+    print(f"   b. HOST tries to Read that same file by its full path.")
+    print("   c. HOST tries to Read a made-up .env that CIO places at the top of the CIO worktree.")
+    print("   Each must be REFUSED. If a seat needs a restart to pick up the new rules, do it now;")
+    print("   this command will wait.")
+    answer = input(
+        "   When Exec tells you all three were refused, type  refused  and press Return (anything else stops here): "
+    )
+    if answer.strip().lower() != "refused":
+        print("Stopped before any key. The deny rules stay in place (they only add protection).")
+        print("Nothing secret was written. Tell Exec what the seats reported.")
+        return 2
+
+    print("4 of 4. The key.")
+    value = getpass.getpass(f"   {name} for seat {seat} (input hidden): ")
+    save(path, add_key(load(path), name, value))
+    print(f"   stored {name}: {fingerprint(value)}")
+    print(
+        f"Done. {seat}'s check, after its next session start: scripts/seat_settings_grant.py check-env --name {name}"
+    )
+    for line in show(path, load(path)):
+        print(line)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--root", type=Path, default=WORKTREES, help=argparse.SUPPRESS)
     sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("grant-key")
+    p.add_argument("--seat", required=True)
+    p.add_argument("--name", required=True)
+    p.add_argument("--shared-settings", type=Path, default=SHARED_SETTINGS, help=argparse.SUPPRESS)
     for cmd in ("add-key", "remove-key"):
         p = sub.add_parser(cmd)
         p.add_argument("--seat", required=True)
@@ -211,6 +280,9 @@ def main(argv: list[str] | None = None) -> int:
         value = os.environ.get(args.name, "")
         print(f"{args.name}: {'set, ' + fingerprint(value) if value else 'UNSET in this session'}")
         return 0 if value else 1
+
+    if args.cmd == "grant-key":
+        return grant_key(args.seat, args.name, args.root, args.shared_settings)
 
     if args.cmd == "fleet-deny":
         added = fleet_deny(args.shared_settings)
