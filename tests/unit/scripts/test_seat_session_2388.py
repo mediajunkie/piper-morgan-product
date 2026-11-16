@@ -491,3 +491,10 @@ def test_an_anthropic_key_passes_for_web_seed_1386_and_nothing_else_does(ss, sha
 def test_the_key_exception_names_its_workspace_and_cap(ss):
     source = (ROOT / "scripts" / "seat_session.py").read_text()
     assert "piper-morgan-test" in source and "$40" in source
+
+
+def test_the_second_account_is_listed_and_holds_nothing(ss):
+    assert sorted(ss.ACCOUNTS) == ["seat-github-1", "web-seed-1386"]
+    second = ss.ACCOUNTS["seat-github-1"]
+    assert second.credential_file == "seat-github-1-credentials.txt"
+    assert not second.integrations and not second.provider_keys and second.connectors is False

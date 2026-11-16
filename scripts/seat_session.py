@@ -88,6 +88,9 @@ ACCOUNTS: Dict[str, Account] = {
         # answers through Exec. If the console shows another workspace, this comes out.
         provider_keys=frozenset({"anthropic"}),
     ),
+    # The second seat account (issue 2389; name agreed by HOST and Lead, 11-16). It holds
+    # nothing until its own exceptions are added as diffs HOST reads.
+    "seat-github-1": Account(credential_file="seat-github-1-credentials.txt"),
 }
 
 USER_KEYS = ("username", "user", "email", "login")
