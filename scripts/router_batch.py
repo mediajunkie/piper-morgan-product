@@ -8,8 +8,9 @@ ONE batch, so they share a time window. Three steps:
   # in each tree (main, main again as the control, the candidate):
   venv/bin/python scripts/router_batch.py render --label main --samples 6 \\
       --phrase "..." --phrase "..." --out /tmp/reqs-main.jsonl
-  # once, from any tree:
-  venv/bin/python scripts/router_batch.py submit /tmp/reqs-*.jsonl --out /tmp/results.jsonl
+  # once, from any tree (a cap and a ledger are required; --dry-run sends nothing):
+  venv/bin/python scripts/router_batch.py submit /tmp/reqs-*.jsonl --out /tmp/results.jsonl \\
+      --cap-usd 8 --ledger /tmp/screen-ledger.json
   # in each tree again:
   venv/bin/python scripts/router_batch.py parse --requests /tmp/reqs-main.jsonl \\
       --results /tmp/results.jsonl --out report-main.md
@@ -19,6 +20,14 @@ same system prompt, catalog prompt, model, max_tokens and temperature).
 ``parse`` validates each reply against that tree's own grammar. A reply that
 fails validation is recorded as REFUSED: the live router would retry once with
 a repair prompt, which a batch can't do, so the report counts them.
+
+``submit`` refuses before anything is sent when the batch could cost more than
+what is left under ``--cap-usd`` (CIO, 2026-11-15: a paid screen's stop is code,
+not a plan). The ceiling is an upper estimate made without a provider call: each
+request's text at 3 characters per token (the router prompt measures nearer 4)
+plus its whole ``max_tokens`` as output, at the batch price. The ledger file
+holds what the screen's earlier batches cost (the provider's own token counts
+once a batch ends, the ceiling until then), so the cap covers the whole screen.
 """
 
 from __future__ import annotations
@@ -103,6 +112,87 @@ def _render(args) -> None:
     print(f"rendered {len(args.phrase) * args.samples} requests -> {args.out}")
 
 
+# Batch prices in USD per million tokens (input, output): half the standard price.
+# claude-haiku-4-5 is $1 / $5 standard (services/llm/config.py). A model with no row
+# here is refused: add its row with the source of the price.
+_BATCH_USD_PER_MTOK = {"claude-haiku-4-5": (0.50, 2.50)}
+# Characters per token used for the ceiling. Lower than the router prompt measures,
+# so the ceiling overstates the input side.
+_CEILING_CHARS_PER_TOKEN = 3.0
+
+
+class CapRefused(SystemExit):
+    """The batch was not sent: it could cost more than the cap leaves."""
+
+
+def _batch_price(model: str) -> tuple:
+    for name, price in _BATCH_USD_PER_MTOK.items():
+        if model == name or model.startswith(name + "-"):
+            return price
+    raise CapRefused(
+        f"REFUSED: no batch price recorded for model {model!r}. Nothing was sent. "
+        "Add its row to _BATCH_USD_PER_MTOK with the source of the price."
+    )
+
+
+def _request_chars(params: dict) -> int:
+    system = params.get("system") or ""
+    chars = len(system) if isinstance(system, str) else len(json.dumps(system))
+    for message in params.get("messages", []):
+        content = message.get("content", "")
+        chars += len(content) if isinstance(content, str) else len(json.dumps(content))
+    return chars
+
+
+def ceiling_usd(reqs: list) -> float:
+    """An upper estimate of what these requests cost as one batch. No provider call."""
+    total = 0.0
+    for r in reqs:
+        params = r["params"]
+        usd_in, usd_out = _batch_price(params["model"])
+        tokens_in = -(-_request_chars(params) // int(_CEILING_CHARS_PER_TOKEN))
+        total += (tokens_in * usd_in + params["max_tokens"] * usd_out) / 1_000_000
+    return total
+
+
+def actual_usd(records: list, model_by_id: dict) -> float:
+    """What a finished batch cost, from the provider's own token counts."""
+    total = 0.0
+    for rec in records:
+        usage = rec.get("usage") or {}
+        usd_in, usd_out = _batch_price(rec.get("model") or model_by_id[rec["custom_id"]])
+        total += (
+            (usage.get("input_tokens") or 0) * usd_in + (usage.get("output_tokens") or 0) * usd_out
+        ) / 1_000_000
+    return total
+
+
+def _read_ledger(path: Path) -> dict:
+    if path.exists():
+        return json.loads(path.read_text())
+    return {"entries": []}
+
+
+def ledger_spent(ledger: dict) -> float:
+    """Each earlier batch at its measured cost, or at its ceiling if it never reported."""
+    return sum(
+        e["actual_usd"] if e.get("actual_usd") is not None else e["ceiling_usd"]
+        for e in ledger["entries"]
+    )
+
+
+def check_cap(reqs: list, cap_usd: float, ledger: dict) -> tuple:
+    """Return (ceiling, spent) or raise CapRefused. Sends nothing."""
+    ceiling = ceiling_usd(reqs)
+    spent = ledger_spent(ledger)
+    if spent + ceiling > cap_usd:
+        raise CapRefused(
+            f"REFUSED: this batch could cost up to ${ceiling:.2f}; ${spent:.2f} is already "
+            f"counted against the ${cap_usd:.2f} cap. Nothing was sent."
+        )
+    return ceiling, spent
+
+
 def _submit(args) -> None:
     from dev_key_binding import developer_keys_bound
 
@@ -113,22 +203,46 @@ def _submit(args) -> None:
             reqs.append({"custom_id": r["custom_id"], "params": r["params"]})
     ids = [r["custom_id"] for r in reqs]
     assert len(ids) == len(set(ids)), "custom_id collision: give each tree a distinct --label"
+    ledger_path = Path(args.ledger)
+    ledger = _read_ledger(ledger_path)
+    ceiling, spent = check_cap(reqs, args.cap_usd, ledger)
+    print(
+        f"PLANNED: {len(reqs)} requests in one batch on anthropic, at most ${ceiling:.2f}; "
+        f"${spent:.2f} already counted of the ${args.cap_usd:.2f} cap. "
+        "Nothing has been sent yet.",
+        flush=True,
+    )
+    if args.dry_run:
+        print("dry run: nothing sent, ledger unchanged")
+        return
+    model_by_id = {r["custom_id"]: r["params"]["model"] for r in reqs}
     with developer_keys_bound(providers=("anthropic",), require=True):
         from services.llm.request_key import anthropic_client_for_request
 
         client = anthropic_client_for_request()
         batch = client.messages.batches.create(requests=reqs)
+        # Counted at its ceiling from the moment it is sent, so a run that dies while
+        # waiting still counts against the cap.
+        entry = {
+            "batch": batch.id,
+            "requests": len(reqs),
+            "ceiling_usd": round(ceiling, 4),
+            "actual_usd": None,
+        }
+        ledger["entries"].append(entry)
+        ledger_path.write_text(json.dumps(ledger, indent=2) + "\n")
         print(f"batch {batch.id}: {len(reqs)} requests submitted", flush=True)
         while True:
             b = client.messages.batches.retrieve(batch.id)
             if b.processing_status == "ended":
                 break
             time.sleep(args.poll)
+        records = []
         with open(args.out, "w") as f:
-            for entry in client.messages.batches.results(batch.id):
-                rec = {"custom_id": entry.custom_id, "type": entry.result.type}
-                if entry.result.type == "succeeded":
-                    msg = entry.result.message
+            for result in client.messages.batches.results(batch.id):
+                rec = {"custom_id": result.custom_id, "type": result.result.type}
+                if result.result.type == "succeeded":
+                    msg = result.result.message
                     # Models that think by default put a thinking block first;
                     # the router reply is the text block (probe 2026-10-30).
                     rec["text"] = next((b.text for b in msg.content if b.type == "text"), "")
@@ -143,9 +257,17 @@ def _submit(args) -> None:
                             "output_tokens": getattr(usage, "output_tokens", None),
                         }
                 else:
-                    rec["error"] = str(getattr(entry.result, "error", entry.result.type))
+                    rec["error"] = str(getattr(result.result, "error", result.result.type))
+                records.append(rec)
                 f.write(json.dumps(rec) + "\n")
+        entry["actual_usd"] = round(actual_usd(records, model_by_id), 4)
+        ledger_path.write_text(json.dumps(ledger, indent=2) + "\n")
     print(f"batch {batch.id} ended -> {args.out} ({b.request_counts})")
+    print(
+        f"COST: this batch ${entry['actual_usd']:.2f} from the provider's token counts "
+        f"(ceiling was ${ceiling:.2f}); the screen so far ${ledger_spent(ledger):.2f} "
+        f"of the ${args.cap_usd:.2f} cap."
+    )
 
 
 def _parse(args) -> None:
@@ -306,6 +428,20 @@ def main() -> int:
     s.add_argument("requests", nargs="+")
     s.add_argument("--out", required=True)
     s.add_argument("--poll", type=int, default=20)
+    s.add_argument(
+        "--cap-usd",
+        type=float,
+        required=True,
+        help="the screen's spend cap in USD; a batch that could pass it is refused unsent",
+    )
+    s.add_argument(
+        "--ledger",
+        required=True,
+        help="JSON file holding what this screen's earlier batches cost (created if absent)",
+    )
+    s.add_argument(
+        "--dry-run", action="store_true", help="print the planned line and stop; needs no key"
+    )
     p = sub.add_parser("parse")
     p.add_argument("--requests", required=True)
     p.add_argument("--results", required=True)
