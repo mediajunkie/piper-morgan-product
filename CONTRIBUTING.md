@@ -529,7 +529,8 @@ alembic upgrade head          # from an activated venv
 docker ps | grep postgres     # confirm piper-postgres is running on 5433
 
 # Full reset (WARNING: deletes all local data):
-docker compose down -v && docker compose up -d && alembic upgrade head
+# Only for a computer that runs a single copy of Piper. This stops the stack, and a volume flag deletes its database. Never run it on a shared stack.
+docker compose down -v && docker compose up -d postgres redis chromadb && alembic upgrade head
 ```
 
 **`localhost:8001` doesn't load on Windows, but `127.0.0.1:8001` does**: Windows can resolve

@@ -39,6 +39,7 @@
 
 ```bash
 # 1. Drop and recreate test database
+# Only for a computer that runs a single copy of Piper. This stops the stack, and a volume flag deletes its database. Never run it on a shared stack.
 docker-compose down -v
 docker-compose up -d postgres
 sleep 5

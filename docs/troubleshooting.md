@@ -23,6 +23,7 @@ Verify with: `docker --version`
 lsof -i :8001
 
 # Stop existing Piper Morgan instance
+# Only for a computer that runs a single copy of Piper. This stops the stack, and a volume flag deletes its database. Never run it on a shared stack.
 docker compose down
 ```
 
@@ -408,6 +409,7 @@ brew services stop postgresql  # If Homebrew PostgreSQL running
 sudo systemctl stop redis     # If system Redis running
 
 # Clean up Docker state
+# Only for a computer that runs a single copy of Piper. This stops the stack, and a volume flag deletes its database. Never run it on a shared stack.
 docker-compose down --volumes
 docker system prune -f
 docker-compose up -d
@@ -836,6 +838,7 @@ curl http://localhost:8088/  # Temporal UI
 
 ```bash
 # Nuclear option - reset everything
+# Only for a computer that runs a single copy of Piper. This stops the stack, and a volume flag deletes its database. Never run it on a shared stack.
 docker-compose down --volumes
 docker system prune -a -f
 rm -rf data/  # Clears all persistent data
