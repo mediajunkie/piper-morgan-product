@@ -36,7 +36,7 @@ python -m pytest tests/ -m "not llm" -q    # everything that needs no LLM key
 python -m pytest tests/ -m llm -v          # LLM tests only
 ```
 
-Tests need Postgres on port 5433 (`docker compose up -d && alembic upgrade head`). The smoke job in CI runs against a Postgres service, so smoke tests include database-backed tests.
+Tests need Postgres on port 5433 (`docker compose up -d postgres redis chromadb && alembic upgrade head`). The smoke job in CI runs against a Postgres service, so smoke tests include database-backed tests.
 
 ## What CI runs
 
