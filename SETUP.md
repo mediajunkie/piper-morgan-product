@@ -121,7 +121,7 @@ alembic upgrade head
 
 ```bash
 # Start database container
-docker compose up -d
+docker compose up -d postgres
 ```
 > ⚠️ **Added 2026-08-31** (probe-measured, see `CONTRIBUTING.md` §1b): the compose project/container
 > names are fixed, not per-checkout. A second checkout on this machine will silently commandeer the

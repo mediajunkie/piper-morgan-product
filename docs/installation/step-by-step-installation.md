@@ -304,7 +304,7 @@ common ones (Docker not running and missing API keys are the two most frequent).
 them yet:
 
 ```bash
-docker compose up -d
+docker compose up -d postgres redis chromadb
 ```
 
 ---
