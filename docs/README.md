@@ -80,7 +80,7 @@ cp .env.example .env
 # Add your API keys (Anthropic, GitHub, etc.)
 
 # 3. Start services and launch
-docker compose up -d
+docker compose up -d postgres redis chromadb
 alembic upgrade head
 python main.py   # server at localhost:8001
 ```
