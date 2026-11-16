@@ -5,7 +5,7 @@ Names, dates and caps only. No value, length or id of any credential is written 
 | Item | State | Date | Reported by | Notes |
 |---|---|---|---|---|
 | Anthropic workspace `lead-scoring` | seat workspace, $150 a month as the hard bound; $10 a run a seat may spend without asking | 2026-11-16 | Exec (xian's words) | Budget rule: planned calls in the log before, actual cost after, in-code stop (#2383). |
-| Key `lead-scoring-2026-10` | disabled, not deleted | 2026-11-16 | Exec (xian: "revoked (disabled, actually)") | xian: nothing he runs personally uses it. A disabled key cannot spend; only xian can re-enable. Deletion is Arch's call. |
+| Key `lead-scoring-2026-10` | disabled, not deleted | 2026-11-16 | Exec (xian: "revoked (disabled, actually)") | xian: nothing he runs personally uses it. A disabled key cannot spend; only xian can re-enable. Arch ruled 2026-11-16: disabled is enough, deletion not required. |
 | Key `seat-screens-2026-11` | the one live key in `lead-scoring` | 2026-11-16 | Exec | Not yet in any seat's file. Step A puts it in Lead's settings file. |
 | Operations reader flag on `web-seed-1386` | set | 2026-11-16 | Exec, from xian's screenshot | Set by xian on beta's Account flags page. The page cannot make an account admin. Seat check of a counter read waits on `seat_session.py` (#2388). |
 | Step A: Lead's seat key file | pending | | | Gate: three logged Read refusals before the key prompt. HOST's two Reads owed. |
