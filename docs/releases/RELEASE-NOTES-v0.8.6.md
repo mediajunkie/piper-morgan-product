@@ -217,7 +217,7 @@ python main.py
 
 - [PDR-002 v3.1](../../docs/internal/planning/conversational-glue/) — Conversational Glue design
 - [Sprint Completion Gate (#779)](https://github.com/mediajunkie/piper-morgan-product/issues/779) — Gate verification evidence
-- [Alpha Quickstart](../ALPHA_QUICKSTART.md) — Setup guide
+- [Alpha Quickstart](../BETA_QUICKSTART.md) — Setup guide
 
 ---
 

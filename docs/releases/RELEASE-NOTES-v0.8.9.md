@@ -100,7 +100,7 @@ For alpha testers on `alpha.pipermorgan.ai`: the hosted instance will be updated
 
 - [Release Notes v0.8.8](RELEASE-NOTES-v0.8.8.md) — prior release (D1/RECONNECT design quality)
 - [BRIEFING-CURRENT-STATE](../briefing/BRIEFING-CURRENT-STATE.md) — live milestone status
-- [Alpha Quickstart](../ALPHA_QUICKSTART.md) — setup guide
+- [Alpha Quickstart](../BETA_QUICKSTART.md) — setup guide
 - [Alpha Deployment](../internal/operations/alpha-deployment-runbook.md) — how `alpha.pipermorgan.ai` is deployed
 
 ---
