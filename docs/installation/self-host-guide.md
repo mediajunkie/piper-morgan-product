@@ -2,7 +2,7 @@
 
 **For**: someone outside the team who wants Piper to run on their own machine, so their notes and projects never sit on a hosted server.
 **Time**: about 30 minutes.
-**Status**: DRAFT 2026-11-12. Steps 1 to 9 follow the tested list in `docs/internal/operations/canonical-ops-recipes.md` section 13. Items marked **(not yet run)** have not been checked from a clean clone, and the invite step is settled but unrun. Docs will remove each marker as it is verified.
+**Status**: DRAFT 2026-11-12. Steps 1 to 9 follow the tested list in `docs/internal/operations/canonical-ops-recipes.md` section 13. Items marked **(not yet run)** have not been checked from a clean clone. On 2026-11-16 Docs ran steps 1, 2, 3 (data services only), 4 and 8 from a fresh clone with its own database and ports, and typed no key. Steps 5, 6, 7 and 9 and the chat check still wait on a real provider key. Docs will remove each marker as it is verified.
 
 ## What you need
 
@@ -24,7 +24,7 @@
    source venv/bin/activate
    pip install -r requirements.txt
    ```
-3. **Start the supporting services** (a database, a cache and a search index). Docker Desktop must be running. **(not yet run from a fresh machine)**
+3. **Start the supporting services** (a database, a cache and a search index). Docker Desktop must be running. **(checked 2026-11-16 from a fresh clone for the database, cache and search index only. The bare command below also lists the app, the GitHub connector, Temporal and Traefik, and that full set was not run)**
    ```bash
    docker compose up -d
    ```
@@ -50,7 +50,7 @@
    source venv/bin/activate
    PYTHONPATH=. python3 scripts/mint_invite_tokens.py 1 --apply
    ```
-   It prints one code. **(not yet run by Docs from a clean clone, and the script's last line talks about handing codes to the team, which you can ignore)** Paste it into the account page, then choose a username and password. Nobody on the team needs to send you a code.
+   It prints one code. **(checked 2026-11-16 from a fresh clone, it added one code to the new database. The script's last line talks about handing codes to the team, which you can ignore)** Paste it into the account page, then choose a username and password. Nobody on the team needs to send you a code.
 9. **Finish.** Add a project or skip. "Setup Complete" means you are signed in. Press Open Piper.
 
 ## Check it works
