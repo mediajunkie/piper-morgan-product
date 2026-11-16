@@ -24,10 +24,10 @@ the day something new is found.
 |---|---|---|
 | Login keychain | macOS, his account | `PIPER_CREDENTIAL_STORE=keychain`, the `security` CLI, any library that asks the OS store |
 | Local database | `piper_morgan` in `piper-postgres`, port 5433, volume `piper_postgres_data_v1` | any run with no `POSTGRES_DB` set; `alembic`; `create_all` in a test tree |
-| Shared Redis and Chroma data | `worktrees/lead/data/…`, bound into `piper-redis` and `piper-chromadb` | `docker compose up` or `down` from any folder; five scripts in `scripts/` (recipe 14) |
+| Shared Redis and Chroma data | `worktrees/lead/data/…`, bound into `piper-redis` and `piper-chromadb` | `docker compose up` or `down` from any folder; `scripts/alpha-setup.sh` (recipe 14; four other scripts did this until 11-16) |
 | Accounts and consoles | Anthropic, OpenAI, GitHub, Fly, his mail | a session or token that is his, wherever a seat can read it |
 | The shared checkout | `~/Development/piper-morgan-product` | git commands that discard working-tree changes (CLAUDE.md hard rule 1) |
-| Running local servers | every `python main.py` on the machine | `pkill -f "python main.py"` (in `scripts/stop.sh`) |
+| Running local servers | every `python main.py` on the machine | `pkill -f "python main.py"` (it was in `scripts/stop.sh`, retired 2026-11-16) |
 
 ## The rule
 

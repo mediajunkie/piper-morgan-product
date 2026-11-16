@@ -104,7 +104,7 @@ def resolve(path: str, mech: Path) -> Path | None:
 # line or deletes a mechanism, never raised. git-hooks' 2 are pre-commit and pre-push: any edit makes
 # the installed copy differ from source until xian reinstalls, so their lines wait for a functional
 # edit (hooks-registry.md).
-RATCHET = {"hooks": 0, "git-hooks": 2, "skills": 0, "workflows": 0, "scripts": 248}
+RATCHET = {"hooks": 0, "git-hooks": 2, "skills": 0, "workflows": 0, "scripts": 245}
 
 # The scripts/ files counted in that 248, by name, so an over-ceiling run can say which file is new
 # (scripts/ isn't listed without --all, and CI's shallow checkout has no history to date files by).
