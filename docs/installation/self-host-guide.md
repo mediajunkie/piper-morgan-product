@@ -24,7 +24,7 @@
    source venv/bin/activate
    pip install -r requirements.txt
    ```
-3. **Start the supporting services** (a database, a cache and a search index). Docker Desktop must be running. Name the three services as shown: a bare `docker compose up -d` also starts the app, which takes the port step 6 needs. This guide assumes no other copy of Piper is running on the computer. **(checked 2026-11-16 from a fresh clone)**
+3. **Start the supporting services** (a database, a cache and a search index). Docker Desktop must be running. Name the three services as shown: a bare `docker compose up -d` also starts the app, which takes the port step 6 needs. This guide assumes no other copy of Piper runs on the computer. If one does, do not go on yet. The top of `docker-compose.yml` lists the lines to put in this copy's `.env` first (`PIPER_STACK`, the three port lines and `REDIS_URL`), and without them this copy would share the other one's database. **(the three services were checked 2026-11-16 from a fresh clone, the second-copy lines have not been run)**
    ```bash
    docker compose up -d postgres redis chromadb
    ```

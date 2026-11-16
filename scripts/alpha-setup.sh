@@ -173,7 +173,10 @@ start_docker() {
 
     if [ -f "docker-compose.yml" ]; then
         # Issue #644: Check docker-compose exit code to catch startup failures
-        if docker-compose up -d; then
+        # Issue 2386: start the three data services by name, never the whole file. A
+        # second copy on this machine sets PIPER_STACK and its ports in .env first
+        # (see the head of docker-compose.yml); compose reads them from there.
+        if docker-compose up -d postgres redis chromadb; then
             print_success "Docker containers started"
             print_warning "Waiting 5 seconds for services to initialize..."
             sleep 5
