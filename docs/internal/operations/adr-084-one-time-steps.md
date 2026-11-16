@@ -30,49 +30,53 @@ Depends on xian's answer to one question: does anything he runs still use the ol
 - **Before you start:** you need the key's value. A provider shows a key once, when it is made. If you no longer have the value of `seat-screens-2026-11`, make a new key in the seat workspace on the Anthropic console and revoke the old one there.
 - **When:** while Lead's session is idle (not mid-fire). Claude Code writes this same file itself when a permission is saved from a prompt, and whether a running session can write it back without the new entry is untested (Arch, 11-15).
 - **Where:** Terminal on this Mac, in any checkout that is at main. Your own is fine after its usual sync. The script finds the seat's settings by absolute path, so it doesn't need to run from a seat's folder, and nothing here changes a seat's folder.
-- **Paste**, one line at a time:
+- **Paste**, one line (Exec's ask, 11-15: one command, not four):
 
 ```
-cd ~/Development/piper-morgan-product && ls scripts/seat_settings_grant.py
+cd ~/Development/piper-morgan-product && scripts/seat_settings_grant.py grant-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY
 ```
 
-  This should print `scripts/seat_settings_grant.py`. If it says "No such file or directory", that checkout is behind main: stop and tell Exec. A seat brings it up to date with `scripts/sync-pm-local.sh`, which never touches your uncommitted edits.
+  If the shell says "no such file or directory", that checkout is behind main: stop and tell Exec. A seat brings it up to date with `scripts/sync-pm-local.sh`, which never touches your uncommitted edits.
 
-```
-scripts/seat_settings_grant.py fleet-deny
-```
+  The command does four things in order and stops at the first failure:
 
-  This adds two Read denies to the one settings file every PM seat shares (`~/.claude-pm/settings.json`): one for any seat's `settings.local.json`, one for any `.env` in the worktrees folder. It prints `added 2 deny rule(s)` and changes nothing else in that file. Why: a seat's own deny doesn't stop another seat's Read tool (CIO's probe, 11-15), and Arch ruled the gap closed by a rule.
+  1. **Shared settings.** Adds two Read denies to the one settings file every PM seat shares (`~/.claude-pm/settings.json`): one for any seat's `settings.local.json`, one for any `.env` in the worktrees folder. It first keeps the file as it was at `~/.claude-pm/settings.json.before-fleet-deny` and prints the line that undoes the change. Why: a seat's own deny doesn't stop another seat's Read tool (CIO's probe, 11-15), and Arch and HOST ruled the gap closed by a rule.
+  2. **Lead's settings.** Sets the file to mode 0600 and adds Lead's own Read deny, with **no key in the file**.
+  3. **It waits.** It prints `WAITING FOR READ TESTS on seat lead`. Tell Exec that line is on your screen. Three Reads are then tried, all before any key exists (Lead's order, ruled by Arch and HOST):
+     - Lead tries to open its own settings file with its Read tool;
+     - HOST tries to open Lead's settings file by its full path;
+     - HOST tries to open a made-up `.env` that CIO puts at the top of the CIO worktree for the test and removes afterwards. The lead folder's real `.env` is never the test file.
 
-```
-scripts/seat_settings_grant.py prepare --seat lead
-```
+     Each must be refused. Exec tells you the result. The file holds only permission rules at that point, so a Read that succeeds shows nothing secret. If a seat needs a restart to pick up the new rules, that happens here while the command waits.
+  4. **The key.** When Exec gives you the three results, type them in order, for example `refused refused refused`, and press Return (HOST, 11-15: all three, so nothing gets through on a bare Return). It then asks `PIPER_SEAT_ANTHROPIC_KEY for seat lead (input hidden):`. Paste the key there and press Return. Nothing shows as you paste. The key is never part of a command.
 
-  This puts Lead's own Read deny and the file mode in place with **no key in the file**. It prints `no key was added`.
+  **If any Read was not refused, type what Exec gave you, or just press Return.** Anything but three times `refused` stops it. You can also press Return to stop and run the same line again later, for example if a seat is asleep or needs a restart; the parts already done are skipped. The command stops before the key. The deny rules stay, since they only add protection. The key does not go in "because the cap is small" (HOST); CIO fixes the deny first and tells Arch and HOST what the result was.
 
-  **Then wait for three results, all before any key exists** (Lead's order, ruled by Arch and HOST, 11-15):
-  1. Lead tries to open its own settings file with its Read tool. It should be refused.
-  2. One other seat tries to open Lead's settings file by its full path with its Read tool. It should be refused. HOST runs this one (HOST 01M7HJ736R).
-  3. HOST also tries a made-up `.env` by its full path: CIO puts a dummy `.env` holding one made-up line at the top of the CIO worktree for the test and removes it afterwards. It should be refused. The lead folder's real `.env` is never the test file.
-
-  Each logs "refused" or "not refused". The file holds only permission rules at that point, so a Read that succeeds shows nothing secret. **If any is not refused, stop here.** The key does not go in "because the cap is small" (HOST). CIO fixes the deny and tells Arch and HOST the result before any key goes in. If a seat's session needs a restart to pick up a new deny, this is where it shows.
-
-```
-scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY
-```
-
-  This last line runs only after all three refusals. It asks `PIPER_SEAT_ANTHROPIC_KEY for seat lead (input hidden):`. Paste the key there and press Return. Nothing shows as you paste. The key is never part of a command.
+  **Why it can't be shorter than this:** the wait in the middle is the point. Testing the deny with the real key already behind it would make a failed test the leak (Lead, 11-15). So his hands are: one paste, three words, one key.
 
 - **You should see:**
 
 ```
-stored PIPER_SEAT_ANTHROPIC_KEY: <N> chars, sha256 <8 characters>
-file set to mode 0600; Read deny for the file added.
+1 of 4. The shared settings file (every PM seat reads it).
+   added 2 Read deny rule(s); 0 were already there.
+   the file as it was is kept at: /Users/xian/.claude-pm/settings.json.before-fleet-deny
+   to undo this step: mv '<that copy>' '<the shared file>'
+2 of 4. Seat lead's own settings file.
+   mode 0600; the seat's own Read deny is in place; no key is in the file.
+3 of 4. Three Read tests, with no key anywhere. Tell Exec this line is on your screen:
+   WAITING FOR READ TESTS on seat lead
+   ...
+4 of 4. The key.
+   PIPER_SEAT_ANTHROPIC_KEY for seat lead (input hidden):
+   stored PIPER_SEAT_ANTHROPIC_KEY: <N> chars, sha256 <8 characters>
+Done. lead's check, after its next session start: scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
 ...
 mode: 0o600
 env: PIPER_SEAT_ANTHROPIC_KEY: <N> chars, sha256 <8 characters>
 self-deny present: True
 ```
+
+  (Copied from a run on a dummy folder with a made-up key, 11-15; only the paths differ.)
 
   The 8 characters are a fingerprint, not the key. Tell Exec the length and the 8 characters, or leave them on screen.
 
@@ -85,14 +89,15 @@ scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
   It should print the same length and the same 8 characters. Lead's first run is then the real test (arm B, or the #2364 gate on the condition above), with `ANTHROPIC_API_KEY="$PIPER_SEAT_ANTHROPIC_KEY"` after the `env -u` flags and `PIPER_CREDENTIAL_STORE=db`. At that run Lead confirms the child process saw the value (length and hash) and that no value reached any output.
 
 - **If it fails:**
-  - The script prints one line and changes nothing if the settings file isn't valid JSON, the value is empty or has a space in it, or the name isn't a `PIPER_SEAT_` name. Fix that and run the line again.
+  - **If any seat's session misbehaves after part 1** (this is the first command of ours that rewrites the file every seat depends on): put the file back with the line the command printed, `mv ~/.claude-pm/settings.json.before-fleet-deny ~/.claude-pm/settings.json`, and tell Exec (Arch, 11-15).
+  - The script prints one line and changes nothing if the settings file isn't valid JSON, the value is empty or has a space in it, or the name isn't a `PIPER_SEAT_` name. It also refuses to start outside a terminal, and it checks Lead's file is readable before it touches the shared one. Fix the cause and run the line again; the parts already done are skipped.
   - **If Lead's check says `UNSET in this session`:** the session started before the key was there. Restart the Lead session once. Whether a running session picks up a new settings variable is the one thing nobody has tested.
-  - **After any restart of the Lead session, check the entry survived:** `scripts/seat_settings_grant.py show --seat lead` should still list `env: PIPER_SEAT_ANTHROPIC_KEY` with the same fingerprint, mode `0o600` and `self-deny present: True`. If the entry is gone, run the `add-key` line again and tell Exec, because that means the session rewrote the file.
-  - If Lead's fingerprint differs from yours, the wrong value was pasted. Run the same line again; it replaces the value.
+  - **After any restart of the Lead session, check the entry survived:** `scripts/seat_settings_grant.py show --seat lead` should still list `env: PIPER_SEAT_ANTHROPIC_KEY` with the same fingerprint, mode `0o600` and `self-deny present: True`. If the entry is gone, put the key back with `scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY` (the key alone, at a hidden prompt; the denies are already in and tested) and tell Exec, because that means the session rewrote the file.
+  - If Lead's fingerprint differs from yours, the wrong value was pasted. Replace it with that same `add-key` line.
   - To take the key back out: `scripts/seat_settings_grant.py remove-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY`. Revoking it on the console ends every copy, including any in a backup.
 
 - **Another seat later** (CIO, PA, Docs): the same line with that seat's name. A seat gets the key only when it names a run.
-- **Tested how:** `tests/unit/scripts/test_seat_settings_grant.py`, 18 cases on a dummy value: the value never appears in any output, the file ends at mode 0600, existing rules are kept, a deny is never removed, a broken file is left alone, `check-env` and `add-allow` refuse anything but seat keys and exact `Bash(...)` rules. **Not tested:** a real key and a live session.
+- **Tested how:** `tests/unit/scripts/test_seat_settings_grant.py`, 29 cases on a dummy value: the value never appears in any output, the file ends at mode 0600, existing rules are kept, a deny is never removed, a broken file is left alone, `check-env` and `add-allow` refuse anything but seat keys and exact `Bash(...)` rules. **Not tested:** a real key and a live session.
 - **What the Read deny does and doesn't cover** (CIO's probe, 11-15 22:38, dummy files only):
   - A deny of the form `Read(**/name)` **is honoured inside the seat's own worktree.** With the fleet's existing `Read(**/.env)`, my Read of a dummy `.env` in my worktree was refused ("File is in a directory that is denied by your permission settings").
   - The same deny **did not stop a Read of a dummy `.env` outside the worktree.** So the deny this step adds keeps Lead's Read tool out of Lead's own settings file. It does not stop another seat's Read tool from opening that file by its full path. For that case the limits are the classifier and the key's cap, which is why this step now adds a second deny that names the path from the home folder, in the settings file all seats share (`fleet-deny`, Arch's ruling 01M7HHQGFK). **That home-path form is untested** until the two Reads above.
@@ -103,7 +108,7 @@ scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
 **Owner: Arch (written). HOST records it.**
 
 - **Where:** beta, signed in as yourself (an admin): `https://beta.pipermorgan.ai/settings/account-flags`. It is also the "Account flags" card on the Settings page.
-- **Paste:** nothing. Type the test account's username, `web-seed-1386`, in the username box and load it. Tick **Operations reader**. Save.
+- **Paste:** nothing; this row is clicks on beta's own page, which no script of ours should make (the flag is set only by an admin's hand, by design). Type the test account's username, `web-seed-1386`, in the username box and load it. Tick **Operations reader**. Save.
 - **You should see:** the page shows the account with "Operations reader" ticked after the save. If it says "No account has exactly that username. Nothing was changed.", the username was mistyped.
 - **Seat check:** NOT READY. A seat can read the counter (`GET /api/v1/admin/floored-actions`, which returns names, sites, days and counts only) once it holds a session as that account, and that needs `seat_session.py` (Step C; its issue is placed on xian's yes). Until then the evidence is the page as you see it. HOST records account, date and set-by from the flag change's evidence line.
 - **If it fails:** nothing else is changed by a failed save. Tell Exec what the page said.
@@ -163,6 +168,8 @@ The order of what it waits on (CIO, 2026-11-15):
 scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_OPENAI_KEY
 ```
 
+  One paste. This is the key alone: Step A has already put the denies in and tested them, so there is no wait here. Do Step A first.
+
   The key goes in at the hidden prompt, as in Step A.
 
 - **You should see:** the same lines as Step A, with this name.
@@ -178,28 +185,22 @@ scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_OPENAI_KEY
 **The path for the second account, once the script exists** (the sign-up route is the same one a tester uses, `POST /api/v1/setup/create-user`: username, email, password twice, invite code):
 
 - **Where:** Terminal, in `~/Development/piper-morgan-product`, on main.
-- **Paste, two lines, one at a time.** The first mints one invite code on beta and prints it in your Terminal only:
-
-  ```
-  scripts/mint_prod_invite.sh --apply
-  ```
-
-  (Without `--apply` it is a dry run that mints nothing. With it, it mints exactly one.)
-
-  The second creates the account. It asks for the invite code at a hidden prompt (paste the code from the line above), makes a password itself, signs the account up on beta, and writes the account's file:
+- **Paste, one line** (Exec, 11-15 late evening: one command per row where it can be; this one can):
 
   ```
   scripts/seat_account_create.py --account <second-seat-account-name>
   ```
 
+  It runs `scripts/mint_prod_invite.sh --apply` itself (your own Fly sign-in, as when you mint by hand), takes the one invite code from that script's output without printing it, makes a password, signs the account up on beta, and writes the account's file. Nothing is typed or pasted besides the line. It stops at the first failure and says which step failed.
 - **You should see:** `created <second-seat-account-name> on beta`, the path of the account's file, `mode 0600`, and `password copied to the clipboard for Step F; it clears in 60 seconds`. No password, no invite code and no cookie on screen.
 - **Seat check (HOST, from xian's screen or the atlas, until `seat_session.py` exists):** the account's own Account page shows no admin marking, no provider key and no connected service. Lead's check from source: the script's fixed list holds this account name and no other new one.
 - **If it fails:**
-  - `invite code not accepted`: the code was already spent or mistyped. Mint one more and run the second line again. Nothing was created.
+  - `the mint step failed`: nothing was minted or created; the line it prints is the mint script's own. Tell Exec.
+  - `invite code not accepted`: beta refused the code the script had just minted. Nothing was created; run the line again (it mints a fresh one) and tell Exec that one code was left unused, so it can be burned.
   - `that username or email is taken`: nothing was created; tell Exec, and Lead picks another name in the script's list.
   - anything else: stop and tell Exec. An account that was created but whose file wasn't written is unusable by design; it gets a password reset, never a guess.
 
-**What the script will hold (for HOST's read when it is built):** a fixed list of allowed account names and one fixed host in code; the invite code only from a hidden prompt, never an argument or the environment; the password from the operating system's random source, written only to the file and the clipboard; output limited to the lines above; a test that searches its output for the password and the code on a forced failure; it refuses to run without a terminal.
+**What the script will hold (for HOST's read when it is built):** a fixed list of allowed account names and one fixed host in code; the invite code only from the mint script's output, held in memory, never printed, never an argument or the environment; the password from the operating system's random source, written only to the file and the clipboard; output limited to the lines above; a test that searches its output for the password and the code on a forced failure; it refuses to run without a terminal.
 
 **Unverified until the script is built and run once:** that `mint_prod_invite.sh --apply` still mints and prints one code on beta as it stands today (its header says so; Lead has not run it, since it runs inside the production app), and the email address the account takes (it must be one xian controls, since password reset goes there; xian's to name).
 
@@ -308,22 +309,14 @@ The form each batch takes, so a sitting is short (CIO, 2026-11-15):
 
 **Owner: Arch (written). Do this only after Step A has served one real run.**
 
-- **Where:** Terminal, in `~/Development/piper-morgan-worktrees/lead`.
-- **Paste**, one line at a time:
+- **Where:** Terminal. The line changes into the lead folder itself, because the stored key and its `.env` live there. Run it while Lead's session is idle.
+- **Paste, one line.** It stops at the first step that fails, so `.env` is deleted only after the key is removed and the list reads back:
 
 ```
-venv/bin/python scripts/local_key_setup.py --remove anthropic
+cd ~/Development/piper-morgan-worktrees/lead && venv/bin/python scripts/local_key_setup.py --remove anthropic && venv/bin/python scripts/local_key_setup.py --list && rm .env
 ```
 
-```
-venv/bin/python scripts/local_key_setup.py --list
-```
-
-```
-rm .env
-```
-
-- **You should see:** after the second line, `stored: none`. The exact wording of the first line's output is unverified here; it should say the Anthropic key was removed. Neither line asks for or prints a key.
+- **You should see:** `anthropic: removed` (or `anthropic: no stored key to remove` if it was already gone), then `stored: none`. Both wordings are read from the script's source. Nothing asks for or prints a key.
 - **Why `.env` can go:** the setup script created it on 11-15 at 18:42 with three values (an encryption key, a sign-in secret and the store flag). Nothing else has used it. If you have put anything else in that file since, tell Exec before deleting it.
 - **Seat check:** Lead re-runs the whole test tree once with tracebacks on and reports whether the six `test_slack_config.py` failures of 11-15 appear.
 - **If it fails:** if `--remove` reports an error, leave `.env` in place (it is the only thing that can read the stored key) and tell Exec what it printed.

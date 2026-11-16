@@ -222,3 +222,167 @@ def test_fleet_deny_keeps_an_existing_deny_and_refuses_a_missing_or_broken_file(
     with pytest.raises(SystemExit):
         mod.main(["fleet-deny", "--shared-settings", str(shared)])
     assert shared.read_text() == "{ not json"
+
+
+def test_fleet_deny_keeps_the_file_as_it_was_beside_it(tmp_path, capsys):
+    mod = _load()
+    shared = tmp_path / "settings.json"
+    original = json.dumps({"env": {"FLY_NO_UPDATE_CHECK": "1"}}, indent=4) + "\n"
+    shared.write_text(original)
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    backup = tmp_path / "settings.json.before-fleet-deny"
+    assert backup.read_text() == original  # byte for byte, so the undo is one mv
+    out = capsys.readouterr().out
+    assert str(backup) in out and "to undo: mv" in out
+    # a second run changes nothing and does not replace the first copy
+    backup_before = backup.read_text()
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    assert backup.read_text() == backup_before
+    assert "to undo" not in capsys.readouterr().out
+
+
+@pytest.fixture
+def tty(monkeypatch):
+    """Tests run without a terminal; the tool's own check is the seam."""
+    return lambda mod, value=True: monkeypatch.setattr(mod, "is_terminal", lambda: value)
+
+
+def _shared(tmp_path):
+    shared = tmp_path / "shared-settings.json"
+    shared.write_text(json.dumps({"env": {"FLY_NO_UPDATE_CHECK": "1"}}, indent=2) + "\n")
+    return shared
+
+
+def test_grant_key_does_all_four_steps_in_order_when_the_reads_were_refused(
+    seat, tmp_path, monkeypatch, capsys, tty
+):
+    mod = _load()
+    tty(mod)
+    root, path = seat
+    shared = _shared(tmp_path)
+    seen = {}
+
+    def answer(prompt):
+        # at the wait, the denies are in and no key is in the seat's file
+        seen["deny_at_wait"] = json.loads(path.read_text())["permissions"]["deny"]
+        seen["env_at_wait"] = json.loads(path.read_text()).get("env")
+        seen["shared_at_wait"] = json.loads(shared.read_text())["permissions"]["deny"]
+        return "refused refused refused"
+
+    monkeypatch.setattr("builtins.input", answer)
+    monkeypatch.setattr(mod.getpass, "getpass", lambda prompt: DUMMY)
+    rc = mod.main(
+        [
+            "--root",
+            str(root),
+            "grant-key",
+            "--seat",
+            "lead",
+            "--name",
+            "PIPER_SEAT_ANTHROPIC_KEY",
+            "--shared-settings",
+            str(shared),
+        ]
+    )
+    assert rc == 0
+    assert mod.SELF_DENY in seen["deny_at_wait"] and seen["env_at_wait"] is None
+    assert seen["shared_at_wait"] == list(mod.FLEET_DENIES)
+    assert json.loads(path.read_text())["env"]["PIPER_SEAT_ANTHROPIC_KEY"] == DUMMY
+    assert stat.S_IMODE(path.stat().st_mode) == 0o600
+    assert (tmp_path / "shared-settings.json.before-fleet-deny").exists()
+    out = capsys.readouterr()
+    assert DUMMY not in out.out and DUMMY not in out.err
+    assert "WAITING FOR READ TESTS on seat lead" in out.out
+
+
+@pytest.mark.parametrize(
+    "reply",
+    [
+        "",
+        "no",
+        "yes",
+        "refused",
+        "refused refused",
+        "refused refused read",
+        "not refused refused refused",
+    ],
+)
+def test_grant_key_stops_before_the_key_unless_he_types_refused(
+    seat, tmp_path, monkeypatch, capsys, tty, reply
+):
+    mod = _load()
+    tty(mod)
+    root, path = seat
+    shared = _shared(tmp_path)
+    monkeypatch.setattr("builtins.input", lambda prompt: reply)
+
+    def no_key(prompt):
+        raise AssertionError("the key prompt must not be reached")
+
+    monkeypatch.setattr(mod.getpass, "getpass", no_key)
+    rc = mod.main(
+        [
+            "--root",
+            str(root),
+            "grant-key",
+            "--seat",
+            "lead",
+            "--name",
+            "PIPER_SEAT_ANTHROPIC_KEY",
+            "--shared-settings",
+            str(shared),
+        ]
+    )
+    assert rc == 2
+    assert "env" not in json.loads(path.read_text())
+    assert "Stopped before any key" in capsys.readouterr().out
+
+
+def test_grant_key_refuses_without_a_terminal_and_changes_nothing(seat, tmp_path, monkeypatch):
+    mod = _load()
+    root, path = seat
+    shared = _shared(tmp_path)
+    before_seat, before_shared = path.read_text(), shared.read_text()
+    monkeypatch.setattr(mod, "is_terminal", lambda: False)
+    with pytest.raises(SystemExit):
+        mod.main(
+            [
+                "--root",
+                str(root),
+                "grant-key",
+                "--seat",
+                "lead",
+                "--name",
+                "PIPER_SEAT_ANTHROPIC_KEY",
+                "--shared-settings",
+                str(shared),
+            ]
+        )
+    assert path.read_text() == before_seat and shared.read_text() == before_shared
+
+
+def test_grant_key_refuses_a_broken_seat_file_before_touching_the_shared_one(
+    seat, tmp_path, monkeypatch, tty
+):
+    mod = _load()
+    tty(mod)
+    root, path = seat
+    shared = _shared(tmp_path)
+    before_shared = shared.read_text()
+    path.write_text("{ not json")
+    with pytest.raises(SystemExit):
+        mod.main(
+            [
+                "--root",
+                str(root),
+                "grant-key",
+                "--seat",
+                "lead",
+                "--name",
+                "PIPER_SEAT_ANTHROPIC_KEY",
+                "--shared-settings",
+                str(shared),
+            ]
+        )
+    assert shared.read_text() == before_shared
+    assert not (tmp_path / "shared-settings.json.before-fleet-deny").exists()
