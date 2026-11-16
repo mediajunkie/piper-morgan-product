@@ -66,10 +66,27 @@ if [ "${1:-}" = "--build" ]; then
     exit 1
   fi
   mkdir -p "$base" 2>/dev/null || exit 1
-  echo "ensure-pytest-env: building $env from $req (one-time, per host/key)..." >&2
-  "$interp" -m venv "$env" >/dev/null 2>&1 && "$env/bin/pip" install -q -r "$req" >/dev/null 2>&1
+  # Build in a staging folder and move it into place only when the install is whole (Pard's
+  # finding, 2026-11-15). Building at the final path made `bin/python` exist from the first
+  # second, so the verify path answered "resolves" while pip was still installing, and a pip
+  # that failed partway was reported as success. The move is safe for callers because they run
+  # "$py" -m pytest, never a console script with the staging path in its shebang.
+  stage="$base/.building-$(basename "$env")-$$"
+  echo "ensure-pytest-env: building $env from $req in $stage (one-time, per host/key)..." >&2
+  if ! "$interp" -m venv "$stage" >/dev/null 2>&1 \
+     || ! "$stage/bin/pip" install -q -r "$req" >/dev/null 2>&1 \
+     || ! "$stage/bin/pip" check >/dev/null 2>&1; then
+    echo "ensure-pytest-env --build: install failed or pip check found broken requirements. Nothing was put in place; the staging folder is $stage. Ask Pard." >&2
+    exit 1
+  fi
+  if [ -e "$env" ]; then
+    # Another build finished first. Keep theirs.
+    echo "$py"
+    exit 0
+  fi
+  mv "$stage" "$env" 2>/dev/null || { echo "ensure-pytest-env --build: could not move $stage into place. Ask Pard." >&2; exit 1; }
   if [ ! -x "$py" ]; then
-    echo "ensure-pytest-env --build: install failed — env not usable. Ask Pard." >&2
+    echo "ensure-pytest-env --build: env moved into place but $py is not runnable. Ask Pard." >&2
     exit 1
   fi
   echo "$py"
