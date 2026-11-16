@@ -287,7 +287,9 @@ REM ============================================================================
     )
 
     if exist docker-compose.yml (
-        docker compose up -d
+        rem Issue 2386: the three data services by name. A second copy on this machine
+        rem sets PIPER_STACK and its ports in .env first (see docker-compose.yml).
+        docker compose up -d postgres redis chromadb
         if errorlevel 1 (
             call :print_error "Failed to start Docker containers"
             exit /b 1
