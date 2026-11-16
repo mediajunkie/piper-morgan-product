@@ -289,10 +289,15 @@ def _parse(args) -> None:
         r = json.loads(line)
         if r["custom_id"] in reqs:
             results[r["custom_id"]] = r
+    # --arg NAME (repeatable) adds a column: what the router put in args[NAME] on
+    # each reply (arm B, Arch 2026-11-14: count how often `project` is emitted, and
+    # with what).
+    arg_names = list(getattr(args, "arg", None) or [])
     rows = []
     for cid, req in reqs.items():
         res = results.get(cid)
         route, conf, served, err = "ERROR", None, "unresolved", None
+        arg_values: dict = {}
         if res is None:
             err = "no result"
         elif res["type"] != "succeeded":
@@ -312,6 +317,8 @@ def _parse(args) -> None:
                 op = parsed["operation"]
                 route = "NONE" if op == NONE_ROUTE else "CLARIFY" if op == CLARIFY_ROUTE else op
                 conf = parsed.get("confidence")
+                reply_args = parsed.get("args") or {}
+                arg_values = {name: reply_args.get(name) for name in arg_names}
         rows.append(
             {
                 "phrase": req["phrase"],
@@ -319,6 +326,7 @@ def _parse(args) -> None:
                 "confidence": conf,
                 "served": served,
                 "error": err,
+                "args": arg_values,
             }
         )
     by_phrase: dict = defaultdict(list)
@@ -333,15 +341,25 @@ def _parse(args) -> None:
         f"{sum(1 for r in rows if r['route'] == 'ERROR')} ERROR · served: "
         + "; ".join(f"{k} ({v}/{len(rows)})" for k, v in served_c.most_common()),
         "",
-        "| phrase | routes (count) | confidence range |",
-        "|---|---|---|",
+        "| phrase | routes (count) | confidence range |"
+        + "".join(f" args.{name} (count) |" for name in arg_names),
+        "|---|---|---|" + "---|" * len(arg_names),
     ]
     for phrase, rs in by_phrase.items():
         counts = Counter(r["route"] for r in rs)
         spread = ", ".join(f"`{k}` ×{v}" for k, v in counts.most_common())
         confs = [r["confidence"] for r in rs if isinstance(r["confidence"], (int, float))]
         rng = f"{min(confs):.2f}–{max(confs):.2f}" if confs else "-"
-        lines.append(f"| {phrase} | {spread} | {rng} |")
+        line = f"| {phrase} | {spread} | {rng} |"
+        for name in arg_names:
+            values = Counter(
+                "(none)"
+                if r["args"].get(name) in (None, "")
+                else json.dumps(r["args"][name], ensure_ascii=False)
+                for r in rs
+            )
+            line += " " + ", ".join(f"{k} ×{v}" for k, v in values.most_common()) + " |"
+        lines.append(line)
     Path(args.out).write_text("\n".join(lines) + "\n")
     print(f"wrote {args.out}")
 
@@ -446,6 +464,12 @@ def main() -> int:
     p.add_argument("--requests", required=True)
     p.add_argument("--results", required=True)
     p.add_argument("--out", required=True)
+    p.add_argument(
+        "--arg",
+        action="append",
+        default=[],
+        help="add a column with the router's args[NAME] on each reply (repeatable)",
+    )
     a = ap.parse_args()
     {
         "render": _render,
