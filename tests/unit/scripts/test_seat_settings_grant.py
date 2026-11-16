@@ -182,3 +182,43 @@ def test_prepare_adds_the_deny_and_the_mode_with_no_key(seat, capsys):
     # running it twice changes nothing
     assert mod.main(["--root", str(root), "prepare", "--seat", "lead"]) == 0
     assert json.loads(path.read_text())["permissions"]["deny"].count(mod.SELF_DENY) == 1
+
+
+def test_fleet_deny_adds_two_rules_and_changes_nothing_else(tmp_path, capsys):
+    mod = _load()
+    shared = tmp_path / "settings.json"
+    before = {
+        "cleanupPeriodDays": 3650,
+        "env": {"FLY_NO_UPDATE_CHECK": "1"},
+        "permissions": {"allow": ["Bash(x)"]},
+    }
+    shared.write_text(json.dumps(before, indent=2) + "\n")
+    shared.chmod(0o644)
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    after = json.loads(shared.read_text())
+    assert after["permissions"]["deny"] == list(mod.FLEET_DENIES)
+    assert after["permissions"]["allow"] == ["Bash(x)"] and after["env"] == before["env"]
+    assert after["cleanupPeriodDays"] == 3650
+    assert stat.S_IMODE(shared.stat().st_mode) == 0o644  # the shared file keeps its mode
+    assert "added 2 deny rule(s)" in capsys.readouterr().out
+    # a second run adds nothing and keeps existing denies
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    assert json.loads(shared.read_text())["permissions"]["deny"] == list(mod.FLEET_DENIES)
+    assert "added 0 deny rule(s)" in capsys.readouterr().out
+
+
+def test_fleet_deny_keeps_an_existing_deny_and_refuses_a_missing_or_broken_file(tmp_path):
+    mod = _load()
+    shared = tmp_path / "settings.json"
+    shared.write_text(json.dumps({"permissions": {"deny": ["Read(~/.cloudflare/**)"]}}))
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    assert json.loads(shared.read_text())["permissions"]["deny"] == [
+        "Read(~/.cloudflare/**)",
+        *mod.FLEET_DENIES,
+    ]
+    with pytest.raises(SystemExit):
+        mod.main(["fleet-deny", "--shared-settings", str(tmp_path / "absent.json")])
+    shared.write_text("{ not json")
+    with pytest.raises(SystemExit):
+        mod.main(["fleet-deny", "--shared-settings", str(shared)])
+    assert shared.read_text() == "{ not json"
