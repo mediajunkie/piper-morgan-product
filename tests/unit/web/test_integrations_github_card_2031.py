@@ -92,7 +92,9 @@ def _renderer(body: str) -> str:
             "// Status icons for overall health"
         )
     ]
-    start = body.index("function renderIntegrations(integrations) {")
+    # From the #2375 constants (the connected GitHub card's link reads them) through
+    # the renderer.
+    start = body.index("const GITHUB_REPOSITORIES_URL")
     end = body.index("async function testConnection(integrationName)")
     return consts + body[start:end]
 
@@ -180,6 +182,8 @@ def test_rendered_connected_card(client, body):
     assert "Connected as octocat. Not the right account? Disconnect, then connect again." in html
     assert 'id="test-btn-github"' in html and "disabled" not in html
     assert 'id="reconnect-btn-github"' not in html
+    # #2375: this card's third button is the way to the repository page, not "Settings".
+    assert 'id="github-repositories-link"' in html and "Settings" not in html
     # #2187 (CXO 14:32 10-28): a connected card with no Test on record says so on its
     # health line; a binding alone never renders as a checked connection. No warning glyph.
     assert "status-detail" in html and "Not checked yet. Press Test." in html
