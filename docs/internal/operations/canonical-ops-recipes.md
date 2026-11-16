@@ -251,13 +251,18 @@ now remembers a pass:
 - **It is honoured for 30 minutes**, prints `already passed on this content N min ago`, and logs
   `outcome=gates-cached` or `outcome=smoke-cached` in `piper-prepush-smoke.log`.
 - **`PIPER_PREPUSH_NO_CACHE=1`** forces a full run.
-- **What it doesn't re-check:** a file another seat pushed under dated logs or mail inside the
-  window. Three gates read file names there. Such a file is already on main, and CI's run on main
-  reports it.
+- **The three lints that read dated logs and mail still run on a remembered pass** (the mailbox
+  bearer lint, which reads file contents, and the mailbox and Windows filename lints; about two
+  seconds, `scripts/run-push-gates.sh --logs-and-mail`). A failure blocks the push. Lead's
+  condition: a seat's own log lines added after a pass must not go unread.
+- **No speed-up with an untracked or modified file in the worktree.** The pass isn't recorded
+  then, so the retry runs in full. That is the rule working, not the fix failing.
+- **The pass file is shared by every worktree** (it is in the git common folder). A pass one seat
+  records serves another seat pushing the same content.
 
 Tested by `scripts/git-hooks/test-remembered-pass.sh <empty scratch dir> scripts/git-hooks/pre-push`
 (a bare remote, a seat clone with stand-in gates and smoke, and a second clone that lands a log
-while the gates run): 10 cases.
+while the gates run): 14 checks.
 
 ## 6. "Is it my diff or the environment?" — the `ab-a-isolation` skill (Lead, 2026-08-15; concept recorded 2026-10-14)
 

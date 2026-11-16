@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Synthetic end-to-end test of the remembered pass in scripts/git-hooks/pre-push (standing row 9u).
 # Usage: scripts/git-hooks/test-remembered-pass.sh <new empty scratch dir> scripts/git-hooks/pre-push
-# Builds a bare remote and a seat clone whose gates and smoke are stand-ins that count their runs.
+# Builds a bare remote and a seat clone whose gates and smoke are stand-ins that count their runs,
+# and a second clone that lands a log while the gates run (the lost race).
 # Touches nothing outside the scratch dir.
 # Concept: docs/internal/operations/canonical-ops-recipes.md (section 5, pushing to main under contention)
 set -u
@@ -15,7 +16,8 @@ ok()  { echo "PASS $1"; pass=$((pass+1)); }
 bad() { echo "FAIL $1"; fail=$((fail+1)); }
 gates_runs() { wc -l < "$S/gates.count" 2>/dev/null | tr -d ' ' || echo 0; }
 smoke_runs() { wc -l < "$S/smoke.count" 2>/dev/null | tr -d ' ' || echo 0; }
-: > "$S/gates.count"; : > "$S/smoke.count"
+light_runs() { wc -l < "$S/light.count" 2>/dev/null | tr -d ' ' || echo 0; }
+: > "$S/gates.count"; : > "$S/smoke.count"; : > "$S/light.count"
 
 git init -q --bare -b main remote.git
 git init -q -b main seed
@@ -25,6 +27,15 @@ mkdir -p scripts tests dev/2026/11/16 dev/active mailboxes/x/inbox
 # Stand-in gates: count the run; fail when the tree holds a file named FAIL-GATE.
 cat > scripts/run-push-gates.sh <<EOS
 #!/usr/bin/env bash
+# The narrowed run (the three lints that read dated logs and mail): counted on its own, and it
+# fails when a dated log or a mail file holds the marker CREDENTIAL-SHAPE.
+case " \$* " in *" --logs-and-mail "*)
+  echo run >> "$S/light.count"
+  if grep -rq "CREDENTIAL-SHAPE" dev/2026 mailboxes 2>/dev/null; then
+    echo "FAIL  stand-in bearer lint"; echo "run-push-gates: 3 gates, 2 passed, 1 failed, 0 unchecked"; exit 1
+  fi
+  echo "run-push-gates: 3 gates, 3 passed, 0 failed, 0 unchecked"; exit 0 ;;
+esac
 echo run >> "$S/gates.count"
 # While the gates "run", another seat lands a dated log and a mail file on main (the race).
 if [ -e "$S/race" ]; then
@@ -63,7 +74,7 @@ if [ $rc -ne 0 ] && [ "$(gates_runs)" = 1 ] && [ "$(smoke_runs)" = 1 ]; then ok 
 # T2: the retry after merging another seat's log is not re-run, and lands.
 git fetch -q origin; git merge -q --no-edit origin/main
 out=$(git push origin HEAD:main 2>&1); rc=$?
-if [ $rc -eq 0 ] && [ "$(gates_runs)" = 1 ] && [ "$(smoke_runs)" = 1 ] && printf '%s' "$out" | grep -q "gates already passed" && printf '%s' "$out" | grep -q "smoke already passed"; then ok "T2 retry after a log-only merge: remembered, not re-run, landed"; else bad "T2 rc=$rc gates=$(gates_runs) smoke=$(smoke_runs): $out"; fi
+if [ $rc -eq 0 ] && [ "$(gates_runs)" = 1 ] && [ "$(smoke_runs)" = 1 ] && [ "$(light_runs)" = 1 ] && printf '%s' "$out" | grep -q "gates already passed" && printf '%s' "$out" | grep -q "smoke already passed"; then ok "T2 retry after a log-only merge: remembered, not re-run, landed"; else bad "T2 rc=$rc gates=$(gates_runs) smoke=$(smoke_runs): $out"; fi
 grep -q "outcome=gates-cached" "$(git rev-parse --git-common-dir)/piper-prepush-smoke.log" && grep -q "outcome=smoke-cached" "$(git rev-parse --git-common-dir)/piper-prepush-smoke.log" && ok "T2b both skips are logged" || bad "T2b log lines"
 
 # T3: any change outside dated logs and mail makes a new key and a full run.
@@ -113,6 +124,24 @@ sed -i.bak -E 's/^ts=[0-9]+ /ts=1000 /' "$pf"
 g=$(gates_runs)
 git push -q origin HEAD:refs/heads/side7 2>/dev/null
 if [ "$(gates_runs)" = $((g+1)) ]; then ok "T9 a pass outside the 30-minute window is run again"; else bad "T9 gates=$(gates_runs) g=$g"; fi
+
+# T10 (Lead's condition): a retry whose only change is a dated log holding a credential-shaped
+# string is blocked by the narrowed lints, and the full gates are still not re-run.
+echo h > tests/test_h.py; git add -A; git commit -qm code-h
+git push -q origin HEAD:refs/heads/side8 2>/dev/null
+g=$(gates_runs); l=$(light_runs)
+echo "pasted CREDENTIAL-SHAPE here" >> dev/2026/11/16/a-log.md; git add -A; git commit -qm "log with a credential shape"
+out=$(git push origin HEAD:refs/heads/side9 2>&1); rc=$?
+if [ $rc -ne 0 ] && [ "$(gates_runs)" = "$g" ] && [ "$(light_runs)" = $((l+1)) ] && printf '%s' "$out" | grep -q "reads session logs and mail FAILED"; then ok "T10 a credential shape in a dated log blocks a remembered pass; full gates not re-run"; else bad "T10 rc=$rc gates=$(gates_runs) g=$g light=$(light_runs) l=$l: $out"; fi
+grep -q "outcome=gates-cached-lint-fail" "$(git rev-parse --git-common-dir)/piper-prepush-smoke.log" && ok "T10b the block is logged" || bad "T10b log line"
+
+# T11: with the string removed, the same remembered pass lets the push through.
+sed -i.bak '/CREDENTIAL-SHAPE/d' dev/2026/11/16/a-log.md; rm -f dev/2026/11/16/a-log.md.bak; git add -A; git commit -qm "log cleaned"
+out=$(git push origin HEAD:refs/heads/side9 2>&1); rc=$?
+if [ $rc -eq 0 ] && [ "$(gates_runs)" = "$g" ]; then ok "T11 cleaned log: remembered pass honoured, landed"; else bad "T11 rc=$rc gates=$(gates_runs) g=$g: $out"; fi
+
+# T12: the not-checked-out warning is logged.
+grep -q "outcome=not-checked-out" "$(git rev-parse --git-common-dir)/piper-prepush-smoke.log" && ok "T12 a push of a commit that is not checked out is logged" || bad "T12 log line"
 
 echo "remembered-pass: $pass passed, $fail failed"
 [ "$fail" -eq 0 ]
