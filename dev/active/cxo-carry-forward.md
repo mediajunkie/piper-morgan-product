@@ -1,8 +1,17 @@
 ---
-last_updated: 2026-11-14
+last_updated: 2026-11-15
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward: 2026-11-15 21:31 STOP (11-14, 11-13, 11-11 and 11-08 blocks below still stand except where this one says otherwise)
+
+**Serving:** beta `460b837a47` (17:22: #2374, #2376, #2375 first half); MCP `dfebe7f0b7` (xian's deploy 18:50). Main CI 12 of 12 green at 21:31 (Tests was red 20:11 on a shallow checkout, fixed by `1ea8e7663a`). Arch GRANTED one promotion from 07:00 11-16 (six conditions) carrying the card fix `72b7428e23`, #2375 revisions `144745bf7d` and #2382 (landed `40523ea6b9`).
+**Done 11-15 (rulings; served only where stated):** #2342 row 2 card half PASS (xian's quoted screenshot); row 3 PASS (PA's 15:52 read); #2374 connector reach PASS (PA 18:50: 366 to 1). #2374 words (named-repo line gains "If it's yours"; too-many line conditional); #2376 words (stored-token line follows Arch's read; no add-token form on App accounts; four lines passed; served for App/no-token only); #2375: floating Settings link FAIL (becomes a card), card label not met as served (Lead's defect, fixed on main), add-another button + sentence, label B "Manage repositories", no-slug note drops the add-another clause. Filed #2375. xian's "why not MCP": one-trip connect answered to Exec (Arch: nonce condition; #2380). Screen atlas #2381: my state matrix draft 1 at docs/internal/design/screen-atlas-state-matrix-2026-11-15.md; Web captures; ADR-084 (seat sign-in helper, HOST bounds). practice.md header softened and row 13 cut back (applied c531cae276; xian's yes pending via Docs). Arm B bar: my view sent (0-of-6, T1 and T4 required); Arch set it on 2301.
+**Owed by me:** Tier 1 voice spec final, Mon 11-16 12:00 PST (any mail naming it needs --due). Leak-list read of final 2297/2301 strings at the sha that merges. Served judging (needs the atlas or xian's screen): #2375 click-path and card after promotion; #2376 token-on-file and no-App account kinds; #2374 chat turns and named-repo line; #2342 row 2 chat and connector, row 4; #2366, #2367, #2274, #2268, #2294 case 2, #2295, #2271, #2328, Account flags. Known-limits row for the connector first-read "Connection closed" waits on PA's clean-build read (fix #2382 served after MCP deploy). Atlas state-matrix corrections from Web.
+**Waiting on xian via Exec:** seat-harness card (nine one-time rows; seat sign-in helper, test GitHub machine account, seat key; xian: no more manual workarounds, 19:11); `web-seed-1386` decision is now inside that route; Tier 1 approval card (practice.md; the conduct layer and seven procedures are CIO's/Lead's); GitHub install steps done; MCP deploy for #2382; older items (`fly auth login`, #2325 admin call, `clear_todos` flip, #2256, Q8).
+**Held builds:** `lead/pathb-armb-candidate` `6a9250e6d1` (2297+2301) for arm B's screen, paid runs stopped until the seat-key route works; 2376 and 2374 landed.
+**label:UX open:** 44 (query limit 100). Filed today: #2375. Next START (11-16 06:31): Step 0 check for the 11-15 DAY-CLOSED marker; beta check after the 07:00 promotion.
 
 # CXO carry-forward: 2026-11-14 21:31 STOP (11-13, 11-11 and 11-08 blocks below still stand except where this one says otherwise)
 

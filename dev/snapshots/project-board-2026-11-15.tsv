@@ -2173,3 +2173,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2382	OPEN	Production		MCP server is stateful: the first connector read after a new process fails 'Connection closed' (run stateless)	architecture		
 2383	OPEN	Production		Live-call spend cap for seat runs: the binder refuses to start without max_usd; running total at the spend chokepoint (ADR-084 build item)			
 2384	OPEN	Production		MCP deploy job: workflow_dispatch deploy of main's sha to the MCP app with an app-scoped token in a main-only environment (ADR-084 D6)			
+2385	OPEN	Production		GitHub personal-token clear is written twice: Disconnect and Remove token should share one function			
