@@ -229,6 +229,50 @@ async def _disconnect_github(user_id: str) -> tuple[list[str], bool]:
     return remaining, revoke_failed
 
 
+async def remove_github_personal_token(user_id: str) -> list[str]:
+    """#2376 (Arch 2026-11-15): remove the account's own GitHub personal token and
+    nothing else. The OAuth binding and its grant are untouched, and nothing is revoked
+    at GitHub (a personal token is the person's own credential, ADR-081 D4).
+
+    The same three copies ``_disconnect_github`` clears: the Settings keychain copy,
+    the at-rest row, and the key service's keychain copy. Returns what could not be
+    verified gone (empty when the token is gone). The read-back is the resolver's own
+    read (``account_pat``): gone means it finds no token on either leg."""
+    from services.infrastructure.keychain_service import KeychainService
+
+    remaining: list[str] = []
+    keychain = KeychainService()
+    if not await _keychain_copy_gone(keychain, "github_token", user_id):
+        remaining.append("keychain_pat")
+    try:
+        from services.connectors.github_pat_store import delete_user_pat_at_rest
+        from services.database.session_factory import AsyncSessionFactory
+
+        async with AsyncSessionFactory.session_scope() as session:
+            await delete_user_pat_at_rest(session, user_id)
+    except Exception as e:
+        logger.warning("github_pat_at_rest_clear_failed", error=str(e))
+        remaining.append("pat_at_rest")
+    if not await _keychain_copy_gone(keychain, "github", user_id):
+        remaining.append("keychain_pat_key_service")
+    try:
+        from services.integrations.github.config_service import GitHubConfigService
+
+        GitHubConfigService().clear_cache()
+    except Exception as e:
+        logger.warning("github_config_cache_clear_failed", error=str(e))
+        remaining.append("config_cache")
+    try:
+        from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+        if await GitHubMCPSpatialAdapter.account_pat(user_id):
+            remaining.append("token_still_readable")
+    except Exception as e:
+        logger.warning("github_pat_remove_readback_failed", error=str(e))
+        remaining.append("token_unverified")
+    return remaining
+
+
 async def _disconnect_slack(user_id: str) -> tuple[list[str], bool]:
     from services.infrastructure.keychain_service import KeychainService
 
