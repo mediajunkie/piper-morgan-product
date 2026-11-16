@@ -2184,3 +2184,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2393	OPEN	Production		Per-seat local databases on the shared Postgres server (ADR-084 D5)	architecture		
 2394	OPEN	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-11-16	documentation,fly-audit,maintenance,weekly-audit		
 2395	OPEN	Production		Unit tests that read a live credential store or database: six fixed in test_slack_config.py, six more in the Slack folder, the rest unmeasured			
+2396	OPEN	Production		No per-test time limit in the full suite: a hung test would hold the run for an hour and never name itself			
