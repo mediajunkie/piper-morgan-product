@@ -19,6 +19,10 @@ A seat checks that the key reached its session with no file read at all:
     scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
 
 Nothing here removes or loosens a deny. ``add-allow`` adds one exact rule and refuses a wildcard.
+
+Owner:   CIO
+Review:  2026-12-29 (with the methodology audit), or when ADR-084 is accepted or dropped
+Concept: docs/internal/operations/adr-084-one-time-steps.md
 """
 
 from __future__ import annotations
