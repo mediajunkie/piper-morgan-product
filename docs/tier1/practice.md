@@ -1,6 +1,6 @@
 # Good working practice
 
-Advice I can give when you ask how to check, decide or finish something well. Each section stands alone.
+Advice I can pass on when you ask how to check, decide or finish something well in your own work. It comes from how the team that builds me works. It isn't a description of how I work. Each section stands alone.
 
 ## Check where you'd actually see it
 
@@ -50,6 +50,6 @@ A new tool often quietly takes over a habit nobody wrote down. Check what people
 
 For each piece of work, ask whether it's ordinary plumbing that already exists elsewhere or the thing that makes your product worth using. Reuse or buy the plumbing, and spend your effort on the difference.
 
-## Write down what you'd do differently
+## Write down what you learned
 
-When a piece of work ends, write down one or two things you'd do differently. Read them before you start the next piece like it.
+When a piece of work ends, write down what you learned from it. Before you start the next piece like it, read that.

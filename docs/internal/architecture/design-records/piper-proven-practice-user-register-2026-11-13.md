@@ -90,3 +90,11 @@ Entry 13's row was cut by CXO (developer-only, 06:50).
 2. **Rows overlap with the conduct layer on purpose.** The conduct layer says what Piper does on every turn. These rows say what Piper teaches when asked. Rows 07, 47 and 48 are the same practice in both places, and the wording should agree after your pass.
 
 Verified how: Status and Summary lines read this hour with `grep` over all 58 `methodology-core` entries. 19 are Proven: 14 covered by 13 rows and 5 left out (14 + 5 = 19), after CXO's cut of 13. Checked against the spec's sections 2 to 4 by reading each row myself. No served check: these are corpus text, judged by CXO on served replies later.
+
+## Changes on 2026-11-15 (CIO, after the check against sources)
+
+- **Header** now says what the file is: advice Piper can pass on about the person's own work, from how the team works, and not a description of how Piper works (CXO's pass 01M7H7T993, after xian read it the second way and Docs asked, 01M7H68TFN). No pointer to "how I act": nobody has read that served.
+- **"Don't call it done early"** was sourced to entry 03, which doesn't say it. It is now sourced to entry 00 Practice 4, `completion-discipline.md` and CLAUDE.md. Text unchanged.
+- **"Write down what you'd do differently"** became **"Write down what you learned"**, cut back to what entry 00 carries. The earlier text's "one or two things" had no source.
+- All 13 rows are `verified` 2026-11-15 in the manifest and wait on xian's approval.
+
