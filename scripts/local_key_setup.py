@@ -63,7 +63,7 @@ NO_TERMINAL = (
 DB_HELP = (
     "The local database did not answer, or it has not been set up yet.\n"
     "From the repository folder run:\n"
-    "    docker compose up -d\n"
+    "    docker compose up -d postgres redis chromadb\n"
     "    alembic upgrade head\n"
     "then run this command again."
 )

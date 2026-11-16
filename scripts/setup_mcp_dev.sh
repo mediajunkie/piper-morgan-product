@@ -142,14 +142,14 @@ if command_exists docker; then
     if [ $? -eq 0 ]; then
         print_status 0 "PostgreSQL running"
     else
-        print_status 1 "PostgreSQL not running - run 'docker-compose up -d'"
+        print_status 1 "PostgreSQL not running - run 'docker compose up -d postgres'"
     fi
 
     docker ps | grep -q piper-redis
     if [ $? -eq 0 ]; then
         print_status 0 "Redis running"
     else
-        print_status 1 "Redis not running - run 'docker-compose up -d'"
+        print_status 1 "Redis not running - run 'docker compose up -d redis'"
     fi
 else
     print_status 1 "Docker not installed"
@@ -191,7 +191,7 @@ echo "   - .env.mcp.example (configuration template)"
 echo "   - scripts/run_mcp_dev.sh (dev launcher)"
 echo ""
 echo "🔄 Next steps:"
-echo "   1. Start services: docker-compose up -d"
+echo "   1. Start services: docker compose up -d postgres redis chromadb"
 echo "   2. Activate venv: source venv/bin/activate"
 echo "   3. Run dev server: ./scripts/run_mcp_dev.sh"
 echo "   4. Begin PM-033a implementation"
