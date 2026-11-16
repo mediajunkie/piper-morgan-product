@@ -114,15 +114,17 @@ def test_a_run_that_reaches_its_cap_has_its_next_call_refused_and_nothing_more_s
     # max_tokens 1000 is about $0.005. After two calls $0.21 is counted, so a $0.212 cap
     # takes two calls and refuses the third.
     client = stand_in()
-    with binder.developer_keys_bound(providers=("anthropic",), max_usd=0.212, planned_calls=3):
-        assert _call() == "ok"
-        assert _call() == "ok"
-        with pytest.raises(spend_cap.SpendCapReached) as exc:
-            _call()
-        assert "Nothing was sent" in str(exc.value)
-        with pytest.raises(spend_cap.SpendCapReached):
-            _call()
+    with pytest.raises(SystemExit) as exit_info:
+        with binder.developer_keys_bound(providers=("anthropic",), max_usd=0.212, planned_calls=3):
+            assert _call() == "ok"
+            assert _call() == "ok"
+            with pytest.raises(spend_cap.SpendCapReached) as exc:
+                _call()
+            assert "Nothing was sent" in str(exc.value)
+            with pytest.raises(spend_cap.SpendCapReached):
+                _call()
     assert client.sent == 2
+    assert "2 calls were refused and not sent" in str(exit_info.value)
     out = capsys.readouterr().out
     assert out.index("PLANNED: 3 model calls on anthropic. Cap $0.21.") < out.index("COST:")
 
@@ -173,13 +175,14 @@ def test_a_response_with_no_usage_is_counted_at_its_upper_estimate(bound_env, st
 
 def test_a_model_with_no_price_row_is_refused_and_not_sent(bound_env, stand_in):
     client = stand_in()
-    with binder.developer_keys_bound(providers=("anthropic",), max_usd=1.0):
-        with pytest.raises(spend_cap.SpendCapReached) as exc:
-            asyncio.run(
-                LLMClient.__new__(LLMClient)._anthropic_complete(
-                    "hello", {**HAIKU, "model": LLMModel.GPT4}
+    with pytest.raises(SystemExit):
+        with binder.developer_keys_bound(providers=("anthropic",), max_usd=1.0):
+            with pytest.raises(spend_cap.SpendCapReached) as exc:
+                asyncio.run(
+                    LLMClient.__new__(LLMClient)._anthropic_complete(
+                        "hello", {**HAIKU, "model": LLMModel.GPT4}
+                    )
                 )
-            )
     assert "no price recorded" in str(exc.value)
     assert client.sent == 0
 
@@ -189,8 +192,9 @@ def test_calls_in_flight_are_counted_so_two_cannot_pass_the_cap_together():
     first = cap.reserve("claude-haiku-4-5", 30, 1000)  # about $0.005 held
     with pytest.raises(spend_cap.SpendCapReached):
         cap.reserve("claude-haiku-4-5", 30, 1000)
+    assert cap.refused == 1 and cap.reserved_usd == pytest.approx(first.upper)
     cap.settle(first, {"input_tokens": 10, "output_tokens": 10})
-    cap.reserve("claude-haiku-4-5", 30, 1000)
+    assert cap.reserved_usd == 0
 
 
 def test_embeddings_are_refused_under_a_cap_and_untouched_without_one():
@@ -198,6 +202,127 @@ def test_embeddings_are_refused_under_a_cap_and_untouched_without_one():
     with spend_cap.spend_cap(1.0):
         with pytest.raises(spend_cap.SpendCapUncounted):
             spend_cap.refuse_uncounted("an OpenAI embedding call")
+
+
+# --- a refusal ends the run (Arch's first required change, 2026-11-16) --------------
+
+
+def test_a_cap_refusal_passes_through_complete_and_no_other_provider_is_tried(
+    bound_env, stand_in, monkeypatch
+):
+    # Both providers are bound and consented, so a fallback to OpenAI is open. Without
+    # the pass-through, the refused Anthropic call would be answered by the stand-in
+    # below: a different model, inside a screen.
+    monkeypatch.setenv("OPENAI_API_KEY", "fake-env-openai")
+    client = stand_in()
+    llm = LLMClient()
+    tried = []
+
+    async def _openai(*args, **kwargs):
+        tried.append("openai")
+        return "answered by another provider"
+
+    monkeypatch.setattr(llm, "_openai_complete", _openai)
+    monkeypatch.setattr(
+        llm._config_service, "get_default_provider", lambda user_id=None: "anthropic"
+    )
+    monkeypatch.setattr(
+        llm._config_service,
+        "get_configured_providers",
+        lambda user_id=None: ["anthropic", "openai"],
+    )
+    with pytest.raises(SystemExit) as exit_info:
+        with binder.developer_keys_bound(providers=("anthropic", "openai"), max_usd=0.000001):
+            with pytest.raises(spend_cap.SpendCapReached):
+                asyncio.run(llm.complete(task_type="intent_classification", prompt="hello"))
+    assert client.sent == 0, "the refused call was sent"
+    assert tried == [], "a cap refusal was treated as a provider failure and fell back"
+    assert "stopped at its $0.00 cap" in str(exit_info.value)
+
+
+def test_the_binder_exits_non_zero_when_a_refusal_was_swallowed_on_the_way(bound_env, stand_in):
+    stand_in()
+    with pytest.raises(SystemExit) as exit_info:
+        with binder.developer_keys_bound(providers=("anthropic",), max_usd=0.000001):
+            try:
+                _call()
+            except Exception:
+                pass  # a script's own row handler swallowing the refusal
+    message = str(exit_info.value)
+    assert exit_info.value.code not in (0, None)
+    assert "1 calls were refused and not sent" in message
+    assert "do not count its rows" in message
+
+
+def test_after_one_refusal_every_later_call_is_refused_too():
+    cap = spend_cap.SpendCap(0.006)
+    cap.settle(cap.reserve("claude-haiku-4-5", 30, 1000), {"input_tokens": 1, "output_tokens": 1})
+    with pytest.raises(spend_cap.SpendCapReached):
+        cap.reserve("claude-haiku-4-5", 30_000, 1000)  # too big for what is left
+    with pytest.raises(spend_cap.SpendCapReached) as exc:
+        cap.reserve("claude-haiku-4-5", 3, 1)  # would fit, but the run is over
+    assert "the run is over" in str(exc.value)
+
+
+# --- the ten-dollar figure (Arch's second required change) --------------------------
+
+RELAY_ID = "01M7JBP51M70C9GGYZT9AEGEBX"  # the shape of a mail id; no approval is implied
+
+
+def test_a_cap_above_ten_dollars_refuses_without_the_relay_id(bound_env, stand_in):
+    client = stand_in()
+    with pytest.raises(SystemExit) as exc:
+        with binder.developer_keys_bound(providers=("anthropic",), max_usd=10.01):
+            pytest.fail("the block ran")
+    assert "--approved-by" in str(exc.value) and "$10.00" in str(exc.value)
+    assert client.sent == 0
+
+
+def test_ten_dollars_exactly_needs_no_approval(bound_env, stand_in, capsys):
+    stand_in()
+    with binder.developer_keys_bound(providers=("anthropic",), max_usd=10.0):
+        pass
+    assert "on approval" not in capsys.readouterr().out
+
+
+def test_a_cap_above_ten_dollars_runs_with_the_relay_id_and_prints_it(bound_env, stand_in, capsys):
+    stand_in()
+    with binder.developer_keys_bound(
+        providers=("anthropic",), max_usd=25.0, approved_by=RELAY_ID, planned_calls=4
+    ):
+        pass
+    planned = [ln for ln in capsys.readouterr().out.splitlines() if ln.startswith("PLANNED:")][0]
+    assert f"Cap $25.00. Above $10.00 on approval {RELAY_ID}." in planned
+
+
+@pytest.mark.parametrize("bad", ("yes", "xian said ok", "01M7", ""))
+def test_an_approval_that_is_not_a_mail_id_refuses(bound_env, bad):
+    with pytest.raises(SystemExit):
+        with binder.developer_keys_bound(providers=("anthropic",), max_usd=25.0, approved_by=bad):
+            pytest.fail("the block ran")
+
+
+def test_pop_approved_by_flag():
+    argv = ["prog", "--approved-by", RELAY_ID, "x"]
+    assert binder.pop_approved_by_flag(argv) == RELAY_ID and argv == ["prog", "x"]
+    argv = ["prog", f"--approved-by={RELAY_ID}"]
+    assert binder.pop_approved_by_flag(argv) == RELAY_ID and argv == ["prog"]
+    assert binder.pop_approved_by_flag(["prog"]) is None
+
+
+def test_every_binder_user_passes_the_approval_through():
+    import ast
+
+    for path in sorted(SCRIPTS.glob("*.py")):
+        if path.name == "dev_key_binding.py":
+            continue
+        for node in ast.walk(ast.parse(path.read_text())):
+            if (
+                isinstance(node, ast.Call)
+                and getattr(node.func, "id", "") == "developer_keys_bound"
+            ):
+                names = {kw.arg for kw in node.keywords}
+                assert "approved_by" in names, f"{path.name}:{node.lineno} can't carry an approval"
 
 
 # --- a served request is untouched --------------------------------------------------

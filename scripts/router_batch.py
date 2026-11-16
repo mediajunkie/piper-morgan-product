@@ -219,7 +219,11 @@ def _submit(args) -> None:
     # The batch is bounded by check_cap above, before it is sent. The binder takes the
     # same figure; a batch makes no live call, so its PLANNED and COST lines are ours.
     with developer_keys_bound(
-        providers=("anthropic",), max_usd=args.cap_usd, announce=False, require=True
+        providers=("anthropic",),
+        max_usd=args.cap_usd,
+        approved_by=getattr(args, "approved_by", None),
+        announce=False,
+        require=True,
     ):
         from services.llm.request_key import anthropic_client_for_request
 
@@ -455,6 +459,11 @@ def main() -> int:
         type=float,
         required=True,
         help="the screen's spend cap in USD; a batch that could pass it is refused unsent",
+    )
+    s.add_argument(
+        "--approved-by",
+        default=None,
+        help="for a cap above $10: the mail id of Exec's relay of xian's approval (ADR-084 D2)",
     )
     s.add_argument(
         "--ledger",
