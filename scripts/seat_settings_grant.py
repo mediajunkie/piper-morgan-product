@@ -226,10 +226,15 @@ def grant_key(seat: str, name: str, root: Path, shared: Path) -> int:
     print("   c. HOST tries to Read a made-up .env that CIO places at the top of the CIO worktree.")
     print("   Each must be REFUSED. If a seat needs a restart to pick up the new rules, do it now;")
     print("   this command will wait.")
-    answer = input(
-        "   When Exec tells you all three were refused, type  refused  and press Return (anything else stops here): "
+    print(
+        "   You can also stop here (Return) and run this same line again later; done parts are skipped."
     )
-    if answer.strip().lower() != "refused":
+    answer = input(
+        "   Type the three results as Exec gives them, in order a b c (for example: refused refused refused): "
+    )
+    # HOST, 2026-11-15: a bare Return or one word would let it through without anyone reading the
+    # results. All three, each exactly "refused", or it stops before the key.
+    if answer.strip().lower().split() != ["refused", "refused", "refused"]:
         print("Stopped before any key. The deny rules stay in place (they only add protection).")
         print("Nothing secret was written. Tell Exec what the seats reported.")
         return 2

@@ -48,11 +48,11 @@ cd ~/Development/piper-morgan-product && scripts/seat_settings_grant.py grant-ke
      - HOST tries to open a made-up `.env` that CIO puts at the top of the CIO worktree for the test and removes afterwards. The lead folder's real `.env` is never the test file.
 
      Each must be refused. Exec tells you the result. The file holds only permission rules at that point, so a Read that succeeds shows nothing secret. If a seat needs a restart to pick up the new rules, that happens here while the command waits.
-  4. **The key.** When Exec says all three were refused, type `refused` and press Return. It then asks `PIPER_SEAT_ANTHROPIC_KEY for seat lead (input hidden):`. Paste the key there and press Return. Nothing shows as you paste. The key is never part of a command.
+  4. **The key.** When Exec gives you the three results, type them in order, for example `refused refused refused`, and press Return (HOST, 11-15: all three, so nothing gets through on a bare Return). It then asks `PIPER_SEAT_ANTHROPIC_KEY for seat lead (input hidden):`. Paste the key there and press Return. Nothing shows as you paste. The key is never part of a command.
 
-  **If any Read was not refused, type anything else** (or just press Return). The command stops before the key. The deny rules stay, since they only add protection. The key does not go in "because the cap is small" (HOST); CIO fixes the deny first and tells Arch and HOST what the result was.
+  **If any Read was not refused, type what Exec gave you, or just press Return.** Anything but three times `refused` stops it. You can also press Return to stop and run the same line again later, for example if a seat is asleep or needs a restart; the parts already done are skipped. The command stops before the key. The deny rules stay, since they only add protection. The key does not go in "because the cap is small" (HOST); CIO fixes the deny first and tells Arch and HOST what the result was.
 
-  **Why it can't be shorter than this:** the wait in the middle is the point. Testing the deny with the real key already behind it would make a failed test the leak (Lead, 11-15). So his hands are: one paste, one word, one key.
+  **Why it can't be shorter than this:** the wait in the middle is the point. Testing the deny with the real key already behind it would make a failed test the leak (Lead, 11-15). So his hands are: one paste, three words, one key.
 
 - **You should see:**
 
@@ -97,7 +97,7 @@ scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
   - To take the key back out: `scripts/seat_settings_grant.py remove-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY`. Revoking it on the console ends every copy, including any in a backup.
 
 - **Another seat later** (CIO, PA, Docs): the same line with that seat's name. A seat gets the key only when it names a run.
-- **Tested how:** `tests/unit/scripts/test_seat_settings_grant.py`, 26 cases on a dummy value: the value never appears in any output, the file ends at mode 0600, existing rules are kept, a deny is never removed, a broken file is left alone, `check-env` and `add-allow` refuse anything but seat keys and exact `Bash(...)` rules. **Not tested:** a real key and a live session.
+- **Tested how:** `tests/unit/scripts/test_seat_settings_grant.py`, 29 cases on a dummy value: the value never appears in any output, the file ends at mode 0600, existing rules are kept, a deny is never removed, a broken file is left alone, `check-env` and `add-allow` refuse anything but seat keys and exact `Bash(...)` rules. **Not tested:** a real key and a live session.
 - **What the Read deny does and doesn't cover** (CIO's probe, 11-15 22:38, dummy files only):
   - A deny of the form `Read(**/name)` **is honoured inside the seat's own worktree.** With the fleet's existing `Read(**/.env)`, my Read of a dummy `.env` in my worktree was refused ("File is in a directory that is denied by your permission settings").
   - The same deny **did not stop a Read of a dummy `.env` outside the worktree.** So the deny this step adds keeps Lead's Read tool out of Lead's own settings file. It does not stop another seat's Read tool from opening that file by its full path. For that case the limits are the classifier and the key's cap, which is why this step now adds a second deny that names the path from the home folder, in the settings file all seats share (`fleet-deny`, Arch's ruling 01M7HHQGFK). **That home-path form is untested** until the two Reads above.
