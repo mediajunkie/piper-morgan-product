@@ -2,9 +2,10 @@
 
 The install step lives on the GitHub repository page, and the only way there was a grey
 "Settings" link on the Integrations card. Now the card's link names what it leads to
-("Install the GitHub app" when the App is installed nowhere, "Choose repositories" when
+("Install the GitHub app" when the App is installed nowhere, "Manage repositories" when
 it is installed, "Repositories" when that isn't known), it lands on the repository
-section, and the Settings index has its own link to the same place.
+section, and the Settings index has a card for the same place (CXO 11-15: first
+"Choose repositories" and a text link; both changed after xian's screen read).
 
 Arch's conditions: one installation read through ``_installed_or_degrade``; the route
 returns a state and nothing else; any failure is ``unknown`` and the neutral label,
@@ -214,9 +215,11 @@ class TestTheCardsLabel:
         assert r["cls"] == "action-btn connect-btn"
         assert r["calls"] == ["/api/v1/settings/integrations/github/install-state"]
 
-    def test_installed_somewhere_says_choose_repositories(self):
+    def test_installed_somewhere_says_manage_repositories(self):
+        # CXO 11-15 19:16: "Choose repositories" read as a one-time choice.
         r = _label({"state": "some"})
-        assert r["text"] == "Choose repositories" and r["cls"] == "action-btn configure-btn"
+        assert r["text"] == "Manage repositories" and r["cls"] == "action-btn configure-btn"
+        assert "Choose repositories" not in CARDS
 
     @pytest.mark.parametrize(
         "response",
@@ -343,14 +346,23 @@ class TestThePagesSource:
         label = CARDS.index("      labelGitHubRepositoriesLink();", render)
         assert label > render and "await labelGitHubRepositoriesLink" not in CARDS
 
-    def test_the_settings_index_links_to_the_repository_section(self):
-        assert (
-            '<a href="/settings/integrations/github#repositories" '
-            'id="index-github-repositories">GitHub repositories</a>'
-        ) in INDEX
-        # A card is itself a link; the new link is not nested inside one.
-        before = INDEX[: INDEX.index('<a href="/settings/integrations/github#repositories"')]
-        assert before.count('<a href="/settings') == before.count("</a>")
+    def test_the_settings_index_has_a_card_for_the_repository_section(self):
+        # CXO 11-15: a card like its neighbours, not a text link (xian looked for the
+        # link and did not find it).
+        start = INDEX.index('<a href="/settings/integrations/github#repositories"')
+        card = INDEX[start : INDEX.index("</a>", start)]
+        assert 'class="settings-card"' in card and 'id="index-github-repositories"' in card
+        assert '<h3 class="card-title">GitHub repositories</h3>' in card
+        assert "Choose which repositories Piper can read." in card
+        assert '<div class="card-icon">' in card
+        # In the first group's grid, between two other cards, and not nested in one.
+        grid = INDEX.index('<div class="settings-grid">')
+        group_end = INDEX.index("</section>", grid)
+        assert grid < start < group_end
+        before = INDEX[grid:start]
+        assert before.count('class="settings-card"') == before.count("</a>") >= 1
+        assert INDEX.count('href="/settings/integrations/github#repositories"') == 1
+        assert "settings-group-links" not in INDEX
 
     def test_the_anchor_is_on_the_repository_section_and_is_scrolled_to_once(self):
         assert '<h3 id="repositories">' in GITHUB_PAGE
