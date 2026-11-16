@@ -143,7 +143,7 @@ python main.py                    # port 8001 (or PIPER_PORT)
 - [Release Notes v0.8.6](RELEASE-NOTES-v0.8.6.md) — prior release (M0)
 - [Release Notes v0.8.8](RELEASE-NOTES-v0.8.8.md) — next release (D1/RECONNECT)
 - [BRIEFING-CURRENT-STATE](../briefing/BRIEFING-CURRENT-STATE.md) — live milestone status
-- [Alpha Quickstart](../ALPHA_QUICKSTART.md) — setup guide
+- [Alpha Quickstart](../BETA_QUICKSTART.md) — setup guide
 
 ---
 

@@ -40,7 +40,7 @@ A PM might ask Piper, in Slack or in the web UI, to help clarify the rationale f
 
 **How to get started**
 
-Alpha users can sign up and connect GitHub, Notion, Slack, and calendar via the Piper web app. Once connected, you can talk to Piper in the web UI or in Slack (where configured). Setup and onboarding are documented at [ALPHA_QUICKSTART](../../ALPHA_QUICKSTART.md) and [getting started](../../public/getting-started/README.md).
+Alpha users can sign up and connect GitHub, Notion, Slack, and calendar via the Piper web app. Once connected, you can talk to Piper in the web UI or in Slack (where configured). Setup and onboarding are documented at [ALPHA_QUICKSTART](../../BETA_QUICKSTART.md) and [getting started](../../public/getting-started/README.md).
 
 ---
 
