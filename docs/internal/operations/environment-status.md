@@ -27,7 +27,7 @@ Run these and paste the actual output — do not carry a prior value forward.
 
 ```bash
 # Dev containers must be up first (they do NOT survive an Amber reboot — see below)
-docker compose up -d postgres redis chromadb
+docker start piper-postgres piper-redis piper-chromadb   # never `docker compose up` on the shared stack (recipe 14)
 docker ps --format '{{.Names}}\t{{.Status}}'
 
 # Current migration (env-strip: a Claude Code shell exports an EMPTY ANTHROPIC_API_KEY)
@@ -54,11 +54,13 @@ all-clear on 2026-08-10.
 - 🔴 **Docker containers do NOT restart after an Amber reboot.** Found 2026-08-11: `piper-postgres`,
   `piper-redis`, and `piper-chromadb` were all `Exited (255)` six hours after the macOS 26.6 reboot,
   with nothing having restarted them. Nothing alerts on this — the first symptom is a connection
-  error in whatever you were doing. **After any host reboot, run `docker compose up -d postgres
-  redis chromadb` before assuming the dev environment works.** (`piper-ghmcp` came back on its own;
+  error in whatever you were doing. **After any host reboot, run `docker start piper-postgres
+  piper-redis piper-chromadb` before assuming the dev environment works** (not `docker compose up`:
+  canonical-ops-recipes.md section 14, seat rule of 2026-11-16). (`piper-ghmcp` came back on its own;
   the data services did not.)
 - Dev Postgres is on **port 5433**, not 5432. Redis 6379, ChromaDB 8000, app server 8001.
 - Database runs in the Docker container `piper-postgres`; volume `piper_postgres_data`.
+- Redis and Chroma data live in the Lead worktree: `piper-morgan-worktrees/lead/data/redis` and `…/lead/data/chromadb` (read with `docker inspect`, 2026-11-16). Check this line before removing or re-creating that worktree. The move out is issue 2387.
 
 ## Migration History
 
