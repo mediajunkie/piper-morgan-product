@@ -66,7 +66,15 @@ async def empty_db(monkeypatch):
 class TestAnAccountWithNothingStored:
     async def test_oauth_status_reads_not_connected(self, empty_db):
         res = await si.github_oauth_status(current_user=_claims())
-        assert res == {"connected": False, "stale": False, "serving": None, "status": None}
+        # #2376 added app_connected and pat_on_file; nothing stored reads False on both.
+        assert res == {
+            "connected": False,
+            "stale": False,
+            "serving": None,
+            "status": None,
+            "app_connected": False,
+            "pat_on_file": False,
+        }
 
     async def test_repositories_are_refused_not_listed(self, empty_db):
         with pytest.raises(HTTPException) as e:
