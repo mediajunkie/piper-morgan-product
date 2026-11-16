@@ -138,6 +138,12 @@ jobs:
     name: Full Test Suite
     runs-on: ubuntu-latest
     needs: smoke-tests
+    # A hung suite must not hold main's Tests verdict. On main a run is never cancelled by a
+    # newer push (see `concurrency` above), so with no limit here a hang blocks every later
+    # run until GitHub's 6-hour default: run 43945328322 on 2026-11-16 sat in the full-suite
+    # step for over 50 minutes with a run queued behind it. The suite takes 17 to 21 minutes
+    # (three runs the same day), so 45 leaves room and still frees the queue within the hour.
+    timeout-minutes: 45
 
     env:
       POSTGRES_HOST: localhost
