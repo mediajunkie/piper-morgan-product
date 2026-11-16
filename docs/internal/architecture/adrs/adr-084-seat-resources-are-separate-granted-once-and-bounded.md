@@ -43,7 +43,7 @@ A **seat resource** is something that exists so agents can run and test Piper. I
 ### D2. Paid model calls
 
 - **The key.** One seat key per provider, in a workspace (Anthropic) or project (OpenAI) that holds nothing else. **The provider's own monthly limit on that workspace is the seat budget.** That limit is the bound.
-- **How it reaches a run.** An `env` entry in the seat's own git-ignored `.claude/settings.local.json` (mode 0600), under a Piper-specific name: `PIPER_SEAT_ANTHROPIC_KEY`, `PIPER_SEAT_OPENAI_KEY`. The name differs from `ANTHROPIC_API_KEY` because Claude Code uses that one and our launch lines strip it. CIO tested the shape with a dummy value on 11-15: the settings `env` surface reaches the shell, and the command ran unrefused.
+- **How it reaches a run.** An `env` entry in the seat's own git-ignored `.claude/settings.local.json`, under a Piper-specific name: `PIPER_SEAT_ANTHROPIC_KEY`, `PIPER_SEAT_OPENAI_KEY`. The file is mode 0600, exists only in the worktrees of seats that run paid calls, and carries a Read deny for itself in those seats' settings, so the value can't enter a transcript through the Read tool. A seat checks its settings with a script that prints key names only. (A session variable has to come from a file; this is the harness's own, and every other launch surface is one of xian's files.) The name differs from `ANTHROPIC_API_KEY` because Claude Code uses that one and our launch lines strip it. CIO tested the shape with a dummy value on 11-15: the settings `env` surface reaches the shell, and the command ran unrefused.
 - **How a run uses it.** The binder's existing command-line source, unchanged: `ANTHROPIC_API_KEY="$PIPER_SEAT_ANTHROPIC_KEY"` after the `env -u` flags, with `PIPER_CREDENTIAL_STORE=db`. The shell expands the name; the command text never holds the value. No file is read, no keychain, no `.env`.
 - **Who holds it.** Only seats that run screens or gates. Lead first; CIO and PA when each names a run. Docs' fresh-clone guide run may use it in its scratch database.
 - **One cap enforcer.** `developer_keys_bound(providers=..., max_usd=...)` refuses to start without a cap. The spend chokepoint (#1809, `services/llm/clients.py`) adds each response's usage and raises before the cap is passed. Batch submits check the worst-case cost of the rendered requests first (`router_batch.py submit --cap-usd`, on main at 1e07f0ba74, is that half). Until the binder half is built, a run with no in-code stop still asks first.
@@ -55,8 +55,16 @@ A **seat resource** is something that exists so agents can run and test Piper. I
 - **Two seat accounts on beta.** Neither is an admin. Each holds nothing real: no real person's provider key, no tester data, a generated password used nowhere else.
 - **One is GitHub-connected** through a dedicated test identity. Its reach has two bounds, and both are required: the org's base permission is none (or a team limited to the test repositories), and the App is installed on the test repositories only. Since #2374 the install bounds what Piper reads; org membership bounds what the identity itself sees. The identity's GitHub password and second factor are not seat resources. The connect and the install are xian's clicks, once.
 - **A seat holds a session, never a password.** One reviewed helper on main (working name `scripts/seat_session.py --account <name>`) reads the account's file, signs in, and saves a session: a cookie jar for API reads, a browser storage state for Web. It prints the account name and the expiry only. The grant is an exact-command allow for that helper, installed by Pard or xian. The Read denies on `~/.piper-shared` stay as they are; the session file lives there under a name the denies match.
-  - This is CIO's route, and it supersedes the proposal's "permitted folder". It waits on Pard's install of CIO's dummy kit. If the helper route is refused, the fallback is xian's own sign-in into a seat-driven profile, with a session lifetime long enough to make it rare. Custody of the choice is HOST's.
-- **The connector.** PA reads through a second connector consented as the GitHub-connected seat account, not through xian's. Whether one claude.ai account can hold two connectors at one URL is unverified (CIO's test 3). Rows about xian's own data still use his connector, and the quote says so.
+  - This is CIO's route, and HOST took it as the custody bound on 11-15 19:36, withdrawing "every sign-in stays in xian's hand" for seeded accounts. It supersedes the proposal's "permitted folder". It waits on Pard's install of CIO's dummy kit. If the helper route is refused, the fallback is xian's own sign-in into a seat-driven profile.
+  - **HOST's bounds on the helper, all required:**
+    1. A fixed list of seeded account names and one fixed host (beta) in code. Any other name or host is refused. Adding a name is a diff HOST reads.
+    2. After sign-in and before saving, it refuses if the account shows admin, a provider key, or a connection to a real person's service.
+    3. Its output is the account name and the expiry. A forced failed sign-in is tested, and the output is searched for the password, a cookie and a token.
+    4. The password file and the saved session sit under the existing denies, mode 0600. A client script reads the session; no seat does.
+    5. The grant is one exact-command allow per account name.
+    6. Revocation is a password rotation plus deleting the session file, the same day anything is seen in clear.
+  - **The browser half** (Web's question; mechanism to be proven on the dummy). The session is two httpOnly cookies (`services/auth/session_cookies.py`: access 24 hours, refresh 7 days, `samesite=lax`, bound to no address or browser). Page script can't set them. Today `.mcp.json` starts the browser tool with `--isolated`, so every browser restart signs every seat out. The intended shape: each seat that does served reads gets a persistent browser profile outside the repo (`--userDataDir`, or `--browserUrl` onto a browser that stays up), and the helper places the two cookies into that profile through the DevTools protocol. The password and the cookies never pass through a tool call. CIO and Pard own the launch configuration; Web runs the dummy check.
+- **The connector.** PA reads through a second connector consented as the GitHub-connected seat account, not through xian's. Whether one claude.ai account can hold two connectors at one URL can't be tested from a seat: it is one try in xian's own claude.ai settings, with the fallback "if it refuses a second one, stop and tell Exec". The seat account also has to be on the #2242 allowlist, which is one production write by xian. Rows about xian's own data still use his connector, and the quote says so.
 - **Served reads and the atlas** (#2381): Web captures each page in each state after a promotion; CXO judges from the atlas; the tracked part is a text index. Lead's script-run card harness covers words; the atlas covers layout.
 
 ### D4. Production facts
@@ -85,8 +93,8 @@ A ruling that puts a step on xian's hands names, in the same text, **the standin
 
 Two further standing accesses were named in review and are accepted in shape, each with its own bound:
 
-- **MCP deploys** (PA): a `workflow_dispatch` job in `fly-deploy.yml` holding a token scoped to the MCP app only. HOST owns the token's custody; Lead builds the job; it prints sha and release only.
-- **Hook and settings installs** (CIO): Pard installs a CIO-authored patch on his own check when it arrives with a before-and-after test count. Paths limited to `.claude/hooks/` and `.claude/settings*.json` in seat worktrees; no deny is ever removed; each install is logged where xian can see it.
+- **MCP deploys** (PA): a `workflow_dispatch` job in `fly-deploy.yml` holding a token scoped to the MCP app only. HOST's bounds: the secret sits in a GitHub environment limited to `main`, not a plain repository secret (otherwise a branch with an edited workflow could read it); the job takes no free-text input, deploys main's sha, and prints sha and release only; the token has an expiry if Fly allows one. Unverified: whether a Fly deploy token can also run commands inside the app. If it can, the workflow text on main is the bound, not the token. Lead builds the job.
+- **Hook and settings installs** (CIO): Pard installs a CIO-authored patch on his own check when it arrives with a before-and-after test count. HOST's bounds: additive only (never removes or loosens a deny, never widens an allow past one exact command); installed by an agent other than the author; the diff posted where xian sees it before the install; paths limited to `.claude/hooks/` and `.claude/settings*.json` in seat worktrees. It lets a seat author the guards that bind seats, so it holds only on xian's one yes to the rule.
 
 ## What this supersedes or narrows
 
@@ -106,12 +114,17 @@ Nothing here lets a seat run `fly`, read the keychain, or pass a classifier refu
 6. Ticks "Operations reader" on the plain test account.
 7. Creates the MCP-app-scoped deploy token and stores it as a repository secret.
 8. Says yes once to Pard's install rule for CIO's hook and settings patches.
+9. Adds the GitHub-connected seat account to the #2242 allowlist (one production write), then adds a second connector in his claude.ai settings and signs in to Piper as that account, once.
+
+Rows 4 and 9 include clicks on GitHub's and claude.ai's own pages. No seat drives those.
 
 ## Open at proposal time
 
 - **The Anthropic workspace.** `lead-scoring` can serve only if the older `lead-scoring-2026-10` key is revoked and nothing of xian's own still spends there. If anything does, the seat key needs its own workspace. A lowered limit also has to allow for what the workspace already spent this month.
-- **The helper route** (D3): pending Pard's install of CIO's dummy kit.
-- **Two connectors at one URL** (D3): untested.
+- **The helper route** (D3): pending Pard's install of CIO's dummy kit. Status at 19:35 (CIO): the key route is tested with a stand-in; the helper under an exact allow is untested.
+- **The browser half of the helper** (D3): untested; needs a persistent profile and a cookie set through the DevTools protocol.
+- **Whether a promotion ends a session:** Web measures it in the first signed-in sitting. The helper makes it a re-mint, not a sitting.
+- **Two connectors at one URL** (D3): xian's one try.
 - **The test identity's account type** under GitHub's terms (HOST reads it as a machine account; unverified).
 - **A running session and a new settings `env` entry:** whether a restart is needed (CIO's kit answers it).
 
