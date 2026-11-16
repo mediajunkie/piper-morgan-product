@@ -134,7 +134,7 @@ No breaking changes. Existing integrations continue to work.
 
 ## Known Issues
 
-See [ALPHA_KNOWN_ISSUES.md](../ALPHA_KNOWN_ISSUES.md) for current known issues.
+See [ALPHA_KNOWN_ISSUES.md](../BETA_KNOWN_ISSUES.md) for current known issues.
 
 **Known limitations in this release:**
 - Portfolio onboarding currently supports text-based project names only

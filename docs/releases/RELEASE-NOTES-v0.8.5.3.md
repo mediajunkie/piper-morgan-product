@@ -152,9 +152,9 @@ python main.py
 
 ## See Also
 
-- [Alpha Quickstart](../ALPHA_QUICKSTART.md) - Updated setup guide
-- [Alpha Testing Guide](../ALPHA_TESTING_GUIDE.md) - PostgreSQL access docs
-- [Known Issues](../ALPHA_KNOWN_ISSUES.md) - Current limitations
+- [Alpha Quickstart](../BETA_QUICKSTART.md) - Updated setup guide
+- [Alpha Testing Guide](../BETA_TESTING_GUIDE.md) - PostgreSQL access docs
+- [Known Issues](../BETA_KNOWN_ISSUES.md) - Current limitations
 
 ---
 
